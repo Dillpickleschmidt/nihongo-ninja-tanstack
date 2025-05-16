@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vinxi dev",
-    "dev-sst": "sst dev -- bun run dev",
+    "dev-sst": "sst dev",
     "build": "vinxi build",
     "start": "vinxi start",
     "deploy-stage": "sst deploy --stage staging",
