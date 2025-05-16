@@ -1,6 +1,8 @@
 # dependencies (bun install)
 node_modules
 bun.lock
+.vinxi
+.output
 
 # output
 out
@@ -36,3 +38,12 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # sst
 .sst
+
+# Supabase
+supabase/.branches
+supabase/.temp
+
+# dotenvx
+.env.keys
+.env.local
+.env.*.local

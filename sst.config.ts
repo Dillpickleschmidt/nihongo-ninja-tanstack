@@ -9,6 +9,10 @@ export default $config({
     }
   },
   async run() {
-    new sst.aws.TanStackStart("MyWeb")
+    const secret = new sst.Secret("SECRET_VAL")
+
+    new sst.aws.TanStackStart("MyWeb", {
+      link: [secret],
+    })
   },
 })
