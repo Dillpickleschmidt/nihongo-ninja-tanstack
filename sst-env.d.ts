@@ -5,6 +5,14 @@
 
 declare module "sst" {
   export interface Resource {
+    "MyWeb": {
+      "type": "sst.aws.TanstackStart"
+      "url": string
+    }
+    "SECRET_VAL": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
   }
 }
 /// <reference path="sst-env.d.ts" />

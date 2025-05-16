@@ -73,6 +73,7 @@ function RootComponent() {
       <ColorModeProvider storageManager={storageManager}>
         <Nav />
         <BackgroundImage />
+        <Scripts />
         <Outlet />
         <TanStackRouterDevtools />
       </ColorModeProvider>
