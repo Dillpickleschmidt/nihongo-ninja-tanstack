@@ -12,7 +12,6 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthImport } from './routes/auth'
-import { Route as ApiImport } from './routes/api'
 import { Route as IndexImport } from './routes/index'
 import { Route as LearnIndexImport } from './routes/learn/index'
 
@@ -21,12 +20,6 @@ import { Route as LearnIndexImport } from './routes/learn/index'
 const AuthRoute = AuthImport.update({
   id: '/auth',
   path: '/auth',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ApiRoute = ApiImport.update({
-  id: '/api',
-  path: '/api',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -53,13 +46,6 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/api': {
-      id: '/api'
-      path: '/api'
-      fullPath: '/api'
-      preLoaderRoute: typeof ApiImport
-      parentRoute: typeof rootRoute
-    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -81,14 +67,12 @@ declare module '@tanstack/solid-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/api': typeof ApiRoute
   '/auth': typeof AuthRoute
   '/learn': typeof LearnIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/api': typeof ApiRoute
   '/auth': typeof AuthRoute
   '/learn': typeof LearnIndexRoute
 }
@@ -96,30 +80,27 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/api': typeof ApiRoute
   '/auth': typeof AuthRoute
   '/learn/': typeof LearnIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api' | '/auth' | '/learn'
+  fullPaths: '/' | '/auth' | '/learn'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api' | '/auth' | '/learn'
-  id: '__root__' | '/' | '/api' | '/auth' | '/learn/'
+  to: '/' | '/auth' | '/learn'
+  id: '__root__' | '/' | '/auth' | '/learn/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ApiRoute: typeof ApiRoute
   AuthRoute: typeof AuthRoute
   LearnIndexRoute: typeof LearnIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ApiRoute: ApiRoute,
   AuthRoute: AuthRoute,
   LearnIndexRoute: LearnIndexRoute,
 }
@@ -135,16 +116,12 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/api",
         "/auth",
         "/learn/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/api": {
-      "filePath": "api.ts"
     },
     "/auth": {
       "filePath": "auth.tsx"
