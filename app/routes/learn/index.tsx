@@ -15,6 +15,7 @@ export const Route = createFileRoute("/learn/")({
   component: RouteComponent,
 })
 
+// TODO: Add a button to sign in
 function RouteComponent() {
   // Execute the server function when component is rendered
   logSecret()

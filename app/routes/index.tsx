@@ -1,5 +1,5 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import ExternalResourceIcons from "@/features/homepage/ExternalResourceIcons"
+import Nav from "@/features/homepage/Nav"
 import { createFileRoute } from "@tanstack/solid-router"
 
 export const Route = createFileRoute("/")({
@@ -9,6 +9,7 @@ export const Route = createFileRoute("/")({
 function RouteComponent() {
   return (
     <>
+      <Nav />
       <div class="flex w-full flex-col items-center px-4">
         <div class="max-w-4xl pt-12 text-center lg:pt-24">
           <h1 class="dark:text-muted-foreground font-serif text-5xl leading-12 font-medium lg:text-7xl lg:leading-20">

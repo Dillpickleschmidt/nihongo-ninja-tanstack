@@ -13,6 +13,14 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "SUPABASE_ANON_KEY": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "SUPABASE_URL": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
   }
 }
 /// <reference path="sst-env.d.ts" />

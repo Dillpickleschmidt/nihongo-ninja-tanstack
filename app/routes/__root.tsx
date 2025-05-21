@@ -18,8 +18,6 @@ import { createServerFn } from "@tanstack/solid-start"
 import { isServer } from "solid-js/web"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 
-import Nav from "@/features/navbar/Nav"
-
 const getServerCookies = createServerFn({
   method: "GET",
 }).handler(() => {
@@ -61,7 +59,6 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
-  // Use the loader data from the Route
   const loaderData = Route.useLoaderData()
   const cookies = loaderData().cookies
 
@@ -71,7 +68,6 @@ function RootComponent() {
     <>
       <ColorModeScript storageType={storageManager?.type} />
       <ColorModeProvider storageManager={storageManager}>
-        <Nav />
         <BackgroundImage />
         <Scripts />
         <Outlet />

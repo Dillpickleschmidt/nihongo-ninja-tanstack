@@ -10,39 +10,67 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root"
-import { Route as IndexImport } from "./routes/index"
-import { Route as LearnIndexImport } from "./routes/learn/index"
+import { Route as rootRoute } from './routes/__root'
+import { Route as AuthImport } from './routes/auth'
+import { Route as ApiImport } from './routes/api'
+import { Route as IndexImport } from './routes/index'
+import { Route as LearnIndexImport } from './routes/learn/index'
 
 // Create/Update Routes
 
+const AuthRoute = AuthImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ApiRoute = ApiImport.update({
+  id: '/api',
+  path: '/api',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
 const LearnIndexRoute = LearnIndexImport.update({
-  id: "/learn/",
-  path: "/learn/",
+  id: '/learn/',
+  path: '/learn/',
   getParentRoute: () => rootRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/solid-router" {
+declare module '@tanstack/solid-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/"
-      path: "/"
-      fullPath: "/"
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    "/learn/": {
-      id: "/learn/"
-      path: "/learn"
-      fullPath: "/learn"
+    '/api': {
+      id: '/api'
+      path: '/api'
+      fullPath: '/api'
+      preLoaderRoute: typeof ApiImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/learn/': {
+      id: '/learn/'
+      path: '/learn'
+      fullPath: '/learn'
       preLoaderRoute: typeof LearnIndexImport
       parentRoute: typeof rootRoute
     }
@@ -52,37 +80,47 @@ declare module "@tanstack/solid-router" {
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute
-  "/learn": typeof LearnIndexRoute
+  '/': typeof IndexRoute
+  '/api': typeof ApiRoute
+  '/auth': typeof AuthRoute
+  '/learn': typeof LearnIndexRoute
 }
 
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute
-  "/learn": typeof LearnIndexRoute
+  '/': typeof IndexRoute
+  '/api': typeof ApiRoute
+  '/auth': typeof AuthRoute
+  '/learn': typeof LearnIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  "/": typeof IndexRoute
-  "/learn/": typeof LearnIndexRoute
+  '/': typeof IndexRoute
+  '/api': typeof ApiRoute
+  '/auth': typeof AuthRoute
+  '/learn/': typeof LearnIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: "/" | "/learn"
+  fullPaths: '/' | '/api' | '/auth' | '/learn'
   fileRoutesByTo: FileRoutesByTo
-  to: "/" | "/learn"
-  id: "__root__" | "/" | "/learn/"
+  to: '/' | '/api' | '/auth' | '/learn'
+  id: '__root__' | '/' | '/api' | '/auth' | '/learn/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiRoute: typeof ApiRoute
+  AuthRoute: typeof AuthRoute
   LearnIndexRoute: typeof LearnIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiRoute: ApiRoute,
+  AuthRoute: AuthRoute,
   LearnIndexRoute: LearnIndexRoute,
 }
 
@@ -97,11 +135,19 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/api",
+        "/auth",
         "/learn/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/api": {
+      "filePath": "api.ts"
+    },
+    "/auth": {
+      "filePath": "auth.tsx"
     },
     "/learn/": {
       "filePath": "learn/index.tsx"

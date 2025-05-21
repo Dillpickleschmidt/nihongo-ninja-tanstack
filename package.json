@@ -15,6 +15,8 @@
     "@fontsource-variable/inter": "^5.2.5",
     "@fontsource-variable/noto-sans-jp": "^5.2.5",
     "@kobalte/core": "^0.13.9",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.49.5",
     "@tailwindcss/postcss": "^4.1.6",
     "@tanstack/solid-router": "^1.120.3",
     "@tanstack/solid-router-devtools": "^1.120.3",
@@ -34,6 +36,7 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.149",
     "@types/bun": "latest",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",

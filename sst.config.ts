@@ -9,10 +9,17 @@ export default $config({
     }
   },
   async run() {
-    const secret = new sst.Secret("SECRET_VAL")
+    // Keep your secrets for Supabase, etc.
+    const secrets = {
+      SECRET_VAL: new sst.Secret("SECRET_VAL"),
+      SUPABASE_URL: new sst.Secret("SUPABASE_URL"),
+      SUPABASE_ANON_KEY: new sst.Secret("SUPABASE_ANON_KEY"),
+    }
+    const allSecrets = Object.values(secrets)
 
+    // Deploy your TanStackStart app and link the secrets
     new sst.aws.TanStackStart("MyWeb", {
-      link: [secret],
+      link: [...allSecrets],
     })
   },
 })
