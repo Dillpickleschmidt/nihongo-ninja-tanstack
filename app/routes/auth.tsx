@@ -1,35 +1,16 @@
 // app/routes/auth.tsx
 import { createFileRoute } from "@tanstack/solid-router"
-import { onMount, createSignal } from "solid-js"
+import Login from "@/features/auth/components/Login"
 
 export const Route = createFileRoute("/auth")({
-  component: AuthTest,
-})
-
-function AuthTest() {
-  const [message, setMessage] = createSignal("Loading...")
-
-  onMount(async () => {
-    const res = await fetch("/api/hello")
-    const data = await res.json()
-    console.log("API /api/hello response:", data)
-    setMessage(data.message)
-  })
-  return (
-    <div style={{ padding: "2rem" }}>
-      <h1>TanStack Start API Route Test</h1>
-      <p>API says: {message()}</p>
-      <form
-        method="post"
-        action="/api/hello"
-        style={{ "margin-top": "2rem" }}
-        onSubmit={(e) => {
-          // Let the browser handle the form POST
-        }}
-      >
-        <input type="hidden" name="foo" value="bar" />
-        <button type="submit">POST to /api/hello</button>
-      </form>
+  component: () => (
+    <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 class="mt-6 text-center text-2xl leading-9 font-bold tracking-tight text-gray-900 dark:text-white">
+          Sign in to your account
+        </h2>
+      </div>
+      <Login callbackName="handleSignInWithGoogleCallback" />
     </div>
-  )
-}
+  ),
+})

@@ -1,13 +1,5 @@
-// backendClient.ts
-import {
-  createServerClient,
-  parseCookieHeader,
-  serializeCookieHeader,
-} from "@supabase/ssr"
-import {
-  getRequestHeader,
-  setResponseHeader,
-} from "@tanstack/solid-start/server"
+import { createServerClient, parseCookieHeader } from "@supabase/ssr"
+import { getRequestHeader } from "@tanstack/solid-start/server"
 import { serverOnly } from "@tanstack/solid-start"
 import { Resource } from "sst"
 
@@ -22,17 +14,22 @@ export const createBackendClient = serverOnly(() => {
   }
 
   const cookieHeader = getRequestHeader("Cookie") ?? ""
+  console.log("[backendClient] SSR Cookie header:", cookieHeader)
+
+  let logged = false
+
   const clientInstance = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       getAll() {
         const allCookies = parseCookieHeader(cookieHeader)
+        if (!logged) {
+          console.log(
+            "[backendClient] getAll: Cookies passed to Supabase SSR client:",
+            allCookies,
+          )
+          logged = true
+        }
         const supabaseCookies = allCookies.map((cookie) => {
-          if (cookie.name.match(/^sb-[a-z0-9]+-auth-token\.\d+$/)) {
-            return {
-              name: cookie.name.replace(/-auth-token\.\d+$/, "-auth-token"),
-              value: cookie.value ?? "",
-            }
-          }
           return {
             name: cookie.name,
             value: cookie.value ?? "",
@@ -40,19 +37,8 @@ export const createBackendClient = serverOnly(() => {
         })
         return supabaseCookies
       },
-      setAll(cookiesToSet) {
-        try {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            setResponseHeader(
-              "Set-Cookie",
-              serializeCookieHeader(name, value, options),
-            )
-          })
-        } catch (e) {
-          console.warn(
-            `Supabase client's setAll failed to set cookies. Error: ${e}.`,
-          )
-        }
+      setAll() {
+        // do not let Supabase SSR client set or clear cookies (doing it manually)
       },
     },
   })

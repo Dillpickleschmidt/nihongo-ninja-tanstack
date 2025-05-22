@@ -1,32 +1,51 @@
 // features/auth/components/Login.tsx
-
-import { createSignal, onCleanup } from "solid-js"
-
-const API_BASE = "https://api.nihongoninja.io"
+import { createSignal, onMount, onCleanup } from "solid-js"
 
 export default function Login({ callbackName }: { callbackName: string }) {
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
   const [credential, setCredential] = createSignal("")
 
-  // Register the callback globally
-  window[callbackName] = (response: { credential: string }) => {
-    setCredential(response.credential)
-    // Submit the form programmatically
-    document
-      .getElementById("google-login-form")
-      ?.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-  }
+  onMount(() => {
+    // Register the callback globally only in the browser
+    ;(window as any)[callbackName] = (response: { credential: string }) => {
+      setCredential(response.credential)
+      document
+        .getElementById("google-login-form")
+        ?.dispatchEvent(
+          new Event("submit", { cancelable: true, bubbles: true }),
+        )
+    }
 
-  onCleanup(() => {
-    delete window[callbackName]
+    // Load the Google One Tap script
+    const script = document.createElement("script")
+    script.src = "https://accounts.google.com/gsi/client"
+    script.async = true
+    script.defer = true
+    document.head.appendChild(script)
+
+    // Cleanup: remove callback and script on unmount
+    onCleanup(() => {
+      delete (window as any)[callbackName]
+      if (document.head.contains(script)) {
+        document.head.removeChild(script)
+      }
+    })
   })
+
+  if (!googleClientId) {
+    return (
+      <div style={{ color: "red", "text-align": "center", padding: "1rem" }}>
+        Google Sign-In is not configured correctly. (Missing Client ID)
+      </div>
+    )
+  }
 
   return (
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div class="rounded-lg bg-white px-6 py-12 shadow sm:px-12 dark:bg-gray-800">
         <form
           id="google-login-form"
-          action={`${API_BASE}/auth/login`}
+          action={`/api/auth/login`}
           method="post"
           style={{ display: "none" }}
         >
