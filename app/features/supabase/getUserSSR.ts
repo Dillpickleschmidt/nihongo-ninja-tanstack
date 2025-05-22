@@ -1,4 +1,4 @@
-// features/supabase/auth.ts
+// features/supabase/getUserSSR.ts
 import { serverOnly } from "@tanstack/solid-start"
 import { createBackendClient } from "./backendClient"
 import { parseCookieHeader, serializeCookieHeader } from "@supabase/ssr"
@@ -7,13 +7,9 @@ import {
   setResponseHeader,
 } from "@tanstack/solid-start/server"
 import { Resource } from "sst"
+import { getProjectRef } from "./getProjectRef"
 
-function getProjectRef(supabaseUrl: string) {
-  const match = supabaseUrl.match(/^https:\/\/([^.]+)\.supabase\.co/)
-  return match ? match[1] : ""
-}
-
-export const getUser = serverOnly(async () => {
+export const getUserSSR = serverOnly(async () => {
   const cookieHeader = getRequestHeader("Cookie") ?? ""
   const cookies = parseCookieHeader(cookieHeader)
 

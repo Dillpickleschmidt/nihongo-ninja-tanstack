@@ -2,7 +2,7 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { Resource } from "sst"
 import { createServerFn } from "@tanstack/solid-start"
-import { getUser } from "@/features/supabase/auth"
+import { getUser } from "@/features/supabase/getUser"
 
 // Server function to log secret value
 const logSecret = createServerFn({
@@ -12,14 +12,12 @@ const logSecret = createServerFn({
   return Resource.SECRET_VAL.value
 })
 
-const logUser = createServerFn({
-  method: "GET",
-}).handler(async () => {
+async function logUser() {
   console.log("GETTING USER NOW")
   const userResult = await getUser()
   console.log("USER IS : ", userResult)
   return userResult as any
-})
+}
 
 export const Route = createFileRoute("/learn/")({
   component: RouteComponent,

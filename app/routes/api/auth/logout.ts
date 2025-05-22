@@ -2,11 +2,7 @@
 import { createAPIFileRoute } from "@tanstack/solid-start/api"
 import { serializeCookieHeader } from "@supabase/ssr"
 import { Resource } from "sst"
-
-function getProjectRef(supabaseUrl: string) {
-  const match = supabaseUrl.match(/^https:\/\/([^.]+)\.supabase\.co/)
-  return match ? match[1] : ""
-}
+import { getProjectRef } from "@/features/supabase/getProjectRef"
 
 export const APIRoute = createAPIFileRoute("/api/auth/logout")({
   POST: async () => {
@@ -32,10 +28,11 @@ export const APIRoute = createAPIFileRoute("/api/auth/logout")({
 
     return new Response(null, {
       status: 302,
-      headers: {
-        "Set-Cookie": cookieHeaders.join(", "),
-        Location: "/auth",
-      },
+      headers: [
+        ["Set-Cookie", cookieHeaders[0]],
+        ["Set-Cookie", cookieHeaders[1]],
+        ["Location", "/learn"],
+      ],
     })
   },
 })

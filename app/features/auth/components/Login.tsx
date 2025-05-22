@@ -16,14 +16,12 @@ export default function Login({ callbackName }: { callbackName: string }) {
         )
     }
 
-    // Load the Google One Tap script
     const script = document.createElement("script")
     script.src = "https://accounts.google.com/gsi/client"
     script.async = true
     script.defer = true
     document.head.appendChild(script)
 
-    // Cleanup: remove callback and script on unmount
     onCleanup(() => {
       delete (window as any)[callbackName]
       if (document.head.contains(script)) {
