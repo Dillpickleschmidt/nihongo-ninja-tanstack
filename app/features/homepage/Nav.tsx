@@ -1,3 +1,4 @@
+// Nav.tsx
 import { Button } from "@/components/ui/button"
 import ModeToggle from "../navbar/ModeToggle"
 import { Link, useLocation } from "@tanstack/solid-router"
@@ -45,7 +46,7 @@ export default function Nav() {
           </div>
           <Button
             as="a"
-            href="/auth"
+            href="/learn"
             variant="ghost"
             class="text-primary-foreground dark:border-secondary/50 dark:border-r-secondary/50 ml-4 rounded-lg border-2 dark:border-l-orange-200/50"
             // onClick={() => setIsLoginHintVisible(false)}

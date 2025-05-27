@@ -1,32 +1,40 @@
-// app/routes/learn
+// app/routes/learn/index.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import { Resource } from "sst"
 import { createServerFn } from "@tanstack/solid-start"
+import { createResource } from "solid-js"
 import { getUser } from "@/features/supabase/getUser"
+import { useAuth } from "@/features/auth/context/AuthContext"
 
 // Server function to log secret value
-const logSecret = createServerFn({
+const getSecret = createServerFn({
   method: "GET",
 }).handler(() => {
   console.log("THE SECRET KEY IS: ", Resource.SECRET_VAL.value)
   return Resource.SECRET_VAL.value
 })
 
-async function logUser() {
-  console.log("GETTING USER NOW")
-  const userResult = await getUser()
-  console.log("USER IS : ", userResult)
-  return userResult as any
-}
-
 export const Route = createFileRoute("/learn/")({
   component: RouteComponent,
+  loader: async () => {
+    console.log("[LEARN LOADER] GETTING USER NOW")
+    const { user } = useAuth()
+    console.log("[LEARN LOADER] USER IS : ", user)
+    return { user }
+  },
+  staleTime: Infinity,
 })
 
-// TODO: Add a button to sign in
 function RouteComponent() {
-  // Execute the server function when component is rendered
-  logSecret()
-  logUser()
-  return <div>Hello "/learn/"!</div>
+  // const { user } = Route.useLoaderData()()
+
+  // const [secret] = createResource(() => getSecret())
+
+  return (
+    <>
+      {/* <div>User: {user?.user?.email || "Not logged in"}</div> */}
+      {/* <div>Secret: {secret() || "Loading secret..."}</div> */}
+      <div>Hello "/learn/"!</div>
+    </>
+  )
 }

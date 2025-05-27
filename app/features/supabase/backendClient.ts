@@ -1,3 +1,4 @@
+// backendClient.ts
 import { createServerClient, parseCookieHeader } from "@supabase/ssr"
 import { getRequestHeader } from "@tanstack/solid-start/server"
 import { serverOnly } from "@tanstack/solid-start"
@@ -14,21 +15,20 @@ export const createBackendClient = serverOnly(() => {
   }
 
   const cookieHeader = getRequestHeader("Cookie") ?? ""
-  console.log("[backendClient] SSR Cookie header:", cookieHeader)
 
-  let logged = false
+  // let logged = false
 
   const clientInstance = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       getAll() {
         const allCookies = parseCookieHeader(cookieHeader)
-        if (!logged) {
-          console.log(
-            "[backendClient] getAll: Cookies passed to Supabase SSR client:",
-            allCookies,
-          )
-          logged = true
-        }
+        // if (!logged) {
+        //   console.log(
+        //     "[backendClient] getAll: Cookies passed to Supabase SSR client:",
+        //     allCookies,
+        //   )
+        //   logged = true
+        // }
         const supabaseCookies = allCookies.map((cookie) => {
           return {
             name: cookie.name,
@@ -38,7 +38,8 @@ export const createBackendClient = serverOnly(() => {
         return supabaseCookies
       },
       setAll() {
-        // do not let Supabase SSR client set or clear cookies (doing it manually)
+        // do not let Supabase SSR client set or clear cookies
+        // Building prod fails with TanStack Start + SST, so doing it manually
       },
     },
   })

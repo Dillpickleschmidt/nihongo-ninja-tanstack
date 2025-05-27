@@ -13,11 +13,14 @@ import {
   ColorModeScript,
   cookieStorageManagerSSR,
 } from "@kobalte/core"
-import { getCookie } from "vinxi/http"
+
+import { getCookie } from "@tanstack/solid-start/server"
 import { createServerFn } from "@tanstack/solid-start"
 import { isServer } from "solid-js/web"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
+import { AuthProvider } from "@/features/auth/context/AuthContext"
 
+// using createServerFn because build complains about mixing client and server code
 const getServerCookies = createServerFn({
   method: "GET",
 }).handler(() => {
@@ -68,10 +71,12 @@ function RootComponent() {
     <>
       <ColorModeScript storageType={storageManager?.type} />
       <ColorModeProvider storageManager={storageManager}>
-        <BackgroundImage />
-        <Scripts />
-        <Outlet />
-        <TanStackRouterDevtools />
+        <AuthProvider>
+          <BackgroundImage />
+          <Scripts />
+          <Outlet />
+          <TanStackRouterDevtools />
+        </AuthProvider>
       </ColorModeProvider>
     </>
   )
