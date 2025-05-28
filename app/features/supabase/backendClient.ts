@@ -18,31 +18,35 @@ export const createBackendClient = serverOnly(() => {
 
   // let logged = false
 
-  const clientInstance = createServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      getAll() {
-        const allCookies = parseCookieHeader(cookieHeader)
-        // if (!logged) {
-        //   console.log(
-        //     "[backendClient] getAll: Cookies passed to Supabase SSR client:",
-        //     allCookies,
-        //   )
-        //   logged = true
-        // }
-        const supabaseCookies = allCookies.map((cookie) => {
-          return {
-            name: cookie.name,
-            value: cookie.value ?? "",
-          }
-        })
-        return supabaseCookies
-      },
-      setAll() {
-        // do not let Supabase SSR client set or clear cookies
-        // Building prod fails with TanStack Start + SST, so doing it manually
+  const clientInstance = createServerClient<Database>(
+    supabaseUrl,
+    supabaseAnonKey,
+    {
+      cookies: {
+        getAll() {
+          const allCookies = parseCookieHeader(cookieHeader)
+          // if (!logged) {
+          //   console.log(
+          //     "[backendClient] getAll: Cookies passed to Supabase SSR client:",
+          //     allCookies,
+          //   )
+          //   logged = true
+          // }
+          const supabaseCookies = allCookies.map((cookie) => {
+            return {
+              name: cookie.name,
+              value: cookie.value ?? "",
+            }
+          })
+          return supabaseCookies
+        },
+        setAll() {
+          // do not let Supabase SSR client set or clear cookies
+          // Building prod fails with TanStack Start + SST, so doing it manually
+        },
       },
     },
-  })
+  )
 
   return clientInstance
 })
