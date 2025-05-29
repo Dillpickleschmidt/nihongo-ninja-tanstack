@@ -1,12 +1,12 @@
 // features/supabase/getUser.ts
 import { isServer } from "solid-js/web"
 import { getUserSSR } from "./getUserSSR"
-import { getUserBrowser } from "./getUserBrowser"
 
 export async function getUser() {
   if (isServer) {
     return await getUserSSR()
   } else {
-    return await getUserBrowser()
+    console.warn("Error: Use AuthContext on client-side")
+    return { user: null, error: "Use AuthContext on client-side" }
   }
 }

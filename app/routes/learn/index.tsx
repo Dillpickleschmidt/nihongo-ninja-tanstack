@@ -3,10 +3,7 @@ import { createFileRoute } from "@tanstack/solid-router"
 import { Resource } from "sst"
 import { createServerFn } from "@tanstack/solid-start"
 import { createResource } from "solid-js"
-import { getUser } from "@/features/supabase/getUser"
-import { useAuth } from "@/features/auth/context/AuthContext"
 
-// Server function to log secret value
 const getSecret = createServerFn({
   method: "GET",
 }).handler(() => {
@@ -16,25 +13,40 @@ const getSecret = createServerFn({
 
 export const Route = createFileRoute("/learn/")({
   component: RouteComponent,
-  loader: async () => {
-    console.log("[LEARN LOADER] GETTING USER NOW")
-    const { user } = useAuth()
-    console.log("[LEARN LOADER] USER IS : ", user)
-    return { user }
+  loader: async ({ context }) => {
+    const { user } = context
+
+    const staticContent = "Learn Japanese with Nihongo Ninja!"
+    return { user, staticContent }
   },
   staleTime: Infinity,
 })
 
 function RouteComponent() {
-  // const { user } = Route.useLoaderData()()
+  const { user, staticContent } = Route.useLoaderData()()
 
   // const [secret] = createResource(() => getSecret())
 
   return (
     <>
-      {/* <div>User: {user?.user?.email || "Not logged in"}</div> */}
-      {/* <div>Secret: {secret() || "Loading secret..."}</div> */}
-      <div>Hello "/learn/"!</div>
+      <div>
+        <h1>{staticContent}</h1>
+
+        {user ? (
+          <div>Welcome back, {user.email}! 🎌</div>
+        ) : (
+          <div>
+            <div>Not logged in</div>
+            <p>
+              💡 <a href="/auth">Sign in</a> to track your progress
+            </p>
+          </div>
+        )}
+
+        {/* <div>Secret: {secret() || "Loading secret..."}</div> */}
+
+        <div>Hello "/learn/"!</div>
+      </div>
     </>
   )
 }

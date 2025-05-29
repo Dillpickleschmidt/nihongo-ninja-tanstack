@@ -4,6 +4,7 @@ import { createFileRoute } from "@tanstack/solid-router"
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
+  staleTime: Infinity,
 })
 
 function RouteComponent() {
@@ -23,7 +24,7 @@ function RouteComponent() {
               with spaced repetition and custom learning tools.
             </h3>
             <div class="flex w-full justify-center pt-4">
-              <ExternalResourceIcons />
+              {/* <ExternalResourceIcons /> */}
             </div>
           </div>
         </div>

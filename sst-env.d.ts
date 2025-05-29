@@ -17,6 +17,10 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "SUPABASE_JWT_SECRET": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "SUPABASE_URL": {
       "type": "sst.sst.Secret"
       "value": string

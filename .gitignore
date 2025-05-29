@@ -3,6 +3,7 @@ node_modules
 bun.lock
 .vinxi
 .output
+.vscode
 
 # output
 out

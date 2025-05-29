@@ -5,7 +5,6 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/solid-router"
-
 import "@fontsource-variable/inter"
 import appCss from "@/styles/app.css?url"
 import {
@@ -13,15 +12,13 @@ import {
   ColorModeScript,
   cookieStorageManagerSSR,
 } from "@kobalte/core"
-
 import { getCookie } from "@tanstack/solid-start/server"
 import { createServerFn } from "@tanstack/solid-start"
 import { isServer } from "solid-js/web"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
-import { AuthProvider } from "@/features/auth/context/AuthContext"
+import { getUser } from "@/features/supabase/getUser"
 
-// using createServerFn because build complains about mixing client and server code
-const getServerCookies = createServerFn({
+const getColorModeCookieServer = createServerFn({
   method: "GET",
 }).handler(() => {
   const colorMode = getCookie("kb-color-mode")
@@ -31,16 +28,12 @@ const getServerCookies = createServerFn({
 export const Route = createRootRoute({
   head: () => ({
     meta: [
-      {
-        charset: "utf-8",
-      },
+      { charset: "utf-8" },
       {
         name: "viewport",
         content: "width=device-width, initial-scale=1",
       },
-      {
-        title: "Nihongo Ninja",
-      },
+      { title: "Nihongo Ninja" },
     ],
     links: [
       {
@@ -49,21 +42,29 @@ export const Route = createRootRoute({
       },
     ],
   }),
+  beforeLoad: async () => {
+    console.log("root beforeLoad fired!")
+    const result = await getUser()
+    return { user: result?.user || null } // Shared data, child routes need this
+  },
   loader: async () => {
-    let cookies = ""
+    // Only root route component needs this (ColorModeProvider gives the rest of the app access)
+    const serverCookies = isServer ? await getColorModeCookieServer() : null
+    let cookies: string
     if (isServer) {
-      cookies = await getServerCookies()
+      cookies = serverCookies as string
     } else {
       cookies = document.cookie
     }
     return { cookies }
   },
   component: RootComponent,
+  staleTime: Infinity,
 })
 
 function RootComponent() {
   const loaderData = Route.useLoaderData()
-  const cookies = loaderData().cookies
+  const { cookies } = loaderData()
 
   const storageManager = cookieStorageManagerSSR(cookies)
 
@@ -71,12 +72,10 @@ function RootComponent() {
     <>
       <ColorModeScript storageType={storageManager?.type} />
       <ColorModeProvider storageManager={storageManager}>
-        <AuthProvider>
-          <BackgroundImage />
-          <Scripts />
-          <Outlet />
-          <TanStackRouterDevtools />
-        </AuthProvider>
+        <BackgroundImage />
+        <Scripts />
+        <Outlet />
+        <TanStackRouterDevtools />
       </ColorModeProvider>
     </>
   )

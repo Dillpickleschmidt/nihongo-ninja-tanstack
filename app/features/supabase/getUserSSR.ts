@@ -8,57 +8,83 @@ import {
 } from "@tanstack/solid-start/server"
 import { Resource } from "sst"
 import { getProjectRef } from "./getProjectRef"
+import jwt from "jsonwebtoken"
+import type { User } from "@supabase/supabase-js"
 
 export const getUserSSR = serverOnly(async () => {
   const { accessToken, refreshToken, projectRef } = extractTokensFromCookies()
 
-  // Uncomment to enable token expiry logging
-  // if (accessToken) {
-  //   logTokenExpiry(accessToken)
-  // }
+  if (!accessToken) {
+    if (refreshToken) {
+      console.log("[getUserSSR] No access token, attempting refresh...")
+      return await refreshAndSetTokens(refreshToken, projectRef)
+    }
+    console.log("[getUserSSR] No access token and no refresh token found")
+    return { user: null, error: "No access token found" }
+  }
 
+  try {
+    // Get user by verifying JWT signature and expiration locally (no db call)
+    const decoded = jwt.verify(
+      accessToken,
+      Resource.SUPABASE_JWT_SECRET.value,
+    ) as any
+
+    console.log(
+      `[getUserSSR] JWT verification successful for user: ${decoded.email}, skipping db call.`,
+    )
+
+    // Return user data using only the claims that exist in the JWT
+    const user = {
+      id: decoded.sub,
+      email: decoded.email,
+      phone: decoded.phone,
+      app_metadata: decoded.app_metadata || {},
+      user_metadata: decoded.user_metadata || {},
+      role: decoded.role,
+      aud: decoded.aud,
+      is_anonymous: decoded.is_anonymous,
+    } as User
+
+    return { user, error: null }
+  } catch (error) {
+    // Only attempt refresh for expired tokens, not invalid/forged tokens
+    if (error.name === "TokenExpiredError" && refreshToken) {
+      // I haven't tested if "TokenExpiredError" is the correct error type
+      return await refreshAndSetTokens(refreshToken, projectRef)
+    }
+
+    // For any other JWT error (invalid signature, malformed, etc.), reject immediately
+    console.log(
+      `[getUserSSR] JWT error type: ${error.name} - rejecting without refresh attempt`,
+    )
+    return { user: null, error: "Authentication failed" }
+  }
+})
+
+async function refreshAndSetTokens(refreshToken: string, projectRef: string) {
   const supabase = createBackendClient()
 
-  // Try to get the user with the access token
-  let {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser(accessToken)
+  const { data: sessionData, error: refreshError } =
+    await supabase.auth.refreshSession({
+      refresh_token: refreshToken,
+    })
 
-  console.log(
-    `[getUserSSR] Initial auth result: user=${!!user}, error=${error?.message}`,
-  )
+  if (sessionData?.user && sessionData.session) {
+    console.log("[getUserSSR] Token refresh successful! Setting new cookies.")
 
-  // If the access token is expired or invalid, try to refresh
-  if ((!user || error) && refreshToken) {
-    console.log("[getUserSSR] Attempting token refresh...")
+    setAuthenticationCookies(
+      projectRef,
+      sessionData.session.access_token,
+      sessionData.session.refresh_token,
+    )
 
-    const { data: sessionData, error: refreshError } =
-      await supabase.auth.refreshSession({
-        refresh_token: refreshToken,
-      })
-
-    if (sessionData?.user && sessionData.session) {
-      console.log("[getUserSSR] Token refresh successful! Setting new cookies.")
-      user = sessionData.user
-
-      setAuthenticationCookies(
-        projectRef,
-        sessionData.session.access_token,
-        sessionData.session.refresh_token,
-      )
-    } else {
-      console.error("Supabase refresh error:", refreshError?.message)
-      return { user: null, error: refreshError?.message || error?.message }
-    }
+    return { user: sessionData.user, error: null }
+  } else {
+    console.error("Supabase refresh error:", refreshError?.message)
+    return { user: null, error: refreshError?.message || "Refresh failed" }
   }
-
-  if (!user) {
-    return { user: null, error: error?.message || "No user" }
-  }
-
-  return { user, error: null }
-})
+}
 
 function setAuthenticationCookies(
   projectRef: string,
@@ -89,11 +115,7 @@ function setAuthenticationCookies(
     },
   )
 
-  // Set multiple cookies properly - pass as array
   setResponseHeader("Set-Cookie", [authCookie, refreshCookie])
-
-  console.log(`[getUserSSR] Set auth cookie (${accessToken.length} chars)`)
-  console.log(`[getUserSSR] Set refresh cookie (${refreshToken.length} chars)`)
 }
 
 function extractTokensFromCookies() {
@@ -110,17 +132,4 @@ function extractTokensFromCookies() {
   )?.value
 
   return { accessToken, refreshToken, projectRef }
-}
-
-function logTokenExpiry(accessToken: string) {
-  try {
-    const payload = JSON.parse(atob(accessToken.split(".")[1]))
-    const expiry = new Date(payload.exp * 1000)
-    const now = new Date()
-    console.log(`[getUserSSR] Token expires: ${expiry.toISOString()}`)
-    console.log(`[getUserSSR] Current time: ${now.toISOString()}`)
-    console.log(`[getUserSSR] Token expired: ${now > expiry}`)
-  } catch (e) {
-    console.log("[getUserSSR] Could not parse token")
-  }
 }
