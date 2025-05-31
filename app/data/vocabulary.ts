@@ -13205,7 +13205,7 @@ export const vocabulary: VocabularyCollection = {
     example_sentences: [
       {
         english: ["I ", { t: "prayed" }, " at the shrine."],
-        japanese: ["神社[じんじゃ]で ", { t: "お祈[いの]りし" }, "ました。"],
+        japanese: ["神社[じんじゃ]で ", { t: "お 祈[いの]りし" }, "ました。"],
       },
     ],
     particles: [

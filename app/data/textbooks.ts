@@ -121,7 +121,11 @@ export const textbooks: TextbookCollection = {
           "あのう",
           "どうぞ",
         ],
-        external_resource_ids: ["res_jpod101_ch1_greetings_video"],
+        external_resource_ids: [
+          "greetings-japanese-super-immersion",
+          "common-expressions-japanese-super-immersion",
+          "res_jpod101_ch1_greetings_video",
+        ],
       },
       {
         id: "genki_1_ch1",
@@ -191,7 +195,14 @@ export const textbooks: TextbookCollection = {
           { type: "external_resource", id: "my-kikitori-conversation-3" },
         ],
         vocabulary_keys: [],
-        external_resource_ids: [],
+        external_resource_ids: [
+          "kikusasaizu-1-1",
+          "japanese-super-immersion-nice-to-meet-you",
+          "my-kikitori-conversation-1",
+          "my-kikitori-conversation-2",
+          "kikusasaizu-1-3",
+          "my-kikitori-conversation-3",
+        ],
       },
       {
         id: "genki_1_ch2",
@@ -243,7 +254,14 @@ export const textbooks: TextbookCollection = {
           { type: "dynamic_module", id: "genki_1_ch2_all-vocab-test" },
         ],
         vocabulary_keys: [],
-        external_resource_ids: [],
+        external_resource_ids: [
+          "kikusasaizu-2-1",
+          "kikusasaizu-2-2",
+          "kudasai-vs-onegaishimasu",
+          "my-kikitori-at-a-cafe",
+          "unlearning-japanese",
+          "my-kikitori-at-a-store",
+        ],
       },
       {
         id: "genki_1_ch3",
@@ -344,7 +362,16 @@ export const textbooks: TextbookCollection = {
           { type: "external_resource", id: "long-form-conversation-immersion" },
         ],
         vocabulary_keys: [],
-        external_resource_ids: [],
+        external_resource_ids: [
+          "your-japanese-voice",
+          "kikusasaizu-3-2",
+          "kikusasaizu-3-3",
+          "my-kikitori-do-you-want-to-go-to-tokyo",
+          "aizuchi",
+          "kikusasaizu-3-1",
+          "my-kikitori-campus-interview-2",
+          "long-form-conversation-immersion",
+        ],
       },
       {
         id: "genki_1_ch4",
@@ -411,7 +438,11 @@ export const textbooks: TextbookCollection = {
           { type: "external_resource", id: "beginner-guide-to-konbini" },
         ],
         vocabulary_keys: [], // Add the vocabulary keys for Chapter 4
-        external_resource_ids: [], // Add the external resource IDs for Chapter 4
+        external_resource_ids: [
+          "saying-no-naturally",
+          "immersion-with-yuta",
+          "beginner-guide-to-konbini",
+        ],
       },
       {
         id: "genki_1_ch5",
@@ -468,7 +499,7 @@ export const textbooks: TextbookCollection = {
           { type: "dynamic_module", id: "counter-practice" },
         ],
         vocabulary_keys: [],
-        external_resource_ids: [],
+        external_resource_ids: ["sports"],
       },
       {
         id: "genki_1_ch6",
@@ -516,7 +547,7 @@ export const textbooks: TextbookCollection = {
           { type: "dynamic_module", id: "genki_1_ch6_all-vocab-test" },
         ],
         vocabulary_keys: [],
-        external_resource_ids: [],
+        external_resource_ids: ["why-your-speaking-sucks"],
       },
       {
         id: "genki_1_ch7",
@@ -597,7 +628,7 @@ export const textbooks: TextbookCollection = {
           { type: "dynamic_module", id: "genki_1_ch8_all-vocab-test" },
         ],
         vocabulary_keys: [],
-        external_resource_ids: [],
+        external_resource_ids: ["how-verbs-work"],
       },
       {
         id: "genki_1_ch9",
@@ -636,7 +667,7 @@ export const textbooks: TextbookCollection = {
           { type: "dynamic_module", id: "genki_1_ch9_all-vocab-test" },
         ],
         vocabulary_keys: [], // Add the vocabulary keys for Chapter 9
-        external_resource_ids: [], // Add the external resource IDs for Chapter 9
+        external_resource_ids: ["colors"],
       },
       {
         id: "genki_1_ch10",
@@ -682,7 +713,7 @@ export const textbooks: TextbookCollection = {
           { type: "dynamic_module", id: "genki_1_ch10_all-vocab-test" },
         ],
         vocabulary_keys: [],
-        external_resource_ids: [],
+        external_resource_ids: ["comparing-sizes", "emotions"],
       },
       {
         id: "genki_1_ch11",
@@ -781,217 +812,227 @@ export const textbooks: TextbookCollection = {
         vocabulary_keys: [],
         external_resource_ids: [],
       },
+    ],
+  },
+  genki_2: {
+    id: "genki_2",
+    name: "Genki II: An Integrated Course in Intermediate Japanese (3rd Edition)",
+    short_name: "Genki II",
+    publisher: "The Japan Times",
+    level: "N4",
+    cover_image_url: "/images/textbooks/genki_2_cover.jpg", // fix
+    chapters: [
       {
-        id: "genki_1_ch13",
+        id: "genki_2_ch13",
         chapter_number: 13,
         title: "Playing a Game", // Assuming this is the chapter title - please replace with the actual title
         description:
           "Focus on vocabulary for nouns, adjectives, verbs, and day counts.", // Add a relevant description
         learning_path_items: [
-          { type: "static_module", id: "genki_1_ch13_vocab-list" },
+          { type: "static_module", id: "genki_2_ch13_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
-          { type: "static_module", id: "genki_1_ch13_nouns" },
+          { type: "static_module", id: "genki_2_ch13_nouns" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch13_practice-nouns-readings",
+            id: "genki_2_ch13_practice-nouns-readings",
           },
-          { type: "dynamic_module", id: "genki_1_ch13_practice-nouns-kana" },
-          { type: "static_module", id: "genki_1_ch13_adj-and-verbs" },
+          { type: "dynamic_module", id: "genki_2_ch13_practice-nouns-kana" },
+          { type: "static_module", id: "genki_2_ch13_adj-and-verbs" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch13_practice-adj-and-verbs-readings",
-          },
-          {
-            type: "dynamic_module",
-            id: "genki_1_ch13_practice-adj-and-verbs-kana",
-          },
-          { type: "static_module", id: "genki_1_ch13_day-count-and-misc" },
-          {
-            type: "dynamic_module",
-            id: "genki_1_ch13_practice-day-count-and-misc-readings",
+            id: "genki_2_ch13_practice-adj-and-verbs-readings",
           },
           {
             type: "dynamic_module",
-            id: "genki_1_ch13_practice-day-count-and-misc-kana",
+            id: "genki_2_ch13_practice-adj-and-verbs-kana",
           },
-          { type: "dynamic_module", id: "genki_1_ch13_all-vocab-test" },
+          { type: "static_module", id: "genki_2_ch13_day-count-and-misc" },
+          {
+            type: "dynamic_module",
+            id: "genki_2_ch13_practice-day-count-and-misc-readings",
+          },
+          {
+            type: "dynamic_module",
+            id: "genki_2_ch13_practice-day-count-and-misc-kana",
+          },
+          { type: "dynamic_module", id: "genki_2_ch13_all-vocab-test" },
         ],
         vocabulary_keys: [],
         external_resource_ids: [],
       },
       {
-        id: "genki_1_ch14",
+        id: "genki_2_ch14",
         chapter_number: 14,
         title: "Describing Someone's Appearance", // Assuming this is the chapter title - please replace with the actual title
         description:
           "Introduce more nouns, adjectives, verbs, counters, adverbs, and other miscellaneous vocabulary.", // Add a relevant description
         learning_path_items: [
-          { type: "static_module", id: "genki_1_ch14_vocab-list" },
+          { type: "static_module", id: "genki_2_ch14_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
-          { type: "static_module", id: "genki_1_ch14_nouns-1" },
+          { type: "static_module", id: "genki_2_ch14_nouns-1" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch14_practice-nouns-1-readings",
+            id: "genki_2_ch14_practice-nouns-1-readings",
           },
-          { type: "dynamic_module", id: "genki_1_ch14_practice-nouns-1-kana" },
-          { type: "static_module", id: "genki_1_ch14_nouns-2" },
+          { type: "dynamic_module", id: "genki_2_ch14_practice-nouns-1-kana" },
+          { type: "static_module", id: "genki_2_ch14_nouns-2" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch14_practice-nouns-2-readings",
+            id: "genki_2_ch14_practice-nouns-2-readings",
           },
-          { type: "dynamic_module", id: "genki_1_ch14_practice-nouns-2-kana" },
-          { type: "static_module", id: "genki_1_ch14_adj-and-verbs" },
+          { type: "dynamic_module", id: "genki_2_ch14_practice-nouns-2-kana" },
+          { type: "static_module", id: "genki_2_ch14_adj-and-verbs" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch14_practice-adj-and-verbs-readings",
-          },
-          {
-            type: "dynamic_module",
-            id: "genki_1_ch14_practice-adj-and-verbs-kana",
-          },
-          { type: "static_module", id: "genki_1_ch14_counters-adv-misc" },
-          {
-            type: "dynamic_module",
-            id: "genki_1_ch14_practice-counters-adv-misc-readings",
+            id: "genki_2_ch14_practice-adj-and-verbs-readings",
           },
           {
             type: "dynamic_module",
-            id: "genki_1_ch14_practice-counters-adv-misc-kana",
+            id: "genki_2_ch14_practice-adj-and-verbs-kana",
           },
-          { type: "dynamic_module", id: "genki_1_ch14_all-vocab-test" },
+          { type: "static_module", id: "genki_2_ch14_counters-adv-misc" },
+          {
+            type: "dynamic_module",
+            id: "genki_2_ch14_practice-counters-adv-misc-readings",
+          },
+          {
+            type: "dynamic_module",
+            id: "genki_2_ch14_practice-counters-adv-misc-kana",
+          },
+          { type: "dynamic_module", id: "genki_2_ch14_all-vocab-test" },
         ],
         vocabulary_keys: [],
         external_resource_ids: [],
       },
       {
-        id: "genki_1_ch15",
+        id: "genki_2_ch15",
         chapter_number: 15,
         title: "Taking a Class", // Assuming this is the chapter title - please replace with the actual title
         description:
           "Focus on different verb types (Ichidan, Godan, Irregular) and continue expanding noun, adverb, and miscellaneous vocabulary.", // Add a relevant description
         learning_path_items: [
-          { type: "static_module", id: "genki_1_ch15_vocab-list" },
+          { type: "static_module", id: "genki_2_ch15_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
-          { type: "static_module", id: "genki_1_ch15_nouns-1" },
+          { type: "static_module", id: "genki_2_ch15_nouns-1" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch15_practice-nouns-1-readings",
+            id: "genki_2_ch15_practice-nouns-1-readings",
           },
-          { type: "dynamic_module", id: "genki_1_ch15_practice-nouns-1-kana" },
-          { type: "static_module", id: "genki_1_ch15_nouns-2" },
+          { type: "dynamic_module", id: "genki_2_ch15_practice-nouns-1-kana" },
+          { type: "static_module", id: "genki_2_ch15_nouns-2" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch15_practice-nouns-2-readings",
+            id: "genki_2_ch15_practice-nouns-2-readings",
           },
-          { type: "dynamic_module", id: "genki_1_ch15_practice-nouns-2-kana" },
-          { type: "static_module", id: "genki_1_ch15_godan-and-ichidan-v" },
+          { type: "dynamic_module", id: "genki_2_ch15_practice-nouns-2-kana" },
+          { type: "static_module", id: "genki_2_ch15_godan-and-ichidan-v" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch15_practice-godan-and-ichidan-v-readings",
-          },
-          {
-            type: "dynamic_module",
-            id: "genki_1_ch15_practice-godan-and-ichidan-v-kana",
-          },
-          { type: "static_module", id: "genki_1_ch15_irr-v-adv-misc" },
-          {
-            type: "dynamic_module",
-            id: "genki_1_ch15_practice-irr-v-adv-misc-readings",
+            id: "genki_2_ch15_practice-godan-and-ichidan-v-readings",
           },
           {
             type: "dynamic_module",
-            id: "genki_1_ch15_practice-irr-v-adv-misc-kana",
+            id: "genki_2_ch15_practice-godan-and-ichidan-v-kana",
+          },
+          { type: "static_module", id: "genki_2_ch15_irr-v-adv-misc" },
+          {
+            type: "dynamic_module",
+            id: "genki_2_ch15_practice-irr-v-adv-misc-readings",
+          },
+          {
+            type: "dynamic_module",
+            id: "genki_2_ch15_practice-irr-v-adv-misc-kana",
           },
           { type: "external_resource", id: "hobbies-with-yuta" },
-          { type: "dynamic_module", id: "genki_1_ch15_all-vocab-test" },
+          { type: "dynamic_module", id: "genki_2_ch15_all-vocab-test" },
         ],
         vocabulary_keys: [],
-        external_resource_ids: [],
+        external_resource_ids: ["hobbies-with-yuta"],
       },
       {
-        id: "genki_1_ch16",
+        id: "genki_2_ch16",
         chapter_number: 16,
         title: "Inviting a Friend", // Assuming this is the chapter title - please replace with the actual title
         description:
           "Introduce more nouns, adjectives, and verbs (U, Ru, Irregular), along with adverbs and other miscellaneous terms.", // Add a relevant description
         learning_path_items: [
-          { type: "static_module", id: "genki_1_ch16_vocab-list" },
+          { type: "static_module", id: "genki_2_ch16_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
-          { type: "static_module", id: "genki_1_ch16_nouns" },
+          { type: "static_module", id: "genki_2_ch16_nouns" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch16_practice-nouns-readings",
+            id: "genki_2_ch16_practice-nouns-readings",
           },
-          { type: "dynamic_module", id: "genki_1_ch16_practice-nouns-kana" },
-          { type: "static_module", id: "genki_1_ch16_adj-and-u-v" },
+          { type: "dynamic_module", id: "genki_2_ch16_practice-nouns-kana" },
+          { type: "static_module", id: "genki_2_ch16_adj-and-u-v" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch16_practice-adj-and-u-v-readings",
-          },
-          {
-            type: "dynamic_module",
-            id: "genki_1_ch16_practice-adj-and-u-v-kana",
-          },
-          { type: "static_module", id: "genki_1_ch16_ru-and-irr-v" },
-          {
-            type: "dynamic_module",
-            id: "genki_1_ch16_practice-ru-and-irr-v-readings",
+            id: "genki_2_ch16_practice-adj-and-u-v-readings",
           },
           {
             type: "dynamic_module",
-            id: "genki_1_ch16_practice-ru-and-irr-v-kana",
+            id: "genki_2_ch16_practice-adj-and-u-v-kana",
           },
-          { type: "static_module", id: "genki_1_ch16_adv-and-misc" },
+          { type: "static_module", id: "genki_2_ch16_ru-and-irr-v" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch16_practice-adv-and-misc-readings",
+            id: "genki_2_ch16_practice-ru-and-irr-v-readings",
           },
           {
             type: "dynamic_module",
-            id: "genki_1_ch16_practice-adv-and-misc-kana",
+            id: "genki_2_ch16_practice-ru-and-irr-v-kana",
           },
-          { type: "dynamic_module", id: "genki_1_ch16_all-vocab-test" },
+          { type: "static_module", id: "genki_2_ch16_adv-and-misc" },
+          {
+            type: "dynamic_module",
+            id: "genki_2_ch16_practice-adv-and-misc-readings",
+          },
+          {
+            type: "dynamic_module",
+            id: "genki_2_ch16_practice-adv-and-misc-kana",
+          },
+          { type: "dynamic_module", id: "genki_2_ch16_all-vocab-test" },
         ],
         vocabulary_keys: [],
         external_resource_ids: [],
       },
       {
-        id: "genki_1_ch17",
+        id: "genki_2_ch17",
         chapter_number: 17,
         title: "Talking About My Trip", // Assuming this is the chapter title - please replace with the actual title
         description:
           "Expand vocabulary with more nouns, verbs, adjectives, and adverbs, and practice new sentence patterns.", // Add a relevant description
         learning_path_items: [
-          { type: "static_module", id: "genki_1_ch17_vocab-list" },
+          { type: "static_module", id: "genki_2_ch17_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
-          { type: "static_module", id: "genki_1_ch17_nouns-1" },
+          { type: "static_module", id: "genki_2_ch17_nouns-1" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch17_practice-nouns-1-readings",
+            id: "genki_2_ch17_practice-nouns-1-readings",
           },
-          { type: "dynamic_module", id: "genki_1_ch17_practice-nouns-1-kana" },
-          { type: "static_module", id: "genki_1_ch17_nouns-2" },
+          { type: "dynamic_module", id: "genki_2_ch17_practice-nouns-1-kana" },
+          { type: "static_module", id: "genki_2_ch17_nouns-2" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch17_practice-nouns-2-readings",
+            id: "genki_2_ch17_practice-nouns-2-readings",
           },
-          { type: "dynamic_module", id: "genki_1_ch17_practice-nouns-2-kana" },
-          { type: "static_module", id: "genki_1_ch17_verbs" },
+          { type: "dynamic_module", id: "genki_2_ch17_practice-nouns-2-kana" },
+          { type: "static_module", id: "genki_2_ch17_verbs" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch17_practice-verbs-readings",
+            id: "genki_2_ch17_practice-verbs-readings",
           },
-          { type: "dynamic_module", id: "genki_1_ch17_practice-verbs-kana" },
-          { type: "static_module", id: "genki_1_ch17_adj-adv-misc" },
+          { type: "dynamic_module", id: "genki_2_ch17_practice-verbs-kana" },
+          { type: "static_module", id: "genki_2_ch17_adj-adv-misc" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch17_practice-adj-adv-misc-readings",
+            id: "genki_2_ch17_practice-adj-adv-misc-readings",
           },
           {
             type: "dynamic_module",
-            id: "genki_1_ch17_practice-adj-adv-misc-kana",
+            id: "genki_2_ch17_practice-adj-adv-misc-kana",
           },
-          { type: "dynamic_module", id: "genki_1_ch17_all-vocab-test" },
+          { type: "dynamic_module", id: "genki_2_ch17_all-vocab-test" },
           { type: "dynamic_module", id: "practice-sentence-sou-desu-heresay" },
           { type: "dynamic_module", id: "practice-sentence-tte" },
           { type: "dynamic_module", id: "practice-sentence-tara" },
@@ -1000,136 +1041,136 @@ export const textbooks: TextbookCollection = {
         external_resource_ids: [],
       },
       {
-        id: "genki_1_ch18",
+        id: "genki_2_ch18",
         chapter_number: 18,
         title: "Comparing Experiences", // Assuming this is the chapter title - please replace with the actual title
         description:
           "Further vocabulary expansion with various noun groups, adjectives, and verb types (U, Ru, Irregular).", // Add a relevant description
         learning_path_items: [
-          { type: "static_module", id: "genki_1_ch18_vocab-list" },
+          { type: "static_module", id: "genki_2_ch18_vocab-list" },
           // { type: "static_module", id: "grammar-notes" }
-          { type: "static_module", id: "genki_1_ch18_nouns-1" },
+          { type: "static_module", id: "genki_2_ch18_nouns-1" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch18_practice-nouns-1-readings",
+            id: "genki_2_ch18_practice-nouns-1-readings",
           },
-          { type: "dynamic_module", id: "genki_1_ch18_practice-nouns-1-kana" },
-          { type: "static_module", id: "genki_1_ch18_nouns-2-and-adjectives" },
+          { type: "dynamic_module", id: "genki_2_ch18_practice-nouns-1-kana" },
+          { type: "static_module", id: "genki_2_ch18_nouns-2-and-adjectives" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch18_practice-nouns-2-and-adjectives-readings",
-          },
-          {
-            type: "dynamic_module",
-            id: "genki_1_ch18_practice-nouns-2-and-adjectives-kana",
-          },
-          { type: "static_module", id: "genki_1_ch18_u-and-irr-verbs" },
-          {
-            type: "dynamic_module",
-            id: "genki_1_ch18_practice-u-and-irr-verbs-readings",
+            id: "genki_2_ch18_practice-nouns-2-and-adjectives-readings",
           },
           {
             type: "dynamic_module",
-            id: "genki_1_ch18_practice-u-and-irr-verbs-kana",
+            id: "genki_2_ch18_practice-nouns-2-and-adjectives-kana",
           },
-          { type: "static_module", id: "genki_1_ch18_ru-verbs-and-misc" },
+          { type: "static_module", id: "genki_2_ch18_u-and-irr-verbs" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch18_practice-ru-verbs-and-misc-readings",
+            id: "genki_2_ch18_practice-u-and-irr-verbs-readings",
           },
           {
             type: "dynamic_module",
-            id: "genki_1_ch18_practice-ru-verbs-and-misc-kana",
+            id: "genki_2_ch18_practice-u-and-irr-verbs-kana",
           },
-          { type: "dynamic_module", id: "genki_1_ch18_all-vocab-test" },
+          { type: "static_module", id: "genki_2_ch18_ru-verbs-and-misc" },
+          {
+            type: "dynamic_module",
+            id: "genki_2_ch18_practice-ru-verbs-and-misc-readings",
+          },
+          {
+            type: "dynamic_module",
+            id: "genki_genki_2practice-ru-verbs-and-misc-kana",
+          },
+          { type: "dynamic_module", id: "genki_2_ch18_all-vocab-test" },
         ],
         vocabulary_keys: [],
         external_resource_ids: [],
       },
       {
-        id: "genki_1_ch19",
+        id: "genki_2_ch19",
         chapter_number: 19,
         title: "Looking for a Job", // Assuming this is the chapter title - please replace with the actual title
         description:
           "Review and test vocabulary from previous chapters and introduce new vocabulary related to nouns, adjectives, and verbs.", // Add a relevant description
         learning_path_items: [
-          { type: "static_module", id: "genki_1_ch19_vocab-list" },
+          { type: "static_module", id: "genki_2_ch19_vocab-list" },
           { type: "static_module", id: "grammar-notes" },
           {
             type: "static_module",
-            id: "genki_1_ch19_chapter-13-18-bonus-vocab",
+            id: "genki_2_ch19_chapter-13-18-bonus-vocab",
           },
-          { type: "dynamic_module", id: "genki_1_ch19_chapter-13-18-nouns" },
+          { type: "dynamic_module", id: "genki_2_ch19_chapter-13-18-nouns" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch19_chapter-13-18-adjectives",
+            id: "genki_2_ch19_chapter-13-18-adjectives",
           },
-          { type: "dynamic_module", id: "genki_1_ch19_chapter-13-18-verbs" },
-          { type: "dynamic_module", id: "genki_1_ch19_chapter-13-18-adv-misc" },
-          { type: "static_module", id: "genki_1_ch19_nouns-and-adj" },
+          { type: "dynamic_module", id: "genki_2_ch19_chapter-13-18-verbs" },
+          { type: "dynamic_module", id: "genki_2_ch19_chapter-13-18-adv-misc" },
+          { type: "static_module", id: "genki_2_ch19_nouns-and-adj" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch19_practice-nouns-and-adj-readings",
-          },
-          {
-            type: "dynamic_module",
-            id: "genki_1_ch19_practice-nouns-and-adj-kana",
-          },
-          { type: "static_module", id: "genki_1_ch19_u-ru-verbs" },
-          {
-            type: "dynamic_module",
-            id: "genki_1_ch19_practice-u-ru-verbs-readings",
+            id: "genki_2_ch19_practice-nouns-and-adj-readings",
           },
           {
             type: "dynamic_module",
-            id: "genki_1_ch19_practice-u-ru-verbs-kana",
+            id: "genki_2_ch19_practice-nouns-and-adj-kana",
           },
-          { type: "static_module", id: "genki_1_ch19_irr-v-adv-misc" },
+          { type: "static_module", id: "genki_2_ch19_u-ru-verbs" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch19_practice-irr-v-adv-misc-readings",
+            id: "genki_2_ch19_practice-u-ru-verbs-readings",
           },
           {
             type: "dynamic_module",
-            id: "genki_1_ch19_practice-irr-v-adv-misc-kana",
+            id: "genki_2_ch19_practice-u-ru-verbs-kana",
           },
-          { type: "dynamic_module", id: "genki_1_ch19_all-vocab-test" },
+          { type: "static_module", id: "genki_2_ch19_irr-v-adv-misc" },
+          {
+            type: "dynamic_module",
+            id: "genki_2_ch19_practice-irr-v-adv-misc-readings",
+          },
+          {
+            type: "dynamic_module",
+            id: "genki_2_ch19_practice-irr-v-adv-misc-kana",
+          },
+          { type: "dynamic_module", id: "genki_2_ch19_all-vocab-test" },
           { type: "dynamic_module", id: "practice-sentence-honorific-verbs" },
         ],
         vocabulary_keys: [],
         external_resource_ids: [],
       },
       {
-        id: "genki_1_ch20",
+        id: "genki_2_ch20",
         chapter_number: 20,
         title: "Expressing Gratitude", // Assuming this is the chapter title - please replace with the actual title
         description:
           "Conclude Genki I with more vocabulary covering nouns, adjectives, and various verb types, and practice different expression levels.", // Add a relevant description
         learning_path_items: [
-          { type: "static_module", id: "genki_1_ch20_vocab-list" },
+          { type: "static_module", id: "genki_2_ch20_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
-          { type: "static_module", id: "genki_1_ch20_nouns" },
+          { type: "static_module", id: "genki_2_ch20_nouns" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch20_practice-nouns-readings",
+            id: "genki_2_ch20_practice-nouns-readings",
           },
-          { type: "dynamic_module", id: "genki_1_ch20_practice-nouns-kana" },
-          { type: "static_module", id: "genki_1_ch20_adj-u-v" },
+          { type: "dynamic_module", id: "genki_2_ch20_practice-nouns-kana" },
+          { type: "static_module", id: "genki_2_ch20_adj-u-v" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch20_practice-adj-u-v-readings",
+            id: "genki_2_ch20_practice-adj-u-v-readings",
           },
-          { type: "dynamic_module", id: "genki_1_ch20_practice-adj-u-v-kana" },
-          { type: "static_module", id: "genki_1_ch20_ru-v-irr-v-adv-misc" },
+          { type: "dynamic_module", id: "genki_2_ch20_practice-adj-u-v-kana" },
+          { type: "static_module", id: "genki_2_ch20_ru-v-irr-v-adv-misc" },
           {
             type: "dynamic_module",
-            id: "genki_1_ch20_practice-ru-v-irr-v-adv-misc-readings",
+            id: "genki_2_ch20_practice-ru-v-irr-v-adv-misc-readings",
           },
           {
             type: "dynamic_module",
-            id: "genki_1_ch20_practice-ru-v-irr-v-adv-misc-kana",
+            id: "genki_2_ch20_practice-ru-v-irr-v-adv-misc-kana",
           },
-          { type: "dynamic_module", id: "genki_1_ch20_all-vocab-test" },
+          { type: "dynamic_module", id: "genki_2_ch20_all-vocab-test" },
           {
             type: "dynamic_module",
             id: "practice-sentence-extra-modest-expressions",
@@ -1143,14 +1184,5 @@ export const textbooks: TextbookCollection = {
         external_resource_ids: [],
       },
     ],
-  },
-  genki_2: {
-    id: "genki_2",
-    name: "Genki II: An Integrated Course in Intermediate Japanese (3rd Edition)",
-    short_name: "Genki II",
-    publisher: "The Japan Times",
-    level: "N4",
-    cover_image_url: "/images/textbooks/genki_2_cover.jpg", // fix
-    chapters: [],
   },
 }

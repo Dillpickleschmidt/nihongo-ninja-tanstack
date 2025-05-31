@@ -1,5 +1,8 @@
 // --- Top-Level Collection Types ---
 
+import { EnumType } from "typescript"
+import { ResourceProvider } from "../resources-config"
+
 // Textbooks: Keyed by a unique textbook ID
 export type TextbookCollection = Record<TextbookIDEnum, Textbook>
 
@@ -93,7 +96,8 @@ export interface ExternalResource {
   title: string
   description?: string
   internal_url?: string
-  external_url?: string
+  external_url: string
+  creator_id: ResourceProvider
   prerequisite_vocab_keys?: string[] // Generally, these won't be presented in the
   //learning path until after completion of the modules before them, but these are
   // here in case users want to skip to them but want to know what exactly they should

@@ -16,7 +16,7 @@ export default function Nav() {
       <ul class="mx-auto grid max-w-6xl grid-cols-3 px-2 pt-8 pb-6 sm:px-3 dark:text-orange-200 [&>*]:items-center">
         <li class="flex w-full">
           <Link to="/" class="relative flex items-center">
-            <Avatar class="absolute -top-[0.4rem] left-0 min-h-12 min-w-12">
+            <Avatar class="absolute -top-[0.4rem] left-0 min-h-12 min-w-12 bg-red-500/50">
               <AvatarImage src="/icons/ninja.png" />
               <AvatarFallback>N</AvatarFallback>
             </Avatar>
@@ -29,7 +29,7 @@ export default function Nav() {
         <li class="flex w-full justify-center">
           <Button
             as="a"
-            href="/learn"
+            href="/dashboard"
             class="px-2 text-base font-normal sm:px-4"
             variant="ghost"
           >
@@ -46,7 +46,7 @@ export default function Nav() {
           </div>
           <Button
             as="a"
-            href="/learn"
+            href="/dashboard"
             variant="ghost"
             class="text-primary-foreground dark:border-secondary/50 dark:border-r-secondary/50 ml-4 rounded-lg border-2 dark:border-l-orange-200/50"
             // onClick={() => setIsLoginHintVisible(false)}

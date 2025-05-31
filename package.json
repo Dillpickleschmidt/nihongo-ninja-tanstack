@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS='--inspect' vinxi dev",
+    "dev": "NODE_OPTIONS='--inspect' vinxi dev --host",
     "dev-sst": "sst dev",
     "build": "vinxi build",
     "start": "vinxi start",
@@ -14,6 +14,7 @@
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.5",
     "@fontsource-variable/noto-sans-jp": "^5.2.5",
+    "@fontsource/poppins": "^5.2.6",
     "@kobalte/core": "^0.13.9",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.8",
@@ -23,6 +24,7 @@
     "@tanstack/solid-start": "^1.120.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "figma-squircle": "^1.1.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-solid": "^0.510.0",
     "postcss": "^8.5.3",

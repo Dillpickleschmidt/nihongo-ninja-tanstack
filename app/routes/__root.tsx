@@ -6,6 +6,7 @@ import {
   Scripts,
 } from "@tanstack/solid-router"
 import "@fontsource-variable/inter"
+import "@fontsource/poppins"
 import appCss from "@/styles/app.css?url"
 import {
   ColorModeProvider,
