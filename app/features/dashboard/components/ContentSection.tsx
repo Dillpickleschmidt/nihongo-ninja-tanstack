@@ -1,6 +1,6 @@
 // features/dashboard/components/ContentSection.tsx
 import { For } from "solid-js"
-import { ChevronRight, Plus } from "lucide-solid"
+import { ArrowRight, Plus } from "lucide-solid"
 import { Await } from "@tanstack/solid-router"
 import { ExternalResourceCard } from "./ExternalResourceCard"
 import type { ExternalResource } from "@/data/types"
@@ -21,7 +21,7 @@ export function ContentSection(props: ContentSectionProps) {
           <h2 class="text-xl">Content</h2>
           <p class="text-muted-foreground pb-1 pl-2 text-xs">You Might Enjoy</p>
         </div>
-        <ChevronRight class="mr-5 h-5 w-5" />
+        <ArrowRight class="mr-5 h-5 w-5" />
       </div>
       <div class="scrollbar-hide mb-5 flex gap-4 overflow-x-auto pr-4 pb-2 pl-8">
         <div class="bg-background border-primary/30 mr-1 flex min-w-[50px] items-center justify-center rounded-[14px] border-2 border-dashed">

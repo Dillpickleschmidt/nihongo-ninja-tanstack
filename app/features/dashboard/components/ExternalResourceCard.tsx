@@ -64,7 +64,10 @@ export function ExternalResourceCard(props: ExternalResourceCardProps) {
       }
 
   return (
-    <ResourceWrapper {...linkProps} class="transition-opacity hover:opacity-80">
+    <ResourceWrapper
+      {...linkProps}
+      class="transition-transform hover:scale-[99%]"
+    >
       <SmoothCard
         width={190}
         height={160}

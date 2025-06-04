@@ -55,7 +55,7 @@ export interface DynamicModule {
   id: string
   textbook_id: string
   chapter_id: string
-  name: string
+  title: string
   session_type: // Specific type of dynamic module
   | "vocab-list" // Counts for 2 minutes
     | "vocab-sublist" // Counts for 10 minutes

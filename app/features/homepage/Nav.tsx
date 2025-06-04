@@ -16,7 +16,7 @@ export default function Nav() {
       <ul class="mx-auto grid max-w-6xl grid-cols-3 px-2 pt-8 pb-6 sm:px-3 dark:text-orange-200 [&>*]:items-center">
         <li class="flex w-full">
           <Link to="/" class="relative flex items-center">
-            <Avatar class="absolute -top-[0.4rem] left-0 min-h-12 min-w-12 bg-red-500/50">
+            <Avatar class="absolute -top-[0.4rem] left-0 min-h-12 min-w-12">
               <AvatarImage src="/icons/ninja.png" />
               <AvatarFallback>N</AvatarFallback>
             </Avatar>

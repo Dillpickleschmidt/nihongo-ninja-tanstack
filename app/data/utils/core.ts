@@ -3,6 +3,8 @@ import { textbooks } from "@/data/textbooks"
 import { external_resources } from "@/data/external_resources"
 import { static_modules } from "@/data/static_modules"
 import { dynamic_modules } from "@/data/dynamic_modules"
+import { parseCookieHeader } from "@supabase/ssr"
+import { isServer } from "solid-js/web"
 import type {
   TextbookIDEnum,
   ExternalResource,
@@ -10,8 +12,36 @@ import type {
   DynamicModule,
 } from "@/data/types"
 
-export function getTextbookChapter(textbookID: TextbookIDEnum): string {
-  const stored = localStorage.getItem(textbookID)
+// Cookie helper functions
+function getCookie(name: string, cookieString?: string): string | null {
+  if (!isServer) {
+    // Client-side
+    const value = `; ${document.cookie}`
+    const parts = value.split(`; ${name}=`)
+    if (parts.length === 2) return parts.pop()?.split(";").shift() || null
+    return null
+  } else if (cookieString) {
+    // Server-side with cookie string passed in
+    const cookies = parseCookieHeader(cookieString)
+    const cookie = cookies.find((c) => c.name === name)
+    return cookie?.value || null
+  }
+  return null
+}
+
+function setCookie(name: string, value: string, days: number = 365) {
+  if (!isServer) {
+    const expires = new Date()
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000)
+    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`
+  }
+}
+
+export function getTextbookChapter(
+  textbookID: TextbookIDEnum,
+  cookieString?: string,
+): string {
+  const stored = getCookie(textbookID, cookieString)
 
   if (stored) {
     // Check if the stored chapter exists in the textbook
@@ -24,26 +54,44 @@ export function getTextbookChapter(textbookID: TextbookIDEnum): string {
 
   // No valid chapter stored for this textbook, use first chapter
   const firstChapterID = getFirstChapter(textbookID)!
-  localStorage.setItem(textbookID, firstChapterID)
+  setCookie(textbookID, firstChapterID)
   return firstChapterID
 }
 
 export function setTextbookChapter(textbook: TextbookIDEnum, chapter: string) {
-  localStorage.setItem(textbook, chapter)
+  setCookie(textbook, chapter)
 }
 
-export function getActiveTextbook(): TextbookIDEnum {
-  const stored = localStorage.getItem("active_textbook")
+export function getActiveTextbook(cookieString?: string): TextbookIDEnum {
+  const stored = getCookie("active_textbook", cookieString)
+
   if (stored && stored in textbooks) {
     return stored as TextbookIDEnum
   }
+
   // Default to genki_1 and save it
-  localStorage.setItem("active_textbook", "genki_1")
+  setCookie("active_textbook", "genki_1")
   return "genki_1"
 }
 
 export function setActiveTextbook(textbook: TextbookIDEnum) {
-  localStorage.setItem("active_textbook", textbook)
+  setCookie("active_textbook", textbook)
+}
+
+export function getChaptersForTextbook(textbook: TextbookIDEnum) {
+  const textbookData = textbooks[textbook]
+  if (!textbookData) return {}
+  const chapters = textbookData.chapters
+  return chapters.reduce(
+    (acc, ch) => {
+      acc[ch.id] = {
+        title: ch.title,
+        chapter_number: ch.chapter_number,
+      }
+      return acc
+    },
+    {} as Record<string, { title: string; chapter_number: number }>,
+  )
 }
 
 export function getExternalResources(
@@ -68,7 +116,6 @@ export function getLessons(
   if (!textbookData) return []
   const chapterData = textbookData.chapters.find((ch) => ch.id === chapter)
   if (!chapterData?.learning_path_items) return []
-
   // Map learning path items to actual module objects
   return chapterData.learning_path_items
     .map((item) => {

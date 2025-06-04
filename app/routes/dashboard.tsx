@@ -1,6 +1,19 @@
 // app/routes/dashboard.tsx
-import { createFileRoute } from "@tanstack/solid-router"
-import { getExternalResources, getLessons } from "@/data/utils/core"
+import { createFileRoute, redirect } from "@tanstack/solid-router"
+import { getRequestHeader } from "@tanstack/solid-start/server"
+import { isServer } from "solid-js/web"
+import { createEffect } from "solid-js"
+import { z } from "zod"
+import { zodValidator } from "@tanstack/zod-adapter"
+import {
+  getActiveTextbook,
+  getExternalResources,
+  getLessons,
+  getChaptersForTextbook,
+  getTextbookChapter,
+  setTextbookChapter,
+} from "@/data/utils/core"
+import { textbooks } from "@/data/textbooks"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { DashboardHeader } from "@/features/dashboard/components/DashboardHeader"
 import { ContentSection } from "@/features/dashboard/components/ContentSection"
@@ -8,15 +21,54 @@ import { LessonsSection } from "@/features/dashboard/components/LessonsSection"
 import { StrugglesSection } from "@/features/dashboard/components/StrugglesSection"
 import { HistorySection } from "@/features/dashboard/components/HistorySection"
 
-export const Route = createFileRoute("/dashboard")({
-  loader: async () => {
-    // Hardcoded for now
-    const textbook = "genki_1"
-    const chapter = "genki_1_ch4"
+// Search params schema
+const dashboardSearchSchema = z.object({
+  chapter: z.string().optional(),
+})
 
-    // Get fast data immediately
-    const externalResources = getExternalResources(textbook, chapter)
-    const lessons = getLessons(textbook, chapter)
+export const Route = createFileRoute("/dashboard")({
+  validateSearch: zodValidator(dashboardSearchSchema),
+  beforeLoad: ({ search }) => {
+    // Get cookies from request header (server-side) or undefined (client-side)
+    const cookieHeader = isServer
+      ? getRequestHeader("Cookie") || undefined
+      : undefined
+
+    const currentTextbook = getActiveTextbook(cookieHeader)
+
+    if (!search.chapter) {
+      // No URL params - check cookies and redirect
+      let chapterFromCookie = getTextbookChapter(currentTextbook, cookieHeader)
+
+      // If no valid chapter from cookie, use first chapter as default
+      if (!chapterFromCookie) {
+        const textbookData = textbooks[currentTextbook]
+        chapterFromCookie = textbookData?.chapters[0]?.id || "genki_1_ch0"
+      }
+
+      // Redirect to URL with search params
+      throw redirect({
+        to: "/dashboard",
+        search: { chapter: chapterFromCookie },
+      })
+    }
+
+    // URL params exist - just return the context (no cookie setting here)
+    return {
+      currentTextbook,
+      currentChapterID: search.chapter,
+    }
+  },
+  loader: async ({ context }) => {
+    const { currentTextbook, currentChapterID } = context
+
+    const currentTextbookChapters = getChaptersForTextbook(currentTextbook)
+
+    const externalResources = getExternalResources(
+      currentTextbook,
+      currentChapterID,
+    )
+    const lessons = getLessons(currentTextbook, currentChapterID)
 
     // Defer thumbnail loading - don't await these
     const thumbnailPromises = externalResources.map((resource) =>
@@ -30,6 +82,8 @@ export const Route = createFileRoute("/dashboard")({
 
     return {
       // Fast data
+      currentChapterID,
+      currentTextbookChapters,
       externalResources,
       lessons,
       // Deferred data - individual promises for progressive loading
@@ -41,6 +95,16 @@ export const Route = createFileRoute("/dashboard")({
 
 function RouteComponent() {
   const loaderData = Route.useLoaderData()
+  const search = Route.useSearch()
+
+  // Sync URL params to cookies on client-side
+  createEffect(() => {
+    const currentSearch = search()
+    if (currentSearch.chapter) {
+      const currentTextbook = getActiveTextbook() // Client-side only
+      setTextbookChapter(currentTextbook, currentSearch.chapter)
+    }
+  })
 
   const struggles = [
     "～て",
@@ -116,7 +180,11 @@ function RouteComponent() {
         alt="Decorative Japanese Gate"
       />
 
-      <DashboardHeader chapterTitle="Chapter 14" dailyProgress={20} />
+      <DashboardHeader
+        currentChapterID={loaderData().currentChapterID}
+        currentTextbookChapters={loaderData().currentTextbookChapters}
+        dailyProgress={20}
+      />
       <ContentSection
         resources={loaderData().externalResources}
         thumbnailPromises={loaderData().deferredThumbnails}
