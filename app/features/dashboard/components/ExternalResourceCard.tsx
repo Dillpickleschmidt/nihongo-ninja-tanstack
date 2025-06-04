@@ -1,6 +1,7 @@
 // features/dashboard/components/ExternalResourceCard.tsx
 import { Link } from "@tanstack/solid-router"
 import { SmoothCard } from "./SmoothCard"
+import { cn } from "@/utils/util"
 import type { ExternalResource } from "@/data/types"
 
 interface ExternalResourceCardProps {
@@ -11,13 +12,13 @@ interface ExternalResourceCardProps {
 function getDifficultyColor(difficulty: string) {
   switch (difficulty) {
     case "easy":
-      return "bg-green-500"
+      return "bg-green-500 shadow-green-500/20"
     case "medium":
-      return "bg-yellow-500"
+      return "bg-yellow-500 shadow-yellow-500/20"
     case "hard":
-      return "bg-red-500"
+      return "bg-red-500 shadow-red-500/20"
     default:
-      return "bg-gray-500"
+      return "bg-gray-500 shadow-gray-500/20"
   }
 }
 
@@ -72,12 +73,15 @@ export function ExternalResourceCard(props: ExternalResourceCardProps) {
         width={190}
         height={160}
         scales={{ xl: 1.1 }}
-        class="relative overflow-hidden p-4 shadow-lg shadow-black xl:p-5"
+        class={cn(
+          "relative overflow-hidden p-4 xl:p-5",
+          "shadow-lg shadow-black/20 dark:shadow-black",
+        )}
       >
-        {/* Background image with low opacity */}
+        {/* Background image with adjusted opacity for light mode */}
         {thumbnailUrl && (
           <div
-            class="absolute inset-0 -z-2 scale-[135%] opacity-65"
+            class="absolute inset-0 -z-2 scale-[135%] opacity-75 dark:opacity-65"
             style={{
               "background-image": `url(${thumbnailUrl})`,
               "background-size": "cover",
@@ -86,24 +90,26 @@ export function ExternalResourceCard(props: ExternalResourceCardProps) {
             }}
           />
         )}
-
-        <div class="absolute inset-0 -z-1 bg-gradient-to-b from-transparent to-black/50 dark:to-black/65" />
+        <div class="absolute inset-0 -z-1 bg-gradient-to-b from-transparent via-transparent to-black/60 dark:from-transparent dark:to-black/65" />
 
         {/* Content */}
         <div class="relative z-10">
-          <div class="mb-2 flex items-start justify-between">
+          <div class="mb-2 flex items-start justify-between xl:mb-3">
             <span class="text-2xl leading-5 drop-shadow-md xl:text-3xl xl:leading-6">
               {getResourceIcon(resource.resource_type)}
             </span>
             <div
-              class={`h-3.5 w-3.5 rounded-full drop-shadow-sm xl:h-4 xl:w-4 ${getDifficultyColor(resource.difficulty_rating)}`}
+              class={cn(
+                "h-3.5 w-3.5 rounded-full shadow-sm drop-shadow-sm xl:h-4 xl:w-4",
+                getDifficultyColor(resource.difficulty_rating),
+              )}
             />
           </div>
           <div class="flex h-24 flex-col justify-end xl:h-28">
-            <div class="font-inter text-sm font-semibold text-white drop-shadow-sm drop-shadow-black xl:text-base">
+            <div class="font-inter text-sm font-semibold text-white drop-shadow-md xl:text-base">
               {truncateText(resource.title, 35)}
             </div>
-            <div class="text-muted-foreground text-xs capitalize drop-shadow-sm xl:text-sm">
+            <div class="dark:text-muted-foreground text-xs text-gray-200 capitalize drop-shadow-sm xl:text-sm">
               {resource.resource_type.replace("_", " ")}
             </div>
           </div>

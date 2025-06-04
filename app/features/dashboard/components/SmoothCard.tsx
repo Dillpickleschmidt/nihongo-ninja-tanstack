@@ -2,6 +2,7 @@
 import { getSvgPath } from "figma-squircle"
 import { createMediaQuery } from "@solid-primitives/media"
 import { JSX } from "solid-js"
+import { cn } from "@/utils/util"
 
 interface SmoothCardProps {
   width: number
@@ -76,7 +77,14 @@ export function SmoothCard(props: SmoothCardProps) {
   }
 
   return (
-    <div style={combinedStyle} class={`bg-card ${props.class || ""}`}>
+    <div
+      style={combinedStyle}
+      class={cn(
+        "bg-card",
+        "shadow-sm shadow-black/5 dark:shadow-black/20",
+        props.class,
+      )}
+    >
       {props.children}
     </div>
   )
