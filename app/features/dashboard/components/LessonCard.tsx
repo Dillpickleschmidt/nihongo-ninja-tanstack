@@ -72,11 +72,16 @@ function IconComponent(props: { module: StaticModule | DynamicModule }) {
   const SelectedIcon = iconComponents[moduleType] || BookOpen
   const iconStyle = iconClasses[moduleType] || "text-gray-500"
 
-  return <SelectedIcon size={iconSize} class={iconStyle} />
+  return <SelectedIcon size={iconSize} class={`${iconStyle} xl:h-6 xl:w-6`} />
 }
 
 export function LessonCard(props: LessonCardProps) {
   const { lesson } = props
+
+  // Trim "Practice " prefix from title if it exists
+  const displayTitle = lesson.title.startsWith("Practice ")
+    ? lesson.title.substring(9)
+    : lesson.title
 
   // Determine link destination
   const linkTo =
@@ -89,18 +94,19 @@ export function LessonCard(props: LessonCardProps) {
       <SmoothCard
         width={120}
         height={155}
-        class="flex flex-col items-center justify-between px-2 py-3 text-center"
+        scales={{ xl: 1.1 }}
+        class="flex flex-col items-center justify-between px-2 py-3 text-center xl:px-3 xl:py-4"
       >
         <div class="mx-auto flex items-center justify-center rounded-lg">
           <IconComponent module={lesson} />
         </div>
 
-        <h3 class="font-inter mb-1 text-sm leading-[1.15rem]">
-          {truncateText(lesson.title, 25)}
+        <h3 class="font-inter mb-1 text-sm leading-[1.15rem] xl:text-[15px] xl:leading-5">
+          {truncateText(displayTitle, 25)}
         </h3>
 
-        <div class="bg-muted mb-1 rounded-full p-2">
-          <ChevronRight class="h-4 w-4" />
+        <div class="bg-muted mb-1 rounded-full p-2 xl:p-[9px]">
+          <ChevronRight class="h-4 w-4 xl:h-[17px] xl:w-[17px]" />
         </div>
       </SmoothCard>
     </Link>

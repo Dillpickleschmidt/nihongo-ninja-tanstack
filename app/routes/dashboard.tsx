@@ -194,15 +194,15 @@ function RouteComponent() {
       />
       <LessonsSection lessons={loaderData().lessons} progressPercentage={75} />
 
-      {/* Mobile Layout - hide from md breakpoint */}
+      {/* Mobile Layout - hide from xl breakpoint */}
       <SSRMediaQuery hideFrom="xl">
         <StrugglesSection struggles={struggles} variant="mobile" />
         <HistorySection items={historyItems} />
       </SSRMediaQuery>
 
-      {/* Desktop Layout - show from md breakpoint */}
+      {/* Desktop Layout - show from xl breakpoint */}
       <SSRMediaQuery showFrom="xl">
-        <div class="my-6 grid grid-cols-3 gap-6 px-4">
+        <div class="my-6 grid grid-cols-3 gap-6 px-4 xl:px-6">
           <AllContentList />
           <StrugglesSection struggles={struggles} variant="desktop" />
           <HistorySection items={historyItems} />
