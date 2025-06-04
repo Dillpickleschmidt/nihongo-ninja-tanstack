@@ -20,6 +20,8 @@ import { ContentSection } from "@/features/dashboard/components/ContentSection"
 import { LessonsSection } from "@/features/dashboard/components/LessonsSection"
 import { StrugglesSection } from "@/features/dashboard/components/StrugglesSection"
 import { HistorySection } from "@/features/dashboard/components/HistorySection"
+import { AllContentList } from "@/features/dashboard/components/AllContentList"
+import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 
 // Search params schema
 const dashboardSearchSchema = z.object({
@@ -115,6 +117,7 @@ function RouteComponent() {
     "敬語",
     "カタカナ",
     "ひらがな",
+    "条件形",
   ]
 
   const historyItems = [
@@ -190,8 +193,21 @@ function RouteComponent() {
         thumbnailPromises={loaderData().deferredThumbnails}
       />
       <LessonsSection lessons={loaderData().lessons} progressPercentage={75} />
-      <StrugglesSection struggles={struggles} />
-      <HistorySection items={historyItems} />
+
+      {/* Mobile Layout - hide from md breakpoint */}
+      <SSRMediaQuery hideFrom="xl">
+        <StrugglesSection struggles={struggles} variant="mobile" />
+        <HistorySection items={historyItems} />
+      </SSRMediaQuery>
+
+      {/* Desktop Layout - show from md breakpoint */}
+      <SSRMediaQuery showFrom="xl">
+        <div class="my-6 grid grid-cols-3 gap-6 px-4">
+          <AllContentList />
+          <StrugglesSection struggles={struggles} variant="desktop" />
+          <HistorySection items={historyItems} />
+        </div>
+      </SSRMediaQuery>
     </div>
   )
 }
