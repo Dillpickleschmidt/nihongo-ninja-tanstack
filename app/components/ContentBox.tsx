@@ -5,7 +5,6 @@ import { useLocation, useNavigate, useMatches } from "@tanstack/solid-router"
 import { cva } from "class-variance-authority"
 import { cn } from "@/utils/util"
 import { User } from "@supabase/supabase-js"
-import { usePageTransition } from "@/context/TransitionContext"
 
 type ContentBoxConfig = {
   nextButtonLink?: string
@@ -39,7 +38,6 @@ export default function ContentBox(props: ContentBoxProps) {
   const location = useLocation()
   const navigate = useNavigate()
   const matches = useMatches()
-  const { startLearnToDashboard } = usePageTransition()
 
   const [isVisible, setIsVisible] = createSignal(false)
 
@@ -65,8 +63,14 @@ export default function ContentBox(props: ContentBoxProps) {
 
   const handleBackClick = (e: Event) => {
     e.preventDefault()
-    startLearnToDashboard()
-    navigate({ to: "/dashboard" })
+
+    // Dispatch custom event for parent to handle
+    const customEvent = new CustomEvent("contentbox-back-click", {
+      bubbles: true,
+      cancelable: true,
+    })
+
+    document.dispatchEvent(customEvent)
   }
 
   const handleNextClick = (e: Event) => {

@@ -1,10 +1,14 @@
 // features/dashboard/components/LessonsSection.tsx
-import { For, createSignal, onMount } from "solid-js"
+import { For, onMount } from "solid-js"
 import { ArrowRight } from "lucide-solid"
 import { useLocation } from "@tanstack/solid-router"
 import { Transition } from "solid-transition-group"
 import { LessonCard } from "./LessonCard"
 import { usePageTransition } from "@/context/TransitionContext"
+import {
+  createSlideWithFadeInAnimation,
+  prepareElementForEnter,
+} from "@/utils/animations"
 import type { StaticModule, DynamicModule } from "@/data/types"
 
 interface LessonsSectionProps {
@@ -12,43 +16,22 @@ interface LessonsSectionProps {
   progressPercentage: number
 }
 
+const SELECTOR = "[data-lessons-section]"
+const DIRECTION = "left" as const
+const ENTER_DELAY = 180 // Lessons enter after content (staggered)
+
 export function LessonsSection(props: LessonsSectionProps) {
   const location = useLocation()
   const { isInitialLoad } = usePageTransition()
 
   onMount(() => {
-    const currentPath = location().pathname
-    if (currentPath === "/dashboard" && !isInitialLoad()) {
-      // Navigation back - hide then animate in quickly
-      const element = document.querySelector(
-        "[data-lessons-section]",
-      ) as HTMLElement
+    if (location().pathname === "/dashboard" && !isInitialLoad()) {
+      const element = document.querySelector(SELECTOR) as HTMLElement
       if (element) {
-        element.style.transform = "translateX(30px)"
-        element.style.opacity = "0"
-
-        // Start enter animation after short delay (staggered)
+        prepareElementForEnter(element, DIRECTION)
         setTimeout(() => {
-          // Transform animation
-          element.animate(
-            [
-              { transform: "translateX(30px)" },
-              { transform: "translateX(0px)" },
-            ],
-            {
-              duration: 300,
-              easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-              fill: "forwards",
-            },
-          )
-
-          // Opacity animation with snappy curve
-          element.animate([{ opacity: 0 }, { opacity: 1 }], {
-            duration: 300,
-            easing: "cubic-bezier(0.25, 1, 0.5, 1)", // Snappy ease-out
-            fill: "forwards",
-          })
-        }, 180) // Slightly longer for stagger
+          createSlideWithFadeInAnimation(element, DIRECTION)
+        }, ENTER_DELAY)
       }
     }
   })
@@ -78,32 +61,10 @@ export function LessonsSection(props: LessonsSectionProps) {
             done()
             return
           }
-
-          // Transform animation
-          const transformAnimation = element.animate(
-            [
-              { transform: "translateX(30px)" },
-              { transform: "translateX(0px)" },
-            ],
-            {
-              duration: 300,
-              easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-            },
-          )
-
-          // Opacity animation with snappy curve (fast start, slow end)
-          const opacityAnimation = element.animate(
-            [{ opacity: 0 }, { opacity: 1 }],
-            {
-              duration: 300,
-              easing: "cubic-bezier(0.25, 1, 0.5, 1)", // Snappy ease-out
-            },
-          )
-
-          Promise.all([
-            transformAnimation.finished,
-            opacityAnimation.finished,
-          ]).then(() => done())
+          createSlideWithFadeInAnimation(
+            element as HTMLElement,
+            DIRECTION,
+          ).then(() => done())
         }}
       >
         {true && (

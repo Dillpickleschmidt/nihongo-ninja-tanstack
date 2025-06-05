@@ -7,6 +7,10 @@ import {
   Show,
   onCleanup,
 } from "solid-js"
+import {
+  createSlideWithFadeOutAnimation,
+  ANIMATION_CONFIG,
+} from "@/utils/animations"
 
 type TransitionState = "idle" | "dashboard-to-learn" | "learn-to-dashboard"
 
@@ -30,101 +34,64 @@ export function TransitionProvider(props: ParentProps) {
 
   const startDashboardToLearn = () => {
     setIsInitialLoad(false)
-
-    // Capture and animate dashboard immediately
-    const ref = dashboardRef()
-    if (ref) {
-      const clonedElement = ref.cloneNode(true) as HTMLDivElement
-
-      clonedElement.style.position = "absolute"
-      clonedElement.style.top = "0"
-      clonedElement.style.left = "0"
-      clonedElement.style.right = "0"
-      clonedElement.style.zIndex = "10"
-      clonedElement.style.pointerEvents = "none"
-
-      // Hide the original dashboard content immediately
-      ref.style.opacity = "0"
-      ref.style.pointerEvents = "none"
-
-      // Start exit animations immediately
-      const contentSection = clonedElement.querySelector(
-        '[data-section="content"] [data-transition-content]',
-      )
-      const lessonsSection = clonedElement.querySelector(
-        '[data-section="lessons"] [data-transition-content]',
-      )
-
-      if (contentSection) {
-        // Separate animations for transform and opacity
-        ;(contentSection as HTMLElement).animate(
-          [
-            { transform: "translateX(0px)" },
-            { transform: "translateX(-30px)" },
-          ],
-          {
-            duration: 300,
-            easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-            fill: "forwards",
-          },
-        )
-        ;(contentSection as HTMLElement).animate(
-          [{ opacity: 1 }, { opacity: 0 }],
-          {
-            duration: 300,
-            easing: "cubic-bezier(0.5, 0, 0.75, 0)", // Inverse curve: ease-in (slow start, fast end)
-            fill: "forwards",
-          },
-        )
-      }
-
-      if (lessonsSection) {
-        // Separate animations for transform and opacity
-        ;(lessonsSection as HTMLElement).animate(
-          [{ transform: "translateX(0px)" }, { transform: "translateX(30px)" }],
-          {
-            duration: 300,
-            easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-            fill: "forwards",
-          },
-        )
-        ;(lessonsSection as HTMLElement).animate(
-          [{ opacity: 1 }, { opacity: 0 }],
-          {
-            duration: 300,
-            easing: "cubic-bezier(0.5, 0, 0.75, 0)", // Inverse curve: ease-in (slow start, fast end)
-            fill: "forwards",
-          },
-        )
-      }
-
-      setPreservedContent(clonedElement)
-
-      // Cleanup faster
-      setTimeout(() => {
-        setPreservedContent(null)
-        setState("idle")
-        // Restore original dashboard visibility for when we return
-        ref.style.opacity = ""
-        ref.style.pointerEvents = ""
-      }, 350)
-    }
-
     setState("dashboard-to-learn")
+
+    const ref = dashboardRef()
+    if (!ref) return
+
+    // Clone and position the dashboard
+    const clonedElement = ref.cloneNode(true) as HTMLDivElement
+    Object.assign(clonedElement.style, {
+      position: "absolute",
+      top: "0",
+      left: "0",
+      right: "0",
+      zIndex: "10",
+      pointerEvents: "none",
+    })
+
+    // Hide original immediately
+    ref.style.opacity = "0"
+    ref.style.pointerEvents = "none"
+
+    // Animate sections
+    const sections = [
+      {
+        selector: '[data-section="content"] [data-transition-content]',
+        direction: "left" as const,
+      },
+      {
+        selector: '[data-section="lessons"] [data-transition-content]',
+        direction: "right" as const,
+      },
+    ]
+
+    sections.forEach(({ selector, direction }) => {
+      const element = clonedElement.querySelector(selector) as HTMLElement
+      if (element) {
+        createSlideWithFadeOutAnimation(element, direction)
+      }
+    })
+
+    setPreservedContent(clonedElement)
+
+    // Cleanup
+    setTimeout(() => {
+      setPreservedContent(null)
+      setState("idle")
+      // Restore original for return navigation
+      ref.style.opacity = ""
+      ref.style.pointerEvents = ""
+    }, ANIMATION_CONFIG.duration)
   }
 
   const startLearnToDashboard = () => {
     setIsInitialLoad(false)
     setState("learn-to-dashboard")
-
-    setTimeout(() => {
-      setState("idle")
-    }, 400)
+    setTimeout(() => setState("idle"), ANIMATION_CONFIG.duration)
   }
 
-  onCleanup(() => {
-    setPreservedContent(null)
-  })
+  onCleanup(() => setPreservedContent(null))
 
   return (
     <TransitionContext.Provider
@@ -145,11 +112,9 @@ export function TransitionProvider(props: ParentProps) {
                 el.appendChild(preserved())
               }
             }
-
             return <div ref={handleRef} class="absolute inset-0 z-10" />
           }}
         </Show>
-
         <div class="relative z-20">{props.children}</div>
       </div>
     </TransitionContext.Provider>
