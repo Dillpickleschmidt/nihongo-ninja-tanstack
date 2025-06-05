@@ -81,7 +81,6 @@ export default function ContentBox(props: ContentBoxProps) {
             class={cn(
               contentBoxVariants({ size: config().size }),
               config().class,
-              "p-6",
             )}
           >
             {props.children}
@@ -89,7 +88,7 @@ export default function ContentBox(props: ContentBoxProps) {
         </div>
       </Show>
       <Show when={config().nextButtonLink}>
-        <div class="absolute inset-0">
+        <div class="absolute">
           <div class="fixed right-6 bottom-6 flex gap-2">
             <Button
               as="a"

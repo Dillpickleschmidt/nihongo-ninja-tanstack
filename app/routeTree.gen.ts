@@ -16,8 +16,9 @@ import { Route as DashboardImport } from './routes/dashboard'
 import { Route as AuthImport } from './routes/auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as LearnIndexImport } from './routes/learn/index'
-import { Route as LearnVocabularyImport } from './routes/learn/vocabulary'
-import { Route as LearnLessonsWelcomeOverviewImport } from './routes/learn/_lessons/welcome-overview'
+import { Route as LearnWritingSystemsImport } from './routes/learn/writing-systems'
+import { Route as LearnWelcomeOverviewImport } from './routes/learn/welcome-overview'
+import { Route as LearnJapanesePronunciationImport } from './routes/learn/japanese-pronunciation'
 
 // Create/Update Routes
 
@@ -51,18 +52,25 @@ const LearnIndexRoute = LearnIndexImport.update({
   getParentRoute: () => LearnRoute,
 } as any)
 
-const LearnVocabularyRoute = LearnVocabularyImport.update({
-  id: '/vocabulary',
-  path: '/vocabulary',
+const LearnWritingSystemsRoute = LearnWritingSystemsImport.update({
+  id: '/writing-systems',
+  path: '/writing-systems',
   getParentRoute: () => LearnRoute,
 } as any)
 
-const LearnLessonsWelcomeOverviewRoute =
-  LearnLessonsWelcomeOverviewImport.update({
-    id: '/_lessons/welcome-overview',
-    path: '/welcome-overview',
+const LearnWelcomeOverviewRoute = LearnWelcomeOverviewImport.update({
+  id: '/welcome-overview',
+  path: '/welcome-overview',
+  getParentRoute: () => LearnRoute,
+} as any)
+
+const LearnJapanesePronunciationRoute = LearnJapanesePronunciationImport.update(
+  {
+    id: '/japanese-pronunciation',
+    path: '/japanese-pronunciation',
     getParentRoute: () => LearnRoute,
-  } as any)
+  } as any,
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -96,11 +104,25 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof LearnImport
       parentRoute: typeof rootRoute
     }
-    '/learn/vocabulary': {
-      id: '/learn/vocabulary'
-      path: '/vocabulary'
-      fullPath: '/learn/vocabulary'
-      preLoaderRoute: typeof LearnVocabularyImport
+    '/learn/japanese-pronunciation': {
+      id: '/learn/japanese-pronunciation'
+      path: '/japanese-pronunciation'
+      fullPath: '/learn/japanese-pronunciation'
+      preLoaderRoute: typeof LearnJapanesePronunciationImport
+      parentRoute: typeof LearnImport
+    }
+    '/learn/welcome-overview': {
+      id: '/learn/welcome-overview'
+      path: '/welcome-overview'
+      fullPath: '/learn/welcome-overview'
+      preLoaderRoute: typeof LearnWelcomeOverviewImport
+      parentRoute: typeof LearnImport
+    }
+    '/learn/writing-systems': {
+      id: '/learn/writing-systems'
+      path: '/writing-systems'
+      fullPath: '/learn/writing-systems'
+      preLoaderRoute: typeof LearnWritingSystemsImport
       parentRoute: typeof LearnImport
     }
     '/learn/': {
@@ -110,28 +132,23 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof LearnIndexImport
       parentRoute: typeof LearnImport
     }
-    '/learn/_lessons/welcome-overview': {
-      id: '/learn/_lessons/welcome-overview'
-      path: '/welcome-overview'
-      fullPath: '/learn/welcome-overview'
-      preLoaderRoute: typeof LearnLessonsWelcomeOverviewImport
-      parentRoute: typeof LearnImport
-    }
   }
 }
 
 // Create and export the route tree
 
 interface LearnRouteChildren {
-  LearnVocabularyRoute: typeof LearnVocabularyRoute
+  LearnJapanesePronunciationRoute: typeof LearnJapanesePronunciationRoute
+  LearnWelcomeOverviewRoute: typeof LearnWelcomeOverviewRoute
+  LearnWritingSystemsRoute: typeof LearnWritingSystemsRoute
   LearnIndexRoute: typeof LearnIndexRoute
-  LearnLessonsWelcomeOverviewRoute: typeof LearnLessonsWelcomeOverviewRoute
 }
 
 const LearnRouteChildren: LearnRouteChildren = {
-  LearnVocabularyRoute: LearnVocabularyRoute,
+  LearnJapanesePronunciationRoute: LearnJapanesePronunciationRoute,
+  LearnWelcomeOverviewRoute: LearnWelcomeOverviewRoute,
+  LearnWritingSystemsRoute: LearnWritingSystemsRoute,
   LearnIndexRoute: LearnIndexRoute,
-  LearnLessonsWelcomeOverviewRoute: LearnLessonsWelcomeOverviewRoute,
 }
 
 const LearnRouteWithChildren = LearnRoute._addFileChildren(LearnRouteChildren)
@@ -141,18 +158,20 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
   '/learn': typeof LearnRouteWithChildren
-  '/learn/vocabulary': typeof LearnVocabularyRoute
+  '/learn/japanese-pronunciation': typeof LearnJapanesePronunciationRoute
+  '/learn/welcome-overview': typeof LearnWelcomeOverviewRoute
+  '/learn/writing-systems': typeof LearnWritingSystemsRoute
   '/learn/': typeof LearnIndexRoute
-  '/learn/welcome-overview': typeof LearnLessonsWelcomeOverviewRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
-  '/learn/vocabulary': typeof LearnVocabularyRoute
+  '/learn/japanese-pronunciation': typeof LearnJapanesePronunciationRoute
+  '/learn/welcome-overview': typeof LearnWelcomeOverviewRoute
+  '/learn/writing-systems': typeof LearnWritingSystemsRoute
   '/learn': typeof LearnIndexRoute
-  '/learn/welcome-overview': typeof LearnLessonsWelcomeOverviewRoute
 }
 
 export interface FileRoutesById {
@@ -161,9 +180,10 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
   '/learn': typeof LearnRouteWithChildren
-  '/learn/vocabulary': typeof LearnVocabularyRoute
+  '/learn/japanese-pronunciation': typeof LearnJapanesePronunciationRoute
+  '/learn/welcome-overview': typeof LearnWelcomeOverviewRoute
+  '/learn/writing-systems': typeof LearnWritingSystemsRoute
   '/learn/': typeof LearnIndexRoute
-  '/learn/_lessons/welcome-overview': typeof LearnLessonsWelcomeOverviewRoute
 }
 
 export interface FileRouteTypes {
@@ -173,26 +193,29 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/learn'
-    | '/learn/vocabulary'
-    | '/learn/'
+    | '/learn/japanese-pronunciation'
     | '/learn/welcome-overview'
+    | '/learn/writing-systems'
+    | '/learn/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/dashboard'
-    | '/learn/vocabulary'
-    | '/learn'
+    | '/learn/japanese-pronunciation'
     | '/learn/welcome-overview'
+    | '/learn/writing-systems'
+    | '/learn'
   id:
     | '__root__'
     | '/'
     | '/auth'
     | '/dashboard'
     | '/learn'
-    | '/learn/vocabulary'
+    | '/learn/japanese-pronunciation'
+    | '/learn/welcome-overview'
+    | '/learn/writing-systems'
     | '/learn/'
-    | '/learn/_lessons/welcome-overview'
   fileRoutesById: FileRoutesById
 }
 
@@ -238,21 +261,26 @@ export const routeTree = rootRoute
     "/learn": {
       "filePath": "learn.tsx",
       "children": [
-        "/learn/vocabulary",
-        "/learn/",
-        "/learn/_lessons/welcome-overview"
+        "/learn/japanese-pronunciation",
+        "/learn/welcome-overview",
+        "/learn/writing-systems",
+        "/learn/"
       ]
     },
-    "/learn/vocabulary": {
-      "filePath": "learn/vocabulary.tsx",
+    "/learn/japanese-pronunciation": {
+      "filePath": "learn/japanese-pronunciation.tsx",
+      "parent": "/learn"
+    },
+    "/learn/welcome-overview": {
+      "filePath": "learn/welcome-overview.tsx",
+      "parent": "/learn"
+    },
+    "/learn/writing-systems": {
+      "filePath": "learn/writing-systems.tsx",
       "parent": "/learn"
     },
     "/learn/": {
       "filePath": "learn/index.tsx",
-      "parent": "/learn"
-    },
-    "/learn/_lessons/welcome-overview": {
-      "filePath": "learn/_lessons/welcome-overview.tsx",
       "parent": "/learn"
     }
   }
