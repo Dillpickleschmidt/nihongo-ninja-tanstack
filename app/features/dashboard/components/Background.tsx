@@ -1,29 +1,22 @@
-// app/routes/_learn.tsx
-import { createFileRoute, Outlet } from "@tanstack/solid-router"
-
-export const Route = createFileRoute("/_learn")({
-  component: RouteComponent,
-})
-
-function RouteComponent() {
+export function Background(props: { position: string; opacity: number }) {
   return (
-    <div>
+    <>
       <style>
         {`
           .custom-gradient-mask {
-             mask-image: linear-gradient(to bottom, 
+             mask-image: linear-gradient(to bottom,
               transparent 0%,
               rgba(0, 0, 0, 1) 0%,
               rgba(0, 0, 0, 0) 100%
             );
-            -webkit-mask-image: linear-gradient(to bottom, 
+            -webkit-mask-image: linear-gradient(to bottom,
               transparent 0%,
               rgba(0, 0, 0, 1) 0%,
               rgba(0, 0, 0, 0) 100%
             );
           }
           .centered-bg-image {
-            position: absolute;
+            position: ${props.position};
             top: -64px;
             left: 50%;
             transform: translateX(-50%);
@@ -34,7 +27,7 @@ function RouteComponent() {
             object-position: center;
             z-index: -2;
             pointer-events: none;
-            opacity: 0.18;
+            opacity: ${props.opacity};
           }
           @media (max-width: 768px) {
             .centered-bg-image {
@@ -50,7 +43,6 @@ function RouteComponent() {
         class="custom-gradient-mask centered-bg-image"
         alt="Decorative Japanese Gate"
       />
-      <Outlet />
-    </div>
+    </>
   )
 }

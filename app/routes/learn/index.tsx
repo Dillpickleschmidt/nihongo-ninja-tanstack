@@ -11,7 +11,7 @@ const getSecret = createServerFn({
   return Resource.SECRET_VAL.value
 })
 
-export const Route = createFileRoute("/_learn/learn/")({
+export const Route = createFileRoute("/learn/")({
   component: RouteComponent,
   loader: async ({ context }) => {
     const { user } = context

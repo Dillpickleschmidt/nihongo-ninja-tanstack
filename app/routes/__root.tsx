@@ -74,43 +74,11 @@ function RootComponent() {
       <ColorModeScript storageType={storageManager?.type} />
       <ColorModeProvider storageManager={storageManager}>
         <TransitionProvider>
-          <BackgroundImage />
           <Scripts />
           <Outlet />
           <TanStackRouterDevtools />
         </TransitionProvider>
       </ColorModeProvider>
-    </>
-  )
-}
-
-function BackgroundImage() {
-  return (
-    <>
-      <style>
-        {`
-            .custom-gradient-mask {
-              mask-image: linear-gradient(to bottom,
-                transparent 0%,
-                rgba(0, 0, 0, 1) 0%,
-                rgba(0, 0, 0, 0) 73%
-              );
-              -webkit-mask-image: linear-gradient(to bottom,
-                transparent 0%,
-                rgba(0, 0, 0, 1) 0%,
-                rgba(0, 0, 0, 0) 73%
-              );
-            }
-
-            .content-gradient {
-              background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 100%);
-            }
-            `}
-      </style>
-      <img
-        src="img/dust-splatter-1.png"
-        class="absolute top-0 left-0 -z-1 h-auto w-screen bg-repeat opacity-[0.03]"
-      />
     </>
   )
 }

@@ -1,7 +1,7 @@
 // app/routes/_learn/learn/vocabulary.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 
-export const Route = createFileRoute("/_learn/learn/vocabulary")({
+export const Route = createFileRoute("/learn/vocabulary")({
   loader: async () => {
     return {
       contentBox: {

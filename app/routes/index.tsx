@@ -1,6 +1,7 @@
 import ExternalResourceIcons from "@/features/homepage/ExternalResourceIcons"
 import Nav from "@/features/homepage/Nav"
 import { createFileRoute } from "@tanstack/solid-router"
+import { BackgroundImage } from "@/components/BackgroundImage"
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -9,7 +10,13 @@ export const Route = createFileRoute("/")({
 
 function RouteComponent() {
   return (
-    <>
+    <div class="relative">
+      <BackgroundImage
+        class="z-[-1] !-mt-[4.1rem] min-h-screen"
+        backgroundImage="/img/dust-splatter-1.png"
+        backgroundImageSize="1215px"
+        backgroundImageOpacity={3}
+      />
       <Nav />
       <div class="flex w-full flex-col items-center px-4">
         <div class="max-w-4xl pt-12 text-center lg:pt-24">
@@ -85,6 +92,6 @@ function RouteComponent() {
         </p>
         <div class="h-32 w-full" />
       </div>
-    </>
+    </div>
   )
 }

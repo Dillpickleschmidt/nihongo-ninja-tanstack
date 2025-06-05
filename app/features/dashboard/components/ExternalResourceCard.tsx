@@ -2,6 +2,7 @@
 import { Link } from "@tanstack/solid-router"
 import { SmoothCard } from "./SmoothCard"
 import { cn } from "@/utils/util"
+import { usePageTransition } from "@/context/TransitionContext"
 import type { ExternalResource } from "@/data/types"
 
 interface ExternalResourceCardProps {
@@ -55,9 +56,18 @@ function truncateText(text: string, maxLength: number) {
 
 export function ExternalResourceCard(props: ExternalResourceCardProps) {
   const { resource, thumbnailUrl } = props
+  const { setUserHasNavigated } = usePageTransition()
+
+  const handleInternalNavigation = () => {
+    setUserHasNavigated(true)
+  }
+
   const ResourceWrapper = resource.internal_url ? Link : "a"
   const linkProps = resource.internal_url
-    ? { to: resource.internal_url }
+    ? {
+        to: resource.internal_url,
+        onClick: handleInternalNavigation,
+      }
     : {
         href: resource.external_url,
         target: "_blank",
@@ -91,7 +101,6 @@ export function ExternalResourceCard(props: ExternalResourceCardProps) {
           />
         )}
         <div class="absolute inset-0 -z-1 bg-gradient-to-b from-transparent via-transparent to-black/60 dark:from-transparent dark:to-black/65" />
-
         {/* Content */}
         <div class="relative z-10">
           <div class="mb-2 flex items-start justify-between xl:mb-3">

@@ -7,8 +7,10 @@ import {
   prepareElementForEnter,
 } from "@/utils/animations"
 import { usePageTransition } from "@/context/TransitionContext"
+import { BackgroundImage } from "@/components/BackgroundImage"
+import { Background } from "@/features/dashboard/components/Background"
 
-export const Route = createFileRoute("/_learn/learn")({
+export const Route = createFileRoute("/learn")({
   loader: async ({ context }) => {
     const { user } = context
     return { user }
@@ -17,7 +19,7 @@ export const Route = createFileRoute("/_learn/learn")({
 })
 
 const SELECTOR = "[data-learn-layout]"
-const ENTER_DIRECTION = "down" as const // Slides down from above into view
+const ENTER_DIRECTION = "up" as const
 const ENTER_DELAY = 100
 
 function LearnLayout() {
@@ -39,10 +41,26 @@ function LearnLayout() {
   })
 
   return (
-    <div data-learn-layout>
-      <ContentBox user={user}>
-        <Outlet />
-      </ContentBox>
+    <div class="relative min-h-screen w-full overflow-y-auto">
+      <Background position="fixed" opacity={0.04} />
+      <BackgroundImage
+        class="!fixed z-[-1]"
+        backgroundImage="/img/dots.svg"
+        backgroundImageSize="400px"
+        backgroundImageOpacity={2.5}
+      />
+      <BackgroundImage
+        class="z-[-1] !-mt-[4.1rem] min-h-screen"
+        backgroundImage="/img/dust-splatter-1.png"
+        backgroundImageSize="1215px"
+        backgroundImageOpacity={4}
+      />
+
+      <div data-learn-layout>
+        <ContentBox user={user}>
+          <Outlet />
+        </ContentBox>
+      </div>
     </div>
   )
 }

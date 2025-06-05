@@ -3,6 +3,7 @@ import { Link } from "@tanstack/solid-router"
 import { ChevronRight } from "lucide-solid"
 import { SmoothCard } from "./SmoothCard"
 import { cn } from "@/utils/util"
+import { usePageTransition } from "@/context/TransitionContext"
 import type { StaticModule, DynamicModule } from "@/data/types"
 import {
   BookOpen,
@@ -133,6 +134,7 @@ function getCardGradient(module: StaticModule | DynamicModule) {
 
 export function LessonCard(props: LessonCardProps) {
   const { lesson } = props
+  const { setUserHasNavigated } = usePageTransition()
 
   // Trim "Practice " prefix from title if it exists
   const displayTitle = lesson.title.startsWith("Practice ")
@@ -145,8 +147,16 @@ export function LessonCard(props: LessonCardProps) {
       ? lesson.link
       : `/learn/practice?id=${lesson.id}`
 
+  const handleClick = () => {
+    setUserHasNavigated(true)
+  }
+
   return (
-    <Link to={linkTo} class="transition-transform hover:scale-[98%]">
+    <Link
+      to={linkTo}
+      onClick={handleClick}
+      class="transition-transform hover:scale-[98%]"
+    >
       <SmoothCard
         width={120}
         height={155}

@@ -15,6 +15,8 @@ import {
 } from "@/data/utils/core"
 import { textbooks } from "@/data/textbooks"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
+import { BackgroundImage } from "@/components/BackgroundImage"
+import { Background } from "@/features/dashboard/components/Background"
 import { DashboardHeader } from "@/features/dashboard/components/DashboardHeader"
 import { ContentSection } from "@/features/dashboard/components/ContentSection"
 import { LessonsSection } from "@/features/dashboard/components/LessonsSection"
@@ -28,7 +30,7 @@ const dashboardSearchSchema = z.object({
   chapter: z.string().optional(),
 })
 
-export const Route = createFileRoute("/_learn/dashboard")({
+export const Route = createFileRoute("/dashboard")({
   validateSearch: zodValidator(dashboardSearchSchema),
   beforeLoad: ({ search }) => {
     const cookieHeader = isServer
@@ -136,12 +138,13 @@ function RouteComponent() {
         }
       `}</style>
 
-      <button
-        onClick={handleVocabularyClick}
-        class="block text-left transition-opacity hover:opacity-80"
-      >
-        <h3 class="mb-2 text-xl font-semibold">Go to vocabulary</h3>
-      </button>
+      <BackgroundImage
+        class="z-[-1] !-mt-[4.1rem] min-h-screen"
+        backgroundImage="/img/dust-splatter-1.png"
+        backgroundImageSize="1215px"
+        backgroundImageOpacity={3}
+      />
+      <Background position="absolute" opacity={0.18} />
 
       <DashboardHeader
         currentChapterID={loaderData().currentChapterID}

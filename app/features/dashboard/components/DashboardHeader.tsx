@@ -23,7 +23,7 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader(props: DashboardHeaderProps) {
   const navigate = useNavigate({ from: "/dashboard" })
-  const { triggerAnimations } = usePageTransition()
+  // const { triggerAnimations, setUserHasNavigated } = usePageTransition()
 
   // Convert chapters object to array for Select options
   const chapterOptions = Object.entries(props.currentTextbookChapters).map(
@@ -34,8 +34,9 @@ export function DashboardHeader(props: DashboardHeaderProps) {
   )
 
   const handleChapterChange = (newChapterID: string) => {
-    // Trigger animations before navigation
-    triggerAnimations()
+    // Trigger animations and navigate
+    // setUserHasNavigated(true)
+    // triggerAnimations()
     navigate({
       search: { chapter: newChapterID },
     })
