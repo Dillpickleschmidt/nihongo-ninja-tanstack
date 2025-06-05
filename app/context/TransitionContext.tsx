@@ -43,6 +43,10 @@ export function TransitionProvider(props: ParentProps) {
       clonedElement.style.zIndex = "10"
       clonedElement.style.pointerEvents = "none"
 
+      // Hide the original dashboard content immediately
+      ref.style.opacity = "0"
+      ref.style.pointerEvents = "none"
+
       // Start exit animations immediately
       const contentSection = clonedElement.querySelector(
         '[data-section="content"] [data-transition-content]',
@@ -52,28 +56,43 @@ export function TransitionProvider(props: ParentProps) {
       )
 
       if (contentSection) {
+        // Separate animations for transform and opacity
         ;(contentSection as HTMLElement).animate(
           [
-            { opacity: 1, transform: "translateX(0px)" },
-            { opacity: 0, transform: "translateX(-30px)" },
+            { transform: "translateX(0px)" },
+            { transform: "translateX(-30px)" },
           ],
           {
-            duration: 350, // Faster exit
+            duration: 300,
             easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+            fill: "forwards",
+          },
+        )
+        ;(contentSection as HTMLElement).animate(
+          [{ opacity: 1 }, { opacity: 0 }],
+          {
+            duration: 300,
+            easing: "cubic-bezier(0.5, 0, 0.75, 0)", // Inverse curve: ease-in (slow start, fast end)
             fill: "forwards",
           },
         )
       }
 
       if (lessonsSection) {
+        // Separate animations for transform and opacity
         ;(lessonsSection as HTMLElement).animate(
-          [
-            { opacity: 1, transform: "translateX(0px)" },
-            { opacity: 0, transform: "translateX(30px)" },
-          ],
+          [{ transform: "translateX(0px)" }, { transform: "translateX(30px)" }],
           {
-            duration: 350, // Faster exit
+            duration: 300,
             easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+            fill: "forwards",
+          },
+        )
+        ;(lessonsSection as HTMLElement).animate(
+          [{ opacity: 1 }, { opacity: 0 }],
+          {
+            duration: 300,
+            easing: "cubic-bezier(0.5, 0, 0.75, 0)", // Inverse curve: ease-in (slow start, fast end)
             fill: "forwards",
           },
         )
@@ -85,7 +104,10 @@ export function TransitionProvider(props: ParentProps) {
       setTimeout(() => {
         setPreservedContent(null)
         setState("idle")
-      }, 400)
+        // Restore original dashboard visibility for when we return
+        ref.style.opacity = ""
+        ref.style.pointerEvents = ""
+      }, 350)
     }
 
     setState("dashboard-to-learn")

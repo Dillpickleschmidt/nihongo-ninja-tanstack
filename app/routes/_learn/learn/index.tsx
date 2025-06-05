@@ -1,4 +1,4 @@
-// app/routes/learn/index.tsx
+// app/routes/_learn/learn/index.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import { Resource } from "sst"
 import { createServerFn } from "@tanstack/solid-start"
@@ -11,7 +11,7 @@ const getSecret = createServerFn({
   return Resource.SECRET_VAL.value
 })
 
-export const Route = createFileRoute("/learn/")({
+export const Route = createFileRoute("/_learn/learn/")({
   component: RouteComponent,
   loader: async ({ context }) => {
     const { user } = context

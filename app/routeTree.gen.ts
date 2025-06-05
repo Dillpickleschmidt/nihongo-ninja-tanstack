@@ -8,39 +8,27 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/solid-router'
-
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as DashboardImport } from './routes/dashboard'
 import { Route as AuthImport } from './routes/auth'
+import { Route as LearnImport } from './routes/_learn'
 import { Route as IndexImport } from './routes/index'
-import { Route as LearnIndexImport } from './routes/learn/index'
-import { Route as LearnLearnImport } from './routes/learn/_learn'
-import { Route as LearnLearnVocabularyImport } from './routes/learn/_learn/vocabulary'
-
-// Create Virtual Routes
-
-const LearnImport = createFileRoute('/learn')()
+import { Route as LearnLearnImport } from './routes/_learn/learn'
+import { Route as LearnDashboardImport } from './routes/_learn/dashboard'
+import { Route as LearnLearnIndexImport } from './routes/_learn/learn/index'
+import { Route as LearnLearnVocabularyImport } from './routes/_learn/learn/vocabulary'
 
 // Create/Update Routes
-
-const LearnRoute = LearnImport.update({
-  id: '/learn',
-  path: '/learn',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DashboardRoute = DashboardImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const AuthRoute = AuthImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LearnRoute = LearnImport.update({
+  id: '/_learn',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -50,15 +38,22 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const LearnIndexRoute = LearnIndexImport.update({
-  id: '/',
-  path: '/',
+const LearnLearnRoute = LearnLearnImport.update({
+  id: '/learn',
+  path: '/learn',
   getParentRoute: () => LearnRoute,
 } as any)
 
-const LearnLearnRoute = LearnLearnImport.update({
-  id: '/_learn',
+const LearnDashboardRoute = LearnDashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => LearnRoute,
+} as any)
+
+const LearnLearnIndexRoute = LearnLearnIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LearnLearnRoute,
 } as any)
 
 const LearnLearnVocabularyRoute = LearnLearnVocabularyImport.update({
@@ -78,6 +73,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/_learn': {
+      id: '/_learn'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LearnImport
+      parentRoute: typeof rootRoute
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -85,39 +87,32 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
-    '/dashboard': {
-      id: '/dashboard'
+    '/_learn/dashboard': {
+      id: '/_learn/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof LearnDashboardImport
+      parentRoute: typeof LearnImport
     }
-    '/learn': {
-      id: '/learn'
-      path: '/learn'
-      fullPath: '/learn'
-      preLoaderRoute: typeof LearnImport
-      parentRoute: typeof rootRoute
-    }
-    '/learn/_learn': {
-      id: '/learn/_learn'
+    '/_learn/learn': {
+      id: '/_learn/learn'
       path: '/learn'
       fullPath: '/learn'
       preLoaderRoute: typeof LearnLearnImport
-      parentRoute: typeof LearnRoute
-    }
-    '/learn/': {
-      id: '/learn/'
-      path: '/'
-      fullPath: '/learn/'
-      preLoaderRoute: typeof LearnIndexImport
       parentRoute: typeof LearnImport
     }
-    '/learn/_learn/vocabulary': {
-      id: '/learn/_learn/vocabulary'
+    '/_learn/learn/vocabulary': {
+      id: '/_learn/learn/vocabulary'
       path: '/vocabulary'
       fullPath: '/learn/vocabulary'
       preLoaderRoute: typeof LearnLearnVocabularyImport
+      parentRoute: typeof LearnLearnImport
+    }
+    '/_learn/learn/': {
+      id: '/_learn/learn/'
+      path: '/'
+      fullPath: '/learn/'
+      preLoaderRoute: typeof LearnLearnIndexImport
       parentRoute: typeof LearnLearnImport
     }
   }
@@ -127,10 +122,12 @@ declare module '@tanstack/solid-router' {
 
 interface LearnLearnRouteChildren {
   LearnLearnVocabularyRoute: typeof LearnLearnVocabularyRoute
+  LearnLearnIndexRoute: typeof LearnLearnIndexRoute
 }
 
 const LearnLearnRouteChildren: LearnLearnRouteChildren = {
   LearnLearnVocabularyRoute: LearnLearnVocabularyRoute,
+  LearnLearnIndexRoute: LearnLearnIndexRoute,
 }
 
 const LearnLearnRouteWithChildren = LearnLearnRoute._addFileChildren(
@@ -138,80 +135,81 @@ const LearnLearnRouteWithChildren = LearnLearnRoute._addFileChildren(
 )
 
 interface LearnRouteChildren {
+  LearnDashboardRoute: typeof LearnDashboardRoute
   LearnLearnRoute: typeof LearnLearnRouteWithChildren
-  LearnIndexRoute: typeof LearnIndexRoute
 }
 
 const LearnRouteChildren: LearnRouteChildren = {
+  LearnDashboardRoute: LearnDashboardRoute,
   LearnLearnRoute: LearnLearnRouteWithChildren,
-  LearnIndexRoute: LearnIndexRoute,
 }
 
 const LearnRouteWithChildren = LearnRoute._addFileChildren(LearnRouteChildren)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '': typeof LearnRouteWithChildren
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRoute
+  '/dashboard': typeof LearnDashboardRoute
   '/learn': typeof LearnLearnRouteWithChildren
-  '/learn/': typeof LearnIndexRoute
   '/learn/vocabulary': typeof LearnLearnVocabularyRoute
+  '/learn/': typeof LearnLearnIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '': typeof LearnRouteWithChildren
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRoute
-  '/learn': typeof LearnIndexRoute
+  '/dashboard': typeof LearnDashboardRoute
   '/learn/vocabulary': typeof LearnLearnVocabularyRoute
+  '/learn': typeof LearnLearnIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/_learn': typeof LearnRouteWithChildren
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRoute
-  '/learn': typeof LearnRouteWithChildren
-  '/learn/_learn': typeof LearnLearnRouteWithChildren
-  '/learn/': typeof LearnIndexRoute
-  '/learn/_learn/vocabulary': typeof LearnLearnVocabularyRoute
+  '/_learn/dashboard': typeof LearnDashboardRoute
+  '/_learn/learn': typeof LearnLearnRouteWithChildren
+  '/_learn/learn/vocabulary': typeof LearnLearnVocabularyRoute
+  '/_learn/learn/': typeof LearnLearnIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | ''
     | '/auth'
     | '/dashboard'
     | '/learn'
-    | '/learn/'
     | '/learn/vocabulary'
+    | '/learn/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard' | '/learn' | '/learn/vocabulary'
+  to: '/' | '' | '/auth' | '/dashboard' | '/learn/vocabulary' | '/learn'
   id:
     | '__root__'
     | '/'
+    | '/_learn'
     | '/auth'
-    | '/dashboard'
-    | '/learn'
-    | '/learn/_learn'
-    | '/learn/'
-    | '/learn/_learn/vocabulary'
+    | '/_learn/dashboard'
+    | '/_learn/learn'
+    | '/_learn/learn/vocabulary'
+    | '/_learn/learn/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRoute
-  DashboardRoute: typeof DashboardRoute
   LearnRoute: typeof LearnRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthRoute: AuthRoute,
-  DashboardRoute: DashboardRoute,
   LearnRoute: LearnRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 
 export const routeTree = rootRoute
@@ -225,41 +223,42 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/auth",
-        "/dashboard",
-        "/learn"
+        "/_learn",
+        "/auth"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/_learn": {
+      "filePath": "_learn.tsx",
+      "children": [
+        "/_learn/dashboard",
+        "/_learn/learn"
+      ]
+    },
     "/auth": {
       "filePath": "auth.tsx"
     },
-    "/dashboard": {
-      "filePath": "dashboard.tsx"
+    "/_learn/dashboard": {
+      "filePath": "_learn/dashboard.tsx",
+      "parent": "/_learn"
     },
-    "/learn": {
-      "filePath": "learn",
+    "/_learn/learn": {
+      "filePath": "_learn/learn.tsx",
+      "parent": "/_learn",
       "children": [
-        "/learn/_learn",
-        "/learn/"
+        "/_learn/learn/vocabulary",
+        "/_learn/learn/"
       ]
     },
-    "/learn/_learn": {
-      "filePath": "learn/_learn.tsx",
-      "parent": "/learn",
-      "children": [
-        "/learn/_learn/vocabulary"
-      ]
+    "/_learn/learn/vocabulary": {
+      "filePath": "_learn/learn/vocabulary.tsx",
+      "parent": "/_learn/learn"
     },
-    "/learn/": {
-      "filePath": "learn/index.tsx",
-      "parent": "/learn"
-    },
-    "/learn/_learn/vocabulary": {
-      "filePath": "learn/_learn/vocabulary.tsx",
-      "parent": "/learn/_learn"
+    "/_learn/learn/": {
+      "filePath": "_learn/learn/index.tsx",
+      "parent": "/_learn/learn"
     }
   }
 }

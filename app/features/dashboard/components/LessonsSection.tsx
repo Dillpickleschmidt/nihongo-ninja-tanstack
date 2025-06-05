@@ -24,15 +24,16 @@ export function LessonsSection(props: LessonsSectionProps) {
         "[data-lessons-section]",
       ) as HTMLElement
       if (element) {
-        element.style.opacity = "0"
         element.style.transform = "translateX(30px)"
+        element.style.opacity = "0"
 
         // Start enter animation after short delay (staggered)
         setTimeout(() => {
+          // Transform animation
           element.animate(
             [
-              { opacity: 0, transform: "translateX(30px)" },
-              { opacity: 1, transform: "translateX(0px)" },
+              { transform: "translateX(30px)" },
+              { transform: "translateX(0px)" },
             ],
             {
               duration: 300,
@@ -40,6 +41,13 @@ export function LessonsSection(props: LessonsSectionProps) {
               fill: "forwards",
             },
           )
+
+          // Opacity animation with snappy curve
+          element.animate([{ opacity: 0 }, { opacity: 1 }], {
+            duration: 300,
+            easing: "cubic-bezier(0.25, 1, 0.5, 1)", // Snappy ease-out
+            fill: "forwards",
+          })
         }, 180) // Slightly longer for stagger
       }
     }
@@ -71,30 +79,31 @@ export function LessonsSection(props: LessonsSectionProps) {
             return
           }
 
-          const animation = element.animate(
+          // Transform animation
+          const transformAnimation = element.animate(
             [
-              { opacity: 0, transform: "translateX(30px)" },
-              { opacity: 1, transform: "translateX(0px)" },
+              { transform: "translateX(30px)" },
+              { transform: "translateX(0px)" },
             ],
             {
               duration: 300,
               easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
             },
           )
-          animation.finished.then(done)
-        }}
-        onExit={(element, done) => {
-          const animation = element.animate(
-            [
-              { opacity: 1, transform: "translateX(0px)" },
-              { opacity: 0, transform: "translateX(30px)" },
-            ],
+
+          // Opacity animation with snappy curve (fast start, slow end)
+          const opacityAnimation = element.animate(
+            [{ opacity: 0 }, { opacity: 1 }],
             {
               duration: 300,
-              easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              easing: "cubic-bezier(0.25, 1, 0.5, 1)", // Snappy ease-out
             },
           )
-          animation.finished.then(done)
+
+          Promise.all([
+            transformAnimation.finished,
+            opacityAnimation.finished,
+          ]).then(() => done())
         }}
       >
         {true && (
