@@ -1,5 +1,5 @@
 // features/dashboard/components/LessonsSection.tsx
-import { For, onMount } from "solid-js"
+import { For, onMount, createEffect } from "solid-js"
 import { ArrowRight } from "lucide-solid"
 import { useLocation } from "@tanstack/solid-router"
 import { Transition } from "solid-transition-group"
@@ -22,10 +22,10 @@ const ENTER_DELAY = 180 // Lessons enter after content (staggered)
 
 export function LessonsSection(props: LessonsSectionProps) {
   const location = useLocation()
-  const { isInitialLoad } = usePageTransition()
+  const { hasUserNavigated, animationTrigger } = usePageTransition()
 
-  onMount(() => {
-    if (location().pathname === "/dashboard" && !isInitialLoad()) {
+  const runAnimation = () => {
+    if (location().pathname === "/dashboard" && hasUserNavigated()) {
       const element = document.querySelector(SELECTOR) as HTMLElement
       if (element) {
         prepareElementForEnter(element, DIRECTION)
@@ -34,6 +34,16 @@ export function LessonsSection(props: LessonsSectionProps) {
         }, ENTER_DELAY)
       }
     }
+  }
+
+  onMount(() => {
+    runAnimation()
+  })
+
+  // Listen for animation triggers (like chapter changes)
+  createEffect(() => {
+    animationTrigger() // Subscribe to trigger changes
+    runAnimation()
   })
 
   return (
@@ -57,7 +67,7 @@ export function LessonsSection(props: LessonsSectionProps) {
 
       <Transition
         onEnter={(element, done) => {
-          if (isInitialLoad()) {
+          if (!hasUserNavigated()) {
             done()
             return
           }

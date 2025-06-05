@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select"
+import { usePageTransition } from "@/context/TransitionContext"
 
 type CurrentTextbookChapters = Record<
   string,
@@ -22,6 +23,7 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader(props: DashboardHeaderProps) {
   const navigate = useNavigate({ from: "/dashboard" })
+  const { triggerAnimations } = usePageTransition()
 
   // Convert chapters object to array for Select options
   const chapterOptions = Object.entries(props.currentTextbookChapters).map(
@@ -32,6 +34,8 @@ export function DashboardHeader(props: DashboardHeaderProps) {
   )
 
   const handleChapterChange = (newChapterID: string) => {
+    // Trigger animations before navigation
+    triggerAnimations()
     navigate({
       search: { chapter: newChapterID },
     })
@@ -45,7 +49,6 @@ export function DashboardHeader(props: DashboardHeaderProps) {
           <AvatarFallback>N</AvatarFallback>
         </Avatar>
       </Link>
-
       <div class="flex justify-center">
         <Select
           value={props.currentChapterID}
@@ -77,7 +80,6 @@ export function DashboardHeader(props: DashboardHeaderProps) {
           <SelectContent />
         </Select>
       </div>
-
       <div class="flex justify-end pr-6 xl:pr-8">
         <div class="text-center text-sm xl:text-base">
           <div>{props.dailyProgress}%</div>

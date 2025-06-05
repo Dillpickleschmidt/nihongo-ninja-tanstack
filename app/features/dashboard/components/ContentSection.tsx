@@ -1,5 +1,5 @@
 // features/dashboard/components/ContentSection.tsx
-import { For, onMount } from "solid-js"
+import { For, onMount, createEffect } from "solid-js"
 import { ArrowRight, Plus } from "lucide-solid"
 import { Await, useLocation } from "@tanstack/solid-router"
 import { Transition } from "solid-transition-group"
@@ -25,10 +25,10 @@ const ENTER_DELAY = 0 // Content enters first
 
 export function ContentSection(props: ContentSectionProps) {
   const location = useLocation()
-  const { isInitialLoad } = usePageTransition()
+  const { hasUserNavigated, animationTrigger } = usePageTransition()
 
-  onMount(() => {
-    if (location().pathname === "/dashboard" && !isInitialLoad()) {
+  const runAnimation = () => {
+    if (location().pathname === "/dashboard" && hasUserNavigated()) {
       const element = document.querySelector(SELECTOR) as HTMLElement
       if (element) {
         prepareElementForEnter(element, DIRECTION)
@@ -37,6 +37,16 @@ export function ContentSection(props: ContentSectionProps) {
         }, ENTER_DELAY)
       }
     }
+  }
+
+  onMount(() => {
+    runAnimation()
+  })
+
+  // Listen for animation triggers (like chapter changes)
+  createEffect(() => {
+    animationTrigger() // Subscribe to trigger changes
+    runAnimation()
   })
 
   return (
@@ -51,13 +61,13 @@ export function ContentSection(props: ContentSectionProps) {
         <ArrowRight class="mr-5 h-5 w-5 xl:mr-6 xl:h-6 xl:w-6" />
       </div>
 
-      <div class="scrollbar-hide mb-5 flex gap-4 pl-8 xl:gap-5 xl:pb-2 xl:pl-10">
+      <div class="scrollbar-hide mb-5 flex gap-4 overflow-x-auto pl-8 xl:gap-5 xl:pb-2 xl:pl-10">
         <div class="bg-background border-primary/30 flex min-w-[50px] items-center justify-center rounded-[14px] border-2 border-dashed xl:min-w-[55px] xl:rounded-[16px]">
           <Plus class="text-primary/30 h-6 w-6 xl:h-7 xl:w-7" />
         </div>
         <Transition
           onEnter={(element, done) => {
-            if (isInitialLoad()) {
+            if (!hasUserNavigated()) {
               done()
               return
             }
@@ -71,7 +81,7 @@ export function ContentSection(props: ContentSectionProps) {
             <div
               data-content-section
               data-transition-content
-              class="flex gap-4 overflow-x-auto pr-4 xl:gap-5 xl:pr-5"
+              class="flex gap-4 pr-4 xl:gap-5 xl:pr-5"
             >
               <For each={props.resources}>
                 {(resource, index) => {

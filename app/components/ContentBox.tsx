@@ -1,10 +1,11 @@
 // app/components/ContentBox.tsx
-import { Show, createEffect, createSignal } from "solid-js"
+import { Show } from "solid-js"
 import { Button } from "./ui/button"
 import { useLocation, useNavigate, useMatches } from "@tanstack/solid-router"
 import { cva } from "class-variance-authority"
 import { cn } from "@/utils/util"
 import { User } from "@supabase/supabase-js"
+import { usePageTransition } from "@/context/TransitionContext"
 
 type ContentBoxConfig = {
   nextButtonLink?: string
@@ -38,8 +39,7 @@ export default function ContentBox(props: ContentBoxProps) {
   const location = useLocation()
   const navigate = useNavigate()
   const matches = useMatches()
-
-  const [isVisible, setIsVisible] = createSignal(false)
+  const { setUserHasNavigated } = usePageTransition()
 
   const config = (): ContentBoxConfig => {
     const currentPath = location().pathname
@@ -53,24 +53,13 @@ export default function ContentBox(props: ContentBoxProps) {
     return {}
   }
 
-  createEffect(() => {
-    const currentPath = location().pathname
-
-    if (currentPath.startsWith("/learn/")) {
-      setIsVisible(true)
-    }
-  })
+  // Check visibility directly without signals - this is stable during SSR/hydration
+  const isVisible = () => location().pathname.startsWith("/learn/")
 
   const handleBackClick = (e: Event) => {
     e.preventDefault()
-
-    // Dispatch custom event for parent to handle
-    const customEvent = new CustomEvent("contentbox-back-click", {
-      bubbles: true,
-      cancelable: true,
-    })
-
-    document.dispatchEvent(customEvent)
+    setUserHasNavigated(true)
+    navigate({ to: "/dashboard" })
   }
 
   const handleNextClick = (e: Event) => {

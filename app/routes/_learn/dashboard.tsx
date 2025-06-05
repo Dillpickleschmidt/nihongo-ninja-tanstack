@@ -90,15 +90,7 @@ function RouteComponent() {
   const loaderData = Route.useLoaderData()
   const search = Route.useSearch()
   const navigate = useNavigate()
-  const { startDashboardToLearn, setDashboardRef } = usePageTransition()
-
-  let dashboardElementRef: HTMLDivElement
-
-  onMount(() => {
-    if (dashboardElementRef) {
-      setDashboardRef(dashboardElementRef)
-    }
-  })
+  const { setUserHasNavigated } = usePageTransition()
 
   createEffect(() => {
     const currentSearch = search()
@@ -110,15 +102,8 @@ function RouteComponent() {
 
   const handleVocabularyClick = (e: Event) => {
     e.preventDefault()
-    startDashboardToLearn()
-    setTimeout(() => {
-      navigate({ to: "/learn/vocabulary" })
-    }, 20)
-  }
-
-  const handleDashboardRef = (el: HTMLDivElement) => {
-    dashboardElementRef = el
-    setDashboardRef(el)
+    setUserHasNavigated(true)
+    navigate({ to: "/learn/vocabulary" })
   }
 
   const struggles = [
@@ -140,7 +125,7 @@ function RouteComponent() {
   ]
 
   return (
-    <div ref={handleDashboardRef} class="font-poppins">
+    <div class="font-poppins">
       <style>{`
         .scrollbar-hide {
           -ms-overflow-style: none;
