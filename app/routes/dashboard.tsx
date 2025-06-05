@@ -1,8 +1,8 @@
 // app/routes/dashboard.tsx
-import { createFileRoute, redirect } from "@tanstack/solid-router"
+import { createFileRoute, redirect, useNavigate } from "@tanstack/solid-router"
 import { getRequestHeader } from "@tanstack/solid-start/server"
 import { isServer } from "solid-js/web"
-import { createEffect } from "solid-js"
+import { createEffect, onMount } from "solid-js"
 import { z } from "zod"
 import { zodValidator } from "@tanstack/zod-adapter"
 import {
@@ -22,8 +22,8 @@ import { StrugglesSection } from "@/features/dashboard/components/StrugglesSecti
 import { HistorySection } from "@/features/dashboard/components/HistorySection"
 import { AllContentList } from "@/features/dashboard/components/AllContentList"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
+import { usePageTransition } from "@/context/TransitionContext"
 
-// Search params schema
 const dashboardSearchSchema = z.object({
   chapter: z.string().optional(),
 })
@@ -31,7 +31,6 @@ const dashboardSearchSchema = z.object({
 export const Route = createFileRoute("/dashboard")({
   validateSearch: zodValidator(dashboardSearchSchema),
   beforeLoad: ({ search }) => {
-    // Get cookies from request header (server-side) or undefined (client-side)
     const cookieHeader = isServer
       ? getRequestHeader("Cookie") || undefined
       : undefined
@@ -39,23 +38,19 @@ export const Route = createFileRoute("/dashboard")({
     const currentTextbook = getActiveTextbook(cookieHeader)
 
     if (!search.chapter) {
-      // No URL params - check cookies and redirect
       let chapterFromCookie = getTextbookChapter(currentTextbook, cookieHeader)
 
-      // If no valid chapter from cookie, use first chapter as default
       if (!chapterFromCookie) {
         const textbookData = textbooks[currentTextbook]
         chapterFromCookie = textbookData?.chapters[0]?.id || "genki_1_ch0"
       }
 
-      // Redirect to URL with search params
       throw redirect({
         to: "/dashboard",
         search: { chapter: chapterFromCookie },
       })
     }
 
-    // URL params exist - just return the context (no cookie setting here)
     return {
       currentTextbook,
       currentChapterID: search.chapter,
@@ -65,14 +60,12 @@ export const Route = createFileRoute("/dashboard")({
     const { currentTextbook, currentChapterID } = context
 
     const currentTextbookChapters = getChaptersForTextbook(currentTextbook)
-
     const externalResources = getExternalResources(
       currentTextbook,
       currentChapterID,
     )
     const lessons = getLessons(currentTextbook, currentChapterID)
 
-    // Defer thumbnail loading - don't await these
     const thumbnailPromises = externalResources.map((resource) =>
       fetchThumbnailUrl(resource.external_url, resource.creator_id).then(
         (thumbnailUrl) => ({
@@ -83,12 +76,10 @@ export const Route = createFileRoute("/dashboard")({
     )
 
     return {
-      // Fast data
       currentChapterID,
       currentTextbookChapters,
       externalResources,
       lessons,
-      // Deferred data - individual promises for progressive loading
       deferredThumbnails: thumbnailPromises,
     }
   },
@@ -98,15 +89,37 @@ export const Route = createFileRoute("/dashboard")({
 function RouteComponent() {
   const loaderData = Route.useLoaderData()
   const search = Route.useSearch()
+  const navigate = useNavigate()
+  const { startDashboardToLearn, setDashboardRef } = usePageTransition()
 
-  // Sync URL params to cookies on client-side
+  let dashboardElementRef: HTMLDivElement
+
+  onMount(() => {
+    if (dashboardElementRef) {
+      setDashboardRef(dashboardElementRef)
+    }
+  })
+
   createEffect(() => {
     const currentSearch = search()
     if (currentSearch.chapter) {
-      const currentTextbook = getActiveTextbook() // Client-side only
+      const currentTextbook = getActiveTextbook()
       setTextbookChapter(currentTextbook, currentSearch.chapter)
     }
   })
+
+  const handleVocabularyClick = (e: Event) => {
+    e.preventDefault()
+    startDashboardToLearn()
+    setTimeout(() => {
+      navigate({ to: "/learn/vocabulary" })
+    }, 20)
+  }
+
+  const handleDashboardRef = (el: HTMLDivElement) => {
+    dashboardElementRef = el
+    setDashboardRef(el)
+  }
 
   const struggles = [
     "～て",
@@ -127,7 +140,7 @@ function RouteComponent() {
   ]
 
   return (
-    <div class="font-poppins">
+    <div ref={handleDashboardRef} class="font-poppins">
       <style>{`
         .scrollbar-hide {
           -ms-overflow-style: none;
@@ -136,9 +149,6 @@ function RouteComponent() {
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
         }
-      `}</style>
-      <style>
-        {`
         .custom-gradient-mask {
           mask-image: linear-gradient(to bottom, 
             transparent 0%,
@@ -151,7 +161,6 @@ function RouteComponent() {
             rgba(0, 0, 0, 0) 100%
           );
         }
-        
         .centered-bg-image {
           position: absolute;
           top: -64px;
@@ -166,7 +175,6 @@ function RouteComponent() {
           pointer-events: none;
           opacity: 0.18;
         }
-        
         @media (max-width: 768px) {
           .centered-bg-image {
             min-width: calc(100vw + 30px);
@@ -174,8 +182,7 @@ function RouteComponent() {
             left: calc(50% + 15px);
           }
         }
-        `}
-      </style>
+      `}</style>
 
       <img
         src="/img/japanese-gate.png"
@@ -183,24 +190,38 @@ function RouteComponent() {
         alt="Decorative Japanese Gate"
       />
 
+      <button
+        onClick={handleVocabularyClick}
+        class="block text-left transition-opacity hover:opacity-80"
+      >
+        <h3 class="mb-2 text-xl font-semibold">Go to vocabulary</h3>
+      </button>
+
       <DashboardHeader
         currentChapterID={loaderData().currentChapterID}
         currentTextbookChapters={loaderData().currentTextbookChapters}
         dailyProgress={20}
       />
-      <ContentSection
-        resources={loaderData().externalResources}
-        thumbnailPromises={loaderData().deferredThumbnails}
-      />
-      <LessonsSection lessons={loaderData().lessons} progressPercentage={75} />
 
-      {/* Mobile Layout - hide from xl breakpoint */}
+      <div data-section="content">
+        <ContentSection
+          resources={loaderData().externalResources}
+          thumbnailPromises={loaderData().deferredThumbnails}
+        />
+      </div>
+
+      <div data-section="lessons">
+        <LessonsSection
+          lessons={loaderData().lessons}
+          progressPercentage={75}
+        />
+      </div>
+
       <SSRMediaQuery hideFrom="xl">
         <StrugglesSection struggles={struggles} variant="mobile" />
         <HistorySection items={historyItems} />
       </SSRMediaQuery>
 
-      {/* Desktop Layout - show from xl breakpoint */}
       <SSRMediaQuery showFrom="xl">
         <div class="my-6 grid grid-cols-3 gap-6 px-4 xl:px-6">
           <AllContentList />

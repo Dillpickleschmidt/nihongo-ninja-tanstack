@@ -18,6 +18,7 @@ import { createServerFn } from "@tanstack/solid-start"
 import { isServer } from "solid-js/web"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { getUser } from "@/features/supabase/getUser"
+import { TransitionProvider } from "@/context/TransitionContext"
 
 const getColorModeCookieServer = createServerFn({
   method: "GET",
@@ -46,10 +47,9 @@ export const Route = createRootRoute({
   beforeLoad: async () => {
     console.log("root beforeLoad fired!")
     const result = await getUser()
-    return { user: result?.user || null } // Shared data, child routes need this
+    return { user: result?.user || null }
   },
   loader: async () => {
-    // Only root route component needs this (ColorModeProvider gives the rest of the app access)
     const serverCookies = isServer ? await getColorModeCookieServer() : null
     let cookies: string
     if (isServer) {
@@ -73,10 +73,12 @@ function RootComponent() {
     <>
       <ColorModeScript storageType={storageManager?.type} />
       <ColorModeProvider storageManager={storageManager}>
-        <BackgroundImage />
-        <Scripts />
-        <Outlet />
-        <TanStackRouterDevtools />
+        <TransitionProvider>
+          <BackgroundImage />
+          <Scripts />
+          <Outlet />
+          <TanStackRouterDevtools />
+        </TransitionProvider>
       </ColorModeProvider>
     </>
   )
