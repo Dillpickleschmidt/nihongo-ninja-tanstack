@@ -5,7 +5,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     id: "practice-hiragana",
     textbook_id: "genki_1",
     chapter_id: "genki_1_ch0",
-    title: "Hiragana Practice (Basic Set 1)",
+    title: "Hiragana Practice",
     session_type: "vocab-practice",
     part_of_speech_category: "hiragana",
     // prettier-ignore
@@ -22,9 +22,8 @@ export const dynamic_modules: DynamicModuleCollection = {
     id: "hiragana-quiz",
     textbook_id: "genki_1",
     chapter_id: "genki_1_ch0",
-    title: "Hiragana Quiz (Basic Set 1)",
+    title: "Hiragana Quiz",
     session_type: "vocab-test",
-    part_of_speech_category: "hiragana",
     // prettier-ignore
     ordered_vocab_keys: [
     "あ", "い", "う", "え", "お",  "か", "き", "く", "け", "こ",
@@ -39,7 +38,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     id: "practice-dakuten-handakuten",
     textbook_id: "genki_1",
     chapter_id: "genki_1_ch0",
-    title: "Hiragana Practice (Dakuten & Handakuten)",
+    title: "Practice Dakuten & Handakuten",
     session_type: "vocab-practice",
     part_of_speech_category: "hiragana-voiced",
     // prettier-ignore
@@ -55,9 +54,8 @@ export const dynamic_modules: DynamicModuleCollection = {
     id: "dakuten-handakuten-quiz",
     textbook_id: "genki_1",
     chapter_id: "genki_1_ch0",
-    title: "Dakuten & Handakuten Quiz (Set 2)",
+    title: "Dakuten & Handakuten Quiz",
     session_type: "vocab-test",
-    part_of_speech_category: "hiragana",
     // prettier-ignore
     ordered_vocab_keys: [
     "が", "ぎ", "ぐ", "げ", "ご",  "ざ", "じ", "ず", "ぜ", "ぞ",
@@ -70,7 +68,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     id: "practice-contracted-sounds",
     textbook_id: "genki_1",
     chapter_id: "genki_1_ch0",
-    title: "Hiragana Practice (Contracted Sounds)",
+    title: "Practice Contracted Sounds",
     session_type: "vocab-practice",
     part_of_speech_category: "hiragana-contracted",
     // prettier-ignore
@@ -87,9 +85,8 @@ export const dynamic_modules: DynamicModuleCollection = {
     id: "contracted-sounds-quiz",
     textbook_id: "genki_1",
     chapter_id: "genki_1_ch0",
-    title: "Contracted Sounds Quiz (Set 3)",
+    title: "Contracted Sounds Quiz",
     session_type: "vocab-test",
-    part_of_speech_category: "hiragana-contracted",
     // prettier-ignore
     ordered_vocab_keys: [
     "きゃ", "きゅ", "きょ",  "ぎゃ", "ぎゅ", "ぎょ",  "しゃ", "しゅ", "しょ",
@@ -103,9 +100,8 @@ export const dynamic_modules: DynamicModuleCollection = {
     id: "all-hiragana-quiz",
     textbook_id: "genki_1",
     chapter_id: "genki_1_ch0",
-    title: "Comprehensive Hiragana Quiz",
+    title: "All Hiragana Quiz",
     session_type: "vocab-test",
-    part_of_speech_category: "hiragana-all",
     // prettier-ignore
     ordered_vocab_keys: [
     // All main hiragana
@@ -146,9 +142,11 @@ export const dynamic_modules: DynamicModuleCollection = {
     session_type: "vocab-practice",
     // prettier-ignore
     ordered_vocab_keys: [
-      "おはようございます", "こんにちは", "こんばんは", "さようなら", "おやすみなさい",
-      "はじめまして", "どうぞよろしくおねがいします", "こちらは〜さんです",
-      "〜からきました", "はい", "いいえ", "そうです", "ちがいます", "あのう", "どうぞ",
+     "おはようございます", "こんにちは", "こんばんは", "じゃあね", "またね",
+     "ありがとうございます", "さようなら", "すみません", "いいえ", "おやすみ",
+     "おやすみなさい", "いってきます", "いってらっしゃい", "ただいま",
+     "おかえり", "おかえりなさい", "いただきます", "ごちそうさまでした",
+     "はじめまして", "よろしくおねがいします", "ようこそ"
     ],
     instructions: "Practice using these essential greetings and expressions.",
   },

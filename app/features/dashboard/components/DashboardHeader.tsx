@@ -7,7 +7,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "~/components/ui/select"
+} from "@/components/ui/select"
 import { usePageTransition } from "@/context/TransitionContext"
 
 type CurrentTextbookChapters = Record<

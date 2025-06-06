@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/solid-router"
 import { KanaQuiz } from "@/features/kana-quiz/KanaQuiz"
 import { loadModuleData, vocabularyToKana } from "@/data/utils/vocab"
 
-export const Route = createFileRoute("/learn/contracted-sounds-quiz")({
+export const Route = createFileRoute("/practice/contracted-sounds-quiz")({
   loader: ({ location }) => {
     const data = loadModuleData(location.pathname)
     const kana = vocabularyToKana(data.vocabulary)

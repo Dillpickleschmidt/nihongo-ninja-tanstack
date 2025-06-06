@@ -61,7 +61,7 @@ export interface DynamicModule {
     | "vocab-sublist" // Counts for 10 minutes
     | "vocab-practice" // Each partial answer counts for 15 seconds
     | "sentence-practice" // Each answer counts for 1 minute
-    | "vocab-test" // Completing it counds for 15 minutes
+    | "vocab-test" // Completing it counts for 15 minutes
   part_of_speech_category?: string
   ordered_vocab_keys: string[] // Vocab for this specific dynamic module
   instructions?: string
@@ -172,3 +172,24 @@ export type PartOfSpeech =
   | "Kuru verb - special class"
   | "I-adjective"
   | "Na-adjective"
+
+/**
+ * Enhanced vocabulary item with reading aids
+ */
+export type RichVocabItem = VocabularyItem & {
+  hiragana: string[] // Word converted to hiragana
+  rubyText: string[] // Ruby (furigana) text components
+}
+
+/**
+ * Vocabulary item with state for vocab-practice
+ */
+export type Card = RichVocabItem & {
+  key: string // Maps to `word` for display
+  answerCategories: {
+    category: string
+    answers: string[]
+  }[]
+  cardStyle: "multiple-choice" | "write" | "done"
+  wrongAnswerCount: number
+}

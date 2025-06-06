@@ -1,9 +1,9 @@
-// app/routes/learn/hiragana-quiz.tsx
+// app/routes/learn/all-hiragana-quiz.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import { KanaQuiz } from "@/features/kana-quiz/KanaQuiz"
 import { loadModuleData, vocabularyToKana } from "@/data/utils/vocab"
 
-export const Route = createFileRoute("/learn/hiragana-quiz")({
+export const Route = createFileRoute("/practice/all-hiragana-quiz")({
   loader: ({ location }) => {
     const data = loadModuleData(location.pathname)
     const kana = vocabularyToKana(data.vocabulary)
@@ -20,7 +20,7 @@ function RouteComponent() {
   return (
     <KanaQuiz
       kana={kana}
-      nextLesson="/learn/dakuten-handakuten"
+      nextLesson="/learn/punctuation-misc"
       title={module.title}
     />
   )

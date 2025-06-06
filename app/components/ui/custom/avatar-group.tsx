@@ -1,6 +1,6 @@
 import { For, Show, ValidComponent, createMemo, splitProps } from "solid-js"
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar"
-import { cn } from "~/utils"
+import { cn } from "@/utils"
 import type { PolymorphicProps } from "@kobalte/core/polymorphic"
 
 // Define the type for each avatar item

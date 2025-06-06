@@ -143,9 +143,7 @@ export function LessonCard(props: LessonCardProps) {
 
   // Determine link destination
   const linkTo =
-    "link" in lesson && lesson.link
-      ? lesson.link
-      : `/learn/practice?id=${lesson.id}`
+    "link" in lesson && lesson.link ? lesson.link : `/practice/${lesson.id}`
 
   const handleClick = () => {
     setUserHasNavigated(true)

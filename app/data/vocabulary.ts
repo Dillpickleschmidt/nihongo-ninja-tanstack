@@ -653,6 +653,623 @@ export const vocabulary: VocabularyCollection = {
     chapter: 0,
   },
 
+  おはようございます: {
+    word: "おはようございます",
+    furigana: "おはようございます",
+    english: ["Good Morning"],
+    chapter: 0,
+    info: [
+      "This is a polite way to say good morning and is typically used until late morning.",
+      "Drop 'ございます' for a more casual version, just 'おはよう (Ohayou)'.",
+      "The casual version, 'おはよう' is often used among friends, family, or colleagues you're familiar with.",
+      "The polite form 'おはようございます' is suitable for more formal situations or when addressing someone you don't know well.",
+      "It's a common greeting in schools, workplaces, or when doing morning activities.",
+      "As a rule of thumb, drop ございます when you're on a first-name basis with someone (friends and family).",
+      "If you refer to that person as Mr./Ms., use the longer ございます version.",
+    ],
+    videos: [
+      {
+        src: "1PwDIljuuJrp38AX6GYfdSE4D1EjEJelp",
+        title: "The Apothecary Diaries S01E05",
+      },
+    ],
+  },
+  こんにちは: {
+    word: "こんにちは",
+    furigana: "こんにちは",
+    english: ["Good Afternoon", "Hello"],
+    chapter: 0,
+    info: [
+      "This is the most versatile and common greeting in Japanese.",
+      "It's used from late morning (around 11 am) until early evening (around 5-6 pm).",
+      "It's akin to saying 'Good afternoon' or a general 'Hello' in English.",
+      "You'll hear this greeting in a wide range of settings, from casual encounters to more formal situations.",
+      "It's a safe, go-to greeting for most daytime interactions.",
+    ],
+    videos: [
+      {
+        src: "1mXOwoTHKtAa1y39Y-NzO2DD9nvsBAsPv",
+        title: "Inuyasha S01E21",
+      },
+    ],
+  },
+  こんばんは: {
+    word: "こんばんは",
+    furigana: "こんばんは",
+    english: ["Good Evening"],
+    chapter: 0,
+    info: [
+      "Used in the evening, starting around dusk.",
+      "It's a polite greeting that's appropriate in both casual and formal situations.",
+      "Whether you're entering a restaurant in the evening, meeting someone for a night event, or just greeting your neighbor, 'こんばんは' is the suitable choice.",
+    ],
+    videos: [
+      {
+        src: "1L17K1H7rPYukpcy9cbvDx2BiV6bwjF_5",
+        title: "7th Time Loop S01E09",
+      },
+    ],
+  },
+  じゃあね: {
+    word: "じゃあね",
+    furigana: "じゃあね",
+    english: ["See you", "Bye"],
+    chapter: 0,
+    info: [
+      "This phrase is casual and friendly, often used among friends, family, or close colleagues.",
+      "It's equivalent to saying 'See you', 'Bye', or 'Catch you later' in English.",
+      "It implies an informal and easy-going parting, often when you expect to see the person again soon.",
+      "It's perfect for everyday casual farewells, like when leaving a café after meeting a friend or saying goodbye at the end of a school or work day.",
+    ],
+    videos: [
+      {
+        src: "1ADuG9poyR3SkM7HtWpqHRdnDvub_05Uw",
+        title: "Hunter x Hunter S01E33",
+      },
+    ],
+    overwrite_word: "じゃあね",
+  },
+  またね: {
+    word: "またね",
+    furigana: "またね",
+    english: ["See you later"],
+    chapter: 0,
+    info: [
+      "This phrase is also casual and conveys a similar sense as 'じゃあね (Jaa ne)'.",
+      "It's used in situations where you are expecting to see or speak to the person again in the future.",
+      "It's warm and friendly, suitable for parting with friends or colleagues in a casual setting.",
+    ],
+    videos: [
+      {
+        src: "1PvXfbCp7Z1c5caQAwpu5C8IbevlCnRHb",
+        title: "The Aristocrat's Otherworldly Adventure S01E07",
+      },
+    ],
+    overwrite_word: "またね",
+  },
+  ありがとうございます: {
+    word: "ありがとうございます",
+    furigana: "ありがとうございます",
+    english: ["Thank you"],
+    chapter: 0,
+    info: [
+      "Polite way to say thank you.",
+      'If you\'re going for casual, drop ございます and just say "ありがとう" (it\'s like "thank you" vs. "thanks").',
+    ],
+    videos: [],
+  },
+  さようなら: {
+    word: "さようなら",
+    furigana: "さようなら",
+    english: ["Goodbye (for a long time)"],
+    chapter: 0,
+    info: [
+      "This is a formal and somewhat solemn way of saying goodbye, often used when you won't see someone for a while.",
+      "さようなら is when the speaker does not expect to see the person spoken to before he/she turns a new page in his/her life—a long time.",
+      "Therefore, it's not commonly used in daily casual conversation.",
+      "In more everyday casual settings, phrases like 'じゃあね (Jaa ne)' or 'またね (Mata ne)' are used among friends or colleagues, with more sophisticated expressions used in the workplace that we'll explore later.",
+    ],
+    videos: [
+      {
+        src: "1czOn4SrM-aA2dOAWmMoze-rnG8lZA9vv",
+        title: "Inuyasha S01E31",
+      },
+    ],
+  },
+  すみません: {
+    word: "すみません",
+    furigana: "すみません",
+    english: ["Excuse Me"],
+    chapter: 0,
+    info: [
+      "'Sumimasen' is primarily used as a polite way to say 'excuse me' or 'I'm sorry.'",
+      "It's a way to acknowledge an inconvenience you might have caused someone or to politely get someone's attention.",
+      "This expression is a versatile and essential part of the Japanese language, often used in various contexts.",
+      "It also highlights some of the major differences between Japanese and Western cultures, so let's break down its uses and nuances.",
+    ],
+    videos: [
+      {
+        src: "1EzV37Mb-dWVLvKOiQ8LsxiiLTrCIyzZi",
+        title: "Demon Slayer S05E06",
+      },
+    ],
+  },
+  いいえ: {
+    word: "いいえ",
+    furigana: "いいえ",
+    english: ["No"],
+    chapter: 0,
+    info: [
+      "It's like saying 'No, thank you,' or 'Don't mention it' without making the other party feel obligated.",
+      "It's the kind of 'No' that comes with a bow and a smile.",
+      "Picture yourself at a sushi bar: if the chef asks if you want more wasabi and you're already breathing fire, a gentle 'いいえ' is your go-to.",
+      "In Japanese, where the art of being polite is pretty much a national sport, 'いいえ' is your essential tool for saying 'No' without any of the harshness.",
+    ],
+    videos: [
+      {
+        src: "1uMfMQ62c6C8FH-7EcvL0JxqcVFwUPZ_i",
+        title: "Vivy S01E09",
+      },
+    ],
+  },
+  おやすみ: {
+    word: "おやすみ",
+    furigana: "おやすみ",
+    english: ["Goodnight"],
+    chapter: 0,
+    info: [
+      "'Oyasumi' is for your buddies, and 'Oyasuminasai' is for when you want to impress your cat with your politeness.",
+    ],
+    videos: [
+      {
+        src: "1J22sdgIC-MTUt7he25eRKrGEgxLFVnvh",
+        title: "Days with My Step Sister S01E01",
+      },
+    ],
+  },
+  おやすみなさい: {
+    word: "おやすみなさい",
+    furigana: "おやすみなさい",
+    english: ["Goodnight (polite)"],
+    chapter: 0,
+    info: ["The extra polite version of おやすみ"],
+    videos: [
+      {
+        src: "1XKwIe5hH7hZ_KCL85tmwcYwwXdmVQKKi",
+        title: "Spy x Family S01E21",
+      },
+    ],
+  },
+  いってきます: {
+    word: "いってきます",
+    furigana: "いってきます",
+    english: ["I'll go and come back"],
+    chapter: 0,
+    info: [
+      "What you say when leaving the house, meaning 'I'll go and come back.'",
+      "It's like a boomerang promise to your family.",
+    ],
+    videos: [
+      {
+        src: "1HJVi7VFmhDHYqzlfq5C4GoSsYYiGflF5",
+        title: "Inuyasha S01E05",
+      },
+    ],
+  },
+  いってらっしゃい: {
+    word: "いってらっしゃい",
+    furigana: "いってらっしゃい",
+    english: ["Go and come back"],
+    chapter: 0,
+    info: [
+      "The response to 'いってきます,' meaning 'Go and come back.'",
+      "It's like saying, 'You better come back, or the cat gets your dinner,' but in a polite way.",
+    ],
+    videos: [
+      {
+        src: "1zrHKS4iJd0Xo8aRk1uYmiWwxpBNWJqFD",
+        title: "Inuyasha S02E48",
+      },
+    ],
+  },
+  ただいま: {
+    word: "ただいま",
+    furigana: "ただいま",
+    english: ["I'm home"],
+    chapter: 0,
+    info: [
+      "What you say when you return home, meaning 'I'm home.'",
+      "It's like announcing your grand entrance to an audience of houseplants.",
+    ],
+    videos: [
+      {
+        src: "1__OB6cgz9ayHqV0T8PMHPR-e5bEMZtMI",
+        title: "Spy x Family S01E18",
+      },
+    ],
+  },
+  おかえり: {
+    word: "おかえり",
+    furigana: "おかえり",
+    english: ["Welcome home"],
+    chapter: 0,
+    info: [
+      "The response to 'ただいま,' meaning 'Welcome home.'",
+      "It's the warm fuzzy feeling of being back, in word form.",
+    ],
+    videos: [
+      {
+        src: "16EE_ZyY1LUqScnyLSxBYaeiDwHfKDZyu",
+        title: "Days with My Step Sister S01E09",
+      },
+    ],
+  },
+  おかえりなさい: {
+    word: "おかえりなさい",
+    furigana: "おかえりなさい",
+    english: ["Welcome home (polite)"],
+    chapter: 0,
+    info: ["The extra polite version of おかえり"],
+    videos: [
+      {
+        src: "1FwA5Vso27U725q4VEgkwVgUnD04jre-W",
+        title: "86 - Eighty Six S01E23",
+      },
+    ],
+  },
+  いただきます: {
+    word: "いただきます",
+    furigana: "いただきます",
+    english: ["Thanks for the food"],
+    chapter: 0,
+    info: [
+      "Said before eating, it's like a mini-gratitude speech to the food gods.",
+      "'Thanks for this feast that I'm about to demolish.'",
+    ],
+    videos: [
+      {
+        src: "1FbHQEFJ4NlPwqLGfNBPVJWZkblWjx4cc",
+        title: "Campfire Cooking in Another World S01E01 + Spy x Family S01E17",
+      },
+    ],
+  },
+  ごちそうさまでした: {
+    word: "ごちそうさまでした",
+    furigana: "ごちそうさまでした",
+    english: ["That was delicious"],
+    chapter: 0,
+    info: [
+      "Said after eating, it's the classy way to say 'That was delicious.'",
+      "It's like a mic drop at the end of a meal.",
+    ],
+    videos: [
+      {
+        src: "10WUchh99TOGg-ThuFXd-loqIjhXM_N8L",
+        title: "Jujutsu Kaisen S01E22",
+      },
+    ],
+  },
+  はじめまして: {
+    word: "はじめまして",
+    furigana: "はじめまして",
+    english: ["Nice to meet you"],
+    chapter: 0,
+    info: [
+      "The cool, casual 'Nice to meet you.'",
+      "Use it when you meet someone new or your friend's pet tarantula.",
+      'Translated literally, it means "first time."',
+    ],
+    videos: [
+      {
+        src: "1NILE_XypmyaN0twjc3Ng7sl_5dQOGKrv",
+        title: "86 - Eighty Six S01E23",
+      },
+    ],
+  },
+  よろしくおねがいします: {
+    word: "よろしくおねがいします",
+    furigana: "よろしくおねがいします",
+    english: ["Please be kind to me", "Please take care of me"],
+    chapter: 0,
+    info: [
+      "This one's tricky to translate, but it's a mix of 'Please be kind to me,' 'Let's get along,' and 'I'm counting on you.'",
+      "It's the ultimate ice-breaker and friend-maker.",
+    ],
+    videos: [
+      {
+        src: "1NitItbauSSced0kkBbbLZYHCmAt38Vs9",
+        title: "I Got a Cheat Skill in Another World S01E02",
+      },
+    ],
+  },
+  ようこそ: {
+    word: "ようこそ",
+    furigana: "ようこそ",
+    english: ["Welcome"],
+    chapter: 0,
+    info: [
+      "This is a warm and welcoming greeting, equivalent to 'Welcome' in English.",
+      "It's used when greeting someone arriving at a place, such as a home, store, or event.",
+      "You'll often see and hear 'ようこそ' on signs, in hospitality settings, or during events.",
+    ],
+    videos: [
+      {
+        src: "1dMY94h9i0NSUXxt-lAqNJq9hZEmJwnBR",
+        title: "SAO Alternative - Gun Gale Online S01E02",
+      },
+    ],
+  },
+  ぜろ: {
+    word: "ぜろ",
+    furigana: "ぜろ",
+    english: ["Zero", "0"],
+    chapter: 0,
+  },
+  れい: {
+    word: "れい",
+    furigana: "れい",
+    english: ["Zero", "0"],
+    chapter: 0,
+  },
+  いち: {
+    word: "いち",
+    furigana: "いち",
+    english: ["One", "1"],
+    chapter: 0,
+  },
+  に1: {
+    word: "に",
+    furigana: "に",
+    english: ["Two", "2"],
+    chapter: 0,
+  },
+  さん: {
+    word: "さん",
+    furigana: "さん",
+    english: ["Three", "3"],
+    chapter: 0,
+  },
+  よん: {
+    word: "よん",
+    furigana: "よん",
+    english: ["Four", "4"],
+    chapter: 0,
+  },
+  し1: {
+    word: "し",
+    furigana: "し",
+    english: ["Four", "4"],
+    chapter: 0,
+  },
+  ご1: {
+    word: "ご",
+    furigana: "ご",
+    english: ["Five", "5"],
+    chapter: 0,
+  },
+  ろく: {
+    word: "ろく",
+    furigana: "ろく",
+    english: ["Six", "6"],
+    chapter: 0,
+  },
+  なな: {
+    word: "なな",
+    furigana: "なな",
+    english: ["Seven", "7"],
+    chapter: 0,
+  },
+  しち: {
+    word: "しち",
+    furigana: "しち",
+    english: ["Seven", "7"],
+    chapter: 0,
+  },
+  はち: {
+    word: "はち",
+    furigana: "はち",
+    english: ["Eight", "8"],
+    chapter: 0,
+  },
+  きゅう: {
+    word: "きゅう",
+    furigana: "きゅう",
+    english: ["Nine", "9"],
+    chapter: 0,
+  },
+  く1: {
+    word: "く",
+    furigana: "く",
+    english: ["Nine", "9"],
+    chapter: 0,
+  },
+  じゅう: {
+    word: "じゅう",
+    furigana: "じゅう",
+    english: ["Ten", "10"],
+    chapter: 0,
+  },
+  じゅういち: {
+    word: "じゅういち",
+    furigana: "じゅういち",
+    english: ["Eleven", "11"],
+    chapter: 0,
+  },
+  じゅうに: {
+    word: "じゅうに",
+    furigana: "じゅうに",
+    english: ["Twelve", "12"],
+    chapter: 0,
+  },
+  じゅうはち: {
+    word: "じゅうはち",
+    furigana: "じゅうはち",
+    english: ["Eighteen", "18"],
+    chapter: 0,
+  },
+  にじゅう: {
+    word: "にじゅう",
+    furigana: "にじゅう",
+    english: ["Twenty", "20"],
+    chapter: 0,
+  },
+  にじゅうさん: {
+    word: "にじゅうさん",
+    furigana: "にじゅうさん",
+    english: ["Twenty-three", "23"],
+    chapter: 0,
+  },
+  にじゅよん: {
+    word: "にじゅよん",
+    furigana: "にじゅよん",
+    english: ["Twenty-four", "24"],
+    chapter: 0,
+  },
+  さんじゅう: {
+    word: "さんじゅう",
+    furigana: "さんじゅう",
+    english: ["Thirty", "30"],
+    chapter: 0,
+  },
+  さんじゅういち: {
+    word: "さんじゅういち",
+    furigana: "さんじゅういち",
+    english: ["Thirty-one", "31"],
+    chapter: 0,
+  },
+  さんじゅうさん: {
+    word: "さんじゅうさん",
+    furigana: "さんじゅうさん",
+    english: ["Thirty-three", "33"],
+    chapter: 0,
+  },
+  よんじゅう: {
+    word: "よんじゅう",
+    furigana: "よんじゅう",
+    english: ["Forty", "40"],
+    chapter: 0,
+  },
+  よんじゅういち: {
+    word: "よんじゅういち",
+    furigana: "よんじゅういち",
+    english: ["Forty-one", "41"],
+    chapter: 0,
+  },
+  よんじゅうご: {
+    word: "よんじゅうご",
+    furigana: "よんじゅうご",
+    english: ["Forty-five", "45"],
+    chapter: 0,
+  },
+  よんじゅうきゅう: {
+    word: "よんじゅうきゅう",
+    furigana: "よんじゅうきゅう",
+    english: ["Forty-nine", "49"],
+    chapter: 0,
+  },
+  よんじゅうなな: {
+    word: "よんじゅうなな",
+    furigana: "よんじゅうなな",
+    english: ["Forty-seven", "47"],
+    chapter: 0,
+  },
+  ごじゅう: {
+    word: "ごじゅう",
+    furigana: "ごじゅう",
+    english: ["Fifty", "50"],
+    chapter: 0,
+  },
+  ごじゅうさん: {
+    word: "ごじゅうさん",
+    furigana: "ごじゅうさん",
+    english: ["Fifty-three", "53"],
+    chapter: 0,
+  },
+  ごじゅうろく: {
+    word: "ごじゅうろく",
+    furigana: "ごじゅうろく",
+    english: ["Fifty-six", "56"],
+    chapter: 0,
+  },
+  ろくじゅう: {
+    word: "ろくじゅう",
+    furigana: "ろくじゅう",
+    english: ["Sixty", "60"],
+    chapter: 0,
+  },
+  ろくじゅうに: {
+    word: "ろくじゅうに",
+    furigana: "ろくじゅうに",
+    english: ["Sixty-two", "62"],
+    chapter: 0,
+  },
+  ろくじゅうよん: {
+    word: "ろくじゅうよん",
+    furigana: "ろくじゅうよん",
+    english: ["Sixty-four", "64"],
+    chapter: 0,
+  },
+  ななじゅう: {
+    word: "ななじゅう",
+    furigana: "ななじゅう",
+    english: ["Seventy", "70"],
+    chapter: 0,
+  },
+  ななじゅうろく: {
+    word: "ななじゅうろく",
+    furigana: "ななじゅうろく",
+    english: ["Seventy-six", "76"],
+    chapter: 0,
+  },
+  ななじゅうはち: {
+    word: "ななじゅうはち",
+    furigana: "ななじゅうはち",
+    english: ["Seventy-eight", "78"],
+    chapter: 0,
+  },
+  はちじゅう: {
+    word: "はちじゅう",
+    furigana: "はちじゅう",
+    english: ["Eighty", "80"],
+    chapter: 0,
+  },
+  はちじゅういち: {
+    word: "はちじゅういち",
+    furigana: "はちじゅういち",
+    english: ["Eighty-one", "81"],
+    chapter: 0,
+  },
+  はちじゅうきゅう: {
+    word: "はちじゅうきゅう",
+    furigana: "はちじゅうきゅう",
+    english: ["Eighty-nine", "89"],
+    chapter: 0,
+  },
+  きゅうじゅう: {
+    word: "きゅうじゅう",
+    furigana: "きゅうじゅう",
+    english: ["Ninety", "90"],
+    chapter: 0,
+  },
+  きゅうじゅうに: {
+    word: "きゅうじゅうに",
+    furigana: "きゅうじゅうに",
+    english: ["Ninety-two", "92"],
+    chapter: 0,
+  },
+  きゅうじゅうはち: {
+    word: "きゅうじゅうはち",
+    furigana: "きゅうじゅうはち",
+    english: ["Ninety-eight", "98"],
+    chapter: 0,
+  },
+  ひゃく: {
+    word: "ひゃく",
+    furigana: "ひゃく",
+    english: ["One hundred", "100"],
+    chapter: 0,
+  },
+
   // From List 1 (Time, Countries)
   いま: {
     word: "いま",
