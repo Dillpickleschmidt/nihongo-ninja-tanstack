@@ -4,6 +4,7 @@ bun.lock
 .vinxi
 .output
 .vscode
+app.config.timestamp*
 
 # output
 out

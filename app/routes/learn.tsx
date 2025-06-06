@@ -1,12 +1,5 @@
-// app/routes/_learn/learn.tsx
+// app/routes/learn.tsx
 import { createFileRoute, Outlet } from "@tanstack/solid-router"
-import { onMount } from "solid-js"
-import ContentBox from "@/components/ContentBox"
-import {
-  createSlideWithFadeInAnimation,
-  prepareElementForEnter,
-} from "@/utils/animations"
-import { usePageTransition } from "@/context/TransitionContext"
 import { BackgroundImage } from "@/components/BackgroundImage"
 import { Background } from "@/features/dashboard/components/Background"
 
@@ -18,28 +11,7 @@ export const Route = createFileRoute("/learn")({
   component: LearnLayout,
 })
 
-const SELECTOR = "[data-learn-layout]"
-const ENTER_DIRECTION = "up" as const
-const ENTER_DELAY = 100
-
 function LearnLayout() {
-  const { user } = Route.useLoaderData()()
-  const { hasUserNavigated } = usePageTransition()
-
-  onMount(() => {
-    // Only animate if we arrived here via navigation (not initial load)
-    if (hasUserNavigated()) {
-      const element = document.querySelector(SELECTOR) as HTMLElement
-      if (element) {
-        prepareElementForEnter(element, ENTER_DIRECTION)
-
-        setTimeout(() => {
-          createSlideWithFadeInAnimation(element, ENTER_DIRECTION)
-        }, ENTER_DELAY)
-      }
-    }
-  })
-
   return (
     <div class="relative min-h-screen w-full overflow-y-auto">
       <Background position="fixed" opacity={0.04} />
@@ -56,11 +28,7 @@ function LearnLayout() {
         backgroundImageOpacity={4}
       />
 
-      <div data-learn-layout>
-        <ContentBox user={user}>
-          <Outlet />
-        </ContentBox>
-      </div>
+      <Outlet />
     </div>
   )
 }

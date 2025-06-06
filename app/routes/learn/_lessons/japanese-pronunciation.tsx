@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/solid-router"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import YouTubeVideo from "@/features/youtube/YouTube"
 
-export const Route = createFileRoute("/learn/japanese-pronunciation")({
+export const Route = createFileRoute("/learn/_lessons/japanese-pronunciation")({
   loader: async () => {
     return {
       contentBox: {

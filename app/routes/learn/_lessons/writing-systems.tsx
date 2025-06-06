@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-export const Route = createFileRoute("/learn/writing-systems")({
+export const Route = createFileRoute("/learn/_lessons/writing-systems")({
   loader: async () => {
     return {
       contentBox: {

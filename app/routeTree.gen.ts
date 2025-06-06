@@ -16,9 +16,15 @@ import { Route as DashboardImport } from './routes/dashboard'
 import { Route as AuthImport } from './routes/auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as LearnIndexImport } from './routes/learn/index'
-import { Route as LearnWritingSystemsImport } from './routes/learn/writing-systems'
-import { Route as LearnWelcomeOverviewImport } from './routes/learn/welcome-overview'
-import { Route as LearnJapanesePronunciationImport } from './routes/learn/japanese-pronunciation'
+import { Route as LearnHiraganaQuizImport } from './routes/learn/hiragana-quiz'
+import { Route as LearnDakutenHandakutenQuizImport } from './routes/learn/dakuten-handakuten-quiz'
+import { Route as LearnContractedSoundsQuizImport } from './routes/learn/contracted-sounds-quiz'
+import { Route as LearnAllHiraganaQuizImport } from './routes/learn/all-hiragana-quiz'
+import { Route as LearnLessonsImport } from './routes/learn/_lessons'
+import { Route as LearnLessonsWritingSystemsImport } from './routes/learn/_lessons/writing-systems'
+import { Route as LearnLessonsWelcomeOverviewImport } from './routes/learn/_lessons/welcome-overview'
+import { Route as LearnLessonsJapanesePronunciationImport } from './routes/learn/_lessons/japanese-pronunciation'
+import { Route as LearnLessonsHiraganaImport } from './routes/learn/_lessons/hiragana'
 
 // Create/Update Routes
 
@@ -52,25 +58,64 @@ const LearnIndexRoute = LearnIndexImport.update({
   getParentRoute: () => LearnRoute,
 } as any)
 
-const LearnWritingSystemsRoute = LearnWritingSystemsImport.update({
-  id: '/writing-systems',
-  path: '/writing-systems',
+const LearnHiraganaQuizRoute = LearnHiraganaQuizImport.update({
+  id: '/hiragana-quiz',
+  path: '/hiragana-quiz',
   getParentRoute: () => LearnRoute,
 } as any)
 
-const LearnWelcomeOverviewRoute = LearnWelcomeOverviewImport.update({
-  id: '/welcome-overview',
-  path: '/welcome-overview',
-  getParentRoute: () => LearnRoute,
-} as any)
-
-const LearnJapanesePronunciationRoute = LearnJapanesePronunciationImport.update(
+const LearnDakutenHandakutenQuizRoute = LearnDakutenHandakutenQuizImport.update(
   {
-    id: '/japanese-pronunciation',
-    path: '/japanese-pronunciation',
+    id: '/dakuten-handakuten-quiz',
+    path: '/dakuten-handakuten-quiz',
     getParentRoute: () => LearnRoute,
   } as any,
 )
+
+const LearnContractedSoundsQuizRoute = LearnContractedSoundsQuizImport.update({
+  id: '/contracted-sounds-quiz',
+  path: '/contracted-sounds-quiz',
+  getParentRoute: () => LearnRoute,
+} as any)
+
+const LearnAllHiraganaQuizRoute = LearnAllHiraganaQuizImport.update({
+  id: '/all-hiragana-quiz',
+  path: '/all-hiragana-quiz',
+  getParentRoute: () => LearnRoute,
+} as any)
+
+const LearnLessonsRoute = LearnLessonsImport.update({
+  id: '/_lessons',
+  getParentRoute: () => LearnRoute,
+} as any)
+
+const LearnLessonsWritingSystemsRoute = LearnLessonsWritingSystemsImport.update(
+  {
+    id: '/writing-systems',
+    path: '/writing-systems',
+    getParentRoute: () => LearnLessonsRoute,
+  } as any,
+)
+
+const LearnLessonsWelcomeOverviewRoute =
+  LearnLessonsWelcomeOverviewImport.update({
+    id: '/welcome-overview',
+    path: '/welcome-overview',
+    getParentRoute: () => LearnLessonsRoute,
+  } as any)
+
+const LearnLessonsJapanesePronunciationRoute =
+  LearnLessonsJapanesePronunciationImport.update({
+    id: '/japanese-pronunciation',
+    path: '/japanese-pronunciation',
+    getParentRoute: () => LearnLessonsRoute,
+  } as any)
+
+const LearnLessonsHiraganaRoute = LearnLessonsHiraganaImport.update({
+  id: '/hiragana',
+  path: '/hiragana',
+  getParentRoute: () => LearnLessonsRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -104,25 +149,39 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof LearnImport
       parentRoute: typeof rootRoute
     }
-    '/learn/japanese-pronunciation': {
-      id: '/learn/japanese-pronunciation'
-      path: '/japanese-pronunciation'
-      fullPath: '/learn/japanese-pronunciation'
-      preLoaderRoute: typeof LearnJapanesePronunciationImport
+    '/learn/_lessons': {
+      id: '/learn/_lessons'
+      path: ''
+      fullPath: '/learn'
+      preLoaderRoute: typeof LearnLessonsImport
       parentRoute: typeof LearnImport
     }
-    '/learn/welcome-overview': {
-      id: '/learn/welcome-overview'
-      path: '/welcome-overview'
-      fullPath: '/learn/welcome-overview'
-      preLoaderRoute: typeof LearnWelcomeOverviewImport
+    '/learn/all-hiragana-quiz': {
+      id: '/learn/all-hiragana-quiz'
+      path: '/all-hiragana-quiz'
+      fullPath: '/learn/all-hiragana-quiz'
+      preLoaderRoute: typeof LearnAllHiraganaQuizImport
       parentRoute: typeof LearnImport
     }
-    '/learn/writing-systems': {
-      id: '/learn/writing-systems'
-      path: '/writing-systems'
-      fullPath: '/learn/writing-systems'
-      preLoaderRoute: typeof LearnWritingSystemsImport
+    '/learn/contracted-sounds-quiz': {
+      id: '/learn/contracted-sounds-quiz'
+      path: '/contracted-sounds-quiz'
+      fullPath: '/learn/contracted-sounds-quiz'
+      preLoaderRoute: typeof LearnContractedSoundsQuizImport
+      parentRoute: typeof LearnImport
+    }
+    '/learn/dakuten-handakuten-quiz': {
+      id: '/learn/dakuten-handakuten-quiz'
+      path: '/dakuten-handakuten-quiz'
+      fullPath: '/learn/dakuten-handakuten-quiz'
+      preLoaderRoute: typeof LearnDakutenHandakutenQuizImport
+      parentRoute: typeof LearnImport
+    }
+    '/learn/hiragana-quiz': {
+      id: '/learn/hiragana-quiz'
+      path: '/hiragana-quiz'
+      fullPath: '/learn/hiragana-quiz'
+      preLoaderRoute: typeof LearnHiraganaQuizImport
       parentRoute: typeof LearnImport
     }
     '/learn/': {
@@ -132,22 +191,73 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof LearnIndexImport
       parentRoute: typeof LearnImport
     }
+    '/learn/_lessons/hiragana': {
+      id: '/learn/_lessons/hiragana'
+      path: '/hiragana'
+      fullPath: '/learn/hiragana'
+      preLoaderRoute: typeof LearnLessonsHiraganaImport
+      parentRoute: typeof LearnLessonsImport
+    }
+    '/learn/_lessons/japanese-pronunciation': {
+      id: '/learn/_lessons/japanese-pronunciation'
+      path: '/japanese-pronunciation'
+      fullPath: '/learn/japanese-pronunciation'
+      preLoaderRoute: typeof LearnLessonsJapanesePronunciationImport
+      parentRoute: typeof LearnLessonsImport
+    }
+    '/learn/_lessons/welcome-overview': {
+      id: '/learn/_lessons/welcome-overview'
+      path: '/welcome-overview'
+      fullPath: '/learn/welcome-overview'
+      preLoaderRoute: typeof LearnLessonsWelcomeOverviewImport
+      parentRoute: typeof LearnLessonsImport
+    }
+    '/learn/_lessons/writing-systems': {
+      id: '/learn/_lessons/writing-systems'
+      path: '/writing-systems'
+      fullPath: '/learn/writing-systems'
+      preLoaderRoute: typeof LearnLessonsWritingSystemsImport
+      parentRoute: typeof LearnLessonsImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface LearnLessonsRouteChildren {
+  LearnLessonsHiraganaRoute: typeof LearnLessonsHiraganaRoute
+  LearnLessonsJapanesePronunciationRoute: typeof LearnLessonsJapanesePronunciationRoute
+  LearnLessonsWelcomeOverviewRoute: typeof LearnLessonsWelcomeOverviewRoute
+  LearnLessonsWritingSystemsRoute: typeof LearnLessonsWritingSystemsRoute
+}
+
+const LearnLessonsRouteChildren: LearnLessonsRouteChildren = {
+  LearnLessonsHiraganaRoute: LearnLessonsHiraganaRoute,
+  LearnLessonsJapanesePronunciationRoute:
+    LearnLessonsJapanesePronunciationRoute,
+  LearnLessonsWelcomeOverviewRoute: LearnLessonsWelcomeOverviewRoute,
+  LearnLessonsWritingSystemsRoute: LearnLessonsWritingSystemsRoute,
+}
+
+const LearnLessonsRouteWithChildren = LearnLessonsRoute._addFileChildren(
+  LearnLessonsRouteChildren,
+)
+
 interface LearnRouteChildren {
-  LearnJapanesePronunciationRoute: typeof LearnJapanesePronunciationRoute
-  LearnWelcomeOverviewRoute: typeof LearnWelcomeOverviewRoute
-  LearnWritingSystemsRoute: typeof LearnWritingSystemsRoute
+  LearnLessonsRoute: typeof LearnLessonsRouteWithChildren
+  LearnAllHiraganaQuizRoute: typeof LearnAllHiraganaQuizRoute
+  LearnContractedSoundsQuizRoute: typeof LearnContractedSoundsQuizRoute
+  LearnDakutenHandakutenQuizRoute: typeof LearnDakutenHandakutenQuizRoute
+  LearnHiraganaQuizRoute: typeof LearnHiraganaQuizRoute
   LearnIndexRoute: typeof LearnIndexRoute
 }
 
 const LearnRouteChildren: LearnRouteChildren = {
-  LearnJapanesePronunciationRoute: LearnJapanesePronunciationRoute,
-  LearnWelcomeOverviewRoute: LearnWelcomeOverviewRoute,
-  LearnWritingSystemsRoute: LearnWritingSystemsRoute,
+  LearnLessonsRoute: LearnLessonsRouteWithChildren,
+  LearnAllHiraganaQuizRoute: LearnAllHiraganaQuizRoute,
+  LearnContractedSoundsQuizRoute: LearnContractedSoundsQuizRoute,
+  LearnDakutenHandakutenQuizRoute: LearnDakutenHandakutenQuizRoute,
+  LearnHiraganaQuizRoute: LearnHiraganaQuizRoute,
   LearnIndexRoute: LearnIndexRoute,
 }
 
@@ -157,21 +267,31 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
-  '/learn': typeof LearnRouteWithChildren
-  '/learn/japanese-pronunciation': typeof LearnJapanesePronunciationRoute
-  '/learn/welcome-overview': typeof LearnWelcomeOverviewRoute
-  '/learn/writing-systems': typeof LearnWritingSystemsRoute
+  '/learn': typeof LearnLessonsRouteWithChildren
+  '/learn/all-hiragana-quiz': typeof LearnAllHiraganaQuizRoute
+  '/learn/contracted-sounds-quiz': typeof LearnContractedSoundsQuizRoute
+  '/learn/dakuten-handakuten-quiz': typeof LearnDakutenHandakutenQuizRoute
+  '/learn/hiragana-quiz': typeof LearnHiraganaQuizRoute
   '/learn/': typeof LearnIndexRoute
+  '/learn/hiragana': typeof LearnLessonsHiraganaRoute
+  '/learn/japanese-pronunciation': typeof LearnLessonsJapanesePronunciationRoute
+  '/learn/welcome-overview': typeof LearnLessonsWelcomeOverviewRoute
+  '/learn/writing-systems': typeof LearnLessonsWritingSystemsRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
-  '/learn/japanese-pronunciation': typeof LearnJapanesePronunciationRoute
-  '/learn/welcome-overview': typeof LearnWelcomeOverviewRoute
-  '/learn/writing-systems': typeof LearnWritingSystemsRoute
   '/learn': typeof LearnIndexRoute
+  '/learn/all-hiragana-quiz': typeof LearnAllHiraganaQuizRoute
+  '/learn/contracted-sounds-quiz': typeof LearnContractedSoundsQuizRoute
+  '/learn/dakuten-handakuten-quiz': typeof LearnDakutenHandakutenQuizRoute
+  '/learn/hiragana-quiz': typeof LearnHiraganaQuizRoute
+  '/learn/hiragana': typeof LearnLessonsHiraganaRoute
+  '/learn/japanese-pronunciation': typeof LearnLessonsJapanesePronunciationRoute
+  '/learn/welcome-overview': typeof LearnLessonsWelcomeOverviewRoute
+  '/learn/writing-systems': typeof LearnLessonsWritingSystemsRoute
 }
 
 export interface FileRoutesById {
@@ -180,10 +300,16 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
   '/learn': typeof LearnRouteWithChildren
-  '/learn/japanese-pronunciation': typeof LearnJapanesePronunciationRoute
-  '/learn/welcome-overview': typeof LearnWelcomeOverviewRoute
-  '/learn/writing-systems': typeof LearnWritingSystemsRoute
+  '/learn/_lessons': typeof LearnLessonsRouteWithChildren
+  '/learn/all-hiragana-quiz': typeof LearnAllHiraganaQuizRoute
+  '/learn/contracted-sounds-quiz': typeof LearnContractedSoundsQuizRoute
+  '/learn/dakuten-handakuten-quiz': typeof LearnDakutenHandakutenQuizRoute
+  '/learn/hiragana-quiz': typeof LearnHiraganaQuizRoute
   '/learn/': typeof LearnIndexRoute
+  '/learn/_lessons/hiragana': typeof LearnLessonsHiraganaRoute
+  '/learn/_lessons/japanese-pronunciation': typeof LearnLessonsJapanesePronunciationRoute
+  '/learn/_lessons/welcome-overview': typeof LearnLessonsWelcomeOverviewRoute
+  '/learn/_lessons/writing-systems': typeof LearnLessonsWritingSystemsRoute
 }
 
 export interface FileRouteTypes {
@@ -193,29 +319,45 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/learn'
+    | '/learn/all-hiragana-quiz'
+    | '/learn/contracted-sounds-quiz'
+    | '/learn/dakuten-handakuten-quiz'
+    | '/learn/hiragana-quiz'
+    | '/learn/'
+    | '/learn/hiragana'
     | '/learn/japanese-pronunciation'
     | '/learn/welcome-overview'
     | '/learn/writing-systems'
-    | '/learn/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/learn'
+    | '/learn/all-hiragana-quiz'
+    | '/learn/contracted-sounds-quiz'
+    | '/learn/dakuten-handakuten-quiz'
+    | '/learn/hiragana-quiz'
+    | '/learn/hiragana'
     | '/learn/japanese-pronunciation'
     | '/learn/welcome-overview'
     | '/learn/writing-systems'
-    | '/learn'
   id:
     | '__root__'
     | '/'
     | '/auth'
     | '/dashboard'
     | '/learn'
-    | '/learn/japanese-pronunciation'
-    | '/learn/welcome-overview'
-    | '/learn/writing-systems'
+    | '/learn/_lessons'
+    | '/learn/all-hiragana-quiz'
+    | '/learn/contracted-sounds-quiz'
+    | '/learn/dakuten-handakuten-quiz'
+    | '/learn/hiragana-quiz'
     | '/learn/'
+    | '/learn/_lessons/hiragana'
+    | '/learn/_lessons/japanese-pronunciation'
+    | '/learn/_lessons/welcome-overview'
+    | '/learn/_lessons/writing-systems'
   fileRoutesById: FileRoutesById
 }
 
@@ -261,27 +403,59 @@ export const routeTree = rootRoute
     "/learn": {
       "filePath": "learn.tsx",
       "children": [
-        "/learn/japanese-pronunciation",
-        "/learn/welcome-overview",
-        "/learn/writing-systems",
+        "/learn/_lessons",
+        "/learn/all-hiragana-quiz",
+        "/learn/contracted-sounds-quiz",
+        "/learn/dakuten-handakuten-quiz",
+        "/learn/hiragana-quiz",
         "/learn/"
       ]
     },
-    "/learn/japanese-pronunciation": {
-      "filePath": "learn/japanese-pronunciation.tsx",
+    "/learn/_lessons": {
+      "filePath": "learn/_lessons.tsx",
+      "parent": "/learn",
+      "children": [
+        "/learn/_lessons/hiragana",
+        "/learn/_lessons/japanese-pronunciation",
+        "/learn/_lessons/welcome-overview",
+        "/learn/_lessons/writing-systems"
+      ]
+    },
+    "/learn/all-hiragana-quiz": {
+      "filePath": "learn/all-hiragana-quiz.tsx",
       "parent": "/learn"
     },
-    "/learn/welcome-overview": {
-      "filePath": "learn/welcome-overview.tsx",
+    "/learn/contracted-sounds-quiz": {
+      "filePath": "learn/contracted-sounds-quiz.tsx",
       "parent": "/learn"
     },
-    "/learn/writing-systems": {
-      "filePath": "learn/writing-systems.tsx",
+    "/learn/dakuten-handakuten-quiz": {
+      "filePath": "learn/dakuten-handakuten-quiz.tsx",
+      "parent": "/learn"
+    },
+    "/learn/hiragana-quiz": {
+      "filePath": "learn/hiragana-quiz.tsx",
       "parent": "/learn"
     },
     "/learn/": {
       "filePath": "learn/index.tsx",
       "parent": "/learn"
+    },
+    "/learn/_lessons/hiragana": {
+      "filePath": "learn/_lessons/hiragana.tsx",
+      "parent": "/learn/_lessons"
+    },
+    "/learn/_lessons/japanese-pronunciation": {
+      "filePath": "learn/_lessons/japanese-pronunciation.tsx",
+      "parent": "/learn/_lessons"
+    },
+    "/learn/_lessons/welcome-overview": {
+      "filePath": "learn/_lessons/welcome-overview.tsx",
+      "parent": "/learn/_lessons"
+    },
+    "/learn/_lessons/writing-systems": {
+      "filePath": "learn/_lessons/writing-systems.tsx",
+      "parent": "/learn/_lessons"
     }
   }
 }

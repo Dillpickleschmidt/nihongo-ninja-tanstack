@@ -10,9 +10,12 @@ export const dynamic_modules: DynamicModuleCollection = {
     part_of_speech_category: "hiragana",
     // prettier-ignore
     ordered_vocab_keys: [
-      "あ", "い", "う", "え", "お",  "か", "き", "く", "け", "こ",
-      "さ", "し", "す", "せ", "そ",
-    ],
+    "あ", "い", "う", "え", "お",  "か", "き", "く", "け", "こ",
+    "さ", "し", "す", "せ", "そ",  "た", "ち", "つ", "て", "と",
+    "な", "に", "ぬ", "ね", "の",  "は", "ひ", "ふ", "へ", "ほ",
+    "ま", "み", "む", "め", "も",  "や", "ゆ", "よ",
+    "ら", "り", "る", "れ", "ろ",  "わ", "を", "ん",
+  ],
     instructions: "Practice writing and recognizing these hiragana characters.",
   },
   "hiragana-quiz": {
@@ -24,9 +27,12 @@ export const dynamic_modules: DynamicModuleCollection = {
     part_of_speech_category: "hiragana",
     // prettier-ignore
     ordered_vocab_keys: [
-      "あ", "い", "う", "え", "お",  "か", "き", "く", "け", "こ",
-      "さ", "し", "す", "せ", "そ",
-    ],
+    "あ", "い", "う", "え", "お",  "か", "き", "く", "け", "こ",
+    "さ", "し", "す", "せ", "そ",  "た", "ち", "つ", "て", "と",
+    "な", "に", "ぬ", "ね", "の",  "は", "ひ", "ふ", "へ", "ほ",
+    "ま", "み", "む", "め", "も",  "や", "ゆ", "よ",
+    "ら", "り", "る", "れ", "ろ",  "わ", "を", "ん",
+  ],
     instructions: "Test your knowledge of these hiragana characters.",
   },
   "practice-dakuten-handakuten": {
@@ -38,27 +44,27 @@ export const dynamic_modules: DynamicModuleCollection = {
     part_of_speech_category: "hiragana-voiced",
     // prettier-ignore
     ordered_vocab_keys: [
-      "が", "ぎ", "ぐ", "げ", "ご",  "ざ", "じ", "ず", "ぜ", "ぞ",
-      "だ", "ぢ", "づ", "で", "ど",  "ば", "び", "ぶ", "べ", "ぼ",
-      "ぱ", "ぴ", "ぷ", "ぺ", "ぽ",
-    ],
+    "が", "ぎ", "ぐ", "げ", "ご",  "ざ", "じ", "ず", "ぜ", "ぞ",
+    "だ", "ぢ", "づ", "で", "ど",  "ば", "ぱ", "び", "ぴ", "ぶ",
+    "ぷ", "べ", "ぺ", "ぼ", "ぽ",
+  ],
     instructions:
       "Practice voiced (dakuten) and semi-voiced (handakuten) hiragana.",
   },
-  "contracted-sounds-quiz": {
-    id: "contracted-sounds-quiz",
+  "dakuten-handakuten-quiz": {
+    id: "dakuten-handakuten-quiz",
     textbook_id: "genki_1",
     chapter_id: "genki_1_ch0",
-    title: "Hiragana Quiz (Contracted Sounds)",
+    title: "Dakuten & Handakuten Quiz (Set 2)",
     session_type: "vocab-test",
-    part_of_speech_category: "hiragana-contracted",
+    part_of_speech_category: "hiragana",
     // prettier-ignore
     ordered_vocab_keys: [
-      "きゃ", "きゅ", "きょ",  "しゃ", "しゅ", "しょ",  "ちゃ", "ちゅ", "ちょ",
-      "にゃ", "にゅ", "にょ",  "ひゃ", "ひゅ", "ひょ",  "みゃ", "みゅ", "みょ",
-      "りゃ", "りゅ", "りょ",
-    ],
-    instructions: "Test your knowledge of contracted hiragana sounds.",
+    "が", "ぎ", "ぐ", "げ", "ご",  "ざ", "じ", "ず", "ぜ", "ぞ",
+    "だ", "ぢ", "づ", "で", "ど",  "ば", "ぱ", "び", "ぴ", "ぶ",
+    "ぷ", "べ", "ぺ", "ぼ", "ぽ",
+  ],
+    instructions: "Test your knowledge of modified hiragana characters.",
   },
   "practice-contracted-sounds": {
     id: "practice-contracted-sounds",
@@ -69,13 +75,29 @@ export const dynamic_modules: DynamicModuleCollection = {
     part_of_speech_category: "hiragana-contracted",
     // prettier-ignore
     ordered_vocab_keys: [
-      "きゃ", "きゅ", "きょ",  "しゃ", "しゅ", "しょ",  "ちゃ", "ちゅ", "ちょ",
-      "にゃ", "にゅ", "にょ",  "ひゃ", "ひゅ", "ひょ",  "みゃ", "みゅ", "みょ",
-      "りゃ", "りゅ", "りょ",  "ぎゃ", "ぎゅ", "ぎょ",  "じゃ", "じゅ", "じょ",
-      "びゃ", "びゅ", "びょ",  "ぴゃ", "ぴゅ", "ぴょ",
-    ],
+    "きゃ", "きゅ", "きょ",  "ぎゃ", "ぎゅ", "ぎょ",  "しゃ", "しゅ", "しょ",
+    "じゃ", "じゅ", "じょ",  "ちゃ", "ちゅ", "ちょ",  "ぢゃ", "ぢゅ", "ぢょ",
+    "にゃ", "にゅ", "にょ",  "ひゃ", "ひゅ", "ひょ",  "びゃ", "びゅ", "びょ",
+    "ぴゃ", "ぴゅ", "ぴょ",  "みゃ", "みゅ", "みょ",  "りゃ", "りゅ", "りょ",
+  ],
     instructions:
       "Practice recognizing and writing contracted hiragana sounds.",
+  },
+  "contracted-sounds-quiz": {
+    id: "contracted-sounds-quiz",
+    textbook_id: "genki_1",
+    chapter_id: "genki_1_ch0",
+    title: "Contracted Sounds Quiz (Set 3)",
+    session_type: "vocab-test",
+    part_of_speech_category: "hiragana-contracted",
+    // prettier-ignore
+    ordered_vocab_keys: [
+    "きゃ", "きゅ", "きょ",  "ぎゃ", "ぎゅ", "ぎょ",  "しゃ", "しゅ", "しょ",
+    "じゃ", "じゅ", "じょ",  "ちゃ", "ちゅ", "ちょ",  "ぢゃ", "ぢゅ", "ぢょ",
+    "にゃ", "にゅ", "にょ",  "ひゃ", "ひゅ", "ひょ",  "びゃ", "びゅ", "びょ",
+    "ぴゃ", "ぴゅ", "ぴょ",  "みゃ", "みゅ", "みょ",  "りゃ", "りゅ", "りょ",
+  ],
+    instructions: "Test your knowledge of contracted hiragana sounds.",
   },
   "all-hiragana-quiz": {
     id: "all-hiragana-quiz",
@@ -86,11 +108,23 @@ export const dynamic_modules: DynamicModuleCollection = {
     part_of_speech_category: "hiragana-all",
     // prettier-ignore
     ordered_vocab_keys: [
-      "あ", "こ", "せ", "た", "ぬ",  "へ", "も", "や", "る", "を", "ん",
-      "が", "じ", "づ", "べ", "ぽ",  "きゃ", "しゅ", "ちょ", "にゃ", "ひゅ",
-      "みょ", "りゃ",
-    ],
-    instructions: "A comprehensive quiz covering all hiragana learned so far.",
+    // All main hiragana
+    "あ", "い", "う", "え", "お",  "か", "き", "く", "け", "こ",
+    "さ", "し", "す", "せ", "そ",  "た", "ち", "つ", "て", "と",
+    "な", "に", "ぬ", "ね", "の",  "は", "ひ", "ふ", "へ", "ほ",
+    "ま", "み", "む", "め", "も",  "や", "ゆ", "よ",
+    "ら", "り", "る", "れ", "ろ",  "わ", "を", "ん",
+    // All dakuten and handakuten
+    "が", "ぎ", "ぐ", "げ", "ご",  "ざ", "じ", "ず", "ぜ", "ぞ",
+    "だ", "ぢ", "づ", "で", "ど",  "ば", "ぱ", "び", "ぴ", "ぶ",
+    "ぷ", "べ", "ぺ", "ぼ", "ぽ",
+    // All contracted sounds
+    "きゃ", "きゅ", "きょ",  "ぎゃ", "ぎゅ", "ぎょ",  "しゃ", "しゅ", "しょ",
+    "じゃ", "じゅ", "じょ",  "ちゃ", "ちゅ", "ちょ",  "ぢゃ", "ぢゅ", "ぢょ",
+    "にゃ", "にゅ", "にょ",  "ひゃ", "ひゅ", "ひょ",  "びゃ", "びゅ", "びょ",
+    "ぴゃ", "ぴゅ", "ぴょ",  "みゃ", "みゅ", "みょ",  "りゃ", "りゅ", "りょ",
+  ],
+    instructions: "A comprehensive quiz covering all hiragana characters.",
   },
   "genki_1_ch0-vocab-list": {
     id: "genki_1_ch0-vocab-list",

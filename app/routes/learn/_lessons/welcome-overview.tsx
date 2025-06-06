@@ -15,7 +15,7 @@ import {
   Zap,
 } from "lucide-solid"
 
-export const Route = createFileRoute("/learn/welcome-overview")({
+export const Route = createFileRoute("/learn/_lessons/welcome-overview")({
   loader: async () => {
     return {
       contentBox: {
