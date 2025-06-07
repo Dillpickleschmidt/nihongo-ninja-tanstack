@@ -11,30 +11,36 @@ export type Database = {
     Tables: {
       practice_item_user_completions: {
         Row: {
-          chapter: number | null
-          completed_at: string
+          created_at: string
+          due_at: string
+          fsrs_card: Json
+          fsrs_log: Json[] | null
           id: number
           lesson_id: string | null
-          practice_item: string
-          textbook: string | null
+          practice_item_key: string
+          stability: number
           user_id: string
         }
         Insert: {
-          chapter?: number | null
-          completed_at?: string
+          created_at?: string
+          due_at: string
+          fsrs_card: Json
+          fsrs_log?: Json[] | null
           id?: number
           lesson_id?: string | null
-          practice_item: string
-          textbook?: string | null
+          practice_item_key: string
+          stability: number
           user_id: string
         }
         Update: {
-          chapter?: number | null
-          completed_at?: string
+          created_at?: string
+          due_at?: string
+          fsrs_card?: Json
+          fsrs_log?: Json[] | null
           id?: number
           lesson_id?: string | null
-          practice_item?: string
-          textbook?: string | null
+          practice_item_key?: string
+          stability?: number
           user_id?: string
         }
         Relationships: []

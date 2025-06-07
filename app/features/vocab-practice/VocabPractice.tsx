@@ -16,22 +16,30 @@ import StartPageComponent from "./components/pages/StartPageComponent"
 import PracticePageComponent from "./components/pages/PracticePageComponent"
 import ReviewPageComponent from "./components/pages/ReviewPageComponent"
 import FinishPageComponent from "./components/pages/FinishPageComponent"
+import { FSRSCardData } from "../supabase/db/utils"
 
 type VocabPracticeProps = {
-  data: VocabularyItem[]
+  newVocabulary: VocabularyItem[]
+  moduleFSRSCards: Promise<FSRSCardData[]> | null
+  dueFSRSCards: Promise<FSRSCardData[]> | null
   deckName: string | JSX.Element
   mode: PracticeMode
 }
 
 export default function VocabPractice(props: VocabPracticeProps) {
   // Convert vocab entries to cards
-  const convertedData = transformVocabToCards(props.data, props.mode) as Card[]
+  const convertedVocab = transformVocabToCards(
+    props.newVocabulary,
+    props.mode,
+  ) as Card[]
 
   return (
     <VocabPracticeContextProvider>
       <VocabPracticeContent
         deckName={props.deckName}
-        data={convertedData}
+        moduleFSRSCards={props.moduleFSRSCards}
+        dueFSRSCards={props.dueFSRSCards}
+        newVocabulary={convertedVocab}
         mode={props.mode}
       />
     </VocabPracticeContextProvider>
@@ -39,40 +47,41 @@ export default function VocabPractice(props: VocabPracticeProps) {
 }
 
 function VocabPracticeContent(props: {
-  data: Card[]
+  newVocabulary: Card[]
+  moduleFSRSCards: Promise<FSRSCardData[]> | null
+  dueFSRSCards: Promise<FSRSCardData[]> | null
   deckName: string | JSX.Element
   mode: PracticeMode
 }) {
   const context = useVocabPracticeContext()
-  const workingSetSize = Math.min(props.data.length, 10)
+  const workingSetSize = Math.min(props.newVocabulary.length, 10)
 
   // Reset state when the data changes (new route/deck)
   createEffect(() => {
-    const currentMode = props.mode
-
     context.setGameState({
       currentPage: "start",
       currentCardIndex: 0,
       hasUserAnswered: false,
       isAnswerCorrect: false,
+      started: false,
     })
 
     context.setSettings({
-      practiceMode: currentMode,
+      practiceMode: props.mode,
       shuffleInput: true,
-      enabledAnswerCategories: extractUniqueCategories(props.data),
+      enabledAnswerCategories: extractUniqueCategories(props.newVocabulary),
     })
   })
 
   // React to shuffle setting changes
   createEffect(() => {
-    const practiceData = context.settings.shuffleInput
-      ? shuffleArray([...props.data])
-      : [...props.data]
+    const practiceCards = context.settings.shuffleInput
+      ? shuffleArray([...props.newVocabulary])
+      : [...props.newVocabulary]
 
     context.setDeckState({
-      allCards: practiceData,
-      workingSet: createNewWorkingSet(practiceData, workingSetSize),
+      allCards: practiceCards,
+      workingSet: createNewWorkingSet(practiceCards, workingSetSize),
       deckRefillIndex: workingSetSize,
       recentlySeenCards: [], // Reset progress when reshuffling
     })
@@ -83,7 +92,9 @@ function VocabPracticeContent(props: {
       <Match when={context.gameState.currentPage === "start"}>
         <StartPageComponent
           deckName={props.deckName}
-          previewData={props.data}
+          previewCards={props.newVocabulary}
+          moduleFSRSCards={props.moduleFSRSCards}
+          dueFSRSCards={props.dueFSRSCards}
           mode={props.mode}
         />
       </Match>

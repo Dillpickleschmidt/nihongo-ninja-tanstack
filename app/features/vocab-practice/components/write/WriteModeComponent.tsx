@@ -11,6 +11,7 @@ import {
 import WanakanaWrapper from "@/features/wanakana/WanaKana"
 
 export default function WriteModeComponent() {
+  // --- Local state ---
   const [userAnswer, setUserAnswer] = createSignal("")
   const [particleAnswers, setParticleAnswers] = createSignal<string[]>([])
   const [isMainAnswerCorrect, setIsMainAnswerCorrect] = createSignal(false)
@@ -21,11 +22,11 @@ export default function WriteModeComponent() {
   let particleRefs: (HTMLInputElement | undefined)[] = []
 
   const context = useVocabPracticeContext()
-
   const correctEntry = createMemo(
     () => context.deckState.workingSet[context.gameState.currentCardIndex],
   )
 
+  // --- Reset state on new question ---
   createEffect(() => {
     if (!context.gameState.hasUserAnswered && inputRef) {
       inputRef.focus()
@@ -40,6 +41,7 @@ export default function WriteModeComponent() {
     }
   })
 
+  // --- Handlers ---
   function handleSubmit() {
     if (context.gameState.hasUserAnswered) return
 
@@ -79,6 +81,7 @@ export default function WriteModeComponent() {
     }
   }
 
+  // --- Main input field ---
   const mainTextField = (
     <TextField class="w-full max-w-xs">
       <div class="h-6">
@@ -108,9 +111,10 @@ export default function WriteModeComponent() {
     </TextField>
   )
 
+  // --- Render ---
   return (
     <div class="space-y-6">
-      {/* Answer display */}
+      {/* --- Answer displayr--- */}
       <div class="flex min-h-16 w-full items-end justify-center text-center">
         <Show when={context.gameState.hasUserAnswered}>
           <div class="space-y-2">
@@ -137,7 +141,7 @@ export default function WriteModeComponent() {
         </Show>
       </div>
 
-      {/* Input section */}
+      {/* --- Input section --- */}
       <div class="flex flex-col items-center space-y-4">
         <div class="flex items-end space-x-4">
           {context.settings.practiceMode === "kana" ? (
@@ -171,7 +175,7 @@ export default function WriteModeComponent() {
           </Show>
         </div>
 
-        {/* Particle inputs */}
+        {/* --- Particle inputs --- */}
         <Show when={!!correctEntry().particles}>
           <div class="w-full max-w-md space-y-3">
             <For each={correctEntry().particles}>
@@ -214,7 +218,7 @@ export default function WriteModeComponent() {
           </div>
         </Show>
 
-        {/* Submit button */}
+        {/* --- Submit button --- */}
         <Show when={!context.gameState.hasUserAnswered}>
           <Button
             onClick={handleSubmit}

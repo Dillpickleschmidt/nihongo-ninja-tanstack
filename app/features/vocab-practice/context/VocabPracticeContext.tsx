@@ -12,6 +12,7 @@ export const initialGameState: GameState = {
   currentCardIndex: 0,
   hasUserAnswered: false,
   isAnswerCorrect: false,
+  started: false,
 }
 
 export const initialDeckState: DeckState = {
@@ -19,6 +20,8 @@ export const initialDeckState: DeckState = {
   workingSet: [],
   recentlySeenCards: [],
   deckRefillIndex: 0,
+  moduleFSRSCards: [],
+  dueFSRSCards: [],
 }
 
 export const initialSettings: Settings = {
@@ -49,13 +52,37 @@ export function VocabPracticeContextProvider(props: { children: JSX.Element }) {
   const [deckState, setDeckState] = createStore(initialDeckState)
   const [settings, setSettings] = createStore(initialSettings)
 
-  // Effect to handle automatic review triggering
+  // --- PAGE SWITCHING LOGIC ---
+
+  // 1. Start: When started, decide which page to go to
+  createEffect(() => {
+    if (gameState.currentPage === "start" && gameState.started) {
+      // if (deckState.dueFSRSCards.length > 0) {
+      //   setGameState({ currentPage: "fsrs-flashcard" })
+      // } else {
+      setGameState({ currentPage: "practice" })
+      // }
+    }
+  })
+
+  // 2. Practice: When enough cards have been seen, go to review
   createEffect(() => {
     if (
       gameState.currentPage === "practice" &&
       deckState.recentlySeenCards.length >= CARDS_UNTIL_REVIEW
     ) {
       setGameState({ currentPage: "review" })
+    }
+  })
+
+  // 3. Practice: When all cards are done, go to finish
+  createEffect(() => {
+    if (
+      gameState.currentPage === "practice" &&
+      deckState.allCards.length > 0 &&
+      deckState.allCards.every((card) => card.cardStyle === "done")
+    ) {
+      setGameState({ currentPage: "finish" })
     }
   })
 

@@ -1,11 +1,59 @@
-// vocab-practice/logic/card-handlers.ts
 import { VocabPracticeContextType } from "../context/VocabPracticeContext"
 import type { Card } from "@/data/types"
+import {
+  getOrCreateFSRSCard,
+  updateLocalFSRSCard,
+  getFSRSRatingFromPracticeEvent,
+} from "../fsrs/fsrs-utils"
+import { Rating } from "ts-fsrs"
+import {
+  FSRSCardData,
+  upsertFSRSCardForUser,
+} from "@/features/supabase/db/utils"
 
-export function handleNextQuestion(context: VocabPracticeContextType) {
+export async function handleNextQuestion(context: VocabPracticeContextType) {
   const currentCard =
     context.deckState.workingSet[context.gameState.currentCardIndex]
   let cardToAdd = currentCard
+
+  // --- FSRS INTEGRATION START ---
+  try {
+    const fsrsCards = context.deckState.moduleFSRSCards
+    const practiceItemKey = currentCard.key
+    const fsrsCardData = getOrCreateFSRSCard(fsrsCards, practiceItemKey)
+
+    const cardStyle = currentCard.cardStyle as "multiple-choice" | "write"
+    const rating = getFSRSRatingFromPracticeEvent(
+      cardStyle,
+      context.gameState.isAnswerCorrect,
+    )
+
+    const now = new Date()
+    const updatedFSRSCardData = updateLocalFSRSCard(fsrsCardData, rating, now)
+    // Persist to Supabase
+    await upsertFSRSCardForUser({
+      data: {
+        practice_item_key: practiceItemKey,
+        fsrs_card: updatedFSRSCardData.fsrs_card,
+        // lesson_id and fsrs_log can be added if you have them
+      },
+    })
+
+    const updatedCards = upsertFSRSCardInArray(
+      fsrsCards, // fsrs card array to update
+      updatedFSRSCardData, // updated fsrs card data
+      practiceItemKey, // key of card to update
+    )
+    context.setDeckState({ moduleFSRSCards: updatedCards })
+
+    console.log(
+      `[FSRS] ${practiceItemKey} | Style: ${cardStyle} | Correct: ${context.gameState.isAnswerCorrect} | Rating: ${Rating[rating]}`,
+    )
+    console.log("[FSRS] Updated card and persisted to DB:", updatedFSRSCardData)
+  } catch (err) {
+    console.error("[FSRS] Error updating FSRS card:", err)
+  }
+  // --- FSRS INTEGRATION END ---
 
   // Update wrong answer count if answer is incorrect
   if (!context.gameState.isAnswerCorrect) {
@@ -46,6 +94,23 @@ export function handleNextQuestion(context: VocabPracticeContextType) {
     hasUserAnswered: false,
     isAnswerCorrect: false,
   })
+}
+
+function upsertFSRSCardInArray(
+  cards: FSRSCardData[],
+  updatedCard: FSRSCardData,
+  practiceItemKey: string,
+) {
+  const exists = cards.some(
+    (card) => card.practice_item_key === practiceItemKey,
+  )
+  if (exists) {
+    return cards.map((card) =>
+      card.practice_item_key === practiceItemKey ? updatedCard : card,
+    )
+  } else {
+    return [...cards, updatedCard]
+  }
 }
 
 function getWrongAnswerCount(
@@ -148,7 +213,8 @@ function cycleCards(context: VocabPracticeContextType, cardStyle: CardStyle) {
     loopIterations++
 
     if (loopIterations === newWorkingSet.length) {
-      context.setGameState({ currentPage: "finish" })
+      // All cards are done, exit the loop
+      // Let the context effect handle switch to finish page
       return
     }
   }

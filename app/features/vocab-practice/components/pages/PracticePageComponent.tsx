@@ -99,7 +99,7 @@ export default function PracticePageComponent() {
           <Button
             ref={buttonRef}
             size="lg"
-            onClick={() => handleNextQuestion(context)}
+            onClick={async () => await handleNextQuestion(context)}
             class="h-14 rounded-xl bg-orange-500 px-8 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] hover:bg-orange-600 focus-visible:ring-2 focus-visible:ring-orange-400"
           >
             <span class="flex items-center gap-2">
