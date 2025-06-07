@@ -1,5 +1,5 @@
 // vocab-practice/VocabPractice.tsx
-import { createEffect, JSX, Match, Switch, onMount } from "solid-js"
+import { createEffect, JSX, Match, Switch } from "solid-js"
 import type { Card, VocabularyItem } from "@/data/types"
 import {
   VocabPracticeContextProvider,

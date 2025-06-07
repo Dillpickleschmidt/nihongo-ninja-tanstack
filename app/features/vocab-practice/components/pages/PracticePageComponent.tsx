@@ -10,16 +10,26 @@ export default function PracticePageComponent() {
   const context = useVocabPracticeContext()
   let buttonRef: HTMLButtonElement | undefined
 
-  const progress = createMemo(() => {
+  const reviewProgress = createMemo(() => {
     const cardsUntilReview = 7
     const currentProgress = context.deckState.recentlySeenCards.length
     return (currentProgress / cardsUntilReview) * 100
   })
 
-  const progressText = createMemo(() => {
-    const cardsUntilReview = 7
-    const currentProgress = context.deckState.recentlySeenCards.length
-    return `${currentProgress}/${cardsUntilReview}`
+  const overallProgress = createMemo(() => {
+    const totalCards = context.deckState.data.length
+    const completedCards = context.deckState.data.filter(
+      (card) => card.cardStyle === "done",
+    ).length
+    return totalCards > 0 ? (completedCards / totalCards) * 100 : 0
+  })
+
+  const overallProgressText = createMemo(() => {
+    const totalCards = context.deckState.data.length
+    const completedCards = context.deckState.data.filter(
+      (card) => card.cardStyle === "done",
+    ).length
+    return `${completedCards}/${totalCards}`
   })
 
   createEffect(() => {
@@ -39,28 +49,54 @@ export default function PracticePageComponent() {
     <div class="min-h-screen">
       {/* Progress header */}
       <div class="bg-background/90 border-card-foreground fixed top-0 right-0 left-0 z-40 border-b backdrop-blur-sm">
-        <div class="px-4 py-4">
+        <div class="px-4 pt-2 pb-2.5">
           <div class="mx-auto max-w-3xl">
-            <div class="mb-3 flex items-center justify-between">
-              <span class="text-muted-foreground text-sm font-medium">
-                Progress to Review
-              </span>
-              <span class="text-sm font-medium text-orange-400">
-                {progressText()} cards
+            {/* Progress Labels */}
+            <div class="mb-2 flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <div class="flex items-center gap-1.5">
+                  <div class="h-2 w-2 rounded-full bg-blue-500" />
+                  <span class="text-muted-foreground/80 text-xs font-medium">
+                    New Terms Mastered
+                  </span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <div class="h-2 w-2 rounded-full bg-orange-500" />
+                  <span class="text-muted-foreground/80 text-xs font-medium">
+                    Session Progress
+                  </span>
+                </div>
+              </div>
+              <span class="text-xs font-medium text-blue-400">
+                {overallProgressText()} terms
               </span>
             </div>
-            <div class="bg-muted h-2 overflow-hidden rounded-full">
-              <div
-                class="h-full bg-orange-500 transition-all duration-500 ease-out"
-                style={`width: ${progress()}%`}
-              />
+
+            {/* Combined Progress Bar */}
+            <div class="relative">
+              {/* Background bar */}
+              <div class="bg-muted h-2 overflow-hidden rounded-full">
+                {/* Review progress (orange) - base layer */}
+                <div
+                  class="h-full rounded-r-full bg-orange-500 transition-all duration-500 ease-out"
+                  style={`width: ${reviewProgress()}%`}
+                />
+              </div>
+
+              {/* Overall progress overlay (blue) - positioned absolutely */}
+              <div class="absolute top-0 right-0 left-0 h-2 overflow-hidden rounded-full">
+                <div
+                  class="h-full rounded-r-full bg-blue-500/80 transition-all duration-500 ease-out"
+                  style={`width: ${overallProgress()}%`}
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main content */}
-      <div class="pt-24 pb-28">
+      <div class="pt-28 pb-28">
         <div class="mx-auto max-w-3xl px-4">
           <div class="bg-card border-card-foreground rounded-2xl border p-8 shadow-md lg:p-10">
             <CardTypeSwitchComponent />

@@ -529,19 +529,19 @@ export const vocabulary: VocabularyCollection = {
   ぢゃ: {
     word: "ぢゃ",
     furigana: "ぢゃ",
-    english: ["ja", "jya", "cha"],
+    english: ["ja", "jya"],
     chapter: 0,
   },
   ぢゅ: {
     word: "ぢゅ",
     furigana: "ぢゅ",
-    english: ["ju", "jyu", "chu"],
+    english: ["ju", "jyu"],
     chapter: 0,
   },
   ぢょ: {
     word: "ぢょ",
     furigana: "ぢょ",
-    english: ["jo", "jyo", "cho"],
+    english: ["jo", "jyo"],
     chapter: 0,
   },
   にゃ: {

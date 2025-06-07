@@ -27,8 +27,9 @@ export const useKanaQuiz = (kana: KanaItem[]) => {
     setCharacterBoxes((prevCharacterBoxes) => {
       const newCharacterBoxes = [...prevCharacterBoxes]
       newCharacterBoxes[index].userInput = newUserInput
-      newCharacterBoxes[index].isCorrect =
-        newCharacterBoxes[index].romaji.includes(newUserInput)
+      newCharacterBoxes[index].isCorrect = newCharacterBoxes[
+        index
+      ].romaji.includes(newUserInput.toLowerCase())
       setNumCorrect(newCharacterBoxes.filter((box) => box.isCorrect).length)
       return newCharacterBoxes
     })

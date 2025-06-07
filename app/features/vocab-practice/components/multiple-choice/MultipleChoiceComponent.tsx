@@ -26,11 +26,8 @@ export default function MultipleChoiceComponent() {
     { isSelected: false, isCorrect: false },
     { isSelected: false, isCorrect: false },
   ])
-  const [isTouchDevice, setIsTouchDevice] = createSignal(false)
 
   onMount(() => {
-    setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0)
-
     // Add keyboard listener
     const handleKeyPress = (e: KeyboardEvent) => {
       if (context.gameState.hasUserAnswered) return
@@ -80,13 +77,6 @@ export default function MultipleChoiceComponent() {
     )
   }
 
-  const getButtonClasses = (isSelected: boolean, isCorrect: boolean) => {
-    if (isCorrect)
-      return "disabled:opacity-100 bg-green-500 text-white font-semibold"
-    if (isSelected) return "disabled:opacity-100 bg-red-500 text-white"
-    return "bg-background opacity-60"
-  }
-
   return (
     <div class="space-y-5">
       <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
@@ -102,21 +92,48 @@ export default function MultipleChoiceComponent() {
                 .flatMap((category) => category.answers),
             )
 
+            // Calculate button classes more explicitly
+            const isAnswered = () => context.gameState.hasUserAnswered
+            const isSelected = () => buttonStore[index()]?.isSelected || false
+            const isCorrect = () => buttonStore[index()]?.isCorrect || false
+
+            const buttonClasses = () => {
+              let classes =
+                "font-japanese relative min-h-20 w-full flex-col items-start justify-center rounded-xl p-4 text-start text-lg shadow-md duration-75 ease-in-out hover:scale-[98.5%]"
+
+              if (isAnswered()) {
+                if (isCorrect()) {
+                  classes +=
+                    " disabled:opacity-100 bg-green-500 text-white font-semibold"
+                } else if (isSelected()) {
+                  classes += " disabled:opacity-100 bg-red-500 text-white"
+                } else {
+                  classes += " bg-background opacity-60"
+                }
+              } else {
+                classes += " bg-background opacity-60"
+              }
+
+              return classes
+            }
+
             return (
-              <Button
-                variant="outline"
-                {...(isTouchDevice()
-                  ? { onPointerDown: () => handleSelection(index()) }
-                  : { onClick: () => handleSelection(index()) })}
-                disabled={context.gameState.hasUserAnswered}
-                class={cn(
-                  context.gameState.hasUserAnswered &&
-                    getButtonClasses(
-                      buttonStore[index()].isSelected,
-                      buttonStore[index()].isCorrect,
-                    ),
-                  "font-japanese relative min-h-20 w-full flex-col items-start justify-center rounded-xl py-4 text-start text-lg shadow-md duration-75 ease-in-out hover:scale-[98.5%]",
-                )}
+              <button
+                onClick={() => handleSelection(index())}
+                disabled={isAnswered()}
+                class={buttonClasses()}
+                type="button"
+                role="button"
+                tabIndex={0}
+                aria-pressed={isSelected()}
+                aria-disabled={isAnswered()}
+                onKeyDown={(e) => {
+                  // Handle Enter and Space key presses for accessibility
+                  if ((e.key === "Enter" || e.key === " ") && !isAnswered()) {
+                    e.preventDefault()
+                    handleSelection(index())
+                  }
+                }}
               >
                 {/* Option number indicator - hidden on mobile */}
                 <div class="bg-card-foreground/70 text-muted-foreground absolute top-3 right-3 hidden h-6 w-6 items-center justify-center rounded-full text-sm font-bold lg:flex">
@@ -154,7 +171,7 @@ export default function MultipleChoiceComponent() {
                     </div>
                   </Show>
                 </div>
-              </Button>
+              </button>
             )
           }}
         </For>

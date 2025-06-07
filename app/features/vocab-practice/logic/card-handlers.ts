@@ -17,9 +17,14 @@ export function handleNextQuestion(context: VocabPracticeContextType) {
     const cardIndex = context.deckState.data.findIndex(
       (card) => card.key === currentCard.key,
     )
-    context.setDeckState("data", [cardIndex], {
+
+    // Update the wrong answer count in the data array
+    const updatedData = [...context.deckState.data]
+    updatedData[cardIndex] = {
+      ...updatedData[cardIndex],
       wrongAnswerCount: wrongAnswerCount + 1,
-    })
+    }
+    context.setDeckState({ data: updatedData })
 
     // Create new card with updated wrong answer count
     cardToAdd = {
@@ -29,11 +34,11 @@ export function handleNextQuestion(context: VocabPracticeContextType) {
   }
 
   // Add the potentially updated card to recently seen cards
-  context.setDeckState(
-    "recentlySeenCards",
-    context.deckState.recentlySeenCards.length,
+  const updatedRecentlySeenCards = [
+    ...context.deckState.recentlySeenCards,
     cardToAdd,
-  )
+  ]
+  context.setDeckState({ recentlySeenCards: updatedRecentlySeenCards })
 
   handleMainPhase(context)
 
@@ -64,6 +69,17 @@ function handleMainPhase(context: VocabPracticeContextType) {
     context.deckState.activeDeck[context.gameState.currentCardIndex]
   if (context.gameState.isAnswerCorrect) {
     if (currentCard.cardStyle === "write") {
+      // Mark card as done in the main data array
+      const cardIndex = context.deckState.data.findIndex(
+        (card) => card.key === currentCard.key,
+      )
+      const updatedData = [...context.deckState.data]
+      updatedData[cardIndex] = {
+        ...updatedData[cardIndex],
+        cardStyle: "done",
+      }
+      context.setDeckState({ data: updatedData })
+
       if (context.deckState.deckRefillIndex >= context.deckState.data.length) {
         cycleCards(context, "done")
       } else {
