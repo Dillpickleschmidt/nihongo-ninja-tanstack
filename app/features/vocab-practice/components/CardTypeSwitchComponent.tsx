@@ -8,7 +8,7 @@ export default function CardTypeSwitchComponent() {
   const context = useVocabPracticeContext()
 
   const currentCard = () =>
-    context.deckState.activeDeck[context.gameState.currentCardIndex]
+    context.deckState.workingSet[context.gameState.currentCardIndex]
   const hasUserAnswered = () => context.gameState.hasUserAnswered
   const isUserAnswerCorrect = () => context.gameState.isAnswerCorrect
   const hasMnemonic = () => {

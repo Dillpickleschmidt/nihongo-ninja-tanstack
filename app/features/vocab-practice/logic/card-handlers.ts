@@ -4,27 +4,27 @@ import type { Card } from "@/data/types"
 
 export function handleNextQuestion(context: VocabPracticeContextType) {
   const currentCard =
-    context.deckState.activeDeck[context.gameState.currentCardIndex]
+    context.deckState.workingSet[context.gameState.currentCardIndex]
   let cardToAdd = currentCard
 
   // Update wrong answer count if answer is incorrect
   if (!context.gameState.isAnswerCorrect) {
     const wrongAnswerCount = getWrongAnswerCount(
-      context.deckState.data,
-      context.deckState.activeDeck,
+      context.deckState.allCards,
+      context.deckState.workingSet,
       context.gameState.currentCardIndex,
     )
-    const cardIndex = context.deckState.data.findIndex(
+    const cardIndex = context.deckState.allCards.findIndex(
       (card) => card.key === currentCard.key,
     )
 
     // Update the wrong answer count in the data array
-    const updatedData = [...context.deckState.data]
+    const updatedData = [...context.deckState.allCards]
     updatedData[cardIndex] = {
       ...updatedData[cardIndex],
       wrongAnswerCount: wrongAnswerCount + 1,
     }
-    context.setDeckState({ data: updatedData })
+    context.setDeckState({ allCards: updatedData })
 
     // Create new card with updated wrong answer count
     cardToAdd = {
@@ -33,12 +33,12 @@ export function handleNextQuestion(context: VocabPracticeContextType) {
     }
   }
 
-  // Add the potentially updated card to recently seen cards
-  const updatedRecentlySeenCards = [
+  // Add the potentially updated card to seen card history
+  const updatedSeenCardHistory = [
     ...context.deckState.recentlySeenCards,
     cardToAdd,
   ]
-  context.setDeckState({ recentlySeenCards: updatedRecentlySeenCards })
+  context.setDeckState({ recentlySeenCards: updatedSeenCardHistory })
 
   handleMainPhase(context)
 
@@ -49,12 +49,12 @@ export function handleNextQuestion(context: VocabPracticeContextType) {
 }
 
 function getWrongAnswerCount(
-  data: Card[],
-  activeDeck: Card[],
+  allCards: Card[],
+  workingSet: Card[],
   currentCardIndex: number,
 ) {
-  const activeCardKey = activeDeck[currentCardIndex].key
-  const matchingEntry = data.find((card) => card.key === activeCardKey)
+  const activeCardKey = workingSet[currentCardIndex].key
+  const matchingEntry = allCards.find((card) => card.key === activeCardKey)
 
   let wrongAnswerCount = 0
 
@@ -66,45 +66,59 @@ function getWrongAnswerCount(
 
 function handleMainPhase(context: VocabPracticeContextType) {
   const currentCard =
-    context.deckState.activeDeck[context.gameState.currentCardIndex]
+    context.deckState.workingSet[context.gameState.currentCardIndex]
   if (context.gameState.isAnswerCorrect) {
     if (currentCard.cardStyle === "write") {
-      // Mark card as done in the main data array
-      const cardIndex = context.deckState.data.findIndex(
-        (card) => card.key === currentCard.key,
-      )
-      const updatedData = [...context.deckState.data]
-      updatedData[cardIndex] = {
-        ...updatedData[cardIndex],
-        cardStyle: "done",
-      }
-      context.setDeckState({ data: updatedData })
-
-      if (context.deckState.deckRefillIndex >= context.deckState.data.length) {
-        cycleCards(context, "done")
-      } else {
-        removeAndAddNewCard(context)
-      }
+      markCardAsComplete(context)
     } else {
-      // turn it into write and cycle
-      cycleCards(context, "write")
+      promoteCardToWriteMode(context)
     }
   } else {
     // if incorrect answer, cycle without changes
-    cycleCards(context, "multiple-choice")
+    handleIncorrectAnswer(context)
   }
+}
+
+function markCardAsComplete(context: VocabPracticeContextType) {
+  const currentCard =
+    context.deckState.workingSet[context.gameState.currentCardIndex]
+
+  // Mark card as done in the main data array
+  const cardIndex = context.deckState.allCards.findIndex(
+    (card) => card.key === currentCard.key,
+  )
+  const updatedData = [...context.deckState.allCards]
+  updatedData[cardIndex] = {
+    ...updatedData[cardIndex],
+    cardStyle: "done",
+  }
+  context.setDeckState({ allCards: updatedData })
+
+  if (context.deckState.deckRefillIndex >= context.deckState.allCards.length) {
+    cycleCards(context, "done")
+  } else {
+    removeAndAddNewCard(context)
+  }
+}
+
+function promoteCardToWriteMode(context: VocabPracticeContextType) {
+  cycleCards(context, "write")
+}
+
+function handleIncorrectAnswer(context: VocabPracticeContextType) {
+  cycleCards(context, "multiple-choice")
 }
 
 function removeAndAddNewCard(context: VocabPracticeContextType) {
   const deckRefillIndex = context.deckState.deckRefillIndex
-  const activeDeck = context.deckState.activeDeck
-  const nextCardToAdd = context.deckState.data[deckRefillIndex]
-  const newActiveDeck = [
-    ...activeDeck.slice(1, activeDeck.length),
+  const workingSet = context.deckState.workingSet
+  const nextCardToAdd = context.deckState.allCards[deckRefillIndex]
+  const newWorkingSet = [
+    ...workingSet.slice(1, workingSet.length),
     nextCardToAdd,
   ]
   context.setDeckState({
-    activeDeck: newActiveDeck,
+    workingSet: newWorkingSet,
     deckRefillIndex: deckRefillIndex + 1,
   })
 }
@@ -112,32 +126,32 @@ function removeAndAddNewCard(context: VocabPracticeContextType) {
 type CardStyle = "write" | "multiple-choice" | "done"
 
 function cycleCards(context: VocabPracticeContextType, cardStyle: CardStyle) {
-  const activeDeck = context.deckState.activeDeck
-  const newActiveDeck = [...activeDeck.slice(1), { ...activeDeck[0] }]
+  const workingSet = context.deckState.workingSet
+  const newWorkingSet = [...workingSet.slice(1), { ...workingSet[0] }]
 
   switch (cardStyle) {
     case "multiple-choice":
-      newActiveDeck[activeDeck.length - 1].cardStyle = "multiple-choice"
+      newWorkingSet[workingSet.length - 1].cardStyle = "multiple-choice"
       break
     case "write":
-      newActiveDeck[activeDeck.length - 1].cardStyle = "write"
+      newWorkingSet[workingSet.length - 1].cardStyle = "write"
       break
     default:
-      newActiveDeck[activeDeck.length - 1].cardStyle = "done"
+      newWorkingSet[workingSet.length - 1].cardStyle = "done"
   }
 
   let loopIterations = 0
   while (
-    newActiveDeck[context.gameState.currentCardIndex].cardStyle === "done"
+    newWorkingSet[context.gameState.currentCardIndex].cardStyle === "done"
   ) {
-    newActiveDeck.push(newActiveDeck.shift()!)
+    newWorkingSet.push(newWorkingSet.shift()!)
     loopIterations++
 
-    if (loopIterations === newActiveDeck.length) {
+    if (loopIterations === newWorkingSet.length) {
       context.setGameState({ currentPage: "finish" })
       return
     }
   }
 
-  context.setDeckState({ activeDeck: newActiveDeck })
+  context.setDeckState({ workingSet: newWorkingSet })
 }

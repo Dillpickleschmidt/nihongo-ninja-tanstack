@@ -1,9 +1,13 @@
 // vocab-practice/components/pages/PracticePageComponent.tsx
 import { createEffect, createMemo } from "solid-js"
-import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
+import {
+  useVocabPracticeContext,
+  CARDS_UNTIL_REVIEW,
+} from "../../context/VocabPracticeContext"
 import { Button } from "@/components/ui/button"
 import CardTypeSwitchComponent from "../CardTypeSwitchComponent"
 import { handleNextQuestion } from "../../logic/card-handlers"
+import { getProgressPercentage, getProgressText } from "../../logic/deck-utils"
 import { Show } from "solid-js"
 
 export default function PracticePageComponent() {
@@ -11,34 +15,19 @@ export default function PracticePageComponent() {
   let buttonRef: HTMLButtonElement | undefined
 
   const reviewProgress = createMemo(() => {
-    const cardsUntilReview = 7
     const currentProgress = context.deckState.recentlySeenCards.length
-    return (currentProgress / cardsUntilReview) * 100
+    return (currentProgress / CARDS_UNTIL_REVIEW) * 100
   })
 
   const overallProgress = createMemo(() => {
-    const totalCards = context.deckState.data.length
-    const completedCards = context.deckState.data.filter(
-      (card) => card.cardStyle === "done",
-    ).length
-    return totalCards > 0 ? (completedCards / totalCards) * 100 : 0
+    return getProgressPercentage(context.deckState)
   })
 
   const overallProgressText = createMemo(() => {
-    const totalCards = context.deckState.data.length
-    const completedCards = context.deckState.data.filter(
-      (card) => card.cardStyle === "done",
-    ).length
-    return `${completedCards}/${totalCards}`
+    return getProgressText(context.deckState)
   })
 
-  createEffect(() => {
-    const recentlySeenCards = context.deckState.recentlySeenCards
-    if (recentlySeenCards.length === 7) {
-      context.setGameState({ currentPage: "review" })
-    }
-  })
-
+  // Focus the next button when user answers
   createEffect(() => {
     if (context.gameState.hasUserAnswered && buttonRef) {
       buttonRef.focus()

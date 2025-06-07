@@ -10,7 +10,7 @@ import { transformVocabToCards } from "@/data/utils/vocab"
 import {
   shuffleArray,
   extractUniqueCategories,
-  createActiveDeck,
+  createNewWorkingSet,
 } from "./logic/deck-utils"
 import StartPageComponent from "./components/pages/StartPageComponent"
 import PracticePageComponent from "./components/pages/PracticePageComponent"
@@ -44,7 +44,7 @@ function VocabPracticeContent(props: {
   mode: PracticeMode
 }) {
   const context = useVocabPracticeContext()
-  const activeDeckSize = Math.min(props.data.length, 10)
+  const workingSetSize = Math.min(props.data.length, 10)
 
   // Reset state when the data changes (new route/deck)
   createEffect(() => {
@@ -71,9 +71,9 @@ function VocabPracticeContent(props: {
       : [...props.data]
 
     context.setDeckState({
-      data: practiceData,
-      activeDeck: createActiveDeck(practiceData, activeDeckSize),
-      deckRefillIndex: activeDeckSize,
+      allCards: practiceData,
+      workingSet: createNewWorkingSet(practiceData, workingSetSize),
+      deckRefillIndex: workingSetSize,
       recentlySeenCards: [], // Reset progress when reshuffling
     })
   })

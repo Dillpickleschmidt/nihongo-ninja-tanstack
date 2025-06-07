@@ -3,6 +3,7 @@ import { For, Show, createMemo } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { getUniqueCards } from "../../logic/deck-utils"
+import type { Card } from "@/data/types"
 
 export type AnswerCategory = {
   answers: string[]
@@ -37,72 +38,7 @@ export default function ReviewPageComponent() {
         <div class="mx-auto max-w-3xl">
           <div class="grid gap-4 lg:gap-5">
             <For each={uniqueCards()}>
-              {(card) => (
-                <div class="bg-card relative overflow-hidden rounded-xl p-5 shadow-md">
-                  <p
-                    class={`${card.wrongAnswerCount > 0 ? "text-red-500" : "text-orange-400 saturate-[125%]"} mb-3 text-xl font-bold lg:text-2xl`}
-                  >
-                    <span class="mr-2">{card.key}</span>
-                    <Show when={card.particles}>
-                      <For each={card.particles}>
-                        {(object, index) => (
-                          <span class="text-base font-light">
-                            {object.label ? (
-                              <span>
-                                {object.label} -{" "}
-                                <span class="font-japanese">
-                                  {object.particle}
-                                </span>
-                                {index() < card.particles!.length - 1 && ", "}
-                              </span>
-                            ) : (
-                              <span>
-                                particle:{" "}
-                                <span class="font-japanese">
-                                  {object.particle}
-                                </span>
-                                {index() < card.particles!.length - 1 && ", "}
-                              </span>
-                            )}
-                          </span>
-                        )}
-                      </For>
-                    </Show>
-                  </p>
-                  <For
-                    each={card.answerCategories.filter(
-                      (object) =>
-                        context.settings.enabledAnswerCategories.includes(
-                          object.category,
-                        ) && object.answers.length > 0,
-                    )}
-                  >
-                    {(object: AnswerCategory) => (
-                      <div class="space-y-1.5">
-                        <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
-                          {object.category}:
-                        </p>
-                        <For each={object.answers}>
-                          {(answer: string) => (
-                            <p class="text-primary ml-4 text-base font-semibold lg:text-lg">
-                              {object.category === "Kana" ? (
-                                <span class="font-japanese text-lg lg:text-xl">
-                                  {answer}
-                                </span>
-                              ) : (
-                                answer
-                              )}
-                            </p>
-                          )}
-                        </For>
-                      </div>
-                    )}
-                  </For>
-                  <div
-                    class={`absolute top-0 right-0 h-full ${card.wrongAnswerCount > 0 ? "w-4 bg-red-500" : "w-2 bg-emerald-500/50"}`}
-                  />
-                </div>
-              )}
+              {(card) => <ReviewCardSummary card={card} />}
             </For>
           </div>
         </div>
@@ -135,6 +71,82 @@ export default function ReviewPageComponent() {
           </Button>
         </div>
       </div>
+    </div>
+  )
+}
+
+function ReviewCardSummary(props: { card: Card }) {
+  const context = useVocabPracticeContext()
+
+  const visibleAnswerCategories = createMemo(() =>
+    props.card.answerCategories.filter(
+      (category) =>
+        context.settings.enabledAnswerCategories.includes(category.category) &&
+        category.answers.length > 0,
+    ),
+  )
+
+  return (
+    <div class="bg-card relative overflow-hidden rounded-xl p-5 shadow-md">
+      {/* Card Title with Particles */}
+      <p
+        class={`${props.card.wrongAnswerCount > 0 ? "text-red-500" : "text-orange-400 saturate-[125%]"} mb-3 text-xl font-bold lg:text-2xl`}
+      >
+        <span class="mr-2">{props.card.key}</span>
+        <Show when={props.card.particles}>
+          <For each={props.card.particles}>
+            {(particleObj, index) => (
+              <span class="text-base font-light">
+                <Show
+                  when={particleObj.label}
+                  fallback={
+                    <span>
+                      particle:{" "}
+                      <span class="font-japanese">{particleObj.particle}</span>
+                    </span>
+                  }
+                >
+                  <span>
+                    {particleObj.label} -{" "}
+                    <span class="font-japanese">{particleObj.particle}</span>
+                  </span>
+                </Show>
+                {index() < props.card.particles!.length - 1 && ", "}
+              </span>
+            )}
+          </For>
+        </Show>
+      </p>
+
+      {/* Answer Categories */}
+      <For each={visibleAnswerCategories()}>
+        {(categoryObj) => (
+          <div class="space-y-1.5">
+            <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
+              {categoryObj.category}:
+            </p>
+            <For each={categoryObj.answers}>
+              {(answer) => (
+                <p class="text-primary ml-4 text-base font-semibold lg:text-lg">
+                  <Show
+                    when={categoryObj.category === "Kana"}
+                    fallback={answer}
+                  >
+                    <span class="font-japanese text-lg lg:text-xl">
+                      {answer}
+                    </span>
+                  </Show>
+                </p>
+              )}
+            </For>
+          </div>
+        )}
+      </For>
+
+      {/* Status Indicator Bar */}
+      <div
+        class={`absolute top-0 right-0 h-full ${props.card.wrongAnswerCount > 0 ? "w-4 bg-red-500" : "w-2 bg-emerald-500/50"}`}
+      />
     </div>
   )
 }

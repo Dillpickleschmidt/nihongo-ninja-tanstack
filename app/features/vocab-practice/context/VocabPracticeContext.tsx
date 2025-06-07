@@ -1,7 +1,10 @@
 // vocab-practice/context/VocabPracticeContext.tsx
-import { createContext, JSX, useContext } from "solid-js"
+import { createContext, JSX, useContext, createEffect } from "solid-js"
 import { createStore } from "solid-js/store"
 import { GameState, DeckState, Settings } from "../types"
+
+// Constants
+const CARDS_UNTIL_REVIEW = 7
 
 // Separate initial states for clarity
 export const initialGameState: GameState = {
@@ -12,8 +15,8 @@ export const initialGameState: GameState = {
 }
 
 export const initialDeckState: DeckState = {
-  data: [],
-  activeDeck: [],
+  allCards: [],
+  workingSet: [],
   recentlySeenCards: [],
   deckRefillIndex: 0,
 }
@@ -46,6 +49,16 @@ export function VocabPracticeContextProvider(props: { children: JSX.Element }) {
   const [deckState, setDeckState] = createStore(initialDeckState)
   const [settings, setSettings] = createStore(initialSettings)
 
+  // Effect to handle automatic review triggering
+  createEffect(() => {
+    if (
+      gameState.currentPage === "practice" &&
+      deckState.recentlySeenCards.length >= CARDS_UNTIL_REVIEW
+    ) {
+      setGameState({ currentPage: "review" })
+    }
+  })
+
   const contextValue: VocabPracticeContextType = {
     gameState,
     setGameState,
@@ -71,3 +84,6 @@ export function useVocabPracticeContext() {
   }
   return context
 }
+
+// Export the constant so it can be used elsewhere
+export { CARDS_UNTIL_REVIEW }

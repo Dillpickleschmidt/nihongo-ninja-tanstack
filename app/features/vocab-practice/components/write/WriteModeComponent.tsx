@@ -23,7 +23,7 @@ export default function WriteModeComponent() {
   const context = useVocabPracticeContext()
 
   const correctEntry = createMemo(
-    () => context.deckState.activeDeck[context.gameState.currentCardIndex],
+    () => context.deckState.workingSet[context.gameState.currentCardIndex],
   )
 
   createEffect(() => {

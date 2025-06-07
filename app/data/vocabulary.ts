@@ -656,7 +656,7 @@ export const vocabulary: VocabularyCollection = {
   おはようございます: {
     word: "おはようございます",
     furigana: "おはようございます",
-    english: ["Good Morning"],
+    english: ["Good Morning (polite)"],
     chapter: 0,
     info: [
       "This is a polite way to say good morning and is typically used until late morning.",
@@ -750,7 +750,7 @@ export const vocabulary: VocabularyCollection = {
   ありがとうございます: {
     word: "ありがとうございます",
     furigana: "ありがとうございます",
-    english: ["Thank you"],
+    english: ["Thank you (polite)"],
     chapter: 0,
     info: [
       "Polite way to say thank you.",
@@ -843,7 +843,7 @@ export const vocabulary: VocabularyCollection = {
   いってきます: {
     word: "いってきます",
     furigana: "いってきます",
-    english: ["I'll go and come back"],
+    english: ["I'll go and come back", "I'm off"],
     chapter: 0,
     info: [
       "What you say when leaving the house, meaning 'I'll go and come back.'",
@@ -859,7 +859,7 @@ export const vocabulary: VocabularyCollection = {
   いってらっしゃい: {
     word: "いってらっしゃい",
     furigana: "いってらっしゃい",
-    english: ["Go and come back"],
+    english: ["Go and come back", "Have a nice day"],
     chapter: 0,
     info: [
       "The response to 'いってきます,' meaning 'Go and come back.'",
@@ -920,7 +920,7 @@ export const vocabulary: VocabularyCollection = {
   いただきます: {
     word: "いただきます",
     furigana: "いただきます",
-    english: ["Thanks for the food"],
+    english: ["Thanks for the food", "said before eating"],
     chapter: 0,
     info: [
       "Said before eating, it's like a mini-gratitude speech to the food gods.",
@@ -936,7 +936,7 @@ export const vocabulary: VocabularyCollection = {
   ごちそうさまでした: {
     word: "ごちそうさまでした",
     furigana: "ごちそうさまでした",
-    english: ["That was delicious"],
+    english: ["That was delicious", "said after eating"],
     chapter: 0,
     info: [
       "Said after eating, it's the classy way to say 'That was delicious.'",

@@ -2,7 +2,6 @@
 import type { Card } from "@/data/types"
 
 export type CurrentPage = "start" | "practice" | "review" | "finish"
-
 export type PracticeMode = "readings" | "kana"
 
 // Break down the large state into logical groups
@@ -14,8 +13,8 @@ export type GameState = {
 }
 
 export type DeckState = {
-  data: Card[]
-  activeDeck: Card[]
+  allCards: Card[]
+  workingSet: Card[]
   recentlySeenCards: Card[]
   deckRefillIndex: number
 }

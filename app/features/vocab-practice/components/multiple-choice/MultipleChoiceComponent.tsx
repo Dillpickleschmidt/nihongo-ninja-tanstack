@@ -49,7 +49,7 @@ export default function MultipleChoiceComponent() {
 
   const choices = createMemo(() =>
     presentMultipleChoiceOptions(
-      context.deckState.activeDeck,
+      context.deckState.workingSet,
       context.gameState.currentCardIndex,
     ),
   )
@@ -70,7 +70,7 @@ export default function MultipleChoiceComponent() {
     })
 
     setButtonStore(
-      buttonStore.map((state, index) => ({
+      buttonStore.map((_, index) => ({
         isSelected: index === selectionIndex,
         isCorrect: index === correctIndex,
       })),
