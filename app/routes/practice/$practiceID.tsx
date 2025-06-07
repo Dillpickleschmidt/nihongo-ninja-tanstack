@@ -1,3 +1,4 @@
+// app/routes/practice/$practiceID.tsx
 import { createFileRoute, notFound } from "@tanstack/solid-router"
 import { loadModuleData } from "@/data/utils/vocab"
 import VocabPractice from "@/features/vocab-practice/VocabPractice"
@@ -22,7 +23,7 @@ function RouteComponent() {
     <>
       <VocabPractice
         data={data().vocabulary}
-        deckName="Greetings & Common Expressions"
+        deckName={data().module.title}
         mode="readings"
       />
     </>

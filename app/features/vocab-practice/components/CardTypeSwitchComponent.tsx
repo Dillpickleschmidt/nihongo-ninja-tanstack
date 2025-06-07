@@ -20,7 +20,7 @@ export default function CardTypeSwitchComponent() {
     <div class="w-full">
       <Show
         fallback={
-          <h2 class="font-japanese mx-12 flex h-48 flex-col justify-center text-center text-5xl lg:text-6xl">
+          <h2 class="font-japanese flex h-48 flex-col justify-center text-center text-5xl lg:text-6xl">
             {currentCard()?.key}
           </h2>
         }

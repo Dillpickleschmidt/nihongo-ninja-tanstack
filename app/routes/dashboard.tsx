@@ -102,12 +102,6 @@ function RouteComponent() {
     }
   })
 
-  const handleVocabularyClick = (e: Event) => {
-    e.preventDefault()
-    setUserHasNavigated(true)
-    navigate({ to: "/learn/vocabulary" })
-  }
-
   const struggles = [
     "～て",
     "留学生",

@@ -32,7 +32,7 @@ export function getModuleVocabulary(moduleId: string): VocabularyItem[] {
 
 /**
  * Extract module ID from URL path
- * Ex: "/learn/hiragana-quiz" -> "hiragana-quiz"
+ * Ex: "/practice/hiragana-quiz" -> "hiragana-quiz"
  */
 export function getModuleIdFromPath(path: string): string {
   const segments = path.split("/")

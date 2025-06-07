@@ -69,7 +69,7 @@ export const APIRoute = createAPIFileRoute("/api/auth/login")({
       headers: [
         ["Set-Cookie", cookieHeaders[0]],
         ["Set-Cookie", cookieHeaders[1]],
-        ["Location", "/learn"],
+        ["Location", "/dashboard"],
       ],
     })
   },

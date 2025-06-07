@@ -159,8 +159,8 @@ export const dynamic_modules: DynamicModuleCollection = {
     part_of_speech_category: "number",
     // prettier-ignore
     ordered_vocab_keys: [
-      "れい", "ゼロ", "いち", "に", "さん", "よん", "し", "ご",
-      "ろく", "なな", "しち", "はち", "きゅう", "く", "じゅう",
+      "れい", "ゼロ", "いち", "に1", "さん", "よん", "し1", "ご1",
+      "ろく", "なな", "しち", "はち", "きゅう", "く1", "じゅう",
     ],
     instructions: "Practice recognizing and saying numbers from 0 to 10.",
   },

@@ -4,8 +4,6 @@ import type { Card, VocabularyItem } from "@/data/types"
 import {
   VocabPracticeContextProvider,
   useVocabPracticeContext,
-  initialGameState,
-  initialSettings,
 } from "./context/VocabPracticeContext"
 import { PracticeMode } from "./types"
 import { transformVocabToCards } from "@/data/utils/vocab"
@@ -48,12 +46,20 @@ function VocabPracticeContent(props: {
   const context = useVocabPracticeContext()
   const activeDeckSize = Math.min(props.data.length, 10)
 
-  onMount(() => {
-    // Initial setup
-    context.setGameState({ ...initialGameState })
+  // Reset state when the data changes (new route/deck)
+  createEffect(() => {
+    const currentMode = props.mode
+
+    context.setGameState({
+      currentPage: "start",
+      currentCardIndex: 0,
+      hasUserAnswered: false,
+      isAnswerCorrect: false,
+    })
+
     context.setSettings({
-      ...initialSettings,
-      practiceMode: props.mode,
+      practiceMode: currentMode,
+      shuffleInput: true,
       enabledAnswerCategories: extractUniqueCategories(props.data),
     })
   })

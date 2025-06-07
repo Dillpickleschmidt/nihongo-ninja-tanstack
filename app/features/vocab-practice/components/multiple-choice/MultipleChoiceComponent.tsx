@@ -88,8 +88,8 @@ export default function MultipleChoiceComponent() {
   }
 
   return (
-    <div>
-      <ul class="mb-6 grid grid-cols-1 gap-[.875rem] px-4 lg:grid-cols-2 lg:px-16">
+    <div class="space-y-5">
+      <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
         <For each={choices().options}>
           {(option, index) => {
             const enabledAnswers = createMemo(() =>
@@ -115,34 +115,50 @@ export default function MultipleChoiceComponent() {
                       buttonStore[index()].isSelected,
                       buttonStore[index()].isCorrect,
                     ),
-                  "font-japanese min-h-20 w-full flex-col items-start justify-center rounded-xl py-4 text-start text-xl shadow-md duration-75 ease-in-out hover:scale-[98.5%]",
+                  "font-japanese relative min-h-20 w-full flex-col items-start justify-center rounded-xl py-4 text-start text-lg shadow-md duration-75 ease-in-out hover:scale-[98.5%]",
                 )}
               >
-                {enabledAnswers().join(", ")}
-                <Show when={option.particles}>
-                  <For each={option.particles}>
-                    {(object) => (
-                      <div class="text-base font-light">
-                        {object.label ? (
-                          <span>
-                            {object.label} -{" "}
-                            <span class="font-japanese">{object.particle}</span>
-                          </span>
-                        ) : (
-                          <span>
-                            particle:{" "}
-                            <span class="font-japanese">{object.particle}</span>
-                          </span>
+                {/* Option number indicator - hidden on mobile */}
+                <div class="bg-card-foreground/70 text-muted-foreground absolute top-3 right-3 hidden h-6 w-6 items-center justify-center rounded-full text-sm font-bold lg:flex">
+                  {index() + 1}
+                </div>
+
+                <div class="w-full space-y-2 overflow-x-auto">
+                  <p class="text-lg font-bold lg:text-xl">
+                    {enabledAnswers().join(", ")}
+                  </p>
+
+                  <Show when={option.particles}>
+                    <div class="space-y-1">
+                      <For each={option.particles}>
+                        {(object) => (
+                          <div class="text-sm font-light">
+                            {object.label ? (
+                              <span>
+                                {object.label} -{" "}
+                                <span class="font-japanese">
+                                  {object.particle}
+                                </span>
+                              </span>
+                            ) : (
+                              <span>
+                                particle:{" "}
+                                <span class="font-japanese">
+                                  {object.particle}
+                                </span>
+                              </span>
+                            )}
+                          </div>
                         )}
-                      </div>
-                    )}
-                  </For>
-                </Show>
+                      </For>
+                    </div>
+                  </Show>
+                </div>
               </Button>
             )
           }}
         </For>
-      </ul>
+      </div>
     </div>
   )
 }

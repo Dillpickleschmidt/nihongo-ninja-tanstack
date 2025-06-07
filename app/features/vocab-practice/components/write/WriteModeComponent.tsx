@@ -103,37 +103,42 @@ export default function WriteModeComponent() {
               ? "text-green-500"
               : "text-red-500"
             : ""
-        } font-bold opacity-100 xl:!text-lg`}
+        } border-card-foreground font-bold opacity-100 xl:!text-lg`}
       />
     </TextField>
   )
 
   return (
-    <div class="mx-4 lg:mx-40">
-      <div class="flex max-h-20 w-full items-end justify-center text-center">
+    <div class="space-y-6">
+      {/* Answer display */}
+      <div class="flex min-h-16 w-full items-end justify-center text-center">
         <Show when={context.gameState.hasUserAnswered}>
-          <For
-            each={correctEntry().answerCategories.filter((category) =>
-              context.settings.enabledAnswerCategories.includes(
-                category.category,
-              ),
-            )}
-          >
-            {(category) => (
-              <p class="text-primary text-xl font-bold">
-                {category.category === "Kana" ? (
-                  <span class="font-japanese">
-                    {category.answers.join(", ")}
-                  </span>
-                ) : (
-                  category.answers.join(", ")
-                )}
-              </p>
-            )}
-          </For>
+          <div class="space-y-2">
+            <For
+              each={correctEntry().answerCategories.filter((category) =>
+                context.settings.enabledAnswerCategories.includes(
+                  category.category,
+                ),
+              )}
+            >
+              {(category) => (
+                <p class="text-primary text-xl font-bold">
+                  {category.category === "Kana" ? (
+                    <span class="font-japanese">
+                      {category.answers.join(", ")}
+                    </span>
+                  ) : (
+                    category.answers.join(", ")
+                  )}
+                </p>
+              )}
+            </For>
+          </div>
         </Show>
       </div>
-      <div class="space-y-2">
+
+      {/* Input section */}
+      <div class="flex flex-col items-center space-y-4">
         <div class="flex items-end space-x-4">
           {context.settings.practiceMode === "kana" ? (
             <WanakanaWrapper>{mainTextField}</WanakanaWrapper>
@@ -146,34 +151,37 @@ export default function WriteModeComponent() {
               !context.gameState.isAnswerCorrect
             }
           >
-            <div>
-              <Button
-                class="bg-green-500"
-                onClick={() => {
-                  setIsMainAnswerCorrect(true)
-                  context.setGameState({ isAnswerCorrect: true })
-                  particleAnswers().forEach((_, index) => {
-                    setParticleCorrectness((prev) => {
-                      const newCorrectness = [...prev]
-                      newCorrectness[index] = true
-                      return newCorrectness
-                    })
+            <Button
+              variant="outline"
+              class="border-green-500 bg-green-500 text-white hover:bg-green-600"
+              onClick={() => {
+                setIsMainAnswerCorrect(true)
+                context.setGameState({ isAnswerCorrect: true })
+                particleAnswers().forEach((_, index) => {
+                  setParticleCorrectness((prev) => {
+                    const newCorrectness = [...prev]
+                    newCorrectness[index] = true
+                    return newCorrectness
                   })
-                }}
-              >
-                No, I was correct
-              </Button>
-            </div>
+                })
+              }}
+            >
+              No, I was correct
+            </Button>
           </Show>
         </div>
+
+        {/* Particle inputs */}
         <Show when={!!correctEntry().particles}>
-          <ul class="space-y-2 pb-4 text-xl">
+          <div class="w-full max-w-md space-y-3">
             <For each={correctEntry().particles}>
               {(object, index) => (
-                <li class="flex items-center gap-2 font-bold">
-                  {object.label ? `${object.label} -` : "Particle:"}
+                <div class="flex items-center gap-3 text-lg font-semibold">
+                  <span class="min-w-fit">
+                    {object.label ? `${object.label} -` : "Particle:"}
+                  </span>
                   <WanakanaWrapper>
-                    <TextField class="max-w-xs">
+                    <TextField class="w-20">
                       <TextFieldInput
                         type="text"
                         ref={(el: HTMLInputElement | undefined) => {
@@ -185,7 +193,7 @@ export default function WriteModeComponent() {
                         }
                         onKeyDown={handleKeyDown}
                         disabled={context.gameState.hasUserAnswered}
-                        class={`font-japanese w-20 ${
+                        class={`font-japanese border-card-foreground text-center ${
                           context.gameState.hasUserAnswered
                             ? particleCorrectness()[index()]
                               ? "text-green-500"
@@ -196,18 +204,22 @@ export default function WriteModeComponent() {
                     </TextField>
                   </WanakanaWrapper>
                   <Show when={context.gameState.hasUserAnswered}>
-                    <span class="font-japanese">{object.particle}</span>
+                    <span class="font-japanese text-orange-400">
+                      {object.particle}
+                    </span>
                   </Show>
-                </li>
+                </div>
               )}
             </For>
-          </ul>
+          </div>
         </Show>
+
+        {/* Submit button */}
         <Show when={!context.gameState.hasUserAnswered}>
           <Button
             onClick={handleSubmit}
             disabled={context.gameState.hasUserAnswered}
-            class="my-2 disabled:opacity-90"
+            class="rounded-xl bg-orange-500 px-8 py-2 font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:bg-orange-600"
           >
             Submit
           </Button>
