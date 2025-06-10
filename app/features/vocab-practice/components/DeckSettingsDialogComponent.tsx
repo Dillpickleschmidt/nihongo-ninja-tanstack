@@ -21,14 +21,8 @@ type DeckSettingsDialogProps = {
 export default function DeckSettingsDialogComponent(
   props: DeckSettingsDialogProps,
 ) {
-  const context = useVocabPracticeContext()
+  const { state, setState } = useVocabPracticeContext()
   const [open, setOpen] = createSignal(false)
-  const [checked, setChecked] = createSignal(context.settings.shuffleInput)
-
-  const handleCheckboxChange = (isChecked: boolean) => {
-    setChecked(isChecked)
-    context.setSettings({ shuffleInput: isChecked })
-  }
 
   const handleOkClick = () => {
     setOpen(false)
@@ -46,7 +40,12 @@ export default function DeckSettingsDialogComponent(
         </DialogHeader>
         <div class="grid gap-4 py-4">
           <div class="flex items-center space-x-2">
-            <Checkbox checked={checked()} onChange={handleCheckboxChange} />
+            <Checkbox
+              checked={state.settings.shuffleInput}
+              onChange={(isChecked) =>
+                setState("settings", "shuffleInput", isChecked)
+              }
+            />
             <Label>Shuffle</Label>
           </div>
         </div>

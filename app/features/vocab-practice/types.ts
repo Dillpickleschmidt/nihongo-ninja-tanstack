@@ -1,6 +1,6 @@
-// vocab-practice/types.ts
-import type { Card } from "@/data/types"
-import type { FSRSCardData } from "@/features/supabase/db/utils"
+import type { RichVocabItem } from "@/data/types"
+import type { Card as FSRSCard, ReviewLog } from "ts-fsrs"
+import type { PracticeSessionManager } from "./logic/PracticeSessionManager"
 
 export type CurrentPage =
   | "start"
@@ -8,25 +8,8 @@ export type CurrentPage =
   | "review"
   | "finish"
   | "fsrs-flashcard"
+
 export type PracticeMode = "readings" | "kana"
-
-// Break down the large state into logical groups
-export type GameState = {
-  currentPage: CurrentPage
-  currentCardIndex: number
-  hasUserAnswered: boolean
-  isAnswerCorrect: boolean
-  started: boolean
-}
-
-export type DeckState = {
-  allCards: Card[]
-  workingSet: Card[]
-  recentlySeenCards: Card[]
-  deckRefillIndex: number
-  moduleFSRSCards: FSRSCardData[] // default empty array
-  dueFSRSCards: FSRSCardData[] // default empty array
-}
 
 export type Settings = {
   practiceMode: PracticeMode
@@ -37,4 +20,36 @@ export type Settings = {
 export type MultipleChoiceButtonState = {
   isSelected: boolean
   isCorrect: boolean
+}
+
+// Card state within the current session
+export type SessionCardStyle =
+  | "multiple-choice"
+  | "write"
+  | "flashcard"
+  | "done"
+
+// Holds the core FSRS card and the logs from previous reviews
+export type FSRSInfo = {
+  card: FSRSCard
+  logs?: ReviewLog[]
+}
+
+// Unified card data for the session, with pre-processed answers
+export type PracticeCard = {
+  key: string // derived from vocab.word
+  vocab: RichVocabItem // The core vocabulary data for display
+  fsrs: FSRSInfo
+  sessionStyle: SessionCardStyle
+  prompt: string // Question to display
+  validAnswers: string[] // Acceptable written answers
+}
+
+// State for the three-queue session system
+export type PracticeSessionState = {
+  cardMap: Map<string, PracticeCard> // All cards by key
+  moduleQueue: string[] // Keys for module cards
+  reviewQueue: string[] // Keys for due non-module cards
+  activeQueue: string[] // Buffer of up to 10 active card keys
+  isFinished: boolean
 }

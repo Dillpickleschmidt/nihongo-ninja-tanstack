@@ -180,16 +180,3 @@ export type RichVocabItem = VocabularyItem & {
   hiragana: string[] // Word converted to hiragana
   rubyText: string[] // Ruby (furigana) text components
 }
-
-/**
- * Vocabulary item with state for vocab-practice
- */
-export type Card = RichVocabItem & {
-  key: string // Maps to `word` for display
-  answerCategories: {
-    category: string
-    answers: string[]
-  }[]
-  cardStyle: "multiple-choice" | "write" | "done"
-  wrongAnswerCount: number
-}

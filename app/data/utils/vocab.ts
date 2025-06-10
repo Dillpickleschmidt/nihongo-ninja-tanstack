@@ -76,7 +76,7 @@ export function vocabularyToKana(vocabulary: VocabularyItem[]): KanaItem[] {
  * @returns An array of RichVocabItem objects.
  */
 export function addKanaAndRuby(
-  items: VocabItem[],
+  items: VocabularyItem[],
   furiganaSize?: string,
   removeDuplicateKana = false,
 ): RichVocabItem[] {
@@ -164,67 +164,4 @@ export function convertFuriganaToRubyHtml<T extends string | string[]>(
   } else {
     return convert(furigana) as T extends string[] ? string[] : string
   }
-}
-
-/**
- * Transforms a single VocabularyItem into a Card for practice mode.
- * @param item - A VocabularyItem object to transform.
- * @param mode - The practice mode ("readings" or "kana").
- * @returns A Card object ready for practice.
- */
-export function transformVocabToCard(
-  item: VocabularyItem,
-  mode: "readings" | "kana",
-): Card {
-  // First, enhance with hiragana and ruby text
-  const richItem = addKanaAndRuby([item])[0] // Get the first (and only) result
-
-  // Then transform to Card
-  const answerCategories = buildAnswerCategories(richItem, mode)
-
-  return {
-    ...richItem,
-    key: item.word,
-    answerCategories,
-    cardStyle: "multiple-choice",
-    wrongAnswerCount: 0,
-  }
-}
-
-/**
- * Transforms an array of VocabularyItems into Cards for practice mode.
- * @param items - An array of VocabularyItem objects to transform.
- * @param mode - The practice mode ("readings" or "kana").
- * @returns An array of Card objects ready for practice.
- */
-export function transformVocabToCards(
-  items: VocabularyItem[],
-  mode: "readings" | "kana",
-): Card[] {
-  return items.map((item) => transformVocabToCard(item, mode))
-}
-
-function buildAnswerCategories(
-  richItem: RichVocabItem,
-  mode: "readings" | "kana",
-): Card["answerCategories"] {
-  if (richItem.english.length === 0) {
-    throw new Error(
-      `Vocabulary item "${richItem.word}" missing English translations`,
-    )
-  }
-
-  if (mode === "kana" && richItem.hiragana.every((h) => !h)) {
-    throw new Error(
-      `Vocabulary item "${richItem.word}" missing hiragana for kana mode`,
-    )
-  }
-
-  const categories = [{ category: "English", answers: richItem.english }]
-
-  if (mode === "kana") {
-    categories.push({ category: "Kana", answers: richItem.hiragana })
-  }
-
-  return categories
 }

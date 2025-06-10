@@ -1,13 +1,14 @@
 // app/features/supabase/db/utils.ts
 import { createBackendClient } from "@/features/supabase/backendClient"
 import { createServerFn, serverOnly } from "@tanstack/solid-start"
-import type { Card } from "ts-fsrs"
+import type { Card, ReviewLog } from "ts-fsrs"
 import { getUser } from "../getUser"
 
 // Type for the returned FSRS card data
 export type FSRSCardData = {
   practice_item_key: string
   fsrs_card: any
+  fsrs_logs?: ReviewLog[] | null
 }
 
 // Get FSRS cards for specific practice items for a user
@@ -55,7 +56,7 @@ type UpsertFSRSCardArgs = {
   practice_item_key: string
   fsrs_card: Card
   lesson_id?: string | null
-  fsrs_log?: any[] | null
+  fsrs_logs?: ReviewLog[] | null
 }
 
 export const upsertFSRSCardForUser = createServerFn({ method: "POST" })
@@ -84,7 +85,7 @@ export const upsertFSRSCardForUser = createServerFn({ method: "POST" })
             practice_item_key: data.practice_item_key,
             lesson_id: data.lesson_id ?? null,
             fsrs_card: fsrsCardJson,
-            fsrs_log: data.fsrs_log ?? null,
+            fsrs_logs: data.fsrs_logs ?? null,
             due_at: fsrsCardJson.due,
             stability: fsrsCardJson.stability,
           },

@@ -7,41 +7,55 @@ import {
   onMount,
   Show,
 } from "solid-js"
-import { presentMultipleChoiceOptions } from "./multiple-choice"
-import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { createStore } from "solid-js/store"
-import { MultipleChoiceButtonState } from "../../types"
+import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
+import { Rating } from "ts-fsrs"
+import type { PracticeCard, MultipleChoiceButtonState } from "../../types"
 
 export default function MultipleChoiceComponent() {
-  const context = useVocabPracticeContext()
+  const { state, setState } = useVocabPracticeContext()
+  const manager = () => state.manager!
 
-  // Store for button states (selected/correct)
-  const [buttonStore, setButtonStore] = createStore<
+  // The current card is derived from the reactive `activeQueue` in the store.
+  const currentCard = createMemo(() => {
+    if (state.activeQueue.length === 0) return null
+    return manager().getCardFromMap(state.activeQueue[0])
+  })
+
+  const [buttonStates, setButtonStates] = createStore<
     MultipleChoiceButtonState[]
-  >(Array(4).fill({ isSelected: false, isCorrect: false }))
+  >([])
 
-  // Generate choices for the current card
-  const choices = createMemo(() =>
-    presentMultipleChoiceOptions(
-      context.deckState.workingSet,
-      context.gameState.currentCardIndex,
-    ),
-  )
+  // Generate 4 multiple-choice options from the entire card map
+  const choices = createMemo(() => {
+    const card = currentCard()
+    if (!card) return []
 
-  // Reset button states when choices change
+    const allCards = Array.from(manager().getCardMap().values())
+    const wrongOptions = allCards
+      .filter((c) => c.key !== card.key)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3)
+
+    return [card, ...wrongOptions].sort(() => 0.5 - Math.random())
+  })
+
+  // Reset local UI state whenever the card changes
   createEffect(() => {
-    setButtonStore(
-      choices().options.map(() => ({ isSelected: false, isCorrect: false })),
+    // This effect depends on choices(), which depends on currentCard().
+    // It will run when a new card is presented.
+    setButtonStates(
+      choices().map(() => ({ isSelected: false, isCorrect: false })),
     )
   })
 
-  // Keyboard support for 1-4
+  // Keyboard support for number keys 1-4
   onMount(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (context.gameState.hasUserAnswered) return
+      if (state.isAnswered) return
       const num = parseInt(e.key)
-      if (num >= 1 && num <= choices().options.length) {
-        handleSelection(num - 1)
+      if (num >= 1 && num <= choices().length) {
+        handleSelection(choices()[num - 1])
       }
     }
     window.addEventListener("keydown", handleKeyPress)
@@ -49,60 +63,59 @@ export default function MultipleChoiceComponent() {
   })
 
   // Handle user selection
-  function handleSelection(selectionIndex: number) {
-    const { correctOption } = choices()
-    const correctIndex = choices().options.indexOf(correctOption)
-    context.setGameState({
-      hasUserAnswered: true,
-      isAnswerCorrect: selectionIndex === correctIndex,
-    })
-    setButtonStore(
-      buttonStore.map((_, index) => ({
-        isSelected: index === selectionIndex,
-        isCorrect: index === correctIndex,
+  function handleSelection(selectedCard: PracticeCard) {
+    if (state.isAnswered) return
+
+    const card = currentCard()
+    if (!card) return
+
+    const isCorrect = selectedCard.key === card.key
+    const rating = isCorrect ? Rating.Good : Rating.Again
+
+    // Set button colors for immediate visual feedback
+    setButtonStates(
+      choices().map((option) => ({
+        isSelected: option.key === selectedCard.key,
+        isCorrect: option.key === card.key,
       })),
     )
+
+    // Set the global state to show the "Next" button and store the rating.
+    // This does NOT advance the card.
+    setState({
+      isAnswered: true,
+      lastRating: rating,
+    })
   }
 
-  // Render
   return (
     <div class="space-y-5">
-      <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
-        <For each={choices().options}>
-          {(option, index) => (
-            <MultipleChoiceButton
-              option={option}
-              index={index()}
-              buttonState={buttonStore[index()]}
-              isAnswered={context.gameState.hasUserAnswered}
-              onSelect={handleSelection}
-              enabledAnswerCategories={context.settings.enabledAnswerCategories}
-            />
-          )}
-        </For>
-      </div>
+      <Show when={buttonStates.length > 0 && currentCard()}>
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
+          <For each={choices()}>
+            {(option, index) => (
+              <MultipleChoiceButton
+                option={option}
+                index={index()}
+                buttonState={buttonStates[index()]}
+                isAnswered={state.isAnswered} // Read from global state
+                onSelect={() => handleSelection(option)}
+              />
+            )}
+          </For>
+        </div>
+      </Show>
     </div>
   )
 }
 
 function MultipleChoiceButton(props: {
-  option: any
+  option: PracticeCard
   index: number
   buttonState: MultipleChoiceButtonState
   isAnswered: boolean
-  onSelect: (index: number) => void
-  enabledAnswerCategories: string[]
+  onSelect: () => void
 }) {
-  // Answers to display
-  const enabledAnswers = createMemo(() =>
-    props.option.answerCategories
-      .filter((object) =>
-        props.enabledAnswerCategories.includes(object.category),
-      )
-      .flatMap((category) => category.answers),
-  )
-
-  // Button classes
   const buttonClasses = () => {
     let classes =
       "font-japanese relative min-h-20 w-full flex-col items-start justify-center rounded-xl p-4 text-start text-lg shadow-md duration-75 ease-in-out hover:scale-[98.5%]"
@@ -115,15 +128,14 @@ function MultipleChoiceButton(props: {
         classes += " bg-background opacity-60"
       }
     } else {
-      classes += " bg-background opacity-60"
+      classes += " bg-background hover:bg-muted"
     }
     return classes
   }
 
-  // Render
   return (
     <button
-      onClick={() => props.onSelect(props.index)}
+      onClick={props.onSelect}
       disabled={props.isAnswered}
       class={buttonClasses()}
       type="button"
@@ -131,24 +143,17 @@ function MultipleChoiceButton(props: {
       tabIndex={0}
       aria-pressed={props.buttonState.isSelected}
       aria-disabled={props.isAnswered}
-      onKeyDown={(e) => {
-        if ((e.key === "Enter" || e.key === " ") && !props.isAnswered) {
-          e.preventDefault()
-          props.onSelect(props.index)
-        }
-      }}
     >
-      {/* Option number indicator - hidden on mobile */}
       <div class="bg-card-foreground/70 text-muted-foreground absolute top-3 right-3 hidden h-6 w-6 items-center justify-center rounded-full text-sm font-bold lg:flex">
         {props.index + 1}
       </div>
       <div class="w-full space-y-2 overflow-x-auto">
         <p class="text-lg font-bold lg:text-xl">
-          {enabledAnswers().join(", ")}
+          {props.option.validAnswers.join(", ")}
         </p>
-        <Show when={props.option.particles}>
+        <Show when={props.option.vocab.particles}>
           <div class="space-y-1">
-            <For each={props.option.particles}>
+            <For each={props.option.vocab.particles}>
               {(object) => (
                 <div class="text-sm font-light">
                   {object.label ? (

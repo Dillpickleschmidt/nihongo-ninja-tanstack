@@ -2,29 +2,48 @@
 import { For, Show, createMemo } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
-import { getUniqueCards } from "../../logic/deck-utils"
-import type { Card } from "@/data/types"
+import type { PracticeCard } from "../../types"
 
-export type AnswerCategory = {
-  answers: string[]
-  category: string
+// Define the shape of the data needed for the summary component
+type ReviewSummaryData = {
+  card: PracticeCard
+  wasCorrect: boolean
 }
 
 export default function ReviewPageComponent() {
-  const context = useVocabPracticeContext()
+  const { state, setState } = useVocabPracticeContext()
+  const manager = () => state.manager!
 
-  const uniqueCards = createMemo(() => {
-    return getUniqueCards(context.deckState.recentlySeenCards)
+  // Create the list of cards for review from the recentReviewHistory
+  const reviewedItems = createMemo(() => {
+    // Use a Map to get the last result for each unique key, preserving order
+    const uniqueLastReviews = new Map<string, boolean>()
+    for (const review of state.recentReviewHistory) {
+      uniqueLastReviews.set(review.key, review.wasCorrect)
+    }
+
+    const summaryData: ReviewSummaryData[] = []
+    uniqueLastReviews.forEach((wasCorrect, key) => {
+      const card = manager().getCardFromMap(key)
+      if (card) {
+        summaryData.push({ card, wasCorrect })
+      }
+    })
+    return summaryData
   })
 
-  const handleContinue = () => {
-    context.setDeckState({ recentlySeenCards: [] }) // Clear recently seen cards
-    context.setGameState({ currentPage: "practice" })
+  function handleContinue() {
+    // Clear the batch history
+    setState("recentReviewHistory", [])
+
+    // Determine the next page to go to
+    const nextStyle = manager().getCurrentCard().sessionStyle
+    const nextPage = nextStyle === "flashcard" ? "fsrs-flashcard" : "practice"
+    setState("currentPage", nextPage)
   }
 
   return (
     <div class="min-h-screen">
-      {/* Header */}
       <div class="px-4 pt-14 pb-10 lg:pt-18 lg:pb-12">
         <div class="mx-auto max-w-3xl text-center">
           <h1 class="text-3xl font-bold lg:text-5xl">
@@ -32,19 +51,20 @@ export default function ReviewPageComponent() {
           </h1>
         </div>
       </div>
-
-      {/* Content */}
       <div class="px-4 pb-28">
         <div class="mx-auto max-w-3xl">
           <div class="grid gap-4 lg:gap-5">
-            <For each={uniqueCards()}>
-              {(card) => <ReviewCardSummary card={card} />}
+            <For each={reviewedItems()}>
+              {(item) => (
+                <ReviewCardSummary
+                  card={item.card}
+                  wasCorrect={item.wasCorrect}
+                />
+              )}
             </For>
           </div>
         </div>
       </div>
-
-      {/* Continue Button */}
       <div class="fixed right-0 bottom-0 left-0 z-50 p-4">
         <div class="mx-auto max-w-md">
           <Button
@@ -75,77 +95,26 @@ export default function ReviewPageComponent() {
   )
 }
 
-function ReviewCardSummary(props: { card: Card }) {
-  const context = useVocabPracticeContext()
-
-  const visibleAnswerCategories = createMemo(() =>
-    props.card.answerCategories.filter(
-      (category) =>
-        context.settings.enabledAnswerCategories.includes(category.category) &&
-        category.answers.length > 0,
-    ),
-  )
+function ReviewCardSummary(props: { card: PracticeCard; wasCorrect: boolean }) {
+  const wasAnsweredIncorrectly = () => !props.wasCorrect
 
   return (
     <div class="bg-card relative overflow-hidden rounded-xl p-5 shadow-md">
-      {/* Card Title with Particles */}
       <p
-        class={`${props.card.wrongAnswerCount > 0 ? "text-red-500" : "text-orange-400 saturate-[125%]"} mb-3 text-xl font-bold lg:text-2xl`}
+        class={`${wasAnsweredIncorrectly() ? "text-red-500" : "text-orange-400 saturate-[125%]"} mb-3 text-xl font-bold lg:text-2xl`}
       >
-        <span class="mr-2">{props.card.key}</span>
-        <Show when={props.card.particles}>
-          <For each={props.card.particles}>
-            {(particleObj, index) => (
-              <span class="text-base font-light">
-                <Show
-                  when={particleObj.label}
-                  fallback={
-                    <span>
-                      particle:{" "}
-                      <span class="font-japanese">{particleObj.particle}</span>
-                    </span>
-                  }
-                >
-                  <span>
-                    {particleObj.label} -{" "}
-                    <span class="font-japanese">{particleObj.particle}</span>
-                  </span>
-                </Show>
-                {index() < props.card.particles!.length - 1 && ", "}
-              </span>
-            )}
-          </For>
-        </Show>
+        <span class="mr-2">{props.card.prompt}</span>
       </p>
-
-      {/* Answer Categories */}
-      <For each={visibleAnswerCategories()}>
-        {(categoryObj) => (
-          <div class="space-y-1.5">
-            <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
-              {categoryObj.category}:
-            </p>
-            <For each={categoryObj.answers}>
-              {(answer) => (
-                <p class="text-primary ml-4 text-base font-semibold lg:text-lg">
-                  <Show
-                    when={categoryObj.category === "Kana"}
-                    fallback={answer}
-                  >
-                    <span class="font-japanese text-lg lg:text-xl">
-                      {answer}
-                    </span>
-                  </Show>
-                </p>
-              )}
-            </For>
-          </div>
-        )}
-      </For>
-
-      {/* Status Indicator Bar */}
+      <div class="space-y-1.5">
+        <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
+          Answer:
+        </p>
+        <p class="text-primary ml-4 text-base font-semibold lg:text-lg">
+          {props.card.validAnswers.join(", ")}
+        </p>
+      </div>
       <div
-        class={`absolute top-0 right-0 h-full ${props.card.wrongAnswerCount > 0 ? "w-4 bg-red-500" : "w-2 bg-emerald-500/50"}`}
+        class={`absolute top-0 right-0 h-full ${wasAnsweredIncorrectly() ? "w-4 bg-red-500" : "w-2 bg-emerald-500/50"}`}
       />
     </div>
   )

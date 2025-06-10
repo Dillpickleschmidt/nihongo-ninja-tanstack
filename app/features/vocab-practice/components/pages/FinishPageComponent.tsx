@@ -3,10 +3,20 @@ import { For, Show, createMemo } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { Link } from "@tanstack/solid-router"
-import type { Card } from "@/data/types"
+import type { PracticeCard } from "../../types"
+import { State } from "ts-fsrs"
 
 export default function FinishPageComponent() {
-  const context = useVocabPracticeContext()
+  const { state } = useVocabPracticeContext()
+  const manager = () => state.manager!
+
+  // Get all cards from the manager's map and filter for just the module cards
+  const moduleCards = createMemo(() => {
+    if (!manager()) return []
+    return Array.from(manager().getCardMap().values()).filter(
+      (card) => card.sessionStyle !== "flashcard",
+    )
+  })
 
   return (
     <div class="min-h-screen">
@@ -24,7 +34,7 @@ export default function FinishPageComponent() {
       <div class="px-4 pb-28">
         <div class="mx-auto max-w-3xl">
           <div class="grid gap-4 lg:gap-5">
-            <For each={context.deckState.allCards}>
+            <For each={moduleCards()}>
               {(card) => <CardSummary card={card} />}
             </For>
           </div>
@@ -63,24 +73,21 @@ export default function FinishPageComponent() {
   )
 }
 
-function CardSummary(props: { card: Card }) {
-  const context = useVocabPracticeContext()
+function CardSummary(props: { card: PracticeCard }) {
+const { state } = useVocabPracticeContext()
 
-  const visibleAnswerCategories = createMemo(() =>
-    props.card.answerCategories.filter(
-      (category) =>
-        context.settings.enabledAnswerCategories.includes(category.category) &&
-        category.answers.length > 0,
-    ),
-  )
+// Get the session-specific incorrect count from the map
+  const incorrectCount = () => state.incorrectAnswerMap.get(props.card.key) ?? 0
 
   return (
     <div class="bg-card relative overflow-hidden rounded-xl p-5 shadow-md">
       {/* Card Title with Particles */}
-      <p class="mb-3 text-xl font-bold text-orange-400 saturate-[125%] lg:text-2xl">
-        <span class="mr-2">{props.card.key}</span>
-        <Show when={props.card.particles}>
-          <For each={props.card.particles}>
+      <p
+        class={`${incorrectCount() > 0 ? "text-red-500" : "text-orange-400 saturate-[125%]"} mb-3 text-xl font-bold lg:text-2xl`}
+      >
+        <span class="mr-2">{props.card.prompt}</span>
+        <Show when={props.card.vocab.particles}>
+          <For each={props.card.vocab.particles}>
             {(particleObj, index) => (
               <span class="text-base font-light">
                 <Show
@@ -97,43 +104,28 @@ function CardSummary(props: { card: Card }) {
                     <span class="font-japanese">{particleObj.particle}</span>
                   </span>
                 </Show>
-                {index() < props.card.particles!.length - 1 && ", "}
+                {index() < props.card.vocab.particles!.length - 1 && ", "}
               </span>
             )}
           </For>
         </Show>
       </p>
 
-      {/* Answer Categories */}
-      <For each={visibleAnswerCategories()}>
-        {(categoryObj) => (
-          <div class="space-y-1.5">
-            <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
-              {categoryObj.category}:
-            </p>
-            <For each={categoryObj.answers}>
-              {(answer) => (
-                <p class="text-primary ml-4 text-base font-semibold lg:text-lg">
-                  <Show
-                    when={categoryObj.category === "Kana"}
-                    fallback={answer}
-                  >
-                    <span class="font-japanese text-lg lg:text-xl">
-                      {answer}
-                    </span>
-                  </Show>
-                </p>
-              )}
-            </For>
-          </div>
-        )}
-      </For>
+      {/* Answer */}
+      <div class="space-y-1.5">
+        <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
+          Answer:
+        </p>
+        <p class="text-primary ml-4 text-base font-semibold lg:text-lg">
+          {props.card.validAnswers.join(", ")}
+        </p>
+      </div>
 
       {/* Missed Attempts Indicator */}
-      <Show when={props.card.wrongAnswerCount > 0}>
+<Show when={incorrectCount() > 0}>
         <p class="mt-3 text-base text-red-500">
-          You missed this question {props.card.wrongAnswerCount}{" "}
-          {props.card.wrongAnswerCount === 1 ? "time" : "times"}
+          You missed this question {incorrectCount()}{" "}
+          {incorrectCount() === 1 ? "time" : "times"} this session.
         </p>
       </Show>
     </div>

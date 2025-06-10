@@ -4,33 +4,63 @@ import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { Button } from "@/components/ui/button"
 import { Loader2, Settings } from "lucide-solid"
 import DeckSettingsDialogComponent from "../DeckSettingsDialogComponent"
-import type { Card } from "@/data/types"
+import { PracticeSessionManager } from "../../logic/PracticeSessionManager"
+import { initializePracticeSession } from "../../logic/data-initialization"
+import type { PracticeMode } from "../../types"
 import type { FSRSCardData } from "@/features/supabase/db/utils"
+import type { RichVocabItem } from "@/data/types"
+import { createMemo } from "solid-js"
+import { vocabulary } from "@/data/vocabulary"
 
 type StartPageProps = {
   deckName: string | JSX.Element
-  previewCards: Card[]
+  newVocabulary: RichVocabItem[]
   moduleFSRSCards: Promise<FSRSCardData[]> | null
   dueFSRSCards: Promise<FSRSCardData[]> | null
-  mode: string
+  mode: PracticeMode
+}
+
+function shuffleArray<T>(array: T[]): T[] {
+  return [...array].sort(() => Math.random() - 0.5)
 }
 
 export default function StartPageComponent(props: StartPageProps) {
-  const context = useVocabPracticeContext()
+  const { state, setState } = useVocabPracticeContext()
   const [loading, setLoading] = createSignal(false)
 
-  async function handleStartButton() {
+  // Shuffle vocabulary if shuffleInput is enabled
+  const preparedVocabulary = createMemo(() => {
+    if (state.settings.shuffleInput) {
+      return shuffleArray(props.newVocabulary)
+    }
+    return props.newVocabulary
+  })
+
+  async function handleStart() {
     setLoading(true)
     try {
-      const [moduleFSRSCards, dueFSRSCards] = await Promise.all([
+      // 1. Await the resolution of the FSRS card promises
+      const [resolvedModuleCards, resolvedDueCards] = await Promise.all([
         props.moduleFSRSCards,
         props.dueFSRSCards,
       ])
-      context.setDeckState({
-        moduleFSRSCards: moduleFSRSCards ?? [],
-      })
-      context.setDeckState({ dueFSRSCards: dueFSRSCards ?? [] })
-      context.setGameState({ started: true })
+
+      // 2. Now that data is resolved, initialize the session state
+      const initialState = initializePracticeSession(
+        preparedVocabulary(),
+        resolvedModuleCards || [],
+        resolvedDueCards || [],
+        props.mode,
+        vocabulary,
+      )
+
+      // 3. Create the manager instance with the fully prepared state
+      const manager = new PracticeSessionManager(initialState)
+      setState("manager", manager)
+      setState("activeQueue", manager.getActiveQueue())
+    } catch (error) {
+      console.error("Failed to initialize practice session:", error)
+      // Optionally, show an error message to the user
     } finally {
       setLoading(false)
     }
@@ -40,14 +70,12 @@ export default function StartPageComponent(props: StartPageProps) {
     <div class="min-h-screen">
       <StartPageHeader
         deckName={props.deckName}
-        previewCount={props.previewCards.length}
+        previewCount={props.newVocabulary.length}
       />
-
-      {/* Preview Cards */}
       <div class="px-4 pb-28">
         <div class="mx-auto max-w-3xl">
           <div class="grid gap-4 lg:gap-5">
-            <For each={props.previewCards}>
+            <For each={props.newVocabulary}>
               {(entry, index) => (
                 <StartPagePreviewCard
                   entry={entry}
@@ -59,8 +87,7 @@ export default function StartPageComponent(props: StartPageProps) {
           </div>
         </div>
       </div>
-
-      <StartPageButton loading={loading()} onClick={handleStartButton} />
+      <StartPageButton loading={loading()} onClick={handleStart} />
     </div>
   )
 }
@@ -98,47 +125,30 @@ function StartPageHeader(props: {
 }
 
 function StartPagePreviewCard(props: {
-  entry: Card
+  entry: RichVocabItem
   index: number
-  mode: string
+  mode: PracticeMode
 }) {
+  const answer = () =>
+    props.mode === "readings"
+      ? props.entry.english.join(", ")
+      : props.entry.hiragana.join(", ")
+
   return (
     <div class="bg-card group relative overflow-hidden rounded-xl p-5 shadow-md transition-all duration-200 hover:shadow-lg">
       <div class="flex items-start justify-between">
         <div class="flex-1">
           <h3 class="mb-3 text-xl font-bold text-orange-400 saturate-[125%] lg:text-2xl">
-            {props.entry.key}
+            {props.entry.word}
           </h3>
-          <For
-            each={props.entry.answerCategories.filter(
-              (category) =>
-                (props.mode === "readings"
-                  ? category.category === "English"
-                  : category.category === "Kana") &&
-                category.answers.length > 0,
-            )}
-          >
-            {(categoryObj) => (
-              <div class="space-y-1.5">
-                <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
-                  {categoryObj.category}:
-                </p>
-                <For each={categoryObj.answers}>
-                  {(answer) => (
-                    <p class="text-primary text-base font-bold lg:text-lg">
-                      {categoryObj.category === "Kana" ? (
-                        <span class="font-japanese text-lg lg:text-xl">
-                          {answer}
-                        </span>
-                      ) : (
-                        answer
-                      )}
-                    </p>
-                  )}
-                </For>
-              </div>
-            )}
-          </For>
+          <div class="space-y-1.5">
+            <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
+              Answer:
+            </p>
+            <p class="text-primary text-base font-bold lg:text-lg">
+              {answer()}
+            </p>
+          </div>
         </div>
         <div class="bg-muted text-muted-foreground ml-4 flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold">
           {props.index + 1}

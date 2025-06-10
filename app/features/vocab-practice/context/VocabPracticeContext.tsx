@@ -1,98 +1,71 @@
 // vocab-practice/context/VocabPracticeContext.tsx
 import { createContext, JSX, useContext, createEffect } from "solid-js"
-import { createStore } from "solid-js/store"
-import { GameState, DeckState, Settings } from "../types"
+import { createStore, SetStoreFunction } from "solid-js/store"
+import { PracticeSessionManager } from "../logic/PracticeSessionManager"
+import type { Settings, CurrentPage } from "../types"
+import { Rating } from "ts-fsrs" // Import Rating
 
-// Constants
-const CARDS_UNTIL_REVIEW = 7
+// --- LOCAL TYPE DEFINITIONS FOR THE CONTEXT ---
 
-// Separate initial states for clarity
-export const initialGameState: GameState = {
-  currentPage: "start",
-  currentCardIndex: 0,
-  hasUserAnswered: false,
-  isAnswerCorrect: false,
-  started: false,
-}
-
-export const initialDeckState: DeckState = {
-  allCards: [],
-  workingSet: [],
-  recentlySeenCards: [],
-  deckRefillIndex: 0,
-  moduleFSRSCards: [],
-  dueFSRSCards: [],
-}
-
-export const initialSettings: Settings = {
-  practiceMode: "readings",
-  shuffleInput: true,
-  enabledAnswerCategories: [],
-}
-
-export type VocabPracticeContextType = {
-  gameState: GameState
-  setGameState: (
-    update: Partial<GameState> | ((prev: GameState) => GameState),
-  ) => void
-  deckState: DeckState
-  setDeckState: (
-    update: Partial<DeckState> | ((prev: DeckState) => DeckState),
-  ) => void
+type AppState = {
+  currentPage: CurrentPage
+  manager: PracticeSessionManager | null
   settings: Settings
-  setSettings: (
-    update: Partial<Settings> | ((prev: Settings) => Settings),
-  ) => void
+  activeQueue: string[]
+  recentReviewHistory: { key: string; wasCorrect: boolean }[]
+  incorrectAnswerMap: Map<string, number>
+  isAnswered: boolean
+  lastRating: Rating | null
 }
+
+type VocabPracticeContextType = {
+  state: AppState
+  setState: SetStoreFunction<AppState>
+}
+
+// --- CONTEXT CREATION & PROVIDER ---
+
+export const CARDS_UNTIL_REVIEW = 7
 
 const VocabPracticeContext = createContext<VocabPracticeContextType>()
 
 export function VocabPracticeContextProvider(props: { children: JSX.Element }) {
-  const [gameState, setGameState] = createStore(initialGameState)
-  const [deckState, setDeckState] = createStore(initialDeckState)
-  const [settings, setSettings] = createStore(initialSettings)
-
-  // --- PAGE SWITCHING LOGIC ---
-
-  // 1. Start: When started, decide which page to go to
-  createEffect(() => {
-    if (gameState.currentPage === "start" && gameState.started) {
-      // if (deckState.dueFSRSCards.length > 0) {
-      //   setGameState({ currentPage: "fsrs-flashcard" })
-      // } else {
-      setGameState({ currentPage: "practice" })
-      // }
-    }
+  const [state, setState] = createStore<AppState>({
+    currentPage: "start",
+    manager: null,
+    activeQueue: [],
+    recentReviewHistory: [],
+    incorrectAnswerMap: new Map(),
+    // --- INITIALIZE NEW STATE ---
+    isAnswered: false,
+    lastRating: null,
+    settings: {
+      practiceMode: "readings",
+      shuffleInput: true,
+      enabledAnswerCategories: [],
+    },
   })
 
-  // 2. Practice: When enough cards have been seen, go to review
-  createEffect(() => {
-    if (
-      gameState.currentPage === "practice" &&
-      deckState.recentlySeenCards.length >= CARDS_UNTIL_REVIEW
-    ) {
-      setGameState({ currentPage: "review" })
-    }
-  })
+  // --- AUTOMATIC PAGE SWITCHING LOGIC ---
 
-  // 3. Practice: When all cards are done, go to finish
   createEffect(() => {
-    if (
-      gameState.currentPage === "practice" &&
-      deckState.allCards.length > 0 &&
-      deckState.allCards.every((card) => card.cardStyle === "done")
+    if (state.manager && state.manager.isFinished()) {
+      setState("currentPage", "finish")
+    } else if (state.recentReviewHistory.length >= CARDS_UNTIL_REVIEW) {
+      setState("currentPage", "review")
+    } else if (
+      state.manager?.getCurrentCard().sessionStyle === "multiple-choice" ||
+      state.manager?.getCurrentCard().sessionStyle === "write"
     ) {
-      setGameState({ currentPage: "finish" })
+      setState("currentPage", "practice")
+    } else if (state.manager?.getCurrentCard().sessionStyle === "flashcard") {
+      setState("currentPage", "fsrs-flashcard")
     }
   })
 
   const contextValue: VocabPracticeContextType = {
-    gameState,
-    setGameState,
-    deckState,
-    setDeckState,
-    settings,
-    setSettings,
+    state,
+    setState,
   }
 
   return (
@@ -111,6 +84,3 @@ export function useVocabPracticeContext() {
   }
   return context
 }
-
-// Export the constant so it can be used elsewhere
-export { CARDS_UNTIL_REVIEW }

@@ -1,6 +1,6 @@
 // app/routes/practice/$practiceID.tsx
 import { createFileRoute, notFound } from "@tanstack/solid-router"
-import { loadModuleData } from "@/data/utils/vocab"
+import { addKanaAndRuby, loadModuleData } from "@/data/utils/vocab"
 import VocabPractice from "@/features/vocab-practice/VocabPractice"
 import {
   type FSRSCardData,
@@ -12,6 +12,7 @@ export const Route = createFileRoute("/practice/$practiceID")({
   loader: ({ context, location }) => {
     try {
       const localData = loadModuleData(location.pathname)
+      const richVocabulary = addKanaAndRuby(localData.vocabulary)
       // get FSRS cards for current module (don't await and resolve later)
       let moduleFSRSCards: Promise<FSRSCardData[]> | null
       let dueFSRSCards: Promise<FSRSCardData[]> | null
@@ -27,7 +28,7 @@ export const Route = createFileRoute("/practice/$practiceID")({
       }
       return {
         module: localData.module,
-        newVocabulary: localData.vocabulary,
+        newVocabulary: richVocabulary,
         moduleFSRSCards,
         dueFSRSCards,
         user: context.user,
