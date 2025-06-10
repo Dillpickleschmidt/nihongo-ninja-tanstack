@@ -5845,6 +5845,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
+  // FIX add chapter 7 verbs
   晴れ: {
     word: "晴れ",
     furigana: "晴[は]れ",

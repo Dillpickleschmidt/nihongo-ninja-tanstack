@@ -1,6 +1,5 @@
 // --- Top-Level Collection Types ---
 
-import { EnumType } from "typescript"
 import { ResourceProvider } from "../resources-config"
 
 // Textbooks: Keyed by a unique textbook ID
@@ -17,6 +16,9 @@ export type ExternalResourceCollection = Record<string, ExternalResource>
 
 // Vocabulary: Keyed by the vocabulary word itself
 export type VocabularyCollection = Record<string, VocabularyItem>
+
+// All vocabulary sets, keyed by their unique ID.
+export type VocabularySetCollection = Record<string, IndividualVocabularySet>
 
 // --- Textbook, Chapter, and Learning Path Types ---
 
@@ -48,6 +50,12 @@ export interface Chapter {
   external_resource_ids?: string[] // Master list of all external resources for the chapter
 }
 
+// A named set of vocabulary keys (words), for use in modules.
+export interface IndividualVocabularySet {
+  id: string
+  keys: string[]
+}
+
 // --- Dynamic Module Types ---
 
 export interface DynamicModule {
@@ -56,14 +64,14 @@ export interface DynamicModule {
   textbook_id: string
   chapter_id: string
   title: string
-  session_type: // Specific type of dynamic module
-  | "vocab-list" // Counts for 2 minutes
+  session_type:
+    | "vocab-list" // Counts for 2 minutes
     | "vocab-sublist" // Counts for 10 minutes
     | "vocab-practice" // Each partial answer counts for 15 seconds
     | "sentence-practice" // Each answer counts for 1 minute
     | "vocab-test" // Completing it counts for 15 minutes
   part_of_speech_category?: string
-  ordered_vocab_keys: string[] // Vocab for this specific dynamic module
+  vocab_set_ids: string[]
   instructions?: string
 }
 
@@ -73,8 +81,8 @@ export interface StaticModule {
   id: string // Unique identifier for the static module
   title: string
   link: string // URL to the static content
-  lesson_type: // Category of the static content
-  | "grammar-notes"
+  lesson_type:
+    | "grammar-notes"
     | "chapter-vocab-overview"
     | "lesson"
     | "vocab-test"

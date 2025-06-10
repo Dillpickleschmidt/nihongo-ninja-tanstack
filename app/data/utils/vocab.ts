@@ -1,12 +1,8 @@
 // app/data/utils/vocab.ts
 import { dynamic_modules } from "@/data/dynamic_modules"
 import { vocabulary } from "@/data/vocabulary"
-import type {
-  Card,
-  DynamicModule,
-  RichVocabItem,
-  VocabularyItem,
-} from "@/data/types"
+import { vocabularySets } from "@/data/vocabulary_sets"
+import type { DynamicModule, RichVocabItem, VocabularyItem } from "@/data/types"
 import type { KanaItem } from "@/features/kana-quiz/hooks/useKanaQuiz"
 
 /**
@@ -21,11 +17,26 @@ export function getDynamicModule(moduleId: string): DynamicModule | null {
  */
 export function getModuleVocabulary(moduleId: string): VocabularyItem[] {
   const module = getDynamicModule(moduleId)
-  if (!module || !module.ordered_vocab_keys) {
+  if (!module || !module.vocab_set_ids) {
     return []
   }
 
-  return module.ordered_vocab_keys
+  // Gather all vocab keys from all sets, preserving order and uniqueness
+  const seen = new Set<string>()
+  const vocabKeys: string[] = []
+  for (const setId of module.vocab_set_ids) {
+    const set = vocabularySets[setId]
+    if (set && Array.isArray(set.keys)) {
+      for (const key of set.keys) {
+        if (!seen.has(key)) {
+          seen.add(key)
+          vocabKeys.push(key)
+        }
+      }
+    }
+  }
+
+  return vocabKeys
     .map((key) => vocabulary[key])
     .filter(Boolean) as VocabularyItem[]
 }

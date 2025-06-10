@@ -29,7 +29,7 @@ export const textbooks: TextbookCollection = {
           },
           {
             type: "dynamic_module",
-            id: "contracted-sounds-quiz",
+            id: "dakuten-handakuten-quiz",
           },
           { type: "static_module", id: "contracted-sounds" },
           {

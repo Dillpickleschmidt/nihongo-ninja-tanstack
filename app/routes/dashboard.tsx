@@ -24,7 +24,6 @@ import { StrugglesSection } from "@/features/dashboard/components/StrugglesSecti
 import { HistorySection } from "@/features/dashboard/components/HistorySection"
 import { AllContentList } from "@/features/dashboard/components/AllContentList"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
-import { usePageTransition } from "@/context/TransitionContext"
 
 const dashboardSearchSchema = z.object({
   chapter: z.string().optional(),
@@ -91,8 +90,6 @@ export const Route = createFileRoute("/dashboard")({
 function RouteComponent() {
   const loaderData = Route.useLoaderData()
   const search = Route.useSearch()
-  const navigate = useNavigate()
-  const { setUserHasNavigated } = usePageTransition()
 
   createEffect(() => {
     const currentSearch = search()
