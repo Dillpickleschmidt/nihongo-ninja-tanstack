@@ -674,6 +674,13 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
+  おはよう: {
+    word: "おはよう",
+    furigana: "おはよう",
+    english: ["Good morning."],
+    chapter: 0,
+  },
+
   こんにちは: {
     word: "こんにちは",
     furigana: "こんにちは",
@@ -758,6 +765,13 @@ export const vocabulary: VocabularyCollection = {
     ],
     videos: [],
   },
+  ありがとう: {
+    word: "ありがとう",
+    furigana: "ありがとう",
+    english: ["Thank you."],
+    chapter: 0,
+  },
+
   さようなら: {
     word: "さようなら",
     furigana: "さようなら",
@@ -936,7 +950,7 @@ export const vocabulary: VocabularyCollection = {
   ごちそうさまでした: {
     word: "ごちそうさまでした",
     furigana: "ごちそうさまでした",
-    english: ["That was delicious", "said after eating"],
+    english: ["Thank you for the meal (after eating)"],
     chapter: 0,
     info: [
       "Said after eating, it's the classy way to say 'That was delicious.'",
@@ -966,9 +980,9 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  よろしくおねがいします: {
-    word: "よろしくおねがいします",
-    furigana: "よろしくおねがいします",
+  よろしくお願いします: {
+    word: "よろしくお願いします",
+    furigana: "よろしくお 願[ねが]いします",
     english: ["Please be kind to me", "Please take care of me"],
     chapter: 0,
     info: [
@@ -1271,9 +1285,9 @@ export const vocabulary: VocabularyCollection = {
   },
 
   // From List 1 (Time, Countries)
-  いま: {
-    word: "いま",
-    furigana: "いま",
+  今: {
+    word: "今",
+    furigana: "今[いま]",
     english: ["now", "right now"],
     chapter: 1,
     info: [
@@ -1281,9 +1295,9 @@ export const vocabulary: VocabularyCollection = {
       "It is commonly used in daily conversations to indicate the present time.",
     ],
   },
-  ごぜん: {
-    word: "ごぜん",
-    furigana: "ごぜん",
+  午前: {
+    word: "午前",
+    furigana: "午前[ごぜん]",
     english: ["A.M.", "morning"],
     chapter: 1,
     info: [
@@ -1291,9 +1305,9 @@ export const vocabulary: VocabularyCollection = {
       "It is typically used with numbers to specify times in the morning.",
     ],
   },
-  ごご: {
-    word: "ごご",
-    furigana: "ごご",
+  午後: {
+    word: "午後",
+    furigana: "午後[ごご]",
     english: ["P.M.", "afternoon"],
     chapter: 1,
     info: [
@@ -1301,9 +1315,9 @@ export const vocabulary: VocabularyCollection = {
       "It is used with numbers to specify times in the afternoon or evening.",
     ],
   },
-  "～じ": {
-    word: "～じ",
-    furigana: "～じ",
+  "～時": {
+    word: "～時",
+    furigana: "～時[じ]",
     english: ["...o'clock", "...hour"],
     chapter: 1,
     info: [
@@ -1311,9 +1325,9 @@ export const vocabulary: VocabularyCollection = {
       "It is added after numbers to denote specific hours.",
     ],
   },
-  いちじ: {
-    word: "いちじ",
-    furigana: "いちじ",
+  一時: {
+    word: "一時",
+    furigana: "一時[いちじ]",
     english: ["one o'clock", "1:00"],
     chapter: 1,
     info: [
@@ -1321,9 +1335,9 @@ export const vocabulary: VocabularyCollection = {
       'It combines "いち" (one) with "じ" (o\'clock) to specify the time.',
     ],
   },
-  はん: {
-    word: "はん",
-    furigana: "はん",
+  半: {
+    word: "半",
+    furigana: "半[はん]",
     english: ["half", "half past"],
     chapter: 1,
     info: [
@@ -1331,9 +1345,9 @@ export const vocabulary: VocabularyCollection = {
       "It can be combined with an hour to specify the time.",
     ],
   },
-  にじはん: {
-    word: "にじはん",
-    furigana: "にじはん",
+  二時半: {
+    word: "二時半",
+    furigana: "二時半[にじはん]",
     english: ["half past two", "2:30"],
     chapter: 1,
     info: [
@@ -1341,9 +1355,9 @@ export const vocabulary: VocabularyCollection = {
       'It combines "にじ" (two o\'clock) with "はん" (half) to specify the time.',
     ],
   },
-  にほん: {
-    word: "にほん",
-    furigana: "にほん",
+  日本: {
+    word: "日本",
+    furigana: "日本[にほん]",
     english: ["Japan"],
     chapter: 1,
     info: [
@@ -1381,9 +1395,9 @@ export const vocabulary: VocabularyCollection = {
       "Like other country names, it is written in katakana.",
     ],
   },
-  かんこく: {
-    word: "かんこく",
-    furigana: "かんこく",
+  韓国: {
+    word: "韓国",
+    furigana: "韓国[かんこく]",
     english: ["Korea", "South Korea"],
     chapter: 1,
     info: [
@@ -1401,9 +1415,9 @@ export const vocabulary: VocabularyCollection = {
       "It is written in katakana, following the convention for foreign country names.",
     ],
   },
-  ちゅうごく: {
-    word: "ちゅうごく",
-    furigana: "ちゅうごく",
+  中国: {
+    word: "中国",
+    furigana: "中国[ちゅうごく]",
     english: ["China"],
     chapter: 1,
     info: [
@@ -1443,57 +1457,53 @@ export const vocabulary: VocabularyCollection = {
   },
 
   // From List 2 (Family, School)
-  おかあさん: {
-    word: "おかあさん",
-    furigana: "おかあさん",
+  お母さん: {
+    word: "お母さん",
+    furigana: "お 母[かあ]さん",
     english: ["mother"],
     chapter: 1,
     info: [
-      '"おかあさん" is the polite way to refer to someone\'s mother.',
+      '"お母さん" is the polite way to refer to someone\'s mother.',
       "It can be used to refer to your own mother in a polite context or someone else's mother.",
       'In informal contexts, you might hear it as "かあさん".',
     ],
-    overwrite_word: "お母さん",
   },
-  おとうさん: {
-    word: "おとうさん",
-    furigana: "おとうさん",
+  お父さん: {
+    word: "お父さん",
+    furigana: "お 父[とう]さん",
     english: ["father"],
     chapter: 1,
     info: [
-      '"おとうさん" is the polite way to refer to someone\'s father.',
+      '"お父さん" is the polite way to refer to someone\'s father.',
       "It can be used to refer to your own father in a polite context or someone else's father.",
       'In informal contexts, you might hear it as "とうさん".',
     ],
-    overwrite_word: "お父さん",
   },
-  おねえさん: {
-    word: "おねえさん",
-    furigana: "おねえさん",
+  お姉さん: {
+    word: "お姉さん",
+    furigana: "お 姉[ねえ]さん",
     english: ["older sister"],
     chapter: 1,
     info: [
-      '"おねえさん" is the polite way to refer to someone\'s older sister.',
+      '"お姉さん" is the polite way to refer to someone\'s older sister.',
       "It can be used to refer to your own older sister in a polite context or someone else's older sister.",
       'In informal contexts, you might hear "ねえさん".',
     ],
-    overwrite_word: "お姉さん",
   },
-  おにいさん: {
-    word: "おにいさん",
-    furigana: "おにいさん",
+  お兄さん: {
+    word: "お兄さん",
+    furigana: "お 兄[にい]さん",
     english: ["older brother"],
     chapter: 1,
     info: [
-      '"おにいさん" is the polite way to refer to someone\'s older brother.',
+      '"お兄さん" is the polite way to refer to someone\'s older brother.',
       "It can be used to refer to your own older brother in a polite context or someone else's older brother.",
       'In informal contexts, you might hear "にいさん".',
     ],
-    overwrite_word: "お兄さん",
   },
-  いもうと: {
-    word: "いもうと",
-    furigana: "いもうと",
+  妹: {
+    word: "妹",
+    furigana: "妹[いもうと]",
     english: ["younger sister"],
     chapter: 1,
     info: [
@@ -1501,11 +1511,10 @@ export const vocabulary: VocabularyCollection = {
       "It is a term used without a polite prefix.",
       'For someone else\'s younger sister, you would say "いもうとさん".',
     ],
-    overwrite_word: "妹",
   },
-  おとうと: {
-    word: "おとうと",
-    furigana: "おとうと",
+  弟: {
+    word: "弟",
+    furigana: "弟[おとうと]",
     english: ["younger brother"],
     chapter: 1,
     info: [
@@ -1513,7 +1522,6 @@ export const vocabulary: VocabularyCollection = {
       "It is a term used without a polite prefix.",
       'For someone else\'s younger brother, you would say "おとうとさん".',
     ],
-    overwrite_word: "弟",
   },
   おばあさん: {
     word: "おばあさん",
@@ -1559,9 +1567,9 @@ export const vocabulary: VocabularyCollection = {
       'In informal contexts, you might hear "じさん" or "おじちゃん".',
     ],
   },
-  だいがく: {
-    word: "だいがく",
-    furigana: "だいがく",
+  大学: {
+    word: "大学",
+    furigana: "大学[だいがく]",
     english: ["college", "university"],
     chapter: 1,
     info: [
@@ -1569,11 +1577,10 @@ export const vocabulary: VocabularyCollection = {
       "It is used to describe institutions of higher education.",
       'It can also be part of compound words, such as "だいがくせい" (college student).',
     ],
-    overwrite_word: "大学",
   },
-  こうこう: {
-    word: "こうこう",
-    furigana: "こうこう",
+  高校: {
+    word: "高校",
+    furigana: "高校[こうこう]",
     english: ["high school"],
     chapter: 1,
     info: [
@@ -1581,22 +1588,20 @@ export const vocabulary: VocabularyCollection = {
       "It is the stage of education before college.",
       'Students in high school are referred to as "こうこうせい".',
     ],
-    overwrite_word: "高校",
   },
-  がくせい: {
-    word: "がくせい",
-    furigana: "がくせい",
+  学生: {
+    word: "学生",
+    furigana: "学生[がくせい]",
     english: ["student"],
     chapter: 1,
     info: [
       '"がくせい" is a general term for student.',
       "It can be used to refer to students of all educational levels.",
     ],
-    overwrite_word: "学生",
   },
-  だいがくせい: {
-    word: "だいがくせい",
-    furigana: "だいがくせい",
+  大学生: {
+    word: "大学生",
+    furigana: "大学生[だいがくせい]",
     english: ["college student"],
     chapter: 1,
     info: [
@@ -1604,11 +1609,10 @@ export const vocabulary: VocabularyCollection = {
       'It combines "だいがく" (college) and "せい" (student).',
       "It is commonly used to identify someone's educational status.",
     ],
-    overwrite_word: "大学生",
   },
-  りゅうがくせい: {
-    word: "りゅうがくせい",
-    furigana: "りゅうがくせい",
+  留学生: {
+    word: "留学生",
+    furigana: "留学生[りゅうがくせい]",
     english: ["international student"],
     chapter: 1,
     info: [
@@ -1616,11 +1620,10 @@ export const vocabulary: VocabularyCollection = {
       'It combines "りゅう" (to stay) and "がくせい" (student).',
       "It is used to describe students who study abroad.",
     ],
-    overwrite_word: "留学生",
   },
-  "～ねんせい": {
-    word: "～ねんせい",
-    furigana: "～ねんせい",
+  "～年生": {
+    word: "～年生",
+    furigana: "～ 年生[ねんせい]",
     english: ["...year student"],
     chapter: 1,
     info: [
@@ -1629,9 +1632,9 @@ export const vocabulary: VocabularyCollection = {
     ],
     overwrite_word: "年生",
   },
-  いちねんせい: {
-    word: "いちねんせい",
-    furigana: "いちねんせい",
+  一年生: {
+    word: "一年生",
+    furigana: "一年生[いちねんせい]",
     english: ["first-year student"],
     chapter: 1,
     info: [
@@ -1641,9 +1644,9 @@ export const vocabulary: VocabularyCollection = {
     ],
     overwrite_word: "一年生",
   },
-  せんこう: {
-    word: "せんこう",
-    furigana: "せんこう",
+  専攻: {
+    word: "専攻",
+    furigana: "専攻[せんこう]",
     english: ["major"],
     chapter: 1,
     info: [
@@ -1963,85 +1966,78 @@ export const vocabulary: VocabularyCollection = {
   },
 
   // From List 5 (Occupations, Fields of Study, English)
-  いしゃ: {
-    word: "いしゃ",
-    furigana: "いしゃ",
+  医者: {
+    word: "医者",
+    furigana: "医者[いしゃ]",
     english: ["doctor"],
     chapter: 1,
     info: [
       "It is used to refer to medical professionals who diagnose and treat illnesses.",
     ],
-    overwrite_word: "医者",
   },
-  かいしゃいん: {
-    word: "かいしゃいん",
-    furigana: "かいしゃいん",
+  会社員: {
+    word: "会社員",
+    furigana: "会社員[かいしゃいん]",
     english: ["office worker", "company employee"],
     chapter: 1,
     info: [
       "It is used to describe someone who works for a company.",
       'The term combines "かいしゃ" (company) and "いん" (member).',
     ],
-    overwrite_word: "会社員",
   },
-  こうこうせい: {
-    word: "こうこうせい",
-    furigana: "こうこうせい",
+  高校生: {
+    word: "高校生",
+    furigana: "高校生[こうこうせい]",
     english: ["high school student"],
     chapter: 1,
     info: [
       'It combines "こうこう" (high school) and "せい" (student).',
       "High school in Japan typically includes grades 10 through 12.",
     ],
-    overwrite_word: "高校生",
   },
-  だいがくいんせい: {
-    word: "だいがくいんせい",
-    furigana: "だいがくいんせい",
+  大学院生: {
+    word: "大学院生",
+    furigana: "大学院生[だいがくいんせい]",
     english: ["graduate student"],
     chapter: 1,
     info: [
       'It combines "だいがく" (university) with "いん" (graduate school) and "せい" (student).',
       "It refers to students pursuing advanced degrees beyond a bachelor's.",
     ],
-    overwrite_word: "大学院生",
   },
-  かんごし: {
-    word: "かんごし",
-    furigana: "かんごし",
+  看護師: {
+    word: "看護師",
+    furigana: "看護師[かんごし]",
     english: ["nurse"],
     chapter: 1,
     info: [
       "It refers to healthcare professionals who care for patients and assist doctors.",
       'The term is gender-neutral, although "かんごふ" (kangofu) is sometimes used specifically for female nurses.',
     ],
-    overwrite_word: "看護師",
   },
-  べんごし: {
-    word: "べんごし",
-    furigana: "べんごし",
+  弁護士: {
+    word: "弁護士",
+    furigana: "弁護士[べんごし]",
     english: ["lawyer"],
     chapter: 1,
     info: [
       "It refers to legal professionals who represent clients in court and provide legal advice.",
       'The term combines "べんご" (defense) and "し" (professional).',
     ],
-    overwrite_word: "弁護士",
   },
-  しゅふ: {
-    word: "しゅふ",
-    furigana: "しゅふ",
+  主婦: {
+    word: "主婦",
+    furigana: "主婦[しゅふ]",
     english: ["housewife", "homemaker"],
     chapter: 1,
     info: [
       "It refers to someone who manages the household and takes care of the family.",
       'The term can also apply to men who stay at home, although "しゅふ" is traditionally used for women.',
     ],
-    overwrite_word: "主婦",
   },
-  アジアけんきゅう: {
-    word: "アジアけんきゅう",
-    furigana: "アジア[あじあ]けんきゅう",
+  アジア研究: {
+    word: "アジア研究",
+    furigana: "アジア研究[あじあけんきゅう]",
     english: ["Asian studies"],
     chapter: 1,
     info: [
@@ -2050,38 +2046,35 @@ export const vocabulary: VocabularyCollection = {
     ],
     overwrite_word: "アジア研究",
   },
-  けいざい: {
-    word: "けいざい",
-    furigana: "けいざい",
+  経済: {
+    word: "経済",
+    furigana: "経済[けいざい]",
     english: ["economics"],
     chapter: 1,
     info: [
       "It refers to the social science that studies the production, distribution, and consumption of goods and services.",
       "The term is commonly used in academic and professional contexts.",
     ],
-    overwrite_word: "経済",
   },
-  こうがく: {
-    word: "こうがく",
-    furigana: "こうがく",
+  工学: {
+    word: "工学",
+    furigana: "工学[こうがく]",
     english: ["engineering"],
     chapter: 1,
     info: [
       "It refers to the application of scientific and mathematical principles to design, build, and maintain structures, machines, and systems.",
       "The term is commonly used in academic and professional contexts.",
     ],
-    overwrite_word: "工学",
   },
-  こくさいかんけい: {
-    word: "こくさいかんけい",
-    furigana: "こくさいかんけい",
+  国際関係: {
+    word: "国際関係",
+    furigana: "国際関係[こくさいかんけい]",
     english: ["international relations"],
     chapter: 1,
     info: [
       "It refers to the study of interactions between countries and the roles of sovereign states, intergovernmental organizations, non-governmental organizations, and multinational corporations.",
       'The term combines "こくさい" (international) and "かんけい" (relations).',
     ],
-    overwrite_word: "国際関係",
   },
   コンピューター: {
     word: "コンピューター",
@@ -2092,27 +2085,25 @@ export const vocabulary: VocabularyCollection = {
       '"コンピューター" (written in Katakana) is an English loan word that sounds like "computer", and has the same meaning.',
     ],
   },
-  せいじ: {
-    word: "せいじ",
-    furigana: "せいじ",
+  政治: {
+    word: "政治",
+    furigana: "政治[せいじ]",
     english: ["politics"],
     chapter: 1,
     info: [
       "It refers to the activities, actions, and policies used to gain and hold power in a government or to influence government decisions.",
       "The term is used in academic, professional, and everyday contexts.",
     ],
-    overwrite_word: "政治",
   },
-  せいぶつがく: {
-    word: "せいぶつがく",
-    furigana: "せいぶつがく",
+  生物学: {
+    word: "生物学",
+    furigana: "生物学[せいぶつがく]",
     english: ["biology"],
     chapter: 1,
     info: [
       "It refers to the scientific study of life and living organisms, including their structure, function, growth, evolution, and distribution.",
       'The term combines "せいぶつ" (living things) and "がく" (study).',
     ],
-    overwrite_word: "生物学",
   },
   ビジネス: {
     word: "ビジネス",
@@ -2123,43 +2114,40 @@ export const vocabulary: VocabularyCollection = {
       '"ビジネス" (written in Katakana) is an English loan word that sounds like "business" and also has the same meaning.',
     ],
   },
-  ぶんがく: {
-    word: "ぶんがく",
-    furigana: "ぶんがく",
+  文学: {
+    word: "文学",
+    furigana: "文学[ぶんがく]",
     english: ["literature"],
     chapter: 1,
     info: [
       "It refers to written works, especially those considered of superior or lasting artistic merit.",
       "The term is used in academic and literary contexts.",
     ],
-    overwrite_word: "文学",
   },
-  れきし: {
-    word: "れきし",
-    furigana: "れきし",
+  歴史: {
+    word: "歴史",
+    furigana: "歴史[れきし]",
     english: ["history"],
     chapter: 1,
     info: [
       "It refers to the study of past events, particularly in human affairs.",
       "The term is used in academic, educational, and everyday contexts.",
     ],
-    overwrite_word: "歴史",
   },
-  えいご: {
-    word: "えいご",
-    furigana: "えいご",
+  英語: {
+    word: "英語",
+    furigana: "英語[えいご]",
     english: ["English language"],
     chapter: 1,
     info: [
       "It refers to the language spoken in England, the United States, and other countries.",
     ],
-    overwrite_word: "英語",
   },
 
   // From List 6 (Pronouns, People, Common Words)
-  わたし: {
-    word: "わたし",
-    furigana: "わたし",
+  私: {
+    word: "私",
+    furigana: "私[わたし]",
     english: ["I"],
     chapter: 1,
     info: [
@@ -2167,11 +2155,10 @@ export const vocabulary: VocabularyCollection = {
       "It is gender-neutral and can be used in both formal and informal contexts.",
       'Men could use "ぼく" instead, and might even prefer "おれ" in informal settings. More on this later.',
     ],
-    overwrite_word: "私",
   },
-  ともだち: {
-    word: "ともだち",
-    furigana: "ともだち",
+  友だち: {
+    word: "友だち",
+    furigana: "友[とも]だち",
     english: ["friend"],
     chapter: 1,
     info: [
@@ -2192,11 +2179,10 @@ export const vocabulary: VocabularyCollection = {
       "The usage of this single word is probably the biggest difference between Japanese and Western culture in terms of etiquette.",
       'NEVER use "さん" when referring to yourself. It is strictly used to address or refer to others. Using ～さん for oneself is like calling yourself Mr./Mrs.[your name] and considered overly self-important and inappropriate.',
     ],
-    overwrite_word: "さん",
   },
-  "～じん": {
-    word: "～じん",
-    furigana: "～じん",
+  "～人": {
+    word: "～人",
+    furigana: "～ 人[じん]",
     english: ["...people"],
     chapter: 1,
     info: [
@@ -2204,19 +2190,17 @@ export const vocabulary: VocabularyCollection = {
       'For example, "にほんじん" means "Japanese people/person".',
       "It is commonly used to describe the people of a particular country.",
     ],
-    overwrite_word: "人",
   },
-  にほんじん: {
-    word: "にほんじん",
-    furigana: "にほんじん",
+  日本人: {
+    word: "日本人",
+    furigana: "日本人[にほんじん]",
     english: ["Japanese people", "Japanese person"],
     chapter: 1,
     info: ['It combines "にほん" (Japan) and "じん" (people).'],
-    overwrite_word: "日本人",
   },
-  せんせい: {
-    word: "せんせい",
-    furigana: "せんせい",
+  先生: {
+    word: "先生",
+    furigana: "先生[せんせい]",
     english: ["Teacher", "Professor", "Dr."],
     chapter: 1,
     info: [
@@ -2224,11 +2208,10 @@ export const vocabulary: VocabularyCollection = {
       "It is a respectful title and can be used by students to address their instructors.",
       'It is also used as a suffix after a person\'s name, just like ～さん. For example: "田中せんせい" (Dr. Tanaka).',
     ],
-    overwrite_word: "先生",
   },
-  "～さい": {
-    word: "～さい",
-    furigana: "～さい",
+  "～歳": {
+    word: "～歳",
+    furigana: "～ 歳[さい]",
     english: ["...years old"],
     chapter: 1,
     info: [
@@ -2236,11 +2219,10 @@ export const vocabulary: VocabularyCollection = {
       "It is added after numbers to denote someone's age.",
       'For example, "にじゅっさい" means "20 years old".',
     ],
-    overwrite_word: "歳",
   },
-  "～ご": {
-    word: "～ご",
-    furigana: "～ご",
+  "～語": {
+    word: "～語",
+    furigana: "～ 語[ご]",
     english: ["...language"],
     chapter: 1,
     info: [
@@ -2248,11 +2230,10 @@ export const vocabulary: VocabularyCollection = {
       "It is added after the name of a country to denote the language spoken there.",
       'For example, "にほんご" means "Japanese language" and "えいご" means "English language".',
     ],
-    overwrite_word: "語",
   },
-  にほんご: {
-    word: "にほんご",
-    furigana: "にほんご",
+  日本語: {
+    word: "日本語",
+    furigana: "日本語[にほんご]",
     english: ["Japanese language"],
     chapter: 1,
     info: [
@@ -2260,33 +2241,30 @@ export const vocabulary: VocabularyCollection = {
       'It combines "にほん" (Japan) and "ご" (language).',
       "It is used to refer to the language spoken in Japan.",
     ],
-    overwrite_word: "日本語",
   },
-  でんわ: {
-    word: "でんわ",
-    furigana: "でんわ",
+  電話: {
+    word: "電話",
+    furigana: "電話[でんわ]",
     english: ["telephone"],
     chapter: 1,
     info: [
       '"でんわ" means "telephone" in Japanese.',
       "It can refer to both the device itself and the act of making a phone call.",
     ],
-    overwrite_word: "電話",
   },
-  "～ばん": {
-    word: "～ばん",
-    furigana: "～ばん",
+  "～番": {
+    word: "～番",
+    furigana: "～ 番[ばん]",
     english: ["...number"],
     chapter: 1,
     info: [
       '"～ばん" is a suffix used to indicate a number in a series.',
       'It is added after numbers to denote the order or position, like "いちばん" for "number one".',
     ],
-    overwrite_word: "番",
   },
-  ばんごう: {
-    word: "ばんごう",
-    furigana: "ばんごう",
+  番号: {
+    word: "番号",
+    furigana: "番号[ばんごう]",
     english: ["number"],
     chapter: 1,
     info: [
@@ -2294,11 +2272,10 @@ export const vocabulary: VocabularyCollection = {
       "It is used for phone numbers, room numbers, and other numerical identifiers.",
       'For example, "でんわばんごう" means "phone number".',
     ],
-    overwrite_word: "番号",
   },
-  なまえ: {
-    word: "なまえ",
-    furigana: "なまえ",
+  名前: {
+    word: "名前",
+    furigana: "名前[なまえ]",
     english: ["name"],
     chapter: 1,
     info: [
@@ -2306,11 +2283,10 @@ export const vocabulary: VocabularyCollection = {
       "It can refer to both first names and last names.",
       'For example, "おなまえは？" means "What is your name?".',
     ],
-    overwrite_word: "名前",
   },
-  みんな: {
-    word: "みんな",
-    furigana: "みんな",
+  皆: {
+    word: "皆",
+    furigana: "皆[みんな]",
     english: ["everyone", "all"],
     chapter: 1,
     info: [
@@ -2318,9 +2294,9 @@ export const vocabulary: VocabularyCollection = {
       "It is used to refer to a group of people inclusively.",
     ],
   },
-  "なん/なに": {
-    word: "なん/なに",
-    furigana: "なん/なに",
+  何: {
+    word: "何",
+    furigana: "何[なん/なに]",
     english: ["what"],
     chapter: 1,
     info: [
@@ -2377,16 +2353,15 @@ export const vocabulary: VocabularyCollection = {
       "Aizuchi are used more often in Japanese than in English, reflecting a higher level of active listening and engagement. Try to use them in your own conversations.",
     ],
   },
-  しゅっしん: {
-    word: "しゅっしん",
-    furigana: "しゅっしん",
+  出身: {
+    word: "出身",
+    furigana: "出身[しゅっしん]",
     english: ["hometown", "place of origin"],
     chapter: 1,
     info: [
       '"しゅっしん" means "hometown" or "place of origin" in Japanese.',
       "It is used to refer to the place where someone is from.",
     ],
-    overwrite_word: "出身",
   },
 
   // From List 7 (Time Expressions)
@@ -2736,8 +2711,422 @@ export const vocabulary: VocabularyCollection = {
     ],
   },
 
-  // FIX (ADD CHAPTER 2 and 3)!!
+  これ: {
+    word: "これ",
+    furigana: "これ",
+    english: ["this one"],
+    chapter: 2,
+  },
+  それ: {
+    word: "それ",
+    furigana: "それ",
+    english: ["that one"],
+    chapter: 2,
+  },
+  あれ: {
+    word: "あれ",
+    furigana: "あれ",
+    english: ["that one (over there)"],
+    chapter: 2,
+  },
+  どれ: {
+    word: "どれ",
+    furigana: "どれ",
+    english: ["which one"],
+    chapter: 2,
+  },
+  この: {
+    word: "この",
+    furigana: "この",
+    english: ["this..."],
+    chapter: 2,
+  },
+  その: {
+    word: "その",
+    furigana: "その",
+    english: ["that..."],
+    chapter: 2,
+  },
+  あの: {
+    word: "あの",
+    furigana: "あの",
+    english: ["that... (over there)"],
+    chapter: 2,
+  },
+  どの: {
+    word: "どの",
+    furigana: "どの",
+    english: ["which..."],
+    chapter: 2,
+  },
+  ここ: {
+    word: "ここ",
+    furigana: "ここ",
+    english: ["here"],
+    chapter: 2,
+  },
+  そこ: {
+    word: "そこ",
+    furigana: "そこ",
+    english: ["there"],
+    chapter: 2,
+  },
+  あそこ: {
+    word: "あそこ",
+    furigana: "あそこ",
+    english: ["over there"],
+    chapter: 2,
+  },
+  どこ: {
+    word: "どこ",
+    furigana: "どこ",
+    english: ["where"],
+    chapter: 2,
+  },
+  だれ: {
+    word: "だれ",
+    furigana: "だれ",
+    english: ["who"],
+    chapter: 2,
+  },
+  おいしい: {
+    word: "おいしい",
+    furigana: "おいしい",
+    english: ["delicious"],
+    chapter: 2,
+  },
+  魚: {
+    word: "魚",
+    furigana: "魚[さかな]",
+    english: ["fish"],
+    chapter: 2,
+  },
+  とんかつ: {
+    word: "とんかつ",
+    furigana: "とんかつ",
+    english: ["pork cutlet"],
+    chapter: 2,
+  },
+  肉: {
+    word: "肉",
+    furigana: "肉[にく]",
+    english: ["meat"],
+    chapter: 2,
+  },
+  メニュー: {
+    word: "メニュー",
+    furigana: "メニュー",
+    english: ["menu"],
+    chapter: 2,
+  },
+  野菜: {
+    word: "野菜",
+    furigana: "野菜[やさい]",
+    english: ["vegetable"],
+    chapter: 2,
+  },
+  傘: {
+    word: "傘",
+    furigana: "傘[かさ]",
+    english: ["umbrella"],
+    chapter: 2,
+  },
+  かばん: {
+    word: "かばん",
+    furigana: "かばん",
+    english: ["bag"],
+    chapter: 2,
+  },
+  靴: {
+    word: "靴",
+    furigana: "靴[くつ]",
+    english: ["shoes"],
+    chapter: 2,
+  },
+  財布: {
+    word: "財布",
+    furigana: "財布[さいふ]",
+    english: ["wallet"],
+    chapter: 2,
+  },
+  ジーンズ: {
+    word: "ジーンズ",
+    furigana: "ジーンズ",
+    english: ["jeans"],
+    chapter: 2,
+  },
+  自転車: {
+    word: "自転車",
+    furigana: "自転車[じてんしゃ]",
+    english: ["bicycle"],
+    chapter: 2,
+  },
+  新聞: {
+    word: "新聞",
+    furigana: "新聞[しんぶん]",
+    english: ["newspaper"],
+    chapter: 2,
+  },
+  スマホ: {
+    word: "スマホ",
+    furigana: "スマホ",
+    english: ["smartphone; mobile"],
+    chapter: 2,
+  },
+  Ｔシャツ: {
+    word: "Ｔシャツ",
+    furigana: "Ｔシャツ[ティーシャツ]",
+    english: ["T-shirt"],
+    chapter: 2,
+  },
+  時計: {
+    word: "時計",
+    furigana: "時計[とけい]",
+    english: ["watch; clock"],
+    chapter: 2,
+  },
+  ノート: {
+    word: "ノート",
+    furigana: "ノート",
+    english: ["notebook"],
+    chapter: 2,
+  },
+  ペン: {
+    word: "ペン",
+    furigana: "ペン",
+    english: ["pen"],
+    chapter: 2,
+  },
+  帽子: {
+    word: "帽子",
+    furigana: "帽子[ぼうし]",
+    english: ["hat; cap"],
+    chapter: 2,
+  },
+  本: {
+    word: "本",
+    furigana: "本[ほん]",
+    english: ["book"],
+    chapter: 2,
+  },
+  銀行: {
+    word: "銀行",
+    furigana: "銀行[ぎんこう]",
+    english: ["bank"],
+    chapter: 2,
+  },
+  コンビニ: {
+    word: "コンビニ",
+    furigana: "コンビニ",
+    english: ["convenience store"],
+    chapter: 2,
+  },
+  トイレ: {
+    word: "トイレ",
+    furigana: "トイレ",
+    english: ["toilet; restroom"],
+    chapter: 2,
+  },
+  図書館: {
+    word: "図書館",
+    furigana: "図書館[としょかん]",
+    english: ["library"],
+    chapter: 2,
+  },
+  郵便局: {
+    word: "郵便局",
+    furigana: "郵便局[ゆうびんきょく]",
+    english: ["post office"],
+    chapter: 2,
+  },
+  いくら: {
+    word: "いくら",
+    furigana: "いくら",
+    english: ["how much"],
+    chapter: 2,
+  },
+  "～円": {
+    word: "～円",
+    furigana: "～ 円[～えん]",
+    english: ["...yen"],
+    chapter: 2,
+  },
+  千: {
+    word: "千",
+    furigana: "千[せん]",
+    english: ["thousand"],
+    chapter: 2,
+  },
+  万: {
+    word: "万",
+    furigana: "万[まん]",
+    english: ["ten thousand"],
+    chapter: 2,
+  },
+  高い: {
+    word: "高い",
+    furigana: "高い[たかい]",
+    english: ["expensive; high"],
+    chapter: 2,
+  },
+  いらっしゃいませ: {
+    word: "いらっしゃいませ",
+    furigana: "いらっしゃいませ",
+    english: ["Welcome (to our store)."],
+    chapter: 2,
+  },
+  "（～を）おねがいします": {
+    word: "（～を）おねがいします",
+    furigana: "（～を）おねがいします",
+    english: ["..., please."],
+    chapter: 2,
+  },
+  "（～を）ください": {
+    word: "（～を）ください",
+    furigana: "（～を）ください",
+    english: ["Please give me..."],
+    chapter: 2,
+  },
+  じゃあ: {
+    word: "じゃあ",
+    furigana: "じゃあ",
+    english: ["then...; if that is the case,..."],
+    chapter: 2,
+  },
+  どうぞ: {
+    word: "どうぞ",
+    furigana: "どうぞ",
+    english: ["Please.; Here it is."],
+    chapter: 2,
+  },
+  どうも: {
+    word: "どうも",
+    furigana: "どうも",
+    english: ["Thank you."],
+    chapter: 2,
+  },
 
+  // Chapter 3
+  映画: {
+    word: "映画",
+    furigana: "映画[えいが]",
+    english: ["movie"],
+    chapter: 3,
+  },
+  音楽: {
+    word: "音楽",
+    furigana: "音楽[おんがく]",
+    english: ["music"],
+    chapter: 3,
+  },
+  雑誌: {
+    word: "雑誌",
+    furigana: "雑誌[ざっし]",
+    english: ["magazine"],
+    chapter: 3,
+  },
+  スポーツ: {
+    word: "スポーツ",
+    furigana: "スポーツ",
+    english: ["sports"],
+    chapter: 3,
+  },
+  デート: {
+    word: "デート",
+    furigana: "デート",
+    english: ["date (romantic, not calendar)"],
+    chapter: 3,
+  },
+  テニス: {
+    word: "テニス",
+    furigana: "テニス",
+    english: ["tennis"],
+    chapter: 3,
+  },
+  テレビ: {
+    word: "テレビ",
+    furigana: "テレビ",
+    english: ["TV"],
+    chapter: 3,
+  },
+  アイスクリーム: {
+    word: "アイスクリーム",
+    furigana: "アイスクリーム",
+    english: ["ice cream"],
+    chapter: 3,
+  },
+  ハンバーガー: {
+    word: "ハンバーガー",
+    furigana: "ハンバーガー",
+    english: ["hamburger"],
+    chapter: 3,
+  },
+  お酒: {
+    word: "お酒",
+    furigana: "お 酒[さけ]",
+    english: ["sake; alcoholic drink"],
+    chapter: 3,
+  },
+  お茶: {
+    word: "お茶",
+    furigana: "お茶[おちゃ]",
+    english: ["green tea"],
+    chapter: 3,
+  },
+  コーヒー: {
+    word: "コーヒー",
+    furigana: "コーヒー",
+    english: ["coffee"],
+    chapter: 3,
+  },
+  水: {
+    word: "水",
+    furigana: "水[みず]",
+    english: ["water"],
+    chapter: 3,
+  },
+  朝ご飯: {
+    word: "朝ご飯",
+    furigana: "朝ご飯[あさごはん]",
+    english: ["breakfast"],
+    chapter: 3,
+  },
+  昼ご飯: {
+    word: "昼ご飯",
+    furigana: "昼ご飯[ひるごはん]",
+    english: ["lunch"],
+    chapter: 3,
+  },
+  晩ご飯: {
+    word: "晩ご飯",
+    furigana: "晩ご飯[ばんごはん]",
+    english: ["dinner"],
+    chapter: 3,
+  },
+  家: {
+    word: "家",
+    furigana: "家[いえ]",
+    english: ["home", "house"],
+    chapter: 3,
+  },
+  うち: {
+    word: "うち",
+    furigana: "うち",
+    english: ["home", "house", "my place"],
+    chapter: 3,
+  },
+  学校: {
+    word: "学校",
+    furigana: "学校[がっこう]",
+    english: ["school"],
+    chapter: 3,
+  },
+  カフェ: {
+    word: "カフェ",
+    furigana: "カフェ",
+    english: ["cafe"],
+    chapter: 3,
+  },
   明日: {
     word: "明日",
     furigana: "明日[あした]",
@@ -2787,6 +3176,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "今晩[こんばん]",
     english: ["tonight"],
     chapter: 3,
+    info: [
+      '今晩 is the typical way to say "tonight." An alternative would be 今夜（こんや）. 今夜 feels a bit more formal, literary, or sometimes dramatic.',
+      "e.g.「今夜は雪になるでしょう。」 (It will likely snow tonight.)",
+    ],
     example_sentences: [
       {
         english: [{ t: "Tonight" }, " I will watch TV."],
@@ -2963,6 +3356,69 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
+  いつ: {
+    word: "いつ",
+    furigana: "いつ",
+    english: ["when"],
+    chapter: 3,
+  },
+  "～ごろ": {
+    word: "～ごろ",
+    furigana: "～ごろ",
+    english: ["at about..."],
+    chapter: 3,
+  },
+  行く: {
+    word: "行く",
+    furigana: "行く[いく]",
+    english: ["to go"],
+    chapter: 3,
+    part_of_speech: "Godan verb with 'ku' ending",
+    particles: [
+      {
+        particle: "に",
+        label: "destination",
+      },
+      {
+        particle: "へ",
+        label: "destination",
+      },
+    ],
+  },
+  来る: {
+    word: "来る",
+    furigana: "来る[くる]",
+    english: ["to come"],
+    chapter: 3,
+    part_of_speech: "Kuru verb - special class",
+    particles: [
+      {
+        particle: "に",
+        label: "destination",
+      },
+      {
+        particle: "へ",
+        label: "destination",
+      },
+    ],
+  },
+  帰る: {
+    word: "帰る",
+    furigana: "帰る[かえる]",
+    english: ["to go back", "to return"],
+    chapter: 3,
+    part_of_speech: "Ichidan verb",
+    particles: [
+      {
+        particle: "に",
+        label: "destination",
+      },
+      {
+        particle: "へ",
+        label: "destination",
+      },
+    ],
+  },
   話す: {
     word: "話す",
     furigana: "話[はな]す",
@@ -2988,6 +3444,45 @@ export const vocabulary: VocabularyCollection = {
       {
         english: ["I ", { t: "speak" }, " in English."],
         japanese: ["英語[えいご]で", { t: "話します" }, "。"],
+      },
+    ],
+  },
+  読む: {
+    word: "読む",
+    furigana: "読[よ]む",
+    english: ["to read"],
+    chapter: 3,
+    part_of_speech: "Godan verb with 'mu' ending",
+    particles: [
+      {
+        particle: "を",
+      },
+    ],
+    example_sentences: [
+      {
+        english: ["I ", { t: "read" }, " books."],
+        japanese: ["本[ほん]を", { t: "読[よ]みます" }, "。"],
+      },
+    ],
+  },
+  食べる: {
+    word: "食べる",
+    furigana: "食[た]べる",
+    english: ["to eat"],
+    chapter: 3,
+    part_of_speech: "Ichidan verb",
+    info: [
+      "Typically used with the を particle to indicate what is being eaten.",
+    ],
+    particles: [
+      {
+        particle: "を",
+      },
+    ],
+    example_sentences: [
+      {
+        english: ["I ", { t: "eat" }, " fish."],
+        japanese: ["魚[さかな]を", { t: "食[た]べます" }, "。"],
       },
     ],
   },
@@ -3043,14 +3538,18 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  食べる: {
-    word: "食べる",
-    furigana: "食[た]べる",
-    english: ["to eat"],
+  聞く: {
+    word: "聞く",
+    furigana: "聞[き]く",
+    english: ["to listen", "to hear", "to ask"],
     chapter: 3,
-    part_of_speech: "Ichidan verb",
+    part_of_speech: "Godan verb with 'ku' ending",
     info: [
-      "Typically used with the を particle to indicate what is being eaten.",
+      "聞く (kiku) is a versatile verb with three main meanings. It is paired with objects using the を particle.",
+      "'To listen to' or 'to hear,' - 音楽を聞く (to listen to music).",
+      "To ask - 先生に質問を聞く (to ask the teacher a question).",
+      "(Not covered in Nihongo Ninja) - 'To understand' or 'to follow,' often in its potential form 聞こえる (kikoeru) - よく聞こえない (I can't hear/understand well). This is a bit advanced so just focus on the other 2 meanings for now.",
+      "Context and particle usage help determine the intended meaning.",
     ],
     particles: [
       {
@@ -3059,8 +3558,8 @@ export const vocabulary: VocabularyCollection = {
     ],
     example_sentences: [
       {
-        english: ["I ", { t: "eat" }, " fish."],
-        japanese: ["魚[さかな]を", { t: "食[た]べます" }, "。"],
+        english: ["Every day I ", { t: "listen" }, " to the radio."],
+        japanese: ["毎日[まいにち]ラジオを", { t: "聞[き]きます" }, "。"],
       },
     ],
   },
@@ -3087,31 +3586,6 @@ export const vocabulary: VocabularyCollection = {
       {
         english: ["Today I will ", { t: "watch" }, " a movie."],
         japanese: ["今日[きょう]は 映画[えいが]を", { t: "見[み]ます" }, "。"],
-      },
-    ],
-  },
-  聞く: {
-    word: "聞く",
-    furigana: "聞[き]く",
-    english: ["to listen", "to hear", "to ask"],
-    chapter: 3,
-    part_of_speech: "Godan verb with 'ku' ending",
-    info: [
-      "聞く (kiku) is a versatile verb with three main meanings. It is paired with objects using the を particle.",
-      "'To listen to' or 'to hear,' - 音楽を聞く (to listen to music).",
-      "To ask - 先生に質問を聞く (to ask the teacher a question).",
-      "(Not covered in Nihongo Ninja) - 'To understand' or 'to follow,' often in its potential form 聞こえる (kikoeru) - よく聞こえない (I can't hear/understand well). This is a bit advanced so just focus on the other 2 meanings for now.",
-      "Context and particle usage help determine the intended meaning.",
-    ],
-    particles: [
-      {
-        particle: "を",
-      },
-    ],
-    example_sentences: [
-      {
-        english: ["Every day I ", { t: "listen" }, " to the radio."],
-        japanese: ["毎日[まいにち]ラジオを", { t: "聞[き]きます" }, "。"],
       },
     ],
   },
@@ -3199,6 +3673,68 @@ export const vocabulary: VocabularyCollection = {
         japanese: ["朝[あさ] 八時[はちじ]は", { t: "早[はや]い" }, "です。"],
       },
     ],
+  },
+  全然: {
+    word: "全然",
+    furigana: "全然[ぜんぜん ＋ negative]",
+    english: ["not at all"],
+    chapter: 3,
+    info: [
+      "全然 (zenzen) is used to express a complete lack or absence of something. It's typically used in negative sentences.",
+      "In modern-day Japanese, 全然 without a following negative conjugation can also be used in positive sentences to mean 'completely' or 'fully.'",
+    ],
+    example_sentences: [
+      {
+        english: ["I don't have ", { t: "any" }, " money."],
+        japanese: ["お金[おかね]は", { t: "全然[ぜんぜん]" }, "ありません。"],
+      },
+      {
+        english: ["It's ", { t: "totally" }, " fine!"],
+        japanese: [{ t: "全然[ぜんぜん]" }, "いいよ！"],
+      },
+    ],
+  },
+  たいてい: {
+    word: "たいてい",
+    furigana: "たいてい",
+    english: ["usually"],
+    chapter: 3,
+  },
+  ちょっと: {
+    word: "ちょっと",
+    furigana: "ちょっと",
+    english: ["a little"],
+    chapter: 3,
+  },
+  時々: {
+    word: "時々",
+    furigana: "時々[ときどき]",
+    english: ["sometimes"],
+    chapter: 3,
+  },
+  よく: {
+    word: "よく",
+    furigana: "よく",
+    english: ["often", "much"],
+    chapter: 3,
+  },
+  そうですね: {
+    word: "そうですね",
+    furigana: "そうですね",
+    english: ["That’s right.", "Let me see."],
+    chapter: 3,
+  },
+  どうですか: {
+    word: "どうですか",
+    furigana: "どうですか",
+    english: ["How about... ?", "How is... ?"],
+    chapter: 3,
+  },
+  ええ: {
+    word: "ええ",
+    furigana: "ええ",
+    english: ["yes"],
+    chapter: 3,
   },
   ゲーム: {
     word: "ゲーム",
@@ -3663,12 +4199,11 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  "(〜の)時": {
-    word: "(〜の)時",
-    furigana: "(〜の) 時[とき]",
+  時: {
+    word: "時",
+    furigana: "時[とき]",
     english: ["when...", "at the time of..."],
     chapter: 4,
-    info: ["(〜の)"],
     example_sentences: [
       {
         english: [
@@ -3881,6 +4416,12 @@ export const vocabulary: VocabularyCollection = {
         japanese: [{ t: "ごめんなさい" }, "、分[わ]かりません。"],
       },
     ],
+  },
+  それから: {
+    word: "それから",
+    furigana: "それから",
+    english: ["and then"],
+    chapter: 4,
   },
   だから: {
     word: "だから",
@@ -4364,9 +4905,9 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  Lサイズ: {
-    word: "Lサイズ",
-    furigana: "Lサイズ",
+  Ｌサイズ: {
+    word: "Ｌサイズ",
+    furigana: "Ｌサイズ[エルサイズ]",
     english: ["size L"],
     chapter: 5,
     example_sentences: [
@@ -4717,7 +5258,20 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  // FIX (add hima (free time))
+  暇: {
+    word: "暇",
+    furigana: "暇[ひま]",
+    english: ["not busy", "free (time)"],
+    chapter: 5,
+    part_of_speech: "Na-adjective",
+    info: ["な-adjective"],
+    example_sentences: [
+      {
+        english: ["I am ", { t: "not busy" }, " today."],
+        japanese: ["今日[きょう]は", { t: "暇[ひま]" }, "です。"],
+      },
+    ],
+  },
 
   泳ぐ: {
     word: "泳ぐ",
@@ -4885,7 +5439,841 @@ export const vocabulary: VocabularyCollection = {
     ],
   },
 
-  // FIX (add chapter 6 content)
+  // Chapter 6
+  漢字: {
+    word: "漢字",
+    furigana: "漢字[かんじ]",
+    english: ["kanji", "Chinese character"],
+    chapter: 6,
+  },
+  教科書: {
+    word: "教科書",
+    furigana: "教科書[きょうかしょ]",
+    english: ["textbook"],
+    chapter: 6,
+  },
+  ページ: {
+    word: "ページ",
+    furigana: "ページ",
+    english: ["page"],
+    chapter: 6,
+  },
+  次: {
+    word: "次",
+    furigana: "次[つぎ]",
+    english: ["next"],
+    chapter: 6,
+  },
+  お金: {
+    word: "お金",
+    furigana: "お金[おかね]",
+    english: ["money"],
+    chapter: 6,
+  },
+  荷物: {
+    word: "荷物",
+    furigana: "荷物[にもつ]",
+    english: ["baggage"],
+    chapter: 6,
+  },
+  パソコン: {
+    word: "パソコン",
+    furigana: "パソコン",
+    english: ["personal computer"],
+    chapter: 6,
+  },
+  シャワー: {
+    word: "シャワー",
+    furigana: "シャワー",
+    english: ["shower"],
+    chapter: 6,
+  },
+  エアコン: {
+    word: "エアコン",
+    furigana: "エアコン",
+    english: ["air conditioner"],
+    chapter: 6,
+  },
+  電気: {
+    word: "電気",
+    furigana: "電気[でんき]",
+    english: ["electricity", "light"],
+    chapter: 6,
+  },
+  窓: {
+    word: "窓",
+    furigana: "窓[まど]",
+    english: ["window"],
+    chapter: 6,
+  },
+  電車: {
+    word: "電車",
+    furigana: "電車[でんしゃ]",
+    english: ["train"],
+    chapter: 6,
+  },
+  国: {
+    word: "国",
+    furigana: "国[くに]",
+    english: ["country", "place of origin"],
+    chapter: 6,
+  },
+  今週: {
+    word: "今週",
+    furigana: "今[いま]週[しゅう]",
+    english: ["this week"],
+    chapter: 6,
+  },
+  来週: {
+    word: "来週",
+    furigana: "来[らい]週[しゅう]",
+    english: ["next week"],
+    chapter: 6,
+  },
+  来年: {
+    word: "来年",
+    furigana: "来[らい]年[ねん]",
+    english: ["next year"],
+    chapter: 6,
+  },
+  夜: {
+    word: "夜",
+    furigana: "夜[よる]",
+    english: ["night"],
+    chapter: 6,
+  },
+  大変: {
+    word: "大変",
+    furigana: "大[だい]変[へん]",
+    english: ["tough (situation)", "troublesome", "Oh no!"],
+    chapter: 6,
+  },
+  遊ぶ: {
+    word: "遊ぶ",
+    furigana: "遊ぶ[あそぶ]",
+    english: ["to play", "to spend time pleasantly"],
+    chapter: 6,
+    part_of_speech: "Godan verb with 'bu' ending",
+    example_sentences: [
+      {
+        english: ["Aiko ", { t: "played" }, " with her friends."],
+        japanese: ["アイコは 友[とも]だちと", { t: "遊[あそ]び" }, "ました。"],
+      },
+    ],
+  },
+  急ぐ: {
+    word: "急ぐ",
+    furigana: "急ぐ[いそぐ]",
+    english: ["to hurry"],
+    chapter: 6,
+    part_of_speech: "Godan verb with 'gu' ending",
+    example_sentences: [
+      {
+        english: ["Let's ", { t: "hurry" }, ". We don't have much time."],
+        japanese: [
+          { t: "急[いそ]ぎましょう" },
+          "。 時間[じかん]があまりありません。",
+        ],
+      },
+    ],
+  },
+  返す: {
+    word: "返す",
+    furigana: "返す[かえす]",
+    english: ["to return (a thing)"],
+    chapter: 6,
+    part_of_speech: "Godan verb with 'su' ending",
+    particles: [
+      { particle: "に", label: "person" },
+      { particle: "を", label: "thing" },
+    ],
+    example_sentences: [
+      {
+        english: ["I ", { t: "returned" }, " the book."],
+        japanese: ["本[ほん]を", { t: "返[かえ]しました" }, "。"],
+      },
+    ],
+  },
+  消す: {
+    word: "消す",
+    furigana: "消す[けす]",
+    english: ["to turn off", "to erase"],
+    chapter: 6,
+    part_of_speech: "Godan verb with 'su' ending",
+    particles: [{ particle: "を" }],
+    example_sentences: [
+      {
+        english: ["I ", { t: "turned off" }, " the light."],
+        japanese: ["電[でん]気[き]を", { t: "消[け]しました" }, "。"],
+      },
+    ],
+  },
+  死ぬ: {
+    word: "死ぬ",
+    furigana: "死ぬ[しぬ]",
+    english: ["to die"],
+    chapter: 6,
+    part_of_speech: "Godan verb with 'nu' ending",
+    example_sentences: [
+      {
+        english: [
+          "The dog that I had when I was a child ",
+          { t: "died" },
+          ", and I was very sad.",
+        ],
+        japanese: [
+          "子供[こども]の 時[とき]に 飼[か]っていた 犬[いぬ]が",
+          { t: "死[し]んで" },
+          "、 とても 悲[かな]しいです。",
+        ],
+      },
+      {
+        english: [
+          "I was so embarrassed that I thought I would ",
+          { t: "die" },
+          ".",
+        ],
+        japanese: ["恥[は]ずかしくて", { t: "死[し]ぬ" }, "かと思った。"],
+      },
+      {
+        english: ["This job is so tough it's ", { t: "killing me" }, "."],
+        japanese: [
+          "この仕事[しごと]、大変[たいへん]すぎて",
+          { t: "死[し]ぬ" },
+          "。",
+        ],
+      },
+    ],
+  },
+  座る: {
+    word: "座る",
+    furigana: "座る[すわる]",
+    english: ["to sit down"],
+    chapter: 6,
+    part_of_speech: "Ichidan verb",
+    particles: [{ particle: "に", label: "seat" }],
+    example_sentences: [
+      {
+        english: ["I ", { t: "sat down" }, " on the bench."],
+        japanese: ["ベンチ[ベンチ]に", { t: "座[すわ]りました" }, "。"],
+      },
+      {
+        english: [
+          "Pochi, ",
+          { t: "sit" },
+          " properly now. There, there, what a good boy!",
+        ],
+        japanese: [
+          "ポチ、ちゃんと",
+          { t: "座[すわ]り" },
+          "して。よしよし、いい子だね！",
+        ],
+      },
+    ],
+  },
+  立つ: {
+    word: "立つ",
+    furigana: "立つ[たつ]",
+    english: ["to stand up", "to be erected"],
+    chapter: 6,
+    info: [
+      "Used for physically standing up as well as when something is built or erected.",
+    ],
+    part_of_speech: "Godan verb with 'tsu' ending",
+    example_sentences: [
+      {
+        english: ["I ", { t: "stood up" }, " and went to the window."],
+        japanese: [{ t: "立[た]って" }, "窓[まど]に 行[い]きました。"],
+      },
+      {
+        english: [
+          "Hey, look. I wonder who that person is who's been ",
+          { t: "standing" },
+          " on that corner for so long. It's a little creepy, isn't it?",
+        ],
+        japanese: [
+          "ねえ、見て。あの 角[かど]にずっと",
+          { t: "立[た]って" },
+          "いる 人[ひと]、誰[だれ]だろう？ちょっと 怖[こわ]いね。",
+        ],
+      },
+      {
+        english: [
+          "Before I knew it, a stylish cafe had ",
+          { t: "been built" },
+          " in front of the station.",
+        ],
+        japanese: [
+          "駅[えき]の前[まえ]に、いつの間にか",
+          "おしゃれなカフェが",
+          { t: "立[た]って" },
+          "いた。",
+        ],
+      },
+    ],
+  },
+  たばこを吸う: {
+    word: "たばこを吸う",
+    furigana: "たばこを吸う[たばこをすう]",
+    english: ["to smoke"],
+    chapter: 6,
+    info: [
+      'On signs, you\'ll often see "No Smoking" written as 禁煙（きんえん）(禁: prohibit, 煙: smoke).',
+    ],
+    part_of_speech: "Godan verb with 'u' ending",
+    example_sentences: [
+      {
+        english: ["Um, is it okay if I ", { t: "smoke" }, " here?"],
+        japanese: [
+          "あの、ここでたばこを",
+          { t: "吸[す]って" },
+          "も 大丈夫[だいじょうぶ]ですか。",
+        ],
+      },
+      {
+        english: ["You must not ", { t: "smoke" }, " here."],
+        japanese: ["ここではたばこを", { t: "吸[す]ってはいけません" }, "。"],
+      },
+      {
+        english: [
+          "Excuse me, but you are not permitted to ",
+          { t: "smoke" },
+          " here.",
+        ],
+        japanese: [
+          "お 客[きゃく]様[さま]、 申[もう]し 訳[わけ]ありませんが、こちらではたばこを",
+          { t: "吸[す]ってはいけません" },
+          "。",
+        ],
+      },
+    ],
+  },
+  使う: {
+    word: "使う",
+    furigana: "使う[つかう]",
+    english: ["to use"],
+    chapter: 6,
+    part_of_speech: "Godan verb with 'u' ending",
+    particles: [{ particle: "を" }],
+    example_sentences: [
+      {
+        english: [
+          '"Excuse me, could I ',
+          { t: "use" },
+          ' this pen for a second?" / "Oh, please, go ahead!"',
+        ],
+        japanese: [
+          "「すみません、このペン、ちょっと",
+          { t: "使[つ]って" },
+          "もいいですか？」「あ、どうぞどうぞ！」",
+        ],
+      },
+    ],
+  },
+  手伝う: {
+    word: "手伝う",
+    furigana: "手伝う[てつだう]",
+    english: ["to help"],
+    chapter: 6,
+    part_of_speech: "Godan verb with 'u' ending",
+    particles: [{ particle: "を", label: "person/task" }],
+    example_sentences: [
+      {
+        english: [
+          "Yesterday, I ",
+          { t: "helped" },
+          " my mother with the cooking.",
+        ],
+        japanese: [
+          "昨日[きのう]、母[はは]の 料理[りょうり]を",
+          { t: "手伝[てつだ]い" },
+          "ました。",
+        ],
+      },
+    ],
+  },
+  入る: {
+    word: "入る",
+    furigana: "入る[はいる]",
+    english: ["to enter", "to join", "to go in"],
+    chapter: 6,
+    info: [
+      "WARNING: This is one of those handfull of verbs that are seeminglly iru/eru verbs but are actually う verbs (はいりました, not はいました).",
+    ],
+    part_of_speech: "Godan verb with 'ru' ending (irregular verb)",
+    particles: [{ particle: "に" }],
+    example_sentences: [
+      {
+        english: [
+          "It's cold, isn't it? Won't you ",
+          { t: "go into" },
+          " that cafe over there?",
+        ],
+        japanese: [
+          "寒[さむ]いですね。あそこのカフェに",
+          { t: "入[はい]り" },
+          "ませんか。",
+        ],
+      },
+      {
+        english: [
+          '"Which club did you ',
+          { t: "join" },
+          '?" / "I ',
+          { t: "joined" },
+          ' the soccer club!"',
+        ],
+        japanese: [
+          "「どのクラブに",
+          { t: "入[はい]り" },
+          "ましたか？」「サッカー部に",
+          { t: "入[はい]り" },
+          "ました！」",
+        ],
+      },
+    ],
+  },
+  持つ: {
+    word: "持つ",
+    furigana: "持つ[もつ]",
+    english: ["to carry", "to hold"],
+    chapter: 6,
+    part_of_speech: "Godan verb with 'tsu' ending",
+    particles: [{ particle: "を", label: "thing" }],
+    example_sentences: [
+      {
+        english: [
+          '"Um, sorry, do you ',
+          { t: "have" },
+          ' a pen?" / "Yes, I ',
+          { t: "do" },
+          '."',
+        ],
+        japanese: [
+          "「あのう、すいません、ペンを",
+          { t: "持[も]って" },
+          "いますか。」「はい、",
+          { t: "持[も]って" },
+          "います",
+        ],
+      },
+      {
+        english: [
+          "This cat is still ",
+          { t: "holding" },
+          " my socks in its mouth.",
+        ],
+        japanese: [
+          "この猫[ねこ]、まだ",
+          "靴下[くつした]を口[くち]に",
+          { t: "持[も]って" },
+          "いる。",
+        ],
+      },
+    ],
+  },
+  休む: {
+    word: "休む",
+    furigana: "休む[やすむ]",
+    english: ["to be absent (from)", "to rest"],
+    chapter: 6,
+    part_of_speech: "Godan verb with 'mu' ending",
+    particles: [{ particle: "を", label: "place absent from" }],
+    example_sentences: [
+      {
+        english: [
+          'A: "Huh, is Tanaka-san here today?"\nB: "No. Tanaka-san ',
+          { t: "was absent" },
+          ' from school because of a cold."',
+        ],
+        japanese: [
+          "A:「あれ、田中[たなか]さんは 今日[きょう]いますか？」\nB:「いいえ。 田中[たなか]さんはかぜで 学校[がっこう]を",
+          { t: "休[やす]み" },
+          "ました。」",
+        ],
+      },
+      {
+        english: ["I'm going to ", { t: "rest" }, " for a bit."],
+        japanese: ["ちょっと", { t: "休[やす]み" }, "ます。"],
+      },
+    ],
+  },
+  開ける: {
+    word: "開ける",
+    furigana: "開ける[あける]",
+    english: ["to open (something)"],
+    chapter: 6,
+    part_of_speech: "Ichidan verb",
+    particles: [{ particle: "を" }],
+    example_sentences: [
+      {
+        english: [
+          'A: "It\'s a little hot, isn\'t it?"\nB: "Yeah. Well then, shall I ',
+          { t: "open" },
+          ' the window a little?"',
+        ],
+        japanese: [
+          "A:「ちょっと 暑[あつ]いですね。」\nB:「ええ。じゃあ、 窓[まど]を 少[すこ]し",
+          { t: "開[あ]け" },
+          "ましょうか。」",
+        ],
+      },
+      {
+        english: [
+          '"Here, this is a birthday present for you. Here you go."\n"Wow, thank you so much! Is it okay if I ',
+          { t: "open" },
+          ' it now?"',
+        ],
+        japanese: [
+          "「A: はい、これ、誕生日[たんじょうび]プレゼント[プレゼント]です。どうぞ。」\n「B: わあ、ありがとうございます！今、",
+          { t: "開[あ]け" },
+          "てもいいですか？」",
+        ],
+      },
+      {
+        english: [
+          "Okay, everyone. Please ",
+          { t: "open" },
+          " your textbooks to page 10.",
+        ],
+        japanese: [
+          "はい、皆さん。 教科書[きょうかしょ]の １０ページを",
+          { t: "開[あ]け" },
+          "てください。",
+        ],
+      },
+    ],
+  },
+  閉める: {
+    word: "閉める",
+    furigana: "閉める[しめる]",
+    english: ["to close (something)"],
+    chapter: 6,
+    part_of_speech: "Ichidan verb",
+    particles: [{ particle: "を" }],
+    example_sentences: [
+      {
+        english: [
+          "When you go out, please ",
+          { t: "close" },
+          " the door, okay?",
+        ],
+        japanese: [
+          "出[で]かける時、ドアを",
+          { t: "閉[し]め" },
+          "てくださいね。",
+        ],
+      },
+      {
+        english: [
+          "Watch out! The cat's gonna escape! ",
+          { t: "Close" },
+          " the door, quick, ",
+          { t: "close" },
+          " it!",
+        ],
+        japanese: [
+          "危[あぶ]ない！猫[ねこ]が 逃[に]げちゃう！早くドアを",
+          { t: "閉[し]め" },
+          "て、",
+          { t: "閉[し]め" },
+          "て！",
+        ],
+      },
+      {
+        english: [
+          "Ah, sorry. It's already time to ",
+          { t: "close up shop" },
+          ". Come again tomorrow, okay!",
+        ],
+        japanese: [
+          "あっ、ごめんね。もう お 店[みせ]を",
+          { t: "閉[し]める" },
+          "時間なんだ。また 明日[あした] 来[き]てね！",
+        ],
+      },
+    ],
+  },
+  教える: {
+    word: "教える",
+    furigana: "教える[おしえる]",
+    english: ["to teach", "to instruct"],
+    chapter: 6,
+    part_of_speech: "Ichidan verb",
+    particles: [
+      { particle: "に", label: "person" },
+      { particle: "を", label: "thing" },
+    ],
+    example_sentences: [
+      {
+        english: [
+          "I'm going to ",
+          { t: "teach" },
+          " you how to use chopsticks.",
+        ],
+        japanese: [
+          "私[わたし]は あなたに 箸[はし]を",
+          { t: "教[おし]え" },
+          "ます。",
+        ],
+      },
+      {
+        english: [
+          'A: "Excuse me, where is the restroom?"\nB: "Ah, the restroom. I\'ll ',
+          { t: "show you" },
+          '."',
+        ],
+        japanese: [
+          "A:「すみません、トイレはどこですか？」\nB:「ああ、トイレですね。",
+          { t: "教[おし]え" },
+          "ますよ。」",
+        ],
+      },
+    ],
+  },
+  忘れる: {
+    word: "忘れる",
+    furigana: "忘れる[わすれる]",
+    english: ["to forget", "to leave behind"],
+    chapter: 6,
+    part_of_speech: "Ichidan verb",
+    particles: [{ particle: "を" }],
+    example_sentences: [
+      {
+        english: [
+          'A: "Okay, everyone, please turn in your homework."\nB: "Ah! I\'m sorry, teacher! I ',
+          { t: "forgot" },
+          ' my homework at home!"',
+        ],
+        japanese: [
+          "A:「はい、皆[みな]さん、宿題[しゅくだい]を 出[だ]してください。」\nB:「あ！すみません、先生[せんせい]！うちに 宿題[しゅくだい]を",
+          { t: "忘[わす]れ" },
+          "ました！」",
+        ],
+      },
+    ],
+  },
+  降りる: {
+    word: "降りる",
+    furigana: "降りる[おりる]",
+    english: ["to get off", "to descend"],
+    chapter: 6,
+    info: [
+      "Tricky: You've gotta use the を particle in conjunction with this verb.",
+    ],
+    part_of_speech: "Ichidan verb",
+    particles: [{ particle: "を" }],
+    example_sentences: [
+      {
+        english: [
+          "I'm going to ",
+          { t: "get off" },
+          " at the next (train) stop.",
+        ],
+        japanese: ["次[つぎ]の 駅[えき]を", { t: "降[お]り" }, "ます。"],
+      },
+      {
+        english: [
+          'A: "Um, where is the restroom?"\nB: "The restroom is on the first floor. Please ',
+          { t: "go down" },
+          ' those stairs."',
+        ],
+        japanese: [
+          "A:「あの、トイレはどこですか？」\nB:「トイレは 一階[いっかい]です。その 階段[かいだん]を",
+          { t: "降[お]り" },
+          "てください。」",
+        ],
+      },
+    ],
+  },
+  借りる: {
+    word: "借りる",
+    furigana: "借りる[かりる]",
+    english: ["to borrow"],
+    chapter: 6,
+    part_of_speech: "Ichidan verb",
+    particles: [
+      { particle: "に", label: "person" },
+      { particle: "を", label: "thing" },
+    ],
+    example_sentences: [
+      {
+        english: [
+          "Excuse me, I forgot my eraser. Is it alright if I ",
+          { t: "borrow" },
+          " this one?",
+        ],
+        japanese: [
+          "すみません、 消[け]しゴムを 忘[わす]れました。これを",
+          { t: "借[か]り" },
+          "てもいいですか。",
+        ],
+      },
+      {
+        english: [
+          "I'm going to ",
+          { t: "borrow" },
+          " a book from the library.",
+        ],
+        japanese: [
+          "図書館[としょかん]から 本[ほん]を",
+          { t: "借[か]り" },
+          "ます。",
+        ],
+      },
+    ],
+  },
+  シャワーを浴びる: {
+    word: "シャワーを浴びる",
+    furigana: "シャワーを浴びる[シャワーをあびる]",
+    english: ["to take a shower"],
+    chapter: 6,
+    part_of_speech: "Ichidan verb",
+    example_sentences: [
+      {
+        english: [
+          "Kyaa! Something cold just... on my neck! It might be bird poop! I'm gonna go ",
+          { t: "take a shower" },
+          " right now!",
+        ],
+        japanese: [
+          "きゃー！ 今[いま]、首[くび]に 何[なに]か 寒[さむ]いものが…！ 鳥[とり]の フンかも！ 今[いま]すぐシャワーを",
+          { t: "浴[あ]び" },
+          "てくる！",
+        ],
+      },
+    ],
+  },
+  つける: {
+    word: "つける",
+    furigana: "つける",
+    english: ["to turn on", "to put on"],
+    chapter: 6,
+    part_of_speech: "Ichidan verb",
+    particles: [{ particle: "を" }],
+    example_sentences: [
+      {
+        english: ["I'm going to ", { t: "turn on" }, " the TV."],
+        japanese: ["テレビを", { t: "つける" }, "ます。"],
+      },
+      {
+        english: ["I'm going to ", { t: "turn on" }, " the light."],
+        japanese: ["電[でん]気[き]を", { t: "つける" }, "ます。"],
+      },
+      {
+        english: [
+          "Hey! You're ",
+          { t: "putting" },
+          " way too much mayo on your takoyaki! At this point, that's just a mountain of mayonnaise!",
+        ],
+        japanese: [
+          "ちょっと！たこ 焼[や]きにマヨネーズを",
+          { t: "つけ" },
+          "すぎでしょ！それ、もはやマヨネーズの 山[やま]じゃん！",
+        ],
+      },
+    ],
+  },
+  電話する: {
+    word: "電話する",
+    furigana: "電話する[でんわする]",
+    english: ["to call"],
+    chapter: 6,
+    part_of_speech: "Suru verb - compound word",
+    particles: [{ particle: "に" }],
+    example_sentences: [
+      {
+        english: [
+          'A: "Hello, Tanaka-san? Is now a good time?"\nB: "I\'m sorry, I\'m a little busy right now... Is it okay if I ',
+          { t: "call" },
+          ' you later?"',
+        ],
+        japanese: [
+          "A:「もしもし、田中[たなか]さん？ 今[いま]、 大丈夫[だいじょうぶ]ですか。」\nB:「すみません、 今[いま]ちょっと…。 後[あと]で",
+          { t: "電話[でんわ]をし" },
+          "てもいいですか。」",
+        ],
+      },
+    ],
+  },
+  連れてくる: {
+    word: "連れてくる",
+    furigana: "連れてくる[つれてくる]",
+    english: ["to bring (a person)"],
+    chapter: 6,
+    part_of_speech: "Godan verb with 'ku' ending",
+    particles: [{ particle: "を" }],
+    example_sentences: [
+      {
+        english: ["I'm going to ", { t: "bring" }, " my friend to the party."],
+        japanese: ["友達[ともだち]を", { t: "連れてき" }, "ます。"],
+      },
+      {
+        english: [
+          'A: "Who is that person with you?"\nB: "This is my younger sister. I ',
+          { t: "brought" },
+          ' her with me today."',
+        ],
+        japanese: [
+          "A:「そちらの 方[かた]はどなたですか。」\nB:「こちら は私[わたし]の 妹[いもうと]です。今日、 一緒[いっしょ]に",
+          { t: "連[つ]れてき" },
+          "ました。」",
+        ],
+      },
+    ],
+  },
+  持ってくる: {
+    word: "持ってくる",
+    furigana: "持ってくる[もってくる]",
+    english: ["to bring (a thing)"],
+    chapter: 6,
+    part_of_speech: "Godan verb with 'ru' ending",
+    particles: [{ particle: "を" }],
+    example_sentences: [
+      {
+        english: [
+          "I forgot my lunchbox today. But, my mom ",
+          { t: "brought" },
+          " it to school.",
+        ],
+        japanese: [
+          "今日[きょう]、お 弁当[べんとう]を 忘[わす]れました。でも、 母[はは]が学校に",
+          { t: "持ってきて" },
+          "きました。",
+        ],
+      },
+    ],
+  },
+  後で: {
+    word: "後で",
+    furigana: "後で[あとで]",
+    english: ["later on"],
+    chapter: 6,
+  },
+  すぐ: {
+    word: "すぐ",
+    furigana: "すぐ",
+    english: ["right away"],
+    chapter: 6,
+  },
+  ゆっくり: {
+    word: "ゆっくり",
+    furigana: "ゆっくり",
+    english: ["slowly", "leisurely", "unhurriedly"],
+    chapter: 6,
+  },
+  結構です: {
+    word: "結構です",
+    furigana: "結構です[けっこうです]",
+    english: ["That would be fine.", "That wouldn’t be necessary."],
+    chapter: 6,
+  },
+  本当ですか: {
+    word: "本当ですか",
+    furigana: "本当ですか[ほんとうですか]",
+    english: ["Really?"],
+    chapter: 6,
+  },
 
   家族: {
     word: "家族",
@@ -4952,7 +6340,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  お兄さん: {
+  お兄さん1: {
     word: "お兄さん",
     furigana: "お 兄[にい]さん",
     english: ["older brother"],
@@ -4971,7 +6359,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  お姉さん: {
+  お姉さん1: {
     word: "お姉さん",
     furigana: "お 姉[ねえ]さん",
     english: ["older sister"],
@@ -5093,7 +6481,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  妹: {
+  妹1: {
     word: "妹",
     furigana: "妹[いもうと]",
     english: ["younger sister"],
@@ -5119,7 +6507,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  弟: {
+  弟1: {
     word: "弟",
     furigana: "弟[おとうと]",
     english: ["younger brother"],
@@ -5346,6 +6734,35 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
+  速い: {
+    word: "速い",
+    furigana: "速[はや]い",
+    english: ["fast"],
+    chapter: 7,
+    part_of_speech: "I-adjective",
+    example_sentences: [
+      {
+        english: [
+          "The Nissan GT-R is very fast. It's a famous Japanese sports car.",
+        ],
+        japanese: [
+          "日産[にっさん]GT-Rは、とても",
+          { t: "速[はや]い" },
+          "です。 日本[にほん]の 有名[ゆうめい]なスポーツカーです。",
+        ],
+      },
+      {
+        english: [
+          "My dad eats his food fast. When I say 'Itadakimasu,' it's all gone already!",
+        ],
+        japanese: [
+          "お父[とう]さんはご 飯[はん]を 食[た]べるのが",
+          { t: "速[はや]い" },
+          "です。私[わたし]が「いただきます」と言う時、もう 全部[ぜんぶ]ありません！",
+        ],
+      },
+    ],
+  },
   背が高い: {
     word: "背が高い",
     furigana: "背[せ]が 高[たか]い",
@@ -5390,14 +6807,27 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  可愛い: {
-    word: "可愛い",
-    furigana: "可愛[かわい]い",
+  かわいい: {
+    word: "かわいい",
+    furigana: "かわいい",
     english: ["cute"],
     chapter: 7,
     part_of_speech: "I-adjective",
-    info: ["Kawaii culture is a whole thing in Japan."],
+    info: [
+      "Sometimes written in kanji as 可愛い.",
+      "Kawaii culture is a whole thing in Japan.",
+    ],
     example_sentences: [
+      {
+        english: [
+          'A: "This frog is really green, isn\'t it?"\nB: "Yeah, but its eyes are big and cute, aren\'t they!"',
+        ],
+        japanese: [
+          "A: このカエル、 本当[ほんとう]に緑[みどり] 色[いろ]ですね。\nB: ええ、でも 目[め]が 大[おお]きくて",
+          { t: "かわいい" },
+          "ですね！",
+        ],
+      },
       {
         english: ["This dog is ", { t: "cute" }, "."],
         japanese: ["この 犬[いぬ]は", { t: "可愛[かわい]い" }, "です。"],
@@ -5440,6 +6870,347 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
+  歌う: {
+    word: "歌う",
+    furigana: "歌う[うたう]",
+    english: ["to sing"],
+    chapter: 7,
+    part_of_speech: "Godan verb with 'u' ending",
+    example_sentences: [
+      {
+        english: ["I like showering. I always sing songs in the shower!"],
+        japanese: [
+          "シャワーが 好き[すき]です。いつもシャワーで、 歌[うた]を",
+          { t: "歌い" },
+          "ます！",
+        ],
+      },
+    ],
+  },
+  かぶる: {
+    word: "かぶる",
+    furigana: "かぶる",
+    english: ["to put on (a hat)"],
+    chapter: 7,
+    part_of_speech: "Godan verb with 'ru' ending",
+    example_sentences: [
+      {
+        english: [
+          "It suddenly started raining, so I didn't have an umbrella and put a towel over my head",
+        ],
+        japanese: [
+          "急[いそ]に 雨[あめ]が 降[ふ]ってきたから、傘[かさ]がなくて、タオル[タオル]を 頭[あたま]に",
+          { t: "かぶり" },
+          "ました。",
+        ],
+      },
+    ],
+  },
+  はく: {
+    word: "はく",
+    furigana: "はく",
+    english: ["to put on (items below your waist)"],
+    chapter: 7,
+    part_of_speech: "Godan verb with 'ku' ending",
+    example_sentences: [
+      {
+        english: [
+          "Hey, look! That person is wearing different colored pants on their right and left sides! I was surprised!",
+        ],
+        japanese: [
+          "ねえ、 見[み]て！あの 人[ひと]は、 右[みぎ]と 左[ひだり]で違[ちが]う 色[いろ]のズボンを",
+          { t: "はいて" },
+          "います！びっくりしました！",
+        ],
+      },
+    ],
+  },
+  知る: {
+    word: "知る",
+    furigana: "知[し]る",
+    english: ["to get to know"],
+    chapter: 7,
+    part_of_speech: "Godan verb with 'ru' ending (irregular verb)",
+    example_sentences: [
+      {
+        english: ["I got to know a new friend at the party. I'm really happy!"],
+        japanese: [
+          "パーティで 新[あたら]しい 友[とも]だちを",
+          { t: "知[し]り" },
+          "ました。うれしいです！",
+        ],
+      },
+      {
+        english: [
+          "During summer vacation, I went to Tokyo with my family. There, I discovered (got to know) the taste of delicious sushi.",
+        ],
+        japanese: [
+          "夏[なつ]休み、 家族[かぞく]と 東京[とうきょう]に行[い]きました。そこで、おいしいお 寿司[すし]の 味[あじ]を",
+          { t: "知[し]り" },
+          "ました。",
+        ],
+      },
+    ],
+  },
+  知っています: {
+    word: "知っています",
+    furigana: "知[し]っています",
+    english: ["I know"],
+    chapter: 7,
+    part_of_speech: "Ichidan verb",
+    example_sentences: [
+      {
+        english: [
+          'A: "What\'s in my hand? Do you know?"\nB: "No, I don\'t know! What is it?"',
+        ],
+        japanese: [
+          "A: 私[わたし]の 手[て]の 中[なか]に 何[なに]がありますか。",
+          { t: "知[し]" },
+          "っていますか？\nB: いいえ、",
+          { t: "知[し]" },
+          "りません！何[なん]ですか。",
+        ],
+      },
+      {
+        english: [
+          'A: "Hey, do you know something special about this panda?"\nB: "Huh? What?"\nA: "Yes, this panda also eats apples!"',
+        ],
+        japanese: [
+          "A: ねえ、このパンダ、 特別[とくべつ]なことを",
+          { t: "知[し]" },
+          "っていますか。\nB: え？何[なに]を？\nA: はい、このパンダはリンゴも 食[た]べますよ！",
+        ],
+      },
+    ],
+  },
+  知りません: {
+    word: "知りません",
+    furigana: "知[し]りません",
+    english: ["I do not know"],
+    chapter: 7,
+    part_of_speech: "Godan verb with 'ru' ending",
+    example_sentences: [
+      {
+        english: [
+          'A: "Does the teacher know that I ate the sweets?"\nB: "No, the teacher doesn\'t know!"',
+        ],
+        japanese: [
+          "A: 先生[せんせい]は 私[わたし]が お 菓子[おかし]を 食[た]べたことを知[し]っていますか。\nB: いいえ、先生は",
+          { t: "知[し]りません" },
+          "よ。",
+        ],
+      },
+    ],
+  },
+  住む: {
+    word: "住む",
+    furigana: "住[す]む",
+    english: ["to live"],
+    chapter: 7,
+    part_of_speech: "Godan verb with 'mu' ending",
+    example_sentences: [
+      {
+        english: [
+          "This cute cat lives in my room. It always sleeps on the bed.",
+        ],
+        japanese: [
+          "この",
+          { t: "かわいい" },
+          "猫[ねこ]は、私[わたし]の 部屋[へや]に",
+          { t: "住[す]んで" },
+          "います。いつもベッドで 寝[ね]ています。",
+        ],
+      },
+    ],
+  },
+  働く: {
+    word: "働く",
+    furigana: "働[はたら]く",
+    english: ["to work"],
+    chapter: 7,
+    part_of_speech: "Godan verb with 'ku' ending",
+    example_sentences: [
+      {
+        english: [
+          'A: "Is Mr./Ms. Suzuki\'s job fun?"\nB: "Hmm... It\'s not very fun. But I work for money."',
+        ],
+        japanese: [
+          "A: 鈴木[すずき]さんのお 仕事[しごと]は 楽[たの]しいですか。\nB: うーん…。あまり 楽[たの]しくないです。でも、お 金[かね]のために",
+          { t: "働[はたら]いて" },
+          "います。",
+        ],
+      },
+      {
+        english: [
+          "I work on weekends too. So, I can't go out to play with friends. I'm a little lonely.",
+        ],
+        japanese: [
+          "週末[しゅうまつ]も",
+          { t: "働[はたら]いて" },
+          "ます。だから、 友[とも]だちと 遊[あそ]びに 行[い]けません。少[すこ]し 寂[さみ]しいです。",
+        ],
+      },
+    ],
+  },
+  太る: {
+    word: "太る",
+    furigana: "太[ふと]る",
+    english: ["to gain weight", "overweight"],
+    chapter: 7,
+    part_of_speech: "Godan verb with 'ru' ending",
+    example_sentences: [
+      {
+        english: [
+          "Before winter comes, bears eat a lot. And then, their bodies get very fat.",
+        ],
+        japanese: [
+          "冬[ふゆ]が 来[く]る前に、クマはたくさん 食[た]べます。そして、 体[からだ]はとても",
+          { t: "太[ふと]り" },
+          "ます。",
+        ],
+      },
+      {
+        english: [
+          "In the game, when your character eats a lot of pizza, their belly gets fat. It's interesting, isn't it!",
+        ],
+        japanese: [
+          "ゲームでは、キャラクターがピザをたくさん 食[た]べると、お 腹[なか]が",
+          { t: "太[ふと]ります" },
+          "。 面白い[おもしろい]ですね！",
+        ],
+      },
+    ],
+  },
+  太っています: {
+    word: "太っています",
+    furigana: "太[ふと]っています",
+    english: ["to be on the heavy side"],
+    chapter: 7,
+    part_of_speech: "Ichidan verb",
+    example_sentences: [
+      {
+        english: [
+          "That squirrel's cheeks are really puffy, aren't they! I bet it's because it ate a lot of nuts, so it's gotten fat (it is fat, more literally).",
+        ],
+        japanese: [
+          "あのリス、ほっぺたがパンパンですね！きっと 木[こ]の 実[み]をたくさん 食[た]べたから",
+          { t: "太[ふと]っています" },
+          "よ！",
+        ],
+      },
+    ],
+  },
+  "かける（眼鏡を）": {
+    word: "かける（眼鏡を）",
+    furigana: "かける（ 眼鏡[めがね]を）",
+    english: ["to put on (glasses)"],
+    chapter: 7,
+    part_of_speech: "Ichidan verb",
+    example_sentences: [
+      {
+        english: [
+          "Look, look! My cat is putting on my glasses by itself! A picture, a picture!",
+        ],
+        japanese: [
+          "見て、見て！うちの猫、自分で",
+          { t: "眼鏡[めがね]" },
+          "を",
+          { t: "かけて" },
+          "る！写真、写真！",
+        ],
+      },
+    ],
+  },
+  着る: {
+    word: "着る",
+    furigana: "着[き]る",
+    english: ["to put on (clothes above your waist)"],
+    chapter: 7,
+    part_of_speech: "Ichidan verb",
+    example_sentences: [
+      {
+        english: [
+          'A: "What will you wear to the party?"\nB: "Hmm... Oh! I have a cute dress. I\'ll wear that."',
+        ],
+        japanese: [
+          "A: パーティーに 何[なに]を",
+          { t: "着[き]ます" },
+          "か。\nB: うーん…あ！",
+          { t: "かわいい" },
+          "ワンピースがあります。それを",
+          { t: "着[き]ます" },
+          "。",
+        ],
+      },
+    ],
+  },
+  やせる: {
+    word: "やせる",
+    furigana: "やせる",
+    english: ["to lose weight"],
+    chapter: 7,
+    part_of_speech: "Ichidan verb",
+    example_sentences: [
+      {
+        english: [
+          "I have a lot of work. Every day, I work until late at night. So, I don't eat my meals leisurely. Because of that, I gradually get thin.",
+        ],
+        japanese: [
+          "仕事[しごと]がたくさんあります。 毎日[まいにち]、 夜[よる]遅[おそ]くまで 作[つく]ります。だから、ご 飯[はん]をゆっくり 食[た]べません。それで、だんだん",
+          { t: "やせ" },
+          "ます。",
+        ],
+      },
+    ],
+  },
+  やせています: {
+    word: "やせています",
+    furigana: "やせています",
+    english: ["to be thin"],
+    chapter: 7,
+    part_of_speech: "Ichidan verb",
+    example_sentences: [
+      {
+        english: [
+          'A: "Mr./Ms. Suzuki, you sure eat a lot of food, don\'t you?"\nB: "Yes, but I\'m thin. It\'s strange!"',
+        ],
+        japanese: [
+          "A: 「鈴木[すずき]さん、ご 飯[はん]をたくさん 食[た]べますね。」\nB: 「そうです、でも",
+          { t: "やせてい" },
+          "ます。不思議[ふしぎ]です！笑[わら]」",
+        ],
+      },
+      {
+        english: [
+          'A: "Oh, this bar of soap is already thin, isn\'t it?"\nB: "Yeah, because I use it every day in the bath. It\'s normal."',
+        ],
+        japanese: [
+          "A:「あ、この石鹸[せっけん]、もう",
+          { t: "やせてい" },
+          "ますね。」\nB:「ええ、 毎日[まいにち]お 風呂[ふろ]で 使[つか]っていますからよ。普通[ふつう]です。」",
+        ],
+      },
+    ],
+  },
+  結婚する: {
+    word: "結婚する",
+    furigana: "結婚[けっこん]する",
+    english: ["to get married"],
+    chapter: 7,
+    part_of_speech: "Suru verb - compound word",
+    example_sentences: [
+      {
+        english: [
+          "My favorite idol is getting married. The fans will be surprised.",
+        ],
+        japanese: [
+          "私の 好[す]きなアイドルが",
+          { t: "結婚[けっこん]し" },
+          "ます。ファンはびっくりします。",
+        ],
+      },
+    ],
+  },
   "～が": {
     word: "～が",
     furigana: "～が",
@@ -5468,7 +7239,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  "～人": {
+  "～人1": {
     word: "～人",
     furigana: "～人[にん]",
     english: ["counter for people"],
@@ -5541,12 +7312,23 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  勿論: {
-    word: "勿論",
-    furigana: "勿論[もちろん]",
+  もちろん: {
+    word: "もちろん",
+    furigana: "もちろん",
     english: ["of course"],
     chapter: 7,
     example_sentences: [
+      {
+        english: [
+          "Do you know this song?\n",
+          "Of course I know it! It's my favorite song!",
+        ],
+        japanese: [
+          "この歌、 知[し]っていますか。\n",
+          { t: "もちろん" },
+          "知[し]っています！私[わたし]の 好き[すき]な 歌[うた]です！",
+        ],
+      },
       {
         english: [
           "A: Will you come to the party?\nB: ",
@@ -5555,8 +7337,18 @@ export const vocabulary: VocabularyCollection = {
         ],
         japanese: [
           "A: パーティーに 来[き]ますか。\nB: ",
-          { t: "勿論[もちろん]" },
+          { t: "もちろん" },
           "です！",
+        ],
+      },
+      {
+        english: [
+          "My cat always opens the fridge. So, of course, it knows where the fish is!",
+        ],
+        japanese: [
+          "私[わたし]の 猫[ねこ]は、いつも冷蔵庫[れいぞうこ]を 開[あ]けます。だから、",
+          { t: "もちろん" },
+          "魚[さかな]がどこにあるか 知[し]っていますよ！",
         ],
       },
     ],
@@ -5673,6 +7465,26 @@ export const vocabulary: VocabularyCollection = {
           "あの 女[おんな]の 人[ひと]は",
           { t: "目[め]" },
           "が きれいです。",
+        ],
+      },
+    ],
+  },
+  眼鏡: {
+    word: "眼鏡",
+    furigana: "眼鏡[めがね]",
+    english: ["glasses"],
+    chapter: 7,
+    example_sentences: [
+      {
+        english: [
+          "Sabae City in Fukui Prefecture, Japan, is a famous glasses town. There, they make many very good glasses.",
+        ],
+        japanese: [
+          "日本[にほん]の 福井県[ふくいけん]の 鯖江市[さばえし]は、 有名[ゆうめい]な",
+          { t: "眼鏡[めがね]" },
+          "の 町[まち]です。そこで、とても いい",
+          { t: "眼鏡[めがね]" },
+          "をたくさん 作[つく]ります。",
         ],
       },
     ],
@@ -5845,7 +7657,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  // FIX add chapter 7 verbs
+
   晴れ: {
     word: "晴れ",
     furigana: "晴[は]れ",
@@ -5870,15 +7682,19 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  くもり: {
-    word: "くもり",
-    furigana: "くもり",
+  曇り: {
+    word: "曇り",
+    furigana: "曇り[くもり]",
     english: ["cloudy weather"],
     chapter: 8,
     example_sentences: [
       {
-        japanese: ["今日[きょう]は", { t: "くもり" }, "です。"],
-        english: ["Today is ", { t: "cloudy" }, "."],
+        english: ["The photo is dark. It's because I took it on a cloudy day."],
+        japanese: [
+          "写真[しゃしん]は 暗[くらい]いです。",
+          { t: "曇り[くもり]" },
+          "の 日[ひ]に 撮[と]りましたから。",
+        ],
       },
     ],
   },
@@ -6025,7 +7841,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  会社員: {
+  会社員1: {
     word: "会社員",
     furigana: "会社[かいしゃ]員[いん]",
     english: ["office worker"],
@@ -6182,7 +7998,19 @@ export const vocabulary: VocabularyCollection = {
           { t: "お 風呂[ふろ]" },
           "に 入[はい]っています。",
         ],
-        english: ["My brother is taking a ", { t: "bath" }, " now."],
+        english: ["My little brother is taking a ", { t: "bath" }, " now."],
+      },
+      {
+        english: ["The bath is warm. Bliss~."],
+        japanese: ["お", { t: "風呂[ふろ]" }, "、あったかい！幸せ〜。"],
+      },
+      {
+        english: ["Yay! The bath got warm!"],
+        japanese: [
+          "やった！お",
+          { t: "風呂[ふろ]" },
+          "、 温[あた]かくなったよ！",
+        ],
       },
     ],
   },
@@ -6350,6 +8178,18 @@ export const vocabulary: VocabularyCollection = {
           "ります。",
         ],
       },
+      {
+        english: [
+          'A: "Elephants are big, aren\'t they! But do they take a bath every day?"\nB: "Probably not!"\n    *elephants do in fact bathe very frequently, often daily',
+        ],
+        japanese: [
+          "A: 「ゾウさんは 大[おお]きいね！でも、毎日[まいにち]お",
+          { t: "風呂[ふろ]に 入[はい]ります" },
+          "か？」\nB: 「たぶん、",
+          { t: "入[はい]らないよ！" },
+          "」",
+        ],
+      },
     ],
   },
   思う: {
@@ -6412,6 +8252,16 @@ export const vocabulary: VocabularyCollection = {
     english: ["(rain/snow) falls"],
     chapter: 8,
     example_sentences: [
+      {
+        english: [
+          "It's raining, and the room will get wet, so please don't open the window.",
+        ],
+        japanese: [
+          "雨[あめ]が",
+          { t: "降[ふ]" },
+          "っていて、 部屋[へや]が 濡[ぬ]れますから、 窓[まど]を 開[あ]けないでください。",
+        ],
+      },
       {
         english: ["It ", { t: "is raining" }, " today."],
         japanese: ["今日[きょう]は 雨[あめ]が", { t: "降[ふ]" }, "ります。"],
@@ -6650,11 +8500,13 @@ export const vocabulary: VocabularyCollection = {
     info: ["Often used as 残念ですね"],
     example_sentences: [
       {
-        english: ["The test was difficult. ", { t: "That's too bad." }],
+        english: [
+          "A: Did you go to the new cat cafe?\nB: No, I didn't. The shop was closed. That's a shame.",
+        ],
         japanese: [
-          "テストが 難[むずか]しかったです。",
-          { t: "残念[ざんねん]ですね" },
-          "。",
+          "A: 「 新[あたら]しい猫[ねこ]カフェに 行[い]きましたか。」\nB: 「いいえ、行きませんでした。 お 店[みせ]が 休[やす]みでした。\nB:「あ、",
+          { t: "残念[ざんねん]" },
+          "ですね。」",
         ],
       },
     ],
@@ -6670,27 +8522,65 @@ export const vocabulary: VocabularyCollection = {
         english: ["I haven't done my homework ", { t: "yet" }, "."],
         japanese: [{ t: "まだ" }, " 宿題[しゅくだい]をしていません。"],
       },
+      {
+        english: ["I still haven't eaten breakfast. I'm so hungry..."],
+        japanese: [
+          { t: "まだ" },
+          "ご 飯[はん]を 食[た]べていません。お 腹[なか]がすいた…",
+        ],
+      },
+      {
+        english: [
+          "A: Mom, look! There's a cat over there! But don't go over there yet! A car is coming.",
+        ],
+        japanese: [
+          "A: ママ、見[み]て！あそこに 猫[ねこ]さんがいますよ！でも、",
+          { t: "まだ" },
+          "あっちへ 行[い]かないで！車[くるま]が 来[き]ますよ。",
+        ],
+      },
     ],
   },
-  について: {
-    word: "について",
-    furigana: "について",
+  "～について": {
+    word: "～について",
+    furigana: "～について",
     english: ["about...", "concerning..."],
     chapter: 8,
     example_sentences: [
+      {
+        english: [
+          'A: "Suzuki-san, do you know about Urusei Yatsura?"\nB: "Hmm, nope, I don\'t. What kind of anime (is it)?"',
+        ],
+        japanese: [
+          "A: 「鈴木[すずき]さん、うる 星[せい]やつら",
+          { t: "について" },
+          "知[し]ってる？」\nB: 「ううん、 知[し]らない。どんなアニメ？」",
+        ],
+      },
       {
         english: ["Let's talk ", { t: "about" }, " this book."],
         japanese: ["この 本[ほん]", { t: "について" }, " 話[はな]しましょう。"],
       },
     ],
   },
-  度: {
-    word: "度",
-    furigana: "度[ど]",
+  "～度": {
+    word: "～度",
+    furigana: "～度[～ど]",
     english: ["...degrees (temperature)"],
     chapter: 8,
-    info: ["Counter for degrees"],
     example_sentences: [
+      {
+        english: [
+          "A: \"What's today's temperature?\"\nB: \"It's \(30^\circ\)C! This is tough, isn't it. I'll turn on the air conditioner!\"",
+        ],
+        japanese: [
+          "A: 「今日[きょう]の 気温[きおん]は 何[なん]",
+          { t: "度[ど]" },
+          "ですか。」\nB: 「30",
+          { t: "度[ど]" },
+          "です！大変[たいへん]ですね。エアコンをつけます！」",
+        ],
+      },
       {
         english: ["It's 25 ", { t: "degrees" }, " today."],
         japanese: ["今日[きょう]は25", { t: "度[ど]" }, "です。"],
@@ -7398,6 +9288,14 @@ export const vocabulary: VocabularyCollection = {
     info: ["Particle"],
     example_sentences: [
       {
+        english: ["No! I won't eat these cookies until Mom comes home!"],
+        japanese: [
+          "だめ！お 母[かあ]さんが 来[き]てくる",
+          { t: "まで" },
+          "、このクッキーを 食[た]べないよ！",
+        ],
+      },
+      {
         english: ["The library is open from 9:00 ", { t: "to" }, " 5:00."],
         japanese: [
           "図書館[としょかん]は 9時[くじ]から 5時[ごじ]",
@@ -7412,18 +9310,39 @@ export const vocabulary: VocabularyCollection = {
     furigana: "ぜひ",
     english: ["by all means"],
     chapter: 9,
+    example_sentences: [],
+  },
+  是非: {
+    word: "是非",
+    furigana: "是非[ぜひ]",
+    english: ["by all means"],
+    chapter: 9,
     example_sentences: [
       {
-        english: [
-          "",
-          { t: "Please" },
-          " come to my party ",
-          { t: "by all means" },
-          ".",
-        ],
+        english: [{ t: "Please (by all means)" }, " come to my party."],
         japanese: [
           { t: "ぜひ" },
           " 私[わたし]の パーティーに 来[き]てください。",
+        ],
+      },
+      {
+        english: [
+          "These are the cookies I made! They're delicious, so please do try them, okay?",
+        ],
+        japanese: [
+          "これ、私[わたし]の 作[つく]ったクッキーです！おいしいから、",
+          { t: "是非[ぜひ]" },
+          "食[た]べてくださいね。",
+        ],
+      },
+      {
+        english: [
+          "The movie is from 8-10pm. Please (by all means), you're invited to come!",
+        ],
+        japanese: [
+          "映画[えいが]は、8時[じ]から10時[じ]までです。",
+          { t: "是非[ぜひ]" },
+          "来[き]てくださいね！",
         ],
       },
     ],
@@ -7770,7 +9689,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  医者: {
+  医者1: {
     word: "医者",
     furigana: "医[い]者[しゃ]",
     english: ["doctor"],
@@ -9166,7 +11085,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  出身: {
+  出身1: {
     word: "出身",
     furigana: "出[しゅっ]身[しん]",
     english: ["coming from"],
@@ -9453,7 +11372,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  看護師: {
+  看護師1: {
     word: "看護師",
     furigana: "看[かん]護[ご]師[し]",
     english: ["nurse"],
@@ -9813,7 +11732,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  政治: {
+  政治1: {
     word: "政治",
     furigana: "政[せい]治[じ]",
     english: ["politics"],
@@ -10381,7 +12300,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  私: {
+  私1: {
     word: "私",
     furigana: "私[わたくし]",
     english: ["I (formal)"],
@@ -12456,7 +14375,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  よく: {
+  よく1: {
     word: "よく",
     furigana: "よく",
     english: ["well", "often", "frequently"],
