@@ -32,12 +32,29 @@ export default function MultipleChoiceComponent() {
     if (!card) return []
 
     const allCards = Array.from(manager().getCardMap().values())
+    const filterProp =
+      state.settings.practiceMode === "readings" ? "english" : "word"
+
+    // Normalize value for consistent comparison
+    const normalize = (value: string | string[]) =>
+      Array.isArray(value) ? value.sort().join("|") : String(value)
+
+    const currentValue = normalize(card.vocab[filterProp])
+    const seenValues = new Set([currentValue])
+
+    // Get unique wrong options (avoid duplicates)
     const wrongOptions = allCards
-      .filter((c) => c.key !== card.key)
-      .sort(() => 0.5 - Math.random())
+      .filter(
+        (c) =>
+          c.key !== card.key &&
+          !seenValues.has(normalize(c.vocab[filterProp])) &&
+          seenValues.add(normalize(c.vocab[filterProp])),
+      )
+      .sort(() => Math.random() - 0.5)
       .slice(0, 3)
 
-    return [card, ...wrongOptions].sort(() => 0.5 - Math.random())
+    // Return shuffled choices
+    return [card, ...wrongOptions].sort(() => Math.random() - 0.5)
   })
 
   // Reset local UI state whenever the card changes
