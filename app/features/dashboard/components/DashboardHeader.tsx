@@ -9,6 +9,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { usePageTransition } from "@/context/TransitionContext"
+import { createResource, Suspense } from "solid-js"
+import type { FSRSCardData } from "@/features/supabase/db/utils"
 
 type CurrentTextbookChapters = Record<
   string,
@@ -18,10 +20,15 @@ type CurrentTextbookChapters = Record<
 interface DashboardHeaderProps {
   currentChapterID: string
   currentTextbookChapters: CurrentTextbookChapters
-  dailyProgress: number
+  dueFSRSCardsPromise: Promise<FSRSCardData[]> | null
 }
 
 export function DashboardHeader(props: DashboardHeaderProps) {
+  const [dueCards] = createResource(
+    () => props.dueFSRSCardsPromise,
+    (promise) => promise,
+  )
+
   const navigate = useNavigate({ from: "/dashboard" })
   // const { triggerAnimations, setUserHasNavigated } = usePageTransition()
 
@@ -82,9 +89,27 @@ export function DashboardHeader(props: DashboardHeaderProps) {
         </Select>
       </div>
       <div class="flex justify-end pr-6 xl:pr-8">
-        <div class="text-center text-sm xl:text-base">
-          <div>{props.dailyProgress}%</div>
-          <div class="text-[0.5rem] xl:text-xs">Daily Progress</div>
+        <div class="min-w-20 text-center xl:min-w-24">
+          {!props.dueFSRSCardsPromise ? (
+            <Link to="/auth" class="text-sm italic xl:text-base">
+              Login
+            </Link>
+          ) : (
+            <Suspense fallback={<div>...</div>}>
+              <div
+                class={dueCards()?.length ? "text-amber-400" : "text-green-500"}
+              >
+                <span class="font-inter text-base font-bold xl:text-lg">
+                  {dueCards()?.length || 0}
+                </span>
+              </div>
+              <div class="text-muted-foreground text-xs xl:text-sm">
+                {dueCards()?.length === 0
+                  ? "No reviews"
+                  : `${dueCards()?.length === 1 ? "Review" : "Reviews"} Due`}
+              </div>
+            </Suspense>
+          )}
         </div>
       </div>
     </div>

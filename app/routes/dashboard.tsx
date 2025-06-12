@@ -24,6 +24,10 @@ import { StrugglesSection } from "@/features/dashboard/components/StrugglesSecti
 import { HistorySection } from "@/features/dashboard/components/HistorySection"
 import { AllContentList } from "@/features/dashboard/components/AllContentList"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
+import {
+  getDueFSRSCards,
+  type FSRSCardData,
+} from "@/features/supabase/db/utils"
 
 const dashboardSearchSchema = z.object({
   chapter: z.string().optional(),
@@ -76,12 +80,18 @@ export const Route = createFileRoute("/dashboard")({
       ),
     )
 
+    let dueFSRSCardsPromise: Promise<FSRSCardData[]> | null
+    context.user
+      ? (dueFSRSCardsPromise = getDueFSRSCards(context.user.id))
+      : (dueFSRSCardsPromise = null)
+
     return {
       currentChapterID,
       currentTextbookChapters,
       externalResources,
       lessons,
       deferredThumbnails: thumbnailPromises,
+      dueFSRSCardsPromise,
     }
   },
   component: RouteComponent,
@@ -140,7 +150,7 @@ function RouteComponent() {
       <DashboardHeader
         currentChapterID={loaderData().currentChapterID}
         currentTextbookChapters={loaderData().currentTextbookChapters}
-        dailyProgress={20}
+        dueFSRSCardsPromise={loaderData().dueFSRSCardsPromise}
       />
 
       <div data-section="content">

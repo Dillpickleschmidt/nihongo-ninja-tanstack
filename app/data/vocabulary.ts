@@ -12277,7 +12277,7 @@ export const vocabulary: VocabularyCollection = {
       },
     ],
   },
-  弁護士: {
+  弁護士1: {
     word: "弁護士",
     furigana: "弁護士[べんごし]",
     english: ["lawyer"],
