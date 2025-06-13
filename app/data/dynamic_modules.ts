@@ -288,7 +288,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch2",
     title: "Things Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_1_ch2-things"],
+    vocab_set_ids: ["genki_1_ch2_things"],
     // Vocab lesson
     instructions: "Learn vocabulary for common objects.",
   },
@@ -298,7 +298,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch2",
     title: "Practice Things",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch2-things"],
+    vocab_set_ids: ["genki_1_ch2_things"],
     instructions: "Practice vocabulary for common objects.",
   },
   "sentence-practice-words-that-point": {
@@ -428,7 +428,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch3",
     title: "Chapter 3 Nouns Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_1_ch3-nouns"],
+    vocab_set_ids: ["genki_1_ch3_nouns"],
     instructions: "Learn nouns from Chapter 3.",
   },
   "genki_1_ch3_practice-nouns-readings": {
@@ -437,7 +437,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch3",
     title: "Practice Nouns - Readings",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch3-nouns"],
+    vocab_set_ids: ["genki_1_ch3_nouns"],
     instructions: "Practice the readings of nouns from Chapter 3.",
   },
   "genki_1_ch3_practice-nouns-kana": {
@@ -446,7 +446,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch3",
     title: "Practice Nouns - Kana",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch3-nouns"],
+    vocab_set_ids: ["genki_1_ch3_nouns"],
     instructions: "Practice recognizing nouns from Chapter 3 in Kana.",
   },
   "genki_1_ch3_days-and-time": {
@@ -772,7 +772,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch5",
     title: "Nouns 1 Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_1_ch5-nouns"],
+    vocab_set_ids: ["genki_1_ch5_nouns"],
     instructions: "Learn the nouns from Chapter 5.",
   },
   "genki_1_ch5_practice-nouns-readings": {
@@ -781,7 +781,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch5",
     title: "Practice Nouns 1 - Readings",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch5-nouns"],
+    vocab_set_ids: ["genki_1_ch5_nouns"],
     instructions: "Practice the readings of nouns from Chapter 5.",
   },
   "genki_1_ch5_practice-nouns-kana": {
@@ -790,7 +790,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch5",
     title: "Practice Nouns 1 - Kana",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch5-nouns"],
+    vocab_set_ids: ["genki_1_ch5_nouns"],
     instructions: "Practice recognizing nouns from Chapter 5 in Kana.",
   },
   "genki_1_ch5_i-adjectives": {
@@ -921,7 +921,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch6",
     title: "Nouns Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_1_ch6-nouns"],
+    vocab_set_ids: ["genki_1_ch6_nouns"],
     instructions: "Learn nouns from Chapter 6.",
   },
   "genki_1_ch6_practice-nouns-readings": {
@@ -930,7 +930,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch6",
     title: "Practice Nouns - Readings",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch6-nouns"],
+    vocab_set_ids: ["genki_1_ch6_nouns"],
     instructions: "Practice the readings of nouns from Chapter 6.",
   },
   "genki_1_ch6_practice-nouns-kana": {
@@ -939,7 +939,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch6",
     title: "Practice Nouns - Kana",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch6-nouns"],
+    vocab_set_ids: ["genki_1_ch6_nouns"],
     instructions: "Practice recognizing nouns from Chapter 6 in Kana.",
   },
   "genki_1_ch6_u-verbs-and-adj": {
@@ -1079,7 +1079,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch7",
     title: "Verbs Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_1_ch7-verbs"],
+    vocab_set_ids: ["genki_1_ch7_verbs"],
     instructions: "Learn verbs from Chapter 7.",
   },
   "genki_1_ch7_practice-verbs-readings": {
@@ -1088,7 +1088,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch7",
     title: "Practice Verbs - Readings",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch7-verbs"],
+    vocab_set_ids: ["genki_1_ch7_verbs"],
     instructions: "Practice the readings of verbs from Chapter 7.",
   },
   "genki_1_ch7_practice-verbs-kana": {
@@ -1097,7 +1097,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch7",
     title: "Practice Verbs - Kana",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch7-verbs"],
+    vocab_set_ids: ["genki_1_ch7_verbs"],
     instructions: "Practice recognizing verbs from Chapter 7 in Kana.",
   },
   "genki_1_ch7_adj-adv-misc": {
@@ -1210,7 +1210,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch8",
     title: "Verbs Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_1_ch8-verbs"],
+    vocab_set_ids: ["genki_1_ch8_verbs"],
     instructions: "Learn verbs from Chapter 8.",
   },
   "genki_1_ch8_practice-verbs-readings": {
@@ -1219,7 +1219,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch8",
     title: "Practice Verbs - Readings",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch8-verbs"],
+    vocab_set_ids: ["genki_1_ch8_verbs"],
     instructions: "Practice the readings of verbs from Chapter 8.",
   },
   "genki_1_ch8_practice-verbs-kana": {
@@ -1228,7 +1228,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch8",
     title: "Practice Verbs - Kana",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch8-verbs"],
+    vocab_set_ids: ["genki_1_ch8_verbs"],
     instructions: "Practice recognizing verbs from Chapter 8 in Kana.",
   },
   "genki_1_ch8_adj-adv-misc": {
@@ -1287,7 +1287,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch9",
     title: "Nouns Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_1_ch9-nouns"],
+    vocab_set_ids: ["genki_1_ch9_nouns"],
     instructions: "Learn nouns from Chapter 9.",
   },
   "genki_1_ch9_practice-nouns-readings": {
@@ -1296,7 +1296,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch9",
     title: "Practice Nouns - Readings",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch9-nouns"],
+    vocab_set_ids: ["genki_1_ch9_nouns"],
     instructions: "Practice the readings of nouns from Chapter 9.",
   },
   "genki_1_ch9_practice-nouns-kana": {
@@ -1305,7 +1305,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch9",
     title: "Practice Nouns - Kana",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch9-nouns"],
+    vocab_set_ids: ["genki_1_ch9_nouns"],
     instructions: "Practice recognizing nouns from Chapter 9 in Kana.",
   },
   "genki_1_ch9_small-item-counters": {
@@ -1341,7 +1341,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch9",
     title: "Verbs Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_1_ch9-verbs"],
+    vocab_set_ids: ["genki_1_ch9_verbs"],
     instructions: "Learn verbs from Chapter 9.",
   },
   "genki_1_ch9_practice-verbs-readings": {
@@ -1350,7 +1350,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch9",
     title: "Practice Verbs - Readings",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch9-verbs"],
+    vocab_set_ids: ["genki_1_ch9_verbs"],
     instructions: "Practice the readings of verbs from Chapter 9.",
   },
   "genki_1_ch9_practice-verbs-kana": {
@@ -1359,7 +1359,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch9",
     title: "Practice Verbs - Kana",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch9-verbs"],
+    vocab_set_ids: ["genki_1_ch9_verbs"],
     instructions: "Practice recognizing verbs from Chapter 9 in Kana.",
   },
   "genki_1_ch9_adj-adv-misc": {
@@ -1660,7 +1660,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch11",
     title: "Occupations Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_1_ch11-occupations"],
+    vocab_set_ids: ["genki_1_ch11_occupations"],
     instructions: "Learn vocabulary for occupations.",
   },
   "genki_1_ch11_practice-occupations-readings": {
@@ -1669,7 +1669,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch11",
     title: "Practice Occupations - Readings",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch11-occupations"],
+    vocab_set_ids: ["genki_1_ch11_occupations"],
     instructions: "Practice the readings of occupation vocabulary.",
   },
   "genki_1_ch11_practice-occupations-kana": {
@@ -1678,7 +1678,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch11",
     title: "Practice Occupations - Kana",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch11-occupations"],
+    vocab_set_ids: ["genki_1_ch11_occupations"],
     instructions: "Practice recognizing occupation vocabulary in Kana.",
   },
   "genki_1_ch11_all-vocab-test": {
@@ -1761,7 +1761,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch12",
     title: "Verbs Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_1_ch12-verbs"],
+    vocab_set_ids: ["genki_1_ch12_verbs"],
     instructions: "Learn verbs from Chapter 12.",
   },
   "genki_1_ch12_practice-verbs-readings": {
@@ -1770,7 +1770,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch12",
     title: "Practice Verbs - Readings",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch12-verbs"],
+    vocab_set_ids: ["genki_1_ch12_verbs"],
     instructions: "Practice the readings of verbs from Chapter 12.",
   },
   "genki_1_ch12_practice-verbs-kana": {
@@ -1779,7 +1779,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch12",
     title: "Practice Verbs - Kana",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch12-verbs"],
+    vocab_set_ids: ["genki_1_ch12_verbs"],
     instructions: "Practice recognizing verbs from Chapter 12 in Kana.",
   },
   "genki_1_ch12_adj-adv-misc": {
@@ -1838,7 +1838,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_2_ch13",
     title: "Nouns Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_2_ch13-nouns"],
+    vocab_set_ids: ["genki_2_ch13_nouns"],
     instructions: "Learn nouns from Chapter 13.",
   },
   "genki_2_ch13_practice-nouns-readings": {
@@ -1847,7 +1847,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_2_ch13",
     title: "Practice Nouns - Readings",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch13-nouns"],
+    vocab_set_ids: ["genki_2_ch13_nouns"],
     instructions: "Practice the readings of nouns from Chapter 13.",
   },
   "genki_2_ch13_practice-nouns-kana": {
@@ -1856,7 +1856,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_2_ch13",
     title: "Practice Nouns - Kana",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch13-nouns"],
+    vocab_set_ids: ["genki_2_ch13_nouns"],
     instructions: "Practice recognizing nouns from Chapter 13 in Kana.",
   },
   "genki_2_ch13_adj-and-verbs": {
@@ -2207,7 +2207,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_2_ch16",
     title: "Nouns Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_2_ch16-nouns"],
+    vocab_set_ids: ["genki_2_ch16_nouns"],
     instructions: "Learn nouns from Chapter 16.",
   },
   "genki_2_ch16_practice-nouns-readings": {
@@ -2216,7 +2216,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_2_ch16",
     title: "Practice Nouns - Readings",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch16-nouns"],
+    vocab_set_ids: ["genki_2_ch16_nouns"],
     instructions: "Practice the readings of nouns from Chapter 16.",
   },
   "genki_2_ch16_practice-nouns-kana": {
@@ -2225,7 +2225,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_2_ch16",
     title: "Practice Nouns - Kana",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch16-nouns"],
+    vocab_set_ids: ["genki_2_ch16_nouns"],
     instructions: "Practice recognizing nouns from Chapter 16 in Kana.",
   },
   "genki_2_ch16_adj-and-u-v": {
@@ -2391,7 +2391,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_2_ch17",
     title: "Verbs Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_2_ch17-verbs"],
+    vocab_set_ids: ["genki_2_ch17_verbs"],
     instructions: "Learn verbs from Chapter 17.",
   },
   "genki_2_ch17_practice-verbs-readings": {
@@ -2400,7 +2400,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_2_ch17",
     title: "Practice Verbs - Readings",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch17-verbs"],
+    vocab_set_ids: ["genki_2_ch17_verbs"],
     instructions: "Practice the readings of verbs from Chapter 17.",
   },
   "genki_2_ch17_practice-verbs-kana": {
@@ -2409,7 +2409,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_2_ch17",
     title: "Practice Verbs - Kana",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch17-verbs"],
+    vocab_set_ids: ["genki_2_ch17_verbs"],
     instructions: "Practice recognizing verbs from Chapter 17 in Kana.",
   },
   "genki_2_ch17_adj-adv-misc": {
@@ -2791,7 +2791,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_2_ch20",
     title: "Nouns Vocab",
     session_type: "vocab-sublist",
-    vocab_set_ids: ["genki_2_ch20-nouns"],
+    vocab_set_ids: ["genki_2_ch20_nouns"],
     instructions: "Learn nouns from Chapter 20.",
   },
   "genki_2_ch20_practice-nouns-readings": {
@@ -2800,7 +2800,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_2_ch20",
     title: "Practice Nouns - Readings",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch20-nouns"],
+    vocab_set_ids: ["genki_2_ch20_nouns"],
     instructions: "Practice the readings of nouns from Chapter 20.",
   },
   "genki_2_ch20_practice-nouns-kana": {
@@ -2809,7 +2809,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_2_ch20",
     title: "Practice Nouns - Kana",
     session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch20-nouns"],
+    vocab_set_ids: ["genki_2_ch20_nouns"],
     instructions: "Practice recognizing nouns from Chapter 20 in Kana.",
   },
   "genki_2_ch20_adj-u-v": {

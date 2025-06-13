@@ -553,7 +553,7 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_1_ch2_things: {
-    id: "genki_1_ch2-things",
+    id: "genki_1_ch2_things",
     keys: [
       "傘",
       "かばん",
@@ -782,8 +782,8 @@ export const vocabularySets: VocabularySetCollection = {
       "野菜",
     ],
   },
-  "genki_1_ch3-nouns": {
-    id: "genki_1_ch3-nouns",
+  genki_1_ch3_nouns: {
+    id: "genki_1_ch3_nouns",
     keys: [
       "映画",
       "音楽",
@@ -1086,8 +1086,8 @@ export const vocabularySets: VocabularySetCollection = {
       "〜枚",
     ],
   },
-  "genki_1_ch5-nouns": {
-    id: "genki_1_ch5-nouns",
+  genki_1_ch5_nouns: {
+    id: "genki_1_ch5_nouns",
     keys: [
       "食べ物",
       "飲み物",
@@ -1219,8 +1219,8 @@ export const vocabularySets: VocabularySetCollection = {
       "本当ですか",
     ],
   },
-  "genki_1_ch6-nouns": {
-    id: "genki_1_ch6-nouns",
+  genki_1_ch6_nouns: {
+    id: "genki_1_ch6_nouns",
     keys: [
       "漢字",
       "教科書",
@@ -1404,8 +1404,8 @@ export const vocabularySets: VocabularySetCollection = {
       "足",
     ],
   },
-  "genki_1_ch7-verbs": {
-    id: "genki_1_ch7-verbs",
+  genki_1_ch7_verbs: {
+    id: "genki_1_ch7_verbs",
     keys: [
       "歌う",
       "被る",
@@ -1543,8 +1543,8 @@ export const vocabularySets: VocabularySetCollection = {
       "何か",
     ],
   },
-  "genki_1_ch8-verbs": {
-    id: "genki_1_ch8-verbs",
+  genki_1_ch8_verbs: {
+    id: "genki_1_ch8_verbs",
     keys: [
       "洗う",
       "言う",
@@ -1643,8 +1643,8 @@ export const vocabularySets: VocabularySetCollection = {
       "もう",
     ],
   },
-  "genki_1_ch9-nouns": {
-    id: "genki_1_ch9-nouns",
+  genki_1_ch9_nouns: {
+    id: "genki_1_ch9_nouns",
     keys: [
       "単語",
       "作文",
@@ -1683,8 +1683,8 @@ export const vocabularySets: VocabularySetCollection = {
       "十",
     ],
   },
-  "genki_1_ch9-verbs": {
-    id: "genki_1_ch9-verbs",
+  genki_1_ch9_verbs: {
+    id: "genki_1_ch9_verbs",
     keys: [
       "踊る",
       "終わる",
@@ -1931,8 +1931,8 @@ export const vocabularySets: VocabularySetCollection = {
       "どちらでもいい",
     ],
   },
-  "genki_1_ch11-occupations": {
-    id: "genki_1_ch11-occupations",
+  genki_1_ch11_occupations: {
+    id: "genki_1_ch11_occupations",
     keys: [
       "作家",
       "ジャーナリスト",
@@ -2041,8 +2041,8 @@ export const vocabularySets: VocabularySetCollection = {
       "意味",
     ],
   },
-  "genki_1_ch12-verbs": {
-    id: "genki_1_ch12-verbs",
+  genki_1_ch12_verbs: {
+    id: "genki_1_ch12_verbs",
     keys: [
       "歩く",
       "風邪をひく",
@@ -2141,8 +2141,8 @@ export const vocabularySets: VocabularySetCollection = {
       "十日",
     ],
   },
-  "genki_2_ch13-nouns": {
-    id: "genki_2_ch13-nouns",
+  genki_2_ch13_nouns: {
+    id: "genki_2_ch13_nouns",
     keys: [
       "大人",
       "弁護士",
@@ -2528,8 +2528,8 @@ export const vocabularySets: VocabularySetCollection = {
       "失礼します",
     ],
   },
-  "genki_2_ch16-nouns": {
-    id: "genki_2_ch16-nouns",
+  genki_2_ch16_nouns: {
+    id: "genki_2_ch16_nouns",
     keys: [
       "駅員",
       "親",
@@ -2697,8 +2697,8 @@ export const vocabularySets: VocabularySetCollection = {
       "自分",
     ],
   },
-  "genki_2_ch17-verbs": {
-    id: "genki_2_ch17-verbs",
+  genki_2_ch17_verbs: {
+    id: "genki_2_ch17_verbs",
     keys: [
       "選ぶ",
       "お湯を沸かす",
@@ -3483,8 +3483,8 @@ export const vocabularySets: VocabularySetCollection = {
       "申し訳ありません",
     ],
   },
-  "genki_2_ch20-nouns": {
-    id: "genki_2_ch20-nouns",
+  genki_2_ch20_nouns: {
+    id: "genki_2_ch20_nouns",
     keys: [
       "アニメ",
       "小説",
