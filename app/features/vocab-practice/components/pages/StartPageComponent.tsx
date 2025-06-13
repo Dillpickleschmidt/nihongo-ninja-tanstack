@@ -117,13 +117,12 @@ function StartPageHeader(props: {
   )
 }
 
-// FIX: The 'mode' prop is removed from the props type.
 function StartPagePreviewCard(props: { entry: RichVocabItem; index: number }) {
   const { state } = useVocabPracticeContext()
 
   const question = createMemo(() => {
     if (state.settings.practiceMode === "kana") {
-      return props.entry.english.join(", ")
+      return props.entry.english.join(" / ")
     }
     return props.entry.word
   })
@@ -135,20 +134,34 @@ function StartPagePreviewCard(props: { entry: RichVocabItem; index: number }) {
     return props.entry.english.join(", ")
   })
 
+  const questionClasses = createMemo(() => {
+    const baseClasses = "mb-3 font-bold text-orange-400 saturate-[125%]"
+    const fontSize =
+      state.settings.practiceMode === "kana"
+        ? "text-lg lg:text-xl" // Smaller for English question
+        : "text-xl lg:text-2xl" // Larger for Japanese question
+    return `${baseClasses} ${fontSize}`
+  })
+
+  const answerClasses = createMemo(() => {
+    const baseClasses = "text-primary font-bold"
+    const fontSize =
+      state.settings.practiceMode === "kana"
+        ? "text-lg lg:text-xl" // Larger for Japanese answer
+        : "text-base lg:text-lg" // Smaller for English answer
+    return `${baseClasses} ${fontSize}`
+  })
+
   return (
     <div class="bg-card group relative overflow-hidden rounded-xl p-5 shadow-md transition-all duration-200 hover:shadow-lg">
       <div class="flex items-start justify-between">
         <div class="flex-1">
-          <h3 class="mb-3 text-xl font-bold text-orange-400 saturate-[125%] lg:text-2xl">
-            {question()}
-          </h3>
+          <h3 class={questionClasses()}>{question()}</h3>
           <div class="space-y-1.5">
             <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
               Answer:
             </p>
-            <p class="text-primary text-base font-bold lg:text-lg">
-              {answer()}
-            </p>
+            <p class={answerClasses()}>{answer()}</p>
           </div>
         </div>
         <div class="bg-muted text-muted-foreground ml-4 flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold">

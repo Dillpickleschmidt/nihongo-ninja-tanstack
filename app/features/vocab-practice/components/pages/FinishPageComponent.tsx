@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { Link } from "@tanstack/solid-router"
 import type { PracticeCard } from "../../types"
-import { State } from "ts-fsrs"
 
 export default function FinishPageComponent() {
   const { state } = useVocabPracticeContext()
@@ -74,17 +73,40 @@ export default function FinishPageComponent() {
 }
 
 function CardSummary(props: { card: PracticeCard }) {
-const { state } = useVocabPracticeContext()
-
-// Get the session-specific incorrect count from the map
+  const { state } = useVocabPracticeContext()
+  // Get the session-specific incorrect count from the map
   const incorrectCount = () => state.incorrectAnswerMap.get(props.card.key) ?? 0
+
+  const answerToDisplay = createMemo(() => {
+    if (state.settings.practiceMode === "kana") {
+      return props.card.vocab.hiragana.join(", ")
+    }
+    return props.card.validAnswers.join(", ")
+  })
+
+  const promptClasses = createMemo(() => {
+    const baseColor =
+      incorrectCount() > 0 ? "text-red-500" : "text-orange-400 saturate-[125%]"
+    const baseLayout = "mb-3 font-bold"
+    const fontSize =
+      state.settings.practiceMode === "kana"
+        ? "text-lg lg:text-xl" // Smaller for English prompt
+        : "text-xl lg:text-2xl" // Larger for Japanese prompt
+    return `${baseColor} ${baseLayout} ${fontSize}`
+  })
+
+  const answerClasses = createMemo(() => {
+    const baseLayout = "text-primary ml-4 font-semibold"
+    const fontSize =
+      state.settings.practiceMode === "kana"
+        ? "text-lg lg:text-xl" // Larger for Japanese answer
+        : "text-base lg:text-lg" // Smaller for English answer
+    return `${baseLayout} ${fontSize}`
+  })
 
   return (
     <div class="bg-card relative overflow-hidden rounded-xl p-5 shadow-md">
-      {/* Card Title with Particles */}
-      <p
-        class={`${incorrectCount() > 0 ? "text-red-500" : "text-orange-400 saturate-[125%]"} mb-3 text-xl font-bold lg:text-2xl`}
-      >
+      <p class={promptClasses()}>
         <span class="mr-2">{props.card.prompt}</span>
         <Show when={props.card.vocab.particles}>
           <For each={props.card.vocab.particles}>
@@ -111,18 +133,15 @@ const { state } = useVocabPracticeContext()
         </Show>
       </p>
 
-      {/* Answer */}
       <div class="space-y-1.5">
         <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
           Answer:
         </p>
-        <p class="text-primary ml-4 text-base font-semibold lg:text-lg">
-          {props.card.validAnswers.join(", ")}
-        </p>
+        <p class={answerClasses()}>{answerToDisplay()}</p>
       </div>
 
       {/* Missed Attempts Indicator */}
-<Show when={incorrectCount() > 0}>
+      <Show when={incorrectCount() > 0}>
         <p class="mt-3 text-base text-red-500">
           You missed this question {incorrectCount()}{" "}
           {incorrectCount() === 1 ? "time" : "times"} this session.
