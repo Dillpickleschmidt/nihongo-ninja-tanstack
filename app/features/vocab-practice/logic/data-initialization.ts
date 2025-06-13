@@ -104,13 +104,18 @@ export function initializePracticeSession(
 }
 
 function getAnswersForMode(vocab: RichVocabItem, mode: PracticeMode) {
-  const prompt = vocab.word
+  let prompt: string
   let validAnswers: string[]
 
   if (mode === "readings") {
+    prompt = vocab.word
     validAnswers = [...vocab.english]
   } else {
-    validAnswers = [...vocab.hiragana]
+    prompt = vocab.english.join(", ")
+
+    // Accept both the original word (kanji) and the hiragana version.
+    const answers = new Set([...vocab.hiragana, vocab.word])
+    validAnswers = Array.from(answers)
   }
 
   return { prompt, validAnswers }

@@ -7,6 +7,7 @@ import {
   getDueFSRSCards,
   getFSRSCardsByKeys,
 } from "@/features/supabase/db/utils"
+import type { PracticeMode } from "@/features/vocab-practice/types"
 
 export const Route = createFileRoute("/practice/$practiceID")({
   loader: ({ context, location }) => {
@@ -26,11 +27,19 @@ export const Route = createFileRoute("/practice/$practiceID")({
         moduleFSRSCards = null
         dueFSRSCards = null
       }
+
+      let mode: PracticeMode
+      if (location.pathname.endsWith("-kana")) {
+        mode = "kana"
+      } else {
+        mode = "readings"
+      }
       return {
         module: localData.module,
         newVocabulary: richVocabulary,
         moduleFSRSCards,
         dueFSRSCards,
+        mode,
         user: context.user,
       }
     } catch (error) {
@@ -51,7 +60,7 @@ function RouteComponent() {
         moduleFSRSCards={data().moduleFSRSCards}
         dueFSRSCards={data().dueFSRSCards}
         deckName={data().module.title}
-        mode="readings"
+        mode={data().mode}
       />
     </>
   )

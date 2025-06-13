@@ -274,8 +274,9 @@ describe("Data Initialization", () => {
       )
 
       const card = result.cardMap.get("食べる")
-      expect(card?.prompt).toBe("食べる")
-      expect(card?.validAnswers).toEqual(["たべる"])
+      expect(card?.prompt).toBe("to eat, eat")
+      // The valid answers should still be the Japanese readings.
+      expect(card?.validAnswers).toEqual(["たべる", "食べる"])
     })
   })
 

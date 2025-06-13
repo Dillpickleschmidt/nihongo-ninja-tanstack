@@ -2,8 +2,8 @@
 import { createContext, JSX, useContext, createEffect } from "solid-js"
 import { createStore, SetStoreFunction } from "solid-js/store"
 import { PracticeSessionManager } from "../logic/PracticeSessionManager"
-import type { Settings, CurrentPage } from "../types"
-import { Rating } from "ts-fsrs" // Import Rating
+import type { Settings, CurrentPage, PracticeMode } from "../types"
+import { Rating } from "ts-fsrs"
 
 // --- LOCAL TYPE DEFINITIONS FOR THE CONTEXT ---
 
@@ -29,18 +29,23 @@ export const CARDS_UNTIL_REVIEW = 7
 
 const VocabPracticeContext = createContext<VocabPracticeContextType>()
 
-export function VocabPracticeContextProvider(props: { children: JSX.Element }) {
+// Update props to accept the practice mode
+type ContextProviderProps = {
+  children: JSX.Element
+  mode: PracticeMode
+}
+
+export function VocabPracticeContextProvider(props: ContextProviderProps) {
   const [state, setState] = createStore<AppState>({
     currentPage: "start",
     manager: null,
     activeQueue: [],
     recentReviewHistory: [],
     incorrectAnswerMap: new Map(),
-    // --- INITIALIZE NEW STATE ---
     isAnswered: false,
     lastRating: null,
     settings: {
-      practiceMode: "readings",
+      practiceMode: props.mode,
       shuffleInput: true,
       enabledAnswerCategories: [],
     },

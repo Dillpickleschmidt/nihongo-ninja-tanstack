@@ -1,15 +1,13 @@
 // vocab-practice/components/pages/StartPageComponent.tsx
-import { For, JSX, createSignal } from "solid-js"
+import { For, JSX, createSignal, createMemo } from "solid-js"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { Button } from "@/components/ui/button"
 import { Loader2, Settings } from "lucide-solid"
 import DeckSettingsDialogComponent from "../DeckSettingsDialogComponent"
 import { PracticeSessionManager } from "../../logic/PracticeSessionManager"
 import { initializePracticeSession } from "../../logic/data-initialization"
-import type { PracticeMode } from "../../types"
 import type { FSRSCardData } from "@/features/supabase/db/utils"
 import type { RichVocabItem } from "@/data/types"
-import { createMemo } from "solid-js"
 import { vocabulary } from "@/data/vocabulary"
 
 type StartPageProps = {
@@ -17,7 +15,6 @@ type StartPageProps = {
   newVocabulary: RichVocabItem[]
   moduleFSRSCards: Promise<FSRSCardData[]> | null
   dueFSRSCards: Promise<FSRSCardData[]> | null
-  mode: PracticeMode
 }
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -50,7 +47,7 @@ export default function StartPageComponent(props: StartPageProps) {
         preparedVocabulary(),
         resolvedModuleCards || [],
         resolvedDueCards || [],
-        props.mode,
+        state.settings.practiceMode,
         vocabulary,
       )
 
@@ -77,11 +74,7 @@ export default function StartPageComponent(props: StartPageProps) {
           <div class="grid gap-4 lg:gap-5">
             <For each={props.newVocabulary}>
               {(entry, index) => (
-                <StartPagePreviewCard
-                  entry={entry}
-                  index={index()}
-                  mode={props.mode}
-                />
+                <StartPagePreviewCard entry={entry} index={index()} />
               )}
             </For>
           </div>
@@ -124,22 +117,30 @@ function StartPageHeader(props: {
   )
 }
 
-function StartPagePreviewCard(props: {
-  entry: RichVocabItem
-  index: number
-  mode: PracticeMode
-}) {
-  const answer = () =>
-    props.mode === "readings"
-      ? props.entry.english.join(", ")
-      : props.entry.hiragana.join(", ")
+// FIX: The 'mode' prop is removed from the props type.
+function StartPagePreviewCard(props: { entry: RichVocabItem; index: number }) {
+  const { state } = useVocabPracticeContext()
+
+  const question = createMemo(() => {
+    if (state.settings.practiceMode === "kana") {
+      return props.entry.english.join(", ")
+    }
+    return props.entry.word
+  })
+
+  const answer = createMemo(() => {
+    if (state.settings.practiceMode === "kana") {
+      return props.entry.hiragana.join(", ")
+    }
+    return props.entry.english.join(", ")
+  })
 
   return (
     <div class="bg-card group relative overflow-hidden rounded-xl p-5 shadow-md transition-all duration-200 hover:shadow-lg">
       <div class="flex items-start justify-between">
         <div class="flex-1">
           <h3 class="mb-3 text-xl font-bold text-orange-400 saturate-[125%] lg:text-2xl">
-            {props.entry.word}
+            {question()}
           </h3>
           <div class="space-y-1.5">
             <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">

@@ -133,6 +133,8 @@ function MultipleChoiceButton(props: {
   isAnswered: boolean
   onSelect: () => void
 }) {
+  const { state } = useVocabPracticeContext()
+
   const buttonClasses = () => {
     let classes =
       "font-japanese relative min-h-20 w-full flex-col items-start justify-center rounded-xl p-4 text-start text-lg shadow-md duration-75 ease-in-out hover:scale-[98.5%]"
@@ -150,6 +152,16 @@ function MultipleChoiceButton(props: {
     return classes
   }
 
+  // Conditionally determine the text to display on the button.
+  const displayText = createMemo(() => {
+    if (state.settings.practiceMode === "kana") {
+      // For kana mode, show only the hiragana reading.
+      return props.option.vocab.hiragana.join(", ")
+    }
+    // For readings mode, show the valid English answers.
+    return props.option.validAnswers.join(", ")
+  })
+
   return (
     <button
       onClick={props.onSelect}
@@ -165,9 +177,7 @@ function MultipleChoiceButton(props: {
         {props.index + 1}
       </div>
       <div class="w-full space-y-2 overflow-x-auto">
-        <p class="text-lg font-bold lg:text-xl">
-          {props.option.validAnswers.join(", ")}
-        </p>
+        <p class="text-lg font-bold lg:text-xl">{displayText()}</p>
         <Show when={props.option.vocab.particles}>
           <div class="space-y-1">
             <For each={props.option.vocab.particles}>

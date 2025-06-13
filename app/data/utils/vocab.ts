@@ -2,8 +2,14 @@
 import { dynamic_modules } from "@/data/dynamic_modules"
 import { vocabulary } from "@/data/vocabulary"
 import { vocabularySets } from "@/data/vocabulary_sets"
-import type { DynamicModule, RichVocabItem, VocabularyItem } from "@/data/types"
+import type {
+  DynamicModule,
+  ExampleSentence,
+  RichVocabItem,
+  VocabularyItem,
+} from "@/data/types"
 import type { KanaItem } from "@/features/kana-quiz/hooks/useKanaQuiz"
+import { PracticeMode } from "@/features/vocab-practice/types"
 
 /**
  * Get a dynamic module by its ID
@@ -109,18 +115,8 @@ export function extractHiragana<T extends string | string[]>(
   furigana: T,
 ): T extends string[] ? string[] : string {
   const extract = (text: string): string => {
-    let hiragana = ""
-    let skip = false
-
-    for (let i = text.length - 1; i >= 0; i--) {
-      const char = text[i]
-      if (char === "[") skip = true
-      else if (char === "]") skip = false
-      else if (skip && char === " ") skip = false
-      else if (!skip && char !== " ") hiragana = char + hiragana
-    }
-
-    return hiragana
+    let reading = text.replace(/([一-龯ぁ-んァ-ン]+)\[(.+?)\]/g, "$2")
+    return reading.replace(/\s/g, "")
   }
 
   if (Array.isArray(furigana)) {
@@ -139,35 +135,15 @@ export function extractHiragana<T extends string | string[]>(
  */
 export function convertFuriganaToRubyHtml<T extends string | string[]>(
   furigana: T,
-  furiganaSize?: string,
+  furiganaSize = "0.75rem",
 ): T extends string[] ? string[] : string {
   const convert = (text: string): string => {
-    let rubyText = ""
-    let tempArr: string[] = []
-    let foundFurigana = false
-
-    for (let i = 0; i < text.length; i++) {
-      const char = text[i]
-      tempArr.push(char)
-
-      if (char === "[") {
-        foundFurigana = true
-        rubyText += `<ruby>${tempArr.join("")}<rp>(</rp><rt><span style="font-size: ${furiganaSize}; user-select: none;">`
-        tempArr = []
-      } else if (char === "]") {
-        rubyText += `${tempArr.join("")}</span></rt><rp>)</rp>`
-        tempArr = []
-      } else if (char === " " || i === text.length - 1) {
-        if (foundFurigana) {
-          rubyText += `${tempArr.join("")}</ruby>`
-        } else {
-          rubyText += tempArr.join("").trim()
-        }
-        tempArr = []
-      }
-    }
-
-    return rubyText.replace(/[\[\]]/g, "")
+    if (!text) return ""
+    const sizeStyle = ` style="font-size: ${furiganaSize}; user-select: none;"`
+    return text.replace(
+      /([一-龯ぁ-んァ-ン]+)\[(.+?)\]/g,
+      `<ruby>$1<rp>(</rp><rt><span${sizeStyle}>$2</span></rt><rp>)</rp></ruby>`,
+    )
   }
 
   if (Array.isArray(furigana)) {
@@ -175,4 +151,26 @@ export function convertFuriganaToRubyHtml<T extends string | string[]>(
   } else {
     return convert(furigana) as T extends string[] ? string[] : string
   }
+}
+
+export type ProcessedSentencePart =
+  | { type: "html"; content: string }
+  | { type: "input" }
+
+export function getExampleSentenceParts(
+  sentence: ExampleSentence,
+  mode: PracticeMode,
+): ProcessedSentencePart[] {
+  const parts = mode === "kana" ? sentence.japanese : sentence.english
+
+  return parts.map((part) => {
+    if (typeof part === "string") {
+      // Process every string part for furigana.
+      const html = mode === "kana" ? convertFuriganaToRubyHtml(part) : part
+      return { type: "html", content: html.replace(/\s/g, "") }
+    } else {
+      // Mark the target word's location for the input field.
+      return { type: "input" }
+    }
+  })
 }

@@ -1526,7 +1526,7 @@ export const vocabulary: VocabularyCollection = {
   おばあさん: {
     word: "おばあさん",
     furigana: "おばあさん",
-    english: ["grandmother"],
+    english: ["grandmother", "old woman"],
     chapter: 1,
     info: [
       '"おばあさん" is the polite way to refer to someone\'s grandmother.',
@@ -1537,7 +1537,7 @@ export const vocabulary: VocabularyCollection = {
   おじいさん: {
     word: "おじいさん",
     furigana: "おじいさん",
-    english: ["grandfather"],
+    english: ["grandfather", "old man"],
     chapter: 1,
     info: [
       '"おじいさん" is the polite way to refer to someone\'s grandfather.',
@@ -6308,7 +6308,7 @@ export const vocabulary: VocabularyCollection = {
     example_sentences: [
       {
         japanese: [{ t: "おじいさん" }, "を 手伝[てつだ]いましょうか。"],
-        english: ["May I help my ", { t: "grandfather" }, "?"],
+        english: ["Would you like some help, ", { t: "grandfather" }, "?"],
       },
       {
         japanese: [{ t: "おじいさん" }, "は 八十[はちじゅう]歳[さい]です。"],
@@ -6396,11 +6396,11 @@ export const vocabulary: VocabularyCollection = {
           { t: "父[ちち]" },
           "は 車[くるま]で 会社[かいしゃ]に 行[い]きます。",
         ],
-        english: ["My ", { t: "father" }, " goes to the company by car."],
+        english: [{ t: "My father" }, " goes to the company by car."],
       },
       {
         japanese: [{ t: "父[ちち]" }, "の 車[くるま]は 大[おお]きいです。"],
-        english: ["My ", { t: "father's" }, " car is big."],
+        english: [{ t: "My father's" }, " car is big."],
       },
     ],
   },
@@ -6418,7 +6418,7 @@ export const vocabulary: VocabularyCollection = {
           { t: "母[はは]" },
           "は 疲[つか]れていて 忙[いそが]しいです。",
         ],
-        english: ["My ", { t: "mother" }, " is tired and busy."],
+        english: [{ t: "My mother" }, " is tired and busy."],
       },
       {
         japanese: [
@@ -6443,7 +6443,7 @@ export const vocabulary: VocabularyCollection = {
           { t: "兄[あに]" },
           "の 車[くるま]を 借[か]りてもいいですか。",
         ],
-        english: ["May I borrow my ", { t: "older brother's" }, " car."],
+        english: ["Can I borrow ", { t: "my older brother" }, "'s car."],
       },
       {
         japanese: [
@@ -6466,7 +6466,7 @@ export const vocabulary: VocabularyCollection = {
     example_sentences: [
       {
         japanese: [{ t: "姉[あね]" }, "は 髪[かみ]が 長[なが]いです。"],
-        english: ["My ", { t: "older sister" }, " has long hair."],
+        english: [{ t: "My older sister" }, " has long hair."],
       },
       {
         japanese: [
@@ -6474,8 +6474,7 @@ export const vocabulary: VocabularyCollection = {
           "は デパートで 買[か]い物[もの]をします。",
         ],
         english: [
-          "My ",
-          { t: "older sister" },
+          { t: "My older sister" },
           " goes shopping at the department store.",
         ],
       },
@@ -6484,7 +6483,7 @@ export const vocabulary: VocabularyCollection = {
   妹1: {
     word: "妹",
     furigana: "妹[いもうと]",
-    english: ["younger sister"],
+    english: ["younger sister", "little sister"],
     chapter: 7,
     mnemonics: [
       "Sounds like 'emote'. Imagine your little sister making faces at you.",
@@ -6510,7 +6509,7 @@ export const vocabulary: VocabularyCollection = {
   弟1: {
     word: "弟",
     furigana: "弟[おとうと]",
-    english: ["younger brother"],
+    english: ["younger brother", "little brother"],
     chapter: 7,
     mnemonics: [
       "Sounds like 'Oh, toe-toe.' Imagine your younger brother always stubbing his toe.",
@@ -6677,7 +6676,7 @@ export const vocabulary: VocabularyCollection = {
           " did you join at university?",
         ],
         japanese: [
-          "大学[だいがく]で どんな",
+          "大学[だいがく]でどんな",
           { t: "サークル" },
           "に 入[はい]りましたか。",
         ],

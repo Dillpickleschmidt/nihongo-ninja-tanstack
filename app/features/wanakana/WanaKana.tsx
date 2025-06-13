@@ -1,13 +1,6 @@
 // app/features/wanakana/WanaKana.tsx
-import { onMount, onCleanup, children, JSX } from "solid-js"
-import { isServer } from "solid-js/web"
+import { createEffect, onCleanup, children, JSX, on } from "solid-js"
 import * as wanakana from "wanakana"
-
-type WanakanaWrapperProps = {
-  children: JSX.Element
-  to?: "romaji" | "hiragana" | "katakana" | "kana"
-  IMEMode?: boolean | "toHiragana" | "toKatakana"
-}
 
 const findInputOrTextAreaElement = (
   element: any,
@@ -22,15 +15,8 @@ const findInputOrTextAreaElement = (
     return element
   }
 
-  if (element.querySelector) {
-    const found = element.querySelector(
-      'textarea, input[type="text"], input[type="email"]',
-    )
-    if (found) return found
-  }
-
   if (element.children) {
-    for (let child of element.children) {
+    for (const child of element.children) {
       const found = findInputOrTextAreaElement(child)
       if (found) return found
     }
@@ -39,36 +25,54 @@ const findInputOrTextAreaElement = (
   return null
 }
 
-const WanakanaWrapper = (props: WanakanaWrapperProps) => {
+type WanaKanaWrapperProps = {
+  children: JSX.Element
+  enabled: boolean
+  watch: any
+}
+
+const WanaKanaWrapper = (props: WanaKanaWrapperProps) => {
   const resolvedChildren = children(() => props.children)
-  let targetElement: HTMLInputElement | HTMLTextAreaElement | null = null
+  let wanakanaBoundElement: HTMLInputElement | HTMLTextAreaElement | null = null
 
-  onMount(() => {
-    if (isServer) return
+  // Use `on` to explicitly track the `watch` prop.
+  createEffect(
+    on(
+      () => props.watch,
+      () => {
+        // Clean up the previous binding first.
+        if (wanakanaBoundElement) {
+          try {
+            wanakana.unbind(wanakanaBoundElement)
+          } catch (e) {}
+          wanakanaBoundElement = null
+        }
 
-    const child = resolvedChildren.toArray()[0] as any
-    targetElement = findInputOrTextAreaElement(child)
+        if (!props.enabled) {
+          return
+        }
 
-    if (targetElement) {
-      wanakana.bind(targetElement, {
-        IMEMode:
-          props.IMEMode ||
-          (props.to === "hiragana"
-            ? "toHiragana"
-            : props.to === "katakana"
-              ? "toKatakana"
-              : true),
-      })
-    }
-  })
+        const element = resolvedChildren.toArray()[0] as HTMLElement
+        if (!element) return
+
+        const inputElement = findInputOrTextAreaElement(element)
+        if (inputElement) {
+          wanakana.bind(inputElement)
+          wanakanaBoundElement = inputElement
+        }
+      },
+    ),
+  )
 
   onCleanup(() => {
-    if (isServer || !targetElement) return
-
-    wanakana.unbind(targetElement)
+    if (wanakanaBoundElement) {
+      try {
+        wanakana.unbind(wanakanaBoundElement)
+      } catch (e) {}
+    }
   })
 
   return <>{resolvedChildren()}</>
 }
 
-export default WanakanaWrapper
+export default WanaKanaWrapper
