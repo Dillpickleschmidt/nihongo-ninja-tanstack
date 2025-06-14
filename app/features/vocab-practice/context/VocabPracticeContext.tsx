@@ -29,10 +29,8 @@ export const CARDS_UNTIL_REVIEW = 7
 
 const VocabPracticeContext = createContext<VocabPracticeContextType>()
 
-// Update props to accept the practice mode
 type ContextProviderProps = {
   children: JSX.Element
-  mode: PracticeMode
 }
 
 export function VocabPracticeContextProvider(props: ContextProviderProps) {
@@ -45,7 +43,6 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     isAnswered: false,
     lastRating: null,
     settings: {
-      practiceMode: props.mode,
       shuffleInput: true,
       enabledAnswerCategories: [],
     },

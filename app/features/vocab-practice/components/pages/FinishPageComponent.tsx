@@ -78,7 +78,7 @@ function CardSummary(props: { card: PracticeCard }) {
   const incorrectCount = () => state.incorrectAnswerMap.get(props.card.key) ?? 0
 
   const answerToDisplay = createMemo(() => {
-    if (state.settings.practiceMode === "kana") {
+    if (props.card.practiceMode === "kana") {
       return props.card.vocab.hiragana.join(", ")
     }
     return props.card.validAnswers.join(", ")
@@ -89,7 +89,7 @@ function CardSummary(props: { card: PracticeCard }) {
       incorrectCount() > 0 ? "text-red-500" : "text-orange-400 saturate-[125%]"
     const baseLayout = "mb-3 font-bold"
     const fontSize =
-      state.settings.practiceMode === "kana"
+      props.card.practiceMode === "kana"
         ? "text-lg lg:text-xl" // Smaller for English prompt
         : "text-xl lg:text-2xl" // Larger for Japanese prompt
     return `${baseColor} ${baseLayout} ${fontSize}`
@@ -98,7 +98,7 @@ function CardSummary(props: { card: PracticeCard }) {
   const answerClasses = createMemo(() => {
     const baseLayout = "text-primary ml-4 font-semibold"
     const fontSize =
-      state.settings.practiceMode === "kana"
+      props.card.practiceMode === "kana"
         ? "text-lg lg:text-xl" // Larger for Japanese answer
         : "text-base lg:text-lg" // Smaller for English answer
     return `${baseLayout} ${fontSize}`

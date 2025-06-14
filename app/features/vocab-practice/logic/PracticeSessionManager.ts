@@ -15,9 +15,12 @@ type QueueState = {
 
 export class PracticeSessionManager {
   private state: PracticeSessionState
+  private reviewOnly: boolean
 
-  constructor(initialState: PracticeSessionState) {
+  constructor(initialState: PracticeSessionState, reviewOnly: boolean = false) {
     this.state = initialState
+    this.reviewOnly = reviewOnly
+
     if (this.state.activeQueue.length === 0) {
       const { moduleQueue, reviewQueue, activeQueue } =
         PracticeSessionManager.replenishActiveQueue(
@@ -114,6 +117,7 @@ export class PracticeSessionManager {
           practice_item_key: updatedCard.key,
           fsrs_card: updatedCard.fsrs.card,
           fsrs_logs: updatedCard.fsrs.logs,
+          mode: updatedCard.practiceMode,
         },
       })
     } catch (error) {
@@ -185,16 +189,29 @@ export class PracticeSessionManager {
   }
 
   private checkIfFinished(): void {
-    // The session is finished if the module source queue is empty AND
-    // there are no "active" module-type cards left in the active queue.
-    const hasActiveModuleCards = this.getActiveQueue().some(
-      (key) => this.state.cardMap.get(key)!.sessionStyle !== "flashcard",
-    )
+    // Use the reviewOnly flag to determine the correct completion logic
+    if (this.reviewOnly) {
+      // In review-only mode, the session is done when all queues are empty
+      if (
+        this.state.moduleQueue.length === 0 &&
+        this.state.reviewQueue.length === 0 &&
+        this.state.activeQueue.length === 0
+      ) {
+        this.state.isFinished = true
+      }
+    } else {
+      // In a standard module session, finish when module cards are done
+      const hasActiveModuleCards = this.getActiveQueue().some(
+        (key) => this.state.cardMap.get(key)!.sessionStyle !== "flashcard",
+      )
 
-    if (this.state.moduleQueue.length === 0 && !hasActiveModuleCards) {
-      this.state.isFinished = true
-      // Clear the active queue completely when finished
-      this.state.activeQueue = []
+      // The session is finished if the module source queue is empty AND
+      // there are no "active" module-type cards left in the active queue.
+      if (this.state.moduleQueue.length === 0 && !hasActiveModuleCards) {
+        this.state.isFinished = true
+        // Clear the active queue completely when finished
+        this.state.activeQueue = []
+      }
     }
   }
 }

@@ -14,9 +14,10 @@ export type Database = {
           created_at: string
           due_at: string
           fsrs_card: Json
-          fsrs_log: Json[] | null
+          fsrs_logs: Json[] | null
           id: number
           lesson_id: string | null
+          mode: string
           practice_item_key: string
           stability: number
           user_id: string
@@ -25,9 +26,10 @@ export type Database = {
           created_at?: string
           due_at: string
           fsrs_card: Json
-          fsrs_log?: Json[] | null
+          fsrs_logs?: Json[] | null
           id?: number
           lesson_id?: string | null
+          mode?: string
           practice_item_key: string
           stability: number
           user_id: string
@@ -36,9 +38,10 @@ export type Database = {
           created_at?: string
           due_at?: string
           fsrs_card?: Json
-          fsrs_log?: Json[] | null
+          fsrs_logs?: Json[] | null
           id?: number
           lesson_id?: string | null
+          mode?: string
           practice_item_key?: string
           stability?: number
           user_id?: string

@@ -1,5 +1,5 @@
 // vocab-practice/components/pages/FSRSFlashcardPageComponent.tsx
-import { createEffect, createSignal, Show, createMemo } from "solid-js"
+import { createSignal, Show, createMemo } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { Rating } from "ts-fsrs"

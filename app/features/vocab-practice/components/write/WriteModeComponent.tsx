@@ -32,9 +32,9 @@ export default function WriteModeComponent() {
 
     const partOfSpeech = card.vocab.part_of_speech
     let shouldShowExampleSentence = false
-    if (state.settings.practiceMode === "kana") {
+    if (card.practiceMode === "kana") {
       shouldShowExampleSentence = !partOfSpeech
-    } else if (state.settings.practiceMode === "readings") {
+    } else if (card.practiceMode === "readings") {
       shouldShowExampleSentence =
         !partOfSpeech ||
         partOfSpeech === "I-adjective" ||
@@ -42,10 +42,7 @@ export default function WriteModeComponent() {
     }
 
     if (shouldShowExampleSentence) {
-      return getExampleSentenceParts(
-        exampleSentences[0],
-        state.settings.practiceMode,
-      )
+      return getExampleSentenceParts(exampleSentences[0], card.practiceMode)
     }
     return []
   })
@@ -56,7 +53,7 @@ export default function WriteModeComponent() {
     const card = currentCard()
     if (!card) return ""
 
-    if (state.settings.practiceMode === "kana") {
+    if (card.practiceMode === "kana") {
       return card.vocab.hiragana.join(", ")
     }
     return card.validAnswers.join(", ")
@@ -111,7 +108,7 @@ export default function WriteModeComponent() {
 
           <div class="flex flex-col items-center space-y-6">
             <WanaKanaWrapper
-              enabled={state.settings.practiceMode === "kana"}
+              enabled={card().practiceMode === "kana"}
               watch={card().key}
             >
               <Show

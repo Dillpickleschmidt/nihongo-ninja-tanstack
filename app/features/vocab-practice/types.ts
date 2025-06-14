@@ -1,6 +1,5 @@
 import type { RichVocabItem } from "@/data/types"
 import type { Card as FSRSCard, ReviewLog } from "ts-fsrs"
-import type { PracticeSessionManager } from "./logic/PracticeSessionManager"
 
 export type CurrentPage =
   | "start"
@@ -12,7 +11,6 @@ export type CurrentPage =
 export type PracticeMode = "readings" | "kana"
 
 export type Settings = {
-  practiceMode: PracticeMode
   shuffleInput: boolean
   enabledAnswerCategories: string[]
 }
@@ -40,6 +38,7 @@ export type PracticeCard = {
   key: string // derived from vocab.word
   vocab: RichVocabItem // The core vocabulary data for display
   fsrs: FSRSInfo
+  practiceMode: PracticeMode
   sessionStyle: SessionCardStyle
   prompt: string // Question to display
   validAnswers: string[] // Acceptable written answers

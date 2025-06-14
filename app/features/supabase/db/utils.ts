@@ -1,13 +1,15 @@
 // app/features/supabase/db/utils.ts
 import { createBackendClient } from "@/features/supabase/backendClient"
 import { createServerFn, serverOnly } from "@tanstack/solid-start"
-import type { Card, ReviewLog } from "ts-fsrs"
 import { getUser } from "../getUser"
+import type { Card, ReviewLog } from "ts-fsrs"
+import type { PracticeMode } from "@/features/vocab-practice/types"
 
 // Type for the returned FSRS card data
 export type FSRSCardData = {
   practice_item_key: string
   fsrs_card: any
+  mode: PracticeMode
   fsrs_logs?: ReviewLog[] | null
 }
 
@@ -21,7 +23,7 @@ export const getFSRSCardsByKeys = serverOnly(
 
     const { data, error } = await supabase
       .from("practice_item_user_completions")
-      .select("practice_item_key, fsrs_card")
+      .select("practice_item_key, fsrs_card, mode, fsrs_logs")
       .eq("user_id", userId)
       .in("practice_item_key", practiceItemKeys)
 
@@ -29,7 +31,7 @@ export const getFSRSCardsByKeys = serverOnly(
       throw error
     }
 
-    return data || []
+    return (data as FSRSCardData[]) || []
   },
 )
 
@@ -40,7 +42,7 @@ export const getDueFSRSCards = serverOnly(
 
     const { data, error } = await supabase
       .from("practice_item_user_completions")
-      .select("practice_item_key, fsrs_card")
+      .select("practice_item_key, fsrs_card, mode, fsrs_logs")
       .eq("user_id", userId)
       .lte("due_at", new Date().toISOString())
 
@@ -48,13 +50,14 @@ export const getDueFSRSCards = serverOnly(
       throw error
     }
 
-    return data || []
+    return (data as FSRSCardData[]) || []
   },
 )
 
 type UpsertFSRSCardArgs = {
   practice_item_key: string
   fsrs_card: Card
+  mode: PracticeMode
   lesson_id?: string | null
   fsrs_logs?: ReviewLog[] | null
 }
@@ -67,7 +70,7 @@ export const upsertFSRSCardForUser = createServerFn({ method: "POST" })
 
     if (!response.user) return
 
-    // serialize Date fields
+    // 1. Serialize Date fields in the main card
     const fsrsCardJson = {
       ...data.fsrs_card,
       due: data.fsrs_card.due.toISOString(),
@@ -75,6 +78,14 @@ export const upsertFSRSCardForUser = createServerFn({ method: "POST" })
         ? data.fsrs_card.last_review.toISOString()
         : null,
     }
+
+    // 2. Serialize Date fields within the logs array
+    const fsrsLogsJson =
+      data.fsrs_logs?.map((log) => ({
+        ...log,
+        due: log.due.toISOString(),
+        review: log.review.toISOString(),
+      })) ?? null
 
     const { error } = await supabase
       .from("practice_item_user_completions")
@@ -85,7 +96,8 @@ export const upsertFSRSCardForUser = createServerFn({ method: "POST" })
             practice_item_key: data.practice_item_key,
             lesson_id: data.lesson_id ?? null,
             fsrs_card: fsrsCardJson,
-            fsrs_logs: data.fsrs_logs ?? null,
+            mode: data.mode,
+            fsrs_logs: fsrsLogsJson,
             due_at: fsrsCardJson.due,
             stability: fsrsCardJson.stability,
           },

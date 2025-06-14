@@ -1,11 +1,11 @@
 // vocab-practice/VocabPractice.tsx
-import { createMemo, JSX, Match, Switch } from "solid-js"
+import { JSX, Match, Switch } from "solid-js"
 import type { RichVocabItem } from "@/data/types"
 import {
   VocabPracticeContextProvider,
   useVocabPracticeContext,
 } from "./context/VocabPracticeContext"
-import { PracticeMode } from "./types"
+import type { PracticeMode } from "./types"
 import StartPageComponent from "./components/pages/StartPageComponent"
 import PracticePageComponent from "./components/pages/PracticePageComponent"
 import ReviewPageComponent from "./components/pages/ReviewPageComponent"
@@ -14,28 +14,29 @@ import FSRSFlashcardPageComponent from "./components/pages/FSRSFlashcardPageComp
 import { FSRSCardData } from "../supabase/db/utils"
 
 type VocabPracticeProps = {
-  newVocabulary: RichVocabItem[]
+  newVocabulary: RichVocabItem[] | null
   moduleFSRSCards: Promise<FSRSCardData[]> | null
   dueFSRSCards: Promise<FSRSCardData[]> | null
   deckName: string | JSX.Element
-  mode: PracticeMode
+  mode: PracticeMode | "review-only"
 }
 
 export default function VocabPractice(props: VocabPracticeProps) {
   return (
-    // Pass the mode prop directly to the provider
-    <VocabPracticeContextProvider mode={props.mode}>
+    <VocabPracticeContextProvider>
       <VocabPracticeContent
         deckName={props.deckName}
         newVocabulary={props.newVocabulary}
         moduleFSRSCards={props.moduleFSRSCards}
         dueFSRSCards={props.dueFSRSCards}
+        mode={props.mode} // Pass mode down to the content component
       />
     </VocabPracticeContextProvider>
   )
 }
 
-type VocabPracticeContentProps = Omit<VocabPracticeProps, "mode">
+// The content props now include the mode
+type VocabPracticeContentProps = VocabPracticeProps
 
 function VocabPracticeContent(props: VocabPracticeContentProps) {
   const { state } = useVocabPracticeContext()
@@ -48,6 +49,7 @@ function VocabPracticeContent(props: VocabPracticeContentProps) {
           newVocabulary={props.newVocabulary}
           moduleFSRSCards={props.moduleFSRSCards}
           dueFSRSCards={props.dueFSRSCards}
+          mode={props.mode} // Pass mode down to the StartPageComponent
         />
       </Match>
       <Match when={state.currentPage === "practice"}>

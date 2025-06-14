@@ -32,8 +32,7 @@ export default function MultipleChoiceComponent() {
     if (!card) return []
 
     const allCards = Array.from(manager().getCardMap().values())
-    const filterProp =
-      state.settings.practiceMode === "readings" ? "english" : "word"
+    const filterProp = card.practiceMode === "readings" ? "english" : "word"
 
     // Normalize value for consistent comparison
     const normalize = (value: string | string[]) =>
@@ -154,7 +153,7 @@ function MultipleChoiceButton(props: {
 
   // Conditionally determine the text to display on the button.
   const displayText = createMemo(() => {
-    if (state.settings.practiceMode === "kana") {
+    if (props.option.practiceMode === "kana") {
       // For kana mode, show only the hiragana reading.
       return props.option.vocab.hiragana.join(", ")
     }

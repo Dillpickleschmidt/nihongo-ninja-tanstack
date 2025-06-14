@@ -1,5 +1,12 @@
 // vocab-practice/components/pages/StartPageComponent.tsx
-import { For, JSX, createSignal, createMemo } from "solid-js"
+import {
+  For,
+  JSX,
+  createSignal,
+  createMemo,
+  createResource,
+  Show,
+} from "solid-js"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { Button } from "@/components/ui/button"
 import { Loader2, Settings } from "lucide-solid"
@@ -9,12 +16,36 @@ import { initializePracticeSession } from "../../logic/data-initialization"
 import type { FSRSCardData } from "@/features/supabase/db/utils"
 import type { RichVocabItem } from "@/data/types"
 import { vocabulary } from "@/data/vocabulary"
+import type { PracticeMode } from "../../types"
+import { addKanaAndRuby } from "@/data/utils/vocab"
+
+type PreviewItem = {
+  key: string
+  question: string
+  answer: string
+  mode: PracticeMode
+  type: "module" | "review"
+}
+
+function getPreviewText(vocab: RichVocabItem, mode: PracticeMode) {
+  if (mode === "kana") {
+    return {
+      question: vocab.english.join(" / "),
+      answer: vocab.hiragana.join(", "),
+    }
+  }
+  return {
+    question: vocab.word,
+    answer: vocab.english.join(", "),
+  }
+}
 
 type StartPageProps = {
   deckName: string | JSX.Element
-  newVocabulary: RichVocabItem[]
+  newVocabulary: RichVocabItem[] | null
   moduleFSRSCards: Promise<FSRSCardData[]> | null
   dueFSRSCards: Promise<FSRSCardData[]> | null
+  mode: PracticeMode | "review-only"
 }
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -25,34 +56,92 @@ export default function StartPageComponent(props: StartPageProps) {
   const { state, setState } = useVocabPracticeContext()
   const [loading, setLoading] = createSignal(false)
 
-  // Shuffle vocabulary if shuffleInput is enabled
+  const [dueCardsResource] = createResource(
+    () => props.dueFSRSCards,
+    (promise) => promise,
+  )
+
+  const previewItems = createMemo<PreviewItem[]>(() => {
+    // 1. Create a fast lookup map of due cards once they are loaded.
+    const dueCardMap = new Map(
+      dueCardsResource()?.map((c) => [c.practice_item_key, c]),
+    )
+
+    // 2. Create the list of module items, "upgrading" them if they are also due for review.
+    const moduleItems: PreviewItem[] = (props.newVocabulary || []).map(
+      (vocab) => {
+        const isAlsoDueForReview = dueCardMap.has(vocab.word)
+        const sessionMode =
+          props.mode === "review-only" ? "readings" : props.mode
+        const { question, answer } = getPreviewText(vocab, sessionMode)
+
+        return {
+          key: vocab.word,
+          question,
+          answer,
+          mode: sessionMode,
+          // If it's due, mark it as a review item right away.
+          type: isAlsoDueForReview ? "review" : "module",
+        }
+      },
+    )
+
+    // 3. Create a set of keys for all module items for efficient filtering.
+    const moduleKeys = new Set((props.newVocabulary || []).map((v) => v.word))
+
+    // 4. Get only the "pure" review cards (those that are NOT part of the current module).
+    const pureReviewItems: PreviewItem[] = (dueCardsResource() || [])
+      .filter((cardData) => !moduleKeys.has(cardData.practice_item_key))
+      .map((cardData) => {
+        const vocab = addKanaAndRuby([
+          vocabulary[cardData.practice_item_key],
+        ])[0]
+        const { question, answer } = getPreviewText(vocab, cardData.mode)
+        return {
+          key: cardData.practice_item_key,
+          question,
+          answer,
+          mode: cardData.mode,
+          type: "review",
+        }
+      })
+
+    // 5. Combine the (potentially upgraded) module list with the pure review list.
+    return [...moduleItems, ...pureReviewItems]
+  })
+
+  const totalItemCount = createMemo(() => previewItems().length)
+
+  const vocabularyToPractice = createMemo(() => props.newVocabulary || [])
+
   const preparedVocabulary = createMemo(() => {
     if (state.settings.shuffleInput) {
-      return shuffleArray(props.newVocabulary)
+      return shuffleArray(vocabularyToPractice())
     }
-    return props.newVocabulary
+    return vocabularyToPractice()
   })
 
   async function handleStart() {
     setLoading(true)
     try {
-      // 1. Await the resolution of the FSRS card promises
       const [resolvedModuleCards, resolvedDueCards] = await Promise.all([
         props.moduleFSRSCards,
-        props.dueFSRSCards,
+        dueCardsResource.latest,
       ])
 
-      // 2. Now that data is resolved, initialize the session state
+      const sessionModeForNewCards =
+        props.mode === "review-only" ? "readings" : props.mode
+
       const initialState = initializePracticeSession(
         preparedVocabulary(),
         resolvedModuleCards || [],
         resolvedDueCards || [],
-        state.settings.practiceMode,
+        sessionModeForNewCards,
         vocabulary,
       )
 
-      // 3. Create the manager instance with the fully prepared state
-      const manager = new PracticeSessionManager(initialState)
+      const isReviewOnly = props.mode === "review-only"
+      const manager = new PracticeSessionManager(initialState, isReviewOnly)
       setState("manager", manager)
       setState("activeQueue", manager.getActiveQueue())
     } catch (error) {
@@ -67,14 +156,14 @@ export default function StartPageComponent(props: StartPageProps) {
     <div class="min-h-screen">
       <StartPageHeader
         deckName={props.deckName}
-        previewCount={props.newVocabulary.length}
+        previewCount={totalItemCount()}
       />
       <div class="px-4 pb-28">
         <div class="mx-auto max-w-3xl">
           <div class="grid gap-4 lg:gap-5">
-            <For each={props.newVocabulary}>
-              {(entry, index) => (
-                <StartPagePreviewCard entry={entry} index={index()} />
+            <For each={previewItems()}>
+              {(item, index) => (
+                <StartPagePreviewCard item={item} index={index()} />
               )}
             </For>
           </div>
@@ -117,38 +206,18 @@ function StartPageHeader(props: {
   )
 }
 
-function StartPagePreviewCard(props: { entry: RichVocabItem; index: number }) {
-  const { state } = useVocabPracticeContext()
-
-  const question = createMemo(() => {
-    if (state.settings.practiceMode === "kana") {
-      return props.entry.english.join(" / ")
-    }
-    return props.entry.word
-  })
-
-  const answer = createMemo(() => {
-    if (state.settings.practiceMode === "kana") {
-      return props.entry.hiragana.join(", ")
-    }
-    return props.entry.english.join(", ")
-  })
-
+function StartPagePreviewCard(props: { item: PreviewItem; index: number }) {
   const questionClasses = createMemo(() => {
     const baseClasses = "mb-3 font-bold text-orange-400 saturate-[125%]"
     const fontSize =
-      state.settings.practiceMode === "kana"
-        ? "text-lg lg:text-xl" // Smaller for English question
-        : "text-xl lg:text-2xl" // Larger for Japanese question
+      props.item.mode === "kana" ? "text-lg lg:text-xl" : "text-xl lg:text-2xl"
     return `${baseClasses} ${fontSize}`
   })
 
   const answerClasses = createMemo(() => {
     const baseClasses = "text-primary font-bold"
     const fontSize =
-      state.settings.practiceMode === "kana"
-        ? "text-lg lg:text-xl" // Larger for Japanese answer
-        : "text-base lg:text-lg" // Smaller for English answer
+      props.item.mode === "kana" ? "text-lg lg:text-xl" : "text-base lg:text-lg"
     return `${baseClasses} ${fontSize}`
   })
 
@@ -156,16 +225,24 @@ function StartPagePreviewCard(props: { entry: RichVocabItem; index: number }) {
     <div class="bg-card group relative overflow-hidden rounded-xl p-5 shadow-md transition-all duration-200 hover:shadow-lg">
       <div class="flex items-start justify-between">
         <div class="flex-1">
-          <h3 class={questionClasses()}>{question()}</h3>
+          <h3 class={questionClasses()}>{props.item.question}</h3>
           <div class="space-y-1.5">
             <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
               Answer:
             </p>
-            <p class={answerClasses()}>{answer()}</p>
+            <p class={answerClasses()}>{props.item.answer}</p>
           </div>
         </div>
-        <div class="bg-muted text-muted-foreground ml-4 flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold">
-          {props.index + 1}
+
+        <div class="flex items-center gap-3">
+          <Show when={props.item.type === "review"}>
+            <span class="inline-flex items-center rounded-full bg-amber-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-amber-500 uppercase">
+              Review
+            </span>
+          </Show>
+          <div class="bg-muted text-muted-foreground flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold">
+            {props.index + 1}
+          </div>
         </div>
       </div>
     </div>

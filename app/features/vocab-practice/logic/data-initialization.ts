@@ -14,7 +14,7 @@ export function initializePracticeSession(
   vocabulary: RichVocabItem[],
   moduleFSRSCards: FSRSCardData[],
   dueFSRSCards: FSRSCardData[],
-  practiceMode: PracticeMode,
+  sessionPracticeMode: PracticeMode,
   globalVocabCollection: VocabularyCollection,
 ): PracticeSessionState {
   const cardMap = new Map<string, PracticeCard>()
@@ -38,11 +38,11 @@ export function initializePracticeSession(
     const key = vocab.word
     const existingFSRSData = existingFSRSMap.get(key)
 
-    // Create or use existing FSRS data
     const fsrsData: FSRSCardData = existingFSRSData || {
       practice_item_key: key,
       fsrs_card: createEmptyCard(new Date()),
       fsrs_logs: [],
+      mode: sessionPracticeMode, // New cards get the session's practice mode
     }
 
     const fsrsInfo: FSRSInfo = {
@@ -50,13 +50,18 @@ export function initializePracticeSession(
       logs: fsrsData.fsrs_logs || [],
     }
 
-    const { prompt, validAnswers } = getAnswersForMode(vocab, practiceMode)
+    // Use the session's mode for these new cards
+    const { prompt, validAnswers } = getAnswersForMode(
+      vocab,
+      sessionPracticeMode,
+    )
 
     const practiceCard: PracticeCard = {
       key,
       vocab,
-      fsrs: fsrsInfo, // Use the correctly transformed object
+      fsrs: fsrsInfo,
       sessionStyle: "multiple-choice",
+      practiceMode: sessionPracticeMode, // Assign the mode to the card
       prompt,
       validAnswers,
     }
@@ -66,26 +71,28 @@ export function initializePracticeSession(
     existingFSRSMap.delete(key)
   })
 
-  // Process remaining due FSRS cards (non-module cards)
+  // Process remaining due FSRS cards (non-module review cards)
   existingFSRSMap.forEach((fsrsData, key) => {
     let vocab: RichVocabItem
 
     const baseVocab = globalVocabCollection[key]
     vocab = addKanaAndRuby([baseVocab])[0]
 
-    // --- FIX: Explicitly transform FSRSCardData to FSRSInfo ---
     const fsrsInfo: FSRSInfo = {
       card: fsrsData.fsrs_card,
       logs: fsrsData.fsrs_logs || [],
     }
 
-    const { prompt, validAnswers } = getAnswersForMode(vocab, practiceMode)
+    // Use the mode from the DB
+    const cardPracticeMode = fsrsData.mode
+    const { prompt, validAnswers } = getAnswersForMode(vocab, cardPracticeMode)
 
     const practiceCard: PracticeCard = {
       key,
       vocab,
-      fsrs: fsrsInfo, // Use the correctly transformed object
+      fsrs: fsrsInfo,
       sessionStyle: "flashcard",
+      practiceMode: cardPracticeMode,
       prompt,
       validAnswers,
     }
