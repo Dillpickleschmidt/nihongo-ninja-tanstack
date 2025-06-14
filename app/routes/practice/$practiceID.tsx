@@ -43,6 +43,7 @@ export const Route = createFileRoute("/practice/$practiceID")({
         user: context.user,
       }
     } catch (error) {
+      console.error(error)
       throw notFound()
     }
   },

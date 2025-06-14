@@ -1,6 +1,6 @@
 // app/features/supabase/db/utils.ts
-import { createBackendClient } from "@/features/supabase/backendClient"
-import { createServerFn, serverOnly } from "@tanstack/solid-start"
+import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
+import { createServerFn } from "@tanstack/solid-start"
 import { getUser } from "../getUser"
 import type { Card, ReviewLog } from "ts-fsrs"
 import type { PracticeMode } from "@/features/vocab-practice/types"
@@ -14,45 +14,41 @@ export type FSRSCardData = {
 }
 
 // Get FSRS cards for specific practice items for a user
-export const getFSRSCardsByKeys = serverOnly(
-  async (
-    userId: string,
-    practiceItemKeys: string[],
-  ): Promise<FSRSCardData[]> => {
-    const supabase = createBackendClient()
+export async function getFSRSCardsByKeys(
+  userId: string,
+  practiceItemKeys: string[],
+): Promise<FSRSCardData[]> {
+  const supabase = createSupabaseClient()
 
-    const { data, error } = await supabase
-      .from("practice_item_user_completions")
-      .select("practice_item_key, fsrs_card, mode, fsrs_logs")
-      .eq("user_id", userId)
-      .in("practice_item_key", practiceItemKeys)
+  const { data, error } = await supabase
+    .from("practice_item_user_completions")
+    .select("practice_item_key, fsrs_card, mode, fsrs_logs")
+    .eq("user_id", userId)
+    .in("practice_item_key", practiceItemKeys)
 
-    if (error) {
-      throw error
-    }
+  if (error) {
+    throw error
+  }
 
-    return (data as FSRSCardData[]) || []
-  },
-)
+  return (data as FSRSCardData[]) || []
+}
 
 // Get all cards that are due now or in the past for a user
-export const getDueFSRSCards = serverOnly(
-  async (userId: string): Promise<FSRSCardData[]> => {
-    const supabase = createBackendClient()
+export async function getDueFSRSCards(userId: string): Promise<FSRSCardData[]> {
+  const supabase = createSupabaseClient()
 
-    const { data, error } = await supabase
-      .from("practice_item_user_completions")
-      .select("practice_item_key, fsrs_card, mode, fsrs_logs")
-      .eq("user_id", userId)
-      .lte("due_at", new Date().toISOString())
+  const { data, error } = await supabase
+    .from("practice_item_user_completions")
+    .select("practice_item_key, fsrs_card, mode, fsrs_logs")
+    .eq("user_id", userId)
+    .lte("due_at", new Date().toISOString())
 
-    if (error) {
-      throw error
-    }
+  if (error) {
+    throw error
+  }
 
-    return (data as FSRSCardData[]) || []
-  },
-)
+  return (data as FSRSCardData[]) || []
+}
 
 type UpsertFSRSCardArgs = {
   practice_item_key: string
@@ -65,7 +61,7 @@ type UpsertFSRSCardArgs = {
 export const upsertFSRSCardForUser = createServerFn({ method: "POST" })
   .validator((data: UpsertFSRSCardArgs) => data)
   .handler(async ({ data }) => {
-    const supabase = createBackendClient()
+    const supabase = createSupabaseClient()
     const response = await getUser()
 
     if (!response.user) return
