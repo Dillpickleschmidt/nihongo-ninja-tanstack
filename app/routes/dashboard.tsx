@@ -1,8 +1,8 @@
 // app/routes/_learn/dashboard.tsx
-import { createFileRoute, redirect, useNavigate } from "@tanstack/solid-router"
+import { createFileRoute, redirect, defer, Await } from "@tanstack/solid-router"
 import { getRequestHeader } from "@tanstack/solid-start/server"
 import { isServer } from "solid-js/web"
-import { createEffect, onMount } from "solid-js"
+import { createEffect } from "solid-js"
 import { z } from "zod"
 import { zodValidator } from "@tanstack/zod-adapter"
 import {
@@ -22,12 +22,10 @@ import { ContentSection } from "@/features/dashboard/components/ContentSection"
 import { LessonsSection } from "@/features/dashboard/components/LessonsSection"
 import { StrugglesSection } from "@/features/dashboard/components/StrugglesSection"
 import { HistorySection } from "@/features/dashboard/components/HistorySection"
-import { AllContentList } from "@/features/dashboard/components/AllContentList"
+import { WordHierarchy } from "@/features/dashboard/components/WordHierarchy"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
-import {
-  getDueFSRSCards,
-  type FSRSCardData,
-} from "@/features/supabase/db/utils"
+import { getDueFSRSCards } from "@/features/supabase/db/utils"
+import { getWKVocabularyHierarchy } from "@/data/wanikani/utils"
 
 const dashboardSearchSchema = z.object({
   chapter: z.string().optional(),
@@ -35,7 +33,7 @@ const dashboardSearchSchema = z.object({
 
 export const Route = createFileRoute("/dashboard")({
   validateSearch: zodValidator(dashboardSearchSchema),
-  beforeLoad: ({ search }) => {
+  beforeLoad: ({ search, context }) => {
     const cookieHeader = isServer
       ? getRequestHeader("Cookie") || undefined
       : undefined
@@ -59,39 +57,44 @@ export const Route = createFileRoute("/dashboard")({
     return {
       currentTextbook,
       currentChapterID: search.chapter,
+      user: context.user,
     }
   },
   loader: async ({ context }) => {
-    const { currentTextbook, currentChapterID } = context
+    const { currentTextbook, currentChapterID, user } = context
 
+    const wordHierarchyData = await getWKVocabularyHierarchy({
+      data: ["勉強する", "時間", "映画"],
+    })
+    const lessons = getLessons(currentTextbook, currentChapterID)
     const currentTextbookChapters = getChaptersForTextbook(currentTextbook)
     const externalResources = getExternalResources(
       currentTextbook,
       currentChapterID,
     )
-    const lessons = getLessons(currentTextbook, currentChapterID)
+    const dueFSRSCardsPromise = user
+      ? getDueFSRSCards(user.id)
+      : Promise.resolve(null)
 
-    const thumbnailPromises = externalResources.map((resource) =>
-      fetchThumbnailUrl(resource.external_url, resource.creator_id).then(
-        (thumbnailUrl) => ({
-          resourceId: resource.id,
-          thumbnailUrl,
-        }),
-      ),
-    )
-
-    let dueFSRSCardsPromise: Promise<FSRSCardData[]> | null
-    context.user
-      ? (dueFSRSCardsPromise = getDueFSRSCards(context.user.id))
-      : (dueFSRSCardsPromise = null)
+    const deferredIndividualThumbnails = externalResources.map((resource) => {
+      const promise = fetchThumbnailUrl(
+        resource.external_url,
+        resource.creator_id,
+      ).then((thumbnailUrl) => ({
+        resourceId: resource.id,
+        thumbnailUrl,
+      }))
+      return defer(promise)
+    })
 
     return {
+      lessons,
       currentChapterID,
       currentTextbookChapters,
       externalResources,
-      lessons,
-      deferredThumbnails: thumbnailPromises,
-      dueFSRSCardsPromise,
+      wordHierarchyData,
+      deferredThumbnails: deferredIndividualThumbnails,
+      dueFSRSCards: defer(dueFSRSCardsPromise),
     }
   },
   component: RouteComponent,
@@ -150,7 +153,7 @@ function RouteComponent() {
       <DashboardHeader
         currentChapterID={loaderData().currentChapterID}
         currentTextbookChapters={loaderData().currentTextbookChapters}
-        dueFSRSCardsPromise={loaderData().dueFSRSCardsPromise}
+        dueFSRSCardsPromise={loaderData().dueFSRSCards}
       />
 
       <div data-section="content">
@@ -167,14 +170,25 @@ function RouteComponent() {
         />
       </div>
 
+      {/* Mobile Layout */}
       <SSRMediaQuery hideFrom="xl">
-        <StrugglesSection struggles={struggles} variant="mobile" />
-        <HistorySection items={historyItems} />
+        <div class="flex flex-col">
+          <StrugglesSection struggles={struggles} variant="mobile" />
+          <WordHierarchy
+            data={loaderData().wordHierarchyData}
+            variant="mobile"
+          />
+          <HistorySection items={historyItems} />
+        </div>
       </SSRMediaQuery>
 
+      {/* Desktop Layout */}
       <SSRMediaQuery showFrom="xl">
-        <div class="my-6 grid grid-cols-3 gap-6 px-4 xl:px-6">
-          <AllContentList />
+        <div class="my-6 grid grid-cols-3 gap-6 px-6">
+          <WordHierarchy
+            data={loaderData().wordHierarchyData}
+            variant="desktop"
+          />
           <StrugglesSection struggles={struggles} variant="desktop" />
           <HistorySection items={historyItems} />
         </div>

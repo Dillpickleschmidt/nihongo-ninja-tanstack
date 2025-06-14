@@ -24,6 +24,7 @@
     "@tanstack/solid-router-devtools": "^1.120.3",
     "@tanstack/solid-start": "^1.120.3",
     "@tanstack/zod-adapter": "^1.120.13",
+    "better-sqlite3": "^11.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "figma-squircle": "^1.1.0",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.149",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/bun": "latest",
     "@types/jsonwebtoken": "^9.0.9",
     "prettier": "^3.5.3",

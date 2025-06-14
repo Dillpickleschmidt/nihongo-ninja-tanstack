@@ -12,8 +12,8 @@ interface StrugglesSectionProps {
 function StruggleCard(props: { struggle: string }) {
   return (
     <SmoothCard
-      width={120}
-      height={140}
+      width={110}
+      height={130}
       scales={{ xl: 1.1 }}
       class={cn(
         "relative flex flex-col items-center justify-center bg-purple-50/70 px-2 py-3 text-center transition-transform hover:scale-[98%] xl:px-3 xl:py-4 dark:bg-transparent",
@@ -74,7 +74,7 @@ export function StrugglesSection(props: StrugglesSectionProps) {
 
       {/* 3x2 Grid */}
       <div class="flex justify-center">
-        <div class="mb-4 grid grid-cols-3 gap-3 xl:mb-5 xl:gap-4">
+        <div class="mb-4 grid grid-cols-4 gap-3 xl:mb-5 xl:gap-4">
           <For each={visibleStruggles()}>
             {(struggle) => <StruggleCard struggle={struggle} />}
           </For>

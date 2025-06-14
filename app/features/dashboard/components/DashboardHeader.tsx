@@ -1,5 +1,10 @@
 // features/dashboard/components/DashboardHeader.tsx
-import { Link, useNavigate } from "@tanstack/solid-router"
+import {
+  Link,
+  useNavigate,
+  Await,
+  type DeferredPromise,
+} from "@tanstack/solid-router"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Select,
@@ -8,8 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { usePageTransition } from "@/context/TransitionContext"
-import { createResource, Suspense } from "solid-js"
 import type { FSRSCardData } from "@/features/supabase/db/utils"
 
 type CurrentTextbookChapters = Record<
@@ -20,17 +23,11 @@ type CurrentTextbookChapters = Record<
 interface DashboardHeaderProps {
   currentChapterID: string
   currentTextbookChapters: CurrentTextbookChapters
-  dueFSRSCardsPromise: Promise<FSRSCardData[]> | null
+  dueFSRSCardsPromise: DeferredPromise<FSRSCardData[] | null>
 }
 
 export function DashboardHeader(props: DashboardHeaderProps) {
-  const [dueCards] = createResource(
-    () => props.dueFSRSCardsPromise,
-    (promise) => promise,
-  )
-
   const navigate = useNavigate({ from: "/dashboard" })
-  // const { triggerAnimations, setUserHasNavigated } = usePageTransition()
 
   // Convert chapters object to array for Select options
   const chapterOptions = Object.entries(props.currentTextbookChapters).map(
@@ -41,9 +38,6 @@ export function DashboardHeader(props: DashboardHeaderProps) {
   )
 
   const handleChapterChange = (newChapterID: string) => {
-    // Trigger animations and navigate
-    // setUserHasNavigated(true)
-    // triggerAnimations()
     navigate({
       search: { chapter: newChapterID },
     })
@@ -95,20 +89,42 @@ export function DashboardHeader(props: DashboardHeaderProps) {
               Login
             </Link>
           ) : (
-            <Suspense fallback={<div>...</div>}>
-              <div
-                class={dueCards()?.length ? "text-amber-400" : "text-green-500"}
-              >
-                <span class="font-inter text-base font-bold xl:text-lg">
-                  {dueCards()?.length || 0}
-                </span>
-              </div>
-              <div class="text-muted-foreground text-xs xl:text-sm">
-                {dueCards()?.length === 0
-                  ? "No reviews"
-                  : `${dueCards()?.length === 1 ? "Review" : "Reviews"} Due`}
-              </div>
-            </Suspense>
+            <Await
+              promise={props.dueFSRSCardsPromise}
+              fallback={
+                <>
+                  <div class="text-gray-400">
+                    <span class="font-inter text-base font-bold xl:text-lg">
+                      ...
+                    </span>
+                  </div>
+                  <div class="text-muted-foreground text-xs xl:text-sm">
+                    Loading...
+                  </div>
+                </>
+              }
+            >
+              {(dueCards) => (
+                <>
+                  <div
+                    class={
+                      dueCards && dueCards.length > 0
+                        ? "text-amber-400"
+                        : "text-green-500"
+                    }
+                  >
+                    <span class="font-inter text-base font-bold xl:text-lg">
+                      {dueCards?.length || 0}
+                    </span>
+                  </div>
+                  <div class="text-muted-foreground text-xs xl:text-sm">
+                    {dueCards?.length === 0
+                      ? "No reviews"
+                      : `${dueCards?.length === 1 ? "Review" : "Reviews"} Due`}
+                  </div>
+                </>
+              )}
+            </Await>
           )}
         </div>
       </div>

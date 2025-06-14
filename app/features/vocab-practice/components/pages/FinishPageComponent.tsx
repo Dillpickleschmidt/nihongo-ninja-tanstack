@@ -85,8 +85,7 @@ function CardSummary(props: { card: PracticeCard }) {
   })
 
   const promptClasses = createMemo(() => {
-    const baseColor =
-      incorrectCount() > 0 ? "text-red-500" : "text-orange-400 saturate-[125%]"
+    const baseColor = "text-orange-400 saturate-[125%]"
     const baseLayout = "mb-3 font-bold"
     const fontSize =
       props.card.practiceMode === "kana"
