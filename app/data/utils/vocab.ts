@@ -9,7 +9,7 @@ import type {
   VocabularyItem,
 } from "@/data/types"
 import type { KanaItem } from "@/features/kana-quiz/hooks/useKanaQuiz"
-import { PracticeMode } from "@/features/vocab-practice/types"
+import type { PracticeMode } from "@/features/vocab-practice/types"
 
 /**
  * Get a dynamic module by its ID
@@ -165,9 +165,17 @@ export function getExampleSentenceParts(
 
   return parts.map((part) => {
     if (typeof part === "string") {
-      // Process every string part for furigana.
       const html = mode === "kana" ? convertFuriganaToRubyHtml(part) : part
-      return { type: "html", content: html.replace(/\s/g, "") }
+      return {
+        type: "html",
+        // Strips spaces only when they are outside of HTML tags.
+        content:
+          mode === "kana"
+            ? html.replace(/<[^>]+>|\s/g, (match) =>
+                match.startsWith("<") ? match : "",
+              )
+            : html,
+      }
     } else {
       // Mark the target word's location for the input field.
       return { type: "input" }

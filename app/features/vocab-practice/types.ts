@@ -39,6 +39,7 @@ export type PracticeCard = {
   vocab: RichVocabItem // The core vocabulary data for display
   fsrs: FSRSInfo
   practiceMode: PracticeMode
+  practiceItemType: DBPracticeItemType
   sessionStyle: SessionCardStyle
   prompt: string // Question to display
   validAnswers: string[] // Acceptable written answers

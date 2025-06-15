@@ -38,11 +38,16 @@ export function initializePracticeSession(
     const key = vocab.word
     const existingFSRSData = existingFSRSMap.get(key)
 
+    const practiceItemType: DBPracticeItemType = existingFSRSData
+      ? existingFSRSData.type
+      : "vocabulary" // Default new module cards to 'vocabulary'
+
     const fsrsData: FSRSCardData = existingFSRSData || {
       practice_item_key: key,
       fsrs_card: createEmptyCard(new Date()),
       fsrs_logs: [],
       mode: sessionPracticeMode, // New cards get the session's practice mode
+      type: practiceItemType,
     }
 
     const fsrsInfo: FSRSInfo = {
@@ -61,6 +66,7 @@ export function initializePracticeSession(
       vocab,
       fsrs: fsrsInfo,
       sessionStyle: "multiple-choice",
+      practiceItemType,
       practiceMode: sessionPracticeMode, // Assign the mode to the card
       prompt,
       validAnswers,
@@ -92,6 +98,7 @@ export function initializePracticeSession(
       vocab,
       fsrs: fsrsInfo,
       sessionStyle: "flashcard",
+      practiceItemType: fsrsData.type,
       practiceMode: cardPracticeMode,
       prompt,
       validAnswers,

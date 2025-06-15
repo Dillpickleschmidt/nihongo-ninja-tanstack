@@ -20,6 +20,7 @@ export type Database = {
           mode: string
           practice_item_key: string
           stability: number
+          type: Database["public"]["Enums"]["practice_item_type"]
           user_id: string
         }
         Insert: {
@@ -32,6 +33,7 @@ export type Database = {
           mode?: string
           practice_item_key: string
           stability: number
+          type?: Database["public"]["Enums"]["practice_item_type"]
           user_id: string
         }
         Update: {
@@ -44,6 +46,7 @@ export type Database = {
           mode?: string
           practice_item_key?: string
           stability?: number
+          type?: Database["public"]["Enums"]["practice_item_type"]
           user_id?: string
         }
         Relationships: []
@@ -95,7 +98,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      practice_item_type: "vocabulary" | "kanji" | "radical"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -210,6 +213,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      practice_item_type: ["vocabulary", "kanji", "radical"],
+    },
   },
 } as const

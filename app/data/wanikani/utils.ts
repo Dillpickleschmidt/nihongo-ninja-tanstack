@@ -3,6 +3,11 @@ import { createServerFn } from "@tanstack/solid-start"
 import type { Database as Db } from "better-sqlite3"
 import Database from "better-sqlite3"
 import path from "node:path"
+import {
+  getFSRSCardsByKeys,
+  type FSRSCardData,
+} from "@/features/supabase/db/utils"
+import { getUser } from "@/features/supabase/getUser"
 import type {
   FullHierarchyData,
   HierarchySummary,
@@ -12,34 +17,15 @@ import type {
   ProgressState,
   Radical,
   RadicalRow,
-  UserProgressData,
   VocabHierarchy,
   VocabKanjiRelation,
   VocabRow,
 } from "./types"
 
-// --- Mock Data and Constants ---
-
-const MOCK_USER_PROGRESS_DB: UserProgressData = {
-  vocabProgress: new Map([[8788, { stability: 50 }]]),
-  kanjiProgress: new Map([
-    [662, { stability: 100 }],
-    [701, { stability: 25 }],
-    [667, { stability: 15 }],
-  ]),
-  radicalProgress: new Map([
-    [13, { stability: 30 }],
-    [22, { stability: 21 }],
-    [36, { stability: 5 }],
-    [89, { stability: 19 }],
-  ]),
-}
-
 const WELL_KNOWN_THRESHOLD = 21
 
 // --- Database & Data Fetching Functions ---
 
-/** Establishes and returns a connection to the SQLite database. */
 function getDbConnection(): Db {
   const dbPath = path.join(
     process.cwd(),
@@ -51,7 +37,6 @@ function getDbConnection(): Db {
   return new Database(dbPath, { readonly: true, fileMustExist: true })
 }
 
-/** Fetches base vocabulary items from the database by their slugs. */
 function fetchVocabulary(db: Db, slugs: string[]): VocabRow[] {
   if (slugs.length === 0) return []
   const placeholders = slugs.map(() => "?").join(",")
@@ -62,7 +47,6 @@ function fetchVocabulary(db: Db, slugs: string[]): VocabRow[] {
     .all(...slugs) as VocabRow[]
 }
 
-/** Fetches Kanji related to a list of vocabulary IDs. */
 function fetchRelatedKanji(db: Db, vocabIds: number[]): KanjiRow[] {
   if (vocabIds.length === 0) return []
   const placeholders = vocabIds.map(() => "?").join(",")
@@ -73,7 +57,6 @@ function fetchRelatedKanji(db: Db, vocabIds: number[]): KanjiRow[] {
     .all(...vocabIds) as KanjiRow[]
 }
 
-/** Fetches Radicals related to a list of Kanji IDs. */
 function fetchRelatedRadicals(db: Db, kanjiIds: number[]): RadicalRow[] {
   if (kanjiIds.length === 0) return []
   const placeholders = kanjiIds.map(() => "?").join(",")
@@ -84,7 +67,6 @@ function fetchRelatedRadicals(db: Db, kanjiIds: number[]): RadicalRow[] {
     .all(...kanjiIds) as RadicalRow[]
 }
 
-/** Fetches relationship data from join tables. */
 function fetchRelationships(db: Db, vocabIds: number[], kanjiIds: number[]) {
   const vocabPlaceholders = vocabIds.map(() => "?").join(",")
   const vocabKanjiRelations = db
@@ -107,17 +89,23 @@ function fetchRelationships(db: Db, vocabIds: number[], kanjiIds: number[]) {
 
 // --- Data Processing & Assembly Functions ---
 
-/** Determines an item's progress state based on its stability. */
+/** Determines an item's progress state using the live FSRS data map. */
 function determineProgress(
-  id: number,
-  progressMap: Map<number, { stability: number }>,
+  type: DBPracticeItemType,
+  slug: string,
+  progressMap: Map<string, FSRSCardData>,
 ): ProgressState {
-  const card = progressMap.get(id)
-  if (!card) return "not_seen"
-  return card.stability >= WELL_KNOWN_THRESHOLD ? "well_known" : "learning"
+  const key = `${type}:${slug}`
+  const cardData = progressMap.get(key)
+
+  if (!cardData) return "not_seen"
+
+  return cardData.fsrs_card.stability >= WELL_KNOWN_THRESHOLD
+    ? "well_known"
+    : "learning"
 }
 
-/** Assembles the full data hierarchy from raw database rows and user progress. */
+/** Assembles the full data hierarchy from raw DB rows and live user progress. */
 function buildHierarchy(
   vocabRows: VocabRow[],
   kanjiRows: KanjiRow[],
@@ -126,14 +114,14 @@ function buildHierarchy(
     vocabKanjiRelations: VocabKanjiRelation[]
     kanjiRadicalRelations: KanjiRadicalRelation[]
   },
-  progressData: UserProgressData,
+  progressMap: Map<string, FSRSCardData>,
 ): VocabHierarchy[] {
   const radicalsMap = new Map(
     radicalRows.map((r) => [
       r.id,
       {
         ...r,
-        progress: determineProgress(r.id, progressData.radicalProgress),
+        progress: determineProgress("radical", r.slug, progressMap),
       },
     ]),
   )
@@ -143,7 +131,7 @@ function buildHierarchy(
     kanjiMap.set(kanji.id, {
       ...kanji,
       radicals: [],
-      progress: determineProgress(kanji.id, progressData.kanjiProgress),
+      progress: determineProgress("kanji", kanji.slug, progressMap),
     })
   }
 
@@ -163,7 +151,7 @@ function buildHierarchy(
     return {
       ...vocab,
       kanji,
-      progress: determineProgress(vocab.id, progressData.vocabProgress),
+      progress: determineProgress("vocabulary", vocab.slug, progressMap),
     }
   })
 }
@@ -189,7 +177,6 @@ function extractUniqueItems(hierarchy: VocabHierarchy[]): {
   }
 }
 
-/** Calculates summary statistics based on the processed data. */
 function calculateSummary(
   hierarchy: VocabHierarchy[],
   uniqueKanji: Kanji[],
@@ -213,18 +200,19 @@ function calculateSummary(
 // --- Main Server Function ---
 
 /**
- * Server Function to retrieve WaniKani hierarchy, summary, and flat lists.
- * It composes smaller functions to fetch, process, and assemble the data.
+ * Rtrieve WaniKani hierarchy, summary, and flat lists.
  */
 export const getWKVocabularyHierarchy = createServerFn({ method: "GET" })
   .validator((slugs: string[]) => slugs)
   .handler(async ({ data: slugs }): Promise<FullHierarchyData | null> => {
-    if (!slugs || slugs.length === 0) {
-      return null
-    }
+    if (!slugs || slugs.length === 0) return null
+
+    const userResponse = await getUser()
+    if (!userResponse.user) return null
 
     const db = getDbConnection()
     try {
+      // 1. Fetch all related items from the local SQLite DB
       const vocabRows = fetchVocabulary(db, slugs)
       if (vocabRows.length === 0) return null
 
@@ -234,12 +222,33 @@ export const getWKVocabularyHierarchy = createServerFn({ method: "GET" })
       const radicalRows = fetchRelatedRadicals(db, kanjiIds)
       const relations = fetchRelationships(db, vocabIds, kanjiIds)
 
+      // 2. Collect all unique slugs to fetch progress for
+      const allSlugs = new Set<string>()
+      vocabRows.forEach((v) => allSlugs.add(v.slug))
+      kanjiRows.forEach((k) => allSlugs.add(k.slug))
+      radicalRows.forEach((r) => r.slug && allSlugs.add(r.slug))
+
+      // 3. Fetch live FSRS progress data from Supabase
+      const fsrsData = await getFSRSCardsByKeys(
+        userResponse.user.id,
+        Array.from(allSlugs),
+      )
+
+      // 4. Create a performance-optimized lookup map with a composite key
+      const progressMap = new Map(
+        fsrsData.map((card) => [
+          `${card.type}:${card.practice_item_key}`,
+          card,
+        ]),
+      )
+
+      // 5. Build the final hierarchy using the live progress data
       const hierarchy = buildHierarchy(
         vocabRows,
         kanjiRows,
         radicalRows,
         relations,
-        MOCK_USER_PROGRESS_DB,
+        progressMap,
       )
 
       const { uniqueKanji, uniqueRadicals } = extractUniqueItems(hierarchy)

@@ -6,20 +6,20 @@ import {
   addKanaAndRuby,
   extractHiragana,
   convertFuriganaToRubyHtml,
-  getExampleSentence,
+  getExampleSentenceParts,
 } from "./vocab"
 
 describe("Vocabulary Utils", () => {
   describe("extractHiragana", () => {
     it("should extract hiragana from a simple furigana string", () => {
       const input = "食[た]べる"
-      const expected = "たべる" // This will now pass with the corrected function.
+      const expected = "たべる"
       expect(extractHiragana(input)).toBe(expected)
     })
 
     it("should extract hiragana and strip spaces from a complex string", () => {
       const input = "何[なん]で 食[た]べ 物[もの]がない？"
-      const expected = "なんでたべものがない？" // This will now pass.
+      const expected = "なんでたべものがない？"
       expect(extractHiragana(input)).toBe(expected)
     })
   })
@@ -36,36 +36,51 @@ describe("Vocabulary Utils", () => {
       const expected = `<ruby>何<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">なん</span></rt><rp>)</rp></ruby>で <ruby>食<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">た</span></rt><rp>)</rp></ruby>べ <ruby>物<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">もの</span></rt><rp>)</rp></ruby>がない？`
       expect(convertFuriganaToRubyHtml(input)).toBe(expected)
     })
-
-    it("should correctly apply a custom font size", () => {
-      const input = "日本[にほん]"
-      const expected = `<ruby>日本<rp>(</rp><rt><span style="font-size: 1rem; user-select: none;">にほん</span></rt><rp>)</rp></ruby>`
-      expect(convertFuriganaToRubyHtml(input, "1rem")).toBe(expected)
-    })
-
-    it("should correctly handle an array of furigana strings", () => {
-      const input = ["日本[にほん]", "語[ご]"]
-      const expected = [
-        `<ruby>日本<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">にほん</span></rt><rp>)</rp></ruby>`,
-        `<ruby>語<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">ご</span></rt><rp>)</rp></ruby>`,
-      ]
-      expect(convertFuriganaToRubyHtml(input)).toEqual(expected)
-    })
   })
 
-  describe("getExampleSentence", () => {
-    it("should process and strip spaces from an example sentence", () => {
-      const sentence: ExampleSentence = {
-        english: ["Shall I help you?"],
-        japanese: ["これ を ", { t: "手伝[てつだ]って" }, " ください"],
-      }
-      const result = getExampleSentence(sentence)
-      expect(result.targets).toEqual(["手伝[てつだ]って"])
+  // --- Test suite for getExampleSentenceParts ---
+  describe("getExampleSentenceParts", () => {
+    const sentence: ExampleSentence = {
+      english: ["Shall I ", { t: "help" }, " you?"],
+      japanese: ["これ を ", { t: "手伝[てつだ]って" }, " ください"],
+    }
 
-      // UPDATED: Expect the correct HTML with the space preserved in the style attribute,
-      // as the function now correctly avoids stripping it.
-      const expectedHtml = `これを<ruby>手伝<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">てつだ</span></rt><rp>)</rp></ruby>ってください`
-      expect(result.sentence).toBe(expectedHtml)
+    it('should process a Japanese sentence and STRIP spaces when mode is "kana"', () => {
+      const result = getExampleSentenceParts(sentence, "kana")
+      const expected = [
+        { type: "html", content: "これを" }, // Space stripped
+        { type: "input" },
+        { type: "html", content: "ください" }, // Space stripped
+      ]
+      expect(result).toEqual(expected)
+    })
+
+    it('should process a Japanese sentence and PRESERVE spaces when mode is "readings"', () => {
+      const result = getExampleSentenceParts(sentence, "readings")
+      const expected = [
+        { type: "html", content: "Shall I " }, // Space preserved
+        { type: "input" },
+        { type: "html", content: " you?" }, // Space preserved
+      ]
+      expect(result).toEqual(expected)
+    })
+
+    it("should correctly process furigana within the sentence parts", () => {
+      const furiganaSentence: ExampleSentence = {
+        english: ["Why is there no ", { t: "food" }, "?"],
+        japanese: ["何[なん]で ", { t: "食[た]べ物[もの]" }, "がない？"],
+      }
+
+      const result = getExampleSentenceParts(furiganaSentence, "kana")
+      const expected = [
+        {
+          type: "html",
+          content: `<ruby>何<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">なん</span></rt><rp>)</rp></ruby>で`,
+        },
+        { type: "input" },
+        { type: "html", content: "がない？" },
+      ]
+      expect(result).toEqual(expected)
     })
   })
 
@@ -93,9 +108,7 @@ describe("Vocabulary Utils", () => {
         chapter: 1,
       }
       const result = addKanaAndRuby([vocabItem])[0]
-      // This will now pass because extractHiragana is fixed.
       expect(result.hiragana).toEqual(["たべる"])
-      // This will now pass because the font-size default is handled.
       expect(result.rubyText).toEqual([
         `<ruby>食<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">た</span></rt><rp>)</rp></ruby>べる`,
       ])

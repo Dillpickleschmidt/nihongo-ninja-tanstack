@@ -118,6 +118,7 @@ export class PracticeSessionManager {
           fsrs_card: updatedCard.fsrs.card,
           fsrs_logs: updatedCard.fsrs.logs,
           mode: updatedCard.practiceMode,
+          type: updatedCard.practiceItemType,
         },
       })
     } catch (error) {

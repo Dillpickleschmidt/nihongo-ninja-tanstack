@@ -71,6 +71,8 @@ describe("Data Initialization", () => {
     {
       practice_item_key: "食べる",
       fsrs_card: createEmptyCard(new Date()),
+      mode: "readings",
+      type: "vocabulary",
       fsrs_logs: [
         {
           rating: Rating.Good,
@@ -92,11 +94,15 @@ describe("Data Initialization", () => {
     {
       practice_item_key: "due1",
       fsrs_card: createEmptyCard(new Date()),
+      mode: "readings",
+      type: "vocabulary",
       fsrs_logs: null, // Test case for null logs
     },
     {
       practice_item_key: "due2",
       fsrs_card: createEmptyCard(new Date()),
+      mode: "readings",
+      type: "vocabulary",
       // Test case for undefined logs
     },
   ]
@@ -124,6 +130,8 @@ describe("Data Initialization", () => {
         {
           practice_item_key: "食べる", // Same as in module cards
           fsrs_card: createEmptyCard(new Date()),
+          mode: "readings",
+          type: "vocabulary",
         },
       ]
 

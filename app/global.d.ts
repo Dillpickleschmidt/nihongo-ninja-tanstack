@@ -8,4 +8,5 @@ declare global {
     Database["public"]["Tables"]["static_module_user_completions"]["Row"]
   type DBPracticeItem =
     Database["public"]["Tables"]["practice_item_user_completions"]["Row"]
+  type DBPracticeItemType = Database["public"]["Enums"]["practice_item_type"]
 }
