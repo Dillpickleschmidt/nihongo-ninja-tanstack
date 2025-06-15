@@ -40,11 +40,25 @@ function getDbConnection(): Db {
 function fetchVocabulary(db: Db, slugs: string[]): VocabRow[] {
   if (slugs.length === 0) return []
   const placeholders = slugs.map(() => "?").join(",")
-  return db
+  const results = db
     .prepare(
       `SELECT id, characters, slug FROM vocabulary WHERE slug IN (${placeholders})`,
     )
     .all(...slugs) as VocabRow[]
+
+  // --- ADDED: Logging for missing vocabulary ---
+  if (results.length !== slugs.length) {
+    const foundSlugs = new Set(results.map((v) => v.slug))
+    for (const slug of slugs) {
+      if (!foundSlugs.has(slug)) {
+        console.warn(
+          `WaniKani DB Warning: Vocabulary slug not found: '${slug}'`,
+        )
+      }
+    }
+  }
+
+  return results
 }
 
 function fetchRelatedKanji(db: Db, vocabIds: number[]): KanjiRow[] {
@@ -91,7 +105,7 @@ function fetchRelationships(db: Db, vocabIds: number[], kanjiIds: number[]) {
 
 /** Determines an item's progress state using the live FSRS data map. */
 function determineProgress(
-  type: DBPracticeItemType,
+  type: "vocabulary" | "kanji" | "radical",
   slug: string,
   progressMap: Map<string, FSRSCardData>,
 ): ProgressState {
@@ -116,7 +130,7 @@ function buildHierarchy(
   },
   progressMap: Map<string, FSRSCardData>,
 ): VocabHierarchy[] {
-  const radicalsMap = new Map(
+  const radicalsMap = new Map<number, Radical>(
     radicalRows.map((r) => [
       r.id,
       {
@@ -138,19 +152,39 @@ function buildHierarchy(
   for (const rel of relations.kanjiRadicalRelations) {
     const kanji = kanjiMap.get(rel.kanji_id)
     const radical = radicalsMap.get(rel.radical_id)
-    if (kanji && radical) kanji.radicals.push(radical)
+    if (kanji && radical) {
+      kanji.radicals.push(radical)
+    } else {
+      // --- ADDED: Logging for missing radicals in relationships ---
+      if (!radical) {
+        console.warn(
+          `WaniKani DB Warning: Radical with ID ${rel.radical_id} referenced by Kanji ID ${rel.kanji_id} but not found.`,
+        )
+      }
+    }
   }
 
   return vocabRows.map((vocab) => {
     const relatedKanjiIds = relations.vocabKanjiRelations
       .filter((r) => r.vocab_id === vocab.id)
       .map((r) => r.kanji_id)
-    const kanji = relatedKanjiIds
-      .map((id) => kanjiMap.get(id))
-      .filter((k): k is Kanji => !!k)
+
+    const kanjiForVocab: Kanji[] = []
+    for (const id of relatedKanjiIds) {
+      const kanji = kanjiMap.get(id)
+      if (kanji) {
+        kanjiForVocab.push(kanji)
+      } else {
+        // --- ADDED: Logging for missing kanji in relationships ---
+        console.warn(
+          `WaniKani DB Warning: Kanji with ID ${id} linked to vocabulary '${vocab.characters}' but not found.`,
+        )
+      }
+    }
+
     return {
       ...vocab,
-      kanji,
+      kanji: kanjiForVocab,
       progress: determineProgress("vocabulary", vocab.slug, progressMap),
     }
   })
@@ -200,7 +234,7 @@ function calculateSummary(
 // --- Main Server Function ---
 
 /**
- * Rtrieve WaniKani hierarchy, summary, and flat lists.
+ * Retrieve WaniKani hierarchy, summary, and flat lists.
  */
 export const getWKVocabularyHierarchy = createServerFn({ method: "GET" })
   .validator((slugs: string[]) => slugs)

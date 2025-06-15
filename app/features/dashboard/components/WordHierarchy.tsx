@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/hover-card"
 import { SmoothCard } from "./SmoothCard"
 import { cn } from "@/utils/util"
-import type { FullHierarchyData, Kanji, Radical } from "@/data/wanikani/utils"
+import type { FullHierarchyData, Kanji, Radical } from "@/data/wanikani/types"
 
 type WordHierarchyVariant = "mobile" | "desktop"
 
@@ -251,7 +251,7 @@ function CharBox(props: { item: Kanji | Radical }) {
                 height={40}
                 cornerRadius={10}
                 class={cn(
-                  "flex items-center justify-center transition-colors",
+                  "flex items-center justify-center transition-colors hover:cursor-pointer",
                   {
                     "bg-muted/40": props.item.progress === "not_seen",
                     "bg-amber-400/10": props.item.progress === "learning",

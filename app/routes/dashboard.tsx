@@ -25,6 +25,7 @@ import { WordHierarchy } from "@/features/dashboard/components/WordHierarchy"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { getDueFSRSCards } from "@/features/supabase/db/utils"
 import { getWKVocabularyHierarchy } from "@/data/wanikani/utils"
+import { getModuleVocabulary } from "@/data/utils/vocab"
 import type {
   Deck,
   DeckSource,
@@ -103,15 +104,12 @@ export const Route = createFileRoute("/dashboard")({
 
     let deck: Deck | undefined
 
-    // Fetch the deck based on its source type
     if (sourceType === "textbook") {
       deck = getDeckBySlug(sourceId as TextbookIDEnum, deckSlug)
     } else if (sourceType === "user") {
-      // Future implementation for fetching user decks from a database
-      // deck = await getUserDeck(sourceId, deckSlug);
+      // Future implementation
     }
 
-    // If the deck doesn't exist (e.g., invalid slug), redirect to default.
     if (!deck) {
       throw redirect({
         to: "/dashboard",
@@ -121,12 +119,23 @@ export const Route = createFileRoute("/dashboard")({
 
     let lessons: (StaticModule | DynamicModule)[] = []
     let externalResources: ExternalResource[] = []
+    let vocabForHierarchy: string[] = []
 
-    // Use the discriminator to get deck-specific content
     switch (deck.deckType) {
       case "textbook_chapter":
         lessons = getLessons(deck)
         externalResources = getExternalResources(deck)
+
+        // Find the vocab module ID from the learning path
+        const vocabModuleId = deck.learning_path_items.find((item) =>
+          item.id.endsWith("_vocab-list"),
+        )?.id
+
+        // If found, get its vocabulary and extract the words
+        if (vocabModuleId) {
+          const vocabItems = getModuleVocabulary(vocabModuleId)
+          vocabForHierarchy = vocabItems.map((item) => item.word)
+        }
         break
       case "user_deck":
         // Future implementation for user decks
@@ -140,10 +149,10 @@ export const Route = createFileRoute("/dashboard")({
       type: "textbook",
       decks: tb.chapters,
     }))
-    // In the future, you would append user deck sources here.
 
+    // Use the dynamically generated list instead of a hardcoded one
     const wordHierarchyData = await getWKVocabularyHierarchy({
-      data: ["勉強する", "時間", "映画"],
+      data: vocabForHierarchy,
     })
 
     const dueFSRSCardsPromise = user

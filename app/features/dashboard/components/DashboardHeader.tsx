@@ -74,7 +74,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
               <path d="M16 15l-4 4l-4 -4" />
             </svg>
           </PopoverTrigger>
-          <PopoverContent class="bg-primary-foreground/80 border-card-foreground w-[480px] p-2 backdrop-blur-2xl">
+          <PopoverContent class="border-card-foreground w-[480px] bg-neutral-950/70 p-2 backdrop-blur-2xl">
             <div class="grid grid-cols-[1fr_2fr]">
               {/* Left Column: Source List */}
               <div class="border-primary/10 border-r p-1">

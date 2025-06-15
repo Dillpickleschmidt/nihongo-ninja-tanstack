@@ -73,56 +73,6 @@ export const textbooks: TextbookCollection = {
             id: "genki_1_ch0_practice-numbers-11-100",
           },
         ],
-        vocabulary_keys: [
-          "わたし",
-          "あなた",
-          "あのひと",
-          "〜さん",
-          "〜ちゃん",
-          "〜じん",
-          "せんせい",
-          "がくせい",
-          "かいしゃいん",
-          "ぎんこういん",
-          "いしゃ",
-          "だいがく",
-          "びょういん",
-          "でんわ",
-          "なんさい",
-          "はい",
-          "いいえ",
-          "おはようございます",
-          "こんにちは",
-          "こんばんは",
-          "さようなら",
-          "おやすみなさい",
-          "はじめまして",
-          "どうぞよろしくおねがいします",
-          "こちらは〜さんです",
-          "〜からきました",
-          "アメリカ",
-          "イギリス",
-          "かんこく",
-          "ちゅうごく",
-          "にほん",
-          "これ",
-          "それ",
-          "あれ",
-          "ほん",
-          "じしょ",
-          "ざっし",
-          "しんぶん",
-          "ノート",
-          "えんぴつ",
-          "かばん",
-          "とけい",
-          "なん",
-          "だれ",
-          "そうです",
-          "ちがいます",
-          "あのう",
-          "どうぞ",
-        ],
         external_resource_ids: [
           "greetings-japanese-super-immersion",
           "common-expressions-japanese-super-immersion",
@@ -138,7 +88,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Learn to introduce yourself, talk about your nationality and occupation, and use the particle は.",
         learning_path_items: [
-          { type: "static_module", id: "genki_1_ch1_vocab-list" },
+          { type: "dynamic_module", id: "genki_1_ch1_vocab-list" },
           { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_1_ch1_kanji-numbers" },
           { type: "dynamic_module", id: "genki_1_ch1_practice-kanji-numbers" },
@@ -198,7 +148,6 @@ export const textbooks: TextbookCollection = {
           { type: "external_resource", id: "kikusasaizu-1-3" },
           { type: "external_resource", id: "my-kikitori-conversation-3" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [
           "kikusasaizu-1-1",
           "japanese-super-immersion-nice-to-meet-you",
@@ -217,7 +166,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Building on introductions, learn to identify and ask about things, use particles が and も, and negate statements.",
         learning_path_items: [
-          { type: "static_module", id: "genki_1_ch2_vocab-list" },
+          { type: "dynamic_module", id: "genki_1_ch2_vocab-list" },
           { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "katakana" },
           { type: "dynamic_module", id: "practice-katakana" },
@@ -259,7 +208,6 @@ export const textbooks: TextbookCollection = {
           { type: "external_resource", id: "my-kikitori-at-a-store" },
           { type: "dynamic_module", id: "genki_1_ch2_all-vocab-test" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [
           "kikusasaizu-2-1",
           "kikusasaizu-2-2",
@@ -278,7 +226,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Introduce verbs and adjectives, learn basic conjugations, and use location and direction particles.",
         learning_path_items: [
-          { type: "static_module", id: "genki_1_ch3_vocab-list" },
+          { type: "dynamic_module", id: "genki_1_ch3_vocab-list" },
           { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "introduction-to-kanji" },
           { type: "static_module", id: "kanji-radicals" },
@@ -369,7 +317,6 @@ export const textbooks: TextbookCollection = {
           { type: "external_resource", id: "my-kikitori-campus-interview-2" },
           { type: "external_resource", id: "long-form-conversation-immersion" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [
           "your-japanese-voice",
           "kikusasaizu-3-2",
@@ -390,7 +337,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Learn to talk about existence of things and people, use past tense, and connect nouns with と.",
         learning_path_items: [
-          { type: "static_module", id: "genki_1_ch4_vocab-list" },
+          { type: "dynamic_module", id: "genki_1_ch4_vocab-list" },
           { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_1_ch4_nouns-1" },
           {
@@ -447,7 +394,6 @@ export const textbooks: TextbookCollection = {
           { type: "static_module", id: "takusan" },
           { type: "external_resource", id: "beginner-guide-to-konbini" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [
           "saying-no-naturally",
           "immersion-with-yuta",
@@ -463,7 +409,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Learn about い and な adjectives, their conjugations, and how to use them to modify nouns.",
         learning_path_items: [
-          { type: "static_module", id: "genki_1_ch5_vocab-list" },
+          { type: "dynamic_module", id: "genki_1_ch5_vocab-list" },
           { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_1_ch5_nouns" },
           { type: "dynamic_module", id: "genki_1_ch5_practice-nouns-readings" },
@@ -510,7 +456,6 @@ export const textbooks: TextbookCollection = {
           { type: "static_module", id: "counters" },
           { type: "dynamic_module", id: "counter-practice" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: ["sports"],
       },
       {
@@ -522,10 +467,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Learn the essential て-form of verbs, its various uses, and how to connect actions and ideas.",
         learning_path_items: [
-          // {
-          //   type: "static_module",
-          //   id: "genki_1_ch6_vocab-list",
-          // },
+          { type: "dynamic_module", id: "genki_1_ch6_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_1_ch6_nouns" },
           { type: "dynamic_module", id: "genki_1_ch6_practice-nouns-readings" },
@@ -560,7 +502,6 @@ export const textbooks: TextbookCollection = {
           { type: "external_resource", id: "why-your-speaking-sucks" },
           { type: "dynamic_module", id: "genki_1_ch6_all-vocab-test" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: ["why-your-speaking-sucks"],
       },
       {
@@ -572,7 +513,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Expand vocabulary with nouns, body parts, verbs, and adjectives, and learn about converting adjectives to adverbs.",
         learning_path_items: [
-          // { type: "static_module", id: "genki_1_ch7_vocab-list" },
+          { type: "dynamic_module", id: "genki_1_ch6_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_1_ch7_nouns-1" },
           {
@@ -604,7 +545,6 @@ export const textbooks: TextbookCollection = {
           { type: "static_module", id: "adj-to-adv" },
           { type: "dynamic_module", id: "genki_1_ch7_all-vocab-test" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [],
       },
       {
@@ -616,7 +556,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Focus on vocabulary expansion with nouns, verbs, adjectives, and adverbs, and explore verb functionality.",
         learning_path_items: [
-          // { type: "static_module", id: "genki_1_ch8_vocab-list" },
+          { type: "dynamic_module", id: "genki_1_ch8_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_1_ch8_nouns-1" },
           {
@@ -645,7 +585,6 @@ export const textbooks: TextbookCollection = {
           { type: "external_resource", id: "how-verbs-work" },
           { type: "dynamic_module", id: "genki_1_ch8_all-vocab-test" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: ["how-verbs-work"],
       },
       {
@@ -657,7 +596,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Learn about various noun categories, small item counters, and continue expanding verb and adjective vocabulary.",
         learning_path_items: [
-          // { type: "static_module", id: "genki_1_ch9_vocab-list" },
+          { type: "dynamic_module", id: "genki_1_ch9_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_1_ch9_nouns" },
           { type: "dynamic_module", id: "genki_1_ch9_practice-nouns-readings" },
@@ -686,7 +625,6 @@ export const textbooks: TextbookCollection = {
           { type: "external_resource", id: "colors" },
           { type: "dynamic_module", id: "genki_1_ch9_all-vocab-test" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: ["colors"],
       },
       {
@@ -698,10 +636,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Continue building vocabulary with different noun groups, verbs, and explore concepts like comparing sizes and emotions.",
         learning_path_items: [
-          // {
-          //   type: "static_module",
-          //   id: "genki_1_ch10_vocab-list",
-          // },
+          { type: "dynamic_module", id: "genki_1_ch10_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_1_ch10_nouns-1" },
           {
@@ -734,7 +669,6 @@ export const textbooks: TextbookCollection = {
           { type: "external_resource", id: "emotions" },
           { type: "dynamic_module", id: "genki_1_ch10_all-vocab-test" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: ["comparing-sizes", "emotions"],
       },
       {
@@ -746,10 +680,10 @@ export const textbooks: TextbookCollection = {
         description:
           "Delve deeper into nouns and verbs, including irregular verbs, adverbs, and occupations.",
         learning_path_items: [
-          // {
-          //   type: "static_module",
-          //   id: "genki_1_ch11_vocab-list",
-          // },
+          {
+            type: "dynamic_module",
+            id: "genki_1_ch11_vocab-list",
+          },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_1_ch11_nouns-1" },
           {
@@ -789,7 +723,6 @@ export const textbooks: TextbookCollection = {
           },
           { type: "dynamic_module", id: "genki_1_ch11_all-vocab-test" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [],
       },
       {
@@ -801,10 +734,10 @@ export const textbooks: TextbookCollection = {
         description:
           "Review and expand vocabulary with more nouns, verbs, adjectives, and adverbs.",
         learning_path_items: [
-          // {
-          //   type: "static_module",
-          //   id: "genki_1_ch12_vocab-list",
-          // },
+          {
+            type: "dynamic_module",
+            id: "genki_1_ch12_vocab-list",
+          },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_1_ch12_nouns-1" },
           {
@@ -835,7 +768,6 @@ export const textbooks: TextbookCollection = {
           },
           { type: "dynamic_module", id: "genki_1_ch12_all-vocab-test" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [],
       },
     ],
@@ -857,7 +789,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Focus on vocabulary for nouns, adjectives, verbs, and day counts.",
         learning_path_items: [
-          { type: "static_module", id: "genki_2_ch13_vocab-list" },
+          { type: "dynamic_module", id: "genki_2_ch13_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_2_ch13_nouns" },
           {
@@ -885,7 +817,6 @@ export const textbooks: TextbookCollection = {
           },
           { type: "dynamic_module", id: "genki_2_ch13_all-vocab-test" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [],
       },
       {
@@ -897,7 +828,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Introduce more nouns, adjectives, verbs, counters, adverbs, and other miscellaneous vocabulary.",
         learning_path_items: [
-          { type: "static_module", id: "genki_2_ch14_vocab-list" },
+          { type: "dynamic_module", id: "genki_2_ch14_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_2_ch14_nouns-1" },
           {
@@ -931,7 +862,6 @@ export const textbooks: TextbookCollection = {
           },
           { type: "dynamic_module", id: "genki_2_ch14_all-vocab-test" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [],
       },
       {
@@ -943,7 +873,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Focus on different verb types (Ichidan, Godan, Irregular) and continue expanding noun, adverb, and miscellaneous vocabulary.",
         learning_path_items: [
-          { type: "static_module", id: "genki_2_ch15_vocab-list" },
+          { type: "dynamic_module", id: "genki_2_ch15_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_2_ch15_nouns-1" },
           {
@@ -978,7 +908,6 @@ export const textbooks: TextbookCollection = {
           { type: "external_resource", id: "hobbies-with-yuta" },
           { type: "dynamic_module", id: "genki_2_ch15_all-vocab-test" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: ["hobbies-with-yuta"],
       },
       {
@@ -990,7 +919,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Introduce more nouns, adjectives, and verbs (U, Ru, Irregular), along with adverbs and other miscellaneous terms.",
         learning_path_items: [
-          { type: "static_module", id: "genki_2_ch16_vocab-list" },
+          { type: "dynamic_module", id: "genki_2_ch16_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_2_ch16_nouns" },
           {
@@ -1027,7 +956,6 @@ export const textbooks: TextbookCollection = {
           },
           { type: "dynamic_module", id: "genki_2_ch16_all-vocab-test" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [],
       },
       {
@@ -1039,7 +967,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Expand vocabulary with more nouns, verbs, adjectives, and adverbs, and practice new sentence patterns.",
         learning_path_items: [
-          { type: "static_module", id: "genki_2_ch17_vocab-list" },
+          { type: "dynamic_module", id: "genki_2_ch17_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_2_ch17_nouns-1" },
           {
@@ -1073,7 +1001,6 @@ export const textbooks: TextbookCollection = {
           { type: "dynamic_module", id: "practice-sentence-tte" },
           { type: "dynamic_module", id: "practice-sentence-tara" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [],
       },
       {
@@ -1085,7 +1012,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Further vocabulary expansion with various noun groups, adjectives, and verb types (U, Ru, Irregular).",
         learning_path_items: [
-          { type: "static_module", id: "genki_2_ch18_vocab-list" },
+          { type: "dynamic_module", id: "genki_2_ch18_vocab-list" },
           // { type: "static_module", id: "grammar-notes" }
           { type: "static_module", id: "genki_2_ch18_nouns-1" },
           {
@@ -1122,7 +1049,6 @@ export const textbooks: TextbookCollection = {
           },
           { type: "dynamic_module", id: "genki_2_ch18_all-vocab-test" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [],
       },
       {
@@ -1134,7 +1060,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Review and test vocabulary from previous chapters and introduce new vocabulary related to nouns, adjectives, and verbs.",
         learning_path_items: [
-          { type: "static_module", id: "genki_2_ch19_vocab-list" },
+          { type: "dynamic_module", id: "genki_2_ch19_vocab-list" },
           { type: "static_module", id: "grammar-notes" },
           {
             type: "static_module",
@@ -1177,7 +1103,6 @@ export const textbooks: TextbookCollection = {
           { type: "dynamic_module", id: "genki_2_ch19_all-vocab-test" },
           { type: "dynamic_module", id: "practice-sentence-honorific-verbs" },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [],
       },
       {
@@ -1189,7 +1114,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Conclude Genki I with more vocabulary covering nouns, adjectives, and various verb types, and practice different expression levels.",
         learning_path_items: [
-          { type: "static_module", id: "genki_2_ch20_vocab-list" },
+          { type: "dynamic_module", id: "genki_2_ch20_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_2_ch20_nouns" },
           {
@@ -1222,7 +1147,6 @@ export const textbooks: TextbookCollection = {
             id: "practice-sentence-humble-expressions",
           },
         ],
-        vocabulary_keys: [],
         external_resource_ids: [],
       },
     ],

@@ -48,7 +48,6 @@ interface BaseDeck {
   slug: string // e.g., "chapter-1" or "my-jlpt-n5-vocab"
   title: string
   description?: string
-  vocabulary_keys: string[]
 }
 
 // A Chapter is a BaseDeck with textbook-specific learning paths
@@ -64,6 +63,7 @@ export interface UserDeck extends BaseDeck {
   deckType: "user_deck"
   owner_id: string
   is_public: boolean
+  vocabulary_keys: string[]
 }
 
 // A union type that represents any possible deck in the system
