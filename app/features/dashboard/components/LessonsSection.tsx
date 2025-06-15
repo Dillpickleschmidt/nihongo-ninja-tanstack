@@ -18,7 +18,7 @@ interface LessonsSectionProps {
 
 const SELECTOR = "[data-lessons-section]"
 const DIRECTION = "left" as const
-const ENTER_DELAY = 180 // Lessons enter after content (staggered)
+const ENTER_DELAY = 180
 
 export function LessonsSection(props: LessonsSectionProps) {
   const location = useLocation()
@@ -40,20 +40,19 @@ export function LessonsSection(props: LessonsSectionProps) {
     runAnimation()
   })
 
-  // Listen for animation triggers (like chapter changes)
   createEffect(() => {
-    animationTrigger() // Subscribe to trigger changes
+    animationTrigger()
     runAnimation()
   })
 
   return (
-    <div class="mb-3 xl:mb-4">
+    <div class="mb-3 xl:mb-0">
       <div class="flex items-center justify-between">
         <div>
-          <div class="mb-4 flex items-center justify-between pl-8 xl:mb-5 xl:pl-10">
+          <div class="mb-4 flex items-center justify-between pl-8 xl:pl-0">
             <h2 class="text-xl xl:text-2xl">Lessons</h2>
           </div>
-          <div class="mb-6 pl-8 xl:mb-7 xl:pl-10">
+          <div class="mb-6 pl-8 xl:pl-0">
             <div class="bg-card-foreground h-[0.33rem] w-48 rounded-full xl:h-[0.4rem] xl:w-52">
               <div
                 class="dark:bg-primary bg-primary/50 h-[0.33rem] rounded-full xl:h-[0.4rem]"
@@ -62,7 +61,7 @@ export function LessonsSection(props: LessonsSectionProps) {
             </div>
           </div>
         </div>
-        <ArrowRight class="mr-5 h-5 w-5 -translate-y-2 xl:mr-6 xl:h-6 xl:w-6" />
+        <ArrowRight class="mr-5 h-5 w-5 -translate-y-2 xl:mr-0" />
       </div>
 
       <Transition
@@ -81,7 +80,7 @@ export function LessonsSection(props: LessonsSectionProps) {
           <div
             data-lessons-section
             data-transition-content
-            class="scrollbar-hide flex gap-3.5 overflow-x-auto pr-4 pb-2 pl-8 xl:gap-4 xl:pr-5 xl:pl-10"
+            class="scrollbar-hide flex gap-3.5 overflow-x-auto pr-4 pb-2 pl-8 xl:grid xl:grid-cols-[repeat(auto-fill,minmax(120px,1fr))] xl:gap-4 xl:overflow-x-visible xl:p-0"
           >
             <For each={props.lessons}>
               {(lesson) => <LessonCard lesson={lesson} />}

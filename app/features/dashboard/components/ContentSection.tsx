@@ -21,7 +21,7 @@ interface ContentSectionProps {
 
 const SELECTOR = "[data-content-section]"
 const DIRECTION = "right" as const
-const ENTER_DELAY = 0 // Content enters first
+const ENTER_DELAY = 0
 
 export function ContentSection(props: ContentSectionProps) {
   const location = useLocation()
@@ -43,26 +43,25 @@ export function ContentSection(props: ContentSectionProps) {
     runAnimation()
   })
 
-  // Listen for animation triggers (like chapter changes)
   createEffect(() => {
-    animationTrigger() // Subscribe to trigger changes
+    animationTrigger()
     runAnimation()
   })
 
   return (
-    <div class="mt-6 xl:mt-7">
-      <div class="mb-4 flex items-center justify-between pl-8 xl:mb-5 xl:pl-10">
+    <div class="mt-6 xl:mt-0">
+      <div class="mb-4 flex items-center justify-between pl-8 xl:pl-0">
         <div class="flex items-end">
           <h2 class="text-xl xl:text-2xl">Content</h2>
           <p class="text-muted-foreground pb-1 pl-2 text-xs xl:pl-3 xl:text-sm">
             You Might Enjoy
           </p>
         </div>
-        <ArrowRight class="mr-5 h-5 w-5 xl:mr-6 xl:h-6 xl:w-6" />
+        <ArrowRight class="mr-5 h-5 w-5 xl:mr-0" />
       </div>
 
-      <div class="scrollbar-hide mb-5 flex gap-4 overflow-x-auto pl-8 xl:gap-5 xl:pb-2 xl:pl-10">
-        <div class="bg-background border-primary/30 flex min-w-[50px] items-center justify-center rounded-[14px] border-2 border-dashed xl:min-w-[55px] xl:rounded-[16px]">
+      <div class="scrollbar-hide mb-5 flex gap-4 overflow-x-auto pl-8 xl:grid xl:grid-cols-[repeat(auto-fill,minmax(190px,1fr))] xl:gap-5 xl:overflow-x-visible xl:p-0">
+        <div class="bg-background border-primary/30 flex min-w-[50px] items-center justify-center rounded-[14px] border-2 border-dashed xl:min-w-0 xl:rounded-[16px]">
           <Plus class="text-primary/30 h-6 w-6 xl:h-7 xl:w-7" />
         </div>
         <Transition
@@ -81,7 +80,7 @@ export function ContentSection(props: ContentSectionProps) {
             <div
               data-content-section
               data-transition-content
-              class="flex gap-4 pr-4 xl:gap-5 xl:pr-5"
+              class="flex gap-4 pr-4 xl:contents"
             >
               <For each={props.resources}>
                 {(resource, index) => {

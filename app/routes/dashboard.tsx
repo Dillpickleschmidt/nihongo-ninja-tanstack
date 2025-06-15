@@ -156,41 +156,52 @@ function RouteComponent() {
         dueFSRSCardsPromise={loaderData().dueFSRSCards}
       />
 
-      <div data-section="content">
-        <ContentSection
-          resources={loaderData().externalResources}
-          thumbnailPromises={loaderData().deferredThumbnails}
-        />
-      </div>
-
-      <div data-section="lessons">
-        <LessonsSection
-          lessons={loaderData().lessons}
-          progressPercentage={75}
-        />
-      </div>
-
-      {/* Mobile Layout */}
+      {/* Mobile Layout: Simple vertical stack */}
       <SSRMediaQuery hideFrom="xl">
         <div class="flex flex-col">
-          <StrugglesSection struggles={struggles} variant="mobile" />
-          <WordHierarchy
-            data={loaderData().wordHierarchyData}
-            variant="mobile"
+          <ContentSection
+            resources={loaderData().externalResources}
+            thumbnailPromises={loaderData().deferredThumbnails}
           />
-          <HistorySection items={historyItems} />
+          <LessonsSection
+            lessons={loaderData().lessons}
+            progressPercentage={75}
+          />
+          <div class="flex flex-col">
+            <StrugglesSection struggles={struggles} variant="mobile" />
+            <WordHierarchy
+              data={loaderData().wordHierarchyData}
+              variant="mobile"
+            />
+            <HistorySection items={historyItems} />
+          </div>
         </div>
       </SSRMediaQuery>
 
-      {/* Desktop Layout */}
+      {/* Desktop Layout: Asymmetrical 2/3 and 1/3 grid */}
       <SSRMediaQuery showFrom="xl">
-        <div class="my-6 grid grid-cols-3 gap-6 px-6">
-          <WordHierarchy
-            data={loaderData().wordHierarchyData}
-            variant="desktop"
-          />
-          <StrugglesSection struggles={struggles} variant="desktop" />
-          <HistorySection items={historyItems} />
+        <div class="my-6 grid grid-cols-[2fr_1fr] gap-8 px-8">
+          {/* Main Content Pane */}
+          <div class="flex flex-col gap-8">
+            <ContentSection
+              resources={loaderData().externalResources}
+              thumbnailPromises={loaderData().deferredThumbnails}
+            />
+            <LessonsSection
+              lessons={loaderData().lessons}
+              progressPercentage={75}
+            />
+          </div>
+
+          {/* Sidebar / Status Pane */}
+          <div class="flex flex-col gap-8">
+            <WordHierarchy
+              data={loaderData().wordHierarchyData}
+              variant="desktop"
+            />
+            <StrugglesSection struggles={struggles} variant="desktop" />
+            <HistorySection items={historyItems} />
+          </div>
         </div>
       </SSRMediaQuery>
     </div>

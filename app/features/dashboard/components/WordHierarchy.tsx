@@ -1,8 +1,15 @@
 // features/dashboard/components/WordHierarchy.tsx
 import { For, Match, Show, Switch } from "solid-js"
+import { createMediaQuery } from "@solid-primitives/media"
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import { SmoothCard } from "./SmoothCard"
+import { cn } from "@/utils/util"
 import type { FullHierarchyData, Kanji, Radical } from "@/data/wanikani/utils"
 
-type ProgressState = "learned" | "in_progress" | "not_learned"
 type WordHierarchyVariant = "mobile" | "desktop"
 
 interface WordHierarchyProps {
@@ -16,7 +23,7 @@ interface WordHierarchyProps {
  */
 export function WordHierarchy(props: WordHierarchyProps) {
   return (
-    <div class="flex flex-col gap-4 px-7">
+    <div class="flex flex-col gap-4">
       <Show when={props.variant === "desktop"}>
         <h2 class="text-xl font-semibold">Your Progress</h2>
       </Show>
@@ -52,7 +59,7 @@ export function WordHierarchy(props: WordHierarchyProps) {
 
             {/* Mobile Layout */}
             <Match when={props.variant === "mobile"}>
-              <div class="mb-8 flex flex-col gap-3">
+              <div class="mb-8 flex flex-col gap-3 px-7">
                 <div class="py-2">
                   <SummaryCircles data={data()} />
                 </div>
@@ -77,30 +84,31 @@ export function WordHierarchy(props: WordHierarchyProps) {
 
 /**
  * A shared component for rendering the three progress circles.
+ * Updated to use the new summary structure.
  */
 function SummaryCircles(props: { data: FullHierarchyData }) {
   return (
     <div class="grid grid-cols-3 gap-4">
       <ProgressCircle
         label="Vocabulary"
-        countLearned={props.data.summary.vocab.learned}
-        countInProgress={0}
+        countLearned={props.data.summary.vocab.wellKnown}
+        countInProgress={props.data.summary.vocab.learning}
         total={props.data.summary.vocab.total}
         colorLearned="text-sky-400"
         colorInProgress="text-sky-600"
       />
       <ProgressCircle
         label="Kanji"
-        countLearned={props.data.summary.kanji.learned}
-        countInProgress={props.data.summary.kanji.inProgress}
+        countLearned={props.data.summary.kanji.wellKnown}
+        countInProgress={props.data.summary.kanji.learning}
         total={props.data.summary.kanji.total}
         colorLearned="text-pink-400"
         colorInProgress="text-pink-600"
       />
       <ProgressCircle
         label="Radicals"
-        countLearned={props.data.summary.radicals.learned}
-        countInProgress={props.data.summary.radicals.inProgress}
+        countLearned={props.data.summary.radicals.wellKnown}
+        countInProgress={props.data.summary.radicals.learning}
         total={props.data.summary.radicals.total}
         colorLearned="text-teal-400"
         colorInProgress="text-teal-600"
@@ -123,7 +131,9 @@ function CharacterList(props: {
       class="flex flex-col"
       classList={{ "h-full": props.isTall && props.variant === "desktop" }}
     >
-      <h3 class="text-muted-foreground mb-3 text-sm">{props.title}</h3>
+      <h3 class="text-muted-foreground mb-3 text-sm font-semibold">
+        {props.title}
+      </h3>
       <div
         class="scrollbar-hide flex flex-wrap content-start gap-2 overflow-y-auto"
         classList={{
@@ -131,11 +141,7 @@ function CharacterList(props: {
           "flex-grow": props.isTall && props.variant === "desktop",
         }}
       >
-        <For each={props.items}>
-          {(item) => (
-            <CharBox char={item.characters} progress={item.progress} />
-          )}
-        </For>
+        <For each={props.items}>{(item) => <CharBox item={item} />}</For>
       </div>
     </div>
   )
@@ -143,6 +149,7 @@ function CharacterList(props: {
 
 /**
  * A compact circular progress indicator.
+ * The main number shows countLearned (well_known), while arcs show total progress.
  */
 function ProgressCircle(props: {
   label: string
@@ -152,7 +159,7 @@ function ProgressCircle(props: {
   colorLearned: string
   colorInProgress: string
 }) {
-  const radius = 32 // Increased from 28
+  const radius = 32
   const circumference = 2 * Math.PI * radius
 
   const progressLearned = () =>
@@ -168,31 +175,27 @@ function ProgressCircle(props: {
   return (
     <div class="flex flex-col items-center gap-1.5">
       <div class="relative h-20 w-20">
-        {" "}
-        {/* Increased from h-16 w-16 */}
         <svg class="h-full w-full" viewBox="0 0 80 80">
-          {" "}
-          {/* Increased from 70x70 */}
           <circle
             class="text-muted-foreground/10"
-            stroke-width="8" // Increased from 7
+            stroke-width="8"
             stroke="currentColor"
             fill="transparent"
             r={radius}
-            cx="40" // Increased from 35
-            cy="40" // Increased from 35
+            cx="40"
+            cy="40"
           />
           <circle
             class={props.colorInProgress}
-            stroke-width="8" // Increased from 7
+            stroke-width="8"
             stroke-dasharray={circumference}
             stroke-dashoffset={offsetTotal()}
             stroke-linecap="round"
             stroke="currentColor"
             fill="transparent"
             r={radius}
-            cx="40" // Increased from 35
-            cy="40" // Increased from 35
+            cx="40"
+            cy="40"
             style={{
               transform: "rotate(-90deg)",
               "transform-origin": "50% 50%",
@@ -201,15 +204,15 @@ function ProgressCircle(props: {
           />
           <circle
             class={props.colorLearned}
-            stroke-width="8" // Increased from 7
+            stroke-width="8"
             stroke-dasharray={circumference}
             stroke-dashoffset={offsetLearned()}
             stroke-linecap="round"
             stroke="currentColor"
             fill="transparent"
             r={radius}
-            cx="40" // Increased from 35
-            cy="40" // Increased from 35
+            cx="40"
+            cy="40"
             style={{
               transform: "rotate(-90deg)",
               "transform-origin": "50% 50%",
@@ -218,8 +221,7 @@ function ProgressCircle(props: {
           />
         </svg>
         <div class="absolute inset-0 flex flex-col items-center justify-center">
-          <span class="text-xl font-bold">{props.countLearned}</span>{" "}
-          {/* Increased from text-lg */}
+          <span class="text-xl font-bold">{props.countLearned}</span>
           <span class="text-muted-foreground text-xs">/{props.total}</span>
         </div>
       </div>
@@ -232,23 +234,65 @@ function ProgressCircle(props: {
 
 /**
  * A small, styled box for displaying a single character.
+ * Updated to use the new ProgressState values for styling.
  */
-function CharBox(props: { char: string | null; progress: ProgressState }) {
+function CharBox(props: { item: Kanji | Radical }) {
+  const isDesktop = createMediaQuery("(min-width: 1280px)")
+
   return (
-    <Show when={props.char}>
-      <div
-        class="inline-flex h-10 w-10 items-center justify-center rounded-md border text-lg font-bold transition-colors"
-        classList={{
-          "border-muted-foreground/20 bg-muted/30 text-muted-foreground":
-            props.progress === "not_learned",
-          "border-amber-400/50 bg-amber-400/10 text-amber-300":
-            props.progress === "in_progress",
-          "border-teal-400/50 bg-teal-400/10 text-teal-300":
-            props.progress === "learned",
-        }}
-      >
-        {props.char}
-      </div>
+    <Show when={props.item.characters}>
+      <Switch>
+        {/* Desktop: Use SmoothCard and wrap with HoverCard */}
+        <Match when={isDesktop()}>
+          <HoverCard openDelay={200}>
+            <HoverCardTrigger as="div">
+              <SmoothCard
+                width={40}
+                height={40}
+                cornerRadius={10}
+                class={cn(
+                  "flex items-center justify-center transition-colors",
+                  {
+                    "bg-muted/40": props.item.progress === "not_seen",
+                    "bg-amber-400/10": props.item.progress === "learning",
+                    "bg-teal-400/10": props.item.progress === "well_known",
+                  },
+                )}
+              >
+                <span
+                  class={cn("text-lg font-bold", {
+                    "text-muted-foreground": props.item.progress === "not_seen",
+                    "text-amber-300": props.item.progress === "learning",
+                    "text-teal-300": props.item.progress === "well_known",
+                  })}
+                >
+                  {props.item.characters}
+                </span>
+              </SmoothCard>
+            </HoverCardTrigger>
+            <HoverCardContent class="w-auto px-3 py-1.5 text-sm">
+              <span>{props.item.slug}</span>
+            </HoverCardContent>
+          </HoverCard>
+        </Match>
+
+        {/* Mobile: Use the original, simple div */}
+        <Match when={!isDesktop()}>
+          <div
+            class="inline-flex h-10 w-10 items-center justify-center rounded-md border text-lg font-bold transition-colors"
+            classList={{
+              "border-muted-foreground/20 bg-muted/30 text-muted-foreground":
+                props.item.progress === "not_seen",
+              "border-amber-400/50 bg-amber-400/10 text-amber-300":
+                props.item.progress === "learning",
+              "border-teal-400/50 bg-teal-400/10 text-teal-300":
+                props.item.progress === "well_known",
+            }}
+          >
+            {props.item.characters}
+          </div>
+        </Match>
+      </Switch>
     </Show>
   )
 }

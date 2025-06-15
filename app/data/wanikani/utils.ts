@@ -1,211 +1,249 @@
 // app/data/wanikani/utils.ts
 import { createServerFn } from "@tanstack/solid-start"
+import type { Database as Db } from "better-sqlite3"
 import Database from "better-sqlite3"
 import path from "node:path"
+import type {
+  FullHierarchyData,
+  HierarchySummary,
+  Kanji,
+  KanjiRadicalRelation,
+  KanjiRow,
+  ProgressState,
+  Radical,
+  RadicalRow,
+  UserProgressData,
+  VocabHierarchy,
+  VocabKanjiRelation,
+  VocabRow,
+} from "./types"
 
-// --- Type Definitions ---
+// --- Mock Data and Constants ---
 
-type ProgressState = "learned" | "in_progress" | "not_learned"
-
-export interface Radical {
-  id: number
-  characters: string | null
-  slug: string
-  progress: ProgressState
+const MOCK_USER_PROGRESS_DB: UserProgressData = {
+  vocabProgress: new Map([[8788, { stability: 50 }]]),
+  kanjiProgress: new Map([
+    [662, { stability: 100 }],
+    [701, { stability: 25 }],
+    [667, { stability: 15 }],
+  ]),
+  radicalProgress: new Map([
+    [13, { stability: 30 }],
+    [22, { stability: 21 }],
+    [36, { stability: 5 }],
+    [89, { stability: 19 }],
+  ]),
 }
 
-export interface Kanji {
-  id: number
-  characters: string
-  slug: string
-  radicals: Radical[]
-  progress: ProgressState
+const WELL_KNOWN_THRESHOLD = 21
+
+// --- Database & Data Fetching Functions ---
+
+/** Establishes and returns a connection to the SQLite database. */
+function getDbConnection(): Db {
+  const dbPath = path.join(
+    process.cwd(),
+    "app",
+    "data",
+    "wanikani",
+    "wanikani.db",
+  )
+  return new Database(dbPath, { readonly: true, fileMustExist: true })
 }
 
-export interface VocabHierarchy {
-  id: number
-  characters: string
-  slug: string
-  kanji: Kanji[]
-  learned: boolean
+/** Fetches base vocabulary items from the database by their slugs. */
+function fetchVocabulary(db: Db, slugs: string[]): VocabRow[] {
+  if (slugs.length === 0) return []
+  const placeholders = slugs.map(() => "?").join(",")
+  return db
+    .prepare(
+      `SELECT id, characters, slug FROM vocabulary WHERE slug IN (${placeholders})`,
+    )
+    .all(...slugs) as VocabRow[]
 }
 
-export interface HierarchySummary {
-  vocab: { total: number; learned: number }
-  kanji: { total: number; learned: number; inProgress: number }
-  radicals: { total: number; learned: number; inProgress: number }
+/** Fetches Kanji related to a list of vocabulary IDs. */
+function fetchRelatedKanji(db: Db, vocabIds: number[]): KanjiRow[] {
+  if (vocabIds.length === 0) return []
+  const placeholders = vocabIds.map(() => "?").join(",")
+  return db
+    .prepare(
+      `SELECT DISTINCT k.id, k.characters, k.slug FROM kanji k JOIN vocab_kanji vk ON k.id = vk.kanji_id WHERE vk.vocab_id IN (${placeholders})`,
+    )
+    .all(...vocabIds) as KanjiRow[]
 }
 
-export interface FullHierarchyData {
-  hierarchy: VocabHierarchy[]
+/** Fetches Radicals related to a list of Kanji IDs. */
+function fetchRelatedRadicals(db: Db, kanjiIds: number[]): RadicalRow[] {
+  if (kanjiIds.length === 0) return []
+  const placeholders = kanjiIds.map(() => "?").join(",")
+  return db
+    .prepare(
+      `SELECT DISTINCT r.id, r.characters, r.slug FROM radicals r JOIN kanji_radicals kr ON r.id = kr.radical_id WHERE kr.kanji_id IN (${placeholders})`,
+    )
+    .all(...kanjiIds) as RadicalRow[]
+}
+
+/** Fetches relationship data from join tables. */
+function fetchRelationships(db: Db, vocabIds: number[], kanjiIds: number[]) {
+  const vocabPlaceholders = vocabIds.map(() => "?").join(",")
+  const vocabKanjiRelations = db
+    .prepare(
+      `SELECT vocab_id, kanji_id FROM vocab_kanji WHERE vocab_id IN (${vocabPlaceholders})`,
+    )
+    .all(...vocabIds) as VocabKanjiRelation[]
+
+  let kanjiRadicalRelations: KanjiRadicalRelation[] = []
+  if (kanjiIds.length > 0) {
+    const radicalPlaceholders = kanjiIds.map(() => "?").join(",")
+    kanjiRadicalRelations = db
+      .prepare(
+        `SELECT kanji_id, radical_id FROM kanji_radicals WHERE kanji_id IN (${radicalPlaceholders})`,
+      )
+      .all(...kanjiIds) as KanjiRadicalRelation[]
+  }
+  return { vocabKanjiRelations, kanjiRadicalRelations }
+}
+
+// --- Data Processing & Assembly Functions ---
+
+/** Determines an item's progress state based on its stability. */
+function determineProgress(
+  id: number,
+  progressMap: Map<number, { stability: number }>,
+): ProgressState {
+  const card = progressMap.get(id)
+  if (!card) return "not_seen"
+  return card.stability >= WELL_KNOWN_THRESHOLD ? "well_known" : "learning"
+}
+
+/** Assembles the full data hierarchy from raw database rows and user progress. */
+function buildHierarchy(
+  vocabRows: VocabRow[],
+  kanjiRows: KanjiRow[],
+  radicalRows: RadicalRow[],
+  relations: {
+    vocabKanjiRelations: VocabKanjiRelation[]
+    kanjiRadicalRelations: KanjiRadicalRelation[]
+  },
+  progressData: UserProgressData,
+): VocabHierarchy[] {
+  const radicalsMap = new Map(
+    radicalRows.map((r) => [
+      r.id,
+      {
+        ...r,
+        progress: determineProgress(r.id, progressData.radicalProgress),
+      },
+    ]),
+  )
+
+  const kanjiMap = new Map<number, Kanji>()
+  for (const kanji of kanjiRows) {
+    kanjiMap.set(kanji.id, {
+      ...kanji,
+      radicals: [],
+      progress: determineProgress(kanji.id, progressData.kanjiProgress),
+    })
+  }
+
+  for (const rel of relations.kanjiRadicalRelations) {
+    const kanji = kanjiMap.get(rel.kanji_id)
+    const radical = radicalsMap.get(rel.radical_id)
+    if (kanji && radical) kanji.radicals.push(radical)
+  }
+
+  return vocabRows.map((vocab) => {
+    const relatedKanjiIds = relations.vocabKanjiRelations
+      .filter((r) => r.vocab_id === vocab.id)
+      .map((r) => r.kanji_id)
+    const kanji = relatedKanjiIds
+      .map((id) => kanjiMap.get(id))
+      .filter((k): k is Kanji => !!k)
+    return {
+      ...vocab,
+      kanji,
+      progress: determineProgress(vocab.id, progressData.vocabProgress),
+    }
+  })
+}
+
+/** Extracts unique Kanji and Radicals from the assembled hierarchy. */
+function extractUniqueItems(hierarchy: VocabHierarchy[]): {
   uniqueKanji: Kanji[]
   uniqueRadicals: Radical[]
-  summary: HierarchySummary
+} {
+  const uniqueKanjiMap = new Map<number, Kanji>()
+  const uniqueRadicalsMap = new Map<number, Radical>()
+  for (const vocab of hierarchy) {
+    for (const kanji of vocab.kanji) {
+      uniqueKanjiMap.set(kanji.id, kanji)
+      for (const radical of kanji.radicals) {
+        uniqueRadicalsMap.set(radical.id, radical)
+      }
+    }
+  }
+  return {
+    uniqueKanji: Array.from(uniqueKanjiMap.values()),
+    uniqueRadicals: Array.from(uniqueRadicalsMap.values()),
+  }
 }
 
-// A static set of learned/in-progress item IDs to simulate user progress.
-const MOCK_USER_PROGRESS_DB = {
-  learnedVocabIds: new Set([8788]),
-  learnedKanjiIds: new Set([662, 701]),
-  inProgressKanjiIds: new Set([667]),
-  learnedRadicalIds: new Set([13, 22, 214]),
-  inProgressRadicalIds: new Set([36, 89, 192]),
+/** Calculates summary statistics based on the processed data. */
+function calculateSummary(
+  hierarchy: VocabHierarchy[],
+  uniqueKanji: Kanji[],
+  uniqueRadicals: Radical[],
+): HierarchySummary {
+  const countProgress = (items: { progress: ProgressState }[]) => ({
+    wellKnown: items.filter((i) => i.progress === "well_known").length,
+    learning: items.filter((i) => i.progress === "learning").length,
+  })
+
+  return {
+    vocab: { total: hierarchy.length, ...countProgress(hierarchy) },
+    kanji: { total: uniqueKanji.length, ...countProgress(uniqueKanji) },
+    radicals: {
+      total: uniqueRadicals.length,
+      ...countProgress(uniqueRadicals),
+    },
+  }
 }
+
+// --- Main Server Function ---
 
 /**
  * Server Function to retrieve WaniKani hierarchy, summary, and flat lists.
- * It fetches the real structure from the DB and augments it with mock progress.
+ * It composes smaller functions to fetch, process, and assemble the data.
  */
 export const getWKVocabularyHierarchy = createServerFn({ method: "GET" })
   .validator((slugs: string[]) => slugs)
   .handler(async ({ data: slugs }): Promise<FullHierarchyData | null> => {
-    if (slugs.length === 0) {
+    if (!slugs || slugs.length === 0) {
       return null
     }
 
-    const dbPath = path.join(
-      process.cwd(),
-      "app",
-      "data",
-      "wanikani",
-      "wanikani.db",
-    )
-    const db = new Database(dbPath, { readonly: true, fileMustExist: true })
-
+    const db = getDbConnection()
     try {
-      const vocabPlaceholders = slugs.map(() => "?").join(",")
-      const vocabRows = db
-        .prepare(
-          `SELECT id, characters, slug FROM vocabulary WHERE slug IN (${vocabPlaceholders})`,
-        )
-        .all(...slugs) as { id: number; characters: string; slug: string }[]
-
+      const vocabRows = fetchVocabulary(db, slugs)
       if (vocabRows.length === 0) return null
 
       const vocabIds = vocabRows.map((v) => v.id)
-      const kanjiPlaceholders = vocabIds.map(() => "?").join(",")
-      const kanjiRows = db
-        .prepare(
-          ` SELECT DISTINCT k.id, k.characters, k.slug FROM kanji k
-            JOIN vocab_kanji vk ON k.id = vk.kanji_id WHERE vk.vocab_id IN (${kanjiPlaceholders})`,
-        )
-        .all(...vocabIds) as Omit<Kanji, "radicals" | "progress">[]
-
+      const kanjiRows = fetchRelatedKanji(db, vocabIds)
       const kanjiIds = kanjiRows.map((k) => k.id)
-      const radicalPlaceholders = kanjiIds.map(() => "?").join(",")
-      const radicalRows =
-        kanjiIds.length > 0
-          ? (db
-              .prepare(
-                ` SELECT DISTINCT r.id, r.characters, r.slug FROM radicals r
-                  JOIN kanji_radicals kr ON r.id = kr.radical_id WHERE kr.kanji_id IN (${radicalPlaceholders})`,
-              )
-              .all(...kanjiIds) as Omit<Radical, "progress">[])
-          : []
+      const radicalRows = fetchRelatedRadicals(db, kanjiIds)
+      const relations = fetchRelationships(db, vocabIds, kanjiIds)
 
-      const vocabKanjiRelations = db
-        .prepare(
-          `SELECT vocab_id, kanji_id FROM vocab_kanji WHERE vocab_id IN (${vocabPlaceholders})`,
-        )
-        .all(...vocabIds) as { vocab_id: number; kanji_id: number }[]
-      const kanjiRadicalRelations =
-        kanjiIds.length > 0
-          ? (db
-              .prepare(
-                `SELECT kanji_id, radical_id FROM kanji_radicals WHERE kanji_id IN (${radicalPlaceholders})`,
-              )
-              .all(...kanjiIds) as { kanji_id: number; radical_id: number }[])
-          : []
-
-      const getProgress = (
-        id: number,
-        learnedSet: Set<number>,
-        inProgressSet: Set<number>,
-      ): ProgressState => {
-        if (learnedSet.has(id)) return "learned"
-        if (inProgressSet.has(id)) return "in_progress"
-        return "not_learned"
-      }
-
-      const radicalsMap = new Map(
-        radicalRows.map((r) => [
-          r.id,
-          {
-            ...r,
-            progress: getProgress(
-              r.id,
-              MOCK_USER_PROGRESS_DB.learnedRadicalIds,
-              MOCK_USER_PROGRESS_DB.inProgressRadicalIds,
-            ),
-          },
-        ]),
+      const hierarchy = buildHierarchy(
+        vocabRows,
+        kanjiRows,
+        radicalRows,
+        relations,
+        MOCK_USER_PROGRESS_DB,
       )
 
-      const kanjiMap = new Map<number, Kanji>()
-      for (const kanji of kanjiRows) {
-        kanjiMap.set(kanji.id, {
-          ...kanji,
-          radicals: [],
-          progress: getProgress(
-            kanji.id,
-            MOCK_USER_PROGRESS_DB.learnedKanjiIds,
-            MOCK_USER_PROGRESS_DB.inProgressKanjiIds,
-          ),
-        })
-      }
-
-      for (const rel of kanjiRadicalRelations) {
-        const kanji = kanjiMap.get(rel.kanji_id)
-        const radical = radicalsMap.get(rel.radical_id)
-        if (kanji && radical) kanji.radicals.push(radical)
-      }
-
-      const hierarchy: VocabHierarchy[] = vocabRows.map((vocab) => {
-        const relatedKanjiIds = vocabKanjiRelations
-          .filter((r) => r.vocab_id === vocab.id)
-          .map((r) => r.kanji_id)
-        const kanji = relatedKanjiIds
-          .map((id) => kanjiMap.get(id))
-          .filter((k): k is Kanji => !!k)
-        return {
-          ...vocab,
-          kanji,
-          learned: MOCK_USER_PROGRESS_DB.learnedVocabIds.has(vocab.id),
-        }
-      })
-
-      const uniqueKanjiMap = new Map<number, Kanji>()
-      const uniqueRadicalsMap = new Map<number, Radical>()
-      for (const vocab of hierarchy) {
-        for (const kanji of vocab.kanji) {
-          uniqueKanjiMap.set(kanji.id, kanji)
-          for (const radical of kanji.radicals) {
-            uniqueRadicalsMap.set(radical.id, radical)
-          }
-        }
-      }
-      const uniqueKanji = Array.from(uniqueKanjiMap.values())
-      const uniqueRadicals = Array.from(uniqueRadicalsMap.values())
-
-      const summary: HierarchySummary = {
-        vocab: {
-          total: hierarchy.length,
-          learned: hierarchy.filter((v) => v.learned).length,
-        },
-        kanji: {
-          total: uniqueKanji.length,
-          learned: uniqueKanji.filter((k) => k.progress === "learned").length,
-          inProgress: uniqueKanji.filter((k) => k.progress === "in_progress")
-            .length,
-        },
-        radicals: {
-          total: uniqueRadicals.length,
-          learned: uniqueRadicals.filter((r) => r.progress === "learned")
-            .length,
-          inProgress: uniqueRadicals.filter((r) => r.progress === "in_progress")
-            .length,
-        },
-      }
+      const { uniqueKanji, uniqueRadicals } = extractUniqueItems(hierarchy)
+      const summary = calculateSummary(hierarchy, uniqueKanji, uniqueRadicals)
 
       return { hierarchy, uniqueKanji, uniqueRadicals, summary }
     } finally {

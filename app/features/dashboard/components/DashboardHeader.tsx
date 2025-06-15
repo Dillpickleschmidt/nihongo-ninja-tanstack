@@ -67,7 +67,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
         >
           <SelectTrigger
             aria-label="Chapter"
-            class="-mt-0.5 flex min-w-[200px] justify-center space-x-2 border-none text-center text-lg font-semibold md:text-xl xl:-mt-1 xl:text-2xl"
+            class="-mt-0.5 flex min-w-[200px] justify-center space-x-2 border-none text-center text-lg font-semibold hover:cursor-pointer md:text-xl xl:-mt-1 xl:text-2xl"
           >
             <SelectValue<string>>
               {(state) => {
