@@ -11,8 +11,10 @@ export const textbooks: TextbookCollection = {
     chapters: [
       {
         id: "genki_1_ch0",
+        slug: "chapter-0",
+        deckType: "textbook_chapter",
         chapter_number: 0,
-        title: "新しい友達 (New Friends)",
+        title: "Chapter 0",
         description:
           "Introduces basic greetings, self-introductions, and identifying people and things.",
         learning_path_items: [
@@ -129,10 +131,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_1_ch1",
+        slug: "chapter-1",
+        deckType: "textbook_chapter",
         chapter_number: 1,
-        title: "学生です (I'm a Student)", // Assuming this is the chapter title
+        title: "Chapter 1",
         description:
-          "Learn to introduce yourself, talk about your nationality and occupation, and use the particle は.", // Add a relevant description
+          "Learn to introduce yourself, talk about your nationality and occupation, and use the particle は.",
         learning_path_items: [
           { type: "static_module", id: "genki_1_ch1_vocab-list" },
           { type: "static_module", id: "grammar-notes" },
@@ -206,10 +210,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_1_ch2",
+        slug: "chapter-2",
+        deckType: "textbook_chapter",
         chapter_number: 2,
-        title: "Student", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 2",
         description:
-          "Building on introductions, learn to identify and ask about things, use particles が and も, and negate statements.", // Add a relevant description
+          "Building on introductions, learn to identify and ask about things, use particles が and も, and negate statements.",
         learning_path_items: [
           { type: "static_module", id: "genki_1_ch2_vocab-list" },
           { type: "static_module", id: "grammar-notes" },
@@ -265,10 +271,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_1_ch3",
+        slug: "chapter-3",
+        deckType: "textbook_chapter",
         chapter_number: 3,
-        title: "Going to a Party", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 3",
         description:
-          "Introduce verbs and adjectives, learn basic conjugations, and use location and direction particles.", // Add a relevant description
+          "Introduce verbs and adjectives, learn basic conjugations, and use location and direction particles.",
         learning_path_items: [
           { type: "static_module", id: "genki_1_ch3_vocab-list" },
           { type: "static_module", id: "grammar-notes" },
@@ -375,10 +383,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_1_ch4",
+        slug: "chapter-4",
+        deckType: "textbook_chapter",
         chapter_number: 4,
-        title: "My Daily Routine", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 4",
         description:
-          "Learn to talk about existence of things and people, use past tense, and connect nouns with と.", // Add a relevant description
+          "Learn to talk about existence of things and people, use past tense, and connect nouns with と.",
         learning_path_items: [
           { type: "static_module", id: "genki_1_ch4_vocab-list" },
           { type: "static_module", id: "grammar-notes" },
@@ -437,7 +447,7 @@ export const textbooks: TextbookCollection = {
           { type: "static_module", id: "takusan" },
           { type: "external_resource", id: "beginner-guide-to-konbini" },
         ],
-        vocabulary_keys: [], // Add the vocabulary keys for Chapter 4
+        vocabulary_keys: [],
         external_resource_ids: [
           "saying-no-naturally",
           "immersion-with-yuta",
@@ -446,10 +456,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_1_ch5",
+        slug: "chapter-5",
+        deckType: "textbook_chapter",
         chapter_number: 5,
-        title: "Going to See a Movie", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 5",
         description:
-          "Learn about い and な adjectives, their conjugations, and how to use them to modify nouns.", // Add a relevant description
+          "Learn about い and な adjectives, their conjugations, and how to use them to modify nouns.",
         learning_path_items: [
           { type: "static_module", id: "genki_1_ch5_vocab-list" },
           { type: "static_module", id: "grammar-notes" },
@@ -503,10 +515,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_1_ch6",
+        slug: "chapter-6",
+        deckType: "textbook_chapter",
         chapter_number: 6,
-        title: "Eating Breakfast", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 6",
         description:
-          "Learn the essential て-form of verbs, its various uses, and how to connect actions and ideas.", // Add a relevant description
+          "Learn the essential て-form of verbs, its various uses, and how to connect actions and ideas.",
         learning_path_items: [
           // {
           //   type: "static_module",
@@ -551,10 +565,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_1_ch7",
+        slug: "chapter-7",
+        deckType: "textbook_chapter",
         chapter_number: 7,
-        title: "Taking a Trip", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 7",
         description:
-          "Expand vocabulary with nouns, body parts, verbs, and adjectives, and learn about converting adjectives to adverbs.", // Add a relevant description
+          "Expand vocabulary with nouns, body parts, verbs, and adjectives, and learn about converting adjectives to adverbs.",
         learning_path_items: [
           // { type: "static_module", id: "genki_1_ch7_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
@@ -593,10 +609,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_1_ch8",
+        slug: "chapter-8",
+        deckType: "textbook_chapter",
         chapter_number: 8,
-        title: "Going to a Museum", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 8",
         description:
-          "Focus on vocabulary expansion with nouns, verbs, adjectives, and adverbs, and explore verb functionality.", // Add a relevant description
+          "Focus on vocabulary expansion with nouns, verbs, adjectives, and adverbs, and explore verb functionality.",
         learning_path_items: [
           // { type: "static_module", id: "genki_1_ch8_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
@@ -632,10 +650,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_1_ch9",
+        slug: "chapter-9",
+        deckType: "textbook_chapter",
         chapter_number: 9,
-        title: "Shopping for Clothes", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 9",
         description:
-          "Learn about various noun categories, small item counters, and continue expanding verb and adjective vocabulary.", // Add a relevant description
+          "Learn about various noun categories, small item counters, and continue expanding verb and adjective vocabulary.",
         learning_path_items: [
           // { type: "static_module", id: "genki_1_ch9_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
@@ -666,15 +686,17 @@ export const textbooks: TextbookCollection = {
           { type: "external_resource", id: "colors" },
           { type: "dynamic_module", id: "genki_1_ch9_all-vocab-test" },
         ],
-        vocabulary_keys: [], // Add the vocabulary keys for Chapter 9
+        vocabulary_keys: [],
         external_resource_ids: ["colors"],
       },
       {
         id: "genki_1_ch10",
+        slug: "chapter-10",
+        deckType: "textbook_chapter",
         chapter_number: 10,
-        title: "Making an Appointment", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 10",
         description:
-          "Continue building vocabulary with different noun groups, verbs, and explore concepts like comparing sizes and emotions.", // Add a relevant description
+          "Continue building vocabulary with different noun groups, verbs, and explore concepts like comparing sizes and emotions.",
         learning_path_items: [
           // {
           //   type: "static_module",
@@ -717,10 +739,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_1_ch11",
+        slug: "chapter-11",
+        deckType: "textbook_chapter",
         chapter_number: 11,
-        title: "Comparing Things", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 11",
         description:
-          "Delve deeper into nouns and verbs, including irregular verbs, adverbs, and occupations.", // Add a relevant description
+          "Delve deeper into nouns and verbs, including irregular verbs, adverbs, and occupations.",
         learning_path_items: [
           // {
           //   type: "static_module",
@@ -770,10 +794,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_1_ch12",
+        slug: "chapter-12",
+        deckType: "textbook_chapter",
         chapter_number: 12,
-        title: "My Trip to Okinawa", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 12",
         description:
-          "Review and expand vocabulary with more nouns, verbs, adjectives, and adverbs.", // Add a relevant description
+          "Review and expand vocabulary with more nouns, verbs, adjectives, and adverbs.",
         learning_path_items: [
           // {
           //   type: "static_module",
@@ -824,10 +850,12 @@ export const textbooks: TextbookCollection = {
     chapters: [
       {
         id: "genki_2_ch13",
+        slug: "chapter-13",
+        deckType: "textbook_chapter",
         chapter_number: 13,
-        title: "Playing a Game", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 13",
         description:
-          "Focus on vocabulary for nouns, adjectives, verbs, and day counts.", // Add a relevant description
+          "Focus on vocabulary for nouns, adjectives, verbs, and day counts.",
         learning_path_items: [
           { type: "static_module", id: "genki_2_ch13_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
@@ -862,10 +890,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_2_ch14",
+        slug: "chapter-14",
+        deckType: "textbook_chapter",
         chapter_number: 14,
-        title: "Describing Someone's Appearance", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 14",
         description:
-          "Introduce more nouns, adjectives, verbs, counters, adverbs, and other miscellaneous vocabulary.", // Add a relevant description
+          "Introduce more nouns, adjectives, verbs, counters, adverbs, and other miscellaneous vocabulary.",
         learning_path_items: [
           { type: "static_module", id: "genki_2_ch14_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
@@ -906,10 +936,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_2_ch15",
+        slug: "chapter-15",
+        deckType: "textbook_chapter",
         chapter_number: 15,
-        title: "Taking a Class", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 15",
         description:
-          "Focus on different verb types (Ichidan, Godan, Irregular) and continue expanding noun, adverb, and miscellaneous vocabulary.", // Add a relevant description
+          "Focus on different verb types (Ichidan, Godan, Irregular) and continue expanding noun, adverb, and miscellaneous vocabulary.",
         learning_path_items: [
           { type: "static_module", id: "genki_2_ch15_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
@@ -951,10 +983,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_2_ch16",
+        slug: "chapter-16",
+        deckType: "textbook_chapter",
         chapter_number: 16,
-        title: "Inviting a Friend", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 16",
         description:
-          "Introduce more nouns, adjectives, and verbs (U, Ru, Irregular), along with adverbs and other miscellaneous terms.", // Add a relevant description
+          "Introduce more nouns, adjectives, and verbs (U, Ru, Irregular), along with adverbs and other miscellaneous terms.",
         learning_path_items: [
           { type: "static_module", id: "genki_2_ch16_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
@@ -998,10 +1032,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_2_ch17",
+        slug: "chapter-17",
+        deckType: "textbook_chapter",
         chapter_number: 17,
-        title: "Talking About My Trip", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 17",
         description:
-          "Expand vocabulary with more nouns, verbs, adjectives, and adverbs, and practice new sentence patterns.", // Add a relevant description
+          "Expand vocabulary with more nouns, verbs, adjectives, and adverbs, and practice new sentence patterns.",
         learning_path_items: [
           { type: "static_module", id: "genki_2_ch17_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
@@ -1042,10 +1078,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_2_ch18",
+        slug: "chapter-18",
+        deckType: "textbook_chapter",
         chapter_number: 18,
-        title: "Comparing Experiences", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 18",
         description:
-          "Further vocabulary expansion with various noun groups, adjectives, and verb types (U, Ru, Irregular).", // Add a relevant description
+          "Further vocabulary expansion with various noun groups, adjectives, and verb types (U, Ru, Irregular).",
         learning_path_items: [
           { type: "static_module", id: "genki_2_ch18_vocab-list" },
           // { type: "static_module", id: "grammar-notes" }
@@ -1089,10 +1127,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_2_ch19",
+        slug: "chapter-19",
+        deckType: "textbook_chapter",
         chapter_number: 19,
-        title: "Looking for a Job", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 19",
         description:
-          "Review and test vocabulary from previous chapters and introduce new vocabulary related to nouns, adjectives, and verbs.", // Add a relevant description
+          "Review and test vocabulary from previous chapters and introduce new vocabulary related to nouns, adjectives, and verbs.",
         learning_path_items: [
           { type: "static_module", id: "genki_2_ch19_vocab-list" },
           { type: "static_module", id: "grammar-notes" },
@@ -1142,10 +1182,12 @@ export const textbooks: TextbookCollection = {
       },
       {
         id: "genki_2_ch20",
+        slug: "chapter-20",
+        deckType: "textbook_chapter",
         chapter_number: 20,
-        title: "Expressing Gratitude", // Assuming this is the chapter title - please replace with the actual title
+        title: "Chapter 20",
         description:
-          "Conclude Genki I with more vocabulary covering nouns, adjectives, and various verb types, and practice different expression levels.", // Add a relevant description
+          "Conclude Genki I with more vocabulary covering nouns, adjectives, and various verb types, and practice different expression levels.",
         learning_path_items: [
           { type: "static_module", id: "genki_2_ch20_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },

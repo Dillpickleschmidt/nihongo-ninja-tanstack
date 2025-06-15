@@ -3,13 +3,13 @@ import { textbooks } from "@/data/textbooks"
 import { external_resources } from "@/data/external_resources"
 import { static_modules } from "@/data/static_modules"
 import { dynamic_modules } from "@/data/dynamic_modules"
-import { parseCookieHeader } from "@supabase/ssr"
 import { isServer } from "solid-js/web"
 import type {
   TextbookIDEnum,
   ExternalResource,
   StaticModule,
   DynamicModule,
+  ChapterDeck,
 } from "@/data/types"
 
 // Cookie helper functions
@@ -22,9 +22,13 @@ function getCookie(name: string, cookieString?: string): string | null {
     return null
   } else if (cookieString) {
     // Server-side with cookie string passed in
-    const cookies = parseCookieHeader(cookieString)
-    const cookie = cookies.find((c) => c.name === name)
-    return cookie?.value || null
+    const cookies = new Map(
+      cookieString.split("; ").map((c) => {
+        const [key, ...v] = c.split("=")
+        return [key, v.join("=")]
+      }),
+    )
+    return cookies.get(name) || null
   }
   return null
 }
@@ -33,91 +37,107 @@ function setCookie(name: string, value: string, days: number = 365) {
   if (!isServer) {
     const expires = new Date()
     expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000)
-    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`
+    // Ensure the value is encoded to handle JSON string safely
+    const encodedValue = encodeURIComponent(value)
+    document.cookie = `${name}=${encodedValue};expires=${expires.toUTCString()};path=/;SameSite=Lax`
   }
 }
 
-export function getTextbookChapter(
-  textbookID: TextbookIDEnum,
-  cookieString?: string,
-): string {
-  const stored = getCookie(textbookID, cookieString)
+const ACTIVE_DECK_COOKIE_KEY = "active_deck"
 
-  if (stored) {
-    // Check if the stored chapter exists in the textbook
-    const textbookData = textbooks[textbookID]
-    const chapterExists = textbookData?.chapters.some((ch) => ch.id === stored)
-    if (chapterExists) {
-      return stored
+type ActiveDeckCookie = {
+  sourceType: "textbook" | "user"
+  sourceId: string
+  deckSlug: string
+}
+
+/**
+ * Sets the user's last active deck in a cookie.
+ */
+export function setActiveDeck(
+  sourceType: "textbook" | "user",
+  sourceId: string,
+  deckSlug: string,
+) {
+  const cookieValue: ActiveDeckCookie = { sourceType, sourceId, deckSlug }
+  setCookie(ACTIVE_DECK_COOKIE_KEY, JSON.stringify(cookieValue))
+}
+
+/**
+ * Gets the user's last active deck info from a cookie.
+ */
+export function getActiveDeckInfo(
+  cookieHeader?: string,
+): ActiveDeckCookie | null {
+  const cookieStr = getCookie(ACTIVE_DECK_COOKIE_KEY, cookieHeader)
+
+  if (!cookieStr) {
+    return null
+  }
+
+  try {
+    const decoded = decodeURIComponent(cookieStr)
+    const parsed = JSON.parse(decoded) as ActiveDeckCookie
+
+    if (
+      parsed.sourceType &&
+      parsed.sourceId &&
+      parsed.deckSlug &&
+      (parsed.sourceType === "textbook" || parsed.sourceType === "user")
+    ) {
+      return parsed
     }
+    return null
+  } catch (e) {
+    console.error("Failed to parse active deck cookie:", e)
+    return null
   }
-
-  // No valid chapter stored for this textbook, use first chapter
-  const firstChapterID = getFirstChapter(textbookID)!
-  setCookie(textbookID, firstChapterID)
-  return firstChapterID
 }
-
-export function setTextbookChapter(textbook: TextbookIDEnum, chapter: string) {
-  setCookie(textbook, chapter)
-}
-
-export function getActiveTextbook(cookieString?: string): TextbookIDEnum {
-  const stored = getCookie("active_textbook", cookieString)
-
-  if (stored && stored in textbooks) {
-    return stored as TextbookIDEnum
+/**
+ * Retrieves a specific deck (chapter) from a textbook by its slug.
+ */
+export function getDeckBySlug(
+  textbookId: TextbookIDEnum,
+  deckSlug: string,
+): ChapterDeck | undefined {
+  const textbook = textbooks[textbookId]
+  if (!textbook) {
+    return undefined
   }
-
-  // Default to genki_1 and save it
-  setCookie("active_textbook", "genki_1")
-  return "genki_1"
+  return textbook.chapters.find((chapter) => chapter.slug === deckSlug)
 }
 
-export function setActiveTextbook(textbook: TextbookIDEnum) {
-  setCookie("active_textbook", textbook)
+/**
+ * Retrieves all chapters for a given textbook.
+ */
+export function getChaptersForTextbook(
+  textbookId: TextbookIDEnum,
+): ChapterDeck[] {
+  return textbooks[textbookId]?.chapters || []
 }
 
-export function getChaptersForTextbook(textbook: TextbookIDEnum) {
-  const textbookData = textbooks[textbook]
-  if (!textbookData) return {}
-  const chapters = textbookData.chapters
-  return chapters.reduce(
-    (acc, ch) => {
-      acc[ch.id] = {
-        title: ch.title,
-        chapter_number: ch.chapter_number,
-      }
-      return acc
-    },
-    {} as Record<string, { title: string; chapter_number: number }>,
-  )
-}
+/**
+ * Retrieves the external resources for a given chapter deck.
+ */
+export function getExternalResources(deck: ChapterDeck): ExternalResource[] {
+  if (!deck.external_resource_ids) return []
 
-export function getExternalResources(
-  textbook: TextbookIDEnum,
-  chapter: string,
-): ExternalResource[] {
-  const textbookData = textbooks[textbook]
-  if (!textbookData) return []
-  const chapterData = textbookData.chapters.find((ch) => ch.id === chapter)
-  if (!chapterData || !chapterData.external_resource_ids) return []
   // Map the external resource IDs to actual external resource objects
-  return chapterData.external_resource_ids
+  return deck.external_resource_ids
     .map((id) => external_resources[id])
-    .filter(Boolean)
+    .filter((resource): resource is ExternalResource => !!resource)
 }
 
+/**
+ * Retrieves the lessons for a given chapter deck.
+ */
 export function getLessons(
-  textbook: TextbookIDEnum,
-  chapter: string,
+  deck: ChapterDeck,
 ): (StaticModule | DynamicModule)[] {
-  const textbookData = textbooks[textbook]
-  if (!textbookData) return []
-  const chapterData = textbookData.chapters.find((ch) => ch.id === chapter)
-  if (!chapterData?.learning_path_items) return []
+  if (!deck.learning_path_items) return []
+
   // Map learning path items to actual module objects
-  return chapterData.learning_path_items
+  return deck.learning_path_items
     .map((item) => {
       if (item.type === "static_module") {
         return static_modules[item.id]
@@ -126,10 +146,5 @@ export function getLessons(
       }
       return null
     })
-    .filter(Boolean) as (StaticModule | DynamicModule)[]
-}
-
-function getFirstChapter(textbook: TextbookIDEnum): string | null {
-  const textbookData = textbooks[textbook]
-  return textbookData?.chapters[0]?.id || null
+    .filter((module): module is StaticModule | DynamicModule => !!module)
 }

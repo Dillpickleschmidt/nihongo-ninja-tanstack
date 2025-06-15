@@ -20,7 +20,7 @@ export type VocabularyCollection = Record<string, VocabularyItem>
 // All vocabulary sets, keyed by their unique ID.
 export type VocabularySetCollection = Record<string, IndividualVocabularySet>
 
-// --- Textbook, Chapter, and Learning Path Types ---
+// --- Textbook and Learning Path Types ---
 
 export interface Textbook {
   id: TextbookIDEnum // this will also be the key in TextbookCollection
@@ -30,7 +30,7 @@ export interface Textbook {
   publication_year?: number
   cover_image_url?: string
   level: string
-  chapters: Chapter[]
+  chapters: ChapterDeck[]
 }
 export type TextbookIDEnum = "genki_1" | "genki_2"
 
@@ -40,15 +40,34 @@ export interface LearningPathItem {
   daily_prog_amount?: number // number of minutes counted towards daily goal
 }
 
-export interface Chapter {
-  id: string // e.g., "genki_1_ch1"
-  chapter_number: number
+// --- Deck Types ---
+
+// The absolute minimum shared by all decks
+interface BaseDeck {
+  id: string // e.g., "genki_1_ch1" or a UUID for a user deck
+  slug: string // e.g., "chapter-1" or "my-jlpt-n5-vocab"
   title: string
   description?: string
-  learning_path_items: LearningPathItem[] // Ordered sequence of modules
-  vocabulary_keys: string[] // Master list of all vocab for the chapter
-  external_resource_ids?: string[] // Master list of all external resources for the chapter
+  vocabulary_keys: string[]
 }
+
+// A Chapter is a BaseDeck with textbook-specific learning paths
+export interface ChapterDeck extends BaseDeck {
+  deckType: "textbook_chapter"
+  chapter_number: number
+  learning_path_items: LearningPathItem[]
+  external_resource_ids?: string[]
+}
+
+// A UserDeck is just a BaseDeck with user-specific metadata
+export interface UserDeck extends BaseDeck {
+  deckType: "user_deck"
+  owner_id: string
+  is_public: boolean
+}
+
+// A union type that represents any possible deck in the system
+export type Deck = ChapterDeck | UserDeck
 
 // A named set of vocabulary keys (words), for use in modules.
 export interface IndividualVocabularySet {
@@ -187,4 +206,12 @@ export type PartOfSpeech =
 export type RichVocabItem = VocabularyItem & {
   hiragana: string[] // Word converted to hiragana
   rubyText: string[] // Ruby (furigana) text components
+}
+
+// A source of decks, like a textbook or a user's collection.
+export type DeckSource = {
+  id: string // e.g., "genki_1" or a user's ID
+  name: string // e.g., "Genki I" or "My Decks"
+  type: "textbook" | "user"
+  decks: Deck[]
 }

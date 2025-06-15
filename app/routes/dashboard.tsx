@@ -6,12 +6,11 @@ import { createEffect } from "solid-js"
 import { z } from "zod"
 import { zodValidator } from "@tanstack/zod-adapter"
 import {
-  getActiveTextbook,
+  getActiveDeckInfo,
   getExternalResources,
   getLessons,
-  getChaptersForTextbook,
-  getTextbookChapter,
-  setTextbookChapter,
+  getDeckBySlug,
+  setActiveDeck,
 } from "@/data/utils/core"
 import { textbooks } from "@/data/textbooks"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
@@ -26,52 +25,127 @@ import { WordHierarchy } from "@/features/dashboard/components/WordHierarchy"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { getDueFSRSCards } from "@/features/supabase/db/utils"
 import { getWKVocabularyHierarchy } from "@/data/wanikani/utils"
+import type {
+  Deck,
+  DeckSource,
+  DynamicModule,
+  ExternalResource,
+  StaticModule,
+  TextbookIDEnum,
+} from "@/data/types"
 
-const dashboardSearchSchema = z.object({
-  chapter: z.string().optional(),
-})
+// Zod schema for search params
+const dashboardSearchSchema = z
+  .object({
+    textbook: z.string(),
+    deck: z.string(),
+    user: z.undefined().optional(),
+  })
+  .or(
+    z.object({
+      user: z.string(),
+      deck: z.string(),
+      textbook: z.undefined().optional(),
+    }),
+  )
 
 export const Route = createFileRoute("/dashboard")({
   validateSearch: zodValidator(dashboardSearchSchema),
   beforeLoad: ({ search, context }) => {
+    // If URL has valid search params, pass them to the loader.
+    if (search.textbook && search.deck) {
+      return {
+        user: context.user,
+        sourceType: "textbook",
+        sourceId: search.textbook as TextbookIDEnum,
+        deckSlug: search.deck,
+      }
+    }
+    if (search.user && search.deck) {
+      // Future-proofing for user decks
+      return {
+        user: context.user,
+        sourceType: "user",
+        sourceId: search.user,
+        deckSlug: search.deck,
+      }
+    }
+
+    // If no search params, check for a cookie to redirect the user.
     const cookieHeader = isServer
       ? getRequestHeader("Cookie") || undefined
       : undefined
+    const activeDeckInfo = getActiveDeckInfo(cookieHeader)
 
-    const currentTextbook = getActiveTextbook(cookieHeader)
-
-    if (!search.chapter) {
-      let chapterFromCookie = getTextbookChapter(currentTextbook, cookieHeader)
-
-      if (!chapterFromCookie) {
-        const textbookData = textbooks[currentTextbook]
-        chapterFromCookie = textbookData?.chapters[0]?.id || "genki_1_ch0"
-      }
+    if (activeDeckInfo) {
+      const { sourceType, sourceId, deckSlug } = activeDeckInfo
+      const searchParams =
+        sourceType === "textbook"
+          ? { textbook: sourceId, deck: deckSlug }
+          : { user: sourceId, deck: deckSlug }
 
       throw redirect({
         to: "/dashboard",
-        search: { chapter: chapterFromCookie },
+        search: searchParams,
       })
     }
 
-    return {
-      currentTextbook,
-      currentChapterID: search.chapter,
-      user: context.user,
-    }
+    // If no params and no cookie, redirect to a hardcoded default deck.
+    const defaultTextbookId = "genki_1"
+    const defaultDeckSlug = textbooks[defaultTextbookId].chapters[0].slug
+    throw redirect({
+      to: "/dashboard",
+      search: { textbook: defaultTextbookId, deck: defaultDeckSlug },
+    })
   },
   loader: async ({ context }) => {
-    const { currentTextbook, currentChapterID, user } = context
+    const { user, sourceType, sourceId, deckSlug } = context
+
+    let deck: Deck | undefined
+
+    // Fetch the deck based on its source type
+    if (sourceType === "textbook") {
+      deck = getDeckBySlug(sourceId as TextbookIDEnum, deckSlug)
+    } else if (sourceType === "user") {
+      // Future implementation for fetching user decks from a database
+      // deck = await getUserDeck(sourceId, deckSlug);
+    }
+
+    // If the deck doesn't exist (e.g., invalid slug), redirect to default.
+    if (!deck) {
+      throw redirect({
+        to: "/dashboard",
+        search: { textbook: "genki_1", deck: "chapter-0" },
+      })
+    }
+
+    let lessons: (StaticModule | DynamicModule)[] = []
+    let externalResources: ExternalResource[] = []
+
+    // Use the discriminator to get deck-specific content
+    switch (deck.deckType) {
+      case "textbook_chapter":
+        lessons = getLessons(deck)
+        externalResources = getExternalResources(deck)
+        break
+      case "user_deck":
+        // Future implementation for user decks
+        break
+    }
+
+    // Prepare the list of all available deck sources for the UI
+    const deckSources: DeckSource[] = Object.values(textbooks).map((tb) => ({
+      id: tb.id,
+      name: tb.short_name || tb.name,
+      type: "textbook",
+      decks: tb.chapters,
+    }))
+    // In the future, you would append user deck sources here.
 
     const wordHierarchyData = await getWKVocabularyHierarchy({
       data: ["勉強する", "時間", "映画"],
     })
-    const lessons = getLessons(currentTextbook, currentChapterID)
-    const currentTextbookChapters = getChaptersForTextbook(currentTextbook)
-    const externalResources = getExternalResources(
-      currentTextbook,
-      currentChapterID,
-    )
+
     const dueFSRSCardsPromise = user
       ? getDueFSRSCards(user.id)
       : Promise.resolve(null)
@@ -88,9 +162,9 @@ export const Route = createFileRoute("/dashboard")({
     })
 
     return {
+      deck,
       lessons,
-      currentChapterID,
-      currentTextbookChapters,
+      deckSources,
       externalResources,
       wordHierarchyData,
       deferredThumbnails: deferredIndividualThumbnails,
@@ -104,11 +178,13 @@ function RouteComponent() {
   const loaderData = Route.useLoaderData()
   const search = Route.useSearch()
 
+  // Update the cookie whenever the user navigates to a new deck
   createEffect(() => {
     const currentSearch = search()
-    if (currentSearch.chapter) {
-      const currentTextbook = getActiveTextbook()
-      setTextbookChapter(currentTextbook, currentSearch.chapter)
+    if (currentSearch.textbook && currentSearch.deck) {
+      setActiveDeck("textbook", currentSearch.textbook, currentSearch.deck)
+    } else if (currentSearch.user && currentSearch.deck) {
+      setActiveDeck("user", currentSearch.user, currentSearch.deck)
     }
   })
 
@@ -151,8 +227,8 @@ function RouteComponent() {
       <Background position="absolute" opacity={0.18} />
 
       <DashboardHeader
-        currentChapterID={loaderData().currentChapterID}
-        currentTextbookChapters={loaderData().currentTextbookChapters}
+        currentDeck={loaderData().deck}
+        deckSources={loaderData().deckSources}
         dueFSRSCardsPromise={loaderData().dueFSRSCards}
       />
 
