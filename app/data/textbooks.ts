@@ -513,7 +513,7 @@ export const textbooks: TextbookCollection = {
         description:
           "Expand vocabulary with nouns, body parts, verbs, and adjectives, and learn about converting adjectives to adverbs.",
         learning_path_items: [
-          { type: "dynamic_module", id: "genki_1_ch6_vocab-list" },
+          { type: "dynamic_module", id: "genki_1_ch7_vocab-list" },
           // { type: "static_module", id: "grammar-notes" },
           { type: "static_module", id: "genki_1_ch7_nouns-1" },
           {

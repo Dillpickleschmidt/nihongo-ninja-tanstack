@@ -2156,9 +2156,9 @@ export const vocabulary: VocabularyCollection = {
       'Men could use "ぼく" instead, and might even prefer "おれ" in informal settings. More on this later.',
     ],
   },
-  友だち: {
-    word: "友だち",
-    furigana: "友[とも]だち",
+  友達: {
+    word: "友達",
+    furigana: "友[とも]達[だち]",
     english: ["friend"],
     chapter: 1,
     info: [

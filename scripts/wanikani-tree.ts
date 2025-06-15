@@ -1,5 +1,6 @@
 import Database, { Database as SQLiteDB } from "better-sqlite3"
-import { writeFileSync } from "fs"
+import { writeFileSync, readFileSync, mkdirSync } from "fs"
+import { dirname } from "path"
 import "dotenv/config" // For loading .env file
 
 // --- Constants and Configuration ---
@@ -25,6 +26,24 @@ interface WaniKaniSubject {
 // --- Core Functions ---
 
 /**
+ * Reads vocabulary words from ./scripts/new-vocab.txt file.
+ * Strips quotes, commas, and spaces, then filters out empty lines.
+ */
+function readVocabFile(): string[] {
+  try {
+    const content = readFileSync("./scripts/new-vocab.txt", "utf-8")
+    return content
+      .split("\n")
+      .map((line) => line.replace(/[",\s]/g, ""))
+      .filter((line) => line.length > 0)
+  } catch (error) {
+    throw new Error(
+      "Could not read ./scripts/new-vocab.txt file. Make sure it exists.",
+    )
+  }
+}
+
+/**
  * Fetches data from a specified WaniKani API endpoint.
  */
 async function fetchFromAPI(endpoint: string) {
@@ -47,7 +66,12 @@ async function fetchFromAPI(endpoint: string) {
  * Initializes the SQLite database and creates the schema if it doesn't exist.
  */
 function initDB(): SQLiteDB {
-  const db = new Database("wanikani.db")
+  const dbPath = "./app/data/wanikani/wanikani.db"
+
+  // Ensure directory exists
+  mkdirSync(dirname(dbPath), { recursive: true })
+
+  const db = new Database(dbPath)
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS vocabulary (
@@ -173,20 +197,16 @@ export interface WaniKaniCollection {
 }
 `
 
-  writeFileSync("wanikani-types.ts", content, "utf-8")
+  const typesPath = "./app/data/wanikani/wanikani-types.ts"
+  mkdirSync(dirname(typesPath), { recursive: true })
+  writeFileSync(typesPath, content, "utf-8")
 }
 
 /**
  * Main execution function.
  */
 async function main() {
-  const words = process.argv.slice(2)
-
-  if (words.length === 0 || words[0] === "--help") {
-    console.log("Usage: bunx tsx wanikani-tree.ts <word1> [word2] [word3] ...")
-    console.log("Outputs: wanikani.db and wanikani-types.ts")
-    return
-  }
+  const generateTypesFlag = process.argv.includes("--generate-types")
 
   if (!WANIKANI_API_TOKEN) {
     throw new Error(
@@ -194,18 +214,33 @@ async function main() {
     )
   }
 
-  console.log(`Processing: ${words.join(", ")}`)
+  const words = readVocabFile()
+
+  if (words.length === 0) {
+    throw new Error("No vocabulary words found in ./scripts/new-vocab.txt")
+  }
+
+  console.log(`Processing ${words.length} words: ${words.join(", ")}`)
   const db = initDB()
 
-  // 1. Fetch initial vocabulary based on command-line arguments
+  // 1. Fetch initial vocabulary based on file contents
   console.log("Fetching vocabulary...")
   const vocabResponse = await fetchFromAPI(
     `/subjects?types=vocabulary&slugs=${words.join(",")}`,
   )
   const vocabSubjects: WaniKaniSubject[] = vocabResponse.data
+
+  // Track unmatched vocabulary for later logging (don't log here to avoid disrupting flow)
+  const matchedSlugs = new Set(vocabSubjects.map((v) => v.data.slug))
+  const unmatchedWords = words.filter((word) => !matchedSlugs.has(word))
+
   if (vocabSubjects.length === 0) {
-    throw new Error(`No vocabulary found for slugs: ${words.join(", ")}`)
+    throw new Error(
+      `No vocabulary found for any of the provided slugs: ${words.join(", ")}`,
+    )
   }
+
+  console.log(`✓ Found ${vocabSubjects.length} vocabulary words`)
 
   // 2. Collect all component Kanji IDs from the vocabulary
   const kanjiIds = new Set<number>()
@@ -250,9 +285,11 @@ async function main() {
     insertRelations(db, "kanji_radicals", kanjiSubjects)
   })()
 
-  // 7. Generate TypeScript types file
-  console.log("Generating wanikani-types.ts...")
-  generateTypes()
+  // 7. Generate TypeScript types file if requested
+  if (generateTypesFlag) {
+    console.log("Generating wanikani-types.ts...")
+    generateTypes()
+  }
 
   // 8. Show results from the database
   const results = db
@@ -273,6 +310,14 @@ async function main() {
     console.log(`  ${r.characters} → ${r.kanji_chars || "(kana only)"}`)
   })
 
+  // Log unmatched vocabulary after the dependency trees
+  if (unmatchedWords.length > 0) {
+    console.log("\nVocabulary not found:")
+    unmatchedWords.forEach((word) => {
+      console.log(`  ❌ ${word}`)
+    })
+  }
+
   const counts = {
     vocab: db.prepare("SELECT COUNT(*) as c FROM vocabulary").get() as any,
     kanji: db.prepare("SELECT COUNT(*) as c FROM kanji").get() as any,
@@ -283,7 +328,11 @@ async function main() {
     `\nTotal in DB: ${counts.vocab.c} vocab, ${counts.kanji.c} kanji, ${counts.radicals.c} radicals`,
   )
   db.close()
-  console.log("\n✓ Complete! Generated wanikani.db and wanikani-types.ts")
+
+  const completionMessage = generateTypesFlag
+    ? "\n✓ Complete! Generated ./app/data/wanikani/wanikani.db and ./app/data/wanikani/wanikani-types.ts"
+    : "\n✓ Complete! Generated ./app/data/wanikani/wanikani.db"
+  console.log(completionMessage)
 }
 
 main().catch(console.error)

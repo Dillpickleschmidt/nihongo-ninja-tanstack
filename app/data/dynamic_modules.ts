@@ -115,7 +115,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     chapter_id: "genki_1_ch1",
     title: "Chapter 1 Vocab List",
     session_type: "vocab-list",
-    vocab_set_ids: ["genki_1_ch1-vocab-list"],
+    vocab_set_ids: ["genki_1_ch1_vocab-list"],
     instructions: "Review the vocabulary for Chapter 1.",
   },
   "genki_1_ch1_practice-kanji-numbers": {
