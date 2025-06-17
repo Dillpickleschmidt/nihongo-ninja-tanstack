@@ -32,25 +32,30 @@ export default function MultipleChoiceComponent() {
     if (!card) return []
 
     const allCards = Array.from(manager().getCardMap().values())
-    const filterProp = card.practiceMode === "readings" ? "english" : "word"
 
-    // Normalize value for consistent comparison
-    const normalize = (value: string | string[]) =>
-      Array.isArray(value) ? value.sort().join("|") : String(value)
+    const getComparableValue = (c: PracticeCard) =>
+      c.validAnswers.sort().join("|")
 
-    const currentValue = normalize(card.vocab[filterProp])
+    const currentValue = getComparableValue(card)
     const seenValues = new Set([currentValue])
 
-    // Get unique wrong options (avoid duplicates)
+    // Get wrong options (with filtering logic)
     const wrongOptions = allCards
       .filter(
         (c) =>
+          // 1. Must be the same type (e.g., kanji questions only get kanji distractors).
+          c.practiceItemType === card.practiceItemType &&
+          // 2. Must be in the same practice mode.
+          c.practiceMode === card.practiceMode &&
+          // 3. Cannot be the same card.
           c.key !== card.key &&
-          !seenValues.has(normalize(c.vocab[filterProp])) &&
-          seenValues.add(normalize(c.vocab[filterProp])),
+          // 4. The answer text must be unique to avoid "seven" vs "seven".
+          !seenValues.has(getComparableValue(c)) &&
+          seenValues.add(getComparableValue(c)),
       )
       .sort(() => Math.random() - 0.5)
       .slice(0, 3)
+    // --- END OF FIX ---
 
     // Return shuffled choices
     return [card, ...wrongOptions].sort(() => Math.random() - 0.5)
@@ -114,7 +119,7 @@ export default function MultipleChoiceComponent() {
                 option={option}
                 index={index()}
                 buttonState={buttonStates[index()]}
-                isAnswered={state.isAnswered} // Read from global state
+                isAnswered={state.isAnswered}
                 onSelect={() => handleSelection(option)}
               />
             )}
@@ -132,8 +137,6 @@ function MultipleChoiceButton(props: {
   isAnswered: boolean
   onSelect: () => void
 }) {
-  const { state } = useVocabPracticeContext()
-
   const buttonClasses = () => {
     let classes =
       "font-japanese relative min-h-20 w-full flex-col items-start justify-center rounded-xl p-4 text-start text-lg shadow-md duration-75 ease-in-out hover:scale-[98.5%]"
@@ -151,13 +154,7 @@ function MultipleChoiceButton(props: {
     return classes
   }
 
-  // Conditionally determine the text to display on the button.
   const displayText = createMemo(() => {
-    if (props.option.practiceMode === "kana") {
-      // For kana mode, show only the hiragana reading.
-      return props.option.vocab.hiragana.join(", ")
-    }
-    // For readings mode, show the valid English answers.
     return props.option.validAnswers.join(", ")
   })
 

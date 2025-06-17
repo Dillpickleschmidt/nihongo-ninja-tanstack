@@ -1,3 +1,4 @@
+// vocab-practice/types.ts
 import type { RichVocabItem } from "@/data/types"
 import type { Card as FSRSCard, ReviewLog } from "ts-fsrs"
 
@@ -35,7 +36,7 @@ export type FSRSInfo = {
 
 // Unified card data for the session, with pre-processed answers
 export type PracticeCard = {
-  key: string // derived from vocab.word
+  key: string // e.g., "vocabulary:食べる" or "kanji:食"
   vocab: RichVocabItem // The core vocabulary data for display
   fsrs: FSRSInfo
   practiceMode: PracticeMode
@@ -43,13 +44,21 @@ export type PracticeCard = {
   sessionStyle: SessionCardStyle
   prompt: string // Question to display
   validAnswers: string[] // Acceptable written answers
+  /**
+   * 'module': A required item for the current learning objective or its dependencies.
+   * 'review': An optional, non-module due review card.
+   */
+  sessionScope: "module" | "review"
 }
 
-// State for the three-queue session system
+// State for the three-queue session system with dependency tracking
 export type PracticeSessionState = {
   cardMap: Map<string, PracticeCard> // All cards by key
-  moduleQueue: string[] // Keys for module cards
-  reviewQueue: string[] // Keys for due non-module cards
+  moduleQueue: string[] // Keys for unlocked, module-scope cards
+  reviewQueue: string[] // Keys for unlocked, review-scope cards
   activeQueue: string[] // Buffer of up to 10 active card keys
   isFinished: boolean
+  unlocksMap: Map<string, string[]> // Maps a prerequisite's key to an array of keys for items that depend on it.
+  dependencyMap: Map<string, string[]> // Maps a dependent item's key to an array of its remaining prerequisite keys.
+  lockedKeys: Set<string> // Cards that are currently locked and waiting for their prerequisites to be completed
 }

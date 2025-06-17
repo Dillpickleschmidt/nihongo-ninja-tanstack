@@ -146,7 +146,9 @@ export default function WriteModeComponent() {
                   </div>
                 }
               >
-                <div class="max-w-2xl text-center text-2xl leading-relaxed">
+                <div
+                  class={`max-w-2xl text-center leading-relaxed ${card().practiceMode === "kana" ? "text-2xl" : "text-xl"}`}
+                >
                   <For each={sentenceParts()}>
                     {(part) => {
                       if (part.type === "html") {
@@ -179,7 +181,9 @@ export default function WriteModeComponent() {
                             style={{
                               width: `${Math.max(
                                 4,
-                                userAnswer().length * 1.8 + 1,
+                                currentCard()?.practiceMode === "kana"
+                                  ? userAnswer().length * 1.5 + 1
+                                  : userAnswer().length,
                               )}ch`,
                             }}
                             autocomplete="off"

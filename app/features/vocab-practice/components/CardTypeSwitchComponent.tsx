@@ -29,16 +29,39 @@ export default function CardTypeSwitchComponent() {
   })
 
   return (
-    // Use a Show component to handle the case where there is no current card
     <Show when={currentCard()} fallback={<div>Loading card...</div>}>
       {(card) => (
-        <div class="w-full">
+        <div class="relative w-full">
+          <div class="absolute -top-4 -right-4 z-10 flex gap-2">
+            {/* --- ADDED: Vocabulary Badge --- */}
+            <Show when={card().practiceItemType === "vocabulary"}>
+              <span class="inline-flex items-center rounded-full bg-orange-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-orange-400 uppercase">
+                Vocabulary
+              </span>
+            </Show>
+            <Show when={card().practiceItemType === "kanji"}>
+              <span class="inline-flex items-center rounded-full bg-pink-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-pink-400 uppercase">
+                Kanji
+              </span>
+            </Show>
+            <Show when={card().practiceItemType === "radical"}>
+              <span class="inline-flex items-center rounded-full bg-blue-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-blue-400 uppercase">
+                Radical
+              </span>
+            </Show>
+          </div>
+
           <h2 class={promptClasses()}>{card().prompt}</h2>
+
           <Show when={hasMnemonic()}>
             <div class="mb-4 max-h-32 overflow-y-auto px-3 pt-3">
               <h3 class="">
                 <span
-                  class={`font-bold ${state.settings.practiceMode === "readings" ? "text-sky-400" : "text-orange-400"}`}
+                  class={`font-bold ${
+                    card().practiceMode === "readings"
+                      ? "text-sky-400"
+                      : "text-orange-400"
+                  }`}
                 >
                   Mnemonic:{" "}
                 </span>
@@ -46,6 +69,7 @@ export default function CardTypeSwitchComponent() {
               </h3>
             </div>
           </Show>
+
           <Switch>
             <Match when={card().sessionStyle === "multiple-choice"}>
               <MultipleChoiceComponent />

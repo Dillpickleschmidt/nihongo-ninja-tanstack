@@ -20,6 +20,7 @@ import type {
   VocabHierarchy,
   VocabKanjiRelation,
   VocabRow,
+  WaniKaniMeaning,
 } from "./types"
 
 const WELL_KNOWN_THRESHOLD = 21
@@ -40,43 +41,45 @@ function getDbConnection(): Db {
 function fetchVocabulary(db: Db, slugs: string[]): VocabRow[] {
   if (slugs.length === 0) return []
   const placeholders = slugs.map(() => "?").join(",")
-  const results = db
+  return db
     .prepare(
       `SELECT id, characters, slug FROM vocabulary WHERE slug IN (${placeholders})`,
     )
     .all(...slugs) as VocabRow[]
 
   // --- ADDED: Logging for missing vocabulary ---
-  if (results.length !== slugs.length) {
-    const foundSlugs = new Set(results.map((v) => v.slug))
-    for (const slug of slugs) {
-      if (!foundSlugs.has(slug)) {
-        console.warn(
-          `WaniKani DB Warning: Vocabulary slug not found: '${slug}'`,
-        )
-      }
-    }
-  }
-
-  return results
+  // if (results.length !== slugs.length) {
+  //   const foundSlugs = new Set(results.map((v) => v.slug))
+  //   for (const slug of slugs) {
+  //     if (!foundSlugs.has(slug)) {
+  //       console.warn(
+  //         `WaniKani DB Warning: Vocabulary slug not found: '${slug}'`,
+  //       )
+  //     }
+  //   }
+  // }
+  //
+  // return results
 }
 
+// --- MODIFIED: Fetch meanings along with Kanji data ---
 function fetchRelatedKanji(db: Db, vocabIds: number[]): KanjiRow[] {
   if (vocabIds.length === 0) return []
   const placeholders = vocabIds.map(() => "?").join(",")
   return db
     .prepare(
-      `SELECT DISTINCT k.id, k.characters, k.slug FROM kanji k JOIN vocab_kanji vk ON k.id = vk.kanji_id WHERE vk.vocab_id IN (${placeholders})`,
+      `SELECT DISTINCT k.id, k.characters, k.slug, k.meanings FROM kanji k JOIN vocab_kanji vk ON k.id = vk.kanji_id WHERE vk.vocab_id IN (${placeholders})`,
     )
     .all(...vocabIds) as KanjiRow[]
 }
 
+// --- MODIFIED: Fetch meanings along with Radical data ---
 function fetchRelatedRadicals(db: Db, kanjiIds: number[]): RadicalRow[] {
   if (kanjiIds.length === 0) return []
   const placeholders = kanjiIds.map(() => "?").join(",")
   return db
     .prepare(
-      `SELECT DISTINCT r.id, r.characters, r.slug FROM radicals r JOIN kanji_radicals kr ON r.id = kr.radical_id WHERE kr.kanji_id IN (${placeholders})`,
+      `SELECT DISTINCT r.id, r.characters, r.slug, r.meanings FROM radicals r JOIN kanji_radicals kr ON r.id = kr.radical_id WHERE kr.kanji_id IN (${placeholders})`,
     )
     .all(...kanjiIds) as RadicalRow[]
 }
@@ -101,6 +104,50 @@ function fetchRelationships(db: Db, vocabIds: number[], kanjiIds: number[]) {
   return { vocabKanjiRelations, kanjiRadicalRelations }
 }
 
+/**
+ * Retrieve WaniKani hierarchy, summary, and flat lists.
+ */
+function fetchStaticHierarchyFromDb(slugs: string[]) {
+  const db = getDbConnection()
+  try {
+    const vocabRows = fetchVocabulary(db, slugs)
+    if (vocabRows.length === 0) return null
+
+    const vocabIds = vocabRows.map((v) => v.id)
+    const kanjiRows = fetchRelatedKanji(db, vocabIds)
+    const kanjiIds = kanjiRows.map((k) => k.id)
+    const radicalRows = fetchRelatedRadicals(db, kanjiIds)
+    const relations = fetchRelationships(db, vocabIds, kanjiIds)
+
+    const parsedKanjiRows = kanjiRows.map((k) => {
+      const parsedMeanings = JSON.parse(k.meanings) as WaniKaniMeaning[]
+      const meaningStrings = parsedMeanings.map((m) => m.meaning)
+      return {
+        ...k,
+        meanings: meaningStrings,
+      }
+    })
+
+    const parsedRadicalRows = radicalRows.map((r) => {
+      const parsedMeanings = JSON.parse(r.meanings) as WaniKaniMeaning[]
+      const meaningStrings = parsedMeanings.map((m) => m.meaning)
+      return {
+        ...r,
+        meanings: meaningStrings,
+      }
+    })
+
+    return {
+      vocabRows,
+      kanjiRows: parsedKanjiRows,
+      radicalRows: parsedRadicalRows,
+      relations,
+    }
+  } finally {
+    db.close()
+  }
+}
+
 // --- Data Processing & Assembly Functions ---
 
 /** Determines an item's progress state using the live FSRS data map. */
@@ -120,10 +167,10 @@ function determineProgress(
 }
 
 /** Assembles the full data hierarchy from raw DB rows and live user progress. */
-function buildHierarchy(
+function buildRichHierarchy(
   vocabRows: VocabRow[],
-  kanjiRows: KanjiRow[],
-  radicalRows: RadicalRow[],
+  kanjiRows: Omit<Kanji, "radicals" | "progress">[],
+  radicalRows: Omit<Radical, "progress">[],
   relations: {
     vocabKanjiRelations: VocabKanjiRelation[]
     kanjiRadicalRelations: KanjiRadicalRelation[]
@@ -133,55 +180,32 @@ function buildHierarchy(
   const radicalsMap = new Map<number, Radical>(
     radicalRows.map((r) => [
       r.id,
+      { ...r, progress: determineProgress("radical", r.slug, progressMap) },
+    ]),
+  )
+  const kanjiMap = new Map<number, Kanji>(
+    kanjiRows.map((k) => [
+      k.id,
       {
-        ...r,
-        progress: determineProgress("radical", r.slug, progressMap),
+        ...k,
+        radicals: [],
+        progress: determineProgress("kanji", k.slug, progressMap),
       },
     ]),
   )
 
-  const kanjiMap = new Map<number, Kanji>()
-  for (const kanji of kanjiRows) {
-    kanjiMap.set(kanji.id, {
-      ...kanji,
-      radicals: [],
-      progress: determineProgress("kanji", kanji.slug, progressMap),
-    })
-  }
-
   for (const rel of relations.kanjiRadicalRelations) {
     const kanji = kanjiMap.get(rel.kanji_id)
     const radical = radicalsMap.get(rel.radical_id)
-    if (kanji && radical) {
-      kanji.radicals.push(radical)
-    } else {
-      // --- ADDED: Logging for missing radicals in relationships ---
-      if (!radical) {
-        console.warn(
-          `WaniKani DB Warning: Radical with ID ${rel.radical_id} referenced by Kanji ID ${rel.kanji_id} but not found.`,
-        )
-      }
-    }
+    if (kanji && radical) kanji.radicals.push(radical)
   }
-
   return vocabRows.map((vocab) => {
     const relatedKanjiIds = relations.vocabKanjiRelations
       .filter((r) => r.vocab_id === vocab.id)
       .map((r) => r.kanji_id)
-
-    const kanjiForVocab: Kanji[] = []
-    for (const id of relatedKanjiIds) {
-      const kanji = kanjiMap.get(id)
-      if (kanji) {
-        kanjiForVocab.push(kanji)
-      } else {
-        // --- ADDED: Logging for missing kanji in relationships ---
-        console.warn(
-          `WaniKani DB Warning: Kanji with ID ${id} linked to vocabulary '${vocab.characters}' but not found.`,
-        )
-      }
-    }
-
+    const kanjiForVocab = relatedKanjiIds
+      .map((id) => kanjiMap.get(id))
+      .filter((k): k is Kanji => !!k)
     return {
       ...vocab,
       kanji: kanjiForVocab,
@@ -216,7 +240,7 @@ function calculateSummary(
   uniqueKanji: Kanji[],
   uniqueRadicals: Radical[],
 ): HierarchySummary {
-  const countProgress = (items: { progress: ProgressState }[]) => ({
+  const countProgress = (items: { progress?: ProgressState }[]) => ({
     wellKnown: items.filter((i) => i.progress === "well_known").length,
     learning: items.filter((i) => i.progress === "learning").length,
   })
@@ -231,65 +255,77 @@ function calculateSummary(
   }
 }
 
-// --- Main Server Function ---
+// --- EXPORTED SERVER FUNCTIONS ---
 
-/**
- * Retrieve WaniKani hierarchy, summary, and flat lists.
- */
-export const getWKVocabularyHierarchy = createServerFn({ method: "GET" })
+export const getRichWKHierarchyWithProgress = createServerFn({ method: "GET" })
   .validator((slugs: string[]) => slugs)
   .handler(async ({ data: slugs }): Promise<FullHierarchyData | null> => {
     if (!slugs || slugs.length === 0) return null
-
     const userResponse = await getUser()
     if (!userResponse.user) return null
 
-    const db = getDbConnection()
-    try {
-      // 1. Fetch all related items from the local SQLite DB
-      const vocabRows = fetchVocabulary(db, slugs)
-      if (vocabRows.length === 0) return null
+    const staticData = fetchStaticHierarchyFromDb(slugs)
+    if (!staticData) return null
+    const { vocabRows, kanjiRows, radicalRows, relations } = staticData
 
-      const vocabIds = vocabRows.map((v) => v.id)
-      const kanjiRows = fetchRelatedKanji(db, vocabIds)
-      const kanjiIds = kanjiRows.map((k) => k.id)
-      const radicalRows = fetchRelatedRadicals(db, kanjiIds)
-      const relations = fetchRelationships(db, vocabIds, kanjiIds)
+    const allSlugs = new Set<string>()
+    vocabRows.forEach((v) => allSlugs.add(v.slug))
+    kanjiRows.forEach((k) => allSlugs.add(k.slug))
+    radicalRows.forEach((r) => r.slug && allSlugs.add(r.slug))
 
-      // 2. Collect all unique slugs to fetch progress for
-      const allSlugs = new Set<string>()
-      vocabRows.forEach((v) => allSlugs.add(v.slug))
-      kanjiRows.forEach((k) => allSlugs.add(k.slug))
-      radicalRows.forEach((r) => r.slug && allSlugs.add(r.slug))
+    const fsrsData = await getFSRSCardsByKeys(
+      userResponse.user.id,
+      Array.from(allSlugs),
+    )
+    const progressMap = new Map(
+      fsrsData.map((card) => [`${card.type}:${card.practice_item_key}`, card]),
+    )
 
-      // 3. Fetch live FSRS progress data from Supabase
-      const fsrsData = await getFSRSCardsByKeys(
-        userResponse.user.id,
-        Array.from(allSlugs),
-      )
+    const hierarchy = buildRichHierarchy(
+      vocabRows,
+      kanjiRows,
+      radicalRows,
+      relations,
+      progressMap,
+    )
+    const { uniqueKanji, uniqueRadicals } = extractUniqueItems(hierarchy)
+    const summary = calculateSummary(hierarchy, uniqueKanji, uniqueRadicals)
 
-      // 4. Create a performance-optimized lookup map with a composite key
-      const progressMap = new Map(
-        fsrsData.map((card) => [
-          `${card.type}:${card.practice_item_key}`,
-          card,
-        ]),
-      )
+    return { hierarchy, uniqueKanji, uniqueRadicals, summary }
+  })
 
-      // 5. Build the final hierarchy using the live progress data
-      const hierarchy = buildHierarchy(
-        vocabRows,
-        kanjiRows,
-        radicalRows,
-        relations,
-        progressMap,
-      )
+// --- MODIFIED: Pass parsed meanings into the static objects ---
+export const getStaticWKHierarchy = createServerFn({ method: "GET" })
+  .validator((slugs: string[]) => slugs)
+  .handler(async ({ data: slugs }): Promise<FullHierarchyData | null> => {
+    const staticData = fetchStaticHierarchyFromDb(slugs)
+    if (!staticData) return null
+    const { vocabRows, kanjiRows, radicalRows, relations } = staticData
 
-      const { uniqueKanji, uniqueRadicals } = extractUniqueItems(hierarchy)
-      const summary = calculateSummary(hierarchy, uniqueKanji, uniqueRadicals)
+    const kanjiMap = new Map<number, Kanji>(
+      kanjiRows.map((k) => [k.id, { ...k, radicals: [] }]),
+    )
+    const radicalsMap = new Map<number, Radical>(
+      radicalRows.map((r) => [r.id, { ...r }]),
+    )
 
-      return { hierarchy, uniqueKanji, uniqueRadicals, summary }
-    } finally {
-      db.close()
+    for (const rel of relations.kanjiRadicalRelations) {
+      const kanji = kanjiMap.get(rel.kanji_id)
+      const radical = radicalsMap.get(rel.radical_id)
+      if (kanji && radical) kanji.radicals.push(radical)
     }
+
+    const hierarchy = vocabRows.map((vocab) => {
+      const relatedKanjiIds = relations.vocabKanjiRelations
+        .filter((r) => r.vocab_id === vocab.id)
+        .map((r) => r.kanji_id)
+      const kanjiForVocab = relatedKanjiIds
+        .map((id) => kanjiMap.get(id))
+        .filter((k): k is Kanji => !!k)
+      return { ...vocab, kanji: kanjiForVocab }
+    })
+
+    const { uniqueKanji, uniqueRadicals } = extractUniqueItems(hierarchy)
+
+    return { hierarchy, uniqueKanji, uniqueRadicals }
   })

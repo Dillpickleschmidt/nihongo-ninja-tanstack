@@ -5,7 +5,8 @@ export interface Radical {
   id: number
   characters: string | null
   slug: string
-  progress: ProgressState
+  meanings: string[]
+  progress?: ProgressState
 }
 
 export interface Kanji {
@@ -13,7 +14,8 @@ export interface Kanji {
   characters: string
   slug: string
   radicals: Radical[]
-  progress: ProgressState
+  meanings: string[]
+  progress?: ProgressState
 }
 
 export interface VocabHierarchy {
@@ -21,7 +23,7 @@ export interface VocabHierarchy {
   characters: string
   slug: string
   kanji: Kanji[]
-  progress: ProgressState
+  progress?: ProgressState
 }
 
 export interface HierarchySummary {
@@ -30,17 +32,32 @@ export interface HierarchySummary {
   radicals: { total: number; wellKnown: number; learning: number }
 }
 
-// The complete data structure returned by the server function.
 export interface FullHierarchyData {
   hierarchy: VocabHierarchy[]
   uniqueKanji: Kanji[]
   uniqueRadicals: Radical[]
-  summary: HierarchySummary
+  summary?: HierarchySummary
 }
 
 // --- Raw Database Row and Relation Types ---
 export type VocabRow = { id: number; characters: string; slug: string }
-export type KanjiRow = Omit<Kanji, "radicals" | "progress">
-export type RadicalRow = Omit<Radical, "progress">
+export type KanjiRow = {
+  id: number
+  characters: string
+  slug: string
+  meanings: string
+}
+export type RadicalRow = {
+  id: number
+  characters: string | null
+  slug: string
+  meanings: string
+}
+
 export type VocabKanjiRelation = { vocab_id: number; kanji_id: number }
 export type KanjiRadicalRelation = { kanji_id: number; radical_id: number }
+
+export interface WaniKaniMeaning {
+  meaning: string
+  primary: boolean
+}

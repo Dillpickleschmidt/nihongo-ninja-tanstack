@@ -16,6 +16,10 @@ interface WaniKaniSubject {
   object: "vocabulary" | "kanji" | "radical"
   data: {
     characters: string
+    meanings: {
+      meaning: string
+      primary: boolean
+    }[]
     slug: string
     meaning_mnemonic: string
     reading_mnemonic?: string
@@ -73,17 +77,21 @@ function initDB(): SQLiteDB {
 
   const db = new Database(dbPath)
 
+  // CHANGED: Renamed 'meaning' column to 'meanings'
   db.exec(`
     CREATE TABLE IF NOT EXISTS vocabulary (
       id INTEGER PRIMARY KEY, object TEXT, characters TEXT, slug TEXT UNIQUE,
+      meanings TEXT,
       meaning_mnemonic TEXT, reading_mnemonic TEXT
     );
     CREATE TABLE IF NOT EXISTS kanji (
       id INTEGER PRIMARY KEY, object TEXT, characters TEXT, slug TEXT,
+      meanings TEXT,
       meaning_mnemonic TEXT, reading_mnemonic TEXT
     );
     CREATE TABLE IF NOT EXISTS radicals (
       id INTEGER PRIMARY KEY, object TEXT, characters TEXT, slug TEXT,
+      meanings TEXT,
       meaning_mnemonic TEXT
     );
     CREATE TABLE IF NOT EXISTS vocab_kanji (
@@ -116,21 +124,25 @@ function insertSubjects(
   if (subjects.length === 0) return
 
   const hasReading = table !== "radicals"
-  const fields = `(id, object, characters, slug, meaning_mnemonic${
+  // CHANGED: Renamed 'meaning' field to 'meanings'
+  const fields = `(id, object, characters, slug, meanings, meaning_mnemonic${
     hasReading ? ", reading_mnemonic" : ""
   })`
-  const placeholders = `(?, ?, ?, ?, ?${hasReading ? ", ?" : ""})`
+  const placeholders = `(?, ?, ?, ?, ?, ?${hasReading ? ", ?" : ""})`
 
   const stmt = db.prepare(
     `INSERT OR REPLACE INTO ${table} ${fields} VALUES ${placeholders}`,
   )
 
   for (const subject of subjects) {
+    const meaningsJSON = JSON.stringify(subject.data.meanings)
+
     const values: (string | number | null)[] = [
       subject.id,
       subject.object,
       subject.data.characters || null, // Radicals can have null characters
       subject.data.slug,
+      meaningsJSON,
       subject.data.meaning_mnemonic,
     ]
     if (hasReading) {
@@ -162,9 +174,7 @@ function insertRelations(
   )
 
   for (const subject of subjects) {
-    // First, clear out old relationships for this parent subject
     deleteStmt.run(subject.id)
-    // Then, insert the new ones
     if (subject.data.component_subject_ids) {
       for (const componentId of subject.data.component_subject_ids) {
         insertStmt.run(subject.id, componentId)
@@ -179,11 +189,17 @@ function insertRelations(
 function generateTypes() {
   const content = `// Generated WaniKani types - ${new Date().toISOString()}
 
+export interface WaniKaniMeaning {
+  meaning: string;
+  primary: boolean;
+}
+
 export interface WaniKaniSubject {
   id: number;
   object: string;
   data: {
     characters: string;
+    meanings: WaniKaniMeaning[];
     slug: string;
     meaning_mnemonic: string;
     reading_mnemonic?: string;
@@ -223,14 +239,13 @@ async function main() {
   console.log(`Processing ${words.length} words: ${words.join(", ")}`)
   const db = initDB()
 
-  // 1. Fetch initial vocabulary based on file contents
+  // 1. Fetch initial vocabulary
   console.log("Fetching vocabulary...")
   const vocabResponse = await fetchFromAPI(
     `/subjects?types=vocabulary&slugs=${words.join(",")}`,
   )
   const vocabSubjects: WaniKaniSubject[] = vocabResponse.data
 
-  // Track unmatched vocabulary for later logging (don't log here to avoid disrupting flow)
   const matchedSlugs = new Set(vocabSubjects.map((v) => v.data.slug))
   const unmatchedWords = words.filter((word) => !matchedSlugs.has(word))
 
@@ -239,16 +254,15 @@ async function main() {
       `No vocabulary found for any of the provided slugs: ${words.join(", ")}`,
     )
   }
-
   console.log(`✓ Found ${vocabSubjects.length} vocabulary words`)
 
-  // 2. Collect all component Kanji IDs from the vocabulary
+  // 2. Collect component Kanji IDs
   const kanjiIds = new Set<number>()
   vocabSubjects.forEach((v) =>
     v.data.component_subject_ids?.forEach((id) => kanjiIds.add(id)),
   )
 
-  // 3. Fetch all required Kanji in a single API call
+  // 3. Fetch Kanji
   let kanjiSubjects: WaniKaniSubject[] = []
   if (kanjiIds.size > 0) {
     console.log(`Fetching ${kanjiIds.size} kanji...`)
@@ -258,13 +272,13 @@ async function main() {
     kanjiSubjects = kanjiResponse.data
   }
 
-  // 4. Collect all component Radical IDs from the Kanji
+  // 4. Collect component Radical IDs
   const radicalIds = new Set<number>()
   kanjiSubjects.forEach((k) =>
     k.data.component_subject_ids?.forEach((id) => radicalIds.add(id)),
   )
 
-  // 5. Fetch all required Radicals in a single API call
+  // 5. Fetch Radicals
   let radicalSubjects: WaniKaniSubject[] = []
   if (radicalIds.size > 0) {
     console.log(`Fetching ${radicalIds.size} radicals...`)
@@ -274,28 +288,31 @@ async function main() {
     radicalSubjects = radicalResponse.data
   }
 
-  // 6. Insert all fetched data into the database within a single transaction
+  // 6. Insert all data
   console.log("Saving to database...")
   db.transaction(() => {
     insertSubjects(db, "vocabulary", vocabSubjects)
     insertSubjects(db, "kanji", kanjiSubjects)
     insertSubjects(db, "radicals", radicalSubjects)
-
     insertRelations(db, "vocab_kanji", vocabSubjects)
     insertRelations(db, "kanji_radicals", kanjiSubjects)
   })()
 
-  // 7. Generate TypeScript types file if requested
+  // 7. Generate types if requested
   if (generateTypesFlag) {
     console.log("Generating wanikani-types.ts...")
     generateTypes()
   }
 
   // 8. Show results from the database
+  // CHANGED: Updated query to use the 'meanings' column.
   const results = db
     .prepare(
       `
-    SELECT v.characters, GROUP_CONCAT(k.characters, '') as kanji_chars
+    SELECT
+      v.characters as vocab_chars,
+      json_extract(v.meanings, '$[0].meaning') as vocab_meaning,
+      GROUP_CONCAT(k.characters || ' (' || json_extract(k.meanings, '$[0].meaning') || ')', ', ') as kanji_components
     FROM vocabulary v
     LEFT JOIN vocab_kanji vk ON v.id = vk.vocab_id
     LEFT JOIN kanji k ON vk.kanji_id = k.id
@@ -307,10 +324,13 @@ async function main() {
 
   console.log("\nDependency Trees:")
   results.forEach((r: any) => {
-    console.log(`  ${r.characters} → ${r.kanji_chars || "(kana only)"}`)
+    console.log(
+      `  ${r.vocab_chars} (${r.vocab_meaning}) → ${
+        r.kanji_components || "(kana only)"
+      }`,
+    )
   })
 
-  // Log unmatched vocabulary after the dependency trees
   if (unmatchedWords.length > 0) {
     console.log("\nVocabulary not found:")
     unmatchedWords.forEach((word) => {

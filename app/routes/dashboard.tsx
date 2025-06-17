@@ -24,7 +24,7 @@ import { HistorySection } from "@/features/dashboard/components/HistorySection"
 import { WordHierarchy } from "@/features/dashboard/components/WordHierarchy"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { getDueFSRSCards } from "@/features/supabase/db/utils"
-import { getWKVocabularyHierarchy } from "@/data/wanikani/utils"
+import { getRichWKHierarchyWithProgress } from "@/data/wanikani/utils"
 import { getModuleVocabulary } from "@/data/utils/vocab"
 import type {
   Deck,
@@ -151,7 +151,7 @@ export const Route = createFileRoute("/dashboard")({
     }))
 
     // Use the dynamically generated list instead of a hardcoded one
-    const wordHierarchyData = await getWKVocabularyHierarchy({
+    const wordHierarchyData = await getRichWKHierarchyWithProgress({
       data: vocabForHierarchy,
     })
 

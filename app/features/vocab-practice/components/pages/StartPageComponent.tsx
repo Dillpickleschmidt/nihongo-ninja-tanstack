@@ -14,141 +14,181 @@ import DeckSettingsDialogComponent from "../DeckSettingsDialogComponent"
 import { PracticeSessionManager } from "../../logic/PracticeSessionManager"
 import { initializePracticeSession } from "../../logic/data-initialization"
 import type { FSRSCardData } from "@/features/supabase/db/utils"
-import type { RichVocabItem } from "@/data/types"
 import { vocabulary } from "@/data/vocabulary"
 import type { PracticeMode } from "../../types"
 import { addKanaAndRuby } from "@/data/utils/vocab"
+import type {
+  FullHierarchyData,
+  Kanji,
+  Radical,
+  VocabHierarchy,
+} from "@/data/wanikani/types"
 
 type PreviewItem = {
   key: string
   question: string
   answer: string
-  mode: PracticeMode
+  isReview: boolean
   type: "module" | "review"
-}
-
-function getPreviewText(vocab: RichVocabItem, mode: PracticeMode) {
-  if (mode === "kana") {
-    return {
-      question: vocab.english.join(" / "),
-      answer: vocab.hiragana.join(", "),
-    }
-  }
-  return {
-    question: vocab.word,
-    answer: vocab.english.join(", "),
-  }
+  itemType: "vocabulary" | "kanji" | "radical"
 }
 
 type StartPageProps = {
+  hierarchy: FullHierarchyData | null
   deckName: string | JSX.Element
-  newVocabulary: RichVocabItem[] | null
   moduleFSRSCards: Promise<FSRSCardData[]> | null
   dueFSRSCards: Promise<FSRSCardData[]> | null
   mode: PracticeMode | "review-only"
 }
 
-function shuffleArray<T>(array: T[]): T[] {
-  return [...array].sort(() => Math.random() - 0.5)
+// --- MODIFIED: Update the function to use the new `meanings` data ---
+function createPreviewItem(
+  // The input can now optionally include the `meanings` array.
+  input: {
+    slug: string
+    characters?: string | null
+    meanings?: string[]
+    type: "module" | "review"
+    itemType: "vocabulary" | "kanji" | "radical"
+  },
+  mode: PracticeMode | "review-only",
+  moduleFSRSMap: Map<string, FSRSCardData>,
+): PreviewItem {
+  let question = ""
+  let answer = ""
+
+  if (input.itemType === "vocabulary") {
+    const vocab = addKanaAndRuby([vocabulary[input.slug]])[0]
+    if (mode === "kana") {
+      question = vocab.english.join(", ")
+      answer = vocab.hiragana.join(", ") || vocab.word
+    } else {
+      question = vocab.word
+      answer = vocab.english.join(", ")
+    }
+  } else {
+    // This logic is for Kanji and Radicals.
+    question = input.characters || input.slug
+    // Use the authoritative `meanings` if they exist, otherwise fallback to the slug.
+    // This gracefully handles pure due reviews that might not have this data in the preview.
+    answer = input.meanings?.join(", ") || input.slug.replace(/-/g, " ")
+  }
+
+  return {
+    key: input.slug,
+    question,
+    answer,
+    isReview: input.type === "review" || moduleFSRSMap.has(input.slug),
+    type: input.type,
+    itemType: input.itemType,
+  }
 }
 
 export default function StartPageComponent(props: StartPageProps) {
-  const { state, setState } = useVocabPracticeContext()
-  const [loading, setLoading] = createSignal(false)
+  const { setState } = useVocabPracticeContext()
+  const [isStarting, setIsStarting] = createSignal(false)
 
-  const [dueCardsResource] = createResource(
+  const [moduleFSRS] = createResource(
+    () => props.moduleFSRSCards,
+    (p) => p,
+  )
+  const [dueCards] = createResource(
     () => props.dueFSRSCards,
-    (promise) => promise,
+    (p) => p,
   )
 
+  const isLoading = createMemo(() => moduleFSRS.loading || dueCards.loading)
+
   const previewItems = createMemo<PreviewItem[]>(() => {
-    // 1. Create a fast lookup map of due cards once they are loaded.
-    const dueCardMap = new Map(
-      dueCardsResource()?.map((c) => [c.practice_item_key, c]),
+    if (!props.hierarchy) return []
+
+    const filteredFSRS = (moduleFSRS() || []).filter((card) => {
+      if (props.mode === "review-only") return true
+      return card.mode === props.mode
+    })
+
+    const moduleFSRSMap = new Map(
+      filteredFSRS.map((c) => [c.practice_item_key, c]),
     )
 
-    // 2. Create the list of module items, "upgrading" them if they are also due for review.
-    const moduleItems: PreviewItem[] = (props.newVocabulary || []).map(
-      (vocab) => {
-        const isAlsoDueForReview = dueCardMap.has(vocab.word)
-        const sessionMode =
-          props.mode === "review-only" ? "readings" : props.mode
-        const { question, answer } = getPreviewText(vocab, sessionMode)
+    const seenKeys = new Set<string>()
 
-        return {
-          key: vocab.word,
-          question,
-          answer,
-          mode: sessionMode,
-          // If it's due, mark it as a review item right away.
-          type: isAlsoDueForReview ? "review" : "module",
-        }
-      },
-    )
+    // The full hierarchy items (which include the `meanings` property) are
+    // passed to `createPreviewItem`, which now knows how to use them.
+    const moduleItems = [
+      ...props.hierarchy.hierarchy.map((item) => ({
+        ...item,
+        itemType: "vocabulary" as const,
+      })),
+      ...props.hierarchy.uniqueKanji.map((item) => ({
+        ...item,
+        itemType: "kanji" as const,
+      })),
+      ...props.hierarchy.uniqueRadicals.map((item) => ({
+        ...item,
+        itemType: "radical" as const,
+      })),
+    ].map((item) => {
+      seenKeys.add(item.slug)
+      return createPreviewItem(
+        { ...item, type: "module" },
+        props.mode,
+        moduleFSRSMap,
+      )
+    })
 
-    // 3. Create a set of keys for all module items for efficient filtering.
-    const moduleKeys = new Set((props.newVocabulary || []).map((v) => v.word))
+    const reviewItems = (dueCards() || [])
+      .filter((card) => !seenKeys.has(card.practice_item_key))
+      .map((card) =>
+        createPreviewItem(
+          {
+            slug: card.practice_item_key,
+            type: "review",
+            itemType: card.type,
+            // Note: `meanings` are not passed for pure due reviews,
+            // so `createPreviewItem` will gracefully fall back to the slug.
+          },
+          props.mode,
+          moduleFSRSMap,
+        ),
+      )
 
-    // 4. Get only the "pure" review cards (those that are NOT part of the current module).
-    const pureReviewItems: PreviewItem[] = (dueCardsResource() || [])
-      .filter((cardData) => !moduleKeys.has(cardData.practice_item_key))
-      .map((cardData) => {
-        const vocab = addKanaAndRuby([
-          vocabulary[cardData.practice_item_key],
-        ])[0]
-        const { question, answer } = getPreviewText(vocab, cardData.mode)
-        return {
-          key: cardData.practice_item_key,
-          question,
-          answer,
-          mode: cardData.mode,
-          type: "review",
-        }
-      })
-
-    // 5. Combine the (potentially upgraded) module list with the pure review list.
-    return [...moduleItems, ...pureReviewItems]
+    return [...moduleItems, ...reviewItems]
   })
 
   const totalItemCount = createMemo(() => previewItems().length)
 
-  const vocabularyToPractice = createMemo(() => props.newVocabulary || [])
-
-  const preparedVocabulary = createMemo(() => {
-    if (state.settings.shuffleInput) {
-      return shuffleArray(vocabularyToPractice())
-    }
-    return vocabularyToPractice()
-  })
-
   async function handleStart() {
-    setLoading(true)
+    setIsStarting(true)
     try {
-      const [resolvedModuleCards, resolvedDueCards] = await Promise.all([
-        props.moduleFSRSCards,
-        dueCardsResource.latest,
-      ])
+      const resolvedModuleFSRS = await props.moduleFSRSCards
+      const resolvedDueCards = await props.dueFSRSCards
+
+      if (!props.hierarchy) {
+        throw new Error("Hierarchy data is not available.")
+      }
 
       const sessionModeForNewCards =
         props.mode === "review-only" ? "readings" : props.mode
 
       const initialState = initializePracticeSession(
-        preparedVocabulary(),
-        resolvedModuleCards || [],
+        props.hierarchy,
+        resolvedModuleFSRS || [],
         resolvedDueCards || [],
         sessionModeForNewCards,
         vocabulary,
       )
 
-      const isReviewOnly = props.mode === "review-only"
-      const manager = new PracticeSessionManager(initialState, isReviewOnly)
+      const manager = new PracticeSessionManager(
+        initialState,
+        props.mode === "review-only",
+      )
       setState("manager", manager)
       setState("activeQueue", manager.getActiveQueue())
     } catch (error) {
       console.error("Failed to initialize practice session:", error)
-      // Optionally, show an error message to the user
     } finally {
-      setLoading(false)
+      setIsStarting(false)
     }
   }
 
@@ -169,11 +209,15 @@ export default function StartPageComponent(props: StartPageProps) {
           </div>
         </div>
       </div>
-      <StartPageButton loading={loading()} onClick={handleStart} />
+      <StartPageButton
+        loading={isLoading() || isStarting()}
+        onClick={handleStart}
+      />
     </div>
   )
 }
 
+// ... (The rest of the components: StartPageHeader, StartPagePreviewCard, StartPageButton remain unchanged)
 function StartPageHeader(props: {
   deckName: string | JSX.Element
   previewCount: number
@@ -207,35 +251,35 @@ function StartPageHeader(props: {
 }
 
 function StartPagePreviewCard(props: { item: PreviewItem; index: number }) {
-  const questionClasses = createMemo(() => {
-    const baseClasses = "mb-3 font-bold text-orange-400 saturate-[125%]"
-    const fontSize =
-      props.item.mode === "kana" ? "text-lg lg:text-xl" : "text-xl lg:text-2xl"
-    return `${baseClasses} ${fontSize}`
-  })
-
-  const answerClasses = createMemo(() => {
-    const baseClasses = "text-primary font-bold"
-    const fontSize =
-      props.item.mode === "kana" ? "text-lg lg:text-xl" : "text-base lg:text-lg"
-    return `${baseClasses} ${fontSize}`
-  })
-
   return (
     <div class="bg-card group relative overflow-hidden rounded-xl p-5 shadow-md transition-all duration-200 hover:shadow-lg">
       <div class="flex items-start justify-between">
         <div class="flex-1">
-          <h3 class={questionClasses()}>{props.item.question}</h3>
+          <h3 class="mb-3 text-xl font-bold text-orange-400 saturate-[125%] lg:text-2xl">
+            {props.item.question}
+          </h3>
           <div class="space-y-1.5">
             <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
               Answer:
             </p>
-            <p class={answerClasses()}>{props.item.answer}</p>
+            <p class="text-primary text-base font-bold lg:text-lg">
+              {props.item.answer}
+            </p>
           </div>
         </div>
 
         <div class="flex items-center gap-3">
-          <Show when={props.item.type === "review"}>
+          <Show when={props.item.itemType === "kanji"}>
+            <span class="inline-flex items-center rounded-full bg-pink-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-pink-400 uppercase">
+              Kanji
+            </span>
+          </Show>
+          <Show when={props.item.itemType === "radical"}>
+            <span class="inline-flex items-center rounded-full bg-blue-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-blue-400 uppercase">
+              Radical
+            </span>
+          </Show>
+          <Show when={props.item.isReview}>
             <span class="inline-flex items-center rounded-full bg-amber-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-amber-500 uppercase">
               Review
             </span>
