@@ -9,7 +9,11 @@ import {
 } from "@/components/ui/text-field"
 import WanaKanaWrapper from "@/features/wanakana/WanaKana"
 import { Rating } from "ts-fsrs"
-import { getExampleSentenceParts } from "@/data/utils/vocab"
+import {
+  getExampleSentenceParts,
+  type ProcessedSentenceResult,
+} from "@/data/utils/vocab"
+import { cn } from "@/utils/util"
 
 export default function WriteModeComponent() {
   const { state, setState } = useVocabPracticeContext()
@@ -21,18 +25,23 @@ export default function WriteModeComponent() {
     return state.manager.getCardFromMap(state.activeQueue[0])
   })
 
-  const [userAnswer, setUserAnswer] = createSignal("")
+  const [userAnswers, setUserAnswers] = createSignal<string[]>([])
+  const [inputCorrectness, setInputCorrectness] = createSignal<boolean[]>([])
   const [wasCorrect, setWasCorrect] = createSignal(false)
 
-  const sentenceParts = createMemo(() => {
+  let singleInputRef: HTMLInputElement | undefined
+  const multiInputRefs: (HTMLInputElement | undefined)[] = []
+
+  const sentenceData = createMemo<ProcessedSentenceResult>(() => {
     const card = currentCard()
-    if (!card) return []
+    if (!card) return { displayParts: [], inputValidationTargets: [] }
     const exampleSentences = card.vocab.example_sentences
-    if (!exampleSentences || exampleSentences.length === 0) return []
+    if (!exampleSentences || exampleSentences.length === 0) {
+      return { displayParts: [], inputValidationTargets: [] }
+    }
 
     const partOfSpeech = card.vocab.part_of_speech
 
-    // Only show example sentences for "kana" practice mode with specific parts of speech
     if (card.practiceMode === "kana") {
       const shouldShowExampleSentence =
         !partOfSpeech ||
@@ -43,10 +52,10 @@ export default function WriteModeComponent() {
         return getExampleSentenceParts(exampleSentences[0], card.practiceMode)
       }
     }
-    return []
+    return { displayParts: [], inputValidationTargets: [] }
   })
 
-  let inputRef: HTMLInputElement | undefined
+  const displaySentenceParts = createMemo(() => sentenceData().displayParts)
 
   const answerToDisplay = createMemo(() => {
     const card = currentCard()
@@ -60,12 +69,31 @@ export default function WriteModeComponent() {
 
   createEffect(() => {
     if (currentCard()) {
-      setUserAnswer("")
+      setUserAnswers([])
+      setInputCorrectness([])
       setWasCorrect(false)
-      if (inputRef) {
-        inputRef.focus()
-        inputRef.select()
-      }
+    }
+  })
+
+  // Runs when component mounts and when currentCard changes
+  createEffect(() => {
+    const card = currentCard()
+    if (!state.isAnswered && card) {
+      setTimeout(() => {
+        if (displaySentenceParts().length === 0) {
+          // Single input mode
+          if (singleInputRef) {
+            singleInputRef.focus()
+            singleInputRef.select()
+          }
+        } else {
+          // Multiple input mode
+          if (multiInputRefs[0]) {
+            multiInputRefs[0].focus()
+            multiInputRefs[0].select()
+          }
+        }
+      }, 0)
     }
   })
 
@@ -73,13 +101,41 @@ export default function WriteModeComponent() {
     const card = currentCard()
     if (state.isAnswered || !card) return
 
-    const isCorrect = card.validAnswers.some(
-      (ans) => ans.trim().toLowerCase() === userAnswer().trim().toLowerCase(),
-    )
-    setWasCorrect(isCorrect)
-    const rating = isCorrect ? Rating.Easy : Rating.Again
+    const targets = sentenceData().inputValidationTargets
+    const answers = userAnswers()
+    let allBlanksCorrect = true
+    const newCorrectness: boolean[] = []
 
-    // Set the global state to show the "Next" button and store the rating
+    if (targets.length > 0) {
+      for (let i = 0; i < targets.length; i++) {
+        const userTypedAnswer = (answers[i] || "").trim().toLowerCase()
+        const specificTargetAnswers = targets[i]
+        const combinedValidAnswers = [
+          ...card.validAnswers,
+          ...specificTargetAnswers,
+        ]
+
+        const isThisBlankCorrect = combinedValidAnswers.some(
+          (ans) => ans.trim().toLowerCase() === userTypedAnswer,
+        )
+
+        newCorrectness[i] = isThisBlankCorrect
+        if (!isThisBlankCorrect) {
+          allBlanksCorrect = false
+        }
+      }
+      setInputCorrectness(newCorrectness)
+      setWasCorrect(allBlanksCorrect)
+    } else {
+      const isSingleAnswerCorrect = card.validAnswers.some(
+        (ans) =>
+          ans.trim().toLowerCase() === (answers[0] || "").trim().toLowerCase(),
+      )
+      setWasCorrect(isSingleAnswerCorrect)
+    }
+
+    const rating = wasCorrect() ? Rating.Easy : Rating.Again
+
     setState({
       isAnswered: true,
       lastRating: rating,
@@ -91,6 +147,18 @@ export default function WriteModeComponent() {
       e.preventDefault()
       handleSubmit()
     }
+  }
+
+  function handleSingleInputChange(value: string) {
+    setUserAnswers([value])
+  }
+
+  function handleMultiInputChange(index: number, value: string) {
+    setUserAnswers((prev) => {
+      const newArr = [...prev]
+      newArr[index] = value
+      return newArr
+    })
   }
 
   return (
@@ -109,7 +177,7 @@ export default function WriteModeComponent() {
               watch={card().key}
             >
               <Show
-                when={sentenceParts().length > 0}
+                when={displaySentenceParts().length > 0}
                 fallback={
                   <div class="space-y-4">
                     <TextField class="w-full max-w-xs">
@@ -121,32 +189,34 @@ export default function WriteModeComponent() {
                         </Show>
                       </div>
                       <TextFieldInput
-                        ref={inputRef}
+                        ref={singleInputRef}
                         type="text"
-                        value={userAnswer()}
-                        onInput={(e) => setUserAnswer(e.currentTarget.value)}
+                        value={userAnswers()[0] || ""}
+                        onInput={(e) =>
+                          handleSingleInputChange(e.currentTarget.value)
+                        }
                         onKeyDown={handleKeyDown}
-                        autofocus
                         autocomplete="off"
                         autocapitalize="none"
                         autocorrect="off"
                         disabled={state.isAnswered}
-                        class={`${
-                          state.isAnswered
-                            ? wasCorrect()
-                              ? "text-green-500"
-                              : "text-red-500"
-                            : ""
-                        } border-card-foreground text-xl font-bold opacity-100`}
+                        class={cn(
+                          "border-card-foreground text-xl font-bold opacity-100",
+                          state.isAnswered &&
+                            (wasCorrect() ? "text-green-500" : "text-red-500"),
+                        )}
                       />
                     </TextField>
                   </div>
                 }
               >
                 <div
-                  class={`max-w-2xl text-center leading-relaxed ${card().practiceMode === "kana" ? "text-2xl" : "text-xl"}`}
+                  class={cn(
+                    "max-w-2xl text-center leading-relaxed",
+                    card().practiceMode === "kana" ? "text-2xl" : "text-xl",
+                  )}
                 >
-                  <For each={sentenceParts()}>
+                  <For each={displaySentenceParts()}>
                     {(part) => {
                       if (part.type === "html") {
                         return (
@@ -159,28 +229,35 @@ export default function WriteModeComponent() {
                       return (
                         <span class="mx-1 inline-block">
                           <input
-                            ref={inputRef}
+                            ref={(el) =>
+                              (multiInputRefs[part.index] = el || undefined)
+                            }
                             type="text"
-                            value={userAnswer()}
+                            value={userAnswers()[part.index] || ""}
                             onInput={(e) =>
-                              setUserAnswer(e.currentTarget.value)
+                              handleMultiInputChange(
+                                part.index,
+                                e.currentTarget.value,
+                              )
                             }
                             onKeyDown={handleKeyDown}
                             disabled={state.isAnswered}
-                            autofocus
-                            class={`inline-block min-w-[4rem] border-b-2 border-gray-400 bg-transparent text-center font-bold outline-none focus:border-blue-500 ${
-                              state.isAnswered
-                                ? wasCorrect()
+                            // REMOVED: autofocus={part.index === 0} attribute
+                            class={cn(
+                              "inline-block min-w-[4rem] border-b-2 border-gray-400 bg-transparent text-center font-bold outline-none focus:border-blue-500",
+                              state.isAnswered &&
+                                (inputCorrectness()[part.index]
                                   ? "border-green-500 text-green-500"
-                                  : "border-red-500 text-red-500"
-                                : ""
-                            }`}
+                                  : "border-red-500 text-red-500"),
+                            )}
                             style={{
                               width: `${Math.max(
                                 4,
-                                currentCard()?.practiceMode === "kana"
-                                  ? userAnswer().length * 1.5 + 1
-                                  : userAnswer().length,
+                                card().practiceMode === "kana"
+                                  ? (userAnswers()[part.index] || "").length *
+                                      1.5 +
+                                      1
+                                  : (userAnswers()[part.index] || "").length,
                               )}ch`,
                             }}
                             autocomplete="off"

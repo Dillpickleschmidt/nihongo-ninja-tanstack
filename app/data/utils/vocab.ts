@@ -140,10 +140,18 @@ export function convertFuriganaToRubyHtml<T extends string | string[]>(
   const convert = (text: string): string => {
     if (!text) return ""
     const sizeStyle = ` style="font-size: ${furiganaSize}; user-select: none;"`
-    return text.replace(
+    // Convert furigana to ruby HTML
+    let convertedHtml = text.replace(
       /([一-龯ぁ-んァ-ン]+)\[(.+?)\]/g,
       `<ruby>$1<rp>(</rp><rt><span${sizeStyle}>$2</span></rt><rp>)</rp></ruby>`,
     )
+
+    // Strip spaces from the text, preserving tags
+    convertedHtml = convertedHtml.replace(/<[^>]+>|\s/g, (match) =>
+      match.startsWith("<") ? match : "",
+    )
+
+    return convertedHtml
   }
 
   if (Array.isArray(furigana)) {
@@ -153,32 +161,84 @@ export function convertFuriganaToRubyHtml<T extends string | string[]>(
   }
 }
 
+/**
+ * Parses a furigana string and returns both base and kana forms
+ * @param furigana - A string containing kanji with furigana in brackets (e.g., "人[ひと]", "食[た]べ 物[もの]")
+ * @returns An object with base (kanji without brackets/spaces) and kana (hiragana reading) properties
+ */
+export function parseFuriganaString(furigana: string): {
+  base: string
+  kana: string
+} {
+  // Extract base form by removing furigana brackets and spaces
+  const base = furigana.replace(/\[(.+?)\]/g, "").replace(/\s/g, "")
+
+  // Extract kana form using existing function
+  const kana = extractHiragana(furigana)
+
+  return { base, kana }
+}
+
 export type ProcessedSentencePart =
   | { type: "html"; content: string }
-  | { type: "input" }
+  | { type: "input"; index: number }
 
+export type ProcessedSentenceResult = {
+  displayParts: ProcessedSentencePart[]
+  inputValidationTargets: string[][]
+}
+
+// Updated getExampleSentenceParts function using the new helper
 export function getExampleSentenceParts(
   sentence: ExampleSentence,
   mode: PracticeMode,
-): ProcessedSentencePart[] {
+): ProcessedSentenceResult {
+  const displayParts: ProcessedSentencePart[] = []
+  const inputValidationTargets: string[][] = []
+  let inputCount = 0
+
   const parts = mode === "kana" ? sentence.japanese : sentence.english
 
-  return parts.map((part) => {
+  parts.forEach((part, index) => {
     if (typeof part === "string") {
-      const html = mode === "kana" ? convertFuriganaToRubyHtml(part) : part
-      return {
+      // If in 'kana' mode, convertFuriganaToRubyHtml will now strip spaces for us.
+      // If in 'readings' mode, the 'part' is already English and spaces should be preserved.
+      const htmlContent =
+        mode === "kana" ? convertFuriganaToRubyHtml(part) : part
+
+      displayParts.push({
         type: "html",
-        // Strips spaces only when they are outside of HTML tags.
-        content:
-          mode === "kana"
-            ? html.replace(/<[^>]+>|\s/g, (match) =>
-                match.startsWith("<") ? match : "",
-              )
-            : html,
-      }
+        content: htmlContent, // Use the potentially modified content
+      })
     } else {
-      // Mark the target word's location for the input field.
-      return { type: "input" }
+      // This is the target word's location for the input field.
+      displayParts.push({ type: "input", index: inputCount })
+
+      // Extract the validation targets from the JAPANESE side of the example sentence.
+      const japaneseTargetPart = sentence.japanese[index]
+
+      if (
+        typeof japaneseTargetPart !== "string" &&
+        japaneseTargetPart &&
+        japaneseTargetPart.t
+      ) {
+        // Use the new parseFuriganaString helper
+        const { base, kana } = parseFuriganaString(japaneseTargetPart.t)
+
+        // Use a Set to ensure unique values
+        const targets = new Set<string>()
+        targets.add(base)
+        if (base !== kana) {
+          targets.add(kana)
+        }
+        inputValidationTargets.push(Array.from(targets))
+      } else {
+        // Fallback for missing target (should ideally not happen if structure is consistent)
+        inputValidationTargets.push([])
+      }
+      inputCount++
     }
   })
+
+  return { displayParts, inputValidationTargets }
 }
