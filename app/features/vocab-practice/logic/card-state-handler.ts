@@ -35,7 +35,7 @@ export function handleCardAnswer(
       }
       break
     case "write":
-      sessionStyle = grade === Rating.Easy ? "done" : "multiple-choice"
+      sessionStyle = grade === Rating.Good ? "done" : "multiple-choice"
       break
     case "flashcard":
       sessionStyle = grade === Rating.Again ? "multiple-choice" : "flashcard"

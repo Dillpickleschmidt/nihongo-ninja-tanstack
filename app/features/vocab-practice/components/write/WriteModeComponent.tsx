@@ -134,7 +134,7 @@ export default function WriteModeComponent() {
       setWasCorrect(isSingleAnswerCorrect)
     }
 
-    const rating = wasCorrect() ? Rating.Easy : Rating.Again
+    const rating = wasCorrect() ? Rating.Good : Rating.Again
 
     setState({
       isAnswered: true,

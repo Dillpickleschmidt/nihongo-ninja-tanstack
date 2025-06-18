@@ -192,7 +192,7 @@ describe("PracticeSessionManager", () => {
               const key = "vocabulary:単語1"
               const originalCard = defaultState.cardMap.get(key)!
               let updatedCard = handleCardAnswer(originalCard, Rating.Good) // -> write
-              updatedCard = handleCardAnswer(updatedCard, Rating.Easy) // -> done
+              updatedCard = handleCardAnswer(updatedCard, Rating.Good) // -> done
               return { key, originalCard, updatedCard }
             },
             expect: (result: any, key: string) => {
@@ -322,7 +322,7 @@ describe("PracticeSessionManager", () => {
           currentCard.sessionStyle === "write"
         ) {
           const activeSize = manager.getActiveQueue().length
-          await manager.processAnswer(Rating.Easy, false) // Complete write stage
+          await manager.processAnswer(Rating.Good, false) // Complete write stage
 
           // Card should be removed completely
           expect(manager.getActiveQueue().length).toBeLessThan(activeSize)
@@ -360,7 +360,7 @@ describe("PracticeSessionManager", () => {
       })
       const standardManager = new PracticeSessionManager(standardState)
 
-      await standardManager.processAnswer(Rating.Easy) // Complete last module card
+      await standardManager.processAnswer(Rating.Good) // Complete last module card
       expect(standardManager.isFinished()).toBe(true)
 
       // Review-only mode: finish when all cards are done
@@ -509,7 +509,7 @@ describe("PracticeSessionManager", () => {
           currentCard.key === "radical:r1" &&
           currentCard.sessionStyle === "write"
         ) {
-          await manager.processAnswer(Rating.Easy, false) // -> done
+          await manager.processAnswer(Rating.Good, false) // -> done
           break
         } else {
           await manager.processAnswer(Rating.Good, false)

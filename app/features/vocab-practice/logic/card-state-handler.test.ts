@@ -84,9 +84,9 @@ describe("Card State Handler", () => {
   })
 
   describe("when initial style is 'write'", () => {
-    it("should transition to 'done' on a correct answer (Easy)", () => {
+    it("should transition to 'done' on a correct answer (Good)", () => {
       const initialCard = createMockPracticeCard("write")
-      const updatedCard = handleCardAnswer(initialCard, Rating.Easy)
+      const updatedCard = handleCardAnswer(initialCard, Rating.Good)
 
       expect(updatedCard.sessionStyle).toBe("done")
       expect(updatedCard.fsrs.card.stability).not.toBe(
@@ -108,7 +108,7 @@ describe("Card State Handler", () => {
 
     it("should revert to 'multiple-choice' on other ratings (Good, Hard)", () => {
       const initialCard = createMockPracticeCard("write")
-      const updatedCard = handleCardAnswer(initialCard, Rating.Good)
+      const updatedCard = handleCardAnswer(initialCard, Rating.Hard) // Keep this as Hard to test 'other ratings'
 
       expect(updatedCard.sessionStyle).toBe("multiple-choice")
       expect(updatedCard.fsrs.card.stability).not.toBe(
@@ -188,7 +188,7 @@ describe("Card State Handler", () => {
 
       // Simulate a sequence of correct answers to graduate the card
       card = handleCardAnswer(card, Rating.Good) // Now 'write'
-      card = handleCardAnswer(card, Rating.Easy) // Now 'done'
+      card = handleCardAnswer(card, Rating.Good) // Now 'done'
 
       // After enough correct ratings, the card should be scheduled for review
       expect(card.fsrs.card.state).toBe(State.Review)
@@ -204,7 +204,7 @@ describe("Card State Handler", () => {
       expect(updatedCard.fsrs.logs).toHaveLength(1)
 
       // Second answer
-      updatedCard = handleCardAnswer(updatedCard, Rating.Easy)
+      updatedCard = handleCardAnswer(updatedCard, Rating.Good)
       expect(updatedCard.fsrs.logs).toHaveLength(2)
     })
   })
