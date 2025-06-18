@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { useVocabPracticeContext } from "../context/VocabPracticeContext"
 import { Label } from "@/components/ui/label"
+import { Show } from "solid-js"
 
 type DeckSettingsDialogProps = {
   children: JSX.Element
@@ -23,6 +24,10 @@ export default function DeckSettingsDialogComponent(
 ) {
   const { state, setState } = useVocabPracticeContext()
   const [open, setOpen] = createSignal(false)
+
+  // Default values for the toggles
+  const DEFAULT_FLIP_VOCAB_QA = false
+  const DEFAULT_FLIP_KANJI_RADICAL_QA = true
 
   const handleOkClick = () => {
     setOpen(false)
@@ -45,8 +50,50 @@ export default function DeckSettingsDialogComponent(
               onChange={(isChecked) =>
                 setState("settings", "shuffleInput", isChecked)
               }
+              id="shuffle-input"
             />
-            <Label>Shuffle</Label>
+            <Label for="shuffle-input">Shuffle answer choices</Label>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <Checkbox
+              checked={state.settings.flipVocabQA}
+              onChange={(isChecked) =>
+                setState("settings", "flipVocabQA", isChecked)
+              }
+              id="flip-vocab-qa"
+            />
+            <Label for="flip-vocab-qa" class="flex items-center gap-2">
+              Flip Vocabulary Q/A
+              <Show when={state.settings.flipVocabQA !== DEFAULT_FLIP_VOCAB_QA}>
+                <span class="text-muted-foreground text-xs italic">
+                  (Default: {DEFAULT_FLIP_VOCAB_QA ? "On" : "Off"})
+                </span>
+              </Show>
+            </Label>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <Checkbox
+              checked={state.settings.flipKanjiRadicalQA}
+              onChange={(isChecked) =>
+                setState("settings", "flipKanjiRadicalQA", isChecked)
+              }
+              id="flip-kanji-radical-qa"
+            />
+            <Label for="flip-kanji-radical-qa" class="flex items-center gap-2">
+              Flip Kanji/Radical Q/A
+              <Show
+                when={
+                  state.settings.flipKanjiRadicalQA !==
+                  DEFAULT_FLIP_KANJI_RADICAL_QA
+                }
+              >
+                <span class="text-muted-foreground text-xs italic">
+                  (Default: {DEFAULT_FLIP_KANJI_RADICAL_QA ? "On" : "Off"})
+                </span>
+              </Show>
+            </Label>
           </div>
         </div>
         <DialogFooter>

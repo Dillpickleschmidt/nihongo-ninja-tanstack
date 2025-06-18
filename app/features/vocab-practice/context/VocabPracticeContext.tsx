@@ -2,7 +2,7 @@
 import { createContext, JSX, useContext, createEffect } from "solid-js"
 import { createStore, SetStoreFunction } from "solid-js/store"
 import { PracticeSessionManager } from "../logic/PracticeSessionManager"
-import type { Settings, CurrentPage, PracticeMode } from "../types"
+import type { Settings, CurrentPage } from "../types"
 import { Rating } from "ts-fsrs"
 
 // --- LOCAL TYPE DEFINITIONS FOR THE CONTEXT ---
@@ -45,6 +45,8 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     settings: {
       shuffleInput: true,
       enabledAnswerCategories: [],
+      flipVocabQA: false,
+      flipKanjiRadicalQA: true,
     },
   })
 

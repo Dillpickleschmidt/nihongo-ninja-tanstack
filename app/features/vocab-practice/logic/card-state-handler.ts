@@ -20,7 +20,19 @@ export function handleCardAnswer(
   let sessionStyle = card.sessionStyle
   switch (card.sessionStyle) {
     case "multiple-choice":
-      sessionStyle = grade === Rating.Good ? "write" : "multiple-choice"
+      // Conditional logic based on practiceItemType
+      if (grade === Rating.Good) {
+        if (
+          card.practiceItemType === "kanji" ||
+          card.practiceItemType === "radical"
+        ) {
+          sessionStyle = "flashcard"
+        } else {
+          sessionStyle = "write"
+        }
+      } else {
+        sessionStyle = "multiple-choice"
+      }
       break
     case "write":
       sessionStyle = grade === Rating.Easy ? "done" : "multiple-choice"

@@ -17,12 +17,7 @@ import type { FSRSCardData } from "@/features/supabase/db/utils"
 import { vocabulary } from "@/data/vocabulary"
 import type { PracticeMode } from "../../types"
 import { addKanaAndRuby } from "@/data/utils/vocab"
-import type {
-  FullHierarchyData,
-  Kanji,
-  Radical,
-  VocabHierarchy,
-} from "@/data/wanikani/types"
+import type { FullHierarchyData } from "@/data/wanikani/types"
 
 type PreviewItem = {
   key: string
@@ -31,6 +26,8 @@ type PreviewItem = {
   isDue: boolean
   type: "module" | "review"
   itemType: "vocabulary" | "kanji" | "radical"
+  isQuestionJapanese: boolean
+  isAnswerJapanese: boolean
   due?: Date // Added: Due date for review items
 }
 
@@ -51,26 +48,65 @@ function createPreviewItem(
     itemType: "vocabulary" | "kanji" | "radical"
   },
   mode: PracticeMode | "review-only",
-  fsrsCardData?: FSRSCardData, // Added: Optional FSRSCardData for due date
+  fsrsCardData?: FSRSCardData,
+  flipVocabQA: boolean = false,
+  flipKanjiRadicalQA: boolean = false,
 ): PreviewItem {
   let question = ""
   let answer = ""
+  let isQJapanese = false
+  let isAJapanese = false
 
   if (input.itemType === "vocabulary") {
     const vocab = addKanaAndRuby([vocabulary[input.slug]])[0]
     if (mode === "kana") {
-      question = vocab.english.join(", ")
-      answer = vocab.hiragana.join(", ") || vocab.word
+      if (flipVocabQA) {
+        // Flipped: Question is kana, Answer is English
+        question = vocab.hiragana.join(", ") || vocab.word
+        answer = vocab.english.join(", ")
+        isQJapanese = true
+        isAJapanese = false
+      } else {
+        // Original: Question is English, Answer is kana
+        question = vocab.english.join(", ")
+        answer = vocab.hiragana.join(", ") || vocab.word
+        isQJapanese = false
+        isAJapanese = true
+      }
     } else {
-      question = vocab.word
-      answer = vocab.english.join(", ")
+      // 'readings' mode
+      if (flipVocabQA) {
+        // Flipped: Question is English, Answer is word
+        question = vocab.english.join(", ")
+        answer = vocab.word
+        isQJapanese = false
+        isAJapanese = true
+      } else {
+        // Original: Question is word, Answer is English
+        question = vocab.word
+        answer = vocab.english.join(", ")
+        isQJapanese = true
+        isAJapanese = false
+      }
     }
   } else {
     // This logic is for Kanji and Radicals.
-    question = input.characters || input.slug
-    // Use the authoritative `meanings` if they exist, otherwise fallback to the slug.
-    // This gracefully handles pure due reviews that might not have this data in the preview.
-    answer = input.meanings?.join(", ") || input.slug.replace(/-/g, " ")
+    const character = input.characters || input.slug
+    const meanings = input.meanings?.join(", ") ?? ""
+
+    if (flipKanjiRadicalQA) {
+      // Flipped: Question is meanings, Answer is character
+      question = meanings
+      answer = character
+      isQJapanese = false
+      isAJapanese = true
+    } else {
+      // Original: Question is character, Answer is meanings
+      question = character
+      answer = meanings
+      isQJapanese = true
+      isAJapanese = false
+    }
   }
 
   return {
@@ -82,12 +118,14 @@ function createPreviewItem(
       : false,
     type: input.type,
     itemType: input.itemType,
-    due: fsrsCardData?.fsrs_card.due, // Populated from fsrsCardData
+    isQuestionJapanese: isQJapanese,
+    isAnswerJapanese: isAJapanese,
+    due: fsrsCardData?.fsrs_card.due,
   }
 }
 
 export default function StartPageComponent(props: StartPageProps) {
-  const { setState } = useVocabPracticeContext()
+  const { setState, state } = useVocabPracticeContext()
   const [isStarting, setIsStarting] = createSignal(false)
 
   const [moduleFSRS] = createResource(
@@ -100,6 +138,9 @@ export default function StartPageComponent(props: StartPageProps) {
   )
 
   const isLoading = createMemo(() => moduleFSRS.loading || dueCards.loading)
+
+  const flipVocabQA = createMemo(() => state.settings.flipVocabQA)
+  const flipKanjiRadicalQA = createMemo(() => state.settings.flipKanjiRadicalQA)
 
   const previewItems = createMemo<PreviewItem[]>(() => {
     if (!props.hierarchy) return []
@@ -115,8 +156,7 @@ export default function StartPageComponent(props: StartPageProps) {
 
     const seenKeys = new Set<string>()
 
-    // The full hierarchy items (which include the `meanings` property) are
-    // passed to `createPreviewItem`, which now knows how to use them.
+    // Pass full hierarchy data
     const moduleItems = [
       ...props.hierarchy.hierarchy.map((item) => ({
         ...item,
@@ -135,7 +175,9 @@ export default function StartPageComponent(props: StartPageProps) {
       return createPreviewItem(
         { ...item, type: "module" },
         props.mode,
-        moduleFSRSMap.get(item.slug), // Pass FSRSCardData if available for module item (e.g. for initial state)
+        moduleFSRSMap.get(item.slug),
+        flipVocabQA(),
+        flipKanjiRadicalQA(),
       )
     })
 
@@ -147,7 +189,7 @@ export default function StartPageComponent(props: StartPageProps) {
           type: "module" | "review"
           itemType: "vocabulary" | "kanji" | "radical"
           characters?: string | null
-          meanings?: string[] // Though often undefined for direct FSRS cards
+          meanings?: string[] // Though undefined for direct FSRS cards
         } = {
           slug: card.practice_item_key,
           type: "review",
@@ -163,6 +205,8 @@ export default function StartPageComponent(props: StartPageProps) {
           itemProps,
           props.mode,
           card, // Pass the full FSRSCardData to get the `due` date
+          flipVocabQA(),
+          flipKanjiRadicalQA(),
         )
       })
 
@@ -181,7 +225,7 @@ export default function StartPageComponent(props: StartPageProps) {
         throw new Error("Hierarchy data is not available.")
       }
 
-      const sessionModeForNewCards =
+      const sessionModeForNewCards = // Doesn't matter for review-only mode, anyway
         props.mode === "review-only" ? "readings" : props.mode
 
       const initialState = await initializePracticeSession(
@@ -190,6 +234,8 @@ export default function StartPageComponent(props: StartPageProps) {
         resolvedDueCards || [],
         sessionModeForNewCards,
         vocabulary,
+        state.settings.flipVocabQA,
+        state.settings.flipKanjiRadicalQA,
       )
 
       const manager = new PracticeSessionManager(
@@ -263,18 +309,35 @@ function StartPageHeader(props: {
 }
 
 function StartPagePreviewCard(props: { item: PreviewItem; index: number }) {
+  const questionTextClass = createMemo(() => ({
+    // If Japanese, make it larger
+    "text-xl lg:text-2xl": props.item.isQuestionJapanese,
+    // If English, keep it smaller
+    "text-lg lg:text-xl": !props.item.isQuestionJapanese,
+  }))
+
+  const answerTextClass = createMemo(() => ({
+    // If Japanese, make it larger
+    "text-xl lg:text-2xl": props.item.isAnswerJapanese,
+    // If English, keep it smaller
+    "text-base lg:text-lg": !props.item.isAnswerJapanese,
+  }))
+
   return (
     <div class="bg-card group relative overflow-hidden rounded-xl p-5 shadow-md transition-all duration-200 hover:shadow-lg">
       <div class="flex items-start justify-between">
         <div class="flex-1">
-          <h3 class="mb-3 text-xl font-bold text-orange-400 saturate-[125%] lg:text-2xl">
+          <h3
+            class="mb-3 font-bold text-orange-400 saturate-[125%]"
+            classList={questionTextClass()}
+          >
             {props.item.question}
           </h3>
           <div class="space-y-1.5">
             <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
               Answer:
             </p>
-            <p class="text-primary text-base font-bold lg:text-lg">
+            <p class="text-primary font-bold" classList={answerTextClass()}>
               {props.item.answer}
             </p>
           </div>

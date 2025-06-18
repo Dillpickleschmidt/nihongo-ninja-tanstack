@@ -25,10 +25,12 @@ import {
  */
 function createPracticeCard(
   item: VocabHierarchy | Kanji | Radical,
-  type: "vocabulary" | "kanji" | "radical",
+  type: DBPracticeItemType,
   fsrsData: FSRSCardData | null,
   sessionPracticeMode: PracticeMode,
   globalVocabCollection: VocabularyCollection,
+  flipVocabQA: boolean,
+  flipKanjiRadicalQA: boolean,
 ): PracticeCard {
   const key = `${type}:${item.slug}`
   const existingFSRS = fsrsData?.fsrs_card
@@ -40,19 +42,24 @@ function createPracticeCard(
   }
 
   let vocabItem: VocabularyItem
+  let characterForKanjiRadical: string = ""
+  let meaningsForKanjiRadical: string[] = []
 
   if (type === "vocabulary") {
     // For vocabulary, the source of truth is the global collection.
     vocabItem = globalVocabCollection[item.slug]
   } else {
-    // For Kanji and Radicals, we construct a temporary vocab-like item.
-    // The key is to use the `meanings` property from the typed `item`.
+    // For Kanji and Radicals, construct a temporary vocab-like item.
     const typedItem = item as Kanji | Radical
+    characterForKanjiRadical = typedItem.characters || typedItem.slug // TODO: Fix to use img (definitely not the slug)
+    meaningsForKanjiRadical = typedItem.meanings
+
+    // Create a pseudo-vocabItem for Kanji/Radical for consistent `addKanaAndRuby`
     vocabItem = {
-      word: typedItem.characters || typedItem.slug,
-      furigana: typedItem.characters || typedItem.slug,
-      english: typedItem.meanings,
-      chapter: 0,
+      word: characterForKanjiRadical,
+      furigana: characterForKanjiRadical,
+      english: meaningsForKanjiRadical,
+      chapter: 0, // Placeholder TODO: remove
     }
   }
 
@@ -61,22 +68,48 @@ function createPracticeCard(
   let prompt: string
   let validAnswers: string[]
 
-  if (practiceMode === "readings") {
-    prompt = richVocab.word
-    validAnswers = [...richVocab.english]
+  if (type === "vocabulary") {
+    if (practiceMode === "readings") {
+      if (flipVocabQA) {
+        // Flipped: English prompt, Japanese word answer
+        prompt = richVocab.english.join(", ")
+        validAnswers = [richVocab.word]
+      } else {
+        // Original: Japanese word prompt, English answer
+        prompt = richVocab.word
+        validAnswers = [...richVocab.english]
+      }
+    } else {
+      // "kana" mode
+      if (flipVocabQA) {
+        // Flipped: Hiragana/Kana prompt, English answer
+        prompt = richVocab.hiragana.join(", ") || richVocab.word
+        validAnswers = [...richVocab.english]
+      } else {
+        // Original: English prompt, Hiragana/Kana answer
+        prompt = richVocab.english.join(", ")
+        const answers = new Set([...richVocab.hiragana])
+        validAnswers = Array.from(answers)
+      }
+    }
   } else {
-    // "kana" mode
-    prompt = richVocab.english.join(", ")
-    // --- FIXED: Only include hiragana, not the original word which might be kanji ---
-    const answers = new Set([...richVocab.hiragana])
-    validAnswers = Array.from(answers)
+    // Logic for Kanji and Radicals
+    if (flipKanjiRadicalQA) {
+      // Flipped: Meanings prompt, Character answer
+      prompt = meaningsForKanjiRadical.join(", ")
+      validAnswers = [characterForKanjiRadical]
+    } else {
+      // Original: Character prompt, Meanings answer
+      prompt = characterForKanjiRadical
+      validAnswers = meaningsForKanjiRadical
+    }
   }
 
   let sessionStyle: "multiple-choice" | "flashcard" | "write" =
     "multiple-choice"
   if (fsrsInfo.card.state === State.Review) {
     // Core vocab in review state is still part of the main lesson.
-    if (type === "vocabulary") {
+    if (type === "vocabulary" && !flipVocabQA) {
       sessionStyle = "multiple-choice"
     } else {
       // Dependencies or due reviews in review state should be quick flashcards.
@@ -106,6 +139,8 @@ export async function initializePracticeSession(
   allDueFSRSCards: FSRSCardData[],
   sessionPracticeMode: PracticeMode,
   globalVocabCollection: VocabularyCollection,
+  flipVocabQA: boolean,
+  flipKanjiRadicalQA: boolean,
 ): Promise<PracticeSessionState> {
   const cardMap = new Map<string, PracticeCard>()
   const dependencyMap = new Map<string, string[]>()
@@ -141,6 +176,8 @@ export async function initializePracticeSession(
       fsrsData,
       sessionPracticeMode,
       globalVocabCollection,
+      flipVocabQA,
+      flipKanjiRadicalQA,
     )
     cardMap.set(key, card)
   })
@@ -150,14 +187,16 @@ export async function initializePracticeSession(
     (card) => !cardMap.has(`${card.type}:${card.practice_item_key}`),
   )
 
-  // --- MODIFIED: Use for...of loop to handle async fetching ---
+  // --- Use for...of loop to handle async fetching ---
   for (const fsrsData of pureDueReviewCards) {
     const key = `${fsrsData.type}:${fsrsData.practice_item_key}`
     if (cardMap.has(key)) continue
 
     let itemToPass: VocabHierarchy | Kanji | Radical | null = null
 
-    if (fsrsData.type === "vocabulary") {
+    const itemType: DBPracticeItemType = fsrsData.type
+
+    if (itemType === "vocabulary") {
       const vocabItem = globalVocabCollection[fsrsData.practice_item_key]
       if (!vocabItem) {
         console.warn(
@@ -166,12 +205,12 @@ export async function initializePracticeSession(
         continue
       }
       itemToPass = {
-        id: 0,
+        id: 0, // Placeholder ID
         characters: vocabItem.word,
         slug: vocabItem.word,
-        kanji: [],
+        kanji: [], // Placeholder
       }
-    } else if (fsrsData.type === "kanji") {
+    } else if (itemType === "kanji") {
       itemToPass = await getKanjiDetailsBySlug({
         data: fsrsData.practice_item_key,
       })
@@ -181,7 +220,7 @@ export async function initializePracticeSession(
         )
         continue
       }
-    } else if (fsrsData.type === "radical") {
+    } else if (itemType === "radical") {
       itemToPass = await getRadicalDetailsBySlug({
         data: fsrsData.practice_item_key,
       })
@@ -197,10 +236,12 @@ export async function initializePracticeSession(
 
     const reviewCard = createPracticeCard(
       itemToPass,
-      fsrsData.type,
+      itemType,
       fsrsData,
       fsrsData.mode,
       globalVocabCollection,
+      flipVocabQA,
+      flipKanjiRadicalQA,
     )
     reviewCard.sessionScope = "review"
     reviewCard.sessionStyle = "flashcard"
@@ -217,13 +258,14 @@ export async function initializePracticeSession(
 
     const prerequisites =
       type === "vocabulary"
-        ? (item as VocabHierarchy).kanji
+        ? (item as VocabHierarchy & { _originalType: DBPracticeItemType }).kanji
         : type === "kanji"
-          ? (item as Kanji).radicals
+          ? (item as Kanji & { _originalType: DBPracticeItemType }).radicals
           : []
 
     prerequisites.forEach((prereq) => {
-      const prereqType = "radicals" in prereq ? "kanji" : "radical"
+      const prereqType: DBPracticeItemType =
+        "radicals" in (prereq as Kanji) ? "kanji" : "radical" // Cast to Kanji for safe property access
       const prereqKey = `${prereqType}:${prereq.slug}`
       const prereqCard = cardMap.get(prereqKey)
 
