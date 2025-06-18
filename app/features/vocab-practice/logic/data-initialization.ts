@@ -15,6 +15,10 @@ import type {
   Radical,
   VocabHierarchy,
 } from "@/data/wanikani/types"
+import {
+  getKanjiDetailsBySlug,
+  getRadicalDetailsBySlug,
+} from "@/data/wanikani/utils"
 
 /**
  * Creates a unified PracticeCard from various data sources.
@@ -47,7 +51,7 @@ function createPracticeCard(
     vocabItem = {
       word: typedItem.characters || typedItem.slug,
       furigana: typedItem.characters || typedItem.slug,
-      english: typedItem.meanings, // Use the authoritative meanings.
+      english: typedItem.meanings,
       chapter: 0,
     }
   }
@@ -61,8 +65,10 @@ function createPracticeCard(
     prompt = richVocab.word
     validAnswers = [...richVocab.english]
   } else {
+    // "kana" mode
     prompt = richVocab.english.join(", ")
-    const answers = new Set([...richVocab.hiragana, richVocab.word])
+    // --- FIXED: Only include hiragana, not the original word which might be kanji ---
+    const answers = new Set([...richVocab.hiragana])
     validAnswers = Array.from(answers)
   }
 
@@ -72,9 +78,8 @@ function createPracticeCard(
     // Core vocab in review state is still part of the main lesson.
     if (type === "vocabulary") {
       sessionStyle = "multiple-choice"
-    }
-    // Dependencies or due reviews in review state should be quick flashcards.
-    else {
+    } else {
+      // Dependencies or due reviews in review state should be quick flashcards.
       sessionStyle = "flashcard"
     }
   }
@@ -83,10 +88,10 @@ function createPracticeCard(
     key,
     vocab: richVocab,
     fsrs: fsrsInfo,
-    sessionScope: "module", // Default scope for hierarchy items
+    sessionScope: "module",
     practiceMode,
     practiceItemType: type,
-    sessionStyle, // Use the new determined style
+    sessionStyle,
     prompt,
     validAnswers,
   }
@@ -95,13 +100,13 @@ function createPracticeCard(
 /**
  * Initializes a practice session from hierarchical data and separate due reviews.
  */
-export function initializePracticeSession(
+export async function initializePracticeSession(
   hierarchy: FullHierarchyData,
   moduleFSRSCards: FSRSCardData[],
   allDueFSRSCards: FSRSCardData[],
   sessionPracticeMode: PracticeMode,
   globalVocabCollection: VocabularyCollection,
-): PracticeSessionState {
+): Promise<PracticeSessionState> {
   const cardMap = new Map<string, PracticeCard>()
   const dependencyMap = new Map<string, string[]>()
   const unlocksMap = new Map<string, string[]>()
@@ -124,7 +129,6 @@ export function initializePracticeSession(
   ]
 
   // --- Phase 1: Create All Cards (No Dependencies Yet) ---
-  // The createPracticeCard function now correctly sets the initial sessionStyle.
   allHierarchyItems.forEach((item) => {
     const type =
       "kanji" in item ? "vocabulary" : "radicals" in item ? "kanji" : "radical"
@@ -143,30 +147,67 @@ export function initializePracticeSession(
 
   // --- Phase 2: Process Standalone Due Reviews ---
   const pureDueReviewCards = allDueFSRSCards.filter(
-    (card) => !moduleFSRSMap.has(card.practice_item_key),
+    (card) => !cardMap.has(`${card.type}:${card.practice_item_key}`),
   )
 
-  pureDueReviewCards.forEach((fsrsData) => {
+  // --- MODIFIED: Use for...of loop to handle async fetching ---
+  for (const fsrsData of pureDueReviewCards) {
     const key = `${fsrsData.type}:${fsrsData.practice_item_key}`
-    if (cardMap.has(key)) return
+    if (cardMap.has(key)) continue
 
-    const vocab = globalVocabCollection[fsrsData.practice_item_key]
-    const richVocab = addKanaAndRuby([vocab])[0]
+    let itemToPass: VocabHierarchy | Kanji | Radical | null = null
 
-    const reviewCard: PracticeCard = {
-      key,
-      vocab: richVocab,
-      fsrs: { card: fsrsData.fsrs_card, logs: fsrsData.fsrs_logs || [] },
-      sessionScope: "review",
-      practiceMode: fsrsData.mode,
-      practiceItemType: fsrsData.type,
-      sessionStyle: "flashcard", // Due reviews are always flashcards
-      prompt: richVocab.word,
-      validAnswers: [...richVocab.english],
+    if (fsrsData.type === "vocabulary") {
+      const vocabItem = globalVocabCollection[fsrsData.practice_item_key]
+      if (!vocabItem) {
+        console.warn(
+          `Missing vocabulary data for due review key: ${fsrsData.practice_item_key}. Skipping card.`,
+        )
+        continue
+      }
+      itemToPass = {
+        id: 0,
+        characters: vocabItem.word,
+        slug: vocabItem.word,
+        kanji: [],
+      }
+    } else if (fsrsData.type === "kanji") {
+      itemToPass = await getKanjiDetailsBySlug({
+        data: fsrsData.practice_item_key,
+      })
+      if (!itemToPass) {
+        console.warn(
+          `Could not fetch Kanji details for due review: ${fsrsData.practice_item_key}. Skipping card.`,
+        )
+        continue
+      }
+    } else if (fsrsData.type === "radical") {
+      itemToPass = await getRadicalDetailsBySlug({
+        data: fsrsData.practice_item_key,
+      })
+      if (!itemToPass) {
+        console.warn(
+          `Could not fetch Radical details for due review: ${fsrsData.practice_item_key}. Skipping card.`,
+        )
+        continue
+      }
     }
+
+    if (!itemToPass) continue
+
+    const reviewCard = createPracticeCard(
+      itemToPass,
+      fsrsData.type,
+      fsrsData,
+      fsrsData.mode,
+      globalVocabCollection,
+    )
+    reviewCard.sessionScope = "review"
+    reviewCard.sessionStyle = "flashcard"
+
     cardMap.set(key, reviewCard)
     reviewQueue.push(key)
-  })
+  }
 
   // --- Phase 3: Build Dependencies (All Cards Now Exist) ---
   allHierarchyItems.forEach((item) => {
@@ -200,7 +241,6 @@ export function initializePracticeSession(
   })
 
   // --- Phase 4: Lock Cards and Populate Queues ---
-  // This loop is now simpler. It only checks for dependencies.
   for (const [key, card] of cardMap.entries()) {
     if (card.sessionScope === "module") {
       if (dependencyMap.has(key)) {

@@ -28,9 +28,10 @@ type PreviewItem = {
   key: string
   question: string
   answer: string
-  isReview: boolean
+  isDue: boolean
   type: "module" | "review"
   itemType: "vocabulary" | "kanji" | "radical"
+  due?: Date // Added: Due date for review items
 }
 
 type StartPageProps = {
@@ -41,9 +42,7 @@ type StartPageProps = {
   mode: PracticeMode | "review-only"
 }
 
-// --- MODIFIED: Update the function to use the new `meanings` data ---
 function createPreviewItem(
-  // The input can now optionally include the `meanings` array.
   input: {
     slug: string
     characters?: string | null
@@ -52,7 +51,7 @@ function createPreviewItem(
     itemType: "vocabulary" | "kanji" | "radical"
   },
   mode: PracticeMode | "review-only",
-  moduleFSRSMap: Map<string, FSRSCardData>,
+  fsrsCardData?: FSRSCardData, // Added: Optional FSRSCardData for due date
 ): PreviewItem {
   let question = ""
   let answer = ""
@@ -78,9 +77,12 @@ function createPreviewItem(
     key: input.slug,
     question,
     answer,
-    isReview: input.type === "review" || moduleFSRSMap.has(input.slug),
+    isDue: fsrsCardData?.fsrs_card.due
+      ? fsrsCardData?.fsrs_card.due <= new Date()
+      : false,
     type: input.type,
     itemType: input.itemType,
+    due: fsrsCardData?.fsrs_card.due, // Populated from fsrsCardData
   }
 }
 
@@ -133,25 +135,36 @@ export default function StartPageComponent(props: StartPageProps) {
       return createPreviewItem(
         { ...item, type: "module" },
         props.mode,
-        moduleFSRSMap,
+        moduleFSRSMap.get(item.slug), // Pass FSRSCardData if available for module item (e.g. for initial state)
       )
     })
 
     const reviewItems = (dueCards() || [])
       .filter((card) => !seenKeys.has(card.practice_item_key))
-      .map((card) =>
-        createPreviewItem(
-          {
-            slug: card.practice_item_key,
-            type: "review",
-            itemType: card.type,
-            // Note: `meanings` are not passed for pure due reviews,
-            // so `createPreviewItem` will gracefully fall back to the slug.
-          },
+      .map((card) => {
+        const itemProps: {
+          slug: string
+          type: "module" | "review"
+          itemType: "vocabulary" | "kanji" | "radical"
+          characters?: string | null
+          meanings?: string[] // Though often undefined for direct FSRS cards
+        } = {
+          slug: card.practice_item_key,
+          type: "review",
+          itemType: card.type,
+        }
+
+        // For Kanji/Radical review cards, their "character" is their slug/key
+        if (card.type === "kanji" || card.type === "radical") {
+          itemProps.characters = card.practice_item_key
+        }
+
+        return createPreviewItem(
+          itemProps,
           props.mode,
-          moduleFSRSMap,
-        ),
-      )
+          card, // Pass the full FSRSCardData to get the `due` date
+        )
+      })
 
     return [...moduleItems, ...reviewItems]
   })
@@ -171,7 +184,7 @@ export default function StartPageComponent(props: StartPageProps) {
       const sessionModeForNewCards =
         props.mode === "review-only" ? "readings" : props.mode
 
-      const initialState = initializePracticeSession(
+      const initialState = await initializePracticeSession(
         props.hierarchy,
         resolvedModuleFSRS || [],
         resolvedDueCards || [],
@@ -217,7 +230,6 @@ export default function StartPageComponent(props: StartPageProps) {
   )
 }
 
-// ... (The rest of the components: StartPageHeader, StartPagePreviewCard, StartPageButton remain unchanged)
 function StartPageHeader(props: {
   deckName: string | JSX.Element
   previewCount: number
@@ -279,9 +291,9 @@ function StartPagePreviewCard(props: { item: PreviewItem; index: number }) {
               Radical
             </span>
           </Show>
-          <Show when={props.item.isReview}>
+          <Show when={props.item.isDue}>
             <span class="inline-flex items-center rounded-full bg-amber-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-amber-500 uppercase">
-              Review
+              Due
             </span>
           </Show>
           <div class="bg-muted text-muted-foreground flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold">
@@ -289,6 +301,16 @@ function StartPagePreviewCard(props: { item: PreviewItem; index: number }) {
           </div>
         </div>
       </div>
+      <Show when={props.item.isDue && props.item.due}>
+        <div class="text-muted-foreground absolute right-4 bottom-4 text-xs">
+          Due:{" "}
+          {props.item.due!.toLocaleDateString(undefined, {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+          })}
+        </div>
+      </Show>
     </div>
   )
 }

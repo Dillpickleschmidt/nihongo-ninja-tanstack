@@ -62,7 +62,7 @@ function fetchVocabulary(db: Db, slugs: string[]): VocabRow[] {
   // return results
 }
 
-// --- MODIFIED: Fetch meanings along with Kanji data ---
+// --- Fetch meanings along with Kanji data ---
 function fetchRelatedKanji(db: Db, vocabIds: number[]): KanjiRow[] {
   if (vocabIds.length === 0) return []
   const placeholders = vocabIds.map(() => "?").join(",")
@@ -73,7 +73,7 @@ function fetchRelatedKanji(db: Db, vocabIds: number[]): KanjiRow[] {
     .all(...vocabIds) as KanjiRow[]
 }
 
-// --- MODIFIED: Fetch meanings along with Radical data ---
+// --- Fetch meanings along with Radical data ---
 function fetchRelatedRadicals(db: Db, kanjiIds: number[]): RadicalRow[] {
   if (kanjiIds.length === 0) return []
   const placeholders = kanjiIds.map(() => "?").join(",")
@@ -294,7 +294,7 @@ export const getRichWKHierarchyWithProgress = createServerFn({ method: "GET" })
     return { hierarchy, uniqueKanji, uniqueRadicals, summary }
   })
 
-// --- MODIFIED: Pass parsed meanings into the static objects ---
+// --- Pass parsed meanings into the static objects ---
 export const getStaticWKHierarchy = createServerFn({ method: "GET" })
   .validator((slugs: string[]) => slugs)
   .handler(async ({ data: slugs }): Promise<FullHierarchyData | null> => {
@@ -328,4 +328,70 @@ export const getStaticWKHierarchy = createServerFn({ method: "GET" })
     const { uniqueKanji, uniqueRadicals } = extractUniqueItems(hierarchy)
 
     return { hierarchy, uniqueKanji, uniqueRadicals }
+  })
+
+/**
+ * Fetches detailed Kanji data by its slug.
+ */
+export const getKanjiDetailsBySlug = createServerFn({ method: "GET" })
+  .validator((slug: string) => slug)
+  .handler(async ({ data: slug }): Promise<Kanji | null> => {
+    if (!slug) return null
+    const db = getDbConnection()
+    try {
+      const kanjiRow = db
+        .prepare(
+          `SELECT id, characters, slug, meanings FROM kanji WHERE slug = ?`,
+        )
+        .get(slug) as KanjiRow | undefined
+
+      if (!kanjiRow) return null
+
+      const parsedMeanings = JSON.parse(kanjiRow.meanings) as WaniKaniMeaning[]
+      const meaningStrings = parsedMeanings.map((m) => m.meaning)
+
+      // Radicals are not needed for a single Kanji lookup in this context
+      return {
+        id: kanjiRow.id,
+        characters: kanjiRow.characters,
+        slug: kanjiRow.slug,
+        meanings: meaningStrings,
+        radicals: [], // Empty array as radicals are not fetched in this specific lookup
+      }
+    } finally {
+      db.close()
+    }
+  })
+
+/**
+ * Fetches detailed Radical data by its slug.
+ */
+export const getRadicalDetailsBySlug = createServerFn({ method: "GET" })
+  .validator((slug: string) => slug)
+  .handler(async ({ data: slug }): Promise<Radical | null> => {
+    if (!slug) return null
+    const db = getDbConnection()
+    try {
+      const radicalRow = db
+        .prepare(
+          `SELECT id, characters, slug, meanings FROM radicals WHERE slug = ?`,
+        )
+        .get(slug) as RadicalRow | undefined
+
+      if (!radicalRow) return null
+
+      const parsedMeanings = JSON.parse(
+        radicalRow.meanings,
+      ) as WaniKaniMeaning[]
+      const meaningStrings = parsedMeanings.map((m) => m.meaning)
+
+      return {
+        id: radicalRow.id,
+        characters: radicalRow.characters,
+        slug: radicalRow.slug,
+        meanings: meaningStrings,
+      }
+    } finally {
+      db.close()
+    }
   })
