@@ -91,58 +91,28 @@ function SummaryCircles(props: { data: FullHierarchyData }) {
     <div class="grid grid-cols-3 gap-4">
       <ProgressCircle
         label="Vocabulary"
-        countLearned={props.data.summary.vocab.wellKnown}
-        countInProgress={props.data.summary.vocab.learning}
-        total={props.data.summary.vocab.total}
+        countLearned={props.data.summary!.vocab.wellKnown}
+        countInProgress={props.data.summary!.vocab.learning}
+        total={props.data.summary!.vocab.total}
         colorLearned="text-sky-400"
         colorInProgress="text-sky-600"
       />
       <ProgressCircle
         label="Kanji"
-        countLearned={props.data.summary.kanji.wellKnown}
-        countInProgress={props.data.summary.kanji.learning}
-        total={props.data.summary.kanji.total}
+        countLearned={props.data.summary!.kanji.wellKnown}
+        countInProgress={props.data.summary!.kanji.learning}
+        total={props.data.summary!.kanji.total}
         colorLearned="text-pink-400"
         colorInProgress="text-pink-600"
       />
       <ProgressCircle
         label="Radicals"
-        countLearned={props.data.summary.radicals.wellKnown}
-        countInProgress={props.data.summary.radicals.learning}
-        total={props.data.summary.radicals.total}
+        countLearned={props.data.summary!.radicals.wellKnown}
+        countInProgress={props.data.summary!.radicals.learning}
+        total={props.data.summary!.radicals.total}
         colorLearned="text-teal-400"
         colorInProgress="text-teal-600"
       />
-    </div>
-  )
-}
-
-/**
- * A container for a list of characters, with responsive height behavior.
- */
-function CharacterList(props: {
-  title: string
-  items: (Kanji | Radical)[]
-  variant: WordHierarchyVariant
-  isTall?: boolean
-}) {
-  return (
-    <div
-      class="flex flex-col"
-      classList={{ "h-full": props.isTall && props.variant === "desktop" }}
-    >
-      <h3 class="text-muted-foreground mb-3 text-sm font-semibold">
-        {props.title}
-      </h3>
-      <div
-        class="scrollbar-hide flex flex-wrap content-start gap-2 overflow-y-auto"
-        classList={{
-          "min-h-[7.5rem]": !props.isTall && props.variant === "desktop",
-          "flex-grow": props.isTall && props.variant === "desktop",
-        }}
-      >
-        <For each={props.items}>{(item) => <CharBox item={item} />}</For>
-      </div>
     </div>
   )
 }
@@ -172,62 +142,108 @@ function ProgressCircle(props: {
   const offsetLearned = () => circumference * (1 - progressLearned())
   const offsetTotal = () => circumference * (1 - progressTotal())
 
+  const seenCount = () => props.countLearned + props.countInProgress
+
   return (
-    <div class="flex flex-col items-center gap-1.5">
-      <div class="relative h-20 w-20">
-        <svg class="h-full w-full" viewBox="0 0 80 80">
-          <circle
-            class="text-muted-foreground/10"
-            stroke-width="8"
-            stroke="currentColor"
-            fill="transparent"
-            r={radius}
-            cx="40"
-            cy="40"
-          />
-          <circle
-            class={props.colorInProgress}
-            stroke-width="8"
-            stroke-dasharray={circumference}
-            stroke-dashoffset={offsetTotal()}
-            stroke-linecap="round"
-            stroke="currentColor"
-            fill="transparent"
-            r={radius}
-            cx="40"
-            cy="40"
-            style={{
-              transform: "rotate(-90deg)",
-              "transform-origin": "50% 50%",
-              transition: "stroke-dashoffset 0.5s ease-out",
-            }}
-          />
-          <circle
-            class={props.colorLearned}
-            stroke-width="8"
-            stroke-dasharray={circumference}
-            stroke-dashoffset={offsetLearned()}
-            stroke-linecap="round"
-            stroke="currentColor"
-            fill="transparent"
-            r={radius}
-            cx="40"
-            cy="40"
-            style={{
-              transform: "rotate(-90deg)",
-              "transform-origin": "50% 50%",
-              transition: "stroke-dashoffset 0.5s ease-out",
-            }}
-          />
-        </svg>
-        <div class="absolute inset-0 flex flex-col items-center justify-center">
-          <span class="text-xl font-bold">{props.countLearned}</span>
-          <span class="text-muted-foreground text-xs">/{props.total}</span>
+    <HoverCard openDelay={200}>
+      <HoverCardTrigger as="div">
+        <div class="flex flex-col items-center gap-1.5">
+          <div class="relative h-20 w-20">
+            <svg class="h-full w-full" viewBox="0 0 80 80">
+              <circle
+                class="text-muted-foreground/10"
+                stroke-width="8"
+                stroke="currentColor"
+                fill="transparent"
+                r={radius}
+                cx="40"
+                cy="40"
+              />
+              <circle
+                class={props.colorInProgress}
+                stroke-width="8"
+                stroke-dasharray={circumference}
+                stroke-dashoffset={offsetTotal()}
+                stroke-linecap="round"
+                stroke="currentColor"
+                fill="transparent"
+                r={radius}
+                cx="40"
+                cy="40"
+                style={{
+                  transform: "rotate(-90deg)",
+                  "transform-origin": "50% 50%",
+                  transition: "stroke-dashoffset 0.5s ease-out",
+                }}
+              />
+              <circle
+                class={props.colorLearned}
+                stroke-width="8"
+                stroke-dasharray={circumference}
+                stroke-dashoffset={offsetLearned()}
+                stroke-linecap="round"
+                stroke="currentColor"
+                fill="transparent"
+                r={radius}
+                cx="40"
+                cy="40"
+                style={{
+                  transform: "rotate(-90deg)",
+                  "transform-origin": "50% 50%",
+                  transition: "stroke-dashoffset 0.5s ease-out",
+                }}
+              />
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span class="text-xl font-bold">{props.countLearned}</span>
+              <span class="text-muted-foreground text-xs">/{props.total}</span>
+            </div>
+          </div>
+          <span class="text-muted-foreground text-base font-medium">
+            {props.label}
+          </span>
         </div>
+      </HoverCardTrigger>
+      <HoverCardContent class="w-auto px-3 py-2 text-sm">
+        <div class="flex flex-col gap-1">
+          <p>
+            Seen: {seenCount()} / {props.total}
+          </p>
+          <p>
+            Well-known: {props.countLearned} / {props.total}
+          </p>
+        </div>
+      </HoverCardContent>
+    </HoverCard>
+  )
+}
+
+/**
+ * A container for a list of characters, with responsive height behavior.
+ */
+function CharacterList(props: {
+  title: string
+  items: (Kanji | Radical)[]
+  variant: WordHierarchyVariant
+  isTall?: boolean
+}) {
+  return (
+    <div
+      class="flex flex-col"
+      classList={{ "h-full": props.isTall && props.variant === "desktop" }}
+    >
+      <h3 class="text-muted-foreground mb-3 text-sm font-semibold">
+        {props.title}
+      </h3>
+      <div
+        class="scrollbar-hide flex flex-wrap content-start gap-2 overflow-y-auto"
+        classList={{
+          "min-h-[7.5rem]": !props.isTall && props.variant === "desktop",
+          "flex-grow": props.isTall && props.variant === "desktop",
+        }}
+      >
+        <For each={props.items}>{(item) => <CharBox item={item} />}</For>
       </div>
-      <span class="text-muted-foreground text-base font-medium">
-        {props.label}
-      </span>
     </div>
   )
 }
@@ -271,7 +287,7 @@ function CharBox(props: { item: Kanji | Radical }) {
               </SmoothCard>
             </HoverCardTrigger>
             <HoverCardContent class="w-auto px-3 py-1.5 text-sm">
-              <span>{props.item.slug}</span>
+              <span>{props.item.meanings.join(", ")}</span>
             </HoverCardContent>
           </HoverCard>
         </Match>

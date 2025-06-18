@@ -33,7 +33,7 @@ export default function CardTypeSwitchComponent() {
       {(card) => (
         <div class="relative w-full">
           <div class="absolute -top-4 -right-4 z-10 flex gap-2">
-            {/* --- ADDED: Vocabulary Badge --- */}
+            {/* --- Vocabulary Badge --- */}
             <Show when={card().practiceItemType === "vocabulary"}>
               <span class="inline-flex items-center rounded-full bg-orange-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-orange-400 uppercase">
                 Vocabulary

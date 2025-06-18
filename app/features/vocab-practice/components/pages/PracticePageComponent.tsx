@@ -96,7 +96,7 @@ export default function PracticePageComponent() {
 
   return (
     <div class="min-h-screen">
-      {/* Progress header (visuals unchanged, logic updated) */}
+      {/* Progress header */}
       <div class="bg-background/90 border-card-foreground fixed top-0 right-0 left-0 z-40 border-b backdrop-blur-sm">
         <div class="px-4 pt-2 pb-2.5">
           <div class="mx-auto max-w-3xl">

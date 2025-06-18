@@ -43,11 +43,8 @@ export default function FinishPageComponent() {
       {/* Return to Dashboard Button */}
       <div class="fixed right-0 bottom-0 left-0 z-50 p-4">
         <div class="mx-auto max-w-md">
-          <Link to="/dashboard">
-            <Button
-              size="lg"
-              class="h-14 w-full rounded-xl bg-orange-500 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] hover:bg-orange-600"
-            >
+          <Link to="/dashboard" tabindex={-1}>
+            <Button class="h-14 w-full rounded-xl bg-orange-500 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] hover:bg-orange-600">
               <span class="flex items-center justify-center gap-2">
                 Return
                 <svg

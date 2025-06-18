@@ -30,7 +30,7 @@ export default function DeckSettingsDialogComponent(
 
   return (
     <Dialog open={open()} onOpenChange={setOpen}>
-      <DialogTrigger as="div">{props.children}</DialogTrigger>
+      <DialogTrigger tabIndex={-1}>{props.children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Deck Settings</DialogTitle>

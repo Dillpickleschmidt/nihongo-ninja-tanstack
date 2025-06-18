@@ -5,6 +5,7 @@ import {
   type FSRSCardData,
   getDueFSRSCards,
 } from "@/features/supabase/db/utils"
+import type { FullHierarchyData } from "@/data/wanikani/types"
 
 export const Route = createFileRoute("/practice/review")({
   loader: ({ context }) => {
@@ -16,8 +17,19 @@ export const Route = createFileRoute("/practice/review")({
         dueFSRSCards = null
       }
 
+      const hierarchy: FullHierarchyData = {
+        hierarchy: [],
+        uniqueKanji: [],
+        uniqueRadicals: [],
+      }
+
+      // In review-only mode, there are no "module" cards to load.
+      const moduleFSRSCards: Promise<FSRSCardData[]> = Promise.resolve([])
+
       return {
         dueFSRSCards,
+        moduleFSRSCards, // Pass the empty moduleFSRSCards promise
+        hierarchy, // Pass the empty hierarchy
         user: context.user,
       }
     } catch (error) {
@@ -35,8 +47,8 @@ function RouteComponent() {
   return (
     <>
       <VocabPractice
-        newVocabulary={null}
-        moduleFSRSCards={null}
+        hierarchy={data().hierarchy}
+        moduleFSRSCards={data().moduleFSRSCards}
         dueFSRSCards={data().dueFSRSCards}
         deckName="Review Session"
         mode="review-only"

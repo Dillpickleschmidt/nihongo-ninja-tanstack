@@ -3750,7 +3750,7 @@ export const vocabulary: VocabularyCollection = {
   },
   アルバイト: {
     word: "アルバイト",
-    furigana: "アールバイト",
+    furigana: "アルバイト",
     english: ["part-time job"],
     chapter: 4,
     example_sentences: [

@@ -31,18 +31,17 @@ export default function WriteModeComponent() {
     if (!exampleSentences || exampleSentences.length === 0) return []
 
     const partOfSpeech = card.vocab.part_of_speech
-    let shouldShowExampleSentence = false
+
+    // Only show example sentences for "kana" practice mode with specific parts of speech
     if (card.practiceMode === "kana") {
-      shouldShowExampleSentence = !partOfSpeech
-    } else if (card.practiceMode === "readings") {
-      shouldShowExampleSentence =
+      const shouldShowExampleSentence =
         !partOfSpeech ||
         partOfSpeech === "I-adjective" ||
         partOfSpeech === "Na-adjective"
-    }
 
-    if (shouldShowExampleSentence) {
-      return getExampleSentenceParts(exampleSentences[0], card.practiceMode)
+      if (shouldShowExampleSentence) {
+        return getExampleSentenceParts(exampleSentences[0], card.practiceMode)
+      }
     }
     return []
   })
@@ -63,12 +62,10 @@ export default function WriteModeComponent() {
     if (currentCard()) {
       setUserAnswer("")
       setWasCorrect(false)
-      setTimeout(() => {
-        if (inputRef) {
-          inputRef.focus()
-          inputRef.select()
-        }
-      }, 0)
+      if (inputRef) {
+        inputRef.focus()
+        inputRef.select()
+      }
     }
   })
 
