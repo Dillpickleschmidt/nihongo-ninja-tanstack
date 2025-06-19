@@ -62,24 +62,24 @@ function fetchVocabulary(db: Db, slugs: string[]): VocabRow[] {
   // return results
 }
 
-// --- Fetch meanings along with Kanji data ---
+// Update fetchRelatedKanji to include mnemonics
 function fetchRelatedKanji(db: Db, vocabIds: number[]): KanjiRow[] {
   if (vocabIds.length === 0) return []
   const placeholders = vocabIds.map(() => "?").join(",")
   return db
     .prepare(
-      `SELECT DISTINCT k.id, k.characters, k.slug, k.meanings FROM kanji k JOIN vocab_kanji vk ON k.id = vk.kanji_id WHERE vk.vocab_id IN (${placeholders})`,
+      `SELECT DISTINCT k.id, k.characters, k.slug, k.meanings, k.meaning_mnemonic, k.reading_mnemonic FROM kanji k JOIN vocab_kanji vk ON k.id = vk.kanji_id WHERE vk.vocab_id IN (${placeholders})`,
     )
     .all(...vocabIds) as KanjiRow[]
 }
 
-// --- Fetch meanings along with Radical data ---
+// Update fetchRelatedRadicals to include mnemonics
 function fetchRelatedRadicals(db: Db, kanjiIds: number[]): RadicalRow[] {
   if (kanjiIds.length === 0) return []
   const placeholders = kanjiIds.map(() => "?").join(",")
   return db
     .prepare(
-      `SELECT DISTINCT r.id, r.characters, r.slug, r.meanings FROM radicals r JOIN kanji_radicals kr ON r.id = kr.radical_id WHERE kr.kanji_id IN (${placeholders})`,
+      `SELECT DISTINCT r.id, r.characters, r.slug, r.meanings, r.meaning_mnemonic FROM radicals r JOIN kanji_radicals kr ON r.id = kr.radical_id WHERE kr.kanji_id IN (${placeholders})`,
     )
     .all(...kanjiIds) as RadicalRow[]
 }
@@ -125,6 +125,8 @@ function fetchStaticHierarchyFromDb(slugs: string[]) {
       return {
         ...k,
         meanings: meaningStrings,
+        meaning_mnemonic: k.meaning_mnemonic, // Direct assignment
+        reading_mnemonic: k.reading_mnemonic, // Direct assignment
       }
     })
 
@@ -134,6 +136,7 @@ function fetchStaticHierarchyFromDb(slugs: string[]) {
       return {
         ...r,
         meanings: meaningStrings,
+        meaning_mnemonic: r.meaning_mnemonic, // Direct assignment
       }
     })
 
@@ -180,7 +183,10 @@ function buildRichHierarchy(
   const radicalsMap = new Map<number, Radical>(
     radicalRows.map((r) => [
       r.id,
-      { ...r, progress: determineProgress("radical", r.slug, progressMap) },
+      {
+        ...r,
+        progress: determineProgress("radical", r.slug, progressMap),
+      },
     ]),
   )
   const kanjiMap = new Map<number, Kanji>(
@@ -341,7 +347,7 @@ export const getKanjiDetailsBySlug = createServerFn({ method: "GET" })
     try {
       const kanjiRow = db
         .prepare(
-          `SELECT id, characters, slug, meanings FROM kanji WHERE slug = ?`,
+          `SELECT id, characters, slug, meanings, meaning_mnemonic, reading_mnemonic FROM kanji WHERE slug = ?`,
         )
         .get(slug) as KanjiRow | undefined
 
@@ -357,6 +363,8 @@ export const getKanjiDetailsBySlug = createServerFn({ method: "GET" })
         slug: kanjiRow.slug,
         meanings: meaningStrings,
         radicals: [], // Empty array as radicals are not fetched in this specific lookup
+        meaning_mnemonic: kanjiRow.meaning_mnemonic, // Direct assignment
+        reading_mnemonic: kanjiRow.reading_mnemonic, // Direct assignment
       }
     } finally {
       db.close()
@@ -374,7 +382,7 @@ export const getRadicalDetailsBySlug = createServerFn({ method: "GET" })
     try {
       const radicalRow = db
         .prepare(
-          `SELECT id, characters, slug, meanings FROM radicals WHERE slug = ?`,
+          `SELECT id, characters, slug, meanings, meaning_mnemonic FROM radicals WHERE slug = ?`,
         )
         .get(slug) as RadicalRow | undefined
 
@@ -390,6 +398,7 @@ export const getRadicalDetailsBySlug = createServerFn({ method: "GET" })
         characters: radicalRow.characters,
         slug: radicalRow.slug,
         meanings: meaningStrings,
+        meaning_mnemonic: radicalRow.meaning_mnemonic,
       }
     } finally {
       db.close()

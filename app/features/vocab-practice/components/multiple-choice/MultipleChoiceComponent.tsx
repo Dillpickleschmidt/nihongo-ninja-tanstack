@@ -16,11 +16,7 @@ export default function MultipleChoiceComponent() {
   const { state, setState } = useVocabPracticeContext()
   const manager = () => state.manager!
 
-  // The current card is derived from the reactive `activeQueue` in the store.
-  const currentCard = createMemo(() => {
-    if (state.activeQueue.length === 0) return null
-    return manager().getCardFromMap(state.activeQueue[0])
-  })
+  const currentCard = createMemo(() => state.currentCard)
 
   const [buttonStates, setButtonStates] = createStore<
     MultipleChoiceButtonState[]

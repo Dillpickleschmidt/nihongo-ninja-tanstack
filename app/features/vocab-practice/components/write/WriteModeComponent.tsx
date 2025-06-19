@@ -18,12 +18,7 @@ import { cn } from "@/utils/util"
 export default function WriteModeComponent() {
   const { state, setState } = useVocabPracticeContext()
 
-  const currentCard = createMemo(() => {
-    if (!state.manager || state.activeQueue.length === 0) {
-      return null
-    }
-    return state.manager.getCardFromMap(state.activeQueue[0])
-  })
+  const currentCard = createMemo(() => state.currentCard)
 
   const [userAnswers, setUserAnswers] = createSignal<string[]>([])
   const [inputCorrectness, setInputCorrectness] = createSignal<boolean[]>([])

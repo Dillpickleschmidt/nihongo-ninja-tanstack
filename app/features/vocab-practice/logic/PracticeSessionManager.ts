@@ -1,5 +1,5 @@
 // vocab-practice/logic/PracticeSessionManager.ts
-import { Rating, Grade } from "ts-fsrs"
+import { Grade } from "ts-fsrs"
 import type { PracticeSessionState, PracticeCard } from "../types"
 import { handleCardAnswer } from "./card-state-handler"
 import { upsertFSRSCardForUser } from "@/features/supabase/db/utils"
@@ -111,7 +111,38 @@ export class PracticeSessionManager {
     return { moduleQueue, reviewQueue, activeQueue }
   }
 
-  // --- INSTANCE METHODS (The "Imperative Shell") ---
+  // --- INSTANCE METHODS ---
+
+  /**
+   * Processes the completion of an introduction card.
+   * This transitions and  cycles it to the back of the active queue without applying an FSRS rating.
+   */
+  public processIntroductionCompletion(): void {
+    if (this.isFinished() || this.state.activeQueue.length === 0) {
+      console.warn(
+        "Attempted to process introduction completion with no active card or finished session.",
+      )
+      return
+    }
+    // Assumes that if this method is called, its sessionStyle is 'introduction'.
+    const key = this.state.activeQueue[0]
+    const currentCard = this.state.cardMap.get(key)
+    if (!currentCard) {
+      console.error(`Card with key ${key} not found in map.`)
+      return
+    }
+
+    // Transition from 'introduction' to 'multiple-choice'
+    const updatedCard: PracticeCard = {
+      ...currentCard,
+      sessionStyle: "multiple-choice",
+    }
+    this.state.cardMap.set(key, updatedCard)
+
+    // Cycle the card to the back of the active queue
+    this.state.activeQueue.shift() // Remove from front
+    this.state.activeQueue.push(key) // Add to back
+  }
 
   public async processAnswer(rating: Grade, replenish = true): Promise<void> {
     if (this.isFinished() || this.state.activeQueue.length === 0) {

@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { Rating, Grade } from "ts-fsrs"
 import { cn } from "@/utils/util"
-import type { PracticeMode } from "../../types" // Import types for helper
+import type { PracticeMode } from "../../types"
 
 // Determines language based on card type and flip settings
 function getCardContentLanguage(
@@ -60,12 +60,7 @@ export default function FSRSFlashcardPageComponent() {
   const { state, setState } = useVocabPracticeContext()
   const manager = () => state.manager!
 
-  const currentCard = createMemo(() => {
-    if (!state.manager || state.activeQueue.length === 0) {
-      return null
-    }
-    return state.manager.getCardFromMap(state.activeQueue[0])
-  })
+  const currentCard = createMemo(() => state.currentCard)
 
   const [showAnswer, setShowAnswer] = createSignal(false)
 
@@ -145,6 +140,7 @@ export default function FSRSFlashcardPageComponent() {
         newIncorrectMap.set(card.key, currentCount + 1)
       }
 
+      const nextCard = manager().getCurrentCard()
       const newActiveQueue = manager().getActiveQueue()
 
       return {
@@ -152,6 +148,7 @@ export default function FSRSFlashcardPageComponent() {
         recentReviewHistory: newHistory,
         incorrectAnswerMap: newIncorrectMap,
         activeQueue: newActiveQueue,
+        currentCard: nextCard,
       }
     })
   }
@@ -251,7 +248,7 @@ export default function FSRSFlashcardPageComponent() {
                         button.color,
                       )}
                     >
-                      <div class="bg-card-foreground/70 text-muted-foreground absolute top-1.5 right-1.5 flex h-5 w-5 items-center justify-center rounded-full font-mono text-xs font-bold">
+                      <div class="absolute top-[7px] right-[7px] flex h-6 w-6 items-center justify-center rounded-full bg-black/20 font-mono text-xs font-bold text-white">
                         {button.key}
                       </div>
                       {button.label}

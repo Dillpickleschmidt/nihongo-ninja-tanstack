@@ -7,6 +7,7 @@ import type {
   PracticeSessionState,
   PracticeMode,
   FSRSInfo,
+  SessionCardStyle,
 } from "../types"
 import { addKanaAndRuby } from "@/data/utils/vocab"
 import type {
@@ -44,6 +45,8 @@ function createPracticeCard(
   let vocabItem: VocabularyItem
   let characterForKanjiRadical: string = ""
   let meaningsForKanjiRadical: string[] = []
+  let itemMeaningMnemonic: string = ""
+  let itemReadingMnemonic: string | undefined
 
   if (type === "vocabulary") {
     // For vocabulary, the source of truth is the global collection.
@@ -53,6 +56,12 @@ function createPracticeCard(
     const typedItem = item as Kanji | Radical
     characterForKanjiRadical = typedItem.characters || typedItem.slug // TODO: Fix to use img (definitely not the slug)
     meaningsForKanjiRadical = typedItem.meanings
+
+    // Assign mnemonics for Kanji and Radicals
+    itemMeaningMnemonic = typedItem.meaning_mnemonic
+    if (type === "kanji") {
+      itemReadingMnemonic = (typedItem as Kanji).reading_mnemonic
+    }
 
     // Create a pseudo-vocabItem for Kanji/Radical for consistent `addKanaAndRuby`
     vocabItem = {
@@ -105,10 +114,14 @@ function createPracticeCard(
     }
   }
 
-  let sessionStyle: "multiple-choice" | "flashcard" | "write" =
-    "multiple-choice"
-  if (fsrsInfo.card.state === State.Review) {
-    // Core vocab in review state is still part of the main lesson.
+  let sessionStyle: SessionCardStyle = "multiple-choice" // Default style
+
+  const isKanjiOrRadical = type === "kanji" || type === "radical"
+
+  if (isKanjiOrRadical && fsrsInfo.card.state === State.New) {
+    // If it's a new Kanji or Radical, start with an introduction phase
+    sessionStyle = "introduction"
+  } else if (fsrsInfo.card.state === State.Review) {
     if (type === "vocabulary" && !flipVocabQA) {
       sessionStyle = "multiple-choice"
     } else {
@@ -124,9 +137,11 @@ function createPracticeCard(
     sessionScope: "module",
     practiceMode,
     practiceItemType: type,
-    sessionStyle,
+    sessionStyle, // This now reflects the new 'introduction' logic
     prompt,
     validAnswers,
+    meaningMnemonic: itemMeaningMnemonic,
+    readingMnemonic: itemReadingMnemonic,
   }
 }
 
@@ -257,20 +272,16 @@ export async function initializePracticeSession(
       "kanji" in item ? "vocabulary" : "radicals" in item ? "kanji" : "radical"
     const key = `${type}:${item.slug}`
 
-    const prerequisites =
+    const prereqKeys =
       type === "vocabulary"
-        ? (item as VocabHierarchy & { _originalType: DBPracticeItemType }).kanji
+        ? (item as VocabHierarchy).kanji.map((k) => `kanji:${k.slug}`)
         : type === "kanji"
-          ? (item as Kanji & { _originalType: DBPracticeItemType }).radicals
+          ? (item as Kanji).radicals.map((r) => `radical:${r.slug}`)
           : []
 
-    prerequisites.forEach((prereq) => {
-      const prereqType: DBPracticeItemType =
-        "radicals" in (prereq as Kanji) ? "kanji" : "radical" // Cast to Kanji for safe property access
-      const prereqKey = `${prereqType}:${prereq.slug}`
+    prereqKeys.forEach((prereqKey) => {
       const prereqCard = cardMap.get(prereqKey)
-
-      if (!prereqCard) return
+      if (!prereqCard) return // Should not happen if all hierarchy items are mapped
 
       const prereqState = prereqCard.fsrs.card.state
       if (prereqState === State.New || prereqState === State.Learning) {

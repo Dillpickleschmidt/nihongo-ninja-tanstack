@@ -8,6 +8,7 @@ export type CurrentPage =
   | "review"
   | "finish"
   | "fsrs-flashcard"
+  | "kanji-introduction"
 
 export type PracticeMode = "readings" | "kana"
 
@@ -28,6 +29,7 @@ export type SessionCardStyle =
   | "multiple-choice"
   | "write"
   | "flashcard"
+  | "introduction"
   | "done"
 
 // Holds the core FSRS card and the logs from previous reviews
@@ -51,6 +53,8 @@ export type PracticeCard = {
    * 'review': An optional, non-module due review card.
    */
   sessionScope: "module" | "review"
+  meaningMnemonic: string
+  readingMnemonic?: string
 }
 
 // State for the three-queue session system with dependency tracking

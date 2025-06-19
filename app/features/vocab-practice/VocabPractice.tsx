@@ -9,6 +9,7 @@ import StartPageComponent from "./components/pages/StartPageComponent"
 import PracticePageComponent from "./components/pages/PracticePageComponent"
 import ReviewPageComponent from "./components/pages/ReviewPageComponent"
 import FinishPageComponent from "./components/pages/FinishPageComponent"
+import IntroductionPageComponent from "./components/pages/IntroductionPageComponent"
 import FSRSFlashcardPageComponent from "./components/pages/FSRSFlashcardPageComponent"
 import type { FSRSCardData } from "../supabase/db/utils"
 import type { FullHierarchyData } from "@/data/wanikani/types"
@@ -55,6 +56,9 @@ function VocabPracticeContent(props: VocabPracticeContentProps) {
       </Match>
       <Match when={state.currentPage === "practice"}>
         <PracticePageComponent />
+      </Match>
+      <Match when={state.currentPage === "kanji-introduction"}>
+        <IntroductionPageComponent />
       </Match>
       <Match when={state.currentPage === "fsrs-flashcard"}>
         <FSRSFlashcardPageComponent />

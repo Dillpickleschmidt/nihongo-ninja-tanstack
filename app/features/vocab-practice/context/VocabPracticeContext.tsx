@@ -2,7 +2,7 @@
 import { createContext, JSX, useContext, createEffect } from "solid-js"
 import { createStore, SetStoreFunction } from "solid-js/store"
 import { PracticeSessionManager } from "../logic/PracticeSessionManager"
-import type { Settings, CurrentPage } from "../types"
+import type { Settings, CurrentPage, PracticeCard } from "../types"
 import { Rating } from "ts-fsrs"
 
 // --- LOCAL TYPE DEFINITIONS FOR THE CONTEXT ---
@@ -16,6 +16,7 @@ type AppState = {
   incorrectAnswerMap: Map<string, number>
   isAnswered: boolean
   lastRating: Rating | null
+  currentCard: PracticeCard | null
 }
 
 type VocabPracticeContextType = {
@@ -48,6 +49,31 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
       flipVocabQA: false,
       flipKanjiRadicalQA: true,
     },
+    currentCard: null,
+  })
+
+  createEffect(() => {
+    // Runs when state.manager or state.activeQueue changes.
+    if (
+      state.manager &&
+      state.activeQueue.length > 0 &&
+      state.currentCard === null
+    ) {
+      try {
+        setState("currentCard", state.manager.getCurrentCard())
+      } catch (e) {
+        console.warn("Could not set initial currentCard from manager:", e)
+        setState("currentCard", null)
+      }
+    } else if (
+      state.manager &&
+      state.activeQueue.length === 0 &&
+      state.currentCard !== null &&
+      state.manager.isFinished()
+    ) {
+      // If the session finished and active queue became empty, clear currentCard
+      setState("currentCard", null)
+    }
   })
 
   // --- AUTOMATIC PAGE SWITCHING LOGIC ---
@@ -57,12 +83,14 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
       setState("currentPage", "finish")
     } else if (state.recentReviewHistory.length >= CARDS_UNTIL_REVIEW) {
       setState("currentPage", "review")
+    } else if (state.currentCard?.sessionStyle === "introduction") {
+      setState("currentPage", "kanji-introduction")
     } else if (
-      state.manager?.getCurrentCard().sessionStyle === "multiple-choice" ||
-      state.manager?.getCurrentCard().sessionStyle === "write"
+      state.currentCard?.sessionStyle === "multiple-choice" ||
+      state.currentCard?.sessionStyle === "write"
     ) {
       setState("currentPage", "practice")
-    } else if (state.manager?.getCurrentCard().sessionStyle === "flashcard") {
+    } else if (state.currentCard?.sessionStyle === "flashcard") {
       setState("currentPage", "fsrs-flashcard")
     }
   })

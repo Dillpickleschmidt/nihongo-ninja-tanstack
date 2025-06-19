@@ -7,6 +7,7 @@ export interface Radical {
   slug: string
   meanings: string[]
   progress?: ProgressState
+  meaning_mnemonic: string
 }
 
 export interface Kanji {
@@ -16,6 +17,8 @@ export interface Kanji {
   radicals: Radical[]
   meanings: string[]
   progress?: ProgressState
+  meaning_mnemonic: string
+  reading_mnemonic: string
 }
 
 export interface VocabHierarchy {
@@ -46,12 +49,15 @@ export type KanjiRow = {
   characters: string
   slug: string
   meanings: string
+  meaning_mnemonic: string
+  reading_mnemonic: string
 }
 export type RadicalRow = {
   id: number
   characters: string | null
   slug: string
   meanings: string
+  meaning_mnemonic: string
 }
 
 export type VocabKanjiRelation = { vocab_id: number; kanji_id: number }

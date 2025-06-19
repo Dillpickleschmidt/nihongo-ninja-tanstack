@@ -74,22 +74,34 @@ const createMockCard = (
   prompt: validAnswers.join(", "),
   validAnswers,
   sessionScope: "module",
+  meaningMnemonic: "mock meaning mnemonic",
+  readingMnemonic: "mock reading mnemonic",
 })
 
 describe("WriteModeComponent", () => {
   const mockSetState = vi.fn()
 
-  const defaultMockState = {
-    manager: { getCardFromMap: vi.fn() },
-    activeQueue: ["test-key"],
-    isAnswered: false,
-    lastRating: null,
+  let defaultMockState: {
+    manager: { getCardFromMap: ReturnType<typeof vi.fn> }
+    activeQueue: string[]
+    isAnswered: boolean
+    lastRating: Rating | null
+    currentCard: PracticeCard | null
   }
 
   // Focus/select mocks are no longer needed if the "Input Focus" tests are removed,
 
   beforeEach(() => {
     vi.clearAllMocks()
+    // Initialize defaultMockState before each test
+    defaultMockState = {
+      manager: { getCardFromMap: vi.fn() },
+      activeQueue: ["test-key"],
+      isAnswered: false,
+      lastRating: null,
+      currentCard: null,
+    }
+
     mockUseVocabPracticeContext.mockReturnValue({
       state: defaultMockState,
       setState: mockSetState,
@@ -101,6 +113,7 @@ describe("WriteModeComponent", () => {
     beforeEach(() => {
       const mockCard = createMockCard(["answer1", "answer2"])
       defaultMockState.manager.getCardFromMap.mockReturnValue(mockCard)
+      defaultMockState.currentCard = mockCard
       mockGetExampleSentenceParts.mockReturnValue({
         displayParts: [],
         inputValidationTargets: [],
@@ -151,6 +164,7 @@ describe("WriteModeComponent", () => {
     beforeEach(() => {
       const mockCard = createMockCard(["validAnswer"], true)
       defaultMockState.manager.getCardFromMap.mockReturnValue(mockCard)
+      defaultMockState.currentCard = mockCard
       mockGetExampleSentenceParts.mockReturnValue({
         displayParts: [
           { type: "html", content: "This is " },

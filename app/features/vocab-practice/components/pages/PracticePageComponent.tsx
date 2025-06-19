@@ -22,7 +22,6 @@ export default function PracticePageComponent() {
   const remainingModuleCards = createMemo(() => {
     const mgr = manager()
     if (!mgr) return 0
-    // By accessing `state.activeQueue`, we make this memo reactive to answer events.
     const activeQueueKeys = state.activeQueue
     const activeQueueCards = activeQueueKeys.map(
       (key) => mgr.getCardFromMap(key)!,
@@ -57,30 +56,33 @@ export default function PracticePageComponent() {
   async function handleNextQuestion() {
     if (!state.lastRating) return
 
-    const card = manager().getCurrentCard()
+    const card = state.currentCard!
     const rating = state.lastRating
     const isCorrect = rating !== Rating.Again
 
-    // Await the manager to ensure all its work (including DB save) is done.
     await manager().processAnswer(rating)
 
-    // Now that the manager is fully updated, sync the UI state.
+    // Sync the UI state
     setState((prevState) => {
       const newHistory = [
         ...prevState.recentReviewHistory,
         { key: card.key, wasCorrect: isCorrect },
       ]
+
       const newIncorrectMap = new Map(prevState.incorrectAnswerMap)
       if (!isCorrect) {
         const currentCount = newIncorrectMap.get(card.key) ?? 0
         newIncorrectMap.set(card.key, currentCount + 1)
       }
+      const nextCard = manager().getCurrentCard()
       const newActiveQueue = manager().getActiveQueue()
+
       return {
         ...prevState,
         recentReviewHistory: newHistory,
         incorrectAnswerMap: newIncorrectMap,
         activeQueue: newActiveQueue,
+        currentCard: nextCard,
         isAnswered: false, // Reset for the next card
         lastRating: null,
       }

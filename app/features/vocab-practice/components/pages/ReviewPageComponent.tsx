@@ -1,5 +1,5 @@
 // vocab-practice/components/pages/ReviewPageComponent.tsx
-import { For, createMemo } from "solid-js"
+import { For, createMemo, onMount } from "solid-js" // Import onMount
 import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import type { PracticeCard } from "../../types"
@@ -13,6 +13,16 @@ type ReviewSummaryData = {
 export default function ReviewPageComponent() {
   const { state, setState } = useVocabPracticeContext()
   const manager = () => state.manager!
+
+  let continueButtonRef: HTMLButtonElement | undefined
+
+  onMount(() => {
+    setTimeout(() => {
+      if (continueButtonRef) {
+        continueButtonRef.focus()
+      }
+    }, 0)
+  })
 
   // Create the list of cards for review from the recentReviewHistory
   const reviewedItems = createMemo(() => {
@@ -37,7 +47,7 @@ export default function ReviewPageComponent() {
     setState("recentReviewHistory", [])
 
     // Determine the next page to go to
-    const nextStyle = manager().getCurrentCard().sessionStyle
+    const nextStyle = state.currentCard?.sessionStyle
     const nextPage = nextStyle === "flashcard" ? "fsrs-flashcard" : "practice"
     setState("currentPage", nextPage)
   }
@@ -71,6 +81,7 @@ export default function ReviewPageComponent() {
             size="lg"
             onClick={handleContinue}
             class="h-14 w-full rounded-xl bg-orange-500 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] hover:bg-orange-600"
+            ref={continueButtonRef}
           >
             <span class="flex items-center justify-center gap-2">
               Continue
@@ -96,7 +107,6 @@ export default function ReviewPageComponent() {
 }
 
 function ReviewCardSummary(props: { card: PracticeCard; wasCorrect: boolean }) {
-  const { state } = useVocabPracticeContext()
   const wasAnsweredIncorrectly = () => !props.wasCorrect
 
   const answerToDisplay = createMemo(() => {
