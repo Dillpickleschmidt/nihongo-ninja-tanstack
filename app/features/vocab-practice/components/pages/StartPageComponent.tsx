@@ -236,6 +236,7 @@ export default function StartPageComponent(props: StartPageProps) {
         vocabulary,
         state.settings.flipVocabQA,
         state.settings.flipKanjiRadicalQA,
+        state.settings.shuffleInput,
       )
 
       const manager = new PracticeSessionManager(

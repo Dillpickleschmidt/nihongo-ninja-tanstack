@@ -141,12 +141,13 @@ export async function initializePracticeSession(
   globalVocabCollection: VocabularyCollection,
   flipVocabQA: boolean,
   flipKanjiRadicalQA: boolean,
+  shuffle: boolean = false,
 ): Promise<PracticeSessionState> {
   const cardMap = new Map<string, PracticeCard>()
   const dependencyMap = new Map<string, string[]>()
   const unlocksMap = new Map<string, string[]>()
   const lockedKeys = new Set<string>()
-  const moduleQueue: string[] = []
+  let moduleQueue: string[] = []
   const reviewQueue: string[] = []
 
   const filteredModuleFSRSCards = moduleFSRSCards.filter(
@@ -291,6 +292,10 @@ export async function initializePracticeSession(
         moduleQueue.push(key)
       }
     }
+  }
+
+  if (shuffle) {
+    moduleQueue = [...moduleQueue].sort(() => Math.random() - 0.5)
   }
 
   return {
