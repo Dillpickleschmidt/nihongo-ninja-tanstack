@@ -1,4 +1,3 @@
-// vocab-practice/components/pages/StartPageComponent.tsx
 import {
   For,
   JSX,
@@ -17,7 +16,12 @@ import type { FSRSCardData } from "@/features/supabase/db/utils"
 import { vocabulary } from "@/data/vocabulary"
 import type { PracticeMode } from "../../types"
 import { addKanaAndRuby } from "@/data/utils/vocab"
-import type { FullHierarchyData } from "@/data/wanikani/types"
+import type {
+  FullHierarchyData,
+  Kanji,
+  Radical,
+  VocabHierarchy,
+} from "@/data/wanikani/types"
 
 type PreviewItem = {
   key: string
@@ -28,7 +32,7 @@ type PreviewItem = {
   itemType: "vocabulary" | "kanji" | "radical"
   isQuestionJapanese: boolean
   isAnswerJapanese: boolean
-  due?: Date // Added: Due date for review items
+  due?: Date // for review items
 }
 
 type StartPageProps = {
@@ -45,7 +49,7 @@ function createPreviewItem(
     characters?: string | null
     meanings?: string[]
     type: "module" | "review"
-    itemType: "vocabulary" | "kanji" | "radical"
+    itemType: DBPracticeItemType
   },
   mode: PracticeMode | "review-only",
   fsrsCardData?: FSRSCardData,
@@ -58,18 +62,32 @@ function createPreviewItem(
   let isAJapanese = false
 
   if (input.itemType === "vocabulary") {
-    const vocab = addKanaAndRuby([vocabulary[input.slug]])[0]
+    const vocab = vocabulary[input.slug]
+    if (!vocab) {
+      console.warn(`Vocabulary item not found for slug: ${input.slug}`)
+      return {
+        key: input.slug,
+        question: `ERROR: ${input.slug}`,
+        answer: "Data Missing",
+        isDue: false,
+        type: input.type,
+        itemType: input.itemType,
+        isQuestionJapanese: false,
+        isAnswerJapanese: false,
+      }
+    }
+    const richVocab = addKanaAndRuby([vocab])[0]
     if (mode === "kana") {
       if (flipVocabQA) {
         // Flipped: Question is kana, Answer is English
-        question = vocab.hiragana.join(", ") || vocab.word
-        answer = vocab.english.join(", ")
+        question = richVocab.hiragana.join(", ") || richVocab.word
+        answer = richVocab.english.join(", ")
         isQJapanese = true
         isAJapanese = false
       } else {
         // Original: Question is English, Answer is kana
-        question = vocab.english.join(", ")
-        answer = vocab.hiragana.join(", ") || vocab.word
+        question = richVocab.english.join(", ")
+        answer = richVocab.hiragana.join(", ") || richVocab.word
         isQJapanese = false
         isAJapanese = true
       }
@@ -77,21 +95,20 @@ function createPreviewItem(
       // 'readings' mode
       if (flipVocabQA) {
         // Flipped: Question is English, Answer is word
-        question = vocab.english.join(", ")
-        answer = vocab.word
+        question = richVocab.english.join(", ")
+        answer = richVocab.word
         isQJapanese = false
         isAJapanese = true
       } else {
         // Original: Question is word, Answer is English
-        question = vocab.word
-        answer = vocab.english.join(", ")
+        question = richVocab.word
+        answer = richVocab.english.join(", ")
         isQJapanese = true
         isAJapanese = false
       }
     }
   } else {
-    // This logic is for Kanji and Radicals.
-    const character = input.characters || input.slug
+    const character = input.characters || input.slug // TODO: Fix to use img (definitely not the slug)
     const meanings = input.meanings?.join(", ") ?? ""
 
     if (flipKanjiRadicalQA) {
@@ -141,6 +158,9 @@ export default function StartPageComponent(props: StartPageProps) {
 
   const flipVocabQA = createMemo(() => state.settings.flipVocabQA)
   const flipKanjiRadicalQA = createMemo(() => state.settings.flipKanjiRadicalQA)
+  const enablePrerequisites = createMemo(
+    () => state.settings.enablePrerequisites,
+  )
 
   const previewItems = createMemo<PreviewItem[]>(() => {
     if (!props.hierarchy) return []
@@ -156,24 +176,44 @@ export default function StartPageComponent(props: StartPageProps) {
 
     const seenKeys = new Set<string>()
 
-    // Pass full hierarchy data
-    const moduleItems = [
-      ...props.hierarchy.hierarchy.map((item) => ({
-        ...item,
-        itemType: "vocabulary" as const,
-      })),
-      ...props.hierarchy.uniqueKanji.map((item) => ({
-        ...item,
-        itemType: "kanji" as const,
-      })),
-      ...props.hierarchy.uniqueRadicals.map((item) => ({
-        ...item,
-        itemType: "radical" as const,
-      })),
-    ].map((item) => {
+    let itemsToProcessForModule: Array<VocabHierarchy | Kanji | Radical> = [
+      ...props.hierarchy.hierarchy, // Always include vocabulary
+    ]
+
+    if (enablePrerequisites()) {
+      itemsToProcessForModule.push(
+        ...props.hierarchy.uniqueKanji,
+        ...props.hierarchy.uniqueRadicals,
+      )
+    }
+
+    const moduleItems = itemsToProcessForModule.map((item) => {
       seenKeys.add(item.slug)
+
+      let currentItemType: DBPracticeItemType
+      let characters: string | null | undefined
+      let meanings: string[] | undefined
+
+      if ("kanji" in item) {
+        currentItemType = "vocabulary"
+      } else if ("radicals" in item) {
+        currentItemType = "kanji"
+        characters = (item as Kanji).characters
+        meanings = (item as Kanji).meanings
+      } else {
+        currentItemType = "radical"
+        characters = (item as Radical).characters
+        meanings = (item as Radical).meanings
+      }
+
       return createPreviewItem(
-        { ...item, type: "module" },
+        {
+          slug: item.slug,
+          type: "module",
+          itemType: currentItemType,
+          characters,
+          meanings,
+        },
         props.mode,
         moduleFSRSMap.get(item.slug),
         flipVocabQA(),
@@ -181,28 +221,59 @@ export default function StartPageComponent(props: StartPageProps) {
       )
     })
 
+    // Review items - Look up full data from props.hierarchy or vocabulary map
     const reviewItems = (dueCards() || [])
       .filter((card) => !seenKeys.has(card.practice_item_key))
       .map((card) => {
-        const itemProps: {
-          slug: string
-          type: "module" | "review"
-          itemType: "vocabulary" | "kanji" | "radical"
-          characters?: string | null
-          meanings?: string[] // Though undefined for direct FSRS cards
-        } = {
-          slug: card.practice_item_key,
-          type: "review",
-          itemType: card.type,
-        }
+        let characters: string | null | undefined
+        let meanings: string[] | undefined
 
-        // For Kanji/Radical review cards, their "character" is their slug/key
-        if (card.type === "kanji" || card.type === "radical") {
-          itemProps.characters = card.practice_item_key
+        if (card.type === "vocabulary") {
+          const vocabData = vocabulary[card.practice_item_key]
+          if (vocabData) {
+            characters = vocabData.word
+            meanings = vocabData.english
+          } else {
+            console.warn(
+              `Vocabulary data not found for review item: ${card.practice_item_key}.`,
+            )
+          }
+        } else if (card.type === "kanji") {
+          // Look up Kanji data directly from props.hierarchy.uniqueKanji
+          const kanjiData = props.hierarchy!.uniqueKanji.find(
+            (k) => k.slug === card.practice_item_key,
+          )
+          if (kanjiData) {
+            characters = kanjiData.characters
+            meanings = kanjiData.meanings
+          } else {
+            console.warn(
+              `Kanji data not found in hierarchy for review item: ${card.practice_item_key}.`,
+            )
+          }
+        } else if (card.type === "radical") {
+          // Look up Radical data directly from props.hierarchy.uniqueRadicals
+          const radicalData = props.hierarchy!.uniqueRadicals.find(
+            (r) => r.slug === card.practice_item_key,
+          )
+          if (radicalData) {
+            characters = radicalData.characters
+            meanings = radicalData.meanings
+          } else {
+            console.warn(
+              `Radical data not found in hierarchy for review item: ${card.practice_item_key}.`,
+            )
+          }
         }
 
         return createPreviewItem(
-          itemProps,
+          {
+            slug: card.practice_item_key,
+            type: "review",
+            itemType: card.type,
+            characters,
+            meanings,
+          },
           props.mode,
           card, // Pass the full FSRSCardData to get the `due` date
           flipVocabQA(),
@@ -213,7 +284,26 @@ export default function StartPageComponent(props: StartPageProps) {
     return [...moduleItems, ...reviewItems]
   })
 
+  const vocabCount = createMemo(() => {
+    return previewItems().filter((item) => item.itemType === "vocabulary")
+      .length
+  })
+
+  const kanjiRadicalCount = createMemo(() => {
+    return previewItems().filter(
+      (item) => item.itemType === "kanji" || item.itemType === "radical",
+    ).length
+  })
+
   const totalItemCount = createMemo(() => previewItems().length)
+
+  const headerText = createMemo(() => {
+    if (enablePrerequisites() && kanjiRadicalCount() > 0) {
+      return `${vocabCount()} vocabulary (+${kanjiRadicalCount()} kanji/radicals)`
+    } else {
+      return `${totalItemCount()} vocabulary`
+    }
+  })
 
   async function handleStart() {
     setIsStarting(true)
@@ -237,6 +327,7 @@ export default function StartPageComponent(props: StartPageProps) {
         state.settings.flipVocabQA,
         state.settings.flipKanjiRadicalQA,
         state.settings.shuffleInput,
+        state.settings.enablePrerequisites,
       )
 
       const manager = new PracticeSessionManager(
@@ -254,10 +345,7 @@ export default function StartPageComponent(props: StartPageProps) {
 
   return (
     <div class="min-h-screen">
-      <StartPageHeader
-        deckName={props.deckName}
-        previewCount={totalItemCount()}
-      />
+      <StartPageHeader deckName={props.deckName} previewCount={headerText()} />
       <div class="px-4 pb-28">
         <div class="mx-auto max-w-3xl">
           <div class="grid gap-4 lg:gap-5">
@@ -279,7 +367,7 @@ export default function StartPageComponent(props: StartPageProps) {
 
 function StartPageHeader(props: {
   deckName: string | JSX.Element
-  previewCount: number
+  previewCount: string
 }) {
   return (
     <div class="relative px-4 pt-14 pb-10 lg:pt-18 lg:pb-12">
@@ -293,7 +381,7 @@ function StartPageHeader(props: {
             </div>
             <h1 class="text-3xl font-bold lg:text-5xl">{props.deckName}</h1>
             <p class="text-muted-foreground mt-3 text-base lg:text-lg">
-              Master {props.previewCount} terms through interactive practice
+              Master {props.previewCount} through interactive practice
             </p>
           </div>
           <div class="absolute top-0 right-0">

@@ -157,6 +157,7 @@ export async function initializePracticeSession(
   flipVocabQA: boolean,
   flipKanjiRadicalQA: boolean,
   shuffle: boolean = false,
+  enablePrerequisites: boolean = true,
 ): Promise<PracticeSessionState> {
   const cardMap = new Map<string, PracticeCard>()
   const dependencyMap = new Map<string, string[]>()
@@ -173,16 +174,30 @@ export async function initializePracticeSession(
     filteredModuleFSRSCards.map((card) => [card.practice_item_key, card]),
   )
 
-  const allHierarchyItems = [
-    ...hierarchy.hierarchy,
-    ...hierarchy.uniqueKanji,
-    ...hierarchy.uniqueRadicals,
+  // Conditionally include Kanji and Radicals for the MODULE ITEMS.
+  // Review items (from allDueFSRSCards) are ALWAYS processed regardless of this flag.
+  const moduleHierarchyItems: Array<VocabHierarchy | Kanji | Radical> = [
+    ...hierarchy.hierarchy, // Always include vocabulary from the hierarchy
   ]
 
-  // --- Phase 1: Create All Cards (No Dependencies Yet) ---
-  allHierarchyItems.forEach((item) => {
-    const type =
-      "kanji" in item ? "vocabulary" : "radicals" in item ? "kanji" : "radical"
+  if (enablePrerequisites) {
+    moduleHierarchyItems.push(
+      ...hierarchy.uniqueKanji,
+      ...hierarchy.uniqueRadicals,
+    )
+  }
+
+  // --- Phase 1: Create All Module Cards (No Dependencies Yet) ---
+  moduleHierarchyItems.forEach((item) => {
+    // Determine type based on properties, as the item might be VocabHierarchy, Kanji, or Radical
+    let type: DBPracticeItemType
+    if ("kanji" in item) {
+      type = "vocabulary"
+    } else if ("radicals" in item) {
+      type = "kanji"
+    } else {
+      type = "radical"
+    }
     const key = `${type}:${item.slug}`
 
     const fsrsData = moduleFSRSMap.get(item.slug) || null
@@ -200,18 +215,20 @@ export async function initializePracticeSession(
 
   // --- Phase 2: Process Standalone Due Reviews ---
   const pureDueReviewCards = allDueFSRSCards.filter(
+    // Filter out due cards that are ALREADY covered by the moduleHierarchyItems,
     (card) => !cardMap.has(`${card.type}:${card.practice_item_key}`),
   )
 
   // --- Use for...of loop to handle async fetching ---
   for (const fsrsData of pureDueReviewCards) {
     const key = `${fsrsData.type}:${fsrsData.practice_item_key}`
-    if (cardMap.has(key)) continue
+    if (cardMap.has(key)) continue // Should be caught by the filter above, but good safeguard
 
     let itemToPass: VocabHierarchy | Kanji | Radical | null = null
 
     const itemType: DBPracticeItemType = fsrsData.type
 
+    // Look up data for review cards from global collections if not in current hierarchy
     if (itemType === "vocabulary") {
       const vocabItem = globalVocabCollection[fsrsData.practice_item_key]
       if (!vocabItem) {
@@ -225,24 +242,29 @@ export async function initializePracticeSession(
         characters: vocabItem.word,
         slug: vocabItem.word,
         kanji: [], // Placeholder
-      }
+      } as VocabHierarchy // Cast needed to satisfy type for addKanaAndRuby
     } else if (itemType === "kanji") {
-      itemToPass = await getKanjiDetailsBySlug({
-        data: fsrsData.practice_item_key,
-      })
+      // Check if it's in the full hierarchy list first, as it's already loaded
+      itemToPass =
+        hierarchy.uniqueKanji.find(
+          (k) => k.slug === fsrsData.practice_item_key,
+        ) || (await getKanjiDetailsBySlug({ data: fsrsData.practice_item_key }))
       if (!itemToPass) {
         console.warn(
-          `Could not fetch Kanji details for due review: ${fsrsData.practice_item_key}. Skipping card.`,
+          `Could not find/fetch Kanji details for due review: ${fsrsData.practice_item_key}. Skipping card.`,
         )
         continue
       }
     } else if (itemType === "radical") {
-      itemToPass = await getRadicalDetailsBySlug({
-        data: fsrsData.practice_item_key,
-      })
+      // Check if it's in the full hierarchy list first
+      itemToPass =
+        hierarchy.uniqueRadicals.find(
+          (r) => r.slug === fsrsData.practice_item_key,
+        ) ||
+        (await getRadicalDetailsBySlug({ data: fsrsData.practice_item_key }))
       if (!itemToPass) {
         console.warn(
-          `Could not fetch Radical details for due review: ${fsrsData.practice_item_key}. Skipping card.`,
+          `Could not find/fetch Radical details for due review: ${fsrsData.practice_item_key}. Skipping card.`,
         )
         continue
       }
@@ -266,42 +288,62 @@ export async function initializePracticeSession(
     reviewQueue.push(key)
   }
 
-  // --- Phase 3: Build Dependencies (All Cards Now Exist) ---
-  allHierarchyItems.forEach((item) => {
-    const type =
-      "kanji" in item ? "vocabulary" : "radicals" in item ? "kanji" : "radical"
-    const key = `${type}:${item.slug}`
+  // --- Phase 3: Build Dependencies (Only if prerequisites are enabled) ---
+  if (enablePrerequisites) {
+    const allOriginalHierarchyItems = [
+      ...hierarchy.hierarchy,
+      ...hierarchy.uniqueKanji,
+      ...hierarchy.uniqueRadicals,
+    ]
 
-    const prereqKeys =
-      type === "vocabulary"
-        ? (item as VocabHierarchy).kanji.map((k) => `kanji:${k.slug}`)
-        : type === "kanji"
-          ? (item as Kanji).radicals.map((r) => `radical:${r.slug}`)
-          : []
-
-    prereqKeys.forEach((prereqKey) => {
-      const prereqCard = cardMap.get(prereqKey)
-      if (!prereqCard) return // Should not happen if all hierarchy items are mapped
-
-      const prereqState = prereqCard.fsrs.card.state
-      if (prereqState === State.New || prereqState === State.Learning) {
-        if (!dependencyMap.has(key)) dependencyMap.set(key, [])
-        dependencyMap.get(key)!.push(prereqKey)
-
-        if (!unlocksMap.has(prereqKey)) unlocksMap.set(prereqKey, [])
-        unlocksMap.get(prereqKey)!.push(key)
+    allOriginalHierarchyItems.forEach((item) => {
+      let type: DBPracticeItemType
+      if ("kanji" in item) {
+        type = "vocabulary"
+      } else if ("radicals" in item) {
+        type = "kanji"
+      } else {
+        type = "radical"
       }
+
+      const key = `${type}:${item.slug}`
+
+      const prereqKeys =
+        type === "vocabulary"
+          ? (item as VocabHierarchy).kanji.map((k) => `kanji:${k.slug}`)
+          : type === "kanji"
+            ? (item as Kanji).radicals.map((r) => `radical:${r.slug}`)
+            : []
+
+      prereqKeys.forEach((prereqKey) => {
+        const prereqCard = cardMap.get(prereqKey)
+        if (!prereqCard) return
+
+        const prereqState = prereqCard.fsrs.card.state
+        if (prereqState === State.New || prereqState === State.Learning) {
+          if (!dependencyMap.has(key)) dependencyMap.set(key, [])
+          dependencyMap.get(key)!.push(prereqKey)
+
+          if (!unlocksMap.has(prereqKey)) unlocksMap.set(prereqKey, [])
+          unlocksMap.get(prereqKey)!.push(key)
+        }
+      })
     })
-  })
+  }
 
   // --- Phase 4: Lock Cards and Populate Queues ---
+  // This logic filters `cardMap` for the *final* queues.
   for (const [key, card] of cardMap.entries()) {
     if (card.sessionScope === "module") {
-      if (dependencyMap.has(key)) {
+      // Only lock if prerequisites are enabled AND there's an actual dependency
+      if (enablePrerequisites && dependencyMap.has(key)) {
         lockedKeys.add(key)
       } else {
         moduleQueue.push(key)
       }
+    } else {
+      // Review cards are always directly added to reviewQueue
+      reviewQueue.push(key)
     }
   }
 

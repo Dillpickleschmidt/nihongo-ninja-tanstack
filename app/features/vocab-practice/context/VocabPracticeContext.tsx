@@ -46,6 +46,7 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     settings: {
       shuffleInput: true,
       enabledAnswerCategories: [],
+      enablePrerequisites: true,
       flipVocabQA: false,
       flipKanjiRadicalQA: true,
     },

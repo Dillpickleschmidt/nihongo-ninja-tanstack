@@ -15,6 +15,7 @@ export type PracticeMode = "readings" | "kana"
 export type Settings = {
   shuffleInput: boolean
   enabledAnswerCategories: string[]
+  enablePrerequisites: boolean
   flipVocabQA: boolean
   flipKanjiRadicalQA: boolean
 }
