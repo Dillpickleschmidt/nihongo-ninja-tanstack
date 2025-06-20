@@ -14,8 +14,6 @@ import {
 } from "@/data/utils/core"
 import { textbooks } from "@/data/textbooks"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
-import { BackgroundImage } from "@/components/BackgroundImage"
-import { Background } from "@/features/dashboard/components/Background"
 import { DashboardHeader } from "@/features/dashboard/components/DashboardHeader"
 import { ContentSection } from "@/features/dashboard/components/ContentSection"
 import { LessonsSection } from "@/features/dashboard/components/LessonsSection"
@@ -34,6 +32,7 @@ import type {
   StaticModule,
   TextbookIDEnum,
 } from "@/data/types"
+import { TextbookChapterBackgrounds } from "@/features/dashboard/components/TextbookChapterBackgrounds"
 
 // Zod schema for search params
 const dashboardSearchSchema = z
@@ -171,6 +170,7 @@ export const Route = createFileRoute("/dashboard")({
     })
 
     return {
+      sourceId,
       deck,
       lessons,
       deckSources,
@@ -227,13 +227,16 @@ function RouteComponent() {
         }
       `}</style>
 
-      <BackgroundImage
-        class="z-[-1] !-mt-[4.1rem] min-h-screen"
-        backgroundImage="/img/dust-splatter-1.png"
-        backgroundImageSize="1215px"
-        backgroundImageOpacity={3}
+      {/* <BackgroundImage */}
+      {/*   class="z-[-1] !-mt-[4.1rem] min-h-screen" */}
+      {/*   backgroundImage="/img/dust-splatter-1.png" */}
+      {/*   backgroundImageSize="1215px" */}
+      {/*   backgroundImageOpacity={3} */}
+      {/* /> */}
+      <TextbookChapterBackgrounds
+        textbook={loaderData().sourceId}
+        chapter={loaderData().deck.slug}
       />
-      <Background position="absolute" opacity={0.18} />
 
       <DashboardHeader
         currentDeck={loaderData().deck}

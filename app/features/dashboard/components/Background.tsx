@@ -1,48 +1,126 @@
-export function Background(props: { position: string; opacity: number }) {
+import { createSignal, createEffect, onMount } from "solid-js" // Import SolidJS primitives
+
+export type BackgroundItem = {
+  source_type: "img" | "video"
+  src: string
+  layout: "vertical" | "horizontal"
+  position: "static" | "relative" | "absolute" | "fixed"
+  opacity: number
+  y_offset_desktop?: string
+  y_offset_mobile?: string
+}
+
+export function Background(props: { backgroundItem: BackgroundItem }) {
+  const { backgroundItem } = props
+  const {
+    source_type,
+    src,
+    layout,
+    position,
+    opacity,
+    y_offset_desktop = "-64px",
+    y_offset_mobile = "-64px",
+  } = backgroundItem
+
+  const [isVerticalDesktop, setIsVerticalDesktop] = createSignal(false)
+
+  onMount(() => {
+    const handleResize = () => {
+      setIsVerticalDesktop(layout === "vertical" && window.innerWidth > 768)
+    }
+
+    handleResize()
+
+    window.addEventListener("resize", handleResize)
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  })
+  const gradientPosition = () => (isVerticalDesktop() ? "fixed" : "absolute")
+  const gradientZIndex = -1
+  const mediaZIndex = -2
+
   return (
     <>
       <style>
         {`
-          .custom-gradient-mask {
-             mask-image: linear-gradient(to bottom,
-              transparent 0%,
-              rgba(0, 0, 0, 1) 0%,
-              rgba(0, 0, 0, 0) 100%
-            );
-            -webkit-mask-image: linear-gradient(to bottom,
-              transparent 0%,
-              rgba(0, 0, 0, 1) 0%,
-              rgba(0, 0, 0, 0) 100%
-            );
-          }
-          .centered-bg-image {
-            position: ${props.position};
-            top: -64px;
+          .background-media {
+            position: ${position};
+            top: ${y_offset_desktop}; 
             left: 50%;
             transform: translateX(-50%);
-            width: auto;
-            height: 100vh;
+            width: 100vw;
             min-height: 100vh;
+            height: auto;
             object-fit: cover;
-            object-position: center;
-            z-index: -2;
+            object-position: ${layout === "vertical" ? "top" : "center"};
+            z-index: ${mediaZIndex};
             pointer-events: none;
-            opacity: ${props.opacity};
+            opacity: ${opacity};
           }
+          
+          .background-media.horizontal {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+          }
+          
+          .gradient-overlay {
+            position: ${gradientPosition()}; /* Access signal with () */
+            top: ${gradientPosition() === "fixed" ? "0" : y_offset_desktop};            
+            left: ${gradientPosition() === "fixed" ? "0" : "50%"};
+            ${
+              gradientPosition() === "absolute"
+                ? "transform: translateX(-50%);"
+                : ""
+            }
+            width: 100vw;
+            height: ${gradientPosition() === "fixed" ? "100vh" : "100vh"};
+            z-index: ${gradientZIndex};
+            pointer-events: none;
+            background-color: #191919;
+            mask-image: linear-gradient(to bottom,
+              rgba(0, 0, 0, 0) 0%,  
+              rgba(0, 0, 0, 1) 100% 
+            );
+            -webkit-mask-image: linear-gradient(to bottom,
+              rgba(0, 0, 0, 0) 0%,
+              rgba(0, 0, 0, 1) 100%
+            );
+          }
+          
           @media (max-width: 768px) {
-            .centered-bg-image {
-              min-width: calc(100vw + 30px);
-              width: calc(100vw + 30px);
-              left: calc(50% + 15px);
+            .background-media {
+              top: ${y_offset_mobile};
+            }
+
+            .gradient-overlay {
+              position: absolute;
+              top: ${y_offset_mobile};
+              left: 50%;
+              transform: translateX(-50%);
+              height: 100vh;
             }
           }
         `}
       </style>
-      <img
-        src="/img/japanese-gate.png"
-        class="custom-gradient-mask centered-bg-image"
-        alt="Decorative Japanese Gate"
-      />
+
+      {source_type === "img" ? (
+        <img src={src} class={`background-media ${layout}`} alt="Background" />
+      ) : (
+        <video
+          src={src}
+          class={`background-media ${layout}`}
+          autoplay
+          loop
+          muted
+          playsInline
+          preload="auto"
+        />
+      )}
+
+      <div class="gradient-overlay" />
     </>
   )
 }

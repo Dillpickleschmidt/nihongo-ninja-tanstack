@@ -204,7 +204,7 @@ function ProgressCircle(props: {
           </span>
         </div>
       </HoverCardTrigger>
-      <HoverCardContent class="w-auto px-3 py-2 text-sm">
+      <HoverCardContent class="border-card-foreground w-auto bg-neutral-950/70 px-3 py-2 text-sm backdrop-blur-2xl">
         <div class="flex flex-col gap-1">
           <p>
             Seen: {seenCount()} / {props.total}
@@ -286,7 +286,7 @@ function CharBox(props: { item: Kanji | Radical }) {
                 </span>
               </SmoothCard>
             </HoverCardTrigger>
-            <HoverCardContent class="w-auto px-3 py-1.5 text-sm">
+            <HoverCardContent class="border-card-foreground w-auto bg-neutral-950/70 px-3 py-1.5 text-sm backdrop-blur-2xl">
               <span>{props.item.meanings.join(", ")}</span>
             </HoverCardContent>
           </HoverCard>

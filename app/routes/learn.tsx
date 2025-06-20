@@ -14,7 +14,16 @@ export const Route = createFileRoute("/learn")({
 function LearnLayout() {
   return (
     <div class="relative min-h-screen w-full overflow-y-auto">
-      <Background position="fixed" opacity={0.04} />
+      <Background
+        backgroundItem={{
+          source_type: "img",
+          src: "/img/backgrounds/tranquil_village_by_k_jackson_katss_djqxpcz.png",
+          position: "fixed",
+          layout: "vertical",
+          opacity: 0.04,
+          y_offset_desktop: "-82px",
+        }}
+      />
       <BackgroundImage
         class="!fixed z-[-1]"
         backgroundImage="/img/dots.svg"
