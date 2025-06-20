@@ -1,130 +1,244 @@
 import Database, { Database as SQLiteDB } from "better-sqlite3"
-import { writeFileSync, readFileSync, mkdirSync } from "fs"
+import { writeFileSync, mkdirSync } from "fs"
 import { dirname } from "path"
-import "dotenv/config" // For loading .env file
+import "dotenv/config"
 
-// --- Constants and Configuration ---
-// NOTE: Create a .env file in the same directory with the line:
-// WANIKANI_API_TOKEN="your_api_token_here"
 const WANIKANI_API_TOKEN = process.env.WANIKANI_API_TOKEN
 const API_BASE = "https://api.wanikani.com/v2"
 
-// --- Type Definitions ---
-// These types are used within the script for type safety.
-interface WaniKaniSubject {
+// --- Type Definitions (aligned with WaniKani API response) ---
+
+interface WaniKaniMeaning {
+  meaning: string
+  primary: boolean
+  accepted_answer?: boolean
+}
+
+interface WaniKaniAuxiliaryMeaning {
+  meaning: string
+  type: "whitelist" | "blacklist"
+}
+
+interface WaniKaniReading {
+  reading: string
+  primary: boolean
+  accepted_answer?: boolean
+  type?: "onyomi" | "kunyomi" | "nanori"
+}
+
+interface WaniKaniCharacterImageMetadata {
+  inline_styles: boolean
+}
+
+interface WaniKaniCharacterImage {
+  url: string
+  metadata: WaniKaniCharacterImageMetadata
+  content_type: string
+}
+
+interface WaniKaniContextSentence {
+  en: string
+  ja: string
+}
+
+interface WaniKaniPronunciationAudioMetadata {
+  gender: string
+  source_id: number
+  pronunciation: string
+  voice_actor_id: number
+  voice_actor_name: string
+  voice_description: string
+}
+
+interface WaniKaniPronunciationAudio {
+  url: string
+  metadata: WaniKaniPronunciationAudioMetadata
+  content_type: string
+}
+
+// Common Subject Data attributes found across radical, kanji, vocabulary, kana_vocabulary
+interface WaniKaniSubjectCommonData {
+  auxiliary_meanings?: WaniKaniAuxiliaryMeaning[]
+  characters: string | null
+  created_at: string
+  document_url: string
+  hidden_at: string | null
+  lesson_position: number
+  level: number
+  meaning_mnemonic: string
+  meanings: WaniKaniMeaning[]
+  slug: string
+  spaced_repetition_system_id: number
+  reading_mnemonic?: string
+  reading_hint?: string
+  context_sentences?: WaniKaniContextSentence[]
+  parts_of_speech?: string[]
+  pronunciation_audios?: WaniKaniPronunciationAudio[]
+}
+
+// Specific Subject Data interfaces extending common attributes
+interface WaniKaniRadicalData extends WaniKaniSubjectCommonData {
+  object: "radical"
+  amalgamation_subject_ids?: number[]
+  character_images?: WaniKaniCharacterImage[]
+}
+
+interface WaniKaniKanjiData extends WaniKaniSubjectCommonData {
+  object: "kanji"
+  amalgamation_subject_ids?: number[]
+  component_subject_ids?: number[]
+  meaning_hint?: string
+  readings?: WaniKaniReading[]
+  visually_similar_subject_ids?: number[]
+}
+
+interface WaniKaniVocabularyData extends WaniKaniSubjectCommonData {
+  object: "vocabulary"
+  component_subject_ids?: number[]
+  context_sentences?: WaniKaniContextSentence[]
+  parts_of_speech?: string[]
+  pronunciation_audios?: WaniKaniPronunciationAudio[]
+  readings?: WaniKaniReading[]
+}
+
+interface WaniKaniKanaVocabularyData extends WaniKaniSubjectCommonData {
+  object: "kana_vocabulary"
+  context_sentences?: WaniKaniContextSentence[]
+  parts_of_speech?: string[]
+  pronunciation_audios?: WaniKaniPronunciationAudio[]
+}
+
+// Union type for the 'data' part of a WaniKaniApiSubject
+type WaniKaniSubjectDataType =
+  | WaniKaniRadicalData
+  | WaniKaniKanjiData
+  | WaniKaniVocabularyData
+  | WaniKaniKanaVocabularyData
+
+// Full WaniKani API Subject structure
+interface WaniKaniApiSubject {
   id: number
-  object: "vocabulary" | "kanji" | "radical"
-  data: {
-    characters: string
-    meanings: {
-      meaning: string
-      primary: boolean
-    }[]
-    slug: string
-    meaning_mnemonic: string
-    reading_mnemonic?: string
-    component_subject_ids?: number[]
+  object: WaniKaniSubjectDataType["object"]
+  url: string
+  data_updated_at: string
+  data: WaniKaniSubjectDataType
+}
+
+// WaniKani Collection response structure for pagination
+interface WaniKaniCollectionResponse {
+  object: "collection"
+  url: string
+  pages: {
+    next_url: string | null
+    previous_url: string | null
+    per_page: number
   }
+  total_count: number
+  data_updated_at: string | null
+  data: WaniKaniApiSubject[] // Ensure data is WaniKaniApiSubject array
 }
 
 // --- Core Functions ---
 
 /**
- * Reads vocabulary words from ./scripts/new-vocab.txt file.
- * Strips quotes, commas, and spaces, then filters out empty lines.
+ * Fetches all pages from a WaniKani API collection endpoint.
  */
-function readVocabFile(): string[] {
-  try {
-    const content = readFileSync("./scripts/new-vocab.txt", "utf-8")
-    return content
-      .split("\n")
-      .map((line) => line.replace(/[",\s]/g, ""))
-      .filter((line) => line.length > 0)
-  } catch (error) {
-    throw new Error(
-      "Could not read ./scripts/new-vocab.txt file. Make sure it exists.",
-    )
+async function fetchAllPages<T>(initialEndpoint: string): Promise<T[]> {
+  let allData: T[] = []
+  let currentUrl: string | null = initialEndpoint
+
+  while (currentUrl) {
+    const fullUrl =
+      currentUrl.startsWith("http://") || currentUrl.startsWith("https://")
+        ? currentUrl // Use full URL if provided by 'next_url'
+        : `${API_BASE}${currentUrl}` // Prepend base for initial relative path
+
+    console.log(`Fetching from: ${fullUrl}`)
+    const response = await fetch(fullUrl, {
+      headers: {
+        Authorization: `Bearer ${WANIKANI_API_TOKEN}`,
+        "Wanikani-Revision": "20170710",
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(
+        `API request failed: ${response.status} ${response.statusText} for ${fullUrl}`,
+      )
+    }
+
+    const responseBody: WaniKaniCollectionResponse = await response.json()
+    allData = allData.concat(responseBody.data as T[])
+    currentUrl = responseBody.pages?.next_url || null
   }
+  return allData
 }
 
 /**
- * Fetches data from a specified WaniKani API endpoint.
- */
-async function fetchFromAPI(endpoint: string) {
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    headers: {
-      Authorization: `Bearer ${WANIKANI_API_TOKEN}`,
-      "Wanikani-Revision": "20170710",
-    },
-  })
-
-  if (!response.ok) {
-    throw new Error(
-      `API request failed: ${response.status} ${response.statusText}`,
-    )
-  }
-  return response.json()
-}
-
-/**
- * Initializes the SQLite database and creates the schema if it doesn't exist.
+ * Initializes the SQLite database and creates/recreates schema.
  */
 function initDB(): SQLiteDB {
   const dbPath = "./app/data/wanikani/wanikani.db"
-
-  // Ensure directory exists
   mkdirSync(dirname(dbPath), { recursive: true })
-
   const db = new Database(dbPath)
 
-  // CHANGED: Renamed 'meaning' column to 'meanings'
+  // Clear existing tables for a fresh sync
   db.exec(`
-    CREATE TABLE IF NOT EXISTS vocabulary (
+    DROP TABLE IF EXISTS vocab_kanji;
+    DROP TABLE IF EXISTS kanji_radicals;
+    DROP TABLE IF EXISTS vocabulary;
+    DROP TABLE IF EXISTS kana_vocabulary;
+    DROP TABLE IF EXISTS kanji;
+    DROP TABLE IF EXISTS radicals;
+  `)
+
+  db.exec(`
+    CREATE TABLE vocabulary (
       id INTEGER PRIMARY KEY, object TEXT, characters TEXT, slug TEXT UNIQUE,
-      meanings TEXT,
-      meaning_mnemonic TEXT, reading_mnemonic TEXT
+      meanings TEXT, meaning_mnemonic TEXT, reading_mnemonic TEXT
     );
-    CREATE TABLE IF NOT EXISTS kanji (
-      id INTEGER PRIMARY KEY, object TEXT, characters TEXT, slug TEXT,
-      meanings TEXT,
-      meaning_mnemonic TEXT, reading_mnemonic TEXT
+    CREATE TABLE kana_vocabulary (
+      id INTEGER PRIMARY KEY, object TEXT, characters TEXT, slug TEXT UNIQUE,
+      meanings TEXT, meaning_mnemonic TEXT, reading_mnemonic TEXT
     );
-    CREATE TABLE IF NOT EXISTS radicals (
-      id INTEGER PRIMARY KEY, object TEXT, characters TEXT, slug TEXT,
-      meanings TEXT,
-      meaning_mnemonic TEXT
+    CREATE TABLE kanji (
+      id INTEGER PRIMARY KEY, object TEXT, characters TEXT, slug TEXT UNIQUE,
+      meanings TEXT, meaning_mnemonic TEXT, reading_mnemonic TEXT
     );
-    CREATE TABLE IF NOT EXISTS vocab_kanji (
-      vocab_id INTEGER NOT NULL,
-      kanji_id INTEGER NOT NULL,
+    CREATE TABLE radicals (
+      id INTEGER PRIMARY KEY, object TEXT, characters TEXT, slug TEXT UNIQUE,
+      meanings TEXT, meaning_mnemonic TEXT
+    );
+    CREATE TABLE vocab_kanji (
+      vocab_id INTEGER NOT NULL, kanji_id INTEGER NOT NULL,
       PRIMARY KEY (vocab_id, kanji_id),
       FOREIGN KEY (vocab_id) REFERENCES vocabulary(id),
       FOREIGN KEY (kanji_id) REFERENCES kanji(id)
     );
-    CREATE TABLE IF NOT EXISTS kanji_radicals (
-      kanji_id INTEGER NOT NULL,
-      radical_id INTEGER NOT NULL,
+    CREATE TABLE kanji_radicals (
+      kanji_id INTEGER NOT NULL, radical_id INTEGER NOT NULL,
       PRIMARY KEY (kanji_id, radical_id),
       FOREIGN KEY (kanji_id) REFERENCES kanji(id),
       FOREIGN KEY (radical_id) REFERENCES radicals(id)
     );
-  `)
 
+    CREATE INDEX IF NOT EXISTS idx_radicals_characters ON radicals (characters);
+  `)
   return db
 }
 
 /**
- * Inserts or replaces subjects into the appropriate table (vocabulary, kanji, or radicals).
+ * Inserts or replaces WaniKani subjects into the appropriate table.
  */
 function insertSubjects(
   db: SQLiteDB,
-  table: "vocabulary" | "kanji" | "radicals",
-  subjects: WaniKaniSubject[],
+  table: "vocabulary" | "kana_vocabulary" | "kanji" | "radicals",
+  subjects: WaniKaniApiSubject[],
 ) {
   if (subjects.length === 0) return
 
-  const hasReading = table !== "radicals"
-  // CHANGED: Renamed 'meaning' field to 'meanings'
+  const hasReading =
+    table === "vocabulary" || table === "kanji" || table === "kana_vocabulary"
   const fields = `(id, object, characters, slug, meanings, meaning_mnemonic${
     hasReading ? ", reading_mnemonic" : ""
   })`
@@ -136,11 +250,10 @@ function insertSubjects(
 
   for (const subject of subjects) {
     const meaningsJSON = JSON.stringify(subject.data.meanings)
-
     const values: (string | number | null)[] = [
       subject.id,
       subject.object,
-      subject.data.characters || null, // Radicals can have null characters
+      subject.data.characters || null,
       subject.data.slug,
       meaningsJSON,
       subject.data.meaning_mnemonic,
@@ -153,13 +266,12 @@ function insertSubjects(
 }
 
 /**
- * Inserts component relationships into the appropriate join table.
- * It first clears existing relationships for the parent subjects to ensure freshness.
+ * Inserts component relationships into join tables.
  */
 function insertRelations(
   db: SQLiteDB,
   table: "vocab_kanji" | "kanji_radicals",
-  subjects: WaniKaniSubject[],
+  subjects: WaniKaniApiSubject[],
 ) {
   if (subjects.length === 0) return
 
@@ -174,7 +286,7 @@ function insertRelations(
   )
 
   for (const subject of subjects) {
-    deleteStmt.run(subject.id)
+    deleteStmt.run(subject.id) // Clear existing relations for this subject
     if (subject.data.component_subject_ids) {
       for (const componentId of subject.data.component_subject_ids) {
         insertStmt.run(subject.id, componentId)
@@ -184,7 +296,7 @@ function insertRelations(
 }
 
 /**
- * Generates a TypeScript definition file for WaniKani API objects.
+ * Generates TypeScript definition file for WaniKani API objects.
  */
 function generateTypes() {
   const content = `// Generated WaniKani types - ${new Date().toISOString()}
@@ -192,25 +304,137 @@ function generateTypes() {
 export interface WaniKaniMeaning {
   meaning: string;
   primary: boolean;
+  accepted_answer?: boolean;
 }
 
-export interface WaniKaniSubject {
+export interface WaniKaniAuxiliaryMeaning {
+  meaning: string;
+  type: "whitelist" | "blacklist";
+}
+
+export interface WaniKaniReading {
+  reading: string;
+  primary: boolean;
+  accepted_answer?: boolean;
+  type?: "onyomi" | "kunyomi" | "nanori";
+}
+
+export interface WaniKaniCharacterImageMetadata {
+  inline_styles: boolean;
+}
+
+export interface WaniKaniCharacterImage {
+  url: string;
+  metadata: WaniKaniCharacterImageMetadata;
+  content_type: string;
+}
+
+export interface WaniKaniContextSentence {
+  en: string;
+  ja: string;
+}
+
+export interface WaniKaniPronunciationAudioMetadata {
+  gender: string;
+  source_id: number;
+  pronunciation: string;
+  voice_actor_id: number;
+  voice_actor_name: string;
+  voice_description: string;
+}
+
+export interface WaniKaniPronunciationAudio {
+  url: string;
+  metadata: WaniKaniPronunciationAudioMetadata;
+  content_type: string;
+}
+
+interface WaniKaniSubjectCommonData {
+  auxiliary_meanings?: WaniKaniAuxiliaryMeaning[];
+  characters: string | null;
+  created_at: string;
+  document_url: string;
+  hidden_at: string | null;
+  lesson_position: number;
+  level: number;
+  meaning_mnemonic: string;
+  meanings: WaniKaniMeaning[];
+  slug: string;
+  spaced_repetition_system_id: number;
+  reading_mnemonic?: string;
+  reading_hint?: string;
+  context_sentences?: WaniKaniContextSentence[];
+  parts_of_speech?: string[];
+  pronunciation_audios?: WaniKaniPronunciationAudio[];
+}
+
+export interface WaniKaniRadicalData extends WaniKaniSubjectCommonData {
+  object: "radical";
+  amalgamation_subject_ids?: number[];
+  character_images?: WaniKaniCharacterImage[];
+}
+
+export interface WaniKaniKanjiData extends WaniKaniSubjectCommonData {
+  object: "kanji";
+  amalgamation_subject_ids?: number[];
+  component_subject_ids?: number[];
+  meaning_hint?: string;
+  readings?: WaniKaniReading[];
+  visually_similar_subject_ids?: number[];
+}
+
+export interface WaniKaniVocabularyData extends WaniKaniSubjectCommonData {
+  object: "vocabulary";
+  component_subject_ids?: number[];
+  context_sentences?: WaniKaniContextSentence[];
+  parts_of_speech?: string[];
+  pronunciation_audios?: WaniKaniPronunciationAudio[];
+  readings?: WaniKaniReading[];
+}
+
+export interface WaniKaniKanaVocabularyData extends WaniKaniSubjectCommonData {
+  object: "kana_vocabulary";
+  context_sentences?: WaniKaniContextSentence[];
+  parts_of_speech?: string[];
+  pronunciation_audios?: WaniKaniPronunciationAudio[];
+}
+
+export type WaniKaniSubjectDataType =
+  | WaniKaniRadicalData
+  | WaniKaniKanjiData
+  | WaniKaniVocabularyData
+  | WaniKaniKanaVocabularyData;
+
+export interface WaniKaniApiSubject {
   id: number;
-  object: string;
-  data: {
-    characters: string;
-    meanings: WaniKaniMeaning[];
-    slug: string;
-    meaning_mnemonic: string;
-    reading_mnemonic?: string;
-    component_subject_ids?: number[];
-  };
+  object: WaniKaniSubjectDataType["object"];
+  url: string;
+  data_updated_at: string;
+  data: WaniKaniSubjectDataType;
 }
 
-export interface WaniKaniCollection {
-  object: string;
-  data: WaniKaniSubject[];
+export interface WaniKaniCollectionResponse<T> {
+  object: "collection";
+  url: string;
+  pages: {
+    next_url: string | null;
+    previous_url: string | null;
+    per_page: number;
+  };
+  total_count: number;
+  data_updated_at: string | null;
+  data: T[];
 }
+
+export interface WaniKaniReportResponse<T> {
+  object: "report";
+  url: string;
+  data_updated_at: string | null;
+  data: T;
+}
+
+export type WaniKaniSubjectsCollection =
+  WaniKaniCollectionResponse<WaniKaniApiSubject>;
 `
 
   const typesPath = "./app/data/wanikani/wanikani-types.ts"
@@ -225,129 +449,73 @@ async function main() {
   const generateTypesFlag = process.argv.includes("--generate-types")
 
   if (!WANIKANI_API_TOKEN) {
-    throw new Error(
-      "WANIKANI_API_TOKEN not set. Please create a .env file with your token.",
-    )
+    throw new Error("WANIKANI_API_TOKEN not set. Create a .env file.")
   }
 
-  const words = readVocabFile()
-
-  if (words.length === 0) {
-    throw new Error("No vocabulary words found in ./scripts/new-vocab.txt")
-  }
-
-  console.log(`Processing ${words.length} words: ${words.join(", ")}`)
+  console.log("Initializing database...")
   const db = initDB()
 
-  // 1. Fetch initial vocabulary
-  console.log("Fetching vocabulary...")
-  const vocabResponse = await fetchFromAPI(
-    `/subjects?types=vocabulary&slugs=${words.join(",")}`,
+  console.log("Fetching all WaniKani subjects...")
+  const allSubjects = await fetchAllPages<WaniKaniApiSubject>(
+    "/subjects?per_page=1000",
   )
-  const vocabSubjects: WaniKaniSubject[] = vocabResponse.data
+  console.log(`✓ Fetched ${allSubjects.length} subjects.`)
 
-  const matchedSlugs = new Set(vocabSubjects.map((v) => v.data.slug))
-  const unmatchedWords = words.filter((word) => !matchedSlugs.has(word))
-
-  if (vocabSubjects.length === 0) {
-    throw new Error(
-      `No vocabulary found for any of the provided slugs: ${words.join(", ")}`,
-    )
-  }
-  console.log(`✓ Found ${vocabSubjects.length} vocabulary words`)
-
-  // 2. Collect component Kanji IDs
-  const kanjiIds = new Set<number>()
-  vocabSubjects.forEach((v) =>
-    v.data.component_subject_ids?.forEach((id) => kanjiIds.add(id)),
+  const vocabSubjects = allSubjects.filter((s) => s.object === "vocabulary")
+  const kanaVocabSubjects = allSubjects.filter(
+    (s) => s.object === "kana_vocabulary",
   )
+  const kanjiSubjects = allSubjects.filter((s) => s.object === "kanji")
+  const radicalSubjects = allSubjects.filter((s) => s.object === "radical")
 
-  // 3. Fetch Kanji
-  let kanjiSubjects: WaniKaniSubject[] = []
-  if (kanjiIds.size > 0) {
-    console.log(`Fetching ${kanjiIds.size} kanji...`)
-    const kanjiResponse = await fetchFromAPI(
-      `/subjects?ids=${Array.from(kanjiIds).join(",")}`,
-    )
-    kanjiSubjects = kanjiResponse.data
-  }
-
-  // 4. Collect component Radical IDs
-  const radicalIds = new Set<number>()
-  kanjiSubjects.forEach((k) =>
-    k.data.component_subject_ids?.forEach((id) => radicalIds.add(id)),
-  )
-
-  // 5. Fetch Radicals
-  let radicalSubjects: WaniKaniSubject[] = []
-  if (radicalIds.size > 0) {
-    console.log(`Fetching ${radicalIds.size} radicals...`)
-    const radicalResponse = await fetchFromAPI(
-      `/subjects?ids=${Array.from(radicalIds).join(",")}`,
-    )
-    radicalSubjects = radicalResponse.data
-  }
-
-  // 6. Insert all data
-  console.log("Saving to database...")
+  console.log("Saving subjects and relationships to database...")
   db.transaction(() => {
     insertSubjects(db, "vocabulary", vocabSubjects)
+    insertSubjects(db, "kana_vocabulary", kanaVocabSubjects)
     insertSubjects(db, "kanji", kanjiSubjects)
     insertSubjects(db, "radicals", radicalSubjects)
-    insertRelations(db, "vocab_kanji", vocabSubjects)
-    insertRelations(db, "kanji_radicals", kanjiSubjects)
-  })()
 
-  // 7. Generate types if requested
+    // Filter subjects to only include those with component_subject_ids for relations
+    insertRelations(
+      db,
+      "vocab_kanji",
+      vocabSubjects.filter((s) => s.data.component_subject_ids?.length),
+    )
+    insertRelations(
+      db,
+      "kanji_radicals",
+      kanjiSubjects.filter((s) => s.data.component_subject_ids?.length),
+    )
+  })()
+  console.log("✓ All subjects and relationships saved.")
+
+  const counts = {
+    vocabulary: db.prepare("SELECT COUNT(*) as c FROM vocabulary").get() as {
+      c: number
+    },
+    kana_vocabulary: db
+      .prepare("SELECT COUNT(*) as c FROM kana_vocabulary")
+      .get() as {
+      c: number
+    },
+    kanji: db.prepare("SELECT COUNT(*) as c FROM kanji").get() as { c: number },
+    radicals: db.prepare("SELECT COUNT(*) as c FROM radicals").get() as {
+      c: number
+    },
+  }
+
+  console.log(
+    `\nTotal in DB: ${counts.vocabulary.c} vocab, ` +
+      `${counts.kana_vocabulary.c} kana_vocab, ` +
+      `${counts.kanji.c} kanji, ` +
+      `${counts.radicals.c} radicals`,
+  )
+  db.close()
+
   if (generateTypesFlag) {
     console.log("Generating wanikani-types.ts...")
     generateTypes()
   }
-
-  // 8. Show results from the database
-  // CHANGED: Updated query to use the 'meanings' column.
-  const results = db
-    .prepare(
-      `
-    SELECT
-      v.characters as vocab_chars,
-      json_extract(v.meanings, '$[0].meaning') as vocab_meaning,
-      GROUP_CONCAT(k.characters || ' (' || json_extract(k.meanings, '$[0].meaning') || ')', ', ') as kanji_components
-    FROM vocabulary v
-    LEFT JOIN vocab_kanji vk ON v.id = vk.vocab_id
-    LEFT JOIN kanji k ON vk.kanji_id = k.id
-    WHERE v.slug IN (${words.map(() => "?").join(",")})
-    GROUP BY v.id
-  `,
-    )
-    .all(...words)
-
-  console.log("\nDependency Trees:")
-  results.forEach((r: any) => {
-    console.log(
-      `  ${r.vocab_chars} (${r.vocab_meaning}) → ${
-        r.kanji_components || "(kana only)"
-      }`,
-    )
-  })
-
-  if (unmatchedWords.length > 0) {
-    console.log("\nVocabulary not found:")
-    unmatchedWords.forEach((word) => {
-      console.log(`  ❌ ${word}`)
-    })
-  }
-
-  const counts = {
-    vocab: db.prepare("SELECT COUNT(*) as c FROM vocabulary").get() as any,
-    kanji: db.prepare("SELECT COUNT(*) as c FROM kanji").get() as any,
-    radicals: db.prepare("SELECT COUNT(*) as c FROM radicals").get() as any,
-  }
-
-  console.log(
-    `\nTotal in DB: ${counts.vocab.c} vocab, ${counts.kanji.c} kanji, ${counts.radicals.c} radicals`,
-  )
-  db.close()
 
   const completionMessage = generateTypesFlag
     ? "\n✓ Complete! Generated ./app/data/wanikani/wanikani.db and ./app/data/wanikani/wanikani-types.ts"
