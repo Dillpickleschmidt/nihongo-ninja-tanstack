@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SettingsImport } from './routes/settings'
 import { Route as LearnImport } from './routes/learn'
 import { Route as DashboardImport } from './routes/dashboard'
 import { Route as AuthImport } from './routes/auth'
@@ -29,6 +30,12 @@ import { Route as LearnLessonsJapanesePronunciationImport } from './routes/learn
 import { Route as LearnLessonsHiraganaImport } from './routes/learn/_lessons/hiragana'
 
 // Create/Update Routes
+
+const SettingsRoute = SettingsImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const LearnRoute = LearnImport.update({
   id: '/learn',
@@ -163,6 +170,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof LearnImport
       parentRoute: typeof rootRoute
     }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsImport
+      parentRoute: typeof rootRoute
+    }
     '/learn/_lessons': {
       id: '/learn/_lessons'
       path: ''
@@ -288,6 +302,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
   '/learn': typeof LearnLessonsRouteWithChildren
+  '/settings': typeof SettingsRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
   '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
@@ -305,6 +320,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/settings': typeof SettingsRoute
   '/learn': typeof LearnIndexRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
@@ -324,6 +340,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
   '/learn': typeof LearnRouteWithChildren
+  '/settings': typeof SettingsRoute
   '/learn/_lessons': typeof LearnLessonsRouteWithChildren
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
@@ -345,6 +362,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/learn'
+    | '/settings'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
     | '/practice/contracted-sounds-quiz'
@@ -361,6 +379,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/settings'
     | '/learn'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
@@ -378,6 +397,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/learn'
+    | '/settings'
     | '/learn/_lessons'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
@@ -398,6 +418,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRoute
   LearnRoute: typeof LearnRouteWithChildren
+  SettingsRoute: typeof SettingsRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
   PracticeAllHiraganaQuizRoute: typeof PracticeAllHiraganaQuizRoute
   PracticeContractedSoundsQuizRoute: typeof PracticeContractedSoundsQuizRoute
@@ -411,6 +432,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   DashboardRoute: DashboardRoute,
   LearnRoute: LearnRouteWithChildren,
+  SettingsRoute: SettingsRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,
   PracticeAllHiraganaQuizRoute: PracticeAllHiraganaQuizRoute,
   PracticeContractedSoundsQuizRoute: PracticeContractedSoundsQuizRoute,
@@ -433,6 +455,7 @@ export const routeTree = rootRoute
         "/auth",
         "/dashboard",
         "/learn",
+        "/settings",
         "/practice/$practiceID",
         "/practice/all-hiragana-quiz",
         "/practice/contracted-sounds-quiz",
@@ -456,6 +479,9 @@ export const routeTree = rootRoute
         "/learn/_lessons",
         "/learn/"
       ]
+    },
+    "/settings": {
+      "filePath": "settings.tsx"
     },
     "/learn/_lessons": {
       "filePath": "learn/_lessons.tsx",

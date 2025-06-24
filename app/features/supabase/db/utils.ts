@@ -113,3 +113,31 @@ export const upsertFSRSCardForUser = createServerFn({ method: "POST" })
 
     if (error) throw error
   })
+
+export const batchUpsertFSRSCardsForUser = createServerFn({ method: "POST" })
+  .validator((data: UpsertFSRSCardArgs[]) => data)
+  .handler(async ({ data }) => {
+    if (data.length === 0) return
+
+    const supabase = createSupabaseClient()
+    const response = await getUser()
+    if (!response.user) return
+
+    const upsertDataArray = data.map((item) => ({
+      user_id: response.user!.id,
+      practice_item_key: item.practice_item_key,
+      type: item.type,
+      lesson_id: item.lesson_id ?? null,
+      fsrs_card: item.fsrs_card as unknown as Json,
+      mode: item.mode,
+      fsrs_logs: (item.fsrs_logs ?? null) as unknown as Json[] | null,
+      due_at: item.fsrs_card.due as unknown as string,
+      stability: item.fsrs_card.stability,
+    }))
+
+    const { error } = await supabase
+      .from("practice_item_user_completions")
+      .upsert(upsertDataArray, { onConflict: "user_id,practice_item_key,type" })
+
+    if (error) throw error
+  })
