@@ -45,7 +45,7 @@ export const APIRoute = createAPIFileRoute("/api/auth/login")({
         data.session.access_token,
         {
           path: "/",
-          httpOnly: true,
+          httpOnly: false,
           sameSite: "none",
           secure: true,
           maxAge: 60 * 60, // 1 hour

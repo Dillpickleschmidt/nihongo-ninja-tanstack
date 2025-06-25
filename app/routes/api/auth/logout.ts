@@ -24,7 +24,7 @@ export const APIRoute = createAPIFileRoute("/api/auth/logout")({
     const cookieHeaders = [
       serializeCookieHeader(`sb-${projectRef}-auth-token`, "", {
         path: "/",
-        httpOnly: true,
+        httpOnly: false,
         sameSite: "none",
         secure: true,
         maxAge: 0, // Delete the cookie

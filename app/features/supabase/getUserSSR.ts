@@ -117,7 +117,7 @@ function setAuthenticationCookies(
     accessToken,
     {
       path: "/",
-      httpOnly: true,
+      httpOnly: false,
       sameSite: "none",
       secure: true,
       maxAge: 60 * 60,
