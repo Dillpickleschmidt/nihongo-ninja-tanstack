@@ -8,77 +8,79 @@ import {
   type Card,
   type ReviewLog,
 } from "ts-fsrs"
-import {
-  CustomFSRSRating,
-  type JpdbReview,
-  type FSRSProcessingGrade,
-} from "./types"
 
-// Constants
-const SECONDS_TO_MS = 1000
 const NEVER_FORGET_YEARS = 10
 
-/**
- * Maps a jpdb.io grade string to an FSRS Grade or a custom action.
- */
-export function mapJpdbGradeToFSRS(
-  jpdbGrade: JpdbReview["grade"],
-): FSRSProcessingGrade {
-  switch (jpdbGrade) {
-    case "okay":
-      return Rating.Good
-    case "hard":
-      return Rating.Hard
-    case "something":
-      return Rating.Again
-    case "easy":
-      return Rating.Easy
-    case "unknown":
-      return CustomFSRSRating.Ignore
-    case "nothing":
-      return CustomFSRSRating.Forget
-    case "never-forget":
-      return CustomFSRSRating.NeverForget
-    case "known":
-      return Rating.Good
-    default:
-      console.warn(
-        `[FSRSProcessor] Unhandled jpdb.io grade '${jpdbGrade}'. Defaulting to 'Again'.`,
-      )
-      return Rating.Again
-  }
+// Custom actions for specific grades
+export const CustomFSRSRating = {
+  Ignore: Symbol("IGNORE_REVIEW"),
+  Forget: Symbol("FORGET_CARD"),
+  NeverForget: Symbol("NEVER_FORGET_CARD"),
+} as const
+
+// Type for FSRS Grades or custom actions
+export type FSRSProcessingGrade =
+  | import("ts-fsrs").Grade
+  | (typeof CustomFSRSRating)[keyof typeof CustomFSRSRating]
+
+// Normalized review format (generic, not jpdb-specific)
+export type NormalizedReview = {
+  timestamp: Date
+  grade: FSRSProcessingGrade
+  source: string
 }
 
 /**
- * Simulates FSRS progression for a card based on a sequence of jpdb.io reviews.
- * JpdbReviews MUST be sorted chronologically by timestamp.
+ * Maps a generic grade to an FSRS Grade or a custom action.
+ */
+export function mapGradeToFSRS(grade: any): FSRSProcessingGrade {
+  // If it's already a valid FSRS grade or custom rating, return as-is
+  if (typeof grade === "number" && grade >= 1 && grade <= 4) {
+    return grade as import("ts-fsrs").Grade
+  }
+
+  if (
+    grade === CustomFSRSRating.Ignore ||
+    grade === CustomFSRSRating.Forget ||
+    grade === CustomFSRSRating.NeverForget
+  ) {
+    return grade
+  }
+
+  // Handle unknown grades
+  console.warn(
+    `[FSRSProcessor] Unhandled grade '${grade}'. Defaulting to 'Again'.`,
+  )
+  return Rating.Again
+}
+
+/**
+ * Simulates FSRS progression for a card based on normalized reviews.
+ * Reviews MUST be sorted chronologically by timestamp.
  */
 export function simulateFSRSReviews(
   initialCard: Card,
-  jpdbReviews: JpdbReview[],
+  reviews: NormalizedReview[],
   fsrsInstance?: FSRS,
 ): { finalCard: Card; logs: ReviewLog[] } {
-  const fsrs =
-    fsrsInstance ??
-    new FSRS({
-      request_retention: 0.8,
-    })
+  const fsrs = fsrsInstance ?? new FSRS({ request_retention: 0.8 })
 
   // If we have reviews, create a fresh card with the first review timestamp as creation date
   // This prevents FSRS from thinking the card has been sitting around for decades
   let currentCard: Card
-  if (jpdbReviews.length > 0) {
-    const firstReviewDate = new Date(jpdbReviews[0].timestamp * SECONDS_TO_MS)
+  if (reviews.length > 0) {
+    const firstReviewDate = reviews[0].timestamp
     currentCard = createEmptyCard(firstReviewDate)
   } else {
     // Fallback to the provided initial card if no reviews
     currentCard = { ...initialCard }
   }
+
   const reviewLogs: ReviewLog[] = []
 
-  for (const jpdbReview of jpdbReviews) {
-    const processingGrade = mapJpdbGradeToFSRS(jpdbReview.grade)
-    const reviewDate = new Date(jpdbReview.timestamp * SECONDS_TO_MS)
+  for (const review of reviews) {
+    const processingGrade = mapGradeToFSRS(review.grade)
+    const reviewDate = review.timestamp
 
     if (processingGrade === CustomFSRSRating.Ignore) {
       continue

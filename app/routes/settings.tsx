@@ -1,7 +1,8 @@
 // routes/settings.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import { createSignal, Show } from "solid-js"
-import { importJpdbReviewsServerFn } from "@/features/fsrs-import/importJpdbReviewsServerFn"
+import { jpdbAdapter } from "@/features/fsrs-import/jpdbAdapter"
+import { importReviewsServerFn } from "@/features/fsrs-import/importReviewsServerFn"
 
 export const Route = createFileRoute("/settings")({
   component: RouteComponent,
@@ -34,10 +35,30 @@ function RouteComponent() {
     try {
       // Read and parse the file
       const fileText = await file.text()
-      const jpdbData = JSON.parse(fileText)
+      const rawData = JSON.parse(fileText)
 
-      // Call the server function
-      const result = await importJpdbReviewsServerFn({ data: jpdbData })
+      // Validate input using jpdb adapter
+      if (!jpdbAdapter.validateInput(rawData)) {
+        throw new Error(
+          "Invalid JPDB JSON format. Please check your export file.",
+        )
+      }
+
+      // Transform data using jpdb adapter
+      const normalizedCards = jpdbAdapter.transformCards(rawData)
+
+      if (normalizedCards.length === 0) {
+        throw new Error("No valid cards found in the JPDB export.")
+      }
+
+      // Call the generic import server function
+      const result = await importReviewsServerFn({
+        data: {
+          cards: normalizedCards,
+          source: "jpdb",
+        },
+      })
+
       setUploadResult(result)
     } catch (err) {
       const errorMessage =
