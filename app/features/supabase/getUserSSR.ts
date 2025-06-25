@@ -1,15 +1,13 @@
 // features/supabase/getUserSSR.ts
 import { createServerFn } from "@tanstack/solid-start"
 import { createBackendClient } from "./backendClient"
-import { parseCookieHeader, serializeCookieHeader } from "@supabase/ssr"
-import {
-  getRequestHeader,
-  setResponseHeader,
-} from "@tanstack/solid-start/server"
+import { serializeCookieHeader } from "@supabase/ssr"
+import { setResponseHeader } from "@tanstack/solid-start/server"
 import { Resource } from "sst"
 import { getProjectRef } from "./getProjectRef"
 import jwt from "jsonwebtoken"
 import type { Session, User } from "@supabase/supabase-js"
+import { getCookie } from "@/utils/cookie-utils"
 
 // 1. Define a serializable User type by omitting 'factors'.
 type SerializableUser = Omit<User, "factors">
@@ -20,7 +18,8 @@ type SerializableSession = Omit<Session, "user"> & {
 }
 
 export const getUserSSR = createServerFn().handler(async () => {
-  const { accessToken, refreshToken, projectRef } = extractTokensFromCookies()
+  const { accessToken, refreshToken, projectRef } =
+    extractSupabaseTokensFromCookies()
 
   if (!accessToken) {
     if (refreshToken) {
@@ -80,7 +79,7 @@ async function refreshAndSetTokens(refreshToken: string, projectRef: string) {
     })
 
   if (sessionData?.user && sessionData.session) {
-    setAuthenticationCookies(
+    setSupabaseCookies(
       projectRef,
       sessionData.session.access_token,
       sessionData.session.refresh_token,
@@ -107,7 +106,7 @@ async function refreshAndSetTokens(refreshToken: string, projectRef: string) {
   }
 }
 
-function setAuthenticationCookies(
+function setSupabaseCookies(
   projectRef: string,
   accessToken: string,
   refreshToken: string,
@@ -139,18 +138,12 @@ function setAuthenticationCookies(
   setResponseHeader("Set-Cookie", [authCookie, refreshCookie])
 }
 
-function extractTokensFromCookies() {
-  const cookieHeader = getRequestHeader("Cookie") ?? ""
-  const cookies = parseCookieHeader(cookieHeader)
+function extractSupabaseTokensFromCookies() {
   const supabaseUrl = Resource.SUPABASE_URL.value
   const projectRef = getProjectRef(supabaseUrl)
 
-  const accessToken = cookies.find(
-    (cookie) => cookie.name === `sb-${projectRef}-auth-token`,
-  )?.value
-  const refreshToken = cookies.find(
-    (cookie) => cookie.name === `sb-${projectRef}-refresh-token`,
-  )?.value
+  const accessToken = getCookie(`sb-${projectRef}-auth-token`)
+  const refreshToken = getCookie(`sb-${projectRef}-refresh-token`)
 
   return { accessToken, refreshToken, projectRef }
 }
