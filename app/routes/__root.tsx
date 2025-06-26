@@ -19,6 +19,8 @@ import { isServer } from "solid-js/web"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { getUser } from "@/features/supabase/getUser"
 import { TransitionProvider } from "@/context/TransitionContext"
+import { SettingsProvider } from "@/context/SettingsContext"
+import { getServiceCredentials } from "@/features/service-auth/service-manager"
 
 const getColorModeCookieServer = createServerFn({
   method: "GET",
@@ -50,14 +52,17 @@ export const Route = createRootRoute({
     return { user: result?.user || null }
   },
   loader: async () => {
-    const serverCookies = isServer ? await getColorModeCookieServer() : null
-    let cookies: string
+    const serverColorModeCookies = isServer
+      ? await getColorModeCookieServer()
+      : null
+    let colorModeCookies: string
     if (isServer) {
-      cookies = serverCookies as string
+      colorModeCookies = serverColorModeCookies as string
     } else {
-      cookies = document.cookie
+      colorModeCookies = document.cookie
     }
-    return { cookies }
+    const initialServiceSettings = getServiceCredentials()
+    return { colorModeCookies, initialServiceSettings }
   },
   component: RootComponent,
   staleTime: Infinity,
@@ -65,19 +70,21 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   const loaderData = Route.useLoaderData()
-  const { cookies } = loaderData()
+  const { colorModeCookies, initialServiceSettings } = loaderData()
 
-  const storageManager = cookieStorageManagerSSR(cookies)
+  const storageManager = cookieStorageManagerSSR(colorModeCookies)
 
   return (
     <>
       <ColorModeScript storageType={storageManager?.type} />
       <ColorModeProvider storageManager={storageManager}>
-        <TransitionProvider>
-          <Scripts />
-          <Outlet />
-          <TanStackRouterDevtools />
-        </TransitionProvider>
+        <SettingsProvider initialSettings={initialServiceSettings}>
+          <TransitionProvider>
+            <Scripts />
+            <Outlet />
+            <TanStackRouterDevtools />
+          </TransitionProvider>
+        </SettingsProvider>
       </ColorModeProvider>
     </>
   )

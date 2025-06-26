@@ -2,28 +2,40 @@
 
 // Core service types
 export type ServiceType = "jpdb" | "wanikani" | "anki"
+export type ServiceMode = "disabled" | "live" | "imported"
 
+/**
+ * Represents the settings for a single service, as stored in the cookie.
+ * This is the primary source of truth for a service's configuration.
+ */
 export interface ServiceSettings {
+  mode: ServiceMode
   api_key: string
-  enabled: boolean
-  use_imported_data: boolean
+  is_api_key_valid: boolean
+  data_imported: boolean
 }
 
-// (what gets stored in the cookie)
+/**
+ * Represents the complete credentials object stored in the cookie.
+ */
 export interface ServiceCredentials {
-  jpdb?: ServiceSettings
-  wanikani?: ServiceSettings
-  anki?: ServiceSettings
+  jpdb?: Partial<ServiceSettings>
+  wanikani?: Partial<ServiceSettings>
+  anki?: Partial<ServiceSettings>
 }
 
 export type ServiceStatus = "connected" | "disconnected" | "expired"
 
-// Service state for UI (combines settings + connection status)
+/**
+ * Represents the resolved state of a service for the UI.
+ * It's derived from the stored ServiceSettings and server-side validation.
+ */
 export interface ServiceState {
-  status: ServiceStatus
-  enabled: boolean
-  use_imported_data: boolean
-  has_api_key: boolean
+  status: ServiceStatus // Overall connection status
+  mode: ServiceMode // The user's selected mode
+  has_api_key: boolean // Does an API key exist?
+  is_api_key_valid: boolean // Is the existing key valid?
+  data_imported: boolean // Has data been successfully imported?
 }
 
 // Complete service state for all services
@@ -55,7 +67,7 @@ export interface ServiceConnectionInput {
 // Service settings update input
 export interface ServiceSettingsUpdate {
   service: ServiceType
-  settings: Partial<Pick<ServiceSettings, "enabled" | "use_imported_data">>
+  settings: Partial<ServiceSettings>
 }
 
 // Service configuration (for internal use)

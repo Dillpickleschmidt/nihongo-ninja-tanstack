@@ -1,29 +1,22 @@
-import { Show } from "solid-js"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import type { ServiceType, ServiceMode } from "../utils/serviceTypes"
-import { getModeDisplayName, getModeDescription } from "../utils/serviceUtils"
+import { Show } from "solid-js";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import type { ServiceType, ServiceMode } from "../utils/serviceTypes";
+import { getModeDisplayName, getModeDescription } from "../utils/serviceUtils";
 
 interface ServiceCardProps {
-  title: string
-  gradient: string
-  borderColor: string
-  iconColor: string
-  service: ServiceType
-  currentMode: ServiceMode
-  selectedMode: ServiceMode
-  isProcessing: boolean
-  onModeChange: (mode: ServiceMode | null) => void
-  children: any
+  title: string;
+  gradient: string;
+  borderColor: string;
+  iconColor: string;
+  service: ServiceType;
+  selectedMode: ServiceMode; // This is the mode from the settings context
+  isProcessing: boolean;
+  onModeChange: (mode: ServiceMode | null) => void;
+  children: any;
 }
 
 export const ServiceCard = (props: ServiceCardProps) => {
-  const modeInfo = () => getModeDescription(props.currentMode)
+  const modeInfo = () => getModeDescription(props.selectedMode || 'disabled');
 
   return (
     <div
@@ -51,8 +44,8 @@ export const ServiceCard = (props: ServiceCardProps) => {
           <SelectTrigger class="w-36 border-white/30 bg-white/10 text-white backdrop-blur-sm placeholder:text-white/70">
             <SelectValue<ServiceMode>>
               {(state) => {
-                const mode = state.selectedOption()
-                return getModeDisplayName(mode || "disabled")
+                const mode = state.selectedOption();
+                return getModeDisplayName(mode || "disabled");
               }}
             </SelectValue>
           </SelectTrigger>
@@ -61,19 +54,19 @@ export const ServiceCard = (props: ServiceCardProps) => {
       </div>
 
       {/* Mode Explanation */}
-      <div class="mb-6 rounded-lg border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
-        <div
-          class={`text-sm ${props.currentMode === "disabled" ? "text-white/70" : "text-white/90"}`}
-        >
-          <p class="mb-1 font-medium">
-            {modeInfo().icon} {modeInfo().title}
-          </p>
-          <p>{modeInfo().description}</p>
+      <Show when={modeInfo()}>
+        <div class="mb-6 rounded-lg border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
+          <div class={`text-sm ${props.selectedMode === "disabled" ? "text-white/70" : "text-white/90"}`}>
+            <p class="mb-1 font-medium">
+              {modeInfo().icon} {modeInfo().title}
+            </p>
+            <p>{modeInfo().description}</p>
+          </div>
         </div>
-      </div>
+      </Show>
 
       {/* Service Content */}
-      <Show when={props.currentMode !== "disabled"}>{props.children}</Show>
+      <Show when={props.selectedMode !== "disabled"}>{props.children}</Show>
     </div>
-  )
-}
+  );
+};

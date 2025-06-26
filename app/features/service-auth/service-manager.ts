@@ -10,28 +10,28 @@ import type {
   AllServicesState,
   OperationResult,
   ServiceConfig,
+  ServiceMode,
 } from "./types"
 
 // Service configuration
 const SERVICE_CONFIGS: Record<ServiceType, ServiceConfig> = {
-  jpdb: {
-    name: "jpdb",
-    display_name: "jpdb",
-    requires_conversion: false,
-  },
+  jpdb: { name: "jpdb", display_name: "jpdb", requires_conversion: false },
   wanikani: {
     name: "wanikani",
     display_name: "WaniKani",
     requires_conversion: false,
   },
-  anki: {
-    name: "anki",
-    display_name: "Anki",
-    requires_conversion: true,
-  },
+  anki: { name: "anki", display_name: "Anki", requires_conversion: true },
 }
 
 const COOKIE_NAME = "nn-service-credentials"
+
+const defaultServiceSettings: ServiceSettings = {
+  mode: "disabled",
+  api_key: "",
+  is_api_key_valid: false,
+  data_imported: false,
+}
 
 // === Cookie Operations ===
 
@@ -40,12 +40,23 @@ const COOKIE_NAME = "nn-service-credentials"
  */
 export function getServiceCredentials(): ServiceCredentials {
   const cookieValue = getCookie(COOKIE_NAME)
-  if (!cookieValue) return {}
+  let parsedCredentials: ServiceCredentials = {}
+  if (cookieValue) {
+    try {
+      parsedCredentials = JSON.parse(cookieValue)
+    } catch (e) {
+      console.error("Failed to parse service credentials cookie:", e)
+    }
+  }
 
-  try {
-    return JSON.parse(cookieValue)
-  } catch {
-    return {}
+  // Ensure all service types are present with default values if not in cookie
+  return {
+    jpdb: { ...defaultServiceSettings, ...(parsedCredentials.jpdb || {}) },
+    wanikani: {
+      ...defaultServiceSettings,
+      ...(parsedCredentials.wanikani || {}),
+    },
+    anki: { ...defaultServiceSettings, ...(parsedCredentials.anki || {}) },
   }
 }
 
@@ -69,11 +80,8 @@ export function updateServiceSettings(
   settings: Partial<ServiceSettings>,
 ): void {
   const currentCredentials = getServiceCredentials()
-  const currentServiceSettings = currentCredentials[service] || {
-    api_key: "",
-    enabled: false,
-    use_imported_data: false,
-  }
+  const currentServiceSettings =
+    currentCredentials[service] || defaultServiceSettings
 
   const updatedCredentials = {
     ...currentCredentials,
@@ -105,9 +113,6 @@ export function clearAllServices(): void {
 
 // === Credential Validation ===
 
-/**
- * Validate jpdb API key
- */
 async function validateJpdbApiKey(apiKey: string): Promise<OperationResult> {
   try {
     const response = await fetch("https://jpdb.io/api/v1/ping", {
@@ -128,9 +133,6 @@ async function validateJpdbApiKey(apiKey: string): Promise<OperationResult> {
   }
 }
 
-/**
- * Validate WaniKani API key
- */
 async function validateWaniKaniApiKey(
   apiKey: string,
 ): Promise<OperationResult> {
@@ -172,9 +174,6 @@ async function convertAnkiCredentials(
   }
 }
 
-/**
- * Validate Anki API key
- */
 async function validateAnkiApiKey(apiKey: string): Promise<OperationResult> {
   try {
     // TODO: Implement AnkiWeb API key validation
@@ -213,7 +212,7 @@ export async function validateServiceCredentials(
       return conversionResult
     }
 
-    const validationResult = await validateAnkiApiKey(conversionResult.api_key!)
+    const validationResult = await validateAnkiApiKey(conversionResult.api_key!) // Use converted API key for validation
     return {
       ...validationResult,
       api_key: conversionResult.api_key,
@@ -245,33 +244,22 @@ export async function validateServiceCredentials(
 
 // === Service State Resolution ===
 
-/**
- * Get current state for a specific service
- */
 function getServiceState(service: ServiceType): ServiceState {
   const credentials = getServiceCredentials()
-  const serviceSettings = credentials[service]
-
-  if (!serviceSettings) {
-    return {
-      status: "disconnected",
-      enabled: false,
-      use_imported_data: false,
-      has_api_key: false,
-    }
+  const serviceSettings = {
+    ...defaultServiceSettings,
+    ...(credentials[service] || {}),
   }
 
   return {
-    status: "connected", // TODO: Add actual credential validation to detect 'expired'
-    enabled: serviceSettings.enabled,
-    use_imported_data: serviceSettings.use_imported_data,
-    has_api_key: Boolean(serviceSettings.api_key),
+    status: serviceSettings.is_api_key_valid ? "connected" : "disconnected",
+    mode: serviceSettings.mode,
+    has_api_key: !!serviceSettings.api_key,
+    is_api_key_valid: serviceSettings.is_api_key_valid,
+    data_imported: serviceSettings.data_imported,
   }
 }
 
-/**
- * Get current state for all services
- */
 export function getAllServicesState(): AllServicesState {
   return {
     jpdb: getServiceState("jpdb"),
@@ -295,9 +283,15 @@ export async function validateAllStoredCredentials(): Promise<AllServicesState> 
         api_key: serviceCredentials.api_key,
       })
 
+      // Update the is_api_key_valid flag based on validation result
+      updateServiceSettings(service, {
+        is_api_key_valid: validationResult.success,
+      })
+
       state[service] = {
         ...state[service],
         status: validationResult.success ? "connected" : "expired",
+        is_api_key_valid: validationResult.success, // Ensure this is updated in the returned state
       }
     }
   }
@@ -305,16 +299,10 @@ export async function validateAllStoredCredentials(): Promise<AllServicesState> 
   return state
 }
 
-/**
- * Get service configuration
- */
 export function getServiceConfig(service: ServiceType): ServiceConfig {
   return SERVICE_CONFIGS[service]
 }
 
-/**
- * Get all service configurations
- */
 export function getAllServiceConfigs(): Record<ServiceType, ServiceConfig> {
   return SERVICE_CONFIGS
 }
