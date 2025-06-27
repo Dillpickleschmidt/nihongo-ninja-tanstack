@@ -1,7 +1,7 @@
 // app/routes/learn.tsx
 import { createFileRoute, Outlet } from "@tanstack/solid-router"
 import { BackgroundImage } from "@/components/BackgroundImage"
-import { Background } from "@/features/dashboard/components/Background"
+import { Background } from "@/features/dashboard/components/shared/Background"
 
 export const Route = createFileRoute("/learn")({
   loader: async ({ context }) => {

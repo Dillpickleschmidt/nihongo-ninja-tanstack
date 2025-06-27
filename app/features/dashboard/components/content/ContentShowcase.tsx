@@ -1,6 +1,6 @@
-// features/dashboard/components/DesktopContentShowcase.tsx
-import { For, Show, Component } from "solid-js"
-import { Await, Link } from "@tanstack/solid-router"
+// features/dashboard/components/content/ContentShowcase.tsx
+import { For, Show, Component, onMount, createEffect } from "solid-js"
+import { Await, Link, useLocation } from "@tanstack/solid-router"
 import {
   ArrowUpRight,
   BookOpen,
@@ -15,75 +15,121 @@ import {
   Ear,
   Eye,
   PenTool,
+  ArrowRight,
+  Plus,
 } from "lucide-solid"
+import { Transition } from "solid-transition-group"
 import type { ExternalResource } from "@/data/types"
 import { cn } from "@/utils"
 import { usePageTransition } from "@/context/TransitionContext"
+import {
+  createSlideWithFadeInAnimation,
+  prepareElementForEnter,
+} from "@/utils/animations"
 
-interface DesktopContentShowcaseProps {
+interface ContentShowcaseProps {
   resources: ExternalResource[]
   thumbnailPromises: Promise<{
     resourceId: string
     thumbnailUrl: string | null
   }>[]
+  variant: "mobile" | "desktop"
 }
 
-// Fake data for "More Resources"
-const moreResourcesData: ExternalResource[] = [
-  {
-    id: "fake-1",
-    title: "Advanced Grammar Patterns",
-    resource_type: "grammar_guide",
-    difficulty_rating: "hard",
-    external_url: "https://example.com/grammar",
-    internal_url: null,
-  },
-  {
-    id: "fake-2",
-    title: "Daily Conversation Practice",
-    resource_type: "listening_practice",
-    difficulty_rating: "medium",
-    external_url: "https://example.com/conversation",
-    internal_url: null,
-  },
-  {
-    id: "fake-3",
-    title: "Pronunciation Workshop",
-    resource_type: "audio",
-    difficulty_rating: "easy",
-    external_url: "https://example.com/pronunciation",
-    internal_url: null,
-  },
-  {
-    id: "fake-4",
-    title: "Writing Techniques Guide",
-    resource_type: "article",
-    difficulty_rating: "medium",
-    external_url: "https://example.com/writing",
-    internal_url: null,
-  },
-  {
-    id: "fake-5",
-    title: "Cultural Context Videos",
-    resource_type: "video",
-    difficulty_rating: "easy",
-    external_url: "https://example.com/culture",
-    internal_url: null,
-  },
-  {
-    id: "fake-6",
-    title: "Interactive Exercises",
-    resource_type: "tool",
-    difficulty_rating: "medium",
-    external_url: "https://example.com/exercises",
-    internal_url: null,
-  },
-]
+const SELECTOR = "[data-content-section]"
+const DIRECTION = "right" as const
+const ENTER_DELAY = 0
 
-export function DesktopContentShowcase(props: DesktopContentShowcaseProps) {
+export function ContentShowcase(props: ContentShowcaseProps) {
+  const location = useLocation()
+  const { hasUserNavigated, animationTrigger } = usePageTransition()
+
+  const runAnimation = () => {
+    if (location().pathname === "/dashboard" && hasUserNavigated()) {
+      const element = document.querySelector(SELECTOR) as HTMLElement
+      if (element) {
+        prepareElementForEnter(element, DIRECTION)
+        setTimeout(() => {
+          createSlideWithFadeInAnimation(element, DIRECTION)
+        }, ENTER_DELAY)
+      }
+    }
+  }
+
+  onMount(() => {
+    runAnimation()
+  })
+
+  createEffect(() => {
+    animationTrigger()
+    runAnimation()
+  })
+
+  if (props.variant === "mobile") {
+    return (
+      <div class="mt-6 xl:mt-0">
+        <div class="mb-4 flex items-center justify-between pl-8 xl:pl-0">
+          <div class="flex items-end">
+            <h2 class="text-xl xl:text-2xl">Content</h2>
+            <p class="text-muted-foreground pb-1 pl-2 text-xs xl:pl-3 xl:text-sm">
+              You Might Enjoy
+            </p>
+          </div>
+          <ArrowRight class="mr-5 h-5 w-5 xl:mr-0" />
+        </div>
+
+        <div class="scrollbar-hide mb-5 flex gap-4 overflow-x-auto pl-8 xl:grid xl:grid-cols-[repeat(auto-fill,minmax(190px,1fr))] xl:gap-5 xl:overflow-x-visible xl:p-0">
+          <div class="bg-background border-primary/30 flex min-w-[50px] items-center justify-center rounded-[14px] border-2 border-dashed xl:min-w-0 xl:rounded-[16px]">
+            <Plus class="text-primary/30 h-6 w-6 xl:h-7 xl:w-7" />
+          </div>
+          <Transition
+            onEnter={(element, done) => {
+              if (!hasUserNavigated()) {
+                done()
+                return
+              }
+              createSlideWithFadeInAnimation(
+                element as HTMLElement,
+                DIRECTION,
+              ).then(() => done())
+            }}
+          >
+            {true && (
+              <div
+                data-content-section
+                data-transition-content
+                class="flex gap-4 pr-4 xl:contents"
+              >
+                <For each={props.resources}>
+                  {(resource, index) => {
+                    const thumbnailPromise = props.thumbnailPromises[index()]
+                    return (
+                      <Await
+                        promise={thumbnailPromise}
+                        fallback={<MobileResourceCard resource={resource} />}
+                      >
+                        {(thumbnailData) => (
+                          <MobileResourceCard
+                            resource={resource}
+                            thumbnailUrl={thumbnailData.thumbnailUrl}
+                          />
+                        )}
+                      </Await>
+                    )
+                  }}
+                </For>
+              </div>
+            )}
+          </Transition>
+        </div>
+      </div>
+    )
+  }
+
+  // Desktop variant
   return (
-    <div class="space-y-6">
-      <div class="flex items-center justify-between">
+    <div class="space-y-3">
+      <div class="flex items-center justify-between px-8">
         <div>
           <h2 class="text-2xl font-bold">Featured Content</h2>
           <p class="text-muted-foreground">
@@ -96,8 +142,8 @@ export function DesktopContentShowcase(props: DesktopContentShowcaseProps) {
         </button>
       </div>
 
-      {/* Horizontal scrolling list of all featured resources */}
-      <div class="flex max-w-[831px] gap-6 overflow-x-auto overflow-y-hidden">
+      {/* Horizontal scrolling list of featured resources */}
+      <div class="mx-7 flex gap-6 overflow-x-auto px-1 pt-3 pb-3">
         <For each={props.resources}>
           {(resource, index) => {
             const thumbnailPromise = props.thumbnailPromises[index()]
@@ -120,18 +166,6 @@ export function DesktopContentShowcase(props: DesktopContentShowcaseProps) {
             )
           }}
         </For>
-      </div>
-
-      {/* More Resources - vertically scrollable with fake data */}
-      <div class="space-y-3">
-        <h3 class="text-muted-foreground text-lg font-semibold">
-          More Resources
-        </h3>
-        <div class="scrollbar-hide max-h-[142px] space-y-2 overflow-y-auto">
-          <For each={moreResourcesData}>
-            {(resource) => <CompactResourceItem resource={resource} />}
-          </For>
-        </div>
       </div>
     </div>
   )
@@ -242,10 +276,9 @@ function FeaturedResourceCardContent(props: {
 }) {
   return (
     <div
-      class="relative h-48 w-[261px] overflow-hidden rounded-2xl border border-white/10 backdrop-blur-sm transition-all duration-300 hover:shadow-xl"
+      class="relative h-48 w-[260px] overflow-hidden rounded-2xl border border-white/10 backdrop-blur-sm transition-all duration-300 hover:shadow-xl"
       style={{ "background-image": props.getGradientStyle() }}
     >
-      {/* Background image */}
       <Show when={props.thumbnailUrl}>
         <div
           class="absolute inset-0 opacity-30 transition-opacity group-hover:opacity-40"
@@ -257,10 +290,8 @@ function FeaturedResourceCardContent(props: {
         />
       </Show>
 
-      {/* Overlay gradient */}
       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-      {/* Content */}
       <div class="relative flex h-full flex-col justify-between p-6">
         <div class="flex items-start justify-between">
           <props.Icon class="h-8 w-8 text-white drop-shadow-md" />
@@ -301,34 +332,59 @@ function FeaturedResourceCardContent(props: {
   )
 }
 
-function CompactResourceItem(props: { resource: ExternalResource }) {
+// Simplified mobile card component
+function MobileResourceCard(props: {
+  resource: ExternalResource
+  thumbnailUrl?: string | null
+}) {
   const { setUserHasNavigated } = usePageTransition()
 
-  const getResourceIcon = () => {
-    const iconMap = {
-      video: Video,
-      article: FileText,
-      podcast: Mic,
-      tool: Wrench,
-      forum: MessageCircle,
-      news: Newspaper,
-      textbook_companion: BookMarked,
-      listening_practice: Ear,
-      reading_practice: Eye,
-      grammar_guide: PenTool,
-      audio: Headphones,
-    }
-    return (
-      iconMap[props.resource.resource_type as keyof typeof iconMap] || BookOpen
-    )
+  const handleInternalNavigation = () => {
+    setUserHasNavigated(true)
   }
 
-  const Icon = getResourceIcon()
-
-  const handleClick = () => {
-    if (props.resource.internal_url) {
-      setUserHasNavigated(true)
+  function getDifficultyColor(difficulty: string) {
+    switch (difficulty) {
+      case "easy":
+        return "bg-green-500 shadow-green-500/20"
+      case "medium":
+        return "bg-yellow-500 shadow-yellow-500/20"
+      case "hard":
+        return "bg-red-500 shadow-red-500/20"
+      default:
+        return "bg-gray-500 shadow-gray-500/20"
     }
+  }
+
+  function getResourceIcon(resourceType: string) {
+    switch (resourceType) {
+      case "video":
+        return "📹"
+      case "article":
+        return "📄"
+      case "podcast":
+        return "🎙️"
+      case "tool":
+        return "🔧"
+      case "forum":
+        return "💬"
+      case "news":
+        return "📰"
+      case "textbook_companion":
+        return "📚"
+      case "listening_practice":
+        return "👂"
+      case "reading_practice":
+        return "👁️"
+      case "grammar_guide":
+        return "📝"
+      default:
+        return "📎"
+    }
+  }
+
+  function truncateText(text: string, maxLength: number) {
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text
   }
 
   return (
@@ -339,41 +395,63 @@ function CompactResourceItem(props: { resource: ExternalResource }) {
           href={props.resource.external_url}
           target="_blank"
           rel="noopener noreferrer"
-          class="group flex items-center gap-4 rounded-lg border border-white/5 bg-white/2 p-3 transition-colors hover:bg-white/5"
+          class="transition-transform hover:scale-[99%]"
         >
-          <CompactResourceItemContent resource={props.resource} Icon={Icon} />
+          <MobileResourceCardContent {...props} />
         </a>
       }
     >
       <Link
         to={props.resource.internal_url!}
-        onClick={handleClick}
-        class="group flex items-center gap-4 rounded-lg border border-white/5 bg-white/2 p-3 transition-colors hover:bg-white/5"
+        onClick={handleInternalNavigation}
+        class="transition-transform hover:scale-[99%]"
       >
-        <CompactResourceItemContent resource={props.resource} Icon={Icon} />
+        <MobileResourceCardContent {...props} />
       </Link>
     </Show>
   )
-}
 
-function CompactResourceItemContent(props: {
-  resource: ExternalResource
-  Icon: Component<any>
-}) {
-  return (
-    <>
-      <div class="bg-primary/10 flex-shrink-0 rounded-lg p-2">
-        <props.Icon class="text-primary h-4 w-4" />
+  function MobileResourceCardContent(props: {
+    resource: ExternalResource
+    thumbnailUrl?: string | null
+  }) {
+    return (
+      <div class="bg-card relative h-40 w-48 overflow-hidden rounded-2xl p-4">
+        {props.thumbnailUrl && (
+          <div
+            class="absolute inset-0 -z-2 scale-[135%] opacity-75 dark:opacity-65"
+            style={{
+              "background-image": `url(${props.thumbnailUrl})`,
+              "background-size": "cover",
+              "background-position": "center",
+              "background-repeat": "no-repeat",
+            }}
+          />
+        )}
+        <div class="absolute inset-0 -z-1 bg-gradient-to-b from-transparent via-transparent to-black/60 dark:from-transparent dark:to-black/65" />
+
+        <div class="relative z-10">
+          <div class="mb-2 flex items-start justify-between">
+            <span class="text-2xl leading-5 drop-shadow-md">
+              {getResourceIcon(props.resource.resource_type)}
+            </span>
+            <div
+              class={cn(
+                "h-3.5 w-3.5 rounded-full shadow-sm drop-shadow-sm",
+                getDifficultyColor(props.resource.difficulty_rating),
+              )}
+            />
+          </div>
+          <div class="flex h-24 flex-col justify-end">
+            <div class="font-inter text-sm font-semibold text-white drop-shadow-md">
+              {truncateText(props.resource.title, 35)}
+            </div>
+            <div class="dark:text-muted-foreground text-xs text-gray-200 capitalize drop-shadow-sm">
+              {props.resource.resource_type.replace("_", " ")}
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="min-w-0 flex-1">
-        <h4 class="group-hover:text-primary line-clamp-1 text-sm font-medium transition-colors">
-          {props.resource.title}
-        </h4>
-        <p class="text-muted-foreground text-xs capitalize">
-          {props.resource.resource_type.replace("_", " ")}
-        </p>
-      </div>
-      <ArrowUpRight class="text-muted-foreground h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
-    </>
-  )
+    )
+  }
 }

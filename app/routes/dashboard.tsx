@@ -14,17 +14,13 @@ import {
 } from "@/data/utils/core"
 import { textbooks } from "@/data/textbooks"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
-import { DesktopDashboardHeader } from "@/features/dashboard/components/DesktopDashboardHeader"
-import { DesktopContentShowcase } from "@/features/dashboard/components/DesktopContentShowcase"
-import { DesktopCourseDashboard } from "@/features/dashboard/components/DesktopCourseDashboard"
-import { DesktopAnalyticsPanel } from "@/features/dashboard/components/DesktopAnalyticsPanel"
-import { DesktopProgressSidebar } from "@/features/dashboard/components/DesktopProgressSidebar"
-import { DashboardHeader } from "@/features/dashboard/components/DashboardHeader"
-import { ContentSection } from "@/features/dashboard/components/ContentSection"
-import { LessonsSection } from "@/features/dashboard/components/LessonsSection"
-import { StrugglesSection } from "@/features/dashboard/components/StrugglesSection"
-import { HistorySection } from "@/features/dashboard/components/HistorySection"
-import { WordHierarchy } from "@/features/dashboard/components/WordHierarchy"
+import { DashboardHeader } from "@/features/dashboard/components/layout/DashboardHeader"
+import { LeftSidebar } from "@/features/dashboard/components/layout/LeftSidebar"
+import { RightSidebar } from "@/features/dashboard/components/layout/RightSidebar"
+import { ContentShowcase } from "@/features/dashboard/components/content/ContentShowcase"
+import { CourseDashboard } from "@/features/dashboard/components/content/CourseDashboard"
+import { MoreResourcesSection } from "@/features/dashboard/components/content/MoreResourcesSection"
+import { StrugglesSection } from "@/features/dashboard/components/content/StrugglesSection"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { getDueFSRSCards } from "@/features/supabase/db/utils"
 import { getRichWKHierarchyWithProgress } from "@/data/wanikani/utils"
@@ -37,9 +33,8 @@ import type {
   StaticModule,
   TextbookIDEnum,
 } from "@/data/types"
-import { TextbookChapterBackgrounds } from "@/features/dashboard/components/TextbookChapterBackgrounds"
+import { TextbookChapterBackgrounds } from "@/features/dashboard/components/shared/TextbookChapterBackgrounds"
 
-// Zod schema for search params
 const dashboardSearchSchema = z
   .object({
     textbook: z.string(),
@@ -57,7 +52,6 @@ const dashboardSearchSchema = z
 export const Route = createFileRoute("/dashboard")({
   validateSearch: zodValidator(dashboardSearchSchema),
   beforeLoad: ({ search, context }) => {
-    // If URL has valid search params, pass them to the loader.
     if (search.textbook && search.deck) {
       return {
         user: context.user,
@@ -67,7 +61,6 @@ export const Route = createFileRoute("/dashboard")({
       }
     }
     if (search.user && search.deck) {
-      // Future-proofing for user decks
       return {
         user: context.user,
         sourceType: "user",
@@ -76,7 +69,6 @@ export const Route = createFileRoute("/dashboard")({
       }
     }
 
-    // If no search params, check for a cookie to redirect the user.
     const cookieHeader = isServer
       ? getRequestHeader("Cookie") || undefined
       : undefined
@@ -95,7 +87,6 @@ export const Route = createFileRoute("/dashboard")({
       })
     }
 
-    // If no params and no cookie, redirect to a hardcoded default deck.
     const defaultTextbookId = "genki_1"
     const defaultDeckSlug = textbooks[defaultTextbookId].chapters[0].slug
     throw redirect({
@@ -130,23 +121,19 @@ export const Route = createFileRoute("/dashboard")({
         lessons = getLessons(deck)
         externalResources = getExternalResources(deck)
 
-        // Find the vocab module ID from the learning path
         const vocabModuleId = deck.learning_path_items.find((item) =>
           item.id.endsWith("_vocab-list"),
         )?.id
 
-        // If found, get its vocabulary and extract the words
         if (vocabModuleId) {
           const vocabItems = getModuleVocabulary(vocabModuleId)
           vocabForHierarchy = vocabItems.map((item) => item.word)
         }
         break
       case "user_deck":
-        // Future implementation for user decks
         break
     }
 
-    // Prepare the list of all available deck sources for the UI
     const deckSources: DeckSource[] = Object.values(textbooks).map((tb) => ({
       id: tb.id,
       name: tb.short_name || tb.name,
@@ -154,7 +141,6 @@ export const Route = createFileRoute("/dashboard")({
       decks: tb.chapters,
     }))
 
-    // Use the dynamically generated list instead of a hardcoded one
     const wordHierarchyData = await getRichWKHierarchyWithProgress({
       data: vocabForHierarchy,
     })
@@ -192,7 +178,6 @@ function RouteComponent() {
   const loaderData = Route.useLoaderData()
   const search = Route.useSearch()
 
-  // Update the cookie whenever the user navigates to a new deck
   createEffect(() => {
     const currentSearch = search()
     if (currentSearch.textbook && currentSearch.deck) {
@@ -221,7 +206,7 @@ function RouteComponent() {
   ]
 
   return (
-    <div class="font-poppins">
+    <div class="font-poppins xl:h-screen xl:overflow-y-hidden xl:overscroll-y-contain">
       <style>{`
         .scrollbar-hide {
           -ms-overflow-style: none;
@@ -231,77 +216,140 @@ function RouteComponent() {
           display: none;
         }
       `}</style>
+
       <TextbookChapterBackgrounds
         textbook={loaderData().sourceId}
         chapter={loaderData().deck.slug}
       />
-      {/* Mobile Layout: Keep existing */}
+
+      {/* Mobile Layout */}
       <SSRMediaQuery hideFrom="xl">
         <DashboardHeader
           currentDeck={loaderData().deck}
           deckSources={loaderData().deckSources}
           dueFSRSCardsPromise={loaderData().dueFSRSCards}
+          variant="mobile"
         />
         <div class="flex flex-col">
-          <ContentSection
+          <ContentShowcase
             resources={loaderData().externalResources}
             thumbnailPromises={loaderData().deferredThumbnails}
+            variant="mobile"
           />
-          <LessonsSection
+          <CourseDashboard
             lessons={loaderData().lessons}
             progressPercentage={75}
+            variant="mobile"
           />
           <div class="flex flex-col">
             <StrugglesSection struggles={struggles} variant="mobile" />
-            <WordHierarchy
+            <LeftSidebar
               data={loaderData().wordHierarchyData}
+              currentDeck={loaderData().deck}
+              deckSources={loaderData().deckSources}
               variant="mobile"
             />
-            <HistorySection items={historyItems} />
+            <RightSidebar
+              struggles={struggles}
+              historyItems={historyItems}
+              lessons={loaderData().lessons}
+              variant="mobile"
+            />
           </div>
         </div>
       </SSRMediaQuery>
 
-      {/* Desktop Layout: New overlaid design */}
+      {/* Desktop Layout */}
       <SSRMediaQuery showFrom="xl">
-        <div class="relative min-h-screen">
-          {/* Floating header overlay */}
-          <DesktopDashboardHeader
+        <div class="min-h-screen">
+          <DashboardHeader
+            dueFSRSCardsPromise={loaderData().dueFSRSCards}
             currentDeck={loaderData().deck}
             deckSources={loaderData().deckSources}
-            dueFSRSCardsPromise={loaderData().dueFSRSCards}
+            variant="desktop"
           />
-          {/* Main content with offset sidebars */}
-          <div class="grid grid-cols-[1fr_2fr_1fr] gap-8 px-8">
-            {/* Left Sidebar - reduced offset since content is more compact */}
-            <div class="pt-44">
-              <DesktopProgressSidebar data={loaderData().wordHierarchyData} />
+
+          <div class="flex w-full pr-4 pl-8">
+            {/* Left Sidebar - 26% */}
+            <div class="w-[24%] pt-6">
+              <LeftSidebar
+                data={loaderData().wordHierarchyData}
+                currentDeck={loaderData().deck}
+                deckSources={loaderData().deckSources}
+                variant="desktop"
+              />
             </div>
 
-            {/* Main Content Area - pushed down a bit */}
-            <div class="pt-20">
-              <div class="flex flex-col gap-8">
-                <DesktopContentShowcase
+            {/* Main Content Area - 48% */}
+            <div class="w-[52%]">
+              {/* Fixed Featured Content Section */}
+              <div class="pb-3">
+                <ContentShowcase
                   resources={loaderData().externalResources}
                   thumbnailPromises={loaderData().deferredThumbnails}
+                  variant="desktop"
                 />
-                <DesktopCourseDashboard
-                  lessons={loaderData().lessons}
-                  progressPercentage={75}
-                />
+              </div>
+
+              {/* Scrollable Bottom Section */}
+              <div class="scrollbar-hide relative h-[calc(100vh-376px)] overflow-x-hidden overflow-y-auto overscroll-x-none px-8 pb-12">
+                {/* More Resources */}
+                <MoreResourcesSection />
+
+                {/* Sticky Header + Course Content */}
+                <div class="relative pt-3">
+                  {/* Sticky Header */}
+                  <div class="sticky top-0 z-10 pt-2 backdrop-blur-sm">
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <h2 class="text-2xl font-bold">Current Progress</h2>
+                        <p class="text-muted-foreground">
+                          Continue your learning journey
+                        </p>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-primary text-2xl font-bold">75%</div>
+                        <div class="text-muted-foreground text-sm">
+                          Complete
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="relative mt-4">
+                      <div class="bg-muted/30 h-2 w-full overflow-hidden rounded-full">
+                        <div
+                          class="from-primary to-primary/80 h-full rounded-full bg-gradient-to-r transition-all duration-700 ease-out"
+                          style="width: 75%"
+                        />
+                      </div>
+                      <div class="bg-primary absolute -top-0.5 right-0 h-3 w-3 rounded-full shadow-lg"></div>
+                    </div>
+                  </div>
+
+                  {/* Course Content */}
+                  <div class="pt-6">
+                    <CourseDashboard
+                      lessons={loaderData().lessons}
+                      progressPercentage={75}
+                      variant="desktop"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Right Sidebar - vocabulary now at top, reduced offset */}
-            <div class="pt-32">
-              <DesktopAnalyticsPanel
+            {/* Right Sidebar - 26% */}
+            <div class="relative h-[calc(100vh-80px)] w-[24%] overflow-y-auto pt-12 pr-4 pb-12">
+              <RightSidebar
                 struggles={struggles}
                 historyItems={historyItems}
                 lessons={loaderData().lessons}
+                variant="desktop"
               />
             </div>
           </div>
-          <div class="pb-8" /> {/* Bottom spacing */}
+
+          <div class="pb-8" />
         </div>
       </SSRMediaQuery>
     </div>

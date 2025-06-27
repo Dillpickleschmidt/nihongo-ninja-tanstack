@@ -1,4 +1,4 @@
-import { SmoothCard } from "@/features/dashboard/components/SmoothCard"
+import { SmoothCard } from "@/features/dashboard/components/shared/SmoothCard"
 
 export function ResultsCard(props: {
   width: number

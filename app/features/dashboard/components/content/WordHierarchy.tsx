@@ -1,4 +1,4 @@
-// features/dashboard/components/WordHierarchy.tsx
+// features/dashboard/components/content/WordHierarchy.tsx
 import { For, Match, Show, Switch } from "solid-js"
 import { createMediaQuery } from "@solid-primitives/media"
 import {
@@ -6,8 +6,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
-import { SmoothCard } from "./SmoothCard"
-import { cn } from "@/utils/util"
+import { cn } from "@/utils"
 import type { FullHierarchyData, Kanji, Radical } from "@/data/wanikani/types"
 
 type WordHierarchyVariant = "mobile" | "desktop"
@@ -30,7 +29,6 @@ export function WordHierarchy(props: WordHierarchyProps) {
       >
         {(data) => (
           <Switch>
-            {/* Desktop Layout */}
             <Match when={props.variant === "desktop"}>
               <div class="grid grid-cols-[3fr_2fr] gap-x-4">
                 <div class="flex flex-col gap-3">
@@ -51,23 +49,20 @@ export function WordHierarchy(props: WordHierarchyProps) {
               </div>
             </Match>
 
-            {/* Mobile Layout */}
             <Match when={props.variant === "mobile"}>
-              <div class="mb-8 flex flex-col gap-3 px-7">
-                <div class="py-2">
-                  <SummaryCircles data={data()} />
-                </div>
-                <CharacterList
-                  title="Kanji"
-                  items={data().uniqueKanji}
-                  variant="mobile"
-                />
-                <CharacterList
-                  title="Radicals"
-                  items={data().uniqueRadicals}
-                  variant="mobile"
-                />
+              <div class="py-2">
+                <SummaryCircles data={data()} />
               </div>
+              <CharacterList
+                title="Kanji"
+                items={data().uniqueKanji}
+                variant="mobile"
+              />
+              <CharacterList
+                title="Radicals"
+                items={data().uniqueRadicals}
+                variant="mobile"
+              />
             </Match>
           </Switch>
         )}
@@ -233,16 +228,12 @@ function CharBox(props: { item: Kanji | Radical }) {
   return (
     <Show when={props.item.characters}>
       <Switch>
-        {/* Desktop: Use SmoothCard and wrap with HoverCard */}
         <Match when={isDesktop()}>
           <HoverCard openDelay={200}>
             <HoverCardTrigger as="div">
-              <SmoothCard
-                width={32}
-                height={32}
-                cornerRadius={8}
+              <div
                 class={cn(
-                  "flex items-center justify-center transition-colors hover:cursor-pointer",
+                  "flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:cursor-pointer",
                   {
                     "bg-muted/40": props.item.progress === "not_seen",
                     "bg-amber-400/10": props.item.progress === "learning",
@@ -259,7 +250,7 @@ function CharBox(props: { item: Kanji | Radical }) {
                 >
                   {props.item.characters}
                 </span>
-              </SmoothCard>
+              </div>
             </HoverCardTrigger>
             <HoverCardContent class="border-card-foreground w-auto bg-neutral-950/70 px-3 py-1.5 text-sm backdrop-blur-2xl">
               <span>{props.item.meanings.join(", ")}</span>
@@ -267,7 +258,6 @@ function CharBox(props: { item: Kanji | Radical }) {
           </HoverCard>
         </Match>
 
-        {/* Mobile: Use the original, simple div */}
         <Match when={!isDesktop()}>
           <div
             class="inline-flex h-10 w-10 items-center justify-center rounded-md border text-lg font-bold transition-colors"

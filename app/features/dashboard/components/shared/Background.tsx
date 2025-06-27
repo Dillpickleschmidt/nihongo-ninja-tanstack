@@ -1,4 +1,5 @@
-import { createSignal, createEffect, onMount } from "solid-js" // Import SolidJS primitives
+// features/dashboard/components/shared/Background.tsx
+import { createSignal, onMount } from "solid-js"
 
 export type BackgroundItem = {
   source_type: "img" | "video"
@@ -30,13 +31,13 @@ export function Background(props: { backgroundItem: BackgroundItem }) {
     }
 
     handleResize()
-
     window.addEventListener("resize", handleResize)
 
     return () => {
       window.removeEventListener("resize", handleResize)
     }
   })
+
   const gradientPosition = () => (isVerticalDesktop() ? "fixed" : "absolute")
   const gradientZIndex = -1
   const mediaZIndex = -2
@@ -67,7 +68,7 @@ export function Background(props: { backgroundItem: BackgroundItem }) {
           }
           
           .gradient-overlay {
-            position: ${gradientPosition()}; /* Access signal with () */
+            position: ${gradientPosition()}; 
             top: ${gradientPosition() === "fixed" ? "0" : y_offset_desktop};            
             left: ${gradientPosition() === "fixed" ? "0" : "50%"};
             ${
@@ -115,7 +116,7 @@ export function Background(props: { backgroundItem: BackgroundItem }) {
           autoplay
           loop
           muted
-          playsInline
+          plays-inline
           preload="auto"
         />
       )}

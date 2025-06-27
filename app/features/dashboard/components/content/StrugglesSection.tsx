@@ -1,30 +1,11 @@
-// features/dashboard/components/StrugglesSection.tsx
+// features/dashboard/components/content/StrugglesSection.tsx
 import { For, createSignal } from "solid-js"
 import { ArrowRight, ChevronDown } from "lucide-solid"
-import { SmoothCard } from "./SmoothCard"
-import { cn } from "@/utils/util"
+import { cn } from "@/utils"
 
 interface StrugglesSectionProps {
   struggles: string[]
-  variant?: "mobile" | "desktop"
-}
-
-function StruggleCard(props: { struggle: string }) {
-  return (
-    <SmoothCard
-      width={110}
-      height={130}
-      scales={{ xl: 1.1 }}
-      class={cn(
-        "relative flex flex-col items-center justify-center bg-purple-50/70 px-2 py-3 text-center transition-transform hover:scale-[98%] xl:px-3 xl:py-4 dark:bg-transparent",
-      )}
-    >
-      <div class="via-card absolute inset-0 -z-1 hidden bg-gradient-to-br from-purple-400/10 to-purple-500/5 dark:block" />
-      <h3 class="font-japanese text-base text-purple-500/90 xl:text-[17px] dark:text-purple-400/80">
-        {props.struggle}
-      </h3>
-    </SmoothCard>
-  )
+  variant: "mobile" | "desktop"
 }
 
 export function StrugglesSection(props: StrugglesSectionProps) {
@@ -41,17 +22,15 @@ export function StrugglesSection(props: StrugglesSectionProps) {
     return (
       <div class="mb-4">
         <div class="mb-4 flex items-center justify-between pl-8">
-          <h2 class="text-muted-foreground text-sm xl:text-base">
-            Your Struggles
-          </h2>
-          <ArrowRight class="text-muted-foreground mr-6 h-4 w-4 xl:h-5 xl:w-5" />
+          <h2 class="text-muted-foreground text-sm">Your Struggles</h2>
+          <ArrowRight class="text-muted-foreground mr-6 h-4 w-4" />
         </div>
-        <div class="scrollbar-hide flex gap-3 overflow-x-auto pr-4 pb-2 pl-8 xl:gap-4">
+        <div class="scrollbar-hide flex gap-3 overflow-x-auto pr-4 pb-2 pl-8">
           <For each={props.struggles}>
             {(struggle) => (
               <div
                 class={cn(
-                  "font-japanese relative rounded-2xl px-4 py-[0.66rem] text-[15px] whitespace-nowrap transition-transform hover:scale-[97%] xl:px-5 xl:py-3 xl:text-base",
+                  "font-japanese relative rounded-2xl px-4 py-[0.66rem] text-[15px] whitespace-nowrap transition-transform hover:scale-[97%]",
                   "bg-purple-100/70 text-purple-500/90 dark:bg-transparent dark:text-purple-400",
                 )}
               >
@@ -68,20 +47,28 @@ export function StrugglesSection(props: StrugglesSectionProps) {
   // Desktop variant with card grid
   return (
     <div class="flex flex-col">
-      <h2 class="mb-4 text-center text-xl font-bold xl:mb-5 xl:text-[22px]">
-        Your Struggles
-      </h2>
+      <h2 class="mb-4 text-center text-xl font-bold">Your Struggles</h2>
 
-      {/* 3x2 Grid */}
       <div class="flex justify-center">
-        <div class="mb-4 grid grid-cols-4 gap-3 xl:mb-5 xl:gap-4">
+        <div class="mb-4 grid grid-cols-4 gap-3">
           <For each={visibleStruggles()}>
-            {(struggle) => <StruggleCard struggle={struggle} />}
+            {(struggle) => (
+              <div
+                class={cn(
+                  "relative flex flex-col items-center justify-center bg-purple-50/70 px-2 py-3 text-center transition-transform hover:scale-[98%] dark:bg-transparent",
+                  "h-32 w-28 rounded-2xl",
+                )}
+              >
+                <div class="via-card absolute inset-0 -z-1 hidden rounded-2xl bg-gradient-to-br from-purple-400/10 to-purple-500/5 dark:block" />
+                <h3 class="font-japanese text-base text-purple-500/90 dark:text-purple-400/80">
+                  {struggle}
+                </h3>
+              </div>
+            )}
           </For>
         </div>
       </div>
 
-      {/* Show More Button */}
       {hasMore() && (
         <div class="flex justify-center">
           <button

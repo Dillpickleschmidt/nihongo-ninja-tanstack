@@ -1,4 +1,4 @@
-// features/dashboard/components/SmoothCard.tsx
+// features/dashboard/components/shared/SmoothCard.tsx
 import { getSvgPath } from "figma-squircle"
 import { createMediaQuery } from "@solid-primitives/media"
 import { JSX } from "solid-js"

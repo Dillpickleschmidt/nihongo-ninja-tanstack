@@ -1,3 +1,4 @@
+// features/dashboard/components/shared/TextbookChapterBackgrounds.tsx
 import { Show } from "solid-js"
 import { Background, BackgroundItem } from "./Background"
 

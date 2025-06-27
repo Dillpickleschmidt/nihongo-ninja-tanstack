@@ -1,4 +1,4 @@
-import { SmoothCard } from "@/features/dashboard/components/SmoothCard"
+import { SmoothCard } from "@/features/dashboard/components/shared/SmoothCard"
 
 export function HeaderCard(props: {
   width: number

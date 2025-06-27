@@ -1,4 +1,4 @@
-// features/dashboard/components/DesktopAnalyticsPanel.tsx
+// features/dashboard/components/layout/RightSidebar.tsx
 import { For, createSignal } from "solid-js"
 import {
   Clock,
@@ -13,7 +13,7 @@ import { Link } from "@tanstack/solid-router"
 import type { StaticModule, DynamicModule } from "@/data/types"
 import { cn } from "@/utils"
 
-interface DesktopAnalyticsPanelProps {
+interface RightSidebarProps {
   struggles: string[]
   historyItems: Array<{
     name: string
@@ -21,13 +21,13 @@ interface DesktopAnalyticsPanelProps {
     amount: number
     color: string
   }>
-  lessons: (StaticModule | DynamicModule)[] // Add lessons prop
+  lessons: (StaticModule | DynamicModule)[]
+  variant: "mobile" | "desktop"
 }
 
-export function DesktopAnalyticsPanel(props: DesktopAnalyticsPanelProps) {
+export function RightSidebar(props: RightSidebarProps) {
   const [selectedTimeframe, setSelectedTimeframe] = createSignal("week")
 
-  // Filter for vocabulary modules only
   const vocabularyLessons = () => {
     return props.lessons.filter((lesson) => {
       const type =
@@ -38,28 +38,60 @@ export function DesktopAnalyticsPanel(props: DesktopAnalyticsPanelProps) {
     })
   }
 
+  if (props.variant === "mobile") {
+    return (
+      <div class="mb-8 px-6">
+        <div class="mb-4 flex items-center justify-between">
+          <h2 class="text-xl font-bold">Your history</h2>
+          <div class="text-muted-foreground mr-8 text-[0.8rem]">Today</div>
+        </div>
+
+        <div class="scrollbar-hide flex max-h-60 flex-col gap-3 overflow-y-auto">
+          <For each={props.historyItems}>
+            {(item) => (
+              <div class="bg-card hover:bg-card/90 flex items-center justify-between rounded-2xl p-4 shadow-sm transition-colors">
+                <div class="flex items-center gap-3">
+                  <div
+                    class={`h-10 w-10 ${item.color} flex items-center justify-center rounded-lg shadow-sm`}
+                  >
+                    <span class="text-lg text-white drop-shadow-sm">
+                      {item.icon}
+                    </span>
+                  </div>
+                  <span class="text-base font-semibold">{item.name}</span>
+                </div>
+                <div class="text-base font-semibold">
+                  {item.amount < 0 ? "-" : "+"}{" "}
+                  {Math.abs(item.amount).toFixed(2)}
+                </div>
+              </div>
+            )}
+          </For>
+        </div>
+      </div>
+    )
+  }
+
+  // Desktop variant
   return (
     <div class="space-y-6">
-      {/* Vocabulary Modules - moved to top */}
-      <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/10 to-cyan-600/5 p-6 backdrop-blur-sm">
-        <div class="mb-4 flex items-center gap-2">
+      {/* Vocabulary Modules */}
+      <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/10 to-cyan-600/5 backdrop-blur-sm">
+        <div class="mb-4 flex items-center gap-2 px-6 pt-6">
           <BookOpen class="h-5 w-5 text-blue-400" />
           <h3 class="text-lg font-semibold">Chapter Vocabulary</h3>
         </div>
 
-        <div class="scrollbar-hide max-h-64 space-y-2 overflow-y-auto">
+        <div class="scrollbar-hide max-h-64 space-y-2 overflow-x-visible overflow-y-auto px-6 pb-6">
           <For each={vocabularyLessons()}>
             {(lesson, index) => (
-              <VocabularyLessonRow
-                lesson={lesson}
-                isCompleted={index() < 1} // Mock completion status
-              />
+              <VocabularyLessonRow lesson={lesson} isCompleted={index() < 1} />
             )}
           </For>
         </div>
       </div>
 
-      {/* Struggle Areas - now shows only 5 items */}
+      {/* Struggle Areas */}
       <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-red-600/10 to-orange-600/5 p-6 backdrop-blur-sm">
         <div class="mb-4 flex items-center justify-between">
           <div class="flex items-center gap-2">
@@ -206,7 +238,6 @@ function VocabularyLessonRow(props: {
         )}
         style={`background-image: linear-gradient(to right, ${getVocabGradient()})`}
       >
-        {/* Status icon */}
         <div class="flex-shrink-0">
           {props.isCompleted ? (
             <CheckCircle class="h-5 w-5 text-green-400" />
@@ -215,7 +246,6 @@ function VocabularyLessonRow(props: {
           )}
         </div>
 
-        {/* Content */}
         <div class="min-w-0 flex-1">
           <h4 class="group-hover:text-primary line-clamp-1 text-sm font-medium transition-colors">
             {displayTitle}
@@ -227,7 +257,6 @@ function VocabularyLessonRow(props: {
           </div>
         </div>
 
-        {/* Arrow */}
         <ArrowRight class="text-muted-foreground h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
       </div>
     </Link>

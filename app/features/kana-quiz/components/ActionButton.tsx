@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { SmoothCard } from "@/features/dashboard/components/SmoothCard"
+import { SmoothCard } from "@/features/dashboard/components/shared/SmoothCard"
 
 export function ActionButton(props: {
   width: number
