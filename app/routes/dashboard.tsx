@@ -14,6 +14,11 @@ import {
 } from "@/data/utils/core"
 import { textbooks } from "@/data/textbooks"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
+import { DesktopDashboardHeader } from "@/features/dashboard/components/DesktopDashboardHeader"
+import { DesktopContentShowcase } from "@/features/dashboard/components/DesktopContentShowcase"
+import { DesktopCourseDashboard } from "@/features/dashboard/components/DesktopCourseDashboard"
+import { DesktopAnalyticsPanel } from "@/features/dashboard/components/DesktopAnalyticsPanel"
+import { DesktopProgressSidebar } from "@/features/dashboard/components/DesktopProgressSidebar"
 import { DashboardHeader } from "@/features/dashboard/components/DashboardHeader"
 import { ContentSection } from "@/features/dashboard/components/ContentSection"
 import { LessonsSection } from "@/features/dashboard/components/LessonsSection"
@@ -226,26 +231,17 @@ function RouteComponent() {
           display: none;
         }
       `}</style>
-
-      {/* <BackgroundImage */}
-      {/*   class="z-[-1] !-mt-[4.1rem] min-h-screen" */}
-      {/*   backgroundImage="/img/dust-splatter-1.png" */}
-      {/*   backgroundImageSize="1215px" */}
-      {/*   backgroundImageOpacity={3} */}
-      {/* /> */}
       <TextbookChapterBackgrounds
         textbook={loaderData().sourceId}
         chapter={loaderData().deck.slug}
       />
-
-      <DashboardHeader
-        currentDeck={loaderData().deck}
-        deckSources={loaderData().deckSources}
-        dueFSRSCardsPromise={loaderData().dueFSRSCards}
-      />
-
-      {/* Mobile Layout: Simple vertical stack */}
+      {/* Mobile Layout: Keep existing */}
       <SSRMediaQuery hideFrom="xl">
+        <DashboardHeader
+          currentDeck={loaderData().deck}
+          deckSources={loaderData().deckSources}
+          dueFSRSCardsPromise={loaderData().dueFSRSCards}
+        />
         <div class="flex flex-col">
           <ContentSection
             resources={loaderData().externalResources}
@@ -266,30 +262,46 @@ function RouteComponent() {
         </div>
       </SSRMediaQuery>
 
-      {/* Desktop Layout: Asymmetrical 2/3 and 1/3 grid */}
+      {/* Desktop Layout: New overlaid design */}
       <SSRMediaQuery showFrom="xl">
-        <div class="my-6 grid grid-cols-[2fr_1fr] gap-8 px-8">
-          {/* Main Content Pane */}
-          <div class="flex flex-col gap-8">
-            <ContentSection
-              resources={loaderData().externalResources}
-              thumbnailPromises={loaderData().deferredThumbnails}
-            />
-            <LessonsSection
-              lessons={loaderData().lessons}
-              progressPercentage={75}
-            />
-          </div>
+        <div class="relative min-h-screen">
+          {/* Floating header overlay */}
+          <DesktopDashboardHeader
+            currentDeck={loaderData().deck}
+            deckSources={loaderData().deckSources}
+            dueFSRSCardsPromise={loaderData().dueFSRSCards}
+          />
+          {/* Main content with offset sidebars */}
+          <div class="grid grid-cols-[1fr_2fr_1fr] gap-8 px-8">
+            {/* Left Sidebar - reduced offset since content is more compact */}
+            <div class="pt-44">
+              <DesktopProgressSidebar data={loaderData().wordHierarchyData} />
+            </div>
 
-          {/* Sidebar / Status Pane */}
-          <div class="flex flex-col gap-8">
-            <WordHierarchy
-              data={loaderData().wordHierarchyData}
-              variant="desktop"
-            />
-            <StrugglesSection struggles={struggles} variant="desktop" />
-            <HistorySection items={historyItems} />
+            {/* Main Content Area - pushed down a bit */}
+            <div class="pt-20">
+              <div class="flex flex-col gap-8">
+                <DesktopContentShowcase
+                  resources={loaderData().externalResources}
+                  thumbnailPromises={loaderData().deferredThumbnails}
+                />
+                <DesktopCourseDashboard
+                  lessons={loaderData().lessons}
+                  progressPercentage={75}
+                />
+              </div>
+            </div>
+
+            {/* Right Sidebar - vocabulary now at top, reduced offset */}
+            <div class="pt-32">
+              <DesktopAnalyticsPanel
+                struggles={struggles}
+                historyItems={historyItems}
+                lessons={loaderData().lessons}
+              />
+            </div>
           </div>
+          <div class="pb-8" /> {/* Bottom spacing */}
         </div>
       </SSRMediaQuery>
     </div>

@@ -17,16 +17,9 @@ interface WordHierarchyProps {
   variant: WordHierarchyVariant
 }
 
-/**
- * The main component for displaying the word hierarchy widget.
- * Renders two distinct layouts for mobile and desktop using a 'variant' prop.
- */
 export function WordHierarchy(props: WordHierarchyProps) {
   return (
     <div class="flex flex-col gap-4">
-      <Show when={props.variant === "desktop"}>
-        <h2 class="text-xl font-semibold">Your Progress</h2>
-      </Show>
       <Show
         when={props.data}
         fallback={
@@ -39,20 +32,21 @@ export function WordHierarchy(props: WordHierarchyProps) {
           <Switch>
             {/* Desktop Layout */}
             <Match when={props.variant === "desktop"}>
-              <div class="grid grid-cols-[3fr_2fr] gap-x-8">
-                <div class="flex flex-col gap-4">
+              <div class="grid grid-cols-[3fr_2fr] gap-x-4">
+                <div class="flex flex-col gap-3">
                   <SummaryCircles data={data()} />
                   <CharacterList
                     title="Kanji"
                     items={data().uniqueKanji}
                     variant="desktop"
+                    maxHeight="max-h-[265px]"
                   />
                 </div>
                 <CharacterList
                   title="Radicals"
                   items={data().uniqueRadicals}
                   variant="desktop"
-                  isTall={true}
+                  maxHeight="max-h-[365px]"
                 />
               </div>
             </Match>
@@ -82,13 +76,9 @@ export function WordHierarchy(props: WordHierarchyProps) {
   )
 }
 
-/**
- * A shared component for rendering the three progress circles.
- * Updated to use the new summary structure.
- */
 function SummaryCircles(props: { data: FullHierarchyData }) {
   return (
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid grid-cols-3 gap-3">
       <ProgressCircle
         label="Vocabulary"
         countLearned={props.data.summary!.vocab.wellKnown}
@@ -117,10 +107,6 @@ function SummaryCircles(props: { data: FullHierarchyData }) {
   )
 }
 
-/**
- * A compact circular progress indicator.
- * The main number shows countLearned (well_known), while arcs show total progress.
- */
 function ProgressCircle(props: {
   label: string
   countLearned: number
@@ -129,7 +115,7 @@ function ProgressCircle(props: {
   colorLearned: string
   colorInProgress: string
 }) {
-  const radius = 32
+  const radius = 28
   const circumference = 2 * Math.PI * radius
 
   const progressLearned = () =>
@@ -147,29 +133,29 @@ function ProgressCircle(props: {
   return (
     <HoverCard openDelay={200}>
       <HoverCardTrigger as="div">
-        <div class="flex flex-col items-center gap-1.5">
-          <div class="relative h-20 w-20">
-            <svg class="h-full w-full" viewBox="0 0 80 80">
+        <div class="flex flex-col items-center gap-1">
+          <div class="relative h-16 w-16">
+            <svg class="h-full w-full" viewBox="0 0 64 64">
               <circle
                 class="text-muted-foreground/10"
-                stroke-width="8"
+                stroke-width="6"
                 stroke="currentColor"
                 fill="transparent"
                 r={radius}
-                cx="40"
-                cy="40"
+                cx="32"
+                cy="32"
               />
               <circle
                 class={props.colorInProgress}
-                stroke-width="8"
+                stroke-width="6"
                 stroke-dasharray={circumference}
                 stroke-dashoffset={offsetTotal()}
                 stroke-linecap="round"
                 stroke="currentColor"
                 fill="transparent"
                 r={radius}
-                cx="40"
-                cy="40"
+                cx="32"
+                cy="32"
                 style={{
                   transform: "rotate(-90deg)",
                   "transform-origin": "50% 50%",
@@ -178,15 +164,15 @@ function ProgressCircle(props: {
               />
               <circle
                 class={props.colorLearned}
-                stroke-width="8"
+                stroke-width="6"
                 stroke-dasharray={circumference}
                 stroke-dashoffset={offsetLearned()}
                 stroke-linecap="round"
                 stroke="currentColor"
                 fill="transparent"
                 r={radius}
-                cx="40"
-                cy="40"
+                cx="32"
+                cy="32"
                 style={{
                   transform: "rotate(-90deg)",
                   "transform-origin": "50% 50%",
@@ -195,11 +181,11 @@ function ProgressCircle(props: {
               />
             </svg>
             <div class="absolute inset-0 flex flex-col items-center justify-center">
-              <span class="text-xl font-bold">{props.countLearned}</span>
+              <span class="text-lg font-bold">{props.countLearned}</span>
               <span class="text-muted-foreground text-xs">/{props.total}</span>
             </div>
           </div>
-          <span class="text-muted-foreground text-base font-medium">
+          <span class="text-muted-foreground text-sm font-medium">
             {props.label}
           </span>
         </div>
@@ -218,29 +204,22 @@ function ProgressCircle(props: {
   )
 }
 
-/**
- * A container for a list of characters, with responsive height behavior.
- */
 function CharacterList(props: {
   title: string
   items: (Kanji | Radical)[]
   variant: WordHierarchyVariant
-  isTall?: boolean
+  maxHeight?: string
 }) {
   return (
-    <div
-      class="flex flex-col"
-      classList={{ "h-full": props.isTall && props.variant === "desktop" }}
-    >
-      <h3 class="text-muted-foreground mb-3 text-sm font-semibold">
+    <div class="flex flex-col">
+      <h3 class="text-muted-foreground mb-2 text-xs font-semibold">
         {props.title}
       </h3>
       <div
-        class="scrollbar-hide flex flex-wrap content-start gap-2 overflow-y-auto"
-        classList={{
-          "min-h-[7.5rem]": !props.isTall && props.variant === "desktop",
-          "flex-grow": props.isTall && props.variant === "desktop",
-        }}
+        class={cn(
+          "scrollbar-hide flex flex-wrap content-start gap-1.5 overflow-y-auto",
+          props.variant === "desktop" && props.maxHeight,
+        )}
       >
         <For each={props.items}>{(item) => <CharBox item={item} />}</For>
       </div>
@@ -248,10 +227,6 @@ function CharacterList(props: {
   )
 }
 
-/**
- * A small, styled box for displaying a single character.
- * Updated to use the new ProgressState values for styling.
- */
 function CharBox(props: { item: Kanji | Radical }) {
   const isDesktop = createMediaQuery("(min-width: 1280px)")
 
@@ -263,9 +238,9 @@ function CharBox(props: { item: Kanji | Radical }) {
           <HoverCard openDelay={200}>
             <HoverCardTrigger as="div">
               <SmoothCard
-                width={40}
-                height={40}
-                cornerRadius={10}
+                width={32}
+                height={32}
+                cornerRadius={8}
                 class={cn(
                   "flex items-center justify-center transition-colors hover:cursor-pointer",
                   {
@@ -276,7 +251,7 @@ function CharBox(props: { item: Kanji | Radical }) {
                 )}
               >
                 <span
-                  class={cn("text-lg font-bold", {
+                  class={cn("text-sm font-bold", {
                     "text-muted-foreground": props.item.progress === "not_seen",
                     "text-amber-300": props.item.progress === "learning",
                     "text-teal-300": props.item.progress === "well_known",

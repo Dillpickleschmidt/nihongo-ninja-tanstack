@@ -1,0 +1,235 @@
+// features/dashboard/components/DesktopAnalyticsPanel.tsx
+import { For, createSignal } from "solid-js"
+import {
+  Clock,
+  Brain,
+  BarChart3,
+  BookOpen,
+  ArrowRight,
+  Circle,
+  CheckCircle,
+} from "lucide-solid"
+import { Link } from "@tanstack/solid-router"
+import type { StaticModule, DynamicModule } from "@/data/types"
+import { cn } from "@/utils"
+
+interface DesktopAnalyticsPanelProps {
+  struggles: string[]
+  historyItems: Array<{
+    name: string
+    icon: string
+    amount: number
+    color: string
+  }>
+  lessons: (StaticModule | DynamicModule)[] // Add lessons prop
+}
+
+export function DesktopAnalyticsPanel(props: DesktopAnalyticsPanelProps) {
+  const [selectedTimeframe, setSelectedTimeframe] = createSignal("week")
+
+  // Filter for vocabulary modules only
+  const vocabularyLessons = () => {
+    return props.lessons.filter((lesson) => {
+      const type =
+        "lesson_type" in lesson ? lesson.lesson_type : lesson.session_type
+      return ["vocab", "vocab-list", "vocab-practice", "vocab-test"].includes(
+        type,
+      )
+    })
+  }
+
+  return (
+    <div class="space-y-6">
+      {/* Vocabulary Modules - moved to top */}
+      <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/10 to-cyan-600/5 p-6 backdrop-blur-sm">
+        <div class="mb-4 flex items-center gap-2">
+          <BookOpen class="h-5 w-5 text-blue-400" />
+          <h3 class="text-lg font-semibold">Chapter Vocabulary</h3>
+        </div>
+
+        <div class="scrollbar-hide max-h-64 space-y-2 overflow-y-auto">
+          <For each={vocabularyLessons()}>
+            {(lesson, index) => (
+              <VocabularyLessonRow
+                lesson={lesson}
+                isCompleted={index() < 1} // Mock completion status
+              />
+            )}
+          </For>
+        </div>
+      </div>
+
+      {/* Struggle Areas - now shows only 5 items */}
+      <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-red-600/10 to-orange-600/5 p-6 backdrop-blur-sm">
+        <div class="mb-4 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <Brain class="h-5 w-5 text-red-400" />
+            <h3 class="text-lg font-semibold">Areas to Improve</h3>
+          </div>
+          <span class="text-muted-foreground text-xs">
+            {Math.min(5, props.struggles.length)} items
+          </span>
+        </div>
+
+        <div class="space-y-2">
+          <For each={props.struggles.slice(0, 5)}>
+            {(struggle, index) => (
+              <div class="flex items-center justify-between rounded-lg bg-white/5 p-2">
+                <span class="font-japanese text-sm">{struggle}</span>
+                <div class="flex items-center gap-2">
+                  <div
+                    class={cn(
+                      "h-2 w-8 rounded-full",
+                      index() < 2 && "bg-red-400/60",
+                      index() >= 2 && index() < 4 && "bg-yellow-400/60",
+                      index() >= 4 && "bg-green-400/60",
+                    )}
+                  ></div>
+                  <span class="text-muted-foreground text-xs">
+                    {100 - index() * 20}%
+                  </span>
+                </div>
+              </div>
+            )}
+          </For>
+        </div>
+      </div>
+
+      {/* Study Time Chart */}
+      <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/10 to-cyan-600/5 p-6 backdrop-blur-sm">
+        <div class="mb-4 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <BarChart3 class="h-5 w-5 text-blue-400" />
+            <h3 class="text-lg font-semibold">Study Time</h3>
+          </div>
+          <select
+            class="rounded border border-white/20 bg-white/10 px-2 py-1 text-xs"
+            value={selectedTimeframe()}
+            onChange={(e) => setSelectedTimeframe(e.currentTarget.value)}
+          >
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+            <option value="year">This Year</option>
+          </select>
+        </div>
+
+        <div class="space-y-2">
+          <For each={["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}>
+            {(day, index) => {
+              const hours = [2, 1.5, 3, 0.5, 2.5, 1, 0.5][index()]
+              const maxHours = 3
+              const percentage = (hours / maxHours) * 100
+
+              return (
+                <div class="flex items-center gap-3">
+                  <span class="text-muted-foreground w-8 text-xs">{day}</span>
+                  <div class="h-3 flex-1 overflow-hidden rounded-full bg-white/10">
+                    <div
+                      class="h-full rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 transition-all duration-500"
+                      style={`width: ${percentage}%`}
+                    ></div>
+                  </div>
+                  <span class="text-muted-foreground w-8 text-xs">
+                    {hours}h
+                  </span>
+                </div>
+              )
+            }}
+          </For>
+        </div>
+
+        <div class="mt-4 text-center">
+          <div class="text-lg font-bold text-blue-400">11.5 hours</div>
+          <div class="text-muted-foreground text-xs">Total this week</div>
+        </div>
+      </div>
+
+      {/* Recent Activity */}
+      <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-green-600/10 to-emerald-600/5 p-6 backdrop-blur-sm">
+        <div class="mb-4 flex items-center gap-2">
+          <Clock class="h-5 w-5 text-green-400" />
+          <h3 class="text-lg font-semibold">Recent Activity</h3>
+        </div>
+
+        <div class="space-y-3">
+          <For each={props.historyItems}>
+            {(item) => (
+              <div class="flex items-center gap-3">
+                <div
+                  class={cn(
+                    "flex h-8 w-8 items-center justify-center rounded-lg",
+                    item.color,
+                  )}
+                >
+                  <span class="text-sm text-white">{item.icon}</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="text-sm font-medium">{item.name}</div>
+                  <div class="text-muted-foreground text-xs">2 hours ago</div>
+                </div>
+                <div class="text-sm font-semibold">
+                  {item.amount < 0 ? "-" : "+"}
+                  {Math.abs(item.amount)}
+                </div>
+              </div>
+            )}
+          </For>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function VocabularyLessonRow(props: {
+  lesson: StaticModule | DynamicModule
+  isCompleted: boolean
+}) {
+  const linkTo =
+    "link" in props.lesson && props.lesson.link
+      ? props.lesson.link
+      : `/practice/${props.lesson.id}`
+
+  const displayTitle = props.lesson.title.startsWith("Practice ")
+    ? props.lesson.title.substring(9)
+    : props.lesson.title
+
+  const getVocabGradient = () => "from-sky-600/20 to-blue-600/10"
+
+  return (
+    <Link to={linkTo} class="group block">
+      <div
+        class={cn(
+          "flex items-center gap-3 rounded-lg border border-white/5 p-3 transition-all duration-200",
+          "hover:scale-[1.01] hover:border-white/10 hover:shadow-lg",
+          "bg-gradient-to-r backdrop-blur-sm",
+          props.isCompleted ? "bg-green-600/5" : "bg-white/2",
+        )}
+        style={`background-image: linear-gradient(to right, ${getVocabGradient()})`}
+      >
+        {/* Status icon */}
+        <div class="flex-shrink-0">
+          {props.isCompleted ? (
+            <CheckCircle class="h-5 w-5 text-green-400" />
+          ) : (
+            <Circle class="text-muted-foreground group-hover:text-primary h-5 w-5 transition-colors" />
+          )}
+        </div>
+
+        {/* Content */}
+        <div class="min-w-0 flex-1">
+          <h4 class="group-hover:text-primary line-clamp-1 text-sm font-medium transition-colors">
+            {displayTitle}
+          </h4>
+          <div class="text-muted-foreground mt-0.5 text-xs capitalize">
+            {"lesson_type" in props.lesson
+              ? props.lesson.lesson_type
+              : props.lesson.session_type}
+          </div>
+        </div>
+
+        {/* Arrow */}
+        <ArrowRight class="text-muted-foreground h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
+      </div>
+    </Link>
+  )
+}
