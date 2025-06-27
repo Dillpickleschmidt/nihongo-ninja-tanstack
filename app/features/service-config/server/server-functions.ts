@@ -1,4 +1,4 @@
-// service-config/server/server-functions.ts
+// features/service-config/server/server-functions.ts
 
 import { createServerFn } from "@tanstack/solid-start"
 import { z } from "zod"

@@ -1,4 +1,4 @@
-// service-config/server/service-manager.ts
+// features/service-config/server/service-manager.ts
 
 import { getCookie, createSetCookieHeader } from "@/utils/cookie-utils"
 import { setResponseHeader } from "@tanstack/solid-start/server"

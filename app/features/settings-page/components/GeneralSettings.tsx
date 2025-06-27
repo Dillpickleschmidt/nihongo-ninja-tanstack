@@ -1,3 +1,4 @@
+// features/settings-page/components/GeneralSettings.tsx
 export const GeneralSettings = () => {
   return (
     <div class="space-y-6">

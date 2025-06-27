@@ -1,4 +1,4 @@
-// service-config/client/preferenceManager.ts
+// features/service-config/client/preferenceManager.ts
 
 import type {
   ServiceType,

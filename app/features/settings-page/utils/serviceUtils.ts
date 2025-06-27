@@ -1,3 +1,4 @@
+// features/settings-page/utils/serviceUtils.ts
 import type { ServiceMode } from "@/features/service-config/types"
 
 export const getModeDisplayName = (mode: ServiceMode): string => {
@@ -18,23 +19,23 @@ export const getModeDescription = (mode: ServiceMode) => {
     case "disabled":
       return {
         icon: "🚫",
-        title: "Disabled",
+        title: "Service Disabled",
         description:
-          "This integration is currently disabled and will not be used.",
+          "This service integration is currently disabled. Select a mode above to get started.",
       }
     case "live":
       return {
-        icon: "⚡",
-        title: "Live Access",
+        icon: "📡",
+        title: "Live Access Mode",
         description:
-          "Connects directly to the service for real-time data and features.",
+          "Connect to your account and access decks in real-time. Continue using your external SRS while browsing content here.",
       }
     case "imported":
       return {
-        icon: "📥",
-        title: "Imported Data",
+        icon: "📦",
+        title: "Import Data Mode",
         description:
-          "Uses data previously imported from the service. No live connection.",
+          "Import your data once to switch to our SRS system. Your data becomes detached from other services.",
       }
     default:
       return {

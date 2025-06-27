@@ -33,6 +33,11 @@ interface SettingsContextType {
     preference: Partial<ServicePreference>,
   ) => void
   isInitialized: () => boolean
+  errors: () => Record<ServiceType, string>
+  isProcessing: () => boolean
+  setError: (service: ServiceType, error: string) => void
+  clearError: (service: ServiceType) => void
+  setIsProcessing: (processing: boolean) => void
 }
 
 const defaultAuthData: ServiceAuthData = {
@@ -72,6 +77,14 @@ export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
   )
 
   const [isInitialized, setIsInitialized] = createSignal(false)
+
+  const [errors, setErrors] = createSignal<Record<ServiceType, string>>({
+    jpdb: "",
+    wanikani: "",
+    anki: "",
+  })
+
+  const [isProcessing, setIsProcessing] = createSignal(false)
 
   onMount(() => {
     // Load preferences from client-side if not provided by server
@@ -120,12 +133,25 @@ export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
     }))
   }
 
+  const setError = (service: ServiceType, error: string) => {
+    setErrors((prev) => ({ ...prev, [service]: error }))
+  }
+
+  const clearError = (service: ServiceType) => {
+    setErrors((prev) => ({ ...prev, [service]: "" }))
+  }
+
   const value = {
     authData,
     preferences,
     updateServiceAuth,
     updateServicePreference,
     isInitialized,
+    errors,
+    isProcessing,
+    setError,
+    clearError,
+    setIsProcessing,
   }
 
   return (

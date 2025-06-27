@@ -1,3 +1,4 @@
+// features/settings-page/components/ServiceCard.tsx
 import { Show } from "solid-js"
 import {
   Select,
@@ -8,6 +9,7 @@ import {
 } from "@/components/ui/select"
 import type { ServiceType, ServiceMode } from "@/features/service-config/types"
 import { getModeDisplayName, getModeDescription } from "../utils/serviceUtils"
+import { useSettings } from "@/context/SettingsContext"
 
 interface ServiceCardProps {
   title: string
@@ -16,12 +18,12 @@ interface ServiceCardProps {
   iconColor: string
   service: ServiceType
   selectedMode: ServiceMode
-  isProcessing: boolean
-  onModeChange: (mode: ServiceMode | null) => void
+  onModeChange: (mode: ServiceMode | undefined) => void
   children: any
 }
 
 export const ServiceCard = (props: ServiceCardProps) => {
+  const { isProcessing } = useSettings()
   const modeInfo = () => getModeDescription(props.selectedMode || "disabled")
 
   return (
@@ -45,7 +47,7 @@ export const ServiceCard = (props: ServiceCardProps) => {
               {getModeDisplayName(itemProps.item.rawValue as ServiceMode)}
             </SelectItem>
           )}
-          disabled={props.isProcessing}
+          disabled={isProcessing()}
         >
           <SelectTrigger class="w-36 border-white/30 bg-white/10 text-white backdrop-blur-sm placeholder:text-white/70">
             <SelectValue<ServiceMode>>

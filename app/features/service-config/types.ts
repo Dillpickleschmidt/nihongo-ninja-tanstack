@@ -1,4 +1,4 @@
-// service-config/types.ts
+// features/service-config/types.ts
 
 // Core service types
 export type ServiceType = "jpdb" | "wanikani" | "anki"
@@ -44,6 +44,23 @@ export interface AllServicePreferences {
   jpdb?: ServicePreference
   wanikani?: ServicePreference
   anki?: ServicePreference
+}
+
+// --- Shared Component Props ---
+
+/**
+ * Shared props interface for all service cards
+ */
+export interface ServiceCardProps {
+  preference: () => Partial<ServicePreference>
+  updateServicePreference: (preference: Partial<ServicePreference>) => void
+}
+
+/**
+ * Extended props for JpdbServiceCard (includes import functionality)
+ */
+export interface JpdbServiceCardProps extends ServiceCardProps {
+  onImport: (apiKey: string, file: File) => void
 }
 
 // --- Operation Types ---
