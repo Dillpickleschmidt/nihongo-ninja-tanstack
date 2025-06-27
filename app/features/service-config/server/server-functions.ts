@@ -1,21 +1,21 @@
-// features/service-auth/server-functions.ts
+// service-config/server/server-functions.ts
 
 import { createServerFn } from "@tanstack/solid-start"
 import { z } from "zod"
 import { getUserSSR } from "@/features/supabase/getUserSSR"
 import {
   validateServiceCredentials,
-  updateServiceSettings,
-  removeService,
-  getAllServicesState,
+  updateServiceAuth,
+  removeServiceAuth,
+  getAuthDataFromCookie,
   validateAllStoredCredentials,
 } from "./service-manager"
 import type {
   ServiceResponse,
-  AllServicesState,
   OperationResult,
-  ServiceSettings,
-} from "./types"
+  ServiceAuthData,
+  AllServiceAuthData,
+} from "../types"
 
 // === Input Validation Schemas ===
 
@@ -28,13 +28,11 @@ const serviceConnectionSchema = z.object({
   }),
 })
 
-const serviceSettingsSchema = z.object({
+const serviceAuthUpdateSchema = z.object({
   service: z.enum(["jpdb", "wanikani", "anki"]),
-  settings: z.object({
-    mode: z.enum(["disabled", "live", "imported"]).optional(),
+  authData: z.object({
     api_key: z.string().optional(),
     is_api_key_valid: z.boolean().optional(),
-    data_imported: z.boolean().optional(),
   }),
 })
 
@@ -56,23 +54,20 @@ export const connectService = createServerFn()
         data.credentials,
       )
 
-      const settingsToUpdate: Partial<ServiceSettings> = {
-        api_key: data.credentials.api_key, // Always store the key they entered
+      const authDataToUpdate: Partial<ServiceAuthData> = {
+        api_key: data.credentials.api_key,
         is_api_key_valid: validationResult.success,
       }
 
       if (!validationResult.success) {
-        updateServiceSettings(data.service, settingsToUpdate) // Save the invalid key and status
+        updateServiceAuth(data.service, authDataToUpdate)
         return {
           success: false,
           error: validationResult.error || "Credential validation failed",
         }
       }
 
-      // On success, also update the mode to live
-      settingsToUpdate.mode = "live"
-      updateServiceSettings(data.service, settingsToUpdate)
-
+      updateServiceAuth(data.service, authDataToUpdate)
       return { success: true }
     } catch (error) {
       console.error(`Error connecting to ${data.service}:`, error)
@@ -87,7 +82,7 @@ export const disconnectService = createServerFn()
     if (!user) return { success: false, error: "User not authenticated" }
 
     try {
-      removeService(data.service)
+      removeServiceAuth(data.service)
       return { success: true }
     } catch (error) {
       console.error(`Error disconnecting from ${data.service}:`, error)
@@ -98,47 +93,47 @@ export const disconnectService = createServerFn()
     }
   })
 
-export const updateServiceSettingsServerFn = createServerFn()
-  .validator(serviceSettingsSchema)
+export const updateServiceAuthServerFn = createServerFn()
+  .validator(serviceAuthUpdateSchema)
   .handler(async ({ data }): Promise<ServiceResponse> => {
     const { user } = await getUserSSR()
     if (!user) return { success: false, error: "User not authenticated" }
 
     try {
-      updateServiceSettings(data.service, data.settings)
+      updateServiceAuth(data.service, data.authData)
       return { success: true }
     } catch (error) {
-      console.error(`Error updating ${data.service} settings:`, error)
+      console.error(`Error updating ${data.service} auth data:`, error)
       return {
         success: false,
-        error: `Failed to update ${data.service} settings`,
+        error: `Failed to update ${data.service} auth data`,
       }
     }
   })
 
-export const getServiceState = createServerFn().handler(
-  async (): Promise<ServiceResponse<AllServicesState>> => {
+export const getServiceAuthState = createServerFn().handler(
+  async (): Promise<ServiceResponse<AllServiceAuthData>> => {
     const { user } = await getUserSSR()
     if (!user) return { success: false, error: "User not authenticated" }
 
     try {
-      const serviceState = getAllServicesState()
-      return { success: true, data: serviceState }
+      const authData = getAuthDataFromCookie()
+      return { success: true, data: authData }
     } catch (error) {
-      console.error("Error getting service state:", error)
-      return { success: false, error: "Failed to get service state" }
+      console.error("Error getting service auth state:", error)
+      return { success: false, error: "Failed to get service auth state" }
     }
   },
 )
 
 export const validateStoredCredentials = createServerFn().handler(
-  async (): Promise<ServiceResponse<AllServicesState>> => {
+  async (): Promise<ServiceResponse> => {
     const { user } = await getUserSSR()
     if (!user) return { success: false, error: "User not authenticated" }
 
     try {
-      const validatedState = await validateAllStoredCredentials()
-      return { success: true, data: validatedState }
+      await validateAllStoredCredentials()
+      return { success: true }
     } catch (error) {
       console.error("Error validating stored credentials:", error)
       return { success: false, error: "Failed to validate stored credentials" }
@@ -155,9 +150,8 @@ export const importServiceData = createServerFn()
     try {
       // This is where you would add the real import logic.
       // For now, we'll simulate a successful import.
-      updateServiceSettings(data.service, { data_imported: true })
 
-      return { success: true, data: { success: true, cards_imported: 123 } } // Example data
+      return { success: true, data: { success: true, cards_imported: 123 } }
     } catch (error) {
       console.error(`Error importing data from ${data.service}:`, error)
       return {

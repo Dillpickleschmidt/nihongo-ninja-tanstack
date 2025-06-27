@@ -7,124 +7,124 @@ import {
   ParentProps,
 } from "solid-js"
 import {
-  ServiceCredentials,
-  ServiceSettings,
+  AllServiceAuthData,
+  AllServicePreferences,
+  ServiceAuthData,
+  ServicePreference,
   ServiceType,
-  ServiceMode,
-} from "../features/service-auth/types"
-
-// --- Cookie Management ---
-
-const COOKIE_NAME = "nn-service-credentials"
-
-function getCookie(name: string): string | null {
-  if (typeof document === "undefined") return null
-  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"))
-  return match ? decodeURIComponent(match[2]) : null
-}
-
-function setCookie(name: string, value: string, days: number = 365) {
-  if (typeof document === "undefined") return
-  let expires = ""
-  if (days) {
-    const date = new Date()
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
-    expires = "; expires=" + date.toUTCString()
-  }
-  document.cookie =
-    name + "=" + (value || "") + expires + "; path=/; SameSite=Lax"
-}
+} from "@/features/service-config/types"
+import { updateServiceAuthServerFn } from "@/features/service-config/server/server-functions"
+import {
+  getAllServicePreferences,
+  setServicePreference,
+} from "@/features/service-config/client/preferenceManager"
 
 // --- Context Definition ---
 
 interface SettingsContextType {
-  serviceSettings: () => ServiceCredentials
-  updateServiceSetting: (
+  authData: () => AllServiceAuthData
+  preferences: () => AllServicePreferences
+  updateServiceAuth: (
     service: ServiceType,
-    settings: Partial<ServiceSettings>,
+    authData: Partial<ServiceAuthData>,
+  ) => Promise<void>
+  updateServicePreference: (
+    service: ServiceType,
+    preference: Partial<ServicePreference>,
   ) => void
   isInitialized: () => boolean
 }
 
-const defaultSettings: ServiceCredentials = {
-  jpdb: {
-    mode: "disabled",
-    api_key: "",
-    is_api_key_valid: false,
-    data_imported: false,
-  },
-  wanikani: {
-    mode: "disabled",
-    api_key: "",
-    is_api_key_valid: false,
-    data_imported: false,
-  },
-  anki: {
-    mode: "disabled",
-    api_key: "",
-    is_api_key_valid: false,
-    data_imported: false,
-  },
+const defaultAuthData: ServiceAuthData = {
+  api_key: "",
+  is_api_key_valid: false,
+}
+
+const defaultPreference: ServicePreference = {
+  mode: "disabled",
+  data_imported: false,
 }
 
 const SettingsContext = createContext<SettingsContextType>()
 
 // --- Provider Component ---
 
-interface SettingsProviderProps {
-  children: ReactNode;
-  initialSettings?: ServiceCredentials;
+interface SettingsProviderProps extends ParentProps {
+  initialAuthData?: AllServiceAuthData
+  initialPreferences?: AllServicePreferences
 }
 
-export const SettingsProvider: Component<ParentProps & SettingsProviderProps> = (props) => {
-  const [serviceSettings, setServiceSettings] = createSignal<ServiceCredentials>(props.initialSettings || defaultSettings);
-  const [isInitialized, setIsInitialized] = createSignal(false);
+export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
+  const [authData, setAuthData] = createSignal<AllServiceAuthData>(
+    props.initialAuthData || {
+      jpdb: defaultAuthData,
+      wanikani: defaultAuthData,
+      anki: defaultAuthData,
+    },
+  )
+
+  const [preferences, setPreferences] = createSignal<AllServicePreferences>(
+    props.initialPreferences || {
+      jpdb: defaultPreference,
+      wanikani: defaultPreference,
+      anki: defaultPreference,
+    },
+  )
+
+  const [isInitialized, setIsInitialized] = createSignal(false)
 
   onMount(() => {
-    // If initialSettings were provided, we assume the server already loaded the cookie.
-    // Otherwise, load from client-side cookie.
-    if (!props.initialSettings) {
-      const savedSettings = getCookie(COOKIE_NAME);
-      if (savedSettings) {
-        try {
-          const parsedSettings = JSON.parse(savedSettings);
-          const mergedSettings = {
-              ...defaultSettings,
-              ...parsedSettings,
-              jpdb: { ...defaultSettings.jpdb, ...(parsedSettings.jpdb || {}) },
-              wanikani: { ...defaultSettings.wanikani, ...(parsedSettings.wanikani || {}) },
-              anki: { ...defaultSettings.anki, ...(parsedSettings.anki || {}) },
-          };
-          setServiceSettings(mergedSettings);
-        } catch (error) {
-          console.error("Failed to parse settings cookie:", error);
-          setServiceSettings(defaultSettings);
-        }
-      }
+    // Load preferences from client-side if not provided by server
+    if (!props.initialPreferences) {
+      const clientPreferences = getAllServicePreferences()
+      setPreferences(clientPreferences)
     }
-    setIsInitialized(true);
-  });
+    setIsInitialized(true)
+  })
 
-  const updateServiceSetting = (
+  const updateServiceAuth = async (
     service: ServiceType,
-    newSettings: Partial<ServiceSettings>,
+    newAuthData: Partial<ServiceAuthData>,
   ) => {
-    setServiceSettings((prevSettings) => {
-      const updatedSettings = {
-        ...prevSettings,
-        [service]: {
-          ...prevSettings[service],
-          ...newSettings,
-        },
-      }
-      setCookie(COOKIE_NAME, JSON.stringify(updatedSettings))
-      return updatedSettings
+    // Update local state immediately for reactivity
+    setAuthData((prevAuthData) => ({
+      ...prevAuthData,
+      [service]: {
+        ...defaultAuthData,
+        ...(prevAuthData[service] || {}),
+        ...newAuthData,
+      },
+    }))
+
+    // Update server-side auth cookie
+    await updateServiceAuthServerFn({
+      data: { service, authData: newAuthData },
     })
   }
 
+  const updateServicePreference = (
+    service: ServiceType,
+    newPreference: Partial<ServicePreference>,
+  ) => {
+    // Update client-side preference cookie via preference manager
+    setServicePreference(service, newPreference)
+
+    // Update local state for reactivity
+    setPreferences((prevPreferences) => ({
+      ...prevPreferences,
+      [service]: {
+        ...defaultPreference,
+        ...(prevPreferences[service] || {}),
+        ...newPreference,
+      },
+    }))
+  }
+
   const value = {
-    serviceSettings,
-    updateServiceSetting,
+    authData,
+    preferences,
+    updateServiceAuth,
+    updateServicePreference,
     isInitialized,
   }
 

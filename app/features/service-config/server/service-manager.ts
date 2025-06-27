@@ -1,17 +1,16 @@
-// features/service-auth/service-manager.ts
+// service-config/server/service-manager.ts
 
 import { getCookie, createSetCookieHeader } from "@/utils/cookie-utils"
 import { setResponseHeader } from "@tanstack/solid-start/server"
 import type {
-  ServiceCredentials,
-  ServiceSettings,
   ServiceType,
-  ServiceState,
-  AllServicesState,
   OperationResult,
   ServiceConfig,
-  ServiceMode,
-} from "./types"
+  ServiceAuthData,
+  AllServiceAuthData,
+  ServicePreference,
+  AllServicePreferences,
+} from "../types"
 
 // Service configuration
 const SERVICE_CONFIGS: Record<ServiceType, ServiceConfig> = {
@@ -24,91 +23,120 @@ const SERVICE_CONFIGS: Record<ServiceType, ServiceConfig> = {
   anki: { name: "anki", display_name: "Anki", requires_conversion: true },
 }
 
-const COOKIE_NAME = "nn-service-credentials"
+const AUTH_COOKIE_NAME = "nn-service-credentials"
+const PREFERENCE_COOKIE_NAME = "nn-service-preferences"
 
-const defaultServiceSettings: ServiceSettings = {
-  mode: "disabled",
+const defaultAuthData: ServiceAuthData = {
   api_key: "",
   is_api_key_valid: false,
+}
+
+const defaultPreference: ServicePreference = {
+  mode: "disabled",
   data_imported: false,
 }
 
 // === Cookie Operations ===
 
 /**
- * Get the complete service credentials object from cookie
+ * Get the complete service authentication data object from the secure cookie.
  */
-export function getServiceCredentials(): ServiceCredentials {
-  const cookieValue = getCookie(COOKIE_NAME)
-  let parsedCredentials: ServiceCredentials = {}
+export function getAuthDataFromCookie(): AllServiceAuthData {
+  const cookieValue = getCookie(AUTH_COOKIE_NAME)
+  let parsedAuthData: AllServiceAuthData = {}
   if (cookieValue) {
     try {
-      parsedCredentials = JSON.parse(cookieValue)
+      parsedAuthData = JSON.parse(cookieValue)
     } catch (e) {
-      console.error("Failed to parse service credentials cookie:", e)
+      console.error("Failed to parse auth data cookie:", e)
     }
   }
 
   // Ensure all service types are present with default values if not in cookie
   return {
-    jpdb: { ...defaultServiceSettings, ...(parsedCredentials.jpdb || {}) },
-    wanikani: {
-      ...defaultServiceSettings,
-      ...(parsedCredentials.wanikani || {}),
-    },
-    anki: { ...defaultServiceSettings, ...(parsedCredentials.anki || {}) },
+    jpdb: { ...defaultAuthData, ...(parsedAuthData.jpdb || {}) },
+    wanikani: { ...defaultAuthData, ...(parsedAuthData.wanikani || {}) },
+    anki: { ...defaultAuthData, ...(parsedAuthData.anki || {}) },
   }
 }
 
 /**
- * Save the complete service credentials object to cookie
+ * Save the complete service authentication data object to the secure cookie.
  */
-export function setServiceCredentials(credentials: ServiceCredentials): void {
+export function setAuthDataToCookie(authData: AllServiceAuthData): void {
   const cookieHeader = createSetCookieHeader(
-    COOKIE_NAME,
-    JSON.stringify(credentials),
+    AUTH_COOKIE_NAME,
+    JSON.stringify(authData),
     { httpOnly: true, maxAge: 60 * 60 * 24 * 365 }, // 1 year
   )
   setResponseHeader("Set-Cookie", cookieHeader)
 }
 
 /**
- * Update settings for a specific service without affecting others
+ * Get the complete service preference data object from the cookie (READ-ONLY for SSR).
+ * Server can read preferences but never writes them - they're managed client-side.
  */
-export function updateServiceSettings(
-  service: ServiceType,
-  settings: Partial<ServiceSettings>,
-): void {
-  const currentCredentials = getServiceCredentials()
-  const currentServiceSettings =
-    currentCredentials[service] || defaultServiceSettings
-
-  const updatedCredentials = {
-    ...currentCredentials,
-    [service]: { ...currentServiceSettings, ...settings },
+export function getPreferencesFromCookie(): AllServicePreferences {
+  const cookieValue = getCookie(PREFERENCE_COOKIE_NAME)
+  let parsedPreferences: AllServicePreferences = {}
+  if (cookieValue) {
+    try {
+      // Try parsing as plain JSON first, then try URI decoding (for migration)
+      try {
+        parsedPreferences = JSON.parse(cookieValue)
+      } catch {
+        parsedPreferences = JSON.parse(decodeURIComponent(cookieValue))
+      }
+    } catch (e) {
+      console.error("Failed to parse preferences cookie:", e)
+    }
   }
 
-  setServiceCredentials(updatedCredentials)
+  // Ensure all service types are present with default values if not in cookie
+  return {
+    jpdb: { ...defaultPreference, ...(parsedPreferences.jpdb || {}) },
+    wanikani: { ...defaultPreference, ...(parsedPreferences.wanikani || {}) },
+    anki: { ...defaultPreference, ...(parsedPreferences.anki || {}) },
+  }
 }
 
 /**
- * Remove a specific service from credentials
+ * Update authentication data for a specific service without affecting others.
  */
-export function removeService(service: ServiceType): void {
-  const currentCredentials = getServiceCredentials()
-  const { [service]: removed, ...remainingCredentials } = currentCredentials
-  setServiceCredentials(remainingCredentials)
+export function updateServiceAuth(
+  service: ServiceType,
+  authData: Partial<ServiceAuthData>,
+): void {
+  const currentAuthData = getAuthDataFromCookie()
+  const updatedAuthData: AllServiceAuthData = {
+    ...currentAuthData,
+    [service]: {
+      ...defaultAuthData,
+      ...(currentAuthData[service] || {}),
+      ...authData,
+    },
+  }
+  setAuthDataToCookie(updatedAuthData)
 }
 
 /**
- * Clear all service credentials
+ * Remove a specific service from authentication data.
  */
-export function clearAllServices(): void {
-  const cookieHeader = createSetCookieHeader(COOKIE_NAME, "", {
+export function removeServiceAuth(service: ServiceType): void {
+  const currentAuthData = getAuthDataFromCookie()
+  const { [service]: _, ...remainingAuth } = currentAuthData
+  setAuthDataToCookie(remainingAuth)
+}
+
+/**
+ * Clear all service authentication data.
+ */
+export function clearAllServiceAuth(): void {
+  const authCookieHeader = createSetCookieHeader(AUTH_COOKIE_NAME, "", {
     httpOnly: true,
     maxAge: 0,
   })
-  setResponseHeader("Set-Cookie", cookieHeader)
+  setResponseHeader("Set-Cookie", authCookieHeader)
 }
 
 // === Credential Validation ===
@@ -212,7 +240,7 @@ export async function validateServiceCredentials(
       return conversionResult
     }
 
-    const validationResult = await validateAnkiApiKey(conversionResult.api_key!) // Use converted API key for validation
+    const validationResult = await validateAnkiApiKey(conversionResult.api_key!)
     return {
       ...validationResult,
       api_key: conversionResult.api_key,
@@ -242,61 +270,28 @@ export async function validateServiceCredentials(
   }
 }
 
-// === Service State Resolution ===
-
-function getServiceState(service: ServiceType): ServiceState {
-  const credentials = getServiceCredentials()
-  const serviceSettings = {
-    ...defaultServiceSettings,
-    ...(credentials[service] || {}),
-  }
-
-  return {
-    status: serviceSettings.is_api_key_valid ? "connected" : "disconnected",
-    mode: serviceSettings.mode,
-    has_api_key: !!serviceSettings.api_key,
-    is_api_key_valid: serviceSettings.is_api_key_valid,
-    data_imported: serviceSettings.data_imported,
-  }
-}
-
-export function getAllServicesState(): AllServicesState {
-  return {
-    jpdb: getServiceState("jpdb"),
-    wanikani: getServiceState("wanikani"),
-    anki: getServiceState("anki"),
-  }
-}
-
 /**
- * Test stored credentials against external APIs to detect expired state
+ * Test stored credentials against external APIs to detect expired state.
+ * Updates the auth cookies with validation results.
  */
-export async function validateAllStoredCredentials(): Promise<AllServicesState> {
-  const credentials = getServiceCredentials()
-  const state = getAllServicesState()
+export async function validateAllStoredCredentials(): Promise<void> {
+  const authData = getAuthDataFromCookie()
 
   // Test each connected service
-  for (const service of Object.keys(credentials) as ServiceType[]) {
-    const serviceCredentials = credentials[service]
-    if (serviceCredentials?.api_key) {
+  for (const service of Object.keys(authData) as ServiceType[]) {
+    const serviceAuthData = authData[service]
+    if (serviceAuthData?.api_key) {
       const validationResult = await validateServiceCredentials(service, {
-        api_key: serviceCredentials.api_key,
+        api_key: serviceAuthData.api_key,
       })
 
       // Update the is_api_key_valid flag based on validation result
-      updateServiceSettings(service, {
+      updateServiceAuth(service, {
+        api_key: serviceAuthData.api_key,
         is_api_key_valid: validationResult.success,
       })
-
-      state[service] = {
-        ...state[service],
-        status: validationResult.success ? "connected" : "expired",
-        is_api_key_valid: validationResult.success, // Ensure this is updated in the returned state
-      }
     }
   }
-
-  return state
 }
 
 export function getServiceConfig(service: ServiceType): ServiceConfig {

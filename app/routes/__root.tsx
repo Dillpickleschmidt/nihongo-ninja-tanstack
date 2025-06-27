@@ -20,7 +20,14 @@ import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { getUser } from "@/features/supabase/getUser"
 import { TransitionProvider } from "@/context/TransitionContext"
 import { SettingsProvider } from "@/context/SettingsContext"
-import { getServiceCredentials } from "@/features/service-auth/service-manager"
+import {
+  getAuthDataFromCookie,
+  getPreferencesFromCookie,
+} from "@/features/service-config/server/service-manager"
+import type {
+  AllServiceAuthData,
+  AllServicePreferences,
+} from "@/features/service-config/types"
 
 const getColorModeCookieServer = createServerFn({
   method: "GET",
@@ -61,8 +68,9 @@ export const Route = createRootRoute({
     } else {
       colorModeCookies = document.cookie
     }
-    const initialServiceSettings = getServiceCredentials()
-    return { colorModeCookies, initialServiceSettings }
+    const initialAuthData = getAuthDataFromCookie()
+    const initialPreferences = getPreferencesFromCookie()
+    return { colorModeCookies, initialAuthData, initialPreferences }
   },
   component: RootComponent,
   staleTime: Infinity,
@@ -70,7 +78,7 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   const loaderData = Route.useLoaderData()
-  const { colorModeCookies, initialServiceSettings } = loaderData()
+  const { colorModeCookies, initialAuthData, initialPreferences } = loaderData()
 
   const storageManager = cookieStorageManagerSSR(colorModeCookies)
 
@@ -78,7 +86,10 @@ function RootComponent() {
     <>
       <ColorModeScript storageType={storageManager?.type} />
       <ColorModeProvider storageManager={storageManager}>
-        <SettingsProvider initialSettings={initialServiceSettings}>
+        <SettingsProvider
+          initialAuthData={initialAuthData}
+          initialPreferences={initialPreferences}
+        >
           <TransitionProvider>
             <Scripts />
             <Outlet />

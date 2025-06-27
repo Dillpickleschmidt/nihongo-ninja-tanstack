@@ -9,17 +9,17 @@ import { ServiceCard } from "./ServiceCard"
 import {
   connectService,
   importServiceData,
-} from "@/features/service-auth/server-functions"
+} from "@/features/service-config/server/server-functions"
 import type {
-  ServiceState,
-  ServiceMode,
-  ServiceSettings,
-} from "../utils/serviceTypes"
+  ServiceAuthData,
+  ServicePreference,
+} from "@/features/service-config/types"
 
 interface AnkiServiceCardProps {
-  serviceState: () => ServiceState
-  settings: () => Partial<ServiceSettings>
-  setSetting: (settings: Partial<ServiceSettings>) => void
+  authData: () => Partial<ServiceAuthData>
+  preference: () => Partial<ServicePreference>
+  updateServiceAuth: (authData: Partial<ServiceAuthData>) => Promise<void>
+  updateServicePreference: (preference: Partial<ServicePreference>) => void
   error: () => string
   setError: (error: string) => void
   isProcessing: () => boolean
@@ -45,10 +45,11 @@ export const AnkiServiceCard = (props: AnkiServiceCardProps) => {
     if (result.success) {
       setAnkiUsername("")
       setAnkiPassword("")
-      props.setSetting({ mode: "live", is_api_key_valid: true })
+      await props.updateServiceAuth({ is_api_key_valid: true })
+      props.updateServicePreference({ mode: "live" })
     } else {
       props.setError(result.error || "An unknown error occurred.")
-      props.setSetting({ is_api_key_valid: false })
+      await props.updateServiceAuth({ is_api_key_valid: false })
     }
     props.setIsProcessing(false)
   }
@@ -60,10 +61,10 @@ export const AnkiServiceCard = (props: AnkiServiceCardProps) => {
     const result = await importServiceData({ data: { service: "anki" } })
 
     if (result.success) {
-      props.setSetting({ data_imported: true })
+      props.updateServicePreference({ data_imported: true })
     } else {
       props.setError(result.error || "An unknown error occurred.")
-      props.setSetting({ data_imported: false })
+      props.updateServicePreference({ data_imported: false })
     }
     props.setIsProcessing(false)
   }
@@ -75,13 +76,13 @@ export const AnkiServiceCard = (props: AnkiServiceCardProps) => {
       borderColor="border-blue-400/30"
       iconColor="bg-blue-300"
       service="anki"
-      selectedMode={props.settings().mode || "disabled"}
+      selectedMode={props.preference().mode || "disabled"}
       isProcessing={props.isProcessing()}
-      onModeChange={(mode) => props.setSetting({ mode })}
+      onModeChange={(mode) => props.updateServicePreference({ mode })}
     >
-      <Show when={props.settings().mode === "live"}>
+      <Show when={props.preference().mode === "live"}>
         <div class="space-y-4">
-          <Show when={!props.settings().is_api_key_valid}>
+          <Show when={!props.authData().is_api_key_valid}>
             <div class="space-y-4">
               <TextField>
                 <TextFieldLabel class="text-white">
@@ -118,7 +119,7 @@ export const AnkiServiceCard = (props: AnkiServiceCardProps) => {
               </Button>
             </div>
           </Show>
-          <Show when={props.settings().is_api_key_valid}>
+          <Show when={props.authData().is_api_key_valid}>
             <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">
               <p class="text-sm text-green-100">
                 ✓ Connected to AnkiWeb - Live access enabled
@@ -128,9 +129,9 @@ export const AnkiServiceCard = (props: AnkiServiceCardProps) => {
         </div>
       </Show>
 
-      <Show when={props.settings().mode === "imported"}>
+      <Show when={props.preference().mode === "imported"}>
         <div class="space-y-4">
-          <Show when={!props.settings().data_imported}>
+          <Show when={!props.preference().data_imported}>
             <Button
               onClick={handleImport}
               disabled={props.isProcessing()}
@@ -139,7 +140,7 @@ export const AnkiServiceCard = (props: AnkiServiceCardProps) => {
               Import Anki Data
             </Button>
           </Show>
-          <Show when={props.settings().data_imported}>
+          <Show when={props.preference().data_imported}>
             <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">
               <p class="text-sm text-green-100">
                 ✓ Anki data imported successfully

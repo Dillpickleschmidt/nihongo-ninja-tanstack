@@ -6,17 +6,17 @@ import {
   TextFieldLabel,
 } from "@/components/ui/text-field"
 import { ServiceCard } from "./ServiceCard"
-import { connectService } from "@/features/service-auth/server-functions"
+import { connectService } from "@/features/service-config/server/server-functions"
 import type {
-  ServiceState,
-  ServiceMode,
-  ServiceSettings,
-} from "../utils/serviceTypes"
+  ServiceAuthData,
+  ServicePreference,
+} from "@/features/service-config/types"
 
 interface JpdbServiceCardProps {
-  serviceState: () => ServiceState
-  settings: () => Partial<ServiceSettings>
-  setSetting: (settings: Partial<ServiceSettings>) => void
+  authData: () => Partial<ServiceAuthData>
+  preference: () => Partial<ServicePreference>
+  updateServiceAuth: (authData: Partial<ServiceAuthData>) => Promise<void>
+  updateServicePreference: (preference: Partial<ServicePreference>) => void
   error: () => string
   setError: (error: string) => void
   isProcessing: () => boolean
@@ -25,11 +25,13 @@ interface JpdbServiceCardProps {
 }
 
 export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
-  const [jpdbApiKey, setJpdbApiKey] = createSignal(props.settings().api_key || "")
+  const [jpdbApiKey, setJpdbApiKey] = createSignal(
+    props.authData().api_key || "",
+  )
   const [selectedFile, setSelectedFile] = createSignal<File | undefined>()
 
   const handleConnect = async () => {
-    const apiKey = props.settings().api_key
+    const apiKey = jpdbApiKey()
     if (!apiKey) return
 
     props.setIsProcessing(true)
@@ -40,10 +42,14 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
     })
 
     if (result.success) {
-      props.setSetting({ mode: "live", is_api_key_valid: true, api_key: apiKey })
+      await props.updateServiceAuth({ is_api_key_valid: true, api_key: apiKey })
+      props.updateServicePreference({ mode: "live" })
     } else {
+      await props.updateServiceAuth({
+        is_api_key_valid: false,
+        api_key: apiKey,
+      })
       props.setError(result.error || "An unknown error occurred.")
-      props.setSetting({ is_api_key_valid: false, api_key: apiKey })
     }
     props.setIsProcessing(false)
   }
@@ -55,7 +61,7 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
   }
 
   const handleImportClick = () => {
-    const apiKey = props.settings().api_key
+    const apiKey = jpdbApiKey()
     const file = selectedFile()
     if (!apiKey || !file) {
       props.setError("API Key and a JSON file are required for import.")
@@ -71,30 +77,30 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
       borderColor="border-purple-400/30"
       iconColor="bg-purple-300"
       service="jpdb"
-      selectedMode={props.settings().mode || "disabled"}
+      selectedMode={props.preference().mode || "disabled"}
       isProcessing={props.isProcessing()}
-      onModeChange={(mode) => props.setSetting({ mode })}
+      onModeChange={(mode) => props.updateServicePreference({ mode })}
     >
-      <Show when={props.settings().mode === "live"}>
+      <Show when={props.preference().mode === "live"}>
         <div class="space-y-4">
           <TextField>
-              <TextFieldLabel class="text-white">jpdb API Key</TextFieldLabel>
-              <TextFieldInput
-                type="password"
-                placeholder="Enter your jpdb API key"
-                class="border-white/20 bg-white/10 text-white placeholder:text-white/50"
-                value={props.settings().api_key || ""}
-                onInput={(e) => props.setSetting({ api_key: e.currentTarget.value })}
-              />
-            </TextField>
-            <Button
-              onClick={handleConnect}
-              disabled={!props.settings().api_key || props.isProcessing()}
-              class="border-white/30 bg-white/20 text-white hover:bg-white/30"
-            >
-              Connect to jpdb
-            </Button>
-          <Show when={props.settings().is_api_key_valid}>
+            <TextFieldLabel class="text-white">jpdb API Key</TextFieldLabel>
+            <TextFieldInput
+              type="password"
+              placeholder="Enter your jpdb API key"
+              class="border-white/20 bg-white/10 text-white placeholder:text-white/50"
+              value={jpdbApiKey()}
+              onInput={(e) => setJpdbApiKey(e.currentTarget.value)}
+            />
+          </TextField>
+          <Button
+            onClick={handleConnect}
+            disabled={!jpdbApiKey() || props.isProcessing()}
+            class="border-white/30 bg-white/20 text-white hover:bg-white/30"
+          >
+            Connect to jpdb
+          </Button>
+          <Show when={props.authData().is_api_key_valid}>
             <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">
               <p class="text-sm text-green-100">
                 ✓ Connected to jpdb - Live access enabled
@@ -104,40 +110,40 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
         </div>
       </Show>
 
-      <Show when={props.settings().mode === "imported"}>
+      <Show when={props.preference().mode === "imported"}>
         <div class="space-y-4">
           <div class="space-y-4">
-              <TextField>
-                <TextFieldLabel class="text-white">jpdb API Key</TextFieldLabel>
-                <TextFieldInput
-                  type="password"
-                  placeholder="Enter your jpdb API key"
-                  class="border-white/20 bg-white/10 text-white placeholder:text-white/50"
-                  value={props.settings().api_key || ""}
-                  onInput={(e) => props.setSetting({ api_key: e.currentTarget.value })}
-                />
-              </TextField>
-              <div class="border-t border-white/20 pt-4">
-                <p class="mb-2 text-sm text-white/80">Upload JSON File</p>
-                <input
-                  type="file"
-                  accept=".json"
-                  onChange={handleFileChange}
-                  disabled={props.isProcessing()}
-                  class="block w-full text-sm text-white/70 file:mr-4 file:rounded-md file:border-0 file:bg-white/20 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-white/30 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </div>
-              <Button
-                onClick={handleImportClick}
-                disabled={
-                  props.isProcessing() || !props.settings().api_key || !selectedFile()
-                }
-                class="border-white/30 bg-white/20 text-white hover:bg-white/30"
-              >
-                Import jpdb Data
-              </Button>
+            <TextField>
+              <TextFieldLabel class="text-white">jpdb API Key</TextFieldLabel>
+              <TextFieldInput
+                type="password"
+                placeholder="Enter your jpdb API key"
+                class="border-white/20 bg-white/10 text-white placeholder:text-white/50"
+                value={jpdbApiKey()}
+                onInput={(e) => setJpdbApiKey(e.currentTarget.value)}
+              />
+            </TextField>
+            <div class="border-t border-white/20 pt-4">
+              <p class="mb-2 text-sm text-white/80">Upload JSON File</p>
+              <input
+                type="file"
+                accept=".json"
+                onChange={handleFileChange}
+                disabled={props.isProcessing()}
+                class="block w-full text-sm text-white/70 file:mr-4 file:rounded-md file:border-0 file:bg-white/20 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-white/30 disabled:cursor-not-allowed disabled:opacity-50"
+              />
             </div>
-          <Show when={props.settings().data_imported}>
+            <Button
+              onClick={handleImportClick}
+              disabled={
+                props.isProcessing() || !jpdbApiKey() || !selectedFile()
+              }
+              class="border-white/30 bg-white/20 text-white hover:bg-white/30"
+            >
+              Import jpdb Data
+            </Button>
+          </div>
+          <Show when={props.preference().data_imported}>
             <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">
               <p class="text-sm text-green-100">
                 ✓ jpdb data imported successfully
