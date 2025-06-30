@@ -17,6 +17,8 @@ import type { FSRSCardData } from "@/features/supabase/db/utils"
 import type { Deck, DeckSource } from "@/data/types"
 import { cn } from "@/utils"
 import type { User } from "@supabase/supabase-js"
+import { useSettings } from "@/context/SettingsContext"
+import { generateServiceSources } from "@/features/dashboard/utils/serviceSourceHelper"
 
 interface DashboardHeaderProps {
   currentDeck: Deck
@@ -29,9 +31,16 @@ interface DashboardHeaderProps {
 export function DashboardHeader(props: DashboardHeaderProps) {
   const navigate = useNavigate({ from: "/dashboard" })
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
+  const { authData, preferences } = useSettings()
+
+  // Generate service sources from cookie data
+  const serviceSources = () => generateServiceSources(authData(), preferences())
+
+  // Combine textbook and service sources
+  const allSources = () => [...props.deckSources, ...serviceSources()]
 
   const findCurrentSource = () =>
-    props.deckSources.find((source) =>
+    allSources().find((source) =>
       source.decks.some((d) => d.id === props.currentDeck.id),
     )
 
@@ -40,6 +49,18 @@ export function DashboardHeader(props: DashboardHeaderProps) {
   >(findCurrentSource())
 
   const handleDeckChange = (source: DeckSource, deck: Deck) => {
+    if (source.type === "service") {
+      // For now, just log the service selection
+      console.log(`Selected service deck:`, {
+        service: source.id,
+        deck: deck.slug,
+        enabled: !deck.disabled,
+      })
+      setIsPopoverOpen(false)
+      return
+    }
+
+    // Handle textbook navigation as before
     const searchParams =
       source.type === "textbook"
         ? { textbook: source.id, deck: deck.slug }
@@ -48,6 +69,12 @@ export function DashboardHeader(props: DashboardHeaderProps) {
     navigate({ search: searchParams })
     setIsPopoverOpen(false)
   }
+
+  const allSourcesDebug = allSources()
+  console.log(
+    "About to render sources:",
+    allSourcesDebug.map((s) => ({ name: s.name, type: s.type })),
+  )
 
   if (props.variant === "mobile") {
     return (
@@ -80,7 +107,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
             <PopoverContent class="border-card-foreground w-[480px] bg-neutral-950/70 p-2 backdrop-blur-2xl">
               <div class="grid grid-cols-[1fr_2fr]">
                 <div class="border-primary/10 border-r p-1">
-                  <For each={props.deckSources}>
+                  <For each={allSources()}>
                     {(source) => (
                       <button
                         onClick={() => setSelectedSource(source)}
@@ -101,10 +128,13 @@ export function DashboardHeader(props: DashboardHeaderProps) {
                         {(deck) => (
                           <button
                             onClick={() => handleDeckChange(source, deck)}
+                            disabled={deck.disabled}
                             class={cn(
                               "hover:bg-card-foreground/40 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal",
                               props.currentDeck.id === deck.id &&
                                 "bg-primary/10 hover:bg-primary/15 font-semibold",
+                              deck.disabled &&
+                                "cursor-not-allowed opacity-50 hover:bg-transparent",
                             )}
                           >
                             <span>{deck.title}</span>

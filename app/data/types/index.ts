@@ -1,3 +1,4 @@
+// app/data/types/index.ts
 // --- Top-Level Collection Types ---
 
 import { ResourceProvider } from "../resources-config"
@@ -48,6 +49,7 @@ interface BaseDeck {
   slug: string // e.g., "chapter-1" or "my-jlpt-n5-vocab"
   title: string
   description?: string
+  disabled?: boolean
 }
 
 // A Chapter is a BaseDeck with textbook-specific learning paths
@@ -212,6 +214,14 @@ export type RichVocabItem = VocabularyItem & {
 export type DeckSource = {
   id: string // e.g., "genki_1" or a user's ID
   name: string // e.g., "Genki I" or "My Decks"
-  type: "textbook" | "user"
+  type: "textbook" | "user" | "service"
   decks: Deck[]
 }
+
+export type ServiceDeckEnum =
+  | "anki"
+  | "anki-imported"
+  | "wanikani"
+  | "wanikani-imported"
+  | "jpdb"
+  | "jpdb-imported"

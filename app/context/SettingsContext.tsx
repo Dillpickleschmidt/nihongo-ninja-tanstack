@@ -1,3 +1,4 @@
+// app/context/SettingsContext.tsx
 import {
   createContext,
   useContext,

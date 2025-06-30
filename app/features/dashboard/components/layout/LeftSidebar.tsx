@@ -12,6 +12,8 @@ import type { FullHierarchyData } from "@/data/wanikani/types"
 import type { Deck, DeckSource } from "@/data/types"
 import { cn } from "@/utils"
 import { User } from "@supabase/supabase-js"
+import { useSettings } from "@/context/SettingsContext"
+import { generateServiceSources } from "@/features/dashboard/utils/serviceSourceHelper"
 
 interface LeftSidebarProps {
   data: FullHierarchyData | null
@@ -25,8 +27,13 @@ export function LeftSidebar(props: LeftSidebarProps) {
   const navigate = useNavigate({ from: "/dashboard" })
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
 
+  // Add service sources integration
+  const { authData, preferences } = useSettings()
+  const serviceSources = () => generateServiceSources(authData(), preferences())
+  const allSources = () => [...props.deckSources, ...serviceSources()]
+
   const findCurrentSource = () =>
-    props.deckSources.find((source) =>
+    allSources().find((source) =>
       source.decks.some((d) => d.id === props.currentDeck.id),
     )
 
@@ -35,6 +42,17 @@ export function LeftSidebar(props: LeftSidebarProps) {
   >(findCurrentSource())
 
   const handleDeckChange = (source: DeckSource, deck: Deck) => {
+    if (source.type === "service") {
+      // For now, just log the service selection
+      console.log(`Selected service deck:`, {
+        service: source.id,
+        deck: deck.slug,
+        enabled: !deck.disabled,
+      })
+      setIsPopoverOpen(false)
+      return
+    }
+
     const searchParams =
       source.type === "textbook"
         ? { textbook: source.id, deck: deck.slug }
@@ -82,7 +100,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
           <PopoverContent class="border-card-foreground w-[520px] bg-neutral-950/80 p-2 backdrop-blur-2xl">
             <div class="grid grid-cols-[1fr_2fr]">
               <div class="border-primary/10 border-r p-1">
-                <For each={props.deckSources}>
+                <For each={allSources()}>
                   {(source) => (
                     <button
                       onClick={() => setSelectedSource(source)}
@@ -103,10 +121,13 @@ export function LeftSidebar(props: LeftSidebarProps) {
                       {(deck) => (
                         <button
                           onClick={() => handleDeckChange(source, deck)}
+                          disabled={deck.disabled}
                           class={cn(
                             "hover:bg-card-foreground/40 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal",
                             props.currentDeck.id === deck.id &&
                               "bg-primary/10 hover:bg-primary/15 font-semibold",
+                            deck.disabled &&
+                              "cursor-not-allowed opacity-50 hover:bg-transparent",
                           )}
                         >
                           <span>{deck.title}</span>
