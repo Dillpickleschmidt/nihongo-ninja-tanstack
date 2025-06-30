@@ -93,7 +93,7 @@ function RootComponent() {
           <TransitionProvider>
             <Scripts />
             <Outlet />
-            <TanStackRouterDevtools />
+            {/* <TanStackRouterDevtools /> */}
           </TransitionProvider>
         </SettingsProvider>
       </ColorModeProvider>

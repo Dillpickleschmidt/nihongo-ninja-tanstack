@@ -7,6 +7,7 @@ import {
 } from "@tanstack/solid-router"
 import { createSignal, For, Show } from "solid-js"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import {
   Popover,
   PopoverContent,
@@ -15,11 +16,13 @@ import {
 import type { FSRSCardData } from "@/features/supabase/db/utils"
 import type { Deck, DeckSource } from "@/data/types"
 import { cn } from "@/utils"
+import type { User } from "@supabase/supabase-js"
 
 interface DashboardHeaderProps {
   currentDeck: Deck
   deckSources: DeckSource[]
   dueFSRSCardsPromise: DeferredPromise<FSRSCardData[] | null>
+  user: User | null
   variant: "mobile" | "desktop"
 }
 
@@ -132,7 +135,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
 
         <div class="flex justify-end pr-6 xl:pr-8">
           <div class="min-w-20 text-center xl:min-w-24">
-            {!props.dueFSRSCardsPromise ? (
+            {!props.user ? (
               <Link to="/auth" class="text-sm italic xl:text-base">
                 Login
               </Link>
@@ -180,7 +183,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
     )
   }
 
-  // Desktop variant (without chapter selector)
+  // Desktop variant
   return (
     <div class="px-8 pt-8">
       <div class="flex items-center justify-between">
@@ -195,45 +198,47 @@ export function DashboardHeader(props: DashboardHeaderProps) {
         </Link>
 
         <div class="flex items-center gap-6">
-          <div class="text-center">
-            <div class="text-xl font-bold text-green-400">12</div>
-            <div class="text-muted-foreground text-xs">Completed</div>
-          </div>
-
-          {!props.dueFSRSCardsPromise ? (
-            <Link to="/auth" class="text-sm italic">
-              Login to see reviews
-            </Link>
+          {!props.user ? (
+            <Button as={Link} to="/auth" variant="link" class="underline">
+              Sign In
+            </Button>
           ) : (
-            <Await
-              promise={props.dueFSRSCardsPromise}
-              fallback={
-                <div class="text-center">
-                  <div class="text-lg font-bold text-gray-400">...</div>
-                  <div class="text-muted-foreground text-xs">Loading...</div>
-                </div>
-              }
-            >
-              {(dueCards) => (
-                <div class="text-center">
-                  <div
-                    class={cn(
-                      "text-lg font-bold",
-                      dueCards && dueCards.length > 0
-                        ? "text-amber-400"
-                        : "text-green-400",
-                    )}
-                  >
-                    {dueCards?.length || 0}
+            <>
+              <div class="text-center">
+                <div class="text-xl font-bold text-green-400">12</div>
+                <div class="text-muted-foreground text-xs">Completed</div>
+              </div>
+
+              <Await
+                promise={props.dueFSRSCardsPromise}
+                fallback={
+                  <div class="text-center">
+                    <div class="text-lg font-bold text-gray-400">...</div>
+                    <div class="text-muted-foreground text-xs">Loading...</div>
                   </div>
-                  <div class="text-muted-foreground text-xs">
-                    {dueCards?.length === 0
-                      ? "No reviews due"
-                      : `Review${dueCards?.length === 1 ? "" : "s"} Due`}
+                }
+              >
+                {(dueCards) => (
+                  <div class="text-center">
+                    <div
+                      class={cn(
+                        "text-lg font-bold",
+                        dueCards && dueCards.length > 0
+                          ? "text-amber-400"
+                          : "text-green-400",
+                      )}
+                    >
+                      {dueCards?.length || 0}
+                    </div>
+                    <div class="text-muted-foreground text-xs">
+                      {dueCards?.length === 0
+                        ? "No reviews due"
+                        : `Review${dueCards?.length === 1 ? "" : "s"} Due`}
+                    </div>
                   </div>
-                </div>
-              )}
-            </Await>
+                )}
+              </Await>
+            </>
           )}
         </div>
       </div>

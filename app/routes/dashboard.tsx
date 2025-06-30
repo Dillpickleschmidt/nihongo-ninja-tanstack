@@ -34,6 +34,7 @@ import type {
   TextbookIDEnum,
 } from "@/data/types"
 import { TextbookChapterBackgrounds } from "@/features/dashboard/components/shared/TextbookChapterBackgrounds"
+import { BottomNav } from "@/features/dashboard/components/layout/BottomNav"
 
 const dashboardSearchSchema = z
   .object({
@@ -161,6 +162,7 @@ export const Route = createFileRoute("/dashboard")({
     })
 
     return {
+      user,
       sourceId,
       deck,
       lessons,
@@ -222,12 +224,15 @@ function RouteComponent() {
         chapter={loaderData().deck.slug}
       />
 
+      <BottomNav dailyProgressPercentage={25} />
+
       {/* Mobile Layout */}
       <SSRMediaQuery hideFrom="xl">
         <DashboardHeader
           currentDeck={loaderData().deck}
           deckSources={loaderData().deckSources}
           dueFSRSCardsPromise={loaderData().dueFSRSCards}
+          user={loaderData().user}
           variant="mobile"
         />
         <div class="flex flex-col">
@@ -266,6 +271,7 @@ function RouteComponent() {
             dueFSRSCardsPromise={loaderData().dueFSRSCards}
             currentDeck={loaderData().deck}
             deckSources={loaderData().deckSources}
+            user={loaderData().user}
             variant="desktop"
           />
 
