@@ -7,7 +7,6 @@ import {
   getFSRSCardsByKeys,
   type FSRSCardData,
 } from "@/features/supabase/db/utils"
-import { getUser } from "@/features/supabase/getUser"
 import type {
   FullHierarchyData,
   HierarchySummary,
@@ -25,7 +24,9 @@ import type {
 
 const WELL_KNOWN_THRESHOLD = 21
 
-// --- Database & Data Fetching Functions ---
+// =============================================================================
+// DATABASE & STATIC DATA FUNCTIONS
+// =============================================================================
 
 function getDbConnection(): Db {
   const dbPath = path.join(
@@ -46,23 +47,8 @@ function fetchVocabulary(db: Db, slugs: string[]): VocabRow[] {
       `SELECT id, characters, slug FROM vocabulary WHERE slug IN (${placeholders})`,
     )
     .all(...slugs) as VocabRow[]
-
-  // --- ADDED: Logging for missing vocabulary ---
-  // if (results.length !== slugs.length) {
-  //   const foundSlugs = new Set(results.map((v) => v.slug))
-  //   for (const slug of slugs) {
-  //     if (!foundSlugs.has(slug)) {
-  //       console.warn(
-  //         `WaniKani DB Warning: Vocabulary slug not found: '${slug}'`,
-  //       )
-  //     }
-  //   }
-  // }
-  //
-  // return results
 }
 
-// Update fetchRelatedKanji to include mnemonics
 function fetchRelatedKanji(db: Db, vocabIds: number[]): KanjiRow[] {
   if (vocabIds.length === 0) return []
   const placeholders = vocabIds.map(() => "?").join(",")
@@ -73,7 +59,6 @@ function fetchRelatedKanji(db: Db, vocabIds: number[]): KanjiRow[] {
     .all(...vocabIds) as KanjiRow[]
 }
 
-// Update fetchRelatedRadicals to include mnemonics
 function fetchRelatedRadicals(db: Db, kanjiIds: number[]): RadicalRow[] {
   if (kanjiIds.length === 0) return []
   const placeholders = kanjiIds.map(() => "?").join(",")
@@ -119,26 +104,15 @@ function fetchStaticHierarchyFromDb(slugs: string[]) {
     const radicalRows = fetchRelatedRadicals(db, kanjiIds)
     const relations = fetchRelationships(db, vocabIds, kanjiIds)
 
-    const parsedKanjiRows = kanjiRows.map((k) => {
-      const parsedMeanings = JSON.parse(k.meanings) as WaniKaniMeaning[]
-      const meaningStrings = parsedMeanings.map((m) => m.meaning)
-      return {
-        ...k,
-        meanings: meaningStrings,
-        meaning_mnemonic: k.meaning_mnemonic, // Direct assignment
-        reading_mnemonic: k.reading_mnemonic, // Direct assignment
-      }
-    })
+    const parsedKanjiRows = kanjiRows.map((k) => ({
+      ...k,
+      meanings: parseMeanings(k.meanings),
+    }))
 
-    const parsedRadicalRows = radicalRows.map((r) => {
-      const parsedMeanings = JSON.parse(r.meanings) as WaniKaniMeaning[]
-      const meaningStrings = parsedMeanings.map((m) => m.meaning)
-      return {
-        ...r,
-        meanings: meaningStrings,
-        meaning_mnemonic: r.meaning_mnemonic, // Direct assignment
-      }
-    })
+    const parsedRadicalRows = radicalRows.map((r) => ({
+      ...r,
+      meanings: parseMeanings(r.meanings),
+    }))
 
     return {
       vocabRows,
@@ -151,82 +125,22 @@ function fetchStaticHierarchyFromDb(slugs: string[]) {
   }
 }
 
-// --- Data Processing & Assembly Functions ---
+// =============================================================================
+// UTILITY FUNCTIONS
+// =============================================================================
 
-/** Determines an item's progress state using the live FSRS data map. */
-function determineProgress(
-  type: "vocabulary" | "kanji" | "radical",
-  slug: string,
-  progressMap: Map<string, FSRSCardData>,
-): ProgressState {
-  const key = `${type}:${slug}`
-  const cardData = progressMap.get(key)
-
-  if (!cardData) return "not_seen"
-
-  return cardData.fsrs_card.stability >= WELL_KNOWN_THRESHOLD
-    ? "well_known"
-    : "learning"
+function parseMeanings(meaningsJson: string): string[] {
+  const parsedMeanings = JSON.parse(meaningsJson) as WaniKaniMeaning[]
+  return parsedMeanings.map((m) => m.meaning)
 }
 
-/** Assembles the full data hierarchy from raw DB rows and live user progress. */
-function buildRichHierarchy(
-  vocabRows: VocabRow[],
-  kanjiRows: Omit<Kanji, "radicals" | "progress">[],
-  radicalRows: Omit<Radical, "progress">[],
-  relations: {
-    vocabKanjiRelations: VocabKanjiRelation[]
-    kanjiRadicalRelations: KanjiRadicalRelation[]
-  },
-  progressMap: Map<string, FSRSCardData>,
-): VocabHierarchy[] {
-  const radicalsMap = new Map<number, Radical>(
-    radicalRows.map((r) => [
-      r.id,
-      {
-        ...r,
-        progress: determineProgress("radical", r.slug, progressMap),
-      },
-    ]),
-  )
-  const kanjiMap = new Map<number, Kanji>(
-    kanjiRows.map((k) => [
-      k.id,
-      {
-        ...k,
-        radicals: [],
-        progress: determineProgress("kanji", k.slug, progressMap),
-      },
-    ]),
-  )
-
-  for (const rel of relations.kanjiRadicalRelations) {
-    const kanji = kanjiMap.get(rel.kanji_id)
-    const radical = radicalsMap.get(rel.radical_id)
-    if (kanji && radical) kanji.radicals.push(radical)
-  }
-  return vocabRows.map((vocab) => {
-    const relatedKanjiIds = relations.vocabKanjiRelations
-      .filter((r) => r.vocab_id === vocab.id)
-      .map((r) => r.kanji_id)
-    const kanjiForVocab = relatedKanjiIds
-      .map((id) => kanjiMap.get(id))
-      .filter((k): k is Kanji => !!k)
-    return {
-      ...vocab,
-      kanji: kanjiForVocab,
-      progress: determineProgress("vocabulary", vocab.slug, progressMap),
-    }
-  })
-}
-
-/** Extracts unique Kanji and Radicals from the assembled hierarchy. */
 function extractUniqueItems(hierarchy: VocabHierarchy[]): {
   uniqueKanji: Kanji[]
   uniqueRadicals: Radical[]
 } {
   const uniqueKanjiMap = new Map<number, Kanji>()
   const uniqueRadicalsMap = new Map<number, Radical>()
+
   for (const vocab of hierarchy) {
     for (const kanji of vocab.kanji) {
       uniqueKanjiMap.set(kanji.id, kanji)
@@ -235,6 +149,7 @@ function extractUniqueItems(hierarchy: VocabHierarchy[]): {
       }
     }
   }
+
   return {
     uniqueKanji: Array.from(uniqueKanjiMap.values()),
     uniqueRadicals: Array.from(uniqueRadicalsMap.values()),
@@ -261,38 +176,152 @@ function calculateSummary(
   }
 }
 
-// --- EXPORTED SERVER FUNCTIONS ---
+// =============================================================================
+// STATIC DATA ASSEMBLY FUNCTIONS
+// =============================================================================
 
-export const getRichWKHierarchyWithProgress = createServerFn({ method: "GET" })
+function buildStaticHierarchy(
+  vocabRows: VocabRow[],
+  kanjiRows: Omit<Kanji, "radicals" | "progress">[],
+  radicalRows: Omit<Radical, "progress">[],
+  relations: {
+    vocabKanjiRelations: VocabKanjiRelation[]
+    kanjiRadicalRelations: KanjiRadicalRelation[]
+  },
+): VocabHierarchy[] {
+  // Build radicals map
+  const radicalsMap = new Map<number, Radical>(
+    radicalRows.map((r) => [r.id, { ...r }]),
+  )
+
+  // Build kanji map
+  const kanjiMap = new Map<number, Kanji>(
+    kanjiRows.map((k) => [k.id, { ...k, radicals: [] }]),
+  )
+
+  // Connect kanji to radicals
+  for (const rel of relations.kanjiRadicalRelations) {
+    const kanji = kanjiMap.get(rel.kanji_id)
+    const radical = radicalsMap.get(rel.radical_id)
+    if (kanji && radical) kanji.radicals.push(radical)
+  }
+
+  // Build vocabulary hierarchy
+  return vocabRows.map((vocab) => {
+    const relatedKanjiIds = relations.vocabKanjiRelations
+      .filter((r) => r.vocab_id === vocab.id)
+      .map((r) => r.kanji_id)
+    const kanjiForVocab = relatedKanjiIds
+      .map((id) => kanjiMap.get(id))
+      .filter((k): k is Kanji => !!k)
+
+    return {
+      ...vocab,
+      kanji: kanjiForVocab,
+    }
+  })
+}
+
+// =============================================================================
+// PROGRESS-RELATED FUNCTIONS
+// =============================================================================
+
+function determineProgress(
+  type: "vocabulary" | "kanji" | "radical",
+  slug: string,
+  progressMap: Map<string, FSRSCardData>,
+): ProgressState {
+  const key = `${type}:${slug}`
+  const cardData = progressMap.get(key)
+
+  if (!cardData) return "not_seen"
+
+  return cardData.fsrs_card.stability >= WELL_KNOWN_THRESHOLD
+    ? "well_known"
+    : "learning"
+}
+
+async function fetchUserProgress(
+  userId: string,
+  allSlugs: string[],
+): Promise<Map<string, FSRSCardData>> {
+  const fsrsData = await getFSRSCardsByKeys(userId, allSlugs)
+  return new Map(
+    fsrsData.map((card) => [`${card.type}:${card.practice_item_key}`, card]),
+  )
+}
+
+function addProgressToItems<T extends { slug: string }>(
+  items: T[],
+  progressMap: Map<string, FSRSCardData>,
+  type: "vocabulary" | "kanji" | "radical",
+): (T & { progress: ProgressState })[] {
+  return items.map((item) => ({
+    ...item,
+    progress: determineProgress(type, item.slug, progressMap),
+  }))
+}
+
+function enrichWithProgress(
+  hierarchy: VocabHierarchy[],
+  uniqueKanji: Kanji[],
+  uniqueRadicals: Radical[],
+  progressMap: Map<string, FSRSCardData>,
+): {
+  hierarchy: VocabHierarchy[]
+  uniqueKanji: Kanji[]
+  uniqueRadicals: Radical[]
+} {
+  // Add progress to radicals
+  const radicalsWithProgress = addProgressToItems(
+    uniqueRadicals,
+    progressMap,
+    "radical",
+  )
+  const radicalsProgressMap = new Map(
+    radicalsWithProgress.map((r) => [r.id, r]),
+  )
+
+  // Add progress to kanji and update their radicals
+  const kanjiWithProgress = uniqueKanji.map((kanji) => ({
+    ...kanji,
+    progress: determineProgress("kanji", kanji.slug, progressMap),
+    radicals: kanji.radicals.map((r) => radicalsProgressMap.get(r.id) || r),
+  }))
+  const kanjiProgressMap = new Map(kanjiWithProgress.map((k) => [k.id, k]))
+
+  // Add progress to vocabulary and update their kanji
+  const hierarchyWithProgress = hierarchy.map((vocab) => ({
+    ...vocab,
+    progress: determineProgress("vocabulary", vocab.slug, progressMap),
+    kanji: vocab.kanji.map((k) => kanjiProgressMap.get(k.id) || k),
+  }))
+
+  return {
+    hierarchy: hierarchyWithProgress,
+    uniqueKanji: kanjiWithProgress,
+    uniqueRadicals: radicalsWithProgress,
+  }
+}
+
+// =============================================================================
+// MAIN EXPORT FUNCTIONS (SERVER FUNCTIONS)
+// =============================================================================
+
+export const getWKHierarchy = createServerFn({ method: "GET" })
   .validator((slugs: string[]) => slugs)
   .handler(async ({ data: slugs }): Promise<FullHierarchyData | null> => {
     if (!slugs || slugs.length === 0) return null
-    const userResponse = await getUser()
-    if (!userResponse.user) return null
 
     const staticData = fetchStaticHierarchyFromDb(slugs)
     if (!staticData) return null
+
     const { vocabRows, kanjiRows, radicalRows, relations } = staticData
-
-    const allSlugs = new Set<string>()
-    vocabRows.forEach((v) => allSlugs.add(v.slug))
-    kanjiRows.forEach((k) => allSlugs.add(k.slug))
-    radicalRows.forEach((r) => r.slug && allSlugs.add(r.slug))
-
-    const fsrsData = await getFSRSCardsByKeys(
-      userResponse.user.id,
-      Array.from(allSlugs),
-    )
-    const progressMap = new Map(
-      fsrsData.map((card) => [`${card.type}:${card.practice_item_key}`, card]),
-    )
-
-    const hierarchy = buildRichHierarchy(
+    const hierarchy = buildStaticHierarchy(
       vocabRows,
       kanjiRows,
       radicalRows,
       relations,
-      progressMap,
     )
     const { uniqueKanji, uniqueRadicals } = extractUniqueItems(hierarchy)
     const summary = calculateSummary(hierarchy, uniqueKanji, uniqueRadicals)
@@ -300,45 +329,47 @@ export const getRichWKHierarchyWithProgress = createServerFn({ method: "GET" })
     return { hierarchy, uniqueKanji, uniqueRadicals, summary }
   })
 
-// --- Pass parsed meanings into the static objects ---
-export const getStaticWKHierarchy = createServerFn({ method: "GET" })
-  .validator((slugs: string[]) => slugs)
-  .handler(async ({ data: slugs }): Promise<FullHierarchyData | null> => {
-    const staticData = fetchStaticHierarchyFromDb(slugs)
-    if (!staticData) return null
-    const { vocabRows, kanjiRows, radicalRows, relations } = staticData
+export const getWKHierarchyWithProgress = createServerFn({ method: "GET" })
+  .validator((data: { slugs: string[]; userId: string }) => data)
+  .handler(
+    async ({ data: { slugs, userId } }): Promise<FullHierarchyData | null> => {
+      if (!slugs || slugs.length === 0 || !userId) return null
 
-    const kanjiMap = new Map<number, Kanji>(
-      kanjiRows.map((k) => [k.id, { ...k, radicals: [] }]),
-    )
-    const radicalsMap = new Map<number, Radical>(
-      radicalRows.map((r) => [r.id, { ...r }]),
-    )
+      const staticData = fetchStaticHierarchyFromDb(slugs)
+      if (!staticData) return null
 
-    for (const rel of relations.kanjiRadicalRelations) {
-      const kanji = kanjiMap.get(rel.kanji_id)
-      const radical = radicalsMap.get(rel.radical_id)
-      if (kanji && radical) kanji.radicals.push(radical)
-    }
+      const { vocabRows, kanjiRows, radicalRows, relations } = staticData
+      const hierarchy = buildStaticHierarchy(
+        vocabRows,
+        kanjiRows,
+        radicalRows,
+        relations,
+      )
+      const { uniqueKanji, uniqueRadicals } = extractUniqueItems(hierarchy)
 
-    const hierarchy = vocabRows.map((vocab) => {
-      const relatedKanjiIds = relations.vocabKanjiRelations
-        .filter((r) => r.vocab_id === vocab.id)
-        .map((r) => r.kanji_id)
-      const kanjiForVocab = relatedKanjiIds
-        .map((id) => kanjiMap.get(id))
-        .filter((k): k is Kanji => !!k)
-      return { ...vocab, kanji: kanjiForVocab }
-    })
+      // Collect all slugs for progress lookup
+      const allSlugs = new Set<string>()
+      vocabRows.forEach((v) => allSlugs.add(v.slug))
+      kanjiRows.forEach((k) => allSlugs.add(k.slug))
+      radicalRows.forEach((r) => r.slug && allSlugs.add(r.slug))
 
-    const { uniqueKanji, uniqueRadicals } = extractUniqueItems(hierarchy)
+      const progressMap = await fetchUserProgress(userId, Array.from(allSlugs))
+      const enrichedData = enrichWithProgress(
+        hierarchy,
+        uniqueKanji,
+        uniqueRadicals,
+        progressMap,
+      )
+      const summary = calculateSummary(
+        enrichedData.hierarchy,
+        enrichedData.uniqueKanji,
+        enrichedData.uniqueRadicals,
+      )
 
-    return { hierarchy, uniqueKanji, uniqueRadicals }
-  })
+      return { ...enrichedData, summary }
+    },
+  )
 
-/**
- * Fetches detailed Kanji data by its slug.
- */
 export const getKanjiDetailsBySlug = createServerFn({ method: "GET" })
   .validator((slug: string) => slug)
   .handler(async ({ data: slug }): Promise<Kanji | null> => {
@@ -353,27 +384,20 @@ export const getKanjiDetailsBySlug = createServerFn({ method: "GET" })
 
       if (!kanjiRow) return null
 
-      const parsedMeanings = JSON.parse(kanjiRow.meanings) as WaniKaniMeaning[]
-      const meaningStrings = parsedMeanings.map((m) => m.meaning)
-
-      // Radicals are not needed for a single Kanji lookup in this context
       return {
         id: kanjiRow.id,
         characters: kanjiRow.characters,
         slug: kanjiRow.slug,
-        meanings: meaningStrings,
+        meanings: parseMeanings(kanjiRow.meanings),
         radicals: [], // Empty array as radicals are not fetched in this specific lookup
-        meaning_mnemonic: kanjiRow.meaning_mnemonic, // Direct assignment
-        reading_mnemonic: kanjiRow.reading_mnemonic, // Direct assignment
+        meaning_mnemonic: kanjiRow.meaning_mnemonic,
+        reading_mnemonic: kanjiRow.reading_mnemonic,
       }
     } finally {
       db.close()
     }
   })
 
-/**
- * Fetches detailed Radical data by its slug.
- */
 export const getRadicalDetailsBySlug = createServerFn({ method: "GET" })
   .validator((slug: string) => slug)
   .handler(async ({ data: slug }): Promise<Radical | null> => {
@@ -388,16 +412,11 @@ export const getRadicalDetailsBySlug = createServerFn({ method: "GET" })
 
       if (!radicalRow) return null
 
-      const parsedMeanings = JSON.parse(
-        radicalRow.meanings,
-      ) as WaniKaniMeaning[]
-      const meaningStrings = parsedMeanings.map((m) => m.meaning)
-
       return {
         id: radicalRow.id,
         characters: radicalRow.characters,
         slug: radicalRow.slug,
-        meanings: meaningStrings,
+        meanings: parseMeanings(radicalRow.meanings),
         meaning_mnemonic: radicalRow.meaning_mnemonic,
       }
     } finally {

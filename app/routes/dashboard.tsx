@@ -23,7 +23,10 @@ import { MoreResourcesSection } from "@/features/dashboard/components/content/Mo
 import { StrugglesSection } from "@/features/dashboard/components/content/StrugglesSection"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { getDueFSRSCards } from "@/features/supabase/db/utils"
-import { getRichWKHierarchyWithProgress } from "@/data/wanikani/utils"
+import {
+  getWKHierarchy,
+  getWKHierarchyWithProgress,
+} from "@/data/wanikani/utils"
 import { getModuleVocabulary } from "@/data/utils/vocab"
 import type {
   Deck,
@@ -142,9 +145,14 @@ export const Route = createFileRoute("/dashboard")({
       decks: tb.chapters,
     }))
 
-    const wordHierarchyData = await getRichWKHierarchyWithProgress({
-      data: vocabForHierarchy,
-    })
+    const wordHierarchyData = user
+      ? await getWKHierarchyWithProgress({
+          data: {
+            slugs: vocabForHierarchy,
+            userId: user.id,
+          },
+        })
+      : await getWKHierarchy({ data: vocabForHierarchy })
 
     const dueFSRSCardsPromise = user
       ? getDueFSRSCards(user.id)
@@ -252,6 +260,7 @@ function RouteComponent() {
               data={loaderData().wordHierarchyData}
               currentDeck={loaderData().deck}
               deckSources={loaderData().deckSources}
+              user={loaderData().user}
               variant="mobile"
             />
             <RightSidebar
@@ -282,6 +291,7 @@ function RouteComponent() {
                 data={loaderData().wordHierarchyData}
                 currentDeck={loaderData().deck}
                 deckSources={loaderData().deckSources}
+                user={loaderData().user}
                 variant="desktop"
               />
             </div>

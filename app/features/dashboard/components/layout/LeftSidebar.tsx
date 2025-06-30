@@ -11,12 +11,14 @@ import {
 import type { FullHierarchyData } from "@/data/wanikani/types"
 import type { Deck, DeckSource } from "@/data/types"
 import { cn } from "@/utils"
+import { User } from "@supabase/supabase-js"
 
 interface LeftSidebarProps {
   data: FullHierarchyData | null
   currentDeck: Deck
   deckSources: DeckSource[]
   variant: "mobile" | "desktop"
+  user: User | null
 }
 
 export function LeftSidebar(props: LeftSidebarProps) {
@@ -45,7 +47,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
   if (props.variant === "mobile") {
     return (
       <div class="mb-8 flex flex-col gap-3 px-7">
-        <WordHierarchy data={props.data} variant="mobile" />
+        <WordHierarchy data={props.data} variant="mobile" user={props.user} />
       </div>
     )
   }
@@ -133,7 +135,11 @@ export function LeftSidebar(props: LeftSidebarProps) {
         <h2 class="text-lg font-semibold">Your Progress</h2>
 
         <div class="relative h-[420px] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-4 backdrop-blur-sm">
-          <WordHierarchy data={props.data} variant="desktop" />
+          <WordHierarchy
+            data={props.data}
+            variant="desktop"
+            user={props.user}
+          />
         </div>
 
         <div class="space-y-2">

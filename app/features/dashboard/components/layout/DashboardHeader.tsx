@@ -136,9 +136,14 @@ export function DashboardHeader(props: DashboardHeaderProps) {
         <div class="flex justify-end pr-6 xl:pr-8">
           <div class="min-w-20 text-center xl:min-w-24">
             {!props.user ? (
-              <Link to="/auth" class="text-sm italic xl:text-base">
-                Login
-              </Link>
+              <Button
+                as={Link}
+                to="/auth"
+                variant="link"
+                class="italic xl:text-base"
+              >
+                Sign In
+              </Button>
             ) : (
               <Await
                 promise={props.dueFSRSCardsPromise}
@@ -199,7 +204,12 @@ export function DashboardHeader(props: DashboardHeaderProps) {
 
         <div class="flex items-center gap-6">
           {!props.user ? (
-            <Button as={Link} to="/auth" variant="link" class="underline">
+            <Button
+              as={Link}
+              to="/auth"
+              variant="link"
+              class="mr-8 font-bold italic xl:text-base"
+            >
               Sign In
             </Button>
           ) : (

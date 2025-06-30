@@ -8,7 +8,7 @@ import {
   getFSRSCardsByKeys,
 } from "@/features/supabase/db/utils"
 import type { PracticeMode } from "@/features/vocab-practice/types"
-import { getStaticWKHierarchy } from "@/data/wanikani/utils"
+import { getWKHierarchy } from "@/data/wanikani/utils"
 import type { FullHierarchyData, VocabHierarchy } from "@/data/wanikani/types"
 
 export const Route = createFileRoute("/practice/$practiceID")({
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/practice/$practiceID")({
 
       if (mode === "readings") {
         // For "readings" mode, build the full dependency tree
-        const fullHierarchy = await getStaticWKHierarchy({
+        const fullHierarchy = await getWKHierarchy({
           data: targetVocabSlugs,
         })
         if (!fullHierarchy) throw notFound()

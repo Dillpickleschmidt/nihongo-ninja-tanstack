@@ -8,12 +8,14 @@ import {
 } from "@/components/ui/hover-card"
 import { cn } from "@/utils"
 import type { FullHierarchyData, Kanji, Radical } from "@/data/wanikani/types"
+import { User } from "@supabase/supabase-js"
 
 type WordHierarchyVariant = "mobile" | "desktop"
 
 interface WordHierarchyProps {
   data: FullHierarchyData | null
   variant: WordHierarchyVariant
+  user: User | null
 }
 
 export function WordHierarchy(props: WordHierarchyProps) {
@@ -32,7 +34,7 @@ export function WordHierarchy(props: WordHierarchyProps) {
             <Match when={props.variant === "desktop"}>
               <div class="grid grid-cols-[3fr_2fr] gap-x-4">
                 <div class="flex flex-col gap-3">
-                  <SummaryCircles data={data()} />
+                  <SummaryCircles data={data()} user={props.user} />
                   <CharacterList
                     title="Kanji"
                     items={data().uniqueKanji}
@@ -51,7 +53,7 @@ export function WordHierarchy(props: WordHierarchyProps) {
 
             <Match when={props.variant === "mobile"}>
               <div class="py-2">
-                <SummaryCircles data={data()} />
+                <SummaryCircles data={data()} user={props.user} />
               </div>
               <CharacterList
                 title="Kanji"
@@ -71,7 +73,7 @@ export function WordHierarchy(props: WordHierarchyProps) {
   )
 }
 
-function SummaryCircles(props: { data: FullHierarchyData }) {
+function SummaryCircles(props: { data: FullHierarchyData; user: User | null }) {
   return (
     <div class="grid grid-cols-3 gap-3">
       <ProgressCircle
@@ -81,6 +83,7 @@ function SummaryCircles(props: { data: FullHierarchyData }) {
         total={props.data.summary!.vocab.total}
         colorLearned="text-sky-400"
         colorInProgress="text-sky-600"
+        hasProgress={!!props.user}
       />
       <ProgressCircle
         label="Kanji"
@@ -89,6 +92,7 @@ function SummaryCircles(props: { data: FullHierarchyData }) {
         total={props.data.summary!.kanji.total}
         colorLearned="text-pink-400"
         colorInProgress="text-pink-600"
+        hasProgress={!!props.user}
       />
       <ProgressCircle
         label="Radicals"
@@ -97,6 +101,7 @@ function SummaryCircles(props: { data: FullHierarchyData }) {
         total={props.data.summary!.radicals.total}
         colorLearned="text-teal-400"
         colorInProgress="text-teal-600"
+        hasProgress={!!props.user}
       />
     </div>
   )
@@ -109,6 +114,7 @@ function ProgressCircle(props: {
   total: number
   colorLearned: string
   colorInProgress: string
+  hasProgress?: boolean
 }) {
   const radius = 28
   const circumference = 2 * Math.PI * radius
@@ -140,44 +146,56 @@ function ProgressCircle(props: {
                 cx="32"
                 cy="32"
               />
-              <circle
-                class={props.colorInProgress}
-                stroke-width="6"
-                stroke-dasharray={circumference}
-                stroke-dashoffset={offsetTotal()}
-                stroke-linecap="round"
-                stroke="currentColor"
-                fill="transparent"
-                r={radius}
-                cx="32"
-                cy="32"
-                style={{
-                  transform: "rotate(-90deg)",
-                  "transform-origin": "50% 50%",
-                  transition: "stroke-dashoffset 0.5s ease-out",
-                }}
-              />
-              <circle
-                class={props.colorLearned}
-                stroke-width="6"
-                stroke-dasharray={circumference}
-                stroke-dashoffset={offsetLearned()}
-                stroke-linecap="round"
-                stroke="currentColor"
-                fill="transparent"
-                r={radius}
-                cx="32"
-                cy="32"
-                style={{
-                  transform: "rotate(-90deg)",
-                  "transform-origin": "50% 50%",
-                  transition: "stroke-dashoffset 0.5s ease-out",
-                }}
-              />
+              {/* Only show progress circles if user has progress data */}
+              <Show when={props.hasProgress}>
+                <circle
+                  class={props.colorInProgress}
+                  stroke-width="6"
+                  stroke-dasharray={circumference}
+                  stroke-dashoffset={offsetTotal()}
+                  stroke-linecap="round"
+                  stroke="currentColor"
+                  fill="transparent"
+                  r={radius}
+                  cx="32"
+                  cy="32"
+                  style={{
+                    transform: "rotate(-90deg)",
+                    "transform-origin": "50% 50%",
+                    transition: "stroke-dashoffset 0.5s ease-out",
+                  }}
+                />
+                <circle
+                  class={props.colorLearned}
+                  stroke-width="6"
+                  stroke-dasharray={circumference}
+                  stroke-dashoffset={offsetLearned()}
+                  stroke-linecap="round"
+                  stroke="currentColor"
+                  fill="transparent"
+                  r={radius}
+                  cx="32"
+                  cy="32"
+                  style={{
+                    transform: "rotate(-90deg)",
+                    "transform-origin": "50% 50%",
+                    transition: "stroke-dashoffset 0.5s ease-out",
+                  }}
+                />
+              </Show>
             </svg>
             <div class="absolute inset-0 flex flex-col items-center justify-center">
-              <span class="text-lg font-bold">{props.countLearned}</span>
-              <span class="text-muted-foreground text-xs">/{props.total}</span>
+              <Show
+                when={props.hasProgress}
+                fallback={<span class="text-lg font-bold">{props.total}</span>}
+              >
+                <span class="pt-0.5 text-lg leading-5 font-bold">
+                  {props.countLearned}
+                </span>
+                <span class="text-muted-foreground text-xs">
+                  /{props.total}
+                </span>
+              </Show>
             </div>
           </div>
           <span class="text-muted-foreground text-sm font-medium">
@@ -186,14 +204,16 @@ function ProgressCircle(props: {
         </div>
       </HoverCardTrigger>
       <HoverCardContent class="border-card-foreground w-auto bg-neutral-950/70 px-3 py-2 text-sm backdrop-blur-2xl">
-        <div class="flex flex-col gap-1">
-          <p>
-            Seen: {seenCount()} / {props.total}
-          </p>
-          <p>
-            Well-known: {props.countLearned} / {props.total}
-          </p>
-        </div>
+        <Show when={props.hasProgress} fallback={<p>Total: {props.total}</p>}>
+          <div class="flex flex-col gap-1">
+            <p>
+              Seen: {seenCount()} / {props.total}
+            </p>
+            <p>
+              Well-known: {props.countLearned} / {props.total}
+            </p>
+          </div>
+        </Show>
       </HoverCardContent>
     </HoverCard>
   )
@@ -216,19 +236,22 @@ function CharacterList(props: {
           props.variant === "desktop" && props.maxHeight,
         )}
       >
-        <For each={props.items}>{(item) => <CharBox item={item} />}</For>
+        <For each={props.items}>
+          {(item) => <CharBox item={item} variant={props.variant} />}
+        </For>
       </div>
     </div>
   )
 }
 
-function CharBox(props: { item: Kanji | Radical }) {
-  const isDesktop = createMediaQuery("(min-width: 1280px)")
-
+function CharBox(props: {
+  item: Kanji | Radical
+  variant: WordHierarchyVariant
+}) {
   return (
     <Show when={props.item.characters}>
       <Switch>
-        <Match when={isDesktop()}>
+        <Match when={props.variant === "desktop"}>
           <HoverCard openDelay={200}>
             <HoverCardTrigger as="div">
               <div
@@ -258,11 +281,11 @@ function CharBox(props: { item: Kanji | Radical }) {
           </HoverCard>
         </Match>
 
-        <Match when={!isDesktop()}>
+        <Match when={props.variant === "mobile"}>
           <div
-            class="inline-flex h-10 w-10 items-center justify-center rounded-md border text-lg font-bold transition-colors"
+            class="border-card-foreground inline-flex h-10 w-10 items-center justify-center rounded-md border text-lg font-bold transition-colors"
             classList={{
-              "border-muted-foreground/20 bg-muted/30 text-muted-foreground":
+              "border-card-foreground bg-muted/30 text-muted-foreground":
                 props.item.progress === "not_seen",
               "border-amber-400/50 bg-amber-400/10 text-amber-300":
                 props.item.progress === "learning",
