@@ -5,14 +5,10 @@ import {
   Await,
   type DeferredPromise,
 } from "@tanstack/solid-router"
-import { createSignal, For, Show } from "solid-js"
+import { createSignal } from "solid-js"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
 import type { FSRSCardData } from "@/features/supabase/db/utils"
 import type { Deck, DeckSource } from "@/data/types"
 import { cn } from "@/utils"
@@ -38,15 +34,6 @@ export function DashboardHeader(props: DashboardHeaderProps) {
 
   // Combine textbook and service sources
   const allSources = () => [...props.deckSources, ...serviceSources()]
-
-  const findCurrentSource = () =>
-    allSources().find((source) =>
-      source.decks.some((d) => d.id === props.currentDeck.id),
-    )
-
-  const [selectedSource, setSelectedSource] = createSignal<
-    DeckSource | undefined
-  >(findCurrentSource())
 
   const handleDeckChange = (source: DeckSource, deck: Deck) => {
     if (source.type === "service") {
@@ -87,8 +74,16 @@ export function DashboardHeader(props: DashboardHeaderProps) {
         </Link>
 
         <div class="flex justify-center">
-          <Popover open={isPopoverOpen()} onOpenChange={setIsPopoverOpen}>
-            <PopoverTrigger class="hover:bg-card-foreground/40 -mt-0.5 flex min-w-[200px] items-center justify-center space-x-2 rounded-md border-none px-3 py-2 text-center text-lg font-semibold hover:cursor-pointer md:text-xl xl:-mt-1 xl:text-2xl">
+          <DeckSelectionPopover
+            currentDeck={props.currentDeck}
+            allSources={allSources()}
+            onDeckChange={handleDeckChange}
+            isOpen={isPopoverOpen()}
+            onOpenChange={setIsPopoverOpen}
+            popoverWidth="w-[480px]"
+            backgroundColor="bg-neutral-950/70"
+          >
+            <div class="hover:bg-card-foreground/40 -mt-0.5 flex min-w-[200px] items-center justify-center space-x-2 rounded-md border-none px-3 py-2 text-center text-lg font-semibold hover:cursor-pointer md:text-xl xl:-mt-1 xl:text-2xl">
               <span>{props.currentDeck.title}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -103,64 +98,8 @@ export function DashboardHeader(props: DashboardHeaderProps) {
                 <path d="M8 9l4 -4l4 4" />
                 <path d="M16 15l-4 4l-4 -4" />
               </svg>
-            </PopoverTrigger>
-            <PopoverContent class="border-card-foreground w-[480px] bg-neutral-950/70 p-2 backdrop-blur-2xl">
-              <div class="grid grid-cols-[1fr_2fr]">
-                <div class="border-primary/10 border-r p-1">
-                  <For each={allSources()}>
-                    {(source) => (
-                      <button
-                        onClick={() => setSelectedSource(source)}
-                        class={cn(
-                          "hover:bg-primary/15 w-full rounded-md p-2 text-left text-sm font-medium",
-                          selectedSource()?.id === source.id && "bg-primary/10",
-                        )}
-                      >
-                        {source.name}
-                      </button>
-                    )}
-                  </For>
-                </div>
-                <div class="p-1">
-                  <Show when={selectedSource()} keyed>
-                    {(source) => (
-                      <For each={source.decks}>
-                        {(deck) => (
-                          <button
-                            onClick={() => handleDeckChange(source, deck)}
-                            disabled={deck.disabled}
-                            class={cn(
-                              "hover:bg-card-foreground/40 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal",
-                              props.currentDeck.id === deck.id &&
-                                "bg-primary/10 hover:bg-primary/15 font-semibold",
-                              deck.disabled &&
-                                "cursor-not-allowed opacity-50 hover:bg-transparent",
-                            )}
-                          >
-                            <span>{deck.title}</span>
-                            <Show when={props.currentDeck.id === deck.id}>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="3"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="size-4"
-                              >
-                                <path d="M5 12l5 5l10 -10" />
-                              </svg>
-                            </Show>
-                          </button>
-                        )}
-                      </For>
-                    )}
-                  </Show>
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
+            </div>
+          </DeckSelectionPopover>
         </div>
 
         <div class="flex justify-end pr-6 xl:pr-8">
