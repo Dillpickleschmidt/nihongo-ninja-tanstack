@@ -13,28 +13,15 @@ import {
   ColorModeScript,
   cookieStorageManagerSSR,
 } from "@kobalte/core"
-import { getCookie } from "@tanstack/solid-start/server"
-import { createServerFn } from "@tanstack/solid-start"
-import { isServer } from "solid-js/web"
+import { getCookie } from "@/utils/cookie-utils"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { getUser } from "@/features/supabase/getUser"
 import { TransitionProvider } from "@/context/TransitionContext"
 import { SettingsProvider } from "@/context/SettingsContext"
 import {
-  getAuthDataFromCookie,
-  getPreferencesFromCookie,
+  getServiceAuthDataFromCookie,
+  getServicePreferencesFromCookie,
 } from "@/features/service-config/server/service-manager"
-import type {
-  AllServiceAuthData,
-  AllServicePreferences,
-} from "@/features/service-config/types"
-
-const getColorModeCookieServer = createServerFn({
-  method: "GET",
-}).handler(() => {
-  const colorMode = getCookie("kb-color-mode")
-  return colorMode ? `kb-color-mode=${colorMode}` : ""
-})
 
 export const Route = createRootRoute({
   head: () => ({
@@ -58,27 +45,19 @@ export const Route = createRootRoute({
     const result = await getUser()
     return { user: result?.user || null }
   },
-  loader: async () => {
-    const serverColorModeCookies = isServer
-      ? await getColorModeCookieServer()
-      : null
-    let colorModeCookies: string
-    if (isServer) {
-      colorModeCookies = serverColorModeCookies as string
-    } else {
-      colorModeCookies = document.cookie
-    }
-    const initialAuthData = getAuthDataFromCookie()
-    const initialPreferences = getPreferencesFromCookie()
-    return { colorModeCookies, initialAuthData, initialPreferences }
+  loader: () => {
+    const initialAuthData = getServiceAuthDataFromCookie()
+    const initialPreferences = getServicePreferencesFromCookie()
+    return { initialAuthData, initialPreferences }
   },
   component: RootComponent,
-  staleTime: Infinity,
+  staleTime: 0,
 })
 
 function RootComponent() {
   const loaderData = Route.useLoaderData()
-  const { colorModeCookies, initialAuthData, initialPreferences } = loaderData()
+  const { initialAuthData, initialPreferences } = loaderData()
+  const colorModeCookies = `kb-color-mode=${getCookie("kb-color-mode")}`
 
   const storageManager = cookieStorageManagerSSR(colorModeCookies)
 
@@ -93,7 +72,7 @@ function RootComponent() {
           <TransitionProvider>
             <Scripts />
             <Outlet />
-            {/* <TanStackRouterDevtools /> */}
+            <TanStackRouterDevtools />
           </TransitionProvider>
         </SettingsProvider>
       </ColorModeProvider>

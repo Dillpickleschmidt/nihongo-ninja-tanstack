@@ -1,3 +1,4 @@
+// app/routes/index.tsx
 import ExternalResourceIcons from "@/features/homepage/ExternalResourceIcons"
 import Nav from "@/features/homepage/Nav"
 import { createFileRoute } from "@tanstack/solid-router"

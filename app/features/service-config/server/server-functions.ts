@@ -7,8 +7,8 @@ import {
   validateServiceCredentials,
   updateServiceAuth,
   removeServiceAuth,
-  getAuthDataFromCookie,
-  validateAllStoredCredentials,
+  getServiceAuthDataFromCookie,
+  validateAllStoredServiceCredentials,
 } from "./service-manager"
 import type {
   ServiceResponse,
@@ -117,7 +117,7 @@ export const getServiceAuthState = createServerFn().handler(
     if (!user) return { success: false, error: "User not authenticated" }
 
     try {
-      const authData = getAuthDataFromCookie()
+      const authData = getServiceAuthDataFromCookie()
       return { success: true, data: authData }
     } catch (error) {
       console.error("Error getting service auth state:", error)
@@ -132,7 +132,7 @@ export const validateStoredCredentials = createServerFn().handler(
     if (!user) return { success: false, error: "User not authenticated" }
 
     try {
-      await validateAllStoredCredentials()
+      await validateAllStoredServiceCredentials()
       return { success: true }
     } catch (error) {
       console.error("Error validating stored credentials:", error)

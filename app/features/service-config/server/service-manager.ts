@@ -41,7 +41,7 @@ const defaultPreference: ServicePreference = {
 /**
  * Get the complete service authentication data object from the secure cookie.
  */
-export function getAuthDataFromCookie(): AllServiceAuthData {
+export function getServiceAuthDataFromCookie(): AllServiceAuthData {
   const cookieValue = getCookie(AUTH_COOKIE_NAME)
   let parsedAuthData: AllServiceAuthData = {}
   if (cookieValue) {
@@ -63,7 +63,7 @@ export function getAuthDataFromCookie(): AllServiceAuthData {
 /**
  * Save the complete service authentication data object to the secure cookie.
  */
-export function setAuthDataToCookie(authData: AllServiceAuthData): void {
+export function setServiceAuthDataToCookie(authData: AllServiceAuthData): void {
   const cookieHeader = createSetCookieHeader(
     AUTH_COOKIE_NAME,
     JSON.stringify(authData),
@@ -76,7 +76,7 @@ export function setAuthDataToCookie(authData: AllServiceAuthData): void {
  * Get the complete service preference data object from the cookie (READ-ONLY for SSR).
  * Server can read preferences but never writes them - they're managed client-side.
  */
-export function getPreferencesFromCookie(): AllServicePreferences {
+export function getServicePreferencesFromCookie(): AllServicePreferences {
   const cookieValue = getCookie(PREFERENCE_COOKIE_NAME)
   let parsedPreferences: AllServicePreferences = {}
   if (cookieValue) {
@@ -107,7 +107,7 @@ export function updateServiceAuth(
   service: ServiceType,
   authData: Partial<ServiceAuthData>,
 ): void {
-  const currentAuthData = getAuthDataFromCookie()
+  const currentAuthData = getServiceAuthDataFromCookie()
   const updatedAuthData: AllServiceAuthData = {
     ...currentAuthData,
     [service]: {
@@ -116,16 +116,16 @@ export function updateServiceAuth(
       ...authData,
     },
   }
-  setAuthDataToCookie(updatedAuthData)
+  setServiceAuthDataToCookie(updatedAuthData)
 }
 
 /**
  * Remove a specific service from authentication data.
  */
 export function removeServiceAuth(service: ServiceType): void {
-  const currentAuthData = getAuthDataFromCookie()
+  const currentAuthData = getServiceAuthDataFromCookie()
   const { [service]: _, ...remainingAuth } = currentAuthData
-  setAuthDataToCookie(remainingAuth)
+  setServiceAuthDataToCookie(remainingAuth)
 }
 
 /**
@@ -274,8 +274,8 @@ export async function validateServiceCredentials(
  * Test stored credentials against external APIs to detect expired state.
  * Updates the auth cookies with validation results.
  */
-export async function validateAllStoredCredentials(): Promise<void> {
-  const authData = getAuthDataFromCookie()
+export async function validateAllStoredServiceCredentials(): Promise<void> {
+  const authData = getServiceAuthDataFromCookie()
 
   // Test each connected service
   for (const service of Object.keys(authData) as ServiceType[]) {
