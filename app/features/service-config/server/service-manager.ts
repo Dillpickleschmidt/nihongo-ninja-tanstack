@@ -2,6 +2,7 @@
 
 import { getCookie, createSetCookieHeader } from "@/utils/cookie-utils"
 import { setResponseHeader } from "@tanstack/solid-start/server"
+import { serverOnly } from "@tanstack/solid-start"
 import type {
   ServiceType,
   OperationResult,
@@ -63,14 +64,16 @@ export function getServiceAuthDataFromCookie(): AllServiceAuthData {
 /**
  * Save the complete service authentication data object to the secure cookie.
  */
-export function setServiceAuthDataToCookie(authData: AllServiceAuthData): void {
-  const cookieHeader = createSetCookieHeader(
-    AUTH_COOKIE_NAME,
-    JSON.stringify(authData),
-    { httpOnly: true, maxAge: 60 * 60 * 24 * 365 }, // 1 year
-  )
-  setResponseHeader("Set-Cookie", cookieHeader)
-}
+export const setServiceAuthDataToCookie = serverOnly(
+  (authData: AllServiceAuthData): void => {
+    const cookieHeader = createSetCookieHeader(
+      AUTH_COOKIE_NAME,
+      JSON.stringify(authData),
+      { httpOnly: true, maxAge: 60 * 60 * 24 * 365 }, // 1 year
+    )
+    setResponseHeader("Set-Cookie", cookieHeader)
+  },
+)
 
 /**
  * Get the complete service preference data object from the cookie (READ-ONLY for SSR).
@@ -103,41 +106,40 @@ export function getServicePreferencesFromCookie(): AllServicePreferences {
 /**
  * Update authentication data for a specific service without affecting others.
  */
-export function updateServiceAuth(
-  service: ServiceType,
-  authData: Partial<ServiceAuthData>,
-): void {
-  const currentAuthData = getServiceAuthDataFromCookie()
-  const updatedAuthData: AllServiceAuthData = {
-    ...currentAuthData,
-    [service]: {
-      ...defaultAuthData,
-      ...(currentAuthData[service] || {}),
-      ...authData,
-    },
-  }
-  setServiceAuthDataToCookie(updatedAuthData)
-}
+export const updateServiceAuth = serverOnly(
+  (service: ServiceType, authData: Partial<ServiceAuthData>): void => {
+    const currentAuthData = getServiceAuthDataFromCookie()
+    const updatedAuthData: AllServiceAuthData = {
+      ...currentAuthData,
+      [service]: {
+        ...defaultAuthData,
+        ...(currentAuthData[service] || {}),
+        ...authData,
+      },
+    }
+    setServiceAuthDataToCookie(updatedAuthData)
+  },
+)
 
 /**
  * Remove a specific service from authentication data.
  */
-export function removeServiceAuth(service: ServiceType): void {
+export const removeServiceAuth = serverOnly((service: ServiceType): void => {
   const currentAuthData = getServiceAuthDataFromCookie()
   const { [service]: _, ...remainingAuth } = currentAuthData
   setServiceAuthDataToCookie(remainingAuth)
-}
+})
 
 /**
  * Clear all service authentication data.
  */
-export function clearAllServiceAuth(): void {
+export const clearAllServiceAuth = serverOnly((): void => {
   const authCookieHeader = createSetCookieHeader(AUTH_COOKIE_NAME, "", {
     httpOnly: true,
     maxAge: 0,
   })
   setResponseHeader("Set-Cookie", authCookieHeader)
-}
+})
 
 // === Credential Validation ===
 
@@ -274,25 +276,27 @@ export async function validateServiceCredentials(
  * Test stored credentials against external APIs to detect expired state.
  * Updates the auth cookies with validation results.
  */
-export async function validateAllStoredServiceCredentials(): Promise<void> {
-  const authData = getServiceAuthDataFromCookie()
+export const validateAllStoredServiceCredentials = serverOnly(
+  async (): Promise<void> => {
+    const authData = getServiceAuthDataFromCookie()
 
-  // Test each connected service
-  for (const service of Object.keys(authData) as ServiceType[]) {
-    const serviceAuthData = authData[service]
-    if (serviceAuthData?.api_key) {
-      const validationResult = await validateServiceCredentials(service, {
-        api_key: serviceAuthData.api_key,
-      })
+    // Test each connected service
+    for (const service of Object.keys(authData) as ServiceType[]) {
+      const serviceAuthData = authData[service]
+      if (serviceAuthData?.api_key) {
+        const validationResult = await validateServiceCredentials(service, {
+          api_key: serviceAuthData.api_key,
+        })
 
-      // Update the is_api_key_valid flag based on validation result
-      updateServiceAuth(service, {
-        api_key: serviceAuthData.api_key,
-        is_api_key_valid: validationResult.success,
-      })
+        // Update the is_api_key_valid flag based on validation result
+        updateServiceAuth(service, {
+          api_key: serviceAuthData.api_key,
+          is_api_key_valid: validationResult.success,
+        })
+      }
     }
-  }
-}
+  },
+)
 
 export function getServiceConfig(service: ServiceType): ServiceConfig {
   return SERVICE_CONFIGS[service]

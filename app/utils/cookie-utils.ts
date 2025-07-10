@@ -1,6 +1,7 @@
 // app/utils/cookie-utils.ts
 import { getRequestHeader } from "@tanstack/solid-start/server"
 import { isServer } from "solid-js/web"
+import { serverOnly } from "@tanstack/solid-start"
 
 /**
  * Parse cookie string into key-value pairs
@@ -26,7 +27,7 @@ export function getCookie(name: string): string | null {
   let cookieString: string
 
   if (isServer) {
-    cookieString = getRequestHeader("Cookie") ?? ""
+    cookieString = serverOnly(() => getRequestHeader("Cookie"))() ?? ""
   } else {
     cookieString = document.cookie
   }

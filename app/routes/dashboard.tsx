@@ -2,6 +2,7 @@
 import { createFileRoute, redirect, defer, Await } from "@tanstack/solid-router"
 import { getRequestHeader } from "@tanstack/solid-start/server"
 import { isServer } from "solid-js/web"
+import { serverOnly } from "@tanstack/solid-start"
 import { createEffect } from "solid-js"
 import { z } from "zod"
 import { zodValidator } from "@tanstack/zod-adapter"
@@ -74,8 +75,8 @@ export const Route = createFileRoute("/dashboard")({
     }
 
     const cookieHeader = isServer
-      ? getRequestHeader("Cookie") || undefined
-      : undefined
+      ? serverOnly(() => getRequestHeader("Cookie") || "")()
+      : document.cookie
     const activeDeckInfo = getActiveDeckInfo(cookieHeader)
 
     if (activeDeckInfo) {
