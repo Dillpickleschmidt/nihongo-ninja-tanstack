@@ -1,4 +1,4 @@
-// features/dashboard/components/content/CourseDashboard.tsx
+// features/dashboard/components/content/textbook/CourseDashboard.tsx
 import { For, onMount, createEffect } from "solid-js"
 import { Link, useLocation } from "@tanstack/solid-router"
 import {
@@ -27,7 +27,7 @@ import {
   createSlideWithFadeInAnimation,
   prepareElementForEnter,
 } from "@/utils/animations"
-import { SmoothCard } from "../shared/SmoothCard"
+import { SmoothCard } from "../../shared/SmoothCard"
 
 interface CourseDashboardProps {
   lessons: (StaticModule | DynamicModule)[]
@@ -44,7 +44,7 @@ export function CourseDashboard(props: CourseDashboardProps) {
   const { hasUserNavigated, animationTrigger } = usePageTransition()
 
   const runAnimation = () => {
-    if (location().pathname === "/dashboard" && hasUserNavigated()) {
+    if (location().pathname.includes("/dashboard") && hasUserNavigated()) {
       const element = document.querySelector(SELECTOR) as HTMLElement
       if (element) {
         prepareElementForEnter(element, DIRECTION)

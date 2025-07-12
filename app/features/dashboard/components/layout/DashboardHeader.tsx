@@ -1,67 +1,125 @@
 // features/dashboard/components/layout/DashboardHeader.tsx
-import {
-  Link,
-  useNavigate,
-  Await,
-  type DeferredPromise,
-} from "@tanstack/solid-router"
-import { createSignal } from "solid-js"
+import { Link, useNavigate, Await } from "@tanstack/solid-router"
+import { createSignal, createMemo } from "solid-js"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
-import type { FSRSCardData } from "@/features/supabase/db/utils"
-import type { Deck, DeckSource } from "@/data/types"
-import { cn } from "@/utils"
 import type { User } from "@supabase/supabase-js"
 import { useSettings } from "@/context/SettingsContext"
 import { generateServiceSources } from "@/features/dashboard/utils/serviceSourceHelper"
+import type { Deck, DeckSource, UserDeck } from "@/data/types"
+import type { DeferredPromise } from "@tanstack/solid-router"
+import type { FSRSCardData } from "@/features/supabase/db/utils"
 
 interface DashboardHeaderProps {
+  dashboardType: "textbook" | "service" | "user"
+  user: User | null
+  dueFSRSCardsPromise: DeferredPromise<FSRSCardData[] | null>
   currentDeck: Deck
   deckSources: DeckSource[]
-  dueFSRSCardsPromise: DeferredPromise<FSRSCardData[] | null>
-  user: User | null
   variant: "mobile" | "desktop"
 }
 
 export function DashboardHeader(props: DashboardHeaderProps) {
-  const navigate = useNavigate({ from: "/dashboard" })
+  const navigate = useNavigate()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
-  const { authData, preferences } = useSettings()
+  const { serviceAuthData, preferences } = useSettings()
 
-  // Generate service sources from cookie data
-  const serviceSources = () => generateServiceSources(authData(), preferences())
-
-  // Combine textbook and service sources
-  const allSources = () => [...props.deckSources, ...serviceSources()]
-
-  const handleDeckChange = (source: DeckSource, deck: Deck) => {
-    if (source.type === "service") {
-      // For now, just log the service selection
-      console.log(`Selected service deck:`, {
-        service: source.id,
-        deck: deck.slug,
-        enabled: !deck.disabled,
-      })
-      setIsPopoverOpen(false)
-      return
+  // Helper function to create a properly typed user deck source
+  const createUserDeckSource = (user: User): DeckSource => {
+    const userDeck: UserDeck = {
+      id: "user-decks",
+      slug: "default",
+      title: "My Custom Decks",
+      deckType: "user_deck" as const,
+      learning_path_items: [],
+      owner_id: user.id,
+      is_public: false,
+      vocabulary_keys: [],
     }
 
-    // Handle textbook navigation as before
-    const searchParams =
-      source.type === "textbook"
-        ? { textbook: source.id, deck: deck.slug }
-        : { user: source.id, deck: deck.slug }
+    return {
+      id: user.id,
+      name: "My Decks",
+      type: "user" as const,
+      decks: [userDeck],
+    }
+  }
 
-    navigate({ search: searchParams })
+  // Generate all available sources
+  const allSources = createMemo(() => {
+    const serviceSources = generateServiceSources(
+      serviceAuthData(),
+      preferences(),
+    )
+    const userSources = props.user ? [createUserDeckSource(props.user)] : []
+
+    return [...props.deckSources, ...serviceSources, ...userSources]
+  })
+
+  const handleDeckChange = (source: DeckSource, deck: Deck) => {
+    if (source.type === "textbook") {
+      navigate({
+        to: "/dashboard/$textbookId/$chapterSlug",
+        params: { textbookId: source.id, chapterSlug: deck.slug },
+      })
+    } else if (source.type === "service") {
+      navigate({
+        to: "/dashboard/$serviceId",
+        params: { serviceId: source.id },
+      })
+    } else if (source.type === "user") {
+      navigate({
+        to: "/dashboard/$userId",
+        params: { userId: source.id },
+      })
+    }
     setIsPopoverOpen(false)
   }
 
-  const allSourcesDebug = allSources()
-  console.log(
-    "About to render sources:",
-    allSourcesDebug.map((s) => ({ name: s.name, type: s.type })),
-  )
+  // Component for rendering due cards count
+  const DueCardsDisplay = () => {
+    if (!props.user) {
+      return null
+    }
+
+    return (
+      <Await
+        promise={props.dueFSRSCardsPromise}
+        fallback={
+          <>
+            <div class="text-gray-400">
+              <span class="font-inter text-base font-bold xl:text-lg">...</span>
+            </div>
+            <div class="text-muted-foreground text-xs xl:text-sm">
+              Loading...
+            </div>
+          </>
+        }
+      >
+        {(dueCards) => (
+          <>
+            <div
+              class={
+                dueCards && dueCards.length > 0
+                  ? "text-amber-400"
+                  : "text-green-500"
+              }
+            >
+              <span class="font-inter text-base font-bold xl:text-lg">
+                {dueCards?.length || 0}
+              </span>
+            </div>
+            <div class="text-muted-foreground text-xs xl:text-sm">
+              {dueCards?.length === 0
+                ? "No reviews"
+                : `${dueCards?.length === 1 ? "Review" : "Reviews"} Due`}
+            </div>
+          </>
+        )}
+      </Await>
+    )
+  }
 
   if (props.variant === "mobile") {
     return (
@@ -114,42 +172,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
                 Sign In
               </Button>
             ) : (
-              <Await
-                promise={props.dueFSRSCardsPromise}
-                fallback={
-                  <>
-                    <div class="text-gray-400">
-                      <span class="font-inter text-base font-bold xl:text-lg">
-                        ...
-                      </span>
-                    </div>
-                    <div class="text-muted-foreground text-xs xl:text-sm">
-                      Loading...
-                    </div>
-                  </>
-                }
-              >
-                {(dueCards) => (
-                  <>
-                    <div
-                      class={
-                        dueCards && dueCards.length > 0
-                          ? "text-amber-400"
-                          : "text-green-500"
-                      }
-                    >
-                      <span class="font-inter text-base font-bold xl:text-lg">
-                        {dueCards?.length || 0}
-                      </span>
-                    </div>
-                    <div class="text-muted-foreground text-xs xl:text-sm">
-                      {dueCards?.length === 0
-                        ? "No reviews"
-                        : `${dueCards?.length === 1 ? "Review" : "Reviews"} Due`}
-                    </div>
-                  </>
-                )}
-              </Await>
+              <DueCardsDisplay />
             )}
           </div>
         </div>
@@ -188,35 +211,9 @@ export function DashboardHeader(props: DashboardHeaderProps) {
                 <div class="text-muted-foreground text-xs">Completed</div>
               </div>
 
-              <Await
-                promise={props.dueFSRSCardsPromise}
-                fallback={
-                  <div class="text-center">
-                    <div class="text-lg font-bold text-gray-400">...</div>
-                    <div class="text-muted-foreground text-xs">Loading...</div>
-                  </div>
-                }
-              >
-                {(dueCards) => (
-                  <div class="text-center">
-                    <div
-                      class={cn(
-                        "text-lg font-bold",
-                        dueCards && dueCards.length > 0
-                          ? "text-amber-400"
-                          : "text-green-400",
-                      )}
-                    >
-                      {dueCards?.length || 0}
-                    </div>
-                    <div class="text-muted-foreground text-xs">
-                      {dueCards?.length === 0
-                        ? "No reviews due"
-                        : `Review${dueCards?.length === 1 ? "" : "s"} Due`}
-                    </div>
-                  </div>
-                )}
-              </Await>
+              <div class="text-center">
+                <DueCardsDisplay />
+              </div>
             </>
           )}
         </div>

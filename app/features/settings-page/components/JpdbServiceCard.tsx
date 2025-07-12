@@ -13,7 +13,7 @@ import type { JpdbServiceCardProps } from "@/features/service-config/types"
 
 export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
   const {
-    authData,
+    serviceAuthData,
     errors,
     isProcessing,
     updateServiceAuth,
@@ -22,7 +22,7 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
     setIsProcessing,
   } = useSettings()
   const [jpdbApiKey, setJpdbApiKey] = createSignal(
-    authData().jpdb?.api_key || "",
+    serviceAuthData().jpdb?.api_key || "",
   )
   const [selectedFile, setSelectedFile] = createSignal<File | undefined>()
 
@@ -98,7 +98,7 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
           >
             Connect to jpdb
           </Button>
-          <Show when={authData().jpdb?.is_api_key_valid}>
+          <Show when={serviceAuthData().jpdb?.is_api_key_valid}>
             <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">
               <p class="text-sm text-green-100">
                 ✓ Connected to jpdb - Live access enabled

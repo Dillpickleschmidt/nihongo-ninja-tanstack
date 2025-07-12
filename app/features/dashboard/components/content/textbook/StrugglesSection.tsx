@@ -1,4 +1,4 @@
-// features/dashboard/components/content/StrugglesSection.tsx
+// features/dashboard/components/content/textbook/StrugglesSection.tsx
 import { For, createSignal } from "solid-js"
 import { ArrowRight, ChevronDown } from "lucide-solid"
 import { cn } from "@/utils"

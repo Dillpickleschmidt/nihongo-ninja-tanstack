@@ -1,4 +1,4 @@
-// features/dashboard/components/content/MoreResourcesSection.tsx
+// features/dashboard/components/content/textbook/MoreResourcesSection.tsx
 import { For, Show } from "solid-js"
 import {
   ArrowUpRight,
@@ -28,6 +28,7 @@ const moreResourcesData: ExternalResource[] = [
     difficulty_rating: "hard",
     external_url: "https://example.com/grammar",
     internal_url: null,
+    creator_id: "textbook_companion" as any,
   },
   {
     id: "fake-2",
@@ -36,6 +37,7 @@ const moreResourcesData: ExternalResource[] = [
     difficulty_rating: "medium",
     external_url: "https://example.com/conversation",
     internal_url: null,
+    creator_id: "textbook_companion" as any,
   },
   {
     id: "fake-3",
@@ -44,6 +46,7 @@ const moreResourcesData: ExternalResource[] = [
     difficulty_rating: "easy",
     external_url: "https://example.com/pronunciation",
     internal_url: null,
+    creator_id: "textbook_companion" as any,
   },
   {
     id: "fake-4",
@@ -52,6 +55,7 @@ const moreResourcesData: ExternalResource[] = [
     difficulty_rating: "medium",
     external_url: "https://example.com/writing",
     internal_url: null,
+    creator_id: "textbook_companion" as any,
   },
   {
     id: "fake-5",
@@ -60,6 +64,7 @@ const moreResourcesData: ExternalResource[] = [
     difficulty_rating: "easy",
     external_url: "https://example.com/culture",
     internal_url: null,
+    creator_id: "textbook_companion" as any,
   },
   {
     id: "fake-6",
@@ -68,6 +73,7 @@ const moreResourcesData: ExternalResource[] = [
     difficulty_rating: "medium",
     external_url: "https://example.com/exercises",
     internal_url: null,
+    creator_id: "textbook_companion" as any,
   },
 ]
 

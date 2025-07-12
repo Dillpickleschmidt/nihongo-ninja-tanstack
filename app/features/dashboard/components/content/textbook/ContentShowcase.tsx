@@ -1,4 +1,4 @@
-// features/dashboard/components/content/ContentShowcase.tsx
+// features/dashboard/components/content/textbook/ContentShowcase.tsx
 import { For, Show, Component, onMount, createEffect } from "solid-js"
 import { Await, Link, useLocation } from "@tanstack/solid-router"
 import {
@@ -45,7 +45,7 @@ export function ContentShowcase(props: ContentShowcaseProps) {
   const { hasUserNavigated, animationTrigger } = usePageTransition()
 
   const runAnimation = () => {
-    if (location().pathname === "/dashboard" && hasUserNavigated()) {
+    if (location().pathname.includes("/dashboard") && hasUserNavigated()) {
       const element = document.querySelector(SELECTOR) as HTMLElement
       if (element) {
         prepareElementForEnter(element, DIRECTION)

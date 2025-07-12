@@ -23,7 +23,7 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
   const findCurrentSource = () =>
     props.allSources.find((source) =>
       source.decks.some((d) => d.id === props.currentDeck.id),
-    )
+    ) || props.allSources[0]
 
   const [selectedSource, setSelectedSource] = createSignal<
     DeckSource | undefined

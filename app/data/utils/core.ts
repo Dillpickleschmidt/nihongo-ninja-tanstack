@@ -46,7 +46,7 @@ function setCookie(name: string, value: string, days: number = 365) {
 const ACTIVE_DECK_COOKIE_KEY = "active_deck"
 
 type ActiveDeckCookie = {
-  sourceType: "textbook" | "user"
+  sourceType: "textbook" | "user" | "service"
   sourceId: string
   deckSlug: string
 }
@@ -55,7 +55,7 @@ type ActiveDeckCookie = {
  * Sets the user's last active deck in a cookie.
  */
 export function setActiveDeck(
-  sourceType: "textbook" | "user",
+  sourceType: "textbook" | "user" | "service",
   sourceId: string,
   deckSlug: string,
 ) {

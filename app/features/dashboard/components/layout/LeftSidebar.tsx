@@ -1,58 +1,90 @@
 // features/dashboard/components/layout/LeftSidebar.tsx
-import { Show, createSignal } from "solid-js"
+import { createSignal, createMemo } from "solid-js"
 import { TrendingUp, Target, Award } from "lucide-solid"
 import { useNavigate } from "@tanstack/solid-router"
 import { WordHierarchy } from "../content/WordHierarchy"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
-import type { FullHierarchyData } from "@/data/wanikani/types"
-import type { Deck, DeckSource } from "@/data/types"
 import { cn } from "@/utils"
-import { User } from "@supabase/supabase-js"
+import type { User } from "@supabase/supabase-js"
 import { useSettings } from "@/context/SettingsContext"
 import { generateServiceSources } from "@/features/dashboard/utils/serviceSourceHelper"
+import type { Deck, DeckSource, UserDeck } from "@/data/types"
+import { FullHierarchyData } from "@/data/wanikani/types"
 
 interface LeftSidebarProps {
-  data: FullHierarchyData | null
+  dashboardType: "textbook" | "service" | "user"
+  user: User | null
   currentDeck: Deck
   deckSources: DeckSource[]
+  wordHierarchyData: FullHierarchyData | null
   variant: "mobile" | "desktop"
-  user: User | null
 }
 
 export function LeftSidebar(props: LeftSidebarProps) {
-  const navigate = useNavigate({ from: "/dashboard" })
+  const navigate = useNavigate()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
+  const { serviceAuthData, preferences } = useSettings()
 
-  // Add service sources integration
-  const { authData, preferences } = useSettings()
-  const serviceSources = () => generateServiceSources(authData(), preferences())
-  const allSources = () => [...props.deckSources, ...serviceSources()]
-
-  const handleDeckChange = (source: DeckSource, deck: Deck) => {
-    if (source.type === "service") {
-      // For now, just log the service selection
-      console.log(`Selected service deck:`, {
-        service: source.id,
-        deck: deck.slug,
-        enabled: !deck.disabled,
-      })
-      setIsPopoverOpen(false)
-      return
+  // Helper function to create a properly typed user deck source
+  const createUserDeckSource = (user: User): DeckSource => {
+    const userDeck: UserDeck = {
+      id: "user-decks",
+      slug: "default",
+      title: "My Custom Decks",
+      deckType: "user_deck" as const,
+      learning_path_items: [],
+      owner_id: user.id,
+      is_public: false,
+      vocabulary_keys: [],
     }
 
-    const searchParams =
-      source.type === "textbook"
-        ? { textbook: source.id, deck: deck.slug }
-        : { user: source.id, deck: deck.slug }
+    return {
+      id: user.id,
+      name: "My Decks",
+      type: "user" as const,
+      decks: [userDeck],
+    }
+  }
 
-    navigate({ search: searchParams })
+  // Generate all available sources
+  const allSources = createMemo(() => {
+    const serviceSources = generateServiceSources(
+      serviceAuthData(),
+      preferences(),
+    )
+    const userSources = props.user ? [createUserDeckSource(props.user)] : []
+
+    return [...props.deckSources, ...serviceSources, ...userSources]
+  })
+
+  const handleDeckChange = (source: DeckSource, deck: Deck) => {
+    if (source.type === "textbook") {
+      navigate({
+        to: "/dashboard/$textbookId/$chapterSlug",
+        params: { textbookId: source.id, chapterSlug: deck.slug },
+      })
+    } else if (source.type === "service") {
+      navigate({
+        to: "/dashboard/$serviceId",
+        params: { serviceId: source.id },
+      })
+    } else if (source.type === "user") {
+      navigate({
+        to: "/dashboard/$userId",
+        params: { userId: source.id },
+      })
+    }
     setIsPopoverOpen(false)
   }
 
   if (props.variant === "mobile") {
     return (
       <div class="mb-8 flex flex-col gap-3 px-7">
-        <WordHierarchy data={props.data} variant="mobile" user={props.user} />
+        <WordHierarchy
+          data={props.wordHierarchyData}
+          variant="mobile"
+          user={props.user}
+        />
       </div>
     )
   }
@@ -60,10 +92,15 @@ export function LeftSidebar(props: LeftSidebarProps) {
   // Desktop variant
   return (
     <div class="space-y-6">
-      {/* Current Chapter Section */}
+      {/* Current Deck Section */}
       <div class="space-y-3">
         <div class="text-muted-foreground text-sm tracking-wider uppercase">
-          Current Chapter
+          Current{" "}
+          {props.dashboardType === "textbook"
+            ? "Chapter"
+            : props.dashboardType === "service"
+              ? "Service"
+              : "Collection"}
         </div>
         <DeckSelectionPopover
           currentDeck={props.currentDeck}
@@ -93,13 +130,13 @@ export function LeftSidebar(props: LeftSidebarProps) {
         </DeckSelectionPopover>
       </div>
 
-      {/* Your Progress Section */}
+      {/* Progress Section */}
       <div class="space-y-3">
         <h2 class="text-lg font-semibold">Your Progress</h2>
 
         <div class="relative h-[420px] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-4 backdrop-blur-sm">
           <WordHierarchy
-            data={props.data}
+            data={props.wordHierarchyData}
             variant="desktop"
             user={props.user}
           />
@@ -125,7 +162,9 @@ export function LeftSidebar(props: LeftSidebarProps) {
           <StatCard
             icon={Award}
             title="Level"
-            value="Intermediate"
+            value={
+              props.dashboardType === "textbook" ? "Beginner" : "Intermediate"
+            }
             gradient="from-purple-600/20 to-indigo-600/10"
             iconColor="text-purple-400"
           />

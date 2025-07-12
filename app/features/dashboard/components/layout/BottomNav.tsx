@@ -1,4 +1,4 @@
-// features/dashboard/components/layout/FloatingBottomNav.tsx
+// features/dashboard/components/layout/BottomNav.tsx
 import { createSignal } from "solid-js"
 import { Link, useLocation } from "@tanstack/solid-router"
 import { Home, Hammer, Search, User } from "lucide-solid"

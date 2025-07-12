@@ -10,7 +10,6 @@ import {
   CheckCircle,
 } from "lucide-solid"
 import { Link } from "@tanstack/solid-router"
-import type { StaticModule, DynamicModule } from "@/data/types"
 import { cn } from "@/utils"
 
 interface RightSidebarProps {
@@ -21,22 +20,11 @@ interface RightSidebarProps {
     amount: number
     color: string
   }>
-  lessons: (StaticModule | DynamicModule)[]
   variant: "mobile" | "desktop"
 }
 
 export function RightSidebar(props: RightSidebarProps) {
   const [selectedTimeframe, setSelectedTimeframe] = createSignal("week")
-
-  const vocabularyLessons = () => {
-    return props.lessons.filter((lesson) => {
-      const type =
-        "lesson_type" in lesson ? lesson.lesson_type : lesson.session_type
-      return ["vocab", "vocab-list", "vocab-practice", "vocab-test"].includes(
-        type,
-      )
-    })
-  }
 
   if (props.variant === "mobile") {
     return (
@@ -75,22 +63,6 @@ export function RightSidebar(props: RightSidebarProps) {
   // Desktop variant
   return (
     <div class="space-y-6">
-      {/* Vocabulary Modules */}
-      <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/10 to-cyan-600/5 backdrop-blur-sm">
-        <div class="mb-4 flex items-center gap-2 px-6 pt-6">
-          <BookOpen class="h-5 w-5 text-blue-400" />
-          <h3 class="text-lg font-semibold">Chapter Vocabulary</h3>
-        </div>
-
-        <div class="scrollbar-hide max-h-64 space-y-2 overflow-x-visible overflow-y-auto px-6 pb-6">
-          <For each={vocabularyLessons()}>
-            {(lesson, index) => (
-              <VocabularyLessonRow lesson={lesson} isCompleted={index() < 1} />
-            )}
-          </For>
-        </div>
-      </div>
-
       {/* Struggle Areas */}
       <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-red-600/10 to-orange-600/5 p-6 backdrop-blur-sm">
         <div class="mb-4 flex items-center justify-between">
@@ -209,56 +181,5 @@ export function RightSidebar(props: RightSidebarProps) {
         </div>
       </div>
     </div>
-  )
-}
-
-function VocabularyLessonRow(props: {
-  lesson: StaticModule | DynamicModule
-  isCompleted: boolean
-}) {
-  const linkTo =
-    "link" in props.lesson && props.lesson.link
-      ? props.lesson.link
-      : `/practice/${props.lesson.id}`
-
-  const displayTitle = props.lesson.title.startsWith("Practice ")
-    ? props.lesson.title.substring(9)
-    : props.lesson.title
-
-  const getVocabGradient = () => "from-sky-600/20 to-blue-600/10"
-
-  return (
-    <Link to={linkTo} class="group block">
-      <div
-        class={cn(
-          "flex items-center gap-3 rounded-lg border border-white/5 p-3 transition-all duration-200",
-          "hover:scale-[1.01] hover:border-white/10 hover:shadow-lg",
-          "bg-gradient-to-r backdrop-blur-sm",
-          props.isCompleted ? "bg-green-600/5" : "bg-white/2",
-        )}
-        style={`background-image: linear-gradient(to right, ${getVocabGradient()})`}
-      >
-        <div class="flex-shrink-0">
-          {props.isCompleted ? (
-            <CheckCircle class="h-5 w-5 text-green-400" />
-          ) : (
-            <Circle class="text-muted-foreground group-hover:text-primary h-5 w-5 transition-colors" />
-          )}
-        </div>
-
-        <div class="min-w-0 flex-1">
-          <h4 class="group-hover:text-primary line-clamp-1 text-sm font-medium transition-colors">
-            {displayTitle}
-          </h4>
-          <div class="text-muted-foreground mt-0.5 text-xs capitalize">
-            {"lesson_type" in props.lesson
-              ? props.lesson.lesson_type
-              : props.lesson.session_type}
-          </div>
-        </div>
-
-        <ArrowRight class="text-muted-foreground h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
-      </div>
-    </Link>
   )
 }

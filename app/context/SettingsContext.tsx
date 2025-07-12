@@ -23,11 +23,11 @@ import {
 // --- Context Definition ---
 
 interface SettingsContextType {
-  authData: () => AllServiceAuthData
+  serviceAuthData: () => AllServiceAuthData
   preferences: () => AllServicePreferences
   updateServiceAuth: (
     service: ServiceType,
-    authData: Partial<ServiceAuthData>,
+    serviceAuthData: Partial<ServiceAuthData>,
   ) => Promise<void>
   updateServicePreference: (
     service: ServiceType,
@@ -61,7 +61,7 @@ interface SettingsProviderProps extends ParentProps {
 }
 
 export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
-  const [authData, setAuthData] = createSignal<AllServiceAuthData>(
+  const [serviceAuthData, setAuthData] = createSignal<AllServiceAuthData>(
     props.initialAuthData || {
       jpdb: defaultAuthData,
       wanikani: defaultAuthData,
@@ -112,7 +112,7 @@ export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
 
     // Update server-side auth cookie
     await updateServiceAuthServerFn({
-      data: { service, authData: newAuthData },
+      data: { service, serviceAuthData: newAuthData },
     })
   }
 
@@ -143,7 +143,7 @@ export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
   }
 
   const value = {
-    authData,
+    serviceAuthData,
     preferences,
     updateServiceAuth,
     updateServicePreference,

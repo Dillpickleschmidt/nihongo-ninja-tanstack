@@ -16,7 +16,7 @@ import type { ServiceCardProps } from "@/features/service-config/types"
 
 export const WanikaniServiceCard = (props: ServiceCardProps) => {
   const {
-    authData,
+    serviceAuthData,
     errors,
     isProcessing,
     updateServiceAuth,
@@ -25,7 +25,7 @@ export const WanikaniServiceCard = (props: ServiceCardProps) => {
     setIsProcessing,
   } = useSettings()
   const [wanikaniApiKey, setWanikaniApiKey] = createSignal(
-    authData().wanikani?.api_key || "",
+    serviceAuthData().wanikani?.api_key || "",
   )
 
   const handleConnect = async () => {
@@ -99,7 +99,7 @@ export const WanikaniServiceCard = (props: ServiceCardProps) => {
           >
             Connect to WaniKani
           </Button>
-          <Show when={authData().wanikani?.is_api_key_valid}>
+          <Show when={serviceAuthData().wanikani?.is_api_key_valid}>
             <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">
               <p class="text-sm text-green-100">
                 ✓ Connected to WaniKani - Live access enabled

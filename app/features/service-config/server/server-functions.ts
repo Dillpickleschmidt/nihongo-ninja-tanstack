@@ -30,7 +30,7 @@ const serviceConnectionSchema = z.object({
 
 const serviceAuthUpdateSchema = z.object({
   service: z.enum(["jpdb", "wanikani", "anki"]),
-  authData: z.object({
+  serviceAuthData: z.object({
     api_key: z.string().optional(),
     is_api_key_valid: z.boolean().optional(),
   }),
@@ -100,7 +100,7 @@ export const updateServiceAuthServerFn = createServerFn()
     if (!user) return { success: false, error: "User not authenticated" }
 
     try {
-      updateServiceAuth(data.service, data.authData)
+      updateServiceAuth(data.service, data.serviceAuthData)
       return { success: true }
     } catch (error) {
       console.error(`Error updating ${data.service} auth data:`, error)
@@ -117,8 +117,8 @@ export const getServiceAuthState = createServerFn().handler(
     if (!user) return { success: false, error: "User not authenticated" }
 
     try {
-      const authData = getServiceAuthDataFromCookie()
-      return { success: true, data: authData }
+      const serviceAuthData = getServiceAuthDataFromCookie()
+      return { success: true, data: serviceAuthData }
     } catch (error) {
       console.error("Error getting service auth state:", error)
       return { success: false, error: "Failed to get service auth state" }

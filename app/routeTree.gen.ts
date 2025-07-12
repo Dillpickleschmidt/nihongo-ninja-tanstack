@@ -17,6 +17,7 @@ import { Route as DashboardImport } from './routes/dashboard'
 import { Route as AuthImport } from './routes/auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as LearnIndexImport } from './routes/learn/index'
+import { Route as DashboardIndexImport } from './routes/dashboard/index'
 import { Route as PracticeReviewImport } from './routes/practice/review'
 import { Route as PracticeHiraganaQuizImport } from './routes/practice/hiragana-quiz'
 import { Route as PracticeDakutenHandakutenQuizImport } from './routes/practice/dakuten-handakuten-quiz'
@@ -24,10 +25,13 @@ import { Route as PracticeContractedSoundsQuizImport } from './routes/practice/c
 import { Route as PracticeAllHiraganaQuizImport } from './routes/practice/all-hiragana-quiz'
 import { Route as PracticePracticeIDImport } from './routes/practice/$practiceID'
 import { Route as LearnLessonsImport } from './routes/learn/_lessons'
+import { Route as DashboardUserIdImport } from './routes/dashboard/$userId'
+import { Route as DashboardServiceIdImport } from './routes/dashboard/$serviceId'
 import { Route as LearnLessonsWritingSystemsImport } from './routes/learn/_lessons/writing-systems'
 import { Route as LearnLessonsWelcomeOverviewImport } from './routes/learn/_lessons/welcome-overview'
 import { Route as LearnLessonsJapanesePronunciationImport } from './routes/learn/_lessons/japanese-pronunciation'
 import { Route as LearnLessonsHiraganaImport } from './routes/learn/_lessons/hiragana'
+import { Route as DashboardTextbookIdChapterSlugImport } from './routes/dashboard/$textbookId.$chapterSlug'
 
 // Create/Update Routes
 
@@ -65,6 +69,12 @@ const LearnIndexRoute = LearnIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => LearnRoute,
+} as any)
+
+const DashboardIndexRoute = DashboardIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
 } as any)
 
 const PracticeReviewRoute = PracticeReviewImport.update({
@@ -110,6 +120,18 @@ const LearnLessonsRoute = LearnLessonsImport.update({
   getParentRoute: () => LearnRoute,
 } as any)
 
+const DashboardUserIdRoute = DashboardUserIdImport.update({
+  id: '/$userId',
+  path: '/$userId',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardServiceIdRoute = DashboardServiceIdImport.update({
+  id: '/$serviceId',
+  path: '/$serviceId',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
 const LearnLessonsWritingSystemsRoute = LearnLessonsWritingSystemsImport.update(
   {
     id: '/writing-systems',
@@ -137,6 +159,13 @@ const LearnLessonsHiraganaRoute = LearnLessonsHiraganaImport.update({
   path: '/hiragana',
   getParentRoute: () => LearnLessonsRoute,
 } as any)
+
+const DashboardTextbookIdChapterSlugRoute =
+  DashboardTextbookIdChapterSlugImport.update({
+    id: '/$textbookId/$chapterSlug',
+    path: '/$textbookId/$chapterSlug',
+    getParentRoute: () => DashboardRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -176,6 +205,20 @@ declare module '@tanstack/solid-router' {
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsImport
       parentRoute: typeof rootRoute
+    }
+    '/dashboard/$serviceId': {
+      id: '/dashboard/$serviceId'
+      path: '/$serviceId'
+      fullPath: '/dashboard/$serviceId'
+      preLoaderRoute: typeof DashboardServiceIdImport
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/$userId': {
+      id: '/dashboard/$userId'
+      path: '/$userId'
+      fullPath: '/dashboard/$userId'
+      preLoaderRoute: typeof DashboardUserIdImport
+      parentRoute: typeof DashboardImport
     }
     '/learn/_lessons': {
       id: '/learn/_lessons'
@@ -226,12 +269,26 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof PracticeReviewImport
       parentRoute: typeof rootRoute
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexImport
+      parentRoute: typeof DashboardImport
+    }
     '/learn/': {
       id: '/learn/'
       path: '/'
       fullPath: '/learn/'
       preLoaderRoute: typeof LearnIndexImport
       parentRoute: typeof LearnImport
+    }
+    '/dashboard/$textbookId/$chapterSlug': {
+      id: '/dashboard/$textbookId/$chapterSlug'
+      path: '/$textbookId/$chapterSlug'
+      fullPath: '/dashboard/$textbookId/$chapterSlug'
+      preLoaderRoute: typeof DashboardTextbookIdChapterSlugImport
+      parentRoute: typeof DashboardImport
     }
     '/learn/_lessons/hiragana': {
       id: '/learn/_lessons/hiragana'
@@ -265,6 +322,24 @@ declare module '@tanstack/solid-router' {
 }
 
 // Create and export the route tree
+
+interface DashboardRouteChildren {
+  DashboardServiceIdRoute: typeof DashboardServiceIdRoute
+  DashboardUserIdRoute: typeof DashboardUserIdRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardTextbookIdChapterSlugRoute: typeof DashboardTextbookIdChapterSlugRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardServiceIdRoute: DashboardServiceIdRoute,
+  DashboardUserIdRoute: DashboardUserIdRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardTextbookIdChapterSlugRoute: DashboardTextbookIdChapterSlugRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
 
 interface LearnLessonsRouteChildren {
   LearnLessonsHiraganaRoute: typeof LearnLessonsHiraganaRoute
@@ -300,16 +375,20 @@ const LearnRouteWithChildren = LearnRoute._addFileChildren(LearnRouteChildren)
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/learn': typeof LearnLessonsRouteWithChildren
   '/settings': typeof SettingsRoute
+  '/dashboard/$serviceId': typeof DashboardServiceIdRoute
+  '/dashboard/$userId': typeof DashboardUserIdRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
   '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
   '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
   '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/learn/': typeof LearnIndexRoute
+  '/dashboard/$textbookId/$chapterSlug': typeof DashboardTextbookIdChapterSlugRoute
   '/learn/hiragana': typeof LearnLessonsHiraganaRoute
   '/learn/japanese-pronunciation': typeof LearnLessonsJapanesePronunciationRoute
   '/learn/welcome-overview': typeof LearnLessonsWelcomeOverviewRoute
@@ -319,8 +398,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRoute
   '/settings': typeof SettingsRoute
+  '/dashboard/$serviceId': typeof DashboardServiceIdRoute
+  '/dashboard/$userId': typeof DashboardUserIdRoute
   '/learn': typeof LearnIndexRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
@@ -328,6 +408,8 @@ export interface FileRoutesByTo {
   '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
   '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
+  '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/$textbookId/$chapterSlug': typeof DashboardTextbookIdChapterSlugRoute
   '/learn/hiragana': typeof LearnLessonsHiraganaRoute
   '/learn/japanese-pronunciation': typeof LearnLessonsJapanesePronunciationRoute
   '/learn/welcome-overview': typeof LearnLessonsWelcomeOverviewRoute
@@ -338,9 +420,11 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/learn': typeof LearnRouteWithChildren
   '/settings': typeof SettingsRoute
+  '/dashboard/$serviceId': typeof DashboardServiceIdRoute
+  '/dashboard/$userId': typeof DashboardUserIdRoute
   '/learn/_lessons': typeof LearnLessonsRouteWithChildren
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
@@ -348,7 +432,9 @@ export interface FileRoutesById {
   '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
   '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/learn/': typeof LearnIndexRoute
+  '/dashboard/$textbookId/$chapterSlug': typeof DashboardTextbookIdChapterSlugRoute
   '/learn/_lessons/hiragana': typeof LearnLessonsHiraganaRoute
   '/learn/_lessons/japanese-pronunciation': typeof LearnLessonsJapanesePronunciationRoute
   '/learn/_lessons/welcome-overview': typeof LearnLessonsWelcomeOverviewRoute
@@ -363,13 +449,17 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/learn'
     | '/settings'
+    | '/dashboard/$serviceId'
+    | '/dashboard/$userId'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
     | '/practice/contracted-sounds-quiz'
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/practice/review'
+    | '/dashboard/'
     | '/learn/'
+    | '/dashboard/$textbookId/$chapterSlug'
     | '/learn/hiragana'
     | '/learn/japanese-pronunciation'
     | '/learn/welcome-overview'
@@ -378,8 +468,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
-    | '/dashboard'
     | '/settings'
+    | '/dashboard/$serviceId'
+    | '/dashboard/$userId'
     | '/learn'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
@@ -387,6 +478,8 @@ export interface FileRouteTypes {
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/practice/review'
+    | '/dashboard'
+    | '/dashboard/$textbookId/$chapterSlug'
     | '/learn/hiragana'
     | '/learn/japanese-pronunciation'
     | '/learn/welcome-overview'
@@ -398,6 +491,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/learn'
     | '/settings'
+    | '/dashboard/$serviceId'
+    | '/dashboard/$userId'
     | '/learn/_lessons'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
@@ -405,7 +500,9 @@ export interface FileRouteTypes {
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/practice/review'
+    | '/dashboard/'
     | '/learn/'
+    | '/dashboard/$textbookId/$chapterSlug'
     | '/learn/_lessons/hiragana'
     | '/learn/_lessons/japanese-pronunciation'
     | '/learn/_lessons/welcome-overview'
@@ -416,7 +513,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
-  DashboardRoute: typeof DashboardRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
   LearnRoute: typeof LearnRouteWithChildren
   SettingsRoute: typeof SettingsRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
@@ -430,7 +527,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
-  DashboardRoute: DashboardRoute,
+  DashboardRoute: DashboardRouteWithChildren,
   LearnRoute: LearnRouteWithChildren,
   SettingsRoute: SettingsRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,
@@ -471,7 +568,13 @@ export const routeTree = rootRoute
       "filePath": "auth.tsx"
     },
     "/dashboard": {
-      "filePath": "dashboard.tsx"
+      "filePath": "dashboard.tsx",
+      "children": [
+        "/dashboard/$serviceId",
+        "/dashboard/$userId",
+        "/dashboard/",
+        "/dashboard/$textbookId/$chapterSlug"
+      ]
     },
     "/learn": {
       "filePath": "learn.tsx",
@@ -482,6 +585,14 @@ export const routeTree = rootRoute
     },
     "/settings": {
       "filePath": "settings.tsx"
+    },
+    "/dashboard/$serviceId": {
+      "filePath": "dashboard/$serviceId.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/$userId": {
+      "filePath": "dashboard/$userId.tsx",
+      "parent": "/dashboard"
     },
     "/learn/_lessons": {
       "filePath": "learn/_lessons.tsx",
@@ -511,9 +622,17 @@ export const routeTree = rootRoute
     "/practice/review": {
       "filePath": "practice/review.tsx"
     },
+    "/dashboard/": {
+      "filePath": "dashboard/index.tsx",
+      "parent": "/dashboard"
+    },
     "/learn/": {
       "filePath": "learn/index.tsx",
       "parent": "/learn"
+    },
+    "/dashboard/$textbookId/$chapterSlug": {
+      "filePath": "dashboard/$textbookId.$chapterSlug.tsx",
+      "parent": "/dashboard"
     },
     "/learn/_lessons/hiragana": {
       "filePath": "learn/_lessons/hiragana.tsx",

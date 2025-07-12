@@ -16,7 +16,7 @@ import type { ServiceCardProps } from "@/features/service-config/types"
 
 export const AnkiServiceCard = (props: ServiceCardProps) => {
   const {
-    authData,
+    serviceAuthData,
     errors,
     isProcessing,
     updateServiceAuth,
@@ -111,7 +111,7 @@ export const AnkiServiceCard = (props: ServiceCardProps) => {
               Connect to Anki
             </Button>
           </div>
-          <Show when={authData().anki?.is_api_key_valid}>
+          <Show when={serviceAuthData().anki?.is_api_key_valid}>
             <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">
               <p class="text-sm text-green-100">
                 ✓ Connected to AnkiWeb - Live access enabled
