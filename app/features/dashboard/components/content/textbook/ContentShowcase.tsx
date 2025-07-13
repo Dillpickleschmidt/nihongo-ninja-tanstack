@@ -17,6 +17,7 @@ import {
   PenTool,
   ArrowRight,
   Plus,
+  Play,
 } from "lucide-solid"
 import { Transition } from "solid-transition-group"
 import type { ExternalResource } from "@/data/types"
@@ -136,9 +137,9 @@ export function ContentShowcase(props: ContentShowcaseProps) {
             Curated resources for your current chapter
           </p>
         </div>
-        <button class="bg-primary/10 text-primary hover:bg-primary/20 flex items-center gap-2 rounded-lg px-4 py-2 transition-colors">
-          <span class="text-sm font-medium">View All</span>
-          <ArrowUpRight class="h-4 w-4" />
+        <button class="bg-primary/10 flex items-center gap-2 rounded-lg px-4 py-2.5 transition-colors hover:opacity-80">
+          <Play class="h-4 w-4" />
+          <span class="text-sm font-medium">Start Studying</span>
         </button>
       </div>
 

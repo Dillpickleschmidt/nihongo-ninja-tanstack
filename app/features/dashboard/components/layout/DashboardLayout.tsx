@@ -10,7 +10,7 @@ import { Background } from "../shared/Background"
 import { TextbookChapterBackgrounds } from "../shared/TextbookChapterBackgrounds"
 import type { BackgroundItem } from "../shared/Background"
 import type { User } from "@supabase/supabase-js"
-import type { Deck, DeckSource } from "@/data/types"
+import type { Deck, DeckSource, VocabularyItem } from "@/data/types"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import type { FSRSCardData } from "@/features/supabase/db/utils"
 import type { FullHierarchyData } from "@/data/wanikani/types"
@@ -22,6 +22,7 @@ interface DashboardLayoutProps {
   currentDeck: Deck
   deckSources: DeckSource[]
   wordHierarchyData: FullHierarchyData | null
+  vocabularyItems: VocabularyItem[]
   textbookId?: string
   chapterSlug?: string
 }
@@ -120,6 +121,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
               currentDeck={props.currentDeck}
               deckSources={props.deckSources}
               wordHierarchyData={props.wordHierarchyData}
+              vocabularyItems={props.vocabularyItems}
               variant="mobile"
             />
             <RightSidebar
@@ -145,13 +147,14 @@ export function DashboardLayout(props: DashboardLayoutProps) {
 
           <div class="flex w-full pr-4 pl-8">
             {/* Left Sidebar - 24% */}
-            <div class="w-[24%] pt-6">
+            <div class="relative max-h-[calc(100vh-146px)] w-[24%] overflow-y-auto pt-6">
               <LeftSidebar
                 dashboardType={dashboardType()}
                 user={props.user}
                 currentDeck={props.currentDeck}
                 deckSources={props.deckSources}
                 wordHierarchyData={props.wordHierarchyData}
+                vocabularyItems={props.vocabularyItems}
                 variant="desktop"
               />
             </div>
@@ -160,7 +163,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
             <div class="w-[52%]">{props.children}</div>
 
             {/* Right Sidebar - 24% */}
-            <div class="relative h-[calc(100vh-80px)] w-[24%] overflow-y-auto pt-12 pr-4 pb-12">
+            <div class="relative h-[calc(100vh-146px)] w-[24%] overflow-y-auto pt-6 pr-4">
               <RightSidebar
                 struggles={struggles}
                 historyItems={historyItems}

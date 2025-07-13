@@ -1,5 +1,6 @@
 // features/dashboard/components/shared/DeckSelectionPopover.tsx
 import { createSignal, For, Show } from "solid-js"
+import { Lock } from "lucide-solid"
 import {
   Popover,
   PopoverContent,
@@ -30,7 +31,16 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
   >(findCurrentSource())
 
   const handleDeckChange = (source: DeckSource, deck: Deck) => {
+    // Prevent navigation if source or deck is disabled
+    if (source.disabled || deck.disabled) {
+      return
+    }
     props.onDeckChange(source, deck)
+  }
+
+  const handleSourceSelect = (source: DeckSource) => {
+    // Allow selecting disabled sources to show their content
+    setSelectedSource(source)
   }
 
   return (
@@ -48,13 +58,19 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
             <For each={props.allSources}>
               {(source) => (
                 <button
-                  onClick={() => setSelectedSource(source)}
+                  onClick={() => handleSourceSelect(source)}
                   class={cn(
-                    "hover:bg-primary/15 w-full rounded-md p-2 text-left text-sm font-medium",
+                    "flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-medium transition-colors",
                     selectedSource()?.id === source.id && "bg-primary/10",
+                    source.disabled
+                      ? "text-muted-foreground/50 hover:bg-primary/5"
+                      : "hover:bg-primary/15",
                   )}
                 >
-                  {source.name}
+                  <span>{source.name}</span>
+                  <Show when={source.disabled}>
+                    <Lock class="text-muted-foreground/50 h-3 w-3" />
+                  </Show>
                 </button>
               )}
             </For>
@@ -62,32 +78,51 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
           <div class="p-1">
             <Show when={selectedSource()} keyed>
               {(source) => (
-                <For each={source.decks}>
-                  {(deck) => (
-                    <button
-                      onClick={() => handleDeckChange(source, deck)}
-                      disabled={deck.disabled}
-                      class={cn(
-                        "hover:bg-card-foreground/40 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal",
-                        props.currentDeck.id === deck.id &&
-                          "bg-primary/10 hover:bg-primary/15 font-semibold",
-                        deck.disabled &&
-                          "cursor-not-allowed opacity-50 hover:bg-transparent",
-                      )}
-                    >
-                      <span>{deck.title}</span>
-                      <Show when={props.currentDeck.id === deck.id}>
-                        <svg
-                          class="size-4"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                        >
-                          <path d="M5 12l5 5l10 -10" />
-                        </svg>
-                      </Show>
-                    </button>
-                  )}
-                </For>
+                <Show
+                  when={source.decks.length > 0}
+                  fallback={
+                    <div class="flex h-32 items-center justify-center">
+                      <div class="text-muted-foreground/70 text-center">
+                        <Lock class="mx-auto mb-2 h-6 w-6" />
+                        <p class="text-sm">Service not configured</p>
+                        <p class="text-xs">Enable in settings</p>
+                      </div>
+                    </div>
+                  }
+                >
+                  <For each={source.decks}>
+                    {(deck) => (
+                      <button
+                        onClick={() => handleDeckChange(source, deck)}
+                        disabled={source.disabled || deck.disabled}
+                        class={cn(
+                          "flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal transition-colors",
+                          props.currentDeck.id === deck.id &&
+                            "bg-primary/10 hover:bg-primary/15 font-semibold",
+                          source.disabled || deck.disabled
+                            ? "text-muted-foreground/50 cursor-not-allowed hover:bg-transparent"
+                            : "hover:bg-card-foreground/40",
+                        )}
+                      >
+                        <div class="flex items-center gap-2">
+                          <span>{deck.title}</span>
+                          <Show when={deck.disabled && !source.disabled}>
+                            <Lock class="text-muted-foreground/50 h-3 w-3" />
+                          </Show>
+                        </div>
+                        <Show when={props.currentDeck.id === deck.id}>
+                          <svg
+                            class="size-4"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                          >
+                            <path d="M5 12l5 5l10 -10" />
+                          </svg>
+                        </Show>
+                      </button>
+                    )}
+                  </For>
+                </Show>
               )}
             </Show>
           </div>

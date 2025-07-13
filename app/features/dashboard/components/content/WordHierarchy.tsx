@@ -7,13 +7,21 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import { cn } from "@/utils"
-import type { FullHierarchyData, Kanji, Radical } from "@/data/wanikani/types"
+import type {
+  FullHierarchyData,
+  Kanji,
+  Radical,
+  VocabHierarchy,
+  ProgressState,
+} from "@/data/wanikani/types"
+import type { VocabularyItem } from "@/data/types"
 import { User } from "@supabase/supabase-js"
 
 type WordHierarchyVariant = "mobile" | "desktop"
 
 interface WordHierarchyProps {
   data: FullHierarchyData | null
+  vocabularyItems: VocabularyItem[]
   variant: WordHierarchyVariant
   user: User | null
 }
@@ -32,22 +40,37 @@ export function WordHierarchy(props: WordHierarchyProps) {
         {(data) => (
           <Switch>
             <Match when={props.variant === "desktop"}>
-              <div class="grid grid-cols-[3fr_2fr] gap-x-4">
-                <div class="flex flex-col gap-3">
-                  <SummaryCircles data={data()} user={props.user} />
-                  <CharacterList
-                    title="Kanji"
-                    items={data().uniqueKanji}
-                    variant="desktop"
-                    maxHeight="max-h-[265px]"
+              <div class="relative h-[420px] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm">
+                <div class="flex h-full flex-col gap-4">
+                  <div class="flex gap-x-4">
+                    <div class="flex w-[58%] flex-col gap-3">
+                      <SummaryCircles data={data()} user={props.user} />
+                      <CharacterList
+                        title="Kanji"
+                        items={data().uniqueKanji}
+                        variant="desktop"
+                        maxHeight="max-h-[265px]"
+                      />
+                    </div>
+                    <div class="w-[42%]">
+                      <CharacterList
+                        title="Radicals"
+                        items={data().uniqueRadicals}
+                        variant="desktop"
+                        maxHeight="max-h-[365px]"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="-mt-2 min-h-0 flex-1">
+                <div class="relative h-[calc(100vh-738px)] min-h-64 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm">
+                  <VocabularyList
+                    hierarchy={data().hierarchy}
+                    vocabularyItems={props.vocabularyItems}
                   />
                 </div>
-                <CharacterList
-                  title="Radicals"
-                  items={data().uniqueRadicals}
-                  variant="desktop"
-                  maxHeight="max-h-[365px]"
-                />
               </div>
             </Match>
 
@@ -64,6 +87,12 @@ export function WordHierarchy(props: WordHierarchyProps) {
                 title="Radicals"
                 items={data().uniqueRadicals}
                 variant="mobile"
+              />
+
+              {/* Mobile Vocabulary Section */}
+              <VocabularyList
+                hierarchy={data().hierarchy}
+                vocabularyItems={props.vocabularyItems}
               />
             </Match>
           </Switch>
@@ -232,7 +261,7 @@ function CharacterList(props: {
       </h3>
       <div
         class={cn(
-          "scrollbar-hide flex flex-wrap content-start gap-1.5 overflow-y-auto",
+          "flex flex-wrap content-start gap-1.5 overflow-y-auto pr-3",
           props.variant === "desktop" && props.maxHeight,
         )}
       >
@@ -298,5 +327,69 @@ function CharBox(props: {
         </Match>
       </Switch>
     </Show>
+  )
+}
+
+function VocabularyList(props: {
+  hierarchy: VocabHierarchy[]
+  vocabularyItems: VocabularyItem[]
+}) {
+  const vocabMap = new Map(
+    props.vocabularyItems.map((item) => [item.word, item]),
+  )
+
+  return (
+    <div class="flex h-full flex-col overflow-y-auto pr-3">
+      <div class="flex flex-col gap-1.5">
+        <For each={props.hierarchy}>
+          {(vocabItem, index) => {
+            const vocab = vocabMap.get(vocabItem.characters)
+            const englishMeanings = vocab?.english || []
+
+            return (
+              <VocabularyRow
+                number={index() + 1}
+                japanese={vocabItem.characters}
+                english={englishMeanings.join(", ")}
+                progress={vocabItem.progress || "not_seen"}
+              />
+            )
+          }}
+        </For>
+      </div>
+    </div>
+  )
+}
+
+function VocabularyRow(props: {
+  number: number
+  japanese: string
+  english: string
+  progress: ProgressState
+}) {
+  return (
+    <div
+      class={cn("flex items-center rounded-lg px-2 py-1.5 transition-colors", {
+        "bg-muted/40": props.progress === "not_seen",
+        "bg-amber-400/10": props.progress === "learning",
+        "bg-teal-400/10": props.progress === "well_known",
+      })}
+    >
+      <div class="space-x-2">
+        <span class="text-muted-foreground text-[11px]">{props.number}.</span>
+        <span
+          class={cn("flex-shrink-0 text-sm font-medium", {
+            "text-muted-foreground": props.progress === "not_seen",
+            "text-amber-300": props.progress === "learning",
+            "text-teal-300": props.progress === "well_known",
+          })}
+        >
+          {props.japanese}
+        </span>
+      </div>
+      <span class="text-muted-foreground flex-1 text-right text-xs">
+        {props.english}
+      </span>
+    </div>
   )
 }

@@ -1,16 +1,9 @@
 // features/dashboard/components/layout/RightSidebar.tsx
 import { For, createSignal } from "solid-js"
-import {
-  Clock,
-  Brain,
-  BarChart3,
-  BookOpen,
-  ArrowRight,
-  Circle,
-  CheckCircle,
-} from "lucide-solid"
-import { Link } from "@tanstack/solid-router"
+import { Clock, Brain, BarChart3 } from "lucide-solid"
 import { cn } from "@/utils"
+
+const MAX_RECENT_ACTIVITIES = 4
 
 interface RightSidebarProps {
   struggles: string[]
@@ -62,7 +55,21 @@ export function RightSidebar(props: RightSidebarProps) {
 
   // Desktop variant
   return (
-    <div class="space-y-6">
+    <div class="space-y-4 pb-3">
+      {/* Recent Activity Section */}
+      <div class="space-y-3">
+        <div class="flex items-center gap-2">
+          <Clock class="h-5 w-5 text-green-400" />
+          <h3 class="text-lg font-semibold">Recent Activity</h3>
+        </div>
+
+        <div class="space-y-2">
+          <For each={props.historyItems.slice(0, MAX_RECENT_ACTIVITIES)}>
+            {(item) => <RecentActivityCard item={item} />}
+          </For>
+        </div>
+      </div>
+
       {/* Struggle Areas */}
       <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-red-600/10 to-orange-600/5 p-6 backdrop-blur-sm">
         <div class="mb-4 flex items-center justify-between">
@@ -147,37 +154,42 @@ export function RightSidebar(props: RightSidebarProps) {
           <div class="text-muted-foreground text-xs">Total this week</div>
         </div>
       </div>
+    </div>
+  )
+}
 
-      {/* Recent Activity */}
-      <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-green-600/10 to-emerald-600/5 p-6 backdrop-blur-sm">
-        <div class="mb-4 flex items-center gap-2">
-          <Clock class="h-5 w-5 text-green-400" />
-          <h3 class="text-lg font-semibold">Recent Activity</h3>
+function RecentActivityCard(props: {
+  item: {
+    name: string
+    icon: string
+    amount: number
+    color: string
+  }
+}) {
+  return (
+    <div
+      class={cn(
+        "rounded-lg border border-white/10 p-3 backdrop-blur-sm",
+        "bg-gradient-to-br transition-all duration-200 hover:scale-[1.01] hover:shadow-lg",
+        "from-gray-600/10 to-slate-600/5", // Default gradient
+      )}
+    >
+      <div class="flex items-center gap-3">
+        <div
+          class={cn(
+            "flex h-8 w-8 items-center justify-center rounded-lg",
+            props.item.color,
+          )}
+        >
+          <span class="text-sm text-white">{props.item.icon}</span>
         </div>
-
-        <div class="space-y-3">
-          <For each={props.historyItems}>
-            {(item) => (
-              <div class="flex items-center gap-3">
-                <div
-                  class={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-lg",
-                    item.color,
-                  )}
-                >
-                  <span class="text-sm text-white">{item.icon}</span>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <div class="text-sm font-medium">{item.name}</div>
-                  <div class="text-muted-foreground text-xs">2 hours ago</div>
-                </div>
-                <div class="text-sm font-semibold">
-                  {item.amount < 0 ? "-" : "+"}
-                  {Math.abs(item.amount)}
-                </div>
-              </div>
-            )}
-          </For>
+        <div class="min-w-0 flex-1">
+          <div class="text-sm font-medium">{props.item.name}</div>
+          <div class="text-muted-foreground text-xs">2 hours ago</div>
+        </div>
+        <div class="text-sm font-semibold">
+          {props.item.amount < 0 ? "-" : "+"}
+          {Math.abs(props.item.amount)}
         </div>
       </div>
     </div>

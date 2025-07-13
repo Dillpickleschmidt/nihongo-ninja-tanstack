@@ -81,8 +81,18 @@ export function generateServiceSources(
   const serviceSources: DeckSource[] = []
 
   services.forEach((service) => {
-    if (!isServiceEnabled(service, preferences)) {
-      return // Skip disabled services
+    const serviceEnabled = isServiceEnabled(service, preferences)
+
+    if (!serviceEnabled) {
+      // Show disabled services with no decks
+      serviceSources.push({
+        id: service,
+        name: SERVICE_DISPLAY_NAMES[service],
+        type: "service" as const,
+        decks: [],
+        disabled: true,
+      })
+      return
     }
 
     const decks: Deck[] = []
@@ -104,6 +114,7 @@ export function generateServiceSources(
       name: SERVICE_DISPLAY_NAMES[service],
       type: "service" as const,
       decks,
+      disabled: false,
     })
   })
 

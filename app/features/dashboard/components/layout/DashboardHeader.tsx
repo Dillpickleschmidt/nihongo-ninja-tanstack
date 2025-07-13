@@ -43,6 +43,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
       name: "My Decks",
       type: "user" as const,
       decks: [userDeck],
+      disabled: false,
     }
   }
 

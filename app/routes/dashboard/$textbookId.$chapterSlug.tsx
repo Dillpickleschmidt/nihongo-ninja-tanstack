@@ -19,7 +19,7 @@ import { getModuleVocabulary } from "@/data/utils/vocab"
 import { TextbookContentArea } from "@/features/dashboard/components/content/textbook/TextbookContentArea"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
 import { textbooks } from "@/data/textbooks"
-import type { TextbookIDEnum, DeckSource } from "@/data/types"
+import type { TextbookIDEnum, DeckSource, VocabularyItem } from "@/data/types"
 
 const searchSchema = z.object({
   textbook: z.string().optional(),
@@ -54,9 +54,11 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
     )?.id
 
     let vocabForHierarchy: string[] = []
+    let vocabularyItems: VocabularyItem[] = []
     if (vocabModuleId) {
       const vocabItems = getModuleVocabulary(vocabModuleId)
       vocabForHierarchy = vocabItems.map((item) => item.word)
+      vocabularyItems = vocabItems
     }
 
     const wordHierarchyData = user
@@ -88,6 +90,7 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       name: tb.short_name || tb.name,
       type: "textbook",
       decks: tb.chapters,
+      disabled: false,
     }))
 
     return {
@@ -97,6 +100,7 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       lessons,
       externalResources,
       wordHierarchyData,
+      vocabularyItems,
       deferredThumbnails: deferredIndividualThumbnails,
       dueFSRSCards: defer(dueFSRSCardsPromise),
       deckSources,
@@ -110,11 +114,6 @@ function RouteComponent() {
 
   createEffect(() => {
     setActiveDeck("textbook", loaderData().textbookId, loaderData().deck.slug)
-    console.log(
-      "Set active deck: ",
-      loaderData().textbookId,
-      loaderData().deck.slug,
-    )
   })
 
   return (
@@ -126,6 +125,7 @@ function RouteComponent() {
       textbookId={loaderData().textbookId}
       chapterSlug={loaderData().deck.slug}
       wordHierarchyData={loaderData().wordHierarchyData}
+      vocabularyItems={loaderData().vocabularyItems}
     >
       <TextbookContentArea
         lessons={loaderData().lessons}

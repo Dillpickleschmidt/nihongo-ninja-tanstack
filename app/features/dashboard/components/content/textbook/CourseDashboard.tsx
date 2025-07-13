@@ -112,70 +112,11 @@ export function CourseDashboard(props: CourseDashboardProps) {
     )
   }
 
-  // Desktop variant - just the lesson content
-  const filteredLessons = () => {
-    return props.lessons.filter((lesson) => {
-      const type =
-        "lesson_type" in lesson ? lesson.lesson_type : lesson.session_type
-      return !["vocab", "vocab-list", "vocab-practice", "vocab-test"].includes(
-        type,
-      )
-    })
-  }
-
-  const groupedLessons = () => {
-    const groups = new Map<string, (StaticModule | DynamicModule)[]>()
-
-    filteredLessons().forEach((lesson) => {
-      const type =
-        "lesson_type" in lesson ? lesson.lesson_type : lesson.session_type
-      const category = getCategoryFromType(type)
-
-      if (!groups.has(category)) {
-        groups.set(category, [])
-      }
-      groups.get(category)!.push(lesson)
-    })
-
-    return Array.from(groups.entries())
-  }
-
-  return (
-    <div class="space-y-8">
-      <For each={groupedLessons()}>
-        {([category, lessons]) => (
-          <LessonCategory category={category} lessons={lessons} />
-        )}
-      </For>
-    </div>
-  )
-}
-
-function LessonCategory(props: {
-  category: string
-  lessons: (StaticModule | DynamicModule)[]
-}) {
-  const getGradientForCategory = (category: string) => {
-    switch (category) {
-      case "Core Lessons":
-        return "from-green-600/20 to-emerald-600/10"
-      case "Practice":
-        return "from-blue-600/20 to-cyan-600/10"
-      case "Culture":
-        return "from-orange-600/20 to-pink-600/10"
-      case "Media":
-        return "from-purple-600/20 to-indigo-600/10"
-      case "Reading":
-        return "from-teal-600/20 to-emerald-600/10"
-      default:
-        return "from-gray-600/20 to-slate-600/10"
-    }
-  }
-
+  // Desktop variant - single list with "Core Lessons" header
   return (
     <div class="space-y-4">
       <div class="flex items-center gap-3">
-        <h3 class="text-lg font-semibold">{props.category}</h3>
+        <h3 class="text-lg font-semibold">Core Lessons</h3>
         <div class="from-muted h-px flex-1 bg-gradient-to-r to-transparent"></div>
         <span class="text-muted-foreground text-sm">
           {props.lessons.length} lessons
@@ -188,7 +129,7 @@ function LessonCategory(props: {
             <LessonRow
               lesson={lesson}
               isCompleted={index() < 2}
-              gradient={getGradientForCategory(props.category)}
+              gradient="from-green-600/20 to-emerald-600/10"
             />
           )}
         </For>
@@ -412,27 +353,4 @@ function MobileLessonCard(props: { lesson: StaticModule | DynamicModule }) {
       </SmoothCard>
     </Link>
   )
-}
-
-function getCategoryFromType(type: string): string {
-  switch (type) {
-    case "lesson":
-    case "grammar-notes":
-      return "Core Lessons"
-    case "practice-sentence":
-    case "worksheet":
-    case "conjugation-practice":
-    case "counter-practice":
-    case "game":
-      return "Practice"
-    case "culture-note":
-      return "Culture"
-    case "video":
-    case "audio":
-      return "Media"
-    case "reading":
-      return "Reading"
-    default:
-      return "Other"
-  }
 }

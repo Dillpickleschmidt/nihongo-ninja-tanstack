@@ -63,7 +63,7 @@ export function TextbookContentArea(props: TextbookContentAreaProps) {
         </div>
 
         {/* Scrollable Bottom Section */}
-        <div class="scrollbar-hide relative h-[calc(100vh-376px)] overflow-x-hidden overflow-y-auto overscroll-x-none px-8 pb-12">
+        <div class="scrollbar-hide relative h-[calc(100vh-441px)] overflow-x-hidden overflow-y-auto overscroll-x-none px-8 pb-12">
           {/* More Resources */}
           <MoreResourcesSection />
 

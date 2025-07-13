@@ -216,6 +216,7 @@ export type DeckSource = {
   name: string // e.g., "Genki I" or "My Decks"
   type: "textbook" | "user" | "service"
   decks: Deck[]
+  disabled: boolean
 }
 
 export type ServiceDeckEnum =

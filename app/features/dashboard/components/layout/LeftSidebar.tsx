@@ -1,14 +1,12 @@
 // features/dashboard/components/layout/LeftSidebar.tsx
-import { createSignal, createMemo } from "solid-js"
-import { TrendingUp, Target, Award } from "lucide-solid"
+import { createSignal, createMemo, For } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
 import { WordHierarchy } from "../content/WordHierarchy"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
-import { cn } from "@/utils"
 import type { User } from "@supabase/supabase-js"
 import { useSettings } from "@/context/SettingsContext"
 import { generateServiceSources } from "@/features/dashboard/utils/serviceSourceHelper"
-import type { Deck, DeckSource, UserDeck } from "@/data/types"
+import type { Deck, DeckSource, UserDeck, VocabularyItem } from "@/data/types"
 import { FullHierarchyData } from "@/data/wanikani/types"
 
 interface LeftSidebarProps {
@@ -17,6 +15,7 @@ interface LeftSidebarProps {
   currentDeck: Deck
   deckSources: DeckSource[]
   wordHierarchyData: FullHierarchyData | null
+  vocabularyItems: VocabularyItem[]
   variant: "mobile" | "desktop"
 }
 
@@ -43,6 +42,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
       name: "My Decks",
       type: "user" as const,
       decks: [userDeck],
+      disabled: false,
     }
   }
 
@@ -82,6 +82,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
       <div class="mb-8 flex flex-col gap-3 px-7">
         <WordHierarchy
           data={props.wordHierarchyData}
+          vocabularyItems={props.vocabularyItems}
           variant="mobile"
           user={props.user}
         />
@@ -131,76 +132,15 @@ export function LeftSidebar(props: LeftSidebarProps) {
       </div>
 
       {/* Progress Section */}
-      <div class="space-y-3">
+      <div class="space-y-3 pb-3">
         <h2 class="text-lg font-semibold">Your Progress</h2>
 
-        <div class="relative h-[420px] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-4 backdrop-blur-sm">
-          <WordHierarchy
-            data={props.wordHierarchyData}
-            variant="desktop"
-            user={props.user}
-          />
-        </div>
-
-        <div class="space-y-2">
-          <StatCard
-            icon={TrendingUp}
-            title="Study Streak"
-            value="12 days"
-            gradient="from-green-600/20 to-emerald-600/10"
-            iconColor="text-green-400"
-          />
-
-          <StatCard
-            icon={Target}
-            title="Weekly Goal"
-            value="85%"
-            gradient="from-blue-600/20 to-cyan-600/10"
-            iconColor="text-blue-400"
-          />
-
-          <StatCard
-            icon={Award}
-            title="Level"
-            value={
-              props.dashboardType === "textbook" ? "Beginner" : "Intermediate"
-            }
-            gradient="from-purple-600/20 to-indigo-600/10"
-            iconColor="text-purple-400"
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function StatCard(props: {
-  icon: any
-  title: string
-  value: string
-  gradient: string
-  iconColor: string
-}) {
-  const Icon = props.icon
-
-  return (
-    <div
-      class={cn(
-        "rounded-lg border border-white/10 p-3 backdrop-blur-sm",
-        "bg-gradient-to-br transition-all duration-200 hover:scale-[1.01] hover:shadow-lg",
-      )}
-      style={`background-image: linear-gradient(to bottom right, ${props.gradient})`}
-    >
-      <div class="flex items-center gap-2">
-        <div class="rounded-md bg-white/10 p-1.5">
-          <Icon class={cn("h-4 w-4", props.iconColor)} />
-        </div>
-        <div class="min-w-0 flex-1">
-          <div class="text-muted-foreground text-xs font-medium">
-            {props.title}
-          </div>
-          <div class="text-sm font-bold">{props.value}</div>
-        </div>
+        <WordHierarchy
+          data={props.wordHierarchyData}
+          vocabularyItems={props.vocabularyItems}
+          variant="desktop"
+          user={props.user}
+        />
       </div>
     </div>
   )
