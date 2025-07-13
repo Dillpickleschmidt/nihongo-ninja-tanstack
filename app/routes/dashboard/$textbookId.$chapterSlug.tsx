@@ -11,10 +11,7 @@ import {
 } from "@/data/utils/core"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { getDueFSRSCards } from "@/features/supabase/db/utils"
-import {
-  getWKHierarchy,
-  getWKHierarchyWithProgress,
-} from "@/data/wanikani/utils"
+import { getWKHierarchy, getUserProgressForVocab } from "@/data/wanikani/utils"
 import { getModuleVocabulary } from "@/data/utils/vocab"
 import { TextbookContentArea } from "@/features/dashboard/components/content/textbook/TextbookContentArea"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
@@ -61,14 +58,16 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       vocabularyItems = vocabItems
     }
 
-    const wordHierarchyData = user
-      ? await getWKHierarchyWithProgress({
-          data: {
-            slugs: vocabForHierarchy,
-            userId: user.id,
-          },
-        })
-      : await getWKHierarchy({ data: vocabForHierarchy })
+    // Always get static hierarchy (fast)
+    const wordHierarchyData = await getWKHierarchy({ data: vocabForHierarchy })
+
+    // Defer progress data if user exists (slow)
+    const progressDataPromise =
+      user && vocabForHierarchy.length > 0
+        ? getUserProgressForVocab({
+            data: { slugs: vocabForHierarchy, userId: user.id },
+          })
+        : Promise.resolve(null)
 
     const dueFSRSCardsPromise = user
       ? getDueFSRSCards(user.id)
@@ -101,6 +100,7 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       externalResources,
       wordHierarchyData,
       vocabularyItems,
+      progressData: defer(progressDataPromise),
       deferredThumbnails: deferredIndividualThumbnails,
       dueFSRSCards: defer(dueFSRSCardsPromise),
       deckSources,
@@ -126,6 +126,7 @@ function RouteComponent() {
       chapterSlug={loaderData().deck.slug}
       wordHierarchyData={loaderData().wordHierarchyData}
       vocabularyItems={loaderData().vocabularyItems}
+      progressData={loaderData().progressData}
     >
       <TextbookContentArea
         lessons={loaderData().lessons}

@@ -241,16 +241,6 @@ function determineProgress(
     : "learning"
 }
 
-async function fetchUserProgress(
-  userId: string,
-  allSlugs: string[],
-): Promise<Map<string, FSRSCardData>> {
-  const fsrsData = await getFSRSCardsByKeys(userId, allSlugs)
-  return new Map(
-    fsrsData.map((card) => [`${card.type}:${card.practice_item_key}`, card]),
-  )
-}
-
 function addProgressToItems<T extends { slug: string }>(
   items: T[],
   progressMap: Map<string, FSRSCardData>,
@@ -329,46 +319,32 @@ export const getWKHierarchy = createServerFn({ method: "GET" })
     return { hierarchy, uniqueKanji, uniqueRadicals, summary }
   })
 
-export const getWKHierarchyWithProgress = createServerFn({ method: "GET" })
+export const getUserProgressForVocab = createServerFn({ method: "GET" })
   .validator((data: { slugs: string[]; userId: string }) => data)
-  .handler(
-    async ({ data: { slugs, userId } }): Promise<FullHierarchyData | null> => {
-      if (!slugs || slugs.length === 0 || !userId) return null
+  .handler(async ({ data }): Promise<Record<string, FSRSCardData> | null> => {
+    if (!data || !data.slugs || data.slugs.length === 0 || !data.userId)
+      return null
 
-      const staticData = fetchStaticHierarchyFromDb(slugs)
-      if (!staticData) return null
+    // Get all vocabulary items and their related kanji/radicals to build the full slug list
+    const staticData = fetchStaticHierarchyFromDb(data.slugs)
+    if (!staticData) return null
 
-      const { vocabRows, kanjiRows, radicalRows, relations } = staticData
-      const hierarchy = buildStaticHierarchy(
-        vocabRows,
-        kanjiRows,
-        radicalRows,
-        relations,
-      )
-      const { uniqueKanji, uniqueRadicals } = extractUniqueItems(hierarchy)
+    // Collect all slugs for progress lookup
+    const allSlugs = new Set<string>()
+    staticData.vocabRows.forEach((v) => allSlugs.add(v.slug))
+    staticData.kanjiRows.forEach((k) => allSlugs.add(k.slug))
+    staticData.radicalRows.forEach((r) => r.slug && allSlugs.add(r.slug))
 
-      // Collect all slugs for progress lookup
-      const allSlugs = new Set<string>()
-      vocabRows.forEach((v) => allSlugs.add(v.slug))
-      kanjiRows.forEach((k) => allSlugs.add(k.slug))
-      radicalRows.forEach((r) => r.slug && allSlugs.add(r.slug))
+    const fsrsData = await getFSRSCardsByKeys(data.userId, Array.from(allSlugs))
 
-      const progressMap = await fetchUserProgress(userId, Array.from(allSlugs))
-      const enrichedData = enrichWithProgress(
-        hierarchy,
-        uniqueKanji,
-        uniqueRadicals,
-        progressMap,
-      )
-      const summary = calculateSummary(
-        enrichedData.hierarchy,
-        enrichedData.uniqueKanji,
-        enrichedData.uniqueRadicals,
-      )
+    // Return a plain object instead of Map
+    const progressRecord: Record<string, FSRSCardData> = {}
+    fsrsData.forEach((card) => {
+      progressRecord[`${card.type}:${card.practice_item_key}`] = card
+    })
 
-      return { ...enrichedData, summary }
-    },
-  )
+    return progressRecord
+  })
 
 export const getKanjiDetailsBySlug = createServerFn({ method: "GET" })
   .validator((slug: string) => slug)

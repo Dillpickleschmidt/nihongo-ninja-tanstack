@@ -7,7 +7,9 @@ import type { User } from "@supabase/supabase-js"
 import { useSettings } from "@/context/SettingsContext"
 import { generateServiceSources } from "@/features/dashboard/utils/serviceSourceHelper"
 import type { Deck, DeckSource, UserDeck, VocabularyItem } from "@/data/types"
-import { FullHierarchyData } from "@/data/wanikani/types"
+import type { FullHierarchyData } from "@/data/wanikani/types"
+import type { DeferredPromise } from "@tanstack/solid-router"
+import type { FSRSCardData } from "@/features/supabase/db/utils"
 
 interface LeftSidebarProps {
   dashboardType: "textbook" | "service" | "user"
@@ -16,6 +18,7 @@ interface LeftSidebarProps {
   deckSources: DeckSource[]
   wordHierarchyData: FullHierarchyData | null
   vocabularyItems: VocabularyItem[]
+  progressData: DeferredPromise<Record<string, FSRSCardData> | null>
   variant: "mobile" | "desktop"
 }
 
@@ -83,6 +86,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
         <WordHierarchy
           data={props.wordHierarchyData}
           vocabularyItems={props.vocabularyItems}
+          progressData={props.progressData}
           variant="mobile"
           user={props.user}
         />
@@ -138,6 +142,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
         <WordHierarchy
           data={props.wordHierarchyData}
           vocabularyItems={props.vocabularyItems}
+          progressData={props.progressData}
           variant="desktop"
           user={props.user}
         />

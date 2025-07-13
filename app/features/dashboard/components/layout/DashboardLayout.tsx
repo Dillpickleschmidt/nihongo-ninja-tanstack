@@ -23,6 +23,7 @@ interface DashboardLayoutProps {
   deckSources: DeckSource[]
   wordHierarchyData: FullHierarchyData | null
   vocabularyItems: VocabularyItem[]
+  progressData: DeferredPromise<Record<string, FSRSCardData> | null>
   textbookId?: string
   chapterSlug?: string
 }
@@ -122,6 +123,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
               deckSources={props.deckSources}
               wordHierarchyData={props.wordHierarchyData}
               vocabularyItems={props.vocabularyItems}
+              progressData={props.progressData}
               variant="mobile"
             />
             <RightSidebar
@@ -155,6 +157,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                 deckSources={props.deckSources}
                 wordHierarchyData={props.wordHierarchyData}
                 vocabularyItems={props.vocabularyItems}
+                progressData={props.progressData}
                 variant="desktop"
               />
             </div>

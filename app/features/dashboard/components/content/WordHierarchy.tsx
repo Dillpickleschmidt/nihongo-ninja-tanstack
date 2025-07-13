@@ -1,6 +1,5 @@
 // features/dashboard/components/content/WordHierarchy.tsx
-import { For, Match, Show, Switch } from "solid-js"
-import { createMediaQuery } from "@solid-primitives/media"
+import { createResource, For, Match, Show, Switch } from "solid-js"
 import {
   HoverCard,
   HoverCardContent,
@@ -15,90 +14,184 @@ import type {
   ProgressState,
 } from "@/data/wanikani/types"
 import type { VocabularyItem } from "@/data/types"
-import { User } from "@supabase/supabase-js"
+import type { User } from "@supabase/supabase-js"
+import type { DeferredPromise } from "@tanstack/solid-router"
+import type { FSRSCardData } from "@/features/supabase/db/utils"
 
 type WordHierarchyVariant = "mobile" | "desktop"
 
 interface WordHierarchyProps {
   data: FullHierarchyData | null
   vocabularyItems: VocabularyItem[]
+  progressData: DeferredPromise<Record<string, FSRSCardData> | null>
   variant: WordHierarchyVariant
   user: User | null
 }
 
+const WELL_KNOWN_THRESHOLD = 21
+
+function determineProgress(
+  type: "vocabulary" | "kanji" | "radical",
+  slug: string,
+  progressRecord: Record<string, FSRSCardData>,
+): ProgressState {
+  const key = `${type}:${slug}`
+  const cardData = progressRecord[key]
+
+  if (!cardData) return "not_seen"
+
+  return cardData.fsrs_card.stability >= WELL_KNOWN_THRESHOLD
+    ? "well_known"
+    : "learning"
+}
+
+function enrichHierarchyWithProgress(
+  hierarchyData: FullHierarchyData,
+  progressRecord: Record<string, FSRSCardData>,
+): FullHierarchyData {
+  const radicalsWithProgress = hierarchyData.uniqueRadicals.map((radical) => ({
+    ...radical,
+    progress: determineProgress("radical", radical.slug, progressRecord),
+  }))
+  const radicalsProgressMap = new Map(
+    radicalsWithProgress.map((r) => [r.id, r]),
+  )
+
+  const kanjiWithProgress = hierarchyData.uniqueKanji.map((kanji) => ({
+    ...kanji,
+    progress: determineProgress("kanji", kanji.slug, progressRecord),
+    radicals: kanji.radicals.map((r) => radicalsProgressMap.get(r.id) || r),
+  }))
+  const kanjiProgressMap = new Map(kanjiWithProgress.map((k) => [k.id, k]))
+
+  const hierarchyWithProgress = hierarchyData.hierarchy.map((vocab) => ({
+    ...vocab,
+    progress: determineProgress("vocabulary", vocab.slug, progressRecord),
+    kanji: vocab.kanji.map((k) => kanjiProgressMap.get(k.id) || k),
+  }))
+
+  const countProgress = (items: { progress?: ProgressState }[]) => ({
+    wellKnown: items.filter((i) => i.progress === "well_known").length,
+    learning: items.filter((i) => i.progress === "learning").length,
+  })
+
+  const summary = {
+    vocab: {
+      total: hierarchyWithProgress.length,
+      ...countProgress(hierarchyWithProgress),
+    },
+    kanji: {
+      total: kanjiWithProgress.length,
+      ...countProgress(kanjiWithProgress),
+    },
+    radicals: {
+      total: radicalsWithProgress.length,
+      ...countProgress(radicalsWithProgress),
+    },
+  }
+
+  return {
+    hierarchy: hierarchyWithProgress,
+    uniqueKanji: kanjiWithProgress,
+    uniqueRadicals: radicalsWithProgress,
+    summary,
+  }
+}
+
 export function WordHierarchy(props: WordHierarchyProps) {
+  const [progressResource] = createResource(
+    () => (props.user ? props.progressData : null),
+    (promise) => promise,
+  )
+
+  const finalData = () => {
+    const hierarchy = props.data
+    const progress = progressResource()
+
+    if (!hierarchy) return null
+    // Only enrich if we have both user AND completed progress data
+    if (!props.user || !progress) return hierarchy
+
+    return enrichHierarchyWithProgress(hierarchy, progress)
+  }
+
   return (
     <div class="flex flex-col gap-4">
-      <Show
-        when={props.data}
-        fallback={
-          <div class="text-muted-foreground bg-card rounded-lg p-4 text-center">
-            Loading Progress Data...
-          </div>
-        }
-      >
-        {(data) => (
-          <Switch>
-            <Match when={props.variant === "desktop"}>
-              <div class="relative h-[420px] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm">
-                <div class="flex h-full flex-col gap-4">
-                  <div class="flex gap-x-4">
-                    <div class="flex w-[58%] flex-col gap-3">
-                      <SummaryCircles data={data()} user={props.user} />
-                      <CharacterList
-                        title="Kanji"
-                        items={data().uniqueKanji}
-                        variant="desktop"
-                        maxHeight="max-h-[265px]"
-                      />
-                    </div>
-                    <div class="w-[42%]">
-                      <CharacterList
-                        title="Radicals"
-                        items={data().uniqueRadicals}
-                        variant="desktop"
-                        maxHeight="max-h-[365px]"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="-mt-2 min-h-0 flex-1">
-                <div class="relative h-[calc(100vh-738px)] min-h-64 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm">
-                  <VocabularyList
-                    hierarchy={data().hierarchy}
-                    vocabularyItems={props.vocabularyItems}
-                  />
-                </div>
-              </div>
-            </Match>
-
-            <Match when={props.variant === "mobile"}>
-              <div class="py-2">
-                <SummaryCircles data={data()} user={props.user} />
-              </div>
-              <CharacterList
-                title="Kanji"
-                items={data().uniqueKanji}
-                variant="mobile"
-              />
-              <CharacterList
-                title="Radicals"
-                items={data().uniqueRadicals}
-                variant="mobile"
-              />
-
-              {/* Mobile Vocabulary Section */}
-              <VocabularyList
-                hierarchy={data().hierarchy}
-                vocabularyItems={props.vocabularyItems}
-              />
-            </Match>
-          </Switch>
-        )}
+      <Show when={finalData()}>
+        <WordHierarchyDisplay
+          data={finalData()!}
+          vocabularyItems={props.vocabularyItems}
+          variant={props.variant}
+          user={props.user}
+        />
       </Show>
     </div>
+  )
+}
+
+function WordHierarchyDisplay(props: {
+  data: FullHierarchyData
+  vocabularyItems: VocabularyItem[]
+  variant: WordHierarchyVariant
+  user: User | null
+}) {
+  return (
+    <Switch>
+      <Match when={props.variant === "desktop"}>
+        <div class="relative h-[420px] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm">
+          <div class="flex h-full flex-col gap-4">
+            <div class="flex gap-x-4">
+              <div class="flex w-[58%] flex-col gap-3">
+                <SummaryCircles data={props.data} user={props.user} />
+                <CharacterList
+                  title="Kanji"
+                  items={props.data.uniqueKanji}
+                  variant="desktop"
+                  maxHeight="max-h-[265px]"
+                />
+              </div>
+              <div class="w-[42%]">
+                <CharacterList
+                  title="Radicals"
+                  items={props.data.uniqueRadicals}
+                  variant="desktop"
+                  maxHeight="max-h-[365px]"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="-mt-2 min-h-0 flex-1">
+          <div class="relative h-[calc(100vh-738px)] min-h-64 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm">
+            <VocabularyList
+              hierarchy={props.data.hierarchy}
+              vocabularyItems={props.vocabularyItems}
+            />
+          </div>
+        </div>
+      </Match>
+
+      <Match when={props.variant === "mobile"}>
+        <div class="py-2">
+          <SummaryCircles data={props.data} user={props.user} />
+        </div>
+        <CharacterList
+          title="Kanji"
+          items={props.data.uniqueKanji}
+          variant="mobile"
+        />
+        <CharacterList
+          title="Radicals"
+          items={props.data.uniqueRadicals}
+          variant="mobile"
+        />
+        <VocabularyList
+          hierarchy={props.data.hierarchy}
+          vocabularyItems={props.vocabularyItems}
+        />
+      </Match>
+    </Switch>
   )
 }
 
@@ -154,10 +247,8 @@ function ProgressCircle(props: {
     props.total > 0
       ? (props.countLearned + props.countInProgress) / props.total
       : 0
-
   const offsetLearned = () => circumference * (1 - progressLearned())
   const offsetTotal = () => circumference * (1 - progressTotal())
-
   const seenCount = () => props.countLearned + props.countInProgress
 
   return (
@@ -175,7 +266,6 @@ function ProgressCircle(props: {
                 cx="32"
                 cy="32"
               />
-              {/* Only show progress circles if user has progress data */}
               <Show when={props.hasProgress}>
                 <circle
                   class={props.colorInProgress}
