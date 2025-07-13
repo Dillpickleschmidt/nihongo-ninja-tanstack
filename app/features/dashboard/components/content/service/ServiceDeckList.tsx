@@ -1,18 +1,20 @@
 // features/dashboard/components/content/service/ServiceDeckList.tsx
 import { For } from "solid-js"
 import { Link } from "@tanstack/solid-router"
-import {
-  Clock,
-  Star,
-  TrendingUp,
-  ArrowRight,
-  Play,
-  Settings,
-  CheckCircle,
-  Circle,
-} from "lucide-solid"
+import { Clock, Star, TrendingUp, ArrowRight, Play, Circle } from "lucide-solid"
 import { cn } from "@/utils"
 import type { ServiceType } from "@/features/service-config/types"
+
+type DeckCategory = {
+  title: string
+  decks: Array<{
+    id: string
+    name: string
+    dueCards: number
+    totalCards: number
+    type: "user" | "special"
+  }>
+}
 
 interface ServiceDeckListProps {
   serviceId: ServiceType
@@ -21,44 +23,66 @@ interface ServiceDeckListProps {
     name: string
     dueCards: number
     totalCards: number
+    type: "user" | "special"
   }>
   activeDeckId: string
   variant: "mobile" | "desktop"
 }
 
 export function ServiceDeckList(props: ServiceDeckListProps) {
-  const getServiceColor = (serviceId: ServiceType) => {
-    switch (serviceId) {
-      case "anki":
-        return "from-blue-600/20 to-cyan-600/10"
-      case "wanikani":
-        return "from-pink-600/20 to-purple-600/10"
-      case "jpdb":
-        return "from-green-600/20 to-emerald-600/10"
-      default:
-        return "from-gray-600/20 to-slate-600/10"
+  const groupedDecks = (): DeckCategory[] => {
+    const specialDecks = props.decks.filter((deck) => deck.type === "special")
+    const userDecks = props.decks.filter((deck) => deck.type === "user")
+
+    const categories: DeckCategory[] = []
+
+    if (specialDecks.length > 0) {
+      categories.push({ title: "Built-in Decks", decks: specialDecks })
     }
+
+    if (userDecks.length > 0) {
+      categories.push({ title: "Your Decks", decks: userDecks })
+    }
+
+    return categories
+  }
+
+  const getServiceColor = (serviceId: ServiceType) => {
+    const colors = {
+      anki: "from-blue-600/20 to-cyan-600/10",
+      wanikani: "from-pink-600/20 to-purple-600/10",
+      jpdb: "from-green-600/20 to-emerald-600/10",
+    }
+    return colors[serviceId] || "from-gray-600/20 to-slate-600/10"
   }
 
   if (props.variant === "mobile") {
     return (
       <div class="mb-8 px-6">
-        <div class="mb-4 flex items-center justify-between">
-          <h2 class="text-xl font-bold">Your Decks</h2>
-          <div class="text-muted-foreground text-sm">
-            {props.decks.length} decks
-          </div>
-        </div>
-
-        <div class="space-y-3">
-          <For each={props.decks}>
-            {(deck) => (
-              <MobileDeckCard
-                deck={deck}
-                serviceId={props.serviceId}
-                isActive={deck.id === props.activeDeckId}
-                gradient={getServiceColor(props.serviceId)}
-              />
+        <div class="space-y-6">
+          <For each={groupedDecks()}>
+            {(category) => (
+              <div class="space-y-3">
+                {/* Category Header with deck count */}
+                <div class="flex items-center justify-between">
+                  <h3 class="text-lg font-semibold">{category.title}</h3>
+                  <div class="text-muted-foreground text-sm">
+                    {category.decks.length} decks
+                  </div>
+                </div>
+                <div class="space-y-3">
+                  <For each={category.decks}>
+                    {(deck) => (
+                      <MobileDeckCard
+                        deck={deck}
+                        serviceId={props.serviceId}
+                        isActive={deck.id === props.activeDeckId}
+                        gradient={getServiceColor(props.serviceId)}
+                      />
+                    )}
+                  </For>
+                </div>
+              </div>
             )}
           </For>
         </div>
@@ -69,14 +93,30 @@ export function ServiceDeckList(props: ServiceDeckListProps) {
   // Desktop variant
   return (
     <div class="space-y-4">
-      <For each={props.decks}>
-        {(deck) => (
-          <DeckRow
-            deck={deck}
-            serviceId={props.serviceId}
-            isActive={deck.id === props.activeDeckId}
-            gradient={getServiceColor(props.serviceId)}
-          />
+      <For each={groupedDecks()}>
+        {(category) => (
+          <div class="space-y-4">
+            <div class="flex items-center gap-3">
+              <h3 class="text-lg font-semibold">{category.title}</h3>
+              <div class="from-muted h-px flex-1 bg-gradient-to-r to-transparent"></div>
+              <span class="text-muted-foreground text-sm">
+                {category.decks.length} decks
+              </span>
+            </div>
+
+            <div class="space-y-4">
+              <For each={category.decks}>
+                {(deck) => (
+                  <DeckRow
+                    deck={deck}
+                    serviceId={props.serviceId}
+                    isActive={deck.id === props.activeDeckId}
+                    gradient={getServiceColor(props.serviceId)}
+                  />
+                )}
+              </For>
+            </div>
+          </div>
         )}
       </For>
     </div>
@@ -89,12 +129,14 @@ function DeckRow(props: {
     name: string
     dueCards: number
     totalCards: number
+    type: "user" | "special"
   }
   serviceId: ServiceType
   isActive: boolean
   gradient: string
 }) {
   const completionPercentage = () => {
+    if (props.deck.name === "Blacklisted Vocabulary") return 0
     const studied = props.deck.totalCards - props.deck.dueCards
     return Math.round((studied / props.deck.totalCards) * 100)
   }
@@ -104,15 +146,13 @@ function DeckRow(props: {
       <div
         class={cn(
           "flex items-center gap-4 rounded-xl border p-4 transition-all duration-200",
-          "backdrop-blur-sm hover:scale-[1.01] hover:shadow-lg",
-          "bg-gradient-to-r",
+          "bg-gradient-to-r backdrop-blur-sm hover:scale-[1.01] hover:shadow-lg",
           props.isActive
             ? "border-primary/30 bg-primary/5 ring-primary/20 shadow-lg ring-2"
             : "border-white/5 bg-white/2 hover:border-white/10",
         )}
         style={`background-image: linear-gradient(to right, ${props.gradient})`}
       >
-        {/* Active indicator */}
         <div class="flex-shrink-0">
           {props.isActive ? (
             <Star class="h-6 w-6 fill-current text-yellow-400" />
@@ -129,10 +169,12 @@ function DeckRow(props: {
             <span class="text-muted-foreground text-sm">
               {props.deck.dueCards} due • {props.deck.totalCards} total
             </span>
-            <div class="text-muted-foreground flex items-center gap-1 text-xs">
-              <TrendingUp class="h-3 w-3" />
-              <span>{completionPercentage()}% complete</span>
-            </div>
+            {props.deck.name !== "Blacklisted Vocabulary" && (
+              <div class="text-muted-foreground flex items-center gap-1 text-xs">
+                <TrendingUp class="h-3 w-3" />
+                <span>{completionPercentage()}% complete</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -156,6 +198,7 @@ function MobileDeckCard(props: {
     name: string
     dueCards: number
     totalCards: number
+    type: "user" | "special"
   }
   serviceId: ServiceType
   isActive: boolean
@@ -165,8 +208,7 @@ function MobileDeckCard(props: {
     <Link to={`/study/${props.serviceId}/${props.deck.id}`} class="block">
       <div
         class={cn(
-          "bg-card relative rounded-2xl p-4 transition-all duration-200",
-          "backdrop-blur-sm hover:scale-[99%]",
+          "bg-card relative rounded-2xl p-4 backdrop-blur-sm transition-all duration-200 hover:scale-[99%]",
           props.isActive && "ring-primary/30 shadow-lg ring-2",
         )}
         style={`background-image: linear-gradient(to right, ${props.gradient})`}

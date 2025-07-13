@@ -12,6 +12,7 @@ interface ServiceContentAreaProps {
       name: string
       dueCards: number
       totalCards: number
+      type: "user" | "special"
     }>
     stats: {
       totalDueCards: number
