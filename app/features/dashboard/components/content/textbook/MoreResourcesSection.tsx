@@ -83,7 +83,7 @@ export function MoreResourcesSection() {
       <h3 class="text-muted-foreground text-lg font-semibold">
         More Resources
       </h3>
-      <div class="scrollbar-hide max-h-[142px] space-y-2 overflow-x-visible overflow-y-auto">
+      <div class="max-h-[142px] space-y-2 overflow-x-visible overflow-y-auto">
         <For each={moreResourcesData}>
           {(resource) => <CompactResourceItem resource={resource} />}
         </For>

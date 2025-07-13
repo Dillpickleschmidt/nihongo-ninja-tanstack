@@ -266,7 +266,12 @@ function CharacterList(props: {
         )}
       >
         <For each={props.items}>
-          {(item) => <CharBox item={item} variant={props.variant} />}
+          {(item) => (
+            <CharBox
+              item={{ ...item, progress: item.progress || "not_seen" }}
+              variant={props.variant}
+            />
+          )}
         </For>
       </div>
     </div>
