@@ -129,7 +129,7 @@ export function ContentShowcase(props: ContentShowcaseProps) {
 
   // Desktop variant
   return (
-    <div class="space-y-3">
+    <div class="space-y-1">
       <div class="flex items-center justify-between px-8">
         <div>
           <h2 class="text-2xl font-bold">Featured Content</h2>
@@ -277,7 +277,7 @@ function FeaturedResourceCardContent(props: {
 }) {
   return (
     <div
-      class="relative h-48 w-[260px] overflow-hidden rounded-2xl border border-white/10 backdrop-blur-sm transition-all duration-300 hover:shadow-xl"
+      class="relative h-44 w-[240px] overflow-hidden rounded-2xl border border-white/10 backdrop-blur-sm transition-all duration-300 hover:shadow-xl"
       style={{ "background-image": props.getGradientStyle() }}
     >
       <Show when={props.thumbnailUrl}>

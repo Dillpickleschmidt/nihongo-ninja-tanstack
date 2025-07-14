@@ -2875,7 +2875,7 @@ export const vocabulary: VocabularyCollection = {
   },
   Ｔシャツ: {
     word: "Ｔシャツ",
-    furigana: "Ｔシャツ[ティーシャツ]",
+    furigana: "ティーシャツ",
     english: ["T-shirt"],
     chapter: 2,
   },
@@ -2947,7 +2947,7 @@ export const vocabulary: VocabularyCollection = {
   },
   "～円": {
     word: "～円",
-    furigana: "～ 円[～えん]",
+    furigana: "～ 円[えん]",
     english: ["...yen"],
     chapter: 2,
   },

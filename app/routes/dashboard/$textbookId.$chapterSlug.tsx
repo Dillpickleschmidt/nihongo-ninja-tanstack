@@ -17,6 +17,7 @@ import { TextbookContentArea } from "@/features/dashboard/components/content/tex
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
 import { textbooks } from "@/data/textbooks"
 import type { TextbookIDEnum, DeckSource, VocabularyItem } from "@/data/types"
+import type { FullHierarchyData } from "@/data/wanikani/types"
 
 const searchSchema = z.object({
   textbook: z.string().optional(),
@@ -58,8 +59,32 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       vocabularyItems = vocabItems
     }
 
-    // Always get static hierarchy (fast)
-    const wordHierarchyData = await getWKHierarchy({ data: vocabForHierarchy })
+    // Get WaniKani hierarchy (only for words that have kanji)
+    const wkHierarchyData = await getWKHierarchy({ data: vocabForHierarchy })
+
+    // Create lookup map and build complete hierarchy in one pass
+    const wkVocabMap = new Map(
+      wkHierarchyData?.hierarchy.map((item) => [item.slug, item]) || [],
+    )
+
+    const wordHierarchyData: FullHierarchyData = {
+      hierarchy: vocabularyItems.map(
+        (vocab, index) =>
+          wkVocabMap.get(vocab.word) || {
+            id: 10000 + index,
+            characters: vocab.word,
+            slug: vocab.word,
+            kanji: [],
+          },
+      ),
+      uniqueKanji: wkHierarchyData?.uniqueKanji || [],
+      uniqueRadicals: wkHierarchyData?.uniqueRadicals || [],
+      summary: wkHierarchyData?.summary || {
+        vocab: { total: 0, wellKnown: 0, learning: 0 },
+        kanji: { total: 0, wellKnown: 0, learning: 0 },
+        radicals: { total: 0, wellKnown: 0, learning: 0 },
+      },
+    }
 
     // Defer progress data if user exists (slow)
     const progressDataPromise =

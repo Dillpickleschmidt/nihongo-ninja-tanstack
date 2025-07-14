@@ -224,28 +224,18 @@ export function CourseDashboard(props: CourseDashboardProps) {
     )
   }
 
-  // Desktop variant - single list with "Core Lessons" header
+  // Desktop variant - just the lesson list without header
   return (
-    <div class="space-y-4">
-      <div class="flex items-center gap-3">
-        <h3 class="text-lg font-semibold">Core Lessons</h3>
-        <div class="from-muted h-px flex-1 bg-gradient-to-r to-transparent"></div>
-        <span class="text-muted-foreground text-sm">
-          {props.lessons.length} lessons
-        </span>
-      </div>
-
-      <div class="grid grid-cols-1 gap-3">
-        <For each={props.lessons}>
-          {(lesson, index) => (
-            <LessonRow
-              lesson={lesson}
-              isCompleted={index() < 2}
-              gradient="from-green-600/20 to-emerald-600/10"
-            />
-          )}
-        </For>
-      </div>
+    <div class="grid grid-cols-1 gap-3">
+      <For each={props.lessons}>
+        {(lesson, index) => (
+          <LessonRow
+            lesson={lesson}
+            isCompleted={index() < 2}
+            gradient="from-green-600/20 to-emerald-600/10"
+          />
+        )}
+      </For>
     </div>
   )
 }
@@ -275,7 +265,7 @@ function LessonRow(props: {
       >
         <div class="flex-shrink-0">
           {props.isCompleted ? (
-            <CheckCircle class="h-6 w-6 text-green-400" />
+            <CheckCircle class="h-5 w-5 text-green-400" />
           ) : (
             <ModuleIcon class={cn("h-5 w-5", iconClasses)} />
           )}

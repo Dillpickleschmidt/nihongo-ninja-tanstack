@@ -53,52 +53,46 @@ export function TextbookContentArea(props: TextbookContentAreaProps) {
 
       {/* Desktop Layout */}
       <SSRMediaQuery showFrom="xl">
-        {/* Fixed Featured Content Section */}
-        <div class="pb-3">
+        <div class="flex h-[calc(100vh-146px)] flex-col">
+          {/* Fixed Featured Content Section */}
           <ContentShowcase
             resources={props.externalResources}
             thumbnailPromises={props.deferredThumbnails}
             variant="desktop"
           />
-        </div>
 
-        {/* Scrollable Bottom Section */}
-        <div class="px-5">
-          <div class="relative h-[calc(100vh-441px)] overflow-x-hidden overflow-y-auto overscroll-x-none px-3 pb-12">
+          {/* Main Content Area */}
+          <div class="flex min-h-0 flex-1 flex-col px-4">
             {/* More Resources */}
-            <MoreResourcesSection />
-            {/* Sticky Header + Course Content */}
-            <div class="relative pt-3">
-              {/* Sticky Header */}
-              <div class="sticky top-0 z-10 pt-2 backdrop-blur-sm">
-                <div class="flex items-center justify-between">
-                  <div>
-                    <h2 class="text-2xl font-bold">Current Progress</h2>
-                    <p class="text-muted-foreground">
-                      Continue your learning journey
-                    </p>
-                  </div>
-                  <div class="text-right">
-                    <div class="text-primary text-2xl font-bold">
-                      {props.progressPercentage}%
-                    </div>
-                    <div class="text-muted-foreground text-sm">Complete</div>
-                  </div>
-                </div>
+            <div class="px-4">
+              <MoreResourcesSection />
+            </div>
 
-                <div class="relative mt-4">
-                  <div class="bg-muted/30 h-2 w-full overflow-hidden rounded-full">
+            {/* Core Lessons Section */}
+            <div class="flex min-h-0 flex-1 flex-col pt-4">
+              {/* Section Header with Progress Bar */}
+              <div class="flex items-center gap-3 px-4 pb-4">
+                <h3 class="text-xl font-semibold">Core Lessons</h3>
+
+                {/* Progress Bar */}
+                <div class="relative flex-1">
+                  <div class="bg-muted/30 h-1.5 w-full overflow-hidden rounded-full">
                     <div
                       class="from-primary to-primary/80 h-full rounded-full bg-gradient-to-r transition-all duration-700 ease-out"
                       style={`width: ${props.progressPercentage}%`}
                     />
                   </div>
-                  <div class="bg-primary absolute -top-0.5 right-0 h-3 w-3 rounded-full shadow-lg"></div>
+                  <div class="bg-primary absolute -top-0.5 right-0 h-2.5 w-2.5 rounded-full shadow-lg"></div>
                 </div>
+
+                <span class="text-muted-foreground text-sm">
+                  {props.lessons.length}{" "}
+                  {props.lessons.length === 1 ? "lesson" : "lessons"}
+                </span>
               </div>
 
-              {/* Course Content */}
-              <div class="pt-6">
+              {/* Scrollable Lessons Container */}
+              <div class="min-h-0 flex-1 overflow-x-hidden overflow-y-auto px-4 pb-4">
                 <CourseDashboard
                   lessons={props.lessons}
                   progressPercentage={props.progressPercentage}

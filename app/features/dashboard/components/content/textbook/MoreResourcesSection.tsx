@@ -79,11 +79,11 @@ const moreResourcesData: ExternalResource[] = [
 
 export function MoreResourcesSection() {
   return (
-    <div class="space-y-3">
+    <div class="group">
       <h3 class="text-muted-foreground text-lg font-semibold">
         More Resources
       </h3>
-      <div class="max-h-[142px] space-y-2 overflow-x-visible overflow-y-auto">
+      <div class="max-h-[93px] space-y-2 overflow-x-visible overflow-y-auto transition-all duration-300 ease-in-out group-hover:max-h-[220px]">
         <For each={moreResourcesData}>
           {(resource) => <CompactResourceItem resource={resource} />}
         </For>

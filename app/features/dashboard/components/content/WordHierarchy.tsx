@@ -1,5 +1,5 @@
 // features/dashboard/components/content/WordHierarchy.tsx
-import { createResource, For, Match, Show, Switch } from "solid-js"
+import { createMemo, createResource, For, Match, Show, Switch } from "solid-js"
 import {
   HoverCard,
   HoverCardContent,
@@ -17,6 +17,7 @@ import type { VocabularyItem } from "@/data/types"
 import type { User } from "@supabase/supabase-js"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import type { FSRSCardData } from "@/features/supabase/db/utils"
+import { extractHiragana } from "@/data/utils/vocab"
 
 type WordHierarchyVariant = "mobile" | "desktop"
 
@@ -429,8 +430,8 @@ function VocabularyList(props: {
   hierarchy: VocabHierarchy[]
   vocabularyItems: VocabularyItem[]
 }) {
-  const vocabMap = new Map(
-    props.vocabularyItems.map((item) => [item.word, item]),
+  const vocabMap = createMemo(
+    () => new Map(props.vocabularyItems.map((item) => [item.word, item])),
   )
 
   return (
@@ -438,8 +439,12 @@ function VocabularyList(props: {
       <div class="flex flex-col gap-1.5">
         <For each={props.hierarchy}>
           {(vocabItem, index) => {
-            const vocab = vocabMap.get(vocabItem.characters)
+            const vocab = vocabMap().get(vocabItem.characters)
             const englishMeanings = vocab?.english || []
+
+            const hiraganaReading = vocab
+              ? extractHiragana(vocab.furigana)
+              : undefined
 
             return (
               <VocabularyRow
@@ -447,6 +452,7 @@ function VocabularyList(props: {
                 japanese={vocabItem.characters}
                 english={englishMeanings.join(", ")}
                 progress={vocabItem.progress || "not_seen"}
+                hiragana={hiraganaReading}
               />
             )
           }}
@@ -461,7 +467,11 @@ function VocabularyRow(props: {
   japanese: string
   english: string
   progress: ProgressState
+  hiragana?: string
 }) {
+  // Only show hiragana if it's different from the Japanese
+  const shouldShowHiragana = props.hiragana && props.hiragana !== props.japanese
+
   return (
     <div
       class={cn("flex items-center rounded-lg px-2 py-1.5 transition-colors", {
@@ -470,10 +480,20 @@ function VocabularyRow(props: {
         "bg-teal-400/10": props.progress === "well_known",
       })}
     >
-      <div class="space-x-2">
-        <span class="text-muted-foreground text-[11px]">{props.number}.</span>
+      {/* Number */}
+      <span class="text-muted-foreground w-6 flex-shrink-0 text-[11px]">
+        {props.number}.
+      </span>
+
+      {/* Japanese column */}
+      <div
+        class={cn(
+          "flex-shrink-0",
+          shouldShowHiragana ? "w-20 min-w-20" : "w-48 min-w-20",
+        )}
+      >
         <span
-          class={cn("flex-shrink-0 text-sm font-medium", {
+          class={cn("text-sm font-medium", {
             "text-muted-foreground": props.progress === "not_seen",
             "text-amber-300": props.progress === "learning",
             "text-teal-300": props.progress === "well_known",
@@ -482,6 +502,22 @@ function VocabularyRow(props: {
           {props.japanese}
         </span>
       </div>
+
+      {/* Hiragana column (center) */}
+      <div
+        class={cn(
+          "flex-shrink-0",
+          shouldShowHiragana ? "w-20 max-w-24 min-w-16" : "w-0",
+        )}
+      >
+        {shouldShowHiragana && (
+          <span class="text-muted-foreground text-xs font-medium">
+            {props.hiragana}
+          </span>
+        )}
+      </div>
+
+      {/* English column - takes remaining space */}
       <span class="text-muted-foreground flex-1 text-right text-xs">
         {props.english}
       </span>
