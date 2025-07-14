@@ -46,9 +46,10 @@ export const Route = createRootRoute({
     return { user: result?.user || null }
   },
   loader: () => {
-    const initialAuthData = getServiceAuthDataFromCookie()
     const initialPreferences = getServicePreferencesFromCookie()
-    return { initialAuthData, initialPreferences }
+    const authData = getServiceAuthDataFromCookie() // Add this
+    console.log("Root loader - auth data from cookie:", authData) // Add this
+    return { initialPreferences }
   },
   component: RootComponent,
   staleTime: 0,
@@ -56,7 +57,7 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   const loaderData = Route.useLoaderData()
-  const { initialAuthData, initialPreferences } = loaderData()
+  const { initialPreferences } = loaderData()
   const colorModeCookies = `kb-color-mode=${getCookie("kb-color-mode")}`
 
   const storageManager = cookieStorageManagerSSR(colorModeCookies)
@@ -65,10 +66,7 @@ function RootComponent() {
     <>
       <ColorModeScript storageType={storageManager?.type} />
       <ColorModeProvider storageManager={storageManager}>
-        <SettingsProvider
-          initialAuthData={initialAuthData}
-          initialPreferences={initialPreferences}
-        >
+        <SettingsProvider initialPreferences={initialPreferences}>
           <TransitionProvider>
             <Scripts />
             <Outlet />

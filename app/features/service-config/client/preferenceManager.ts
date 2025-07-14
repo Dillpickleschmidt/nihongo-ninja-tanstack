@@ -11,6 +11,7 @@ const PREFERENCE_COOKIE_NAME = "nn-service-preferences"
 const defaultPreference: ServicePreference = {
   mode: "disabled",
   data_imported: false,
+  is_api_key_valid: false,
 }
 
 /**

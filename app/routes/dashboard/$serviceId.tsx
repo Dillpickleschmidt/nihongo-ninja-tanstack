@@ -177,9 +177,29 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
       }
       currentDeck = createDefaultDeck(serviceId, "")
     } else if (serviceId === "jpdb") {
+      // Get both auth data (for API key) and preferences (for validity status)
       const authData = getServiceAuthDataFromCookie()
+      const preferences = getServicePreferencesFromCookie()
 
-      if (!isLiveOptionEnabled("jpdb", authData)) {
+      console.log("JPDB route - authData:", authData)
+      console.log("JPDB route - preferences:", preferences)
+
+      // Check if live option is enabled using preferences
+      if (!isLiveOptionEnabled("jpdb", preferences)) {
+        console.log("JPDB live option not enabled")
+        serviceData = {
+          decks: [],
+          stats: {
+            totalDueCards: 0,
+            studiedToday: 0,
+            currentStreak: 0,
+            accuracy: 0,
+          },
+          activeDeckId: "",
+        }
+        currentDeck = createDefaultDeck(serviceId, user.id)
+      } else if (!authData?.jpdb?.api_key) {
+        console.log("JPDB API key not available")
         serviceData = {
           decks: [],
           stats: {
@@ -192,37 +212,53 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
         }
         currentDeck = createDefaultDeck(serviceId, user.id)
       } else {
-        const [jpdbUserData, jpdbSpecialData] = await Promise.all([
-          fetchJPDBUserDecks({ data: { apiKey: authData.jpdb!.api_key! } }),
-          fetchJPDBSpecialDecks({ data: { apiKey: authData.jpdb!.api_key! } }),
-        ])
+        console.log("JPDB live enabled and API key available, fetching decks")
+        try {
+          const [jpdbUserData, jpdbSpecialData] = await Promise.all([
+            fetchJPDBUserDecks({ data: { apiKey: authData.jpdb.api_key } }),
+            fetchJPDBSpecialDecks({ data: { apiKey: authData.jpdb.api_key } }),
+          ])
 
-        const specialDecks = filterAndTransformDecks(
-          jpdbSpecialData.decks,
-          "special",
-        )
-        const userDecks = filterAndTransformDecks(jpdbUserData.decks, "user")
-        const allDecks = [...specialDecks, ...userDecks]
+          const specialDecks = filterAndTransformDecks(
+            jpdbSpecialData.decks,
+            "special",
+          )
+          const userDecks = filterAndTransformDecks(jpdbUserData.decks, "user")
+          const allDecks = [...specialDecks, ...userDecks]
 
-        serviceData = {
-          decks: allDecks,
-          stats: calculateJPDBStats(allDecks),
-          activeDeckId: userDecks[0]?.id || "", // First user deck is active
+          serviceData = {
+            decks: allDecks,
+            stats: calculateJPDBStats(allDecks),
+            activeDeckId: userDecks[0]?.id || "", // First user deck is active
+          }
+
+          const activeDeck = userDecks[0]
+          currentDeck = activeDeck
+            ? {
+                id: activeDeck.id,
+                slug: `jpdb-${activeDeck.id}`,
+                title: activeDeck.name,
+                deckType: "user_deck" as const,
+                learning_path_items: [],
+                owner_id: user.id,
+                is_public: false,
+                vocabulary_keys: [],
+              }
+            : createDefaultDeck(serviceId, user.id)
+        } catch (error) {
+          console.error("Error fetching JPDB data:", error)
+          serviceData = {
+            decks: [],
+            stats: {
+              totalDueCards: 0,
+              studiedToday: 0,
+              currentStreak: 0,
+              accuracy: 0,
+            },
+            activeDeckId: "",
+          }
+          currentDeck = createDefaultDeck(serviceId, user.id)
         }
-
-        const activeDeck = userDecks[0]
-        currentDeck = activeDeck
-          ? {
-              id: activeDeck.id,
-              slug: `jpdb-${activeDeck.id}`,
-              title: activeDeck.name,
-              deckType: "user_deck" as const,
-              learning_path_items: [],
-              owner_id: user.id,
-              is_public: false,
-              vocabulary_keys: [],
-            }
-          : createDefaultDeck(serviceId, user.id)
       }
     } else {
       const mockDecks = MOCK_SERVICE_DECKS[serviceId] || []

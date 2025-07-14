@@ -25,7 +25,7 @@ interface LeftSidebarProps {
 export function LeftSidebar(props: LeftSidebarProps) {
   const navigate = useNavigate()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
-  const { serviceAuthData, preferences } = useSettings()
+  const { preferences } = useSettings()
 
   // Helper function to create a properly typed user deck source
   const createUserDeckSource = (user: User): DeckSource => {
@@ -51,10 +51,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
 
   // Generate all available sources
   const allSources = createMemo(() => {
-    const serviceSources = generateServiceSources(
-      serviceAuthData(),
-      preferences(),
-    )
+    const serviceSources = generateServiceSources(preferences())
     const userSources = props.user ? [createUserDeckSource(props.user)] : []
 
     return [...props.deckSources, ...serviceSources, ...userSources]

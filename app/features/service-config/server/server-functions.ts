@@ -6,6 +6,7 @@ import { getUserSSR } from "@/features/supabase/getUserSSR"
 import {
   validateServiceCredentials,
   updateServiceAuth,
+  updateServicePreferenceFromServer,
   removeServiceAuth,
   getServiceAuthDataFromCookie,
   validateAllStoredServiceCredentials,
@@ -15,6 +16,7 @@ import type {
   OperationResult,
   ServiceAuthData,
   AllServiceAuthData,
+  ServicePreference,
 } from "../types"
 
 // === Input Validation Schemas ===
@@ -32,7 +34,6 @@ const serviceAuthUpdateSchema = z.object({
   service: z.enum(["jpdb", "wanikani", "anki"]),
   serviceAuthData: z.object({
     api_key: z.string().optional(),
-    is_api_key_valid: z.boolean().optional(),
   }),
 })
 
@@ -56,10 +57,14 @@ export const connectService = createServerFn()
 
       const authDataToUpdate: Partial<ServiceAuthData> = {
         api_key: data.credentials.api_key,
+      }
+
+      const preferenceToUpdate: Partial<ServicePreference> = {
         is_api_key_valid: validationResult.success,
       }
 
       if (!validationResult.success) {
+        updateServicePreferenceFromServer(data.service, preferenceToUpdate)
         updateServiceAuth(data.service, authDataToUpdate)
         return {
           success: false,
@@ -67,6 +72,7 @@ export const connectService = createServerFn()
         }
       }
 
+      updateServicePreferenceFromServer(data.service, preferenceToUpdate)
       updateServiceAuth(data.service, authDataToUpdate)
       return { success: true }
     } catch (error) {
@@ -83,6 +89,10 @@ export const disconnectService = createServerFn()
 
     try {
       removeServiceAuth(data.service)
+      // Also reset the validity flag in preferences
+      updateServicePreferenceFromServer(data.service, {
+        is_api_key_valid: false,
+      })
       return { success: true }
     } catch (error) {
       console.error(`Error disconnecting from ${data.service}:`, error)

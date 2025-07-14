@@ -22,10 +22,10 @@ export function isServiceEnabled(
 
 export function isLiveOptionEnabled(
   service: ServiceType,
-  authData: AllServiceAuthData,
+  preferences: AllServicePreferences,
 ): boolean {
-  const serviceAuth = authData[service]
-  return serviceAuth?.is_api_key_valid === true
+  const servicePrefs = preferences[service]
+  return servicePrefs?.is_api_key_valid === true
 }
 
 export function isImportedOptionEnabled(
@@ -74,7 +74,6 @@ function getServiceDecks(serviceId: string): Deck[] {
 }
 
 export function generateServiceSources(
-  authData: AllServiceAuthData,
   preferences: AllServicePreferences,
 ): DeckSource[] {
   const services: ServiceType[] = ["anki", "wanikani", "jpdb"]
@@ -82,7 +81,6 @@ export function generateServiceSources(
 
   services.forEach((service) => {
     const serviceEnabled = isServiceEnabled(service, preferences)
-
     if (!serviceEnabled) {
       // Show disabled services with no decks
       serviceSources.push({
@@ -96,7 +94,7 @@ export function generateServiceSources(
     }
 
     const decks: Deck[] = []
-    const liveEnabled = isLiveOptionEnabled(service, authData)
+    const liveEnabled = isLiveOptionEnabled(service, preferences)
     const importedEnabled = isImportedOptionEnabled(service, preferences)
 
     // Add live option

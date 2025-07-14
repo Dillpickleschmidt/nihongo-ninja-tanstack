@@ -1,5 +1,5 @@
 // features/dashboard/components/shared/DeckSelectionPopover.tsx
-import { createSignal, For, Show } from "solid-js"
+import { createMemo, createSignal, For, Show } from "solid-js"
 import { Lock } from "lucide-solid"
 import {
   Popover,
@@ -21,14 +21,22 @@ interface DeckSelectionPopoverProps {
 }
 
 export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
-  const findCurrentSource = () =>
-    props.allSources.find((source) =>
-      source.decks.some((d) => d.id === props.currentDeck.id),
-    ) || props.allSources[0]
+  // Pure UI state: which source the user is currently browsing in the popover
+  const [userSelectedSource, setUserSelectedSource] =
+    createSignal<DeckSource | null>(null)
 
-  const [selectedSource, setSelectedSource] = createSignal<
-    DeckSource | undefined
-  >(findCurrentSource())
+  // Derived state: find which source contains the current deck
+  const currentSource = createMemo(
+    () =>
+      props.allSources.find((source) =>
+        source.decks.some((d) => d.id === props.currentDeck.id),
+      ) || props.allSources[0],
+  )
+
+  // Derived state: which source to display (user browsing or current)
+  const displayedSource = createMemo(
+    () => userSelectedSource() || currentSource(),
+  )
 
   const handleDeckChange = (source: DeckSource, deck: Deck) => {
     // Prevent navigation if source or deck is disabled
@@ -40,11 +48,19 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
 
   const handleSourceSelect = (source: DeckSource) => {
     // Allow selecting disabled sources to show their content
-    setSelectedSource(source)
+    setUserSelectedSource(source)
+  }
+
+  const handleOpenChange = (open: boolean) => {
+    // Reset UI state when popover closes
+    if (!open) {
+      setUserSelectedSource(null)
+    }
+    props.onOpenChange(open)
   }
 
   return (
-    <Popover open={props.isOpen} onOpenChange={props.onOpenChange}>
+    <Popover open={props.isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger>{props.children}</PopoverTrigger>
       <PopoverContent
         class={cn(
@@ -61,7 +77,7 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
                   onClick={() => handleSourceSelect(source)}
                   class={cn(
                     "flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-medium transition-colors",
-                    selectedSource()?.id === source.id && "bg-primary/10",
+                    displayedSource()?.id === source.id && "bg-primary/10",
                     source.disabled
                       ? "text-muted-foreground/50 hover:bg-primary/5"
                       : "hover:bg-primary/15",
@@ -76,7 +92,7 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
             </For>
           </div>
           <div class="p-1">
-            <Show when={selectedSource()} keyed>
+            <Show when={displayedSource()} keyed>
               {(source) => (
                 <Show
                   when={source.decks.length > 0}

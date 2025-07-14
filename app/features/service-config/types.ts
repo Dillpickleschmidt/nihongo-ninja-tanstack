@@ -12,7 +12,6 @@ export type ServiceMode = "disabled" | "live" | "imported"
  */
 export interface ServiceAuthData {
   api_key?: string
-  is_api_key_valid?: boolean
 }
 
 /**
@@ -34,6 +33,7 @@ export interface AllServiceAuthData {
 export interface ServicePreference {
   mode?: ServiceMode
   data_imported?: boolean
+  is_api_key_valid?: boolean
 }
 
 /**

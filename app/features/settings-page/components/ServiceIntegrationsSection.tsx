@@ -12,7 +12,6 @@ import type { ServiceType } from "@/features/service-config/types"
 export const ServiceIntegrationsSection = () => {
   const {
     preferences,
-    updateServiceAuth,
     updateServicePreference,
     setError,
     clearError,
@@ -30,15 +29,13 @@ export const ServiceIntegrationsSection = () => {
 
     if (!validationResult.success) {
       setError("jpdb", validationResult.error || "Invalid API Key")
+      updateServicePreference("jpdb", { is_api_key_valid: false })
       setIsProcessing(false)
       return
     }
 
-    // Update auth state after successful validation
-    await updateServiceAuth("jpdb", {
-      api_key: apiKey,
-      is_api_key_valid: true,
-    })
+    // Update preference state after successful validation
+    updateServicePreference("jpdb", { is_api_key_valid: true })
 
     // 2. Process and Import File
     try {
@@ -70,7 +67,11 @@ export const ServiceIntegrationsSection = () => {
 
   const createServiceProps = (service: ServiceType) => ({
     preference: () =>
-      preferences()[service] || { mode: "disabled", data_imported: false },
+      preferences()[service] || {
+        mode: "disabled",
+        data_imported: false,
+        is_api_key_valid: false,
+      },
     updateServicePreference: (preferenceUpdate: any) =>
       updateServicePreference(service, preferenceUpdate),
   })

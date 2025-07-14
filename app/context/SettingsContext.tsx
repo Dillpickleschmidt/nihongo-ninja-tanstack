@@ -8,13 +8,10 @@ import {
   ParentProps,
 } from "solid-js"
 import {
-  AllServiceAuthData,
   AllServicePreferences,
-  ServiceAuthData,
   ServicePreference,
   ServiceType,
 } from "@/features/service-config/types"
-import { updateServiceAuthServerFn } from "@/features/service-config/server/server-functions"
 import {
   getAllServicePreferences,
   setServicePreference,
@@ -23,12 +20,7 @@ import {
 // --- Context Definition ---
 
 interface SettingsContextType {
-  serviceAuthData: () => AllServiceAuthData
   preferences: () => AllServicePreferences
-  updateServiceAuth: (
-    service: ServiceType,
-    serviceAuthData: Partial<ServiceAuthData>,
-  ) => Promise<void>
   updateServicePreference: (
     service: ServiceType,
     preference: Partial<ServicePreference>,
@@ -41,14 +33,10 @@ interface SettingsContextType {
   setIsProcessing: (processing: boolean) => void
 }
 
-const defaultAuthData: ServiceAuthData = {
-  api_key: "",
-  is_api_key_valid: false,
-}
-
 const defaultPreference: ServicePreference = {
   mode: "disabled",
   data_imported: false,
+  is_api_key_valid: false,
 }
 
 const SettingsContext = createContext<SettingsContextType>()
@@ -56,19 +44,10 @@ const SettingsContext = createContext<SettingsContextType>()
 // --- Provider Component ---
 
 interface SettingsProviderProps extends ParentProps {
-  initialAuthData?: AllServiceAuthData
   initialPreferences?: AllServicePreferences
 }
 
 export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
-  const [serviceAuthData, setAuthData] = createSignal<AllServiceAuthData>(
-    props.initialAuthData || {
-      jpdb: defaultAuthData,
-      wanikani: defaultAuthData,
-      anki: defaultAuthData,
-    },
-  )
-
   const [preferences, setPreferences] = createSignal<AllServicePreferences>(
     props.initialPreferences || {
       jpdb: defaultPreference,
@@ -95,26 +74,6 @@ export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
     }
     setIsInitialized(true)
   })
-
-  const updateServiceAuth = async (
-    service: ServiceType,
-    newAuthData: Partial<ServiceAuthData>,
-  ) => {
-    // Update local state immediately for reactivity
-    setAuthData((prevAuthData) => ({
-      ...prevAuthData,
-      [service]: {
-        ...defaultAuthData,
-        ...(prevAuthData[service] || {}),
-        ...newAuthData,
-      },
-    }))
-
-    // Update server-side auth cookie
-    await updateServiceAuthServerFn({
-      data: { service, serviceAuthData: newAuthData },
-    })
-  }
 
   const updateServicePreference = (
     service: ServiceType,
@@ -143,9 +102,7 @@ export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
   }
 
   const value = {
-    serviceAuthData,
     preferences,
-    updateServiceAuth,
     updateServicePreference,
     isInitialized,
     errors,

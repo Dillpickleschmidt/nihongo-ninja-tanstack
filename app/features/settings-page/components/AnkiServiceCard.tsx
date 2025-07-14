@@ -15,15 +15,8 @@ import { useSettings } from "@/context/SettingsContext"
 import type { ServiceCardProps } from "@/features/service-config/types"
 
 export const AnkiServiceCard = (props: ServiceCardProps) => {
-  const {
-    serviceAuthData,
-    errors,
-    isProcessing,
-    updateServiceAuth,
-    setError,
-    clearError,
-    setIsProcessing,
-  } = useSettings()
+  const { errors, isProcessing, setError, clearError, setIsProcessing } =
+    useSettings()
   const [ankiUsername, setAnkiUsername] = createSignal("")
   const [ankiPassword, setAnkiPassword] = createSignal("")
 
@@ -42,11 +35,15 @@ export const AnkiServiceCard = (props: ServiceCardProps) => {
     if (result.success) {
       setAnkiUsername("")
       setAnkiPassword("")
-      await updateServiceAuth("anki", { is_api_key_valid: true })
-      props.updateServicePreference({ mode: "live" })
+      props.updateServicePreference({
+        mode: "live",
+        is_api_key_valid: true,
+      })
     } else {
       setError("anki", result.error || "An unknown error occurred.")
-      await updateServiceAuth("anki", { is_api_key_valid: false })
+      props.updateServicePreference({
+        is_api_key_valid: false,
+      })
     }
     setIsProcessing(false)
   }
@@ -111,7 +108,7 @@ export const AnkiServiceCard = (props: ServiceCardProps) => {
               Connect to Anki
             </Button>
           </div>
-          <Show when={serviceAuthData().anki?.is_api_key_valid}>
+          <Show when={props.preference().is_api_key_valid}>
             <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">
               <p class="text-sm text-green-100">
                 ✓ Connected to AnkiWeb - Live access enabled

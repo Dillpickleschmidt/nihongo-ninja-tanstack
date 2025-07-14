@@ -1,4 +1,4 @@
-// features/settings-page/components/WanikaniServiceCard
+// features/settings-page/components/WanikaniServiceCard.tsx
 import { createSignal, Show } from "solid-js"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,18 +15,9 @@ import { useSettings } from "@/context/SettingsContext"
 import type { ServiceCardProps } from "@/features/service-config/types"
 
 export const WanikaniServiceCard = (props: ServiceCardProps) => {
-  const {
-    serviceAuthData,
-    errors,
-    isProcessing,
-    updateServiceAuth,
-    setError,
-    clearError,
-    setIsProcessing,
-  } = useSettings()
-  const [wanikaniApiKey, setWanikaniApiKey] = createSignal(
-    serviceAuthData().wanikani?.api_key || "",
-  )
+  const { errors, isProcessing, setError, clearError, setIsProcessing } =
+    useSettings()
+  const [wanikaniApiKey, setWanikaniApiKey] = createSignal("")
 
   const handleConnect = async () => {
     const apiKey = wanikaniApiKey()
@@ -40,16 +31,14 @@ export const WanikaniServiceCard = (props: ServiceCardProps) => {
     })
 
     if (result.success) {
-      await updateServiceAuth("wanikani", {
+      props.updateServicePreference({
+        mode: "live",
         is_api_key_valid: true,
-        api_key: apiKey,
       })
-      props.updateServicePreference({ mode: "live" })
     } else {
       setError("wanikani", result.error || "An unknown error occurred.")
-      await updateServiceAuth("wanikani", {
+      props.updateServicePreference({
         is_api_key_valid: false,
-        api_key: apiKey,
       })
     }
     setIsProcessing(false)
@@ -99,7 +88,7 @@ export const WanikaniServiceCard = (props: ServiceCardProps) => {
           >
             Connect to WaniKani
           </Button>
-          <Show when={serviceAuthData().wanikani?.is_api_key_valid}>
+          <Show when={props.preference().is_api_key_valid}>
             <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">
               <p class="text-sm text-green-100">
                 ✓ Connected to WaniKani - Live access enabled
