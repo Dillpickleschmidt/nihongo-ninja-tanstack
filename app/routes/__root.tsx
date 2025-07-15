@@ -18,10 +18,7 @@ import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { getUser } from "@/features/supabase/getUser"
 import { TransitionProvider } from "@/context/TransitionContext"
 import { SettingsProvider } from "@/context/SettingsContext"
-import {
-  getServiceAuthDataFromCookie,
-  getServicePreferencesFromCookie,
-} from "@/features/service-config/server/service-manager"
+import { getServicePreferencesFromCookie } from "@/features/service-config/server/service-manager"
 
 export const Route = createRootRoute({
   head: () => ({
@@ -47,8 +44,6 @@ export const Route = createRootRoute({
   },
   loader: () => {
     const initialPreferences = getServicePreferencesFromCookie()
-    const authData = getServiceAuthDataFromCookie() // Add this
-    console.log("Root loader - auth data from cookie:", authData) // Add this
     return { initialPreferences }
   },
   component: RootComponent,

@@ -42,26 +42,28 @@ const defaultPreference: ServicePreference = {
 /**
  * Get the complete service authentication data object from the secure cookie.
  */
-export function getServiceAuthDataFromCookie(): AllServiceAuthData | null {
-  const cookieValue = getCookie(AUTH_COOKIE_NAME)
+export const getServiceAuthDataFromCookie = serverOnly(
+  (): AllServiceAuthData | null => {
+    const cookieValue = getCookie(AUTH_COOKIE_NAME)
 
-  if (!cookieValue) {
-    return null // Don't return defaults when no cookie (e.g. http only cookie on client)
-  }
-
-  try {
-    const parsedAuthData = JSON.parse(cookieValue)
-    // Only return data if we actually parsed something meaningful
-    return {
-      jpdb: { ...defaultAuthData, ...(parsedAuthData.jpdb || {}) },
-      wanikani: { ...defaultAuthData, ...(parsedAuthData.wanikani || {}) },
-      anki: { ...defaultAuthData, ...(parsedAuthData.anki || {}) },
+    if (!cookieValue) {
+      return null // Don't return defaults when no cookie (e.g. http only cookie on client)
     }
-  } catch (e) {
-    console.error("Failed to parse auth data cookie:", e)
-    return null // Don't return defaults on parse error
-  }
-}
+
+    try {
+      const parsedAuthData = JSON.parse(cookieValue)
+      // Only return data if we actually parsed something meaningful
+      return {
+        jpdb: { ...defaultAuthData, ...(parsedAuthData.jpdb || {}) },
+        wanikani: { ...defaultAuthData, ...(parsedAuthData.wanikani || {}) },
+        anki: { ...defaultAuthData, ...(parsedAuthData.anki || {}) },
+      }
+    } catch (e) {
+      console.error("Failed to parse auth data cookie:", e)
+      return null // Don't return defaults on parse error
+    }
+  },
+)
 
 /**
  * Save the complete service authentication data object to the secure cookie.

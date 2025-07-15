@@ -6,14 +6,8 @@ import { getDueFSRSCards } from "@/features/supabase/db/utils"
 import { textbooks } from "@/data/textbooks"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
 import { ServiceContentArea } from "@/features/dashboard/components/content/service/ServiceContentArea"
-import {
-  fetchJPDBUserDecks,
-  fetchJPDBSpecialDecks,
-} from "@/features/service-config/jpdb/api"
-import {
-  getServiceAuthDataFromCookie,
-  getServicePreferencesFromCookie,
-} from "@/features/service-config/server/service-manager"
+import { fetchServiceDataWithAuth } from "@/features/service-config/jpdb/api"
+import { getServicePreferencesFromCookie } from "@/features/service-config/server/service-manager"
 import { isLiveOptionEnabled } from "@/features/dashboard/utils/serviceSourceHelper"
 import type { ServiceType } from "@/features/service-config/types"
 import type { DeckSource, UserDeck } from "@/data/types"
@@ -93,6 +87,102 @@ const MOCK_SERVICE_STATS: Record<ServiceType, any> = {
   jpdb: { totalDueCards: 0, studiedToday: 0, currentStreak: 0, accuracy: 0 },
 }
 
+// Helper functions
+function createEmptyServiceData() {
+  return {
+    decks: [],
+    stats: { totalDueCards: 0, studiedToday: 0, currentStreak: 0, accuracy: 0 },
+    activeDeckId: "",
+  }
+}
+
+function createServiceDataFromDecks(allDecks: any[]) {
+  const userDecks = allDecks.filter((d) => d.type === "user")
+  return {
+    decks: allDecks,
+    stats: calculateJPDBStats(allDecks),
+    activeDeckId: userDecks[0]?.id || "",
+  }
+}
+
+function createCurrentDeckFromDecks(
+  allDecks: any[],
+  serviceId: string,
+  userId: string,
+): UserDeck {
+  const userDecks = allDecks.filter((d) => d.type === "user")
+  const activeDeck = userDecks[0]
+
+  return activeDeck
+    ? {
+        id: activeDeck.id,
+        slug: `jpdb-${activeDeck.id}`,
+        title: activeDeck.name,
+        deckType: "user_deck" as const,
+        learning_path_items: [],
+        owner_id: userId,
+        is_public: false,
+        vocabulary_keys: [],
+      }
+    : createDefaultDeck(serviceId, userId)
+}
+
+function createDefaultDeck(serviceId: ServiceType, ownerId: string): UserDeck {
+  return {
+    id: `${serviceId}-main`,
+    slug: serviceId,
+    title: serviceId.charAt(0).toUpperCase() + serviceId.slice(1),
+    deckType: "user_deck" as const,
+    learning_path_items: [],
+    owner_id: ownerId,
+    is_public: false,
+    vocabulary_keys: [],
+  }
+}
+
+function filterAndTransformDecks(jpdbDecks: any[], type: "user" | "special") {
+  // For special decks, skip the first entry (which is "All Vocabulary")
+  const decksToProcess = type === "special" ? jpdbDecks.slice(1) : jpdbDecks
+
+  return decksToProcess.map((deckArray) => {
+    const name = deckArray[1] || "Untitled Deck"
+    const totalCards = deckArray[2] || 0
+    const knownCoverage = deckArray[3] || 0
+
+    // "Blacklisted Vocabulary" has no completion count
+    const dueCards =
+      name === "Blacklisted Vocabulary"
+        ? 0
+        : Math.max(
+            0,
+            totalCards - Math.floor(totalCards * (knownCoverage / 100)),
+          )
+
+    return {
+      id: `jpdb-${type}-${deckArray[0]}`,
+      name,
+      dueCards,
+      totalCards,
+      type,
+    }
+  })
+}
+
+function calculateJPDBStats(decks: any[]) {
+  const totalDueCards = decks.reduce((sum, deck) => sum + deck.dueCards, 0)
+  const totalCards = decks.reduce((sum, deck) => sum + deck.totalCards, 0)
+
+  return {
+    totalDueCards,
+    studiedToday: 0,
+    currentStreak: 0,
+    accuracy:
+      totalCards > 0
+        ? Math.round(((totalCards - totalDueCards) / totalCards) * 100)
+        : 0,
+  }
+}
+
 export const Route = createFileRoute("/dashboard/$serviceId")({
   beforeLoad: ({ context, params }) => {
     if (!VALID_SERVICES.includes(params.serviceId as ServiceType)) {
@@ -165,114 +255,62 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
     let currentDeck: UserDeck
 
     if (!user) {
-      serviceData = {
-        decks: [],
-        stats: {
-          totalDueCards: 0,
-          studiedToday: 0,
-          currentStreak: 0,
-          accuracy: 0,
-        },
-        activeDeckId: "",
-      }
+      serviceData = createEmptyServiceData()
       currentDeck = createDefaultDeck(serviceId, "")
     } else if (serviceId === "jpdb") {
-      // Get both auth data (for API key) and preferences (for validity status)
-      const authData = getServiceAuthDataFromCookie()
       const preferences = getServicePreferencesFromCookie()
 
-      console.log("JPDB route - authData:", authData)
-      console.log("JPDB route - preferences:", preferences)
-
-      // Check if live option is enabled using preferences
       if (!isLiveOptionEnabled("jpdb", preferences)) {
-        console.log("JPDB live option not enabled")
-        serviceData = {
-          decks: [],
-          stats: {
-            totalDueCards: 0,
-            studiedToday: 0,
-            currentStreak: 0,
-            accuracy: 0,
-          },
-          activeDeckId: "",
-        }
-        currentDeck = createDefaultDeck(serviceId, user.id)
-      } else if (!authData?.jpdb?.api_key) {
-        console.log("JPDB API key not available")
-        serviceData = {
-          decks: [],
-          stats: {
-            totalDueCards: 0,
-            studiedToday: 0,
-            currentStreak: 0,
-            accuracy: 0,
-          },
-          activeDeckId: "",
-        }
+        serviceData = createEmptyServiceData()
         currentDeck = createDefaultDeck(serviceId, user.id)
       } else {
-        console.log("JPDB live enabled and API key available, fetching decks")
         try {
-          const [jpdbUserData, jpdbSpecialData] = await Promise.all([
-            fetchJPDBUserDecks({ data: { apiKey: authData.jpdb.api_key } }),
-            fetchJPDBSpecialDecks({ data: { apiKey: authData.jpdb.api_key } }),
-          ])
+          const { userDecks, specialDecks } = await fetchServiceDataWithAuth({
+            data: "jpdb",
+          })
+          const allDecks = [
+            ...filterAndTransformDecks(specialDecks.decks, "special"),
+            ...filterAndTransformDecks(userDecks.decks, "user"),
+          ]
 
-          const specialDecks = filterAndTransformDecks(
-            jpdbSpecialData.decks,
-            "special",
-          )
-          const userDecks = filterAndTransformDecks(jpdbUserData.decks, "user")
-          const allDecks = [...specialDecks, ...userDecks]
-
-          serviceData = {
-            decks: allDecks,
-            stats: calculateJPDBStats(allDecks),
-            activeDeckId: userDecks[0]?.id || "", // First user deck is active
-          }
-
-          const activeDeck = userDecks[0]
-          currentDeck = activeDeck
-            ? {
-                id: activeDeck.id,
-                slug: `jpdb-${activeDeck.id}`,
-                title: activeDeck.name,
-                deckType: "user_deck" as const,
-                learning_path_items: [],
-                owner_id: user.id,
-                is_public: false,
-                vocabulary_keys: [],
-              }
-            : createDefaultDeck(serviceId, user.id)
+          serviceData = createServiceDataFromDecks(allDecks)
+          currentDeck = createCurrentDeckFromDecks(allDecks, serviceId, user.id)
         } catch (error) {
           console.error("Error fetching JPDB data:", error)
-          serviceData = {
-            decks: [],
-            stats: {
-              totalDueCards: 0,
-              studiedToday: 0,
-              currentStreak: 0,
-              accuracy: 0,
-            },
-            activeDeckId: "",
-          }
+          serviceData = createEmptyServiceData()
           currentDeck = createDefaultDeck(serviceId, user.id)
         }
       }
     } else {
-      const mockDecks = MOCK_SERVICE_DECKS[serviceId] || []
-      const decksWithType = mockDecks.map((deck) => ({
-        ...deck,
-        type: "user" as const,
-      }))
+      // Handle other services with mock data for now
+      const preferences = getServicePreferencesFromCookie()
 
-      serviceData = {
-        decks: decksWithType,
-        stats: MOCK_SERVICE_STATS[serviceId] || MOCK_SERVICE_STATS.anki,
-        activeDeckId: decksWithType[0]?.id || `${serviceId}-deck-1`,
+      if (!isLiveOptionEnabled(serviceId, preferences)) {
+        serviceData = createEmptyServiceData()
+        currentDeck = createDefaultDeck(serviceId, user.id)
+      } else {
+        try {
+          // For future implementation:
+          // const serviceData = await fetchServiceDataWithAuth({ data: serviceId })
+
+          // For now, use mock data
+          const mockDecks = MOCK_SERVICE_DECKS[serviceId] || []
+          const decksWithType = mockDecks.map((deck) => ({
+            ...deck,
+            type: "user" as const,
+          }))
+
+          serviceData = {
+            decks: decksWithType,
+            stats: MOCK_SERVICE_STATS[serviceId] || MOCK_SERVICE_STATS.anki,
+            activeDeckId: decksWithType[0]?.id || `${serviceId}-deck-1`,
+          }
+          currentDeck = createDefaultDeck(serviceId, user.id)
+        } catch (error) {
+          serviceData = createEmptyServiceData()
+          currentDeck = createDefaultDeck(serviceId, user.id)
+        }
       }
-      currentDeck = createDefaultDeck(serviceId, user.id)
     }
 
     return {
@@ -336,60 +374,4 @@ function ServiceSignInMessage(props: { serviceId: ServiceType }) {
       </button>
     </div>
   )
-}
-
-function createDefaultDeck(serviceId: ServiceType, ownerId: string): UserDeck {
-  return {
-    id: `${serviceId}-main`,
-    slug: serviceId,
-    title: serviceId.charAt(0).toUpperCase() + serviceId.slice(1),
-    deckType: "user_deck" as const,
-    learning_path_items: [],
-    owner_id: ownerId,
-    is_public: false,
-    vocabulary_keys: [],
-  }
-}
-
-function filterAndTransformDecks(jpdbDecks: any[], type: "user" | "special") {
-  // For special decks, skip the first entry (which is "All Vocabulary")
-  const decksToProcess = type === "special" ? jpdbDecks.slice(1) : jpdbDecks
-
-  return decksToProcess.map((deckArray) => {
-    const name = deckArray[1] || "Untitled Deck"
-    const totalCards = deckArray[2] || 0
-    const knownCoverage = deckArray[3] || 0
-
-    // "Blacklisted Vocabulary" has no completion count
-    const dueCards =
-      name === "Blacklisted Vocabulary"
-        ? 0
-        : Math.max(
-            0,
-            totalCards - Math.floor(totalCards * (knownCoverage / 100)),
-          )
-
-    return {
-      id: `jpdb-${type}-${deckArray[0]}`,
-      name,
-      dueCards,
-      totalCards,
-      type,
-    }
-  })
-}
-
-function calculateJPDBStats(decks: any[]) {
-  const totalDueCards = decks.reduce((sum, deck) => sum + deck.dueCards, 0)
-  const totalCards = decks.reduce((sum, deck) => sum + deck.totalCards, 0)
-
-  return {
-    totalDueCards,
-    studiedToday: 0,
-    currentStreak: 0,
-    accuracy:
-      totalCards > 0
-        ? Math.round(((totalCards - totalDueCards) / totalCards) * 100)
-        : 0,
-  }
 }

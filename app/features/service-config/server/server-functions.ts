@@ -121,21 +121,6 @@ export const updateServiceAuthServerFn = createServerFn()
     }
   })
 
-export const getServiceAuthState = createServerFn().handler(
-  async (): Promise<ServiceResponse<AllServiceAuthData>> => {
-    const { user } = await getUserSSR()
-    if (!user) return { success: false, error: "User not authenticated" }
-
-    try {
-      const serviceAuthData = getServiceAuthDataFromCookie()
-      return { success: true, data: serviceAuthData }
-    } catch (error) {
-      console.error("Error getting service auth state:", error)
-      return { success: false, error: "Failed to get service auth state" }
-    }
-  },
-)
-
 export const validateStoredCredentials = createServerFn().handler(
   async (): Promise<ServiceResponse> => {
     const { user } = await getUserSSR()
