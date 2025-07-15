@@ -10,7 +10,7 @@ import {
   setActiveDeck,
 } from "@/data/utils/core"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
-import { getDueFSRSCards } from "@/features/supabase/db/utils"
+import { getDueFSRSCardsCount } from "@/features/supabase/db/utils"
 import { getWKHierarchy, getUserProgressForVocab } from "@/data/wanikani/utils"
 import { getModuleVocabulary } from "@/data/utils/vocab"
 import { TextbookContentArea } from "@/features/dashboard/components/content/textbook/TextbookContentArea"
@@ -86,17 +86,25 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       },
     }
 
+    const slugs = [
+      ...new Set([
+        ...(wkHierarchyData?.hierarchy.map((item) => item.slug) || []),
+        ...(wkHierarchyData?.uniqueKanji.map((item) => item.slug) || []),
+        ...(wkHierarchyData?.uniqueRadicals.map((item) => item.slug) || []),
+      ]),
+    ]
+
     // Defer progress data if user exists (slow)
     const progressDataPromise =
-      user && vocabForHierarchy.length > 0
+      user && slugs.length > 0
         ? getUserProgressForVocab({
-            data: { slugs: vocabForHierarchy, userId: user.id },
+            data: { slugs, userId: user.id },
           })
         : Promise.resolve(null)
 
-    const dueFSRSCardsPromise = user
-      ? getDueFSRSCards(user.id)
-      : Promise.resolve(null)
+    const dueFSRSCardsCountPromise = user
+      ? getDueFSRSCardsCount(user.id)
+      : Promise.resolve(0)
 
     const deferredIndividualThumbnails = externalResources.map((resource) => {
       const promise = fetchThumbnailUrl(
@@ -127,7 +135,7 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       vocabularyItems,
       progressData: defer(progressDataPromise),
       deferredThumbnails: deferredIndividualThumbnails,
-      dueFSRSCards: defer(dueFSRSCardsPromise),
+      dueFSRSCardsCount: defer(dueFSRSCardsCountPromise),
       deckSources,
     }
   },
@@ -144,7 +152,7 @@ function RouteComponent() {
   return (
     <DashboardLayout
       user={loaderData().user}
-      dueFSRSCardsPromise={loaderData().dueFSRSCards}
+      dueFSRSCardsCount={loaderData().dueFSRSCardsCount}
       currentDeck={loaderData().deck}
       deckSources={loaderData().deckSources}
       textbookId={loaderData().textbookId}

@@ -18,7 +18,7 @@ import type { FullHierarchyData } from "@/data/wanikani/types"
 interface DashboardLayoutProps {
   children: JSX.Element
   user: User | null
-  dueFSRSCardsPromise: DeferredPromise<FSRSCardData[] | null>
+  dueFSRSCardsCount: DeferredPromise<number | null>
   currentDeck: Deck
   deckSources: DeckSource[]
   wordHierarchyData: FullHierarchyData | null
@@ -108,7 +108,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
         <DashboardHeader
           dashboardType={dashboardType()}
           user={props.user}
-          dueFSRSCardsPromise={props.dueFSRSCardsPromise}
+          dueFSRSCardsCount={props.dueFSRSCardsCount}
           currentDeck={props.currentDeck}
           deckSources={props.deckSources}
           variant="mobile"
@@ -141,7 +141,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
           <DashboardHeader
             dashboardType={dashboardType()}
             user={props.user}
-            dueFSRSCardsPromise={props.dueFSRSCardsPromise}
+            dueFSRSCardsCount={props.dueFSRSCardsCount}
             currentDeck={props.currentDeck}
             deckSources={props.deckSources}
             variant="desktop"

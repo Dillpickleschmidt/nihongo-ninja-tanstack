@@ -80,12 +80,24 @@ export async function getDueFSRSCards(userId: string): Promise<FSRSCardData[]> {
   const supabase = createSupabaseClient()
   const { data, error } = await supabase
     .from("practice_item_user_completions")
-    .select("practice_item_key, type, fsrs_card, mode, fsrs_logs")
+    .select("practice_item_key, type, fsrs_card, mode") // Removed fsrs_logs
     .eq("user_id", userId)
     .lte("due_at", new Date().toISOString())
 
   if (error) throw error
   return (data as SupabaseFSRSCardData[]).map(deserializeFSRSCardData)
+}
+
+export async function getDueFSRSCardsCount(userId: string): Promise<number> {
+  const supabase = createSupabaseClient()
+  const { count, error } = await supabase
+    .from("practice_item_user_completions")
+    .select("", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .lte("due_at", new Date().toISOString())
+
+  if (error) throw error
+  return count || 0
 }
 
 export const upsertFSRSCardForUser = createServerFn({ method: "POST" })

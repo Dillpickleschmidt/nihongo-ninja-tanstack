@@ -14,7 +14,7 @@ import type { FSRSCardData } from "@/features/supabase/db/utils"
 interface DashboardHeaderProps {
   dashboardType: "textbook" | "service" | "user"
   user: User | null
-  dueFSRSCardsPromise: DeferredPromise<FSRSCardData[] | null>
+  dueFSRSCardsCount: DeferredPromise<number | null>
   currentDeck: Deck
   deckSources: DeckSource[]
   variant: "mobile" | "desktop"
@@ -83,7 +83,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
 
     return (
       <Await
-        promise={props.dueFSRSCardsPromise}
+        promise={props.dueFSRSCardsCount}
         fallback={
           <>
             <div class="text-gray-400">
@@ -95,23 +95,19 @@ export function DashboardHeader(props: DashboardHeaderProps) {
           </>
         }
       >
-        {(dueCards) => (
+        {(count) => (
           <>
             <div
-              class={
-                dueCards && dueCards.length > 0
-                  ? "text-amber-400"
-                  : "text-green-500"
-              }
+              class={count && count > 0 ? "text-amber-400" : "text-green-500"}
             >
               <span class="font-inter text-base font-bold xl:text-lg">
-                {dueCards?.length || 0}
+                {count || 0}
               </span>
             </div>
             <div class="text-muted-foreground text-xs xl:text-sm">
-              {dueCards?.length === 0
+              {count === 0
                 ? "No reviews"
-                : `${dueCards?.length === 1 ? "Review" : "Reviews"} Due`}
+                : `${count === 1 ? "Review" : "Reviews"} Due`}
             </div>
           </>
         )}

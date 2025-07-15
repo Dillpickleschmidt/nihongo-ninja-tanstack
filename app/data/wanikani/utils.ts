@@ -49,46 +49,6 @@ function fetchVocabulary(db: Db, slugs: string[]): VocabRow[] {
     .all(...slugs) as VocabRow[]
 }
 
-function fetchRelatedKanji(db: Db, vocabIds: number[]): KanjiRow[] {
-  if (vocabIds.length === 0) return []
-  const placeholders = vocabIds.map(() => "?").join(",")
-  return db
-    .prepare(
-      `SELECT DISTINCT k.id, k.characters, k.slug, k.meanings, k.meaning_mnemonic, k.reading_mnemonic FROM kanji k JOIN vocab_kanji vk ON k.id = vk.kanji_id WHERE vk.vocab_id IN (${placeholders})`,
-    )
-    .all(...vocabIds) as KanjiRow[]
-}
-
-function fetchRelatedRadicals(db: Db, kanjiIds: number[]): RadicalRow[] {
-  if (kanjiIds.length === 0) return []
-  const placeholders = kanjiIds.map(() => "?").join(",")
-  return db
-    .prepare(
-      `SELECT DISTINCT r.id, r.characters, r.slug, r.meanings, r.meaning_mnemonic FROM radicals r JOIN kanji_radicals kr ON r.id = kr.radical_id WHERE kr.kanji_id IN (${placeholders})`,
-    )
-    .all(...kanjiIds) as RadicalRow[]
-}
-
-function fetchRelationships(db: Db, vocabIds: number[], kanjiIds: number[]) {
-  const vocabPlaceholders = vocabIds.map(() => "?").join(",")
-  const vocabKanjiRelations = db
-    .prepare(
-      `SELECT vocab_id, kanji_id FROM vocab_kanji WHERE vocab_id IN (${vocabPlaceholders})`,
-    )
-    .all(...vocabIds) as VocabKanjiRelation[]
-
-  let kanjiRadicalRelations: KanjiRadicalRelation[] = []
-  if (kanjiIds.length > 0) {
-    const radicalPlaceholders = kanjiIds.map(() => "?").join(",")
-    kanjiRadicalRelations = db
-      .prepare(
-        `SELECT kanji_id, radical_id FROM kanji_radicals WHERE kanji_id IN (${radicalPlaceholders})`,
-      )
-      .all(...kanjiIds) as KanjiRadicalRelation[]
-  }
-  return { vocabKanjiRelations, kanjiRadicalRelations }
-}
-
 /**
  * Retrieve WaniKani hierarchy, summary, and flat lists.
  */
@@ -99,25 +59,56 @@ function fetchStaticHierarchyFromDb(slugs: string[]) {
     if (vocabRows.length === 0) return null
 
     const vocabIds = vocabRows.map((v) => v.id)
-    const kanjiRows = fetchRelatedKanji(db, vocabIds)
-    const kanjiIds = kanjiRows.map((k) => k.id)
-    const radicalRows = fetchRelatedRadicals(db, kanjiIds)
-    const relations = fetchRelationships(db, vocabIds, kanjiIds)
+    const vocabPlaceholders = vocabIds.map(() => "?").join(",")
 
-    const parsedKanjiRows = kanjiRows.map((k) => ({
+    const kanjiQuery = `
+      SELECT DISTINCT k.id, k.characters, k.slug, k.meanings, k.meaning_mnemonic, k.reading_mnemonic, vk.vocab_id
+      FROM kanji k
+      JOIN vocab_kanji vk ON k.id = vk.kanji_id
+      WHERE vk.vocab_id IN (${vocabPlaceholders})
+    `
+    const kanjiResults = db
+      .prepare(kanjiQuery)
+      .all(...vocabIds) as (KanjiRow & { vocab_id: number })[]
+
+    const kanjiIds = [...new Set(kanjiResults.map((k) => k.id))]
+    const kanjiPlaceholders = kanjiIds.map(() => "?").join(",")
+
+    const radicalsQuery = `
+      SELECT DISTINCT r.id, r.characters, r.slug, r.meanings, r.meaning_mnemonic, kr.kanji_id
+      FROM radicals r
+      JOIN kanji_radicals kr ON r.id = kr.radical_id
+      WHERE kr.kanji_id IN (${kanjiPlaceholders})
+    `
+    const radicalResults = db
+      .prepare(radicalsQuery)
+      .all(...kanjiIds) as (RadicalRow & { kanji_id: number })[]
+
+    const kanjiRows = kanjiResults.map((k) => ({
       ...k,
       meanings: parseMeanings(k.meanings),
     }))
 
-    const parsedRadicalRows = radicalRows.map((r) => ({
+    const radicalRows = radicalResults.map((r) => ({
       ...r,
       meanings: parseMeanings(r.meanings),
     }))
 
+    const relations = {
+      vocabKanjiRelations: kanjiResults.map((k) => ({
+        vocab_id: k.vocab_id,
+        kanji_id: k.id,
+      })),
+      kanjiRadicalRelations: radicalResults.map((r) => ({
+        kanji_id: r.kanji_id,
+        radical_id: r.id,
+      })),
+    }
+
     return {
       vocabRows,
-      kanjiRows: parsedKanjiRows,
-      radicalRows: parsedRadicalRows,
+      kanjiRows,
+      radicalRows,
       relations,
     }
   } finally {
@@ -322,20 +313,11 @@ export const getWKHierarchy = createServerFn({ method: "GET" })
 export const getUserProgressForVocab = createServerFn({ method: "GET" })
   .validator((data: { slugs: string[]; userId: string }) => data)
   .handler(async ({ data }): Promise<Record<string, FSRSCardData> | null> => {
-    if (!data || !data.slugs || data.slugs.length === 0 || !data.userId)
+    if (!data || !data.slugs || data.slugs.length === 0 || !data.userId) {
       return null
+    }
 
-    // Get all vocabulary items and their related kanji/radicals to build the full slug list
-    const staticData = fetchStaticHierarchyFromDb(data.slugs)
-    if (!staticData) return null
-
-    // Collect all slugs for progress lookup
-    const allSlugs = new Set<string>()
-    staticData.vocabRows.forEach((v) => allSlugs.add(v.slug))
-    staticData.kanjiRows.forEach((k) => allSlugs.add(k.slug))
-    staticData.radicalRows.forEach((r) => r.slug && allSlugs.add(r.slug))
-
-    const fsrsData = await getFSRSCardsByKeys(data.userId, Array.from(allSlugs))
+    const fsrsData = await getFSRSCardsByKeys(data.userId, data.slugs)
 
     // Return a plain object instead of Map
     const progressRecord: Record<string, FSRSCardData> = {}

@@ -2,7 +2,7 @@
 import { createFileRoute, redirect, defer } from "@tanstack/solid-router"
 import { createEffect } from "solid-js"
 import { setActiveDeck } from "@/data/utils/core"
-import { getDueFSRSCards } from "@/features/supabase/db/utils"
+import { getDueFSRSCardsCount } from "@/features/supabase/db/utils"
 import { textbooks } from "@/data/textbooks"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
 import { ServiceContentArea } from "@/features/dashboard/components/content/service/ServiceContentArea"
@@ -231,7 +231,7 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
 
     const deckSources = [...textbookSources, ...userSources]
     const dueFSRSCardsPromise = user
-      ? getDueFSRSCards(user.id)
+      ? getDueFSRSCardsCount(user.id)
       : Promise.resolve(null)
 
     // Generate service data
@@ -321,7 +321,7 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
       wordHierarchyData: null,
       vocabularyItems: [],
       progressData: defer(Promise.resolve(null)),
-      dueFSRSCards: defer(dueFSRSCardsPromise),
+      dueFSRSCardsCount: defer(dueFSRSCardsPromise),
       serviceData,
     }
   },
@@ -338,7 +338,7 @@ function RouteComponent() {
   return (
     <DashboardLayout
       user={loaderData().user}
-      dueFSRSCardsPromise={loaderData().dueFSRSCards}
+      dueFSRSCardsCount={loaderData().dueFSRSCardsCount}
       currentDeck={loaderData().currentDeck}
       deckSources={loaderData().deckSources}
       wordHierarchyData={loaderData().wordHierarchyData}
