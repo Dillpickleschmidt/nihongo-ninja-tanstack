@@ -94,3 +94,82 @@ export const fetchJPDBSpecialDecks = createServerFn()
 
     return response.json()
   })
+
+export const fetchJPDBDeckVocabulary = createServerFn()
+  .validator(
+    z.object({
+      deckId: z.number(),
+    }),
+  )
+  .handler(async ({ data }) => {
+    const { user } = await getUserSSR()
+    if (!user) {
+      throw new Error("User not authenticated")
+    }
+
+    const authData = getServiceAuthDataFromCookie()
+    const apiKey = authData?.jpdb?.api_key
+
+    if (!apiKey) {
+      throw new Error("JPDB API key not available")
+    }
+
+    const response = await fetch(
+      "https://jpdb.io/api/v1/deck/list-vocabulary",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: data.deckId,
+          fetch_occurences: false, // As per documentation, default is false
+        }),
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error(`JPDB API error: ${response.status}`)
+    }
+
+    return response.json()
+  })
+
+export const lookupJPDBVocabulary = createServerFn()
+  .validator(
+    z.object({
+      vocabularyList: z.array(z.array(z.number())),
+    }),
+  )
+  .handler(async ({ data }) => {
+    const { user } = await getUserSSR()
+    if (!user) {
+      throw new Error("User not authenticated")
+    }
+
+    const authData = getServiceAuthDataFromCookie()
+    const apiKey = authData?.jpdb?.api_key
+
+    if (!apiKey) {
+      throw new Error("JPDB API key not available")
+    }
+
+    const response = await fetch("https://jpdb.io/api/v1/lookup-vocabulary", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        list: data.vocabularyList,
+        fields: ["spelling", "reading", "meanings"],
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`JPDB API error: ${response.status}`)
+    }
+
+    return response.json()
+  })
