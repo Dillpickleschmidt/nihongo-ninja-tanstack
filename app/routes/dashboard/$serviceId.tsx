@@ -14,102 +14,103 @@ import type { DeckSource, UserDeck } from "@/data/types"
 
 const VALID_SERVICES = ["anki", "wanikani", "jpdb"] as const
 
-// Mock data constants
-const MOCK_SERVICE_DECKS: Record<ServiceType, any[]> = {
-  anki: [
-    {
-      id: "anki-deck-1",
-      name: "Japanese Core 2000",
-      dueCards: 23,
-      totalCards: 2000,
-    },
-    {
-      id: "anki-deck-2",
-      name: "Genki I Vocabulary",
-      dueCards: 5,
-      totalCards: 317,
-    },
-    {
-      id: "anki-deck-3",
-      name: "Kanji Recognition",
-      dueCards: 12,
-      totalCards: 500,
-    },
-    {
-      id: "anki-deck-4",
-      name: "Grammar Patterns",
-      dueCards: 0,
-      totalCards: 150,
-    },
-  ],
-  wanikani: [
-    {
-      id: "wanikani-deck-1",
-      name: "Level 1 Radicals",
-      dueCards: 8,
-      totalCards: 30,
-    },
-    {
-      id: "wanikani-deck-2",
-      name: "Level 1 Kanji",
-      dueCards: 15,
-      totalCards: 25,
-    },
-    {
-      id: "wanikani-deck-3",
-      name: "Level 2 Radicals",
-      dueCards: 3,
-      totalCards: 20,
-    },
-    {
-      id: "wanikani-deck-4",
-      name: "Level 2 Kanji",
-      dueCards: 7,
-      totalCards: 30,
-    },
-  ],
-  jpdb: [],
-}
-
-const MOCK_SERVICE_STATS: Record<ServiceType, any> = {
+const SERVICE_CONFIG = {
   anki: {
-    totalDueCards: 40,
-    studiedToday: 25,
-    currentStreak: 12,
-    accuracy: 85,
+    mockDecks: [
+      {
+        id: "anki-deck-1",
+        name: "Japanese Core 2000",
+        dueCards: 23,
+        totalCards: 2000,
+      },
+      {
+        id: "anki-deck-2",
+        name: "Genki I Vocabulary",
+        dueCards: 5,
+        totalCards: 317,
+      },
+      {
+        id: "anki-deck-3",
+        name: "Kanji Recognition",
+        dueCards: 12,
+        totalCards: 500,
+      },
+      {
+        id: "anki-deck-4",
+        name: "Grammar Patterns",
+        dueCards: 0,
+        totalCards: 150,
+      },
+    ],
+    mockStats: {
+      totalDueCards: 40,
+      studiedToday: 25,
+      currentStreak: 12,
+      accuracy: 85,
+    },
   },
   wanikani: {
-    totalDueCards: 33,
-    studiedToday: 18,
-    currentStreak: 8,
-    accuracy: 92,
+    mockDecks: [
+      {
+        id: "wanikani-deck-1",
+        name: "Level 1 Radicals",
+        dueCards: 8,
+        totalCards: 30,
+      },
+      {
+        id: "wanikani-deck-2",
+        name: "Level 1 Kanji",
+        dueCards: 15,
+        totalCards: 25,
+      },
+      {
+        id: "wanikani-deck-3",
+        name: "Level 2 Radicals",
+        dueCards: 3,
+        totalCards: 20,
+      },
+      {
+        id: "wanikani-deck-4",
+        name: "Level 2 Kanji",
+        dueCards: 7,
+        totalCards: 30,
+      },
+    ],
+    mockStats: {
+      totalDueCards: 33,
+      studiedToday: 18,
+      currentStreak: 8,
+      accuracy: 92,
+    },
   },
-  jpdb: { totalDueCards: 0, studiedToday: 0, currentStreak: 0, accuracy: 0 },
-}
+  jpdb: {
+    mockDecks: [],
+    mockStats: {
+      totalDueCards: 0,
+      studiedToday: 0,
+      currentStreak: 0,
+      accuracy: 0,
+    },
+  },
+} as const
 
-// Helper functions
-function createEmptyServiceData() {
-  return {
-    decks: [],
-    stats: { totalDueCards: 0, studiedToday: 0, currentStreak: 0, accuracy: 0 },
-    activeDeckId: "",
-  }
-}
+const createEmptyServiceData = () => ({
+  decks: [],
+  stats: { totalDueCards: 0, studiedToday: 0, currentStreak: 0, accuracy: 0 },
+  activeDeckId: "",
+})
 
-function createServiceDataFromDecks(allDecks: any[]) {
-  const userDecks = allDecks.filter((d) => d.type === "user")
-  return {
-    decks: allDecks,
-    stats: calculateJPDBStats(allDecks),
-    activeDeckId: userDecks[0]?.id || "",
-  }
-}
+const createServiceDataFromDecks = (allDecks: any[]) => ({
+  decks: allDecks,
+  stats: calculateJPDBStats(allDecks),
+  activeDeckId: allDecks.filter((d) => d.type === "user")[0]?.id || "",
+})
 
-function createCurrentDeckFromDecks(
+const createCurrentDeckFromDecks = (
   allDecks: any[],
   serviceId: string,
   userId: string,
-): UserDeck {
+): UserDeck => {
   const userDecks = allDecks.filter((d) => d.type === "user")
   const activeDeck = userDecks[0]
 
@@ -127,21 +128,24 @@ function createCurrentDeckFromDecks(
     : createDefaultDeck(serviceId, userId)
 }
 
-function createDefaultDeck(serviceId: ServiceType, ownerId: string): UserDeck {
-  return {
-    id: `${serviceId}-main`,
-    slug: serviceId,
-    title: serviceId.charAt(0).toUpperCase() + serviceId.slice(1),
-    deckType: "user_deck" as const,
-    learning_path_items: [],
-    owner_id: ownerId,
-    is_public: false,
-    vocabulary_keys: [],
-  }
-}
+const createDefaultDeck = (
+  serviceId: ServiceType,
+  ownerId: string,
+): UserDeck => ({
+  id: `${serviceId}-main`,
+  slug: serviceId,
+  title: serviceId.charAt(0).toUpperCase() + serviceId.slice(1),
+  deckType: "user_deck" as const,
+  learning_path_items: [],
+  owner_id: ownerId,
+  is_public: false,
+  vocabulary_keys: [],
+})
 
-function filterAndTransformDecks(jpdbDecks: any[], type: "user" | "special") {
-  // For special decks, skip the first entry (which is "All Vocabulary")
+const filterAndTransformDecks = (
+  jpdbDecks: any[],
+  type: "user" | "special",
+) => {
   const decksToProcess = type === "special" ? jpdbDecks.slice(1) : jpdbDecks
 
   return decksToProcess.map((deckArray) => {
@@ -149,7 +153,6 @@ function filterAndTransformDecks(jpdbDecks: any[], type: "user" | "special") {
     const totalCards = deckArray[2] || 0
     const knownCoverage = deckArray[3] || 0
 
-    // "Blacklisted Vocabulary" has no completion count
     const dueCards =
       name === "Blacklisted Vocabulary"
         ? 0
@@ -168,7 +171,7 @@ function filterAndTransformDecks(jpdbDecks: any[], type: "user" | "special") {
   })
 }
 
-function calculateJPDBStats(decks: any[]) {
+const calculateJPDBStats = (decks: any[]) => {
   const totalDueCards = decks.reduce((sum, deck) => sum + deck.dueCards, 0)
   const totalCards = decks.reduce((sum, deck) => sum + deck.totalCards, 0)
 
@@ -197,7 +200,6 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
     const { user } = context
     const serviceId = params.serviceId as ServiceType
 
-    // Generate standard deck sources
     const textbookSources = Object.values(textbooks).map((tb) => ({
       id: tb.id,
       name: tb.short_name || tb.name,
@@ -234,7 +236,6 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
       ? getDueFSRSCardsCount(user.id)
       : Promise.resolve(null)
 
-    // Generate service data
     let serviceData: {
       decks: Array<{
         id: string
@@ -282,7 +283,6 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
         }
       }
     } else {
-      // Handle other services with mock data for now
       const preferences = getServicePreferencesFromCookie()
 
       if (!isLiveOptionEnabled(serviceId, preferences)) {
@@ -290,19 +290,15 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
         currentDeck = createDefaultDeck(serviceId, user.id)
       } else {
         try {
-          // For future implementation:
-          // const serviceData = await fetchServiceDataWithAuth({ data: serviceId })
-
-          // For now, use mock data
-          const mockDecks = MOCK_SERVICE_DECKS[serviceId] || []
-          const decksWithType = mockDecks.map((deck) => ({
+          const config = SERVICE_CONFIG[serviceId]
+          const decksWithType = config.mockDecks.map((deck) => ({
             ...deck,
             type: "user" as const,
           }))
 
           serviceData = {
             decks: decksWithType,
-            stats: MOCK_SERVICE_STATS[serviceId] || MOCK_SERVICE_STATS.anki,
+            stats: config.mockStats,
             activeDeckId: decksWithType[0]?.id || `${serviceId}-deck-1`,
           }
           currentDeck = createDefaultDeck(serviceId, user.id)
@@ -327,14 +323,11 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
   },
   component: RouteComponent,
 })
-
 function RouteComponent() {
   const loaderData = Route.useLoaderData()
-
   createEffect(() => {
     setActiveDeck("service", loaderData().serviceId, "default")
   })
-
   return (
     <DashboardLayout
       user={loaderData().user}
@@ -356,11 +349,18 @@ function RouteComponent() {
     </DashboardLayout>
   )
 }
-
 function ServiceSignInMessage(props: { serviceId: ServiceType }) {
-  const serviceName =
-    props.serviceId.charAt(0).toUpperCase() + props.serviceId.slice(1)
-
+  const getServiceName = (serviceId: ServiceType) => {
+    const names = {
+      anki: "Anki",
+      wanikani: "WaniKani",
+      jpdb: "jpdb",
+    }
+    return (
+      names[serviceId] || serviceId.charAt(0).toUpperCase() + serviceId.slice(1)
+    )
+  }
+  const serviceName = getServiceName(props.serviceId)
   return (
     <div class="flex h-full flex-col items-center justify-center p-8 text-center">
       <h2 class="mb-4 text-2xl font-bold">

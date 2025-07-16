@@ -149,9 +149,15 @@ export function RightSidebar(props: RightSidebarProps) {
           </For>
         </div>
 
-        <div class="mt-4 text-center">
-          <div class="text-lg font-bold text-blue-400">11.5 hours</div>
-          <div class="text-muted-foreground text-xs">Total this week</div>
+        <div class="mt-4 flex justify-around">
+          <div>
+            <div class="text-lg font-bold text-blue-400">11.5 hours</div>
+            <div class="text-muted-foreground text-xs">Total this week</div>
+          </div>
+          <div>
+            <div class="text-lg font-bold text-violet-400">11 days</div>
+            <div class="text-muted-foreground text-xs">Current Streak</div>
+          </div>
         </div>
       </div>
     </div>

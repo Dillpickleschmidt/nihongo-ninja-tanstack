@@ -1,7 +1,6 @@
 // features/dashboard/components/content/service/ServiceDeckList.tsx
 import { For } from "solid-js"
-import { Clock, Star, TrendingUp, ArrowRight, Play } from "lucide-solid"
-import { cn } from "@/utils"
+import { Star, TrendingUp, ArrowRight, Play } from "lucide-solid"
 import type { ServiceType } from "@/features/service-config/types"
 
 interface Deck {
@@ -29,16 +28,9 @@ interface DeckComponentProps {
   deck: Deck
   serviceId: ServiceType
   isActive: boolean
-  gradient: string
   index: number
   onDeckClick: (deck: Deck) => void
 }
-
-const SERVICE_COLORS = {
-  anki: "from-blue-600/20 to-cyan-600/10",
-  wanikani: "from-pink-600/20 to-purple-600/10",
-  jpdb: "from-green-600/20 to-emerald-600/10",
-} as const
 
 export function ServiceDeckList(props: ServiceDeckListProps) {
   const groupedDecks = (): DeckCategory[] => {
@@ -47,19 +39,16 @@ export function ServiceDeckList(props: ServiceDeckListProps) {
 
     const categories: DeckCategory[] = []
 
-    if (specialDecks.length > 0) {
-      categories.push({ title: "Built-in Decks", decks: specialDecks })
-    }
-
     if (userDecks.length > 0) {
       categories.push({ title: "Your Decks", decks: userDecks })
     }
 
+    if (specialDecks.length > 0) {
+      categories.push({ title: "Built-in Decks", decks: specialDecks })
+    }
+
     return categories
   }
-
-  const getServiceColor = (serviceId: ServiceType) =>
-    SERVICE_COLORS[serviceId] || "from-gray-600/20 to-slate-600/10"
 
   const CategoryHeader = ({ category }: { category: DeckCategory }) => (
     <div class="flex items-center gap-3">
@@ -88,7 +77,6 @@ export function ServiceDeckList(props: ServiceDeckListProps) {
                         deck={deck}
                         serviceId={props.serviceId}
                         isActive={deck.id === props.activeDeckId}
-                        gradient={getServiceColor(props.serviceId)}
                         index={index()}
                         onDeckClick={props.onDeckClick}
                       />
@@ -116,7 +104,6 @@ export function ServiceDeckList(props: ServiceDeckListProps) {
                     deck={deck}
                     serviceId={props.serviceId}
                     isActive={deck.id === props.activeDeckId}
-                    gradient={getServiceColor(props.serviceId)}
                     index={index()}
                     onDeckClick={props.onDeckClick}
                   />
@@ -142,16 +129,11 @@ function DeckRow(props: DeckComponentProps) {
 
   return (
     <div
-      class={cn(
-        "group flex cursor-pointer items-center rounded-xl border p-4",
-        "bg-gradient-to-r backdrop-blur-sm transition-all duration-200",
-        "hover:scale-[1.01] hover:shadow-lg",
-        showNumber ? "gap-4" : "gap-0",
+      class={`group flex cursor-pointer items-center rounded-xl border p-4 backdrop-blur-sm transition-all duration-200 hover:scale-[1.01] hover:shadow-lg ${showNumber ? "gap-4" : "gap-0"} ${
         props.isActive
           ? "border-primary/30 bg-primary/5 ring-primary/20 shadow-lg ring-2"
-          : "border-white/5 bg-white/2 hover:border-white/10",
-      )}
-      style={`background-image: linear-gradient(to right, ${props.gradient})`}
+          : "border-white/5 bg-white/2 hover:border-white/10"
+      } `}
       onClick={() => props.onDeckClick(props.deck)}
     >
       {showNumber && (
@@ -201,12 +183,7 @@ function MobileDeckCard(props: DeckComponentProps) {
 
   return (
     <div
-      class={cn(
-        "relative block cursor-pointer rounded-2xl p-4 backdrop-blur-sm",
-        "bg-card transition-all duration-200 hover:scale-[99%]",
-        props.isActive && "ring-primary/30 shadow-lg ring-2",
-      )}
-      style={`background-image: linear-gradient(to right, ${props.gradient})`}
+      class={`bg-card relative block cursor-pointer rounded-2xl p-4 backdrop-blur-sm transition-all duration-200 hover:scale-[99%] ${props.isActive ? "ring-primary/30 shadow-lg ring-2" : ""} `}
       onClick={() => props.onDeckClick(props.deck)}
     >
       {(props.isActive || showNumber) && (
@@ -224,10 +201,7 @@ function MobileDeckCard(props: DeckComponentProps) {
       <div class="space-y-3">
         <div>
           <h3
-            class={cn(
-              "line-clamp-1 font-semibold",
-              (props.isActive || showNumber) && "pr-8",
-            )}
+            class={`line-clamp-1 font-semibold ${props.isActive || showNumber ? "pr-8" : ""}`}
           >
             {props.deck.name}
           </h3>
@@ -243,12 +217,11 @@ function MobileDeckCard(props: DeckComponentProps) {
           </div>
 
           <div
-            class={cn(
-              "rounded-full px-2 py-1 text-xs font-medium",
+            class={`rounded-full px-2 py-1 text-xs font-medium ${
               hasDueCards
                 ? "bg-amber-400/20 text-amber-400"
-                : "bg-green-400/20 text-green-400",
-            )}
+                : "bg-green-400/20 text-green-400"
+            }`}
           >
             {hasDueCards ? `${props.deck.dueCards} due` : "Up to date"}
           </div>
