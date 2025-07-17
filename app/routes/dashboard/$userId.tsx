@@ -36,7 +36,7 @@ export const Route = createFileRoute("/dashboard/$userId")({
     const currentDeck: UserDeck = {
       id: "user-main",
       slug: "user-decks",
-      title: "My Decks",
+      title: "My Custom Decks",
       deckType: "user_deck" as const,
       learning_path_items: [],
       owner_id: user.id,

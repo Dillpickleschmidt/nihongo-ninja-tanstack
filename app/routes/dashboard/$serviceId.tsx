@@ -110,6 +110,7 @@ const createCurrentDeckFromDecks = (
   allDecks: any[],
   serviceId: string,
   userId: string,
+  title: string,
 ): UserDeck => {
   const userDecks = allDecks.filter((d) => d.type === "user")
   const activeDeck = userDecks[0]
@@ -118,23 +119,24 @@ const createCurrentDeckFromDecks = (
     ? {
         id: activeDeck.id,
         slug: `jpdb-${activeDeck.id}`,
-        title: activeDeck.name,
+        title: title,
         deckType: "user_deck" as const,
         learning_path_items: [],
         owner_id: userId,
         is_public: false,
         vocabulary_keys: [],
       }
-    : createDefaultDeck(serviceId, userId)
+    : createDefaultDeck(serviceId, userId, title)
 }
 
 const createDefaultDeck = (
   serviceId: ServiceType,
   ownerId: string,
+  title: string,
 ): UserDeck => ({
   id: `${serviceId}-main`,
   slug: serviceId,
-  title: serviceId.charAt(0).toUpperCase() + serviceId.slice(1),
+  title: title,
   deckType: "user_deck" as const,
   learning_path_items: [],
   owner_id: ownerId,
@@ -188,7 +190,10 @@ const calculateJPDBStats = (decks: any[]) => {
 
 export const Route = createFileRoute("/dashboard/$serviceId")({
   beforeLoad: ({ context, params }) => {
-    if (!VALID_SERVICES.includes(params.serviceId as ServiceType)) {
+    const fullServiceId = params.serviceId
+    const baseService = fullServiceId.split("-")[0] as ServiceType
+
+    if (!VALID_SERVICES.includes(baseService)) {
       throw redirect({
         to: "/dashboard/$textbookId/$chapterSlug",
         params: { textbookId: "genki_1", chapterSlug: "chapter-0" },
@@ -198,7 +203,27 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
   },
   loader: async ({ context, params }) => {
     const { user } = context
-    const serviceId = params.serviceId as ServiceType
+    const fullServiceId = params.serviceId
+
+    // Helper to parse the full service ID, e.g., "jpdb-live" or "wanikani-imported"
+    const parseServiceId = (fullId: string) => {
+      const parts = fullId.split("-")
+      const baseService = parts[0] as ServiceType
+      const variant = parts.length > 1 ? parts.slice(1).join("-") : "live"
+      const displayName = baseService.toUpperCase()
+      const variantName = variant.charAt(0).toUpperCase() + variant.slice(1)
+      const title = `${displayName}-${variantName}`
+      return { baseService, variant, title }
+    }
+
+    const { baseService, variant, title } = parseServiceId(fullServiceId)
+
+    if (!VALID_SERVICES.includes(baseService)) {
+      throw redirect({
+        to: "/dashboard/$textbookId/$chapterSlug",
+        params: { textbookId: "genki_1", chapterSlug: "chapter-0" },
+      })
+    }
 
     const textbookSources = Object.values(textbooks).map((tb) => ({
       id: tb.id,
@@ -257,13 +282,13 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
 
     if (!user) {
       serviceData = createEmptyServiceData()
-      currentDeck = createDefaultDeck(serviceId, "")
-    } else if (serviceId === "jpdb") {
+      currentDeck = createDefaultDeck(baseService, "", title)
+    } else if (baseService === "jpdb") {
       const preferences = getServicePreferencesFromCookie()
 
-      if (!isLiveOptionEnabled("jpdb", preferences)) {
+      if (variant === "live" && !isLiveOptionEnabled("jpdb", preferences)) {
         serviceData = createEmptyServiceData()
-        currentDeck = createDefaultDeck(serviceId, user.id)
+        currentDeck = createDefaultDeck(baseService, user.id, title)
       } else {
         try {
           const { userDecks, specialDecks } = await fetchServiceDataWithAuth({
@@ -275,22 +300,27 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
           ]
 
           serviceData = createServiceDataFromDecks(allDecks)
-          currentDeck = createCurrentDeckFromDecks(allDecks, serviceId, user.id)
+          currentDeck = createCurrentDeckFromDecks(
+            allDecks,
+            baseService,
+            user.id,
+            title,
+          )
         } catch (error) {
           console.error("Error fetching JPDB data:", error)
           serviceData = createEmptyServiceData()
-          currentDeck = createDefaultDeck(serviceId, user.id)
+          currentDeck = createDefaultDeck(baseService, user.id, title)
         }
       }
     } else {
       const preferences = getServicePreferencesFromCookie()
 
-      if (!isLiveOptionEnabled(serviceId, preferences)) {
+      if (variant === "live" && !isLiveOptionEnabled(baseService, preferences)) {
         serviceData = createEmptyServiceData()
-        currentDeck = createDefaultDeck(serviceId, user.id)
+        currentDeck = createDefaultDeck(baseService, user.id, title)
       } else {
         try {
-          const config = SERVICE_CONFIG[serviceId]
+          const config = SERVICE_CONFIG[baseService]
           const decksWithType = config.mockDecks.map((deck) => ({
             ...deck,
             type: "user" as const,
@@ -299,19 +329,19 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
           serviceData = {
             decks: decksWithType,
             stats: config.mockStats,
-            activeDeckId: decksWithType[0]?.id || `${serviceId}-deck-1`,
+            activeDeckId: decksWithType[0]?.id || `${baseService}-deck-1`,
           }
-          currentDeck = createDefaultDeck(serviceId, user.id)
+          currentDeck = createDefaultDeck(baseService, user.id, title)
         } catch (error) {
           serviceData = createEmptyServiceData()
-          currentDeck = createDefaultDeck(serviceId, user.id)
+          currentDeck = createDefaultDeck(baseService, user.id, title)
         }
       }
     }
 
     return {
       user,
-      serviceId,
+      serviceId: fullServiceId,
       currentDeck,
       deckSources,
       wordHierarchyData: null,

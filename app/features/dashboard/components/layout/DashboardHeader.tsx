@@ -9,7 +9,6 @@ import { useSettings } from "@/context/SettingsContext"
 import { generateServiceSources } from "@/features/dashboard/utils/serviceSourceHelper"
 import type { Deck, DeckSource, UserDeck } from "@/data/types"
 import type { DeferredPromise } from "@tanstack/solid-router"
-import type { FSRSCardData } from "@/features/supabase/db/utils"
 
 interface DashboardHeaderProps {
   dashboardType: "textbook" | "service" | "user"
@@ -64,7 +63,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
     } else if (source.type === "service") {
       navigate({
         to: "/dashboard/$serviceId",
-        params: { serviceId: source.id },
+        params: { serviceId: deck.slug },
       })
     } else if (source.type === "user") {
       navigate({
