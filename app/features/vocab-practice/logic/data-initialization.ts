@@ -181,9 +181,17 @@ export async function initializePracticeSession(
   ]
 
   if (enablePrerequisites) {
+    // Collect kanji characters for deduplication
+    const kanjiCharacters = new Set(
+      hierarchy.uniqueKanji.map((k) => k.characters).filter(Boolean),
+    )
+
     moduleHierarchyItems.push(
       ...hierarchy.uniqueKanji,
-      ...hierarchy.uniqueRadicals,
+      // Filter out radicals that duplicate kanji characters
+      ...hierarchy.uniqueRadicals.filter(
+        (r) => r.characters && !kanjiCharacters.has(r.characters),
+      ),
     )
   }
 

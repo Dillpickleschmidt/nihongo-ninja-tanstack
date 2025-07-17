@@ -141,6 +141,92 @@ function createPreviewItem(
   }
 }
 
+// Helper function to build hierarchical module items with duplicate detection
+function buildHierarchicalModuleItems(
+  hierarchy: FullHierarchyData,
+  enablePrerequisites: boolean,
+  moduleFSRSMap: Map<string, FSRSCardData>,
+  mode: PracticeMode | "review-only",
+  flipVocabQA: boolean,
+  flipKanjiRadicalQA: boolean,
+): PreviewItem[] {
+  const seenItems = new Set<string>()
+  const items: PreviewItem[] = []
+
+  // Collect kanji characters for deduplication (same as data-initialization)
+  const kanjiCharacters = new Set(
+    hierarchy.uniqueKanji.map((k) => k.characters).filter(Boolean),
+  )
+
+  // Helper to add item if not seen
+  const addItemIfNew = (
+    item: VocabHierarchy | Kanji | Radical,
+    itemType: DBPracticeItemType,
+  ) => {
+    if (seenItems.has(item.slug)) return
+
+    // Filter out radicals that duplicate kanji characters
+    if (itemType === "radical") {
+      const radical = item as Radical
+      if (radical.characters && kanjiCharacters.has(radical.characters)) {
+        return // Skip this duplicate radical
+      }
+    }
+
+    seenItems.add(item.slug)
+
+    let characters: string | null | undefined
+    let meanings: string[] | undefined
+
+    if (itemType === "vocabulary") {
+      // For vocabulary, we don't need characters/meanings here since createPreviewItem will look them up
+    } else if (itemType === "kanji") {
+      characters = (item as Kanji).characters
+      meanings = (item as Kanji).meanings
+    } else {
+      characters = (item as Radical).characters
+      meanings = (item as Radical).meanings
+    }
+
+    const previewItem = createPreviewItem(
+      {
+        slug: item.slug,
+        type: "module",
+        itemType,
+        characters,
+        meanings,
+      },
+      mode,
+      moduleFSRSMap.get(item.slug),
+      flipVocabQA,
+      flipKanjiRadicalQA,
+    )
+
+    items.push(previewItem)
+  }
+
+  // Process each vocabulary item hierarchically
+  hierarchy.hierarchy.forEach((vocab) => {
+    // Add the vocabulary item
+    addItemIfNew(vocab, "vocabulary")
+
+    // If prerequisites are enabled, add its dependencies in hierarchical order
+    if (enablePrerequisites) {
+      // Add kanji dependencies
+      vocab.kanji.forEach((kanji) => {
+        addItemIfNew(kanji, "kanji")
+
+        // Add radical dependencies for this kanji
+        kanji.radicals.forEach((radical) => {
+          addItemIfNew(radical, "radical")
+        })
+      })
+    }
+  })
+
+  return items
+}
+
 export default function StartPageComponent(props: StartPageProps) {
   const { setState, state } = useVocabPracticeContext()
   const [isStarting, setIsStarting] = createSignal(false)
@@ -162,7 +248,8 @@ export default function StartPageComponent(props: StartPageProps) {
     () => state.settings.enablePrerequisites,
   )
 
-  const previewItems = createMemo<PreviewItem[]>(() => {
+  // Build module items with hierarchical ordering
+  const moduleItems = createMemo<PreviewItem[]>(() => {
     if (!props.hierarchy) return []
 
     const filteredFSRS = (moduleFSRS() || []).filter((card) => {
@@ -174,56 +261,25 @@ export default function StartPageComponent(props: StartPageProps) {
       filteredFSRS.map((c) => [c.practice_item_key, c]),
     )
 
-    const seenKeys = new Set<string>()
+    return buildHierarchicalModuleItems(
+      props.hierarchy,
+      enablePrerequisites(),
+      moduleFSRSMap,
+      props.mode,
+      flipVocabQA(),
+      flipKanjiRadicalQA(),
+    )
+  })
 
-    let itemsToProcessForModule: Array<VocabHierarchy | Kanji | Radical> = [
-      ...props.hierarchy.hierarchy, // Always include vocabulary
-    ]
+  // Build review items (due cards not in module)
+  const reviewItems = createMemo<PreviewItem[]>(() => {
+    if (!props.hierarchy) return []
 
-    if (enablePrerequisites()) {
-      itemsToProcessForModule.push(
-        ...props.hierarchy.uniqueKanji,
-        ...props.hierarchy.uniqueRadicals,
-      )
-    }
+    // Get all module item keys for filtering
+    const moduleItemKeys = new Set(moduleItems().map((item) => item.key))
 
-    const moduleItems = itemsToProcessForModule.map((item) => {
-      seenKeys.add(item.slug)
-
-      let currentItemType: DBPracticeItemType
-      let characters: string | null | undefined
-      let meanings: string[] | undefined
-
-      if ("kanji" in item) {
-        currentItemType = "vocabulary"
-      } else if ("radicals" in item) {
-        currentItemType = "kanji"
-        characters = (item as Kanji).characters
-        meanings = (item as Kanji).meanings
-      } else {
-        currentItemType = "radical"
-        characters = (item as Radical).characters
-        meanings = (item as Radical).meanings
-      }
-
-      return createPreviewItem(
-        {
-          slug: item.slug,
-          type: "module",
-          itemType: currentItemType,
-          characters,
-          meanings,
-        },
-        props.mode,
-        moduleFSRSMap.get(item.slug),
-        flipVocabQA(),
-        flipKanjiRadicalQA(),
-      )
-    })
-
-    // Review items - Look up full data from props.hierarchy or vocabulary map
     const reviewItems = (dueCards() || [])
-      .filter((card) => !seenKeys.has(card.practice_item_key))
+      .filter((card) => !moduleItemKeys.has(card.practice_item_key))
       .map((card) => {
         let characters: string | null | undefined
         let meanings: string[] | undefined
@@ -281,27 +337,25 @@ export default function StartPageComponent(props: StartPageProps) {
         )
       })
 
-    return [...moduleItems, ...reviewItems]
+    return reviewItems
   })
 
+  // Count only core module items for header
   const vocabCount = createMemo(() => {
-    return previewItems().filter((item) => item.itemType === "vocabulary")
-      .length
+    return moduleItems().filter((item) => item.itemType === "vocabulary").length
   })
 
   const kanjiRadicalCount = createMemo(() => {
-    return previewItems().filter(
+    return moduleItems().filter(
       (item) => item.itemType === "kanji" || item.itemType === "radical",
     ).length
   })
-
-  const totalItemCount = createMemo(() => previewItems().length)
 
   const headerText = createMemo(() => {
     if (enablePrerequisites() && kanjiRadicalCount() > 0) {
       return `${vocabCount()} vocabulary (+${kanjiRadicalCount()} kanji/radicals)`
     } else {
-      return `${totalItemCount()} vocabulary`
+      return `${vocabCount()} vocabulary`
     }
   })
 
@@ -348,12 +402,39 @@ export default function StartPageComponent(props: StartPageProps) {
       <StartPageHeader deckName={props.deckName} previewCount={headerText()} />
       <div class="px-4 pb-28">
         <div class="mx-auto max-w-3xl">
-          <div class="grid gap-4 lg:gap-5">
-            <For each={previewItems()}>
-              {(item, index) => (
-                <StartPagePreviewCard item={item} index={index()} />
-              )}
-            </For>
+          <div class="space-y-8">
+            {/* Module Content Section */}
+            <div class="space-y-4">
+              <h2 class="text-primary text-center text-xl font-bold">
+                Module Content
+              </h2>
+              <div class="grid gap-4 lg:gap-5">
+                <For each={moduleItems()}>
+                  {(item, index) => (
+                    <StartPagePreviewCard item={item} index={index()} />
+                  )}
+                </For>
+              </div>
+            </div>
+
+            {/* Review Items Section (only if there are review items) */}
+            <Show when={reviewItems().length > 0}>
+              <div class="space-y-4">
+                <h2 class="text-primary text-center text-xl font-bold">
+                  Review Items
+                </h2>
+                <div class="grid gap-4 lg:gap-5">
+                  <For each={reviewItems()}>
+                    {(item, index) => (
+                      <StartPagePreviewCard
+                        item={item}
+                        index={moduleItems().length + index()}
+                      />
+                    )}
+                  </For>
+                </div>
+              </div>
+            </Show>
           </div>
         </div>
       </div>

@@ -522,6 +522,59 @@ describe("Data Initialization", () => {
 
       expect(result.cardMap.size).toBe(expectedModuleQueueItems.length)
     })
+    it("should filter out radicals that have the same characters as kanji", async () => {
+      // Create a hierarchy where a radical and kanji share the same character
+      const duplicateRadical = createMockRadical(4, "life", ["life"], "生")
+      const duplicateKanji = createMockKanji(
+        4,
+        "生",
+        ["life", "birth"],
+        [duplicateRadical],
+      )
+      const vocabWithDuplicate = createMockVocab(4, "生活", [duplicateKanji])
+
+      const hierarchyWithDuplicates: FullHierarchyData = {
+        hierarchy: [vocabWithDuplicate],
+        uniqueKanji: [duplicateKanji],
+        uniqueRadicals: [duplicateRadical], // This should get filtered out
+      }
+
+      const vocabCollection: VocabularyCollection = {
+        生活: {
+          word: "生活",
+          furigana: "生[せい]活[かつ]",
+          english: ["life", "living"],
+          chapter: 1,
+        },
+      }
+
+      const result = await initializePracticeSession(
+        hierarchyWithDuplicates,
+        [],
+        [],
+        "readings",
+        vocabCollection,
+        false, // flipVocabQA
+        false, // flipKanjiRadicalQA
+        false, // shuffle
+        true, // enablePrerequisites
+      )
+
+      // The kanji should be present
+      expect(result.cardMap.has("kanji:生")).toBe(true)
+
+      // The duplicate radical should be filtered out
+      expect(result.cardMap.has("radical:life")).toBe(false)
+
+      // The kanji should not have any dependencies since its radical was filtered
+      expect(result.dependencyMap.get("kanji:生")).toBeUndefined()
+
+      // The kanji should not be locked since it has no dependencies
+      expect(result.lockedKeys.has("kanji:生")).toBe(false)
+
+      // The vocabulary should still depend on the kanji
+      expect(result.dependencyMap.get("vocabulary:生活")).toContain("kanji:生")
+    })
   })
 
   describe("FSRS data handling", () => {
