@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [solid()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./app"),
+      "@": path.resolve(__dirname, "./src"),
     },
     conditions: ["development", "browser"],
   },

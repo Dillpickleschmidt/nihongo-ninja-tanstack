@@ -178,7 +178,7 @@ async function fetchAllPages<T>(initialEndpoint: string): Promise<T[]> {
  * Initializes the SQLite database and creates/recreates schema.
  */
 function initDB(): SQLiteDB {
-  const dbPath = "./app/data/wanikani/wanikani.db"
+  const dbPath = "./src/data/wanikani/wanikani.db"
   mkdirSync(dirname(dbPath), { recursive: true })
   const db = new Database(dbPath)
 
@@ -437,7 +437,7 @@ export type WaniKaniSubjectsCollection =
   WaniKaniCollectionResponse<WaniKaniApiSubject>;
 `
 
-  const typesPath = "./app/data/wanikani/wanikani-types.ts"
+  const typesPath = "./src/data/wanikani/wanikani-types.ts"
   mkdirSync(dirname(typesPath), { recursive: true })
   writeFileSync(typesPath, content, "utf-8")
 }
@@ -518,8 +518,8 @@ async function main() {
   }
 
   const completionMessage = generateTypesFlag
-    ? "\n✓ Complete! Generated ./app/data/wanikani/wanikani.db and ./app/data/wanikani/wanikani-types.ts"
-    : "\n✓ Complete! Generated ./app/data/wanikani/wanikani.db"
+    ? "\n✓ Complete! Generated ./src/data/wanikani/wanikani.db and ./src/data/wanikani/wanikani-types.ts"
+    : "\n✓ Complete! Generated ./src/data/wanikani/wanikani.db"
   console.log(completionMessage)
 }
 

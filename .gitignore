@@ -4,6 +4,8 @@ bun.lock
 .vinxi
 .output
 .vscode
+.tanstack
+.nitro
 app.config.timestamp*
 
 # output

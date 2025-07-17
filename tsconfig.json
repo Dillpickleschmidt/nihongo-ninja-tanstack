@@ -9,8 +9,8 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./app/*"],
-      "~/*": ["./app/*"]
+      "@/*": ["./src/*"],
+      "~/*": ["./src/*"]
     },
     "types": ["vite/client", "@testing-library/jest-dom"]
   }
