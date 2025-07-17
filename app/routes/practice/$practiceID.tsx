@@ -1,5 +1,5 @@
 // app/routes/practice/$practiceID.tsx
-import { createFileRoute, notFound } from "@tanstack/solid-router"
+import { createFileRoute, notFound, defer } from "@tanstack/solid-router"
 import { loadModuleData } from "@/data/utils/vocab"
 import VocabPractice from "@/features/vocab-practice/VocabPractice"
 import {
@@ -10,6 +10,9 @@ import {
 import type { PracticeMode } from "@/features/vocab-practice/types"
 import { getWKHierarchy } from "@/data/wanikani/utils"
 import type { FullHierarchyData, VocabHierarchy } from "@/data/wanikani/types"
+import type { DeferredPromise } from "@tanstack/solid-router"
+import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
+import { vocabulary } from "@/data/vocabulary"
 
 export const Route = createFileRoute("/practice/$practiceID")({
   loader: async ({ context, location }) => {
@@ -50,28 +53,50 @@ export const Route = createFileRoute("/practice/$practiceID")({
         }
       }
 
-      // 3. Extract all slugs from the now-resolved (and correctly shaped) hierarchy
+      // 2. Create initial state with just hierarchy data (no FSRS)
+      const initialState = await initializePracticeSession(
+        hierarchy,
+        [], // No module FSRS cards - will be loaded client-side
+        [], // No due FSRS cards - will be loaded client-side
+        mode,
+        vocabulary,
+        false, // Default settings - will be overridden client-side
+        true,
+        false,
+        true,
+      )
+
+      // 3. Serialize the initial state
+      const serializedInitialState = {
+        ...initialState,
+        cardMap: Array.from(initialState.cardMap.entries()),
+        dependencyMap: Array.from(initialState.dependencyMap.entries()),
+        unlocksMap: Array.from(initialState.unlocksMap.entries()),
+        lockedKeys: Array.from(initialState.lockedKeys),
+      }
+
+      // 4. Extract all slugs for FSRS data fetching
       const allHierarchySlugs = new Set<string>()
       hierarchy.hierarchy.forEach((v) => allHierarchySlugs.add(v.slug))
       hierarchy.uniqueKanji.forEach((k) => allHierarchySlugs.add(k.slug))
       hierarchy.uniqueRadicals.forEach((r) => allHierarchySlugs.add(r.slug))
 
-      let moduleFSRSCardsPromise: Promise<FSRSCardData[]> | null = null
-      let dueFSRSCardsPromise: Promise<FSRSCardData[]> | null = null
+      // 5. Defer FSRS data fetching
+      let moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null = null
+      let dueFSRSCards: DeferredPromise<FSRSCardData[]> | null = null
 
       if (context.user && allHierarchySlugs.size > 0) {
-        // 4. Start fetching FSRS data for the items in our (now correct) hierarchy
-        moduleFSRSCardsPromise = getFSRSCardsByKeys(
-          context.user.id,
-          Array.from(allHierarchySlugs),
+        moduleFSRSCards = defer(
+          getFSRSCardsByKeys(context.user.id, Array.from(allHierarchySlugs)),
         )
-        dueFSRSCardsPromise = getDueFSRSCards(context.user.id)
+        dueFSRSCards = defer(getDueFSRSCards(context.user.id))
       }
 
       return {
         hierarchy,
-        moduleFSRSCards: moduleFSRSCardsPromise,
-        dueFSRSCards: dueFSRSCardsPromise,
+        initialState: serializedInitialState,
+        moduleFSRSCards,
+        dueFSRSCards,
         deckName: loadModuleData(location.pathname).module.title,
         mode,
       }
@@ -90,6 +115,7 @@ function RouteComponent() {
   return (
     <VocabPractice
       hierarchy={data().hierarchy}
+      initialState={data().initialState}
       moduleFSRSCards={data().moduleFSRSCards}
       dueFSRSCards={data().dueFSRSCards}
       deckName={data().deckName}

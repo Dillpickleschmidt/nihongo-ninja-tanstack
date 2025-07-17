@@ -252,11 +252,18 @@ vi.mock("@/data/wanikani/utils", () => {
   )
 
   return {
-    getKanjiDetailsBySlug: vi.fn(async ({ data: slug }) => {
-      return Promise.resolve(mockKanjiDetailsMap.get(slug) || null)
-    }),
-    getRadicalDetailsBySlug: vi.fn(async ({ data: slug }) => {
-      return Promise.resolve(mockRadicalDetailsMap.get(slug) || null)
+    getItemDetailsBySlugsBatch: vi.fn(async (data) => {
+      const actualData = data
+
+      const result = {
+        kanji: (actualData.kanji || [])
+          .map((slug: string) => mockKanjiDetailsMap.get(slug))
+          .filter(Boolean),
+        radicals: (actualData.radicals || [])
+          .map((slug: string) => mockRadicalDetailsMap.get(slug))
+          .filter(Boolean),
+      }
+      return Promise.resolve(result)
     }),
   }
 })
@@ -382,17 +389,14 @@ describe("Data Initialization", () => {
         expect.arrayContaining(["true", "reality"]),
       )
 
-      const { getKanjiDetailsBySlug } = await import("@/data/wanikani/utils")
-      expect(vi.mocked(getKanjiDetailsBySlug)).toHaveBeenCalledWith({
-        data: "写",
+      const { getItemDetailsBySlugsBatch } = await import(
+        "@/data/wanikani/utils"
+      )
+      expect(vi.mocked(getItemDetailsBySlugsBatch)).toHaveBeenCalledWith({
+        kanji: ["写", "真", "nonExistentKanji"],
+        radicals: [],
       })
-      expect(vi.mocked(getKanjiDetailsBySlug)).toHaveBeenCalledWith({
-        data: "真",
-      })
-      expect(vi.mocked(getKanjiDetailsBySlug)).toHaveBeenCalledWith({
-        data: "nonExistentKanji",
-      })
-      expect(vi.mocked(getKanjiDetailsBySlug)).toHaveBeenCalledTimes(3)
+      expect(vi.mocked(getItemDetailsBySlugsBatch)).toHaveBeenCalledTimes(1)
     })
   })
 

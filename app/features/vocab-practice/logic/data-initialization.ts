@@ -16,10 +16,7 @@ import type {
   Radical,
   VocabHierarchy,
 } from "@/data/wanikani/types"
-import {
-  getKanjiDetailsBySlug,
-  getRadicalDetailsBySlug,
-} from "@/data/wanikani/utils"
+import { getItemDetailsBySlugsBatch } from "@/data/wanikani/utils"
 
 /**
  * Creates a unified PracticeCard from various data sources.
@@ -223,66 +220,76 @@ export async function initializePracticeSession(
 
   // --- Phase 2: Process Standalone Due Reviews ---
   const pureDueReviewCards = allDueFSRSCards.filter(
-    // Filter out due cards that are ALREADY covered by the moduleHierarchyItems,
     (card) => !cardMap.has(`${card.type}:${card.practice_item_key}`),
   )
 
-  // --- Use for...of loop to handle async fetching ---
-  for (const fsrsData of pureDueReviewCards) {
-    const key = `${fsrsData.type}:${fsrsData.practice_item_key}`
-    if (cardMap.has(key)) continue // Should be caught by the filter above, but good safeguard
+  // Group by type for batch processing
+  const dueVocab = pureDueReviewCards.filter(
+    (card) => card.type === "vocabulary",
+  )
+  const dueKanji = pureDueReviewCards.filter((card) => card.type === "kanji")
+  const dueRadicals = pureDueReviewCards.filter(
+    (card) => card.type === "radical",
+  )
 
+  // Batch fetch missing kanji and radicals
+  const missingKanjiSlugs = dueKanji
+    .map((card) => card.practice_item_key)
+    .filter((slug) => !hierarchy.uniqueKanji.find((k) => k.slug === slug))
+
+  const missingRadicalSlugs = dueRadicals
+    .map((card) => card.practice_item_key)
+    .filter((slug) => !hierarchy.uniqueRadicals.find((r) => r.slug === slug))
+
+  let fetchedData = { kanji: [] as Kanji[], radicals: [] as Radical[] }
+  if (missingKanjiSlugs.length > 0 || missingRadicalSlugs.length > 0) {
+    fetchedData = await getItemDetailsBySlugsBatch({
+      data: {
+        kanji: missingKanjiSlugs,
+        radicals: missingRadicalSlugs,
+      },
+    })
+  }
+
+  // Create lookup maps
+  const kanjiLookup = new Map(
+    [...hierarchy.uniqueKanji, ...fetchedData.kanji].map((k) => [k.slug, k]),
+  )
+  const radicalLookup = new Map(
+    [...hierarchy.uniqueRadicals, ...fetchedData.radicals].map((r) => [
+      r.slug,
+      r,
+    ]),
+  )
+
+  // Process all due cards
+  pureDueReviewCards.forEach((fsrsData) => {
+    const key = `${fsrsData.type}:${fsrsData.practice_item_key}`
     let itemToPass: VocabHierarchy | Kanji | Radical | null = null
 
-    const itemType: DBPracticeItemType = fsrsData.type
-
-    // Look up data for review cards from global collections if not in current hierarchy
-    if (itemType === "vocabulary") {
+    if (fsrsData.type === "vocabulary") {
       const vocabItem = globalVocabCollection[fsrsData.practice_item_key]
-      if (!vocabItem) {
-        console.warn(
-          `Missing vocabulary data for due review key: ${fsrsData.practice_item_key}. Skipping card.`,
-        )
-        continue
-      }
+      if (!vocabItem) return // Skip silently
+
       itemToPass = {
-        id: 0, // Placeholder ID
+        id: 0,
         characters: vocabItem.word,
         slug: vocabItem.word,
-        kanji: [], // Placeholder
-      } as VocabHierarchy // Cast needed to satisfy type for addKanaAndRuby
-    } else if (itemType === "kanji") {
-      // Check if it's in the full hierarchy list first, as it's already loaded
-      itemToPass =
-        hierarchy.uniqueKanji.find(
-          (k) => k.slug === fsrsData.practice_item_key,
-        ) || (await getKanjiDetailsBySlug({ data: fsrsData.practice_item_key }))
-      if (!itemToPass) {
-        console.warn(
-          `Could not find/fetch Kanji details for due review: ${fsrsData.practice_item_key}. Skipping card.`,
-        )
-        continue
-      }
-    } else if (itemType === "radical") {
-      // Check if it's in the full hierarchy list first
-      itemToPass =
-        hierarchy.uniqueRadicals.find(
-          (r) => r.slug === fsrsData.practice_item_key,
-        ) ||
-        (await getRadicalDetailsBySlug({ data: fsrsData.practice_item_key }))
-      if (!itemToPass) {
-        console.warn(
-          `Could not find/fetch Radical details for due review: ${fsrsData.practice_item_key}. Skipping card.`,
-        )
-        continue
-      }
+        kanji: [],
+      } as VocabHierarchy
+    } else if (fsrsData.type === "kanji") {
+      itemToPass = kanjiLookup.get(fsrsData.practice_item_key) || null
+      if (!itemToPass) return // Skip silently
+    } else if (fsrsData.type === "radical") {
+      itemToPass = radicalLookup.get(fsrsData.practice_item_key) || null
+      if (!itemToPass) return // Skip silently
     }
 
-    if (!itemToPass) continue
+    if (!itemToPass) return
 
     const reviewCard = createPracticeCard(
       itemToPass,
-      itemType,
+      fsrsData.type,
       fsrsData,
       fsrsData.mode,
       globalVocabCollection,
@@ -294,7 +301,7 @@ export async function initializePracticeSession(
 
     cardMap.set(key, reviewCard)
     reviewQueue.push(key)
-  }
+  })
 
   // --- Phase 3: Build Dependencies (Only if prerequisites are enabled) ---
   if (enablePrerequisites) {

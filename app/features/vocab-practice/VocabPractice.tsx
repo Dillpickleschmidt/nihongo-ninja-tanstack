@@ -4,7 +4,7 @@ import {
   VocabPracticeContextProvider,
   useVocabPracticeContext,
 } from "./context/VocabPracticeContext"
-import type { PracticeMode } from "./types"
+import type { PracticeMode, PracticeSessionState } from "./types"
 import StartPageComponent from "./components/pages/StartPageComponent"
 import PracticePageComponent from "./components/pages/PracticePageComponent"
 import ReviewPageComponent from "./components/pages/ReviewPageComponent"
@@ -13,15 +13,15 @@ import IntroductionPageComponent from "./components/pages/IntroductionPageCompon
 import FSRSFlashcardPageComponent from "./components/pages/FSRSFlashcardPageComponent"
 import type { FSRSCardData } from "../supabase/db/utils"
 import type { FullHierarchyData } from "@/data/wanikani/types"
+import type { DeferredPromise } from "@tanstack/solid-router"
 
 type VocabPracticeProps = {
-  // Synchronous data for instant preview
   hierarchy: FullHierarchyData | null
-  // Promises for FSRS data
-  moduleFSRSCards: Promise<FSRSCardData[]> | null
-  dueFSRSCards: Promise<FSRSCardData[]> | null
+  initialState: PracticeSessionState
+  moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null
+  dueFSRSCards: DeferredPromise<FSRSCardData[]> | null
   deckName: string | JSX.Element
-  mode: PracticeMode | "review-only"
+  mode: PracticeMode
 }
 
 export default function VocabPractice(props: VocabPracticeProps) {
@@ -30,6 +30,7 @@ export default function VocabPractice(props: VocabPracticeProps) {
       <VocabPracticeContent
         deckName={props.deckName}
         hierarchy={props.hierarchy}
+        initialState={props.initialState}
         moduleFSRSCards={props.moduleFSRSCards}
         dueFSRSCards={props.dueFSRSCards}
         mode={props.mode}
@@ -49,6 +50,7 @@ function VocabPracticeContent(props: VocabPracticeContentProps) {
         <StartPageComponent
           deckName={props.deckName}
           hierarchy={props.hierarchy}
+          initialState={props.initialState}
           moduleFSRSCards={props.moduleFSRSCards}
           dueFSRSCards={props.dueFSRSCards}
           mode={props.mode}

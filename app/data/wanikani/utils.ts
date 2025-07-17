@@ -328,56 +328,55 @@ export const getUserProgressForVocab = createServerFn({ method: "GET" })
     return progressRecord
   })
 
-export const getKanjiDetailsBySlug = createServerFn({ method: "GET" })
-  .validator((slug: string) => slug)
-  .handler(async ({ data: slug }): Promise<Kanji | null> => {
-    if (!slug) return null
-    const db = getDbConnection()
-    try {
-      const kanjiRow = db
-        .prepare(
-          `SELECT id, characters, slug, meanings, meaning_mnemonic, reading_mnemonic FROM kanji WHERE slug = ?`,
-        )
-        .get(slug) as KanjiRow | undefined
+export const getItemDetailsBySlugsBatch = createServerFn({ method: "GET" })
+  .validator((data: { kanji: string[]; radicals: string[] }) => data)
+  .handler(
+    async ({ data }): Promise<{ kanji: Kanji[]; radicals: Radical[] }> => {
+      const db = getDbConnection()
+      try {
+        const results = { kanji: [] as Kanji[], radicals: [] as Radical[] }
 
-      if (!kanjiRow) return null
+        if (data.kanji.length > 0) {
+          const kanjiPlaceholders = data.kanji.map(() => "?").join(",")
+          const kanjiRows = db
+            .prepare(
+              `SELECT id, characters, slug, meanings, meaning_mnemonic, reading_mnemonic 
+                     FROM kanji WHERE slug IN (${kanjiPlaceholders})`,
+            )
+            .all(...data.kanji) as KanjiRow[]
 
-      return {
-        id: kanjiRow.id,
-        characters: kanjiRow.characters,
-        slug: kanjiRow.slug,
-        meanings: parseMeanings(kanjiRow.meanings),
-        radicals: [], // Empty array as radicals are not fetched in this specific lookup
-        meaning_mnemonic: kanjiRow.meaning_mnemonic,
-        reading_mnemonic: kanjiRow.reading_mnemonic,
+          results.kanji = kanjiRows.map((row) => ({
+            id: row.id,
+            characters: row.characters,
+            slug: row.slug,
+            meanings: parseMeanings(row.meanings),
+            radicals: [],
+            meaning_mnemonic: row.meaning_mnemonic,
+            reading_mnemonic: row.reading_mnemonic,
+          }))
+        }
+
+        if (data.radicals.length > 0) {
+          const radicalPlaceholders = data.radicals.map(() => "?").join(",")
+          const radicalRows = db
+            .prepare(
+              `SELECT id, characters, slug, meanings, meaning_mnemonic 
+                     FROM radicals WHERE slug IN (${radicalPlaceholders})`,
+            )
+            .all(...data.radicals) as RadicalRow[]
+
+          results.radicals = radicalRows.map((row) => ({
+            id: row.id,
+            characters: row.characters,
+            slug: row.slug,
+            meanings: parseMeanings(row.meanings),
+            meaning_mnemonic: row.meaning_mnemonic,
+          }))
+        }
+
+        return results
+      } finally {
+        db.close()
       }
-    } finally {
-      db.close()
-    }
-  })
-
-export const getRadicalDetailsBySlug = createServerFn({ method: "GET" })
-  .validator((slug: string) => slug)
-  .handler(async ({ data: slug }): Promise<Radical | null> => {
-    if (!slug) return null
-    const db = getDbConnection()
-    try {
-      const radicalRow = db
-        .prepare(
-          `SELECT id, characters, slug, meanings, meaning_mnemonic FROM radicals WHERE slug = ?`,
-        )
-        .get(slug) as RadicalRow | undefined
-
-      if (!radicalRow) return null
-
-      return {
-        id: radicalRow.id,
-        characters: radicalRow.characters,
-        slug: radicalRow.slug,
-        meanings: parseMeanings(radicalRow.meanings),
-        meaning_mnemonic: radicalRow.meaning_mnemonic,
-      }
-    } finally {
-      db.close()
-    }
-  })
+    },
+  )

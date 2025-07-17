@@ -1,8 +1,10 @@
+// features/vocab-practice/components/pages/StartPageComponent.tsx
 import {
   For,
   JSX,
   createSignal,
   createMemo,
+  createEffect,
   createResource,
   Show,
 } from "solid-js"
@@ -12,156 +14,45 @@ import { Loader2, Settings } from "lucide-solid"
 import DeckSettingsDialogComponent from "../DeckSettingsDialogComponent"
 import { PracticeSessionManager } from "../../logic/PracticeSessionManager"
 import { initializePracticeSession } from "../../logic/data-initialization"
-import type { FSRSCardData } from "@/features/supabase/db/utils"
 import { vocabulary } from "@/data/vocabulary"
-import type { PracticeMode } from "../../types"
-import { addKanaAndRuby } from "@/data/utils/vocab"
+import type {
+  PracticeMode,
+  PracticeSessionState,
+  PracticeCard,
+} from "../../types"
 import type {
   FullHierarchyData,
   Kanji,
   Radical,
   VocabHierarchy,
 } from "@/data/wanikani/types"
-
-type PreviewItem = {
-  key: string
-  question: string
-  answer: string
-  isDue: boolean
-  type: "module" | "review"
-  itemType: "vocabulary" | "kanji" | "radical"
-  isQuestionJapanese: boolean
-  isAnswerJapanese: boolean
-  due?: Date // for review items
-}
+import type { FSRSCardData } from "@/features/supabase/db/utils"
+import type { DeferredPromise } from "@tanstack/solid-router"
 
 type StartPageProps = {
   hierarchy: FullHierarchyData | null
+  initialState: PracticeSessionState
+  moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null
+  dueFSRSCards: DeferredPromise<FSRSCardData[]> | null
   deckName: string | JSX.Element
-  moduleFSRSCards: Promise<FSRSCardData[]> | null
-  dueFSRSCards: Promise<FSRSCardData[]> | null
-  mode: PracticeMode | "review-only"
+  mode: PracticeMode
 }
 
-function createPreviewItem(
-  input: {
-    slug: string
-    characters?: string | null
-    meanings?: string[]
-    type: "module" | "review"
-    itemType: DBPracticeItemType
-  },
-  mode: PracticeMode | "review-only",
-  fsrsCardData?: FSRSCardData,
-  flipVocabQA: boolean = false,
-  flipKanjiRadicalQA: boolean = false,
-): PreviewItem {
-  let question = ""
-  let answer = ""
-  let isQJapanese = false
-  let isAJapanese = false
-
-  if (input.itemType === "vocabulary") {
-    const vocab = vocabulary[input.slug]
-    if (!vocab) {
-      console.warn(`Vocabulary item not found for slug: ${input.slug}`)
-      return {
-        key: input.slug,
-        question: `ERROR: ${input.slug}`,
-        answer: "Data Missing",
-        isDue: false,
-        type: input.type,
-        itemType: input.itemType,
-        isQuestionJapanese: false,
-        isAnswerJapanese: false,
-      }
-    }
-    const richVocab = addKanaAndRuby([vocab])[0]
-    if (mode === "kana") {
-      if (flipVocabQA) {
-        // Flipped: Question is kana, Answer is English
-        question = richVocab.hiragana.join(", ") || richVocab.word
-        answer = richVocab.english.join(", ")
-        isQJapanese = true
-        isAJapanese = false
-      } else {
-        // Original: Question is English, Answer is kana
-        question = richVocab.english.join(", ")
-        answer = richVocab.hiragana.join(", ") || richVocab.word
-        isQJapanese = false
-        isAJapanese = true
-      }
-    } else {
-      // 'readings' mode
-      if (flipVocabQA) {
-        // Flipped: Question is English, Answer is word
-        question = richVocab.english.join(", ")
-        answer = richVocab.word
-        isQJapanese = false
-        isAJapanese = true
-      } else {
-        // Original: Question is word, Answer is English
-        question = richVocab.word
-        answer = richVocab.english.join(", ")
-        isQJapanese = true
-        isAJapanese = false
-      }
-    }
-  } else {
-    const character = input.characters || input.slug // TODO: Fix to use img (definitely not the slug)
-    const meanings = input.meanings?.join(", ") ?? ""
-
-    if (flipKanjiRadicalQA) {
-      // Flipped: Question is meanings, Answer is character
-      question = meanings
-      answer = character
-      isQJapanese = false
-      isAJapanese = true
-    } else {
-      // Original: Question is character, Answer is meanings
-      question = character
-      answer = meanings
-      isQJapanese = true
-      isAJapanese = false
-    }
-  }
-
-  return {
-    key: input.slug,
-    question,
-    answer,
-    isDue: fsrsCardData?.fsrs_card.due
-      ? fsrsCardData?.fsrs_card.due <= new Date()
-      : false,
-    type: input.type,
-    itemType: input.itemType,
-    isQuestionJapanese: isQJapanese,
-    isAnswerJapanese: isAJapanese,
-    due: fsrsCardData?.fsrs_card.due,
-  }
-}
-
-// Helper function to build hierarchical module items with duplicate detection
-function buildHierarchicalModuleItems(
+// Helper function to build hierarchical ordering
+function getHierarchicalOrder(
   hierarchy: FullHierarchyData,
   enablePrerequisites: boolean,
-  moduleFSRSMap: Map<string, FSRSCardData>,
-  mode: PracticeMode | "review-only",
-  flipVocabQA: boolean,
-  flipKanjiRadicalQA: boolean,
-): PreviewItem[] {
+): string[] {
   const seenItems = new Set<string>()
-  const items: PreviewItem[] = []
+  const orderedKeys: string[] = []
 
-  // Collect kanji characters for deduplication (same as data-initialization)
   const kanjiCharacters = new Set(
     hierarchy.uniqueKanji.map((k) => k.characters).filter(Boolean),
   )
 
-  // Helper to add item if not seen
   const addItemIfNew = (
     item: VocabHierarchy | Kanji | Radical,
-    itemType: DBPracticeItemType,
+    itemType: "vocabulary" | "kanji" | "radical",
   ) => {
     if (seenItems.has(item.slug)) return
 
@@ -169,54 +60,20 @@ function buildHierarchicalModuleItems(
     if (itemType === "radical") {
       const radical = item as Radical
       if (radical.characters && kanjiCharacters.has(radical.characters)) {
-        return // Skip this duplicate radical
+        return
       }
     }
 
     seenItems.add(item.slug)
-
-    let characters: string | null | undefined
-    let meanings: string[] | undefined
-
-    if (itemType === "vocabulary") {
-      // For vocabulary, we don't need characters/meanings here since createPreviewItem will look them up
-    } else if (itemType === "kanji") {
-      characters = (item as Kanji).characters
-      meanings = (item as Kanji).meanings
-    } else {
-      characters = (item as Radical).characters
-      meanings = (item as Radical).meanings
-    }
-
-    const previewItem = createPreviewItem(
-      {
-        slug: item.slug,
-        type: "module",
-        itemType,
-        characters,
-        meanings,
-      },
-      mode,
-      moduleFSRSMap.get(item.slug),
-      flipVocabQA,
-      flipKanjiRadicalQA,
-    )
-
-    items.push(previewItem)
+    orderedKeys.push(`${itemType}:${item.slug}`)
   }
 
-  // Process each vocabulary item hierarchically
   hierarchy.hierarchy.forEach((vocab) => {
-    // Add the vocabulary item
     addItemIfNew(vocab, "vocabulary")
 
-    // If prerequisites are enabled, add its dependencies in hierarchical order
     if (enablePrerequisites) {
-      // Add kanji dependencies
       vocab.kanji.forEach((kanji) => {
         addItemIfNew(kanji, "kanji")
-
-        // Add radical dependencies for this kanji
         kanji.radicals.forEach((radical) => {
           addItemIfNew(radical, "radical")
         })
@@ -224,23 +81,17 @@ function buildHierarchicalModuleItems(
     }
   })
 
-  return items
+  return orderedKeys
 }
 
 export default function StartPageComponent(props: StartPageProps) {
   const { setState, state } = useVocabPracticeContext()
   const [isStarting, setIsStarting] = createSignal(false)
 
-  const [moduleFSRS] = createResource(
-    () => props.moduleFSRSCards,
-    (p) => p,
-  )
-  const [dueCards] = createResource(
-    () => props.dueFSRSCards,
-    (p) => p,
-  )
-
-  const isLoading = createMemo(() => moduleFSRS.loading || dueCards.loading)
+  // Two states: initial (server-side) and enhanced (with FSRS data)
+  const [enhancedState, setEnhancedState] =
+    createSignal<PracticeSessionState | null>(null)
+  const currentState = createMemo(() => enhancedState() || props.initialState)
 
   const flipVocabQA = createMemo(() => state.settings.flipVocabQA)
   const flipKanjiRadicalQA = createMemo(() => state.settings.flipKanjiRadicalQA)
@@ -248,106 +99,101 @@ export default function StartPageComponent(props: StartPageProps) {
     () => state.settings.enablePrerequisites,
   )
 
-  // Build module items with hierarchical ordering
-  const moduleItems = createMemo<PreviewItem[]>(() => {
-    if (!props.hierarchy) return []
+  // Create resources for deferred FSRS data
+  const [moduleFSRS] = createResource(
+    () => props.moduleFSRSCards,
+    (deferredPromise) => deferredPromise || Promise.resolve([]),
+  )
+  const [dueFSRS] = createResource(
+    () => props.dueFSRSCards,
+    (deferredPromise) => deferredPromise || Promise.resolve([]),
+  )
 
-    const filteredFSRS = (moduleFSRS() || []).filter((card) => {
-      if (props.mode === "review-only") return true
-      return card.mode === props.mode
-    })
+  // Enhance with FSRS data when loaded OR when settings change
+  createEffect(async () => {
+    if (moduleFSRS.loading || dueFSRS.loading || !props.hierarchy) return
 
-    const moduleFSRSMap = new Map(
-      filteredFSRS.map((c) => [c.practice_item_key, c]),
-    )
+    try {
+      const fullState = await initializePracticeSession(
+        props.hierarchy,
+        moduleFSRS() || [],
+        dueFSRS() || [],
+        props.mode,
+        vocabulary,
+        flipVocabQA(),
+        flipKanjiRadicalQA(),
+        state.settings.shuffleInput,
+        enablePrerequisites(),
+      )
 
-    return buildHierarchicalModuleItems(
-      props.hierarchy,
-      enablePrerequisites(),
-      moduleFSRSMap,
-      props.mode,
-      flipVocabQA(),
-      flipKanjiRadicalQA(),
-    )
+      // Serialize Maps and Sets for JSON transfer
+      const serializedState = {
+        ...fullState,
+        cardMap: Array.from(fullState.cardMap.entries()),
+        dependencyMap: Array.from(fullState.dependencyMap.entries()),
+        unlocksMap: Array.from(fullState.unlocksMap.entries()),
+        lockedKeys: Array.from(fullState.lockedKeys),
+      } as unknown as PracticeSessionState
+
+      setEnhancedState(serializedState)
+    } catch (error) {
+      console.error("Failed to enhance practice session:", error)
+    }
   })
 
-  // Build review items (due cards not in module)
-  const reviewItems = createMemo<PreviewItem[]>(() => {
+  const isLoading = createMemo(() => moduleFSRS.loading || dueFSRS.loading)
+  const hasEnhancedData = createMemo(() => enhancedState() !== null)
+
+  // Reconstruct Map from serialized array
+  const getCardMap = (
+    state: PracticeSessionState,
+  ): Map<string, PracticeCard> => {
+    const cardMapData = state.cardMap as any
+    if (Array.isArray(cardMapData)) {
+      return new Map(cardMapData)
+    }
+    return new Map()
+  }
+
+  const hierarchicalOrder = createMemo(() => {
     if (!props.hierarchy) return []
-
-    // Get all module item keys for filtering
-    const moduleItemKeys = new Set(moduleItems().map((item) => item.key))
-
-    const reviewItems = (dueCards() || [])
-      .filter((card) => !moduleItemKeys.has(card.practice_item_key))
-      .map((card) => {
-        let characters: string | null | undefined
-        let meanings: string[] | undefined
-
-        if (card.type === "vocabulary") {
-          const vocabData = vocabulary[card.practice_item_key]
-          if (vocabData) {
-            characters = vocabData.word
-            meanings = vocabData.english
-          } else {
-            console.warn(
-              `Vocabulary data not found for review item: ${card.practice_item_key}.`,
-            )
-          }
-        } else if (card.type === "kanji") {
-          // Look up Kanji data directly from props.hierarchy.uniqueKanji
-          const kanjiData = props.hierarchy!.uniqueKanji.find(
-            (k) => k.slug === card.practice_item_key,
-          )
-          if (kanjiData) {
-            characters = kanjiData.characters
-            meanings = kanjiData.meanings
-          } else {
-            console.warn(
-              `Kanji data not found in hierarchy for review item: ${card.practice_item_key}.`,
-            )
-          }
-        } else if (card.type === "radical") {
-          // Look up Radical data directly from props.hierarchy.uniqueRadicals
-          const radicalData = props.hierarchy!.uniqueRadicals.find(
-            (r) => r.slug === card.practice_item_key,
-          )
-          if (radicalData) {
-            characters = radicalData.characters
-            meanings = radicalData.meanings
-          } else {
-            console.warn(
-              `Radical data not found in hierarchy for review item: ${card.practice_item_key}.`,
-            )
-          }
-        }
-
-        return createPreviewItem(
-          {
-            slug: card.practice_item_key,
-            type: "review",
-            itemType: card.type,
-            characters,
-            meanings,
-          },
-          props.mode,
-          card, // Pass the full FSRSCardData to get the `due` date
-          flipVocabQA(),
-          flipKanjiRadicalQA(),
-        )
-      })
-
-    return reviewItems
+    return getHierarchicalOrder(props.hierarchy, enablePrerequisites())
   })
 
-  // Count only core module items for header
+  const moduleItems = createMemo<PracticeCard[]>(() => {
+    const state = currentState()
+    const cardMap = getCardMap(state)
+    const order = hierarchicalOrder()
+
+    return order
+      .map((key) => cardMap.get(key))
+      .filter(
+        (card): card is PracticeCard =>
+          card !== undefined && card.sessionScope === "module",
+      )
+  })
+
+  const reviewItems = createMemo<PracticeCard[]>(() => {
+    const state = currentState()
+    const cardMap = getCardMap(state)
+    const reviewQueue = (state.reviewQueue as any) || []
+
+    return reviewQueue
+      .map((key: string) => cardMap.get(key))
+      .filter((card: any): card is PracticeCard => card !== undefined)
+  })
+
   const vocabCount = createMemo(() => {
-    return moduleItems().filter((item) => item.itemType === "vocabulary").length
+    return moduleItems().filter(
+      (card) => card.practiceItemType === "vocabulary",
+    ).length
   })
 
   const kanjiRadicalCount = createMemo(() => {
     return moduleItems().filter(
-      (item) => item.itemType === "kanji" || item.itemType === "radical",
+      (card) =>
+        card.practiceItemType === "kanji" ||
+        card.practiceItemType === "radical",
     ).length
   })
 
@@ -359,39 +205,27 @@ export default function StartPageComponent(props: StartPageProps) {
     }
   })
 
-  async function handleStart() {
+  function handleStart() {
     setIsStarting(true)
     try {
-      const resolvedModuleFSRS = await props.moduleFSRSCards
-      const resolvedDueCards = await props.dueFSRSCards
+      const state = currentState()
 
-      if (!props.hierarchy) {
-        throw new Error("Hierarchy data is not available.")
+      const reconstructedState: PracticeSessionState = {
+        ...state,
+        cardMap: getCardMap(state),
+        dependencyMap: new Map((state.dependencyMap as any) || []),
+        unlocksMap: new Map((state.unlocksMap as any) || []),
+        lockedKeys: new Set((state.lockedKeys as any) || []),
+        moduleQueue: (state.moduleQueue as any) || [],
+        reviewQueue: (state.reviewQueue as any) || [],
+        activeQueue: (state.activeQueue as any) || [],
       }
 
-      const sessionModeForNewCards = // Doesn't matter for review-only mode, anyway
-        props.mode === "review-only" ? "readings" : props.mode
-
-      const initialState = await initializePracticeSession(
-        props.hierarchy,
-        resolvedModuleFSRS || [],
-        resolvedDueCards || [],
-        sessionModeForNewCards,
-        vocabulary,
-        state.settings.flipVocabQA,
-        state.settings.flipKanjiRadicalQA,
-        state.settings.shuffleInput,
-        state.settings.enablePrerequisites,
-      )
-
-      const manager = new PracticeSessionManager(
-        initialState,
-        props.mode === "review-only",
-      )
+      const manager = new PracticeSessionManager(reconstructedState, false)
       setState("manager", manager)
       setState("activeQueue", manager.getActiveQueue())
     } catch (error) {
-      console.error("Failed to initialize practice session:", error)
+      console.error("Failed to start practice session:", error)
     } finally {
       setIsStarting(false)
     }
@@ -410,25 +244,32 @@ export default function StartPageComponent(props: StartPageProps) {
               </h2>
               <div class="grid gap-4 lg:gap-5">
                 <For each={moduleItems()}>
-                  {(item, index) => (
-                    <StartPagePreviewCard item={item} index={index()} />
+                  {(card, index) => (
+                    <StartPagePreviewCard
+                      card={card}
+                      index={index()}
+                      isLoading={isLoading()}
+                      hasEnhancedData={hasEnhancedData()}
+                    />
                   )}
                 </For>
               </div>
             </div>
 
-            {/* Review Items Section (only if there are review items) */}
-            <Show when={reviewItems().length > 0}>
+            {/* Review Items Section */}
+            <Show when={reviewItems()?.length > 0}>
               <div class="space-y-4">
                 <h2 class="text-primary text-center text-xl font-bold">
                   Review Items
                 </h2>
                 <div class="grid gap-4 lg:gap-5">
-                  <For each={reviewItems()}>
-                    {(item, index) => (
+                  <For each={reviewItems() || []}>
+                    {(card, index) => (
                       <StartPagePreviewCard
-                        item={item}
+                        card={card}
                         index={moduleItems().length + index()}
+                        isLoading={isLoading()}
+                        hasEnhancedData={hasEnhancedData()}
                       />
                     )}
                   </For>
@@ -439,7 +280,7 @@ export default function StartPageComponent(props: StartPageProps) {
         </div>
       </div>
       <StartPageButton
-        loading={isLoading() || isStarting()}
+        loading={isStarting() || isLoading()}
         onClick={handleStart}
       />
     </div>
@@ -478,20 +319,48 @@ function StartPageHeader(props: {
   )
 }
 
-function StartPagePreviewCard(props: { item: PreviewItem; index: number }) {
+function StartPagePreviewCard(props: {
+  card: PracticeCard
+  index: number
+  isLoading: boolean
+  hasEnhancedData: boolean
+}) {
   const questionTextClass = createMemo(() => ({
-    // If Japanese, make it larger
-    "text-xl lg:text-2xl": props.item.isQuestionJapanese,
-    // If English, keep it smaller
-    "text-lg lg:text-xl": !props.item.isQuestionJapanese,
+    "text-xl lg:text-2xl":
+      props.card.practiceMode === "readings" ||
+      props.card.practiceItemType !== "vocabulary",
+    "text-lg lg:text-xl":
+      props.card.practiceMode === "kana" &&
+      props.card.practiceItemType === "vocabulary",
   }))
 
   const answerTextClass = createMemo(() => ({
-    // If Japanese, make it larger
-    "text-xl lg:text-2xl": props.item.isAnswerJapanese,
-    // If English, keep it smaller
-    "text-base lg:text-lg": !props.item.isAnswerJapanese,
+    "text-xl lg:text-2xl": props.card.validAnswers.some((answer) =>
+      /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(answer),
+    ),
+    "text-base lg:text-lg": !props.card.validAnswers.some((answer) =>
+      /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(answer),
+    ),
   }))
+
+  const isDue = createMemo(() => {
+    // Only check due status if we have real FSRS data
+    if (!props.hasEnhancedData) return false
+
+    const dueDate = props.card.fsrs.card.due
+    if (!dueDate) return false
+
+    const now = new Date()
+    const cardDueDate = new Date(dueDate)
+
+    // Don't show "due" for cards created within the last 5 seconds
+    const fiveSecondsAgo = new Date(now.getTime() - 5000)
+    if (cardDueDate > fiveSecondsAgo) {
+      return false
+    }
+
+    return cardDueDate <= now
+  })
 
   return (
     <div class="bg-card group relative overflow-hidden rounded-xl p-5 shadow-md transition-all duration-200 hover:shadow-lg">
@@ -501,30 +370,39 @@ function StartPagePreviewCard(props: { item: PreviewItem; index: number }) {
             class="mb-3 font-bold text-orange-400 saturate-[125%]"
             classList={questionTextClass()}
           >
-            {props.item.question}
+            {props.card.prompt}
           </h3>
           <div class="space-y-1.5">
             <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
               Answer:
             </p>
             <p class="text-primary font-bold" classList={answerTextClass()}>
-              {props.item.answer}
+              {props.card.validAnswers.join(", ")}
             </p>
           </div>
         </div>
 
         <div class="flex items-center gap-3">
-          <Show when={props.item.itemType === "kanji"}>
+          <Show when={props.card.practiceItemType === "kanji"}>
             <span class="inline-flex items-center rounded-full bg-pink-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-pink-400 uppercase">
               Kanji
             </span>
           </Show>
-          <Show when={props.item.itemType === "radical"}>
+          <Show when={props.card.practiceItemType === "radical"}>
             <span class="inline-flex items-center rounded-full bg-blue-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-blue-400 uppercase">
               Radical
             </span>
           </Show>
-          <Show when={props.item.isDue}>
+          <Show
+            when={!props.isLoading && isDue()}
+            fallback={
+              <Show when={props.isLoading}>
+                <div class="inline-flex items-center rounded-full bg-gray-500/20 px-2.5 py-1">
+                  <Loader2 class="h-3 w-3 animate-spin text-gray-400" />
+                </div>
+              </Show>
+            }
+          >
             <span class="inline-flex items-center rounded-full bg-amber-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-amber-500 uppercase">
               Due
             </span>
@@ -534,10 +412,10 @@ function StartPagePreviewCard(props: { item: PreviewItem; index: number }) {
           </div>
         </div>
       </div>
-      <Show when={props.item.isDue && props.item.due}>
+      <Show when={!props.isLoading && isDue() && props.card.fsrs.card.due}>
         <div class="text-muted-foreground absolute right-4 bottom-4 text-xs">
           Due:{" "}
-          {props.item.due!.toLocaleDateString(undefined, {
+          {new Date(props.card.fsrs.card.due).toLocaleDateString(undefined, {
             weekday: "short",
             month: "short",
             day: "numeric",
