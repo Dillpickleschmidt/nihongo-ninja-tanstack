@@ -28,7 +28,12 @@ const WELL_KNOWN_THRESHOLD = 21
 // DATABASE & STATIC DATA FUNCTIONS
 // =============================================================================
 
+let db: Db | null = null
+
 function getDbConnection(): Db {
+  if (db) {
+    return db
+  }
   const dbPath = path.join(
     process.cwd(),
     "src",
@@ -36,7 +41,8 @@ function getDbConnection(): Db {
     "wanikani",
     "wanikani.db",
   )
-  return new Database(dbPath, { readonly: true, fileMustExist: true })
+  db = new Database(dbPath, { readonly: true, fileMustExist: true })
+  return db
 }
 
 function fetchVocabulary(db: Db, slugs: string[]): VocabRow[] {
@@ -54,65 +60,61 @@ function fetchVocabulary(db: Db, slugs: string[]): VocabRow[] {
  */
 function fetchStaticHierarchyFromDb(slugs: string[]) {
   const db = getDbConnection()
-  try {
-    const vocabRows = fetchVocabulary(db, slugs)
-    if (vocabRows.length === 0) return null
+  const vocabRows = fetchVocabulary(db, slugs)
+  if (vocabRows.length === 0) return null
 
-    const vocabIds = vocabRows.map((v) => v.id)
-    const vocabPlaceholders = vocabIds.map(() => "?").join(",")
+  const vocabIds = vocabRows.map((v) => v.id)
+  const vocabPlaceholders = vocabIds.map(() => "?").join(",")
 
-    const kanjiQuery = `
+  const kanjiQuery = `
       SELECT DISTINCT k.id, k.characters, k.slug, k.meanings, k.meaning_mnemonic, k.reading_mnemonic, vk.vocab_id
       FROM kanji k
       JOIN vocab_kanji vk ON k.id = vk.kanji_id
       WHERE vk.vocab_id IN (${vocabPlaceholders})
     `
-    const kanjiResults = db
-      .prepare(kanjiQuery)
-      .all(...vocabIds) as (KanjiRow & { vocab_id: number })[]
+  const kanjiResults = db.prepare(kanjiQuery).all(...vocabIds) as (KanjiRow & {
+    vocab_id: number
+  })[]
 
-    const kanjiIds = [...new Set(kanjiResults.map((k) => k.id))]
-    const kanjiPlaceholders = kanjiIds.map(() => "?").join(",")
+  const kanjiIds = [...new Set(kanjiResults.map((k) => k.id))]
+  const kanjiPlaceholders = kanjiIds.map(() => "?").join(",")
 
-    const radicalsQuery = `
+  const radicalsQuery = `
       SELECT DISTINCT r.id, r.characters, r.slug, r.meanings, r.meaning_mnemonic, kr.kanji_id
       FROM radicals r
       JOIN kanji_radicals kr ON r.id = kr.radical_id
       WHERE kr.kanji_id IN (${kanjiPlaceholders})
     `
-    const radicalResults = db
-      .prepare(radicalsQuery)
-      .all(...kanjiIds) as (RadicalRow & { kanji_id: number })[]
+  const radicalResults = db
+    .prepare(radicalsQuery)
+    .all(...kanjiIds) as (RadicalRow & { kanji_id: number })[]
 
-    const kanjiRows = kanjiResults.map((k) => ({
-      ...k,
-      meanings: parseMeanings(k.meanings),
-    }))
+  const kanjiRows = kanjiResults.map((k) => ({
+    ...k,
+    meanings: parseMeanings(k.meanings),
+  }))
 
-    const radicalRows = radicalResults.map((r) => ({
-      ...r,
-      meanings: parseMeanings(r.meanings),
-    }))
+  const radicalRows = radicalResults.map((r) => ({
+    ...r,
+    meanings: parseMeanings(r.meanings),
+  }))
 
-    const relations = {
-      vocabKanjiRelations: kanjiResults.map((k) => ({
-        vocab_id: k.vocab_id,
-        kanji_id: k.id,
-      })),
-      kanjiRadicalRelations: radicalResults.map((r) => ({
-        kanji_id: r.kanji_id,
-        radical_id: r.id,
-      })),
-    }
+  const relations = {
+    vocabKanjiRelations: kanjiResults.map((k) => ({
+      vocab_id: k.vocab_id,
+      kanji_id: k.id,
+    })),
+    kanjiRadicalRelations: radicalResults.map((r) => ({
+      kanji_id: r.kanji_id,
+      radical_id: r.id,
+    })),
+  }
 
-    return {
-      vocabRows,
-      kanjiRows,
-      radicalRows,
-      relations,
-    }
-  } finally {
-    db.close()
+  return {
+    vocabRows,
+    kanjiRows,
+    radicalRows,
+    relations,
   }
 }
 
@@ -333,50 +335,47 @@ export const getItemDetailsBySlugsBatch = createServerFn({ method: "GET" })
   .handler(
     async ({ data }): Promise<{ kanji: Kanji[]; radicals: Radical[] }> => {
       const db = getDbConnection()
-      try {
-        const results = { kanji: [] as Kanji[], radicals: [] as Radical[] }
+      const results = { kanji: [] as Kanji[], radicals: [] as Radical[] }
 
-        if (data.kanji.length > 0) {
-          const kanjiPlaceholders = data.kanji.map(() => "?").join(",")
-          const kanjiRows = db
-            .prepare(
-              `SELECT id, characters, slug, meanings, meaning_mnemonic, reading_mnemonic 
-                     FROM kanji WHERE slug IN (${kanjiPlaceholders})`,
-            )
-            .all(...data.kanji) as KanjiRow[]
+      if (data.kanji.length > 0) {
+        const kanjiPlaceholders = data.kanji.map(() => "?").join(",")
+        const kanjiRows = db
+          .prepare(
+            `SELECT id, characters, slug, meanings, meaning_mnemonic, reading_mnemonic 
+                   FROM kanji WHERE slug IN (${kanjiPlaceholders})`,
+          )
+          .all(...data.kanji) as KanjiRow[]
 
-          results.kanji = kanjiRows.map((row) => ({
-            id: row.id,
-            characters: row.characters,
-            slug: row.slug,
-            meanings: parseMeanings(row.meanings),
-            radicals: [],
-            meaning_mnemonic: row.meaning_mnemonic,
-            reading_mnemonic: row.reading_mnemonic,
-          }))
-        }
-
-        if (data.radicals.length > 0) {
-          const radicalPlaceholders = data.radicals.map(() => "?").join(",")
-          const radicalRows = db
-            .prepare(
-              `SELECT id, characters, slug, meanings, meaning_mnemonic 
-                     FROM radicals WHERE slug IN (${radicalPlaceholders})`,
-            )
-            .all(...data.radicals) as RadicalRow[]
-
-          results.radicals = radicalRows.map((row) => ({
-            id: row.id,
-            characters: row.characters,
-            slug: row.slug,
-            meanings: parseMeanings(row.meanings),
-            meaning_mnemonic: row.meaning_mnemonic,
-          }))
-        }
-
-        return results
-      } finally {
-        db.close()
+        results.kanji = kanjiRows.map((row) => ({
+          id: row.id,
+          characters: row.characters,
+          slug: row.slug,
+          meanings: parseMeanings(row.meanings),
+          radicals: [],
+          meaning_mnemonic: row.meaning_mnemonic,
+          reading_mnemonic: row.reading_mnemonic,
+        }))
       }
+
+      if (data.radicals.length > 0) {
+        const radicalPlaceholders = data.radicals.map(() => "?").join(",")
+        const radicalRows = db
+          .prepare(
+            `SELECT id, characters, slug, meanings, meaning_mnemonic 
+                   FROM radicals WHERE slug IN (${radicalPlaceholders})`,
+          )
+          .all(...data.radicals) as RadicalRow[]
+
+        results.radicals = radicalRows.map((row) => ({
+          id: row.id,
+          characters: row.characters,
+          slug: row.slug,
+          meanings: parseMeanings(row.meanings),
+          meaning_mnemonic: row.meaning_mnemonic,
+        }))
+      }
+
+      return results
     },
   )
+
