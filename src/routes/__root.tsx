@@ -39,7 +39,11 @@ export const Route = createRootRoute({
   }),
   beforeLoad: async () => {
     console.log("root beforeLoad fired!")
+    // --- ADD TIMER FOR USER FETCH ---
+    console.time("getUser (beforeLoad)")
     const result = await getUser()
+    console.timeEnd("getUser (beforeLoad)")
+    // --- END TIMER ---
     return { user: result?.user || null }
   },
   loader: () => {

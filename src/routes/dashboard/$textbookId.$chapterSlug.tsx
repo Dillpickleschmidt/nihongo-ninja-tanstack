@@ -13,7 +13,7 @@ import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { getDueFSRSCardsCount } from "@/features/supabase/db/utils"
 import { getWKHierarchy, getUserProgressForVocab } from "@/data/wanikani/utils"
 import { getModuleVocabulary } from "@/data/utils/vocab"
-import { TextbookContentArea } from "@/features/dashboard/components/content/textbook/TextbookContentArea"
+// import { TextbookContentArea } from "@/features/dashboard/components/content/textbook/TextbookContentArea"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
 import { textbooks } from "@/data/textbooks"
 import type { TextbookIDEnum, DeckSource, VocabularyItem } from "@/data/types"
@@ -78,12 +78,10 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       vocabForHierarchy = vocabularyItems.map((item) => item.word)
     }
 
-    // Get WaniKani hierarchy (only for words that have kanji)
     console.time("getWKHierarchy")
     const wkHierarchyData = await getWKHierarchy({ data: vocabForHierarchy })
     console.timeEnd("getWKHierarchy")
 
-    // Create lookup map and build complete hierarchy in one pass
     const wkVocabMap = new Map(
       wkHierarchyData?.hierarchy.map((item) => [item.slug, item]) || [],
     )
@@ -115,7 +113,6 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       ]),
     ]
 
-    // Defer progress data if user exists (slow)
     const progressDataPromise =
       user && slugs.length > 0
         ? getUserProgressForVocab({
@@ -150,8 +147,8 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
           chapter_number,
           title,
           description,
-          learning_path_items: [], // Add empty array to satisfy type
-          external_resource_ids: [], // Add empty array to satisfy type
+          learning_path_items: [],
+          external_resource_ids: [],
         }),
       ),
       disabled: false,
@@ -194,12 +191,12 @@ function RouteComponent() {
       vocabularyItems={loaderData().vocabularyItems}
       progressData={loaderData().progressData}
     >
-      <TextbookContentArea
-        lessons={loaderData().lessons}
-        externalResources={loaderData().externalResources}
-        deferredThumbnails={loaderData().deferredThumbnails}
-        progressPercentage={75}
-      />
+      {/* --- TEMPORARY CHANGE FOR TESTING --- */}
+      {/* We are rendering the full layout but NOT its complex children. */}
+      <div>
+        <h1>[Perf Test] TextbookContentArea is disabled.</h1>
+      </div>
+      {/* --- END TEMPORARY CHANGE --- */}
     </DashboardLayout>
   )
 }
