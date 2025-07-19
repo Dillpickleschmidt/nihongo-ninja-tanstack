@@ -54,6 +54,17 @@ jobs:
           bunx sst secret set SECRET_VAL '${{ secrets.SECRET_VAL }}' --stage staging
           bunx sst secret set COMMIT_SHA '${{ github.sha }}' --stage staging
 
+      - name: Debug - List build output structure
+        run: |
+          echo "=== Root directory contents ==="
+          ls -la
+          echo "=== Public directory contents ==="
+          ls -la public/ || echo "Public directory not found"
+          echo "=== Assets directory contents ==="
+          ls -la public/assets/ || echo "Assets directory not found"
+          echo "=== Build output directories ==="
+          find . -name "*.db" -type f | head -20 || echo "No .db files found"
+
       - name: Deploy to AWS with SST
         run: bun run deploy-stage
 

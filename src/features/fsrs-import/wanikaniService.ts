@@ -3,7 +3,6 @@
 import Database, { Database as SQLiteDB } from "better-sqlite3"
 import * as path from "path"
 import * as fs from "fs"
-import { WANIKANI_DB_BASE64 } from "@/data/wanikani/wanikani-db-embedded"
 import {
   prepareBatchQuery,
   groupSubjectsBySearchTerm,
@@ -50,26 +49,19 @@ export class WaniKaniService {
 
   private getDbPath(): string {
     if (process.env.LAMBDA_TASK_ROOT) {
-      // Lambda environment - create database from embedded base64 data
-      const tmpDbPath = "/tmp/wanikani.db"
+      // Lambda environment - database bundled by Nitro server assets
+      const bundledPath = path.join(process.env.LAMBDA_TASK_ROOT, "server/assets/wanikani.db")
       
-      // Check if already written to /tmp
-      if (!fs.existsSync(tmpDbPath)) {
-        console.log(`[WaniKaniService] Creating database from embedded base64 data...`)
-        try {
-          const dbBuffer = Buffer.from(WANIKANI_DB_BASE64, 'base64')
-          fs.writeFileSync(tmpDbPath, dbBuffer)
-          console.log(`[WaniKaniService] Successfully created database at: ${tmpDbPath} (${dbBuffer.length} bytes)`)
-        } catch (error) {
-          console.error(`[WaniKaniService] Failed to create database from base64:`, error)
-          throw error
-        }
-      } else {
-        console.log(`[WaniKaniService] Database already exists in /tmp`)
+      console.log(`[WaniKaniService] Lambda environment detected. Checking: ${bundledPath}`)
+      if (fs.existsSync(bundledPath)) {
+        console.log(`[WaniKaniService] ✅ Found bundled database at: ${bundledPath}`)
+        return bundledPath
       }
       
-      return tmpDbPath
+      console.error(`[WaniKaniService] Bundled database not found at: ${bundledPath}`)
+      throw new Error("Database file not found in Lambda bundle. Check Nitro server assets configuration.")
     }
+    
     // Local development
     return path.join(process.cwd(), "src/data/wanikani/wanikani.db")
   }
