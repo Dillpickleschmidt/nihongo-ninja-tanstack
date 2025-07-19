@@ -3,6 +3,7 @@ import { createServerFn } from "@tanstack/solid-start"
 import type { Database as Db } from "better-sqlite3"
 import Database from "better-sqlite3"
 import path from "node:path"
+import fs from "node:fs"
 import {
   getFSRSCardsByKeys,
   type FSRSCardData,
@@ -32,11 +33,8 @@ let db: Db | null = null
 
 function getDbPath(): string {
   if (process.env.LAMBDA_TASK_ROOT) {
-    // Lambda environment
-    return path.join(
-      process.env.LAMBDA_TASK_ROOT,
-      "src/data/wanikani/wanikani.db",
-    )
+    // Lambda environment - database should be in /tmp from GitHub Actions
+    return "/tmp/wanikani.db"
   }
   // Local development
   return path.join(process.cwd(), "src/data/wanikani/wanikani.db")

@@ -2,6 +2,7 @@
 
 import Database, { Database as SQLiteDB } from "better-sqlite3"
 import * as path from "path"
+import * as fs from "fs"
 import {
   prepareBatchQuery,
   groupSubjectsBySearchTerm,
@@ -48,11 +49,8 @@ export class WaniKaniService {
 
   private getDbPath(): string {
     if (process.env.LAMBDA_TASK_ROOT) {
-      // Lambda environment
-      return path.join(
-        process.env.LAMBDA_TASK_ROOT,
-        "src/data/wanikani/wanikani.db",
-      )
+      // Lambda environment - database should be in /tmp from GitHub Actions
+      return "/tmp/wanikani.db"
     }
     // Local development
     return path.join(process.cwd(), "src/data/wanikani/wanikani.db")

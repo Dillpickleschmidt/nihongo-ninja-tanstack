@@ -39,6 +39,11 @@ jobs:
       - name: Install projects deps
         run: bun install
 
+      - name: Prepare database for Lambda /tmp directory
+        run: |
+          mkdir -p tmp
+          cp src/data/wanikani/wanikani.db tmp/wanikani.db
+
       - name: Install AWS Creds
         run: |
           mkdir -p ~/.aws
