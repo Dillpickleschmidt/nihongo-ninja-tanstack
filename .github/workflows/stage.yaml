@@ -39,11 +39,6 @@ jobs:
       - name: Install projects deps
         run: bun install
 
-      - name: Prepare database for Lambda bundling
-        run: |
-          mkdir -p src/assets
-          cp src/data/wanikani/wanikani.db src/assets/wanikani.db
-
       - name: Install AWS Creds
         run: |
           mkdir -p ~/.aws

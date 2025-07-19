@@ -3,6 +3,7 @@
 import Database, { Database as SQLiteDB } from "better-sqlite3"
 import * as path from "path"
 import * as fs from "fs"
+import { WANIKANI_DB_BASE64 } from "@/data/wanikani/wanikani-db-embedded"
 import {
   prepareBatchQuery,
   groupSubjectsBySearchTerm,
@@ -49,38 +50,19 @@ export class WaniKaniService {
 
   private getDbPath(): string {
     if (process.env.LAMBDA_TASK_ROOT) {
-      // Lambda environment - copy database to /tmp on first access
+      // Lambda environment - create database from embedded base64 data
       const tmpDbPath = "/tmp/wanikani.db"
       
-      // Check if already copied to /tmp
+      // Check if already written to /tmp
       if (!fs.existsSync(tmpDbPath)) {
-        console.log(`[WaniKaniService] Database not in /tmp, attempting to copy from bundle...`)
-        
-        // Try to find the bundled database
-        const bundledPaths = [
-          path.join(process.env.LAMBDA_TASK_ROOT, "wanikani.db"),
-          path.join(process.env.LAMBDA_TASK_ROOT, "public/wanikani.db"),
-          "/var/task/wanikani.db",
-          "/var/task/public/wanikani.db"
-        ]
-        
-        let sourceFound = false
-        for (const sourcePath of bundledPaths) {
-          if (fs.existsSync(sourcePath)) {
-            console.log(`[WaniKaniService] Found source database at: ${sourcePath}`)
-            try {
-              fs.copyFileSync(sourcePath, tmpDbPath)
-              console.log(`[WaniKaniService] Successfully copied database to: ${tmpDbPath}`)
-              sourceFound = true
-              break
-            } catch (error) {
-              console.error(`[WaniKaniService] Failed to copy from ${sourcePath} to ${tmpDbPath}:`, error)
-            }
-          }
-        }
-        
-        if (!sourceFound) {
-          console.error(`[WaniKaniService] Source database not found in any bundled location:`, bundledPaths)
+        console.log(`[WaniKaniService] Creating database from embedded base64 data...`)
+        try {
+          const dbBuffer = Buffer.from(WANIKANI_DB_BASE64, 'base64')
+          fs.writeFileSync(tmpDbPath, dbBuffer)
+          console.log(`[WaniKaniService] Successfully created database at: ${tmpDbPath} (${dbBuffer.length} bytes)`)
+        } catch (error) {
+          console.error(`[WaniKaniService] Failed to create database from base64:`, error)
+          throw error
         }
       } else {
         console.log(`[WaniKaniService] Database already exists in /tmp`)

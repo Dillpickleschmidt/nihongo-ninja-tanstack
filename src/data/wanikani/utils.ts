@@ -4,6 +4,7 @@ import type { Database as Db } from "better-sqlite3"
 import Database from "better-sqlite3"
 import path from "node:path"
 import fs from "node:fs"
+import { WANIKANI_DB_BASE64 } from "./wanikani-db-embedded"
 import {
   getFSRSCardsByKeys,
   type FSRSCardData,
@@ -33,73 +34,19 @@ let db: Db | null = null
 
 function getDbPath(): string {
   if (process.env.LAMBDA_TASK_ROOT) {
-    // Lambda environment - copy database to /tmp on first access
+    // Lambda environment - create database from embedded base64 data
     const tmpDbPath = "/tmp/wanikani.db"
     
-    // Check if already copied to /tmp
+    // Check if already written to /tmp
     if (!fs.existsSync(tmpDbPath)) {
-      console.log(`[DB] Database not in /tmp, attempting to copy from bundle...`)
-      
-      // First, let's see what's actually in the Lambda bundle
+      console.log(`[DB] Creating database from embedded base64 data...`)
       try {
-        const taskRootContents = fs.readdirSync(process.env.LAMBDA_TASK_ROOT)
-        console.log(`[DB] Contents of LAMBDA_TASK_ROOT (${process.env.LAMBDA_TASK_ROOT}):`, taskRootContents)
-        
-        // Check if public directory exists
-        const publicPath = path.join(process.env.LAMBDA_TASK_ROOT, "public")
-        if (fs.existsSync(publicPath)) {
-          const publicContents = fs.readdirSync(publicPath)
-          console.log(`[DB] Contents of public directory:`, publicContents)
-        } else {
-          console.log(`[DB] No public directory found`)
-        }
-        
-        // Check chunks directory
-        const chunksPath = path.join(process.env.LAMBDA_TASK_ROOT, "chunks")
-        if (fs.existsSync(chunksPath)) {
-          const chunksContents = fs.readdirSync(chunksPath)
-          console.log(`[DB] Contents of chunks directory:`, chunksContents)
-          
-          // Check inside chunks/_/ if it exists
-          const chunksDashPath = path.join(chunksPath, "_")
-          if (fs.existsSync(chunksDashPath)) {
-            const chunksDashContents = fs.readdirSync(chunksDashPath)
-            console.log(`[DB] Contents of chunks/_/ directory:`, chunksDashContents)
-          }
-        }
+        const dbBuffer = Buffer.from(WANIKANI_DB_BASE64, 'base64')
+        fs.writeFileSync(tmpDbPath, dbBuffer)
+        console.log(`[DB] Successfully created database at: ${tmpDbPath} (${dbBuffer.length} bytes)`)
       } catch (error) {
-        console.log(`[DB] Error listing directories:`, error)
-      }
-      
-      // Try to find the bundled database
-      const bundledPaths = [
-        path.join(process.env.LAMBDA_TASK_ROOT, "wanikani.db"),
-        path.join(process.env.LAMBDA_TASK_ROOT, "public/wanikani.db"),
-        path.join(process.env.LAMBDA_TASK_ROOT, "src/assets/wanikani.db"),
-        path.join(process.env.LAMBDA_TASK_ROOT, "chunks/_/assets/wanikani.db"),
-        "/var/task/wanikani.db",
-        "/var/task/public/wanikani.db",
-        "/var/task/src/assets/wanikani.db",
-        "/var/task/chunks/_/assets/wanikani.db"
-      ]
-      
-      let sourceFound = false
-      for (const sourcePath of bundledPaths) {
-        if (fs.existsSync(sourcePath)) {
-          console.log(`[DB] Found source database at: ${sourcePath}`)
-          try {
-            fs.copyFileSync(sourcePath, tmpDbPath)
-            console.log(`[DB] Successfully copied database to: ${tmpDbPath}`)
-            sourceFound = true
-            break
-          } catch (error) {
-            console.error(`[DB] Failed to copy from ${sourcePath} to ${tmpDbPath}:`, error)
-          }
-        }
-      }
-      
-      if (!sourceFound) {
-        console.error(`[DB] Source database not found in any bundled location:`, bundledPaths)
+        console.error(`[DB] Failed to create database from base64:`, error)
+        throw error
       }
     } else {
       console.log(`[DB] Database already exists in /tmp`)
