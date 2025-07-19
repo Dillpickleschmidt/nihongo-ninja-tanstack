@@ -49,8 +49,44 @@ export class WaniKaniService {
 
   private getDbPath(): string {
     if (process.env.LAMBDA_TASK_ROOT) {
-      // Lambda environment - database should be in /tmp from GitHub Actions
-      return "/tmp/wanikani.db"
+      // Lambda environment - copy database to /tmp on first access
+      const tmpDbPath = "/tmp/wanikani.db"
+      
+      // Check if already copied to /tmp
+      if (!fs.existsSync(tmpDbPath)) {
+        console.log(`[WaniKaniService] Database not in /tmp, attempting to copy from bundle...`)
+        
+        // Try to find the bundled database
+        const bundledPaths = [
+          path.join(process.env.LAMBDA_TASK_ROOT, "wanikani.db"),
+          path.join(process.env.LAMBDA_TASK_ROOT, "public/wanikani.db"),
+          "/var/task/wanikani.db",
+          "/var/task/public/wanikani.db"
+        ]
+        
+        let sourceFound = false
+        for (const sourcePath of bundledPaths) {
+          if (fs.existsSync(sourcePath)) {
+            console.log(`[WaniKaniService] Found source database at: ${sourcePath}`)
+            try {
+              fs.copyFileSync(sourcePath, tmpDbPath)
+              console.log(`[WaniKaniService] Successfully copied database to: ${tmpDbPath}`)
+              sourceFound = true
+              break
+            } catch (error) {
+              console.error(`[WaniKaniService] Failed to copy from ${sourcePath} to ${tmpDbPath}:`, error)
+            }
+          }
+        }
+        
+        if (!sourceFound) {
+          console.error(`[WaniKaniService] Source database not found in any bundled location:`, bundledPaths)
+        }
+      } else {
+        console.log(`[WaniKaniService] Database already exists in /tmp`)
+      }
+      
+      return tmpDbPath
     }
     // Local development
     return path.join(process.cwd(), "src/data/wanikani/wanikani.db")

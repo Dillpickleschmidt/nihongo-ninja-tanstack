@@ -33,8 +33,79 @@ let db: Db | null = null
 
 function getDbPath(): string {
   if (process.env.LAMBDA_TASK_ROOT) {
-    // Lambda environment - database should be in /tmp from GitHub Actions
-    return "/tmp/wanikani.db"
+    // Lambda environment - copy database to /tmp on first access
+    const tmpDbPath = "/tmp/wanikani.db"
+    
+    // Check if already copied to /tmp
+    if (!fs.existsSync(tmpDbPath)) {
+      console.log(`[DB] Database not in /tmp, attempting to copy from bundle...`)
+      
+      // First, let's see what's actually in the Lambda bundle
+      try {
+        const taskRootContents = fs.readdirSync(process.env.LAMBDA_TASK_ROOT)
+        console.log(`[DB] Contents of LAMBDA_TASK_ROOT (${process.env.LAMBDA_TASK_ROOT}):`, taskRootContents)
+        
+        // Check if public directory exists
+        const publicPath = path.join(process.env.LAMBDA_TASK_ROOT, "public")
+        if (fs.existsSync(publicPath)) {
+          const publicContents = fs.readdirSync(publicPath)
+          console.log(`[DB] Contents of public directory:`, publicContents)
+        } else {
+          console.log(`[DB] No public directory found`)
+        }
+        
+        // Check chunks directory
+        const chunksPath = path.join(process.env.LAMBDA_TASK_ROOT, "chunks")
+        if (fs.existsSync(chunksPath)) {
+          const chunksContents = fs.readdirSync(chunksPath)
+          console.log(`[DB] Contents of chunks directory:`, chunksContents)
+          
+          // Check inside chunks/_/ if it exists
+          const chunksDashPath = path.join(chunksPath, "_")
+          if (fs.existsSync(chunksDashPath)) {
+            const chunksDashContents = fs.readdirSync(chunksDashPath)
+            console.log(`[DB] Contents of chunks/_/ directory:`, chunksDashContents)
+          }
+        }
+      } catch (error) {
+        console.log(`[DB] Error listing directories:`, error)
+      }
+      
+      // Try to find the bundled database
+      const bundledPaths = [
+        path.join(process.env.LAMBDA_TASK_ROOT, "wanikani.db"),
+        path.join(process.env.LAMBDA_TASK_ROOT, "public/wanikani.db"),
+        path.join(process.env.LAMBDA_TASK_ROOT, "src/assets/wanikani.db"),
+        path.join(process.env.LAMBDA_TASK_ROOT, "chunks/_/assets/wanikani.db"),
+        "/var/task/wanikani.db",
+        "/var/task/public/wanikani.db",
+        "/var/task/src/assets/wanikani.db",
+        "/var/task/chunks/_/assets/wanikani.db"
+      ]
+      
+      let sourceFound = false
+      for (const sourcePath of bundledPaths) {
+        if (fs.existsSync(sourcePath)) {
+          console.log(`[DB] Found source database at: ${sourcePath}`)
+          try {
+            fs.copyFileSync(sourcePath, tmpDbPath)
+            console.log(`[DB] Successfully copied database to: ${tmpDbPath}`)
+            sourceFound = true
+            break
+          } catch (error) {
+            console.error(`[DB] Failed to copy from ${sourcePath} to ${tmpDbPath}:`, error)
+          }
+        }
+      }
+      
+      if (!sourceFound) {
+        console.error(`[DB] Source database not found in any bundled location:`, bundledPaths)
+      }
+    } else {
+      console.log(`[DB] Database already exists in /tmp`)
+    }
+    
+    return tmpDbPath
   }
   // Local development
   return path.join(process.cwd(), "src/data/wanikani/wanikani.db")
@@ -45,8 +116,15 @@ function getDbConnection(): Db {
     return db
   }
   const dbPath = getDbPath()
-  db = new Database(dbPath, { readonly: true, fileMustExist: true })
-  return db
+  console.log(`[DB] Attempting to open database at: ${dbPath}`)
+  try {
+    db = new Database(dbPath, { readonly: true, fileMustExist: true })
+    console.log(`[DB] Successfully opened database at: ${dbPath}`)
+    return db
+  } catch (error) {
+    console.error(`[DB] Failed to open database at ${dbPath}:`, error)
+    throw error
+  }
 }
 
 function fetchVocabulary(db: Db, slugs: string[]): VocabRow[] {
