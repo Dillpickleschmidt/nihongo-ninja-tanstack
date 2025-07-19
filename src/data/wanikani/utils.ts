@@ -1,10 +1,7 @@
 // app/data/wanikani/utils.ts
 import { createServerFn } from "@tanstack/solid-start"
-import type { Database as Db } from "better-sqlite3"
-import Database from "better-sqlite3"
-import path from "node:path"
-import fs from "node:fs"
-import { WANIKANI_DB_BASE64 } from "./wanikani-db-embedded"
+import Database, { type Database as SQLiteDatabase } from "better-sqlite3"
+import { existsSync } from "fs"
 import {
   getFSRSCardsByKeys,
   type FSRSCardData,
@@ -30,66 +27,66 @@ const WELL_KNOWN_THRESHOLD = 21
 // DATABASE & STATIC DATA FUNCTIONS
 // =============================================================================
 
-let db: Db | null = null
+// Global database connection cache for Lambda warm starts
+let globalDbConnection: SQLiteDatabase | null = null
 
-function getDbPath(): string {
-  if (process.env.LAMBDA_TASK_ROOT) {
-    // Lambda environment - create database from embedded base64 data
-    const tmpDbPath = "/tmp/wanikani.db"
-    
-    // Check if already written to /tmp
-    if (!fs.existsSync(tmpDbPath)) {
-      console.log(`[DB] Creating database from embedded base64 data...`)
-      try {
-        const dbBuffer = Buffer.from(WANIKANI_DB_BASE64, 'base64')
-        fs.writeFileSync(tmpDbPath, dbBuffer)
-        console.log(`[DB] Successfully created database at: ${tmpDbPath} (${dbBuffer.length} bytes)`)
-      } catch (error) {
-        console.error(`[DB] Failed to create database from base64:`, error)
-        throw error
-      }
-    } else {
-      console.log(`[DB] Database already exists in /tmp`)
+async function getDbConnection(): Promise<SQLiteDatabase> {
+  // Return cached connection if available
+  if (globalDbConnection) {
+    try {
+      globalDbConnection.prepare("SELECT 1").get()
+      return globalDbConnection
+    } catch (error) {
+      globalDbConnection = null
     }
-    
-    return tmpDbPath
   }
-  // Local development
-  return path.join(process.cwd(), "src/data/wanikani/wanikani.db")
-}
 
-function getDbConnection(): Db {
-  if (db) {
-    return db
-  }
-  const dbPath = getDbPath()
-  console.log(`[DB] Attempting to open database at: ${dbPath}`)
+  const dbPath = await getDbPath()
+
   try {
-    db = new Database(dbPath, { readonly: true, fileMustExist: true })
-    console.log(`[DB] Successfully opened database at: ${dbPath}`)
-    return db
+    globalDbConnection = new Database(dbPath, { readonly: true })
+    // Test the connection
+    globalDbConnection.prepare("SELECT COUNT(*) FROM vocabulary").get()
+    return globalDbConnection
   } catch (error) {
-    console.error(`[DB] Failed to open database at ${dbPath}:`, error)
+    console.error(`[Utils] Failed to open database at ${dbPath}:`, error)
     throw error
   }
 }
 
-function fetchVocabulary(db: Db, slugs: string[]): VocabRow[] {
+async function getDbPath(): Promise<string> {
+  // The Nitro hook places the file in the server root, which becomes the Lambda task root.
+  const prodPath = "/var/task/wanikani.db"
+  if (existsSync(prodPath)) {
+    return prodPath
+  }
+
+  // Fallback for local development
+  const devPath = "./public/wanikani.db"
+  if (existsSync(devPath)) {
+    return devPath
+  }
+
+  throw new Error(
+    "Could not locate wanikani.db file in production or development paths.",
+  )
+}
+
+async function fetchVocabulary(slugs: string[]): Promise<VocabRow[]> {
   if (slugs.length === 0) return []
+  const db = await getDbConnection()
   const placeholders = slugs.map(() => "?").join(",")
-  return db
-    .prepare(
-      `SELECT id, characters, slug FROM vocabulary WHERE slug IN (${placeholders})`,
-    )
-    .all(...slugs) as VocabRow[]
+  const query = `SELECT id, characters, slug FROM vocabulary WHERE slug IN (${placeholders})`
+  const result = db.prepare(query).all(...slugs) as VocabRow[]
+  return result
 }
 
 /**
  * Retrieve WaniKani hierarchy, summary, and flat lists.
  */
-function fetchStaticHierarchyFromDb(slugs: string[]) {
-  const db = getDbConnection()
-  const vocabRows = fetchVocabulary(db, slugs)
+async function fetchStaticHierarchyFromDb(slugs: string[]) {
+  const db = await getDbConnection()
+  const vocabRows = await fetchVocabulary(slugs)
   if (vocabRows.length === 0) return null
 
   const vocabIds = vocabRows.map((v) => v.id)
@@ -325,7 +322,7 @@ export const getWKHierarchy = createServerFn({ method: "GET" })
   .handler(async ({ data: slugs }): Promise<FullHierarchyData | null> => {
     if (!slugs || slugs.length === 0) return null
 
-    const staticData = fetchStaticHierarchyFromDb(slugs)
+    const staticData = await fetchStaticHierarchyFromDb(slugs)
     if (!staticData) return null
 
     const { vocabRows, kanjiRows, radicalRows, relations } = staticData
@@ -350,7 +347,7 @@ export const getUserProgressForVocab = createServerFn({ method: "GET" })
 
     const fsrsData = await getFSRSCardsByKeys(data.userId, data.slugs)
 
-    // Return a plain object instead of Map
+    // Return a plain object instead of Map (for server JSON serialization)
     const progressRecord: Record<string, FSRSCardData> = {}
     fsrsData.forEach((card) => {
       progressRecord[`${card.type}:${card.practice_item_key}`] = card
@@ -363,16 +360,14 @@ export const getItemDetailsBySlugsBatch = createServerFn({ method: "GET" })
   .validator((data: { kanji: string[]; radicals: string[] }) => data)
   .handler(
     async ({ data }): Promise<{ kanji: Kanji[]; radicals: Radical[] }> => {
-      const db = getDbConnection()
+      const db = await getDbConnection()
       const results = { kanji: [] as Kanji[], radicals: [] as Radical[] }
 
       if (data.kanji.length > 0) {
         const kanjiPlaceholders = data.kanji.map(() => "?").join(",")
+        const kanjiQuery = `SELECT id, characters, slug, meanings, meaning_mnemonic, reading_mnemonic FROM kanji WHERE slug IN (${kanjiPlaceholders})`
         const kanjiRows = db
-          .prepare(
-            `SELECT id, characters, slug, meanings, meaning_mnemonic, reading_mnemonic 
-                   FROM kanji WHERE slug IN (${kanjiPlaceholders})`,
-          )
+          .prepare(kanjiQuery)
           .all(...data.kanji) as KanjiRow[]
 
         results.kanji = kanjiRows.map((row) => ({
@@ -388,11 +383,9 @@ export const getItemDetailsBySlugsBatch = createServerFn({ method: "GET" })
 
       if (data.radicals.length > 0) {
         const radicalPlaceholders = data.radicals.map(() => "?").join(",")
+        const radicalQuery = `SELECT id, characters, slug, meanings, meaning_mnemonic FROM radicals WHERE slug IN (${radicalPlaceholders})`
         const radicalRows = db
-          .prepare(
-            `SELECT id, characters, slug, meanings, meaning_mnemonic 
-                   FROM radicals WHERE slug IN (${radicalPlaceholders})`,
-          )
+          .prepare(radicalQuery)
           .all(...data.radicals) as RadicalRow[]
 
         results.radicals = radicalRows.map((row) => ({

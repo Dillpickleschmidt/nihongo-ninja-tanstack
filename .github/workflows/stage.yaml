@@ -30,7 +30,7 @@ jobs:
             .output/
             .sst/
             .tanstack/
-          key: cache-${{ hashFiles('**/bun.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]xs') }}
+          key: cache-${{ hashFiles('**/bun.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           restore-keys: |
             cache-${{ hashFiles('**/bun.lock') }}-
       - name: Install Bun
@@ -54,15 +54,12 @@ jobs:
           bunx sst secret set SECRET_VAL '${{ secrets.SECRET_VAL }}' --stage staging
           bunx sst secret set COMMIT_SHA '${{ github.sha }}' --stage staging
 
+      - name: Build application
+        run: bun run build
+
       - name: Deploy to AWS with SST
         run: bun run deploy-stage
 
       - name: Clean Up AWS Profile
         run: |
           rm -rf ~/.aws
-
-      # - name: Create Pull Request to Production
-      #   if: success()
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: gh pr create --base production --head main --title "Auto- ${{ github.event.head_commit.message }}" --body "Auto PR from Stage Release"
