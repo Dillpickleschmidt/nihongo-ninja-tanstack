@@ -1,0 +1,68 @@
+name: Staging Deploy via SST to AWS
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "main"
+    paths:
+      - ".github/workflows/stage.yaml"
+      - "src/**"
+      - "*.json"
+      - "*.yaml"
+      - "*.json"
+      - "*.config.js"
+      - "*.config.ts"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Cache TanStack Start Build
+        uses: actions/cache@v4
+        with:
+          path: |
+            .nitro/
+            .output/
+            .sst/
+            .tanstack/
+          key: cache-${{ hashFiles('**/bun.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]xs') }}
+          restore-keys: |
+            cache-${{ hashFiles('**/bun.lock') }}-
+      - name: Install Bun
+        run: npm install -g bun
+
+      - name: Install projects deps
+        run: bun install
+
+      - name: Install AWS Creds
+        run: |
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/credentials
+          echo "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+
+      - name: Set SST Config Secret
+        run: |
+          bunx sst secret set SUPABASE_URL '${{ secrets.SUPABASE_URL_STAGING }}' --stage staging
+          bunx sst secret set SUPABASE_ANON_KEY '${{ secrets.SUPABASE_ANON_KEY_STAGING }}' --stage staging
+          bunx sst secret set SUPABASE_JWT_SECRET '${{ secrets.SUPABASE_JWT_SECRET }}' --stage staging
+          bunx sst secret set SECRET_VAL '${{ secrets.SECRET_VAL }}' --stage staging
+          bunx sst secret set COMMIT_SHA '${{ github.sha }}' --stage staging
+
+      - name: Deploy to AWS with SST
+        run: bun run deploy-stage
+
+      - name: Clean Up AWS Profile
+        run: |
+          rm -rf ~/.aws
+
+      # - name: Create Pull Request to Production
+      #   if: success()
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: gh pr create --base production --head main --title "Auto- ${{ github.event.head_commit.message }}" --body "Auto PR from Stage Release"

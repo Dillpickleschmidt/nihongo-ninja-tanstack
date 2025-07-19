@@ -10,6 +10,7 @@ export default defineConfig({
     },
     conditions: ["development", "browser"],
   },
+  assetsInclude: ["**/*.db"],
   test: {
     environment: "jsdom",
     globals: true,
