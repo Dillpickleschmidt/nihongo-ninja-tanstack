@@ -1,5 +1,5 @@
 // features/dashboard/components/layout/LeftSidebar.tsx
-import { createSignal, createMemo, For } from "solid-js"
+import { createSignal, createMemo } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
 import { WordHierarchy } from "../content/WordHierarchy"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"

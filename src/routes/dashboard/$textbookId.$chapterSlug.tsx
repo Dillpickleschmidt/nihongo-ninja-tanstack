@@ -32,35 +32,56 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
     }
   },
   loader: async ({ context, params }) => {
+    console.time("loader")
     const { user } = context
     const { textbookId, chapterSlug } = params
 
-    const deck = getDeckBySlug(textbookId as TextbookIDEnum, chapterSlug)
+    console.time("getDeckBySlug")
+    const fullDeck = getDeckBySlug(textbookId as TextbookIDEnum, chapterSlug)
+    console.timeEnd("getDeckBySlug")
 
-    if (!deck) {
+    if (!fullDeck) {
       throw redirect({
         to: "/dashboard/$textbookId/$chapterSlug",
         params: { textbookId: "genki_1", chapterSlug: "chapter-0" },
       })
     }
+    const deck = {
+      id: fullDeck.id,
+      slug: fullDeck.slug,
+      title: fullDeck.title,
+      deckType: fullDeck.deckType,
+      chapter_number: fullDeck.chapter_number,
+      description: fullDeck.description,
+      learning_path_items: [],
+      external_resource_ids: [],
+    }
 
-    const lessons = getLessons(deck)
-    const externalResources = getExternalResources(deck)
+    console.time("getLessons")
+    const lessons = getLessons(fullDeck)
+    console.timeEnd("getLessons")
 
-    const vocabModuleId = deck.learning_path_items.find((item) =>
+    console.time("getExternalResources")
+    const externalResources = getExternalResources(fullDeck)
+    console.timeEnd("getExternalResources")
+
+    const vocabModuleId = fullDeck.learning_path_items.find((item) =>
       item.id.endsWith("_vocab-list"),
     )?.id
 
     let vocabForHierarchy: string[] = []
     let vocabularyItems: VocabularyItem[] = []
     if (vocabModuleId) {
-      const vocabItems = getModuleVocabulary(vocabModuleId)
-      vocabForHierarchy = vocabItems.map((item) => item.word)
-      vocabularyItems = vocabItems
+      console.time("getModuleVocabulary")
+      vocabularyItems = await getModuleVocabulary(vocabModuleId)
+      console.timeEnd("getModuleVocabulary")
+      vocabForHierarchy = vocabularyItems.map((item) => item.word)
     }
 
     // Get WaniKani hierarchy (only for words that have kanji)
+    console.time("getWKHierarchy")
     const wkHierarchyData = await getWKHierarchy({ data: vocabForHierarchy })
+    console.timeEnd("getWKHierarchy")
 
     // Create lookup map and build complete hierarchy in one pass
     const wkVocabMap = new Map(
@@ -121,10 +142,22 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       id: tb.id,
       name: tb.short_name || tb.name,
       type: "textbook",
-      decks: tb.chapters,
+      decks: tb.chapters.map(
+        ({ id, slug, deckType, chapter_number, title, description }) => ({
+          id,
+          slug,
+          deckType,
+          chapter_number,
+          title,
+          description,
+          learning_path_items: [], // Add empty array to satisfy type
+          external_resource_ids: [], // Add empty array to satisfy type
+        }),
+      ),
       disabled: false,
     }))
 
+    console.timeEnd("loader")
     return {
       user,
       textbookId,

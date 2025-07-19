@@ -1,6 +1,5 @@
 // src/data/utils/vocab.ts
 import { dynamic_modules } from "@/data/dynamic_modules"
-import { vocabulary } from "@/data/vocabulary"
 import { vocabularySets } from "@/data/vocabulary_sets"
 import type {
   DynamicModule,
@@ -10,6 +9,7 @@ import type {
 } from "@/data/types"
 import type { KanaItem } from "@/features/kana-quiz/hooks/useKanaQuiz"
 import type { PracticeMode } from "@/features/vocab-practice/types"
+import { getVocabularyByKeys } from "./vocab.server"
 
 /**
  * Get a dynamic module by its ID
@@ -21,7 +21,9 @@ export function getDynamicModule(moduleId: string): DynamicModule | null {
 /**
  * Get vocabulary items for a specific dynamic module
  */
-export function getModuleVocabulary(moduleId: string): VocabularyItem[] {
+export async function getModuleVocabulary(
+  moduleId: string,
+): Promise<VocabularyItem[]> {
   const module = getDynamicModule(moduleId)
   if (!module || !module.vocab_set_ids) {
     return []
@@ -42,9 +44,8 @@ export function getModuleVocabulary(moduleId: string): VocabularyItem[] {
     }
   }
 
-  return vocabKeys
-    .map((key) => vocabulary[key])
-    .filter(Boolean) as VocabularyItem[]
+  // Use the new server function to fetch only the required vocabulary
+  return getVocabularyByKeys({ data: vocabKeys })
 }
 
 /**
