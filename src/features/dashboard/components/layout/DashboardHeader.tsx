@@ -1,58 +1,23 @@
 // features/dashboard/components/layout/DashboardHeader.tsx
 import { Link, useNavigate, Await } from "@tanstack/solid-router"
-import { createSignal, createMemo } from "solid-js"
+import { createSignal } from "solid-js"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
 import type { User } from "@supabase/supabase-js"
-import { useSettings } from "@/context/SettingsContext"
-import { generateServiceSources } from "@/features/dashboard/utils/serviceSourceHelper"
-import type { Deck, DeckSource, UserDeck } from "@/data/types"
-import type { DeferredPromise } from "@tanstack/solid-router"
+import type { Deck, DeckSource } from "@/data/types"
+import { useDashboardData } from "@/features/dashboard/context/DashboardDataContext"
 
 interface DashboardHeaderProps {
   dashboardType: "textbook" | "service" | "user"
   user: User | null
-  dueFSRSCardsCount: DeferredPromise<number | null>
-  currentDeck: Deck
-  deckSources: DeckSource[]
   variant: "mobile" | "desktop"
 }
 
 export function DashboardHeader(props: DashboardHeaderProps) {
   const navigate = useNavigate()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
-  const { preferences } = useSettings()
-
-  // Helper function to create a properly typed user deck source
-  const createUserDeckSource = (user: User): DeckSource => {
-    const userDeck: UserDeck = {
-      id: "user-decks",
-      slug: "default",
-      title: "My Custom Decks",
-      deckType: "user_deck" as const,
-      learning_path_items: [],
-      owner_id: user.id,
-      is_public: false,
-      vocabulary_keys: [],
-    }
-
-    return {
-      id: user.id,
-      name: "My Decks",
-      type: "user" as const,
-      decks: [userDeck],
-      disabled: false,
-    }
-  }
-
-  // Generate all available sources
-  const allSources = createMemo(() => {
-    const serviceSources = generateServiceSources(preferences())
-    const userSources = props.user ? [createUserDeckSource(props.user)] : []
-
-    return [...props.deckSources, ...serviceSources, ...userSources]
-  })
+  const dashboardData = useDashboardData()
 
   const handleDeckChange = (source: DeckSource, deck: Deck) => {
     if (source.type === "textbook") {
@@ -82,7 +47,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
 
     return (
       <Await
-        promise={props.dueFSRSCardsCount}
+        promise={dashboardData.dueFSRSCardsCount}
         fallback={
           <>
             <div class="text-gray-400">
@@ -126,8 +91,8 @@ export function DashboardHeader(props: DashboardHeaderProps) {
 
         <div class="flex justify-center">
           <DeckSelectionPopover
-            currentDeck={props.currentDeck}
-            allSources={allSources()}
+            currentDeck={dashboardData.currentDeck}
+            allSources={dashboardData.deckSources}
             onDeckChange={handleDeckChange}
             isOpen={isPopoverOpen()}
             onOpenChange={setIsPopoverOpen}
@@ -135,7 +100,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
             backgroundColor="bg-neutral-950/70"
           >
             <div class="hover:bg-card-foreground/40 -mt-0.5 flex min-w-[200px] items-center justify-center space-x-2 rounded-md border-none px-3 py-2 text-center text-lg font-semibold hover:cursor-pointer md:text-xl xl:-mt-1 xl:text-2xl">
-              <span>{props.currentDeck.title}</span>
+              <span>{dashboardData.currentDeck.title}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

@@ -3,10 +3,12 @@ import { createFileRoute, redirect, defer } from "@tanstack/solid-router"
 import { createEffect } from "solid-js"
 import { setActiveDeck } from "@/data/utils/core"
 import { getDueFSRSCardsCount } from "@/features/supabase/db/utils"
-import { textbooks } from "@/data/textbooks"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
+import { DashboardDataProvider } from "@/features/dashboard/context/DashboardDataContext"
 import { UserContentArea } from "@/features/dashboard/components/content/user/UserContentArea"
-import type { DeckSource, UserDeck } from "@/data/types"
+import type { UserDeck } from "@/data/types"
+import { getServicePreferencesFromCookie } from "@/features/service-config/server/service-manager"
+import { getAllDeckSources } from "@/features/dashboard/utils/allDeckSources"
 
 export const Route = createFileRoute("/dashboard/$userId")({
   beforeLoad: ({ context }) => {
@@ -17,13 +19,13 @@ export const Route = createFileRoute("/dashboard/$userId")({
   loader: async ({ context, params }) => {
     const { user } = context
     const userId = params.userId
+    const preferences = getServicePreferencesFromCookie()
 
     console.log("User route - user:", user)
     console.log("User route - userId param:", userId)
     console.log("User route - user.id:", user?.id)
     console.log("User route - match:", user?.id === userId)
 
-    // For now, just verify user access
     if (!user || user.id !== userId) {
       console.log("User route - redirecting due to failed verification")
       throw redirect({
@@ -32,7 +34,6 @@ export const Route = createFileRoute("/dashboard/$userId")({
       })
     }
 
-    // Create a mock current deck for the user
     const currentDeck: UserDeck = {
       id: "user-main",
       slug: "user-decks",
@@ -44,44 +45,12 @@ export const Route = createFileRoute("/dashboard/$userId")({
       vocabulary_keys: [],
     }
 
-    // Generate deck sources (textbook sources + user sources)
-    const textbookSources = Object.values(textbooks).map((tb) => ({
-      id: tb.id,
-      name: tb.short_name || tb.name,
-      type: "textbook" as const,
-      decks: tb.chapters,
-      disabled: false,
-    }))
+    const deckSources = getAllDeckSources(user, preferences)
 
-    const userSources: DeckSource[] = [
-      {
-        id: user.id,
-        name: "My Decks",
-        type: "user" as const,
-        decks: [
-          {
-            id: "user-decks",
-            slug: "default",
-            title: "My Custom Decks",
-            deckType: "user_deck" as const,
-            learning_path_items: [],
-            owner_id: user.id,
-            is_public: false,
-            vocabulary_keys: [],
-          },
-        ],
-        disabled: false,
-      },
-    ]
-
-    const deckSources = [...textbookSources, ...userSources]
-
-    // Get due cards for the user (same as textbook route)
     const dueFSRSCardsPromise = user
       ? getDueFSRSCardsCount(user.id)
       : Promise.resolve(null)
 
-    // Mock user data for UserContentArea
     const mockUserData = {
       decks: generateMockUserDecks(),
       notes: generateMockUserNotes(),
@@ -93,11 +62,12 @@ export const Route = createFileRoute("/dashboard/$userId")({
       userId,
       currentDeck,
       deckSources,
-      wordHierarchyData: null, // TODO: use active deck data
+      wordHierarchyData: null,
       vocabularyItems: [],
       progressData: defer(Promise.resolve(null)),
       dueFSRSCardsCount: defer(dueFSRSCardsPromise),
       userData: mockUserData,
+      totalLessonCount: 0,
     }
   },
   component: RouteComponent,
@@ -110,21 +80,25 @@ function RouteComponent() {
     setActiveDeck("user", loaderData().userId, "default")
   })
 
+  const dashboardData = {
+    wordHierarchyData: loaderData().wordHierarchyData,
+    vocabularyItems: loaderData().vocabularyItems,
+    progressData: loaderData().progressData,
+    dueFSRSCardsCount: loaderData().dueFSRSCardsCount,
+    currentDeck: loaderData().currentDeck,
+    deckSources: loaderData().deckSources,
+    totalLessonCount: loaderData().totalLessonCount,
+  }
+
   return (
-    <DashboardLayout
-      user={loaderData().user}
-      dueFSRSCardsCount={loaderData().dueFSRSCardsCount}
-      currentDeck={loaderData().currentDeck}
-      deckSources={loaderData().deckSources}
-      wordHierarchyData={loaderData().wordHierarchyData}
-      vocabularyItems={loaderData().vocabularyItems}
-      progressData={loaderData().progressData}
-    >
-      <UserContentArea
-        userId={loaderData().userId}
-        userData={loaderData().userData}
-      />
-    </DashboardLayout>
+    <DashboardDataProvider data={dashboardData}>
+      <DashboardLayout user={loaderData().user}>
+        <UserContentArea
+          userId={loaderData().userId}
+          userData={loaderData().userData}
+        />
+      </DashboardLayout>
+    </DashboardDataProvider>
   )
 }
 

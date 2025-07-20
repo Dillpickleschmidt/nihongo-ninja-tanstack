@@ -1,10 +1,9 @@
 // features/dashboard/components/content/textbook/CourseDashboard.tsx
-import { For, onMount, createEffect } from "solid-js"
-import { Link, useLocation } from "@tanstack/solid-router"
+import { For, createEffect } from "solid-js"
+import { Link, useLocation, Await } from "@tanstack/solid-router"
 import {
   Clock,
   CheckCircle,
-  Circle,
   ArrowRight,
   ChevronRight,
   BookOpen,
@@ -20,7 +19,7 @@ import {
   BookPlus,
 } from "lucide-solid"
 import { Transition } from "solid-transition-group"
-import type { StaticModule, DynamicModule } from "@/data/types"
+import type { EnrichedLearningPathModule } from "@/features/dashboard/utils/loader-helpers"
 import { cn } from "@/utils"
 import { usePageTransition } from "@/context/TransitionContext"
 import {
@@ -28,9 +27,11 @@ import {
   prepareElementForEnter,
 } from "@/utils/animations"
 import { SmoothCard } from "../../shared/SmoothCard"
+import type { DeferredPromise } from "@tanstack/solid-router"
 
 interface CourseDashboardProps {
-  lessons: (StaticModule | DynamicModule)[]
+  initialLessons: EnrichedLearningPathModule[]
+  remainingLessons: DeferredPromise<EnrichedLearningPathModule[]>
   progressPercentage: number
   variant: "mobile" | "desktop"
 }
@@ -38,11 +39,6 @@ interface CourseDashboardProps {
 const SELECTOR = "[data-lessons-section]"
 const DIRECTION = "left" as const
 const ENTER_DELAY = 180
-
-// Shared utility functions
-function getModuleType(module: StaticModule | DynamicModule) {
-  return "lesson_type" in module ? module.lesson_type : module.session_type
-}
 
 function getModuleIcon(moduleType: string) {
   const iconComponents = {
@@ -66,97 +62,14 @@ function getModuleIcon(moduleType: string) {
   return iconComponents[moduleType] || BookOpen
 }
 
-function getModuleIconClasses(moduleType: string) {
-  const iconClasses = {
-    lesson: "text-green-600 dark:text-green-500",
-    worksheet: "text-teal-500 dark:text-teal-400",
-    "practice-sentence": "text-yellow-600 dark:text-yellow-500 saturate-[75%]",
-    "culture-note": "text-pink-500 dark:text-pink-400 saturate-[75%]",
-    vocab: "text-sky-500 dark:text-sky-400 saturate-[75%]",
-    "vocab-practice": "text-orange-600 dark:text-orange-500",
-    "conjugation-practice": "text-teal-500 dark:text-teal-400",
-    "counter-practice": "text-green-600 dark:text-green-500",
-    game: "text-red-600 dark:text-red-500",
-    video: "text-purple-500 dark:text-purple-400",
-    audio: "text-purple-500 dark:text-purple-400",
-    "grammar-notes": "text-red-600 dark:text-red-500 opacity-80",
-    reading: "text-teal-500 dark:text-teal-400",
-    "vocab-list": "text-sky-500 dark:text-sky-400 saturate-[75%]",
-    "vocab-test": "text-yellow-600 dark:text-yellow-500 saturate-[75%]",
-  }
-
-  return iconClasses[moduleType] || "text-gray-600 dark:text-gray-500"
-}
-
-function getModuleGradient(moduleType: string) {
-  const gradientClasses = {
-    lesson: "bg-gradient-to-br from-green-500/10 via-card to-green-600/5",
-    worksheet: "bg-gradient-to-br from-teal-400/10 via-card to-teal-500/5",
-    "practice-sentence":
-      "bg-gradient-to-br from-yellow-500/10 via-card to-yellow-600/5",
-    "culture-note": "bg-gradient-to-br from-pink-400/10 via-card to-pink-500/5",
-    vocab: "bg-gradient-to-br from-sky-400/10 via-card to-sky-500/5",
-    "vocab-practice":
-      "bg-gradient-to-br from-orange-500/10 via-card to-orange-600/5",
-    "conjugation-practice":
-      "bg-gradient-to-br from-teal-400/10 via-card to-teal-500/5",
-    "counter-practice":
-      "bg-gradient-to-br from-green-500/10 via-card to-green-600/5",
-    game: "bg-gradient-to-br from-red-500/10 via-card to-red-600/5",
-    video: "bg-gradient-to-br from-purple-400/10 via-card to-purple-500/5",
-    audio: "bg-gradient-to-br from-purple-400/10 via-card to-purple-500/5",
-    "grammar-notes": "bg-gradient-to-br from-red-500/10 via-card to-red-600/5",
-    reading: "bg-gradient-to-br from-teal-400/10 via-card to-teal-500/5",
-    "vocab-list": "bg-gradient-to-br from-sky-400/10 via-card to-sky-500/5",
-    "vocab-test":
-      "bg-gradient-to-br from-yellow-500/10 via-card to-yellow-600/5",
-  }
-
-  return gradientClasses[moduleType] || "bg-card"
-}
-
-function getModuleLightBackground(moduleType: string) {
-  const lightBackgrounds = {
-    lesson: "bg-green-50/70",
-    worksheet: "bg-teal-50/70",
-    "practice-sentence": "bg-yellow-50/70",
-    "culture-note": "bg-pink-50/70",
-    vocab: "bg-sky-50/70",
-    "vocab-practice": "bg-orange-50/70",
-    "conjugation-practice": "bg-teal-50/70",
-    "counter-practice": "bg-green-50/70",
-    game: "bg-red-50/70",
-    video: "bg-purple-50/70",
-    audio: "bg-purple-50/70",
-    "grammar-notes": "bg-red-50/70",
-    reading: "bg-teal-50/70",
-    "vocab-list": "bg-sky-50/70",
-    "vocab-test": "bg-yellow-50/70",
-  }
-
-  return lightBackgrounds[moduleType] || "bg-card"
-}
-
-function truncateText(text: string, maxLength: number) {
-  return text.length > maxLength ? text.substring(0, maxLength) + "..." : text
-}
-
-function getDisplayTitle(title: string) {
-  return title.startsWith("Practice ") ? title.substring(9) : title
-}
-
-function getLinkTo(lesson: StaticModule | DynamicModule) {
-  return "link" in lesson && lesson.link
-    ? lesson.link
-    : `/practice/${lesson.id}`
-}
+// Removed Skeleton components as they are no longer needed.
 
 export function CourseDashboard(props: CourseDashboardProps) {
-  const location = useLocation()
   const { hasUserNavigated, animationTrigger } = usePageTransition()
 
-  const runAnimation = () => {
-    if (location().pathname.includes("/dashboard") && hasUserNavigated()) {
+  createEffect(() => {
+    animationTrigger()
+    if (hasUserNavigated()) {
       const element = document.querySelector(SELECTOR) as HTMLElement
       if (element) {
         prepareElementForEnter(element, DIRECTION)
@@ -165,15 +78,6 @@ export function CourseDashboard(props: CourseDashboardProps) {
         }, ENTER_DELAY)
       }
     }
-  }
-
-  onMount(() => {
-    runAnimation()
-  })
-
-  createEffect(() => {
-    animationTrigger()
-    runAnimation()
   })
 
   if (props.variant === "mobile") {
@@ -208,49 +112,77 @@ export function CourseDashboard(props: CourseDashboardProps) {
             ).then(() => done())
           }}
         >
-          {true && (
-            <div
-              data-lessons-section
-              data-transition-content
-              class="scrollbar-hide flex gap-3.5 overflow-x-auto pr-4 pb-2 pl-8"
-            >
-              <For each={props.lessons}>
-                {(lesson) => <MobileLessonCard lesson={lesson} />}
-              </For>
-            </div>
-          )}
+          <div
+            data-lessons-section
+            data-transition-content
+            class="scrollbar-hide flex gap-3.5 overflow-x-auto pr-4 pb-2 pl-8"
+          >
+            <For each={props.initialLessons}>
+              {(lesson) => <MobileLessonCard lesson={lesson} />}
+            </For>
+            <Await promise={props.remainingLessons} fallback={null}>
+              {(remaining) => (
+                <For each={remaining}>
+                  {(lesson) => <MobileLessonCard lesson={lesson} />}
+                </For>
+              )}
+            </Await>
+          </div>
         </Transition>
       </div>
     )
   }
 
-  // Desktop variant - just the lesson list without header
+  // Desktop variant
   return (
-    <div class="grid grid-cols-1 gap-3">
-      <For each={props.lessons}>
-        {(lesson, index) => (
-          <LessonRow
-            lesson={lesson}
-            isCompleted={index() < 2}
-            gradient="from-green-600/20 to-emerald-600/10"
-          />
-        )}
-      </For>
-    </div>
+    <Transition
+      onEnter={(element, done) => {
+        if (!hasUserNavigated()) {
+          done()
+          return
+        }
+        createSlideWithFadeInAnimation(element as HTMLElement, DIRECTION).then(
+          () => done(),
+        )
+      }}
+    >
+      <div
+        data-lessons-section
+        data-transition-content
+        class="grid grid-cols-1 gap-3"
+      >
+        {/* Render initial lessons immediately */}
+        <For each={props.initialLessons}>
+          {(lesson, index) => (
+            <LessonRow lesson={lesson} isCompleted={index() < 2} />
+          )}
+        </For>
+
+        {/* Await the rest of the lessons and stream them in */}
+        <Await promise={props.remainingLessons} fallback={null}>
+          {(remaining) => (
+            <For each={remaining}>
+              {(lesson, index) => (
+                <LessonRow
+                  lesson={lesson}
+                  isCompleted={index() + props.initialLessons.length < 2}
+                />
+              )}
+            </For>
+          )}
+        </Await>
+      </div>
+    </Transition>
   )
 }
 
 function LessonRow(props: {
-  lesson: StaticModule | DynamicModule
+  lesson: EnrichedLearningPathModule
   isCompleted: boolean
-  gradient: string
 }) {
-  const moduleType = getModuleType(props.lesson)
-  const displayTitle = getDisplayTitle(props.lesson.title)
-  const linkTo = getLinkTo(props.lesson)
-
+  const { moduleType, displayTitle, linkTo, iconClasses, gradientClasses } =
+    props.lesson
   const ModuleIcon = getModuleIcon(moduleType)
-  const iconClasses = getModuleIconClasses(moduleType)
 
   return (
     <Link to={linkTo} class="group block">
@@ -261,7 +193,7 @@ function LessonRow(props: {
           "bg-gradient-to-r backdrop-blur-sm",
           props.isCompleted ? "bg-green-600/5" : "bg-white/2",
         )}
-        style={`background-image: linear-gradient(to right, ${props.gradient})`}
+        style={`background-image: linear-gradient(to right, ${gradientClasses})`}
       >
         <div class="flex-shrink-0">
           {props.isCompleted ? (
@@ -270,7 +202,6 @@ function LessonRow(props: {
             <ModuleIcon class={cn("h-5 w-5", iconClasses)} />
           )}
         </div>
-
         <div class="min-w-0 flex-1">
           <h4 class="group-hover:text-primary line-clamp-1 font-medium transition-colors">
             {displayTitle}
@@ -285,25 +216,23 @@ function LessonRow(props: {
             </div>
           </div>
         </div>
-
         <ArrowRight class="text-muted-foreground h-5 w-5 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
       </div>
     </Link>
   )
 }
 
-// Simplified mobile lesson card component
-function MobileLessonCard(props: { lesson: StaticModule | DynamicModule }) {
+function MobileLessonCard(props: { lesson: EnrichedLearningPathModule }) {
   const { setUserHasNavigated } = usePageTransition()
-
-  const moduleType = getModuleType(props.lesson)
-  const displayTitle = getDisplayTitle(props.lesson.title)
-  const linkTo = getLinkTo(props.lesson)
-
+  const {
+    moduleType,
+    linkTo,
+    iconClasses,
+    lightBackground,
+    gradientClasses,
+    truncatedTitle,
+  } = props.lesson
   const ModuleIcon = getModuleIcon(moduleType)
-  const iconClasses = getModuleIconClasses(moduleType)
-  const lightBackground = getModuleLightBackground(moduleType)
-  const gradientClasses = getModuleGradient(moduleType)
 
   const handleClick = () => {
     setUserHasNavigated(true)
@@ -330,15 +259,12 @@ function MobileLessonCard(props: { lesson: StaticModule | DynamicModule }) {
             gradientClasses,
           )}
         />
-
         <div class="mx-auto flex items-center justify-center">
           <ModuleIcon size="20px" class={iconClasses} />
         </div>
-
         <h3 class="font-inter mb-1 text-sm leading-[1.15rem]">
-          {truncateText(displayTitle, 25)}
+          {truncatedTitle}
         </h3>
-
         <div class="bg-muted mb-1 rounded-full p-2">
           <ChevronRight class="h-4 w-4" />
         </div>

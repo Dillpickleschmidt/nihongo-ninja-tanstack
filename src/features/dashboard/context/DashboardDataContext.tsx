@@ -1,5 +1,6 @@
+// features/dashboard/context/DashboardDataContext.tsx
 import { createContext, useContext, type ParentComponent } from "solid-js"
-import type { VocabularyItem } from "@/data/types"
+import type { VocabularyItem, Deck, DeckSource } from "@/data/types"
 import type { FullHierarchyData } from "@/data/wanikani/types"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import type { FSRSCardData } from "@/features/supabase/db/utils"
@@ -8,6 +9,10 @@ export interface DashboardData {
   wordHierarchyData: FullHierarchyData | null
   vocabularyItems: VocabularyItem[]
   progressData: DeferredPromise<Record<string, FSRSCardData> | null>
+  dueFSRSCardsCount: DeferredPromise<number | null>
+  currentDeck: Deck
+  deckSources: DeckSource[]
+  totalLessonCount: number
 }
 
 const DashboardDataContext = createContext<DashboardData>()
@@ -35,4 +40,3 @@ export const useDashboardData = (): DashboardData => {
   }
   return context
 }
-

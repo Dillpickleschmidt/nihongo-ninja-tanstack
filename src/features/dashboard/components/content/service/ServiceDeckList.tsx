@@ -54,7 +54,7 @@ export function ServiceDeckList(props: ServiceDeckListProps) {
     <div class="flex items-center gap-3">
       <h3 class="text-lg font-semibold">{category.title}</h3>
       {props.variant === "desktop" && (
-        <div class="from-muted h-px flex-1 bg-gradient-to-r to-transparent" />
+        <div class="bg-card-foreground h-px flex-1" />
       )}
       <span class="text-muted-foreground text-sm">
         {category.decks.length} decks

@@ -3,14 +3,15 @@ import { createFileRoute, redirect, defer } from "@tanstack/solid-router"
 import { createEffect } from "solid-js"
 import { setActiveDeck } from "@/data/utils/core"
 import { getDueFSRSCardsCount } from "@/features/supabase/db/utils"
-import { textbooks } from "@/data/textbooks"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
+import { DashboardDataProvider } from "@/features/dashboard/context/DashboardDataContext"
 import { ServiceContentArea } from "@/features/dashboard/components/content/service/ServiceContentArea"
 import { fetchServiceDataWithAuth } from "@/features/service-config/jpdb/api"
 import { getServicePreferencesFromCookie } from "@/features/service-config/server/service-manager"
 import { isLiveOptionEnabled } from "@/features/dashboard/utils/serviceSourceHelper"
 import type { ServiceType } from "@/features/service-config/types"
-import type { DeckSource, UserDeck } from "@/data/types"
+import type { UserDeck } from "@/data/types"
+import { getAllDeckSources } from "@/features/dashboard/utils/allDeckSources"
 
 const VALID_SERVICES = ["anki", "wanikani", "jpdb"] as const
 
@@ -204,8 +205,8 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
   loader: async ({ context, params }) => {
     const { user } = context
     const fullServiceId = params.serviceId
+    const preferences = getServicePreferencesFromCookie()
 
-    // Helper to parse the full service ID, e.g., "jpdb-live" or "wanikani-imported"
     const parseServiceId = (fullId: string) => {
       const parts = fullId.split("-")
       const baseService = parts[0] as ServiceType
@@ -225,38 +226,8 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
       })
     }
 
-    const textbookSources = Object.values(textbooks).map((tb) => ({
-      id: tb.id,
-      name: tb.short_name || tb.name,
-      type: "textbook" as const,
-      decks: tb.chapters,
-      disabled: false,
-    }))
+    const deckSources = getAllDeckSources(user, preferences)
 
-    const userSources: DeckSource[] = user
-      ? [
-          {
-            id: user.id,
-            name: "My Decks",
-            type: "user" as const,
-            decks: [
-              {
-                id: "user-decks",
-                slug: "default",
-                title: "My Custom Decks",
-                deckType: "user_deck" as const,
-                learning_path_items: [],
-                owner_id: user.id,
-                is_public: false,
-                vocabulary_keys: [],
-              },
-            ],
-            disabled: false,
-          },
-        ]
-      : []
-
-    const deckSources = [...textbookSources, ...userSources]
     const dueFSRSCardsPromise = user
       ? getDueFSRSCardsCount(user.id)
       : Promise.resolve(null)
@@ -284,8 +255,6 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
       serviceData = createEmptyServiceData()
       currentDeck = createDefaultDeck(baseService, "", title)
     } else if (baseService === "jpdb") {
-      const preferences = getServicePreferencesFromCookie()
-
       if (variant === "live" && !isLiveOptionEnabled("jpdb", preferences)) {
         serviceData = createEmptyServiceData()
         currentDeck = createDefaultDeck(baseService, user.id, title)
@@ -313,9 +282,10 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
         }
       }
     } else {
-      const preferences = getServicePreferencesFromCookie()
-
-      if (variant === "live" && !isLiveOptionEnabled(baseService, preferences)) {
+      if (
+        variant === "live" &&
+        !isLiveOptionEnabled(baseService, preferences)
+      ) {
         serviceData = createEmptyServiceData()
         currentDeck = createDefaultDeck(baseService, user.id, title)
       } else {
@@ -349,6 +319,7 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
       progressData: defer(Promise.resolve(null)),
       dueFSRSCardsCount: defer(dueFSRSCardsPromise),
       serviceData,
+      totalLessonCount: 0,
     }
   },
   component: RouteComponent,
@@ -358,25 +329,30 @@ function RouteComponent() {
   createEffect(() => {
     setActiveDeck("service", loaderData().serviceId, "default")
   })
+
+  const dashboardData = {
+    wordHierarchyData: loaderData().wordHierarchyData,
+    vocabularyItems: loaderData().vocabularyItems,
+    progressData: loaderData().progressData,
+    dueFSRSCardsCount: loaderData().dueFSRSCardsCount,
+    currentDeck: loaderData().currentDeck,
+    deckSources: loaderData().deckSources,
+    totalLessonCount: loaderData().totalLessonCount,
+  }
+
   return (
-    <DashboardLayout
-      user={loaderData().user}
-      dueFSRSCardsCount={loaderData().dueFSRSCardsCount}
-      currentDeck={loaderData().currentDeck}
-      deckSources={loaderData().deckSources}
-      wordHierarchyData={loaderData().wordHierarchyData}
-      vocabularyItems={loaderData().vocabularyItems}
-      progressData={loaderData().progressData}
-    >
-      {!loaderData().user ? (
-        <ServiceSignInMessage serviceId={loaderData().serviceId} />
-      ) : (
-        <ServiceContentArea
-          serviceId={loaderData().serviceId}
-          serviceData={loaderData().serviceData}
-        />
-      )}
-    </DashboardLayout>
+    <DashboardDataProvider data={dashboardData}>
+      <DashboardLayout user={loaderData().user}>
+        {!loaderData().user ? (
+          <ServiceSignInMessage serviceId={loaderData().serviceId} />
+        ) : (
+          <ServiceContentArea
+            serviceId={loaderData().serviceId}
+            serviceData={loaderData().serviceData}
+          />
+        )}
+      </DashboardLayout>
+    </DashboardDataProvider>
   )
 }
 function ServiceSignInMessage(props: { serviceId: ServiceType }) {

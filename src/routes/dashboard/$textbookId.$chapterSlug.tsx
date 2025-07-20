@@ -13,12 +13,17 @@ import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { getDueFSRSCardsCount } from "@/features/supabase/db/utils"
 import { getWKHierarchy, getUserProgressForVocab } from "@/data/wanikani/utils"
 import { getModuleVocabulary } from "@/data/utils/vocab"
-// import { TextbookContentArea } from "@/features/dashboard/components/content/textbook/TextbookContentArea"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
 import { DashboardDataProvider } from "@/features/dashboard/context/DashboardDataContext"
-import { textbooks } from "@/data/textbooks"
-import type { TextbookIDEnum, DeckSource, VocabularyItem } from "@/data/types"
+import { TextbookContentArea } from "@/features/dashboard/components/content/textbook/TextbookContentArea"
+import { getServicePreferencesFromCookie } from "@/features/service-config/server/service-manager"
+import type { TextbookIDEnum, VocabularyItem, Deck } from "@/data/types"
 import type { FullHierarchyData } from "@/data/wanikani/types"
+import {
+  enrichLessons,
+  enrichExternalResources,
+} from "@/features/dashboard/utils/loader-helpers"
+import { getAllDeckSources } from "@/features/dashboard/utils/allDeckSources"
 
 const searchSchema = z.object({
   textbook: z.string().optional(),
@@ -33,13 +38,12 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
     }
   },
   loader: async ({ context, params }) => {
-    console.time("loader")
     const { user } = context
     const { textbookId, chapterSlug } = params
 
-    console.time("getDeckBySlug")
+    const preferences = getServicePreferencesFromCookie()
+
     const fullDeck = getDeckBySlug(textbookId as TextbookIDEnum, chapterSlug)
-    console.timeEnd("getDeckBySlug")
 
     if (!fullDeck) {
       throw redirect({
@@ -47,7 +51,7 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
         params: { textbookId: "genki_1", chapterSlug: "chapter-0" },
       })
     }
-    const deck = {
+    const deck: Deck = {
       id: fullDeck.id,
       slug: fullDeck.slug,
       title: fullDeck.title,
@@ -58,30 +62,29 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       external_resource_ids: [],
     }
 
-    console.time("getLessons")
-    const lessons = getLessons(fullDeck)
-    console.timeEnd("getLessons")
+    const allEnrichedLessons = enrichLessons(getLessons(fullDeck))
+    const INITIAL_LESSON_COUNT = 7 // Deferring lessons after the first 7 to load later seems to save ~150ms on initial load
 
-    console.time("getExternalResources")
-    const externalResources = getExternalResources(fullDeck)
-    console.timeEnd("getExternalResources")
+    const initialLessons = allEnrichedLessons.slice(0, INITIAL_LESSON_COUNT)
+    const remainingLessonsPromise = Promise.resolve(
+      allEnrichedLessons.slice(INITIAL_LESSON_COUNT),
+    )
+
+    const externalResources = enrichExternalResources(
+      getExternalResources(fullDeck),
+    )
 
     const vocabModuleId = fullDeck.learning_path_items.find((item) =>
       item.id.endsWith("_vocab-list"),
     )?.id
 
-    let vocabForHierarchy: string[] = []
     let vocabularyItems: VocabularyItem[] = []
     if (vocabModuleId) {
-      console.time("getModuleVocabulary")
       vocabularyItems = await getModuleVocabulary(vocabModuleId)
-      console.timeEnd("getModuleVocabulary")
-      vocabForHierarchy = vocabularyItems.map((item) => item.word)
     }
+    const vocabForHierarchy = vocabularyItems.map((item) => item.word)
 
-    console.time("getWKHierarchy")
     const wkHierarchyData = await getWKHierarchy({ data: vocabForHierarchy })
-    console.timeEnd("getWKHierarchy")
 
     const wkVocabMap = new Map(
       wkHierarchyData?.hierarchy.map((item) => [item.slug, item]) || [],
@@ -116,9 +119,7 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
 
     const progressDataPromise =
       user && slugs.length > 0
-        ? getUserProgressForVocab({
-            data: { slugs, userId: user.id },
-          })
+        ? getUserProgressForVocab({ data: { slugs, userId: user.id } })
         : Promise.resolve(null)
 
     const dueFSRSCardsCountPromise = user
@@ -136,31 +137,15 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       return defer(promise)
     })
 
-    const deckSources: DeckSource[] = Object.values(textbooks).map((tb) => ({
-      id: tb.id,
-      name: tb.short_name || tb.name,
-      type: "textbook",
-      decks: tb.chapters.map(
-        ({ id, slug, deckType, chapter_number, title, description }) => ({
-          id,
-          slug,
-          deckType,
-          chapter_number,
-          title,
-          description,
-          learning_path_items: [],
-          external_resource_ids: [],
-        }),
-      ),
-      disabled: false,
-    }))
+    const deckSources = getAllDeckSources(user, preferences)
 
-    console.timeEnd("loader")
     return {
       user,
       textbookId,
       deck,
-      lessons,
+      initialLessons,
+      remainingLessons: defer(remainingLessonsPromise),
+      totalLessonCount: allEnrichedLessons.length,
       externalResources,
       wordHierarchyData,
       vocabularyItems,
@@ -184,24 +169,27 @@ function RouteComponent() {
     wordHierarchyData: loaderData().wordHierarchyData,
     vocabularyItems: loaderData().vocabularyItems,
     progressData: loaderData().progressData,
+    dueFSRSCardsCount: loaderData().dueFSRSCardsCount,
+    currentDeck: loaderData().deck,
+    deckSources: loaderData().deckSources,
+    totalLessonCount: loaderData().totalLessonCount,
   }
 
   return (
     <DashboardDataProvider data={dashboardData}>
       <DashboardLayout
         user={loaderData().user}
-        dueFSRSCardsCount={loaderData().dueFSRSCardsCount}
-        currentDeck={loaderData().deck}
-        deckSources={loaderData().deckSources}
         textbookId={loaderData().textbookId}
         chapterSlug={loaderData().deck.slug}
       >
-        {/* --- TEMPORARY CHANGE FOR TESTING --- */}
-        {/* We are rendering the full layout but NOT its complex children. */}
-        <div>
-          <h1>[Perf Test] TextbookContentArea is disabled.</h1>
-        </div>
-        {/* --- END TEMPORARY CHANGE --- */}
+        <TextbookContentArea
+          initialLessons={loaderData().initialLessons}
+          remainingLessons={loaderData().remainingLessons}
+          totalLessonCount={loaderData().totalLessonCount}
+          externalResources={loaderData().externalResources}
+          deferredThumbnails={loaderData().deferredThumbnails}
+          progressPercentage={75}
+        />
       </DashboardLayout>
     </DashboardDataProvider>
   )

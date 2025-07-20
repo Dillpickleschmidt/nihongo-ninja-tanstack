@@ -1,6 +1,7 @@
 // features/dashboard/components/content/WordHierarchy.tsx
 import { createMemo, createResource, For, Match, Show, Switch } from "solid-js"
 import { useDashboardData } from "../../context/DashboardDataContext"
+import { isServer } from "solid-js/web"
 import {
   HoverCard,
   HoverCardContent,
@@ -253,89 +254,99 @@ function ProgressCircle(props: {
   const seenCount = () => props.countLearned + props.countInProgress
 
   return (
-    <HoverCard openDelay={200}>
-      <HoverCardTrigger as="div">
-        <div class="flex flex-col items-center gap-1">
-          <div class="relative h-16 w-16">
-            <svg class="h-full w-full" viewBox="0 0 64 64">
-              <circle
-                class="text-muted-foreground/10"
-                stroke-width="6"
-                stroke="currentColor"
-                fill="transparent"
-                r={radius}
-                cx="32"
-                cy="32"
-              />
-              <Show when={props.hasProgress}>
+    <>
+      <HoverCard openDelay={200}>
+        <HoverCardTrigger as="div">
+          <div class="flex flex-col items-center gap-1">
+            <div class="relative h-16 w-16">
+              <svg class="h-full w-full" viewBox="0 0 64 64">
                 <circle
-                  class={props.colorInProgress}
+                  class="text-muted-foreground/10"
                   stroke-width="6"
-                  stroke-dasharray={circumference}
-                  stroke-dashoffset={offsetTotal()}
-                  stroke-linecap="round"
                   stroke="currentColor"
                   fill="transparent"
                   r={radius}
                   cx="32"
                   cy="32"
-                  style={{
-                    transform: "rotate(-90deg)",
-                    "transform-origin": "50% 50%",
-                    transition: "stroke-dashoffset 0.5s ease-out",
-                  }}
                 />
-                <circle
-                  class={props.colorLearned}
-                  stroke-width="6"
-                  stroke-dasharray={circumference}
-                  stroke-dashoffset={offsetLearned()}
-                  stroke-linecap="round"
-                  stroke="currentColor"
-                  fill="transparent"
-                  r={radius}
-                  cx="32"
-                  cy="32"
-                  style={{
-                    transform: "rotate(-90deg)",
-                    "transform-origin": "50% 50%",
-                    transition: "stroke-dashoffset 0.5s ease-out",
-                  }}
-                />
-              </Show>
-            </svg>
-            <div class="absolute inset-0 flex flex-col items-center justify-center">
-              <Show
-                when={props.hasProgress}
-                fallback={<span class="text-lg font-bold">{props.total}</span>}
-              >
-                <span class="pt-0.5 text-lg leading-5 font-bold">
-                  {props.countLearned}
-                </span>
-                <span class="text-muted-foreground text-xs">
-                  /{props.total}
-                </span>
-              </Show>
+                <Show when={props.hasProgress}>
+                  <circle
+                    class={props.colorInProgress}
+                    stroke-width="6"
+                    stroke-dasharray={circumference}
+                    stroke-dashoffset={offsetTotal()}
+                    stroke-linecap="round"
+                    stroke="currentColor"
+                    fill="transparent"
+                    r={radius}
+                    cx="32"
+                    cy="32"
+                    style={{
+                      transform: "rotate(-90deg)",
+                      "transform-origin": "50% 50%",
+                      transition: "stroke-dashoffset 0.5s ease-out",
+                    }}
+                  />
+                  <circle
+                    class={props.colorLearned}
+                    stroke-width="6"
+                    stroke-dasharray={circumference}
+                    stroke-dashoffset={offsetLearned()}
+                    stroke-linecap="round"
+                    stroke="currentColor"
+                    fill="transparent"
+                    r={radius}
+                    cx="32"
+                    cy="32"
+                    style={{
+                      transform: "rotate(-90deg)",
+                      "transform-origin": "50% 50%",
+                      transition: "stroke-dashoffset 0.5s ease-out",
+                    }}
+                  />
+                </Show>
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <Show
+                  when={props.hasProgress}
+                  fallback={
+                    <span class="text-lg font-bold">{props.total}</span>
+                  }
+                >
+                  <span class="pt-0.5 text-lg leading-5 font-bold">
+                    {props.countLearned}
+                  </span>
+                  <span class="text-muted-foreground text-xs">
+                    /{props.total}
+                  </span>
+                </Show>
+              </div>
             </div>
+            <span class="text-muted-foreground text-sm font-medium">
+              {props.label}
+            </span>
           </div>
-          <span class="text-muted-foreground text-sm font-medium">
-            {props.label}
-          </span>
-        </div>
-      </HoverCardTrigger>
-      <HoverCardContent class="border-card-foreground w-auto bg-neutral-950/70 px-3 py-2 text-sm backdrop-blur-2xl">
-        <Show when={props.hasProgress} fallback={<p>Total: {props.total}</p>}>
-          <div class="flex flex-col gap-1">
-            <p>
-              Seen: {seenCount()} / {props.total}
-            </p>
-            <p>
-              Well-known: {props.countLearned} / {props.total}
-            </p>
-          </div>
+        </HoverCardTrigger>
+        {/* OPTIMIZATION: Only render HoverCardContent on the client */}
+        <Show when={!isServer}>
+          <HoverCardContent class="border-card-foreground w-auto bg-neutral-950/70 px-3 py-2 text-sm backdrop-blur-2xl">
+            <Show
+              when={props.hasProgress}
+              fallback={<p>Total: {props.total}</p>}
+            >
+              <div class="flex flex-col gap-1">
+                <p>
+                  Seen: {seenCount()} / {props.total}
+                </p>
+                <p>
+                  Well-known: {props.countLearned} / {props.total}
+                </p>
+              </div>
+            </Show>
+          </HoverCardContent>
         </Show>
-      </HoverCardContent>
-    </HoverCard>
+      </HoverCard>
+    </>
   )
 }
 
@@ -400,9 +411,12 @@ function CharBox(props: {
                 </span>
               </div>
             </HoverCardTrigger>
-            <HoverCardContent class="border-card-foreground w-auto bg-neutral-950/70 px-3 py-1.5 text-sm backdrop-blur-2xl">
-              <span>{props.item.meanings.join(", ")}</span>
-            </HoverCardContent>
+            {/* OPTIMIZATION: Only render HoverCardContent on the client */}
+            <Show when={!isServer}>
+              <HoverCardContent class="border-card-foreground w-auto bg-neutral-950/70 px-3 py-1.5 text-sm backdrop-blur-2xl">
+                <span>{props.item.meanings.join(", ")}</span>
+              </HoverCardContent>
+            </Show>
           </HoverCard>
         </Match>
 

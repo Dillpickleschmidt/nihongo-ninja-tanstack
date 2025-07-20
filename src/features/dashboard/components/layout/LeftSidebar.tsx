@@ -4,51 +4,21 @@ import { useNavigate } from "@tanstack/solid-router"
 import { WordHierarchy } from "../content/WordHierarchy"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
 import type { User } from "@supabase/supabase-js"
-import { useSettings } from "@/context/SettingsContext"
-import { generateServiceSources } from "@/features/dashboard/utils/serviceSourceHelper"
-import type { Deck, DeckSource, UserDeck } from "@/data/types"
+import type { Deck, DeckSource } from "@/data/types"
+import { useDashboardData } from "@/features/dashboard/context/DashboardDataContext"
 
 interface LeftSidebarProps {
   dashboardType: "textbook" | "service" | "user"
   user: User | null
-  currentDeck: Deck
-  deckSources: DeckSource[]
   variant: "mobile" | "desktop"
 }
 
 export function LeftSidebar(props: LeftSidebarProps) {
   const navigate = useNavigate()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
-  const { preferences } = useSettings()
-
-  // Helper function to create a properly typed user deck source
-  const createUserDeckSource = (user: User): DeckSource => {
-    const userDeck: UserDeck = {
-      id: "user-decks",
-      slug: "default",
-      title: "My Custom Decks",
-      deckType: "user_deck" as const,
-      learning_path_items: [],
-      owner_id: user.id,
-      is_public: false,
-      vocabulary_keys: [],
-    }
-
-    return {
-      id: user.id,
-      name: "My Decks",
-      type: "user" as const,
-      decks: [userDeck],
-      disabled: false,
-    }
-  }
-
-  // Generate all available sources
+  const dashboardData = useDashboardData()
   const allSources = createMemo(() => {
-    const serviceSources = generateServiceSources(preferences())
-    const userSources = props.user ? [createUserDeckSource(props.user)] : []
-
-    return [...props.deckSources, ...serviceSources, ...userSources]
+    return dashboardData.deckSources
   })
 
   const handleDeckChange = (source: DeckSource, deck: Deck) => {
@@ -79,10 +49,8 @@ export function LeftSidebar(props: LeftSidebarProps) {
     )
   }
 
-  // Desktop variant
   return (
     <div class="space-y-6">
-      {/* Current Deck Section */}
       <div class="space-y-3">
         <div class="text-muted-foreground text-sm tracking-wider uppercase">
           Current{" "}
@@ -93,7 +61,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
               : "Collection"}
         </div>
         <DeckSelectionPopover
-          currentDeck={props.currentDeck}
+          currentDeck={dashboardData.currentDeck}
           allSources={allSources()}
           onDeckChange={handleDeckChange}
           isOpen={isPopoverOpen()}
@@ -101,7 +69,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
         >
           <div class="group flex items-center gap-3 text-left">
             <h1 class="text-foreground group-hover:text-foreground/80 text-2xl font-bold transition-colors">
-              {props.currentDeck.title}
+              {dashboardData.currentDeck.title}
             </h1>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +88,6 @@ export function LeftSidebar(props: LeftSidebarProps) {
         </DeckSelectionPopover>
       </div>
 
-      {/* Progress Section */}
       <div class="space-y-3 pb-3">
         <h2 class="text-lg font-semibold">Your Progress</h2>
 
