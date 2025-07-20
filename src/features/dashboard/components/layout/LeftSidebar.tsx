@@ -6,19 +6,13 @@ import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
 import type { User } from "@supabase/supabase-js"
 import { useSettings } from "@/context/SettingsContext"
 import { generateServiceSources } from "@/features/dashboard/utils/serviceSourceHelper"
-import type { Deck, DeckSource, UserDeck, VocabularyItem } from "@/data/types"
-import type { FullHierarchyData } from "@/data/wanikani/types"
-import type { DeferredPromise } from "@tanstack/solid-router"
-import type { FSRSCardData } from "@/features/supabase/db/utils"
+import type { Deck, DeckSource, UserDeck } from "@/data/types"
 
 interface LeftSidebarProps {
   dashboardType: "textbook" | "service" | "user"
   user: User | null
   currentDeck: Deck
   deckSources: DeckSource[]
-  wordHierarchyData: FullHierarchyData | null
-  vocabularyItems: VocabularyItem[]
-  progressData: DeferredPromise<Record<string, FSRSCardData> | null>
   variant: "mobile" | "desktop"
 }
 
@@ -80,13 +74,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
   if (props.variant === "mobile") {
     return (
       <div class="mb-8 flex flex-col gap-3 px-7">
-        <WordHierarchy
-          data={props.wordHierarchyData}
-          vocabularyItems={props.vocabularyItems}
-          progressData={props.progressData}
-          variant="mobile"
-          user={props.user}
-        />
+        <WordHierarchy variant="mobile" user={props.user} />
       </div>
     )
   }
@@ -136,13 +124,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
       <div class="space-y-3 pb-3">
         <h2 class="text-lg font-semibold">Your Progress</h2>
 
-        <WordHierarchy
-          data={props.wordHierarchyData}
-          vocabularyItems={props.vocabularyItems}
-          progressData={props.progressData}
-          variant="desktop"
-          user={props.user}
-        />
+        <WordHierarchy variant="desktop" user={props.user} />
       </div>
     </div>
   )

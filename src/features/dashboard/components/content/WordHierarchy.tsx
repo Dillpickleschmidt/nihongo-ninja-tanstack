@@ -1,5 +1,6 @@
 // features/dashboard/components/content/WordHierarchy.tsx
 import { createMemo, createResource, For, Match, Show, Switch } from "solid-js"
+import { useDashboardData } from "../../context/DashboardDataContext"
 import {
   HoverCard,
   HoverCardContent,
@@ -15,16 +16,12 @@ import type {
 } from "@/data/wanikani/types"
 import type { VocabularyItem } from "@/data/types"
 import type { User } from "@supabase/supabase-js"
-import type { DeferredPromise } from "@tanstack/solid-router"
 import type { FSRSCardData } from "@/features/supabase/db/utils"
 import { extractHiragana } from "@/data/utils/vocab"
 
 type WordHierarchyVariant = "mobile" | "desktop"
 
 interface WordHierarchyProps {
-  data: FullHierarchyData | null
-  vocabularyItems: VocabularyItem[]
-  progressData: DeferredPromise<Record<string, FSRSCardData> | null>
   variant: WordHierarchyVariant
   user: User | null
 }
@@ -100,13 +97,16 @@ function enrichHierarchyWithProgress(
 }
 
 export function WordHierarchy(props: WordHierarchyProps) {
+  const { wordHierarchyData, vocabularyItems, progressData } =
+    useDashboardData()
+
   const [progressResource] = createResource(
-    () => (props.user ? props.progressData : null),
+    () => (props.user ? progressData : null),
     (promise) => promise,
   )
 
   const finalData = () => {
-    const hierarchy = props.data
+    const hierarchy = wordHierarchyData
     const progress = progressResource()
 
     if (!hierarchy) return null
@@ -121,7 +121,7 @@ export function WordHierarchy(props: WordHierarchyProps) {
       <Show when={finalData()}>
         <WordHierarchyDisplay
           data={finalData()!}
-          vocabularyItems={props.vocabularyItems}
+          vocabularyItems={vocabularyItems}
           variant={props.variant}
           user={props.user}
         />

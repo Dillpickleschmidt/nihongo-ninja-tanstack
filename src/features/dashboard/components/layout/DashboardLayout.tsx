@@ -10,10 +10,8 @@ import { Background } from "../shared/Background"
 import { TextbookChapterBackgrounds } from "../shared/TextbookChapterBackgrounds"
 import type { BackgroundItem } from "../shared/Background"
 import type { User } from "@supabase/supabase-js"
-import type { Deck, DeckSource, VocabularyItem } from "@/data/types"
+import type { Deck, DeckSource } from "@/data/types"
 import type { DeferredPromise } from "@tanstack/solid-router"
-import type { FSRSCardData } from "@/features/supabase/db/utils"
-import type { FullHierarchyData } from "@/data/wanikani/types"
 
 interface DashboardLayoutProps {
   children: JSX.Element
@@ -21,9 +19,6 @@ interface DashboardLayoutProps {
   dueFSRSCardsCount: DeferredPromise<number | null>
   currentDeck: Deck
   deckSources: DeckSource[]
-  wordHierarchyData: FullHierarchyData | null
-  vocabularyItems: VocabularyItem[]
-  progressData: DeferredPromise<Record<string, FSRSCardData> | null>
   textbookId?: string
   chapterSlug?: string
 }
@@ -121,9 +116,6 @@ export function DashboardLayout(props: DashboardLayoutProps) {
               user={props.user}
               currentDeck={props.currentDeck}
               deckSources={props.deckSources}
-              wordHierarchyData={props.wordHierarchyData}
-              vocabularyItems={props.vocabularyItems}
-              progressData={props.progressData}
               variant="mobile"
             />
             <RightSidebar
@@ -155,9 +147,6 @@ export function DashboardLayout(props: DashboardLayoutProps) {
                 user={props.user}
                 currentDeck={props.currentDeck}
                 deckSources={props.deckSources}
-                wordHierarchyData={props.wordHierarchyData}
-                vocabularyItems={props.vocabularyItems}
-                progressData={props.progressData}
                 variant="desktop"
               />
             </div>

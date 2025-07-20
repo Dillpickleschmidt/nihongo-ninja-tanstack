@@ -15,6 +15,7 @@ import { getWKHierarchy, getUserProgressForVocab } from "@/data/wanikani/utils"
 import { getModuleVocabulary } from "@/data/utils/vocab"
 // import { TextbookContentArea } from "@/features/dashboard/components/content/textbook/TextbookContentArea"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
+import { DashboardDataProvider } from "@/features/dashboard/context/DashboardDataContext"
 import { textbooks } from "@/data/textbooks"
 import type { TextbookIDEnum, DeckSource, VocabularyItem } from "@/data/types"
 import type { FullHierarchyData } from "@/data/wanikani/types"
@@ -179,24 +180,29 @@ function RouteComponent() {
     setActiveDeck("textbook", loaderData().textbookId, loaderData().deck.slug)
   })
 
+  const dashboardData = {
+    wordHierarchyData: loaderData().wordHierarchyData,
+    vocabularyItems: loaderData().vocabularyItems,
+    progressData: loaderData().progressData,
+  }
+
   return (
-    <DashboardLayout
-      user={loaderData().user}
-      dueFSRSCardsCount={loaderData().dueFSRSCardsCount}
-      currentDeck={loaderData().deck}
-      deckSources={loaderData().deckSources}
-      textbookId={loaderData().textbookId}
-      chapterSlug={loaderData().deck.slug}
-      wordHierarchyData={loaderData().wordHierarchyData}
-      vocabularyItems={loaderData().vocabularyItems}
-      progressData={loaderData().progressData}
-    >
-      {/* --- TEMPORARY CHANGE FOR TESTING --- */}
-      {/* We are rendering the full layout but NOT its complex children. */}
-      <div>
-        <h1>[Perf Test] TextbookContentArea is disabled.</h1>
-      </div>
-      {/* --- END TEMPORARY CHANGE --- */}
-    </DashboardLayout>
+    <DashboardDataProvider data={dashboardData}>
+      <DashboardLayout
+        user={loaderData().user}
+        dueFSRSCardsCount={loaderData().dueFSRSCardsCount}
+        currentDeck={loaderData().deck}
+        deckSources={loaderData().deckSources}
+        textbookId={loaderData().textbookId}
+        chapterSlug={loaderData().deck.slug}
+      >
+        {/* --- TEMPORARY CHANGE FOR TESTING --- */}
+        {/* We are rendering the full layout but NOT its complex children. */}
+        <div>
+          <h1>[Perf Test] TextbookContentArea is disabled.</h1>
+        </div>
+        {/* --- END TEMPORARY CHANGE --- */}
+      </DashboardLayout>
+    </DashboardDataProvider>
   )
 }
