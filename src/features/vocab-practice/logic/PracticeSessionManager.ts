@@ -301,8 +301,18 @@ export class PracticeSessionManager {
     return this.state
   }
 
+  /**
+   * Returns the percentage of review cards to module cards
+   */
   private getInterleavingRatio(): number {
-    const total = this.state.moduleQueue.length + this.state.reviewQueue.length
-    return total > 0 ? this.state.reviewQueue.length / total : 0
+    const moduleLength = this.state.moduleQueue.length
+    const reviewLength = this.state.reviewQueue.length
+
+    if (moduleLength === 0) return 1
+    if (reviewLength === 0) return 0
+
+    // Linear scaling: ratio increases from 0 to 0.33 as review/module ratio goes from 0 to 3
+    const reviewToModuleRatio = reviewLength / moduleLength
+    return Math.min(reviewToModuleRatio * (0.33 / 3), 0.33)
   }
 }
