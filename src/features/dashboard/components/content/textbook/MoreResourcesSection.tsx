@@ -17,7 +17,6 @@ import {
 } from "lucide-solid"
 import { Link } from "@tanstack/solid-router"
 import type { ExternalResource } from "@/data/types"
-import { usePageTransition } from "@/context/TransitionContext"
 
 // Fake data for "More Resources"
 const moreResourcesData: ExternalResource[] = [
@@ -93,8 +92,6 @@ export function MoreResourcesSection() {
 }
 
 function CompactResourceItem(props: { resource: ExternalResource }) {
-  const { setUserHasNavigated } = usePageTransition()
-
   const getResourceIcon = () => {
     const iconMap = {
       video: Video,
@@ -116,12 +113,6 @@ function CompactResourceItem(props: { resource: ExternalResource }) {
 
   const Icon = getResourceIcon()
 
-  const handleClick = () => {
-    if (props.resource.internal_url) {
-      setUserHasNavigated(true)
-    }
-  }
-
   return (
     <Show
       when={props.resource.internal_url}
@@ -138,7 +129,6 @@ function CompactResourceItem(props: { resource: ExternalResource }) {
     >
       <Link
         to={props.resource.internal_url!}
-        onClick={handleClick}
         class="group flex items-center gap-4 rounded-lg border border-white/5 bg-white/2 p-3 transition-colors hover:bg-white/5"
       >
         <CompactResourceItemContent resource={props.resource} Icon={Icon} />

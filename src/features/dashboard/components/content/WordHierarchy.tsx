@@ -1,13 +1,19 @@
 // features/dashboard/components/content/WordHierarchy.tsx
-import { createMemo, createResource, For, Match, Show, Switch } from "solid-js"
+import { createMemo, createResource, For, Match, Show, Switch, createEffect } from "solid-js"
 import { useDashboardData } from "../../context/DashboardDataContext"
 import { isServer } from "solid-js/web"
+import { useLocation } from "@tanstack/solid-router"
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import { cn } from "@/utils"
+import { usePageTransition } from "@/context/TransitionContext"
+import {
+  createSlideWithFadeInAnimation,
+  prepareElementForEnter,
+} from "@/utils/animations"
 import type {
   FullHierarchyData,
   Kanji,
@@ -28,6 +34,9 @@ interface WordHierarchyProps {
 }
 
 const WELL_KNOWN_THRESHOLD = 21
+const WORD_HIERARCHY_SELECTOR = "[data-word-hierarchy]"
+const ENTER_DIRECTION = "right" as const
+const ENTER_DELAY = 0
 
 function determineProgress(
   type: "vocabulary" | "kanji" | "radical",
@@ -98,6 +107,8 @@ function enrichHierarchyWithProgress(
 }
 
 export function WordHierarchy(props: WordHierarchyProps) {
+  const location = useLocation()
+  const { shouldAnimate, animationTrigger } = usePageTransition()
   const { wordHierarchyData, vocabularyItems, progressData } =
     useDashboardData()
 
@@ -105,6 +116,20 @@ export function WordHierarchy(props: WordHierarchyProps) {
     () => (props.user ? progressData : null),
     (promise) => promise,
   )
+
+  // Animation logic for desktop variant only
+  createEffect(() => {
+    animationTrigger()
+    if (props.variant === "desktop" && location().pathname.includes("/dashboard") && shouldAnimate()) {
+      const element = document.querySelector(WORD_HIERARCHY_SELECTOR) as HTMLElement
+      if (element) {
+        prepareElementForEnter(element, ENTER_DIRECTION)
+        setTimeout(() => {
+          createSlideWithFadeInAnimation(element, ENTER_DIRECTION)
+        }, ENTER_DELAY)
+      }
+    }
+  })
 
   const finalData = () => {
     const hierarchy = wordHierarchyData
@@ -118,7 +143,7 @@ export function WordHierarchy(props: WordHierarchyProps) {
   }
 
   return (
-    <div class="flex flex-col gap-4">
+    <div data-word-hierarchy class="flex flex-col gap-4">
       <Show when={finalData()}>
         <WordHierarchyDisplay
           data={finalData()!}

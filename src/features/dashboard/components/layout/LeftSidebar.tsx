@@ -1,11 +1,16 @@
 // features/dashboard/components/layout/LeftSidebar.tsx
-import { createSignal, createMemo } from "solid-js"
-import { useNavigate } from "@tanstack/solid-router"
+import { createSignal, createMemo, onMount, createEffect } from "solid-js"
+import { useNavigate, useLocation } from "@tanstack/solid-router"
 import { WordHierarchy } from "../content/WordHierarchy"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
 import type { User } from "@supabase/supabase-js"
 import type { Deck, DeckSource } from "@/data/types"
 import { useDashboardData } from "@/features/dashboard/context/DashboardDataContext"
+import { usePageTransition } from "@/context/TransitionContext"
+import {
+  createSlideWithFadeInAnimation,
+  prepareElementForEnter,
+} from "@/utils/animations"
 
 interface LeftSidebarProps {
   dashboardType: "textbook" | "service" | "user"
@@ -13,13 +18,20 @@ interface LeftSidebarProps {
   variant: "mobile" | "desktop"
 }
 
+const LEFT_SIDEBAR_SELECTOR = "[data-left-sidebar]"
+const ENTER_DIRECTION = "right" as const
+const ENTER_DELAY = 50
+
 export function LeftSidebar(props: LeftSidebarProps) {
   const navigate = useNavigate()
+  const location = useLocation()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
   const dashboardData = useDashboardData()
+  const { shouldAnimate, animationTrigger } = usePageTransition()
   const allSources = createMemo(() => {
     return dashboardData.deckSources
   })
+
 
   const handleDeckChange = (source: DeckSource, deck: Deck) => {
     if (source.type === "textbook") {

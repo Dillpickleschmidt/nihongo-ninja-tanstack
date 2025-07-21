@@ -5,7 +5,6 @@ import { useLocation, useNavigate, useMatches } from "@tanstack/solid-router"
 import { cva } from "class-variance-authority"
 import { cn } from "@/utils/util"
 import { User } from "@supabase/supabase-js"
-import { usePageTransition } from "@/context/TransitionContext"
 
 type ContentBoxConfig = {
   nextButtonLink?: string
@@ -42,8 +41,6 @@ export default function ContentBox(props: ContentBoxProps) {
   const location = useLocation()
   const navigate = useNavigate()
   const matches = useMatches()
-  const { setUserHasNavigated } = usePageTransition()
-
   const config = (): ContentBoxConfig => {
     const currentPath = location().pathname
     const match = matches().find((match) => match.pathname === currentPath)
@@ -61,7 +58,6 @@ export default function ContentBox(props: ContentBoxProps) {
 
   const handleBackClick = (e: Event) => {
     e.preventDefault()
-    setUserHasNavigated(true)
     navigate({ to: "/dashboard" })
   }
 

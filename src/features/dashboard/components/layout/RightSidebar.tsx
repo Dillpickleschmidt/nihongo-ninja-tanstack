@@ -1,7 +1,13 @@
 // features/dashboard/components/layout/RightSidebar.tsx
-import { For, createSignal } from "solid-js"
+import { For, createSignal, createEffect } from "solid-js"
 import { Clock, Brain, BarChart3 } from "lucide-solid"
+import { useLocation } from "@tanstack/solid-router"
 import { cn } from "@/utils"
+import { usePageTransition } from "@/context/TransitionContext"
+import {
+  createSlideWithFadeInAnimation,
+  prepareElementForEnter,
+} from "@/utils/animations"
 
 const MAX_RECENT_ACTIVITIES = 4
 
@@ -16,8 +22,28 @@ interface RightSidebarProps {
   variant: "mobile" | "desktop"
 }
 
+const RIGHT_SIDEBAR_SELECTOR = "[data-right-sidebar]"
+const ENTER_DIRECTION = "down" as const
+const ENTER_DELAY = 0
+
 export function RightSidebar(props: RightSidebarProps) {
+  const location = useLocation()
   const [selectedTimeframe, setSelectedTimeframe] = createSignal("week")
+  const { shouldAnimate, animationTrigger } = usePageTransition()
+
+  // Animation logic for desktop variant only
+  createEffect(() => {
+    animationTrigger()
+    if (props.variant === "desktop" && location().pathname.includes("/dashboard") && shouldAnimate()) {
+      const element = document.querySelector(RIGHT_SIDEBAR_SELECTOR) as HTMLElement
+      if (element) {
+        prepareElementForEnter(element, ENTER_DIRECTION)
+        setTimeout(() => {
+          createSlideWithFadeInAnimation(element, ENTER_DIRECTION)
+        }, ENTER_DELAY)
+      }
+    }
+  })
 
   if (props.variant === "mobile") {
     return (
@@ -55,7 +81,7 @@ export function RightSidebar(props: RightSidebarProps) {
 
   // Desktop variant
   return (
-    <div class="space-y-4 pb-3">
+    <div data-right-sidebar class="space-y-4 pb-3">
       {/* Recent Activity Section */}
       <div class="space-y-3">
         <div class="flex items-center gap-2">

@@ -23,12 +23,13 @@ interface ContentShowcaseProps {
 }
 
 const SELECTOR = "[data-content-section]"
-const DIRECTION = "right" as const
+const MOBILE_DIRECTION = "right" as const
+const DESKTOP_DIRECTION = "left" as const
 const ENTER_DELAY = 0
 
 export function ContentShowcase(props: ContentShowcaseProps) {
   const location = useLocation()
-  const { hasUserNavigated, animationTrigger } = usePageTransition()
+  const { shouldAnimate, animationTrigger } = usePageTransition()
   const [isClient, setIsClient] = createSignal(false)
 
   onMount(() => {
@@ -44,12 +45,13 @@ export function ContentShowcase(props: ContentShowcaseProps) {
   })
 
   const runAnimation = () => {
-    if (location().pathname.includes("/dashboard") && hasUserNavigated()) {
+    if (location().pathname.includes("/dashboard") && shouldAnimate()) {
       const element = document.querySelector(SELECTOR) as HTMLElement
       if (element) {
-        prepareElementForEnter(element, DIRECTION)
+        const direction = props.variant === "desktop" ? DESKTOP_DIRECTION : MOBILE_DIRECTION
+        prepareElementForEnter(element, direction)
         setTimeout(() => {
-          createSlideWithFadeInAnimation(element, DIRECTION)
+          createSlideWithFadeInAnimation(element, direction)
         }, ENTER_DELAY)
       }
     }
@@ -84,13 +86,13 @@ export function ContentShowcase(props: ContentShowcaseProps) {
           >
             <Transition
               onEnter={(element, done) => {
-                if (!hasUserNavigated()) {
+                if (!shouldAnimate()) {
                   done()
                   return
                 }
                 createSlideWithFadeInAnimation(
                   element as HTMLElement,
-                  DIRECTION,
+                  MOBILE_DIRECTION,
                 ).then(() => done())
               }}
             >
@@ -128,7 +130,7 @@ export function ContentShowcase(props: ContentShowcaseProps) {
 
   // Desktop variant
   return (
-    <div class="space-y-1">
+    <div data-content-section class="space-y-1">
       <div class="flex items-center justify-between px-8">
         <div>
           <h2 class="text-2xl font-bold">Featured Content</h2>
@@ -175,13 +177,6 @@ function FeaturedResourceCard(props: {
   resource: EnrichedExternalResource
   thumbnailUrl?: string | null
 }) {
-  const { setUserHasNavigated } = usePageTransition()
-
-  const handleClick = () => {
-    if (props.resource.internal_url) {
-      setUserHasNavigated(true)
-    }
-  }
 
   return (
     <Show
@@ -202,7 +197,6 @@ function FeaturedResourceCard(props: {
     >
       <Link
         to={props.resource.internal_url!}
-        onClick={handleClick}
         class="group block transition-transform hover:scale-[1.02]"
       >
         <FeaturedResourceCardContent
@@ -272,11 +266,6 @@ function MobileResourceCard(props: {
   resource: EnrichedExternalResource
   thumbnailUrl?: string | null
 }) {
-  const { setUserHasNavigated } = usePageTransition()
-
-  const handleInternalNavigation = () => {
-    setUserHasNavigated(true)
-  }
 
   return (
     <Show
@@ -297,7 +286,6 @@ function MobileResourceCard(props: {
     >
       <Link
         to={props.resource.internal_url!}
-        onClick={handleInternalNavigation}
         class="transition-transform hover:scale-[99%]"
       >
         <MobileResourceCardContent

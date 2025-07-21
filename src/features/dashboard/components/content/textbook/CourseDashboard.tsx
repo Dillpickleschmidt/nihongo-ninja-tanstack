@@ -37,8 +37,9 @@ interface CourseDashboardProps {
 }
 
 const SELECTOR = "[data-lessons-section]"
-const DIRECTION = "left" as const
-const ENTER_DELAY = 180
+const MOBILE_DIRECTION = "left" as const
+const DESKTOP_DIRECTION = "up" as const
+const ENTER_DELAY = 0
 
 function getModuleIcon(moduleType: string) {
   const iconComponents = {
@@ -65,16 +66,17 @@ function getModuleIcon(moduleType: string) {
 // Removed Skeleton components as they are no longer needed.
 
 export function CourseDashboard(props: CourseDashboardProps) {
-  const { hasUserNavigated, animationTrigger } = usePageTransition()
+  const { shouldAnimate, animationTrigger } = usePageTransition()
 
   createEffect(() => {
     animationTrigger()
-    if (hasUserNavigated()) {
+    if (shouldAnimate()) {
       const element = document.querySelector(SELECTOR) as HTMLElement
       if (element) {
-        prepareElementForEnter(element, DIRECTION)
+        const direction = props.variant === "desktop" ? DESKTOP_DIRECTION : MOBILE_DIRECTION
+        prepareElementForEnter(element, direction)
         setTimeout(() => {
-          createSlideWithFadeInAnimation(element, DIRECTION)
+          createSlideWithFadeInAnimation(element, direction)
         }, ENTER_DELAY)
       }
     }
@@ -223,7 +225,6 @@ function LessonRow(props: {
 }
 
 function MobileLessonCard(props: { lesson: EnrichedLearningPathModule }) {
-  const { setUserHasNavigated } = usePageTransition()
   const {
     moduleType,
     linkTo,
@@ -234,14 +235,9 @@ function MobileLessonCard(props: { lesson: EnrichedLearningPathModule }) {
   } = props.lesson
   const ModuleIcon = getModuleIcon(moduleType)
 
-  const handleClick = () => {
-    setUserHasNavigated(true)
-  }
-
   return (
     <Link
       to={linkTo}
-      onClick={handleClick}
       class="transition-transform hover:scale-[98%]"
     >
       <SmoothCard
