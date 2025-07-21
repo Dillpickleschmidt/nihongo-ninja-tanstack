@@ -1,6 +1,9 @@
 // src/routes/practice/$practiceID.tsx
 import { createFileRoute, notFound, defer } from "@tanstack/solid-router"
-import { loadModuleData } from "@/data/utils/vocab"
+import {
+  getVocabularyWordsForModule,
+  getModuleTitleFromPath,
+} from "@/data/utils/vocab"
 import VocabPractice from "@/features/vocab-practice/VocabPractice"
 import {
   type FSRSCardData,
@@ -22,8 +25,8 @@ export const Route = createFileRoute("/practice/$practiceID")({
         ? "kana"
         : "readings"
 
-      const targetVocabSlugs = loadModuleData(location.pathname).vocabulary.map(
-        (v) => v.word,
+      const targetVocabSlugs = await getVocabularyWordsForModule(
+        location.pathname,
       )
 
       let hierarchy: FullHierarchyData
@@ -66,7 +69,7 @@ export const Route = createFileRoute("/practice/$practiceID")({
         true,
       )
 
-      // 3. Serialize the initial state
+      // 4. Serialize for transport
       const serializedInitialState = {
         ...initialState,
         cardMap: Array.from(initialState.cardMap.entries()),
@@ -75,13 +78,13 @@ export const Route = createFileRoute("/practice/$practiceID")({
         lockedKeys: Array.from(initialState.lockedKeys),
       }
 
-      // 4. Extract all slugs for FSRS data fetching
+      // 5. Extract all slugs for FSRS data fetching
       const allHierarchySlugs = new Set<string>()
       hierarchy.hierarchy.forEach((v) => allHierarchySlugs.add(v.slug))
       hierarchy.uniqueKanji.forEach((k) => allHierarchySlugs.add(k.slug))
       hierarchy.uniqueRadicals.forEach((r) => allHierarchySlugs.add(r.slug))
 
-      // 5. Defer FSRS data fetching
+      // 6. Defer FSRS data fetching
       let moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null = null
       let dueFSRSCards: DeferredPromise<FSRSCardData[]> | null = null
 
@@ -94,10 +97,10 @@ export const Route = createFileRoute("/practice/$practiceID")({
 
       return {
         hierarchy,
-        initialState: serializedInitialState,
+        serializedInitialState,
         moduleFSRSCards,
         dueFSRSCards,
-        deckName: loadModuleData(location.pathname).module.title,
+        deckName: getModuleTitleFromPath(location.pathname),
         mode,
       }
     } catch (error) {
@@ -112,10 +115,19 @@ export const Route = createFileRoute("/practice/$practiceID")({
 function RouteComponent() {
   const data = Route.useLoaderData()
 
+  // Deserialize
+  const initialState = {
+    ...data().serializedInitialState,
+    cardMap: new Map(data().serializedInitialState.cardMap),
+    dependencyMap: new Map(data().serializedInitialState.dependencyMap),
+    unlocksMap: new Map(data().serializedInitialState.unlocksMap),
+    lockedKeys: new Set(data().serializedInitialState.lockedKeys),
+  }
+
   return (
     <VocabPractice
       hierarchy={data().hierarchy}
-      initialState={data().initialState}
+      initialState={initialState}
       moduleFSRSCards={data().moduleFSRSCards}
       dueFSRSCards={data().dueFSRSCards}
       deckName={data().deckName}

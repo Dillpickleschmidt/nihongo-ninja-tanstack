@@ -1,27 +1,39 @@
 // src/routes/learn/all-hiragana-quiz.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import { KanaQuiz } from "@/features/kana-quiz/KanaQuiz"
-import { loadModuleData, vocabularyToKana } from "@/data/utils/vocab"
+import {
+  getVocabularyForModule,
+  getModuleTitleFromPath,
+  vocabularyToKana,
+} from "@/data/utils/vocab"
 
 export const Route = createFileRoute("/practice/all-hiragana-quiz")({
-  loader: ({ location }) => {
-    const data = loadModuleData(location.pathname)
-    const kana = vocabularyToKana(data.vocabulary)
+  loader: async ({ location }) => {
+    const segments = location.pathname.split("/")
+    const moduleId = segments[segments.length - 1] || ""
+
+    const vocabulary = await getVocabularyForModule(moduleId)
+    const title = getModuleTitleFromPath(location.pathname)
+    const kana = vocabularyToKana(vocabulary)
     const shuffledKana = kana.sort(() => Math.random() - 0.5)
-    return { module: data.module, kana: shuffledKana }
+
+    return {
+      title,
+      kana: shuffledKana,
+    }
   },
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const data = Route.useLoaderData()
-  const { module, kana } = data()
+  const { title, kana } = data()
 
   return (
     <KanaQuiz
       kana={kana}
       nextLesson="/learn/punctuation-misc"
-      title={module.title}
+      title={title ?? ""}
     />
   )
 }

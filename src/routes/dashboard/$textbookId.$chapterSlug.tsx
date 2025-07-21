@@ -12,7 +12,7 @@ import {
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { getDueFSRSCardsCount } from "@/features/supabase/db/utils"
 import { getWKHierarchy, getUserProgressForVocab } from "@/data/wanikani/utils"
-import { getModuleVocabulary } from "@/data/utils/vocab"
+import { getVocabularyForModule } from "@/data/utils/vocab"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
 import { DashboardDataProvider } from "@/features/dashboard/context/DashboardDataContext"
 import { TextbookContentArea } from "@/features/dashboard/components/content/textbook/TextbookContentArea"
@@ -80,7 +80,7 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
 
     let vocabularyItems: VocabularyItem[] = []
     if (vocabModuleId) {
-      vocabularyItems = await getModuleVocabulary(vocabModuleId)
+      vocabularyItems = await getVocabularyForModule(vocabModuleId)
     }
     const vocabForHierarchy = vocabularyItems.map((item) => item.word)
 

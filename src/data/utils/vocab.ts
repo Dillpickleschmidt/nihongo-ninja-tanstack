@@ -11,20 +11,16 @@ import type { KanaItem } from "@/features/kana-quiz/hooks/useKanaQuiz"
 import type { PracticeMode } from "@/features/vocab-practice/types"
 import { getVocabularyByKeys } from "./vocab.server"
 
-/**
- * Get a dynamic module by its ID
- */
-export function getDynamicModule(moduleId: string): DynamicModule | null {
+function getModuleFromPath(path: string): DynamicModule | null {
+  const segments = path.split("/")
+  const moduleId = segments[segments.length - 1] || ""
   return dynamic_modules[moduleId] || null
 }
 
-/**
- * Get vocabulary items for a specific dynamic module
- */
-export async function getModuleVocabulary(
+export async function getVocabularyForModule(
   moduleId: string,
 ): Promise<VocabularyItem[]> {
-  const module = getDynamicModule(moduleId)
+  const module = dynamic_modules[moduleId] || null
   if (!module || !module.vocab_set_ids) {
     return []
   }
@@ -44,37 +40,27 @@ export async function getModuleVocabulary(
     }
   }
 
-  // Use the new server function to fetch only the required vocabulary
   return getVocabularyByKeys({ data: vocabKeys })
 }
 
 /**
- * Extract module ID from URL path
- * Ex: "/practice/hiragana-quiz" -> "hiragana-quiz"
+ * Get vocabulary slugs (words) for a module from path
  */
-export function getModuleIdFromPath(path: string): string {
+export async function getVocabularyWordsForModule(
+  path: string,
+): Promise<string[]> {
   const segments = path.split("/")
-  return segments[segments.length - 1] || ""
+  const moduleId = segments[segments.length - 1] || ""
+  const vocabulary = await getVocabularyForModule(moduleId)
+  return vocabulary.map((v) => v.word)
 }
 
 /**
- * Load module data for route loader - abstracts all the logic
+ * Get module title from path
  */
-export function loadModuleData(path: string) {
-  const moduleId = getModuleIdFromPath(path)
-  const module = getDynamicModule(moduleId)
-
-  if (!module) {
-    throw new Error(`Module "${moduleId}" not found`)
-  }
-
-  const vocabulary = getModuleVocabulary(moduleId)
-
-  return {
-    module,
-    vocabulary,
-    moduleId,
-  }
+export function getModuleTitleFromPath(path: string): string | undefined {
+  const module = getModuleFromPath(path)
+  return module?.title
 }
 
 /**
@@ -189,7 +175,9 @@ export type ProcessedSentenceResult = {
   inputValidationTargets: string[][]
 }
 
-// Updated getExampleSentenceParts function using the new helper
+/**
+ * Process example sentence parts for practice modes
+ */
 export function getExampleSentenceParts(
   sentence: ExampleSentence,
   mode: PracticeMode,
