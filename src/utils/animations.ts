@@ -14,50 +14,55 @@ type Direction = "left" | "right" | "up" | "down"
 export function createSlideWithFadeInAnimation(
   element: HTMLElement,
   direction: Direction,
-  options: { withOpacity?: boolean } = {},
+  options: { withOpacity?: boolean; duration?: number } = {},
 ) {
-  const { withOpacity = true } = options
+  const { withOpacity = true, duration = ANIMATION_CONFIG.duration } = options
   const animations: Animation[] = []
 
-  // Get starting transform values based on desired visual movement direction
-  const getStartTransform = (dir: Direction) => {
+  // Ensure element has position relative for left/top to work
+  if (element.style.position === "" || element.style.position === "static") {
+    element.style.position = "relative"
+  }
+
+  // Get starting position values based on desired visual movement direction
+  const getStartPosition = (dir: Direction) => {
     switch (dir) {
       case "left":
-        return "translateX(30px)" // Start from right, slide left
+        return { left: "30px" } // Start from right, slide left
       case "right":
-        return "translateX(-30px)" // Start from left, slide right
+        return { left: "-30px" } // Start from left, slide right
       case "up":
-        return "translateY(30px)" // Start from below, slide up
+        return { top: "30px" } // Start from below, slide up
       case "down":
-        return "translateY(-30px)" // Start from above, slide down
+        return { top: "-30px" } // Start from above, slide down
     }
   }
 
-  // Transform animation
+  const getEndPosition = (dir: Direction) => {
+    switch (dir) {
+      case "left":
+      case "right":
+        return { left: "0px" }
+      case "up":
+      case "down":
+        return { top: "0px" }
+    }
+  }
+
+  // Position animation
   animations.push(
-    element.animate(
-      [
-        { transform: getStartTransform(direction) },
-        {
-          transform:
-            direction === "left" || direction === "right"
-              ? "translateX(0px)"
-              : "translateY(0px)",
-        },
-      ],
-      {
-        duration: ANIMATION_CONFIG.duration,
-        easing: ANIMATION_CONFIG.easings.transform,
-        fill: "forwards",
-      },
-    ),
+    element.animate([getStartPosition(direction), getEndPosition(direction)], {
+      duration: duration,
+      easing: ANIMATION_CONFIG.easings.transform,
+      fill: "forwards",
+    }),
   )
 
   // Opacity animation (if requested)
   if (withOpacity) {
     animations.push(
       element.animate([{ opacity: 0 }, { opacity: 1 }], {
-        duration: ANIMATION_CONFIG.duration,
+        duration: duration,
         easing: ANIMATION_CONFIG.easings.opacityEnter,
         fill: "forwards",
       }),
@@ -71,30 +76,38 @@ export function createSlideWithFadeOutAnimation(
   element: HTMLElement,
   direction: Direction,
 ) {
-  // Get ending transform values based on desired visual movement direction
-  const getEndTransform = (dir: Direction) => {
+  // Ensure element has position relative for left/top to work
+  if (element.style.position === "" || element.style.position === "static") {
+    element.style.position = "relative"
+  }
+
+  // Get ending position values based on desired visual movement direction
+  const getStartPosition = (dir: Direction) => {
     switch (dir) {
       case "left":
-        return "translateX(-30px)" // End to the left
       case "right":
-        return "translateX(30px)" // End to the right
+        return { left: "0px" }
       case "up":
-        return "translateY(-30px)" // End above
       case "down":
-        return "translateY(30px)" // End below
+        return { top: "0px" }
     }
   }
 
-  const transformAnim = element.animate(
-    [
-      {
-        transform:
-          direction === "left" || direction === "right"
-            ? "translateX(0px)"
-            : "translateY(0px)",
-      },
-      { transform: getEndTransform(direction) },
-    ],
+  const getEndPosition = (dir: Direction) => {
+    switch (dir) {
+      case "left":
+        return { left: "-30px" } // End to the left
+      case "right":
+        return { left: "30px" } // End to the right
+      case "up":
+        return { top: "-30px" } // End above
+      case "down":
+        return { top: "30px" } // End below
+    }
+  }
+
+  const positionAnim = element.animate(
+    [getStartPosition(direction), getEndPosition(direction)],
     {
       duration: ANIMATION_CONFIG.duration,
       easing: ANIMATION_CONFIG.easings.transform,
@@ -108,7 +121,7 @@ export function createSlideWithFadeOutAnimation(
     fill: "forwards",
   })
 
-  return Promise.all([transformAnim.finished, opacityAnim.finished])
+  return Promise.all([positionAnim.finished, opacityAnim.finished])
 }
 
 export function prepareElementForEnter(
@@ -116,21 +129,27 @@ export function prepareElementForEnter(
   direction: Direction,
   withOpacity = true,
 ) {
-  // Set initial transform based on desired visual movement direction
-  const getStartTransform = (dir: Direction) => {
-    switch (dir) {
-      case "left":
-        return "translateX(30px)" // Start from right, slide left
-      case "right":
-        return "translateX(-30px)" // Start from left, slide right
-      case "up":
-        return "translateY(30px)" // Start from below, slide up
-      case "down":
-        return "translateY(-30px)" // Start from above, slide down
-    }
+  // Ensure element has position relative for left/top to work
+  if (element.style.position === "" || element.style.position === "static") {
+    element.style.position = "relative"
   }
 
-  element.style.transform = getStartTransform(direction)
+  // Set initial position based on desired visual movement direction
+  switch (direction) {
+    case "left":
+      element.style.left = "30px" // Start from right, slide left
+      break
+    case "right":
+      element.style.left = "-30px" // Start from left, slide right
+      break
+    case "up":
+      element.style.top = "30px" // Start from below, slide up
+      break
+    case "down":
+      element.style.top = "-30px" // Start from above, slide down
+      break
+  }
+
   if (withOpacity) {
     element.style.opacity = "0"
   }

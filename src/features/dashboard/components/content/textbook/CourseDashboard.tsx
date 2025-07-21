@@ -1,6 +1,6 @@
 // features/dashboard/components/content/textbook/CourseDashboard.tsx
-import { For, createEffect } from "solid-js"
-import { Link, useLocation, Await } from "@tanstack/solid-router"
+import { For } from "solid-js"
+import { Link, Await } from "@tanstack/solid-router"
 import {
   Clock,
   CheckCircle,
@@ -21,11 +21,7 @@ import {
 import { Transition } from "solid-transition-group"
 import type { EnrichedLearningPathModule } from "@/features/dashboard/utils/loader-helpers"
 import { cn } from "@/utils"
-import { usePageTransition } from "@/context/TransitionContext"
-import {
-  createSlideWithFadeInAnimation,
-  prepareElementForEnter,
-} from "@/utils/animations"
+import { createSlideWithFadeInAnimation } from "@/utils/animations"
 import { SmoothCard } from "../../shared/SmoothCard"
 import type { DeferredPromise } from "@tanstack/solid-router"
 
@@ -35,11 +31,6 @@ interface CourseDashboardProps {
   progressPercentage: number
   variant: "mobile" | "desktop"
 }
-
-const SELECTOR = "[data-lessons-section]"
-const MOBILE_DIRECTION = "left" as const
-const DESKTOP_DIRECTION = "up" as const
-const ENTER_DELAY = 0
 
 function getModuleIcon(moduleType: string) {
   const iconComponents = {
@@ -63,25 +54,7 @@ function getModuleIcon(moduleType: string) {
   return iconComponents[moduleType] || BookOpen
 }
 
-// Removed Skeleton components as they are no longer needed.
-
 export function CourseDashboard(props: CourseDashboardProps) {
-  const { shouldAnimate, animationTrigger } = usePageTransition()
-
-  createEffect(() => {
-    animationTrigger()
-    if (shouldAnimate()) {
-      const element = document.querySelector(SELECTOR) as HTMLElement
-      if (element) {
-        const direction = props.variant === "desktop" ? DESKTOP_DIRECTION : MOBILE_DIRECTION
-        prepareElementForEnter(element, direction)
-        setTimeout(() => {
-          createSlideWithFadeInAnimation(element, direction)
-        }, ENTER_DELAY)
-      }
-    }
-  })
-
   if (props.variant === "mobile") {
     return (
       <div class="mb-3">
@@ -137,44 +110,32 @@ export function CourseDashboard(props: CourseDashboardProps) {
 
   // Desktop variant
   return (
-    <Transition
-      onEnter={(element, done) => {
-        if (!hasUserNavigated()) {
-          done()
-          return
-        }
-        createSlideWithFadeInAnimation(element as HTMLElement, DIRECTION).then(
-          () => done(),
-        )
-      }}
+    <div
+      data-lessons-section
+      data-transition-content
+      class="grid grid-cols-1 gap-3"
     >
-      <div
-        data-lessons-section
-        data-transition-content
-        class="grid grid-cols-1 gap-3"
-      >
-        {/* Render initial lessons immediately */}
-        <For each={props.initialLessons}>
-          {(lesson, index) => (
-            <LessonRow lesson={lesson} isCompleted={index() < 2} />
-          )}
-        </For>
+      {/* Render initial lessons immediately */}
+      <For each={props.initialLessons}>
+        {(lesson, index) => (
+          <LessonRow lesson={lesson} isCompleted={index() < 2} />
+        )}
+      </For>
 
-        {/* Await the rest of the lessons and stream them in */}
-        <Await promise={props.remainingLessons} fallback={null}>
-          {(remaining) => (
-            <For each={remaining}>
-              {(lesson, index) => (
-                <LessonRow
-                  lesson={lesson}
-                  isCompleted={index() + props.initialLessons.length < 2}
-                />
-              )}
-            </For>
-          )}
-        </Await>
-      </div>
-    </Transition>
+      {/* Await the rest of the lessons and stream them in */}
+      <Await promise={props.remainingLessons} fallback={null}>
+        {(remaining) => (
+          <For each={remaining}>
+            {(lesson, index) => (
+              <LessonRow
+                lesson={lesson}
+                isCompleted={index() + props.initialLessons.length < 2}
+              />
+            )}
+          </For>
+        )}
+      </Await>
+    </div>
   )
 }
 
@@ -236,10 +197,7 @@ function MobileLessonCard(props: { lesson: EnrichedLearningPathModule }) {
   const ModuleIcon = getModuleIcon(moduleType)
 
   return (
-    <Link
-      to={linkTo}
-      class="transition-transform hover:scale-[98%]"
-    >
+    <Link to={linkTo} class="transition-transform hover:scale-[98%]">
       <SmoothCard
         width={120}
         height={155}

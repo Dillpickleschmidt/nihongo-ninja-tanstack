@@ -31,17 +31,53 @@ export function RightSidebar(props: RightSidebarProps) {
   const [selectedTimeframe, setSelectedTimeframe] = createSignal("week")
   const { shouldAnimate, animationTrigger } = usePageTransition()
 
-  // Animation logic for desktop variant only
+  // Container animation disabled - using individual element animations instead
+  // createEffect(() => {
+  //   animationTrigger()
+  //   if (props.variant === "desktop" && location().pathname.includes("/dashboard") && shouldAnimate()) {
+  //     const element = document.querySelector(RIGHT_SIDEBAR_SELECTOR) as HTMLElement
+  //     if (element) {
+  //       prepareElementForEnter(element, ENTER_DIRECTION)
+  //       setTimeout(() => {
+  //         createSlideWithFadeInAnimation(element, ENTER_DIRECTION)
+  //       }, ENTER_DELAY)
+  //     }
+  //   }
+  // })
+
+  // Animate individual right sidebar sections with staggered timing
   createEffect(() => {
     animationTrigger()
     if (props.variant === "desktop" && location().pathname.includes("/dashboard") && shouldAnimate()) {
-      const element = document.querySelector(RIGHT_SIDEBAR_SELECTOR) as HTMLElement
-      if (element) {
-        prepareElementForEnter(element, ENTER_DIRECTION)
-        setTimeout(() => {
-          createSlideWithFadeInAnimation(element, ENTER_DIRECTION)
-        }, ENTER_DELAY)
-      }
+      requestAnimationFrame(() => {
+        const strugglesElement = document.querySelector('[data-right-sidebar-struggles]') as HTMLElement
+        const studyTimeElement = document.querySelector('[data-right-sidebar-study-time]') as HTMLElement
+        
+        // Recent Activities - 100ms delay
+        const activitiesElements = document.querySelectorAll('[data-right-sidebar-activities]') as NodeListOf<HTMLElement>
+        activitiesElements.forEach((element) => {
+          prepareElementForEnter(element, "left", true)
+          setTimeout(() => {
+            createSlideWithFadeInAnimation(element, "left", { withOpacity: true })
+          }, 100)
+        })
+        
+        // Struggles - 200ms delay
+        if (strugglesElement) {
+          prepareElementForEnter(strugglesElement, "left", true)
+          setTimeout(() => {
+            createSlideWithFadeInAnimation(strugglesElement, "left", { withOpacity: true })
+          }, 200)
+        }
+        
+        // Study Time - 300ms delay
+        if (studyTimeElement) {
+          prepareElementForEnter(studyTimeElement, "left", true)
+          setTimeout(() => {
+            createSlideWithFadeInAnimation(studyTimeElement, "left", { withOpacity: true })
+          }, 300)
+        }
+      })
     }
   })
 
@@ -97,7 +133,7 @@ export function RightSidebar(props: RightSidebarProps) {
       </div>
 
       {/* Struggle Areas */}
-      <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-red-600/10 to-orange-600/5 p-6 backdrop-blur-sm">
+      <div data-right-sidebar-struggles class="rounded-2xl border border-white/10 bg-gradient-to-br from-red-600/10 to-orange-600/5 p-6 backdrop-blur-sm">
         <div class="mb-4 flex items-center justify-between">
           <div class="flex items-center gap-2">
             <Brain class="h-5 w-5 text-red-400" />
@@ -133,7 +169,7 @@ export function RightSidebar(props: RightSidebarProps) {
       </div>
 
       {/* Study Time Chart */}
-      <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/10 to-cyan-600/5 p-6 backdrop-blur-sm">
+      <div data-right-sidebar-study-time class="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/10 to-cyan-600/5 p-6 backdrop-blur-sm">
         <div class="mb-4 flex items-center justify-between">
           <div class="flex items-center gap-2">
             <BarChart3 class="h-5 w-5 text-blue-400" />
@@ -200,6 +236,7 @@ function RecentActivityCard(props: {
 }) {
   return (
     <div
+      data-right-sidebar-activities
       class={cn(
         "rounded-lg border border-white/10 p-3 backdrop-blur-sm",
         "bg-gradient-to-br transition-all duration-200 hover:scale-[1.01] hover:shadow-lg",

@@ -117,19 +117,53 @@ export function WordHierarchy(props: WordHierarchyProps) {
     (promise) => promise,
   )
 
-  // Animation logic for desktop variant only
+  // Container animation disabled - using individual backdrop element animations instead
+  // createEffect(() => {
+  //   animationTrigger()
+  //   if (props.variant === "desktop" && location().pathname.includes("/dashboard") && shouldAnimate()) {
+  //     const element = document.querySelector(WORD_HIERARCHY_SELECTOR) as HTMLElement
+  //     if (element) {
+  //       prepareElementForEnter(element, ENTER_DIRECTION)
+  //       setTimeout(() => {
+  //         createSlideWithFadeInAnimation(element, ENTER_DIRECTION)
+  //       }, ENTER_DELAY)
+  
+  // Animate individual backdrop elements
   createEffect(() => {
     animationTrigger()
-    if (props.variant === "desktop" && location().pathname.includes("/dashboard") && shouldAnimate()) {
-      const element = document.querySelector(WORD_HIERARCHY_SELECTOR) as HTMLElement
-      if (element) {
-        prepareElementForEnter(element, ENTER_DIRECTION)
-        setTimeout(() => {
-          createSlideWithFadeInAnimation(element, ENTER_DIRECTION)
-        }, ENTER_DELAY)
-      }
+    if (location().pathname.includes("/dashboard") && shouldAnimate()) {
+      requestAnimationFrame(() => {
+        if (props.variant === "desktop") {
+          const topElement = document.querySelector('[data-word-hierarchy-desktop-top]') as HTMLElement
+          const bottomElement = document.querySelector('[data-word-hierarchy-desktop-bottom]') as HTMLElement
+          
+          if (topElement) {
+            prepareElementForEnter(topElement, "right", true)
+            setTimeout(() => {
+              createSlideWithFadeInAnimation(topElement, "right", { withOpacity: true })
+            }, 100)
+          }
+          
+          if (bottomElement) {
+            prepareElementForEnter(bottomElement, "right", true)
+            setTimeout(() => {
+              createSlideWithFadeInAnimation(bottomElement, "right", { withOpacity: true })
+            }, 200)
+          }
+        } else if (props.variant === "mobile") {
+          const mobileElement = document.querySelector('[data-word-hierarchy-mobile]') as HTMLElement
+          
+          if (mobileElement) {
+            prepareElementForEnter(mobileElement, "right", true)
+            createSlideWithFadeInAnimation(mobileElement, "right", { withOpacity: true })
+          }
+        }
+      })
     }
   })
+  //     }
+  //   }
+  // })
 
   const finalData = () => {
     const hierarchy = wordHierarchyData
@@ -165,7 +199,7 @@ function WordHierarchyDisplay(props: {
   return (
     <Switch>
       <Match when={props.variant === "desktop"}>
-        <div class="relative h-[420px] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm">
+        <div data-word-hierarchy-desktop-top class="relative h-[420px] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm">
           <div class="flex h-full flex-col gap-4">
             <div class="flex gap-x-4">
               <div class="flex w-[58%] flex-col gap-3">
@@ -190,7 +224,7 @@ function WordHierarchyDisplay(props: {
         </div>
 
         <div class="-mt-2 min-h-0 flex-1">
-          <div class="relative h-[calc(100vh-738px)] min-h-64 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm">
+          <div data-word-hierarchy-desktop-bottom class="relative h-[calc(100vh-738px)] min-h-64 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm">
             <VocabularyList
               hierarchy={props.data.hierarchy}
               vocabularyItems={props.vocabularyItems}

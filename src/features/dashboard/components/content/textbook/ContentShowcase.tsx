@@ -22,10 +22,7 @@ interface ContentShowcaseProps {
   variant: "mobile" | "desktop"
 }
 
-const SELECTOR = "[data-content-section]"
 const MOBILE_DIRECTION = "right" as const
-const DESKTOP_DIRECTION = "left" as const
-const ENTER_DELAY = 0
 
 export function ContentShowcase(props: ContentShowcaseProps) {
   const location = useLocation()
@@ -34,28 +31,34 @@ export function ContentShowcase(props: ContentShowcaseProps) {
 
   onMount(() => {
     setIsClient(true)
-    runAnimation()
   })
 
+  // Animate individual featured content items
   createEffect(() => {
     animationTrigger()
-    if (isClient()) {
-      runAnimation()
+    if (
+      props.variant === "desktop" &&
+      location().pathname.includes("/dashboard") &&
+      shouldAnimate() &&
+      isClient()
+    ) {
+      requestAnimationFrame(() => {
+        const featuredItems = document.querySelectorAll(
+          "[data-featured-content-item]",
+        ) as NodeListOf<HTMLElement>
+
+        featuredItems.forEach((item) => {
+          prepareElementForEnter(item, "left", true)
+          setTimeout(() => {
+            createSlideWithFadeInAnimation(item, "left", {
+              withOpacity: true,
+              // duration: 600,
+            })
+          }, 100)
+        })
+      })
     }
   })
-
-  const runAnimation = () => {
-    if (location().pathname.includes("/dashboard") && shouldAnimate()) {
-      const element = document.querySelector(SELECTOR) as HTMLElement
-      if (element) {
-        const direction = props.variant === "desktop" ? DESKTOP_DIRECTION : MOBILE_DIRECTION
-        prepareElementForEnter(element, direction)
-        setTimeout(() => {
-          createSlideWithFadeInAnimation(element, direction)
-        }, ENTER_DELAY)
-      }
-    }
-  }
 
   if (props.variant === "mobile") {
     return (
@@ -177,7 +180,6 @@ function FeaturedResourceCard(props: {
   resource: EnrichedExternalResource
   thumbnailUrl?: string | null
 }) {
-
   return (
     <Show
       when={props.resource.internal_url}
@@ -216,6 +218,7 @@ function FeaturedResourceCardContent(props: {
 
   return (
     <div
+      data-featured-content-item
       class="relative h-44 w-[240px] overflow-hidden rounded-2xl border border-white/10 backdrop-blur-sm transition-all duration-300 hover:shadow-xl"
       style={{ "background-image": props.resource.gradientStyle }}
     >
@@ -266,7 +269,6 @@ function MobileResourceCard(props: {
   resource: EnrichedExternalResource
   thumbnailUrl?: string | null
 }) {
-
   return (
     <Show
       when={props.resource.internal_url}
