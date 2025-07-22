@@ -1,6 +1,6 @@
 // src/features/fsrs-import/reviewMerger.ts
 
-import { type NormalizedReview } from "./fsrsProcessor"
+import { type NormalizedReview } from "../logic/spaced-repetition-processor"
 
 export { type NormalizedReview }
 

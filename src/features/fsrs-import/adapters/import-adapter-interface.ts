@@ -1,15 +1,13 @@
 // src/features/fsrs-import/importAdapter.ts
 
 import { type Grade } from "ts-fsrs"
-import { CustomFSRSRating, type FSRSProcessingGrade } from "./fsrsProcessor"
+import {
+  CustomFSRSRating,
+  type FSRSProcessingGrade,
+  type NormalizedReview,
+} from "../logic/spaced-repetition-processor"
 
-export { CustomFSRSRating }
-
-export type NormalizedReview = {
-  timestamp: Date
-  grade: FSRSProcessingGrade
-  source: string
-}
+export { CustomFSRSRating, type NormalizedReview }
 
 export type NormalizedCard = {
   searchTerm: string

@@ -1,5 +1,5 @@
-// app/data/wanikani/utils.ts
-import { createServerFn } from "@tanstack/solid-start"
+// src/data/wanikani/utils.ts
+import { createServerFn, serverOnly } from "@tanstack/solid-start"
 import Database, { type Database as SQLiteDatabase } from "better-sqlite3"
 import { existsSync } from "fs"
 import {
@@ -30,7 +30,7 @@ const WELL_KNOWN_THRESHOLD = 21
 // Global database connection cache for Lambda warm starts
 let globalDbConnection: SQLiteDatabase | null = null
 
-async function getDbConnection(): Promise<SQLiteDatabase> {
+export const getDbConnection = serverOnly(async (): Promise<SQLiteDatabase> => {
   // Return cached connection if available
   if (globalDbConnection) {
     try {
@@ -52,7 +52,7 @@ async function getDbConnection(): Promise<SQLiteDatabase> {
     console.error(`[Utils] Failed to open database at ${dbPath}:`, error)
     throw error
   }
-}
+})
 
 async function getDbPath(): Promise<string> {
   // The Nitro hook places the file in the server root, which becomes the Lambda task root.

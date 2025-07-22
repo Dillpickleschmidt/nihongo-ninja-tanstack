@@ -7,7 +7,7 @@ import {
   type NormalizedReview,
   CustomFSRSRating,
   normalizeReview,
-} from "./importAdapter"
+} from "./import-adapter-interface"
 
 type JpdbReview = {
   timestamp: number // Unix timestamp in seconds

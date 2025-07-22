@@ -1,14 +1,13 @@
 // src/features/fsrs-import/wanikaniService.ts
 
-import Database, { Database as SQLiteDB } from "better-sqlite3"
-import * as path from "path"
-import * as fs from "fs"
+import { type Database as SQLiteDB } from "better-sqlite3"
+import { getDbConnection } from "@/data/wanikani/utils"
 import {
   prepareBatchQuery,
   groupSubjectsBySearchTerm,
   type WaniKaniSubjectMapping,
   type WaniKaniApiSubjectRow,
-} from "./wanikaniHelpers"
+} from "./wanikani-database-helpers"
 
 // Singleton instance
 let serviceInstance: WaniKaniService | null = null
@@ -24,55 +23,25 @@ export function getWaniKaniService(): WaniKaniService {
 }
 
 /**
- * WaniKani database service that handles subject lookups and mapping
+ * WaniKani database service that handles subject lookups and mapping.
+ * Now uses the shared database connection from utils.ts
  */
 export class WaniKaniService {
-  private db: SQLiteDB
   private cache: Map<string, WaniKaniSubjectMapping[]> = new Map()
 
   constructor() {
-    const dbPath = this.getDbPath()
-    console.log(`[WaniKaniService] Opening DB at: ${dbPath}`)
-
-    try {
-      this.db = new Database(dbPath, { readonly: true })
-      // Test the connection
-      this.db.prepare("SELECT COUNT(*) FROM vocabulary").get()
-      console.log("[WaniKaniService] Successfully opened WaniKani DB.")
-    } catch (error) {
-      console.error(`[WaniKaniService] Failed to open DB at ${dbPath}:`, error)
-      throw new Error(
-        `Failed to initialize WaniKani DB: ${error instanceof Error ? error.message : String(error)}`,
-      )
-    }
-  }
-
-  private getDbPath(): string {
-    if (process.env.LAMBDA_TASK_ROOT) {
-      // Lambda environment - database bundled by Nitro server assets
-      const bundledPath = path.join(process.env.LAMBDA_TASK_ROOT, "server/assets/wanikani.db")
-      
-      console.log(`[WaniKaniService] Lambda environment detected. Checking: ${bundledPath}`)
-      if (fs.existsSync(bundledPath)) {
-        console.log(`[WaniKaniService] ✅ Found bundled database at: ${bundledPath}`)
-        return bundledPath
-      }
-      
-      console.error(`[WaniKaniService] Bundled database not found at: ${bundledPath}`)
-      throw new Error("Database file not found in Lambda bundle. Check Nitro server assets configuration.")
-    }
-    
-    // Local development
-    return path.join(process.cwd(), "src/data/wanikani/wanikani.db")
+    console.log(
+      "[WaniKaniService] Initialized (using shared DB connection from utils)",
+    )
   }
 
   /**
    * Batch find subjects for multiple search terms at once.
    * Uses helper functions for query preparation and result processing.
    */
-  public batchFindSubjects(
+  public async batchFindSubjects(
     searchTerms: string[],
-  ): Map<string, WaniKaniSubjectMapping[]> {
+  ): Promise<Map<string, WaniKaniSubjectMapping[]>> {
     const results = new Map<string, WaniKaniSubjectMapping[]>()
     const uncachedTerms: string[] = []
 
@@ -99,6 +68,9 @@ export class WaniKaniService {
       )
 
       try {
+        // Get shared database connection
+        const db = await getDbConnection()
+
         // Use helper function to prepare batch query
         const { placeholders, parameters } = prepareBatchQuery(uncachedTerms)
 
@@ -114,7 +86,7 @@ export class WaniKaniService {
           ) ORDER BY characters
         `
 
-        const stmt = this.db.prepare(query)
+        const stmt = db.prepare(query)
         const rows = stmt.all(...parameters) as (WaniKaniApiSubjectRow & {
           characters: string
         })[]
@@ -155,12 +127,14 @@ export class WaniKaniService {
    * Finds matching WaniKani subjects for a single search term.
    * Uses the batch method internally for consistency.
    */
-  public findSubjects(searchTerm: string): WaniKaniSubjectMapping[] {
+  public async findSubjects(
+    searchTerm: string,
+  ): Promise<WaniKaniSubjectMapping[]> {
     if (!searchTerm?.trim()) {
       return []
     }
 
-    const results = this.batchFindSubjects([searchTerm])
+    const results = await this.batchFindSubjects([searchTerm])
     return results.get(searchTerm) || []
   }
 
@@ -183,15 +157,14 @@ export class WaniKaniService {
   }
 
   /**
-   * Close the database connection
+   * Close the service (only clears cache now, DB connection managed by utils)
    */
   public close(): void {
     try {
-      this.db?.close()
       this.cache.clear()
-      console.log("[WaniKaniService] Database connection closed.")
+      console.log("[WaniKaniService] Service closed and cache cleared.")
     } catch (error) {
-      console.error("[WaniKaniService] Error closing database:", error)
+      console.error("[WaniKaniService] Error closing service:", error)
     }
   }
 }

@@ -8,7 +8,7 @@ import {
   groupSubjectsBySearchTerm,
   type WaniKaniSubjectMapping,
   type WaniKaniApiSubjectRow,
-} from "../wanikaniHelpers"
+} from "../wanikani-database-helpers"
 
 const mockConsoleWarn = vi.spyOn(console, "warn").mockImplementation(() => {})
 

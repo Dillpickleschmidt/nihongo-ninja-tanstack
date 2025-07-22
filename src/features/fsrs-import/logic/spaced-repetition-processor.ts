@@ -1,13 +1,17 @@
-// src/features/fsrs-import/fsrsProcessor.ts
+// src/features/fsrs-import/logic/spaced-repetition-processor.ts
 
 import {
   FSRS,
   State,
-  createEmptyCard,
   Rating,
+  createEmptyCard,
   type Card,
   type ReviewLog,
 } from "ts-fsrs"
+
+// =============================================================================
+// CONSTANTS AND TYPES
+// =============================================================================
 
 const NEVER_FORGET_YEARS = 10
 
@@ -29,6 +33,10 @@ export type NormalizedReview = {
   grade: FSRSProcessingGrade
   source: string
 }
+
+// =============================================================================
+// SPACED REPETITION PROCESSING UTILITIES
+// =============================================================================
 
 /**
  * Maps a generic grade to an FSRS Grade or a custom action.
@@ -127,3 +135,4 @@ export function simulateFSRSReviews(
 
   return { finalCard: currentCard, logs: reviewLogs }
 }
+

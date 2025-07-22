@@ -1,10 +1,9 @@
 // features/settings-page/components/ServiceIntegrationsSection.tsx
-import { Show } from "solid-js"
 import { AnkiServiceCard } from "./AnkiServiceCard"
 import { WanikaniServiceCard } from "./WanikaniServiceCard"
 import { JpdbServiceCard } from "./JpdbServiceCard"
-import { jpdbAdapter } from "@/features/fsrs-import/jpdbAdapter"
-import { importReviewsServerFn } from "@/features/fsrs-import/importReviewsServerFn"
+import { jpdbAdapter } from "@/features/fsrs-import/adapters/jpdb-import-adapter"
+import { importReviewsServerFn } from "@/features/fsrs-import/server/importReviewsServerFn"
 import { connectService } from "@/features/service-config/server/server-functions"
 import { useSettings } from "@/context/SettingsContext"
 import type { ServiceType } from "@/features/service-config/types"
