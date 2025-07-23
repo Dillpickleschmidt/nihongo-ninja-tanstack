@@ -210,9 +210,10 @@ describe("PracticeSessionManager", () => {
               return { key, originalCard, updatedCard }
             },
             expect: (result: any, key: string) => {
-              expect(result.moduleQueue).toContain(key)
+              expect(result.moduleQueue).not.toContain(key)
               expect(result.reviewQueue).not.toContain(key)
-              expect(result.activeQueue).not.toContain(key)
+              expect(result.activeQueue).toContain(key)
+              expect(result.activeQueue[result.activeQueue.length - 1]).toBe(key)
             },
           },
           {

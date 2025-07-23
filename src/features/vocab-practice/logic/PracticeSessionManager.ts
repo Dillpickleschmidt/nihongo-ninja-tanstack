@@ -51,12 +51,12 @@ export class PracticeSessionManager {
     const isNowPromoted =
       wasFlashcard && updatedCard.sessionStyle === "multiple-choice"
 
-    // A failed flashcard is promoted to the module queue to be learned properly.
+    // A failed flashcard is promoted to the back of the active queue to be learned properly.
     if (isNowPromoted) {
       return {
-        activeQueue,
+        activeQueue: [...activeQueue, key],
         reviewQueue: reviewQueue.filter((k) => k !== key),
-        moduleQueue: [...moduleQueue, key],
+        moduleQueue,
       }
     }
     // A completed card (either by finishing the cycle or a successful review) is removed.
