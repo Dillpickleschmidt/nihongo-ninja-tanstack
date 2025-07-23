@@ -178,17 +178,9 @@ export async function initializePracticeSession(
   ]
 
   if (enablePrerequisites) {
-    // Collect kanji characters for deduplication
-    const kanjiCharacters = new Set(
-      hierarchy.uniqueKanji.map((k) => k.characters).filter(Boolean),
-    )
-
     moduleHierarchyItems.push(
       ...hierarchy.uniqueKanji,
-      // Filter out radicals that duplicate kanji characters
-      ...hierarchy.uniqueRadicals.filter(
-        (r) => r.characters && !kanjiCharacters.has(r.characters),
-      ),
+      ...hierarchy.uniqueRadicals,
     )
   }
 
@@ -334,8 +326,24 @@ export async function initializePracticeSession(
         const prereqCard = cardMap.get(prereqKey)
         if (!prereqCard) return
 
-        const prereqState = prereqCard.fsrs.card.state
-        if (prereqState === State.New || prereqState === State.Learning) {
+        // For kanji/radicals, skip if not yet due (instead of checking state)
+        const prereqType = prereqKey.split(":")[0] // 'kanji' or 'radical'
+        const now = new Date()
+
+        let shouldCreateDependency = false
+
+        if (prereqType === "kanji" || prereqType === "radical") {
+          // Skip kanji/radicals that are not yet due
+          const isDue = prereqCard.fsrs.card.due <= now
+          shouldCreateDependency = isDue
+        } else {
+          // For vocabulary, keep the original state-based logic
+          const prereqState = prereqCard.fsrs.card.state
+          shouldCreateDependency =
+            prereqState === State.New || prereqState === State.Learning
+        }
+
+        if (shouldCreateDependency) {
           if (!dependencyMap.has(key)) dependencyMap.set(key, [])
           dependencyMap.get(key)!.push(prereqKey)
 

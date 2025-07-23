@@ -46,23 +46,11 @@ function getHierarchicalOrder(
   const seenItems = new Set<string>()
   const orderedKeys: string[] = []
 
-  const kanjiCharacters = new Set(
-    hierarchy.uniqueKanji.map((k) => k.characters).filter(Boolean),
-  )
-
   const addItemIfNew = (
     item: VocabHierarchy | Kanji | Radical,
     itemType: "vocabulary" | "kanji" | "radical",
   ) => {
     if (seenItems.has(item.slug)) return
-
-    // Filter out radicals that duplicate kanji characters
-    if (itemType === "radical") {
-      const radical = item as Radical
-      if (radical.characters && kanjiCharacters.has(radical.characters)) {
-        return
-      }
-    }
 
     seenItems.add(item.slug)
     orderedKeys.push(`${itemType}:${item.slug}`)

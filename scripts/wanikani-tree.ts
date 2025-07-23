@@ -1,4 +1,4 @@
-import Database, { Database as SQLiteDB } from "better-sqlite3"
+import { Database as SQLiteDB } from "better-sqlite3"
 import { writeFileSync, mkdirSync } from "fs"
 import { dirname } from "path"
 import "dotenv/config"
@@ -272,6 +272,7 @@ function insertRelations(
   db: SQLiteDB,
   table: "vocab_kanji" | "kanji_radicals",
   subjects: WaniKaniApiSubject[],
+  validComponentIds?: Set<number>,
 ) {
   if (subjects.length === 0) return
 
@@ -287,9 +288,15 @@ function insertRelations(
 
   for (const subject of subjects) {
     deleteStmt.run(subject.id) // Clear existing relations for this subject
-    if (subject.data.component_subject_ids) {
+    if (
+      "component_subject_ids" in subject.data &&
+      subject.data.component_subject_ids
+    ) {
       for (const componentId of subject.data.component_subject_ids) {
-        insertStmt.run(subject.id, componentId)
+        // Filter out references to components that were filtered out
+        if (!validComponentIds || validComponentIds.has(componentId)) {
+          insertStmt.run(subject.id, componentId)
+        }
       }
     }
   }
@@ -466,7 +473,30 @@ async function main() {
     (s) => s.object === "kana_vocabulary",
   )
   const kanjiSubjects = allSubjects.filter((s) => s.object === "kanji")
-  const radicalSubjects = allSubjects.filter((s) => s.object === "radical")
+  const allRadicalSubjects = allSubjects.filter((s) => s.object === "radical")
+
+  // Filter out radicals that have the same characters as kanji to avoid duplicates
+  const kanjiCharacters = new Set(
+    kanjiSubjects
+      .map((k) => k.data.characters)
+      .filter((chars): chars is string => chars !== null),
+  )
+
+  const radicalSubjects = allRadicalSubjects.filter((radical) => {
+    if (!radical.data.characters) return true // Keep radicals without characters
+    return !kanjiCharacters.has(radical.data.characters)
+  })
+
+  const filteredRadicalCount =
+    allRadicalSubjects.length - radicalSubjects.length
+  if (filteredRadicalCount > 0) {
+    console.log(
+      `✓ Filtered out ${filteredRadicalCount} duplicate radicals that share characters with kanji`,
+    )
+  }
+
+  // Create a set of remaining radical IDs for filtering relationships
+  const remainingRadicalIds = new Set(radicalSubjects.map((r) => r.id))
 
   console.log("Saving subjects and relationships to database...")
   db.transaction(() => {
@@ -479,12 +509,17 @@ async function main() {
     insertRelations(
       db,
       "vocab_kanji",
-      vocabSubjects.filter((s) => s.data.component_subject_ids?.length),
+      vocabSubjects.filter(
+        (s) => (s.data as WaniKaniVocabularyData).component_subject_ids?.length,
+      ),
     )
     insertRelations(
       db,
       "kanji_radicals",
-      kanjiSubjects.filter((s) => s.data.component_subject_ids?.length),
+      kanjiSubjects.filter(
+        (s) => (s.data as WaniKaniKanjiData).component_subject_ids?.length,
+      ),
+      remainingRadicalIds, // Only reference radicals that weren't filtered out
     )
   })()
   console.log("✓ All subjects and relationships saved.")

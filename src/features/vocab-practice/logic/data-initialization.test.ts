@@ -466,15 +466,33 @@ describe("Data Initialization", () => {
       expect(result.moduleQueue).toEqual(expect.arrayContaining(unlockedCards))
     })
 
-    it("should not create dependencies for well-known prerequisites", async () => {
-      const fsrsCardsWithWellKnown: FSRSCardData[] = [
-        createMockFSRSCard("person", "readings", "radical", State.Review),
-        createMockFSRSCard("mouth", "readings", "radical", State.Review),
+    it("should not create dependencies for kanji/radicals not yet due", async () => {
+      // Create future due dates (1 day from now)
+      const futureDate = new Date()
+      futureDate.setDate(futureDate.getDate() + 1)
+
+      const fsrsCardsWithFutureDates: FSRSCardData[] = [
+        {
+          ...createMockFSRSCard("person", "readings", "radical", State.Review),
+          fsrs_card: {
+            ...createMockFSRSCard("person", "readings", "radical", State.Review)
+              .fsrs_card,
+            due: futureDate,
+          },
+        },
+        {
+          ...createMockFSRSCard("mouth", "readings", "radical", State.Review),
+          fsrs_card: {
+            ...createMockFSRSCard("mouth", "readings", "radical", State.Review)
+              .fsrs_card,
+            due: futureDate,
+          },
+        },
       ]
 
       const result = await initializePracticeSession(
         mockHierarchy,
-        fsrsCardsWithWellKnown,
+        fsrsCardsWithFutureDates,
         [],
         "readings",
         mockGlobalVocabCollection,
@@ -484,8 +502,52 @@ describe("Data Initialization", () => {
         true, // enablePrerequisites
       )
 
+      // Kanji should not have dependencies since radicals are not yet due
       expect(result.dependencyMap.get("kanji:食")).toBeUndefined()
       expect(result.lockedKeys.has("kanji:食")).toBe(false)
+    })
+
+    it("should create dependencies for kanji/radicals that are due", async () => {
+      // Create past due dates (1 day ago)
+      const pastDate = new Date()
+      pastDate.setDate(pastDate.getDate() - 1)
+
+      const fsrsCardsWithPastDates: FSRSCardData[] = [
+        {
+          ...createMockFSRSCard("person", "readings", "radical", State.Review),
+          fsrs_card: {
+            ...createMockFSRSCard("person", "readings", "radical", State.Review)
+              .fsrs_card,
+            due: pastDate,
+          },
+        },
+        {
+          ...createMockFSRSCard("mouth", "readings", "radical", State.Review),
+          fsrs_card: {
+            ...createMockFSRSCard("mouth", "readings", "radical", State.Review)
+              .fsrs_card,
+            due: pastDate,
+          },
+        },
+      ]
+
+      const result = await initializePracticeSession(
+        mockHierarchy,
+        fsrsCardsWithPastDates,
+        [],
+        "readings",
+        mockGlobalVocabCollection,
+        false, // flipVocabQA
+        false, // flipKanjiRadicalQA
+        false, // shuffle
+        true, // enablePrerequisites
+      )
+
+      // Kanji should have dependencies since radicals are due
+      expect(result.dependencyMap.get("kanji:食")).toEqual(
+        expect.arrayContaining(["radical:person", "radical:mouth"]),
+      )
+      expect(result.lockedKeys.has("kanji:食")).toBe(true)
     })
 
     it("should filter out Kanji/Radicals from module queue and not build dependencies when enablePrerequisites is false", async () => {
@@ -526,8 +588,10 @@ describe("Data Initialization", () => {
 
       expect(result.cardMap.size).toBe(expectedModuleQueueItems.length)
     })
-    it("should filter out radicals that have the same characters as kanji", async () => {
+    it("should include all radicals and kanji from hierarchy (no filtering at component level)", async () => {
       // Create a hierarchy where a radical and kanji share the same character
+      // Note: In practice, duplicates are now filtered at the database level,
+      // so this test verifies that the component doesn't do additional filtering
       const duplicateRadical = createMockRadical(4, "life", ["life"], "生")
       const duplicateKanji = createMockKanji(
         4,
@@ -540,7 +604,7 @@ describe("Data Initialization", () => {
       const hierarchyWithDuplicates: FullHierarchyData = {
         hierarchy: [vocabWithDuplicate],
         uniqueKanji: [duplicateKanji],
-        uniqueRadicals: [duplicateRadical], // This should get filtered out
+        uniqueRadicals: [duplicateRadical], // This should now be included
       }
 
       const vocabCollection: VocabularyCollection = {
@@ -567,16 +631,16 @@ describe("Data Initialization", () => {
       // The kanji should be present
       expect(result.cardMap.has("kanji:生")).toBe(true)
 
-      // The duplicate radical should be filtered out
-      expect(result.cardMap.has("radical:life")).toBe(false)
+      // The radical should now be included (no component-level filtering)
+      expect(result.cardMap.has("radical:life")).toBe(true)
 
-      // The kanji should not have any dependencies since its radical was filtered
-      expect(result.dependencyMap.get("kanji:生")).toBeUndefined()
+      // The kanji should have the radical as a dependency
+      expect(result.dependencyMap.get("kanji:生")).toContain("radical:life")
 
-      // The kanji should not be locked since it has no dependencies
-      expect(result.lockedKeys.has("kanji:生")).toBe(false)
+      // The kanji should be locked since it depends on the radical
+      expect(result.lockedKeys.has("kanji:生")).toBe(true)
 
-      // The vocabulary should still depend on the kanji
+      // The vocabulary should depend on the kanji
       expect(result.dependencyMap.get("vocabulary:生活")).toContain("kanji:生")
     })
   })
