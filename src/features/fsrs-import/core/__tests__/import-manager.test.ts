@@ -2,10 +2,16 @@
 
 import { describe, it, expect, vi } from "vitest"
 import { FSRS } from "ts-fsrs"
-import { ImportSessionManager } from "../import-session-manager"
-import { type ProcessedCard } from "../card-validation-deduplication"
-import type { ImportAdapter, NormalizedCard } from "../../adapters/import-adapter-interface"
-import type { ImportDependencies, BatchProcessingContext } from "../types"
+import {
+  ImportSessionManager,
+  type ImportDependencies,
+} from "../import-manager"
+import {
+  type ProcessedCard,
+  type NormalizedCard,
+  type BatchProcessingContext,
+} from "../schemas"
+import type { ImportAdapter } from "../../adapters/import-adapter-interface"
 
 describe("ImportSessionManager", () => {
   // Mock data
@@ -23,8 +29,9 @@ describe("ImportSessionManager", () => {
     },
   ]
 
+  const mockValidateInput = vi.fn().mockReturnValue(true)
   const mockAdapter: ImportAdapter<any> = {
-    validateInput: vi.fn().mockReturnValue(true),
+    validateInput: mockValidateInput as any,
     transformCards: vi.fn().mockReturnValue(mockNormalizedCards),
     getSupportedCardTypes: vi.fn().mockReturnValue(["vocabulary"]),
     normalizeGrade: vi.fn().mockReturnValue(3),
@@ -35,7 +42,7 @@ describe("ImportSessionManager", () => {
       practice_item_key: "猫",
       type: "vocabulary",
       fsrs_card: {} as any,
-      mode: "multiple_choice",
+      mode: "readings",
       fsrs_logs: [],
       lesson_id: null,
       source: "test-source",
@@ -430,4 +437,3 @@ describe("ImportSessionManager", () => {
     })
   })
 })
-

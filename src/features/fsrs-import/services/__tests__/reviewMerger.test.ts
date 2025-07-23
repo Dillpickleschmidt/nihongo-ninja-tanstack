@@ -2,7 +2,8 @@
 
 import { describe, it, expect } from "vitest"
 import { Rating } from "ts-fsrs"
-import { mergeReviews, type NormalizedReview } from "../reviewMerger"
+import { mergeReviews } from "../reviewMerger"
+import { type NormalizedReview } from "../../core/schemas"
 
 describe("reviewMerger", () => {
   describe("mergeReviews - Basic Merging", () => {

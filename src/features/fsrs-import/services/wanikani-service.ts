@@ -1,5 +1,3 @@
-// src/features/fsrs-import/wanikaniService.ts
-
 import { type Database as SQLiteDB } from "better-sqlite3"
 import { getDbConnection } from "@/data/wanikani/utils"
 import {
@@ -8,6 +6,7 @@ import {
   type WaniKaniSubjectMapping,
   type WaniKaniApiSubjectRow,
 } from "./wanikani-database-helpers"
+import { type WaniKaniSubject, WaniKaniSubjectSchema } from "../core/schemas"
 
 // Singleton instance
 let serviceInstance: WaniKaniService | null = null
@@ -24,25 +23,23 @@ export function getWaniKaniService(): WaniKaniService {
 
 /**
  * WaniKani database service that handles subject lookups and mapping.
- * Now uses the shared database connection from utils.ts
+ * Now uses Zod validation for type safety.
  */
 export class WaniKaniService {
-  private cache: Map<string, WaniKaniSubjectMapping[]> = new Map()
+  private cache: Map<string, WaniKaniSubject[]> = new Map()
 
   constructor() {
-    console.log(
-      "[WaniKaniService] Initialized (using shared DB connection from utils)",
-    )
+    console.log("[WaniKaniService] Initialized with Zod validation")
   }
 
   /**
    * Batch find subjects for multiple search terms at once.
-   * Uses helper functions for query preparation and result processing.
+   * Uses Zod validation for results.
    */
   public async batchFindSubjects(
     searchTerms: string[],
-  ): Promise<Map<string, WaniKaniSubjectMapping[]>> {
-    const results = new Map<string, WaniKaniSubjectMapping[]>()
+  ): Promise<Map<string, WaniKaniSubject[]>> {
+    const results = new Map<string, WaniKaniSubject[]>()
     const uncachedTerms: string[] = []
 
     // Check cache first
@@ -91,8 +88,37 @@ export class WaniKaniService {
           characters: string
         })[]
 
-        // Use helper function to group and process results
-        const groupedResults = groupSubjectsBySearchTerm(uncachedTerms, rows)
+        // Validate and transform results using Zod
+        const validatedRows = rows
+          .map((row) => {
+            try {
+              return WaniKaniSubjectSchema.parse({
+                slug: row.slug,
+                type:
+                  row.object === "kana_vocabulary" ? "vocabulary" : row.object,
+                // Pass through other fields from the database
+                ...row,
+              })
+            } catch (error) {
+              console.warn(
+                `[WaniKaniService] Invalid subject data:`,
+                row,
+                error,
+              )
+              return null
+            }
+          })
+          .filter((row): row is WaniKaniSubject => row !== null)
+
+        // Group results by search term
+        const groupedResults = new Map<string, WaniKaniSubject[]>()
+
+        for (const term of uncachedTerms) {
+          const matchingSubjects = validatedRows.filter(
+            (row) => (row as any).characters === term,
+          )
+          groupedResults.set(term, matchingSubjects)
+        }
 
         // Cache results and map back to original terms
         for (const [trimmedTerm, subjects] of groupedResults.entries()) {
@@ -127,9 +153,7 @@ export class WaniKaniService {
    * Finds matching WaniKani subjects for a single search term.
    * Uses the batch method internally for consistency.
    */
-  public async findSubjects(
-    searchTerm: string,
-  ): Promise<WaniKaniSubjectMapping[]> {
+  public async findSubjects(searchTerm: string): Promise<WaniKaniSubject[]> {
     if (!searchTerm?.trim()) {
       return []
     }

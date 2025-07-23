@@ -9,8 +9,8 @@ import {
   selectBestCard,
   groupCardsByKey,
   deduplicateCards,
-  type ProcessedCard,
-} from "../card-validation-deduplication"
+} from "../utils"
+import { type ProcessedCard } from "../schemas"
 
 describe("Card Validation and Deduplication Utilities", () => {
   // Test data
@@ -387,4 +387,3 @@ describe("Card Validation and Deduplication Utilities", () => {
     })
   })
 })
-

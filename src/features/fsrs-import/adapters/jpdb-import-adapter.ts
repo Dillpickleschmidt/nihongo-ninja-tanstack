@@ -1,72 +1,26 @@
-// src/features/fsrs-import/jpdbAdapter.ts
-
-import { Rating } from "ts-fsrs"
 import {
   type ImportAdapter,
   type NormalizedCard,
   type NormalizedReview,
-  CustomFSRSRating,
   normalizeReview,
 } from "./import-adapter-interface"
-
-type JpdbReview = {
-  timestamp: number // Unix timestamp in seconds
-  grade:
-    | "unknown"
-    | "known"
-    | "something"
-    | "hard"
-    | "okay"
-    | "easy"
-    | "nothing"
-    | "never-forget"
-  from_anki: boolean
-}
-
-type JpdbVocabularyCard = {
-  vid: number
-  spelling: string
-  reading: string
-  reviews: JpdbReview[]
-}
-
-type JpdbKanjiCard = {
-  character: string
-  reviews: JpdbReview[]
-}
-
-export type JpdbJsonData = {
-  cards_vocabulary_jp_en: JpdbVocabularyCard[]
-  cards_vocabulary_en_jp: JpdbVocabularyCard[]
-  cards_kanji_keyword_char: JpdbKanjiCard[]
-  cards_kanji_char_keyword: JpdbKanjiCard[]
-}
+import {
+  type JpdbJsonData,
+  type JpdbVocabularyCard,
+  type JpdbKanjiCard,
+  type JpdbReview,
+  safeParseJpdbJsonData,
+  mapJpdbGradeToFSRS,
+  normalizeTimestamp,
+} from "../core/schemas"
 
 /**
  * jpdb.io import adapter implementation
  */
 export const jpdbAdapter: ImportAdapter<JpdbJsonData> = {
   validateInput: (data: any): data is JpdbJsonData => {
-    // Check if data is an object
-    if (typeof data !== "object" || data === null) {
-      return false
-    }
-
-    // Check if all required arrays exist and are arrays
-    const requiredArrays = [
-      "cards_vocabulary_jp_en",
-      "cards_vocabulary_en_jp",
-      "cards_kanji_keyword_char",
-      "cards_kanji_char_keyword",
-    ]
-
-    for (const arrayName of requiredArrays) {
-      if (!(arrayName in data) || !Array.isArray(data[arrayName])) {
-        return false
-      }
-    }
-
-    return true
+    const result = safeParseJpdbJsonData(data)
+    return result.success
   },
 
   transformCards: (data: JpdbJsonData): NormalizedCard[] => {
@@ -116,28 +70,7 @@ export const jpdbAdapter: ImportAdapter<JpdbJsonData> = {
     ]
   },
 
-  normalizeGrade: (grade: any) => {
-    switch (grade) {
-      case "okay":
-        return Rating.Good
-      case "hard":
-        return Rating.Hard
-      case "something":
-        return Rating.Again
-      case "easy":
-        return Rating.Easy
-      case "known":
-        return Rating.Good
-      case "unknown":
-        return CustomFSRSRating.Ignore
-      case "nothing":
-        return CustomFSRSRating.Forget
-      case "never-forget":
-        return CustomFSRSRating.NeverForget
-      default:
-        return Rating.Again
-    }
-  },
+  normalizeGrade: mapJpdbGradeToFSRS,
 }
 
 /**
@@ -196,10 +129,9 @@ function transformReviews(
   source: string,
 ): NormalizedReview[] {
   return jpdbReviews.map((review) => {
-    // Normalize the raw review using the generic helper
     return normalizeReview({
-      timestamp: review.timestamp, // Unix timestamp in seconds
-      grade: jpdbAdapter.normalizeGrade(review.grade),
+      timestamp: normalizeTimestamp(review.timestamp),
+      grade: mapJpdbGradeToFSRS(review.grade),
       source: source,
     })
   })

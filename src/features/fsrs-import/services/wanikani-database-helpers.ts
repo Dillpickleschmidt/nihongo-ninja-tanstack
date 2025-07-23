@@ -1,5 +1,7 @@
 // src/features/fsrs-import/wanikaniHelpers.ts
 
+import { type DBPracticeItemType } from "../core/schemas"
+
 export type WaniKaniSubjectMapping = {
   id: number
   slug: string

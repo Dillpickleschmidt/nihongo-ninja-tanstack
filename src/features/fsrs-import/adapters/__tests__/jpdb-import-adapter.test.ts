@@ -2,8 +2,9 @@
 
 import { describe, it, expect } from "vitest"
 import { Rating } from "ts-fsrs"
-import { jpdbAdapter, type JpdbJsonData } from "../jpdb-import-adapter"
-import { CustomFSRSRating } from "../import-adapter-interface"
+import { jpdbAdapter } from "../jpdb-import-adapter"
+import { type JpdbJsonData } from "../../core/schemas"
+import { CustomFSRSRating } from "../../services/spaced-repetition-processor"
 
 describe("jpdbAdapter", () => {
   describe("validateInput", () => {

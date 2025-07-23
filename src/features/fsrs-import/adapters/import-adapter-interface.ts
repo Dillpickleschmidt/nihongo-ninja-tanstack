@@ -1,25 +1,13 @@
-// src/features/fsrs-import/importAdapter.ts
-
-import { type Grade } from "ts-fsrs"
 import {
-  CustomFSRSRating,
-  type FSRSProcessingGrade,
+  type NormalizedCard,
   type NormalizedReview,
-} from "../logic/spaced-repetition-processor"
+  type FSRSProcessingGrade,
+  type RawReview,
+  normalizeTimestamp,
+  NormalizedReviewSchema,
+} from "../core/schemas"
 
-export { CustomFSRSRating, type NormalizedReview }
-
-export type NormalizedCard = {
-  searchTerm: string
-  reviews: NormalizedReview[]
-  source: string
-}
-
-type RawReview = {
-  timestamp: Date | string | number
-  grade: any
-  source: string
-}
+export { type NormalizedCard, type NormalizedReview }
 
 export interface ImportAdapter<TInput> {
   validateInput(data: any): data is TInput
@@ -35,23 +23,11 @@ export function createAdapter<TInput>(
 }
 
 export function normalizeReview(rawReview: RawReview): NormalizedReview {
-  let timestamp: Date
-
-  // Handle different timestamp formats
-  if (rawReview.timestamp instanceof Date) {
-    timestamp = rawReview.timestamp
-  } else if (typeof rawReview.timestamp === "string") {
-    timestamp = new Date(rawReview.timestamp)
-  } else if (typeof rawReview.timestamp === "number") {
-    // Assume unix timestamp in seconds, convert to milliseconds
-    timestamp = new Date(rawReview.timestamp * 1000)
-  } else {
-    throw new Error(`Invalid timestamp format: ${rawReview.timestamp}`)
-  }
-
-  return {
-    timestamp,
+  const normalized = {
+    timestamp: normalizeTimestamp(rawReview.timestamp),
     grade: rawReview.grade,
     source: rawReview.source,
   }
+
+  return NormalizedReviewSchema.parse(normalized)
 }

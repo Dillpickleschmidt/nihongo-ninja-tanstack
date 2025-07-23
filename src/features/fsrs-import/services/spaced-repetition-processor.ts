@@ -135,4 +135,3 @@ export function simulateFSRSReviews(
 
   return { finalCard: currentCard, logs: reviewLogs }
 }
-
