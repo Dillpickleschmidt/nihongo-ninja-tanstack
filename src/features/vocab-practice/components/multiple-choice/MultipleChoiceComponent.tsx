@@ -11,6 +11,13 @@ import { createStore } from "solid-js/store"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { Rating } from "ts-fsrs"
 import type { PracticeCard, MultipleChoiceButtonState } from "../../types"
+import type { PartOfSpeech } from "@/data/types"
+
+// Helper function to determine if a part of speech is a verb
+function isVerb(partOfSpeech?: PartOfSpeech): boolean {
+  if (!partOfSpeech) return false
+  return partOfSpeech !== "I-adjective" && partOfSpeech !== "Na-adjective"
+}
 
 export default function MultipleChoiceComponent() {
   const { state, setState } = useVocabPracticeContext()
@@ -45,7 +52,9 @@ export default function MultipleChoiceComponent() {
           c.practiceMode === card.practiceMode &&
           // 3. Cannot be the same card.
           c.key !== card.key &&
-          // 4. The answer text must be unique to avoid "seven" vs "seven".
+          // 4. Part of speech must match: verbs with verbs, non-verbs with non-verbs.
+          isVerb(c.vocab.part_of_speech) === isVerb(card.vocab.part_of_speech) &&
+          // 5. The answer text must be unique to avoid "seven" vs "seven".
           !seenValues.has(getComparableValue(c)) &&
           seenValues.add(getComparableValue(c)),
       )

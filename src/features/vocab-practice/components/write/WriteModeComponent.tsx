@@ -137,6 +137,15 @@ export default function WriteModeComponent() {
     })
   }
 
+  function handleIWasCorrect() {
+    if (!state.isAnswered) return
+
+    setWasCorrect(true)
+    setState({
+      lastRating: Rating.Good,
+    })
+  }
+
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key === "Enter" && !state.isAnswered) {
       e.preventDefault()
@@ -288,6 +297,18 @@ export default function WriteModeComponent() {
                       d="M13 7l5 5m0 0l-5 5m5-5H6"
                     />
                   </svg>
+                </span>
+              </Button>
+            </Show>
+
+            <Show when={state.isAnswered && !wasCorrect()}>
+              <Button
+                onClick={handleIWasCorrect}
+                size="lg"
+                class="rounded-xl border border-green-400/30 bg-green-500/20 px-8 text-base font-semibold text-green-100 shadow-lg transition-all duration-200 hover:scale-[1.02] hover:bg-green-500/30 focus-visible:ring-2 focus-visible:ring-green-400"
+              >
+                <span class="flex items-center justify-center gap-2">
+                  ✓ I was correct
                 </span>
               </Button>
             </Show>
