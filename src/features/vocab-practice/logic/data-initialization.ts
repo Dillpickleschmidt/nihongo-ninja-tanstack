@@ -331,25 +331,26 @@ export async function initializePracticeSession(
         const prereqType = prereqKey.split(":")[0] // 'kanji' or 'radical'
         const now = new Date()
 
-        let shouldCreateDependency = false
+        let shouldBlockOnPrerequisite = false
 
         if (prereqType === "kanji" || prereqType === "radical") {
           // Skip seen kanji/radicals that are not yet due
           const isDue = prereqCard.fsrs.card.due <= now // this includes just created cards
-          shouldCreateDependency = isDue
+          shouldBlockOnPrerequisite = isDue
         } else {
           // For vocabulary, use state-based logic
           const prereqState = prereqCard.fsrs.card.state
-          shouldCreateDependency =
+          shouldBlockOnPrerequisite =
             prereqState === State.New || prereqState === State.Learning
         }
 
-        if (shouldCreateDependency) {
+        // Create unlocksMap entries to show what each card unlocks
+        if (!unlocksMap.has(prereqKey)) unlocksMap.set(prereqKey, [])
+        unlocksMap.get(prereqKey)!.push(key)
+
+        if (shouldBlockOnPrerequisite) {
           if (!dependencyMap.has(key)) dependencyMap.set(key, [])
           dependencyMap.get(key)!.push(prereqKey)
-
-          if (!unlocksMap.has(prereqKey)) unlocksMap.set(prereqKey, [])
-          unlocksMap.get(prereqKey)!.push(key)
         } else {
           // If a prerequisite is not due, mark it as disabled
           prereqCard.isDisabled = true
