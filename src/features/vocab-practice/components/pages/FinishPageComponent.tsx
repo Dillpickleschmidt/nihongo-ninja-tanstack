@@ -9,11 +9,18 @@ export default function FinishPageComponent() {
   const { state } = useVocabPracticeContext()
   const manager = () => state.manager!
 
-  // Get all cards from the manager's map and filter for just the module cards
+  // Get all cards from the manager's map and separate by session scope
   const moduleCards = createMemo(() => {
     if (!manager()) return []
     return Array.from(manager().getCardMap().values()).filter(
-      (card) => card.sessionStyle !== "flashcard",
+      (card) => card.sessionScope === "module",
+    )
+  })
+
+  const reviewCards = createMemo(() => {
+    if (!manager()) return []
+    return Array.from(manager().getCardMap().values()).filter(
+      (card) => card.sessionScope === "review",
     )
   })
 
@@ -31,12 +38,34 @@ export default function FinishPageComponent() {
 
       {/* Card Summary Grid */}
       <div class="px-4 pb-28">
-        <div class="mx-auto max-w-3xl">
-          <div class="grid gap-4 lg:gap-5">
-            <For each={moduleCards()}>
-              {(card) => <CardSummary card={card} />}
-            </For>
-          </div>
+        <div class="mx-auto max-w-3xl space-y-8">
+          {/* Module Items Section */}
+          <Show when={moduleCards().length > 0}>
+            <div>
+              <h2 class="text-primary mb-4 text-xl font-semibold">
+                Module Items
+              </h2>
+              <div class="grid gap-4 lg:gap-5">
+                <For each={moduleCards()}>
+                  {(card) => <CardSummary card={card} />}
+                </For>
+              </div>
+            </div>
+          </Show>
+
+          {/* Review Items Section */}
+          <Show when={reviewCards().length > 0}>
+            <div>
+              <h2 class="text-primary mb-4 text-xl font-semibold">
+                Review Items
+              </h2>
+              <div class="grid gap-4 lg:gap-5">
+                <For each={reviewCards()}>
+                  {(card) => <CardSummary card={card} />}
+                </For>
+              </div>
+            </div>
+          </Show>
         </div>
       </div>
 

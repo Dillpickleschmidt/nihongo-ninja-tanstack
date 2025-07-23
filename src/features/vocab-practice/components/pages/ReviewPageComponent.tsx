@@ -1,5 +1,5 @@
 // vocab-practice/components/pages/ReviewPageComponent.tsx
-import { For, createMemo, onMount } from "solid-js" // Import onMount
+import { For, Show, createMemo, onMount } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import type { PracticeCard } from "../../types"
@@ -148,6 +148,11 @@ function ReviewCardSummary(props: { card: PracticeCard; wasCorrect: boolean }) {
         </p>
         <p class={answerClasses()}>{answerToDisplay()}</p>
       </div>
+      <Show when={props.card.sessionScope === "review"}>
+        <p class="text-muted-foreground absolute bottom-3 right-6 text-xs font-medium">
+          External Review
+        </p>
+      </Show>
       <div
         class={`absolute top-0 right-0 h-full ${wasAnsweredIncorrectly() ? "w-4 bg-red-500" : "w-2 bg-emerald-500/50"}`}
       />
