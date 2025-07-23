@@ -15192,6 +15192,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "売[う]る",
     english: ["to sell"],
     chapter: 15,
+    part_of_speech: "Godan verb with 'ru' ending",
     example_sentences: [
       {
         english: ["I sell books."],
@@ -15211,6 +15212,7 @@ export const vocabulary: VocabularyCollection = {
     english: ["to withdraw (money)", "to unload"],
     chapter: 15,
     info: ["Can also be used with 荷物を下ろす (to unload luggage)"],
+    part_of_speech: "Godan verb with 'su' ending",
     example_sentences: [
       {
         english: ["I withdrew money from the bank."],
@@ -15233,6 +15235,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "描[えが]く",
     english: ["to draw", "to paint"],
     chapter: 15,
+    part_of_speech: "Godan verb with 'ku' ending",
     example_sentences: [
       {
         english: ["She is good at drawing pictures."],
@@ -15261,6 +15264,7 @@ export const vocabulary: VocabularyCollection = {
       "見つける -> to find X item (item focused)",
       "見つける focuses on the result of the search, indicating that the object is known.",
     ],
+    part_of_speech: "Godan verb with 'su' ending",
     example_sentences: [
       {
         english: ["I'm looking for a new job."],
@@ -15283,7 +15287,8 @@ export const vocabulary: VocabularyCollection = {
     furigana: "誘[さそ]う",
     english: ["to invite"],
     chapter: 15,
-    info: ["Structure: 人をopportunityに誘う"],
+    info: ["Structure: 人を opportunity に誘う"],
+    part_of_speech: "Godan verb with 'u' ending",
     example_sentences: [
       {
         english: ["I invited my friend to my house."],
@@ -15306,6 +15311,7 @@ export const vocabulary: VocabularyCollection = {
       "Another deceptive う verb that ends in eru! It's one of those few exception う verbs.",
       "It conjugates as しゃべります, しゃべって (NOT しゃべます)",
     ],
+    part_of_speech: "Godan verb with 'ru' ending (irregular verb)",
     example_sentences: [
       {
         english: ["We chatted for hours."],
@@ -15322,6 +15328,7 @@ export const vocabulary: VocabularyCollection = {
       "Structure: Aさんは/がBさんと付き合っている -> Aさん and Bさん are dating (refers to a committed relationship)",
       "デートする is used for individual dating events, whether or not the people involved are in a serious relationship",
     ],
+    part_of_speech: "Godan verb with 'u' ending",
     example_sentences: [
       {
         english: ["I am dating my classmate."],
@@ -15344,6 +15351,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "着[つ]く",
     english: ["to arrive"],
     chapter: 15,
+    part_of_speech: "Godan verb with 'ku' ending",
     example_sentences: [
       {
         english: ["I arrived at the station."],
@@ -15364,6 +15372,7 @@ export const vocabulary: VocabularyCollection = {
     chapter: 15,
     mnemonics: ["保 (ほ) means 'to protect' and 険 (けん) means 'danger'"],
     info: ["Used for getting insurance against thefts, accidents, etc."],
+    part_of_speech: "Godan verb with 'ru' ending (irregular verb)",
     example_sentences: [
       {
         english: ["I got insurance for my car."],
