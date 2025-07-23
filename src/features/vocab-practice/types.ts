@@ -56,6 +56,7 @@ export type PracticeCard = {
   sessionScope: "module" | "review"
   meaningMnemonic: string
   readingMnemonic?: string
+  isDisabled: boolean
 }
 
 // State for the three-queue session system with dependency tracking

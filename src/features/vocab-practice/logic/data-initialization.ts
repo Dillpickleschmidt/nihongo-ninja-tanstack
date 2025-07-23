@@ -139,6 +139,7 @@ function createPracticeCard(
     validAnswers,
     meaningMnemonic: itemMeaningMnemonic,
     readingMnemonic: itemReadingMnemonic,
+    isDisabled: false,
   }
 }
 
@@ -333,11 +334,11 @@ export async function initializePracticeSession(
         let shouldCreateDependency = false
 
         if (prereqType === "kanji" || prereqType === "radical") {
-          // Skip kanji/radicals that are not yet due
-          const isDue = prereqCard.fsrs.card.due <= now
+          // Skip seen kanji/radicals that are not yet due
+          const isDue = prereqCard.fsrs.card.due <= now // this includes just created cards
           shouldCreateDependency = isDue
         } else {
-          // For vocabulary, keep the original state-based logic
+          // For vocabulary, use state-based logic
           const prereqState = prereqCard.fsrs.card.state
           shouldCreateDependency =
             prereqState === State.New || prereqState === State.Learning
@@ -349,6 +350,9 @@ export async function initializePracticeSession(
 
           if (!unlocksMap.has(prereqKey)) unlocksMap.set(prereqKey, [])
           unlocksMap.get(prereqKey)!.push(key)
+        } else {
+          // If a prerequisite is not due, mark it as disabled
+          prereqCard.isDisabled = true
         }
       })
     })
@@ -357,6 +361,9 @@ export async function initializePracticeSession(
   // --- Phase 4: Lock Cards and Populate Queues ---
   // This logic filters `cardMap` for the *final* queues.
   for (const [key, card] of cardMap.entries()) {
+    if (card.isDisabled) {
+      continue // Skip disabled cards
+    }
     if (card.sessionScope === "module") {
       // Only lock if prerequisites are enabled AND there's an actual dependency
       if (enablePrerequisites && dependencyMap.has(key)) {
