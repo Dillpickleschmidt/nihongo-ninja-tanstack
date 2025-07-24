@@ -48,6 +48,7 @@ function createPracticeCard(
   if (type === "vocabulary") {
     // For vocabulary, the source of truth is the global collection.
     vocabItem = globalVocabCollection[item.slug]
+    itemMeaningMnemonic = vocabItem?.mnemonics?.[0] ?? ""
   } else {
     // For Kanji and Radicals, construct a temporary vocab-like item.
     const typedItem = item as Kanji | Radical

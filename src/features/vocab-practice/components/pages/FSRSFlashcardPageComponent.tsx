@@ -64,6 +64,10 @@ export default function FSRSFlashcardPageComponent() {
 
   const [showAnswer, setShowAnswer] = createSignal(false)
 
+  // Mnemonic helpers
+  const meaningMnemonic = createMemo(() => currentCard()?.meaningMnemonic || "")
+  const readingMnemonic = createMemo(() => currentCard()?.readingMnemonic || "")
+
   let showAnswerButtonRef: HTMLButtonElement | undefined
 
   // Effect to reset state and focus the "Show Answer" button for new cards
@@ -233,6 +237,41 @@ export default function FSRSFlashcardPageComponent() {
                   <p class="mt-6 text-orange-400" classList={answerTextClass()}>
                     {card().validAnswers.join(", ")}
                   </p>
+
+                  {/* Mnemonics Section */}
+                  <div class="mt-6 flex flex-col items-center gap-4">
+                    {/* Meaning Mnemonic */}
+                    <Show
+                      when={meaningMnemonic() && meaningMnemonic().length > 0}
+                    >
+                      <div class="w-full max-w-xl px-2">
+                        <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
+                          Meaning Mnemonic
+                        </p>
+                        <p class="text-muted-foreground text-base leading-relaxed italic">
+                          {meaningMnemonic()}
+                        </p>
+                      </div>
+                    </Show>
+
+                    {/* Reading Mnemonic (for Kanji only) */}
+                    <Show
+                      when={
+                        card().practiceItemType === "kanji" &&
+                        readingMnemonic() &&
+                        readingMnemonic().length > 0
+                      }
+                    >
+                      <div class="w-full max-w-xl px-2">
+                        <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
+                          Reading Mnemonic
+                        </p>
+                        <p class="text-muted-foreground text-base leading-relaxed italic">
+                          {readingMnemonic()}
+                        </p>
+                      </div>
+                    </Show>
+                  </div>
                 </Show>
               </div>
             </div>
