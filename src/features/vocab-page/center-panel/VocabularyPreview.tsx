@@ -12,7 +12,7 @@ interface VocabularyPreviewProps {
 export function VocabularyPreview(props: VocabularyPreviewProps) {
   return (
     <div class="h-full w-full overflow-y-auto p-6">
-      <div class="mb-6 text-center">
+      <div class="my-6 text-center">
         <h2 class="mb-2 text-2xl font-bold">{props.selectedDeck.name}</h2>
         <p class="text-muted-foreground">Vocabulary Preview</p>
       </div>

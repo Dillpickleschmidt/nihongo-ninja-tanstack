@@ -9,11 +9,10 @@ interface CenterPanelProps {
 
 export function CenterPanel(props: CenterPanelProps) {
   return (
-    <div class="flex flex-1 items-center justify-center p-8">
+    <div class="flex flex-1 items-center justify-center px-8">
       <Show when={props.selectedUserDeck} fallback={<DefaultContent />}>
         {(deck) => <VocabularyPreview selectedDeck={deck()} />}
       </Show>
     </div>
   )
 }
-

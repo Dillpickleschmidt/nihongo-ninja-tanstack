@@ -7,12 +7,7 @@ import { useVocabPageState } from "./useVocabPageState"
 
 export function DesktopVocabPage() {
   const state = useVocabPageState()
-
-  const handleUserDecksPanelClick = () => {
-    if (state.selectedUserDeck()) {
-      state.deselectUserDeck()
-    }
-  }
+  let userDecksPanelRef: HTMLDivElement
 
   return (
     <div class="bg-background flex h-screen">
@@ -38,7 +33,7 @@ export function DesktopVocabPage() {
         isOpen={state.rightPanelOpen()}
         onToggle={() => state.setRightPanelOpen(!state.rightPanelOpen())}
         position="right"
-        onClick={handleUserDecksPanelClick}
+        ref={userDecksPanelRef!}
       >
         <UserDecksPanel
           userDecks={state.userDecks()}
@@ -47,6 +42,7 @@ export function DesktopVocabPage() {
           selectedUserDeck={state.selectedUserDeck()}
           onSelectDeck={state.selectUserDeck}
           onDeselectDeck={state.deselectUserDeck}
+          panelRef={userDecksPanelRef}
         />
       </CollapsiblePanel>
     </div>

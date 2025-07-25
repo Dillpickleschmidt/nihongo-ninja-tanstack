@@ -1,3 +1,4 @@
+// features/vocab-page/CollapsiblePanel.tsx
 import { JSX, Show } from "solid-js"
 import { ChevronLeft, ChevronRight } from "lucide-solid"
 import { Button } from "@/components/ui/button"
@@ -10,7 +11,7 @@ interface CollapsiblePanelProps {
   position: "left" | "right"
   children: JSX.Element
   class?: string
-  onClick?: () => void
+  ref?: HTMLDivElement
 }
 
 export function CollapsiblePanel(props: CollapsiblePanelProps) {
@@ -25,8 +26,8 @@ export function CollapsiblePanel(props: CollapsiblePanelProps) {
     >
       <Show when={props.isOpen}>
         <div
+          ref={props.ref}
           class="bg-muted/30 border-border h-full overflow-y-auto border-r p-4"
-          onClick={props.onClick}
         >
           <div class="mb-4 flex items-center justify-between">
             <h2 class="text-lg font-semibold">{props.title}</h2>

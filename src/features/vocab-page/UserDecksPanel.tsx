@@ -1,5 +1,5 @@
 // features/vocab-page/UserDecksPanel.tsx
-import { For, Show } from "solid-js"
+import { For, Show, onMount } from "solid-js"
 import { BookMarked } from "lucide-solid"
 import { DeckCard } from "./DeckCard"
 import type { UserDeck } from "./types"
@@ -11,9 +11,29 @@ interface UserDecksPanelProps {
   selectedUserDeck: UserDeck | null
   onSelectDeck: (deck: UserDeck) => void
   onDeselectDeck: () => void
+  panelRef?: HTMLDivElement
 }
 
 export function UserDecksPanel(props: UserDecksPanelProps) {
+  onMount(() => {
+    if (props.panelRef) {
+      const handleClick = (e: MouseEvent) => {
+        const target = e.target as HTMLElement
+        const deckCard = target.closest(".deck-card")
+
+        if (!deckCard && props.selectedUserDeck) {
+          props.onDeselectDeck()
+        }
+      }
+
+      props.panelRef.addEventListener("click", handleClick)
+
+      return () => {
+        props.panelRef?.removeEventListener("click", handleClick)
+      }
+    }
+  })
+
   return (
     <>
       <div class="space-y-4">
@@ -38,16 +58,14 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
           <div class="space-y-3 pb-16">
             <For each={props.userDecks}>
               {(deck) => (
-                <div onClick={(e) => e.stopPropagation()}>
-                  <DeckCard
-                    deck={deck}
-                    onPlay={props.onPlayDeck}
-                    isNewlyImported={props.newlyImportedDecks.has(deck.id)}
-                    isSelected={props.selectedUserDeck?.id === deck.id}
-                    onSelect={props.onSelectDeck}
-                    class="deck-card"
-                  />
-                </div>
+                <DeckCard
+                  deck={deck}
+                  onPlay={props.onPlayDeck}
+                  isNewlyImported={props.newlyImportedDecks.has(deck.id)}
+                  isSelected={props.selectedUserDeck?.id === deck.id}
+                  onSelect={props.onSelectDeck}
+                  class="deck-card"
+                />
               )}
             </For>
           </div>
