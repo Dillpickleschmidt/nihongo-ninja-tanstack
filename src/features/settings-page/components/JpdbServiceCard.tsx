@@ -127,6 +127,13 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
             >
               Import jpdb Data
             </Button>
+            <p class="text-sm text-white/80">
+              *Note that jpbd has an issue where a handful of radicals do not
+              get included in its exported file. Unfortunately, this is out of
+              our control—you may have to repractice these but thankfully it's
+              only a very small amount and will minimally affect your
+              experience.
+            </p>
           </div>
           <Show when={props.preference().data_imported}>
             <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">

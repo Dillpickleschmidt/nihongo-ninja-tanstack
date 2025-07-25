@@ -13,6 +13,7 @@ import { createServerRootRoute } from '@tanstack/solid-start/server'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as LearnRouteImport } from './routes/learn'
+import { Route as KanjiTestRouteImport } from './routes/kanji-test'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
@@ -46,6 +47,11 @@ const SettingsRoute = SettingsRouteImport.update({
 const LearnRoute = LearnRouteImport.update({
   id: '/learn',
   path: '/learn',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KanjiTestRoute = KanjiTestRouteImport.update({
+  id: '/kanji-test',
+  path: '/kanji-test',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -168,6 +174,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRouteWithChildren
+  '/kanji-test': typeof KanjiTestRoute
   '/learn': typeof LearnLessonsRouteWithChildren
   '/settings': typeof SettingsRoute
   '/dashboard/$serviceId': typeof DashboardServiceIdRoute
@@ -189,6 +196,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/kanji-test': typeof KanjiTestRoute
   '/settings': typeof SettingsRoute
   '/dashboard/$serviceId': typeof DashboardServiceIdRoute
   '/dashboard/$userId': typeof DashboardUserIdRoute
@@ -211,6 +219,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRouteWithChildren
+  '/kanji-test': typeof KanjiTestRoute
   '/learn': typeof LearnRouteWithChildren
   '/settings': typeof SettingsRoute
   '/dashboard/$serviceId': typeof DashboardServiceIdRoute
@@ -236,6 +245,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/kanji-test'
     | '/learn'
     | '/settings'
     | '/dashboard/$serviceId'
@@ -257,6 +267,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/kanji-test'
     | '/settings'
     | '/dashboard/$serviceId'
     | '/dashboard/$userId'
@@ -278,6 +289,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/kanji-test'
     | '/learn'
     | '/settings'
     | '/dashboard/$serviceId'
@@ -302,6 +314,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRouteWithChildren
+  KanjiTestRoute: typeof KanjiTestRoute
   LearnRoute: typeof LearnRouteWithChildren
   SettingsRoute: typeof SettingsRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
@@ -355,6 +368,13 @@ declare module '@tanstack/solid-router' {
       path: '/learn'
       fullPath: '/learn'
       preLoaderRoute: typeof LearnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kanji-test': {
+      id: '/kanji-test'
+      path: '/kanji-test'
+      fullPath: '/kanji-test'
+      preLoaderRoute: typeof KanjiTestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -571,6 +591,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   DashboardRoute: DashboardRouteWithChildren,
+  KanjiTestRoute: KanjiTestRoute,
   LearnRoute: LearnRouteWithChildren,
   SettingsRoute: SettingsRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,
