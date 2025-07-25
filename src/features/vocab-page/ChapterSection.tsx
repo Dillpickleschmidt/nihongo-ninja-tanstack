@@ -1,6 +1,9 @@
-import { For, Show } from "solid-js"
-import { ChevronDown, ChevronRight } from "lucide-solid"
-import { Button } from "@/components/ui/button"
+import { For } from "solid-js"
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/custom/collapsible"
 import { DeckCard } from "./DeckCard"
 import type { Chapter, DeckPart } from "./types"
 
@@ -15,25 +18,17 @@ interface ChapterSectionProps {
 export function ChapterSection(props: ChapterSectionProps) {
   return (
     <div class="mb-3">
-      <Button
-        variant="ghost"
-        class="h-auto w-full justify-start p-2 text-sm font-normal"
-        onClick={props.onToggle}
+      <Collapsible
+        open={props.isExpanded}
+        onOpenChange={() => props.onToggle()}
       >
-        <div class="flex items-center gap-2">
-          {props.isExpanded ? (
-            <ChevronDown class="h-3 w-3" />
-          ) : (
-            <ChevronRight class="h-3 w-3" />
-          )}
+        <CollapsibleTrigger class="h-auto w-full justify-start p-2 text-sm font-normal">
           <span class="truncate">
             Ch.{props.chapter.number} - {props.chapter.title}
           </span>
-        </div>
-      </Button>
+        </CollapsibleTrigger>
 
-      <Show when={props.isExpanded}>
-        <div class="mt-2 ml-5 space-y-2">
+        <CollapsibleContent class="mt-2 ml-5 space-y-2">
           <For each={props.chapter.parts}>
             {(part) => (
               <DeckCard
@@ -44,8 +39,8 @@ export function ChapterSection(props: ChapterSectionProps) {
               />
             )}
           </For>
-        </div>
-      </Show>
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   )
 }

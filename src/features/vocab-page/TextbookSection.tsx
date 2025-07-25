@@ -1,6 +1,10 @@
-import { For, Show } from "solid-js"
-import { ChevronDown, ChevronRight, BookOpen } from "lucide-solid"
-import { Button } from "@/components/ui/button"
+import { For } from "solid-js"
+import { BookOpen } from "lucide-solid"
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/custom/collapsible"
 import { ChapterSection } from "./ChapterSection"
 import type { Textbook, DeckPart } from "./types"
 
@@ -17,24 +21,16 @@ interface TextbookSectionProps {
 export function TextbookSection(props: TextbookSectionProps) {
   return (
     <div class="mb-4">
-      <Button
-        variant="ghost"
-        class="h-auto w-full justify-start p-2 text-sm font-medium"
-        onClick={props.onToggle}
+      <Collapsible
+        open={props.isExpanded}
+        onOpenChange={() => props.onToggle()}
       >
-        <div class="flex items-center gap-2">
-          {props.isExpanded ? (
-            <ChevronDown class="h-4 w-4" />
-          ) : (
-            <ChevronRight class="h-4 w-4" />
-          )}
+        <CollapsibleTrigger class="h-auto w-full justify-start p-2 text-sm font-medium">
           <BookOpen class="h-4 w-4" />
           <span class="truncate">{props.textbook.shortName}</span>
-        </div>
-      </Button>
+        </CollapsibleTrigger>
 
-      <Show when={props.isExpanded}>
-        <div class="mt-2 ml-6 space-y-2">
+        <CollapsibleContent class="mt-2 ml-6 space-y-2">
           <For each={props.textbook.chapters}>
             {(chapter) => (
               <ChapterSection
@@ -46,8 +42,8 @@ export function TextbookSection(props: TextbookSectionProps) {
               />
             )}
           </For>
-        </div>
-      </Show>
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   )
 }
