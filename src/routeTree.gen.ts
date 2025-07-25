@@ -11,6 +11,8 @@
 import { createServerRootRoute } from '@tanstack/solid-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VocabRouteImport } from './routes/vocab'
+import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as KanjiTestRouteImport } from './routes/kanji-test'
@@ -39,6 +41,16 @@ import { ServerRoute as ApiAuthLoginServerRouteImport } from './routes/api/auth/
 
 const rootServerRouteImport = createServerRootRoute()
 
+const VocabRoute = VocabRouteImport.update({
+  id: '/vocab',
+  path: '/vocab',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -177,6 +189,8 @@ export interface FileRoutesByFullPath {
   '/kanji-test': typeof KanjiTestRoute
   '/learn': typeof LearnLessonsRouteWithChildren
   '/settings': typeof SettingsRoute
+  '/tools': typeof ToolsRoute
+  '/vocab': typeof VocabRoute
   '/dashboard/$serviceId': typeof DashboardServiceIdRoute
   '/dashboard/$userId': typeof DashboardUserIdRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
@@ -198,6 +212,8 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/kanji-test': typeof KanjiTestRoute
   '/settings': typeof SettingsRoute
+  '/tools': typeof ToolsRoute
+  '/vocab': typeof VocabRoute
   '/dashboard/$serviceId': typeof DashboardServiceIdRoute
   '/dashboard/$userId': typeof DashboardUserIdRoute
   '/learn': typeof LearnIndexRoute
@@ -222,6 +238,8 @@ export interface FileRoutesById {
   '/kanji-test': typeof KanjiTestRoute
   '/learn': typeof LearnRouteWithChildren
   '/settings': typeof SettingsRoute
+  '/tools': typeof ToolsRoute
+  '/vocab': typeof VocabRoute
   '/dashboard/$serviceId': typeof DashboardServiceIdRoute
   '/dashboard/$userId': typeof DashboardUserIdRoute
   '/learn/_lessons': typeof LearnLessonsRouteWithChildren
@@ -248,6 +266,8 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/learn'
     | '/settings'
+    | '/tools'
+    | '/vocab'
     | '/dashboard/$serviceId'
     | '/dashboard/$userId'
     | '/practice/$practiceID'
@@ -269,6 +289,8 @@ export interface FileRouteTypes {
     | '/auth'
     | '/kanji-test'
     | '/settings'
+    | '/tools'
+    | '/vocab'
     | '/dashboard/$serviceId'
     | '/dashboard/$userId'
     | '/learn'
@@ -292,6 +314,8 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/learn'
     | '/settings'
+    | '/tools'
+    | '/vocab'
     | '/dashboard/$serviceId'
     | '/dashboard/$userId'
     | '/learn/_lessons'
@@ -317,6 +341,8 @@ export interface RootRouteChildren {
   KanjiTestRoute: typeof KanjiTestRoute
   LearnRoute: typeof LearnRouteWithChildren
   SettingsRoute: typeof SettingsRoute
+  ToolsRoute: typeof ToolsRoute
+  VocabRoute: typeof VocabRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
   PracticeAllHiraganaQuizRoute: typeof PracticeAllHiraganaQuizRoute
   PracticeContractedSoundsQuizRoute: typeof PracticeContractedSoundsQuizRoute
@@ -356,6 +382,20 @@ export interface RootServerRouteChildren {
 
 declare module '@tanstack/solid-router' {
   interface FileRoutesByPath {
+    '/vocab': {
+      id: '/vocab'
+      path: '/vocab'
+      fullPath: '/vocab'
+      preLoaderRoute: typeof VocabRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -594,6 +634,8 @@ const rootRouteChildren: RootRouteChildren = {
   KanjiTestRoute: KanjiTestRoute,
   LearnRoute: LearnRouteWithChildren,
   SettingsRoute: SettingsRoute,
+  ToolsRoute: ToolsRoute,
+  VocabRoute: VocabRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,
   PracticeAllHiraganaQuizRoute: PracticeAllHiraganaQuizRoute,
   PracticeContractedSoundsQuizRoute: PracticeContractedSoundsQuizRoute,
