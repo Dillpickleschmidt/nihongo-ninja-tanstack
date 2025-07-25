@@ -41,4 +41,3 @@ export interface VocabPageState {
   selectedDeck: DeckPart | UserDeck | null
   modalOpen: boolean
 }
-

@@ -9,6 +9,8 @@ interface DeckCardProps {
   onImport?: (deck: DeckPart) => void
   onPlay?: (deck: DeckPart | UserDeck) => void
   isNewlyImported?: boolean
+  isSelected?: boolean
+  onSelect?: (deck: UserDeck) => void
   class?: string
 }
 
@@ -24,8 +26,15 @@ export function DeckCard(props: DeckCardProps) {
     <div
       class={cn(
         "bg-card border-border space-y-3 rounded-lg border p-4",
+        props.isSelected && "outline-card-foreground outline outline-2",
+        userDeck() && "cursor-pointer",
         props.class,
       )}
+      onClick={() => {
+        if (userDeck()) {
+          props.onSelect?.(userDeck()!)
+        }
+      }}
     >
       <div class="space-y-1">
         <h4 class="text-sm leading-tight font-medium">{props.deck.name}</h4>

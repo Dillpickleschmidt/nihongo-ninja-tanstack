@@ -10,11 +10,11 @@ interface CollapsiblePanelProps {
   position: "left" | "right"
   children: JSX.Element
   class?: string
+  onClick?: () => void
 }
 
 export function CollapsiblePanel(props: CollapsiblePanelProps) {
   const isLeft = props.position === "left"
-
   return (
     <div
       class={cn(
@@ -24,14 +24,16 @@ export function CollapsiblePanel(props: CollapsiblePanelProps) {
       )}
     >
       <Show when={props.isOpen}>
-        <div class="bg-muted/30 border-border h-full overflow-y-auto border-r p-4">
+        <div
+          class="bg-muted/30 border-border h-full overflow-y-auto border-r p-4"
+          onClick={props.onClick}
+        >
           <div class="mb-4 flex items-center justify-between">
             <h2 class="text-lg font-semibold">{props.title}</h2>
           </div>
           <div>{props.children}</div>
         </div>
       </Show>
-
       {/* Arrow button - always positioned at the edge, vertically centered */}
       <Button
         variant="ghost"
@@ -59,4 +61,3 @@ export function CollapsiblePanel(props: CollapsiblePanelProps) {
     </div>
   )
 }
-

@@ -17,8 +17,8 @@ export function BuiltInDecksPanel(props: BuiltInDecksPanelProps) {
     <div class="space-y-2">
       <div class="mb-4">
         <p class="text-muted-foreground text-sm">
-          Browse vocabulary decks organized by textbook and chapter. Click
-          "Import" to add them to your personal collection.
+          Browse decks by textbook and chapter. Import to your collection to
+          start practicing.
         </p>
       </div>
 
@@ -38,4 +38,3 @@ export function BuiltInDecksPanel(props: BuiltInDecksPanelProps) {
     </div>
   )
 }
-

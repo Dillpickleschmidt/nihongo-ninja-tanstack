@@ -19,6 +19,9 @@ export function useVocabPageState() {
   const [newlyImportedDecks, setNewlyImportedDecks] = createSignal<Set<string>>(
     new Set(),
   )
+  const [selectedUserDeck, setSelectedUserDeck] = createSignal<UserDeck | null>(
+    null,
+  )
 
   // Create reactive textbooks with import state
   const [textbooks, setTextbooks] = createSignal(mockTextbooks)
@@ -94,6 +97,14 @@ export function useVocabPageState() {
     setModalOpen(false)
   }
 
+  const selectUserDeck = (deck: UserDeck) => {
+    setSelectedUserDeck(deck)
+  }
+
+  const deselectUserDeck = () => {
+    setSelectedUserDeck(null)
+  }
+
   return {
     // Panel state
     leftPanelOpen,
@@ -109,6 +120,7 @@ export function useVocabPageState() {
     selectedDeck,
     modalOpen,
     newlyImportedDecks,
+    selectedUserDeck,
 
     // Actions
     toggleTextbook,
@@ -116,6 +128,7 @@ export function useVocabPageState() {
     importDeck,
     openDeckModal,
     closeDeckModal,
+    selectUserDeck,
+    deselectUserDeck,
   }
 }
-

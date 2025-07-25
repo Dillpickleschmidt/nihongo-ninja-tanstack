@@ -49,4 +49,3 @@ export function ChapterSection(props: ChapterSectionProps) {
     </div>
   )
 }
-

@@ -1,3 +1,4 @@
+// features/vocab-page/UserDecksPanel.tsx
 import { For, Show } from "solid-js"
 import { BookMarked } from "lucide-solid"
 import { DeckCard } from "./DeckCard"
@@ -7,6 +8,9 @@ interface UserDecksPanelProps {
   userDecks: UserDeck[]
   onPlayDeck: (deck: UserDeck) => void
   newlyImportedDecks: Set<string>
+  selectedUserDeck: UserDeck | null
+  onSelectDeck: (deck: UserDeck) => void
+  onDeselectDeck: () => void
 }
 
 export function UserDecksPanel(props: UserDecksPanelProps) {
@@ -19,7 +23,6 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
             with spaced repetition.
           </p>
         </div>
-
         <Show
           when={props.userDecks.length > 0}
           fallback={
@@ -35,17 +38,21 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
           <div class="space-y-3 pb-16">
             <For each={props.userDecks}>
               {(deck) => (
-                <DeckCard
-                  deck={deck}
-                  onPlay={props.onPlayDeck}
-                  isNewlyImported={props.newlyImportedDecks.has(deck.id)}
-                />
+                <div onClick={(e) => e.stopPropagation()}>
+                  <DeckCard
+                    deck={deck}
+                    onPlay={props.onPlayDeck}
+                    isNewlyImported={props.newlyImportedDecks.has(deck.id)}
+                    isSelected={props.selectedUserDeck?.id === deck.id}
+                    onSelect={props.onSelectDeck}
+                    class="deck-card"
+                  />
+                </div>
               )}
             </For>
           </div>
         </Show>
       </div>
-
       <div class="border-border fixed right-0 bottom-0 z-20 w-96 p-4">
         <p class="text-muted-foreground text-center text-xs italic">
           Look at the word list before practicing!
