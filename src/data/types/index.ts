@@ -87,6 +87,7 @@ export interface DynamicModule {
     | "sentence-practice" // Each answer counts for 1 minute
     | "vocab-test" // Completing it counts for 15 minutes
   vocab_set_ids: string[]
+  description?: string
   instructions?: string
 }
 

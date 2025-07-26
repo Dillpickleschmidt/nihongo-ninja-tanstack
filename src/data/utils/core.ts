@@ -11,6 +11,7 @@ import type {
   DynamicModule,
   ChapterDeck,
 } from "@/data/types"
+import type { Textbook, Chapter, DeckPart } from "@/features/vocab-page/types"
 
 // Cookie helper functions
 function getCookie(name: string, cookieString?: string): string | null {
@@ -160,4 +161,51 @@ export function getLessons(
       return null
     })
     .filter((result): result is { lesson: StaticModule | DynamicModule; key: string } => !!result)
+}
+
+/**
+ * Extracts vocab-practice dynamic modules from the textbooks structure
+ * and formats them for the vocab page Built-in Decks interface.
+ */
+export function getVocabPracticeModulesFromTextbooks(): Textbook[] {
+  return Object.entries(textbooks).map(([, textbook]) => {
+    const chapters: Chapter[] = textbook.chapters.map((chapter) => {
+      // Extract vocab-practice modules from this chapter
+      const vocabPracticeModules = chapter.learning_path_items
+        .filter(item => item.type === "dynamic_module")
+        .map(item => {
+          const module = dynamic_modules[item.id]
+          return module && module.session_type === "vocab-practice" 
+            ? { module, key: item.id }
+            : null
+        })
+        .filter((result): result is { module: DynamicModule; key: string } => !!result)
+
+      // Convert to DeckPart interface
+      const parts: DeckPart[] = vocabPracticeModules.map((item, index) => ({
+        id: item.key,
+        name: item.module.title,
+        partNumber: index + 1,
+        totalParts: vocabPracticeModules.length,
+        description: item.module.description || "",
+        isImported: false, // Default to false, will be managed by vocab page state
+      }))
+
+      return {
+        id: chapter.id,
+        number: chapter.chapter_number,
+        title: chapter.title,
+        parts,
+      }
+    })
+    .filter(chapter => chapter.parts.length > 0) // Only include chapters with vocab-practice modules
+
+    return {
+      id: textbook.id,
+      name: textbook.name,
+      shortName: textbook.short_name || textbook.name,
+      chapters,
+    }
+  })
+  .filter(textbook => textbook.chapters.length > 0) // Only include textbooks with vocab-practice modules
 }

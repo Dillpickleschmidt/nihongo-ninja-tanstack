@@ -1,12 +1,12 @@
 import { createSignal } from "solid-js"
 import type { DeckPart, UserDeck, VocabPageState } from "./types"
-import { mockTextbooks } from "./mockData"
+import { getVocabPracticeModulesFromTextbooks } from "@/data/utils/core"
 
 export function useVocabPageState() {
   const [leftPanelOpen, setLeftPanelOpen] = createSignal(true)
   const [rightPanelOpen, setRightPanelOpen] = createSignal(true)
   const [expandedTextbooks, setExpandedTextbooks] = createSignal<Set<string>>(
-    new Set(["genki-1"]),
+    new Set(["genki_1"]),
   )
   const [expandedChapters, setExpandedChapters] = createSignal<Set<string>>(
     new Set(),
@@ -24,7 +24,7 @@ export function useVocabPageState() {
   )
 
   // Create reactive textbooks with import state
-  const [textbooks, setTextbooks] = createSignal(mockTextbooks)
+  const [textbooks, setTextbooks] = createSignal(getVocabPracticeModulesFromTextbooks())
 
   const toggleTextbook = (textbookId: string) => {
     setExpandedTextbooks((prev) => {

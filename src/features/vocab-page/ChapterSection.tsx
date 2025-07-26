@@ -24,7 +24,7 @@ export function ChapterSection(props: ChapterSectionProps) {
       >
         <CollapsibleTrigger class="h-auto w-full justify-start p-2 text-sm font-normal">
           <span class="truncate">
-            Ch.{props.chapter.number} - {props.chapter.title}
+            {props.chapter.title}
           </span>
         </CollapsibleTrigger>
 
