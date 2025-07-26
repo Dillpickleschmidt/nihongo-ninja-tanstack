@@ -5,14 +5,14 @@ import { UserDecksPanel } from "./UserDecksPanel"
 import { CenterPanel } from "./center-panel/CenterPanel"
 import { ImportConfirmationModal } from "./ImportConfirmationModal"
 import { useVocabPageState } from "./useVocabPageState"
-import type { BuiltInDeck } from "./types"
+import type { ImportRequest } from "./types"
 
 interface DesktopVocabPageProps {
-  pendingImport?: BuiltInDeck | null
+  importRequest?: ImportRequest | null
 }
 
 export function DesktopVocabPage(props: DesktopVocabPageProps) {
-  const state = useVocabPageState(props.pendingImport)
+  const state = useVocabPageState(props.importRequest)
   let userDecksPanelRef!: HTMLDivElement
 
   return (

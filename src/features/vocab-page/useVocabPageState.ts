@@ -1,17 +1,31 @@
 import { createSignal, createEffect } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
-import type { BuiltInDeck, UserDeck, VocabPageState } from "./types"
+import type { BuiltInDeck, UserDeck, VocabPageState, ImportRequest } from "./types"
 import { getVocabPracticeModulesFromTextbooks } from "@/data/utils/core"
 
-export function useVocabPageState(pendingImport?: BuiltInDeck | null) {
+export function useVocabPageState(importRequest?: ImportRequest | null) {
   const navigate = useNavigate()
   const [leftPanelOpen, setLeftPanelOpen] = createSignal(true)
   const [rightPanelOpen, setRightPanelOpen] = createSignal(true)
+  
+  // Destructure import request
+  const pendingImport = importRequest?.deck
+  const expansionData = importRequest?.location
+  
+  // Initialize expansion state with auto-expansion for imports
+  const initialExpandedTextbooks = new Set(["genki_1"])
+  const initialExpandedChapters = new Set<string>()
+  
+  if (expansionData) {
+    initialExpandedTextbooks.add(expansionData.textbookId)
+    initialExpandedChapters.add(expansionData.chapterId)
+  }
+  
   const [expandedTextbooks, setExpandedTextbooks] = createSignal<Set<string>>(
-    new Set(["genki_1"]),
+    initialExpandedTextbooks,
   )
   const [expandedChapters, setExpandedChapters] = createSignal<Set<string>>(
-    new Set(),
+    initialExpandedChapters,
   )
   const [userDecks, setUserDecks] = createSignal<UserDeck[]>([])
   const [newlyImportedDecks, setNewlyImportedDecks] = createSignal<Set<string>>(
@@ -123,6 +137,8 @@ export function useVocabPageState(pendingImport?: BuiltInDeck | null) {
     if (pendingImport) {
       setPendingImportDeck(pendingImport)
       setShowImportModal(true)
+      // Ensure left panel is open to show the expanded hierarchy
+      setLeftPanelOpen(true)
       // Clean URL
       navigate({ to: "/vocab", search: { import: undefined }, replace: true })
     }

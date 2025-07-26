@@ -33,6 +33,16 @@ export interface PanelState {
   rightPanelOpen: boolean
 }
 
+export interface ExpansionData {
+  textbookId: string
+  chapterId: string
+}
+
+export interface ImportRequest {
+  deck: BuiltInDeck
+  location: ExpansionData
+}
+
 export interface VocabPageState {
   panelState: PanelState
   expandedTextbooks: Set<string>

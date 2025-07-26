@@ -1,17 +1,17 @@
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { DesktopVocabPage } from "./DesktopVocabPage"
 import { MobileVocabPage } from "./MobileVocabPage"
-import type { BuiltInDeck } from "./types"
+import type { ImportRequest } from "./types"
 
 interface VocabPageProps {
-  pendingImport?: BuiltInDeck | null
+  importRequest?: ImportRequest | null
 }
 
 export function VocabPage(props: VocabPageProps) {
   return (
     <>
       <SSRMediaQuery showFrom="lg">
-        <DesktopVocabPage pendingImport={props.pendingImport} />
+        <DesktopVocabPage importRequest={props.importRequest} />
       </SSRMediaQuery>
 
       <SSRMediaQuery hideFrom="lg">
