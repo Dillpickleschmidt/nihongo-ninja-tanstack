@@ -2148,7 +2148,7 @@ export const vocabulary: VocabularyCollection = {
   私: {
     word: "私",
     furigana: "私[わたし]",
-    english: ["I"],
+    english: ["I", "me", "my"],
     chapter: 1,
     info: [
       '"わたし" is the standard way to say "I" or "me" in Japanese.',
@@ -2206,7 +2206,7 @@ export const vocabulary: VocabularyCollection = {
     info: [
       '"せんせい" is a term used to address teachers, professors, doctors, or anyone who is a master in their field.',
       "It is a respectful title and can be used by students to address their instructors.",
-      'It is also used as a suffix after a person\'s name, just like ～さん. For example: "田中せんせい" (Dr. Tanaka).',
+      'It is also used as a suffix after a person\'s name, just like ～さん. For example: "田中先生" (Dr. Tanaka).',
     ],
   },
   "～歳": {
@@ -2268,9 +2268,9 @@ export const vocabulary: VocabularyCollection = {
     english: ["number"],
     chapter: 1,
     info: [
-      '"ばんごう" means "number".',
       "It is used for phone numbers, room numbers, and other numerical identifiers.",
       'For example, "でんわばんごう" means "phone number".',
+      "番 is used for pure numbers (e.g. number 1, number 2, etc.), while 番号 is used for numbers that are part of a sequence or identifier, like phone numbers or room numbers.",
     ],
   },
   名前: {
@@ -2301,21 +2301,21 @@ export const vocabulary: VocabularyCollection = {
     chapter: 1,
     info: [
       '"なん" and "なに" both mean "what".',
-      'For example, "なんですか？" means "What is it?" and "なにをしますか？" means "What will you do?".',
-      "You'll get a feel for which to use pretty quickly just by listening.",
+      'For example, "なんですか。" means "What is it?" and "なにをしますか。" means "What will you do?".',
+      "You'll get a feel for which variant to use pretty quickly just by listening exposure (trust me on this).",
     ],
     overwrite_word: "何",
   },
   あのう: {
     word: "あのう",
     furigana: "あのう",
-    english: ["um..."],
+    english: ["um...", "excuse me"],
     chapter: 1,
     info: [
       '"あのう" is a filler word used to pause or hesitate in speech.',
       'It is similar to "um" or "uh" in English.',
-      "It is often used when the speaker is thinking or trying to get someone's attention politely.",
-      'While English speakers are often discouraged from using filler words like "uh" or "um", when politely seeking someone\'s attention, Japanese speakers purposefully use "あのう" to show politeness and respect. This applies to other situations in Japan as well.',
+      'It doubles as something akin to "Excuse me" in English',
+      'While English speakers are often discouraged from using filler words like "uh" or "um," when politely seeking someone\'s attention, Japanese speakers purposefully use "あのう" to politely get attention.',
     ],
   },
   はい: {
@@ -2326,7 +2326,7 @@ export const vocabulary: VocabularyCollection = {
     info: [
       '"はい" means "yes" in Japanese.',
       "It can also be used to show agreement or acknowledgment.",
-      'In some contexts, it can mean "here" or "present" when responding to a roll call.',
+      "It's used very frequently in Japanese.",
     ],
   },
   そうです: {
@@ -2365,6 +2365,12 @@ export const vocabulary: VocabularyCollection = {
   },
 
   // From List 7 (Time Expressions)
+  いちじ: {
+    word: "いちじ",
+    furigana: "いちじ",
+    english: ["1 o'clock", "1:00"],
+    chapter: 1,
+  },
   にじ: {
     word: "にじ",
     furigana: "にじ",

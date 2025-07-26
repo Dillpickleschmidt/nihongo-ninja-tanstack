@@ -1,6 +1,7 @@
 import { Show } from "solid-js"
 import { Plus, Check, Play, ArrowLeft } from "lucide-solid"
 import { Button } from "@/components/ui/button"
+import { useNavigate } from "@tanstack/solid-router"
 import { cn } from "@/utils"
 import type { DeckPart, UserDeck } from "./types"
 
@@ -15,6 +16,8 @@ interface DeckCardProps {
 }
 
 export function DeckCard(props: DeckCardProps) {
+  const navigate = useNavigate()
+
   const isDeckPart = (deck: DeckPart | UserDeck): deck is DeckPart => {
     return "partNumber" in deck
   }
@@ -83,7 +86,13 @@ export function DeckCard(props: DeckCardProps) {
           <Button
             variant="default"
             size="sm"
-            onClick={() => {}}
+            onClick={(e) => {
+              e.stopPropagation()
+              navigate({
+                to: "/practice/$practiceID",
+                params: { practiceID: userDeck()!.id },
+              })
+            }}
             class="relative flex-1 overflow-hidden text-xs"
           >
             <div class="relative flex w-full items-center justify-center">

@@ -1,15 +1,53 @@
-import { For } from "solid-js"
+import { For, createSignal, createEffect } from "solid-js"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Book, Grid2x2 } from "lucide-solid"
-import { convertFuriganaToRubyHtml } from "@/data/utils/vocab"
-import { mockVocabularyData } from "./mockVocabData"
+import {
+  convertFuriganaToRubyHtml,
+  getVocabularyForSet,
+} from "@/data/utils/vocab"
+import { dynamic_modules } from "@/data/dynamic_modules"
 import type { UserDeck } from "../types"
+import type { VocabularyItem } from "@/data/types"
 
 interface VocabularyPreviewProps {
   selectedDeck: UserDeck
 }
 
 export function VocabularyPreview(props: VocabularyPreviewProps) {
+  const [vocabularyItems, setVocabularyItems] = createSignal<VocabularyItem[]>(
+    [],
+  )
+  const [isLoading, setIsLoading] = createSignal(false)
+
+  // Load vocabulary when deck changes
+  createEffect(async () => {
+    const deck = props.selectedDeck
+
+    // Only load vocabulary from dynamic modules for textbook decks
+    if (deck.source !== "textbook") {
+      setVocabularyItems([])
+      return
+    }
+
+    const module = dynamic_modules[deck.id]
+
+    if (!module || !module.vocab_set_ids) {
+      setVocabularyItems([])
+      return
+    }
+
+    setIsLoading(true)
+    try {
+      const vocab = await getVocabularyForSet(module.vocab_set_ids)
+      setVocabularyItems(vocab)
+    } catch (error) {
+      console.error("Failed to load vocabulary:", error)
+      setVocabularyItems([])
+    } finally {
+      setIsLoading(false)
+    }
+  })
+
   return (
     <div class="h-full w-full overflow-y-auto p-6">
       <div class="my-6 text-center">
@@ -18,76 +56,90 @@ export function VocabularyPreview(props: VocabularyPreviewProps) {
       </div>
 
       <div class="w-full space-y-6">
-        <For each={mockVocabularyData}>
-          {(item, index) => (
-            <div class="w-full">
-              <div
-                class={`relative rounded-lg shadow-sm ${
-                  (index() + 1) % 2 === 0 ? "bg-card/80" : "bg-card/60"
-                }`}
-              >
-                <div class="px-6 py-6">
-                  <div class="border-border mb-6 border-b pb-4">
-                    <div class="flex items-baseline gap-4">
-                      <h3 class="font-japanese flex items-baseline text-xl font-bold">
-                        <span class="text-muted-foreground mr-3 text-base">
-                          {`${index() + 1}.`}
+        {isLoading() ? (
+          <div class="flex items-center justify-center py-12">
+            <div class="text-muted-foreground">Loading vocabulary...</div>
+          </div>
+        ) : vocabularyItems().length === 0 ? (
+          <div class="flex items-center justify-center py-12">
+            <div class="text-muted-foreground">
+              {props.selectedDeck.source === "textbook"
+                ? "No vocabulary items found for this deck."
+                : `${props.selectedDeck.source} deck vocabulary loading not yet implemented.`}
+            </div>
+          </div>
+        ) : (
+          <For each={vocabularyItems()}>
+            {(item, index) => (
+              <div class="w-full">
+                <div
+                  class={`relative rounded-lg shadow-sm ${
+                    (index() + 1) % 2 === 0 ? "bg-card/80" : "bg-card/60"
+                  }`}
+                >
+                  <div class="px-6 py-6">
+                    <div class="border-border mb-6 border-b pb-4">
+                      <div class="flex items-baseline gap-4">
+                        <h3 class="font-japanese flex items-baseline text-xl font-bold">
+                          <span class="text-muted-foreground mr-3 text-base">
+                            {`${index() + 1}.`}
+                          </span>
+                          <span
+                            class="text-xl"
+                            innerHTML={convertFuriganaToRubyHtml(item.furigana)}
+                          />
+                        </h3>
+                        <span class="text-muted-foreground text-sm italic">
+                          {item.english.join(", ")}
                         </span>
-                        <span
-                          class="text-xl"
-                          innerHTML={convertFuriganaToRubyHtml(item.furigana)}
-                        />
-                      </h3>
-                      <span class="text-muted-foreground text-sm italic">
-                        {item.english.join(", ")}
-                      </span>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Mobile: Tabbed Layout */}
-                  <div class="md:hidden">
-                    <Tabs defaultValue="info" class="w-full">
-                      <TabsList class="bg-muted">
-                        <TabsTrigger value="info">
-                          <Book class="mr-2 h-4 w-4" />
-                          Info
-                        </TabsTrigger>
-                        <TabsTrigger value="examples">
-                          <Grid2x2 class="mr-2 h-4 w-4" />
-                          Examples
-                        </TabsTrigger>
-                      </TabsList>
+                    {/* Mobile: Tabbed Layout */}
+                    <div class="md:hidden">
+                      <Tabs defaultValue="info" class="w-full">
+                        <TabsList class="bg-muted">
+                          <TabsTrigger value="info">
+                            <Book class="mr-2 h-4 w-4" />
+                            Info
+                          </TabsTrigger>
+                          <TabsTrigger value="examples">
+                            <Grid2x2 class="mr-2 h-4 w-4" />
+                            Examples
+                          </TabsTrigger>
+                        </TabsList>
 
-                      <TabsContent value="info">
+                        <TabsContent value="info">
+                          <VocabInfo item={item} />
+                        </TabsContent>
+
+                        <TabsContent value="examples">
+                          <VocabExamples item={item} />
+                        </TabsContent>
+                      </Tabs>
+                    </div>
+
+                    {/* Desktop: Compact Layout */}
+                    <div class="hidden md:flex md:justify-between md:gap-6">
+                      <div class="max-w-[50%] border-l-2 border-orange-400 pl-6 saturate-[75%]">
                         <VocabInfo item={item} />
-                      </TabsContent>
-
-                      <TabsContent value="examples">
+                      </div>
+                      <div class="bg-muted/60 w-full max-w-[60%] rounded-lg p-4">
                         <VocabExamples item={item} />
-                      </TabsContent>
-                    </Tabs>
-                  </div>
-
-                  {/* Desktop: Compact Layout */}
-                  <div class="hidden md:flex md:justify-between md:gap-6">
-                    <div class="max-w-[50%] border-l-2 border-orange-400 pl-6 saturate-[75%]">
-                      <VocabInfo item={item} />
-                    </div>
-                    <div class="bg-muted/60 w-full max-w-[60%] rounded-lg p-4">
-                      <VocabExamples item={item} />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-        </For>
+            )}
+          </For>
+        )}
       </div>
     </div>
   )
 }
 
-function VocabInfo(props: { item: (typeof mockVocabularyData)[0] }) {
+function VocabInfo(props: { item: VocabularyItem }) {
   return (
     <div class="space-y-4">
       {props.item.particles && (
@@ -131,7 +183,7 @@ function VocabInfo(props: { item: (typeof mockVocabularyData)[0] }) {
   )
 }
 
-function VocabExamples(props: { item: (typeof mockVocabularyData)[0] }) {
+function VocabExamples(props: { item: VocabularyItem }) {
   return (
     <div class="space-y-3">
       {props.item.example_sentences &&

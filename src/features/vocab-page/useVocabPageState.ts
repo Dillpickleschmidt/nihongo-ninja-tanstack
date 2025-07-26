@@ -12,10 +12,6 @@ export function useVocabPageState() {
     new Set(),
   )
   const [userDecks, setUserDecks] = createSignal<UserDeck[]>([])
-  const [selectedDeck, setSelectedDeck] = createSignal<
-    DeckPart | UserDeck | null
-  >(null)
-  const [modalOpen, setModalOpen] = createSignal(false)
   const [newlyImportedDecks, setNewlyImportedDecks] = createSignal<Set<string>>(
     new Set(),
   )
@@ -24,7 +20,9 @@ export function useVocabPageState() {
   )
 
   // Create reactive textbooks with import state
-  const [textbooks, setTextbooks] = createSignal(getVocabPracticeModulesFromTextbooks())
+  const [textbooks, setTextbooks] = createSignal(
+    getVocabPracticeModulesFromTextbooks(),
+  )
 
   const toggleTextbook = (textbookId: string) => {
     setExpandedTextbooks((prev) => {
@@ -66,13 +64,16 @@ export function useVocabPageState() {
 
     // Add to user decks
     const newUserDeck: UserDeck = {
-      id: `user-${deckPart.id}`,
+      id: deckPart.id,
       name: deckPart.name,
-      originalDeckId: deckPart.id,
       importedAt: new Date(),
+      source: "textbook",
     }
 
-    setUserDecks((prev) => [...prev, newUserDeck])
+    setUserDecks((prev) => [newUserDeck, ...prev])
+
+    // Auto-select the newly imported deck
+    setSelectedUserDeck(newUserDeck)
 
     // Mark as newly imported
     setNewlyImportedDecks((prev) => new Set([...prev, newUserDeck.id]))
@@ -85,16 +86,6 @@ export function useVocabPageState() {
         return newSet
       })
     }, 2500)
-  }
-
-  const openDeckModal = (deck: DeckPart | UserDeck) => {
-    setSelectedDeck(deck)
-    setModalOpen(true)
-  }
-
-  const closeDeckModal = () => {
-    setSelectedDeck(null)
-    setModalOpen(false)
   }
 
   const selectUserDeck = (deck: UserDeck) => {
@@ -117,8 +108,6 @@ export function useVocabPageState() {
     expandedTextbooks,
     expandedChapters,
     userDecks,
-    selectedDeck,
-    modalOpen,
     newlyImportedDecks,
     selectedUserDeck,
 
@@ -126,8 +115,6 @@ export function useVocabPageState() {
     toggleTextbook,
     toggleChapter,
     importDeck,
-    openDeckModal,
-    closeDeckModal,
     selectUserDeck,
     deselectUserDeck,
   }

@@ -39,8 +39,7 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
       <div class="space-y-4">
         <div class="mb-4">
           <p class="text-muted-foreground text-sm">
-            Your imported vocabulary decks. Click "Practice" to start studying
-            with spaced repetition.
+            Your imported vocabulary decks. Click "Practice" to start studying.
           </p>
         </div>
         <Show
@@ -73,7 +72,7 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
       </div>
       <div class="border-border fixed right-0 bottom-0 z-20 w-96 p-4">
         <p class="text-muted-foreground text-center text-xs italic">
-          Look at the word list before practicing!
+          Click on a deck to view it. Start practicing when you're ready.
         </p>
       </div>
     </>

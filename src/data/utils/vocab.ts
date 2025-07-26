@@ -25,10 +25,16 @@ export async function getVocabularyForModule(
     return []
   }
 
+  return getVocabularyForSet(module.vocab_set_ids)
+}
+
+export async function getVocabularyForSet(
+  vocabSetIds: string[],
+): Promise<VocabularyItem[]> {
   // Gather all vocab keys from all sets, preserving order and uniqueness
   const seen = new Set<string>()
   const vocabKeys: string[] = []
-  for (const setId of module.vocab_set_ids) {
+  for (const setId of vocabSetIds) {
     const set = vocabularySets[setId]
     if (set && Array.isArray(set.keys)) {
       for (const key of set.keys) {

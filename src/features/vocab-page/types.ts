@@ -21,11 +21,13 @@ export interface Textbook {
   chapters: Chapter[]
 }
 
+import type { ServiceDeckEnum } from "@/data/types"
+
 export interface UserDeck {
   id: string
   name: string
-  originalDeckId: string
   importedAt: Date
+  source: "textbook" | "user" | ServiceDeckEnum
 }
 
 export interface PanelState {
@@ -38,6 +40,4 @@ export interface VocabPageState {
   expandedTextbooks: Set<string>
   expandedChapters: Set<string>
   userDecks: UserDeck[]
-  selectedDeck: DeckPart | UserDeck | null
-  modalOpen: boolean
 }

@@ -184,7 +184,7 @@ export function getVocabPracticeModulesFromTextbooks(): Textbook[] {
       // Convert to DeckPart interface
       const parts: DeckPart[] = vocabPracticeModules.map((item, index) => ({
         id: item.key,
-        name: item.module.title,
+        name: `${textbook.short_name || textbook.name} Ch.${chapter.chapter_number} ${item.module.title}`,
         partNumber: index + 1,
         totalParts: vocabPracticeModules.length,
         description: item.module.description || "",
