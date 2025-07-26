@@ -5,10 +5,10 @@ import { UserDecksPanel } from "./UserDecksPanel"
 import { CenterPanel } from "./center-panel/CenterPanel"
 import { ImportConfirmationModal } from "./ImportConfirmationModal"
 import { useVocabPageState } from "./useVocabPageState"
-import type { DeckPart } from "./types"
+import type { BuiltInDeck } from "./types"
 
 interface DesktopVocabPageProps {
-  pendingImport?: DeckPart | null
+  pendingImport?: BuiltInDeck | null
 }
 
 export function DesktopVocabPage(props: DesktopVocabPageProps) {

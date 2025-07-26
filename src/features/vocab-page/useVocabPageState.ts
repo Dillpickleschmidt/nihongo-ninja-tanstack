@@ -1,9 +1,9 @@
 import { createSignal, createEffect } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
-import type { DeckPart, UserDeck, VocabPageState } from "./types"
+import type { BuiltInDeck, UserDeck, VocabPageState } from "./types"
 import { getVocabPracticeModulesFromTextbooks } from "@/data/utils/core"
 
-export function useVocabPageState(pendingImport?: DeckPart | null) {
+export function useVocabPageState(pendingImport?: BuiltInDeck | null) {
   const navigate = useNavigate()
   const [leftPanelOpen, setLeftPanelOpen] = createSignal(true)
   const [rightPanelOpen, setRightPanelOpen] = createSignal(true)
@@ -24,7 +24,7 @@ export function useVocabPageState(pendingImport?: DeckPart | null) {
   // Import confirmation modal state
   const [showImportModal, setShowImportModal] = createSignal(false)
   const [pendingImportDeck, setPendingImportDeck] =
-    createSignal<DeckPart | null>(null)
+    createSignal<BuiltInDeck | null>(null)
 
   // Create reactive textbooks with import state
   const [textbooks, setTextbooks] = createSignal(
@@ -55,7 +55,7 @@ export function useVocabPageState(pendingImport?: DeckPart | null) {
     })
   }
 
-  const importDeck = (deckPart: DeckPart) => {
+  const importDeck = (builtInDeck: BuiltInDeck) => {
     // Mark deck as imported in textbooks
     setTextbooks((prev) =>
       prev.map((textbook) => ({
@@ -63,7 +63,7 @@ export function useVocabPageState(pendingImport?: DeckPart | null) {
         chapters: textbook.chapters.map((chapter) => ({
           ...chapter,
           parts: chapter.parts.map((part) =>
-            part.id === deckPart.id ? { ...part, isImported: true } : part,
+            part.id === builtInDeck.id ? { ...part, isImported: true } : part,
           ),
         })),
       })),
@@ -71,8 +71,8 @@ export function useVocabPageState(pendingImport?: DeckPart | null) {
 
     // Add to user decks
     const newUserDeck: UserDeck = {
-      id: deckPart.id,
-      name: deckPart.name,
+      id: builtInDeck.id,
+      name: builtInDeck.name,
       importedAt: new Date(),
       source: "textbook",
     }

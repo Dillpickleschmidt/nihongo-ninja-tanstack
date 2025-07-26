@@ -1,8 +1,6 @@
-export interface DeckPart {
+export interface BuiltInDeck {
   id: string
   name: string
-  partNumber: number
-  totalParts: number
   description: string
   isImported: boolean
 }
@@ -11,7 +9,7 @@ export interface Chapter {
   id: string
   number: number
   title: string
-  parts: DeckPart[]
+  parts: BuiltInDeck[]
 }
 
 export interface Textbook {

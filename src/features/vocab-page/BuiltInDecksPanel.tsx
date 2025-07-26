@@ -1,6 +1,6 @@
 import { For } from "solid-js"
 import { TextbookSection } from "./TextbookSection"
-import type { Textbook, DeckPart } from "./types"
+import type { Textbook, BuiltInDeck } from "./types"
 
 interface BuiltInDecksPanelProps {
   textbooks: Textbook[]
@@ -8,8 +8,8 @@ interface BuiltInDecksPanelProps {
   expandedChapters: Set<string>
   onToggleTextbook: (textbookId: string) => void
   onToggleChapter: (chapterId: string) => void
-  onImportDeck: (deck: DeckPart) => void
-  onPlayDeck: (deck: DeckPart) => void
+  onImportDeck: (deck: BuiltInDeck) => void
+  onPlayDeck: (deck: BuiltInDeck) => void
 }
 
 export function BuiltInDecksPanel(props: BuiltInDecksPanelProps) {

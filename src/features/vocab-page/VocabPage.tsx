@@ -1,10 +1,10 @@
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { DesktopVocabPage } from "./DesktopVocabPage"
 import { MobileVocabPage } from "./MobileVocabPage"
-import type { DeckPart } from "./types"
+import type { BuiltInDeck } from "./types"
 
 interface VocabPageProps {
-  pendingImport?: DeckPart | null
+  pendingImport?: BuiltInDeck | null
 }
 
 export function VocabPage(props: VocabPageProps) {

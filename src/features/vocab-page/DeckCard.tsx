@@ -3,12 +3,12 @@ import { Plus, Check, Play, ArrowLeft } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "@tanstack/solid-router"
 import { cn } from "@/utils"
-import type { DeckPart, UserDeck } from "./types"
+import type { BuiltInDeck, UserDeck } from "./types"
 
 interface DeckCardProps {
-  deck: DeckPart | UserDeck
-  onImport?: (deck: DeckPart) => void
-  onPlay?: (deck: DeckPart | UserDeck) => void
+  deck: BuiltInDeck | UserDeck
+  onImport?: (deck: BuiltInDeck) => void
+  onPlay?: (deck: BuiltInDeck | UserDeck) => void
   isNewlyImported?: boolean
   isSelected?: boolean
   onSelect?: (deck: UserDeck) => void
@@ -18,12 +18,12 @@ interface DeckCardProps {
 export function DeckCard(props: DeckCardProps) {
   const navigate = useNavigate()
 
-  const isDeckPart = (deck: DeckPart | UserDeck): deck is DeckPart => {
-    return "partNumber" in deck
+  const isBuiltInDeck = (deck: BuiltInDeck | UserDeck): deck is BuiltInDeck => {
+    return "isImported" in deck
   }
 
-  const deckPart = () => (isDeckPart(props.deck) ? props.deck : null)
-  const userDeck = () => (!isDeckPart(props.deck) ? props.deck : null)
+  const builtInDeck = () => (isBuiltInDeck(props.deck) ? props.deck : null)
+  const userDeck = () => (!isBuiltInDeck(props.deck) ? props.deck : null)
 
   return (
     <div
@@ -42,7 +42,7 @@ export function DeckCard(props: DeckCardProps) {
       <div class="space-y-1">
         <h4 class="text-sm leading-tight font-medium">{props.deck.name}</h4>
 
-        <Show when={deckPart()}>
+        <Show when={builtInDeck()}>
           {(deck) => (
             <p class="text-muted-foreground text-xs">{deck().description}</p>
           )}
@@ -58,17 +58,17 @@ export function DeckCard(props: DeckCardProps) {
       </div>
 
       <div class="flex gap-2">
-        <Show when={deckPart()}>
+        <Show when={builtInDeck()}>
           <Button
             variant="outline"
             size="sm"
             onClick={() =>
-              deckPart()!.isImported ? {} : props.onImport?.(deckPart()!)
+              builtInDeck()!.isImported ? {} : props.onImport?.(builtInDeck()!)
             }
-            disabled={deckPart()!.isImported}
+            disabled={builtInDeck()!.isImported}
             class="flex-1 text-xs"
           >
-            {deckPart()!.isImported ? (
+            {builtInDeck()!.isImported ? (
               <>
                 <Check class="mr-1 h-3 w-3" />
                 Imported

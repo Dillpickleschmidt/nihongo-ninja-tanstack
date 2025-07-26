@@ -6,7 +6,7 @@ import {
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
 import { ChapterSection } from "./ChapterSection"
-import type { Textbook, DeckPart } from "./types"
+import type { Textbook, BuiltInDeck } from "./types"
 
 interface TextbookSectionProps {
   textbook: Textbook
@@ -14,8 +14,8 @@ interface TextbookSectionProps {
   onToggle: () => void
   expandedChapters: Set<string>
   onToggleChapter: (chapterId: string) => void
-  onImportDeck: (deck: DeckPart) => void
-  onPlayDeck: (deck: DeckPart) => void
+  onImportDeck: (deck: BuiltInDeck) => void
+  onPlayDeck: (deck: BuiltInDeck) => void
 }
 
 export function TextbookSection(props: TextbookSectionProps) {

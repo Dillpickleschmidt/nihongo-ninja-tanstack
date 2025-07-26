@@ -11,7 +11,7 @@ import type {
   DynamicModule,
   ChapterDeck,
 } from "@/data/types"
-import type { Textbook, Chapter, DeckPart } from "@/features/vocab-page/types"
+import type { Textbook, Chapter, BuiltInDeck } from "@/features/vocab-page/types"
 
 // Cookie helper functions
 function getCookie(name: string, cookieString?: string): string | null {
@@ -181,12 +181,10 @@ export function getVocabPracticeModulesFromTextbooks(): Textbook[] {
         })
         .filter((result): result is { module: DynamicModule; key: string } => !!result)
 
-      // Convert to DeckPart interface
-      const parts: DeckPart[] = vocabPracticeModules.map((item, index) => ({
+      // Convert to BuiltInDeck interface
+      const parts: BuiltInDeck[] = vocabPracticeModules.map((item) => ({
         id: item.key,
         name: `${textbook.short_name || textbook.name} Ch.${chapter.chapter_number} ${item.module.title}`,
-        partNumber: index + 1,
-        totalParts: vocabPracticeModules.length,
         description: item.module.description || "",
         isImported: false, // Default to false, will be managed by vocab page state
       }))
