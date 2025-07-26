@@ -104,10 +104,10 @@ function getDisplayTitle(title: string) {
   return title.startsWith("Practice ") ? title.substring(9) : title
 }
 
-function getLinkTo(lesson: StaticModule | DynamicModule) {
+function getLinkTo(lesson: StaticModule | DynamicModule, moduleKey: string) {
   return "link" in lesson && lesson.link
     ? lesson.link
-    : `/practice/${lesson.id}`
+    : `/practice/${moduleKey}`
 }
 
 function getModuleIconClasses(moduleType: string) {
@@ -182,9 +182,9 @@ function getModuleLightBackground(moduleType: string) {
 }
 
 export function enrichLessons(
-  lessons: (StaticModule | DynamicModule)[],
+  lessons: { lesson: StaticModule | DynamicModule; key: string }[],
 ): EnrichedLearningPathModule[] {
-  return lessons.map((lesson) => {
+  return lessons.map(({ lesson, key }) => {
     const moduleType = getModuleType(lesson)
     const displayTitle = getDisplayTitle(lesson.title)
 
@@ -192,7 +192,7 @@ export function enrichLessons(
       ...lesson,
       moduleType,
       displayTitle,
-      linkTo: getLinkTo(lesson),
+      linkTo: getLinkTo(lesson, key),
       iconClasses: getModuleIconClasses(moduleType),
       gradientClasses: getModuleGradient(moduleType),
       lightBackground: getModuleLightBackground(moduleType),

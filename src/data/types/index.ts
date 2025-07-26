@@ -73,7 +73,6 @@ export type Deck = ChapterDeck | UserDeck
 
 // A named set of vocabulary keys (words), for use in modules.
 export interface IndividualVocabularySet {
-  id: string
   keys: string[]
 }
 
@@ -81,17 +80,12 @@ export interface IndividualVocabularySet {
 
 export interface DynamicModule {
   // Anything dynamic that has data needing to be passed
-  id: string
-  textbook_id: string
-  chapter_id: string
   title: string
   session_type:
     | "vocab-list" // Counts for 2 minutes
-    | "vocab-sublist" // Counts for 10 minutes
     | "vocab-practice" // Each partial answer counts for 15 seconds
     | "sentence-practice" // Each answer counts for 1 minute
     | "vocab-test" // Completing it counts for 15 minutes
-  part_of_speech_category?: string
   vocab_set_ids: string[]
   instructions?: string
 }
@@ -99,7 +93,6 @@ export interface DynamicModule {
 // --- Static Module Types ---
 
 export interface StaticModule {
-  id: string // Unique identifier for the static module
   title: string
   link: string // URL to the static content
   lesson_type:
@@ -121,7 +114,6 @@ export interface StaticModule {
 // --- External Resource Types ---
 
 export interface ExternalResource {
-  id: string // Unique identifier for the resource
   title: string
   description?: string
   internal_url?: string

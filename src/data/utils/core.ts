@@ -119,13 +119,19 @@ export function getChaptersForTextbook(
 /**
  * Retrieves the external resources for a given chapter deck.
  */
-export function getExternalResources(deck: ChapterDeck): ExternalResource[] {
+export function getExternalResources(deck: ChapterDeck): { resource: ExternalResource; key: string }[] {
   if (!deck.external_resource_ids) return []
 
-  // Map the external resource IDs to actual external resource objects
+  // Map the external resource IDs to actual external resource objects with their keys
   return deck.external_resource_ids
-    .map((id) => external_resources[id])
-    .filter((resource): resource is ExternalResource => !!resource)
+    .map((id) => {
+      const resource = external_resources[id]
+      if (resource) {
+        return { resource, key: id }
+      }
+      return null
+    })
+    .filter((result): result is { resource: ExternalResource; key: string } => !!result)
 }
 
 /**
@@ -133,18 +139,25 @@ export function getExternalResources(deck: ChapterDeck): ExternalResource[] {
  */
 export function getLessons(
   deck: ChapterDeck,
-): (StaticModule | DynamicModule)[] {
+): { lesson: StaticModule | DynamicModule; key: string }[] {
   if (!deck.learning_path_items) return []
 
-  // Map learning path items to actual module objects
+  // Map learning path items to actual module objects with their keys
   return deck.learning_path_items
     .map((item) => {
+      let lesson: StaticModule | DynamicModule | null = null
+      
       if (item.type === "static_module") {
-        return static_modules[item.id]
+        lesson = static_modules[item.id]
       } else if (item.type === "dynamic_module") {
-        return dynamic_modules[item.id]
+        lesson = dynamic_modules[item.id]
       }
+      
+      if (lesson) {
+        return { lesson, key: item.id }
+      }
+      
       return null
     })
-    .filter((module): module is StaticModule | DynamicModule => !!module)
+    .filter((result): result is { lesson: StaticModule | DynamicModule; key: string } => !!result)
 }

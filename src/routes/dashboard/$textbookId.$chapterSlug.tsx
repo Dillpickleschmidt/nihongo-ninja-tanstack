@@ -70,9 +70,7 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       allEnrichedLessons.slice(INITIAL_LESSON_COUNT),
     )
 
-    const externalResources = enrichExternalResources(
-      getExternalResources(fullDeck),
-    )
+    const rawResources = getExternalResources(fullDeck)
 
     const vocabModuleId = fullDeck.learning_path_items.find((item) =>
       item.id.endsWith("_vocab-list"),
@@ -126,16 +124,22 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
       ? getDueFSRSCardsCount(user.id)
       : Promise.resolve(0)
 
-    const deferredIndividualThumbnails = externalResources.map((resource) => {
-      const promise = fetchThumbnailUrl(
-        resource.external_url,
-        resource.creator_id,
-      ).then((thumbnailUrl) => ({
-        resourceId: resource.id,
-        thumbnailUrl,
-      }))
-      return defer(promise)
-    })
+    const deferredIndividualThumbnails = rawResources.map(
+      ({ resource, key }) => {
+        const promise = fetchThumbnailUrl(
+          resource.external_url,
+          resource.creator_id,
+        ).then((thumbnailUrl) => ({
+          resourceId: key,
+          thumbnailUrl,
+        }))
+        return defer(promise)
+      },
+    )
+
+    const externalResources = enrichExternalResources(
+      rawResources.map(({ resource }) => resource),
+    )
 
     const deckSources = getAllDeckSources(user, preferences)
 

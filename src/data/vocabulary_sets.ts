@@ -1,11 +1,7 @@
-// Auto-generated vocabulary sets
-export type VocabularySetCollection = Record<
-  string,
-  { id: string; keys: string[] }
->
+import type { VocabularySetCollection } from "./types"
+
 export const vocabularySets: VocabularySetCollection = {
-  "practice-hiragana": {
-    id: "practice-hiragana",
+  hiragana: {
     keys: [
       "あ",
       "い",
@@ -55,8 +51,7 @@ export const vocabularySets: VocabularySetCollection = {
       "ん",
     ],
   },
-  "practice-dakuten-handakuten": {
-    id: "practice-dakuten-handakuten",
+  "dakuten-handakuten": {
     keys: [
       "が",
       "ぎ",
@@ -85,8 +80,7 @@ export const vocabularySets: VocabularySetCollection = {
       "ぽ",
     ],
   },
-  "practice-contracted-sounds": {
-    id: "practice-contracted-sounds",
+  "contracted-sounds": {
     keys: [
       "きゃ",
       "きゅ",
@@ -127,7 +121,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "all-hiragana-quiz": {
-    id: "all-hiragana-quiz",
     keys: [
       "あ",
       "い",
@@ -239,11 +232,9 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch0-vocab-list": {
-    id: "genki_1_ch0-vocab-list",
     keys: [],
   },
-  "genki_1_ch0_practice-greetings-common-expressions": {
-    id: "genki_1_ch0_practice-greetings-common-expressions",
+  "genki_1_ch0_greetings-common-expressions": {
     keys: [
       "おはようございます",
       "おはよう",
@@ -270,8 +261,7 @@ export const vocabularySets: VocabularySetCollection = {
       "ようこそ",
     ],
   },
-  "genki_1_ch0_practice-numbers-0-10": {
-    id: "genki_1_ch0_practice-numbers-0-10",
+  "genki_1_ch0_numbers-0-10": {
     keys: [
       "れい",
       "ゼロ",
@@ -290,8 +280,7 @@ export const vocabularySets: VocabularySetCollection = {
       "じゅう",
     ],
   },
-  "genki_1_ch0_practice-numbers-11-100": {
-    id: "genki_1_ch0_practice-numbers-11-100",
+  "genki_1_ch0_numbers-11-100": {
     keys: [
       "じゅういち",
       "じゅうご",
@@ -309,7 +298,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch1_vocab-list": {
-    id: "genki_1_ch1_vocab-list",
     keys: [
       "私",
       "友達",
@@ -382,8 +370,7 @@ export const vocabularySets: VocabularySetCollection = {
       "十",
     ],
   },
-  "genki_1_ch1_practice-kanji-numbers": {
-    id: "genki_1_ch1_practice-kanji-numbers",
+  "genki_1_ch1_kanji-numbers": {
     keys: [
       "一",
       "二",
@@ -408,7 +395,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch1_people-descriptors-misc": {
-    id: "genki_1_ch1_people-descriptors-misc",
     keys: [
       "私",
       "友達",
@@ -433,7 +419,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch1_family-school": {
-    id: "genki_1_ch1_family-school",
     keys: [
       "お母さん",
       "お父さん",
@@ -456,11 +441,9 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "sentence-practice-x-wa-y-desu": {
-    id: "sentence-practice-x-wa-y-desu",
     keys: ["genki_1/sentence-practice-x-wa-y-desu"],
   },
   "genki_1_ch1_occupations-majors": {
-    id: "genki_1_ch1_occupations-majors",
     keys: [
       "医者",
       "会社員",
@@ -483,7 +466,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch1_countries-time": {
-    id: "genki_1_ch1_countries-time",
     keys: [
       "今",
       "午前",
@@ -505,15 +487,12 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "sentence-practice-questions-with-ka": {
-    id: "sentence-practice-questions-with-ka",
     keys: ["genki_1/sentence-practice-questions-with-ka"],
   },
   "sentence-practice-the-no-particle": {
-    id: "sentence-practice-the-no-particle",
     keys: ["genki_1/sentence-practice-the-no-particle"],
   },
-  "genki_1_ch1_practice-telling-time": {
-    id: "genki_1_ch1_practice-telling-time",
+  "genki_1_ch1_telling-time": {
     keys: [
       "いちじ",
       "にじ",
@@ -543,8 +522,7 @@ export const vocabularySets: VocabularySetCollection = {
       "なんじですか",
     ],
   },
-  "genki_1_ch1_practice-minutes": {
-    id: "genki_1_ch1_practice-minutes",
+  genki_1_ch1_minutes: {
     keys: [
       "いっぷん",
       "にふん",
@@ -575,7 +553,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch2_vocab-list": {
-    id: "genki_1_ch2_vocab-list",
     keys: [
       "これ",
       "それ",
@@ -627,7 +604,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_1_ch2_things: {
-    id: "genki_1_ch2_things",
     keys: [
       "傘",
       "かばん",
@@ -646,27 +622,21 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "sentence-practice-words-that-point": {
-    id: "sentence-practice-words-that-point",
     keys: ["genki_1/sentence-practice-words-that-point"],
   },
   "sentence-practice-dare": {
-    id: "sentence-practice-dare",
     keys: ["genki_1/sentence-practice-dare"],
   },
   "sentence-practice-mo-particle": {
-    id: "sentence-practice-mo-particle",
     keys: ["genki_1/sentence-practice-mo-particle"],
   },
   "sentence-practice-janai": {
-    id: "sentence-practice-janai",
     keys: ["genki_1/sentence-practice-janai"],
   },
   "sentence-practice-ne-yo": {
-    id: "sentence-practice-ne-yo",
     keys: ["genki_1/sentence-practice-ne-yo"],
   },
   "genki_1_ch2_places-money-food": {
-    id: "genki_1_ch2_places-money-food",
     keys: [
       "コンビニ",
       "銀行",
@@ -693,7 +663,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch3_vocab-list": {
-    id: "genki_1_ch3_vocab-list",
     keys: [
       "映画",
       "音楽",
@@ -759,8 +728,7 @@ export const vocabularySets: VocabularySetCollection = {
       "ええ",
     ],
   },
-  "genki_1_ch3_practice-chapter-1-kanji-part-1": {
-    id: "genki_1_ch3_practice-chapter-1-kanji-part-1",
+  "genki_1_ch3_chapter-1-kanji-part-1": {
     keys: [
       "私",
       "友達",
@@ -785,8 +753,7 @@ export const vocabularySets: VocabularySetCollection = {
       "専攻",
     ],
   },
-  "genki_1_ch3_practice-chapter-1-kanji-part-2": {
-    id: "genki_1_ch3_practice-chapter-1-kanji-part-2",
+  "genki_1_ch3_chapter-1-kanji-part-2": {
     keys: [
       "医者",
       "会社員",
@@ -808,8 +775,7 @@ export const vocabularySets: VocabularySetCollection = {
       "英語",
     ],
   },
-  "genki_1_ch3_practice-chapter-1-kanji-part-3": {
-    id: "genki_1_ch3_practice-chapter-1-kanji-part-3",
+  "genki_1_ch3_chapter-1-kanji-part-3": {
     keys: [
       "分かりましたか。",
       "ちょっと待ってください",
@@ -832,8 +798,7 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
 
-  "genki_1_ch3_practice-chapter-2-kanji": {
-    id: "genki_1_ch3_practice-chapter-2-kanji",
+  "genki_1_ch3_chapter-2-kanji": {
     keys: [
       "傘",
       "鞄",
@@ -857,7 +822,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_1_ch3_nouns: {
-    id: "genki_1_ch3_nouns",
     keys: [
       "映画",
       "音楽",
@@ -883,7 +847,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch3_days-and-time": {
-    id: "genki_1_ch3_days-and-time",
     keys: [
       "明日",
       "今日",
@@ -904,7 +867,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch3_verbs-and-adj": {
-    id: "genki_1_ch3_verbs-and-adj",
     keys: [
       "行く",
       "来る",
@@ -924,15 +886,12 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "sentence-practice-o-de-ni-e-particles": {
-    id: "sentence-practice-o-de-ni-e-particles",
     keys: ["genki_1/sentence-practice-o-de-ni-e-particles"],
   },
   "sentence-practice-polite-invitations": {
-    id: "sentence-practice-polite-invitations",
     keys: ["genki_1/sentence-practice-polite-invitations"],
   },
   "genki_1_ch3_adverbs-expressions": {
-    id: "genki_1_ch3_adverbs-expressions",
     keys: [
       "あまり",
       "全然",
@@ -947,15 +906,12 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "sentence-practice-time-expressions": {
-    id: "sentence-practice-time-expressions",
     keys: ["genki_1/sentence-practice-time-expressions"],
   },
   "sentence-practice-frequency-adverbs": {
-    id: "sentence-practice-frequency-adverbs",
     keys: ["genki_1/sentence-practice-frequency-adverbs"],
   },
   "genki_1_ch4_vocab-list": {
-    id: "genki_1_ch4_vocab-list",
     keys: [
       "ゲーム",
       "アルバイト",
@@ -1017,7 +973,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch4_nouns-1": {
-    id: "genki_1_ch4_nouns-1",
     keys: [
       "ゲーム",
       "アルバイト",
@@ -1038,7 +993,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch4_nouns-2": {
-    id: "genki_1_ch4_nouns-2",
     keys: [
       "お寺",
       "公園",
@@ -1057,19 +1011,15 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch4_location-words": {
-    id: "genki_1_ch4_location-words",
     keys: ["右", "左", "前", "後ろ", "中", "上", "下", "近く", "隣", "間"],
   },
   "sentence-practice-iru-aru": {
-    id: "sentence-practice-iru-aru",
     keys: ["genki_1/sentence-practice-iru-aru"],
   },
   "sentence-practice-where-things-are": {
-    id: "sentence-practice-where-things-are",
     keys: ["genki_1/sentence-practice-where-things-are"],
   },
   "genki_1_ch4_verbs-adv-misc": {
-    id: "genki_1_ch4_verbs-adv-misc",
     keys: [
       "会う",
       "ある",
@@ -1091,19 +1041,15 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "sentence-practice-deshita-past-tense-verbs": {
-    id: "sentence-practice-deshita-past-tense-verbs",
     keys: ["genki_1/sentence-practice-deshita-past-tense-verbs"],
   },
   "sentence-practice-to-particle": {
-    id: "sentence-practice-to-particle",
     keys: ["genki_1/sentence-practice-to-particle"],
   },
   "sentence-practice-duration": {
-    id: "sentence-practice-duration",
     keys: ["genki_1/sentence-practice-duration"],
   },
   "genki_1_ch5_vocab-list": {
-    id: "genki_1_ch5_vocab-list",
     keys: [
       "食べ物",
       "飲み物",
@@ -1161,7 +1107,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_1_ch5_nouns: {
-    id: "genki_1_ch5_nouns",
     keys: [
       "食べ物",
       "飲み物",
@@ -1182,7 +1127,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch5_i-adjectives": {
-    id: "genki_1_ch5_i-adjectives",
     keys: [
       "新しい",
       "古い",
@@ -1204,7 +1148,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch5_na-adjectives": {
-    id: "genki_1_ch5_na-adjectives",
     keys: [
       "好き",
       "嫌い",
@@ -1218,15 +1161,12 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "sentence-practice-adjectives": {
-    id: "sentence-practice-adjectives",
     keys: ["genki_1/sentence-practice-adjectives"],
   },
   "sentence-practice-suki-kirai": {
-    id: "sentence-practice-suki-kirai",
     keys: ["genki_1/sentence-practice-suki-kirai"],
   },
   "genki_1_ch5_verbs-adv-misc": {
-    id: "genki_1_ch5_verbs-adv-misc",
     keys: [
       "泳ぐ",
       "聞く",
@@ -1242,7 +1182,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch6_vocab-list": {
-    id: "genki_1_ch6_vocab-list",
     keys: [
       "漢字",
       "教科書",
@@ -1294,7 +1233,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_1_ch6_nouns: {
-    id: "genki_1_ch6_nouns",
     keys: [
       "漢字",
       "教科書",
@@ -1316,7 +1254,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch6_u-verbs-and-adj": {
-    id: "genki_1_ch6_u-verbs-and-adj",
     keys: [
       "大変",
       "遊ぶ",
@@ -1335,7 +1272,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch6_ru-v-irr-v-adv-misc": {
-    id: "genki_1_ch6_ru-v-irr-v-adv-misc",
     keys: [
       "開ける",
       "閉める",
@@ -1356,7 +1292,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch7_vocab-list": {
-    id: "genki_1_ch7_vocab-list",
     keys: [
       "家族",
       "おじいさん1",
@@ -1431,7 +1366,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch7_nouns-1": {
-    id: "genki_1_ch7_nouns-1",
     keys: [
       "家族",
       "おじいさん1",
@@ -1456,7 +1390,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch7_body-parts": {
-    id: "genki_1_ch7_body-parts",
     keys: [
       "鼻",
       "耳",
@@ -1479,7 +1412,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_1_ch7_verbs: {
-    id: "genki_1_ch7_verbs",
     keys: [
       "歌う",
       "被る",
@@ -1499,7 +1431,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch7_adj-adv-misc": {
-    id: "genki_1_ch7_adj-adv-misc",
     keys: [
       "長い",
       "短い",
@@ -1521,7 +1452,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch8_vocab-list": {
-    id: "genki_1_ch8_vocab-list",
     keys: [
       "晴れ",
       "雨",
@@ -1582,7 +1512,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch8_nouns-1": {
-    id: "genki_1_ch8_nouns-1",
     keys: [
       "晴れ",
       "雨",
@@ -1600,7 +1529,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch8_nouns-2": {
-    id: "genki_1_ch8_nouns-2",
     keys: [
       "仕事",
       "会社員",
@@ -1618,7 +1546,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_1_ch8_verbs: {
-    id: "genki_1_ch8_verbs",
     keys: [
       "洗う",
       "言う",
@@ -1639,7 +1566,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch8_adj-adv-misc": {
-    id: "genki_1_ch8_adj-adv-misc",
     keys: [
       "上手",
       "下手",
@@ -1658,7 +1584,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch9_vocab-list": {
-    id: "genki_1_ch9_vocab-list",
     keys: [
       "単語",
       "作文",
@@ -1718,7 +1643,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_1_ch9_nouns: {
-    id: "genki_1_ch9_nouns",
     keys: [
       "単語",
       "作文",
@@ -1743,7 +1667,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch9_small-item-counters": {
-    id: "genki_1_ch9_small-item-counters",
     keys: [
       "一つ",
       "二つ",
@@ -1758,7 +1681,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_1_ch9_verbs: {
-    id: "genki_1_ch9_verbs",
     keys: [
       "踊る",
       "終わる",
@@ -1774,7 +1696,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch9_adj-adv-misc": {
-    id: "genki_1_ch9_adj-adv-misc",
     keys: [
       "青い",
       "赤い",
@@ -1793,7 +1714,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch10_vocab-list": {
-    id: "genki_1_ch10_vocab-list",
     keys: [
       "季節",
       "春",
@@ -1828,7 +1748,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch10_nouns-1": {
-    id: "genki_1_ch10_nouns-1",
     keys: [
       "季節",
       "春",
@@ -1849,7 +1768,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch10_nouns-2": {
-    id: "genki_1_ch10_nouns-2",
     keys: [
       "駅",
       "新幹線",
@@ -1868,7 +1786,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch11_vocab-list": {
-    id: "genki_1_ch11_vocab-list",
     keys: [
       "外国",
       "オーストラリア",
@@ -1936,7 +1853,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch11_nouns-1": {
-    id: "genki_1_ch11_nouns-1",
     keys: [
       "外国",
       "オーストラリア",
@@ -1956,7 +1872,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch11_nouns-2": {
-    id: "genki_1_ch11_nouns-2",
     keys: [
       "将来",
       "夢",
@@ -1972,7 +1887,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch11_ru-v-u-v": {
-    id: "genki_1_ch11_ru-v-u-v",
     keys: [
       "うそをつく",
       "おなかがすく",
@@ -1987,7 +1901,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch11_irr-v-adv-misc": {
-    id: "genki_1_ch11_irr-v-adv-misc",
     keys: [
       "けんかする",
       "紹介する",
@@ -2006,7 +1919,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_1_ch11_occupations: {
-    id: "genki_1_ch11_occupations",
     keys: [
       "作家",
       "ジャーナリスト",
@@ -2024,7 +1936,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch12_vocab-list": {
-    id: "genki_1_ch12_vocab-list",
     keys: [
       "おなか",
       "足",
@@ -2081,7 +1992,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch12_nouns-1": {
-    id: "genki_1_ch12_nouns-1",
     keys: [
       "おなか",
       "足",
@@ -2099,7 +2009,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch12_nouns-2": {
-    id: "genki_1_ch12_nouns-2",
     keys: [
       "物",
       "プレゼント",
@@ -2116,7 +2025,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_1_ch12_verbs: {
-    id: "genki_1_ch12_verbs",
     keys: [
       "歩く",
       "風邪をひく",
@@ -2132,7 +2040,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_1_ch12_adj-adv-misc": {
-    id: "genki_1_ch12_adj-adv-misc",
     keys: [
       "狭い",
       "広い",
@@ -2153,7 +2060,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch13_vocab-list": {
-    id: "genki_2_ch13_vocab-list",
     keys: [
       "大人",
       "弁護士",
@@ -2216,7 +2122,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_2_ch13_nouns: {
-    id: "genki_2_ch13_nouns",
     keys: [
       "大人",
       "弁護士",
@@ -2247,7 +2152,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch13_adj-and-verbs": {
-    id: "genki_2_ch13_adj-and-verbs",
     keys: [
       "うれしい",
       "悲しい",
@@ -2269,7 +2173,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch13_day-count-and-misc": {
-    id: "genki_2_ch13_day-count-and-misc",
     keys: [
       "～回",
       "～キロ",
@@ -2289,7 +2192,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch14_vocab-list": {
-    id: "genki_2_ch14_vocab-list",
     keys: [
       "奥さん",
       "ご主人",
@@ -2345,7 +2247,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch14_nouns-1": {
-    id: "genki_2_ch14_nouns-1",
     keys: [
       "奥さん",
       "ご主人",
@@ -2363,7 +2264,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch14_nouns-2": {
-    id: "genki_2_ch14_nouns-2",
     keys: [
       "マフラー",
       "指輪",
@@ -2381,7 +2281,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch14_adj-and-verbs": {
-    id: "genki_2_ch14_adj-and-verbs",
     keys: [
       "欲しい",
       "おしゃれ",
@@ -2398,7 +2297,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch14_counters-adv-misc": {
-    id: "genki_2_ch14_counters-adv-misc",
     keys: [
       "～君",
       "～たち",
@@ -2416,7 +2314,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch15_vocab-list": {
-    id: "genki_2_ch15_vocab-list",
     keys: [
       "外国人",
       "そば",
@@ -2474,7 +2371,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch15_nouns-1": {
-    id: "genki_2_ch15_nouns-1",
     keys: [
       "外国人",
       "そば",
@@ -2494,7 +2390,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch15_nouns-2": {
-    id: "genki_2_ch15_nouns-2",
     keys: [
       "教室",
       "建物",
@@ -2513,7 +2408,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch15_godan-and-ichidan-v": {
-    id: "genki_2_ch15_godan-and-ichidan-v",
     keys: [
       "売る",
       "下ろす",
@@ -2530,7 +2424,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch15_irr-v-adv-misc": {
-    id: "genki_2_ch15_irr-v-adv-misc",
     keys: [
       "する",
       "観光する",
@@ -2547,7 +2440,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch16_vocab-list": {
-    id: "genki_2_ch16_vocab-list",
     keys: [
       "駅員",
       "親",
@@ -2603,7 +2495,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_2_ch16_nouns: {
-    id: "genki_2_ch16_nouns",
     keys: [
       "駅員",
       "親",
@@ -2624,7 +2515,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch16_adj-and-u-v": {
-    id: "genki_2_ch16_adj-and-u-v",
     keys: [
       "汚い",
       "起こす",
@@ -2643,7 +2533,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch16_ru-and-irr-v": {
-    id: "genki_2_ch16_ru-and-irr-v",
     keys: [
       "集める",
       "入れる",
@@ -2657,7 +2546,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch16_adv-and-misc": {
-    id: "genki_2_ch16_adv-and-misc",
     keys: [
       "今日中に",
       "授業中に",
@@ -2674,7 +2562,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch17_vocab-list": {
-    id: "genki_2_ch17_vocab-list",
     keys: [
       "赤ちゃん",
       "お客さん",
@@ -2736,7 +2623,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch17_nouns-1": {
-    id: "genki_2_ch17_nouns-1",
     keys: [
       "赤ちゃん",
       "お客さん",
@@ -2755,7 +2641,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch17_nouns-2": {
-    id: "genki_2_ch17_nouns-2",
     keys: [
       "お湯",
       "電子レンジ",
@@ -2772,7 +2657,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_2_ch17_verbs: {
-    id: "genki_2_ch17_verbs",
     keys: [
       "選ぶ",
       "お湯を沸かす",
@@ -2793,7 +2677,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch17_adj-adv-misc": {
-    id: "genki_2_ch17_adj-adv-misc",
     keys: [
       "危ない",
       "うらやましい",
@@ -2813,19 +2696,15 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "sentence-practice-sou-desu-heresay": {
-    id: "sentence-practice-sou-desu-heresay",
     keys: ["genki_1/sentence-practice-sou-desu-heresay"],
   },
   "sentence-practice-tte": {
-    id: "sentence-practice-tte",
     keys: ["genki_1/sentence-practice-tte"],
   },
   "sentence-practice-tara": {
-    id: "sentence-practice-tara",
     keys: ["genki_1/sentence-practice-tara"],
   },
   "genki_2_ch18_vocab-list": {
-    id: "genki_2_ch18_vocab-list",
     keys: [
       "カーテン",
       "ソファ",
@@ -2885,7 +2764,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch18_nouns-1": {
-    id: "genki_2_ch18_nouns-1",
     keys: [
       "カーテン",
       "ソファ",
@@ -2900,7 +2778,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch18_nouns-2-and-adjectives": {
-    id: "genki_2_ch18_nouns-2-and-adjectives",
     keys: [
       "タオル",
       "スカート",
@@ -2921,7 +2798,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch18_u-and-irr-verbs": {
-    id: "genki_2_ch18_u-and-irr-verbs",
     keys: [
       "開く",
       "閉まる",
@@ -2940,7 +2816,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch18_ru-verbs-and-misc": {
-    id: "genki_2_ch18_ru-verbs-and-misc",
     keys: [
       "落ちる",
       "片付ける",
@@ -2960,7 +2835,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch19_vocab-list": {
-    id: "genki_2_ch19_vocab-list",
     keys: [
       "夫婦",
       "親戚",
@@ -3206,7 +3080,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch19_chapter-13-18-bonus-vocab": {
-    id: "genki_2_ch19_chapter-13-18-bonus-vocab",
     keys: [
       "夫婦",
       "親戚",
@@ -3226,7 +3099,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch19_chapter-13-18-nouns": {
-    id: "genki_2_ch19_chapter-13-18-nouns",
     keys: [
       "大人",
       "弁護士",
@@ -3303,7 +3175,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch19_chapter-13-18-adjectives": {
-    id: "genki_2_ch19_chapter-13-18-adjectives",
     keys: [
       "悪い",
       "悲しい",
@@ -3328,7 +3199,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch19_chapter-13-18-verbs": {
-    id: "genki_2_ch19_chapter-13-18-verbs",
     keys: [
       "編む",
       "頑張る",
@@ -3396,7 +3266,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch19_chapter-13-18-adv-misc": {
-    id: "genki_2_ch19_chapter-13-18-adv-misc",
     keys: [
       "年上",
       "今年",
@@ -3422,7 +3291,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch19_nouns-and-adj": {
-    id: "genki_2_ch19_nouns-and-adj",
     keys: [
       "奥様",
       "お子さん",
@@ -3445,7 +3313,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch19_u-ru-verbs": {
-    id: "genki_2_ch19_u-ru-verbs",
     keys: [
       "いらっしゃる",
       "召し上がる",
@@ -3472,7 +3339,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch19_irr-v-adv-misc": {
-    id: "genki_2_ch19_irr-v-adv-misc",
     keys: [
       "ごちそうする",
       "遠慮する",
@@ -3492,11 +3358,9 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "sentence-practice-honorific-verbs": {
-    id: "sentence-practice-honorific-verbs",
     keys: ["genki_1/sentence-practice-honorific-verbs"],
   },
   "genki_2_ch20_vocab-list": {
-    id: "genki_2_ch20_vocab-list",
     keys: [
       "アニメ",
       "小説",
@@ -3558,7 +3422,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   genki_2_ch20_nouns: {
-    id: "genki_2_ch20_nouns",
     keys: [
       "アニメ",
       "小説",
@@ -3583,7 +3446,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch20_adj-u-v": {
-    id: "genki_2_ch20_adj-u-v",
     keys: [
       "重い",
       "軽い",
@@ -3608,7 +3470,6 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "genki_2_ch20_ru-v-irr-v-adv-misc": {
-    id: "genki_2_ch20_ru-v-irr-v-adv-misc",
     keys: [
       "差し上げる",
       "聞こえる",
@@ -3634,11 +3495,9 @@ export const vocabularySets: VocabularySetCollection = {
     ],
   },
   "sentence-practice-extra-modest-expressions": {
-    id: "sentence-practice-extra-modest-expressions",
     keys: ["genki_1/sentence-practice-extra-modest-expressions"],
   },
   "sentence-practice-humble-expressions": {
-    id: "sentence-practice-humble-expressions",
     keys: ["genki_1/sentence-practice-humble-expressions"],
   },
 }
