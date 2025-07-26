@@ -105,9 +105,15 @@ function getDisplayTitle(title: string) {
 }
 
 function getLinkTo(lesson: StaticModule | DynamicModule, moduleKey: string) {
-  return "link" in lesson && lesson.link
-    ? lesson.link
-    : `/practice/${moduleKey}`
+  if ("link" in lesson && lesson.link) {
+    return lesson.link
+  }
+
+  if ("session_type" in lesson && lesson.session_type === "vocab-practice") {
+    return `/vocab?import=${moduleKey}`
+  }
+
+  return `/practice/${moduleKey}`
 }
 
 function getModuleIconClasses(moduleType: string) {
