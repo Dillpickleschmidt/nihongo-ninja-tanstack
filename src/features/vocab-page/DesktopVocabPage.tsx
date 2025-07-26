@@ -3,11 +3,17 @@ import { CollapsiblePanel } from "./CollapsiblePanel"
 import { BuiltInDecksPanel } from "./BuiltInDecksPanel"
 import { UserDecksPanel } from "./UserDecksPanel"
 import { CenterPanel } from "./center-panel/CenterPanel"
+import { ImportConfirmationModal } from "./ImportConfirmationModal"
 import { useVocabPageState } from "./useVocabPageState"
+import type { DeckPart } from "./types"
 
-export function DesktopVocabPage() {
-  const state = useVocabPageState()
-  let userDecksPanelRef: HTMLDivElement
+interface DesktopVocabPageProps {
+  pendingImport?: DeckPart | null
+}
+
+export function DesktopVocabPage(props: DesktopVocabPageProps) {
+  const state = useVocabPageState(props.pendingImport)
+  let userDecksPanelRef!: HTMLDivElement
 
   return (
     <div class="bg-background flex h-screen">
@@ -45,6 +51,13 @@ export function DesktopVocabPage() {
           panelRef={userDecksPanelRef}
         />
       </CollapsiblePanel>
+
+      <ImportConfirmationModal
+        isOpen={state.showImportModal()}
+        onClose={state.handleImportCancel}
+        onConfirm={state.handleImportConfirm}
+        deckTitle={state.pendingImportDeck()?.name || ""}
+      />
     </div>
   )
 }

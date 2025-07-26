@@ -1,8 +1,10 @@
-import { createSignal } from "solid-js"
+import { createSignal, createEffect } from "solid-js"
+import { useNavigate } from "@tanstack/solid-router"
 import type { DeckPart, UserDeck, VocabPageState } from "./types"
 import { getVocabPracticeModulesFromTextbooks } from "@/data/utils/core"
 
-export function useVocabPageState() {
+export function useVocabPageState(pendingImport?: DeckPart | null) {
+  const navigate = useNavigate()
   const [leftPanelOpen, setLeftPanelOpen] = createSignal(true)
   const [rightPanelOpen, setRightPanelOpen] = createSignal(true)
   const [expandedTextbooks, setExpandedTextbooks] = createSignal<Set<string>>(
@@ -18,6 +20,11 @@ export function useVocabPageState() {
   const [selectedUserDeck, setSelectedUserDeck] = createSignal<UserDeck | null>(
     null,
   )
+
+  // Import confirmation modal state
+  const [showImportModal, setShowImportModal] = createSignal(false)
+  const [pendingImportDeck, setPendingImportDeck] =
+    createSignal<DeckPart | null>(null)
 
   // Create reactive textbooks with import state
   const [textbooks, setTextbooks] = createSignal(
@@ -96,6 +103,31 @@ export function useVocabPageState() {
     setSelectedUserDeck(null)
   }
 
+  // Import modal functions
+  const handleImportConfirm = () => {
+    const deck = pendingImportDeck()
+    if (deck) {
+      importDeck(deck)
+    }
+    setShowImportModal(false)
+    setPendingImportDeck(null)
+  }
+
+  const handleImportCancel = () => {
+    setShowImportModal(false)
+    setPendingImportDeck(null)
+  }
+
+  // Handle pending import from route loader
+  createEffect(() => {
+    if (pendingImport) {
+      setPendingImportDeck(pendingImport)
+      setShowImportModal(true)
+      // Clean URL
+      navigate({ to: "/vocab", search: { import: undefined }, replace: true })
+    }
+  })
+
   return {
     // Panel state
     leftPanelOpen,
@@ -117,5 +149,11 @@ export function useVocabPageState() {
     importDeck,
     selectUserDeck,
     deselectUserDeck,
+
+    // Import modal state and actions
+    showImportModal,
+    pendingImportDeck,
+    handleImportConfirm,
+    handleImportCancel,
   }
 }
