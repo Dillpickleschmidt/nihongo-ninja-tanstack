@@ -3,40 +3,47 @@ import {
   createContext,
   useContext,
   createSignal,
-  onMount,
+  createResource,
+  createEffect,
   Component,
   ParentProps,
 } from "solid-js"
+import type { UserPreferencesCookieData } from "@/features/user-settings/schemas/user-preferences"
+import type { DeviceUISettingsCookieData } from "@/features/user-settings/schemas/device-ui-settings"
+import { setDeviceUISettingsCookie } from "@/features/user-settings/utils/settings-cookies"
 import {
-  AllServicePreferences,
-  ServicePreference,
-  ServiceType,
-} from "@/features/service-config/types"
-import {
-  getAllServicePreferences,
-  setServicePreference,
-} from "@/features/service-config/client/preferenceManager"
+  revalidateUserPreferencesCookieServerFn,
+  mutateUserPreferencesServerFn,
+} from "@/features/user-settings/server/server-functions"
+import { User } from "@supabase/supabase-js"
 
 // --- Context Definition ---
 
 interface SettingsContextType {
-  preferences: () => AllServicePreferences
-  updateServicePreference: (
-    service: ServiceType,
-    preference: Partial<ServicePreference>,
-  ) => void
-  isInitialized: () => boolean
-  errors: () => Record<ServiceType, string>
-  isProcessing: () => boolean
-  setError: (service: ServiceType, error: string) => void
-  clearError: (service: ServiceType) => void
-  setIsProcessing: (processing: boolean) => void
-}
+  // Cross-device user preferences (with SWR)
+  userPreferences: () => UserPreferencesCookieData
+  updateUserPreferences: (
+    prefs: Partial<UserPreferencesCookieData>,
+  ) => Promise<void>
 
-const defaultPreference: ServicePreference = {
-  mode: "disabled",
-  data_imported: false,
-  is_api_key_valid: false,
+  // Device UI settings (client-only)
+  deviceUISettings: () => DeviceUISettingsCookieData
+  updateDeviceUISettings: (
+    settings: Partial<DeviceUISettingsCookieData>,
+  ) => void
+
+  // Service-specific helpers (for migration compatibility)
+  getServiceCredential: (
+    service: "anki" | "wanikani" | "jpdb",
+    key: "api_key",
+  ) => string
+  getServicePreference: (
+    service: "anki" | "wanikani" | "jpdb",
+    key: "mode" | "data_imported" | "is_api_key_valid",
+  ) => any
+
+  // Status
+  isInitialized: () => boolean
 }
 
 const SettingsContext = createContext<SettingsContextType>()
@@ -44,72 +51,123 @@ const SettingsContext = createContext<SettingsContextType>()
 // --- Provider Component ---
 
 interface SettingsProviderProps extends ParentProps {
-  initialPreferences?: AllServicePreferences
+  user: User | null
+  initialUserPreferenceData: UserPreferencesCookieData
+  userPreferencesDBPromise: Promise<UserPreferencesCookieData>
+  deviceUISettings: DeviceUISettingsCookieData
 }
 
 export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
-  const [preferences, setPreferences] = createSignal<AllServicePreferences>(
-    props.initialPreferences || {
-      jpdb: defaultPreference,
-      wanikani: defaultPreference,
-      anki: defaultPreference,
-    },
-  )
+  // Cross-device settings with SWR pattern (Hook 1: createSignal)
+  const [displayedUserPreferences, setDisplayedUserPreferences] =
+    createSignal<UserPreferencesCookieData>(props.initialUserPreferenceData)
+
+  // Device UI settings (simple client state)
+  const [deviceUISettings, setDeviceUISettings] =
+    createSignal<DeviceUISettingsCookieData>(props.deviceUISettings)
 
   const [isInitialized, setIsInitialized] = createSignal(false)
 
-  const [errors, setErrors] = createSignal<Record<ServiceType, string>>({
-    jpdb: "",
-    wanikani: "",
-    anki: "",
-  })
+  // SWR pattern (Hook 2: createResource)
+  const [freshUserPreferencesResource] = createResource(
+    () => props.userPreferencesDBPromise,
+  )
 
-  const [isProcessing, setIsProcessing] = createSignal(false)
+  // SWR pattern (Hook 3: createEffect)
+  createEffect(() => {
+    const freshData = freshUserPreferencesResource()
+    if (freshData) {
+      const currentData = displayedUserPreferences()
 
-  onMount(() => {
-    // Load preferences from client-side if not provided by server
-    if (!props.initialPreferences) {
-      const clientPreferences = getAllServicePreferences()
-      setPreferences(clientPreferences)
+      // Compare timestamps - only update if DB is strictly newer
+      if (freshData.timestamp > currentData.timestamp) {
+        setDisplayedUserPreferences(freshData)
+
+        // Update HttpOnly cookie to match newer DB data
+        if (props.user) {
+          revalidateUserPreferencesCookieServerFn({
+            data: {
+              preferences: freshData,
+            },
+          }).catch(console.error) // Non-blocking error handling
+        }
+      }
+      // If cookie timestamp >= DB timestamp, no change (prevents flash)
     }
+
     setIsInitialized(true)
   })
 
-  const updateServicePreference = (
-    service: ServiceType,
-    newPreference: Partial<ServicePreference>,
+  // Update user preferences (user-initiated changes)
+  const updateUserPreferences = async (
+    prefs: Partial<UserPreferencesCookieData>,
   ) => {
-    // Update client-side preference cookie via preference manager
-    setServicePreference(service, newPreference)
+    const currentPrefs = displayedUserPreferences()
+    const newPrefs = { ...currentPrefs, ...prefs }
 
-    // Update local state for reactivity
-    setPreferences((prevPreferences) => ({
-      ...prevPreferences,
-      [service]: {
-        ...defaultPreference,
-        ...(prevPreferences[service] || {}),
-        ...newPreference,
-      },
-    }))
+    try {
+      // Optimistically update UI
+      setDisplayedUserPreferences(newPrefs)
+
+      // Persist to DB and cookie (only for authenticated users)
+      if (props.user) {
+        const result = await mutateUserPreferencesServerFn({
+          data: {
+            preferences: newPrefs,
+          },
+        })
+        // Update with server response (includes new timestamp)
+        setDisplayedUserPreferences(result.preferences)
+      } else {
+        // For unauthenticated users, just update timestamp locally
+        setDisplayedUserPreferences({
+          ...newPrefs,
+          timestamp: Date.now(),
+        })
+      }
+    } catch (error) {
+      // Rollback on error
+      setDisplayedUserPreferences(currentPrefs)
+      throw error
+    }
   }
 
-  const setError = (service: ServiceType, error: string) => {
-    setErrors((prev) => ({ ...prev, [service]: error }))
+  // Update device UI settings
+  const updateDeviceUISettings = (
+    settings: Partial<DeviceUISettingsCookieData>,
+  ) => {
+    const currentSettings = deviceUISettings()
+    const newSettings = { ...currentSettings, ...settings }
+
+    setDeviceUISettings(newSettings)
+    setDeviceUISettingsCookie(newSettings)
   }
 
-  const clearError = (service: ServiceType) => {
-    setErrors((prev) => ({ ...prev, [service]: "" }))
+  // Service-specific helpers for migration compatibility
+  const getServiceCredential = (
+    service: "anki" | "wanikani" | "jpdb",
+    key: "api_key",
+  ) => {
+    const prefs = displayedUserPreferences()
+    return prefs["service-credentials"][service]?.[key] || ""
+  }
+
+  const getServicePreference = (
+    service: "anki" | "wanikani" | "jpdb",
+    key: "mode" | "data_imported" | "is_api_key_valid",
+  ) => {
+    const prefs = displayedUserPreferences()
+    return prefs["service-preferences"][service]?.[key]
   }
 
   const value = {
-    preferences,
-    updateServicePreference,
+    userPreferences: displayedUserPreferences,
+    updateUserPreferences,
+    deviceUISettings,
+    updateDeviceUISettings,
+    getServiceCredential,
+    getServicePreference,
     isInitialized,
-    errors,
-    isProcessing,
-    setError,
-    clearError,
-    setIsProcessing,
   }
 
   return (

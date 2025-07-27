@@ -1,8 +1,8 @@
 import { createBackendClient } from "@/features/supabase/backendClient"
 import {
-  CrossDeviceSettingsSchema,
+  UserPreferencesSchema,
   type UserPreferencesCookieData,
-} from "@/features/user-settings/schemas/cross-device-settings"
+} from "@/features/user-settings/schemas/user-preferences"
 
 export async function getUserPreferencesFromDB(
   userId: string,
@@ -20,7 +20,7 @@ export async function getUserPreferencesFromDB(
   }
 
   try {
-    const result = CrossDeviceSettingsSchema.safeParse(data.user_preferences)
+    const result = UserPreferencesSchema.safeParse(data.user_preferences)
     return result.success ? result.data : null
   } catch {
     return null
@@ -41,3 +41,4 @@ export async function updateUserPreferencesInDB(
 
   return !error
 }
+

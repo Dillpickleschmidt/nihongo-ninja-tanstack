@@ -4,6 +4,7 @@ import {
   createRootRoute,
   HeadContent,
   Scripts,
+  defer,
 } from "@tanstack/solid-router"
 import "@fontsource-variable/inter"
 import "@fontsource/poppins"
@@ -18,7 +19,11 @@ import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { getUser } from "@/features/supabase/getUser"
 import { TransitionProvider } from "@/context/TransitionContext"
 import { SettingsProvider } from "@/context/SettingsContext"
-import { getServicePreferencesFromCookie } from "@/features/service-config/server/service-manager"
+import {
+  getInitialUserPreferencesFromCookieServerFn,
+  getUserPreferencesFromDBServerFn,
+} from "@/features/user-settings/server/server-functions"
+import { getDeviceUISettingsCookie } from "@/features/user-settings/utils/settings-cookies"
 
 export const Route = createRootRoute({
   head: () => ({
@@ -46,9 +51,23 @@ export const Route = createRootRoute({
     // --- END TIMER ---
     return { user: result?.user || null }
   },
-  loader: () => {
-    const initialPreferences = getServicePreferencesFromCookie()
-    return { initialPreferences }
+  loader: async ({ context }) => {
+    const { user } = context
+
+    // Cross-device user preferences (SWR pattern)
+    const initialUserPreferenceData =
+      await getInitialUserPreferencesFromCookieServerFn()
+    const userPreferencesDBPromise = defer(getUserPreferencesFromDBServerFn())
+
+    // Device UI settings (client-accessible cookie)
+    const deviceUISettings = getDeviceUISettingsCookie()
+
+    return {
+      user,
+      initialUserPreferenceData,
+      userPreferencesDBPromise,
+      deviceUISettings,
+    }
   },
   component: RootComponent,
   staleTime: 0,
@@ -56,7 +75,12 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   const loaderData = Route.useLoaderData()
-  const { initialPreferences } = loaderData()
+  const {
+    user,
+    initialUserPreferenceData,
+    userPreferencesDBPromise,
+    deviceUISettings,
+  } = loaderData()
   const colorModeCookies = `kb-color-mode=${getCookie("kb-color-mode")}`
 
   const storageManager = cookieStorageManagerSSR(colorModeCookies)
@@ -65,7 +89,12 @@ function RootComponent() {
     <>
       <ColorModeScript storageType={storageManager?.type} />
       <ColorModeProvider storageManager={storageManager}>
-        <SettingsProvider initialPreferences={initialPreferences}>
+        <SettingsProvider
+          user={user}
+          initialUserPreferenceData={initialUserPreferenceData}
+          userPreferencesDBPromise={userPreferencesDBPromise}
+          deviceUISettings={deviceUISettings}
+        >
           <TransitionProvider>
             <Scripts />
             <Outlet />
