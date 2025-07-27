@@ -15,11 +15,11 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
-import type { ServiceType } from "@/features/service-config/types"
+import type { ServiceType } from "@/features/user-settings/schemas/user-preferences"
 import {
   fetchJPDBDeckVocabulary,
   lookupJPDBVocabulary,
-} from "@/features/service-config/jpdb/api"
+} from "@/features/service-api-functions/jpdb/api"
 
 interface Deck {
   id: string

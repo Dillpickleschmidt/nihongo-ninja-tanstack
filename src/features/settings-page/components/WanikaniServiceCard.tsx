@@ -7,16 +7,18 @@ import {
   TextFieldLabel,
 } from "@/components/ui/text-field"
 import { ServiceCard } from "./ServiceCard"
-import {
-  connectService,
-  importServiceData,
-} from "@/features/service-config/server/server-functions"
-import { useSettings } from "@/context/SettingsContext"
-import type { ServiceCardProps } from "@/features/service-config/types"
+// TODO: Implement WaniKani validation functions when needed
+import { useServiceManagement } from "../context/ServiceManagementContext"
+import type { ServicePreference } from "@/features/user-settings/schemas/user-preferences"
+
+type ServiceCardProps = {
+  preference: () => ServicePreference
+  updateServicePreference: (updates: Partial<ServicePreference>) => void
+}
 
 export const WanikaniServiceCard = (props: ServiceCardProps) => {
   const { errors, isProcessing, setError, clearError, setIsProcessing } =
-    useSettings()
+    useServiceManagement()
   const [wanikaniApiKey, setWanikaniApiKey] = createSignal("")
 
   const handleConnect = async () => {
@@ -26,21 +28,14 @@ export const WanikaniServiceCard = (props: ServiceCardProps) => {
     setIsProcessing(true)
     clearError("wanikani")
 
-    const result = await connectService({
-      data: { service: "wanikani", credentials: { api_key: apiKey } },
+    // TODO: Implement WaniKani API validation
+    setError(
+      "wanikani",
+      "WaniKani integration not yet implemented with new settings system",
+    )
+    props.updateServicePreference({
+      is_api_key_valid: false,
     })
-
-    if (result.success) {
-      props.updateServicePreference({
-        mode: "live",
-        is_api_key_valid: true,
-      })
-    } else {
-      setError("wanikani", result.error || "An unknown error occurred.")
-      props.updateServicePreference({
-        is_api_key_valid: false,
-      })
-    }
     setIsProcessing(false)
   }
 
@@ -48,14 +43,12 @@ export const WanikaniServiceCard = (props: ServiceCardProps) => {
     setIsProcessing(true)
     clearError("wanikani")
 
-    const result = await importServiceData({ data: { service: "wanikani" } })
-
-    if (result.success) {
-      props.updateServicePreference({ data_imported: true })
-    } else {
-      setError("wanikani", result.error || "An unknown error occurred.")
-      props.updateServicePreference({ data_imported: false })
-    }
+    // TODO: Implement WaniKani data import
+    setError(
+      "wanikani",
+      "WaniKani data import not yet implemented with new settings system",
+    )
+    props.updateServicePreference({ data_imported: false })
     setIsProcessing(false)
   }
 

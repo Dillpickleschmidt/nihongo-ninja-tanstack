@@ -4,37 +4,53 @@ import { WanikaniServiceCard } from "./WanikaniServiceCard"
 import { JpdbServiceCard } from "./JpdbServiceCard"
 import { jpdbAdapter } from "@/features/fsrs-import/adapters/jpdb-import-adapter"
 import { importReviewsServerFn } from "@/features/fsrs-import/server/importReviewsServerFn"
-import { connectService } from "@/features/service-config/server/server-functions"
+import { validateJpdbApiKey } from "@/features/service-api-functions/jpdb/validation"
 import { useSettings } from "@/context/SettingsContext"
-import type { ServiceType } from "@/features/service-config/types"
+import { useServiceManagement } from "../context/ServiceManagementContext"
+import type { ServiceType } from "@/features/user-settings/schemas/user-preferences"
 
 export const ServiceIntegrationsSection = () => {
-  const {
-    preferences,
-    updateServicePreference,
-    setError,
-    clearError,
-    setIsProcessing,
-  } = useSettings()
+  const { userPreferences, updateUserPreferences } = useSettings()
+  const { setError, clearError, setIsProcessing } = useServiceManagement()
 
   const handleJpdbImport = async (apiKey: string, file: File) => {
     setIsProcessing(true)
     clearError("jpdb")
 
     // 1. Validate API Key
-    const validationResult = await connectService({
-      data: { service: "jpdb", credentials: { api_key: apiKey } },
-    })
+    const validationResult = await validateJpdbApiKey(apiKey)
 
     if (!validationResult.success) {
       setError("jpdb", validationResult.error || "Invalid API Key")
-      updateServicePreference("jpdb", { is_api_key_valid: false })
+      const currentPrefs = userPreferences()
+      updateUserPreferences({
+        "service-preferences": {
+          ...currentPrefs["service-preferences"],
+          jpdb: {
+            ...currentPrefs["service-preferences"].jpdb,
+            is_api_key_valid: false,
+          },
+        },
+      })
       setIsProcessing(false)
       return
     }
 
-    // Update preference state after successful validation
-    updateServicePreference("jpdb", { is_api_key_valid: true })
+    // Update preferences with validated API key and success state
+    const currentPrefs = userPreferences()
+    updateUserPreferences({
+      "service-credentials": {
+        ...currentPrefs["service-credentials"],
+        jpdb: { ...currentPrefs["service-credentials"].jpdb, api_key: apiKey },
+      },
+      "service-preferences": {
+        ...currentPrefs["service-preferences"],
+        jpdb: {
+          ...currentPrefs["service-preferences"].jpdb,
+          is_api_key_valid: true,
+        },
+      },
+    })
 
     // 2. Process and Import File
     try {
@@ -51,7 +67,16 @@ export const ServiceIntegrationsSection = () => {
         data: { cards: normalizedCards, source: "jpdb" },
       })
       if (importResult.success) {
-        updateServicePreference("jpdb", { data_imported: true })
+        const currentPrefs = userPreferences()
+        updateUserPreferences({
+          "service-preferences": {
+            ...currentPrefs["service-preferences"],
+            jpdb: {
+              ...currentPrefs["service-preferences"].jpdb,
+              data_imported: true,
+            },
+          },
+        })
       } else {
         throw new Error(importResult.message || "File import failed.")
       }
@@ -66,13 +91,26 @@ export const ServiceIntegrationsSection = () => {
 
   const createServiceProps = (service: ServiceType) => ({
     preference: () =>
-      preferences()[service] || {
+      userPreferences()["service-preferences"][service] || {
         mode: "disabled",
         data_imported: false,
         is_api_key_valid: false,
       },
-    updateServicePreference: (preferenceUpdate: any) =>
-      updateServicePreference(service, preferenceUpdate),
+    updateServicePreference: (preferenceUpdate: any) => {
+      const currentServicePrefs = userPreferences()["service-preferences"]
+      const currentServicePref = currentServicePrefs[service] || {
+        mode: "disabled",
+        data_imported: false,
+        is_api_key_valid: false,
+      }
+
+      return updateUserPreferences({
+        "service-preferences": {
+          ...currentServicePrefs,
+          [service]: { ...currentServicePref, ...preferenceUpdate },
+        },
+      })
+    },
   })
 
   return (

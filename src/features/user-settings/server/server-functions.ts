@@ -1,5 +1,6 @@
 // features/user-settings/server/server-functions.ts
 import { createServerFn } from "@tanstack/solid-start"
+import { setResponseHeader } from "@tanstack/solid-start/server"
 import { getUserSSR } from "@/features/supabase/getUserSSR"
 import { z } from "zod"
 import {
@@ -61,6 +62,7 @@ export const revalidateUserPreferencesCookieServerFn = createServerFn({
 
     // Update cookie to match the newer DB data
     const cookieHeader = createUserPreferencesCookieHeader(data.preferences)
+    setResponseHeader("Set-Cookie", cookieHeader)
 
     return {
       cookieHeader,
@@ -96,18 +98,16 @@ export const mutateUserPreferencesServerFn = createServerFn({
     }
 
     // Update database
-    const success = await updateUserPreferencesInDB(
-      user.id,
+    await updateUserPreferencesInDB(user.id, preferencesWithTimestamp)
+
+    // Set cookie header in response and return updated preferences
+    const cookieHeader = createUserPreferencesCookieHeader(
       preferencesWithTimestamp,
     )
+    setResponseHeader("Set-Cookie", cookieHeader)
 
-    if (!success) {
-      throw new Error("Failed to update user preferences")
-    }
-
-    // Return updated preferences and cookie header
     return {
       preferences: preferencesWithTimestamp,
-      cookieHeader: createUserPreferencesCookieHeader(preferencesWithTimestamp),
+      cookieHeader,
     }
   })

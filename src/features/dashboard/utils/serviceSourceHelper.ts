@@ -1,9 +1,8 @@
 // features/dashboard/utils/serviceSourceHelper.ts
 import type {
-  AllServiceAuthData,
   AllServicePreferences,
   ServiceType,
-} from "@/features/service-config/types"
+} from "@/features/user-settings/schemas/user-preferences"
 import type { DeckSource, Deck } from "@/data/types"
 
 const SERVICE_DISPLAY_NAMES: Record<ServiceType, string> = {

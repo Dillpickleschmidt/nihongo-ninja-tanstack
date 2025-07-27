@@ -1,7 +1,7 @@
 // features/dashboard/components/content/service/ServiceDeckList.tsx
 import { For } from "solid-js"
 import { Star, TrendingUp, ArrowRight, Play } from "lucide-solid"
-import type { ServiceType } from "@/features/service-config/types"
+import type { ServiceType } from "@/features/user-settings/schemas/user-preferences"
 
 interface Deck {
   id: string

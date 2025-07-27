@@ -16,7 +16,7 @@ import { getVocabularyForModule } from "@/data/utils/vocab"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
 import { DashboardDataProvider } from "@/features/dashboard/context/DashboardDataContext"
 import { TextbookContentArea } from "@/features/dashboard/components/content/textbook/TextbookContentArea"
-import { getServicePreferencesFromCookie } from "@/features/service-config/server/service-manager"
+import { getInitialUserPreferencesFromCookieServerFn } from "@/features/user-settings/server/server-functions"
 import type { TextbookIDEnum, VocabularyItem, Deck } from "@/data/types"
 import type { FullHierarchyData } from "@/data/wanikani/types"
 import {
@@ -41,7 +41,8 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
     const { user } = context
     const { textbookId, chapterSlug } = params
 
-    const preferences = getServicePreferencesFromCookie()
+    const userPreferences = await getInitialUserPreferencesFromCookieServerFn()
+    const preferences = userPreferences["service-preferences"]
 
     const fullDeck = getDeckBySlug(textbookId as TextbookIDEnum, chapterSlug)
 

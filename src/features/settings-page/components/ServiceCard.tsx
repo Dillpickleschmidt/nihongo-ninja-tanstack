@@ -7,9 +7,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import type { ServiceType, ServiceMode } from "@/features/service-config/types"
 import { getModeDisplayName, getModeDescription } from "../utils/serviceUtils"
-import { useSettings } from "@/context/SettingsContext"
+import { useServiceManagement } from "../context/ServiceManagementContext"
+
+import type { ServiceType, ServiceMode } from "@/features/user-settings/schemas/user-preferences"
 
 interface ServiceCardProps {
   title: string
@@ -23,7 +24,7 @@ interface ServiceCardProps {
 }
 
 export const ServiceCard = (props: ServiceCardProps) => {
-  const { isProcessing } = useSettings()
+  const { isProcessing } = useServiceManagement()
   const modeInfo = () => getModeDescription(props.selectedMode || "disabled")
 
   return (

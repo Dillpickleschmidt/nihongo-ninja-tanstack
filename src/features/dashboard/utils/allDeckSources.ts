@@ -3,7 +3,7 @@ import { textbooks } from "@/data/textbooks"
 import { generateServiceSources } from "@/features/dashboard/utils/serviceSourceHelper"
 import type { DeckSource, UserDeck } from "@/data/types"
 import type { User } from "@supabase/supabase-js"
-import type { AllServicePreferences } from "@/features/service-config/types"
+import type { AllServicePreferences } from "@/features/user-settings/schemas/user-preferences"
 
 const createUserDeckSource = (user: User): DeckSource => {
   const userDeck: UserDeck = {

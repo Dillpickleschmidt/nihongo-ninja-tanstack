@@ -4,8 +4,8 @@ import { z } from "zod"
 const VocabRouteSettingsSchema = z.object({
   leftSidebarExpand: z.boolean().default(true),
   rightSidebarExpand: z.boolean().default(true),
-  lastOpenTextbook: z.string().default(""),
-  lastOpenChapter: z.string().default(""),
+  lastOpenTextbook: z.string().max(20).default(""),
+  lastOpenChapter: z.string().max(20).default(""),
 })
 
 const VocabPracticeSettingsSchema = z.object({
@@ -16,12 +16,14 @@ const VocabPracticeSettingsSchema = z.object({
 })
 
 const RouteSettingsSchema = z.object({
-  vocab: VocabRouteSettingsSchema.default({}),
-  "vocab-practice": VocabPracticeSettingsSchema.default({}),
+  vocab: VocabRouteSettingsSchema.default(VocabRouteSettingsSchema.parse({})),
+  "vocab-practice": VocabPracticeSettingsSchema.default(
+    VocabPracticeSettingsSchema.parse({}),
+  ),
 })
 
 export const DeviceUISettingsSchema = z.object({
-  routes: RouteSettingsSchema.default({}),
+  routes: RouteSettingsSchema.default(RouteSettingsSchema.parse({})),
 })
 
 export type DeviceUISettingsCookieData = z.infer<typeof DeviceUISettingsSchema>

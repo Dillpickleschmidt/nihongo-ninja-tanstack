@@ -59,17 +59,17 @@ export type Database = {
       profiles: {
         Row: {
           display_name: string | null
-          id: string
+          user_id: string
           user_preferences: Json
         }
         Insert: {
           display_name?: string | null
-          id?: string
+          user_id?: string
           user_preferences: Json
         }
         Update: {
           display_name?: string | null
-          id?: string
+          user_id?: string
           user_preferences?: Json
         }
         Relationships: []

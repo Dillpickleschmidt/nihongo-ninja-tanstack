@@ -2,7 +2,7 @@
 import { createServerFn } from "@tanstack/solid-start"
 import { z } from "zod"
 import { getUserSSR } from "@/features/supabase/getUserSSR"
-import { getServiceAuthDataFromCookie } from "../server/service-manager"
+import { getInitialUserPreferencesFromCookieServerFn } from "@/features/user-settings/server/server-functions"
 
 const serviceSchema = z.enum(["anki", "wanikani", "jpdb"])
 const apiKeySchema = z.object({
@@ -12,8 +12,8 @@ const apiKeySchema = z.object({
 export const fetchServiceDataWithAuth = createServerFn()
   .validator(serviceSchema)
   .handler(async ({ data: service }) => {
-    const authData = getServiceAuthDataFromCookie()
-    const apiKey = authData?.[service]?.api_key
+    const userPreferences = await getInitialUserPreferencesFromCookieServerFn()
+    const apiKey = userPreferences["service-credentials"]?.[service]?.api_key
 
     if (!apiKey) {
       throw new Error(`${service} API key not available`)
@@ -107,8 +107,8 @@ export const fetchJPDBDeckVocabulary = createServerFn()
       throw new Error("User not authenticated")
     }
 
-    const authData = getServiceAuthDataFromCookie()
-    const apiKey = authData?.jpdb?.api_key
+    const userPreferences = await getInitialUserPreferencesFromCookieServerFn()
+    const apiKey = userPreferences["service-credentials"]?.jpdb?.api_key
 
     if (!apiKey) {
       throw new Error("JPDB API key not available")
@@ -148,8 +148,8 @@ export const lookupJPDBVocabulary = createServerFn()
       throw new Error("User not authenticated")
     }
 
-    const authData = getServiceAuthDataFromCookie()
-    const apiKey = authData?.jpdb?.api_key
+    const userPreferences = await getInitialUserPreferencesFromCookieServerFn()
+    const apiKey = userPreferences["service-credentials"]?.jpdb?.api_key
 
     if (!apiKey) {
       throw new Error("JPDB API key not available")

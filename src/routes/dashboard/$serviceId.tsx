@@ -6,10 +6,10 @@ import { getDueFSRSCardsCount } from "@/features/supabase/db/fsrs-operations"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
 import { DashboardDataProvider } from "@/features/dashboard/context/DashboardDataContext"
 import { ServiceContentArea } from "@/features/dashboard/components/content/service/ServiceContentArea"
-import { fetchServiceDataWithAuth } from "@/features/service-config/jpdb/api"
-import { getServicePreferencesFromCookie } from "@/features/service-config/server/service-manager"
+import { fetchServiceDataWithAuth } from "@/features/service-api-functions/jpdb/api"
+import { getInitialUserPreferencesFromCookieServerFn } from "@/features/user-settings/server/server-functions"
 import { isLiveOptionEnabled } from "@/features/dashboard/utils/serviceSourceHelper"
-import type { ServiceType } from "@/features/service-config/types"
+import type { ServiceType } from "@/features/user-settings/schemas/user-preferences"
 import type { UserDeck } from "@/data/types"
 import { getAllDeckSources } from "@/features/dashboard/utils/allDeckSources"
 
@@ -205,7 +205,8 @@ export const Route = createFileRoute("/dashboard/$serviceId")({
   loader: async ({ context, params }) => {
     const { user } = context
     const fullServiceId = params.serviceId
-    const preferences = getServicePreferencesFromCookie()
+    const userPreferences = await getInitialUserPreferencesFromCookieServerFn()
+    const preferences = userPreferences["service-preferences"]
 
     const parseServiceId = (fullId: string) => {
       const parts = fullId.split("-")

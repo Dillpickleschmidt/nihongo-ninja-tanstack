@@ -7,13 +7,19 @@ import {
   TextFieldLabel,
 } from "@/components/ui/text-field"
 import { ServiceCard } from "./ServiceCard"
-import { connectService } from "@/features/service-config/server/server-functions"
-import { useSettings } from "@/context/SettingsContext"
-import type { JpdbServiceCardProps } from "@/features/service-config/types"
+import { validateJpdbApiKey } from "@/features/service-api-functions/jpdb/validation"
+import { useServiceManagement } from "../context/ServiceManagementContext"
+import type { ServicePreference } from "@/features/user-settings/schemas/user-preferences"
+
+type JpdbServiceCardProps = {
+  preference: () => ServicePreference
+  updateServicePreference: (updates: Partial<ServicePreference>) => void
+  onImport: (apiKey: string, file: File) => void
+}
 
 export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
   const { errors, isProcessing, setError, clearError, setIsProcessing } =
-    useSettings()
+    useServiceManagement()
   const [jpdbApiKey, setJpdbApiKey] = createSignal("")
   const [selectedFile, setSelectedFile] = createSignal<File | undefined>()
 
@@ -24,9 +30,7 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
     setIsProcessing(true)
     clearError("jpdb")
 
-    const result = await connectService({
-      data: { service: "jpdb", credentials: { api_key: apiKey } },
-    })
+    const result = await validateJpdbApiKey(apiKey)
 
     if (result.success) {
       props.updateServicePreference({

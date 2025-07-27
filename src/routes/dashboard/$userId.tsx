@@ -7,7 +7,7 @@ import { DashboardLayout } from "@/features/dashboard/components/layout/Dashboar
 import { DashboardDataProvider } from "@/features/dashboard/context/DashboardDataContext"
 import { UserContentArea } from "@/features/dashboard/components/content/user/UserContentArea"
 import type { UserDeck } from "@/data/types"
-import { getServicePreferencesFromCookie } from "@/features/service-config/server/service-manager"
+import { getInitialUserPreferencesFromCookieServerFn } from "@/features/user-settings/server/server-functions"
 import { getAllDeckSources } from "@/features/dashboard/utils/allDeckSources"
 
 export const Route = createFileRoute("/dashboard/$userId")({
@@ -19,7 +19,8 @@ export const Route = createFileRoute("/dashboard/$userId")({
   loader: async ({ context, params }) => {
     const { user } = context
     const userId = params.userId
-    const preferences = getServicePreferencesFromCookie()
+    const userPreferences = await getInitialUserPreferencesFromCookieServerFn()
+    const preferences = userPreferences["service-preferences"]
 
     console.log("User route - user:", user)
     console.log("User route - userId param:", userId)

@@ -30,15 +30,15 @@ export async function getUserPreferencesFromDB(
 export async function updateUserPreferencesInDB(
   userId: string,
   preferences: UserPreferencesCookieData,
-): Promise<boolean> {
+): Promise<void> {
   const supabase = createBackendClient()
 
-  const { error } = await supabase.from("profiles").upsert({
-    user_id: userId,
-    user_preferences: preferences,
-    updated_at: new Date().toISOString(),
-  })
+  const { error } = await supabase
+    .from("profiles")
+    .update({ user_preferences: preferences })
+    .eq("user_id", userId)
 
-  return !error
+  if (error) {
+    throw error
+  }
 }
-

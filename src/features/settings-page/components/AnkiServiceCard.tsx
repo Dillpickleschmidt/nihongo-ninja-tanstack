@@ -7,16 +7,18 @@ import {
   TextFieldLabel,
 } from "@/components/ui/text-field"
 import { ServiceCard } from "./ServiceCard"
-import {
-  connectService,
-  importServiceData,
-} from "@/features/service-config/server/server-functions"
-import { useSettings } from "@/context/SettingsContext"
-import type { ServiceCardProps } from "@/features/service-config/types"
+// TODO: Implement Anki validation functions when needed
+import { useServiceManagement } from "../context/ServiceManagementContext"
+import type { ServicePreference } from "@/features/user-settings/schemas/user-preferences"
+
+type ServiceCardProps = {
+  preference: () => ServicePreference
+  updateServicePreference: (updates: Partial<ServicePreference>) => void
+}
 
 export const AnkiServiceCard = (props: ServiceCardProps) => {
   const { errors, isProcessing, setError, clearError, setIsProcessing } =
-    useSettings()
+    useServiceManagement()
   const [ankiUsername, setAnkiUsername] = createSignal("")
   const [ankiPassword, setAnkiPassword] = createSignal("")
 
@@ -28,23 +30,14 @@ export const AnkiServiceCard = (props: ServiceCardProps) => {
     setIsProcessing(true)
     clearError("anki")
 
-    const result = await connectService({
-      data: { service: "anki", credentials: { username, password } },
+    // TODO: Implement Anki API validation
+    setError(
+      "anki",
+      "Anki integration not yet implemented with new settings system",
+    )
+    props.updateServicePreference({
+      is_api_key_valid: false,
     })
-
-    if (result.success) {
-      setAnkiUsername("")
-      setAnkiPassword("")
-      props.updateServicePreference({
-        mode: "live",
-        is_api_key_valid: true,
-      })
-    } else {
-      setError("anki", result.error || "An unknown error occurred.")
-      props.updateServicePreference({
-        is_api_key_valid: false,
-      })
-    }
     setIsProcessing(false)
   }
 
@@ -52,14 +45,12 @@ export const AnkiServiceCard = (props: ServiceCardProps) => {
     setIsProcessing(true)
     clearError("anki")
 
-    const result = await importServiceData({ data: { service: "anki" } })
-
-    if (result.success) {
-      props.updateServicePreference({ data_imported: true })
-    } else {
-      setError("anki", result.error || "An unknown error occurred.")
-      props.updateServicePreference({ data_imported: false })
-    }
+    // TODO: Implement Anki data import
+    setError(
+      "anki",
+      "Anki data import not yet implemented with new settings system",
+    )
+    props.updateServicePreference({ data_imported: false })
     setIsProcessing(false)
   }
 
