@@ -27,7 +27,7 @@ import type {
   Radical,
   VocabHierarchy,
 } from "@/data/wanikani/types"
-import type { FSRSCardData } from "@/features/supabase/db/utils"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
 import type { DeferredPromise } from "@tanstack/solid-router"
 
 type StartPageProps = {

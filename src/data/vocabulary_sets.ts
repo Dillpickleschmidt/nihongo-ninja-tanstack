@@ -2063,7 +2063,7 @@ export const vocabularySets: VocabularySetCollection = {
     keys: [
       "大人",
       "弁護士",
-      "私",
+      "私1",
       "カレー",
       "紅茶",
       "着物",
@@ -2125,7 +2125,7 @@ export const vocabularySets: VocabularySetCollection = {
     keys: [
       "大人",
       "弁護士",
-      "私",
+      "私1",
       "カレー",
       "紅茶",
       "着物",

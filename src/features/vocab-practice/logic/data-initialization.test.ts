@@ -8,7 +8,7 @@ import type {
   Kanji,
   Radical,
 } from "@/data/wanikani/types"
-import type { FSRSCardData } from "@/features/supabase/db/utils"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
 import { initializePracticeSession } from "./data-initialization"
 
 // --- Mock Data Factory Functions ---
@@ -367,10 +367,7 @@ describe("Data Initialization", () => {
       expect(result.cardMap.get("vocabulary:due2")?.sessionScope).toBe("review")
 
       expect(result.reviewQueue).toEqual(
-        expect.arrayContaining([
-          "vocabulary:due1",
-          "vocabulary:due2",
-        ]),
+        expect.arrayContaining(["vocabulary:due1", "vocabulary:due2"]),
       )
     })
   })
@@ -954,7 +951,7 @@ describe("Data Initialization", () => {
       // Only non-disabled radical should be in moduleQueue
       expect(result.moduleQueue).toContain("radical:water")
       // Since person and mouth are disabled, kanji that depend on them should be unlocked
-      expect(result.moduleQueue).toContain("kanji:食") // no blocking dependencies 
+      expect(result.moduleQueue).toContain("kanji:食") // no blocking dependencies
       expect(result.moduleQueue).toContain("kanji:見") // no blocking dependencies
     })
 

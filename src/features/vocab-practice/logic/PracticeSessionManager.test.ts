@@ -213,7 +213,9 @@ describe("PracticeSessionManager", () => {
               expect(result.moduleQueue).not.toContain(key)
               expect(result.reviewQueue).not.toContain(key)
               expect(result.activeQueue).toContain(key)
-              expect(result.activeQueue[result.activeQueue.length - 1]).toBe(key)
+              expect(result.activeQueue[result.activeQueue.length - 1]).toBe(
+                key,
+              )
             },
           },
           {
@@ -786,7 +788,7 @@ describe("PracticeSessionManager", () => {
     it("should handle database operations correctly", async () => {
       const manager = new PracticeSessionManager(defaultState)
       const { upsertFSRSCardForUser } = await import(
-        "@/features/supabase/db/utils"
+        "@/features/supabase/db/fsrs-operations"
       )
 
       // Test successful database call

@@ -3,7 +3,7 @@ import { getUser } from "@/features/supabase/getUser"
 import {
   batchUpsertFSRSCardsForUser,
   getFSRSCardsByKeys,
-} from "@/features/supabase/db/utils"
+} from "@/features/supabase/db/fsrs-operations"
 import { getWaniKaniService } from "../services/wanikani-service"
 import {
   ImportSessionManager,

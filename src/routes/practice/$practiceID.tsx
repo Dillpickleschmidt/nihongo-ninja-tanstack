@@ -9,7 +9,7 @@ import {
   type FSRSCardData,
   getDueFSRSCards,
   getFSRSCardsByKeys,
-} from "@/features/supabase/db/utils"
+} from "@/features/supabase/db/fsrs-operations"
 import type { PracticeMode } from "@/features/vocab-practice/types"
 import { getWKHierarchy } from "@/data/wanikani/utils"
 import type { FullHierarchyData, VocabHierarchy } from "@/data/wanikani/types"

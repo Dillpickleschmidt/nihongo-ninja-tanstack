@@ -11,7 +11,7 @@ import ReviewPageComponent from "./components/pages/ReviewPageComponent"
 import FinishPageComponent from "./components/pages/FinishPageComponent"
 import IntroductionPageComponent from "./components/pages/IntroductionPageComponent"
 import FSRSFlashcardPageComponent from "./components/pages/FSRSFlashcardPageComponent"
-import type { FSRSCardData } from "../supabase/db/utils"
+import type { FSRSCardData } from "../supabase/db/fsrs-operations"
 import type { FullHierarchyData } from "@/data/wanikani/types"
 import type { DeferredPromise } from "@tanstack/solid-router"
 

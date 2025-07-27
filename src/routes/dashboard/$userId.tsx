@@ -2,7 +2,7 @@
 import { createFileRoute, redirect, defer } from "@tanstack/solid-router"
 import { createEffect } from "solid-js"
 import { setActiveDeck } from "@/data/utils/core"
-import { getDueFSRSCardsCount } from "@/features/supabase/db/utils"
+import { getDueFSRSCardsCount } from "@/features/supabase/db/fsrs-operations"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"
 import { DashboardDataProvider } from "@/features/dashboard/context/DashboardDataContext"
 import { UserContentArea } from "@/features/dashboard/components/content/user/UserContentArea"

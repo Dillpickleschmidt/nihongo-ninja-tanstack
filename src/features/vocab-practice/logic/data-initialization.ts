@@ -1,7 +1,7 @@
 // vocab-practice/logic/data-initialization.ts
 import { createEmptyCard, State } from "ts-fsrs"
 import type { VocabularyCollection, VocabularyItem } from "@/data/types"
-import type { FSRSCardData } from "@/features/supabase/db/utils"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
 import type {
   PracticeCard,
   PracticeSessionState,

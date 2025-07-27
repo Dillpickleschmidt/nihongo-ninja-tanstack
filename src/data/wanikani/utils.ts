@@ -5,7 +5,7 @@ import { existsSync } from "fs"
 import {
   getFSRSCardsByKeys,
   type FSRSCardData,
-} from "@/features/supabase/db/utils"
+} from "@/features/supabase/db/fsrs-operations"
 import type {
   FullHierarchyData,
   HierarchySummary,

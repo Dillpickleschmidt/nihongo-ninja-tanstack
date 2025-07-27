@@ -4,7 +4,7 @@ import VocabPractice from "@/features/vocab-practice/VocabPractice"
 import {
   type FSRSCardData,
   getDueFSRSCards,
-} from "@/features/supabase/db/utils"
+} from "@/features/supabase/db/fsrs-operations"
 import type { FullHierarchyData } from "@/data/wanikani/types"
 
 export const Route = createFileRoute("/practice/review")({

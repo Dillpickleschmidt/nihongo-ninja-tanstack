@@ -10,7 +10,7 @@ import {
   setActiveDeck,
 } from "@/data/utils/core"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
-import { getDueFSRSCardsCount } from "@/features/supabase/db/utils"
+import { getDueFSRSCardsCount } from "@/features/supabase/db/fsrs-operations"
 import { getWKHierarchy, getUserProgressForVocab } from "@/data/wanikani/utils"
 import { getVocabularyForModule } from "@/data/utils/vocab"
 import { DashboardLayout } from "@/features/dashboard/components/layout/DashboardLayout"

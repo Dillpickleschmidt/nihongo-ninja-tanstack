@@ -1,5 +1,13 @@
 // features/dashboard/components/content/WordHierarchy.tsx
-import { createMemo, createResource, For, Match, Show, Switch, createEffect } from "solid-js"
+import {
+  createMemo,
+  createResource,
+  For,
+  Match,
+  Show,
+  Switch,
+  createEffect,
+} from "solid-js"
 import { useDashboardData } from "../../context/DashboardDataContext"
 import { isServer } from "solid-js/web"
 import { useLocation } from "@tanstack/solid-router"
@@ -23,7 +31,7 @@ import type {
 } from "@/data/wanikani/types"
 import type { VocabularyItem } from "@/data/types"
 import type { User } from "@supabase/supabase-js"
-import type { FSRSCardData } from "@/features/supabase/db/utils"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
 import { extractHiragana } from "@/data/utils/vocab"
 
 type WordHierarchyVariant = "mobile" | "desktop"
@@ -127,35 +135,47 @@ export function WordHierarchy(props: WordHierarchyProps) {
   //       setTimeout(() => {
   //         createSlideWithFadeInAnimation(element, ENTER_DIRECTION)
   //       }, ENTER_DELAY)
-  
+
   // Animate individual backdrop elements
   createEffect(() => {
     animationTrigger()
     if (location().pathname.includes("/dashboard") && shouldAnimate()) {
       requestAnimationFrame(() => {
         if (props.variant === "desktop") {
-          const topElement = document.querySelector('[data-word-hierarchy-desktop-top]') as HTMLElement
-          const bottomElement = document.querySelector('[data-word-hierarchy-desktop-bottom]') as HTMLElement
-          
+          const topElement = document.querySelector(
+            "[data-word-hierarchy-desktop-top]",
+          ) as HTMLElement
+          const bottomElement = document.querySelector(
+            "[data-word-hierarchy-desktop-bottom]",
+          ) as HTMLElement
+
           if (topElement) {
             prepareElementForEnter(topElement, "right", true)
             setTimeout(() => {
-              createSlideWithFadeInAnimation(topElement, "right", { withOpacity: true })
+              createSlideWithFadeInAnimation(topElement, "right", {
+                withOpacity: true,
+              })
             }, 100)
           }
-          
+
           if (bottomElement) {
             prepareElementForEnter(bottomElement, "right", true)
             setTimeout(() => {
-              createSlideWithFadeInAnimation(bottomElement, "right", { withOpacity: true })
+              createSlideWithFadeInAnimation(bottomElement, "right", {
+                withOpacity: true,
+              })
             }, 200)
           }
         } else if (props.variant === "mobile") {
-          const mobileElement = document.querySelector('[data-word-hierarchy-mobile]') as HTMLElement
-          
+          const mobileElement = document.querySelector(
+            "[data-word-hierarchy-mobile]",
+          ) as HTMLElement
+
           if (mobileElement) {
             prepareElementForEnter(mobileElement, "right", true)
-            createSlideWithFadeInAnimation(mobileElement, "right", { withOpacity: true })
+            createSlideWithFadeInAnimation(mobileElement, "right", {
+              withOpacity: true,
+            })
           }
         }
       })
@@ -199,7 +219,10 @@ function WordHierarchyDisplay(props: {
   return (
     <Switch>
       <Match when={props.variant === "desktop"}>
-        <div data-word-hierarchy-desktop-top class="relative h-[420px] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm">
+        <div
+          data-word-hierarchy-desktop-top
+          class="relative h-[420px] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm"
+        >
           <div class="flex h-full flex-col gap-4">
             <div class="flex gap-x-4">
               <div class="flex w-[58%] flex-col gap-3">
@@ -224,7 +247,10 @@ function WordHierarchyDisplay(props: {
         </div>
 
         <div class="-mt-2 min-h-0 flex-1">
-          <div data-word-hierarchy-desktop-bottom class="relative h-[calc(100vh-738px)] min-h-64 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm">
+          <div
+            data-word-hierarchy-desktop-bottom
+            class="relative h-[calc(100vh-738px)] min-h-64 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1 pl-4 backdrop-blur-sm"
+          >
             <VocabularyList
               hierarchy={props.data.hierarchy}
               vocabularyItems={props.vocabularyItems}

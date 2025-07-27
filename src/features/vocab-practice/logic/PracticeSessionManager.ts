@@ -2,7 +2,7 @@
 import { Grade } from "ts-fsrs"
 import type { PracticeSessionState, PracticeCard } from "../types"
 import { handleCardAnswer } from "./card-state-handler"
-import { upsertFSRSCardForUser } from "@/features/supabase/db/utils"
+import { upsertFSRSCardForUser } from "@/features/supabase/db/fsrs-operations"
 
 const ACTIVE_QUEUE_MAX_SIZE = 10
 
