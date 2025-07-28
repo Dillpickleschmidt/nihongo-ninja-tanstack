@@ -39,8 +39,7 @@ export const getUserPreferencesFromDBServerFn = createServerFn({
   }
 
   // Fetch DB data for timestamp comparison
-  const dbData = await getUserPreferencesFromDB(user.id)
-  return dbData || UserPreferencesSchema.parse({}) // fallback should ideally never happen but just in case...
+  return await getUserPreferencesFromDB(user.id)
 })
 
 // Server function to revalidate HttpOnly cookie (for when client detects newer DB data)
@@ -98,7 +97,13 @@ export const mutateUserPreferencesServerFn = createServerFn({
     }
 
     // Update database
-    await updateUserPreferencesInDB(user.id, preferencesWithTimestamp)
+    await updateUserPreferencesInDB(user.id, preferencesWithTimestamp).catch(
+      (error) =>
+        console.error(
+          "💾 Database update failed (continuing with cookie):",
+          error,
+        ),
+    )
 
     // Set cookie header in response and return updated preferences
     const cookieHeader = createUserPreferencesCookieHeader(

@@ -35,7 +35,8 @@ export const UserPreferencesSchema = z.object({
   "service-credentials": ServiceCredentialsSchema.default(ServiceCredentialsSchema.parse({})),
   "service-preferences": ServicePreferencesSchema.default(ServicePreferencesSchema.parse({})),
   "current-chapter": z.string().default(""),
-  timestamp: z.number().default(() => Date.now()),
+  // Use timestamp 0 (very old) for default so it never overrides real user preferences
+  timestamp: z.number().default(0),
 })
 
 export type UserPreferencesCookieData = z.infer<typeof UserPreferencesSchema>

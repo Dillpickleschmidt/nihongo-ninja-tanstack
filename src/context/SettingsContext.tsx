@@ -32,16 +32,6 @@ interface SettingsContextType {
     settings: Partial<DeviceUISettingsCookieData>,
   ) => void
 
-  // Service-specific helpers (for migration compatibility)
-  getServiceCredential: (
-    service: "anki" | "wanikani" | "jpdb",
-    key: "api_key",
-  ) => string
-  getServicePreference: (
-    service: "anki" | "wanikani" | "jpdb",
-    key: "mode" | "data_imported" | "is_api_key_valid",
-  ) => any
-
   // Status
   isInitialized: () => boolean
 }
@@ -116,6 +106,7 @@ export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
             preferences: newPrefs,
           },
         })
+
         // Update with server response (includes new timestamp)
         setDisplayedUserPreferences(result.preferences)
       } else {
@@ -143,30 +134,11 @@ export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
     setDeviceUISettingsCookie(newSettings)
   }
 
-  // Service-specific helpers for migration compatibility
-  const getServiceCredential = (
-    service: "anki" | "wanikani" | "jpdb",
-    key: "api_key",
-  ) => {
-    const prefs = displayedUserPreferences()
-    return prefs["service-credentials"][service]?.[key] || ""
-  }
-
-  const getServicePreference = (
-    service: "anki" | "wanikani" | "jpdb",
-    key: "mode" | "data_imported" | "is_api_key_valid",
-  ) => {
-    const prefs = displayedUserPreferences()
-    return prefs["service-preferences"][service]?.[key]
-  }
-
   const value = {
     userPreferences: displayedUserPreferences,
     updateUserPreferences,
     deviceUISettings,
     updateDeviceUISettings,
-    getServiceCredential,
-    getServicePreference,
     isInitialized,
   }
 

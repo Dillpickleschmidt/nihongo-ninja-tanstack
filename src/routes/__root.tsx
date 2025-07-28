@@ -57,7 +57,13 @@ export const Route = createRootRoute({
     // Cross-device user preferences (SWR pattern)
     const initialUserPreferenceData =
       await getInitialUserPreferencesFromCookieServerFn()
-    const userPreferencesDBPromise = defer(getUserPreferencesFromDBServerFn())
+    const userPreferencesDBPromise = defer(
+      getUserPreferencesFromDBServerFn().catch((error) => {
+        console.log(error.message)
+        // Return a promise that never resolves - this prevents good cookie data from being overwritten with a default value
+        return new Promise(() => {})
+      }),
+    )
 
     // Device UI settings (client-accessible cookie)
     const deviceUISettings = getDeviceUISettingsCookie()

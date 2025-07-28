@@ -6,7 +6,7 @@ import {
 
 export async function getUserPreferencesFromDB(
   userId: string,
-): Promise<UserPreferencesCookieData | null> {
+): Promise<UserPreferencesCookieData> {
   const supabase = createBackendClient()
 
   const { data, error } = await supabase
@@ -15,30 +15,46 @@ export async function getUserPreferencesFromDB(
     .eq("user_id", userId)
     .single()
 
-  if (error || !data) {
-    return null
+  if (error) {
+    throw new Error(`Database query failed: ${error.message}`)
   }
 
   try {
     const result = UserPreferencesSchema.safeParse(data.user_preferences)
-    return result.success ? result.data : null
-  } catch {
-    return null
+    if (!result.success) {
+      throw new Error(`Schema validation failed: ${result.error.message}`)
+    }
+    return result.data
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error
+    }
+    throw new Error(`Failed to parse user preferences: ${error}`)
   }
 }
 
 export async function updateUserPreferencesInDB(
   userId: string,
   preferences: UserPreferencesCookieData,
-): Promise<void> {
+): Promise<any> {
   const supabase = createBackendClient()
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("profiles")
     .update({ user_preferences: preferences })
     .eq("user_id", userId)
+    .select()
 
   if (error) {
     throw error
   }
+
+  // Check if the update actually affected any rows
+  if (!data || data.length === 0) {
+    throw new Error(
+      `Failed to update user preferences: No rows affected for user_id ${userId}. This could be due to RLS policies or the user not existing in the profiles table.`,
+    )
+  }
+
+  return data
 }
