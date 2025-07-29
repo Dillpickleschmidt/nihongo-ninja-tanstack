@@ -66,3 +66,54 @@ export function createSetCookieHeader(
 
   return cookieString
 }
+
+/**
+ * Unified cookie setting function that works on both server and client
+ */
+export function setCookie(
+  name: string,
+  value: string,
+  options?: {
+    httpOnly?: boolean
+    maxAge?: number
+    secure?: boolean
+    sameSite?: "strict" | "lax" | "none"
+    response?: Response
+  },
+): void {
+  const encodedValue = encodeURIComponent(value)
+
+  if (isServer) {
+    serverOnly(() => {
+      const opts = {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax" as const,
+        maxAge: 60 * 60 * 24 * 365, // 1 year default
+        ...options,
+      }
+      
+      const cookieHeader = createSetCookieHeader(name, encodedValue, opts)
+      
+      if (options?.response) {
+        options.response.headers.append("Set-Cookie", cookieHeader)
+      }
+    })()
+  } else {
+    // Client-side cookie setting
+    const opts = {
+      secure: true,
+      sameSite: "lax" as const,
+      maxAge: 60 * 60 * 24 * 365, // 1 year default
+      ...options,
+    }
+
+    let cookieString = `${name}=${encodedValue}; Path=/`
+    
+    if (opts.secure) cookieString += `; Secure`
+    if (opts.sameSite) cookieString += `; SameSite=${opts.sameSite}`
+    if (opts.maxAge !== undefined) cookieString += `; Max-Age=${opts.maxAge}`
+
+    document.cookie = cookieString
+  }
+}

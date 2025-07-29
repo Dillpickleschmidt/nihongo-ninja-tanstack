@@ -7,8 +7,8 @@ import {
   getLessons,
   getExternalResources,
   getDeckBySlug,
-  setActiveDeck,
 } from "@/data/utils/core"
+import { mutateUserPreferencesServerFn } from "@/features/user-settings/server/server-functions"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { getDueFSRSCardsCount } from "@/features/supabase/db/fsrs-operations"
 import { getWKHierarchy, getUserProgressForVocab } from "@/data/wanikani/utils"
@@ -52,6 +52,14 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
         params: { textbookId: "genki_1", chapterSlug: "chapter-0" },
       })
     }
+
+    // Set active textbook and deck in user preferences (updates both DB and cookie)
+    const updatedPreferences = {
+      ...userPreferences,
+      "active-textbook": textbookId,
+      "active-deck": chapterSlug,
+    }
+    await mutateUserPreferencesServerFn({ preferences: updatedPreferences })
     const deck: Deck = {
       id: fullDeck.id,
       slug: fullDeck.slug,
@@ -166,9 +174,8 @@ export const Route = createFileRoute("/dashboard/$textbookId/$chapterSlug")({
 function RouteComponent() {
   const loaderData = Route.useLoaderData()
 
-  createEffect(() => {
-    setActiveDeck("textbook", loaderData().textbookId, loaderData().deck.slug)
-  })
+  // Note: Active textbook/deck is now set on the server in the loader
+  // No need for client-side createEffect since it's handled by user settings system
 
   const dashboardData = {
     wordHierarchyData: loaderData().wordHierarchyData,

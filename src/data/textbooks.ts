@@ -12,7 +12,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch0",
         slug: "chapter-0",
-        deckType: "textbook_chapter",
         chapter_number: 0,
         title: "Chapter 0",
         description:
@@ -82,7 +81,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch1",
         slug: "chapter-1",
-        deckType: "textbook_chapter",
         chapter_number: 1,
         title: "Chapter 1",
         description:
@@ -160,7 +158,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch2",
         slug: "chapter-2",
-        deckType: "textbook_chapter",
         chapter_number: 2,
         title: "Chapter 2",
         description:
@@ -220,7 +217,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch3",
         slug: "chapter-3",
-        deckType: "textbook_chapter",
         chapter_number: 3,
         title: "Chapter 3",
         description:
@@ -331,7 +327,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch4",
         slug: "chapter-4",
-        deckType: "textbook_chapter",
         chapter_number: 4,
         title: "Chapter 4",
         description:
@@ -403,7 +398,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch5",
         slug: "chapter-5",
-        deckType: "textbook_chapter",
         chapter_number: 5,
         title: "Chapter 5",
         description:
@@ -461,7 +455,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch6",
         slug: "chapter-6",
-        deckType: "textbook_chapter",
         chapter_number: 6,
         title: "Chapter 6",
         description:
@@ -507,7 +500,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch7",
         slug: "chapter-7",
-        deckType: "textbook_chapter",
         chapter_number: 7,
         title: "Chapter 7",
         description:
@@ -550,7 +542,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch8",
         slug: "chapter-8",
-        deckType: "textbook_chapter",
         chapter_number: 8,
         title: "Chapter 8",
         description:
@@ -590,7 +581,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch9",
         slug: "chapter-9",
-        deckType: "textbook_chapter",
         chapter_number: 9,
         title: "Chapter 9",
         description:
@@ -630,7 +620,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch10",
         slug: "chapter-10",
-        deckType: "textbook_chapter",
         chapter_number: 10,
         title: "Chapter 10",
         description:
@@ -674,7 +663,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch11",
         slug: "chapter-11",
-        deckType: "textbook_chapter",
         chapter_number: 11,
         title: "Chapter 11",
         description:
@@ -728,7 +716,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch12",
         slug: "chapter-12",
-        deckType: "textbook_chapter",
         chapter_number: 12,
         title: "Chapter 12",
         description:
@@ -783,7 +770,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch13",
         slug: "chapter-13",
-        deckType: "textbook_chapter",
         chapter_number: 13,
         title: "Chapter 13",
         description:
@@ -822,7 +808,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch14",
         slug: "chapter-14",
-        deckType: "textbook_chapter",
         chapter_number: 14,
         title: "Chapter 14",
         description:
@@ -867,7 +852,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch15",
         slug: "chapter-15",
-        deckType: "textbook_chapter",
         chapter_number: 15,
         title: "Chapter 15",
         description:
@@ -913,7 +897,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch16",
         slug: "chapter-16",
-        deckType: "textbook_chapter",
         chapter_number: 16,
         title: "Chapter 16",
         description:
@@ -961,7 +944,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch17",
         slug: "chapter-17",
-        deckType: "textbook_chapter",
         chapter_number: 17,
         title: "Chapter 17",
         description:
@@ -1006,7 +988,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch18",
         slug: "chapter-18",
-        deckType: "textbook_chapter",
         chapter_number: 18,
         title: "Chapter 18",
         description:
@@ -1054,7 +1035,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch19",
         slug: "chapter-19",
-        deckType: "textbook_chapter",
         chapter_number: 19,
         title: "Chapter 19",
         description:
@@ -1108,7 +1088,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch20",
         slug: "chapter-20",
-        deckType: "textbook_chapter",
         chapter_number: 20,
         title: "Chapter 20",
         description:

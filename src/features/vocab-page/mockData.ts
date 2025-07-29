@@ -4,7 +4,7 @@ export const mockTextbooks: Textbook[] = [
   {
     id: "genki-1",
     name: "Genki I: An Integrated Course in Elementary Japanese",
-    shortName: "Genki I",
+    short_name: "Genki I",
     chapters: [
       {
         id: "genki-1-ch1",
@@ -97,7 +97,7 @@ export const mockTextbooks: Textbook[] = [
   {
     id: "genki-2",
     name: "Genki II: An Integrated Course in Elementary Japanese",
-    shortName: "Genki II",
+    short_name: "Genki II",
     chapters: [
       {
         id: "genki-2-ch13",

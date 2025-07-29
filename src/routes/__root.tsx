@@ -22,8 +22,8 @@ import { SettingsProvider } from "@/context/SettingsContext"
 import {
   getInitialUserPreferencesFromCookieServerFn,
   getUserPreferencesFromDBServerFn,
+  getDeviceUISettingsCookie,
 } from "@/features/user-settings/server/server-functions"
-import { getDeviceUISettingsCookie } from "@/features/user-settings/utils/settings-cookies"
 
 export const Route = createRootRoute({
   head: () => ({
@@ -49,21 +49,27 @@ export const Route = createRootRoute({
     const result = await getUser()
     console.timeEnd("getUser (beforeLoad)")
     // --- END TIMER ---
-    return { user: result?.user || null }
-  },
-  loader: async ({ context }) => {
-    const { user } = context
 
     // Cross-device user preferences (SWR pattern)
     const initialUserPreferenceData =
       await getInitialUserPreferencesFromCookieServerFn()
+
+    return {
+      user: result?.user || null,
+      initialUserPreferenceData,
+    }
+  },
+  loader: async ({ context }) => {
+    const { user, initialUserPreferenceData } = context
+
+    // Deferred DB data for SWR pattern
     const userPreferencesDBPromise = defer(
       getUserPreferencesFromDBServerFn().catch((error) => {
         console.log(error.message)
         // Return a promise that never resolves - this prevents good cookie data from being overwritten with a default value
         return new Promise(() => {})
       }),
-    )
+    ) as Promise<typeof initialUserPreferenceData> // it will never resolve on error thus we can safely type it
 
     // Device UI settings (client-accessible cookie)
     const deviceUISettings = getDeviceUISettingsCookie()

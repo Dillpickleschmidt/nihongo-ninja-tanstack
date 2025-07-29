@@ -27,7 +27,7 @@ export function TextbookSection(props: TextbookSectionProps) {
       >
         <CollapsibleTrigger class="h-auto w-full justify-start p-2 text-sm font-medium">
           <BookOpen class="h-4 w-4" />
-          <span class="truncate">{props.textbook.shortName}</span>
+          <span class="truncate">{props.textbook.short_name}</span>
         </CollapsibleTrigger>
 
         <CollapsibleContent class="mt-2 ml-6 space-y-2">

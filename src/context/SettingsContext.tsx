@@ -10,7 +10,7 @@ import {
 } from "solid-js"
 import type { UserPreferencesCookieData } from "@/features/user-settings/schemas/user-preferences"
 import type { DeviceUISettingsCookieData } from "@/features/user-settings/schemas/device-ui-settings"
-import { setDeviceUISettingsCookie } from "@/features/user-settings/utils/settings-cookies"
+import { setDeviceUISettingsCookie } from "@/features/user-settings/server/server-functions"
 import {
   revalidateUserPreferencesCookieServerFn,
   mutateUserPreferencesServerFn,

@@ -11,15 +11,12 @@
 import { createServerRootRoute } from '@tanstack/solid-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as VocabRouteImport } from './routes/vocab'
-import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as LearnRouteImport } from './routes/learn'
+import { Route as LessonsRouteImport } from './routes/lessons'
 import { Route as KanjiTestRouteImport } from './routes/kanji-test'
-import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as HomeRouteImport } from './routes/_home'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as LearnIndexRouteImport } from './routes/learn/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as PracticeReviewRouteImport } from './routes/practice/review'
 import { Route as PracticeHiraganaQuizRouteImport } from './routes/practice/hiragana-quiz'
@@ -27,38 +24,32 @@ import { Route as PracticeDakutenHandakutenQuizRouteImport } from './routes/prac
 import { Route as PracticeContractedSoundsQuizRouteImport } from './routes/practice/contracted-sounds-quiz'
 import { Route as PracticeAllHiraganaQuizRouteImport } from './routes/practice/all-hiragana-quiz'
 import { Route as PracticePracticeIDRouteImport } from './routes/practice/$practiceID'
-import { Route as LearnLessonsRouteImport } from './routes/learn/_lessons'
-import { Route as DashboardUserIdRouteImport } from './routes/dashboard/$userId'
-import { Route as DashboardServiceIdRouteImport } from './routes/dashboard/$serviceId'
-import { Route as LearnLessonsWritingSystemsRouteImport } from './routes/learn/_lessons/writing-systems'
-import { Route as LearnLessonsWelcomeOverviewRouteImport } from './routes/learn/_lessons/welcome-overview'
-import { Route as LearnLessonsJapanesePronunciationRouteImport } from './routes/learn/_lessons/japanese-pronunciation'
-import { Route as LearnLessonsHiraganaRouteImport } from './routes/learn/_lessons/hiragana'
+import { Route as LessonsWritingSystemsRouteImport } from './routes/lessons/writing-systems'
+import { Route as LessonsWelcomeOverviewRouteImport } from './routes/lessons/welcome-overview'
+import { Route as LessonsJapanesePronunciationRouteImport } from './routes/lessons/japanese-pronunciation'
+import { Route as LessonsHiraganaRouteImport } from './routes/lessons/hiragana'
+import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
+import { Route as HomeSentencePracticeRouteImport } from './routes/_home/sentence-practice'
+import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
+import { Route as HomeDashboardNewRouteImport } from './routes/_home/dashboard-new'
+import { Route as HomeConjugationRouteImport } from './routes/_home/conjugation'
+import { Route as HomeLearnIndexRouteImport } from './routes/_home/learn/index'
 import { Route as DashboardTextbookIdChapterSlugRouteImport } from './routes/dashboard/$textbookId.$chapterSlug'
+import { Route as HomeLearnTextbookIdChapterSlugRouteImport } from './routes/_home/learn/$textbookId.$chapterSlug'
 import { ServerRoute as ApiHelloServerRouteImport } from './routes/api/hello'
 import { ServerRoute as ApiAuthLogoutServerRouteImport } from './routes/api/auth/logout'
 import { ServerRoute as ApiAuthLoginServerRouteImport } from './routes/api/auth/login'
 
 const rootServerRouteImport = createServerRootRoute()
 
-const VocabRoute = VocabRouteImport.update({
-  id: '/vocab',
-  path: '/vocab',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ToolsRoute = ToolsRouteImport.update({
-  id: '/tools',
-  path: '/tools',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LearnRoute = LearnRouteImport.update({
-  id: '/learn',
-  path: '/learn',
+const LessonsRoute = LessonsRouteImport.update({
+  id: '/lessons',
+  path: '/lessons',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KanjiTestRoute = KanjiTestRouteImport.update({
@@ -66,14 +57,13 @@ const KanjiTestRoute = KanjiTestRouteImport.update({
   path: '/kanji-test',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/_home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -81,15 +71,10 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LearnIndexRoute = LearnIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => LearnRoute,
-} as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardRoute,
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const PracticeReviewRoute = PracticeReviewRouteImport.update({
   id: '/practice/review',
@@ -123,48 +108,68 @@ const PracticePracticeIDRoute = PracticePracticeIDRouteImport.update({
   path: '/practice/$practiceID',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LearnLessonsRoute = LearnLessonsRouteImport.update({
-  id: '/_lessons',
-  getParentRoute: () => LearnRoute,
+const LessonsWritingSystemsRoute = LessonsWritingSystemsRouteImport.update({
+  id: '/writing-systems',
+  path: '/writing-systems',
+  getParentRoute: () => LessonsRoute,
 } as any)
-const DashboardUserIdRoute = DashboardUserIdRouteImport.update({
-  id: '/$userId',
-  path: '/$userId',
-  getParentRoute: () => DashboardRoute,
+const LessonsWelcomeOverviewRoute = LessonsWelcomeOverviewRouteImport.update({
+  id: '/welcome-overview',
+  path: '/welcome-overview',
+  getParentRoute: () => LessonsRoute,
 } as any)
-const DashboardServiceIdRoute = DashboardServiceIdRouteImport.update({
-  id: '/$serviceId',
-  path: '/$serviceId',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const LearnLessonsWritingSystemsRoute =
-  LearnLessonsWritingSystemsRouteImport.update({
-    id: '/writing-systems',
-    path: '/writing-systems',
-    getParentRoute: () => LearnLessonsRoute,
-  } as any)
-const LearnLessonsWelcomeOverviewRoute =
-  LearnLessonsWelcomeOverviewRouteImport.update({
-    id: '/welcome-overview',
-    path: '/welcome-overview',
-    getParentRoute: () => LearnLessonsRoute,
-  } as any)
-const LearnLessonsJapanesePronunciationRoute =
-  LearnLessonsJapanesePronunciationRouteImport.update({
+const LessonsJapanesePronunciationRoute =
+  LessonsJapanesePronunciationRouteImport.update({
     id: '/japanese-pronunciation',
     path: '/japanese-pronunciation',
-    getParentRoute: () => LearnLessonsRoute,
+    getParentRoute: () => LessonsRoute,
   } as any)
-const LearnLessonsHiraganaRoute = LearnLessonsHiraganaRouteImport.update({
+const LessonsHiraganaRoute = LessonsHiraganaRouteImport.update({
   id: '/hiragana',
   path: '/hiragana',
-  getParentRoute: () => LearnLessonsRoute,
+  getParentRoute: () => LessonsRoute,
+} as any)
+const HomeVocabRoute = HomeVocabRouteImport.update({
+  id: '/vocab',
+  path: '/vocab',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeSentencePracticeRoute = HomeSentencePracticeRouteImport.update({
+  id: '/sentence-practice',
+  path: '/sentence-practice',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeGrammarNotesRoute = HomeGrammarNotesRouteImport.update({
+  id: '/grammar-notes',
+  path: '/grammar-notes',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeDashboardNewRoute = HomeDashboardNewRouteImport.update({
+  id: '/dashboard-new',
+  path: '/dashboard-new',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeConjugationRoute = HomeConjugationRouteImport.update({
+  id: '/conjugation',
+  path: '/conjugation',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeLearnIndexRoute = HomeLearnIndexRouteImport.update({
+  id: '/learn/',
+  path: '/learn/',
+  getParentRoute: () => HomeRoute,
 } as any)
 const DashboardTextbookIdChapterSlugRoute =
   DashboardTextbookIdChapterSlugRouteImport.update({
-    id: '/$textbookId/$chapterSlug',
-    path: '/$textbookId/$chapterSlug',
-    getParentRoute: () => DashboardRoute,
+    id: '/dashboard/$textbookId/$chapterSlug',
+    path: '/dashboard/$textbookId/$chapterSlug',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const HomeLearnTextbookIdChapterSlugRoute =
+  HomeLearnTextbookIdChapterSlugRouteImport.update({
+    id: '/learn/$textbookId/$chapterSlug',
+    path: '/learn/$textbookId/$chapterSlug',
+    getParentRoute: () => HomeRoute,
   } as any)
 const ApiHelloServerRoute = ApiHelloServerRouteImport.update({
   id: '/api/hello',
@@ -185,38 +190,18 @@ const ApiAuthLoginServerRoute = ApiAuthLoginServerRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRouteWithChildren
   '/kanji-test': typeof KanjiTestRoute
-  '/learn': typeof LearnLessonsRouteWithChildren
+  '/lessons': typeof LessonsRouteWithChildren
   '/settings': typeof SettingsRoute
-  '/tools': typeof ToolsRoute
-  '/vocab': typeof VocabRoute
-  '/dashboard/$serviceId': typeof DashboardServiceIdRoute
-  '/dashboard/$userId': typeof DashboardUserIdRoute
-  '/practice/$practiceID': typeof PracticePracticeIDRoute
-  '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
-  '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
-  '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
-  '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
-  '/practice/review': typeof PracticeReviewRoute
-  '/dashboard/': typeof DashboardIndexRoute
-  '/learn/': typeof LearnIndexRoute
-  '/dashboard/$textbookId/$chapterSlug': typeof DashboardTextbookIdChapterSlugRoute
-  '/learn/hiragana': typeof LearnLessonsHiraganaRoute
-  '/learn/japanese-pronunciation': typeof LearnLessonsJapanesePronunciationRoute
-  '/learn/welcome-overview': typeof LearnLessonsWelcomeOverviewRoute
-  '/learn/writing-systems': typeof LearnLessonsWritingSystemsRoute
-}
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
-  '/kanji-test': typeof KanjiTestRoute
-  '/settings': typeof SettingsRoute
-  '/tools': typeof ToolsRoute
-  '/vocab': typeof VocabRoute
-  '/dashboard/$serviceId': typeof DashboardServiceIdRoute
-  '/dashboard/$userId': typeof DashboardUserIdRoute
-  '/learn': typeof LearnIndexRoute
+  '/conjugation': typeof HomeConjugationRoute
+  '/dashboard-new': typeof HomeDashboardNewRoute
+  '/grammar-notes': typeof HomeGrammarNotesRoute
+  '/sentence-practice': typeof HomeSentencePracticeRoute
+  '/vocab': typeof HomeVocabRoute
+  '/lessons/hiragana': typeof LessonsHiraganaRoute
+  '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
+  '/lessons/welcome-overview': typeof LessonsWelcomeOverviewRoute
+  '/lessons/writing-systems': typeof LessonsWritingSystemsRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
   '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
@@ -225,24 +210,52 @@ export interface FileRoutesByTo {
   '/practice/review': typeof PracticeReviewRoute
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/$textbookId/$chapterSlug': typeof DashboardTextbookIdChapterSlugRoute
-  '/learn/hiragana': typeof LearnLessonsHiraganaRoute
-  '/learn/japanese-pronunciation': typeof LearnLessonsJapanesePronunciationRoute
-  '/learn/welcome-overview': typeof LearnLessonsWelcomeOverviewRoute
-  '/learn/writing-systems': typeof LearnLessonsWritingSystemsRoute
+  '/learn': typeof HomeLearnIndexRoute
+  '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/kanji-test': typeof KanjiTestRoute
+  '/lessons': typeof LessonsRouteWithChildren
+  '/settings': typeof SettingsRoute
+  '/conjugation': typeof HomeConjugationRoute
+  '/dashboard-new': typeof HomeDashboardNewRoute
+  '/grammar-notes': typeof HomeGrammarNotesRoute
+  '/sentence-practice': typeof HomeSentencePracticeRoute
+  '/vocab': typeof HomeVocabRoute
+  '/lessons/hiragana': typeof LessonsHiraganaRoute
+  '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
+  '/lessons/welcome-overview': typeof LessonsWelcomeOverviewRoute
+  '/lessons/writing-systems': typeof LessonsWritingSystemsRoute
+  '/practice/$practiceID': typeof PracticePracticeIDRoute
+  '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
+  '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
+  '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
+  '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
+  '/practice/review': typeof PracticeReviewRoute
+  '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/$textbookId/$chapterSlug': typeof DashboardTextbookIdChapterSlugRoute
+  '/learn': typeof HomeLearnIndexRoute
+  '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_home': typeof HomeRouteWithChildren
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRouteWithChildren
   '/kanji-test': typeof KanjiTestRoute
-  '/learn': typeof LearnRouteWithChildren
+  '/lessons': typeof LessonsRouteWithChildren
   '/settings': typeof SettingsRoute
-  '/tools': typeof ToolsRoute
-  '/vocab': typeof VocabRoute
-  '/dashboard/$serviceId': typeof DashboardServiceIdRoute
-  '/dashboard/$userId': typeof DashboardUserIdRoute
-  '/learn/_lessons': typeof LearnLessonsRouteWithChildren
+  '/_home/conjugation': typeof HomeConjugationRoute
+  '/_home/dashboard-new': typeof HomeDashboardNewRoute
+  '/_home/grammar-notes': typeof HomeGrammarNotesRoute
+  '/_home/sentence-practice': typeof HomeSentencePracticeRoute
+  '/_home/vocab': typeof HomeVocabRoute
+  '/lessons/hiragana': typeof LessonsHiraganaRoute
+  '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
+  '/lessons/welcome-overview': typeof LessonsWelcomeOverviewRoute
+  '/lessons/writing-systems': typeof LessonsWritingSystemsRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
   '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
@@ -250,50 +263,53 @@ export interface FileRoutesById {
   '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
   '/dashboard/': typeof DashboardIndexRoute
-  '/learn/': typeof LearnIndexRoute
   '/dashboard/$textbookId/$chapterSlug': typeof DashboardTextbookIdChapterSlugRoute
-  '/learn/_lessons/hiragana': typeof LearnLessonsHiraganaRoute
-  '/learn/_lessons/japanese-pronunciation': typeof LearnLessonsJapanesePronunciationRoute
-  '/learn/_lessons/welcome-overview': typeof LearnLessonsWelcomeOverviewRoute
-  '/learn/_lessons/writing-systems': typeof LearnLessonsWritingSystemsRoute
+  '/_home/learn/': typeof HomeLearnIndexRoute
+  '/_home/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
-    | '/dashboard'
     | '/kanji-test'
-    | '/learn'
+    | '/lessons'
     | '/settings'
-    | '/tools'
+    | '/conjugation'
+    | '/dashboard-new'
+    | '/grammar-notes'
+    | '/sentence-practice'
     | '/vocab'
-    | '/dashboard/$serviceId'
-    | '/dashboard/$userId'
+    | '/lessons/hiragana'
+    | '/lessons/japanese-pronunciation'
+    | '/lessons/welcome-overview'
+    | '/lessons/writing-systems'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
     | '/practice/contracted-sounds-quiz'
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/practice/review'
-    | '/dashboard/'
-    | '/learn/'
+    | '/dashboard'
     | '/dashboard/$textbookId/$chapterSlug'
-    | '/learn/hiragana'
-    | '/learn/japanese-pronunciation'
-    | '/learn/welcome-overview'
-    | '/learn/writing-systems'
+    | '/learn'
+    | '/learn/$textbookId/$chapterSlug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/kanji-test'
+    | '/lessons'
     | '/settings'
-    | '/tools'
+    | '/conjugation'
+    | '/dashboard-new'
+    | '/grammar-notes'
+    | '/sentence-practice'
     | '/vocab'
-    | '/dashboard/$serviceId'
-    | '/dashboard/$userId'
-    | '/learn'
+    | '/lessons/hiragana'
+    | '/lessons/japanese-pronunciation'
+    | '/lessons/welcome-overview'
+    | '/lessons/writing-systems'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
     | '/practice/contracted-sounds-quiz'
@@ -302,23 +318,25 @@ export interface FileRouteTypes {
     | '/practice/review'
     | '/dashboard'
     | '/dashboard/$textbookId/$chapterSlug'
-    | '/learn/hiragana'
-    | '/learn/japanese-pronunciation'
-    | '/learn/welcome-overview'
-    | '/learn/writing-systems'
+    | '/learn'
+    | '/learn/$textbookId/$chapterSlug'
   id:
     | '__root__'
     | '/'
+    | '/_home'
     | '/auth'
-    | '/dashboard'
     | '/kanji-test'
-    | '/learn'
+    | '/lessons'
     | '/settings'
-    | '/tools'
-    | '/vocab'
-    | '/dashboard/$serviceId'
-    | '/dashboard/$userId'
-    | '/learn/_lessons'
+    | '/_home/conjugation'
+    | '/_home/dashboard-new'
+    | '/_home/grammar-notes'
+    | '/_home/sentence-practice'
+    | '/_home/vocab'
+    | '/lessons/hiragana'
+    | '/lessons/japanese-pronunciation'
+    | '/lessons/welcome-overview'
+    | '/lessons/writing-systems'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
     | '/practice/contracted-sounds-quiz'
@@ -326,29 +344,26 @@ export interface FileRouteTypes {
     | '/practice/hiragana-quiz'
     | '/practice/review'
     | '/dashboard/'
-    | '/learn/'
     | '/dashboard/$textbookId/$chapterSlug'
-    | '/learn/_lessons/hiragana'
-    | '/learn/_lessons/japanese-pronunciation'
-    | '/learn/_lessons/welcome-overview'
-    | '/learn/_lessons/writing-systems'
+    | '/_home/learn/'
+    | '/_home/learn/$textbookId/$chapterSlug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  HomeRoute: typeof HomeRouteWithChildren
   AuthRoute: typeof AuthRoute
-  DashboardRoute: typeof DashboardRouteWithChildren
   KanjiTestRoute: typeof KanjiTestRoute
-  LearnRoute: typeof LearnRouteWithChildren
+  LessonsRoute: typeof LessonsRouteWithChildren
   SettingsRoute: typeof SettingsRoute
-  ToolsRoute: typeof ToolsRoute
-  VocabRoute: typeof VocabRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
   PracticeAllHiraganaQuizRoute: typeof PracticeAllHiraganaQuizRoute
   PracticeContractedSoundsQuizRoute: typeof PracticeContractedSoundsQuizRoute
   PracticeDakutenHandakutenQuizRoute: typeof PracticeDakutenHandakutenQuizRoute
   PracticeHiraganaQuizRoute: typeof PracticeHiraganaQuizRoute
   PracticeReviewRoute: typeof PracticeReviewRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardTextbookIdChapterSlugRoute: typeof DashboardTextbookIdChapterSlugRoute
 }
 export interface FileServerRoutesByFullPath {
   '/api/hello': typeof ApiHelloServerRoute
@@ -382,20 +397,6 @@ export interface RootServerRouteChildren {
 
 declare module '@tanstack/solid-router' {
   interface FileRoutesByPath {
-    '/vocab': {
-      id: '/vocab'
-      path: '/vocab'
-      fullPath: '/vocab'
-      preLoaderRoute: typeof VocabRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tools': {
-      id: '/tools'
-      path: '/tools'
-      fullPath: '/tools'
-      preLoaderRoute: typeof ToolsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -403,11 +404,11 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/learn': {
-      id: '/learn'
-      path: '/learn'
-      fullPath: '/learn'
-      preLoaderRoute: typeof LearnRouteImport
+    '/lessons': {
+      id: '/lessons'
+      path: '/lessons'
+      fullPath: '/lessons'
+      preLoaderRoute: typeof LessonsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/kanji-test': {
@@ -417,18 +418,18 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof KanjiTestRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_home': {
+      id: '/_home'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -438,19 +439,12 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/learn/': {
-      id: '/learn/'
-      path: '/'
-      fullPath: '/learn/'
-      preLoaderRoute: typeof LearnIndexRouteImport
-      parentRoute: typeof LearnRoute
-    }
     '/dashboard/': {
       id: '/dashboard/'
-      path: '/'
-      fullPath: '/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof rootRouteImport
     }
     '/practice/review': {
       id: '/practice/review'
@@ -494,61 +488,89 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof PracticePracticeIDRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/learn/_lessons': {
-      id: '/learn/_lessons'
-      path: ''
-      fullPath: '/learn'
-      preLoaderRoute: typeof LearnLessonsRouteImport
-      parentRoute: typeof LearnRoute
-    }
-    '/dashboard/$userId': {
-      id: '/dashboard/$userId'
-      path: '/$userId'
-      fullPath: '/dashboard/$userId'
-      preLoaderRoute: typeof DashboardUserIdRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/$serviceId': {
-      id: '/dashboard/$serviceId'
-      path: '/$serviceId'
-      fullPath: '/dashboard/$serviceId'
-      preLoaderRoute: typeof DashboardServiceIdRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/learn/_lessons/writing-systems': {
-      id: '/learn/_lessons/writing-systems'
+    '/lessons/writing-systems': {
+      id: '/lessons/writing-systems'
       path: '/writing-systems'
-      fullPath: '/learn/writing-systems'
-      preLoaderRoute: typeof LearnLessonsWritingSystemsRouteImport
-      parentRoute: typeof LearnLessonsRoute
+      fullPath: '/lessons/writing-systems'
+      preLoaderRoute: typeof LessonsWritingSystemsRouteImport
+      parentRoute: typeof LessonsRoute
     }
-    '/learn/_lessons/welcome-overview': {
-      id: '/learn/_lessons/welcome-overview'
+    '/lessons/welcome-overview': {
+      id: '/lessons/welcome-overview'
       path: '/welcome-overview'
-      fullPath: '/learn/welcome-overview'
-      preLoaderRoute: typeof LearnLessonsWelcomeOverviewRouteImport
-      parentRoute: typeof LearnLessonsRoute
+      fullPath: '/lessons/welcome-overview'
+      preLoaderRoute: typeof LessonsWelcomeOverviewRouteImport
+      parentRoute: typeof LessonsRoute
     }
-    '/learn/_lessons/japanese-pronunciation': {
-      id: '/learn/_lessons/japanese-pronunciation'
+    '/lessons/japanese-pronunciation': {
+      id: '/lessons/japanese-pronunciation'
       path: '/japanese-pronunciation'
-      fullPath: '/learn/japanese-pronunciation'
-      preLoaderRoute: typeof LearnLessonsJapanesePronunciationRouteImport
-      parentRoute: typeof LearnLessonsRoute
+      fullPath: '/lessons/japanese-pronunciation'
+      preLoaderRoute: typeof LessonsJapanesePronunciationRouteImport
+      parentRoute: typeof LessonsRoute
     }
-    '/learn/_lessons/hiragana': {
-      id: '/learn/_lessons/hiragana'
+    '/lessons/hiragana': {
+      id: '/lessons/hiragana'
       path: '/hiragana'
-      fullPath: '/learn/hiragana'
-      preLoaderRoute: typeof LearnLessonsHiraganaRouteImport
-      parentRoute: typeof LearnLessonsRoute
+      fullPath: '/lessons/hiragana'
+      preLoaderRoute: typeof LessonsHiraganaRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/_home/vocab': {
+      id: '/_home/vocab'
+      path: '/vocab'
+      fullPath: '/vocab'
+      preLoaderRoute: typeof HomeVocabRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/sentence-practice': {
+      id: '/_home/sentence-practice'
+      path: '/sentence-practice'
+      fullPath: '/sentence-practice'
+      preLoaderRoute: typeof HomeSentencePracticeRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/grammar-notes': {
+      id: '/_home/grammar-notes'
+      path: '/grammar-notes'
+      fullPath: '/grammar-notes'
+      preLoaderRoute: typeof HomeGrammarNotesRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/dashboard-new': {
+      id: '/_home/dashboard-new'
+      path: '/dashboard-new'
+      fullPath: '/dashboard-new'
+      preLoaderRoute: typeof HomeDashboardNewRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/conjugation': {
+      id: '/_home/conjugation'
+      path: '/conjugation'
+      fullPath: '/conjugation'
+      preLoaderRoute: typeof HomeConjugationRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/learn/': {
+      id: '/_home/learn/'
+      path: '/learn'
+      fullPath: '/learn'
+      preLoaderRoute: typeof HomeLearnIndexRouteImport
+      parentRoute: typeof HomeRoute
     }
     '/dashboard/$textbookId/$chapterSlug': {
       id: '/dashboard/$textbookId/$chapterSlug'
-      path: '/$textbookId/$chapterSlug'
+      path: '/dashboard/$textbookId/$chapterSlug'
       fullPath: '/dashboard/$textbookId/$chapterSlug'
       preLoaderRoute: typeof DashboardTextbookIdChapterSlugRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/_home/learn/$textbookId/$chapterSlug': {
+      id: '/_home/learn/$textbookId/$chapterSlug'
+      path: '/learn/$textbookId/$chapterSlug'
+      fullPath: '/learn/$textbookId/$chapterSlug'
+      preLoaderRoute: typeof HomeLearnTextbookIdChapterSlugRouteImport
+      parentRoute: typeof HomeRoute
     }
   }
 }
@@ -578,70 +600,60 @@ declare module '@tanstack/solid-start/server' {
   }
 }
 
-interface DashboardRouteChildren {
-  DashboardServiceIdRoute: typeof DashboardServiceIdRoute
-  DashboardUserIdRoute: typeof DashboardUserIdRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
-  DashboardTextbookIdChapterSlugRoute: typeof DashboardTextbookIdChapterSlugRoute
+interface HomeRouteChildren {
+  HomeConjugationRoute: typeof HomeConjugationRoute
+  HomeDashboardNewRoute: typeof HomeDashboardNewRoute
+  HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
+  HomeSentencePracticeRoute: typeof HomeSentencePracticeRoute
+  HomeVocabRoute: typeof HomeVocabRoute
+  HomeLearnIndexRoute: typeof HomeLearnIndexRoute
+  HomeLearnTextbookIdChapterSlugRoute: typeof HomeLearnTextbookIdChapterSlugRoute
 }
 
-const DashboardRouteChildren: DashboardRouteChildren = {
-  DashboardServiceIdRoute: DashboardServiceIdRoute,
-  DashboardUserIdRoute: DashboardUserIdRoute,
-  DashboardIndexRoute: DashboardIndexRoute,
-  DashboardTextbookIdChapterSlugRoute: DashboardTextbookIdChapterSlugRoute,
+const HomeRouteChildren: HomeRouteChildren = {
+  HomeConjugationRoute: HomeConjugationRoute,
+  HomeDashboardNewRoute: HomeDashboardNewRoute,
+  HomeGrammarNotesRoute: HomeGrammarNotesRoute,
+  HomeSentencePracticeRoute: HomeSentencePracticeRoute,
+  HomeVocabRoute: HomeVocabRoute,
+  HomeLearnIndexRoute: HomeLearnIndexRoute,
+  HomeLearnTextbookIdChapterSlugRoute: HomeLearnTextbookIdChapterSlugRoute,
 }
 
-const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
-  DashboardRouteChildren,
-)
+const HomeRouteWithChildren = HomeRoute._addFileChildren(HomeRouteChildren)
 
-interface LearnLessonsRouteChildren {
-  LearnLessonsHiraganaRoute: typeof LearnLessonsHiraganaRoute
-  LearnLessonsJapanesePronunciationRoute: typeof LearnLessonsJapanesePronunciationRoute
-  LearnLessonsWelcomeOverviewRoute: typeof LearnLessonsWelcomeOverviewRoute
-  LearnLessonsWritingSystemsRoute: typeof LearnLessonsWritingSystemsRoute
+interface LessonsRouteChildren {
+  LessonsHiraganaRoute: typeof LessonsHiraganaRoute
+  LessonsJapanesePronunciationRoute: typeof LessonsJapanesePronunciationRoute
+  LessonsWelcomeOverviewRoute: typeof LessonsWelcomeOverviewRoute
+  LessonsWritingSystemsRoute: typeof LessonsWritingSystemsRoute
 }
 
-const LearnLessonsRouteChildren: LearnLessonsRouteChildren = {
-  LearnLessonsHiraganaRoute: LearnLessonsHiraganaRoute,
-  LearnLessonsJapanesePronunciationRoute:
-    LearnLessonsJapanesePronunciationRoute,
-  LearnLessonsWelcomeOverviewRoute: LearnLessonsWelcomeOverviewRoute,
-  LearnLessonsWritingSystemsRoute: LearnLessonsWritingSystemsRoute,
+const LessonsRouteChildren: LessonsRouteChildren = {
+  LessonsHiraganaRoute: LessonsHiraganaRoute,
+  LessonsJapanesePronunciationRoute: LessonsJapanesePronunciationRoute,
+  LessonsWelcomeOverviewRoute: LessonsWelcomeOverviewRoute,
+  LessonsWritingSystemsRoute: LessonsWritingSystemsRoute,
 }
 
-const LearnLessonsRouteWithChildren = LearnLessonsRoute._addFileChildren(
-  LearnLessonsRouteChildren,
-)
-
-interface LearnRouteChildren {
-  LearnLessonsRoute: typeof LearnLessonsRouteWithChildren
-  LearnIndexRoute: typeof LearnIndexRoute
-}
-
-const LearnRouteChildren: LearnRouteChildren = {
-  LearnLessonsRoute: LearnLessonsRouteWithChildren,
-  LearnIndexRoute: LearnIndexRoute,
-}
-
-const LearnRouteWithChildren = LearnRoute._addFileChildren(LearnRouteChildren)
+const LessonsRouteWithChildren =
+  LessonsRoute._addFileChildren(LessonsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HomeRoute: HomeRouteWithChildren,
   AuthRoute: AuthRoute,
-  DashboardRoute: DashboardRouteWithChildren,
   KanjiTestRoute: KanjiTestRoute,
-  LearnRoute: LearnRouteWithChildren,
+  LessonsRoute: LessonsRouteWithChildren,
   SettingsRoute: SettingsRoute,
-  ToolsRoute: ToolsRoute,
-  VocabRoute: VocabRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,
   PracticeAllHiraganaQuizRoute: PracticeAllHiraganaQuizRoute,
   PracticeContractedSoundsQuizRoute: PracticeContractedSoundsQuizRoute,
   PracticeDakutenHandakutenQuizRoute: PracticeDakutenHandakutenQuizRoute,
   PracticeHiraganaQuizRoute: PracticeHiraganaQuizRoute,
   PracticeReviewRoute: PracticeReviewRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardTextbookIdChapterSlugRoute: DashboardTextbookIdChapterSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

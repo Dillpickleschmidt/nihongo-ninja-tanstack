@@ -10,17 +10,17 @@ interface FeaturedToolsSectionProps {
 
 export function FeaturedToolsSection(props: FeaturedToolsSectionProps) {
   return (
-    <div class="mx-auto">
+    <>
       <SSRMediaQuery showFrom="md">
-        <div class="container py-16">
+        <div class="container pb-16">
           <h1
-            class={`text-foreground mb-16 text-center text-4xl font-bold transition-all duration-700 ease-out ${
+            class={`text-foreground my-12 text-center text-4xl font-bold transition-all duration-700 ease-out ${
               props.animated()
                 ? "translate-y-0 opacity-100"
                 : "translate-y-8 opacity-0"
             }`}
           >
-            Learning Tools
+            Dashboard
           </h1>
 
           <div class="grid justify-items-center gap-6 md:grid-cols-3 lg:grid-cols-5">
@@ -64,6 +64,6 @@ export function FeaturedToolsSection(props: FeaturedToolsSectionProps) {
           </div>
         </div>
       </SSRMediaQuery>
-    </div>
+    </>
   )
 }

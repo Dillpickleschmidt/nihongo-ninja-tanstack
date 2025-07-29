@@ -2,11 +2,11 @@ import { createFileRoute } from "@tanstack/solid-router"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import YouTubeVideo from "@/features/youtube/YouTube"
 
-export const Route = createFileRoute("/learn/_lessons/hiragana")({
+export const Route = createFileRoute("/lessons/hiragana")({
   loader: async () => {
     return {
       contentBox: {
-        nextButtonLink: "/learn/practice/hiragana",
+        nextButtonLink: "/lessons/practice/hiragana",
       },
     }
   },

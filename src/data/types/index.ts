@@ -31,7 +31,7 @@ export interface Textbook {
   publication_year?: number
   cover_image_url?: string
   level: string
-  chapters: ChapterDeck[]
+  chapters: BuiltInDeck[]
 }
 export type TextbookIDEnum = "genki_1" | "genki_2"
 
@@ -43,33 +43,21 @@ export interface LearningPathItem {
 
 // --- Deck Types ---
 
-// The absolute minimum shared by all decks
-interface BaseDeck {
-  id: string // e.g., "genki_1_ch1" or a UUID for a user deck
-  slug: string // e.g., "chapter-1" or "my-jlpt-n5-vocab"
+// A textbook chapter deck with learning paths and resources
+export interface Deck {
+  id: string // e.g., "genki_1_ch1"
+  slug: string // e.g., "chapter-1"
   title: string
   description?: string
   disabled?: boolean
-}
-
-// A Chapter is a BaseDeck with textbook-specific learning paths
-export interface ChapterDeck extends BaseDeck {
-  deckType: "textbook_chapter"
-  chapter_number: number
-  learning_path_items: LearningPathItem[]
   external_resource_ids?: string[]
 }
 
-// A UserDeck is just a BaseDeck with user-specific metadata
-export interface UserDeck extends BaseDeck {
-  deckType: "user_deck"
-  owner_id: string
-  is_public: boolean
-  vocabulary_keys: string[]
+export type BuiltInDeck = Deck & {
+  chapter_number: number
+  learning_path_items: LearningPathItem[]
+  isImported?: boolean
 }
-
-// A union type that represents any possible deck in the system
-export type Deck = ChapterDeck | UserDeck
 
 // A named set of vocabulary keys (words), for use in modules.
 export interface IndividualVocabularySet {
@@ -202,20 +190,3 @@ export type RichVocabItem = VocabularyItem & {
   hiragana: string[] // Word converted to hiragana
   rubyText: string[] // Ruby (furigana) text components
 }
-
-// A source of decks, like a textbook or a user's collection.
-export type DeckSource = {
-  id: string // e.g., "genki_1" or a user's ID
-  name: string // e.g., "Genki I" or "My Decks"
-  type: "textbook" | "user" | "service"
-  decks: Deck[]
-  disabled: boolean
-}
-
-export type ServiceDeckEnum =
-  | "anki"
-  | "anki-imported"
-  | "wanikani"
-  | "wanikani-imported"
-  | "jpdb"
-  | "jpdb-imported"

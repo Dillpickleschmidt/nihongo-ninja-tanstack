@@ -54,7 +54,7 @@ export default function ContentBox(props: ContentBoxProps) {
   }
 
   // Check visibility directly without signals - this is stable during SSR/hydration
-  const isVisible = () => location().pathname.startsWith("/learn/")
+  const isVisible = () => location().pathname.startsWith("/lessons/")
 
   const handleBackClick = (e: Event) => {
     e.preventDefault()

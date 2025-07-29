@@ -4,7 +4,7 @@ import { dynamic_modules } from "@/data/dynamic_modules"
 import { getVocabPracticeModulesFromTextbooks } from "@/data/utils/core"
 import type { ImportRequest } from "@/features/vocab-page/types"
 
-export const Route = createFileRoute("/vocab")({
+export const Route = createFileRoute("/_home/vocab")({
   validateSearch: (search: Record<string, unknown>) => {
     return {
       import: search.import as string | undefined,

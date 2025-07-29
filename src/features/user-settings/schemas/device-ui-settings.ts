@@ -4,8 +4,6 @@ import { z } from "zod"
 const VocabRouteSettingsSchema = z.object({
   leftSidebarExpand: z.boolean().default(true),
   rightSidebarExpand: z.boolean().default(true),
-  lastOpenTextbook: z.string().max(20).default(""),
-  lastOpenChapter: z.string().max(20).default(""),
 })
 
 const VocabPracticeSettingsSchema = z.object({

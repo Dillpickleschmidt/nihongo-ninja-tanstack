@@ -1,6 +1,9 @@
 // features/user-settings/schemas/user-preferences.ts
 import { z } from "zod"
 
+// TextbookID validation schema
+const TextbookIDSchema = z.enum(["genki_1", "genki_2"]).or(z.string().length(0))
+
 const AnkiCredentialsSchema = z.object({
   api_key: z.string().default(""),
 })
@@ -34,7 +37,8 @@ const ServicePreferencesSchema = z.object({
 export const UserPreferencesSchema = z.object({
   "service-credentials": ServiceCredentialsSchema.default(ServiceCredentialsSchema.parse({})),
   "service-preferences": ServicePreferencesSchema.default(ServicePreferencesSchema.parse({})),
-  "current-chapter": z.string().default(""),
+  "active-textbook": TextbookIDSchema.default(""),
+  "active-deck": z.string().max(20).default(""),
   // Use timestamp 0 (very old) for default so it never overrides real user preferences
   timestamp: z.number().default(0),
 })

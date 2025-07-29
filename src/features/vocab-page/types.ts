@@ -1,9 +1,5 @@
-export interface BuiltInDeck {
-  id: string
-  name: string
-  description: string
-  isImported: boolean
-}
+// features/vocab-page/types.ts
+import type { BuiltInDeck } from "@/data/types"
 
 export interface Chapter {
   id: string
@@ -15,17 +11,15 @@ export interface Chapter {
 export interface Textbook {
   id: string
   name: string
-  shortName: string
+  short_name: string
   chapters: Chapter[]
 }
-
-import type { ServiceDeckEnum } from "@/data/types"
 
 export interface UserDeck {
   id: string
   name: string
   importedAt: Date
-  source: "textbook" | "user" | ServiceDeckEnum
+  source: "built-in" | "anki" | "wanikani" | "jpdb"
 }
 
 export interface PanelState {

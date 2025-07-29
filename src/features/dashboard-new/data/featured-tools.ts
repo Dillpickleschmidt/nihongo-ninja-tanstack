@@ -16,7 +16,7 @@ export const featuredTools: Tool[] = [
     gradient: "from-green-400 to-green-600",
   },
   {
-    title: "Lessons",
+    title: "Learn",
     description: "Follow structured learning paths",
     icon: "🎓",
     href: "/learn",
