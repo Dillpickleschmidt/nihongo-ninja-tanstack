@@ -1,5 +1,8 @@
 // src/utils/cookie-utils.ts
-import { getRequestHeader } from "@tanstack/solid-start/server"
+import {
+  getRequestHeader,
+  setResponseHeader,
+} from "@tanstack/solid-start/server"
 import { isServer } from "solid-js/web"
 import { serverOnly } from "@tanstack/solid-start"
 
@@ -81,8 +84,6 @@ export function setCookie(
     response?: Response
   },
 ): void {
-  const encodedValue = encodeURIComponent(value)
-
   if (isServer) {
     serverOnly(() => {
       const opts = {
@@ -92,12 +93,10 @@ export function setCookie(
         maxAge: 60 * 60 * 24 * 365, // 1 year default
         ...options,
       }
-      
-      const cookieHeader = createSetCookieHeader(name, encodedValue, opts)
-      
-      if (options?.response) {
-        options.response.headers.append("Set-Cookie", cookieHeader)
-      }
+
+      const cookieHeader = createSetCookieHeader(name, value, opts)
+
+      setResponseHeader("Set-Cookie", cookieHeader)
     })()
   } else {
     // Client-side cookie setting
@@ -108,8 +107,8 @@ export function setCookie(
       ...options,
     }
 
-    let cookieString = `${name}=${encodedValue}; Path=/`
-    
+    let cookieString = `${name}=${value}; Path=/`
+
     if (opts.secure) cookieString += `; Secure`
     if (opts.sameSite) cookieString += `; SameSite=${opts.sameSite}`
     if (opts.maxAge !== undefined) cookieString += `; Max-Age=${opts.maxAge}`

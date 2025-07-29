@@ -15,6 +15,8 @@ import {
   revalidateUserPreferencesCookieServerFn,
   mutateUserPreferencesServerFn,
 } from "@/features/user-settings/server/server-functions"
+import { UserPreferencesSchema } from "@/features/user-settings/schemas/user-preferences"
+import { DeviceUISettingsSchema } from "@/features/user-settings/schemas/device-ui-settings"
 import { User } from "@supabase/supabase-js"
 
 // --- Context Definition ---
@@ -36,7 +38,16 @@ interface SettingsContextType {
   isInitialized: () => boolean
 }
 
-const SettingsContext = createContext<SettingsContextType>()
+// Create default context value using Zod schema defaults
+const defaultContextValue: SettingsContextType = {
+  userPreferences: () => UserPreferencesSchema.parse({}),
+  updateUserPreferences: async () => {},
+  deviceUISettings: () => DeviceUISettingsSchema.parse({}),
+  updateDeviceUISettings: () => {},
+  isInitialized: () => false,
+}
+
+const SettingsContext = createContext<SettingsContextType>(defaultContextValue)
 
 // --- Provider Component ---
 
