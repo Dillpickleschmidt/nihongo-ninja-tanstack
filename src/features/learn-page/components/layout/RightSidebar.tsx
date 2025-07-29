@@ -1,4 +1,4 @@
-// features/dashboard/components/layout/RightSidebar.tsx
+// features/learn-page/components/layout/RightSidebar.tsx
 import { For, createSignal, createEffect } from "solid-js"
 import { Clock, Brain, BarChart3 } from "lucide-solid"
 import { useLocation } from "@tanstack/solid-router"
@@ -27,7 +27,7 @@ export function RightSidebar(props: RightSidebarProps) {
     animationTrigger()
     if (
       props.variant === "desktop" &&
-      location().pathname.includes("/dashboard") &&
+      location().pathname.includes("/learn") &&
       shouldAnimate()
     ) {
       requestAnimationFrame(() => {

@@ -251,24 +251,19 @@ function WordHierarchyDisplay(props: {
         <TabsContent
           value="vocab"
           data-word-hierarchy-content
-          class={cn(
-            "relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1.5 pl-4 backdrop-blur-sm",
-            props.variant === "desktop" ? "h-[300px]" : "h-60",
-          )}
+          class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1.5 pl-4 backdrop-blur-sm"
         >
           <VocabularyList
             hierarchy={props.data.hierarchy}
             chapterVocabulary={props.chapterVocabulary}
+            variant={props.variant}
           />
         </TabsContent>
 
         <TabsContent
           value="kanji"
           data-word-hierarchy-content
-          class={cn(
-            "relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-4 backdrop-blur-sm",
-            props.variant === "desktop" ? "h-[300px]" : "h-60",
-          )}
+          class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-4 backdrop-blur-sm"
         >
           <CharacterList
             title="Kanji"
@@ -280,10 +275,7 @@ function WordHierarchyDisplay(props: {
         <TabsContent
           value="radicals"
           data-word-hierarchy-content
-          class={cn(
-            "relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-4 backdrop-blur-sm",
-            props.variant === "desktop" ? "h-[300px]" : "h-60",
-          )}
+          class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-4 backdrop-blur-sm"
         >
           <CharacterList
             title="Radicals"
@@ -382,7 +374,7 @@ function ProgressCircleTrigger(props: {
                 }
               >
                 <span class="pt-0.5 text-base leading-4 font-bold">
-                  {props.countLearned}
+                  {seenCount()}
                 </span>
                 <span class="text-muted-foreground text-[10px]">
                   /{props.total}
@@ -419,8 +411,13 @@ function CharacterList(props: {
   variant: WordHierarchyVariant
 }) {
   return (
-    <div class="h-full overflow-y-auto">
-      <div class="flex flex-wrap content-start gap-1.5">
+    <div
+      class={cn(
+        "overflow-y-auto",
+        props.variant === "desktop" ? "max-h-[calc(100vh-437px)]" : "h-full",
+      )}
+    >
+      <div class="flex flex-wrap content-start justify-center gap-1.5">
         <For each={props.items}>
           {(item) => (
             <CharBox
@@ -444,20 +441,20 @@ function CharBox(props: {
         <HoverCardTrigger as="div">
           <div
             class={cn(
-              "flex items-center justify-center rounded-lg transition-colors hover:cursor-pointer",
-              props.variant === "desktop"
-                ? "h-8 w-8"
-                : "border-card-foreground h-10 w-10 border",
+              "flex items-center justify-center rounded-lg border transition-colors hover:cursor-pointer",
+              // Size based on variant
+              props.variant === "desktop" ? "h-8 w-8" : "h-10 w-10",
+              // Background colors
               {
                 "bg-muted/40": props.item.progress === "not_seen",
                 "bg-amber-400/10": props.item.progress === "learning",
                 "bg-teal-400/10": props.item.progress === "well_known",
-                "border-amber-400/50":
-                  props.variant === "mobile" &&
-                  props.item.progress === "learning",
-                "border-teal-400/50":
-                  props.variant === "mobile" &&
-                  props.item.progress === "well_known",
+              },
+              // Border colors (now applied to both desktop and mobile)
+              {
+                "border-card-foreground": props.item.progress === "not_seen",
+                "border-amber-400/50": props.item.progress === "learning",
+                "border-teal-400/50": props.item.progress === "well_known",
               },
             )}
           >
@@ -489,13 +486,21 @@ function CharBox(props: {
 function VocabularyList(props: {
   hierarchy: VocabHierarchy[]
   chapterVocabulary: VocabularyItem[]
+  variant: WordHierarchyVariant
 }) {
   const vocabMap = createMemo(
     () => new Map(props.chapterVocabulary.map((item) => [item.word, item])),
   )
 
   return (
-    <div class="flex h-full flex-col overflow-y-auto pr-2.5">
+    <div
+      class={cn(
+        "flex flex-col pr-2.5",
+        props.variant === "desktop"
+          ? "max-h-[calc(100vh-437px)] overflow-y-auto"
+          : "h-full overflow-y-auto",
+      )}
+    >
       <div class="flex flex-col gap-1.5">
         <For each={props.hierarchy}>
           {(vocabItem, index) => {

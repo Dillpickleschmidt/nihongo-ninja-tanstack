@@ -1,10 +1,11 @@
-// features/learn/components/content/LearnPageContent.tsx
+// features/learn-page/components/layout/LearnPageContent.tsx
 import { JSX } from "solid-js"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { LearnPageHeader } from "./LearnPageHeader"
 import { LeftSidebar } from "./LeftSidebar"
 import { RightSidebar } from "./RightSidebar"
 import { TextbookChapterBackgrounds } from "../shared/TextbookChapterBackgrounds"
+import { ChapterContentArea } from "../content/ChapterContentArea"
 import type { User } from "@supabase/supabase-js"
 import type { TextbookIDEnum } from "@/data/types"
 
@@ -26,24 +27,21 @@ export function LearnPageContent(props: LearnPageContentProps) {
           display: none;
         }
       `}</style>
-
       <TextbookChapterBackgrounds
         textbook={props.activeTextbookId!}
         chapter={props.activeDeck!}
       />
-
       {/* Mobile Layout */}
       <SSRMediaQuery hideFrom="xl">
         <LearnPageHeader user={props.user} variant="mobile" />
         <div class="flex flex-col">
-          {/* {props.children} */}
+          <ChapterContentArea />
           <div class="flex flex-col">
             <LeftSidebar user={props.user} variant="mobile" />
             <RightSidebar variant="mobile" />
           </div>
         </div>
       </SSRMediaQuery>
-
       {/* Desktop Layout */}
       <SSRMediaQuery showFrom="xl">
         <div class="min-h-screen">
@@ -52,7 +50,9 @@ export function LearnPageContent(props: LearnPageContentProps) {
             <div class="relative max-h-[calc(100vh-146px)] w-[20%] overflow-y-auto pt-6">
               <LeftSidebar user={props.user} variant="desktop" />
             </div>
-            <div class="w-[60%]">{/* {props.children} */}</div>
+            <div class="w-[60%]">
+              <ChapterContentArea />
+            </div>
             <div class="relative h-[calc(100vh-146px)] w-[20%] overflow-y-auto pt-6 pr-4">
               <RightSidebar variant="desktop" />
             </div>

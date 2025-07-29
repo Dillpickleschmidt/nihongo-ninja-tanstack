@@ -58,7 +58,7 @@ export default function ContentBox(props: ContentBoxProps) {
 
   const handleBackClick = (e: Event) => {
     e.preventDefault()
-    navigate({ to: "/dashboard" })
+    navigate({ to: "/lessons" })
   }
 
   const handleNextClick = (e: Event) => {
@@ -88,7 +88,7 @@ export default function ContentBox(props: ContentBoxProps) {
           <div class="fixed right-6 bottom-6 flex gap-2">
             <Button
               as="a"
-              href="/dashboard"
+              href="/lessons"
               onClick={handleBackClick}
               variant="ghost"
               class="dark:to-card/25 opacity-80 hover:opacity-100 dark:bg-gradient-to-br dark:from-green-500/30"

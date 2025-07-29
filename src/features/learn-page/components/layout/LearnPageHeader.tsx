@@ -136,7 +136,7 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
             <AvatarFallback>N</AvatarFallback>
           </Avatar>
           <span class="text-foreground/90 text-lg font-semibold">
-            LearnPage
+            Learn Page
           </span>
         </Link>
 
