@@ -1,50 +1,21 @@
-// features/learn-page/components/content/LearningPath.tsx
+// features/learn-page/components/content/LearningPathList.tsx
 import { For } from "solid-js"
 import { Link } from "@tanstack/solid-router"
-import {
-  BookOpen,
-  PencilLine,
-  ScrollText,
-  GraduationCap,
-  Gamepad,
-  Coffee,
-  Video,
-  Volume2,
-  Library,
-  BookOpenText,
-  BookPlus,
-} from "lucide-solid"
 import { Transition } from "solid-transition-group"
 import { cn } from "@/utils"
-import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { usePageTransition } from "@/context/TransitionContext"
 import { createSlideWithFadeInAnimation } from "@/utils/animations"
-import type { EnrichedLearningPathModule } from "@/features/dashboard/utils/loader-helpers"
+import {
+  getModuleIcon,
+  type EnrichedLearningPathModule,
+} from "@/features/learn-page/utils/loader-helpers"
 import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
 
 const DIRECTION = "right" as const
 
-export function LearningPath() {
-  return (
-    <>
-      {/* Mobile Layout - Empty Placeholder */}
-      <SSRMediaQuery hideFrom="xl">
-        <div />
-      </SSRMediaQuery>
-      {/* Desktop Layout */}
-      <SSRMediaQuery showFrom="xl">
-        <DesktopLearningPath />
-      </SSRMediaQuery>
-    </>
-  )
-}
-
-// ============================================================================
-// Desktop Implementation
-// ============================================================================
-
-function DesktopLearningPath() {
+export function LearningPathList() {
   const { shouldAnimate } = usePageTransition()
+
   return (
     <Transition
       onEnter={(element, done) => {
@@ -99,31 +70,6 @@ function LessonsList() {
       </div>
     </>
   )
-}
-
-// ============================================================================
-// Module Icon Mapping
-// ============================================================================
-
-function getModuleIcon(moduleType: string) {
-  const iconComponents = {
-    lesson: BookOpen,
-    worksheet: PencilLine,
-    "practice-sentence": PencilLine,
-    "culture-note": Coffee,
-    vocab: BookPlus,
-    "vocab-practice": GraduationCap,
-    "conjugation-practice": GraduationCap,
-    "counter-practice": GraduationCap,
-    game: Gamepad,
-    video: Video,
-    audio: Volume2,
-    "grammar-notes": ScrollText,
-    reading: BookOpenText,
-    "vocab-list": Library,
-    "vocab-test": GraduationCap,
-  }
-  return iconComponents[moduleType] || BookOpen
 }
 
 // ============================================================================

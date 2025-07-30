@@ -5,6 +5,19 @@ import type {
   DynamicModule,
   ExternalResourceCollection,
 } from "@/data/types"
+import {
+  BookOpen,
+  PencilLine,
+  ScrollText,
+  GraduationCap,
+  Gamepad,
+  Coffee,
+  Video,
+  Volume2,
+  Library,
+  BookOpenText,
+  BookPlus,
+} from "lucide-solid"
 
 // --- Text Truncation Helper ---
 function truncateText(text: string, maxLength: number): string {
@@ -122,6 +135,27 @@ function getLinkTo(lesson: StaticModule | DynamicModule, moduleKey: string) {
   }
 
   return `/practice/${moduleKey}`
+}
+
+export function getModuleIcon(moduleType: string) {
+  const iconComponents = {
+    lesson: BookOpen,
+    worksheet: PencilLine,
+    "practice-sentence": PencilLine,
+    "culture-note": Coffee,
+    vocab: BookPlus,
+    "vocab-practice": GraduationCap,
+    "conjugation-practice": GraduationCap,
+    "counter-practice": GraduationCap,
+    game: Gamepad,
+    video: Video,
+    audio: Volume2,
+    "grammar-notes": ScrollText,
+    reading: BookOpenText,
+    "vocab-list": Library,
+    "vocab-test": GraduationCap,
+  }
+  return iconComponents[moduleType] || BookOpen
 }
 
 function getModuleIconClasses(moduleType: string) {
