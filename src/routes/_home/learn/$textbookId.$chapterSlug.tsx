@@ -1,5 +1,6 @@
 // routes/_home/learn/$textbookId.$chapterSlug.tsx
-import { createFileRoute, redirect, defer } from "@tanstack/solid-router"
+import { createFileRoute, redirect, defer, useNavigate } from "@tanstack/solid-router"
+import { createEffect } from "solid-js"
 import {
   getLessons,
   getExternalResources,
@@ -17,6 +18,7 @@ import {
 
 import { LearnDataProvider } from "@/features/learn-page/context/LearnPageDataContext"
 import { LearnPageContent } from "@/features/learn-page/components/layout/LearnPageContent"
+import { useSettings } from "@/context/SettingsContext"
 import type { TextbookIDEnum, VocabularyItem } from "@/data/types"
 import type { FullHierarchyData } from "@/data/wanikani/types"
 
@@ -34,15 +36,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       })
     }
 
-    // update db and cookie based on current route-params
-    const updatedPreferences = {
-      ...initialUserPreferenceData,
-      "active-textbook": textbookId,
-      "active-deck": chapterSlug,
-    }
-    await mutateUserPreferencesServerFn({
-      data: { preferences: updatedPreferences },
-    })
 
     // Lessons
     const enrichedLessons = enrichLessons(getLessons(deck))
@@ -159,6 +152,34 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
 
 function RouteComponent() {
   const loaderData = Route.useLoaderData()
+  const { userPreferences } = useSettings()
+  const navigate = useNavigate()
+
+  // Check for mismatch when preferences update via SWR
+  createEffect(() => {
+    const prefs = userPreferences()
+    const { textbookId } = loaderData()
+    const activeDeck = loaderData().deck.slug
+    
+    // Only redirect if we have real preferences (not defaults) and there's a mismatch
+    if (prefs.timestamp > 0 && 
+        (prefs["active-textbook"] !== textbookId || 
+         prefs["active-deck"] !== activeDeck)) {
+      
+      console.log("Preference mismatch detected, redirecting:", {
+        currentRoute: { textbookId, chapterSlug: activeDeck },
+        preferences: { textbook: prefs["active-textbook"], deck: prefs["active-deck"] }
+      })
+      
+      navigate({
+        to: "/learn/$textbookId/$chapterSlug",
+        params: { 
+          textbookId: prefs["active-textbook"], 
+          chapterSlug: prefs["active-deck"] 
+        },
+      })
+    }
+  })
 
   const learnPageData = {
     activeTextbookId: loaderData().textbookId as TextbookIDEnum,

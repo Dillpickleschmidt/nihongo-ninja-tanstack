@@ -1,6 +1,7 @@
 // features/learn-page/components/layout/LearnPageHeader.tsx
 import { Link, useNavigate, Await } from "@tanstack/solid-router"
 import { createSignal } from "solid-js"
+import { useSettings } from "@/context/SettingsContext"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
@@ -16,15 +17,32 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
   const navigate = useNavigate()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
   const { activeTextbookId, activeDeck, dueFSRSCardsCount } = useLearnPageData()
+  const { updateUserPreferences } = useSettings()
 
-  const handleDeckChange = (
+  const handleDeckChange = async (
     textbookId: typeof activeTextbookId,
     deck: typeof activeDeck,
   ) => {
-    navigate({
-      to: "/learn/$textbookId/$chapterSlug",
-      params: { textbookId, chapterSlug: deck.slug },
-    })
+    try {
+      // Update preferences first via SWR system
+      await updateUserPreferences({
+        "active-textbook": textbookId,
+        "active-deck": deck.slug,
+      })
+      
+      // Then navigate to new route
+      navigate({
+        to: "/learn/$textbookId/$chapterSlug",
+        params: { textbookId, chapterSlug: deck.slug },
+      })
+    } catch (error) {
+      console.error("Failed to update preferences:", error)
+      // Still navigate even if preference update fails
+      navigate({
+        to: "/learn/$textbookId/$chapterSlug",
+        params: { textbookId, chapterSlug: deck.slug },
+      })
+    }
     setIsPopoverOpen(false)
   }
 
