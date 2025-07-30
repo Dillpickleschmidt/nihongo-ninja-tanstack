@@ -9,7 +9,7 @@ import {
 import { ServiceCard } from "./ServiceCard"
 // TODO: Implement WaniKani validation functions when needed
 import { useServiceManagement } from "../context/ServiceManagementContext"
-import type { ServicePreference } from "@/features/user-settings/schemas/user-preferences"
+import type { ServicePreference } from "@/features/main-cookies/schemas/user-preferences"
 
 type ServiceCardProps = {
   preference: () => ServicePreference

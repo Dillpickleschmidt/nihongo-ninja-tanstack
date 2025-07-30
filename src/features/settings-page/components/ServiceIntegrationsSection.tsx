@@ -7,7 +7,7 @@ import { importReviewsServerFn } from "@/features/fsrs-import/server/importRevie
 import { validateJpdbApiKey } from "@/features/service-api-functions/jpdb/validation"
 import { useSettings } from "@/context/SettingsContext"
 import { useServiceManagement } from "../context/ServiceManagementContext"
-import type { ServiceType } from "@/features/user-settings/schemas/user-preferences"
+import type { ServiceType } from "@/features/main-cookies/schemas/user-preferences"
 
 export const ServiceIntegrationsSection = () => {
   const { userPreferences, updateUserPreferences } = useSettings()

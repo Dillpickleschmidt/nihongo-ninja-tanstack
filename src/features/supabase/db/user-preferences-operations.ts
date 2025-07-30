@@ -2,7 +2,7 @@ import { createBackendClient } from "@/features/supabase/backendClient"
 import {
   UserPreferencesSchema,
   type UserPreferencesCookieData,
-} from "@/features/user-settings/schemas/user-preferences"
+} from "@/features/main-cookies/schemas/user-preferences"
 
 export async function getUserPreferencesFromDB(
   userId: string,

@@ -10,7 +10,10 @@ import {
 import { getModeDisplayName, getModeDescription } from "../utils/serviceUtils"
 import { useServiceManagement } from "../context/ServiceManagementContext"
 
-import type { ServiceType, ServiceMode } from "@/features/user-settings/schemas/user-preferences"
+import type {
+  ServiceType,
+  ServiceMode,
+} from "@/features/main-cookies/schemas/user-preferences"
 
 interface ServiceCardProps {
   title: string

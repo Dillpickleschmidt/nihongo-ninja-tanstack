@@ -8,15 +8,15 @@ import {
   Component,
   ParentProps,
 } from "solid-js"
-import type { UserPreferencesCookieData } from "@/features/user-settings/schemas/user-preferences"
-import type { DeviceUISettingsCookieData } from "@/features/user-settings/schemas/device-ui-settings"
-import { setDeviceUISettingsCookie } from "@/features/user-settings/server/server-functions"
+import type { UserPreferencesCookieData } from "@/features/main-cookies/schemas/user-preferences"
+import type { DeviceUISettingsCookieData } from "@/features/main-cookies/schemas/device-ui-settings"
+import { setDeviceUISettingsCookie } from "@/features/main-cookies/server/server-functions"
 import {
   revalidateUserPreferencesCookieServerFn,
   mutateUserPreferencesServerFn,
-} from "@/features/user-settings/server/server-functions"
-import { UserPreferencesSchema } from "@/features/user-settings/schemas/user-preferences"
-import { DeviceUISettingsSchema } from "@/features/user-settings/schemas/device-ui-settings"
+} from "@/features/main-cookies/server/server-functions"
+import { UserPreferencesSchema } from "@/features/main-cookies/schemas/user-preferences"
+import { DeviceUISettingsSchema } from "@/features/main-cookies/schemas/device-ui-settings"
 import { User } from "@supabase/supabase-js"
 
 // --- Context Definition ---

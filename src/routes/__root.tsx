@@ -23,7 +23,7 @@ import {
   getInitialUserPreferencesFromCookieServerFn,
   getUserPreferencesFromDBServerFn,
   getDeviceUISettingsCookie,
-} from "@/features/user-settings/server/server-functions"
+} from "@/features/main-cookies/server/server-functions"
 
 export const Route = createRootRoute({
   head: () => ({

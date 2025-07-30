@@ -5,7 +5,7 @@ import {
   getExternalResources,
   getDeckBySlug,
 } from "@/data/utils/core"
-import { mutateUserPreferencesServerFn } from "@/features/user-settings/server/server-functions"
+import { mutateUserPreferencesServerFn } from "@/features/main-cookies/server/server-functions"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { getDueFSRSCardsCount } from "@/features/supabase/db/fsrs-operations"
 import { getWKHierarchy, getUserProgressForVocab } from "@/data/wanikani/utils"

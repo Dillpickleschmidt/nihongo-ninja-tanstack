@@ -2,7 +2,7 @@
 import { createServerFn } from "@tanstack/solid-start"
 import { z } from "zod"
 import { getUserSSR } from "@/features/supabase/getUserSSR"
-import { getInitialUserPreferencesFromCookieServerFn } from "@/features/user-settings/server/server-functions"
+import { getInitialUserPreferencesFromCookieServerFn } from "@/features/main-cookies/server/server-functions"
 
 const serviceSchema = z.enum(["anki", "wanikani", "jpdb"])
 const apiKeySchema = z.object({
