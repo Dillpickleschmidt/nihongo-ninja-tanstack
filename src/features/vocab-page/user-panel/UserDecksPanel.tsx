@@ -1,8 +1,9 @@
-// features/vocab-page/UserDecksPanel.tsx
+// features/vocab-page/user-panel/UserDecksPanel.tsx
 import { For, Show, onMount } from "solid-js"
 import { BookMarked } from "lucide-solid"
-import { DeckCard } from "./DeckCard"
-import type { UserDeck } from "./types"
+import { UserDeckCard } from "./UserDeckCard"
+import type { UserDeck } from "../types"
+import { cn } from "@/utils"
 
 interface UserDecksPanelProps {
   userDecks: UserDeck[]
@@ -57,7 +58,7 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
           <div class="space-y-3 pb-16">
             <For each={props.userDecks}>
               {(deck) => (
-                <DeckCard
+                <UserDeckCard
                   deck={deck}
                   onPlay={props.onPlayDeck}
                   isNewlyImported={props.newlyImportedDecks.has(deck.id)}
@@ -70,7 +71,12 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
           </div>
         </Show>
       </div>
-      <div class="border-border fixed right-0 bottom-0 z-20 w-96 p-4">
+      <div
+        class={cn(
+          "border-border absolute right-0 bottom-0 z-10 w-96 border-t px-4 py-2.5",
+          "bg-card/95 backdrop-blur-sm",
+        )}
+      >
         <p class="text-muted-foreground text-center text-xs italic">
           Click on a deck to view it. Start practicing when you're ready.
         </p>

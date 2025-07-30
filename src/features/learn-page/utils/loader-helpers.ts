@@ -17,7 +17,18 @@ import {
   Library,
   BookOpenText,
   BookPlus,
+  Headphones,
+  FileText,
+  Mic,
+  Wrench,
+  MessageCircle,
+  Newspaper,
+  BookMarked,
+  Ear,
+  Eye,
+  PenTool,
 } from "lucide-solid"
+import { Component } from "solid-js"
 
 // --- Text Truncation Helper ---
 function truncateText(text: string, maxLength: number): string {
@@ -82,7 +93,6 @@ function getResourceGradientStyle(
 function getResourceDifficultyColorClass(
   difficulty: ExternalResource["difficulty_rating"],
 ): string {
-  // ... (implementation from contentShowcaseUtils.ts)
   switch (difficulty) {
     case "easy":
       return "bg-green-500/30 text-green-100"
@@ -113,6 +123,26 @@ export function enrichExternalResources(
   }
 
   return enriched
+}
+
+// Helper function to map resource type to Lucide icon component
+export function getResourceIconComponent(
+  resourceType: ExternalResource["resource_type"],
+): Component<any> {
+  const iconMap = {
+    video: Video,
+    article: FileText,
+    podcast: Mic,
+    tool: Wrench,
+    forum: MessageCircle,
+    news: Newspaper,
+    textbook_companion: BookMarked,
+    listening_practice: Ear,
+    reading_practice: Eye,
+    grammar_guide: PenTool,
+    audio: Headphones,
+  }
+  return iconMap[resourceType as keyof typeof iconMap] || BookOpen
 }
 
 // --- Enrichment Functions for Learning Path Modules (Lessons) ---

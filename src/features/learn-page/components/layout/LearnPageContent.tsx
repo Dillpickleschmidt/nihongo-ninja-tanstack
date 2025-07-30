@@ -1,5 +1,4 @@
 // features/learn-page/components/layout/LearnPageContent.tsx
-import { JSX } from "solid-js"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { LearnPageHeader } from "./LearnPageHeader"
 import { LeftSidebar } from "./LeftSidebar"

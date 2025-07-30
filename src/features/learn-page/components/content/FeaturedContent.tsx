@@ -9,8 +9,10 @@ import {
   createSlideWithFadeInAnimation,
   prepareElementForEnter,
 } from "@/utils/animations"
-import { getResourceIconComponent } from "@/features/dashboard/utils/contentShowcaseUtils" // TODO: Fix import path
-import type { EnrichedExternalResource } from "@/features/learn-page/utils/loader-helpers"
+import {
+  getResourceIconComponent,
+  type EnrichedExternalResource,
+} from "@/features/learn-page/utils/loader-helpers"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
 

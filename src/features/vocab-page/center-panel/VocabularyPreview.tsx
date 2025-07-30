@@ -1,3 +1,4 @@
+// features/vocab-page/center-panel/VocabularyPreview.tsx
 import { For, createSignal, createEffect } from "solid-js"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Book, Grid2x2 } from "lucide-solid"

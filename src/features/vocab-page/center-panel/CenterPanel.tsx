@@ -1,3 +1,4 @@
+// features/vocab-page/center-panel/CenterPanel.tsx
 import { Show } from "solid-js"
 import { DefaultContent } from "./DefaultContent"
 import { VocabularyPreview } from "./VocabularyPreview"

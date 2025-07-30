@@ -1,26 +1,36 @@
+// features/vocab-page/hooks/useVocabPageState.ts
 import { createSignal, createEffect } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
-import type { BuiltInDeck, UserDeck, VocabPageState, ImportRequest } from "./types"
-import { getVocabPracticeModulesFromTextbooks } from "@/data/utils/core"
+import { DEFAULT_EXPANDED_TEXTBOOKS, NEWLY_IMPORTED_TIMEOUT } from "../types"
+import type {
+  UserDeck,
+  ImportRequest,
+  VocabBuiltInDeck,
+  VocabTextbook,
+} from "../types"
+import type { TextbookIDEnum } from "@/data/types"
 
-export function useVocabPageState(importRequest?: ImportRequest | null) {
+export function useVocabPageState(
+  importRequest?: ImportRequest | null,
+  initialTextbooks?: [TextbookIDEnum, VocabTextbook][],
+) {
   const navigate = useNavigate()
   const [leftPanelOpen, setLeftPanelOpen] = createSignal(true)
   const [rightPanelOpen, setRightPanelOpen] = createSignal(true)
-  
+
   // Destructure import request
   const pendingImport = importRequest?.deck
   const expansionData = importRequest?.location
-  
+
   // Initialize expansion state with auto-expansion for imports
-  const initialExpandedTextbooks = new Set(["genki_1"])
+  const initialExpandedTextbooks = new Set(DEFAULT_EXPANDED_TEXTBOOKS)
   const initialExpandedChapters = new Set<string>()
-  
+
   if (expansionData) {
     initialExpandedTextbooks.add(expansionData.textbookId)
     initialExpandedChapters.add(expansionData.chapterId)
   }
-  
+
   const [expandedTextbooks, setExpandedTextbooks] = createSignal<Set<string>>(
     initialExpandedTextbooks,
   )
@@ -38,12 +48,12 @@ export function useVocabPageState(importRequest?: ImportRequest | null) {
   // Import confirmation modal state
   const [showImportModal, setShowImportModal] = createSignal(false)
   const [pendingImportDeck, setPendingImportDeck] =
-    createSignal<BuiltInDeck | null>(null)
+    createSignal<VocabBuiltInDeck | null>(null)
 
-  // Create reactive textbooks with import state
-  const [textbooks, setTextbooks] = createSignal(
-    getVocabPracticeModulesFromTextbooks(),
-  )
+  // Use pre-loaded textbooks from server
+  const [textbooks, setTextbooks] = createSignal<
+    [TextbookIDEnum, VocabTextbook][]
+  >(initialTextbooks || [])
 
   const toggleTextbook = (textbookId: string) => {
     setExpandedTextbooks((prev) => {
@@ -69,44 +79,61 @@ export function useVocabPageState(importRequest?: ImportRequest | null) {
     })
   }
 
-  const importDeck = (builtInDeck: BuiltInDeck) => {
-    // Mark deck as imported in textbooks
+  const updateDeckImportStatus = (deckId: string, isImported: boolean) => {
     setTextbooks((prev) =>
-      prev.map((textbook) => ({
-        ...textbook,
-        chapters: textbook.chapters.map((chapter) => ({
-          ...chapter,
-          parts: chapter.parts.map((part) =>
-            part.id === builtInDeck.id ? { ...part, isImported: true } : part,
-          ),
-        })),
-      })),
+      prev.map(([textbookId, textbook]) => [
+        textbookId,
+        {
+          ...textbook,
+          chapters: textbook.chapters.map((chapter) => ({
+            ...chapter,
+            decks: chapter.decks.map((deck) =>
+              deck.id === deckId ? { ...deck, isImported } : deck,
+            ),
+          })),
+        },
+      ]),
     )
+  }
 
-    // Add to user decks
+  const generateDeckTitle = (builtInDeck: VocabBuiltInDeck): string => {
+    for (const [, textbook] of textbooks()) {
+      for (const chapter of textbook.chapters) {
+        const deck = chapter.decks.find((d) => d.id === builtInDeck.id)
+        if (deck) {
+          return `${textbook.short_name || textbook.name} Ch.${chapter.number} ${deck.title}`
+        }
+      }
+    }
+    return builtInDeck.title
+  }
+
+  const importDeck = (builtInDeck: VocabBuiltInDeck) => {
+    const fullTitle = generateDeckTitle(builtInDeck)
+
+    updateDeckImportStatus(builtInDeck.id, true)
+
     const newUserDeck: UserDeck = {
       id: builtInDeck.id,
-      name: builtInDeck.name,
+      name: fullTitle,
       importedAt: new Date(),
       source: "textbook",
     }
 
     setUserDecks((prev) => [newUserDeck, ...prev])
-
-    // Auto-select the newly imported deck
     setSelectedUserDeck(newUserDeck)
 
     // Mark as newly imported
     setNewlyImportedDecks((prev) => new Set([...prev, newUserDeck.id]))
 
-    // Remove from newly imported after 2 seconds
+    // Remove from newly imported after timeout
     setTimeout(() => {
       setNewlyImportedDecks((prev) => {
         const newSet = new Set(prev)
         newSet.delete(newUserDeck.id)
         return newSet
       })
-    }, 2500)
+    }, NEWLY_IMPORTED_TIMEOUT)
   }
 
   const selectUserDeck = (deck: UserDeck) => {

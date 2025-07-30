@@ -8,7 +8,7 @@ import {
 } from "@/utils/animations"
 import { usePageTransition } from "@/context/TransitionContext"
 import { BackgroundImage } from "@/components/BackgroundImage"
-import { Background } from "@/features/dashboard/components/shared/Background"
+import { Background } from "@/features/learn-page/components/shared/Background"
 
 export const Route = createFileRoute("/lessons")({
   loader: async ({ context }) => {

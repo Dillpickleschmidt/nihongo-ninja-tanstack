@@ -1,3 +1,4 @@
+// features/vocab-page/built-in-panel/TextbookSection.tsx
 import { For } from "solid-js"
 import { BookOpen } from "lucide-solid"
 import {
@@ -6,16 +7,16 @@ import {
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
 import { ChapterSection } from "./ChapterSection"
-import type { Textbook, BuiltInDeck } from "./types"
+import type { VocabBuiltInDeck, VocabTextbook } from "../types"
 
 interface TextbookSectionProps {
-  textbook: Textbook
+  textbook: VocabTextbook
   isExpanded: boolean
   onToggle: () => void
   expandedChapters: Set<string>
   onToggleChapter: (chapterId: string) => void
-  onImportDeck: (deck: BuiltInDeck) => void
-  onPlayDeck: (deck: BuiltInDeck) => void
+  onImportDeck: (deck: VocabBuiltInDeck) => void
+  onPlayDeck: (deck: VocabBuiltInDeck) => void
 }
 
 export function TextbookSection(props: TextbookSectionProps) {

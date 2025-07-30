@@ -54,9 +54,7 @@ export interface Deck {
 }
 
 export type BuiltInDeck = Deck & {
-  chapter_number: number
   learning_path_items: LearningPathItem[]
-  isImported?: boolean
 }
 
 // A named set of vocabulary keys (words), for use in modules.

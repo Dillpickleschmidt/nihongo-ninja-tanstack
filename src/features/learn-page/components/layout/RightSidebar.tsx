@@ -234,9 +234,9 @@ function RecentActivityCard(props: {
     <div
       data-right-sidebar-activities
       class={cn(
-        "rounded-lg border border-white/10 p-3 backdrop-blur-sm",
-        "bg-gradient-to-br transition-all duration-200 hover:scale-[1.01] hover:shadow-lg",
-        "from-gray-600/10 to-slate-600/5", // Default gradient
+        "rounded-lg border border-white/10 p-3",
+        "bg-gradient-to-br from-gray-600/10 to-slate-600/5 backdrop-blur-sm",
+        "transition-all duration-200 hover:scale-[1.01] hover:shadow-lg", // Default gradient
       )}
     >
       <div class="flex items-center gap-3">

@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { createSignal, onMount } from "solid-js"
-import { FeaturedToolsSection } from "@/features/dashboard-new/components/FeaturedToolsSection"
-import { ResourceDirectorySection } from "@/features/dashboard-new/components/ResourceDirectorySection"
+import { FeaturedToolsSection } from "@/features/dashboard/components/FeaturedToolsSection"
+import { ResourceDirectorySection } from "@/features/dashboard/components/ResourceDirectorySection"
 
-export const Route = createFileRoute("/_home/dashboard-new")({
+export const Route = createFileRoute("/_home/dashboard")({
   component: RouteComponent,
 })
 

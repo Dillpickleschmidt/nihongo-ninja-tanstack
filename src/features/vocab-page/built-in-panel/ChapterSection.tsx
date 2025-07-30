@@ -1,18 +1,18 @@
+// features/vocab-page/built-in-panel/ChapterSection.tsx
 import { For } from "solid-js"
 import {
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
-import { DeckCard } from "./DeckCard"
-import type { Chapter, BuiltInDeck } from "./types"
+import { BuiltInDeckCard } from "./BuiltInDeckCard"
+import type { Chapter, VocabBuiltInDeck } from "../types"
 
 interface ChapterSectionProps {
   chapter: Chapter
   isExpanded: boolean
   onToggle: () => void
-  onImportDeck: (deck: BuiltInDeck) => void
-  onPlayDeck: (deck: BuiltInDeck) => void
+  onImportDeck: (deck: VocabBuiltInDeck) => void
 }
 
 export function ChapterSection(props: ChapterSectionProps) {
@@ -23,18 +23,15 @@ export function ChapterSection(props: ChapterSectionProps) {
         onOpenChange={() => props.onToggle()}
       >
         <CollapsibleTrigger class="h-auto w-full justify-start p-2 text-sm font-normal">
-          <span class="truncate">
-            {props.chapter.title}
-          </span>
+          <span class="truncate">{props.chapter.title}</span>
         </CollapsibleTrigger>
 
         <CollapsibleContent class="mt-2 ml-5 space-y-2">
-          <For each={props.chapter.parts}>
-            {(part) => (
-              <DeckCard
-                deck={part}
+          <For each={props.chapter.decks}>
+            {(deck) => (
+              <BuiltInDeckCard
+                deck={deck}
                 onImport={props.onImportDeck}
-                onPlay={props.onPlayDeck}
                 class="text-xs"
               />
             )}

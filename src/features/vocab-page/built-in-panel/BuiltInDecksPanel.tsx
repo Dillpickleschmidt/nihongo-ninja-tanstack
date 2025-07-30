@@ -1,15 +1,17 @@
+// features/vocab-page/built-in-panel/BuiltInDecksPanel.tsx
 import { For } from "solid-js"
 import { TextbookSection } from "./TextbookSection"
-import type { Textbook, BuiltInDeck } from "./types"
+import type { VocabBuiltInDeck, VocabTextbook } from "../types"
+import type { TextbookIDEnum } from "@/data/types"
 
 interface BuiltInDecksPanelProps {
-  textbooks: Textbook[]
+  textbooks: [TextbookIDEnum, VocabTextbook][]
   expandedTextbooks: Set<string>
   expandedChapters: Set<string>
   onToggleTextbook: (textbookId: string) => void
   onToggleChapter: (chapterId: string) => void
-  onImportDeck: (deck: BuiltInDeck) => void
-  onPlayDeck: (deck: BuiltInDeck) => void
+  onImportDeck: (deck: VocabBuiltInDeck) => void
+  onPlayDeck: (deck: VocabBuiltInDeck) => void
 }
 
 export function BuiltInDecksPanel(props: BuiltInDecksPanelProps) {
@@ -23,11 +25,11 @@ export function BuiltInDecksPanel(props: BuiltInDecksPanelProps) {
       </div>
 
       <For each={props.textbooks}>
-        {(textbook) => (
+        {([textbookId, textbook]) => (
           <TextbookSection
             textbook={textbook}
-            isExpanded={props.expandedTextbooks.has(textbook.id)}
-            onToggle={() => props.onToggleTextbook(textbook.id)}
+            isExpanded={props.expandedTextbooks.has(textbookId)}
+            onToggle={() => props.onToggleTextbook(textbookId)}
             expandedChapters={props.expandedChapters}
             onToggleChapter={props.onToggleChapter}
             onImportDeck={props.onImportDeck}

@@ -1,4 +1,4 @@
-// features/vocab-page/CollapsiblePanel.tsx
+// features/vocab-page/shared/CollapsiblePanel.tsx
 import { JSX, Show } from "solid-js"
 import { ChevronLeft, ChevronRight } from "lucide-solid"
 import { Button } from "@/components/ui/button"
@@ -19,7 +19,7 @@ export function CollapsiblePanel(props: CollapsiblePanelProps) {
   return (
     <div
       class={cn(
-        "relative transition-all duration-300 ease-in-out",
+        "relative h-full transition-all duration-300 ease-in-out",
         props.isOpen ? "w-96" : "w-0",
         props.class,
       )}

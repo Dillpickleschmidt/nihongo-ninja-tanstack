@@ -16,7 +16,7 @@ export function BottomNav(props: BottomNavProps) {
       id: "home",
       icon: Home,
       label: "Home",
-      href: "/dashboard-new",
+      href: "/dashboard",
     },
     {
       id: "learn",

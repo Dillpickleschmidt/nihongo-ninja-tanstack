@@ -663,9 +663,7 @@ export const vocabulary: VocabularyCollection = {
       "Drop 'ございます' for a more casual version, just 'おはよう (Ohayou)'.",
       "The casual version, 'おはよう' is often used among friends, family, or colleagues you're familiar with.",
       "The polite form 'おはようございます' is suitable for more formal situations or when addressing someone you don't know well.",
-      "It's a common greeting in schools, workplaces, or when doing morning activities.",
-      "As a rule of thumb, drop ございます when you're on a first-name basis with someone (friends and family).",
-      "If you refer to that person as Mr./Ms., use the longer ございます version.",
+      "You can generally drop ございます when you're on a first-name basis with someone (friends and family).",
     ],
     videos: [
       {

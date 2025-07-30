@@ -1,3 +1,4 @@
+// features/vocab-page/shared/ImportConfirmationModal.tsx
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -38,4 +39,3 @@ export function ImportConfirmationModal(props: ImportConfirmationModalProps) {
     </Dialog>
   )
 }
-

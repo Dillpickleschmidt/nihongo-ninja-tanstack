@@ -1,3 +1,4 @@
+// features/vocab-page/MobileVocabPage.tsx
 import { Smartphone } from "lucide-solid"
 
 export function MobileVocabPage() {

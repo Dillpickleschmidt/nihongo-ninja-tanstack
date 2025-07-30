@@ -12,7 +12,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch0",
         slug: "chapter-0",
-        chapter_number: 0,
         title: "Chapter 0",
         description:
           "Introduces basic greetings, self-introductions, and identifying people and things.",
@@ -81,7 +80,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch1",
         slug: "chapter-1",
-        chapter_number: 1,
         title: "Chapter 1",
         description:
           "Learn to introduce yourself, talk about your nationality and occupation, and use the particle は.",
@@ -158,7 +156,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch2",
         slug: "chapter-2",
-        chapter_number: 2,
         title: "Chapter 2",
         description:
           "Building on introductions, learn to identify and ask about things, use particles が and も, and negate statements.",
@@ -217,7 +214,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch3",
         slug: "chapter-3",
-        chapter_number: 3,
         title: "Chapter 3",
         description:
           "Introduce verbs and adjectives, learn basic conjugations, and use location and direction particles.",
@@ -327,7 +323,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch4",
         slug: "chapter-4",
-        chapter_number: 4,
         title: "Chapter 4",
         description:
           "Learn to talk about existence of things and people, use past tense, and connect nouns with と.",
@@ -398,7 +393,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch5",
         slug: "chapter-5",
-        chapter_number: 5,
         title: "Chapter 5",
         description:
           "Learn about い and な adjectives, their conjugations, and how to use them to modify nouns.",
@@ -455,7 +449,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch6",
         slug: "chapter-6",
-        chapter_number: 6,
         title: "Chapter 6",
         description:
           "Learn the essential て-form of verbs, its various uses, and how to connect actions and ideas.",
@@ -500,7 +493,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch7",
         slug: "chapter-7",
-        chapter_number: 7,
         title: "Chapter 7",
         description:
           "Expand vocabulary with nouns, body parts, verbs, and adjectives, and learn about converting adjectives to adverbs.",
@@ -542,7 +534,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch8",
         slug: "chapter-8",
-        chapter_number: 8,
         title: "Chapter 8",
         description:
           "Focus on vocabulary expansion with nouns, verbs, adjectives, and adverbs, and explore verb functionality.",
@@ -581,7 +572,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch9",
         slug: "chapter-9",
-        chapter_number: 9,
         title: "Chapter 9",
         description:
           "Learn about various noun categories, small item counters, and continue expanding verb and adjective vocabulary.",
@@ -620,7 +610,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch10",
         slug: "chapter-10",
-        chapter_number: 10,
         title: "Chapter 10",
         description:
           "Continue building vocabulary with different noun groups, verbs, and explore concepts like comparing sizes and emotions.",
@@ -663,7 +652,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch11",
         slug: "chapter-11",
-        chapter_number: 11,
         title: "Chapter 11",
         description:
           "Delve deeper into nouns and verbs, including irregular verbs, adverbs, and occupations.",
@@ -716,7 +704,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_1_ch12",
         slug: "chapter-12",
-        chapter_number: 12,
         title: "Chapter 12",
         description:
           "Review and expand vocabulary with more nouns, verbs, adjectives, and adverbs.",
@@ -770,7 +757,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch13",
         slug: "chapter-13",
-        chapter_number: 13,
         title: "Chapter 13",
         description:
           "Focus on vocabulary for nouns, adjectives, verbs, and day counts.",
@@ -808,7 +794,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch14",
         slug: "chapter-14",
-        chapter_number: 14,
         title: "Chapter 14",
         description:
           "Introduce more nouns, adjectives, verbs, counters, adverbs, and other miscellaneous vocabulary.",
@@ -852,7 +837,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch15",
         slug: "chapter-15",
-        chapter_number: 15,
         title: "Chapter 15",
         description:
           "Focus on different verb types (Ichidan, Godan, Irregular) and continue expanding noun, adverb, and miscellaneous vocabulary.",
@@ -897,7 +881,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch16",
         slug: "chapter-16",
-        chapter_number: 16,
         title: "Chapter 16",
         description:
           "Introduce more nouns, adjectives, and verbs (U, Ru, Irregular), along with adverbs and other miscellaneous terms.",
@@ -944,7 +927,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch17",
         slug: "chapter-17",
-        chapter_number: 17,
         title: "Chapter 17",
         description:
           "Expand vocabulary with more nouns, verbs, adjectives, and adverbs, and practice new sentence patterns.",
@@ -988,7 +970,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch18",
         slug: "chapter-18",
-        chapter_number: 18,
         title: "Chapter 18",
         description:
           "Further vocabulary expansion with various noun groups, adjectives, and verb types (U, Ru, Irregular).",
@@ -1035,7 +1016,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch19",
         slug: "chapter-19",
-        chapter_number: 19,
         title: "Chapter 19",
         description:
           "Review and test vocabulary from previous chapters and introduce new vocabulary related to nouns, adjectives, and verbs.",
@@ -1088,7 +1068,6 @@ export const textbooks: TextbookCollection = {
       {
         id: "genki_2_ch20",
         slug: "chapter-20",
-        chapter_number: 20,
         title: "Chapter 20",
         description:
           "Conclude Genki I with more vocabulary covering nouns, adjectives, and various verb types, and practice different expression levels.",
