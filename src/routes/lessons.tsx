@@ -1,5 +1,6 @@
 // src/routes/lessons.tsx
 import { createFileRoute, Outlet } from "@tanstack/solid-router"
+import { createSignal, onMount } from "solid-js"
 import ContentBox from "@/components/ContentBox"
 import { useAnimationManager } from "@/hooks/useAnimations"
 import { BackgroundImage } from "@/components/BackgroundImage"
@@ -16,9 +17,28 @@ export const Route = createFileRoute("/lessons")({
 function LessonsLayout() {
   const { user } = Route.useLoaderData()()
   const { animateOnDataChange } = useAnimationManager()
+  const [shouldAnimate, setShouldAnimate] = createSignal(false)
 
-  // Trigger slide up animation when user data loads
-  animateOnDataChange(["[data-lessons-layout]"], () => user)
+  onMount(() => {
+    // Check if we should animate (set by button press)
+    const shouldAnimateFlag = sessionStorage.getItem("animate-lessons")
+    const isNavigation = !!shouldAnimateFlag
+
+    // Clear the flag immediately
+    sessionStorage.removeItem("animate-lessons")
+
+    console.log("[LessonsLayout] Manual flag check:", {
+      shouldAnimateFlag,
+      isNavigation,
+    })
+
+    setShouldAnimate(isNavigation)
+  })
+
+  // Trigger slide up animation when user data loads (only when shouldAnimate is true)
+  animateOnDataChange(["[data-lessons-layout]"], () =>
+    shouldAnimate() ? user : null,
+  )
 
   return (
     <div class="relative min-h-screen w-full overflow-y-auto">

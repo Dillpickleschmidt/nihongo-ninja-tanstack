@@ -64,8 +64,15 @@ function LessonItem(props: {
   const { moduleType, displayTitle, linkTo, iconClasses } = props.lesson
   const ModuleIcon = getModuleIcon(moduleType)
 
+  const handleLinkClick = () => {
+    // Set animation flag if navigating to lessons
+    if (linkTo.startsWith("/lessons")) {
+      sessionStorage.setItem("animate-lessons", "true")
+    }
+  }
+
   return (
-    <Link to={linkTo} class="group block">
+    <Link to={linkTo} onClick={handleLinkClick} class="group block">
       <div class="flex items-center gap-2 py-2">
         <span class="text-muted-foreground w-3 flex-shrink-0 text-xs font-medium opacity-0 transition-opacity duration-200 group-hover:opacity-100">
           {props.number}.

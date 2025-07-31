@@ -46,10 +46,18 @@ function GridLessonItem(props: {
   // TODO: Add completion logic when available
   const isCompleted = false
 
+  const handleLinkClick = () => {
+    // Set animation flag if navigating to lessons
+    if (linkTo.startsWith("/lessons")) {
+      sessionStorage.setItem("animate-lessons", "true")
+    }
+  }
+
   return (
     <div class="duration-75 ease-in-out hover:scale-[98.5%]">
       <Link
         to={linkTo}
+        onClick={handleLinkClick}
         class={cn(
           "group bg-card font-inter relative block h-12 w-full rounded-md text-sm whitespace-nowrap",
           "border-card-foreground/70 border backdrop-blur-sm",
