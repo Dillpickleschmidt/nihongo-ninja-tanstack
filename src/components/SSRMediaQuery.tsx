@@ -52,15 +52,26 @@ export function SSRMediaQuery(props: SSRMediaQueryProps) {
     return <Show when={mediaQuery()}>{props.children}</Show>
   }
 
-  // 2. Use isServer to conditionally render
-  return (
-    <Show
-      when={!isServer}
-      // On the server, render a simple div with Tailwind classes for visibility.
-      fallback={<div class={getSSRClasses()}>{props.children}</div>}
-    >
-      {/* On the client, render the fully reactive component. */}
-      <ClientSideRender />
-    </Show>
-  )
+  // For SSR, use mobile-first approach (assume smallest screen)
+  if (isServer) {
+    const shouldShowOnMobile = () => {
+      // If showFrom is specified, hide on mobile (show only from that breakpoint up)
+      if (props.showFrom) return false
+
+      // If hideFrom is specified, show on mobile (hide only from that breakpoint up)
+      if (props.hideFrom) return true
+
+      // Default: show
+      return true
+    }
+
+    if (shouldShowOnMobile()) {
+      return <div>{props.children}</div> // mobile variant - show children
+    } else {
+      return <div style="display: none;">{props.children}</div>
+    }
+  }
+
+  // Client-side: use proper media queries
+  return <ClientSideRender />
 }
