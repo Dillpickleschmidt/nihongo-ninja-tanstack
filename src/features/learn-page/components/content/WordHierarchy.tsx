@@ -1,8 +1,8 @@
 // features/learn-page/components/content/WordHierarchy.tsx
-import { createMemo, createResource, For, Show, createEffect } from "solid-js"
+import { createMemo, createResource, For, Show } from "solid-js"
 import { useLearnPageData } from "../../context/LearnPageDataContext"
+import { useAnimationManager } from "@/hooks/useAnimations"
 import { isServer } from "solid-js/web"
-import { useLocation } from "@tanstack/solid-router"
 import {
   HoverCard,
   HoverCardContent,
@@ -10,11 +10,6 @@ import {
 } from "@/components/ui/hover-card"
 import { Tabs, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { cn } from "@/utils"
-import { usePageTransition } from "@/context/TransitionContext"
-import {
-  createSlideWithFadeInAnimation,
-  prepareElementForEnter,
-} from "@/utils/animations"
 import type {
   FullHierarchyData,
   Kanji,
@@ -105,73 +100,14 @@ function enrichHierarchyWithProgress(
 }
 
 export function WordHierarchy(props: WordHierarchyProps) {
-  const location = useLocation()
-  const { shouldAnimate, animationTrigger } = usePageTransition()
   const { wordHierarchyData, chapterVocabulary, fsrsProgressData } =
     useLearnPageData()
+  const { animateOnDataChange } = useAnimationManager()
 
   const [progressResource] = createResource(
     () => (props.user ? fsrsProgressData : null),
     (promise) => promise,
   )
-
-  // Animation effect for blurred boxes
-  createEffect(() => {
-    animationTrigger()
-    if (location().pathname.includes("/learn") && shouldAnimate()) {
-      requestAnimationFrame(() => {
-        if (props.variant === "desktop") {
-          const topElement = document.querySelector(
-            "[data-word-hierarchy-progress]",
-          ) as HTMLElement
-          const bottomElement = document.querySelector(
-            "[data-word-hierarchy-content]",
-          ) as HTMLElement
-
-          if (topElement) {
-            prepareElementForEnter(topElement, "right", true)
-            setTimeout(() => {
-              createSlideWithFadeInAnimation(topElement, "right", {
-                withOpacity: true,
-              })
-            }, 100)
-          }
-
-          if (bottomElement) {
-            prepareElementForEnter(bottomElement, "right", true)
-            setTimeout(() => {
-              createSlideWithFadeInAnimation(bottomElement, "right", {
-                withOpacity: true,
-              })
-            }, 200)
-          }
-        } else if (props.variant === "mobile") {
-          const mobileProgressElement = document.querySelector(
-            "[data-word-hierarchy-progress]",
-          ) as HTMLElement
-          const mobileContentElement = document.querySelector(
-            "[data-word-hierarchy-content]",
-          ) as HTMLElement
-
-          if (mobileProgressElement) {
-            prepareElementForEnter(mobileProgressElement, "right", true)
-            createSlideWithFadeInAnimation(mobileProgressElement, "right", {
-              withOpacity: true,
-            })
-          }
-
-          if (mobileContentElement) {
-            prepareElementForEnter(mobileContentElement, "right", true)
-            setTimeout(() => {
-              createSlideWithFadeInAnimation(mobileContentElement, "right", {
-                withOpacity: true,
-              })
-            }, 100)
-          }
-        }
-      })
-    }
-  })
 
   const finalData = () => {
     const hierarchy = wordHierarchyData
@@ -184,8 +120,14 @@ export function WordHierarchy(props: WordHierarchyProps) {
     return enrichHierarchyWithProgress(hierarchy, progress)
   }
 
+  // Centralized animation management - trigger when hierarchy data changes
+  animateOnDataChange(
+    ["[data-word-hierarchy-progress]", "[data-word-hierarchy-content]"],
+    () => wordHierarchyData
+  )
+
   return (
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4" data-animate="word-hierarchy">
       <Show when={finalData()}>
         <WordHierarchyDisplay
           data={finalData()!}

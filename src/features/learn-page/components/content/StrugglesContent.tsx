@@ -2,6 +2,7 @@ import { For } from "solid-js"
 import { Brain } from "lucide-solid"
 import { cn } from "@/utils"
 import { useLearnPageData } from "../../context/LearnPageDataContext"
+import { useAnimationManager } from "@/hooks/useAnimations"
 
 interface StrugglesContentProps {
   variant?: "mobile" | "desktop"
@@ -12,6 +13,12 @@ export function StrugglesContent(props: StrugglesContentProps) {
   const { struggles } = useLearnPageData()
   const variant = props.variant || "desktop"
   const maxItems = props.maxItems || 5
+  const { animateOnDataChange } = useAnimationManager()
+
+  // Centralized animation management - trigger when struggles data changes (desktop only)
+  if (variant === "desktop") {
+    animateOnDataChange(['[data-animate="struggles"]'], () => struggles)
+  }
 
   if (variant === "mobile") {
     return (
@@ -54,7 +61,7 @@ export function StrugglesContent(props: StrugglesContentProps) {
   // Desktop variant
   return (
     <div
-      data-right-sidebar-struggles
+      data-animate="struggles"
       class="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/10 to-cyan-600/5 p-5 backdrop-blur-sm"
     >
       <div class="mb-4 flex items-center justify-between">

@@ -1,41 +1,22 @@
 // features/learn-page/components/content/LearningPathList.tsx
 import { For } from "solid-js"
 import { Link } from "@tanstack/solid-router"
-import { Transition } from "solid-transition-group"
 import { cn } from "@/utils"
-import { usePageTransition } from "@/context/TransitionContext"
-import { createSlideWithFadeInAnimation } from "@/utils/animations"
 import {
   getModuleIcon,
   type EnrichedLearningPathModule,
 } from "@/features/learn-page/utils/loader-helpers"
 import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
 
-const DIRECTION = "right" as const
-
 export function LearningPathList() {
-  const { shouldAnimate } = usePageTransition()
-
   return (
-    <Transition
-      onEnter={(element, done) => {
-        if (!shouldAnimate()) {
-          done()
-          return
-        }
-        createSlideWithFadeInAnimation(element as HTMLElement, DIRECTION).then(
-          () => done(),
-        )
-      }}
+    <div
+      data-lessons-section
+      data-transition-content
+      class="grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-2"
     >
-      <div
-        data-lessons-section
-        data-transition-content
-        class="grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-2"
-      >
-        <LessonsList />
-      </div>
-    </Transition>
+      <LessonsList />
+    </div>
   )
 }
 

@@ -1,12 +1,7 @@
 // src/routes/lessons.tsx
 import { createFileRoute, Outlet } from "@tanstack/solid-router"
-import { onMount } from "solid-js"
 import ContentBox from "@/components/ContentBox"
-import {
-  createSlideWithFadeInAnimation,
-  prepareElementForEnter,
-} from "@/utils/animations"
-import { usePageTransition } from "@/context/TransitionContext"
+import { useAnimationManager } from "@/hooks/useAnimations"
 import { BackgroundImage } from "@/components/BackgroundImage"
 import { Background } from "@/features/learn-page/components/shared/Background"
 
@@ -18,43 +13,12 @@ export const Route = createFileRoute("/lessons")({
   component: LessonsLayout,
 })
 
-const SELECTOR = "[data-lessons-layout]"
-const ENTER_DIRECTION = "up" as const
-const ENTER_DELAY = 100
-
 function LessonsLayout() {
   const { user } = Route.useLoaderData()()
-  const { shouldAnimate } = usePageTransition()
+  const { animateOnDataChange } = useAnimationManager()
 
-  onMount(() => {
-    console.log("[LessonsLayout] onMount called")
-    console.log("[LessonsLayout] shouldAnimate():", shouldAnimate())
-
-    // Only animate if we arrived here via navigation (not initial load or refresh)
-    if (shouldAnimate()) {
-      console.log(
-        "[LessonsLayout] Animation should run - looking for element:",
-        SELECTOR,
-      )
-      const element = document.querySelector(SELECTOR) as HTMLElement
-      if (element) {
-        console.log("[LessonsLayout] Element found, preparing animation")
-        prepareElementForEnter(element, ENTER_DIRECTION)
-
-        setTimeout(() => {
-          console.log("[LessonsLayout] Running slide animation")
-          createSlideWithFadeInAnimation(element, ENTER_DIRECTION)
-        }, ENTER_DELAY)
-      } else {
-        console.log(
-          "[LessonsLayout] Element NOT found with selector:",
-          SELECTOR,
-        )
-      }
-    } else {
-      console.log("[LessonsLayout] Animation should NOT run")
-    }
-  })
+  // Trigger slide up animation when user data loads
+  animateOnDataChange(["[data-lessons-layout]"], () => user)
 
   return (
     <div class="relative min-h-screen w-full overflow-y-auto">
@@ -81,7 +45,7 @@ function LessonsLayout() {
         backgroundImageOpacity={4}
       />
 
-      <div data-lesson-layout>
+      <div data-lessons-layout>
         <ContentBox user={user}>
           <Outlet />
         </ContentBox>

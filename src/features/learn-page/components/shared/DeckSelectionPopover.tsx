@@ -49,7 +49,7 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
       <PopoverTrigger>{props.children}</PopoverTrigger>
       <PopoverContent
         class={cn(
-          "border-card-foreground ![animation:none] !animate-none bg-neutral-950/70 p-2 backdrop-blur-2xl",
+          "border-card-foreground bg-neutral-950/70 p-2 backdrop-blur-2xl",
           props.popoverWidth || "w-[480px]",
         )}
       >

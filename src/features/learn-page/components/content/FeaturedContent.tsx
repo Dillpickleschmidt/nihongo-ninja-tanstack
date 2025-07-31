@@ -1,18 +1,14 @@
 // features/learn-page/components/content/FeaturedContent.tsx
-import { For, Show, createEffect } from "solid-js"
-import { Await, Link, useLocation } from "@tanstack/solid-router"
+import { For, Show } from "solid-js"
+import { Await, Link } from "@tanstack/solid-router"
 import { ArrowUpRight, Play } from "lucide-solid"
 import { cn } from "@/utils"
-import { usePageTransition } from "@/context/TransitionContext"
-import {
-  createSlideWithFadeInAnimation,
-  prepareElementForEnter,
-} from "@/utils/animations"
 import {
   getResourceIconComponent,
   type EnrichedExternalResource,
 } from "@/features/learn-page/utils/loader-helpers"
 import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
+import { useAnimationManager } from "@/hooks/useAnimations"
 
 const MOBILE_DIRECTION = "right" as const
 
@@ -51,21 +47,13 @@ function MobileFeaturedContent() {
 // ============================================================================
 
 function DesktopFeaturedContent() {
-  const location = useLocation()
-  const { shouldAnimate, animationTrigger } = usePageTransition()
-
-  // Animation Effects
-  createEffect(() => {
-    animationTrigger()
-    if (location().pathname.includes("/learn") && shouldAnimate()) {
-      requestAnimationFrame(() => {
-        animateFeaturedItems()
-      })
-    }
-  })
-
   return (
-    <div data-content-section data-transition-content class="space-y-1">
+    <div
+      data-content-section
+      data-transition-content
+      class="space-y-1"
+      data-animate="featured-content"
+    >
       <FeaturedContentHeader />
       <FeaturedContentGrid />
     </div>
@@ -73,25 +61,8 @@ function DesktopFeaturedContent() {
 }
 
 // ============================================================================
-// Animation Utilities
+// Header and Grid Components
 // ============================================================================
-
-function animateFeaturedItems() {
-  const featuredItems = document.querySelectorAll(
-    "[data-featured-content-item]",
-  ) as NodeListOf<HTMLElement>
-
-  featuredItems.forEach((item) => {
-    prepareElementForEnter(item, "left", true)
-    setTimeout(() => {
-      createSlideWithFadeInAnimation(item, "left", {
-        withOpacity: true,
-      })
-    }, 100)
-  })
-}
-
-// Rest of the components remain the same...
 function FeaturedContentHeader() {
   return (
     <div class="flex items-center justify-between px-8">
@@ -110,6 +81,10 @@ function FeaturedContentHeader() {
 function FeaturedContentGrid() {
   const data = useLearnPageData()
   const resourcesArray = () => Object.values(data.externalResources)
+  const { animateOnDataChange } = useAnimationManager()
+
+  // Centralized animation management - trigger when resources change
+  animateOnDataChange(["[data-featured-content-item]"], resourcesArray)
 
   return (
     <div class="mx-7 flex gap-6 overflow-x-auto px-1 pt-3 pb-3">
@@ -182,7 +157,7 @@ function FeaturedResourceCardContent(props: {
   return (
     <div
       data-featured-content-item
-      class="relative h-40 w-[220px] overflow-hidden rounded-2xl border border-white/10 backdrop-blur-sm transition-all duration-300 hover:shadow-xl"
+      class="relative h-40 w-[220px] overflow-hidden rounded-2xl border border-white/10 backdrop-blur-sm hover:shadow-xl"
       style={{ "background-image": props.resource.gradientStyle }}
     >
       {props.thumbnailUrl && (

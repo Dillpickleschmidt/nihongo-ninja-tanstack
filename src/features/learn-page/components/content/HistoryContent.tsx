@@ -1,13 +1,9 @@
-import { For, createEffect } from "solid-js"
+// features/learn-page/components/content/HistoryContent.tsx
+import { For } from "solid-js"
 import { Clock } from "lucide-solid"
-import { useLocation } from "@tanstack/solid-router"
 import { cn } from "@/utils"
 import { useLearnPageData } from "../../context/LearnPageDataContext"
-import { usePageTransition } from "@/context/TransitionContext"
-import {
-  createSlideWithFadeInAnimation,
-  prepareElementForEnter,
-} from "@/utils/animations"
+import { useAnimationManager } from "@/hooks/useAnimations"
 
 interface HistoryContentProps {
   variant?: "mobile" | "desktop"
@@ -17,31 +13,14 @@ interface HistoryContentProps {
 
 export function HistoryContent(props: HistoryContentProps) {
   const { historyItems } = useLearnPageData()
-  const location = useLocation()
-  const { shouldAnimate, animationTrigger } = usePageTransition()
   const variant = props.variant || "desktop"
   const maxItems = props.maxItems || (variant === "mobile" ? undefined : 4)
+  const { animateOnDataChange } = useAnimationManager()
 
-  // Animation effect for desktop variant
-  createEffect(() => {
-    animationTrigger()
-    if (location().pathname.includes("/learn") && shouldAnimate() && variant === "desktop") {
-      requestAnimationFrame(() => {
-        const historyItems = document.querySelectorAll(
-          "[data-history-content-item]",
-        ) as NodeListOf<HTMLElement>
-
-        historyItems.forEach((item, index) => {
-          prepareElementForEnter(item, "left", true)
-          setTimeout(() => {
-            createSlideWithFadeInAnimation(item, "left", {
-              withOpacity: true,
-            })
-          }, 100 + (index * 50))
-        })
-      })
-    }
-  })
+  // Centralized animation management - trigger when history items change (desktop only)
+  if (variant === "desktop") {
+    animateOnDataChange(["[data-history-content-item]"], () => historyItems)
+  }
 
   if (variant === "mobile") {
     return (
@@ -79,7 +58,7 @@ export function HistoryContent(props: HistoryContentProps) {
 
   // Desktop variant
   return (
-    <div class="space-y-3">
+    <div class="space-y-3" data-animate="history-content">
       <div class="flex items-center gap-2">
         <Clock class="h-5 w-5 text-green-400" />
         <h3 class="text-lg font-semibold">Recent Activity</h3>
@@ -108,7 +87,7 @@ function RecentActivityCard(props: {
       class={cn(
         "rounded-lg border border-white/10 p-3",
         "bg-gradient-to-br from-gray-600/10 to-slate-600/5 backdrop-blur-sm",
-        "transition-all duration-200 hover:scale-[1.01] hover:shadow-lg",
+        "hover:scale-[1.01] hover:shadow-lg",
       )}
     >
       <div class="flex items-center gap-3">
@@ -132,4 +111,3 @@ function RecentActivityCard(props: {
     </div>
   )
 }
-

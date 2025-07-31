@@ -17,7 +17,6 @@ import {
 import { getCookie } from "@/utils/cookie-utils"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { getUser } from "@/features/supabase/getUser"
-import { TransitionProvider } from "@/context/TransitionContext"
 import { SettingsProvider } from "@/context/SettingsContext"
 import {
   getInitialUserPreferencesFromCookieServerFn,
@@ -107,11 +106,9 @@ function RootComponent() {
           userPreferencesDBPromise={userPreferencesDBPromise}
           deviceUISettings={deviceUISettings}
         >
-          <TransitionProvider>
-            <Scripts />
-            <Outlet />
-            <TanStackRouterDevtools />
-          </TransitionProvider>
+          <Scripts />
+          <Outlet />
+          <TanStackRouterDevtools />
         </SettingsProvider>
       </ColorModeProvider>
     </>

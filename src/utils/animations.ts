@@ -154,3 +154,37 @@ export function prepareElementForEnter(
     element.style.opacity = "0"
   }
 }
+
+// Animation configuration for component-specific animations
+const COMPONENT_ANIMATION_CONFIG = {
+  "[data-word-hierarchy-progress]": { direction: "right" as const, offset: 100 },
+  "[data-word-hierarchy-content]": { direction: "right" as const, offset: 200 },
+  "[data-history-content-item]": { direction: "left" as const, offset: 100 },
+  "[data-featured-content-item]": { direction: "left" as const, offset: 100 },
+  '[data-animate="struggles"]': { direction: "left" as const, offset: 200 },
+  "[data-lessons-layout]": { direction: "up" as const, offset: 100 },
+} as const
+
+// Utility function for components to trigger their own animations
+export function triggerComponentAnimations(selectors: string[]) {
+  selectors.forEach((selector) => {
+    const config = COMPONENT_ANIMATION_CONFIG[selector as keyof typeof COMPONENT_ANIMATION_CONFIG]
+    if (!config) return
+
+    const elements = document.querySelectorAll(selector) as NodeListOf<HTMLElement>
+    elements.forEach((element) => {
+      if (element) {
+        prepareElementForEnter(element, config.direction, true)
+
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            createSlideWithFadeInAnimation(element, config.direction, {
+              duration: ANIMATION_CONFIG.duration,
+              withOpacity: true,
+            })
+          }, config.offset)
+        })
+      }
+    })
+  })
+}
