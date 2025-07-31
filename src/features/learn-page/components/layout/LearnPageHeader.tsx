@@ -4,6 +4,14 @@ import { createSignal } from "solid-js"
 import { useSettings } from "@/context/SettingsContext"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
 import type { User } from "@supabase/supabase-js"
 import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
@@ -29,7 +37,7 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
         "active-textbook": textbookId,
         "active-deck": deck.slug,
       })
-      
+
       // Then navigate to new route
       navigate({
         to: "/learn/$textbookId/$chapterSlug",
@@ -88,25 +96,10 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
 
   if (props.variant === "mobile") {
     return (
-      <div class="grid grid-cols-3 pt-10 text-xl font-bold xl:pt-12 xl:text-2xl">
-        <Link to="/" class="-mt-2 pl-8 xl:-mt-3 xl:pl-10">
-          <Avatar class="h-11 w-11 xl:h-12 xl:w-12">
-            <AvatarImage src="/icons/ninja.png" class="h-full w-full" />
-            <AvatarFallback>N</AvatarFallback>
-          </Avatar>
-        </Link>
-
-        <div class="flex justify-center">
-          <DeckSelectionPopover
-            activeTextbookId={activeTextbookId}
-            activeDeck={activeDeck}
-            onDeckChange={handleDeckChange}
-            isOpen={isPopoverOpen()}
-            onOpenChange={setIsPopoverOpen}
-            popoverWidth="w-[480px]"
-          >
-            <div class="hover:bg-card-foreground/40 -mt-0.5 flex min-w-[200px] items-center justify-center space-x-2 rounded-md border-none px-3 py-2 text-center text-lg font-semibold hover:cursor-pointer md:text-xl xl:-mt-1 xl:text-2xl">
-              <span>{activeDeck.title}</span>
+      <Sheet>
+        <div class="grid grid-cols-3 pt-5 pb-3 text-xl font-bold">
+          <div class="flex justify-center">
+            <SheetTrigger>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -115,32 +108,66 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="size-4 opacity-50"
+                class="h-6 w-6"
               >
-                <path d="M8 9l4 -4l4 4" />
-                <path d="M16 15l-4 4l-4 -4" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
               </svg>
-            </div>
-          </DeckSelectionPopover>
-        </div>
+            </SheetTrigger>
+          </div>
 
-        <div class="flex justify-end pr-6 xl:pr-8">
-          <div class="min-w-20 text-center xl:min-w-24">
-            {!props.user ? (
-              <Button
-                as={Link}
-                to="/auth"
-                variant="link"
-                class="italic xl:text-base"
-              >
-                Sign In
-              </Button>
-            ) : (
-              <DueCardsDisplay />
-            )}
+          <div class="flex justify-center">
+            <DeckSelectionPopover
+              activeTextbookId={activeTextbookId}
+              activeDeck={activeDeck}
+              onDeckChange={handleDeckChange}
+              isOpen={isPopoverOpen()}
+              onOpenChange={setIsPopoverOpen}
+              popoverWidth="w-[350px]"
+            >
+              <div class="hover:bg-card-foreground/40 -mt-0.5 flex min-w-[150px] items-center justify-center space-x-2 rounded-md border-none px-3 py-2 text-center text-lg font-semibold hover:cursor-pointer md:text-xl">
+                <span>{activeDeck.title}</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="size-4 opacity-50"
+                >
+                  <path d="M8 9l4 -4l4 4" />
+                  <path d="M16 15l-4 4l-4 -4" />
+                </svg>
+              </div>
+            </DeckSelectionPopover>
+          </div>
+
+          <div class="flex justify-center">
+            <div class="min-w-20 text-center">
+              {!props.user ? (
+                <Button as={Link} to="/auth" variant="link" class="italic">
+                  Sign In
+                </Button>
+              ) : (
+                <DueCardsDisplay />
+              )}
+            </div>
           </div>
         </div>
-      </div>
+
+        <SheetContent position="left">
+          <SheetHeader>
+            <SheetTitle>Are you sure absolutely sure?</SheetTitle>
+            <SheetDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </SheetDescription>
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
     )
   }
 

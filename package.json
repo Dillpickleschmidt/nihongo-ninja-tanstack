@@ -16,7 +16,7 @@
     "@fontsource-variable/inter": "^5.2.6",
     "@fontsource-variable/noto-sans-jp": "^5.2.6",
     "@fontsource/poppins": "^5.2.6",
-    "@kobalte/core": "^0.13.10",
+    "@kobalte/core": "^0.13.11",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.52.0",
     "@tailwindcss/postcss": "^4.1.11",

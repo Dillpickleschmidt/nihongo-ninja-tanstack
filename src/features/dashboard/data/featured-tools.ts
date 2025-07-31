@@ -3,7 +3,7 @@ import type { Tool } from "../types"
 export const featuredTools: Tool[] = [
   {
     title: "Vocab Decks",
-    description: "Practice vocabulary both quickly and with spaced repetition",
+    description: "Practice vocabulary short-term and long-term",
     icon: "📚",
     href: "/vocab",
     gradient: "from-blue-400 to-blue-600",

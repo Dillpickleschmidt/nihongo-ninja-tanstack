@@ -11,6 +11,7 @@ interface FeaturedToolsSectionProps {
 export function FeaturedToolsSection(props: FeaturedToolsSectionProps) {
   return (
     <>
+      {/* Desktop */}
       <SSRMediaQuery showFrom="md">
         <div class="container pb-16">
           <h1
@@ -38,6 +39,7 @@ export function FeaturedToolsSection(props: FeaturedToolsSectionProps) {
         </div>
       </SSRMediaQuery>
 
+      {/* Mobile */}
       <SSRMediaQuery hideFrom="md">
         <div class="py-4">
           <h1
@@ -47,7 +49,7 @@ export function FeaturedToolsSection(props: FeaturedToolsSectionProps) {
                 : "translate-y-8 opacity-0"
             }`}
           >
-            Learning Tools
+            Dashboard
           </h1>
 
           <div class="space-y-4 px-4">

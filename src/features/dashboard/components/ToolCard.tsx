@@ -57,7 +57,7 @@ export function MobileCard(props: MobileCardProps) {
   return (
     <a
       href={props.tool.href}
-      class={`group block bg-gradient-to-r ${props.tool.gradient} rounded-xl px-6 py-4 text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${
+      class={`group block bg-gradient-to-r ${props.tool.gradient} flex h-26 flex-col justify-center rounded-xl px-6 text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${
         props.animated()
           ? "translate-y-0 opacity-100"
           : "translate-y-4 opacity-0"
