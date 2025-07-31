@@ -1,8 +1,7 @@
 // features/learn-page/components/content/FeaturedContent.tsx
-import { For, Show, onMount, createEffect, createSignal } from "solid-js"
+import { For, Show, createEffect } from "solid-js"
 import { Await, Link, useLocation } from "@tanstack/solid-router"
 import { ArrowUpRight, Play } from "lucide-solid"
-import { Transition } from "solid-transition-group"
 import { cn } from "@/utils"
 import { usePageTransition } from "@/context/TransitionContext"
 import {
@@ -13,7 +12,6 @@ import {
   getResourceIconComponent,
   type EnrichedExternalResource,
 } from "@/features/learn-page/utils/loader-helpers"
-import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
 
 const MOBILE_DIRECTION = "right" as const
@@ -55,20 +53,11 @@ function MobileFeaturedContent() {
 function DesktopFeaturedContent() {
   const location = useLocation()
   const { shouldAnimate, animationTrigger } = usePageTransition()
-  const [isClient, setIsClient] = createSignal(false)
-
-  onMount(() => {
-    setIsClient(true)
-  })
 
   // Animation Effects
   createEffect(() => {
     animationTrigger()
-    if (
-      location().pathname.includes("/learn") &&
-      shouldAnimate() &&
-      isClient()
-    ) {
+    if (location().pathname.includes("/learn") && shouldAnimate()) {
       requestAnimationFrame(() => {
         animateFeaturedItems()
       })
@@ -76,23 +65,10 @@ function DesktopFeaturedContent() {
   })
 
   return (
-    <Transition
-      onEnter={(element, done) => {
-        if (!shouldAnimate()) {
-          done()
-          return
-        }
-        createSlideWithFadeInAnimation(
-          element as HTMLElement,
-          MOBILE_DIRECTION,
-        ).then(() => done())
-      }}
-    >
-      <div data-content-section data-transition-content class="space-y-1">
-        <FeaturedContentHeader />
-        <FeaturedContentGrid />
-      </div>
-    </Transition>
+    <div data-content-section data-transition-content class="space-y-1">
+      <FeaturedContentHeader />
+      <FeaturedContentGrid />
+    </div>
   )
 }
 
@@ -201,7 +177,7 @@ function FeaturedResourceCardContent(props: {
   resource: EnrichedExternalResource
   thumbnailUrl?: string | null
 }) {
-  const Icon = getResourceIconComponent(props.resource.iconType)
+  const Icon = getResourceIconComponent(props.resource.resource_type)
 
   return (
     <div
@@ -233,12 +209,12 @@ function FeaturedResourceCardContent(props: {
             {props.resource.truncatedTitle}
           </h3>
           <div class="flex items-center gap-2">
-            <span class="rounded-full bg-white/20 px-2 py-1 text-[11px] text-white/80 capitalize backdrop-blur-sm">
+            <span class="rounded-full bg-neutral-600 px-2 py-1 text-[11px] text-white/80 capitalize">
               {props.resource.resource_type.replace("_", " ")}
             </span>
             <span
               class={cn(
-                "rounded-full px-2 py-1 text-[11px] backdrop-blur-sm",
+                "rounded-full px-2 py-1 text-[11px]",
                 props.resource.difficultyColorClass,
               )}
             >

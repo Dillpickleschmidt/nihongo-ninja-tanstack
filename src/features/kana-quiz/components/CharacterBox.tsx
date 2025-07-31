@@ -1,6 +1,6 @@
 // src/features/kana-quiz/components/CharacterBox.tsx
 import { JSX } from "solid-js"
-import { SmoothCard } from "@/features/dashboard/components/shared/SmoothCard"
+import { SmoothCard } from "@/features/learn-page/components/shared/SmoothCard"
 
 type CharacterBoxProps = {
   character: string

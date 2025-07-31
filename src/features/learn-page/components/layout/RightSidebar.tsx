@@ -17,7 +17,7 @@ export function RightSidebar(props: RightSidebarProps) {
   const location = useLocation()
   const { shouldAnimate, animationTrigger } = usePageTransition()
 
-  // Animate individual right sidebar sections with staggered timing
+  // Animate struggles section
   createEffect(() => {
     animationTrigger()
     if (
@@ -29,22 +29,6 @@ export function RightSidebar(props: RightSidebarProps) {
         const strugglesElement = document.querySelector(
           "[data-right-sidebar-struggles]",
         ) as HTMLElement
-        // const studyTimeElement = document.querySelector(
-        //   "[data-right-sidebar-study-time]",
-        // ) as HTMLElement
-
-        // Recent Activities - 100ms delay
-        const activitiesElements = document.querySelectorAll(
-          "[data-right-sidebar-activities]",
-        ) as NodeListOf<HTMLElement>
-        activitiesElements.forEach((element) => {
-          prepareElementForEnter(element, "left", true)
-          setTimeout(() => {
-            createSlideWithFadeInAnimation(element, "left", {
-              withOpacity: true,
-            })
-          }, 100)
-        })
 
         // Struggles - 200ms delay
         if (strugglesElement) {
@@ -55,16 +39,6 @@ export function RightSidebar(props: RightSidebarProps) {
             })
           }, 200)
         }
-
-        // Study Time - 300ms delay
-        // if (studyTimeElement) {
-        //   prepareElementForEnter(studyTimeElement, "left", true)
-        //   setTimeout(() => {
-        //     createSlideWithFadeInAnimation(studyTimeElement, "left", {
-        //       withOpacity: true,
-        //     })
-        //   }, 300)
-        // }
       })
     }
   })

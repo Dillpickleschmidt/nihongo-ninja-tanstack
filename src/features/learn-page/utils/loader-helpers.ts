@@ -95,13 +95,13 @@ function getResourceDifficultyColorClass(
 ): string {
   switch (difficulty) {
     case "easy":
-      return "bg-green-500/30 text-green-100"
+      return "bg-green-800 text-green-100 saturate-[75%]"
     case "medium":
-      return "bg-yellow-500/30 text-yellow-100"
+      return "bg-yellow-800 text-yellow-100 saturate-[75%]"
     case "hard":
-      return "bg-red-500/30 text-red-100"
+      return "bg-red-800 text-red-100 saturate-[75%]"
     default:
-      return "bg-gray-500/30 text-gray-100"
+      return "bg-gray-800 text-gray-100 saturate-[75%]"
   }
 }
 

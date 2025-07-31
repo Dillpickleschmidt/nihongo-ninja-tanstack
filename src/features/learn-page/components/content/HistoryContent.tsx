@@ -1,7 +1,9 @@
-import { For } from "solid-js"
+import { For, createEffect } from "solid-js"
 import { Clock } from "lucide-solid"
+import { useLocation } from "@tanstack/solid-router"
 import { cn } from "@/utils"
 import { useLearnPageData } from "../../context/LearnPageDataContext"
+import { usePageTransition } from "@/context/TransitionContext"
 import {
   createSlideWithFadeInAnimation,
   prepareElementForEnter,
@@ -15,8 +17,31 @@ interface HistoryContentProps {
 
 export function HistoryContent(props: HistoryContentProps) {
   const { historyItems } = useLearnPageData()
+  const location = useLocation()
+  const { shouldAnimate, animationTrigger } = usePageTransition()
   const variant = props.variant || "desktop"
   const maxItems = props.maxItems || (variant === "mobile" ? undefined : 4)
+
+  // Animation effect for desktop variant
+  createEffect(() => {
+    animationTrigger()
+    if (location().pathname.includes("/learn") && shouldAnimate() && variant === "desktop") {
+      requestAnimationFrame(() => {
+        const historyItems = document.querySelectorAll(
+          "[data-history-content-item]",
+        ) as NodeListOf<HTMLElement>
+
+        historyItems.forEach((item, index) => {
+          prepareElementForEnter(item, "left", true)
+          setTimeout(() => {
+            createSlideWithFadeInAnimation(item, "left", {
+              withOpacity: true,
+            })
+          }, 100 + (index * 50))
+        })
+      })
+    }
+  })
 
   if (variant === "mobile") {
     return (
@@ -79,7 +104,7 @@ function RecentActivityCard(props: {
 }) {
   return (
     <div
-      data-right-sidebar-activities
+      data-history-content-item
       class={cn(
         "rounded-lg border border-white/10 p-3",
         "bg-gradient-to-br from-gray-600/10 to-slate-600/5 backdrop-blur-sm",
