@@ -43,7 +43,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
             params: { practiceID: props.deck.id },
           })
         }}
-        class="relative w-full overflow-hidden text-xs"
+        class="bg-card-foreground text-primary relative w-full overflow-hidden text-xs"
       >
         <div class="relative flex w-full items-center justify-center">
           <div

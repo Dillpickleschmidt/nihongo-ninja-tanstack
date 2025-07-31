@@ -49,7 +49,7 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
       <PopoverTrigger>{props.children}</PopoverTrigger>
       <PopoverContent
         class={cn(
-          "border-card-foreground bg-neutral-950/70 p-2 backdrop-blur-2xl",
+          "border-card-foreground ![animation:none] !animate-none bg-neutral-950/70 p-2 backdrop-blur-2xl",
           props.popoverWidth || "w-[480px]",
         )}
       >
@@ -60,7 +60,7 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
                 <button
                   onClick={() => handleTextbookSelect(textbookId)}
                   class={cn(
-                    "hover:bg-primary/15 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-medium transition-colors",
+                    "hover:bg-primary/15 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-medium",
                     displayedTextbookId() === textbookId && "bg-primary/10",
                   )}
                 >
@@ -78,7 +78,7 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
                       <button
                         onClick={() => handleDeckChange(textbookId, deck)}
                         class={cn(
-                          "hover:bg-card-foreground/40 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal transition-colors",
+                          "hover:bg-card-foreground/40 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal",
                           props.activeDeck.id === deck.id &&
                             "bg-primary/10 hover:bg-primary/15 font-semibold",
                         )}

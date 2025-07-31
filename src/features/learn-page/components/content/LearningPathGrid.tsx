@@ -31,7 +31,7 @@ export function LearningPathGrid() {
       <div
         data-lessons-section
         data-transition-content
-        class="grid grid-cols-2 gap-6 md:grid-cols-3"
+        class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
       >
         <GridLessonsList />
       </div>

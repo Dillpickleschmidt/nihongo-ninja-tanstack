@@ -10,15 +10,18 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
 } from "@/components/ui/sheet"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
+import { MobileNavigationSheet } from "./MobileNavigationSheet"
 import type { User } from "@supabase/supabase-js"
+import type { MobileContentView } from "./LearnPageContent"
 import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
 
 interface LearnPageHeaderProps {
   user: User | null
   variant: "mobile" | "desktop"
+  mobileContentView?: MobileContentView
+  setMobileContentView?: (view: MobileContentView) => void
 }
 
 export function LearnPageHeader(props: LearnPageHeaderProps) {
@@ -98,7 +101,7 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
     return (
       <Sheet>
         <div class="grid grid-cols-3 pt-5 pb-3 text-xl font-bold">
-          <div class="flex justify-center">
+          <div class="ml-8 flex">
             <SheetTrigger>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -158,14 +161,17 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
           </div>
         </div>
 
-        <SheetContent position="left">
+        <SheetContent
+          class="data-[closed=]:duration-300 data-[expanded=]:duration-200"
+          position="left"
+        >
           <SheetHeader>
-            <SheetTitle>Are you sure absolutely sure?</SheetTitle>
-            <SheetDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </SheetDescription>
+            <SheetTitle>Navigation</SheetTitle>
           </SheetHeader>
+          <MobileNavigationSheet
+            activeView={props.mobileContentView || "learning-path"}
+            setActiveView={props.setMobileContentView}
+          />
         </SheetContent>
       </Sheet>
     )

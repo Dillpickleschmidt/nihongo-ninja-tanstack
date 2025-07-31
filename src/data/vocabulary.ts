@@ -12355,7 +12355,7 @@ export const vocabulary: VocabularyCollection = {
         english: ["I drink ", { t: "black tea" }, " three times a week."],
         japanese: [
           { t: "紅茶[こうちゃ]" },
-          "は 一週間[いっしゅうかん]に 三回[さんかい] 飲[の]みます。",
+          "を一週間[いっしゅうかん]に 三回[さんかい] 飲[の]みます。",
         ],
       },
     ],

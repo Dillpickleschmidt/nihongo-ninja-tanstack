@@ -18,19 +18,33 @@ import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataCon
 
 const MOBILE_DIRECTION = "right" as const
 
-export function FeaturedContent() {
-  return (
-    <>
-      {/* Mobile Layout - Empty Placeholder */}
-      <SSRMediaQuery hideFrom="xl">
-        <div />
-      </SSRMediaQuery>
+interface FeaturedContentProps {
+  variant?: "mobile" | "desktop"
+}
 
-      {/* Desktop Layout */}
-      <SSRMediaQuery showFrom="xl">
-        <DesktopFeaturedContent />
-      </SSRMediaQuery>
-    </>
+export function FeaturedContent(props: FeaturedContentProps = {}) {
+  const variant = props.variant || "desktop"
+
+  if (variant === "mobile") {
+    return <MobileFeaturedContent />
+  }
+
+  return <DesktopFeaturedContent />
+}
+
+// ============================================================================
+// Mobile Implementation
+// ============================================================================
+
+function MobileFeaturedContent() {
+  return (
+    <div class="px-6 py-4">
+      <div class="mb-4">
+        <h2 class="text-xl font-bold">Featured Content</h2>
+        <p class="text-muted-foreground">You might enjoy</p>
+      </div>
+      <MobileFeaturedContentGrid />
+    </div>
   )
 }
 
@@ -234,5 +248,88 @@ function FeaturedResourceCardContent(props: {
         </div>
       </div>
     </div>
+  )
+}
+
+function MobileFeaturedContentGrid() {
+  const data = useLearnPageData()
+  const resourcesArray = () => Object.values(data.externalResources)
+
+  return (
+    <div class="grid grid-cols-1 gap-4">
+      <For each={resourcesArray()}>
+        {(resource, index) => {
+          const thumbnailDeferredPromise = data.deferredThumbnails[index()]
+          return (
+            <Show
+              when={thumbnailDeferredPromise}
+              fallback={<MobileFeaturedResourceCard resource={resource} />}
+            >
+              <Await promise={thumbnailDeferredPromise}>
+                {(thumbnailData) => (
+                  <MobileFeaturedResourceCard
+                    resource={resource}
+                    thumbnailUrl={thumbnailData?.thumbnailUrl}
+                  />
+                )}
+              </Await>
+            </Show>
+          )
+        }}
+      </For>
+    </div>
+  )
+}
+
+function MobileFeaturedResourceCard(props: {
+  resource: EnrichedExternalResource
+  thumbnailUrl?: string | null
+}) {
+  const IconComponent = getResourceIconComponent(props.resource.resource_type)
+
+  return (
+    <Link
+      href={props.resource.link}
+      target="_blank"
+      class="bg-card hover:bg-card/90 group flex items-center gap-4 rounded-2xl p-4 shadow-sm transition-colors"
+    >
+      <div class="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg">
+        <Show
+          when={props.thumbnailUrl}
+          fallback={
+            <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
+              <IconComponent class="h-8 w-8 text-white" />
+            </div>
+          }
+        >
+          <img
+            src={props.thumbnailUrl!}
+            alt={props.resource.title}
+            class="h-full w-full object-cover"
+          />
+        </Show>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h3 class="text-foreground group-hover:text-primary text-base font-semibold transition-colors">
+          {props.resource.truncatedTitle}
+        </h3>
+        <div class="mt-1 flex items-center gap-2">
+          <span class="text-muted-foreground text-sm capitalize">
+            {props.resource.resource_type.replace("_", " ")}
+          </span>
+          <span
+            class={cn(
+              "rounded-full px-2 py-1 text-xs font-medium",
+              props.resource.difficultyColorClass,
+            )}
+          >
+            {props.resource.difficulty_rating}
+          </span>
+        </div>
+      </div>
+
+      <ArrowUpRight class="text-muted-foreground group-hover:text-primary h-5 w-5 transition-colors" />
+    </Link>
   )
 }

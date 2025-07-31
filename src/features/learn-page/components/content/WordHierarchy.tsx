@@ -316,7 +316,7 @@ function ProgressCircleTrigger(props: {
       <HoverCardTrigger as="div">
         <TabsTrigger
           value={props.value}
-          class="flex h-auto w-full flex-col items-center gap-0.5 rounded-xl p-1.5 data-[selected]:bg-white/5"
+          class="flex h-auto w-full flex-col items-center gap-0.5 rounded-xl p-1.5 hover:bg-white/5 data-[selected]:bg-white/5"
         >
           <div class="relative h-15 w-15">
             <svg class="h-full w-full" viewBox="0 0 56 56">
