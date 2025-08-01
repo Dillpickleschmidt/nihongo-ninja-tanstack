@@ -13,11 +13,7 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
-    "SUPABASE_ANON_KEY": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "SUPABASE_JWT_SECRET": {
+    "SUPABASE_PUBLISHABLE_OR_ANON_KEY": {
       "type": "sst.sst.Secret"
       "value": string
     }

@@ -1,6 +1,6 @@
 // features/user-settings/server/server-functions.ts
 import { createServerFn } from "@tanstack/solid-start"
-import { getUserSSR } from "@/features/supabase/getUserSSR"
+import { getUser } from "@/features/supabase/getUser"
 import { z } from "zod"
 import {
   getUserPreferencesFromDB,
@@ -21,7 +21,7 @@ const preferencesValidator = z.object({ preferences: UserPreferencesSchema })
 export const getInitialUserPreferencesFromCookieServerFn = createServerFn({
   method: "GET",
 }).handler(async () => {
-  const { user } = await getUserSSR()
+  const { user } = await getUser()
   if (!user) return _getDefaultPreferences()
 
   const cookieData = _getUserPreferencesCookie()
@@ -32,7 +32,7 @@ export const getInitialUserPreferencesFromCookieServerFn = createServerFn({
 export const getUserPreferencesFromDBServerFn = createServerFn({
   method: "GET",
 }).handler(async () => {
-  const { user } = await getUserSSR()
+  const { user } = await getUser()
   if (!user) return _getDefaultPreferences()
 
   return await getUserPreferencesFromDB(user.id)
@@ -44,7 +44,7 @@ export const revalidateUserPreferencesCookieServerFn = createServerFn({
 })
   .validator((input: any) => preferencesValidator.parse(input))
   .handler(async ({ data }) => {
-    const { user } = await getUserSSR()
+    const { user } = await getUser()
     if (!user) return { success: true }
 
     _setUserPreferencesCookie(data.preferences)
@@ -57,7 +57,7 @@ export const mutateUserPreferencesServerFn = createServerFn({
 })
   .validator((input: any) => preferencesValidator.parse(input))
   .handler(async ({ data }) => {
-    const { user } = await getUserSSR()
+    const { user } = await getUser()
     const preferencesWithTimestamp = _addTimestamp(data.preferences)
 
     if (!user) {

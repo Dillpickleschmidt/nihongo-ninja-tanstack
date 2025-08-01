@@ -13,8 +13,9 @@ export default $config({
     const secrets = {
       SECRET_VAL: new sst.Secret("SECRET_VAL"),
       SUPABASE_URL: new sst.Secret("SUPABASE_URL"),
-      SUPABASE_ANON_KEY: new sst.Secret("SUPABASE_ANON_KEY"),
-      SUPABASE_JWT_SECRET: new sst.Secret("SUPABASE_JWT_SECRET"),
+      SUPABASE_PUBLISHABLE_OR_ANON_KEY: new sst.Secret(
+        "SUPABASE_PUBLISHABLE_OR_ANON_KEY",
+      ),
     }
     const allSecrets = Object.values(secrets)
 

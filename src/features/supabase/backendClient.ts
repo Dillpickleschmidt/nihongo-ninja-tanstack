@@ -1,12 +1,19 @@
 // backendClient.ts
-import { createServerClient, parseCookieHeader } from "@supabase/ssr"
-import { getRequestHeader } from "@tanstack/solid-start/server"
+import {
+  createServerClient,
+  parseCookieHeader,
+  serializeCookieHeader,
+} from "@supabase/ssr"
+import {
+  getRequestHeader,
+  setResponseHeader,
+} from "@tanstack/solid-start/server"
 import { serverOnly } from "@tanstack/solid-start"
 import { Resource } from "sst"
 
 export const createBackendClient = serverOnly(() => {
   const supabaseUrl = Resource.SUPABASE_URL.value
-  const supabaseAnonKey = Resource.SUPABASE_ANON_KEY.value
+  const supabaseAnonKey = Resource.SUPABASE_PUBLISHABLE_OR_ANON_KEY.value
 
   if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error(
@@ -15,8 +22,6 @@ export const createBackendClient = serverOnly(() => {
   }
 
   const cookieHeader = getRequestHeader("Cookie") ?? ""
-
-  // let logged = false
 
   const clientInstance = createServerClient<Database>(
     supabaseUrl,
@@ -33,8 +38,20 @@ export const createBackendClient = serverOnly(() => {
           })
           return supabaseCookies
         },
-        setAll() {
-          // do not let Supabase SSR client set or clear cookies
+        setAll(cookiesToSet) {
+          const cookieHeaders = cookiesToSet.map(({ name, value, options }) => {
+            return serializeCookieHeader(name, value, {
+              ...options,
+              httpOnly: false, // Auth tokens need to be accessible to getClaims()
+              secure: true,
+              sameSite: "lax",
+            })
+          })
+
+          // Set all cookies as an array
+          if (cookieHeaders.length > 0) {
+            setResponseHeader("Set-Cookie", cookieHeaders)
+          }
         },
       },
     },

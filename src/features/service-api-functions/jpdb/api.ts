@@ -1,7 +1,7 @@
 // features/service-config/jpdb/api.ts
 import { createServerFn } from "@tanstack/solid-start"
 import { z } from "zod"
-import { getUserSSR } from "@/features/supabase/getUserSSR"
+import { getUser } from "@/features/supabase/getUser"
 import { getInitialUserPreferencesFromCookieServerFn } from "@/features/main-cookies/server/server-functions"
 
 const serviceSchema = z.enum(["anki", "wanikani", "jpdb"])
@@ -46,7 +46,7 @@ export const fetchServiceDataWithAuth = createServerFn()
 export const fetchJPDBUserDecks = createServerFn()
   .validator(apiKeySchema)
   .handler(async ({ data }) => {
-    const { user } = await getUserSSR()
+    const { user } = await getUser()
     if (!user) {
       throw new Error("User not authenticated")
     }
@@ -72,7 +72,7 @@ export const fetchJPDBUserDecks = createServerFn()
 export const fetchJPDBSpecialDecks = createServerFn()
   .validator(apiKeySchema)
   .handler(async ({ data }) => {
-    const { user } = await getUserSSR()
+    const { user } = await getUser()
     if (!user) {
       throw new Error("User not authenticated")
     }
@@ -102,7 +102,7 @@ export const fetchJPDBDeckVocabulary = createServerFn()
     }),
   )
   .handler(async ({ data }) => {
-    const { user } = await getUserSSR()
+    const { user } = await getUser()
     if (!user) {
       throw new Error("User not authenticated")
     }
@@ -143,7 +143,7 @@ export const lookupJPDBVocabulary = createServerFn()
     }),
   )
   .handler(async ({ data }) => {
-    const { user } = await getUserSSR()
+    const { user } = await getUser()
     if (!user) {
       throw new Error("User not authenticated")
     }
