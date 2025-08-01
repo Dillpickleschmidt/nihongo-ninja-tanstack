@@ -21,7 +21,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
     <div
       class={cn(
         "bg-card border-border cursor-pointer space-y-3 rounded-lg border p-4",
-        props.isSelected && "outline-card-foreground outline outline-2",
+        props.isSelected && "outline-card-foreground outline-2",
         props.class,
       )}
       onClick={() => props.onSelect?.(props.deck)}

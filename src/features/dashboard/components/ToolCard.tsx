@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/solid-router"
 import type { Tool } from "../types"
 
 interface DesktopCardProps {
@@ -9,8 +10,8 @@ interface DesktopCardProps {
 
 export function DesktopCard(props: DesktopCardProps) {
   return (
-    <a
-      href={props.tool.href}
+    <Link
+      to={props.tool.href}
       class={`group relative h-80 w-full overflow-hidden rounded-xl bg-gradient-to-br ${props.tool.gradient} flex flex-col justify-between p-6 text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl ${
         props.animated()
           ? "translate-y-0 opacity-100"
@@ -42,7 +43,7 @@ export function DesktopCard(props: DesktopCardProps) {
           Start Learning →
         </div>
       </div>
-    </a>
+    </Link>
   )
 }
 
@@ -55,8 +56,8 @@ interface MobileCardProps {
 
 export function MobileCard(props: MobileCardProps) {
   return (
-    <a
-      href={props.tool.href}
+    <Link
+      to={props.tool.href}
       class={`group block bg-gradient-to-r ${props.tool.gradient} flex h-26 flex-col justify-center rounded-xl px-6 text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${
         props.animated()
           ? "translate-y-0 opacity-100"
@@ -84,6 +85,6 @@ export function MobileCard(props: MobileCardProps) {
           →
         </div>
       </div>
-    </a>
+    </Link>
   )
 }
