@@ -136,12 +136,17 @@ export interface VocabularyItem {
   chapter: number // TEMPORARY, WILL BE REMOVED
   part_of_speech?: PartOfSpeech // For verb and adjective conjugation
   info?: string[] // Additional information/notes
-  mnemonics?: string[] // Memory aids
+  mnemonics?: Mnemonics // Memory aids
   example_sentences?: ExampleSentence[] // Usage examples
   videos?: Video[] // Related video content
   particles?: Particle[] // Associated particles
   overwrite_word?: string // Alternative word for immersion kit matching
   extra?: any // Just notes for myself (anything I might want to add later; not used in the app)
+}
+
+export type Mnemonics = {
+  kanji: string[] // Kanji mnemonics
+  reading: string[] // Reading mnemonics
 }
 
 export interface ExampleSentence {

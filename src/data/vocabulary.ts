@@ -1660,41 +1660,53 @@ export const vocabulary: VocabularyCollection = {
     furigana: "一[いち]",
     english: ["1", "one"],
     chapter: 1,
-    mnemonics: [
-      "A pictograph of one line. Simple, straightforward, and is more recognizable than いち.",
-    ],
+    mnemonics: {
+      kanji: [
+        "A pictograph of one line. Simple, straightforward, and is more recognizable than いち.",
+      ],
+      reading: [],
+    },
   },
   二: {
     word: "二",
     furigana: "二[に]",
     english: ["2", "two"],
     chapter: 1,
-    mnemonics: [
-      "A pictograph of two lines. Wow, this isn't that hard. ( ‾́ ◡ ‾́ )",
-    ],
+    mnemonics: {
+      kanji: [
+        "A pictograph of two lines. Wow, this isn't that hard. ( ‾́ ◡ ‾́ )",
+      ],
+      reading: [],
+    },
   },
   三: {
     word: "三",
     furigana: "三[さん]",
     english: ["3", "three"],
     chapter: 1,
-    mnemonics: ["A pictograph of three lines."],
+    mnemonics: { kanji: ["A pictograph of three lines."], reading: [] },
   },
   四: {
     word: "四",
     furigana: "四[よん]",
     english: ["4", "four"],
     chapter: 1,
-    mnemonics: [
-      "A monster four times the size of a human has a mouth that's almost big enough to swallow them whole! We say almost because if it tried, the legs would still stick out!",
-    ],
+    mnemonics: {
+      kanji: [
+        "A monster four times the size of a human has a mouth that's almost big enough to swallow them whole! We say almost because if it tried, the legs would still stick out!",
+      ],
+      reading: [],
+    },
   },
   五: {
     word: "五",
     furigana: "五[ご]",
     english: ["5", "five"],
     chapter: 1,
-    mnemonics: ["On your mark, get set, go! (ご) -> Japanese: よーい、どん！"],
+    mnemonics: {
+      kanji: ["On your mark, get set, go! (ご) -> Japanese: よーい、どん！"],
+      reading: [],
+    },
     info: ["Anime: My Hero Academia"],
   },
   六: {
@@ -1702,47 +1714,62 @@ export const vocabulary: VocabularyCollection = {
     furigana: "六[ろく]",
     english: ["6", "six"],
     chapter: 1,
-    mnemonics: [
-      "The Cookie Monster had six cookies 🍪 stolen by Oscar the Grouch and is seeking retribution. Oscar hides in a trash can with a lid over his head. He's the only one who can fit because he has such short legs.",
-    ],
+    mnemonics: {
+      kanji: [
+        "The Cookie Monster had six cookies 🍪 stolen by Oscar the Grouch and is seeking retribution. Oscar hides in a trash can with a lid over his head. He's the only one who can fit because he has such short legs.",
+      ],
+      reading: [],
+    },
   },
   七: {
     word: "七",
     furigana: "七[なな]",
     english: ["7", "seven"],
     chapter: 1,
-    mnemonics: [
-      "If you rotate it 180 degrees, you'll notice it's just an upside-down seven.",
-    ],
+    mnemonics: {
+      kanji: [
+        "If you rotate it 180 degrees, you'll notice it's just an upside-down seven.",
+      ],
+      reading: [],
+    },
   },
   八: {
     word: "八",
     furigana: "八[はち]",
     english: ["8", "eight"],
     chapter: 1,
-    mnemonics: [
-      "I eight something so large, it bent my chopsticks.",
-      "The volcano hasn't erupted for eight years.",
-    ],
+    mnemonics: {
+      kanji: [
+        "I eight something so large, it bent my chopsticks.",
+        "The volcano hasn't erupted for eight years.",
+      ],
+      reading: [],
+    },
   },
   九: {
     word: "九",
     furigana: "九[きゅう]",
     english: ["9", "nine"],
     chapter: 1,
-    mnemonics: [
-      "It looks like an elaborate letter n with a tiny i attached at the end (where it flares up). What do the letters n and i start spelling? Yep, the word nine.",
-      "A person in the doggie style position, waiting for (insert nine [unit of measurement] joke here).",
-    ],
+    mnemonics: {
+      kanji: [
+        "It looks like an elaborate letter n with a tiny i attached at the end (where it flares up). What do the letters n and i start spelling? Yep, the word nine.",
+        "A person in the doggie style position, waiting for (insert nine [unit of measurement] joke here).",
+      ],
+      reading: [],
+    },
   },
   十: {
     word: "十",
     furigana: "十[じゅう]",
     english: ["10", "ten"],
     chapter: 1,
-    mnemonics: [
-      "A pictograph of a cross, which signifies the number ten. You know, like the ten commandments?",
-    ],
+    mnemonics: {
+      kanji: [
+        "A pictograph of a cross, which signifies the number ten. You know, like the ten commandments?",
+      ],
+      reading: [],
+    },
   },
   十七: {
     word: "十七",
@@ -3223,9 +3250,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "週末[しゅうまつ]",
     english: ["weekend"],
     chapter: 3,
-    mnemonics: [
-      'In Yuki\'s office, everyone wore uncomfortable shoes all week. But come しゅうまつ (shūmatsu), there was a special tradition. "Shoo, matsu!" Yuki would announce every Friday evening, kicking off her shoes. "Shoo, matsu!" her coworkers echoed, following suit. All weekend, they\'d wiggle their toes freely, savoring the shoe-free しゅうまつ. Monday morning always came too soon. Reluctantly, they\'d slip their shoes back on, already dreaming of the next "Shoo, matsu!" weekend.',
-    ],
+    mnemonics: {
+      kanji: [
+        'In Yuki\'s office, everyone wore uncomfortable shoes all week. But come しゅうまつ (shūmatsu), there was a special tradition. "Shoo, matsu!" Yuki would announce every Friday evening, kicking off her shoes. "Shoo, matsu!" her coworkers echoed, following suit. All weekend, they\'d wiggle their toes freely, savoring the shoe-free しゅうまつ. Monday morning always came too soon. Reluctantly, they\'d slip their shoes back on, already dreaming of the next "Shoo, matsu!" weekend.',
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["On ", { t: "weekends" }, ", I go to the library."],
@@ -3301,7 +3331,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "水曜日[すいようび]",
     english: ["Wednesday"],
     chapter: 3,
-    mnemonics: ["Linked to water and the planet Mercury"],
+    mnemonics: {
+      kanji: ["Linked to water and the planet Mercury"],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["On ", { t: "Wednesday" }, ", I drink coffee and study."],
@@ -6308,7 +6341,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "おじいさん",
     english: ["grandfather", "old man"],
     chapter: 7,
-    mnemonics: ['"Oh! Gee, son, I see you\'re good with the ladies, too!"'],
+    mnemonics: {
+      kanji: ['"Oh! Gee, son, I see you\'re good with the ladies, too!"'],
+      reading: [],
+    },
     example_sentences: [
       {
         japanese: [{ t: "おじいさん" }, "を 手伝[てつだ]いましょうか。"],
@@ -6325,7 +6361,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "おばあさん",
     english: ["grandmother", "old woman"],
     chapter: 7,
-    mnemonics: ['"Bah! Rediculous!" said the old woman to her son.'],
+    mnemonics: {
+      kanji: ['"Bah! Rediculous!" said the old woman to her son.'],
+      reading: [],
+    },
     example_sentences: [
       {
         japanese: [
@@ -6413,9 +6452,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "母[はは]",
     english: ["my mother"],
     chapter: 7,
-    mnemonics: [
-      'There are enough "Your mom" jokes out there that surely you\'ll laugh at at least one, haha.',
-    ],
+    mnemonics: {
+      kanji: [
+        'There are enough "Your mom" jokes out there that surely you\'ll laugh at at least one, haha.',
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         japanese: [
@@ -6438,9 +6480,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "兄[あに]",
     english: ["my older brother"],
     chapter: 7,
-    mnemonics: [
-      '"AH, MY KNEE!" your older brother exclaims as he fell off his bike.',
-    ],
+    mnemonics: {
+      kanji: [
+        '"AH, MY KNEE!u your older brother exclaims as he fell off his bike.',
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         japanese: [
@@ -6489,9 +6534,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "妹[いもうと]",
     english: ["younger sister", "little sister"],
     chapter: 7,
-    mnemonics: [
-      "Sounds like 'emote'. Imagine your little sister making faces at you.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Sounds like 'emote'. Imagine your little sister making faces at you.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         japanese: [
@@ -6515,9 +6563,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "弟[おとうと]",
     english: ["younger brother", "little brother"],
     chapter: 7,
-    mnemonics: [
-      "Sounds like 'Oh, toe-toe.' Imagine your younger brother always stubbing his toe.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Sounds like 'Oh, toe-toe.' Imagine your younger brother always stubbing his toe.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         japanese: [
@@ -6541,9 +6592,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "兄[きょう] 弟[だい]",
     english: ["brothers and sisters", "siblings"],
     chapter: 7,
-    mnemonics: [
-      'Picture siblings playing a video game together and saying, "Today (きょう), you die!（だい）"',
-    ],
+    mnemonics: {
+      kanji: [
+        'Picture siblings playing a video game together and saying, "Today (きょう), you die!（だい）"',
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["I have three ", { t: "siblings" }, "."],
@@ -6608,9 +6662,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "食[しょく] 堂[どう]",
     english: ["cafeteria"],
     chapter: 7,
-    mnemonics: [
-      "Sounds like 'shoku-dough.' Picture a cafeteria where they always bake fresh dough.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Sounds like 'shoku-dough.' Picture a cafeteria where they always bake fresh dough.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: [
@@ -6631,7 +6688,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "デパート",
     english: ["department store"],
     chapter: 7,
-    mnemonics: ["The place where you always depart with your money."],
+    mnemonics: {
+      kanji: ["The place where you always depart with your money."],
+      reading: [],
+    },
     example_sentences: [
       {
         english: [
@@ -6709,7 +6769,7 @@ export const vocabulary: VocabularyCollection = {
     english: ["long"],
     chapter: 7,
     part_of_speech: "I-adjective",
-    mnemonics: ["Imagine a long nagging sound."],
+    mnemonics: { kanji: ["Imagine a long nagging sound."], reading: [] },
     example_sentences: [
       {
         english: ["My sister has ", { t: "long" }, " hair."],
@@ -6723,9 +6783,12 @@ export const vocabulary: VocabularyCollection = {
     english: ["short (length)"],
     chapter: 7,
     part_of_speech: "I-adjective",
-    mnemonics: [
-      "Sounds like midget, but this is for length, not height. The word for short stature is listed below.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Sounds like midget, but this is for length, not height. The word for short stature is listed below.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["My brother's hair is ", { t: "short" }, "."],
@@ -6843,9 +6906,12 @@ export const vocabulary: VocabularyCollection = {
     english: ["kind"],
     chapter: 7,
     part_of_speech: "Na-adjective",
-    mnemonics: [
-      "Sounds like 'shin-sets.' Picture a kind person who always sets their heart (shin) on doing good.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Sounds like 'shin-sets.' Picture a kind person who always sets their heart (shin) on doing good.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["My grandmother is a ", { t: "kind" }, " person."],
@@ -6863,9 +6929,12 @@ export const vocabulary: VocabularyCollection = {
     english: ["convenient"],
     chapter: 7,
     part_of_speech: "Na-adjective",
-    mnemonics: [
-      "Ben's really great to have around. He's a skilled handiman, and I very rarely forget his name—very convenient.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Ben's really great to have around. He's a skilled handiman, and I very rarely forget his name—very convenient.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["Smartphones are ", { t: "convenient" }, "."],
@@ -7403,9 +7472,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "歯[は]",
     english: ["teeth"],
     chapter: 7,
-    mnemonics: [
-      "Sounds like 'ha.' Imagine laughing 'ha-ha' and showing your teeth.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Sounds like 'ha.' Imagine laughing 'ha-ha' and showing your teeth.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["My ", { t: "teeth" }, " are white."],
@@ -7446,9 +7518,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "口[くち]",
     english: ["mouth"],
     chapter: 7,
-    mnemonics: [
-      "Sounds like 'coochie.' Remember by thinking of a baby's coochie-coo, often said while touching their mouth.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Sounds like 'coochie.' Remember by thinking of a baby's coochie-coo, often said while touching their mouth.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["Please open your ", { t: "mouth" }, "."],
@@ -7509,9 +7584,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "顔[かお]",
     english: ["face"],
     chapter: 7,
-    mnemonics: [
-      "Sounds like 'cow-o.' Picture a face with the calmness of a cow's expression.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Sounds like 'cow-o.' Picture a face with the calmness of a cow's expression.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["I wash my ", { t: "face" }, "."],
@@ -7532,9 +7610,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "首[くび]",
     english: ["neck"],
     chapter: 7,
-    mnemonics: [
-      "Think of 'kubi' as in 'cubicle.' Imagine stretching your neck looking over cubicle walls.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Think of 'kubi' as in 'cubicle.' Imagine stretching your neck looking over cubicle walls.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["My ", { t: "neck" }, " is long."],
@@ -7547,9 +7628,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "肩[かた]",
     english: ["shoulder"],
     chapter: 7,
-    mnemonics: [
-      "Sounds like 'cutter.' Imagine a strong shoulder cutting through the water in swimming.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Sounds like 'cutter.' Imagine a strong shoulder cutting through the water in swimming.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["My father's ", { t: "shoulders" }, " are big."],
@@ -7574,9 +7658,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "指[ゆび]",
     english: ["finger"],
     chapter: 7,
-    mnemonics: [
-      "Sounds like 'you-be.' Think of pointing a finger and saying, 'You be careful.'",
-    ],
+    mnemonics: {
+      kanji: [
+        "Sounds like 'you-be.' Think of pointing a finger and saying, 'You be careful.'",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["My ", { t: "fingers" }, " are short."],
@@ -7589,9 +7676,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "胸[むね]",
     english: ["chest"],
     chapter: 7,
-    mnemonics: [
-      "Sounds like 'mooneh.' Picture a treasure chest, as valuable as the moon.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Sounds like 'mooneh.' Picture a treasure chest, as valuable as the moon.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["My ", { t: "chest" }, " hurts."],
@@ -7604,9 +7694,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "背[せ] 中[なか]",
     english: ["back"],
     chapter: 7,
-    mnemonics: [
-      "Sounds like 'say-naka.' Imagine someone saying 'Naka' (middle) while pointing at their back.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Sounds like 'say-naka.' Imagine someone saying 'Naka' (middle) while pointing at their back.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["Please look at my ", { t: "back" }, "."],
@@ -7619,9 +7712,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "おなか",
     english: ["stomach"],
     chapter: 7,
-    mnemonics: [
-      "Sounds like 'Oh! Naka.' Picture feeling a sudden stomachache and exclaiming 'Oh, naka (inside)!'.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Sounds like 'Oh! Naka.' Picture feeling a sudden stomachache and exclaiming 'Oh, naka (inside)!'.",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: [
@@ -12265,7 +12361,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "大人[おとな]",
     english: ["adult"],
     chapter: 13,
-    mnemonics: ["Big (大) person (人) = adult"],
+    mnemonics: { kanji: ["Big (大) person (人) = adult"], reading: [] },
     example_sentences: [
       {
         english: [
@@ -12327,7 +12423,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "カレー",
     english: ["curry"],
     chapter: 13,
-    mnemonics: ["Sounds just like the English word."],
+    mnemonics: { kanji: ["Sounds just like the English word."], reading: [] },
     info: [
       "Milder and sweeter than Indian or Thai curry",
       "カレーライス (curry rice) is considered a national dish",
@@ -12365,10 +12461,13 @@ export const vocabulary: VocabularyCollection = {
     furigana: "着物[きもの]",
     english: ["kimono", "Japanese traditional dress"],
     chapter: 13,
-    mnemonics: [
-      "Wear (着) + thing (物) = kimono",
-      "Similar pattern to: 飲み物、食べ物、乗り物",
-    ],
+    mnemonics: {
+      kanji: [
+        "Wear (着) + thing (物) = kimono",
+        "Similar pattern to: 飲み物、食べ物、乗り物",
+      ],
+      reading: [],
+    },
     info: [
       "Evolved from the Chinese hanfu during the Heian period (794-1185)",
       "Became the main form of dress for all classes in Japan during the Edo period (1603-1867)",
@@ -12385,7 +12484,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "セーター",
     english: ["sweater"],
     chapter: 13,
-    mnemonics: ["Sounds just like the English word."],
+    mnemonics: { kanji: ["Sounds just like the English word."], reading: [] },
     example_sentences: [
       {
         english: ["This ", { t: "sweater" }, " looks warm."],
@@ -12422,7 +12521,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "空手[からて]",
     english: ["karate"],
     chapter: 13,
-    mnemonics: ["Empty (空) + hand (手) = karate"],
+    mnemonics: { kanji: ["Empty (空) + hand (手) = karate"], reading: [] },
     example_sentences: [
       {
         english: ["If it’s ", { t: "karate" }, ", I can teach you."],
@@ -12435,7 +12534,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "ゴルフ",
     english: ["golf"],
     chapter: 13,
-    mnemonics: ["Sounds just like the English word."],
+    mnemonics: { kanji: ["Sounds just like the English word."], reading: [] },
     example_sentences: [
       {
         english: ["My father plays ", { t: "golf" }, " three times a month."],
@@ -12517,9 +12616,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "外国語[がいこくご]",
     english: ["foreign language"],
     chapter: 13,
-    mnemonics: [
-      "Outside (外) + country (国) + language (語) = foreign language",
-    ],
+    mnemonics: {
+      kanji: ["Outside (外) + country (国) + language (語) = foreign language"],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["Learning a ", { t: "foreign language" }, " is fun."],
@@ -12535,7 +12635,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "言葉[ことば]",
     english: ["language", "word", "speech"],
     chapter: 13,
-    mnemonics: ["Contains 言 from 言う (to say)"],
+    mnemonics: { kanji: ["Contains 言 from 言う (to say)"], reading: [] },
     info: [
       "Can refer to a single word, a phrase, or an entire language",
       "Often used to discuss manner of speaking or choice of words",
@@ -12580,7 +12680,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "文法[ぶんぽう]",
     english: ["grammar"],
     chapter: 13,
-    mnemonics: ["Sentence (文) + method (法) = grammar"],
+    mnemonics: {
+      kanji: ["Sentence (文) + method (法) = grammar"],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["Japanese ", { t: "grammar" }, " is a bit difficult."],
@@ -12613,7 +12716,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "アパート",
     english: ["apartment", "smaller apartment building"],
     chapter: 13,
-    mnemonics: ["Sounds just like the English word."],
+    mnemonics: { kanji: ["Sounds just like the English word."], reading: [] },
     example_sentences: [
       {
         english: ["I moved to a new ", { t: "apartment" }, "."],
@@ -12651,7 +12754,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "空港[くうこう]",
     english: ["airport"],
     chapter: 13,
-    mnemonics: ["空 (sky) + 港 (port) = airport"],
+    mnemonics: { kanji: ["空 (sky) + 港 (port) = airport"], reading: [] },
     example_sentences: [
       {
         english: ["I took a bus to the ", { t: "airport" }, "."],
@@ -12697,7 +12800,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "広告[こうこく]",
     english: ["advertisement"],
     chapter: 13,
-    mnemonics: ["Wide (広) + inform (告) = advertisement"],
+    mnemonics: {
+      kanji: ["Wide (広) + inform (告) = advertisement"],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["I saw a new ", { t: "advertisement" }, "."],
@@ -12778,9 +12884,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "経験[けいけん]",
     english: ["experience"],
     chapter: 13,
-    mnemonics: [
-      "経 (けい) means 'to pass through' and 験 (けん) means 'test' or 'trial'",
-    ],
+    mnemonics: {
+      kanji: [
+        "経 (けい) means 'to pass through' and 験 (けん) means 'test' or 'trial'",
+      ],
+      reading: [],
+    },
     info: [
       "This word can refer to both general life experiences and specific work experiences.",
       "In job applications, 経験者 (keiken-sha) refers to someone with relevant experience.",
@@ -12859,7 +12968,10 @@ export const vocabulary: VocabularyCollection = {
     english: ["sad"],
     chapter: 13,
     part_of_speech: "I-adjective",
-    mnemonics: ["Notice the 心 (heart) radical at the bottom."],
+    mnemonics: {
+      kanji: ["Notice the 心 (heart) radical at the bottom."],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["I was sad when I heard the news."],
@@ -13032,7 +13144,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "編[あ]む",
     english: ["to knit"],
     chapter: 13,
-    mnemonics: ["Contains 糸 (thread)."],
+    mnemonics: { kanji: ["Contains 糸 (thread)."], reading: [] },
     example_sentences: [
       {
         english: ["I am knitting a sweater for my friend."],
@@ -13066,7 +13178,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "泣[な]く",
     english: ["to cry"],
     chapter: 13,
-    mnemonics: ["Contains 氵 (water drops)."],
+    mnemonics: { kanji: ["Contains 氵 (water drops)."], reading: [] },
     example_sentences: [
       {
         english: ["The baby started crying."],
@@ -13117,7 +13229,7 @@ export const vocabulary: VocabularyCollection = {
     english: ["to be moved (emotionally)", "to be touched (emotionally)"],
     chapter: 13,
     part_of_speech: "Suru verb - included",
-    mnemonics: ["Notice the 心 (heart) radical."],
+    mnemonics: { kanji: ["Notice the 心 (heart) radical."], reading: [] },
     info: [
       "Often used with the particle に.",
       'Basic structure: [Source of emotion] に 感動する ("[Subject] is moved by [source]").',
@@ -13443,7 +13555,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "パートナー",
     english: ["partner"],
     chapter: 14,
-    mnemonics: ["It's a loanword from English meaning 'partner.'"],
+    mnemonics: {
+      kanji: ["It's a loanword from English meaning 'partner.'"],
+      reading: [],
+    },
     info: [
       "It can refer to a romantic partner, business partner, or any kind of associate.",
       "It's increasingly used as a gender-neutral term for a significant other, especially among progressive, younger generations.",
@@ -13510,7 +13625,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "両親[りょうしん]",
     english: ["parents"],
     chapter: 14,
-    mnemonics: ["両 (ryō) means 'both' and 親 (shin) means 'parent.'"],
+    mnemonics: {
+      kanji: ["両 (ryō) means 'both' and 親 (shin) means 'parent.'"],
+      reading: [],
+    },
     info: [],
     example_sentences: [
       {
@@ -13532,7 +13650,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "大家[おおや]さん",
     english: ["landlord", "landlady"],
     chapter: 14,
-    mnemonics: ["大 (ō) means 'big,' 家 (ya) means 'house.'"],
+    mnemonics: {
+      kanji: ["大 (ō) means 'big,' 家 (ya) means 'house.'"],
+      reading: [],
+    },
     info: [],
     example_sentences: [
       {
@@ -13593,7 +13714,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "トレーナー",
     english: ["sweatshirt", "trainer top"],
     chapter: 14,
-    mnemonics: ["It's a loanword from English 'trainer.'"],
+    mnemonics: {
+      kanji: ["It's a loanword from English 'trainer.'"],
+      reading: [],
+    },
     info: [],
     example_sentences: [
       {
@@ -13615,7 +13739,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "シャツ",
     english: ["shirt"],
     chapter: 14,
-    mnemonics: ["Sounds like 'shirt.'"],
+    mnemonics: { kanji: ["Sounds like 'shirt.'"], reading: [] },
     info: [],
     example_sentences: [
       {
@@ -13633,7 +13757,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "ネクタイ",
     english: ["necktie"],
     chapter: 14,
-    mnemonics: ["Sounds like necktie."],
+    mnemonics: { kanji: ["Sounds like necktie."], reading: [] },
     info: [],
     example_sentences: [
       {
@@ -13651,7 +13775,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "チョコレート",
     english: ["chocolate"],
     chapter: 14,
-    mnemonics: ["Sounds like 'chocolate.'"],
+    mnemonics: { kanji: ["Sounds like 'chocolate.'"], reading: [] },
     info: [],
     example_sentences: [
       {
@@ -13672,9 +13796,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "マフラー",
     english: ["scarf", "winter scarf"],
     chapter: 14,
-    mnemonics: [
-      "It's a loanword from English 'muffler,' but in Japanese, it's most commonly used to mean scarf.",
-    ],
+    mnemonics: {
+      kanji: [
+        "It's a loanword from English 'muffler,' but in Japanese, it's most commonly used to mean scarf.",
+      ],
+      reading: [],
+    },
     info: [],
     example_sentences: [
       {
@@ -13696,9 +13823,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "指輪[ゆびわ]",
     english: ["ring"],
     chapter: 14,
-    mnemonics: [
-      "指 (yubi) means 'finger,' and 輪 (wa) means 'ring' or 'circle.'",
-    ],
+    mnemonics: {
+      kanji: [
+        "指 (yubi) means 'finger,' and 輪 (wa) means 'ring' or 'circle.'",
+      ],
+      reading: [],
+    },
     info: [],
     example_sentences: [
       {
@@ -13720,7 +13850,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "鉛筆[えんぴつ]",
     english: ["pencil"],
     chapter: 14,
-    mnemonics: ["Sounds like 'a pencil.'"],
+    mnemonics: { kanji: ["Sounds like 'a pencil.'"], reading: [] },
     info: [],
     example_sentences: [
       {
@@ -13771,10 +13901,13 @@ export const vocabulary: VocabularyCollection = {
     furigana: "化粧品[けしょうひん]",
     english: ["cosmetics"],
     chapter: 14,
-    mnemonics: [
-      "化粧品 refers to cosmetics or makeup products used to enhance or alter a person's appearance.",
-      "In Japan, the cosmetics industry is very large and advanced, with many popular domestic and international brands.",
-    ],
+    mnemonics: {
+      kanji: [
+        "化粧品 refers to cosmetics or makeup products used to enhance or alter a person's appearance.",
+        "In Japan, the cosmetics industry is very large and advanced, with many popular domestic and international brands.",
+      ],
+      reading: [],
+    },
     info: [],
     example_sentences: [
       {
@@ -13795,7 +13928,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "ラジオ",
     english: ["radio"],
     chapter: 14,
-    mnemonics: ["Sounds like 'radio.'"],
+    mnemonics: { kanji: ["Sounds like 'radio.'"], reading: [] },
     info: [],
     example_sentences: [
       {
@@ -13878,7 +14011,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "クリスマス",
     english: ["Christmas"],
     chapter: 14,
-    mnemonics: ["It's beginning to look a lot like 'Christmas!'"],
+    mnemonics: {
+      kanji: ["It's beginning to look a lot like 'Christmas!'"],
+      reading: [],
+    },
     info: [],
     example_sentences: [
       {
@@ -13899,7 +14035,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "バレンタインデー",
     english: ["Valentine's Day"],
     chapter: 14,
-    mnemonics: ["Sounds like Valentine's Day."],
+    mnemonics: { kanji: ["Sounds like Valentine's Day."], reading: [] },
     info: [
       "In Japan, the customs for Valentine's Day and White Day are quite unique.",
       "On Valentine's Day, girls and women typically give chocolates to boys and men.",
@@ -14168,9 +14304,12 @@ export const vocabulary: VocabularyCollection = {
     english: ["to consult"],
     chapter: 14,
     part_of_speech: "Suru verb - included",
-    mnemonics: [
-      'When you consult with someone, you ask them questions. When you learn something new, you say "そうか". That sounds a bit like そうだん, right?',
-    ],
+    mnemonics: {
+      kanji: [
+        'When you consult with someone, you ask them questions. When you learn something new, you say "そうか". That sounds a bit like そうだん, right?',
+      ],
+      reading: [],
+    },
     particles: [
       {
         label: "person",
@@ -14198,7 +14337,7 @@ export const vocabulary: VocabularyCollection = {
     english: ["to give warning", "to watch out"],
     chapter: 14,
     part_of_speech: "Suru verb - included",
-    mnemonics: ['Han Solo says, "Chewie, watch out!"'],
+    mnemonics: { kanji: ['Han Solo says, "Chewie, watch out!"'], reading: [] },
     particles: [
       {
         label: "person",
@@ -14399,11 +14538,14 @@ export const vocabulary: VocabularyCollection = {
     furigana: "さあ",
     english: ["I am not sure..."],
     chapter: 14,
-    mnemonics: [
-      "To urge or encourage action: 'Come on!' or 'Let's go!'",
-      "To express uncertainty: similar to 'Well...' or 'Hmm...'",
-      "To mark the beginning of an activity: 'Now then,' or 'Here we go.'",
-    ],
+    mnemonics: {
+      kanji: [
+        "To urge or encourage action: 'Come on!' or 'Let's go!'",
+        "To express uncertainty: similar to 'Well...' or 'Hmm...'",
+        "To mark the beginning of an activity: 'Now then,' or 'Here we go.'",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: [
@@ -14593,9 +14735,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "外国人[がいこくじん]",
     english: ["foreigner"],
     chapter: 15,
-    mnemonics: [
-      "外 (gai) means 'outside', 国 (koku) means 'country', and 人 (jin) means 'person'",
-    ],
+    mnemonics: {
+      kanji: [
+        "外 (gai) means 'outside', 国 (koku) means 'country', and 人 (jin) means 'person'",
+      ],
+      reading: [],
+    },
     info: [],
     example_sentences: [
       {
@@ -14613,7 +14758,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "そば",
     english: ["soba", "Japanese buckwheat noodles"],
     chapter: 15,
-    mnemonics: ["Think of the 'so' in 'noodle soup' and 'ba' in 'buckwheat'"],
+    mnemonics: {
+      kanji: ["Think of the 'so' in 'noodle soup' and 'ba' in 'buckwheat'"],
+      reading: [],
+    },
     info: [
       "Soba noodles are a staple in Japanese cuisine, often served either hot in a soup or chilled with a dipping sauce.",
       "The kanji for そば is 蕎麦, but it's usually written in hiragana.",
@@ -14634,9 +14782,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "絵[え]",
     english: ["painting", "picture", "drawing"],
     chapter: 15,
-    mnemonics: [
-      "Consists of kanji for 'thread' and 'meet,' think of a paintbrush meeting the woven canvas (made of thread).",
-    ],
+    mnemonics: {
+      kanji: [
+        "Consists of kanji for 'thread' and 'meet,' think of a paintbrush meeting the woven canvas (made of thread).",
+      ],
+      reading: [],
+    },
     info: [
       "This word can refer to any kind of pictorial representation, from fine art to children's drawings.",
     ],
@@ -14656,9 +14807,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "地図[ちず]",
     english: ["map"],
     chapter: 15,
-    mnemonics: [
-      "地 (chi) means 'earth', and 図 (zu) means 'diagram' - A map is really just a diagram of a section of Earth.",
-    ],
+    mnemonics: {
+      kanji: [
+        "地 (chi) means 'earth', and 図 (zu) means 'diagram' - A map is really just a diagram of a section of Earth.",
+      ],
+      reading: [],
+    },
     info: [
       "This word can refer to any type of map, from a world map to a subway map.",
       "In the age of smartphones, physical maps are less common, but the word is still used for digital maps as well.",
@@ -14679,7 +14833,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "辞書[じしょ]",
     english: ["dictionary"],
     chapter: 15,
-    mnemonics: ["辞 (ji) means 'word' and 書 (sho) means 'write'"],
+    mnemonics: {
+      kanji: ["辞 (ji) means 'word' and 書 (sho) means 'write'"],
+      reading: [],
+    },
     info: ["This word can refer to both physical and digital dictionaries."],
     example_sentences: [
       {
@@ -14701,9 +14858,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "家具[かぐ]",
     english: ["furniture"],
     chapter: 15,
-    mnemonics: [
-      "家 (ka) means 'house', and 具 (gu) means 'tool' or 'equipment'",
-    ],
+    mnemonics: {
+      kanji: ["家 (ka) means 'house', and 具 (gu) means 'tool' or 'equipment'"],
+      reading: [],
+    },
     info: [
       "This word refers to any kind of furniture used in a home or office.",
       "Large furniture stores like IKEA are called 家具店 (kaguten) in Japanese.",
@@ -14770,9 +14928,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "教室[きょうしつ]",
     english: ["classroom"],
     chapter: 15,
-    mnemonics: [
-      "教 (kyou) means 'teach', and 室 (shitsu) means 'room' (which you've seen in words like 部屋)",
-    ],
+    mnemonics: {
+      kanji: [
+        "教 (kyou) means 'teach', and 室 (shitsu) means 'room' (which you've seen in words like 部屋)",
+      ],
+      reading: [],
+    },
     info: [],
     example_sentences: [
       {
@@ -14789,7 +14950,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "建物[たてもの]",
     english: ["building"],
     chapter: 15,
-    mnemonics: ["建 (tate) means 'build', and 物 (mono) means 'thing'"],
+    mnemonics: {
+      kanji: ["建 (tate) means 'build', and 物 (mono) means 'thing'"],
+      reading: [],
+    },
     info: [
       "This word can refer to any type of building, from houses to skyscrapers.",
     ],
@@ -14830,9 +14994,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "映画館[えいがかん]",
     english: ["movie theater"],
     chapter: 15,
-    mnemonics: [
-      "映画 (eiga) means 'movie', and 館 (kan) means 'building' or 'hall'",
-    ],
+    mnemonics: {
+      kanji: [
+        "映画 (eiga) means 'movie', and 館 (kan) means 'building' or 'hall'",
+      ],
+      reading: [],
+    },
     info: [],
     example_sentences: [
       {
@@ -14854,9 +15021,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "旅館[りょかん]",
     english: ["Japanese inn"],
     chapter: 15,
-    mnemonics: [
-      "旅 (ryo) means 'travel', and 館 (kan) means 'building' or 'hall'",
-    ],
+    mnemonics: {
+      kanji: [
+        "旅 (ryo) means 'travel', and 館 (kan) means 'building' or 'hall'",
+      ],
+      reading: [],
+    },
     info: [
       "Ryokan are traditional Japanese inns that typically feature tatami-matted rooms, communal baths, and other public areas where visitors may wear yukata and talk with the owner.",
       "Many ryokan are known for their cuisine, featuring local and seasonal specialties.",
@@ -14925,9 +15095,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "活動[かつどう]",
     english: ["activity"],
     chapter: 15,
-    mnemonics: [
-      "活 (katsu) means 'activity', and 動 (dou) means 'move' (which you've already seen in words like 動物 (どうぶつ - animal))",
-    ],
+    mnemonics: {
+      kanji: [
+        "活 (katsu) means 'activity', and 動 (dou) means 'move' (which you've already seen in words like 動物 (どうぶつ - animal))",
+      ],
+      reading: [],
+    },
     info: [
       "This word can refer to various types of activities, from club activities at school to social or political activities.",
       "It's often used in compound words, like 課外活動 (extracurricular activities) or 経済活動 (economic activities).",
@@ -14952,9 +15125,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "習慣[しゅうかん]",
     english: ["custom"],
     chapter: 15,
-    mnemonics: [
-      "習 (shuu) means 'learn', and 慣 (kan) means 'become accustomed to'",
-    ],
+    mnemonics: {
+      kanji: [
+        "習 (shuu) means 'learn', and 慣 (kan) means 'become accustomed to'",
+      ],
+      reading: [],
+    },
     info: [
       "This word can refer to personal habits as well as cultural customs.",
     ],
@@ -14974,9 +15150,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "締[し]め 切[き]り",
     english: ["deadline"],
     chapter: 15,
-    mnemonics: [
-      "締め (shime) means 'tighten' or 'close', and 切り (kiri) means 'cut' - imagine the deadline cutting off time",
-    ],
+    mnemonics: {
+      kanji: [
+        "締め (shime) means 'tighten' or 'close', and 切り (kiri) means 'cut' - imagine the deadline cutting off time",
+      ],
+      reading: [],
+    },
     info: [
       "This word is used in various contexts, from school assignments to work projects.",
       "Missing a deadline is often expressed as 締め切りに間に合わない (shimekiri ni maniawanai).",
@@ -14997,9 +15176,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "予定[よてい]",
     english: ["schedule", "plan"],
     chapter: 15,
-    mnemonics: [
-      "You've already seen 予 (よ - 'beforehand') in words like 予約 - reservation",
-    ],
+    mnemonics: {
+      kanji: [
+        "You've already seen 予 (よ - 'beforehand') in words like 予約 - reservation",
+      ],
+      reading: [],
+    },
     info: [
       "This word can refer to both personal plans and official schedules.",
       "Don't use 作る to describe making plans -> 予定を立てる = make plans instead of X予定を作る.",
@@ -15020,9 +15202,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "卒業式[そつぎょうしき]",
     english: ["graduation ceremony"],
     chapter: 15,
-    mnemonics: [
-      "卒業 (sotsugyou) means 'graduation', and 式 (shiki) means 'ceremony'",
-    ],
+    mnemonics: {
+      kanji: [
+        "卒業 (sotsugyou) means 'graduation', and 式 (shiki) means 'ceremony'",
+      ],
+      reading: [],
+    },
     info: [
       "You can also say 卒業する to mean 'to graduate', however, you must use ～を instead of ～から when describing where you're graduating from.",
     ],
@@ -15046,9 +15231,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "結婚式[けっこんしき]",
     english: ["wedding"],
     chapter: 15,
-    mnemonics: [
-      "結婚 (kekkon) means 'marriage', and 式 (shiki) means 'ceremony'",
-    ],
+    mnemonics: {
+      kanji: [
+        "結婚 (kekkon) means 'marriage', and 式 (shiki) means 'ceremony'",
+      ],
+      reading: [],
+    },
     info: [
       "Japanese weddings can be either traditional Shinto ceremonies or Western-style ceremonies.",
     ],
@@ -15068,9 +15256,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "地震[じしん]",
     english: ["earthquake"],
     chapter: 15,
-    mnemonics: [
-      "地 (ji) means 'earth' and 震 (shin) means 'shake' - Earth shake.",
-    ],
+    mnemonics: {
+      kanji: [
+        "地 (ji) means 'earth' and 震 (shin) means 'shake' - Earth shake.",
+      ],
+      reading: [],
+    },
     info: [
       "Japan is located in a seismically active area, so this word is unfortunately quite common.",
       "There are different scales to measure earthquakes in Japan, including the shindo (震度) scale, which measures the intensity of shaking at a specific location.",
@@ -15091,7 +15282,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "保険[ほけん]",
     english: ["insurance"],
     chapter: 15,
-    mnemonics: ["保 (ho) means 'protect' and 険 (ken) means 'danger'"],
+    mnemonics: {
+      kanji: ["保 (ho) means 'protect' and 険 (ken) means 'danger'"],
+      reading: [],
+    },
     info: [
       "This word covers all types of insurance, including health insurance, life insurance, and property insurance.",
       "In Japan, everyone is required to have health insurance, either through their employer or through the national health insurance system.",
@@ -15117,9 +15311,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "税金[ぜいきん]",
     english: ["tax"],
     chapter: 15,
-    mnemonics: [
-      "Contains 金 (きん -> money) and 兄 (older brother) with horns. Think of sitting in a tree with a pair of binoculars, observing your evil older brother extorting others for money from afar.",
-    ],
+    mnemonics: {
+      kanji: [
+        "Contains 金 (きん -> money) and 兄 (older brother) with horns. Think of sitting in a tree with a pair of binoculars, observing your evil older brother extorting others for money from afar.",
+      ],
+      reading: [],
+    },
     info: [
       "This word refers to any kind of tax, including income tax, sales tax, and property tax.",
       "Japan has a consumption tax (消費税, shouhizei) which is similar to sales tax or VAT in other countries.",
@@ -15374,7 +15571,10 @@ export const vocabulary: VocabularyCollection = {
     furigana: "保険[ほけん]に 入[はい]る",
     english: ["to buy insurance", "to get insurance"],
     chapter: 15,
-    mnemonics: ["保 (ほ) means 'to protect' and 険 (けん) means 'danger'"],
+    mnemonics: {
+      kanji: ["保 (ほ) means 'to protect' and 険 (けん) means 'danger'"],
+      reading: [],
+    },
     info: ["Used for getting insurance against thefts, accidents, etc."],
     part_of_speech: "Godan verb with 'ru' ending (irregular verb)",
     example_sentences: [
@@ -15484,7 +15684,7 @@ export const vocabulary: VocabularyCollection = {
     english: ["to do sightseeing"],
     chapter: 15,
     part_of_speech: "Suru verb - included",
-    mnemonics: ["Contains 見 - meaning 'to see'"],
+    mnemonics: { kanji: ["Contains 見 - meaning 'to see'"], reading: [] },
     example_sentences: [
       {
         english: ["I did sightseeing in Kyoto."],
@@ -15498,9 +15698,12 @@ export const vocabulary: VocabularyCollection = {
     english: ["to reserve", "to make a reservation", "to book an appointment"],
     chapter: 15,
     part_of_speech: "Suru verb - included",
-    mnemonics: [
-      "予 (よ) means 'beforehand,' 約 (やく) means 'promise' (same as in 約束)",
-    ],
+    mnemonics: {
+      kanji: [
+        "予 (よ) means 'beforehand,' 約 (やく) means 'promise' (same as in 約束)",
+      ],
+      reading: [],
+    },
     particles: [
       {
         particle: "を",
@@ -15526,11 +15729,14 @@ export const vocabulary: VocabularyCollection = {
     english: ["to participate"],
     chapter: 15,
     part_of_speech: "Suru verb - included",
-    mnemonics: [
-      "参: Consists of the radicals 人 (person) + 大 (big) + 小 (small). Think of 'all kinds of people, big and small, participating together.'",
-      "加: The hiragana か and katakana カ were derived from this kanji",
-      "To see how other hiragana were derived, check out https://www.reddit.com/r/LearnJapanese/comments/9vwxhn/hiragana_chart_showing_the_kanji_they_came_from/",
-    ],
+    mnemonics: {
+      kanji: [
+        "参: Consists of the radicals 人 (person) + 大 (big) + 小 (small). Think of 'all kinds of people, big and small, participating together.'",
+        "加: The hiragana か and katakana カ were derived from this kanji",
+        "To see how other hiragana were derived, check out https://www.reddit.com/r/LearnJapanese/comments/9vwxhn/hiragana_chart_showing_the_kanji_they_came_from/",
+      ],
+      reading: [],
+    },
     particles: [
       {
         particle: "に",
@@ -15549,7 +15755,10 @@ export const vocabulary: VocabularyCollection = {
     english: ["to graduate (from...)"],
     chapter: 15,
     part_of_speech: "Suru verb - included",
-    mnemonics: ["業 is the same kanji as in 授業 (じゅぎょう; class)"],
+    mnemonics: {
+      kanji: ["業 is the same kanji as in 授業 (じゅぎょう; class)"],
+      reading: [],
+    },
     info: [
       "You must use ～を instead of ～から when describing where you're graduating from",
       "Can be used with 式 (しき) to form 卒業式 (graduation ceremony)",
@@ -15638,9 +15847,12 @@ export const vocabulary: VocabularyCollection = {
     furigana: "最近[さいきん]",
     english: ["recently"],
     chapter: 15,
-    mnemonics: [
-      "最 means 'most' as seen in 最初 (さいしょ; the first time) and 最高 (さいこう; the best)",
-    ],
+    mnemonics: {
+      kanji: [
+        "最 means 'most' as seen in 最初 (さいしょ; the first time) and 最高 (さいこう; the best)",
+      ],
+      reading: [],
+    },
     example_sentences: [
       {
         english: ["I recently started exercising."],
@@ -16417,7 +16629,7 @@ export const vocabulary: VocabularyCollection = {
     english: ["to put makeup on", "to put on makeup"],
     chapter: 17,
     part_of_speech: "Suru verb - included",
-    mnemonics: ["化粧 from 化粧品"],
+    mnemonics: { kanji: ["化粧 from 化粧品"], reading: [] },
     example_sentences: [
       {
         english: ["She ", { t: "puts on makeup" }, " every morning."],
@@ -16463,7 +16675,10 @@ export const vocabulary: VocabularyCollection = {
     english: ["to get a divorce"],
     chapter: 17,
     part_of_speech: "Suru verb - included",
-    mnemonics: ["The 婚 character is the same as in 結婚 (marriage)"],
+    mnemonics: {
+      kanji: ["The 婚 character is the same as in 結婚 (marriage)"],
+      reading: [],
+    },
     particles: [
       {
         label: "person",
