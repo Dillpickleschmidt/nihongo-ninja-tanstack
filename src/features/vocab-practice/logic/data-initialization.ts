@@ -1,6 +1,10 @@
 // vocab-practice/logic/data-initialization.ts
 import { createEmptyCard, State } from "ts-fsrs"
-import type { VocabularyCollection, VocabularyItem } from "@/data/types"
+import type {
+  VocabularyCollection,
+  VocabularyItem,
+  Mnemonics,
+} from "@/data/types"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
 import type {
   PracticeCard,
@@ -42,23 +46,35 @@ function createPracticeCard(
   let vocabItem: VocabularyItem
   let characterForKanjiRadical: string = ""
   let meaningsForKanjiRadical: string[] = []
-  let itemMeaningMnemonic: string = ""
-  let itemReadingMnemonic: string | undefined
+  let itemMnemonics: Mnemonics | undefined
 
   if (type === "vocabulary") {
     // For vocabulary, the source of truth is the global collection.
     vocabItem = globalVocabCollection[item.slug]
-    itemMeaningMnemonic = vocabItem?.mnemonics?.[0] ?? ""
+    itemMnemonics = vocabItem?.mnemonics
   } else {
     // For Kanji and Radicals, construct a temporary vocab-like item.
     const typedItem = item as Kanji | Radical
     characterForKanjiRadical = typedItem.characters || typedItem.slug // TODO: Fix to use img (definitely not the slug)
     meaningsForKanjiRadical = typedItem.meanings
 
-    // Assign mnemonics for Kanji and Radicals
-    itemMeaningMnemonic = typedItem.meaning_mnemonic
-    if (type === "kanji") {
-      itemReadingMnemonic = (typedItem as Kanji).reading_mnemonic
+    // Assign mnemonics for Kanji and Radicals using WaniKani format
+    const kanjiMnemonics: string[] = []
+    const readingMnemonics: string[] = []
+
+    if (typedItem.meaning_mnemonic) {
+      kanjiMnemonics.push(typedItem.meaning_mnemonic)
+    }
+
+    if (type === "kanji" && (typedItem as Kanji).reading_mnemonic) {
+      readingMnemonics.push((typedItem as Kanji).reading_mnemonic)
+    }
+
+    if (kanjiMnemonics.length > 0 || readingMnemonics.length > 0) {
+      itemMnemonics = {
+        kanji: kanjiMnemonics,
+        reading: readingMnemonics,
+      }
     }
 
     // Create a pseudo-vocabItem for Kanji/Radical for consistent `addKanaAndRuby`
@@ -138,8 +154,7 @@ function createPracticeCard(
     sessionStyle, // This now reflects the new 'introduction' logic
     prompt,
     validAnswers,
-    meaningMnemonic: itemMeaningMnemonic,
-    readingMnemonic: itemReadingMnemonic,
+    mnemonics: itemMnemonics,
     isDisabled: false,
   }
 }

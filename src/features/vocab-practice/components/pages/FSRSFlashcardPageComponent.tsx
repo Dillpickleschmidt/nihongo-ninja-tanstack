@@ -65,8 +65,8 @@ export default function FSRSFlashcardPageComponent() {
   const [showAnswer, setShowAnswer] = createSignal(false)
 
   // Mnemonic helpers
-  const meaningMnemonic = createMemo(() => currentCard()?.meaningMnemonic || "")
-  const readingMnemonic = createMemo(() => currentCard()?.readingMnemonic || "")
+  const meaningMnemonic = createMemo(() => currentCard()?.mnemonics?.kanji?.[0] || "")
+  const readingMnemonic = createMemo(() => currentCard()?.mnemonics?.reading?.[0] || "")
 
   let showAnswerButtonRef: HTMLButtonElement | undefined
 

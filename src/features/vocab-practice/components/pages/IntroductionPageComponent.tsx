@@ -12,8 +12,8 @@ export default function IntroductionPageComponent() {
   const character = createMemo(() => currentCard()?.vocab.word)
   const meanings = createMemo(() => currentCard()?.vocab.english.join(", "))
 
-  const meaningMnemonic = createMemo(() => currentCard()?.meaningMnemonic || "")
-  const readingMnemonic = createMemo(() => currentCard()?.readingMnemonic || "")
+  const meaningMnemonic = createMemo(() => currentCard()?.mnemonics?.kanji?.[0] || "")
+  const readingMnemonic = createMemo(() => currentCard()?.mnemonics?.reading?.[0] || "")
 
   let gotItButtonRef: HTMLButtonElement | undefined
 

@@ -48,8 +48,10 @@ const createMockCard = (
   prompt: validAnswers.join(", "),
   validAnswers,
   sessionScope: "module",
-  meaningMnemonic: "mock meaning mnemonic",
-  readingMnemonic: "mock reading mnemonic",
+  mnemonics: {
+    kanji: ["mock meaning mnemonic"],
+    reading: ["mock reading mnemonic"],
+  },
 })
 
 describe("MultipleChoiceComponent", () => {

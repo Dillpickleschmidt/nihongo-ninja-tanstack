@@ -12423,7 +12423,7 @@ export const vocabulary: VocabularyCollection = {
     furigana: "カレー",
     english: ["curry"],
     chapter: 13,
-    mnemonics: { kanji: ["Sounds just like the English word."], reading: [] },
+    mnemonics: { kanji: [], reading: ["Sounds just like the English word."] },
     info: [
       "Milder and sweeter than Indian or Thai curry",
       "カレーライス (curry rice) is considered a national dish",

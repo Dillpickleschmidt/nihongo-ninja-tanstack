@@ -161,15 +161,31 @@ function VocabInfo(props: { item: VocabularyItem }) {
       )}
 
       {props.item.mnemonics && (
-        <div class="pt-2">
-          <For each={props.item.mnemonics}>
-            {(mnemonic) => (
-              <div class="text-sm">
-                <span class="font-medium text-sky-400">Mnemonic: </span>
-                <span class="text-muted-foreground">{mnemonic}</span>
-              </div>
-            )}
-          </For>
+        <div class="pt-2 space-y-2">
+          {props.item.mnemonics.kanji && props.item.mnemonics.kanji.length > 0 && (
+            <div class="space-y-1">
+              <span class="font-medium text-sky-400 text-sm">Kanji Mnemonics:</span>
+              <For each={props.item.mnemonics.kanji}>
+                {(mnemonic) => (
+                  <div class="text-sm ml-2">
+                    <span class="text-muted-foreground">{mnemonic}</span>
+                  </div>
+                )}
+              </For>
+            </div>
+          )}
+          {props.item.mnemonics.reading && props.item.mnemonics.reading.length > 0 && (
+            <div class="space-y-1">
+              <span class="font-medium text-emerald-400 text-sm">Reading Mnemonics:</span>
+              <For each={props.item.mnemonics.reading}>
+                {(mnemonic) => (
+                  <div class="text-sm ml-2">
+                    <span class="text-muted-foreground">{mnemonic}</span>
+                  </div>
+                )}
+              </For>
+            </div>
+          )}
         </div>
       )}
 

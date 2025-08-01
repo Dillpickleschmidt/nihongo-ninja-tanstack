@@ -1,5 +1,5 @@
 // vocab-practice/types.ts
-import type { RichVocabItem } from "@/data/types"
+import type { RichVocabItem, Mnemonics } from "@/data/types"
 import type { Card as FSRSCard, ReviewLog } from "ts-fsrs"
 
 export type CurrentPage =
@@ -54,8 +54,7 @@ export type PracticeCard = {
    * 'review': An optional, non-module due review card.
    */
   sessionScope: "module" | "review"
-  meaningMnemonic: string
-  readingMnemonic?: string
+  mnemonics?: Mnemonics
   isDisabled: boolean
 }
 
