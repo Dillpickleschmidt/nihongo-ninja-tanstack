@@ -183,7 +183,7 @@ describe("deck-import-logic", () => {
 
       const result = generateDeckTitle(textbookInfo)
 
-      expect(result).toBe("Genki I Chapter 1 Vocabulary")
+      expect(result).toBe("Genki I Ch.1 Vocabulary")
     })
   })
 
@@ -235,7 +235,7 @@ describe("deck-import-logic", () => {
 
       expect(result.folders).toHaveLength(2)
       expect(result.decks).toHaveLength(1)
-      expect(result.importedDeck.deck_name).toBe("Genki I Chapter 1 Vocabulary")
+      expect(result.importedDeck.deck_name).toBe("Genki I Ch.1 Vocabulary")
       expect(result.importedDeck.original_deck_id).toBe("genki_1_ch1_vocab")
       expect(result.targetFolderId).toBe(result.folders[1].folder_id)
     })
@@ -389,10 +389,10 @@ describe("deck-import-logic", () => {
   })
 
   describe("getFolderPathString", () => {
-    it("returns 'All Decks' for root", () => {
+    it("returns 'Root' for root", () => {
       const result = getFolderPathString([], null)
 
-      expect(result).toBe("All Decks")
+      expect(result).toBe("Root")
     })
 
     it("builds path string for nested folder", () => {
@@ -462,4 +462,3 @@ describe("deck-import-logic", () => {
     })
   })
 })
-

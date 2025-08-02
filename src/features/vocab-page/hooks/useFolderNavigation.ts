@@ -44,9 +44,11 @@ export function useFolderNavigation(
   )
 
   // Compute current folder content reactively
-  const currentFolderContent = createMemo(() =>
-    getFolderContents(folders(), decks(), currentFolderId()),
-  )
+  const currentFolderContent = createMemo(() => {
+    const currentFolders = folders() // Access accessor here
+    const currentDecks = decks() // Access accessor here
+    return getFolderContents(currentFolders, currentDecks, currentFolderId())
+  })
 
   // Check if we can navigate up (not at root)
   const canNavigateUp = createMemo(() => currentFolderId() !== null)

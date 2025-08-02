@@ -65,20 +65,22 @@ export function createFolderHierarchyForDeck(
  * Generates a full deck title including textbook context
  */
 export function generateDeckTitle(textbookInfo: TextbookInfo): string {
-  return `${textbookInfo.textbookName} ${textbookInfo.chapterName} ${textbookInfo.deckTitle}`
+  const shortChapter = textbookInfo.chapterName.replace("Chapter ", "Ch.")
+  return `${textbookInfo.textbookName} ${shortChapter} ${textbookInfo.deckTitle}`
 }
+
 
 /**
  * Creates a new UserDeck from a built-in deck with proper folder assignment
  */
 export function createUserDeckFromBuiltIn(
   builtInDeck: VocabBuiltInDeck,
-  folderId: number,
+  folderId: number | null,
   deckTitle: string,
   userId: string = "temp-user-id",
 ): UserDeck {
   return {
-    deck_id: Date.now(), // Temporary numeric ID - should be replaced with database-generated ID
+    deck_id: -Date.now(), // Negative temporary ID to avoid conflicts with positive database IDs
     deck_name: deckTitle,
     deck_description: null,
     original_deck_id: builtInDeck.id, // Store original built-in deck ID for vocabulary lookup
@@ -224,7 +226,7 @@ export function getFolderPathString(
   folderId: number | null,
   separator: string = " > ",
 ): string {
-  if (folderId === null) return "All Decks"
+  if (folderId === null) return "Root"
 
   const path: string[] = []
   let currentId: number | null = folderId
@@ -237,7 +239,7 @@ export function getFolderPathString(
     currentId = folder.parent_folder_id
   }
 
-  return path.length > 0 ? path.join(separator) : "All Decks"
+  return path.length > 0 ? path.join(separator) : "Root"
 }
 
 /**
@@ -273,4 +275,3 @@ export function validateImport(
     errors,
   }
 }
-

@@ -27,9 +27,7 @@ export const Route = createFileRoute("/_home/learn/")({
 
     // Case 2: No cookie but have user - await DB fetch (only for new devices)
     if (preferences?.timestamp === 0 && user) {
-      const dbPreferences = await getUserPreferencesFromDBServerFn({
-        data: user.id,
-      })
+      const dbPreferences = await getUserPreferencesFromDBServerFn()
 
       if (dbPreferences["active-textbook"] && dbPreferences["active-deck"]) {
         throw redirect({

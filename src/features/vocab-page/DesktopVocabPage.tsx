@@ -1,4 +1,5 @@
 // featuers/vocab-page/DesktopVocabPage.tsx
+import type { DeferredPromise } from "@tanstack/solid-router"
 import { CollapsiblePanel } from "./shared/CollapsiblePanel"
 import { BuiltInDecksPanel } from "./built-in-panel/BuiltInDecksPanel"
 import { UserDecksPanel } from "./user-panel/UserDecksPanel"
@@ -7,14 +8,23 @@ import { ImportConfirmationModal } from "./shared/ImportConfirmationModal"
 import { useVocabPageState } from "./hooks/useVocabPageState"
 import type { ImportRequest, VocabTextbook } from "./types"
 import type { TextbookIDEnum } from "@/data/types"
+import type { FoldersAndDecksData } from "@/features/supabase/db/folder-operations"
+import type { User } from "@supabase/supabase-js"
 
 interface DesktopVocabPageProps {
   importRequest?: ImportRequest | null
   textbooks: [TextbookIDEnum, VocabTextbook][]
+  foldersAndDecksPromise: DeferredPromise<FoldersAndDecksData>
+  user: User | null
 }
 
 export function DesktopVocabPage(props: DesktopVocabPageProps) {
-  const state = useVocabPageState(props.importRequest, props.textbooks)
+  const state = useVocabPageState(
+    props.importRequest,
+    props.textbooks,
+    props.foldersAndDecksPromise,
+    props.user,
+  )
   let userDecksPanelRef!: HTMLDivElement
 
   return (
@@ -56,6 +66,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
             onSelectDeck={state.selectUserDeck}
             onDeselectDeck={state.deselectUserDeck}
             panelRef={userDecksPanelRef}
+            isLoading={state.isLoadingFoldersAndDecks()}
           />
         </CollapsiblePanel>
       </div>

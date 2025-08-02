@@ -1,8 +1,10 @@
-import { createFileRoute } from "@tanstack/solid-router"
+import { createFileRoute, defer } from "@tanstack/solid-router"
 import { VocabPage } from "@/features/vocab-page/VocabPage"
 import { getVocabPracticeModulesFromTextbooks } from "@/data/utils/core"
+import { getUserFoldersAndDecks } from "@/features/supabase/db/folder-operations"
 import type { VocabBuiltInDeck } from "@/features/vocab-page/types"
 import type { TextbookIDEnum } from "@/data/types"
+import type { User } from "@supabase/supabase-js"
 
 function findVocabPracticeDeck(deckId: string): {
   deck: VocabBuiltInDeck
@@ -24,9 +26,15 @@ function findVocabPracticeDeck(deckId: string): {
 }
 
 export const Route = createFileRoute("/_home/vocab")({
-  loader: ({ location }) => {
+  loader: ({ location, context }) => {
     const importKey = new URLSearchParams(location.search).get("import")
     const result = importKey ? findVocabPracticeDeck(importKey) : null
+
+    // Fetch user folders and decks if authenticated
+    // For unsigned users, data will be loaded from session storage in the component
+    const foldersAndDecksPromise = context.user
+      ? getUserFoldersAndDecks(context.user.id)
+      : Promise.resolve({ folders: [], decks: [] })
 
     return {
       importRequest: result
@@ -39,6 +47,8 @@ export const Route = createFileRoute("/_home/vocab")({
           }
         : null,
       textbooks: getVocabPracticeModulesFromTextbooks(),
+      foldersAndDecksPromise: defer(foldersAndDecksPromise),
+      user: context.user,
     }
   },
   component: () => {
@@ -47,6 +57,8 @@ export const Route = createFileRoute("/_home/vocab")({
       <VocabPage
         importRequest={data.importRequest}
         textbooks={data.textbooks}
+        foldersAndDecksPromise={data.foldersAndDecksPromise}
+        user={data.user as User | null}
       />
     )
   },

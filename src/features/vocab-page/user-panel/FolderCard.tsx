@@ -15,7 +15,7 @@ export function FolderCard(props: FolderCardProps) {
 
   return (
     <div
-      class="hover:bg-accent bg-card cursor-pointer rounded-lg border p-4 transition-colors"
+      class="hover:bg-accent bg-card border-border cursor-pointer rounded-lg border p-4 transition-colors"
       onClick={() => props.onClick(props.folder.folder_id)}
     >
       <div class="flex items-start gap-3">
@@ -35,4 +35,3 @@ export function FolderCard(props: FolderCardProps) {
     </div>
   )
 }
-

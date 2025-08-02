@@ -42,7 +42,7 @@ export function FolderBreadcrumb(props: FolderBreadcrumbProps) {
               onClick={props.onNavigateToRoot}
               class="truncate"
             >
-              All Decks
+              Root
             </BreadcrumbLink>
           </BreadcrumbItem>
 

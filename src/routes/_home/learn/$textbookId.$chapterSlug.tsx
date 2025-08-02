@@ -5,7 +5,6 @@ import {
   getExternalResources,
   getDeckBySlug,
 } from "@/data/utils/core"
-import { mutateUserPreferencesServerFn } from "@/features/main-cookies/server/server-functions"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { getDueFSRSCardsCount } from "@/features/supabase/db/fsrs-operations"
 import { getWKHierarchy, getUserProgressForVocab } from "@/data/wanikani/utils"
@@ -19,10 +18,11 @@ import { LearnDataProvider } from "@/features/learn-page/context/LearnPageDataCo
 import { LearnPageContent } from "@/features/learn-page/components/layout/LearnPageContent"
 import type { TextbookIDEnum, VocabularyItem } from "@/data/types"
 import type { FullHierarchyData } from "@/data/wanikani/types"
+import type { User } from "@supabase/supabase-js"
 
 export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
   loader: async ({ context, params }) => {
-    const { user, initialUserPreferenceData } = context
+    const { user } = context
     const { textbookId, chapterSlug } = params
 
     let deck = getDeckBySlug(textbookId as TextbookIDEnum, chapterSlug)
@@ -33,7 +33,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
         params: { textbookId: "genki_1", chapterSlug: "chapter-0" },
       })
     }
-
 
     // Lessons
     const enrichedLessons = enrichLessons(getLessons(deck))
@@ -170,7 +169,7 @@ function RouteComponent() {
   return (
     <LearnDataProvider data={learnPageData}>
       <LearnPageContent
-        user={loaderData().user}
+        user={loaderData().user as User | null}
         activeTextbookId={loaderData().textbookId as TextbookIDEnum}
         activeDeck={loaderData().deck.slug}
       />

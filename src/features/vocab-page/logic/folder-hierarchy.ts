@@ -59,8 +59,8 @@ export function findOrCreateFolderPath(
   let currentFolders = [...folders]
   let currentParentId: number | null = null
 
-  // Start with a high ID to avoid conflicts
-  let nextId = Math.max(...folders.map((f) => f.folder_id), 999) + 1
+  // Use negative IDs to avoid conflicts with positive database IDs
+  let nextId = -Date.now()
 
   for (const folderName of pathNames) {
     // Try to find existing folder
@@ -72,7 +72,7 @@ export function findOrCreateFolderPath(
     if (!existingFolder) {
       // Create new folder
       const newFolder: DeckFolder = {
-        folder_id: nextId++,
+        folder_id: nextId--,
         folder_name: folderName,
         parent_folder_id: currentParentId,
         user_id: userId,
@@ -250,4 +250,5 @@ export function getFolderStats(
     totalDecks: decks.length,
   }
 }
+
 

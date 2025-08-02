@@ -20,14 +20,16 @@ export function UserDeckCard(props: UserDeckCardProps) {
   return (
     <div
       class={cn(
-        "bg-card border-border cursor-pointer space-y-3 rounded-lg border p-4",
+        "hover:bg-accent bg-card border-border cursor-pointer space-y-3 rounded-lg border p-4",
         props.isSelected && "outline-card-foreground outline-2",
         props.class,
       )}
       onClick={() => props.onSelect?.(props.deck)}
     >
       <div class="space-y-1">
-        <h4 class="text-sm leading-tight font-medium">{props.deck.deck_name}</h4>
+        <h4 class="text-sm leading-tight font-medium">
+          {props.deck.deck_name}
+        </h4>
         <p class="text-muted-foreground text-xs">
           {`Imported ${new Date(props.deck.created_at).toLocaleDateString()}`}
         </p>
@@ -43,7 +45,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
             params: { practiceID: props.deck.deck_id.toString() },
           })
         }}
-        class="bg-card-foreground text-primary relative w-full overflow-hidden text-xs"
+        class="bg-card-foreground text-primary relative w-full overflow-hidden text-xs hover:bg-neutral-500"
       >
         <div class="relative flex w-full items-center justify-center">
           <div

@@ -5,7 +5,6 @@ import { UserDeckCard } from "./UserDeckCard"
 import { FolderCard } from "./FolderCard"
 import { FolderBreadcrumb } from "../shared/FolderBreadcrumb"
 import type { UseFolderNavigationResult } from "../hooks/useFolderNavigation"
-// UserDeck type is now global from global.d.ts
 import { cn } from "@/utils"
 
 interface UserDecksPanelProps {
@@ -18,6 +17,7 @@ interface UserDecksPanelProps {
   onSelectDeck: (deck: UserDeck) => void
   onDeselectDeck: () => void
   panelRef?: HTMLDivElement
+  isLoading?: boolean
 }
 
 export function UserDecksPanel(props: UserDecksPanelProps) {
@@ -67,17 +67,33 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
         </div>
 
         <Show
-          when={hasContent()}
+          when={!props.isLoading}
           fallback={
             <div class="py-12 text-center">
-              <BookMarked class="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-              <h3 class="mb-2 text-lg font-medium">No decks imported yet</h3>
+              <div class="text-muted-foreground mx-auto mb-4 h-12 w-12 animate-spin">
+                ⏳
+              </div>
+              <h3 class="mb-2 text-lg font-medium">Loading your decks...</h3>
               <p class="text-muted-foreground text-sm">
-                Import decks from the built-in collection to get started
+                Fetching your folders and imported decks
               </p>
             </div>
           }
         >
+          <Show
+            when={hasContent()}
+            fallback={
+              <div class="py-12 text-center">
+                <BookMarked class="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+                <h3 class="mb-2 text-lg font-medium">
+                  No decks imported yet
+                </h3>
+                <p class="text-muted-foreground text-sm">
+                  Import decks from the built-in collection to get started
+                </p>
+              </div>
+            }
+          >
           <div class="space-y-3 pb-16">
             {/* Show folders first */}
             <For each={currentFolderContent().folders}>
@@ -107,6 +123,7 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
               )}
             </For>
           </div>
+          </Show>
         </Show>
       </div>
       <div
