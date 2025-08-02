@@ -22,12 +22,19 @@ export interface VocabTextbook {
   chapters: Chapter[]
 }
 
-// User's imported deck
-export interface UserDeck {
-  id: string
-  name: string
-  importedAt: Date
-  source: "textbook" | "anki" | "wanikani" | "jpdb"
+// UserDeck is now provided by global database types from global.d.ts
+// No local interface needed - using Database["public"]["Tables"]["user_decks"]["Row"]
+
+// Folder Navigation Types
+export interface FolderNavigationState {
+  currentFolderId: number | null  // null = root level
+  breadcrumbPath: DeckFolder[]    // path from root to current folder
+}
+
+// Content at current folder level (immediate children only)
+export interface FolderContent {
+  folders: DeckFolder[]    // immediate child folders
+  decks: UserDeck[]       // decks in current folder
 }
 
 // Expansion state tracking for collapsible UI

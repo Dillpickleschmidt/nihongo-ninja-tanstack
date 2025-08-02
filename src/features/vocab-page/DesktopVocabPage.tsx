@@ -62,7 +62,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
         isOpen={state.showImportModal()}
         onClose={state.handleImportCancel}
         onConfirm={state.handleImportConfirm}
-        deckTitle={state.pendingImportDeck()?.title || ""}
+        deckTitle={state.pendingImportDeck()?.title ?? ""}
       />
     </div>
   )

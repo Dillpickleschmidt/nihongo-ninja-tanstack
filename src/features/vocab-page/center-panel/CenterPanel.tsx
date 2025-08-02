@@ -2,7 +2,7 @@
 import { Show } from "solid-js"
 import { DefaultContent } from "./DefaultContent"
 import { VocabularyPreview } from "./VocabularyPreview"
-import type { UserDeck } from "../types"
+// UserDeck type is now global from global.d.ts
 
 interface CenterPanelProps {
   selectedUserDeck: UserDeck | null

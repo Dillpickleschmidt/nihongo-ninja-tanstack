@@ -2,7 +2,7 @@
 import { For, Show, onMount } from "solid-js"
 import { BookMarked } from "lucide-solid"
 import { UserDeckCard } from "./UserDeckCard"
-import type { UserDeck } from "../types"
+// UserDeck type is now global from global.d.ts
 import { cn } from "@/utils"
 
 interface UserDecksPanelProps {
@@ -61,8 +61,8 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
                 <UserDeckCard
                   deck={deck}
                   onPlay={props.onPlayDeck}
-                  isNewlyImported={props.newlyImportedDecks.has(deck.id)}
-                  isSelected={props.selectedUserDeck?.id === deck.id}
+                  isNewlyImported={props.newlyImportedDecks.has(deck.deck_id.toString())}
+                  isSelected={props.selectedUserDeck?.deck_id === deck.deck_id}
                   onSelect={props.onSelectDeck}
                   class="deck-card"
                 />

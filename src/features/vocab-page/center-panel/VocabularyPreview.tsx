@@ -7,7 +7,7 @@ import {
   getVocabularyForSet,
 } from "@/data/utils/vocab"
 import { dynamic_modules } from "@/data/dynamic_modules"
-import type { UserDeck } from "../types"
+// UserDeck type is now global from global.d.ts
 import type { VocabularyItem } from "@/data/types"
 
 interface VocabularyPreviewProps {
@@ -24,13 +24,15 @@ export function VocabularyPreview(props: VocabularyPreviewProps) {
   createEffect(async () => {
     const deck = props.selectedDeck
 
-    // Only load vocabulary from dynamic modules for textbook decks
-    if (deck.source !== "textbook") {
+    // Only load vocabulary from dynamic modules for built-in decks
+    if (deck.source !== "built-in") {
       setVocabularyItems([])
       return
     }
 
-    const module = dynamic_modules[deck.id]
+    // Use the original built-in deck ID for vocabulary lookup
+    const originalDeckId = deck.original_deck_id!
+    const module = dynamic_modules[originalDeckId]
 
     if (!module || !module.vocab_set_ids) {
       setVocabularyItems([])
@@ -52,7 +54,7 @@ export function VocabularyPreview(props: VocabularyPreviewProps) {
   return (
     <div class="h-full w-full overflow-y-auto p-6">
       <div class="my-6 text-center">
-        <h2 class="mb-2 text-2xl font-bold">{props.selectedDeck.name}</h2>
+        <h2 class="mb-2 text-2xl font-bold">{props.selectedDeck.deck_name}</h2>
         <p class="text-muted-foreground">Vocabulary Preview</p>
       </div>
 
@@ -64,7 +66,7 @@ export function VocabularyPreview(props: VocabularyPreviewProps) {
         ) : vocabularyItems().length === 0 ? (
           <div class="flex items-center justify-center py-12">
             <div class="text-muted-foreground">
-              {props.selectedDeck.source === "textbook"
+              {props.selectedDeck.source === "built-in"
                 ? "No vocabulary items found for this deck."
                 : `${props.selectedDeck.source} deck vocabulary loading not yet implemented.`}
             </div>

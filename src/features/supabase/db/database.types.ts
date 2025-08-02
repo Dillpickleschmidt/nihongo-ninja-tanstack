@@ -12,8 +12,65 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
   }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string
+          query?: string
+          variables?: Json
+          extensions?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
+      deck_folders: {
+        Row: {
+          created_at: string
+          folder_id: number
+          folder_name: string
+          parent_folder_id: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          folder_id?: never
+          folder_name: string
+          parent_folder_id?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          folder_id?: never
+          folder_name?: string
+          parent_folder_id?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deck_folders_parent_fkey"
+            columns: ["parent_folder_id"]
+            isOneToOne: false
+            referencedRelation: "deck_folders"
+            referencedColumns: ["folder_id"]
+          },
+        ]
+      }
       practice_item_user_completions: {
         Row: {
           created_at: string
@@ -95,6 +152,103 @@ export type Database = {
         }
         Relationships: []
       }
+      user_decks: {
+        Row: {
+          created_at: string
+          deck_description: string | null
+          deck_id: number
+          deck_name: string
+          folder_id: number | null
+          original_deck_id: string | null
+          source: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deck_description?: string | null
+          deck_id?: never
+          deck_name: string
+          folder_id?: number | null
+          original_deck_id?: string | null
+          source?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deck_description?: string | null
+          deck_id?: never
+          deck_name?: string
+          folder_id?: number | null
+          original_deck_id?: string | null
+          source?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_decks_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "deck_folders"
+            referencedColumns: ["folder_id"]
+          },
+        ]
+      }
+      vocabulary_items: {
+        Row: {
+          chapter: number | null
+          created_at: string
+          deck_id: number
+          english: string[]
+          example_sentences: Json | null
+          furigana: string | null
+          id: number
+          info: string[] | null
+          mnemonics: Json | null
+          part_of_speech: Database["public"]["Enums"]["part_of_speech"] | null
+          particles: Json | null
+          videos: Json | null
+          word: string
+        }
+        Insert: {
+          chapter?: number | null
+          created_at?: string
+          deck_id: number
+          english: string[]
+          example_sentences?: Json | null
+          furigana?: string | null
+          id?: never
+          info?: string[] | null
+          mnemonics?: Json | null
+          part_of_speech?: Database["public"]["Enums"]["part_of_speech"] | null
+          particles?: Json | null
+          videos?: Json | null
+          word: string
+        }
+        Update: {
+          chapter?: number | null
+          created_at?: string
+          deck_id?: number
+          english?: string[]
+          example_sentences?: Json | null
+          furigana?: string | null
+          id?: never
+          info?: string[] | null
+          mnemonics?: Json | null
+          part_of_speech?: Database["public"]["Enums"]["part_of_speech"] | null
+          particles?: Json | null
+          videos?: Json | null
+          word?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocabulary_items_deck_id_fkey"
+            columns: ["deck_id"]
+            isOneToOne: false
+            referencedRelation: "user_decks"
+            referencedColumns: ["deck_id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -103,6 +257,26 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      part_of_speech:
+        | "Ichidan verb"
+        | "Godan verb with 'u' ending"
+        | "Godan verb with 'tsu' ending"
+        | "Godan verb with 'ru' ending"
+        | "Godan verb - Iku/Yuku special class"
+        | "Godan verb with 'ku' ending"
+        | "Godan verb with 'gu' ending"
+        | "Godan verb with 'bu' ending"
+        | "Godan verb with 'mu' ending"
+        | "Godan verb with 'nu' ending"
+        | "Godan verb with 'su' ending"
+        | "Godan verb with 'ru' ending (irregular verb)"
+        | "Godan verb - -aru special class"
+        | "Suru verb - included"
+        | "Suru verb - compound word"
+        | "Suru verb - special class"
+        | "Kuru verb - special class"
+        | "I-adjective"
+        | "Na-adjective"
       practice_item_type: "vocabulary" | "kanji" | "radical"
     }
     CompositeTypes: {
@@ -229,8 +403,32 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
+      part_of_speech: [
+        "Ichidan verb",
+        "Godan verb with 'u' ending",
+        "Godan verb with 'tsu' ending",
+        "Godan verb with 'ru' ending",
+        "Godan verb - Iku/Yuku special class",
+        "Godan verb with 'ku' ending",
+        "Godan verb with 'gu' ending",
+        "Godan verb with 'bu' ending",
+        "Godan verb with 'mu' ending",
+        "Godan verb with 'nu' ending",
+        "Godan verb with 'su' ending",
+        "Godan verb with 'ru' ending (irregular verb)",
+        "Godan verb - -aru special class",
+        "Suru verb - included",
+        "Suru verb - compound word",
+        "Suru verb - special class",
+        "Kuru verb - special class",
+        "I-adjective",
+        "Na-adjective",
+      ],
       practice_item_type: ["vocabulary", "kanji", "radical"],
     },
   },

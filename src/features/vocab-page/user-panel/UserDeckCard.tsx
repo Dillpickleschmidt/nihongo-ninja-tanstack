@@ -3,7 +3,7 @@ import { Play, ArrowLeft } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "@tanstack/solid-router"
 import { cn } from "@/utils"
-import type { UserDeck } from "../types"
+// UserDeck type is now global from global.d.ts
 
 interface UserDeckCardProps {
   deck: UserDeck
@@ -27,9 +27,9 @@ export function UserDeckCard(props: UserDeckCardProps) {
       onClick={() => props.onSelect?.(props.deck)}
     >
       <div class="space-y-1">
-        <h4 class="text-sm leading-tight font-medium">{props.deck.name}</h4>
+        <h4 class="text-sm leading-tight font-medium">{props.deck.deck_name}</h4>
         <p class="text-muted-foreground text-xs">
-          Imported {props.deck.importedAt.toLocaleDateString()}
+          {`Imported ${new Date(props.deck.created_at).toLocaleDateString()}`}
         </p>
       </div>
 
@@ -40,7 +40,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
           e.stopPropagation()
           navigate({
             to: "/practice/$practiceID",
-            params: { practiceID: props.deck.id },
+            params: { practiceID: props.deck.deck_id.toString() },
           })
         }}
         class="bg-card-foreground text-primary relative w-full overflow-hidden text-xs"

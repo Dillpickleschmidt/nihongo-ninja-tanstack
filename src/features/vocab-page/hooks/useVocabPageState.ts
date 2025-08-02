@@ -3,7 +3,6 @@ import { createSignal, createEffect } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
 import { DEFAULT_EXPANDED_TEXTBOOKS, NEWLY_IMPORTED_TIMEOUT } from "../types"
 import type {
-  UserDeck,
   ImportRequest,
   VocabBuiltInDeck,
   VocabTextbook,
@@ -113,24 +112,30 @@ export function useVocabPageState(
 
     updateDeckImportStatus(builtInDeck.id, true)
 
+    // TODO: This should eventually save to database and get a real deck_id
+    // For now, creating a mock UserDeck object for UI state
     const newUserDeck: UserDeck = {
-      id: builtInDeck.id,
-      name: fullTitle,
-      importedAt: new Date(),
-      source: "textbook",
+      deck_id: Date.now(), // Temporary numeric ID - should be replaced with database-generated ID
+      deck_name: fullTitle,
+      deck_description: null,
+      original_deck_id: builtInDeck.id, // Store original built-in deck ID for vocabulary lookup
+      created_at: new Date().toISOString(),
+      source: "built-in",
+      user_id: "temp-user-id", // TODO: Get actual user ID
+      folder_id: null,
     }
 
     setUserDecks((prev) => [newUserDeck, ...prev])
     setSelectedUserDeck(newUserDeck)
 
     // Mark as newly imported
-    setNewlyImportedDecks((prev) => new Set([...prev, newUserDeck.id]))
+    setNewlyImportedDecks((prev) => new Set([...prev, newUserDeck.deck_id.toString()]))
 
     // Remove from newly imported after timeout
     setTimeout(() => {
       setNewlyImportedDecks((prev) => {
         const newSet = new Set(prev)
-        newSet.delete(newUserDeck.id)
+        newSet.delete(newUserDeck.deck_id.toString())
         return newSet
       })
     }, NEWLY_IMPORTED_TIMEOUT)
