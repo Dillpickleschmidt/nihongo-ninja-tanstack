@@ -15,7 +15,7 @@ import {
   saveFoldersAndDecks,
   loadFoldersAndDecks,
 } from "@/features/vocab-page/storage/sessionStorage"
-import { importDeckWithFolders } from "@/features/vocab-page/logic/deck-import-logic"
+import { importDeckWithFolders, isDeckAlreadyImported } from "@/features/vocab-page/logic/deck-import-logic"
 
 export function useVocabPageState(
   importRequest?: ImportRequest | null,
@@ -138,6 +138,24 @@ export function useVocabPageState(
     [TextbookIDEnum, VocabTextbook][]
   >(initialTextbooks || [])
 
+  // Computed textbooks with up-to-date import status derived from user decks
+  const textbooksWithImportStatus = () => {
+    const currentDecks = userDecks()
+    return textbooks().map(([textbookId, textbook]) => [
+      textbookId,
+      {
+        ...textbook,
+        chapters: textbook.chapters.map((chapter) => ({
+          ...chapter,
+          decks: chapter.decks.map((deck) => ({
+            ...deck,
+            isImported: isDeckAlreadyImported(currentDecks, deck.id),
+          })),
+        })),
+      },
+    ]) as [TextbookIDEnum, VocabTextbook][]
+  }
+
   const toggleTextbook = (textbookId: string) => {
     setExpandedTextbooks((prev) => {
       const newSet = new Set(prev)
@@ -162,26 +180,9 @@ export function useVocabPageState(
     })
   }
 
-  const updateDeckImportStatus = (deckId: string, isImported: boolean) => {
-    setTextbooks((prev) =>
-      prev.map(([textbookId, textbook]) => [
-        textbookId,
-        {
-          ...textbook,
-          chapters: textbook.chapters.map((chapter) => ({
-            ...chapter,
-            decks: chapter.decks.map((deck) =>
-              deck.id === deckId ? { ...deck, isImported } : deck,
-            ),
-          })),
-        },
-      ]),
-    )
-  }
 
 
   const importDeck = async (builtInDeck: VocabBuiltInDeck) => {
-    updateDeckImportStatus(builtInDeck.id, true)
 
     // 1. Optimistic local update (immediate UI response for all users)
     const currentFolders = folders()
@@ -193,7 +194,7 @@ export function useVocabPageState(
       currentDecks,
       builtInDeck,
       textbooks(),
-      userId, // Just use default ID generation
+      userId,
     )
 
     // Update local state immediately
@@ -224,7 +225,6 @@ export function useVocabPageState(
         // Revert optimistic update
         setLocalFolders(currentFolders)
         setLocalDecks(currentDecks)
-        updateDeckImportStatus(builtInDeck.id, false)
         alert("Failed to save deck to your account. Please try again.")
       }
     } else {
@@ -288,7 +288,7 @@ export function useVocabPageState(
     setRightPanelOpen,
 
     // Content state
-    textbooks,
+    textbooks: textbooksWithImportStatus,
     expandedTextbooks,
     expandedChapters,
     userDecks,
