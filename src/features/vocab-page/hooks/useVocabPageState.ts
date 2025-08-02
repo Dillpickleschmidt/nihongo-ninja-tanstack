@@ -2,12 +2,10 @@
 import { createSignal, createEffect } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
 import { DEFAULT_EXPANDED_TEXTBOOKS, NEWLY_IMPORTED_TIMEOUT } from "../types"
-import type {
-  ImportRequest,
-  VocabBuiltInDeck,
-  VocabTextbook,
-} from "../types"
+import type { ImportRequest, VocabBuiltInDeck, VocabTextbook } from "../types"
 import type { TextbookIDEnum } from "@/data/types"
+import { useFolderNavigation } from "./useFolderNavigation"
+import { importDeckWithFolders } from "../logic/deck-import-logic"
 
 export function useVocabPageState(
   importRequest?: ImportRequest | null,
@@ -37,12 +35,16 @@ export function useVocabPageState(
     initialExpandedChapters,
   )
   const [userDecks, setUserDecks] = createSignal<UserDeck[]>([])
+  const [folders, setFolders] = createSignal<DeckFolder[]>([])
   const [newlyImportedDecks, setNewlyImportedDecks] = createSignal<Set<string>>(
     new Set(),
   )
   const [selectedUserDeck, setSelectedUserDeck] = createSignal<UserDeck | null>(
     null,
   )
+
+  // Folder navigation
+  const folderNavigation = useFolderNavigation(folders, userDecks)
 
   // Import confirmation modal state
   const [showImportModal, setShowImportModal] = createSignal(false)
@@ -108,34 +110,37 @@ export function useVocabPageState(
   }
 
   const importDeck = (builtInDeck: VocabBuiltInDeck) => {
-    const fullTitle = generateDeckTitle(builtInDeck)
-
     updateDeckImportStatus(builtInDeck.id, true)
 
-    // TODO: This should eventually save to database and get a real deck_id
-    // For now, creating a mock UserDeck object for UI state
-    const newUserDeck: UserDeck = {
-      deck_id: Date.now(), // Temporary numeric ID - should be replaced with database-generated ID
-      deck_name: fullTitle,
-      deck_description: null,
-      original_deck_id: builtInDeck.id, // Store original built-in deck ID for vocabulary lookup
-      created_at: new Date().toISOString(),
-      source: "built-in",
-      user_id: "temp-user-id", // TODO: Get actual user ID
-      folder_id: null,
+    // Use smart import logic with folder creation
+    const result = importDeckWithFolders(
+      folders(),
+      userDecks(),
+      builtInDeck,
+      textbooks(),
+      "temp-user-id", // TODO: Get actual user ID
+    )
+
+    // Update state with results
+    setFolders(result.folders)
+    setUserDecks(result.decks)
+    setSelectedUserDeck(result.importedDeck)
+
+    // Navigate to the folder containing the new deck
+    if (result.targetFolderId !== null) {
+      folderNavigation.navigateToFolder(result.targetFolderId)
     }
 
-    setUserDecks((prev) => [newUserDeck, ...prev])
-    setSelectedUserDeck(newUserDeck)
-
     // Mark as newly imported
-    setNewlyImportedDecks((prev) => new Set([...prev, newUserDeck.deck_id.toString()]))
+    setNewlyImportedDecks(
+      (prev) => new Set([...prev, result.importedDeck.deck_id.toString()]),
+    )
 
     // Remove from newly imported after timeout
     setTimeout(() => {
       setNewlyImportedDecks((prev) => {
         const newSet = new Set(prev)
-        newSet.delete(newUserDeck.deck_id.toString())
+        newSet.delete(result.importedDeck.deck_id.toString())
         return newSet
       })
     }, NEWLY_IMPORTED_TIMEOUT)
@@ -188,8 +193,12 @@ export function useVocabPageState(
     expandedTextbooks,
     expandedChapters,
     userDecks,
+    folders,
     newlyImportedDecks,
     selectedUserDeck,
+
+    // Folder navigation
+    folderNavigation,
 
     // Actions
     toggleTextbook,

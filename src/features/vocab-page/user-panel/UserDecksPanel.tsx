@@ -2,11 +2,16 @@
 import { For, Show, onMount } from "solid-js"
 import { BookMarked } from "lucide-solid"
 import { UserDeckCard } from "./UserDeckCard"
+import { FolderCard } from "./FolderCard"
+import { FolderBreadcrumb } from "../shared/FolderBreadcrumb"
+import type { UseFolderNavigationResult } from "../hooks/useFolderNavigation"
 // UserDeck type is now global from global.d.ts
 import { cn } from "@/utils"
 
 interface UserDecksPanelProps {
   userDecks: UserDeck[]
+  folders: DeckFolder[]
+  folderNavigation: UseFolderNavigationResult
   onPlayDeck: (deck: UserDeck) => void
   newlyImportedDecks: Set<string>
   selectedUserDeck: UserDeck | null
@@ -35,16 +40,34 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
     }
   })
 
+  const currentFolderContent = () =>
+    props.folderNavigation.currentFolderContent()
+  const hasContent = () => {
+    const content = currentFolderContent()
+    return content.folders.length > 0 || content.decks.length > 0
+  }
+
   return (
     <>
       <div class="space-y-4">
+        {/* Folder breadcrumb navigation */}
+        <FolderBreadcrumb
+          breadcrumbPath={props.folderNavigation.breadcrumbPath()}
+          canNavigateUp={props.folderNavigation.canNavigateUp()}
+          onNavigateToFolder={props.folderNavigation.navigateToFolder}
+          onNavigateToParent={props.folderNavigation.navigateToParent}
+          onNavigateToRoot={props.folderNavigation.navigateToRoot}
+        />
+
         <div class="mb-4">
           <p class="text-muted-foreground text-sm">
-            Your imported vocabulary decks. Click "Practice" to start studying.
+            Your imported vocabulary decks. Import from built-in collection or
+            organize into folders.
           </p>
         </div>
+
         <Show
-          when={props.userDecks.length > 0}
+          when={hasContent()}
           fallback={
             <div class="py-12 text-center">
               <BookMarked class="text-muted-foreground mx-auto mb-4 h-12 w-12" />
@@ -56,12 +79,27 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
           }
         >
           <div class="space-y-3 pb-16">
-            <For each={props.userDecks}>
+            {/* Show folders first */}
+            <For each={currentFolderContent().folders}>
+              {(folder) => (
+                <FolderCard
+                  folder={folder}
+                  allFolders={props.folders}
+                  allDecks={props.userDecks}
+                  onClick={props.folderNavigation.navigateToFolder}
+                />
+              )}
+            </For>
+
+            {/* Show decks in current folder */}
+            <For each={currentFolderContent().decks}>
               {(deck) => (
                 <UserDeckCard
                   deck={deck}
                   onPlay={props.onPlayDeck}
-                  isNewlyImported={props.newlyImportedDecks.has(deck.deck_id.toString())}
+                  isNewlyImported={props.newlyImportedDecks.has(
+                    deck.deck_id.toString(),
+                  )}
                   isSelected={props.selectedUserDeck?.deck_id === deck.deck_id}
                   onSelect={props.onSelectDeck}
                   class="deck-card"

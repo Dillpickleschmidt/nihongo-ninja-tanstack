@@ -48,6 +48,8 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
         >
           <UserDecksPanel
             userDecks={state.userDecks()}
+            folders={state.folders()}
+            folderNavigation={state.folderNavigation}
             onPlayDeck={() => {}}
             newlyImportedDecks={state.newlyImportedDecks()}
             selectedUserDeck={state.selectedUserDeck()}
