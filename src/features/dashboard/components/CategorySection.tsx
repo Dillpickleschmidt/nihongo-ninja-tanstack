@@ -10,7 +10,7 @@ interface CategorySectionProps {
 export function CategorySection(props: CategorySectionProps) {
   return (
     <div class="mb-8">
-      <h3 class="text-foreground border-border mb-4 border-b pb-2 text-xl font-bold">
+      <h3 class="text-foreground border-border mb-4 border-b pb-2 text-xl font-semibold">
         {props.title}
       </h3>
       <div class="space-y-3">

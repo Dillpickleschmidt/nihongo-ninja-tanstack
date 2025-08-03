@@ -15,7 +15,7 @@ export function FeaturedToolsSection(props: FeaturedToolsSectionProps) {
       <SSRMediaQuery showFrom="md">
         <div class="container pb-16">
           <h1
-            class={`text-foreground my-12 text-center text-4xl font-bold transition-all duration-700 ease-out ${
+            class={`text-foreground mt-4 mb-8 text-center text-4xl font-semibold transition-all duration-700 ease-out ${
               props.animated()
                 ? "translate-y-0 opacity-100"
                 : "translate-y-8 opacity-0"

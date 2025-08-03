@@ -13,7 +13,7 @@ export function ResourceDirectorySection() {
       {/* Above the fold resources */}
       <div class="border-border bg-muted/30 border-t py-12">
         <div class="container mx-auto">
-          <h2 class="text-foreground mb-8 text-center text-2xl font-bold">
+          <h2 class="text-foreground mb-8 text-center text-2xl font-semibold">
             Quick Start Guides
           </h2>
 
@@ -31,7 +31,7 @@ export function ResourceDirectorySection() {
       {bottomCategories.length > 0 && (
         <div class="py-12">
           <div class="container mx-auto">
-            <h2 class="text-foreground mb-8 text-center text-2xl font-bold">
+            <h2 class="text-foreground mb-8 text-center text-2xl font-semibold">
               Additional Resources
             </h2>
 

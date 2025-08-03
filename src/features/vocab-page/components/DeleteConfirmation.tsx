@@ -55,6 +55,7 @@ export function DeleteConfirmation(props: DeleteConfirmationProps) {
                       name="deleteStrategy"
                       checked={props.deleteStrategy === "move-up"}
                       onChange={() => props.onStrategyChange("move-up")}
+                      class="accent-amber-500"
                     />
                     <span class="text-sm">Move items to parent folder</span>
                   </label>
@@ -65,6 +66,7 @@ export function DeleteConfirmation(props: DeleteConfirmationProps) {
                       name="deleteStrategy"
                       checked={props.deleteStrategy === "delete-all"}
                       onChange={() => props.onStrategyChange("delete-all")}
+                      class="accent-amber-500"
                     />
                     <span class="text-sm">
                       Delete all items (cannot be undone)
@@ -76,7 +78,7 @@ export function DeleteConfirmation(props: DeleteConfirmationProps) {
           </div>
         }
       >
-        <p>
+        <p class="text-sm">
           Delete "{(props.item as UserDeck)?.deck_name}"? This action cannot be
           undone.
         </p>
@@ -93,4 +95,3 @@ export function DeleteConfirmation(props: DeleteConfirmationProps) {
     </div>
   )
 }
-
