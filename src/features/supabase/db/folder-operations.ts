@@ -3,6 +3,7 @@ import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 import { createServerFn } from "@tanstack/solid-start"
 import { getUser } from "../getUser"
 import type { VocabBuiltInDeck } from "@/features/vocab-page/types"
+import { generateDeckTitle } from "@/features/vocab-page/logic/deck-import-logic"
 
 export type FoldersAndDecksData = {
   folders: DeckFolder[]
@@ -284,7 +285,7 @@ export const importBuiltInDeckServerFn = createServerFn({ method: "POST" })
       throw new Error("Deck already imported")
     }
 
-    // Extract textbook info from deck (following existing logic)
+    // Extract textbook info from deck
     const textbookInfo = extractTextbookInfo(builtInDeck, textbooks)
 
     // Create folder hierarchy if needed
@@ -300,7 +301,9 @@ export const importBuiltInDeckServerFn = createServerFn({ method: "POST" })
 
     // Create the user deck
     const insertData: UserDeckInsert = {
-      deck_name: builtInDeck.title,
+      deck_name: textbookInfo
+        ? generateDeckTitle(textbookInfo)
+        : builtInDeck.title,
       deck_description: builtInDeck.description || null,
       folder_id: targetFolderId,
       original_deck_id: builtInDeck.id,
@@ -329,7 +332,7 @@ export const importBuiltInDeckServerFn = createServerFn({ method: "POST" })
 function extractTextbookInfo(
   builtInDeck: VocabBuiltInDeck,
   textbooks: [string, any][],
-): { textbookName: string; chapterName: string } | null {
+): { textbookName: string; chapterName: string; deckTitle: string } | null {
   for (const [textbookId, textbook] of textbooks) {
     for (const chapter of textbook.chapters) {
       const deck = chapter.decks.find((d: any) => d.id === builtInDeck.id)
@@ -337,10 +340,10 @@ function extractTextbookInfo(
         return {
           textbookName: textbook.short_name || textbook.name,
           chapterName: `Chapter ${chapter.number}`,
+          deckTitle: deck.title,
         }
       }
     }
   }
   return null
 }
-
