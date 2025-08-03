@@ -20,10 +20,15 @@ export function UserDeckCard(props: UserDeckCardProps) {
   const navigate = useNavigate()
   const [isHovered, setIsHovered] = createSignal(false)
 
+  const practiceID = () =>
+    props.deck.source === "built-in"
+      ? props.deck.original_deck_id!
+      : props.deck.deck_id.toString()
+
   return (
     <div
       class={cn(
-        "hover:bg-accent bg-card border-border cursor-pointer space-y-3 rounded-lg border p-4 relative",
+        "hover:bg-accent bg-card border-border relative cursor-pointer space-y-3 rounded-lg border p-4",
         props.isSelected && "outline-card-foreground outline-2",
         props.class,
       )}
@@ -35,7 +40,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
       <div
         class={cn(
           "absolute top-2 right-2 transition-opacity duration-200",
-          isHovered() ? "opacity-100" : "opacity-0"
+          isHovered() ? "opacity-100" : "opacity-0",
         )}
       >
         <Button
@@ -52,7 +57,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
       </div>
 
       <div class="space-y-1">
-        <h4 class="text-sm leading-tight font-medium pr-8">
+        <h4 class="pr-8 text-sm leading-tight font-medium">
           {props.deck.deck_name}
         </h4>
         <p class="text-muted-foreground text-xs">
@@ -67,7 +72,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
           e.stopPropagation()
           navigate({
             to: "/practice/$practiceID",
-            params: { practiceID: props.deck.deck_id.toString() },
+            params: { practiceID: practiceID() },
           })
         }}
         class="bg-card-foreground text-primary relative w-full overflow-hidden text-xs hover:bg-neutral-500"

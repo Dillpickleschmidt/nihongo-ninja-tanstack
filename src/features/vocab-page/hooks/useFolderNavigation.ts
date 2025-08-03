@@ -11,14 +11,13 @@ import {
   getFolderContents,
   getParentFolderId,
 } from "../logic/folder-hierarchy"
-import type { FolderContent, FolderNavigationState } from "../types"
+import type { FolderContent } from "../types"
 
 export interface UseFolderNavigationResult {
   // Current state
   currentFolderId: () => number | null
   breadcrumbPath: () => DeckFolder[]
   currentFolderContent: () => FolderContent
-  isLoading: () => boolean
 
   // Navigation actions
   navigateToFolder: (folderId: number | null) => void
@@ -36,7 +35,6 @@ export function useFolderNavigation(
   const [currentFolderId, setCurrentFolderId] = createSignal<number | null>(
     null,
   )
-  const [isLoading, setIsLoading] = createSignal(false)
 
   // Compute breadcrumb path reactively
   const breadcrumbPath = createMemo(() =>
@@ -55,13 +53,7 @@ export function useFolderNavigation(
 
   // Navigation functions
   const navigateToFolder = (folderId: number | null) => {
-    setIsLoading(true)
-
-    // Simulate async navigation (can be used for future database calls)
-    setTimeout(() => {
-      setCurrentFolderId(folderId)
-      setIsLoading(false)
-    }, 0)
+    setCurrentFolderId(folderId)
   }
 
   const navigateToParent = () => {
@@ -78,7 +70,6 @@ export function useFolderNavigation(
     currentFolderId,
     breadcrumbPath,
     currentFolderContent,
-    isLoading,
 
     // Actions
     navigateToFolder,

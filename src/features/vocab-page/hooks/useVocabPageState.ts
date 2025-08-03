@@ -16,7 +16,10 @@ import {
   saveFoldersAndDecks,
   loadFoldersAndDecks,
 } from "@/features/vocab-page/storage/sessionStorage"
-import { importDeckWithFolders, isDeckAlreadyImported } from "@/features/vocab-page/logic/deck-import-logic"
+import {
+  importDeckWithFolders,
+  isDeckAlreadyImported,
+} from "@/features/vocab-page/logic/deck-import-logic"
 import { EditTransaction } from "@/features/vocab-page/logic/edit-transaction"
 import type { AppState } from "@/features/vocab-page/logic/edit-transaction"
 
@@ -183,10 +186,7 @@ export function useVocabPageState(
     })
   }
 
-
-
   const importDeck = async (builtInDeck: VocabBuiltInDeck) => {
-
     // 1. Optimistic local update (immediate UI response for all users)
     const currentFolders = folders()
     const currentDecks = userDecks()
@@ -217,12 +217,14 @@ export function useVocabPageState(
     if (user) {
       // 2. Database sync (background, with navigation reconciliation)
       try {
-        const dbResult = await importBuiltInDeckServerFn({
+        await importBuiltInDeckServerFn({
           data: {
             builtInDeck,
             textbooks: textbooks(),
           },
         })
+        // Refetch to get real IDs and sync with database
+        refetchFoldersAndDecks()
       } catch (error) {
         console.error("Database sync failed:", error)
         // Revert optimistic update
@@ -251,7 +253,7 @@ export function useVocabPageState(
   // Edit operation functions
   const executeEdit = async (transaction: EditTransaction) => {
     const currentState: AppState = { folders: folders(), decks: userDecks() }
-    
+
     // 1. Validate transaction
     const preview = transaction.preview(currentState)
     if (!preview.success) {
@@ -267,7 +269,11 @@ export function useVocabPageState(
     try {
       if (user) {
         // Database transaction
-        await executeEditTransactionServerFn({ data: { operations: transaction.getOperations() } })
+        await executeEditTransactionServerFn({
+          data: { operations: transaction.getOperations() },
+        })
+        // Refetch to get updated data and real IDs
+        refetchFoldersAndDecks()
       } else {
         // Session storage (atomic write)
         saveFoldersAndDecks(preview.newState!)
@@ -277,26 +283,34 @@ export function useVocabPageState(
       setLocalFolders(currentState.folders)
       setLocalDecks(currentState.decks)
       console.error("Edit failed:", error)
-      alert(`Edit failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      alert(
+        `Edit failed: ${error instanceof Error ? error.message : "Unknown error"}`,
+      )
     }
   }
 
-  const editDeck = async (deckId: number, updates: { name?: string; folderId?: number | null }) => {
+  const editDeck = async (
+    deckId: number,
+    updates: { name?: string; folderId?: number | null },
+  ) => {
     const transaction = new EditTransaction()
     transaction.add({
-      type: 'update-deck',
+      type: "update-deck",
       deckId,
-      updates
+      updates,
     })
     await executeEdit(transaction)
   }
 
-  const editFolder = async (folderId: number, updates: { name?: string; parentId?: number | null }) => {
+  const editFolder = async (
+    folderId: number,
+    updates: { name?: string; parentId?: number | null },
+  ) => {
     const transaction = new EditTransaction()
     transaction.add({
-      type: 'update-folder',
+      type: "update-folder",
       folderId,
-      updates
+      updates,
     })
     await executeEdit(transaction)
   }
@@ -304,18 +318,21 @@ export function useVocabPageState(
   const deleteDeck = async (deckId: number) => {
     const transaction = new EditTransaction()
     transaction.add({
-      type: 'delete-deck',
-      deckId
+      type: "delete-deck",
+      deckId,
     })
     await executeEdit(transaction)
   }
 
-  const deleteFolder = async (folderId: number, strategy: 'move-up' | 'delete-all') => {
+  const deleteFolder = async (
+    folderId: number,
+    strategy: "move-up" | "delete-all",
+  ) => {
     const transaction = new EditTransaction()
     transaction.add({
-      type: 'delete-folder',
+      type: "delete-folder",
       folderId,
-      strategy
+      strategy,
     })
     await executeEdit(transaction)
   }
@@ -393,8 +410,5 @@ export function useVocabPageState(
     pendingImportDeck,
     handleImportConfirm,
     handleImportCancel,
-
-    // Loading state - use a more explicit check
-    isLoadingFoldersAndDecks: () => foldersAndDecks.loading,
   }
 }

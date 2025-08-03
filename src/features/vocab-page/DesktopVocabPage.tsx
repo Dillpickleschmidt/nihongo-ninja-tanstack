@@ -31,7 +31,9 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
 
   // Edit modal state
   const [editModalOpen, setEditModalOpen] = createSignal(false)
-  const [editingItem, setEditingItem] = createSignal<UserDeck | DeckFolder | null>(null)
+  const [editingItem, setEditingItem] = createSignal<
+    UserDeck | DeckFolder | null
+  >(null)
 
   // Edit handlers
   const handleEditDeck = (deck: UserDeck) => {
@@ -95,7 +97,6 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
             onEditDeck={handleEditDeck}
             onEditFolder={handleEditFolder}
             panelRef={userDecksPanelRef}
-            isLoading={state.isLoadingFoldersAndDecks()}
           />
         </CollapsiblePanel>
       </div>

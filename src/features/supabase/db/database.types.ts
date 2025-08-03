@@ -254,7 +254,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      execute_edit_transaction: {
+        Args: { user_id: string; operations: Json }
+        Returns: undefined
+      }
     }
     Enums: {
       part_of_speech:

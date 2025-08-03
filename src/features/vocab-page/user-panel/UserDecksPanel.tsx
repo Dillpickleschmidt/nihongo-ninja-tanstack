@@ -19,7 +19,6 @@ interface UserDecksPanelProps {
   onEditDeck: (deck: UserDeck) => void
   onEditFolder: (folder: DeckFolder) => void
   panelRef?: HTMLDivElement
-  isLoading?: boolean
 }
 
 export function UserDecksPanel(props: UserDecksPanelProps) {
@@ -69,33 +68,17 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
         </div>
 
         <Show
-          when={!props.isLoading}
+          when={hasContent()}
           fallback={
             <div class="py-12 text-center">
-              <div class="text-muted-foreground mx-auto mb-4 h-12 w-12 animate-spin">
-                ⏳
-              </div>
-              <h3 class="mb-2 text-lg font-medium">Loading your decks...</h3>
+              <BookMarked class="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+              <h3 class="mb-2 text-lg font-medium">No decks imported yet</h3>
               <p class="text-muted-foreground text-sm">
-                Fetching your folders and imported decks
+                Import decks from the built-in collection to get started
               </p>
             </div>
           }
         >
-          <Show
-            when={hasContent()}
-            fallback={
-              <div class="py-12 text-center">
-                <BookMarked class="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-                <h3 class="mb-2 text-lg font-medium">
-                  No decks imported yet
-                </h3>
-                <p class="text-muted-foreground text-sm">
-                  Import decks from the built-in collection to get started
-                </p>
-              </div>
-            }
-          >
           <div class="space-y-3 pb-16">
             {/* Show folders first */}
             <For each={currentFolderContent().folders}>
@@ -127,7 +110,6 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
               )}
             </For>
           </div>
-          </Show>
         </Show>
       </div>
       <div

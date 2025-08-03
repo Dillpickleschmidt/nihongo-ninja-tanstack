@@ -18,12 +18,14 @@ export interface TreeViewProps {
   className?: string
   renderIcon?: (node: TreeNode, isExpanded: boolean) => JSX.Element
   renderLabel?: (node: TreeNode, isSelected: boolean) => JSX.Element
+  isSelectable?: (node: TreeNode) => boolean
 }
 
 function TreeViewNode(props: TreeViewProps & { node: TreeNode }) {
   const hasChildren = () => props.node.children && props.node.children.length > 0
   const isExpanded = () => props.expandedIds?.has(props.node.id) ?? false
   const isSelected = () => props.selectedId === props.node.id
+  const isSelectable = () => props.isSelectable?.(props.node) ?? true
   const level = () => props.level ?? 0
   const paddingLeft = `${level() * 16 + 8}px`
 
@@ -36,14 +38,18 @@ function TreeViewNode(props: TreeViewProps & { node: TreeNode }) {
 
   const handleSelect = (e: MouseEvent) => {
     e.stopPropagation()
-    props.onSelect?.(props.node.id, props.node)
+    if (isSelectable()) {
+      props.onSelect?.(props.node.id, props.node)
+    }
   }
 
   return (
     <div>
       <div
-        class={`flex items-center px-2 py-1 rounded-sm cursor-pointer hover:bg-accent text-xs ${
-          isSelected() ? "ring-1 ring-border bg-accent" : ""
+        class={`flex items-center px-2 py-1 rounded-sm text-xs ${
+          isSelectable() ? "cursor-pointer hover:bg-accent" : "cursor-default"
+        } ${
+          isSelected() && isSelectable() ? "ring-1 ring-border bg-accent" : ""
         }`}
         style={{ "padding-left": paddingLeft }}
         onClick={handleSelect}
@@ -84,6 +90,7 @@ function TreeViewNode(props: TreeViewProps & { node: TreeNode }) {
           level={level() + 1}
           renderIcon={props.renderIcon}
           renderLabel={props.renderLabel}
+          isSelectable={props.isSelectable}
         />
       </Show>
     </div>

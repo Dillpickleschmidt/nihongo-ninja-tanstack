@@ -364,12 +364,10 @@ export const executeEditTransactionServerFn = createServerFn({ method: "POST" })
       throw new Error("Transaction is empty")
     }
 
-    console.log("Operations to execute:", operations)
-
     // Execute all operations in a single database transaction
-    const { error } = await supabase.rpc('execute_edit_transaction', {
+    const { error } = await supabase.rpc("execute_edit_transaction", {
       user_id: response.user.id,
-      operations: operations  // Pass as JSONB array, not string
+      operations: operations as any, // TypeScript workaround for Supabase Json type
     })
 
     if (error) {
