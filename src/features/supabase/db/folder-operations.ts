@@ -4,6 +4,7 @@ import { createServerFn } from "@tanstack/solid-start"
 import { getUser } from "../getUser"
 import type { VocabBuiltInDeck } from "@/features/vocab-page/types"
 import { generateDeckTitle } from "@/features/vocab-page/logic/deck-import-logic"
+import type { EditOperation } from "@/features/vocab-page/logic/deck-edit-operations"
 
 export type FoldersAndDecksData = {
   folders: DeckFolder[]
@@ -347,3 +348,33 @@ function extractTextbookInfo(
   }
   return null
 }
+
+/**
+ * Server function that executes multiple edit operations as an atomic transaction
+ */
+export const executeEditTransactionServerFn = createServerFn({ method: "POST" })
+  .validator((data: { operations: EditOperation[] }) => data)
+  .handler(async ({ data }) => {
+    const supabase = createSupabaseClient()
+    const response = await getUser()
+    if (!response.user) throw new Error("User not authenticated")
+
+    const { operations } = data
+    if (operations.length === 0) {
+      throw new Error("Transaction is empty")
+    }
+
+    console.log("Operations to execute:", operations)
+
+    // Execute all operations in a single database transaction
+    const { error } = await supabase.rpc('execute_edit_transaction', {
+      user_id: response.user.id,
+      operations: operations  // Pass as JSONB array, not string
+    })
+
+    if (error) {
+      throw new Error(`Transaction failed: ${error.message}`)
+    }
+
+    return { success: true }
+  })

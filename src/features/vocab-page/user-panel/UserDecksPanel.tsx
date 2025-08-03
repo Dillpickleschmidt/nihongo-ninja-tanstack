@@ -16,6 +16,8 @@ interface UserDecksPanelProps {
   selectedUserDeck: UserDeck | null
   onSelectDeck: (deck: UserDeck) => void
   onDeselectDeck: () => void
+  onEditDeck: (deck: UserDeck) => void
+  onEditFolder: (folder: DeckFolder) => void
   panelRef?: HTMLDivElement
   isLoading?: boolean
 }
@@ -103,6 +105,7 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
                   allFolders={props.folders}
                   allDecks={props.userDecks}
                   onClick={props.folderNavigation.navigateToFolder}
+                  onEdit={props.onEditFolder}
                 />
               )}
             </For>
@@ -118,6 +121,7 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
                   )}
                   isSelected={props.selectedUserDeck?.deck_id === deck.deck_id}
                   onSelect={props.onSelectDeck}
+                  onEdit={props.onEditDeck}
                   class="deck-card"
                 />
               )}

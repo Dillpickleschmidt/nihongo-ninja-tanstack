@@ -10,12 +10,15 @@ import { useFolderNavigation } from "./useFolderNavigation"
 import {
   importBuiltInDeckServerFn,
   getUserFoldersAndDecks,
+  executeEditTransactionServerFn,
 } from "@/features/supabase/db/folder-operations"
 import {
   saveFoldersAndDecks,
   loadFoldersAndDecks,
 } from "@/features/vocab-page/storage/sessionStorage"
 import { importDeckWithFolders, isDeckAlreadyImported } from "@/features/vocab-page/logic/deck-import-logic"
+import { EditTransaction } from "@/features/vocab-page/logic/edit-transaction"
+import type { AppState } from "@/features/vocab-page/logic/edit-transaction"
 
 export function useVocabPageState(
   importRequest?: ImportRequest | null,
@@ -245,6 +248,78 @@ export function useVocabPageState(
     }, NEWLY_IMPORTED_TIMEOUT)
   }
 
+  // Edit operation functions
+  const executeEdit = async (transaction: EditTransaction) => {
+    const currentState: AppState = { folders: folders(), decks: userDecks() }
+    
+    // 1. Validate transaction
+    const preview = transaction.preview(currentState)
+    if (!preview.success) {
+      alert(`Edit failed: ${preview.error}`)
+      return
+    }
+
+    // 2. Optimistic update (same logic for all user types)
+    setLocalFolders(preview.newState!.folders)
+    setLocalDecks(preview.newState!.decks)
+
+    // 3. Persistence (different strategies)
+    try {
+      if (user) {
+        // Database transaction
+        await executeEditTransactionServerFn({ data: { operations: transaction.getOperations() } })
+      } else {
+        // Session storage (atomic write)
+        saveFoldersAndDecks(preview.newState!)
+      }
+    } catch (error) {
+      // 4. Rollback (same logic for all user types)
+      setLocalFolders(currentState.folders)
+      setLocalDecks(currentState.decks)
+      console.error("Edit failed:", error)
+      alert(`Edit failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    }
+  }
+
+  const editDeck = async (deckId: number, updates: { name?: string; folderId?: number | null }) => {
+    const transaction = new EditTransaction()
+    transaction.add({
+      type: 'update-deck',
+      deckId,
+      updates
+    })
+    await executeEdit(transaction)
+  }
+
+  const editFolder = async (folderId: number, updates: { name?: string; parentId?: number | null }) => {
+    const transaction = new EditTransaction()
+    transaction.add({
+      type: 'update-folder',
+      folderId,
+      updates
+    })
+    await executeEdit(transaction)
+  }
+
+  const deleteDeck = async (deckId: number) => {
+    const transaction = new EditTransaction()
+    transaction.add({
+      type: 'delete-deck',
+      deckId
+    })
+    await executeEdit(transaction)
+  }
+
+  const deleteFolder = async (folderId: number, strategy: 'move-up' | 'delete-all') => {
+    const transaction = new EditTransaction()
+    transaction.add({
+      type: 'delete-folder',
+      folderId,
+      strategy
+    })
+    await executeEdit(transaction)
+  }
+
   const selectUserDeck = (deck: UserDeck) => {
     setSelectedUserDeck(deck)
   }
@@ -305,6 +380,13 @@ export function useVocabPageState(
     importDeck,
     selectUserDeck,
     deselectUserDeck,
+
+    // Edit operations
+    executeEdit,
+    editDeck,
+    editFolder,
+    deleteDeck,
+    deleteFolder,
 
     // Import modal state and actions
     showImportModal,

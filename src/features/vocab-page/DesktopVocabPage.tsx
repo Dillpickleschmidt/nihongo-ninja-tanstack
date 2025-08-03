@@ -1,10 +1,12 @@
 // featuers/vocab-page/DesktopVocabPage.tsx
 import type { DeferredPromise } from "@tanstack/solid-router"
+import { createSignal } from "solid-js"
 import { CollapsiblePanel } from "./shared/CollapsiblePanel"
 import { BuiltInDecksPanel } from "./built-in-panel/BuiltInDecksPanel"
 import { UserDecksPanel } from "./user-panel/UserDecksPanel"
 import { CenterPanel } from "./center-panel/CenterPanel"
 import { ImportConfirmationModal } from "./shared/ImportConfirmationModal"
+import { EditModal } from "./components/EditModal"
 import { useVocabPageState } from "./hooks/useVocabPageState"
 import type { ImportRequest, VocabTextbook } from "./types"
 import type { TextbookIDEnum } from "@/data/types"
@@ -26,6 +28,31 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
     props.user,
   )
   let userDecksPanelRef!: HTMLDivElement
+
+  // Edit modal state
+  const [editModalOpen, setEditModalOpen] = createSignal(false)
+  const [editingItem, setEditingItem] = createSignal<UserDeck | DeckFolder | null>(null)
+
+  // Edit handlers
+  const handleEditDeck = (deck: UserDeck) => {
+    setEditingItem(deck)
+    setEditModalOpen(true)
+  }
+
+  const handleEditFolder = (folder: DeckFolder) => {
+    setEditingItem(folder)
+    setEditModalOpen(true)
+  }
+
+  const handleCloseEditModal = () => {
+    setEditModalOpen(false)
+    setEditingItem(null)
+  }
+
+  const handleSaveEdit = (transaction: any) => {
+    state.executeEdit(transaction)
+    handleCloseEditModal()
+  }
 
   return (
     <div class="bg-background flex h-screen">
@@ -65,6 +92,8 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
             selectedUserDeck={state.selectedUserDeck()}
             onSelectDeck={state.selectUserDeck}
             onDeselectDeck={state.deselectUserDeck}
+            onEditDeck={handleEditDeck}
+            onEditFolder={handleEditFolder}
             panelRef={userDecksPanelRef}
             isLoading={state.isLoadingFoldersAndDecks()}
           />
@@ -76,6 +105,16 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
         onClose={state.handleImportCancel}
         onConfirm={state.handleImportConfirm}
         deckTitle={state.pendingImportDeck()?.title ?? ""}
+      />
+
+      <EditModal
+        item={editingItem()}
+        isOpen={editModalOpen()}
+        folders={state.folders()}
+        decks={state.userDecks()}
+        onClose={handleCloseEditModal}
+        onSave={handleSaveEdit}
+        onDelete={handleSaveEdit}
       />
     </div>
   )

@@ -1,8 +1,9 @@
 // features/vocab-page/user-panel/UserDeckCard.tsx
-import { Play, ArrowLeft } from "lucide-solid"
+import { Play, ArrowLeft, Edit } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "@tanstack/solid-router"
 import { cn } from "@/utils"
+import { createSignal } from "solid-js"
 // UserDeck type is now global from global.d.ts
 
 interface UserDeckCardProps {
@@ -11,23 +12,47 @@ interface UserDeckCardProps {
   isNewlyImported?: boolean
   isSelected?: boolean
   onSelect?: (deck: UserDeck) => void
+  onEdit?: (deck: UserDeck) => void
   class?: string
 }
 
 export function UserDeckCard(props: UserDeckCardProps) {
   const navigate = useNavigate()
+  const [isHovered, setIsHovered] = createSignal(false)
 
   return (
     <div
       class={cn(
-        "hover:bg-accent bg-card border-border cursor-pointer space-y-3 rounded-lg border p-4",
+        "hover:bg-accent bg-card border-border cursor-pointer space-y-3 rounded-lg border p-4 relative",
         props.isSelected && "outline-card-foreground outline-2",
         props.class,
       )}
       onClick={() => props.onSelect?.(props.deck)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
+      {/* Edit button - appears on hover */}
+      <div
+        class={cn(
+          "absolute top-2 right-2 transition-opacity duration-200",
+          isHovered() ? "opacity-100" : "opacity-0"
+        )}
+      >
+        <Button
+          size="sm"
+          variant="ghost"
+          class="h-6 w-6 p-0"
+          onClick={(e) => {
+            e.stopPropagation()
+            props.onEdit?.(props.deck)
+          }}
+        >
+          <Edit class="h-3 w-3" />
+        </Button>
+      </div>
+
       <div class="space-y-1">
-        <h4 class="text-sm leading-tight font-medium">
+        <h4 class="text-sm leading-tight font-medium pr-8">
           {props.deck.deck_name}
         </h4>
         <p class="text-muted-foreground text-xs">
