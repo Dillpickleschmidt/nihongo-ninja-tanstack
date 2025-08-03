@@ -8,64 +8,75 @@ export default function Nav() {
   const location = useLocation()
   const active = (path: string) =>
     location().pathname === path
-      ? "border-orange-200 saturate-[50%]"
-      : "border-transparent"
+      ? "text-primary dark:text-orange-200"
+      : "text-foreground/80 hover:text-foreground dark:text-orange-100/70 hover:dark:text-orange-100"
 
   return (
-    <nav class="bg-background relative z-50">
-      <ul class="mx-auto grid max-w-6xl grid-cols-3 px-2 py-4 sm:px-3 dark:text-orange-200 [&>*]:items-center">
-        <li class="flex w-full">
-          <Link to="/" class="relative flex items-center">
-            <Avatar class="absolute -top-[0.2rem] left-0 min-h-9 min-w-9">
-              <AvatarImage src="/icons/ninja.png" />
-              <AvatarFallback>N</AvatarFallback>
-            </Avatar>
-            <div class="h-1 w-10" />
-            <label class="ml-5 text-xl font-medium saturate-50 hover:cursor-pointer dark:text-orange-200">
-              Nihongo Ninja
-            </label>
+    <nav class="border-border/40 bg-background/70 sticky top-0 z-50 w-full border-b backdrop-blur-md">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+        {/* Left: Logo + Brand */}
+        <Link to="/" class="relative flex items-center">
+          <Avatar class="h-9 w-9">
+            <AvatarImage src="/icons/ninja.png" />
+            <AvatarFallback>N</AvatarFallback>
+          </Avatar>
+          <span class="ml-3 text-lg font-semibold tracking-tight dark:text-orange-200">
+            Nihongo Ninja
+          </span>
+        </Link>
+
+        {/* Right: Actions */}
+        <div class="hidden items-center gap-2 sm:flex">
+          <Link
+            to="/dashboard"
+            class={`transition-colors ${active("/dashboard")}`}
+          >
+            <Button variant="ghost" class="px-3">
+              <span class="font-medium">日本語</span>
+            </Button>
           </Link>
-        </li>
-        <li class="flex w-full justify-center">
-          <Button
-            as="a"
-            href="/dashboard"
-            class="px-2 text-base font-normal sm:px-4"
-            variant="ghost"
-          >
-            <span
-              class={`border-b-2 ${active("/learn")} text-lg font-medium saturate-[50%]`}
-            >
-              日本語
-            </span>
-          </Button>
-        </li>
-        <li class="flex w-full justify-end">
-          <Button
-            as="a"
-            href="/pricing"
-            variant="ghost"
-            class="text-primary-foreground"
-          >
-            <span class="text-primary saturate-50 dark:text-orange-200">
-              Pricing
-            </span>
-          </Button>
-          <Button
-            as="a"
-            href="/dashboard"
-            variant="ghost"
-            class="text-primary-foreground ml-3"
-          >
-            <span class="text-primary font-bold saturate-50 dark:text-orange-200">
-              Dive in! →
-            </span>
-          </Button>
-          <div class="ml-3 saturate-[50%]">
+
+          <Link to="/pricing" class={`transition-colors ${active("/pricing")}`}>
+            <Button variant="ghost" class="px-3">
+              <span>Pricing</span>
+            </Button>
+          </Link>
+
+          <Link to="/dashboard">
+            <Button variant="ghost" class="ml-1 px-3">
+              <span class="text-primary font-bold saturate-50 dark:text-orange-200">
+                Dive in! →
+              </span>
+            </Button>
+          </Link>
+
+          <div class="ml-1">
             <ModeToggle />
           </div>
-        </li>
-      </ul>
+        </div>
+
+        {/* Compact for small screens */}
+        <div class="flex items-center gap-2 sm:hidden">
+          <Link to="/dashboard">
+            <Button size="sm" variant="secondary">
+              日本語
+            </Button>
+          </Link>
+          <Link to="/pricing">
+            <Button size="sm" variant="ghost">
+              Pricing
+            </Button>
+          </Link>
+          <Link to="/dashboard">
+            <Button size="sm" variant="ghost">
+              <span class="text-primary font-bold dark:text-orange-200">
+                Dive in! →
+              </span>
+            </Button>
+          </Link>
+          <ModeToggle />
+        </div>
+      </div>
     </nav>
   )
 }

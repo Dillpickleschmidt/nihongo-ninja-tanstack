@@ -12,6 +12,7 @@ import { createServerRootRoute } from '@tanstack/solid-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as LessonsRouteImport } from './routes/lessons'
 import { Route as KanjiTestRouteImport } from './routes/kanji-test'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -43,6 +44,11 @@ const rootServerRouteImport = createServerRootRoute()
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LessonsRoute = LessonsRouteImport.update({
@@ -179,6 +185,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
+  '/pricing': typeof PricingRoute
   '/settings': typeof SettingsRoute
   '/conjugation': typeof HomeConjugationRoute
   '/dashboard': typeof HomeDashboardRoute
@@ -203,6 +210,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
+  '/pricing': typeof PricingRoute
   '/settings': typeof SettingsRoute
   '/conjugation': typeof HomeConjugationRoute
   '/dashboard': typeof HomeDashboardRoute
@@ -229,6 +237,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
+  '/pricing': typeof PricingRoute
   '/settings': typeof SettingsRoute
   '/_home/conjugation': typeof HomeConjugationRoute
   '/_home/dashboard': typeof HomeDashboardRoute
@@ -255,6 +264,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/kanji-test'
     | '/lessons'
+    | '/pricing'
     | '/settings'
     | '/conjugation'
     | '/dashboard'
@@ -279,6 +289,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/kanji-test'
     | '/lessons'
+    | '/pricing'
     | '/settings'
     | '/conjugation'
     | '/dashboard'
@@ -304,6 +315,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/kanji-test'
     | '/lessons'
+    | '/pricing'
     | '/settings'
     | '/_home/conjugation'
     | '/_home/dashboard'
@@ -330,6 +342,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   KanjiTestRoute: typeof KanjiTestRoute
   LessonsRoute: typeof LessonsRouteWithChildren
+  PricingRoute: typeof PricingRoute
   SettingsRoute: typeof SettingsRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
   PracticeAllHiraganaQuizRoute: typeof PracticeAllHiraganaQuizRoute
@@ -375,6 +388,13 @@ declare module '@tanstack/solid-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lessons': {
@@ -604,6 +624,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   KanjiTestRoute: KanjiTestRoute,
   LessonsRoute: LessonsRouteWithChildren,
+  PricingRoute: PricingRoute,
   SettingsRoute: SettingsRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,
   PracticeAllHiraganaQuizRoute: PracticeAllHiraganaQuizRoute,
