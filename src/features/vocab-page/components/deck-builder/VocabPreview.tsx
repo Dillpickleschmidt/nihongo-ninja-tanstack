@@ -1,23 +1,29 @@
+import { For, Show } from "solid-js"
+import type { VocabularyItem } from "@/data/types"
+import { VocabularyCard } from "@/features/vocab-page/components/VocabularyCard"
+
 interface VocabPreviewProps {
-  vocabCount: number
+  vocabularyItems: VocabularyItem[]
 }
 
 export function VocabPreview(props: VocabPreviewProps) {
   return (
-    <div class="border-border overflow-hidden rounded-lg border">
-      <div class="border-border bg-muted/40 text-muted-foreground border-b px-3 py-2 text-xs">
-        Preview
+    <Show
+      when={props.vocabularyItems.length > 0}
+      fallback={
+        <div class="text-muted-foreground p-6 text-center">
+          <p class="text-sm">No vocabulary items to preview yet.</p>
+          <p class="mt-2 text-xs">
+            Add some vocabulary items to see them displayed here.
+          </p>
+        </div>
+      }
+    >
+      <div class="space-y-4">
+        <For each={props.vocabularyItems}>
+          {(item, index) => <VocabularyCard item={item} index={index()} />}
+        </For>
       </div>
-      <div class="text-muted-foreground p-6 text-center">
-        <p class="text-sm">
-          Preview will show {props.vocabCount} vocabulary{" "}
-          {props.vocabCount === 1 ? "item" : "items"} here.
-        </p>
-        <p class="mt-2 text-xs">
-          Preview functionality will be implemented when data collection is
-          added.
-        </p>
-      </div>
-    </div>
+    </Show>
   )
 }

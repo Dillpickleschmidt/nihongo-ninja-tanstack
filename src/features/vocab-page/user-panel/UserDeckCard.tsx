@@ -46,7 +46,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
         <Button
           size="sm"
           variant="ghost"
-          class="h-6 w-6 p-0"
+          class="h-6 w-6 p-0 hover:cursor-pointer"
           onClick={(e) => {
             e.stopPropagation()
             props.onEdit?.(props.deck)

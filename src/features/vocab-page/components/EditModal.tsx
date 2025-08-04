@@ -255,7 +255,7 @@ export function EditModal(props: EditModalProps) {
                     <Button
                       size="sm"
                       variant="ghost"
-                      class="hover:bg-accent h-6 w-6 p-0"
+                      class="hover:bg-accent h-6 w-6 p-0 hover:cursor-pointer"
                       onClick={() => {
                         setIsEditingName(true)
                         // Focus the input after it becomes enabled

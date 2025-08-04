@@ -39,7 +39,7 @@ export function DeckHeader(props: DeckHeaderProps) {
             open={props.confirmClearOpen()}
             onOpenChange={props.setConfirmClearOpen}
           >
-            <DialogTrigger asChild>
+            <DialogTrigger>
               <Button variant="ghost" size="sm">
                 Clear
               </Button>

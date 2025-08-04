@@ -1,5 +1,7 @@
 import { createSignal } from "solid-js"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import type { VocabularyItem } from "@/data/types"
+import type { VocabItemFormData } from "../components/deck-builder/VocabItemEditor"
 
 import { DeckHeader } from "../components/deck-builder/DeckHeader"
 import { DeckDetails } from "../components/deck-builder/DeckDetails"
@@ -14,6 +16,8 @@ export function DeckBuilder() {
   const [nextId, setNextId] = createSignal(1)
   const [confirmClearOpen, setConfirmClearOpen] = createSignal(false)
   const [tab, setTab] = createSignal("items")
+  const [vocabularyItems, setVocabularyItems] = createSignal<VocabularyItem[]>([])
+  const [formDataMap, setFormDataMap] = createSignal<Map<number, VocabItemFormData>>(new Map())
 
   const addItem = () => {
     setVocabIds((prev) => [...prev, nextId()])
@@ -30,6 +34,8 @@ export function DeckBuilder() {
     setFolderName("")
     setVocabIds([0])
     setNextId(1)
+    setVocabularyItems([])
+    setFormDataMap(new Map())
   }
 
   return (
@@ -65,11 +71,14 @@ export function DeckBuilder() {
               vocabIds={vocabIds}
               onAddItem={addItem}
               onRemoveItem={removeItem}
+              onDataChange={setVocabularyItems}
+              formDataMap={formDataMap}
+              setFormDataMap={setFormDataMap}
             />
           </TabsContent>
 
           <TabsContent value="preview" class="mt-0">
-            <VocabPreview vocabCount={vocabIds().length} />
+            <VocabPreview vocabularyItems={vocabularyItems()} />
           </TabsContent>
         </Tabs>
       </section>

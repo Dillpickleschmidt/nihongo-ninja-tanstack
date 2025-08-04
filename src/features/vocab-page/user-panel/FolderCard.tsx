@@ -20,7 +20,7 @@ export function FolderCard(props: FolderCardProps) {
 
   return (
     <div
-      class="hover:bg-accent bg-card border-border cursor-pointer rounded-lg border p-4 transition-colors relative"
+      class="hover:bg-accent bg-card border-border relative cursor-pointer rounded-lg border p-4 transition-colors"
       onClick={() => props.onClick(props.folder.folder_id)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -29,13 +29,13 @@ export function FolderCard(props: FolderCardProps) {
       <div
         class={cn(
           "absolute top-2 right-2 transition-opacity duration-200",
-          isHovered() ? "opacity-100" : "opacity-0"
+          isHovered() ? "opacity-100" : "opacity-0",
         )}
       >
         <Button
           size="sm"
           variant="ghost"
-          class="h-6 w-6 p-0"
+          class="h-6 w-6 p-0 hover:cursor-pointer"
           onClick={(e) => {
             e.stopPropagation()
             props.onEdit?.(props.folder)
