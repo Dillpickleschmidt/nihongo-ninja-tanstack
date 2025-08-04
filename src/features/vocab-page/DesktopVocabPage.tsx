@@ -76,7 +76,11 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
           />
         </CollapsiblePanel>
       </div>
-      <CenterPanel selectedUserDeck={state.selectedUserDeck()} />
+      <CenterPanel
+        selectedUserDeck={state.selectedUserDeck()}
+        activeNavTab={state.activeNavTab()}
+        onNavTabChange={state.handleTabChange}
+      />
       <div class="h-[calc(100vh-65px)]">
         <CollapsiblePanel
           title="Your Decks"
@@ -92,8 +96,8 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
             onPlayDeck={() => {}}
             newlyImportedDecks={state.newlyImportedDecks()}
             selectedUserDeck={state.selectedUserDeck()}
-            onSelectDeck={state.selectUserDeck}
-            onDeselectDeck={state.deselectUserDeck}
+            onSelectDeck={state.handleDeckSelect}
+            onDeselectDeck={state.handleDeckDeselect}
             onEditDeck={handleEditDeck}
             onEditFolder={handleEditFolder}
             panelRef={userDecksPanelRef}

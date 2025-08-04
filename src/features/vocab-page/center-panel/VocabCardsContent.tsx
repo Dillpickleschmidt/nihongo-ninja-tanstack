@@ -1,5 +1,5 @@
-// features/vocab-page/center-panel/VocabularyPreview.tsx
-import { For, createSignal, createEffect } from "solid-js"
+// features/vocab-page/center-panel/VocabCardsContent.tsx
+import { For, Show, createSignal, createEffect } from "solid-js"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Book, Grid2x2 } from "lucide-solid"
 import {
@@ -7,14 +7,26 @@ import {
   getVocabularyForSet,
 } from "@/data/utils/vocab"
 import { dynamic_modules } from "@/data/dynamic_modules"
-// UserDeck type is now global from global.d.ts
 import type { VocabularyItem } from "@/data/types"
+import { DefaultContent } from "./DefaultContent"
+
+interface VocabCardsContentProps {
+  selectedUserDeck: UserDeck | null
+}
+
+export function VocabCardsContent(props: VocabCardsContentProps) {
+  return (
+    <Show when={props.selectedUserDeck} fallback={<DefaultContent />}>
+      {(deck) => <VocabularyPreview selectedDeck={deck()} />}
+    </Show>
+  )
+}
 
 interface VocabularyPreviewProps {
   selectedDeck: UserDeck
 }
 
-export function VocabularyPreview(props: VocabularyPreviewProps) {
+function VocabularyPreview(props: VocabularyPreviewProps) {
   const [vocabularyItems, setVocabularyItems] = createSignal<VocabularyItem[]>(
     [],
   )
@@ -163,31 +175,37 @@ function VocabInfo(props: { item: VocabularyItem }) {
       )}
 
       {props.item.mnemonics && (
-        <div class="pt-2 space-y-2">
-          {props.item.mnemonics.kanji && props.item.mnemonics.kanji.length > 0 && (
-            <div class="space-y-1">
-              <span class="font-medium text-sky-400 text-sm">Kanji Mnemonics:</span>
-              <For each={props.item.mnemonics.kanji}>
-                {(mnemonic) => (
-                  <div class="text-sm ml-2">
-                    <span class="text-muted-foreground">{mnemonic}</span>
-                  </div>
-                )}
-              </For>
-            </div>
-          )}
-          {props.item.mnemonics.reading && props.item.mnemonics.reading.length > 0 && (
-            <div class="space-y-1">
-              <span class="font-medium text-emerald-400 text-sm">Reading Mnemonics:</span>
-              <For each={props.item.mnemonics.reading}>
-                {(mnemonic) => (
-                  <div class="text-sm ml-2">
-                    <span class="text-muted-foreground">{mnemonic}</span>
-                  </div>
-                )}
-              </For>
-            </div>
-          )}
+        <div class="space-y-2 pt-2">
+          {props.item.mnemonics.kanji &&
+            props.item.mnemonics.kanji.length > 0 && (
+              <div class="space-y-1">
+                <span class="text-sm font-medium text-sky-400">
+                  Kanji Mnemonics:
+                </span>
+                <For each={props.item.mnemonics.kanji}>
+                  {(mnemonic) => (
+                    <div class="ml-2 text-sm">
+                      <span class="text-muted-foreground">{mnemonic}</span>
+                    </div>
+                  )}
+                </For>
+              </div>
+            )}
+          {props.item.mnemonics.reading &&
+            props.item.mnemonics.reading.length > 0 && (
+              <div class="space-y-1">
+                <span class="text-sm font-medium text-emerald-400">
+                  Reading Mnemonics:
+                </span>
+                <For each={props.item.mnemonics.reading}>
+                  {(mnemonic) => (
+                    <div class="ml-2 text-sm">
+                      <span class="text-muted-foreground">{mnemonic}</span>
+                    </div>
+                  )}
+                </For>
+              </div>
+            )}
         </div>
       )}
 

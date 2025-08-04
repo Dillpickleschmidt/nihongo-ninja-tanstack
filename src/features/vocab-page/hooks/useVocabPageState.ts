@@ -22,6 +22,7 @@ import {
 } from "@/features/vocab-page/logic/deck-import-logic"
 import { EditTransaction } from "@/features/vocab-page/logic/edit-transaction"
 import type { AppState } from "@/features/vocab-page/logic/edit-transaction"
+import type { NavTabId } from "@/features/vocab-page/center-panel/CenterNavBar"
 
 export function useVocabPageState(
   importRequest?: ImportRequest | null,
@@ -32,6 +33,11 @@ export function useVocabPageState(
   const navigate = useNavigate()
   const [leftPanelOpen, setLeftPanelOpen] = createSignal(true)
   const [rightPanelOpen, setRightPanelOpen] = createSignal(true)
+
+  // Center panel navigation state
+  const [activeNavTab, setActiveNavTab] = createSignal<NavTabId>("vocab-cards")
+  const [vocabCardsTabState, setVocabCardsTabState] =
+    createSignal<UserDeck | null>(null)
 
   // Destructure import request
   const pendingImport = importRequest?.deck
@@ -345,6 +351,37 @@ export function useVocabPageState(
     setSelectedUserDeck(null)
   }
 
+  // Enhanced tab and deck selection handlers
+  const handleTabChange = (newTab: NavTabId) => {
+    if (activeNavTab() === "vocab-cards" && newTab !== "vocab-cards") {
+      // Leaving vocab-cards: save whatever the current state is
+      setVocabCardsTabState(selectedUserDeck())
+    }
+
+    if (newTab === "vocab-cards") {
+      // Entering vocab-cards: restore saved state
+      setSelectedUserDeck(vocabCardsTabState())
+    } else {
+      // On other tabs: always deselect
+      setSelectedUserDeck(null)
+    }
+
+    setActiveNavTab(newTab)
+  }
+
+  const handleDeckSelect = (deck: UserDeck) => {
+    setSelectedUserDeck(deck)
+    setVocabCardsTabState(deck) // Keep vocab-cards state in sync
+    setActiveNavTab("vocab-cards")
+  }
+
+  const handleDeckDeselect = () => {
+    setSelectedUserDeck(null)
+    if (activeNavTab() === "vocab-cards") {
+      setVocabCardsTabState(null) // Update vocab-cards state when explicitly deselecting
+    }
+  }
+
   // Import modal functions
   const handleImportConfirm = () => {
     const deck = pendingImportDeck()
@@ -379,6 +416,10 @@ export function useVocabPageState(
     rightPanelOpen,
     setRightPanelOpen,
 
+    // Center panel navigation
+    activeNavTab,
+    setActiveNavTab,
+
     // Content state
     textbooks: textbooksWithImportStatus,
     expandedTextbooks,
@@ -397,6 +438,11 @@ export function useVocabPageState(
     importDeck,
     selectUserDeck,
     deselectUserDeck,
+
+    // Enhanced tab and deck selection handlers
+    handleTabChange,
+    handleDeckSelect,
+    handleDeckDeselect,
 
     // Edit operations
     executeEdit,
