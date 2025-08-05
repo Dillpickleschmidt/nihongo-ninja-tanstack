@@ -22,7 +22,7 @@ import {
   NumberFieldInput,
   NumberFieldLabel,
 } from "@/components/ui/number-field"
-import type { PartOfSpeech, VocabularyItem } from "@/data/types"
+import type { PartOfSpeech } from "@/data/types"
 
 export interface VocabItemFormData {
   word: string
@@ -278,7 +278,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                   </SelectItem>
                 )}
               >
-                <SelectTrigger aria-label="Part of Speech">
+                <SelectTrigger aria-label="Part of Speech" class="text-xs">
                   <SelectValue<string>>
                     {(state) =>
                       state.selectedOption() || "Select part of speech"
@@ -311,28 +311,36 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
           <div class="mt-3 flex min-h-36 flex-col justify-center 2xl:mt-1.5">
             <div class="flex flex-wrap justify-end gap-2">
               <Show when={props.formData.notes.length === 0}>
-                <Button variant="outline" onClick={addNote}>
-                  <Plus class="size-4" /> Note
+                <Button variant="outline" onClick={addNote} class="text-xs">
+                  <Plus class="max-h-3 max-w-3" /> Note
                 </Button>
               </Show>
               <Show when={props.formData.particles.length === 0}>
-                <Button variant="outline" onClick={addParticle}>
-                  <Plus class="size-4" /> Particle
+                <Button variant="outline" onClick={addParticle} class="text-xs">
+                  <Plus class="max-h-3 max-w-3" /> Particle
                 </Button>
               </Show>
               <Show when={props.formData.examples.length === 0}>
-                <Button variant="outline" onClick={addExample}>
-                  <Plus class="size-4" /> Example Sentence
+                <Button variant="outline" onClick={addExample} class="text-xs">
+                  <Plus class="max-h-3 max-w-3" /> Example Sentence
                 </Button>
               </Show>
               <Show when={props.formData.readingMnemonics.length === 0}>
-                <Button variant="outline" onClick={addReadingMnemonic}>
-                  <Plus class="size-4" /> Reading Mnemonic
+                <Button
+                  variant="outline"
+                  onClick={addReadingMnemonic}
+                  class="text-xs"
+                >
+                  <Plus class="max-h-3 max-w-3" /> Reading Mnemonic
                 </Button>
               </Show>
               <Show when={props.formData.kanjiMnemonics.length === 0}>
-                <Button variant="outline" onClick={addKanjiMnemonic}>
-                  <Plus class="size-4" /> Kanji Mnemonic
+                <Button
+                  variant="outline"
+                  onClick={addKanjiMnemonic}
+                  class="text-xs"
+                >
+                  <Plus class="max-h-3 max-w-3" /> Kanji Mnemonic
                 </Button>
               </Show>
             </div>

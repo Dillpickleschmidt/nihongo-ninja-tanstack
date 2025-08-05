@@ -40,7 +40,7 @@ export function DeckHeader(props: DeckHeaderProps) {
             onOpenChange={props.setConfirmClearOpen}
           >
             <DialogTrigger>
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" class="hover:cursor-pointer">
                 Clear
               </Button>
             </DialogTrigger>
@@ -71,8 +71,8 @@ export function DeckHeader(props: DeckHeaderProps) {
             </DialogContent>
           </Dialog>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
+            <DropdownMenuTrigger>
+              <Button variant="outline" size="sm" class="cursor-pointer">
                 <MoreHorizontal class="mr-2 size-4" />
                 More
               </Button>
@@ -89,7 +89,9 @@ export function DeckHeader(props: DeckHeaderProps) {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button size="sm">Save Deck</Button>
+          <Button size="sm" class="cursor-pointer">
+            Save Deck
+          </Button>
         </div>
       </div>
     </div>

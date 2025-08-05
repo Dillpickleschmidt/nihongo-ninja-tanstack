@@ -1,5 +1,5 @@
 import { createMemo } from "solid-js"
-import { TreeNode } from "@/components/ui/tree-view"
+import type { TreeNode } from "@/components/ui/tree-view"
 
 interface UseFolderTreeProps {
   folders: DeckFolder[]

@@ -10,6 +10,8 @@ interface CenterPanelProps {
   selectedUserDeck: UserDeck | null
   activeNavTab: NavTabId
   onNavTabChange: (tabId: NavTabId) => void
+  folders: DeckFolder[]
+  decks: UserDeck[]
 }
 
 export function CenterPanel(props: CenterPanelProps) {
@@ -25,7 +27,7 @@ export function CenterPanel(props: CenterPanelProps) {
             <VocabCardsContent selectedUserDeck={props.selectedUserDeck} />
           </Match>
           <Match when={props.activeNavTab === "deck-builder"}>
-            <DeckBuilderContent />
+            <DeckBuilderContent folders={props.folders} decks={props.decks} />
           </Match>
           <Match when={props.activeNavTab === "browse-decks"}>
             <BrowseDecksContent />

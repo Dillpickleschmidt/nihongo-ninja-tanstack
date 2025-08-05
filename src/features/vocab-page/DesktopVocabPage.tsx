@@ -80,6 +80,8 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
         selectedUserDeck={state.selectedUserDeck()}
         activeNavTab={state.activeNavTab()}
         onNavTabChange={state.handleTabChange}
+        folders={state.folders()}
+        decks={state.userDecks()}
       />
       <div class="h-[calc(100vh-65px)]">
         <CollapsiblePanel
