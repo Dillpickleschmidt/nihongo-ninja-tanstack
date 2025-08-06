@@ -5,6 +5,7 @@ import { dynamic_modules } from "@/data/dynamic_modules"
 import type { VocabularyItem } from "@/data/types"
 import { DefaultContent } from "./DefaultContent"
 import { VocabularyCard } from "@/features/vocab-page/components/VocabularyCard"
+import { getVocabForDeck } from "@/features/supabase/db/folder-operations"
 
 interface VocabCardsContentProps {
   selectedUserDeck: UserDeck | null
@@ -34,6 +35,12 @@ function VocabularyPreview(props: VocabularyPreviewProps) {
 
     // Only load vocabulary from dynamic modules for built-in decks
     if (deck.source !== "built-in") {
+      if (deck.source === "user") {
+        // directly use the db data (no dynamic modules)
+        const vocab = await getVocabForDeck(deck.deck_id)
+        setVocabularyItems(vocab)
+        return
+      }
       setVocabularyItems([])
       return
     }
