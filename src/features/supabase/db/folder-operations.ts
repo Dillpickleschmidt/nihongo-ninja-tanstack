@@ -5,7 +5,12 @@ import { getUser } from "../getUser"
 import type { VocabBuiltInDeck } from "@/features/vocab-page/types"
 import { generateDeckTitle } from "@/features/vocab-page/logic/deck-import-logic"
 import type { EditOperation } from "@/features/vocab-page/logic/deck-edit-operations"
-import { ExampleSentence, Mnemonics, VocabularyItem } from "@/data/types"
+import { VocabularyItem } from "@/data/types"
+import {
+  dbItemToVocabularyItem,
+  formDataToDBInsert,
+  type VocabItemFormData,
+} from "@/features/vocab-page/types/vocabulary-types"
 
 export type FoldersAndDecksData = {
   folders: DeckFolder[]
@@ -359,17 +364,7 @@ export const createCustomDeckServerFn = createServerFn({ method: "POST" })
       deck_name: string
       deck_description?: string | null
       folder_id?: number | null
-      vocabulary_items: Array<{
-        word: string
-        furigana?: string
-        english: string[]
-        part_of_speech?: string
-        chapter?: number
-        info?: string[]
-        particles?: Array<{ particle: string; label: string }>
-        mnemonics?: { reading?: string[]; kanji?: string[] }
-        example_sentences?: Array<{ japanese: string[]; english: string[] }>
-      }>
+      vocabulary_items: VocabItemFormData[]
     }) => data,
   )
   .handler(async ({ data }) => {
@@ -409,19 +404,9 @@ export const createCustomDeckServerFn = createServerFn({ method: "POST" })
     if (data.vocabulary_items.length > 0) {
       console.log("Processing vocabulary items:", data.vocabulary_items.length)
 
-      const vocabularyInserts: DBVocabularyItemInsert[] =
-        data.vocabulary_items.map((item) => ({
-          deck_id: deck.deck_id,
-          word: item.word,
-          furigana: item.furigana || item.word,
-          english: item.english,
-          part_of_speech: item.part_of_speech || null,
-          chapter: item.chapter || 1,
-          info: item.info || null,
-          particles: item.particles || null,
-          mnemonics: item.mnemonics || null,
-          example_sentences: item.example_sentences || null,
-        }))
+      const vocabularyInserts = data.vocabulary_items
+        .map((item) => formDataToDBInsert(item, deck.deck_id))
+        .filter((item): item is NonNullable<typeof item> => item !== null)
 
       console.log("Attempting to insert vocabulary items:", vocabularyInserts)
 
@@ -474,25 +459,14 @@ export async function getVocabForDeck(
   deck_id: number,
 ): Promise<VocabularyItem[]> {
   const supabase = createSupabaseClient()
-  return supabase
+
+  const { data, error } = await supabase
     .from("vocabulary_items")
     .select("*")
     .eq("deck_id", deck_id)
-    .then((result) => {
-      if (result.error) throw result.error
-      // map to VocabularyItem type
-      const vocabItems = result.data.map((item) => ({
-        word: item.word,
-        furigana: item.furigana,
-        english: item.english,
-        part_of_speech: item.part_of_speech,
-        chapter: item.chapter,
-        info: item.info,
-        particles: item.particles,
-        mnemonics: item.mnemonics as Mnemonics,
-        example_sentences:
-          item.example_sentences as unknown as ExampleSentence[],
-      })) as VocabularyItem[]
-      return vocabItems
-    })
+
+  if (error) throw error
+
+  // Convert DB items to VocabularyItems using the unified conversion utility
+  return (data || []).map(dbItemToVocabularyItem)
 }

@@ -1,10 +1,6 @@
 // vocab-page/logic/deck-edit-operations.test.ts
 import { describe, it, expect } from "vitest"
 import {
-  validateName,
-  validateDeckNameUnique,
-  validateFolderNameUnique,
-  validateNoCircularReference,
   getFolderDescendants,
   getDecksInFolderTree,
   applyUpdateDeck,
@@ -12,18 +8,24 @@ import {
   applyDeleteDeck,
   applyDeleteFolder,
   applyEditOperation,
-  VALIDATION_RULES,
   type UpdateDeckOperation,
   type UpdateFolderOperation,
   type DeleteDeckOperation,
   type DeleteFolderOperation,
 } from "./deck-edit-operations"
+import {
+  VALIDATION_RULES,
+  validateName,
+  validateDeckNameUnique,
+  validateFolderNameUnique,
+  validateNoCircularReference,
+} from "../validation"
 
 // Mock data helpers
 const createMockDeck = (
   id: number,
   name: string,
-  folderId: number | null = null
+  folderId: number | null = null,
 ): UserDeck => ({
   deck_id: id,
   deck_name: name,
@@ -38,7 +40,7 @@ const createMockDeck = (
 const createMockFolder = (
   id: number,
   name: string,
-  parentId: number | null = null
+  parentId: number | null = null,
 ): DeckFolder => ({
   folder_id: id,
   folder_name: name,
@@ -71,7 +73,9 @@ describe("deck-edit-operations", () => {
       const longName = "a".repeat(VALIDATION_RULES.NAME_MAX_LENGTH + 1)
       const result = validateName(longName)
       expect(result.isValid).toBe(false)
-      expect(result.error).toBe(`Name cannot exceed ${VALIDATION_RULES.NAME_MAX_LENGTH} characters`)
+      expect(result.error).toBe(
+        `Name cannot exceed ${VALIDATION_RULES.NAME_MAX_LENGTH} characters`,
+      )
     })
 
     it("accepts names at the maximum length", () => {
@@ -102,7 +106,9 @@ describe("deck-edit-operations", () => {
     it("rejects duplicate names in same folder", () => {
       const result = validateDeckNameUnique("Deck Two", 1, decks)
       expect(result.isValid).toBe(false)
-      expect(result.error).toBe("A deck with this name already exists in this folder")
+      expect(result.error).toBe(
+        "A deck with this name already exists in this folder",
+      )
     })
 
     it("allows renaming deck to same name (excludes self)", () => {
@@ -142,7 +148,9 @@ describe("deck-edit-operations", () => {
     it("rejects duplicate names in same parent", () => {
       const result = validateFolderNameUnique("Folder Two", 1, folders)
       expect(result.isValid).toBe(false)
-      expect(result.error).toBe("A folder with this name already exists in this location")
+      expect(result.error).toBe(
+        "A folder with this name already exists in this location",
+      )
     })
 
     it("allows renaming folder to same name (excludes self)", () => {
@@ -193,7 +201,7 @@ describe("deck-edit-operations", () => {
 
     it("returns all descendants", () => {
       const descendants = getFolderDescendants(1, folders)
-      const descendantIds = descendants.map(f => f.folder_id).sort()
+      const descendantIds = descendants.map((f) => f.folder_id).sort()
       expect(descendantIds).toEqual([2, 3, 4, 5])
     })
 
@@ -223,13 +231,13 @@ describe("deck-edit-operations", () => {
 
     it("returns decks in folder and descendants", () => {
       const result = getDecksInFolderTree(1, folders, decks)
-      const deckIds = result.map(d => d.deck_id).sort()
+      const deckIds = result.map((d) => d.deck_id).sort()
       expect(deckIds).toEqual([2, 3, 4])
     })
 
     it("returns only decks in specific folder when no descendants", () => {
       const result = getDecksInFolderTree(2, folders, decks)
-      const deckIds = result.map(d => d.deck_id)
+      const deckIds = result.map((d) => d.deck_id)
       expect(deckIds).toEqual([4])
     })
   })
@@ -245,36 +253,40 @@ describe("deck-edit-operations", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
         deckId: 1,
-        updates: { name: "New Name" }
+        updates: { name: "New Name" },
       }
 
       const result = applyUpdateDeck(folders, decks, operation)
       expect(result.success).toBe(true)
-      expect(result.newState!.decks.find(d => d.deck_id === 1)!.deck_name).toBe("New Name")
+      expect(
+        result.newState!.decks.find((d) => d.deck_id === 1)!.deck_name,
+      ).toBe("New Name")
     })
 
     it("updates deck folder successfully", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
         deckId: 1,
-        updates: { folderId: 1 }
+        updates: { folderId: 1 },
       }
 
       const result = applyUpdateDeck(folders, decks, operation)
       expect(result.success).toBe(true)
-      expect(result.newState!.decks.find(d => d.deck_id === 1)!.folder_id).toBe(1)
+      expect(
+        result.newState!.decks.find((d) => d.deck_id === 1)!.folder_id,
+      ).toBe(1)
     })
 
     it("updates both name and folder", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
         deckId: 1,
-        updates: { name: "New Name", folderId: 1 }
+        updates: { name: "New Name", folderId: 1 },
       }
 
       const result = applyUpdateDeck(folders, decks, operation)
       expect(result.success).toBe(true)
-      const updatedDeck = result.newState!.decks.find(d => d.deck_id === 1)!
+      const updatedDeck = result.newState!.decks.find((d) => d.deck_id === 1)!
       expect(updatedDeck.deck_name).toBe("New Name")
       expect(updatedDeck.folder_id).toBe(1)
     })
@@ -283,7 +295,7 @@ describe("deck-edit-operations", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
         deckId: 999,
-        updates: { name: "New Name" }
+        updates: { name: "New Name" },
       }
 
       const result = applyUpdateDeck(folders, decks, operation)
@@ -295,7 +307,7 @@ describe("deck-edit-operations", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
         deckId: 1,
-        updates: { name: "" }
+        updates: { name: "" },
       }
 
       const result = applyUpdateDeck(folders, decks, operation)
@@ -307,19 +319,21 @@ describe("deck-edit-operations", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
         deckId: 1,
-        updates: { name: "Deck Two", folderId: 1 }
+        updates: { name: "Deck Two", folderId: 1 },
       }
 
       const result = applyUpdateDeck(folders, decks, operation)
       expect(result.success).toBe(false)
-      expect(result.error).toBe("A deck with this name already exists in this folder")
+      expect(result.error).toBe(
+        "A deck with this name already exists in this folder",
+      )
     })
 
     it("fails for nonexistent target folder", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
         deckId: 1,
-        updates: { folderId: 999 }
+        updates: { folderId: 999 },
       }
 
       const result = applyUpdateDeck(folders, decks, operation)
@@ -339,31 +353,36 @@ describe("deck-edit-operations", () => {
       const operation: UpdateFolderOperation = {
         type: "update-folder",
         folderId: 2,
-        updates: { name: "New Name" }
+        updates: { name: "New Name" },
       }
 
       const result = applyUpdateFolder(folders, decks, operation)
       expect(result.success).toBe(true)
-      expect(result.newState!.folders.find(f => f.folder_id === 2)!.folder_name).toBe("New Name")
+      expect(
+        result.newState!.folders.find((f) => f.folder_id === 2)!.folder_name,
+      ).toBe("New Name")
     })
 
     it("updates folder parent successfully", () => {
       const operation: UpdateFolderOperation = {
         type: "update-folder",
         folderId: 2,
-        updates: { parentId: null }
+        updates: { parentId: null },
       }
 
       const result = applyUpdateFolder(folders, decks, operation)
       expect(result.success).toBe(true)
-      expect(result.newState!.folders.find(f => f.folder_id === 2)!.parent_folder_id).toBe(null)
+      expect(
+        result.newState!.folders.find((f) => f.folder_id === 2)!
+          .parent_folder_id,
+      ).toBe(null)
     })
 
     it("fails for circular reference", () => {
       const operation: UpdateFolderOperation = {
         type: "update-folder",
         folderId: 1,
-        updates: { parentId: 2 }
+        updates: { parentId: 2 },
       }
 
       const result = applyUpdateFolder(folders, decks, operation)
@@ -382,19 +401,21 @@ describe("deck-edit-operations", () => {
     it("deletes deck successfully", () => {
       const operation: DeleteDeckOperation = {
         type: "delete-deck",
-        deckId: 1
+        deckId: 1,
       }
 
       const result = applyDeleteDeck(folders, decks, operation)
       expect(result.success).toBe(true)
       expect(result.newState!.decks).toHaveLength(1)
-      expect(result.newState!.decks.find(d => d.deck_id === 1)).toBeUndefined()
+      expect(
+        result.newState!.decks.find((d) => d.deck_id === 1),
+      ).toBeUndefined()
     })
 
     it("fails for nonexistent deck", () => {
       const operation: DeleteDeckOperation = {
         type: "delete-deck",
-        deckId: 999
+        deckId: 999,
       }
 
       const result = applyDeleteDeck(folders, decks, operation)
@@ -420,19 +441,19 @@ describe("deck-edit-operations", () => {
       const operation: DeleteFolderOperation = {
         type: "delete-folder",
         folderId: 2,
-        strategy: "move-up"
+        strategy: "move-up",
       }
 
       const result = applyDeleteFolder(folders, decks, operation)
       expect(result.success).toBe(true)
-      
+
       // Folder 2 and 3 should be deleted
       expect(result.newState!.folders).toHaveLength(1)
       expect(result.newState!.folders[0].folder_id).toBe(1)
-      
+
       // Decks should be moved to parent (folder 1)
-      const deck2 = result.newState!.decks.find(d => d.deck_id === 2)!
-      const deck3 = result.newState!.decks.find(d => d.deck_id === 3)!
+      const deck2 = result.newState!.decks.find((d) => d.deck_id === 2)!
+      const deck3 = result.newState!.decks.find((d) => d.deck_id === 3)!
       expect(deck2.folder_id).toBe(1) // Moved from folder 2 to its parent (1)
       expect(deck3.folder_id).toBe(1) // Moved from folder 3 to root's parent (1)
     })
@@ -441,18 +462,20 @@ describe("deck-edit-operations", () => {
       const operation: DeleteFolderOperation = {
         type: "delete-folder",
         folderId: 2,
-        strategy: "delete-all"
+        strategy: "delete-all",
       }
 
       const result = applyDeleteFolder(folders, decks, operation)
       expect(result.success).toBe(true)
-      
+
       // Folder 2 and 3 should be deleted
       expect(result.newState!.folders).toHaveLength(1)
-      
+
       // Only decks not in deleted folders should remain
       expect(result.newState!.decks).toHaveLength(2)
-      const remainingDeckIds = result.newState!.decks.map(d => d.deck_id).sort()
+      const remainingDeckIds = result
+        .newState!.decks.map((d) => d.deck_id)
+        .sort()
       expect(remainingDeckIds).toEqual([1, 4]) // Deck 1 (in folder 1) and Deck 4 (no folder)
     })
 
@@ -460,7 +483,7 @@ describe("deck-edit-operations", () => {
       const operation: DeleteFolderOperation = {
         type: "delete-folder",
         folderId: 999,
-        strategy: "move-up"
+        strategy: "move-up",
       }
 
       const result = applyDeleteFolder(folders, decks, operation)
@@ -477,7 +500,7 @@ describe("deck-edit-operations", () => {
       const updateOperation: UpdateDeckOperation = {
         type: "update-deck",
         deckId: 1,
-        updates: { name: "New Name" }
+        updates: { name: "New Name" },
       }
 
       const result = applyEditOperation(folders, decks, updateOperation)
@@ -487,7 +510,7 @@ describe("deck-edit-operations", () => {
 
     it("handles unknown operation type", () => {
       const invalidOperation = {
-        type: "invalid-operation"
+        type: "invalid-operation",
       } as any
 
       const result = applyEditOperation(folders, decks, invalidOperation)

@@ -15,9 +15,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import type { PartOfSpeech } from "@/data/types"
-import { useDeckCreationStore } from "../hooks/useDeckCreationStore"
+import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
 import { useVocabItemValidation } from "../hooks/useVocabItemValidation"
-import { createEmptyVocabItemFormData } from "../utils/form-data-helpers"
+import { createEmptyVocabItemFormData } from "../../types/vocabulary-types"
 
 const PARTS_OF_SPEECH: PartOfSpeech[] = [
   "Ichidan verb",

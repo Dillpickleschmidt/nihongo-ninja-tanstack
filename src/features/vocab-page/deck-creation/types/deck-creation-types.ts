@@ -1,4 +1,4 @@
-import type { VocabItemFormData } from "../schemas/vocab-item-schemas"
+import type { VocabItemFormData } from "../../types/vocabulary-types"
 
 // Store state structure
 export interface DeckCreationStore {
@@ -21,18 +21,6 @@ export interface DeckCreationStore {
   ui: {
     currentTab: string
   }
-}
-
-// Validation error types
-export interface ValidationError {
-  field: string
-  message: string
-  itemId?: number
-}
-
-export interface ValidationResult {
-  isValid: boolean
-  errors: ValidationError[]
 }
 
 // Form field validation states

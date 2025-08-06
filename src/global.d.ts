@@ -19,6 +19,7 @@ declare global {
   type DeckFolderInsert = Database["public"]["Tables"]["deck_folders"]["Insert"]
   type DeckFolderUpdate = Database["public"]["Tables"]["deck_folders"]["Update"]
 
+  // Vocabulary Database Types
   type DBVocabularyItem = Database["public"]["Tables"]["vocabulary_items"]["Row"]
   type DBVocabularyItemInsert = Database["public"]["Tables"]["vocabulary_items"]["Insert"]
   type DBVocabularyItemUpdate = Database["public"]["Tables"]["vocabulary_items"]["Update"]

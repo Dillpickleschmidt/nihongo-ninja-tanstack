@@ -1,5 +1,8 @@
 import { createMemo } from "solid-js"
-import { validateName } from "@/features/vocab-page/logic/deck-edit-operations"
+import {
+  validateDeckComplete,
+  validateFolderComplete,
+} from "@/features/vocab-page/validation"
 
 interface UseEditValidationProps {
   name: () => string
@@ -14,11 +17,7 @@ export function useEditValidation(props: UseEditValidationProps) {
   const isFolder = () => props.item && "folder_id" in props.item
 
   const nameValidation = createMemo(() => {
-    const validation = validateName(props.name())
-    if (!validation.isValid) return validation
-
-    // Check for duplicates
-    if (!props.item) return validation
+    if (!props.item) return { isValid: true }
 
     if (isDeck()) {
       const deck = props.item as UserDeck
@@ -26,41 +25,28 @@ export function useEditValidation(props: UseEditValidationProps) {
         props.selectedFolderId() === "root"
           ? null
           : parseInt(props.selectedFolderId())
-      const duplicateDeck = props.decks.find(
-        (d) =>
-          d.deck_name.trim().toLowerCase() ===
-            props.name().trim().toLowerCase() &&
-          d.folder_id === targetFolderId &&
-          d.deck_id !== deck.deck_id,
+
+      return validateDeckComplete(
+        props.name(),
+        targetFolderId,
+        props.decks,
+        deck.deck_id,
       )
-      if (duplicateDeck) {
-        return {
-          isValid: false,
-          error: "A deck with this name already exists in this folder",
-        }
-      }
     } else {
       const folder = props.item as DeckFolder
       const targetParentId =
         props.selectedFolderId() === "root"
           ? null
           : parseInt(props.selectedFolderId())
-      const duplicateFolder = props.folders.find(
-        (f) =>
-          f.folder_name.trim().toLowerCase() ===
-            props.name().trim().toLowerCase() &&
-          f.parent_folder_id === targetParentId &&
-          f.folder_id !== folder.folder_id,
-      )
-      if (duplicateFolder) {
-        return {
-          isValid: false,
-          error: "A folder with this name already exists in this location",
-        }
-      }
-    }
 
-    return validation
+      return validateFolderComplete(
+        props.name(),
+        targetParentId,
+        folder.folder_id,
+        props.folders,
+        folder.folder_id,
+      )
+    }
   })
 
   const hasChanges = createMemo(() => {
@@ -96,4 +82,3 @@ export function useEditValidation(props: UseEditValidationProps) {
     canSave,
   }
 }
-

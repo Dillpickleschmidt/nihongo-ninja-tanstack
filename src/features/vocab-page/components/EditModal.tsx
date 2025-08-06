@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/text-field"
 import { Trash2, Edit, Check, X } from "lucide-solid"
 import { EditTransaction } from "@/features/vocab-page/logic/edit-transaction"
-import { VALIDATION_RULES } from "@/features/vocab-page/logic/deck-edit-operations"
+import { VALIDATION_RULES } from "@/features/vocab-page/validation"
 import {
   buildFolderPath,
   getCurrentFolderId,

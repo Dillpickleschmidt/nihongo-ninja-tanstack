@@ -2,12 +2,11 @@ import {
   TextField,
   TextFieldInput,
   TextFieldLabel,
-  TextFieldDescription,
 } from "@/components/ui/text-field"
 import { Label } from "@/components/ui/label"
 import { LocationSelector } from "@/features/vocab-page/components/LocationSelector"
 import { useFolderTree } from "@/features/vocab-page/hooks/useFolderTree"
-import { useDeckCreationStore } from "../hooks/useDeckCreationStore"
+import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
 import { useDeckValidation } from "../hooks/useDeckValidation"
 
 interface DeckDetailsProps {
@@ -125,4 +124,3 @@ export function DeckDetails(props: DeckDetailsProps) {
     </section>
   )
 }
-

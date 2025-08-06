@@ -1,19 +1,9 @@
 import { createStore } from "solid-js/store"
 import type { DeckCreationStore } from "../types/deck-creation-types"
-import type { VocabItemFormData } from "../schemas/vocab-item-schemas"
-
-// Helper function to create empty vocab item form data
-const createEmptyFormData = (): VocabItemFormData => ({
-  word: "",
-  furigana: "",
-  english: [""],
-  partOfSpeech: "",
-  notes: [],
-  particles: [],
-  examples: [],
-  readingMnemonics: [],
-  kanjiMnemonics: [],
-})
+import {
+  createEmptyVocabItemFormData,
+  type VocabItemFormData,
+} from "../../types/vocabulary-types"
 
 // Create initial store state
 const createInitialState = (): DeckCreationStore => ({
@@ -27,8 +17,8 @@ const createInitialState = (): DeckCreationStore => ({
     nextId: 2, // Start with 2 because we initialize with items 0 and 1
     activeIds: [0, 1], // Start with 2 cards as requested
     formData: new Map([
-      [0, createEmptyFormData()],
-      [1, createEmptyFormData()],
+      [0, createEmptyVocabItemFormData()],
+      [1, createEmptyVocabItemFormData()],
     ]),
   },
   validation: {
@@ -64,7 +54,7 @@ export function createDeckCreationStore() {
       const newId = store.vocabItems.nextId
       setStore("vocabItems", "activeIds", (prev) => [...prev, newId])
       setStore("vocabItems", "formData", (prev) =>
-        new Map(prev).set(newId, createEmptyFormData()),
+        new Map(prev).set(newId, createEmptyVocabItemFormData()),
       )
       setStore("vocabItems", "nextId", (prev) => prev + 1)
     },

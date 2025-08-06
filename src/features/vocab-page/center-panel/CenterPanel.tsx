@@ -3,7 +3,7 @@ import { Switch, Match } from "solid-js"
 import { CenterNavBar, type NavTabId } from "./CenterNavBar"
 import { VocabCardsContent } from "./VocabCardsContent"
 import { DeckCreationContainer } from "../deck-creation/components/DeckCreationContainer"
-import { DeckCreationStoreProvider } from "../deck-creation/hooks/useDeckCreationStore"
+import { DeckCreationStoreProvider } from "../deck-creation/context/DeckCreationStoreContext"
 import { BrowseDecksContent } from "./BrowseDecksContent"
 import { OverridesContent } from "./OverridesContent"
 
@@ -29,7 +29,10 @@ export function CenterPanel(props: CenterPanelProps) {
           </Match>
           <Match when={props.activeNavTab === "deck-builder"}>
             <DeckCreationStoreProvider>
-              <DeckCreationContainer folders={props.folders} decks={props.decks} />
+              <DeckCreationContainer
+                folders={props.folders}
+                decks={props.decks}
+              />
             </DeckCreationStoreProvider>
           </Match>
           <Match when={props.activeNavTab === "browse-decks"}>
