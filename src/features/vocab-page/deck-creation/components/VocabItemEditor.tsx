@@ -1,4 +1,4 @@
-import { Index, Show, createEffect } from "solid-js"
+import { Index, Show, createMemo } from "solid-js"
 import { Plus, Trash2, Minus } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import {
@@ -23,19 +23,9 @@ import {
   NumberFieldLabel,
 } from "@/components/ui/number-field"
 import type { PartOfSpeech } from "@/data/types"
-
-export interface VocabItemFormData {
-  word: string
-  furigana: string
-  english: string[]
-  partOfSpeech: string
-  chapter: string
-  notes: string[]
-  particles: Array<{ particle: string; label: string }>
-  examples: Array<{ japanese: string; english: string }>
-  readingMnemonics: string[]
-  kanjiMnemonics: string[]
-}
+import { useDeckCreationStore } from "../hooks/useDeckCreationStore"
+import { useVocabItemValidation } from "../hooks/useVocabItemValidation"
+import { createEmptyVocabItemFormData } from "../utils/form-data-helpers"
 
 const PARTS_OF_SPEECH: PartOfSpeech[] = [
   "Ichidan verb",
@@ -60,123 +50,181 @@ const PARTS_OF_SPEECH: PartOfSpeech[] = [
 ]
 
 interface VocabItemEditorProps {
+  itemId: number
   index: number
+  isFirstItem: boolean
   onRemove: () => void
-  formData: VocabItemFormData
-  onFormDataChange: (data: VocabItemFormData) => void
 }
 
 export function VocabItemEditor(props: VocabItemEditorProps) {
-  // Use external form data instead of local state
-  const updateFormData = (updates: Partial<VocabItemFormData>) => {
-    props.onFormDataChange({ ...props.formData, ...updates })
+  const { store, actions } = useDeckCreationStore()
+
+  // Get form data for this item
+  const formData = createMemo(() => {
+    return store.vocabItems.formData.get(props.itemId) || createEmptyVocabItemFormData()
+  })
+
+  // Create validation context
+  const validationContext = createMemo(() => ({
+    itemId: props.itemId,
+    isFirstItem: props.isFirstItem,
+    hasAttemptedSubmit: store.validation.hasAttemptedSubmit,
+    formData: formData()
+  }))
+
+  const validation = useVocabItemValidation(validationContext)
+
+  // Update form data helper
+  const updateFormData = (updates: Partial<typeof formData>) => {
+    const current = formData()
+    const updated = { ...current, ...updates }
+    actions.updateVocabItemFormData(props.itemId, updated)
   }
 
+  // English meanings handlers
   const addEnglishMeaning = () =>
     updateFormData({
-      english: [...props.formData.english, ""],
+      english: [...formData().english, ""],
     })
+  
   const removeEnglishMeaning = (index: number) =>
     updateFormData({
       english:
-        props.formData.english.length > 1
-          ? props.formData.english.filter((_, i) => i !== index)
+        formData().english.length > 1
+          ? formData().english.filter((_, i) => i !== index)
           : [""],
     })
+  
   const updateEnglishMeaning = (index: number, value: string) =>
     updateFormData({
-      english: props.formData.english.map((item, i) =>
+      english: formData().english.map((item, i) =>
         i === index ? value : item,
       ),
     })
 
-  // Additional field functions
+  // Additional field handlers (keeping original logic)
   const addNote = () =>
     updateFormData({
-      notes: [...props.formData.notes, ""],
+      notes: [...formData().notes, ""],
     })
+  
   const removeNote = (index: number) =>
     updateFormData({
-      notes: props.formData.notes.filter((_, i) => i !== index),
+      notes: formData().notes.filter((_, i) => i !== index),
     })
+  
   const updateNote = (index: number, value: string) =>
     updateFormData({
-      notes: props.formData.notes.map((item, i) =>
+      notes: formData().notes.map((item, i) =>
         i === index ? value : item,
       ),
     })
 
   const addParticle = () =>
     updateFormData({
-      particles: [...props.formData.particles, { particle: "", label: "" }],
+      particles: [...formData().particles, { particle: "", label: "" }],
     })
+  
   const removeParticle = (index: number) =>
     updateFormData({
-      particles: props.formData.particles.filter((_, i) => i !== index),
+      particles: formData().particles.filter((_, i) => i !== index),
     })
+  
   const updateParticle = (
     index: number,
     field: "particle" | "label",
     value: string,
   ) =>
     updateFormData({
-      particles: props.formData.particles.map((item, i) =>
+      particles: formData().particles.map((item, i) =>
         i === index ? { ...item, [field]: value } : item,
       ),
     })
 
   const addExample = () =>
     updateFormData({
-      examples: [...props.formData.examples, { japanese: "", english: "" }],
+      examples: [...formData().examples, { japanese: "", english: "" }],
     })
+  
   const removeExample = (index: number) =>
     updateFormData({
-      examples: props.formData.examples.filter((_, i) => i !== index),
+      examples: formData().examples.filter((_, i) => i !== index),
     })
+  
   const updateExample = (
     index: number,
     field: "japanese" | "english",
     value: string,
   ) =>
     updateFormData({
-      examples: props.formData.examples.map((item, i) =>
+      examples: formData().examples.map((item, i) =>
         i === index ? { ...item, [field]: value } : item,
       ),
     })
 
   const addReadingMnemonic = () =>
     updateFormData({
-      readingMnemonics: [...props.formData.readingMnemonics, ""],
+      readingMnemonics: [...formData().readingMnemonics, ""],
     })
+  
   const removeReadingMnemonic = (index: number) =>
     updateFormData({
-      readingMnemonics: props.formData.readingMnemonics.filter(
+      readingMnemonics: formData().readingMnemonics.filter(
         (_, i) => i !== index,
       ),
     })
+  
   const updateReadingMnemonic = (index: number, value: string) =>
     updateFormData({
-      readingMnemonics: props.formData.readingMnemonics.map((item, i) =>
+      readingMnemonics: formData().readingMnemonics.map((item, i) =>
         i === index ? value : item,
       ),
     })
 
   const addKanjiMnemonic = () =>
     updateFormData({
-      kanjiMnemonics: [...props.formData.kanjiMnemonics, ""],
+      kanjiMnemonics: [...formData().kanjiMnemonics, ""],
     })
+  
   const removeKanjiMnemonic = (index: number) =>
     updateFormData({
-      kanjiMnemonics: props.formData.kanjiMnemonics.filter(
+      kanjiMnemonics: formData().kanjiMnemonics.filter(
         (_, i) => i !== index,
       ),
     })
+  
   const updateKanjiMnemonic = (index: number, value: string) =>
     updateFormData({
-      kanjiMnemonics: props.formData.kanjiMnemonics.map((item, i) =>
+      kanjiMnemonics: formData().kanjiMnemonics.map((item, i) =>
         i === index ? value : item,
       ),
     })
+
+  // Required indicator helpers
+  const getRequiredIndicator = (validation: { showError: boolean, isRequired: boolean, error?: string }) => {
+    const hasAttemptedSubmit = store.validation.hasAttemptedSubmit
+    const isFirstCard = props.isFirstItem
+    
+    // Show red error only after submit attempt and field is invalid
+    if (hasAttemptedSubmit && !validation.isValid && validation.error) {
+      return (
+        <span class="text-destructive text-xs font-medium">
+          {validation.error}
+        </span>
+      )
+    }
+    
+    // Show gray "Required" preview only on first card before submit attempt
+    if (!hasAttemptedSubmit && isFirstCard && validation.isRequired) {
+      return (
+        <span class="text-muted-foreground text-xs font-medium">
+          Required
+        </span>
+      )
+    }
+    
+    return null
+  }
 
   return (
     <div class="border-border rounded-lg border p-4">
@@ -193,18 +241,21 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
         </Button>
       </div>
 
-      {/* Word and Furigana row - for proper tab order */}
+      {/* Word and Furigana row */}
       <div class="grid gap-4 md:grid-cols-2">
         <TextField
-          value={props.formData.word}
+          value={formData().word}
           onChange={(value) => updateFormData({ word: value })}
         >
-          <TextFieldLabel>Word</TextFieldLabel>
+          <div class="flex items-center justify-between">
+            <TextFieldLabel>Word</TextFieldLabel>
+            {getRequiredIndicator(validation.wordValidation())}
+          </div>
           <TextFieldInput placeholder="食べ物" />
         </TextField>
 
         <TextField
-          value={props.formData.furigana}
+          value={formData().furigana}
           onChange={(value) => updateFormData({ furigana: value })}
         >
           <TextFieldLabel>Furigana</TextFieldLabel>
@@ -220,11 +271,12 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
         {/* LEFT COLUMN */}
         <div>
           {/* English Meanings */}
-          <div class="mb-1.5">
+          <div class="mb-1.5 flex items-center justify-between">
             <span class="text-sm font-medium">English Meanings</span>
+            {getRequiredIndicator(validation.englishValidation())}
           </div>
           <div class="space-y-2">
-            <Index each={props.formData.english}>
+            <Index each={formData().english}>
               {(meaning, i) => (
                 <div class="flex items-center gap-1">
                   <TextField
@@ -266,7 +318,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                 <span class="text-sm font-medium">Part of Speech</span>
               </div>
               <Select
-                value={props.formData.partOfSpeech}
+                value={formData().partOfSpeech}
                 onChange={(value) =>
                   updateFormData({ partOfSpeech: value || "" })
                 }
@@ -291,7 +343,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
 
             <div class="w-20">
               <NumberField
-                value={props.formData.chapter}
+                value={formData().chapter}
                 onChange={(val) => updateFormData({ chapter: val || "1" })}
               >
                 <NumberFieldLabel>Chapter</NumberFieldLabel>
@@ -305,27 +357,26 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
           </div>
         </div>
 
-        {/* RIGHT COLUMN */}
+        {/* RIGHT COLUMN - Action buttons */}
         <div class="space-y-4">
-          {/* Action buttons */}
           <div class="mt-3 flex min-h-36 flex-col justify-center 2xl:mt-1.5">
             <div class="flex flex-wrap justify-end gap-2">
-              <Show when={props.formData.notes.length === 0}>
+              <Show when={formData().notes.length === 0}>
                 <Button variant="outline" onClick={addNote} class="text-xs">
                   <Plus class="max-h-3 max-w-3" /> Note
                 </Button>
               </Show>
-              <Show when={props.formData.particles.length === 0}>
+              <Show when={formData().particles.length === 0}>
                 <Button variant="outline" onClick={addParticle} class="text-xs">
                   <Plus class="max-h-3 max-w-3" /> Particle
                 </Button>
               </Show>
-              <Show when={props.formData.examples.length === 0}>
+              <Show when={formData().examples.length === 0}>
                 <Button variant="outline" onClick={addExample} class="text-xs">
                   <Plus class="max-h-3 max-w-3" /> Example Sentence
                 </Button>
               </Show>
-              <Show when={props.formData.readingMnemonics.length === 0}>
+              <Show when={formData().readingMnemonics.length === 0}>
                 <Button
                   variant="outline"
                   onClick={addReadingMnemonic}
@@ -334,7 +385,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                   <Plus class="max-h-3 max-w-3" /> Reading Mnemonic
                 </Button>
               </Show>
-              <Show when={props.formData.kanjiMnemonics.length === 0}>
+              <Show when={formData().kanjiMnemonics.length === 0}>
                 <Button
                   variant="outline"
                   onClick={addKanjiMnemonic}
@@ -348,18 +399,18 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
         </div>
       </div>
 
-      {/* Additional Fields Section - Full Width */}
+      {/* Additional Fields Section - Full Width (keeping original structure) */}
       <div
-        class={`${(props.formData.notes || props.formData.examples || props.formData.particles || props.formData.readingMnemonics || props.formData.kanjiMnemonics) && "2xl:mt-4"} space-y-3`}
+        class={`${(formData().notes || formData().examples || formData().particles || formData().readingMnemonics || formData().kanjiMnemonics) && "2xl:mt-4"} space-y-3`}
       >
         {/* Notes */}
-        {props.formData.notes.length > 0 && (
+        {formData().notes.length > 0 && (
           <div>
             <div class="mb-1.5">
               <span class="text-sm font-medium">Notes</span>
             </div>
             <div class="space-y-2">
-              <Index each={props.formData.notes}>
+              <Index each={formData().notes}>
                 {(note, i) => (
                   <div class="flex items-center gap-1">
                     <TextField
@@ -397,13 +448,13 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
         )}
 
         {/* Particles */}
-        {props.formData.particles.length > 0 && (
+        {formData().particles.length > 0 && (
           <div>
             <div class="mb-1.5">
               <span class="text-sm font-medium">Particles</span>
             </div>
             <div class="space-y-2">
-              <Index each={props.formData.particles}>
+              <Index each={formData().particles}>
                 {(particle, i) => (
                   <div class="flex items-center gap-1">
                     <div class="grid flex-1 grid-cols-2 gap-2">
@@ -450,13 +501,13 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
         )}
 
         {/* Example Sentences */}
-        {props.formData.examples.length > 0 && (
+        {formData().examples.length > 0 && (
           <div>
             <div class="mb-1.5">
               <span class="text-sm font-medium">Example Sentences</span>
             </div>
             <div class="space-y-2">
-              <Index each={props.formData.examples}>
+              <Index each={formData().examples}>
                 {(example, i) => (
                   <div class="flex items-center gap-1">
                     <div class="grid flex-1 grid-cols-2 gap-2">
@@ -503,13 +554,13 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
         )}
 
         {/* Reading Mnemonics */}
-        {props.formData.readingMnemonics.length > 0 && (
+        {formData().readingMnemonics.length > 0 && (
           <div>
             <div class="mb-1.5">
               <span class="text-sm font-medium">Reading Mnemonics</span>
             </div>
             <div class="space-y-2">
-              <Index each={props.formData.readingMnemonics}>
+              <Index each={formData().readingMnemonics}>
                 {(mnemonic, i) => (
                   <div class="flex items-center gap-1">
                     <TextField
@@ -547,13 +598,13 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
         )}
 
         {/* Kanji Mnemonics */}
-        {props.formData.kanjiMnemonics.length > 0 && (
+        {formData().kanjiMnemonics.length > 0 && (
           <>
             <div class="mb-1.5">
               <span class="text-sm font-medium">Kanji Mnemonics</span>
             </div>
             <div class="space-y-2">
-              <Index each={props.formData.kanjiMnemonics}>
+              <Index each={formData().kanjiMnemonics}>
                 {(mnemonic, i) => (
                   <div class="flex items-center gap-1">
                     <TextField

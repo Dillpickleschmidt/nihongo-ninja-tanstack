@@ -1,3 +1,4 @@
+import { createSignal } from "solid-js"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -17,12 +18,14 @@ import {
 import { MoreHorizontal } from "lucide-solid"
 
 interface DeckHeaderProps {
-  confirmClearOpen: () => boolean
-  setConfirmClearOpen: (open: boolean) => void
   onClear: () => void
+  onSave: () => void
+  isSaving?: boolean
 }
 
 export function DeckHeader(props: DeckHeaderProps) {
+  const [confirmClearOpen, setConfirmClearOpen] = createSignal(false)
+
   return (
     <div class="bg-background/80 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-10 -mx-2 px-2 py-2 backdrop-blur">
       <div class="flex items-center justify-between">
@@ -36,8 +39,8 @@ export function DeckHeader(props: DeckHeaderProps) {
         </div>
         <div class="flex items-center gap-2">
           <Dialog
-            open={props.confirmClearOpen()}
-            onOpenChange={props.setConfirmClearOpen}
+            open={confirmClearOpen()}
+            onOpenChange={setConfirmClearOpen}
           >
             <DialogTrigger>
               <Button variant="ghost" size="sm" class="hover:cursor-pointer">
@@ -54,7 +57,7 @@ export function DeckHeader(props: DeckHeaderProps) {
               <DialogFooter>
                 <Button
                   variant="ghost"
-                  onClick={() => props.setConfirmClearOpen(false)}
+                  onClick={() => setConfirmClearOpen(false)}
                 >
                   Cancel
                 </Button>
@@ -62,7 +65,7 @@ export function DeckHeader(props: DeckHeaderProps) {
                   variant="destructive"
                   onClick={() => {
                     props.onClear()
-                    props.setConfirmClearOpen(false)
+                    setConfirmClearOpen(false)
                   }}
                 >
                   Clear
@@ -89,8 +92,8 @@ export function DeckHeader(props: DeckHeaderProps) {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button size="sm" class="cursor-pointer">
-            Save Deck
+          <Button size="sm" class="cursor-pointer" onClick={props.onSave} disabled={props.isSaving}>
+            {props.isSaving ? "Saving..." : "Save Deck"}
           </Button>
         </div>
       </div>

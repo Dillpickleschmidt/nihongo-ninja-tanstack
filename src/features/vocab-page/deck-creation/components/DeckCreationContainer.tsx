@@ -1,0 +1,107 @@
+import { createMemo, createSignal } from "solid-js"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useDeckCreationStore } from "../hooks/useDeckCreationStore"
+import { useDeckValidation } from "../hooks/useDeckValidation"
+import { convertAllFormDataToVocabularyItems } from "../utils/form-data-helpers"
+import { createCustomDeckServerFn } from "@/features/supabase/db/folder-operations"
+import { DeckHeader } from "./DeckHeader"
+import { DeckDetails } from "./DeckDetails"
+import { VocabItemsList } from "./VocabItemsList"
+import { VocabPreview } from "./VocabPreview"
+
+interface DeckCreationContainerProps {
+  folders: DeckFolder[]
+  decks: UserDeck[]
+}
+
+export function DeckCreationContainer(props: DeckCreationContainerProps) {
+  const { store, actions } = useDeckCreationStore()
+  const deckValidation = useDeckValidation({ 
+    store: () => store, 
+    existingDecks: props.decks 
+  })
+  const [isSaving, setIsSaving] = createSignal(false)
+
+  // Convert form data to vocabulary items for preview
+  const vocabularyItems = createMemo(() => {
+    return convertAllFormDataToVocabularyItems(store.vocabItems.formData)
+  })
+
+  const handleClear = () => {
+    actions.resetStore()
+  }
+
+  const handleSaveDeck = async () => {
+    actions.setHasAttemptedSubmit(true)
+    
+    // Validate the entire form
+    const isDeckValid = deckValidation.deckNameValidation().isValid && store.deck.name.trim().length > 0
+    const hasValidVocabItems = vocabularyItems().length > 0
+    
+    if (!isDeckValid || !hasValidVocabItems) {
+      console.log("Validation failed")
+      return
+    }
+
+    setIsSaving(true)
+    
+    try {
+      // Prepare folder_id (convert "root" to null)
+      const folder_id = store.deck.selectedFolderId === "root" ? null : parseInt(store.deck.selectedFolderId)
+      
+      // Create the deck with vocabulary items
+      const savedDeck = await createCustomDeckServerFn({
+        data: {
+          deck_name: store.deck.name,
+          deck_description: store.deck.description || null,
+          folder_id,
+          vocabulary_items: vocabularyItems()
+        }
+      })
+
+      console.log("Deck saved successfully:", savedDeck)
+      
+      // TODO: Show success toast
+      // TODO: Reset form or navigate away
+      actions.resetStore()
+      
+    } catch (error) {
+      console.error("Failed to save deck:", error)
+      // TODO: Show error toast
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  return (
+    <div class="w-full space-y-8 px-2 pb-8 sm:px-4 lg:px-6">
+      <DeckHeader onClear={handleClear} onSave={handleSaveDeck} isSaving={isSaving()} />
+
+      <DeckDetails 
+        folders={props.folders}
+        decks={props.decks}
+      />
+
+      <section>
+        <div class="mb-2">
+          <h2 class="text-lg font-semibold">Vocabulary Items</h2>
+        </div>
+
+        <Tabs value={store.ui.currentTab} onChange={actions.setCurrentTab}>
+          <TabsList class="mb-4">
+            <TabsTrigger value="items">List</TabsTrigger>
+            <TabsTrigger value="preview">Preview</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="items" class="mt-0">
+            <VocabItemsList />
+          </TabsContent>
+
+          <TabsContent value="preview" class="mt-0">
+            <VocabPreview vocabularyItems={vocabularyItems()} />
+          </TabsContent>
+        </Tabs>
+      </section>
+    </div>
+  )
+}

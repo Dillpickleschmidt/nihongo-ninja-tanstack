@@ -350,6 +350,95 @@ function extractTextbookInfo(
 }
 
 /**
+ * Creates a custom deck with vocabulary items in a single transaction
+ */
+export const createCustomDeckServerFn = createServerFn({ method: "POST" })
+  .validator(
+    (data: {
+      deck_name: string
+      deck_description?: string | null
+      folder_id?: number | null
+      vocabulary_items: Array<{
+        word: string
+        furigana?: string
+        english: string[]
+        part_of_speech?: string
+        chapter?: number
+        info?: string[]
+        particles?: Array<{ particle: string; label: string }>
+        mnemonics?: { reading?: string[]; kanji?: string[] }
+        example_sentences?: Array<{ japanese: string[]; english: string[] }>
+      }>
+    }) => data,
+  )
+  .handler(async ({ data }) => {
+    const supabase = createSupabaseClient()
+    const response = await getUser()
+    if (!response.user) throw new Error("User not authenticated")
+
+    // Create the deck using the same logic as createUserDeckServerFn
+    const insertData: UserDeckInsert = {
+      deck_name: data.deck_name,
+      deck_description: data.deck_description || null,
+      folder_id: data.folder_id || null,
+      source: "user",
+      user_id: response.user.id,
+    }
+
+    console.log("Attempting to insert deck with data:", insertData)
+
+    const { data: deck, error } = await supabase
+      .from("user_decks")
+      .insert([insertData])
+      .select()
+      .single()
+
+    console.log("Database response:", { deck, error })
+
+    if (error) {
+      console.error("Database error:", error)
+      throw new Error(`Failed to create deck: ${error.message}`)
+    }
+
+    if (!deck) {
+      throw new Error("Deck creation succeeded but no deck was returned")
+    }
+
+    // Add vocabulary items in the same transaction context
+    if (data.vocabulary_items.length > 0) {
+      console.log("Processing vocabulary items:", data.vocabulary_items.length)
+      
+      const vocabularyInserts: DBVocabularyItemInsert[] = data.vocabulary_items.map((item) => ({
+        deck_id: deck.deck_id,
+        word: item.word,
+        furigana: item.furigana || item.word,
+        english: item.english,
+        part_of_speech: item.part_of_speech || null,
+        chapter: item.chapter || 1,
+        info: item.info || null,
+        particles: item.particles || null,
+        mnemonics: item.mnemonics || null,
+        example_sentences: item.example_sentences || null,
+      }))
+
+      console.log("Attempting to insert vocabulary items:", vocabularyInserts)
+
+      const { error: vocabError } = await supabase
+        .from("vocabulary_items")
+        .insert(vocabularyInserts)
+
+      if (vocabError) {
+        console.error("Vocabulary insert error:", vocabError)
+        throw new Error(`Failed to create vocabulary items: ${vocabError.message}`)
+      }
+      
+      console.log("Vocabulary items inserted successfully")
+    }
+
+    return deck as UserDeck
+  })
+
+/**
  * Server function that executes multiple edit operations as an atomic transaction
  */
 export const executeEditTransactionServerFn = createServerFn({ method: "POST" })
