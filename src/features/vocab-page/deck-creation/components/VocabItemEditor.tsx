@@ -14,14 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
-  NumberField,
-  NumberFieldDecrementTrigger,
-  NumberFieldGroup,
-  NumberFieldIncrementTrigger,
-  NumberFieldInput,
-  NumberFieldLabel,
-} from "@/components/ui/number-field"
 import type { PartOfSpeech } from "@/data/types"
 import { useDeckCreationStore } from "../hooks/useDeckCreationStore"
 import { useVocabItemValidation } from "../hooks/useVocabItemValidation"
@@ -61,7 +53,10 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
 
   // Get form data for this item
   const formData = createMemo(() => {
-    return store.vocabItems.formData.get(props.itemId) || createEmptyVocabItemFormData()
+    return (
+      store.vocabItems.formData.get(props.itemId) ||
+      createEmptyVocabItemFormData()
+    )
   })
 
   // Create validation context
@@ -69,7 +64,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
     itemId: props.itemId,
     isFirstItem: props.isFirstItem,
     hasAttemptedSubmit: store.validation.hasAttemptedSubmit,
-    formData: formData()
+    formData: formData(),
   }))
 
   const validation = useVocabItemValidation(validationContext)
@@ -86,7 +81,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
     updateFormData({
       english: [...formData().english, ""],
     })
-  
+
   const removeEnglishMeaning = (index: number) =>
     updateFormData({
       english:
@@ -94,7 +89,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
           ? formData().english.filter((_, i) => i !== index)
           : [""],
     })
-  
+
   const updateEnglishMeaning = (index: number, value: string) =>
     updateFormData({
       english: formData().english.map((item, i) =>
@@ -107,29 +102,27 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
     updateFormData({
       notes: [...formData().notes, ""],
     })
-  
+
   const removeNote = (index: number) =>
     updateFormData({
       notes: formData().notes.filter((_, i) => i !== index),
     })
-  
+
   const updateNote = (index: number, value: string) =>
     updateFormData({
-      notes: formData().notes.map((item, i) =>
-        i === index ? value : item,
-      ),
+      notes: formData().notes.map((item, i) => (i === index ? value : item)),
     })
 
   const addParticle = () =>
     updateFormData({
       particles: [...formData().particles, { particle: "", label: "" }],
     })
-  
+
   const removeParticle = (index: number) =>
     updateFormData({
       particles: formData().particles.filter((_, i) => i !== index),
     })
-  
+
   const updateParticle = (
     index: number,
     field: "particle" | "label",
@@ -145,12 +138,12 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
     updateFormData({
       examples: [...formData().examples, { japanese: "", english: "" }],
     })
-  
+
   const removeExample = (index: number) =>
     updateFormData({
       examples: formData().examples.filter((_, i) => i !== index),
     })
-  
+
   const updateExample = (
     index: number,
     field: "japanese" | "english",
@@ -166,14 +159,14 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
     updateFormData({
       readingMnemonics: [...formData().readingMnemonics, ""],
     })
-  
+
   const removeReadingMnemonic = (index: number) =>
     updateFormData({
       readingMnemonics: formData().readingMnemonics.filter(
         (_, i) => i !== index,
       ),
     })
-  
+
   const updateReadingMnemonic = (index: number, value: string) =>
     updateFormData({
       readingMnemonics: formData().readingMnemonics.map((item, i) =>
@@ -185,14 +178,12 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
     updateFormData({
       kanjiMnemonics: [...formData().kanjiMnemonics, ""],
     })
-  
+
   const removeKanjiMnemonic = (index: number) =>
     updateFormData({
-      kanjiMnemonics: formData().kanjiMnemonics.filter(
-        (_, i) => i !== index,
-      ),
+      kanjiMnemonics: formData().kanjiMnemonics.filter((_, i) => i !== index),
     })
-  
+
   const updateKanjiMnemonic = (index: number, value: string) =>
     updateFormData({
       kanjiMnemonics: formData().kanjiMnemonics.map((item, i) =>
@@ -201,10 +192,14 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
     })
 
   // Required indicator helpers
-  const getRequiredIndicator = (validation: { showError: boolean, isRequired: boolean, error?: string }) => {
+  const getRequiredIndicator = (validation: {
+    showError: boolean
+    isRequired: boolean
+    error?: string
+  }) => {
     const hasAttemptedSubmit = store.validation.hasAttemptedSubmit
     const isFirstCard = props.isFirstItem
-    
+
     // Show red error only after submit attempt and field is invalid
     if (hasAttemptedSubmit && !validation.isValid && validation.error) {
       return (
@@ -213,16 +208,12 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
         </span>
       )
     }
-    
+
     // Show gray "Required" preview only on first card before submit attempt
     if (!hasAttemptedSubmit && isFirstCard && validation.isRequired) {
-      return (
-        <span class="text-muted-foreground text-xs font-medium">
-          Required
-        </span>
-      )
+      return <span>Required</span>
     }
-    
+
     return null
   }
 
@@ -246,12 +237,13 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
         <TextField
           value={formData().word}
           onChange={(value) => updateFormData({ word: value })}
+          class="relative"
         >
-          <div class="flex items-center justify-between">
-            <TextFieldLabel>Word</TextFieldLabel>
+          <TextFieldLabel>Word</TextFieldLabel>
+          <TextFieldInput placeholder="食べ物" />
+          <div class="text-muted-foreground/70 pointer-events-none absolute top-7.5 right-4 text-xs font-medium italic">
             {getRequiredIndicator(validation.wordValidation())}
           </div>
-          <TextFieldInput placeholder="食べ物" />
         </TextField>
 
         <TextField
@@ -271,20 +263,22 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
         {/* LEFT COLUMN */}
         <div>
           {/* English Meanings */}
-          <div class="mb-1.5 flex items-center justify-between">
-            <span class="text-sm font-medium">English Meanings</span>
-            {getRequiredIndicator(validation.englishValidation())}
+          <div class="mb-1.5 flex items-center justify-between text-sm font-medium">
+            English Meanings
           </div>
           <div class="space-y-2">
             <Index each={formData().english}>
               {(meaning, i) => (
                 <div class="flex items-center gap-1">
                   <TextField
-                    class="flex-1"
+                    class="relative flex-1"
                     value={meaning()}
                     onChange={(value) => updateEnglishMeaning(i, value)}
                   >
                     <TextFieldInput placeholder="food" />
+                    <div class="text-muted-foreground/70 pointer-events-none absolute top-3 right-4 text-xs font-medium italic">
+                      {getRequiredIndicator(validation.englishValidation())}
+                    </div>
                   </TextField>
                   <div class="flex items-center gap-0.5">
                     <Button
@@ -311,49 +305,31 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
             </Index>
           </div>
 
-          {/* Part of Speech + Chapter */}
-          <div class="grid grid-cols-[1fr_auto] items-end gap-3 pt-2.5">
-            <div>
-              <div class="mb-1.5">
-                <span class="text-sm font-medium">Part of Speech</span>
-              </div>
-              <Select
-                value={formData().partOfSpeech}
-                onChange={(value) =>
-                  updateFormData({ partOfSpeech: value || "" })
-                }
-                options={PARTS_OF_SPEECH}
-                placeholder="Select part of speech"
-                itemComponent={(props) => (
-                  <SelectItem item={props.item}>
-                    {props.item.rawValue as string}
-                  </SelectItem>
-                )}
-              >
-                <SelectTrigger aria-label="Part of Speech" class="text-xs">
-                  <SelectValue<string>>
-                    {(state) =>
-                      state.selectedOption() || "Select part of speech"
-                    }
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent />
-              </Select>
+          {/* Part of Speech */}
+          <div class="pt-2.5">
+            <div class="mb-1.5">
+              <span class="text-sm font-medium">Part of Speech</span>
             </div>
-
-            <div class="w-20">
-              <NumberField
-                value={formData().chapter}
-                onChange={(val) => updateFormData({ chapter: val || "1" })}
-              >
-                <NumberFieldLabel>Chapter</NumberFieldLabel>
-                <NumberFieldGroup>
-                  <NumberFieldInput />
-                  <NumberFieldIncrementTrigger class="h-3 w-3 pt-1" />
-                  <NumberFieldDecrementTrigger class="h-3 w-3 pb-1" />
-                </NumberFieldGroup>
-              </NumberField>
-            </div>
+            <Select
+              value={formData().partOfSpeech}
+              onChange={(value) =>
+                updateFormData({ partOfSpeech: value || "" })
+              }
+              options={PARTS_OF_SPEECH}
+              placeholder="Select part of speech"
+              itemComponent={(props) => (
+                <SelectItem item={props.item}>
+                  {props.item.rawValue as string}
+                </SelectItem>
+              )}
+            >
+              <SelectTrigger aria-label="Part of Speech" class="text-xs">
+                <SelectValue<string>>
+                  {(state) => state.selectedOption() || "Select part of speech"}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent />
+            </Select>
           </div>
         </div>
 

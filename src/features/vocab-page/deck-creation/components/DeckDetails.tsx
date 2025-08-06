@@ -1,9 +1,10 @@
-import { 
-  TextField, 
-  TextFieldInput, 
-  TextFieldLabel, 
-  TextFieldDescription 
+import {
+  TextField,
+  TextFieldInput,
+  TextFieldLabel,
+  TextFieldDescription,
 } from "@/components/ui/text-field"
+import { Label } from "@/components/ui/label"
 import { LocationSelector } from "@/features/vocab-page/components/LocationSelector"
 import { useFolderTree } from "@/features/vocab-page/hooks/useFolderTree"
 import { useDeckCreationStore } from "../hooks/useDeckCreationStore"
@@ -16,9 +17,9 @@ interface DeckDetailsProps {
 
 export function DeckDetails(props: DeckDetailsProps) {
   const { store, actions } = useDeckCreationStore()
-  const deckValidation = useDeckValidation({ 
-    store: () => store, 
-    existingDecks: props.decks 
+  const deckValidation = useDeckValidation({
+    store: () => store,
+    existingDecks: props.decks,
   })
 
   // Folder tree for LocationSelector
@@ -32,7 +33,9 @@ export function DeckDetails(props: DeckDetailsProps) {
     if (folderId === "root") {
       actions.updateDeckFolder("root", "Root")
     } else {
-      const folder = props.folders.find(f => f.folder_id.toString() === folderId)
+      const folder = props.folders.find(
+        (f) => f.folder_id.toString() === folderId,
+      )
       actions.updateDeckFolder(folderId, folder?.folder_name || "Root")
     }
   }
@@ -40,7 +43,7 @@ export function DeckDetails(props: DeckDetailsProps) {
   // Show name validation error
   const nameError = () => {
     const hasAttemptedSubmit = store.validation.hasAttemptedSubmit
-    
+
     // Only show errors after submit attempt
     if (hasAttemptedSubmit) {
       if (!deckValidation.deckNameValidation().isValid) {
@@ -50,7 +53,7 @@ export function DeckDetails(props: DeckDetailsProps) {
         return "Deck name is required"
       }
     }
-    
+
     return undefined
   }
 
@@ -58,25 +61,19 @@ export function DeckDetails(props: DeckDetailsProps) {
   const showRequiredIndicator = () => {
     const hasAttemptedSubmit = store.validation.hasAttemptedSubmit
     const nameIsEmpty = store.deck.name.trim().length === 0
-    
+
     // Show gray "Required" text as preview when field is empty and haven't attempted submit
     if (!hasAttemptedSubmit && nameIsEmpty) {
-      return (
-        <span class="text-muted-foreground text-xs font-medium">
-          Required
-        </span>
-      )
+      return <span>Required</span>
     }
-    
+
     // Show red error after submit attempt
     if (hasAttemptedSubmit && nameError()) {
       return (
-        <span class="text-destructive text-xs font-medium">
-          {nameError()}
-        </span>
+        <span class="text-destructive text-xs font-medium">{nameError()}</span>
       )
     }
-    
+
     return null
   }
 
@@ -87,20 +84,21 @@ export function DeckDetails(props: DeckDetailsProps) {
       </div>
 
       <div class="grid gap-4 md:grid-cols-2">
-        <TextField 
-          value={store.deck.name} 
+        <TextField
+          value={store.deck.name}
           onChange={actions.updateDeckName}
+          class="relative"
         >
-          <div class="flex items-center justify-between">
-            <TextFieldLabel>Deck Name</TextFieldLabel>
+          <TextFieldLabel>Deck Name</TextFieldLabel>
+          <TextFieldInput placeholder="My Vocabulary Deck" />
+          <div class="text-muted-foreground/70 pointer-events-none absolute top-7.5 right-4 text-xs font-medium italic">
             {showRequiredIndicator()}
           </div>
-          <TextFieldInput placeholder="My Vocabulary Deck" />
         </TextField>
 
         <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <span class="text-sm font-medium">Folder</span>
+          <div class="mb-1 flex items-center justify-between">
+            <Label>Folder</Label>
           </div>
           <LocationSelector
             selectedFolderId={store.deck.selectedFolderId}
@@ -113,17 +111,18 @@ export function DeckDetails(props: DeckDetailsProps) {
       </div>
 
       <div class="mt-4">
-        <TextField 
-          value={store.deck.description} 
+        <TextField
+          value={store.deck.description}
           onChange={actions.updateDeckDescription}
         >
-          <TextFieldLabel>Description (Optional)</TextFieldLabel>
+          <TextFieldLabel>
+            Description{" "}
+            <span class="text-muted-foreground text-xs">(Optional)</span>
+          </TextFieldLabel>
           <TextFieldInput placeholder="Describe your deck..." />
-          <TextFieldDescription>
-            Add a brief description of what this deck contains.
-          </TextFieldDescription>
         </TextField>
       </div>
     </section>
   )
 }
+
