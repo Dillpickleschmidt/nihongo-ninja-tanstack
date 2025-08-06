@@ -8,6 +8,8 @@ import { CenterPanel } from "./center-panel/CenterPanel"
 import { ImportConfirmationModal } from "./shared/ImportConfirmationModal"
 import { EditModal } from "./components/EditModal"
 import { useVocabPageState } from "./hooks/useVocabPageState"
+import { useImportModal } from "./hooks/useImportModal"
+import { useEditOperations } from "./hooks/useEditOperations"
 import type { ImportRequest, VocabTextbook } from "./types"
 import type { TextbookIDEnum } from "@/data/types"
 import type { FoldersAndDecksData } from "@/features/supabase/db/folder-operations"
@@ -27,6 +29,23 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
     props.foldersAndDecksPromise,
     props.user,
   )
+
+  // Import modal management
+  const importModal = useImportModal(
+    props.importRequest,
+    state.importDeck,
+    state.setLeftPanelOpen,
+  )
+
+  // Edit operations management
+  const editOperations = useEditOperations({
+    folders: state.folders,
+    userDecks: state.userDecks,
+    setLocalFolders: state.setLocalFolders,
+    setLocalDecks: state.setLocalDecks,
+    refetchFoldersAndDecks: state.refetchFoldersAndDecks,
+    user: props.user,
+  })
   let userDecksPanelRef!: HTMLDivElement
 
   // Edit modal state
@@ -52,7 +71,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
   }
 
   const handleSaveEdit = (transaction: any) => {
-    state.executeEdit(transaction)
+    editOperations.executeEdit(transaction)
     handleCloseEditModal()
   }
 
@@ -108,10 +127,10 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
       </div>
 
       <ImportConfirmationModal
-        isOpen={state.showImportModal()}
-        onClose={state.handleImportCancel}
-        onConfirm={state.handleImportConfirm}
-        deckTitle={state.pendingImportDeck()?.title ?? ""}
+        isOpen={importModal.showImportModal()}
+        onClose={importModal.handleImportCancel}
+        onConfirm={importModal.handleImportConfirm}
+        deckTitle={importModal.pendingImportDeck()?.title ?? ""}
       />
 
       <EditModal

@@ -1,6 +1,6 @@
 // features/vocab-page/hooks/useVocabPageState.ts
 import { createSignal, createEffect, createResource } from "solid-js"
-import { useNavigate, type DeferredPromise } from "@tanstack/solid-router"
+import { type DeferredPromise } from "@tanstack/solid-router"
 import { DEFAULT_EXPANDED_TEXTBOOKS, NEWLY_IMPORTED_TIMEOUT } from "../types"
 import type { ImportRequest, VocabBuiltInDeck, VocabTextbook } from "../types"
 import type { TextbookIDEnum } from "@/data/types"
@@ -10,7 +10,6 @@ import { useFolderNavigation } from "./useFolderNavigation"
 import {
   importBuiltInDeckServerFn,
   getUserFoldersAndDecks,
-  executeEditTransactionServerFn,
 } from "@/features/supabase/db/folder-operations"
 import {
   saveFoldersAndDecks,
@@ -20,8 +19,6 @@ import {
   importDeckWithFolders,
   isDeckAlreadyImported,
 } from "@/features/vocab-page/logic/deck-import-logic"
-import { EditTransaction } from "@/features/vocab-page/logic/edit-transaction"
-import type { AppState } from "@/features/vocab-page/logic/edit-transaction"
 import type { NavTabId } from "@/features/vocab-page/center-panel/CenterNavBar"
 
 export function useVocabPageState(
@@ -30,7 +27,6 @@ export function useVocabPageState(
   foldersAndDecksPromise?: DeferredPromise<FoldersAndDecksData>,
   user?: User | null,
 ) {
-  const navigate = useNavigate()
   const [leftPanelOpen, setLeftPanelOpen] = createSignal(true)
   const [rightPanelOpen, setRightPanelOpen] = createSignal(true)
 
@@ -39,8 +35,7 @@ export function useVocabPageState(
   const [vocabCardsTabState, setVocabCardsTabState] =
     createSignal<UserDeck | null>(null)
 
-  // Destructure import request
-  const pendingImport = importRequest?.deck
+  // Extract expansion data from import request for auto-expansion
   const expansionData = importRequest?.location
 
   // Initialize expansion state with auto-expansion for imports
@@ -113,10 +108,16 @@ export function useVocabPageState(
   }
 
   // Sync database data to local state when it loads (for authenticated users)
+  // Only sync on initial load, not on subsequent updates to preserve optimistic state
+  // DB fetch function forces refresh on failures
   createEffect(() => {
     if (user && foldersAndDecks.state === "ready") {
-      const data = foldersAndDecks()
-      if (data) {
+      const data = foldersAndDecks() as FoldersAndDecksData | undefined
+      const currentFolders = localFolders()
+      const currentDecks = localDecks()
+
+      // Only sync if we don't have local data (initial load)
+      if (data && currentFolders.length === 0 && currentDecks.length === 0) {
         setLocalFolders(data.folders)
         setLocalDecks(data.decks)
       }
@@ -139,11 +140,6 @@ export function useVocabPageState(
 
   // Folder navigation
   const folderNavigation = useFolderNavigation(folders, userDecks)
-
-  // Import confirmation modal state
-  const [showImportModal, setShowImportModal] = createSignal(false)
-  const [pendingImportDeck, setPendingImportDeck] =
-    createSignal<VocabBuiltInDeck | null>(null)
 
   // Use pre-loaded textbooks from server
   const [textbooks, setTextbooks] = createSignal<
@@ -206,12 +202,12 @@ export function useVocabPageState(
       userId,
     )
 
-    // Update local state immediately
+    // Update local state immediately for UI feedback (all users)
     setLocalFolders(localResult.folders)
     setLocalDecks(localResult.decks)
     setSelectedUserDeck(localResult.importedDeck)
 
-    // Navigate to the folder containing the new deck (using temporary ID)
+    // Navigate immediately to the folder containing the new deck (all users)
     if (localResult.targetFolderId !== null) {
       folderNavigation.navigateToFolder(localResult.targetFolderId)
     }
@@ -221,23 +217,21 @@ export function useVocabPageState(
     setNewlyImportedDecks((prev) => new Set([...prev, importedDeckId]))
 
     if (user) {
-      // 2. Database sync (background, with navigation reconciliation)
-      try {
-        await importBuiltInDeckServerFn({
-          data: {
-            builtInDeck,
-            textbooks: textbooks(),
-          },
-        })
-        // Refetch to get real IDs and sync with database
-        refetchFoldersAndDecks()
-      } catch (error) {
+      // Background database sync (don't await, don't update UI unless error)
+      importBuiltInDeckServerFn({
+        data: {
+          builtInDeck,
+          textbooks: textbooks(),
+        },
+      }).catch((error) => {
         console.error("Database sync failed:", error)
-        // Revert optimistic update
+        // Only revert on error
         setLocalFolders(currentFolders)
         setLocalDecks(currentDecks)
+        setSelectedUserDeck(null)
+        folderNavigation.navigateToRoot()
         alert("Failed to save deck to your account. Please try again.")
-      }
+      })
     } else {
       // For unsigned users: Save to session storage
       saveFoldersAndDecks({
@@ -254,93 +248,6 @@ export function useVocabPageState(
         return newSet
       })
     }, NEWLY_IMPORTED_TIMEOUT)
-  }
-
-  // Edit operation functions
-  const executeEdit = async (transaction: EditTransaction) => {
-    const currentState: AppState = { folders: folders(), decks: userDecks() }
-
-    // 1. Validate transaction
-    const preview = transaction.preview(currentState)
-    if (!preview.success) {
-      alert(`Edit failed: ${preview.error}`)
-      return
-    }
-
-    // 2. Optimistic update (same logic for all user types)
-    setLocalFolders(preview.newState!.folders)
-    setLocalDecks(preview.newState!.decks)
-
-    // 3. Persistence (different strategies)
-    try {
-      if (user) {
-        // Database transaction
-        await executeEditTransactionServerFn({
-          data: { operations: transaction.getOperations() },
-        })
-        // Refetch to get updated data and real IDs
-        refetchFoldersAndDecks()
-      } else {
-        // Session storage (atomic write)
-        saveFoldersAndDecks(preview.newState!)
-      }
-    } catch (error) {
-      // 4. Rollback (same logic for all user types)
-      setLocalFolders(currentState.folders)
-      setLocalDecks(currentState.decks)
-      console.error("Edit failed:", error)
-      alert(
-        `Edit failed: ${error instanceof Error ? error.message : "Unknown error"}`,
-      )
-    }
-  }
-
-  const editDeck = async (
-    deckId: number,
-    updates: { name?: string; folderId?: number | null },
-  ) => {
-    const transaction = new EditTransaction()
-    transaction.add({
-      type: "update-deck",
-      deckId,
-      updates,
-    })
-    await executeEdit(transaction)
-  }
-
-  const editFolder = async (
-    folderId: number,
-    updates: { name?: string; parentId?: number | null },
-  ) => {
-    const transaction = new EditTransaction()
-    transaction.add({
-      type: "update-folder",
-      folderId,
-      updates,
-    })
-    await executeEdit(transaction)
-  }
-
-  const deleteDeck = async (deckId: number) => {
-    const transaction = new EditTransaction()
-    transaction.add({
-      type: "delete-deck",
-      deckId,
-    })
-    await executeEdit(transaction)
-  }
-
-  const deleteFolder = async (
-    folderId: number,
-    strategy: "move-up" | "delete-all",
-  ) => {
-    const transaction = new EditTransaction()
-    transaction.add({
-      type: "delete-folder",
-      folderId,
-      strategy,
-    })
-    await executeEdit(transaction)
   }
 
   const selectUserDeck = (deck: UserDeck) => {
@@ -382,33 +289,6 @@ export function useVocabPageState(
     }
   }
 
-  // Import modal functions
-  const handleImportConfirm = () => {
-    const deck = pendingImportDeck()
-    if (deck) {
-      importDeck(deck)
-    }
-    setShowImportModal(false)
-    setPendingImportDeck(null)
-  }
-
-  const handleImportCancel = () => {
-    setShowImportModal(false)
-    setPendingImportDeck(null)
-  }
-
-  // Handle pending import from route loader
-  createEffect(() => {
-    if (pendingImport) {
-      setPendingImportDeck(pendingImport)
-      setShowImportModal(true)
-      // Ensure left panel is open to show the expanded hierarchy
-      setLeftPanelOpen(true)
-      // Clean URL
-      navigate({ to: "/vocab", search: { import: undefined }, replace: true })
-    }
-  })
-
   return {
     // Panel state
     leftPanelOpen,
@@ -444,17 +324,9 @@ export function useVocabPageState(
     handleDeckSelect,
     handleDeckDeselect,
 
-    // Edit operations
-    executeEdit,
-    editDeck,
-    editFolder,
-    deleteDeck,
-    deleteFolder,
-
-    // Import modal state and actions
-    showImportModal,
-    pendingImportDeck,
-    handleImportConfirm,
-    handleImportCancel,
+    // Internal state setters (for edit operations hook)
+    setLocalFolders,
+    setLocalDecks,
+    refetchFoldersAndDecks,
   }
 }
