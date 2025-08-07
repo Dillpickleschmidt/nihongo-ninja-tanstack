@@ -43,8 +43,8 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
   const editOperations = useEditOperations({
     folders: state.folders,
     userDecks: state.userDecks,
-    setLocalFolders: state.setLocalFolders,
-    setLocalDecks: state.setLocalDecks,
+    setLocalFolders: state.setFolderData,
+    setLocalDecks: state.setDeckData,
     refetchFoldersAndDecks: state.refetchFoldersAndDecks,
     user: props.user,
   })
@@ -123,7 +123,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
 
   return (
     <div class="bg-background flex h-screen">
-      {/* Left panel — extremely soft hint */}
+      {/* Left panel — subtle gradient */}
       <div class="h-[calc(100vh-65px)] bg-[radial-gradient(1400px_900px_at_8%_6%,theme(colors.orange.300/5%),transparent_60%),radial-gradient(320px_200px_at_92%_98%,theme(colors.sky.400/1.5%),transparent_82%),linear-gradient(to_bottom,theme(colors.black/0%)_0%,theme(colors.black/3%)_100%)]">
         <CollapsiblePanel
           title="Built-in Decks"
@@ -153,10 +153,12 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
           folders={state.folders()}
           decks={state.userDecks()}
           deckEditData={deckEditData()}
+          onRefetch={() => state.refetchFoldersAndDecks() as Promise<void>}
+          onNavigateToDeck={state.handleDeckSelect}
         />
       </div>
 
-      {/* Right panel — same gradients as left (not mirrored) */}
+      {/* Right panel — same gradients as left */}
       <div class="h-[calc(100vh-65px)] bg-[radial-gradient(1400px_900px_at_8%_6%,theme(colors.orange.300/5%),transparent_60%),radial-gradient(320px_200px_at_92%_98%,theme(colors.sky.400/1.5%),transparent_82%),linear-gradient(to_bottom,theme(colors.black/0%)_0%,theme(colors.black/3%)_100%)]">
         <CollapsiblePanel
           title="Your Decks"
@@ -168,7 +170,12 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
           <UserDecksPanel
             userDecks={state.userDecks()}
             folders={state.folders()}
-            folderNavigation={state.folderNavigation}
+            currentViewFolderId={state.currentViewFolderId}
+            viewBreadcrumbPath={state.viewBreadcrumbPath}
+            currentViewContent={state.currentViewContent}
+            canNavigateUp={state.canNavigateUp}
+            setCurrentViewFolderId={state.setCurrentViewFolderId}
+            navigateToParentView={state.navigateToParentView}
             onPlayDeck={() => {}}
             newlyImportedDecks={state.newlyImportedDecks()}
             selectedUserDeck={state.selectedUserDeck()}

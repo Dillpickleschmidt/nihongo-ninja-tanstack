@@ -1,5 +1,5 @@
 // features/vocab-page/center-panel/CenterPanel.tsx
-import { Switch, Match } from "solid-js"
+import { Switch, Match, Show } from "solid-js"
 import { CenterNavBar, type NavTabId } from "./CenterNavBar"
 import { VocabCardsContent } from "./VocabCardsContent"
 import { DeckCreationContainer } from "../deck-creation/components/DeckCreationContainer"
@@ -15,6 +15,8 @@ interface CenterPanelProps {
   folders: DeckFolder[]
   decks: UserDeck[]
   deckEditData?: DeckCreationInitialData | null
+  onRefetch?: () => Promise<void>
+  onNavigateToDeck?: (deck: UserDeck) => void
 }
 
 export function CenterPanel(props: CenterPanelProps) {
@@ -30,12 +32,31 @@ export function CenterPanel(props: CenterPanelProps) {
             <VocabCardsContent selectedUserDeck={props.selectedUserDeck} />
           </Match>
           <Match when={props.activeNavTab === "deck-builder"}>
-            <DeckCreationStoreProvider initialData={props.deckEditData || undefined}>
-              <DeckCreationContainer
-                folders={props.folders}
-                decks={props.decks}
-              />
-            </DeckCreationStoreProvider>
+            <Show
+              when={props.deckEditData}
+              keyed
+              fallback={
+                <DeckCreationStoreProvider initialData={undefined}>
+                  <DeckCreationContainer
+                    folders={props.folders}
+                    decks={props.decks}
+                    onRefetch={props.onRefetch}
+                    onNavigateToDeck={props.onNavigateToDeck}
+                  />
+                </DeckCreationStoreProvider>
+              }
+            >
+              {(editData) => (
+                <DeckCreationStoreProvider initialData={editData}>
+                  <DeckCreationContainer
+                    folders={props.folders}
+                    decks={props.decks}
+                    onRefetch={props.onRefetch}
+                    onNavigateToDeck={props.onNavigateToDeck}
+                  />
+                </DeckCreationStoreProvider>
+              )}
+            </Show>
           </Match>
           <Match when={props.activeNavTab === "browse-decks"}>
             <BrowseDecksContent />

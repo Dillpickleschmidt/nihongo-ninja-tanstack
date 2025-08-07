@@ -4,13 +4,19 @@ import { BookMarked } from "lucide-solid"
 import { UserDeckCard } from "./UserDeckCard"
 import { FolderCard } from "./FolderCard"
 import { FolderBreadcrumb } from "../shared/FolderBreadcrumb"
-import type { UseFolderNavigationResult } from "../hooks/useFolderNavigation"
 import { cn } from "@/utils"
 
 interface UserDecksPanelProps {
   userDecks: UserDeck[]
   folders: DeckFolder[]
-  folderNavigation: UseFolderNavigationResult
+  // Folder view navigation
+  currentViewFolderId: () => number | null
+  viewBreadcrumbPath: () => DeckFolder[]
+  currentViewContent: () => import("../types").FolderContent
+  canNavigateUp: () => boolean
+  setCurrentViewFolderId: (folderId: number | null) => void
+  navigateToParentView: () => void
+
   onPlayDeck: (deck: UserDeck) => void
   newlyImportedDecks: Set<string>
   selectedUserDeck: UserDeck | null
@@ -41,8 +47,7 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
     }
   })
 
-  const currentFolderContent = () =>
-    props.folderNavigation.currentFolderContent()
+  const currentFolderContent = () => props.currentViewContent()
   const hasContent = () => {
     const content = currentFolderContent()
     return content.folders.length > 0 || content.decks.length > 0
@@ -53,11 +58,11 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
       <div class="space-y-4">
         {/* Folder breadcrumb navigation */}
         <FolderBreadcrumb
-          breadcrumbPath={props.folderNavigation.breadcrumbPath()}
-          canNavigateUp={props.folderNavigation.canNavigateUp()}
-          onNavigateToFolder={props.folderNavigation.navigateToFolder}
-          onNavigateToParent={props.folderNavigation.navigateToParent}
-          onNavigateToRoot={props.folderNavigation.navigateToRoot}
+          breadcrumbPath={props.viewBreadcrumbPath()}
+          canNavigateUp={props.canNavigateUp()}
+          onNavigateToFolder={props.setCurrentViewFolderId}
+          onNavigateToParent={props.navigateToParentView}
+          onNavigateToRoot={() => props.setCurrentViewFolderId(null)}
         />
 
         <div class="mb-4">
@@ -87,7 +92,7 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
                   folder={folder}
                   allFolders={props.folders}
                   allDecks={props.userDecks}
-                  onClick={props.folderNavigation.navigateToFolder}
+                  onClick={props.setCurrentViewFolderId}
                   onEdit={props.onEditFolder}
                 />
               )}

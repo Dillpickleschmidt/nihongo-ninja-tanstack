@@ -24,6 +24,8 @@ import { VocabPreview } from "./VocabPreview"
 interface DeckCreationContainerProps {
   folders: DeckFolder[]
   decks: UserDeck[]
+  onRefetch?: () => Promise<void>
+  onNavigateToDeck?: (deck: UserDeck) => void
 }
 
 export function DeckCreationContainer(props: DeckCreationContainerProps) {
@@ -109,6 +111,12 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
             operations: [updateDeckOperation, updateVocabularyOperation],
           },
         })
+
+        // Refetch data to update local state
+        // TODO: use the savedDack to update local state instead of refetching
+        if (props.onRefetch) {
+          await props.onRefetch()
+        }
       } else {
         // Create mode: use existing logic
         const savedDeck = await createCustomDeckServerFn({
@@ -121,6 +129,16 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
         })
 
         console.log("Deck created successfully:", savedDeck)
+
+        // Refetch data to update local state
+        // TODO: use the savedDack to update local state instead of refetching
+        if (props.onRefetch) {
+          await props.onRefetch()
+        }
+
+        if (props.onNavigateToDeck) {
+          props.onNavigateToDeck(savedDeck as UserDeck)
+        }
       }
 
       actions.resetStore()
