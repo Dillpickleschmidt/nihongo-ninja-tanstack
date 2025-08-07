@@ -1,3 +1,4 @@
+// features/vocab-page/deck-creation/components/VocabItemEditor.tsx
 import { Index, Show, createMemo } from "solid-js"
 import { Plus, Trash2, Minus } from "lucide-solid"
 import { Button } from "@/components/ui/button"
@@ -218,7 +219,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
   }
 
   return (
-    <div class="border-border rounded-lg border p-4">
+    <div class="bg-card/50 border-card-foreground/70 rounded-lg border p-4 shadow-sm backdrop-blur-sm">
       <div class="mb-3 flex items-center justify-between">
         <div class="text-muted-foreground text-xs">Item {props.index + 1}</div>
         <Button

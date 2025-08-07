@@ -20,7 +20,7 @@ interface FolderBreadcrumbProps {
 
 export function FolderBreadcrumb(props: FolderBreadcrumbProps) {
   return (
-    <div class="bg-muted/30 mb-4 flex items-center gap-3 rounded-lg p-3">
+    <div class="bg-background/50 border-card-foreground/70 mb-4 flex items-center gap-3 rounded-lg border p-3 shadow-sm backdrop-blur-md">
       {/* Back button */}
       <Button
         variant="ghost"

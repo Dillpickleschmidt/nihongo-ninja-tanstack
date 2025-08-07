@@ -1,4 +1,5 @@
-import { createSignal, Show, createMemo } from "solid-js"
+// features/vocab-page/components/LocationSelector.tsx
+import { createSignal, Show } from "solid-js"
 import { Button } from "@/components/ui/button"
 import {
   Popover,
@@ -12,7 +13,7 @@ interface LocationSelectorProps {
   selectedFolderId: string
   selectedFolderName: string
   folderTreeNodes: TreeNode[]
-  editingType: "deck" | "folder" // Add this to determine highlighting rules
+  editingType: "deck" | "folder"
   onSelect: (folderId: string) => void
 }
 
@@ -105,7 +106,10 @@ export function LocationSelector(props: LocationSelectorProps) {
   return (
     <Popover open={isPopoverOpen()} onOpenChange={handleOpenChange}>
       <PopoverTrigger>
-        <Button variant="outline" class="h-10 w-full justify-start font-normal">
+        <Button
+          variant="outline"
+          class="bg-background/50 border-card-foreground/70 h-10 w-full justify-start font-normal backdrop-blur-sm"
+        >
           <Show
             when={props.selectedFolderId === "root"}
             fallback={
@@ -121,7 +125,7 @@ export function LocationSelector(props: LocationSelectorProps) {
           <ChevronDown class="ml-auto h-4 w-4" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent class="border-card-foreground bg-background w-80 p-0">
+      <PopoverContent class="bg-background/70 w-80 border border-white/10 p-0 shadow-xl backdrop-blur-md">
         <div class="max-h-64 space-y-1 overflow-y-auto p-3">
           {/* Root + Folder Tree */}
           <TreeView
@@ -158,7 +162,7 @@ export function LocationSelector(props: LocationSelectorProps) {
         </div>
 
         {/* Action Buttons */}
-        <div class="border-card-foreground flex justify-end gap-2 border-t p-2">
+        <div class="bg-background/40 border-card-foreground/70 flex justify-end gap-2 border-t p-2 backdrop-blur-sm">
           <Button
             variant="outline"
             size="sm"

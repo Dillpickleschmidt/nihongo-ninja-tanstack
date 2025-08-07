@@ -299,7 +299,7 @@ export function EditModal(props: EditModalProps) {
                 Location
               </label>
 
-              <div class="bg-muted/50 space-y-3 rounded-lg p-3">
+              <div class="bg-muted/20 border-card-foreground/70 space-y-3 rounded-lg border p-3 backdrop-blur-sm">
                 <LocationBreadcrumb
                   currentPath={currentLocationPath()}
                   selectedPath={selectedLocationPath()}
@@ -317,8 +317,8 @@ export function EditModal(props: EditModalProps) {
             </div>
 
             {/* Delete Section */}
-            <div class="border-border border-t pt-6">
-              <div class="bg-destructive/5 border-destructive/20 rounded-lg border p-4">
+            <div class="border-card-foreground/70 border-t pt-6">
+              <div class="border-destructive/30 bg-destructive/10 rounded-lg border p-4 backdrop-blur-xs">
                 <div class="mb-3 flex items-center gap-3">
                   <div class="flex-shrink-0">
                     <Trash2 class="text-destructive h-5 w-5" />

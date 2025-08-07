@@ -77,7 +77,8 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
 
   return (
     <div class="bg-background flex h-screen">
-      <div class="h-[calc(100vh-65px)]">
+      {/* Left panel — extremely soft hint */}
+      <div class="h-[calc(100vh-65px)] bg-[radial-gradient(1400px_900px_at_8%_6%,theme(colors.orange.300/5%),transparent_60%),radial-gradient(320px_200px_at_92%_98%,theme(colors.sky.400/1.5%),transparent_82%),linear-gradient(to_bottom,theme(colors.black/0%)_0%,theme(colors.black/3%)_100%)]">
         <CollapsiblePanel
           title="Built-in Decks"
           isOpen={state.leftPanelOpen()}
@@ -95,14 +96,21 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
           />
         </CollapsiblePanel>
       </div>
-      <CenterPanel
-        selectedUserDeck={state.selectedUserDeck()}
-        activeNavTab={state.activeNavTab()}
-        onNavTabChange={state.handleTabChange}
-        folders={state.folders()}
-        decks={state.userDecks()}
-      />
-      <div class="h-[calc(100vh-65px)]">
+
+      {/* Center panel — faint orange and neutral vignette */}
+      <div class="relative z-0 w-full">
+        <div class="absolute inset-0 -z-1 bg-[radial-gradient(880px_640px_at_72%_78%,theme(colors.orange.300/2.5%),transparent_66%),radial-gradient(700px_540px_at_50%_44%,theme(colors.black/5%)_0%,transparent_72%)]" />
+        <CenterPanel
+          selectedUserDeck={state.selectedUserDeck()}
+          activeNavTab={state.activeNavTab()}
+          onNavTabChange={state.handleTabChange}
+          folders={state.folders()}
+          decks={state.userDecks()}
+        />
+      </div>
+
+      {/* Right panel — same gradients as left (not mirrored) */}
+      <div class="h-[calc(100vh-65px)] bg-[radial-gradient(1400px_900px_at_8%_6%,theme(colors.orange.300/5%),transparent_60%),radial-gradient(320px_200px_at_92%_98%,theme(colors.sky.400/1.5%),transparent_82%),linear-gradient(to_bottom,theme(colors.black/0%)_0%,theme(colors.black/3%)_100%)]">
         <CollapsiblePanel
           title="Your Decks"
           isOpen={state.rightPanelOpen()}

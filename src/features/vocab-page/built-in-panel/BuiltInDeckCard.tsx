@@ -14,7 +14,7 @@ export function BuiltInDeckCard(props: BuiltInDeckCardProps) {
   return (
     <div
       class={cn(
-        "bg-card border-border space-y-3 rounded-lg border p-4",
+        "bg-card/50 border-card-foreground/70 space-y-3 rounded-lg border p-4 shadow-sm backdrop-blur-sm transition-shadow hover:shadow-md",
         props.class,
       )}
     >

@@ -14,8 +14,8 @@ export function VocabularyCard(props: VocabularyCardProps) {
   return (
     <div class="w-full">
       <div
-        class={`relative rounded-lg shadow-sm ${
-          (props.index + 1) % 2 === 0 ? "bg-card/80" : "bg-card/60"
+        class={`border-card-foreground/70 relative rounded-lg border shadow-md backdrop-blur-sm ${
+          (props.index + 1) % 2 === 0 ? "bg-card/60" : "bg-card/50"
         }`}
       >
         <div class="px-6 py-6">
@@ -39,7 +39,7 @@ export function VocabularyCard(props: VocabularyCardProps) {
           {/* Mobile: Tabbed Layout */}
           <div class="md:hidden">
             <Tabs defaultValue="info" class="w-full">
-              <TabsList class="bg-muted">
+              <TabsList class="bg-background/40 border-card-foreground/70 border backdrop-blur-sm">
                 <TabsTrigger value="info">
                   <Book class="mr-2 h-4 w-4" />
                   Info
@@ -62,10 +62,10 @@ export function VocabularyCard(props: VocabularyCardProps) {
 
           {/* Desktop: Compact Layout */}
           <div class="hidden md:flex md:justify-between md:gap-6">
-            <div class="max-w-[50%] border-l-2 border-orange-400 pl-6 saturate-[75%]">
+            <div class="max-w-[50%] border-l-2 border-orange-400/60 pl-6 saturate-[75%]">
               <VocabInfo item={props.item} />
             </div>
-            <div class="bg-muted/60 w-full max-w-[60%] rounded-lg p-4">
+            <div class="bg-background/40 border-card-foreground/70 w-full max-w-[60%] rounded-lg border p-4 backdrop-blur-sm">
               <VocabExamples item={props.item} />
             </div>
           </div>
@@ -181,4 +181,3 @@ function VocabExamples(props: { item: VocabularyItem }) {
     </div>
   )
 }
-

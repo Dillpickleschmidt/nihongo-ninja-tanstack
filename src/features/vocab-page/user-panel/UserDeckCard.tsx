@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { useNavigate } from "@tanstack/solid-router"
 import { cn } from "@/utils"
 import { createSignal } from "solid-js"
-// UserDeck type is now global from global.d.ts
 
 interface UserDeckCardProps {
   deck: UserDeck
@@ -28,7 +27,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
   return (
     <div
       class={cn(
-        "hover:bg-accent bg-card border-border relative cursor-pointer space-y-3 rounded-lg border p-4",
+        "bg-card/60 hover:bg-card/70 border-card-foreground/70 relative cursor-pointer space-y-3 rounded-lg border p-4 shadow-sm backdrop-blur-sm hover:shadow-md",
         props.isSelected && "outline-card-foreground outline-2",
         props.class,
       )}
@@ -75,7 +74,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
             params: { practiceID: practiceID() },
           })
         }}
-        class="bg-card-foreground text-primary relative w-full overflow-hidden text-xs hover:bg-neutral-500"
+        class="bg-card hover:bg-card-foreground/10 dark:bg-card-foreground text-primary outline-card-foreground/70 relative w-full overflow-hidden text-xs outline backdrop-blur-xs transition-colors dark:outline-none hover:dark:bg-neutral-600"
       >
         <div class="relative flex w-full items-center justify-center">
           <div

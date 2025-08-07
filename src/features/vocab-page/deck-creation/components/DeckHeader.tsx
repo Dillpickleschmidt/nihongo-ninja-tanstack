@@ -27,7 +27,7 @@ export function DeckHeader(props: DeckHeaderProps) {
   const [confirmClearOpen, setConfirmClearOpen] = createSignal(false)
 
   return (
-    <div class="bg-background/80 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-10 -mx-2 px-2 py-2 backdrop-blur">
+    <div class="bg-background/50 sticky top-0 z-10 -mx-2 px-2 py-2 backdrop-blur-md">
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-2xl leading-tight font-semibold">
@@ -38,10 +38,7 @@ export function DeckHeader(props: DeckHeaderProps) {
           </p>
         </div>
         <div class="flex items-center gap-2">
-          <Dialog
-            open={confirmClearOpen()}
-            onOpenChange={setConfirmClearOpen}
-          >
+          <Dialog open={confirmClearOpen()} onOpenChange={setConfirmClearOpen}>
             <DialogTrigger>
               <Button variant="ghost" size="sm" class="hover:cursor-pointer">
                 Clear
@@ -92,7 +89,12 @@ export function DeckHeader(props: DeckHeaderProps) {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button size="sm" class="cursor-pointer" onClick={props.onSave} disabled={props.isSaving}>
+          <Button
+            size="sm"
+            class="cursor-pointer"
+            onClick={props.onSave}
+            disabled={props.isSaving}
+          >
             {props.isSaving ? "Saving..." : "Save Deck"}
           </Button>
         </div>
@@ -100,3 +102,4 @@ export function DeckHeader(props: DeckHeaderProps) {
     </div>
   )
 }
+

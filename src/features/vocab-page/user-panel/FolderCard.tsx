@@ -20,7 +20,7 @@ export function FolderCard(props: FolderCardProps) {
 
   return (
     <div
-      class="hover:bg-accent bg-card border-border relative cursor-pointer rounded-lg border p-4 transition-colors"
+      class="bg-card/60 hover:bg-card/70 border-card-foreground/70 relative cursor-pointer rounded-lg border p-4 shadow-sm backdrop-blur-sm transition-colors hover:shadow-md"
       onClick={() => props.onClick(props.folder.folder_id)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -46,7 +46,7 @@ export function FolderCard(props: FolderCardProps) {
       </div>
 
       <div class="flex items-start gap-3">
-        <div class="bg-muted rounded-md p-2">
+        <div class="bg-muted/40 border-card-foreground/70 rounded-md border p-2 backdrop-blur-xs">
           <Folder class="text-muted-foreground h-5 w-5" />
         </div>
 

@@ -30,7 +30,7 @@ export function DeleteConfirmation(props: DeleteConfirmationProps) {
                   props.folderContents.folders > 0)
               }
             >
-              <div class="bg-muted rounded p-3">
+              <div class="bg-background/40 border-card-foreground/70 rounded border p-3 backdrop-blur-sm">
                 <p class="text-sm">
                   This folder contains{" "}
                   <strong>

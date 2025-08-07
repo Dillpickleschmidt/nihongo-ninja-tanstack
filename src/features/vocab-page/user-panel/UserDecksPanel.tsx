@@ -114,8 +114,8 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
       </div>
       <div
         class={cn(
-          "border-border absolute right-0 bottom-0 z-10 w-96 border-t px-4 py-2.5",
-          "bg-card/95 backdrop-blur-sm",
+          "absolute right-0 bottom-0 z-10 w-96 px-4 py-2.5",
+          "bg-background/60 border-card-foreground/70 border-t backdrop-blur-md",
         )}
       >
         <p class="text-muted-foreground text-center text-xs italic">
