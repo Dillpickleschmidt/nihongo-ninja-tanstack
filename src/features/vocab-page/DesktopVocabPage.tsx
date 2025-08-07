@@ -13,7 +13,9 @@ import { useEditOperations } from "./hooks/useEditOperations"
 import type { ImportRequest, VocabTextbook } from "./types"
 import type { TextbookIDEnum } from "@/data/types"
 import type { FoldersAndDecksData } from "@/features/supabase/db/folder-operations"
+import { getVocabForDeck } from "@/features/supabase/db/folder-operations"
 import type { User } from "@supabase/supabase-js"
+import type { DeckCreationInitialData } from "./deck-creation/stores/deck-creation-store"
 
 interface DesktopVocabPageProps {
   importRequest?: ImportRequest | null
@@ -54,10 +56,45 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
     UserDeck | DeckFolder | null
   >(null)
 
+  // Deck edit state for center panel
+  const [deckEditData, setDeckEditData] =
+    createSignal<DeckCreationInitialData | null>(null)
+
   // Edit handlers
-  const handleEditDeck = (deck: UserDeck) => {
-    setEditingItem(deck)
-    setEditModalOpen(true)
+  const handleEditDeck = async (deck: UserDeck) => {
+    // Prevent editing of built-in decks
+    if (deck.source === "built-in") {
+      // Built-in decks cannot be edited because they use static vocabulary data
+      // Users should copy the deck first to create an editable version
+      return
+    }
+
+    try {
+      // Load vocabulary items for the deck
+      const vocabItems = await getVocabForDeck(deck.deck_id)
+
+      // Find folder information
+      const folder = state.folders().find((f) => f.folder_id === deck.folder_id)
+
+      // Prepare initial data for editing
+      const initialData: DeckCreationInitialData = {
+        deckId: deck.deck_id,
+        name: deck.deck_name,
+        description: deck.deck_description || "",
+        folderId: deck.folder_id ? deck.folder_id.toString() : "root",
+        folderName: folder?.folder_name || "Root",
+        vocabItems: vocabItems,
+      }
+
+      // Set edit data and switch to deck-builder tab
+      setDeckEditData(initialData)
+      state.handleTabChange("deck-builder")
+    } catch (error) {
+      console.error("Failed to load deck data for editing:", error)
+      // Fallback to basic edit modal
+      setEditingItem(deck)
+      setEditModalOpen(true)
+    }
   }
 
   const handleEditFolder = (folder: DeckFolder) => {
@@ -73,6 +110,15 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
   const handleSaveEdit = (transaction: any) => {
     editOperations.executeEdit(transaction)
     handleCloseEditModal()
+  }
+
+  // Enhanced tab change handler to clear edit data
+  const handleTabChange = (tabId: any) => {
+    // Clear deck edit data when leaving deck-builder
+    if (state.activeNavTab() === "deck-builder" && tabId !== "deck-builder") {
+      setDeckEditData(null)
+    }
+    state.handleTabChange(tabId)
   }
 
   return (
@@ -103,9 +149,10 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
         <CenterPanel
           selectedUserDeck={state.selectedUserDeck()}
           activeNavTab={state.activeNavTab()}
-          onNavTabChange={state.handleTabChange}
+          onNavTabChange={handleTabChange}
           folders={state.folders()}
           decks={state.userDecks()}
+          deckEditData={deckEditData()}
         />
       </div>
 

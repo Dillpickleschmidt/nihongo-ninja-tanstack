@@ -2,37 +2,89 @@ import { createStore } from "solid-js/store"
 import type { DeckCreationStore } from "../types/deck-creation-types"
 import {
   createEmptyVocabItemFormData,
+  vocabularyItemToFormData,
   type VocabItemFormData,
+  type VocabularyItem,
 } from "../../types/vocabulary-types"
 
+// Optional initial data for editing existing decks
+export interface DeckCreationInitialData {
+  deckId?: number
+  name?: string
+  description?: string
+  folderId?: string
+  folderName?: string
+  vocabItems?: VocabularyItem[]
+}
+
 // Create initial store state
-const createInitialState = (): DeckCreationStore => ({
-  deck: {
-    name: "",
-    description: "",
-    selectedFolderId: "root",
-    selectedFolderName: "Root",
-  },
-  vocabItems: {
-    nextId: 2, // Start with 2 because we initialize with items 0 and 1
-    activeIds: [0, 1], // Start with 2 cards as requested
-    formData: new Map([
+const createInitialState = (
+  initialData?: DeckCreationInitialData,
+): DeckCreationStore => {
+  // Store original values for comparison in edit mode
+  const originalData = initialData
+    ? {
+        deckId: initialData.deckId,
+        name: initialData.name || "",
+        description: initialData.description || "",
+        folderId: initialData.folderId || "root",
+        folderName: initialData.folderName || "Root",
+      }
+    : null
+
+  // If we have initial vocab items, convert them to form data
+  let vocabFormData: Map<number, VocabItemFormData>
+  let activeIds: number[]
+  let nextId: number
+
+  if (initialData?.vocabItems && initialData.vocabItems.length > 0) {
+    // Convert vocabulary items to form data
+    vocabFormData = new Map()
+    activeIds = []
+
+    initialData.vocabItems.forEach((item, index) => {
+      const formData = vocabularyItemToFormData(item)
+      vocabFormData.set(index, formData)
+      activeIds.push(index)
+    })
+
+    nextId = initialData.vocabItems.length
+  } else {
+    // Default: start with 2 empty items
+    vocabFormData = new Map([
       [0, createEmptyVocabItemFormData()],
       [1, createEmptyVocabItemFormData()],
-    ]),
-  },
-  validation: {
-    errors: {},
-    hasAttemptedSubmit: false,
-    isFormValid: false,
-  },
-  ui: {
-    currentTab: "items",
-  },
-})
+    ])
+    activeIds = [0, 1]
+    nextId = 2
+  }
 
-export function createDeckCreationStore() {
-  const [store, setStore] = createStore(createInitialState())
+  return {
+    deck: {
+      name: initialData?.name || "",
+      description: initialData?.description || "",
+      selectedFolderId: initialData?.folderId || "root",
+      selectedFolderName: initialData?.folderName || "Root",
+    },
+    vocabItems: {
+      nextId,
+      activeIds,
+      formData: vocabFormData,
+    },
+    validation: {
+      errors: {},
+      hasAttemptedSubmit: false,
+      isFormValid: false,
+    },
+    ui: {
+      currentTab: "items",
+    },
+    original: originalData,
+  }
+}
+
+export function createDeckCreationStore(initialData?: DeckCreationInitialData) {
+  const [store, setStore] = createStore(createInitialState(initialData))
 
   const actions = {
     // Deck metadata actions
@@ -101,6 +153,11 @@ export function createDeckCreationStore() {
     // Reset action
     resetStore: () => {
       setStore(createInitialState())
+    },
+
+    // Helper to check if we're in edit mode
+    isEditMode: () => {
+      return !!initialData
     },
   }
 

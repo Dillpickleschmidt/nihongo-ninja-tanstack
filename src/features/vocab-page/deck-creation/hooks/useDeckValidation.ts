@@ -30,6 +30,7 @@ export function useDeckValidation(props: UseDeckValidationProps) {
       name: store.deck.name,
       folderId: store.deck.selectedFolderId,
       existingDecks: props.existingDecks,
+      excludeId: store.original?.deckId, // Exclude current deck when editing
     }
 
     const result = DeckNameValidationSchema.safeParse(validationData)
@@ -54,4 +55,3 @@ export function useDeckValidation(props: UseDeckValidationProps) {
     shouldShowNameRequired,
   }
 }
-

@@ -34,7 +34,6 @@ export interface VocabItemFormData {
   kanjiMnemonics: string[]
 }
 
-
 // Conversion utilities
 export function dbItemToVocabularyItem(
   dbItem: DBVocabularyItem,
@@ -75,6 +74,29 @@ export function vocabularyItemToDBInsert(
   }
 }
 
+export function vocabularyItemToFormData(
+  item: VocabularyItem,
+): VocabItemFormData {
+  return {
+    word: item.word,
+    furigana: item.furigana || item.word,
+    english: [...item.english], // Copy array
+    partOfSpeech: item.part_of_speech || "",
+    notes: item.info ? [...item.info] : [],
+    particles: item.particles ? item.particles.map((p) => ({ ...p })) : [],
+    examples: item.example_sentences
+      ? item.example_sentences.map((ex) => ({
+          japanese: ex.japanese[0] || "",
+          english: ex.english[0] || "",
+        }))
+      : [],
+    readingMnemonics: item.mnemonics?.reading
+      ? [...item.mnemonics.reading]
+      : [],
+    kanjiMnemonics: item.mnemonics?.kanji ? [...item.mnemonics.kanji] : [],
+  }
+}
+
 export function formDataToVocabularyItem(
   formData: VocabItemFormData,
 ): VocabularyItem | null {
@@ -91,7 +113,10 @@ export function formDataToVocabularyItem(
     furigana: formData.furigana.trim() || formData.word.trim(),
     english: formData.english.filter((e) => e.trim()).map((e) => e.trim()),
     chapter: 1, // VocabularyItem requires chapter (temporary field)
-    part_of_speech: (formData.partOfSpeech as PartOfSpeech) || undefined,
+    part_of_speech:
+      formData.partOfSpeech && formData.partOfSpeech.trim()
+        ? (formData.partOfSpeech as PartOfSpeech)
+        : undefined,
   }
 
   // Add optional fields if they have content

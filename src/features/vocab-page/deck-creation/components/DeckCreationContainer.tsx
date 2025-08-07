@@ -4,10 +4,18 @@ import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
 import { useDeckValidation } from "../hooks/useDeckValidation"
 import {
   convertAllFormDataToVocabularyItems,
+  formDataToDBInsert,
   type VocabItemFormData,
 } from "../../types/vocabulary-types"
 import { validateVocabItemMinimal } from "../../validation"
-import { createCustomDeckServerFn } from "@/features/supabase/db/folder-operations"
+import {
+  createCustomDeckServerFn,
+  executeEditTransactionServerFn,
+} from "@/features/supabase/db/folder-operations"
+import type {
+  UpdateDeckOperation,
+  UpdateDeckVocabularyOperation,
+} from "../../logic/deck-edit-operations"
 import { DeckHeader } from "./DeckHeader"
 import { DeckDetails } from "./DeckDetails"
 import { VocabItemsList } from "./VocabItemsList"
@@ -65,17 +73,56 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
           ? null
           : parseInt(store.deck.selectedFolderId)
 
-      // Create the deck with vocabulary items
-      const savedDeck = await createCustomDeckServerFn({
-        data: {
-          deck_name: store.deck.name,
-          deck_description: store.deck.description || null,
-          folder_id,
-          vocabulary_items: validFormDataItems(),
-        },
-      })
+      const isEditMode = actions.isEditMode()
 
-      console.log("Deck saved successfully:", savedDeck)
+      if (isEditMode) {
+        // Edit mode: use edit transaction
+        const deckId = store.original?.deckId
+        if (!deckId) {
+          throw new Error("Deck ID is required for editing")
+        }
+
+        // Convert form data to DB insert format
+        const vocabularyItems = validFormDataItems()
+          .map((item) => formDataToDBInsert(item, deckId))
+          .filter((item): item is NonNullable<typeof item> => item !== null)
+
+        // Prepare operations for the transaction
+        const updateDeckOperation: UpdateDeckOperation = {
+          type: "update-deck",
+          deckId,
+          updates: {
+            name: store.deck.name,
+            folderId: folder_id,
+          },
+        }
+
+        const updateVocabularyOperation: UpdateDeckVocabularyOperation = {
+          type: "update-deck-vocabulary",
+          deckId,
+          vocabularyItems,
+        }
+
+        // Execute the edit transaction
+        await executeEditTransactionServerFn({
+          data: {
+            operations: [updateDeckOperation, updateVocabularyOperation],
+          },
+        })
+      } else {
+        // Create mode: use existing logic
+        const savedDeck = await createCustomDeckServerFn({
+          data: {
+            deck_name: store.deck.name,
+            deck_description: store.deck.description || null,
+            folder_id,
+            vocabulary_items: validFormDataItems(),
+          },
+        })
+
+        console.log("Deck created successfully:", savedDeck)
+      }
+
       actions.resetStore()
     } catch (error) {
       console.error("Failed to save deck:", error)

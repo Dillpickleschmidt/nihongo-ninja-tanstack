@@ -4,6 +4,7 @@ import { CenterNavBar, type NavTabId } from "./CenterNavBar"
 import { VocabCardsContent } from "./VocabCardsContent"
 import { DeckCreationContainer } from "../deck-creation/components/DeckCreationContainer"
 import { DeckCreationStoreProvider } from "../deck-creation/context/DeckCreationStoreContext"
+import type { DeckCreationInitialData } from "../deck-creation/stores/deck-creation-store"
 import { BrowseDecksContent } from "./BrowseDecksContent"
 import { OverridesContent } from "./OverridesContent"
 
@@ -13,6 +14,7 @@ interface CenterPanelProps {
   onNavTabChange: (tabId: NavTabId) => void
   folders: DeckFolder[]
   decks: UserDeck[]
+  deckEditData?: DeckCreationInitialData | null
 }
 
 export function CenterPanel(props: CenterPanelProps) {
@@ -28,7 +30,7 @@ export function CenterPanel(props: CenterPanelProps) {
             <VocabCardsContent selectedUserDeck={props.selectedUserDeck} />
           </Match>
           <Match when={props.activeNavTab === "deck-builder"}>
-            <DeckCreationStoreProvider>
+            <DeckCreationStoreProvider initialData={props.deckEditData || undefined}>
               <DeckCreationContainer
                 folders={props.folders}
                 decks={props.decks}

@@ -4,7 +4,6 @@ import { createServerFn } from "@tanstack/solid-start"
 import { getUser } from "../getUser"
 import type { VocabBuiltInDeck } from "@/features/vocab-page/types"
 import { generateDeckTitle } from "@/features/vocab-page/logic/deck-import-logic"
-import type { EditOperation } from "@/features/vocab-page/logic/deck-edit-operations"
 import { VocabularyItem } from "@/data/types"
 import {
   dbItemToVocabularyItem,
@@ -431,7 +430,7 @@ export const createCustomDeckServerFn = createServerFn({ method: "POST" })
  * Server function that executes multiple edit operations as an atomic transaction
  */
 export const executeEditTransactionServerFn = createServerFn({ method: "POST" })
-  .validator((data: { operations: EditOperation[] }) => data)
+  .validator((data: { operations: any[] }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -445,7 +444,7 @@ export const executeEditTransactionServerFn = createServerFn({ method: "POST" })
     // Execute all operations in a single database transaction
     const { error } = await supabase.rpc("execute_edit_transaction", {
       user_id: response.user.id,
-      operations: operations as any, // TypeScript workaround for Supabase Json type
+      operations: operations,
     })
 
     if (error) {

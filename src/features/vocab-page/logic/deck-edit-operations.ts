@@ -41,11 +41,18 @@ export interface DeleteFolderOperation {
   strategy: "move-up" | "delete-all"
 }
 
+export interface UpdateDeckVocabularyOperation {
+  type: "update-deck-vocabulary"
+  deckId: number
+  vocabularyItems: DBVocabularyItemInsert[]
+}
+
 export type EditOperation =
   | UpdateDeckOperation
   | UpdateFolderOperation
   | DeleteDeckOperation
   | DeleteFolderOperation
+  | UpdateDeckVocabularyOperation
 
 // Result types
 export interface EditResult {

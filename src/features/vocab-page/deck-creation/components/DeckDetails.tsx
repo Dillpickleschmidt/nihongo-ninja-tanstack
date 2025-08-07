@@ -106,6 +106,13 @@ export function DeckDetails(props: DeckDetailsProps) {
             editingType="deck"
             onSelect={handleFolderSelect}
           />
+          {/* Show original path when different from current in edit mode */}
+          {store.original && 
+           store.original.folderId !== store.deck.selectedFolderId && (
+            <div class="mt-1 text-xs text-muted-foreground">
+              Original location: {store.original.folderName}
+            </div>
+          )}
         </div>
       </div>
 

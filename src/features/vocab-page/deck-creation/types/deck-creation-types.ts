@@ -21,6 +21,14 @@ export interface DeckCreationStore {
   ui: {
     currentTab: string
   }
+  // Original data for edit mode comparison
+  original: {
+    deckId?: number
+    name: string
+    description: string
+    folderId: string
+    folderName: string
+  } | null
 }
 
 // Form field validation states

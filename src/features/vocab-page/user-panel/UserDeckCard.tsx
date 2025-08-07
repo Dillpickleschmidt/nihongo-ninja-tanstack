@@ -41,14 +41,29 @@ export function UserDeckCard(props: UserDeckCardProps) {
           "absolute top-2 right-2 transition-opacity duration-200",
           isHovered() ? "opacity-100" : "opacity-0",
         )}
+        title={
+          props.deck.source === "built-in"
+            ? "Built-in deck editing is disabled. Right click and make a copy instead."
+            : props.deck.deck_id < 0
+              ? "Deck is still syncing. Refresh to enable editing."
+              : "Edit deck"
+        }
       >
         <Button
           size="sm"
           variant="ghost"
-          class="h-6 w-6 p-0 hover:cursor-pointer"
+          class="h-6 w-6 p-0"
+          classList={{
+            "hover:cursor-pointer":
+              props.deck.source !== "built-in" && props.deck.deck_id > 0,
+            "cursor-not-allowed opacity-50 pointer-events-none":
+              props.deck.source === "built-in" || props.deck.deck_id < 0,
+          }}
           onClick={(e) => {
             e.stopPropagation()
-            props.onEdit?.(props.deck)
+            if (props.deck.source !== "built-in" && props.deck.deck_id > 0) {
+              props.onEdit?.(props.deck)
+            }
           }}
         >
           <Edit class="h-3 w-3" />

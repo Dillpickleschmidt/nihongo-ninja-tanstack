@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-solid"
+import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
 
 interface DeckHeaderProps {
   onClear: () => void
@@ -25,13 +26,15 @@ interface DeckHeaderProps {
 
 export function DeckHeader(props: DeckHeaderProps) {
   const [confirmClearOpen, setConfirmClearOpen] = createSignal(false)
+  const { actions } = useDeckCreationStore()
+  const isEditMode = actions.isEditMode()
 
   return (
     <div class="bg-background/50 sticky top-0 z-10 -mx-2 px-2 py-2 backdrop-blur-md">
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-2xl leading-tight font-semibold">
-            Create a Custom Deck
+            {isEditMode ? "Edit Custom Deck" : "Create a Custom Deck"}
           </h1>
           <p class="text-muted-foreground text-sm">
             Build vocabulary with translations, examples, and more.
@@ -95,7 +98,12 @@ export function DeckHeader(props: DeckHeaderProps) {
             onClick={props.onSave}
             disabled={props.isSaving}
           >
-            {props.isSaving ? "Saving..." : "Save Deck"}
+            {props.isSaving 
+              ? "Saving..." 
+              : isEditMode 
+                ? "Save Changes" 
+                : "Save Deck"
+            }
           </Button>
         </div>
       </div>
