@@ -61,7 +61,7 @@ function GridLessonItem(props: {
         class={cn(
           "group bg-card font-inter relative block h-12 w-full rounded-md text-sm whitespace-nowrap",
           "border-card-foreground/70 border backdrop-blur-sm",
-          "bg-gradient-to-br from-neutral-600/10 to-gray-600/5",
+          "bg-gradient-to-br dark:from-neutral-600/10 dark:to-gray-600/5",
           "transition-all duration-200",
           isCompleted && "border-green-500/50 font-semibold text-green-500",
         )}
@@ -75,7 +75,7 @@ function GridLessonItem(props: {
           <div class="flex items-center gap-3">
             <span
               class={cn(
-                "text-white",
+                "text-primary",
                 isCompleted && "font-bold text-green-500",
               )}
             >
@@ -83,7 +83,7 @@ function GridLessonItem(props: {
             </span>
             <span
               class={cn(
-                "text-muted-foreground",
+                "text-primary dark:text-muted-foreground",
                 isCompleted && "font-bold text-green-500",
               )}
             >

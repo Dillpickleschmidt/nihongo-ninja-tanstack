@@ -127,7 +127,6 @@ export function BottomNav(props: BottomNavProps) {
               const active = isActive(item.href)
               return (
                 <Link
-                  key={item.id}
                   to={item.href}
                   class={cn(
                     "group relative flex h-16 w-16 items-center justify-center rounded-full transition-all duration-200",
@@ -178,12 +177,12 @@ export function BottomNav(props: BottomNavProps) {
 
             return (
               <Link
-                key={item.id}
                 to={item.href}
                 class={cn(
                   "group flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200",
-                  "hover:bg-card-foreground/60 hover:scale-110",
-                  active && "bg-card-foreground/60 scale-110",
+                  "hover:bg-card-foreground/20 hover:dark:bg-card-foreground/60 hover:scale-110",
+                  active &&
+                    "bg-card-foreground/10 dark:bg-card-foreground/60 scale-110",
                 )}
               >
                 <Icon

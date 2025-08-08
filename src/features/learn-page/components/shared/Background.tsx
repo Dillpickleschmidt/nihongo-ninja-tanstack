@@ -80,7 +80,7 @@ export function Background(props: { backgroundItem: BackgroundItem }) {
             height: ${gradientPosition() === "fixed" ? "100vh" : "100vh"};
             z-index: ${gradientZIndex};
             pointer-events: none;
-            background-color: #191919;
+            background-color: var(--color-background);
             mask-image: linear-gradient(to bottom,
               rgba(0, 0, 0, 0) 0%,  
               rgba(0, 0, 0, 1) 100% 

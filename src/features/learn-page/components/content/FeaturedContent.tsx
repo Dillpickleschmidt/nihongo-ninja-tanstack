@@ -157,7 +157,7 @@ function FeaturedResourceCardContent(props: {
   return (
     <div
       data-featured-content-item
-      class="relative h-40 w-[220px] overflow-hidden rounded-2xl border border-white/10 backdrop-blur-sm hover:shadow-xl"
+      class="border-card-foreground/70 relative h-40 w-[220px] overflow-hidden rounded-2xl border backdrop-blur-sm hover:shadow-xl"
       style={{ "background-image": props.resource.gradientStyle }}
     >
       {props.thumbnailUrl && (
@@ -171,20 +171,20 @@ function FeaturedResourceCardContent(props: {
         />
       )}
 
-      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+      <div class="absolute inset-0 dark:bg-gradient-to-t dark:from-black/60 dark:via-transparent dark:to-transparent" />
 
       <div class="relative flex h-full flex-col justify-between p-5">
         <div class="flex items-start justify-between">
-          <Icon class="h-6 w-6 text-white drop-shadow-md" />
+          <Icon class="text-primary h-6 w-6 drop-shadow-md" />
           <ArrowUpRight class="h-5 w-5 text-white/80 opacity-0 transition-opacity group-hover:opacity-100" />
         </div>
 
         <div class="space-y-2">
-          <h3 class="line-clamp-2 text-base font-semibold text-white drop-shadow-md">
+          <h3 class="line-clamp-2 text-base font-semibold drop-shadow-md">
             {props.resource.truncatedTitle}
           </h3>
           <div class="flex items-center gap-2">
-            <span class="rounded-full bg-neutral-600 px-2 py-1 text-[11px] text-white/80 capitalize">
+            <span class="rounded-full bg-neutral-500 px-2 py-1 text-[11px] text-white/80 capitalize dark:bg-neutral-600">
               {props.resource.resource_type.replace("_", " ")}
             </span>
             <span
@@ -240,7 +240,7 @@ function MobileFeaturedResourceCard(props: {
 
   return (
     <Link
-      href={props.resource.link}
+      to={props.resource.link}
       target="_blank"
       class="bg-card hover:bg-card/90 group flex items-center gap-4 rounded-2xl p-4 shadow-sm transition-colors"
     >
