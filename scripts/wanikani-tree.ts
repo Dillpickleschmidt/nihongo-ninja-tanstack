@@ -1,4 +1,4 @@
-import { Database as SQLiteDB } from "better-sqlite3"
+import Database, { Database as SQLiteDB } from "better-sqlite3"
 import { writeFileSync, mkdirSync } from "fs"
 import { dirname } from "path"
 import "dotenv/config"
