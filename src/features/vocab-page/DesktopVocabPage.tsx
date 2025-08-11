@@ -6,7 +6,7 @@ import { BuiltInDecksPanel } from "./built-in-panel/BuiltInDecksPanel"
 import { UserDecksPanel } from "./user-panel/UserDecksPanel"
 import { CenterPanel } from "./center-panel/CenterPanel"
 import { ImportConfirmationModal } from "./shared/ImportConfirmationModal"
-import { EditModal } from "./components/EditModal"
+import { FolderEditModal } from "./components/FolderEditModal"
 import { useVocabPageState } from "./hooks/useVocabPageState"
 import { useImportModal } from "./hooks/useImportModal"
 import { useEditOperations } from "./hooks/useEditOperations"
@@ -51,10 +51,10 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
   let userDecksPanelRef!: HTMLDivElement
 
   // Edit modal state
-  const [editModalOpen, setEditModalOpen] = createSignal(false)
-  const [editingItem, setEditingItem] = createSignal<
-    UserDeck | DeckFolder | null
-  >(null)
+  const [folderEditModalOpen, setFolderEditModalOpen] = createSignal(false)
+  const [editingFolder, setEditingFolder] = createSignal<DeckFolder | null>(
+    null,
+  )
 
   // Deck edit state for center panel
   const [deckEditData, setDeckEditData] =
@@ -91,25 +91,22 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
       state.handleTabChange("deck-builder")
     } catch (error) {
       console.error("Failed to load deck data for editing:", error)
-      // Fallback to basic edit modal
-      setEditingItem(deck)
-      setEditModalOpen(true)
     }
   }
 
   const handleEditFolder = (folder: DeckFolder) => {
-    setEditingItem(folder)
-    setEditModalOpen(true)
+    setEditingFolder(folder)
+    setFolderEditModalOpen(true)
   }
 
-  const handleCloseEditModal = () => {
-    setEditModalOpen(false)
-    setEditingItem(null)
+  const handleCloseFolderEditModal = () => {
+    setFolderEditModalOpen(false)
+    setEditingFolder(null)
   }
 
-  const handleSaveEdit = (transaction: any) => {
+  const handleSaveFolderEdit = (transaction: any) => {
     editOperations.executeEdit(transaction)
-    handleCloseEditModal()
+    handleCloseFolderEditModal()
   }
 
   // Enhanced tab change handler to clear edit data
@@ -195,14 +192,14 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
         deckTitle={importModal.pendingImportDeck()?.title ?? ""}
       />
 
-      <EditModal
-        item={editingItem()}
-        isOpen={editModalOpen()}
+      <FolderEditModal
+        folder={editingFolder()}
+        isOpen={folderEditModalOpen()}
         folders={state.folders()}
         decks={state.userDecks()}
-        onClose={handleCloseEditModal}
-        onSave={handleSaveEdit}
-        onDelete={handleSaveEdit}
+        onClose={handleCloseFolderEditModal}
+        onSave={handleSaveFolderEdit}
+        onDelete={handleSaveFolderEdit}
       />
     </div>
   )

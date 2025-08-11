@@ -1,4 +1,4 @@
-// vocab-page/components/EditModal.tsx
+// vocab-page/components/FolderEditModal.tsx
 import { createSignal, createMemo, createEffect, on, Show } from "solid-js"
 import {
   Dialog,
@@ -26,8 +26,8 @@ import { LocationBreadcrumb } from "./LocationBreadcrumb"
 import { LocationSelector } from "./LocationSelector"
 import { DeleteConfirmation } from "./DeleteConfirmation"
 
-interface EditModalProps {
-  item: UserDeck | DeckFolder | null
+interface FolderEditModalProps {
+  folder: DeckFolder | null
   isOpen: boolean
   folders: DeckFolder[]
   decks: UserDeck[]
@@ -36,9 +36,7 @@ interface EditModalProps {
   onDelete: (transaction: EditTransaction) => void
 }
 
-export function EditModal(props: EditModalProps) {
-  const isDeck = () => props.item && "deck_id" in props.item
-  const isFolder = () => props.item && "folder_id" in props.item
+export function FolderEditModal(props: FolderEditModalProps) {
 
   // Ref for input focus
   let nameInputRef!: HTMLInputElement
@@ -52,29 +50,23 @@ export function EditModal(props: EditModalProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false)
   const [isEditingName, setIsEditingName] = createSignal(false)
 
-  // Initialize form when item changes
+  // Initialize form when folder changes
   const initializeForm = () => {
-    if (!props.item) return
+    if (!props.folder) return
 
-    if (isDeck()) {
-      const deck = props.item as UserDeck
-      setName(deck.deck_name)
-      setSelectedFolderId(deck.folder_id?.toString() || "root")
-    } else {
-      const folder = props.item as DeckFolder
-      setName(folder.folder_name)
-      setSelectedFolderId(folder.parent_folder_id?.toString() || "root")
-    }
+    const folder = props.folder
+    setName(folder.folder_name)
+    setSelectedFolderId(folder.parent_folder_id?.toString() || "root")
     setShowDeleteConfirm(false)
     setIsEditingName(false)
   }
 
-  // Initialize when modal opens (only track isOpen and item, not other signals)
+  // Initialize when modal opens (only track isOpen and folder, not other signals)
   createEffect(
     on(
-      () => [props.isOpen, props.item],
-      ([isOpen, item]) => {
-        if (isOpen && item) {
+      () => [props.isOpen, props.folder],
+      ([isOpen, folder]) => {
+        if (isOpen && folder) {
           initializeForm()
         }
       },
@@ -83,8 +75,8 @@ export function EditModal(props: EditModalProps) {
 
   // Current location breadcrumb
   const currentLocationPath = createMemo(() => {
-    if (!props.item) return []
-    return buildFolderPath(getCurrentFolderId(props.item), props.folders)
+    if (!props.folder) return []
+    return buildFolderPath(getCurrentFolderId(props.folder), props.folders)
   })
 
   // Selected location breadcrumb
@@ -94,7 +86,7 @@ export function EditModal(props: EditModalProps) {
 
   // Only compute when modal is open and we have data
   const modalData = createMemo(() => {
-    if (!props.isOpen || !props.item || props.folders.length === 0) {
+    if (!props.isOpen || !props.folder || props.folders.length === 0) {
       return {
         nameValidation: { isValid: true, error: "" },
         hasChanges: false,
@@ -107,7 +99,7 @@ export function EditModal(props: EditModalProps) {
     // Call hooks once and destructure all needed values
     const validation = useEditValidation({
       name,
-      item: props.item,
+      item: props.folder,
       selectedFolderId,
       folders: props.folders,
       decks: props.decks,
@@ -116,7 +108,7 @@ export function EditModal(props: EditModalProps) {
     const folderTree = useFolderTree({
       folders: props.folders,
       decks: props.decks,
-      item: props.item,
+      item: props.folder,
     })
 
     return {
@@ -145,82 +137,51 @@ export function EditModal(props: EditModalProps) {
 
   // Event handlers
   const handleSave = () => {
-    if (!canSave() || !props.item) return
+    if (!canSave() || !props.folder) return
 
     const transaction = new EditTransaction()
+    const folder = props.folder
+    const updates: { name?: string; parentId?: number | null } = {}
 
-    if (isDeck()) {
-      const deck = props.item as UserDeck
-      const updates: { name?: string; folderId?: number | null } = {}
-
-      if (name() !== deck.deck_name) {
-        updates.name = name().trim()
-      }
-
-      const targetFolderId =
-        selectedFolderId() === "root" ? null : parseInt(selectedFolderId())
-      if (targetFolderId !== deck.folder_id) {
-        updates.folderId = targetFolderId
-      }
-
-      transaction.add({
-        type: "update-deck",
-        deckId: deck.deck_id,
-        updates,
-      })
-    } else {
-      const folder = props.item as DeckFolder
-      const updates: { name?: string; parentId?: number | null } = {}
-
-      if (name() !== folder.folder_name) {
-        updates.name = name().trim()
-      }
-
-      const targetParentId =
-        selectedFolderId() === "root" ? null : parseInt(selectedFolderId())
-      if (targetParentId !== folder.parent_folder_id) {
-        updates.parentId = targetParentId
-      }
-
-      transaction.add({
-        type: "update-folder",
-        folderId: folder.folder_id,
-        updates,
-      })
+    if (name() !== folder.folder_name) {
+      updates.name = name().trim()
     }
+
+    const targetParentId =
+      selectedFolderId() === "root" ? null : parseInt(selectedFolderId())
+    if (targetParentId !== folder.parent_folder_id) {
+      updates.parentId = targetParentId
+    }
+
+    transaction.add({
+      type: "update-folder",
+      folderId: folder.folder_id,
+      updates,
+    })
 
     props.onSave(transaction)
     props.onClose()
   }
 
   const handleDelete = () => {
-    if (!props.item) return
+    if (!props.folder) return
 
     const transaction = new EditTransaction()
-
-    if (isDeck()) {
-      const deck = props.item as UserDeck
-      transaction.add({
-        type: "delete-deck",
-        deckId: deck.deck_id,
-      })
-    } else {
-      const folder = props.item as DeckFolder
-      transaction.add({
-        type: "delete-folder",
-        folderId: folder.folder_id,
-        strategy: deleteStrategy(),
-      })
-    }
+    const folder = props.folder
+    
+    transaction.add({
+      type: "delete-folder",
+      folderId: folder.folder_id,
+      strategy: deleteStrategy(),
+    })
 
     props.onDelete(transaction)
     props.onClose()
   }
 
   const getTitle = () => {
-    if (!props.item) return "Edit"
-    if (isDeck()) return `Edit ${(props.item as UserDeck).deck_name}`
-    return `Edit ${(props.item as DeckFolder).folder_name}`
+    if (!props.folder) return "Edit Folder"
+    return `Edit ${props.folder.folder_name}`
   }
 
   return (
@@ -245,7 +206,7 @@ export function EditModal(props: EditModalProps) {
                   ref={nameInputRef}
                   value={name()}
                   onInput={(e) => setName(e.currentTarget.value)}
-                  placeholder={`${isDeck() ? "Deck" : "Folder"} name`}
+                  placeholder="Folder name"
                   maxLength={VALIDATION_RULES.NAME_MAX_LENGTH}
                   disabled={!isEditingName()}
                   class={`pr-12 focus-visible:ring focus-visible:ring-amber-500 ${!isEditingName() ? "bg-muted/50 cursor-default" : ""}`}
@@ -310,7 +271,7 @@ export function EditModal(props: EditModalProps) {
                   selectedFolderId={selectedFolderId()}
                   selectedFolderName={selectedFolderName()}
                   folderTreeNodes={folderTreeNodes()}
-                  editingType={isDeck() ? "deck" : "folder"}
+                  editingType="folder"
                   onSelect={setSelectedFolderId}
                 />
               </div>
@@ -325,7 +286,7 @@ export function EditModal(props: EditModalProps) {
                   </div>
                   <div>
                     <h4 class="text-foreground text-sm font-medium">
-                      Delete {isDeck() ? "Deck" : "Folder"}
+                      Delete Folder
                     </h4>
                     <p class="text-muted-foreground mt-1 text-xs">
                       This action cannot be undone
@@ -338,7 +299,7 @@ export function EditModal(props: EditModalProps) {
                   onClick={() => setShowDeleteConfirm(true)}
                   class="w-full"
                 >
-                  Delete {isDeck() ? "Deck" : "Folder"}
+                  Delete Folder
                 </Button>
               </div>
             </div>
@@ -346,11 +307,11 @@ export function EditModal(props: EditModalProps) {
         </Show>
 
         {/* Delete Confirmation */}
-        <Show when={showDeleteConfirm() && props.item}>
+        <Show when={showDeleteConfirm() && props.folder}>
           <DeleteConfirmation
-            item={props.item!}
-            itemType={isDeck() ? "deck" : "folder"}
-            folderContents={isFolder() ? folderContents() : undefined}
+            item={props.folder!}
+            itemType="folder"
+            folderContents={folderContents()}
             deleteStrategy={deleteStrategy()}
             onStrategyChange={setDeleteStrategy}
             onCancel={() => setShowDeleteConfirm(false)}
