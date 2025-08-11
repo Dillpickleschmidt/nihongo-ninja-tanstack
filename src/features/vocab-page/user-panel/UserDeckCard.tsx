@@ -1,6 +1,21 @@
 // features/vocab-page/user-panel/UserDeckCard.tsx
-import { Play, ArrowLeft, Edit } from "lucide-solid"
+import {
+  Play,
+  ArrowLeft,
+  Edit,
+  Edit3,
+  FileText,
+  FolderPlus,
+  Copy,
+} from "lucide-solid"
 import { Button } from "@/components/ui/button"
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
 import { useNavigate } from "@tanstack/solid-router"
 import { cn } from "@/utils"
 import { createSignal } from "solid-js"
@@ -25,99 +40,137 @@ export function UserDeckCard(props: UserDeckCardProps) {
       : props.deck.deck_id.toString()
 
   return (
-    <div
-      class={cn(
-        "bg-card/60 hover:bg-card/70 border-card-foreground/70 relative cursor-pointer space-y-3 rounded-lg border p-4 shadow-sm backdrop-blur-sm hover:shadow-md",
-        props.isSelected && "outline-card-foreground outline-2",
-        props.class,
-      )}
-      onClick={() => props.onSelect?.(props.deck)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Edit button - appears on hover */}
-      <div
+    <ContextMenu modal={false}>
+      <ContextMenuTrigger
         class={cn(
-          "absolute top-2 right-2 transition-opacity duration-200",
-          isHovered() ? "opacity-100" : "opacity-0",
+          "bg-card/60 hover:bg-card/70 border-card-foreground/70 relative cursor-pointer space-y-3 rounded-lg border p-4 shadow-sm backdrop-blur-sm hover:shadow-md",
+          props.isSelected && "outline-card-foreground outline-2",
+          props.class,
         )}
-        title={
-          props.deck.source === "built-in"
-            ? "Built-in deck editing is disabled. Right click and make a copy instead."
-            : props.deck.deck_id < 0
-              ? "Deck is still syncing. Refresh to enable editing."
-              : "Edit deck"
-        }
+        onClick={() => props.onSelect?.(props.deck)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
+        {/* Edit button - appears on hover */}
+        <div
+          class={cn(
+            "absolute top-2 right-2 transition-opacity duration-200",
+            isHovered() ? "opacity-100" : "opacity-0",
+          )}
+          title={
+            props.deck.source === "built-in"
+              ? "Built-in deck editing is disabled. Right click and make a copy instead."
+              : props.deck.deck_id < 0
+                ? "Deck is still syncing. Refresh to enable editing."
+                : "Edit deck"
+          }
+        >
+          <Button
+            size="sm"
+            variant="ghost"
+            class="h-6 w-6 p-0"
+            classList={{
+              "hover:cursor-pointer":
+                props.deck.source !== "built-in" && props.deck.deck_id > 0,
+              "cursor-not-allowed opacity-50 pointer-events-none":
+                props.deck.source === "built-in" || props.deck.deck_id < 0,
+            }}
+            onClick={(e) => {
+              e.stopPropagation()
+              if (props.deck.source !== "built-in" && props.deck.deck_id > 0) {
+                props.onEdit?.(props.deck)
+              }
+            }}
+          >
+            <Edit class="h-3 w-3" />
+          </Button>
+        </div>
+
+        <div class="space-y-1">
+          <h4 class="pr-8 text-sm leading-tight font-medium">
+            {props.deck.deck_name}
+          </h4>
+          <p class="text-muted-foreground text-xs">
+            {`Imported ${new Date(props.deck.created_at).toLocaleDateString()}`}
+          </p>
+        </div>
+
         <Button
+          variant="default"
           size="sm"
-          variant="ghost"
-          class="h-6 w-6 p-0"
-          classList={{
-            "hover:cursor-pointer":
-              props.deck.source !== "built-in" && props.deck.deck_id > 0,
-            "cursor-not-allowed opacity-50 pointer-events-none":
-              props.deck.source === "built-in" || props.deck.deck_id < 0,
-          }}
           onClick={(e) => {
             e.stopPropagation()
-            if (props.deck.source !== "built-in" && props.deck.deck_id > 0) {
-              props.onEdit?.(props.deck)
-            }
+            navigate({
+              to: "/practice/$practiceID",
+              params: { practiceID: practiceID() },
+            })
           }}
+          class="bg-card hover:bg-card-foreground/10 dark:bg-card-foreground text-primary outline-card-foreground/70 relative w-full overflow-hidden text-xs outline backdrop-blur-xs transition-colors dark:outline-none hover:dark:bg-neutral-600"
         >
-          <Edit class="h-3 w-3" />
+          <div class="relative flex w-full items-center justify-center">
+            <div
+              class={cn(
+                "absolute inset-0 flex items-center justify-center transition-all duration-300 ease-in-out",
+                props.isNewlyImported
+                  ? "translate-x-0 opacity-100"
+                  : "-translate-x-full opacity-0",
+              )}
+            >
+              <ArrowLeft class="mt-0.25 mr-1 max-h-3 max-w-3" />
+              <span class="text-xs whitespace-nowrap italic">
+                Look at the words before practicing them!
+              </span>
+            </div>
+            <div
+              class={cn(
+                "flex items-center justify-center transition-all duration-300 ease-in-out",
+                props.isNewlyImported
+                  ? "translate-x-full opacity-0"
+                  : "translate-x-0 opacity-100",
+              )}
+            >
+              <Play class="mr-1 max-h-3 max-w-3" />
+              Practice
+            </div>
+          </div>
         </Button>
-      </div>
+      </ContextMenuTrigger>
 
-      <div class="space-y-1">
-        <h4 class="pr-8 text-sm leading-tight font-medium">
-          {props.deck.deck_name}
-        </h4>
-        <p class="text-muted-foreground text-xs">
-          {`Imported ${new Date(props.deck.created_at).toLocaleDateString()}`}
-        </p>
-      </div>
-
-      <Button
-        variant="default"
-        size="sm"
-        onClick={(e) => {
-          e.stopPropagation()
-          navigate({
-            to: "/practice/$practiceID",
-            params: { practiceID: practiceID() },
-          })
-        }}
-        class="bg-card hover:bg-card-foreground/10 dark:bg-card-foreground text-primary outline-card-foreground/70 relative w-full overflow-hidden text-xs outline backdrop-blur-xs transition-colors dark:outline-none hover:dark:bg-neutral-600"
-      >
-        <div class="relative flex w-full items-center justify-center">
-          <div
-            class={cn(
-              "absolute inset-0 flex items-center justify-center transition-all duration-300 ease-in-out",
-              props.isNewlyImported
-                ? "translate-x-0 opacity-100"
-                : "-translate-x-full opacity-0",
-            )}
+      <ContextMenuContent class="bg-card border-card-foreground outline-none">
+        <div
+          title={
+            props.deck.source === "built-in"
+              ? "Built-in deck editing is disabled. Select make a copy instead."
+              : undefined
+          }
+        >
+          <ContextMenuItem
+            disabled={props.deck.source === "built-in"}
+            class="disabled:cursor-not-allowed disabled:opacity-50"
+            onClick={() => {
+              if (props.deck.source !== "built-in" && props.deck.deck_id > 0) {
+                props.onEdit?.(props.deck)
+              }
+            }}
           >
-            <ArrowLeft class="mt-0.25 mr-1 max-h-3 max-w-3" />
-            <span class="text-xs whitespace-nowrap italic">
-              Look at the words before practicing them!
-            </span>
-          </div>
-          <div
-            class={cn(
-              "flex items-center justify-center transition-all duration-300 ease-in-out",
-              props.isNewlyImported
-                ? "translate-x-full opacity-0"
-                : "translate-x-0 opacity-100",
-            )}
-          >
-            <Play class="mr-1 max-h-3 max-w-3" />
-            Practice
-          </div>
+            <Edit3 class="mr-2 h-3 w-3" />
+            Edit contents
+          </ContextMenuItem>
         </div>
-      </Button>
-    </div>
+        <ContextMenuSeparator class="border-card-foreground" />
+        <ContextMenuItem>
+          <FileText class="mr-2 h-3 w-3" />
+          Rename
+        </ContextMenuItem>
+        <ContextMenuItem>
+          <FolderPlus class="mr-2 h-3 w-3" />
+          Move
+        </ContextMenuItem>
+        <ContextMenuItem>
+          <Copy class="mr-2 h-3 w-3" />
+          Make a copy
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   )
 }
