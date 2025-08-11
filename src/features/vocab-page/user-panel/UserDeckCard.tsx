@@ -13,12 +13,19 @@ import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
+  ContextMenuPortal,
   ContextMenuSeparator,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
 import { useNavigate } from "@tanstack/solid-router"
 import { cn } from "@/utils"
 import { createSignal } from "solid-js"
+import { TreeView } from "@/components/ui/tree-view"
+import { useFolderTree } from "../hooks/useFolderTree"
+import { Folder, Home } from "lucide-solid"
 
 interface UserDeckCardProps {
   deck: UserDeck
@@ -27,17 +34,81 @@ interface UserDeckCardProps {
   isSelected?: boolean
   onSelect?: (deck: UserDeck) => void
   onEdit?: (deck: UserDeck) => void
+  folders?: DeckFolder[]
+  onMove?: (deck: UserDeck, targetFolderId: string) => void
+  onRename?: (deck: UserDeck, newName: string) => void
   class?: string
 }
 
 export function UserDeckCard(props: UserDeckCardProps) {
   const navigate = useNavigate()
   const [isHovered, setIsHovered] = createSignal(false)
+  const [expandedFolderIds, setExpandedFolderIds] = createSignal<Set<string>>(
+    new Set(),
+  )
 
   const practiceID = () =>
     props.deck.source === "built-in"
       ? props.deck.original_deck_id!
       : props.deck.deck_id.toString()
+
+  // Build folder tree for move functionality
+  const { folderTreeNodes } = useFolderTree({
+    folders: props.folders || [],
+    decks: [],
+    item: props.deck,
+  })
+
+  // Auto-expand to show current folder location
+  const getCurrentFolderPath = () => {
+    if (!props.deck.folder_id || !props.folders) return []
+
+    const expandPath = (
+      targetId: number,
+      folders: DeckFolder[],
+      path: number[] = [],
+    ): number[] | null => {
+      for (const folder of folders) {
+        if (folder.folder_id === targetId) return [...path, targetId]
+
+        const childFolders = folders.filter(
+          (f) => f.parent_folder_id === folder.folder_id,
+        )
+        if (childFolders.length > 0) {
+          const found = expandPath(targetId, childFolders, [
+            ...path,
+            folder.folder_id,
+          ])
+          if (found) return found
+        }
+      }
+      return null
+    }
+
+    return expandPath(props.deck.folder_id, props.folders) || []
+  }
+
+  const handleToggleFolder = (id: string) => {
+    setExpandedFolderIds((prev) => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+      } else {
+        newSet.add(id)
+      }
+      return newSet
+    })
+  }
+
+  const handleMoveToFolder = (folderId: string, node: any) => {
+    props.onMove?.(props.deck, folderId)
+  }
+
+  // Initialize expanded state with current folder path
+  const initializeExpandedState = () => {
+    const path = getCurrentFolderPath()
+    setExpandedFolderIds(new Set(["root", ...path.map((id) => id.toString())]))
+  }
 
   return (
     <ContextMenu modal={false}>
@@ -158,14 +229,68 @@ export function UserDeckCard(props: UserDeckCardProps) {
           </ContextMenuItem>
         </div>
         <ContextMenuSeparator class="border-card-foreground" />
-        <ContextMenuItem>
+        <ContextMenuItem
+          onClick={() => {
+            const newName = window.prompt(
+              "Enter new deck name:",
+              props.deck.deck_name,
+            )
+            if (
+              newName &&
+              newName.trim() &&
+              newName.trim() !== props.deck.deck_name
+            ) {
+              props.onRename?.(props.deck, newName.trim())
+            }
+          }}
+        >
           <FileText class="mr-2 h-3 w-3" />
           Rename
         </ContextMenuItem>
-        <ContextMenuItem>
-          <FolderPlus class="mr-2 h-3 w-3" />
-          Move
-        </ContextMenuItem>
+        <ContextMenuSub
+          onOpenChange={(open: boolean) => {
+            if (open) {
+              initializeExpandedState()
+            }
+          }}
+        >
+          <ContextMenuSubTrigger>
+            <FolderPlus class="mr-2 h-3 w-3" />
+            Move
+          </ContextMenuSubTrigger>
+          <ContextMenuPortal>
+            <ContextMenuSubContent class="bg-card border-card-foreground max-h-80 w-64 overflow-y-auto p-2">
+              <TreeView
+                nodes={[
+                  {
+                    id: "root",
+                    label: "Root",
+                    children: folderTreeNodes(),
+                    data: null,
+                  },
+                ]}
+                selectedId={props.deck.folder_id?.toString() || "root"}
+                onSelect={handleMoveToFolder}
+                expandedIds={expandedFolderIds()}
+                onToggle={handleToggleFolder}
+                renderIcon={(node) =>
+                  node.id === "root" ? (
+                    <Home class="mr-2 h-4 w-4 flex-shrink-0" />
+                  ) : (
+                    <Folder class="mr-2 h-4 w-4 flex-shrink-0" />
+                  )
+                }
+                renderLabel={(node, isSelected) => (
+                  <span
+                    class={`flex-1 truncate text-xs ${isSelected ? "font-medium" : ""}`}
+                  >
+                    {node.label}
+                  </span>
+                )}
+              />
+            </ContextMenuSubContent>
+          </ContextMenuPortal>
+        </ContextMenuSub>
         <ContextMenuItem>
           <Copy class="mr-2 h-3 w-3" />
           Make a copy

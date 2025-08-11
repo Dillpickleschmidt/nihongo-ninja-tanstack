@@ -180,6 +180,14 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
             onDeselectDeck={state.handleDeckDeselect}
             onEditDeck={handleEditDeck}
             onEditFolder={handleEditFolder}
+            onRenameDeck={(deck, newName) => {
+              editOperations.editDeck(deck.deck_id, { name: newName })
+            }}
+            onMoveDeck={(deck, targetFolderId) => {
+              const folderId =
+                targetFolderId === "root" ? null : parseInt(targetFolderId)
+              editOperations.editDeck(deck.deck_id, { folderId })
+            }}
             panelRef={userDecksPanelRef}
           />
         </CollapsiblePanel>

@@ -8,7 +8,22 @@ import { cn } from "@/utils"
 
 const ContextMenuTrigger = ContextMenuPrimitive.Trigger
 const ContextMenuPortal = ContextMenuPrimitive.Portal
-const ContextMenuSub = ContextMenuPrimitive.Sub
+const ContextMenuSub: Component<ContextMenuPrimitive.ContextMenuSubProps> = (
+  props,
+) => {
+  const handleOpenChange = (open: boolean) => {
+    // When submenu opens, restore pointer events to allow interaction
+    // This is needed when the parent context menu has modal={false}
+    if (open) {
+      document.body.style.pointerEvents = "auto"
+    }
+
+    // Call the original onOpenChange if provided
+    props.onOpenChange?.(open)
+  }
+
+  return <ContextMenuPrimitive.Sub {...props} onOpenChange={handleOpenChange} />
+}
 const ContextMenuGroup = ContextMenuPrimitive.Group
 const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup
 
