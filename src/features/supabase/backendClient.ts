@@ -50,7 +50,15 @@ export const createBackendClient = serverOnly(() => {
 
           // Set all cookies as an array
           if (cookieHeaders.length > 0) {
-            setResponseHeader("Set-Cookie", cookieHeaders)
+            try {
+              setResponseHeader("Set-Cookie", cookieHeaders)
+            } catch (error) {
+              // Silently ignore if headers have already been sent
+              // This can happen during token refresh after SSR response is complete
+              if ((error as any)?.code !== "ERR_HTTP_HEADERS_SENT") {
+                console.warn("Failed to set cookies:", error)
+              }
+            }
           }
         },
       },
