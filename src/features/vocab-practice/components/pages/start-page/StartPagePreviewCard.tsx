@@ -26,12 +26,12 @@ export default function StartPagePreviewCard(props: StartPagePreviewCardProps) {
   const vocabularyDependencies = createMemo(() => {
     if (props.card.practiceItemType === "vocabulary") return []
 
-    const unlocksMap = new Map((props.currentState.unlocksMap as any) || [])
+    const unlocksMap = props.currentState.unlocksMap
     const cardMap = props.getCardMap(props.currentState)
 
     const dependentKeys = unlocksMap.get(props.card.key) || []
     return dependentKeys
-      .map((key) => cardMap.get(key)?.vocab.word)
+      .map((key: string) => cardMap.get(key)?.vocab.word)
       .filter(Boolean)
   })
 
@@ -74,8 +74,8 @@ export default function StartPagePreviewCard(props: StartPagePreviewCardProps) {
 
   const explanationText = (
     <p class="text-sm">
-      Kanji & Radical dependencies are skipped for the current lesson if not due
-      so you can focus on vocabulary.
+      Kanji & Radical dependencies are skipped for the current lesson if you've
+      seen them before and they aren't due so you can focus on vocabulary.
     </p>
   )
 
@@ -195,7 +195,7 @@ export default function StartPagePreviewCard(props: StartPagePreviewCardProps) {
                 <PopoverTrigger>
                   <Info class="h-3.5 w-3.5" />
                 </PopoverTrigger>
-                <PopoverContent class="w-64 p-3">
+                <PopoverContent class="bg-card border-card-foreground w-64 p-3">
                   {explanationText}
                 </PopoverContent>
               </Popover>
@@ -220,7 +220,7 @@ export default function StartPagePreviewCard(props: StartPagePreviewCardProps) {
         <SSRMediaQuery showFrom="md">
           <HoverCard openDelay={200}>
             <HoverCardTrigger class="absolute inset-0" />
-            <HoverCardContent class="w-64 p-3">
+            <HoverCardContent class="bg-card border-card-foreground w-64 p-3">
               {explanationText}
             </HoverCardContent>
           </HoverCard>
@@ -231,4 +231,3 @@ export default function StartPagePreviewCard(props: StartPagePreviewCardProps) {
 
   return cardContent
 }
-

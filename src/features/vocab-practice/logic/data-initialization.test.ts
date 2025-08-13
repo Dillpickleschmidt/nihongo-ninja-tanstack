@@ -1,7 +1,7 @@
 // vocab-practice/logic/data-initialization.test.ts
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import { createEmptyCard, Rating, State } from "ts-fsrs"
-import type { VocabularyCollection } from "@/data/types"
+import type { VocabularyItem } from "@/data/types"
 import type {
   FullHierarchyData,
   VocabHierarchy,
@@ -116,55 +116,58 @@ const mockHierarchy: FullHierarchyData = {
   uniqueRadicals: mockRadicals,
 }
 
-const mockGlobalVocabCollection: VocabularyCollection = {
-  ...mockVocabHierarchy.reduce((acc, vocab) => {
-    acc[vocab.slug] = {
-      word: vocab.characters,
-      furigana: vocab.characters + "[dummy]", // Placeholder furigana
-      english: vocab.kanji.map((k) => k.meanings.join(", ")), // Simplistic English from Kanji
-      chapter: 1, // Placeholder
-    }
-    return acc
-  }, {} as VocabularyCollection),
+const mockVocabularyItems: VocabularyItem[] = [
+  // Generated from mockVocabHierarchy
+  ...mockVocabHierarchy.map((vocab) => ({
+    word: vocab.characters,
+    furigana: vocab.characters + "[dummy]", // Placeholder furigana
+    english: vocab.kanji.map((k) => k.meanings.join(", ")), // Simplistic English from Kanji
+    chapter: 1, // Placeholder
+  })),
   // Add direct definitions for specific test vocab/kanji not derivable from hierarchy in this way
-  食べる: {
+  {
     word: "食べる",
     furigana: "食[た]べる",
     english: ["to eat", "eat"],
     chapter: 1,
   },
-  飲む: {
+  {
     word: "飲む",
     furigana: "飲[の]む",
     english: ["to drink", "drink"],
     chapter: 1,
   },
-  見る: {
+  {
     word: "見る",
     furigana: "見[み]る",
     english: ["to see", "to watch", "see", "watch"],
     chapter: 1,
   },
-  due1: {
+  {
     word: "due1",
     furigana: "due1",
     english: ["due1_meaning"],
     chapter: 2,
   },
-  due2: {
+  {
     word: "due2",
     furigana: "due2",
     english: ["due2_meaning"],
     chapter: 2,
   },
-  写: {
+  {
     word: "写",
     furigana: "写",
     english: ["copy", "be photographed"],
     chapter: 10,
   },
-  真: { word: "真", furigana: "真", english: ["true", "reality"], chapter: 10 },
-}
+  {
+    word: "真",
+    furigana: "真",
+    english: ["true", "reality"],
+    chapter: 10,
+  },
+]
 
 // --- Global Mocks for WaniKani Utils ---
 // This block must be at the top level, before `describe`.
@@ -280,7 +283,7 @@ describe("Data Initialization", () => {
         [],
         [],
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -326,7 +329,7 @@ describe("Data Initialization", () => {
         [],
         duplicateDueCards,
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -353,7 +356,7 @@ describe("Data Initialization", () => {
         [],
         mockDueFSRSCards,
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -379,7 +382,7 @@ describe("Data Initialization", () => {
         [],
         [],
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -410,7 +413,7 @@ describe("Data Initialization", () => {
         [],
         [],
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -467,7 +470,7 @@ describe("Data Initialization", () => {
         fsrsCardsWithFutureDates,
         [],
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -508,7 +511,7 @@ describe("Data Initialization", () => {
         fsrsCardsWithPastDates,
         [],
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -528,7 +531,7 @@ describe("Data Initialization", () => {
         [],
         [],
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -579,21 +582,21 @@ describe("Data Initialization", () => {
         uniqueRadicals: [duplicateRadical], // This should now be included
       }
 
-      const vocabCollection: VocabularyCollection = {
-        生活: {
+      const vocabItems: VocabularyItem[] = [
+        {
           word: "生活",
           furigana: "生[せい]活[かつ]",
           english: ["life", "living"],
           chapter: 1,
         },
-      }
+      ]
 
       const result = await initializePracticeSession(
         hierarchyWithDuplicates,
         [],
         [],
         "readings",
-        vocabCollection,
+        vocabItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -629,7 +632,7 @@ describe("Data Initialization", () => {
         mockModuleFSRSCards,
         [],
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -663,7 +666,7 @@ describe("Data Initialization", () => {
         mixedModeFSRSCards,
         [],
         "readings", // Session mode is "readings"
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -694,7 +697,7 @@ describe("Data Initialization", () => {
         [],
         mockDueFSRSCards,
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -758,7 +761,7 @@ describe("Data Initialization", () => {
           fsrsCards,
           dueFsrsCards,
           "readings",
-          mockGlobalVocabCollection,
+          mockVocabularyItems,
           false, // flipVocabQA
           false, // flipKanjiRadicalQA
           false, // shuffle
@@ -779,7 +782,7 @@ describe("Data Initialization", () => {
         [],
         [],
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -809,7 +812,7 @@ describe("Data Initialization", () => {
         reviewStateFSRS,
         [],
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -852,7 +855,7 @@ describe("Data Initialization", () => {
         fsrsCardsWithFutureDates,
         [],
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -888,7 +891,7 @@ describe("Data Initialization", () => {
         fsrsCardsWithFutureDates,
         [],
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -935,7 +938,7 @@ describe("Data Initialization", () => {
         fsrsCardsWithFutureDates,
         [],
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -976,7 +979,7 @@ describe("Data Initialization", () => {
         fsrsCardsWithFutureDates,
         [],
         "readings",
-        mockGlobalVocabCollection,
+        mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle
@@ -1051,7 +1054,7 @@ describe("Data Initialization", () => {
           [],
           dueCards,
           "readings",
-          mockGlobalVocabCollection,
+          mockVocabularyItems,
           false, // flipVocabQA
           false, // flipKanjiRadicalQA
           false, // shuffle
@@ -1079,22 +1082,22 @@ describe("Data Initialization", () => {
         uniqueRadicals: mockRadicals,
       }
 
-      const complexGlobalVocab: VocabularyCollection = {
-        ...mockGlobalVocabCollection,
-        複雑: {
+      const complexVocabularyItems: VocabularyItem[] = [
+        ...mockVocabularyItems,
+        {
           word: "複雑",
           furigana: "複[ふく]雑[ざつ]",
           english: ["complex", "complicated"],
           chapter: 1,
         },
-      }
+      ]
 
       const result = await initializePracticeSession(
         complexHierarchy,
         [],
         [],
         "readings",
-        complexGlobalVocab,
+        complexVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
         false, // shuffle

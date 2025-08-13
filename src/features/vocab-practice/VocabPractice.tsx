@@ -13,6 +13,7 @@ import IntroductionPageComponent from "./components/pages/IntroductionPageCompon
 import FSRSFlashcardPageComponent from "./components/pages/FSRSFlashcardPageComponent"
 import type { FSRSCardData } from "../supabase/db/fsrs-operations"
 import type { FullHierarchyData } from "@/data/wanikani/types"
+import type { VocabularyItem } from "@/data/types"
 import type { DeferredPromise } from "@tanstack/solid-router"
 
 type VocabPracticeProps = {
@@ -20,6 +21,7 @@ type VocabPracticeProps = {
   initialState: PracticeSessionState
   moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null
   dueFSRSCards: DeferredPromise<FSRSCardData[]> | null
+  moduleVocabulary: VocabularyItem[]
   deckName: string | JSX.Element
   mode: PracticeMode
 }
@@ -33,6 +35,7 @@ export default function VocabPractice(props: VocabPracticeProps) {
         initialState={props.initialState}
         moduleFSRSCards={props.moduleFSRSCards}
         dueFSRSCards={props.dueFSRSCards}
+        moduleVocabulary={props.moduleVocabulary}
         mode={props.mode}
       />
     </VocabPracticeContextProvider>
@@ -53,6 +56,7 @@ function VocabPracticeContent(props: VocabPracticeContentProps) {
           initialState={props.initialState}
           moduleFSRSCards={props.moduleFSRSCards}
           dueFSRSCards={props.dueFSRSCards}
+          moduleVocabulary={props.moduleVocabulary}
           mode={props.mode}
         />
       </Match>

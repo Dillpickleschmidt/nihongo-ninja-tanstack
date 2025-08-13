@@ -1,10 +1,6 @@
 // vocab-practice/logic/data-initialization.ts
 import { createEmptyCard, State } from "ts-fsrs"
-import type {
-  VocabularyCollection,
-  VocabularyItem,
-  Mnemonics,
-} from "@/data/types"
+import type { VocabularyItem, Mnemonics } from "@/data/types"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
 import type {
   PracticeCard,
@@ -14,6 +10,7 @@ import type {
   SessionCardStyle,
 } from "../types"
 import { addKanaAndRuby } from "@/data/utils/vocab"
+import { getVocabularyByKeys } from "@/data/utils/vocab.server"
 import type {
   FullHierarchyData,
   Kanji,
@@ -30,7 +27,7 @@ function createPracticeCard(
   type: DBPracticeItemType,
   fsrsData: FSRSCardData | null,
   sessionPracticeMode: PracticeMode,
-  globalVocabCollection: VocabularyCollection,
+  vocabularyMap: Map<string, VocabularyItem>,
   flipVocabQA: boolean,
   flipKanjiRadicalQA: boolean,
 ): PracticeCard {
@@ -50,7 +47,7 @@ function createPracticeCard(
 
   if (type === "vocabulary") {
     // For vocabulary, the source of truth is the global collection.
-    vocabItem = globalVocabCollection[item.slug]
+    vocabItem = vocabularyMap.get(item.slug)
     itemMnemonics = vocabItem?.mnemonics
   } else {
     // For Kanji and Radicals, construct a temporary vocab-like item.
@@ -167,7 +164,7 @@ export async function initializePracticeSession(
   moduleFSRSCards: FSRSCardData[],
   allDueFSRSCards: FSRSCardData[],
   sessionPracticeMode: PracticeMode,
-  globalVocabCollection: VocabularyCollection,
+  moduleVocabulary: VocabularyItem[],
   flipVocabQA: boolean,
   flipKanjiRadicalQA: boolean,
   shuffle: boolean = false,
@@ -179,6 +176,33 @@ export async function initializePracticeSession(
   const lockedKeys = new Set<string>()
   let moduleQueue: string[] = []
   const reviewQueue: string[] = []
+
+  // Create vocabulary lookup map from available module vocabulary
+  const vocabularyMap = new Map(
+    moduleVocabulary.map((item) => [item.word, item]),
+  )
+
+  // Collect additional vocabulary keys needed for FSRS cards
+  const additionalVocabKeys = new Set<string>()
+  const filteredAllDueFSRSCards = allDueFSRSCards.filter(
+    (card) => card.mode === sessionPracticeMode && card.type === "vocabulary",
+  )
+
+  filteredAllDueFSRSCards.forEach((card) => {
+    if (!vocabularyMap.has(card.practice_item_key)) {
+      additionalVocabKeys.add(card.practice_item_key)
+    }
+  })
+
+  // Fetch additional vocabulary if needed
+  if (additionalVocabKeys.size > 0) {
+    const additionalVocab = await getVocabularyByKeys({
+      data: Array.from(additionalVocabKeys),
+    })
+    additionalVocab.forEach((item) => {
+      vocabularyMap.set(item.word, item)
+    })
+  }
 
   const filteredModuleFSRSCards = moduleFSRSCards.filter(
     (card) => card.mode === sessionPracticeMode,
@@ -220,7 +244,7 @@ export async function initializePracticeSession(
       type,
       fsrsData,
       sessionPracticeMode,
-      globalVocabCollection,
+      vocabularyMap,
       flipVocabQA,
       flipKanjiRadicalQA,
     )
@@ -277,7 +301,7 @@ export async function initializePracticeSession(
     let itemToPass: VocabHierarchy | Kanji | Radical | null = null
 
     if (fsrsData.type === "vocabulary") {
-      const vocabItem = globalVocabCollection[fsrsData.practice_item_key]
+      const vocabItem = vocabularyMap.get(fsrsData.practice_item_key)
       if (!vocabItem) return // Skip silently
 
       itemToPass = {
@@ -301,7 +325,7 @@ export async function initializePracticeSession(
       fsrsData.type,
       fsrsData,
       fsrsData.mode,
-      globalVocabCollection,
+      vocabularyMap,
       flipVocabQA,
       flipKanjiRadicalQA,
     )

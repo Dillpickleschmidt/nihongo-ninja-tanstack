@@ -1,7 +1,7 @@
 // src/routes/practice/$practiceID.tsx
 import { createFileRoute, notFound, defer } from "@tanstack/solid-router"
 import {
-  getVocabularyWordsForModule,
+  getVocabularyForModule,
   getModuleTitleFromPath,
 } from "@/data/utils/vocab"
 import VocabPractice from "@/features/vocab-practice/VocabPractice"
@@ -15,7 +15,6 @@ import { getWKHierarchy } from "@/data/wanikani/utils"
 import type { FullHierarchyData, VocabHierarchy } from "@/data/wanikani/types"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
-import { vocabulary } from "@/data/vocabulary"
 
 export const Route = createFileRoute("/practice/$practiceID")({
   loader: async ({ context, location }) => {
@@ -25,8 +24,8 @@ export const Route = createFileRoute("/practice/$practiceID")({
         ? "kana"
         : "readings"
 
-      const targetVocabSlugs = await getVocabularyWordsForModule(
-        location.pathname,
+      const moduleVocabulary = await getVocabularyForModule(
+        location.pathname.split("/").pop() || "",
       )
 
       let hierarchy: FullHierarchyData
@@ -34,17 +33,17 @@ export const Route = createFileRoute("/practice/$practiceID")({
       if (mode === "readings") {
         // For "readings" mode, build the full dependency tree
         const fullHierarchy = await getWKHierarchy({
-          data: targetVocabSlugs,
+          data: moduleVocabulary.map((v) => v.word),
         })
         if (!fullHierarchy) throw notFound()
         hierarchy = fullHierarchy
       } else {
         // For "kana" mode, create a "flat" hierarchy with NO dependencies
-        const flatVocabHierarchy: VocabHierarchy[] = targetVocabSlugs.map(
-          (slug, index) => ({
+        const flatVocabHierarchy: VocabHierarchy[] = moduleVocabulary.map(
+          (vocab, index) => ({
             id: index, // A placeholder ID is fine
-            characters: slug,
-            slug: slug,
+            characters: vocab.word,
+            slug: vocab.word,
             kanji: [], // No kanji dependencies
           }),
         )
@@ -62,7 +61,7 @@ export const Route = createFileRoute("/practice/$practiceID")({
         [], // No module FSRS cards - will be loaded client-side
         [], // No due FSRS cards - will be loaded client-side
         mode,
-        vocabulary,
+        moduleVocabulary,
         false, // Default settings - will be overridden client-side
         true,
         false,
@@ -100,6 +99,7 @@ export const Route = createFileRoute("/practice/$practiceID")({
         serializedInitialState,
         moduleFSRSCards,
         dueFSRSCards,
+        moduleVocabulary,
         deckName: getModuleTitleFromPath(location.pathname),
         mode,
       }
@@ -130,6 +130,7 @@ function RouteComponent() {
       initialState={initialState}
       moduleFSRSCards={data().moduleFSRSCards}
       dueFSRSCards={data().dueFSRSCards}
+      moduleVocabulary={data().moduleVocabulary}
       deckName={data().deckName}
       mode={data().mode}
     />

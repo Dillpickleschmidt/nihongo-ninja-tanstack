@@ -15,7 +15,6 @@ import DeckSettingsDialogComponent from "../DeckSettingsDialogComponent"
 import StartPagePreviewCard from "./start-page/StartPagePreviewCard"
 import { PracticeSessionManager } from "../../logic/PracticeSessionManager"
 import { initializePracticeSession } from "../../logic/data-initialization"
-import { vocabulary } from "@/data/vocabulary"
 import type {
   PracticeMode,
   PracticeSessionState,
@@ -27,6 +26,7 @@ import type {
   Radical,
   VocabHierarchy,
 } from "@/data/wanikani/types"
+import type { VocabularyItem } from "@/data/types"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
 import type { DeferredPromise } from "@tanstack/solid-router"
 
@@ -35,6 +35,7 @@ type StartPageProps = {
   initialState: PracticeSessionState
   moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null
   dueFSRSCards: DeferredPromise<FSRSCardData[]> | null
+  moduleVocabulary: VocabularyItem[]
   deckName: string | JSX.Element
   mode: PracticeMode
 }
@@ -108,23 +109,14 @@ export default function StartPageComponent(props: StartPageProps) {
         moduleFSRS() || [],
         dueFSRS() || [],
         props.mode,
-        vocabulary,
+        props.moduleVocabulary,
         flipVocabQA(),
         flipKanjiRadicalQA(),
         state.settings.shuffleInput,
         enablePrerequisites(),
       )
 
-      // Serialize Maps and Sets for JSON transfer
-      const serializedState = {
-        ...fullState,
-        cardMap: Array.from(fullState.cardMap.entries()),
-        dependencyMap: Array.from(fullState.dependencyMap.entries()),
-        unlocksMap: Array.from(fullState.unlocksMap.entries()),
-        lockedKeys: Array.from(fullState.lockedKeys),
-      } as unknown as PracticeSessionState
-
-      setEnhancedState(serializedState)
+      setEnhancedState(fullState)
     } catch (error) {
       console.error("Failed to enhance practice session:", error)
     }
@@ -133,15 +125,11 @@ export default function StartPageComponent(props: StartPageProps) {
   const isLoading = createMemo(() => moduleFSRS.loading || dueFSRS.loading)
   const hasEnhancedData = createMemo(() => enhancedState() !== null)
 
-  // Reconstruct Map from serialized array
+  // Get cardMap from state
   const getCardMap = (
     state: PracticeSessionState,
   ): Map<string, PracticeCard> => {
-    const cardMapData = state.cardMap as any
-    if (Array.isArray(cardMapData)) {
-      return new Map(cardMapData)
-    }
-    return new Map()
+    return state.cardMap || new Map()
   }
 
   const hierarchicalOrder = createMemo(() => {
@@ -165,7 +153,7 @@ export default function StartPageComponent(props: StartPageProps) {
   const reviewItems = createMemo<PracticeCard[]>(() => {
     const state = currentState()
     const cardMap = getCardMap(state)
-    const reviewQueue = (state.reviewQueue as any) || []
+    const reviewQueue = state.reviewQueue || []
 
     return reviewQueue
       .map((key: string) => cardMap.get(key))
@@ -202,12 +190,6 @@ export default function StartPageComponent(props: StartPageProps) {
       const reconstructedState: PracticeSessionState = {
         ...state,
         cardMap: getCardMap(state),
-        dependencyMap: new Map((state.dependencyMap as any) || []),
-        unlocksMap: new Map((state.unlocksMap as any) || []),
-        lockedKeys: new Set((state.lockedKeys as any) || []),
-        moduleQueue: (state.moduleQueue as any) || [],
-        reviewQueue: (state.reviewQueue as any) || [],
-        activeQueue: (state.activeQueue as any) || [],
       }
 
       const manager = new PracticeSessionManager(reconstructedState, false)
