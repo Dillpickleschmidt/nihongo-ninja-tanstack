@@ -22,6 +22,7 @@ import {
   isDeckAlreadyImported,
 } from "@/features/vocab-page/logic/deck-import-logic"
 import type { NavTabId } from "@/features/vocab-page/center-panel/CenterNavBar"
+import { useDeckSelection } from "./useDeckSelection"
 
 export function useVocabPageState(
   importRequest?: ImportRequest | null,
@@ -67,12 +68,36 @@ export function useVocabPageState(
   const [deckData, setDeckData] = createSignal<UserDeck[]>(
     initialLocalData.decks,
   )
-  const [selectedUserDeck, setSelectedUserDeck] = createSignal<UserDeck | null>(
-    null,
-  )
   const [newlyImportedDecks, setNewlyImportedDecks] = createSignal<Set<string>>(
     new Set(),
   )
+
+  // Enhanced tab change handler
+  const handleTabChange = (newTab: NavTabId) => {
+    if (activeNavTab() === "vocab-cards" && newTab !== "vocab-cards") {
+      // Leaving vocab-cards: save whatever the current state is
+      setVocabCardsTabState(deckSelection.selectedUserDeck())
+    }
+
+    if (newTab === "vocab-cards") {
+      // Entering vocab-cards: only restore saved state if nothing is currently selected
+      if (
+        vocabCardsTabState() &&
+        !deckSelection.selectedUserDeck() &&
+        !deckSelection.selectedBuiltInDeck()
+      ) {
+        deckSelection.handleUserDeckSelect(vocabCardsTabState()!)
+      }
+    } else {
+      // On other tabs: always deselect
+      deckSelection.handleDeselect()
+    }
+
+    setActiveNavTab(newTab)
+  }
+
+  // Deck selection hook
+  const deckSelection = useDeckSelection(handleTabChange)
 
   // Folder navigation state (which folder user is viewing)
   const [currentViewFolderId, setCurrentViewFolderId] = createSignal<
@@ -188,37 +213,19 @@ export function useVocabPageState(
     setCurrentViewFolderId(parentId)
   }
 
-  // Enhanced tab and deck selection handlers
-  const handleTabChange = (newTab: NavTabId) => {
-    if (activeNavTab() === "vocab-cards" && newTab !== "vocab-cards") {
-      // Leaving vocab-cards: save whatever the current state is
-      setVocabCardsTabState(selectedUserDeck())
-    }
-
-    if (newTab === "vocab-cards") {
-      // Entering vocab-cards: restore saved state
-      setSelectedUserDeck(vocabCardsTabState())
-    } else {
-      // On other tabs: always deselect
-      setSelectedUserDeck(null)
-    }
-
-    setActiveNavTab(newTab)
-  }
-
+  // Enhanced deck selection handlers
   const handleDeckSelect = (deck: UserDeck) => {
     // Navigate to the deck's folder if we're not already there
     if (deck.folder_id !== currentViewFolderId()) {
       setCurrentViewFolderId(deck.folder_id)
     }
 
-    setSelectedUserDeck(deck)
+    deckSelection.handleUserDeckSelect(deck)
     setVocabCardsTabState(deck) // Keep vocab-cards state in sync
-    setActiveNavTab("vocab-cards")
   }
 
   const handleDeckDeselect = () => {
-    setSelectedUserDeck(null)
+    deckSelection.handleDeselect()
     if (activeNavTab() === "vocab-cards") {
       setVocabCardsTabState(null) // Update vocab-cards state when explicitly deselecting
     }
@@ -246,7 +253,7 @@ export function useVocabPageState(
 
     setFolderData(localResult.folders)
     setDeckData(localResult.decks)
-    setSelectedUserDeck(localResult.importedDeck)
+    deckSelection.handleUserDeckSelect(localResult.importedDeck)
 
     // Navigate immediately to the folder containing the new deck
     if (localResult.targetFolderId !== null) {
@@ -288,7 +295,7 @@ export function useVocabPageState(
       // Revert local changes
       setFolderData(fallbackData.currentFolders)
       setDeckData(fallbackData.currentDecks)
-      setSelectedUserDeck(null)
+      deckSelection.handleDeselect()
       setCurrentViewFolderId(null)
 
       alert("Failed to save deck to your account. Please try again.")
@@ -332,7 +339,8 @@ export function useVocabPageState(
     userDecks: deckData,
     folders: folderData,
     newlyImportedDecks,
-    selectedUserDeck,
+    selectedUserDeck: deckSelection.selectedUserDeck,
+    selectedBuiltInDeck: deckSelection.selectedBuiltInDeck,
 
     // Folder view navigation
     currentViewFolderId,
@@ -351,6 +359,7 @@ export function useVocabPageState(
     handleTabChange,
     handleDeckSelect,
     handleDeckDeselect,
+    handleBuiltInDeckSelect: deckSelection.handleBuiltInDeckSelect,
 
     // Internal state setters (for edit operations hook)
     setFolderData,

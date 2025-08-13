@@ -13,6 +13,9 @@ interface ChapterSectionProps {
   isExpanded: boolean
   onToggle: () => void
   onImportDeck: (deck: VocabBuiltInDeck) => void
+  onPlayDeck: (deck: VocabBuiltInDeck) => void
+  onSelectDeck?: (deck: VocabBuiltInDeck) => void
+  selectedBuiltInDeck?: VocabBuiltInDeck | null
 }
 
 export function ChapterSection(props: ChapterSectionProps) {
@@ -32,6 +35,8 @@ export function ChapterSection(props: ChapterSectionProps) {
               <BuiltInDeckCard
                 deck={deck}
                 onImport={props.onImportDeck}
+                onSelect={props.onSelectDeck}
+                isSelected={props.selectedBuiltInDeck?.id === deck.id}
                 class="text-xs"
               />
             )}

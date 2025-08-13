@@ -54,6 +54,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
     user: props.user,
   })
   let userDecksPanelRef!: HTMLDivElement
+  let builtInDecksPanelRef!: HTMLDivElement
 
   // Edit modal state
   const [folderEditModalOpen, setFolderEditModalOpen] = createSignal(false)
@@ -200,6 +201,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
           isOpen={state.leftPanelOpen()}
           onToggle={() => state.setLeftPanelOpen(!state.leftPanelOpen())}
           position="left"
+          ref={builtInDecksPanelRef!}
         >
           <BuiltInDecksPanel
             textbooks={state.textbooks()}
@@ -209,6 +211,10 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
             onToggleChapter={state.toggleChapter}
             onImportDeck={state.importDeck}
             onPlayDeck={() => {}}
+            onSelectDeck={state.handleBuiltInDeckSelect}
+            selectedBuiltInDeck={state.selectedBuiltInDeck()}
+            onDeselect={state.handleDeckDeselect}
+            panelRef={builtInDecksPanelRef}
           />
         </CollapsiblePanel>
       </div>
@@ -218,6 +224,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
         <div class="absolute inset-0 -z-1 bg-[radial-gradient(880px_640px_at_72%_78%,theme(colors.orange.300/2.5%),transparent_66%),radial-gradient(700px_540px_at_50%_44%,theme(colors.black/5%)_0%,transparent_72%)]" />
         <CenterPanel
           selectedUserDeck={state.selectedUserDeck()}
+          selectedBuiltInDeck={state.selectedBuiltInDeck()}
           activeNavTab={state.activeNavTab()}
           onNavTabChange={handleTabChange}
           folders={state.folders()}

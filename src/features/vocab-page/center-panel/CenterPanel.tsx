@@ -7,9 +7,11 @@ import { DeckCreationStoreProvider } from "../deck-creation/context/DeckCreation
 import type { DeckCreationInitialData } from "../deck-creation/stores/deck-creation-store"
 import { BrowseDecksContent } from "./BrowseDecksContent"
 import { OverridesContent } from "./OverridesContent"
+import type { VocabBuiltInDeck } from "../types"
 
 interface CenterPanelProps {
   selectedUserDeck: UserDeck | null
+  selectedBuiltInDeck?: VocabBuiltInDeck | null
   activeNavTab: NavTabId
   onNavTabChange: (tabId: NavTabId) => void
   folders: DeckFolder[]
@@ -29,7 +31,10 @@ export function CenterPanel(props: CenterPanelProps) {
       <div class="flex flex-1 items-center justify-center px-8">
         <Switch>
           <Match when={props.activeNavTab === "vocab-cards"}>
-            <VocabCardsContent selectedUserDeck={props.selectedUserDeck} />
+            <VocabCardsContent
+              selectedUserDeck={props.selectedUserDeck}
+              selectedBuiltInDeck={props.selectedBuiltInDeck}
+            />
           </Match>
           <Match when={props.activeNavTab === "deck-builder"}>
             <Show

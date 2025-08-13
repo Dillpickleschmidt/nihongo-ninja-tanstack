@@ -1,26 +1,34 @@
 // features/vocab-page/center-panel/VocabCardsContent.tsx
-import { For, Show, createSignal, createEffect } from "solid-js"
+import { For, Show, Switch, Match, createSignal, createEffect } from "solid-js"
 import { getVocabularyForSet } from "@/data/utils/vocab"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import type { VocabularyItem } from "@/data/types"
 import { DefaultContent } from "./DefaultContent"
 import { VocabularyCard } from "@/features/vocab-page/components/VocabularyCard"
 import { getVocabForDeck } from "@/features/supabase/db/deck-operations"
+import type { VocabBuiltInDeck } from "../types"
 
 interface VocabCardsContentProps {
   selectedUserDeck: UserDeck | null
+  selectedBuiltInDeck?: VocabBuiltInDeck | null
 }
 
 export function VocabCardsContent(props: VocabCardsContentProps) {
   return (
-    <Show when={props.selectedUserDeck} fallback={<DefaultContent />}>
-      {(deck) => <VocabularyPreview selectedDeck={deck()} />}
-    </Show>
+    <Switch fallback={<DefaultContent />}>
+      <Match when={props.selectedUserDeck}>
+        <VocabularyPreview selectedDeck={props.selectedUserDeck!} />
+      </Match>
+      <Match when={props.selectedBuiltInDeck}>
+        <VocabularyPreview selectedBuiltInDeck={props.selectedBuiltInDeck!} />
+      </Match>
+    </Switch>
   )
 }
 
 interface VocabularyPreviewProps {
-  selectedDeck: UserDeck
+  selectedDeck?: UserDeck
+  selectedBuiltInDeck?: VocabBuiltInDeck
 }
 
 function VocabularyPreview(props: VocabularyPreviewProps) {
@@ -29,34 +37,15 @@ function VocabularyPreview(props: VocabularyPreviewProps) {
   )
   const [isLoading, setIsLoading] = createSignal(false)
 
-  // Load vocabulary when deck changes
-  createEffect(async () => {
-    const deck = props.selectedDeck
+  // Get deck name for display
+  const deckName = () =>
+    props.selectedDeck?.deck_name || props.selectedBuiltInDeck?.title || ""
 
-    // Only load vocabulary from dynamic modules for built-in decks
-    if (deck.source !== "built-in") {
-      if (deck.source === "user") {
-        // directly use the db data (no dynamic modules)
-        const vocab = await getVocabForDeck(deck.deck_id)
-        setVocabularyItems(vocab)
-        return
-      }
-      setVocabularyItems([])
-      return
-    }
-
-    // Use the original built-in deck ID for vocabulary lookup
-    const originalDeckId = deck.original_deck_id!
-    const module = dynamic_modules[originalDeckId]
-
-    if (!module || !module.vocab_set_ids) {
-      setVocabularyItems([])
-      return
-    }
-
+  // Helper function to load vocabulary with common error handling
+  const loadVocabulary = async (loadFn: () => Promise<VocabularyItem[]>) => {
     setIsLoading(true)
     try {
-      const vocab = await getVocabularyForSet(module.vocab_set_ids)
+      const vocab = await loadFn()
       setVocabularyItems(vocab)
     } catch (error) {
       console.error("Failed to load vocabulary:", error)
@@ -64,12 +53,41 @@ function VocabularyPreview(props: VocabularyPreviewProps) {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // Load vocabulary when deck changes
+  createEffect(async () => {
+    if (props.selectedBuiltInDeck) {
+      // Handle built-in deck preview
+      const module = dynamic_modules[props.selectedBuiltInDeck.id]
+      if (!module?.vocab_set_ids) {
+        setVocabularyItems([])
+        return
+      }
+      await loadVocabulary(() => getVocabularyForSet(module.vocab_set_ids))
+    } else if (props.selectedDeck) {
+      const deck = props.selectedDeck
+
+      if (deck.source === "user") {
+        await loadVocabulary(() => getVocabForDeck(deck.deck_id))
+      } else if (deck.source === "built-in") {
+        // Handle imported built-in deck
+        const module = dynamic_modules[deck.original_deck_id!]
+        if (!module?.vocab_set_ids) {
+          setVocabularyItems([])
+          return
+        }
+        await loadVocabulary(() => getVocabularyForSet(module.vocab_set_ids))
+      } else {
+        setVocabularyItems([])
+      }
+    }
   })
 
   return (
     <div class="h-full w-full overflow-y-auto p-6">
       <div class="mb-6 text-center">
-        <h2 class="mb-2 text-2xl font-bold">{props.selectedDeck.deck_name}</h2>
+        <h2 class="mb-2 text-2xl font-bold">{deckName()}</h2>
         <p class="text-muted-foreground">Vocabulary Preview</p>
       </div>
 
@@ -81,9 +99,7 @@ function VocabularyPreview(props: VocabularyPreviewProps) {
         ) : vocabularyItems().length === 0 ? (
           <div class="flex items-center justify-center py-12">
             <div class="text-muted-foreground">
-              {props.selectedDeck.source === "built-in"
-                ? "No vocabulary items found for this deck."
-                : `${props.selectedDeck.source} deck vocabulary loading not yet implemented.`}
+              No vocabulary items found for this deck.
             </div>
           </div>
         ) : (

@@ -14759,7 +14759,7 @@ export const vocabulary: VocabularyCollection = {
     english: ["soba", "Japanese buckwheat noodles"],
     chapter: 15,
     mnemonics: {
-      kanji: ["Think of the 'so' in 'noodle soup' and 'ba' in 'buckwheat'"],
+      kanji: [],
       reading: [],
     },
     info: [

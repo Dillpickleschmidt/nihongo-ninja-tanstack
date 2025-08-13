@@ -17,6 +17,8 @@ interface TextbookSectionProps {
   onToggleChapter: (chapterId: string) => void
   onImportDeck: (deck: VocabBuiltInDeck) => void
   onPlayDeck: (deck: VocabBuiltInDeck) => void
+  onSelectDeck?: (deck: VocabBuiltInDeck) => void
+  selectedBuiltInDeck?: VocabBuiltInDeck | null
 }
 
 export function TextbookSection(props: TextbookSectionProps) {
@@ -40,6 +42,8 @@ export function TextbookSection(props: TextbookSectionProps) {
                 onToggle={() => props.onToggleChapter(chapter.id)}
                 onImportDeck={props.onImportDeck}
                 onPlayDeck={props.onPlayDeck}
+                onSelectDeck={props.onSelectDeck}
+                selectedBuiltInDeck={props.selectedBuiltInDeck}
               />
             )}
           </For>
