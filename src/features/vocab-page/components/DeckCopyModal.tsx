@@ -133,6 +133,11 @@ export function DeckCopyModal(props: DeckCopyModalProps) {
               onInput={(e) => setName(e.currentTarget.value)}
               placeholder="Enter deck name"
               onBlur={() => setShowValidation(true)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleCopy()
+                }
+              }}
             />
             <Show when={showValidation() && !nameValidation().isValid}>
               <p class="text-sm text-red-500">{nameValidation().error}</p>

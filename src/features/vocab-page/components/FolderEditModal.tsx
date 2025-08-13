@@ -150,6 +150,17 @@ export function FolderEditModal(props: FolderEditModalProps) {
 
   // Event handlers
   const handleSave = () => {
+    // Check for unsaved name changes
+    if (isEditingName()) {
+      const shouldApply = window.confirm(
+        "You have unsaved name changes! Would you like to apply them?",
+      )
+      if (!shouldApply) {
+        return // Cancel save operation
+      }
+      setIsEditingName(false) // Apply name changes
+    }
+
     setShowValidation(true)
 
     if (!canSave() || !props.folder) return
@@ -220,6 +231,11 @@ export function FolderEditModal(props: FolderEditModalProps) {
                   value={name()}
                   onInput={(e) => setName(e.currentTarget.value)}
                   onBlur={() => setShowValidation(true)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && isEditingName()) {
+                      setIsEditingName(false)
+                    }
+                  }}
                   placeholder="Folder name"
                   maxLength={VALIDATION_RULES.NAME_MAX_LENGTH}
                   disabled={!isEditingName()}
@@ -311,7 +327,7 @@ export function FolderEditModal(props: FolderEditModalProps) {
                   variant="destructive"
                   size="sm"
                   onClick={() => setShowDeleteConfirm(true)}
-                  class="w-full"
+                  class="w-full hover:cursor-pointer"
                 >
                   Delete Folder
                 </Button>
@@ -335,10 +351,18 @@ export function FolderEditModal(props: FolderEditModalProps) {
 
         <Show when={!showDeleteConfirm()}>
           <DialogFooter class="gap-3">
-            <Button variant="outline" onClick={props.onClose} class="flex-1">
+            <Button
+              variant="outline"
+              onClick={props.onClose}
+              class="flex-1 hover:cursor-pointer"
+            >
               Cancel
             </Button>
-            <Button onClick={handleSave} disabled={!canSave()} class="flex-1">
+            <Button
+              onClick={handleSave}
+              disabled={!canSave()}
+              class="flex-1 hover:cursor-pointer"
+            >
               Save Changes
             </Button>
           </DialogFooter>
