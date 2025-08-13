@@ -114,7 +114,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
   }
 
   return (
-    <ContextMenu modal={false}>
+    <ContextMenu>
       <ContextMenuTrigger
         class={cn(
           "bg-card/60 hover:bg-card/70 border-card-foreground/70 relative cursor-pointer space-y-3 rounded-lg border p-4 shadow-sm backdrop-blur-sm hover:shadow-md",

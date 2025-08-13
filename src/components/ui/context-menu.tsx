@@ -8,49 +8,14 @@ import { cn } from "@/utils"
 
 const ContextMenuTrigger = ContextMenuPrimitive.Trigger
 const ContextMenuPortal = ContextMenuPrimitive.Portal
-const ContextMenuSub: Component<ContextMenuPrimitive.ContextMenuSubProps> = (
-  props,
-) => {
-  const handleOpenChange = (open: boolean) => {
-    // When submenu opens, restore pointer events to allow interaction
-    // This is needed when the parent context menu has modal={false}
-    if (open) {
-      document.body.style.pointerEvents = "auto"
-    }
-
-    // Call the original onOpenChange if provided
-    props.onOpenChange?.(open)
-  }
-
-  return <ContextMenuPrimitive.Sub {...props} onOpenChange={handleOpenChange} />
-}
+const ContextMenuSub = ContextMenuPrimitive.Sub
 const ContextMenuGroup = ContextMenuPrimitive.Group
 const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup
 
 const ContextMenu: Component<ContextMenuPrimitive.ContextMenuRootProps> = (
   props,
 ) => {
-  const handleOpenChange = (open: boolean) => {
-    // Block/unblock interactions with document body when modal=false
-    if (props.modal === false) {
-      if (open) {
-        document.body.style.pointerEvents = "none"
-      } else {
-        document.body.style.pointerEvents = "auto"
-      }
-    }
-
-    // Call the original onOpenChange if provided
-    props.onOpenChange?.(open)
-  }
-
-  return (
-    <ContextMenuPrimitive.Root
-      gutter={4}
-      {...props}
-      onOpenChange={handleOpenChange}
-    />
-  )
+  return <ContextMenuPrimitive.Root gutter={4} {...props} />
 }
 
 type ContextMenuContentProps<T extends ValidComponent = "div"> =
@@ -71,7 +36,10 @@ const ContextMenuContent = <T extends ValidComponent = "div">(
           "bg-popover text-popover-foreground animate-in z-50 min-w-32 origin-[var(--kb-menu-content-transform-origin)] overflow-hidden rounded-md border p-1 shadow-md",
           local.class,
         )}
-        style="pointer-events: auto;"
+        onCloseAutoFocus={(event) => {
+          event.preventDefault()
+          document.body.style.pointerEvents = ""
+        }}
         {...others}
       />
     </ContextMenuPrimitive.Portal>
@@ -182,7 +150,6 @@ const ContextMenuSubContent = <T extends ValidComponent = "div">(
         "bg-popover text-popover-foreground animate-in z-50 min-w-32 origin-[var(--kb-menu-content-transform-origin)] overflow-hidden rounded-md border p-1 shadow-md",
         local.class,
       )}
-      style="pointer-events: auto;"
       {...others}
     />
   )

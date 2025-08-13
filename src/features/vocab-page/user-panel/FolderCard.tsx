@@ -1,6 +1,12 @@
 // vocab-page/user-panel/FolderCard.tsx
 import { Folder, Edit } from "lucide-solid"
 import { Button } from "@/components/ui/button"
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
 import { cn } from "@/utils"
 import { createSignal } from "solid-js"
 import { countDecksInFolder } from "../logic/folder-manager"
@@ -19,46 +25,59 @@ export function FolderCard(props: FolderCardProps) {
   const [isHovered, setIsHovered] = createSignal(false)
 
   return (
-    <div
-      class="bg-card/60 hover:bg-card/70 border-card-foreground/70 relative cursor-pointer rounded-lg border p-4 shadow-sm backdrop-blur-sm transition-colors hover:shadow-md"
-      onClick={() => props.onClick(props.folder.folder_id)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Edit button - appears on hover */}
-      <div
-        class={cn(
-          "absolute top-2 right-2 transition-opacity duration-200",
-          isHovered() ? "opacity-100" : "opacity-0",
-        )}
+    <ContextMenu>
+      <ContextMenuTrigger
+        class="bg-card/60 hover:bg-card/70 border-card-foreground/70 relative cursor-pointer rounded-lg border p-4 shadow-sm backdrop-blur-sm transition-colors hover:shadow-md"
+        onClick={() => props.onClick(props.folder.folder_id)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <Button
-          size="sm"
-          variant="ghost"
-          class="h-6 w-6 p-0 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation()
-            props.onEdit?.(props.folder)
-          }}
+        {/* Edit button - appears on hover */}
+        <div
+          class={cn(
+            "absolute top-2 right-2 transition-opacity duration-200",
+            isHovered() ? "opacity-100" : "opacity-0",
+          )}
         >
-          <Edit class="h-3 w-3" />
-        </Button>
-      </div>
-
-      <div class="flex items-start gap-3">
-        <div class="bg-muted/40 border-card-foreground/70 rounded-md border p-2 backdrop-blur-xs">
-          <Folder class="text-muted-foreground h-5 w-5" />
+          <Button
+            size="sm"
+            variant="ghost"
+            class="h-6 w-6 p-0 hover:cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation()
+              props.onEdit?.(props.folder)
+            }}
+          >
+            <Edit class="h-3 w-3" />
+          </Button>
         </div>
 
-        <div class="min-w-0 flex-1 pr-8">
-          <h4 class="truncate text-sm leading-tight font-medium">
-            {props.folder.folder_name}
-          </h4>
-          <p class="text-muted-foreground mt-1 text-xs">
-            {deckCount() === 1 ? "1 deck" : `${deckCount()} decks`}
-          </p>
+        <div class="flex items-start gap-3">
+          <div class="bg-muted/40 border-card-foreground/70 rounded-md border p-2 backdrop-blur-xs">
+            <Folder class="text-muted-foreground h-5 w-5" />
+          </div>
+
+          <div class="min-w-0 flex-1 pr-8">
+            <h4 class="truncate text-sm leading-tight font-medium">
+              {props.folder.folder_name}
+            </h4>
+            <p class="text-muted-foreground mt-1 text-xs">
+              {deckCount() === 1 ? "1 deck" : `${deckCount()} decks`}
+            </p>
+          </div>
         </div>
-      </div>
-    </div>
+      </ContextMenuTrigger>
+
+      <ContextMenuContent class="bg-card border-card-foreground outline-none">
+        {/* For some reason I need this div wrapper or I get duplicate menu items. */}
+        {/* Using modal={false} also works */}
+        <div>
+          <ContextMenuItem onClick={() => props.onEdit?.(props.folder)}>
+            <Edit class="mr-2 h-3 w-3" />
+            Edit folder
+          </ContextMenuItem>
+        </div>
+      </ContextMenuContent>
+    </ContextMenu>
   )
 }
