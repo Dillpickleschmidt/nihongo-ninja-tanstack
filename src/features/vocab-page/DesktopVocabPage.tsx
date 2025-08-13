@@ -14,7 +14,10 @@ import { useEditOperations } from "./hooks/useEditOperations"
 import type { ImportRequest, VocabTextbook } from "./types"
 import type { TextbookIDEnum } from "@/data/types"
 import type { FoldersAndDecksData } from "@/features/supabase/db/folder-operations"
-import { getVocabForDeck } from "@/features/supabase/db/folder-operations"
+import {
+  getVocabForDeck,
+  getDeckIdByOriginalIdServerFn,
+} from "@/features/supabase/db/folder-operations"
 import type { User } from "@supabase/supabase-js"
 import type { DeckCreationInitialData } from "./deck-creation/stores/deck-creation-store"
 import { copyDeck } from "@/features/vocab-page/utils/deckCopyUtils"
@@ -155,6 +158,30 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
     }
   }
 
+  // Delete deck handler
+  const handleDeleteDeck = async (deck: UserDeck) => {
+    // For built-in decks with temp IDs, get the real deck_id from database
+    if (
+      deck.deck_id < 0 &&
+      deck.source === "built-in" &&
+      deck.original_deck_id
+    ) {
+      try {
+        const realDeckId = await getDeckIdByOriginalIdServerFn({
+          data: { original_deck_id: deck.original_deck_id },
+        })
+        editOperations.deleteDeck(realDeckId)
+        return
+      } catch (error) {
+        alert("Deck is still syncing. Please wait a moment and try again.")
+        return
+      }
+    }
+
+    // Original logic for normal decks
+    editOperations.deleteDeck(deck.deck_id)
+  }
+
   // Enhanced tab change handler to clear edit data
   const handleTabChange = (tabId: any) => {
     // Clear deck edit data when leaving deck-builder
@@ -235,6 +262,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
               editOperations.editDeck(deck.deck_id, { folderId })
             }}
             onCopyDeck={handleOpenCopyModal}
+            onDeleteDeck={handleDeleteDeck}
             panelRef={userDecksPanelRef}
           />
         </CollapsiblePanel>

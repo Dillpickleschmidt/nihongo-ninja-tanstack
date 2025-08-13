@@ -7,6 +7,7 @@ import {
   FileText,
   FolderPlus,
   Copy,
+  Trash2,
 } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import {
@@ -38,6 +39,7 @@ interface UserDeckCardProps {
   onMove?: (deck: UserDeck, targetFolderId: string) => void
   onRename?: (deck: UserDeck, newName: string) => void
   onCopy?: (deck: UserDeck) => void
+  onDelete?: (deck: UserDeck) => void
   class?: string
 }
 
@@ -299,6 +301,23 @@ export function UserDeckCard(props: UserDeckCardProps) {
         >
           <Copy class="mr-2 h-3 w-3" />
           Make a copy
+        </ContextMenuItem>
+        <ContextMenuSeparator class="border-card-foreground" />
+        <ContextMenuItem
+          onClick={() => {
+            const message =
+              props.deck.source === "built-in"
+                ? `You're about to remove "${props.deck.deck_name}" You can always import it again. ( ˆ𐃷ˆ) .ᐟ.ᐟ`
+                : `Are you sure you want to delete "${props.deck.deck_name}"? This action cannot be undone.`
+
+            if (window.confirm(message)) {
+              props.onDelete?.(props.deck)
+            }
+          }}
+          class="text-red-600 focus:bg-red-50 focus:text-red-900 dark:text-red-400 dark:focus:bg-red-950 dark:focus:text-red-300"
+        >
+          <Trash2 class="mr-2 h-3 w-3" />
+          Delete
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>

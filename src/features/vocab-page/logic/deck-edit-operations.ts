@@ -243,13 +243,8 @@ export function applyDeleteDeck(
 ): EditResult {
   const { deckId } = operation
 
-  // Find the deck
-  const deckIndex = decks.findIndex((d) => d.deck_id === deckId)
-  if (deckIndex === -1) {
-    return { success: false, error: "Deck not found" }
-  }
-
-  // Create new state without the deck
+  // Create new state without the deck (if it exists locally)
+  // The database will handle validation of whether the deck actually exists
   const newDecks = decks.filter((d) => d.deck_id !== deckId)
 
   return {

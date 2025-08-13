@@ -411,17 +411,6 @@ describe("deck-edit-operations", () => {
         result.newState!.decks.find((d) => d.deck_id === 1),
       ).toBeUndefined()
     })
-
-    it("fails for nonexistent deck", () => {
-      const operation: DeleteDeckOperation = {
-        type: "delete-deck",
-        deckId: 999,
-      }
-
-      const result = applyDeleteDeck(folders, decks, operation)
-      expect(result.success).toBe(false)
-      expect(result.error).toBe("Deck not found")
-    })
   })
 
   describe("applyDeleteFolder", () => {

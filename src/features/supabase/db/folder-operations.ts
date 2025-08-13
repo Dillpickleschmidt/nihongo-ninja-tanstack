@@ -427,6 +427,27 @@ export const createCustomDeckServerFn = createServerFn({ method: "POST" })
   })
 
 /**
+ * Gets the real deck_id for a built-in deck by original_deck_id
+ */
+export const getDeckIdByOriginalIdServerFn = createServerFn({ method: "POST" })
+  .validator((data: { original_deck_id: string }) => data)
+  .handler(async ({ data }) => {
+    const supabase = createSupabaseClient()
+    const response = await getUser()
+    if (!response.user) throw new Error("User not authenticated")
+
+    const { data: deck, error } = await supabase
+      .from("user_decks")
+      .select("deck_id")
+      .eq("user_id", response.user.id)
+      .eq("original_deck_id", data.original_deck_id)
+      .single()
+
+    if (error) throw error
+    return deck.deck_id
+  })
+
+/**
  * Server function that executes multiple edit operations as an atomic transaction
  */
 export const executeEditTransactionServerFn = createServerFn({ method: "POST" })
