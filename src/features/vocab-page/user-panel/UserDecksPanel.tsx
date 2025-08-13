@@ -4,6 +4,7 @@ import { BookMarked } from "lucide-solid"
 import { UserDeckCard } from "./UserDeckCard"
 import { FolderCard } from "./FolderCard"
 import { FolderBreadcrumb } from "../shared/FolderBreadcrumb"
+import { EditTransaction } from "../logic/edit-transaction"
 import { cn } from "@/utils"
 
 interface UserDecksPanelProps {
@@ -24,6 +25,7 @@ interface UserDecksPanelProps {
   onDeselectDeck: () => void
   onEditDeck: (deck: UserDeck) => void
   onEditFolder: (folder: DeckFolder) => void
+  onDeleteFolder: (transaction: EditTransaction) => void
   onRenameDeck: (deck: UserDeck, newName: string) => void
   onMoveDeck: (deck: UserDeck, targetFolderId: string) => void
   onCopyDeck?: (deck: UserDeck) => void
@@ -98,6 +100,7 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
                   allDecks={props.userDecks}
                   onClick={props.setCurrentViewFolderId}
                   onEdit={props.onEditFolder}
+                  onDelete={props.onDeleteFolder}
                 />
               )}
             </For>

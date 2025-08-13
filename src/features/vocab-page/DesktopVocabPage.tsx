@@ -260,6 +260,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
             onDeselectDeck={state.handleDeckDeselect}
             onEditDeck={handleEditDeck}
             onEditFolder={handleEditFolder}
+            onDeleteFolder={handleSaveFolderEdit}
             onRenameDeck={(deck, newName) => {
               editOperations.editDeck(deck.deck_id, { name: newName })
             }}
