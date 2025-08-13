@@ -17,7 +17,7 @@ import type { FoldersAndDecksData } from "@/features/supabase/db/folder-operatio
 import {
   getVocabForDeck,
   getDeckIdByOriginalIdServerFn,
-} from "@/features/supabase/db/folder-operations"
+} from "@/features/supabase/db/deck-operations"
 import type { User } from "@supabase/supabase-js"
 import type { DeckCreationInitialData } from "./deck-creation/stores/deck-creation-store"
 import { copyDeck } from "@/features/vocab-page/utils/deckCopyUtils"

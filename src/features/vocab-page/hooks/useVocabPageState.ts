@@ -11,10 +11,8 @@ import {
   getFolderContents,
   getParentFolderId,
 } from "../logic/folder-hierarchy"
-import {
-  importBuiltInDeckServerFn,
-  getUserFoldersAndDecks,
-} from "@/features/supabase/db/folder-operations"
+import { getUserFoldersAndDecks } from "@/features/supabase/db/folder-operations"
+import { importBuiltInDeckServerFn } from "@/features/supabase/db/deck-operations"
 import {
   saveFoldersAndDecks,
   loadFoldersAndDecks,

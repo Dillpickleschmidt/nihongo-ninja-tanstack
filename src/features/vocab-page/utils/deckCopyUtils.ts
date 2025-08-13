@@ -5,7 +5,7 @@ import { dynamic_modules } from "@/data/dynamic_modules"
 import {
   getVocabForDeck,
   createCustomDeckServerFn,
-} from "@/features/supabase/db/folder-operations"
+} from "@/features/supabase/db/deck-operations"
 import type { VocabItemFormData } from "@/features/vocab-page/types/vocabulary-types"
 import type { VocabularyItem } from "@/data/types"
 
@@ -108,4 +108,3 @@ export async function copyDeck(params: CopyDeckParams): Promise<UserDeck> {
 
   return newDeck
 }
-
