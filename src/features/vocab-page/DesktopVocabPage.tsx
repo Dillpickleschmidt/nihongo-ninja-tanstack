@@ -7,6 +7,7 @@ import { UserDecksPanel } from "./user-panel/UserDecksPanel"
 import { CenterPanel } from "./center-panel/CenterPanel"
 import { ImportConfirmationModal } from "./shared/ImportConfirmationModal"
 import { FolderEditModal } from "./components/FolderEditModal"
+import { DeckCopyModal } from "./components/DeckCopyModal"
 import { useVocabPageState } from "./hooks/useVocabPageState"
 import { useImportModal } from "./hooks/useImportModal"
 import { useEditOperations } from "./hooks/useEditOperations"
@@ -16,6 +17,7 @@ import type { FoldersAndDecksData } from "@/features/supabase/db/folder-operatio
 import { getVocabForDeck } from "@/features/supabase/db/folder-operations"
 import type { User } from "@supabase/supabase-js"
 import type { DeckCreationInitialData } from "./deck-creation/stores/deck-creation-store"
+import { copyDeck } from "@/features/vocab-page/utils/deckCopyUtils"
 
 interface DesktopVocabPageProps {
   importRequest?: ImportRequest | null
@@ -55,6 +57,10 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
   const [editingFolder, setEditingFolder] = createSignal<DeckFolder | null>(
     null,
   )
+
+  // Copy modal state
+  const [copyModalOpen, setCopyModalOpen] = createSignal(false)
+  const [copyingDeck, setCopyingDeck] = createSignal<UserDeck | null>(null)
 
   // Deck edit state for center panel
   const [deckEditData, setDeckEditData] =
@@ -107,6 +113,46 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
   const handleSaveFolderEdit = (transaction: any) => {
     editOperations.executeEdit(transaction)
     handleCloseFolderEditModal()
+  }
+
+  // Copy deck modal handlers
+  const handleOpenCopyModal = (deck: UserDeck) => {
+    setCopyingDeck(deck)
+    setCopyModalOpen(true)
+  }
+
+  const handleCloseCopyModal = () => {
+    setCopyModalOpen(false)
+    setCopyingDeck(null)
+  }
+
+  // Copy deck handler
+  const handleCopyDeck = async (
+    deck: UserDeck,
+    newName: string,
+    targetFolderId: string,
+  ) => {
+    if (!props.user) {
+      alert("Copying decks requires authentication")
+      return
+    }
+
+    try {
+      await copyDeck({
+        sourceDeck: deck,
+        newName,
+        targetFolderId,
+        userId: props.user.id,
+      })
+
+      // Refetch to show the new deck
+      state.refetchFoldersAndDecks()
+    } catch (error) {
+      console.error("Failed to copy deck:", error)
+      alert(
+        `Failed to copy deck: ${error instanceof Error ? error.message : "Unknown error"}`,
+      )
+    }
   }
 
   // Enhanced tab change handler to clear edit data
@@ -188,6 +234,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
                 targetFolderId === "root" ? null : parseInt(targetFolderId)
               editOperations.editDeck(deck.deck_id, { folderId })
             }}
+            onCopyDeck={handleOpenCopyModal}
             panelRef={userDecksPanelRef}
           />
         </CollapsiblePanel>
@@ -208,6 +255,15 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
         onClose={handleCloseFolderEditModal}
         onSave={handleSaveFolderEdit}
         onDelete={handleSaveFolderEdit}
+      />
+
+      <DeckCopyModal
+        deck={copyingDeck()}
+        isOpen={copyModalOpen()}
+        folders={state.folders()}
+        decks={state.userDecks()}
+        onClose={handleCloseCopyModal}
+        onCopy={handleCopyDeck}
       />
     </div>
   )

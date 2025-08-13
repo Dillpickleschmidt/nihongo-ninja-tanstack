@@ -15,12 +15,14 @@ import {
 } from "@/components/ui/text-field"
 import { Trash2, Edit, Check, X } from "lucide-solid"
 import { EditTransaction } from "@/features/vocab-page/logic/edit-transaction"
-import { VALIDATION_RULES } from "@/features/vocab-page/validation"
+import {
+  VALIDATION_RULES,
+  validateFolderComplete,
+} from "@/features/vocab-page/validation"
 import {
   buildFolderPath,
   getCurrentFolderId,
 } from "@/features/vocab-page/utils/folderUtils"
-import { useEditValidation } from "@/features/vocab-page/hooks/useEditValidation"
 import { useFolderTree } from "@/features/vocab-page/hooks/useFolderTree"
 import { LocationBreadcrumb } from "./LocationBreadcrumb"
 import { LocationSelector } from "./LocationSelector"
@@ -37,7 +39,6 @@ interface FolderEditModalProps {
 }
 
 export function FolderEditModal(props: FolderEditModalProps) {
-
   // Ref for input focus
   let nameInputRef!: HTMLInputElement
 
@@ -49,6 +50,7 @@ export function FolderEditModal(props: FolderEditModalProps) {
   >("move-up")
   const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false)
   const [isEditingName, setIsEditingName] = createSignal(false)
+  const [showValidation, setShowValidation] = createSignal(false)
 
   // Initialize form when folder changes
   const initializeForm = () => {
@@ -59,6 +61,7 @@ export function FolderEditModal(props: FolderEditModalProps) {
     setSelectedFolderId(folder.parent_folder_id?.toString() || "root")
     setShowDeleteConfirm(false)
     setIsEditingName(false)
+    setShowValidation(false)
   }
 
   // Initialize when modal opens (only track isOpen and folder, not other signals)
@@ -73,37 +76,47 @@ export function FolderEditModal(props: FolderEditModalProps) {
     ),
   )
 
-  // Current location breadcrumb
-  const currentLocationPath = createMemo(() => {
-    if (!props.folder) return []
-    return buildFolderPath(getCurrentFolderId(props.folder), props.folders)
+  // Validation - only computed when needed
+  const nameValidation = createMemo(() => {
+    if (!props.folder) return { isValid: true, error: "" }
+
+    const targetParentId =
+      selectedFolderId() === "root" ? null : parseInt(selectedFolderId())
+    return validateFolderComplete(
+      name(),
+      targetParentId,
+      props.folder.folder_id,
+      props.folders,
+      props.folder.folder_id,
+    )
   })
 
-  // Selected location breadcrumb
-  const selectedLocationPath = createMemo(() => {
-    return buildFolderPath(selectedFolderId(), props.folders)
+  // Stable validation state that only changes on blur/submit
+  const stableValidationState = createMemo(() => {
+    if (!showValidation()) return "valid"
+    return nameValidation().isValid ? "valid" : "invalid"
   })
 
-  // Only compute when modal is open and we have data
-  const modalData = createMemo(() => {
-    if (!props.isOpen || !props.folder || props.folders.length === 0) {
-      return {
-        nameValidation: { isValid: true, error: "" },
-        hasChanges: false,
-        canSave: false,
-        folderTreeNodes: [],
-        folderContents: { decks: 0, folders: 0 },
-      }
-    }
+  // Check if there are changes
+  const hasChanges = createMemo(() => {
+    if (!props.folder) return false
 
-    // Call hooks once and destructure all needed values
-    const validation = useEditValidation({
-      name,
-      item: props.folder,
-      selectedFolderId,
-      folders: props.folders,
-      decks: props.decks,
-    })
+    const folder = props.folder
+    const targetParentId =
+      selectedFolderId() === "root" ? null : parseInt(selectedFolderId())
+    const nameChanged = name() !== folder.folder_name
+    const locationChanged = targetParentId !== folder.parent_folder_id
+    return nameChanged || locationChanged
+  })
+
+  const canSave = () => {
+    return nameValidation().isValid && hasChanges()
+  }
+
+  // Folder tree and contents
+  const folderData = createMemo(() => {
+    if (!props.folder)
+      return { folderTreeNodes: [], folderContents: { decks: 0, folders: 0 } }
 
     const folderTree = useFolderTree({
       folders: props.folders,
@@ -112,31 +125,33 @@ export function FolderEditModal(props: FolderEditModalProps) {
     })
 
     return {
-      nameValidation: validation.nameValidation(),
-      hasChanges: validation.hasChanges(),
-      canSave: validation.canSave(),
       folderTreeNodes: folderTree.folderTreeNodes(),
       folderContents: folderTree.folderContents(),
     }
   })
 
-  // Simple accessor functions
-  const nameValidation = () => modalData().nameValidation
-  const hasChanges = () => modalData().hasChanges
-  const canSave = () => modalData().canSave
-  const folderTreeNodes = () => modalData().folderTreeNodes
-  const folderContents = () => modalData().folderContents
+  // Current and selected location paths
+  const currentLocationPath = createMemo(() => {
+    if (!props.folder) return []
+    return buildFolderPath(getCurrentFolderId(props.folder), props.folders)
+  })
+
+  const selectedLocationPath = createMemo(() => {
+    return buildFolderPath(selectedFolderId(), props.folders)
+  })
 
   // Get selected folder display name
-  const selectedFolderName = createMemo(() => {
+  const selectedFolderName = () => {
     const id = selectedFolderId()
     if (id === "root") return "Root"
     const folder = props.folders.find((f) => f.folder_id.toString() === id)
     return folder?.folder_name || "Unknown"
-  })
+  }
 
   // Event handlers
   const handleSave = () => {
+    setShowValidation(true)
+
     if (!canSave() || !props.folder) return
 
     const transaction = new EditTransaction()
@@ -168,7 +183,7 @@ export function FolderEditModal(props: FolderEditModalProps) {
 
     const transaction = new EditTransaction()
     const folder = props.folder
-    
+
     transaction.add({
       type: "delete-folder",
       folderId: folder.folder_id,
@@ -197,15 +212,14 @@ export function FolderEditModal(props: FolderEditModalProps) {
         <Show when={!showDeleteConfirm()}>
           <div class="space-y-6">
             {/* Name Field */}
-            <TextField
-              validationState={nameValidation().isValid ? "valid" : "invalid"}
-            >
+            <TextField validationState={stableValidationState()}>
               <TextFieldLabel>Name</TextFieldLabel>
               <div class="relative">
                 <TextFieldInput
                   ref={nameInputRef}
                   value={name()}
                   onInput={(e) => setName(e.currentTarget.value)}
+                  onBlur={() => setShowValidation(true)}
                   placeholder="Folder name"
                   maxLength={VALIDATION_RULES.NAME_MAX_LENGTH}
                   disabled={!isEditingName()}
@@ -249,7 +263,7 @@ export function FolderEditModal(props: FolderEditModalProps) {
                   </Show>
                 </div>
               </div>
-              <Show when={!nameValidation().isValid}>
+              <Show when={showValidation() && !nameValidation().isValid}>
                 <p class="text-sm text-red-500">{nameValidation().error}</p>
               </Show>
             </TextField>
@@ -270,7 +284,7 @@ export function FolderEditModal(props: FolderEditModalProps) {
                 <LocationSelector
                   selectedFolderId={selectedFolderId()}
                   selectedFolderName={selectedFolderName()}
-                  folderTreeNodes={folderTreeNodes()}
+                  folderTreeNodes={folderData().folderTreeNodes}
                   editingType="folder"
                   onSelect={setSelectedFolderId}
                 />
@@ -311,7 +325,7 @@ export function FolderEditModal(props: FolderEditModalProps) {
           <DeleteConfirmation
             item={props.folder!}
             itemType="folder"
-            folderContents={folderContents()}
+            folderContents={folderData().folderContents}
             deleteStrategy={deleteStrategy()}
             onStrategyChange={setDeleteStrategy}
             onCancel={() => setShowDeleteConfirm(false)}

@@ -26,6 +26,7 @@ interface UserDecksPanelProps {
   onEditFolder: (folder: DeckFolder) => void
   onRenameDeck: (deck: UserDeck, newName: string) => void
   onMoveDeck: (deck: UserDeck, targetFolderId: string) => void
+  onCopyDeck?: (deck: UserDeck) => void
   panelRef?: HTMLDivElement
 }
 
@@ -115,6 +116,7 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
                   folders={props.folders}
                   onRename={props.onRenameDeck}
                   onMove={props.onMoveDeck}
+                  onCopy={props.onCopyDeck}
                   class="deck-card"
                 />
               )}

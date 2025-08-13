@@ -34,4 +34,3 @@ export function getCurrentFolderId(item: UserDeck | DeckFolder): number | null {
     return item.parent_folder_id
   }
 }
-

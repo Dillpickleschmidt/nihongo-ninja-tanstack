@@ -37,6 +37,7 @@ interface UserDeckCardProps {
   folders?: DeckFolder[]
   onMove?: (deck: UserDeck, targetFolderId: string) => void
   onRename?: (deck: UserDeck, newName: string) => void
+  onCopy?: (deck: UserDeck) => void
   class?: string
 }
 
@@ -291,7 +292,11 @@ export function UserDeckCard(props: UserDeckCardProps) {
             </ContextMenuSubContent>
           </ContextMenuPortal>
         </ContextMenuSub>
-        <ContextMenuItem>
+        <ContextMenuItem
+          onClick={() => {
+            props.onCopy?.(props.deck)
+          }}
+        >
           <Copy class="mr-2 h-3 w-3" />
           Make a copy
         </ContextMenuItem>
