@@ -13413,7 +13413,7 @@ export const vocabulary: VocabularyCollection = {
           ".",
         ],
         japanese: [
-          "友[とも]だちの家[いえ]に",
+          "友[とも]だちの 家[いえ]に",
           { t: "五日[いつか]" },
           " 泊[と]まります。",
         ],

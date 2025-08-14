@@ -44,7 +44,6 @@ export const createDeckShareServerFn = createServerFn({ method: "POST" })
     if (error) {
       // Handle case where share already exists
       if (error.code === "23505") {
-        // unique_violation
         throw new Error("Deck is already shared publicly")
       }
       throw error
@@ -272,4 +271,3 @@ export const importSharedDeckServerFn = createServerFn({ method: "POST" })
       vocabularyCount: vocabularyItems.length,
     }
   })
-

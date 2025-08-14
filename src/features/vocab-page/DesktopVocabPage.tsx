@@ -258,6 +258,8 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
           <UserDecksPanel
             userDecks={state.userDecks()}
             folders={state.folders()}
+            shareStatus={state.shareStatus()}
+            onShareStatusChange={state.refetchFoldersAndDecks}
             currentViewFolderId={state.currentViewFolderId}
             viewBreadcrumbPath={state.viewBreadcrumbPath}
             currentViewContent={state.currentViewContent}

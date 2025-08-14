@@ -10,6 +10,8 @@ import { cn } from "@/utils"
 interface UserDecksPanelProps {
   userDecks: UserDeck[]
   folders: DeckFolder[]
+  shareStatus: Record<number, boolean>
+  onShareStatusChange: () => void
   // Folder view navigation
   currentViewFolderId: () => number | null
   viewBreadcrumbPath: () => DeckFolder[]
@@ -124,6 +126,8 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
                   onCopy={props.onCopyDeck}
                   onDelete={props.onDeleteDeck}
                   userId={props.userId}
+                  isShared={!!props.shareStatus[deck.deck_id]}
+                  onShareStatusChange={props.onShareStatusChange}
                   class="deck-card"
                 />
               )}

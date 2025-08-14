@@ -61,8 +61,8 @@ export function useVocabPageState(
 
   // Folder/deck data (immediate UI updates)
   const initialLocalData = user
-    ? { folders: [], decks: [] }
-    : loadFoldersAndDecks()
+    ? { folders: [], decks: [], shareStatus: {} }
+    : { ...loadFoldersAndDecks(), shareStatus: {} }
   const [userData, setUserData] = createStore(initialLocalData)
   const [newlyImportedDecks, setNewlyImportedDecks] = createSignal<Set<string>>(
     new Set(),
@@ -104,15 +104,10 @@ export function useVocabPageState(
   const [foldersAndDecks, { refetch: refetchFoldersAndDecks }] = createResource(
     foldersAndDecksPromise,
     async (resolvedInitialData, { refetching }) => {
-      if (refetching) {
-        if (user?.id) {
-          return getUserFoldersAndDecks(user.id)
-        } else {
-          return { folders: [], decks: [] }
-        }
-      } else {
-        return resolvedInitialData || { folders: [], decks: [] }
+      if (refetching && user?.id) {
+        return getUserFoldersAndDecks(user.id)
       }
+      return resolvedInitialData || { folders: [], decks: [], shareStatus: {} }
     },
   )
 
@@ -252,6 +247,7 @@ export function useVocabPageState(
     setUserData({
       folders: localResult.folders,
       decks: localResult.decks,
+      shareStatus: localResult.shareStatus,
     })
 
     deckSelection.handleUserDeckSelect(localResult.importedDeck)
@@ -328,6 +324,7 @@ export function useVocabPageState(
     expandedChapters,
     userDecks: () => userData.decks,
     folders: () => userData.folders,
+    shareStatus: () => userData.shareStatus,
     newlyImportedDecks,
     selectedUserDeck: deckSelection.selectedUserDeck,
     selectedBuiltInDeck: deckSelection.selectedBuiltInDeck,

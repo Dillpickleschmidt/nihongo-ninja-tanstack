@@ -6,6 +6,7 @@ import { getUser } from "../getUser"
 export type FoldersAndDecksData = {
   folders: DeckFolder[]
   decks: UserDeck[]
+  shareStatus: Record<number, boolean> // deck_id -> isShared
 }
 
 /**
@@ -16,8 +17,8 @@ export async function getUserFoldersAndDecks(
 ): Promise<FoldersAndDecksData> {
   const supabase = createSupabaseClient()
 
-  // Fetch folders and decks in parallel
-  const [foldersResult, decksResult] = await Promise.all([
+  // Fetch folders, decks, and share status in parallel
+  const [foldersResult, decksResult, sharesResult] = await Promise.all([
     supabase
       .from("deck_folders")
       .select("*")
@@ -29,14 +30,27 @@ export async function getUserFoldersAndDecks(
       .select("*")
       .eq("user_id", userId)
       .order("created_at", { ascending: true }),
+
+    supabase
+      .from("public_deck_shares")
+      .select("deck_id")
+      .eq("shared_by", userId),
   ])
 
   if (foldersResult.error) throw foldersResult.error
   if (decksResult.error) throw decksResult.error
+  if (sharesResult.error) throw sharesResult.error
+
+  // Build share status map
+  const shareStatus: Record<number, boolean> = {}
+  sharesResult.data?.forEach((share) => {
+    shareStatus[share.deck_id] = true
+  })
 
   return {
     folders: foldersResult.data || [],
     decks: decksResult.data || [],
+    shareStatus,
   }
 }
 
