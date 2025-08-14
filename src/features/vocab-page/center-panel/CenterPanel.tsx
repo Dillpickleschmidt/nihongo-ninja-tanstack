@@ -8,6 +8,7 @@ import type { DeckCreationInitialData } from "../deck-creation/stores/deck-creat
 import { BrowseDecksContent } from "./BrowseDecksContent"
 import { OverridesContent } from "./OverridesContent"
 import type { VocabBuiltInDeck } from "../types"
+import type { User } from "@supabase/supabase-js"
 
 interface CenterPanelProps {
   selectedUserDeck: UserDeck | null
@@ -19,6 +20,7 @@ interface CenterPanelProps {
   deckEditData?: DeckCreationInitialData | null
   onRefetch?: () => Promise<void>
   onNavigateToDeck?: (deck: UserDeck) => void
+  user?: User | null
 }
 
 export function CenterPanel(props: CenterPanelProps) {
@@ -64,7 +66,7 @@ export function CenterPanel(props: CenterPanelProps) {
             </Show>
           </Match>
           <Match when={props.activeNavTab === "browse-decks"}>
-            <BrowseDecksContent />
+            <BrowseDecksContent user={props.user} />
           </Match>
           <Match when={props.activeNavTab === "overrides"}>
             <OverridesContent />

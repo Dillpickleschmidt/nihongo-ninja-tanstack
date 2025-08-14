@@ -109,18 +109,21 @@ export type Database = {
       public_deck_shares: {
         Row: {
           deck_id: number
+          import_count: number
           shared_at: string
           shared_by: string
           updated_at: string
         }
         Insert: {
           deck_id: number
+          import_count?: number
           shared_at?: string
           shared_by: string
           updated_at?: string
         }
         Update: {
           deck_id?: number
+          import_count?: number
           shared_at?: string
           shared_by?: string
           updated_at?: string

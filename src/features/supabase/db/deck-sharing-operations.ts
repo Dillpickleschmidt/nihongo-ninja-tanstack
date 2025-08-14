@@ -98,19 +98,22 @@ export const getDeckShareStatusServerFn = createServerFn({ method: "POST" })
   })
 
 /**
- * Gets all publicly shared decks for browsing
+ * Gets all publicly shared decks for browsing with pagination
  */
-export const getSharedDecksServerFn = createServerFn({ method: "GET" }).handler(
-  async () => {
+export const getSharedDecksServerFn = createServerFn({ method: "GET" })
+  .validator((data: { offset?: number; limit?: number }) => data)
+  .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
+    const { offset = 0, limit = 20 } = data
 
-    const { data, error } = await supabase
+    const { data: decks, error } = await supabase
       .from("public_deck_shares")
       .select(
         `
         deck_id,
         shared_at,
         shared_by,
+        import_count,
         user_decks (
           deck_name,
           deck_description,
@@ -120,12 +123,12 @@ export const getSharedDecksServerFn = createServerFn({ method: "GET" }).handler(
       `,
       )
       .order("shared_at", { ascending: false })
+      .range(offset, offset + limit - 1)
 
     if (error) throw error
 
-    return data || []
-  },
-)
+    return decks || []
+  })
 
 /**
  * Gets detailed information about a shared deck for preview before import

@@ -243,6 +243,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
           deckEditData={deckEditData()}
           onRefetch={() => state.refetchFoldersAndDecks() as Promise<void>}
           onNavigateToDeck={state.handleDeckSelect}
+          user={props.user}
         />
       </div>
 
