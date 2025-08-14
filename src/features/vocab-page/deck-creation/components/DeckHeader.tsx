@@ -30,7 +30,7 @@ export function DeckHeader(props: DeckHeaderProps) {
   const isEditMode = actions.isEditMode()
 
   return (
-    <div class="bg-background/50 sticky top-0 z-10 -mx-2 px-2 py-2 backdrop-blur-md">
+    <div class="bg-background/50 sticky top-0 z-10 -mx-2 rounded-sm px-2 py-2 backdrop-blur-md">
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-2xl leading-tight font-semibold">
@@ -98,16 +98,14 @@ export function DeckHeader(props: DeckHeaderProps) {
             onClick={props.onSave}
             disabled={props.isSaving}
           >
-            {props.isSaving 
-              ? "Saving..." 
-              : isEditMode 
-                ? "Save Changes" 
-                : "Save Deck"
-            }
+            {props.isSaving
+              ? "Saving..."
+              : isEditMode
+                ? "Save Changes"
+                : "Save Deck"}
           </Button>
         </div>
       </div>
     </div>
   )
 }
-

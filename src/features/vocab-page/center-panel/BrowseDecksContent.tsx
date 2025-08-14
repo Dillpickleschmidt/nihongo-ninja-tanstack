@@ -177,37 +177,37 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
                   : `border-card-foreground/70 ${(index() + 1) % 2 === 0 ? "bg-card/60" : "bg-card/50"}`
               }`}
             >
-              <div class="p-6">
+              <div class="p-4">
                 <div class="flex items-start justify-between">
-                  <div class="flex-1 space-y-3">
+                  <div class="flex-1 space-y-2">
                     {/* Deck Title */}
                     <div class="flex items-center gap-2">
-                      <h3 class="text-xl leading-tight font-bold">
+                      <h3 class="text-lg leading-tight font-bold">
                         {deck.user_decks.deck_name}
                       </h3>
                       <Show when={isOwnDeck(deck)}>
-                        <Crown class="h-4 w-4 flex-shrink-0 text-amber-400" />
+                        <Crown class="h-3.5 w-3.5 flex-shrink-0 text-amber-400" />
                       </Show>
                     </div>
 
                     {/* Description */}
                     <Show when={deck.user_decks.deck_description}>
-                      <p class="text-muted-foreground text-sm leading-relaxed">
+                      <p class="text-muted-foreground text-xs leading-relaxed">
                         {deck.user_decks.deck_description}
                       </p>
                     </Show>
 
                     {/* Metadata */}
-                    <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex flex-wrap items-center gap-3">
                       <div
-                        class={`flex items-center gap-2 rounded-lg border px-3 py-1.5 backdrop-blur-sm ${
+                        class={`flex items-center gap-1.5 rounded-md border px-2 py-1 backdrop-blur-sm ${
                           isOwnDeck(deck)
                             ? "border-amber-400/30 bg-amber-100/20"
                             : "bg-background/40 border-card-foreground/50"
                         }`}
                       >
                         <Users
-                          class={`h-3.5 w-3.5 ${isOwnDeck(deck) ? "text-amber-400" : "text-sky-400"}`}
+                          class={`h-3 w-3 ${isOwnDeck(deck) ? "text-amber-400" : "text-sky-400"}`}
                         />
                         <span class="text-xs font-medium">
                           {isOwnDeck(deck) ? "You" : deck.shared_by}
@@ -221,20 +221,20 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
                   </div>
 
                   {/* Import/Manage Button */}
-                  <div class="ml-6">
+                  <div class="ml-4">
                     <Show
                       when={isOwnDeck(deck)}
                       fallback={
                         <Button
                           variant="default"
                           size="sm"
-                          class="hover:bg-primary shadow-sm"
+                          class="hover:bg-primary text-xs shadow-sm"
                           onClick={() => {
                             // TODO: Implement import functionality
                             alert("Import functionality coming soon!")
                           }}
                         >
-                          <Download class="mr-2 h-4 w-4" />
+                          <Download class="mr-1.5 h-3.5 w-3.5" />
                           Import
                         </Button>
                       }
@@ -242,7 +242,7 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
                       <Button
                         variant="secondary"
                         size="sm"
-                        class="shadow-sm"
+                        class="text-xs shadow-sm"
                         onClick={() => {
                           // TODO: Implement manage functionality (unshare, edit, etc.)
                           alert("Manage functionality coming soon!")
@@ -261,7 +261,7 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
 
       <Show when={isLoading()}>
         <div class="flex justify-center py-8">
-          <div class="border-primary h-6 w-6 animate-spin rounded-full border-b-2"></div>
+          <div class="h-6 w-6 animate-spin rounded-full border border-current border-t-transparent"></div>
         </div>
       </Show>
 

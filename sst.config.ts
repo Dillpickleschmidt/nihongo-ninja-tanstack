@@ -22,6 +22,11 @@ export default $config({
     // Deploy your TanStackStart app and link the secrets
     new sst.aws.TanStackStart("MyWeb", {
       link: [...allSecrets],
+      environment: {
+        VITE_SUPABASE_URL: secrets.SUPABASE_URL.value,
+        VITE_SUPABASE_PUBLISHABLE_OR_ANON_KEY:
+          secrets.SUPABASE_PUBLISHABLE_OR_ANON_KEY.value,
+      },
     })
   },
 })

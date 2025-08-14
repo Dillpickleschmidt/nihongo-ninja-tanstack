@@ -49,8 +49,7 @@ jobs:
       - name: Set SST Config Secret
         run: |
           bunx sst secret set SUPABASE_URL '${{ secrets.SUPABASE_URL_STAGING }}' --stage staging
-          bunx sst secret set SUPABASE_ANON_KEY '${{ secrets.SUPABASE_ANON_KEY_STAGING }}' --stage staging
-          bunx sst secret set SUPABASE_JWT_SECRET '${{ secrets.SUPABASE_JWT_SECRET }}' --stage staging
+          bunx sst secret set SUPABASE_PUBLISHABLE_OR_ANON_KEY '${{ secrets.SUPABASE_PUBLISHABLE_OR_ANON_KEY_STAGING }}' --stage staging
           bunx sst secret set SECRET_VAL '${{ secrets.SECRET_VAL }}' --stage staging
           bunx sst secret set COMMIT_SHA '${{ github.sha }}' --stage staging
 

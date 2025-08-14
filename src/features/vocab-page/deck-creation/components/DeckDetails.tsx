@@ -89,7 +89,10 @@ export function DeckDetails(props: DeckDetailsProps) {
           class="relative"
         >
           <TextFieldLabel>Deck Name</TextFieldLabel>
-          <TextFieldInput placeholder="My Vocabulary Deck" />
+          <TextFieldInput
+            placeholder="My Vocabulary Deck"
+            class="bg-primary/10 border-primary-foreground/40"
+          />
           <div class="text-muted-foreground/70 pointer-events-none absolute top-7.5 right-4 text-xs font-medium italic">
             {showRequiredIndicator()}
           </div>
@@ -107,12 +110,12 @@ export function DeckDetails(props: DeckDetailsProps) {
             onSelect={handleFolderSelect}
           />
           {/* Show original path when different from current in edit mode */}
-          {store.original && 
-           store.original.folderId !== store.deck.selectedFolderId && (
-            <div class="mt-1 text-xs text-muted-foreground">
-              Original location: {store.original.folderName}
-            </div>
-          )}
+          {store.original &&
+            store.original.folderId !== store.deck.selectedFolderId && (
+              <div class="text-muted-foreground mt-1 text-xs">
+                Original location: {store.original.folderName}
+              </div>
+            )}
         </div>
       </div>
 
@@ -125,7 +128,10 @@ export function DeckDetails(props: DeckDetailsProps) {
             Description{" "}
             <span class="text-muted-foreground text-xs">(Optional)</span>
           </TextFieldLabel>
-          <TextFieldInput placeholder="Describe your deck..." />
+          <TextFieldInput
+            placeholder="Describe your deck..."
+            class="bg-primary/10 border-primary-foreground/40"
+          />
         </TextField>
       </div>
     </section>
