@@ -276,6 +276,34 @@ export async function getVocabForDeck(
 }
 
 /**
+ * Gets deck information by deck_id for practice sessions
+ */
+export const getDeckInfoServerFn = createServerFn({ method: "POST" })
+  .validator((data: { deck_id: number }) => data)
+  .handler(async ({ data }) => {
+    const supabase = createSupabaseClient()
+    const response = await getUser()
+    if (!response.user) throw new Error("User not authenticated")
+
+    const { data: deck, error } = await supabase
+      .from("user_decks")
+      .select("deck_name, deck_description, source, original_deck_id")
+      .eq("deck_id", data.deck_id)
+      .eq("user_id", response.user.id) // Ensure user owns the deck
+      .single()
+
+    if (error) throw error
+    if (!deck) throw new Error("Deck not found")
+
+    return {
+      deck_name: deck.deck_name,
+      deck_description: deck.deck_description,
+      source: deck.source,
+      original_deck_id: deck.original_deck_id,
+    }
+  })
+
+/**
  * Batch insert vocabulary items for a deck
  */
 export async function insertVocabularyItems(

@@ -40,6 +40,7 @@ interface UserDeckCardProps {
   onRename?: (deck: UserDeck, newName: string) => void
   onCopy?: (deck: UserDeck) => void
   onDelete?: (deck: UserDeck) => void
+  userId?: string
   class?: string
 }
 
@@ -50,10 +51,24 @@ export function UserDeckCard(props: UserDeckCardProps) {
     new Set(),
   )
 
-  const practiceID = () =>
-    props.deck.source === "built-in"
-      ? props.deck.original_deck_id!
-      : props.deck.deck_id.toString()
+  const getPracticeRoute = () => {
+    if (props.deck.source === "built-in") {
+      // Built-in decks use the original route
+      return {
+        to: "/practice/$practiceID",
+        params: { practiceID: props.deck.original_deck_id! },
+      }
+    } else {
+      // User decks use the new route structure
+      return {
+        to: "/practice/$userID/$deckID",
+        params: {
+          userID: props.userId || "unknown",
+          deckID: props.deck.deck_id.toString(),
+        },
+      }
+    }
+  }
 
   // Build folder tree for move functionality
   const { folderTreeNodes } = useFolderTree({
@@ -174,10 +189,8 @@ export function UserDeckCard(props: UserDeckCardProps) {
           size="sm"
           onClick={(e) => {
             e.stopPropagation()
-            navigate({
-              to: "/practice/$practiceID",
-              params: { practiceID: practiceID() },
-            })
+            const route = getPracticeRoute()
+            navigate(route)
           }}
           class="bg-card hover:bg-card-foreground/10 dark:bg-card-foreground text-primary outline-card-foreground/70 relative w-full overflow-hidden text-xs outline backdrop-blur-xs transition-colors dark:outline-none hover:dark:bg-neutral-600"
         >

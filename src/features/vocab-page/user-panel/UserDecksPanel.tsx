@@ -30,6 +30,7 @@ interface UserDecksPanelProps {
   onMoveDeck: (deck: UserDeck, targetFolderId: string) => void
   onCopyDeck?: (deck: UserDeck) => void
   onDeleteDeck?: (deck: UserDeck) => void
+  userId?: string
   panelRef?: HTMLDivElement
 }
 
@@ -122,6 +123,7 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
                   onMove={props.onMoveDeck}
                   onCopy={props.onCopyDeck}
                   onDelete={props.onDeleteDeck}
+                  userId={props.userId}
                   class="deck-card"
                 />
               )}

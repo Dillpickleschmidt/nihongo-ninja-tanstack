@@ -34,6 +34,7 @@ import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-not
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeConjugationRouteImport } from './routes/_home/conjugation'
 import { Route as HomeLearnIndexRouteImport } from './routes/_home/learn/index'
+import { Route as PracticeUserIDDeckIDRouteImport } from './routes/practice/$userID.$deckID'
 import { Route as HomeLearnTextbookIdChapterSlugRouteImport } from './routes/_home/learn/$textbookId.$chapterSlug'
 import { ServerRoute as ApiHelloServerRouteImport } from './routes/api/hello'
 import { ServerRoute as ApiAuthLogoutServerRouteImport } from './routes/api/auth/logout'
@@ -158,6 +159,11 @@ const HomeLearnIndexRoute = HomeLearnIndexRouteImport.update({
   path: '/learn/',
   getParentRoute: () => HomeRoute,
 } as any)
+const PracticeUserIDDeckIDRoute = PracticeUserIDDeckIDRouteImport.update({
+  id: '/practice/$userID/$deckID',
+  path: '/practice/$userID/$deckID',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomeLearnTextbookIdChapterSlugRoute =
   HomeLearnTextbookIdChapterSlugRouteImport.update({
     id: '/learn/$textbookId/$chapterSlug',
@@ -202,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
   '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
+  '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
 }
@@ -227,6 +234,7 @@ export interface FileRoutesByTo {
   '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
   '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
+  '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
 }
@@ -254,6 +262,7 @@ export interface FileRoutesById {
   '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
   '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
+  '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/_home/learn/': typeof HomeLearnIndexRoute
   '/_home/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
 }
@@ -281,6 +290,7 @@ export interface FileRouteTypes {
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/practice/review'
+    | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
   fileRoutesByTo: FileRoutesByTo
@@ -306,6 +316,7 @@ export interface FileRouteTypes {
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/practice/review'
+    | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
   id:
@@ -332,6 +343,7 @@ export interface FileRouteTypes {
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/practice/review'
+    | '/practice/$userID/$deckID'
     | '/_home/learn/'
     | '/_home/learn/$textbookId/$chapterSlug'
   fileRoutesById: FileRoutesById
@@ -350,6 +362,7 @@ export interface RootRouteChildren {
   PracticeDakutenHandakutenQuizRoute: typeof PracticeDakutenHandakutenQuizRoute
   PracticeHiraganaQuizRoute: typeof PracticeHiraganaQuizRoute
   PracticeReviewRoute: typeof PracticeReviewRoute
+  PracticeUserIDDeckIDRoute: typeof PracticeUserIDDeckIDRoute
 }
 export interface FileServerRoutesByFullPath {
   '/api/hello': typeof ApiHelloServerRoute
@@ -544,6 +557,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeLearnIndexRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/practice/$userID/$deckID': {
+      id: '/practice/$userID/$deckID'
+      path: '/practice/$userID/$deckID'
+      fullPath: '/practice/$userID/$deckID'
+      preLoaderRoute: typeof PracticeUserIDDeckIDRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_home/learn/$textbookId/$chapterSlug': {
       id: '/_home/learn/$textbookId/$chapterSlug'
       path: '/learn/$textbookId/$chapterSlug'
@@ -632,6 +652,7 @@ const rootRouteChildren: RootRouteChildren = {
   PracticeDakutenHandakutenQuizRoute: PracticeDakutenHandakutenQuizRoute,
   PracticeHiraganaQuizRoute: PracticeHiraganaQuizRoute,
   PracticeReviewRoute: PracticeReviewRoute,
+  PracticeUserIDDeckIDRoute: PracticeUserIDDeckIDRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
