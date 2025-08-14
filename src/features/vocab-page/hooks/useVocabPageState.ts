@@ -1,5 +1,6 @@
 // features/vocab-page/hooks/useVocabPageState.ts
 import { createSignal, createEffect, createResource } from "solid-js"
+import { createStore, reconcile } from "solid-js/store"
 import { type DeferredPromise } from "@tanstack/solid-router"
 import { DEFAULT_EXPANDED_TEXTBOOKS, NEWLY_IMPORTED_TIMEOUT } from "../types"
 import type { ImportRequest, VocabBuiltInDeck, VocabTextbook } from "../types"
@@ -62,12 +63,7 @@ export function useVocabPageState(
   const initialLocalData = user
     ? { folders: [], decks: [] }
     : loadFoldersAndDecks()
-  const [folderData, setFolderData] = createSignal<DeckFolder[]>(
-    initialLocalData.folders,
-  )
-  const [deckData, setDeckData] = createSignal<UserDeck[]>(
-    initialLocalData.decks,
-  )
+  const [userData, setUserData] = createStore(initialLocalData)
   const [newlyImportedDecks, setNewlyImportedDecks] = createSignal<Set<string>>(
     new Set(),
   )
@@ -128,14 +124,12 @@ export function useVocabPageState(
   // === COMPUTED VALUES ===
   // Folder navigation computations
   const viewBreadcrumbPath = () =>
-    buildBreadcrumbPath(folderData(), currentViewFolderId())
+    buildBreadcrumbPath(userData.folders, currentViewFolderId())
   const currentViewContent = () =>
-    getFolderContents(folderData(), deckData(), currentViewFolderId())
+    getFolderContents(userData.folders, userData.decks, currentViewFolderId())
   const canNavigateUp = () => currentViewFolderId() !== null
 
-  // Computed textbooks with up-to-date import status derived from user decks
   const textbooksWithImportStatus = () => {
-    const currentDecks = deckData()
     return textbooks().map(([textbookId, textbook]) => [
       textbookId,
       {
@@ -144,7 +138,7 @@ export function useVocabPageState(
           ...chapter,
           decks: chapter.decks.map((deck) => ({
             ...deck,
-            isImported: isDeckAlreadyImported(currentDecks, deck.id),
+            isImported: isDeckAlreadyImported(userData.decks, deck.id),
           })),
         })),
       },
@@ -156,14 +150,29 @@ export function useVocabPageState(
   createEffect(() => {
     if (user) {
       const data = foldersAndDecks() as FoldersAndDecksData | undefined
-      if (data) {
-        // Always update local signals from database for signed-in users
-        setFolderData(data.folders)
-        setDeckData(data.decks)
+      if (data && data.decks.length > 0) {
+        const selectedDeck = deckSelection.selectedUserDeck()
+        const hasTemporaryDeck =
+          selectedDeck &&
+          selectedDeck.deck_id < 0 &&
+          selectedDeck.source === "built-in"
 
-        // Reset navigation state to avoid stale folder references
-        // TODO: Could be smarter and try to preserve navigation if folder still exists
-        setCurrentViewFolderId(null)
+        if (hasTemporaryDeck) {
+          const realDeck = data.decks.find(
+            (deck) =>
+              deck.source === "built-in" &&
+              deck.original_deck_id === selectedDeck.original_deck_id &&
+              deck.deck_id > 0,
+          )
+
+          if (realDeck) {
+            setUserData(reconcile(data, { key: "deck_id" }))
+            setCurrentViewFolderId(realDeck.folder_id)
+            deckSelection.handleUserDeckSelect(realDeck)
+          }
+        } else {
+          setUserData(reconcile(data, { key: "deck_id" }))
+        }
       }
     }
   })
@@ -171,13 +180,8 @@ export function useVocabPageState(
   // Auto-sync local state to session storage for unsigned users
   createEffect(() => {
     if (!user) {
-      const currentFolders = folderData()
-      const currentDecks = deckData()
-      if (currentFolders.length > 0 || currentDecks.length > 0) {
-        saveFoldersAndDecks({
-          folders: currentFolders,
-          decks: currentDecks,
-        })
+      if (userData.folders.length > 0 || userData.decks.length > 0) {
+        saveFoldersAndDecks(userData)
       }
     }
   })
@@ -186,11 +190,9 @@ export function useVocabPageState(
   const toggleTextbook = (textbookId: string) => {
     setExpandedTextbooks((prev) => {
       const newSet = new Set(prev)
-      if (newSet.has(textbookId)) {
-        newSet.delete(textbookId)
-      } else {
-        newSet.add(textbookId)
-      }
+      newSet.has(textbookId)
+        ? newSet.delete(textbookId)
+        : newSet.add(textbookId)
       return newSet
     })
   }
@@ -198,18 +200,14 @@ export function useVocabPageState(
   const toggleChapter = (chapterId: string) => {
     setExpandedChapters((prev) => {
       const newSet = new Set(prev)
-      if (newSet.has(chapterId)) {
-        newSet.delete(chapterId)
-      } else {
-        newSet.add(chapterId)
-      }
+      newSet.has(chapterId) ? newSet.delete(chapterId) : newSet.add(chapterId)
       return newSet
     })
   }
 
   // Folder navigation actions
   const navigateToParentView = () => {
-    const parentId = getParentFolderId(folderData(), currentViewFolderId())
+    const parentId = getParentFolderId(userData.folders, currentViewFolderId())
     setCurrentViewFolderId(parentId)
   }
 
@@ -231,49 +229,47 @@ export function useVocabPageState(
     }
   }
 
+  // Get stable key for deck tracking
+  const getDeckTrackingKey = (deck: UserDeck) => {
+    return deck.original_deck_id || deck.deck_id.toString()
+  }
+
   // === UI SYNC LOGIC ===
-  // Immediate local update with visual feedback
+  // Optimistic update for immediate UI feedback
   const updateLocalStateOptimistically = (
     operation: string,
     builtInDeck: VocabBuiltInDeck,
   ) => {
-    const currentFolders = folderData()
-    const currentDecks = deckData()
     const userId = user?.id || "session-user"
-    const deckId = builtInDeck.id
-
-    // Apply local changes immediately
     const localResult = importDeckWithFolders(
-      currentFolders,
-      currentDecks,
+      userData.folders,
+      userData.decks,
       builtInDeck,
       textbooks(),
       userId,
     )
 
-    setFolderData(localResult.folders)
-    setDeckData(localResult.decks)
+    setUserData({
+      folders: localResult.folders,
+      decks: localResult.decks,
+    })
+
     deckSelection.handleUserDeckSelect(localResult.importedDeck)
 
-    // Navigate immediately to the folder containing the new deck
     if (localResult.targetFolderId !== null) {
       setCurrentViewFolderId(localResult.targetFolderId)
     }
 
-    // Mark as newly imported
-    const importedDeckId = localResult.importedDeck.deck_id.toString()
-    setNewlyImportedDecks((prev) => new Set([...prev, importedDeckId]))
+    const importedDeckKey = getDeckTrackingKey(localResult.importedDeck)
+    setNewlyImportedDecks((prev) => new Set([...prev, importedDeckKey]))
 
-    return { localResult, currentFolders, currentDecks }
+    return { localResult, userData }
   }
 
-  // Background database sync with error handling
   const syncToDatabase = async (
     builtInDeck: VocabBuiltInDeck,
-    fallbackData: { currentFolders: DeckFolder[]; currentDecks: UserDeck[] },
+    fallbackData: any,
   ) => {
-    const deckId = builtInDeck.id
-
     try {
       if (user) {
         await importBuiltInDeckServerFn({
@@ -282,22 +278,15 @@ export function useVocabPageState(
             textbooks: textbooks(),
           },
         })
+        await refetchFoldersAndDecks()
       } else {
-        // For unsigned users: Save to session storage
-        saveFoldersAndDecks({
-          folders: folderData(),
-          decks: deckData(),
-        })
+        saveFoldersAndDecks(userData)
       }
     } catch (error) {
       console.error("Database sync failed:", error)
-
-      // Revert local changes
-      setFolderData(fallbackData.currentFolders)
-      setDeckData(fallbackData.currentDecks)
+      setUserData(fallbackData.userData)
       deckSelection.handleDeselect()
       setCurrentViewFolderId(null)
-
       alert("Failed to save deck to your account. Please try again.")
     }
   }
@@ -310,12 +299,13 @@ export function useVocabPageState(
     syncToDatabase(builtInDeck, fallbackData)
 
     // Remove from newly imported after timeout
-    const importedDeckId =
-      fallbackData.localResult.importedDeck.deck_id.toString()
+    const importedDeckKey = getDeckTrackingKey(
+      fallbackData.localResult.importedDeck,
+    )
     setTimeout(() => {
       setNewlyImportedDecks((prev) => {
         const newSet = new Set(prev)
-        newSet.delete(importedDeckId)
+        newSet.delete(importedDeckKey)
         return newSet
       })
     }, NEWLY_IMPORTED_TIMEOUT)
@@ -336,8 +326,8 @@ export function useVocabPageState(
     textbooks: textbooksWithImportStatus,
     expandedTextbooks,
     expandedChapters,
-    userDecks: deckData,
-    folders: folderData,
+    userDecks: () => userData.decks,
+    folders: () => userData.folders,
     newlyImportedDecks,
     selectedUserDeck: deckSelection.selectedUserDeck,
     selectedBuiltInDeck: deckSelection.selectedBuiltInDeck,
@@ -362,8 +352,7 @@ export function useVocabPageState(
     handleBuiltInDeckSelect: deckSelection.handleBuiltInDeckSelect,
 
     // Internal state setters (for edit operations hook)
-    setFolderData,
-    setDeckData,
+    setUserData,
     refetchFoldersAndDecks,
   }
 }

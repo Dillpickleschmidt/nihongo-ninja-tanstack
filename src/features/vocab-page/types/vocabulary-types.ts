@@ -200,6 +200,14 @@ export function createEmptyVocabItemFormData(): VocabItemFormData {
   }
 }
 
+// Helper to convert multiple VocabularyItems to DB inserts
+export function vocabularyItemsToDBInserts(
+  items: VocabularyItem[],
+  deckId: number,
+): DBVocabularyItemInsert[] {
+  return items.map((item) => vocabularyItemToDBInsert(item, deckId))
+}
+
 // Helper to convert multiple form data items
 export function convertAllFormDataToVocabularyItems(
   formDataMap: Map<number, VocabItemFormData>,

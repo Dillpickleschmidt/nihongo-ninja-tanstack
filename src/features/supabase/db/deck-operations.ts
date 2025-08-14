@@ -8,13 +8,17 @@ import { VocabularyItem } from "@/data/types"
 import {
   dbItemToVocabularyItem,
   formDataToDBInsert,
+  vocabularyItemsToDBInserts,
   type VocabItemFormData,
+  type DBVocabularyItemInsert,
 } from "@/features/vocab-page/types/vocabulary-types"
 import {
   ensureFolderHierarchy,
   getUserFoldersAndDecks,
 } from "./folder-operations"
 import { extractTextbookInfo } from "@/features/vocab-page/logic/deck-import-logic"
+import { getVocabularyForSet } from "@/data/utils/vocab"
+import { dynamic_modules } from "@/data/dynamic_modules"
 
 /**
  * Creates a new user deck for the current user
@@ -148,6 +152,28 @@ export const importBuiltInDeckServerFn = createServerFn({ method: "POST" })
 
     if (error) throw error
 
+    // Import vocabulary items from the built-in deck
+    const module = dynamic_modules[builtInDeck.id]
+    if (module?.vocab_set_ids) {
+      try {
+        const vocabularyItems = await getVocabularyForSet(module.vocab_set_ids)
+        if (vocabularyItems.length > 0) {
+          await insertVocabularyItems(vocabularyItems, newDeck.deck_id)
+        }
+      } catch (vocabError) {
+        console.error("[Import] Vocabulary import failed:", vocabError)
+        // If vocabulary import fails, we should rollback the deck creation
+        await supabase
+          .from("user_decks")
+          .delete()
+          .eq("deck_id", newDeck.deck_id)
+
+        throw new Error(
+          `Failed to import vocabulary: ${vocabError instanceof Error ? vocabError.message : "Unknown error"}`,
+        )
+      }
+    }
+
     return {
       importedDeck: newDeck as UserDeck,
       targetFolderId,
@@ -249,3 +275,23 @@ export async function getVocabForDeck(
   return (data || []).map(dbItemToVocabularyItem)
 }
 
+/**
+ * Batch insert vocabulary items for a deck
+ */
+export async function insertVocabularyItems(
+  vocabularyItems: VocabularyItem[],
+  deckId: number,
+): Promise<void> {
+  if (vocabularyItems.length === 0) return
+
+  const supabase = createSupabaseClient()
+  const vocabularyInserts = vocabularyItemsToDBInserts(vocabularyItems, deckId)
+
+  const { error } = await supabase
+    .from("vocabulary_items")
+    .insert(vocabularyInserts)
+
+  if (error) {
+    throw new Error(`Failed to insert vocabulary items: ${error.message}`)
+  }
+}

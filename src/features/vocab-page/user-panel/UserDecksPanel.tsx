@@ -112,7 +112,7 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
                   deck={deck}
                   onPlay={props.onPlayDeck}
                   isNewlyImported={props.newlyImportedDecks.has(
-                    deck.deck_id.toString(),
+                    deck.original_deck_id || deck.deck_id.toString(),
                   )}
                   isSelected={props.selectedUserDeck?.deck_id === deck.deck_id}
                   onSelect={props.onSelectDeck}
