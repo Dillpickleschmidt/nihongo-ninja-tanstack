@@ -41,6 +41,8 @@ export function LearnPageContent(props: LearnPageContentProps) {
       <TextbookChapterBackgrounds
         textbook={props.activeTextbookId!}
         chapter={props.activeDeck!}
+        showGradient={true}
+        blur="0px"
       />
       {/* Mobile Layout */}
       <SSRMediaQuery hideFrom="xl">

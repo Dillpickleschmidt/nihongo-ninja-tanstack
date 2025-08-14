@@ -4,7 +4,6 @@ import { createSignal, onMount } from "solid-js"
 import ContentBox from "@/components/ContentBox"
 import { useAnimationManager } from "@/hooks/useAnimations"
 import { BackgroundImage } from "@/components/BackgroundImage"
-import { Background } from "@/features/learn-page/components/shared/Background"
 
 export const Route = createFileRoute("/lessons")({
   loader: async ({ context }) => {
@@ -42,7 +41,8 @@ function LessonsLayout() {
 
   return (
     <div class="relative min-h-screen w-full overflow-y-auto">
-      <Background
+      <BackgroundImage
+        variant="media"
         backgroundItem={{
           source_type: "img",
           src: "/img/backgrounds/tranquil_village_by_k_jackson_katss_djqxpcz.png",
@@ -53,12 +53,14 @@ function LessonsLayout() {
         }}
       />
       <BackgroundImage
+        variant="pattern"
         class="!fixed z-[-1]"
         backgroundImage="/img/dots.svg"
         backgroundImageSize="400px"
         backgroundImageOpacity={2.5}
       />
       <BackgroundImage
+        variant="pattern"
         class="z-[-1] !-mt-[4.1rem] min-h-screen"
         backgroundImage="/img/dust-splatter-1.png"
         backgroundImageSize="1215px"

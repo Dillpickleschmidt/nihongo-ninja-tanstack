@@ -1,10 +1,12 @@
-// features/dashboard/components/shared/TextbookChapterBackgrounds.tsx
 import { Show } from "solid-js"
-import { Background, BackgroundItem } from "./Background"
+import {
+  BackgroundImage,
+  BackgroundMediaItem,
+} from "@/components/BackgroundImage"
 
 type TextbookChapterBackgrounds = {
   [textbook: string]: {
-    [chapter: string]: BackgroundItem
+    [chapter: string]: BackgroundMediaItem
   }
 }
 
@@ -175,13 +177,24 @@ const textbook_chapter_backgrounds: TextbookChapterBackgrounds = {
 export function TextbookChapterBackgrounds(props: {
   textbook: string
   chapter: string
+  showGradient?: boolean
+  blur?: string
+  class?: string
 }) {
   const getBackgroundItem = () =>
     textbook_chapter_backgrounds[props.textbook]?.[props.chapter]
 
   return (
     <Show when={getBackgroundItem()} keyed>
-      {(backgroundItem) => <Background backgroundItem={backgroundItem} />}
+      {(backgroundItem) => (
+        <BackgroundImage
+          variant="media"
+          backgroundItem={backgroundItem}
+          showGradient={props.showGradient}
+          blur={props.blur}
+          class={props.class}
+        />
+      )}
     </Show>
   )
 }
