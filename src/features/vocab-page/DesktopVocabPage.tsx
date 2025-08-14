@@ -51,8 +51,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
   const editOperations = useEditOperations({
     folders: state.folders,
     userDecks: state.userDecks,
-    setLocalFolders: state.setFolderData,
-    setLocalDecks: state.setDeckData,
+    setUserData: state.setUserData,
     refetchFoldersAndDecks: state.refetchFoldersAndDecks,
     user: props.user,
   })

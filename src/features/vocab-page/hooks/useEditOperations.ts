@@ -4,12 +4,16 @@ import { executeEditTransactionServerFn } from "@/features/supabase/db/folder-op
 import { saveFoldersAndDecks } from "@/features/vocab-page/storage/sessionStorage"
 import type { AppState } from "@/features/vocab-page/logic/edit-transaction"
 import type { User } from "@supabase/supabase-js"
+import type { SetStoreFunction } from "solid-js/store"
 
 interface UseEditOperationsProps {
   folders: () => DeckFolder[]
   userDecks: () => UserDeck[]
-  setLocalFolders: (folders: DeckFolder[]) => void
-  setLocalDecks: (decks: UserDeck[]) => void
+  setUserData: SetStoreFunction<{
+    folders: DeckFolder[]
+    decks: UserDeck[]
+    shareStatus: Record<number, boolean>
+  }>
   refetchFoldersAndDecks: () => void
   user?: User | null
 }
@@ -33,8 +37,8 @@ export function useEditOperations(props: UseEditOperationsProps) {
     }
 
     // 2. Optimistic update (same logic for all user types)
-    props.setLocalFolders(preview.newState!.folders)
-    props.setLocalDecks(preview.newState!.decks)
+    props.setUserData("folders", preview.newState!.folders)
+    props.setUserData("decks", preview.newState!.decks)
 
     // 3. Persistence (different strategies)
     try {
@@ -51,8 +55,8 @@ export function useEditOperations(props: UseEditOperationsProps) {
       }
     } catch (error) {
       // 4. Rollback (same logic for all user types)
-      props.setLocalFolders(currentState.folders)
-      props.setLocalDecks(currentState.decks)
+      props.setUserData("folders", currentState.folders)
+      props.setUserData("decks", currentState.decks)
       console.error("Edit failed:", error)
       alert(
         `Edit failed: ${error instanceof Error ? error.message : "Unknown error"}`,
@@ -120,4 +124,3 @@ export function useEditOperations(props: UseEditOperationsProps) {
     deleteFolder,
   }
 }
-
