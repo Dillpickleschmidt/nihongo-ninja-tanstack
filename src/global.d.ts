@@ -23,4 +23,9 @@ declare global {
   type DBVocabularyItem = Database["public"]["Tables"]["vocabulary_items"]["Row"]
   type DBVocabularyItemInsert = Database["public"]["Tables"]["vocabulary_items"]["Insert"]
   type DBVocabularyItemUpdate = Database["public"]["Tables"]["vocabulary_items"]["Update"]
+
+  // Deck Sharing Types
+  type PublicDeckShare = Database["public"]["Tables"]["public_deck_shares"]["Row"]
+  type PublicDeckShareInsert = Database["public"]["Tables"]["public_deck_shares"]["Insert"]
+  type PublicDeckShareUpdate = Database["public"]["Tables"]["public_deck_shares"]["Update"]
 }

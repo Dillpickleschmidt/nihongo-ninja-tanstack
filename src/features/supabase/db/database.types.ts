@@ -7,35 +7,10 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
-  }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          operationName?: string
-          query?: string
-          variables?: Json
-          extensions?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
   }
   public: {
     Tables: {
@@ -130,6 +105,35 @@ export type Database = {
           user_preferences?: Json
         }
         Relationships: []
+      }
+      public_deck_shares: {
+        Row: {
+          deck_id: number
+          shared_at: string
+          shared_by: string
+          updated_at: string
+        }
+        Insert: {
+          deck_id: number
+          shared_at?: string
+          shared_by: string
+          updated_at?: string
+        }
+        Update: {
+          deck_id?: number
+          shared_at?: string
+          shared_by?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_deck_shares_deck_id_fkey"
+            columns: ["deck_id"]
+            isOneToOne: true
+            referencedRelation: "user_decks"
+            referencedColumns: ["deck_id"]
+          },
+        ]
       }
       static_module_user_completions: {
         Row: {
@@ -255,7 +259,7 @@ export type Database = {
     }
     Functions: {
       execute_edit_transaction: {
-        Args: { user_id: string; operations: Json }
+        Args: { operations: Json; user_id: string }
         Returns: undefined
       }
     }
@@ -406,9 +410,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       part_of_speech: [
