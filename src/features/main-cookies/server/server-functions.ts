@@ -76,8 +76,3 @@ export const mutateUserPreferencesServerFn = createServerFn({
     _setUserPreferencesCookie(preferencesWithTimestamp)
     return { preferences: preferencesWithTimestamp }
   })
-
-export {
-  getDeviceUISettingsCookie,
-  setDeviceUISettingsCookie,
-} from "./cookie-utils"

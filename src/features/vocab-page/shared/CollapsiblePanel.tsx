@@ -28,7 +28,7 @@ export function CollapsiblePanel(props: CollapsiblePanelProps) {
         <div
           ref={props.ref}
           class={cn(
-            "bg-background/40 border-card-foreground/70 h-full overflow-y-auto p-4 shadow-inner backdrop-blur-md",
+            "bg-background/90 border-card-foreground/70 h-full overflow-y-auto p-4 shadow-inner",
             isLeft ? "border-r" : "border-l",
           )}
         >
@@ -44,7 +44,7 @@ export function CollapsiblePanel(props: CollapsiblePanelProps) {
         size="sm"
         onClick={props.onToggle}
         class={cn(
-          "bg-background/60 border-card-foreground/70 absolute top-1/2 z-10 h-12 w-8 -translate-y-1/2 border-y p-2 shadow-sm backdrop-blur-md",
+          "bg-background/90 border-card-foreground/70 absolute top-1/2 z-10 h-12 w-8 -translate-y-1/2 border-y p-2 shadow-sm",
           isLeft
             ? "-right-8 rounded-l-none rounded-r-md border-r"
             : "-left-8 rounded-l-md rounded-r-none border-l",

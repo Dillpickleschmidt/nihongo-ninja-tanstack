@@ -3582,11 +3582,10 @@ export const vocabulary: VocabularyCollection = {
     chapter: 3,
     part_of_speech: "Godan verb with 'ku' ending",
     info: [
-      "聞く (kiku) is a versatile verb with three main meanings. It is paired with objects using the を particle.",
+      "聞く (kiku) has two main, different meanings. It is paired with objects using the を particle.",
       "'To listen to' or 'to hear,' - 音楽を聞く (to listen to music).",
       "To ask - 先生に質問を聞く (to ask the teacher a question).",
-      "(Not covered in Nihongo Ninja) - 'To understand' or 'to follow,' often in its potential form 聞こえる (kikoeru) - よく聞こえない (I can't hear/understand well). This is a bit advanced so just focus on the other 2 meanings for now.",
-      "Context and particle usage help determine the intended meaning.",
+      "Bonus: 'To understand' or 'to follow,' often in its potential form 聞こえる (kikoeru) - よく聞こえない (I can't hear/understand well). More on this in later chapters.",
     ],
     particles: [
       {

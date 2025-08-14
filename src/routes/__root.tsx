@@ -21,8 +21,8 @@ import { SettingsProvider } from "@/context/SettingsContext"
 import {
   getInitialUserPreferencesFromCookieServerFn,
   getUserPreferencesFromDBServerFn,
-  getDeviceUISettingsCookie,
 } from "@/features/main-cookies/server/server-functions"
+import { getDeviceUISettingsCookie } from "@/features/main-cookies/server/cookie-utils"
 
 export const Route = createRootRoute({
   head: () => ({

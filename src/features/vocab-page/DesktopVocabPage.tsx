@@ -21,6 +21,8 @@ import {
 import type { User } from "@supabase/supabase-js"
 import type { DeckCreationInitialData } from "./deck-creation/stores/deck-creation-store"
 import { copyDeck } from "@/features/vocab-page/utils/deckCopyUtils"
+import { TextbookChapterBackgrounds } from "../learn-page/components/shared/TextbookChapterBackgrounds"
+import { useSettings } from "@/context/SettingsContext"
 
 interface DesktopVocabPageProps {
   importRequest?: ImportRequest | null
@@ -30,6 +32,7 @@ interface DesktopVocabPageProps {
 }
 
 export function DesktopVocabPage(props: DesktopVocabPageProps) {
+  const { userPreferences } = useSettings()
   const state = useVocabPageState(
     props.importRequest,
     props.textbooks,
@@ -193,9 +196,17 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
   }
 
   return (
-    <div class="bg-background flex h-screen">
+    <div class="flex h-screen">
+      <div class="absolute inset-0">
+        <TextbookChapterBackgrounds
+          textbook={userPreferences()["active-textbook"]}
+          chapter={userPreferences()["active-deck"]}
+          showGradient={false}
+          blur="6px"
+        />
+      </div>
       {/* Left panel — subtle gradient */}
-      <div class="h-[calc(100vh-65px)] bg-[radial-gradient(1400px_900px_at_8%_6%,theme(colors.orange.300/5%),transparent_60%),radial-gradient(320px_200px_at_92%_98%,theme(colors.sky.400/1.5%),transparent_82%),linear-gradient(to_bottom,theme(colors.black/0%)_0%,theme(colors.black/3%)_100%)]">
+      <div class="h-[calc(100vh-65px)]">
         <CollapsiblePanel
           title="Built-in Decks"
           isOpen={state.leftPanelOpen()}
@@ -221,7 +232,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
 
       {/* Center panel — faint orange and neutral vignette */}
       <div class="relative z-0 w-full">
-        <div class="absolute inset-0 -z-1 bg-[radial-gradient(880px_640px_at_72%_78%,theme(colors.orange.300/2.5%),transparent_66%),radial-gradient(700px_540px_at_50%_44%,theme(colors.black/5%)_0%,transparent_72%)]" />
+        <div class="absolute inset-0 -z-1" />
         <CenterPanel
           selectedUserDeck={state.selectedUserDeck()}
           selectedBuiltInDeck={state.selectedBuiltInDeck()}
@@ -236,7 +247,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
       </div>
 
       {/* Right panel — same gradients as left */}
-      <div class="h-[calc(100vh-65px)] bg-[radial-gradient(1400px_900px_at_8%_6%,theme(colors.orange.300/5%),transparent_60%),radial-gradient(320px_200px_at_92%_98%,theme(colors.sky.400/1.5%),transparent_82%),linear-gradient(to_bottom,theme(colors.black/0%)_0%,theme(colors.black/3%)_100%)]">
+      <div class="h-[calc(100vh-65px)]">
         <CollapsiblePanel
           title="Your Decks"
           isOpen={state.rightPanelOpen()}
@@ -271,6 +282,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
             }}
             onCopyDeck={handleOpenCopyModal}
             onDeleteDeck={handleDeleteDeck}
+            userId={props.user?.id}
             panelRef={userDecksPanelRef}
           />
         </CollapsiblePanel>

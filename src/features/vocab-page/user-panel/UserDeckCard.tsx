@@ -27,6 +27,8 @@ import { createSignal } from "solid-js"
 import { TreeView } from "@/components/ui/tree-view"
 import { useFolderTree } from "../hooks/useFolderTree"
 import { Folder, Home } from "lucide-solid"
+import { useSettings } from "@/context/SettingsContext"
+import { parseBuiltInDeckId } from "../utils/deckIdParser"
 
 interface UserDeckCardProps {
   deck: UserDeck
@@ -46,6 +48,7 @@ interface UserDeckCardProps {
 
 export function UserDeckCard(props: UserDeckCardProps) {
   const navigate = useNavigate()
+  const { updateUserPreferences } = useSettings()
   const [isHovered, setIsHovered] = createSignal(false)
   const [expandedFolderIds, setExpandedFolderIds] = createSignal<Set<string>>(
     new Set(),
@@ -136,7 +139,23 @@ export function UserDeckCard(props: UserDeckCardProps) {
           props.isSelected && "outline-card-foreground outline-2",
           props.class,
         )}
-        onClick={() => props.onSelect?.(props.deck)}
+        onClick={async () => {
+          // Auto-set active textbook/chapter for built-in decks
+          if (props.deck.source === "built-in" && props.deck.original_deck_id) {
+            const parsed = parseBuiltInDeckId(props.deck.original_deck_id)
+            if (parsed) {
+              try {
+                await updateUserPreferences({
+                  "active-textbook": parsed.textbook,
+                  "active-deck": parsed.chapter,
+                })
+              } catch (error) {
+                console.error("Failed to update textbook/chapter:", error)
+              }
+            }
+          }
+          props.onSelect?.(props.deck)
+        }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
