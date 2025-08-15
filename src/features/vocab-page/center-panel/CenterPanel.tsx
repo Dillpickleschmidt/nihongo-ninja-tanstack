@@ -66,7 +66,11 @@ export function CenterPanel(props: CenterPanelProps) {
             </Show>
           </Match>
           <Match when={props.activeNavTab === "browse-decks"}>
-            <BrowseDecksContent user={props.user} />
+            <BrowseDecksContent
+              user={props.user}
+              onRefetch={props.onRefetch}
+              decks={props.decks}
+            />
           </Match>
           <Match when={props.activeNavTab === "overrides"}>
             <OverridesContent />

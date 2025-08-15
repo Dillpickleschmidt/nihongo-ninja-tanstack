@@ -2,7 +2,10 @@ import { createSignal, onMount, For, Show } from "solid-js"
 import { Search, TrendingUp, Clock, Download, Users, Crown } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
-import { getSharedDecksServerFn } from "@/features/supabase/db/deck-sharing-operations"
+import {
+  getSharedDecksServerFn,
+  importSharedDeckServerFn,
+} from "@/features/supabase/db/deck-sharing-operations"
 import type { User } from "@supabase/supabase-js"
 
 type SharedDeck = {
@@ -22,6 +25,8 @@ type SortOption = "recent" | "popular"
 
 interface BrowseDecksContentProps {
   user?: User | null
+  onRefetch?: () => Promise<void>
+  decks?: UserDeck[]
 }
 
 export function BrowseDecksContent(props: BrowseDecksContentProps) {
@@ -31,10 +36,63 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
   const [error, setError] = createSignal<string | null>(null)
   const [searchQuery, setSearchQuery] = createSignal("")
   const [sortBy, setSortBy] = createSignal<SortOption>("recent")
+  const [importingDeckIds, setImportingDeckIds] = createSignal<Set<number>>(
+    new Set(),
+  )
   let sentinelRef: HTMLDivElement | undefined
 
   const isOwnDeck = (deck: SharedDeck) => {
     return props.user?.id === deck.shared_by
+  }
+
+  const isAlreadyImported = (deck: SharedDeck) => {
+    return (
+      props.decks?.some(
+        (userDeck) =>
+          userDeck.source === "shared" &&
+          userDeck.original_deck_id === deck.deck_id.toString(),
+      ) ?? false
+    )
+  }
+
+  const handleImport = async (deck: SharedDeck) => {
+    if (!props.user) {
+      alert("Please sign in to import decks")
+      return
+    }
+
+    if (isOwnDeck(deck)) {
+      alert("You cannot import your own shared deck")
+      return
+    }
+
+    const isImporting = importingDeckIds().has(deck.deck_id)
+    if (isImporting) return
+
+    setImportingDeckIds((prev) => new Set([...prev, deck.deck_id]))
+
+    try {
+      await importSharedDeckServerFn({
+        data: { deck_id: deck.deck_id },
+      })
+
+      // Trigger SWR refetch to update the user's deck list
+      if (props.onRefetch) {
+        await props.onRefetch()
+      }
+
+      alert("Deck imported successfully!")
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to import deck"
+      alert(`Error: ${message}`)
+    } finally {
+      setImportingDeckIds((prev) => {
+        const newSet = new Set(prev)
+        newSet.delete(deck.deck_id)
+        return newSet
+      })
+    }
   }
 
   const loadDecks = async (offset = 0) => {
@@ -229,13 +287,16 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
                           variant="default"
                           size="sm"
                           class="hover:bg-primary text-xs shadow-sm"
-                          onClick={() => {
-                            // TODO: Implement import functionality
-                            alert("Import functionality coming soon!")
-                          }}
+                          disabled={importingDeckIds().has(deck.deck_id)}
+                          onClick={() => handleImport(deck)}
                         >
-                          <Download class="mr-1.5 h-3.5 w-3.5" />
-                          Import
+                          <Show when={importingDeckIds().has(deck.deck_id)}>
+                            <div class="mr-1.5 h-3.5 w-3.5 animate-spin rounded-full border border-current border-t-transparent" />
+                          </Show>
+                          <Show when={!importingDeckIds().has(deck.deck_id)}>
+                            <Download class="mr-1.5 h-3.5 w-3.5" />
+                          </Show>
+                          {isAlreadyImported(deck) ? "Import Again?" : "Import"}
                         </Button>
                       }
                     >
