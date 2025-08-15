@@ -332,7 +332,6 @@ export async function initializePracticeSession(
     reviewCard.sessionStyle = "flashcard"
 
     cardMap.set(key, reviewCard)
-    reviewQueue.push(key)
   })
 
   // --- Phase 3: Build Dependencies (Only if prerequisites are enabled) ---
@@ -400,6 +399,9 @@ export async function initializePracticeSession(
 
   // --- Phase 4: Lock Cards and Populate Queues ---
   // This logic filters `cardMap` for the *final* queues.
+  let modeMatchCount = 0
+  let modeMismatchCount = 0
+
   for (const [key, card] of cardMap.entries()) {
     if (card.isDisabled) {
       continue // Skip disabled cards
@@ -412,8 +414,17 @@ export async function initializePracticeSession(
         moduleQueue.push(key)
       }
     } else {
-      // Review cards are always directly added to reviewQueue
-      reviewQueue.push(key)
+      // Review cards: only add if actually due AND matches session mode
+      const now = new Date()
+      const isDue = card.fsrs?.card.due && card.fsrs.card.due <= now
+      const matchesMode = card.practiceMode === sessionPracticeMode
+
+      if (isDue && matchesMode) {
+        modeMatchCount++
+        reviewQueue.push(key)
+      } else if (isDue) {
+        modeMismatchCount++
+      }
     }
   }
 

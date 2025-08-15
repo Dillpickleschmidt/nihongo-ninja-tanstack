@@ -1111,4 +1111,59 @@ describe("Data Initialization", () => {
       expect(result.lockedKeys.has("kanji:食")).toBe(true)
     })
   })
+
+  describe("review queue filtering", () => {
+    it("should filter review queue by due date and session mode", async () => {
+      const pastDate = new Date(Date.now() - 86400000) // 1 day ago
+      const futureDate = new Date(Date.now() + 86400000) // 1 day from now
+
+      const cards: FSRSCardData[] = [
+        {
+          ...createMockFSRSCard("due1", "readings", "vocabulary"),
+          fsrs_card: {
+            ...createMockFSRSCard("due1", "readings", "vocabulary").fsrs_card,
+            due: pastDate,
+          },
+        },
+        {
+          ...createMockFSRSCard("future1", "readings", "vocabulary"),
+          fsrs_card: {
+            ...createMockFSRSCard("future1", "readings", "vocabulary")
+              .fsrs_card,
+            due: futureDate,
+          },
+        },
+        {
+          ...createMockFSRSCard("due2", "kana", "vocabulary"),
+          fsrs_card: {
+            ...createMockFSRSCard("due2", "kana", "vocabulary").fsrs_card,
+            due: pastDate,
+          },
+        },
+      ]
+
+      const vocabItems = [
+        ...mockVocabularyItems,
+        { word: "due1", furigana: "due1", english: ["test"] },
+        { word: "future1", furigana: "future1", english: ["test"] },
+        { word: "due2", furigana: "due2", english: ["test"] },
+      ]
+
+      const result = await initializePracticeSession(
+        mockHierarchy,
+        [],
+        cards,
+        "readings",
+        vocabItems,
+        false,
+        false,
+        false,
+        true,
+      )
+
+      // Only due cards matching session mode should be in reviewQueue
+      expect(result.reviewQueue).toEqual(["vocabulary:due1"])
+      expect(result.cardMap.size).toBe(12) // 9 hierarchy + 3 review cards
+    })
+  })
 })
