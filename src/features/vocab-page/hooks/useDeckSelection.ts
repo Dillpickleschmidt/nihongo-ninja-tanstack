@@ -13,19 +13,17 @@ export function useDeckSelection(onTabChange: (tabId: NavTabId) => void) {
   const [selectedBuiltInDeck, setSelectedBuiltInDeck] =
     createSignal<VocabBuiltInDeck | null>(null)
 
-  const handleUserDeckSelect = async (deck: UserDeck) => {
+  const handleUserDeckSelect = (deck: UserDeck) => {
     // Auto-set active textbook/chapter for built-in sourced decks
     if (deck.source === "built-in" && deck.original_deck_id) {
       const parsed = parseBuiltInDeckId(deck.original_deck_id)
       if (parsed) {
-        try {
-          await updateUserPreferences({
-            "active-textbook": parsed.textbook,
-            "active-deck": parsed.chapter,
-          })
-        } catch (error) {
+        updateUserPreferences({
+          "active-textbook": parsed.textbook,
+          "active-deck": parsed.chapter,
+        }).catch((error) => {
           console.error("Failed to update textbook/chapter:", error)
-        }
+        })
       }
     }
     setSelectedBuiltInDeck(null) // Clear built-in selection
@@ -33,18 +31,16 @@ export function useDeckSelection(onTabChange: (tabId: NavTabId) => void) {
     onTabChange("vocab-cards")
   }
 
-  const handleBuiltInDeckSelect = async (deck: VocabBuiltInDeck) => {
+  const handleBuiltInDeckSelect = (deck: VocabBuiltInDeck) => {
     // Auto-set active textbook/chapter for built-in decks
     const parsed = parseBuiltInDeckId(deck.id)
     if (parsed) {
-      try {
-        await updateUserPreferences({
-          "active-textbook": parsed.textbook,
-          "active-deck": parsed.chapter,
-        })
-      } catch (error) {
+      updateUserPreferences({
+        "active-textbook": parsed.textbook,
+        "active-deck": parsed.chapter,
+      }).catch((error) => {
         console.error("Failed to update textbook/chapter:", error)
-      }
+      })
     }
     setSelectedUserDeck(null) // Clear user deck selection
     setSelectedBuiltInDeck(deck)
