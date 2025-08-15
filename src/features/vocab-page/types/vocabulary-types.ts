@@ -13,6 +13,18 @@ import { Json } from "@/features/supabase/db/database.types"
 // Re-export existing types for convenience
 export type { VocabularyItem } from "@/data/types"
 
+// Verb detection utility
+export function isVerbPartOfSpeech(
+  partOfSpeech: PartOfSpeech | string | undefined,
+): boolean {
+  if (!partOfSpeech) return false
+
+  // All part-of-speech types except adjectives are verbs
+  const adjectiveTypes: PartOfSpeech[] = ["I-adjective", "Na-adjective"]
+
+  return !adjectiveTypes.includes(partOfSpeech as PartOfSpeech)
+}
+
 // Database types from global.d.ts (which import from database.types.ts)
 export type DBVocabularyItem =
   Database["public"]["Tables"]["vocabulary_items"]["Row"]
@@ -26,7 +38,7 @@ export interface VocabItemFormData {
   word: string
   furigana: string
   english: string[]
-  partOfSpeech: string
+  isVerb: boolean
   notes: string[]
   particles: Array<{ particle: string; label: string }>
   examples: Array<{ japanese: string; english: string }>
@@ -43,7 +55,7 @@ export function dbItemToVocabularyItem(
     furigana: dbItem.furigana || dbItem.word,
     english: dbItem.english,
     chapter: dbItem.chapter || 1, // VocabularyItem requires chapter (temporary field)
-    part_of_speech: dbItem.part_of_speech || undefined,
+    part_of_speech: undefined, // User-created items don't have part_of_speech
     info: dbItem.info || undefined,
     mnemonics: (dbItem.mnemonics as unknown as Mnemonics) || undefined,
     example_sentences:
@@ -55,7 +67,8 @@ export function dbItemToVocabularyItem(
   }
 }
 
-export function vocabularyItemToDBInsert(
+// For built-in vocabulary imports only
+export function builtInVocabToDBInsert(
   item: VocabularyItem,
   deckId: number,
 ): DBVocabularyItemInsert {
@@ -64,7 +77,7 @@ export function vocabularyItemToDBInsert(
     word: item.word,
     furigana: item.furigana || null,
     english: item.english,
-    part_of_speech: item.part_of_speech || null,
+    is_verb: isVerbPartOfSpeech(item.part_of_speech),
     chapter: item.chapter || null,
     info: item.info || null,
     mnemonics: item.mnemonics || null,
@@ -74,32 +87,31 @@ export function vocabularyItemToDBInsert(
   }
 }
 
+// For converting static vocabulary to form data (deck copying/editing)
 export function vocabularyItemToFormData(
   item: VocabularyItem,
 ): VocabItemFormData {
   return {
     word: item.word,
     furigana: item.furigana || item.word,
-    english: [...item.english], // Copy array
-    partOfSpeech: item.part_of_speech || "",
-    notes: item.info ? [...item.info] : [],
-    particles: item.particles ? item.particles.map((p) => ({ ...p })) : [],
-    examples: item.example_sentences
-      ? item.example_sentences.map((ex) => ({
-          japanese: ex.japanese[0] || "",
-          english: ex.english[0] || "",
-        }))
-      : [],
-    readingMnemonics: item.mnemonics?.reading
-      ? [...item.mnemonics.reading]
-      : [],
-    kanjiMnemonics: item.mnemonics?.kanji ? [...item.mnemonics.kanji] : [],
+    english: [...item.english],
+    isVerb: isVerbPartOfSpeech(item.part_of_speech),
+    notes: item.info || [],
+    particles: item.particles || [],
+    examples:
+      item.example_sentences?.map((ex) => ({
+        japanese: ex.japanese[0] || "",
+        english: ex.english[0] || "",
+      })) || [],
+    readingMnemonics: item.mnemonics?.reading || [],
+    kanjiMnemonics: item.mnemonics?.kanji || [],
   }
 }
 
-export function formDataToVocabularyItem(
+export function formDataToDBInsert(
   formData: VocabItemFormData,
-): VocabularyItem | null {
+  deckId: number,
+): DBVocabularyItemInsert | null {
   if (
     !formData.word.trim() ||
     formData.english.length === 0 ||
@@ -108,81 +120,49 @@ export function formDataToVocabularyItem(
     return null
   }
 
-  const item: VocabularyItem = {
+  const insert: DBVocabularyItemInsert = {
+    deck_id: deckId,
     word: formData.word.trim(),
-    furigana: formData.furigana.trim() || formData.word.trim(),
+    furigana: formData.furigana.trim() || null,
     english: formData.english.filter((e) => e.trim()).map((e) => e.trim()),
-    chapter: 1, // VocabularyItem requires chapter (temporary field)
-    part_of_speech:
-      formData.partOfSpeech && formData.partOfSpeech.trim()
-        ? (formData.partOfSpeech as PartOfSpeech)
-        : undefined,
+    is_verb: formData.isVerb, // Direct boolean from form
+    chapter: 1,
+    info:
+      formData.notes.length > 0
+        ? formData.notes.filter((n) => n.trim()).map((n) => n.trim())
+        : null,
+    mnemonics: null,
+    example_sentences: null,
+    particles:
+      formData.particles.length > 0
+        ? formData.particles.filter((p) => p.particle.trim() || p.label.trim())
+        : null,
+    videos: null,
   }
 
-  // Add optional fields if they have content
-  if (formData.notes.length > 0) {
-    const validNotes = formData.notes
-      .filter((n) => n.trim())
-      .map((n) => n.trim())
-    if (validNotes.length > 0) {
-      item.info = validNotes
-    }
+  // Handle mnemonics
+  const readingMnemonics = formData.readingMnemonics.filter((m) => m.trim())
+  const kanjiMnemonics = formData.kanjiMnemonics.filter((m) => m.trim())
+
+  if (readingMnemonics.length > 0 || kanjiMnemonics.length > 0) {
+    insert.mnemonics = {
+      reading: readingMnemonics,
+      kanji: kanjiMnemonics,
+    } as unknown as Json
   }
 
-  if (formData.particles.length > 0) {
-    const validParticles = formData.particles.filter(
-      (p) => p.particle.trim() || p.label.trim(),
-    )
-    if (validParticles.length > 0) {
-      item.particles = validParticles.map((p) => ({
-        particle: p.particle.trim(),
-        label: p.label.trim(),
-      }))
-    }
+  // Handle example sentences
+  const validExamples = formData.examples.filter(
+    (e) => e.japanese.trim() || e.english.trim(),
+  )
+  if (validExamples.length > 0) {
+    insert.example_sentences = validExamples.map((e) => ({
+      japanese: [e.japanese.trim()],
+      english: [e.english.trim()],
+    })) as unknown as Json
   }
 
-  if (
-    formData.readingMnemonics.length > 0 ||
-    formData.kanjiMnemonics.length > 0
-  ) {
-    const readingMnemonics = formData.readingMnemonics
-      .filter((m) => m.trim())
-      .map((m) => m.trim())
-    const kanjiMnemonics = formData.kanjiMnemonics
-      .filter((m) => m.trim())
-      .map((m) => m.trim())
-
-    if (readingMnemonics.length > 0 || kanjiMnemonics.length > 0) {
-      item.mnemonics = {
-        reading: readingMnemonics,
-        kanji: kanjiMnemonics,
-      }
-    }
-  }
-
-  if (formData.examples.length > 0) {
-    const validExamples = formData.examples.filter(
-      (e) => e.japanese.trim() || e.english.trim(),
-    )
-    if (validExamples.length > 0) {
-      item.example_sentences = validExamples.map((e) => ({
-        japanese: [e.japanese.trim()],
-        english: [e.english.trim()],
-      }))
-    }
-  }
-
-  return item
-}
-
-export function formDataToDBInsert(
-  formData: VocabItemFormData,
-  deckId: number,
-): DBVocabularyItemInsert | null {
-  const vocabularyItem = formDataToVocabularyItem(formData)
-  if (!vocabularyItem) return null
-
-  return vocabularyItemToDBInsert(vocabularyItem, deckId)
+  return insert
 }
 
 // Helper to create empty form data
@@ -191,7 +171,7 @@ export function createEmptyVocabItemFormData(): VocabItemFormData {
     word: "",
     furigana: "",
     english: [""],
-    partOfSpeech: "",
+    isVerb: false,
     notes: [],
     particles: [],
     examples: [],
@@ -200,26 +180,42 @@ export function createEmptyVocabItemFormData(): VocabItemFormData {
   }
 }
 
-// Helper to convert multiple VocabularyItems to DB inserts
-export function vocabularyItemsToDBInserts(
+// Helper to convert multiple built-in VocabularyItems to DB inserts
+export function builtInVocabItemsToDBInserts(
   items: VocabularyItem[],
   deckId: number,
 ): DBVocabularyItemInsert[] {
-  return items.map((item) => vocabularyItemToDBInsert(item, deckId))
+  return items.map((item) => builtInVocabToDBInsert(item, deckId))
 }
 
-// Helper to convert multiple form data items
-export function convertAllFormDataToVocabularyItems(
-  formDataMap: Map<number, VocabItemFormData>,
-): VocabularyItem[] {
-  const validItems: VocabularyItem[] = []
-
-  for (const formData of formDataMap.values()) {
-    const item = formDataToVocabularyItem(formData)
-    if (item) {
-      validItems.push(item)
-    }
+// Lightweight conversion for preview purposes only
+export function formDataToVocabularyItem(
+  formData: VocabItemFormData,
+): VocabularyItem {
+  return {
+    word: formData.word,
+    furigana: formData.furigana || formData.word,
+    english: formData.english,
+    chapter: 1,
+    part_of_speech: undefined, // Preview doesn't need part_of_speech
+    info: formData.notes.length > 0 ? formData.notes : undefined,
+    particles: formData.particles.length > 0 ? formData.particles : undefined,
+    example_sentences:
+      formData.examples.length > 0
+        ? formData.examples.map((ex) => ({
+            japanese: [ex.japanese],
+            english: [ex.english],
+          }))
+        : undefined,
+    mnemonics:
+      formData.readingMnemonics.length > 0 || formData.kanjiMnemonics.length > 0
+        ? {
+            reading: formData.readingMnemonics,
+            kanji: formData.kanjiMnemonics,
+          }
+        : undefined,
+    videos: undefined,
+    overwrite_word: undefined,
+    extra: undefined,
   }
-
-  return validItems
 }

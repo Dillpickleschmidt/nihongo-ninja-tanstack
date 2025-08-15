@@ -7,6 +7,7 @@ import {
   createCustomDeckServerFn,
 } from "@/features/supabase/db/deck-operations"
 import type { VocabItemFormData } from "@/features/vocab-page/types/vocabulary-types"
+import { isVerbPartOfSpeech } from "@/features/vocab-page/types/vocabulary-types"
 import type { VocabularyItem } from "@/data/types"
 
 /**
@@ -30,7 +31,7 @@ function vocabularyItemToFormData(item: VocabularyItem): VocabItemFormData {
     word: item.word,
     furigana: item.furigana || item.word,
     english: [...item.english],
-    partOfSpeech: item.part_of_speech || "",
+    isVerb: isVerbPartOfSpeech(item.part_of_speech),
     notes: item.info ? [...item.info] : [],
     particles: item.particles
       ? item.particles.map((p) => ({

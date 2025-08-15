@@ -210,8 +210,8 @@ export type Database = {
           furigana: string | null
           id: number
           info: string[] | null
+          is_verb: boolean | null
           mnemonics: Json | null
-          part_of_speech: Database["public"]["Enums"]["part_of_speech"] | null
           particles: Json | null
           videos: Json | null
           word: string
@@ -225,8 +225,8 @@ export type Database = {
           furigana?: string | null
           id?: never
           info?: string[] | null
+          is_verb?: boolean | null
           mnemonics?: Json | null
-          part_of_speech?: Database["public"]["Enums"]["part_of_speech"] | null
           particles?: Json | null
           videos?: Json | null
           word: string
@@ -240,8 +240,8 @@ export type Database = {
           furigana?: string | null
           id?: never
           info?: string[] | null
+          is_verb?: boolean | null
           mnemonics?: Json | null
-          part_of_speech?: Database["public"]["Enums"]["part_of_speech"] | null
           particles?: Json | null
           videos?: Json | null
           word?: string
@@ -267,26 +267,6 @@ export type Database = {
       }
     }
     Enums: {
-      part_of_speech:
-        | "Ichidan verb"
-        | "Godan verb with 'u' ending"
-        | "Godan verb with 'tsu' ending"
-        | "Godan verb with 'ru' ending"
-        | "Godan verb - Iku/Yuku special class"
-        | "Godan verb with 'ku' ending"
-        | "Godan verb with 'gu' ending"
-        | "Godan verb with 'bu' ending"
-        | "Godan verb with 'mu' ending"
-        | "Godan verb with 'nu' ending"
-        | "Godan verb with 'su' ending"
-        | "Godan verb with 'ru' ending (irregular verb)"
-        | "Godan verb - -aru special class"
-        | "Suru verb - included"
-        | "Suru verb - compound word"
-        | "Suru verb - special class"
-        | "Kuru verb - special class"
-        | "I-adjective"
-        | "Na-adjective"
       practice_item_type: "vocabulary" | "kanji" | "radical"
     }
     CompositeTypes: {
@@ -415,27 +395,6 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      part_of_speech: [
-        "Ichidan verb",
-        "Godan verb with 'u' ending",
-        "Godan verb with 'tsu' ending",
-        "Godan verb with 'ru' ending",
-        "Godan verb - Iku/Yuku special class",
-        "Godan verb with 'ku' ending",
-        "Godan verb with 'gu' ending",
-        "Godan verb with 'bu' ending",
-        "Godan verb with 'mu' ending",
-        "Godan verb with 'nu' ending",
-        "Godan verb with 'su' ending",
-        "Godan verb with 'ru' ending (irregular verb)",
-        "Godan verb - -aru special class",
-        "Suru verb - included",
-        "Suru verb - compound word",
-        "Suru verb - special class",
-        "Kuru verb - special class",
-        "I-adjective",
-        "Na-adjective",
-      ],
       practice_item_type: ["vocabulary", "kanji", "radical"],
     },
   },

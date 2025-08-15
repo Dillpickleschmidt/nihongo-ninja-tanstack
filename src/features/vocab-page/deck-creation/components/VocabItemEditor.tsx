@@ -1,6 +1,6 @@
 // features/vocab-page/deck-creation/components/VocabItemEditor.tsx
 import { Index, Show, createMemo } from "solid-js"
-import { Plus, Trash2, Minus } from "lucide-solid"
+import { Plus, Trash2, Minus, InfoIcon } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import {
   TextField,
@@ -8,39 +8,11 @@ import {
   TextFieldInput,
   TextFieldLabel,
 } from "@/components/ui/text-field"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import type { PartOfSpeech } from "@/data/types"
+import { Checkbox } from "@/components/ui/checkbox"
 import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
 import { useVocabItemValidation } from "../hooks/useVocabItemValidation"
 import { createEmptyVocabItemFormData } from "../../types/vocabulary-types"
-
-const PARTS_OF_SPEECH: PartOfSpeech[] = [
-  "Ichidan verb",
-  "Godan verb with 'u' ending",
-  "Godan verb with 'tsu' ending",
-  "Godan verb with 'ru' ending",
-  "Godan verb - Iku/Yuku special class",
-  "Godan verb with 'ku' ending",
-  "Godan verb with 'gu' ending",
-  "Godan verb with 'bu' ending",
-  "Godan verb with 'mu' ending",
-  "Godan verb with 'nu' ending",
-  "Godan verb with 'su' ending",
-  "Godan verb with 'ru' ending (irregular verb)",
-  "Godan verb - -aru special class",
-  "Suru verb - included",
-  "Suru verb - compound word",
-  "Suru verb - special class",
-  "Kuru verb - special class",
-  "I-adjective",
-  "Na-adjective",
-]
+import { Label } from "@/components/ui/label"
 
 interface VocabItemEditorProps {
   itemId: number
@@ -315,34 +287,18 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
             </Index>
           </div>
 
-          {/* Part of Speech */}
-          <div class="pt-2.5">
-            <div class="mb-1.5">
-              <span class="text-sm font-medium">Part of Speech</span>
-            </div>
-            <Select
-              value={formData().partOfSpeech}
-              onChange={(value) =>
-                updateFormData({ partOfSpeech: value || "" })
-              }
-              options={PARTS_OF_SPEECH}
-              placeholder="Select part of speech"
-              itemComponent={(props) => (
-                <SelectItem item={props.item}>
-                  {props.item.rawValue as string}
-                </SelectItem>
-              )}
+          {/* Is Verb */}
+          <div class="flex items-center gap-2 pt-4">
+            <Checkbox
+              checked={formData().isVerb}
+              onChange={(checked) => updateFormData({ isVerb: checked })}
             >
-              <SelectTrigger
-                aria-label="Part of Speech"
-                class="text-xs hover:cursor-pointer"
-              >
-                <SelectValue<string>>
-                  {(state) => state.selectedOption() || "Select part of speech"}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent />
-            </Select>
+              <span class="text-sm font-medium">Is Verb</span>
+            </Checkbox>
+            <Label class="text-muted-foreground text-xs">Is this a verb?</Label>
+            <div title="When you use multiple-choice during review, we show verbs with verbs and non-verbs with non-verbs (so the answer isn't too obvious).">
+              <InfoIcon class="text-muted-foreground size-3" />
+            </div>
           </div>
         </div>
 

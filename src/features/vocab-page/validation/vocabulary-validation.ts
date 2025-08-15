@@ -11,7 +11,7 @@ export const BaseVocabItemSchema = z.object({
     (arr) => arr.some((meaning) => meaning.trim().length > 0),
     "At least one English meaning is required",
   ),
-  partOfSpeech: z.string(),
+  isVerb: z.boolean(),
 })
 
 // Extended vocabulary item form data schema

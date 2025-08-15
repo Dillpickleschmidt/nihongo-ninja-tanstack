@@ -3,8 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
 import { useDeckValidation } from "../hooks/useDeckValidation"
 import {
-  convertAllFormDataToVocabularyItems,
   formDataToDBInsert,
+  formDataToVocabularyItem,
   type VocabItemFormData,
 } from "../../types/vocabulary-types"
 import { validateVocabItemMinimal } from "../../validation"
@@ -36,7 +36,11 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
 
   // Convert form data to vocabulary items for preview
   const vocabularyItems = createMemo(() => {
-    return convertAllFormDataToVocabularyItems(store.vocabItems.formData)
+    return Array.from(store.vocabItems.formData.values())
+      .filter((formData: VocabItemFormData) =>
+        validateVocabItemMinimal(formData),
+      )
+      .map(formDataToVocabularyItem)
   })
 
   // Get valid form data items for server submission

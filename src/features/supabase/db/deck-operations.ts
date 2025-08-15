@@ -8,7 +8,7 @@ import { VocabularyItem } from "@/data/types"
 import {
   dbItemToVocabularyItem,
   formDataToDBInsert,
-  vocabularyItemsToDBInserts,
+  builtInVocabItemsToDBInserts,
   type VocabItemFormData,
   type DBVocabularyItemInsert,
 } from "@/features/vocab-page/types/vocabulary-types"
@@ -313,7 +313,7 @@ export async function insertVocabularyItems(
   if (vocabularyItems.length === 0) return
 
   const supabase = createSupabaseClient()
-  const vocabularyInserts = vocabularyItemsToDBInserts(vocabularyItems, deckId)
+  const vocabularyInserts = builtInVocabItemsToDBInserts(vocabularyItems, deckId)
 
   const { error } = await supabase
     .from("vocabulary_items")
