@@ -34,6 +34,7 @@ import {
   removeDeckShareServerFn,
 } from "@/features/supabase/db/deck-sharing-operations"
 import { ShareModal } from "../components/ShareModal"
+import { PracticeModeModal } from "../components/PracticeModeModal"
 
 interface UserDeckCardProps {
   deck: UserDeck
@@ -61,26 +62,9 @@ export function UserDeckCard(props: UserDeckCardProps) {
     new Set(),
   )
   const [showShareModal, setShowShareModal] = createSignal(false)
+  const [showPracticeModeModal, setShowPracticeModeModal] = createSignal(false)
   const [isSharing, setIsSharing] = createSignal(false)
 
-  const getPracticeRoute = () => {
-    if (props.deck.source === "built-in") {
-      // Built-in decks use the original route
-      return {
-        to: "/practice/$practiceID",
-        params: { practiceID: props.deck.original_deck_id! },
-      }
-    } else {
-      // User decks use the new route structure
-      return {
-        to: "/practice/$userID/$deckID",
-        params: {
-          userID: props.userId || "unknown",
-          deckID: props.deck.deck_id.toString(),
-        },
-      }
-    }
-  }
 
   // Build folder tree for move functionality
   const { folderTreeNodes } = useFolderTree({
@@ -240,8 +224,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
             size="sm"
             onClick={(e) => {
               e.stopPropagation()
-              const route = getPracticeRoute()
-              navigate(route)
+              setShowPracticeModeModal(true)
             }}
             class="bg-card hover:bg-card-foreground/10 dark:bg-card-foreground text-primary outline-card-foreground/70 relative w-full overflow-hidden text-xs outline backdrop-blur-xs transition-colors dark:outline-none hover:dark:bg-neutral-600"
           >
@@ -426,6 +409,13 @@ export function UserDeckCard(props: UserDeckCardProps) {
         deck={props.deck}
         isSharing={() => isSharing()}
         handlePublicShare={handlePublicShare}
+      />
+
+      <PracticeModeModal
+        deck={props.deck}
+        isOpen={showPracticeModeModal()}
+        onClose={() => setShowPracticeModeModal(false)}
+        userId={props.userId}
       />
     </>
   )

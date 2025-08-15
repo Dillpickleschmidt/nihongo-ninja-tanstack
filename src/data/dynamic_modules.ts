@@ -241,43 +241,20 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_1_ch3_chapter-2-kanji"], // FIX
     instructions: "Practice Kanji from Chapter 2.",
   },
-  "genki_1_ch3_nouns-readings": {
-    title: "Nouns - Readings",
+  genki_1_ch3_nouns: {
+    title: "Nouns",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch3_nouns"],
-    instructions: "Practice the readings of nouns from Chapter 3.",
   },
-  "genki_1_ch3_nouns-kana": {
-    title: "Nouns - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch3_nouns"],
-    instructions: "Practice recognizing nouns from Chapter 3 in Kana.",
-  },
-  "genki_1_ch3_days-and-time-readings": {
-    title: "Days & Time - Readings",
+  "genki_1_ch3_days-and-time": {
+    title: "Days & Time",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch3_days-and-time"],
-    instructions: "Practice the readings of days and time vocabulary.",
   },
-  "genki_1_ch3_days-and-time-kana": {
-    title: "Days & Time - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch3_days-and-time"],
-    instructions: "Practice recognizing days and time vocabulary in Kana.",
-  },
-  "genki_1_ch3_verbs-and-adj-readings": {
-    title: "Verbs & Adj. - Readings",
+  "genki_1_ch3_verbs-and-adj": {
+    title: "Verbs & Adj.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch3_verbs-and-adj"],
-    instructions:
-      "Practice the readings of verbs and adjectives from Chapter 3.",
-  },
-  "genki_1_ch3_verbs-and-adj-kana": {
-    title: "Verbs & Adj. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch3_verbs-and-adj"],
-    instructions:
-      "Practice recognizing verbs and adjectives from Chapter 3 in Kana.",
   },
   "sentence-practice-o-de-ni-e-particles": {
     title: "Particles - を, で, に, へ",
@@ -292,19 +269,10 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["sentence-practice-polite-invitations"],
     instructions: "Practice forming and responding to polite invitations.",
   },
-  "genki_1_ch3_adverbs-expressions-readings": {
-    title: "Adv. & Expres. - Readings",
+  "genki_1_ch3_adverbs-expressions": {
+    title: "Adv. & Expres.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch3_adverbs-expressions"],
-    instructions:
-      "Practice the readings of adverbs and expressions from Chapter 3.",
-  },
-  "genki_1_ch3_adverbs-expressions-kana": {
-    title: "Adv. & Expres. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch3_adverbs-expressions"],
-    instructions:
-      "Practice recognizing adverbs and expressions from Chapter 3 in Kana.",
   },
   "genki_1_ch3_all-vocab-test": {
     title: "All Vocab - Test",
@@ -330,41 +298,20 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_1_ch4_vocab-list"],
     instructions: "Review the vocabulary for Chapter 4.",
   },
-  "genki_1_ch4_nouns-1-readings": {
-    title: "Nouns 1 - Readings",
+  "genki_1_ch4_nouns-1": {
+    title: "Nouns 1",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch4_nouns-1"],
-    instructions: "Practice the readings of the first set of nouns.",
   },
-  "genki_1_ch4_nouns-1-kana": {
-    title: "Nouns 1 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch4_nouns-1"],
-    instructions: "Practice recognizing the first set of nouns in Kana.",
-  },
-  "genki_1_ch4_nouns-2-readings": {
-    title: "Nouns 2 - Readings",
+  "genki_1_ch4_nouns-2": {
+    title: "Nouns 2",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch4_nouns-2"],
-    instructions: "Practice the readings of the second set of nouns.",
   },
-  "genki_1_ch4_nouns-2-kana": {
-    title: "Nouns 2 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch4_nouns-2"],
-    instructions: "Practice recognizing the second set of nouns in Kana.",
-  },
-  "genki_1_ch4_location-words-readings": {
-    title: "Location Words - Readings",
+  "genki_1_ch4_location-words": {
+    title: "Location Words",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch4_location-words"],
-    instructions: "Practice the readings of location words.",
-  },
-  "genki_1_ch4_location-words-kana": {
-    title: "Location Words - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch4_location-words"],
-    instructions: "Practice recognizing location words in Kana.",
   },
   "sentence-practice-iru-aru": {
     title: "いる・ある",
@@ -379,19 +326,10 @@ export const dynamic_modules: DynamicModuleCollection = {
     instructions:
       "Practice forming sentences indicating the location of things.",
   },
-  "genki_1_ch4_verbs-adv-misc-readings": {
-    title: "V, Adv, & Misc. - Readings",
+  "genki_1_ch4_verbs-adv-misc": {
+    title: "V, Adv, & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch4_verbs-adv-misc"],
-    instructions:
-      "Practice the readings of verbs, adverbs, and miscellaneous vocabulary.",
-  },
-  "genki_1_ch4_verbs-adv-misc-kana": {
-    title: "V, Adv, & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch4_verbs-adv-misc"],
-    instructions:
-      "Practice recognizing verbs, adverbs, and miscellaneous vocabulary in Kana.",
   },
   "genki_1_ch4_all-vocab-test": {
     title: "All Vocab - Test",
@@ -425,41 +363,20 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_1_ch5_vocab-list"],
     instructions: "Review the vocabulary for Chapter 5.",
   },
-  "genki_1_ch5_nouns-readings": {
-    title: "Nouns 1 - Readings",
+  genki_1_ch5_nouns: {
+    title: "Nouns 1",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch5_nouns"],
-    instructions: "Practice the readings of nouns from Chapter 5.",
   },
-  "genki_1_ch5_nouns-kana": {
-    title: "Nouns 1 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch5_nouns"],
-    instructions: "Practice recognizing nouns from Chapter 5 in Kana.",
-  },
-  "genki_1_ch5_i-adjectives-readings": {
-    title: "い Adjectives - Readings",
+  "genki_1_ch5_i-adjectives": {
+    title: "い Adjectives",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch5_i-adjectives"],
-    instructions: "Practice the readings of い-adjectives.",
   },
-  "genki_1_ch5_i-adjectives-kana": {
-    title: "い Adjectives - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch5_i-adjectives"],
-    instructions: "Practice recognizing い-adjectives in Kana.",
-  },
-  "genki_1_ch5_na-adjectives-readings": {
-    title: "な Adjectives - Readings",
+  "genki_1_ch5_na-adjectives": {
+    title: "な Adjectives",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch5_na-adjectives"],
-    instructions: "Practice the readings of な-adjectives.",
-  },
-  "genki_1_ch5_na-adjectives-kana": {
-    title: "な Adjectives - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch5_na-adjectives"],
-    instructions: "Practice recognizing な-adjectives in Kana.",
   },
   "sentence-practice-adjectives": {
     title: "Adjectives in Sentences",
@@ -473,19 +390,10 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["sentence-practice-suki-kirai"],
     instructions: "Practice forming sentences expressing likes and dislikes.",
   },
-  "genki_1_ch5_verbs-adv-misc-readings": {
-    title: "Verbs, Adv, & Misc. - Readings",
+  "genki_1_ch5_verbs-adv-misc": {
+    title: "Verbs, Adv, & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch5_verbs-adv-misc"],
-    instructions:
-      "Practice the readings of verbs, adverbs, and miscellaneous vocabulary.",
-  },
-  "genki_1_ch5_verbs-adv-misc-kana": {
-    title: "Verbs, Adv, & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch5_verbs-adv-misc"],
-    instructions:
-      "Practice recognizing verbs, adverbs, and miscellaneous vocabulary in Kana.",
   },
   "genki_1_ch5_all-vocab-test": {
     title: "All Vocab - Test",
@@ -501,43 +409,20 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_1_ch6_vocab-list"],
     instructions: "Review the vocabulary for Chapter 6.",
   },
-  "genki_1_ch6_nouns-readings": {
-    title: "Nouns - Readings",
+  genki_1_ch6_nouns: {
+    title: "Nouns",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch6_nouns"],
-    instructions: "Practice the readings of nouns from Chapter 6.",
   },
-  "genki_1_ch6_nouns-kana": {
-    title: "Nouns - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch6_nouns"],
-    instructions: "Practice recognizing nouns from Chapter 6 in Kana.",
-  },
-  "genki_1_ch6_u-verbs-and-adj-readings": {
-    title: "U-V & Adj - Readings",
+  "genki_1_ch6_u-verbs-and-adj": {
+    title: "U-V & Adj",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch6_u-verbs-and-adj"],
-    instructions: "Practice the readings of U-verbs and adjectives.",
   },
-  "genki_1_ch6_u-verbs-and-adj-kana": {
-    title: "U-V & Adj - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch6_u-verbs-and-adj"],
-    instructions: "Practice recognizing U-verbs and adjectives in Kana.",
-  },
-  "genki_1_ch6_ru-v-irr-v-adv-misc-readings": {
-    title: "Ru-V, Irr-V, & Misc. - Readings",
+  "genki_1_ch6_ru-v-irr-v-adv-misc": {
+    title: "Ru-V, Irr-V, & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch6_ru-v-irr-v-adv-misc"],
-    instructions:
-      "Practice the readings of Ru-verbs, irregular verbs, and miscellaneous vocabulary.",
-  },
-  "genki_1_ch6_ru-v-irr-v-adv-misc-kana": {
-    title: "Ru-V, Irr-V, & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch6_ru-v-irr-v-adv-misc"],
-    instructions:
-      "Practice recognizing Ru-verbs, irregular verbs, and miscellaneous vocabulary in Kana.",
   },
   "genki_1_ch6_all-vocab-test": {
     title: "All Vocab - Test",
@@ -553,55 +438,25 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_1_ch7_vocab-list"],
     instructions: "Review the vocabulary for Chapter 7.",
   },
-  "genki_1_ch7_nouns-1-readings": {
-    title: "Nouns 1 - Readings",
+  "genki_1_ch7_nouns-1": {
+    title: "Nouns 1",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch7_nouns-1"],
-    instructions: "Practice the readings of the first set of nouns.",
   },
-  "genki_1_ch7_nouns-1-kana": {
-    title: "Nouns 1 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch7_nouns-1"],
-    instructions: "Practice recognizing the first set of nouns in Kana.",
-  },
-  "genki_1_ch7_body-parts-readings": {
-    title: "Body Parts - Readings",
+  "genki_1_ch7_body-parts": {
+    title: "Body Parts",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch7_body-parts"],
-    instructions: "Practice the readings of body parts vocabulary.",
   },
-  "genki_1_ch7_body-parts-kana": {
-    title: "Body Parts - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch7_body-parts"],
-    instructions: "Practice recognizing body parts vocabulary in Kana.",
-  },
-  "genki_1_ch7_verbs-readings": {
-    title: "Verbs - Readings",
+  genki_1_ch7_verbs: {
+    title: "Verbs",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch7_verbs"],
-    instructions: "Practice the readings of verbs from Chapter 7.",
   },
-  "genki_1_ch7_verbs-kana": {
-    title: "Verbs - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch7_verbs"],
-    instructions: "Practice recognizing verbs from Chapter 7 in Kana.",
-  },
-  "genki_1_ch7_adj-adv-misc-readings": {
-    title: "Adj, Adv, & Misc. - Readings",
+  "genki_1_ch7_adj-adv-misc": {
+    title: "Adj, Adv, & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch7_adj-adv-misc"],
-    instructions:
-      "Practice the readings of adjectives, adverbs, and miscellaneous vocabulary.",
-  },
-  "genki_1_ch7_adj-adv-misc-kana": {
-    title: "Adj, Adv, & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch7_adj-adv-misc"],
-    instructions:
-      "Practice recognizing adjectives, adverbs, and miscellaneous vocabulary in Kana.",
   },
   "genki_1_ch7_all-vocab-test": {
     title: "All Vocab - Test",
@@ -617,55 +472,25 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_1_ch8_vocab-list"],
     instructions: "Review the vocabulary for Chapter 8.",
   },
-  "genki_1_ch8_nouns-1-readings": {
-    title: "Nouns 1 - Readings",
+  "genki_1_ch8_nouns-1": {
+    title: "Nouns 1",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch8_nouns-1"],
-    instructions: "Practice the readings of the first set of nouns.",
   },
-  "genki_1_ch8_nouns-1-kana": {
-    title: "Nouns 1 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch8_nouns-1"],
-    instructions: "Practice recognizing the first set of nouns in Kana.",
-  },
-  "genki_1_ch8_nouns-2-readings": {
-    title: "Nouns 2 - Readings",
+  "genki_1_ch8_nouns-2": {
+    title: "Nouns 2",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch8_nouns-2"],
-    instructions: "Practice the readings of the second set of nouns.",
   },
-  "genki_1_ch8_nouns-2-kana": {
-    title: "Nouns 2 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch8_nouns-2"],
-    instructions: "Practice recognizing the second set of nouns in Kana.",
-  },
-  "genki_1_ch8_verbs-readings": {
-    title: "Verbs - Readings",
+  genki_1_ch8_verbs: {
+    title: "Verbs",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch8_verbs"],
-    instructions: "Practice the readings of verbs from Chapter 8.",
   },
-  "genki_1_ch8_verbs-kana": {
-    title: "Verbs - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch8_verbs"],
-    instructions: "Practice recognizing verbs from Chapter 8 in Kana.",
-  },
-  "genki_1_ch8_adj-adv-misc-readings": {
-    title: "Adj, Adv, & Misc. - Readings",
+  "genki_1_ch8_adj-adv-misc": {
+    title: "Adj, Adv, & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch8_adj-adv-misc"],
-    instructions:
-      "Practice the readings of adjectives, adverbs, and miscellaneous vocabulary.",
-  },
-  "genki_1_ch8_adj-adv-misc-kana": {
-    title: "Adj, Adv, & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch8_adj-adv-misc"],
-    instructions:
-      "Practice recognizing adjectives, adverbs, and miscellaneous vocabulary in Kana.",
   },
   "genki_1_ch8_all-vocab-test": {
     title: "All Vocab - Test",
@@ -681,55 +506,25 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_1_ch9_vocab-list"],
     instructions: "Review the vocabulary for Chapter 9.",
   },
-  "genki_1_ch9_nouns-readings": {
-    title: "Nouns - Readings",
+  genki_1_ch9_nouns: {
+    title: "Nouns",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch9_nouns"],
-    instructions: "Practice the readings of nouns from Chapter 9.",
   },
-  "genki_1_ch9_nouns-kana": {
-    title: "Nouns - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch9_nouns"],
-    instructions: "Practice recognizing nouns from Chapter 9 in Kana.",
-  },
-  "genki_1_ch9_small-item-counters-readings": {
-    title: "Small Item Counters - Readings",
+  "genki_1_ch9_small-item-counters": {
+    title: "Small Item Counters",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch9_small-item-counters"],
-    instructions: "Practice the readings of small item counters.",
   },
-  "genki_1_ch9_small-item-counters-kana": {
-    title: "Small Item Counters - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch9_small-item-counters"],
-    instructions: "Practice recognizing small item counters in Kana.",
-  },
-  "genki_1_ch9_verbs-readings": {
-    title: "Verbs - Readings",
+  genki_1_ch9_verbs: {
+    title: "Verbs",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch9_verbs"],
-    instructions: "Practice the readings of verbs from Chapter 9.",
   },
-  "genki_1_ch9_verbs-kana": {
-    title: "Verbs - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch9_verbs"],
-    instructions: "Practice recognizing verbs from Chapter 9 in Kana.",
-  },
-  "genki_1_ch9_adj-adv-misc-readings": {
-    title: "Adj, Adv, & Misc. - Readings",
+  "genki_1_ch9_adj-adv-misc": {
+    title: "Adj, Adv, & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch9_adj-adv-misc"],
-    instructions:
-      "Practice the readings of adjectives, adverbs, and miscellaneous vocabulary.",
-  },
-  "genki_1_ch9_adj-adv-misc-kana": {
-    title: "Adj, Adv, & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch9_adj-adv-misc"],
-    instructions:
-      "Practice recognizing adjectives, adverbs, and miscellaneous vocabulary in Kana.",
   },
   "genki_1_ch9_all-vocab-test": {
     title: "All Vocab - Test",
@@ -745,55 +540,25 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_1_ch10_vocab-list"],
     instructions: "Review the vocabulary for Chapter 10.",
   },
-  "genki_1_ch10_nouns-1-readings": {
-    title: "Nouns 1 - Readings",
+  "genki_1_ch10_nouns-1": {
+    title: "Nouns 1",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch10_nouns-1"],
-    instructions: "Practice the readings of the first set of nouns.",
   },
-  "genki_1_ch10_nouns-1-kana": {
-    title: "Nouns 1 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch10_nouns-1"],
-    instructions: "Practice recognizing the first set of nouns in Kana.",
-  },
-  "genki_1_ch10_nouns-2-readings": {
-    title: "Nouns 2 - Readings",
+  "genki_1_ch10_nouns-2": {
+    title: "Nouns 2",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch10_nouns-2"],
-    instructions: "Practice the readings of the second set of nouns.",
   },
-  "genki_1_ch10_nouns-2-kana": {
-    title: "Nouns 2 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch10_nouns-2"],
-    instructions: "Practice recognizing the second set of nouns in Kana.",
-  },
-  "genki_1_ch10_verbs-readings": {
-    title: "Verbs - Readings",
+  genki_1_ch10_verbs: {
+    title: "Verbs",
     session_type: "vocab-practice",
     vocab_set_ids: [], // FIX
-    instructions: "Practice the readings of verbs from Chapter 10.",
   },
-  "genki_1_ch10_verbs-kana": {
-    title: "Verbs - Kana",
+  "genki_1_ch10_adj-adv-misc": {
+    title: "Adj, Adv, & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: [], // FIX
-    instructions: "Practice recognizing verbs from Chapter 10 in Kana.",
-  },
-  "genki_1_ch10_adj-adv-misc-readings": {
-    title: "Adj, Adv, & Misc. - Readings",
-    session_type: "vocab-practice",
-    vocab_set_ids: [], // FIX
-    instructions:
-      "Practice the readings of adjectives, adverbs, and miscellaneous vocabulary.",
-  },
-  "genki_1_ch10_adj-adv-misc-kana": {
-    title: "Adj, Adv, & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: [], // FIX
-    instructions:
-      "Practice recognizing adjectives, adverbs, and miscellaneous vocabulary in Kana.",
   },
   "genki_1_ch10_all-vocab-test": {
     title: "All Vocab - Test",
@@ -809,67 +574,30 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_1_ch11_vocab-list"],
     instructions: "Review the vocabulary for Chapter 11.",
   },
-  "genki_1_ch11_nouns-1-readings": {
-    title: "Nouns 1 - Readings",
+  "genki_1_ch11_nouns-1": {
+    title: "Nouns 1",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch11_nouns-1"],
-    instructions: "Practice the readings of the first set of nouns.",
   },
-  "genki_1_ch11_nouns-1-kana": {
-    title: "Nouns 1 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch11_nouns-1"],
-    instructions: "Practice recognizing the first set of nouns in Kana.",
-  },
-  "genki_1_ch11_nouns-2-readings": {
-    title: "Nouns 2 - Readings",
+  "genki_1_ch11_nouns-2": {
+    title: "Nouns 2",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch11_nouns-2"],
-    instructions: "Practice the readings of the second set of nouns.",
   },
-  "genki_1_ch11_nouns-2-kana": {
-    title: "Nouns 2 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch11_nouns-2"],
-    instructions: "Practice recognizing the second set of nouns in Kana.",
-  },
-  "genki_1_ch11_ru-v-u-v-readings": {
-    title: "Ru and U-Verbs - Readings",
+  "genki_1_ch11_ru-v-u-v": {
+    title: "Ru and U-Verbs",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch11_ru-v-u-v"],
-    instructions: "Practice the readings of Ru-verbs and U-verbs.",
   },
-  "genki_1_ch11_ru-v-u-v-kana": {
-    title: "Ru and U-Verbs - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch11_ru-v-u-v"],
-    instructions: "Practice recognizing Ru-verbs and U-verbs in Kana.",
-  },
-  "genki_1_ch11_irr-v-adv-misc-readings": {
-    title: "Irr. V, Adv, & Misc. - Readings",
+  "genki_1_ch11_irr-v-adv-misc": {
+    title: "Irr. V, Adv, & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch11_irr-v-adv-misc"],
-    instructions:
-      "Practice the readings of irregular verbs, adverbs, and miscellaneous vocabulary.",
   },
-  "genki_1_ch11_irr-v-adv-misc-kana": {
-    title: "Irr. V, Adv, & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch11_irr-v-adv-misc"],
-    instructions:
-      "Practice recognizing irregular verbs, adverbs, and miscellaneous vocabulary in Kana.",
-  },
-  "genki_1_ch11_occupations-readings": {
-    title: "Occupations - Readings",
+  genki_1_ch11_occupations: {
+    title: "Occupations",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch11_occupations"],
-    instructions: "Practice the readings of occupation vocabulary.",
-  },
-  "genki_1_ch11_occupations-kana": {
-    title: "Occupations - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch11_occupations"],
-    instructions: "Practice recognizing occupation vocabulary in Kana.",
   },
   "genki_1_ch11_all-vocab-test": {
     title: "All Vocab - Test",
@@ -885,55 +613,25 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_1_ch12_vocab-list"],
     instructions: "Review the vocabulary for Chapter 12.",
   },
-  "genki_1_ch12_nouns-1-readings": {
-    title: "Nouns 1 - Readings",
+  "genki_1_ch12_nouns-1": {
+    title: "Nouns 1",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch12_nouns-1"],
-    instructions: "Practice the readings of the first set of nouns.",
   },
-  "genki_1_ch12_nouns-1-kana": {
-    title: "Nouns 1 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch12_nouns-1"],
-    instructions: "Practice recognizing the first set of nouns in Kana.",
-  },
-  "genki_1_ch12_nouns-2-readings": {
-    title: "Nouns 2 - Readings",
+  "genki_1_ch12_nouns-2": {
+    title: "Nouns 2",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch12_nouns-2"],
-    instructions: "Practice the readings of the second set of nouns.",
   },
-  "genki_1_ch12_nouns-2-kana": {
-    title: "Nouns 2 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch12_nouns-2"],
-    instructions: "Practice recognizing the second set of nouns in Kana.",
-  },
-  "genki_1_ch12_verbs-readings": {
-    title: "Verbs - Readings",
+  genki_1_ch12_verbs: {
+    title: "Verbs",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch12_verbs"],
-    instructions: "Practice the readings of verbs from Chapter 12.",
   },
-  "genki_1_ch12_verbs-kana": {
-    title: "Verbs - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch12_verbs"],
-    instructions: "Practice recognizing verbs from Chapter 12 in Kana.",
-  },
-  "genki_1_ch12_adj-adv-misc-readings": {
-    title: "Adj, Adv, & Misc. - Readings",
+  "genki_1_ch12_adj-adv-misc": {
+    title: "Adj, Adv, & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch12_adj-adv-misc"],
-    instructions:
-      "Practice the readings of adjectives, adverbs, and miscellaneous vocabulary.",
-  },
-  "genki_1_ch12_adj-adv-misc-kana": {
-    title: "Adj, Adv, & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_1_ch12_adj-adv-misc"],
-    instructions:
-      "Practice recognizing adjectives, adverbs, and miscellaneous vocabulary in Kana.",
   },
   "genki_1_ch12_all-vocab-test": {
     title: "All Vocab - Test",
@@ -949,45 +647,20 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_2_ch13_vocab-list"],
     instructions: "Review the vocabulary for Chapter 13.",
   },
-  "genki_2_ch13_nouns-readings": {
-    title: "Nouns - Readings",
+  genki_2_ch13_nouns: {
+    title: "Nouns",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch13_nouns"],
-    instructions: "Practice the readings of nouns from Chapter 13.",
   },
-  "genki_2_ch13_nouns-kana": {
-    title: "Nouns - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch13_nouns"],
-    instructions: "Practice recognizing nouns from Chapter 13 in Kana.",
-  },
-  "genki_2_ch13_adj-and-verbs-readings": {
-    title: "Adj & Verbs - Readings",
+  "genki_2_ch13_adj-and-verbs": {
+    title: "Adj & Verbs",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch13_adj-and-verbs"],
-    instructions:
-      "Practice the readings of adjectives and verbs from Chapter 13.",
   },
-  "genki_2_ch13_adj-and-verbs-kana": {
-    title: "Adj & Verbs - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch13_adj-and-verbs"],
-    instructions:
-      "Practice recognizing adjectives and verbs from Chapter 13 in Kana.",
-  },
-  "genki_2_ch13_day-count-and-misc-readings": {
-    title: "Day Count & Misc. - Readings",
+  "genki_2_ch13_day-count-and-misc": {
+    title: "Day Count & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch13_day-count-and-misc"],
-    instructions:
-      "Practice the readings of day count and miscellaneous vocabulary.",
-  },
-  "genki_2_ch13_day-count-and-misc-kana": {
-    title: "Day Count & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch13_day-count-and-misc"],
-    instructions:
-      "Practice recognizing day count and miscellaneous vocabulary in Kana.",
   },
   "genki_2_ch13_all-vocab-test": {
     title: "All Vocab - Test",
@@ -1003,57 +676,25 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_2_ch14_vocab-list"],
     instructions: "Review the vocabulary for Chapter 14.",
   },
-  "genki_2_ch14_nouns-1-readings": {
-    title: "Nouns 1 - Readings",
+  "genki_2_ch14_nouns-1": {
+    title: "Nouns 1",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch14_nouns-1"],
-    instructions: "Practice the readings of the first set of nouns.",
   },
-  "genki_2_ch14_nouns-1-kana": {
-    title: "Nouns 1 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch14_nouns-1"],
-    instructions: "Practice recognizing the first set of nouns in Kana.",
-  },
-  "genki_2_ch14_nouns-2-readings": {
-    title: "Nouns 2 - Readings",
+  "genki_2_ch14_nouns-2": {
+    title: "Nouns 2",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch14_nouns-2"],
-    instructions: "Practice the readings of the second set of nouns.",
   },
-  "genki_2_ch14_nouns-2-kana": {
-    title: "Nouns 2 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch14_nouns-2"],
-    instructions: "Practice recognizing the second set of nouns in Kana.",
-  },
-  "genki_2_ch14_adj-and-verbs-readings": {
-    title: "Adj & Verbs - Readings",
+  "genki_2_ch14_adj-and-verbs": {
+    title: "Adj & Verbs",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch14_adj-and-verbs"],
-    instructions:
-      "Practice the readings of adjectives and verbs from Chapter 14.",
   },
-  "genki_2_ch14_adj-and-verbs-kana": {
-    title: "Adj & Verbs - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch14_adj-and-verbs"],
-    instructions:
-      "Practice recognizing adjectives and verbs from Chapter 14 in Kana.",
-  },
-  "genki_2_ch14_counters-adv-misc-readings": {
-    title: "Counters, Adv., & Misc. - Readings",
+  "genki_2_ch14_counters-adv-misc": {
+    title: "Counters, Adv., & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch14_counters-adv-misc"],
-    instructions:
-      "Practice the readings of counters, adverbs, and miscellaneous vocabulary.",
-  },
-  "genki_2_ch14_counters-adv-misc-kana": {
-    title: "Counters, Adv., & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch14_counters-adv-misc"],
-    instructions:
-      "Practice recognizing counters, adverbs, and miscellaneous vocabulary in Kana.",
   },
   "genki_2_ch14_all-vocab-test": {
     title: "All Vocab - Test",
@@ -1069,55 +710,25 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_2_ch15_vocab-list"],
     instructions: "Review the vocabulary for Chapter 15.",
   },
-  "genki_2_ch15_nouns-1-readings": {
-    title: "Nouns 1 - Readings",
+  "genki_2_ch15_nouns-1": {
+    title: "Nouns 1",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch15_nouns-1"],
-    instructions: "Practice the readings of the first set of nouns.",
   },
-  "genki_2_ch15_nouns-1-kana": {
-    title: "Nouns 1 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch15_nouns-1"],
-    instructions: "Practice recognizing the first set of nouns in Kana.",
-  },
-  "genki_2_ch15_nouns-2-readings": {
-    title: "Nouns 2 - Readings",
+  "genki_2_ch15_nouns-2": {
+    title: "Nouns 2",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch15_nouns-2"],
-    instructions: "Practice the readings of the second set of nouns.",
   },
-  "genki_2_ch15_nouns-2-kana": {
-    title: "Nouns 2 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch15_nouns-2"],
-    instructions: "Practice recognizing the second set of nouns in Kana.",
-  },
-  "genki_2_ch15_godan-and-ichidan-v-readings": {
-    title: "Ichidan & Godan V. - Readings",
+  "genki_2_ch15_godan-and-ichidan-v": {
+    title: "Ichidan & Godan V.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch15_godan-and-ichidan-v"],
-    instructions: "Practice the readings of Ichidan and Godan verbs.",
   },
-  "genki_2_ch15_godan-and-ichidan-v-kana": {
-    title: "Ichidan & Godan V. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch15_godan-and-ichidan-v"],
-    instructions: "Practice recognizing Ichidan and Godan verbs in Kana.",
-  },
-  "genki_2_ch15_irr-v-adv-misc-readings": {
-    title: "Irreg Verbs, Adv., & Misc. - Readings",
+  "genki_2_ch15_irr-v-adv-misc": {
+    title: "Irreg Verbs, Adv., & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch15_irr-v-adv-misc"],
-    instructions:
-      "Practice the readings of irregular verbs, adverbs, and miscellaneous vocabulary.",
-  },
-  "genki_2_ch15_irr-v-adv-misc-kana": {
-    title: "Irreg Verbs, Adv., & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch15_irr-v-adv-misc"],
-    instructions:
-      "Practice recognizing irregular verbs, adverbs, and miscellaneous vocabulary in Kana.",
   },
   "genki_2_ch15_all-vocab-test": {
     title: "All Vocab - Test",
@@ -1133,55 +744,25 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_2_ch16_vocab-list"],
     instructions: "Review the vocabulary for Chapter 16.",
   },
-  "genki_2_ch16_nouns-readings": {
-    title: "Nouns - Readings",
+  genki_2_ch16_nouns: {
+    title: "Nouns",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch16_nouns"],
-    instructions: "Practice the readings of nouns from Chapter 16.",
   },
-  "genki_2_ch16_nouns-kana": {
-    title: "Nouns - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch16_nouns"],
-    instructions: "Practice recognizing nouns from Chapter 16 in Kana.",
-  },
-  "genki_2_ch16_adj-and-u-v-readings": {
-    title: "Adj. & U-V - Readings",
+  "genki_2_ch16_adj-and-u-v": {
+    title: "Adj. & U-V",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch16_adj-and-u-v"],
-    instructions: "Practice the readings of adjectives and U-verbs.",
   },
-  "genki_2_ch16_adj-and-u-v-kana": {
-    title: "Adj. & U-V - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch16_adj-and-u-v"],
-    instructions: "Practice recognizing adjectives and U-verbs in Kana.",
-  },
-  "genki_2_ch16_ru-and-irr-v-readings": {
-    title: "Ru-V & Irreg V - Readings",
+  "genki_2_ch16_ru-and-irr-v": {
+    title: "Ru-V & Irreg V",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch16_ru-and-irr-v"],
-    instructions: "Practice the readings of Ru-verbs and irregular verbs.",
   },
-  "genki_2_ch16_ru-and-irr-v-kana": {
-    title: "Ru-V & Irreg V - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch16_ru-and-irr-v"],
-    instructions: "Practice recognizing Ru-verbs and irregular verbs in Kana.",
-  },
-  "genki_2_ch16_adv-and-misc-readings": {
-    title: "Adv & Misc. - Readings",
+  "genki_2_ch16_adv-and-misc": {
+    title: "Adv & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch16_adv-and-misc"],
-    instructions:
-      "Practice the readings of adverbs and miscellaneous vocabulary.",
-  },
-  "genki_2_ch16_adv-and-misc-kana": {
-    title: "Adv & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch16_adv-and-misc"],
-    instructions:
-      "Practice recognizing adverbs and miscellaneous vocabulary in Kana.",
   },
   "genki_2_ch16_all-vocab-test": {
     title: "All Vocab - Test",
@@ -1197,55 +778,25 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_2_ch17_vocab-list"],
     instructions: "Review the vocabulary for Chapter 17.",
   },
-  "genki_2_ch17_nouns-1-readings": {
-    title: "Nouns 1 - Readings",
+  "genki_2_ch17_nouns-1": {
+    title: "Nouns 1",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch17_nouns-1"],
-    instructions: "Practice the readings of the first set of nouns.",
   },
-  "genki_2_ch17_nouns-1-kana": {
-    title: "Nouns 1 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch17_nouns-1"],
-    instructions: "Practice recognizing the first set of nouns in Kana.",
-  },
-  "genki_2_ch17_nouns-2-readings": {
-    title: "Nouns 2 - Readings",
+  "genki_2_ch17_nouns-2": {
+    title: "Nouns 2",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch17_nouns-2"],
-    instructions: "Practice the readings of the second set of nouns.",
   },
-  "genki_2_ch17_nouns-2-kana": {
-    title: "Nouns 2 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch17_nouns-2"],
-    instructions: "Practice recognizing the second set of nouns in Kana.",
-  },
-  "genki_2_ch17_verbs-readings": {
-    title: "Verbs - Readings",
+  genki_2_ch17_verbs: {
+    title: "Verbs",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch17_verbs"],
-    instructions: "Practice the readings of verbs from Chapter 17.",
   },
-  "genki_2_ch17_verbs-kana": {
-    title: "Verbs - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch17_verbs"],
-    instructions: "Practice recognizing verbs from Chapter 17 in Kana.",
-  },
-  "genki_2_ch17_adj-adv-misc-readings": {
-    title: "Adj, Adv, & Misc. - Readings",
+  "genki_2_ch17_adj-adv-misc": {
+    title: "Adj, Adv, & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch17_adj-adv-misc"],
-    instructions:
-      "Practice the readings of adjectives, adverbs, and miscellaneous vocabulary.",
-  },
-  "genki_2_ch17_adj-adv-misc-kana": {
-    title: "Adj, Adv, & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch17_adj-adv-misc"],
-    instructions:
-      "Practice recognizing adjectives, adverbs, and miscellaneous vocabulary in Kana.",
   },
   "genki_2_ch17_all-vocab-test": {
     title: "All Vocab - Test",
@@ -1279,57 +830,25 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_2_ch18_vocab-list"],
     instructions: "Review the vocabulary for Chapter 18.",
   },
-  "genki_2_ch18_nouns-1-readings": {
-    title: "Nouns 1 - Readings",
+  "genki_2_ch18_nouns-1": {
+    title: "Nouns 1",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch18_nouns-1"],
-    instructions: "Practice the readings of the first set of nouns.",
   },
-  "genki_2_ch18_nouns-1-kana": {
-    title: "Nouns 1 - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch18_nouns-1"],
-    instructions: "Practice recognizing the first set of nouns in Kana.",
-  },
-  "genki_2_ch18_nouns-2-and-adjectives-readings": {
-    title: "Nouns 2 & Adj - Readings",
+  "genki_2_ch18_nouns-2-and-adjectives": {
+    title: "Nouns 2 & Adj",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch18_nouns-2-and-adjectives"],
-    instructions:
-      "Practice the readings of the second set of nouns and adjectives.",
   },
-  "genki_2_ch18_nouns-2-and-adjectives-kana": {
-    title: "Nouns 2 & Adj - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch18_nouns-2-and-adjectives"],
-    instructions:
-      "Practice recognizing the second set of nouns and adjectives in Kana.",
-  },
-  "genki_2_ch18_u-and-irr-verbs-readings": {
-    title: "U & Irr Verbs - Readings",
+  "genki_2_ch18_u-and-irr-verbs": {
+    title: "U & Irr Verbs",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch18_u-and-irr-verbs"],
-    instructions: "Practice the readings of U-verbs and irregular verbs.",
   },
-  "genki_2_ch18_u-and-irr-verbs-kana": {
-    title: "U & Irr Verbs - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch18_u-and-irr-verbs"],
-    instructions: "Practice recognizing U-verbs and irregular verbs in Kana.",
-  },
-  "genki_2_ch18_ru-verbs-and-misc-readings": {
-    title: "Ru Verbs & Misc. - Readings",
+  "genki_2_ch18_ru-verbs-and-misc": {
+    title: "Ru Verbs & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch18_ru-verbs-and-misc"],
-    instructions:
-      "Practice the readings of Ru-verbs and miscellaneous vocabulary.",
-  },
-  "genki_2_ch18_ru-verbs-and-misc-kana": {
-    title: "Ru Verbs & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch18_ru-verbs-and-misc"],
-    instructions:
-      "Practice recognizing Ru-verbs and miscellaneous vocabulary in Kana.",
   },
   "genki_2_ch18_all-vocab-test": {
     title: "All Vocab - Test",
@@ -1370,46 +889,20 @@ export const dynamic_modules: DynamicModuleCollection = {
     instructions:
       "Test your knowledge of adverbs and miscellaneous vocabulary from Chapters 13-18.",
   },
-  "genki_2_ch19_nouns-and-adj-readings": {
-    title: "Nouns & Adj. - Readings",
+  "genki_2_ch19_nouns-and-adj": {
+    title: "Nouns & Adj.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch19_nouns-and-adj"],
-    instructions:
-      "Practice the readings of nouns and adjectives from Chapter 19.",
   },
-  "genki_2_ch19_nouns-and-adj-kana": {
-    title: "Nouns & Adj. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch19_nouns-and-adj"],
-    instructions:
-      "Practice recognizing nouns and adjectives from Chapter 19 in Kana.",
-  },
-  "genki_2_ch19_u-ru-verbs-readings": {
-    title: "U + Ru Verbs - Readings",
+  "genki_2_ch19_u-ru-verbs": {
+    title: "U + Ru Verbs",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch19_u-ru-verbs"],
-    instructions: "Practice the readings of U and Ru verbs from Chapter 19.",
   },
-  "genki_2_ch19_u-ru-verbs-kana": {
-    title: "U + Ru Verbs - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch19_u-ru-verbs"],
-    instructions:
-      "Practice recognizing U and Ru verbs from Chapter 19 in Kana.",
-  },
-  "genki_2_ch19_irr-v-adv-misc-readings": {
-    title: "Irr. Verbs, Adv., & Misc. - Readings",
+  "genki_2_ch19_irr-v-adv-misc": {
+    title: "Irr. Verbs, Adv., & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch19_irr-v-adv-misc"],
-    instructions:
-      "Practice the readings of irregular verbs, adverbs, and miscellaneous vocabulary.",
-  },
-  "genki_2_ch19_irr-v-adv-misc-kana": {
-    title: "Irr. Verbs, Adv., & Misc. - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch19_irr-v-adv-misc"],
-    instructions:
-      "Practice recognizing irregular verbs, adverbs, and miscellaneous vocabulary in Kana.",
   },
   "genki_2_ch19_all-vocab-test": {
     title: "Ch. 19 All Vocab - Test",
@@ -1431,39 +924,18 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_2_ch20_vocab-list"],
     instructions: "Review the vocabulary for Chapter 20.",
   },
-  "genki_2_ch20_nouns-readings": {
-    title: "Nouns - Readings",
+  genki_2_ch20_nouns: {
+    title: "Nouns",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch20_nouns"],
-    instructions: "Practice the readings of nouns from Chapter 20.",
   },
-  "genki_2_ch20_nouns-kana": {
-    title: "Nouns - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch20_nouns"],
-    instructions: "Practice recognizing nouns from Chapter 20 in Kana.",
-  },
-  "genki_2_ch20_adj-u-v-readings": {
-    title: "Adjectives & う-Verbs - Readings",
+  "genki_2_ch20_adj-u-v": {
+    title: "Adjectives & う-Verbs",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch20_adj-u-v"],
-    instructions: "Practice the readings of adjectives and う-verbs.",
   },
-  "genki_2_ch20_adj-u-v-kana": {
-    title: "Adjectives & う-Verbs - Kana",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch20_adj-u-v"],
-    instructions: "Practice recognizing adjectives and う-verbs in Kana.",
-  },
-  "genki_2_ch20_ru-v-irr-v-adv-misc-readings": {
-    title: "る-Verbs, Irr. V., Adv., & Misc. - Readings",
-    session_type: "vocab-practice",
-    vocab_set_ids: ["genki_2_ch20_ru-v-irr-v-adv-misc"],
-    instructions:
-      "Practice the readings of る-verbs, irregular verbs, adverbs, and miscellaneous vocabulary.",
-  },
-  "genki_2_ch20_ru-v-irr-v-adv-misc-kana": {
-    title: "る-Verbs, Irr. V., Adv., & Misc. - Kana",
+  "genki_2_ch20_ru-v-irr-v-adv-misc": {
+    title: "る-Verbs, Irr. V., Adv., & Misc.",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch20_ru-v-irr-v-adv-misc"],
     instructions:

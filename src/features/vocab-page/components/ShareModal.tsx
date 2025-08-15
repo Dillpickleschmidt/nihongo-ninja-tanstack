@@ -23,15 +23,15 @@ export function ShareModal(props: ShareModalProps) {
     >
       <DialogContent class="bg-card border-card-foreground sm:max-w-md">
         <DialogHeader>
-          <DialogTitle class="font-medium">
+          <DialogTitle class="text-muted-foreground font-medium">
             Share{" "}
-            <span class="font-bold text-sky-400">"{props.deck.deck_name}"</span>
+            <span class="font-bold text-amber-400">{props.deck.deck_name}</span>
           </DialogTitle>
         </DialogHeader>
         <div class="grid grid-cols-2 gap-4">
           <Button
             variant="outline"
-            class="relative h-auto min-h-16 flex-col items-center justify-center p-4 whitespace-normal"
+            class="bg-background/30 relative h-auto min-h-16 flex-col items-center justify-center p-4 whitespace-normal"
             disabled={props.isSharing()}
             onClick={props.handlePublicShare}
           >
@@ -58,7 +58,7 @@ export function ShareModal(props: ShareModalProps) {
 
           <Button
             variant="outline"
-            class="h-auto min-h-16 flex-col items-center justify-center p-4 whitespace-normal"
+            class="bg-background/30 h-auto min-h-16 flex-col items-center justify-center p-4 whitespace-normal"
             disabled
             onClick={() => alert("Organization sharing coming soon!")}
           >

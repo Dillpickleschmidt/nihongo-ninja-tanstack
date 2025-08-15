@@ -17,7 +17,13 @@ import type { DeferredPromise } from "@tanstack/solid-router"
 import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
 
 export const Route = createFileRoute("/practice/$userID/$deckID")({
-  loader: async ({ context, location, params }) => {
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { mode: PracticeMode } => ({
+    mode: (search.mode as PracticeMode) === "kana" ? "kana" : "readings",
+  }),
+  loaderDeps: ({ search }) => ({ mode: search.mode }),
+  loader: async ({ context, params, deps }) => {
     try {
       // Parse deck ID from params
       const deckId = parseInt(params.deckID, 10)
@@ -31,10 +37,8 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
 
       if (!deckInfo || deckVocabulary.length === 0) throw notFound()
 
-      // 2. Determine the practice mode
-      const mode: PracticeMode = location.pathname.endsWith("-readings")
-        ? "readings"
-        : "kana"
+      // 2. Get the practice mode from search params (defaults to "readings")
+      const mode: PracticeMode = deps.mode
 
       let hierarchy: FullHierarchyData
 
