@@ -1,8 +1,14 @@
-import type { VocabularyCollection } from "./types"
+import type { VocabularyCollection, VocabularyItem } from "./types"
+
+// Extend VocabularyItem locally to include chapter for my visual reference
+type VocabularyItemWithChapter = VocabularyItem & {
+  chapter?: number
+}
+type LocalVocabularyCollection = Record<string, VocabularyItemWithChapter>
 
 // MISSING AREAS TO UPDATE ARE MARKED BY "FIX"
 
-export const vocabulary: VocabularyCollection = {
+const vocabularyWithChapter: LocalVocabularyCollection = {
   // FIX (ADD CHAPTER 0)!!
 
   // Main Hiragana
@@ -16853,3 +16859,6 @@ export const vocabulary: VocabularyCollection = {
   },
   // FIX add chapter 18-21 here!!
 }
+
+// Export as the original type (chapter property gets stripped at type level)
+export const vocabulary: VocabularyCollection = vocabularyWithChapter

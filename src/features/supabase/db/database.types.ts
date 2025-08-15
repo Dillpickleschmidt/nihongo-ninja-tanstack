@@ -202,7 +202,6 @@ export type Database = {
       }
       vocabulary_items: {
         Row: {
-          chapter: number | null
           created_at: string
           deck_id: number
           english: string[]
@@ -217,7 +216,6 @@ export type Database = {
           word: string
         }
         Insert: {
-          chapter?: number | null
           created_at?: string
           deck_id: number
           english: string[]
@@ -232,7 +230,6 @@ export type Database = {
           word: string
         }
         Update: {
-          chapter?: number | null
           created_at?: string
           deck_id?: number
           english?: string[]

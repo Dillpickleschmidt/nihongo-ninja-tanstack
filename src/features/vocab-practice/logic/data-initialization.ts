@@ -47,7 +47,7 @@ function createPracticeCard(
 
   if (type === "vocabulary") {
     // For vocabulary, the source of truth is the global collection.
-    vocabItem = vocabularyMap.get(item.slug)
+    vocabItem = vocabularyMap.get(item.slug)!
     itemMnemonics = vocabItem?.mnemonics
   } else {
     // For Kanji and Radicals, construct a temporary vocab-like item.
@@ -79,7 +79,6 @@ function createPracticeCard(
       word: characterForKanjiRadical,
       furigana: characterForKanjiRadical,
       english: meaningsForKanjiRadical,
-      chapter: 0, // Placeholder TODO: remove
     }
   }
 

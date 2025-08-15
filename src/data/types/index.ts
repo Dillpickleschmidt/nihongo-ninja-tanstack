@@ -133,7 +133,6 @@ export interface VocabularyItem {
   word: string // The Japanese word/phrase
   furigana: string // Japanese word with hiragana in brackets
   english: string[] // English translations
-  chapter: number // TEMPORARY, WILL BE REMOVED
   part_of_speech?: PartOfSpeech // For verb and adjective conjugation
   info?: string[] // Additional information/notes
   mnemonics?: Mnemonics // Memory aids

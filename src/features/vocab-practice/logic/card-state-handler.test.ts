@@ -14,7 +14,6 @@ const createMockPracticeCard = (
     word: "食べる",
     furigana: "食[た]べる",
     english: ["to eat", "eat"],
-    chapter: 1,
     hiragana: ["たべる"],
     rubyText: ["た", "べる"],
   },
@@ -22,6 +21,7 @@ const createMockPracticeCard = (
     card: createEmptyCard(new Date()),
     // logs is initially undefined
   },
+  isDisabled: false,
   practiceMode: "readings",
   practiceItemType,
   sessionStyle,

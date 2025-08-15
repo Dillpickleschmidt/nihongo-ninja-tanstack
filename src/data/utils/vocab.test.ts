@@ -216,7 +216,6 @@ describe("Vocabulary Utils", () => {
           word: "こんにちは",
           furigana: "こんにちは",
           english: ["hello"],
-          chapter: 1,
         },
       ]
       const expected = [{ hiragana: "こんにちは", romaji: ["hello"] }]
@@ -230,7 +229,6 @@ describe("Vocabulary Utils", () => {
         word: "食べる",
         furigana: "食[た]べる",
         english: ["to eat"],
-        chapter: 1,
       }
       const result = addKanaAndRuby([vocabItem])[0]
       expect(result.hiragana).toEqual(["たべる"])
@@ -244,7 +242,6 @@ describe("Vocabulary Utils", () => {
         word: "水",
         furigana: "水[みず] ",
         english: ["water"],
-        chapter: 1,
       }
       const result = addKanaAndRuby([vocabItem])[0]
       expect(result.hiragana).toEqual(["みず"])

@@ -54,7 +54,6 @@ export function dbItemToVocabularyItem(
     word: dbItem.word,
     furigana: dbItem.furigana || dbItem.word,
     english: dbItem.english,
-    chapter: dbItem.chapter || 1, // VocabularyItem requires chapter (temporary field)
     part_of_speech: undefined, // User-created items don't have part_of_speech
     info: dbItem.info || undefined,
     mnemonics: (dbItem.mnemonics as unknown as Mnemonics) || undefined,
@@ -78,7 +77,6 @@ export function builtInVocabToDBInsert(
     furigana: item.furigana || null,
     english: item.english,
     is_verb: isVerbPartOfSpeech(item.part_of_speech),
-    chapter: item.chapter || null,
     info: item.info || null,
     mnemonics: item.mnemonics || null,
     example_sentences: (item.example_sentences as unknown as Json) || null,
@@ -126,7 +124,6 @@ export function formDataToDBInsert(
     furigana: formData.furigana.trim() || null,
     english: formData.english.filter((e) => e.trim()).map((e) => e.trim()),
     is_verb: formData.isVerb, // Direct boolean from form
-    chapter: 1,
     info:
       formData.notes.length > 0
         ? formData.notes.filter((n) => n.trim()).map((n) => n.trim())
@@ -196,7 +193,6 @@ export function formDataToVocabularyItem(
     word: formData.word,
     furigana: formData.furigana || formData.word,
     english: formData.english,
-    chapter: 1,
     part_of_speech: undefined, // Preview doesn't need part_of_speech
     info: formData.notes.length > 0 ? formData.notes : undefined,
     particles: formData.particles.length > 0 ? formData.particles : undefined,

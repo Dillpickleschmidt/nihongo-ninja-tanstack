@@ -38,7 +38,6 @@ const createMockCard = (
     hiragana: ["テスト"],
     rubyText: ["テスト"],
     english: validAnswers,
-    chapter: 1,
     part_of_speech: partOfSpeech,
   },
   fsrs: { card: {} as any, logs: [] },
@@ -412,4 +411,3 @@ describe("MultipleChoiceComponent", () => {
     })
   })
 })
-

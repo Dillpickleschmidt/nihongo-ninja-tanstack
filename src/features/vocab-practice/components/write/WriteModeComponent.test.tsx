@@ -57,7 +57,6 @@ const createMockCard = (
     hiragana: ["テスト"],
     rubyText: ["テスト"],
     english: validAnswers,
-    chapter: 1,
     example_sentences: hasExampleSentence
       ? ([
           { japanese: ["mock"], english: ["mock"] },

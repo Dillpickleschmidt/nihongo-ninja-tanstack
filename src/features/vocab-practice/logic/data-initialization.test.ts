@@ -122,50 +122,42 @@ const mockVocabularyItems: VocabularyItem[] = [
     word: vocab.characters,
     furigana: vocab.characters + "[dummy]", // Placeholder furigana
     english: vocab.kanji.map((k) => k.meanings.join(", ")), // Simplistic English from Kanji
-    chapter: 1, // Placeholder
   })),
   // Add direct definitions for specific test vocab/kanji not derivable from hierarchy in this way
   {
     word: "食べる",
     furigana: "食[た]べる",
     english: ["to eat", "eat"],
-    chapter: 1,
   },
   {
     word: "飲む",
     furigana: "飲[の]む",
     english: ["to drink", "drink"],
-    chapter: 1,
   },
   {
     word: "見る",
     furigana: "見[み]る",
     english: ["to see", "to watch", "see", "watch"],
-    chapter: 1,
   },
   {
     word: "due1",
     furigana: "due1",
     english: ["due1_meaning"],
-    chapter: 2,
   },
   {
     word: "due2",
     furigana: "due2",
     english: ["due2_meaning"],
-    chapter: 2,
   },
   {
     word: "写",
     furigana: "写",
     english: ["copy", "be photographed"],
-    chapter: 10,
   },
   {
     word: "真",
     furigana: "真",
     english: ["true", "reality"],
-    chapter: 10,
   },
 ]
 
@@ -587,7 +579,6 @@ describe("Data Initialization", () => {
           word: "生活",
           furigana: "生[せい]活[かつ]",
           english: ["life", "living"],
-          chapter: 1,
         },
       ]
 
@@ -1088,7 +1079,6 @@ describe("Data Initialization", () => {
           word: "複雑",
           furigana: "複[ふく]雑[ざつ]",
           english: ["complex", "complicated"],
-          chapter: 1,
         },
       ]
 
