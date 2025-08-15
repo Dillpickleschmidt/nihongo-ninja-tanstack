@@ -3,8 +3,6 @@ import { Plus, Check } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/utils"
 import type { VocabBuiltInDeck } from "../types"
-import { useSettings } from "@/context/SettingsContext"
-import { parseBuiltInDeckId } from "../utils/deckIdParser"
 
 interface BuiltInDeckCardProps {
   deck: VocabBuiltInDeck
@@ -15,8 +13,6 @@ interface BuiltInDeckCardProps {
 }
 
 export function BuiltInDeckCard(props: BuiltInDeckCardProps) {
-  const { updateUserPreferences } = useSettings()
-
   return (
     <div
       class={cn(
@@ -24,19 +20,7 @@ export function BuiltInDeckCard(props: BuiltInDeckCardProps) {
         props.isSelected && "outline-card-foreground outline-2",
         props.class,
       )}
-      onClick={async () => {
-        // Auto-set active textbook/chapter for built-in decks
-        const parsed = parseBuiltInDeckId(props.deck.id)
-        if (parsed) {
-          try {
-            await updateUserPreferences({
-              "active-textbook": parsed.textbook,
-              "active-deck": parsed.chapter,
-            })
-          } catch (error) {
-            console.error("Failed to update textbook/chapter:", error)
-          }
-        }
+      onClick={() => {
         props.onSelect?.(props.deck)
       }}
     >

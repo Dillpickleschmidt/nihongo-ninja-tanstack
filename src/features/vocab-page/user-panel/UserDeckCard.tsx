@@ -9,9 +9,6 @@ import {
   Copy,
   Trash2,
   Share,
-  Globe,
-  Building,
-  InfoIcon,
 } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import {
@@ -25,12 +22,6 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
 import { useNavigate } from "@tanstack/solid-router"
 import { cn } from "@/utils"
 import { createSignal } from "solid-js"
@@ -38,7 +29,6 @@ import { TreeView } from "@/components/ui/tree-view"
 import { useFolderTree } from "../hooks/useFolderTree"
 import { Folder, Home } from "lucide-solid"
 import { useSettings } from "@/context/SettingsContext"
-import { parseBuiltInDeckId } from "../utils/deckIdParser"
 import {
   createDeckShareServerFn,
   removeDeckShareServerFn,
@@ -192,24 +182,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
             props.isSelected && "outline-card-foreground outline-2",
             props.class,
           )}
-          onClick={async () => {
-            // Auto-set active textbook/chapter for built-in decks
-            if (
-              props.deck.source === "built-in" &&
-              props.deck.original_deck_id
-            ) {
-              const parsed = parseBuiltInDeckId(props.deck.original_deck_id)
-              if (parsed) {
-                try {
-                  await updateUserPreferences({
-                    "active-textbook": parsed.textbook,
-                    "active-deck": parsed.chapter,
-                  })
-                } catch (error) {
-                  console.error("Failed to update textbook/chapter:", error)
-                }
-              }
-            }
+          onClick={() => {
             props.onSelect?.(props.deck)
           }}
           onMouseEnter={() => setIsHovered(true)}
