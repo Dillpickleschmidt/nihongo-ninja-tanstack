@@ -1,10 +1,26 @@
 import { createSignal, onMount, For, Show } from "solid-js"
-import { Search, TrendingUp, Clock, Download, Users, Crown } from "lucide-solid"
+import {
+  Search,
+  TrendingUp,
+  Clock,
+  Download,
+  Users,
+  Crown,
+  Edit,
+  FileText,
+  Share,
+} from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
 import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover"
+import {
   getSharedDecksServerFn,
   importSharedDeckServerFn,
+  removeDeckShareServerFn,
 } from "@/features/supabase/db/deck-sharing-operations"
 import type { User } from "@supabase/supabase-js"
 
@@ -37,6 +53,9 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
   const [searchQuery, setSearchQuery] = createSignal("")
   const [sortBy, setSortBy] = createSignal<SortOption>("recent")
   const [importingDeckIds, setImportingDeckIds] = createSignal<Set<number>>(
+    new Set(),
+  )
+  const [unsharingDeckIds, setUnsharingDeckIds] = createSignal<Set<number>>(
     new Set(),
   )
   let sentinelRef: HTMLDivElement | undefined
@@ -95,6 +114,44 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
     }
   }
 
+  const handleUnshare = async (deck: SharedDeck) => {
+    if (!props.user) {
+      alert("Please sign in to unshare decks")
+      return
+    }
+
+    const isUnsharing = unsharingDeckIds().has(deck.deck_id)
+    if (isUnsharing) return
+
+    setUnsharingDeckIds((prev) => new Set([...prev, deck.deck_id]))
+
+    try {
+      await removeDeckShareServerFn({
+        data: { deck_id: deck.deck_id },
+      })
+
+      // Trigger SWR refetch to update the user's deck list
+      if (props.onRefetch) {
+        await props.onRefetch()
+      }
+
+      // Refresh the shared decks list to remove the unshared deck
+      await loadDecks(0)
+
+      alert("Deck unshared successfully!")
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to unshare deck"
+      alert(`Error: ${message}`)
+    } finally {
+      setUnsharingDeckIds((prev) => {
+        const newSet = new Set(prev)
+        newSet.delete(deck.deck_id)
+        return newSet
+      })
+    }
+  }
+
   const loadDecks = async (offset = 0) => {
     if (isLoading() || (offset > 0 && !hasMore())) return
 
@@ -103,7 +160,7 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
 
     try {
       const newDecks = await getSharedDecksServerFn({
-        data: { offset, limit: 20 },
+        data: { offset, limit: 20, sortBy: sortBy() },
       })
 
       if (offset === 0) {
@@ -175,7 +232,10 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setSortBy("recent")}
+              onClick={() => {
+                setSortBy("recent")
+                loadDecks(0)
+              }}
               class={`flex items-center gap-2 rounded-md px-3 py-2 text-xs transition-all ${
                 sortBy() === "recent"
                   ? "bg-background/70 text-foreground font-medium shadow backdrop-blur-sm"
@@ -188,7 +248,10 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setSortBy("popular")}
+              onClick={() => {
+                setSortBy("popular")
+                loadDecks(0)
+              }}
               class={`flex items-center gap-2 rounded-md px-3 py-2 text-xs transition-all ${
                 sortBy() === "popular"
                   ? "bg-background/70 text-foreground font-medium shadow backdrop-blur-sm"
@@ -286,7 +349,7 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
                         <Button
                           variant="default"
                           size="sm"
-                          class="hover:bg-primary text-xs shadow-sm"
+                          class="text-xs shadow-sm hover:cursor-pointer"
                           disabled={importingDeckIds().has(deck.deck_id)}
                           onClick={() => handleImport(deck)}
                         >
@@ -300,17 +363,70 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
                         </Button>
                       }
                     >
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        class="text-xs shadow-sm"
-                        onClick={() => {
-                          // TODO: Implement manage functionality (unshare, edit, etc.)
-                          alert("Manage functionality coming soon!")
-                        }}
-                      >
-                        Manage
-                      </Button>
+                      <Popover>
+                        <PopoverTrigger>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            class="text-xs shadow-sm"
+                          >
+                            Manage
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent class="bg-card border-card-foreground w-48 p-2">
+                          <div class="space-y-1">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              class="w-full justify-start"
+                              onClick={() => {
+                                alert("Edit contents feature coming soon!")
+                              }}
+                            >
+                              <Edit class="mr-2 h-3 w-3" />
+                              Edit contents
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              class="w-full justify-start"
+                              onClick={() => {
+                                const newName = window.prompt(
+                                  "Enter new deck name:",
+                                  deck.user_decks.deck_name,
+                                )
+                                if (
+                                  newName &&
+                                  newName.trim() &&
+                                  newName.trim() !== deck.user_decks.deck_name
+                                ) {
+                                  alert("Rename feature coming soon!")
+                                }
+                              }}
+                            >
+                              <FileText class="mr-2 h-3 w-3" />
+                              Rename
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              class="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-900 dark:text-red-400 dark:hover:bg-red-950 dark:hover:text-red-300"
+                              disabled={unsharingDeckIds().has(deck.deck_id)}
+                              onClick={() => handleUnshare(deck)}
+                            >
+                              <Show when={unsharingDeckIds().has(deck.deck_id)}>
+                                <div class="mr-2 h-3 w-3 animate-spin rounded-full border border-current border-t-transparent" />
+                              </Show>
+                              <Show
+                                when={!unsharingDeckIds().has(deck.deck_id)}
+                              >
+                                <Share class="mr-2 h-3 w-3" />
+                              </Show>
+                              Unshare
+                            </Button>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
                     </Show>
                   </div>
                 </div>

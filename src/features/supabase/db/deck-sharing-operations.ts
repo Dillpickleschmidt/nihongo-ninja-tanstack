@@ -101,15 +101,19 @@ export const getDeckShareStatusServerFn = createServerFn({ method: "POST" })
  * Gets all publicly shared decks for browsing with pagination
  */
 export const getSharedDecksServerFn = createServerFn({ method: "GET" })
-  .validator((data: { offset?: number; limit?: number }) => data)
+  .validator(
+    (data: {
+      offset?: number
+      limit?: number
+      sortBy?: "recent" | "popular"
+    }) => data,
+  )
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
-    const { offset = 0, limit = 20 } = data
+    const { offset = 0, limit = 20, sortBy = "recent" } = data
 
-    const { data: decks, error } = await supabase
-      .from("public_deck_shares")
-      .select(
-        `
+    let query = supabase.from("public_deck_shares").select(
+      `
         deck_id,
         shared_at,
         shared_by,
@@ -121,9 +125,16 @@ export const getSharedDecksServerFn = createServerFn({ method: "GET" })
           created_at
         )
       `,
-      )
-      .order("shared_at", { ascending: false })
-      .range(offset, offset + limit - 1)
+    )
+
+    // Apply sorting based on sortBy parameter
+    if (sortBy === "popular") {
+      query = query.order("import_count", { ascending: false })
+    } else {
+      query = query.order("shared_at", { ascending: false })
+    }
+
+    const { data: decks, error } = await query.range(offset, offset + limit - 1)
 
     if (error) throw error
 
@@ -179,11 +190,7 @@ export const getSharedDeckInfoServerFn = createServerFn({ method: "POST" })
  */
 export const importSharedDeckServerFn = createServerFn({ method: "POST" })
   .validator(
-    (data: {
-      deck_id: number
-      target_folder_id?: number | null
-      custom_deck_name?: string
-    }) => data,
+    (data: { deck_id: number; target_folder_id?: number | null }) => data,
   )
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
@@ -237,10 +244,8 @@ export const importSharedDeckServerFn = createServerFn({ method: "POST" })
     }
 
     // Create the imported deck
-    const deckName =
-      data.custom_deck_name || `${originalDeck.deck_name} (Shared)`
     const insertData: UserDeckInsert = {
-      deck_name: deckName,
+      deck_name: originalDeck.deck_name,
       deck_description: originalDeck.deck_description,
       folder_id: data.target_folder_id,
       source: "shared",
