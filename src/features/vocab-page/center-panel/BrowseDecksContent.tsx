@@ -9,6 +9,7 @@ import {
   Edit,
   FileText,
   Share,
+  Eye,
 } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
@@ -43,6 +44,7 @@ interface BrowseDecksContentProps {
   user?: User | null
   onRefetch?: () => Promise<void>
   decks?: UserDeck[]
+  onDeckPreview?: (deck: UserDeck) => void
 }
 
 export function BrowseDecksContent(props: BrowseDecksContentProps) {
@@ -149,6 +151,26 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
         newSet.delete(deck.deck_id)
         return newSet
       })
+    }
+  }
+
+  const handlePreview = (deck: SharedDeck) => {
+    // Create temporary UserDeck object for preview
+    const previewDeck: UserDeck = {
+      deck_id: deck.deck_id,
+      deck_name: deck.user_decks.deck_name,
+      deck_description: deck.user_decks.deck_description,
+      source: "preview",
+      original_deck_id: null,
+      folder_id: null,
+      user_id: "",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }
+
+    // Use existing deck selection handler
+    if (props.onDeckPreview) {
+      props.onDeckPreview(previewDeck)
     }
   }
 
@@ -341,26 +363,39 @@ export function BrowseDecksContent(props: BrowseDecksContentProps) {
                     </div>
                   </div>
 
-                  {/* Import/Manage Button */}
+                  {/* Preview/Import/Manage Buttons */}
                   <div class="ml-4">
                     <Show
                       when={isOwnDeck(deck)}
                       fallback={
-                        <Button
-                          variant="default"
-                          size="sm"
-                          class="text-xs shadow-sm hover:cursor-pointer"
-                          disabled={importingDeckIds().has(deck.deck_id)}
-                          onClick={() => handleImport(deck)}
-                        >
-                          <Show when={importingDeckIds().has(deck.deck_id)}>
-                            <div class="mr-1.5 h-3.5 w-3.5 animate-spin rounded-full border border-current border-t-transparent" />
-                          </Show>
-                          <Show when={!importingDeckIds().has(deck.deck_id)}>
-                            <Download class="mr-1.5 h-3.5 w-3.5" />
-                          </Show>
-                          {isAlreadyImported(deck) ? "Import Again?" : "Import"}
-                        </Button>
+                        <div class="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            class="text-xs shadow-sm"
+                            onClick={() => handlePreview(deck)}
+                          >
+                            <Eye class="mr-1.5 h-3.5 w-3.5" />
+                            Preview
+                          </Button>
+                          <Button
+                            variant="default"
+                            size="sm"
+                            class="text-xs shadow-sm hover:cursor-pointer"
+                            disabled={importingDeckIds().has(deck.deck_id)}
+                            onClick={() => handleImport(deck)}
+                          >
+                            <Show when={importingDeckIds().has(deck.deck_id)}>
+                              <div class="mr-1.5 h-3.5 w-3.5 animate-spin rounded-full border border-current border-t-transparent" />
+                            </Show>
+                            <Show when={!importingDeckIds().has(deck.deck_id)}>
+                              <Download class="mr-1.5 h-3.5 w-3.5" />
+                            </Show>
+                            {isAlreadyImported(deck)
+                              ? "Import Again?"
+                              : "Import"}
+                          </Button>
+                        </div>
                       }
                     >
                       <Popover>

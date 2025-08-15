@@ -70,6 +70,7 @@ export function CenterPanel(props: CenterPanelProps) {
               user={props.user}
               onRefetch={props.onRefetch}
               decks={props.decks}
+              onDeckPreview={props.onNavigateToDeck}
             />
           </Match>
           <Match when={props.activeNavTab === "overrides"}>
