@@ -160,7 +160,7 @@ export function useVocabPageState(
               deck.deck_id > 0,
           )
 
-          if (realDeck) {
+          if (realDeck && realDeck.deck_id !== selectedDeck.deck_id) {
             setUserData(reconcile(data, { key: "deck_id" }))
             setCurrentViewFolderId(realDeck.folder_id)
             deckSelection.handleUserDeckSelect(realDeck)

@@ -1,10 +1,12 @@
 // features/vocab-page/user-panel/UserDecksPanel.tsx
-import { For, Show, onMount } from "solid-js"
-import { BookMarked } from "lucide-solid"
+import { For, Show, onMount, createSignal } from "solid-js"
+import { BookMarked, Plus } from "lucide-solid"
+import { Button } from "@/components/ui/button"
 import { UserDeckCard } from "./UserDeckCard"
 import { FolderCard } from "./FolderCard"
 import { FolderBreadcrumb } from "../shared/FolderBreadcrumb"
 import { EditTransaction } from "../logic/edit-transaction"
+import { CreateModal } from "../components/CreateModal"
 import { cn } from "@/utils"
 
 interface UserDecksPanelProps {
@@ -37,6 +39,8 @@ interface UserDecksPanelProps {
 }
 
 export function UserDecksPanel(props: UserDecksPanelProps) {
+  const [showCreateModal, setShowCreateModal] = createSignal(false)
+
   onMount(() => {
     if (props.panelRef) {
       const handleClick = (e: MouseEvent) => {
@@ -90,10 +94,34 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
               <p class="text-muted-foreground text-sm">
                 Import decks from the built-in collection to get started
               </p>
+              <div class="mt-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowCreateModal(true)}
+                  class="gap-2"
+                >
+                  <Plus class="h-4 w-4" />
+                  Create New
+                </Button>
+              </div>
             </div>
           }
         >
           <div class="space-y-3 pb-16">
+            {/* Create New Button - positioned above folders */}
+            <div class="flex justify-end">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowCreateModal(true)}
+                class="gap-2"
+              >
+                <Plus class="h-4 w-4" />
+                Create New
+              </Button>
+            </div>
+
             {/* Show folders first */}
             <For each={currentFolderContent().folders}>
               {(folder) => (
@@ -145,6 +173,12 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
           Click on a deck to view it. Start practicing when you're ready.
         </p>
       </div>
+
+      {/* Create Modal */}
+      <CreateModal
+        isOpen={showCreateModal()}
+        onOpenChange={setShowCreateModal}
+      />
     </>
   )
 }
