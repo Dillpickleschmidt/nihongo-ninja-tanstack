@@ -91,7 +91,7 @@ export function DeckDetails(props: DeckDetailsProps) {
           <TextFieldLabel>Deck Name</TextFieldLabel>
           <TextFieldInput
             placeholder="My Vocabulary Deck"
-            class="bg-primary/10 border-primary-foreground/40"
+            class="dark:bg-primary/10 border-primary dark:border-primary-foreground/40 backdrop-blur-sm"
           />
           <div class="text-muted-foreground/70 pointer-events-none absolute top-7.5 right-4 text-xs font-medium italic">
             {showRequiredIndicator()}
@@ -130,7 +130,7 @@ export function DeckDetails(props: DeckDetailsProps) {
           </TextFieldLabel>
           <TextFieldInput
             placeholder="Describe your deck..."
-            class="bg-primary/10 border-primary-foreground/40"
+            class="dark:bg-primary/10 border-primary dark:border-primary-foreground/40 backdrop-blur-sm"
           />
         </TextField>
       </div>

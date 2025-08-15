@@ -260,7 +260,7 @@ export function FolderEditModal(props: FolderEditModalProps) {
                     <Button
                       size="sm"
                       variant="ghost"
-                      class="h-6 w-6 p-0 hover:text-green-500"
+                      class="h-6 w-6 p-0 hover:text-green-500 focus-visible:text-green-500"
                       onClick={() => setIsEditingName(false)}
                     >
                       <Check class="h-3 w-3" />
@@ -268,7 +268,7 @@ export function FolderEditModal(props: FolderEditModalProps) {
                     <Button
                       size="sm"
                       variant="ghost"
-                      class="h-6 w-6 p-0 hover:text-red-500"
+                      class="h-6 w-6 p-0 hover:text-red-500 focus-visible:text-red-500"
                       onClick={() => {
                         initializeForm() // Reset to original value
                         setIsEditingName(false)

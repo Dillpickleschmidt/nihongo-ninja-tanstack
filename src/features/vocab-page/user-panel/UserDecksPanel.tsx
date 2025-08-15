@@ -208,7 +208,7 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
             variant="outline"
             size="sm"
             onClick={() => setShowCreateModal(true)}
-            class="bg-background/80 border-card-foreground/70 gap-2 shadow-lg backdrop-blur-md"
+            class="bg-background/80 border-card-foreground/70 text-primary/90 gap-2 shadow-lg backdrop-blur-md"
           >
             <Plus class="h-4 w-4" />
             Create New

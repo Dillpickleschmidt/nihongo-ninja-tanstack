@@ -18,7 +18,7 @@ type CreateModalProps = {
 export function CreateModal(props: CreateModalProps) {
   return (
     <Dialog open={props.isOpen} onOpenChange={props.onOpenChange}>
-      <DialogContent class="bg-card border-card-foreground sm:max-w-md">
+      <DialogContent class="bg-background border-card-foreground/70 sm:max-w-md">
         <DialogHeader>
           <DialogTitle class="font-medium">Create New</DialogTitle>
         </DialogHeader>

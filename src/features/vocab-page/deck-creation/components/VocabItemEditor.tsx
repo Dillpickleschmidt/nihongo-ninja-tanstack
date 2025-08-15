@@ -241,7 +241,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
           class="relative"
         >
           <TextFieldLabel>Word</TextFieldLabel>
-          <TextFieldInput placeholder="食べ物" />
+          <TextFieldInput class="border-card-foreground" placeholder="食べ物" />
           <div class="text-muted-foreground/70 pointer-events-none absolute top-7.5 right-4 text-xs font-medium italic">
             {getRequiredIndicator(validation.wordValidation())}
           </div>
@@ -250,9 +250,13 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
         <TextField
           value={formData().furigana}
           onChange={(value) => updateFormData({ furigana: value })}
+          title="Add a space before each kanji group. If you typed '食[た]べ物[もの]' (without the space), もの will be applied to 'べ物' instead of just '物.'"
         >
           <TextFieldLabel>Furigana</TextFieldLabel>
-          <TextFieldInput placeholder="食[た]べ  物[もの]" />
+          <TextFieldInput
+            class="border-card-foreground"
+            placeholder="食[た]べ  物[もの]"
+          />
           <TextFieldDescription class="text-xs leading-none font-normal">
             Use kana in brackets for kanji segments.
           </TextFieldDescription>
@@ -276,16 +280,21 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                     value={meaning()}
                     onChange={(value) => updateEnglishMeaning(i, value)}
                   >
-                    <TextFieldInput placeholder="food" />
-                    <div class="text-muted-foreground/70 pointer-events-none absolute top-3 right-4 text-xs font-medium italic">
-                      {getRequiredIndicator(validation.englishValidation())}
-                    </div>
+                    <TextFieldInput
+                      class="border-card-foreground"
+                      placeholder="food"
+                    />
+                    <Show when={i === 0}>
+                      <div class="text-muted-foreground/70 pointer-events-none absolute top-3 right-4 text-xs font-medium italic">
+                        {getRequiredIndicator(validation.englishValidation())}
+                      </div>
+                    </Show>
                   </TextField>
                   <div class="flex items-center gap-0.5">
                     <Button
                       variant="ghost"
                       size="icon"
-                      class="size-8 hover:text-red-500"
+                      class="size-8 hover:cursor-pointer hover:text-red-500 focus-visible:text-red-500"
                       onClick={() => removeEnglishMeaning(i)}
                       aria-label="Remove meaning"
                     >
@@ -294,7 +303,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                     <Button
                       variant="ghost"
                       size="icon"
-                      class="size-8 hover:text-green-500"
+                      class="size-8 hover:cursor-pointer hover:text-green-500 focus-visible:text-green-500"
                       onClick={addEnglishMeaning}
                       aria-label="Add meaning"
                     >
@@ -324,7 +333,10 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                 </SelectItem>
               )}
             >
-              <SelectTrigger aria-label="Part of Speech" class="text-xs">
+              <SelectTrigger
+                aria-label="Part of Speech"
+                class="text-xs hover:cursor-pointer"
+              >
                 <SelectValue<string>>
                   {(state) => state.selectedOption() || "Select part of speech"}
                 </SelectValue>
@@ -401,7 +413,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                       <Button
                         variant="ghost"
                         size="icon"
-                        class="size-8 hover:text-red-500"
+                        class="size-8 hover:cursor-pointer hover:text-red-500 focus-visible:text-red-500"
                         onClick={() => removeNote(i)}
                         aria-label="Remove note"
                       >
@@ -410,7 +422,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                       <Button
                         variant="ghost"
                         size="icon"
-                        class="size-8 hover:text-green-500"
+                        class="size-8 hover:cursor-pointer hover:text-green-500 focus-visible:text-green-500"
                         onClick={addNote}
                         aria-label="Add note"
                       >
@@ -447,14 +459,14 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                         value={particle().label}
                         onChange={(value) => updateParticle(i, "label", value)}
                       >
-                        <TextFieldInput placeholder="Label (topic, object, direction...)" />
+                        <TextFieldInput placeholder="Label (for when there are multiple particles)" />
                       </TextField>
                     </div>
                     <div class="flex items-center gap-0.5">
                       <Button
                         variant="ghost"
                         size="icon"
-                        class="size-8 hover:text-red-500"
+                        class="size-8 hover:cursor-pointer hover:text-red-500 focus-visible:text-red-500"
                         onClick={() => removeParticle(i)}
                         aria-label="Remove particle"
                       >
@@ -463,7 +475,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                       <Button
                         variant="ghost"
                         size="icon"
-                        class="size-8 hover:text-green-500"
+                        class="size-8 hover:cursor-pointer hover:text-green-500 focus-visible:text-green-500"
                         onClick={addParticle}
                         aria-label="Add particle"
                       >
@@ -507,7 +519,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                       <Button
                         variant="ghost"
                         size="icon"
-                        class="size-8 hover:text-red-500"
+                        class="size-8 hover:cursor-pointer hover:text-red-500 focus-visible:text-red-500"
                         onClick={() => removeExample(i)}
                         aria-label="Remove example"
                       >
@@ -516,7 +528,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                       <Button
                         variant="ghost"
                         size="icon"
-                        class="size-8 hover:text-green-500"
+                        class="size-8 hover:cursor-pointer hover:text-green-500 focus-visible:text-green-500"
                         onClick={addExample}
                         aria-label="Add example"
                       >
@@ -551,7 +563,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                       <Button
                         variant="ghost"
                         size="icon"
-                        class="size-8 hover:text-red-500"
+                        class="size-8 hover:cursor-pointer hover:text-red-500 focus-visible:text-red-500"
                         onClick={() => removeReadingMnemonic(i)}
                         aria-label="Remove reading mnemonic"
                       >
@@ -560,7 +572,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                       <Button
                         variant="ghost"
                         size="icon"
-                        class="size-8 hover:text-green-500"
+                        class="size-8 hover:cursor-pointer hover:text-green-500 focus-visible:text-green-500"
                         onClick={addReadingMnemonic}
                         aria-label="Add reading mnemonic"
                       >
@@ -595,7 +607,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                       <Button
                         variant="ghost"
                         size="icon"
-                        class="size-8 hover:text-red-500"
+                        class="size-8 hover:cursor-pointer hover:text-red-500 focus-visible:text-red-500"
                         onClick={() => removeKanjiMnemonic(i)}
                         aria-label="Remove kanji mnemonic"
                       >
@@ -604,7 +616,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                       <Button
                         variant="ghost"
                         size="icon"
-                        class="size-8 hover:text-green-500"
+                        class="size-8 hover:cursor-pointer hover:text-green-500 focus-visible:text-green-500"
                         onClick={addKanjiMnemonic}
                         aria-label="Add kanji mnemonic"
                       >

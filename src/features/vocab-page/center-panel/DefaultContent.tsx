@@ -9,14 +9,14 @@ export function DefaultContent() {
         practice what you've already collected.
       </p>
       <div class="mt-8 grid grid-cols-2 gap-6 text-sm">
-        <div class="bg-muted/30 rounded-lg p-6 text-center">
+        <div class="bg-muted-foreground/10 rounded-lg p-6 text-center">
           <h3 class="mb-3 text-base font-semibold">Built-in Decks</h3>
           <p class="text-muted-foreground leading-relaxed">
             Curated vocabulary from popular textbooks, organized by chapter and
             topic.
           </p>
         </div>
-        <div class="bg-muted/30 rounded-lg p-6 text-center">
+        <div class="bg-muted-foreground/10 rounded-lg p-6 text-center">
           <h3 class="mb-3 text-base font-semibold">Your Decks</h3>
           <p class="text-muted-foreground leading-relaxed">
             Your imported decks with spaced repetition tracking and progress.
