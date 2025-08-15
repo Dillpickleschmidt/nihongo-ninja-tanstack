@@ -11,6 +11,8 @@ import {
 type CreateModalProps = {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
+  onCreateDeck?: () => void
+  onCreateFolder?: () => void
 }
 
 export function CreateModal(props: CreateModalProps) {
@@ -24,7 +26,7 @@ export function CreateModal(props: CreateModalProps) {
           <Button
             variant="outline"
             class="h-auto min-h-16 flex-col items-center justify-center p-4 whitespace-normal"
-            onClick={() => alert("Create folder feature coming soon!")}
+            onClick={() => props.onCreateFolder?.()}
           >
             <FolderPlus class="mb-2 h-5 w-5" />
             <div class="text-center">
@@ -38,7 +40,7 @@ export function CreateModal(props: CreateModalProps) {
           <Button
             variant="outline"
             class="h-auto min-h-16 flex-col items-center justify-center p-4 whitespace-normal"
-            onClick={() => alert("Create deck feature coming soon!")}
+            onClick={() => props.onCreateDeck?.()}
           >
             <FileText class="mb-2 h-5 w-5" />
             <div class="text-center">
@@ -53,3 +55,4 @@ export function CreateModal(props: CreateModalProps) {
     </Dialog>
   )
 }
+

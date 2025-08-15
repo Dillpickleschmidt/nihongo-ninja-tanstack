@@ -8,6 +8,9 @@ import { FolderBreadcrumb } from "../shared/FolderBreadcrumb"
 import { EditTransaction } from "../logic/edit-transaction"
 import { CreateModal } from "../components/CreateModal"
 import { cn } from "@/utils"
+import type { NavTabId } from "../center-panel/CenterNavBar"
+import { createFolderServerFn } from "@/features/supabase/db/folder-operations"
+import { validateName, validateFolderNameUnique } from "../validation"
 
 interface UserDecksPanelProps {
   userDecks: UserDeck[]
@@ -34,12 +37,59 @@ interface UserDecksPanelProps {
   onMoveDeck: (deck: UserDeck, targetFolderId: string) => void
   onCopyDeck?: (deck: UserDeck) => void
   onDeleteDeck?: (deck: UserDeck) => void
+  onTabChange: (tabId: NavTabId) => void
+  onRefetch?: () => void
   userId?: string
   panelRef?: HTMLDivElement
 }
 
 export function UserDecksPanel(props: UserDecksPanelProps) {
   const [showCreateModal, setShowCreateModal] = createSignal(false)
+
+  const handleCreateFolder = async () => {
+    const folderName = window.prompt("Enter folder name:")
+    if (!folderName?.trim()) return
+
+    const trimmedName = folderName.trim()
+    const parentFolderId = props.currentViewFolderId()
+
+    // Validate folder name
+    const nameValidation = validateName(trimmedName)
+    if (!nameValidation.isValid) {
+      alert(`Invalid folder name: ${nameValidation.error}`)
+      return
+    }
+
+    const uniqueValidation = validateFolderNameUnique(
+      trimmedName,
+      parentFolderId,
+      props.folders,
+    )
+
+    if (!uniqueValidation.isValid) {
+      alert(`Invalid folder name: ${uniqueValidation.error}`)
+      return
+    }
+
+    try {
+      await createFolderServerFn({
+        data: {
+          folder_name: trimmedName,
+          parent_folder_id: parentFolderId,
+        },
+      })
+
+      // Refresh data to show new folder
+      if (props.onRefetch) {
+        props.onRefetch()
+      }
+    } catch (error) {
+      console.error("Failed to create folder:", error)
+      alert(
+        `Failed to create folder: ${error instanceof Error ? error.message : "Unknown error"}`,
+      )
+    }
+  }
 
   onMount(() => {
     if (props.panelRef) {
@@ -109,19 +159,6 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
           }
         >
           <div class="space-y-3 pb-16">
-            {/* Create New Button - positioned above folders */}
-            <div class="flex justify-end">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowCreateModal(true)}
-                class="gap-2"
-              >
-                <Plus class="h-4 w-4" />
-                Create New
-              </Button>
-            </div>
-
             {/* Show folders first */}
             <For each={currentFolderContent().folders}>
               {(folder) => (
@@ -163,6 +200,22 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
           </div>
         </Show>
       </div>
+
+      {/* Fixed Create New Button - positioned above instruction bar */}
+      <Show when={hasContent()}>
+        <div class="absolute right-4 bottom-12 z-20">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowCreateModal(true)}
+            class="bg-background/80 border-card-foreground/70 gap-2 shadow-lg backdrop-blur-md"
+          >
+            <Plus class="h-4 w-4" />
+            Create New
+          </Button>
+        </div>
+      </Show>
+
       <div
         class={cn(
           "absolute right-0 bottom-0 z-10 w-96 px-4 py-2.5",
@@ -178,6 +231,14 @@ export function UserDecksPanel(props: UserDecksPanelProps) {
       <CreateModal
         isOpen={showCreateModal()}
         onOpenChange={setShowCreateModal}
+        onCreateDeck={() => {
+          setShowCreateModal(false)
+          props.onTabChange("deck-builder")
+        }}
+        onCreateFolder={() => {
+          setShowCreateModal(false)
+          handleCreateFolder()
+        }}
       />
     </>
   )

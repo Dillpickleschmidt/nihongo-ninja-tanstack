@@ -284,6 +284,8 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
             }}
             onCopyDeck={handleOpenCopyModal}
             onDeleteDeck={handleDeleteDeck}
+            onTabChange={handleTabChange}
+            onRefetch={state.refetchFoldersAndDecks}
             userId={props.user?.id}
             panelRef={userDecksPanelRef}
           />
