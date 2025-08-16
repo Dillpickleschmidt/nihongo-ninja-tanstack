@@ -12,7 +12,7 @@ import {
 } from "@/features/supabase/db/fsrs-operations"
 import type { PracticeMode } from "@/features/vocab-practice/types"
 import { getWKHierarchy } from "@/data/wanikani/utils"
-import type { FullHierarchyData, VocabHierarchy } from "@/data/wanikani/types"
+import type { VocabHierarchy as CleanVocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
 
@@ -30,30 +30,27 @@ export const Route = createFileRoute("/practice/$practiceID")({
 
       const moduleVocabulary = await getVocabularyForModule(params.practiceID)
 
-      let hierarchy: FullHierarchyData
+      let hierarchy: CleanVocabHierarchy
 
       if (mode === "readings") {
         // For "readings" mode, build the full dependency tree
-        const fullHierarchy = await getWKHierarchy({
-          data: moduleVocabulary.map((v) => v.word),
-        })
-        if (!fullHierarchy) throw notFound()
-        hierarchy = fullHierarchy
+        const vocabWords = moduleVocabulary.map((v) => v.word)
+        const cleanHierarchy = await getWKHierarchy({ data: vocabWords })
+
+        if (!cleanHierarchy) {
+          throw notFound()
+        }
+
+        hierarchy = cleanHierarchy
       } else {
         // For "kana" mode, create a "flat" hierarchy with NO dependencies
-        const flatVocabHierarchy: VocabHierarchy[] = moduleVocabulary.map(
-          (vocab, index) => ({
-            id: index, // A placeholder ID is fine
-            characters: vocab.word,
-            slug: vocab.word,
-            kanji: [], // No kanji dependencies
-          }),
-        )
-
         hierarchy = {
-          hierarchy: flatVocabHierarchy,
-          uniqueKanji: [], // No kanji
-          uniqueRadicals: [], // No radicals
+          vocabulary: moduleVocabulary.map((vocab) => ({
+            word: vocab.word,
+            kanjiComponents: [], // No kanji dependencies in kana mode
+          })),
+          kanji: [], // No kanji in kana mode
+          radicals: [], // No radicals in kana mode
         }
       }
 
@@ -70,7 +67,7 @@ export const Route = createFileRoute("/practice/$practiceID")({
         true,
       )
 
-      // 4. Serialize for transport
+      // 3. Serialize for transport
       const serializedInitialState = {
         ...initialState,
         cardMap: Array.from(initialState.cardMap.entries()),
@@ -79,13 +76,14 @@ export const Route = createFileRoute("/practice/$practiceID")({
         lockedKeys: Array.from(initialState.lockedKeys),
       }
 
-      // 5. Extract all slugs for FSRS data fetching
+      // 4. Extract all slugs for FSRS data fetching
       const allHierarchySlugs = new Set<string>()
-      hierarchy.hierarchy.forEach((v) => allHierarchySlugs.add(v.slug))
-      hierarchy.uniqueKanji.forEach((k) => allHierarchySlugs.add(k.slug))
-      hierarchy.uniqueRadicals.forEach((r) => allHierarchySlugs.add(r.slug))
 
-      // 6. Defer FSRS data fetching
+      hierarchy.vocabulary.forEach((v) => allHierarchySlugs.add(v.word))
+      hierarchy.kanji.forEach((k) => allHierarchySlugs.add(k.kanji))
+      hierarchy.radicals.forEach((r) => allHierarchySlugs.add(r.radical))
+
+      // 5. Defer FSRS data fetching
       let moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null = null
       let dueFSRSCards: DeferredPromise<FSRSCardData[]> | null = null
 

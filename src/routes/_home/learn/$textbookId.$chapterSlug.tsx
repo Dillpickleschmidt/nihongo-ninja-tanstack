@@ -17,7 +17,7 @@ import {
 import { LearnDataProvider } from "@/features/learn-page/context/LearnPageDataContext"
 import { LearnPageContent } from "@/features/learn-page/components/layout/LearnPageContent"
 import type { TextbookIDEnum, VocabularyItem } from "@/data/types"
-import type { FullHierarchyData } from "@/data/wanikani/types"
+import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { User } from "@supabase/supabase-js"
 
 export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
@@ -64,41 +64,16 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       chapterVocabulary = await getVocabularyForModule(vocabModuleId)
     }
     const vocabForHierarchy = chapterVocabulary.map((item) => item.word)
-    const wkHierarchyData = await getWKHierarchy({ data: vocabForHierarchy })
+    const wkHierarchyData: VocabHierarchy | null = await getWKHierarchy({
+      data: vocabForHierarchy,
+    })
 
-    // Create a map for quick lookup of WK vocabulary items by slug
-    const wkVocabMap = new Map(
-      wkHierarchyData?.hierarchy.map((item) => [item.slug, item]) || [],
-    )
-
-    // Transform vocabulary items to match the WK hierarchy format
-    const wordHierarchyData: FullHierarchyData = {
-      hierarchy: chapterVocabulary.map((vocab, index) => {
-        const wkItem = wkVocabMap.get(vocab.word)
-        return (
-          wkItem || {
-            id: 10000 + index,
-            characters: vocab.word,
-            slug: vocab.word,
-            kanji: [],
-          }
-        )
-      }),
-      uniqueKanji: wkHierarchyData?.uniqueKanji || [],
-      uniqueRadicals: wkHierarchyData?.uniqueRadicals || [],
-      summary: wkHierarchyData?.summary || {
-        vocab: { total: 0, wellKnown: 0, learning: 0 },
-        kanji: { total: 0, wellKnown: 0, learning: 0 },
-        radicals: { total: 0, wellKnown: 0, learning: 0 },
-      },
-    }
-
-    // Collect all unique slugs from hierarchy, kanji, and radicals
+    // Collect all unique slugs from hierarchy
     const slugs = [
       ...new Set([
-        ...(wkHierarchyData?.hierarchy.map((item) => item.slug) || []),
-        ...(wkHierarchyData?.uniqueKanji.map((item) => item.slug) || []),
-        ...(wkHierarchyData?.uniqueRadicals.map((item) => item.slug) || []),
+        ...(wkHierarchyData?.vocabulary.map((item) => item.word) || []),
+        ...(wkHierarchyData?.kanji.map((item) => item.kanji) || []),
+        ...(wkHierarchyData?.radicals.map((item) => item.radical) || []),
       ]),
     ]
 
@@ -119,9 +94,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       "～てしま",
       "助詞",
       "敬語",
-      "カタカナ",
-      "ひらがな",
-      "条件形",
     ]
     const historyItems = [
       { name: "Gym", icon: "⚡", amount: -40.99, color: "bg-orange-500" },
@@ -136,7 +108,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       lessons: enrichedLessons,
       externalResources,
       chapterVocabulary,
-      wordHierarchyData,
+      wordHierarchyData: wkHierarchyData,
       fsrsProgressData: defer(fsrsProgressDataPromise),
       dueFSRSCardsCount: defer(dueFSRSCardsCountPromise),
       deferredThumbnails: deferredIndividualThumbnails,

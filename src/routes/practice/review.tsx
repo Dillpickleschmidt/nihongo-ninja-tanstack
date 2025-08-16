@@ -5,7 +5,7 @@ import {
   type FSRSCardData,
   getDueFSRSCards,
 } from "@/features/supabase/db/fsrs-operations"
-import type { FullHierarchyData } from "@/data/wanikani/types"
+import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 
 export const Route = createFileRoute("/practice/review")({
   loader: ({ context }) => {
@@ -17,10 +17,10 @@ export const Route = createFileRoute("/practice/review")({
         dueFSRSCards = null
       }
 
-      const hierarchy: FullHierarchyData = {
-        hierarchy: [],
-        uniqueKanji: [],
-        uniqueRadicals: [],
+      const hierarchy: VocabHierarchy = {
+        vocabulary: [],
+        kanji: [],
+        radicals: [],
       }
 
       // In review-only mode, there are no "module" cards to load.
@@ -33,7 +33,6 @@ export const Route = createFileRoute("/practice/review")({
         user: context.user,
       }
     } catch (error) {
-      // In case of an unexpected error, show a not found page.
       console.error("Failed to load review session data:", error)
       throw notFound()
     }
@@ -45,14 +44,12 @@ function RouteComponent() {
   const data = Route.useLoaderData()
 
   return (
-    <>
-      <VocabPractice
-        hierarchy={data().hierarchy}
-        moduleFSRSCards={data().moduleFSRSCards}
-        dueFSRSCards={data().dueFSRSCards}
-        deckName="Review Session"
-        mode="review-only"
-      />
-    </>
+    <VocabPractice
+      hierarchy={data().hierarchy}
+      moduleFSRSCards={data().moduleFSRSCards}
+      dueFSRSCards={data().dueFSRSCards}
+      deckName="Review Session"
+      mode="review-only"
+    />
   )
 }

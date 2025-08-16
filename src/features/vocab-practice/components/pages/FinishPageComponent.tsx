@@ -4,29 +4,23 @@ import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { Link } from "@tanstack/solid-router"
 import type { PracticeCard } from "../../types"
-import type {
-  FullHierarchyData,
-  Kanji,
-  Radical,
-  VocabHierarchy,
-} from "@/data/wanikani/types"
 import FinishPagePreviewCard from "./finish-page/FinishPagePreviewCard"
 
 function getHierarchicalOrder(
   cardMap: Map<string, PracticeCard>,
+  dependencyMap: Map<string, string[]>,
   enablePrerequisites: boolean,
 ): string[] {
   const seenItems = new Set<string>()
   const orderedKeys: string[] = []
 
   const addItemIfNew = (
-    item: { slug: string },
+    slug: string,
     itemType: "vocabulary" | "kanji" | "radical",
   ) => {
-    if (seenItems.has(item.slug)) return
-    seenItems.add(item.slug)
-    const key = `${itemType}:${item.slug}`
-    if (cardMap.has(key)) {
+    const key = `${itemType}:${slug}`
+    if (!seenItems.has(slug) && cardMap.has(key)) {
+      seenItems.add(slug)
       orderedKeys.push(key)
     }
   }
@@ -38,26 +32,24 @@ function getHierarchicalOrder(
   )
 
   vocabCards.forEach((vocabCard) => {
-    addItemIfNew({ slug: vocabCard.key.split(":")[1] }, "vocabulary")
+    const vocabSlug = vocabCard.key.split(":")[1]
+    addItemIfNew(vocabSlug, "vocabulary")
 
-    if (enablePrerequisites && vocabCard.vocab.kanji) {
-      vocabCard.vocab.kanji.forEach((kanjiChar) => {
-        // Find kanji cards that match this character
-        const kanjiCards = Array.from(cardMap.values()).filter(
-          (card) =>
-            card.practiceItemType === "kanji" && card.prompt === kanjiChar,
-        )
-        kanjiCards.forEach((kanjiCard) => {
-          addItemIfNew({ slug: kanjiCard.key.split(":")[1] }, "kanji")
+    if (enablePrerequisites) {
+      const deps = dependencyMap.get(vocabCard.key) || []
+      deps.forEach((depKey) => {
+        if (depKey.startsWith("kanji:")) {
+          const kanjiSlug = depKey.split(":")[1]
+          addItemIfNew(kanjiSlug, "kanji")
 
-          // For radicals, we need to check if there are any radical cards
-          const radicalCards = Array.from(cardMap.values()).filter(
-            (card) => card.practiceItemType === "radical",
-          )
-          radicalCards.forEach((radicalCard) => {
-            addItemIfNew({ slug: radicalCard.key.split(":")[1] }, "radical")
+          const kanjiDeps = dependencyMap.get(depKey) || []
+          kanjiDeps.forEach((radicalKey) => {
+            if (radicalKey.startsWith("radical:")) {
+              const radicalSlug = radicalKey.split(":")[1]
+              addItemIfNew(radicalSlug, "radical")
+            }
           })
-        })
+        }
       })
     }
   })
@@ -75,8 +67,10 @@ export default function FinishPageComponent() {
   const moduleCards = createMemo(() => {
     if (!manager()) return []
     const cardMap = manager().getCardMap()
+    const dependencyMap = manager().getState().dependencyMap
     const hierarchicalOrder = getHierarchicalOrder(
       cardMap,
+      dependencyMap,
       enablePrerequisites(),
     )
     return hierarchicalOrder

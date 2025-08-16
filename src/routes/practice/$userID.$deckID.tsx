@@ -12,7 +12,7 @@ import {
 } from "@/features/supabase/db/deck-operations"
 import type { PracticeMode } from "@/features/vocab-practice/types"
 import { getWKHierarchy } from "@/data/wanikani/utils"
-import type { FullHierarchyData, VocabHierarchy } from "@/data/wanikani/types"
+import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
 
@@ -40,31 +40,24 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
       // 2. Get the practice mode from search params (defaults to "readings")
       const mode: PracticeMode = deps.mode
 
-      let hierarchy: FullHierarchyData
+      let hierarchy: VocabHierarchy
 
       if (mode === "readings") {
         // For "readings" mode, build the full dependency tree
         const fullHierarchy = await getWKHierarchy({
           data: deckVocabulary.map((v) => v.word),
         })
-        console.log("Full hierarchy: ", fullHierarchy)
         if (!fullHierarchy) throw notFound()
         hierarchy = fullHierarchy
       } else {
         // For "kana" mode, create a "flat" hierarchy with NO dependencies
-        const flatVocabHierarchy: VocabHierarchy[] = deckVocabulary.map(
-          (vocab, index) => ({
-            id: index, // A placeholder ID is fine
-            characters: vocab.word,
-            slug: vocab.word,
-            kanji: [], // No kanji dependencies
-          }),
-        )
-
         hierarchy = {
-          hierarchy: flatVocabHierarchy,
-          uniqueKanji: [], // No kanji
-          uniqueRadicals: [], // No radicals
+          vocabulary: deckVocabulary.map((vocab) => ({
+            word: vocab.word,
+            kanjiComponents: [], // No kanji dependencies
+          })),
+          kanji: [], // No kanji
+          radicals: [], // No radicals
         }
       }
 
@@ -92,9 +85,10 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
 
       // 5. Extract all slugs for FSRS data fetching
       const allHierarchySlugs = new Set<string>()
-      hierarchy.hierarchy.forEach((v) => allHierarchySlugs.add(v.slug))
-      hierarchy.uniqueKanji.forEach((k) => allHierarchySlugs.add(k.slug))
-      hierarchy.uniqueRadicals.forEach((r) => allHierarchySlugs.add(r.slug))
+
+      hierarchy.vocabulary.forEach((v) => allHierarchySlugs.add(v.word))
+      hierarchy.kanji.forEach((k) => allHierarchySlugs.add(k.kanji))
+      hierarchy.radicals.forEach((r) => allHierarchySlugs.add(r.radical))
 
       // 6. Defer FSRS data fetching
       let moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null = null

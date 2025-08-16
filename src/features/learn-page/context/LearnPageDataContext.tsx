@@ -1,7 +1,7 @@
 // features/learn-page/context/LearnDataContext.tsx
 import { createContext, useContext, type ParentComponent } from "solid-js"
 import type { VocabularyItem, Deck, TextbookIDEnum } from "@/data/types"
-import type { FullHierarchyData } from "@/data/wanikani/types"
+import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
 import type {
@@ -13,7 +13,7 @@ export interface LearnPageData {
   activeTextbookId: TextbookIDEnum
   activeDeck: Deck
   chapterVocabulary: VocabularyItem[]
-  wordHierarchyData: FullHierarchyData | null
+  wordHierarchyData: VocabHierarchy | null
   fsrsProgressData: DeferredPromise<Record<string, FSRSCardData> | null>
   dueFSRSCardsCount: DeferredPromise<number | null>
   lessons: EnrichedLearningPathModule[]

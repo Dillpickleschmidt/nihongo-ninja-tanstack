@@ -302,6 +302,55 @@ export class PracticeSessionManager {
   }
 
   /**
+   * Returns the total amount of module work that needs to be completed in this session.
+   * This is calculated once and represents all non-disabled module cards.
+   */
+  public getTotalModuleWork(): number {
+    if (!this._totalModuleWork) {
+      // Calculate once: count all module cards that aren't disabled
+      this._totalModuleWork = Array.from(this.state.cardMap.values()).filter(
+        (card) => card.sessionScope === "module" && !card.isDisabled,
+      ).length
+    }
+    return this._totalModuleWork
+  }
+
+  /**
+   * Returns the number of module cards remaining to be completed.
+   */
+  public getModuleWorkRemaining(): number {
+    // Count active module cards (cards currently being practiced that are module scope)
+    const activeModuleCardsCount = this.state.activeQueue
+      .map((key) => this.state.cardMap.get(key))
+      .filter((card) => card && card.sessionScope === "module").length
+
+    return (
+      this.state.moduleQueue.length +
+      this.state.lockedKeys.size +
+      activeModuleCardsCount
+    )
+  }
+
+  /**
+   * Returns complete progress information for module work.
+   */
+  public getModuleProgress(): {
+    done: number
+    total: number
+    percentage: number
+  } {
+    const total = this.getTotalModuleWork()
+    const remaining = this.getModuleWorkRemaining()
+    const done = total - remaining
+    const percentage = total === 0 ? 0 : (done / total) * 100
+
+    return { done, total, percentage }
+  }
+
+  // Cache the total module work calculation
+  private _totalModuleWork?: number
+
+  /**
    * Returns the percentage of review cards to module cards
    */
   private getInterleavingRatio(): number {

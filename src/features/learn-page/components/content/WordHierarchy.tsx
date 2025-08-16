@@ -11,18 +11,23 @@ import {
 import { Tabs, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { cn } from "@/utils"
 import type {
-  FullHierarchyData,
-  Kanji,
-  Radical,
   VocabHierarchy,
-  ProgressState,
-} from "@/data/wanikani/types"
+  VocabEntry,
+  KanjiEntry,
+  RadicalEntry,
+} from "@/data/wanikani/hierarchy-builder"
 import type { VocabularyItem } from "@/data/types"
 import type { User } from "@supabase/supabase-js"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
 import { extractHiragana } from "@/data/utils/vocab"
 
 type WordHierarchyVariant = "mobile" | "desktop"
+type ProgressState = "not_seen" | "learning" | "well_known"
+
+// ✅ Local enriched types with progress
+type EnrichedVocabEntry = VocabEntry & { progress?: ProgressState }
+type EnrichedKanjiEntry = KanjiEntry & { progress?: ProgressState }
+type EnrichedRadicalEntry = RadicalEntry & { progress?: ProgressState }
 
 interface WordHierarchyProps {
   variant: WordHierarchyVariant
@@ -47,29 +52,37 @@ function determineProgress(
 }
 
 function enrichHierarchyWithProgress(
-  hierarchyData: FullHierarchyData,
+  hierarchyData: VocabHierarchy,
   progressRecord: Record<string, FSRSCardData>,
-): FullHierarchyData {
-  const radicalsWithProgress = hierarchyData.uniqueRadicals.map((radical) => ({
-    ...radical,
-    progress: determineProgress("radical", radical.slug, progressRecord),
-  }))
-  const radicalsProgressMap = new Map(
-    radicalsWithProgress.map((r) => [r.id, r]),
+): {
+  vocabulary: EnrichedVocabEntry[]
+  kanji: EnrichedKanjiEntry[]
+  radicals: EnrichedRadicalEntry[]
+  summary: {
+    vocab: { total: number; wellKnown: number; learning: number }
+    kanji: { total: number; wellKnown: number; learning: number }
+    radicals: { total: number; wellKnown: number; learning: number }
+  }
+} {
+  const radicalsWithProgress: EnrichedRadicalEntry[] =
+    hierarchyData.radicals.map((radical) => ({
+      ...radical,
+      progress: determineProgress("radical", radical.radical, progressRecord),
+    }))
+
+  const kanjiWithProgress: EnrichedKanjiEntry[] = hierarchyData.kanji.map(
+    (kanji) => ({
+      ...kanji,
+      progress: determineProgress("kanji", kanji.kanji, progressRecord),
+    }),
   )
 
-  const kanjiWithProgress = hierarchyData.uniqueKanji.map((kanji) => ({
-    ...kanji,
-    progress: determineProgress("kanji", kanji.slug, progressRecord),
-    radicals: kanji.radicals.map((r) => radicalsProgressMap.get(r.id) || r),
-  }))
-  const kanjiProgressMap = new Map(kanjiWithProgress.map((k) => [k.id, k]))
-
-  const hierarchyWithProgress = hierarchyData.hierarchy.map((vocab) => ({
-    ...vocab,
-    progress: determineProgress("vocabulary", vocab.slug, progressRecord),
-    kanji: vocab.kanji.map((k) => kanjiProgressMap.get(k.id) || k),
-  }))
+  const vocabWithProgress: EnrichedVocabEntry[] = hierarchyData.vocabulary.map(
+    (vocab) => ({
+      ...vocab,
+      progress: determineProgress("vocabulary", vocab.word, progressRecord),
+    }),
+  )
 
   const countProgress = (items: { progress?: ProgressState }[]) => ({
     wellKnown: items.filter((i) => i.progress === "well_known").length,
@@ -78,8 +91,8 @@ function enrichHierarchyWithProgress(
 
   const summary = {
     vocab: {
-      total: hierarchyWithProgress.length,
-      ...countProgress(hierarchyWithProgress),
+      total: vocabWithProgress.length,
+      ...countProgress(vocabWithProgress),
     },
     kanji: {
       total: kanjiWithProgress.length,
@@ -92,9 +105,9 @@ function enrichHierarchyWithProgress(
   }
 
   return {
-    hierarchy: hierarchyWithProgress,
-    uniqueKanji: kanjiWithProgress,
-    uniqueRadicals: radicalsWithProgress,
+    vocabulary: vocabWithProgress,
+    kanji: kanjiWithProgress,
+    radicals: radicalsWithProgress,
     summary,
   }
 }
@@ -114,16 +127,14 @@ export function WordHierarchy(props: WordHierarchyProps) {
     const progress = progressResource()
 
     if (!hierarchy) return null
-    // Only enrich if we have both user AND completed progress data
     if (!props.user || !progress) return hierarchy
 
     return enrichHierarchyWithProgress(hierarchy, progress)
   }
 
-  // Centralized animation management - trigger when hierarchy data changes
   animateOnDataChange(
     ["[data-word-hierarchy-progress]", "[data-word-hierarchy-content]"],
-    () => wordHierarchyData
+    () => wordHierarchyData,
   )
 
   return (
@@ -141,14 +152,18 @@ export function WordHierarchy(props: WordHierarchyProps) {
 }
 
 function WordHierarchyDisplay(props: {
-  data: FullHierarchyData
+  data: {
+    vocabulary: EnrichedVocabEntry[]
+    kanji: EnrichedKanjiEntry[]
+    radicals: EnrichedRadicalEntry[]
+    summary?: any
+  }
   chapterVocabulary: VocabularyItem[]
   variant: WordHierarchyVariant
   user: User | null
 }) {
   return (
     <div class="flex flex-col gap-1">
-      {/* Tabs with progress circles as triggers */}
       <Tabs defaultValue="vocab" class="flex flex-col">
         {/* Progress Circle Triggers */}
         <div
@@ -159,9 +174,9 @@ function WordHierarchyDisplay(props: {
             <ProgressCircleTrigger
               value="vocab"
               label="Vocabulary"
-              countLearned={props.data.summary!.vocab.wellKnown}
-              countInProgress={props.data.summary!.vocab.learning}
-              total={props.data.summary!.vocab.total}
+              countLearned={props.data.summary?.vocab.wellKnown || 0}
+              countInProgress={props.data.summary?.vocab.learning || 0}
+              total={props.data.summary?.vocab.total || 0}
               colorLearned="text-sky-400"
               colorInProgress="text-sky-600"
               hasProgress={!!props.user}
@@ -169,9 +184,9 @@ function WordHierarchyDisplay(props: {
             <ProgressCircleTrigger
               value="kanji"
               label="Kanji"
-              countLearned={props.data.summary!.kanji.wellKnown}
-              countInProgress={props.data.summary!.kanji.learning}
-              total={props.data.summary!.kanji.total}
+              countLearned={props.data.summary?.kanji.wellKnown || 0}
+              countInProgress={props.data.summary?.kanji.learning || 0}
+              total={props.data.summary?.kanji.total || 0}
               colorLearned="text-pink-400"
               colorInProgress="text-pink-600"
               hasProgress={!!props.user}
@@ -179,9 +194,9 @@ function WordHierarchyDisplay(props: {
             <ProgressCircleTrigger
               value="radicals"
               label="Radicals"
-              countLearned={props.data.summary!.radicals.wellKnown}
-              countInProgress={props.data.summary!.radicals.learning}
-              total={props.data.summary!.radicals.total}
+              countLearned={props.data.summary?.radicals.wellKnown || 0}
+              countInProgress={props.data.summary?.radicals.learning || 0}
+              total={props.data.summary?.radicals.total || 0}
               colorLearned="text-teal-400"
               colorInProgress="text-teal-600"
               hasProgress={!!props.user}
@@ -189,14 +204,14 @@ function WordHierarchyDisplay(props: {
           </div>
         </div>
 
-        {/* Tab Content with blurred background */}
+        {/* Tab Content */}
         <TabsContent
           value="vocab"
           data-word-hierarchy-content
           class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1.5 pl-4 backdrop-blur-sm"
         >
           <VocabularyList
-            hierarchy={props.data.hierarchy}
+            hierarchy={props.data.vocabulary}
             chapterVocabulary={props.chapterVocabulary}
             variant={props.variant}
           />
@@ -209,7 +224,7 @@ function WordHierarchyDisplay(props: {
         >
           <CharacterList
             title="Kanji"
-            items={props.data.uniqueKanji}
+            items={props.data.kanji}
             variant={props.variant}
           />
         </TabsContent>
@@ -221,7 +236,7 @@ function WordHierarchyDisplay(props: {
         >
           <CharacterList
             title="Radicals"
-            items={props.data.uniqueRadicals}
+            items={props.data.radicals}
             variant={props.variant}
           />
         </TabsContent>
@@ -349,7 +364,7 @@ function ProgressCircleTrigger(props: {
 
 function CharacterList(props: {
   title: string
-  items: (Kanji | Radical)[]
+  items: (EnrichedKanjiEntry | EnrichedRadicalEntry)[]
   variant: WordHierarchyVariant
 }) {
   return (
@@ -374,25 +389,22 @@ function CharacterList(props: {
 }
 
 function CharBox(props: {
-  item: Kanji | Radical
+  item: EnrichedKanjiEntry | EnrichedRadicalEntry
   variant: WordHierarchyVariant
 }) {
   return (
-    <Show when={props.item.characters}>
+    <Show when={"kanji" in props.item || "radical" in props.item}>
       <HoverCard openDelay={200}>
         <HoverCardTrigger as="div">
           <div
             class={cn(
               "flex items-center justify-center rounded-lg border transition-colors hover:cursor-pointer",
-              // Size based on variant
               props.variant === "desktop" ? "h-8 w-8" : "h-10 w-10",
-              // Background colors
               {
                 "bg-muted/40": props.item.progress === "not_seen",
                 "bg-amber-400/10": props.item.progress === "learning",
                 "bg-teal-400/10": props.item.progress === "well_known",
               },
-              // Border colors (now applied to both desktop and mobile)
               {
                 "border-card-foreground": props.item.progress === "not_seen",
                 "border-amber-400/50": props.item.progress === "learning",
@@ -411,7 +423,9 @@ function CharBox(props: {
                 },
               )}
             >
-              {props.item.characters}
+              {"kanji" in props.item
+                ? props.item.kanji
+                : (props.item as EnrichedRadicalEntry).radical}
             </span>
           </div>
         </HoverCardTrigger>
@@ -426,7 +440,7 @@ function CharBox(props: {
 }
 
 function VocabularyList(props: {
-  hierarchy: VocabHierarchy[]
+  hierarchy: EnrichedVocabEntry[]
   chapterVocabulary: VocabularyItem[]
   variant: WordHierarchyVariant
 }) {
@@ -446,9 +460,8 @@ function VocabularyList(props: {
       <div class="flex flex-col gap-1.5">
         <For each={props.hierarchy}>
           {(vocabItem, index) => {
-            const vocab = vocabMap().get(vocabItem.characters)
+            const vocab = vocabMap().get(vocabItem.word)
             const englishMeanings = vocab?.english || []
-
             const hiraganaReading = vocab
               ? extractHiragana(vocab.furigana)
               : undefined
@@ -456,7 +469,7 @@ function VocabularyList(props: {
             return (
               <VocabularyRow
                 number={index() + 1}
-                japanese={vocabItem.characters}
+                japanese={vocabItem.word}
                 english={englishMeanings.join(", ")}
                 progress={vocabItem.progress || "not_seen"}
                 hiragana={hiraganaReading}
@@ -476,7 +489,6 @@ function VocabularyRow(props: {
   progress: ProgressState
   hiragana?: string
 }) {
-  // Only show hiragana if it's different from the Japanese
   const shouldShowHiragana = props.hiragana && props.hiragana !== props.japanese
 
   return (
@@ -487,12 +499,9 @@ function VocabularyRow(props: {
         "bg-teal-400/10": props.progress === "well_known",
       })}
     >
-      {/* Number */}
       <span class="text-muted-foreground w-6 flex-shrink-0 text-[11px]">
         {props.number}.
       </span>
-
-      {/* Japanese column */}
       <div
         class={cn(
           "flex-shrink-0",
@@ -509,8 +518,6 @@ function VocabularyRow(props: {
           {props.japanese}
         </span>
       </div>
-
-      {/* Hiragana column (center) */}
       <div
         class={cn(
           "flex-shrink-0",
@@ -523,8 +530,6 @@ function VocabularyRow(props: {
           </span>
         )}
       </div>
-
-      {/* English column - takes remaining space */}
       <span class="text-muted-foreground flex-1 text-right text-xs">
         {props.english}
       </span>

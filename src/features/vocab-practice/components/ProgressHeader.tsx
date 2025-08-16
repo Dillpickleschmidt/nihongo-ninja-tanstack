@@ -9,43 +9,12 @@ export default function ProgressHeader() {
   const { state } = useVocabPracticeContext()
   const manager = () => state.manager!
 
-  // Calculate the initial count ONCE when the component is created.
-  const initialModuleCount = Array.from(manager().getCardMap().values()).filter(
-    (card) => card.sessionStyle !== "flashcard",
-  ).length
+  // Use business logic for all progress calculations
+  const moduleProgress = createMemo(() => manager().getModuleProgress())
 
-  // This memo correctly calculates the CURRENT number of remaining module cards
-  const remainingModuleCards = createMemo(() => {
-    const mgr = manager()
-    if (!mgr) return 0
-    const activeQueueKeys = state.activeQueue
-    const activeQueueCards = activeQueueKeys.map(
-      (key) => mgr.getCardFromMap(key)!,
-    )
-    const activeModuleCardsCount = activeQueueCards.filter(
-      (c) => c.sessionStyle !== "flashcard",
-    ).length
-    return mgr.getSourceQueueSizes().module + activeModuleCardsCount
-  })
-
-  // Progress for the current review batch
   const reviewProgress = () => {
     const currentProgress = state.recentReviewHistory.length
     return (currentProgress / CARDS_UNTIL_REVIEW) * 100
-  }
-
-  // This calculation now works correctly because `initialModuleCount` is a stable number
-  const overallProgress = createMemo(() => {
-    const total = initialModuleCount
-    if (total === 0) return 0
-    const done = total - remainingModuleCards()
-    return (done / total) * 100
-  })
-
-  const overallProgressText = () => {
-    const total = initialModuleCount
-    const done = total - remainingModuleCards()
-    return `${done}/${total} terms`
   }
 
   return (
@@ -69,7 +38,7 @@ export default function ProgressHeader() {
             </div>
             <div class="flex items-center gap-4">
               <span class="text-xs font-medium text-blue-400">
-                {overallProgressText()}
+                {moduleProgress().done}/{moduleProgress().total} terms
               </span>
               <span class="text-xs font-medium text-orange-400">
                 {state.recentReviewHistory.length}/{CARDS_UNTIL_REVIEW}
@@ -86,7 +55,7 @@ export default function ProgressHeader() {
             <div class="absolute top-0 right-0 left-0 h-2 overflow-hidden rounded-full">
               <div
                 class="h-full rounded-r-full bg-blue-500/80 transition-all duration-500 ease-out"
-                style={`width: ${overallProgress()}%`}
+                style={`width: ${moduleProgress().percentage}%`}
               />
             </div>
           </div>
@@ -95,3 +64,4 @@ export default function ProgressHeader() {
     </div>
   )
 }
+

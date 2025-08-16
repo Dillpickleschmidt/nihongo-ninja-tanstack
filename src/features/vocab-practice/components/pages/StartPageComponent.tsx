@@ -21,12 +21,7 @@ import type {
   PracticeSessionState,
   PracticeCard,
 } from "../../types"
-import type {
-  FullHierarchyData,
-  Kanji,
-  Radical,
-  VocabHierarchy,
-} from "@/data/wanikani/types"
+import type { VocabHierarchy as CleanVocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { VocabularyItem } from "@/data/types"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
 import type { DeferredPromise } from "@tanstack/solid-router"
@@ -36,7 +31,7 @@ import { BottomNav } from "@/features/navbar/BottomNav"
 import { SessionModeTabSwitcher } from "../SessionModeTabSwitcher"
 
 type StartPageProps = {
-  hierarchy: FullHierarchyData | null
+  hierarchy: CleanVocabHierarchy | null
   initialState: PracticeSessionState
   moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null
   dueFSRSCards: DeferredPromise<FSRSCardData[]> | null
@@ -46,29 +41,33 @@ type StartPageProps = {
 }
 
 function getHierarchicalOrder(
-  hierarchy: FullHierarchyData,
+  hierarchy: CleanVocabHierarchy,
   enablePrerequisites: boolean,
 ): string[] {
-  const seenItems = new Set<string>()
   const orderedKeys: string[] = []
 
-  const addItemIfNew = (
-    item: VocabHierarchy | Kanji | Radical,
-    itemType: "vocabulary" | "kanji" | "radical",
-  ) => {
-    if (seenItems.has(item.slug)) return
-    seenItems.add(item.slug)
-    orderedKeys.push(`${itemType}:${item.slug}`)
-  }
+  // Add vocabulary items
+  hierarchy.vocabulary.forEach((vocabEntry) => {
+    orderedKeys.push(`vocabulary:${vocabEntry.word}`)
 
-  hierarchy.hierarchy.forEach((vocab) => {
-    addItemIfNew(vocab, "vocabulary")
     if (enablePrerequisites) {
-      vocab.kanji.forEach((kanji) => {
-        addItemIfNew(kanji, "kanji")
-        kanji.radicals.forEach((radical) => {
-          addItemIfNew(radical, "radical")
-        })
+      // Add kanji dependencies
+      vocabEntry.kanjiComponents.forEach((kanjiChar) => {
+        const kanjiKey = `kanji:${kanjiChar}`
+        if (!orderedKeys.includes(kanjiKey)) {
+          orderedKeys.push(kanjiKey)
+        }
+
+        // Add radical dependencies
+        const kanjiEntry = hierarchy.kanji.find((k) => k.kanji === kanjiChar)
+        if (kanjiEntry) {
+          kanjiEntry.radicalComponents.forEach((radicalChar) => {
+            const radicalKey = `radical:${radicalChar}`
+            if (!orderedKeys.includes(radicalKey)) {
+              orderedKeys.push(radicalKey)
+            }
+          })
+        }
       })
     }
   })
@@ -103,6 +102,7 @@ export default function StartPageComponent(props: StartPageProps) {
   // Enhance state with FSRS data
   createEffect(async () => {
     if (moduleFSRS.loading || dueFSRS.loading || !props.hierarchy) return
+
     try {
       const fullState = await initializePracticeSession(
         props.hierarchy,
@@ -116,6 +116,7 @@ export default function StartPageComponent(props: StartPageProps) {
         enablePrerequisites(),
         sessionMode() === "mixed",
       )
+
       setEnhancedState(fullState)
     } catch (error) {
       console.error("Failed to enhance practice session:", error)

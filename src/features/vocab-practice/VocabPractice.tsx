@@ -12,12 +12,12 @@ import FinishPageComponent from "./components/pages/FinishPageComponent"
 import IntroductionPageComponent from "./components/pages/IntroductionPageComponent"
 import FSRSFlashcardPageComponent from "./components/pages/FSRSFlashcardPageComponent"
 import type { FSRSCardData } from "../supabase/db/fsrs-operations"
-import type { FullHierarchyData } from "@/data/wanikani/types"
+import type { VocabHierarchy as CleanVocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { VocabularyItem } from "@/data/types"
 import type { DeferredPromise } from "@tanstack/solid-router"
 
 type VocabPracticeProps = {
-  hierarchy: FullHierarchyData | null
+  hierarchy: CleanVocabHierarchy | null
   initialState: PracticeSessionState
   moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null
   dueFSRSCards: DeferredPromise<FSRSCardData[]> | null
