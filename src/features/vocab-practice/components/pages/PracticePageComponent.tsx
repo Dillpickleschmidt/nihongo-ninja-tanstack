@@ -74,7 +74,9 @@ export default function PracticePageComponent() {
         const currentCount = newIncorrectMap.get(card.key) ?? 0
         newIncorrectMap.set(card.key, currentCount + 1)
       }
-      const nextCard = manager().getCurrentCard()
+      const nextCard = manager().isFinished()
+        ? null
+        : manager().getCurrentCard()
       const newActiveQueue = manager().getActiveQueue()
 
       return {
@@ -117,9 +119,14 @@ export default function PracticePageComponent() {
                   </span>
                 </div>
               </div>
-              <span class="text-xs font-medium text-blue-400">
-                {overallProgressText()}
-              </span>
+              <div class="flex items-center gap-4">
+                <span class="text-xs font-medium text-blue-400">
+                  {overallProgressText()}
+                </span>
+                <span class="text-xs font-medium text-orange-400">
+                  {state.recentReviewHistory.length}/{CARDS_UNTIL_REVIEW}
+                </span>
+              </div>
             </div>
             <div class="relative">
               <div class="bg-muted h-2 overflow-hidden rounded-full">
