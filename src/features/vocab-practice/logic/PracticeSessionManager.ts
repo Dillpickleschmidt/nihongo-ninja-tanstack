@@ -16,6 +16,7 @@ type QueueState = {
 export class PracticeSessionManager {
   private state: PracticeSessionState
   private reviewOnly: boolean
+  private changeCallbacks: (() => void)[] = []
 
   constructor(initialState: PracticeSessionState, reviewOnly: boolean = false) {
     this.state = initialState
@@ -31,7 +32,24 @@ export class PracticeSessionManager {
       this.state.moduleQueue = moduleQueue
       this.state.reviewQueue = reviewQueue
       this.state.activeQueue = activeQueue
+      this.notifyChange()
     }
+  }
+
+  // --- OBSERVER PATTERN FOR REACTIVITY ---
+
+  /**
+   * Register a callback to be called when manager state changes
+   */
+  onChange(callback: () => void): void {
+    this.changeCallbacks.push(callback)
+  }
+
+  /**
+   * Notify all registered callbacks that state has changed
+   */
+  private notifyChange(): void {
+    this.changeCallbacks.forEach((callback) => callback())
   }
 
   // --- PURE, STATIC, TESTABLE LOGIC ---
@@ -142,6 +160,8 @@ export class PracticeSessionManager {
     // Cycle the card to the back of the active queue
     this.state.activeQueue.shift() // Remove from front
     this.state.activeQueue.push(key) // Add to back
+
+    this.notifyChange()
   }
 
   public async processAnswer(rating: Grade, replenish = true): Promise<void> {
@@ -211,6 +231,8 @@ export class PracticeSessionManager {
 
     // 6. Check if the entire session is finished
     this.checkIfFinished()
+
+    this.notifyChange()
   }
 
   private unlockDependents(completedKey: string): void {

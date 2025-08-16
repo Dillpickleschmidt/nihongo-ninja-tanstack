@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button"
 import { ChevronDown, Loader2, Settings } from "lucide-solid"
 import DeckSettingsDialogComponent from "../DeckSettingsDialogComponent"
 import StartPagePreviewCard from "./start-page/StartPagePreviewCard"
-import { PracticeSessionManager } from "../../logic/PracticeSessionManager"
 import { initializePracticeSession } from "../../logic/data-initialization"
 import type {
   PracticeMode,
@@ -76,7 +75,7 @@ function getHierarchicalOrder(
 }
 
 export default function StartPageComponent(props: StartPageProps) {
-  const { setState, state } = useVocabPracticeContext()
+  const { uiState, setUIState, initializeManager } = useVocabPracticeContext()
   const { userPreferences } = useSettings()
   const [isStarting, setIsStarting] = createSignal(false)
   const [enhancedState, setEnhancedState] =
@@ -86,9 +85,9 @@ export default function StartPageComponent(props: StartPageProps) {
 
   const currentState = createMemo(() => enhancedState() || props.initialState)
 
-  const flipVocabQA = () => state.settings.flipVocabQA
-  const flipKanjiRadicalQA = () => state.settings.flipKanjiRadicalQA
-  const enablePrerequisites = () => state.settings.enablePrerequisites
+  const flipVocabQA = () => uiState.settings.flipVocabQA
+  const flipKanjiRadicalQA = () => uiState.settings.flipKanjiRadicalQA
+  const enablePrerequisites = () => uiState.settings.enablePrerequisites
 
   const [moduleFSRS] = createResource(
     () => props.moduleFSRSCards,
@@ -112,7 +111,7 @@ export default function StartPageComponent(props: StartPageProps) {
         props.moduleVocabulary,
         flipVocabQA(),
         flipKanjiRadicalQA(),
-        state.settings.shuffleInput,
+        uiState.settings.shuffleInput,
         enablePrerequisites(),
         sessionMode() === "mixed",
       )
@@ -178,9 +177,8 @@ export default function StartPageComponent(props: StartPageProps) {
         ...state,
         cardMap: getCardMap(state),
       }
-      const manager = new PracticeSessionManager(reconstructedState, false)
-      setState("manager", manager)
-      setState("activeQueue", manager.getActiveQueue())
+      // Initialize manager using the hook (this will automatically set up reactivity)
+      initializeManager(reconstructedState)
     } catch (error) {
       console.error("Failed to start practice session:", error)
     } finally {

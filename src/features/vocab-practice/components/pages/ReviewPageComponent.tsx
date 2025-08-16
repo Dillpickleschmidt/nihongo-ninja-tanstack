@@ -11,8 +11,8 @@ type ReviewSummaryData = {
 }
 
 export default function ReviewPageComponent() {
-  const { state, setState } = useVocabPracticeContext()
-  const manager = () => state.manager!
+  const { uiState, setUIState, currentCard, getCardFromMap } =
+    useVocabPracticeContext()
 
   let continueButtonRef: HTMLButtonElement | undefined
 
@@ -28,13 +28,13 @@ export default function ReviewPageComponent() {
   const reviewedItems = createMemo(() => {
     // Use a Map to get the last result for each unique key, preserving order
     const uniqueLastReviews = new Map<string, boolean>()
-    for (const review of state.recentReviewHistory) {
+    for (const review of uiState.recentReviewHistory) {
       uniqueLastReviews.set(review.key, review.wasCorrect)
     }
 
     const summaryData: ReviewSummaryData[] = []
     uniqueLastReviews.forEach((wasCorrect, key) => {
-      const card = manager().getCardFromMap(key)
+      const card = getCardFromMap(key)
       if (card) {
         summaryData.push({ card, wasCorrect })
       }
@@ -44,12 +44,12 @@ export default function ReviewPageComponent() {
 
   function handleContinue() {
     // Clear the batch history
-    setState("recentReviewHistory", [])
+    setUIState("recentReviewHistory", [])
 
     // Determine the next page to go to
-    const nextStyle = state.currentCard?.sessionStyle
+    const nextStyle = currentCard()?.sessionStyle
     const nextPage = nextStyle === "flashcard" ? "fsrs-flashcard" : "practice"
-    setState("currentPage", nextPage)
+    setUIState("currentPage", nextPage)
   }
 
   return (

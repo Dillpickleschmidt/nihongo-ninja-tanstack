@@ -45,11 +45,11 @@ export default function VocabPractice(props: VocabPracticeProps) {
 type VocabPracticeContentProps = VocabPracticeProps
 
 function VocabPracticeContent(props: VocabPracticeContentProps) {
-  const { state } = useVocabPracticeContext()
+  const { uiState } = useVocabPracticeContext()
 
   return (
     <Switch>
-      <Match when={state.currentPage === "start"}>
+      <Match when={uiState.currentPage === "start"}>
         <StartPageComponent
           deckName={props.deckName}
           hierarchy={props.hierarchy}
@@ -60,19 +60,19 @@ function VocabPracticeContent(props: VocabPracticeContentProps) {
           mode={props.mode}
         />
       </Match>
-      <Match when={state.currentPage === "practice"}>
+      <Match when={uiState.currentPage === "practice"}>
         <PracticePageComponent />
       </Match>
-      <Match when={state.currentPage === "kanji-introduction"}>
+      <Match when={uiState.currentPage === "kanji-introduction"}>
         <IntroductionPageComponent />
       </Match>
-      <Match when={state.currentPage === "fsrs-flashcard"}>
+      <Match when={uiState.currentPage === "fsrs-flashcard"}>
         <FSRSFlashcardPageComponent />
       </Match>
-      <Match when={state.currentPage === "review"}>
+      <Match when={uiState.currentPage === "review"}>
         <ReviewPageComponent />
       </Match>
-      <Match when={state.currentPage === "finish"}>
+      <Match when={uiState.currentPage === "finish"}>
         <FinishPageComponent />
       </Match>
     </Switch>

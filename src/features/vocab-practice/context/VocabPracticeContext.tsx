@@ -1,28 +1,35 @@
 // vocab-practice/context/VocabPracticeContext.tsx
 import { createContext, JSX, useContext, createEffect } from "solid-js"
 import { createStore, SetStoreFunction } from "solid-js/store"
-import { PracticeSessionManager } from "../logic/PracticeSessionManager"
-import type { Settings, CurrentPage, PracticeCard } from "../types"
+import type { Settings, CurrentPage } from "../types"
 import { Rating } from "ts-fsrs"
+import {
+  usePracticeManager,
+  type PracticeManagerHook,
+} from "../logic/usePracticeManager"
 
 // --- LOCAL TYPE DEFINITIONS FOR THE CONTEXT ---
 
-type AppState = {
+// UI-only state (non-manager state)
+type UIState = {
   currentPage: CurrentPage
-  manager: PracticeSessionManager | null
   settings: Settings
-  activeQueue: string[]
   recentReviewHistory: { key: string; wasCorrect: boolean }[]
   incorrectAnswerMap: Map<string, number>
   isAnswered: boolean
   lastRating: Rating | null
-  currentCard: PracticeCard | null
 }
 
 type VocabPracticeContextType = {
-  state: AppState
-  setState: SetStoreFunction<AppState>
-}
+  // UI state
+  uiState: UIState
+  setUIState: SetStoreFunction<UIState>
+
+  // Combined business + UI logic
+  answerCardWithUIUpdate: (rating: Rating) => Promise<void>
+
+  // Manager hook (reactive practice logic)
+} & PracticeManagerHook
 
 // --- CONTEXT CREATION & PROVIDER ---
 
@@ -35,10 +42,9 @@ type ContextProviderProps = {
 }
 
 export function VocabPracticeContextProvider(props: ContextProviderProps) {
-  const [state, setState] = createStore<AppState>({
+  // UI-only state store
+  const [uiState, setUIState] = createStore<UIState>({
     currentPage: "start",
-    manager: null,
-    activeQueue: [],
     recentReviewHistory: [],
     incorrectAnswerMap: new Map(),
     isAnswered: false,
@@ -50,55 +56,73 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
       flipVocabQA: false,
       flipKanjiRadicalQA: true,
     },
-    currentCard: null,
   })
 
-  createEffect(() => {
-    // Runs when state.manager or state.activeQueue changes.
-    if (
-      state.manager &&
-      state.activeQueue.length > 0 &&
-      state.currentCard === null
-    ) {
-      try {
-        setState("currentCard", state.manager.getCurrentCard())
-      } catch (e) {
-        console.warn("Could not set initial currentCard from manager:", e)
-        setState("currentCard", null)
-      }
-    } else if (
-      state.manager &&
-      state.activeQueue.length === 0 &&
-      state.currentCard !== null &&
-      state.manager.isFinished()
-    ) {
-      // If the session finished and active queue became empty, clear currentCard
-      setState("currentCard", null)
-    }
-  })
+  // Practice manager hook (handles reactive practice logic)
+  const managerHook = usePracticeManager()
 
   // --- AUTOMATIC PAGE SWITCHING LOGIC ---
 
   createEffect(() => {
-    if (state.manager && state.manager.isFinished()) {
-      setState("currentPage", "finish")
-    } else if (state.recentReviewHistory.length >= CARDS_UNTIL_REVIEW) {
-      setState("currentPage", "review")
-    } else if (state.currentCard?.sessionStyle === "introduction") {
-      setState("currentPage", "kanji-introduction")
+    if (managerHook.isFinished()) {
+      setUIState("currentPage", "finish")
+    } else if (uiState.recentReviewHistory.length >= CARDS_UNTIL_REVIEW) {
+      setUIState("currentPage", "review")
+    } else if (managerHook.currentCard()?.sessionStyle === "introduction") {
+      setUIState("currentPage", "kanji-introduction")
     } else if (
-      state.currentCard?.sessionStyle === "multiple-choice" ||
-      state.currentCard?.sessionStyle === "write"
+      managerHook.currentCard()?.sessionStyle === "multiple-choice" ||
+      managerHook.currentCard()?.sessionStyle === "write"
     ) {
-      setState("currentPage", "practice")
-    } else if (state.currentCard?.sessionStyle === "flashcard") {
-      setState("currentPage", "fsrs-flashcard")
+      setUIState("currentPage", "practice")
+    } else if (managerHook.currentCard()?.sessionStyle === "flashcard") {
+      setUIState("currentPage", "fsrs-flashcard")
     }
   })
 
+  // Wrapper function that combines business logic + UI state updates
+  const answerCardWithUIUpdate = async (rating: Rating): Promise<void> => {
+    const card = managerHook.currentCard()
+    if (!card) return
+
+    const isCorrect = rating !== Rating.Again
+
+    // 1. Call business logic
+    await managerHook.answerCard(rating)
+
+    // 2. Update UI state automatically
+    setUIState((prevState) => {
+      const newHistory = [
+        ...prevState.recentReviewHistory,
+        { key: card.key, wasCorrect: isCorrect },
+      ]
+
+      const newIncorrectMap = new Map(prevState.incorrectAnswerMap)
+      if (!isCorrect) {
+        const currentCount = newIncorrectMap.get(card.key) ?? 0
+        newIncorrectMap.set(card.key, currentCount + 1)
+      }
+
+      return {
+        ...prevState,
+        recentReviewHistory: newHistory,
+        incorrectAnswerMap: newIncorrectMap,
+        isAnswered: false, // Reset for next card
+        lastRating: null,
+      }
+    })
+  }
+
   const contextValue: VocabPracticeContextType = {
-    state,
-    setState,
+    // UI state
+    uiState,
+    setUIState,
+
+    // Combined business + UI logic
+    answerCardWithUIUpdate,
+
+    // Manager hook values (spread all manager hook properties)
+    ...managerHook,
   }
 
   return (

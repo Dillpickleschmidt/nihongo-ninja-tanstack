@@ -1,19 +1,20 @@
 // vocab-practice/components/ProgressHeader.tsx
-import { createMemo } from "solid-js"
 import {
   useVocabPracticeContext,
   CARDS_UNTIL_REVIEW,
 } from "../context/VocabPracticeContext"
 
 export default function ProgressHeader() {
-  const { state } = useVocabPracticeContext()
-  const manager = () => state.manager!
+  const { uiState, moduleProgress } = useVocabPracticeContext()
 
-  // Use business logic for all progress calculations
-  const moduleProgress = createMemo(() => manager().getModuleProgress())
+  const moduleProgressPercentage = () => {
+    const progress = moduleProgress()
+    if (progress.total === 0) return 0
+    return (progress.completed / progress.total) * 100
+  }
 
   const reviewProgress = () => {
-    const currentProgress = state.recentReviewHistory.length
+    const currentProgress = uiState.recentReviewHistory.length
     return (currentProgress / CARDS_UNTIL_REVIEW) * 100
   }
 
@@ -38,10 +39,10 @@ export default function ProgressHeader() {
             </div>
             <div class="flex items-center gap-4">
               <span class="text-xs font-medium text-blue-400">
-                {moduleProgress().done}/{moduleProgress().total} terms
+                {moduleProgress().completed}/{moduleProgress().total} terms
               </span>
               <span class="text-xs font-medium text-orange-400">
-                {state.recentReviewHistory.length}/{CARDS_UNTIL_REVIEW}
+                {uiState.recentReviewHistory.length}/{CARDS_UNTIL_REVIEW}
               </span>
             </div>
           </div>
@@ -55,7 +56,7 @@ export default function ProgressHeader() {
             <div class="absolute top-0 right-0 left-0 h-2 overflow-hidden rounded-full">
               <div
                 class="h-full rounded-r-full bg-blue-500/80 transition-all duration-500 ease-out"
-                style={`width: ${moduleProgress().percentage}%`}
+                style={`width: ${moduleProgressPercentage()}%`}
               />
             </div>
           </div>
@@ -64,4 +65,3 @@ export default function ProgressHeader() {
     </div>
   )
 }
-

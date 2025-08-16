@@ -2,12 +2,12 @@
 import {
   createEffect,
   createMemo,
+  createSignal,
   For,
   onCleanup,
   onMount,
   Show,
 } from "solid-js"
-import { createStore } from "solid-js/store"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { Rating } from "ts-fsrs"
 import type { PracticeCard, MultipleChoiceButtonState } from "../../types"
@@ -20,21 +20,17 @@ function isVerb(partOfSpeech?: PartOfSpeech): boolean {
 }
 
 export default function MultipleChoiceComponent() {
-  const { state, setState } = useVocabPracticeContext()
-  const manager = () => state.manager!
+  const { uiState, setUIState, currentCard, getCardMap } =
+    useVocabPracticeContext()
 
-  const currentCard = createMemo(() => state.currentCard)
-
-  const [buttonStates, setButtonStates] = createStore<
-    MultipleChoiceButtonState[]
-  >([])
+  const [selectedIndex, setSelectedIndex] = createSignal<number | null>(null)
 
   // Generate 4 multiple-choice options from the entire card map
   const choices = createMemo(() => {
     const card = currentCard()
     if (!card) return []
 
-    const allCards = Array.from(manager().getCardMap().values())
+    const allCards = Array.from(getCardMap().values())
 
     const getComparableValue = (c: PracticeCard) =>
       c.validAnswers.sort().join("|")
@@ -73,19 +69,26 @@ export default function MultipleChoiceComponent() {
     return [card, ...wrongOptions].sort(() => Math.random() - 0.5)
   })
 
-  // Reset local UI state whenever the card changes
+  // Derive button states from current selection and choices
+  const buttonStates = createMemo(() =>
+    choices().map((choice, index) => ({
+      isSelected: selectedIndex() === index,
+      isCorrect:
+        selectedIndex() === index ? choice.key === currentCard()?.key : false,
+    })),
+  )
+
+  // Reset selection whenever the card changes
   createEffect(() => {
     // This effect depends on choices(), which depends on currentCard().
     // It will run when a new card is presented.
-    setButtonStates(
-      choices().map(() => ({ isSelected: false, isCorrect: false })),
-    )
+    setSelectedIndex(null)
   })
 
   // Keyboard support for number keys 1-4
   onMount(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (state.isAnswered) return
+      if (uiState.isAnswered) return
       const num = parseInt(e.key)
       if (num >= 1 && num <= choices().length) {
         handleSelection(choices()[num - 1])
@@ -97,7 +100,7 @@ export default function MultipleChoiceComponent() {
 
   // Handle user selection
   function handleSelection(selectedCard: PracticeCard) {
-    if (state.isAnswered) return
+    if (uiState.isAnswered) return
 
     const card = currentCard()
     if (!card) return
@@ -105,17 +108,15 @@ export default function MultipleChoiceComponent() {
     const isCorrect = selectedCard.key === card.key
     const rating = isCorrect ? Rating.Good : Rating.Again
 
-    // Set button colors for immediate visual feedback
-    setButtonStates(
-      choices().map((option) => ({
-        isSelected: option.key === selectedCard.key,
-        isCorrect: option.key === card.key,
-      })),
+    // Set selected index for immediate visual feedback
+    const index = choices().findIndex(
+      (choice) => choice.key === selectedCard.key,
     )
+    setSelectedIndex(index)
 
     // Set the global state to show the "Next" button and store the rating.
     // This does NOT advance the card.
-    setState({
+    setUIState({
       isAnswered: true,
       lastRating: rating,
     })
@@ -123,15 +124,15 @@ export default function MultipleChoiceComponent() {
 
   return (
     <div class="space-y-5">
-      <Show when={buttonStates.length > 0 && currentCard()}>
+      <Show when={buttonStates().length > 0 && currentCard()}>
         <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
           <For each={choices()}>
             {(option, index) => (
               <MultipleChoiceButton
                 option={option}
                 index={index()}
-                buttonState={buttonStates[index()]}
-                isAnswered={state.isAnswered}
+                buttonState={buttonStates()[index()]}
+                isAnswered={uiState.isAnswered}
                 onSelect={() => handleSelection(option)}
               />
             )}

@@ -16,9 +16,7 @@ import {
 import { cn } from "@/utils/util"
 
 export default function WriteModeComponent() {
-  const { state, setState } = useVocabPracticeContext()
-
-  const currentCard = createMemo(() => state.currentCard)
+  const { uiState, setUIState, currentCard } = useVocabPracticeContext()
 
   const [userAnswers, setUserAnswers] = createSignal<string[]>([])
   const [inputCorrectness, setInputCorrectness] = createSignal<boolean[]>([])
@@ -73,7 +71,7 @@ export default function WriteModeComponent() {
   // Runs when component mounts and when currentCard changes
   createEffect(() => {
     const card = currentCard()
-    if (!state.isAnswered && card) {
+    if (!uiState.isAnswered && card) {
       setTimeout(() => {
         if (displaySentenceParts().length === 0) {
           // Single input mode
@@ -94,7 +92,7 @@ export default function WriteModeComponent() {
 
   function handleSubmit() {
     const card = currentCard()
-    if (state.isAnswered || !card) return
+    if (uiState.isAnswered || !card) return
 
     const targets = sentenceData().inputValidationTargets
     const answers = userAnswers()
@@ -131,23 +129,23 @@ export default function WriteModeComponent() {
 
     const rating = wasCorrect() ? Rating.Good : Rating.Again
 
-    setState({
+    setUIState({
       isAnswered: true,
       lastRating: rating,
     })
   }
 
   function handleIWasCorrect() {
-    if (!state.isAnswered) return
+    if (!uiState.isAnswered) return
 
     setWasCorrect(true)
-    setState({
+    setUIState({
       lastRating: Rating.Good,
     })
   }
 
   function handleKeyDown(e: KeyboardEvent) {
-    if (e.key === "Enter" && !state.isAnswered) {
+    if (e.key === "Enter" && !uiState.isAnswered) {
       e.preventDefault()
       handleSubmit()
     }
@@ -170,7 +168,7 @@ export default function WriteModeComponent() {
       {(card) => (
         <div class="space-y-6">
           <div class="flex min-h-16 w-full items-end justify-center text-center">
-            <Show when={state.isAnswered}>
+            <Show when={uiState.isAnswered}>
               <p class="text-primary text-xl font-bold">{answerToDisplay()}</p>
             </Show>
           </div>
@@ -186,7 +184,7 @@ export default function WriteModeComponent() {
                   <div class="space-y-4">
                     <TextField class="w-full max-w-xs">
                       <div class="h-6">
-                        <Show when={!state.isAnswered}>
+                        <Show when={!uiState.isAnswered}>
                           <TextFieldDescription>
                             Type your answer.
                           </TextFieldDescription>
@@ -203,10 +201,10 @@ export default function WriteModeComponent() {
                         autocomplete="off"
                         autocapitalize="none"
                         autocorrect="off"
-                        disabled={state.isAnswered}
+                        disabled={uiState.isAnswered}
                         class={cn(
                           "border-card-foreground text-xl font-bold opacity-100",
-                          state.isAnswered &&
+                          uiState.isAnswered &&
                             (wasCorrect() ? "text-green-500" : "text-red-500"),
                         )}
                       />
@@ -245,11 +243,11 @@ export default function WriteModeComponent() {
                               )
                             }
                             onKeyDown={handleKeyDown}
-                            disabled={state.isAnswered}
+                            disabled={uiState.isAnswered}
                             // REMOVED: autofocus={part.index === 0} attribute
                             class={cn(
                               "inline-block min-w-[4rem] border-b-2 border-gray-400 bg-transparent text-center font-bold outline-none focus:border-blue-500",
-                              state.isAnswered &&
+                              uiState.isAnswered &&
                                 (inputCorrectness()[part.index]
                                   ? "border-green-500 text-green-500"
                                   : "border-red-500 text-red-500"),
@@ -276,7 +274,7 @@ export default function WriteModeComponent() {
               </Show>
             </WanaKanaWrapper>
 
-            <Show when={!state.isAnswered}>
+            <Show when={!uiState.isAnswered}>
               <Button
                 onClick={handleSubmit}
                 size="lg"
@@ -301,7 +299,7 @@ export default function WriteModeComponent() {
               </Button>
             </Show>
 
-            <Show when={state.isAnswered && !wasCorrect()}>
+            <Show when={uiState.isAnswered && !wasCorrect()}>
               <Button
                 onClick={handleIWasCorrect}
                 size="lg"

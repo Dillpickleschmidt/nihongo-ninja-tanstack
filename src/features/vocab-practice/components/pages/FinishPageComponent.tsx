@@ -58,23 +58,20 @@ function getHierarchicalOrder(
 }
 
 export default function FinishPageComponent() {
-  const { state } = useVocabPracticeContext()
-  const manager = () => state.manager!
+  const { uiState, cardMap, dependencyMap, getManagerState } =
+    useVocabPracticeContext()
 
-  const enablePrerequisites = () => state.settings.enablePrerequisites
+  const enablePrerequisites = () => uiState.settings.enablePrerequisites
 
   // Get hierarchically ordered module cards
   const moduleCards = createMemo(() => {
-    if (!manager()) return []
-    const cardMap = manager().getCardMap()
-    const dependencyMap = manager().getState().dependencyMap
     const hierarchicalOrder = getHierarchicalOrder(
-      cardMap,
-      dependencyMap,
+      cardMap(),
+      dependencyMap(),
       enablePrerequisites(),
     )
     return hierarchicalOrder
-      .map((key) => cardMap.get(key))
+      .map((key) => cardMap().get(key))
       .filter(
         (card): card is PracticeCard =>
           !!card && card.sessionScope === "module",
@@ -83,12 +80,10 @@ export default function FinishPageComponent() {
 
   // Get review cards that were actually practiced (appeared in recentReviewHistory)
   const practicedReviewCards = createMemo(() => {
-    if (!manager()) return []
-    const cardMap = manager().getCardMap()
     const practicedKeys = new Set(
-      state.recentReviewHistory.map((item) => item.key),
+      uiState.recentReviewHistory.map((item) => item.key),
     )
-    return Array.from(cardMap.values()).filter(
+    return Array.from(cardMap().values()).filter(
       (card) => card.sessionScope === "review" && practicedKeys.has(card.key),
     )
   })
@@ -119,10 +114,9 @@ export default function FinishPageComponent() {
                   {(card, index) => {
                     const vocabularyDependencies = createMemo(() => {
                       if (card.practiceItemType === "vocabulary") return []
-                      const unlocksMap = manager().getState().unlocksMap
-                      const cardMap = manager().getCardMap()
+                      const unlocksMap = getManagerState().unlocksMap
                       return (unlocksMap.get(card.key) || [])
-                        .map((key) => cardMap.get(key)?.vocab.word)
+                        .map((key) => cardMap().get(key)?.vocab.word)
                         .filter(Boolean) as string[]
                     })
 
@@ -132,7 +126,7 @@ export default function FinishPageComponent() {
                         index={index()}
                         allCards={moduleCards()}
                         incorrectCount={
-                          state.incorrectAnswerMap.get(card.key) ?? 0
+                          uiState.incorrectAnswerMap.get(card.key) ?? 0
                         }
                         vocabularyDependencies={vocabularyDependencies()}
                       />
@@ -157,7 +151,7 @@ export default function FinishPageComponent() {
                       index={index()}
                       allCards={practicedReviewCards()}
                       incorrectCount={
-                        state.incorrectAnswerMap.get(card.key) ?? 0
+                        uiState.incorrectAnswerMap.get(card.key) ?? 0
                       }
                       vocabularyDependencies={[]}
                     />

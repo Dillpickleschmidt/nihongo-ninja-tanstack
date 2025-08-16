@@ -21,7 +21,7 @@ type DeckSettingsDialogProps = {
 export default function DeckSettingsDialogComponent(
   props: DeckSettingsDialogProps,
 ) {
-  const { state, setState } = useVocabPracticeContext()
+  const { uiState, setUIState } = useVocabPracticeContext()
   const [open, setOpen] = createSignal(false)
 
   // Default values for the toggles
@@ -46,9 +46,9 @@ export default function DeckSettingsDialogComponent(
         <div class="grid gap-4 py-4">
           <div class="flex items-center space-x-2">
             <Checkbox
-              checked={state.settings.shuffleInput}
+              checked={uiState.settings.shuffleInput}
               onChange={(isChecked) =>
-                setState("settings", "shuffleInput", isChecked)
+                setUIState("settings", "shuffleInput", isChecked)
               }
               id="shuffle-input"
             />
@@ -57,9 +57,9 @@ export default function DeckSettingsDialogComponent(
 
           <div class="flex items-center space-x-2">
             <Checkbox
-              checked={state.settings.enablePrerequisites}
+              checked={uiState.settings.enablePrerequisites}
               onChange={(isChecked) =>
-                setState("settings", "enablePrerequisites", isChecked)
+                setUIState("settings", "enablePrerequisites", isChecked)
               }
               id="enable-prerequisites"
             />
@@ -67,7 +67,7 @@ export default function DeckSettingsDialogComponent(
               Enable Kanji/Radical Prerequisites
               <Show
                 when={
-                  state.settings.enablePrerequisites !==
+                  uiState.settings.enablePrerequisites !==
                   DEFAULT_ENABLE_PREREQUISITES
                 }
               >
@@ -80,15 +80,17 @@ export default function DeckSettingsDialogComponent(
 
           <div class="flex items-center space-x-2">
             <Checkbox
-              checked={state.settings.flipVocabQA}
+              checked={uiState.settings.flipVocabQA}
               onChange={(isChecked) =>
-                setState("settings", "flipVocabQA", isChecked)
+                setUIState("settings", "flipVocabQA", isChecked)
               }
               id="flip-vocab-qa"
             />
             <Label for="flip-vocab-qa" class="flex items-center gap-2">
               Flip Vocabulary Q/A
-              <Show when={state.settings.flipVocabQA !== DEFAULT_FLIP_VOCAB_QA}>
+              <Show
+                when={uiState.settings.flipVocabQA !== DEFAULT_FLIP_VOCAB_QA}
+              >
                 <span class="text-muted-foreground text-xs italic">
                   (Default: {DEFAULT_FLIP_VOCAB_QA ? "On" : "Off"})
                 </span>
@@ -97,12 +99,12 @@ export default function DeckSettingsDialogComponent(
           </div>
 
           {/* CONDITIONAL: Hide flipKanjiRadicalQA when prerequisites are disabled */}
-          <Show when={state.settings.enablePrerequisites}>
+          <Show when={uiState.settings.enablePrerequisites}>
             <div class="flex items-center space-x-2">
               <Checkbox
-                checked={state.settings.flipKanjiRadicalQA}
+                checked={uiState.settings.flipKanjiRadicalQA}
                 onChange={(isChecked) =>
-                  setState("settings", "flipKanjiRadicalQA", isChecked)
+                  setUIState("settings", "flipKanjiRadicalQA", isChecked)
                 }
                 id="flip-kanji-radical-qa"
               />
@@ -113,7 +115,7 @@ export default function DeckSettingsDialogComponent(
                 Flip Kanji/Radical Q/A
                 <Show
                   when={
-                    state.settings.flipKanjiRadicalQA !==
+                    uiState.settings.flipKanjiRadicalQA !==
                     DEFAULT_FLIP_KANJI_RADICAL_QA
                   }
                 >

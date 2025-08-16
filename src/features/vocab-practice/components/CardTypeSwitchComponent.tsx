@@ -5,22 +5,15 @@ import WriteModeComponent from "./write/WriteModeComponent"
 import { useVocabPracticeContext } from "../context/VocabPracticeContext"
 
 export default function CardTypeSwitchComponent() {
-  const { state } = useVocabPracticeContext()
+  const { currentCard } = useVocabPracticeContext()
 
-  // Automatically updates when state.activeQueue changes
-  const currentCard = createMemo(() => {
-    if (!state.manager || state.activeQueue.length === 0) {
-      return null
-    }
-    return state.manager.getCardFromMap(state.activeQueue[0])
+  const hasMnemonic = createMemo(() => {
+    const mnemonics = currentCard()?.mnemonics
+    return !!(
+      mnemonics &&
+      (mnemonics.kanji.length > 0 || mnemonics.reading.length > 0)
+    )
   })
-
-  const hasMnemonic = createMemo(
-    () => {
-      const mnemonics = currentCard()?.mnemonics
-      return !!(mnemonics && (mnemonics.kanji.length > 0 || mnemonics.reading.length > 0))
-    },
-  )
 
   const promptClasses = createMemo(() => {
     const baseClasses =
@@ -57,19 +50,32 @@ export default function CardTypeSwitchComponent() {
           <h2 class={promptClasses()}>{card().prompt}</h2>
 
           <Show when={hasMnemonic()}>
-            <div class="mb-4 max-h-32 overflow-y-auto px-3 pt-3 space-y-2">
-              <Show when={card().mnemonics?.kanji && card().mnemonics.kanji.length > 0}>
+            <div class="mb-4 max-h-32 space-y-2 overflow-y-auto px-3 pt-3">
+              <Show
+                when={
+                  card().mnemonics?.kanji && card().mnemonics!.kanji.length > 0
+                }
+              >
                 <div class="space-y-1">
-                  <span class="font-bold text-sky-400 text-sm">Kanji Mnemonic:</span>
-                  <div class="text-sm text-muted-foreground">
+                  <span class="text-sm font-bold text-sky-400">
+                    Kanji Mnemonic:
+                  </span>
+                  <div class="text-muted-foreground text-sm">
                     {card().mnemonics!.kanji[0]}
                   </div>
                 </div>
               </Show>
-              <Show when={card().mnemonics?.reading && card().mnemonics.reading.length > 0}>
+              <Show
+                when={
+                  card().mnemonics?.reading &&
+                  card().mnemonics!.reading.length > 0
+                }
+              >
                 <div class="space-y-1">
-                  <span class="font-bold text-emerald-400 text-sm">Reading Mnemonic:</span>
-                  <div class="text-sm text-muted-foreground">
+                  <span class="text-sm font-bold text-emerald-400">
+                    Reading Mnemonic:
+                  </span>
+                  <div class="text-muted-foreground text-sm">
                     {card().mnemonics!.reading[0]}
                   </div>
                 </div>

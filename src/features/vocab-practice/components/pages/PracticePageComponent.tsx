@@ -4,55 +4,20 @@ import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import CardTypeSwitchComponent from "../CardTypeSwitchComponent"
 import ProgressHeader from "../ProgressHeader"
 import { Button } from "@/components/ui/button"
-import { Rating } from "ts-fsrs"
 
 export default function PracticePageComponent() {
-  const { state, setState } = useVocabPracticeContext()
-  const manager = () => state.manager!
+  const { uiState, answerCardWithUIUpdate } = useVocabPracticeContext()
   let nextButtonRef: HTMLButtonElement | undefined
 
-  // This is the new handler for the "Next Question" button
+  // Handler for the "Next Question" button
   async function handleNextQuestion() {
-    if (!state.lastRating) return
-
-    const card = state.currentCard!
-    const rating = state.lastRating
-    const isCorrect = rating !== Rating.Again
-
-    await manager().processAnswer(rating)
-
-    // Sync the UI state
-    setState((prevState) => {
-      const newHistory = [
-        ...prevState.recentReviewHistory,
-        { key: card.key, wasCorrect: isCorrect },
-      ]
-
-      const newIncorrectMap = new Map(prevState.incorrectAnswerMap)
-      if (!isCorrect) {
-        const currentCount = newIncorrectMap.get(card.key) ?? 0
-        newIncorrectMap.set(card.key, currentCount + 1)
-      }
-      const nextCard = manager().isFinished()
-        ? null
-        : manager().getCurrentCard()
-      const newActiveQueue = manager().getActiveQueue()
-
-      return {
-        ...prevState,
-        recentReviewHistory: newHistory,
-        incorrectAnswerMap: newIncorrectMap,
-        activeQueue: newActiveQueue,
-        currentCard: nextCard,
-        isAnswered: false, // Reset for the next card
-        lastRating: null,
-      }
-    })
+    if (!uiState.lastRating) return
+    await answerCardWithUIUpdate(uiState.lastRating)
   }
 
   // Focus the button when it appears
   createEffect(() => {
-    if (state.isAnswered && nextButtonRef) {
+    if (uiState.isAnswered && nextButtonRef) {
       nextButtonRef.focus()
     }
   })
@@ -71,7 +36,7 @@ export default function PracticePageComponent() {
       </div>
 
       {/* "Next Question" button is now rendered here */}
-      <Show when={state.isAnswered}>
+      <Show when={uiState.isAnswered}>
         <div class="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform">
           <Button
             ref={nextButtonRef}
