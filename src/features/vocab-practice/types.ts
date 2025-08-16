@@ -12,6 +12,8 @@ export type CurrentPage =
 
 export type PracticeMode = "readings" | "kana"
 
+export type PracticeSessionMode = "mixed" | "focused"
+
 export type Settings = {
   shuffleInput: boolean
   enabledAnswerCategories: string[]

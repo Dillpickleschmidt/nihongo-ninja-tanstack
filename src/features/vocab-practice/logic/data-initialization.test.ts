@@ -1163,7 +1163,75 @@ describe("Data Initialization", () => {
 
       // Only due cards matching session mode should be in reviewQueue
       expect(result.reviewQueue).toEqual(["vocabulary:due1"])
-      expect(result.cardMap.size).toBe(12) // 9 hierarchy + 3 review cards
+      expect(result.cardMap.size).toBe(10) // 9 hierarchy + 1 review card (due1 only)
+    })
+
+    it("should exclude review cards when includeReviews is false", async () => {
+      const pastDate = new Date()
+      pastDate.setDate(pastDate.getDate() - 1)
+
+      const dueReviewCard: FSRSCardData = {
+        ...createMockFSRSCard("外部", "readings", "vocabulary"),
+        fsrs_card: {
+          ...createMockFSRSCard("外部", "readings", "vocabulary").fsrs_card,
+          due: pastDate,
+        },
+      }
+
+      const externalVocab = {
+        word: "外部",
+        furigana: "外部[がいぶ]",
+        english: ["external"],
+      }
+
+      const result = await initializePracticeSession(
+        mockHierarchy,
+        [],
+        [dueReviewCard],
+        "readings",
+        [...mockVocabularyItems, externalVocab],
+        false,
+        false,
+        false,
+        true,
+        false, // includeReviews: false
+      )
+
+      expect(result.reviewQueue).toEqual([])
+    })
+
+    it("should include review cards when includeReviews is true", async () => {
+      const pastDate = new Date()
+      pastDate.setDate(pastDate.getDate() - 1)
+
+      const dueReviewCard: FSRSCardData = {
+        ...createMockFSRSCard("外部", "readings", "vocabulary"),
+        fsrs_card: {
+          ...createMockFSRSCard("外部", "readings", "vocabulary").fsrs_card,
+          due: pastDate,
+        },
+      }
+
+      const externalVocab = {
+        word: "外部",
+        furigana: "外部[がいぶ]",
+        english: ["external"],
+      }
+
+      const result = await initializePracticeSession(
+        mockHierarchy,
+        [],
+        [dueReviewCard],
+        "readings",
+        [...mockVocabularyItems, externalVocab],
+        false,
+        false,
+        false,
+        true,
+        true, // includeReviews: true
+      )
+
+      expect(result.reviewQueue).toEqual(["vocabulary:外部"])
     })
   })
 })

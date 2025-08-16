@@ -17,6 +17,7 @@ import { PracticeSessionManager } from "../../logic/PracticeSessionManager"
 import { initializePracticeSession } from "../../logic/data-initialization"
 import type {
   PracticeMode,
+  PracticeSessionMode,
   PracticeSessionState,
   PracticeCard,
 } from "../../types"
@@ -32,6 +33,7 @@ import type { DeferredPromise } from "@tanstack/solid-router"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 import { useSettings } from "@/context/SettingsContext"
 import { BottomNav } from "@/features/navbar/BottomNav"
+import { SessionModeTabSwitcher } from "../SessionModeTabSwitcher"
 
 type StartPageProps = {
   hierarchy: FullHierarchyData | null
@@ -80,6 +82,8 @@ export default function StartPageComponent(props: StartPageProps) {
   const [isStarting, setIsStarting] = createSignal(false)
   const [enhancedState, setEnhancedState] =
     createSignal<PracticeSessionState | null>(null)
+  const [sessionMode, setSessionMode] =
+    createSignal<PracticeSessionMode>("mixed")
 
   const currentState = createMemo(() => enhancedState() || props.initialState)
 
@@ -110,6 +114,7 @@ export default function StartPageComponent(props: StartPageProps) {
         flipKanjiRadicalQA(),
         state.settings.shuffleInput,
         enablePrerequisites(),
+        sessionMode() === "mixed",
       )
       setEnhancedState(fullState)
     } catch (error) {
@@ -195,7 +200,12 @@ export default function StartPageComponent(props: StartPageProps) {
       </div>
 
       {/* Header */}
-      <StartPageHeader deckName={props.deckName} previewCount={headerText()} />
+      <StartPageHeader
+        deckName={props.deckName}
+        previewCount={headerText()}
+        sessionMode={sessionMode()}
+        onSessionModeChange={setSessionMode}
+      />
 
       {/* Module Content */}
       <div class="px-4 pb-24">
@@ -220,7 +230,7 @@ export default function StartPageComponent(props: StartPageProps) {
           </div>
 
           {/* Review Items */}
-          <Show when={reviewItems().length > 0}>
+          <Show when={sessionMode() === "mixed" && reviewItems().length > 0}>
             <div class="mt-32 mb-20 space-y-3 md:mt-48">
               <h2 class="text-primary text-center text-lg font-semibold tracking-wide">
                 Review Items
@@ -286,6 +296,8 @@ export default function StartPageComponent(props: StartPageProps) {
 function StartPageHeader(props: {
   deckName: string | JSX.Element
   previewCount: string
+  sessionMode: PracticeSessionMode
+  onSessionModeChange: (mode: PracticeSessionMode) => void
 }) {
   return (
     <div class="relative px-4 pt-10 pb-6 lg:pt-14 lg:pb-8">
@@ -302,7 +314,11 @@ function StartPageHeader(props: {
               Master {props.previewCount} through interactive practice
             </p>
           </div>
-          <div class="absolute top-0 right-0">
+          <div class="absolute top-0 right-0 flex items-center gap-3">
+            <SessionModeTabSwitcher
+              mode={props.sessionMode}
+              onModeChange={props.onSessionModeChange}
+            />
             <DeckSettingsDialogComponent>
               <Button variant="ghost" size="sm" class="h-9 w-9 rounded-lg">
                 <Settings class="h-4 w-4" />
