@@ -43,23 +43,30 @@ export default function MultipleChoiceComponent() {
     const seenValues = new Set([currentValue])
 
     // Get wrong options (with filtering logic)
-    const wrongOptions = allCards
-      .filter(
-        (c) =>
-          // 1. Must be the same type (e.g., kanji questions only get kanji distractors).
-          c.practiceItemType === card.practiceItemType &&
-          // 2. Must be in the same practice mode.
-          c.practiceMode === card.practiceMode &&
-          // 3. Cannot be the same card.
-          c.key !== card.key &&
-          // 4. Part of speech must match: verbs with verbs, non-verbs with non-verbs.
-          isVerb(c.vocab.part_of_speech) === isVerb(card.vocab.part_of_speech) &&
-          // 5. The answer text must be unique to avoid "seven" vs "seven".
-          !seenValues.has(getComparableValue(c)) &&
-          seenValues.add(getComparableValue(c)),
-      )
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3)
+    const filteredCards = allCards.filter(
+      (c) =>
+        // 1. Must be the same type (e.g., kanji questions only get kanji distractors).
+        c.practiceItemType === card.practiceItemType &&
+        // 2. Must be in the same practice mode.
+        c.practiceMode === card.practiceMode &&
+        // 3. Cannot be the same card.
+        c.key !== card.key &&
+        // 4. Part of speech must match: verbs with verbs, non-verbs with non-verbs.
+        isVerb(c.vocab.part_of_speech) === isVerb(card.vocab.part_of_speech),
+    )
+
+    // 5. Filter for unique answers and collect up to 3 options
+    const wrongOptions: PracticeCard[] = []
+    const shuffledCandidates = filteredCards.sort(() => Math.random() - 0.5)
+
+    for (const candidate of shuffledCandidates) {
+      const candidateValue = getComparableValue(candidate)
+      if (!seenValues.has(candidateValue)) {
+        seenValues.add(candidateValue)
+        wrongOptions.push(candidate)
+        if (wrongOptions.length >= 3) break
+      }
+    }
     // --- END OF FIX ---
 
     // Return shuffled choices
