@@ -27,7 +27,7 @@ export function parseMnemonicText(text: string): JSX.Element[] {
       )
     } else if (radicalMatch) {
       return (
-        <span class="inline-flex items-center rounded-[6px] bg-blue-500/20 px-1.5 py-0.5 text-sm font-normal text-blue-400">
+        <span class="inline-flex items-center rounded-[6px] bg-sky-500/20 px-1.5 py-0.5 text-sm font-normal text-sky-400">
           {radicalMatch[1]}
         </span>
       )

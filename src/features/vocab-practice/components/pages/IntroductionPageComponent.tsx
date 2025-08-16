@@ -8,17 +8,13 @@ export default function IntroductionPageComponent() {
   const { state, setState } = useVocabPracticeContext()
   const manager = () => state.manager!
 
-  const currentCard = createMemo(() => state.currentCard)
+  const currentCard = () => state.currentCard
 
-  const character = createMemo(() => currentCard()?.vocab.word)
-  const meanings = createMemo(() => currentCard()?.vocab.english.join(", "))
+  const character = () => currentCard()?.vocab.word
+  const meanings = () => currentCard()?.vocab.english.join(", ")
 
-  const meaningMnemonic = createMemo(
-    () => currentCard()?.mnemonics?.kanji?.[0] || "",
-  )
-  const readingMnemonic = createMemo(
-    () => currentCard()?.mnemonics?.reading?.[0] || "",
-  )
+  const meaningMnemonic = () => currentCard()?.mnemonics?.kanji?.[0] || ""
+  const readingMnemonic = () => currentCard()?.mnemonics?.reading?.[0] || ""
 
   let gotItButtonRef: HTMLButtonElement | undefined
 
@@ -85,7 +81,7 @@ export default function IntroductionPageComponent() {
                 <Show when={meaningMnemonic() && meaningMnemonic().length > 0}>
                   <div class="w-full max-w-xl px-2">
                     <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
-                      <span class="text-blue-400">Meaning</span> Mnemonic
+                      <span class="text-sky-400">Meaning</span> Mnemonic
                     </p>
                     <p class="text-muted-foreground text-base leading-relaxed">
                       {parseMnemonicText(meaningMnemonic())}
@@ -103,7 +99,7 @@ export default function IntroductionPageComponent() {
                 >
                   <div class="w-full max-w-xl px-2">
                     <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
-                      <span class="text-green-400">Reading</span> Mnemonic
+                      <span class="text-orange-400">Reading</span> Mnemonic
                     </p>
                     <p class="text-muted-foreground text-base leading-relaxed">
                       {parseMnemonicText(readingMnemonic())}

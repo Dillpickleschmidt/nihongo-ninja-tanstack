@@ -109,14 +109,14 @@ export default function ReviewPageComponent() {
 function ReviewCardSummary(props: { card: PracticeCard; wasCorrect: boolean }) {
   const wasAnsweredIncorrectly = () => !props.wasCorrect
 
-  const answerToDisplay = createMemo(() => {
+  const answerToDisplay = () => {
     if (props.card.practiceMode === "kana") {
       return props.card.vocab.hiragana.join(", ")
     }
     return props.card.validAnswers.join(", ")
-  })
+  }
 
-  const promptClasses = createMemo(() => {
+  const promptClasses = () => {
     const baseColor = wasAnsweredIncorrectly()
       ? "text-red-500"
       : "text-orange-400 saturate-[125%]"
@@ -126,16 +126,16 @@ function ReviewCardSummary(props: { card: PracticeCard; wasCorrect: boolean }) {
         ? "text-lg lg:text-xl" // Smaller for English prompt
         : "text-xl lg:text-2xl" // Larger for Japanese prompt
     return `${baseColor} ${baseLayout} ${fontSize}`
-  })
+  }
 
-  const answerClasses = createMemo(() => {
+  const answerClasses = () => {
     const baseLayout = "text-primary ml-4 font-semibold"
     const fontSize =
       props.card.practiceMode === "kana"
         ? "text-lg lg:text-xl" // Larger for Japanese answer
         : "text-base lg:text-lg" // Smaller for English answer
     return `${baseLayout} ${fontSize}`
-  })
+  }
 
   return (
     <div class="bg-card relative overflow-hidden rounded-xl p-5 shadow-md">
@@ -149,7 +149,7 @@ function ReviewCardSummary(props: { card: PracticeCard; wasCorrect: boolean }) {
         <p class={answerClasses()}>{answerToDisplay()}</p>
       </div>
       <Show when={props.card.sessionScope === "review"}>
-        <p class="text-muted-foreground absolute bottom-3 right-6 text-xs font-medium">
+        <p class="text-muted-foreground absolute right-6 bottom-3 text-xs font-medium">
           External Review
         </p>
       </Show>

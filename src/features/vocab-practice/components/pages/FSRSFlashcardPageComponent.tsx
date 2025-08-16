@@ -61,13 +61,13 @@ export default function FSRSFlashcardPageComponent() {
   const { state, setState } = useVocabPracticeContext()
   const manager = () => state.manager!
 
-  const currentCard = createMemo(() => state.currentCard)
+  const currentCard = () => state.currentCard
 
   const [showAnswer, setShowAnswer] = createSignal(false)
 
   // Mnemonic helpers
-  const meaningMnemonic = createMemo(() => currentCard()?.mnemonics?.kanji?.[0] || "")
-  const readingMnemonic = createMemo(() => currentCard()?.mnemonics?.reading?.[0] || "")
+  const meaningMnemonic = () => currentCard()?.mnemonics?.kanji?.[0] || ""
+  const readingMnemonic = () => currentCard()?.mnemonics?.reading?.[0] || ""
 
   let showAnswerButtonRef: HTMLButtonElement | undefined
 
@@ -162,17 +162,15 @@ export default function FSRSFlashcardPageComponent() {
     <Show when={currentCard()} fallback={<div>Loading...</div>}>
       {(card) => {
         // Determine content languages
-        const { isPromptJapanese, isAnswerJapanese } = createMemo(() =>
-          getCardContentLanguage(
-            card().practiceItemType,
-            card().practiceMode,
-            state.settings.flipVocabQA,
-            state.settings.flipKanjiRadicalQA,
-          ),
-        )() // Call the memo function immediately to get its value
+        const { isPromptJapanese, isAnswerJapanese } = getCardContentLanguage(
+          card().practiceItemType,
+          card().practiceMode,
+          state.settings.flipVocabQA,
+          state.settings.flipKanjiRadicalQA,
+        )
 
         // Dynamic class for prompt text
-        const promptTextClass = createMemo(() => {
+        const promptTextClass = () => {
           if (showAnswer()) {
             // After answer is shown, shrink prompt size
             return {
@@ -186,13 +184,13 @@ export default function FSRSFlashcardPageComponent() {
               "font-inter text-4xl font-semibold": !isPromptJapanese,
             }
           }
-        })
+        }
 
         // Dynamic class for answer text
-        const answerTextClass = createMemo(() => ({
+        const answerTextClass = () => ({
           "font-japanese text-6xl lg:text-7xl": isAnswerJapanese,
           "font-inter text-3xl font-semibold": !isAnswerJapanese,
-        }))
+        })
 
         return (
           <div class="flex min-h-screen flex-col items-center justify-center p-4">
@@ -247,7 +245,7 @@ export default function FSRSFlashcardPageComponent() {
                     >
                       <div class="w-full max-w-xl px-2">
                         <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
-                          <span class="text-pink-400">Meaning</span> Mnemonic
+                          <span class="text-sky-400">Meaning</span> Mnemonic
                         </p>
                         <p class="text-muted-foreground text-base leading-relaxed italic">
                           {parseMnemonicText(meaningMnemonic())}
@@ -265,7 +263,7 @@ export default function FSRSFlashcardPageComponent() {
                     >
                       <div class="w-full max-w-xl px-2">
                         <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
-                          <span class="text-green-400">Reading</span> Mnemonic
+                          <span class="text-orange-400">Reading</span> Mnemonic
                         </p>
                         <p class="text-muted-foreground text-base leading-relaxed italic">
                           {parseMnemonicText(readingMnemonic())}

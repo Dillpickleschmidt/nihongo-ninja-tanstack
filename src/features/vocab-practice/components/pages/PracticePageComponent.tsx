@@ -33,10 +33,10 @@ export default function PracticePageComponent() {
   })
 
   // Progress for the current review batch
-  const reviewProgress = createMemo(() => {
+  const reviewProgress = () => {
     const currentProgress = state.recentReviewHistory.length
     return (currentProgress / CARDS_UNTIL_REVIEW) * 100
-  })
+  }
 
   // This calculation now works correctly because `initialModuleCount` is a stable number
   const overallProgress = createMemo(() => {
@@ -46,11 +46,11 @@ export default function PracticePageComponent() {
     return (done / total) * 100
   })
 
-  const overallProgressText = createMemo(() => {
+  const overallProgressText = () => {
     const total = initialModuleCount
     const done = total - remainingModuleCards()
     return `${done}/${total} terms`
-  })
+  }
 
   // This is the new handler for the "Next Question" button
   async function handleNextQuestion() {

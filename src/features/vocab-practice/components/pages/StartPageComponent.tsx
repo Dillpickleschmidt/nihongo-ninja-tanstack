@@ -127,7 +127,7 @@ export default function StartPageComponent(props: StartPageProps) {
       ? getHierarchicalOrder(props.hierarchy, enablePrerequisites())
       : []
 
-  const moduleItems = () => {
+  const moduleItems = createMemo(() => {
     const state = currentState()
     const cardMap = getCardMap(state)
     return hierarchicalOrder()
@@ -136,15 +136,15 @@ export default function StartPageComponent(props: StartPageProps) {
         (card): card is PracticeCard =>
           !!card && card.sessionScope === "module",
       )
-  }
+  })
 
-  const reviewItems = () => {
+  const reviewItems = createMemo(() => {
     const state = currentState()
     const cardMap = getCardMap(state)
     return (state.reviewQueue || [])
       .map((key) => cardMap.get(key))
       .filter((card): card is PracticeCard => !!card)
-  }
+  })
 
   const vocabCount = () =>
     moduleItems().filter((c) => c.practiceItemType === "vocabulary").length

@@ -35,20 +35,18 @@ export default function StartPagePreviewCard(props: StartPagePreviewCardProps) {
     return countBefore + 1
   })
 
-  const questionTextClass = createMemo(() =>
+  const questionTextClass = () =>
     props.card.practiceMode === "readings" ||
     props.card.practiceItemType !== "vocabulary"
       ? "text-xl lg:text-2xl"
-      : "text-lg lg:text-xl",
-  )
+      : "text-lg lg:text-xl"
 
-  const answerTextClass = createMemo(() =>
+  const answerTextClass = () =>
     props.card.validAnswers.some((answer) =>
       /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(answer),
     )
       ? "text-xl lg:text-2xl"
-      : "text-base lg:text-lg",
-  )
+      : "text-base lg:text-lg"
 
   const isDue = createMemo(() => {
     if (!props.hasEnhancedData || props.card.isDisabled) return false
