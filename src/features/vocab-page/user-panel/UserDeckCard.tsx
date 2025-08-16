@@ -22,13 +22,11 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
-import { useNavigate } from "@tanstack/solid-router"
 import { cn } from "@/utils"
 import { createSignal } from "solid-js"
 import { TreeView } from "@/components/ui/tree-view"
 import { useFolderTree } from "../hooks/useFolderTree"
 import { Folder, Home } from "lucide-solid"
-import { useSettings } from "@/context/SettingsContext"
 import {
   createDeckShareServerFn,
   removeDeckShareServerFn,
@@ -55,8 +53,6 @@ interface UserDeckCardProps {
 }
 
 export function UserDeckCard(props: UserDeckCardProps) {
-  const navigate = useNavigate()
-  const { updateUserPreferences } = useSettings()
   const [isHovered, setIsHovered] = createSignal(false)
   const [expandedFolderIds, setExpandedFolderIds] = createSignal<Set<string>>(
     new Set(),
@@ -64,7 +60,6 @@ export function UserDeckCard(props: UserDeckCardProps) {
   const [showShareModal, setShowShareModal] = createSignal(false)
   const [showPracticeModeModal, setShowPracticeModeModal] = createSignal(false)
   const [isSharing, setIsSharing] = createSignal(false)
-
 
   // Build folder tree for move functionality
   const { folderTreeNodes } = useFolderTree({
@@ -211,7 +206,12 @@ export function UserDeckCard(props: UserDeckCardProps) {
           </div>
 
           <div class="space-y-1">
-            <h4 class="pr-8 text-sm leading-tight font-medium">
+            <h4
+              class={`${props.deck.source === "built-in" && "decoration-muted-foreground/70 underline underline-offset-4"} "pr-8 font-medium" text-sm leading-tight`}
+              title={
+                props.deck.source === "built-in" ? "Built-in deck" : undefined
+              }
+            >
               {props.deck.deck_name}
             </h4>
             <p class="text-muted-foreground text-xs">

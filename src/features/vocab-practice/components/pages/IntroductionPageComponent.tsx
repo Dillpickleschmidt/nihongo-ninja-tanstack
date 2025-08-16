@@ -2,6 +2,7 @@
 import { createMemo, Show, createEffect } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
+import { parseMnemonicText } from "@/utils/mnemonic-parser"
 
 export default function IntroductionPageComponent() {
   const { state, setState } = useVocabPracticeContext()
@@ -12,8 +13,12 @@ export default function IntroductionPageComponent() {
   const character = createMemo(() => currentCard()?.vocab.word)
   const meanings = createMemo(() => currentCard()?.vocab.english.join(", "))
 
-  const meaningMnemonic = createMemo(() => currentCard()?.mnemonics?.kanji?.[0] || "")
-  const readingMnemonic = createMemo(() => currentCard()?.mnemonics?.reading?.[0] || "")
+  const meaningMnemonic = createMemo(
+    () => currentCard()?.mnemonics?.kanji?.[0] || "",
+  )
+  const readingMnemonic = createMemo(
+    () => currentCard()?.mnemonics?.reading?.[0] || "",
+  )
 
   let gotItButtonRef: HTMLButtonElement | undefined
 
@@ -80,10 +85,10 @@ export default function IntroductionPageComponent() {
                 <Show when={meaningMnemonic() && meaningMnemonic().length > 0}>
                   <div class="w-full max-w-xl px-2">
                     <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
-                      Meaning Mnemonic
+                      <span class="text-blue-400">Meaning</span> Mnemonic
                     </p>
-                    <p class="text-muted-foreground text-base leading-relaxed italic">
-                      {meaningMnemonic()}
+                    <p class="text-muted-foreground text-base leading-relaxed">
+                      {parseMnemonicText(meaningMnemonic())}
                     </p>
                   </div>
                 </Show>
@@ -98,10 +103,10 @@ export default function IntroductionPageComponent() {
                 >
                   <div class="w-full max-w-xl px-2">
                     <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
-                      Reading Mnemonic
+                      <span class="text-green-400">Reading</span> Mnemonic
                     </p>
-                    <p class="text-muted-foreground text-base leading-relaxed italic">
-                      {readingMnemonic()}
+                    <p class="text-muted-foreground text-base leading-relaxed">
+                      {parseMnemonicText(readingMnemonic())}
                     </p>
                   </div>
                 </Show>

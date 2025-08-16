@@ -151,7 +151,9 @@ export default function StartPageComponent(props: StartPageProps) {
 
   const kanjiRadicalCount = () =>
     moduleItems().filter(
-      (c) => c.practiceItemType === "kanji" || c.practiceItemType === "radical",
+      (c) =>
+        (c.practiceItemType === "kanji" || c.practiceItemType === "radical") &&
+        !c.isDisabled,
     ).length
 
   const headerText = () =>

@@ -13,6 +13,7 @@ import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { Rating, Grade } from "ts-fsrs"
 import { cn } from "@/utils/util"
 import type { PracticeMode } from "../../types"
+import { parseMnemonicText } from "@/utils/mnemonic-parser"
 
 // Determines language based on card type and flip settings
 function getCardContentLanguage(
@@ -246,10 +247,10 @@ export default function FSRSFlashcardPageComponent() {
                     >
                       <div class="w-full max-w-xl px-2">
                         <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
-                          Meaning Mnemonic
+                          <span class="text-pink-400">Meaning</span> Mnemonic
                         </p>
                         <p class="text-muted-foreground text-base leading-relaxed italic">
-                          {meaningMnemonic()}
+                          {parseMnemonicText(meaningMnemonic())}
                         </p>
                       </div>
                     </Show>
@@ -264,10 +265,10 @@ export default function FSRSFlashcardPageComponent() {
                     >
                       <div class="w-full max-w-xl px-2">
                         <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
-                          Reading Mnemonic
+                          <span class="text-green-400">Reading</span> Mnemonic
                         </p>
                         <p class="text-muted-foreground text-base leading-relaxed italic">
-                          {readingMnemonic()}
+                          {parseMnemonicText(readingMnemonic())}
                         </p>
                       </div>
                     </Show>

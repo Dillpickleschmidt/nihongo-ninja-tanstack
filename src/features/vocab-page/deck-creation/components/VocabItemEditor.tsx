@@ -292,6 +292,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
             <Checkbox
               checked={formData().isVerb}
               onChange={(checked) => updateFormData({ isVerb: checked })}
+              class="border-primary/60 ml-1 hover:cursor-pointer"
             >
               <span class="text-sm font-medium">Is Verb</span>
             </Checkbox>
@@ -345,9 +346,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
       </div>
 
       {/* Additional Fields Section - Full Width (keeping original structure) */}
-      <div
-        class={`${(formData().notes || formData().examples || formData().particles || formData().readingMnemonics || formData().kanjiMnemonics) && "2xl:mt-4"} space-y-3`}
-      >
+      <div class="space-y-3">
         {/* Notes */}
         {formData().notes.length > 0 && (
           <div>
