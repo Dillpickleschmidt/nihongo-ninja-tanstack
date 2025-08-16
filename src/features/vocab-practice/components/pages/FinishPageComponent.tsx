@@ -4,23 +4,98 @@ import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import { Link } from "@tanstack/solid-router"
 import type { PracticeCard } from "../../types"
+import type {
+  FullHierarchyData,
+  Kanji,
+  Radical,
+  VocabHierarchy,
+} from "@/data/wanikani/types"
+import FinishPagePreviewCard from "./finish-page/FinishPagePreviewCard"
+
+function getHierarchicalOrder(
+  cardMap: Map<string, PracticeCard>,
+  enablePrerequisites: boolean,
+): string[] {
+  const seenItems = new Set<string>()
+  const orderedKeys: string[] = []
+
+  const addItemIfNew = (
+    item: { slug: string },
+    itemType: "vocabulary" | "kanji" | "radical",
+  ) => {
+    if (seenItems.has(item.slug)) return
+    seenItems.add(item.slug)
+    const key = `${itemType}:${item.slug}`
+    if (cardMap.has(key)) {
+      orderedKeys.push(key)
+    }
+  }
+
+  // Get vocabulary cards first, then their dependencies if prerequisites enabled
+  const vocabCards = Array.from(cardMap.values()).filter(
+    (card) =>
+      card.practiceItemType === "vocabulary" && card.sessionScope === "module",
+  )
+
+  vocabCards.forEach((vocabCard) => {
+    addItemIfNew({ slug: vocabCard.key.split(":")[1] }, "vocabulary")
+
+    if (enablePrerequisites && vocabCard.vocab.kanji) {
+      vocabCard.vocab.kanji.forEach((kanjiChar) => {
+        // Find kanji cards that match this character
+        const kanjiCards = Array.from(cardMap.values()).filter(
+          (card) =>
+            card.practiceItemType === "kanji" && card.prompt === kanjiChar,
+        )
+        kanjiCards.forEach((kanjiCard) => {
+          addItemIfNew({ slug: kanjiCard.key.split(":")[1] }, "kanji")
+
+          // For radicals, we need to check if there are any radical cards
+          const radicalCards = Array.from(cardMap.values()).filter(
+            (card) => card.practiceItemType === "radical",
+          )
+          radicalCards.forEach((radicalCard) => {
+            addItemIfNew({ slug: radicalCard.key.split(":")[1] }, "radical")
+          })
+        })
+      })
+    }
+  })
+
+  return orderedKeys
+}
 
 export default function FinishPageComponent() {
   const { state } = useVocabPracticeContext()
   const manager = () => state.manager!
 
-  // Get all cards from the manager's map and separate by session scope
+  const enablePrerequisites = () => state.settings.enablePrerequisites
+
+  // Get hierarchically ordered module cards
   const moduleCards = createMemo(() => {
     if (!manager()) return []
-    return Array.from(manager().getCardMap().values()).filter(
-      (card) => card.sessionScope === "module",
+    const cardMap = manager().getCardMap()
+    const hierarchicalOrder = getHierarchicalOrder(
+      cardMap,
+      enablePrerequisites(),
     )
+    return hierarchicalOrder
+      .map((key) => cardMap.get(key))
+      .filter(
+        (card): card is PracticeCard =>
+          !!card && card.sessionScope === "module",
+      )
   })
 
-  const reviewCards = createMemo(() => {
+  // Get review cards that were actually practiced (appeared in recentReviewHistory)
+  const practicedReviewCards = createMemo(() => {
     if (!manager()) return []
-    return Array.from(manager().getCardMap().values()).filter(
-      (card) => card.sessionScope === "review",
+    const cardMap = manager().getCardMap()
+    const practicedKeys = new Set(
+      state.recentReviewHistory.map((item) => item.key),
+    )
+    return Array.from(cardMap.values()).filter(
+      (card) => card.sessionScope === "review" && practicedKeys.has(card.key),
     )
   })
 
@@ -45,23 +120,54 @@ export default function FinishPageComponent() {
               <h2 class="text-primary mb-4 text-xl font-semibold">
                 Module Items
               </h2>
-              <div class="grid gap-4 lg:gap-5">
+              <div class="grid gap-3 lg:gap-4">
                 <For each={moduleCards()}>
-                  {(card) => <CardSummary card={card} />}
+                  {(card, index) => {
+                    const vocabularyDependencies = createMemo(() => {
+                      if (card.practiceItemType === "vocabulary") return []
+                      const unlocksMap = manager().getState().unlocksMap
+                      const cardMap = manager().getCardMap()
+                      return (unlocksMap.get(card.key) || [])
+                        .map((key) => cardMap.get(key)?.vocab.word)
+                        .filter(Boolean) as string[]
+                    })
+
+                    return (
+                      <FinishPagePreviewCard
+                        card={card}
+                        index={index()}
+                        allCards={moduleCards()}
+                        incorrectCount={
+                          state.incorrectAnswerMap.get(card.key) ?? 0
+                        }
+                        vocabularyDependencies={vocabularyDependencies()}
+                      />
+                    )
+                  }}
                 </For>
               </div>
             </div>
           </Show>
 
           {/* Review Items Section */}
-          <Show when={reviewCards().length > 0}>
+          <Show when={practicedReviewCards().length > 0}>
             <div>
               <h2 class="text-primary mb-4 text-xl font-semibold">
-                Review Items
+                Practiced Review Items
               </h2>
-              <div class="grid gap-4 lg:gap-5">
-                <For each={reviewCards()}>
-                  {(card) => <CardSummary card={card} />}
+              <div class="grid gap-3 lg:gap-4">
+                <For each={practicedReviewCards()}>
+                  {(card, index) => (
+                    <FinishPagePreviewCard
+                      card={card}
+                      index={index()}
+                      allCards={practicedReviewCards()}
+                      incorrectCount={
+                        state.incorrectAnswerMap.get(card.key) ?? 0
+                      }
+                      vocabularyDependencies={[]}
+                    />
+                  )}
                 </For>
               </div>
             </div>
@@ -94,84 +200,6 @@ export default function FinishPageComponent() {
           </Link>
         </div>
       </div>
-    </div>
-  )
-}
-
-function CardSummary(props: { card: PracticeCard }) {
-  const { state } = useVocabPracticeContext()
-  // Get the session-specific incorrect count from the map
-  const incorrectCount = () => state.incorrectAnswerMap.get(props.card.key) ?? 0
-
-  const answerToDisplay = () => {
-    if (props.card.practiceMode === "kana") {
-      return props.card.vocab.hiragana.join(", ")
-    }
-    return props.card.validAnswers.join(", ")
-  }
-
-  const promptClasses = () => {
-    const baseColor = "text-orange-400 saturate-[125%]"
-    const baseLayout = "mb-3 font-bold"
-    const fontSize =
-      props.card.practiceMode === "kana"
-        ? "text-lg lg:text-xl" // Smaller for English prompt
-        : "text-xl lg:text-2xl" // Larger for Japanese prompt
-    return `${baseColor} ${baseLayout} ${fontSize}`
-  }
-
-  const answerClasses = () => {
-    const baseLayout = "text-primary ml-4 font-semibold"
-    const fontSize =
-      props.card.practiceMode === "kana"
-        ? "text-lg lg:text-xl" // Larger for Japanese answer
-        : "text-base lg:text-lg" // Smaller for English answer
-    return `${baseLayout} ${fontSize}`
-  }
-
-  return (
-    <div class="bg-card relative overflow-hidden rounded-xl p-5 shadow-md">
-      <p class={promptClasses()}>
-        <span class="mr-2">{props.card.prompt}</span>
-        <Show when={props.card.vocab.particles}>
-          <For each={props.card.vocab.particles}>
-            {(particleObj, index) => (
-              <span class="text-base font-light">
-                <Show
-                  when={particleObj.label}
-                  fallback={
-                    <span>
-                      particle:{" "}
-                      <span class="font-japanese">{particleObj.particle}</span>
-                    </span>
-                  }
-                >
-                  <span>
-                    {particleObj.label} -{" "}
-                    <span class="font-japanese">{particleObj.particle}</span>
-                  </span>
-                </Show>
-                {index() < props.card.vocab.particles!.length - 1 && ", "}
-              </span>
-            )}
-          </For>
-        </Show>
-      </p>
-
-      <div class="space-y-1.5">
-        <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
-          Answer:
-        </p>
-        <p class={answerClasses()}>{answerToDisplay()}</p>
-      </div>
-
-      {/* Missed Attempts Indicator */}
-      <Show when={incorrectCount() > 0}>
-        <p class="mt-3 text-base text-red-500">
-          You missed this question {incorrectCount()}{" "}
-          {incorrectCount() === 1 ? "time" : "times"} this session.
-        </p>
-      </Show>
     </div>
   )
 }

@@ -10,6 +10,7 @@ import {
 } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
+import ProgressHeader from "../ProgressHeader"
 import { Rating, Grade } from "ts-fsrs"
 import { cn } from "@/utils/util"
 import type { PracticeMode } from "../../types"
@@ -193,8 +194,10 @@ export default function FSRSFlashcardPageComponent() {
         })
 
         return (
-          <div class="flex min-h-screen flex-col items-center justify-center p-4">
-            <div class="bg-card border-card-foreground relative w-full max-w-3xl rounded-2xl border p-8 shadow-md lg:p-10">
+          <div class="min-h-screen">
+            <ProgressHeader />
+            <div class="flex min-h-screen flex-col items-center justify-center p-4 pt-28">
+              <div class="bg-card border-card-foreground relative w-full max-w-3xl rounded-2xl border p-8 shadow-md lg:p-10">
               <div class="absolute top-4 right-4 z-10 flex gap-2">
                 <Show when={card().practiceItemType === "vocabulary"}>
                   <span class="inline-flex items-center rounded-full bg-orange-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-orange-400 uppercase">
@@ -314,6 +317,7 @@ export default function FSRSFlashcardPageComponent() {
                 </div>
               </div>
             </Show>
+            </div>
           </div>
         )
       }}

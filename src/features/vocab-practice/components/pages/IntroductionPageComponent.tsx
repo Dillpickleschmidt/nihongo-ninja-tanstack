@@ -2,6 +2,7 @@
 import { createMemo, Show, createEffect } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
+import ProgressHeader from "../ProgressHeader"
 import { parseMnemonicText } from "@/utils/mnemonic-parser"
 
 export default function IntroductionPageComponent() {
@@ -39,8 +40,10 @@ export default function IntroductionPageComponent() {
   return (
     <Show when={currentCard()} fallback={<div>Loading card...</div>}>
       {(card) => (
-        <div class="flex min-h-screen flex-col items-center justify-center p-4">
-          <div class="mx-auto w-full max-w-3xl px-0 sm:px-4">
+        <div class="min-h-screen">
+          <ProgressHeader />
+          <div class="flex min-h-screen flex-col items-center justify-center p-4 pt-28">
+            <div class="mx-auto w-full max-w-3xl px-0 sm:px-4">
             <div class="bg-card border-card-foreground rounded-2xl border p-8 shadow-md lg:p-10">
               <div class="relative flex min-h-[350px] flex-col items-center justify-center gap-8 py-4 text-center">
                 {/* Card type indicators */}
@@ -120,6 +123,7 @@ export default function IntroductionPageComponent() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       )}
     </Show>
