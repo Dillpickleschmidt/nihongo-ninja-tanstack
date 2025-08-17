@@ -1,5 +1,5 @@
 // vocab-practice/components/pages/IntroductionPageComponent.tsx
-import { Show, createEffect, createSignal, createResource } from "solid-js"
+import { Show, createEffect, createResource } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import ProgressHeader from "../ProgressHeader"
@@ -9,9 +9,9 @@ import { KanjiAnimationControls } from "@/components/KanjiAnimationControls"
 import { processSvgString } from "@/utils/svg-processor"
 
 export default function IntroductionPageComponent() {
-  const { 
-    currentCard, 
-    processIntroduction, 
+  const {
+    currentCard,
+    processIntroduction,
     getSvgForCharacter,
     kanjiDisplaySettings,
     setKanjiDisplaySettings,
@@ -66,9 +66,9 @@ export default function IntroductionPageComponent() {
   return (
     <Show when={currentCard()} fallback={<div>Loading card...</div>}>
       {(card) => (
-        <div class="min-h-screen">
+        <>
           <ProgressHeader />
-          <div class="flex min-h-screen flex-col items-center justify-center p-4 pt-28">
+          <div class="flex min-h-screen flex-col items-center justify-center px-3">
             <div class="mx-auto w-full max-w-3xl px-0 sm:px-4">
               <div class="bg-card border-card-foreground rounded-2xl border p-8 shadow-md lg:p-10">
                 <div class="relative flex min-h-[350px] flex-col items-center justify-center gap-8 py-4 text-center">
@@ -111,7 +111,8 @@ export default function IntroductionPageComponent() {
                             autostart: kanjiAnimationSettings.autostart,
                             showNumbers: kanjiDisplaySettings.numbers,
                             showStartDots: kanjiDisplaySettings.startDots,
-                            showDirectionLines: kanjiDisplaySettings.directionLines,
+                            showDirectionLines:
+                              kanjiDisplaySettings.directionLines,
                           })}
                           styleSettings={kanjiStyleSettings}
                           displaySettings={kanjiDisplaySettings}
@@ -123,17 +124,23 @@ export default function IntroductionPageComponent() {
                               displaySettings={kanjiDisplaySettings}
                               animationSettings={kanjiAnimationSettings}
                               onDisplaySettingsChange={setKanjiDisplaySettings}
-                              onAnimationSettingsChange={setKanjiAnimationSettings}
-                              processedSvgContent={processSvgString(svgData()!, {
-                                size: kanjiStyleSettings.size,
-                                strokeColor: kanjiStyleSettings.strokeColor,
-                                strokeWidth: kanjiStyleSettings.strokeWidth,
-                                showGrid: kanjiStyleSettings.showGrid,
-                                autostart: kanjiAnimationSettings.autostart,
-                                showNumbers: kanjiDisplaySettings.numbers,
-                                showStartDots: kanjiDisplaySettings.startDots,
-                                showDirectionLines: kanjiDisplaySettings.directionLines,
-                              })}
+                              onAnimationSettingsChange={
+                                setKanjiAnimationSettings
+                              }
+                              processedSvgContent={processSvgString(
+                                svgData()!,
+                                {
+                                  size: kanjiStyleSettings.size,
+                                  strokeColor: kanjiStyleSettings.strokeColor,
+                                  strokeWidth: kanjiStyleSettings.strokeWidth,
+                                  showGrid: kanjiStyleSettings.showGrid,
+                                  autostart: kanjiAnimationSettings.autostart,
+                                  showNumbers: kanjiDisplaySettings.numbers,
+                                  showStartDots: kanjiDisplaySettings.startDots,
+                                  showDirectionLines:
+                                    kanjiDisplaySettings.directionLines,
+                                },
+                              )}
                               rawSvgContent={svgData()!}
                               styleSettings={kanjiStyleSettings}
                             />
@@ -155,7 +162,12 @@ export default function IntroductionPageComponent() {
 
                   {/* Meaning Mnemonic */}
                   <Show
-                    when={meaningMnemonic() && meaningMnemonic().length > 0}
+                    when={
+                      ["kanji", "radical"].includes(card().practiceItemType) &&
+                      card().practiceMode === "meanings" &&
+                      meaningMnemonic() &&
+                      meaningMnemonic().length > 0
+                    }
                   >
                     <div class="w-full max-w-xl px-2">
                       <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
@@ -167,17 +179,18 @@ export default function IntroductionPageComponent() {
                     </div>
                   </Show>
 
-                  {/* Reading Mnemonic (for Kanji only) */}
+                  {/* Spelling Mnemonic */}
                   <Show
                     when={
-                      card().practiceItemType === "kanji" &&
+                      ["kanji", "radical"].includes(card().practiceItemType) &&
+                      card().practiceMode === "spellings" &&
                       readingMnemonic() &&
                       readingMnemonic().length > 0
                     }
                   >
                     <div class="w-full max-w-xl px-2">
                       <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
-                        <span class="text-orange-400">Reading</span> Mnemonic
+                        <span class="text-orange-400">Spelling</span> Mnemonic
                       </p>
                       <p class="text-muted-foreground text-base leading-relaxed">
                         {parseMnemonicText(readingMnemonic())}
@@ -199,7 +212,7 @@ export default function IntroductionPageComponent() {
               </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </Show>
   )

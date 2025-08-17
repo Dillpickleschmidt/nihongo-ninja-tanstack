@@ -1,3 +1,4 @@
+// features/vocab-practice/utils/svg-helpers.ts
 import { fetchKanjiSvgsBatch } from "@/utils/svg-processor"
 import type { PracticeSessionState } from "../types"
 

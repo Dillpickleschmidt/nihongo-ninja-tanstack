@@ -1,3 +1,4 @@
+// src/components/KanjiAnimation.tsx
 import { createSignal, onCleanup, createEffect, type JSX } from "solid-js"
 import { raphaelColors } from "../utils/raphael-colors"
 

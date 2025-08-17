@@ -87,16 +87,18 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
   const [additionalSvgsFetched, setAdditionalSvgsFetched] = createSignal(false)
 
   // Kanji animation settings (reactive stores)
-  const [kanjiDisplaySettings, setKanjiDisplaySettings] = createStore<KanjiDisplaySettings>({
-    numbers: true,
-    startDots: true,
-    directionLines: true,
-  })
+  const [kanjiDisplaySettings, setKanjiDisplaySettings] =
+    createStore<KanjiDisplaySettings>({
+      numbers: true,
+      startDots: true,
+      directionLines: true,
+    })
 
-  const [kanjiAnimationSettings, setKanjiAnimationSettings] = createStore<KanjiAnimationSettings>({
-    speed: 0.5,
-    autostart: true,
-  })
+  const [kanjiAnimationSettings, setKanjiAnimationSettings] =
+    createStore<KanjiAnimationSettings>({
+      speed: 0.5,
+      autostart: true,
+    })
 
   const kanjiStyleSettings: KanjiStyleSettings = {
     strokeWidth: 3,

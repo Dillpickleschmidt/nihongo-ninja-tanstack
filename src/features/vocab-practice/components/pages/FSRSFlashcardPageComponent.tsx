@@ -65,11 +65,21 @@ function FlashcardSide(props: {
   uiState: ReturnType<typeof useVocabPracticeContext>["uiState"]
   showAnswer: boolean
   getSvgForCharacter: (char: string) => Promise<string | null>
-  kanjiDisplaySettings: ReturnType<typeof useVocabPracticeContext>["kanjiDisplaySettings"]
-  setKanjiDisplaySettings: ReturnType<typeof useVocabPracticeContext>["setKanjiDisplaySettings"]
-  kanjiAnimationSettings: ReturnType<typeof useVocabPracticeContext>["kanjiAnimationSettings"]
-  setKanjiAnimationSettings: ReturnType<typeof useVocabPracticeContext>["setKanjiAnimationSettings"]
-  kanjiStyleSettings: ReturnType<typeof useVocabPracticeContext>["kanjiStyleSettings"]
+  kanjiDisplaySettings: ReturnType<
+    typeof useVocabPracticeContext
+  >["kanjiDisplaySettings"]
+  setKanjiDisplaySettings: ReturnType<
+    typeof useVocabPracticeContext
+  >["setKanjiDisplaySettings"]
+  kanjiAnimationSettings: ReturnType<
+    typeof useVocabPracticeContext
+  >["kanjiAnimationSettings"]
+  setKanjiAnimationSettings: ReturnType<
+    typeof useVocabPracticeContext
+  >["setKanjiAnimationSettings"]
+  kanjiStyleSettings: ReturnType<
+    typeof useVocabPracticeContext
+  >["kanjiStyleSettings"]
 }) {
   const sideConfig = () =>
     getSideConfig(props.card(), props.side, props.uiState)
@@ -116,8 +126,7 @@ function FlashcardSide(props: {
       <div class="mt-6 flex justify-center">
         <KanjiAnimation
           processedSvgContent={processSvgString(svgData()!, {
-            size:
-              props.side === "prompt" ? (props.showAnswer ? 120 : 170) : 120,
+            size: props.kanjiStyleSettings.size,
             strokeColor: props.kanjiStyleSettings.strokeColor,
             strokeWidth: props.kanjiStyleSettings.strokeWidth,
             showGrid: props.kanjiStyleSettings.showGrid,
@@ -128,8 +137,7 @@ function FlashcardSide(props: {
           })}
           styleSettings={{
             ...props.kanjiStyleSettings,
-            size:
-              props.side === "prompt" ? (props.showAnswer ? 120 : 170) : 120,
+            size: props.kanjiStyleSettings.size,
           }}
           displaySettings={props.kanjiDisplaySettings}
           animationSettings={props.kanjiAnimationSettings}
@@ -142,8 +150,7 @@ function FlashcardSide(props: {
               onDisplaySettingsChange={props.setKanjiDisplaySettings}
               onAnimationSettingsChange={props.setKanjiAnimationSettings}
               processedSvgContent={processSvgString(svgData()!, {
-                size:
-                  props.side === "prompt" ? (props.showAnswer ? 120 : 170) : 120,
+                size: props.kanjiStyleSettings.size,
                 strokeColor: props.kanjiStyleSettings.strokeColor,
                 strokeWidth: props.kanjiStyleSettings.strokeWidth,
                 showGrid: props.kanjiStyleSettings.showGrid,
@@ -155,8 +162,6 @@ function FlashcardSide(props: {
               rawSvgContent={svgData()!}
               styleSettings={{
                 ...props.kanjiStyleSettings,
-                size:
-                  props.side === "prompt" ? (props.showAnswer ? 120 : 170) : 120,
               }}
             />
           )}
@@ -172,7 +177,14 @@ function Mnemonics(props: { card: () => PracticeCard }) {
 
   return (
     <div class="mt-6 flex flex-col items-center gap-4">
-      <Show when={meaningMnemonic().length > 0}>
+      {/* Meaning Mnemonic (only in meanings mode, for kanji/radical) */}
+      <Show
+        when={
+          ["kanji", "radical"].includes(props.card().practiceItemType) &&
+          props.card().practiceMode === "meanings" &&
+          meaningMnemonic().length > 0
+        }
+      >
         <div class="w-full max-w-xl px-2">
           <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
             <span class="text-sky-400">Meaning</span> Mnemonic
@@ -183,15 +195,17 @@ function Mnemonics(props: { card: () => PracticeCard }) {
         </div>
       </Show>
 
+      {/* Spelling Mnemonic (only in spellings mode, for kanji/radical) */}
       <Show
         when={
-          props.card().practiceItemType === "kanji" &&
+          ["kanji", "radical"].includes(props.card().practiceItemType) &&
+          props.card().practiceMode === "spellings" &&
           readingMnemonic().length > 0
         }
       >
         <div class="w-full max-w-xl px-2">
           <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
-            <span class="text-orange-400">Reading</span> Mnemonic
+            <span class="text-orange-400">Spelling</span> Mnemonic
           </p>
           <p class="text-muted-foreground text-base leading-relaxed italic">
             {parseMnemonicText(readingMnemonic())}
@@ -255,10 +269,10 @@ function RatingButtons(props: { onAnswer: (rating: Grade) => void }) {
 // -----------------------------
 
 export default function FSRSFlashcardPageComponent() {
-  const { 
-    uiState, 
-    currentCard, 
-    answerCardWithUIUpdate, 
+  const {
+    uiState,
+    currentCard,
+    answerCardWithUIUpdate,
     getSvgForCharacter,
     kanjiDisplaySettings,
     setKanjiDisplaySettings,

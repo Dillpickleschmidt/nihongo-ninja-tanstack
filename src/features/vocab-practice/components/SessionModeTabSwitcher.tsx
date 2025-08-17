@@ -18,7 +18,7 @@ export function SessionModeTabSwitcher(props: SessionModeTabSwitcherProps) {
             ? "bg-background text-foreground hover:bg-background/70 shadow-sm"
             : "text-muted-foreground hover:text-foreground"
         }`}
-        title="Mixed mode adds a handful of due cards from outside the current deck (up to 1 non-deck card for every 3 deck cards, so ~33% review and ~66% new). This makes reviews feel like less of a chore."
+        title="Mixed mode adds a handful of due cards from outside the current deck (up to 1 non-deck card for every 3 deck cards, so ~33% review and ~66% new). This helps prevent reviews from building up too quickly."
       >
         Mixed
       </Button>
@@ -37,4 +37,3 @@ export function SessionModeTabSwitcher(props: SessionModeTabSwitcherProps) {
     </div>
   )
 }
-

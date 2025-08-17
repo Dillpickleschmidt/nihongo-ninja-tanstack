@@ -16,10 +16,16 @@ function getKanjiSvgUrl(char: string) {
   return `${KANJIVG_BASE}/${codePoint}.svg`
 }
 
-export async function getKanjiSvg(char: string): Promise<string> {
-  const url = getKanjiSvgUrl(char)
-  const response = await fetch(url)
-  return response.text()
+export async function getKanjiSvg(char: string): Promise<string | null> {
+  try {
+    const res = await fetch(getKanjiSvgUrl(char))
+    if (!res.ok) return null
+
+    const text = await res.text()
+    return text.trim().startsWith("{") ? null : text
+  } catch {
+    return null
+  }
 }
 
 export async function fetchKanjiSvgsBatch(
@@ -28,24 +34,15 @@ export async function fetchKanjiSvgsBatch(
   const uniqueChars = Array.from(new Set(characters))
   const svgMap = new Map<string, string>()
 
-  // Fetch all SVGs in parallel
-  const fetchPromises = uniqueChars.map(async (char) => {
-    try {
-      const svgContent = await getKanjiSvg(char)
-      return { char, svgContent }
-    } catch (error) {
-      console.warn(`Failed to fetch SVG for character: ${char}`, error)
-      return { char, svgContent: null }
-    }
-  })
+  const results = await Promise.all(
+    uniqueChars.map(async (char) => ({
+      char,
+      svgContent: await getKanjiSvg(char),
+    })),
+  )
 
-  const results = await Promise.all(fetchPromises)
-
-  // Only add successful fetches to the map
   results.forEach(({ char, svgContent }) => {
-    if (svgContent) {
-      svgMap.set(char, svgContent)
-    }
+    if (svgContent) svgMap.set(char, svgContent)
   })
 
   return svgMap
