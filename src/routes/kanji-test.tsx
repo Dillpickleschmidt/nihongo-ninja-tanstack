@@ -1,80 +1,96 @@
-import { createFileRoute } from "@tanstack/solid-router"
 import { createSignal } from "solid-js"
-import { DmakKanji } from "../components/DmakKanji"
+import { createFileRoute } from "@tanstack/solid-router"
+import { KanjiAnimation } from "@/components/KanjiAnimation"
 
 export const Route = createFileRoute("/kanji-test")({
   component: () => <KanjiTestPage />,
 })
 
 function KanjiTestPage() {
+  // Separate signals for each control
+  const [animate, setAnimate] = createSignal<() => void>(() => {})
+  const [reset, setReset] = createSignal<() => void>(() => {})
+  const [isAnimating, setIsAnimating] = createSignal<() => boolean>(() => false)
+  const [toggleNumbers, setToggleNumbers] = createSignal<
+    (show: boolean) => void
+  >(() => {})
+  const [animationComplete, setAnimationComplete] = createSignal<() => boolean>(
+    () => false,
+  )
+
   const [showNumbers, setShowNumbers] = createSignal(false)
-  const [colored, setColored] = createSignal(true)
-  let dmakControls: any = null
+  const [speed, setSpeed] = createSignal(0.5) // default medium
 
   return (
-    <div class="container mx-auto p-8">
-      <h1 class="mb-8 text-3xl font-bold">KanjiVG Animation Test</h1>
-      <div class="space-y-8">
-        <div class="text-center">
-          <h2 class="mb-4 text-xl">dmak-style Kanji Animation</h2>
-          <div class="inline-block rounded-lg border-2 border-gray-300 p-8">
-            <DmakKanji
-              svgPath="/05473.svg"
-              showGrid={true}
-              shouldShowNumbers={showNumbers()}
-              colored={colored()}
-              onControlsReady={(controls) => {
-                dmakControls = controls
-              }}
-              class="mx-auto"
-            />
-          </div>
+    <div class="container mx-auto space-y-6 p-8">
+      <h1 class="text-2xl font-bold text-white">Kanji Test</h1>
 
-          <div class="mt-4 space-y-2">
-            <div class="space-x-2">
-              <button
-                onClick={() => dmakControls?.render()}
-                disabled={dmakControls?.isAnimating()}
-                class="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
-              >
-                {dmakControls?.isAnimating() ? "Animating..." : "Animate"}
-              </button>
-              <button
-                onClick={() => dmakControls?.erase()}
-                class="rounded bg-red-500 px-4 py-2 text-white"
-              >
-                Erase
-              </button>
-            </div>
+      {/* Kanji Animation */}
+      <KanjiAnimation
+        svgPath="/06f22.svg"
+        showGrid
+        size={200}
+        speed={speed()}
+        enableAnimate={true}
+        onControlsReady={(c) => {
+          setAnimate(() => c.animate)
+          setReset(() => c.reset)
+          setIsAnimating(() => c.isAnimating)
+          setToggleNumbers(() => c.toggleNumbers)
+          setAnimationComplete(() => c.animationComplete)
+        }}
+      />
 
-            <div class="flex items-center justify-center space-x-4">
-              <div class="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="show-stroke-numbers"
-                  checked={showNumbers()}
-                  onChange={(e) => setShowNumbers(e.target.checked)}
-                  class="rounded"
-                />
-                <label for="show-stroke-numbers" class="text-sm text-white">
-                  Show stroke numbers
-                </label>
-              </div>
+      {/* External Controls */}
+      <div class="flex items-center gap-4">
+        <button
+          onClick={() => animate()()}
+          disabled={isAnimating()()}
+          class="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
+        >
+          {isAnimating()() ? "Animating..." : "Animate"}
+        </button>
 
-              <div class="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="colored"
-                  checked={colored()}
-                  onChange={(e) => setColored(e.target.checked)}
-                  class="rounded"
-                />
-                <label for="colored" class="text-sm text-white">
-                  Rainbow colors
-                </label>
-              </div>
-            </div>
-          </div>
+        <button
+          onClick={() => reset()()}
+          class="rounded bg-gray-500 px-4 py-2 text-white"
+        >
+          Reset
+        </button>
+
+        <label class="flex items-center gap-2 text-white">
+          <input
+            type="checkbox"
+            checked={showNumbers()}
+            onChange={(e) => {
+              const checked = e.currentTarget.checked
+              setShowNumbers(checked)
+              toggleNumbers()(checked)
+            }}
+          />
+          Show stroke numbers
+        </label>
+      </div>
+
+      {/* Speed Slider */}
+      <div class="space-y-2">
+        <label for="speed" class="block text-white">
+          Animation Speed ({speed().toFixed(2)})
+        </label>
+        <input
+          id="speed"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={speed()}
+          onInput={(e) => setSpeed(parseFloat(e.currentTarget.value))}
+          class="w-64"
+        />
+        <div class="flex w-64 justify-between text-sm text-gray-300">
+          <span>Slow</span>
+          <span>Medium</span>
+          <span>Fast</span>
         </div>
       </div>
     </div>
