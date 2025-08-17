@@ -6,6 +6,7 @@
  */
 
 import type { FoldersAndDecksData } from "@/features/supabase/db/folder-operations"
+import { isServer } from "solid-js/web"
 
 const STORAGE_KEY = "nihongo-ninja-vocab-data"
 
@@ -13,6 +14,11 @@ const STORAGE_KEY = "nihongo-ninja-vocab-data"
  * Saves folders and decks to session storage
  */
 export function saveFoldersAndDecks(data: FoldersAndDecksData): void {
+  // No-op during SSR
+  if (isServer) {
+    return
+  }
+
   try {
     const serialized = JSON.stringify(data)
     sessionStorage.setItem(STORAGE_KEY, serialized)
@@ -25,6 +31,11 @@ export function saveFoldersAndDecks(data: FoldersAndDecksData): void {
  * Loads folders and decks from session storage
  */
 export function loadFoldersAndDecks(): FoldersAndDecksData {
+  // Return empty state during SSR
+  if (isServer) {
+    return { folders: [], decks: [] }
+  }
+
   try {
     const serialized = sessionStorage.getItem(STORAGE_KEY)
     if (serialized) {
@@ -43,6 +54,11 @@ export function loadFoldersAndDecks(): FoldersAndDecksData {
  * Clears all vocab data from session storage
  */
 export function clearFoldersAndDecks(): void {
+  // No-op during SSR
+  if (isServer) {
+    return
+  }
+
   try {
     sessionStorage.removeItem(STORAGE_KEY)
   } catch (error) {
@@ -54,6 +70,11 @@ export function clearFoldersAndDecks(): void {
  * Checks if session storage has any vocab data
  */
 export function hasStoredData(): boolean {
+  // Return false during SSR
+  if (isServer) {
+    return false
+  }
+
   try {
     return sessionStorage.getItem(STORAGE_KEY) !== null
   } catch (error) {
@@ -65,6 +86,11 @@ export function hasStoredData(): boolean {
  * Gets the size of stored data (for debugging)
  */
 export function getStorageInfo(): { hasData: boolean; size: number } {
+  // Return empty info during SSR
+  if (isServer) {
+    return { hasData: false, size: 0 }
+  }
+
   try {
     const data = sessionStorage.getItem(STORAGE_KEY)
     return {
