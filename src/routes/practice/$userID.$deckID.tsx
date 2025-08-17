@@ -15,12 +15,13 @@ import { getWKHierarchy } from "@/data/wanikani/utils"
 import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
+import { fetchKanjiSvgsBatch } from "@/utils/svg-processor"
 
 export const Route = createFileRoute("/practice/$userID/$deckID")({
   validateSearch: (
     search: Record<string, unknown>,
   ): { mode: PracticeMode } => ({
-    mode: (search.mode as PracticeMode) === "kana" ? "kana" : "readings",
+    mode: (search.mode as PracticeMode) === "spellings" ? "spellings" : "meanings",
   }),
   loaderDeps: ({ search }) => ({ mode: search.mode }),
   loader: async ({ context, params, deps }) => {
@@ -37,20 +38,20 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
 
       if (!deckInfo || deckVocabulary.length === 0) throw notFound()
 
-      // 2. Get the practice mode from search params (defaults to "readings")
+      // 2. Get the practice mode from search params (defaults to "meanings")
       const mode: PracticeMode = deps.mode
 
       let hierarchy: VocabHierarchy
 
-      if (mode === "readings") {
-        // For "readings" mode, build the full dependency tree
+      if (mode === "meanings") {
+        // For "meanings" mode, build the full dependency tree
         const fullHierarchy = await getWKHierarchy({
           data: deckVocabulary.map((v) => v.word),
         })
         if (!fullHierarchy) throw notFound()
         hierarchy = fullHierarchy
       } else {
-        // For "kana" mode, create a "flat" hierarchy with NO dependencies
+        // For "spellings" mode, create a "flat" hierarchy with NO dependencies
         hierarchy = {
           vocabulary: deckVocabulary.map((vocab) => ({
             word: vocab.word,
@@ -85,12 +86,16 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
 
       // 5. Extract all slugs for FSRS data fetching
       const allHierarchySlugs = new Set<string>()
-
       hierarchy.vocabulary.forEach((v) => allHierarchySlugs.add(v.word))
       hierarchy.kanji.forEach((k) => allHierarchySlugs.add(k.kanji))
       hierarchy.radicals.forEach((r) => allHierarchySlugs.add(r.radical))
 
-      // 6. Defer FSRS data fetching
+      // 6. Extract kanji and radicals for SVG fetching
+      const hierarchyKanjiRadicals: string[] = []
+      hierarchy.kanji.forEach((k) => hierarchyKanjiRadicals.push(k.kanji))
+      hierarchy.radicals.forEach((r) => hierarchyKanjiRadicals.push(r.radical))
+
+      // 7. Defer FSRS data fetching
       let moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null = null
       let dueFSRSCards: DeferredPromise<FSRSCardData[]> | null = null
 
@@ -101,11 +106,18 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
         dueFSRSCards = defer(getDueFSRSCards(context.user.id))
       }
 
+      // 8. Defer SVG fetching for hierarchy kanji/radicals
+      let hierarchySvgs: DeferredPromise<Map<string, string>> | null = null
+      if (hierarchyKanjiRadicals.length > 0) {
+        hierarchySvgs = defer(fetchKanjiSvgsBatch(hierarchyKanjiRadicals))
+      }
+
       return {
         hierarchy,
         serializedInitialState,
         moduleFSRSCards,
         dueFSRSCards,
+        hierarchySvgs,
         moduleVocabulary: deckVocabulary,
         deckName: deckInfo.deck_name,
         mode,
@@ -141,6 +153,7 @@ function RouteComponent() {
       initialState={initialState}
       moduleFSRSCards={data.moduleFSRSCards}
       dueFSRSCards={data.dueFSRSCards}
+      hierarchySvgs={data.hierarchySvgs}
       moduleVocabulary={data.moduleVocabulary}
       deckName={data.deckName}
       mode={data.mode}

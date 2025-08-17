@@ -21,6 +21,7 @@ type VocabPracticeProps = {
   initialState: PracticeSessionState
   moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null
   dueFSRSCards: DeferredPromise<FSRSCardData[]> | null
+  hierarchySvgs: DeferredPromise<Map<string, string>> | null
   moduleVocabulary: VocabularyItem[]
   deckName: string | JSX.Element
   mode: PracticeMode
@@ -35,6 +36,7 @@ export default function VocabPractice(props: VocabPracticeProps) {
         initialState={props.initialState}
         moduleFSRSCards={props.moduleFSRSCards}
         dueFSRSCards={props.dueFSRSCards}
+        hierarchySvgs={props.hierarchySvgs}
         moduleVocabulary={props.moduleVocabulary}
         mode={props.mode}
       />
@@ -56,6 +58,7 @@ function VocabPracticeContent(props: VocabPracticeContentProps) {
           initialState={props.initialState}
           moduleFSRSCards={props.moduleFSRSCards}
           dueFSRSCards={props.dueFSRSCards}
+          hierarchySvgs={props.hierarchySvgs}
           moduleVocabulary={props.moduleVocabulary}
           mode={props.mode}
         />

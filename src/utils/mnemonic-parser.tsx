@@ -21,19 +21,19 @@ export function parseMnemonicText(text: string): JSX.Element[] {
 
     if (kanjiMatch) {
       return (
-        <span class="inline-flex items-center rounded-[6px] bg-pink-500/20 px-1.5 py-0.5 text-sm font-normal text-pink-400">
+        <span class="inline-flex items-center rounded-[6px] bg-pink-500/20 px-1 py-0.25 text-sm font-normal text-pink-400">
           {kanjiMatch[1]}
         </span>
       )
     } else if (radicalMatch) {
       return (
-        <span class="inline-flex items-center rounded-[6px] bg-sky-500/20 px-1.5 py-0.5 text-sm font-normal text-sky-400">
+        <span class="inline-flex items-center rounded-[6px] bg-sky-500/20 px-1 py-0.25 text-sm font-normal text-sky-400">
           {radicalMatch[1]}
         </span>
       )
     } else if (readingMatch) {
       return (
-        <span class="inline-flex items-center rounded-[6px] bg-green-500/20 px-1.5 py-0.5 text-sm font-normal text-green-400">
+        <span class="inline-flex items-center rounded-[6px] bg-green-500/20 px-1 py-0.25 text-sm font-normal text-green-400">
           {readingMatch[1]}
         </span>
       )

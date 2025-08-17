@@ -103,7 +103,7 @@ export function KanjiAnimationControls(props: KanjiAnimationControlsProps) {
         >
           <Settings size={14} />
         </PopoverTrigger>
-        <PopoverContent class="w-56">
+        <PopoverContent class="bg-background border-card-foreground w-56">
           <div class="space-y-3">
             <h4 class="text-sm font-medium">Display Options</h4>
 

@@ -34,6 +34,7 @@ type StartPageProps = {
   initialState: PracticeSessionState
   moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null
   dueFSRSCards: DeferredPromise<FSRSCardData[]> | null
+  hierarchySvgs: DeferredPromise<Map<string, string>> | null
   moduleVocabulary: VocabularyItem[]
   deckName: string | JSX.Element
   mode: PracticeMode
@@ -75,7 +76,8 @@ function getHierarchicalOrder(
 }
 
 export default function StartPageComponent(props: StartPageProps) {
-  const { uiState, setUIState, initializeManager } = useVocabPracticeContext()
+  const { uiState, initializeManager, initializeSvgData } =
+    useVocabPracticeContext()
   const { userPreferences } = useSettings()
   const [isStarting, setIsStarting] = createSignal(false)
   const [enhancedState, setEnhancedState] =
@@ -97,6 +99,17 @@ export default function StartPageComponent(props: StartPageProps) {
     () => props.dueFSRSCards,
     (deferred) => deferred || Promise.resolve([]),
   )
+  const [hierarchySvgs] = createResource(
+    () => props.hierarchySvgs,
+    (deferred) => deferred || Promise.resolve(new Map()),
+  )
+
+  // Initialize SVG data when it's loaded
+  createEffect(() => {
+    if (!hierarchySvgs.loading && hierarchySvgs()) {
+      initializeSvgData(hierarchySvgs()!)
+    }
+  })
 
   // Enhance state with FSRS data
   createEffect(async () => {
@@ -122,7 +135,8 @@ export default function StartPageComponent(props: StartPageProps) {
     }
   })
 
-  const isLoading = () => moduleFSRS.loading || dueFSRS.loading
+  const isLoading = () =>
+    moduleFSRS.loading || dueFSRS.loading || hierarchySvgs.loading
   const hasEnhancedData = () => enhancedState() !== null
 
   const getCardMap = (state: PracticeSessionState) => state.cardMap || new Map()

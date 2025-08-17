@@ -1668,7 +1668,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     chapter: 1,
     mnemonics: {
       kanji: [
-        "A pictograph of one line. Simple, straightforward, and is more recognizable than いち.",
+        "A pictograph of one line. Simple, straightforward, and is easier to read than いち.",
       ],
       reading: [],
     },
@@ -1760,7 +1760,6 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     mnemonics: {
       kanji: [
         "It looks like an elaborate letter n with a tiny i attached at the end (where it flares up). What do the letters n and i start spelling? Yep, the word nine.",
-        "A person in the doggie style position, waiting for (insert nine [unit of measurement] joke here).",
       ],
       reading: [],
     },

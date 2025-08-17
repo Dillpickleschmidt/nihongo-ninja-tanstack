@@ -1,5 +1,11 @@
 // vocab-practice/context/VocabPracticeContext.tsx
-import { createContext, JSX, useContext, createEffect } from "solid-js"
+import {
+  createContext,
+  JSX,
+  useContext,
+  createEffect,
+  createSignal,
+} from "solid-js"
 import { createStore, SetStoreFunction } from "solid-js/store"
 import type { Settings, CurrentPage } from "../types"
 import { Rating } from "ts-fsrs"
@@ -7,6 +13,12 @@ import {
   usePracticeManager,
   type PracticeManagerHook,
 } from "../logic/usePracticeManager"
+import { fetchAdditionalSvgsForSession } from "../utils/svg-helpers"
+import type {
+  KanjiDisplaySettings,
+  KanjiAnimationSettings,
+  KanjiStyleSettings,
+} from "@/components/KanjiAnimation"
 
 // --- LOCAL TYPE DEFINITIONS FOR THE CONTEXT ---
 
@@ -24,6 +36,18 @@ type VocabPracticeContextType = {
   // UI state
   uiState: UIState
   setUIState: SetStoreFunction<UIState>
+
+  // SVG data management
+  svgData: () => Map<string, string>
+  getSvgForCharacter: (character: string) => Promise<string | null>
+  initializeSvgData: (initialSvgs: Map<string, string>) => void
+
+  // Kanji animation settings
+  kanjiDisplaySettings: KanjiDisplaySettings
+  setKanjiDisplaySettings: SetStoreFunction<KanjiDisplaySettings>
+  kanjiAnimationSettings: KanjiAnimationSettings
+  setKanjiAnimationSettings: SetStoreFunction<KanjiAnimationSettings>
+  kanjiStyleSettings: KanjiStyleSettings
 
   // Combined business + UI logic
   answerCardWithUIUpdate: (rating: Rating) => Promise<void>
@@ -58,6 +82,29 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     },
   })
 
+  // SVG data management
+  const [svgData, setSvgData] = createSignal<Map<string, string>>(new Map())
+  const [additionalSvgsFetched, setAdditionalSvgsFetched] = createSignal(false)
+
+  // Kanji animation settings (reactive stores)
+  const [kanjiDisplaySettings, setKanjiDisplaySettings] = createStore<KanjiDisplaySettings>({
+    numbers: true,
+    startDots: true,
+    directionLines: true,
+  })
+
+  const [kanjiAnimationSettings, setKanjiAnimationSettings] = createStore<KanjiAnimationSettings>({
+    speed: 0.5,
+    autostart: true,
+  })
+
+  const kanjiStyleSettings: KanjiStyleSettings = {
+    strokeWidth: 3,
+    strokeColor: "#ffffff",
+    size: 170,
+    showGrid: true,
+  }
+
   // Practice manager hook (handles reactive practice logic)
   const managerHook = usePracticeManager()
 
@@ -79,6 +126,43 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
       setUIState("currentPage", "fsrs-flashcard")
     }
   })
+
+  // --- SVG DATA MANAGEMENT FUNCTIONS ---
+
+  const initializeSvgData = (initialSvgs: Map<string, string>) => {
+    setSvgData(initialSvgs)
+  }
+
+  const getSvgForCharacter = async (
+    character: string,
+  ): Promise<string | null> => {
+    const currentData = svgData()
+
+    // If we already have the SVG, return it
+    if (currentData.has(character)) {
+      return currentData.get(character)!
+    }
+
+    // If we haven't fetched additional SVGs yet and have a manager, try to fetch them
+    if (!additionalSvgsFetched() && managerHook.manager()) {
+      const sessionState = managerHook.getManagerState()
+      const additionalSvgs = await fetchAdditionalSvgsForSession(
+        sessionState,
+        currentData,
+      )
+
+      // Merge additional SVGs with existing data
+      const mergedData = new Map([...currentData, ...additionalSvgs])
+      setSvgData(mergedData)
+      setAdditionalSvgsFetched(true)
+
+      // Return the character if it was found in additional fetch
+      return mergedData.get(character) || null
+    }
+
+    // Character not found
+    return null
+  }
 
   // Wrapper function that combines business logic + UI state updates
   const answerCardWithUIUpdate = async (rating: Rating): Promise<void> => {
@@ -117,6 +201,18 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     // UI state
     uiState,
     setUIState,
+
+    // SVG data management
+    svgData,
+    getSvgForCharacter,
+    initializeSvgData,
+
+    // Kanji animation settings
+    kanjiDisplaySettings,
+    setKanjiDisplaySettings,
+    kanjiAnimationSettings,
+    setKanjiAnimationSettings,
+    kanjiStyleSettings,
 
     // Combined business + UI logic
     answerCardWithUIUpdate,

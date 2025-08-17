@@ -94,7 +94,7 @@ function createPracticeCardFromCleanEntry(
   let validAnswers: string[]
 
   if (type === "vocabulary") {
-    if (practiceMode === "readings") {
+    if (practiceMode === "meanings") {
       if (flipVocabQA) {
         // Flipped: English prompt, Japanese word answer
         prompt = richVocab.english.join(", ")
@@ -105,7 +105,7 @@ function createPracticeCardFromCleanEntry(
         validAnswers = [...richVocab.english]
       }
     } else {
-      // "kana" mode
+      // "spellings" mode
       if (flipVocabQA) {
         // Flipped: Hiragana/Kana prompt, English answer
         prompt = richVocab.hiragana.join(", ") || richVocab.word
@@ -249,7 +249,7 @@ export async function initializePracticeSession(
       (card) => !cardMap.has(`${card.type}:${card.practice_item_key}`),
     )
 
-    const dueVocab = pureDueReviewCards.filter((c) => c.type === "vocabulary")
+    // const dueVocab = pureDueReviewCards.filter((c) => c.type === "vocabulary")
     const dueKanji = pureDueReviewCards.filter((c) => c.type === "kanji")
     const dueRadicals = pureDueReviewCards.filter((c) => c.type === "radical")
 

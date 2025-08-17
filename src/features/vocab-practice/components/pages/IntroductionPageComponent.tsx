@@ -1,18 +1,49 @@
 // vocab-practice/components/pages/IntroductionPageComponent.tsx
-import { Show, createEffect } from "solid-js"
+import { Show, createEffect, createSignal, createResource } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import ProgressHeader from "../ProgressHeader"
 import { parseMnemonicText } from "@/utils/mnemonic-parser"
+import { KanjiAnimation } from "@/components/KanjiAnimation"
+import { KanjiAnimationControls } from "@/components/KanjiAnimationControls"
+import { processSvgString } from "@/utils/svg-processor"
 
 export default function IntroductionPageComponent() {
-  const { currentCard, processIntroduction } = useVocabPracticeContext()
+  const { 
+    currentCard, 
+    processIntroduction, 
+    getSvgForCharacter,
+    kanjiDisplaySettings,
+    setKanjiDisplaySettings,
+    kanjiAnimationSettings,
+    setKanjiAnimationSettings,
+    kanjiStyleSettings,
+  } = useVocabPracticeContext()
 
   const character = () => currentCard()?.vocab.word
   const meanings = () => currentCard()?.vocab.english.join(", ")
 
   const meaningMnemonic = () => currentCard()?.mnemonics?.kanji?.[0] || ""
   const readingMnemonic = () => currentCard()?.mnemonics?.reading?.[0] || ""
+
+  // Check if we should use kanji animation
+  const shouldUseAnimation = () => {
+    const card = currentCard()
+    if (!card) return false
+    const char = character()
+    return (
+      (card.practiceItemType === "kanji" ||
+        card.practiceItemType === "radical") &&
+      char &&
+      char.length === 1
+    )
+  }
+
+  // Create resource for SVG data
+  const [svgData] = createResource(
+    () => (shouldUseAnimation() ? character() : null),
+    (char) => (char ? getSvgForCharacter(char) : null),
+  )
 
   let gotItButtonRef: HTMLButtonElement | undefined
 
@@ -60,9 +91,56 @@ export default function IntroductionPageComponent() {
                     <p class="text-muted-foreground text-sm tracking-wider uppercase">
                       Character
                     </p>
-                    <h2 class="text-primary text-6xl font-bold lg:text-7xl">
-                      {character()}
-                    </h2>
+                    <Show
+                      when={
+                        shouldUseAnimation() && svgData() && !svgData.loading
+                      }
+                      fallback={
+                        <h2 class="text-primary text-6xl font-bold lg:text-7xl">
+                          {character()}
+                        </h2>
+                      }
+                    >
+                      <div class="flex justify-center">
+                        <KanjiAnimation
+                          processedSvgContent={processSvgString(svgData()!, {
+                            size: kanjiStyleSettings.size,
+                            strokeColor: kanjiStyleSettings.strokeColor,
+                            strokeWidth: kanjiStyleSettings.strokeWidth,
+                            showGrid: kanjiStyleSettings.showGrid,
+                            autostart: kanjiAnimationSettings.autostart,
+                            showNumbers: kanjiDisplaySettings.numbers,
+                            showStartDots: kanjiDisplaySettings.startDots,
+                            showDirectionLines: kanjiDisplaySettings.directionLines,
+                          })}
+                          styleSettings={kanjiStyleSettings}
+                          displaySettings={kanjiDisplaySettings}
+                          animationSettings={kanjiAnimationSettings}
+                        >
+                          {(animationRef) => (
+                            <KanjiAnimationControls
+                              animationRef={animationRef}
+                              displaySettings={kanjiDisplaySettings}
+                              animationSettings={kanjiAnimationSettings}
+                              onDisplaySettingsChange={setKanjiDisplaySettings}
+                              onAnimationSettingsChange={setKanjiAnimationSettings}
+                              processedSvgContent={processSvgString(svgData()!, {
+                                size: kanjiStyleSettings.size,
+                                strokeColor: kanjiStyleSettings.strokeColor,
+                                strokeWidth: kanjiStyleSettings.strokeWidth,
+                                showGrid: kanjiStyleSettings.showGrid,
+                                autostart: kanjiAnimationSettings.autostart,
+                                showNumbers: kanjiDisplaySettings.numbers,
+                                showStartDots: kanjiDisplaySettings.startDots,
+                                showDirectionLines: kanjiDisplaySettings.directionLines,
+                              })}
+                              rawSvgContent={svgData()!}
+                              styleSettings={kanjiStyleSettings}
+                            />
+                          )}
+                        </KanjiAnimation>
+                      </div>
+                    </Show>
                   </div>
 
                   {/* Meanings Display */}

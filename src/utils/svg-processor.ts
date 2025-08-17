@@ -5,7 +5,10 @@ const KANJIVG_BASE =
 
 function getPathStartPoint(dAttribute: string) {
   const match = dAttribute.match(/^M([\d.-]+),([\d.-]+)/)
-  return { x: parseFloat(match[1]), y: parseFloat(match[2]) }
+  return {
+    x: parseFloat(match?.[1] ?? "0"), // shouldn't ever need to fallback
+    y: parseFloat(match?.[2] ?? "0"),
+  }
 }
 
 function getKanjiSvgUrl(char: string) {
@@ -17,6 +20,35 @@ export async function getKanjiSvg(char: string): Promise<string> {
   const url = getKanjiSvgUrl(char)
   const response = await fetch(url)
   return response.text()
+}
+
+export async function fetchKanjiSvgsBatch(
+  characters: string[],
+): Promise<Map<string, string>> {
+  const uniqueChars = Array.from(new Set(characters))
+  const svgMap = new Map<string, string>()
+
+  // Fetch all SVGs in parallel
+  const fetchPromises = uniqueChars.map(async (char) => {
+    try {
+      const svgContent = await getKanjiSvg(char)
+      return { char, svgContent }
+    } catch (error) {
+      console.warn(`Failed to fetch SVG for character: ${char}`, error)
+      return { char, svgContent: null }
+    }
+  })
+
+  const results = await Promise.all(fetchPromises)
+
+  // Only add successful fetches to the map
+  results.forEach(({ char, svgContent }) => {
+    if (svgContent) {
+      svgMap.set(char, svgContent)
+    }
+  })
+
+  return svgMap
 }
 
 export interface ProcessSvgOptions {
@@ -66,7 +98,7 @@ export function processSvgString(
     ]
 
     raphaelColors.reset()
-    let dotsToAdd = []
+    let dotsToAdd: string[] = []
 
     strokePaths.forEach(([fullMatch, dAttribute], index) => {
       const color = raphaelColors.getColor()
