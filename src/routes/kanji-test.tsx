@@ -72,6 +72,9 @@ function KanjiTestPage() {
             onAnimationSettingsChange={(changes) =>
               setAnimationSettings(changes)
             }
+            processedSvgContent={processedSvg()}
+            rawSvgContent={svgContent}
+            styleSettings={styleSettings}
           />
         )}
       </KanjiAnimation>

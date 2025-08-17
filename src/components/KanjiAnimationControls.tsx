@@ -1,15 +1,19 @@
-import { Play, Pause, RotateCcw, Settings } from "lucide-solid"
+import { Play, Pause, RotateCcw, Settings, Maximize2 } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover"
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
+import { KanjiAnimation } from "./KanjiAnimation"
+import { processSvgString } from "@/utils/svg-processor"
 
 import type {
   KanjiAnimationRef,
   KanjiDisplaySettings,
   KanjiAnimationSettings,
+  KanjiStyleSettings,
 } from "./KanjiAnimation"
 
 interface KanjiAnimationControlsProps {
@@ -18,63 +22,83 @@ interface KanjiAnimationControlsProps {
   animationSettings: KanjiAnimationSettings
   onDisplaySettingsChange: (settings: Partial<KanjiDisplaySettings>) => void
   onAnimationSettingsChange: (settings: Partial<KanjiAnimationSettings>) => void
+  processedSvgContent: string
+  rawSvgContent: string
+  styleSettings: KanjiStyleSettings
 }
 
 export function KanjiAnimationControls(props: KanjiAnimationControlsProps) {
-  // Determine the main button state and action
-  const getMainButtonConfig = () => {
-    const state = props.animationRef?.getState() || {
-      isAnimating: false,
-      isComplete: false,
-    }
-
-    if (state.isAnimating) {
-      return {
-        icon: <Pause size={14} />,
-        onClick: () => props.animationRef?.stop(),
-        title: "Pause Animation",
-        disabled: false,
-      }
-    } else if (state.isComplete) {
-      return {
-        icon: <RotateCcw size={14} />,
-        onClick: () => props.animationRef?.reset(),
-        title: "Restart Animation",
-        disabled: false,
-      }
-    } else {
-      return {
-        icon: <Play size={14} />,
-        onClick: () => props.animationRef?.play(),
-        title: "Play Animation",
-        disabled: false,
-      }
-    }
-  }
-
-  const mainButton = () => getMainButtonConfig()
+  // Process SVG for modal with larger size
+  const modalSvgContent = () =>
+    processSvgString(props.rawSvgContent, {
+      size: 400,
+      strokeColor: props.styleSettings.strokeColor,
+      strokeWidth: props.styleSettings.strokeWidth,
+      showGrid: props.styleSettings.showGrid,
+      autostart: props.animationSettings.autostart,
+      showNumbers: props.displaySettings.numbers,
+      showStartDots: props.displaySettings.startDots,
+      showDirectionLines: props.displaySettings.directionLines,
+    })
 
   return (
     <>
       {/* Main Action Button - Play/Pause/Reset (Bottom Left) */}
-      <Button
-        variant="ghost"
-        size="sm"
-        class="text-muted-foreground hover:text-foreground pointer-events-auto absolute bottom-1 left-1 h-7 w-7 p-0"
-        onClick={mainButton().onClick}
-        disabled={mainButton().disabled}
-        title={mainButton().title}
-      >
-        {mainButton().icon}
-      </Button>
+      {props.animationRef && (
+        <AnimationControlButton
+          animationRef={props.animationRef}
+          class="text-muted-foreground hover:text-foreground pointer-events-auto absolute bottom-1 left-1 h-7 w-7 p-0"
+          size={14}
+        />
+      )}
 
-      {/* Options Popover (Top Right) */}
+      {/* Maximize Button (Top Right) */}
+      <Dialog>
+        <DialogTrigger
+          as={Button}
+          variant="ghost"
+          size="sm"
+          class="text-muted-foreground hover:text-foreground pointer-events-auto absolute top-1 right-1 h-7 w-7 p-0"
+          title="Maximize"
+        >
+          <Maximize2 size={14} />
+        </DialogTrigger>
+        <DialogContent
+          class="border-card-foreground bg-card flex justify-center"
+          style={{
+            "--tw-enter-translate-x": "0",
+            "--tw-enter-translate-y": "0",
+            "--tw-exit-translate-x": "0",
+            "--tw-exit-translate-y": "0",
+          }}
+        >
+          <KanjiAnimation
+            processedSvgContent={modalSvgContent()}
+            styleSettings={{
+              ...props.styleSettings,
+              size: 400, // Larger size for modal
+            }}
+            displaySettings={props.displaySettings}
+            animationSettings={props.animationSettings}
+          >
+            {(modalAnimationRef) => (
+              <AnimationControlButton
+                animationRef={modalAnimationRef}
+                class="text-muted-foreground hover:text-foreground pointer-events-auto absolute bottom-1 left-1 h-7 w-7 p-0"
+                size={14}
+              />
+            )}
+          </KanjiAnimation>
+        </DialogContent>
+      </Dialog>
+
+      {/* Options Popover (Bottom Right) */}
       <Popover>
         <PopoverTrigger
           as={Button}
           variant="ghost"
           size="sm"
-          class="text-muted-foreground hover:text-foreground pointer-events-auto absolute top-1 right-1 h-7 w-7 p-0"
+          class="text-muted-foreground hover:text-foreground pointer-events-auto absolute right-1 bottom-1 h-7 w-7 p-0"
           title="Options"
         >
           <Settings size={14} />
@@ -168,5 +192,52 @@ export function KanjiAnimationControls(props: KanjiAnimationControlsProps) {
         </PopoverContent>
       </Popover>
     </>
+  )
+}
+
+// Reusable animation control button component
+function AnimationControlButton(props: {
+  animationRef: KanjiAnimationRef
+  class?: string
+  size: number
+}) {
+  const iconSize = props.size
+
+  const getButtonConfig = () => {
+    const state = props.animationRef.getState()
+
+    if (state.isAnimating) {
+      return {
+        icon: <Pause size={iconSize} />,
+        onClick: () => props.animationRef.stop(),
+        title: "Pause Animation",
+      }
+    } else if (state.isComplete) {
+      return {
+        icon: <RotateCcw size={iconSize} />,
+        onClick: () => props.animationRef.reset(),
+        title: "Restart Animation",
+      }
+    } else {
+      return {
+        icon: <Play size={iconSize} />,
+        onClick: () => props.animationRef.play(),
+        title: "Play Animation",
+      }
+    }
+  }
+
+  const config = () => getButtonConfig()
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      class={props.class}
+      onClick={config().onClick}
+      title={config().title}
+    >
+      {config().icon}
+    </Button>
   )
 }

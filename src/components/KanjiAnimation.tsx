@@ -128,7 +128,7 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
     const strokeNumbers = svgRef.querySelector('g[id*="StrokeNumbers"]')
     if (strokeNumbers) {
       const numbersEl = strokeNumbers as SVGElement
-      numbersEl.style.transition = "opacity 0.25s ease-in"
+      numbersEl.style.transition = "opacity 0.1s ease-in"
 
       // Create separate groups for dots and direction lines (not processed server-side)
       const strokePaths = svgRef.querySelectorAll('path[id*="-s"]')
@@ -143,7 +143,7 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
       )
       dotsGroup.id = "stroke-dots"
       dotsGroup.style.opacity = "0"
-      dotsGroup.style.transition = "opacity 0.25s ease-in"
+      dotsGroup.style.transition = "opacity 0.1s ease-in"
 
       const linesGroup = document.createElementNS(
         "http://www.w3.org/2000/svg",
@@ -151,7 +151,7 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
       )
       linesGroup.id = "direction-lines"
       linesGroup.style.opacity = "0"
-      linesGroup.style.transition = "opacity 0.25s ease-in"
+      linesGroup.style.transition = "opacity 0.1s ease-in"
 
       // Style numbers and create dots/direction lines with matching colors
       raphaelColors.reset()
