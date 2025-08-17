@@ -7,12 +7,19 @@ import {
   type KanjiStyleSettings,
 } from "@/components/KanjiAnimation"
 import { KanjiAnimationControls } from "@/components/KanjiAnimationControls"
+import { processSvgString, getKanjiSvg } from "@/utils/svg-processor"
 
 export const Route = createFileRoute("/kanji-test")({
+  loader: async () => {
+    const svgContent = await getKanjiSvg("字")
+    return { svgContent }
+  },
   component: () => <KanjiTestPage />,
 })
 
 function KanjiTestPage() {
+  const { svgContent } = Route.useLoaderData()()
+
   const [displaySettings, setDisplaySettings] =
     createStore<KanjiDisplaySettings>({
       numbers: true,
@@ -22,7 +29,7 @@ function KanjiTestPage() {
 
   const [animationSettings, setAnimationSettings] =
     createStore<KanjiAnimationSettings>({
-      enabled: true,
+      enabled: false,
       speed: 0.5,
       autoplay: true,
     })
@@ -34,12 +41,25 @@ function KanjiTestPage() {
     showGrid: true,
   }
 
+  // Process SVG with current settings
+  const processedSvg = () =>
+    processSvgString(svgContent, {
+      size: styleSettings.size,
+      strokeColor: styleSettings.strokeColor,
+      strokeWidth: styleSettings.strokeWidth,
+      showGrid: styleSettings.showGrid,
+      animationEnabled: animationSettings.enabled,
+      showNumbers: displaySettings.numbers,
+      showStartDots: displaySettings.startDots,
+      showDirectionLines: displaySettings.directionLines,
+    })
+
   return (
     <div class="flex flex-col items-center space-y-4 p-8">
       <h1 class="text-2xl text-white">Kanji Test</h1>
 
       <KanjiAnimation
-        svgPath="/05473.svg"
+        processedSvgContent={processedSvg()}
         styleSettings={styleSettings}
         displaySettings={displaySettings}
         animationSettings={animationSettings}

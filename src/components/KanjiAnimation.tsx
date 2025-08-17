@@ -39,13 +39,10 @@ export interface KanjiStyleSettings {
 }
 
 interface KanjiAnimationProps {
-  svgPath: string
+  processedSvgContent: string
   styleSettings?: Partial<KanjiStyleSettings>
   displaySettings?: Partial<KanjiDisplaySettings>
   animationSettings?: Partial<KanjiAnimationSettings>
-  // Settings change callbacks
-  onDisplaySettingsChange?: (settings: KanjiDisplaySettings) => void
-  onAnimationSettingsChange?: (settings: KanjiAnimationSettings) => void
   class?: string
   children?: JSX.Element | ((ref: KanjiAnimationRef) => JSX.Element)
 }
@@ -54,7 +51,6 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
   // -----------------------------
   // State
   // -----------------------------
-  const [svgContent, setSvgContent] = createSignal<string>("")
   const [isAnimating, setIsAnimating] = createSignal(false)
   const [animationComplete, setAnimationComplete] = createSignal(false)
   const [hasAutoPlayed, setHasAutoPlayed] = createSignal(false)
@@ -103,15 +99,6 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
     }),
   }
 
-  // Notify parent of settings changes
-  createEffect(() => {
-    props.onDisplaySettingsChange?.(displaySettings())
-  })
-
-  createEffect(() => {
-    props.onAnimationSettingsChange?.(animationSettings())
-  })
-
   let svgRef: SVGSVGElement | undefined
   let containerRef: HTMLDivElement | undefined
   let animationId: number | undefined
@@ -141,71 +128,20 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
   const setupSvg = () => {
     if (!svgRef) return
 
-    // Apply size from styleSettings
-    svgRef.setAttribute("width", styleSettings().size.toString())
-    svgRef.setAttribute("height", styleSettings().size.toString())
+    // The SVG is already pre-processed server-side, so we only need to:
+    // 1. Set up client-only interactive features (dots and direction lines)
+    // 2. Ensure proper state for animations
 
-    if (styleSettings().showGrid) {
-      // Remove any existing grid
-      svgRef.querySelector("#kanji-grid")?.remove()
-
-      const gridGroup = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "g",
-      )
-      gridGroup.id = "kanji-grid"
-      gridGroup.style.opacity = "0.3"
-
-      // Vertical line
-      const vLine = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path",
-      )
-      vLine.setAttribute("d", "M54.5,0 L54.5,109")
-      vLine.setAttribute("stroke", "rgb(163 163 163)")
-      vLine.setAttribute("stroke-width", "0.5")
-      vLine.setAttribute("stroke-dasharray", "3,3")
-      vLine.setAttribute("fill", "none")
-      gridGroup.appendChild(vLine)
-
-      // Horizontal line
-      const hLine = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path",
-      )
-      hLine.setAttribute("d", "M0,54.5 L109,54.5")
-      hLine.setAttribute("stroke", "rgb(163 163 163)")
-      hLine.setAttribute("stroke-width", "0.5")
-      hLine.setAttribute("stroke-dasharray", "3,3")
-      hLine.setAttribute("fill", "none")
-      gridGroup.appendChild(hLine)
-
-      svgRef.insertBefore(gridGroup, svgRef.firstChild)
-    }
-    // --- End grid setup ---
-
-    // Style background strokes
-    svgRef.querySelectorAll('path[id*="-s"]').forEach((path) => {
-      const pathEl = path as SVGPathElement
-      pathEl.style.stroke = styleSettings().strokeColor
-      pathEl.style.strokeWidth = styleSettings().strokeWidth.toString()
-      pathEl.style.fill = "none"
-      pathEl.style.strokeLinecap = "round"
-      pathEl.style.strokeLinejoin = "round"
-    })
-
-    // Handle stroke numbers, dots, and direction lines
+    // Handle stroke numbers, dots, and direction lines (client-only features)
     const strokeNumbers = svgRef.querySelector('g[id*="StrokeNumbers"]')
     if (strokeNumbers) {
       const numbersEl = strokeNumbers as SVGElement
-      numbersEl.style.display = "none"
-      numbersEl.style.opacity = "0"
       numbersEl.style.transition = "opacity 0.25s ease-in"
 
-      // Create separate groups for dots and direction lines
+      // Create separate groups for dots and direction lines (not processed server-side)
       const strokePaths = svgRef.querySelectorAll('path[id*="-s"]')
 
-      // Remove existing groups
+      // Remove existing groups (in case of re-setup)
       svgRef.querySelector("#stroke-dots")?.remove()
       svgRef.querySelector("#direction-lines")?.remove()
 
@@ -225,15 +161,19 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
       linesGroup.style.opacity = "0"
       linesGroup.style.transition = "opacity 0.25s ease-in"
 
-      // Color each number and create matching dots/lines
+      // Style numbers and create dots/direction lines with matching colors
       raphaelColors.reset()
       const numberTexts = numbersEl.querySelectorAll("text")
       numberTexts.forEach((text, index) => {
         const color = raphaelColors.getColor()
         const textEl = text as SVGTextElement
-        textEl.style.fill = color
-        textEl.style.fontSize = "10px"
-        textEl.style.fontWeight = "500"
+
+        // Only re-style text when animations are enabled (preserve server-side styling otherwise)
+        if (animationSettings().enabled) {
+          textEl.style.fill = color
+          textEl.style.fontSize = "10px"
+          textEl.style.fontWeight = "500"
+        }
 
         // Create dot and direction line at start of corresponding stroke
         if (index < strokePaths.length) {
@@ -278,8 +218,30 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
       svgRef.appendChild(linesGroup)
     }
 
-    // Reset to background state
-    resetToBackground()
+    // Apply current visibility state for client-side features
+    updateClientSideVisibility()
+  }
+
+  const updateClientSideVisibility = () => {
+    if (!svgRef) return
+
+    // Update client-side features (numbers, dots, direction lines)
+    // These only show at the end of animation or when animations are disabled
+    const canShow = !animationSettings().enabled || animationComplete()
+
+    // Only manage numbers visibility when animations are enabled (server-side handles disabled case)
+    if (animationSettings().enabled) {
+      updateElement(
+        'g[id*="StrokeNumbers"]',
+        canShow && displaySettings().numbers,
+        true,
+      ) // Move to top
+    }
+    updateElement("#stroke-dots", canShow && displaySettings().startDots)
+    updateElement(
+      "#direction-lines",
+      canShow && displaySettings().directionLines,
+    )
   }
 
   // -----------------------------
@@ -393,24 +355,15 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
     stopAnimation()
     svgRef.querySelector("#animation-strokes")?.remove()
 
+    // Reset stroke opacity to server-processed state
     const strokePaths = svgRef.querySelectorAll('path[id*="-s"]')
     const opacity = animationSettings().enabled ? "0.3" : "1"
-
     strokePaths.forEach(
       (path) => ((path as SVGPathElement).style.opacity = opacity),
     )
 
-    // Update each element based on animation state and individual props
-    const canShow = !animationSettings().enabled
-    updateElement(
-      'g[id*="StrokeNumbers"]',
-      canShow && displaySettings().numbers,
-    )
-    updateElement("#stroke-dots", canShow && displaySettings().startDots)
-    updateElement(
-      "#direction-lines",
-      canShow && displaySettings().directionLines,
-    )
+    // Update client-side features
+    updateClientSideVisibility()
 
     setAnimationComplete(!animationSettings().enabled)
   }
@@ -475,7 +428,7 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
       setIsAnimating(false)
       setAnimationComplete(true)
 
-      // Show elements based on their individual props
+      // Show client-side elements based on their individual props
       if (displaySettings().numbers)
         updateElement('g[id*="StrokeNumbers"]', true, true)
       if (displaySettings().startDots) updateElement("#stroke-dots", true, true)
@@ -487,35 +440,11 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
   // -----------------------------
   // Lifecycle
   // -----------------------------
-  const loadSvg = async () => {
-    if (!props.svgPath) return
-    try {
-      setSvgContent(await (await fetch(props.svgPath)).text())
-    } catch (error) {
-      console.error("Failed to load SVG:", error)
-    }
-  }
-
-  onMount(() => {
-    loadSvg()
-  })
 
   // Watch for prop changes and update visibility
   createEffect(() => {
-    // Track all reactive dependencies explicitly
-    const enableAnimate = animationSettings().enabled
-    const isComplete = animationComplete()
-    const showNums = displaySettings().numbers
-    const showDots = displaySettings().startDots
-    const showLines = displaySettings().directionLines
-
-    if (svgRef) {
-      const canShow = isComplete || !enableAnimate
-
-      updateElement('g[id*="StrokeNumbers"]', canShow && showNums)
-      updateElement("#stroke-dots", canShow && showDots)
-      updateElement("#direction-lines", canShow && showLines)
-    }
+    // Update client-side visibility when settings change
+    updateClientSideVisibility()
   })
 
   onCleanup(() => {
@@ -523,8 +452,7 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
   })
 
   createEffect(() => {
-    const content = svgContent()
-    if (content && containerRef) {
+    if (containerRef) {
       const svg = containerRef.querySelector("svg") as SVGSVGElement
       if (svg) {
         svgRef = svg
@@ -536,11 +464,9 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
   // Autoplay after initial setup
   createEffect(() => {
     const shouldAutoplay = animationSettings().autoplay
-    const content = svgContent()
 
     if (
       shouldAutoplay &&
-      content &&
       svgRef &&
       animationSettings().enabled &&
       !hasAutoPlayed() &&
@@ -564,7 +490,7 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
       role="img"
       aria-label="Kanji stroke order animation"
     >
-      <div ref={containerRef} innerHTML={svgContent()} />
+      <div ref={containerRef} innerHTML={props.processedSvgContent} />
       {props.children && (
         <div class="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-active:opacity-100">
           {typeof props.children === "function"
