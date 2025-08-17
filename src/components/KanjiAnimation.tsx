@@ -1,10 +1,4 @@
-import {
-  createSignal,
-  onMount,
-  onCleanup,
-  createEffect,
-  type JSX,
-} from "solid-js"
+import { createSignal, onCleanup, createEffect, type JSX } from "solid-js"
 import { raphaelColors } from "../utils/raphael-colors"
 
 interface Point {
@@ -26,9 +20,8 @@ export interface KanjiDisplaySettings {
 }
 
 export interface KanjiAnimationSettings {
-  enabled: boolean
   speed: number
-  autoplay: boolean
+  autostart: boolean
 }
 
 export interface KanjiStyleSettings {
@@ -52,9 +45,6 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
   // State
   // -----------------------------
   const [isAnimating, setIsAnimating] = createSignal(false)
-  const [animationComplete, setAnimationComplete] = createSignal(false)
-  const [hasAutoPlayed, setHasAutoPlayed] = createSignal(false)
-
   // Computed settings with defaults
   const styleSettings = () => ({
     strokeWidth: 3,
@@ -72,16 +62,18 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
   })
 
   const animationSettings = () => ({
-    enabled: true,
     speed: 0.5,
-    autoplay: true,
+    autostart: true,
     ...props.animationSettings,
   })
+
+  const [animationComplete, setAnimationComplete] = createSignal(false)
+  const [hasAutoPlayed, setHasAutoPlayed] = createSignal(false)
 
   // Create ref object with animation methods
   const animationRef: KanjiAnimationRef = {
     play: () => {
-      if (!isAnimating() && animationSettings().enabled) {
+      if (!isAnimating()) {
         animateStrokes()
       }
     },
@@ -91,7 +83,9 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
       }
     },
     reset: () => {
-      resetToBackground()
+      if (!isAnimating()) {
+        animateStrokes()
+      }
     },
     getState: () => ({
       isAnimating: isAnimating(),
@@ -128,9 +122,7 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
   const setupSvg = () => {
     if (!svgRef) return
 
-    // The SVG is already pre-processed server-side, so we only need to:
-    // 1. Set up client-only interactive features (dots and direction lines)
-    // 2. Ensure proper state for animations
+    // Set up client-side interactive features (dots and direction lines)
 
     // Handle stroke numbers, dots, and direction lines (client-only features)
     const strokeNumbers = svgRef.querySelector('g[id*="StrokeNumbers"]')
@@ -168,8 +160,8 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
         const color = raphaelColors.getColor()
         const textEl = text as SVGTextElement
 
-        // Only re-style text when animations are enabled (preserve server-side styling otherwise)
-        if (animationSettings().enabled) {
+        // Re-style text when autostart is enabled (server handles autostart=false styling)
+        if (animationSettings().autostart) {
           textEl.style.fill = color
           textEl.style.fontSize = "10px"
           textEl.style.fontWeight = "500"
@@ -218,26 +210,23 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
       svgRef.appendChild(linesGroup)
     }
 
-    // Apply current visibility state for client-side features
+    // Apply initial visibility state
     updateClientSideVisibility()
   }
 
   const updateClientSideVisibility = () => {
     if (!svgRef) return
 
-    // Update client-side features (numbers, dots, direction lines)
-    // These only show at the end of animation or when animations are disabled
-    const canShow = !animationSettings().enabled || animationComplete()
+    // Simple logic: show elements when not animating
+    const canShow = !isAnimating()
 
-    // Only manage numbers visibility when animations are enabled (server-side handles disabled case)
-    if (animationSettings().enabled) {
-      updateElement(
-        'g[id*="StrokeNumbers"]',
-        canShow && displaySettings().numbers,
-        true,
-      ) // Move to top
-    }
+    updateElement(
+      'g[id*="StrokeNumbers"]',
+      canShow && displaySettings().numbers,
+      true,
+    )
     updateElement("#stroke-dots", canShow && displaySettings().startDots)
+    updateElement("#server-dots", canShow && displaySettings().startDots)
     updateElement(
       "#direction-lines",
       canShow && displaySettings().directionLines,
@@ -265,6 +254,7 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
       })
     } else {
       el.style.opacity = "0"
+      if (selector.includes("StrokeNumbers")) el.style.display = "none"
     }
   }
 
@@ -349,33 +339,17 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
     setIsAnimating(false)
   }
 
-  const resetToBackground = () => {
-    if (!svgRef) return
-
-    stopAnimation()
-    svgRef.querySelector("#animation-strokes")?.remove()
-
-    // Reset stroke opacity to server-processed state
-    const strokePaths = svgRef.querySelectorAll('path[id*="-s"]')
-    const opacity = animationSettings().enabled ? "0.3" : "1"
-    strokePaths.forEach(
-      (path) => ((path as SVGPathElement).style.opacity = opacity),
-    )
-
-    // Update client-side features
-    updateClientSideVisibility()
-
-    setAnimationComplete(!animationSettings().enabled)
-  }
-
   const animateStrokes = async () => {
-    if (!svgRef || isAnimating() || !animationSettings().enabled) return
+    if (!svgRef || isAnimating()) return
 
     const strokePaths = svgRef.querySelectorAll('path[id*="-s"]')
     if (strokePaths.length === 0) return
 
     setIsAnimating(true)
     setAnimationComplete(false)
+
+    // Hide all UI elements during animation
+    updateClientSideVisibility()
 
     // Clear any existing animation without changing isAnimating state
     if (animationId) {
@@ -428,12 +402,8 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
       setIsAnimating(false)
       setAnimationComplete(true)
 
-      // Show client-side elements based on their individual props
-      if (displaySettings().numbers)
-        updateElement('g[id*="StrokeNumbers"]', true, true)
-      if (displaySettings().startDots) updateElement("#stroke-dots", true, true)
-      if (displaySettings().directionLines)
-        updateElement("#direction-lines", true, true)
+      // Show elements based on current settings
+      updateClientSideVisibility()
     }
   }
 
@@ -441,10 +411,12 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
   // Lifecycle
   // -----------------------------
 
-  // Watch for prop changes and update visibility
+  // Update visibility when display settings change
   createEffect(() => {
-    // Update client-side visibility when settings change
-    updateClientSideVisibility()
+    displaySettings() // Track display settings changes
+    if (svgRef) {
+      updateClientSideVisibility()
+    }
   })
 
   onCleanup(() => {
@@ -461,17 +433,11 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
     }
   })
 
-  // Autoplay after initial setup
+  // Autostart after initial setup
   createEffect(() => {
-    const shouldAutoplay = animationSettings().autoplay
+    const shouldAutostart = animationSettings().autostart
 
-    if (
-      shouldAutoplay &&
-      svgRef &&
-      animationSettings().enabled &&
-      !hasAutoPlayed() &&
-      !isAnimating()
-    ) {
+    if (shouldAutostart && svgRef && !hasAutoPlayed() && !isAnimating()) {
       setHasAutoPlayed(true)
       animateStrokes()
     }

@@ -39,7 +39,7 @@ export function KanjiAnimationControls(props: KanjiAnimationControlsProps) {
       return {
         icon: <RotateCcw size={14} />,
         onClick: () => props.animationRef?.reset(),
-        title: "Reset",
+        title: "Restart Animation",
         disabled: false,
       }
     } else {
@@ -47,7 +47,7 @@ export function KanjiAnimationControls(props: KanjiAnimationControlsProps) {
         icon: <Play size={14} />,
         onClick: () => props.animationRef?.play(),
         title: "Play Animation",
-        disabled: !props.animationSettings.enabled,
+        disabled: false,
       }
     }
   }
@@ -87,15 +87,18 @@ export function KanjiAnimationControls(props: KanjiAnimationControlsProps) {
               <label class="flex items-center space-x-2 text-sm">
                 <input
                   type="checkbox"
-                  checked={props.animationSettings.enabled}
-                  onChange={(e) =>
-                    props.onAnimationSettingsChange({
-                      enabled: e.currentTarget.checked,
-                    })
-                  }
+                  checked={props.animationSettings.autostart}
+                  onChange={(e) => {
+                    console.log(
+                      "Autostart clicked:",
+                      e.currentTarget.checked,
+                      "(will be persisted in future)",
+                    )
+                    // TODO: Update cookie for server-side persistence
+                  }}
                   class="rounded"
                 />
-                <span>Enable Animation</span>
+                <span>Autostart Animation</span>
               </label>
 
               <label class="flex items-center space-x-2 text-sm">

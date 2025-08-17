@@ -24,7 +24,7 @@ export interface ProcessSvgOptions {
   strokeColor: string
   strokeWidth: number
   showGrid: boolean
-  animationEnabled: boolean
+  autostart: boolean
   showNumbers: boolean
   showStartDots: boolean
   showDirectionLines: boolean
@@ -49,7 +49,7 @@ export function processSvgString(
   processed = processed.replace(/height="\d+"/, `height="${options.size}"`)
 
   // 2. Update stroke paths styling
-  const strokeOpacity = options.animationEnabled ? "0.3" : "1"
+  const strokeOpacity = options.autostart ? "0.3" : "1"
   processed = processed.replace(
     /<g id="kvg:StrokePaths_[^"]*" style="[^"]*">/,
     replaceGroupWithId(
@@ -59,10 +59,7 @@ export function processSvgString(
   )
 
   // 3. Handle numbers and dots for static state
-  if (
-    !options.animationEnabled &&
-    (options.showNumbers || options.showStartDots)
-  ) {
+  if (!options.autostart && (options.showNumbers || options.showStartDots)) {
     // Extract stroke paths with simple regex for KanjiVG
     const strokePaths = [
       ...processed.matchAll(/<path id="[^"]*-s\d+" d="([^"]*)"/g),
@@ -108,7 +105,7 @@ export function processSvgString(
       ),
     )
   } else {
-    // Numbers start hidden when animations are enabled (client-side will handle them)
+    // Numbers start hidden when autostart is enabled (client-side will handle them)
     processed = processed.replace(
       /<g id="kvg:StrokeNumbers_[^"]*" style="[^"]*">/,
       replaceGroupWithId(
@@ -130,4 +127,3 @@ export function processSvgString(
 
   return processed
 }
-

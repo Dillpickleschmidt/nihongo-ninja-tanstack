@@ -29,9 +29,8 @@ function KanjiTestPage() {
 
   const [animationSettings, setAnimationSettings] =
     createStore<KanjiAnimationSettings>({
-      enabled: false,
       speed: 0.5,
-      autoplay: true,
+      autostart: true,
     })
 
   const styleSettings: KanjiStyleSettings = {
@@ -48,7 +47,7 @@ function KanjiTestPage() {
       strokeColor: styleSettings.strokeColor,
       strokeWidth: styleSettings.strokeWidth,
       showGrid: styleSettings.showGrid,
-      animationEnabled: animationSettings.enabled,
+      autostart: animationSettings.autostart,
       showNumbers: displaySettings.numbers,
       showStartDots: displaySettings.startDots,
       showDirectionLines: displaySettings.directionLines,
