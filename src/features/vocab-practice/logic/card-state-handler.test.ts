@@ -22,7 +22,7 @@ const createMockPracticeCard = (
     // logs is initially undefined
   },
   isDisabled: false,
-  practiceMode: "readings",
+  practiceMode: "meanings",
   practiceItemType,
   sessionStyle,
   prompt: "食べる",

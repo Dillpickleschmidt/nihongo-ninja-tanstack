@@ -45,7 +45,7 @@ const createMockVocab = (
 // --- Data for FSRS Card Creation ---
 const createMockFSRSCard = (
   key: string,
-  mode: "readings" | "kana",
+  mode: "meanings" | "spellings",
   type: "vocabulary" | "kanji" | "radical",
   state: State = State.New,
 ): FSRSCardData => ({
@@ -194,7 +194,7 @@ describe("Data Initialization", () => {
         mockHierarchy,
         [],
         [],
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false, // flipVocabQA
         false, // flipKanjiRadicalQA
@@ -234,14 +234,14 @@ describe("Data Initialization", () => {
 
     it("should handle duplicate keys between module and due cards correctly", async () => {
       const duplicateDueCards: FSRSCardData[] = [
-        createMockFSRSCard("食べる", "readings", "vocabulary"),
+        createMockFSRSCard("食べる", "meanings", "vocabulary"),
       ]
 
       const result = await initializePracticeSession(
         mockHierarchy,
         [],
         duplicateDueCards,
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false,
         false,
@@ -258,15 +258,15 @@ describe("Data Initialization", () => {
 
     it("should process standalone due review cards", async () => {
       const mockDueFSRSCards: FSRSCardData[] = [
-        createMockFSRSCard("due1", "readings", "vocabulary"),
-        createMockFSRSCard("due2", "readings", "vocabulary"),
+        createMockFSRSCard("due1", "meanings", "vocabulary"),
+        createMockFSRSCard("due2", "meanings", "vocabulary"),
       ]
 
       const result = await initializePracticeSession(
         mockHierarchy,
         [],
         mockDueFSRSCards,
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false,
         false,
@@ -292,7 +292,7 @@ describe("Data Initialization", () => {
         mockHierarchy,
         [],
         [],
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false,
         false,
@@ -323,7 +323,7 @@ describe("Data Initialization", () => {
         mockHierarchy,
         [],
         [],
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false,
         false,
@@ -386,7 +386,7 @@ describe("Data Initialization", () => {
         {
           name: "only due cards",
           hierarchy: { vocabulary: [], kanji: [], radicals: [] },
-          dueCards: [createMockFSRSCard("due1", "readings", "vocabulary")],
+          dueCards: [createMockFSRSCard("due1", "meanings", "vocabulary")],
           expectation: (result: any) => {
             expect(result.cardMap.size).toBe(1)
             expect(result.reviewQueue).toContain("vocabulary:due1")
@@ -402,7 +402,7 @@ describe("Data Initialization", () => {
           hierarchy as VocabHierarchy,
           [],
           dueCards,
-          "readings",
+          "meanings",
           mockVocabularyItems,
           false,
           false,
@@ -417,15 +417,15 @@ describe("Data Initialization", () => {
   describe("FSRS data handling", () => {
     it("should preserve and filter FSRS data correctly", async () => {
       const mockModuleFSRSCards: FSRSCardData[] = [
-        createMockFSRSCard("食べる", "readings", "vocabulary", State.Review),
-        createMockFSRSCard("食", "readings", "kanji", State.New),
+        createMockFSRSCard("食べる", "meanings", "vocabulary", State.Review),
+        createMockFSRSCard("食", "meanings", "kanji", State.New),
       ]
 
       const result = await initializePracticeSession(
         mockHierarchy,
         mockModuleFSRSCards,
         [],
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false,
         false,
@@ -444,10 +444,10 @@ describe("Data Initialization", () => {
 
     it("should filter incoming FSRS data by the current session mode", async () => {
       const mixedModeFSRSCards: FSRSCardData[] = [
-        createMockFSRSCard("食べる", "readings", "vocabulary"),
-        createMockFSRSCard("食べる", "kana", "vocabulary"),
-        createMockFSRSCard("食", "readings", "kanji"),
-        createMockFSRSCard("食", "kana", "kanji"),
+        createMockFSRSCard("食べる", "meanings", "vocabulary"),
+        createMockFSRSCard("食べる", "spellings", "vocabulary"),
+        createMockFSRSCard("食", "meanings", "kanji"),
+        createMockFSRSCard("食", "spellings", "kanji"),
       ]
 
       mixedModeFSRSCards[0].fsrs_card.stability = 10
@@ -459,7 +459,7 @@ describe("Data Initialization", () => {
         mockHierarchy,
         mixedModeFSRSCards,
         [],
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false,
         false,
@@ -477,11 +477,11 @@ describe("Data Initialization", () => {
     it("should handle null/undefined logs gracefully", async () => {
       const mockDueFSRSCards: FSRSCardData[] = [
         {
-          ...createMockFSRSCard("due1", "readings", "vocabulary"),
+          ...createMockFSRSCard("due1", "meanings", "vocabulary"),
           fsrs_logs: null,
         },
         {
-          ...createMockFSRSCard("due2", "readings", "vocabulary"),
+          ...createMockFSRSCard("due2", "meanings", "vocabulary"),
           fsrs_logs: undefined,
         },
       ]
@@ -490,7 +490,7 @@ describe("Data Initialization", () => {
         mockHierarchy,
         [],
         mockDueFSRSCards,
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false,
         false,
@@ -525,7 +525,7 @@ describe("Data Initialization", () => {
           fsrsCards: [
             createMockFSRSCard(
               "食べる",
-              "readings",
+              "meanings",
               "vocabulary",
               State.Review,
             ),
@@ -537,14 +537,14 @@ describe("Data Initialization", () => {
         {
           name: "dependency cards in review state become flashcard",
           fsrsCards: [
-            createMockFSRSCard("食", "readings", "kanji", State.Review),
+            createMockFSRSCard("食", "meanings", "kanji", State.Review),
           ],
           expectations: [{ key: "kanji:食", style: "flashcard" }],
         },
         {
           name: "due review cards are flashcard",
           fsrsCards: [],
-          dueFsrsCards: [createMockFSRSCard("due1", "readings", "vocabulary")],
+          dueFsrsCards: [createMockFSRSCard("due1", "meanings", "vocabulary")],
           expectations: [{ key: "vocabulary:due1", style: "flashcard" }],
         },
       ]
@@ -554,7 +554,7 @@ describe("Data Initialization", () => {
           mockHierarchy,
           fsrsCards,
           dueFsrsCards,
-          "readings",
+          "meanings",
           mockVocabularyItems,
           false,
           false,
@@ -575,7 +575,7 @@ describe("Data Initialization", () => {
         mockHierarchy,
         [],
         [],
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false,
         false,
@@ -601,14 +601,14 @@ describe("Data Initialization", () => {
 
     it("should handle cards already in Review state", async () => {
       const reviewStateFSRS: FSRSCardData[] = [
-        createMockFSRSCard("人", "readings", "radical", State.Review),
+        createMockFSRSCard("人", "meanings", "radical", State.Review),
       ]
 
       const result = await initializePracticeSession(
         mockHierarchy,
         reviewStateFSRS,
         [],
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false,
         false,
@@ -628,17 +628,17 @@ describe("Data Initialization", () => {
 
       const fsrsCardsWithFutureDates: FSRSCardData[] = [
         {
-          ...createMockFSRSCard("人", "readings", "radical", State.Review),
+          ...createMockFSRSCard("人", "meanings", "radical", State.Review),
           fsrs_card: {
-            ...createMockFSRSCard("人", "readings", "radical", State.Review)
+            ...createMockFSRSCard("人", "meanings", "radical", State.Review)
               .fsrs_card,
             due: futureDate,
           },
         },
         {
-          ...createMockFSRSCard("口", "readings", "radical", State.Review),
+          ...createMockFSRSCard("口", "meanings", "radical", State.Review),
           fsrs_card: {
-            ...createMockFSRSCard("口", "readings", "radical", State.Review)
+            ...createMockFSRSCard("口", "meanings", "radical", State.Review)
               .fsrs_card,
             due: futureDate,
           },
@@ -649,7 +649,7 @@ describe("Data Initialization", () => {
         mockHierarchy,
         fsrsCardsWithFutureDates,
         [],
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false,
         false,
@@ -668,9 +668,9 @@ describe("Data Initialization", () => {
 
       const fsrsCardsWithFutureDates: FSRSCardData[] = [
         {
-          ...createMockFSRSCard("人", "readings", "radical", State.Review),
+          ...createMockFSRSCard("人", "meanings", "radical", State.Review),
           fsrs_card: {
-            ...createMockFSRSCard("人", "readings", "radical", State.Review)
+            ...createMockFSRSCard("人", "meanings", "radical", State.Review)
               .fsrs_card,
             due: futureDate,
           },
@@ -681,7 +681,7 @@ describe("Data Initialization", () => {
         mockHierarchy,
         fsrsCardsWithFutureDates,
         [],
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false,
         false,
@@ -702,17 +702,17 @@ describe("Data Initialization", () => {
 
       const fsrsCardsWithFutureDates: FSRSCardData[] = [
         {
-          ...createMockFSRSCard("人", "readings", "radical", State.Review),
+          ...createMockFSRSCard("人", "meanings", "radical", State.Review),
           fsrs_card: {
-            ...createMockFSRSCard("人", "readings", "radical", State.Review)
+            ...createMockFSRSCard("人", "meanings", "radical", State.Review)
               .fsrs_card,
             due: futureDate,
           },
         },
         {
-          ...createMockFSRSCard("口", "readings", "radical", State.Review),
+          ...createMockFSRSCard("口", "meanings", "radical", State.Review),
           fsrs_card: {
-            ...createMockFSRSCard("口", "readings", "radical", State.Review)
+            ...createMockFSRSCard("口", "meanings", "radical", State.Review)
               .fsrs_card,
             due: futureDate,
           },
@@ -723,7 +723,7 @@ describe("Data Initialization", () => {
         mockHierarchy,
         fsrsCardsWithFutureDates,
         [],
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false,
         false,
@@ -747,9 +747,9 @@ describe("Data Initialization", () => {
 
       const fsrsCardsWithFutureDates: FSRSCardData[] = [
         {
-          ...createMockFSRSCard("人", "readings", "radical", State.Review),
+          ...createMockFSRSCard("人", "meanings", "radical", State.Review),
           fsrs_card: {
-            ...createMockFSRSCard("人", "readings", "radical", State.Review)
+            ...createMockFSRSCard("人", "meanings", "radical", State.Review)
               .fsrs_card,
             due: futureDate,
           },
@@ -760,7 +760,7 @@ describe("Data Initialization", () => {
         mockHierarchy,
         fsrsCardsWithFutureDates,
         [],
-        "readings",
+        "meanings",
         mockVocabularyItems,
         false,
         false,
@@ -819,7 +819,7 @@ describe("Data Initialization", () => {
         complexHierarchy,
         [],
         [],
-        "readings",
+        "meanings",
         complexVocabularyItems,
         false,
         false,
@@ -848,24 +848,24 @@ describe("Data Initialization", () => {
 
       const cards: FSRSCardData[] = [
         {
-          ...createMockFSRSCard("due1", "readings", "vocabulary"),
+          ...createMockFSRSCard("due1", "meanings", "vocabulary"),
           fsrs_card: {
-            ...createMockFSRSCard("due1", "readings", "vocabulary").fsrs_card,
+            ...createMockFSRSCard("due1", "meanings", "vocabulary").fsrs_card,
             due: pastDate,
           },
         },
         {
-          ...createMockFSRSCard("future1", "readings", "vocabulary"),
+          ...createMockFSRSCard("future1", "meanings", "vocabulary"),
           fsrs_card: {
-            ...createMockFSRSCard("future1", "readings", "vocabulary")
+            ...createMockFSRSCard("future1", "meanings", "vocabulary")
               .fsrs_card,
             due: futureDate,
           },
         },
         {
-          ...createMockFSRSCard("due2", "kana", "vocabulary"),
+          ...createMockFSRSCard("due2", "spellings", "vocabulary"),
           fsrs_card: {
-            ...createMockFSRSCard("due2", "kana", "vocabulary").fsrs_card,
+            ...createMockFSRSCard("due2", "spellings", "vocabulary").fsrs_card,
             due: pastDate,
           },
         },
@@ -882,7 +882,7 @@ describe("Data Initialization", () => {
         mockHierarchy,
         [],
         cards,
-        "readings",
+        "meanings",
         vocabItems,
         false,
         false,
@@ -899,9 +899,9 @@ describe("Data Initialization", () => {
       pastDate.setDate(pastDate.getDate() - 1)
 
       const dueReviewCard: FSRSCardData = {
-        ...createMockFSRSCard("外部", "readings", "vocabulary"),
+        ...createMockFSRSCard("外部", "meanings", "vocabulary"),
         fsrs_card: {
-          ...createMockFSRSCard("外部", "readings", "vocabulary").fsrs_card,
+          ...createMockFSRSCard("外部", "meanings", "vocabulary").fsrs_card,
           due: pastDate,
         },
       }
@@ -916,7 +916,7 @@ describe("Data Initialization", () => {
         mockHierarchy,
         [],
         [dueReviewCard],
-        "readings",
+        "meanings",
         [...mockVocabularyItems, externalVocab],
         false,
         false,
@@ -933,9 +933,9 @@ describe("Data Initialization", () => {
       pastDate.setDate(pastDate.getDate() - 1)
 
       const dueReviewCard: FSRSCardData = {
-        ...createMockFSRSCard("外部", "readings", "vocabulary"),
+        ...createMockFSRSCard("外部", "meanings", "vocabulary"),
         fsrs_card: {
-          ...createMockFSRSCard("外部", "readings", "vocabulary").fsrs_card,
+          ...createMockFSRSCard("外部", "meanings", "vocabulary").fsrs_card,
           due: pastDate,
         },
       }
@@ -950,7 +950,7 @@ describe("Data Initialization", () => {
         mockHierarchy,
         [],
         [dueReviewCard],
-        "readings",
+        "meanings",
         [...mockVocabularyItems, externalVocab],
         false,
         false,

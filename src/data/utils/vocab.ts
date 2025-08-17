@@ -192,14 +192,14 @@ export function getExampleSentenceParts(
   const inputValidationTargets: string[][] = []
   let inputCount = 0
 
-  const parts = mode === "kana" ? sentence.japanese : sentence.english
+  const parts = mode === "spellings" ? sentence.japanese : sentence.english
 
   parts.forEach((part, index) => {
     if (typeof part === "string") {
-      // If in 'kana' mode, convertFuriganaToRubyHtml will now strip spaces for us.
-      // If in 'readings' mode, the 'part' is already English and spaces should be preserved.
+      // If in 'spellings' mode, convertFuriganaToRubyHtml will now strip spaces for us.
+      // If in 'meanings' mode, the 'part' is already English and spaces should be preserved.
       const htmlContent =
-        mode === "kana" ? convertFuriganaToRubyHtml(part) : part
+        mode === "spellings" ? convertFuriganaToRubyHtml(part) : part
 
       displayParts.push({
         type: "html",

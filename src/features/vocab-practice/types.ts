@@ -10,7 +10,7 @@ export type CurrentPage =
   | "fsrs-flashcard"
   | "kanji-introduction"
 
-export type PracticeMode = "readings" | "kana"
+export type PracticeMode = "meanings" | "spellings"
 
 export type PracticeSessionMode = "mixed" | "focused"
 

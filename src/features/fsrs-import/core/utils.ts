@@ -17,22 +17,22 @@ const KANJI_REGEX = /[\u4e00-\u9faf\u3400-\u4dbf]/
 
 /**
  * Determines the practice mode based on item type and content.
- * Returns "readings" for kanji/radical types or vocabulary containing kanji.
- * Returns "kana" for pure kana vocabulary.
+ * Returns "meanings" for kanji/radical types or vocabulary containing kanji.
+ * Returns "spellings" for pure kana vocabulary.
  */
 export function determineMode(
   practiceItemType: DBPracticeItemType,
   originalSpelling: string,
 ): PracticeMode {
-  // Non-vocabulary types always use readings mode
+  // Non-vocabulary types always use meanings mode
   if (practiceItemType !== "vocabulary") {
-    return "readings"
+    return "meanings"
   }
 
-  // Vocabulary with kanji or empty spelling uses readings, pure kana uses kana
+  // Vocabulary with kanji or empty spelling uses meanings, pure kana uses spellings
   return !originalSpelling || KANJI_REGEX.test(originalSpelling)
-    ? "readings"
-    : "kana"
+    ? "meanings"
+    : "spellings"
 }
 
 /**

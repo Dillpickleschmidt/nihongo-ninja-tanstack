@@ -18,7 +18,7 @@ export default function CardTypeSwitchComponent() {
   const promptClasses = createMemo(() => {
     const baseClasses =
       "font-japanese flex h-48 flex-col justify-center text-center"
-    if (currentCard()?.practiceMode === "kana") {
+    if (currentCard()?.practiceMode === "spellings") {
       return `${baseClasses} text-4xl lg:text-5xl`
     }
     return `${baseClasses} text-5xl lg:text-6xl`

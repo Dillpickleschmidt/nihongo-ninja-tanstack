@@ -29,7 +29,7 @@ const createMockCard = (
   validAnswers: string[],
   partOfSpeech?: PartOfSpeech,
   practiceItemType: "vocabulary" | "kanji" = "vocabulary",
-  practiceMode: "readings" | "kana" = "readings",
+  practiceMode: "meanings" | "spellings" = "meanings",
 ): PracticeCard => ({
   key,
   vocab: {
@@ -119,42 +119,42 @@ describe("MultipleChoiceComponent", () => {
     })
 
     it("should filter options by practice mode", () => {
-      const readingsCard = createMockCard(
+      const meaningsCard = createMockCard(
         "vocabulary:食べる",
         ["eat"],
         "Ichidan verb",
         "vocabulary",
-        "readings",
+        "meanings",
       )
-      const kanaCard = createMockCard(
+      const spellingsCard = createMockCard(
         "vocabulary:飲む",
         ["drink"],
         "Godan verb with 'mu' ending",
         "vocabulary",
-        "kana",
+        "spellings",
       )
-      const anotherReadingsCard = createMockCard(
+      const anotherMeaningsCard = createMockCard(
         "vocabulary:見る",
         ["see"],
         "Ichidan verb",
         "vocabulary",
-        "readings",
+        "meanings",
       )
 
       const cardMap = new Map([
-        ["vocabulary:食べる", readingsCard],
-        ["vocabulary:飲む", kanaCard],
-        ["vocabulary:見る", anotherReadingsCard],
+        ["vocabulary:食べる", meaningsCard],
+        ["vocabulary:飲む", spellingsCard],
+        ["vocabulary:見る", anotherMeaningsCard],
       ])
 
-      defaultMockState.currentCard = readingsCard
+      defaultMockState.currentCard = meaningsCard
       mockGetCardMap.mockReturnValue(cardMap)
 
       render(() => <MultipleChoiceComponent />)
 
       const buttons = screen.getAllByRole("button")
 
-      // Should have exactly 2 buttons: readings cards only (kana card filtered out)
+      // Should have exactly 2 buttons: meanings cards only (spellings card filtered out)
       expect(buttons.length).toBe(2)
     })
 
@@ -311,28 +311,28 @@ describe("MultipleChoiceComponent", () => {
         ["eat"],
         "Ichidan verb",
         "vocabulary",
-        "readings",
+        "meanings",
       )
       const correctCard = createMockCard(
         "vocabulary:飲む",
         ["drink"],
         "Godan verb with 'mu' ending",
         "vocabulary",
-        "readings",
+        "meanings",
       )
       const wrongPoSCard = createMockCard(
         "vocabulary:大きい",
         ["big"],
         "I-adjective",
         "vocabulary",
-        "readings",
+        "meanings",
       ) // Wrong part of speech
       const wrongModeCard = createMockCard(
         "vocabulary:見る",
         ["see"],
         "Ichidan verb",
         "vocabulary",
-        "kana",
+        "spellings",
       ) // Wrong practice mode
 
       const cardMap = new Map([

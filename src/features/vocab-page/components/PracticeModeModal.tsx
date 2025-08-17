@@ -19,7 +19,7 @@ interface PracticeModeModalProps {
 export function PracticeModeModal(props: PracticeModeModalProps) {
   const navigate = useNavigate()
 
-  const handlePracticeMode = (mode: "readings" | "kana") => {
+  const handlePracticeMode = (mode: "meanings" | "spellings") => {
     if (!props.deck) return
 
     if (props.deck.source === "built-in") {
@@ -59,8 +59,8 @@ export function PracticeModeModal(props: PracticeModeModalProps) {
 
           <div class="space-y-4">
             <p class="text-muted-foreground text-sm">
-              Start with the readings to familiarize yourself, then move on to
-              kana for pronunciation.
+              Start with the meanings to familiarize yourself, then move on to
+              spellings for pronunciation.
             </p>
 
             <div class="grid grid-cols-2 gap-4">
@@ -68,13 +68,13 @@ export function PracticeModeModal(props: PracticeModeModalProps) {
                 variant="outline"
                 size="lg"
                 class="bg-background/30 h-auto min-h-16 flex-col items-center justify-center p-4 whitespace-normal"
-                onClick={() => handlePracticeMode("readings")}
+                onClick={() => handlePracticeMode("meanings")}
               >
                 <div class="mb-2 text-lg font-bold text-sky-400 select-none">
                   読
                 </div>
                 <div class="text-center">
-                  <div class="text-sm font-medium">Readings</div>
+                  <div class="text-sm font-medium">Meanings</div>
                   <div class="text-muted-foreground mt-1 text-xs">
                     Japanese → English
                   </div>
@@ -85,13 +85,13 @@ export function PracticeModeModal(props: PracticeModeModalProps) {
                 variant="outline"
                 size="lg"
                 class="bg-background/30 h-auto min-h-16 flex-col items-center justify-center p-4 whitespace-normal"
-                onClick={() => handlePracticeMode("kana")}
+                onClick={() => handlePracticeMode("spellings")}
               >
                 <div class="mb-2 text-lg font-bold text-orange-400 select-none">
                   あ
                 </div>
                 <div class="text-center">
-                  <div class="text-sm font-medium">Kana</div>
+                  <div class="text-sm font-medium">Spellings</div>
                   <div class="text-muted-foreground mt-1 text-xs">
                     English → Japanese
                   </div>

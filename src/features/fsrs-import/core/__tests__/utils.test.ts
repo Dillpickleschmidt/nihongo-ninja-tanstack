@@ -18,42 +18,42 @@ describe("Card Validation and Deduplication Utilities", () => {
     practice_item_key: "猫",
     type: "vocabulary",
     fsrs_card: createEmptyCard(new Date("2024-01-01")),
-    mode: "readings",
+    mode: "meanings",
     fsrs_logs: [],
     lesson_id: null,
     source: "test-source",
   }
 
   describe("determineMode", () => {
-    it("should return 'readings' for kanji type", () => {
-      expect(determineMode("kanji", "猫")).toBe("readings")
-      expect(determineMode("kanji", "")).toBe("readings")
+    it("should return 'meanings' for kanji type", () => {
+      expect(determineMode("kanji", "猫")).toBe("meanings")
+      expect(determineMode("kanji", "")).toBe("meanings")
     })
 
-    it("should return 'readings' for radical type", () => {
-      expect(determineMode("radical", "⼈")).toBe("readings")
+    it("should return 'meanings' for radical type", () => {
+      expect(determineMode("radical", "⼈")).toBe("meanings")
     })
 
-    it("should return 'readings' for vocabulary with kanji", () => {
-      expect(determineMode("vocabulary", "猫")).toBe("readings")
-      expect(determineMode("vocabulary", "日本語")).toBe("readings")
-      expect(determineMode("vocabulary", "食べる")).toBe("readings")
+    it("should return 'meanings' for vocabulary with kanji", () => {
+      expect(determineMode("vocabulary", "猫")).toBe("meanings")
+      expect(determineMode("vocabulary", "日本語")).toBe("meanings")
+      expect(determineMode("vocabulary", "食べる")).toBe("meanings")
     })
 
-    it("should return 'kana' for vocabulary with only kana", () => {
-      expect(determineMode("vocabulary", "ひらがな")).toBe("kana")
-      expect(determineMode("vocabulary", "カタカナ")).toBe("kana")
-      expect(determineMode("vocabulary", "あいうえお")).toBe("kana")
+    it("should return 'spellings' for vocabulary with only kana", () => {
+      expect(determineMode("vocabulary", "ひらがな")).toBe("spellings")
+      expect(determineMode("vocabulary", "カタカナ")).toBe("spellings")
+      expect(determineMode("vocabulary", "あいうえお")).toBe("spellings")
     })
 
-    it("should return 'readings' for empty vocabulary spelling", () => {
-      expect(determineMode("vocabulary", "")).toBe("readings")
-      expect(determineMode("vocabulary", "   ")).toBe("kana") // whitespace only
+    it("should return 'meanings' for empty vocabulary spelling", () => {
+      expect(determineMode("vocabulary", "")).toBe("meanings")
+      expect(determineMode("vocabulary", "   ")).toBe("spellings") // whitespace only
     })
 
-    it("should return 'readings' as default fallback", () => {
+    it("should return 'meanings' as default fallback", () => {
       // @ts-expect-error - testing invalid type
-      expect(determineMode("unknown", "test")).toBe("readings")
+      expect(determineMode("unknown", "test")).toBe("meanings")
     })
   })
 
@@ -135,10 +135,10 @@ describe("Card Validation and Deduplication Utilities", () => {
     })
 
     it("should accept valid modes", () => {
-      expect(validateCardStructure({ ...mockCard, mode: "readings" })).toBe(
+      expect(validateCardStructure({ ...mockCard, mode: "meanings" })).toBe(
         true,
       )
-      expect(validateCardStructure({ ...mockCard, mode: "kana" })).toBe(true)
+      expect(validateCardStructure({ ...mockCard, mode: "spellings" })).toBe(true)
     })
 
     it("should reject cards with invalid fsrs_card", () => {

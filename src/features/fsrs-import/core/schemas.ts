@@ -64,7 +64,7 @@ export const DBPracticeItemTypeSchema = z.enum([
 ])
 export type DBPracticeItemType = z.infer<typeof DBPracticeItemTypeSchema>
 
-export const PracticeModeSchema = z.enum(["readings", "kana"])
+export const PracticeModeSchema = z.enum(["meanings", "spellings"])
 export type PracticeMode = z.infer<typeof PracticeModeSchema>
 
 export const ProcessedCardSchema = z.object({

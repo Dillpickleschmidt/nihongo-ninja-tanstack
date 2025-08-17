@@ -79,8 +79,8 @@ describe("Vocabulary Utils", () => {
       japanese: ["これ を ", { t: "手伝[てつだ]って" }, " ください"],
     }
 
-    it('should process a Japanese sentence in "kana" mode, stripping spaces and returning validation targets', () => {
-      const result = getExampleSentenceParts(sentence, "kana")
+    it('should process a Japanese sentence in "spellings" mode, stripping spaces and returning validation targets', () => {
+      const result = getExampleSentenceParts(sentence, "spellings")
       const expectedDisplayParts = [
         { type: "html", content: "これを" },
         { type: "input", index: 0 },
@@ -91,8 +91,8 @@ describe("Vocabulary Utils", () => {
       expect(result.inputValidationTargets).toEqual(expectedValidationTargets)
     })
 
-    it('should process an English sentence in "readings" mode, preserving spaces and returning validation targets', () => {
-      const result = getExampleSentenceParts(sentence, "readings")
+    it('should process an English sentence in "meanings" mode, preserving spaces and returning validation targets', () => {
+      const result = getExampleSentenceParts(sentence, "meanings")
       const expectedDisplayParts = [
         // EXPECTED: Spaces preserved for English text, as convertFuriganaToRubyHtml is not applied
         { type: "html", content: "Shall I " },
@@ -122,7 +122,7 @@ describe("Vocabulary Utils", () => {
         ],
       }
 
-      const result = getExampleSentenceParts(furiganaSentence, "kana")
+      const result = getExampleSentenceParts(furiganaSentence, "spellings")
       const expectedDisplayParts = [
         {
           type: "html",
@@ -147,7 +147,7 @@ describe("Vocabulary Utils", () => {
         japanese: ["今、", { t: "ここ" }, "にいる。"],
       }
 
-      const result = getExampleSentenceParts(simpleKanaSentence, "kana")
+      const result = getExampleSentenceParts(simpleKanaSentence, "spellings")
       const expectedDisplayParts = [
         { type: "html", content: "今、" },
         { type: "input", index: 0 },
@@ -165,7 +165,7 @@ describe("Vocabulary Utils", () => {
         japanese: ["こんにちは、お元気ですか？"],
       }
 
-      const result = getExampleSentenceParts(noTargetSentence, "kana")
+      const result = getExampleSentenceParts(noTargetSentence, "spellings")
       const expectedDisplayParts = [
         { type: "html", content: "こんにちは、お元気ですか？" },
       ]
@@ -192,7 +192,7 @@ describe("Vocabulary Utils", () => {
           " 本を。",
         ],
       }
-      const result = getExampleSentenceParts(mixedSentence, "kana")
+      const result = getExampleSentenceParts(mixedSentence, "spellings")
       const expectedDisplayParts = [
         { type: "html", content: "あの" },
         { type: "input", index: 0 },

@@ -36,7 +36,7 @@ export default function StartPagePreviewCard(props: StartPagePreviewCardProps) {
   })
 
   const questionTextClass = () =>
-    props.card.practiceMode === "readings" ||
+    props.card.practiceMode === "meanings" ||
     props.card.practiceItemType !== "vocabulary"
       ? "text-xl lg:text-2xl"
       : "text-lg lg:text-xl"

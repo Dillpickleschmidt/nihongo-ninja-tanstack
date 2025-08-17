@@ -94,7 +94,7 @@ const createTestState = (
       },
       sessionScope,
       practiceItemType,
-      practiceMode: "readings",
+      practiceMode: "meanings",
       sessionStyle,
       prompt,
       validAnswers,
@@ -423,7 +423,7 @@ describe("PracticeSessionManager", () => {
         },
         sessionScope: "module",
         practiceItemType: "radical",
-        practiceMode: "readings",
+        practiceMode: "meanings",
         sessionStyle: "multiple-choice",
         prompt: "人",
         validAnswers: ["radical1"],
@@ -454,7 +454,7 @@ describe("PracticeSessionManager", () => {
         },
         sessionScope: "module",
         practiceItemType: "kanji",
-        practiceMode: "readings",
+        practiceMode: "meanings",
         sessionStyle: "multiple-choice",
         prompt: "漢",
         validAnswers: ["kanji1"],
@@ -485,7 +485,7 @@ describe("PracticeSessionManager", () => {
         },
         sessionScope: "module",
         practiceItemType: "vocabulary",
-        practiceMode: "readings",
+        practiceMode: "meanings",
         sessionStyle: "multiple-choice",
         prompt: "単語",
         validAnswers: ["vocab1"],
@@ -563,7 +563,7 @@ describe("PracticeSessionManager", () => {
         },
         sessionScope: "module",
         practiceItemType: "vocabulary",
-        practiceMode: "readings",
+        practiceMode: "meanings",
         sessionStyle: "multiple-choice",
         prompt: "食べる",
         validAnswers: ["to eat", "eat"],
@@ -593,7 +593,7 @@ describe("PracticeSessionManager", () => {
         },
         sessionScope: "module",
         practiceItemType: "kanji",
-        practiceMode: "readings",
+        practiceMode: "meanings",
         sessionStyle: "multiple-choice",
         prompt: "食",
         validAnswers: ["food", "meal"],
@@ -623,7 +623,7 @@ describe("PracticeSessionManager", () => {
         },
         sessionScope: "module",
         practiceItemType: "radical",
-        practiceMode: "readings",
+        practiceMode: "meanings",
         sessionStyle: "multiple-choice",
         prompt: "人",
         validAnswers: ["person", "human"],
@@ -679,7 +679,7 @@ describe("PracticeSessionManager", () => {
         },
         sessionScope: "review",
         practiceItemType: "vocabulary",
-        practiceMode: "readings",
+        practiceMode: "meanings",
         sessionStyle: "flashcard",
         prompt: "読む",
         validAnswers: ["to read", "read"],
@@ -709,7 +709,7 @@ describe("PracticeSessionManager", () => {
         },
         sessionScope: "review",
         practiceItemType: "vocabulary",
-        practiceMode: "kana",
+        practiceMode: "spellings",
         sessionStyle: "flashcard",
         prompt: "to write, write",
         validAnswers: ["かく", "書く"],
@@ -718,16 +718,16 @@ describe("PracticeSessionManager", () => {
       const manager = new PracticeSessionManager(mixedModeState, true)
 
       // Verify different modes work correctly
-      const readingsCard = manager.getCurrentCard()
-      expect(readingsCard.practiceMode).toBe("readings")
-      expect(readingsCard.prompt).toBe("読む")
+      const meaningsCard = manager.getCurrentCard()
+      expect(meaningsCard.practiceMode).toBe("meanings")
+      expect(meaningsCard.prompt).toBe("読む")
 
       await manager.processAnswer(Rating.Good, false)
 
-      const kanaCard = manager.getCurrentCard()
-      expect(kanaCard.practiceMode).toBe("kana")
-      expect(kanaCard.prompt).toBe("to write, write")
-      expect(kanaCard.validAnswers).toEqual(["かく", "書く"])
+      const spellingsCard = manager.getCurrentCard()
+      expect(spellingsCard.practiceMode).toBe("spellings")
+      expect(spellingsCard.prompt).toBe("to write, write")
+      expect(spellingsCard.validAnswers).toEqual(["かく", "書く"])
     })
   })
 
@@ -789,7 +789,7 @@ describe("PracticeSessionManager", () => {
           practice_item_key: "単語1",
           fsrs_card: expect.any(Object),
           fsrs_logs: expect.any(Array),
-          mode: "readings",
+          mode: "meanings",
           type: "vocabulary",
         }),
       })

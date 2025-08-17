@@ -110,7 +110,7 @@ function ReviewCardSummary(props: { card: PracticeCard; wasCorrect: boolean }) {
   const wasAnsweredIncorrectly = () => !props.wasCorrect
 
   const answerToDisplay = () => {
-    if (props.card.practiceMode === "kana") {
+    if (props.card.practiceMode === "spellings") {
       return props.card.vocab.hiragana.join(", ")
     }
     return props.card.validAnswers.join(", ")
@@ -122,7 +122,7 @@ function ReviewCardSummary(props: { card: PracticeCard; wasCorrect: boolean }) {
       : "text-orange-400 saturate-[125%]"
     const baseLayout = "mb-3 font-bold"
     const fontSize =
-      props.card.practiceMode === "kana"
+      props.card.practiceMode === "spellings"
         ? "text-lg lg:text-xl" // Smaller for English prompt
         : "text-xl lg:text-2xl" // Larger for Japanese prompt
     return `${baseColor} ${baseLayout} ${fontSize}`
@@ -131,7 +131,7 @@ function ReviewCardSummary(props: { card: PracticeCard; wasCorrect: boolean }) {
   const answerClasses = () => {
     const baseLayout = "text-primary ml-4 font-semibold"
     const fontSize =
-      props.card.practiceMode === "kana"
+      props.card.practiceMode === "spellings"
         ? "text-lg lg:text-xl" // Larger for Japanese answer
         : "text-base lg:text-lg" // Smaller for English answer
     return `${baseLayout} ${fontSize}`

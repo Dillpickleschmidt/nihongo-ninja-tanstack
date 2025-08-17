@@ -67,7 +67,7 @@ const createMockCard = (
       : ("Godan verb with 'u' ending" satisfies PartOfSpeech),
   },
   fsrs: { card: {} as any, logs: [] },
-  practiceMode: hasExampleSentence ? "kana" : "readings",
+  practiceMode: hasExampleSentence ? "spellings" : "meanings",
   practiceItemType: "vocabulary",
   sessionStyle: "write",
   prompt: validAnswers.join(", "),

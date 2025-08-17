@@ -42,7 +42,7 @@ describe("ImportSessionManager", () => {
       practice_item_key: "猫",
       type: "vocabulary",
       fsrs_card: {} as any,
-      mode: "readings",
+      mode: "meanings",
       fsrs_logs: [],
       lesson_id: null,
       source: "test-source",
