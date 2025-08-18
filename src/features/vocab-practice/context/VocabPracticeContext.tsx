@@ -102,8 +102,8 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
 
   const kanjiStyleSettings: KanjiStyleSettings = {
     strokeWidth: 3,
-    strokeColor: "#ffffff",
-    size: 170,
+    strokeColor: "var(--color-primary)",
+    size: 190,
     showGrid: true,
   }
 

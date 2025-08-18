@@ -7,16 +7,18 @@ import {
   onCleanup,
   createResource,
 } from "solid-js"
-import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import ProgressHeader from "../ProgressHeader"
 import { Rating, Grade } from "ts-fsrs"
 import { cn } from "@/utils/util"
-import { parseMnemonicText } from "@/utils/mnemonic-parser"
 import { KanjiAnimation } from "@/components/KanjiAnimation"
 import { KanjiAnimationControls } from "@/components/KanjiAnimationControls"
 import { processSvgString } from "@/utils/svg-processor"
 import type { PracticeCard } from "../../types"
+import { PracticeCardContainer } from "../shared/PracticeCardContainer"
+import { MnemonicSection } from "../shared/MnemonicSection"
+import { ActionButton } from "../shared/ActionButton"
+import { KanjiGrid } from "@/components/ui/KanjiGrid"
 
 // -----------------------------
 // Helpers
@@ -45,14 +47,14 @@ function getSideConfig(
     isJapanese = isPrompt ? !flipKanjiRadicalQA : flipKanjiRadicalQA
   }
 
-  const shouldAnimate =
+  const showAsKanjiAnimation =
     card.practiceMode === "meanings" &&
     (card.practiceItemType === "kanji" ||
       card.practiceItemType === "radical") &&
     isJapanese &&
     (Array.isArray(text) ? text[0]?.length === 1 : text.length === 1)
 
-  return { isJapanese, shouldAnimate, text }
+  return { isJapanese, showAsKanjiAnimation, text }
 }
 
 // -----------------------------
@@ -84,9 +86,10 @@ function FlashcardSide(props: {
   const sideConfig = () =>
     getSideConfig(props.card(), props.side, props.uiState)
 
+  // Load SVG data if we should show kanji animation
   const [svgData] = createResource(
     () =>
-      sideConfig().shouldAnimate
+      sideConfig().showAsKanjiAnimation
         ? Array.isArray(sideConfig().text)
           ? sideConfig().text[0]
           : sideConfig().text
@@ -97,33 +100,68 @@ function FlashcardSide(props: {
   const textClass = () => {
     const cfg = sideConfig()
     const isJapanese = cfg.isJapanese
-    if (props.side === "prompt") {
+
+    // Answer side: simple sizing
+    if (props.side === "answer") {
       return isJapanese
-        ? props.showAnswer
-          ? "font-japanese text-4xl lg:text-5xl"
-          : "font-japanese text-5xl lg:text-6xl"
-        : props.showAnswer
-          ? "font-inter text-2xl font-semibold"
-          : "font-inter text-4xl font-semibold"
-    } else {
-      return isJapanese
-        ? "font-japanese text-6xl lg:text-7xl"
-        : "font-inter text-3xl font-semibold"
+        ? "font-japanese text-5xl sm:text-6xl lg:text-7xl font-medium"
+        : "font-inter text-2xl sm:text-3xl font-semibold"
     }
+
+    // Prompt side: For kanji cards, keep consistent sizing regardless of showAnswer
+    if (isKanjiMeaningsCard()) {
+      return isJapanese
+        ? "font-japanese text-3xl sm:text-4xl lg:text-5xl"
+        : "font-inter text-2xl sm:text-3xl font-semibold" // Consistent English size too
+    }
+
+    // Prompt side: Non-kanji cards can change size with answer reveal
+    if (isJapanese) {
+      return props.showAnswer
+        ? "font-japanese text-3xl sm:text-4xl lg:text-5xl"
+        : "font-japanese text-4xl sm:text-5xl lg:text-6xl"
+    }
+
+    // Prompt side: English text for non-kanji cards
+    return props.showAnswer
+      ? "font-inter text-xl sm:text-2xl font-semibold"
+      : "font-inter text-2xl sm:text-3xl font-semibold"
+  }
+
+  // Check if this card type could show kanji animation
+  const isKanjiMeaningsCard = () => {
+    const card = props.card()
+    return (
+      card.practiceMode === "meanings" &&
+      (card.practiceItemType === "kanji" || card.practiceItemType === "radical")
+    )
   }
 
   return (
     <Show
-      when={sideConfig().shouldAnimate && svgData() && !svgData.loading}
+      when={sideConfig().showAsKanjiAnimation && svgData() && !svgData.loading}
       fallback={
-        <p class={cn("mt-6 text-orange-400", textClass())}>
-          {Array.isArray(sideConfig().text)
-            ? (sideConfig().text as string[]).join(", ")
-            : (sideConfig().text as string)}
-        </p>
+        <>
+          <p class={cn("mt-6 text-orange-400", textClass())}>
+            {Array.isArray(sideConfig().text)
+              ? (sideConfig().text as string[]).join(", ")
+              : (sideConfig().text as string)}
+          </p>
+          <Show
+            when={
+              isKanjiMeaningsCard() &&
+              props.side === "prompt" &&
+              !props.showAnswer
+            }
+          >
+            <div class="mt-6 flex justify-center">
+              <KanjiGrid size={props.kanjiStyleSettings.size} />
+            </div>
+          </Show>
+        </>
       }
     >
-      <div class="mt-6 flex justify-center">
+      <div class="my-6 flex justify-center">
         <KanjiAnimation
           processedSvgContent={processSvgString(svgData()!, {
             size: props.kanjiStyleSettings.size,
@@ -135,10 +173,7 @@ function FlashcardSide(props: {
             showStartDots: props.kanjiDisplaySettings.startDots,
             showDirectionLines: props.kanjiDisplaySettings.directionLines,
           })}
-          styleSettings={{
-            ...props.kanjiStyleSettings,
-            size: props.kanjiStyleSettings.size,
-          }}
+          styleSettings={props.kanjiStyleSettings}
           displaySettings={props.kanjiDisplaySettings}
           animationSettings={props.kanjiAnimationSettings}
         >
@@ -160,9 +195,7 @@ function FlashcardSide(props: {
                 showDirectionLines: props.kanjiDisplaySettings.directionLines,
               })}
               rawSvgContent={svgData()!}
-              styleSettings={{
-                ...props.kanjiStyleSettings,
-              }}
+              styleSettings={props.kanjiStyleSettings}
             />
           )}
         </KanjiAnimation>
@@ -171,52 +204,8 @@ function FlashcardSide(props: {
   )
 }
 
-function Mnemonics(props: { card: () => PracticeCard }) {
-  const meaningMnemonic = () => props.card().mnemonics?.kanji?.[0] || ""
-  const readingMnemonic = () => props.card().mnemonics?.reading?.[0] || ""
-
-  return (
-    <div class="mt-6 flex flex-col items-center gap-4">
-      {/* Meaning Mnemonic (only in meanings mode, for kanji/radical) */}
-      <Show
-        when={
-          ["kanji", "radical"].includes(props.card().practiceItemType) &&
-          props.card().practiceMode === "meanings" &&
-          meaningMnemonic().length > 0
-        }
-      >
-        <div class="w-full max-w-xl px-2">
-          <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
-            <span class="text-sky-400">Meaning</span> Mnemonic
-          </p>
-          <p class="text-muted-foreground text-base leading-relaxed italic">
-            {parseMnemonicText(meaningMnemonic())}
-          </p>
-        </div>
-      </Show>
-
-      {/* Spelling Mnemonic (only in spellings mode, for kanji/radical) */}
-      <Show
-        when={
-          ["kanji", "radical"].includes(props.card().practiceItemType) &&
-          props.card().practiceMode === "spellings" &&
-          readingMnemonic().length > 0
-        }
-      >
-        <div class="w-full max-w-xl px-2">
-          <p class="text-muted-foreground mb-2 text-sm tracking-wider uppercase">
-            <span class="text-orange-400">Spelling</span> Mnemonic
-          </p>
-          <p class="text-muted-foreground text-base leading-relaxed italic">
-            {parseMnemonicText(readingMnemonic())}
-          </p>
-        </div>
-      </Show>
-    </div>
-  )
-}
-
 function RatingButtons(props: { onAnswer: (rating: Grade) => void }) {
+  // Four rating buttons (Again, Hard, Good, Easy)
   const RATING_BUTTONS = [
     { rating: Rating.Again, label: "Again", color: "bg-red-600", key: "1" },
     { rating: Rating.Hard, label: "Hard", color: "bg-yellow-500", key: "2" },
@@ -225,42 +214,22 @@ function RatingButtons(props: { onAnswer: (rating: Grade) => void }) {
   ]
 
   return (
-    <>
-      {/* Desktop */}
-      <div class="mt-8 hidden w-full max-w-3xl grid-cols-4 gap-3 lg:grid">
-        {RATING_BUTTONS.map((button) => (
-          <Button
-            onClick={() => props.onAnswer(button.rating as Grade)}
-            class={cn(
-              "relative h-14 rounded-xl text-base font-semibold text-white",
-              button.color,
-            )}
-          >
-            <div class="absolute top-[7px] right-[7px] flex h-6 w-6 items-center justify-center rounded-full bg-black/20 font-mono text-xs font-bold text-white">
-              {button.key}
-            </div>
-            {button.label}
-          </Button>
-        ))}
-      </div>
-
-      {/* Mobile */}
-      <div class="fixed right-0 bottom-0 left-0 z-50 p-4 lg:hidden">
-        <div class="grid grid-cols-4 gap-3">
-          {RATING_BUTTONS.map((button) => (
-            <Button
-              onClick={() => props.onAnswer(button.rating as Grade)}
-              class={cn(
-                "relative h-10 rounded-xl text-base font-semibold text-white",
-                button.color,
-              )}
-            >
-              {button.label}
-            </Button>
-          ))}
-        </div>
-      </div>
-    </>
+    <div class="mt-6 grid w-full max-w-3xl grid-cols-4 gap-3">
+      {RATING_BUTTONS.map((button) => (
+        <button
+          onClick={() => props.onAnswer(button.rating as Grade)}
+          class={cn(
+            "relative h-12 rounded-xl text-sm font-semibold text-white sm:text-base",
+            button.color,
+          )}
+        >
+          <div class="absolute top-[6px] right-[6px] flex h-5 w-5 items-center justify-center rounded-full bg-black/20 font-mono text-[10px] font-bold text-white">
+            {button.key}
+          </div>
+          {button.label}
+        </button>
+      ))}
+    </div>
   )
 }
 
@@ -320,25 +289,8 @@ export default function FSRSFlashcardPageComponent() {
       {(card) => (
         <div class="min-h-screen">
           <ProgressHeader />
-          <div class="flex min-h-screen flex-col items-center justify-center p-4 pt-28">
-            <div class="bg-card border-card-foreground relative w-full max-w-3xl rounded-2xl border p-8 shadow-md lg:p-10">
-              {/* Card Type Badge */}
-              <div class="absolute top-4 right-4 z-10 flex gap-2">
-                <span
-                  class={cn(
-                    "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold tracking-wide uppercase",
-                    card().practiceItemType === "vocabulary" &&
-                      "bg-orange-500/20 text-orange-400",
-                    card().practiceItemType === "kanji" &&
-                      "bg-pink-500/20 text-pink-400",
-                    card().practiceItemType === "radical" &&
-                      "bg-blue-500/20 text-blue-400",
-                  )}
-                >
-                  {card().practiceItemType}
-                </span>
-              </div>
-
+          <div class="mx-auto max-w-3xl px-4 pt-20 sm:pt-28">
+            <PracticeCardContainer>
               {/* Prompt */}
               <div class="flex min-h-48 flex-col items-center justify-center text-center">
                 <FlashcardSide
@@ -358,14 +310,14 @@ export default function FSRSFlashcardPageComponent() {
                 <Show
                   when={showAnswer()}
                   fallback={
-                    <Button
+                    <ActionButton
                       ref={showAnswerButtonRef}
                       onClick={() => setShowAnswer(true)}
-                      class="mt-8"
-                      variant="outline"
+                      variant="secondary"
+                      class="mt-6 w-auto px-6"
                     >
                       Show Answer
-                    </Button>
+                    </ActionButton>
                   }
                 >
                   <FlashcardSide
@@ -380,13 +332,16 @@ export default function FSRSFlashcardPageComponent() {
                     setKanjiAnimationSettings={setKanjiAnimationSettings}
                     kanjiStyleSettings={kanjiStyleSettings}
                   />
-                  <Mnemonics card={card} />
+
+                  <MnemonicSection visible={() => showAnswer()} />
                 </Show>
               </div>
-            </div>
+            </PracticeCardContainer>
 
             <Show when={showAnswer()}>
-              <RatingButtons onAnswer={handleAnswer} />
+              <div class="mt-6 flex justify-center">
+                <RatingButtons onAnswer={handleAnswer} />
+              </div>
             </Show>
           </div>
         </div>

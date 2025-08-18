@@ -1,8 +1,9 @@
 // vocab-practice/components/pages/ReviewPageComponent.tsx
 import { For, Show, createMemo, onMount } from "solid-js"
-import { Button } from "@/components/ui/button"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import type { PracticeCard } from "../../types"
+import { PracticeCardContainer } from "../shared/PracticeCardContainer"
+import { ActionButton } from "../shared/ActionButton"
 
 // Define the shape of the data needed for the summary component
 type ReviewSummaryData = {
@@ -16,17 +17,15 @@ export default function ReviewPageComponent() {
 
   let continueButtonRef: HTMLButtonElement | undefined
 
+  // Focus "Continue" button on mount
   onMount(() => {
     setTimeout(() => {
-      if (continueButtonRef) {
-        continueButtonRef.focus()
-      }
+      continueButtonRef?.focus()
     }, 0)
   })
 
   // Create the list of cards for review from the recentReviewHistory
   const reviewedItems = createMemo(() => {
-    // Use a Map to get the last result for each unique key, preserving order
     const uniqueLastReviews = new Map<string, boolean>()
     for (const review of uiState.recentReviewHistory) {
       uniqueLastReviews.set(review.key, review.wasCorrect)
@@ -56,51 +55,33 @@ export default function ReviewPageComponent() {
     <div class="min-h-screen">
       <div class="px-4 pt-14 pb-10 lg:pt-18 lg:pb-12">
         <div class="mx-auto max-w-3xl text-center">
-          <h1 class="text-3xl font-bold lg:text-5xl">
+          <h1 class="text-2xl font-bold sm:text-3xl lg:text-5xl">
             See the terms you practiced!
           </h1>
         </div>
       </div>
-      <div class="px-4 pb-28">
-        <div class="mx-auto max-w-3xl">
-          <div class="grid gap-4 lg:gap-5">
-            <For each={reviewedItems()}>
-              {(item) => (
+      <div class="mx-auto max-w-3xl px-4 pb-28">
+        <div class="grid gap-3 sm:gap-4 lg:gap-5">
+          <For each={reviewedItems()}>
+            {(item) => (
+              <PracticeCardContainer>
                 <ReviewCardSummary
                   card={item.card}
                   wasCorrect={item.wasCorrect}
                 />
-              )}
-            </For>
-          </div>
+              </PracticeCardContainer>
+            )}
+          </For>
         </div>
       </div>
-      <div class="fixed right-0 bottom-0 left-0 z-50 p-4">
-        <div class="mx-auto max-w-md">
-          <Button
-            size="lg"
-            onClick={handleContinue}
-            class="h-14 w-full rounded-xl bg-orange-500 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] hover:bg-orange-600"
-            ref={continueButtonRef}
-          >
-            <span class="flex items-center justify-center gap-2">
-              Continue
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 7l5 5m0 0l-5 5m5-5H6"
-                />
-              </svg>
-            </span>
-          </Button>
-        </div>
+      <div class="fixed bottom-6 left-1/2 w-full max-w-md -translate-x-1/2 px-4">
+        <ActionButton
+          ref={continueButtonRef}
+          onClick={handleContinue}
+          variant="primary"
+        >
+          Continue →
+        </ActionButton>
       </div>
     </div>
   )
@@ -116,46 +97,30 @@ function ReviewCardSummary(props: { card: PracticeCard; wasCorrect: boolean }) {
     return props.card.validAnswers.join(", ")
   }
 
-  const promptClasses = () => {
-    const baseColor = wasAnsweredIncorrectly()
-      ? "text-red-500"
-      : "text-orange-400 saturate-[125%]"
-    const baseLayout = "mb-3 font-bold"
-    const fontSize =
-      props.card.practiceMode === "spellings"
-        ? "text-lg lg:text-xl" // Smaller for English prompt
-        : "text-xl lg:text-2xl" // Larger for Japanese prompt
-    return `${baseColor} ${baseLayout} ${fontSize}`
-  }
-
-  const answerClasses = () => {
-    const baseLayout = "text-primary ml-4 font-semibold"
-    const fontSize =
-      props.card.practiceMode === "spellings"
-        ? "text-lg lg:text-xl" // Larger for Japanese answer
-        : "text-base lg:text-lg" // Smaller for English answer
-    return `${baseLayout} ${fontSize}`
-  }
-
   return (
-    <div class="bg-card relative overflow-hidden rounded-xl p-5 shadow-md">
-      <p class={promptClasses()}>
-        <span class="mr-2">{props.card.prompt}</span>
+    <div>
+      <p
+        class={`mb-2 font-bold sm:mb-3 ${
+          wasAnsweredIncorrectly()
+            ? "text-red-500"
+            : "text-orange-400 saturate-[125%]"
+        } text-lg sm:text-xl lg:text-2xl`}
+      >
+        {props.card.prompt}
       </p>
       <div class="space-y-1.5">
-        <p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
+        <p class="text-muted-foreground text-xs font-medium tracking-wider uppercase sm:text-sm">
           Answer:
         </p>
-        <p class={answerClasses()}>{answerToDisplay()}</p>
+        <p class="text-primary ml-3 text-base font-semibold sm:ml-4 sm:text-lg lg:text-xl">
+          {answerToDisplay()}
+        </p>
       </div>
       <Show when={props.card.sessionScope === "review"}>
         <p class="text-muted-foreground absolute right-6 bottom-3 text-xs font-medium">
           External Review
         </p>
       </Show>
-      <div
-        class={`absolute top-0 right-0 h-full ${wasAnsweredIncorrectly() ? "w-4 bg-red-500" : "w-2 bg-emerald-500/50"}`}
-      />
     </div>
   )
 }

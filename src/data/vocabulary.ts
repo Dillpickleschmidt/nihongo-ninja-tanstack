@@ -13560,8 +13560,8 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     english: ["partner"],
     chapter: 14,
     mnemonics: {
-      kanji: ["It's a loanword from English meaning 'partner.'"],
-      reading: [],
+      kanji: [],
+      reading: ["It's a loanword from English meaning 'partner.'"],
     },
     info: [
       "It can refer to a romantic partner, business partner, or any kind of associate.",
@@ -14309,10 +14309,10 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     chapter: 14,
     part_of_speech: "Suru verb - included",
     mnemonics: {
-      kanji: [
+      kanji: [],
+      reading: [
         'When you consult with someone, you ask them questions. When you learn something new, you say "そうか". That sounds a bit like そうだん, right?',
       ],
-      reading: [],
     },
     particles: [
       {
@@ -14341,7 +14341,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     english: ["to give warning", "to watch out"],
     chapter: 14,
     part_of_speech: "Suru verb - included",
-    mnemonics: { kanji: ['Han Solo says, "Chewie, watch out!"'], reading: [] },
+    mnemonics: { kanji: [], reading: ['Han Solo says, "Chewie, watch out!"'] },
     particles: [
       {
         label: "person",

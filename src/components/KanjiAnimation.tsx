@@ -49,7 +49,7 @@ export function KanjiAnimation(props: KanjiAnimationProps) {
   // Computed settings with defaults
   const styleSettings = () => ({
     strokeWidth: 3,
-    strokeColor: "#ffffff",
+    strokeColor: "var(--color-primary)",
     size: 128,
     showGrid: false,
     ...props.styleSettings,

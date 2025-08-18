@@ -77,7 +77,7 @@ export function KanaQuiz(props: KanaQuizProps) {
     if (percentage <= 0.5) {
       return {
         gradient: "from-rose-500 to-pink-500",
-        title: "YOU FAILED! 🤦",
+        title: "There's work to do! 😕",
         message: "Review the terms and try again!",
       }
     }

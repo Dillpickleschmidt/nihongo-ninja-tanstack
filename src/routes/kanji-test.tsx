@@ -35,7 +35,7 @@ function KanjiTestPage() {
 
   const styleSettings: KanjiStyleSettings = {
     strokeWidth: 3,
-    strokeColor: "#ffffff",
+    strokeColor: "var(--color-primary)",
     size: 170,
     showGrid: true,
   }

@@ -1,12 +1,6 @@
 // vocab-practice/components/write/WriteModeComponent.tsx
 import { createEffect, createSignal, Show, createMemo, For } from "solid-js"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
-import { Button } from "@/components/ui/button"
-import {
-  TextField,
-  TextFieldInput,
-  TextFieldDescription,
-} from "@/components/ui/text-field"
 import WanaKanaWrapper from "@/features/wanakana/WanaKana"
 import { Rating } from "ts-fsrs"
 import {
@@ -14,6 +8,7 @@ import {
   type ProcessedSentenceResult,
 } from "@/data/utils/vocab"
 import { cn } from "@/utils/util"
+import { ActionButton } from "../shared/ActionButton"
 
 export default function WriteModeComponent() {
   const { uiState, setUIState, currentCard } = useVocabPracticeContext()
@@ -74,17 +69,11 @@ export default function WriteModeComponent() {
     if (!uiState.isAnswered && card) {
       setTimeout(() => {
         if (displaySentenceParts().length === 0) {
-          // Single input mode
-          if (singleInputRef) {
-            singleInputRef.focus()
-            singleInputRef.select()
-          }
+          singleInputRef?.focus()
+          singleInputRef?.select()
         } else {
-          // Multiple input mode
-          if (multiInputRefs[0]) {
-            multiInputRefs[0].focus()
-            multiInputRefs[0].select()
-          }
+          multiInputRefs[0]?.focus()
+          multiInputRefs[0]?.select()
         }
       }, 0)
     }
@@ -128,20 +117,13 @@ export default function WriteModeComponent() {
     }
 
     const rating = wasCorrect() ? Rating.Good : Rating.Again
-
-    setUIState({
-      isAnswered: true,
-      lastRating: rating,
-    })
+    setUIState({ isAnswered: true, lastRating: rating })
   }
 
   function handleIWasCorrect() {
     if (!uiState.isAnswered) return
-
     setWasCorrect(true)
-    setUIState({
-      lastRating: Rating.Good,
-    })
+    setUIState({ lastRating: Rating.Good })
   }
 
   function handleKeyDown(e: KeyboardEvent) {
@@ -166,152 +148,126 @@ export default function WriteModeComponent() {
   return (
     <Show when={currentCard()}>
       {(card) => (
-        <div class="space-y-6">
-          <div class="flex min-h-16 w-full items-end justify-center text-center">
-            <Show when={uiState.isAnswered}>
-              <p class="text-primary text-xl font-bold">{answerToDisplay()}</p>
-            </Show>
-          </div>
+        <>
+          <div class="space-y-4 sm:space-y-6">
+            {/* Show correct answer after submission */}
+            <div class="flex min-h-12 w-full items-end justify-center text-center sm:min-h-16">
+              <Show when={uiState.isAnswered}>
+                <p class="text-primary text-lg font-bold sm:text-xl">
+                  {answerToDisplay()}
+                </p>
+              </Show>
+            </div>
 
-          <div class="flex flex-col items-center space-y-6">
-            <WanaKanaWrapper
-              enabled={card().practiceMode === "spellings"}
-              watch={card().key}
-            >
-              <Show
-                when={displaySentenceParts().length > 0}
-                fallback={
-                  <div class="space-y-4">
-                    <TextField class="w-full max-w-xs">
-                      <div class="h-6">
-                        <Show when={!uiState.isAnswered}>
-                          <TextFieldDescription>
-                            Type your answer.
-                          </TextFieldDescription>
-                        </Show>
-                      </div>
-                      <TextFieldInput
-                        ref={singleInputRef}
-                        type="text"
-                        value={userAnswers()[0] || ""}
-                        onInput={(e) =>
-                          handleSingleInputChange(e.currentTarget.value)
-                        }
-                        onKeyDown={handleKeyDown}
-                        autocomplete="off"
-                        autocapitalize="none"
-                        autocorrect="off"
-                        disabled={uiState.isAnswered}
-                        class={cn(
-                          "border-card-foreground text-xl font-bold opacity-100",
-                          uiState.isAnswered &&
-                            (wasCorrect() ? "text-green-500" : "text-red-500"),
-                        )}
-                      />
-                    </TextField>
-                  </div>
-                }
+            {/* Input(s) */}
+            <div class="flex flex-col items-center space-y-3 sm:space-y-5">
+              <WanaKanaWrapper
+                enabled={card().practiceMode === "spellings"}
+                watch={card().key}
               >
-                <div
-                  class={cn(
-                    "max-w-2xl text-center leading-relaxed",
-                    card().practiceMode === "spellings" ? "text-2xl" : "text-xl",
-                  )}
+                <Show
+                  when={displaySentenceParts().length > 0}
+                  fallback={
+                    <input
+                      ref={singleInputRef}
+                      type="text"
+                      value={userAnswers()[0] || ""}
+                      onInput={(e) =>
+                        handleSingleInputChange(e.currentTarget.value)
+                      }
+                      onKeyDown={handleKeyDown}
+                      disabled={uiState.isAnswered}
+                      class={cn(
+                        "border-b-2 border-gray-400 bg-transparent text-center text-xl font-bold outline-none focus:border-blue-500 sm:text-2xl",
+                        uiState.isAnswered &&
+                          (wasCorrect() ? "text-green-500" : "text-red-500"),
+                      )}
+                    />
+                  }
                 >
-                  <For each={displaySentenceParts()}>
-                    {(part) => {
-                      if (part.type === "html") {
-                        return (
+                  <div
+                    class={cn(
+                      "max-w-2xl text-center leading-relaxed",
+                      card().practiceMode === "spellings"
+                        ? "text-2xl"
+                        : "text-xl",
+                    )}
+                  >
+                    <For each={displaySentenceParts()}>
+                      {(part) =>
+                        part.type === "html" ? (
                           <span
                             class="font-japanese"
                             innerHTML={part.content}
                           />
+                        ) : (
+                          <span class="mx-1 inline-block">
+                            <input
+                              ref={(el) =>
+                                (multiInputRefs[part.index] = el || undefined)
+                              }
+                              type="text"
+                              value={userAnswers()[part.index] || ""}
+                              onInput={(e) =>
+                                handleMultiInputChange(
+                                  part.index,
+                                  e.currentTarget.value,
+                                )
+                              }
+                              onKeyDown={handleKeyDown}
+                              disabled={uiState.isAnswered}
+                              class={cn(
+                                "inline-block min-w-[4rem] border-b-2 border-gray-400 bg-transparent text-center font-bold outline-none focus:border-blue-500",
+                                uiState.isAnswered &&
+                                  (inputCorrectness()[part.index]
+                                    ? "border-green-500 text-green-500"
+                                    : "border-red-500 text-red-500"),
+                              )}
+                              style={{
+                                width: `${Math.max(
+                                  4,
+                                  card().practiceMode === "spellings"
+                                    ? (userAnswers()[part.index] || "").length *
+                                        1.5 +
+                                        1
+                                    : (userAnswers()[part.index] || "").length,
+                                )}ch`,
+                              }}
+                              autocomplete="off"
+                              autocapitalize="none"
+                              autocorrect="off"
+                            />
+                          </span>
                         )
                       }
-                      return (
-                        <span class="mx-1 inline-block">
-                          <input
-                            ref={(el) =>
-                              (multiInputRefs[part.index] = el || undefined)
-                            }
-                            type="text"
-                            value={userAnswers()[part.index] || ""}
-                            onInput={(e) =>
-                              handleMultiInputChange(
-                                part.index,
-                                e.currentTarget.value,
-                              )
-                            }
-                            onKeyDown={handleKeyDown}
-                            disabled={uiState.isAnswered}
-                            // REMOVED: autofocus={part.index === 0} attribute
-                            class={cn(
-                              "inline-block min-w-[4rem] border-b-2 border-gray-400 bg-transparent text-center font-bold outline-none focus:border-blue-500",
-                              uiState.isAnswered &&
-                                (inputCorrectness()[part.index]
-                                  ? "border-green-500 text-green-500"
-                                  : "border-red-500 text-red-500"),
-                            )}
-                            style={{
-                              width: `${Math.max(
-                                4,
-                                card().practiceMode === "spellings"
-                                  ? (userAnswers()[part.index] || "").length *
-                                      1.5 +
-                                      1
-                                  : (userAnswers()[part.index] || "").length,
-                              )}ch`,
-                            }}
-                            autocomplete="off"
-                            autocapitalize="none"
-                            autocorrect="off"
-                          />
-                        </span>
-                      )
-                    }}
-                  </For>
-                </div>
-              </Show>
-            </WanaKanaWrapper>
-
-            <Show when={!uiState.isAnswered}>
-              <Button
-                onClick={handleSubmit}
-                size="lg"
-                class="h-14 rounded-xl bg-orange-500 px-8 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] hover:bg-orange-600 focus-visible:ring-2 focus-visible:ring-orange-400"
-              >
-                <span class="flex items-center justify-center gap-2">
-                  Submit
-                  <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M13 7l5 5m0 0l-5 5m5-5H6"
-                    />
-                  </svg>
-                </span>
-              </Button>
-            </Show>
-
-            <Show when={uiState.isAnswered && !wasCorrect()}>
-              <Button
-                onClick={handleIWasCorrect}
-                size="lg"
-                class="rounded-xl border border-green-400/30 bg-green-500/20 px-8 text-base font-semibold text-green-100 shadow-lg transition-all duration-200 hover:scale-[1.02] hover:bg-green-500/30 focus-visible:ring-2 focus-visible:ring-green-400"
-              >
-                <span class="flex items-center justify-center gap-2">
-                  ✓ I was correct
-                </span>
-              </Button>
-            </Show>
+                    </For>
+                  </div>
+                </Show>
+              </WanaKanaWrapper>
+            </div>
           </div>
-        </div>
+
+          {/* Fixed bottom buttons */}
+          <Show when={!uiState.isAnswered}>
+            <div class="fixed bottom-6 left-1/2 w-full max-w-md -translate-x-1/2 px-4">
+              <ActionButton onClick={handleSubmit} variant="primary">
+                Submit
+              </ActionButton>
+            </div>
+          </Show>
+
+          <Show when={uiState.isAnswered && !wasCorrect()}>
+            <div class="fixed bottom-6 left-1/2 w-full max-w-md -translate-x-1/2 px-4">
+              <ActionButton
+                onClick={handleIWasCorrect}
+                variant="success"
+                class="w-auto px-6"
+              >
+                ✓ I was correct
+              </ActionButton>
+            </div>
+          </Show>
+        </>
       )}
     </Show>
   )

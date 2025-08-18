@@ -63,7 +63,6 @@ export default function MultipleChoiceComponent() {
         if (wrongOptions.length >= 3) break
       }
     }
-    // --- END OF FIX ---
 
     // Return shuffled choices
     return [card, ...wrongOptions].sort(() => Math.random() - 0.5)
@@ -80,8 +79,6 @@ export default function MultipleChoiceComponent() {
 
   // Reset selection whenever the card changes
   createEffect(() => {
-    // This effect depends on choices(), which depends on currentCard().
-    // It will run when a new card is presented.
     setSelectedIndex(null)
   })
 
@@ -123,23 +120,21 @@ export default function MultipleChoiceComponent() {
   }
 
   return (
-    <div class="space-y-5">
-      <Show when={buttonStates().length > 0 && currentCard()}>
-        <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
-          <For each={choices()}>
-            {(option, index) => (
-              <MultipleChoiceButton
-                option={option}
-                index={index()}
-                buttonState={buttonStates()[index()]}
-                isAnswered={uiState.isAnswered}
-                onSelect={() => handleSelection(option)}
-              />
-            )}
-          </For>
-        </div>
-      </Show>
-    </div>
+    <Show when={buttonStates().length > 0 && currentCard()}>
+      <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
+        <For each={choices()}>
+          {(option, index) => (
+            <MultipleChoiceButton
+              option={option}
+              index={index()}
+              buttonState={buttonStates()[index()]}
+              isAnswered={uiState.isAnswered}
+              onSelect={() => handleSelection(option)}
+            />
+          )}
+        </For>
+      </div>
+    </Show>
   )
 }
 
@@ -167,10 +162,6 @@ function MultipleChoiceButton(props: {
     return classes
   }
 
-  const displayText = createMemo(() => {
-    return props.option.validAnswers.join(", ")
-  })
-
   return (
     <button
       onClick={props.onSelect}
@@ -186,7 +177,9 @@ function MultipleChoiceButton(props: {
         {props.index + 1}
       </div>
       <div class="w-full space-y-2 overflow-x-auto">
-        <p class="text-lg font-bold lg:text-xl">{displayText()}</p>
+        <p class="text-lg font-bold lg:text-xl">
+          {props.option.validAnswers.join(", ")}
+        </p>
         <Show when={props.option.vocab.particles}>
           <div class="space-y-1">
             <For each={props.option.vocab.particles}>
