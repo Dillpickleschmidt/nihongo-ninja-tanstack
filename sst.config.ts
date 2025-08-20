@@ -27,6 +27,9 @@ export default $config({
         VITE_SUPABASE_PUBLISHABLE_OR_ANON_KEY:
           secrets.SUPABASE_PUBLISHABLE_OR_ANON_KEY.value,
       },
+      domain: {
+        name: "staging.nihongoninja.io",
+      },
     })
   },
 })
