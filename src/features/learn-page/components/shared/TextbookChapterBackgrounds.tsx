@@ -185,7 +185,26 @@ export function TextbookChapterBackgrounds(props: {
     textbook_chapter_backgrounds[props.textbook]?.[props.chapter]
 
   return (
-    <Show when={getBackgroundItem()} keyed>
+    <Show
+      when={getBackgroundItem()}
+      keyed
+      fallback={
+        <BackgroundImage
+          variant="media"
+          backgroundItem={{
+            source_type: "img",
+            src: "/img/backgrounds/tranquil_village_by_k_jackson_katss_djqxpcz.png",
+            position: "absolute",
+            layout: "horizontal",
+            opacity: 0.18,
+            y_offset_desktop: "-82px",
+          }}
+          showGradient={props.showGradient}
+          blur={props.blur}
+          class={props.class}
+        />
+      }
+    >
       {(backgroundItem) => (
         <BackgroundImage
           variant="media"

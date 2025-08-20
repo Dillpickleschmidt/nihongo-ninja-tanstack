@@ -9,7 +9,7 @@ function RouteComponent() {
   return (
     <>
       <Nav />
-      <div>Hello "/pricing"!</div>
+      <div>Not yet implemented.</div>
     </>
   )
 }

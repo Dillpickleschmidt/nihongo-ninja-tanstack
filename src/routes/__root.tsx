@@ -23,6 +23,7 @@ import {
   getUserPreferencesFromDBServerFn,
 } from "@/features/main-cookies/server/server-functions"
 import { getDeviceUISettingsCookie } from "@/features/main-cookies/server/cookie-utils"
+import type { User } from "@supabase/supabase-js"
 
 export const Route = createRootRoute({
   head: () => ({
@@ -101,7 +102,7 @@ function RootComponent() {
       <ColorModeScript storageType={storageManager?.type} />
       <ColorModeProvider storageManager={storageManager}>
         <SettingsProvider
-          user={user}
+          user={user as User}
           initialUserPreferenceData={initialUserPreferenceData}
           userPreferencesDBPromise={userPreferencesDBPromise}
           deviceUISettings={deviceUISettings}
