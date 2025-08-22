@@ -93,6 +93,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
           title: s.title,
           description: s.description,
           side: s.side || "bottom",
+          align: s.align,
           onNextClick: () => handleNext(steps, index),
           onPrevClick: () => handlePrevious(steps, index),
         },

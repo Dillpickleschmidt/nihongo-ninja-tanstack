@@ -12,6 +12,7 @@ interface CollapsiblePanelProps {
   children: JSX.Element
   class?: string
   ref?: HTMLDivElement
+  toggleButtonId?: string
 }
 
 export function CollapsiblePanel(props: CollapsiblePanelProps) {
@@ -40,6 +41,7 @@ export function CollapsiblePanel(props: CollapsiblePanelProps) {
       </Show>
       {/* Arrow button - always positioned at the edge, vertically centered */}
       <Button
+        id={props.toggleButtonId}
         variant="ghost"
         size="sm"
         onClick={props.onToggle}

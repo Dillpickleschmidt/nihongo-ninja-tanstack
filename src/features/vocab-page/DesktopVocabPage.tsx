@@ -205,13 +205,14 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
         />
       </div>
       {/* Left panel — subtle gradient */}
-      <div class="h-[calc(100vh-65px)]">
+      <div id="tour-builtin-panel" class="h-[calc(100vh-65px)]">
         <CollapsiblePanel
           title="Built-in Decks"
           isOpen={state.leftPanelOpen()}
           onToggle={() => state.setLeftPanelOpen(!state.leftPanelOpen())}
           position="left"
           ref={builtInDecksPanelRef!}
+          toggleButtonId="tour-builtin-toggle"
         >
           <BuiltInDecksPanel
             textbooks={state.textbooks()}
@@ -230,7 +231,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
       </div>
 
       {/* Center panel — faint orange and neutral vignette */}
-      <div class="relative z-0 w-full">
+      <div id="tour-vocab-center" class="relative z-0 w-full">
         <div class="absolute inset-0 -z-1" />
         <CenterPanel
           selectedUserDeck={state.selectedUserDeck()}
@@ -247,7 +248,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
       </div>
 
       {/* Right panel — same gradients as left */}
-      <div class="h-[calc(100vh-65px)]">
+      <div id="tour-user-panel" class="h-[calc(100vh-65px)]">
         <CollapsiblePanel
           title="Your Decks"
           isOpen={state.rightPanelOpen()}

@@ -177,6 +177,7 @@ export function BottomNav(props: BottomNavProps) {
 
             return (
               <Link
+                id={"tour-" + item.id}
                 to={item.href}
                 class={cn(
                   "group flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200",

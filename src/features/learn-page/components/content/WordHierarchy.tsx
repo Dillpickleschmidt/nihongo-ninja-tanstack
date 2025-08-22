@@ -190,6 +190,7 @@ function WordHierarchyDisplay(props: {
               colorLearned="text-pink-400"
               colorInProgress="text-pink-600"
               hasProgress={!!props.user}
+              dataTour="vocab-trigger"
             />
             <ProgressCircleTrigger
               value="radicals"
@@ -254,6 +255,7 @@ function ProgressCircleTrigger(props: {
   colorLearned: string
   colorInProgress: string
   hasProgress?: boolean
+  dataTour?: string
 }) {
   const radius = 24
   const circumference = 2 * Math.PI * radius
@@ -273,6 +275,7 @@ function ProgressCircleTrigger(props: {
       <HoverCardTrigger as="div">
         <TabsTrigger
           value={props.value}
+          data-tour={props.dataTour}
           class="flex h-auto w-full flex-col items-center gap-0.5 rounded-xl p-1.5 hover:bg-white/5 data-[selected]:bg-white/5"
         >
           <div class="relative h-15 w-15">

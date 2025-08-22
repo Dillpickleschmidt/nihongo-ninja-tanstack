@@ -12,6 +12,7 @@ import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataCon
 export function LearningPathGrid() {
   return (
     <div
+      id="tour-lesson-cards"
       data-lessons-section
       data-transition-content
       class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
