@@ -84,6 +84,11 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     }
 
     // Create new driver instance
+    const dismissTour = () => {
+      handleDismiss()
+      cleanup()
+    }
+
     driverInstance = driver({
       showProgress: true,
       popoverClass: "nihongo-ninja-tour",
@@ -98,9 +103,25 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
           onPrevClick: () => handlePrevious(steps, index),
         },
       })),
-      onDestroyStarted: () => {
-        handleDismiss()
-        cleanup()
+      onDestroyStarted: dismissTour, // 👈 reuse
+      onPopoverRender: (popover, { state }) => {
+        if (state.activeIndex === 0) {
+          const skipButton = document.createElement("button")
+          skipButton.innerText = "Skip"
+
+          // Insert before the Next button
+          const nextBtn = popover.footerButtons.querySelector(
+            ".driver-popover-next-btn",
+          )
+          if (nextBtn) {
+            popover.footerButtons.insertBefore(skipButton, nextBtn)
+          } else {
+            popover.footerButtons.appendChild(skipButton)
+          }
+
+          // Skip = same as dismiss
+          skipButton.onclick = dismissTour
+        }
       },
     })
 

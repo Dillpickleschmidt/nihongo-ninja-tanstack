@@ -13,8 +13,7 @@ export const TOURS: Record<string, TourStep[]> = {
     {
       route: "*",
       title: "Welcome to Nihongo Ninja! 🥷",
-      description:
-        "Take a quick tour to see how everything works. It’ll only take a minute!",
+      description: "Take a quick tour, or skip and explore on your own!",
     },
     {
       route: "/dashboard",
