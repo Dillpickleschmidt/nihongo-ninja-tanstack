@@ -187,9 +187,9 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
       "completed-tours": [...completed, currentTour],
     })
 
-    // Reset device settings
+    // Mark as completed (-2)
     updateDeviceUISettings({
-      tour: { currentTourId: null, currentTourStep: 0 },
+      tour: { currentTourId: null, currentTourStep: -2 },
     })
 
     // If we just completed the main tour, check if we should start a route-specific tour

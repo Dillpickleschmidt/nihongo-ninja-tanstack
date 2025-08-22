@@ -19,10 +19,11 @@ export function TourResetDropdown() {
     const isCompleted = userPreferences()["completed-tours"].includes(tourId)
     const deviceTour = deviceUISettings().tour
     const isDismissed = deviceTour.currentTourStep === -1
+    const isMarkedCompleted = deviceTour.currentTourStep === -2
     const isActive =
       deviceTour.currentTourId === tourId && deviceTour.currentTourStep >= 0
 
-    if (isCompleted) return "✅"
+    if (isCompleted || isMarkedCompleted) return "✅"
     if (isActive) return "▶️"
     if (isDismissed) return "❌"
     return "⚪"

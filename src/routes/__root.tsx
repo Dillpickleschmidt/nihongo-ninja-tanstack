@@ -6,7 +6,6 @@ import {
   Scripts,
   defer,
 } from "@tanstack/solid-router"
-import { onMount } from "solid-js"
 import "@fontsource-variable/inter"
 import "@fontsource/poppins"
 import "driver.js/dist/driver.css"
@@ -79,7 +78,8 @@ export const Route = createRootRoute({
 
     // Check if main tour should auto-start
     const isMainTourCompleted =
-      initialUserPreferenceData["completed-tours"].includes("app-onboarding")
+      initialUserPreferenceData["completed-tours"].includes("app-onboarding") ||
+      deviceUISettings.tour.currentTourStep === -2
     const isDismissed = deviceUISettings.tour.currentTourStep === -1
     const hasActiveTour = deviceUISettings.tour.currentTourId
     const shouldStartMainTour =
