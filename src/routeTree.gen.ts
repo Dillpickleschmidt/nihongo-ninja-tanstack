@@ -29,6 +29,7 @@ import { Route as LessonsWelcomeOverviewRouteImport } from './routes/lessons/wel
 import { Route as LessonsJapanesePronunciationRouteImport } from './routes/lessons/japanese-pronunciation'
 import { Route as LessonsHiraganaRouteImport } from './routes/lessons/hiragana'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
+import { Route as HomeProfileRouteImport } from './routes/_home/profile'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeLearnIndexRouteImport } from './routes/_home/learn/index'
@@ -134,6 +135,11 @@ const HomeVocabRoute = HomeVocabRouteImport.update({
   path: '/vocab',
   getParentRoute: () => HomeRoute,
 } as any)
+const HomeProfileRoute = HomeProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => HomeRoute,
+} as any)
 const HomeGrammarNotesRoute = HomeGrammarNotesRouteImport.update({
   id: '/grammar-notes',
   path: '/grammar-notes',
@@ -196,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/dashboard': typeof HomeDashboardRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
+  '/profile': typeof HomeProfileRoute
   '/vocab': typeof HomeVocabRoute
   '/lessons/hiragana': typeof LessonsHiraganaRoute
   '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
@@ -222,6 +229,7 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/dashboard': typeof HomeDashboardRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
+  '/profile': typeof HomeProfileRoute
   '/vocab': typeof HomeVocabRoute
   '/lessons/hiragana': typeof LessonsHiraganaRoute
   '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
@@ -250,6 +258,7 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/_home/dashboard': typeof HomeDashboardRoute
   '/_home/grammar-notes': typeof HomeGrammarNotesRoute
+  '/_home/profile': typeof HomeProfileRoute
   '/_home/vocab': typeof HomeVocabRoute
   '/lessons/hiragana': typeof LessonsHiraganaRoute
   '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
@@ -278,6 +287,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/dashboard'
     | '/grammar-notes'
+    | '/profile'
     | '/vocab'
     | '/lessons/hiragana'
     | '/lessons/japanese-pronunciation'
@@ -304,6 +314,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/dashboard'
     | '/grammar-notes'
+    | '/profile'
     | '/vocab'
     | '/lessons/hiragana'
     | '/lessons/japanese-pronunciation'
@@ -331,6 +342,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/_home/dashboard'
     | '/_home/grammar-notes'
+    | '/_home/profile'
     | '/_home/vocab'
     | '/lessons/hiragana'
     | '/lessons/japanese-pronunciation'
@@ -523,6 +535,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeVocabRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/_home/profile': {
+      id: '/_home/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof HomeProfileRouteImport
+      parentRoute: typeof HomeRoute
+    }
     '/_home/grammar-notes': {
       id: '/_home/grammar-notes'
       path: '/grammar-notes'
@@ -603,6 +622,7 @@ declare module '@tanstack/solid-start/server' {
 interface HomeRouteChildren {
   HomeDashboardRoute: typeof HomeDashboardRoute
   HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
+  HomeProfileRoute: typeof HomeProfileRoute
   HomeVocabRoute: typeof HomeVocabRoute
   HomePracticeConjugationRoute: typeof HomePracticeConjugationRoute
   HomePracticeSentencePracticeRoute: typeof HomePracticeSentencePracticeRoute
@@ -613,6 +633,7 @@ interface HomeRouteChildren {
 const HomeRouteChildren: HomeRouteChildren = {
   HomeDashboardRoute: HomeDashboardRoute,
   HomeGrammarNotesRoute: HomeGrammarNotesRoute,
+  HomeProfileRoute: HomeProfileRoute,
   HomeVocabRoute: HomeVocabRoute,
   HomePracticeConjugationRoute: HomePracticeConjugationRoute,
   HomePracticeSentencePracticeRoute: HomePracticeSentencePracticeRoute,

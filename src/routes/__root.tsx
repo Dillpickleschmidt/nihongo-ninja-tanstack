@@ -6,8 +6,10 @@ import {
   Scripts,
   defer,
 } from "@tanstack/solid-router"
+import { onMount } from "solid-js"
 import "@fontsource-variable/inter"
 import "@fontsource/poppins"
+import "driver.js/dist/driver.css"
 import appCss from "@/styles/app.css?url"
 import {
   ColorModeProvider,
@@ -18,6 +20,7 @@ import { getCookie } from "@/utils/cookie-utils"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { getUser } from "@/features/supabase/getUser"
 import { SettingsProvider } from "@/context/SettingsContext"
+import { TourProvider } from "@/features/guided-tour/TourContext"
 import {
   getInitialUserPreferencesFromCookieServerFn,
   getUserPreferencesFromDBServerFn,
@@ -74,11 +77,20 @@ export const Route = createRootRoute({
     // Device UI settings (client-accessible cookie)
     const deviceUISettings = getDeviceUISettingsCookie()
 
+    // Check if main tour should auto-start
+    const isMainTourCompleted =
+      initialUserPreferenceData["completed-tours"].includes("app-onboarding")
+    const isDismissed = deviceUISettings.tour.currentTourStep === -1
+    const hasActiveTour = deviceUISettings.tour.currentTourId
+    const shouldStartMainTour =
+      !isMainTourCompleted && !isDismissed && !hasActiveTour
+
     return {
       user,
       initialUserPreferenceData,
       userPreferencesDBPromise,
       deviceUISettings,
+      shouldStartMainTour,
     }
   },
   component: RootComponent,
@@ -92,6 +104,7 @@ function RootComponent() {
     initialUserPreferenceData,
     userPreferencesDBPromise,
     deviceUISettings,
+    shouldStartMainTour,
   } = loaderData()
   const colorModeCookies = `kb-color-mode=${getCookie("kb-color-mode")}`
 
@@ -107,9 +120,11 @@ function RootComponent() {
           userPreferencesDBPromise={userPreferencesDBPromise}
           deviceUISettings={deviceUISettings}
         >
-          <Scripts />
-          <Outlet />
-          <TanStackRouterDevtools />
+          <TourProvider shouldStartMainTour={shouldStartMainTour}>
+            <Scripts />
+            <Outlet />
+            <TanStackRouterDevtools />
+          </TourProvider>
         </SettingsProvider>
       </ColorModeProvider>
     </>

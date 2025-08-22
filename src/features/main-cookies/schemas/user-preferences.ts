@@ -14,7 +14,11 @@ const AnkiCredentialsSchema = z.object({
 })
 
 const WanikaniCredentialsSchema = z.object({
-  api_key: z.string().uuid("Invalid UUID format").or(z.string().length(0)).default(""),
+  api_key: z
+    .string()
+    .uuid("Invalid UUID format")
+    .or(z.string().length(0))
+    .default(""),
 })
 
 const JpdbCredentialsSchema = z.object({
@@ -24,7 +28,9 @@ const JpdbCredentialsSchema = z.object({
 // Combined service credentials schema
 const ServiceCredentialsSchema = z.object({
   anki: AnkiCredentialsSchema.default(AnkiCredentialsSchema.parse({})),
-  wanikani: WanikaniCredentialsSchema.default(WanikaniCredentialsSchema.parse({})),
+  wanikani: WanikaniCredentialsSchema.default(
+    WanikaniCredentialsSchema.parse({}),
+  ),
   jpdb: JpdbCredentialsSchema.default(JpdbCredentialsSchema.parse({})),
 })
 
@@ -44,10 +50,15 @@ const ServicePreferencesSchema = z.object({
 
 // Main user preferences schema
 export const UserPreferencesSchema = z.object({
-  "service-credentials": ServiceCredentialsSchema.default(ServiceCredentialsSchema.parse({})),
-  "service-preferences": ServicePreferencesSchema.default(ServicePreferencesSchema.parse({})),
+  "service-credentials": ServiceCredentialsSchema.default(
+    ServiceCredentialsSchema.parse({}),
+  ),
+  "service-preferences": ServicePreferencesSchema.default(
+    ServicePreferencesSchema.parse({}),
+  ),
   "active-textbook": TextbookIDSchema.default(""),
   "active-deck": z.string().max(20).default(""),
+  "completed-tours": z.array(z.string()).default([]),
   // Use timestamp 0 (very old) for default so it never overrides real user preferences
   timestamp: z.number().default(0),
 })
