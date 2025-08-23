@@ -5,7 +5,7 @@ import { dynamic_modules } from "@/data/dynamic_modules"
 import type { VocabularyItem } from "@/data/types"
 import { DefaultContent } from "./DefaultContent"
 import { VocabularyCard } from "@/features/vocab-page/components/VocabularyCard"
-import { getVocabForDeck } from "@/features/supabase/db/deck-operations"
+import { getVocabForDeck } from "@/features/supabase/db/deck"
 import type { VocabBuiltInDeck } from "../types"
 
 interface VocabCardsContentProps {

@@ -12,7 +12,7 @@ const DeckCreationStoreContext = createContext<{
   actions: DeckCreationStoreActions
 }>()
 
-export function DeckCreationStoreProvider(props: { 
+export function DeckCreationStoreProvider(props: {
   children: any
   initialData?: DeckCreationInitialData
 }) {

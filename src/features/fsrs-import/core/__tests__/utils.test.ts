@@ -138,7 +138,9 @@ describe("Card Validation and Deduplication Utilities", () => {
       expect(validateCardStructure({ ...mockCard, mode: "meanings" })).toBe(
         true,
       )
-      expect(validateCardStructure({ ...mockCard, mode: "spellings" })).toBe(true)
+      expect(validateCardStructure({ ...mockCard, mode: "spellings" })).toBe(
+        true,
+      )
     })
 
     it("should reject cards with invalid fsrs_card", () => {

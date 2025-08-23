@@ -104,4 +104,3 @@ export function PracticeModeModal(props: PracticeModeModalProps) {
     </Show>
   )
 }
-

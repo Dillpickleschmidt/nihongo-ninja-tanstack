@@ -1,17 +1,17 @@
 // src/routes/practice/$practiceID.tsx
 import { createFileRoute, notFound, defer } from "@tanstack/solid-router"
 import {
-  getVocabularyForModule,
   getModuleTitleFromPath,
+  getVocabularyForModule,
 } from "@/data/utils/vocab"
 import VocabPractice from "@/features/vocab-practice/VocabPractice"
 import {
   type FSRSCardData,
   getDueFSRSCards,
-  getFSRSCardsByKeys,
-} from "@/features/supabase/db/fsrs-operations"
+  getFSRSCards,
+} from "@/features/supabase/db/fsrs"
 import type { PracticeMode } from "@/features/vocab-practice/types"
-import { getWKHierarchy } from "@/data/wanikani/utils"
+import { getVocabHierarchy } from "@/features/resolvers/kanji"
 import type { VocabHierarchy as CleanVocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
@@ -21,7 +21,8 @@ export const Route = createFileRoute("/practice/$practiceID")({
   validateSearch: (
     search: Record<string, unknown>,
   ): { mode: PracticeMode } => ({
-    mode: (search.mode as PracticeMode) === "spellings" ? "spellings" : "meanings",
+    mode:
+      (search.mode as PracticeMode) === "spellings" ? "spellings" : "meanings",
   }),
   loaderDeps: ({ search }) => ({ mode: search.mode }),
   loader: async ({ context, params, deps }) => {
@@ -36,7 +37,7 @@ export const Route = createFileRoute("/practice/$practiceID")({
       if (mode === "meanings") {
         // For "meanings" mode, build the full dependency tree
         const vocabWords = moduleVocabulary.map((v) => v.word)
-        const cleanHierarchy = await getWKHierarchy({ data: vocabWords })
+        const cleanHierarchy = await getVocabHierarchy({ data: vocabWords })
 
         if (!cleanHierarchy) {
           throw notFound()
@@ -95,9 +96,14 @@ export const Route = createFileRoute("/practice/$practiceID")({
 
       if (context.user && allHierarchySlugs.size > 0) {
         moduleFSRSCards = defer(
-          getFSRSCardsByKeys(context.user.id, Array.from(allHierarchySlugs)),
+          getFSRSCards({
+            data: {
+              userId: context.user.id,
+              keys: Array.from(allHierarchySlugs),
+            },
+          }),
         )
-        dueFSRSCards = defer(getDueFSRSCards(context.user.id))
+        dueFSRSCards = defer(getDueFSRSCards({ data: context.user.id }))
       }
 
       // 7. Defer SVG fetching for hierarchy kanji/radicals

@@ -1,7 +1,7 @@
-// src/features/supabase/db/deck-operations.ts
+// src/features/supabase/db/deck.ts
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 import { createServerFn } from "@tanstack/solid-start"
-import { getUser } from "../getUser"
+import { getUser } from "@/features/supabase/getUser"
 import type { VocabBuiltInDeck } from "@/features/vocab-page/types"
 import { generateDeckTitle } from "@/features/vocab-page/logic/deck-import-logic"
 import { VocabularyItem } from "@/data/types"
@@ -10,12 +10,8 @@ import {
   formDataToDBInsert,
   builtInVocabItemsToDBInserts,
   type VocabItemFormData,
-  type DBVocabularyItemInsert,
 } from "@/features/vocab-page/types/vocabulary-types"
-import {
-  ensureFolderHierarchy,
-  getUserFoldersAndDecks,
-} from "./folder-operations"
+import { ensureFolderHierarchy, getUserFoldersAndDecks } from "./folder"
 import { extractTextbookInfo } from "@/features/vocab-page/logic/deck-import-logic"
 import { getVocabularyForSet } from "@/data/utils/vocab"
 import { dynamic_modules } from "@/data/dynamic_modules"
@@ -313,7 +309,10 @@ export async function insertVocabularyItems(
   if (vocabularyItems.length === 0) return
 
   const supabase = createSupabaseClient()
-  const vocabularyInserts = builtInVocabItemsToDBInserts(vocabularyItems, deckId)
+  const vocabularyInserts = builtInVocabItemsToDBInserts(
+    vocabularyItems,
+    deckId,
+  )
 
   const { error } = await supabase
     .from("vocabulary_items")

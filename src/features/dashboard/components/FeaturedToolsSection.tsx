@@ -24,7 +24,10 @@ export function FeaturedToolsSection(props: FeaturedToolsSectionProps) {
             Dashboard
           </h1>
 
-          <div id="tour-featured-tools" class="grid justify-items-center gap-6 md:grid-cols-3 lg:grid-cols-5">
+          <div
+            id="tour-featured-tools"
+            class="grid justify-items-center gap-6 md:grid-cols-3 lg:grid-cols-5"
+          >
             <For each={featuredTools}>
               {(tool, index) => (
                 <DesktopCard

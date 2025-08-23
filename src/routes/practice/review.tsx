@@ -1,10 +1,7 @@
 // src/routes/practice/review.tsx
 import { createFileRoute, notFound } from "@tanstack/solid-router"
 import VocabPractice from "@/features/vocab-practice/VocabPractice"
-import {
-  type FSRSCardData,
-  getDueFSRSCards,
-} from "@/features/supabase/db/fsrs-operations"
+import { type FSRSCardData, getDueFSRSCards } from "@/features/supabase/db/fsrs"
 import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 
 export const Route = createFileRoute("/practice/review")({
@@ -12,7 +9,7 @@ export const Route = createFileRoute("/practice/review")({
     try {
       let dueFSRSCards: Promise<FSRSCardData[]> | null
       if (context.user) {
-        dueFSRSCards = getDueFSRSCards(context.user.id)
+        dueFSRSCards = getDueFSRSCards({ data: context.user.id })
       } else {
         dueFSRSCards = null
       }

@@ -5,7 +5,7 @@ import { z } from "zod"
 import {
   getUserPreferencesFromDB,
   updateUserPreferencesInDB,
-} from "@/features/supabase/db/user-preferences-operations"
+} from "@/features/supabase/db/user-preferences"
 import { UserPreferencesSchema } from "../schemas/user-preferences"
 import {
   _getUserPreferencesCookie,

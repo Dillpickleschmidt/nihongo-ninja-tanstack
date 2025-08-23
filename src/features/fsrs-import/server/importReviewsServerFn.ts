@@ -2,8 +2,8 @@ import { createServerFn } from "@tanstack/solid-start"
 import { getUser } from "@/features/supabase/getUser"
 import {
   batchUpsertFSRSCardsForUser,
-  getFSRSCardsByKeys,
-} from "@/features/supabase/db/fsrs-operations"
+  getFSRSCards,
+} from "@/features/supabase/db/fsrs"
 import { getWaniKaniService } from "../services/wanikani-service"
 import {
   ImportSessionManager,
@@ -27,8 +27,8 @@ export const importReviewsServerFn = createServerFn({
   })
   .handler(async ({ data }) => {
     const dependencies: ImportDependencies = {
-      getFSRSCardsByKeys: (userId: string, keys: string[]) =>
-        getFSRSCardsByKeys(userId, keys),
+      getFSRSCards: (userId: string, keys: string[]) =>
+        getFSRSCards({ data: { userId, keys } }),
       batchUpsertFSRSCards: (processedCards) =>
         batchUpsertFSRSCardsForUser({ data: processedCards }),
       waniKaniService: getWaniKaniService(),

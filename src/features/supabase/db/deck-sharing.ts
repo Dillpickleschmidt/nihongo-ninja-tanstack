@@ -1,12 +1,9 @@
-// src/features/supabase/db/deck-sharing-operations.ts
+// src/features/supabase/db/deck-sharing.ts
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 import { createServerFn } from "@tanstack/solid-start"
-import { getUser } from "../getUser"
-import { insertVocabularyItems, getVocabForDeck } from "./deck-operations"
-import {
-  ensureFolderHierarchy,
-  getUserFoldersAndDecks,
-} from "./folder-operations"
+import { getUser } from "@/features/supabase/getUser"
+import { insertVocabularyItems, getVocabForDeck } from "./deck"
+import { getUserFoldersAndDecks } from "./folder"
 
 /**
  * Creates a public share for a user's deck

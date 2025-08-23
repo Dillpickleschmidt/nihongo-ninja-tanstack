@@ -91,5 +91,3 @@ export async function getDetailedNews(
 ): Promise<DetailedNewsResponse> {
   return makeRequest<DetailedNewsResponse>("/news/detailed", payload)
 }
-
-

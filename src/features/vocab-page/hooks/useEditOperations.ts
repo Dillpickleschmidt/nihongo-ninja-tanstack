@@ -1,6 +1,6 @@
 // features/vocab-page/hooks/useEditOperations.ts
 import { EditTransaction } from "@/features/vocab-page/logic/edit-transaction"
-import { executeEditTransactionServerFn } from "@/features/supabase/db/folder-operations"
+import { executeEditTransactionServerFn } from "@/features/supabase/db/folder"
 import { saveFoldersAndDecks } from "@/features/vocab-page/storage/sessionStorage"
 import type { AppState } from "@/features/vocab-page/logic/edit-transaction"
 import type { User } from "@supabase/supabase-js"

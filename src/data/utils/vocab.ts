@@ -9,7 +9,7 @@ import type {
 } from "@/data/types"
 import type { KanaItem } from "@/features/kana-quiz/hooks/useKanaQuiz"
 import type { PracticeMode } from "@/features/vocab-practice/types"
-import { getVocabularyByKeys } from "./vocab.server"
+import { getVocabulary } from "@/features/resolvers/vocabulary"
 
 function getModuleFromPath(path: string): DynamicModule | null {
   const segments = path.split("/")
@@ -46,7 +46,8 @@ export async function getVocabularyForSet(
     }
   }
 
-  return getVocabularyByKeys({ data: vocabKeys })
+  // Use resolver to get vocabulary items
+  return getVocabulary({ data: vocabKeys })
 }
 
 /**

@@ -3,7 +3,9 @@
 /**
  * Validates a JPDB API key by making a test request
  */
-export async function validateJpdbApiKey(apiKey: string): Promise<{ success: boolean; error?: string }> {
+export async function validateJpdbApiKey(
+  apiKey: string,
+): Promise<{ success: boolean; error?: string }> {
   try {
     const response = await fetch("https://jpdb.io/api/v1/list-user-decks", {
       method: "POST",

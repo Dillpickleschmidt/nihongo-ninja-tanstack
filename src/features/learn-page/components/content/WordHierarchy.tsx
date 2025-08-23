@@ -18,7 +18,7 @@ import type {
 } from "@/data/wanikani/hierarchy-builder"
 import type { VocabularyItem } from "@/data/types"
 import type { User } from "@supabase/supabase-js"
-import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import { extractHiragana } from "@/data/utils/vocab"
 
 type WordHierarchyVariant = "mobile" | "desktop"

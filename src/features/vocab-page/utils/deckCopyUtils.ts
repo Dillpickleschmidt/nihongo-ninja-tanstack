@@ -5,7 +5,7 @@ import { dynamic_modules } from "@/data/dynamic_modules"
 import {
   getVocabForDeck,
   createCustomDeckServerFn,
-} from "@/features/supabase/db/deck-operations"
+} from "@/features/supabase/db/deck"
 import type { VocabItemFormData } from "@/features/vocab-page/types/vocabulary-types"
 import { isVerbPartOfSpeech } from "@/features/vocab-page/types/vocabulary-types"
 import type { VocabularyItem } from "@/data/types"

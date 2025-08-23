@@ -46,6 +46,10 @@ const mockGetExampleSentenceParts = getExampleSentenceParts as ReturnType<
   typeof vi.fn
 >
 
+// Mock functions for context
+const mockCurrentCard = vi.fn()
+const mockSetUIState = vi.fn()
+
 const createMockCard = (
   validAnswers: string[],
   hasExampleSentence = false,
@@ -80,41 +84,26 @@ const createMockCard = (
 })
 
 describe("WriteModeComponent", () => {
-  const mockSetState = vi.fn()
-
-  let defaultMockState: {
-    manager: { getCardFromMap: ReturnType<typeof vi.fn> }
-    activeQueue: string[]
-    isAnswered: boolean
-    lastRating: Rating | null
-    currentCard: PracticeCard | null
-  }
-
-  // Focus/select mocks are no longer needed if the "Input Focus" tests are removed,
-
   beforeEach(() => {
     vi.clearAllMocks()
-    // Initialize defaultMockState before each test
-    defaultMockState = {
-      manager: { getCardFromMap: vi.fn() },
-      activeQueue: ["test-key"],
-      isAnswered: false,
-      lastRating: null,
-      currentCard: null,
-    }
+
+    // Reset mock functions
+    mockCurrentCard.mockReturnValue(null)
 
     mockUseVocabPracticeContext.mockReturnValue({
-      state: defaultMockState,
-      setState: mockSetState,
+      currentCard: mockCurrentCard,
+      uiState: {
+        isAnswered: false,
+        lastRating: null,
+      },
+      setUIState: mockSetUIState,
     })
-    // Removed `mockClear()` calls for focus/select as those mocks are effectively removed or no longer directly used by these tests.
   })
 
   describe("Single Input Mode", () => {
     beforeEach(() => {
       const mockCard = createMockCard(["answer1", "answer2"])
-      defaultMockState.manager.getCardFromMap.mockReturnValue(mockCard)
-      defaultMockState.currentCard = mockCard
+      mockCurrentCard.mockReturnValue(mockCard)
       mockGetExampleSentenceParts.mockReturnValue({
         displayParts: [],
         inputValidationTargets: [],
@@ -164,8 +153,7 @@ describe("WriteModeComponent", () => {
   describe("Multiple Input Mode (Example Sentences)", () => {
     beforeEach(() => {
       const mockCard = createMockCard(["validAnswer"], true)
-      defaultMockState.manager.getCardFromMap.mockReturnValue(mockCard)
-      defaultMockState.currentCard = mockCard
+      mockCurrentCard.mockReturnValue(mockCard)
       mockGetExampleSentenceParts.mockReturnValue({
         displayParts: [
           { type: "html", content: "This is " },

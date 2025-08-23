@@ -69,7 +69,6 @@ export function generateDeckTitle(textbookInfo: TextbookInfo): string {
   return `${textbookInfo.textbookName} ${shortChapter} ${textbookInfo.deckTitle}`
 }
 
-
 /**
  * Creates a new UserDeck from a built-in deck with proper folder assignment
  */

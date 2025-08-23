@@ -4,7 +4,7 @@ import {
   getSharedDecksServerFn,
   importSharedDeckServerFn,
   removeDeckShareServerFn,
-} from "@/features/supabase/db/deck-sharing-operations"
+} from "@/features/supabase/db/deck-sharing"
 import type { User } from "@supabase/supabase-js"
 
 export type SharedDeck = {

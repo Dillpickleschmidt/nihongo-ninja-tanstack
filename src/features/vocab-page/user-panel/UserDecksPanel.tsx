@@ -9,7 +9,7 @@ import { EditTransaction } from "../logic/edit-transaction"
 import { CreateModal } from "../components/CreateModal"
 import { cn } from "@/utils"
 import type { NavTabId } from "../center-panel/CenterNavBar"
-import { createFolderServerFn } from "@/features/supabase/db/folder-operations"
+import { createFolderServerFn } from "@/features/supabase/db/folder"
 import { validateName, validateFolderNameUnique } from "../validation"
 
 interface UserDecksPanelProps {

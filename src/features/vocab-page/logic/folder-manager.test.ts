@@ -364,4 +364,3 @@ describe("folder-manager", () => {
     })
   })
 })
-

@@ -3,7 +3,7 @@ import { createContext, useContext, type ParentComponent } from "solid-js"
 import type { VocabularyItem, Deck, TextbookIDEnum } from "@/data/types"
 import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { DeferredPromise } from "@tanstack/solid-router"
-import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import type {
   EnrichedExternalResourceCollection,
   EnrichedLearningPathModule,

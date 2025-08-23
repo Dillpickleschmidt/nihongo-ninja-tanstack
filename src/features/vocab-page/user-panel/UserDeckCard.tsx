@@ -30,7 +30,7 @@ import { Folder, Home } from "lucide-solid"
 import {
   createDeckShareServerFn,
   removeDeckShareServerFn,
-} from "@/features/supabase/db/deck-sharing-operations"
+} from "@/features/supabase/db/deck-sharing"
 import { ShareModal } from "../components/ShareModal"
 import { PracticeModeModal } from "../components/PracticeModeModal"
 

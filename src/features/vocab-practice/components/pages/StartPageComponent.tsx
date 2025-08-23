@@ -22,7 +22,7 @@ import type {
 } from "../../types"
 import type { VocabHierarchy as CleanVocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { VocabularyItem } from "@/data/types"
-import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 import { useSettings } from "@/context/SettingsContext"

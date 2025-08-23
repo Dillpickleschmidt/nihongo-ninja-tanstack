@@ -75,26 +75,26 @@ export class EditTransaction {
     }
 
     let state = currentState
-    
+
     // Apply each operation sequentially to build up the final state
     for (let i = 0; i < this.operations.length; i++) {
       const operation = this.operations[i]
       const result = applyEditOperation(state.folders, state.decks, operation)
-      
+
       if (!result.success) {
         // Include operation context in error message
         const operationDescription = this.describeOperation(operation)
         const errorMessage = `Operation ${i + 1} failed (${operationDescription}): ${result.error}`
         return { success: false, error: errorMessage }
       }
-      
+
       // Use the new state for the next operation
       state = result.newState!
     }
 
     return {
       success: true,
-      newState: state
+      newState: state,
     }
   }
 
@@ -103,26 +103,27 @@ export class EditTransaction {
    */
   private describeOperation(operation: EditOperation): string {
     switch (operation.type) {
-      case 'update-deck':
+      case "update-deck":
         const deckUpdates = []
-        if (operation.updates.name) deckUpdates.push('name')
-        if (operation.updates.folderId !== undefined) deckUpdates.push('folder')
-        return `update deck ${operation.deckId} (${deckUpdates.join(', ')})`
-      
-      case 'update-folder':
+        if (operation.updates.name) deckUpdates.push("name")
+        if (operation.updates.folderId !== undefined) deckUpdates.push("folder")
+        return `update deck ${operation.deckId} (${deckUpdates.join(", ")})`
+
+      case "update-folder":
         const folderUpdates = []
-        if (operation.updates.name) folderUpdates.push('name')
-        if (operation.updates.parentId !== undefined) folderUpdates.push('parent')
-        return `update folder ${operation.folderId} (${folderUpdates.join(', ')})`
-      
-      case 'delete-deck':
+        if (operation.updates.name) folderUpdates.push("name")
+        if (operation.updates.parentId !== undefined)
+          folderUpdates.push("parent")
+        return `update folder ${operation.folderId} (${folderUpdates.join(", ")})`
+
+      case "delete-deck":
         return `delete deck ${operation.deckId}`
-      
-      case 'delete-folder':
+
+      case "delete-folder":
         return `delete folder ${operation.folderId} (${operation.strategy})`
-      
+
       default:
-        return 'unknown operation'
+        return "unknown operation"
     }
   }
 }
@@ -130,7 +131,9 @@ export class EditTransaction {
 /**
  * Helper function to create a transaction with a single operation
  */
-export function createSingleTransaction(operation: EditOperation): EditTransaction {
+export function createSingleTransaction(
+  operation: EditOperation,
+): EditTransaction {
   const transaction = new EditTransaction()
   transaction.add(operation)
   return transaction
@@ -141,13 +144,13 @@ export function createSingleTransaction(operation: EditOperation): EditTransacti
  */
 export function createDeckUpdateTransaction(
   deckId: number,
-  updates: { name?: string; folderId?: number | null }
+  updates: { name?: string; folderId?: number | null },
 ): EditTransaction {
   const transaction = new EditTransaction()
   transaction.add({
-    type: 'update-deck',
+    type: "update-deck",
     deckId,
-    updates
+    updates,
   })
   return transaction
 }
@@ -157,13 +160,13 @@ export function createDeckUpdateTransaction(
  */
 export function createFolderUpdateTransaction(
   folderId: number,
-  updates: { name?: string; parentId?: number | null }
+  updates: { name?: string; parentId?: number | null },
 ): EditTransaction {
   const transaction = new EditTransaction()
   transaction.add({
-    type: 'update-folder',
+    type: "update-folder",
     folderId,
-    updates
+    updates,
   })
   return transaction
 }
@@ -174,8 +177,8 @@ export function createFolderUpdateTransaction(
 export function createDeckDeletionTransaction(deckId: number): EditTransaction {
   const transaction = new EditTransaction()
   transaction.add({
-    type: 'delete-deck',
-    deckId
+    type: "delete-deck",
+    deckId,
   })
   return transaction
 }
@@ -185,13 +188,13 @@ export function createDeckDeletionTransaction(deckId: number): EditTransaction {
  */
 export function createFolderDeletionTransaction(
   folderId: number,
-  strategy: 'move-up' | 'delete-all'
+  strategy: "move-up" | "delete-all",
 ): EditTransaction {
   const transaction = new EditTransaction()
   transaction.add({
-    type: 'delete-folder',
+    type: "delete-folder",
     folderId,
-    strategy
+    strategy,
   })
   return transaction
 }
@@ -203,24 +206,24 @@ export function createFolderDeletionTransaction(
 export function createDeckMoveTransaction(
   deckId: number,
   targetFolderId: number | null,
-  newName?: string
+  newName?: string,
 ): EditTransaction {
   const transaction = new EditTransaction()
-  
+
   const updates: { folderId: number | null; name?: string } = {
-    folderId: targetFolderId
+    folderId: targetFolderId,
   }
-  
+
   if (newName !== undefined) {
     updates.name = newName
   }
-  
+
   transaction.add({
-    type: 'update-deck',
+    type: "update-deck",
     deckId,
-    updates
+    updates,
   })
-  
+
   return transaction
 }
 
@@ -231,23 +234,23 @@ export function createDeckMoveTransaction(
 export function createFolderMoveTransaction(
   folderId: number,
   targetParentId: number | null,
-  newName?: string
+  newName?: string,
 ): EditTransaction {
   const transaction = new EditTransaction()
-  
+
   const updates: { parentId: number | null; name?: string } = {
-    parentId: targetParentId
+    parentId: targetParentId,
   }
-  
+
   if (newName !== undefined) {
     updates.name = newName
   }
-  
+
   transaction.add({
-    type: 'update-folder',
+    type: "update-folder",
     folderId,
-    updates
+    updates,
   })
-  
+
   return transaction
 }

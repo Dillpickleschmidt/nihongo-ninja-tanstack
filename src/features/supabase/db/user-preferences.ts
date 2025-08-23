@@ -1,4 +1,4 @@
-// features/supabase/db/user-preferences-operations.ts
+// features/supabase/db/user-preferences.ts
 import { createBackendClient } from "@/features/supabase/backendClient"
 import {
   UserPreferencesSchema,

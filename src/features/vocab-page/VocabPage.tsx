@@ -5,7 +5,7 @@ import { DesktopVocabPage } from "./DesktopVocabPage"
 import { MobileVocabPage } from "./MobileVocabPage"
 import type { ImportRequest, VocabTextbook } from "./types"
 import type { TextbookIDEnum } from "@/data/types"
-import type { FoldersAndDecksData } from "@/features/supabase/db/folder-operations"
+import type { FoldersAndDecksData } from "@/features/supabase/db/folder"
 import type { User } from "@supabase/supabase-js"
 
 interface VocabPageProps {

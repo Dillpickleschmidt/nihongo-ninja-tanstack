@@ -2,21 +2,13 @@
 import { createServerFn, serverOnly } from "@tanstack/solid-start"
 import Database, { type Database as SQLiteDatabase } from "better-sqlite3"
 import { existsSync } from "fs"
-import {
-  getFSRSCardsByKeys,
-  type FSRSCardData,
-} from "@/features/supabase/db/fsrs-operations"
-import type {
-  Kanji,
-  KanjiRow,
-  Radical,
-  RadicalRow,
-  VocabRow,
-  WaniKaniMeaning,
-} from "./types"
+import { getFSRSCards, type FSRSCardData } from "@/features/supabase/db/fsrs"
+import type { KanjiRow, RadicalRow, VocabRow, WaniKaniMeaning } from "./types"
 import {
   buildVocabHierarchy,
-  type VocabHierarchy as CleanVocabHierarchy,
+  type VocabHierarchy,
+  type KanjiEntry,
+  type RadicalEntry,
 } from "./hierarchy-builder"
 
 // =============================================================================
@@ -92,49 +84,23 @@ function parseMeanings(meaningsJson: string): string[] {
 // MAIN EXPORT FUNCTIONS (SERVER FUNCTIONS)
 // =============================================================================
 
-// CLEAN HIERARCHY SYSTEM - Simple, declarative approach
-export const getWKHierarchy = createServerFn({ method: "GET" })
-  .validator((slugs: string[]) => slugs)
-  .handler(async ({ data: slugs }): Promise<CleanVocabHierarchy | null> => {
-    if (!slugs || slugs.length === 0) return null
+// Legacy hierarchy function removed - now using centralized resolver at:
+// /features/resolvers/kanji/index.ts -> getVocabHierarchy()
 
-    try {
-      // Use the new clean hierarchy builder
-      const cleanHierarchy = await buildVocabHierarchy(slugs)
+// Legacy getUserProgressForVocab function removed - now using centralized version at:
+// /features/supabase/db/fsrs.ts -> getUserProgress()
 
-      return cleanHierarchy
-    } catch (error) {
-      console.error("🚨 [Utils] NEW hierarchy system failed:", error)
-      return null
-    }
-  })
-
-// Legacy function removed - using clean hierarchy system only
-
-export const getUserProgressForVocab = createServerFn({ method: "GET" })
-  .validator((data: { slugs: string[]; userId: string }) => data)
-  .handler(async ({ data }): Promise<Record<string, FSRSCardData> | null> => {
-    if (!data || !data.slugs || data.slugs.length === 0 || !data.userId) {
-      return null
-    }
-
-    const fsrsData = await getFSRSCardsByKeys(data.userId, data.slugs)
-
-    // Return a plain object instead of Map (for server JSON serialization)
-    const progressRecord: Record<string, FSRSCardData> = {}
-    fsrsData.forEach((card) => {
-      progressRecord[`${card.type}:${card.practice_item_key}`] = card
-    })
-
-    return progressRecord
-  })
-
-export const getItemDetailsBySlugsBatch = createServerFn({ method: "GET" })
+export const getWKItemsBySlugs = createServerFn({ method: "GET" })
   .validator((data: { kanji: string[]; radicals: string[] }) => data)
   .handler(
-    async ({ data }): Promise<{ kanji: Kanji[]; radicals: Radical[] }> => {
+    async ({
+      data,
+    }): Promise<{ kanji: KanjiEntry[]; radicals: RadicalEntry[] }> => {
       const db = await getDbConnection()
-      const results = { kanji: [] as Kanji[], radicals: [] as Radical[] }
+      const results = {
+        kanji: [] as KanjiEntry[],
+        radicals: [] as RadicalEntry[],
+      }
 
       if (data.kanji.length > 0) {
         const kanjiPlaceholders = data.kanji.map(() => "?").join(",")
@@ -144,11 +110,9 @@ export const getItemDetailsBySlugsBatch = createServerFn({ method: "GET" })
           .all(...data.kanji) as KanjiRow[]
 
         results.kanji = kanjiRows.map((row) => ({
-          id: row.id,
-          characters: row.characters,
-          slug: row.slug,
+          kanji: row.characters,
+          radicalComponents: [], // TODO: populate from relations if needed
           meanings: parseMeanings(row.meanings),
-          radicals: [],
           meaning_mnemonic: row.meaning_mnemonic,
           reading_mnemonic: row.reading_mnemonic,
         }))
@@ -162,9 +126,7 @@ export const getItemDetailsBySlugsBatch = createServerFn({ method: "GET" })
           .all(...data.radicals) as RadicalRow[]
 
         results.radicals = radicalRows.map((row) => ({
-          id: row.id,
-          characters: row.characters,
-          slug: row.slug,
+          radical: row.characters || row.slug, // Use slug as fallback if characters is null
           meanings: parseMeanings(row.meanings),
           meaning_mnemonic: row.meaning_mnemonic,
         }))

@@ -10,4 +10,3 @@ export function parseBuiltInDeckId(originalDeckId: string): {
     chapter: `chapter-${match[2]}`, // "chapter-0"
   }
 }
-

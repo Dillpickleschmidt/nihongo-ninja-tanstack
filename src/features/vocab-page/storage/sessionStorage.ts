@@ -5,7 +5,7 @@
  * Provides persistent state across browser sessions without database
  */
 
-import type { FoldersAndDecksData } from "@/features/supabase/db/folder-operations"
+import type { FoldersAndDecksData } from "@/features/supabase/db/folder"
 import { isServer } from "solid-js/web"
 
 const STORAGE_KEY = "nihongo-ninja-vocab-data"
@@ -101,4 +101,3 @@ export function getStorageInfo(): { hasData: boolean; size: number } {
     return { hasData: false, size: 0 }
   }
 }
-

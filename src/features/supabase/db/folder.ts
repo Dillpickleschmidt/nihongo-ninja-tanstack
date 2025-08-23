@@ -1,7 +1,7 @@
-// src/features/supabase/db/folder-operations.ts
+// src/features/supabase/db/folder.ts
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 import { createServerFn } from "@tanstack/solid-start"
-import { getUser } from "../getUser"
+import { getUser } from "@/features/supabase/getUser"
 
 export type FoldersAndDecksData = {
   folders: DeckFolder[]

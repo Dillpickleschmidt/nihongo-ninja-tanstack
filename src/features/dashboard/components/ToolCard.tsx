@@ -11,7 +11,13 @@ interface DesktopCardProps {
 export function DesktopCard(props: DesktopCardProps) {
   return (
     <Link
-      id={props.tool.title === "Learn" ? "tour-learn-card" : props.tool.title === "Vocab Decks" ? "tour-vocab-card" : undefined}
+      id={
+        props.tool.title === "Learn"
+          ? "tour-learn-card"
+          : props.tool.title === "Vocab Decks"
+            ? "tour-vocab-card"
+            : undefined
+      }
       to={props.tool.href}
       class={`group relative h-80 w-full overflow-hidden rounded-xl bg-gradient-to-br ${props.tool.gradient} flex flex-col justify-between p-6 text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl ${
         props.animated()

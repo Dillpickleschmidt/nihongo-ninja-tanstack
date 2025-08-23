@@ -13,11 +13,11 @@ import { useImportModal } from "./hooks/useImportModal"
 import { useEditOperations } from "./hooks/useEditOperations"
 import type { ImportRequest, VocabTextbook } from "./types"
 import type { TextbookIDEnum } from "@/data/types"
-import type { FoldersAndDecksData } from "@/features/supabase/db/folder-operations"
+import type { FoldersAndDecksData } from "@/features/supabase/db/folder"
 import {
   getVocabForDeck,
   getDeckIdByOriginalIdServerFn,
-} from "@/features/supabase/db/deck-operations"
+} from "@/features/supabase/db/deck"
 import type { User } from "@supabase/supabase-js"
 import type { DeckCreationInitialData } from "./deck-creation/stores/deck-creation-store"
 import { copyDeck } from "@/features/vocab-page/utils/deckCopyUtils"

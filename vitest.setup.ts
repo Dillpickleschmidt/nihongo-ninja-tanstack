@@ -17,3 +17,10 @@ vi.mock("@tanstack/solid-start", async () => {
     isServer: false,
   }
 })
+
+vi.mock("@/features/supabase/db/fsrs", () => ({
+  upsertFSRSCardForUser: vi.fn(),
+  batchUpsertFSRSCardsForUser: vi.fn(),
+  getFSRSCards: vi.fn(),
+  getUserProgress: vi.fn(),
+}))

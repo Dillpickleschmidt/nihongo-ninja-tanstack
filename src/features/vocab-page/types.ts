@@ -27,14 +27,14 @@ export interface VocabTextbook {
 
 // Folder Navigation Types
 export interface FolderNavigationState {
-  currentFolderId: number | null  // null = root level
-  breadcrumbPath: DeckFolder[]    // path from root to current folder
+  currentFolderId: number | null // null = root level
+  breadcrumbPath: DeckFolder[] // path from root to current folder
 }
 
 // Content at current folder level (immediate children only)
 export interface FolderContent {
-  folders: DeckFolder[]    // immediate child folders
-  decks: UserDeck[]       // decks in current folder
+  folders: DeckFolder[] // immediate child folders
+  decks: UserDeck[] // decks in current folder
 }
 
 // Expansion state tracking for collapsible UI

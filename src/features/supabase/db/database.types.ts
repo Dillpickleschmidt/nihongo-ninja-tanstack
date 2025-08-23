@@ -46,7 +46,7 @@ export type Database = {
           },
         ]
       }
-      practice_item_user_completions: {
+      fsrs_cards: {
         Row: {
           created_at: string
           due_at: string

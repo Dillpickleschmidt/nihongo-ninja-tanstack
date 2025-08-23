@@ -1,6 +1,6 @@
 import { createEmptyCard, State } from "ts-fsrs"
 import type { VocabularyItem, Mnemonics } from "@/data/types"
-import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import type {
   PracticeCard,
   PracticeSessionState,
@@ -15,7 +15,7 @@ import type {
   KanjiEntry,
   RadicalEntry,
 } from "@/data/wanikani/hierarchy-builder"
-import { getItemDetailsBySlugsBatch } from "@/data/wanikani/utils"
+import { getKanjiDetails } from "@/features/resolvers/kanji"
 
 /**
  * Creates a unified PracticeCard from clean hierarchy entry types.
@@ -266,7 +266,7 @@ export async function initializePracticeSession(
       radicals: [] as RadicalEntry[],
     }
     if (missingKanjiSlugs.length > 0 || missingRadicalSlugs.length > 0) {
-      fetchedData = await getItemDetailsBySlugsBatch({
+      fetchedData = await getKanjiDetails({
         data: { kanji: missingKanjiSlugs, radicals: missingRadicalSlugs },
       })
     }

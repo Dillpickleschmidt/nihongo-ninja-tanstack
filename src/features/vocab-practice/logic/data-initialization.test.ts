@@ -8,7 +8,7 @@ import type {
   KanjiEntry,
   RadicalEntry,
 } from "@/data/wanikani/hierarchy-builder"
-import type { FSRSCardData } from "@/features/supabase/db/fsrs-operations"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import { initializePracticeSession } from "./data-initialization"
 
 // --- Mock Data Factory Functions ---
@@ -171,7 +171,7 @@ vi.mock("@/data/wanikani/utils", () => {
   )
 
   return {
-    getItemDetailsBySlugsBatch: vi.fn(async (data) => {
+    getWKItemsBySlugs: vi.fn(async (data) => {
       return {
         kanji: (data.kanji || [])
           .map((slug: string) => mockKanjiDetailsMap.get(slug))

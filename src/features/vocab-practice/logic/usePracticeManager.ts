@@ -33,7 +33,9 @@ export function usePracticeManager() {
 
     // Set up observer for automatic reactivity sync
     newManager.onChange(() => {
-      setCurrentCard(newManager.isFinished() ? null : newManager.getCurrentCard())
+      setCurrentCard(
+        newManager.isFinished() ? null : newManager.getCurrentCard(),
+      )
       setActiveQueue(newManager.getActiveQueue())
       setIsFinished(newManager.isFinished())
       setCardMap(newManager.getCardMap())
@@ -67,7 +69,9 @@ export function usePracticeManager() {
 
     // Set up observer for automatic reactivity sync
     newManager.onChange(() => {
-      setCurrentCard(newManager.isFinished() ? null : newManager.getCurrentCard())
+      setCurrentCard(
+        newManager.isFinished() ? null : newManager.getCurrentCard(),
+      )
       setActiveQueue(newManager.getActiveQueue())
       setIsFinished(newManager.isFinished())
       setCardMap(newManager.getCardMap())
@@ -162,4 +166,3 @@ export function usePracticeManager() {
 }
 
 export type PracticeManagerHook = ReturnType<typeof usePracticeManager>
-

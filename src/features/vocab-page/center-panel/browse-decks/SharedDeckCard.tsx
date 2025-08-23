@@ -183,4 +183,3 @@ export function SharedDeckCard(props: SharedDeckCardProps) {
     </div>
   )
 }
-

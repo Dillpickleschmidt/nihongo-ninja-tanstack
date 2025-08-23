@@ -28,7 +28,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
         "active-textbook": textbookId,
         "active-deck": deck.slug,
       })
-      
+
       // Then navigate to new route
       navigate({
         to: "/learn/$textbookId/$chapterSlug",

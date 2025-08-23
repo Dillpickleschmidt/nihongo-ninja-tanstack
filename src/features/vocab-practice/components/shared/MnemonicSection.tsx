@@ -3,9 +3,7 @@ import { Show } from "solid-js"
 import { parseMnemonicText } from "@/utils/mnemonic-parser"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 
-export function MnemonicSection(props: {
-  visible: () => boolean
-}) {
+export function MnemonicSection(props: { visible: () => boolean }) {
   const { currentCard } = useVocabPracticeContext()
 
   // Pick the correct mnemonic based on mode
@@ -24,7 +22,9 @@ export function MnemonicSection(props: {
   const labelText = () => {
     const card = currentCard()
     if (!card) return ""
-    return card.practiceMode === "meanings" ? "Meaning Mnemonic" : "Spelling Mnemonic"
+    return card.practiceMode === "meanings"
+      ? "Meaning Mnemonic"
+      : "Spelling Mnemonic"
   }
 
   return (

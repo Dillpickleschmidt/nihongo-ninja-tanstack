@@ -6,8 +6,9 @@ import {
   getDeckBySlug,
 } from "@/data/utils/core"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
-import { getDueFSRSCardsCount } from "@/features/supabase/db/fsrs-operations"
-import { getWKHierarchy, getUserProgressForVocab } from "@/data/wanikani/utils"
+import { getDueFSRSCardsCount } from "@/features/supabase/db/fsrs"
+import { getVocabHierarchy } from "@/features/resolvers/kanji"
+import { getUserProgress } from "@/features/supabase/db/fsrs"
 import { getVocabularyForModule } from "@/data/utils/vocab"
 import {
   enrichLessons,
@@ -64,7 +65,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       chapterVocabulary = await getVocabularyForModule(vocabModuleId)
     }
     const vocabForHierarchy = chapterVocabulary.map((item) => item.word)
-    const wkHierarchyData: VocabHierarchy | null = await getWKHierarchy({
+    const wkHierarchyData: VocabHierarchy | null = await getVocabHierarchy({
       data: vocabForHierarchy,
     })
 
@@ -80,11 +81,11 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
     // Fetch user progress data for all collected slugs
     const fsrsProgressDataPromise =
       user && slugs.length > 0
-        ? getUserProgressForVocab({ data: { slugs, userId: user.id } })
+        ? getUserProgress({ data: { slugs, userId: user.id } })
         : Promise.resolve(null)
 
     const dueFSRSCardsCountPromise = user
-      ? getDueFSRSCardsCount(user.id)
+      ? getDueFSRSCardsCount({ data: user.id })
       : Promise.resolve(0)
 
     const struggles = [

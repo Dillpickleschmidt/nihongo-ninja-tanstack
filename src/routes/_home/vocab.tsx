@@ -1,7 +1,7 @@
 import { createFileRoute, defer } from "@tanstack/solid-router"
 import { VocabPage } from "@/features/vocab-page/VocabPage"
 import { getVocabPracticeModulesFromTextbooks } from "@/data/utils/core"
-import { getUserFoldersAndDecks } from "@/features/supabase/db/folder-operations"
+import { getUserFoldersAndDecks } from "@/features/supabase/db/folder"
 import type { VocabBuiltInDeck } from "@/features/vocab-page/types"
 import type { TextbookIDEnum } from "@/data/types"
 import type { User } from "@supabase/supabase-js"

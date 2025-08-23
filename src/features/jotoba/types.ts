@@ -182,4 +182,3 @@ export interface JotobaError {
   error: string
   message: string
 }
-

@@ -6,7 +6,7 @@ import { PracticeSessionManager } from "./PracticeSessionManager"
 import { handleCardAnswer } from "./card-state-handler"
 
 // This replaces upsertFSRSCardForUser with a mock function.
-vi.mock("@/features/supabase/db/utils", () => ({
+vi.mock("@/features/supabase/db/fsrs", () => ({
   upsertFSRSCardForUser: vi.fn(),
 }))
 
@@ -779,7 +779,7 @@ describe("PracticeSessionManager", () => {
     it("should handle database operations correctly", async () => {
       const manager = new PracticeSessionManager(defaultState)
       const { upsertFSRSCardForUser } = await import(
-        "@/features/supabase/db/fsrs-operations"
+        "@/features/supabase/db/fsrs"
       )
 
       // Test successful database call

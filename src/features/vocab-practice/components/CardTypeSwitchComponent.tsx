@@ -25,9 +25,7 @@ export default function CardTypeSwitchComponent() {
 
           {/* Mnemonics Section */}
           <div class="mb-3 flex min-h-20 items-end overflow-y-auto px-2 pt-2 sm:mb-4 sm:min-h-28 sm:pt-3">
-            <MnemonicSection
-              visible={() => uiState.isAnswered}
-            />
+            <MnemonicSection visible={() => uiState.isAnswered} />
           </div>
 
           {/* Card Type Switch */}

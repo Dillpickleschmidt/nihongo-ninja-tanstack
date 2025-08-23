@@ -242,4 +242,3 @@ export function validateFolderComplete(
 
   return { isValid: true }
 }
-

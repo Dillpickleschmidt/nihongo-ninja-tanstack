@@ -24,6 +24,11 @@ const mockUseVocabPracticeContext = useVocabPracticeContext as ReturnType<
   typeof vi.fn
 >
 
+// Mock functions for context
+const mockCurrentCard = vi.fn()
+const mockGetCardMap = vi.fn()
+const mockSetUIState = vi.fn()
+
 const createMockCard = (
   key: string,
   validAnswers: string[],
@@ -54,28 +59,21 @@ const createMockCard = (
 })
 
 describe("MultipleChoiceComponent", () => {
-  const mockSetState = vi.fn()
-  const mockGetCardMap = vi.fn()
-
-  let defaultMockState: {
-    manager: { getCardMap: ReturnType<typeof vi.fn> }
-    isAnswered: boolean
-    lastRating: Rating | null
-    currentCard: PracticeCard | null
-  }
-
   beforeEach(() => {
     vi.clearAllMocks()
-    defaultMockState = {
-      manager: { getCardMap: mockGetCardMap },
-      isAnswered: false,
-      lastRating: null,
-      currentCard: null,
-    }
+
+    // Reset mock functions
+    mockCurrentCard.mockReturnValue(null)
+    mockGetCardMap.mockReturnValue(new Map())
 
     mockUseVocabPracticeContext.mockReturnValue({
-      state: defaultMockState,
-      setState: mockSetState,
+      currentCard: mockCurrentCard,
+      getCardMap: mockGetCardMap,
+      uiState: {
+        isAnswered: false,
+        lastRating: null,
+      },
+      setUIState: mockSetUIState,
     })
   })
 
@@ -107,7 +105,7 @@ describe("MultipleChoiceComponent", () => {
         ["vocabulary:飲む", anotherVocabCard],
       ])
 
-      defaultMockState.currentCard = vocabCard
+      mockCurrentCard.mockReturnValue(vocabCard)
       mockGetCardMap.mockReturnValue(cardMap)
 
       render(() => <MultipleChoiceComponent />)
@@ -147,7 +145,7 @@ describe("MultipleChoiceComponent", () => {
         ["vocabulary:見る", anotherMeaningsCard],
       ])
 
-      defaultMockState.currentCard = meaningsCard
+      mockCurrentCard.mockReturnValue(meaningsCard)
       mockGetCardMap.mockReturnValue(cardMap)
 
       render(() => <MultipleChoiceComponent />)
@@ -187,7 +185,7 @@ describe("MultipleChoiceComponent", () => {
         ["vocabulary:見る", anotherVerbCard],
       ])
 
-      defaultMockState.currentCard = currentCard
+      mockCurrentCard.mockReturnValue(currentCard)
       mockGetCardMap.mockReturnValue(cardMap)
 
       render(() => <MultipleChoiceComponent />)
@@ -227,7 +225,7 @@ describe("MultipleChoiceComponent", () => {
         ["vocabulary:静か", naAdjectiveCard],
       ])
 
-      defaultMockState.currentCard = currentCard
+      mockCurrentCard.mockReturnValue(currentCard)
       mockGetCardMap.mockReturnValue(cardMap)
 
       render(() => <MultipleChoiceComponent />)
@@ -260,7 +258,7 @@ describe("MultipleChoiceComponent", () => {
         ["vocabulary:飲む", differentCard],
       ])
 
-      defaultMockState.currentCard = currentCard
+      mockCurrentCard.mockReturnValue(currentCard)
       mockGetCardMap.mockReturnValue(cardMap)
 
       render(() => <MultipleChoiceComponent />)
@@ -294,7 +292,7 @@ describe("MultipleChoiceComponent", () => {
         ["vocabulary:本", anotherNoPoSCard],
       ])
 
-      defaultMockState.currentCard = currentCard
+      mockCurrentCard.mockReturnValue(currentCard)
       mockGetCardMap.mockReturnValue(cardMap)
 
       render(() => <MultipleChoiceComponent />)
@@ -342,7 +340,7 @@ describe("MultipleChoiceComponent", () => {
         ["vocabulary:見る", wrongModeCard],
       ])
 
-      defaultMockState.currentCard = currentCard
+      mockCurrentCard.mockReturnValue(currentCard)
       mockGetCardMap.mockReturnValue(cardMap)
 
       render(() => <MultipleChoiceComponent />)
@@ -372,7 +370,7 @@ describe("MultipleChoiceComponent", () => {
         ["vocabulary:飲む", otherCard],
       ])
 
-      defaultMockState.currentCard = currentCard
+      mockCurrentCard.mockReturnValue(currentCard)
       mockGetCardMap.mockReturnValue(cardMap)
     })
 

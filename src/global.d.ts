@@ -6,8 +6,7 @@ declare global {
   type DBProfile = Database["public"]["Tables"]["profiles"]["Row"]
   type DBStaticModule =
     Database["public"]["Tables"]["static_module_user_completions"]["Row"]
-  type DBPracticeItem =
-    Database["public"]["Tables"]["practice_item_user_completions"]["Row"]
+  type DBPracticeItem = Database["public"]["Tables"]["fsrs_cards"]["Row"]
   type DBPracticeItemType = Database["public"]["Enums"]["practice_item_type"]
 
   // Folder Management Types
@@ -20,12 +19,18 @@ declare global {
   type DeckFolderUpdate = Database["public"]["Tables"]["deck_folders"]["Update"]
 
   // Vocabulary Database Types
-  type DBVocabularyItem = Database["public"]["Tables"]["vocabulary_items"]["Row"]
-  type DBVocabularyItemInsert = Database["public"]["Tables"]["vocabulary_items"]["Insert"]
-  type DBVocabularyItemUpdate = Database["public"]["Tables"]["vocabulary_items"]["Update"]
+  type DBVocabularyItem =
+    Database["public"]["Tables"]["vocabulary_items"]["Row"]
+  type DBVocabularyItemInsert =
+    Database["public"]["Tables"]["vocabulary_items"]["Insert"]
+  type DBVocabularyItemUpdate =
+    Database["public"]["Tables"]["vocabulary_items"]["Update"]
 
   // Deck Sharing Types
-  type PublicDeckShare = Database["public"]["Tables"]["public_deck_shares"]["Row"]
-  type PublicDeckShareInsert = Database["public"]["Tables"]["public_deck_shares"]["Insert"]
-  type PublicDeckShareUpdate = Database["public"]["Tables"]["public_deck_shares"]["Update"]
+  type PublicDeckShare =
+    Database["public"]["Tables"]["public_deck_shares"]["Row"]
+  type PublicDeckShareInsert =
+    Database["public"]["Tables"]["public_deck_shares"]["Insert"]
+  type PublicDeckShareUpdate =
+    Database["public"]["Tables"]["public_deck_shares"]["Update"]
 }

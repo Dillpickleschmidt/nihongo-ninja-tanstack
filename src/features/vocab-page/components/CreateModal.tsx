@@ -55,4 +55,3 @@ export function CreateModal(props: CreateModalProps) {
     </Dialog>
   )
 }
-

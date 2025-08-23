@@ -8,8 +8,8 @@ import {
   type VocabItemFormData,
 } from "../../types/vocabulary-types"
 import { validateVocabItemMinimal } from "../../validation"
-import { executeEditTransactionServerFn } from "@/features/supabase/db/folder-operations"
-import { createCustomDeckServerFn } from "@/features/supabase/db/deck-operations"
+import { executeEditTransactionServerFn } from "@/features/supabase/db/folder"
+import { createCustomDeckServerFn } from "@/features/supabase/db/deck"
 import type {
   UpdateDeckOperation,
   UpdateDeckVocabularyOperation,

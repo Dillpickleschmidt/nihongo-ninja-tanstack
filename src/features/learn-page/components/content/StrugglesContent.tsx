@@ -99,4 +99,3 @@ export function StrugglesContent(props: StrugglesContentProps) {
     </div>
   )
 }
-

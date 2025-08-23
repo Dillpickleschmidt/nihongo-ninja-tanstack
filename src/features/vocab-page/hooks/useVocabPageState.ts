@@ -5,15 +5,15 @@ import { type DeferredPromise } from "@tanstack/solid-router"
 import { DEFAULT_EXPANDED_TEXTBOOKS, NEWLY_IMPORTED_TIMEOUT } from "../types"
 import type { ImportRequest, VocabBuiltInDeck, VocabTextbook } from "../types"
 import type { TextbookIDEnum } from "@/data/types"
-import type { FoldersAndDecksData } from "@/features/supabase/db/folder-operations"
+import type { FoldersAndDecksData } from "@/features/supabase/db/folder"
 import type { User } from "@supabase/supabase-js"
 import {
   buildBreadcrumbPath,
   getFolderContents,
   getParentFolderId,
 } from "../logic/folder-hierarchy"
-import { getUserFoldersAndDecks } from "@/features/supabase/db/folder-operations"
-import { importBuiltInDeckServerFn } from "@/features/supabase/db/deck-operations"
+import { getUserFoldersAndDecks } from "@/features/supabase/db/folder"
+import { importBuiltInDeckServerFn } from "@/features/supabase/db/deck"
 import {
   saveFoldersAndDecks,
   loadFoldersAndDecks,

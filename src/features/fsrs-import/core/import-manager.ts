@@ -31,7 +31,7 @@ import {
  */
 export interface ImportDependencies {
   // Database operations
-  getFSRSCardsByKeys: (userId: string, keys: string[]) => Promise<any[]>
+  getFSRSCards: (userId: string, keys: string[]) => Promise<any[]>
   batchUpsertFSRSCards: (data: any[]) => Promise<void>
 
   // External services
@@ -392,7 +392,7 @@ export class ImportSessionManager {
       ImportSessionManager.extractSubjectSlugs(waniKaniResults)
 
     // Step 4: Fetch existing cards from database (injected dependency)
-    const existingCardsArray = await dependencies.getFSRSCardsByKeys(
+    const existingCardsArray = await dependencies.getFSRSCards(
       context.userId,
       subjectSlugs,
     )

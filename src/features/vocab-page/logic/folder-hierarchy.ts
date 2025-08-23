@@ -250,5 +250,3 @@ export function getFolderStats(
     totalDecks: decks.length,
   }
 }
-
-

@@ -311,7 +311,7 @@ describe("ImportSessionManager", () => {
 
   describe("Instance Methods - Integration Logic", () => {
     const createMockDependencies = (): ImportDependencies => ({
-      getFSRSCardsByKeys: vi.fn().mockResolvedValue([]),
+      getFSRSCards: vi.fn().mockResolvedValue([]),
       batchUpsertFSRSCards: vi.fn().mockResolvedValue(undefined),
       waniKaniService: {
         batchFindSubjects: vi
