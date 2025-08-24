@@ -287,7 +287,8 @@ export async function initializePracticeSession(
     let skippedRadicalCount = 0
 
     pureDueReviewCards.forEach((fsrsData) => {
-      const isDue = fsrsData.fsrs_card.due && fsrsData.fsrs_card.due <= now
+      const isDue =
+        fsrsData.fsrs_card.due && new Date(fsrsData.fsrs_card.due) <= now
       const matchesMode = fsrsData.mode === sessionPracticeMode
       if (!isDue || !matchesMode) return
 

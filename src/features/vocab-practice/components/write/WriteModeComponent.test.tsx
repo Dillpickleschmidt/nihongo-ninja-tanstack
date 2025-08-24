@@ -20,20 +20,6 @@ vi.mock("@/components/ui/button", () => ({
     </button>
   ),
 }))
-vi.mock("@/components/ui/text-field", () => ({
-  TextField: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  TextFieldInput: ({ onInput, onKeyDown, ...props }: any) => (
-    <input
-      {...props}
-      onInput={onInput}
-      onKeyDown={onKeyDown}
-      data-testid="text-field-input"
-    />
-  ),
-  TextFieldDescription: ({ children, ...props }: any) => (
-    <div {...props}>{children}</div>
-  ),
-}))
 
 // Import mocked functions
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
@@ -110,42 +96,38 @@ describe("WriteModeComponent", () => {
       })
     })
 
-    it("should accept valid answers from the validAnswers array", async () => {
+    it("should accept valid answers from the validAnswers array", () => {
       render(() => <WriteModeComponent />)
-      const input = await screen.findByTestId("text-field-input")
+      const input = screen.getByRole("textbox")
       fireEvent.input(input, { target: { value: "answer1" } })
       fireEvent.keyDown(input, { key: "Enter" })
-      await waitFor(() => {
-        expect(mockSetState).toHaveBeenCalledWith({
-          isAnswered: true,
-          lastRating: Rating.Good,
-        })
+
+      expect(mockSetUIState).toHaveBeenCalledWith({
+        isAnswered: true,
+        lastRating: Rating.Good,
       })
     })
 
-    it("should handle case-insensitive and whitespace-trimmed answers", async () => {
+    it("should handle case-insensitive and whitespace-trimmed answers", () => {
       render(() => <WriteModeComponent />)
-      const input = await screen.findByTestId("text-field-input")
+      const input = screen.getByRole("textbox")
       fireEvent.input(input, { target: { value: "  ANSWER1  " } })
       fireEvent.keyDown(input, { key: "Enter" })
-      await waitFor(() => {
-        expect(mockSetState).toHaveBeenCalledWith({
-          isAnswered: true,
-          lastRating: Rating.Good,
-        })
+
+      expect(mockSetUIState).toHaveBeenCalledWith({
+        isAnswered: true,
+        lastRating: Rating.Good,
       })
     })
 
     it("should mark incorrect answers as wrong", async () => {
       render(() => <WriteModeComponent />)
-      const input = await screen.findByTestId("text-field-input")
+      const input = screen.getByRole("textbox")
       fireEvent.input(input, { target: { value: "wrong answer" } })
       fireEvent.keyDown(input, { key: "Enter" })
-      await waitFor(() => {
-        expect(mockSetState).toHaveBeenCalledWith({
-          isAnswered: true,
-          lastRating: Rating.Again,
-        })
+      expect(mockSetUIState).toHaveBeenCalledWith({
+        isAnswered: true,
+        lastRating: Rating.Again,
       })
     })
   })
@@ -171,11 +153,10 @@ describe("WriteModeComponent", () => {
       const input = await screen.findByRole("textbox")
       fireEvent.input(input, { target: { value: "validAnswer" } })
       fireEvent.keyDown(input, { key: "Enter" })
-      await waitFor(() => {
-        expect(mockSetState).toHaveBeenCalledWith({
-          isAnswered: true,
-          lastRating: Rating.Good,
-        })
+
+      expect(mockSetUIState).toHaveBeenCalledWith({
+        isAnswered: true,
+        lastRating: Rating.Good,
       })
     })
 
@@ -184,11 +165,10 @@ describe("WriteModeComponent", () => {
       const input = await screen.findByRole("textbox")
       fireEvent.input(input, { target: { value: "exampleSpecificAnswer" } })
       fireEvent.keyDown(input, { key: "Enter" })
-      await waitFor(() => {
-        expect(mockSetState).toHaveBeenCalledWith({
-          isAnswered: true,
-          lastRating: Rating.Good,
-        })
+
+      expect(mockSetUIState).toHaveBeenCalledWith({
+        isAnswered: true,
+        lastRating: Rating.Good,
       })
     })
 
@@ -210,8 +190,8 @@ describe("WriteModeComponent", () => {
       fireEvent.input(inputs[0], { target: { value: "answer1" } })
       fireEvent.input(inputs[1], { target: { value: "answer2" } })
       fireEvent.keyDown(inputs[0], { key: "Enter" })
-      await waitFor(() => {
-        expect(mockSetState).toHaveBeenCalledWith({
+      waitFor(() => {
+        expect(mockSetUIState).toHaveBeenCalledWith({
           isAnswered: true,
           lastRating: Rating.Good,
         })
@@ -235,11 +215,9 @@ describe("WriteModeComponent", () => {
       fireEvent.input(inputs[0], { target: { value: "answer1" } })
       fireEvent.input(inputs[1], { target: { value: "wrong" } })
       fireEvent.keyDown(inputs[0], { key: "Enter" })
-      await waitFor(() => {
-        expect(mockSetState).toHaveBeenCalledWith({
-          isAnswered: true,
-          lastRating: Rating.Again,
-        })
+      expect(mockSetUIState).toHaveBeenCalledWith({
+        isAnswered: true,
+        lastRating: Rating.Again,
       })
     })
   })

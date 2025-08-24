@@ -385,7 +385,7 @@ describe("MultipleChoiceComponent", () => {
       expect(correctButton).toBeDefined()
       fireEvent.click(correctButton!)
 
-      expect(mockSetState).toHaveBeenCalledWith({
+      expect(mockSetUIState).toHaveBeenCalledWith({
         isAnswered: true,
         lastRating: Rating.Good,
       })
@@ -402,7 +402,7 @@ describe("MultipleChoiceComponent", () => {
       expect(incorrectButton).toBeDefined()
       fireEvent.click(incorrectButton!)
 
-      expect(mockSetState).toHaveBeenCalledWith({
+      expect(mockSetUIState).toHaveBeenCalledWith({
         isAnswered: true,
         lastRating: Rating.Again,
       })
