@@ -8,7 +8,7 @@ import {
   Component,
   ParentProps,
 } from "solid-js"
-import type { UserPreferencesCookieData } from "@/features/main-cookies/schemas/user-preferences"
+import type { UserPreferences } from "@/features/main-cookies/schemas/user-preferences"
 import type { DeviceUISettingsCookieData } from "@/features/main-cookies/schemas/device-ui-settings"
 import { setDeviceUISettingsCookie } from "@/features/main-cookies/server/cookie-utils"
 import {
@@ -23,10 +23,8 @@ import { User } from "@supabase/supabase-js"
 
 interface SettingsContextType {
   // Cross-device user preferences (with SWR)
-  userPreferences: () => UserPreferencesCookieData
-  updateUserPreferences: (
-    prefs: Partial<UserPreferencesCookieData>,
-  ) => Promise<void>
+  userPreferences: () => UserPreferences
+  updateUserPreferences: (prefs: Partial<UserPreferences>) => Promise<void>
 
   // Device UI settings (client-only)
   deviceUISettings: () => DeviceUISettingsCookieData
@@ -53,15 +51,15 @@ const SettingsContext = createContext<SettingsContextType>(defaultContextValue)
 
 interface SettingsProviderProps extends ParentProps {
   user: User | null
-  initialUserPreferenceData: UserPreferencesCookieData
-  userPreferencesDBPromise: Promise<UserPreferencesCookieData>
+  initialUserPreferenceData: UserPreferences
+  userPreferencesDBPromise: Promise<UserPreferences>
   deviceUISettings: DeviceUISettingsCookieData
 }
 
 export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
   // Cross-device settings with SWR pattern (Hook 1: createSignal)
   const [displayedUserPreferences, setDisplayedUserPreferences] =
-    createSignal<UserPreferencesCookieData>(props.initialUserPreferenceData)
+    createSignal<UserPreferences>(props.initialUserPreferenceData)
 
   // Device UI settings (simple client state)
   const [deviceUISettings, setDeviceUISettings] =
@@ -100,9 +98,7 @@ export const SettingsProvider: Component<SettingsProviderProps> = (props) => {
   })
 
   // Update user preferences (user-initiated changes)
-  const updateUserPreferences = async (
-    prefs: Partial<UserPreferencesCookieData>,
-  ) => {
+  const updateUserPreferences = async (prefs: Partial<UserPreferences>) => {
     const currentPrefs = displayedUserPreferences()
     const newPrefs = { ...currentPrefs, ...prefs }
 

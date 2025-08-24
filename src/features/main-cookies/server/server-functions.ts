@@ -6,7 +6,7 @@ import {
   getUserPreferencesFromDB,
   updateUserPreferencesInDB,
 } from "@/features/supabase/db/user-preferences"
-import { UserPreferencesSchema } from "../schemas/user-preferences"
+import { UserPreferencesSchema } from "@/features/main-cookies/schemas/user-preferences"
 import {
   _getUserPreferencesCookie,
   _setUserPreferencesCookie,

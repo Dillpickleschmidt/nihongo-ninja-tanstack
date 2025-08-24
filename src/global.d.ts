@@ -1,7 +1,23 @@
-import type { Database as DB } from "./features/supabase/db/database.types"
+import type { MergeDeep } from "type-fest"
+import type { Database as DatabaseGenerated } from "./features/supabase/db/database.types"
+import type { UserPreferences } from "./features/main-cookies/schemas/user-preferences"
 
 declare global {
-  type Database = DB
+  // Enhanced Database type with properly typed user_preferences
+  type Database = MergeDeep<
+    DatabaseGenerated,
+    {
+      public: {
+        Tables: {
+          profiles: {
+            Row: { user_preferences: UserPreferences }
+            Insert: { user_preferences: UserPreferences }
+            Update: { user_preferences?: UserPreferences }
+          }
+        }
+      }
+    }
+  >
 
   type DBProfile = Database["public"]["Tables"]["profiles"]["Row"]
   type DBStaticModule =

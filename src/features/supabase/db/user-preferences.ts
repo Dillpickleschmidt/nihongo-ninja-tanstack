@@ -1,13 +1,11 @@
 // features/supabase/db/user-preferences.ts
 import { createBackendClient } from "@/features/supabase/backendClient"
-import {
-  UserPreferencesSchema,
-  type UserPreferencesCookieData,
-} from "@/features/main-cookies/schemas/user-preferences"
+import { UserPreferencesSchema } from "@/features/main-cookies/schemas/user-preferences"
+import type { UserPreferences } from "@/features/main-cookies/schemas/user-preferences"
 
 export async function getUserPreferencesFromDB(
   userId: string,
-): Promise<UserPreferencesCookieData> {
+): Promise<UserPreferences> {
   const supabase = createBackendClient()
 
   const { data, error } = await supabase
@@ -36,7 +34,7 @@ export async function getUserPreferencesFromDB(
 
 export async function updateUserPreferencesInDB(
   userId: string,
-  preferences: UserPreferencesCookieData,
+  preferences: UserPreferences,
 ): Promise<any> {
   const supabase = createBackendClient()
 

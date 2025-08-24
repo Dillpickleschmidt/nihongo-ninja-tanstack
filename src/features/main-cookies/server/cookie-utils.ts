@@ -1,10 +1,8 @@
 // Internal cookie utilities - extracted for organization
 import { getCookie, setCookie } from "@/utils/cookie-utils"
 import { serverOnly } from "@tanstack/solid-start"
-import {
-  UserPreferencesSchema,
-  type UserPreferencesCookieData,
-} from "../schemas/user-preferences"
+import { UserPreferencesSchema } from "@/features/main-cookies/schemas/user-preferences"
+import type { UserPreferences } from "../schemas/user-preferences"
 import {
   DeviceUISettingsSchema,
   type DeviceUISettingsCookieData,
@@ -13,7 +11,7 @@ import { USER_PREFERENCES_COOKIE, DEVICE_UI_SETTINGS_COOKIE } from "../types"
 
 // User preferences cookie helpers (HttpOnly)
 export const _getUserPreferencesCookie = serverOnly(
-  (): UserPreferencesCookieData | null => {
+  (): UserPreferences | null => {
     const cookieValue = getCookie(USER_PREFERENCES_COOKIE)
     if (!cookieValue) return null
 
@@ -28,7 +26,7 @@ export const _getUserPreferencesCookie = serverOnly(
 )
 
 export const _setUserPreferencesCookie = serverOnly(
-  (data: UserPreferencesCookieData, response?: Response): void => {
+  (data: UserPreferences, response?: Response): void => {
     setCookie(USER_PREFERENCES_COOKIE, JSON.stringify(data), {
       httpOnly: true,
       secure: true,
@@ -69,8 +67,8 @@ export function setDeviceUISettingsCookie(
 export const _getDefaultPreferences = () => UserPreferencesSchema.parse({})
 
 export const _addTimestamp = (
-  preferences: UserPreferencesCookieData,
-): UserPreferencesCookieData => ({
+  preferences: UserPreferences,
+): UserPreferences => ({
   ...preferences,
   timestamp: Date.now(),
 })
