@@ -1,31 +1,64 @@
-import { Settings } from "lucide-solid"
+import { createSignal } from "solid-js"
+import { StackEditor } from "./overrides/StackEditor"
+import { getDefaultVocabularyStacks } from "@/features/resolvers/vocabulary/stacking"
+import { getDefaultKanjiStacks } from "@/features/resolvers/kanji/stacking"
+import type { Stack } from "@/features/resolvers/types"
 
 export function OverridesContent() {
+  // Initialize with default stacks
+  const [vocabularyStacks, setVocabularyStacks] = createSignal<Stack[]>(
+    getDefaultVocabularyStacks(),
+  )
+  const [kanjiStacks, setKanjiStacks] = createSignal<Stack[]>(
+    getDefaultKanjiStacks(),
+  )
+
   return (
-    <div class="mx-auto max-w-4xl space-y-6 text-center">
-      <div class="mb-8 flex justify-center">
-        <div class="bg-muted flex h-20 w-20 items-center justify-center rounded-full">
-          <Settings class="text-muted-foreground h-10 w-10" />
+    <div class="space-y-8">
+      {/* Header (compact, left-aligned) */}
+      <div class="space-y-2">
+        <h1 class="text-2xl font-semibold">Override Settings</h1>
+        <p class="text-muted-foreground max-w-2xl text-sm leading-relaxed">
+          Configure how vocabulary and kanji data sources are prioritized and
+          merged during practice sessions. Higher priority sources (lower
+          numbers) override lower priority ones.
+        </p>
+      </div>
+
+      {/* Stack Editors */}
+      <div class="grid items-stretch gap-8 lg:grid-cols-2">
+        <div class="border-card-foreground/70 bg-background/40 flex flex-col rounded-lg border p-6 backdrop-blur-sm">
+          <StackEditor
+            title="Vocabulary Overrides"
+            stacks={vocabularyStacks()}
+            onChange={setVocabularyStacks}
+          />
+        </div>
+
+        <div class="border-card-foreground/70 bg-background/40 flex flex-col rounded-lg border p-6 backdrop-blur-sm">
+          <StackEditor
+            title="Kanji Overrides"
+            stacks={kanjiStacks()}
+            onChange={setKanjiStacks}
+          />
         </div>
       </div>
-      <h1 class="text-4xl font-bold">Vocabulary Overrides</h1>
-      <p class="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed">
-        Configure advanced stacking context rules to customize how vocabulary
-        items are prioritized and presented during practice sessions.
-      </p>
-      <div class="mt-8 space-y-4">
-        <p class="text-muted-foreground text-sm">
-          This feature is coming soon!
+
+      {/* Help Text (slightly larger than before, but still subtle) */}
+      <div class="text-muted-foreground mx-auto max-w-2xl space-y-1 text-center text-sm leading-relaxed">
+        <p>
+          <strong>Priority:</strong> Lower numbers have higher priority (100
+          beats 200)
         </p>
-        <div class="bg-muted/30 mx-auto max-w-md rounded-lg p-6">
-          <h3 class="mb-3 text-base font-semibold">Planned Features</h3>
-          <ul class="text-muted-foreground space-y-2 text-sm">
-            <li>• Set vocabulary priority rules</li>
-            <li>• Configure deck stacking contexts</li>
-            <li>• Override default spaced repetition</li>
-            <li>• Custom learning algorithms</li>
-          </ul>
-        </div>
+        <p>
+          <strong>Locked items:</strong> Cannot be disabled or reordered (🔒)
+        </p>
+        <p>
+          <strong>Drag to reorder:</strong> Only unlocked items can be moved
+        </p>
+        <p>
+          <strong>Enable/disable:</strong> Toggle unlocked items on or off
+        </p>
       </div>
     </div>
   )
