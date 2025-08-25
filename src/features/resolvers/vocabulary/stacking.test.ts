@@ -26,6 +26,15 @@ vi.mock("@/data/vocabulary", () => ({
   },
 }))
 
+// Mock the getVocabForDeck import
+vi.mock("@/features/supabase/db/deck", () => ({
+  getVocabForDeck: vi.fn(),
+}))
+
+import { getVocabForDeck } from "@/features/supabase/db/deck"
+const mockGetVocabForDeck = vi.mocked(getVocabForDeck)
+
+
 describe("Vocabulary Stacking", () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -76,7 +85,7 @@ describe("Vocabulary Stacking", () => {
     })
 
     it("should process multiple terms in batch", async () => {
-      const stacks: Stack[] = [getDefaultVocabularyStacks()[0]]
+      const stacks: Stack[] = [getDefaultVocabularyStacks()[1]] // Built-in Vocabulary stack
 
       const result = await resolveVocabularyEntries(["こんにちは", "水"], stacks)
 
@@ -346,12 +355,134 @@ describe("Vocabulary Stacking", () => {
     })
   })
 
+  describe("User Decks Integration", () => {
+    it("should resolve user deck vocabulary when deck_id is provided", async () => {
+      const mockDeckVocab: VocabularyItem[] = [
+        {
+          word: "テスト",
+          furigana: "テスト",
+          english: ["test", "exam"],
+          part_of_speech: "Noun",
+          info: ["From user deck"],
+        },
+        {
+          word: "こんにちは",
+          furigana: "こんにちは",
+          english: ["hello from deck"],
+          part_of_speech: "Expression",
+        },
+      ]
+
+      mockGetVocabForDeck.mockResolvedValueOnce(mockDeckVocab)
+
+      const stacks: Stack[] = [
+        {
+          name: "User Decks",
+          enabled: true,
+          locked: true,
+          sourceId: "user-decks",
+          priority: 0,
+        },
+        {
+          name: "Built-in Vocabulary",
+          enabled: true,
+          locked: true,
+          sourceId: "vocabulary.ts",
+          priority: 999,
+        },
+      ]
+
+      const result = await resolveVocabularyEntries(["テスト", "こんにちは"], stacks, createMockJsonLoader(new Map()), 123)
+
+      expect(mockGetVocabForDeck).toHaveBeenCalledWith(123)
+      expect(result.size).toBe(2)
+      
+      // User deck should override built-in vocabulary
+      const greeting = result.get("こんにちは")
+      expect(greeting?.english).toEqual(["hello from deck"]) // From user deck, not built-in
+      
+      // User deck provides new vocabulary
+      const test = result.get("テスト")
+      expect(test?.english).toEqual(["test", "exam"])
+      expect(test?.info).toEqual(["From user deck"])
+    })
+
+    it("should skip user deck lookup when no deck_id provided", async () => {
+      const stacks: Stack[] = [
+        {
+          name: "User Decks",
+          enabled: true,
+          locked: true,
+          sourceId: "user-decks",
+          priority: 0,
+        },
+        {
+          name: "Built-in Vocabulary",
+          enabled: true,
+          locked: true,
+          sourceId: "vocabulary.ts",
+          priority: 999,
+        },
+      ]
+
+      const result = await resolveVocabularyEntries(["こんにちは"], stacks, createMockJsonLoader(new Map()))
+
+      expect(mockGetVocabForDeck).not.toHaveBeenCalled()
+      expect(result.size).toBe(1)
+      
+      // Should fall back to built-in vocabulary
+      const greeting = result.get("こんにちは")
+      expect(greeting?.english).toEqual(["hello", "good afternoon"])
+    })
+
+    it("should handle user deck errors gracefully", async () => {
+      mockGetVocabForDeck.mockRejectedValueOnce(new Error("Database error"))
+
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      const stacks: Stack[] = [
+        {
+          name: "User Decks",
+          enabled: true,
+          locked: true,
+          sourceId: "user-decks",
+          priority: 0,
+        },
+        {
+          name: "Built-in Vocabulary",
+          enabled: true,
+          locked: true,
+          sourceId: "vocabulary.ts",
+          priority: 999,
+        },
+      ]
+
+      const result = await resolveVocabularyEntries(["こんにちは"], stacks, createMockJsonLoader(new Map()), 123)
+
+      expect(consoleSpy).toHaveBeenCalledWith("Failed to fetch vocabulary from user deck:", expect.any(Error))
+      expect(result.size).toBe(1)
+      
+      // Should fall back to built-in vocabulary
+      const greeting = result.get("こんにちは")
+      expect(greeting?.english).toEqual(["hello", "good afternoon"])
+
+      consoleSpy.mockRestore()
+    })
+  })
+
   describe("getDefaultVocabularyStacks", () => {
-    it("should return correct default configuration", () => {
+    it("should return correct default configuration with User Decks", () => {
       const defaults = getDefaultVocabularyStacks()
 
-      expect(defaults).toHaveLength(1)
+      expect(defaults).toHaveLength(2)
       expect(defaults[0]).toEqual({
+        name: "User Decks",
+        enabled: true,
+        locked: true,
+        sourceId: "user-decks",
+        priority: 0,
+      })
+      expect(defaults[1]).toEqual({
         name: "Built-in Vocabulary",
         enabled: true,
         locked: true,

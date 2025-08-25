@@ -9,6 +9,15 @@ import type {
   RadicalEntry,
 } from "@/data/wanikani/hierarchy-builder"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
+
+// Mock resolvers to prevent server function imports
+vi.mock("@/features/resolvers/vocabulary", () => ({
+  getVocabulary: vi.fn(),
+}))
+vi.mock("@/features/resolvers/kanji", () => ({
+  getKanjiDetails: vi.fn(),
+}))
+
 import { initializePracticeSession } from "./data-initialization"
 
 // --- Mock Data Factory Functions ---

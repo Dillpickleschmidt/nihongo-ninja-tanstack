@@ -76,34 +76,80 @@ export function StackEditor(props: StackEditorProps) {
     console.log(`Add new stack item to "${props.title}"`)
   }
 
+  // Check if this is vocabulary stacks (has User Decks)
+  const hasUserDecks = () => sortedStacks().some(stack => stack.sourceId === "user-decks")
+
   return (
     <div class="flex h-full flex-col">
       <h3 class="mb-4 text-lg font-semibold">{props.title}</h3>
 
       {/* Stack list (bottom-aligned) */}
       <div class="flex flex-1 flex-col justify-end gap-3">
-        {/* Add New Block */}
-        <button
-          onClick={handleAddClick}
-          class="border-card-foreground/70 bg-background/30 text-muted-foreground hover:bg-background/50 hover:text-foreground flex items-center justify-center gap-2 rounded-lg border border-dashed p-4 text-sm transition-colors"
-        >
-          <Plus class="h-4 w-4" />
-          Add New
-        </button>
+        {/* Special layout for vocabulary stacks with User Decks */}
+        {hasUserDecks() ? (
+          <>
+            {/* User Decks (always first due to priority 0) */}
+            {sortedStacks()[0] && (
+              <StackItem
+                stack={sortedStacks()[0]}
+                index={0}
+                onToggleEnabled={handleToggleEnabled}
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+              />
+            )}
 
-        {/* Existing stack items */}
-        <For each={sortedStacks()}>
-          {(stack, index) => (
-            <StackItem
-              stack={stack}
-              index={index()}
-              onToggleEnabled={handleToggleEnabled}
-              onDragStart={handleDragStart}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-            />
-          )}
-        </For>
+            {/* Add New Block */}
+            <button
+              onClick={handleAddClick}
+              class="border-card-foreground/70 bg-background/30 text-muted-foreground hover:bg-background/50 hover:text-foreground flex items-center justify-center gap-2 rounded-lg border border-dashed p-4 text-sm transition-colors"
+            >
+              <Plus class="h-4 w-4" />
+              Add New
+            </button>
+
+            {/* Other stack items */}
+            <For each={sortedStacks().slice(1)}>
+              {(stack, index) => (
+                <StackItem
+                  stack={stack}
+                  index={index() + 1}
+                  onToggleEnabled={handleToggleEnabled}
+                  onDragStart={handleDragStart}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                />
+              )}
+            </For>
+          </>
+        ) : (
+          <>
+            {/* Original layout for kanji stacks */}
+            {/* Add New Block */}
+            <button
+              onClick={handleAddClick}
+              class="border-card-foreground/70 bg-background/30 text-muted-foreground hover:bg-background/50 hover:text-foreground flex items-center justify-center gap-2 rounded-lg border border-dashed p-4 text-sm transition-colors"
+            >
+              <Plus class="h-4 w-4" />
+              Add New
+            </button>
+
+            {/* All stack items */}
+            <For each={sortedStacks()}>
+              {(stack, index) => (
+                <StackItem
+                  stack={stack}
+                  index={index()}
+                  onToggleEnabled={handleToggleEnabled}
+                  onDragStart={handleDragStart}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                />
+              )}
+            </For>
+          </>
+        )}
       </div>
     </div>
   )

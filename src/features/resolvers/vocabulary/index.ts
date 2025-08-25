@@ -13,10 +13,10 @@ import {
  */
 export const getVocabulary = createServerFn({ method: "GET" })
   .validator(
-    (data: { keys: string[]; userOverrides?: OverrideSettings }) => data,
+    (data: { keys: string[]; userOverrides?: OverrideSettings; deck_id?: number }) => data,
   )
   .handler(
-    async ({ data: { keys, userOverrides } }): Promise<VocabularyItem[]> => {
+    async ({ data: { keys, userOverrides, deck_id } }): Promise<VocabularyItem[]> => {
       // Use stacking system with user overrides or default stacks
       const effectiveStacks =
         userOverrides?.vocabularyOverrides ?? getDefaultVocabularyStacks()
@@ -25,6 +25,8 @@ export const getVocabulary = createServerFn({ method: "GET" })
       const resolvedItems = await resolveVocabularyEntries(
         keys,
         effectiveStacks,
+        undefined,
+        deck_id,
       )
 
       // Convert Map to array, preserving order of requested keys

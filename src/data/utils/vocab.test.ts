@@ -1,6 +1,12 @@
 // src/data/utils/vocab.test.ts
-import { describe, it, expect } from "vitest"
+import { describe, it, expect, vi } from "vitest"
 import type { VocabularyItem, ExampleSentence } from "@/data/types"
+
+// Mock the vocabulary resolver to prevent server function imports
+vi.mock("@/features/resolvers/vocabulary", () => ({
+  getVocabulary: vi.fn(),
+}))
+
 import {
   vocabularyToKana,
   addKanaAndRuby,

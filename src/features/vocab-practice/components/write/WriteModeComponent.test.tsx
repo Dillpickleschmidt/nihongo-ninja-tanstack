@@ -10,6 +10,12 @@ import type { PartOfSpeech, ExampleSentence } from "@/data/types"
 // Mock all external dependencies
 vi.mock("../../context/VocabPracticeContext")
 vi.mock("@/data/utils/vocab")
+vi.mock("@/features/resolvers/vocabulary", () => ({
+  getVocabulary: vi.fn(),
+}))
+vi.mock("@/features/resolvers/kanji", () => ({
+  getKanjiDetails: vi.fn(),
+}))
 vi.mock("@/features/wanakana/WanaKana", () => ({
   default: ({ children }: { children: any }) => children,
 }))

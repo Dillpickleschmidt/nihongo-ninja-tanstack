@@ -3,6 +3,7 @@ import type { VocabularyItem } from "@/data/types"
 import type { Stack } from "@/features/resolvers/types"
 import { vocabulary } from "@/data/vocabulary"
 import { loadJsonSources as loadJsonSourcesGeneric } from "@/features/resolvers/shared/json-loader"
+import { getVocabForDeck } from "@/features/supabase/db/deck"
 
 type PartialVocabularyProperties = Partial<VocabularyItem>
 
@@ -16,19 +17,22 @@ type JsonDataLoader = (
  * @param terms Array of vocabulary terms to look up
  * @param stacks Priority-ordered array of stacks (lower priority number = higher precedence)
  * @param jsonLoader Optional JSON data loader (defaults to loadJsonSources)
+ * @param deck_id Optional deck ID for user deck lookup
  * @returns Map of term to resolved vocabulary item (excludes items not found)
  */
 export async function resolveVocabularyEntries(
   terms: string[],
   stacks: Stack[],
   jsonLoader: JsonDataLoader = loadJsonSources,
+  deck_id?: number,
 ): Promise<Map<string, VocabularyItem>> {
   if (terms.length === 0) return new Map()
 
   // Batch load all data sources
-  const [vocabularyCache, jsonCaches] = await Promise.all([
+  const [vocabularyCache, jsonCaches, userDeckCache] = await Promise.all([
     loadVocabularyData(terms),
     jsonLoader(stacks),
+    deck_id ? loadUserDeckData(terms, deck_id) : Promise.resolve(new Map()),
   ])
 
   // Process all terms in parallel
@@ -42,6 +46,7 @@ export async function resolveVocabularyEntries(
         sortedStacks,
         jsonCaches,
         vocabularyCache,
+        userDeckCache,
       )
 
       if (!hasAnyProperties(mergedProps)) return
@@ -71,6 +76,27 @@ async function loadVocabularyData(
 }
 
 /**
+ * Loads user deck vocabulary data for requested terms
+ */
+async function loadUserDeckData(
+  terms: string[],
+  deck_id: number,
+): Promise<Map<string, VocabularyItem>> {
+  const cache = new Map<string, VocabularyItem>()
+  try {
+    const deckVocab = await getVocabForDeck(deck_id)
+    for (const item of deckVocab) {
+      if (terms.includes(item.word)) {
+        cache.set(item.word, item)
+      }
+    }
+  } catch (error) {
+    console.error("Failed to fetch vocabulary from user deck:", error)
+  }
+  return cache
+}
+
+/**
  * Loads all JSON sources needed by the stacks (wrapper around shared utility)
  */
 async function loadJsonSources(
@@ -91,6 +117,7 @@ function mergePropertiesFromStacks(
   sortedStacks: Stack[],
   jsonCaches: Map<string, Map<string, PartialVocabularyProperties>>,
   vocabularyCache: Map<string, VocabularyItem>,
+  userDeckCache: Map<string, VocabularyItem>,
 ): PartialVocabularyProperties {
   let props: PartialVocabularyProperties = {}
 
@@ -101,7 +128,7 @@ function mergePropertiesFromStacks(
     if (stack.sourceId === "vocabulary.ts") {
       stackProps = vocabularyCache.get(term) || null
     } else if (stack.sourceId === "user-decks") {
-      // TODO: Implement user deck lookup
+      stackProps = userDeckCache.get(term) || null
     } else if (stack.sourceId.endsWith(".json")) {
       stackProps = jsonCaches.get(stack.sourceId)?.get(term) || null
     }
@@ -154,6 +181,13 @@ function mergeVocabularyProperties(
  */
 export function getDefaultVocabularyStacks(): Stack[] {
   return [
+    {
+      name: "User Decks",
+      enabled: true,
+      locked: true,
+      sourceId: "user-decks",
+      priority: 0, // Highest priority
+    },
     {
       name: "Built-in Vocabulary",
       enabled: true,
