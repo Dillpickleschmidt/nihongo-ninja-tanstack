@@ -1,18 +1,41 @@
 // src/features/resolvers/vocabulary/index.ts
 import { createServerFn } from "@tanstack/solid-start"
-import { vocabulary } from "@/data/vocabulary"
 import type { VocabularyItem } from "@/data/types"
+import type { OverrideSettings } from "@/features/resolvers/types"
+import {
+  resolveVocabularyEntries,
+  getDefaultVocabularyStacks,
+} from "./stacking"
 
 /**
  * Core vocabulary resolver - handles vocabulary with override stacking
  * This is the single source of truth for vocabulary key-to-item resolution
  */
 export const getVocabulary = createServerFn({ method: "GET" })
-  .validator((keys: string[]) => keys)
-  .handler(async ({ data: keys }): Promise<VocabularyItem[]> => {
-    // For now, just return from existing vocabulary collection
-    // TODO: Add override stacking logic here
-    return keys
-      .map((key) => vocabulary[key])
-      .filter(Boolean) as VocabularyItem[]
-  })
+  .validator(
+    (data: { keys: string[]; userOverrides?: OverrideSettings }) => data,
+  )
+  .handler(
+    async ({ data: { keys, userOverrides } }): Promise<VocabularyItem[]> => {
+      // Use stacking system with user overrides or default stacks
+      const effectiveStacks =
+        userOverrides?.vocabularyOverrides ?? getDefaultVocabularyStacks()
+
+      // Batch resolve all vocabulary items at once
+      const resolvedItems = await resolveVocabularyEntries(
+        keys,
+        effectiveStacks,
+      )
+
+      // Convert Map to array, preserving order of requested keys
+      const resultArray: VocabularyItem[] = []
+      for (const key of keys) {
+        const item = resolvedItems.get(key)
+        if (item) {
+          resultArray.push(item)
+        }
+      }
+
+      return resultArray
+    },
+  )

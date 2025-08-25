@@ -39,13 +39,6 @@ export const StackSchema = z.object({
   name: z.string(),
   enabled: z.boolean(),
   locked: z.boolean(),
-  sourceType: z.enum([
-    "user-deck",
-    "jpdb-import",
-    "wanikani-import",
-    "built-in",
-    "json",
-  ]),
   sourceId: z.string(),
   priority: z.number(),
 })
