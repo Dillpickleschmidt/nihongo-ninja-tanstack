@@ -6,6 +6,12 @@ import "dotenv/config"
 const WANIKANI_API_TOKEN = process.env.WANIKANI_API_TOKEN
 const API_BASE = "https://api.wanikani.com/v2"
 
+// Character replacement mapping for visually similar Unicode variants
+const CHARACTER_REPLACEMENTS: Record<string, string> = {
+  ム: "厶", // Katakana Mu → CJK Radical Private Use
+  ｲ: "亻",
+}
+
 // --- Type Definitions (aligned with WaniKani API response) ---
 
 interface WaniKaniMeaning {
@@ -178,7 +184,7 @@ async function fetchAllPages<T>(initialEndpoint: string): Promise<T[]> {
  * Initializes the SQLite database and creates/recreates schema.
  */
 function initDB(): SQLiteDB {
-  const dbPath = "./src/data/wanikani/wanikani.db"
+  const dbPath = "./public/wanikani.db"
   mkdirSync(dirname(dbPath), { recursive: true })
   const db = new Database(dbPath)
 
@@ -250,11 +256,21 @@ function insertSubjects(
 
   for (const subject of subjects) {
     const meaningsJSON = JSON.stringify(subject.data.meanings)
+
+    // Apply character replacements for kanji and radicals
+    let characters = subject.data.characters || null
+    let slug = subject.data.slug
+
+    if ((table === "kanji" || table === "radicals") && characters) {
+      characters = CHARACTER_REPLACEMENTS[characters] || characters
+      slug = CHARACTER_REPLACEMENTS[slug] || slug
+    }
+
     const values: (string | number | null)[] = [
       subject.id,
       subject.object,
-      subject.data.characters || null,
-      subject.data.slug,
+      characters,
+      slug,
       meaningsJSON,
       subject.data.meaning_mnemonic,
     ]
@@ -444,7 +460,7 @@ export type WaniKaniSubjectsCollection =
   WaniKaniCollectionResponse<WaniKaniApiSubject>;
 `
 
-  const typesPath = "./src/data/wanikani/wanikani-types.ts"
+  const typesPath = "./public/wanikani-types.ts"
   mkdirSync(dirname(typesPath), { recursive: true })
   writeFileSync(typesPath, content, "utf-8")
 }
@@ -553,8 +569,8 @@ async function main() {
   }
 
   const completionMessage = generateTypesFlag
-    ? "\n✓ Complete! Generated ./src/data/wanikani/wanikani.db and ./src/data/wanikani/wanikani-types.ts"
-    : "\n✓ Complete! Generated ./src/data/wanikani/wanikani.db"
+    ? "\n✓ Complete! Generated ./public/wanikani.db and ./public/wanikani-types.ts"
+    : "\n✓ Complete! Generated ./public/wanikani.db"
   console.log(completionMessage)
 }
 
