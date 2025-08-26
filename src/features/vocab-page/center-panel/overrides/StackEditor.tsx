@@ -2,19 +2,21 @@ import { createSignal, For } from "solid-js"
 import { StackItem } from "./StackItem"
 import type { Stack } from "@/features/resolvers/types"
 import { Plus } from "lucide-solid"
+import { findHighestAvailablePriority } from "@/features/resolvers/shared/priority-utils"
 
 interface StackEditorProps {
   title: string
   stacks: Stack[]
   onChange: (stacks: Stack[]) => void
+  onAddNew: () => void
 }
 
 export function StackEditor(props: StackEditorProps) {
   const [dragIndex, setDragIndex] = createSignal<number | null>(null)
 
-  const handleToggleEnabled = (index: number, enabled: boolean) => {
+  const handleToggleEnabled = (originalIndex: number, enabled: boolean) => {
     const newStacks = [...props.stacks]
-    newStacks[index] = { ...newStacks[index], enabled }
+    newStacks[originalIndex] = { ...newStacks[originalIndex], enabled }
     props.onChange(newStacks)
   }
 
@@ -72,12 +74,34 @@ export function StackEditor(props: StackEditorProps) {
   const sortedStacks = () =>
     [...props.stacks].sort((a, b) => a.priority - b.priority)
 
-  const handleAddClick = () => {
-    console.log(`Add new stack item to "${props.title}"`)
+  // Calculate where the "Add New" button should appear (same logic as server)
+  const getAddNewPosition = () => {
+    return findHighestAvailablePriority(props.stacks)
   }
 
-  // Check if this is vocabulary stacks (has User Decks)
-  const hasUserDecks = () => sortedStacks().some(stack => stack.sourceId === "user-decks")
+  const handleAddClick = () => {
+    props.onAddNew()
+  }
+
+  const AddNewButton = () => (
+    <button
+      onClick={handleAddClick}
+      class="border-card-foreground/70 bg-background/30 text-muted-foreground hover:bg-background/50 hover:text-foreground flex items-center justify-center gap-2 rounded-lg border border-dashed p-4 text-sm transition-colors"
+    >
+      <Plus class="h-4 w-4" />
+      Add New
+    </button>
+  )
+
+  const shouldShowButton = (stack: Stack, sortedIndex: number) => {
+    const priority = getAddNewPosition()
+    return (
+      stack.priority === priority || // Replace stack (push down)
+      (stack.priority > priority && // Insert before stack
+        (sortedIndex === 0 ||
+          sortedStacks()[sortedIndex - 1].priority < priority))
+    )
+  }
 
   return (
     <div class="flex h-full flex-col">
@@ -85,73 +109,28 @@ export function StackEditor(props: StackEditorProps) {
 
       {/* Stack list (bottom-aligned) */}
       <div class="flex flex-1 flex-col justify-end gap-3">
-        {/* Special layout for vocabulary stacks with User Decks */}
-        {hasUserDecks() ? (
-          <>
-            {/* User Decks (always first due to priority 0) */}
-            {sortedStacks()[0] && (
-              <StackItem
-                stack={sortedStacks()[0]}
-                index={0}
-                onToggleEnabled={handleToggleEnabled}
-                onDragStart={handleDragStart}
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-              />
-            )}
+        <For each={sortedStacks()}>
+          {(stack, sortedIndex) => {
+            const originalIndex = props.stacks.findIndex((s) => s === stack)
 
-            {/* Add New Block */}
-            <button
-              onClick={handleAddClick}
-              class="border-card-foreground/70 bg-background/30 text-muted-foreground hover:bg-background/50 hover:text-foreground flex items-center justify-center gap-2 rounded-lg border border-dashed p-4 text-sm transition-colors"
-            >
-              <Plus class="h-4 w-4" />
-              Add New
-            </button>
-
-            {/* Other stack items */}
-            <For each={sortedStacks().slice(1)}>
-              {(stack, index) => (
+            return (
+              <>
+                {shouldShowButton(stack, sortedIndex()) && <AddNewButton />}
                 <StackItem
                   stack={stack}
-                  index={index() + 1}
+                  index={originalIndex}
                   onToggleEnabled={handleToggleEnabled}
                   onDragStart={handleDragStart}
                   onDragOver={handleDragOver}
                   onDrop={handleDrop}
                 />
-              )}
-            </For>
-          </>
-        ) : (
-          <>
-            {/* Original layout for kanji stacks */}
-            {/* Add New Block */}
-            <button
-              onClick={handleAddClick}
-              class="border-card-foreground/70 bg-background/30 text-muted-foreground hover:bg-background/50 hover:text-foreground flex items-center justify-center gap-2 rounded-lg border border-dashed p-4 text-sm transition-colors"
-            >
-              <Plus class="h-4 w-4" />
-              Add New
-            </button>
+              </>
+            )
+          }}
+        </For>
 
-            {/* All stack items */}
-            <For each={sortedStacks()}>
-              {(stack, index) => (
-                <StackItem
-                  stack={stack}
-                  index={index()}
-                  onToggleEnabled={handleToggleEnabled}
-                  onDragStart={handleDragStart}
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
-                />
-              )}
-            </For>
-          </>
-        )}
+        {props.stacks.length === 0 && <AddNewButton />}
       </div>
     </div>
   )
 }
-
