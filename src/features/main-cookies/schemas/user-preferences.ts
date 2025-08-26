@@ -84,7 +84,8 @@ export const DEFAULT_KANJI_STACKS: z.infer<typeof StackSchema>[] = [
     name: "JPDB Keywords",
     enabled: false,
     locked: false,
-    sourceId: "jpdb-keywords.json",
+    sourceId:
+      "https://zsllzwieciplioikzzmq.supabase.co/storage/v1/object/public/jpdb-keywords/jpdb-keywords.json",
     priority: 500,
   },
   {

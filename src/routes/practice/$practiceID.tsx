@@ -12,6 +12,7 @@ import {
 } from "@/features/supabase/db/fsrs"
 import type { PracticeMode } from "@/features/vocab-practice/types"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
+import { useSettings } from "@/context/SettingsContext"
 import type { VocabHierarchy as CleanVocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
@@ -37,7 +38,14 @@ export const Route = createFileRoute("/practice/$practiceID")({
       if (mode === "meanings") {
         // For "meanings" mode, build the full dependency tree
         const vocabWords = moduleVocabulary.map((v) => v.word)
-        const cleanHierarchy = await getVocabHierarchy({ data: vocabWords })
+        const userOverrides =
+          context.initialUserPreferenceData["override-settings"]
+        const cleanHierarchy = await getVocabHierarchy({
+          data: {
+            slugs: vocabWords,
+            userOverrides,
+          },
+        })
 
         if (!cleanHierarchy) {
           throw notFound()

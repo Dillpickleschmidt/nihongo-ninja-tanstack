@@ -13,23 +13,51 @@ vi.mock("@/data/wanikani/utils", () => ({
   getWKItemsBySlugs: vi.fn(),
 }))
 
-// Mock JSON imports
-vi.mock("@/data/imports/jpdb-keywords.json", () => ({
-  default: [
-    {
-      character: "人",
-      meanings: ["person", "human"],
-      meaning_mnemonic: "JPDB person mnemonic",
-      reading_mnemonic: "JPDB reading mnemonic", // Complete data for early termination test
-    },
-    {
-      character: "水",
-      meanings: ["water"],
-      meaning_mnemonic: "JPDB water mnemonic",
-      // Partial data - no reading_mnemonic
-    },
-  ],
-}))
+// Mock data constants
+const MOCK_JPDB_DATA = {
+  PERSON_COMPLETE: {
+    character: "人",
+    meanings: ["person", "human"],
+    meaning_mnemonic: "JPDB person mnemonic",
+    reading_mnemonic: "JPDB reading mnemonic", // Complete data for early termination test
+  },
+  WATER_PARTIAL: {
+    character: "水",
+    meanings: ["water"],
+    meaning_mnemonic: "JPDB water mnemonic",
+    // Partial data - no reading_mnemonic
+  },
+} as const
+
+// Create mock JSON loader for tests
+const createMockJsonLoader = (
+  mockData: Array<{
+    character: string
+    meanings?: string[]
+    meaning_mnemonic?: string
+    reading_mnemonic?: string
+  }>,
+) => {
+  return async (stacks: Stack[]) => {
+    const result = new Map<string, Map<string, any>>()
+
+    stacks.forEach((stack) => {
+      if (stack.sourceId.endsWith(".json")) {
+        const itemMap = new Map<string, any>()
+        mockData.forEach((item) => {
+          itemMap.set(item.character, {
+            meanings: item.meanings,
+            meaning_mnemonic: item.meaning_mnemonic,
+            reading_mnemonic: item.reading_mnemonic,
+          })
+        })
+        result.set(stack.sourceId, itemMap)
+      }
+    })
+
+    return result
+  }
+}
 
 import { getWKItemsBySlugs } from "@/data/wanikani/utils"
 
@@ -199,12 +227,15 @@ describe("Kanji Stacking", () => {
           name: "Should not be reached",
           enabled: true,
           locked: false,
-          sourceId: "jpdb-keywords.json", // Use existing mock instead of non-existent file
+          sourceId: "jpdb-keywords.json",
           priority: 200,
         },
       ]
 
-      const result = await resolveKanjiEntries(["人"], stacks)
+      // Create mock loader with complete JPDB data
+      const mockLoader = createMockJsonLoader([MOCK_JPDB_DATA.PERSON_COMPLETE])
+
+      const result = await resolveKanjiEntries(["人"], stacks, mockLoader)
       const resolved = result.get("人")
 
       expect(resolved).toBeDefined()
@@ -283,7 +314,10 @@ describe("Kanji Stacking", () => {
         },
       ]
 
-      const result = await resolveKanjiEntries(["水"], stacks)
+      // Create mock loader with partial JPDB data (no reading_mnemonic)
+      const mockLoader = createMockJsonLoader([MOCK_JPDB_DATA.WATER_PARTIAL])
+
+      const result = await resolveKanjiEntries(["水"], stacks, mockLoader)
       const resolved = result.get("水")
 
       expect(resolved).toBeDefined()
@@ -310,7 +344,10 @@ describe("Kanji Stacking", () => {
         },
       ]
 
-      const result = await resolveKanjiEntries(["人"], stacks)
+      // Create mock loader - but it shouldn't be used since stack is disabled
+      const mockLoader = createMockJsonLoader([MOCK_JPDB_DATA.PERSON_COMPLETE])
+
+      const result = await resolveKanjiEntries(["人"], stacks, mockLoader)
 
       expect(result.size).toBe(0) // No results since stack was disabled
     })
@@ -331,7 +368,10 @@ describe("Kanji Stacking", () => {
         },
       ]
 
-      const result = await resolveKanjiEntries(["非存在"], stacks) // Character not in mock data
+      // Create mock loader with different characters - requested character not found
+      const mockLoader = createMockJsonLoader([MOCK_JPDB_DATA.PERSON_COMPLETE])
+
+      const result = await resolveKanjiEntries(["非存在"], stacks, mockLoader) // Character not in mock data
       expect(result.size).toBe(0) // Character not found in any source
     })
   })

@@ -47,7 +47,11 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
       if (mode === "meanings") {
         // For "meanings" mode, build the full dependency tree
         const fullHierarchy = await getVocabHierarchy({
-          data: deckVocabulary.map((v) => v.word),
+          data: {
+            slugs: deckVocabulary.map((v) => v.word),
+            userOverrides:
+              context.initialUserPreferenceData["override-settings"],
+          },
         })
         if (!fullHierarchy) throw notFound()
         hierarchy = fullHierarchy

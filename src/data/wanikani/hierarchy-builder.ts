@@ -2,6 +2,8 @@
 // Clean, declarative hierarchy system for vocabulary → kanji → radicals
 
 import { getDbConnection } from "./utils"
+import type { Stack } from "@/features/resolvers/types"
+import { resolveKanjiEntries } from "@/features/resolvers/kanji/stacking"
 
 // =============================================================================
 // CLEAN TYPES - Simple, focused objects
@@ -134,14 +136,16 @@ async function fetchKanjiByCharacters(
 // =============================================================================
 
 /**
- * Build a clean vocabulary hierarchy from vocabulary words
- * This is the main entry point for the new hierarchy system
+ * Build a clean vocabulary hierarchy from vocabulary words with user stack overrides
+ * This is the main entry point for the hierarchy system
  *
  * @param vocabularyWords - Array of vocabulary words (e.g., ["一", "二十三", "学校"])
+ * @param stacks - Optional user stack overrides for property enhancement
  * @returns Clean hierarchy with vocabulary → kanji → radicals structure
  */
 export async function buildVocabHierarchy(
   vocabularyWords: string[],
+  stacks?: Stack[],
 ): Promise<VocabHierarchy> {
   // 1. Extract all unique kanji from all vocabulary words
   const allKanjiChars = [
@@ -191,12 +195,46 @@ export async function buildVocabHierarchy(
     kanjiComponents: extractKanjiCharacters(word),
   }))
 
+  // 5. Enhance properties with user stacks if provided (minimal integration)
+  const radicalEntries = Array.from(radicalMap.values())
+
+  if (stacks) {
+    const allChars = [
+      ...kanjiEntries.map((k) => k.kanji),
+      ...radicalEntries.map((r) => r.radical),
+    ]
+    const enhancedProps = await resolveKanjiEntries(allChars, stacks)
+
+    // Apply enhancements to kanji
+    kanjiEntries.forEach((kanji) => {
+      const enhanced = enhancedProps.get(kanji.kanji)
+      if (enhanced) {
+        kanji.meanings = enhanced.meanings ?? kanji.meanings
+        kanji.meaning_mnemonic =
+          enhanced.meaning_mnemonic ?? kanji.meaning_mnemonic
+        kanji.reading_mnemonic =
+          ("reading_mnemonic" in enhanced
+            ? enhanced.reading_mnemonic
+            : undefined) ?? kanji.reading_mnemonic
+      }
+    })
+
+    // Apply enhancements to radicals
+    radicalEntries.forEach((radical) => {
+      const enhanced = enhancedProps.get(radical.radical)
+      if (enhanced) {
+        radical.meanings = enhanced.meanings ?? radical.meanings
+        radical.meaning_mnemonic =
+          enhanced.meaning_mnemonic ?? radical.meaning_mnemonic
+      }
+    })
+  }
+
   const result: VocabHierarchy = {
     vocabulary: vocabularyEntries,
     kanji: kanjiEntries,
-    radicals: Array.from(radicalMap.values()),
+    radicals: radicalEntries,
   }
 
   return result
 }
-

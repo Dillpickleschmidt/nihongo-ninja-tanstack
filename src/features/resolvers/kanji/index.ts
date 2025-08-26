@@ -24,9 +24,11 @@ export const getVocabHierarchy = createServerFn({ method: "GET" })
       if (!slugs || slugs.length === 0) return null
 
       try {
-        // For now, use existing hierarchy builder
-        // TODO: Integrate stacking system into hierarchy building process
-        const cleanHierarchy = await buildVocabHierarchy(slugs)
+        // Use stacking system with user overrides or default stacks
+        const effectiveStacks =
+          userOverrides?.kanjiOverrides ?? DEFAULT_KANJI_STACKS
+
+        const cleanHierarchy = await buildVocabHierarchy(slugs, effectiveStacks)
         return cleanHierarchy
       } catch (error) {
         console.error("Failed to build vocab hierarchy:", error)

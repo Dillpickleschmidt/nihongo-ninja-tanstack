@@ -22,11 +22,16 @@ export async function loadJsonSources<TJsonItem, TProperties>(
 
   await Promise.all(
     jsonSources.map(async (sourceId) => {
-      const baseName = sourceId.replace(".json", "")
       try {
-        const module = await import(`@/data/imports/${baseName}.json`)
+        // Fetch JSON data from URL
+        const response = await fetch(sourceId)
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        }
+        const jsonData: TJsonItem[] = await response.json()
+
         const itemMap = new Map<string, TProperties>()
-        module.default.forEach((item: TJsonItem) => {
+        jsonData.forEach((item: TJsonItem) => {
           const key = keyExtractor(item)
           const properties = transformer(item)
           itemMap.set(key, properties)
@@ -41,4 +46,3 @@ export async function loadJsonSources<TJsonItem, TProperties>(
 
   return jsonCaches
 }
-

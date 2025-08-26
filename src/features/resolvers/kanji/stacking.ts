@@ -6,7 +6,6 @@ import type {
 import type { Stack } from "@/features/resolvers/types"
 import { getWKItemsBySlugs } from "@/data/wanikani/utils"
 import { loadJsonSources as loadJsonSourcesGeneric } from "@/features/resolvers/shared/json-loader"
-import { DEFAULT_KANJI_STACKS } from "@/features/main-cookies/schemas/user-preferences"
 
 type KanjiItem = KanjiEntry | RadicalEntry
 

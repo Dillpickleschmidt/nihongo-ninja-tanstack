@@ -47,7 +47,7 @@ export async function getVocabularyForSet(
   }
 
   // Use resolver to get vocabulary items
-  return getVocabulary({ data: vocabKeys })
+  return getVocabulary({ data: { keys: vocabKeys } })
 }
 
 /**

@@ -66,7 +66,10 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
     }
     const vocabForHierarchy = chapterVocabulary.map((item) => item.word)
     const wkHierarchyData: VocabHierarchy | null = await getVocabHierarchy({
-      data: vocabForHierarchy,
+      data: {
+        slugs: vocabForHierarchy,
+        userOverrides: context.initialUserPreferenceData["override-settings"],
+      },
     })
 
     // Collect all unique slugs from hierarchy
