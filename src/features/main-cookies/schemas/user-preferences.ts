@@ -1,36 +1,52 @@
 // features/main-cookies/schemas/user-preferences.ts
 import { z } from "zod"
-import type { OverrideSettings } from "@/features/resolvers/types"
 
-/**
- * Main user preferences type - explicit for clarity and database integration
- * Enhanced via global.d.ts for Database type compatibility
- */
-export type UserPreferences = {
-  "service-credentials": {
-    anki: { api_key: string }
-    wanikani: { api_key: string }
-    jpdb: { api_key: string }
-  }
-  "service-preferences": {
-    anki: { mode: string; data_imported: boolean; is_api_key_valid: boolean }
-    wanikani: {
-      mode: string
-      data_imported: boolean
-      is_api_key_valid: boolean
-    }
-    jpdb: { mode: string; data_imported: boolean; is_api_key_valid: boolean }
-  }
-  "active-textbook": string
-  "active-deck": string
-  "completed-tours": string[]
-  "override-settings"?: OverrideSettings
-  timestamp: number
-}
+// Service-related utility types
+export type ServiceType = "anki" | "wanikani" | "jpdb"
+export type ServiceMode = "disabled" | "live" | "imported"
 
-// =============================================================================
-// ZOD VALIDATION SCHEMAS
-// =============================================================================
+// TextbookID validation schema
+const TextbookIDSchema = z.enum(["genki_1", "genki_2"]).or(z.string().length(0))
+
+// Individual service credential schemas
+const AnkiCredentialsSchema = z.object({
+  api_key: z.string().default(""),
+})
+
+const WanikaniCredentialsSchema = z.object({
+  api_key: z
+    .string()
+    .uuid("Invalid UUID format")
+    .or(z.string().length(0))
+    .default(""),
+})
+
+const JpdbCredentialsSchema = z.object({
+  api_key: z.string().length(32).or(z.string().length(0)).default(""),
+})
+
+// Combined service credentials schema
+const ServiceCredentialsSchema = z.object({
+  anki: AnkiCredentialsSchema.default(AnkiCredentialsSchema.parse({})),
+  wanikani: WanikaniCredentialsSchema.default(
+    WanikaniCredentialsSchema.parse({}),
+  ),
+  jpdb: JpdbCredentialsSchema.default(JpdbCredentialsSchema.parse({})),
+})
+
+// Individual service preference schema
+const ServicePreferenceSchema = z.object({
+  mode: z.string().default("disabled"),
+  data_imported: z.boolean().default(false),
+  is_api_key_valid: z.boolean().default(false),
+})
+
+// Combined service preferences schema
+const ServicePreferencesSchema = z.object({
+  anki: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
+  wanikani: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
+  jpdb: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
+})
 
 /**
  * Schema for both vocabulary and kanji stacks (identical structure)
@@ -51,64 +67,24 @@ export const OverrideSettingsSchema = z.object({
   kanjiOverrides: z.array(StackSchema),
 })
 
-/**
- * Service-related schemas for inference
- */
-export const ServicePreferenceSchema = z.object({
-  mode: z.string(),
-  data_imported: z.boolean(),
-  is_api_key_valid: z.boolean(),
+// Main user preferences schema
+export const UserPreferencesSchema = z.object({
+  "service-credentials": ServiceCredentialsSchema.default(
+    ServiceCredentialsSchema.parse({}),
+  ),
+  "service-preferences": ServicePreferencesSchema.default(
+    ServicePreferencesSchema.parse({}),
+  ),
+  "active-textbook": TextbookIDSchema.default(""),
+  "active-deck": z.string().max(20).default(""),
+  "completed-tours": z.array(z.string()).default([]),
+  "override-settings": OverrideSettingsSchema.optional(),
+  timestamp: z.number().default(0),
 })
 
-/**
- * Centralized defaults object - single source of truth
- */
-const SERVICES = ["anki", "wanikani", "jpdb"] as const
-const DEFAULT_SERVICE_PREFERENCE = {
-  mode: "disabled",
-  data_imported: false,
-  is_api_key_valid: false,
-}
-
-const DEFAULT_USER_PREFERENCES: UserPreferences = {
-  "service-credentials": Object.fromEntries(
-    SERVICES.map((service) => [service, { api_key: "" }]),
-  ) as UserPreferences["service-credentials"],
-  "service-preferences": Object.fromEntries(
-    SERVICES.map((service) => [service, DEFAULT_SERVICE_PREFERENCE]),
-  ) as UserPreferences["service-preferences"],
-  "active-textbook": "",
-  "active-deck": "",
-  "completed-tours": [],
-  timestamp: 0,
-}
-
-/**
- * Ultra-clean runtime validation schema with full type safety
- */
-const ServiceCredentialSchema = z.object({ api_key: z.string() })
-
-export const UserPreferencesSchema = z
-  .object({
-    "service-credentials": z.object(
-      Object.fromEntries(
-        SERVICES.map((service) => [service, ServiceCredentialSchema]),
-      ),
-    ),
-    "service-preferences": z.object(
-      Object.fromEntries(
-        SERVICES.map((service) => [service, ServicePreferenceSchema]),
-      ),
-    ),
-    "active-textbook": z.string(),
-    "active-deck": z.string().max(20),
-    "completed-tours": z.array(z.string()),
-    "override-settings": OverrideSettingsSchema.optional(),
-    timestamp: z.number(),
-  })
-  .default(DEFAULT_USER_PREFERENCES)
-
-/**
- * Hybrid approach: infer helper types where beneficial
- */
+// Inferred types from schemas
+export type UserPreferencesCookieData = z.infer<typeof UserPreferencesSchema>
 export type ServicePreference = z.infer<typeof ServicePreferenceSchema>
+export type ServiceCredentials = z.infer<typeof ServiceCredentialsSchema>
+export type AllServicePreferences = z.infer<typeof ServicePreferencesSchema>
+export type AllServiceCredentials = z.infer<typeof ServiceCredentialsSchema>
