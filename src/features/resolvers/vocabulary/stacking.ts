@@ -4,6 +4,7 @@ import type { Stack } from "@/features/resolvers/types"
 import { vocabulary } from "@/data/vocabulary"
 import { loadJsonSources as loadJsonSourcesGeneric } from "@/features/resolvers/shared/json-loader"
 import { getVocabForDeck } from "@/features/supabase/db/deck"
+import { DEFAULT_VOCABULARY_STACKS } from "@/features/main-cookies/schemas/user-preferences"
 
 type PartialVocabularyProperties = Partial<VocabularyItem>
 
@@ -174,26 +175,4 @@ function mergeVocabularyProperties(
       ? { ...base.mnemonics, ...override.mnemonics }
       : base.mnemonics,
   }
-}
-
-/**
- * Returns default vocabulary stacks for users without override configuration
- */
-export function getDefaultVocabularyStacks(): Stack[] {
-  return [
-    {
-      name: "User Decks",
-      enabled: true,
-      locked: true,
-      sourceId: "user-decks",
-      priority: 0, // Highest priority
-    },
-    {
-      name: "Built-in Vocabulary",
-      enabled: true,
-      locked: true,
-      sourceId: "vocabulary.ts",
-      priority: 999, // Lowest priority (acts as fallback)
-    },
-  ]
 }

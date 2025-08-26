@@ -74,7 +74,7 @@ export function CenterPanel(props: CenterPanelProps) {
             />
           </Match>
           <Match when={props.activeNavTab === "overrides"}>
-            <OverridesContent />
+            <OverridesContent user={props.user || null} />
           </Match>
         </Switch>
       </div>

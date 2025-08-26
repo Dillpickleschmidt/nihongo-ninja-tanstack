@@ -7,7 +7,8 @@ import type {
   RadicalEntry,
 } from "@/data/wanikani/hierarchy-builder"
 import type { OverrideSettings } from "@/features/resolvers/types"
-import { resolveKanjiEntries, getDefaultKanjiStacks } from "./stacking"
+import { resolveKanjiEntries } from "./stacking"
+import { DEFAULT_KANJI_STACKS } from "@/features/main-cookies/schemas/user-preferences"
 
 /**
  * Get vocabulary hierarchy with kanji and radical dependencies
@@ -51,7 +52,7 @@ export const getKanjiDetails = createServerFn({ method: "GET" })
     }): Promise<{ kanji: KanjiEntry[]; radicals: RadicalEntry[] }> => {
       // Use stacking system with user overrides or default stacks
       const effectiveStacks =
-        userOverrides?.kanjiOverrides ?? getDefaultKanjiStacks()
+        userOverrides?.kanjiOverrides ?? DEFAULT_KANJI_STACKS
 
       // Batch resolve all characters at once
       const allCharacters = [...kanji, ...radicals]

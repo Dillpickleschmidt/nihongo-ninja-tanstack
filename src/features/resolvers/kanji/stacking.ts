@@ -6,6 +6,7 @@ import type {
 import type { Stack } from "@/features/resolvers/types"
 import { getWKItemsBySlugs } from "@/data/wanikani/utils"
 import { loadJsonSources as loadJsonSourcesGeneric } from "@/features/resolvers/shared/json-loader"
+import { DEFAULT_KANJI_STACKS } from "@/features/main-cookies/schemas/user-preferences"
 
 type KanjiItem = KanjiEntry | RadicalEntry
 
@@ -189,27 +190,4 @@ export function mergeKanjiProperties<T extends KanjiItem>(
         radicalComponents: override.radicalComponents ?? base.radicalComponents,
       }),
   }
-}
-
-/**
- * Returns default kanji stacks for users without override configuration
- * Includes predefined blocks that users can optionally enable
- */
-export function getDefaultKanjiStacks(): Stack[] {
-  return [
-    {
-      name: "JPDB Keywords",
-      enabled: false, // Initially disabled - user can enable
-      locked: false, // User can enable/disable and reorder
-      sourceId: "jpdb-keywords.json",
-      priority: 500, // Middle priority between custom imports and WaniKani
-    },
-    {
-      name: "WaniKani",
-      enabled: true,
-      locked: true, // Always enabled as fallback
-      sourceId: "wanikani.db",
-      priority: 999, // Lowest priority (acts as fallback)
-    },
-  ]
 }

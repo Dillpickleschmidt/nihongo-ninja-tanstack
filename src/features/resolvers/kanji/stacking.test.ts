@@ -5,11 +5,8 @@ import type {
   RadicalEntry,
 } from "@/data/wanikani/hierarchy-builder"
 import type { Stack } from "@/features/resolvers/types"
-import {
-  resolveKanjiEntries,
-  getDefaultKanjiStacks,
-  mergeKanjiProperties,
-} from "./stacking"
+import { resolveKanjiEntries, mergeKanjiProperties } from "./stacking"
+import { DEFAULT_KANJI_STACKS } from "@/features/main-cookies/schemas/user-preferences"
 
 // Mock the WaniKani utils
 vi.mock("@/data/wanikani/utils", () => ({
@@ -103,7 +100,7 @@ describe("Kanji Stacking", () => {
         radicals: [mockRadicalData],
       })
 
-      const stacks: Stack[] = [getDefaultKanjiStacks()[1]] // WaniKani stack only
+      const stacks: Stack[] = [DEFAULT_KANJI_STACKS[1]] // WaniKani stack only
 
       const result = await resolveKanjiEntries(["人", "水"], stacks)
 
@@ -239,7 +236,7 @@ describe("Kanji Stacking", () => {
         radicals: [mockRadicalData],
       })
 
-      const stacks: Stack[] = [getDefaultKanjiStacks()[1]] // WaniKani only
+      const stacks: Stack[] = [DEFAULT_KANJI_STACKS[1]] // WaniKani only
 
       const result = await resolveKanjiEntries(["人", "水"], stacks)
 
@@ -336,32 +333,6 @@ describe("Kanji Stacking", () => {
 
       const result = await resolveKanjiEntries(["非存在"], stacks) // Character not in mock data
       expect(result.size).toBe(0) // Character not found in any source
-    })
-  })
-
-  describe("getDefaultKanjiStacks", () => {
-    it("should return correct default configuration", () => {
-      const defaults = getDefaultKanjiStacks()
-
-      expect(defaults).toHaveLength(2)
-
-      // JPDB stack
-      expect(defaults[0]).toEqual({
-        name: "JPDB Keywords",
-        enabled: false,
-        locked: false,
-        sourceId: "jpdb-keywords.json",
-        priority: 500,
-      })
-
-      // WaniKani stack
-      expect(defaults[1]).toEqual({
-        name: "WaniKani",
-        enabled: true,
-        locked: true,
-        sourceId: "wanikani.db",
-        priority: 999,
-      })
     })
   })
 

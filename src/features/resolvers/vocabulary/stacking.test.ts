@@ -2,21 +2,19 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import type { VocabularyItem } from "@/data/types"
 import type { Stack } from "@/features/resolvers/types"
-import {
-  resolveVocabularyEntries,
-  getDefaultVocabularyStacks,
-} from "./stacking"
+import { resolveVocabularyEntries } from "./stacking"
+import { DEFAULT_VOCABULARY_STACKS } from "@/features/main-cookies/schemas/user-preferences"
 
 // Mock the vocabulary import
 vi.mock("@/data/vocabulary", () => ({
   vocabulary: {
-    "こんにちは": {
+    こんにちは: {
       word: "こんにちは",
       furigana: "こんにちは",
       english: ["hello", "good afternoon"],
       part_of_speech: "Expression",
     },
-    "水": {
+    水: {
       word: "水",
       furigana: "水[みず]",
       english: ["water"],
@@ -34,23 +32,27 @@ vi.mock("@/features/supabase/db/deck", () => ({
 import { getVocabForDeck } from "@/features/supabase/db/deck"
 const mockGetVocabForDeck = vi.mocked(getVocabForDeck)
 
-
 describe("Vocabulary Stacking", () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
   // Create a mock JSON data loader for testing
-  const createMockJsonLoader = (mockData: Map<string, Map<string, Partial<VocabularyItem>>>) => {
+  const createMockJsonLoader = (
+    mockData: Map<string, Map<string, Partial<VocabularyItem>>>,
+  ) => {
     return async (stacks: Stack[]) => {
       const jsonCaches = new Map<string, Map<string, Partial<VocabularyItem>>>()
-      
+
       for (const stack of stacks) {
         if (stack.sourceId.endsWith(".json")) {
-          jsonCaches.set(stack.sourceId, mockData.get(stack.sourceId) || new Map())
+          jsonCaches.set(
+            stack.sourceId,
+            mockData.get(stack.sourceId) || new Map(),
+          )
         }
       }
-      
+
       return jsonCaches
     }
   }
@@ -85,9 +87,12 @@ describe("Vocabulary Stacking", () => {
     })
 
     it("should process multiple terms in batch", async () => {
-      const stacks: Stack[] = [getDefaultVocabularyStacks()[1]] // Built-in Vocabulary stack
+      const stacks: Stack[] = [DEFAULT_VOCABULARY_STACKS[1]] // Built-in Vocabulary stack
 
-      const result = await resolveVocabularyEntries(["こんにちは", "水"], stacks)
+      const result = await resolveVocabularyEntries(
+        ["こんにちは", "水"],
+        stacks,
+      )
 
       expect(result.size).toBe(2)
       expect(result.get("こんにちは")).toBeDefined()
@@ -135,7 +140,11 @@ describe("Vocabulary Stacking", () => {
         },
       ]
 
-      const result = await resolveVocabularyEntries(["こんにちは"], stacks, mockJsonLoader)
+      const result = await resolveVocabularyEntries(
+        ["こんにちは"],
+        stacks,
+        mockJsonLoader,
+      )
       const resolved = result.get("こんにちは")
 
       expect(resolved).toBeDefined()
@@ -184,7 +193,11 @@ describe("Vocabulary Stacking", () => {
         },
       ]
 
-      const result = await resolveVocabularyEntries(["水"], stacks, mockJsonLoader)
+      const result = await resolveVocabularyEntries(
+        ["水"],
+        stacks,
+        mockJsonLoader,
+      )
       const resolved = result.get("水")
 
       expect(resolved).toBeDefined()
@@ -231,7 +244,11 @@ describe("Vocabulary Stacking", () => {
         },
       ]
 
-      const result = await resolveVocabularyEntries(["こんにちは"], stacks, mockJsonLoader)
+      const result = await resolveVocabularyEntries(
+        ["こんにちは"],
+        stacks,
+        mockJsonLoader,
+      )
       const resolved = result.get("こんにちは")
 
       expect(resolved?.mnemonics).toEqual({
@@ -277,7 +294,11 @@ describe("Vocabulary Stacking", () => {
         },
       ]
 
-      const result = await resolveVocabularyEntries(["こんにちは"], stacks, mockJsonLoader)
+      const result = await resolveVocabularyEntries(
+        ["こんにちは"],
+        stacks,
+        mockJsonLoader,
+      )
       const resolved = result.get("こんにちは")
 
       expect(resolved?.english).toEqual(["hello", "good afternoon"]) // Only from vocabulary.ts
@@ -297,7 +318,11 @@ describe("Vocabulary Stacking", () => {
         },
       ]
 
-      const result = await resolveVocabularyEntries(["非存在"], stacks, mockJsonLoader)
+      const result = await resolveVocabularyEntries(
+        ["非存在"],
+        stacks,
+        mockJsonLoader,
+      )
       expect(result.size).toBe(0) // Term not found in any source
     })
 
@@ -314,7 +339,11 @@ describe("Vocabulary Stacking", () => {
         },
       ]
 
-      const result = await resolveVocabularyEntries(["こんにちは"], stacks, mockJsonLoader)
+      const result = await resolveVocabularyEntries(
+        ["こんにちは"],
+        stacks,
+        mockJsonLoader,
+      )
       expect(result.size).toBe(0) // Term not found in empty JSON
     })
 
@@ -346,7 +375,11 @@ describe("Vocabulary Stacking", () => {
         },
       ]
 
-      const result = await resolveVocabularyEntries(["test"], stacks, mockJsonLoader)
+      const result = await resolveVocabularyEntries(
+        ["test"],
+        stacks,
+        mockJsonLoader,
+      )
       const resolved = result.get("test")
 
       expect(resolved?.word).toBe("test")
@@ -392,15 +425,20 @@ describe("Vocabulary Stacking", () => {
         },
       ]
 
-      const result = await resolveVocabularyEntries(["テスト", "こんにちは"], stacks, createMockJsonLoader(new Map()), 123)
+      const result = await resolveVocabularyEntries(
+        ["テスト", "こんにちは"],
+        stacks,
+        createMockJsonLoader(new Map()),
+        123,
+      )
 
       expect(mockGetVocabForDeck).toHaveBeenCalledWith(123)
       expect(result.size).toBe(2)
-      
+
       // User deck should override built-in vocabulary
       const greeting = result.get("こんにちは")
       expect(greeting?.english).toEqual(["hello from deck"]) // From user deck, not built-in
-      
+
       // User deck provides new vocabulary
       const test = result.get("テスト")
       expect(test?.english).toEqual(["test", "exam"])
@@ -425,11 +463,15 @@ describe("Vocabulary Stacking", () => {
         },
       ]
 
-      const result = await resolveVocabularyEntries(["こんにちは"], stacks, createMockJsonLoader(new Map()))
+      const result = await resolveVocabularyEntries(
+        ["こんにちは"],
+        stacks,
+        createMockJsonLoader(new Map()),
+      )
 
       expect(mockGetVocabForDeck).not.toHaveBeenCalled()
       expect(result.size).toBe(1)
-      
+
       // Should fall back to built-in vocabulary
       const greeting = result.get("こんにちは")
       expect(greeting?.english).toEqual(["hello", "good afternoon"])
@@ -438,7 +480,7 @@ describe("Vocabulary Stacking", () => {
     it("should handle user deck errors gracefully", async () => {
       mockGetVocabForDeck.mockRejectedValueOnce(new Error("Database error"))
 
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {})
 
       const stacks: Stack[] = [
         {
@@ -457,38 +499,24 @@ describe("Vocabulary Stacking", () => {
         },
       ]
 
-      const result = await resolveVocabularyEntries(["こんにちは"], stacks, createMockJsonLoader(new Map()), 123)
+      const result = await resolveVocabularyEntries(
+        ["こんにちは"],
+        stacks,
+        createMockJsonLoader(new Map()),
+        123,
+      )
 
-      expect(consoleSpy).toHaveBeenCalledWith("Failed to fetch vocabulary from user deck:", expect.any(Error))
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "Failed to fetch vocabulary from user deck:",
+        expect.any(Error),
+      )
       expect(result.size).toBe(1)
-      
+
       // Should fall back to built-in vocabulary
       const greeting = result.get("こんにちは")
       expect(greeting?.english).toEqual(["hello", "good afternoon"])
 
       consoleSpy.mockRestore()
-    })
-  })
-
-  describe("getDefaultVocabularyStacks", () => {
-    it("should return correct default configuration with User Decks", () => {
-      const defaults = getDefaultVocabularyStacks()
-
-      expect(defaults).toHaveLength(2)
-      expect(defaults[0]).toEqual({
-        name: "User Decks",
-        enabled: true,
-        locked: true,
-        sourceId: "user-decks",
-        priority: 0,
-      })
-      expect(defaults[1]).toEqual({
-        name: "Built-in Vocabulary",
-        enabled: true,
-        locked: true,
-        sourceId: "vocabulary.ts",
-        priority: 999,
-      })
     })
   })
 })

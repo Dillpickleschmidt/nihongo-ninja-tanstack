@@ -2,10 +2,8 @@
 import { createServerFn } from "@tanstack/solid-start"
 import type { VocabularyItem } from "@/data/types"
 import type { OverrideSettings } from "@/features/resolvers/types"
-import {
-  resolveVocabularyEntries,
-  getDefaultVocabularyStacks,
-} from "./stacking"
+import { resolveVocabularyEntries } from "./stacking"
+import { DEFAULT_VOCABULARY_STACKS } from "@/features/main-cookies/schemas/user-preferences"
 
 /**
  * Core vocabulary resolver - handles vocabulary with override stacking
@@ -19,7 +17,7 @@ export const getVocabulary = createServerFn({ method: "GET" })
     async ({ data: { keys, userOverrides, deck_id } }): Promise<VocabularyItem[]> => {
       // Use stacking system with user overrides or default stacks
       const effectiveStacks =
-        userOverrides?.vocabularyOverrides ?? getDefaultVocabularyStacks()
+        userOverrides?.vocabularyOverrides ?? DEFAULT_VOCABULARY_STACKS
 
       // Batch resolve all vocabulary items at once
       const resolvedItems = await resolveVocabularyEntries(

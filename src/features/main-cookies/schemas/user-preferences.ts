@@ -60,6 +60,43 @@ export const StackSchema = z.object({
 })
 
 /**
+ * Default stack configurations
+ */
+export const DEFAULT_VOCABULARY_STACKS: z.infer<typeof StackSchema>[] = [
+  {
+    name: "Your Decks",
+    enabled: true,
+    locked: true,
+    sourceId: "user-decks",
+    priority: 0,
+  },
+  {
+    name: "Built-in Vocabulary",
+    enabled: true,
+    locked: true,
+    sourceId: "vocabulary.ts",
+    priority: 999,
+  },
+]
+
+export const DEFAULT_KANJI_STACKS: z.infer<typeof StackSchema>[] = [
+  {
+    name: "JPDB Keywords",
+    enabled: false,
+    locked: false,
+    sourceId: "jpdb-keywords.json",
+    priority: 500,
+  },
+  {
+    name: "WaniKani",
+    enabled: true,
+    locked: true,
+    sourceId: "wanikani.db",
+    priority: 999,
+  },
+]
+
+/**
  * Zod schema for complete override settings validation
  */
 export const OverrideSettingsSchema = z.object({
@@ -78,12 +115,15 @@ export const UserPreferencesSchema = z.object({
   "active-textbook": TextbookIDSchema.default(""),
   "active-deck": z.string().max(20).default(""),
   "completed-tours": z.array(z.string()).default([]),
-  "override-settings": OverrideSettingsSchema.optional(),
+  "override-settings": OverrideSettingsSchema.default({
+    vocabularyOverrides: DEFAULT_VOCABULARY_STACKS,
+    kanjiOverrides: DEFAULT_KANJI_STACKS,
+  }),
   timestamp: z.number().default(0),
 })
 
 // Inferred types from schemas
-export type UserPreferencesCookieData = z.infer<typeof UserPreferencesSchema>
+export type UserPreferences = z.infer<typeof UserPreferencesSchema>
 export type ServicePreference = z.infer<typeof ServicePreferenceSchema>
 export type ServiceCredentials = z.infer<typeof ServiceCredentialsSchema>
 export type AllServicePreferences = z.infer<typeof ServicePreferencesSchema>
