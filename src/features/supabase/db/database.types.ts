@@ -138,27 +138,6 @@ export type Database = {
           },
         ]
       }
-      static_module_user_completions: {
-        Row: {
-          completed_at: string
-          id: number
-          static_module_path: string
-          user_id: string
-        }
-        Insert: {
-          completed_at?: string
-          id?: number
-          static_module_path: string
-          user_id: string
-        }
-        Update: {
-          completed_at?: string
-          id?: number
-          static_module_path?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       user_decks: {
         Row: {
           allowed_practice_modes: Database["public"]["Enums"]["practice_mode_enum"][]
@@ -202,6 +181,27 @@ export type Database = {
             referencedColumns: ["folder_id"]
           },
         ]
+      }
+      user_module_completions: {
+        Row: {
+          completed_at: string
+          id: number
+          static_module_path: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: number
+          static_module_path: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: number
+          static_module_path?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       vocabulary_items: {
         Row: {

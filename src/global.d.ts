@@ -50,4 +50,9 @@ declare global {
     Database["public"]["Tables"]["public_deck_shares"]["Insert"]
   type PublicDeckShareUpdate =
     Database["public"]["Tables"]["public_deck_shares"]["Update"]
+
+  type ModuleCompletion =
+    Database["public"]["Tables"]["user_module_completions"]["Row"]
+  type ModuleCompletionInsert =
+    Database["public"]["Tables"]["user_module_completions"]["Insert"]
 }
