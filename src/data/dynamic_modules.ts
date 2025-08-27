@@ -6,6 +6,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     session_type: "vocab-practice",
     vocab_set_ids: ["hiragana"],
     instructions: "Practice writing and recognizing these hiragana characters.",
+    allowed_practice_modes: ["meanings"],
   },
   "hiragana-quiz": {
     title: "Hiragana Quiz",
@@ -19,6 +20,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["dakuten-handakuten"],
     instructions:
       "Practice voiced (dakuten) and semi-voiced (handakuten) hiragana.",
+    allowed_practice_modes: ["meanings"],
   },
   "dakuten-handakuten-quiz": {
     title: "Dakuten & Handakuten Quiz",
@@ -32,6 +34,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["contracted-sounds"],
     instructions:
       "Practice recognizing and writing contracted hiragana sounds.",
+    allowed_practice_modes: ["meanings"],
   },
   "contracted-sounds-quiz": {
     title: "Contracted Sounds Quiz",
@@ -152,6 +155,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     session_type: "vocab-practice",
     vocab_set_ids: [], // FIX
     instructions: "Practice writing and recognizing Katakana characters.",
+    allowed_practice_modes: ["meanings"],
   },
   "katakana-quiz": {
     title: "Katakana Quiz",

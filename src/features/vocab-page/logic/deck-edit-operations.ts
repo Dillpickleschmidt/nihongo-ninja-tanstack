@@ -18,6 +18,7 @@ export interface UpdateDeckOperation {
   updates: {
     name?: string
     folderId?: number | null
+    allowedPracticeModes?: PracticeModeEnum[]
   }
 }
 
@@ -144,6 +145,11 @@ export function applyUpdateDeck(
     }
 
     newDeck.folder_id = updates.folderId
+  }
+
+  // Apply practice mode update
+  if (updates.allowedPracticeModes !== undefined) {
+    newDeck.allowed_practice_modes = updates.allowedPracticeModes
   }
 
   // Create new state

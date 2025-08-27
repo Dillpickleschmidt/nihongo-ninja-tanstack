@@ -98,6 +98,7 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
           updates: {
             name: store.deck.name,
             folderId: folder_id,
+            allowedPracticeModes: store.deck.allowedPracticeModes,
           },
         }
 
@@ -127,6 +128,7 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
             deck_description: store.deck.description || null,
             folder_id,
             vocabulary_items: validFormDataItems(),
+            allowed_practice_modes: store.deck.allowedPracticeModes,
           },
         })
 

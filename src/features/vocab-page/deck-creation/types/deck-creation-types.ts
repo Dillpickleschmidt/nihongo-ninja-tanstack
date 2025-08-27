@@ -7,6 +7,7 @@ export interface DeckCreationStore {
     description: string
     selectedFolderId: string
     selectedFolderName: string
+    allowedPracticeModes: PracticeModeEnum[]
   }
   vocabItems: {
     nextId: number

@@ -161,6 +161,7 @@ export type Database = {
       }
       user_decks: {
         Row: {
+          allowed_practice_modes: Database["public"]["Enums"]["practice_mode_enum"][]
           created_at: string
           deck_description: string | null
           deck_id: number
@@ -171,6 +172,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          allowed_practice_modes: Database["public"]["Enums"]["practice_mode_enum"][]
           created_at?: string
           deck_description?: string | null
           deck_id?: never
@@ -181,6 +183,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          allowed_practice_modes?: Database["public"]["Enums"]["practice_mode_enum"][]
           created_at?: string
           deck_description?: string | null
           deck_id?: never
@@ -265,6 +268,7 @@ export type Database = {
     }
     Enums: {
       practice_item_type: "vocabulary" | "kanji" | "radical"
+      practice_mode_enum: "meanings" | "spellings"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -393,6 +397,7 @@ export const Constants = {
   public: {
     Enums: {
       practice_item_type: ["vocabulary", "kanji", "radical"],
+      practice_mode_enum: ["meanings", "spellings"],
     },
   },
 } as const

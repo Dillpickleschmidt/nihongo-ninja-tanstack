@@ -75,6 +75,7 @@ export interface DynamicModule {
   vocab_set_ids: string[]
   description?: string
   instructions?: string
+  allowed_practice_modes?: PracticeModeEnum[]
 }
 
 // --- Static Module Types ---

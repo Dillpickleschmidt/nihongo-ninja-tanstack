@@ -4,6 +4,7 @@ import {
   TextFieldLabel,
 } from "@/components/ui/text-field"
 import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
 import { LocationSelector } from "@/features/vocab-page/components/LocationSelector"
 import { useFolderTree } from "@/features/vocab-page/hooks/useFolderTree"
 import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
@@ -76,6 +77,33 @@ export function DeckDetails(props: DeckDetailsProps) {
     return null
   }
 
+  const handlePracticeModeChange = (
+    mode: PracticeModeEnum,
+    enabled: boolean,
+  ) => {
+    const currentModes = store.deck.allowedPracticeModes
+    if (enabled) {
+      // Add mode if not already present
+      if (!currentModes.includes(mode)) {
+        actions.updateAllowedPracticeModes([...currentModes, mode])
+      }
+    } else {
+      // Remove mode, but ensure at least one remains
+      const newModes = currentModes.filter((m) => m !== mode)
+      if (newModes.length > 0) {
+        actions.updateAllowedPracticeModes(newModes)
+      }
+    }
+  }
+
+  const practiceModeError = () => {
+    const hasAttemptedSubmit = store.validation.hasAttemptedSubmit
+    if (hasAttemptedSubmit && store.deck.allowedPracticeModes.length === 0) {
+      return "At least one practice mode must be enabled"
+    }
+    return undefined
+  }
+
   return (
     <section>
       <div class="mb-4">
@@ -98,24 +126,79 @@ export function DeckDetails(props: DeckDetailsProps) {
           </div>
         </TextField>
 
-        <div>
-          <div class="mb-1 flex items-center justify-between">
-            <Label>Folder</Label>
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <div class="mb-1 flex items-center justify-between">
+              <Label>Folder</Label>
+            </div>
+            <LocationSelector
+              selectedFolderId={store.deck.selectedFolderId}
+              selectedFolderName={store.deck.selectedFolderName}
+              folderTreeNodes={folderTree.folderTreeNodes()}
+              editingType="deck"
+              onSelect={handleFolderSelect}
+            />
+            {/* Show original path when different from current in edit mode */}
+            {store.original &&
+              store.original.folderId !== store.deck.selectedFolderId && (
+                <div class="text-muted-foreground mt-1 text-xs">
+                  Original location: {store.original.folderName}
+                </div>
+              )}
           </div>
-          <LocationSelector
-            selectedFolderId={store.deck.selectedFolderId}
-            selectedFolderName={store.deck.selectedFolderName}
-            folderTreeNodes={folderTree.folderTreeNodes()}
-            editingType="deck"
-            onSelect={handleFolderSelect}
-          />
-          {/* Show original path when different from current in edit mode */}
-          {store.original &&
-            store.original.folderId !== store.deck.selectedFolderId && (
-              <div class="text-muted-foreground mt-1 text-xs">
-                Original location: {store.original.folderName}
+
+          <div class="flex flex-col gap-1 pt-4">
+            <div
+              class="flex items-center justify-end space-x-2"
+              title="Choose which modes are presented when you click to practice this deck. At least one must be enabled."
+            >
+              <Label for="allow-meanings" class="text-muted-foreground text-xs">
+                Allow Meanings
+              </Label>
+              <Checkbox
+                checked={store.deck.allowedPracticeModes.includes("meanings")}
+                onChange={(enabled) =>
+                  handlePracticeModeChange("meanings", enabled)
+                }
+                id="allow-meanings"
+                disabled={
+                  store.deck.allowedPracticeModes.length === 1 &&
+                  store.deck.allowedPracticeModes.includes("meanings")
+                }
+                size={3.5}
+                class="data-[checked]:bg-primary/60 border-primary/30 hover:cursor-pointer"
+              />
+            </div>
+            <div
+              class="flex items-center justify-end space-x-2"
+              title="Choose which modes are presented when you click to practice this deck. At least one must be enabled."
+            >
+              <Label
+                for="allow-spellings"
+                class="text-muted-foreground text-xs"
+              >
+                Allow Spellings
+              </Label>
+              <Checkbox
+                checked={store.deck.allowedPracticeModes.includes("spellings")}
+                onChange={(enabled) =>
+                  handlePracticeModeChange("spellings", enabled)
+                }
+                id="allow-spellings"
+                disabled={
+                  store.deck.allowedPracticeModes.length === 1 &&
+                  store.deck.allowedPracticeModes.includes("spellings")
+                }
+                size={3.5}
+                class="data-[checked]:bg-primary/60 border-primary/30 hover:cursor-pointer"
+              />
+            </div>
+            {practiceModeError() && (
+              <div class="text-destructive text-xs font-medium">
+                {practiceModeError()}
               </div>
             )}
+          </div>
         </div>
       </div>
 

@@ -24,6 +24,7 @@ declare global {
     Database["public"]["Tables"]["static_module_user_completions"]["Row"]
   type DBPracticeItem = Database["public"]["Tables"]["fsrs_cards"]["Row"]
   type DBPracticeItemType = Database["public"]["Enums"]["practice_item_type"]
+  type PracticeModeEnum = Database["public"]["Enums"]["practice_mode_enum"]
 
   // Folder Management Types
   type UserDeck = Database["public"]["Tables"]["user_decks"]["Row"]

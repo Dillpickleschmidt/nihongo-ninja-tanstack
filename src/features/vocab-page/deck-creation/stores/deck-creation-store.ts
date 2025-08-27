@@ -15,6 +15,7 @@ export interface DeckCreationInitialData {
   folderId?: string
   folderName?: string
   vocabItems?: VocabularyItem[]
+  allowedPracticeModes?: PracticeModeEnum[]
 }
 
 // Create initial store state
@@ -65,6 +66,10 @@ const createInitialState = (
       description: initialData?.description || "",
       selectedFolderId: initialData?.folderId || "root",
       selectedFolderName: initialData?.folderName || "Root",
+      allowedPracticeModes: initialData?.allowedPracticeModes || [
+        "meanings",
+        "spellings",
+      ],
     },
     vocabItems: {
       nextId,
@@ -99,6 +104,10 @@ export function createDeckCreationStore(initialData?: DeckCreationInitialData) {
     updateDeckFolder: (folderId: string, folderName: string) => {
       setStore("deck", "selectedFolderId", folderId)
       setStore("deck", "selectedFolderName", folderName)
+    },
+
+    updateAllowedPracticeModes: (modes: PracticeModeEnum[]) => {
+      setStore("deck", "allowedPracticeModes", modes)
     },
 
     // Vocab items actions

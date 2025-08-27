@@ -33,6 +33,8 @@ import {
 } from "@/features/supabase/db/deck-sharing"
 import { ShareModal } from "../components/ShareModal"
 import { PracticeModeModal } from "../components/PracticeModeModal"
+import { getPracticeAction } from "../utils/practiceMode"
+import { useNavigate } from "@tanstack/solid-router"
 
 interface UserDeckCardProps {
   deck: UserDeck
@@ -53,6 +55,7 @@ interface UserDeckCardProps {
 }
 
 export function UserDeckCard(props: UserDeckCardProps) {
+  const navigate = useNavigate()
   const [isHovered, setIsHovered] = createSignal(false)
   const [expandedFolderIds, setExpandedFolderIds] = createSignal<Set<string>>(
     new Set(),
@@ -152,6 +155,47 @@ export function UserDeckCard(props: UserDeckCardProps) {
     }
   }
 
+  // Handle practice button click with mode logic
+  const handlePracticeClick = (e: MouseEvent) => {
+    e.stopPropagation()
+
+    const action = getPracticeAction(props.deck.allowed_practice_modes)
+
+    switch (action) {
+      case "direct-meanings":
+        navigateToPractice("meanings")
+        break
+      case "direct-spellings":
+        navigateToPractice("spellings")
+        break
+      case "show-modal":
+        setShowPracticeModeModal(true)
+        break
+    }
+  }
+
+  // Navigate to practice with given mode
+  const navigateToPractice = (mode: "meanings" | "spellings") => {
+    if (props.deck.source === "built-in") {
+      // Built-in decks use the original route with search params
+      navigate({
+        to: "/practice/$practiceID",
+        params: { practiceID: props.deck.original_deck_id! },
+        search: { mode },
+      })
+    } else {
+      // User decks use the new route structure with search params
+      navigate({
+        to: "/practice/$userID/$deckID",
+        params: {
+          userID: props.userId || "unknown",
+          deckID: props.deck.deck_id.toString(),
+        },
+        search: { mode },
+      })
+    }
+  }
+
   return (
     <>
       <ContextMenu>
@@ -222,10 +266,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
           <Button
             variant="default"
             size="sm"
-            onClick={(e) => {
-              e.stopPropagation()
-              setShowPracticeModeModal(true)
-            }}
+            onClick={handlePracticeClick}
             class="bg-card hover:bg-card-foreground/10 dark:bg-card-foreground text-primary outline-card-foreground/70 relative w-full overflow-hidden text-xs outline backdrop-blur-xs transition-colors dark:outline-none hover:dark:bg-neutral-600"
           >
             <div class="relative flex w-full items-center justify-center">

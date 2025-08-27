@@ -41,6 +41,7 @@ export const createUserDeckServerFn = createServerFn({ method: "POST" })
       original_deck_id: data.original_deck_id || null,
       source: data.source,
       user_id: response.user.id,
+      allowed_practice_modes: ["meanings", "spellings"],
     }
 
     const { data: deck, error } = await supabase
@@ -63,6 +64,7 @@ export const updateUserDeckServerFn = createServerFn({ method: "POST" })
       deck_name?: string
       deck_description?: string | null
       folder_id?: number | null
+      allowed_practice_modes?: PracticeModeEnum[]
     }) => data,
   )
   .handler(async ({ data }) => {
@@ -75,6 +77,8 @@ export const updateUserDeckServerFn = createServerFn({ method: "POST" })
     if (data.deck_description !== undefined)
       updateData.deck_description = data.deck_description
     if (data.folder_id !== undefined) updateData.folder_id = data.folder_id
+    if (data.allowed_practice_modes !== undefined)
+      updateData.allowed_practice_modes = data.allowed_practice_modes
 
     const { data: deck, error } = await supabase
       .from("user_decks")
@@ -121,12 +125,18 @@ export const importBuiltInDeckServerFn = createServerFn({ method: "POST" })
     const folderPath = textbookInfo
       ? [textbookInfo.textbookName, textbookInfo.chapterName]
       : []
-    const { folders: updatedFolders, targetFolderId } =
-      await ensureFolderHierarchy(
-        currentData.folders,
-        folderPath,
-        response.user.id,
-      )
+    const { targetFolderId } = await ensureFolderHierarchy(
+      currentData.folders,
+      folderPath,
+      response.user.id,
+    )
+
+    // Get module configuration for practice modes
+    const module = dynamic_modules[builtInDeck.id]
+    const allowedPracticeModes = module?.allowed_practice_modes || [
+      "meanings",
+      "spellings",
+    ]
 
     // Create the user deck
     const insertData: UserDeckInsert = {
@@ -138,6 +148,7 @@ export const importBuiltInDeckServerFn = createServerFn({ method: "POST" })
       original_deck_id: builtInDeck.id,
       source: "built-in",
       user_id: response.user.id,
+      allowed_practice_modes: allowedPracticeModes,
     }
 
     const { data: newDeck, error } = await supabase
@@ -149,7 +160,6 @@ export const importBuiltInDeckServerFn = createServerFn({ method: "POST" })
     if (error) throw error
 
     // Import vocabulary items from the built-in deck
-    const module = dynamic_modules[builtInDeck.id]
     if (module?.vocab_set_ids) {
       try {
         const vocabularyItems = await getVocabularyForSet(module.vocab_set_ids)
@@ -186,6 +196,7 @@ export const createCustomDeckServerFn = createServerFn({ method: "POST" })
       deck_description?: string | null
       folder_id?: number | null
       vocabulary_items: VocabItemFormData[]
+      allowed_practice_modes?: PracticeModeEnum[]
     }) => data,
   )
   .handler(async ({ data }) => {
@@ -199,6 +210,10 @@ export const createCustomDeckServerFn = createServerFn({ method: "POST" })
       folder_id: data.folder_id || null,
       source: "user",
       user_id: response.user.id,
+      allowed_practice_modes: data.allowed_practice_modes || [
+        "meanings",
+        "spellings",
+      ],
     }
 
     const { data: deck, error } = await supabase
