@@ -57,7 +57,7 @@ export const Route = createRootRoute({
       await getInitialUserPreferencesFromCookieServerFn()
 
     return {
-      user: result?.user || null,
+      user: (result?.user as User) || null,
       initialUserPreferenceData,
     }
   },

@@ -1,6 +1,6 @@
+// routes/lessons/japanese-pronunciation.tsx
+import KanaChart from "@/components/charts/KanaChart"
 import { createFileRoute } from "@tanstack/solid-router"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import YouTubeVideo from "@/features/youtube/YouTube"
 
 export const Route = createFileRoute("/lessons/japanese-pronunciation")({
   loader: async () => {
@@ -15,253 +15,166 @@ export const Route = createFileRoute("/lessons/japanese-pronunciation")({
 
 function RouteComponent() {
   return (
-    <div class="mb-8">
-      {/* Hero Section */}
-      <div class="relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 px-4 py-16">
-        <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-10"></div>
-        <div class="relative text-center">
-          <h1 class="mb-4 text-4xl leading-tight font-bold text-white">
-            Japanese Pronunciation:{" "}
-            <span class="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-              Easier Than You Think
+    <div class="mb-32">
+      {/* Header */}
+      <header class="mx-auto max-w-3xl px-6 py-14 text-center">
+        <h1 class="mb-3 text-4xl font-extrabold tracking-tight">
+          Japanese Pronunciation
+        </h1>
+        <div class="mx-auto mb-5 h-1 w-16 rounded bg-emerald-400"></div>
+        <p class="text-muted-foreground mb-6 text-lg">
+          Simple rules, consistent sounds. Once you get them down, you can
+          pronounce any word you see with confidence.
+        </p>
+        <div class="font-japanese flex justify-center space-x-3 text-xl">
+          <span class="rounded-md bg-emerald-500/20 px-3 py-1">あ</span>
+          <span class="rounded-md bg-emerald-500/20 px-3 py-1">い</span>
+          <span class="rounded-md bg-emerald-500/20 px-3 py-1">う</span>
+          <span class="rounded-md bg-emerald-500/20 px-3 py-1">え</span>
+          <span class="rounded-md bg-emerald-500/20 px-3 py-1">お</span>
+        </div>
+      </header>
+
+      <main class="mx-auto max-w-3xl space-y-12 px-6 leading-relaxed">
+        {/* Opening Callout */}
+        <section class="bg-muted/20 text-muted-foreground rounded-md p-4 text-sm italic">
+          If English spelling has ever thrown you off—read vs. read (past
+          tense), or though / through / tough—here’s the good news: Japanese
+          doesn’t do that. Every character = one sound, every time.
+        </section>
+
+        {/* Why It's Simpler */}
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold">
+            Why Pronunciation Seems Hard (But Isn’t)
+          </h2>
+          <p>
+            English makes you deal with silent letters, shifting vowels, and
+            words that look identical but sound completely different. It’s no
+            wonder learners hesitate.
+          </p>
+          <p class="mt-4">
+            Japanese is designed differently: sounds are predictable. Once you
+            learn the handful of rules, you can comfortably rely on them.
+          </p>
+        </section>
+
+        {/* Vowels + Kana Grid */}
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold">The Sound System</h2>
+          <p class="mb-4">
+            Everything starts with five vowels. Put a consonant in front, and
+            you have five new valid sounds.
+          </p>
+
+          <div class="flex flex-col space-y-8 lg:grid lg:grid-cols-[auto,1fr] lg:gap-12 lg:space-y-0">
+            {/* Five Vowels */}
+            <section class="rounded-lg p-6">
+              <h2 class="mb-3 text-2xl font-semibold">
+                The Foundation: Five Vowels
+              </h2>
+              <p class="mb-4">
+                Everything starts with five short, steady vowels. Keep them
+                crisp:
+              </p>
+              <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                <div class="rounded-md bg-emerald-500/15 p-3 text-center">
+                  <p class="font-japanese text-xl text-emerald-300">あ (a)</p>
+                  <p class="mt-0.5 text-xs text-emerald-200/90">
+                    “ah” • father
+                  </p>
+                </div>
+                <div class="rounded-md bg-emerald-500/15 p-3 text-center">
+                  <p class="font-japanese text-xl text-emerald-300">い (i)</p>
+                  <p class="mt-0.5 text-xs text-emerald-200/90">
+                    “ee” • machine
+                  </p>
+                </div>
+                <div class="rounded-md bg-emerald-500/15 p-3 text-center">
+                  <p class="font-japanese text-xl text-emerald-300">う (u)</p>
+                  <p class="mt-0.5 text-xs text-emerald-200/90">“oo” • scoop</p>
+                </div>
+                <div class="rounded-md bg-emerald-500/15 p-3 text-center">
+                  <p class="font-japanese text-xl text-emerald-300">え (e)</p>
+                  <p class="mt-0.5 text-xs text-emerald-200/90">“eh” • bent</p>
+                </div>
+                <div class="rounded-md bg-emerald-500/15 p-3 text-center">
+                  <p class="font-japanese text-xl text-emerald-300">お (o)</p>
+                  <p class="mt-0.5 text-xs text-emerald-200/90">“oh” • oh</p>
+                </div>
+              </div>
+            </section>
+
+            {/* Kana Grid */}
+            <div class="flex-1 overflow-x-auto">
+              <KanaChart />
+            </div>
+          </div>
+
+          {/* Bridge explanation text */}
+          <p class="text-muted-foreground mt-6 text-sm">
+            See how neat this is? Each column is one of those five vowels, and
+            each row is a consonant pairing with them. Don't see the pattern? It
+            might take a minute to click.
+          </p>
+
+          <p class="text-muted-foreground mt-4 text-sm">
+            Variations worth noting include: <br />・ し = “shi” not “si”
+            <br />・ ち = “chi,” つ = “tsu”
+            <br />・ ふ = soft “fu,” like blowing air
+            <br />・ を is more often pronounced “o”
+            <br />・ ん can be "n" or "m"
+          </p>
+        </section>
+
+        {/* Wrap-up Confidence Booster */}
+        <section class="mt-8">
+          <div class="space-y-3 rounded-md border border-green-600/40 bg-green-900/20 p-5">
+            <p class="leading-relaxed font-medium text-green-200">
+              Look at that — with just these patterns, you can already see what
+              makes up most Japanese words. English never gives you this level
+              of consistency.
+            </p>
+            <p class="text-sm text-green-300">
+              Don’t worry about memorizing the full chart yet—we're just looking
+              at the patterns right now. Now let's take a look at some real
+              words.
+            </p>
+          </div>
+        </section>
+
+        {/* Example Words */}
+        <section class="space-y-6">
+          <h2 class="mb-5 text-2xl font-semibold">
+            Let’s put it together{" "}
+            <span class="text-muted-foreground ml-3 text-base">
+              (Read left to right)
             </span>
-          </h1>
-          <p class="text-lg leading-relaxed text-slate-300">
-            Unlike English, Japanese pronunciation follows clear, consistent
-            rules that work the same way every time.
-          </p>
-        </div>
-      </div>
-
-      <div class="space-y-8 px-4 py-8">
-        {/* Introduction Dialogue */}
-        <div class="bg-card/50 border-border rounded-lg border p-5 shadow-lg">
-          <div class="space-y-6">
-            <div class="flex items-start gap-4">
-              <Avatar class="flex-shrink-0">
-                <AvatarImage src="/img/student.png" />
-                <AvatarFallback>S</AvatarFallback>
-              </Avatar>
-              <div class="flex-1 rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
-                <p class="text-sm">
-                  Japanese just seems so different from English. Learning
-                  pronunciation seems like it's going to be a huge challenge.
-                </p>
-              </div>
-            </div>
-            <div class="flex items-start justify-end gap-4">
-              <div class="max-w-md flex-1 rounded-lg bg-blue-100 p-3 dark:bg-blue-900/30">
-                <p class="text-sm">
-                  <em class="text-blue-600 dark:text-blue-400">
-                    *sipping tea with suspicious intensity*
-                  </em>{" "}
-                  Actually, it's one of the easiest parts! If you can speak
-                  English, you already know how to make almost every Japanese
-                  sound. The real advantage is consistency—once you learn how to
-                  pronounce something, it works that way every time.
-                </p>
-              </div>
-              <Avatar class="flex-shrink-0">
-                <AvatarImage src="/img/guru.png" />
-                <AvatarFallback>T</AvatarFallback>
-              </Avatar>
-            </div>
+          </h2>
+          {/* <p class="mb-4">Let’s put it together. Read left to right:</p> */}
+          <div class="grid gap-4 sm:grid-cols-3">
+            <WordCard jp="ねこ" romaji="ne + ko" gloss="“neh-koh” (cat)" />
+            <WordCard jp="すし" romaji="su + shi" gloss="“soo-shee” (sushi)" />
+            <WordCard jp="かみ" romaji="ka + mi" gloss="“kah-mee” (paper)" />
           </div>
-        </div>
+        </section>
 
-        {/* English vs Japanese Comparison */}
-        <div class="border-border rounded-lg border bg-gradient-to-br from-red-500/10 to-orange-500/5 p-6 shadow-lg">
-          <h3 class="mb-4 text-lg font-semibold text-orange-500">
-            Why Japanese is Actually Easier
-          </h3>
-          <div class="text-muted-foreground space-y-3 text-sm leading-relaxed">
-            <p>
-              Think about English for a moment. How do you pronounce "read"?
-              Well, it depends—are we talking about present tense or past tense?
-              What about "though," "through," "rough," and "cough"? English
-              spelling is famously chaotic.
-            </p>
-            <p>
-              Japanese takes the opposite approach. Every character represents
-              the same sound, every single time. No exceptions, no surprises.
-            </p>
-          </div>
-        </div>
+        <p class="text-muted-foreground mx-auto max-w-2xl text-sm">
+          In the next lesson, we'll take a look at the major writing systems in
+          Japanese, and how they all fit together.
+        </p>
+      </main>
+    </div>
+  )
+}
 
-        {/* Five Vowels Section */}
-        <div class="bg-card/50 border-border rounded-lg border p-6 shadow-lg">
-          <h3 class="mb-4 text-lg font-semibold">
-            The Foundation: Five Pure Vowels
-          </h3>
-          <p class="text-muted-foreground mb-6">
-            Everything in Japanese pronunciation builds from just five vowel
-            sounds:
-          </p>
-
-          <div class="font-japanese my-8 flex w-full justify-center text-2xl font-medium">
-            <ul class="space-y-3">
-              <li>
-                あ a -{" "}
-                <span class="text-xl">
-                  <em>
-                    <span class="text-2xl font-extrabold">AH</span>HH!!
-                  </em>
-                </span>
-              </li>
-              <li>
-                い i -{" "}
-                <span class="text-xl">
-                  <em>
-                    eur<span class="text-2xl font-semibold">ea</span>ka!
-                  </em>
-                </span>
-              </li>
-              <li>
-                う u -{" "}
-                <span class="text-xl">
-                  g<span class="text-2xl font-semibold">👀</span>se 🪿
-                </span>
-              </li>
-              <li>
-                え e -{" "}
-                <span class="text-xl">
-                  <span class="text-2xl font-semibold">e</span>lephant 🐘
-                </span>
-              </li>
-              <li>
-                お o -{" "}
-                <span class="text-xl">
-                  d<span class="text-2xl font-semibold">o</span>nut 🍩
-                </span>
-              </li>
-            </ul>
-          </div>
-          <p class="text-muted-foreground text-center text-xs">
-            *Note the rounded shapes of Hiragana characters.*
-          </p>
-        </div>
-
-        {/* Building Syllables */}
-        <div class="bg-card/50 border-border rounded-lg border p-6 shadow-lg">
-          <h3 class="mb-4 text-lg font-semibold">Building Syllables</h3>
-          <p class="text-muted-foreground mb-6">
-            Japanese builds syllables by combining consonants with vowels in
-            predictable patterns.
-          </p>
-
-          <div class="space-y-6">
-            <div class="text-center">
-              <p class="mb-3 text-base">
-                Take the consonant <span class="font-bold">k</span>:
-              </p>
-              <div class="font-japanese bg-background/50 rounded-lg p-4 text-xl font-medium">
-                <p>か (ka) • き (ki) • く (ku) • け (ke) • こ (ko)</p>
-              </div>
-            </div>
-
-            <div class="text-center">
-              <p class="mb-3 text-base">
-                Or the consonant <span class="font-bold">s</span>:
-              </p>
-              <div class="font-japanese bg-background/50 rounded-lg p-4 text-xl font-medium">
-                <p>さ (sa) • し (shi) • す (su) • せ (se) • そ (so)</p>
-              </div>
-              <p class="text-muted-foreground mt-2 text-xs">
-                *Note: "shi" is a slight exception, but it's nothing you can't
-                handle.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Practice Section */}
-        <div class="border-border rounded-lg border bg-gradient-to-br from-green-500/10 to-emerald-500/5 p-6 shadow-lg">
-          <h3 class="mb-4 text-lg font-semibold text-green-500">
-            Try It Yourself
-          </h3>
-          <div class="text-muted-foreground space-y-3 leading-relaxed">
-            <p>
-              Let's practice with a real word:{" "}
-              <span class="font-japanese text-lg font-medium">ねこ (neko)</span>
-              , which means "cat."
-            </p>
-            <p>
-              Break it down: ne + ko. Use the "e" sound from "pet" (or elephant)
-              and the "o" sound from "coat" (or donut). Put them together
-              smoothly: "neh-koh."
-            </p>
-            <p>
-              Congratulations—you just pronounced your first Japanese word! And
-              trust me, you already sound better than most Japanese speakers
-              attempting English:
-            </p>
-          </div>
-
-          <div class="mt-6 flex w-full justify-center">
-            <div class="w-full max-w-96">
-              <YouTubeVideo
-                videoId="vQFaPMth2kw"
-                title="Japanese Characters Speaking Engrish in Anime"
-                credit="Tamako Sensei"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* The Big Revelation */}
-        <div class="bg-card/50 border-border space-y-6 rounded-lg border p-5 shadow-lg">
-          <div class="flex items-start justify-end gap-4">
-            <div class="max-w-md flex-1 rounded-lg bg-purple-100 p-3 dark:bg-purple-900/30">
-              <p class="text-sm">
-                <em class="text-purple-600 dark:text-purple-400">
-                  *laughing maniacally*
-                </em>{" "}
-                UNLIMITED PHONETIC POWER!{" "}
-                <em>*lightning crackles around their teacup*</em> DO YOU REALIZE
-                HOW POWERFUL THIS KNOWLEDGE IS? <em>*straightens robes*</em> I
-                mean... here's the beautiful part: Japanese has roughly 100
-                basic sound combinations, while English juggles around 250
-                unique sounds with <em>thousands</em> of spelling variations.
-              </p>
-            </div>
-            <Avatar class="flex-shrink-0">
-              <AvatarImage src="/img/guru.png" />
-              <AvatarFallback>T</AvatarFallback>
-            </Avatar>
-          </div>
-          <div class="flex items-start gap-4">
-            <Avatar class="flex-shrink-0">
-              <AvatarImage src="/img/student.png" />
-              <AvatarFallback>S</AvatarFallback>
-            </Avatar>
-            <div class="flex-1 rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
-              <p class="text-sm">
-                That's actually really encouraging!{" "}
-                <span class="text-muted-foreground">
-                  (Though I'm slightly concerned about your mental state...)
-                </span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Key Takeaway */}
-        <div class="border-border rounded-lg border bg-gradient-to-br from-blue-500/10 to-cyan-500/5 p-6 shadow-lg">
-          <h3 class="mb-4 text-lg font-semibold text-blue-500">Key Takeaway</h3>
-          <div class="text-muted-foreground space-y-3 leading-relaxed">
-            <p>
-              Your tongue can already handle Japanese—it's just a matter of
-              learning the patterns. Once you learn hiragana and katakana (which
-              we'll cover next), you'll be able to pronounce any Japanese word
-              correctly just by reading it.
-            </p>
-            <p class="text-foreground font-medium">
-              No guessing, no memorizing exceptions—just consistent, logical
-              pronunciation every time.
-            </p>
-          </div>
-        </div>
-      </div>
+/* Word example cards */
+function WordCard(props: { jp: string; romaji: string; gloss: string }) {
+  return (
+    <div class="bg-card/50 font-japanese rounded-lg p-4 text-center">
+      <p class="mb-1 text-2xl font-semibold">{props.jp}</p>
+      <p class="text-muted-foreground text-sm">{props.romaji}</p>
+      <p class="text-sm">{props.gloss}</p>
     </div>
   )
 }

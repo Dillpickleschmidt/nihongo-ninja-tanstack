@@ -23,12 +23,12 @@ type ContentBoxProps = {
 }
 
 export const contentBoxVariants = cva(
-  "w-full min-h-screen relative bg-background/75",
+  "w-full min-h-screen relative bg-background/60",
   {
     variants: {
       size: {
-        default: "max-w-[825px] ",
-        lg: "max-w-5xl",
+        default: "max-w-4xl ",
+        lg: "",
       },
     },
     defaultVariants: {
@@ -58,7 +58,7 @@ export default function ContentBox(props: ContentBoxProps) {
 
   const handleBackClick = (e: Event) => {
     e.preventDefault()
-    navigate({ to: "/lessons" })
+    navigate({ to: "/learn" })
   }
 
   const handleNextClick = (e: Event) => {
@@ -88,7 +88,7 @@ export default function ContentBox(props: ContentBoxProps) {
           <div class="fixed right-6 bottom-6 flex gap-2">
             <Button
               as="a"
-              href="/lessons"
+              href="/learn"
               onClick={handleBackClick}
               variant="ghost"
               class="dark:to-card/25 opacity-80 hover:opacity-100 dark:bg-gradient-to-br dark:from-green-500/30"

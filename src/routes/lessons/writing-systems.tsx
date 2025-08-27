@@ -1,3 +1,4 @@
+// routes/lessons/writing-systems.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
@@ -18,7 +19,7 @@ function RouteComponent() {
       <div class="-mt-2 h-48 w-full border-b border-black">
         <img src="/img/chapter-0/brushes.jpg" alt="japanese brushstrokes" />
       </div>
-      <h2 class="mt-24 px-12 pb-14 text-4xl font-medium lg:px-24 lg:text-5xl">
+      <h2 class="mt-24 px-12 pt-10 pb-14 text-4xl font-medium lg:px-24 lg:text-5xl">
         Let's take a closer look at the Japanese writing systems.
       </h2>
       <div class="space-y-9 px-8 sm:px-24 lg:px-12">
@@ -109,7 +110,7 @@ function RouteComponent() {
 
           <div class="mt-6 space-y-4">
             <p>
-              First, meet Hiragana, the foundation of our writing system. These
+              First, meet Hiragana, the foundational writing system. These
               curved characters can represent every sound in Japanese:
             </p>
 
@@ -143,7 +144,6 @@ function RouteComponent() {
             </div>
           </div>
         </div>
-
         {/* Katakana Section */}
         <div class="border-border rounded-lg border bg-gradient-to-br from-green-500/10 to-emerald-500/5 p-6 shadow-lg">
           <h3 class="mb-4 text-lg font-semibold text-green-500">
@@ -194,7 +194,7 @@ function RouteComponent() {
             <div class="text-center">
               <p class="mb-2">
                 <strong>Sensei:</strong> Notice their sharp, decisive forms -
-                like the blade of a perfectly forged katana!
+                like the blade of a katana!
               </p>
               <div class="mb-4 flex justify-center">
                 <div class="h-10 w-10">
@@ -209,8 +209,8 @@ function RouteComponent() {
             <div class="text-muted-foreground space-y-3">
               <p>
                 We use Katakana for foreign words, scientific terms, and when we
-                want text to stand out. Like how English uses italics or bold
-                for emphasis.
+                want text to <em>STAND OUT</em>. Like how English uses italics
+                or bold for emphasis.
               </p>
 
               <div class="flex items-start gap-4">
@@ -228,8 +228,7 @@ function RouteComponent() {
               <p>
                 <strong>Sensei:</strong> Good question. Katakana is perfect for
                 writing foreign words, sound effects in manga, and making things
-                pop in advertisements. It's like having both casual and formal
-                writing - each has its time and place.
+                pop in advertisements.
               </p>
 
               <p class="bg-background/50 rounded p-3 text-sm italic">
@@ -242,7 +241,6 @@ function RouteComponent() {
             </div>
           </div>
         </div>
-
         {/* Kanji Section */}
         <div class="border-border rounded-lg border bg-gradient-to-br from-red-500/10 to-pink-500/5 p-6 shadow-lg">
           <h3 class="mb-4 text-lg font-semibold text-red-500">
@@ -349,8 +347,11 @@ function RouteComponent() {
             <div class="flex items-start justify-end gap-4">
               <div class="max-w-md flex-1 rounded-lg bg-orange-100 p-3 dark:bg-orange-900/30">
                 <p class="text-sm">
-                  Romaji uses Latin letters to represent Japanese sounds—like
-                  writing "konnichiwa" instead of "こんにちは."
+                  Romaji is just Japanese written with Latin letters—like{" "}
+                  <code class="bg-background/50 rounded-sm px-1 py-0.25">
+                    konnichiwa
+                  </code>{" "}
+                  instead of <span class="font-japanese">こんにちは</span>.
                 </p>
               </div>
               <Avatar class="flex-shrink-0">
@@ -360,23 +361,22 @@ function RouteComponent() {
             </div>
           </div>
 
-          <div class="text-muted-foreground space-y-4">
+          <div class="text-muted-foreground space-y-3">
             <p>
-              <strong>Student:</strong> So, Romaji is like training wheels?
+              <strong>Student:</strong> So... like training wheels?
             </p>
             <p>
-              <strong>Sensei:</strong> Precisely. It can help you get started,
-              but to truly embrace Japanese, you must learn the real scripts.
-              That's why we'll only use Romaji during this first chapter.
+              <strong>Sensei:</strong> Exactly. Helpful at first, but not
+              something to depend on. That’s why we’ll only use Romaji in this
+              first chapter.
             </p>
             <p>
-              <strong>Student:</strong> Thanks, Sensei. I'll make sure not to
-              rely on it too much.
+              <strong>Student:</strong> Got it. I’ll start learning the real
+              scripts soon.
             </p>
             <p>
-              <strong>Sensei:</strong> <em>*mumbles*</em> If only I had chosen
-              to be a hermit... <em>*smiles emphatically*</em> Wise decision,
-              young one.
+              <strong>Sensei:</strong> <em>*mumbles*</em> If only I had become a
+              hermit… <em>*smiles*</em> Wise choice, young one.
             </p>
           </div>
         </div>
@@ -385,8 +385,8 @@ function RouteComponent() {
         <div class="bg-card/50 border-border rounded-lg border p-6 shadow-lg">
           <h3 class="mb-4 text-lg font-semibold">Summary</h3>
           <ul class="space-y-4">
-            <li class="flex gap-3">
-              <div class="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-blue-500"></div>
+            <li class="flex items-center gap-3">
+              <span class="font-japanese text-xl text-blue-500">あ</span>
               <div>
                 <span class="font-semibold">Hiragana - </span>
                 <span class="text-muted-foreground">
@@ -396,8 +396,8 @@ function RouteComponent() {
                 </span>
               </div>
             </li>
-            <li class="flex gap-3">
-              <div class="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-green-500"></div>
+            <li class="flex items-center gap-3">
+              <span class="font-japanese text-xl text-green-500">ア</span>
               <div>
                 <span class="font-semibold">Katakana - </span>
                 <span class="text-muted-foreground">
@@ -407,8 +407,8 @@ function RouteComponent() {
                 </span>
               </div>
             </li>
-            <li class="flex gap-3">
-              <div class="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-red-500"></div>
+            <li class="flex items-center gap-3">
+              <span class="font-japanese text-xl text-red-500">日</span>
               <div>
                 <span class="font-semibold">Kanji - </span>
                 <span class="text-muted-foreground">
@@ -417,8 +417,8 @@ function RouteComponent() {
                 </span>
               </div>
             </li>
-            <li class="flex gap-3">
-              <div class="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-orange-500"></div>
+            <li class="flex items-center gap-3">
+              <span class="font-semibold text-orange-400">ABC</span>
               <div>
                 <span class="font-semibold">Bonus: Romaji - </span>
                 <span class="text-muted-foreground">

@@ -3,7 +3,8 @@ import { createFileRoute, Outlet } from "@tanstack/solid-router"
 import { createSignal, onMount } from "solid-js"
 import ContentBox from "@/components/ContentBox"
 import { useAnimationManager } from "@/hooks/useAnimations"
-import { BackgroundImage } from "@/components/BackgroundImage"
+import { useSettings } from "@/context/SettingsContext"
+import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 
 export const Route = createFileRoute("/lessons")({
   loader: async ({ context }) => {
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/lessons")({
 function LessonsLayout() {
   const { user } = Route.useLoaderData()()
   const { animateOnDataChange } = useAnimationManager()
+  const { userPreferences } = useSettings()
   const [shouldAnimate, setShouldAnimate] = createSignal(false)
 
   onMount(() => {
@@ -40,38 +42,24 @@ function LessonsLayout() {
   )
 
   return (
-    <div class="relative min-h-screen w-full overflow-y-auto">
-      <BackgroundImage
-        variant="media"
-        backgroundItem={{
-          source_type: "img",
-          src: "/img/backgrounds/tranquil_village_by_k_jackson_katss_djqxpcz.png",
-          position: "fixed",
-          layout: "vertical",
-          opacity: 0.04,
-          y_offset_desktop: "-82px",
-        }}
-      />
-      <BackgroundImage
-        variant="pattern"
-        class="!fixed z-[-1]"
-        backgroundImage="/img/dots.svg"
-        backgroundImageSize="400px"
-        backgroundImageOpacity={2.5}
-      />
-      <BackgroundImage
-        variant="pattern"
-        class="z-[-1] !-mt-[4.1rem] min-h-screen"
-        backgroundImage="/img/dust-splatter-1.png"
-        backgroundImageSize="1215px"
-        backgroundImageOpacity={4}
-      />
-
-      <div data-lessons-layout>
+    <>
+      <div class="fixed inset-0 -z-1">
+        <TextbookChapterBackgrounds
+          textbook={userPreferences()["active-textbook"]}
+          chapter={userPreferences()["active-deck"]}
+          showGradient={false}
+          blur="16px"
+          class="opacity-50"
+        />
+      </div>
+      <div
+        // class="bg-background/60 mx-auto min-h-screen max-w-4xl"
+        data-lessons-layout
+      >
         <ContentBox user={user}>
           <Outlet />
         </ContentBox>
       </div>
-    </div>
+    </>
   )
 }
