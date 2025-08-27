@@ -1,18 +1,10 @@
 // components/KanaChart.tsx
 import { JSX } from "solid-js"
 
-export default function KanaChart(): JSX.Element {
-  const rows = [
-    {
-      consonant: "",
-      cells: [
-        ["あ", "a"],
-        ["い", "i"],
-        ["う", "u"],
-        ["え", "e"],
-        ["お", "o"],
-      ],
-    },
+type ChartType = "base-kana" | "dakuten" | "handakuten"
+
+export default function KanaChart(props: { type: ChartType }): JSX.Element {
+  const baseRows = [
     {
       consonant: "k",
       cells: [
@@ -44,16 +36,6 @@ export default function KanaChart(): JSX.Element {
       ],
     },
     {
-      consonant: "n",
-      cells: [
-        ["な", "na"],
-        ["に", "ni"],
-        ["ぬ", "nu"],
-        ["ね", "ne"],
-        ["の", "no"],
-      ],
-    },
-    {
       consonant: "h",
       cells: [
         ["は", "ha"],
@@ -63,57 +45,72 @@ export default function KanaChart(): JSX.Element {
         ["ほ", "ho"],
       ],
     },
+  ]
+
+  // Dakuten mappings
+  const dakutenRows = [
     {
-      consonant: "m",
+      consonant: "g",
       cells: [
-        ["ま", "ma"],
-        ["み", "mi"],
-        ["む", "mu"],
-        ["め", "me"],
-        ["も", "mo"],
+        ["が", "ga"],
+        ["ぎ", "gi"],
+        ["ぐ", "gu"],
+        ["げ", "ge"],
+        ["ご", "go"],
       ],
     },
     {
-      consonant: "y",
+      consonant: "z",
       cells: [
-        ["や", "ya"],
-        ["", ""],
-        ["ゆ", "yu"],
-        ["", ""],
-        ["よ", "yo"],
+        ["ざ", "za"],
+        ["じ", "ji"],
+        ["ず", "zu"],
+        ["ぜ", "ze"],
+        ["ぞ", "zo"],
       ],
     },
     {
-      consonant: "r",
+      consonant: "d",
       cells: [
-        ["ら", "ra"],
-        ["り", "ri"],
-        ["る", "ru"],
-        ["れ", "re"],
-        ["ろ", "ro"],
+        ["だ", "da"],
+        ["ぢ", "ji*"],
+        ["づ", "zu*"],
+        ["で", "de"],
+        ["ど", "do"],
       ],
     },
     {
-      consonant: "w",
+      consonant: "b",
       cells: [
-        ["わ", "wa"],
-        ["", ""],
-        ["", ""],
-        ["", ""],
-        ["を", "wo/o*"],
-      ],
-    },
-    {
-      consonant: "n",
-      cells: [
-        ["ん", "n"],
-        ["", ""],
-        ["", ""],
-        ["", ""],
-        ["", ""],
+        ["ば", "ba"],
+        ["び", "bi"],
+        ["ぶ", "bu"],
+        ["べ", "be"],
+        ["ぼ", "bo"],
       ],
     },
   ]
+
+  // Handakuten mappings
+  const handakutenRows = [
+    {
+      consonant: "p",
+      cells: [
+        ["ぱ", "pa"],
+        ["ぴ", "pi"],
+        ["ぷ", "pu"],
+        ["ぺ", "pe"],
+        ["ぽ", "po"],
+      ],
+    },
+  ]
+
+  const rows =
+    props.type === "base-kana"
+      ? baseRows
+      : props.type === "dakuten"
+        ? dakutenRows
+        : handakutenRows
 
   return (
     <div
@@ -122,11 +119,9 @@ export default function KanaChart(): JSX.Element {
     >
       {rows.map((row) => (
         <>
-          {/* consonant label */}
           <div class="text-muted-foreground flex w-5 items-center justify-end pr-2 text-center text-base">
             {row.consonant}
           </div>
-          {/* kana cells */}
           {row.cells.map(([jp, romaji]) =>
             jp ? <SyllableTile jp={jp} romaji={romaji} /> : <div></div>,
           )}

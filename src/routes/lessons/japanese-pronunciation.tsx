@@ -107,7 +107,7 @@ function RouteComponent() {
 
             {/* Kana Grid */}
             <div class="flex-1 overflow-x-auto">
-              <KanaChart />
+              <KanaChart type="base-kana" />
             </div>
           </div>
 

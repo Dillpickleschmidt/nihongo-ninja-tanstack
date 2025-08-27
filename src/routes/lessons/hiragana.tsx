@@ -1,8 +1,9 @@
 // routes/lessons/hiragana.tsx
 import { createFileRoute } from "@tanstack/solid-router"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import YouTubeVideo from "@/features/youtube/YouTube"
 import KanaChart from "@/components/charts/KanaChart"
+import { ChatBubble } from "@/components/ChatBubble"
+import { ChatAttachment } from "@/components/ChatAttachment"
 
 export const Route = createFileRoute("/lessons/hiragana")({
   loader: async () => ({
@@ -84,13 +85,13 @@ function RouteComponent() {
         </section>
 
         <section class="space-y-8">
-          <Dialogue
+          <ChatBubble
             speaker="student"
             text="So if I learn hiragana, I can start reading real Japanese?"
           />
-          <Dialogue
+          <ChatBubble
             speaker="sensei"
-            text="Exactly. That’s why it’s the first step in your learning journey."
+            text="Exactly. That's why it's the first step in your learning journey."
           />
         </section>
 
@@ -101,24 +102,24 @@ function RouteComponent() {
             Put a consonant in front of each vowel, and you unlock a{" "}
             <strong>whole row</strong> of new sounds:
           </p>
-          <Attachment speaker="sensei">
-            <p class="mb-3">Here’s the k‑row:</p>
+          <ChatAttachment speaker="sensei">
+            <p class="mb-3">Here's the k‑row:</p>
             <KanaRow consonant="k" />
             <p class="mt-3 text-center text-[0.8rem] opacity-90">
               One consonant × five vowels = a predictable row of Hiragana.
             </p>
-          </Attachment>
-          <Attachment speaker="sensei">
-            <p class="mb-3">…and here’s the r‑row:</p>
+          </ChatAttachment>
+          <ChatAttachment speaker="sensei">
+            <p class="mb-3">…and here's the r‑row:</p>
             <KanaRow consonant="r" />
-          </Attachment>
+          </ChatAttachment>
         </section>
 
         {/* Full Chart */}
         <section class="space-y-6">
           <h2 class="text-2xl font-semibold">The Full Chart</h2>
           <div class="flex-1 overflow-x-auto">
-            <KanaChart />
+            <KanaChart type="base-kana" />
           </div>
           <p class="text-muted-foreground text-sm">
             Forty‑six characters in all—enough to write anything in Japanese.
@@ -159,35 +160,35 @@ function RouteComponent() {
         {/* Resources (restore original dialogue here) */}
         <section class="space-y-8">
           <h2 class="text-2xl font-semibold">How to Actually Learn These</h2>
-          <Dialogue
+          <ChatBubble
             speaker="student"
-            text="Sensei… there are 46 of these squiggles. I’ll never remember them all!"
+            text="Sensei… there are 46 of these squiggles. I'll never remember them all!"
           />
-          <Dialogue
+          <ChatBubble
             speaker="sensei"
             text="Fear not—the internet has come to rescue you!"
           />
-          <Attachment speaker="sensei">
+          <ChatAttachment speaker="sensei">
             <a
               href="https://files.tofugu.com/articles/japanese/2022-07-05-learn-hiragana-book-pdf/tofugu-learn-hiragana-book.pdf"
               target="_blank"
               class="block font-semibold hover:underline"
             >
-              📄 Tofugu’s Free Hiragana PDF
+              📄 Tofugu's Free Hiragana PDF
             </a>
             <p class="mt-1 text-xs opacity-90">
               Mnemonics + practice sheets. Many learners master all 46 kana in
               days.
             </p>
-          </Attachment>
+          </ChatAttachment>
 
-          <Dialogue
+          <ChatBubble
             speaker="student"
             text="I'll check that out. What comes after mastering these squiggles?"
           />
-          <Dialogue
+          <ChatBubble
             speaker="sensei"
-            text="Once you’ve learned the characters, we’ll practice Japanese greetings. Don’t worry about perfection—we’ll ease you in with romaji this time. But next chapter? You’re on your own, kid."
+            text="Once you've learned the characters, we'll practice Japanese greetings. Don't worry about perfection—we'll ease you in with romaji this time. But next chapter? You're on your own, kid."
           />
         </section>
 
@@ -221,16 +222,16 @@ function RouteComponent() {
             <h3 class="mb-4 text-2xl font-semibold">A Note from Sensei</h3>
           </div>
 
-          <Attachment speaker="sensei">
+          <ChatAttachment speaker="sensei">
             <p class="text-sm leading-relaxed italic">
               Hiragana feels huge at first, but think of it like collecting tea
               cups—{" "}
               <em class="text-purple-200">
                 pulls out absolutely massive tea cup set from nowhere
               </em>{" "}
-              —learn a few every day, and before long, you’ll have the full set.
+              —learn a few every day, and before long, you'll have the full set.
             </p>
-          </Attachment>
+          </ChatAttachment>
 
           <div class="flex justify-center">
             <div class="w-full max-w-md">
@@ -317,83 +318,6 @@ function KanaRow({ consonant }: { consonant: string }) {
           <p class="text-muted-foreground text-xs italic">{hint}</p>
         </div>
       ))}
-    </div>
-  )
-}
-
-function Dialogue({
-  speaker,
-  text,
-}: {
-  speaker: "student" | "sensei"
-  text: string
-}) {
-  const isStudent = speaker === "student"
-
-  return (
-    <div
-      class={`flex items-end gap-2 ${isStudent ? "justify-start" : "justify-end"}`}
-    >
-      {isStudent && (
-        <Avatar class="h-8 w-8 flex-shrink-0">
-          <AvatarImage src="/img/student.png" />
-          <AvatarFallback>S</AvatarFallback>
-        </Avatar>
-      )}
-      <div
-        class={`max-w-[75%] rounded-2xl px-4 py-2 text-sm leading-relaxed shadow-sm ${
-          isStudent
-            ? "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200"
-            : "bg-sky-500 text-white dark:bg-sky-600"
-        }`}
-      >
-        {text}
-      </div>
-      {!isStudent && (
-        <Avatar class="h-8 w-8 flex-shrink-0">
-          <AvatarImage src="/img/guru.png" />
-          <AvatarFallback>T</AvatarFallback>
-        </Avatar>
-      )}
-    </div>
-  )
-}
-
-function Attachment({
-  speaker,
-  children,
-}: {
-  speaker: "student" | "sensei"
-  children: any
-}) {
-  const isStudent = speaker === "student"
-  return (
-    <div
-      class={`flex items-start gap-2 ${
-        isStudent ? "justify-start" : "justify-end"
-      }`}
-    >
-      {isStudent && (
-        <Avatar class="h-8 w-8 flex-shrink-0">
-          <AvatarImage src="/img/student.png" alt="Student" />
-          <AvatarFallback>S</AvatarFallback>
-        </Avatar>
-      )}
-      <div
-        class={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
-          isStudent
-            ? "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200"
-            : "bg-sky-500 text-white dark:bg-sky-600"
-        }`}
-      >
-        {children}
-      </div>
-      {!isStudent && (
-        <Avatar class="h-8 w-8 flex-shrink-0">
-          <AvatarImage src="/img/guru.png" alt="Sensei" />
-          <AvatarFallback>T</AvatarFallback>
-        </Avatar>
-      )}
     </div>
   )
 }
