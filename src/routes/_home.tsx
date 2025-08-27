@@ -8,7 +8,6 @@ export const Route = createFileRoute("/_home")({
 function RouteComponent() {
   return (
     <>
-      {/* <h1 class="text-3xl font-bold text-white">Home Page</h1> */}
       <Outlet />
       <div class="fixed bottom-0">
         <BottomNav dailyProgressPercentage={25} />

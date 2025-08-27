@@ -17,9 +17,9 @@ export const resourceDirectory: ResourceCategory = {
       type: "guide",
     },
     {
-      name: "JPDB Setup Guide",
-      description: "How to set up and use JPDB effectively",
-      href: "/guides/jpdb",
+      name: "Our Spaced Repetition System",
+      description: "How our SRS works and how to use it effectively",
+      href: "/guides/srs",
       icon: "📊",
       type: "guide",
     },

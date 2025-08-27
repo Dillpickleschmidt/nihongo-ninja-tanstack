@@ -30,12 +30,14 @@ import { Route as LessonsJapanesePronunciationRouteImport } from './routes/lesso
 import { Route as LessonsHiraganaRouteImport } from './routes/lessons/hiragana'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
 import { Route as HomeProfileRouteImport } from './routes/_home/profile'
+import { Route as HomeGuidesRouteImport } from './routes/_home/guides'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeLearnIndexRouteImport } from './routes/_home/learn/index'
 import { Route as PracticeUserIDDeckIDRouteImport } from './routes/practice/$userID.$deckID'
 import { Route as HomePracticeSentencePracticeRouteImport } from './routes/_home/practice/sentence-practice'
 import { Route as HomePracticeConjugationRouteImport } from './routes/_home/practice/conjugation'
+import { Route as HomeGuidesSrsRouteImport } from './routes/_home/guides/srs'
 import { Route as HomeLearnTextbookIdChapterSlugRouteImport } from './routes/_home/learn/$textbookId.$chapterSlug'
 import { ServerRoute as ApiUploadOverrideServerRouteImport } from './routes/api/upload-override'
 import { ServerRoute as ApiHelloServerRouteImport } from './routes/api/hello'
@@ -141,6 +143,11 @@ const HomeProfileRoute = HomeProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => HomeRoute,
 } as any)
+const HomeGuidesRoute = HomeGuidesRouteImport.update({
+  id: '/guides',
+  path: '/guides',
+  getParentRoute: () => HomeRoute,
+} as any)
 const HomeGrammarNotesRoute = HomeGrammarNotesRouteImport.update({
   id: '/grammar-notes',
   path: '/grammar-notes',
@@ -171,6 +178,11 @@ const HomePracticeConjugationRoute = HomePracticeConjugationRouteImport.update({
   id: '/practice/conjugation',
   path: '/practice/conjugation',
   getParentRoute: () => HomeRoute,
+} as any)
+const HomeGuidesSrsRoute = HomeGuidesSrsRouteImport.update({
+  id: '/srs',
+  path: '/srs',
+  getParentRoute: () => HomeGuidesRoute,
 } as any)
 const HomeLearnTextbookIdChapterSlugRoute =
   HomeLearnTextbookIdChapterSlugRouteImport.update({
@@ -208,6 +220,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/dashboard': typeof HomeDashboardRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
+  '/guides': typeof HomeGuidesRouteWithChildren
   '/profile': typeof HomeProfileRoute
   '/vocab': typeof HomeVocabRoute
   '/lessons/hiragana': typeof LessonsHiraganaRoute
@@ -220,6 +233,7 @@ export interface FileRoutesByFullPath {
   '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
   '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
+  '/guides/srs': typeof HomeGuidesSrsRoute
   '/practice/conjugation': typeof HomePracticeConjugationRoute
   '/practice/sentence-practice': typeof HomePracticeSentencePracticeRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
@@ -235,6 +249,7 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/dashboard': typeof HomeDashboardRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
+  '/guides': typeof HomeGuidesRouteWithChildren
   '/profile': typeof HomeProfileRoute
   '/vocab': typeof HomeVocabRoute
   '/lessons/hiragana': typeof LessonsHiraganaRoute
@@ -247,6 +262,7 @@ export interface FileRoutesByTo {
   '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
   '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
+  '/guides/srs': typeof HomeGuidesSrsRoute
   '/practice/conjugation': typeof HomePracticeConjugationRoute
   '/practice/sentence-practice': typeof HomePracticeSentencePracticeRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
@@ -264,6 +280,7 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/_home/dashboard': typeof HomeDashboardRoute
   '/_home/grammar-notes': typeof HomeGrammarNotesRoute
+  '/_home/guides': typeof HomeGuidesRouteWithChildren
   '/_home/profile': typeof HomeProfileRoute
   '/_home/vocab': typeof HomeVocabRoute
   '/lessons/hiragana': typeof LessonsHiraganaRoute
@@ -276,6 +293,7 @@ export interface FileRoutesById {
   '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
   '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
+  '/_home/guides/srs': typeof HomeGuidesSrsRoute
   '/_home/practice/conjugation': typeof HomePracticeConjugationRoute
   '/_home/practice/sentence-practice': typeof HomePracticeSentencePracticeRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
@@ -293,6 +311,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/dashboard'
     | '/grammar-notes'
+    | '/guides'
     | '/profile'
     | '/vocab'
     | '/lessons/hiragana'
@@ -305,6 +324,7 @@ export interface FileRouteTypes {
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/practice/review'
+    | '/guides/srs'
     | '/practice/conjugation'
     | '/practice/sentence-practice'
     | '/practice/$userID/$deckID'
@@ -320,6 +340,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/dashboard'
     | '/grammar-notes'
+    | '/guides'
     | '/profile'
     | '/vocab'
     | '/lessons/hiragana'
@@ -332,6 +353,7 @@ export interface FileRouteTypes {
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/practice/review'
+    | '/guides/srs'
     | '/practice/conjugation'
     | '/practice/sentence-practice'
     | '/practice/$userID/$deckID'
@@ -348,6 +370,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/_home/dashboard'
     | '/_home/grammar-notes'
+    | '/_home/guides'
     | '/_home/profile'
     | '/_home/vocab'
     | '/lessons/hiragana'
@@ -360,6 +383,7 @@ export interface FileRouteTypes {
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/practice/review'
+    | '/_home/guides/srs'
     | '/_home/practice/conjugation'
     | '/_home/practice/sentence-practice'
     | '/practice/$userID/$deckID'
@@ -565,6 +589,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeProfileRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/_home/guides': {
+      id: '/_home/guides'
+      path: '/guides'
+      fullPath: '/guides'
+      preLoaderRoute: typeof HomeGuidesRouteImport
+      parentRoute: typeof HomeRoute
+    }
     '/_home/grammar-notes': {
       id: '/_home/grammar-notes'
       path: '/grammar-notes'
@@ -606,6 +637,13 @@ declare module '@tanstack/solid-router' {
       fullPath: '/practice/conjugation'
       preLoaderRoute: typeof HomePracticeConjugationRouteImport
       parentRoute: typeof HomeRoute
+    }
+    '/_home/guides/srs': {
+      id: '/_home/guides/srs'
+      path: '/srs'
+      fullPath: '/guides/srs'
+      preLoaderRoute: typeof HomeGuidesSrsRouteImport
+      parentRoute: typeof HomeGuidesRoute
     }
     '/_home/learn/$textbookId/$chapterSlug': {
       id: '/_home/learn/$textbookId/$chapterSlug'
@@ -649,9 +687,22 @@ declare module '@tanstack/solid-start/server' {
   }
 }
 
+interface HomeGuidesRouteChildren {
+  HomeGuidesSrsRoute: typeof HomeGuidesSrsRoute
+}
+
+const HomeGuidesRouteChildren: HomeGuidesRouteChildren = {
+  HomeGuidesSrsRoute: HomeGuidesSrsRoute,
+}
+
+const HomeGuidesRouteWithChildren = HomeGuidesRoute._addFileChildren(
+  HomeGuidesRouteChildren,
+)
+
 interface HomeRouteChildren {
   HomeDashboardRoute: typeof HomeDashboardRoute
   HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
+  HomeGuidesRoute: typeof HomeGuidesRouteWithChildren
   HomeProfileRoute: typeof HomeProfileRoute
   HomeVocabRoute: typeof HomeVocabRoute
   HomePracticeConjugationRoute: typeof HomePracticeConjugationRoute
@@ -663,6 +714,7 @@ interface HomeRouteChildren {
 const HomeRouteChildren: HomeRouteChildren = {
   HomeDashboardRoute: HomeDashboardRoute,
   HomeGrammarNotesRoute: HomeGrammarNotesRoute,
+  HomeGuidesRoute: HomeGuidesRouteWithChildren,
   HomeProfileRoute: HomeProfileRoute,
   HomeVocabRoute: HomeVocabRoute,
   HomePracticeConjugationRoute: HomePracticeConjugationRoute,

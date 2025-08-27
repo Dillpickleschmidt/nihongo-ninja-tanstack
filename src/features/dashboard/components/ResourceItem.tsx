@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/solid-router"
 import type { ResourceItem as ResourceItemType } from "../types"
 
 interface ResourceItemProps {
@@ -22,8 +23,8 @@ export function ResourceItem(props: ResourceItemProps) {
   const typeInfo = getTypeIndicator()
 
   return (
-    <a
-      href={props.resource.href}
+    <Link
+      to={props.resource.href}
       class="group bg-card border-border hover:bg-accent flex items-center space-x-4 rounded-lg border p-4 transition-all duration-200 hover:scale-[1.01] hover:shadow-md"
     >
       <div class="text-2xl transition-transform duration-200 group-hover:scale-110">
@@ -51,6 +52,6 @@ export function ResourceItem(props: ResourceItemProps) {
       <div class="text-muted-foreground group-hover:text-foreground transition-all duration-200 group-hover:translate-x-1">
         →
       </div>
-    </a>
+    </Link>
   )
 }
