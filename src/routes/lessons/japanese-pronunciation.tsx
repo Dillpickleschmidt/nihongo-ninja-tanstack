@@ -21,7 +21,7 @@ function RouteComponent() {
         <h1 class="mb-3 text-4xl font-extrabold tracking-tight">
           Japanese Pronunciation
         </h1>
-        <div class="mx-auto mb-5 h-1 w-16 rounded bg-emerald-400"></div>
+        <div class="mx-auto mb-5 h-1 w-16 rounded bg-emerald-400" />
         <p class="text-muted-foreground mb-6 text-lg">
           Simple rules, consistent sounds. Once you get them down, you can
           pronounce any word you see with confidence.

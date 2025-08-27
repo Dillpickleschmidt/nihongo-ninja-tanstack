@@ -31,14 +31,14 @@ export const static_modules: StaticModuleCollection = {
     link: "/lessons/contracted-sounds",
     lesson_type: "lesson",
   },
-  "long-vowels-double-consonants": {
-    title: "Long Vowels & Double Consonants",
-    link: "/lessons/long-vowels-double-consonants",
+  "long-vowels-paused-consonants": {
+    title: "Long Vowels & Paused Consonants",
+    link: "/lessons/long-vowels-paused-consonants",
     lesson_type: "lesson",
   },
-  "punctuation-and-misc": {
+  "punctuation-misc": {
     title: "Punctuation and Misc.",
-    link: "/lessons/punctuation-and-misc",
+    link: "/lessons/punctuation-misc",
     lesson_type: "lesson",
   },
   greetings: {

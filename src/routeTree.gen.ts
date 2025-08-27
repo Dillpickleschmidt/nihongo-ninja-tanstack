@@ -26,6 +26,8 @@ import { Route as PracticeAllHiraganaQuizRouteImport } from './routes/practice/a
 import { Route as PracticePracticeIDRouteImport } from './routes/practice/$practiceID'
 import { Route as LessonsWritingSystemsRouteImport } from './routes/lessons/writing-systems'
 import { Route as LessonsWelcomeOverviewRouteImport } from './routes/lessons/welcome-overview'
+import { Route as LessonsPunctuationMiscRouteImport } from './routes/lessons/punctuation-misc'
+import { Route as LessonsLongVowelsPausedConsonantsRouteImport } from './routes/lessons/long-vowels-paused-consonants'
 import { Route as LessonsJapanesePronunciationRouteImport } from './routes/lessons/japanese-pronunciation'
 import { Route as LessonsHiraganaRouteImport } from './routes/lessons/hiragana'
 import { Route as LessonsDakutenHandakutenRouteImport } from './routes/lessons/dakuten-handakuten'
@@ -124,6 +126,17 @@ const LessonsWelcomeOverviewRoute = LessonsWelcomeOverviewRouteImport.update({
   path: '/welcome-overview',
   getParentRoute: () => LessonsRoute,
 } as any)
+const LessonsPunctuationMiscRoute = LessonsPunctuationMiscRouteImport.update({
+  id: '/punctuation-misc',
+  path: '/punctuation-misc',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsLongVowelsPausedConsonantsRoute =
+  LessonsLongVowelsPausedConsonantsRouteImport.update({
+    id: '/long-vowels-paused-consonants',
+    path: '/long-vowels-paused-consonants',
+    getParentRoute: () => LessonsRoute,
+  } as any)
 const LessonsJapanesePronunciationRoute =
   LessonsJapanesePronunciationRouteImport.update({
     id: '/japanese-pronunciation',
@@ -240,6 +253,8 @@ export interface FileRoutesByFullPath {
   '/lessons/dakuten-handakuten': typeof LessonsDakutenHandakutenRoute
   '/lessons/hiragana': typeof LessonsHiraganaRoute
   '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
+  '/lessons/long-vowels-paused-consonants': typeof LessonsLongVowelsPausedConsonantsRoute
+  '/lessons/punctuation-misc': typeof LessonsPunctuationMiscRoute
   '/lessons/welcome-overview': typeof LessonsWelcomeOverviewRoute
   '/lessons/writing-systems': typeof LessonsWritingSystemsRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
@@ -271,6 +286,8 @@ export interface FileRoutesByTo {
   '/lessons/dakuten-handakuten': typeof LessonsDakutenHandakutenRoute
   '/lessons/hiragana': typeof LessonsHiraganaRoute
   '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
+  '/lessons/long-vowels-paused-consonants': typeof LessonsLongVowelsPausedConsonantsRoute
+  '/lessons/punctuation-misc': typeof LessonsPunctuationMiscRoute
   '/lessons/welcome-overview': typeof LessonsWelcomeOverviewRoute
   '/lessons/writing-systems': typeof LessonsWritingSystemsRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
@@ -304,6 +321,8 @@ export interface FileRoutesById {
   '/lessons/dakuten-handakuten': typeof LessonsDakutenHandakutenRoute
   '/lessons/hiragana': typeof LessonsHiraganaRoute
   '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
+  '/lessons/long-vowels-paused-consonants': typeof LessonsLongVowelsPausedConsonantsRoute
+  '/lessons/punctuation-misc': typeof LessonsPunctuationMiscRoute
   '/lessons/welcome-overview': typeof LessonsWelcomeOverviewRoute
   '/lessons/writing-systems': typeof LessonsWritingSystemsRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
@@ -337,6 +356,8 @@ export interface FileRouteTypes {
     | '/lessons/dakuten-handakuten'
     | '/lessons/hiragana'
     | '/lessons/japanese-pronunciation'
+    | '/lessons/long-vowels-paused-consonants'
+    | '/lessons/punctuation-misc'
     | '/lessons/welcome-overview'
     | '/lessons/writing-systems'
     | '/practice/$practiceID'
@@ -368,6 +389,8 @@ export interface FileRouteTypes {
     | '/lessons/dakuten-handakuten'
     | '/lessons/hiragana'
     | '/lessons/japanese-pronunciation'
+    | '/lessons/long-vowels-paused-consonants'
+    | '/lessons/punctuation-misc'
     | '/lessons/welcome-overview'
     | '/lessons/writing-systems'
     | '/practice/$practiceID'
@@ -400,6 +423,8 @@ export interface FileRouteTypes {
     | '/lessons/dakuten-handakuten'
     | '/lessons/hiragana'
     | '/lessons/japanese-pronunciation'
+    | '/lessons/long-vowels-paused-consonants'
+    | '/lessons/punctuation-misc'
     | '/lessons/welcome-overview'
     | '/lessons/writing-systems'
     | '/practice/$practiceID'
@@ -586,6 +611,20 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof LessonsWelcomeOverviewRouteImport
       parentRoute: typeof LessonsRoute
     }
+    '/lessons/punctuation-misc': {
+      id: '/lessons/punctuation-misc'
+      path: '/punctuation-misc'
+      fullPath: '/lessons/punctuation-misc'
+      preLoaderRoute: typeof LessonsPunctuationMiscRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/long-vowels-paused-consonants': {
+      id: '/lessons/long-vowels-paused-consonants'
+      path: '/long-vowels-paused-consonants'
+      fullPath: '/lessons/long-vowels-paused-consonants'
+      preLoaderRoute: typeof LessonsLongVowelsPausedConsonantsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
     '/lessons/japanese-pronunciation': {
       id: '/lessons/japanese-pronunciation'
       path: '/japanese-pronunciation'
@@ -769,6 +808,8 @@ interface LessonsRouteChildren {
   LessonsDakutenHandakutenRoute: typeof LessonsDakutenHandakutenRoute
   LessonsHiraganaRoute: typeof LessonsHiraganaRoute
   LessonsJapanesePronunciationRoute: typeof LessonsJapanesePronunciationRoute
+  LessonsLongVowelsPausedConsonantsRoute: typeof LessonsLongVowelsPausedConsonantsRoute
+  LessonsPunctuationMiscRoute: typeof LessonsPunctuationMiscRoute
   LessonsWelcomeOverviewRoute: typeof LessonsWelcomeOverviewRoute
   LessonsWritingSystemsRoute: typeof LessonsWritingSystemsRoute
 }
@@ -778,6 +819,9 @@ const LessonsRouteChildren: LessonsRouteChildren = {
   LessonsDakutenHandakutenRoute: LessonsDakutenHandakutenRoute,
   LessonsHiraganaRoute: LessonsHiraganaRoute,
   LessonsJapanesePronunciationRoute: LessonsJapanesePronunciationRoute,
+  LessonsLongVowelsPausedConsonantsRoute:
+    LessonsLongVowelsPausedConsonantsRoute,
+  LessonsPunctuationMiscRoute: LessonsPunctuationMiscRoute,
   LessonsWelcomeOverviewRoute: LessonsWelcomeOverviewRoute,
   LessonsWritingSystemsRoute: LessonsWritingSystemsRoute,
 }

@@ -40,9 +40,9 @@ export const textbooks: TextbookCollection = {
             type: "dynamic_module",
             id: "contracted-sounds-quiz",
           },
-          { type: "static_module", id: "long-vowels-double-consonants" },
+          { type: "static_module", id: "long-vowels-paused-consonants" },
           { type: "dynamic_module", id: "all-hiragana-quiz" },
-          { type: "static_module", id: "punctuation-and-misc" },
+          { type: "static_module", id: "punctuation-misc" },
           {
             type: "dynamic_module",
             id: "genki_1_ch0-vocab-list",

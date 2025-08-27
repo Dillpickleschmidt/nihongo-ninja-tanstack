@@ -32,7 +32,7 @@ function RouteComponent() {
   return (
     <KanaQuiz
       kana={kana}
-      nextLesson="/learn/long-vowels-double-consonants"
+      nextLesson="/learn/long-vowels-paused-consonants"
       title={title ?? ""}
     />
   )

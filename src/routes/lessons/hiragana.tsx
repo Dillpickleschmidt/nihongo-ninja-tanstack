@@ -46,7 +46,7 @@ function RouteComponent() {
         <section class="space-y-8">
           <div class="text-center">
             <h2 class="mb-4 text-3xl font-bold">What is Hiragana?</h2>
-            <div class="mx-auto h-1 w-24 bg-gradient-to-r from-blue-400 to-cyan-400"></div>
+            <div class="mx-auto h-1 w-24 bg-gradient-to-r from-blue-400 to-cyan-400" />
           </div>
 
           <div class="space-y-6 text-lg leading-relaxed">
