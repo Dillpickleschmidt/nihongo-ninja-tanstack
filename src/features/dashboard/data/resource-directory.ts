@@ -5,7 +5,7 @@ export const resourceDirectory: ResourceCategory = {
     {
       name: "Hiragana Guide",
       description: "Complete guide to learning hiragana characters",
-      href: "/guides/hiragana",
+      href: "/lessons/hiragana",
       icon: "あ",
       type: "guide",
     },
@@ -15,6 +15,7 @@ export const resourceDirectory: ResourceCategory = {
       href: "/guides/katakana",
       icon: "ア",
       type: "guide",
+      disabled: true,
     },
     {
       name: "Our Spaced Repetition System",
@@ -31,6 +32,7 @@ export const resourceDirectory: ResourceCategory = {
       href: "/guides/sentence-mining",
       icon: "⛏️",
       type: "guide",
+      disabled: true,
     },
     {
       name: "Immersion Strategies",
@@ -38,6 +40,7 @@ export const resourceDirectory: ResourceCategory = {
       href: "/guides/immersion",
       icon: "🌊",
       type: "guide",
+      disabled: true,
     },
   ],
   "Tools & Extensions": [
@@ -63,6 +66,7 @@ export const resourceDirectory: ResourceCategory = {
       href: "/guides/hayase-ipad",
       icon: "📱",
       type: "guide",
+      disabled: true,
     },
     {
       name: "Mobile Study Apps",
@@ -70,6 +74,7 @@ export const resourceDirectory: ResourceCategory = {
       href: "/guides/mobile-apps",
       icon: "📲",
       type: "guide",
+      disabled: true,
     },
   ],
 }

@@ -12,6 +12,7 @@ export interface ResourceItem {
   href: string
   icon: string
   type: "guide" | "external" | "tool"
+  disabled?: boolean
 }
 
 export interface ResourceCategory {

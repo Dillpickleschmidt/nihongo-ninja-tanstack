@@ -21,11 +21,17 @@ export function ResourceItem(props: ResourceItemProps) {
   }
 
   const typeInfo = getTypeIndicator()
+  const isDisabled = props.resource.disabled
 
   return (
     <Link
       to={props.resource.href}
-      class="group bg-card border-border hover:bg-accent flex items-center space-x-4 rounded-lg border p-4 transition-all duration-200 hover:scale-[1.01] hover:shadow-md"
+      disabled={isDisabled}
+      class={`group bg-card border-border flex items-center space-x-4 rounded-lg border p-4 transition-all duration-200 ${
+        isDisabled
+          ? "cursor-not-allowed opacity-50"
+          : "hover:bg-accent hover:scale-[1.01] hover:shadow-md"
+      }`}
     >
       <div class="text-2xl transition-transform duration-200 group-hover:scale-110">
         {props.resource.icon}
@@ -39,9 +45,14 @@ export function ResourceItem(props: ResourceItemProps) {
           </h3>
           {typeInfo.badge && (
             <span
-              class={`bg-muted rounded-full px-2 py-1 text-xs ${typeInfo.color} font-medium`}
+              class={`bg-muted rounded-full px-2 py-1 text-xs ${isDisabled ? "text-muted-foreground" : typeInfo.color} font-medium`}
             >
               {typeInfo.badge}
+            </span>
+          )}
+          {isDisabled && (
+            <span class="bg-muted text-muted-foreground rounded-full px-2 py-1 text-xs font-medium">
+              Coming Soon
             </span>
           )}
         </div>
