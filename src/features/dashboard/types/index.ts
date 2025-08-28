@@ -4,6 +4,7 @@ export interface Tool {
   icon: string
   href: string
   gradient: string
+  disabled?: boolean
 }
 
 export interface ResourceItem {

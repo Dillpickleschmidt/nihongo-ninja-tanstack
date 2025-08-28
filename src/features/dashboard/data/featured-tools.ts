@@ -14,6 +14,7 @@ export const featuredTools: Tool[] = [
     icon: "📝",
     href: "/grammar",
     gradient: "from-green-400 to-green-600",
+    disabled: true,
   },
   {
     title: "Learn",
@@ -28,6 +29,7 @@ export const featuredTools: Tool[] = [
     icon: "💬",
     href: "/practice/sentences",
     gradient: "from-orange-400 to-orange-600",
+    disabled: true,
   },
   {
     title: "Conjugation",
@@ -35,5 +37,6 @@ export const featuredTools: Tool[] = [
     icon: "⚡",
     href: "/practice/conjugation",
     gradient: "from-red-400 to-red-600",
+    disabled: true,
   },
 ]

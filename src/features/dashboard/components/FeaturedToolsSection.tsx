@@ -44,7 +44,7 @@ export function FeaturedToolsSection(props: FeaturedToolsSectionProps) {
 
       {/* Mobile */}
       <SSRMediaQuery hideFrom="md">
-        <div class="py-4">
+        <div class="py-4 md:h-[472px]">
           <h1
             class={`text-foreground mt-4 mb-8 text-center text-3xl font-bold transition-all duration-700 ease-out ${
               props.animated()
