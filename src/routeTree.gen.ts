@@ -31,6 +31,7 @@ import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-not
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeLearnIndexRouteImport } from './routes/_home/learn/index'
 import { Route as PracticeUserIDDeckIDRouteImport } from './routes/practice/$userID.$deckID'
+import { Route as LessonsChapter2KatakanaRouteImport } from './routes/lessons/_chapter-2/katakana'
 import { Route as LessonsChapter1XWaYDesuRouteImport } from './routes/lessons/_chapter-1/x-wa-y-desu'
 import { Route as LessonsChapter1UsefulExpressionsRouteImport } from './routes/lessons/_chapter-1/useful-expressions'
 import { Route as LessonsChapter1TheNoParticleRouteImport } from './routes/lessons/_chapter-1/the-no-particle'
@@ -163,6 +164,11 @@ const PracticeUserIDDeckIDRoute = PracticeUserIDDeckIDRouteImport.update({
   id: '/practice/$userID/$deckID',
   path: '/practice/$userID/$deckID',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsChapter2KatakanaRoute = LessonsChapter2KatakanaRouteImport.update({
+  id: '/_chapter-2/katakana',
+  path: '/katakana',
+  getParentRoute: () => LessonsRoute,
 } as any)
 const LessonsChapter1XWaYDesuRoute = LessonsChapter1XWaYDesuRouteImport.update({
   id: '/_chapter-1/x-wa-y-desu',
@@ -371,6 +377,7 @@ export interface FileRoutesByFullPath {
   '/lessons/the-no-particle': typeof LessonsChapter1TheNoParticleRoute
   '/lessons/useful-expressions': typeof LessonsChapter1UsefulExpressionsRoute
   '/lessons/x-wa-y-desu': typeof LessonsChapter1XWaYDesuRoute
+  '/lessons/katakana': typeof LessonsChapter2KatakanaRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
@@ -417,6 +424,7 @@ export interface FileRoutesByTo {
   '/lessons/the-no-particle': typeof LessonsChapter1TheNoParticleRoute
   '/lessons/useful-expressions': typeof LessonsChapter1UsefulExpressionsRoute
   '/lessons/x-wa-y-desu': typeof LessonsChapter1XWaYDesuRoute
+  '/lessons/katakana': typeof LessonsChapter2KatakanaRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
@@ -465,6 +473,7 @@ export interface FileRoutesById {
   '/lessons/_chapter-1/the-no-particle': typeof LessonsChapter1TheNoParticleRoute
   '/lessons/_chapter-1/useful-expressions': typeof LessonsChapter1UsefulExpressionsRoute
   '/lessons/_chapter-1/x-wa-y-desu': typeof LessonsChapter1XWaYDesuRoute
+  '/lessons/_chapter-2/katakana': typeof LessonsChapter2KatakanaRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/_home/learn/': typeof HomeLearnIndexRoute
   '/_home/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
@@ -513,6 +522,7 @@ export interface FileRouteTypes {
     | '/lessons/the-no-particle'
     | '/lessons/useful-expressions'
     | '/lessons/x-wa-y-desu'
+    | '/lessons/katakana'
     | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
@@ -559,6 +569,7 @@ export interface FileRouteTypes {
     | '/lessons/the-no-particle'
     | '/lessons/useful-expressions'
     | '/lessons/x-wa-y-desu'
+    | '/lessons/katakana'
     | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
@@ -606,6 +617,7 @@ export interface FileRouteTypes {
     | '/lessons/_chapter-1/the-no-particle'
     | '/lessons/_chapter-1/useful-expressions'
     | '/lessons/_chapter-1/x-wa-y-desu'
+    | '/lessons/_chapter-2/katakana'
     | '/practice/$userID/$deckID'
     | '/_home/learn/'
     | '/_home/learn/$textbookId/$chapterSlug'
@@ -815,6 +827,13 @@ declare module '@tanstack/solid-router' {
       fullPath: '/practice/$userID/$deckID'
       preLoaderRoute: typeof PracticeUserIDDeckIDRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/lessons/_chapter-2/katakana': {
+      id: '/lessons/_chapter-2/katakana'
+      path: '/katakana'
+      fullPath: '/lessons/katakana'
+      preLoaderRoute: typeof LessonsChapter2KatakanaRouteImport
+      parentRoute: typeof LessonsRoute
     }
     '/lessons/_chapter-1/x-wa-y-desu': {
       id: '/lessons/_chapter-1/x-wa-y-desu'
@@ -1086,6 +1105,7 @@ interface LessonsRouteChildren {
   LessonsChapter1TheNoParticleRoute: typeof LessonsChapter1TheNoParticleRoute
   LessonsChapter1UsefulExpressionsRoute: typeof LessonsChapter1UsefulExpressionsRoute
   LessonsChapter1XWaYDesuRoute: typeof LessonsChapter1XWaYDesuRoute
+  LessonsChapter2KatakanaRoute: typeof LessonsChapter2KatakanaRoute
 }
 
 const LessonsRouteChildren: LessonsRouteChildren = {
@@ -1114,6 +1134,7 @@ const LessonsRouteChildren: LessonsRouteChildren = {
   LessonsChapter1TheNoParticleRoute: LessonsChapter1TheNoParticleRoute,
   LessonsChapter1UsefulExpressionsRoute: LessonsChapter1UsefulExpressionsRoute,
   LessonsChapter1XWaYDesuRoute: LessonsChapter1XWaYDesuRoute,
+  LessonsChapter2KatakanaRoute: LessonsChapter2KatakanaRoute,
 }
 
 const LessonsRouteWithChildren =

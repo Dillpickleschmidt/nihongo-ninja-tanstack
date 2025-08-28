@@ -1,10 +1,20 @@
 // components/KanaChart.tsx
 import { JSX } from "solid-js"
 
-type ChartType = "base-kana" | "dakuten" | "handakuten"
+type ChartType = "base-kana" | "dakuten" | "handakuten" | "katakana"
 
 export default function KanaChart(props: { type: ChartType }): JSX.Element {
   const baseRows = [
+    {
+      consonant: "",
+      cells: [
+        ["あ", "a"],
+        ["い", "i"],
+        ["う", "u"],
+        ["え", "e"],
+        ["お", "o"],
+      ],
+    },
     {
       consonant: "k",
       cells: [
@@ -36,6 +46,16 @@ export default function KanaChart(props: { type: ChartType }): JSX.Element {
       ],
     },
     {
+      consonant: "n",
+      cells: [
+        ["な", "na"],
+        ["に", "ni"],
+        ["ぬ", "nu"],
+        ["ね", "ne"],
+        ["の", "no"],
+      ],
+    },
+    {
       consonant: "h",
       cells: [
         ["は", "ha"],
@@ -43,6 +63,56 @@ export default function KanaChart(props: { type: ChartType }): JSX.Element {
         ["ふ", "fu*"],
         ["へ", "he"],
         ["ほ", "ho"],
+      ],
+    },
+    {
+      consonant: "m",
+      cells: [
+        ["ま", "ma"],
+        ["み", "mi"],
+        ["む", "mu"],
+        ["め", "me"],
+        ["も", "mo"],
+      ],
+    },
+    {
+      consonant: "y",
+      cells: [
+        ["や", "ya"],
+        [null, ""],
+        ["ゆ", "yu"],
+        [null, ""],
+        ["よ", "yo"],
+      ],
+    },
+    {
+      consonant: "r",
+      cells: [
+        ["ら", "ra"],
+        ["り", "ri"],
+        ["る", "ru"],
+        ["れ", "re"],
+        ["ろ", "ro"],
+      ],
+    },
+    {
+      consonant: "w",
+      cells: [
+        ["わ", "wa"],
+        [null, ""],
+        [null, ""],
+        [null, ""],
+        ["を", "wo*"],
+      ],
+    },
+    {
+      consonant: "n",
+      cells: [
+        [null, ""],
+        [null, ""],
+        ["ん", "n*"],
+        [null, ""],
+        [null, ""],
       ],
     },
   ]
@@ -105,12 +175,128 @@ export default function KanaChart(props: { type: ChartType }): JSX.Element {
     },
   ]
 
+  // Katakana mappings
+  const katakanaRows = [
+    {
+      consonant: "",
+      cells: [
+        ["ア", "a"],
+        ["イ", "i"],
+        ["ウ", "u"],
+        ["エ", "e"],
+        ["オ", "o"],
+      ],
+    },
+    {
+      consonant: "k",
+      cells: [
+        ["カ", "ka"],
+        ["キ", "ki"],
+        ["ク", "ku"],
+        ["ケ", "ke"],
+        ["コ", "ko"],
+      ],
+    },
+    {
+      consonant: "s",
+      cells: [
+        ["サ", "sa"],
+        ["シ", "shi*"],
+        ["ス", "su"],
+        ["セ", "se"],
+        ["ソ", "so"],
+      ],
+    },
+    {
+      consonant: "t",
+      cells: [
+        ["タ", "ta"],
+        ["チ", "chi*"],
+        ["ツ", "tsu*"],
+        ["テ", "te"],
+        ["ト", "to"],
+      ],
+    },
+    {
+      consonant: "n",
+      cells: [
+        ["ナ", "na"],
+        ["ニ", "ni"],
+        ["ヌ", "nu"],
+        ["ネ", "ne"],
+        ["ノ", "no"],
+      ],
+    },
+    {
+      consonant: "h",
+      cells: [
+        ["ハ", "ha"],
+        ["ヒ", "hi"],
+        ["フ", "fu*"],
+        ["ヘ", "he"],
+        ["ホ", "ho"],
+      ],
+    },
+    {
+      consonant: "m",
+      cells: [
+        ["マ", "ma"],
+        ["ミ", "mi"],
+        ["ム", "mu"],
+        ["メ", "me"],
+        ["モ", "mo"],
+      ],
+    },
+    {
+      consonant: "y",
+      cells: [
+        ["ヤ", "ya"],
+        [null, ""],
+        ["ユ", "yu"],
+        [null, ""],
+        ["ヨ", "yo"],
+      ],
+    },
+    {
+      consonant: "r",
+      cells: [
+        ["ラ", "ra"],
+        ["リ", "ri"],
+        ["ル", "ru"],
+        ["レ", "re"],
+        ["ロ", "ro"],
+      ],
+    },
+    {
+      consonant: "w",
+      cells: [
+        ["ワ", "wa"],
+        [null, ""],
+        [null, ""],
+        [null, ""],
+        ["ヲ", "wo*"],
+      ],
+    },
+    {
+      consonant: "n",
+      cells: [
+        [null, ""],
+        [null, ""],
+        ["ン", "n*"],
+        [null, ""],
+        [null, ""],
+      ],
+    },
+  ]
+
   const rows =
     props.type === "base-kana"
       ? baseRows
       : props.type === "dakuten"
         ? dakutenRows
-        : handakutenRows
+        : props.type === "handakuten"
+          ? handakutenRows
+          : katakanaRows
 
   return (
     <div
