@@ -803,7 +803,6 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
       "'Sumimasen' is primarily used as a polite way to say 'excuse me' or 'I'm sorry.'",
       "It's a way to acknowledge an inconvenience you might have caused someone or to politely get someone's attention.",
       "This expression is a versatile and essential part of the Japanese language, often used in various contexts.",
-      "It also highlights some of the major differences between Japanese and Western cultures, so let's break down its uses and nuances.",
     ],
     videos: [
       {
