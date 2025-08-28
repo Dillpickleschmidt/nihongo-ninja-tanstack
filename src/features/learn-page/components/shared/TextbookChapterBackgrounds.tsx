@@ -65,7 +65,7 @@ const textbook_chapter_backgrounds: TextbookChapterBackgrounds = {
     },
     "chapter-7": {
       source_type: "img",
-      src: "/img/backgrounds/woman-8382544.jpg",
+      src: "/img/backgrounds/japanese-gate.png",
       position: "absolute",
       layout: "horizontal",
       opacity: 0.23,
