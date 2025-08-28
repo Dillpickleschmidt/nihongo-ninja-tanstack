@@ -36,11 +36,11 @@ export default function Nav() {
             </Button>
           </Link>
 
-          <Link to="/pricing" class={`transition-colors ${active("/pricing")}`}>
-            <Button variant="ghost" class="px-3">
-              <span>Pricing</span>
-            </Button>
-          </Link>
+          {/* <Link to="/pricing" class={`transition-colors ${active("/pricing")}`}> */}
+          {/*   <Button variant="ghost" class="px-3"> */}
+          {/*     <span>Pricing</span> */}
+          {/*   </Button> */}
+          {/* </Link> */}
 
           <Link to="/dashboard">
             <Button variant="ghost" class="ml-1 px-3">
