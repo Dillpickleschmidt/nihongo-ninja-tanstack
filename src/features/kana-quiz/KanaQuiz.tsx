@@ -9,8 +9,9 @@ import { For, Show } from "solid-js"
 import { createMediaQuery } from "@solid-primitives/media"
 import { RotateCcw } from "lucide-solid"
 import { HeaderCard } from "./components/HeaderCard"
-import { ResultsCard } from "./components/ResultsCard"
 import { ActionButton } from "./components/ActionButton"
+import { TextbookChapterBackgrounds } from "../learn-page/components/shared/TextbookChapterBackgrounds"
+import { useSettings } from "@/context/SettingsContext"
 
 type KanaQuizProps = {
   kana: KanaItem[]
@@ -27,6 +28,7 @@ export function KanaQuiz(props: KanaQuizProps) {
     handleSubmit,
     handleRetry,
   } = useKanaQuiz(props.kana)
+  const { userPreferences } = useSettings()
 
   // Media queries
   const isMobile = createMediaQuery("(max-width: 640px)")
@@ -38,8 +40,6 @@ export function KanaQuiz(props: KanaQuizProps) {
   const dimensions = () => {
     if (isMobile()) {
       return {
-        header: { width: 340, height: 180 },
-        results: { width: 320, height: 200 },
         buttons: {
           submit: { width: 140, height: 50 },
           retry: { width: 120, height: 50 },
@@ -49,8 +49,6 @@ export function KanaQuiz(props: KanaQuizProps) {
     }
     if (isTablet()) {
       return {
-        header: { width: 500, height: 170 },
-        results: { width: 450, height: 190 },
         buttons: {
           submit: { width: 160, height: 60 },
           retry: { width: 140, height: 60 },
@@ -59,89 +57,87 @@ export function KanaQuiz(props: KanaQuizProps) {
       }
     }
     return {
-      header: { width: 700, height: 180 },
-      results: { width: 600, height: 200 },
       buttons: {
-        submit: { width: 160, height: 60 },
-        retry: { width: 140, height: 60 },
-        next: { width: 180, height: 60 },
+        submit: { width: 140, height: 50 },
+        retry: { width: 120, height: 50 },
+        next: { width: 160, height: 50 },
       },
     }
   }
 
-  // Score-based styling
+  // Score-based theming
   const scorePercentage = () => numCorrect() / props.kana.length
 
-  const getResultsTheme = () => {
+  const resultsTheme = () => {
     const percentage = scorePercentage()
     if (percentage <= 0.5) {
       return {
-        gradient: "from-rose-500 to-pink-500",
-        title: "There's work to do! 😕",
-        message: "Review the terms and try again!",
+        accent: "bg-rose-500",
+        title: "There's work to do 😕",
+        message: "Review the kana and try again!",
       }
     }
     if (percentage <= 0.8) {
       return {
-        gradient: "from-amber-500 to-yellow-500",
-        title: "You're getting there! 😎",
-        message: "Try again and see if you can get 80%!",
+        accent: "bg-amber-400",
+        title: "You're getting there 😎",
+        message: "Push for 80% to really master them.",
       }
     }
     return {
-      gradient: "from-green-500 to-emerald-600",
-      title: "Nice job! 🥳",
-      message: "Keep it up!",
+      accent: "bg-emerald-500",
+      title: "Excellent 🥳",
+      message: "You really know your kana!",
     }
   }
 
-  const resultsTheme = () => getResultsTheme()
-
   return (
-    <div class="min-h-screen bg-gray-900">
-      {/* Header Section */}
-      <header class="px-4 pt-4 pb-4 text-center">
+    <div class="relative min-h-screen">
+      {/* Background */}
+      <div class="fixed inset-0 -z-10">
+        <TextbookChapterBackgrounds
+          textbook={userPreferences()["active-textbook"]}
+          chapter={userPreferences()["active-deck"]}
+          showGradient={false}
+          blur="16px"
+        />
+      </div>
+
+      {/* Header */}
+      <header class="px-4 pt-6 pb-4 text-center">
         <Show
           when={showResults()}
-          fallback={
-            <HeaderCard
-              width={dimensions().header.width}
-              height={dimensions().header.height}
-              title={props.title}
-            />
-          }
+          fallback={<HeaderCard title={props.title} />}
         >
-          <ResultsCard
-            width={dimensions().results.width}
-            height={dimensions().results.height}
-            theme={resultsTheme()}
-            numCorrect={numCorrect()}
-            total={props.kana.length}
+          <HeaderCard
+            title={resultsTheme().title}
+            theme={{
+              accent: resultsTheme().accent,
+              message: `You got ${numCorrect()} out of ${props.kana.length}. ${resultsTheme().message}`,
+            }}
           />
         </Show>
       </header>
 
       {/* Character Grid */}
-      <main class="container mx-auto mt-12 grid grid-cols-[repeat(auto-fill,minmax(145px,_1fr))] gap-3 p-3 pb-32">
+      <main class="container mx-auto mt-10 grid grid-cols-[repeat(auto-fill,minmax(145px,_1fr))] gap-3 p-3 pb-32">
         <For each={characterBoxes()}>
-          {(characterBox, index) => (
+          {(box, idx) => (
             <CharacterBox
-              character={characterBox.hiragana}
-              userInput={characterBox.userInput}
-              onInputChange={(newUserInput) =>
-                handleInputChange(index(), newUserInput)
-              }
+              character={box.hiragana}
+              userInput={box.userInput}
+              onInputChange={(newVal) => handleInputChange(idx(), newVal)}
               disabled={showResults()}
-              isCorrect={showResults() && characterBox.isCorrect}
-              isIncorrect={showResults() && !characterBox.isCorrect}
+              isCorrect={showResults() && box.isCorrect}
+              isIncorrect={showResults() && !box.isCorrect}
               showResults={showResults()}
             />
           )}
         </For>
       </main>
 
-      {/* Fixed Action Bar */}
-      <footer class="fixed inset-x-0 bottom-0 z-50 border-t border-gray-700/50 bg-gray-900/95 p-4 backdrop-blur-sm">
+      {/* Footer / Action Bar */}
+      <footer class="bg-background/80 border-border fixed inset-x-0 bottom-0 z-50 border-t p-4 backdrop-blur-lg">
         <div class="mx-auto flex max-w-lg justify-center gap-3">
           <Show
             when={showResults()}
@@ -162,8 +158,12 @@ export function KanaQuiz(props: KanaQuizProps) {
               onClick={handleRetry}
               variant="retry"
             >
-              Retry{" "}
-              <RotateCcw size={18} stroke-width={2.5} class="inline-flex" />
+              Retry
+              <RotateCcw
+                size={18}
+                stroke-width={2.5}
+                class="ml-1 inline-flex"
+              />
             </ActionButton>
 
             <Link to={props.nextLesson} class="no-underline">
@@ -172,7 +172,7 @@ export function KanaQuiz(props: KanaQuizProps) {
                 height={dimensions().buttons.next.height}
                 variant="success"
               >
-                Next Lesson {"->"}
+                Next Lesson →
               </ActionButton>
             </Link>
           </Show>

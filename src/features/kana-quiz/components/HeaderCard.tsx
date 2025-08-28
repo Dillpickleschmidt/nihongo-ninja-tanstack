@@ -1,25 +1,31 @@
-import { SmoothCard } from "@/features/learn-page/components/shared/SmoothCard"
-
+// features/kana-quiz/components/HeaderCard.tsx
 export function HeaderCard(props: {
-  width: number
-  height: number
   title: string
+  theme?: { accent: string; message?: string }
 }) {
   return (
-    <SmoothCard
-      width={props.width}
-      height={props.height}
-      cornerRadius={24}
-      cornerSmoothing={1}
-      class="mx-auto mb-4 flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-purple-700 text-white"
-    >
-      <h1 class="mb-2 px-4 text-xl font-semibold sm:text-3xl">{props.title}</h1>
-      <p class="mb-1 px-4 text-center text-base text-blue-100">
-        Type the english spelling of each character into their respective boxes.
+    <div class="bg-card/70 border-border mx-auto max-w-2xl rounded-xl border p-6 text-center shadow backdrop-blur-sm">
+      <h1 class="text-foreground mb-2 text-3xl font-extrabold">
+        {props.title}
+      </h1>
+
+      {/* Optional accent line */}
+      {props.theme && (
+        <div class={`mx-auto mb-4 h-1 w-16 rounded ${props.theme.accent}`} />
+      )}
+
+      {/* Body message */}
+      <p class="text-muted-foreground text-lg">
+        {props.theme?.message ??
+          "Type the romaji for each kana in the boxes below."}
       </p>
-      <p class="px-4 text-sm text-blue-200">
-        Take it as many times as you like! 👍
-      </p>
-    </SmoothCard>
+
+      {/* Only shown for normal intro */}
+      {!props.theme && (
+        <p class="text-muted-foreground/80 mt-2 text-sm">
+          Practice until it feels natural 👍
+        </p>
+      )}
+    </div>
   )
 }
