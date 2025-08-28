@@ -58,6 +58,7 @@ export interface EnrichedLearningPathModule
   gradientClasses: string
   lightBackground: string
   truncatedTitle: string
+  disabled?: boolean
 }
 
 // --- Enrichment Functions for External Resources ---
@@ -260,9 +261,9 @@ function getModuleLightBackground(moduleType: string) {
 }
 
 export function enrichLessons(
-  lessons: { lesson: StaticModule | DynamicModule; key: string }[],
+  lessons: { lesson: StaticModule | DynamicModule; key: string; disabled?: boolean }[],
 ): EnrichedLearningPathModule[] {
-  return lessons.map(({ lesson, key }) => {
+  return lessons.map(({ lesson, key, disabled }) => {
     const moduleType = getModuleType(lesson)
     const displayTitle = getDisplayTitle(lesson.title)
 
@@ -275,6 +276,7 @@ export function enrichLessons(
       gradientClasses: getModuleGradient(moduleType),
       lightBackground: getModuleLightBackground(moduleType),
       truncatedTitle: truncateText(displayTitle, 25),
+      disabled,
     } as EnrichedLearningPathModule
   })
 }

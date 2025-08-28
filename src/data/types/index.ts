@@ -39,6 +39,7 @@ export interface LearningPathItem {
   type: "static_module" | "dynamic_module" | "external_resource"
   id: string
   daily_prog_amount?: number // number of minutes counted towards daily goal
+  disabled?: boolean
 }
 
 // --- Deck Types ---

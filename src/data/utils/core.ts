@@ -81,7 +81,7 @@ export function getExternalResources(
  */
 export function getLessons(
   deck: BuiltInDeck,
-): { key: string; lesson: StaticModule | DynamicModule }[] {
+): { key: string; lesson: StaticModule | DynamicModule; disabled?: boolean }[] {
   if (!deck.learning_path_items) return []
 
   // Map learning path items to actual module objects with their keys
@@ -96,7 +96,7 @@ export function getLessons(
       }
 
       if (lesson) {
-        return { lesson, key: item.id }
+        return { lesson, key: item.id, disabled: item.disabled }
       }
 
       return null
@@ -104,7 +104,7 @@ export function getLessons(
     .filter(
       (
         result,
-      ): result is { lesson: StaticModule | DynamicModule; key: string } =>
+      ): result is { lesson: StaticModule | DynamicModule; key: string; disabled?: boolean } =>
         !!result,
     )
 }
