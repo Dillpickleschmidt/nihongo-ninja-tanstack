@@ -7,7 +7,7 @@ import { ChatAttachment } from "@/components/ChatAttachment"
 
 export const Route = createFileRoute("/lessons/hiragana")({
   loader: async () => ({
-    contentBox: { nextButtonLink: "/lessons/practice/hiragana" },
+    contentBox: { nextButtonLink: "/vocab?import=hiragana" },
   }),
   component: RouteComponent,
 })

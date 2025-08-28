@@ -30,6 +30,7 @@ import { Route as LessonsPunctuationMiscRouteImport } from './routes/lessons/pun
 import { Route as LessonsLongVowelsPausedConsonantsRouteImport } from './routes/lessons/long-vowels-paused-consonants'
 import { Route as LessonsJapanesePronunciationRouteImport } from './routes/lessons/japanese-pronunciation'
 import { Route as LessonsHiraganaRouteImport } from './routes/lessons/hiragana'
+import { Route as LessonsGreetingsRouteImport } from './routes/lessons/greetings'
 import { Route as LessonsDakutenHandakutenRouteImport } from './routes/lessons/dakuten-handakuten'
 import { Route as LessonsContractedSoundsRouteImport } from './routes/lessons/contracted-sounds'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
@@ -148,6 +149,11 @@ const LessonsHiraganaRoute = LessonsHiraganaRouteImport.update({
   path: '/hiragana',
   getParentRoute: () => LessonsRoute,
 } as any)
+const LessonsGreetingsRoute = LessonsGreetingsRouteImport.update({
+  id: '/greetings',
+  path: '/greetings',
+  getParentRoute: () => LessonsRoute,
+} as any)
 const LessonsDakutenHandakutenRoute =
   LessonsDakutenHandakutenRouteImport.update({
     id: '/dakuten-handakuten',
@@ -251,6 +257,7 @@ export interface FileRoutesByFullPath {
   '/vocab': typeof HomeVocabRoute
   '/lessons/contracted-sounds': typeof LessonsContractedSoundsRoute
   '/lessons/dakuten-handakuten': typeof LessonsDakutenHandakutenRoute
+  '/lessons/greetings': typeof LessonsGreetingsRoute
   '/lessons/hiragana': typeof LessonsHiraganaRoute
   '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
   '/lessons/long-vowels-paused-consonants': typeof LessonsLongVowelsPausedConsonantsRoute
@@ -284,6 +291,7 @@ export interface FileRoutesByTo {
   '/vocab': typeof HomeVocabRoute
   '/lessons/contracted-sounds': typeof LessonsContractedSoundsRoute
   '/lessons/dakuten-handakuten': typeof LessonsDakutenHandakutenRoute
+  '/lessons/greetings': typeof LessonsGreetingsRoute
   '/lessons/hiragana': typeof LessonsHiraganaRoute
   '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
   '/lessons/long-vowels-paused-consonants': typeof LessonsLongVowelsPausedConsonantsRoute
@@ -319,6 +327,7 @@ export interface FileRoutesById {
   '/_home/vocab': typeof HomeVocabRoute
   '/lessons/contracted-sounds': typeof LessonsContractedSoundsRoute
   '/lessons/dakuten-handakuten': typeof LessonsDakutenHandakutenRoute
+  '/lessons/greetings': typeof LessonsGreetingsRoute
   '/lessons/hiragana': typeof LessonsHiraganaRoute
   '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
   '/lessons/long-vowels-paused-consonants': typeof LessonsLongVowelsPausedConsonantsRoute
@@ -354,6 +363,7 @@ export interface FileRouteTypes {
     | '/vocab'
     | '/lessons/contracted-sounds'
     | '/lessons/dakuten-handakuten'
+    | '/lessons/greetings'
     | '/lessons/hiragana'
     | '/lessons/japanese-pronunciation'
     | '/lessons/long-vowels-paused-consonants'
@@ -387,6 +397,7 @@ export interface FileRouteTypes {
     | '/vocab'
     | '/lessons/contracted-sounds'
     | '/lessons/dakuten-handakuten'
+    | '/lessons/greetings'
     | '/lessons/hiragana'
     | '/lessons/japanese-pronunciation'
     | '/lessons/long-vowels-paused-consonants'
@@ -421,6 +432,7 @@ export interface FileRouteTypes {
     | '/_home/vocab'
     | '/lessons/contracted-sounds'
     | '/lessons/dakuten-handakuten'
+    | '/lessons/greetings'
     | '/lessons/hiragana'
     | '/lessons/japanese-pronunciation'
     | '/lessons/long-vowels-paused-consonants'
@@ -639,6 +651,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof LessonsHiraganaRouteImport
       parentRoute: typeof LessonsRoute
     }
+    '/lessons/greetings': {
+      id: '/lessons/greetings'
+      path: '/greetings'
+      fullPath: '/lessons/greetings'
+      preLoaderRoute: typeof LessonsGreetingsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
     '/lessons/dakuten-handakuten': {
       id: '/lessons/dakuten-handakuten'
       path: '/dakuten-handakuten'
@@ -806,6 +825,7 @@ const HomeRouteWithChildren = HomeRoute._addFileChildren(HomeRouteChildren)
 interface LessonsRouteChildren {
   LessonsContractedSoundsRoute: typeof LessonsContractedSoundsRoute
   LessonsDakutenHandakutenRoute: typeof LessonsDakutenHandakutenRoute
+  LessonsGreetingsRoute: typeof LessonsGreetingsRoute
   LessonsHiraganaRoute: typeof LessonsHiraganaRoute
   LessonsJapanesePronunciationRoute: typeof LessonsJapanesePronunciationRoute
   LessonsLongVowelsPausedConsonantsRoute: typeof LessonsLongVowelsPausedConsonantsRoute
@@ -817,6 +837,7 @@ interface LessonsRouteChildren {
 const LessonsRouteChildren: LessonsRouteChildren = {
   LessonsContractedSoundsRoute: LessonsContractedSoundsRoute,
   LessonsDakutenHandakutenRoute: LessonsDakutenHandakutenRoute,
+  LessonsGreetingsRoute: LessonsGreetingsRoute,
   LessonsHiraganaRoute: LessonsHiraganaRoute,
   LessonsJapanesePronunciationRoute: LessonsJapanesePronunciationRoute,
   LessonsLongVowelsPausedConsonantsRoute:

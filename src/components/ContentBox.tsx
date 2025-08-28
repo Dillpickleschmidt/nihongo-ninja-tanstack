@@ -91,7 +91,8 @@ export default function ContentBox(props: ContentBoxProps) {
               href="/learn"
               onClick={handleBackClick}
               variant="ghost"
-              class="dark:to-card/25 opacity-80 hover:opacity-100 dark:bg-gradient-to-br dark:from-green-500/30"
+              size="sm"
+              class="text-muted-foreground"
             >
               {"<-"} Complete & Return
             </Button>
@@ -100,7 +101,8 @@ export default function ContentBox(props: ContentBoxProps) {
               href={config().nextButtonLink!}
               onClick={handleNextClick}
               variant="ghost"
-              class="dark:to-card/25 opacity-80 hover:opacity-100 dark:bg-gradient-to-br dark:from-green-500/30"
+              size="sm"
+              class="text-muted-foreground"
             >
               {config().nextButtonText ?? "Complete & Next ->"}
             </Button>

@@ -245,6 +245,7 @@ export const vocabularySets: VocabularySetCollection = {
       "ありがとうございます",
       "ありがとう",
       "さようなら",
+      "ようこそ",
       "すみません",
       "いいえ",
       "おやすみ",
@@ -258,7 +259,6 @@ export const vocabularySets: VocabularySetCollection = {
       "ごちそうさまでした",
       "はじめまして",
       "よろしくお願いします",
-      "ようこそ",
     ],
   },
   "genki_1_ch0_numbers-0-10": {

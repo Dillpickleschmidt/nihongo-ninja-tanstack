@@ -6,7 +6,7 @@ import { ChatBubble } from "@/components/ChatBubble"
 
 export const Route = createFileRoute("/lessons/dakuten-handakuten")({
   loader: async () => ({
-    contentBox: { nextButtonLink: "/lessons/practice/dakuten-handakuten" },
+    contentBox: { nextButtonLink: "/vocab?import=dakuten-handakuten" },
   }),
   component: RouteComponent,
 })

@@ -65,12 +65,14 @@ export const dynamic_modules: DynamicModuleCollection = {
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch0_numbers-0-10"],
     instructions: "Practice recognizing and saying numbers from 0 to 10.",
+    allowed_practice_modes: ["meanings"],
   },
   "genki_1_ch0_numbers-11-100": {
     title: "Numbers 11-100",
     session_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch0_numbers-11-100"],
     instructions: "Practice numbers from 11 to 100.",
+    allowed_practice_modes: ["meanings"],
   },
 
   // Chapter 1 Dynamic Modules
