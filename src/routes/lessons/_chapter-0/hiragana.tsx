@@ -5,7 +5,7 @@ import KanaChart from "@/components/charts/KanaChart"
 import { ChatBubble } from "@/components/ChatBubble"
 import { ChatAttachment } from "@/components/ChatAttachment"
 
-export const Route = createFileRoute("/lessons/hiragana")({
+export const Route = createFileRoute("/lessons/_chapter-0/hiragana")({
   loader: async () => ({
     contentBox: { nextButtonLink: "/vocab?import=hiragana" },
   }),

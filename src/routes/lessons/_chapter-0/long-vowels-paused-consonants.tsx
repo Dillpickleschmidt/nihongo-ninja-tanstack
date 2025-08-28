@@ -3,7 +3,9 @@ import YouTubeVideo from "@/features/youtube/YouTube"
 import { ChatBubble } from "@/components/ChatBubble"
 import { ChatAttachment } from "@/components/ChatAttachment"
 
-export const Route = createFileRoute("/lessons/long-vowels-paused-consonants")({
+export const Route = createFileRoute(
+  "/lessons/_chapter-0/long-vowels-paused-consonants",
+)({
   loader: async () => ({
     contentBox: {
       nextButtonLink: "/lessons/practice/all-hiragana-quiz",

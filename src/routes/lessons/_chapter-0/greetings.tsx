@@ -5,7 +5,7 @@ import { getVocabularyForModule } from "@/data/utils/vocab"
 import MultipleChoiceText from "@/components/text/MultipleChoiceText"
 import { VocabularyCard } from "@/features/vocab-page/components/VocabularyCard"
 
-export const Route = createFileRoute("/lessons/greetings")({
+export const Route = createFileRoute("/lessons/_chapter-0/greetings")({
   loader: async () => {
     const vocabItems = await getVocabularyForModule(
       "genki_1_ch0_greetings-common-expressions",

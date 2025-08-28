@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/solid-router"
 import { ChatBubble } from "@/components/ChatBubble"
 import { ChatAttachment } from "@/components/ChatAttachment"
 
-export const Route = createFileRoute("/lessons/punctuation-misc")({
+export const Route = createFileRoute("/lessons/_chapter-0/punctuation-misc")({
   loader: async () => ({
     contentBox: {
       nextButtonLink: "/lessons/greetings",

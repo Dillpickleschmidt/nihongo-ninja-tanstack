@@ -114,6 +114,12 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_1_ch1_occupations-majors"],
     instructions: "Practice vocabulary related to occupations and majors.",
   },
+  "genki_1_ch1_useful-expressions": {
+    title: "Useful Expressions",
+    session_type: "vocab-practice",
+    vocab_set_ids: ["genki_1_ch1_useful-expressions"],
+    instructions: "Practice common useful expressions in Japanese.",
+  },
   "genki_1_ch1_countries-time": {
     title: "Countries & Time",
     session_type: "vocab-practice",

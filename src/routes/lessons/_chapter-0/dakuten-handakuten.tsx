@@ -4,7 +4,7 @@ import { createFileRoute } from "@tanstack/solid-router"
 import KanaChart from "@/components/charts/KanaChart"
 import { ChatBubble } from "@/components/ChatBubble"
 
-export const Route = createFileRoute("/lessons/dakuten-handakuten")({
+export const Route = createFileRoute("/lessons/_chapter-0/dakuten-handakuten")({
   loader: async () => ({
     contentBox: { nextButtonLink: "/vocab?import=dakuten-handakuten" },
   }),

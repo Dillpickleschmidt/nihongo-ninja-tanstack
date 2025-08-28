@@ -9,7 +9,7 @@ import {
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
 
-export const Route = createFileRoute("/lessons/numbers-0-100")({
+export const Route = createFileRoute("/lessons/_chapter-0/numbers-0-100")({
   loader: async () => ({
     contentBox: {
       nextButtonLink: "/lessons/hiragana",

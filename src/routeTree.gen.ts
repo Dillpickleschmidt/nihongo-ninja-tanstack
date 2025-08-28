@@ -24,17 +24,6 @@ import { Route as PracticeDakutenHandakutenQuizRouteImport } from './routes/prac
 import { Route as PracticeContractedSoundsQuizRouteImport } from './routes/practice/contracted-sounds-quiz'
 import { Route as PracticeAllHiraganaQuizRouteImport } from './routes/practice/all-hiragana-quiz'
 import { Route as PracticePracticeIDRouteImport } from './routes/practice/$practiceID'
-import { Route as LessonsWritingSystemsRouteImport } from './routes/lessons/writing-systems'
-import { Route as LessonsWelcomeOverviewRouteImport } from './routes/lessons/welcome-overview'
-import { Route as LessonsPunctuationMiscRouteImport } from './routes/lessons/punctuation-misc'
-import { Route as LessonsNumbers0100RouteImport } from './routes/lessons/numbers-0-100'
-import { Route as LessonsLongVowelsPausedConsonantsRouteImport } from './routes/lessons/long-vowels-paused-consonants'
-import { Route as LessonsJapanesePronunciationRouteImport } from './routes/lessons/japanese-pronunciation'
-import { Route as LessonsHiraganaRouteImport } from './routes/lessons/hiragana'
-import { Route as LessonsGreetingsRouteImport } from './routes/lessons/greetings'
-import { Route as LessonsDakutenHandakutenRouteImport } from './routes/lessons/dakuten-handakuten'
-import { Route as LessonsContractedSoundsRouteImport } from './routes/lessons/contracted-sounds'
-import { Route as LessonsCommonExpressionsRouteImport } from './routes/lessons/common-expressions'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
 import { Route as HomeProfileRouteImport } from './routes/_home/profile'
 import { Route as HomeGuidesRouteImport } from './routes/_home/guides'
@@ -42,6 +31,27 @@ import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-not
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeLearnIndexRouteImport } from './routes/_home/learn/index'
 import { Route as PracticeUserIDDeckIDRouteImport } from './routes/practice/$userID.$deckID'
+import { Route as LessonsChapter1XWaYDesuRouteImport } from './routes/lessons/_chapter-1/x-wa-y-desu'
+import { Route as LessonsChapter1UsefulExpressionsRouteImport } from './routes/lessons/_chapter-1/useful-expressions'
+import { Route as LessonsChapter1TheNoParticleRouteImport } from './routes/lessons/_chapter-1/the-no-particle'
+import { Route as LessonsChapter1TellingTimeRouteImport } from './routes/lessons/_chapter-1/telling-time'
+import { Route as LessonsChapter1SelfIntroductionsRouteImport } from './routes/lessons/_chapter-1/self-introductions'
+import { Route as LessonsChapter1SayingYouInJapaneseRouteImport } from './routes/lessons/_chapter-1/saying-you-in-japanese'
+import { Route as LessonsChapter1QuestionsWithKaRouteImport } from './routes/lessons/_chapter-1/questions-with-ka'
+import { Route as LessonsChapter1MinutesRouteImport } from './routes/lessons/_chapter-1/minutes'
+import { Route as LessonsChapter1JapaneseNamesHonorificsRouteImport } from './routes/lessons/_chapter-1/japanese-names-honorifics'
+import { Route as LessonsChapter1AnouEttoRouteImport } from './routes/lessons/_chapter-1/anou-etto'
+import { Route as LessonsChapter0WritingSystemsRouteImport } from './routes/lessons/_chapter-0/writing-systems'
+import { Route as LessonsChapter0WelcomeOverviewRouteImport } from './routes/lessons/_chapter-0/welcome-overview'
+import { Route as LessonsChapter0PunctuationMiscRouteImport } from './routes/lessons/_chapter-0/punctuation-misc'
+import { Route as LessonsChapter0Numbers0100RouteImport } from './routes/lessons/_chapter-0/numbers-0-100'
+import { Route as LessonsChapter0LongVowelsPausedConsonantsRouteImport } from './routes/lessons/_chapter-0/long-vowels-paused-consonants'
+import { Route as LessonsChapter0JapanesePronunciationRouteImport } from './routes/lessons/_chapter-0/japanese-pronunciation'
+import { Route as LessonsChapter0HiraganaRouteImport } from './routes/lessons/_chapter-0/hiragana'
+import { Route as LessonsChapter0GreetingsRouteImport } from './routes/lessons/_chapter-0/greetings'
+import { Route as LessonsChapter0DakutenHandakutenRouteImport } from './routes/lessons/_chapter-0/dakuten-handakuten'
+import { Route as LessonsChapter0ContractedSoundsRouteImport } from './routes/lessons/_chapter-0/contracted-sounds'
+import { Route as LessonsChapter0CommonExpressionsRouteImport } from './routes/lessons/_chapter-0/common-expressions'
 import { Route as HomePracticeSentencePracticeRouteImport } from './routes/_home/practice/sentence-practice'
 import { Route as HomePracticeConjugationRouteImport } from './routes/_home/practice/conjugation'
 import { Route as HomeGuidesSrsRouteImport } from './routes/_home/guides/srs'
@@ -119,65 +129,6 @@ const PracticePracticeIDRoute = PracticePracticeIDRouteImport.update({
   path: '/practice/$practiceID',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LessonsWritingSystemsRoute = LessonsWritingSystemsRouteImport.update({
-  id: '/writing-systems',
-  path: '/writing-systems',
-  getParentRoute: () => LessonsRoute,
-} as any)
-const LessonsWelcomeOverviewRoute = LessonsWelcomeOverviewRouteImport.update({
-  id: '/welcome-overview',
-  path: '/welcome-overview',
-  getParentRoute: () => LessonsRoute,
-} as any)
-const LessonsPunctuationMiscRoute = LessonsPunctuationMiscRouteImport.update({
-  id: '/punctuation-misc',
-  path: '/punctuation-misc',
-  getParentRoute: () => LessonsRoute,
-} as any)
-const LessonsNumbers0100Route = LessonsNumbers0100RouteImport.update({
-  id: '/numbers-0-100',
-  path: '/numbers-0-100',
-  getParentRoute: () => LessonsRoute,
-} as any)
-const LessonsLongVowelsPausedConsonantsRoute =
-  LessonsLongVowelsPausedConsonantsRouteImport.update({
-    id: '/long-vowels-paused-consonants',
-    path: '/long-vowels-paused-consonants',
-    getParentRoute: () => LessonsRoute,
-  } as any)
-const LessonsJapanesePronunciationRoute =
-  LessonsJapanesePronunciationRouteImport.update({
-    id: '/japanese-pronunciation',
-    path: '/japanese-pronunciation',
-    getParentRoute: () => LessonsRoute,
-  } as any)
-const LessonsHiraganaRoute = LessonsHiraganaRouteImport.update({
-  id: '/hiragana',
-  path: '/hiragana',
-  getParentRoute: () => LessonsRoute,
-} as any)
-const LessonsGreetingsRoute = LessonsGreetingsRouteImport.update({
-  id: '/greetings',
-  path: '/greetings',
-  getParentRoute: () => LessonsRoute,
-} as any)
-const LessonsDakutenHandakutenRoute =
-  LessonsDakutenHandakutenRouteImport.update({
-    id: '/dakuten-handakuten',
-    path: '/dakuten-handakuten',
-    getParentRoute: () => LessonsRoute,
-  } as any)
-const LessonsContractedSoundsRoute = LessonsContractedSoundsRouteImport.update({
-  id: '/contracted-sounds',
-  path: '/contracted-sounds',
-  getParentRoute: () => LessonsRoute,
-} as any)
-const LessonsCommonExpressionsRoute =
-  LessonsCommonExpressionsRouteImport.update({
-    id: '/common-expressions',
-    path: '/common-expressions',
-    getParentRoute: () => LessonsRoute,
-  } as any)
 const HomeVocabRoute = HomeVocabRouteImport.update({
   id: '/vocab',
   path: '/vocab',
@@ -213,6 +164,128 @@ const PracticeUserIDDeckIDRoute = PracticeUserIDDeckIDRouteImport.update({
   path: '/practice/$userID/$deckID',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LessonsChapter1XWaYDesuRoute = LessonsChapter1XWaYDesuRouteImport.update({
+  id: '/_chapter-1/x-wa-y-desu',
+  path: '/x-wa-y-desu',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter1UsefulExpressionsRoute =
+  LessonsChapter1UsefulExpressionsRouteImport.update({
+    id: '/_chapter-1/useful-expressions',
+    path: '/useful-expressions',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter1TheNoParticleRoute =
+  LessonsChapter1TheNoParticleRouteImport.update({
+    id: '/_chapter-1/the-no-particle',
+    path: '/the-no-particle',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter1TellingTimeRoute =
+  LessonsChapter1TellingTimeRouteImport.update({
+    id: '/_chapter-1/telling-time',
+    path: '/telling-time',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter1SelfIntroductionsRoute =
+  LessonsChapter1SelfIntroductionsRouteImport.update({
+    id: '/_chapter-1/self-introductions',
+    path: '/self-introductions',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter1SayingYouInJapaneseRoute =
+  LessonsChapter1SayingYouInJapaneseRouteImport.update({
+    id: '/_chapter-1/saying-you-in-japanese',
+    path: '/saying-you-in-japanese',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter1QuestionsWithKaRoute =
+  LessonsChapter1QuestionsWithKaRouteImport.update({
+    id: '/_chapter-1/questions-with-ka',
+    path: '/questions-with-ka',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter1MinutesRoute = LessonsChapter1MinutesRouteImport.update({
+  id: '/_chapter-1/minutes',
+  path: '/minutes',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter1JapaneseNamesHonorificsRoute =
+  LessonsChapter1JapaneseNamesHonorificsRouteImport.update({
+    id: '/_chapter-1/japanese-names-honorifics',
+    path: '/japanese-names-honorifics',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter1AnouEttoRoute = LessonsChapter1AnouEttoRouteImport.update({
+  id: '/_chapter-1/anou-etto',
+  path: '/anou-etto',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter0WritingSystemsRoute =
+  LessonsChapter0WritingSystemsRouteImport.update({
+    id: '/_chapter-0/writing-systems',
+    path: '/writing-systems',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter0WelcomeOverviewRoute =
+  LessonsChapter0WelcomeOverviewRouteImport.update({
+    id: '/_chapter-0/welcome-overview',
+    path: '/welcome-overview',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter0PunctuationMiscRoute =
+  LessonsChapter0PunctuationMiscRouteImport.update({
+    id: '/_chapter-0/punctuation-misc',
+    path: '/punctuation-misc',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter0Numbers0100Route =
+  LessonsChapter0Numbers0100RouteImport.update({
+    id: '/_chapter-0/numbers-0-100',
+    path: '/numbers-0-100',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter0LongVowelsPausedConsonantsRoute =
+  LessonsChapter0LongVowelsPausedConsonantsRouteImport.update({
+    id: '/_chapter-0/long-vowels-paused-consonants',
+    path: '/long-vowels-paused-consonants',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter0JapanesePronunciationRoute =
+  LessonsChapter0JapanesePronunciationRouteImport.update({
+    id: '/_chapter-0/japanese-pronunciation',
+    path: '/japanese-pronunciation',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter0HiraganaRoute = LessonsChapter0HiraganaRouteImport.update({
+  id: '/_chapter-0/hiragana',
+  path: '/hiragana',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter0GreetingsRoute =
+  LessonsChapter0GreetingsRouteImport.update({
+    id: '/_chapter-0/greetings',
+    path: '/greetings',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter0DakutenHandakutenRoute =
+  LessonsChapter0DakutenHandakutenRouteImport.update({
+    id: '/_chapter-0/dakuten-handakuten',
+    path: '/dakuten-handakuten',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter0ContractedSoundsRoute =
+  LessonsChapter0ContractedSoundsRouteImport.update({
+    id: '/_chapter-0/contracted-sounds',
+    path: '/contracted-sounds',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter0CommonExpressionsRoute =
+  LessonsChapter0CommonExpressionsRouteImport.update({
+    id: '/_chapter-0/common-expressions',
+    path: '/common-expressions',
+    getParentRoute: () => LessonsRoute,
+  } as any)
 const HomePracticeSentencePracticeRoute =
   HomePracticeSentencePracticeRouteImport.update({
     id: '/practice/sentence-practice',
@@ -268,17 +341,6 @@ export interface FileRoutesByFullPath {
   '/guides': typeof HomeGuidesRouteWithChildren
   '/profile': typeof HomeProfileRoute
   '/vocab': typeof HomeVocabRoute
-  '/lessons/common-expressions': typeof LessonsCommonExpressionsRoute
-  '/lessons/contracted-sounds': typeof LessonsContractedSoundsRoute
-  '/lessons/dakuten-handakuten': typeof LessonsDakutenHandakutenRoute
-  '/lessons/greetings': typeof LessonsGreetingsRoute
-  '/lessons/hiragana': typeof LessonsHiraganaRoute
-  '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
-  '/lessons/long-vowels-paused-consonants': typeof LessonsLongVowelsPausedConsonantsRoute
-  '/lessons/numbers-0-100': typeof LessonsNumbers0100Route
-  '/lessons/punctuation-misc': typeof LessonsPunctuationMiscRoute
-  '/lessons/welcome-overview': typeof LessonsWelcomeOverviewRoute
-  '/lessons/writing-systems': typeof LessonsWritingSystemsRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
   '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
@@ -288,6 +350,27 @@ export interface FileRoutesByFullPath {
   '/guides/srs': typeof HomeGuidesSrsRoute
   '/practice/conjugation': typeof HomePracticeConjugationRoute
   '/practice/sentence-practice': typeof HomePracticeSentencePracticeRoute
+  '/lessons/common-expressions': typeof LessonsChapter0CommonExpressionsRoute
+  '/lessons/contracted-sounds': typeof LessonsChapter0ContractedSoundsRoute
+  '/lessons/dakuten-handakuten': typeof LessonsChapter0DakutenHandakutenRoute
+  '/lessons/greetings': typeof LessonsChapter0GreetingsRoute
+  '/lessons/hiragana': typeof LessonsChapter0HiraganaRoute
+  '/lessons/japanese-pronunciation': typeof LessonsChapter0JapanesePronunciationRoute
+  '/lessons/long-vowels-paused-consonants': typeof LessonsChapter0LongVowelsPausedConsonantsRoute
+  '/lessons/numbers-0-100': typeof LessonsChapter0Numbers0100Route
+  '/lessons/punctuation-misc': typeof LessonsChapter0PunctuationMiscRoute
+  '/lessons/welcome-overview': typeof LessonsChapter0WelcomeOverviewRoute
+  '/lessons/writing-systems': typeof LessonsChapter0WritingSystemsRoute
+  '/lessons/anou-etto': typeof LessonsChapter1AnouEttoRoute
+  '/lessons/japanese-names-honorifics': typeof LessonsChapter1JapaneseNamesHonorificsRoute
+  '/lessons/minutes': typeof LessonsChapter1MinutesRoute
+  '/lessons/questions-with-ka': typeof LessonsChapter1QuestionsWithKaRoute
+  '/lessons/saying-you-in-japanese': typeof LessonsChapter1SayingYouInJapaneseRoute
+  '/lessons/self-introductions': typeof LessonsChapter1SelfIntroductionsRoute
+  '/lessons/telling-time': typeof LessonsChapter1TellingTimeRoute
+  '/lessons/the-no-particle': typeof LessonsChapter1TheNoParticleRoute
+  '/lessons/useful-expressions': typeof LessonsChapter1UsefulExpressionsRoute
+  '/lessons/x-wa-y-desu': typeof LessonsChapter1XWaYDesuRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
@@ -304,17 +387,6 @@ export interface FileRoutesByTo {
   '/guides': typeof HomeGuidesRouteWithChildren
   '/profile': typeof HomeProfileRoute
   '/vocab': typeof HomeVocabRoute
-  '/lessons/common-expressions': typeof LessonsCommonExpressionsRoute
-  '/lessons/contracted-sounds': typeof LessonsContractedSoundsRoute
-  '/lessons/dakuten-handakuten': typeof LessonsDakutenHandakutenRoute
-  '/lessons/greetings': typeof LessonsGreetingsRoute
-  '/lessons/hiragana': typeof LessonsHiraganaRoute
-  '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
-  '/lessons/long-vowels-paused-consonants': typeof LessonsLongVowelsPausedConsonantsRoute
-  '/lessons/numbers-0-100': typeof LessonsNumbers0100Route
-  '/lessons/punctuation-misc': typeof LessonsPunctuationMiscRoute
-  '/lessons/welcome-overview': typeof LessonsWelcomeOverviewRoute
-  '/lessons/writing-systems': typeof LessonsWritingSystemsRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
   '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
@@ -324,6 +396,27 @@ export interface FileRoutesByTo {
   '/guides/srs': typeof HomeGuidesSrsRoute
   '/practice/conjugation': typeof HomePracticeConjugationRoute
   '/practice/sentence-practice': typeof HomePracticeSentencePracticeRoute
+  '/lessons/common-expressions': typeof LessonsChapter0CommonExpressionsRoute
+  '/lessons/contracted-sounds': typeof LessonsChapter0ContractedSoundsRoute
+  '/lessons/dakuten-handakuten': typeof LessonsChapter0DakutenHandakutenRoute
+  '/lessons/greetings': typeof LessonsChapter0GreetingsRoute
+  '/lessons/hiragana': typeof LessonsChapter0HiraganaRoute
+  '/lessons/japanese-pronunciation': typeof LessonsChapter0JapanesePronunciationRoute
+  '/lessons/long-vowels-paused-consonants': typeof LessonsChapter0LongVowelsPausedConsonantsRoute
+  '/lessons/numbers-0-100': typeof LessonsChapter0Numbers0100Route
+  '/lessons/punctuation-misc': typeof LessonsChapter0PunctuationMiscRoute
+  '/lessons/welcome-overview': typeof LessonsChapter0WelcomeOverviewRoute
+  '/lessons/writing-systems': typeof LessonsChapter0WritingSystemsRoute
+  '/lessons/anou-etto': typeof LessonsChapter1AnouEttoRoute
+  '/lessons/japanese-names-honorifics': typeof LessonsChapter1JapaneseNamesHonorificsRoute
+  '/lessons/minutes': typeof LessonsChapter1MinutesRoute
+  '/lessons/questions-with-ka': typeof LessonsChapter1QuestionsWithKaRoute
+  '/lessons/saying-you-in-japanese': typeof LessonsChapter1SayingYouInJapaneseRoute
+  '/lessons/self-introductions': typeof LessonsChapter1SelfIntroductionsRoute
+  '/lessons/telling-time': typeof LessonsChapter1TellingTimeRoute
+  '/lessons/the-no-particle': typeof LessonsChapter1TheNoParticleRoute
+  '/lessons/useful-expressions': typeof LessonsChapter1UsefulExpressionsRoute
+  '/lessons/x-wa-y-desu': typeof LessonsChapter1XWaYDesuRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
@@ -342,17 +435,6 @@ export interface FileRoutesById {
   '/_home/guides': typeof HomeGuidesRouteWithChildren
   '/_home/profile': typeof HomeProfileRoute
   '/_home/vocab': typeof HomeVocabRoute
-  '/lessons/common-expressions': typeof LessonsCommonExpressionsRoute
-  '/lessons/contracted-sounds': typeof LessonsContractedSoundsRoute
-  '/lessons/dakuten-handakuten': typeof LessonsDakutenHandakutenRoute
-  '/lessons/greetings': typeof LessonsGreetingsRoute
-  '/lessons/hiragana': typeof LessonsHiraganaRoute
-  '/lessons/japanese-pronunciation': typeof LessonsJapanesePronunciationRoute
-  '/lessons/long-vowels-paused-consonants': typeof LessonsLongVowelsPausedConsonantsRoute
-  '/lessons/numbers-0-100': typeof LessonsNumbers0100Route
-  '/lessons/punctuation-misc': typeof LessonsPunctuationMiscRoute
-  '/lessons/welcome-overview': typeof LessonsWelcomeOverviewRoute
-  '/lessons/writing-systems': typeof LessonsWritingSystemsRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
   '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
@@ -362,6 +444,27 @@ export interface FileRoutesById {
   '/_home/guides/srs': typeof HomeGuidesSrsRoute
   '/_home/practice/conjugation': typeof HomePracticeConjugationRoute
   '/_home/practice/sentence-practice': typeof HomePracticeSentencePracticeRoute
+  '/lessons/_chapter-0/common-expressions': typeof LessonsChapter0CommonExpressionsRoute
+  '/lessons/_chapter-0/contracted-sounds': typeof LessonsChapter0ContractedSoundsRoute
+  '/lessons/_chapter-0/dakuten-handakuten': typeof LessonsChapter0DakutenHandakutenRoute
+  '/lessons/_chapter-0/greetings': typeof LessonsChapter0GreetingsRoute
+  '/lessons/_chapter-0/hiragana': typeof LessonsChapter0HiraganaRoute
+  '/lessons/_chapter-0/japanese-pronunciation': typeof LessonsChapter0JapanesePronunciationRoute
+  '/lessons/_chapter-0/long-vowels-paused-consonants': typeof LessonsChapter0LongVowelsPausedConsonantsRoute
+  '/lessons/_chapter-0/numbers-0-100': typeof LessonsChapter0Numbers0100Route
+  '/lessons/_chapter-0/punctuation-misc': typeof LessonsChapter0PunctuationMiscRoute
+  '/lessons/_chapter-0/welcome-overview': typeof LessonsChapter0WelcomeOverviewRoute
+  '/lessons/_chapter-0/writing-systems': typeof LessonsChapter0WritingSystemsRoute
+  '/lessons/_chapter-1/anou-etto': typeof LessonsChapter1AnouEttoRoute
+  '/lessons/_chapter-1/japanese-names-honorifics': typeof LessonsChapter1JapaneseNamesHonorificsRoute
+  '/lessons/_chapter-1/minutes': typeof LessonsChapter1MinutesRoute
+  '/lessons/_chapter-1/questions-with-ka': typeof LessonsChapter1QuestionsWithKaRoute
+  '/lessons/_chapter-1/saying-you-in-japanese': typeof LessonsChapter1SayingYouInJapaneseRoute
+  '/lessons/_chapter-1/self-introductions': typeof LessonsChapter1SelfIntroductionsRoute
+  '/lessons/_chapter-1/telling-time': typeof LessonsChapter1TellingTimeRoute
+  '/lessons/_chapter-1/the-no-particle': typeof LessonsChapter1TheNoParticleRoute
+  '/lessons/_chapter-1/useful-expressions': typeof LessonsChapter1UsefulExpressionsRoute
+  '/lessons/_chapter-1/x-wa-y-desu': typeof LessonsChapter1XWaYDesuRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/_home/learn/': typeof HomeLearnIndexRoute
   '/_home/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
@@ -380,6 +483,15 @@ export interface FileRouteTypes {
     | '/guides'
     | '/profile'
     | '/vocab'
+    | '/practice/$practiceID'
+    | '/practice/all-hiragana-quiz'
+    | '/practice/contracted-sounds-quiz'
+    | '/practice/dakuten-handakuten-quiz'
+    | '/practice/hiragana-quiz'
+    | '/practice/review'
+    | '/guides/srs'
+    | '/practice/conjugation'
+    | '/practice/sentence-practice'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
     | '/lessons/dakuten-handakuten'
@@ -391,15 +503,16 @@ export interface FileRouteTypes {
     | '/lessons/punctuation-misc'
     | '/lessons/welcome-overview'
     | '/lessons/writing-systems'
-    | '/practice/$practiceID'
-    | '/practice/all-hiragana-quiz'
-    | '/practice/contracted-sounds-quiz'
-    | '/practice/dakuten-handakuten-quiz'
-    | '/practice/hiragana-quiz'
-    | '/practice/review'
-    | '/guides/srs'
-    | '/practice/conjugation'
-    | '/practice/sentence-practice'
+    | '/lessons/anou-etto'
+    | '/lessons/japanese-names-honorifics'
+    | '/lessons/minutes'
+    | '/lessons/questions-with-ka'
+    | '/lessons/saying-you-in-japanese'
+    | '/lessons/self-introductions'
+    | '/lessons/telling-time'
+    | '/lessons/the-no-particle'
+    | '/lessons/useful-expressions'
+    | '/lessons/x-wa-y-desu'
     | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
@@ -416,6 +529,15 @@ export interface FileRouteTypes {
     | '/guides'
     | '/profile'
     | '/vocab'
+    | '/practice/$practiceID'
+    | '/practice/all-hiragana-quiz'
+    | '/practice/contracted-sounds-quiz'
+    | '/practice/dakuten-handakuten-quiz'
+    | '/practice/hiragana-quiz'
+    | '/practice/review'
+    | '/guides/srs'
+    | '/practice/conjugation'
+    | '/practice/sentence-practice'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
     | '/lessons/dakuten-handakuten'
@@ -427,15 +549,16 @@ export interface FileRouteTypes {
     | '/lessons/punctuation-misc'
     | '/lessons/welcome-overview'
     | '/lessons/writing-systems'
-    | '/practice/$practiceID'
-    | '/practice/all-hiragana-quiz'
-    | '/practice/contracted-sounds-quiz'
-    | '/practice/dakuten-handakuten-quiz'
-    | '/practice/hiragana-quiz'
-    | '/practice/review'
-    | '/guides/srs'
-    | '/practice/conjugation'
-    | '/practice/sentence-practice'
+    | '/lessons/anou-etto'
+    | '/lessons/japanese-names-honorifics'
+    | '/lessons/minutes'
+    | '/lessons/questions-with-ka'
+    | '/lessons/saying-you-in-japanese'
+    | '/lessons/self-introductions'
+    | '/lessons/telling-time'
+    | '/lessons/the-no-particle'
+    | '/lessons/useful-expressions'
+    | '/lessons/x-wa-y-desu'
     | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
@@ -453,17 +576,6 @@ export interface FileRouteTypes {
     | '/_home/guides'
     | '/_home/profile'
     | '/_home/vocab'
-    | '/lessons/common-expressions'
-    | '/lessons/contracted-sounds'
-    | '/lessons/dakuten-handakuten'
-    | '/lessons/greetings'
-    | '/lessons/hiragana'
-    | '/lessons/japanese-pronunciation'
-    | '/lessons/long-vowels-paused-consonants'
-    | '/lessons/numbers-0-100'
-    | '/lessons/punctuation-misc'
-    | '/lessons/welcome-overview'
-    | '/lessons/writing-systems'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
     | '/practice/contracted-sounds-quiz'
@@ -473,6 +585,27 @@ export interface FileRouteTypes {
     | '/_home/guides/srs'
     | '/_home/practice/conjugation'
     | '/_home/practice/sentence-practice'
+    | '/lessons/_chapter-0/common-expressions'
+    | '/lessons/_chapter-0/contracted-sounds'
+    | '/lessons/_chapter-0/dakuten-handakuten'
+    | '/lessons/_chapter-0/greetings'
+    | '/lessons/_chapter-0/hiragana'
+    | '/lessons/_chapter-0/japanese-pronunciation'
+    | '/lessons/_chapter-0/long-vowels-paused-consonants'
+    | '/lessons/_chapter-0/numbers-0-100'
+    | '/lessons/_chapter-0/punctuation-misc'
+    | '/lessons/_chapter-0/welcome-overview'
+    | '/lessons/_chapter-0/writing-systems'
+    | '/lessons/_chapter-1/anou-etto'
+    | '/lessons/_chapter-1/japanese-names-honorifics'
+    | '/lessons/_chapter-1/minutes'
+    | '/lessons/_chapter-1/questions-with-ka'
+    | '/lessons/_chapter-1/saying-you-in-japanese'
+    | '/lessons/_chapter-1/self-introductions'
+    | '/lessons/_chapter-1/telling-time'
+    | '/lessons/_chapter-1/the-no-particle'
+    | '/lessons/_chapter-1/useful-expressions'
+    | '/lessons/_chapter-1/x-wa-y-desu'
     | '/practice/$userID/$deckID'
     | '/_home/learn/'
     | '/_home/learn/$textbookId/$chapterSlug'
@@ -634,83 +767,6 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof PracticePracticeIDRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lessons/writing-systems': {
-      id: '/lessons/writing-systems'
-      path: '/writing-systems'
-      fullPath: '/lessons/writing-systems'
-      preLoaderRoute: typeof LessonsWritingSystemsRouteImport
-      parentRoute: typeof LessonsRoute
-    }
-    '/lessons/welcome-overview': {
-      id: '/lessons/welcome-overview'
-      path: '/welcome-overview'
-      fullPath: '/lessons/welcome-overview'
-      preLoaderRoute: typeof LessonsWelcomeOverviewRouteImport
-      parentRoute: typeof LessonsRoute
-    }
-    '/lessons/punctuation-misc': {
-      id: '/lessons/punctuation-misc'
-      path: '/punctuation-misc'
-      fullPath: '/lessons/punctuation-misc'
-      preLoaderRoute: typeof LessonsPunctuationMiscRouteImport
-      parentRoute: typeof LessonsRoute
-    }
-    '/lessons/numbers-0-100': {
-      id: '/lessons/numbers-0-100'
-      path: '/numbers-0-100'
-      fullPath: '/lessons/numbers-0-100'
-      preLoaderRoute: typeof LessonsNumbers0100RouteImport
-      parentRoute: typeof LessonsRoute
-    }
-    '/lessons/long-vowels-paused-consonants': {
-      id: '/lessons/long-vowels-paused-consonants'
-      path: '/long-vowels-paused-consonants'
-      fullPath: '/lessons/long-vowels-paused-consonants'
-      preLoaderRoute: typeof LessonsLongVowelsPausedConsonantsRouteImport
-      parentRoute: typeof LessonsRoute
-    }
-    '/lessons/japanese-pronunciation': {
-      id: '/lessons/japanese-pronunciation'
-      path: '/japanese-pronunciation'
-      fullPath: '/lessons/japanese-pronunciation'
-      preLoaderRoute: typeof LessonsJapanesePronunciationRouteImport
-      parentRoute: typeof LessonsRoute
-    }
-    '/lessons/hiragana': {
-      id: '/lessons/hiragana'
-      path: '/hiragana'
-      fullPath: '/lessons/hiragana'
-      preLoaderRoute: typeof LessonsHiraganaRouteImport
-      parentRoute: typeof LessonsRoute
-    }
-    '/lessons/greetings': {
-      id: '/lessons/greetings'
-      path: '/greetings'
-      fullPath: '/lessons/greetings'
-      preLoaderRoute: typeof LessonsGreetingsRouteImport
-      parentRoute: typeof LessonsRoute
-    }
-    '/lessons/dakuten-handakuten': {
-      id: '/lessons/dakuten-handakuten'
-      path: '/dakuten-handakuten'
-      fullPath: '/lessons/dakuten-handakuten'
-      preLoaderRoute: typeof LessonsDakutenHandakutenRouteImport
-      parentRoute: typeof LessonsRoute
-    }
-    '/lessons/contracted-sounds': {
-      id: '/lessons/contracted-sounds'
-      path: '/contracted-sounds'
-      fullPath: '/lessons/contracted-sounds'
-      preLoaderRoute: typeof LessonsContractedSoundsRouteImport
-      parentRoute: typeof LessonsRoute
-    }
-    '/lessons/common-expressions': {
-      id: '/lessons/common-expressions'
-      path: '/common-expressions'
-      fullPath: '/lessons/common-expressions'
-      preLoaderRoute: typeof LessonsCommonExpressionsRouteImport
-      parentRoute: typeof LessonsRoute
-    }
     '/_home/vocab': {
       id: '/_home/vocab'
       path: '/vocab'
@@ -759,6 +815,153 @@ declare module '@tanstack/solid-router' {
       fullPath: '/practice/$userID/$deckID'
       preLoaderRoute: typeof PracticeUserIDDeckIDRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/lessons/_chapter-1/x-wa-y-desu': {
+      id: '/lessons/_chapter-1/x-wa-y-desu'
+      path: '/x-wa-y-desu'
+      fullPath: '/lessons/x-wa-y-desu'
+      preLoaderRoute: typeof LessonsChapter1XWaYDesuRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-1/useful-expressions': {
+      id: '/lessons/_chapter-1/useful-expressions'
+      path: '/useful-expressions'
+      fullPath: '/lessons/useful-expressions'
+      preLoaderRoute: typeof LessonsChapter1UsefulExpressionsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-1/the-no-particle': {
+      id: '/lessons/_chapter-1/the-no-particle'
+      path: '/the-no-particle'
+      fullPath: '/lessons/the-no-particle'
+      preLoaderRoute: typeof LessonsChapter1TheNoParticleRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-1/telling-time': {
+      id: '/lessons/_chapter-1/telling-time'
+      path: '/telling-time'
+      fullPath: '/lessons/telling-time'
+      preLoaderRoute: typeof LessonsChapter1TellingTimeRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-1/self-introductions': {
+      id: '/lessons/_chapter-1/self-introductions'
+      path: '/self-introductions'
+      fullPath: '/lessons/self-introductions'
+      preLoaderRoute: typeof LessonsChapter1SelfIntroductionsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-1/saying-you-in-japanese': {
+      id: '/lessons/_chapter-1/saying-you-in-japanese'
+      path: '/saying-you-in-japanese'
+      fullPath: '/lessons/saying-you-in-japanese'
+      preLoaderRoute: typeof LessonsChapter1SayingYouInJapaneseRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-1/questions-with-ka': {
+      id: '/lessons/_chapter-1/questions-with-ka'
+      path: '/questions-with-ka'
+      fullPath: '/lessons/questions-with-ka'
+      preLoaderRoute: typeof LessonsChapter1QuestionsWithKaRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-1/minutes': {
+      id: '/lessons/_chapter-1/minutes'
+      path: '/minutes'
+      fullPath: '/lessons/minutes'
+      preLoaderRoute: typeof LessonsChapter1MinutesRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-1/japanese-names-honorifics': {
+      id: '/lessons/_chapter-1/japanese-names-honorifics'
+      path: '/japanese-names-honorifics'
+      fullPath: '/lessons/japanese-names-honorifics'
+      preLoaderRoute: typeof LessonsChapter1JapaneseNamesHonorificsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-1/anou-etto': {
+      id: '/lessons/_chapter-1/anou-etto'
+      path: '/anou-etto'
+      fullPath: '/lessons/anou-etto'
+      preLoaderRoute: typeof LessonsChapter1AnouEttoRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-0/writing-systems': {
+      id: '/lessons/_chapter-0/writing-systems'
+      path: '/writing-systems'
+      fullPath: '/lessons/writing-systems'
+      preLoaderRoute: typeof LessonsChapter0WritingSystemsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-0/welcome-overview': {
+      id: '/lessons/_chapter-0/welcome-overview'
+      path: '/welcome-overview'
+      fullPath: '/lessons/welcome-overview'
+      preLoaderRoute: typeof LessonsChapter0WelcomeOverviewRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-0/punctuation-misc': {
+      id: '/lessons/_chapter-0/punctuation-misc'
+      path: '/punctuation-misc'
+      fullPath: '/lessons/punctuation-misc'
+      preLoaderRoute: typeof LessonsChapter0PunctuationMiscRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-0/numbers-0-100': {
+      id: '/lessons/_chapter-0/numbers-0-100'
+      path: '/numbers-0-100'
+      fullPath: '/lessons/numbers-0-100'
+      preLoaderRoute: typeof LessonsChapter0Numbers0100RouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-0/long-vowels-paused-consonants': {
+      id: '/lessons/_chapter-0/long-vowels-paused-consonants'
+      path: '/long-vowels-paused-consonants'
+      fullPath: '/lessons/long-vowels-paused-consonants'
+      preLoaderRoute: typeof LessonsChapter0LongVowelsPausedConsonantsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-0/japanese-pronunciation': {
+      id: '/lessons/_chapter-0/japanese-pronunciation'
+      path: '/japanese-pronunciation'
+      fullPath: '/lessons/japanese-pronunciation'
+      preLoaderRoute: typeof LessonsChapter0JapanesePronunciationRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-0/hiragana': {
+      id: '/lessons/_chapter-0/hiragana'
+      path: '/hiragana'
+      fullPath: '/lessons/hiragana'
+      preLoaderRoute: typeof LessonsChapter0HiraganaRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-0/greetings': {
+      id: '/lessons/_chapter-0/greetings'
+      path: '/greetings'
+      fullPath: '/lessons/greetings'
+      preLoaderRoute: typeof LessonsChapter0GreetingsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-0/dakuten-handakuten': {
+      id: '/lessons/_chapter-0/dakuten-handakuten'
+      path: '/dakuten-handakuten'
+      fullPath: '/lessons/dakuten-handakuten'
+      preLoaderRoute: typeof LessonsChapter0DakutenHandakutenRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-0/contracted-sounds': {
+      id: '/lessons/_chapter-0/contracted-sounds'
+      path: '/contracted-sounds'
+      fullPath: '/lessons/contracted-sounds'
+      preLoaderRoute: typeof LessonsChapter0ContractedSoundsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-0/common-expressions': {
+      id: '/lessons/_chapter-0/common-expressions'
+      path: '/common-expressions'
+      fullPath: '/lessons/common-expressions'
+      preLoaderRoute: typeof LessonsChapter0CommonExpressionsRouteImport
+      parentRoute: typeof LessonsRoute
     }
     '/_home/practice/sentence-practice': {
       id: '/_home/practice/sentence-practice'
@@ -862,32 +1065,55 @@ const HomeRouteChildren: HomeRouteChildren = {
 const HomeRouteWithChildren = HomeRoute._addFileChildren(HomeRouteChildren)
 
 interface LessonsRouteChildren {
-  LessonsCommonExpressionsRoute: typeof LessonsCommonExpressionsRoute
-  LessonsContractedSoundsRoute: typeof LessonsContractedSoundsRoute
-  LessonsDakutenHandakutenRoute: typeof LessonsDakutenHandakutenRoute
-  LessonsGreetingsRoute: typeof LessonsGreetingsRoute
-  LessonsHiraganaRoute: typeof LessonsHiraganaRoute
-  LessonsJapanesePronunciationRoute: typeof LessonsJapanesePronunciationRoute
-  LessonsLongVowelsPausedConsonantsRoute: typeof LessonsLongVowelsPausedConsonantsRoute
-  LessonsNumbers0100Route: typeof LessonsNumbers0100Route
-  LessonsPunctuationMiscRoute: typeof LessonsPunctuationMiscRoute
-  LessonsWelcomeOverviewRoute: typeof LessonsWelcomeOverviewRoute
-  LessonsWritingSystemsRoute: typeof LessonsWritingSystemsRoute
+  LessonsChapter0CommonExpressionsRoute: typeof LessonsChapter0CommonExpressionsRoute
+  LessonsChapter0ContractedSoundsRoute: typeof LessonsChapter0ContractedSoundsRoute
+  LessonsChapter0DakutenHandakutenRoute: typeof LessonsChapter0DakutenHandakutenRoute
+  LessonsChapter0GreetingsRoute: typeof LessonsChapter0GreetingsRoute
+  LessonsChapter0HiraganaRoute: typeof LessonsChapter0HiraganaRoute
+  LessonsChapter0JapanesePronunciationRoute: typeof LessonsChapter0JapanesePronunciationRoute
+  LessonsChapter0LongVowelsPausedConsonantsRoute: typeof LessonsChapter0LongVowelsPausedConsonantsRoute
+  LessonsChapter0Numbers0100Route: typeof LessonsChapter0Numbers0100Route
+  LessonsChapter0PunctuationMiscRoute: typeof LessonsChapter0PunctuationMiscRoute
+  LessonsChapter0WelcomeOverviewRoute: typeof LessonsChapter0WelcomeOverviewRoute
+  LessonsChapter0WritingSystemsRoute: typeof LessonsChapter0WritingSystemsRoute
+  LessonsChapter1AnouEttoRoute: typeof LessonsChapter1AnouEttoRoute
+  LessonsChapter1JapaneseNamesHonorificsRoute: typeof LessonsChapter1JapaneseNamesHonorificsRoute
+  LessonsChapter1MinutesRoute: typeof LessonsChapter1MinutesRoute
+  LessonsChapter1QuestionsWithKaRoute: typeof LessonsChapter1QuestionsWithKaRoute
+  LessonsChapter1SayingYouInJapaneseRoute: typeof LessonsChapter1SayingYouInJapaneseRoute
+  LessonsChapter1SelfIntroductionsRoute: typeof LessonsChapter1SelfIntroductionsRoute
+  LessonsChapter1TellingTimeRoute: typeof LessonsChapter1TellingTimeRoute
+  LessonsChapter1TheNoParticleRoute: typeof LessonsChapter1TheNoParticleRoute
+  LessonsChapter1UsefulExpressionsRoute: typeof LessonsChapter1UsefulExpressionsRoute
+  LessonsChapter1XWaYDesuRoute: typeof LessonsChapter1XWaYDesuRoute
 }
 
 const LessonsRouteChildren: LessonsRouteChildren = {
-  LessonsCommonExpressionsRoute: LessonsCommonExpressionsRoute,
-  LessonsContractedSoundsRoute: LessonsContractedSoundsRoute,
-  LessonsDakutenHandakutenRoute: LessonsDakutenHandakutenRoute,
-  LessonsGreetingsRoute: LessonsGreetingsRoute,
-  LessonsHiraganaRoute: LessonsHiraganaRoute,
-  LessonsJapanesePronunciationRoute: LessonsJapanesePronunciationRoute,
-  LessonsLongVowelsPausedConsonantsRoute:
-    LessonsLongVowelsPausedConsonantsRoute,
-  LessonsNumbers0100Route: LessonsNumbers0100Route,
-  LessonsPunctuationMiscRoute: LessonsPunctuationMiscRoute,
-  LessonsWelcomeOverviewRoute: LessonsWelcomeOverviewRoute,
-  LessonsWritingSystemsRoute: LessonsWritingSystemsRoute,
+  LessonsChapter0CommonExpressionsRoute: LessonsChapter0CommonExpressionsRoute,
+  LessonsChapter0ContractedSoundsRoute: LessonsChapter0ContractedSoundsRoute,
+  LessonsChapter0DakutenHandakutenRoute: LessonsChapter0DakutenHandakutenRoute,
+  LessonsChapter0GreetingsRoute: LessonsChapter0GreetingsRoute,
+  LessonsChapter0HiraganaRoute: LessonsChapter0HiraganaRoute,
+  LessonsChapter0JapanesePronunciationRoute:
+    LessonsChapter0JapanesePronunciationRoute,
+  LessonsChapter0LongVowelsPausedConsonantsRoute:
+    LessonsChapter0LongVowelsPausedConsonantsRoute,
+  LessonsChapter0Numbers0100Route: LessonsChapter0Numbers0100Route,
+  LessonsChapter0PunctuationMiscRoute: LessonsChapter0PunctuationMiscRoute,
+  LessonsChapter0WelcomeOverviewRoute: LessonsChapter0WelcomeOverviewRoute,
+  LessonsChapter0WritingSystemsRoute: LessonsChapter0WritingSystemsRoute,
+  LessonsChapter1AnouEttoRoute: LessonsChapter1AnouEttoRoute,
+  LessonsChapter1JapaneseNamesHonorificsRoute:
+    LessonsChapter1JapaneseNamesHonorificsRoute,
+  LessonsChapter1MinutesRoute: LessonsChapter1MinutesRoute,
+  LessonsChapter1QuestionsWithKaRoute: LessonsChapter1QuestionsWithKaRoute,
+  LessonsChapter1SayingYouInJapaneseRoute:
+    LessonsChapter1SayingYouInJapaneseRoute,
+  LessonsChapter1SelfIntroductionsRoute: LessonsChapter1SelfIntroductionsRoute,
+  LessonsChapter1TellingTimeRoute: LessonsChapter1TellingTimeRoute,
+  LessonsChapter1TheNoParticleRoute: LessonsChapter1TheNoParticleRoute,
+  LessonsChapter1UsefulExpressionsRoute: LessonsChapter1UsefulExpressionsRoute,
+  LessonsChapter1XWaYDesuRoute: LessonsChapter1XWaYDesuRoute,
 }
 
 const LessonsRouteWithChildren =

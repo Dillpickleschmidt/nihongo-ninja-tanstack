@@ -2,7 +2,9 @@
 import KanaChart from "@/components/charts/KanaChart"
 import { createFileRoute } from "@tanstack/solid-router"
 
-export const Route = createFileRoute("/lessons/japanese-pronunciation")({
+export const Route = createFileRoute(
+  "/lessons/_chapter-0/japanese-pronunciation",
+)({
   loader: async () => {
     return {
       contentBox: {
