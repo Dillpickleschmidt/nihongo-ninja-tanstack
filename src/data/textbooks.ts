@@ -198,7 +198,7 @@ export const textbooks: TextbookCollection = {
           { type: "static_module", id: "janai" },
           { type: "dynamic_module", id: "practice-sentence-janai" },
           { type: "external_resource", id: "kikusasaizu-2-1" },
-          { type: "static_module", id: "ne-yo" },
+          { type: "static_module", id: "ne-yo-particles" },
           { type: "dynamic_module", id: "practice-sentence-ne-yo" },
           { type: "external_resource", id: "kikusasaizu-2-2" },
           { type: "static_module", id: "genki_1_ch2_places-money-food" },
@@ -211,7 +211,7 @@ export const textbooks: TextbookCollection = {
           { type: "static_module", id: "big-numbers" },
           { type: "external_resource", id: "unlearning-japanese" },
           { type: "static_module", id: "japanese-money" },
-          { type: "static_module", id: "money" },
+          { type: "static_module", id: "practice-money", disabled: true },
           { type: "external_resource", id: "my-kikitori-at-a-store" },
           {
             type: "dynamic_module",

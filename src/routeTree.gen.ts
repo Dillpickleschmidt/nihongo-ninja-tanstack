@@ -31,7 +31,14 @@ import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-not
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeLearnIndexRouteImport } from './routes/_home/learn/index'
 import { Route as PracticeUserIDDeckIDRouteImport } from './routes/practice/$userID.$deckID'
+import { Route as LessonsChapter2NeYoParticlesRouteImport } from './routes/lessons/_chapter-2/ne-yo-particles'
+import { Route as LessonsChapter2MoParticleRouteImport } from './routes/lessons/_chapter-2/mo-particle'
 import { Route as LessonsChapter2KatakanaRouteImport } from './routes/lessons/_chapter-2/katakana'
+import { Route as LessonsChapter2JapaneseMoneyRouteImport } from './routes/lessons/_chapter-2/japanese-money'
+import { Route as LessonsChapter2JanaiRouteImport } from './routes/lessons/_chapter-2/janai'
+import { Route as LessonsChapter2GaParticleRouteImport } from './routes/lessons/_chapter-2/ga-particle'
+import { Route as LessonsChapter2DareRouteImport } from './routes/lessons/_chapter-2/dare'
+import { Route as LessonsChapter2BigNumbersRouteImport } from './routes/lessons/_chapter-2/big-numbers'
 import { Route as LessonsChapter1XWaYDesuRouteImport } from './routes/lessons/_chapter-1/x-wa-y-desu'
 import { Route as LessonsChapter1UsefulExpressionsRouteImport } from './routes/lessons/_chapter-1/useful-expressions'
 import { Route as LessonsChapter1TheNoParticleRouteImport } from './routes/lessons/_chapter-1/the-no-particle'
@@ -165,11 +172,51 @@ const PracticeUserIDDeckIDRoute = PracticeUserIDDeckIDRouteImport.update({
   path: '/practice/$userID/$deckID',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LessonsChapter2NeYoParticlesRoute =
+  LessonsChapter2NeYoParticlesRouteImport.update({
+    id: '/_chapter-2/ne-yo-particles',
+    path: '/ne-yo-particles',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter2MoParticleRoute =
+  LessonsChapter2MoParticleRouteImport.update({
+    id: '/_chapter-2/mo-particle',
+    path: '/mo-particle',
+    getParentRoute: () => LessonsRoute,
+  } as any)
 const LessonsChapter2KatakanaRoute = LessonsChapter2KatakanaRouteImport.update({
   id: '/_chapter-2/katakana',
   path: '/katakana',
   getParentRoute: () => LessonsRoute,
 } as any)
+const LessonsChapter2JapaneseMoneyRoute =
+  LessonsChapter2JapaneseMoneyRouteImport.update({
+    id: '/_chapter-2/japanese-money',
+    path: '/japanese-money',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter2JanaiRoute = LessonsChapter2JanaiRouteImport.update({
+  id: '/_chapter-2/janai',
+  path: '/janai',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter2GaParticleRoute =
+  LessonsChapter2GaParticleRouteImport.update({
+    id: '/_chapter-2/ga-particle',
+    path: '/ga-particle',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter2DareRoute = LessonsChapter2DareRouteImport.update({
+  id: '/_chapter-2/dare',
+  path: '/dare',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter2BigNumbersRoute =
+  LessonsChapter2BigNumbersRouteImport.update({
+    id: '/_chapter-2/big-numbers',
+    path: '/big-numbers',
+    getParentRoute: () => LessonsRoute,
+  } as any)
 const LessonsChapter1XWaYDesuRoute = LessonsChapter1XWaYDesuRouteImport.update({
   id: '/_chapter-1/x-wa-y-desu',
   path: '/x-wa-y-desu',
@@ -377,7 +424,14 @@ export interface FileRoutesByFullPath {
   '/lessons/the-no-particle': typeof LessonsChapter1TheNoParticleRoute
   '/lessons/useful-expressions': typeof LessonsChapter1UsefulExpressionsRoute
   '/lessons/x-wa-y-desu': typeof LessonsChapter1XWaYDesuRoute
+  '/lessons/big-numbers': typeof LessonsChapter2BigNumbersRoute
+  '/lessons/dare': typeof LessonsChapter2DareRoute
+  '/lessons/ga-particle': typeof LessonsChapter2GaParticleRoute
+  '/lessons/janai': typeof LessonsChapter2JanaiRoute
+  '/lessons/japanese-money': typeof LessonsChapter2JapaneseMoneyRoute
   '/lessons/katakana': typeof LessonsChapter2KatakanaRoute
+  '/lessons/mo-particle': typeof LessonsChapter2MoParticleRoute
+  '/lessons/ne-yo-particles': typeof LessonsChapter2NeYoParticlesRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
@@ -424,7 +478,14 @@ export interface FileRoutesByTo {
   '/lessons/the-no-particle': typeof LessonsChapter1TheNoParticleRoute
   '/lessons/useful-expressions': typeof LessonsChapter1UsefulExpressionsRoute
   '/lessons/x-wa-y-desu': typeof LessonsChapter1XWaYDesuRoute
+  '/lessons/big-numbers': typeof LessonsChapter2BigNumbersRoute
+  '/lessons/dare': typeof LessonsChapter2DareRoute
+  '/lessons/ga-particle': typeof LessonsChapter2GaParticleRoute
+  '/lessons/janai': typeof LessonsChapter2JanaiRoute
+  '/lessons/japanese-money': typeof LessonsChapter2JapaneseMoneyRoute
   '/lessons/katakana': typeof LessonsChapter2KatakanaRoute
+  '/lessons/mo-particle': typeof LessonsChapter2MoParticleRoute
+  '/lessons/ne-yo-particles': typeof LessonsChapter2NeYoParticlesRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
@@ -473,7 +534,14 @@ export interface FileRoutesById {
   '/lessons/_chapter-1/the-no-particle': typeof LessonsChapter1TheNoParticleRoute
   '/lessons/_chapter-1/useful-expressions': typeof LessonsChapter1UsefulExpressionsRoute
   '/lessons/_chapter-1/x-wa-y-desu': typeof LessonsChapter1XWaYDesuRoute
+  '/lessons/_chapter-2/big-numbers': typeof LessonsChapter2BigNumbersRoute
+  '/lessons/_chapter-2/dare': typeof LessonsChapter2DareRoute
+  '/lessons/_chapter-2/ga-particle': typeof LessonsChapter2GaParticleRoute
+  '/lessons/_chapter-2/janai': typeof LessonsChapter2JanaiRoute
+  '/lessons/_chapter-2/japanese-money': typeof LessonsChapter2JapaneseMoneyRoute
   '/lessons/_chapter-2/katakana': typeof LessonsChapter2KatakanaRoute
+  '/lessons/_chapter-2/mo-particle': typeof LessonsChapter2MoParticleRoute
+  '/lessons/_chapter-2/ne-yo-particles': typeof LessonsChapter2NeYoParticlesRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/_home/learn/': typeof HomeLearnIndexRoute
   '/_home/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
@@ -522,7 +590,14 @@ export interface FileRouteTypes {
     | '/lessons/the-no-particle'
     | '/lessons/useful-expressions'
     | '/lessons/x-wa-y-desu'
+    | '/lessons/big-numbers'
+    | '/lessons/dare'
+    | '/lessons/ga-particle'
+    | '/lessons/janai'
+    | '/lessons/japanese-money'
     | '/lessons/katakana'
+    | '/lessons/mo-particle'
+    | '/lessons/ne-yo-particles'
     | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
@@ -569,7 +644,14 @@ export interface FileRouteTypes {
     | '/lessons/the-no-particle'
     | '/lessons/useful-expressions'
     | '/lessons/x-wa-y-desu'
+    | '/lessons/big-numbers'
+    | '/lessons/dare'
+    | '/lessons/ga-particle'
+    | '/lessons/janai'
+    | '/lessons/japanese-money'
     | '/lessons/katakana'
+    | '/lessons/mo-particle'
+    | '/lessons/ne-yo-particles'
     | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
@@ -617,7 +699,14 @@ export interface FileRouteTypes {
     | '/lessons/_chapter-1/the-no-particle'
     | '/lessons/_chapter-1/useful-expressions'
     | '/lessons/_chapter-1/x-wa-y-desu'
+    | '/lessons/_chapter-2/big-numbers'
+    | '/lessons/_chapter-2/dare'
+    | '/lessons/_chapter-2/ga-particle'
+    | '/lessons/_chapter-2/janai'
+    | '/lessons/_chapter-2/japanese-money'
     | '/lessons/_chapter-2/katakana'
+    | '/lessons/_chapter-2/mo-particle'
+    | '/lessons/_chapter-2/ne-yo-particles'
     | '/practice/$userID/$deckID'
     | '/_home/learn/'
     | '/_home/learn/$textbookId/$chapterSlug'
@@ -828,11 +917,60 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof PracticeUserIDDeckIDRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lessons/_chapter-2/ne-yo-particles': {
+      id: '/lessons/_chapter-2/ne-yo-particles'
+      path: '/ne-yo-particles'
+      fullPath: '/lessons/ne-yo-particles'
+      preLoaderRoute: typeof LessonsChapter2NeYoParticlesRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-2/mo-particle': {
+      id: '/lessons/_chapter-2/mo-particle'
+      path: '/mo-particle'
+      fullPath: '/lessons/mo-particle'
+      preLoaderRoute: typeof LessonsChapter2MoParticleRouteImport
+      parentRoute: typeof LessonsRoute
+    }
     '/lessons/_chapter-2/katakana': {
       id: '/lessons/_chapter-2/katakana'
       path: '/katakana'
       fullPath: '/lessons/katakana'
       preLoaderRoute: typeof LessonsChapter2KatakanaRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-2/japanese-money': {
+      id: '/lessons/_chapter-2/japanese-money'
+      path: '/japanese-money'
+      fullPath: '/lessons/japanese-money'
+      preLoaderRoute: typeof LessonsChapter2JapaneseMoneyRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-2/janai': {
+      id: '/lessons/_chapter-2/janai'
+      path: '/janai'
+      fullPath: '/lessons/janai'
+      preLoaderRoute: typeof LessonsChapter2JanaiRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-2/ga-particle': {
+      id: '/lessons/_chapter-2/ga-particle'
+      path: '/ga-particle'
+      fullPath: '/lessons/ga-particle'
+      preLoaderRoute: typeof LessonsChapter2GaParticleRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-2/dare': {
+      id: '/lessons/_chapter-2/dare'
+      path: '/dare'
+      fullPath: '/lessons/dare'
+      preLoaderRoute: typeof LessonsChapter2DareRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-2/big-numbers': {
+      id: '/lessons/_chapter-2/big-numbers'
+      path: '/big-numbers'
+      fullPath: '/lessons/big-numbers'
+      preLoaderRoute: typeof LessonsChapter2BigNumbersRouteImport
       parentRoute: typeof LessonsRoute
     }
     '/lessons/_chapter-1/x-wa-y-desu': {
@@ -1105,7 +1243,14 @@ interface LessonsRouteChildren {
   LessonsChapter1TheNoParticleRoute: typeof LessonsChapter1TheNoParticleRoute
   LessonsChapter1UsefulExpressionsRoute: typeof LessonsChapter1UsefulExpressionsRoute
   LessonsChapter1XWaYDesuRoute: typeof LessonsChapter1XWaYDesuRoute
+  LessonsChapter2BigNumbersRoute: typeof LessonsChapter2BigNumbersRoute
+  LessonsChapter2DareRoute: typeof LessonsChapter2DareRoute
+  LessonsChapter2GaParticleRoute: typeof LessonsChapter2GaParticleRoute
+  LessonsChapter2JanaiRoute: typeof LessonsChapter2JanaiRoute
+  LessonsChapter2JapaneseMoneyRoute: typeof LessonsChapter2JapaneseMoneyRoute
   LessonsChapter2KatakanaRoute: typeof LessonsChapter2KatakanaRoute
+  LessonsChapter2MoParticleRoute: typeof LessonsChapter2MoParticleRoute
+  LessonsChapter2NeYoParticlesRoute: typeof LessonsChapter2NeYoParticlesRoute
 }
 
 const LessonsRouteChildren: LessonsRouteChildren = {
@@ -1134,7 +1279,14 @@ const LessonsRouteChildren: LessonsRouteChildren = {
   LessonsChapter1TheNoParticleRoute: LessonsChapter1TheNoParticleRoute,
   LessonsChapter1UsefulExpressionsRoute: LessonsChapter1UsefulExpressionsRoute,
   LessonsChapter1XWaYDesuRoute: LessonsChapter1XWaYDesuRoute,
+  LessonsChapter2BigNumbersRoute: LessonsChapter2BigNumbersRoute,
+  LessonsChapter2DareRoute: LessonsChapter2DareRoute,
+  LessonsChapter2GaParticleRoute: LessonsChapter2GaParticleRoute,
+  LessonsChapter2JanaiRoute: LessonsChapter2JanaiRoute,
+  LessonsChapter2JapaneseMoneyRoute: LessonsChapter2JapaneseMoneyRoute,
   LessonsChapter2KatakanaRoute: LessonsChapter2KatakanaRoute,
+  LessonsChapter2MoParticleRoute: LessonsChapter2MoParticleRoute,
+  LessonsChapter2NeYoParticlesRoute: LessonsChapter2NeYoParticlesRoute,
 }
 
 const LessonsRouteWithChildren =

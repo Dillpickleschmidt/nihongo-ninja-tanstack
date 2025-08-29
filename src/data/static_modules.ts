@@ -156,9 +156,9 @@ export const static_modules: StaticModuleCollection = {
     link: "/lessons/janai",
     lesson_type: "lesson",
   },
-  "ne-yo": {
+  "ne-yo-particles": {
     title: "ね, よ",
-    link: "/lessons/ne-yo",
+    link: "/lessons/ne-yo-particles",
     lesson_type: "lesson",
   },
   "big-numbers": {

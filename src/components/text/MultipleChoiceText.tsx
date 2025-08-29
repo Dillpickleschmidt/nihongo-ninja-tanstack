@@ -38,17 +38,22 @@ export default function MultipleChoiceText(props: MultipleChoiceTextProps) {
   const renderOption = (option: string, text?: string) => {
     if (!text) return null
     return (
-      <p>
-        <span
-          class={`${getTextColorClass(option)} inline-block origin-left cursor-pointer px-3 py-[.0625rem] text-xl duration-100 ease-out hover:scale-[107%]`}
+      <div>
+        <p
+          class={`${getTextColorClass(option)} inline-block cursor-pointer`}
           onClick={() => handleClick(option)}
         >
-          {`${option}) `}
-          <span class={cn("font-japanese text-lg font-medium", props.class)}>
+          <span class="px-3 py-[.0625rem] text-lg">{`${option}) `}</span>
+          <span
+            class={cn(
+              "font-japanese origin-left text-lg font-medium duration-100 ease-out hover:scale-[107%]",
+              props.class,
+            )}
+          >
             {text}
           </span>
-        </span>
-      </p>
+        </p>
+      </div>
     )
   }
 
