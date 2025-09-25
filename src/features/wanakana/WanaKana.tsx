@@ -25,13 +25,13 @@ const findInputOrTextAreaElement = (
   return null
 }
 
-type WanaKanaWrapperProps = {
+type WanakanaWrapperProps = {
   children: JSX.Element
   enabled: boolean
   watch: any
 }
 
-const WanaKanaWrapper = (props: WanaKanaWrapperProps) => {
+const WanakanaWrapper = (props: WanakanaWrapperProps) => {
   const resolvedChildren = children(() => props.children)
   let wanakanaBoundElement: HTMLInputElement | HTMLTextAreaElement | null = null
 
@@ -75,4 +75,4 @@ const WanaKanaWrapper = (props: WanaKanaWrapperProps) => {
   return <>{resolvedChildren()}</>
 }
 
-export default WanaKanaWrapper
+export default WanakanaWrapper

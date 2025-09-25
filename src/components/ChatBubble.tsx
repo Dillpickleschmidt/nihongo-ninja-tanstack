@@ -1,15 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { JSX } from "solid-js"
+import { cn } from "@/utils"
 
-export function ChatBubble({
-  speaker,
-  text,
-}: {
+export function ChatBubble(props: {
   speaker: "student" | "sensei"
   text: string | JSX.Element
+  class?: JSX.ElementClass
 }) {
-  const isStudent = speaker === "student"
-
+  const isStudent = props.speaker === "student"
   return (
     <div
       class={`flex items-end gap-2 ${isStudent ? "justify-start" : "justify-end"}`}
@@ -21,13 +19,16 @@ export function ChatBubble({
         </Avatar>
       )}
       <div
-        class={`max-w-[75%] rounded-2xl px-4 py-2 text-sm leading-relaxed shadow-sm ${
-          isStudent
-            ? "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200"
-            : "bg-sky-500 text-white dark:bg-sky-600"
-        }`}
+        class={cn(
+          "max-w-[75%] rounded-2xl px-4 py-2 text-sm leading-relaxed shadow-sm",
+          props.class
+            ? props.class
+            : isStudent
+              ? "bg-slate-100 text-slate-800"
+              : "bg-sky-500 text-white",
+        )}
       >
-        {text}
+        {props.text}
       </div>
       {!isStudent && (
         <Avatar class="h-8 w-8 flex-shrink-0">
@@ -38,4 +39,3 @@ export function ChatBubble({
     </div>
   )
 }
-

@@ -31,6 +31,13 @@ import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-not
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeLearnIndexRouteImport } from './routes/_home/learn/index'
 import { Route as PracticeUserIDDeckIDRouteImport } from './routes/practice/$userID.$deckID'
+import { Route as LessonsChapter3WordOrderRouteImport } from './routes/lessons/_chapter-3/word-order'
+import { Route as LessonsChapter3VerbConjMasuRouteImport } from './routes/lessons/_chapter-3/verb-conj-masu'
+import { Route as LessonsChapter3PoliteInvitationsRouteImport } from './routes/lessons/_chapter-3/polite-invitations'
+import { Route as LessonsChapter3ODeNiEParticlesRouteImport } from './routes/lessons/_chapter-3/o-de-ni-e-particles'
+import { Route as LessonsChapter3NegativeMasuConjRouteImport } from './routes/lessons/_chapter-3/negative-masu-conj'
+import { Route as LessonsChapter3KanjiRadicalsRouteImport } from './routes/lessons/_chapter-3/kanji-radicals'
+import { Route as LessonsChapter3KanjiRouteImport } from './routes/lessons/_chapter-3/kanji'
 import { Route as LessonsChapter2NeYoParticlesRouteImport } from './routes/lessons/_chapter-2/ne-yo-particles'
 import { Route as LessonsChapter2MoParticleRouteImport } from './routes/lessons/_chapter-2/mo-particle'
 import { Route as LessonsChapter2KatakanaRouteImport } from './routes/lessons/_chapter-2/katakana'
@@ -171,6 +178,47 @@ const PracticeUserIDDeckIDRoute = PracticeUserIDDeckIDRouteImport.update({
   id: '/practice/$userID/$deckID',
   path: '/practice/$userID/$deckID',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsChapter3WordOrderRoute =
+  LessonsChapter3WordOrderRouteImport.update({
+    id: '/_chapter-3/word-order',
+    path: '/word-order',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter3VerbConjMasuRoute =
+  LessonsChapter3VerbConjMasuRouteImport.update({
+    id: '/_chapter-3/verb-conj-masu',
+    path: '/verb-conj-masu',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter3PoliteInvitationsRoute =
+  LessonsChapter3PoliteInvitationsRouteImport.update({
+    id: '/_chapter-3/polite-invitations',
+    path: '/polite-invitations',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter3ODeNiEParticlesRoute =
+  LessonsChapter3ODeNiEParticlesRouteImport.update({
+    id: '/_chapter-3/o-de-ni-e-particles',
+    path: '/o-de-ni-e-particles',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter3NegativeMasuConjRoute =
+  LessonsChapter3NegativeMasuConjRouteImport.update({
+    id: '/_chapter-3/negative-masu-conj',
+    path: '/negative-masu-conj',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter3KanjiRadicalsRoute =
+  LessonsChapter3KanjiRadicalsRouteImport.update({
+    id: '/_chapter-3/kanji-radicals',
+    path: '/kanji-radicals',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter3KanjiRoute = LessonsChapter3KanjiRouteImport.update({
+  id: '/_chapter-3/kanji',
+  path: '/kanji',
+  getParentRoute: () => LessonsRoute,
 } as any)
 const LessonsChapter2NeYoParticlesRoute =
   LessonsChapter2NeYoParticlesRouteImport.update({
@@ -432,6 +480,13 @@ export interface FileRoutesByFullPath {
   '/lessons/katakana': typeof LessonsChapter2KatakanaRoute
   '/lessons/mo-particle': typeof LessonsChapter2MoParticleRoute
   '/lessons/ne-yo-particles': typeof LessonsChapter2NeYoParticlesRoute
+  '/lessons/kanji': typeof LessonsChapter3KanjiRoute
+  '/lessons/kanji-radicals': typeof LessonsChapter3KanjiRadicalsRoute
+  '/lessons/negative-masu-conj': typeof LessonsChapter3NegativeMasuConjRoute
+  '/lessons/o-de-ni-e-particles': typeof LessonsChapter3ODeNiEParticlesRoute
+  '/lessons/polite-invitations': typeof LessonsChapter3PoliteInvitationsRoute
+  '/lessons/verb-conj-masu': typeof LessonsChapter3VerbConjMasuRoute
+  '/lessons/word-order': typeof LessonsChapter3WordOrderRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
@@ -486,6 +541,13 @@ export interface FileRoutesByTo {
   '/lessons/katakana': typeof LessonsChapter2KatakanaRoute
   '/lessons/mo-particle': typeof LessonsChapter2MoParticleRoute
   '/lessons/ne-yo-particles': typeof LessonsChapter2NeYoParticlesRoute
+  '/lessons/kanji': typeof LessonsChapter3KanjiRoute
+  '/lessons/kanji-radicals': typeof LessonsChapter3KanjiRadicalsRoute
+  '/lessons/negative-masu-conj': typeof LessonsChapter3NegativeMasuConjRoute
+  '/lessons/o-de-ni-e-particles': typeof LessonsChapter3ODeNiEParticlesRoute
+  '/lessons/polite-invitations': typeof LessonsChapter3PoliteInvitationsRoute
+  '/lessons/verb-conj-masu': typeof LessonsChapter3VerbConjMasuRoute
+  '/lessons/word-order': typeof LessonsChapter3WordOrderRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
@@ -542,6 +604,13 @@ export interface FileRoutesById {
   '/lessons/_chapter-2/katakana': typeof LessonsChapter2KatakanaRoute
   '/lessons/_chapter-2/mo-particle': typeof LessonsChapter2MoParticleRoute
   '/lessons/_chapter-2/ne-yo-particles': typeof LessonsChapter2NeYoParticlesRoute
+  '/lessons/_chapter-3/kanji': typeof LessonsChapter3KanjiRoute
+  '/lessons/_chapter-3/kanji-radicals': typeof LessonsChapter3KanjiRadicalsRoute
+  '/lessons/_chapter-3/negative-masu-conj': typeof LessonsChapter3NegativeMasuConjRoute
+  '/lessons/_chapter-3/o-de-ni-e-particles': typeof LessonsChapter3ODeNiEParticlesRoute
+  '/lessons/_chapter-3/polite-invitations': typeof LessonsChapter3PoliteInvitationsRoute
+  '/lessons/_chapter-3/verb-conj-masu': typeof LessonsChapter3VerbConjMasuRoute
+  '/lessons/_chapter-3/word-order': typeof LessonsChapter3WordOrderRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/_home/learn/': typeof HomeLearnIndexRoute
   '/_home/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
@@ -598,6 +667,13 @@ export interface FileRouteTypes {
     | '/lessons/katakana'
     | '/lessons/mo-particle'
     | '/lessons/ne-yo-particles'
+    | '/lessons/kanji'
+    | '/lessons/kanji-radicals'
+    | '/lessons/negative-masu-conj'
+    | '/lessons/o-de-ni-e-particles'
+    | '/lessons/polite-invitations'
+    | '/lessons/verb-conj-masu'
+    | '/lessons/word-order'
     | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
@@ -652,6 +728,13 @@ export interface FileRouteTypes {
     | '/lessons/katakana'
     | '/lessons/mo-particle'
     | '/lessons/ne-yo-particles'
+    | '/lessons/kanji'
+    | '/lessons/kanji-radicals'
+    | '/lessons/negative-masu-conj'
+    | '/lessons/o-de-ni-e-particles'
+    | '/lessons/polite-invitations'
+    | '/lessons/verb-conj-masu'
+    | '/lessons/word-order'
     | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
@@ -707,6 +790,13 @@ export interface FileRouteTypes {
     | '/lessons/_chapter-2/katakana'
     | '/lessons/_chapter-2/mo-particle'
     | '/lessons/_chapter-2/ne-yo-particles'
+    | '/lessons/_chapter-3/kanji'
+    | '/lessons/_chapter-3/kanji-radicals'
+    | '/lessons/_chapter-3/negative-masu-conj'
+    | '/lessons/_chapter-3/o-de-ni-e-particles'
+    | '/lessons/_chapter-3/polite-invitations'
+    | '/lessons/_chapter-3/verb-conj-masu'
+    | '/lessons/_chapter-3/word-order'
     | '/practice/$userID/$deckID'
     | '/_home/learn/'
     | '/_home/learn/$textbookId/$chapterSlug'
@@ -916,6 +1006,55 @@ declare module '@tanstack/solid-router' {
       fullPath: '/practice/$userID/$deckID'
       preLoaderRoute: typeof PracticeUserIDDeckIDRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/lessons/_chapter-3/word-order': {
+      id: '/lessons/_chapter-3/word-order'
+      path: '/word-order'
+      fullPath: '/lessons/word-order'
+      preLoaderRoute: typeof LessonsChapter3WordOrderRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-3/verb-conj-masu': {
+      id: '/lessons/_chapter-3/verb-conj-masu'
+      path: '/verb-conj-masu'
+      fullPath: '/lessons/verb-conj-masu'
+      preLoaderRoute: typeof LessonsChapter3VerbConjMasuRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-3/polite-invitations': {
+      id: '/lessons/_chapter-3/polite-invitations'
+      path: '/polite-invitations'
+      fullPath: '/lessons/polite-invitations'
+      preLoaderRoute: typeof LessonsChapter3PoliteInvitationsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-3/o-de-ni-e-particles': {
+      id: '/lessons/_chapter-3/o-de-ni-e-particles'
+      path: '/o-de-ni-e-particles'
+      fullPath: '/lessons/o-de-ni-e-particles'
+      preLoaderRoute: typeof LessonsChapter3ODeNiEParticlesRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-3/negative-masu-conj': {
+      id: '/lessons/_chapter-3/negative-masu-conj'
+      path: '/negative-masu-conj'
+      fullPath: '/lessons/negative-masu-conj'
+      preLoaderRoute: typeof LessonsChapter3NegativeMasuConjRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-3/kanji-radicals': {
+      id: '/lessons/_chapter-3/kanji-radicals'
+      path: '/kanji-radicals'
+      fullPath: '/lessons/kanji-radicals'
+      preLoaderRoute: typeof LessonsChapter3KanjiRadicalsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-3/kanji': {
+      id: '/lessons/_chapter-3/kanji'
+      path: '/kanji'
+      fullPath: '/lessons/kanji'
+      preLoaderRoute: typeof LessonsChapter3KanjiRouteImport
+      parentRoute: typeof LessonsRoute
     }
     '/lessons/_chapter-2/ne-yo-particles': {
       id: '/lessons/_chapter-2/ne-yo-particles'
@@ -1251,6 +1390,13 @@ interface LessonsRouteChildren {
   LessonsChapter2KatakanaRoute: typeof LessonsChapter2KatakanaRoute
   LessonsChapter2MoParticleRoute: typeof LessonsChapter2MoParticleRoute
   LessonsChapter2NeYoParticlesRoute: typeof LessonsChapter2NeYoParticlesRoute
+  LessonsChapter3KanjiRoute: typeof LessonsChapter3KanjiRoute
+  LessonsChapter3KanjiRadicalsRoute: typeof LessonsChapter3KanjiRadicalsRoute
+  LessonsChapter3NegativeMasuConjRoute: typeof LessonsChapter3NegativeMasuConjRoute
+  LessonsChapter3ODeNiEParticlesRoute: typeof LessonsChapter3ODeNiEParticlesRoute
+  LessonsChapter3PoliteInvitationsRoute: typeof LessonsChapter3PoliteInvitationsRoute
+  LessonsChapter3VerbConjMasuRoute: typeof LessonsChapter3VerbConjMasuRoute
+  LessonsChapter3WordOrderRoute: typeof LessonsChapter3WordOrderRoute
 }
 
 const LessonsRouteChildren: LessonsRouteChildren = {
@@ -1287,6 +1433,13 @@ const LessonsRouteChildren: LessonsRouteChildren = {
   LessonsChapter2KatakanaRoute: LessonsChapter2KatakanaRoute,
   LessonsChapter2MoParticleRoute: LessonsChapter2MoParticleRoute,
   LessonsChapter2NeYoParticlesRoute: LessonsChapter2NeYoParticlesRoute,
+  LessonsChapter3KanjiRoute: LessonsChapter3KanjiRoute,
+  LessonsChapter3KanjiRadicalsRoute: LessonsChapter3KanjiRadicalsRoute,
+  LessonsChapter3NegativeMasuConjRoute: LessonsChapter3NegativeMasuConjRoute,
+  LessonsChapter3ODeNiEParticlesRoute: LessonsChapter3ODeNiEParticlesRoute,
+  LessonsChapter3PoliteInvitationsRoute: LessonsChapter3PoliteInvitationsRoute,
+  LessonsChapter3VerbConjMasuRoute: LessonsChapter3VerbConjMasuRoute,
+  LessonsChapter3WordOrderRoute: LessonsChapter3WordOrderRoute,
 }
 
 const LessonsRouteWithChildren =
