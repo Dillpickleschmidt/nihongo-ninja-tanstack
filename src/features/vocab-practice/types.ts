@@ -15,9 +15,9 @@ export type PracticeMode = "meanings" | "spellings"
 export type PracticeSessionMode = "mixed" | "focused"
 
 export type Settings = {
-  shuffleInput: boolean
+  shuffleAnswers: boolean
   enabledAnswerCategories: string[]
-  enablePrerequisites: boolean
+  enableKanjiRadicalPrereqs: boolean
   flipVocabQA: boolean
   flipKanjiRadicalQA: boolean
 }

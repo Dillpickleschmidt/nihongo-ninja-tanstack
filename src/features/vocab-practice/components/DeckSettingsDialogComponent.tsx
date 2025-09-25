@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { useVocabPracticeContext } from "../context/VocabPracticeContext"
 import { Label } from "@/components/ui/label"
+import { useSettings } from "@/context/SettingsContext"
 
 type DeckSettingsDialogProps = {
   children: JSX.Element
@@ -22,12 +23,10 @@ export default function DeckSettingsDialogComponent(
   props: DeckSettingsDialogProps,
 ) {
   const { uiState, setUIState } = useVocabPracticeContext()
+  const { deviceUISettings } = useSettings()
   const [open, setOpen] = createSignal(false)
 
-  // Default values for the toggles
-  const DEFAULT_FLIP_VOCAB_QA = false
-  const DEFAULT_FLIP_KANJI_RADICAL_QA = true
-  const DEFAULT_ENABLE_PREREQUISITES = true
+  const defaults = deviceUISettings().routes["vocab-practice"]
 
   const handleOkClick = () => {
     setOpen(false)
@@ -46,33 +45,37 @@ export default function DeckSettingsDialogComponent(
         <div class="grid gap-4 py-4">
           <div class="flex items-center space-x-2">
             <Checkbox
-              checked={uiState.settings.shuffleInput}
+              checked={uiState.settings.shuffleAnswers}
               onChange={(isChecked) =>
-                setUIState("settings", "shuffleInput", isChecked)
+                setUIState("settings", "shuffleAnswers", isChecked)
               }
-              id="shuffle-input"
+              id="shuffle-answers"
             />
-            <Label for="shuffle-input">Shuffle answer choices</Label>
+            <Label for="shuffle-answers">Shuffle answer choices</Label>
           </div>
 
           <div class="flex items-center space-x-2">
             <Checkbox
-              checked={uiState.settings.enablePrerequisites}
+              checked={uiState.settings.enableKanjiRadicalPrereqs}
               onChange={(isChecked) =>
-                setUIState("settings", "enablePrerequisites", isChecked)
+                setUIState("settings", "enableKanjiRadicalPrereqs", isChecked)
               }
-              id="enable-prerequisites"
+              id="enable-kanji-radical-prereqs"
             />
-            <Label for="enable-prerequisites" class="flex items-center gap-2">
+            <Label
+              for="enable-kanji-radical-prereqs"
+              class="flex items-center gap-2"
+            >
               Enable Kanji/Radical Prerequisites
               <Show
                 when={
-                  uiState.settings.enablePrerequisites !==
-                  DEFAULT_ENABLE_PREREQUISITES
+                  uiState.settings.enableKanjiRadicalPrereqs !==
+                  defaults["enable-kanji-radical-prereqs"]
                 }
               >
                 <span class="text-muted-foreground text-xs italic">
-                  (Default: {DEFAULT_ENABLE_PREREQUISITES ? "On" : "Off"})
+                  (Default:{" "}
+                  {defaults["enable-kanji-radical-prereqs"] ? "On" : "Off"})
                 </span>
               </Show>
             </Label>
@@ -89,17 +92,19 @@ export default function DeckSettingsDialogComponent(
             <Label for="flip-vocab-qa" class="flex items-center gap-2">
               Flip Vocabulary Q/A
               <Show
-                when={uiState.settings.flipVocabQA !== DEFAULT_FLIP_VOCAB_QA}
+                when={
+                  uiState.settings.flipVocabQA !== defaults["flip-vocab-qa"]
+                }
               >
                 <span class="text-muted-foreground text-xs italic">
-                  (Default: {DEFAULT_FLIP_VOCAB_QA ? "On" : "Off"})
+                  (Default: {defaults["flip-vocab-qa"] ? "On" : "Off"})
                 </span>
               </Show>
             </Label>
           </div>
 
           {/* CONDITIONAL: Hide flipKanjiRadicalQA when prerequisites are disabled */}
-          <Show when={uiState.settings.enablePrerequisites}>
+          <Show when={uiState.settings.enableKanjiRadicalPrereqs}>
             <div class="flex items-center space-x-2">
               <Checkbox
                 checked={uiState.settings.flipKanjiRadicalQA}
@@ -116,11 +121,12 @@ export default function DeckSettingsDialogComponent(
                 <Show
                   when={
                     uiState.settings.flipKanjiRadicalQA !==
-                    DEFAULT_FLIP_KANJI_RADICAL_QA
+                    defaults["flip-kanji-radical-qa"]
                   }
                 >
                   <span class="text-muted-foreground text-xs italic">
-                    (Default: {DEFAULT_FLIP_KANJI_RADICAL_QA ? "On" : "Off"})
+                    (Default: {defaults["flip-kanji-radical-qa"] ? "On" : "Off"}
+                    )
                   </span>
                 </Show>
               </Label>

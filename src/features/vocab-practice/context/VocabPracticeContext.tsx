@@ -9,6 +9,7 @@ import {
 import { createStore, SetStoreFunction } from "solid-js/store"
 import type { Settings, CurrentPage } from "../types"
 import { Rating } from "ts-fsrs"
+import { useSettings } from "@/context/SettingsContext"
 import {
   usePracticeManager,
   type PracticeManagerHook,
@@ -66,6 +67,10 @@ type ContextProviderProps = {
 }
 
 export function VocabPracticeContextProvider(props: ContextProviderProps) {
+  // Get default settings from SettingsContext
+  const { deviceUISettings } = useSettings()
+  const practiceDefaults = deviceUISettings().routes["vocab-practice"]
+
   // UI-only state store
   const [uiState, setUIState] = createStore<UIState>({
     currentPage: "start",
@@ -74,11 +79,12 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     isAnswered: false,
     lastRating: null,
     settings: {
-      shuffleInput: true,
+      shuffleAnswers: practiceDefaults["shuffle-answers"],
       enabledAnswerCategories: [],
-      enablePrerequisites: true,
-      flipVocabQA: false,
-      flipKanjiRadicalQA: true,
+      enableKanjiRadicalPrereqs:
+        practiceDefaults["enable-kanji-radical-prereqs"],
+      flipVocabQA: practiceDefaults["flip-vocab-qa"],
+      flipKanjiRadicalQA: practiceDefaults["flip-kanji-radical-qa"],
     },
   })
 

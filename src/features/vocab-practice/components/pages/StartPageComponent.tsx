@@ -89,7 +89,8 @@ export default function StartPageComponent(props: StartPageProps) {
 
   const flipVocabQA = () => uiState.settings.flipVocabQA
   const flipKanjiRadicalQA = () => uiState.settings.flipKanjiRadicalQA
-  const enablePrerequisites = () => uiState.settings.enablePrerequisites
+  const enableKanjiRadicalPrereqs = () =>
+    uiState.settings.enableKanjiRadicalPrereqs
 
   const [moduleFSRS] = createResource(
     () => props.moduleFSRSCards,
@@ -124,8 +125,8 @@ export default function StartPageComponent(props: StartPageProps) {
         props.moduleVocabulary,
         flipVocabQA(),
         flipKanjiRadicalQA(),
-        uiState.settings.shuffleInput,
-        enablePrerequisites(),
+        uiState.settings.shuffleAnswers,
+        enableKanjiRadicalPrereqs(),
         sessionMode() === "mixed",
       )
 
@@ -143,7 +144,7 @@ export default function StartPageComponent(props: StartPageProps) {
 
   const hierarchicalOrder = () =>
     props.hierarchy
-      ? getHierarchicalOrder(props.hierarchy, enablePrerequisites())
+      ? getHierarchicalOrder(props.hierarchy, enableKanjiRadicalPrereqs())
       : []
 
   const moduleItems = createMemo(() => {
@@ -176,7 +177,7 @@ export default function StartPageComponent(props: StartPageProps) {
     ).length
 
   const headerText = () =>
-    enablePrerequisites() && kanjiRadicalCount() > 0
+    enableKanjiRadicalPrereqs() && kanjiRadicalCount() > 0
       ? `${vocabCount()} vocabulary (+${kanjiRadicalCount()} kanji/radicals)`
       : `${vocabCount()} vocabulary`
 

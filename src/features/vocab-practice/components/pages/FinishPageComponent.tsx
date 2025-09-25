@@ -61,14 +61,15 @@ export default function FinishPageComponent() {
   const { uiState, cardMap, dependencyMap, getManagerState } =
     useVocabPracticeContext()
 
-  const enablePrerequisites = () => uiState.settings.enablePrerequisites
+  const enableKanjiRadicalPrereqs = () =>
+    uiState.settings.enableKanjiRadicalPrereqs
 
   // Get hierarchically ordered module cards
   const moduleCards = createMemo(() => {
     const hierarchicalOrder = getHierarchicalOrder(
       cardMap(),
       dependencyMap(),
-      enablePrerequisites(),
+      enableKanjiRadicalPrereqs(),
     )
     return hierarchicalOrder
       .map((key) => cardMap().get(key))
