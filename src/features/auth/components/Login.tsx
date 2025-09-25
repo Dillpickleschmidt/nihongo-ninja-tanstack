@@ -9,11 +9,13 @@ export default function Login({ callbackName }: { callbackName: string }) {
     // Register the callback globally only in the browser
     ;(window as any)[callbackName] = (response: { credential: string }) => {
       setCredential(response.credential)
-      document
-        .getElementById("google-login-form")
-        ?.dispatchEvent(
-          new Event("submit", { cancelable: true, bubbles: true }),
-        )
+
+      const form = document.getElementById(
+        "google-login-form",
+      ) as HTMLFormElement
+      if (form) {
+        form.submit()
+      }
     }
 
     const script = document.createElement("script")
