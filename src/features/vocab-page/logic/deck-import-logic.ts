@@ -6,6 +6,7 @@
  */
 
 import { findOrCreateFolderPath } from "./folder-hierarchy"
+import { dynamic_modules } from "@/data/dynamic_modules"
 import type { VocabBuiltInDeck, VocabTextbook } from "../types"
 
 /**
@@ -78,6 +79,12 @@ export function createUserDeckFromBuiltIn(
   deckTitle: string,
   userId: string = "temp-user-id",
 ): UserDeck {
+  const module = dynamic_modules[builtInDeck.id]
+  const allowedPracticeModes = module?.allowed_practice_modes || [
+    "meanings",
+    "spellings",
+  ]
+
   return {
     deck_id: -Date.now(), // Negative temporary ID to avoid conflicts with positive database IDs
     deck_name: deckTitle,
@@ -87,6 +94,7 @@ export function createUserDeckFromBuiltIn(
     source: "built-in",
     user_id: userId,
     created_at: new Date().toISOString(),
+    allowed_practice_modes: allowedPracticeModes,
   }
 }
 

@@ -33,7 +33,7 @@ export function saveFoldersAndDecks(data: FoldersAndDecksData): void {
 export function loadFoldersAndDecks(): FoldersAndDecksData {
   // Return empty state during SSR
   if (isServer) {
-    return { folders: [], decks: [] }
+    return { folders: [], decks: [], shareStatus: {} }
   }
 
   try {
@@ -47,7 +47,7 @@ export function loadFoldersAndDecks(): FoldersAndDecksData {
   }
 
   // Return empty state if no data or error
-  return { folders: [], decks: [] }
+  return { folders: [], decks: [], shareStatus: {} }
 }
 
 /**
