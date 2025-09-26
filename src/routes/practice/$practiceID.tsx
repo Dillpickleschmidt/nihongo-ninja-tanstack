@@ -129,6 +129,7 @@ export const Route = createFileRoute("/practice/$practiceID")({
         moduleVocabulary,
         deckName: getModuleTitleFromPath(params.practiceID),
         mode,
+        user: context.user,
       }
     } catch (error) {
       console.error(error)
@@ -161,6 +162,7 @@ function RouteComponent() {
       moduleVocabulary={data().moduleVocabulary}
       deckName={data().deckName}
       mode={data().mode}
+      user={data().user}
     />
   )
 }

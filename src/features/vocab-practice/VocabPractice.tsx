@@ -15,6 +15,7 @@ import type { FSRSCardData } from "../supabase/db/fsrs"
 import type { VocabHierarchy as CleanVocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { VocabularyItem } from "@/data/types"
 import type { DeferredPromise } from "@tanstack/solid-router"
+import type { User } from "@supabase/supabase-js"
 
 type VocabPracticeProps = {
   hierarchy: CleanVocabHierarchy | null
@@ -25,11 +26,12 @@ type VocabPracticeProps = {
   moduleVocabulary: VocabularyItem[]
   deckName: string | JSX.Element
   mode: PracticeMode
+  user: User | null
 }
 
 export default function VocabPractice(props: VocabPracticeProps) {
   return (
-    <VocabPracticeContextProvider>
+    <VocabPracticeContextProvider user={props.user}>
       <VocabPracticeContent
         deckName={props.deckName}
         hierarchy={props.hierarchy}
@@ -39,6 +41,7 @@ export default function VocabPractice(props: VocabPracticeProps) {
         hierarchySvgs={props.hierarchySvgs}
         moduleVocabulary={props.moduleVocabulary}
         mode={props.mode}
+        user={props.user}
       />
     </VocabPracticeContextProvider>
   )

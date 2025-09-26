@@ -10,6 +10,7 @@ import { createStore, SetStoreFunction } from "solid-js/store"
 import type { Settings, CurrentPage } from "../types"
 import { Rating } from "ts-fsrs"
 import { useSettings } from "@/context/SettingsContext"
+import type { User } from "@supabase/supabase-js"
 import {
   usePracticeManager,
   type PracticeManagerHook,
@@ -64,6 +65,7 @@ const VocabPracticeContext = createContext<VocabPracticeContextType>()
 
 type ContextProviderProps = {
   children: JSX.Element
+  user: User | null
 }
 
 export function VocabPracticeContextProvider(props: ContextProviderProps) {
@@ -81,8 +83,9 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     settings: {
       shuffleAnswers: practiceDefaults["shuffle-answers"],
       enabledAnswerCategories: [],
-      enableKanjiRadicalPrereqs:
-        practiceDefaults["enable-kanji-radical-prereqs"],
+      enableKanjiRadicalPrereqs: !!props.user
+        ? practiceDefaults["enable-kanji-radical-prereqs"]
+        : false, // Always disabled for unauthenticated users
       flipVocabQA: practiceDefaults["flip-vocab-qa"],
       flipKanjiRadicalQA: practiceDefaults["flip-kanji-radical-qa"],
     },
