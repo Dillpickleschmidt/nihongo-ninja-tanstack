@@ -41,13 +41,12 @@ export default function VocabPractice(props: VocabPracticeProps) {
         hierarchySvgs={props.hierarchySvgs}
         moduleVocabulary={props.moduleVocabulary}
         mode={props.mode}
-        user={props.user}
       />
     </VocabPracticeContextProvider>
   )
 }
 
-type VocabPracticeContentProps = VocabPracticeProps
+type VocabPracticeContentProps = Omit<VocabPracticeProps, "user">
 
 function VocabPracticeContent(props: VocabPracticeContentProps) {
   const { uiState } = useVocabPracticeContext()
