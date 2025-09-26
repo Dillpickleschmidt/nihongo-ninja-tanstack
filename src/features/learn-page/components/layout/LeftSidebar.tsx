@@ -1,4 +1,4 @@
-// featuers/learn-page/components/layout/LeftSidebar.tsx
+// features/learn-page/components/layout/LeftSidebar.tsx
 import { createSignal } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
 import { useSettings } from "@/context/SettingsContext"

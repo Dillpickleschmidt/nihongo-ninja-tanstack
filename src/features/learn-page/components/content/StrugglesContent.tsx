@@ -12,7 +12,7 @@ interface StrugglesContentProps {
 export function StrugglesContent(props: StrugglesContentProps) {
   const { struggles } = useLearnPageData()
   const variant = props.variant || "desktop"
-  const maxItems = props.maxItems || 5
+  const maxItems = props.maxItems || 4
   const { animateOnDataChange } = useAnimationManager()
 
   // Centralized animation management - trigger when struggles data changes (desktop only)
@@ -60,14 +60,11 @@ export function StrugglesContent(props: StrugglesContentProps) {
 
   // Desktop variant
   return (
-    <div
-      data-animate="struggles"
-      class="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/10 to-cyan-600/5 p-5 backdrop-blur-sm"
-    >
+    <div data-animate="struggles" class="p-4">
       <div class="mb-4 flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <Brain class="h-5 w-5 text-red-400" />
-          <h3 class="text-lg font-semibold">Areas to Improve</h3>
+          <Brain class="text-muted-foreground h-5 w-5" />
+          <h3 class="font-semibold">Areas to Improve</h3>
         </div>
         <span class="text-muted-foreground text-xs">
           {Math.min(maxItems, struggles.length)} items

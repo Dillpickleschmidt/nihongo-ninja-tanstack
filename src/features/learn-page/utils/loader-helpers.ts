@@ -185,12 +185,14 @@ export function getModuleIcon(moduleType: string) {
     reading: BookOpenText,
     "vocab-list": Library,
     "vocab-test": GraduationCap,
+    kanji: Library,
+    "listening-material": Volume2,
+    misc: BookOpen,
   }
   return iconComponents[moduleType] || BookOpen
 }
 
-function getModuleIconClasses(moduleType: string) {
-  // ... (implementation from previous refactor)
+export function getModuleIconClasses(moduleType: string) {
   const iconClasses = {
     lesson: "text-green-600 dark:text-green-500",
     worksheet: "text-teal-500 dark:text-teal-400",
@@ -207,12 +209,14 @@ function getModuleIconClasses(moduleType: string) {
     reading: "text-teal-500 dark:text-teal-400",
     "vocab-list": "text-sky-500 dark:text-sky-400 saturate-[75%]",
     "vocab-test": "text-yellow-600 dark:text-yellow-500 saturate-[75%]",
+    kanji: "text-indigo-600 dark:text-indigo-400",
+    "listening-material": "text-purple-500 dark:text-purple-400",
+    misc: "text-gray-600 dark:text-gray-500",
   }
   return iconClasses[moduleType] || "text-gray-600 dark:text-gray-500"
 }
 
 function getModuleGradient(moduleType: string) {
-  // ... (implementation from previous refactor)
   const gradientClasses = {
     lesson: "bg-gradient-to-br from-green-500/10 via-card to-green-600/5",
     worksheet: "bg-gradient-to-br from-teal-400/10 via-card to-teal-500/5",
@@ -261,7 +265,11 @@ function getModuleLightBackground(moduleType: string) {
 }
 
 export function enrichLessons(
-  lessons: { lesson: StaticModule | DynamicModule; key: string; disabled?: boolean }[],
+  lessons: {
+    lesson: StaticModule | DynamicModule
+    key: string
+    disabled?: boolean
+  }[],
 ): EnrichedLearningPathModule[] {
   return lessons.map(({ lesson, key, disabled }) => {
     const moduleType = getModuleType(lesson)

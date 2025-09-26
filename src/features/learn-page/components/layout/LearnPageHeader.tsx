@@ -1,6 +1,6 @@
 // features/learn-page/components/layout/LearnPageHeader.tsx
 import { Link, useNavigate, Await } from "@tanstack/solid-router"
-import { createSignal } from "solid-js"
+import { createSignal, Show } from "solid-js"
 import { useSettings } from "@/context/SettingsContext"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -12,7 +12,9 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
-import { MobileNavigationSheet } from "./MobileNavigationSheet"
+import { NavigationSheet } from "./NavigationSheet"
+import { HamburgerIcon } from "../shared/HamburgerIcon"
+import { UserActions } from "../shared/UserActions"
 import type { User } from "@supabase/supabase-js"
 import type { MobileContentView } from "./LearnPageContent"
 import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
@@ -57,66 +59,13 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
     setIsPopoverOpen(false)
   }
 
-  // Component for rendering due cards count
-  const DueCardsDisplay = () => {
-    if (!props.user) {
-      return null
-    }
-
-    return (
-      <Await
-        promise={dueFSRSCardsCount}
-        fallback={
-          <>
-            <div class="text-gray-400">
-              <span class="font-inter text-base font-bold xl:text-lg">...</span>
-            </div>
-            <div class="text-muted-foreground text-xs xl:text-sm">
-              Loading...
-            </div>
-          </>
-        }
-      >
-        {(count) => (
-          <>
-            <div
-              class={count && count > 0 ? "text-amber-400" : "text-green-500"}
-            >
-              <span class="font-inter text-base font-bold xl:text-lg">
-                {count || 0}
-              </span>
-            </div>
-            <div class="text-muted-foreground text-xs xl:text-sm">
-              {count === 0
-                ? "No reviews"
-                : `${count === 1 ? "Review" : "Reviews"} Due`}
-            </div>
-          </>
-        )}
-      </Await>
-    )
-  }
-
-  if (props.variant === "mobile") {
-    return (
-      <Sheet>
+  return (
+    <Sheet>
+      {props.variant === "mobile" ? (
         <div class="grid grid-cols-3 pt-5 pb-3 text-xl font-bold">
           <div class="ml-8 flex">
             <SheetTrigger>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="h-6 w-6"
-              >
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
-              </svg>
+              <HamburgerIcon size="md" />
             </SheetTrigger>
           </div>
 
@@ -150,71 +99,59 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
 
           <div class="flex justify-center">
             <div class="min-w-20 text-center">
-              {!props.user ? (
-                <Button as={Link} to="/auth" variant="link" class="italic">
-                  Sign In
-                </Button>
-              ) : (
-                <DueCardsDisplay />
-              )}
+              <UserActions
+                user={props.user}
+                variant="mobile"
+                dueFSRSCardsCount={dueFSRSCardsCount}
+              />
             </div>
           </div>
         </div>
+      ) : (
+        // Desktop variant
+        <div class="px-8 pt-8">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <SheetTrigger class="mr-2">
+                <HamburgerIcon size="md" />
+              </SheetTrigger>
+              <Link to="/" class="flex items-center gap-3">
+                <Avatar class="h-11 w-11">
+                  <AvatarImage src="/icons/ninja.png" class="h-full w-full" />
+                  <AvatarFallback>N</AvatarFallback>
+                </Avatar>
+                <span class="text-foreground/90 text-lg font-semibold">
+                  Learn Page
+                </span>
+              </Link>
+            </div>
 
-        <SheetContent
-          class="data-[closed=]:duration-300 data-[expanded=]:duration-200"
-          position="left"
-        >
+            <div class="flex items-center gap-6">
+              <UserActions
+                user={props.user}
+                variant="desktop"
+                dueFSRSCardsCount={dueFSRSCardsCount}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <SheetContent
+        class="data-[closed=]:duration-300 data-[expanded=]:duration-200"
+        position="left"
+      >
+        <Show when={props.variant === "mobile"}>
           <SheetHeader>
             <SheetTitle>Navigation</SheetTitle>
           </SheetHeader>
-          <MobileNavigationSheet
-            activeView={props.mobileContentView || "learning-path"}
-            setActiveView={props.setMobileContentView}
-          />
-        </SheetContent>
-      </Sheet>
-    )
-  }
-
-  // Desktop variant
-  return (
-    <div class="px-8 pt-8">
-      <div class="flex items-center justify-between">
-        <Link to="/" class="flex items-center gap-3">
-          <Avatar class="h-11 w-11">
-            <AvatarImage src="/icons/ninja.png" class="h-full w-full" />
-            <AvatarFallback>N</AvatarFallback>
-          </Avatar>
-          <span class="text-foreground/90 text-lg font-semibold">
-            Learn Page
-          </span>
-        </Link>
-
-        <div class="flex items-center gap-6">
-          {!props.user ? (
-            <Button
-              as={Link}
-              to="/auth"
-              variant="link"
-              class="mr-8 font-bold italic xl:text-base"
-            >
-              Sign In
-            </Button>
-          ) : (
-            <>
-              <div class="text-center">
-                <div class="text-xl font-bold text-green-400">12</div>
-                <div class="text-muted-foreground text-xs">Completed</div>
-              </div>
-
-              <div class="text-center">
-                <DueCardsDisplay />
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
+        </Show>
+        <NavigationSheet
+          activeView={props.mobileContentView || "learning-path"}
+          setActiveView={props.setMobileContentView}
+          variant={props.variant}
+        />
+      </SheetContent>
+    </Sheet>
   )
 }

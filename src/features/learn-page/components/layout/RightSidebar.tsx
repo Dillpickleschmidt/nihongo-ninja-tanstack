@@ -13,13 +13,12 @@ export function RightSidebar(props: RightSidebarProps) {
 
   // Desktop variant
   return (
-    <div data-right-sidebar class="space-y-4 overflow-x-hidden pb-3">
-      {/* Recent Activity Section */}
-      {/* <HistoryContent variant="desktop" maxItems={4} /> */}
-
-      {/* Struggle Areas */}
-      {/* <StrugglesContent variant="desktop" maxItems={5} /> */}
-      <h3 class="text-muted-foreground mb-2 text-center text-lg font-semibold">
+    <div
+      data-right-sidebar
+      class="flex h-full flex-col space-y-6 overflow-x-hidden pb-3"
+    >
+      {/* <StrugglesContent variant="desktop" /> */}
+      <h3 class="text-muted-foreground text-center">
         Your review history here, coming soon.
       </h3>
     </div>
