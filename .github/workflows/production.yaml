@@ -1,21 +1,15 @@
-name: Staging Deploy via SST to AWS
+name: Production Deploy via SST to AWS
 
 on:
-  workflow_dispatch:
-  push:
+  pull_request:
     branches:
-      - "main"
-    paths:
-      - ".github/workflows/stage.yaml"
-      - "src/**"
-      - "*.json"
-      - "*.yaml"
-      - "*.json"
-      - "*.config.js"
-      - "*.config.ts"
+      - "production"
+    types:
+      - closed
 
 jobs:
   deploy:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -48,22 +42,16 @@ jobs:
 
       - name: Set SST Config Secret
         run: |
-          bunx sst secret set SUPABASE_URL '${{ secrets.SUPABASE_URL_STAGING }}' --stage staging
-          bunx sst secret set SUPABASE_PUBLISHABLE_OR_ANON_KEY '${{ secrets.SUPABASE_PUBLISHABLE_OR_ANON_KEY_STAGING }}' --stage staging
-          bunx sst secret set SECRET_VAL '${{ secrets.SECRET_VAL }}' --stage staging
-          bunx sst secret set COMMIT_SHA '${{ github.sha }}' --stage staging
+          bunx sst secret set SUPABASE_URL '${{ secrets.SUPABASE_URL_PRODUCTION }}' --stage production
+          bunx sst secret set SUPABASE_PUBLISHABLE_OR_ANON_KEY '${{ secrets.SUPABASE_PUBLISHABLE_OR_ANON_KEY_PRODUCTION }}' --stage production
+          bunx sst secret set SECRET_VAL '${{ secrets.SECRET_VAL }}' --stage production
+          bunx sst secret set COMMIT_SHA '${{ github.sha }}' --stage production
 
       - name: Deploy to AWS with SST
-        run: bun run deploy-stage
+        run: bun run deploy-prod
         env:
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
 
       - name: Clean Up AWS Profile
         run: |
           rm -rf ~/.aws
-
-      - name: Create Pull Request to Production
-        if: success()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr create --title "Deploy to Production" --body "Automated PR to deploy changes to production." --base production --head main
