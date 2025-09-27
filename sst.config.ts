@@ -32,6 +32,8 @@ export default $config({
           $app.stage === "production"
             ? "nihongoninja.io"
             : "staging.nihongoninja.io",
+        aliases: $app.stage === "production" ? ["www.nihongoninja.io"] : [],
+        redirects: $app.stage === "production" ? ["www.nihongoninja.io"] : [],
       },
     })
   },

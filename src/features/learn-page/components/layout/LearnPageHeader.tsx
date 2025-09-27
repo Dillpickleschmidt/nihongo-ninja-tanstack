@@ -123,6 +123,7 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
                 <span class="text-foreground/90 text-lg font-semibold">
                   Learn Page
                 </span>
+                <span class="font-semibold text-red-500 italic">Alpha</span>
               </Link>
             </div>
 
