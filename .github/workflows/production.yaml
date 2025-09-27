@@ -56,8 +56,8 @@ jobs:
           SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_PRODUCTION }}
           SUPABASE_PROJECT_ID: zsllzwieciplioikzzmq
         run: |
-          bunx supabase link --project-ref $SUPABASE_PROJECT_ID
-          bunx supabase db push
+          supabase link --project-ref $SUPABASE_PROJECT_ID
+          supabase db push --password $SUPABASE_DB_PASSWORD
 
       - name: Deploy to AWS with SST
         run: bun run deploy-prod
