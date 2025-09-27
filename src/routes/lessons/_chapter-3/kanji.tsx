@@ -1,3 +1,4 @@
+// routes/lessons/_chapter-3/kanji.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import { ChatBubble } from "@/components/ChatBubble"
 import { ChatAttachment } from "@/components/ChatAttachment"
