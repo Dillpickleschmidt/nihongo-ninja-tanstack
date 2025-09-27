@@ -47,6 +47,15 @@ jobs:
           bunx sst secret set SECRET_VAL '${{ secrets.SECRET_VAL }}' --stage production
           bunx sst secret set COMMIT_SHA '${{ github.sha }}' --stage production
 
+      - name: Run Supabase Migrations
+        env:
+          SUPABASE_PUBLISHABLE_OR_ANON_KEY_PRODUCTION: ${{ secrets.SUPABASE_PUBLISHABLE_OR_ANON_KEY_PRODUCTION }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_PRODUCTION }}
+          SUPABASE_PROJECT_ID: zsllzwieciplioikzzmq
+        run: |
+          bunx supabase link --project-ref $SUPABASE_PROJECT_ID
+          bunx supabase db push
+
       - name: Deploy to AWS with SST
         run: bun run deploy-prod
         env:
