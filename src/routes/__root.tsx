@@ -26,6 +26,7 @@ import {
 } from "@/features/main-cookies/server/server-functions"
 import { getDeviceUISettingsCookie } from "@/features/main-cookies/server/cookie-utils"
 import type { User } from "@supabase/supabase-js"
+import { PostHogProvider } from "@/features/posthog/PostHogContext"
 
 export const Route = createRootRoute({
   head: () => ({
@@ -112,21 +113,23 @@ function RootComponent() {
 
   return (
     <>
-      <ColorModeScript storageType={storageManager?.type} />
-      <ColorModeProvider storageManager={storageManager}>
-        <SettingsProvider
-          user={user as User}
-          initialUserPreferenceData={initialUserPreferenceData}
-          userPreferencesDBPromise={userPreferencesDBPromise}
-          deviceUISettings={deviceUISettings}
-        >
-          <TourProvider shouldStartMainTour={shouldStartMainTour}>
-            <Scripts />
-            <Outlet />
-            <TanStackRouterDevtools />
-          </TourProvider>
-        </SettingsProvider>
-      </ColorModeProvider>
+      <PostHogProvider>
+        <ColorModeScript storageType={storageManager?.type} />
+        <ColorModeProvider storageManager={storageManager}>
+          <SettingsProvider
+            user={user as User}
+            initialUserPreferenceData={initialUserPreferenceData}
+            userPreferencesDBPromise={userPreferencesDBPromise}
+            deviceUISettings={deviceUISettings}
+          >
+            <TourProvider shouldStartMainTour={shouldStartMainTour}>
+              <Scripts />
+              <Outlet />
+              <TanStackRouterDevtools />
+            </TourProvider>
+          </SettingsProvider>
+        </ColorModeProvider>
+      </PostHogProvider>
     </>
   )
 }
