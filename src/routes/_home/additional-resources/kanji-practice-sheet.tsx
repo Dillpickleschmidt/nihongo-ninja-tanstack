@@ -7,6 +7,7 @@ import {
   TextFieldTextArea,
 } from "@/components/ui/text-field"
 import PrintButton from "@/components/PrintButton"
+import ModeToggle from "@/features/navbar/ModeToggle"
 
 export const Route = createFileRoute(
   "/_home/additional-resources/kanji-practice-sheet",
@@ -290,6 +291,11 @@ function KanjiPracticeSheet() {
         ref={setPrintContent}
         class="border-card bg-background relative min-w-[1500px] border p-20 print:min-w-0 print:border-none print:bg-white"
       >
+        {/* Theme Toggle */}
+        <div class="absolute top-12 left-32 transform print:hidden">
+          <ModeToggle iconSize={7} />
+        </div>
+
         {/* Print Button */}
         <div class="font-inter absolute top-8 right-8 flex items-center">
           <h2 class="text-card-foreground mr-2 mb-1 font-bold italic print:hidden">

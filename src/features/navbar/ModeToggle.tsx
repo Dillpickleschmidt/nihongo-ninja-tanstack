@@ -9,8 +9,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export default function ModeToggle() {
+interface ModeToggleProps {
+  iconSize?: number
+}
+
+export default function ModeToggle(props: ModeToggleProps) {
   const { setColorMode } = useColorMode()
+  const iconSize = props.iconSize || 4
 
   return (
     <DropdownMenu>
@@ -18,10 +23,26 @@ export default function ModeToggle() {
         as={Button<"button">}
         variant="ghost"
         size="sm"
-        class="w-9 px-0"
+        class="p-5"
+        style={{
+          width: iconSize ? `${iconSize * 0.25 + 0.5}rem` : "2.25rem",
+          height: iconSize ? `${iconSize * 0.25 + 0.5}rem` : "2.25rem",
+        }}
       >
-        <IconSun class="h-4 w-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-        <IconMoon class="absolute h-4 w-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+        <IconSun
+          class="scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
+          style={{
+            width: `${iconSize * 0.25}rem`,
+            height: `${iconSize * 0.25}rem`,
+          }}
+        />
+        <IconMoon
+          class="absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
+          style={{
+            width: `${iconSize * 0.25}rem`,
+            height: `${iconSize * 0.25}rem`,
+          }}
+        />
         <span class="sr-only">Toggle theme</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -42,12 +63,13 @@ export default function ModeToggle() {
   )
 }
 
-function IconSun(props: { class?: string }) {
+function IconSun(props: { class?: string; style?: any }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       class={props.class}
+      style={props.style}
     >
       <path
         fill="none"
@@ -62,11 +84,12 @@ function IconSun(props: { class?: string }) {
   )
 }
 
-function IconMoon(props: { class?: string }) {
+function IconMoon(props: { class?: string; style?: any }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class={props.class}
+      style={props.style}
       viewBox="0 0 24 24"
     >
       <path
@@ -82,11 +105,12 @@ function IconMoon(props: { class?: string }) {
   )
 }
 
-function IconLaptop(props: { class?: string }) {
+function IconLaptop(props: { class?: string; style?: any }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class={props.class}
+      style={props.style}
       viewBox="0 0 24 24"
     >
       <path
