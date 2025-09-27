@@ -1,15 +1,15 @@
 name: Production Deploy via SST to AWS
 
 on:
-  workflow_dispatch:
-  push:
+  pull_request:
     branches:
       - "production"
-    paths:
-      - ".github/workflows/production.yaml"
+    types:
+      - closed
 
 jobs:
   deploy:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -47,13 +47,10 @@ jobs:
           bunx sst secret set SECRET_VAL '${{ secrets.SECRET_VAL }}' --stage production
           bunx sst secret set COMMIT_SHA '${{ github.sha }}' --stage production
 
-      - name: Build application
-        run: bun run build
-        env:
-          VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-
       - name: Deploy to AWS with SST
         run: bun run deploy-prod
+        env:
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
 
       - name: Clean Up AWS Profile
         run: |

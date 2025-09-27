@@ -53,13 +53,10 @@ jobs:
           bunx sst secret set SECRET_VAL '${{ secrets.SECRET_VAL }}' --stage staging
           bunx sst secret set COMMIT_SHA '${{ github.sha }}' --stage staging
 
-      - name: Build application
-        run: bun run build
-        env:
-          VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-
       - name: Deploy to AWS with SST
         run: bun run deploy-stage
+        env:
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
 
       - name: Clean Up AWS Profile
         run: |
