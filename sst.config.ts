@@ -28,7 +28,11 @@ export default $config({
           secrets.SUPABASE_PUBLISHABLE_OR_ANON_KEY.value,
       },
       domain: {
-        name: "staging.nihongoninja.io",
+        name:
+          // $app.stage === "production"
+          //   ? "nihongoninja.io"
+          //   :
+          "staging.nihongoninja.io",
       },
     })
   },
