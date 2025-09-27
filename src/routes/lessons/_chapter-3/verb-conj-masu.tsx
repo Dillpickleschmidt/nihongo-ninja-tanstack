@@ -1,3 +1,4 @@
+// routes/lessons/_chapter-3/verb-conj-masu.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import YouTubeVideo from "@/features/youtube/YouTube"
 import GodanEndingChart from "@/features/routes-misc/chapter-3/verb-conj-masu/GodanEndingChart"
