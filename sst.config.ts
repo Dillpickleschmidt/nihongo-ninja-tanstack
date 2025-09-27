@@ -29,10 +29,9 @@ export default $config({
       },
       domain: {
         name:
-          // $app.stage === "production"
-          //   ? "nihongoninja.io"
-          //   :
-          "staging.nihongoninja.io",
+          $app.stage === "production"
+            ? "nihongoninja.io"
+            : "staging.nihongoninja.io",
       },
     })
   },
