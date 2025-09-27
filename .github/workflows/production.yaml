@@ -16,6 +16,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
       - name: Cache TanStack Start Build
         uses: actions/cache@v4
         with:
@@ -49,7 +52,7 @@ jobs:
 
       - name: Run Supabase Migrations
         env:
-          SUPABASE_PUBLISHABLE_OR_ANON_KEY_PRODUCTION: ${{ secrets.SUPABASE_PUBLISHABLE_OR_ANON_KEY_PRODUCTION }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_PRODUCTION }}
           SUPABASE_PROJECT_ID: zsllzwieciplioikzzmq
         run: |
