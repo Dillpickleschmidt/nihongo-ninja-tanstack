@@ -17,6 +17,11 @@ function RouteComponent() {
     <div class="relative min-h-screen">
       <Nav />
 
+      <h2 class="absolute top-20 left-1/2 -translate-x-1/2 text-2xl font-semibold text-red-500">
+        Everything in this page is pre-alpha and will change significantly in
+        the future!
+      </h2>
+
       <section class="relative">
         <Hero />
         <CurveDivider />

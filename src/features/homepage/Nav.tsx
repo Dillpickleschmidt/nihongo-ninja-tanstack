@@ -23,6 +23,7 @@ export default function Nav() {
           <span class="ml-3 text-lg font-semibold tracking-tight dark:text-orange-200">
             Nihongo Ninja
           </span>
+          <span class="ml-3 font-semibold text-red-500 italic">Alpha</span>
         </Link>
 
         {/* Right: Actions */}
