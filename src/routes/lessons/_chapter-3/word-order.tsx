@@ -1,3 +1,4 @@
+// routes/lessons/_chapter-3/word-order.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import Furigana from "@/components/text/Furigana"
 import YouTubeVideo from "@/features/youtube/YouTube"
