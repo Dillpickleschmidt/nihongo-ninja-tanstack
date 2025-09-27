@@ -76,7 +76,6 @@ import { Route as HomeAdditionalResourcesKanjiPracticeSheetRouteImport } from '.
 import { Route as HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/learn/additional-resources.kanji-practice-sheet'
 import { Route as HomeLearnTextbookIdChapterSlugRouteImport } from './routes/_home/learn/$textbookId.$chapterSlug'
 import { ServerRoute as ApiUploadOverrideServerRouteImport } from './routes/api/upload-override'
-import { ServerRoute as ApiHelloServerRouteImport } from './routes/api/hello'
 import { ServerRoute as ApiAuthLogoutServerRouteImport } from './routes/api/auth/logout'
 import { ServerRoute as ApiAuthLoginServerRouteImport } from './routes/api/auth/login'
 
@@ -438,11 +437,6 @@ const HomeLearnTextbookIdChapterSlugRoute =
 const ApiUploadOverrideServerRoute = ApiUploadOverrideServerRouteImport.update({
   id: '/api/upload-override',
   path: '/api/upload-override',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
-const ApiHelloServerRoute = ApiHelloServerRouteImport.update({
-  id: '/api/hello',
-  path: '/api/hello',
   getParentRoute: () => rootServerRouteImport,
 } as any)
 const ApiAuthLogoutServerRoute = ApiAuthLogoutServerRouteImport.update({
@@ -869,47 +863,34 @@ export interface RootRouteChildren {
   PracticeUserIDDeckIDRoute: typeof PracticeUserIDDeckIDRoute
 }
 export interface FileServerRoutesByFullPath {
-  '/api/hello': typeof ApiHelloServerRoute
   '/api/upload-override': typeof ApiUploadOverrideServerRoute
   '/api/auth/login': typeof ApiAuthLoginServerRoute
   '/api/auth/logout': typeof ApiAuthLogoutServerRoute
 }
 export interface FileServerRoutesByTo {
-  '/api/hello': typeof ApiHelloServerRoute
   '/api/upload-override': typeof ApiUploadOverrideServerRoute
   '/api/auth/login': typeof ApiAuthLoginServerRoute
   '/api/auth/logout': typeof ApiAuthLogoutServerRoute
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport
-  '/api/hello': typeof ApiHelloServerRoute
   '/api/upload-override': typeof ApiUploadOverrideServerRoute
   '/api/auth/login': typeof ApiAuthLoginServerRoute
   '/api/auth/logout': typeof ApiAuthLogoutServerRoute
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths:
-    | '/api/hello'
-    | '/api/upload-override'
-    | '/api/auth/login'
-    | '/api/auth/logout'
+  fullPaths: '/api/upload-override' | '/api/auth/login' | '/api/auth/logout'
   fileServerRoutesByTo: FileServerRoutesByTo
-  to:
-    | '/api/hello'
-    | '/api/upload-override'
-    | '/api/auth/login'
-    | '/api/auth/logout'
+  to: '/api/upload-override' | '/api/auth/login' | '/api/auth/logout'
   id:
     | '__root__'
-    | '/api/hello'
     | '/api/upload-override'
     | '/api/auth/login'
     | '/api/auth/logout'
   fileServerRoutesById: FileServerRoutesById
 }
 export interface RootServerRouteChildren {
-  ApiHelloServerRoute: typeof ApiHelloServerRoute
   ApiUploadOverrideServerRoute: typeof ApiUploadOverrideServerRoute
   ApiAuthLoginServerRoute: typeof ApiAuthLoginServerRoute
   ApiAuthLogoutServerRoute: typeof ApiAuthLogoutServerRoute
@@ -1376,13 +1357,6 @@ declare module '@tanstack/solid-start/server' {
       preLoaderRoute: typeof ApiUploadOverrideServerRouteImport
       parentRoute: typeof rootServerRouteImport
     }
-    '/api/hello': {
-      id: '/api/hello'
-      path: '/api/hello'
-      fullPath: '/api/hello'
-      preLoaderRoute: typeof ApiHelloServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
     '/api/auth/logout': {
       id: '/api/auth/logout'
       path: '/api/auth/logout'
@@ -1565,7 +1539,6 @@ export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 const rootServerRouteChildren: RootServerRouteChildren = {
-  ApiHelloServerRoute: ApiHelloServerRoute,
   ApiUploadOverrideServerRoute: ApiUploadOverrideServerRoute,
   ApiAuthLoginServerRoute: ApiAuthLoginServerRoute,
   ApiAuthLogoutServerRoute: ApiAuthLogoutServerRoute,

@@ -36,6 +36,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
   let driverInstance: Driver | null = null
   let currentTour: string | null = null
   let currentStepIndex: number = 0
+  let tourStartPath: string = location().pathname
 
   // Auto-start main tour if requested
   onMount(() => {
@@ -53,6 +54,9 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
 
     // Check if already completed
     if (userPreferences()["completed-tours"].includes(tourId)) return
+
+    // Capture the current location as the starting point
+    tourStartPath = location().pathname
 
     // Start the requested tour
     currentTour = tourId
@@ -191,6 +195,9 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     updateDeviceUISettings({
       tour: { currentTourId: null, currentTourStep: -2 },
     })
+
+    // Navigate back to the original page
+    await navigate({ to: tourStartPath })
 
     // If we just completed the main tour, check if we should start a route-specific tour
     if (currentTour === "app-onboarding") {
