@@ -25,6 +25,7 @@ import { Route as PracticeContractedSoundsQuizRouteImport } from './routes/pract
 import { Route as PracticeAllHiraganaQuizRouteImport } from './routes/practice/all-hiragana-quiz'
 import { Route as PracticePracticeIDRouteImport } from './routes/practice/$practiceID'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
+import { Route as HomeProgressRouteImport } from './routes/_home/progress'
 import { Route as HomeProfileRouteImport } from './routes/_home/profile'
 import { Route as HomeGuidesRouteImport } from './routes/_home/guides'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
@@ -150,6 +151,11 @@ const PracticePracticeIDRoute = PracticePracticeIDRouteImport.update({
 const HomeVocabRoute = HomeVocabRouteImport.update({
   id: '/vocab',
   path: '/vocab',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeProgressRoute = HomeProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeProfileRoute = HomeProfileRouteImport.update({
@@ -462,6 +468,7 @@ export interface FileRoutesByFullPath {
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/guides': typeof HomeGuidesRouteWithChildren
   '/profile': typeof HomeProfileRoute
+  '/progress': typeof HomeProgressRoute
   '/vocab': typeof HomeVocabRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
@@ -526,6 +533,7 @@ export interface FileRoutesByTo {
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/guides': typeof HomeGuidesRouteWithChildren
   '/profile': typeof HomeProfileRoute
+  '/progress': typeof HomeProgressRoute
   '/vocab': typeof HomeVocabRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
@@ -592,6 +600,7 @@ export interface FileRoutesById {
   '/_home/grammar-notes': typeof HomeGrammarNotesRoute
   '/_home/guides': typeof HomeGuidesRouteWithChildren
   '/_home/profile': typeof HomeProfileRoute
+  '/_home/progress': typeof HomeProgressRoute
   '/_home/vocab': typeof HomeVocabRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
@@ -658,6 +667,7 @@ export interface FileRouteTypes {
     | '/grammar-notes'
     | '/guides'
     | '/profile'
+    | '/progress'
     | '/vocab'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
@@ -722,6 +732,7 @@ export interface FileRouteTypes {
     | '/grammar-notes'
     | '/guides'
     | '/profile'
+    | '/progress'
     | '/vocab'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
@@ -787,6 +798,7 @@ export interface FileRouteTypes {
     | '/_home/grammar-notes'
     | '/_home/guides'
     | '/_home/profile'
+    | '/_home/progress'
     | '/_home/vocab'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
@@ -1001,6 +1013,13 @@ declare module '@tanstack/solid-router' {
       path: '/vocab'
       fullPath: '/vocab'
       preLoaderRoute: typeof HomeVocabRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/progress': {
+      id: '/_home/progress'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof HomeProgressRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/profile': {
@@ -1414,6 +1433,7 @@ interface HomeRouteChildren {
   HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
   HomeGuidesRoute: typeof HomeGuidesRouteWithChildren
   HomeProfileRoute: typeof HomeProfileRoute
+  HomeProgressRoute: typeof HomeProgressRoute
   HomeVocabRoute: typeof HomeVocabRoute
   HomePracticeConjugationRoute: typeof HomePracticeConjugationRoute
   HomePracticeSentencePracticeRoute: typeof HomePracticeSentencePracticeRoute
@@ -1428,6 +1448,7 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeGrammarNotesRoute: HomeGrammarNotesRoute,
   HomeGuidesRoute: HomeGuidesRouteWithChildren,
   HomeProfileRoute: HomeProfileRoute,
+  HomeProgressRoute: HomeProgressRoute,
   HomeVocabRoute: HomeVocabRoute,
   HomePracticeConjugationRoute: HomePracticeConjugationRoute,
   HomePracticeSentencePracticeRoute: HomePracticeSentencePracticeRoute,
