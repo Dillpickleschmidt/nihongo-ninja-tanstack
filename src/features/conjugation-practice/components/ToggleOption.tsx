@@ -28,8 +28,8 @@ export default function ToggleOption({
       <CheckboxInput class="border-card-foreground hover:cursor-pointer" />
       <CheckboxLabel
         class={cn(
-          "text-lg leading-none hover:cursor-pointer hover:opacity-50 lg:text-[1.2rem]",
-          "ease-instant-hover-300",
+          "text-lg hover:cursor-pointer hover:opacity-70 lg:text-[1.2rem]",
+          "ease-instant-hover-200",
           className,
         )}
       >

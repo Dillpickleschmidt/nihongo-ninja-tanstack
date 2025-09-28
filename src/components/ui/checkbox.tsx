@@ -135,7 +135,7 @@ const CheckboxLabel = <T extends ValidComponent = "label">(
   return (
     <CheckboxPrimitive.Label
       class={cn(
-        "cursor-pointer text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+        "cursor-pointer text-sm leading-none! font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
         local.class,
       )}
       {...others}

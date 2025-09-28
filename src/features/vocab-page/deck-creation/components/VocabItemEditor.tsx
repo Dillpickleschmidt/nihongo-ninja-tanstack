@@ -8,7 +8,7 @@ import {
   TextFieldInput,
   TextFieldLabel,
 } from "@/components/ui/text-field"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox, CheckboxInput, CheckboxLabel } from "@/components/ui/checkbox"
 import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
 import { useVocabItemValidation } from "../hooks/useVocabItemValidation"
 import { createEmptyVocabItemFormData } from "../../types/vocabulary-types"
@@ -292,9 +292,10 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
             <Checkbox
               checked={formData().isVerb}
               onChange={(checked) => updateFormData({ isVerb: checked })}
-              class="border-primary/60 ml-1 hover:cursor-pointer"
+              class="flex items-center space-x-2"
             >
-              <span class="text-sm font-medium">Is Verb</span>
+              <CheckboxInput class="border-primary/60 ml-1 hover:cursor-pointer" />
+              <CheckboxLabel class="text-sm font-medium">Is Verb</CheckboxLabel>
             </Checkbox>
             <Label class="text-muted-foreground text-xs">Is this a verb?</Label>
             <div title="When you use multiple-choice during review, we show verbs with verbs and non-verbs with non-verbs (so the answer isn't too obvious).">
