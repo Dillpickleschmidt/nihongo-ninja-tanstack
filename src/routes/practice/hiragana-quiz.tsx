@@ -1,4 +1,4 @@
-// src/routes/learn/hiragana-quiz.tsx
+// src/routes/practice/hiragana-quiz.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import { KanaQuiz } from "@/features/kana-quiz/KanaQuiz"
 import {
