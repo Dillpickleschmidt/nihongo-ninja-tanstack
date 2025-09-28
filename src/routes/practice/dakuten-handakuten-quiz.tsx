@@ -1,4 +1,4 @@
-// src/routes/learn/dakuten-handakuten-quiz.tsx
+// src/routes/practice/dakuten-handakuten-quiz.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import { KanaQuiz } from "@/features/kana-quiz/KanaQuiz"
 import {
