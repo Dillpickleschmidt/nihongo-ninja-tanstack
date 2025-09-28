@@ -1,4 +1,4 @@
-// src/routes/learn/contracted-sounds-quiz.tsx
+// src/routes/practice/contracted-sounds-quiz.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import { KanaQuiz } from "@/features/kana-quiz/KanaQuiz"
 import {
