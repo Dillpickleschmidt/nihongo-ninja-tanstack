@@ -53,6 +53,7 @@ jobs:
           bunx sst secret set SUPABASE_PUBLISHABLE_OR_ANON_KEY '${{ secrets.SUPABASE_PUBLISHABLE_OR_ANON_KEY_STAGING }}' --stage staging
           bunx sst secret set SECRET_VAL '${{ secrets.SECRET_VAL }}' --stage staging
           bunx sst secret set COMMIT_SHA '${{ github.sha }}' --stage staging
+          bunx sst unlock
 
       - name: Deploy to AWS with SST
         run: bun run deploy-stage
