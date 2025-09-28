@@ -42,10 +42,10 @@ function PostHogPageView() {
 // Initialize PostHog once on the client side
 if (!isServer) {
   const posthogKey = import.meta.env.VITE_POSTHOG_KEY
-  const posthogHost = import.meta.env.VITE_POSTHOG_HOST
-  if (posthogKey && posthogHost) {
+  if (posthogKey) {
     posthog.init(posthogKey!, {
-      api_host: posthogHost!,
+      api_host: "/relay-tefh",
+      ui_host: "https://us.posthog.com",
       capture_pageview: false, // Disable automatic pageview capture since we're doing it manually
       capture_pageleave: true, // Enable page leave tracking for bounce rate calculation
     })

@@ -63,8 +63,10 @@ jobs:
         run: |
           rm -rf ~/.aws
 
-      - name: Create Pull Request to Production
+      - name: Create or Update Pull Request to Production
         if: success()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr create --title "Deploy to Production" --body "Automated PR to deploy changes to production." --base production --head main
+        run: |
+          # Try to create PR, if it fails due to existing PR, that's fine - commits are auto-added
+          gh pr create --title "Deploy to Production" --body "Automated PR to deploy changes to production. **Merge using 'Rebase and merge' to keep branches in sync.**" --base production --head main || true
