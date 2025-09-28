@@ -1,7 +1,7 @@
 // src/components/CheckboxQuestion.tsx
 import { createSignal, For } from "solid-js"
 import { cn } from "@/utils"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox, CheckboxInput, CheckboxLabel } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import { extractHiragana, convertFuriganaToRubyHtml } from "@/data/utils/vocab"
 
@@ -62,23 +62,23 @@ export default function CheckboxQuestion(props: CheckboxQuestionProps) {
               class={`flex items-center ${props.horizontal ? "mt-3 space-x-3" : "space-x-3"}`}
             >
               <Checkbox
-                id={`checkbox-${question.word}`}
+                class="items-top group relative flex space-x-2"
                 checked={checkedQuestions().has(question.word)}
                 onChange={() => handleCheckboxChange(question.word)}
-                class="cursor-pointer ease-out hover:scale-[102%]"
-              />
-              <label
-                for={`checkbox-${question.word}`}
-                class={cn(
-                  `${getTextColorClass(question.word, question.isCorrect)} cursor-pointer ${!props.horizontal && "pr-6"} font-japanese text-xl`,
-                  props.class,
-                )}
               >
-                <span
-                  class={cn("font-japanese text-xl", props.class)}
-                  innerHTML={question.rubyText}
-                />
-              </label>
+                <CheckboxInput class="cursor-pointer ease-out hover:scale-[102%]" />
+                <CheckboxLabel
+                  class={cn(
+                    `${getTextColorClass(question.word, question.isCorrect)} cursor-pointer ${!props.horizontal && "pr-6"} font-japanese text-xl`,
+                    props.class,
+                  )}
+                >
+                  <span
+                    class={cn("font-japanese text-xl", props.class)}
+                    innerHTML={question.rubyText}
+                  />
+                </CheckboxLabel>
+              </Checkbox>
             </li>
           )}
         </For>

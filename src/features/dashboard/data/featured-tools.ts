@@ -37,6 +37,5 @@ export const featuredTools: Tool[] = [
     icon: "⚡",
     href: "/practice/conjugation",
     gradient: "from-red-400 to-red-600",
-    disabled: true,
   },
 ]

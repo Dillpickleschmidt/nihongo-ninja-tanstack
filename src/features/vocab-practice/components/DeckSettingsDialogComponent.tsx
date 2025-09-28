@@ -1,7 +1,7 @@
 // vocab-practice/components/DeckSettingsDialogComponent.tsx
 import { createSignal, JSX, Show } from "solid-js"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox, CheckboxInput, CheckboxLabel } from "@/components/ui/checkbox"
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useVocabPracticeContext } from "../context/VocabPracticeContext"
-import { Label } from "@/components/ui/label"
 import { useSettings } from "@/context/SettingsContext"
 
 type DeckSettingsDialogProps = {
@@ -43,29 +42,26 @@ export default function DeckSettingsDialogComponent(
           </DialogDescription>
         </DialogHeader>
         <div class="grid gap-4 py-4">
-          <div class="flex items-center space-x-2">
-            <Checkbox
-              checked={uiState.settings.shuffleAnswers}
-              onChange={(isChecked) =>
-                setUIState("settings", "shuffleAnswers", isChecked)
-              }
-              id="shuffle-answers"
-            />
-            <Label for="shuffle-answers">Shuffle answer choices</Label>
-          </div>
+          <Checkbox
+            class="flex items-center space-x-2"
+            checked={uiState.settings.shuffleAnswers}
+            onChange={(isChecked) =>
+              setUIState("settings", "shuffleAnswers", isChecked)
+            }
+          >
+            <CheckboxInput />
+            <CheckboxLabel>Shuffle answer choices</CheckboxLabel>
+          </Checkbox>
 
-          <div class="flex items-center space-x-2">
-            <Checkbox
-              checked={uiState.settings.enableKanjiRadicalPrereqs}
-              onChange={(isChecked) =>
-                setUIState("settings", "enableKanjiRadicalPrereqs", isChecked)
-              }
-              id="enable-kanji-radical-prereqs"
-            />
-            <Label
-              for="enable-kanji-radical-prereqs"
-              class="flex items-center gap-2"
-            >
+          <Checkbox
+            class="flex items-center space-x-2"
+            checked={uiState.settings.enableKanjiRadicalPrereqs}
+            onChange={(isChecked) =>
+              setUIState("settings", "enableKanjiRadicalPrereqs", isChecked)
+            }
+          >
+            <CheckboxInput />
+            <CheckboxLabel class="flex items-center gap-2">
               Enable Kanji/Radical Prerequisites
               <Show
                 when={
@@ -78,18 +74,18 @@ export default function DeckSettingsDialogComponent(
                   {defaults["enable-kanji-radical-prereqs"] ? "On" : "Off"})
                 </span>
               </Show>
-            </Label>
-          </div>
+            </CheckboxLabel>
+          </Checkbox>
 
-          <div class="flex items-center space-x-2">
-            <Checkbox
-              checked={uiState.settings.flipVocabQA}
-              onChange={(isChecked) =>
-                setUIState("settings", "flipVocabQA", isChecked)
-              }
-              id="flip-vocab-qa"
-            />
-            <Label for="flip-vocab-qa" class="flex items-center gap-2">
+          <Checkbox
+            class="flex items-center space-x-2"
+            checked={uiState.settings.flipVocabQA}
+            onChange={(isChecked) =>
+              setUIState("settings", "flipVocabQA", isChecked)
+            }
+          >
+            <CheckboxInput />
+            <CheckboxLabel class="flex items-center gap-2">
               Flip Vocabulary Q/A
               <Show
                 when={
@@ -100,23 +96,20 @@ export default function DeckSettingsDialogComponent(
                   (Default: {defaults["flip-vocab-qa"] ? "On" : "Off"})
                 </span>
               </Show>
-            </Label>
-          </div>
+            </CheckboxLabel>
+          </Checkbox>
 
           {/* CONDITIONAL: Hide flipKanjiRadicalQA when prerequisites are disabled */}
           <Show when={uiState.settings.enableKanjiRadicalPrereqs}>
-            <div class="flex items-center space-x-2">
-              <Checkbox
-                checked={uiState.settings.flipKanjiRadicalQA}
-                onChange={(isChecked) =>
-                  setUIState("settings", "flipKanjiRadicalQA", isChecked)
-                }
-                id="flip-kanji-radical-qa"
-              />
-              <Label
-                for="flip-kanji-radical-qa"
-                class="flex items-center gap-2"
-              >
+            <Checkbox
+              class="flex items-center space-x-2"
+              checked={uiState.settings.flipKanjiRadicalQA}
+              onChange={(isChecked) =>
+                setUIState("settings", "flipKanjiRadicalQA", isChecked)
+              }
+            >
+              <CheckboxInput />
+              <CheckboxLabel class="flex items-center gap-2">
                 Flip Kanji/Radical Q/A
                 <Show
                   when={
@@ -129,8 +122,8 @@ export default function DeckSettingsDialogComponent(
                     )
                   </span>
                 </Show>
-              </Label>
-            </div>
+              </CheckboxLabel>
+            </Checkbox>
           </Show>
         </div>
         <DialogFooter>

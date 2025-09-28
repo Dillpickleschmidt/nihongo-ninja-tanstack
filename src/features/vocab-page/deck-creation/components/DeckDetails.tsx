@@ -4,7 +4,7 @@ import {
   TextFieldLabel,
 } from "@/components/ui/text-field"
 import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox, CheckboxInput, CheckboxLabel } from "@/components/ui/checkbox"
 import { LocationSelector } from "@/features/vocab-page/components/LocationSelector"
 import { useFolderTree } from "@/features/vocab-page/hooks/useFolderTree"
 import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
@@ -148,51 +148,46 @@ export function DeckDetails(props: DeckDetailsProps) {
           </div>
 
           <div class="flex flex-col gap-1 pt-4">
-            <div
+            <Checkbox
               class="flex items-center justify-end space-x-2"
               title="Choose which modes are presented when you click to practice this deck. At least one must be enabled."
+              checked={store.deck.allowedPracticeModes.includes("meanings")}
+              onChange={(enabled) =>
+                handlePracticeModeChange("meanings", enabled)
+              }
+              disabled={
+                store.deck.allowedPracticeModes.length === 1 &&
+                store.deck.allowedPracticeModes.includes("meanings")
+              }
             >
-              <Label for="allow-meanings" class="text-muted-foreground text-xs">
+              <CheckboxLabel class="text-muted-foreground text-xs">
                 Allow Meanings
-              </Label>
-              <Checkbox
-                checked={store.deck.allowedPracticeModes.includes("meanings")}
-                onChange={(enabled) =>
-                  handlePracticeModeChange("meanings", enabled)
-                }
-                id="allow-meanings"
-                disabled={
-                  store.deck.allowedPracticeModes.length === 1 &&
-                  store.deck.allowedPracticeModes.includes("meanings")
-                }
+              </CheckboxLabel>
+              <CheckboxInput
                 size={3.5}
                 class="data-[checked]:bg-primary/60 border-primary/30 hover:cursor-pointer"
               />
-            </div>
-            <div
+            </Checkbox>
+            <Checkbox
               class="flex items-center justify-end space-x-2"
               title="Choose which modes are presented when you click to practice this deck. At least one must be enabled."
+              checked={store.deck.allowedPracticeModes.includes("spellings")}
+              onChange={(enabled) =>
+                handlePracticeModeChange("spellings", enabled)
+              }
+              disabled={
+                store.deck.allowedPracticeModes.length === 1 &&
+                store.deck.allowedPracticeModes.includes("spellings")
+              }
             >
-              <Label
-                for="allow-spellings"
-                class="text-muted-foreground text-xs"
-              >
+              <CheckboxLabel class="text-muted-foreground text-xs">
                 Allow Spellings
-              </Label>
-              <Checkbox
-                checked={store.deck.allowedPracticeModes.includes("spellings")}
-                onChange={(enabled) =>
-                  handlePracticeModeChange("spellings", enabled)
-                }
-                id="allow-spellings"
-                disabled={
-                  store.deck.allowedPracticeModes.length === 1 &&
-                  store.deck.allowedPracticeModes.includes("spellings")
-                }
+              </CheckboxLabel>
+              <CheckboxInput
                 size={3.5}
                 class="data-[checked]:bg-primary/60 border-primary/30 hover:cursor-pointer"
               />
-            </div>
+            </Checkbox>
             {practiceModeError() && (
               <div class="text-destructive text-xs font-medium">
                 {practiceModeError()}

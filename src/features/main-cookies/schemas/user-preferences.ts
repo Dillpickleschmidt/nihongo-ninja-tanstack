@@ -1,5 +1,6 @@
 // features/main-cookies/schemas/user-preferences.ts
 import { z } from "zod"
+import { ConjugationPracticeSettingsSchema } from "@/features/conjugation-practice/schemas/settings"
 
 // Service-related utility types
 export type ServiceType = "anki" | "wanikani" | "jpdb"
@@ -120,6 +121,9 @@ export const UserPreferencesSchema = z.object({
     vocabularyOverrides: DEFAULT_VOCABULARY_STACKS,
     kanjiOverrides: DEFAULT_KANJI_STACKS,
   }),
+  "conjugation-practice": ConjugationPracticeSettingsSchema.default(
+    ConjugationPracticeSettingsSchema.parse({}),
+  ),
   timestamp: z.number().default(0),
 })
 
