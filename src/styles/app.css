@@ -332,3 +332,11 @@
     content: counter(step);
   }
 }
+
+/* Custom instant hover utilities */
+@utility ease-instant-hover-* {
+  transition: none;
+  &:not(:hover) {
+    transition: all calc(--value(integer) * 1ms) ease-out;
+  }
+}
