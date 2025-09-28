@@ -16,11 +16,22 @@ async function handler({ request, params }: { request: Request; params: any }) {
     : `https://us.i.posthog.com/${splatPath}${url.search}`
 
   try {
+    console.log("Starting proxy for:", targetUrl)
+    console.log("Request method:", request.method)
+    console.log("Content-Length:", request.headers.get("content-length"))
+
+    const body =
+      request.method === "POST" ? await request.arrayBuffer() : undefined
+    console.log("Body processed, size:", body?.byteLength || 0)
+
+    const fetchStart = Date.now()
     const response = await fetch(targetUrl, {
       method: request.method,
       headers: request.headers,
-      body: request.method === "POST" ? await request.arrayBuffer() : undefined,
+      body: body,
     })
+    console.log("Fetch took:", Date.now() - fetchStart, "ms")
+    console.log("Response status:", response.status)
 
     const headers = new Headers(response.headers)
     headers.delete("content-encoding")
