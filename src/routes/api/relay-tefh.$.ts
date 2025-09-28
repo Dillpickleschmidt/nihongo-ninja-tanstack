@@ -19,25 +19,25 @@ async function handler({ request, params }: { request: Request; params: any }) {
     const response = await fetch(targetUrl, {
       method: request.method,
       headers: request.headers,
-      body: request.method === "POST" ? await request.text() : undefined,
+      body: request.method === "POST" ? await request.arrayBuffer() : undefined,
     })
 
-    // Filter out compression headers since we're sending uncompressed content
-    const filteredHeaders = new Headers()
-    response.headers.forEach((value, key) => {
-      // Skip headers that could cause content decoding issues
-      if (
-        !["content-encoding", "content-length", "transfer-encoding"].includes(
-          key.toLowerCase(),
-        )
-      ) {
-        filteredHeaders.set(key, value)
-      }
-    })
+    const headers = new Headers(response.headers)
+    headers.delete("content-encoding")
+    headers.delete("content-length")
+
+    // Responses that must not have a body per HTTP spec
+    const noBodyStatuses = [204, 304]
+    if (noBodyStatuses.includes(response.status)) {
+      return new Response(null, {
+        status: response.status,
+        headers,
+      })
+    }
 
     return new Response(await response.arrayBuffer(), {
       status: response.status,
-      headers: filteredHeaders,
+      headers,
     })
   } catch (error) {
     console.error(`PostHog proxy error:`, error)
