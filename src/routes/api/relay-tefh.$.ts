@@ -20,9 +20,20 @@ async function handler({ request, params }: { request: Request; params: any }) {
     console.log("Request method:", request.method)
     console.log("Content-Length:", request.headers.get("content-length"))
 
+    console.log("Request headers being forwarded:")
+    for (const [key, value] of request.headers.entries()) {
+      console.log(`${key}: ${value}`)
+    }
+
     const body =
       request.method === "POST" ? await request.arrayBuffer() : undefined
     console.log("Body processed, size:", body?.byteLength || 0)
+
+    // Log body content for debugging (first 500 chars)
+    if (body && body.byteLength > 0) {
+      const bodyText = new TextDecoder().decode(body.slice(0, 500))
+      console.log("Body content (first 500 chars):", bodyText)
+    }
 
     const fetchStart = Date.now()
     const response = await fetch(targetUrl, {
