@@ -76,6 +76,7 @@ import { Route as HomeAdditionalResourcesKanjiPracticeSheetRouteImport } from '.
 import { Route as HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/learn/additional-resources.kanji-practice-sheet'
 import { Route as HomeLearnTextbookIdChapterSlugRouteImport } from './routes/_home/learn/$textbookId.$chapterSlug'
 import { ServerRoute as ApiUploadOverrideServerRouteImport } from './routes/api/upload-override'
+import { ServerRoute as ApiRelayTefhSplatServerRouteImport } from './routes/api/relay-tefh.$'
 import { ServerRoute as ApiAuthLogoutServerRouteImport } from './routes/api/auth/logout'
 import { ServerRoute as ApiAuthLoginServerRouteImport } from './routes/api/auth/login'
 
@@ -437,6 +438,11 @@ const HomeLearnTextbookIdChapterSlugRoute =
 const ApiUploadOverrideServerRoute = ApiUploadOverrideServerRouteImport.update({
   id: '/api/upload-override',
   path: '/api/upload-override',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
+const ApiRelayTefhSplatServerRoute = ApiRelayTefhSplatServerRouteImport.update({
+  id: '/api/relay-tefh/$',
+  path: '/api/relay-tefh/$',
   getParentRoute: () => rootServerRouteImport,
 } as any)
 const ApiAuthLogoutServerRoute = ApiAuthLogoutServerRouteImport.update({
@@ -866,34 +872,47 @@ export interface FileServerRoutesByFullPath {
   '/api/upload-override': typeof ApiUploadOverrideServerRoute
   '/api/auth/login': typeof ApiAuthLoginServerRoute
   '/api/auth/logout': typeof ApiAuthLogoutServerRoute
+  '/api/relay-tefh/$': typeof ApiRelayTefhSplatServerRoute
 }
 export interface FileServerRoutesByTo {
   '/api/upload-override': typeof ApiUploadOverrideServerRoute
   '/api/auth/login': typeof ApiAuthLoginServerRoute
   '/api/auth/logout': typeof ApiAuthLogoutServerRoute
+  '/api/relay-tefh/$': typeof ApiRelayTefhSplatServerRoute
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport
   '/api/upload-override': typeof ApiUploadOverrideServerRoute
   '/api/auth/login': typeof ApiAuthLoginServerRoute
   '/api/auth/logout': typeof ApiAuthLogoutServerRoute
+  '/api/relay-tefh/$': typeof ApiRelayTefhSplatServerRoute
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/api/upload-override' | '/api/auth/login' | '/api/auth/logout'
+  fullPaths:
+    | '/api/upload-override'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/relay-tefh/$'
   fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/api/upload-override' | '/api/auth/login' | '/api/auth/logout'
+  to:
+    | '/api/upload-override'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/relay-tefh/$'
   id:
     | '__root__'
     | '/api/upload-override'
     | '/api/auth/login'
     | '/api/auth/logout'
+    | '/api/relay-tefh/$'
   fileServerRoutesById: FileServerRoutesById
 }
 export interface RootServerRouteChildren {
   ApiUploadOverrideServerRoute: typeof ApiUploadOverrideServerRoute
   ApiAuthLoginServerRoute: typeof ApiAuthLoginServerRoute
   ApiAuthLogoutServerRoute: typeof ApiAuthLogoutServerRoute
+  ApiRelayTefhSplatServerRoute: typeof ApiRelayTefhSplatServerRoute
 }
 
 declare module '@tanstack/solid-router' {
@@ -1357,6 +1376,13 @@ declare module '@tanstack/solid-start/server' {
       preLoaderRoute: typeof ApiUploadOverrideServerRouteImport
       parentRoute: typeof rootServerRouteImport
     }
+    '/api/relay-tefh/$': {
+      id: '/api/relay-tefh/$'
+      path: '/api/relay-tefh/$'
+      fullPath: '/api/relay-tefh/$'
+      preLoaderRoute: typeof ApiRelayTefhSplatServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
     '/api/auth/logout': {
       id: '/api/auth/logout'
       path: '/api/auth/logout'
@@ -1542,6 +1568,7 @@ const rootServerRouteChildren: RootServerRouteChildren = {
   ApiUploadOverrideServerRoute: ApiUploadOverrideServerRoute,
   ApiAuthLoginServerRoute: ApiAuthLoginServerRoute,
   ApiAuthLogoutServerRoute: ApiAuthLogoutServerRoute,
+  ApiRelayTefhSplatServerRoute: ApiRelayTefhSplatServerRoute,
 }
 export const serverRouteTree = rootServerRouteImport
   ._addFileChildren(rootServerRouteChildren)

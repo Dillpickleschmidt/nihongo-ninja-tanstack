@@ -6,14 +6,6 @@ import { resolve } from "path"
 export default defineNitroConfig({
   preset: "aws-lambda",
   serveStatic: true,
-  routeRules: {
-    "/relay-tefh/static/**": {
-      proxy: "https://us-assets.i.posthog.com/static/**",
-    },
-    "/relay-tefh/**": {
-      proxy: "https://us.i.posthog.com/**",
-    },
-  },
   hooks: {
     // This hook runs after the Nitro server has been compiled
     compiled(nitro) {

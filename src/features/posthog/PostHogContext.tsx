@@ -44,7 +44,7 @@ if (!isServer) {
   const posthogKey = import.meta.env.VITE_POSTHOG_KEY
   if (posthogKey) {
     posthog.init(posthogKey!, {
-      api_host: "/relay-tefh",
+      api_host: "/api/relay-tefh",
       ui_host: "https://us.posthog.com",
       capture_pageview: false, // Disable automatic pageview capture since we're doing it manually
       capture_pageleave: true, // Enable page leave tracking for bounce rate calculation
