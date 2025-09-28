@@ -40,7 +40,7 @@ async function handler({ request, params }: { request: Request; params: any }) {
     // Stream the response back
     return new Response(response.body, {
       status: response.status,
-      headers,
+      headers: responseHeaders,
     })
   } catch (error) {
     console.error(`PostHog proxy error:`, error)
