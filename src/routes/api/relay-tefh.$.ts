@@ -16,50 +16,75 @@ async function handler({ request, params }: { request: Request; params: any }) {
     : `https://us.i.posthog.com/${splatPath}${url.search}`
 
   try {
-    console.log("Starting proxy for:", targetUrl)
-    console.log("Request method:", request.method)
-    console.log("Content-Length:", request.headers.get("content-length"))
+    // Create clean headers for forwarding
+    const forwardHeaders = new Headers()
 
-    console.log("Request headers being forwarded:")
-    for (const [key, value] of request.headers.entries()) {
-      console.log(`${key}: ${value}`)
+    // Only forward essential headers to reduce overhead
+    const essentialHeaders = [
+      "content-type",
+      "content-length",
+      "user-agent",
+      "accept",
+      "accept-encoding",
+      "authorization",
+    ]
+
+    for (const header of essentialHeaders) {
+      const value = request.headers.get(header)
+      if (value) {
+        forwardHeaders.set(header, value)
+      }
     }
 
-    const body =
-      request.method === "POST" ? await request.arrayBuffer() : undefined
-    console.log("Body processed, size:", body?.byteLength || 0)
+    // Handle request body efficiently
+    const body = request.method === "POST" ? request.body : null
 
-    // Log body content for debugging (first 500 chars)
-    if (body && body.byteLength > 0) {
-      const bodyText = new TextDecoder().decode(body.slice(0, 500))
-      console.log("Body content (first 500 chars):", bodyText)
-    }
-
-    const fetchStart = Date.now()
     const response = await fetch(targetUrl, {
       method: request.method,
-      headers: request.headers,
+      headers: forwardHeaders,
       body: body,
     })
-    console.log("Fetch took:", Date.now() - fetchStart, "ms")
-    console.log("Response status:", response.status)
 
-    const headers = new Headers(response.headers)
-    headers.delete("content-encoding")
-    headers.delete("content-length")
+    // Create response headers efficiently
+    const responseHeaders = new Headers()
+
+    // Copy essential response headers
+    const essentialResponseHeaders = [
+      "content-type",
+      "cache-control",
+      "access-control-allow-origin",
+      "access-control-allow-methods",
+      "access-control-allow-headers",
+    ]
+
+    for (const header of essentialResponseHeaders) {
+      const value = response.headers.get(header)
+      if (value) {
+        responseHeaders.set(header, value)
+      }
+    }
+
+    // Handle CORS
+    responseHeaders.set("access-control-allow-origin", "*")
+    responseHeaders.set("access-control-allow-methods", "GET, POST, OPTIONS")
+    responseHeaders.set(
+      "access-control-allow-headers",
+      "Content-Type, Authorization",
+    )
 
     // Responses that must not have a body per HTTP spec
     const noBodyStatuses = [204, 304]
     if (noBodyStatuses.includes(response.status)) {
       return new Response(null, {
         status: response.status,
-        headers,
+        headers: responseHeaders,
       })
     }
 
-    return new Response(await response.arrayBuffer(), {
+    // Stream the response body for better performance
+    return new Response(response.body, {
       status: response.status,
-      headers,
+      headers: responseHeaders,
     })
   } catch (error) {
     console.error(`PostHog proxy error:`, error)
