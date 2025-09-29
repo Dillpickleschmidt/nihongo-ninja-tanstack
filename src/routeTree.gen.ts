@@ -24,6 +24,7 @@ import { Route as PracticeDakutenHandakutenQuizRouteImport } from './routes/prac
 import { Route as PracticeContractedSoundsQuizRouteImport } from './routes/practice/contracted-sounds-quiz'
 import { Route as PracticeAllHiraganaQuizRouteImport } from './routes/practice/all-hiragana-quiz'
 import { Route as PracticePracticeIDRouteImport } from './routes/practice/$practiceID'
+import { Route as ExternalResourcesResourceRouteImport } from './routes/external-resources/$resource'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
 import { Route as HomeProgressRouteImport } from './routes/_home/progress'
 import { Route as HomeProfileRouteImport } from './routes/_home/profile'
@@ -148,6 +149,12 @@ const PracticePracticeIDRoute = PracticePracticeIDRouteImport.update({
   path: '/practice/$practiceID',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExternalResourcesResourceRoute =
+  ExternalResourcesResourceRouteImport.update({
+    id: '/external-resources/$resource',
+    path: '/external-resources/$resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const HomeVocabRoute = HomeVocabRouteImport.update({
   id: '/vocab',
   path: '/vocab',
@@ -470,6 +477,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof HomeProfileRoute
   '/progress': typeof HomeProgressRoute
   '/vocab': typeof HomeVocabRoute
+  '/external-resources/$resource': typeof ExternalResourcesResourceRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
   '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
@@ -535,6 +543,7 @@ export interface FileRoutesByTo {
   '/profile': typeof HomeProfileRoute
   '/progress': typeof HomeProgressRoute
   '/vocab': typeof HomeVocabRoute
+  '/external-resources/$resource': typeof ExternalResourcesResourceRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
   '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
@@ -602,6 +611,7 @@ export interface FileRoutesById {
   '/_home/profile': typeof HomeProfileRoute
   '/_home/progress': typeof HomeProgressRoute
   '/_home/vocab': typeof HomeVocabRoute
+  '/external-resources/$resource': typeof ExternalResourcesResourceRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
   '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
@@ -669,6 +679,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/vocab'
+    | '/external-resources/$resource'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
     | '/practice/contracted-sounds-quiz'
@@ -734,6 +745,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/vocab'
+    | '/external-resources/$resource'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
     | '/practice/contracted-sounds-quiz'
@@ -800,6 +812,7 @@ export interface FileRouteTypes {
     | '/_home/profile'
     | '/_home/progress'
     | '/_home/vocab'
+    | '/external-resources/$resource'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
     | '/practice/contracted-sounds-quiz'
@@ -860,6 +873,7 @@ export interface RootRouteChildren {
   LessonsRoute: typeof LessonsRouteWithChildren
   PricingRoute: typeof PricingRoute
   SettingsRoute: typeof SettingsRoute
+  ExternalResourcesResourceRoute: typeof ExternalResourcesResourceRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
   PracticeAllHiraganaQuizRoute: typeof PracticeAllHiraganaQuizRoute
   PracticeContractedSoundsQuizRoute: typeof PracticeContractedSoundsQuizRoute
@@ -1006,6 +1020,13 @@ declare module '@tanstack/solid-router' {
       path: '/practice/$practiceID'
       fullPath: '/practice/$practiceID'
       preLoaderRoute: typeof PracticePracticeIDRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/external-resources/$resource': {
+      id: '/external-resources/$resource'
+      path: '/external-resources/$resource'
+      fullPath: '/external-resources/$resource'
+      preLoaderRoute: typeof ExternalResourcesResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_home/vocab': {
@@ -1553,6 +1574,7 @@ const rootRouteChildren: RootRouteChildren = {
   LessonsRoute: LessonsRouteWithChildren,
   PricingRoute: PricingRoute,
   SettingsRoute: SettingsRoute,
+  ExternalResourcesResourceRoute: ExternalResourcesResourceRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,
   PracticeAllHiraganaQuizRoute: PracticeAllHiraganaQuizRoute,
   PracticeContractedSoundsQuizRoute: PracticeContractedSoundsQuizRoute,
