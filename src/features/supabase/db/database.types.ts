@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "13.0.5"
   }
   public: {
     Tables: {
@@ -53,7 +53,6 @@ export type Database = {
           fsrs_card: Json
           fsrs_logs: Json[] | null
           id: number
-          lesson_id: string | null
           mode: string
           practice_item_key: string
           stability: number
@@ -66,7 +65,6 @@ export type Database = {
           fsrs_card: Json
           fsrs_logs?: Json[] | null
           id?: number
-          lesson_id?: string | null
           mode?: string
           practice_item_key: string
           stability: number
@@ -79,7 +77,6 @@ export type Database = {
           fsrs_card?: Json
           fsrs_logs?: Json[] | null
           id?: number
-          lesson_id?: string | null
           mode?: string
           practice_item_key?: string
           stability?: number
@@ -186,19 +183,19 @@ export type Database = {
         Row: {
           completed_at: string
           id: number
-          static_module_path: string
+          module_path: string
           user_id: string
         }
         Insert: {
           completed_at?: string
           id?: number
-          static_module_path: string
+          module_path: string
           user_id: string
         }
         Update: {
           completed_at?: string
           id?: number
-          static_module_path?: string
+          module_path?: string
           user_id?: string
         }
         Relationships: []

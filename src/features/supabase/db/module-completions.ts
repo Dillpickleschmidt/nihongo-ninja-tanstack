@@ -12,7 +12,7 @@ export async function addModuleCompletion(
     .from("user_module_completions")
     .insert({
       user_id: userId,
-      static_module_path: moduleId,
+      module_path: moduleId,
     } satisfies ModuleCompletionInsert)
     .select()
     .single()
@@ -43,7 +43,7 @@ async function getModuleCompletion(
     .from("user_module_completions")
     .select()
     .eq("user_id", userId)
-    .eq("static_module_path", moduleId)
+    .eq("module_path", moduleId)
     .maybeSingle()
 
   if (error) throw error
@@ -59,11 +59,11 @@ export async function getUserModuleCompletions(
   const supabase = createSupabaseClient()
   const { data, error } = await supabase
     .from("user_module_completions")
-    .select("static_module_path")
+    .select("module_path")
     .eq("user_id", userId)
 
   if (error) throw error
-  return data.map((completion) => completion.static_module_path)
+  return data.map((completion) => completion.module_path)
 }
 
 /**

@@ -4,7 +4,7 @@ import type { UserPreferences } from "./features/main-cookies/schemas/user-prefe
 
 declare global {
   // Enhanced Database type with properly typed user_preferences
-  type Database = MergeDeep<
+  type SupabaseDB = MergeDeep<
     DatabaseGenerated,
     {
       public: {
@@ -19,40 +19,40 @@ declare global {
     }
   >
 
-  type DBProfile = Database["public"]["Tables"]["profiles"]["Row"]
-  type DBStaticModule =
-    Database["public"]["Tables"]["static_module_user_completions"]["Row"]
-  type DBPracticeItem = Database["public"]["Tables"]["fsrs_cards"]["Row"]
-  type DBPracticeItemType = Database["public"]["Enums"]["practice_item_type"]
-  type PracticeModeEnum = Database["public"]["Enums"]["practice_mode_enum"]
+  type DBProfile = SupabaseDB["public"]["Tables"]["profiles"]["Row"]
+  type DBPracticeItem = SupabaseDB["public"]["Tables"]["fsrs_cards"]["Row"]
+  type DBPracticeItemType = SupabaseDB["public"]["Enums"]["practice_item_type"]
+  type PracticeModeEnum = SupabaseDB["public"]["Enums"]["practice_mode_enum"]
 
   // Folder Management Types
-  type UserDeck = Database["public"]["Tables"]["user_decks"]["Row"]
-  type UserDeckInsert = Database["public"]["Tables"]["user_decks"]["Insert"]
-  type UserDeckUpdate = Database["public"]["Tables"]["user_decks"]["Update"]
+  type UserDeck = SupabaseDB["public"]["Tables"]["user_decks"]["Row"]
+  type UserDeckInsert = SupabaseDB["public"]["Tables"]["user_decks"]["Insert"]
+  type UserDeckUpdate = SupabaseDB["public"]["Tables"]["user_decks"]["Update"]
 
-  type DeckFolder = Database["public"]["Tables"]["deck_folders"]["Row"]
-  type DeckFolderInsert = Database["public"]["Tables"]["deck_folders"]["Insert"]
-  type DeckFolderUpdate = Database["public"]["Tables"]["deck_folders"]["Update"]
+  type DeckFolder = SupabaseDB["public"]["Tables"]["deck_folders"]["Row"]
+  type DeckFolderInsert =
+    SupabaseDB["public"]["Tables"]["deck_folders"]["Insert"]
+  type DeckFolderUpdate =
+    SupabaseDB["public"]["Tables"]["deck_folders"]["Update"]
 
-  // Vocabulary Database Types
+  // Vocabulary SupabaseDB Types
   type DBVocabularyItem =
-    Database["public"]["Tables"]["vocabulary_items"]["Row"]
+    SupabaseDB["public"]["Tables"]["vocabulary_items"]["Row"]
   type DBVocabularyItemInsert =
-    Database["public"]["Tables"]["vocabulary_items"]["Insert"]
+    SupabaseDB["public"]["Tables"]["vocabulary_items"]["Insert"]
   type DBVocabularyItemUpdate =
-    Database["public"]["Tables"]["vocabulary_items"]["Update"]
+    SupabaseDB["public"]["Tables"]["vocabulary_items"]["Update"]
 
   // Deck Sharing Types
   type PublicDeckShare =
-    Database["public"]["Tables"]["public_deck_shares"]["Row"]
+    SupabaseDB["public"]["Tables"]["public_deck_shares"]["Row"]
   type PublicDeckShareInsert =
-    Database["public"]["Tables"]["public_deck_shares"]["Insert"]
+    SupabaseDB["public"]["Tables"]["public_deck_shares"]["Insert"]
   type PublicDeckShareUpdate =
-    Database["public"]["Tables"]["public_deck_shares"]["Update"]
+    SupabaseDB["public"]["Tables"]["public_deck_shares"]["Update"]
 
   type ModuleCompletion =
-    Database["public"]["Tables"]["user_module_completions"]["Row"]
+    SupabaseDB["public"]["Tables"]["user_module_completions"]["Row"]
   type ModuleCompletionInsert =
-    Database["public"]["Tables"]["user_module_completions"]["Insert"]
+    SupabaseDB["public"]["Tables"]["user_module_completions"]["Insert"]
 }

@@ -7,7 +7,7 @@ export const createSupabaseClient = () => {
   if (isServer) {
     return createBackendClient()
   } else {
-    return createBrowserClient<Database>(
+    return createBrowserClient(
       import.meta.env.VITE_SUPABASE_URL,
       import.meta.env.VITE_SUPABASE_PUBLISHABLE_OR_ANON_KEY,
     )

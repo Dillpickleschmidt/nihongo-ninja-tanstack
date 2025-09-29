@@ -27,11 +27,11 @@ export function isVerbPartOfSpeech(
 
 // Database types from global.d.ts (which import from database.types.ts)
 export type DBVocabularyItem =
-  Database["public"]["Tables"]["vocabulary_items"]["Row"]
+  SupabaseDB["public"]["Tables"]["vocabulary_items"]["Row"]
 export type DBVocabularyItemInsert =
-  Database["public"]["Tables"]["vocabulary_items"]["Insert"]
+  SupabaseDB["public"]["Tables"]["vocabulary_items"]["Insert"]
 export type DBVocabularyItemUpdate =
-  Database["public"]["Tables"]["vocabulary_items"]["Update"]
+  SupabaseDB["public"]["Tables"]["vocabulary_items"]["Update"]
 
 // Form data structure (for user input in deck creation)
 export interface VocabItemFormData {
