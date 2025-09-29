@@ -1,7 +1,12 @@
 // src/components/ContentBox.tsx
 import { Show, createSignal, onMount, onCleanup } from "solid-js"
 import { Button } from "./ui/button"
-import { useLocation, useNavigate, useMatches } from "@tanstack/solid-router"
+import {
+  useLocation,
+  useNavigate,
+  useMatches,
+  useRouter,
+} from "@tanstack/solid-router"
 import { cva } from "class-variance-authority"
 import { cn } from "@/utils/util"
 import { User } from "@supabase/supabase-js"
@@ -41,6 +46,7 @@ export const contentBoxVariants = cva(
 export default function ContentBox(props: ContentBoxProps) {
   const location = useLocation()
   const navigate = useNavigate()
+  const router = useRouter()
   const matches = useMatches()
   const [showCompleteButton, setShowCompleteButton] = createSignal(false)
 
@@ -76,7 +82,7 @@ export default function ContentBox(props: ContentBoxProps) {
       }
     }
 
-    navigate({ to: "/learn" })
+    navigate({ to: "/learn", reloadDocument: true })
   }
 
   const handleNextClick = (e: Event) => {

@@ -1,6 +1,6 @@
 // features/learn-page/components/content/LearningPathSection.tsx
 import { Grid3x3, List } from "lucide-solid"
-import { createResource } from "solid-js"
+import { Await } from "@tanstack/solid-router"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { LearningPathList } from "./LearningPathList"
 import { LearningPathGrid } from "./LearningPathGrid"
@@ -13,17 +13,6 @@ interface LearningPathSectionProps {
 export function LearningPathSection(props: LearningPathSectionProps = {}) {
   const variant = props.variant || "desktop"
   const data = useLearnPageData()
-
-  const [completedModules] = createResource(
-    () => data.completedModules,
-    (promise) => promise,
-  )
-
-  // Create a Set for O(1) lookups
-  const completedModulesSet = () => {
-    const modules = completedModules()
-    return modules ? new Set(modules) : new Set()
-  }
 
   return (
     <div class={variant === "mobile" ? "px-6 py-4" : ""}>
@@ -46,13 +35,35 @@ export function LearningPathSection(props: LearningPathSectionProps = {}) {
           </TabsList>
         </div>
 
-        <TabsContent value="list">
-          <LearningPathList completedModules={completedModulesSet()} />
-        </TabsContent>
+        <Await
+          promise={data.completedModules}
+          fallback={
+            <>
+              <TabsContent value="list">
+                <LearningPathList completedModules={new Set()} />
+              </TabsContent>
+              <TabsContent value="grid">
+                <LearningPathGrid completedModules={new Set()} />
+              </TabsContent>
+            </>
+          }
+        >
+          {(completedModules) => {
+            // Create a Set for O(1) lookups
+            const completedModulesSet = new Set(completedModules || [])
 
-        <TabsContent value="grid">
-          <LearningPathGrid completedModules={completedModulesSet()} />
-        </TabsContent>
+            return (
+              <>
+                <TabsContent value="list">
+                  <LearningPathList completedModules={completedModulesSet} />
+                </TabsContent>
+                <TabsContent value="grid">
+                  <LearningPathGrid completedModules={completedModulesSet} />
+                </TabsContent>
+              </>
+            )
+          }}
+        </Await>
       </Tabs>
     </div>
   )
