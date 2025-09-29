@@ -3,6 +3,18 @@ import { createSignal, onMount, createEffect, onCleanup } from "solid-js"
 import { loadYouTubeApi } from "../util/youtubeAPI"
 import { Loader2 } from "lucide-solid"
 
+// Global flag to track if we've already focused a YouTube player (resets on navigation)
+let hasAutoFocusedPlayer = false
+
+// Reset the flag when navigating to a new page
+if (typeof window !== "undefined") {
+  const resetFocusFlag = () => {
+    hasAutoFocusedPlayer = false
+  }
+  window.addEventListener("popstate", resetFocusFlag)
+  document.addEventListener("DOMContentLoaded", resetFocusFlag)
+}
+
 type YouTubeIframeProps = {
   videoId: string
   title: string
@@ -13,6 +25,7 @@ type YouTubeIframeProps = {
 
 export function YouTubeIframe(props: YouTubeIframeProps) {
   let iframeRef!: HTMLDivElement
+  let containerRef!: HTMLDivElement
   const [isLoading, setIsLoading] = createSignal(true)
   const [player, setPlayer] = createSignal<YT.Player | null>(null)
   let timeUpdateInterval: number | undefined
@@ -33,6 +46,16 @@ export function YouTubeIframe(props: YouTubeIframeProps) {
         onReady: (event) => {
           setIsLoading(false)
           setPlayer(event.target)
+
+          // Only auto-focus the first YouTube player on the page (by DOM order)
+          if (
+            !hasAutoFocusedPlayer &&
+            document.querySelector("[data-youtube-container]") === containerRef
+          ) {
+            hasAutoFocusedPlayer = true
+            setTimeout(() => containerRef.focus(), 100)
+          }
+
           if (props.onTimeUpdate) {
             timeUpdateInterval = window.setInterval(() => {
               const time = event.target.getCurrentTime()
@@ -62,8 +85,24 @@ export function YouTubeIframe(props: YouTubeIframeProps) {
     player()?.destroy()
   })
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    const currentPlayer = player()
+    if (!currentPlayer || e.code !== "Space") return
+
+    e.preventDefault()
+    currentPlayer.getPlayerState() === YT.PlayerState.PLAYING
+      ? currentPlayer.pauseVideo()
+      : currentPlayer.playVideo()
+  }
+
   return (
-    <div class="relative z-10">
+    <div
+      ref={containerRef}
+      class="relative z-10 outline-none"
+      tabindex="0"
+      onKeyDown={handleKeyDown}
+      data-youtube-container
+    >
       {/* Add another container div for aspect ratio */}
       <div class="relative w-full pt-[56.25%]">
         {/* 16:9 aspect ratio */}

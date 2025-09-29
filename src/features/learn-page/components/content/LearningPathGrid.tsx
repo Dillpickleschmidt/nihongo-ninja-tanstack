@@ -58,14 +58,14 @@ function GridLessonItem(props: {
   }
 
   return (
-    <div class="duration-75 ease-in-out hover:scale-[98.5%]">
+    <div class="ease-instant-hover-75 hover:scale-[98.5%]">
       <Link to={disabled ? "#" : linkTo} onClick={handleClick}>
         <div
           class={cn(
             "group bg-card font-inter relative block h-12 w-full rounded-md text-sm whitespace-nowrap",
             "border-card-foreground/70 border backdrop-blur-sm",
             "bg-gradient-to-br dark:from-neutral-600/10 dark:to-gray-600/5",
-            "transition-all duration-200",
+            "ease-instant-hover-200",
             isCompleted && "border-green-500/50 font-semibold text-green-500",
             disabled
               ? "cursor-not-allowed opacity-50"
