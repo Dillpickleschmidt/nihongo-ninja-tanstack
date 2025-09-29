@@ -1,4 +1,3 @@
-// PostHogContext.tsx
 import {
   createContext,
   useContext,
@@ -6,66 +5,54 @@ import {
   createEffect,
 } from "solid-js"
 import type { PostHog } from "posthog-js"
-import posthog from "posthog-js"
 import { useLocation } from "@tanstack/solid-router"
 import { isServer } from "solid-js/web"
 
-const PostHogContext = createContext<PostHog>()
+const PostHogContext = createContext<PostHog | null>(null)
 
-export const usePostHog = () => {
-  const context = useContext(PostHogContext)
-  if (!context) {
-    throw new Error("usePostHog must be used within a PostHogProvider")
-  }
-  return context
-}
+export const usePostHog = () => useContext(PostHogContext)
 
-// Track page views component
 function PostHogPageView() {
   const location = useLocation()
   const posthog = usePostHog()
 
   createEffect(() => {
     const loc = location()
-    if (loc.pathname) {
-      const url = window.origin + loc.pathname
-      console.log("Capturing pageview:", url)
+    if (loc.pathname && posthog) {
       posthog.capture("$pageview", {
-        $current_url: url,
+        $current_url: window.origin + loc.pathname,
         $pathname: loc.pathname,
       })
-      console.log("Pageview captured for:", loc.pathname)
     }
   })
 
   return null
 }
 
-// Initialize PostHog once on the client side
+let posthogInstance: PostHog | null = null
+
 if (!isServer) {
-  const posthogKey = import.meta.env.VITE_POSTHOG_KEY
-  console.log("PostHog key available:", !!posthogKey)
-  if (posthogKey) {
-    console.log("Initializing PostHog with proxy:", "/api/relay-tefh")
-    posthog.init(posthogKey!, {
-      api_host: "/api/relay-tefh",
-      ui_host: "https://us.posthog.com",
-      capture_pageview: false, // Disable automatic pageview capture since we're doing it manually
-      capture_pageleave: true, // Enable page leave tracking for bounce rate calculation
-      debug: true, // Enable PostHog debug logging
-      loaded: (posthog) => {
-        console.log("PostHog loaded successfully")
-        console.log("PostHog config:", posthog.config)
-      },
+  const { VITE_POSTHOG_KEY: key, VITE_APP_STAGE: stage } = import.meta.env
+
+  if (key && stage === "production") {
+    // console.log("Initializing PostHog")
+    import("posthog-js").then(({ default: posthog }) => {
+      posthog.init(key, {
+        api_host: "/api/relay-tefh",
+        ui_host: "https://us.posthog.com",
+        capture_pageview: false, // skipped since we're doing it manually
+        capture_pageleave: true,
+      })
+      posthogInstance = posthog
     })
   } else {
-    console.warn("PostHog key not found in environment variables")
+    // console.log("PostHog skipped - not in production")
   }
 }
 
 export function PostHogProvider(props: ParentProps) {
   return (
-    <PostHogContext.Provider value={posthog}>
+    <PostHogContext.Provider value={posthogInstance}>
       {props.children}
       <PostHogPageView />
     </PostHogContext.Provider>

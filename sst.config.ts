@@ -26,6 +26,7 @@ export default $config({
         VITE_SUPABASE_URL: secrets.SUPABASE_URL.value,
         VITE_SUPABASE_PUBLISHABLE_OR_ANON_KEY:
           secrets.SUPABASE_PUBLISHABLE_OR_ANON_KEY.value,
+        VITE_APP_STAGE: $app.stage,
       },
       domain: {
         name:
