@@ -1,8 +1,10 @@
 // features/learn-page/components/content/LearningPathSection.tsx
 import { Grid3x3, List } from "lucide-solid"
+import { createResource } from "solid-js"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { LearningPathList } from "./LearningPathList"
 import { LearningPathGrid } from "./LearningPathGrid"
+import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
 
 interface LearningPathSectionProps {
   variant?: "mobile" | "desktop"
@@ -10,6 +12,19 @@ interface LearningPathSectionProps {
 
 export function LearningPathSection(props: LearningPathSectionProps = {}) {
   const variant = props.variant || "desktop"
+  const data = useLearnPageData()
+
+  const [completedModules] = createResource(
+    () => data.completedModules,
+    (promise) => promise,
+  )
+
+  // Create a Set for O(1) lookups
+  const completedModulesSet = () => {
+    const modules = completedModules()
+    return modules ? new Set(modules) : new Set()
+  }
+
   return (
     <div class={variant === "mobile" ? "px-6 py-4" : ""}>
       <Tabs defaultValue="grid" class="w-full">
@@ -32,11 +47,11 @@ export function LearningPathSection(props: LearningPathSectionProps = {}) {
         </div>
 
         <TabsContent value="list">
-          <LearningPathList />
+          <LearningPathList completedModules={completedModulesSet()} />
         </TabsContent>
 
         <TabsContent value="grid">
-          <LearningPathGrid />
+          <LearningPathGrid completedModules={completedModulesSet()} />
         </TabsContent>
       </Tabs>
     </div>

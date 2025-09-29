@@ -9,6 +9,7 @@ import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { getDueFSRSCardsCount } from "@/features/supabase/db/fsrs"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
 import { getUserProgress } from "@/features/supabase/db/fsrs"
+import { getUserModuleCompletions } from "@/features/supabase/db/module-completions"
 import { getVocabularyForModule } from "@/data/utils/vocab"
 import {
   enrichLessons,
@@ -91,6 +92,10 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       ? getDueFSRSCardsCount({ data: user.id })
       : Promise.resolve(0)
 
+    const completedModulesPromise = user
+      ? getUserModuleCompletions(user.id)
+      : Promise.resolve([])
+
     const struggles = [
       "～て",
       "留学生",
@@ -115,6 +120,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       wordHierarchyData: wkHierarchyData,
       fsrsProgressData: defer(fsrsProgressDataPromise),
       dueFSRSCardsCount: defer(dueFSRSCardsCountPromise),
+      completedModules: defer(completedModulesPromise),
       deferredThumbnails: deferredIndividualThumbnails,
       struggles,
       historyItems,
@@ -133,6 +139,7 @@ function RouteComponent() {
     wordHierarchyData: loaderData().wordHierarchyData,
     fsrsProgressData: loaderData().fsrsProgressData,
     dueFSRSCardsCount: loaderData().dueFSRSCardsCount,
+    completedModules: loaderData().completedModules,
 
     lessons: loaderData().lessons,
     externalResources: loaderData().externalResources,

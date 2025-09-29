@@ -8,19 +8,23 @@ import {
 } from "@/features/learn-page/utils/loader-helpers"
 import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
 
-export function LearningPathList() {
+interface LearningPathListProps {
+  completedModules: Set<string>
+}
+
+export function LearningPathList(props: LearningPathListProps) {
   return (
     <div
       data-lessons-section
       data-transition-content
       class="grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-2"
     >
-      <LessonsList />
+      <LessonsList completedModules={props.completedModules} />
     </div>
   )
 }
 
-function LessonsList() {
+function LessonsList(props: { completedModules: Set<string> }) {
   const data = useLearnPageData()
   const lessons = data.lessons
   const midpoint = Math.ceil(lessons.length / 2)
@@ -33,7 +37,11 @@ function LessonsList() {
       <div class="space-y-4">
         <For each={leftColumn}>
           {(lesson, index) => (
-            <LessonItem lesson={lesson} number={index() + 1} />
+            <LessonItem
+              lesson={lesson}
+              number={index() + 1}
+              completedModules={props.completedModules}
+            />
           )}
         </For>
       </div>
@@ -45,6 +53,7 @@ function LessonsList() {
             <LessonItem
               lesson={lesson}
               number={leftColumn.length + index() + 1}
+              completedModules={props.completedModules}
             />
           )}
         </For>
@@ -60,10 +69,15 @@ function LessonsList() {
 function LessonItem(props: {
   lesson: EnrichedLearningPathModule
   number: number
+  completedModules: Set<string>
 }) {
   const { moduleType, displayTitle, linkTo, iconClasses, disabled } =
     props.lesson
   const ModuleIcon = getModuleIcon(moduleType)
+
+  // Extract module ID from linkTo and check completion
+  const moduleId = linkTo.split("/").pop() || ""
+  const isCompleted = props.completedModules.has(moduleId)
 
   const handleClick = () => {
     if (disabled) return
@@ -90,7 +104,12 @@ function LessonItem(props: {
             {props.number}.
           </span>
           <ModuleIcon class={cn("h-4 w-4 flex-shrink-0", iconClasses)} />
-          <span class="flex-1 text-sm">
+          <span
+            class={cn(
+              "flex-1 text-sm",
+              isCompleted && "font-semibold text-green-500",
+            )}
+          >
             {disabled ? `${displayTitle} (Coming Soon)` : displayTitle}
           </span>
         </div>

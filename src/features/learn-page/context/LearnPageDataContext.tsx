@@ -16,6 +16,7 @@ export interface LearnPageData {
   wordHierarchyData: VocabHierarchy | null
   fsrsProgressData: DeferredPromise<Record<string, FSRSCardData> | null>
   dueFSRSCardsCount: DeferredPromise<number | null>
+  completedModules: DeferredPromise<string[]>
   lessons: EnrichedLearningPathModule[]
   externalResources: EnrichedExternalResourceCollection
   deferredThumbnails: DeferredPromise<{

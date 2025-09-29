@@ -2,7 +2,7 @@ import { cn } from "@/utils"
 
 interface HamburgerIconProps {
   size?: "sm" | "md"
-  className?: string
+  class?: string
 }
 
 export function HamburgerIcon(props: HamburgerIconProps) {
@@ -17,7 +17,7 @@ export function HamburgerIcon(props: HamburgerIconProps) {
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class={cn(sizeClass, props.className)}
+      class={cn(sizeClass, props.class)}
     >
       <line x1="3" y1="6" x2="21" y2="6" />
       <line x1="3" y1="12" x2="21" y2="12" />
@@ -25,4 +25,3 @@ export function HamburgerIcon(props: HamburgerIconProps) {
     </svg>
   )
 }
-

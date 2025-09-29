@@ -65,7 +65,7 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
         <div class="grid grid-cols-3 pt-5 pb-3 text-xl font-bold">
           <div class="ml-8 flex">
             <SheetTrigger>
-              <HamburgerIcon size="md" />
+              <HamburgerIcon size="md" class="hover:cursor-pointer" />
             </SheetTrigger>
           </div>
 
@@ -113,7 +113,7 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <SheetTrigger class="mr-2">
-                <HamburgerIcon size="md" />
+                <HamburgerIcon size="md" class="hover:cursor-pointer" />
               </SheetTrigger>
               <Link to="/" class="flex items-center gap-3">
                 <Avatar class="h-11 w-11">

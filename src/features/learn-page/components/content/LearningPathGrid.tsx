@@ -9,7 +9,11 @@ import {
 } from "@/features/learn-page/utils/loader-helpers"
 import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
 
-export function LearningPathGrid() {
+interface LearningPathGridProps {
+  completedModules: Set<string>
+}
+
+export function LearningPathGrid(props: LearningPathGridProps) {
   return (
     <div
       id="tour-lesson-cards"
@@ -17,17 +21,21 @@ export function LearningPathGrid() {
       data-transition-content
       class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
     >
-      <GridLessonsList />
+      <GridLessonsList completedModules={props.completedModules} />
     </div>
   )
 }
 
-function GridLessonsList() {
+function GridLessonsList(props: { completedModules: Set<string> }) {
   const data = useLearnPageData()
   return (
     <For each={data.lessons}>
       {(lesson, index) => (
-        <GridLessonItem lesson={lesson} number={index() + 1} />
+        <GridLessonItem
+          lesson={lesson}
+          number={index() + 1}
+          completedModules={props.completedModules}
+        />
       )}
     </For>
   )
@@ -40,13 +48,15 @@ function GridLessonsList() {
 function GridLessonItem(props: {
   lesson: EnrichedLearningPathModule
   number: number
+  completedModules: Set<string>
 }) {
   const { moduleType, displayTitle, linkTo, iconClasses, disabled } =
     props.lesson
   const ModuleIcon = getModuleIcon(moduleType)
 
-  // TODO: Add completion logic when available
-  const isCompleted = false
+  // Extract module ID from linkTo and check completion
+  const moduleId = linkTo.split("/").pop() || ""
+  const isCompleted = props.completedModules.has(moduleId)
 
   const handleClick = () => {
     if (disabled) return
