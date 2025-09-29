@@ -1,6 +1,4 @@
-import { Link } from "@tanstack/solid-router"
 import { createSignal, For } from "solid-js"
-import { Button } from "@/components/ui/button"
 import YouTubeVideo from "@/features/youtube/YouTube"
 import { formatDuration } from "@/utils/timeFormat"
 
