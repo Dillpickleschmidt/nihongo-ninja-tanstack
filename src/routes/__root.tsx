@@ -139,7 +139,7 @@ function RootComponent() {
   return (
     <>
       <QueryClientProvider client={routeContext().queryClient}>
-        <PostHogProvider>
+        <PostHogProvider user={user}>
           <ColorModeScript storageType={storageManager?.type} />
           <ColorModeProvider storageManager={storageManager}>
             <SettingsProvider
