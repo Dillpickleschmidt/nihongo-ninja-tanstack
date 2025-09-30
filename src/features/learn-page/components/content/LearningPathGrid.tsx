@@ -1,16 +1,18 @@
 // features/learn-page/components/content/LearningPathGrid.tsx
-import { For } from "solid-js"
+import { For, createMemo } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { CircleCheckBig } from "lucide-solid"
 import { cn } from "@/utils"
 import {
   getModuleIcon,
+  enrichLessons,
   type EnrichedLearningPathModule,
 } from "@/features/learn-page/utils/loader-helpers"
-import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
+import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
+import { getDeckBySlug, getLessons } from "@/data/utils/core"
 
 interface LearningPathGridProps {
-  completedModules: Set<string>
+  completedModules: () => string[]
 }
 
 export function LearningPathGrid(props: LearningPathGridProps) {
@@ -26,15 +28,26 @@ export function LearningPathGrid(props: LearningPathGridProps) {
   )
 }
 
-function GridLessonsList(props: { completedModules: Set<string> }) {
-  const data = useLearnPageData()
+function GridLessonsList(props: { completedModules: () => string[] }) {
+  const completedModulesSet = () => new Set(props.completedModules())
+  const loaderData = Route.useLoaderData()
+  const activeDeck = () =>
+    getDeckBySlug(loaderData().textbookId, loaderData().chapterSlug)
+
+  const lessons = createMemo(() => {
+    const deck = activeDeck()
+    if (!deck) return []
+    const rawLessons = getLessons(deck)
+    return enrichLessons(rawLessons)
+  })
+
   return (
-    <For each={data.lessons}>
+    <For each={lessons()}>
       {(lesson, index) => (
         <GridLessonItem
           lesson={lesson}
           number={index() + 1}
-          completedModules={props.completedModules}
+          completedModulesSet={completedModulesSet}
         />
       )}
     </For>
@@ -48,7 +61,7 @@ function GridLessonsList(props: { completedModules: Set<string> }) {
 function GridLessonItem(props: {
   lesson: EnrichedLearningPathModule
   number: number
-  completedModules: Set<string>
+  completedModulesSet: () => Set<string>
 }) {
   const { moduleType, displayTitle, linkTo, iconClasses, disabled } =
     props.lesson
@@ -56,7 +69,7 @@ function GridLessonItem(props: {
 
   // Extract module ID from linkTo and check completion
   const moduleId = linkTo.split("/").pop() || ""
-  const isCompleted = props.completedModules.has(moduleId)
+  const isCompleted = () => props.completedModulesSet().has(moduleId)
 
   const handleClick = () => {
     if (disabled) return
@@ -76,7 +89,7 @@ function GridLessonItem(props: {
             "border-card-foreground/70 border backdrop-blur-sm",
             "bg-gradient-to-br dark:from-neutral-600/10 dark:to-gray-600/5",
             "ease-instant-hover-200",
-            isCompleted && "border-green-500/50 font-semibold text-green-500",
+            isCompleted() && "border-green-500/50 font-semibold text-green-500",
             disabled
               ? "cursor-not-allowed opacity-50"
               : "hover:bg-accent cursor-pointer",
@@ -85,14 +98,14 @@ function GridLessonItem(props: {
           <div
             class={cn(
               "scrollbar-hide absolute inset-0 flex items-center justify-between overflow-x-scroll overflow-y-hidden px-5",
-              isCompleted && "bg-green-500/10",
+              isCompleted() && "bg-green-500/10",
             )}
           >
             <div class="flex items-center gap-3">
               <span
                 class={cn(
                   "text-primary",
-                  isCompleted && "font-bold text-green-500",
+                  isCompleted() && "font-bold text-green-500",
                 )}
               >
                 {props.number}.
@@ -100,10 +113,10 @@ function GridLessonItem(props: {
               <span
                 class={cn(
                   "text-primary dark:text-muted-foreground",
-                  isCompleted && "font-bold text-green-500",
+                  isCompleted() && "font-bold text-green-500",
                 )}
               >
-                {isCompleted && (
+                {isCompleted() && (
                   <CircleCheckBig class="mr-2 inline-flex h-4 w-4 origin-center" />
                 )}
                 {disabled ? `${displayTitle} (Coming Soon)` : displayTitle}

@@ -21,6 +21,8 @@
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.58.0",
     "@tailwindcss/postcss": "^4.1.11",
+    "@tanstack/solid-query": "^5.90.3",
+    "@tanstack/solid-query-devtools": "^5.90.3",
     "@tanstack/solid-router": "1.128.0",
     "@tanstack/solid-router-devtools": "1.128.0",
     "@tanstack/solid-start": "1.128.1",
@@ -47,6 +49,7 @@
   },
   "devDependencies": {
     "@solidjs/testing-library": "^0.8.10",
+    "@tanstack/eslint-plugin-query": "^5.91.0",
     "@tanstack/solid-start-plugin": "1.128.1",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/user-event": "^14.6.1",

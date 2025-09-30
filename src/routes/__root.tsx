@@ -1,11 +1,13 @@
 // src/routes/__root.tsx
 import {
   Outlet,
-  createRootRoute,
+  createRootRouteWithContext,
   HeadContent,
   Scripts,
   defer,
 } from "@tanstack/solid-router"
+import { isServer, QueryClientProvider } from "@tanstack/solid-query"
+import type { QueryClient } from "@tanstack/solid-query"
 import "@fontsource-variable/inter"
 import "@fontsource/poppins"
 import "driver.js/dist/driver.css"
@@ -16,7 +18,11 @@ import {
   cookieStorageManagerSSR,
 } from "@kobalte/core"
 import { getCookie } from "@/utils/cookie-utils"
+import { setDeviceUISettingsCookie } from "@/features/main-cookies/server/cookie-utils"
+import { createEffect } from "solid-js"
+import { createMediaQuery } from "@solid-primitives/media"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
+import { SolidQueryDevtools } from "@tanstack/solid-query-devtools"
 import { getUser } from "@/features/supabase/getUser"
 import { SettingsProvider } from "@/context/SettingsContext"
 import { TourProvider } from "@/features/guided-tour/TourContext"
@@ -28,7 +34,9 @@ import { getDeviceUISettingsCookie } from "@/features/main-cookies/server/cookie
 import type { User } from "@supabase/supabase-js"
 import { PostHogProvider } from "@/features/posthog/PostHogContext"
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient
+}>()({
   head: () => ({
     meta: [
       { charset: "utf-8" },
@@ -95,11 +103,11 @@ export const Route = createRootRoute({
     }
   },
   component: RootComponent,
-  staleTime: 0,
 })
 
 function RootComponent() {
   const loaderData = Route.useLoaderData()
+  const routeContext = Route.useRouteContext()
   const {
     user,
     initialUserPreferenceData,
@@ -111,25 +119,45 @@ function RootComponent() {
 
   const storageManager = cookieStorageManagerSSR(colorModeCookies)
 
+  if (!isServer) {
+    const isDesktop = createMediaQuery("(min-width: 1280px)")
+    createEffect(() => {
+      const detectedType: "mobile" | "desktop" = isDesktop()
+        ? "desktop"
+        : "mobile"
+
+      if (deviceUISettings["device-type"] !== detectedType) {
+        const updatedSettings = {
+          ...deviceUISettings,
+          "device-type": detectedType,
+        }
+        setDeviceUISettingsCookie(updatedSettings)
+      }
+    })
+  }
+
   return (
     <>
-      <PostHogProvider>
-        <ColorModeScript storageType={storageManager?.type} />
-        <ColorModeProvider storageManager={storageManager}>
-          <SettingsProvider
-            user={user as User}
-            initialUserPreferenceData={initialUserPreferenceData}
-            userPreferencesDBPromise={userPreferencesDBPromise}
-            deviceUISettings={deviceUISettings}
-          >
-            <TourProvider shouldStartMainTour={shouldStartMainTour}>
-              <Scripts />
-              <Outlet />
-              <TanStackRouterDevtools />
-            </TourProvider>
-          </SettingsProvider>
-        </ColorModeProvider>
-      </PostHogProvider>
+      <QueryClientProvider client={routeContext().queryClient}>
+        <PostHogProvider>
+          <ColorModeScript storageType={storageManager?.type} />
+          <ColorModeProvider storageManager={storageManager}>
+            <SettingsProvider
+              user={user as User}
+              initialUserPreferenceData={initialUserPreferenceData}
+              userPreferencesDBPromise={userPreferencesDBPromise}
+              deviceUISettings={deviceUISettings}
+            >
+              <TourProvider shouldStartMainTour={shouldStartMainTour}>
+                <Scripts />
+                <Outlet />
+                <TanStackRouterDevtools position="bottom-right" />
+                <SolidQueryDevtools buttonPosition="bottom-left" />
+              </TourProvider>
+            </SettingsProvider>
+          </ColorModeProvider>
+        </PostHogProvider>
+      </QueryClientProvider>
     </>
   )
 }

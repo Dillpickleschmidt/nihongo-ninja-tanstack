@@ -1,10 +1,11 @@
 // features/learn-page/components/content/LearningPathSection.tsx
 import { Grid3x3, List } from "lucide-solid"
-import { Await } from "@tanstack/solid-router"
+import { createResource } from "solid-js"
+import { useQueryClient } from "@tanstack/solid-query"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { LearningPathList } from "./LearningPathList"
 import { LearningPathGrid } from "./LearningPathGrid"
-import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
+import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
 
 interface LearningPathSectionProps {
   variant?: "mobile" | "desktop"
@@ -12,7 +13,18 @@ interface LearningPathSectionProps {
 
 export function LearningPathSection(props: LearningPathSectionProps = {}) {
   const variant = props.variant || "desktop"
-  const data = useLearnPageData()
+  const loaderData = Route.useLoaderData()
+  const queryClient = useQueryClient()
+  const userId = loaderData().user?.id || null
+
+  const [completedModules] = createResource(async () => {
+    const data = await loaderData().completedModules
+
+    // Populate cache for future navigations
+    queryClient.setQueryData(["module-completions", userId], data)
+
+    return data
+  })
 
   return (
     <div class={variant === "mobile" ? "px-6 py-4" : ""}>
@@ -35,36 +47,25 @@ export function LearningPathSection(props: LearningPathSectionProps = {}) {
           </TabsList>
         </div>
 
-        <Await
-          promise={data.completedModules}
-          fallback={
-            <>
-              <TabsContent value="list">
-                <LearningPathList completedModules={new Set()} />
-              </TabsContent>
-              <TabsContent value="grid">
-                <LearningPathGrid completedModules={new Set()} />
-              </TabsContent>
-            </>
-          }
-        >
-          {(completedModules) => {
-            // Create a Set for O(1) lookups
-            const completedModulesSet = new Set(completedModules || [])
-
-            return (
-              <>
-                <TabsContent value="list">
-                  <LearningPathList completedModules={completedModulesSet} />
-                </TabsContent>
-                <TabsContent value="grid">
-                  <LearningPathGrid completedModules={completedModulesSet} />
-                </TabsContent>
-              </>
-            )
-          }}
-        </Await>
+        <LearningPathContent completedModulesResource={completedModules} />
       </Tabs>
     </div>
+  )
+}
+
+function LearningPathContent(props: {
+  completedModulesResource: () => string[] | undefined
+}) {
+  const completedModules = () => props.completedModulesResource() || []
+
+  return (
+    <>
+      <TabsContent value="list">
+        <LearningPathList completedModules={completedModules} />
+      </TabsContent>
+      <TabsContent value="grid">
+        <LearningPathGrid completedModules={completedModules} />
+      </TabsContent>
+    </>
   )
 }

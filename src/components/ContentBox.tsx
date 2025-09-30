@@ -1,12 +1,8 @@
 // src/components/ContentBox.tsx
 import { Show, createSignal, onMount, onCleanup } from "solid-js"
 import { Button } from "./ui/button"
-import {
-  useLocation,
-  useNavigate,
-  useMatches,
-  useRouter,
-} from "@tanstack/solid-router"
+import { useLocation, useNavigate, useMatches } from "@tanstack/solid-router"
+import { useQueryClient, useMutation } from "@tanstack/solid-query"
 import { cva } from "class-variance-authority"
 import { cn } from "@/utils/util"
 import { User } from "@supabase/supabase-js"
@@ -46,9 +42,27 @@ export const contentBoxVariants = cva(
 export default function ContentBox(props: ContentBoxProps) {
   const location = useLocation()
   const navigate = useNavigate()
-  const router = useRouter()
   const matches = useMatches()
+  const queryClient = useQueryClient()
   const [showCompleteButton, setShowCompleteButton] = createSignal(false)
+
+  const addCompletionMutation = useMutation(() => ({
+    mutationFn: ({ userId, moduleId }: { userId: string; moduleId: string }) =>
+      addModuleCompletion(userId, moduleId),
+    onSuccess: (data, variables) => {
+      // Update cache with the completed module
+      queryClient.setQueryData(
+        ["module-completions", variables.userId],
+        (old: string[] | undefined) => {
+          const modulePath = data.module_path
+          // If module already in list, return as-is
+          if (old?.includes(modulePath)) return old
+          // Otherwise append the new module
+          return [...(old || []), modulePath]
+        },
+      )
+    },
+  }))
 
   const config = (): ContentBoxConfig => {
     const currentPath = location().pathname
@@ -66,23 +80,20 @@ export default function ContentBox(props: ContentBoxProps) {
     location().pathname.startsWith("/lessons/") ||
     location().pathname.startsWith("/external-resources/")
 
-  const handleCompleteClick = async (e: Event) => {
+  const handleCompleteClick = (e: Event) => {
     e.preventDefault()
 
-    // Extract module ID from current path (everything after the last "/")
     const currentPath = location().pathname
     const moduleId = currentPath.split("/").pop()
 
     // If user is logged in and we have a moduleId, mark as complete
     if (props.user && moduleId) {
-      try {
-        await addModuleCompletion(props.user.id, moduleId)
-      } catch (error) {
-        console.error("Failed to mark module as complete:", error)
-      }
+      // Fire mutation without awaiting - cache will update via onSuccess
+      addCompletionMutation.mutate({ userId: props.user.id, moduleId })
     }
 
-    navigate({ to: "/learn", reloadDocument: true })
+    // Navigate immediately
+    navigate({ to: "/learn" })
   }
 
   const handleNextClick = (e: Event) => {
@@ -93,7 +104,7 @@ export default function ContentBox(props: ContentBoxProps) {
     }
   }
 
-  // Handle scroll detection for complete button
+  // scroll detection
   onMount(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + window.innerHeight
@@ -108,7 +119,7 @@ export default function ContentBox(props: ContentBoxProps) {
     }
 
     window.addEventListener("scroll", handleScroll)
-    handleScroll() // Check initial position
+    handleScroll()
 
     onCleanup(() => {
       window.removeEventListener("scroll", handleScroll)
@@ -146,7 +157,7 @@ export default function ContentBox(props: ContentBoxProps) {
         </div>
       </Show>
 
-      {/* Next button only */}
+      {/* Next button */}
       <Show when={config().nextButtonLink}>
         <div class="absolute">
           <div class="fixed right-6 bottom-6">

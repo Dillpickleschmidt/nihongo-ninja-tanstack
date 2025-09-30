@@ -38,6 +38,7 @@ function truncateText(text: string, maxLength: number): string {
 // --- Types for Enriched Data ---
 
 export type EnrichedExternalResource = ExternalResource & {
+  id: string
   gradientStyle: string
   difficultyColorClass: string
   truncatedTitle: string
@@ -114,6 +115,7 @@ export function enrichExternalResources(
   for (const [key, resource] of Object.entries(resources)) {
     enriched[key] = {
       ...resource,
+      id: key,
       gradientStyle: getResourceGradientStyle(resource.resource_type),
       difficultyColorClass: getResourceDifficultyColorClass(
         resource.difficulty_rating,

@@ -1,33 +1,24 @@
 // routes/_home/learn/$textbookId.$chapterSlug.tsx
 import { createFileRoute, redirect, defer } from "@tanstack/solid-router"
-import {
-  getLessons,
-  getExternalResources,
-  getDeckBySlug,
-} from "@/data/utils/core"
-import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
-import { getDueFSRSCardsCount } from "@/features/supabase/db/fsrs"
-import { getVocabHierarchy } from "@/features/resolvers/kanji"
-import { getUserProgress } from "@/features/supabase/db/fsrs"
-import { getUserModuleCompletions } from "@/features/supabase/db/module-completions"
-import { getVocabularyForModule } from "@/data/utils/vocab"
-import {
-  enrichLessons,
-  enrichExternalResources,
-} from "@/features/learn-page/utils/loader-helpers"
-
-import { LearnDataProvider } from "@/features/learn-page/context/LearnPageDataContext"
+import { getDeckBySlug, getExternalResources } from "@/data/utils/core"
 import { LearnPageContent } from "@/features/learn-page/components/layout/LearnPageContent"
-import type { TextbookIDEnum, VocabularyItem } from "@/data/types"
-import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
-import type { User } from "@supabase/supabase-js"
+import {
+  dueFSRSCardsCountQueryOptions,
+  vocabHierarchyQueryOptions,
+  completedModulesQueryOptions,
+  fsrsProgressQueryOptions,
+  resourceThumbnailQueryOptions,
+} from "@/features/learn-page/queries/learn-page-queries"
+import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
+import type { TextbookIDEnum } from "@/data/types"
 
 export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
   loader: async ({ context, params }) => {
-    const { user } = context
+    const { user, queryClient } = context
     const { textbookId, chapterSlug } = params
 
-    let deck = getDeckBySlug(textbookId as TextbookIDEnum, chapterSlug)
+    // Validate deck exists (synchronous)
+    const deck = getDeckBySlug(textbookId as TextbookIDEnum, chapterSlug)
 
     if (!deck) {
       throw redirect({
@@ -36,126 +27,82 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       })
     }
 
-    // Lessons
-    const enrichedLessons = enrichLessons(getLessons(deck))
-
-    // External Resources
-    const externalResources = enrichExternalResources(
-      getExternalResources(deck),
+    // Use TanStack Query's ensureQueryData (checks cache, fetches if needed)
+    const dueFSRSCardsCountPromise = queryClient.ensureQueryData(
+      dueFSRSCardsCountQueryOptions(user?.id || null),
     )
-    const deferredIndividualThumbnails = Object.entries(externalResources).map(
-      ([key, resource]) => {
-        const promise = fetchThumbnailUrl(
+
+    const completedModulesPromise = queryClient.ensureQueryData(
+      completedModulesQueryOptions(user?.id || null),
+    )
+
+    const vocabHierarchyPromise = queryClient.ensureQueryData(
+      vocabHierarchyQueryOptions(
+        deck,
+        context.initialUserPreferenceData["override-settings"],
+      ),
+    )
+
+    // fsrsProgress depends on vocabHierarchy slugs, so we need to await it first
+    const vocabHierarchyData = await vocabHierarchyPromise
+    const fsrsProgressPromise = queryClient.ensureQueryData(
+      fsrsProgressQueryOptions(
+        user?.id || null,
+        vocabHierarchyData?.slugs || [],
+      ),
+    )
+
+    // Pre-fetch all resource thumbnails in parallel (non-blocking, for streaming)
+    const rawResources = getExternalResources(deck)
+    const externalResources = enrichExternalResources(rawResources)
+    const resourcesArray = Object.values(externalResources)
+    const thumbnailPromises = resourcesArray.map((resource) =>
+      queryClient.ensureQueryData(
+        resourceThumbnailQueryOptions(
+          resource.id,
           resource.external_url,
           resource.creator_id,
-        ).then((thumbnailUrl) => ({
-          resourceId: key,
-          thumbnailUrl,
-        }))
-        return defer(promise)
-      },
+        ),
+      ),
     )
 
-    // Vocabulary and Hierarchy
-    const vocabModuleId = deck.learning_path_items.find((item) =>
-      item.id.endsWith("_vocab-list"),
-    )?.id
-
-    let chapterVocabulary: VocabularyItem[] = []
-    if (vocabModuleId) {
-      chapterVocabulary = await getVocabularyForModule(vocabModuleId)
-    }
-    const vocabForHierarchy = chapterVocabulary.map((item) => item.word)
-    const wkHierarchyData: VocabHierarchy | null = await getVocabHierarchy({
-      data: {
-        slugs: vocabForHierarchy,
-        userOverrides: context.initialUserPreferenceData["override-settings"],
+    // TODO: Replace with real data from backend
+    const mockStruggles = ["食べる", "飲む", "見る", "聞く", "話す"]
+    const mockHistoryItems = [
+      {
+        name: "Vocabulary Practice",
+        icon: "📚",
+        amount: 50,
+        color: "bg-blue-500",
       },
-    })
-
-    // Collect all unique slugs from hierarchy
-    const slugs = [
-      ...new Set([
-        ...(wkHierarchyData?.vocabulary.map((item) => item.word) || []),
-        ...(wkHierarchyData?.kanji.map((item) => item.kanji) || []),
-        ...(wkHierarchyData?.radicals.map((item) => item.radical) || []),
-      ]),
-    ]
-
-    // Fetch user progress data for all collected slugs
-    const fsrsProgressDataPromise =
-      user && slugs.length > 0
-        ? getUserProgress({ data: { slugs, userId: user.id } })
-        : Promise.resolve(null)
-
-    const dueFSRSCardsCountPromise = user
-      ? getDueFSRSCardsCount({ data: user.id })
-      : Promise.resolve(0)
-
-    const completedModulesPromise = user
-      ? getUserModuleCompletions(user.id)
-      : Promise.resolve([])
-
-    const struggles = [
-      "～て",
-      "留学生",
-      "Intransat...",
-      "～てしま",
-      "助詞",
-      "敬語",
-    ]
-    const historyItems = [
-      { name: "Gym", icon: "⚡", amount: -40.99, color: "bg-orange-500" },
-      { name: "Coffee", icon: "☕", amount: -5.5, color: "bg-amber-600" },
-      { name: "Study Books", icon: "📚", amount: -29.99, color: "bg-blue-500" },
+      { name: "Grammar Lesson", icon: "✏️", amount: 30, color: "bg-green-500" },
+      { name: "Kanji Review", icon: "🔠", amount: -20, color: "bg-red-500" },
+      {
+        name: "Reading Practice",
+        icon: "📖",
+        amount: 40,
+        color: "bg-purple-500",
+      },
     ]
 
     return {
       user,
-      textbookId,
+      textbookId: textbookId as TextbookIDEnum,
+      chapterSlug,
       deck,
-      lessons: enrichedLessons,
+      struggles: mockStruggles,
+      historyItems: mockHistoryItems,
       externalResources,
-      chapterVocabulary,
-      wordHierarchyData: wkHierarchyData,
-      fsrsProgressData: defer(fsrsProgressDataPromise),
       dueFSRSCardsCount: defer(dueFSRSCardsCountPromise),
       completedModules: defer(completedModulesPromise),
-      deferredThumbnails: deferredIndividualThumbnails,
-      struggles,
-      historyItems,
+      vocabHierarchy: defer(Promise.resolve(vocabHierarchyData)),
+      fsrsProgress: defer(fsrsProgressPromise),
+      resourceThumbnails: thumbnailPromises.map((p) => defer(p)),
     }
   },
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const loaderData = Route.useLoaderData()
-
-  const learnPageData = {
-    activeTextbookId: loaderData().textbookId as TextbookIDEnum,
-    activeDeck: loaderData().deck,
-    chapterVocabulary: loaderData().chapterVocabulary,
-    wordHierarchyData: loaderData().wordHierarchyData,
-    fsrsProgressData: loaderData().fsrsProgressData,
-    dueFSRSCardsCount: loaderData().dueFSRSCardsCount,
-    completedModules: loaderData().completedModules,
-
-    lessons: loaderData().lessons,
-    externalResources: loaderData().externalResources,
-    deferredThumbnails: loaderData().deferredThumbnails,
-    progressPercentage: 75,
-    struggles: loaderData().struggles,
-    historyItems: loaderData().historyItems,
-  }
-
-  return (
-    <LearnDataProvider data={learnPageData}>
-      <LearnPageContent
-        user={loaderData().user as User | null}
-        activeTextbookId={loaderData().textbookId as TextbookIDEnum}
-        activeDeck={loaderData().deck.slug}
-      />
-    </LearnDataProvider>
-  )
+  return <LearnPageContent />
 }

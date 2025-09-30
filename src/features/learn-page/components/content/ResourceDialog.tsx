@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button"
 
 export function ResourceCardWrapper(props: {
   resource: EnrichedExternalResource
-  thumbnailUrl?: string | null
+  thumbnailUrl: (() => string | null | undefined) | string | null | undefined
   variant: "desktop" | "mobile"
 }) {
   const hasInternalUrl = () => Boolean(props.resource.internal_url)
@@ -69,29 +69,43 @@ export function ResourceCardWrapper(props: {
 
 export function ResourceCardContent(props: {
   resource: EnrichedExternalResource
-  thumbnailUrl?: string | null
+  thumbnailUrl: (() => string | null | undefined) | string | null | undefined
   variant: "desktop" | "mobile"
 }) {
   const Icon = getResourceIconComponent(props.resource.resource_type)
+
+  // Normalize thumbnailUrl to always be a function
+  const getThumbnailUrl = () =>
+    typeof props.thumbnailUrl === "function"
+      ? props.thumbnailUrl()
+      : props.thumbnailUrl
 
   if (props.variant === "mobile") {
     return (
       <>
         <div class="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg">
-          <Show
-            when={props.thumbnailUrl}
+          <Suspense
             fallback={
               <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
                 <Icon class="h-8 w-8 text-white" />
               </div>
             }
           >
-            <img
-              src={props.thumbnailUrl!}
-              alt={props.resource.title}
-              class="h-full w-full object-cover"
-            />
-          </Show>
+            <Show
+              when={getThumbnailUrl()}
+              fallback={
+                <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
+                  <Icon class="h-8 w-8 text-white" />
+                </div>
+              }
+            >
+              <img
+                src={getThumbnailUrl()!}
+                alt={props.resource.title}
+                class="h-full w-full object-cover"
+              />
+            </Show>
+          </Suspense>
         </div>
 
         <div class="min-w-0 flex-1">
@@ -125,16 +139,18 @@ export function ResourceCardContent(props: {
       class="border-card-foreground/70 relative h-40 w-[220px] overflow-hidden rounded-2xl border backdrop-blur-sm hover:shadow-xl"
       style={{ "background-image": props.resource.gradientStyle }}
     >
-      {props.thumbnailUrl && (
-        <div
-          class="absolute inset-0 opacity-30 transition-opacity group-hover:opacity-40"
-          style={{
-            "background-image": `url(${props.thumbnailUrl})`,
-            "background-size": "cover",
-            "background-position": "center",
-          }}
-        />
-      )}
+      <Suspense>
+        <Show when={getThumbnailUrl()}>
+          <div
+            class="absolute inset-0 opacity-30 transition-opacity group-hover:opacity-40"
+            style={{
+              "background-image": `url(${getThumbnailUrl()})`,
+              "background-size": "cover",
+              "background-position": "center",
+            }}
+          />
+        </Show>
+      </Suspense>
 
       <div class="absolute inset-0 dark:bg-gradient-to-t dark:from-black/60 dark:via-transparent dark:to-transparent" />
 

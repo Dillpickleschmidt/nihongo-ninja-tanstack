@@ -28,6 +28,7 @@ const RouteSettingsSchema = z.object({
 export const DeviceUISettingsSchema = z.object({
   routes: RouteSettingsSchema.default(RouteSettingsSchema.parse({})),
   tour: TourSettingsSchema.default(TourSettingsSchema.parse({})),
+  "device-type": z.enum(["mobile", "desktop"]).nullable().default(null),
 })
 
 export type DeviceUISettingsCookieData = z.infer<typeof DeviceUISettingsSchema>

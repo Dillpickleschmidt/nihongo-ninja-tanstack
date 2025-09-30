@@ -1,9 +1,8 @@
 // features/learn-page/components/layout/LearnPageHeader.tsx
-import { Link, useNavigate, Await } from "@tanstack/solid-router"
+import { Link, useNavigate } from "@tanstack/solid-router"
 import { createSignal, Show } from "solid-js"
 import { useSettings } from "@/context/SettingsContext"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
 import {
   Sheet,
   SheetTrigger,
@@ -14,13 +13,12 @@ import {
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
 import { NavigationSheet } from "./NavigationSheet"
 import { HamburgerIcon } from "../shared/HamburgerIcon"
-import { UserActions } from "../shared/UserActions"
-import type { User } from "@supabase/supabase-js"
+import { DueCardsDisplay } from "../shared/DueCardsDisplay"
+import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
+import { getDeckBySlug } from "@/data/utils/core"
 import type { MobileContentView } from "./LearnPageContent"
-import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
 
 interface LearnPageHeaderProps {
-  user: User | null
   variant: "mobile" | "desktop"
   mobileContentView?: MobileContentView
   setMobileContentView?: (view: MobileContentView) => void
@@ -29,12 +27,12 @@ interface LearnPageHeaderProps {
 export function LearnPageHeader(props: LearnPageHeaderProps) {
   const navigate = useNavigate()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
-  const { activeTextbookId, activeDeck, dueFSRSCardsCount } = useLearnPageData()
   const { updateUserPreferences } = useSettings()
+  const loaderData = Route.useLoaderData()
 
   const handleDeckChange = async (
-    textbookId: typeof activeTextbookId,
-    deck: typeof activeDeck,
+    textbookId: string,
+    deck: { slug: string; title: string },
   ) => {
     try {
       // Update preferences first via SWR system
@@ -71,15 +69,27 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
 
           <div class="flex justify-center">
             <DeckSelectionPopover
-              activeTextbookId={activeTextbookId}
-              activeDeck={activeDeck}
+              activeTextbookId={loaderData().textbookId}
+              activeDeck={
+                getDeckBySlug(
+                  loaderData().textbookId,
+                  loaderData().chapterSlug,
+                )!
+              }
               onDeckChange={handleDeckChange}
               isOpen={isPopoverOpen()}
               onOpenChange={setIsPopoverOpen}
               popoverWidth="w-[350px]"
             >
               <div class="hover:bg-card-foreground/40 -mt-0.5 flex min-w-[150px] items-center justify-center space-x-2 rounded-md border-none px-3 py-2 text-center text-lg font-semibold hover:cursor-pointer md:text-xl">
-                <span>{activeDeck.title}</span>
+                <span>
+                  {
+                    getDeckBySlug(
+                      loaderData().textbookId,
+                      loaderData().chapterSlug,
+                    )?.title
+                  }
+                </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -99,11 +109,7 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
 
           <div class="flex justify-center">
             <div class="min-w-20 text-center">
-              <UserActions
-                user={props.user}
-                variant="mobile"
-                dueFSRSCardsCount={dueFSRSCardsCount}
-              />
+              <DueCardsDisplay variant="mobile" />
             </div>
           </div>
         </div>
@@ -128,11 +134,7 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
             </div>
 
             <div class="flex items-center gap-6">
-              <UserActions
-                user={props.user}
-                variant="desktop"
-                dueFSRSCardsCount={dueFSRSCardsCount}
-              />
+              <DueCardsDisplay variant="desktop" />
             </div>
           </div>
         </div>

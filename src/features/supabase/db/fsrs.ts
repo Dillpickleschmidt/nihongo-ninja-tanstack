@@ -81,25 +81,23 @@ export const getUserProgress = createServerFn({ method: "GET" })
 /**
  * Get count of due FSRS cards for a user
  */
-export const getDueFSRSCardsCount = createServerFn({ method: "GET" })
-  .validator((userId: string) => userId)
-  .handler(async ({ data: userId }): Promise<number> => {
-    const supabase = createSupabaseClient()
+export async function getDueFSRSCardsCount(userId: string): Promise<number> {
+  const supabase = createSupabaseClient()
 
-    const now = new Date()
-    const { count, error } = await supabase
-      .from("fsrs_cards")
-      .select("*", { count: "exact", head: true })
-      .eq("user_id", userId)
-      .lte("due_at", now.toISOString())
+  const now = new Date()
+  const { count, error } = await supabase
+    .from("fsrs_cards")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .lte("due_at", now.toISOString())
 
-    if (error) {
-      console.error("Error counting due FSRS cards:", error)
-      return 0
-    }
+  if (error) {
+    console.error("Error counting due FSRS cards:", error)
+    return 0
+  }
 
-    return count || 0
-  })
+  return count || 0
+}
 
 /**
  * Upsert FSRS card data for a user

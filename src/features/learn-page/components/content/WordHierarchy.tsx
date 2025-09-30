@@ -1,6 +1,6 @@
 // features/learn-page/components/content/WordHierarchy.tsx
-import { createMemo, createResource, For, Show } from "solid-js"
-import { useLearnPageData } from "../../context/LearnPageDataContext"
+import { createMemo, For, Show, Suspense, createResource } from "solid-js"
+import { useQueryClient } from "@tanstack/solid-query"
 import { useAnimationManager } from "@/hooks/useAnimations"
 import { isServer } from "solid-js/web"
 import {
@@ -17,9 +17,11 @@ import type {
   RadicalEntry,
 } from "@/data/wanikani/hierarchy-builder"
 import type { VocabularyItem } from "@/data/types"
-import type { User } from "@supabase/supabase-js"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import { extractHiragana } from "@/data/utils/vocab"
+import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
+import { getDeckBySlug } from "@/data/utils/core"
+import { useSettings } from "@/context/SettingsContext"
 
 type WordHierarchyVariant = "mobile" | "desktop"
 type ProgressState = "not_seen" | "learning" | "well_known"
@@ -31,7 +33,6 @@ type EnrichedRadicalEntry = RadicalEntry & { progress?: ProgressState }
 
 interface WordHierarchyProps {
   variant: WordHierarchyVariant
-  user: User | null
 }
 
 const WELL_KNOWN_THRESHOLD = 21
@@ -113,40 +114,84 @@ function enrichHierarchyWithProgress(
 }
 
 export function WordHierarchy(props: WordHierarchyProps) {
-  const { wordHierarchyData, chapterVocabulary, fsrsProgressData } =
-    useLearnPageData()
+  const loaderData = Route.useLoaderData()
+  const queryClient = useQueryClient()
   const { animateOnDataChange } = useAnimationManager()
+  const { userPreferences } = useSettings()
+  const userId = loaderData().user?.id || null
 
-  const [progressResource] = createResource(
-    () => (props.user ? fsrsProgressData : null),
-    (promise) => promise,
+  const activeDeck = () =>
+    getDeckBySlug(loaderData().textbookId, loaderData().chapterSlug)
+
+  const [vocabHierarchyData] = createResource(async () => {
+    const data = await loaderData().vocabHierarchy
+
+    // Populate cache for future navigations
+    queryClient.setQueryData(
+      [
+        "vocab-hierarchy",
+        activeDeck()?.slug,
+        userPreferences?.["override-settings"],
+      ],
+      data,
+    )
+
+    return data
+  })
+
+  const [fsrsProgressData] = createResource(
+    vocabHierarchyData,
+    async (vocabData) => {
+      const data = await loaderData().fsrsProgress
+
+      // Populate cache for future navigations
+      const slugs = vocabData?.slugs || []
+      queryClient.setQueryData(["fsrs-progress", userId, slugs], data)
+
+      return data
+    },
   )
 
+  const slugs = () => vocabHierarchyData()?.slugs || []
+  const chapterVocabulary = () => vocabHierarchyData()?.chapterVocabulary || []
+  const wordHierarchyData = () => vocabHierarchyData()?.wordHierarchyData
+  const hasUser = () => !!loaderData().user
+
   const finalData = () => {
-    const hierarchy = wordHierarchyData
-    const progress = progressResource()
+    const hierarchy = wordHierarchyData()
+    const progress = fsrsProgressData()
 
     if (!hierarchy) return null
-    if (!props.user || !progress) return hierarchy
+    if (!hasUser() || !progress) return hierarchy
 
     return enrichHierarchyWithProgress(hierarchy, progress)
   }
 
   animateOnDataChange(
     ["[data-word-hierarchy-progress]", "[data-word-hierarchy-content]"],
-    () => wordHierarchyData,
+    () => wordHierarchyData(),
   )
 
   return (
     <div class="flex flex-col gap-4" data-animate="word-hierarchy">
-      <Show when={finalData()}>
-        <WordHierarchyDisplay
-          data={finalData()!}
-          chapterVocabulary={chapterVocabulary}
-          variant={props.variant}
-          user={props.user}
-        />
-      </Show>
+      <Suspense fallback={<WordHierarchyLoadingFallback />}>
+        <Show when={finalData()}>
+          <WordHierarchyDisplay
+            data={finalData()!}
+            chapterVocabulary={chapterVocabulary()}
+            variant={props.variant}
+            hasUser={hasUser()}
+          />
+        </Show>
+      </Suspense>
+    </div>
+  )
+}
+
+function WordHierarchyLoadingFallback() {
+  return (
+    <div class="flex flex-col gap-4">
+      <div class="text-muted-foreground text-sm">Loading word hierarchy...</div>
     </div>
   )
 }
@@ -160,7 +205,7 @@ function WordHierarchyDisplay(props: {
   }
   chapterVocabulary: VocabularyItem[]
   variant: WordHierarchyVariant
-  user: User | null
+  hasUser: boolean
 }) {
   return (
     <div class="flex flex-col gap-1">
@@ -168,7 +213,7 @@ function WordHierarchyDisplay(props: {
         {/* Progress Circle Triggers */}
         <div
           data-word-hierarchy-progress
-          class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-3 backdrop-blur-sm"
+          class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-3 opacity-0 backdrop-blur-sm"
         >
           <div class="grid grid-cols-3 gap-2">
             <ProgressCircleTrigger
@@ -179,7 +224,7 @@ function WordHierarchyDisplay(props: {
               total={props.data.summary?.vocab.total || 0}
               colorLearned="text-sky-400"
               colorInProgress="text-sky-600"
-              hasProgress={!!props.user}
+              hasProgress={props.hasUser}
             />
             <ProgressCircleTrigger
               value="kanji"
@@ -189,7 +234,7 @@ function WordHierarchyDisplay(props: {
               total={props.data.summary?.kanji.total || 0}
               colorLearned="text-pink-400"
               colorInProgress="text-pink-600"
-              hasProgress={!!props.user}
+              hasProgress={props.hasUser}
               dataTour="vocab-trigger"
             />
             <ProgressCircleTrigger
@@ -200,7 +245,7 @@ function WordHierarchyDisplay(props: {
               total={props.data.summary?.radicals.total || 0}
               colorLearned="text-teal-400"
               colorInProgress="text-teal-600"
-              hasProgress={!!props.user}
+              hasProgress={props.hasUser}
             />
           </div>
         </div>
@@ -209,7 +254,7 @@ function WordHierarchyDisplay(props: {
         <TabsContent
           value="vocab"
           data-word-hierarchy-content
-          class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1.5 pl-4 backdrop-blur-sm"
+          class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1.5 pl-4 opacity-0 backdrop-blur-sm"
         >
           <VocabularyList
             hierarchy={props.data.vocabulary}
