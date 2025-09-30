@@ -1,6 +1,13 @@
 // features/learn-page/components/content/WordHierarchy.tsx
-import { createMemo, createResource, For, Show } from "solid-js"
-import { useLearnPageData } from "../../context/LearnPageDataContext"
+import {
+  For,
+  Show,
+  Suspense,
+  createResource,
+  onMount,
+  onCleanup,
+} from "solid-js"
+import { useQueryClient } from "@tanstack/solid-query"
 import { useAnimationManager } from "@/hooks/useAnimations"
 import { isServer } from "solid-js/web"
 import {
@@ -17,9 +24,11 @@ import type {
   RadicalEntry,
 } from "@/data/wanikani/hierarchy-builder"
 import type { VocabularyItem } from "@/data/types"
-import type { User } from "@supabase/supabase-js"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import { extractHiragana } from "@/data/utils/vocab"
+import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
+import { getDeckBySlug } from "@/data/utils/core"
+import { useSettings } from "@/context/SettingsContext"
 
 type WordHierarchyVariant = "mobile" | "desktop"
 type ProgressState = "not_seen" | "learning" | "well_known"
@@ -31,7 +40,6 @@ type EnrichedRadicalEntry = RadicalEntry & { progress?: ProgressState }
 
 interface WordHierarchyProps {
   variant: WordHierarchyVariant
-  user: User | null
 }
 
 const WELL_KNOWN_THRESHOLD = 21
@@ -58,11 +66,6 @@ function enrichHierarchyWithProgress(
   vocabulary: EnrichedVocabEntry[]
   kanji: EnrichedKanjiEntry[]
   radicals: EnrichedRadicalEntry[]
-  summary: {
-    vocab: { total: number; wellKnown: number; learning: number }
-    kanji: { total: number; wellKnown: number; learning: number }
-    radicals: { total: number; wellKnown: number; learning: number }
-  }
 } {
   const radicalsWithProgress: EnrichedRadicalEntry[] =
     hierarchyData.radicals.map((radical) => ({
@@ -84,162 +87,279 @@ function enrichHierarchyWithProgress(
     }),
   )
 
-  const countProgress = (items: { progress?: ProgressState }[]) => ({
-    wellKnown: items.filter((i) => i.progress === "well_known").length,
-    learning: items.filter((i) => i.progress === "learning").length,
-  })
-
-  const summary = {
-    vocab: {
-      total: vocabWithProgress.length,
-      ...countProgress(vocabWithProgress),
-    },
-    kanji: {
-      total: kanjiWithProgress.length,
-      ...countProgress(kanjiWithProgress),
-    },
-    radicals: {
-      total: radicalsWithProgress.length,
-      ...countProgress(radicalsWithProgress),
-    },
-  }
-
   return {
     vocabulary: vocabWithProgress,
     kanji: kanjiWithProgress,
     radicals: radicalsWithProgress,
-    summary,
   }
 }
 
 export function WordHierarchy(props: WordHierarchyProps) {
-  const { wordHierarchyData, chapterVocabulary, fsrsProgressData } =
-    useLearnPageData()
-  const { animateOnDataChange } = useAnimationManager()
+  const loaderData = Route.useLoaderData()
+  const queryClient = useQueryClient()
+  const { userPreferences } = useSettings()
+  const userId = loaderData().user?.id || null
 
-  const [progressResource] = createResource(
-    () => (props.user ? fsrsProgressData : null),
-    (promise) => promise,
+  // Load vocab hierarchy (fast, show immediately)
+  const [vocabData] = createResource(async () => {
+    const data = await loaderData().vocabHierarchy
+
+    // Populate cache for future navigations
+    queryClient.setQueryData(
+      [
+        "vocab-hierarchy",
+        loaderData().textbookId,
+        loaderData().chapterSlug,
+        userPreferences?.["override-settings"],
+      ],
+      data,
+    )
+
+    return data
+  })
+
+  // Load FSRS progress (depends on vocabData being ready for slugs)
+  const [progressData, { refetch: refetchProgress }] = createResource(
+    vocabData,
+    async (vocab) => {
+      // First, await and populate cache from deferred loader data
+      const data = await loaderData().fsrsProgress
+      const slugs = vocab?.slugs || []
+      queryClient.setQueryData(["fsrs-progress", userId, slugs], data)
+      return data
+    },
   )
 
-  const finalData = () => {
-    const hierarchy = wordHierarchyData
-    const progress = progressResource()
+  // Subscribe to FSRS progress cache updates
+  onMount(() => {
+    const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
+      if (
+        event?.query?.queryKey?.[0] === "fsrs-progress" &&
+        event?.query?.queryKey?.[1] === userId
+      ) {
+        refetchProgress()
+      }
+    })
 
-    if (!hierarchy) return null
-    if (!props.user || !progress) return hierarchy
+    onCleanup(() => unsubscribe())
+  })
 
-    return enrichHierarchyWithProgress(hierarchy, progress)
+  const { animateOnDataChange } = useAnimationManager()
+  const hasUser = !!loaderData().user
+
+  // Compute final data
+  const enrichedData = () => {
+    const vocab = vocabData()
+    const hierarchy = vocab?.wordHierarchyData
+    if (!hierarchy) {
+      return null
+    }
+
+    const progress = progressData()
+    if (hasUser && progress) {
+      return enrichHierarchyWithProgress(hierarchy, progress)
+    }
+
+    // Return hierarchy without progress data
+    return {
+      vocabulary: hierarchy.vocabulary,
+      kanji: hierarchy.kanji,
+      radicals: hierarchy.radicals,
+    }
   }
+
+  const chapterVocabulary = () => vocabData()?.chapterVocabulary || []
 
   animateOnDataChange(
     ["[data-word-hierarchy-progress]", "[data-word-hierarchy-content]"],
-    () => wordHierarchyData,
+    () => true, // Always trigger - boxes exist immediately
   )
 
   return (
-    <div class="flex flex-col gap-4" data-animate="word-hierarchy">
-      <Show when={finalData()}>
-        <WordHierarchyDisplay
-          data={finalData()!}
-          chapterVocabulary={chapterVocabulary}
-          variant={props.variant}
-          user={props.user}
-        />
-      </Show>
+    <div class="flex flex-col gap-4">
+      <WordHierarchyDisplay
+        enrichedData={enrichedData}
+        chapterVocabulary={chapterVocabulary}
+        variant={props.variant}
+        hasUser={hasUser}
+      />
     </div>
   )
 }
 
 function WordHierarchyDisplay(props: {
-  data: {
+  enrichedData: () => {
     vocabulary: EnrichedVocabEntry[]
     kanji: EnrichedKanjiEntry[]
     radicals: EnrichedRadicalEntry[]
-    summary?: any
-  }
-  chapterVocabulary: VocabularyItem[]
+  } | null
+  chapterVocabulary: () => VocabularyItem[]
   variant: WordHierarchyVariant
-  user: User | null
+  hasUser: boolean
 }) {
+  const vocabCounts = () => {
+    const items = props.enrichedData()?.vocabulary || []
+    return {
+      total: items.length,
+      wellKnown: items.filter((i) => i.progress === "well_known").length,
+      learning: items.filter((i) => i.progress === "learning").length,
+    }
+  }
+
+  const kanjiCounts = () => {
+    const items = props.enrichedData()?.kanji || []
+    return {
+      total: items.length,
+      wellKnown: items.filter((i) => i.progress === "well_known").length,
+      learning: items.filter((i) => i.progress === "learning").length,
+    }
+  }
+
+  const radicalsCounts = () => {
+    const items = props.enrichedData()?.radicals || []
+    return {
+      total: items.length,
+      wellKnown: items.filter((i) => i.progress === "well_known").length,
+      learning: items.filter((i) => i.progress === "learning").length,
+    }
+  }
+
   return (
     <div class="flex flex-col gap-1">
       <Tabs defaultValue="vocab" class="flex flex-col">
-        {/* Progress Circle Triggers */}
+        {/* Progress Circles */}
         <div
           data-word-hierarchy-progress
-          class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-3 backdrop-blur-sm"
+          class="rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-3 opacity-0 backdrop-blur-sm"
         >
           <div class="grid grid-cols-3 gap-2">
-            <ProgressCircleTrigger
-              value="vocab"
-              label="Vocabulary"
-              countLearned={props.data.summary?.vocab.wellKnown || 0}
-              countInProgress={props.data.summary?.vocab.learning || 0}
-              total={props.data.summary?.vocab.total || 0}
-              colorLearned="text-sky-400"
-              colorInProgress="text-sky-600"
-              hasProgress={!!props.user}
-            />
-            <ProgressCircleTrigger
-              value="kanji"
-              label="Kanji"
-              countLearned={props.data.summary?.kanji.wellKnown || 0}
-              countInProgress={props.data.summary?.kanji.learning || 0}
-              total={props.data.summary?.kanji.total || 0}
-              colorLearned="text-pink-400"
-              colorInProgress="text-pink-600"
-              hasProgress={!!props.user}
-              dataTour="vocab-trigger"
-            />
-            <ProgressCircleTrigger
-              value="radicals"
-              label="Radicals"
-              countLearned={props.data.summary?.radicals.wellKnown || 0}
-              countInProgress={props.data.summary?.radicals.learning || 0}
-              total={props.data.summary?.radicals.total || 0}
-              colorLearned="text-teal-400"
-              colorInProgress="text-teal-600"
-              hasProgress={!!props.user}
-            />
+            <Suspense
+              fallback={
+                <ProgressCircleTrigger
+                  value="vocab"
+                  label="Vocabulary"
+                  countLearned={0}
+                  countInProgress={0}
+                  total={0}
+                  colorLearned="text-sky-400"
+                  colorInProgress="text-sky-600"
+                  hasProgress={props.hasUser}
+                />
+              }
+            >
+              <ProgressCircleTrigger
+                value="vocab"
+                label="Vocabulary"
+                countLearned={vocabCounts().wellKnown}
+                countInProgress={vocabCounts().learning}
+                total={vocabCounts().total}
+                colorLearned="text-sky-400"
+                colorInProgress="text-sky-600"
+                hasProgress={props.hasUser}
+              />
+            </Suspense>
+            <Suspense
+              fallback={
+                <ProgressCircleTrigger
+                  value="kanji"
+                  label="Kanji"
+                  countLearned={0}
+                  countInProgress={0}
+                  total={0}
+                  colorLearned="text-pink-400"
+                  colorInProgress="text-pink-600"
+                  hasProgress={props.hasUser}
+                  dataTour="vocab-trigger"
+                />
+              }
+            >
+              <ProgressCircleTrigger
+                value="kanji"
+                label="Kanji"
+                countLearned={kanjiCounts().wellKnown}
+                countInProgress={kanjiCounts().learning}
+                total={kanjiCounts().total}
+                colorLearned="text-pink-400"
+                colorInProgress="text-pink-600"
+                hasProgress={props.hasUser}
+                dataTour="vocab-trigger"
+              />
+            </Suspense>
+            <Suspense
+              fallback={
+                <ProgressCircleTrigger
+                  value="radicals"
+                  label="Radicals"
+                  countLearned={0}
+                  countInProgress={0}
+                  total={0}
+                  colorLearned="text-teal-400"
+                  colorInProgress="text-teal-600"
+                  hasProgress={props.hasUser}
+                />
+              }
+            >
+              <ProgressCircleTrigger
+                value="radicals"
+                label="Radicals"
+                countLearned={radicalsCounts().wellKnown}
+                countInProgress={radicalsCounts().learning}
+                total={radicalsCounts().total}
+                colorLearned="text-teal-400"
+                colorInProgress="text-teal-600"
+                hasProgress={props.hasUser}
+              />
+            </Suspense>
           </div>
         </div>
 
-        {/* Tab Content */}
+        {/* Word/Kanji/Radical Content */}
         <TabsContent
           value="vocab"
           data-word-hierarchy-content
-          class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1.5 pl-4 backdrop-blur-sm"
+          class="rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1.5 pl-4 opacity-0 backdrop-blur-sm"
         >
-          <VocabularyList
-            hierarchy={props.data.vocabulary}
-            chapterVocabulary={props.chapterVocabulary}
-            variant={props.variant}
-          />
+          <Show when={props.enrichedData()}>
+            {(data) => (
+              <VocabularyList
+                hierarchy={data().vocabulary}
+                chapterVocabulary={props.chapterVocabulary()}
+                variant={props.variant}
+              />
+            )}
+          </Show>
         </TabsContent>
 
         <TabsContent
           value="kanji"
           data-word-hierarchy-content
-          class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-4 backdrop-blur-sm"
+          class="rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-4 backdrop-blur-sm"
         >
-          <CharacterList
-            title="Kanji"
-            items={props.data.kanji}
-            variant={props.variant}
-          />
+          <Show when={props.enrichedData()}>
+            {(data) => (
+              <CharacterList
+                title="Kanji"
+                items={data().kanji}
+                variant={props.variant}
+              />
+            )}
+          </Show>
         </TabsContent>
 
         <TabsContent
           value="radicals"
           data-word-hierarchy-content
-          class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-4 backdrop-blur-sm"
+          class="rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-4 backdrop-blur-sm"
         >
-          <CharacterList
-            title="Radicals"
-            items={props.data.radicals}
-            variant={props.variant}
-          />
+          <Show when={props.enrichedData()}>
+            {(data) => (
+              <CharacterList
+                title="Radicals"
+                items={data().radicals}
+                variant={props.variant}
+              />
+            )}
+          </Show>
         </TabsContent>
       </Tabs>
     </div>
@@ -377,16 +497,24 @@ function CharacterList(props: {
         props.variant === "desktop" ? "max-h-[calc(100vh-437px)]" : "h-full",
       )}
     >
-      <div class="flex flex-wrap content-start justify-center gap-1.5">
-        <For each={props.items}>
-          {(item) => (
-            <CharBox
-              item={{ ...item, progress: item.progress || "not_seen" }}
-              variant={props.variant}
-            />
-          )}
-        </For>
-      </div>
+      <Suspense
+        fallback={
+          <div class="text-muted-foreground text-sm">
+            Loading {props.title.toLowerCase()}...
+          </div>
+        }
+      >
+        <div class="flex flex-wrap content-start justify-center gap-1.5">
+          <For each={props.items}>
+            {(item) => (
+              <CharBox
+                item={{ ...item, progress: item.progress || "not_seen" }}
+                variant={props.variant}
+              />
+            )}
+          </For>
+        </div>
+      </Suspense>
     </div>
   )
 }
@@ -447,9 +575,8 @@ function VocabularyList(props: {
   chapterVocabulary: VocabularyItem[]
   variant: WordHierarchyVariant
 }) {
-  const vocabMap = createMemo(
-    () => new Map(props.chapterVocabulary.map((item) => [item.word, item])),
-  )
+  const vocabMap = () =>
+    new Map(props.chapterVocabulary.map((item) => [item.word, item]))
 
   return (
     <div
@@ -460,27 +587,33 @@ function VocabularyList(props: {
           : "h-full overflow-y-auto",
       )}
     >
-      <div class="flex flex-col gap-1.5">
-        <For each={props.hierarchy}>
-          {(vocabItem, index) => {
-            const vocab = vocabMap().get(vocabItem.word)
-            const englishMeanings = vocab?.english || []
-            const hiraganaReading = vocab
-              ? extractHiragana(vocab.furigana)
-              : undefined
+      <Suspense
+        fallback={
+          <div class="text-muted-foreground text-sm">Loading vocabulary...</div>
+        }
+      >
+        <div class="flex flex-col gap-1.5">
+          <For each={props.hierarchy}>
+            {(vocabItem, index) => {
+              const vocab = vocabMap().get(vocabItem.word)
+              const englishMeanings = vocab?.english || []
+              const hiraganaReading = vocab
+                ? extractHiragana(vocab.furigana)
+                : undefined
 
-            return (
-              <VocabularyRow
-                number={index() + 1}
-                japanese={vocabItem.word}
-                english={englishMeanings.join(", ")}
-                progress={vocabItem.progress || "not_seen"}
-                hiragana={hiraganaReading}
-              />
-            )
-          }}
-        </For>
-      </div>
+              return (
+                <VocabularyRow
+                  number={index() + 1}
+                  japanese={vocabItem.word}
+                  english={englishMeanings.join(", ")}
+                  progress={vocabItem.progress || "not_seen"}
+                  hiragana={hiraganaReading}
+                />
+              )
+            }}
+          </For>
+        </div>
+      </Suspense>
     </div>
   )
 }

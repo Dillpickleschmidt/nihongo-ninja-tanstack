@@ -4,23 +4,22 @@ import { useNavigate } from "@tanstack/solid-router"
 import { useSettings } from "@/context/SettingsContext"
 import { WordHierarchy } from "../content/WordHierarchy"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
-import type { User } from "@supabase/supabase-js"
-import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
+import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
+import { getDeckBySlug } from "@/data/utils/core"
 
 interface LeftSidebarProps {
-  user: User | null
   variant: "mobile" | "desktop"
 }
 
 export function LeftSidebar(props: LeftSidebarProps) {
   const navigate = useNavigate()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
-  const { activeTextbookId, activeDeck } = useLearnPageData()
+  const loaderData = Route.useLoaderData()
   const { updateUserPreferences } = useSettings()
 
   const handleDeckChange = async (
-    textbookId: typeof activeTextbookId,
-    deck: typeof activeDeck,
+    textbookId: string,
+    deck: { slug: string; title: string },
   ) => {
     try {
       // Update preferences first via SWR system
@@ -48,7 +47,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
   if (props.variant === "mobile") {
     return (
       <div class="mb-8 flex flex-col gap-3 px-7">
-        <WordHierarchy variant="mobile" user={props.user} />
+        <WordHierarchy variant="mobile" />
       </div>
     )
   }
@@ -60,15 +59,22 @@ export function LeftSidebar(props: LeftSidebarProps) {
           Current Chapter
         </div>
         <DeckSelectionPopover
-          activeTextbookId={activeTextbookId}
-          activeDeck={activeDeck}
+          activeTextbookId={loaderData().textbookId}
+          activeDeck={
+            getDeckBySlug(loaderData().textbookId, loaderData().chapterSlug)!
+          }
           onDeckChange={handleDeckChange}
           isOpen={isPopoverOpen()}
           onOpenChange={setIsPopoverOpen}
         >
           <div class="group flex items-center gap-3 text-left">
             <h1 class="text-foreground group-hover:text-foreground/80 text-2xl font-bold transition-colors">
-              {activeDeck.title}
+              {
+                getDeckBySlug(
+                  loaderData().textbookId,
+                  loaderData().chapterSlug,
+                )!.title
+              }
             </h1>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +94,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
       </div>
 
       <div class="pt-1">
-        <WordHierarchy variant="desktop" user={props.user} />
+        <WordHierarchy variant="desktop" />
       </div>
     </div>
   )

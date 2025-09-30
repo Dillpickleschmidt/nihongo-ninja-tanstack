@@ -1,7 +1,8 @@
 // src/components/SSRMediaQuery.tsx
 import { createMediaQuery } from "@solid-primitives/media"
 import { Show, type ParentProps } from "solid-js"
-import { isServer } from "solid-js/web" // 1. Import isServer
+import { isServer } from "solid-js/web"
+import { getDeviceUISettingsCookie } from "@/features/main-cookies/server/cookie-utils"
 
 interface SSRMediaQueryProps extends ParentProps {
   showFrom?: "sm" | "md" | "lg" | "xl" | "2xl"
@@ -52,21 +53,35 @@ export function SSRMediaQuery(props: SSRMediaQueryProps) {
     return <Show when={mediaQuery()}>{props.children}</Show>
   }
 
-  // For SSR, use mobile-first approach (assume smallest screen)
+  // For SSR, use cookie to determine device type
   if (isServer) {
-    const shouldShowOnMobile = () => {
-      // If showFrom is specified, hide on mobile (show only from that breakpoint up)
-      if (props.showFrom) return false
+    const deviceUISettings = getDeviceUISettingsCookie()
+    const cookieDeviceType = deviceUISettings["device-type"]
 
-      // If hideFrom is specified, show on mobile (hide only from that breakpoint up)
-      if (props.hideFrom) return true
+    // Determine screen width based on cookie (or default to mobile for first visit)
+    const isMobile = cookieDeviceType === "mobile" || cookieDeviceType === null
+
+    const shouldShow = () => {
+      // If showFrom is specified, only show if we're at or above that breakpoint
+      if (props.showFrom) {
+        const breakpoint = breakpointMap[props.showFrom]
+        const screenWidth = isMobile ? 768 : 1280 // Assume mobile=768px, desktop=1280px
+        return screenWidth >= breakpoint
+      }
+
+      // If hideFrom is specified, only show if we're below that breakpoint
+      if (props.hideFrom) {
+        const breakpoint = breakpointMap[props.hideFrom]
+        const screenWidth = isMobile ? 768 : 1280
+        return screenWidth < breakpoint
+      }
 
       // Default: show
       return true
     }
 
-    if (shouldShowOnMobile()) {
-      return <div>{props.children}</div> // mobile variant - show children
+    if (shouldShow()) {
+      return <div>{props.children}</div>
     } else {
       return <div style="display: none;">{props.children}</div>
     }

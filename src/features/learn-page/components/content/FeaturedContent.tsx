@@ -1,12 +1,10 @@
 // features/learn-page/components/content/FeaturedContent.tsx
-import { For, Show } from "solid-js"
-import { Await } from "@tanstack/solid-router"
+import { For, createResource } from "solid-js"
+import { useQueryClient } from "@tanstack/solid-query"
 import { Play } from "lucide-solid"
-import type { EnrichedExternalResource } from "@/features/learn-page/utils/loader-helpers"
-import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
 import { useAnimationManager } from "@/hooks/useAnimations"
 import { ResourceCardWrapper } from "./ResourceDialog"
-
+import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
 
 interface FeaturedContentProps {
   variant?: "mobile" | "desktop"
@@ -44,12 +42,7 @@ function MobileFeaturedContent() {
 
 function DesktopFeaturedContent() {
   return (
-    <div
-      data-content-section
-      data-transition-content
-      class="space-y-1"
-      data-animate="featured-content"
-    >
+    <div class="space-y-1">
       <FeaturedContentHeader />
       <FeaturedContentGrid />
     </div>
@@ -75,33 +68,33 @@ function FeaturedContentHeader() {
 }
 
 function FeaturedContentGrid() {
-  const data = useLearnPageData()
-  const resourcesArray = () => Object.values(data.externalResources)
+  const loaderData = Route.useLoaderData()
+  const queryClient = useQueryClient()
+
+  const resourcesArray = () => Object.values(loaderData().externalResources)
   const { animateOnDataChange } = useAnimationManager()
 
   // Centralized animation management - trigger when resources change
-  animateOnDataChange(["[data-featured-content-item]"], resourcesArray)
+  animateOnDataChange(["[data-featured-item]"], resourcesArray)
 
   return (
     <div class="mx-7 flex gap-6 overflow-x-auto px-1 pt-3 pb-3">
       <For each={resourcesArray()}>
         {(resource, index) => {
-          const thumbnailDeferredPromise = data.deferredThumbnails[index()]
+          const [thumbnailUrl] = createResource(async () => {
+            const data = await loaderData().resourceThumbnails[index()]
+            // Populate cache for future navigations
+            queryClient.setQueryData(["resource-thumbnail", resource.id], data)
+            return data
+          })
+
           return (
             <div class="flex-shrink-0">
-              <Show
-                when={thumbnailDeferredPromise}
-                fallback={<FeaturedResourceCard resource={resource} />}
-              >
-                <Await promise={thumbnailDeferredPromise}>
-                  {(thumbnailData) => (
-                    <FeaturedResourceCard
-                      resource={resource}
-                      thumbnailUrl={thumbnailData?.thumbnailUrl}
-                    />
-                  )}
-                </Await>
-              </Show>
+              <ResourceCardWrapper
+                resource={resource}
+                thumbnailUrl={thumbnailUrl}
+                variant="desktop"
+              />
             </div>
           )
         }}
@@ -110,58 +103,32 @@ function FeaturedContentGrid() {
   )
 }
 
-function FeaturedResourceCard(props: {
-  resource: EnrichedExternalResource
-  thumbnailUrl?: string | null
-}) {
-  return (
-    <ResourceCardWrapper
-      resource={props.resource}
-      thumbnailUrl={props.thumbnailUrl}
-      variant="desktop"
-    />
-  )
-}
-
 function MobileFeaturedContentGrid() {
-  const data = useLearnPageData()
-  const resourcesArray = () => Object.values(data.externalResources)
+  const loaderData = Route.useLoaderData()
+  const queryClient = useQueryClient()
+
+  const resourcesArray = () => Object.values(loaderData().externalResources)
 
   return (
     <div class="grid grid-cols-1 gap-4">
       <For each={resourcesArray()}>
         {(resource, index) => {
-          const thumbnailDeferredPromise = data.deferredThumbnails[index()]
+          const [thumbnailUrl] = createResource(async () => {
+            const data = await loaderData().resourceThumbnails[index()]
+            // Populate cache for future navigations
+            queryClient.setQueryData(["resource-thumbnail", resource.id], data)
+            return data
+          })
+
           return (
-            <Show
-              when={thumbnailDeferredPromise}
-              fallback={<MobileFeaturedResourceCard resource={resource} />}
-            >
-              <Await promise={thumbnailDeferredPromise}>
-                {(thumbnailData) => (
-                  <MobileFeaturedResourceCard
-                    resource={resource}
-                    thumbnailUrl={thumbnailData?.thumbnailUrl}
-                  />
-                )}
-              </Await>
-            </Show>
+            <ResourceCardWrapper
+              resource={resource}
+              thumbnailUrl={thumbnailUrl}
+              variant="mobile"
+            />
           )
         }}
       </For>
     </div>
-  )
-}
-
-function MobileFeaturedResourceCard(props: {
-  resource: EnrichedExternalResource
-  thumbnailUrl?: string | null
-}) {
-  return (
-    <ResourceCardWrapper
-      resource={props.resource}
-      thumbnailUrl={props.thumbnailUrl}
-      variant="mobile"
-    />
   )
 }

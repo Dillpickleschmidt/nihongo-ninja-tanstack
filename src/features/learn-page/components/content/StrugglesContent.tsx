@@ -1,8 +1,8 @@
 import { For } from "solid-js"
 import { Brain } from "lucide-solid"
 import { cn } from "@/utils"
-import { useLearnPageData } from "../../context/LearnPageDataContext"
 import { useAnimationManager } from "@/hooks/useAnimations"
+import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
 
 interface StrugglesContentProps {
   variant?: "mobile" | "desktop"
@@ -10,14 +10,15 @@ interface StrugglesContentProps {
 }
 
 export function StrugglesContent(props: StrugglesContentProps) {
-  const { struggles } = useLearnPageData()
+  const loaderData = Route.useLoaderData()
+  const struggles = () => loaderData().struggles
   const variant = props.variant || "desktop"
   const maxItems = props.maxItems || 4
   const { animateOnDataChange } = useAnimationManager()
 
   // Centralized animation management - trigger when struggles data changes (desktop only)
   if (variant === "desktop") {
-    animateOnDataChange(['[data-animate="struggles"]'], () => struggles)
+    animateOnDataChange(["[data-struggles-item]"], struggles)
   }
 
   if (variant === "mobile") {
@@ -26,12 +27,12 @@ export function StrugglesContent(props: StrugglesContentProps) {
         <div class="mb-4 flex items-center justify-between">
           <h2 class="text-xl font-bold">Your Struggles</h2>
           <span class="text-muted-foreground text-sm">
-            {Math.min(maxItems, struggles.length)} items
+            {Math.min(maxItems, struggles().length)} items
           </span>
         </div>
 
         <div class="space-y-3">
-          <For each={struggles.slice(0, maxItems)}>
+          <For each={struggles().slice(0, maxItems)}>
             {(struggle, index) => (
               <div class="bg-card hover:bg-card/90 flex items-center justify-between rounded-2xl p-4 shadow-sm transition-colors">
                 <span class="font-japanese text-base font-semibold">
@@ -60,21 +61,24 @@ export function StrugglesContent(props: StrugglesContentProps) {
 
   // Desktop variant
   return (
-    <div data-animate="struggles" class="p-4">
+    <div class="p-4">
       <div class="mb-4 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <Brain class="text-muted-foreground h-5 w-5" />
           <h3 class="font-semibold">Areas to Improve</h3>
         </div>
         <span class="text-muted-foreground text-xs">
-          {Math.min(maxItems, struggles.length)} items
+          {Math.min(maxItems, struggles().length)} items
         </span>
       </div>
 
       <div class="space-y-2">
-        <For each={struggles.slice(0, maxItems)}>
+        <For each={struggles().slice(0, maxItems)}>
           {(struggle, index) => (
-            <div class="flex items-center justify-between rounded-lg bg-white/5 p-2">
+            <div
+              data-struggles-item
+              class="flex items-center justify-between rounded-lg bg-white/5 p-2"
+            >
               <span class="font-japanese text-sm">{struggle}</span>
               <div class="flex items-center gap-2">
                 <div

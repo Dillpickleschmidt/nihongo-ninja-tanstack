@@ -23,7 +23,7 @@ export const createBackendClient = serverOnly(() => {
 
   const cookieHeader = getRequestHeader("Cookie") ?? ""
 
-  const clientInstance = createServerClient<Database>(
+  const clientInstance = createServerClient(
     supabaseUrl,
     supabaseAnonKey,
     {

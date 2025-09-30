@@ -7,8 +7,8 @@ import { RightSidebar } from "./RightSidebar"
 import { TextbookChapterBackgrounds } from "../shared/TextbookChapterBackgrounds"
 import { ChapterContentArea } from "../content/ChapterContentArea"
 import { MobileContentRenderer } from "./MobileContentRenderer"
-import type { User } from "@supabase/supabase-js"
-import type { TextbookIDEnum } from "@/data/types"
+import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
+import { getDeckBySlug } from "@/data/utils/core"
 
 export type MobileContentView =
   | "learning-path"
@@ -17,15 +17,13 @@ export type MobileContentView =
   | "your-struggles"
   | "your-history"
 
-interface LearnPageContentProps {
-  user: User | null
-  activeTextbookId: TextbookIDEnum
-  activeDeck: string
-}
-
-export function LearnPageContent(props: LearnPageContentProps) {
+export function LearnPageContent() {
   const [mobileContentView, setMobileContentView] =
     createSignal<MobileContentView>("learning-path")
+  const loaderData = Route.useLoaderData()
+
+  const activeDeck = () =>
+    getDeckBySlug(loaderData().textbookId, loaderData().chapterSlug)
 
   return (
     <div class="font-poppins xl:h-screen xl:overflow-y-hidden xl:overscroll-y-contain">
@@ -39,33 +37,29 @@ export function LearnPageContent(props: LearnPageContentProps) {
         }
       `}</style>
       <TextbookChapterBackgrounds
-        textbook={props.activeTextbookId!}
-        chapter={props.activeDeck!}
+        textbook={loaderData().textbookId}
+        chapter={activeDeck()?.slug || ""}
         showGradient={true}
         blur="0px"
       />
       {/* Mobile Layout */}
       <SSRMediaQuery hideFrom="xl">
         <LearnPageHeader
-          user={props.user}
           variant="mobile"
           mobileContentView={mobileContentView()}
           setMobileContentView={setMobileContentView}
         />
         <div class="h-[calc(100vh-141px)] overflow-y-auto">
-          <MobileContentRenderer
-            activeView={mobileContentView}
-            user={props.user}
-          />
+          <MobileContentRenderer activeView={mobileContentView} />
         </div>
       </SSRMediaQuery>
       {/* Desktop Layout */}
       <SSRMediaQuery showFrom="xl">
         <div class="min-h-screen">
-          <LearnPageHeader user={props.user} variant="desktop" />
+          <LearnPageHeader variant="desktop" />
           <div class="flex w-full pr-4 pl-8">
             <div class="relative max-h-[calc(100vh-146px)] w-[20%] overflow-y-auto pt-6">
-              <LeftSidebar user={props.user} variant="desktop" />
+              <LeftSidebar variant="desktop" />
             </div>
             <div class="w-[60%]">
               <ChapterContentArea />

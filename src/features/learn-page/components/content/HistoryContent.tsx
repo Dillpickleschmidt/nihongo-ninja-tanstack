@@ -2,8 +2,8 @@
 import { For } from "solid-js"
 import { Clock } from "lucide-solid"
 import { cn } from "@/utils"
-import { useLearnPageData } from "../../context/LearnPageDataContext"
 import { useAnimationManager } from "@/hooks/useAnimations"
+import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
 
 interface HistoryContentProps {
   variant?: "mobile" | "desktop"
@@ -12,14 +12,15 @@ interface HistoryContentProps {
 }
 
 export function HistoryContent(props: HistoryContentProps) {
-  const { historyItems } = useLearnPageData()
+  const loaderData = Route.useLoaderData()
+  const historyItems = () => loaderData().historyItems
   const variant = props.variant || "desktop"
   const maxItems = props.maxItems || (variant === "mobile" ? undefined : 4)
   const { animateOnDataChange } = useAnimationManager()
 
   // Centralized animation management - trigger when history items change (desktop only)
   if (variant === "desktop") {
-    animateOnDataChange(["[data-history-content-item]"], () => historyItems)
+    animateOnDataChange(["[data-history-item]"], historyItems)
   }
 
   if (variant === "mobile") {
@@ -31,7 +32,7 @@ export function HistoryContent(props: HistoryContentProps) {
         </div>
 
         <div class="scrollbar-hide flex max-h-60 flex-col gap-3 overflow-y-auto">
-          <For each={historyItems}>
+          <For each={historyItems()}>
             {(item) => (
               <div class="bg-card hover:bg-card/90 flex items-center justify-between rounded-2xl p-4 shadow-sm transition-colors">
                 <div class="flex items-center gap-3">
@@ -58,14 +59,16 @@ export function HistoryContent(props: HistoryContentProps) {
 
   // Desktop variant
   return (
-    <div class="space-y-3" data-animate="history-content">
+    <div class="space-y-3">
       <div class="flex items-center gap-2">
         <Clock class="h-5 w-5 text-green-400" />
         <h3 class="text-lg font-semibold">Recent Activity</h3>
       </div>
 
       <div class="space-y-2">
-        <For each={maxItems ? historyItems.slice(0, maxItems) : historyItems}>
+        <For
+          each={maxItems ? historyItems().slice(0, maxItems) : historyItems()}
+        >
           {(item) => <RecentActivityCard item={item} />}
         </For>
       </div>
@@ -83,7 +86,7 @@ function RecentActivityCard(props: {
 }) {
   return (
     <div
-      data-history-content-item
+      data-history-item
       class={cn(
         "rounded-lg border border-white/10 p-3",
         "bg-gradient-to-br from-gray-600/10 to-slate-600/5 backdrop-blur-sm",

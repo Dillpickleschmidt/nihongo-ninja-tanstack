@@ -1,50 +1,70 @@
 // features/learn-page/components/content/LearningPathList.tsx
-import { For } from "solid-js"
+import { For, createMemo } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { cn } from "@/utils"
 import {
   getModuleIcon,
+  enrichLessons,
   type EnrichedLearningPathModule,
 } from "@/features/learn-page/utils/loader-helpers"
-import { useLearnPageData } from "@/features/learn-page/context/LearnPageDataContext"
+import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
+import { getDeckBySlug, getLessons } from "@/data/utils/core"
 
-export function LearningPathList() {
+interface LearningPathListProps {
+  completedModules: () => string[]
+}
+
+export function LearningPathList(props: LearningPathListProps) {
   return (
     <div
-      data-lessons-section
-      data-transition-content
+      // data-lessons-section
       class="grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-2"
     >
-      <LessonsList />
+      <LessonsList completedModules={props.completedModules} />
     </div>
   )
 }
 
-function LessonsList() {
-  const data = useLearnPageData()
-  const lessons = data.lessons
-  const midpoint = Math.ceil(lessons.length / 2)
-  const leftColumn = lessons.slice(0, midpoint)
-  const rightColumn = lessons.slice(midpoint)
+function LessonsList(props: { completedModules: () => string[] }) {
+  const completedModulesSet = () => new Set(props.completedModules())
+  const loaderData = Route.useLoaderData()
+  const activeDeck = () =>
+    getDeckBySlug(loaderData().textbookId, loaderData().chapterSlug)
+
+  const lessons = createMemo(() => {
+    const deck = activeDeck()
+    if (!deck) return []
+    const rawLessons = getLessons(deck)
+    return enrichLessons(rawLessons)
+  })
+
+  const midpoint = () => Math.ceil(lessons().length / 2)
+  const leftColumn = () => lessons().slice(0, midpoint())
+  const rightColumn = () => lessons().slice(midpoint())
 
   return (
     <>
       {/* Left Column */}
       <div class="space-y-4">
-        <For each={leftColumn}>
+        <For each={leftColumn()}>
           {(lesson, index) => (
-            <LessonItem lesson={lesson} number={index() + 1} />
+            <LessonItem
+              lesson={lesson}
+              number={index() + 1}
+              completedModulesSet={completedModulesSet}
+            />
           )}
         </For>
       </div>
 
       {/* Right Column */}
       <div class="space-y-4">
-        <For each={rightColumn}>
+        <For each={rightColumn()}>
           {(lesson, index) => (
             <LessonItem
               lesson={lesson}
-              number={leftColumn.length + index() + 1}
+              number={leftColumn().length + index() + 1}
+              completedModulesSet={completedModulesSet}
             />
           )}
         </For>
@@ -60,10 +80,15 @@ function LessonsList() {
 function LessonItem(props: {
   lesson: EnrichedLearningPathModule
   number: number
+  completedModulesSet: () => Set<string>
 }) {
   const { moduleType, displayTitle, linkTo, iconClasses, disabled } =
     props.lesson
   const ModuleIcon = getModuleIcon(moduleType)
+
+  // Extract module ID from linkTo and check completion
+  const moduleId = linkTo.split("/").pop() || ""
+  const isCompleted = () => props.completedModulesSet().has(moduleId)
 
   const handleClick = () => {
     if (disabled) return
@@ -90,7 +115,12 @@ function LessonItem(props: {
             {props.number}.
           </span>
           <ModuleIcon class={cn("h-4 w-4 flex-shrink-0", iconClasses)} />
-          <span class="flex-1 text-sm">
+          <span
+            class={cn(
+              "flex-1 text-sm",
+              isCompleted() && "font-semibold text-green-500",
+            )}
+          >
             {disabled ? `${displayTitle} (Coming Soon)` : displayTitle}
           </span>
         </div>
