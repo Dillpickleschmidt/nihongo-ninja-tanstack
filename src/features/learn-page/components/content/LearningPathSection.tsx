@@ -1,6 +1,6 @@
 // features/learn-page/components/content/LearningPathSection.tsx
 import { Grid3x3, List } from "lucide-solid"
-import { createResource } from "solid-js"
+import { createResource, Suspense, onMount, onCleanup } from "solid-js"
 import { useQueryClient } from "@tanstack/solid-query"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { LearningPathList } from "./LearningPathList"
@@ -17,13 +17,25 @@ export function LearningPathSection(props: LearningPathSectionProps = {}) {
   const queryClient = useQueryClient()
   const userId = loaderData().user?.id || null
 
-  const [completedModules] = createResource(async () => {
+  const [completedModules, { refetch }] = createResource(async () => {
+    // First, await and populate cache from deferred loader data
     const data = await loaderData().completedModules
-
-    // Populate cache for future navigations
     queryClient.setQueryData(["module-completions", userId], data)
-
     return data
+  })
+
+  // Subscribe to cache updates and trigger refetch
+  onMount(() => {
+    const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
+      if (
+        event?.query?.queryKey?.[0] === "module-completions" &&
+        event?.query?.queryKey?.[1] === userId
+      ) {
+        refetch()
+      }
+    })
+
+    onCleanup(() => unsubscribe())
   })
 
   return (
@@ -47,16 +59,21 @@ export function LearningPathSection(props: LearningPathSectionProps = {}) {
           </TabsList>
         </div>
 
-        <LearningPathContent completedModulesResource={completedModules} />
+        <Suspense>
+          <LearningPathContent completedModules={completedModules} />
+        </Suspense>
       </Tabs>
     </div>
   )
 }
 
 function LearningPathContent(props: {
-  completedModulesResource: () => string[] | undefined
+  completedModules: () => string[] | undefined
 }) {
-  const completedModules = () => props.completedModulesResource() || []
+  const completedModules = () => props.completedModules() || []
+  // const { animateOnDataChange } = useAnimationManager()
+  //
+  // animateOnDataChange(["[data-lessons-section]"], completedModules)
 
   return (
     <>

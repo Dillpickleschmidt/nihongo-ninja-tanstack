@@ -72,8 +72,6 @@ export const dueFSRSCardsCountQueryOptions = (userId: string | null) =>
       if (!userId) return 0
       return getDueFSRSCardsCount(userId)
     },
-    staleTime: 1000 * 60 * 5, // Consider data fresh for 5 minutes
-    throwOnError: true, // Required for ErrorBoundary to catch errors
   })
 
 export const completedModulesQueryOptions = (userId: string | null) =>

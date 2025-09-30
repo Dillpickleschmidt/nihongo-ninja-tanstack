@@ -19,8 +19,6 @@ export function LearningPathGrid(props: LearningPathGridProps) {
   return (
     <div
       id="tour-lesson-cards"
-      data-lessons-section
-      data-transition-content
       class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
     >
       <GridLessonsList completedModules={props.completedModules} />
@@ -84,6 +82,7 @@ function GridLessonItem(props: {
     <div class="ease-instant-hover-75 hover:scale-[98.5%]">
       <Link to={disabled ? "#" : linkTo} onClick={handleClick}>
         <div
+          data-lessons-section
           class={cn(
             "group bg-card font-inter relative block h-12 w-full rounded-md text-sm whitespace-nowrap",
             "border-card-foreground/70 border backdrop-blur-sm",

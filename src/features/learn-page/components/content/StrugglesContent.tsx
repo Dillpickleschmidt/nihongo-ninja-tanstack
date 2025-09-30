@@ -18,7 +18,7 @@ export function StrugglesContent(props: StrugglesContentProps) {
 
   // Centralized animation management - trigger when struggles data changes (desktop only)
   if (variant === "desktop") {
-    animateOnDataChange(['[data-animate="struggles"]'], struggles)
+    animateOnDataChange(["[data-struggles-item]"], struggles)
   }
 
   if (variant === "mobile") {
@@ -61,7 +61,7 @@ export function StrugglesContent(props: StrugglesContentProps) {
 
   // Desktop variant
   return (
-    <div data-animate="struggles" class="p-4">
+    <div class="p-4">
       <div class="mb-4 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <Brain class="text-muted-foreground h-5 w-5" />
@@ -75,7 +75,10 @@ export function StrugglesContent(props: StrugglesContentProps) {
       <div class="space-y-2">
         <For each={struggles().slice(0, maxItems)}>
           {(struggle, index) => (
-            <div class="flex items-center justify-between rounded-lg bg-white/5 p-2">
+            <div
+              data-struggles-item
+              class="flex items-center justify-between rounded-lg bg-white/5 p-2"
+            >
               <span class="font-japanese text-sm">{struggle}</span>
               <div class="flex items-center gap-2">
                 <div

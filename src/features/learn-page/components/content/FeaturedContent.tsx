@@ -42,12 +42,7 @@ function MobileFeaturedContent() {
 
 function DesktopFeaturedContent() {
   return (
-    <div
-      data-content-section
-      data-transition-content
-      class="space-y-1"
-      data-animate="featured-content"
-    >
+    <div class="space-y-1">
       <FeaturedContentHeader />
       <FeaturedContentGrid />
     </div>
@@ -80,7 +75,7 @@ function FeaturedContentGrid() {
   const { animateOnDataChange } = useAnimationManager()
 
   // Centralized animation management - trigger when resources change
-  animateOnDataChange(["[data-featured-content-item]"], resourcesArray)
+  animateOnDataChange(["[data-featured-item]"], resourcesArray)
 
   return (
     <div class="mx-7 flex gap-6 overflow-x-auto px-1 pt-3 pb-3">

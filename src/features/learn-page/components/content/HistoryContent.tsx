@@ -20,7 +20,7 @@ export function HistoryContent(props: HistoryContentProps) {
 
   // Centralized animation management - trigger when history items change (desktop only)
   if (variant === "desktop") {
-    animateOnDataChange(["[data-history-content-item]"], historyItems)
+    animateOnDataChange(["[data-history-item]"], historyItems)
   }
 
   if (variant === "mobile") {
@@ -59,14 +59,16 @@ export function HistoryContent(props: HistoryContentProps) {
 
   // Desktop variant
   return (
-    <div class="space-y-3" data-animate="history-content">
+    <div class="space-y-3">
       <div class="flex items-center gap-2">
         <Clock class="h-5 w-5 text-green-400" />
         <h3 class="text-lg font-semibold">Recent Activity</h3>
       </div>
 
       <div class="space-y-2">
-        <For each={maxItems ? historyItems().slice(0, maxItems) : historyItems()}>
+        <For
+          each={maxItems ? historyItems().slice(0, maxItems) : historyItems()}
+        >
           {(item) => <RecentActivityCard item={item} />}
         </For>
       </div>
@@ -84,7 +86,7 @@ function RecentActivityCard(props: {
 }) {
   return (
     <div
-      data-history-content-item
+      data-history-item
       class={cn(
         "rounded-lg border border-white/10 p-3",
         "bg-gradient-to-br from-gray-600/10 to-slate-600/5 backdrop-blur-sm",

@@ -17,8 +17,7 @@ interface LearningPathListProps {
 export function LearningPathList(props: LearningPathListProps) {
   return (
     <div
-      data-lessons-section
-      data-transition-content
+      // data-lessons-section
       class="grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-2"
     >
       <LessonsList completedModules={props.completedModules} />

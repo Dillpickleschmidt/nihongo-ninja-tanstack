@@ -135,8 +135,8 @@ export function ResourceCardContent(props: {
   // Desktop variant
   return (
     <div
-      data-featured-content-item
-      class="border-card-foreground/70 relative h-40 w-[220px] overflow-hidden rounded-2xl border backdrop-blur-sm hover:shadow-xl"
+      data-featured-item
+      class="border-card-foreground/70 relative h-40 w-[220px] overflow-hidden rounded-2xl border opacity-0 backdrop-blur-sm hover:shadow-xl"
       style={{ "background-image": props.resource.gradientStyle }}
     >
       <Suspense>
