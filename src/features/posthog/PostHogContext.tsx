@@ -7,6 +7,7 @@ import {
 import type { PostHog } from "posthog-js"
 import { useLocation } from "@tanstack/solid-router"
 import { isServer } from "solid-js/web"
+import type { User } from "@supabase/supabase-js"
 
 const PostHogContext = createContext<PostHog | null>(null)
 
@@ -50,7 +51,20 @@ if (!isServer) {
   }
 }
 
-export function PostHogProvider(props: ParentProps) {
+export function PostHogProvider(props: ParentProps & { user: User | null }) {
+  createEffect(async () => {
+    const salt = import.meta.env.VITE_POSTHOG_SALT
+    if (posthogInstance && props.user && salt) {
+      const encoder = new TextEncoder()
+      const data = encoder.encode(salt + props.user.id)
+      const hash = await crypto.subtle.digest("SHA-256", data)
+      const id = Array.from(new Uint8Array(hash), (b) =>
+        b.toString(16).padStart(2, "0"),
+      ).join("")
+      posthogInstance.identify(id)
+    }
+  })
+
   return (
     <PostHogContext.Provider value={posthogInstance}>
       {props.children}

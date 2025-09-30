@@ -64,6 +64,7 @@ jobs:
         env:
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           VITE_POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+          VITE_POSTHOG_SALT: ${{ secrets.POSTHOG_SALT }}
 
       - name: Clean Up AWS Profile
         run: |
