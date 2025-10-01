@@ -22,7 +22,8 @@ import type { User } from "@supabase/supabase-js"
 import type { DeckCreationInitialData } from "./deck-creation/stores/deck-creation-store"
 import { copyDeck } from "@/features/vocab-page/utils/deckCopyUtils"
 import { TextbookChapterBackgrounds } from "../learn-page/components/shared/TextbookChapterBackgrounds"
-import { useSettings } from "@/context/SettingsContext"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { userSettingsQueryOptions } from "@/queries/user-settings"
 
 interface DesktopVocabPageProps {
   importRequest?: ImportRequest | null
@@ -32,7 +33,9 @@ interface DesktopVocabPageProps {
 }
 
 export function DesktopVocabPage(props: DesktopVocabPageProps) {
-  const { userPreferences } = useSettings()
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(props.user?.id || null),
+  )
   const state = useVocabPageState(
     props.importRequest,
     props.textbooks,
@@ -198,8 +201,8 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
     <div class="flex h-screen">
       <div class="absolute inset-0">
         <TextbookChapterBackgrounds
-          textbook={userPreferences()["active-textbook"]}
-          chapter={userPreferences()["active-deck"]}
+          textbook={settingsQuery.data["active-textbook"]}
+          chapter={settingsQuery.data["active-deck"]}
           showGradient={false}
           blur="6px"
         />

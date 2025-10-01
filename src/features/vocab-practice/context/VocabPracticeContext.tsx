@@ -9,7 +9,8 @@ import {
 import { createStore, SetStoreFunction } from "solid-js/store"
 import type { Settings, CurrentPage } from "../types"
 import { Rating } from "ts-fsrs"
-import { useSettings } from "@/context/SettingsContext"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { userSettingsQueryOptions } from "@/queries/user-settings"
 import type { User } from "@supabase/supabase-js"
 import {
   usePracticeManager,
@@ -69,9 +70,11 @@ type ContextProviderProps = {
 }
 
 export function VocabPracticeContextProvider(props: ContextProviderProps) {
-  // Get default settings from SettingsContext
-  const { deviceUISettings } = useSettings()
-  const practiceDefaults = deviceUISettings().routes["vocab-practice"]
+  // Get default settings from user settings
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(props.user?.id || null),
+  )
+  const practiceDefaults = settingsQuery.data.routes["vocab-practice"]
 
   // UI-only state store
   const [uiState, setUIState] = createStore<UIState>({

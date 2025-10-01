@@ -1,8 +1,7 @@
 // src/data/wanikani/utils.ts
-import { createServerFn, serverOnly } from "@tanstack/solid-start"
+import { createServerFn, createServerOnlyFn } from "@tanstack/solid-start"
 import Database, { type Database as SQLiteDatabase } from "better-sqlite3"
 import { existsSync } from "fs"
-import { getFSRSCards, type FSRSCardData } from "@/features/supabase/db/fsrs"
 import type { KanjiRow, RadicalRow, VocabRow, WaniKaniMeaning } from "./types"
 import {
   buildVocabHierarchy,
@@ -18,29 +17,31 @@ import {
 // Global database connection cache for Lambda warm starts
 let globalDbConnection: SQLiteDatabase | null = null
 
-export const getDbConnection = serverOnly(async (): Promise<SQLiteDatabase> => {
-  // Return cached connection if available
-  if (globalDbConnection) {
+export const getDbConnection = createServerOnlyFn(
+  async (): Promise<SQLiteDatabase> => {
+    // Return cached connection if available
+    if (globalDbConnection) {
+      try {
+        globalDbConnection.prepare("SELECT 1").get()
+        return globalDbConnection
+      } catch (error) {
+        globalDbConnection = null
+      }
+    }
+
+    const dbPath = await getDbPath()
+
     try {
-      globalDbConnection.prepare("SELECT 1").get()
+      globalDbConnection = new Database(dbPath, { readonly: true })
+      // Test the connection
+      globalDbConnection.prepare("SELECT COUNT(*) FROM vocabulary").get()
       return globalDbConnection
     } catch (error) {
-      globalDbConnection = null
+      console.error(`[Utils] Failed to open database at ${dbPath}:`, error)
+      throw error
     }
-  }
-
-  const dbPath = await getDbPath()
-
-  try {
-    globalDbConnection = new Database(dbPath, { readonly: true })
-    // Test the connection
-    globalDbConnection.prepare("SELECT COUNT(*) FROM vocabulary").get()
-    return globalDbConnection
-  } catch (error) {
-    console.error(`[Utils] Failed to open database at ${dbPath}:`, error)
-    throw error
-  }
-})
+  },
+)
 
 async function getDbPath(): Promise<string> {
   // The Nitro hook places the file in the server root, which becomes the Lambda task root.
@@ -91,7 +92,7 @@ function parseMeanings(meaningsJson: string): string[] {
 // /features/supabase/db/fsrs.ts -> getUserProgress()
 
 export const getWKItemsBySlugs = createServerFn({ method: "GET" })
-  .validator((data: { kanji: string[]; radicals: string[] }) => data)
+  .inputValidator((data: { kanji: string[]; radicals: string[] }) => data)
   .handler(
     async ({
       data,

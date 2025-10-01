@@ -6,10 +6,13 @@ import {
   ParentProps,
   onMount,
 } from "solid-js"
-import { useNavigate, useLocation } from "@tanstack/solid-router"
+import { useNavigate, useLocation, useRouteContext } from "@tanstack/solid-router"
 import { driver } from "driver.js"
 import type { Driver } from "driver.js"
-import { useSettings } from "@/context/SettingsContext"
+import { useMutation, useQueryClient } from "@tanstack/solid-query"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { userSettingsQueryOptions, updateUserSettingsMutation } from "@/queries/user-settings"
+import { Route as RootRoute } from "@/routes/__root"
 import { TOURS } from "./tours"
 
 interface TourContextType {
@@ -24,14 +27,15 @@ interface TourProviderProps extends ParentProps {
 }
 
 export const TourProvider: Component<TourProviderProps> = (props) => {
-  const {
-    deviceUISettings,
-    updateDeviceUISettings,
-    userPreferences,
-    updateUserPreferences,
-  } = useSettings()
   const navigate = useNavigate()
   const location = useLocation()
+  const context = useRouteContext({ from: RootRoute.id })
+  const userId = context().user?.id || null
+
+  const queryClient = useQueryClient()
+  const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
+
+  const updateSettingsMutation = useMutation(() => updateUserSettingsMutation(userId, queryClient))
 
   let driverInstance: Driver | null = null
   let currentTour: string | null = null
@@ -47,13 +51,13 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
 
   const startTour = (tourId: string) => {
     // Check if there's already an active tour
-    if (deviceUISettings().tour.currentTourId) return
+    if (settingsQuery.data.tour.currentTourId) return
 
     const steps = TOURS[tourId]
     if (!steps) return
 
     // Check if already completed
-    if (userPreferences()["completed-tours"].includes(tourId)) return
+    if (settingsQuery.data["completed-tours"].includes(tourId)) return
 
     // Capture the current location as the starting point
     tourStartPath = location().pathname
@@ -62,7 +66,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     currentTour = tourId
     currentStepIndex = 0
 
-    updateDeviceUISettings({
+    updateSettingsMutation.mutate({
       tour: {
         currentTourId: tourId,
         currentTourStep: 0,
@@ -143,7 +147,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     }
 
     currentStepIndex = nextIndex
-    updateDeviceUISettings({
+    updateSettingsMutation.mutate({
       tour: { currentTourId: currentTour, currentTourStep: nextIndex },
     })
 
@@ -165,7 +169,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
 
     const prevIndex = currentIndex - 1
     currentStepIndex = prevIndex
-    updateDeviceUISettings({
+    updateSettingsMutation.mutate({
       tour: { currentTourId: currentTour, currentTourStep: prevIndex },
     })
 
@@ -186,13 +190,13 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     if (!currentTour) return
 
     // Add to completed tours
-    const completed = userPreferences()["completed-tours"]
-    await updateUserPreferences({
+    const completed = settingsQuery.data["completed-tours"]
+    await updateSettingsMutation.mutateAsync({
       "completed-tours": [...completed, currentTour],
     })
 
     // Mark as completed (-2)
-    updateDeviceUISettings({
+    updateSettingsMutation.mutate({
       tour: { currentTourId: null, currentTourStep: -2 },
     })
 
@@ -215,7 +219,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
 
   const handleDismiss = () => {
     // Mark as dismissed
-    updateDeviceUISettings({
+    updateSettingsMutation.mutate({
       tour: { currentTourId: null, currentTourStep: -1 },
     })
   }
@@ -231,13 +235,13 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
 
   const resetTour = async (tourId: string) => {
     // Reset completion status
-    const completed = userPreferences()["completed-tours"]
-    await updateUserPreferences({
+    const completed = settingsQuery.data["completed-tours"]
+    await updateSettingsMutation.mutateAsync({
       "completed-tours": completed.filter((id) => id !== tourId),
     })
 
-    // Reset device settings
-    updateDeviceUISettings({
+    // Reset tour settings
+    updateSettingsMutation.mutate({
       tour: { currentTourId: null, currentTourStep: 0 },
     })
   }

@@ -12,7 +12,6 @@ import {
 } from "@/features/supabase/db/fsrs"
 import type { PracticeMode } from "@/features/vocab-practice/types"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
-import { useSettings } from "@/context/SettingsContext"
 import type { VocabHierarchy as CleanVocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"

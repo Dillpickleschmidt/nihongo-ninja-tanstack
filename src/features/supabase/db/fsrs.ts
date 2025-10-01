@@ -28,7 +28,7 @@ type UpsertFSRSCardArgs = {
  * Get FSRS cards by practice item keys for a user
  */
 export const getFSRSCards = createServerFn({ method: "GET" })
-  .validator((data: { userId: string; keys: string[] }) => data)
+  .inputValidator((data: { userId: string; keys: string[] }) => data)
   .handler(async ({ data }): Promise<FSRSCardData[]> => {
     if (!data.keys?.length) return []
 
@@ -59,7 +59,7 @@ export const getFSRSCards = createServerFn({ method: "GET" })
  * Get user progress data for vocabulary items
  */
 export const getUserProgress = createServerFn({ method: "GET" })
-  .validator((data: { slugs: string[]; userId: string }) => data)
+  .inputValidator((data: { slugs: string[]; userId: string }) => data)
   .handler(async ({ data }): Promise<Record<string, FSRSCardData> | null> => {
     if (!data || !data.slugs || data.slugs.length === 0 || !data.userId) {
       return null
@@ -103,7 +103,7 @@ export async function getDueFSRSCardsCount(userId: string): Promise<number> {
  * Upsert FSRS card data for a user
  */
 export const upsertFSRSCardForUser = createServerFn({ method: "POST" })
-  .validator((data: UpsertFSRSCardArgs) => data)
+  .inputValidator((data: UpsertFSRSCardArgs) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -132,7 +132,7 @@ export const upsertFSRSCardForUser = createServerFn({ method: "POST" })
  * Batch upsert FSRS cards for a user
  */
 export const batchUpsertFSRSCardsForUser = createServerFn({ method: "POST" })
-  .validator((data: UpsertFSRSCardArgs[]) => data)
+  .inputValidator((data: UpsertFSRSCardArgs[]) => data)
   .handler(async ({ data }) => {
     if (data.length === 0) return
 
@@ -163,7 +163,7 @@ export const batchUpsertFSRSCardsForUser = createServerFn({ method: "POST" })
  * Get due FSRS cards for a user
  */
 export const getDueFSRSCards = createServerFn({ method: "GET" })
-  .validator((userId: string) => userId)
+  .inputValidator((userId: string) => userId)
   .handler(async ({ data: userId }): Promise<FSRSCardData[]> => {
     const supabase = createSupabaseClient()
 

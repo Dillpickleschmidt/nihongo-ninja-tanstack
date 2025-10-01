@@ -1,7 +1,11 @@
 // vocab-practice/components/DeckSettingsDialogComponent.tsx
 import { createSignal, JSX, Show } from "solid-js"
 import { Button } from "@/components/ui/button"
-import { Checkbox, CheckboxInput, CheckboxLabel } from "@/components/ui/checkbox"
+import {
+  Checkbox,
+  CheckboxInput,
+  CheckboxLabel,
+} from "@/components/ui/checkbox"
 import {
   Dialog,
   DialogContent,
@@ -12,7 +16,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useVocabPracticeContext } from "../context/VocabPracticeContext"
-import { useSettings } from "@/context/SettingsContext"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { userSettingsQueryOptions } from "@/queries/user-settings"
+import { useRouteContext } from "@tanstack/solid-router"
+import { Route as RootRoute } from "@/routes/__root"
 
 type DeckSettingsDialogProps = {
   children: JSX.Element
@@ -22,10 +29,13 @@ export default function DeckSettingsDialogComponent(
   props: DeckSettingsDialogProps,
 ) {
   const { uiState, setUIState } = useVocabPracticeContext()
-  const { deviceUISettings } = useSettings()
   const [open, setOpen] = createSignal(false)
 
-  const defaults = deviceUISettings().routes["vocab-practice"]
+  const context = useRouteContext({ from: RootRoute.id })
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(context().user?.id || null),
+  )
+  const defaults = settingsQuery.data.routes["vocab-practice"]
 
   const handleOkClick = () => {
     setOpen(false)

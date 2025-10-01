@@ -1,7 +1,6 @@
 // features/learn-page/components/layout/LeftSidebar.tsx
 import { createSignal } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
-import { useSettings } from "@/context/SettingsContext"
 import { WordHierarchy } from "../content/WordHierarchy"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
 import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
@@ -15,19 +14,12 @@ export function LeftSidebar(props: LeftSidebarProps) {
   const navigate = useNavigate()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
   const loaderData = Route.useLoaderData()
-  const { updateUserPreferences } = useSettings()
 
   const handleDeckChange = async (
     textbookId: string,
     deck: { slug: string; title: string },
   ) => {
     try {
-      // Update preferences first via SWR system
-      await updateUserPreferences({
-        "active-textbook": textbookId,
-        "active-deck": deck.slug,
-      })
-
       // Then navigate to new route
       navigate({
         to: "/learn/$textbookId/$chapterSlug",

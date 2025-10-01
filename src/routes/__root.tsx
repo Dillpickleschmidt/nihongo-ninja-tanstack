@@ -4,9 +4,12 @@ import {
   createRootRouteWithContext,
   HeadContent,
   Scripts,
-  defer,
 } from "@tanstack/solid-router"
-import { isServer, QueryClientProvider } from "@tanstack/solid-query"
+import {
+  isServer,
+  QueryClientProvider,
+  useQueryClient,
+} from "@tanstack/solid-query"
 import type { QueryClient } from "@tanstack/solid-query"
 import "@fontsource-variable/inter"
 import "@fontsource/poppins"
@@ -18,21 +21,20 @@ import {
   cookieStorageManagerSSR,
 } from "@kobalte/core"
 import { getCookie } from "@/utils/cookie-utils"
-import { setDeviceUISettingsCookie } from "@/features/main-cookies/server/cookie-utils"
 import { createEffect } from "solid-js"
 import { createMediaQuery } from "@solid-primitives/media"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { SolidQueryDevtools } from "@tanstack/solid-query-devtools"
 import { getUser } from "@/features/supabase/getUser"
-import { SettingsProvider } from "@/context/SettingsContext"
 import { TourProvider } from "@/features/guided-tour/TourContext"
-import {
-  getInitialUserPreferencesFromCookieServerFn,
-  getUserPreferencesFromDBServerFn,
-} from "@/features/main-cookies/server/server-functions"
-import { getDeviceUISettingsCookie } from "@/features/main-cookies/server/cookie-utils"
 import type { User } from "@supabase/supabase-js"
+import { useMutation } from "@tanstack/solid-query"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { PostHogProvider } from "@/features/posthog/PostHogContext"
+import {
+  userSettingsQueryOptions,
+  updateUserSettingsMutation,
+} from "@/queries/user-settings"
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
@@ -53,71 +55,77 @@ export const Route = createRootRouteWithContext<{
       },
     ],
   }),
-  beforeLoad: async () => {
-    console.log("root beforeLoad fired!")
-    // --- ADD TIMER FOR USER FETCH ---
-    console.time("getUser (beforeLoad)")
+  beforeLoad: async ({ context }) => {
     const result = await getUser()
-    console.timeEnd("getUser (beforeLoad)")
-    // --- END TIMER ---
+    const user = (result?.user as User) || null
 
-    // Cross-device user preferences (SWR pattern)
-    const initialUserPreferenceData =
-      await getInitialUserPreferencesFromCookieServerFn()
+    // Prefetch queries (don't await - let loader handle that)
+    const { queryClient } = context
+    queryClient.prefetchQuery(userSettingsQueryOptions(user?.id || null))
 
-    return {
-      user: (result?.user as User) || null,
-      initialUserPreferenceData,
-    }
+    return { user }
   },
   loader: async ({ context }) => {
-    const { user, initialUserPreferenceData } = context
+    const { user, queryClient } = context
 
-    // Deferred DB data for SWR pattern
-    const userPreferencesDBPromise = defer(
-      getUserPreferencesFromDBServerFn().catch((error) => {
-        console.log(error.message)
-        // Return a promise that never resolves - this prevents good cookie data from being overwritten with a default value
-        return new Promise(() => {})
-      }),
-    ) as Promise<typeof initialUserPreferenceData> // it will never resolve on error thus we can safely type it
-
-    // Device UI settings (client-accessible cookie)
-    const deviceUISettings = getDeviceUISettingsCookie()
+    // Await queries to ensure data ready for SSR
+    const userSettings = await queryClient.ensureQueryData(
+      userSettingsQueryOptions(user?.id || null),
+    )
 
     // Check if main tour should auto-start
     const isMainTourCompleted =
-      initialUserPreferenceData["completed-tours"].includes("app-onboarding") ||
-      deviceUISettings.tour.currentTourStep === -2
-    const isDismissed = deviceUISettings.tour.currentTourStep === -1
-    const hasActiveTour = deviceUISettings.tour.currentTourId
+      userSettings["completed-tours"].includes("app-onboarding") ||
+      userSettings.tour.currentTourStep === -2
+    const isDismissed = userSettings.tour.currentTourStep === -1
+    const hasActiveTour = userSettings.tour.currentTourId
     const shouldStartMainTour =
       !isMainTourCompleted && !isDismissed && !hasActiveTour
 
     return {
       user,
-      initialUserPreferenceData,
-      userPreferencesDBPromise,
-      deviceUISettings,
       shouldStartMainTour,
     }
   },
   component: RootComponent,
+  notFoundComponent: () => (
+    <div class="flex min-h-screen items-center justify-center">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold">404</h1>
+        <p class="mt-2 text-lg">Page not found</p>
+      </div>
+    </div>
+  ),
 })
 
 function RootComponent() {
+  const { queryClient } = Route.useRouteContext()()
+
+  return (
+    <>
+      <HeadContent />
+      <QueryClientProvider client={queryClient}>
+        <RootContent />
+      </QueryClientProvider>
+      <Scripts />
+    </>
+  )
+}
+
+function RootContent() {
   const loaderData = Route.useLoaderData()
-  const routeContext = Route.useRouteContext()
-  const {
-    user,
-    initialUserPreferenceData,
-    userPreferencesDBPromise,
-    deviceUISettings,
-    shouldStartMainTour,
-  } = loaderData()
+  const { user, shouldStartMainTour } = loaderData()
+  const queryClient = useQueryClient()
   const colorModeCookies = `kb-color-mode=${getCookie("kb-color-mode")}`
 
   const storageManager = cookieStorageManagerSSR(colorModeCookies)
+
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(user?.id || null),
+  )
+  const updateSettingsMutation = useMutation(() =>
+    updateUserSettingsMutation(user?.id || null, queryClient),
+  )
 
   if (!isServer) {
     const isDesktop = createMediaQuery("(min-width: 1280px)")
@@ -126,38 +134,24 @@ function RootComponent() {
         ? "desktop"
         : "mobile"
 
-      if (deviceUISettings["device-type"] !== detectedType) {
-        const updatedSettings = {
-          ...deviceUISettings,
+      if (settingsQuery.data?.["device-type"] !== detectedType) {
+        updateSettingsMutation.mutate({
           "device-type": detectedType,
-        }
-        setDeviceUISettingsCookie(updatedSettings)
+        })
       }
     })
   }
 
   return (
-    <>
-      <QueryClientProvider client={routeContext().queryClient}>
-        <PostHogProvider user={user}>
-          <ColorModeScript storageType={storageManager?.type} />
-          <ColorModeProvider storageManager={storageManager}>
-            <SettingsProvider
-              user={user as User}
-              initialUserPreferenceData={initialUserPreferenceData}
-              userPreferencesDBPromise={userPreferencesDBPromise}
-              deviceUISettings={deviceUISettings}
-            >
-              <TourProvider shouldStartMainTour={shouldStartMainTour}>
-                <Scripts />
-                <Outlet />
-                <TanStackRouterDevtools position="bottom-right" />
-                <SolidQueryDevtools buttonPosition="bottom-left" />
-              </TourProvider>
-            </SettingsProvider>
-          </ColorModeProvider>
-        </PostHogProvider>
-      </QueryClientProvider>
-    </>
+    <PostHogProvider user={user}>
+      <ColorModeScript storageType={storageManager?.type} />
+      <ColorModeProvider storageManager={storageManager}>
+        <TourProvider shouldStartMainTour={shouldStartMainTour}>
+          <Outlet />
+          <TanStackRouterDevtools position="bottom-right" />
+          <SolidQueryDevtools buttonPosition="bottom-left" />
+        </TourProvider>
+      </ColorModeProvider>
+    </PostHogProvider>
   )
 }

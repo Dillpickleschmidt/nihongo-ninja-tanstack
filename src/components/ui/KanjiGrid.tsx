@@ -1,5 +1,5 @@
 // src/components/ui/KanjiGrid.tsx
-import { cn } from "@/utils/util"
+import { cn } from "@/utils"
 
 interface KanjiGridProps {
   size: number
@@ -46,3 +46,4 @@ export function KanjiGrid(props: KanjiGridProps) {
     </div>
   )
 }
+

@@ -9,7 +9,7 @@ import {
 import { ServiceCard } from "./ServiceCard"
 import { validateJpdbApiKey } from "@/features/service-api-functions/jpdb/validation"
 import { useServiceManagement } from "../context/ServiceManagementContext"
-import type { ServicePreference } from "@/features/main-cookies/schemas/user-preferences"
+import type { ServicePreference } from "@/features/main-cookies/schemas/user-settings"
 
 type JpdbServiceCardProps = {
   preference: () => ServicePreference

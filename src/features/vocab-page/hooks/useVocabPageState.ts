@@ -93,7 +93,7 @@ export function useVocabPageState(
   }
 
   // Deck selection hook
-  const deckSelection = useDeckSelection(handleTabChange)
+  const deckSelection = useDeckSelection(handleTabChange, user?.id || null)
 
   // Folder navigation state (which folder user is viewing)
   const [currentViewFolderId, setCurrentViewFolderId] = createSignal<

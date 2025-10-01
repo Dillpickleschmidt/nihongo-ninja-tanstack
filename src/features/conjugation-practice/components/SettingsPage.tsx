@@ -1,6 +1,11 @@
 // features/conjugation-practice/components/SettingsPage.tsx
 import { For } from "solid-js"
-import { useSettings } from "@/context/SettingsContext"
+import { useMutation, useQueryClient } from "@tanstack/solid-query"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import {
+  userSettingsQueryOptions,
+  updateUserSettingsMutation,
+} from "@/queries/user-settings"
 import ToggleOption from "./ToggleOption"
 import { Button } from "@/components/ui/button"
 import {
@@ -20,6 +25,7 @@ import { TextbookChapterBackgrounds } from "@/features/learn-page/components/sha
 type SettingsPageProps = {
   settings: () => ConjugationPracticeSettings
   isSharedRoute: boolean
+  userId: string | null
   onSettingsChange: (settings: ConjugationPracticeSettings) => void
   onStartReview: () => void
 }
@@ -27,10 +33,15 @@ type SettingsPageProps = {
 export default function SettingsPage({
   settings,
   isSharedRoute,
+  userId,
   onSettingsChange,
   onStartReview,
 }: SettingsPageProps) {
-  const { userPreferences, updateUserPreferences } = useSettings()
+  const queryClient = useQueryClient()
+  const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
+  const updateMutation = useMutation(() =>
+    updateUserSettingsMutation(userId, queryClient),
+  )
 
   const CATEGORIES = {
     formTypes: [
@@ -97,11 +108,11 @@ export default function SettingsPage({
     const newSettings = { ...settings(), [key]: value }
     onSettingsChange(newSettings)
 
-    // Update user preferences only if not a shared route
+    // Update user settings only if not a shared route
     if (!isSharedRoute) {
-      updateUserPreferences({
+      updateMutation.mutate({
         "conjugation-practice": {
-          ...userPreferences()["conjugation-practice"],
+          ...settingsQuery.data["conjugation-practice"],
           [key]: value,
         },
       })
@@ -126,8 +137,8 @@ export default function SettingsPage({
     <>
       <div class="fixed inset-0 -z-1">
         <TextbookChapterBackgrounds
-          textbook={userPreferences()["active-textbook"]}
-          chapter={userPreferences()["active-deck"]}
+          textbook={settingsQuery.data["active-textbook"]}
+          chapter={settingsQuery.data["active-deck"]}
           showGradient={false}
           blur="16px"
           class="opacity-40"

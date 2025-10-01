@@ -1,7 +1,7 @@
 // vocab-practice/components/shared/ActionButton.tsx
 import { JSX } from "solid-js"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/utils/util"
+import { cn } from "@/utils"
 
 export function ActionButton(props: {
   children: JSX.Element

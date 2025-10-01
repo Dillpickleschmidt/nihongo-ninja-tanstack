@@ -22,7 +22,7 @@ type ImportReviewsInput = z.infer<typeof ImportReviewsInputSchema>
 export const importReviewsServerFn = createServerFn({
   method: "POST",
 })
-  .validator((input: any): ImportReviewsInput => {
+  .inputValidator((input: any): ImportReviewsInput => {
     return ImportReviewsInputSchema.parse(input)
   })
   .handler(async ({ data }) => {

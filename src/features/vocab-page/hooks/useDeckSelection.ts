@@ -2,11 +2,18 @@
 import { createSignal } from "solid-js"
 import type { VocabBuiltInDeck } from "../types"
 import type { NavTabId } from "../center-panel/CenterNavBar"
-import { useSettings } from "@/context/SettingsContext"
+import { useMutation, useQueryClient } from "@tanstack/solid-query"
+import { updateUserSettingsMutation } from "@/queries/user-settings"
 import { parseBuiltInDeckId } from "../utils/deckIdParser"
 
-export function useDeckSelection(onTabChange: (tabId: NavTabId) => void) {
-  const { updateUserPreferences } = useSettings()
+export function useDeckSelection(
+  onTabChange: (tabId: NavTabId) => void,
+  userId: string | null,
+) {
+  const queryClient = useQueryClient()
+  const updateMutation = useMutation(() =>
+    updateUserSettingsMutation(userId, queryClient),
+  )
   const [selectedUserDeck, setSelectedUserDeck] = createSignal<UserDeck | null>(
     null,
   )
@@ -18,11 +25,9 @@ export function useDeckSelection(onTabChange: (tabId: NavTabId) => void) {
     if (deck.source === "built-in" && deck.original_deck_id) {
       const parsed = parseBuiltInDeckId(deck.original_deck_id)
       if (parsed) {
-        updateUserPreferences({
+        updateMutation.mutate({
           "active-textbook": parsed.textbook,
           "active-deck": parsed.chapter,
-        }).catch((error) => {
-          console.error("Failed to update textbook/chapter:", error)
         })
       }
     }
@@ -35,11 +40,9 @@ export function useDeckSelection(onTabChange: (tabId: NavTabId) => void) {
     // Auto-set active textbook/chapter for built-in decks
     const parsed = parseBuiltInDeckId(deck.id)
     if (parsed) {
-      updateUserPreferences({
+      updateMutation.mutate({
         "active-textbook": parsed.textbook,
         "active-deck": parsed.chapter,
-      }).catch((error) => {
-        console.error("Failed to update textbook/chapter:", error)
       })
     }
     setSelectedUserDeck(null) // Clear user deck selection

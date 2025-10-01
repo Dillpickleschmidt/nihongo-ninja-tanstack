@@ -1,16 +1,20 @@
 import ConjugationPractice from "@/features/conjugation-practice/ConjugationPractice"
 import { createFileRoute } from "@tanstack/solid-router"
 import { z } from "zod"
-import { useSettings } from "@/context/SettingsContext"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { userSettingsQueryOptions } from "@/queries/user-settings"
 import { DEFAULT_CONJUGATION_SETTINGS } from "@/features/conjugation-practice/schemas/settings"
 import type { ConjugationPracticeSettings } from "@/features/conjugation-practice/schemas/settings"
 
 function RouteComponent() {
-  const { userPreferences } = useSettings()
+  const { user } = Route.useLoaderData()()
   const validatedSearchParams = Route.useSearch()
 
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(user?.id || null),
+  )
   const savedSettings =
-    userPreferences()["conjugation-practice"] || DEFAULT_CONJUGATION_SETTINGS
+    settingsQuery.data["conjugation-practice"] || DEFAULT_CONJUGATION_SETTINGS
   const merged = { ...savedSettings, ...validatedSearchParams }
   const hasUrlParams = Object.keys(validatedSearchParams).length > 0
 
@@ -18,6 +22,7 @@ function RouteComponent() {
     <ConjugationPractice
       initialOptions={merged}
       isSharedRoute={hasUrlParams}
+      userId={user?.id || null}
     />
   )
 }
@@ -73,6 +78,10 @@ function validateConjugationSearch(
 }
 
 export const Route = createFileRoute("/_home/practice/conjugation")({
+  loader: async ({ context }) => {
+    const { user } = context
+    return { user }
+  },
   validateSearch: validateConjugationSearch,
   component: RouteComponent,
 })

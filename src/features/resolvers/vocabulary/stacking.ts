@@ -4,7 +4,7 @@ import type { Stack } from "@/features/resolvers/types"
 import { vocabulary } from "@/data/vocabulary"
 import { loadJsonSources as loadJsonSourcesGeneric } from "@/features/resolvers/shared/json-loader"
 import { getVocabForDeck } from "@/features/supabase/db/deck"
-import { DEFAULT_VOCABULARY_STACKS } from "@/features/main-cookies/schemas/user-preferences"
+import { DEFAULT_VOCABULARY_STACKS } from "@/features/main-cookies/schemas/user-settings"
 
 type PartialVocabularyProperties = Partial<VocabularyItem>
 

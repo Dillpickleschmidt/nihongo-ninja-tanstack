@@ -13,7 +13,7 @@ import { useServiceManagement } from "../context/ServiceManagementContext"
 import type {
   ServiceType,
   ServiceMode,
-} from "@/features/main-cookies/schemas/user-preferences"
+} from "@/features/main-cookies/schemas/user-settings"
 
 interface ServiceCardProps {
   title: string

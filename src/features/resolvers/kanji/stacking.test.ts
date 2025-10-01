@@ -6,7 +6,7 @@ import type {
 } from "@/data/wanikani/hierarchy-builder"
 import type { Stack } from "@/features/resolvers/types"
 import { resolveKanjiEntries, mergeKanjiProperties } from "./stacking"
-import { DEFAULT_KANJI_STACKS } from "@/features/main-cookies/schemas/user-preferences"
+import { DEFAULT_KANJI_STACKS } from "@/features/main-cookies/schemas/user-settings"
 
 // Mock the WaniKani utils
 vi.mock("@/data/wanikani/utils", () => ({

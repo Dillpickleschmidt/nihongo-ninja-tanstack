@@ -10,11 +10,13 @@ type Page = "settings" | "practice" | "summary"
 type ConjugationPracticeProps = {
   initialOptions: ConjugationPracticeSettings
   isSharedRoute: boolean
+  userId: string | null
 }
 
 export default function ConjugationPractice({
   initialOptions,
   isSharedRoute,
+  userId,
 }: ConjugationPracticeProps) {
   // Page navigation state
   const [currentPage, setCurrentPage] = createSignal<Page>("settings")
@@ -22,7 +24,8 @@ export default function ConjugationPractice({
     createSignal<ReviewSessionState | null>(null)
 
   // Local settings state - tracks what user actually sees/configures
-  const [currentSettings, setCurrentSettings] = createSignal<ConjugationPracticeSettings>(initialOptions)
+  const [currentSettings, setCurrentSettings] =
+    createSignal<ConjugationPracticeSettings>(initialOptions)
 
   const navigateToReview = () => setCurrentPage("practice")
   const navigateToSettings = () => setCurrentPage("settings")
@@ -38,6 +41,7 @@ export default function ConjugationPractice({
           <SettingsPage
             settings={currentSettings}
             isSharedRoute={isSharedRoute}
+            userId={userId}
             onSettingsChange={setCurrentSettings}
             onStartReview={navigateToReview}
           />

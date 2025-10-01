@@ -5,7 +5,7 @@ import {
   Component,
   ParentProps,
 } from "solid-js"
-import type { ServiceType } from "@/features/main-cookies/schemas/user-preferences"
+import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"
 
 interface ServiceManagementContextType {
   errors: () => Record<ServiceType, string>

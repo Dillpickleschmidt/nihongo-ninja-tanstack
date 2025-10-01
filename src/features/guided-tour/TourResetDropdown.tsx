@@ -9,15 +9,21 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useTour } from "./TourContext"
 import { TOURS } from "./tours"
-import { useSettings } from "@/context/SettingsContext"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { userSettingsQueryOptions } from "@/queries/user-settings"
+import { useRouteContext } from "@tanstack/solid-router"
+import { Route as RootRoute } from "@/routes/__root"
 
 export function TourResetDropdown() {
   const tour = useTour()
-  const { userPreferences, deviceUISettings } = useSettings()
+  const context = useRouteContext({ from: RootRoute.id })
+  const userId = context().user?.id || null
+
+  const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
 
   const getTourStatus = (tourId: string) => {
-    const isCompleted = userPreferences()["completed-tours"].includes(tourId)
-    const deviceTour = deviceUISettings().tour
+    const isCompleted = settingsQuery.data["completed-tours"].includes(tourId)
+    const deviceTour = settingsQuery.data.tour
     const isDismissed = deviceTour.currentTourStep === -1
     const isMarkedCompleted = deviceTour.currentTourStep === -2
     const isActive =
@@ -45,10 +51,7 @@ export function TourResetDropdown() {
       <DropdownMenuContent>
         <DropdownMenuLabel>Reset Tour Progress</DropdownMenuLabel>
         {Object.entries(TOURS).map(([tourId, tourConfig]) => (
-          <DropdownMenuItem
-            key={tourId}
-            onSelect={() => handleResetTour(tourId)}
-          >
+          <DropdownMenuItem onSelect={() => handleResetTour(tourId)}>
             <span class="mr-2">{getTourStatus(tourId)}</span>
             <span>{tourConfig[0]?.title || tourId}</span>
           </DropdownMenuItem>

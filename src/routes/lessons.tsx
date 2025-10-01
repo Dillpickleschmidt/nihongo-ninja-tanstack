@@ -3,7 +3,8 @@ import { createFileRoute, Outlet } from "@tanstack/solid-router"
 import { createSignal, onMount } from "solid-js"
 import ContentBox from "@/components/ContentBox"
 import { useAnimationManager } from "@/hooks/useAnimations"
-import { useSettings } from "@/context/SettingsContext"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { userSettingsQueryOptions } from "@/queries/user-settings"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 
 export const Route = createFileRoute("/lessons")({
@@ -17,7 +18,9 @@ export const Route = createFileRoute("/lessons")({
 function LessonsLayout() {
   const { user } = Route.useLoaderData()()
   const { animateOnDataChange } = useAnimationManager()
-  const { userPreferences } = useSettings()
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(user?.id || null),
+  )
   const [shouldAnimate, setShouldAnimate] = createSignal(false)
 
   onMount(() => {
@@ -45,8 +48,8 @@ function LessonsLayout() {
     <>
       <div class="fixed inset-0 -z-1">
         <TextbookChapterBackgrounds
-          textbook={userPreferences()["active-textbook"]}
-          chapter={userPreferences()["active-deck"]}
+          textbook={settingsQuery.data["active-textbook"]}
+          chapter={settingsQuery.data["active-deck"]}
           showGradient={false}
           blur="16px"
           class="opacity-50"
