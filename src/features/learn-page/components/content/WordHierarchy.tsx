@@ -1,15 +1,12 @@
 // features/learn-page/components/content/WordHierarchy.tsx
-import {
-  For,
-  Show,
-  Suspense,
-  createResource,
-  onMount,
-  onCleanup,
-} from "solid-js"
-import { useQueryClient } from "@tanstack/solid-query"
+import { For, Show, Suspense } from "solid-js"
 import { useAnimationManager } from "@/hooks/useAnimations"
 import { isServer } from "solid-js/web"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import {
+  vocabHierarchyQueryOptions,
+  fsrsProgressQueryOptions,
+} from "@/features/learn-page/queries/learn-page-queries"
 import {
   HoverCard,
   HoverCardContent,
@@ -27,7 +24,6 @@ import type { VocabularyItem } from "@/data/types"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import { extractHiragana } from "@/data/utils/vocab"
 import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
-import { getDeckBySlug } from "@/data/utils/core"
 import { useSettings } from "@/context/SettingsContext"
 
 type WordHierarchyVariant = "mobile" | "desktop"
@@ -96,66 +92,39 @@ function enrichHierarchyWithProgress(
 
 export function WordHierarchy(props: WordHierarchyProps) {
   const loaderData = Route.useLoaderData()
-  const queryClient = useQueryClient()
   const { userPreferences } = useSettings()
   const userId = loaderData().user?.id || null
 
-  // Load vocab hierarchy (fast, show immediately)
-  const [vocabData] = createResource(async () => {
-    const data = await loaderData().vocabHierarchy
-
-    // Populate cache for future navigations
-    queryClient.setQueryData(
-      [
-        "vocab-hierarchy",
-        loaderData().textbookId,
-        loaderData().chapterSlug,
-        userPreferences?.["override-settings"],
-      ],
-      data,
-    )
-
-    return data
-  })
-
-  // Load FSRS progress (depends on vocabData being ready for slugs)
-  const [progressData, { refetch: refetchProgress }] = createResource(
-    vocabData,
-    async (vocab) => {
-      // First, await and populate cache from deferred loader data
-      const data = await loaderData().fsrsProgress
-      const slugs = vocab?.slugs || []
-      queryClient.setQueryData(["fsrs-progress", userId, slugs], data)
-      return data
-    },
+  const vocabDataQuery = useCustomQuery(() =>
+    vocabHierarchyQueryOptions(
+      loaderData().deck,
+      userPreferences()?.["override-settings"],
+    ),
   )
 
-  // Subscribe to FSRS progress cache updates
-  onMount(() => {
-    const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
-      if (
-        event?.query?.queryKey?.[0] === "fsrs-progress" &&
-        event?.query?.queryKey?.[1] === userId
-      ) {
-        refetchProgress()
-      }
-    })
+  const vocabData = vocabDataQuery.data!
 
-    onCleanup(() => unsubscribe())
-  })
+  // Load FSRS progress (depends on vocabData slugs)
+  const progressQuery = useCustomQuery(() =>
+    fsrsProgressQueryOptions(
+      userId,
+      loaderData().textbookId,
+      loaderData().deck.slug,
+      vocabData.slugs,
+    ),
+  )
 
   const { animateOnDataChange } = useAnimationManager()
   const hasUser = !!loaderData().user
 
   // Compute final data
   const enrichedData = () => {
-    const vocab = vocabData()
-    const hierarchy = vocab?.wordHierarchyData
+    const hierarchy = vocabData.wordHierarchyData
     if (!hierarchy) {
       return null
     }
 
-    const progress = progressData()
+    const progress = progressQuery.data
     if (hasUser && progress) {
       return enrichHierarchyWithProgress(hierarchy, progress)
     }
@@ -168,7 +137,7 @@ export function WordHierarchy(props: WordHierarchyProps) {
     }
   }
 
-  const chapterVocabulary = () => vocabData()?.chapterVocabulary || []
+  const chapterVocabulary = () => vocabData.chapterVocabulary
 
   animateOnDataChange(
     ["[data-word-hierarchy-progress]", "[data-word-hierarchy-content]"],

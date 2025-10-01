@@ -19,8 +19,16 @@ export function createRouter() {
       queryClient,
     },
     scrollRestoration: true,
-    // Not using dehydrate/hydrate because we're using defer() for streaming
-    // Dehydration happens before deferred queries complete, so cache is empty
+    dehydrate: () => {
+      return {
+        queryClientState: dehydrate(queryClient, {
+          shouldDehydrateQuery: () => true, // Include all queries (even pending)
+        }),
+      }
+    },
+    hydrate: (dehydrated) => {
+      hydrate(queryClient, dehydrated.queryClientState)
+    }
   })
 
   return router

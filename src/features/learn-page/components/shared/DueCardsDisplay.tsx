@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/solid-router"
-import { Suspense, createResource } from "solid-js"
-import { useQueryClient } from "@tanstack/solid-query"
+import { Suspense } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
+import { dueFSRSCardsCountQueryOptions } from "@/features/learn-page/queries/learn-page-queries"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
 
 interface DueCardsDisplayProps {
   variant: "mobile" | "desktop"
@@ -10,7 +11,6 @@ interface DueCardsDisplayProps {
 
 export function DueCardsDisplay(props: DueCardsDisplayProps) {
   const loaderData = Route.useLoaderData()
-  const queryClient = useQueryClient()
   const userId = loaderData().user?.id || null
 
   if (!loaderData().user) {
@@ -30,17 +30,10 @@ export function DueCardsDisplay(props: DueCardsDisplayProps) {
     )
   }
 
-  const [count] = createResource(async () => {
-    const data = await loaderData().dueFSRSCardsCount
-
-    // Populate cache for future navigations
-    queryClient.setQueryData(['fsrs-due-count', userId], data)
-
-    return data
-  })
+  const countQuery = useCustomQuery(() => dueFSRSCardsCountQueryOptions(userId))
 
   const display = () => {
-    const value = count() ?? 0
+    const value = countQuery.data!
     return (
       <>
         <div class={value > 0 ? "text-amber-400" : "text-green-500"}>
@@ -55,23 +48,17 @@ export function DueCardsDisplay(props: DueCardsDisplayProps) {
     )
   }
 
+  const loadingFallback = (
+    <>
+      <div class="text-gray-400">
+        <span class="font-inter text-base font-bold xl:text-lg">...</span>
+      </div>
+      <div class="text-muted-foreground text-xs xl:text-sm">Loading...</div>
+    </>
+  )
+
   if (props.variant === "mobile") {
-    return (
-      <Suspense
-        fallback={
-          <>
-            <div class="text-gray-400">
-              <span class="font-inter text-base font-bold xl:text-lg">...</span>
-            </div>
-            <div class="text-muted-foreground text-xs xl:text-sm">
-              Loading...
-            </div>
-          </>
-        }
-      >
-        {display()}
-      </Suspense>
-    )
+    return <Suspense fallback={loadingFallback}>{display()}</Suspense>
   }
 
   return (
@@ -81,22 +68,7 @@ export function DueCardsDisplay(props: DueCardsDisplayProps) {
         <div class="text-muted-foreground text-xs">Completed</div>
       </div>
       <div class="text-center">
-        <Suspense
-          fallback={
-            <>
-              <div class="text-gray-400">
-                <span class="font-inter text-base font-bold xl:text-lg">
-                  ...
-                </span>
-              </div>
-              <div class="text-muted-foreground text-xs xl:text-sm">
-                Loading...
-              </div>
-            </>
-          }
-        >
-          {display()}
-        </Suspense>
+        <Suspense fallback={loadingFallback}>{display()}</Suspense>
       </div>
     </>
   )

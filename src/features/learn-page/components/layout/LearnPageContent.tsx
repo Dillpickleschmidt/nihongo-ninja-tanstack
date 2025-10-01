@@ -43,16 +43,16 @@ export function LearnPageContent() {
         blur="0px"
       />
       {/* Mobile Layout */}
-      <SSRMediaQuery hideFrom="xl">
-        <LearnPageHeader
-          variant="mobile"
-          mobileContentView={mobileContentView()}
-          setMobileContentView={setMobileContentView}
-        />
-        <div class="h-[calc(100vh-141px)] overflow-y-auto">
-          <MobileContentRenderer activeView={mobileContentView} />
-        </div>
-      </SSRMediaQuery>
+      {/* <SSRMediaQuery hideFrom="xl"> */}
+      {/*   <LearnPageHeader */}
+      {/*     variant="mobile" */}
+      {/*     mobileContentView={mobileContentView()} */}
+      {/*     setMobileContentView={setMobileContentView} */}
+      {/*   /> */}
+      {/*   <div class="h-[calc(100vh-141px)] overflow-y-auto"> */}
+      {/*     <MobileContentRenderer activeView={mobileContentView} /> */}
+      {/*   </div> */}
+      {/* </SSRMediaQuery> */}
       {/* Desktop Layout */}
       <SSRMediaQuery showFrom="xl">
         <div class="min-h-screen">
