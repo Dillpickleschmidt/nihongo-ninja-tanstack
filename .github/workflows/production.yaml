@@ -19,17 +19,17 @@ jobs:
       - uses: supabase/setup-cli@v1
         with:
           version: latest
-      - name: Cache TanStack Start Build
-        uses: actions/cache@v4
-        with:
-          path: |
-            .nitro/
-            .output/
-            .sst/
-            .tanstack/
-          key: cache-${{ hashFiles('**/bun.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-          restore-keys: |
-            cache-${{ hashFiles('**/bun.lock') }}-
+      # - name: Cache TanStack Start Build
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       .nitro/
+      #       .output/
+      #       .sst/
+      #       .tanstack/
+      #     key: cache-${{ hashFiles('**/bun.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+      #     restore-keys: |
+      #       cache-${{ hashFiles('**/bun.lock') }}-
       - name: Install Bun
         run: npm install -g bun
 

@@ -1,3 +1,4 @@
+// routes/lessons/_chapter-0/common-expressions
 import { createFileRoute, Link } from "@tanstack/solid-router"
 import { For, Show } from "solid-js"
 import { Button } from "@/components/ui/button"

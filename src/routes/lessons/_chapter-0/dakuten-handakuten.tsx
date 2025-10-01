@@ -1,4 +1,4 @@
-// routes/lessons/dakuten-handakuten.tsx
+// routes/lessons/_chapter-0/dakuten-handakuten.tsx
 
 import { createFileRoute } from "@tanstack/solid-router"
 import KanaChart from "@/components/charts/KanaChart"

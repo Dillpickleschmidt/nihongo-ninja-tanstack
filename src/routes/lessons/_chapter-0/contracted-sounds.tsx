@@ -1,4 +1,4 @@
-// routes/lessons/contracted-sounds.tsx
+// routes/lessons/_chapter-0/contracted-sounds.tsx
 
 import { createFileRoute } from "@tanstack/solid-router"
 import { ChatBubble } from "@/components/ChatBubble"
