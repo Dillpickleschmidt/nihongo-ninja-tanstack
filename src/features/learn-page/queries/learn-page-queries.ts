@@ -12,14 +12,12 @@ import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { ResourceProvider } from "@/data/resources-config"
 
 export const vocabHierarchyQueryOptions = (
-  deck: ReturnType<typeof getDeckBySlug>,
+  deck: NonNullable<ReturnType<typeof getDeckBySlug>>,
   userOverrides: any,
 ) =>
   queryOptions({
-    queryKey: ["vocab-hierarchy", deck?.slug, userOverrides],
+    queryKey: ["vocab-hierarchy", deck.slug, userOverrides],
     queryFn: async () => {
-      if (!deck) return null
-
       const vocabModuleId = deck.learning_path_items.find((item) =>
         item.id.endsWith("_vocab-list"),
       )?.id
@@ -51,14 +49,21 @@ export const vocabHierarchyQueryOptions = (
         slugs,
       }
     },
+    placeholderData: {
+      chapterVocabulary: [],
+      wordHierarchyData: null,
+      slugs: [],
+    },
   })
 
 export const fsrsProgressQueryOptions = (
   userId: string | null,
+  textbookId: string,
+  deckSlug: string,
   slugs: string[],
 ) =>
   queryOptions({
-    queryKey: ["fsrs-progress", userId, slugs],
+    queryKey: ["fsrs-progress", userId, textbookId, deckSlug],
     queryFn: async () => {
       if (!userId || slugs.length === 0) return null
       return getUserProgress({ data: { slugs, userId } })
@@ -81,6 +86,7 @@ export const completedModulesQueryOptions = (userId: string | null) =>
       if (!userId) return []
       return getUserModuleCompletions(userId)
     },
+    placeholderData: [],
   })
 
 export const resourceThumbnailQueryOptions = (

@@ -9,9 +9,10 @@ import {
 } from "@/features/learn-page/utils/loader-helpers"
 import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
 import { getDeckBySlug, getLessons } from "@/data/utils/core"
+import type { UseQueryResult } from "@tanstack/solid-query"
 
 interface LearningPathListProps {
-  completedModules: () => string[]
+  completedModulesQuery: UseQueryResult<string[]>
 }
 
 export function LearningPathList(props: LearningPathListProps) {
@@ -20,13 +21,15 @@ export function LearningPathList(props: LearningPathListProps) {
       // data-lessons-section
       class="grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-2"
     >
-      <LessonsList completedModules={props.completedModules} />
+      <LessonsList completedModulesQuery={props.completedModulesQuery} />
     </div>
   )
 }
 
-function LessonsList(props: { completedModules: () => string[] }) {
-  const completedModulesSet = () => new Set(props.completedModules())
+function LessonsList(props: {
+  completedModulesQuery: UseQueryResult<string[]>
+}) {
+  const completedModulesSet = () => new Set(props.completedModulesQuery.data)
   const loaderData = Route.useLoaderData()
   const activeDeck = () =>
     getDeckBySlug(loaderData().textbookId, loaderData().chapterSlug)

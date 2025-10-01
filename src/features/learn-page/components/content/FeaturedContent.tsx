@@ -1,8 +1,9 @@
 // features/learn-page/components/content/FeaturedContent.tsx
-import { For, createResource } from "solid-js"
-import { useQueryClient } from "@tanstack/solid-query"
+import { For } from "solid-js"
 import { Play } from "lucide-solid"
 import { useAnimationManager } from "@/hooks/useAnimations"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { resourceThumbnailQueryOptions } from "@/features/learn-page/queries/learn-page-queries"
 import { ResourceCardWrapper } from "./ResourceDialog"
 import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
 
@@ -69,7 +70,6 @@ function FeaturedContentHeader() {
 
 function FeaturedContentGrid() {
   const loaderData = Route.useLoaderData()
-  const queryClient = useQueryClient()
 
   const resourcesArray = () => Object.values(loaderData().externalResources)
   const { animateOnDataChange } = useAnimationManager()
@@ -80,19 +80,20 @@ function FeaturedContentGrid() {
   return (
     <div class="mx-7 flex gap-6 overflow-x-auto px-1 pt-3 pb-3">
       <For each={resourcesArray()}>
-        {(resource, index) => {
-          const [thumbnailUrl] = createResource(async () => {
-            const data = await loaderData().resourceThumbnails[index()]
-            // Populate cache for future navigations
-            queryClient.setQueryData(["resource-thumbnail", resource.id], data)
-            return data
-          })
+        {(resource) => {
+          const thumbnailQuery = useCustomQuery(() =>
+            resourceThumbnailQueryOptions(
+              resource.id,
+              resource.external_url,
+              resource.creator_id,
+            ),
+          )
 
           return (
             <div class="flex-shrink-0">
               <ResourceCardWrapper
                 resource={resource}
-                thumbnailUrl={thumbnailUrl}
+                thumbnailUrl={() => thumbnailQuery.data}
                 variant="desktop"
               />
             </div>
@@ -105,25 +106,25 @@ function FeaturedContentGrid() {
 
 function MobileFeaturedContentGrid() {
   const loaderData = Route.useLoaderData()
-  const queryClient = useQueryClient()
 
   const resourcesArray = () => Object.values(loaderData().externalResources)
 
   return (
     <div class="grid grid-cols-1 gap-4">
       <For each={resourcesArray()}>
-        {(resource, index) => {
-          const [thumbnailUrl] = createResource(async () => {
-            const data = await loaderData().resourceThumbnails[index()]
-            // Populate cache for future navigations
-            queryClient.setQueryData(["resource-thumbnail", resource.id], data)
-            return data
-          })
+        {(resource) => {
+          const thumbnailQuery = useCustomQuery(() =>
+            resourceThumbnailQueryOptions(
+              resource.id,
+              resource.external_url,
+              resource.creator_id,
+            ),
+          )
 
           return (
             <ResourceCardWrapper
               resource={resource}
-              thumbnailUrl={thumbnailUrl}
+              thumbnailUrl={() => thumbnailQuery.data}
               variant="mobile"
             />
           )
