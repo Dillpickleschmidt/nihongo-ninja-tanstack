@@ -20,7 +20,23 @@ export default defineConfig({
     tanstackStart(),
     nitroV2Plugin({
       preset: "aws-lambda",
-      compatibilityDate: "2025-10-01",
+      serveStatic: true,
+      hooks: {
+        compiled(nitro) {
+          console.log("[Nitro Hook] Copying database to server output...")
+          const { copyFileSync, existsSync, mkdirSync } = require("fs")
+          const { resolve } = require("path")
+          const source = resolve("./public/wanikani.db")
+          const dest = resolve(nitro.options.output.serverDir, "wanikani.db")
+
+          if (!existsSync(nitro.options.output.serverDir)) {
+            mkdirSync(nitro.options.output.serverDir, { recursive: true })
+          }
+
+          copyFileSync(source, dest)
+          console.log(`[Nitro Hook] ✅ Database copied to ${dest}`)
+        },
+      },
     }),
     viteSolid({ ssr: true }),
     process.env.ANALYZE

@@ -50,7 +50,7 @@
   "devDependencies": {
     "@solidjs/testing-library": "^0.8.10",
     "@tanstack/eslint-plugin-query": "^5.91.0",
-    "@tanstack/nitro-v2-vite-plugin": "^1.132.21",
+    "@tanstack/nitro-v2-vite-plugin": "^1.132.31",
     "@tanstack/solid-start-plugin": "^1.131.50",
     "@testing-library/jest-dom": "^6.9.0",
     "@testing-library/user-event": "^14.6.1",
