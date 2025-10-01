@@ -1,9 +1,13 @@
-import { createServerFileRoute } from "@tanstack/solid-start/server"
+import { createFileRoute } from "@tanstack/solid-router"
 
-export const ServerRoute = createServerFileRoute("/api/relay-tefh/$").methods({
-  GET: handler,
-  POST: handler,
-  OPTIONS: async () => new Response(null, { status: 200 }),
+export const Route = createFileRoute("/api/relay-tefh/$")({
+  server: {
+    handlers: {
+      GET: handler,
+      POST: handler,
+      OPTIONS: async () => new Response(null, { status: 200 }),
+    },
+  },
 })
 
 async function handler({ request, params }: { request: Request; params: any }) {

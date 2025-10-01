@@ -7,7 +7,7 @@ import {
   getExampleSentenceParts,
   type ProcessedSentenceResult,
 } from "@/data/utils/vocab"
-import { cn } from "@/utils/util"
+import { cn } from "@/utils"
 import { ActionButton } from "../shared/ActionButton"
 
 export default function WriteModeComponent() {

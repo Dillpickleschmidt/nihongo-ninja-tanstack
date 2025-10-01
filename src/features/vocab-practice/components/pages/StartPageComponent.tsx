@@ -25,7 +25,8 @@ import type { VocabularyItem } from "@/data/types"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
-import { useSettings } from "@/context/SettingsContext"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { userSettingsQueryOptions } from "@/queries/user-settings"
 import { BottomNav } from "@/features/navbar/BottomNav"
 import { SessionModeTabSwitcher } from "../SessionModeTabSwitcher"
 
@@ -38,6 +39,7 @@ type StartPageProps = {
   moduleVocabulary: VocabularyItem[]
   deckName: string | JSX.Element
   mode: PracticeMode
+  userId: string | null
 }
 
 function getHierarchicalOrder(
@@ -78,7 +80,9 @@ function getHierarchicalOrder(
 export default function StartPageComponent(props: StartPageProps) {
   const { uiState, initializeManager, initializeSvgData } =
     useVocabPracticeContext()
-  const { userPreferences } = useSettings()
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(props.userId),
+  )
   const [isStarting, setIsStarting] = createSignal(false)
   const [enhancedState, setEnhancedState] =
     createSignal<PracticeSessionState | null>(null)
@@ -206,8 +210,8 @@ export default function StartPageComponent(props: StartPageProps) {
       {/* Background */}
       <div class="fixed inset-0 -z-1">
         <TextbookChapterBackgrounds
-          textbook={userPreferences()["active-textbook"]}
-          chapter={userPreferences()["active-deck"]}
+          textbook={settingsQuery.data["active-textbook"]}
+          chapter={settingsQuery.data["active-deck"]}
           showGradient={false}
           blur="6px"
         />

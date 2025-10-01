@@ -3,8 +3,9 @@ import { Grid3x3, List } from "lucide-solid"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { LearningPathList } from "./LearningPathList"
 import { LearningPathGrid } from "./LearningPathGrid"
-import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
-import { completedModulesQueryOptions } from "../../queries/learn-page-queries"
+import { useRouteContext } from "@tanstack/solid-router"
+import { Route as RootRoute } from "@/routes/__root"
+import { completedModulesQueryOptions } from "../../../../queries/learn-page-queries"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 
 interface LearningPathSectionProps {
@@ -13,8 +14,8 @@ interface LearningPathSectionProps {
 
 export function LearningPathSection(props: LearningPathSectionProps = {}) {
   const variant = props.variant || "desktop"
-  const loaderData = Route.useLoaderData()
-  const userId = loaderData().user?.id || null
+  const context = useRouteContext({ from: RootRoute.id })
+  const userId = context().user?.id || null
 
   const completedModulesQuery = useCustomQuery(() =>
     completedModulesQueryOptions(userId),

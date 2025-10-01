@@ -2,7 +2,7 @@
 import { createServerFn } from "@tanstack/solid-start"
 import { z } from "zod"
 import { getUser } from "@/features/supabase/getUser"
-import { getInitialUserPreferencesFromCookieServerFn } from "@/features/main-cookies/server/server-functions"
+import { getServiceCredentials } from "@/features/main-cookies/functions/service-credentials"
 
 const serviceSchema = z.enum(["anki", "wanikani", "jpdb"])
 const apiKeySchema = z.object({
@@ -10,10 +10,11 @@ const apiKeySchema = z.object({
 })
 
 export const fetchServiceDataWithAuth = createServerFn()
-  .validator(serviceSchema)
+  .inputValidator(serviceSchema)
   .handler(async ({ data: service }) => {
-    const userPreferences = await getInitialUserPreferencesFromCookieServerFn()
-    const apiKey = userPreferences["service-credentials"]?.[service]?.api_key
+    // Get service credentials from HttpOnly cookie
+    const credentials = await getServiceCredentials()
+    const apiKey = credentials[service]?.api_key
 
     if (!apiKey) {
       throw new Error(`${service} API key not available`)
@@ -44,7 +45,7 @@ export const fetchServiceDataWithAuth = createServerFn()
   })
 
 export const fetchJPDBUserDecks = createServerFn()
-  .validator(apiKeySchema)
+  .inputValidator(apiKeySchema)
   .handler(async ({ data }) => {
     const { user } = await getUser()
     if (!user) {
@@ -70,7 +71,7 @@ export const fetchJPDBUserDecks = createServerFn()
   })
 
 export const fetchJPDBSpecialDecks = createServerFn()
-  .validator(apiKeySchema)
+  .inputValidator(apiKeySchema)
   .handler(async ({ data }) => {
     const { user } = await getUser()
     if (!user) {
@@ -96,7 +97,7 @@ export const fetchJPDBSpecialDecks = createServerFn()
   })
 
 export const fetchJPDBDeckVocabulary = createServerFn()
-  .validator(
+  .inputValidator(
     z.object({
       deckId: z.number(),
     }),
@@ -107,8 +108,9 @@ export const fetchJPDBDeckVocabulary = createServerFn()
       throw new Error("User not authenticated")
     }
 
-    const userPreferences = await getInitialUserPreferencesFromCookieServerFn()
-    const apiKey = userPreferences["service-credentials"]?.jpdb?.api_key
+    // Get service credentials from HttpOnly cookie
+    const credentials = await getServiceCredentials()
+    const apiKey = credentials.jpdb?.api_key
 
     if (!apiKey) {
       throw new Error("JPDB API key not available")
@@ -137,7 +139,7 @@ export const fetchJPDBDeckVocabulary = createServerFn()
   })
 
 export const lookupJPDBVocabulary = createServerFn()
-  .validator(
+  .inputValidator(
     z.object({
       vocabularyList: z.array(z.array(z.number())),
     }),
@@ -148,8 +150,9 @@ export const lookupJPDBVocabulary = createServerFn()
       throw new Error("User not authenticated")
     }
 
-    const userPreferences = await getInitialUserPreferencesFromCookieServerFn()
-    const apiKey = userPreferences["service-credentials"]?.jpdb?.api_key
+    // Get service credentials from HttpOnly cookie
+    const credentials = await getServiceCredentials()
+    const apiKey = credentials.jpdb?.api_key
 
     if (!apiKey) {
       throw new Error("JPDB API key not available")

@@ -1,5 +1,5 @@
 // features/settings-page/utils/serviceUtils.ts
-import type { ServiceMode } from "@/features/main-cookies/schemas/user-preferences"
+import type { ServiceMode } from "@/features/main-cookies/schemas/user-settings"
 
 export const getModeDisplayName = (mode: ServiceMode): string => {
   switch (mode) {

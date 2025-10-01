@@ -11,12 +11,14 @@ import { RotateCcw } from "lucide-solid"
 import { HeaderCard } from "./components/HeaderCard"
 import { ActionButton } from "./components/ActionButton"
 import { TextbookChapterBackgrounds } from "../learn-page/components/shared/TextbookChapterBackgrounds"
-import { useSettings } from "@/context/SettingsContext"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { userSettingsQueryOptions } from "@/queries/user-settings"
 
 type KanaQuizProps = {
   kana: KanaItem[]
   nextLesson: string
   title: string
+  userId: string | null
 }
 
 export function KanaQuiz(props: KanaQuizProps) {
@@ -28,7 +30,9 @@ export function KanaQuiz(props: KanaQuizProps) {
     handleSubmit,
     handleRetry,
   } = useKanaQuiz(props.kana)
-  const { userPreferences } = useSettings()
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(props.userId),
+  )
 
   // Media queries
   const isMobile = createMediaQuery("(max-width: 640px)")
@@ -96,8 +100,8 @@ export function KanaQuiz(props: KanaQuizProps) {
       {/* Background */}
       <div class="fixed inset-0 -z-10">
         <TextbookChapterBackgrounds
-          textbook={userPreferences()["active-textbook"]}
-          chapter={userPreferences()["active-deck"]}
+          textbook={settingsQuery.data["active-textbook"]}
+          chapter={settingsQuery.data["active-deck"]}
           showGradient={false}
           blur="16px"
         />

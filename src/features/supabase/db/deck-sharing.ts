@@ -9,7 +9,7 @@ import { getUserFoldersAndDecks } from "./folder"
  * Creates a public share for a user's deck
  */
 export const createDeckShareServerFn = createServerFn({ method: "POST" })
-  .validator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: number }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -53,7 +53,7 @@ export const createDeckShareServerFn = createServerFn({ method: "POST" })
  * Removes public sharing for a user's deck
  */
 export const removeDeckShareServerFn = createServerFn({ method: "POST" })
-  .validator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: number }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -73,7 +73,7 @@ export const removeDeckShareServerFn = createServerFn({ method: "POST" })
  * Checks if a user's deck is currently shared
  */
 export const getDeckShareStatusServerFn = createServerFn({ method: "POST" })
-  .validator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: number }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -98,7 +98,7 @@ export const getDeckShareStatusServerFn = createServerFn({ method: "POST" })
  * Gets all publicly shared decks for browsing with pagination
  */
 export const getSharedDecksServerFn = createServerFn({ method: "GET" })
-  .validator(
+  .inputValidator(
     (data: {
       offset?: number
       limit?: number
@@ -142,7 +142,7 @@ export const getSharedDecksServerFn = createServerFn({ method: "GET" })
  * Gets detailed information about a shared deck for preview before import
  */
 export const getSharedDeckInfoServerFn = createServerFn({ method: "POST" })
-  .validator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: number }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
 
@@ -186,7 +186,7 @@ export const getSharedDeckInfoServerFn = createServerFn({ method: "POST" })
  * Imports a shared deck into the current user's account
  */
 export const importSharedDeckServerFn = createServerFn({ method: "POST" })
-  .validator(
+  .inputValidator(
     (data: { deck_id: number; target_folder_id?: number | null }) => data,
   )
   .handler(async ({ data }) => {

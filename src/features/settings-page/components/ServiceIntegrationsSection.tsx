@@ -5,12 +5,31 @@ import { JpdbServiceCard } from "./JpdbServiceCard"
 import { jpdbAdapter } from "@/features/fsrs-import/adapters/jpdb-import-adapter"
 import { importReviewsServerFn } from "@/features/fsrs-import/server/importReviewsServerFn"
 import { validateJpdbApiKey } from "@/features/service-api-functions/jpdb/validation"
-import { useSettings } from "@/context/SettingsContext"
+import { useMutation, useQueryClient } from "@tanstack/solid-query"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import {
+  userSettingsQueryOptions,
+  updateUserSettingsMutation,
+} from "@/queries/user-settings"
+import { useRouteContext } from "@tanstack/solid-router"
+import { Route as RootRoute } from "@/routes/__root"
 import { useServiceManagement } from "../context/ServiceManagementContext"
-import type { ServiceType } from "@/features/main-cookies/schemas/user-preferences"
+import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"
+import {
+  getServiceCredentials,
+  updateServiceCredentials,
+} from "@/features/main-cookies/functions/service-credentials"
 
 export const ServiceIntegrationsSection = () => {
-  const { userPreferences, updateUserPreferences } = useSettings()
+  const context = useRouteContext({ from: RootRoute.id })
+  const userId = context().user?.id || null
+
+  const queryClient = useQueryClient()
+  const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
+  const updateMutation = useMutation(() =>
+    updateUserSettingsMutation(userId, queryClient),
+  )
+
   const { setError, clearError, setIsProcessing } = useServiceManagement()
 
   const handleJpdbImport = async (apiKey: string, file: File) => {
@@ -22,12 +41,12 @@ export const ServiceIntegrationsSection = () => {
 
     if (!validationResult.success) {
       setError("jpdb", validationResult.error || "Invalid API Key")
-      const currentPrefs = userPreferences()
-      updateUserPreferences({
+      const currentSettings = settingsQuery.data
+      updateMutation.mutate({
         "service-preferences": {
-          ...currentPrefs["service-preferences"],
+          ...currentSettings["service-preferences"],
           jpdb: {
-            ...currentPrefs["service-preferences"].jpdb,
+            ...currentSettings["service-preferences"].jpdb,
             is_api_key_valid: false,
           },
         },
@@ -36,17 +55,22 @@ export const ServiceIntegrationsSection = () => {
       return
     }
 
-    // Update preferences with validated API key and success state
-    const currentPrefs = userPreferences()
-    updateUserPreferences({
-      "service-credentials": {
-        ...currentPrefs["service-credentials"],
-        jpdb: { ...currentPrefs["service-credentials"].jpdb, api_key: apiKey },
+    // Update credentials in HttpOnly cookie (server-only)
+    const currentCredentials = await getServiceCredentials()
+    await updateServiceCredentials({
+      data: {
+        ...currentCredentials,
+        jpdb: { ...currentCredentials.jpdb, api_key: apiKey },
       },
+    })
+
+    // Update settings with validated API key state
+    const currentSettings = settingsQuery.data
+    updateMutation.mutate({
       "service-preferences": {
-        ...currentPrefs["service-preferences"],
+        ...currentSettings["service-preferences"],
         jpdb: {
-          ...currentPrefs["service-preferences"].jpdb,
+          ...currentSettings["service-preferences"].jpdb,
           is_api_key_valid: true,
         },
       },
@@ -67,12 +91,12 @@ export const ServiceIntegrationsSection = () => {
         data: { cards: normalizedCards, source: "jpdb" },
       })
       if (importResult.success) {
-        const currentPrefs = userPreferences()
-        updateUserPreferences({
+        const currentSettings = settingsQuery.data
+        updateMutation.mutate({
           "service-preferences": {
-            ...currentPrefs["service-preferences"],
+            ...currentSettings["service-preferences"],
             jpdb: {
-              ...currentPrefs["service-preferences"].jpdb,
+              ...currentSettings["service-preferences"].jpdb,
               data_imported: true,
             },
           },
@@ -91,20 +115,20 @@ export const ServiceIntegrationsSection = () => {
 
   const createServiceProps = (service: ServiceType) => ({
     preference: () =>
-      userPreferences()["service-preferences"][service] || {
+      settingsQuery.data["service-preferences"][service] || {
         mode: "disabled",
         data_imported: false,
         is_api_key_valid: false,
       },
     updateServicePreference: (preferenceUpdate: any) => {
-      const currentServicePrefs = userPreferences()["service-preferences"]
+      const currentServicePrefs = settingsQuery.data["service-preferences"]
       const currentServicePref = currentServicePrefs[service] || {
         mode: "disabled",
         data_imported: false,
         is_api_key_valid: false,
       }
 
-      return updateUserPreferences({
+      return updateMutation.mutate({
         "service-preferences": {
           ...currentServicePrefs,
           [service]: { ...currentServicePref, ...preferenceUpdate },

@@ -8,13 +8,13 @@ import type {
 } from "@/data/wanikani/hierarchy-builder"
 import type { OverrideSettings } from "@/features/resolvers/types"
 import { resolveKanjiEntries } from "./stacking"
-import { DEFAULT_KANJI_STACKS } from "@/features/main-cookies/schemas/user-preferences"
+import { DEFAULT_KANJI_STACKS } from "@/features/main-cookies/schemas/user-settings"
 
 /**
  * Get vocabulary hierarchy with kanji and radical dependencies
  */
 export const getVocabHierarchy = createServerFn({ method: "GET" })
-  .validator(
+  .inputValidator(
     (data: { slugs: string[]; userOverrides?: OverrideSettings }) => data,
   )
   .handler(
@@ -41,7 +41,7 @@ export const getVocabHierarchy = createServerFn({ method: "GET" })
  * Get detailed kanji and radical information by slugs with stacking support
  */
 export const getKanjiDetails = createServerFn({ method: "GET" })
-  .validator(
+  .inputValidator(
     (data: {
       kanji: string[]
       radicals: string[]

@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest"
 import type { VocabularyItem } from "@/data/types"
 import type { Stack } from "@/features/resolvers/types"
 import { resolveVocabularyEntries } from "./stacking"
-import { DEFAULT_VOCABULARY_STACKS } from "@/features/main-cookies/schemas/user-preferences"
+import { DEFAULT_VOCABULARY_STACKS } from "@/features/main-cookies/schemas/user-settings"
 
 // Mock the vocabulary import
 vi.mock("@/data/vocabulary", () => ({

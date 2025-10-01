@@ -9,7 +9,7 @@ import {
 import { ServiceCard } from "./ServiceCard"
 // TODO: Implement Anki validation functions when needed
 import { useServiceManagement } from "../context/ServiceManagementContext"
-import type { ServicePreference } from "@/features/main-cookies/schemas/user-preferences"
+import type { ServicePreference } from "@/features/main-cookies/schemas/user-settings"
 
 type ServiceCardProps = {
   preference: () => ServicePreference

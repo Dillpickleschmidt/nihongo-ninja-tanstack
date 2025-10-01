@@ -3,18 +3,24 @@ import { createServerFn } from "@tanstack/solid-start"
 import type { VocabularyItem } from "@/data/types"
 import type { OverrideSettings } from "@/features/resolvers/types"
 import { resolveVocabularyEntries } from "./stacking"
-import { DEFAULT_VOCABULARY_STACKS } from "@/features/main-cookies/schemas/user-preferences"
+import { DEFAULT_VOCABULARY_STACKS } from "@/features/main-cookies/schemas/user-settings"
 
 /**
  * Core vocabulary resolver - handles vocabulary with override stacking
  * This is the single source of truth for vocabulary key-to-item resolution
  */
 export const getVocabulary = createServerFn({ method: "GET" })
-  .validator(
-    (data: { keys: string[]; userOverrides?: OverrideSettings; deck_id?: number }) => data,
+  .inputValidator(
+    (data: {
+      keys: string[]
+      userOverrides?: OverrideSettings
+      deck_id?: number
+    }) => data,
   )
   .handler(
-    async ({ data: { keys, userOverrides, deck_id } }): Promise<VocabularyItem[]> => {
+    async ({
+      data: { keys, userOverrides, deck_id },
+    }): Promise<VocabularyItem[]> => {
       // Use stacking system with user overrides or default stacks
       const effectiveStacks =
         userOverrides?.vocabularyOverrides ?? DEFAULT_VOCABULARY_STACKS

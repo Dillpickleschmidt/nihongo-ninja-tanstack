@@ -46,7 +46,7 @@ export function ResourceCardWrapper(props: {
         <DialogTrigger
           as="button"
           class={cn(
-            "group block w-full text-left transition-transform hover:scale-[1.02]",
+            "group block w-full cursor-pointer text-left transition-transform hover:scale-[1.02]",
             props.variant === "mobile" &&
               "bg-card hover:bg-card/90 flex items-center gap-4 rounded-2xl p-4 shadow-sm transition-colors",
           )}

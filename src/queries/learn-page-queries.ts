@@ -12,11 +12,12 @@ import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { ResourceProvider } from "@/data/resources-config"
 
 export const vocabHierarchyQueryOptions = (
+  activeTextbook: string,
   deck: NonNullable<ReturnType<typeof getDeckBySlug>>,
   userOverrides: any,
 ) =>
   queryOptions({
-    queryKey: ["vocab-hierarchy", deck.slug, userOverrides],
+    queryKey: ["vocab-hierarchy", activeTextbook, deck.slug, userOverrides],
     queryFn: async () => {
       const vocabModuleId = deck.learning_path_items.find((item) =>
         item.id.endsWith("_vocab-list"),
@@ -58,12 +59,12 @@ export const vocabHierarchyQueryOptions = (
 
 export const fsrsProgressQueryOptions = (
   userId: string | null,
-  textbookId: string,
-  deckSlug: string,
+  activeTextbook: string,
+  activeDeck: string,
   slugs: string[],
 ) =>
   queryOptions({
-    queryKey: ["fsrs-progress", userId, textbookId, deckSlug],
+    queryKey: ["fsrs-progress", userId, activeTextbook, activeDeck],
     queryFn: async () => {
       if (!userId || slugs.length === 0) return null
       return getUserProgress({ data: { slugs, userId } })

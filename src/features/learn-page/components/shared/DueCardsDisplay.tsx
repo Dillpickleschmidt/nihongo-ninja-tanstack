@@ -1,8 +1,8 @@
-import { Link } from "@tanstack/solid-router"
+import { Link, useRouteContext } from "@tanstack/solid-router"
 import { Suspense } from "solid-js"
 import { Button } from "@/components/ui/button"
-import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
-import { dueFSRSCardsCountQueryOptions } from "@/features/learn-page/queries/learn-page-queries"
+import { Route as RootRoute } from "@/routes/__root"
+import { dueFSRSCardsCountQueryOptions } from "@/queries/learn-page-queries"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 
 interface DueCardsDisplayProps {
@@ -10,10 +10,10 @@ interface DueCardsDisplayProps {
 }
 
 export function DueCardsDisplay(props: DueCardsDisplayProps) {
-  const loaderData = Route.useLoaderData()
-  const userId = loaderData().user?.id || null
+  const context = useRouteContext({ from: RootRoute.id })
+  const userId = context().user?.id || null
 
-  if (!loaderData().user) {
+  if (!context().user) {
     return (
       <Button
         as={Link}

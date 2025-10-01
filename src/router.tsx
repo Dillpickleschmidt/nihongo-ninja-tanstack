@@ -1,9 +1,10 @@
 // src/router.tsx
-import { createRouter as createTanStackRouter } from "@tanstack/solid-router"
-import { QueryClient, dehydrate, hydrate } from "@tanstack/solid-query"
+import { createRouter } from "@tanstack/solid-router"
 import { routeTree } from "./routeTree.gen"
+import { dehydrate, hydrate, QueryClient } from "@tanstack/solid-query"
 
-export function createRouter() {
+export function getRouter() {
+  // Create a new QueryClient for each request (server) or app initialization (client)
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -13,7 +14,7 @@ export function createRouter() {
     },
   })
 
-  const router = createTanStackRouter({
+  return createRouter({
     routeTree,
     context: {
       queryClient,
@@ -23,19 +24,12 @@ export function createRouter() {
       return {
         queryClientState: dehydrate(queryClient, {
           shouldDehydrateQuery: () => true, // Include all queries (even pending)
+          shouldDehydrateMutation: () => true, // Include all mutations
         }),
-      }
+      } as any
     },
     hydrate: (dehydrated) => {
       hydrate(queryClient, dehydrated.queryClientState)
-    }
+    },
   })
-
-  return router
-}
-
-declare module "@tanstack/solid-router" {
-  interface Register {
-    router: ReturnType<typeof createRouter>
-  }
 }

@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/solid-router"
 import { Show, lazy, Suspense, createSignal } from "solid-js"
 import { external_resources } from "@/data/external_resources"
 import ContentBox from "@/components/ContentBox"
-import { useSettings } from "@/context/SettingsContext"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { userSettingsQueryOptions } from "@/queries/user-settings"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 
 export const Route = createFileRoute("/external-resources/$resource")({
@@ -33,9 +34,12 @@ function findComponentPath(resourceId: string): string | null {
 
 function ExternalResourcePage() {
   const { user } = Route.useLoaderData()()
-  const { userPreferences } = useSettings()
   const { resource } = Route.useParams()()
   const [hasError, setHasError] = createSignal(false)
+
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(user?.id || null),
+  )
 
   const componentPath = () => findComponentPath(resource)
 
@@ -64,8 +68,8 @@ function ExternalResourcePage() {
     <>
       <div class="fixed inset-0 -z-1">
         <TextbookChapterBackgrounds
-          textbook={userPreferences()["active-textbook"]}
-          chapter={userPreferences()["active-deck"]}
+          textbook={settingsQuery.data["active-textbook"]}
+          chapter={settingsQuery.data["active-deck"]}
           showGradient={false}
           blur="16px"
           class="opacity-50"

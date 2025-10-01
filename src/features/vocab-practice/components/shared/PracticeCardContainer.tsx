@@ -1,6 +1,6 @@
 // vocab-practice/components/shared/PracticeCardContainer.tsx
 import { JSX, Show } from "solid-js"
-import { cn } from "@/utils/util"
+import { cn } from "@/utils"
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 
 export function PracticeCardContainer(props: {

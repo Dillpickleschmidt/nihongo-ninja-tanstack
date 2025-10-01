@@ -2,7 +2,7 @@
 import { getSvgPath } from "figma-squircle"
 import { createMediaQuery } from "@solid-primitives/media"
 import { JSX } from "solid-js"
-import { cn } from "@/utils/util"
+import { cn } from "@/utils"
 
 interface SmoothCardProps {
   width: number

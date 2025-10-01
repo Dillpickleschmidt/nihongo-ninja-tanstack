@@ -6,7 +6,7 @@ import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
   vocabHierarchyQueryOptions,
   fsrsProgressQueryOptions,
-} from "@/features/learn-page/queries/learn-page-queries"
+} from "@/queries/learn-page-queries"
 import {
   HoverCard,
   HoverCardContent,
@@ -23,8 +23,10 @@ import type {
 import type { VocabularyItem } from "@/data/types"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import { extractHiragana } from "@/data/utils/vocab"
+import { useRouteContext } from "@tanstack/solid-router"
+import { Route as RootRoute } from "@/routes/__root"
 import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
-import { useSettings } from "@/context/SettingsContext"
+import { userSettingsQueryOptions } from "@/queries/user-settings"
 
 type WordHierarchyVariant = "mobile" | "desktop"
 type ProgressState = "not_seen" | "learning" | "well_known"
@@ -91,14 +93,17 @@ function enrichHierarchyWithProgress(
 }
 
 export function WordHierarchy(props: WordHierarchyProps) {
+  const context = useRouteContext({ from: RootRoute.id })
+  const userId = context().user?.id || null
   const loaderData = Route.useLoaderData()
-  const { userPreferences } = useSettings()
-  const userId = loaderData().user?.id || null
+
+  const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
 
   const vocabDataQuery = useCustomQuery(() =>
     vocabHierarchyQueryOptions(
+      loaderData().textbookId,
       loaderData().deck,
-      userPreferences()?.["override-settings"],
+      settingsQuery.data["override-settings"],
     ),
   )
 
@@ -115,7 +120,7 @@ export function WordHierarchy(props: WordHierarchyProps) {
   )
 
   const { animateOnDataChange } = useAnimationManager()
-  const hasUser = !!loaderData().user
+  const hasUser = !!context().user
 
   // Compute final data
   const enrichedData = () => {

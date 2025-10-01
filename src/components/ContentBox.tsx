@@ -4,7 +4,7 @@ import { Button } from "./ui/button"
 import { useLocation, useNavigate, useMatches } from "@tanstack/solid-router"
 import { useQueryClient, useMutation } from "@tanstack/solid-query"
 import { cva } from "class-variance-authority"
-import { cn } from "@/utils/util"
+import { cn } from "@/utils"
 import { User } from "@supabase/supabase-js"
 import { addModuleCompletion } from "@/features/supabase/db/module-completions"
 

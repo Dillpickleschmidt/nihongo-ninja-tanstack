@@ -58,7 +58,7 @@ export async function getUserFoldersAndDecks(
  * Creates a new folder for the current user
  */
 export const createFolderServerFn = createServerFn({ method: "POST" })
-  .validator(
+  .inputValidator(
     (data: { folder_name: string; parent_folder_id: number | null }) => data,
   )
   .handler(async ({ data }) => {
@@ -86,7 +86,7 @@ export const createFolderServerFn = createServerFn({ method: "POST" })
  * Updates an existing folder for the current user
  */
 export const updateFolderServerFn = createServerFn({ method: "POST" })
-  .validator(
+  .inputValidator(
     (data: {
       folder_id: number
       folder_name?: string
@@ -120,7 +120,7 @@ export const updateFolderServerFn = createServerFn({ method: "POST" })
  * Deletes a folder and all its descendants for the current user
  */
 export const deleteFolderServerFn = createServerFn({ method: "POST" })
-  .validator((data: { folder_id: number }) => data)
+  .inputValidator((data: { folder_id: number }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -200,7 +200,7 @@ export async function ensureFolderHierarchy(
  * Server function that executes multiple edit operations as an atomic transaction
  */
 export const executeEditTransactionServerFn = createServerFn({ method: "POST" })
-  .validator((data: { operations: any[] }) => data)
+  .inputValidator((data: { operations: any[] }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()

@@ -1,5 +1,5 @@
 // routes/_home/learn/$textbookId.$chapterSlug.tsx
-import { createFileRoute, redirect, defer } from "@tanstack/solid-router"
+import { createFileRoute, redirect } from "@tanstack/solid-router"
 import { getDeckBySlug, getExternalResources } from "@/data/utils/core"
 import { LearnPageContent } from "@/features/learn-page/components/layout/LearnPageContent"
 import {
@@ -8,9 +8,16 @@ import {
   completedModulesQueryOptions,
   fsrsProgressQueryOptions,
   resourceThumbnailQueryOptions,
-} from "@/features/learn-page/queries/learn-page-queries"
+} from "@/queries/learn-page-queries"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
+import {
+  userSettingsQueryOptions,
+  updateUserSettingsMutation,
+} from "@/queries/user-settings"
 import type { TextbookIDEnum } from "@/data/types"
+import { useMutation, useQueryClient } from "@tanstack/solid-query"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { createEffect } from "solid-js"
 
 export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
   loader: async ({ context, params }) => {
@@ -27,19 +34,30 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       })
     }
 
+    // Get user settings for vocab hierarchy
+    const userSettings = await queryClient.ensureQueryData(
+      userSettingsQueryOptions(user?.id || null),
+    )
+
     // Prefetch queries without awaiting (for streaming SSR)
     queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
     queryClient.prefetchQuery(dueFSRSCardsCountQueryOptions(user?.id || null))
 
     const vocabHierarchyData = await queryClient.ensureQueryData(
       vocabHierarchyQueryOptions(
+        textbookId,
         deck,
-        context.initialUserPreferenceData["override-settings"],
+        userSettings["override-settings"],
       ),
     )
     // Now prefetch fsrsProgress with the slugs from vocabHierarchy
     queryClient.prefetchQuery(
-      fsrsProgressQueryOptions(user?.id || null, textbookId, deck.slug, vocabHierarchyData.slugs),
+      fsrsProgressQueryOptions(
+        user?.id || null,
+        textbookId,
+        deck.slug,
+        vocabHierarchyData.slugs,
+      ),
     )
 
     // Pre-fetch all resource thumbnails in parallel (non-blocking, for streaming)
@@ -89,5 +107,26 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
 })
 
 function RouteComponent() {
+  const { textbookId, deck } = Route.useLoaderData()()
+  const userId = Route.useRouteContext()().user?.id || null
+
+  const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
+  const updateMutation = useMutation(() =>
+    updateUserSettingsMutation(userId, useQueryClient()),
+  )
+
+  // Update active textbook/deck when route params change
+  createEffect(() => {
+    const { "active-textbook": activeTextbook, "active-deck": activeDeck } =
+      settingsQuery.data || {}
+
+    if (activeTextbook !== textbookId || activeDeck !== deck.slug) {
+      updateMutation.mutate({
+        "active-textbook": textbookId,
+        "active-deck": deck.slug,
+      })
+    }
+  })
+
   return <LearnPageContent />
 }

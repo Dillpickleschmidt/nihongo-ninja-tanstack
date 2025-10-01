@@ -8,8 +8,6 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createServerRootRoute } from '@tanstack/solid-start/server'
-
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as PricingRouteImport } from './routes/pricing'
@@ -25,6 +23,7 @@ import { Route as PracticeContractedSoundsQuizRouteImport } from './routes/pract
 import { Route as PracticeAllHiraganaQuizRouteImport } from './routes/practice/all-hiragana-quiz'
 import { Route as PracticePracticeIDRouteImport } from './routes/practice/$practiceID'
 import { Route as ExternalResourcesResourceRouteImport } from './routes/external-resources/$resource'
+import { Route as ApiUploadOverrideRouteImport } from './routes/api/upload-override'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
 import { Route as HomeProgressRouteImport } from './routes/_home/progress'
 import { Route as HomeProfileRouteImport } from './routes/_home/profile'
@@ -70,18 +69,15 @@ import { Route as LessonsChapter0GreetingsRouteImport } from './routes/lessons/_
 import { Route as LessonsChapter0DakutenHandakutenRouteImport } from './routes/lessons/_chapter-0/dakuten-handakuten'
 import { Route as LessonsChapter0ContractedSoundsRouteImport } from './routes/lessons/_chapter-0/contracted-sounds'
 import { Route as LessonsChapter0CommonExpressionsRouteImport } from './routes/lessons/_chapter-0/common-expressions'
+import { Route as ApiRelayTefhSplatRouteImport } from './routes/api/relay-tefh.$'
+import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
+import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 import { Route as HomePracticeSentencePracticeRouteImport } from './routes/_home/practice/sentence-practice'
 import { Route as HomePracticeConjugationRouteImport } from './routes/_home/practice/conjugation'
 import { Route as HomeGuidesSrsRouteImport } from './routes/_home/guides/srs'
 import { Route as HomeAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/additional-resources/kanji-practice-sheet'
 import { Route as HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/learn/additional-resources.kanji-practice-sheet'
 import { Route as HomeLearnTextbookIdChapterSlugRouteImport } from './routes/_home/learn/$textbookId.$chapterSlug'
-import { ServerRoute as ApiUploadOverrideServerRouteImport } from './routes/api/upload-override'
-import { ServerRoute as ApiRelayTefhSplatServerRouteImport } from './routes/api/relay-tefh.$'
-import { ServerRoute as ApiAuthLogoutServerRouteImport } from './routes/api/auth/logout'
-import { ServerRoute as ApiAuthLoginServerRouteImport } from './routes/api/auth/login'
-
-const rootServerRouteImport = createServerRootRoute()
 
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
@@ -155,6 +151,11 @@ const ExternalResourcesResourceRoute =
     path: '/external-resources/$resource',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiUploadOverrideRoute = ApiUploadOverrideRouteImport.update({
+  id: '/api/upload-override',
+  path: '/api/upload-override',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomeVocabRoute = HomeVocabRouteImport.update({
   id: '/vocab',
   path: '/vocab',
@@ -408,6 +409,21 @@ const LessonsChapter0CommonExpressionsRoute =
     path: '/common-expressions',
     getParentRoute: () => LessonsRoute,
   } as any)
+const ApiRelayTefhSplatRoute = ApiRelayTefhSplatRouteImport.update({
+  id: '/api/relay-tefh/$',
+  path: '/api/relay-tefh/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthLogoutRoute = ApiAuthLogoutRouteImport.update({
+  id: '/api/auth/logout',
+  path: '/api/auth/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthLoginRoute = ApiAuthLoginRouteImport.update({
+  id: '/api/auth/login',
+  path: '/api/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomePracticeSentencePracticeRoute =
   HomePracticeSentencePracticeRouteImport.update({
     id: '/practice/sentence-practice',
@@ -442,26 +458,6 @@ const HomeLearnTextbookIdChapterSlugRoute =
     path: '/learn/$textbookId/$chapterSlug',
     getParentRoute: () => HomeRoute,
   } as any)
-const ApiUploadOverrideServerRoute = ApiUploadOverrideServerRouteImport.update({
-  id: '/api/upload-override',
-  path: '/api/upload-override',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
-const ApiRelayTefhSplatServerRoute = ApiRelayTefhSplatServerRouteImport.update({
-  id: '/api/relay-tefh/$',
-  path: '/api/relay-tefh/$',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
-const ApiAuthLogoutServerRoute = ApiAuthLogoutServerRouteImport.update({
-  id: '/api/auth/logout',
-  path: '/api/auth/logout',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
-const ApiAuthLoginServerRoute = ApiAuthLoginServerRouteImport.update({
-  id: '/api/auth/login',
-  path: '/api/auth/login',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -477,6 +473,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof HomeProfileRoute
   '/progress': typeof HomeProgressRoute
   '/vocab': typeof HomeVocabRoute
+  '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
@@ -488,6 +485,9 @@ export interface FileRoutesByFullPath {
   '/guides/srs': typeof HomeGuidesSrsRoute
   '/practice/conjugation': typeof HomePracticeConjugationRoute
   '/practice/sentence-practice': typeof HomePracticeSentencePracticeRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
+  '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
   '/lessons/common-expressions': typeof LessonsChapter0CommonExpressionsRoute
   '/lessons/contracted-sounds': typeof LessonsChapter0ContractedSoundsRoute
   '/lessons/dakuten-handakuten': typeof LessonsChapter0DakutenHandakutenRoute
@@ -543,6 +543,7 @@ export interface FileRoutesByTo {
   '/profile': typeof HomeProfileRoute
   '/progress': typeof HomeProgressRoute
   '/vocab': typeof HomeVocabRoute
+  '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
@@ -554,6 +555,9 @@ export interface FileRoutesByTo {
   '/guides/srs': typeof HomeGuidesSrsRoute
   '/practice/conjugation': typeof HomePracticeConjugationRoute
   '/practice/sentence-practice': typeof HomePracticeSentencePracticeRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
+  '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
   '/lessons/common-expressions': typeof LessonsChapter0CommonExpressionsRoute
   '/lessons/contracted-sounds': typeof LessonsChapter0ContractedSoundsRoute
   '/lessons/dakuten-handakuten': typeof LessonsChapter0DakutenHandakutenRoute
@@ -611,6 +615,7 @@ export interface FileRoutesById {
   '/_home/profile': typeof HomeProfileRoute
   '/_home/progress': typeof HomeProgressRoute
   '/_home/vocab': typeof HomeVocabRoute
+  '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
   '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
@@ -622,6 +627,9 @@ export interface FileRoutesById {
   '/_home/guides/srs': typeof HomeGuidesSrsRoute
   '/_home/practice/conjugation': typeof HomePracticeConjugationRoute
   '/_home/practice/sentence-practice': typeof HomePracticeSentencePracticeRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
+  '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
   '/lessons/_chapter-0/common-expressions': typeof LessonsChapter0CommonExpressionsRoute
   '/lessons/_chapter-0/contracted-sounds': typeof LessonsChapter0ContractedSoundsRoute
   '/lessons/_chapter-0/dakuten-handakuten': typeof LessonsChapter0DakutenHandakutenRoute
@@ -679,6 +687,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/vocab'
+    | '/api/upload-override'
     | '/external-resources/$resource'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
@@ -690,6 +699,9 @@ export interface FileRouteTypes {
     | '/guides/srs'
     | '/practice/conjugation'
     | '/practice/sentence-practice'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/relay-tefh/$'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
     | '/lessons/dakuten-handakuten'
@@ -745,6 +757,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/vocab'
+    | '/api/upload-override'
     | '/external-resources/$resource'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
@@ -756,6 +769,9 @@ export interface FileRouteTypes {
     | '/guides/srs'
     | '/practice/conjugation'
     | '/practice/sentence-practice'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/relay-tefh/$'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
     | '/lessons/dakuten-handakuten'
@@ -812,6 +828,7 @@ export interface FileRouteTypes {
     | '/_home/profile'
     | '/_home/progress'
     | '/_home/vocab'
+    | '/api/upload-override'
     | '/external-resources/$resource'
     | '/practice/$practiceID'
     | '/practice/all-hiragana-quiz'
@@ -823,6 +840,9 @@ export interface FileRouteTypes {
     | '/_home/guides/srs'
     | '/_home/practice/conjugation'
     | '/_home/practice/sentence-practice'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/relay-tefh/$'
     | '/lessons/_chapter-0/common-expressions'
     | '/lessons/_chapter-0/contracted-sounds'
     | '/lessons/_chapter-0/dakuten-handakuten'
@@ -873,6 +893,7 @@ export interface RootRouteChildren {
   LessonsRoute: typeof LessonsRouteWithChildren
   PricingRoute: typeof PricingRoute
   SettingsRoute: typeof SettingsRoute
+  ApiUploadOverrideRoute: typeof ApiUploadOverrideRoute
   ExternalResourcesResourceRoute: typeof ExternalResourcesResourceRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
   PracticeAllHiraganaQuizRoute: typeof PracticeAllHiraganaQuizRoute
@@ -880,53 +901,10 @@ export interface RootRouteChildren {
   PracticeDakutenHandakutenQuizRoute: typeof PracticeDakutenHandakutenQuizRoute
   PracticeHiraganaQuizRoute: typeof PracticeHiraganaQuizRoute
   PracticeReviewRoute: typeof PracticeReviewRoute
+  ApiAuthLoginRoute: typeof ApiAuthLoginRoute
+  ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
+  ApiRelayTefhSplatRoute: typeof ApiRelayTefhSplatRoute
   PracticeUserIDDeckIDRoute: typeof PracticeUserIDDeckIDRoute
-}
-export interface FileServerRoutesByFullPath {
-  '/api/upload-override': typeof ApiUploadOverrideServerRoute
-  '/api/auth/login': typeof ApiAuthLoginServerRoute
-  '/api/auth/logout': typeof ApiAuthLogoutServerRoute
-  '/api/relay-tefh/$': typeof ApiRelayTefhSplatServerRoute
-}
-export interface FileServerRoutesByTo {
-  '/api/upload-override': typeof ApiUploadOverrideServerRoute
-  '/api/auth/login': typeof ApiAuthLoginServerRoute
-  '/api/auth/logout': typeof ApiAuthLogoutServerRoute
-  '/api/relay-tefh/$': typeof ApiRelayTefhSplatServerRoute
-}
-export interface FileServerRoutesById {
-  __root__: typeof rootServerRouteImport
-  '/api/upload-override': typeof ApiUploadOverrideServerRoute
-  '/api/auth/login': typeof ApiAuthLoginServerRoute
-  '/api/auth/logout': typeof ApiAuthLogoutServerRoute
-  '/api/relay-tefh/$': typeof ApiRelayTefhSplatServerRoute
-}
-export interface FileServerRouteTypes {
-  fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths:
-    | '/api/upload-override'
-    | '/api/auth/login'
-    | '/api/auth/logout'
-    | '/api/relay-tefh/$'
-  fileServerRoutesByTo: FileServerRoutesByTo
-  to:
-    | '/api/upload-override'
-    | '/api/auth/login'
-    | '/api/auth/logout'
-    | '/api/relay-tefh/$'
-  id:
-    | '__root__'
-    | '/api/upload-override'
-    | '/api/auth/login'
-    | '/api/auth/logout'
-    | '/api/relay-tefh/$'
-  fileServerRoutesById: FileServerRoutesById
-}
-export interface RootServerRouteChildren {
-  ApiUploadOverrideServerRoute: typeof ApiUploadOverrideServerRoute
-  ApiAuthLoginServerRoute: typeof ApiAuthLoginServerRoute
-  ApiAuthLogoutServerRoute: typeof ApiAuthLogoutServerRoute
-  ApiRelayTefhSplatServerRoute: typeof ApiRelayTefhSplatServerRoute
 }
 
 declare module '@tanstack/solid-router' {
@@ -1027,6 +1005,13 @@ declare module '@tanstack/solid-router' {
       path: '/external-resources/$resource'
       fullPath: '/external-resources/$resource'
       preLoaderRoute: typeof ExternalResourcesResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/upload-override': {
+      id: '/api/upload-override'
+      path: '/api/upload-override'
+      fullPath: '/api/upload-override'
+      preLoaderRoute: typeof ApiUploadOverrideRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_home/vocab': {
@@ -1344,6 +1329,27 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof LessonsChapter0CommonExpressionsRouteImport
       parentRoute: typeof LessonsRoute
     }
+    '/api/relay-tefh/$': {
+      id: '/api/relay-tefh/$'
+      path: '/api/relay-tefh/$'
+      fullPath: '/api/relay-tefh/$'
+      preLoaderRoute: typeof ApiRelayTefhSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/logout': {
+      id: '/api/auth/logout'
+      path: '/api/auth/logout'
+      fullPath: '/api/auth/logout'
+      preLoaderRoute: typeof ApiAuthLogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/login': {
+      id: '/api/auth/login'
+      path: '/api/auth/login'
+      fullPath: '/api/auth/login'
+      preLoaderRoute: typeof ApiAuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_home/practice/sentence-practice': {
       id: '/_home/practice/sentence-practice'
       path: '/practice/sentence-practice'
@@ -1385,38 +1391,6 @@ declare module '@tanstack/solid-router' {
       fullPath: '/learn/$textbookId/$chapterSlug'
       preLoaderRoute: typeof HomeLearnTextbookIdChapterSlugRouteImport
       parentRoute: typeof HomeRoute
-    }
-  }
-}
-declare module '@tanstack/solid-start/server' {
-  interface ServerFileRoutesByPath {
-    '/api/upload-override': {
-      id: '/api/upload-override'
-      path: '/api/upload-override'
-      fullPath: '/api/upload-override'
-      preLoaderRoute: typeof ApiUploadOverrideServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/api/relay-tefh/$': {
-      id: '/api/relay-tefh/$'
-      path: '/api/relay-tefh/$'
-      fullPath: '/api/relay-tefh/$'
-      preLoaderRoute: typeof ApiRelayTefhSplatServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/api/auth/logout': {
-      id: '/api/auth/logout'
-      path: '/api/auth/logout'
-      fullPath: '/api/auth/logout'
-      preLoaderRoute: typeof ApiAuthLogoutServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/api/auth/login': {
-      id: '/api/auth/login'
-      path: '/api/auth/login'
-      fullPath: '/api/auth/login'
-      preLoaderRoute: typeof ApiAuthLoginServerRouteImport
-      parentRoute: typeof rootServerRouteImport
     }
   }
 }
@@ -1574,6 +1548,7 @@ const rootRouteChildren: RootRouteChildren = {
   LessonsRoute: LessonsRouteWithChildren,
   PricingRoute: PricingRoute,
   SettingsRoute: SettingsRoute,
+  ApiUploadOverrideRoute: ApiUploadOverrideRoute,
   ExternalResourcesResourceRoute: ExternalResourcesResourceRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,
   PracticeAllHiraganaQuizRoute: PracticeAllHiraganaQuizRoute,
@@ -1581,17 +1556,20 @@ const rootRouteChildren: RootRouteChildren = {
   PracticeDakutenHandakutenQuizRoute: PracticeDakutenHandakutenQuizRoute,
   PracticeHiraganaQuizRoute: PracticeHiraganaQuizRoute,
   PracticeReviewRoute: PracticeReviewRoute,
+  ApiAuthLoginRoute: ApiAuthLoginRoute,
+  ApiAuthLogoutRoute: ApiAuthLogoutRoute,
+  ApiRelayTefhSplatRoute: ApiRelayTefhSplatRoute,
   PracticeUserIDDeckIDRoute: PracticeUserIDDeckIDRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-const rootServerRouteChildren: RootServerRouteChildren = {
-  ApiUploadOverrideServerRoute: ApiUploadOverrideServerRoute,
-  ApiAuthLoginServerRoute: ApiAuthLoginServerRoute,
-  ApiAuthLogoutServerRoute: ApiAuthLogoutServerRoute,
-  ApiRelayTefhSplatServerRoute: ApiRelayTefhSplatServerRoute,
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/solid-start'
+declare module '@tanstack/solid-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
 }
-export const serverRouteTree = rootServerRouteImport
-  ._addFileChildren(rootServerRouteChildren)
-  ._addFileTypes<FileServerRouteTypes>()

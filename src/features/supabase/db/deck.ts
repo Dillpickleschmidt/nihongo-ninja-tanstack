@@ -20,7 +20,7 @@ import { dynamic_modules } from "@/data/dynamic_modules"
  * Creates a new user deck for the current user
  */
 export const createUserDeckServerFn = createServerFn({ method: "POST" })
-  .validator(
+  .inputValidator(
     (data: {
       deck_name: string
       deck_description?: string | null
@@ -58,7 +58,7 @@ export const createUserDeckServerFn = createServerFn({ method: "POST" })
  * Updates an existing user deck for the current user
  */
 export const updateUserDeckServerFn = createServerFn({ method: "POST" })
-  .validator(
+  .inputValidator(
     (data: {
       deck_id: number
       deck_name?: string
@@ -96,7 +96,7 @@ export const updateUserDeckServerFn = createServerFn({ method: "POST" })
  * Server function that imports a built-in deck with automatic folder creation
  */
 export const importBuiltInDeckServerFn = createServerFn({ method: "POST" })
-  .validator(
+  .inputValidator(
     (data: { builtInDeck: VocabBuiltInDeck; textbooks: [string, any][] }) =>
       data,
   )
@@ -190,7 +190,7 @@ export const importBuiltInDeckServerFn = createServerFn({ method: "POST" })
  * Creates a custom deck with vocabulary items in a single transaction
  */
 export const createCustomDeckServerFn = createServerFn({ method: "POST" })
-  .validator(
+  .inputValidator(
     (data: {
       deck_name: string
       deck_description?: string | null
@@ -254,7 +254,7 @@ export const createCustomDeckServerFn = createServerFn({ method: "POST" })
  * Gets the real deck_id for a built-in deck by original_deck_id
  */
 export const getDeckIdByOriginalIdServerFn = createServerFn({ method: "POST" })
-  .validator((data: { original_deck_id: string }) => data)
+  .inputValidator((data: { original_deck_id: string }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -290,7 +290,7 @@ export async function getVocabForDeck(
  * Gets deck information by deck_id for practice sessions
  */
 export const getDeckInfoServerFn = createServerFn({ method: "POST" })
-  .validator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: number }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()

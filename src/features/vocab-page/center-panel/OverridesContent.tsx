@@ -2,7 +2,12 @@ import { Show, createSignal } from "solid-js"
 import { createMediaQuery } from "@solid-primitives/media"
 import { StackEditor } from "./overrides/StackEditor"
 import type { Stack } from "@/features/resolvers/types"
-import { useSettings } from "@/context/SettingsContext"
+import { useMutation, useQueryClient } from "@tanstack/solid-query"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import {
+  userSettingsQueryOptions,
+  updateUserSettingsMutation,
+} from "@/queries/user-settings"
 import type { User } from "@supabase/supabase-js"
 import { FileUploadDialog } from "@/components/FileUploadDialog"
 import { Button } from "@/components/ui/button"
@@ -12,7 +17,13 @@ interface OverridesContentProps {
 }
 
 export function OverridesContent(props: OverridesContentProps) {
-  const { userPreferences, updateUserPreferences } = useSettings()
+  const queryClient = useQueryClient()
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(props.user?.id || null),
+  )
+  const updateMutation = useMutation(() =>
+    updateUserSettingsMutation(props.user?.id || null, queryClient),
+  )
 
   // Upload dialog state
   const [isVocabularyUploadOpen, setIsVocabularyUploadOpen] =
@@ -41,18 +52,18 @@ export function OverridesContent(props: OverridesContentProps) {
   }
 
   const handleVocabularyStacksChange = async (newStacks: Stack[]) => {
-    await updateUserPreferences({
+    await updateMutation.mutateAsync({
       "override-settings": {
-        ...userPreferences()["override-settings"],
+        ...settingsQuery.data["override-settings"],
         vocabularyOverrides: newStacks,
       },
     })
   }
 
   const handleKanjiStacksChange = async (newStacks: Stack[]) => {
-    await updateUserPreferences({
+    await updateMutation.mutateAsync({
       "override-settings": {
-        ...userPreferences()["override-settings"],
+        ...settingsQuery.data["override-settings"],
         kanjiOverrides: newStacks,
       },
     })
@@ -99,14 +110,14 @@ export function OverridesContent(props: OverridesContentProps) {
   // Upload handlers
   const handleVocabularyUpload = createUploadHandler(
     "vocabulary",
-    () => userPreferences()["override-settings"].vocabularyOverrides,
+    () => settingsQuery.data["override-settings"].vocabularyOverrides,
     handleVocabularyStacksChange,
     "Vocabulary",
   )
 
   const handleKanjiUpload = createUploadHandler(
     "kanji",
-    () => userPreferences()["override-settings"].kanjiOverrides,
+    () => settingsQuery.data["override-settings"].kanjiOverrides,
     handleKanjiStacksChange,
     "Kanji",
   )
@@ -144,9 +155,7 @@ export function OverridesContent(props: OverridesContentProps) {
           <div class="border-card-foreground/70 bg-background/40 flex flex-col rounded-lg border p-6 backdrop-blur-sm">
             <StackEditor
               title="Vocabulary Overrides"
-              stacks={
-                userPreferences()["override-settings"].vocabularyOverrides
-              }
+              stacks={settingsQuery.data["override-settings"].vocabularyOverrides}
               onChange={handleVocabularyStacksChange}
               onAddNew={handleAddVocabularyStack}
             />
@@ -155,7 +164,7 @@ export function OverridesContent(props: OverridesContentProps) {
           <div class="border-card-foreground/70 bg-background/40 flex flex-col rounded-lg border p-6 backdrop-blur-sm">
             <StackEditor
               title="Kanji Overrides"
-              stacks={userPreferences()["override-settings"].kanjiOverrides}
+              stacks={settingsQuery.data["override-settings"].kanjiOverrides}
               onChange={handleKanjiStacksChange}
               onAddNew={handleAddKanjiStack}
             />

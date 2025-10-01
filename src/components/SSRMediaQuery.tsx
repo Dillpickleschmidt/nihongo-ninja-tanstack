@@ -2,7 +2,10 @@
 import { createMediaQuery } from "@solid-primitives/media"
 import { Show, type ParentProps } from "solid-js"
 import { isServer } from "solid-js/web"
-import { getDeviceUISettingsCookie } from "@/features/main-cookies/server/cookie-utils"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { userSettingsQueryOptions } from "@/queries/user-settings"
+import { useRouteContext } from "@tanstack/solid-router"
+import { Route as RootRoute } from "@/routes/__root"
 
 interface SSRMediaQueryProps extends ParentProps {
   showFrom?: "sm" | "md" | "lg" | "xl" | "2xl"
@@ -18,18 +21,10 @@ const breakpointMap = {
 }
 
 export function SSRMediaQuery(props: SSRMediaQueryProps) {
-  const getSSRClasses = () => {
-    const classes: string[] = []
-    if (props.showFrom) {
-      classes.push(`hidden ${props.showFrom}:block`)
-    } else {
-      classes.push("block")
-    }
-    if (props.hideFrom) {
-      classes.push(`${props.hideFrom}:hidden`)
-    }
-    return classes.join(" ")
-  }
+  const context = useRouteContext({ from: RootRoute.id })
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(context().user?.id || null),
+  )
 
   // Client-side only logic
   const ClientSideRender = () => {
@@ -53,10 +48,9 @@ export function SSRMediaQuery(props: SSRMediaQueryProps) {
     return <Show when={mediaQuery()}>{props.children}</Show>
   }
 
-  // For SSR, use cookie to determine device type
+  // For SSR, use device settings from query
   if (isServer) {
-    const deviceUISettings = getDeviceUISettingsCookie()
-    const cookieDeviceType = deviceUISettings["device-type"]
+    const cookieDeviceType = settingsQuery.data["device-type"]
 
     // Determine screen width based on cookie (or default to mobile for first visit)
     const isMobile = cookieDeviceType === "mobile" || cookieDeviceType === null

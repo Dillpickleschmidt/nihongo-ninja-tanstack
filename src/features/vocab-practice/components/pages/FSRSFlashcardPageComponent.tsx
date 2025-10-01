@@ -10,7 +10,7 @@ import {
 import { useVocabPracticeContext } from "../../context/VocabPracticeContext"
 import ProgressHeader from "../ProgressHeader"
 import { Rating, Grade } from "ts-fsrs"
-import { cn } from "@/utils/util"
+import { cn } from "@/utils"
 import { KanjiAnimation } from "@/components/KanjiAnimation"
 import { KanjiAnimationControls } from "@/components/KanjiAnimationControls"
 import { processSvgString } from "@/utils/svg-processor"

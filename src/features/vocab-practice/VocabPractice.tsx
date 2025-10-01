@@ -41,13 +41,13 @@ export default function VocabPractice(props: VocabPracticeProps) {
         hierarchySvgs={props.hierarchySvgs}
         moduleVocabulary={props.moduleVocabulary}
         mode={props.mode}
+        user={props.user || null}
       />
     </VocabPracticeContextProvider>
   )
 }
 
-type VocabPracticeContentProps = Omit<VocabPracticeProps, "user">
-
+type VocabPracticeContentProps = VocabPracticeProps
 function VocabPracticeContent(props: VocabPracticeContentProps) {
   const { uiState } = useVocabPracticeContext()
 
@@ -63,6 +63,7 @@ function VocabPracticeContent(props: VocabPracticeContentProps) {
           hierarchySvgs={props.hierarchySvgs}
           moduleVocabulary={props.moduleVocabulary}
           mode={props.mode}
+          userId={props.user?.id || null}
         />
       </Match>
       <Match when={uiState.currentPage === "practice"}>

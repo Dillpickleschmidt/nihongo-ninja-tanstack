@@ -1,7 +1,6 @@
 // features/learn-page/components/layout/LearnPageHeader.tsx
 import { Link, useNavigate } from "@tanstack/solid-router"
 import { createSignal, Show } from "solid-js"
-import { useSettings } from "@/context/SettingsContext"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Sheet,
@@ -27,7 +26,6 @@ interface LearnPageHeaderProps {
 export function LearnPageHeader(props: LearnPageHeaderProps) {
   const navigate = useNavigate()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
-  const { updateUserPreferences } = useSettings()
   const loaderData = Route.useLoaderData()
 
   const handleDeckChange = async (
@@ -35,12 +33,6 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
     deck: { slug: string; title: string },
   ) => {
     try {
-      // Update preferences first via SWR system
-      await updateUserPreferences({
-        "active-textbook": textbookId,
-        "active-deck": deck.slug,
-      })
-
       // Then navigate to new route
       navigate({
         to: "/learn/$textbookId/$chapterSlug",
