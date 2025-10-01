@@ -2,6 +2,7 @@
 import { defineConfig } from "vite"
 import tsConfigPaths from "vite-tsconfig-paths"
 import { tanstackStart } from "@tanstack/solid-start/plugin/vite"
+import { nitroV2Plugin } from "@tanstack/nitro-v2-vite-plugin"
 import viteSolid from "vite-plugin-solid"
 import lucidePreprocess from "vite-plugin-lucide-preprocess"
 import { visualizer } from "rollup-plugin-visualizer"
@@ -16,9 +17,10 @@ export default defineConfig({
   plugins: [
     tsConfigPaths(),
     lucidePreprocess(),
-    tanstackStart({
-      target: "aws-lambda",
-      customViteSolidPlugin: true,
+    tanstackStart(),
+    nitroV2Plugin({
+      preset: "aws-lambda",
+      compatibilityDate: "2025-10-01",
     }),
     viteSolid({ ssr: true }),
     process.env.ANALYZE
