@@ -12,7 +12,7 @@ import { getDeckBySlug, getLessons } from "@/data/utils/core"
 import type { UseQueryResult } from "@tanstack/solid-query"
 
 interface LearningPathListProps {
-  completedModulesQuery: UseQueryResult<string[]>
+  completedModulesQuery: UseQueryResult<ModuleCompletion[]>
 }
 
 export function LearningPathList(props: LearningPathListProps) {
@@ -27,9 +27,10 @@ export function LearningPathList(props: LearningPathListProps) {
 }
 
 function LessonsList(props: {
-  completedModulesQuery: UseQueryResult<string[]>
+  completedModulesQuery: UseQueryResult<ModuleCompletion[]>
 }) {
-  const completedModulesSet = () => new Set(props.completedModulesQuery.data)
+  const completedModulesSet = () =>
+    new Set(props.completedModulesQuery.data?.map((c) => c.module_path))
   const loaderData = Route.useLoaderData()
   const activeDeck = () =>
     getDeckBySlug(loaderData().textbookId, loaderData().chapterSlug)

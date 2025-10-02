@@ -194,28 +194,91 @@ export function getModuleIcon(moduleType: string) {
   return iconComponents[moduleType] || BookOpen
 }
 
+const MODULE_STYLES = {
+  lesson: {
+    text: "text-green-600 dark:text-green-500",
+    bg: "bg-green-600 dark:bg-green-500",
+  },
+  worksheet: {
+    text: "text-teal-500 dark:text-teal-400",
+    bg: "bg-teal-500 dark:bg-teal-400",
+  },
+  "practice-sentence": {
+    text: "text-yellow-600 dark:text-yellow-500 saturate-[75%]",
+    bg: "bg-yellow-600 dark:bg-yellow-500 saturate-[75%]",
+  },
+  "culture-note": {
+    text: "text-pink-500 dark:text-pink-400 saturate-[75%]",
+    bg: "bg-pink-500 dark:bg-pink-400 saturate-[75%]",
+  },
+  vocab: {
+    text: "text-sky-500 dark:text-sky-400 saturate-[75%]",
+    bg: "bg-sky-500 dark:bg-sky-400 saturate-[75%]",
+  },
+  "vocab-practice": {
+    text: "text-orange-600 dark:text-orange-500",
+    bg: "bg-orange-600 dark:bg-orange-500",
+  },
+  "conjugation-practice": {
+    text: "text-teal-500 dark:text-teal-400",
+    bg: "bg-teal-500 dark:bg-teal-400",
+  },
+  "counter-practice": {
+    text: "text-green-600 dark:text-green-500",
+    bg: "bg-green-600 dark:bg-green-500",
+  },
+  game: {
+    text: "text-red-600 dark:text-red-500",
+    bg: "bg-red-600 dark:bg-red-500",
+  },
+  video: {
+    text: "text-purple-500 dark:text-purple-400",
+    bg: "bg-purple-500 dark:bg-purple-400",
+  },
+  audio: {
+    text: "text-purple-500 dark:text-purple-400",
+    bg: "bg-purple-500 dark:bg-purple-400",
+  },
+  "grammar-notes": {
+    text: "text-red-600 dark:text-red-500 opacity-80",
+    bg: "bg-red-600 dark:bg-red-500 opacity-80",
+  },
+  reading: {
+    text: "text-teal-500 dark:text-teal-400",
+    bg: "bg-teal-500 dark:bg-teal-400",
+  },
+  "vocab-list": {
+    text: "text-sky-500 dark:text-sky-400 saturate-[75%]",
+    bg: "bg-sky-500 dark:bg-sky-400 saturate-[75%]",
+  },
+  "vocab-test": {
+    text: "text-yellow-600 dark:text-yellow-500 saturate-[75%]",
+    bg: "bg-yellow-600 dark:bg-yellow-500 saturate-[75%]",
+  },
+  kanji: {
+    text: "text-indigo-600 dark:text-indigo-400",
+    bg: "bg-indigo-600 dark:bg-indigo-400",
+  },
+  "listening-material": {
+    text: "text-purple-500 dark:text-purple-400",
+    bg: "bg-purple-500 dark:bg-purple-400",
+  },
+  misc: {
+    text: "text-gray-600 dark:text-gray-500",
+    bg: "bg-gray-600 dark:bg-gray-500",
+  },
+}
+
+function getModuleStyle(moduleType: string) {
+  return MODULE_STYLES[moduleType] || MODULE_STYLES.misc
+}
+
 export function getModuleIconClasses(moduleType: string) {
-  const iconClasses = {
-    lesson: "text-green-600 dark:text-green-500",
-    worksheet: "text-teal-500 dark:text-teal-400",
-    "practice-sentence": "text-yellow-600 dark:text-yellow-500 saturate-[75%]",
-    "culture-note": "text-pink-500 dark:text-pink-400 saturate-[75%]",
-    vocab: "text-sky-500 dark:text-sky-400 saturate-[75%]",
-    "vocab-practice": "text-orange-600 dark:text-orange-500",
-    "conjugation-practice": "text-teal-500 dark:text-teal-400",
-    "counter-practice": "text-green-600 dark:text-green-500",
-    game: "text-red-600 dark:text-red-500",
-    video: "text-purple-500 dark:text-purple-400",
-    audio: "text-purple-500 dark:text-purple-400",
-    "grammar-notes": "text-red-600 dark:text-red-500 opacity-80",
-    reading: "text-teal-500 dark:text-teal-400",
-    "vocab-list": "text-sky-500 dark:text-sky-400 saturate-[75%]",
-    "vocab-test": "text-yellow-600 dark:text-yellow-500 saturate-[75%]",
-    kanji: "text-indigo-600 dark:text-indigo-400",
-    "listening-material": "text-purple-500 dark:text-purple-400",
-    misc: "text-gray-600 dark:text-gray-500",
-  }
-  return iconClasses[moduleType] || "text-gray-600 dark:text-gray-500"
+  return getModuleStyle(moduleType).text
+}
+
+export function getModuleCircleClasses(moduleType: string) {
+  return getModuleStyle(moduleType).bg
 }
 
 function getModuleGradient(moduleType: string) {

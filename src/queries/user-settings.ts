@@ -100,6 +100,8 @@ export const updateUserSettingsMutation = (
             "completed-tours": newSettings["completed-tours"],
             "override-settings": newSettings["override-settings"],
             "conjugation-practice": newSettings["conjugation-practice"],
+            "dismissed-position-prompts":
+              newSettings["dismissed-position-prompts"],
             timestamp: Date.now(),
           },
         })

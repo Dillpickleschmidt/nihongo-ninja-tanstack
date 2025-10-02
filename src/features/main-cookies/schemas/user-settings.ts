@@ -131,6 +131,8 @@ export const UserSettingsSchema = z.object({
   // --- DEVICE-SPECIFIC SETTINGS (cookie only, no DB sync) ---
   routes: RouteSettingsSchema.default(RouteSettingsSchema.parse({})),
   tour: TourSettingsSchema.default(TourSettingsSchema.parse({})),
+  // Map of textbook IDs to dismissed prompt module IDs: { "genki_1": "module-id", "genki_2": "module-id" }
+  "dismissed-position-prompts": z.record(z.string(), z.string()).default({}),
   "device-type": z.enum(["mobile", "desktop"]).nullable().default(null),
 })
 

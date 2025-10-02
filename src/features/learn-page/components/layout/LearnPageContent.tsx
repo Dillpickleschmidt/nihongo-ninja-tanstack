@@ -65,7 +65,12 @@ export function LearnPageContent() {
               <ChapterContentArea />
             </div>
             <div class="relative h-[calc(100vh-146px)] w-[20%] overflow-y-auto pt-6 pr-4">
-              <RightSidebar variant="desktop" />
+              <RightSidebar
+                variant="desktop"
+                userId={loaderData().user?.id}
+                textbookId={loaderData().textbookId}
+                learningPathItems={loaderData().deck.learning_path_items}
+              />
             </div>
           </div>
           <div class="pb-8" />
