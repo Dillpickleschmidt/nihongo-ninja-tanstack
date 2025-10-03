@@ -9,6 +9,7 @@ import { ChapterContentArea } from "../content/ChapterContentArea"
 import { MobileContentRenderer } from "./MobileContentRenderer"
 import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
 import { getDeckBySlug } from "@/data/utils/core"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
 
 export type MobileContentView =
   | "learning-path"
@@ -17,7 +18,11 @@ export type MobileContentView =
   | "your-struggles"
   | "your-history"
 
-export function LearnPageContent() {
+interface LearnPageContentProps {
+  upcomingModulesQuery: ReturnType<typeof useCustomQuery>
+}
+
+export function LearnPageContent(props: LearnPageContentProps) {
   const [mobileContentView, setMobileContentView] =
     createSignal<MobileContentView>("learning-path")
   const loaderData = Route.useLoaderData()
@@ -68,8 +73,7 @@ export function LearnPageContent() {
               <RightSidebar
                 variant="desktop"
                 userId={loaderData().user?.id}
-                textbookId={loaderData().textbookId}
-                learningPathItems={loaderData().deck.learning_path_items}
+                upcomingModulesQuery={props.upcomingModulesQuery}
               />
             </div>
           </div>

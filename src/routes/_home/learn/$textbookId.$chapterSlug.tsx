@@ -10,6 +10,7 @@ import {
   resourceThumbnailQueryOptions,
   shouldPromptPositionUpdateQueryOptions,
   userTextbookProgressQueryOptions,
+  upcomingModulesQueryOptions,
 } from "@/queries/learn-page-queries"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
 import {
@@ -25,6 +26,7 @@ import { updateUserTextbookProgress } from "@/features/supabase/db/user-textbook
 import {
   shouldUpdatePosition,
   getModuleDistance,
+  getUpcomingModules,
 } from "@/features/learn-page/utils/learning-position-detector"
 
 export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
@@ -50,6 +52,15 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
     // Prefetch queries without awaiting (for streaming SSR)
     queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
     queryClient.prefetchQuery(dueFSRSCardsCountQueryOptions(user?.id || null))
+    queryClient.prefetchQuery(
+      upcomingModulesQueryOptions(
+        user?.id || null,
+        textbookId as TextbookIDEnum,
+        deck.learning_path_items,
+        null,
+        userSettings["upcoming-modules"]?.[textbookId as TextbookIDEnum],
+      ),
+    )
 
     const vocabHierarchyData = await queryClient.ensureQueryData(
       vocabHierarchyQueryOptions(
@@ -109,6 +120,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       struggles: mockStruggles,
       historyItems: mockHistoryItems,
       externalResources,
+      userSettings,
     }
   },
   component: RouteComponent,
@@ -131,19 +143,47 @@ function RouteComponent() {
   const progressQuery = useCustomQuery(() =>
     userTextbookProgressQueryOptions(userId, textbookId),
   )
+  const upcomingModulesQuery = useCustomQuery(() =>
+    upcomingModulesQueryOptions(
+      userId,
+      textbookId,
+      deck.learning_path_items,
+      progressQuery.data?.current_module_id || null,
+      settingsQuery.data?.["upcoming-modules"]?.[textbookId],
+    ),
+  )
 
   const updateMutation = useMutation(() =>
     updateUserSettingsMutation(userId, queryClient),
   )
+
+  // Helper to update upcoming modules cookie when position changes
+  const updateUpcomingModulesCookie = (newPosition: string) => {
+    const currentModule = deck.learning_path_items.find(
+      (item) => item.id === newPosition,
+    )
+    const upcoming = getUpcomingModules(newPosition, deck.learning_path_items, 5)
+    const withCurrent = currentModule ? [currentModule, ...upcoming] : upcoming
+    const moduleIds = withCurrent.map((item) => item.id)
+
+    updateMutation.mutate({
+      "upcoming-modules": {
+        ...settingsQuery.data?.["upcoming-modules"],
+        [textbookId]: moduleIds,
+      },
+    })
+  }
 
   // Shared invalidation helper for all position updates
   const invalidatePositionQueries = () => {
     queryClient.invalidateQueries({
       queryKey: ["textbook-progress", userId, textbookId],
     })
-    // Invalidate prompt queries for this user/textbook only (more targeted than invalidating all)
     queryClient.invalidateQueries({
       queryKey: ["should-prompt-position-update", userId, textbookId],
+    })
+    queryClient.invalidateQueries({
+      queryKey: ["upcoming-modules", userId, textbookId],
     })
   }
 
@@ -179,6 +219,7 @@ function RouteComponent() {
     },
     onSuccess: (updatedPosition) => {
       if (updatedPosition) {
+        updateUpcomingModulesCookie(updatedPosition)
         invalidatePositionQueries()
       }
     },
@@ -258,16 +299,12 @@ function RouteComponent() {
     const suggestedPosition = promptQuery.data?.suggestedPosition
 
     if (userId && suggestedPosition) {
-      // Mark this suggestion as handled to prevent re-showing
       setHandledSuggestions((prev) => new Set(prev).add(suggestedPosition))
-
-      // Close modal immediately
       setShowPositionModal(false)
 
-      // Update DB
       await updateUserTextbookProgress(userId, textbookId, suggestedPosition)
 
-      // Invalidate queries to refetch with new position
+      updateUpcomingModulesCookie(suggestedPosition)
       invalidatePositionQueries()
     }
   }
@@ -291,7 +328,7 @@ function RouteComponent() {
 
   return (
     <>
-      <LearnPageContent />
+      <LearnPageContent upcomingModulesQuery={upcomingModulesQuery} />
       <Show when={promptQuery.data?.suggestedPosition}>
         <PositionUpdateModal
           open={showPositionModal()}

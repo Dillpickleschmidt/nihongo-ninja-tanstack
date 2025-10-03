@@ -7,7 +7,7 @@ import { getVocabHierarchy } from "@/features/resolvers/kanji"
 import { getUserProgress } from "@/features/supabase/db/fsrs"
 import { getUserTextbookProgress } from "@/features/supabase/db/user-textbook-progress"
 import { getUserModuleCompletions } from "@/features/supabase/db/module-completions"
-import { detectSequentialJump } from "@/features/learn-page/utils/learning-position-detector"
+import { detectSequentialJump, getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
 import { getVocabularyForModule } from "@/data/utils/vocab"
 import type {
   VocabularyItem,
@@ -167,3 +167,39 @@ export const shouldPromptPositionUpdateQueryOptions = (
     },
     placeholderData: { shouldPrompt: false, suggestedPosition: null },
   })
+
+type ModuleWithCurrent = LearningPathItem & { isCurrent?: boolean }
+
+export const upcomingModulesQueryOptions = (
+  userId: string | null,
+  textbookId: TextbookIDEnum,
+  learningPathItems: LearningPathItem[],
+  currentPosition: string | null,
+  cachedModuleIds?: string[],
+) => {
+  const initialData = cachedModuleIds
+    ? cachedModuleIds
+        .map((id, index) => {
+          const found = learningPathItems.find((item) => item.id === id)
+          return found ? { ...found, isCurrent: index === 0 } : null
+        })
+        .filter((item): item is ModuleWithCurrent => item !== null)
+    : undefined
+
+  return queryOptions({
+    queryKey: ["upcoming-modules", userId, textbookId, currentPosition],
+    queryFn: async (): Promise<ModuleWithCurrent[]> => {
+      if (!currentPosition) return learningPathItems.slice(0, 6)
+
+      const currentModule = learningPathItems.find(
+        (item) => item.id === currentPosition,
+      )
+      const upcoming = getUpcomingModules(currentPosition, learningPathItems, 5)
+
+      return currentModule
+        ? [{ ...currentModule, isCurrent: true }, ...upcoming]
+        : upcoming
+    },
+    initialData,
+  })
+}

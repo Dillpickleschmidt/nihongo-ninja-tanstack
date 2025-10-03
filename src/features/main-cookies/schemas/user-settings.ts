@@ -133,6 +133,8 @@ export const UserSettingsSchema = z.object({
   tour: TourSettingsSchema.default(TourSettingsSchema.parse({})),
   // Map of textbook IDs to dismissed prompt module IDs: { "genki_1": "module-id", "genki_2": "module-id" }
   "dismissed-position-prompts": z.record(z.string(), z.string()).default({}),
+  // Map of textbook IDs to upcoming module IDs: { "genki_1": ["module-1", "module-2", ...] }
+  "upcoming-modules": z.record(z.string(), z.array(z.string())).default({}),
   "device-type": z.enum(["mobile", "desktop"]).nullable().default(null),
 })
 

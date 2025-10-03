@@ -1,28 +1,20 @@
 import { Show, For } from "solid-js"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import {
-  userTextbookProgressQueryOptions,
-  completedModulesQueryOptions,
-} from "@/queries/learn-page-queries"
-import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
+import { completedModulesQueryOptions } from "@/queries/learn-page-queries"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import { static_modules } from "@/data/static_modules"
-import type { TextbookIDEnum, LearningPathItem } from "@/data/types"
+import type { LearningPathItem } from "@/data/types"
 import { cn } from "@/utils"
 import { getModuleCircleClasses } from "@/features/learn-page/utils/loader-helpers"
 
 interface UpcomingLessonsContentProps {
   userId: string | null
-  textbookId: TextbookIDEnum
-  learningPathItems: LearningPathItem[]
+  upcomingModulesQuery: ReturnType<typeof useCustomQuery>
 }
 
 type ModuleWithCurrent = LearningPathItem & { isCurrent?: boolean }
 
 export function UpcomingLessonsContent(props: UpcomingLessonsContentProps) {
-  const progressQuery = useCustomQuery(() =>
-    userTextbookProgressQueryOptions(props.userId, props.textbookId),
-  )
   const completionsQuery = useCustomQuery(() =>
     completedModulesQueryOptions(props.userId),
   )
@@ -30,25 +22,8 @@ export function UpcomingLessonsContent(props: UpcomingLessonsContentProps) {
   const isCompleted = (moduleId: string) =>
     completionsQuery.data?.some((c) => c.module_path === moduleId)
 
-  const modulesWithCurrent = (): ModuleWithCurrent[] => {
-    const currentPosition = progressQuery.data?.current_module_id
-    if (!currentPosition) return props.learningPathItems.slice(0, 6)
-
-    const currentModule = props.learningPathItems.find(
-      (item) => item.id === currentPosition,
-    )
-    const upcoming = getUpcomingModules(
-      currentPosition,
-      props.learningPathItems,
-      5,
-    )
-    return currentModule
-      ? [{ ...currentModule, isCurrent: true }, ...upcoming]
-      : upcoming
-  }
-
   const hasCurrentItem = () => {
-    const first = modulesWithCurrent()[0]
+    const first = props.upcomingModulesQuery.data?.[0]
     return first?.isCurrent || isCompleted(first?.id)
   }
 
@@ -75,7 +50,10 @@ export function UpcomingLessonsContent(props: UpcomingLessonsContentProps) {
       <h3 class="text-lg font-semibold">Upcoming Lessons</h3>
 
       <Show
-        when={!progressQuery.isLoading && modulesWithCurrent().length > 0}
+        when={
+          !props.upcomingModulesQuery.isLoading &&
+          props.upcomingModulesQuery.data?.length
+        }
         fallback={
           <p class="text-muted-foreground text-sm">
             Complete a lesson to see upcoming modules
@@ -86,7 +64,7 @@ export function UpcomingLessonsContent(props: UpcomingLessonsContentProps) {
           {(() => {
             const firstUpcomingIndex = hasCurrentItem() ? 1 : 0
             return (
-              <For each={modulesWithCurrent()}>
+              <For each={props.upcomingModulesQuery.data || []}>
                 {(item, index) => {
                   const moduleInfo = getModuleInfo(item.id, item)
                   const circleClasses = getModuleCircleClasses(moduleInfo.type)

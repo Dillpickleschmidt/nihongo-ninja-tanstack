@@ -3,13 +3,12 @@ import { Show } from "solid-js"
 import { HistoryContent } from "../content/HistoryContent"
 import { StrugglesContent } from "../content/StrugglesContent"
 import { UpcomingLessonsContent } from "../content/UpcomingLessonsContent"
-import type { TextbookIDEnum, LearningPathItem } from "@/data/types"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
 
 interface RightSidebarProps {
   variant: "mobile" | "desktop"
   userId?: string | null
-  textbookId?: TextbookIDEnum
-  learningPathItems?: LearningPathItem[]
+  upcomingModulesQuery?: ReturnType<typeof useCustomQuery>
 }
 
 export function RightSidebar(props: RightSidebarProps) {
@@ -24,7 +23,7 @@ export function RightSidebar(props: RightSidebarProps) {
       class="flex h-full flex-col space-y-6 overflow-x-hidden pb-3"
     >
       <Show
-        when={props.userId && props.textbookId && props.learningPathItems}
+        when={props.userId && props.upcomingModulesQuery}
         fallback={
           <h3 class="text-muted-foreground text-center">
             Your review history here, coming soon.
@@ -33,8 +32,7 @@ export function RightSidebar(props: RightSidebarProps) {
       >
         <UpcomingLessonsContent
           userId={props.userId!}
-          textbookId={props.textbookId!}
-          learningPathItems={props.learningPathItems!}
+          upcomingModulesQuery={props.upcomingModulesQuery!}
         />
       </Show>
     </div>
