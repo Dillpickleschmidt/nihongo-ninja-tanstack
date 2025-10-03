@@ -72,7 +72,7 @@ export function ResourceCardContent(props: {
   thumbnailUrl: (() => string | null | undefined) | string | null | undefined
   variant: "desktop" | "mobile"
 }) {
-  const Icon = getResourceIconComponent(props.resource.resource_type)
+  const Icon = getResourceIconComponent(props.resource.lesson_type)
 
   // Normalize thumbnailUrl to always be a function
   const getThumbnailUrl = () =>
@@ -114,7 +114,7 @@ export function ResourceCardContent(props: {
           </h3>
           <div class="mt-1 flex items-center gap-2">
             <span class="text-muted-foreground text-sm capitalize">
-              {props.resource.resource_type.replace("_", " ")}
+              {props.resource.lesson_type.replace("_", " ")}
             </span>
             <span
               class={cn(
@@ -166,7 +166,7 @@ export function ResourceCardContent(props: {
           </h3>
           <div class="flex items-center gap-2">
             <span class="rounded-full bg-neutral-500 px-2 py-1 text-[11px] text-white/80 capitalize dark:bg-neutral-600">
-              {props.resource.resource_type.replace("_", " ")}
+              {props.resource.lesson_type.replace("_", " ")}
             </span>
             <span
               class={cn(

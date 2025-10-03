@@ -8,7 +8,7 @@ export const external_resources: ExternalResourceCollection = {
     external_url: "youtube.com/watch?v=po_6rnpP5mI",
     creator_id: "japanese_super_immersion",
     difficulty_rating: "easy",
-    resource_type: "video",
+    lesson_type: "video",
     prerequisite_module_ids: ["greetings"],
   },
   "common-expressions-japanese-super-immersion": {
@@ -18,7 +18,7 @@ export const external_resources: ExternalResourceCollection = {
     external_url: "youtube.com/watch?v=4PBR4w47wsQ",
     creator_id: "japanese_super_immersion",
     difficulty_rating: "easy",
-    resource_type: "video",
+    lesson_type: "video",
     prerequisite_module_ids: ["common-expressions"],
   },
   res_jpod101_ch1_greetings_video: {
@@ -28,7 +28,7 @@ export const external_resources: ExternalResourceCollection = {
     creator_id: "JapanesePod101",
     prerequisite_vocab_keys: ["おはようございます", "こんにちは"],
     difficulty_rating: "medium",
-    resource_type: "video",
+    lesson_type: "video",
     daily_prog_amount: 7,
   },
 
@@ -38,7 +38,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-1/kikusasaizu-1-1",
     external_url: "https://h5p.cee.sfu.ca/h5p/embed/2319",
     creator_id: "kikusasaizu",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
   "japanese-super-immersion-nice-to-meet-you": {
@@ -47,7 +47,7 @@ export const external_resources: ExternalResourceCollection = {
       "/external-resources/chapter-1/japanese-super-immersion-nice-to-meet-you",
     external_url: "youtube.com/watch?v=XBKeW87xsKc",
     creator_id: "japanese_super_immersion",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
   "my-kikitori-conversation-1": {
@@ -55,7 +55,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-1/my-kikitori-conversation-1",
     external_url: "mykikitori.com/lesson-1",
     creator_id: "mykikitori",
-    resource_type: "listening_practice",
+    lesson_type: "listening_practice",
     difficulty_rating: "easy",
   },
   "my-kikitori-conversation-2": {
@@ -63,7 +63,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-1/my-kikitori-conversation-2",
     external_url: "mykikitori.com/lesson-1",
     creator_id: "mykikitori",
-    resource_type: "listening_practice",
+    lesson_type: "listening_practice",
     difficulty_rating: "easy",
   },
   "kikusasaizu-1-3": {
@@ -71,7 +71,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-1/kikusasaizu-1-3",
     external_url: "youtube.com/watch?v=VKETvr5uXsk",
     creator_id: "kikusasaizu",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
   "my-kikitori-conversation-3": {
@@ -79,7 +79,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-1/my-kikitori-conversation-3",
     external_url: "mykikitori.com/lesson-1",
     creator_id: "mykikitori",
-    resource_type: "listening_practice",
+    lesson_type: "listening_practice",
     difficulty_rating: "easy",
   },
 
@@ -89,7 +89,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-2/kikusasaizu-2-1",
     external_url: "https://h5p.cee.sfu.ca/h5p/embed/2358",
     creator_id: "kikusasaizu",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
   "kikusasaizu-2-2": {
@@ -97,7 +97,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-2/kikusasaizu-2-2",
     external_url: "youtube.com/watch?v=EdkEWPldx28",
     creator_id: "kikusasaizu",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
   "kudasai-vs-onegaishimasu": {
@@ -105,7 +105,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-2/kudasai-vs-onegaishimasu",
     external_url: "youtube.com/watch?v=sVCeecJw8GM",
     creator_id: "nihongodekita",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
   "my-kikitori-at-a-cafe": {
@@ -113,7 +113,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-2/my-kikitori-at-a-cafe",
     external_url: "mykikitori.com/lesson-2",
     creator_id: "mykikitori",
-    resource_type: "listening_practice",
+    lesson_type: "listening_practice",
     difficulty_rating: "easy",
   },
   "unlearning-japanese": {
@@ -121,7 +121,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-2/unlearning-japanese",
     external_url: "youtube.com/watch?v=BH9n_fNA7Z8",
     creator_id: "realrealjapan",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
   "my-kikitori-at-a-store": {
@@ -129,7 +129,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-2/my-kikitori-at-a-store",
     external_url: "mykikitori.com/lesson-2",
     creator_id: "mykikitori",
-    resource_type: "listening_practice",
+    lesson_type: "listening_practice",
     difficulty_rating: "easy",
   },
 
@@ -139,7 +139,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-3/your-japanese-voice",
     external_url: "youtube.com/watch?v=Phr8z5X5Sf4",
     creator_id: "dogen",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
   "kikusasaizu-3-2": {
@@ -147,7 +147,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-3/kikusasaizu-3-2",
     external_url: "https://h5p.cee.sfu.ca/h5p/embed/2327",
     creator_id: "kikusasaizu",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
   "kikusasaizu-3-3": {
@@ -155,7 +155,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-3/kikusasaizu-3-3",
     external_url: "https://h5p.cee.sfu.ca/h5p/embed/2332",
     creator_id: "kikusasaizu",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
   "my-kikitori-do-you-want-to-go-to-tokyo": {
@@ -164,7 +164,7 @@ export const external_resources: ExternalResourceCollection = {
       "/external-resources/chapter-3/my-kikitori-do-you-want-to-go-to-tokyo",
     external_url: "mykikitori.com/lesson-3",
     creator_id: "mykikitori",
-    resource_type: "listening_practice",
+    lesson_type: "listening_practice",
     difficulty_rating: "easy",
   },
   aizuchi: {
@@ -172,7 +172,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-3/aizuchi",
     external_url: "youtube.com/watch?v=r0io_xgmcSs",
     creator_id: "kaname_naito",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
   "kikusasaizu-3-1": {
@@ -180,7 +180,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-3/kikusasaizu-3-1",
     external_url: "https://h5p.cee.sfu.ca/h5p/embed/1978",
     creator_id: "kikusasaizu",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
   "my-kikitori-campus-interview-2": {
@@ -189,7 +189,7 @@ export const external_resources: ExternalResourceCollection = {
       "/external-resources/chapter-3/my-kikitori-campus-interview-2",
     external_url: "mykikitori.com/lesson-3",
     creator_id: "mykikitori",
-    resource_type: "listening_practice",
+    lesson_type: "listening_practice",
     difficulty_rating: "easy",
   },
   "long-form-conversation-immersion": {
@@ -198,7 +198,7 @@ export const external_resources: ExternalResourceCollection = {
       "/external-resources/chapter-3/long-form-conversation-immersion",
     external_url: "youtube.com/watch?v=IJEn-9nAFQE",
     creator_id: "japanese_super_immersion",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "medium",
   },
 
@@ -208,7 +208,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-4/saying-no-naturally",
     external_url: "youtube.com/watch?v=J9JdP6pA5LY",
     creator_id: "that_japanese_man_yuta",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
   "immersion-with-yuta": {
@@ -216,7 +216,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-4/immersion-with-yuta",
     external_url: "youtube.com/watch?v=PFJZdvrghgI",
     creator_id: "nihongo_learning",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "medium",
   },
   "beginner-guide-to-konbini": {
@@ -224,7 +224,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-4/beginner-guide-to-konbini",
     external_url: "youtube.com/watch?v=bPP3-GyFpYs",
     creator_id: "kaname_naito",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
 
@@ -234,7 +234,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-5/sports",
     external_url: "youtube.com/watch?v=MYuNYVhz3Gs",
     creator_id: "nihongo_learning",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
 
@@ -244,7 +244,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-6/why-your-speaking-sucks",
     external_url: "youtube.com/watch?v=xLqnAI6mqDo",
     creator_id: "tokini_andy",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "medium",
   },
 
@@ -258,7 +258,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-8/how-verbs-work",
     external_url: "youtube.com/watch?v=cGA6Tj9_lSg",
     creator_id: "jozu_juls",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "medium",
   },
 
@@ -268,7 +268,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-9/colors",
     external_url: "youtube.com/watch?v=7XKDgSyu2yk",
     creator_id: "nihongo_learning",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
 
@@ -278,7 +278,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-10/comparing-sizes",
     external_url: "youtube.com/watch?v=vD3_BO4KAdM",
     creator_id: "nihongo_learning",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "medium",
   },
   emotions: {
@@ -286,7 +286,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-10/emotions",
     external_url: "youtube.com/watch?v=nmmj3N3RnqY",
     creator_id: "nihongo_learning",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "easy",
   },
 
@@ -308,7 +308,7 @@ export const external_resources: ExternalResourceCollection = {
     internal_url: "/external-resources/chapter-15/hobbies-with-yuta",
     external_url: "youtube.com/watch?v=p37XUVrHP4E",
     creator_id: "nihongo_learning",
-    resource_type: "video",
+    lesson_type: "video",
     difficulty_rating: "medium",
   },
 

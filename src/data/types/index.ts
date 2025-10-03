@@ -102,11 +102,10 @@ export interface StaticModule {
 
 // --- External Resource Types ---
 
-export interface ExternalResource {
-  title: string
-  description?: string
-  internal_url?: string
+export interface ExternalResource extends Omit<StaticModule, "link"> {
+  internal_url: string
   external_url: string
+  description?: string
   creator_id: ResourceProvider
   prerequisite_vocab_keys?: string[] // Generally, these won't be presented in the
   //learning path until after completion of the modules before them, but these are
@@ -114,19 +113,6 @@ export interface ExternalResource {
   // learn first, or for resources that aren't even used in the core paths.
   prerequisite_module_ids?: string[]
   difficulty_rating: "easy" | "medium" | "hard"
-  resource_type:
-    | "video"
-    | "article"
-    | "podcast"
-    | "tool"
-    | "forum"
-    | "news"
-    | "textbook_companion"
-    | "listening_practice"
-    | "reading_practice"
-    | "grammar_guide"
-    | "other"
-  daily_prog_amount?: number // Todo: default to 15 minutes if not overridden in LearningPathItem
 }
 
 // --- Vocabulary Types ---

@@ -120,7 +120,7 @@ function GridLessonItem(props: {
                 )}
               >
                 {isCompleted() && (
-                  <CircleCheckBig class="mr-2 inline-flex h-4 w-4 origin-center" />
+                  <CircleCheckBig class="mr-2 inline-flex h-4 w-4 origin-center dark:text-green-500" />
                 )}
                 {disabled ? `${displayTitle} (Coming Soon)` : displayTitle}
               </span>
