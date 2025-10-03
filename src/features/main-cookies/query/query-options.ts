@@ -1,4 +1,4 @@
-// queries/user-settings.ts
+// features/main-cookies/query/query-options.ts
 import { queryOptions } from "@tanstack/solid-query"
 import type { MutationOptions } from "@tanstack/solid-query"
 import { getCookie, setCookie } from "@/utils/cookie-utils"

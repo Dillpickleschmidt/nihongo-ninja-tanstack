@@ -1,4 +1,4 @@
-// features/learn-page/queries/learn-page-queries.ts
+// features/learn-page/query/query-options.ts
 import { queryOptions } from "@tanstack/solid-query"
 import { getDeckBySlug } from "@/data/utils/core"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"

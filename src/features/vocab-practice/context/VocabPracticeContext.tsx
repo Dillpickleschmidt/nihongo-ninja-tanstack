@@ -10,7 +10,7 @@ import { createStore, SetStoreFunction } from "solid-js/store"
 import type { Settings, CurrentPage } from "../types"
 import { Rating } from "ts-fsrs"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/queries/user-settings"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 import type { User } from "@supabase/supabase-js"
 import {
   usePracticeManager,

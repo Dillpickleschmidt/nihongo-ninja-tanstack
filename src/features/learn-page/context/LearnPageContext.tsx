@@ -29,7 +29,7 @@ import {
 import {
   userSettingsQueryOptions,
   updateUserSettingsMutation,
-} from "@/queries/user-settings"
+} from "@/features/main-cookies/query/query-options"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import { updateUserTextbookProgress } from "@/features/supabase/db/user-textbook-progress"
 import type { VocabularyItem } from "@/data/types"

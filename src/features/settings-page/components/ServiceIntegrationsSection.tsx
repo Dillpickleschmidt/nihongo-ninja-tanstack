@@ -10,7 +10,7 @@ import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
   userSettingsQueryOptions,
   updateUserSettingsMutation,
-} from "@/queries/user-settings"
+} from "@/features/main-cookies/query/query-options"
 import { useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 import { useServiceManagement } from "../context/ServiceManagementContext"

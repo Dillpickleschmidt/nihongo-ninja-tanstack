@@ -34,7 +34,7 @@ import { PostHogProvider } from "@/features/posthog/PostHogContext"
 import {
   userSettingsQueryOptions,
   updateUserSettingsMutation,
-} from "@/queries/user-settings"
+} from "@/features/main-cookies/query/query-options"
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient

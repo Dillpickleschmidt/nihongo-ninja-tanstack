@@ -1,6 +1,6 @@
 // routes/_home/learn/index.tsx
 import { createFileRoute, redirect } from "@tanstack/solid-router"
-import { userSettingsQueryOptions } from "@/queries/user-settings"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 
 export const Route = createFileRoute("/_home/learn/")({
   loader: async ({ context }) => {

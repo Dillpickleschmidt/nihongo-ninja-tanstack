@@ -12,7 +12,7 @@ import { HeaderCard } from "./components/HeaderCard"
 import { ActionButton } from "./components/ActionButton"
 import { TextbookChapterBackgrounds } from "../learn-page/components/shared/TextbookChapterBackgrounds"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/queries/user-settings"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 
 type KanaQuizProps = {
   kana: KanaItem[]

@@ -12,7 +12,7 @@ import {
   upcomingModulesQueryOptions,
 } from "@/features/learn-page/query/query-options"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
-import { userSettingsQueryOptions } from "@/queries/user-settings"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 import type { TextbookIDEnum } from "@/data/types"
 
 export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
