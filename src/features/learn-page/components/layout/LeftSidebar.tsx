@@ -19,20 +19,10 @@ export function LeftSidebar(props: LeftSidebarProps) {
     textbookId: string,
     deck: { slug: string; title: string },
   ) => {
-    try {
-      // Then navigate to new route
-      navigate({
-        to: "/learn/$textbookId/$chapterSlug",
-        params: { textbookId, chapterSlug: deck.slug },
-      })
-    } catch (error) {
-      console.error("Failed to update preferences:", error)
-      // Still navigate even if preference update fails
-      navigate({
-        to: "/learn/$textbookId/$chapterSlug",
-        params: { textbookId, chapterSlug: deck.slug },
-      })
-    }
+    navigate({
+      to: "/learn/$textbookId/$chapterSlug",
+      params: { textbookId, chapterSlug: deck.slug },
+    })
     setIsPopoverOpen(false)
   }
 

@@ -3,10 +3,6 @@ import { Grid3x3, List } from "lucide-solid"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { LearningPathList } from "./LearningPathList"
 import { LearningPathGrid } from "./LearningPathGrid"
-import { useRouteContext } from "@tanstack/solid-router"
-import { Route as RootRoute } from "@/routes/__root"
-import { completedModulesQueryOptions } from "../../../../queries/learn-page-queries"
-import { useCustomQuery } from "@/hooks/useCustomQuery"
 
 interface LearningPathSectionProps {
   variant?: "mobile" | "desktop"
@@ -14,12 +10,6 @@ interface LearningPathSectionProps {
 
 export function LearningPathSection(props: LearningPathSectionProps = {}) {
   const variant = props.variant || "desktop"
-  const context = useRouteContext({ from: RootRoute.id })
-  const userId = context().user?.id || null
-
-  const completedModulesQuery = useCustomQuery(() =>
-    completedModulesQueryOptions(userId),
-  )
 
   return (
     <div class={variant === "mobile" ? "px-6 py-4" : ""}>
@@ -43,10 +33,10 @@ export function LearningPathSection(props: LearningPathSectionProps = {}) {
         </div>
 
         <TabsContent value="list">
-          <LearningPathList completedModulesQuery={completedModulesQuery} />
+          <LearningPathList />
         </TabsContent>
         <TabsContent value="grid">
-          <LearningPathGrid completedModulesQuery={completedModulesQuery} />
+          <LearningPathGrid />
         </TabsContent>
       </Tabs>
     </div>

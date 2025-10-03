@@ -1,30 +1,20 @@
 import { Show, For } from "solid-js"
-import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { completedModulesQueryOptions } from "@/queries/learn-page-queries"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import { static_modules } from "@/data/static_modules"
 import type { LearningPathItem } from "@/data/types"
 import { cn } from "@/utils"
 import { getModuleCircleClasses } from "@/features/learn-page/utils/loader-helpers"
+import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 
-interface UpcomingLessonsContentProps {
-  userId: string | null
-  upcomingModulesQuery: ReturnType<typeof useCustomQuery>
-}
-
-type ModuleWithCurrent = LearningPathItem & { isCurrent?: boolean }
-
-export function UpcomingLessonsContent(props: UpcomingLessonsContentProps) {
-  const completionsQuery = useCustomQuery(() =>
-    completedModulesQueryOptions(props.userId),
-  )
+export function UpcomingLessonsContent() {
+  const { upcomingModulesQuery, completionsQuery } = useLearnPageContext()
 
   const isCompleted = (moduleId: string) =>
     completionsQuery.data?.some((c) => c.module_path === moduleId)
 
   const hasCurrentItem = () => {
-    const first = props.upcomingModulesQuery.data?.[0]
-    return first?.isCurrent || isCompleted(first?.id)
+    const first = upcomingModulesQuery.data?.[0]
+    return first?.isCurrent || (first && isCompleted(first.id))
   }
 
   const getModuleInfo = (
@@ -51,8 +41,7 @@ export function UpcomingLessonsContent(props: UpcomingLessonsContentProps) {
 
       <Show
         when={
-          !props.upcomingModulesQuery.isLoading &&
-          props.upcomingModulesQuery.data?.length
+          !upcomingModulesQuery.isLoading && upcomingModulesQuery.data?.length
         }
         fallback={
           <p class="text-muted-foreground text-sm">
@@ -64,7 +53,7 @@ export function UpcomingLessonsContent(props: UpcomingLessonsContentProps) {
           {(() => {
             const firstUpcomingIndex = hasCurrentItem() ? 1 : 0
             return (
-              <For each={props.upcomingModulesQuery.data || []}>
+              <For each={upcomingModulesQuery.data || []}>
                 {(item, index) => {
                   const moduleInfo = getModuleInfo(item.id, item)
                   const circleClasses = getModuleCircleClasses(moduleInfo.type)
