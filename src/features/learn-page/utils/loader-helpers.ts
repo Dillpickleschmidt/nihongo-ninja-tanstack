@@ -53,6 +53,7 @@ export type EnrichedExternalResourceCollection = Record<
 export interface EnrichedLearningPathModule
   extends StaticModule,
     DynamicModule {
+  moduleId: string
   moduleType: string
   displayTitle: string
   linkTo: string
@@ -370,6 +371,7 @@ export function enrichLessons(
 
     return {
       ...lesson,
+      moduleId: key,
       moduleType,
       displayTitle,
       linkTo: getLinkTo(lesson, key),

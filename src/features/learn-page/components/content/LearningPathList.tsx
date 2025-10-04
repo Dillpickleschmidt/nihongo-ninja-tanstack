@@ -10,6 +10,12 @@ import {
 import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
 import { getDeckBySlug, getLessons } from "@/data/utils/core"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+} from "@/components/ui/context-menu"
 
 export function LearningPathList() {
   return (
@@ -46,9 +52,9 @@ function LessonsList() {
       {/* Left Column */}
       <div class="space-y-4">
         <For each={leftColumn()}>
-          {(lesson, index) => (
+          {(module, index) => (
             <LessonItem
-              lesson={lesson}
+              module={module}
               number={index() + 1}
               completedModulesSet={completedModulesSet}
             />
@@ -59,9 +65,9 @@ function LessonsList() {
       {/* Right Column */}
       <div class="space-y-4">
         <For each={rightColumn()}>
-          {(lesson, index) => (
+          {(module, index) => (
             <LessonItem
-              lesson={lesson}
+              module={module}
               number={leftColumn().length + index() + 1}
               completedModulesSet={completedModulesSet}
             />
@@ -77,16 +83,15 @@ function LessonsList() {
 // ============================================================================
 
 function LessonItem(props: {
-  lesson: EnrichedLearningPathModule
+  module: EnrichedLearningPathModule
   number: number
   completedModulesSet: () => Set<string>
 }) {
-  const { moduleType, displayTitle, linkTo, iconClasses, disabled } =
-    props.lesson
+  const { setCurrentPosition } = useLearnPageContext()
+  const { moduleId, moduleType, displayTitle, linkTo, iconClasses, disabled } =
+    props.module
   const ModuleIcon = getModuleIcon(moduleType)
 
-  // Extract module ID from linkTo and check completion
-  const moduleId = linkTo.split("/").pop() || ""
   const isCompleted = () => props.completedModulesSet().has(moduleId)
 
   const handleClick = () => {
@@ -98,32 +103,52 @@ function LessonItem(props: {
     }
   }
 
+  const handleStartFromHere = () => {
+    if (!disabled && moduleId) {
+      setCurrentPosition(moduleId)
+    }
+  }
+
   return (
-    <Link to={disabled ? "#" : linkTo} onClick={handleClick}>
-      <div
-        onClick={handleClick}
-        class={cn(
-          "group block",
-          disabled
-            ? "cursor-not-allowed opacity-50"
-            : "hover:bg-accent/50 -mx-2 cursor-pointer rounded px-2",
-        )}
-      >
-        <div class="flex items-center gap-2 py-2">
-          <span class="text-muted-foreground w-3 flex-shrink-0 text-xs font-medium opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-            {props.number}.
-          </span>
-          <ModuleIcon class={cn("h-4 w-4 flex-shrink-0", iconClasses)} />
-          <span
+    <ContextMenu>
+      <ContextMenuTrigger disabled={disabled}>
+        <Link to={disabled ? "#" : linkTo} onClick={handleClick}>
+          <div
+            onClick={handleClick}
             class={cn(
-              "flex-1 text-sm",
-              isCompleted() && "font-semibold text-green-500",
+              "group block",
+              disabled
+                ? "cursor-not-allowed opacity-50"
+                : "hover:bg-accent/50 -mx-2 cursor-pointer rounded px-2",
             )}
           >
-            {disabled ? `${displayTitle} (Coming Soon)` : displayTitle}
-          </span>
-        </div>
-      </div>
-    </Link>
+            <div class="flex items-center gap-2 py-2">
+              <span class="text-muted-foreground w-3 flex-shrink-0 text-xs font-medium opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                {props.number}.
+              </span>
+              <ModuleIcon class={cn("h-4 w-4 flex-shrink-0", iconClasses)} />
+              <span
+                class={cn(
+                  "flex-1 text-sm",
+                  isCompleted() && "font-semibold text-green-500",
+                )}
+              >
+                {disabled ? `${displayTitle} (Coming Soon)` : displayTitle}
+              </span>
+            </div>
+          </div>
+        </Link>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem onSelect={handleStartFromHere}>
+          <div class="flex flex-col">
+            <span>Start from here</span>
+            <span class="text-muted-foreground text-xs">
+              Set this as your current learning position
+            </span>
+          </div>
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   )
 }

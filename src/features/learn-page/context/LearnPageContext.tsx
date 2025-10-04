@@ -1,10 +1,5 @@
 // features/learn-page/context/LearnPageContext.tsx
-import {
-  createContext,
-  useContext,
-  createEffect,
-  on,
-} from "solid-js"
+import { createContext, useContext, createEffect, on } from "solid-js"
 import type { ParentComponent } from "solid-js"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
@@ -55,6 +50,7 @@ interface LearnPageContextValue {
     DefaultError
   >
   dueCardsCountQuery: UseQueryResult<number, DefaultError>
+  setCurrentPosition: (moduleId: string) => void
 }
 
 const LearnPageContext = createContext<LearnPageContextValue>()
@@ -113,7 +109,9 @@ export const LearnPageProvider: ParentComponent = (props) => {
       deck.learning_path_items,
       5,
     )
-    const withCurrent = currentModuleId ? [{ id: currentModuleId }, ...upcoming] : upcoming
+    const withCurrent = currentModuleId
+      ? [{ id: currentModuleId }, ...upcoming]
+      : upcoming
     const moduleIds = withCurrent.map((item) => item.id)
 
     updateMutation.mutate({
@@ -134,7 +132,28 @@ export const LearnPageProvider: ParentComponent = (props) => {
     })
   }
 
-  // Auto-update position mutation
+  // Shared update function for position changes
+  const updatePosition = async (moduleId: string) => {
+    if (!userId) return null
+    await updateUserTextbookProgress(userId, textbookId, moduleId)
+    return moduleId
+  }
+
+  // Shared onSuccess handler for position updates
+  const handlePositionUpdate = (moduleId: string | null) => {
+    if (moduleId) {
+      updateUpcomingModulesCookie(moduleId)
+      invalidatePositionQueries()
+    }
+  }
+
+  // Manual position update mutation (for user-initiated changes)
+  const manualUpdatePositionMutation = useMutation(() => ({
+    mutationFn: updatePosition,
+    onSuccess: handlePositionUpdate,
+  }))
+
+  // Auto-update position mutation (for completion-based changes)
   const autoUpdatePositionMutation = useMutation(() => ({
     mutationFn: async () => {
       if (
@@ -155,12 +174,7 @@ export const LearnPageProvider: ParentComponent = (props) => {
       )
 
       if (shouldUpdateNearby) {
-        await updateUserTextbookProgress(
-          userId,
-          textbookId,
-          mostRecent.module_path,
-        )
-        return mostRecent.module_path
+        return await updatePosition(mostRecent.module_path)
       }
 
       // Check if should update due to sequential jump (>2 modules away)
@@ -171,22 +185,12 @@ export const LearnPageProvider: ParentComponent = (props) => {
       )
 
       if (jumpDetection.shouldPrompt && jumpDetection.suggestedModuleId) {
-        await updateUserTextbookProgress(
-          userId,
-          textbookId,
-          jumpDetection.suggestedModuleId,
-        )
-        return jumpDetection.suggestedModuleId
+        return await updatePosition(jumpDetection.suggestedModuleId)
       }
 
       return null
     },
-    onSuccess: (updatedPosition) => {
-      if (updatedPosition) {
-        updateUpcomingModulesCookie(updatedPosition)
-        invalidatePositionQueries()
-      }
-    },
+    onSuccess: handlePositionUpdate,
   }))
 
   // Update active textbook/deck when route params change
@@ -201,7 +205,6 @@ export const LearnPageProvider: ParentComponent = (props) => {
       })
     }
   })
-
 
   // Auto-update position when most recent completion changes
   createEffect(
@@ -224,6 +227,7 @@ export const LearnPageProvider: ParentComponent = (props) => {
         vocabHierarchyQuery,
         fsrsProgressQuery,
         dueCardsCountQuery,
+        setCurrentPosition: manualUpdatePositionMutation.mutate,
       }}
     >
       {props.children}
