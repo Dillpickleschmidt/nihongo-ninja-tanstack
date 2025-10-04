@@ -1,7 +1,7 @@
 import type { DynamicModuleCollection } from "./types"
 
 export const dynamic_modules: DynamicModuleCollection = {
-  hiragana: {
+  "hiragana-practice": {
     title: "Hiragana",
     session_type: "vocab-practice",
     vocab_set_ids: ["hiragana"],
@@ -14,7 +14,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["hiragana"],
     instructions: "Test your knowledge of these hiragana characters.",
   },
-  "dakuten-handakuten": {
+  "dakuten-handakuten-practice": {
     title: "Dakuten & Handakuten",
     session_type: "vocab-practice",
     vocab_set_ids: ["dakuten-handakuten"],
@@ -28,7 +28,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["dakuten-handakuten"],
     instructions: "Test your knowledge of modified hiragana characters.",
   },
-  "contracted-sounds": {
+  "contracted-sounds-practice": {
     title: "Contracted Sounds",
     session_type: "vocab-practice",
     vocab_set_ids: ["contracted-sounds"],
@@ -158,7 +158,7 @@ export const dynamic_modules: DynamicModuleCollection = {
     vocab_set_ids: ["genki_1_ch2_vocab-list"],
     instructions: "Review the vocabulary for Chapter 2.",
   },
-  katakana: {
+  "katakana-practice": {
     title: "Katakana",
     session_type: "vocab-practice",
     vocab_set_ids: [], // FIX

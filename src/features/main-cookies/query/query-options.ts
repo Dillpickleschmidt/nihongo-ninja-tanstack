@@ -1,4 +1,4 @@
-// queries/user-settings.ts
+// features/main-cookies/query/query-options.ts
 import { queryOptions } from "@tanstack/solid-query"
 import type { MutationOptions } from "@tanstack/solid-query"
 import { getCookie, setCookie } from "@/utils/cookie-utils"
@@ -100,6 +100,8 @@ export const updateUserSettingsMutation = (
             "completed-tours": newSettings["completed-tours"],
             "override-settings": newSettings["override-settings"],
             "conjugation-practice": newSettings["conjugation-practice"],
+            "dismissed-position-prompts":
+              newSettings["dismissed-position-prompts"],
             timestamp: Date.now(),
           },
         })

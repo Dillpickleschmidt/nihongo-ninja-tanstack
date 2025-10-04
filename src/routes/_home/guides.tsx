@@ -1,6 +1,6 @@
 // routes/guides.tsx
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/queries/user-settings"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 import { createFileRoute, Outlet } from "@tanstack/solid-router"
 

@@ -3,7 +3,7 @@ import { createSignal } from "solid-js"
 import type { VocabBuiltInDeck } from "../types"
 import type { NavTabId } from "../center-panel/CenterNavBar"
 import { useMutation, useQueryClient } from "@tanstack/solid-query"
-import { updateUserSettingsMutation } from "@/queries/user-settings"
+import { updateUserSettingsMutation } from "@/features/main-cookies/query/query-options"
 import { parseBuiltInDeckId } from "../utils/deckIdParser"
 
 export function useDeckSelection(

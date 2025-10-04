@@ -51,19 +51,20 @@ async function getModuleCompletion(
 }
 
 /**
- * Get all module completions for a user
+ * Get all module completions for a user, sorted by most recent first
  */
 export async function getUserModuleCompletions(
   userId: string,
-): Promise<string[]> {
+): Promise<ModuleCompletion[]> {
   const supabase = createSupabaseClient()
   const { data, error } = await supabase
     .from("user_module_completions")
-    .select("module_path")
+    .select()
     .eq("user_id", userId)
+    .order("completed_at", { ascending: false })
 
   if (error) throw error
-  return data.map((completion) => completion.module_path)
+  return data
 }
 
 /**

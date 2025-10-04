@@ -2,8 +2,7 @@ import { Link, useRouteContext } from "@tanstack/solid-router"
 import { Suspense } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { Route as RootRoute } from "@/routes/__root"
-import { dueFSRSCardsCountQueryOptions } from "@/queries/learn-page-queries"
-import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 
 interface DueCardsDisplayProps {
   variant: "mobile" | "desktop"
@@ -11,7 +10,6 @@ interface DueCardsDisplayProps {
 
 export function DueCardsDisplay(props: DueCardsDisplayProps) {
   const context = useRouteContext({ from: RootRoute.id })
-  const userId = context().user?.id || null
 
   if (!context().user) {
     return (
@@ -30,7 +28,7 @@ export function DueCardsDisplay(props: DueCardsDisplayProps) {
     )
   }
 
-  const countQuery = useCustomQuery(() => dueFSRSCardsCountQueryOptions(userId))
+  const { dueCardsCountQuery: countQuery } = useLearnPageContext()
 
   const display = () => {
     const value = countQuery.data!

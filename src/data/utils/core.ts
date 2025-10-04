@@ -1,19 +1,21 @@
 // src/data/utils/core.ts
 // TODO: use server functions for fetching or make functions lazy in other files
 import { textbooks } from "@/data/textbooks"
-import { external_resources } from "@/data/external_resources"
 import { static_modules } from "@/data/static_modules"
 import { dynamic_modules } from "@/data/dynamic_modules"
+import { external_resources } from "@/data/external_resources"
 import type {
   TextbookIDEnum,
   StaticModule,
   DynamicModule,
   BuiltInDeck,
-  ExternalResourceCollection,
   Textbook,
   Deck,
+  ExternalResource,
 } from "@/data/types"
 import type { Chapter, VocabTextbook } from "@/features/vocab-page/types"
+
+const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 
 /**
  * Retrieves a specific deck (chapter) from a textbook by its slug.
@@ -30,7 +32,7 @@ export function getDeckBySlug(
 }
 
 /* Constructs a minified version of the textbook type
- * Removes learning_path_items and external_resource_ids from chapter property
+ * Removes learning_path_items from chapter property
  * @returns {MinimalTextbook[]} - Array of textbooks with chapters as Decks
  */
 type MinimalTextbook = Omit<Textbook, "chapters"> & {
@@ -45,89 +47,67 @@ export function getMinifiedTextbookEntries(): [
     {
       ...textbook,
       chapters: textbook.chapters.map(
-        ({
-          learning_path_items,
-          external_resource_ids,
-          isImported,
-          ...chapter
-        }) => chapter as Deck,
+        ({ learning_path_items, disabled_modules, ...chapter }) =>
+          chapter as Deck,
       ),
     },
   ])
 }
 
 /**
- * Retrieves the external resources for a given chapter deck.
+ * Retrieves the modules for a given chapter deck.
  */
-export function getExternalResources(
-  deck: BuiltInDeck,
-): ExternalResourceCollection {
-  if (!deck.external_resource_ids) return {}
-
-  return deck.external_resource_ids.reduce(
-    (acc: ExternalResourceCollection, id: string) => {
-      const resource = external_resources[id]
-      if (resource) {
-        acc[id] = resource
-      }
-      return acc
-    },
-    {},
-  )
-}
-
-/**
- * Retrieves the lessons for a given chapter deck.
- */
-export function getLessons(
-  deck: BuiltInDeck,
-): { key: string; lesson: StaticModule | DynamicModule; disabled?: boolean }[] {
+export function getModules(deck: BuiltInDeck): {
+  key: string
+  lesson: StaticModule | DynamicModule | ExternalResource
+  disabled?: boolean
+}[] {
   if (!deck.learning_path_items) return []
 
-  // Map learning path items to actual module objects with their keys
   return deck.learning_path_items
-    .map((item) => {
-      let lesson: StaticModule | DynamicModule | null = null
-
-      if (item.type === "static_module") {
-        lesson = static_modules[item.id]
-      } else if (item.type === "dynamic_module") {
-        lesson = dynamic_modules[item.id]
-      }
-
-      if (lesson) {
-        return { lesson, key: item.id, disabled: item.disabled }
-      }
-
-      return null
+    .map((moduleId) => {
+      const lesson = modules[moduleId]
+      const disabled = deck.disabled_modules?.includes(moduleId)
+      return lesson
+        ? { lesson, key: moduleId, ...(disabled && { disabled: true }) }
+        : null
     })
     .filter(
       (
         result,
-      ): result is { lesson: StaticModule | DynamicModule; key: string; disabled?: boolean } =>
-        !!result,
+      ): result is {
+        lesson: StaticModule | DynamicModule | ExternalResource
+        key: string
+        disabled?: boolean
+      } => result !== null,
     )
 }
+
+// Backward compatibility alias
+export const getLessons = getModules
 
 /**
  * Helper function to create a vocab chapter from a textbook chapter
  */
 function createVocabChapter(chapter: BuiltInDeck): Chapter {
-  const chapterNumber = parseInt(chapter.slug.split('-').pop()!)
-  
-  const vocabModules = chapter.learning_path_items
-    .filter(item => item.type === "dynamic_module")
-    .map(item => ({ item, module: dynamic_modules[item.id] }))
-    .filter(({ module }) => module?.session_type === "vocab-practice")
+  const chapterNumber = parseInt(chapter.slug.split("-").pop()!)
 
-  const decks = vocabModules.map(({ item, module }) => ({
-    id: item.id,
-    slug: item.id,
+  const vocabModules = chapter.learning_path_items
+    .map((moduleId) => ({ moduleId, module: modules[moduleId] }))
+    .filter(
+      (item): item is { moduleId: string; module: DynamicModule } =>
+        item.module !== undefined &&
+        "session_type" in item.module &&
+        item.module.session_type === "vocab-practice",
+    )
+
+  const decks = vocabModules.map(({ moduleId, module }) => ({
+    id: moduleId,
+    slug: moduleId,
     title: module.title,
     description: module.instructions || module.description,
     chapter_number: chapterNumber,
-    learning_path_items: [{ type: "dynamic_module" as const, id: item.id }],
-    external_resource_ids: [],
+    learning_path_items: [moduleId],
     isImported: false,
   }))
 
@@ -142,12 +122,15 @@ function createVocabChapter(chapter: BuiltInDeck): Chapter {
 /**
  * Extracts vocab-practice dynamic modules from textbooks and returns them as individual BuiltInDecks.
  */
-export function getVocabPracticeModulesFromTextbooks(): [TextbookIDEnum, VocabTextbook][] {
+export function getVocabPracticeModulesFromTextbooks(): [
+  TextbookIDEnum,
+  VocabTextbook,
+][] {
   return Object.entries(textbooks)
     .map(([textbookId, textbook]) => {
       const chapters = textbook.chapters
-        .map(chapter => createVocabChapter(chapter))
-        .filter(chapter => chapter.decks.length > 0)
+        .map((chapter) => createVocabChapter(chapter))
+        .filter((chapter) => chapter.decks.length > 0)
 
       return [
         textbookId as TextbookIDEnum,
@@ -156,7 +139,7 @@ export function getVocabPracticeModulesFromTextbooks(): [TextbookIDEnum, VocabTe
           name: textbook.name,
           short_name: textbook.short_name || textbook.name,
           chapters,
-        }
+        },
       ] as [TextbookIDEnum, VocabTextbook]
     })
     .filter(([, textbook]) => textbook.chapters.length > 0)

@@ -3,7 +3,7 @@ import { For } from "solid-js"
 import { Play } from "lucide-solid"
 import { useAnimationManager } from "@/hooks/useAnimations"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { resourceThumbnailQueryOptions } from "@/queries/learn-page-queries"
+import { resourceThumbnailQueryOptions } from "@/features/learn-page/query/query-options"
 import { ResourceCardWrapper } from "./ResourceDialog"
 import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
 

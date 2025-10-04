@@ -203,7 +203,7 @@ export const static_modules: StaticModuleCollection = {
   },
   "conjugation-practice-masu": {
     title: "Practice Pos/Neg ます Conjugation",
-    link: "/lessons/conjugation?normal=true&teForm=false&volitional=false&taiForm=false&tariForm=false&potential=false&imperative=false&conditional=false&passive=false&causative=false&causativePassive=false&verb=true&iAdjective=false&naAdjective=false&polite=true&plain=false&nonPast=true&past=false&positive=true&negative=true",
+    link: "/practice/conjugation?normal=true&teForm=false&volitional=false&taiForm=false&tariForm=false&potential=false&imperative=false&conditional=false&passive=false&causative=false&causativePassive=false&verb=false&iAdjective=true&naAdjective=true&polite=true&plain=false&nonPast=true&past=false&positive=true&negative=true",
     lesson_type: "conjugation-practice",
   },
   "o-de-ni-e-particles": {
@@ -283,7 +283,7 @@ export const static_modules: StaticModuleCollection = {
   },
   "conjugation-practice-adjective": {
     title: "Practice Adjective Conjugation",
-    link: "/lessons/conjugation?normal=true&teForm=false&volitional=false&taiForm=false&tariForm=false&potential=false&imperative=false&conditional=false&passive=false&causative=false&causativePassive=false&verb=false&iAdjective=true&naAdjective=true&polite=true&plain=false&nonPast=true&past=true&positive=true&negative=true",
+    link: "/practice/conjugation?normal=true&teForm=false&volitional=false&taiForm=false&tariForm=false&potential=false&imperative=false&conditional=false&passive=false&causative=false&causativePassive=false&verb=false&iAdjective=true&naAdjective=true&polite=true&plain=false&nonPast=true&past=true&positive=true&negative=true",
     lesson_type: "conjugation-practice",
   },
   "when-not-to-use-wa": {
@@ -328,7 +328,7 @@ export const static_modules: StaticModuleCollection = {
   },
   "conjugation-practice-te-form": {
     title: "Practice て-Form Conjugation",
-    link: "/lessons/conjugation?normal=false&teForm=true&volitional=false&taiForm=false&tariForm=false&potential=false&imperative=false&conditional=false&passive=false&causative=false&causativePassive=false&verb=true&iAdjective=false&naAdjective=false&polite=true&plain=false&nonPast=true&past=false&positive=true&negative=false",
+    link: "/practice/conjugation?normal=false&teForm=true&volitional=false&taiForm=false&tariForm=false&potential=false&imperative=false&conditional=false&passive=false&causative=false&causativePassive=false&verb=true&iAdjective=false&naAdjective=false&polite=true&plain=false&nonPast=true&past=false&positive=true&negative=false",
     lesson_type: "conjugation-practice",
   },
   "te-form-connection": {

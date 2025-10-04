@@ -26,7 +26,7 @@ import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/queries/user-settings"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 import { BottomNav } from "@/features/navbar/BottomNav"
 import { SessionModeTabSwitcher } from "../SessionModeTabSwitcher"
 

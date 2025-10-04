@@ -7,7 +7,7 @@ import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
   userSettingsQueryOptions,
   updateUserSettingsMutation,
-} from "@/queries/user-settings"
+} from "@/features/main-cookies/query/query-options"
 import type { User } from "@supabase/supabase-js"
 import { FileUploadDialog } from "@/components/FileUploadDialog"
 import { Button } from "@/components/ui/button"
@@ -155,7 +155,9 @@ export function OverridesContent(props: OverridesContentProps) {
           <div class="border-card-foreground/70 bg-background/40 flex flex-col rounded-lg border p-6 backdrop-blur-sm">
             <StackEditor
               title="Vocabulary Overrides"
-              stacks={settingsQuery.data["override-settings"].vocabularyOverrides}
+              stacks={
+                settingsQuery.data["override-settings"].vocabularyOverrides
+              }
               onChange={handleVocabularyStacksChange}
               onAddNew={handleAddVocabularyStack}
             />
