@@ -1,5 +1,6 @@
 // features/dashboard/utils/loader-helpers.ts
 import type {
+  Module,
   ExternalResource,
   StaticModule,
   DynamicModule,
@@ -65,7 +66,7 @@ export interface EnrichedLearningPathModule
 // --- Enrichment Functions for External Resources ---
 
 function getResourceGradientStyle(
-  resourceType: ExternalResource["resource_type"],
+  lessonType: ExternalResource["lesson_type"],
 ): string {
   const gradients = {
     video:
@@ -88,8 +89,27 @@ function getResourceGradientStyle(
       "linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(74, 222, 128, 0.1) 100%)",
     grammar_guide:
       "linear-gradient(135deg, rgba(245, 101, 101, 0.2) 0%, rgba(252, 165, 165, 0.1) 100%)",
+    worksheet:
+      "linear-gradient(135deg, rgba(20, 184, 166, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%)",
+    lesson:
+      "linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%)",
+    "vocab-test":
+      "linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(251, 191, 36, 0.1) 100%)",
+    "conjugation-practice":
+      "linear-gradient(135deg, rgba(20, 184, 166, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%)",
+    "counter-practice":
+      "linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%)",
+    game: "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(251, 113, 133, 0.1) 100%)",
+    "grammar-notes":
+      "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(251, 113, 133, 0.1) 100%)",
+    reading:
+      "linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%)",
+    "culture-note":
+      "linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(244, 114, 182, 0.1) 100%)",
+    "chapter-vocab-overview":
+      "linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%)",
   }
-  return gradients[resourceType as keyof typeof gradients] || gradients.article
+  return gradients[lessonType as keyof typeof gradients] || gradients.lesson
 }
 
 function getResourceDifficultyColorClass(
@@ -116,7 +136,7 @@ export function enrichExternalResources(
     enriched[key] = {
       ...resource,
       id: key,
-      gradientStyle: getResourceGradientStyle(resource.resource_type),
+      gradientStyle: getResourceGradientStyle(resource.lesson_type),
       difficultyColorClass: getResourceDifficultyColorClass(
         resource.difficulty_rating,
       ),
@@ -128,29 +148,30 @@ export function enrichExternalResources(
   return enriched
 }
 
-// Helper function to map resource type to Lucide icon component
+// Helper function to map lesson type to Lucide icon component
 export function getResourceIconComponent(
-  resourceType: ExternalResource["resource_type"],
+  lessonType: ExternalResource["lesson_type"],
 ): Component<any> {
   const iconMap = {
     video: Video,
-    article: FileText,
-    podcast: Mic,
-    tool: Wrench,
-    forum: MessageCircle,
-    news: Newspaper,
-    textbook_companion: BookMarked,
-    listening_practice: Ear,
-    reading_practice: Eye,
-    grammar_guide: PenTool,
     audio: Headphones,
+    worksheet: FileText,
+    lesson: BookOpen,
+    "vocab-test": GraduationCap,
+    "conjugation-practice": GraduationCap,
+    "counter-practice": GraduationCap,
+    game: Gamepad,
+    "grammar-notes": ScrollText,
+    reading: BookOpenText,
+    "culture-note": Coffee,
+    "chapter-vocab-overview": Library,
   }
-  return iconMap[resourceType as keyof typeof iconMap] || BookOpen
+  return iconMap[lessonType as keyof typeof iconMap] || BookOpen
 }
 
 // --- Enrichment Functions for Learning Path Modules (Lessons) ---
 
-function getModuleType(module: StaticModule | DynamicModule) {
+function getModuleType(module: Module) {
   return "lesson_type" in module ? module.lesson_type : module.session_type
 }
 
@@ -158,8 +179,15 @@ function getDisplayTitle(title: string) {
   return title.startsWith("Practice ") ? title.substring(9) : title
 }
 
-function getLinkTo(lesson: StaticModule | DynamicModule, moduleKey: string) {
+function getLinkTo(lesson: Module, moduleKey: string) {
   if ("link" in lesson && lesson.link) {
+    // For external resources, remove chapter folder:
+    // /external-resources/chapter-0/resource-id → /external-resources/resource-id
+    if (lesson.link.startsWith("/external-resources/")) {
+      const parts = lesson.link.split("/")
+      parts.splice(-2, 1) // Remove the second to last element (chapter folder)
+      return parts.join("/")
+    }
     return lesson.link
   }
 
@@ -174,7 +202,7 @@ export function getModuleIcon(moduleType: string) {
   const iconComponents = {
     lesson: BookOpen,
     worksheet: PencilLine,
-    "practice-sentence": PencilLine,
+    "sentence-practice": PencilLine,
     "culture-note": Coffee,
     vocab: BookPlus,
     "vocab-practice": GraduationCap,
@@ -203,7 +231,7 @@ const MODULE_STYLES = {
     text: "text-teal-500 dark:text-teal-400",
     bg: "bg-teal-500 dark:bg-teal-400",
   },
-  "practice-sentence": {
+  "sentence-practice": {
     text: "text-yellow-600 dark:text-yellow-500 saturate-[75%]",
     bg: "bg-yellow-600 dark:bg-yellow-500 saturate-[75%]",
   },
@@ -331,7 +359,7 @@ function getModuleLightBackground(moduleType: string) {
 
 export function enrichLessons(
   lessons: {
-    lesson: StaticModule | DynamicModule
+    lesson: Module
     key: string
     disabled?: boolean
   }[],

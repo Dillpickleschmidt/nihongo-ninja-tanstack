@@ -3,8 +3,7 @@ import type { ExternalResourceCollection } from "./types"
 export const external_resources: ExternalResourceCollection = {
   "greetings-japanese-super-immersion": {
     title: "Japanese Greetings - Super Immersion Video",
-    internal_url:
-      "/external-resources/chapter-0/greetings-japanese-super-immersion",
+    link: "/external-resources/chapter-0/greetings-japanese-super-immersion",
     external_url: "youtube.com/watch?v=po_6rnpP5mI",
     creator_id: "japanese_super_immersion",
     difficulty_rating: "easy",
@@ -13,8 +12,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "common-expressions-japanese-super-immersion": {
     title: "Common Japanese Expressions - Super Immersion Video",
-    internal_url:
-      "/external-resources/chapter-0/common-expressions-japanese-super-immersion",
+    link: "/external-resources/chapter-0/common-expressions-japanese-super-immersion",
     external_url: "youtube.com/watch?v=4PBR4w47wsQ",
     creator_id: "japanese_super_immersion",
     difficulty_rating: "easy",
@@ -23,7 +21,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   res_jpod101_ch1_greetings_video: {
     title: "JapanesePod101: Top 25 Japanese Phrases - Greetings",
-    internal_url: "/resources/notes/jpod101_greetings_video",
+    link: "/resources/notes/jpod101_greetings_video",
     external_url: "youtube.com/watch?v=n6ciMT6KhVo",
     creator_id: "JapanesePod101",
     prerequisite_vocab_keys: ["おはようございます", "こんにちは"],
@@ -35,7 +33,7 @@ export const external_resources: ExternalResourceCollection = {
   // Chapter 1 External Resources
   "kikusasaizu-1-1": {
     title: "Kikusasaizu Video - L1-1",
-    internal_url: "/external-resources/chapter-1/kikusasaizu-1-1",
+    link: "/external-resources/chapter-1/kikusasaizu-1-1",
     external_url: "https://h5p.cee.sfu.ca/h5p/embed/2319",
     creator_id: "kikusasaizu",
     lesson_type: "video",
@@ -43,8 +41,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "japanese-super-immersion-nice-to-meet-you": {
     title: "Nice to meet you - Listening Practice",
-    internal_url:
-      "/external-resources/chapter-1/japanese-super-immersion-nice-to-meet-you",
+    link: "/external-resources/chapter-1/japanese-super-immersion-nice-to-meet-you",
     external_url: "youtube.com/watch?v=XBKeW87xsKc",
     creator_id: "japanese_super_immersion",
     lesson_type: "video",
@@ -52,7 +49,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "my-kikitori-conversation-1": {
     title: "MyKikitori - Conversation 1",
-    internal_url: "/external-resources/chapter-1/my-kikitori-conversation-1",
+    link: "/external-resources/chapter-1/my-kikitori-conversation-1",
     external_url: "mykikitori.com/lesson-1",
     creator_id: "mykikitori",
     lesson_type: "listening_practice",
@@ -60,7 +57,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "my-kikitori-conversation-2": {
     title: "MyKikitori - Conversation 2",
-    internal_url: "/external-resources/chapter-1/my-kikitori-conversation-2",
+    link: "/external-resources/chapter-1/my-kikitori-conversation-2",
     external_url: "mykikitori.com/lesson-1",
     creator_id: "mykikitori",
     lesson_type: "listening_practice",
@@ -68,7 +65,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "kikusasaizu-1-3": {
     title: "Kikusasaizu Video - L1-3",
-    internal_url: "/external-resources/chapter-1/kikusasaizu-1-3",
+    link: "/external-resources/chapter-1/kikusasaizu-1-3",
     external_url: "youtube.com/watch?v=VKETvr5uXsk",
     creator_id: "kikusasaizu",
     lesson_type: "video",
@@ -76,7 +73,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "my-kikitori-conversation-3": {
     title: "MyKikitori - Conversation 3",
-    internal_url: "/external-resources/chapter-1/my-kikitori-conversation-3",
+    link: "/external-resources/chapter-1/my-kikitori-conversation-3",
     external_url: "mykikitori.com/lesson-1",
     creator_id: "mykikitori",
     lesson_type: "listening_practice",
@@ -86,7 +83,7 @@ export const external_resources: ExternalResourceCollection = {
   // Chapter 2 External Resources
   "kikusasaizu-2-1": {
     title: "Kikusasaizu Video - L2-1",
-    internal_url: "/external-resources/chapter-2/kikusasaizu-2-1",
+    link: "/external-resources/chapter-2/kikusasaizu-2-1",
     external_url: "https://h5p.cee.sfu.ca/h5p/embed/2358",
     creator_id: "kikusasaizu",
     lesson_type: "video",
@@ -94,7 +91,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "kikusasaizu-2-2": {
     title: "Kikusasaizu Video - L2-2",
-    internal_url: "/external-resources/chapter-2/kikusasaizu-2-2",
+    link: "/external-resources/chapter-2/kikusasaizu-2-2",
     external_url: "youtube.com/watch?v=EdkEWPldx28",
     creator_id: "kikusasaizu",
     lesson_type: "video",
@@ -102,7 +99,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "kudasai-vs-onegaishimasu": {
     title: "ください vs お願いします",
-    internal_url: "/external-resources/chapter-2/kudasai-vs-onegaishimasu",
+    link: "/external-resources/chapter-2/kudasai-vs-onegaishimasu",
     external_url: "youtube.com/watch?v=sVCeecJw8GM",
     creator_id: "nihongodekita",
     lesson_type: "video",
@@ -110,7 +107,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "my-kikitori-at-a-cafe": {
     title: "MyKikitori - At a Café",
-    internal_url: "/external-resources/chapter-2/my-kikitori-at-a-cafe",
+    link: "/external-resources/chapter-2/my-kikitori-at-a-cafe",
     external_url: "mykikitori.com/lesson-2",
     creator_id: "mykikitori",
     lesson_type: "listening_practice",
@@ -118,7 +115,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "unlearning-japanese": {
     title: "Unlearning Japanese - Real Real Japan #01",
-    internal_url: "/external-resources/chapter-2/unlearning-japanese",
+    link: "/external-resources/chapter-2/unlearning-japanese",
     external_url: "youtube.com/watch?v=BH9n_fNA7Z8",
     creator_id: "realrealjapan",
     lesson_type: "video",
@@ -126,7 +123,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "my-kikitori-at-a-store": {
     title: "MyKikitori - At a Store",
-    internal_url: "/external-resources/chapter-2/my-kikitori-at-a-store",
+    link: "/external-resources/chapter-2/my-kikitori-at-a-store",
     external_url: "mykikitori.com/lesson-2",
     creator_id: "mykikitori",
     lesson_type: "listening_practice",
@@ -136,7 +133,7 @@ export const external_resources: ExternalResourceCollection = {
   // Chapter 3 External Resources
   "your-japanese-voice": {
     title: "Your Japanese Voice",
-    internal_url: "/external-resources/chapter-3/your-japanese-voice",
+    link: "/external-resources/chapter-3/your-japanese-voice",
     external_url: "youtube.com/watch?v=Phr8z5X5Sf4",
     creator_id: "dogen",
     lesson_type: "video",
@@ -144,7 +141,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "kikusasaizu-3-2": {
     title: "Kikusasaizu Video - L3-2",
-    internal_url: "/external-resources/chapter-3/kikusasaizu-3-2",
+    link: "/external-resources/chapter-3/kikusasaizu-3-2",
     external_url: "https://h5p.cee.sfu.ca/h5p/embed/2327",
     creator_id: "kikusasaizu",
     lesson_type: "video",
@@ -152,7 +149,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "kikusasaizu-3-3": {
     title: "Kikusasaizu Video - L3-3",
-    internal_url: "/external-resources/chapter-3/kikusasaizu-3-3",
+    link: "/external-resources/chapter-3/kikusasaizu-3-3",
     external_url: "https://h5p.cee.sfu.ca/h5p/embed/2332",
     creator_id: "kikusasaizu",
     lesson_type: "video",
@@ -160,8 +157,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "my-kikitori-do-you-want-to-go-to-tokyo": {
     title: "MyKikitori - Do You Want to Go to Tokyo?",
-    internal_url:
-      "/external-resources/chapter-3/my-kikitori-do-you-want-to-go-to-tokyo",
+    link: "/external-resources/chapter-3/my-kikitori-do-you-want-to-go-to-tokyo",
     external_url: "mykikitori.com/lesson-3",
     creator_id: "mykikitori",
     lesson_type: "listening_practice",
@@ -169,7 +165,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   aizuchi: {
     title: "Aizuchi: Japanese Noises",
-    internal_url: "/external-resources/chapter-3/aizuchi",
+    link: "/external-resources/chapter-3/aizuchi",
     external_url: "youtube.com/watch?v=r0io_xgmcSs",
     creator_id: "kaname_naito",
     lesson_type: "video",
@@ -177,7 +173,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "kikusasaizu-3-1": {
     title: "Kikusasaizu Video - L3-1",
-    internal_url: "/external-resources/chapter-3/kikusasaizu-3-1",
+    link: "/external-resources/chapter-3/kikusasaizu-3-1",
     external_url: "https://h5p.cee.sfu.ca/h5p/embed/1978",
     creator_id: "kikusasaizu",
     lesson_type: "video",
@@ -185,8 +181,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "my-kikitori-campus-interview-2": {
     title: "MyKikitori - Campus Interview #2",
-    internal_url:
-      "/external-resources/chapter-3/my-kikitori-campus-interview-2",
+    link: "/external-resources/chapter-3/my-kikitori-campus-interview-2",
     external_url: "mykikitori.com/lesson-3",
     creator_id: "mykikitori",
     lesson_type: "listening_practice",
@@ -194,8 +189,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "long-form-conversation-immersion": {
     title: "Long Form Conversation Immersion",
-    internal_url:
-      "/external-resources/chapter-3/long-form-conversation-immersion",
+    link: "/external-resources/chapter-3/long-form-conversation-immersion",
     external_url: "youtube.com/watch?v=IJEn-9nAFQE",
     creator_id: "japanese_super_immersion",
     lesson_type: "video",
@@ -205,7 +199,7 @@ export const external_resources: ExternalResourceCollection = {
   // Chapter 4 External Resources
   "saying-no-naturally": {
     title: 'Don\'t use いいえ! - Saying "No" Naturally',
-    internal_url: "/external-resources/chapter-4/saying-no-naturally",
+    link: "/external-resources/chapter-4/saying-no-naturally",
     external_url: "youtube.com/watch?v=J9JdP6pA5LY",
     creator_id: "that_japanese_man_yuta",
     lesson_type: "video",
@@ -213,7 +207,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "immersion-with-yuta": {
     title: "Immersion With Yuta - Listening Practice",
-    internal_url: "/external-resources/chapter-4/immersion-with-yuta",
+    link: "/external-resources/chapter-4/immersion-with-yuta",
     external_url: "youtube.com/watch?v=PFJZdvrghgI",
     creator_id: "nihongo_learning",
     lesson_type: "video",
@@ -221,7 +215,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   "beginner-guide-to-konbini": {
     title: "Beginner Guide To コンビニ",
-    internal_url: "/external-resources/chapter-4/beginner-guide-to-konbini",
+    link: "/external-resources/chapter-4/beginner-guide-to-konbini",
     external_url: "youtube.com/watch?v=bPP3-GyFpYs",
     creator_id: "kaname_naito",
     lesson_type: "video",
@@ -231,7 +225,7 @@ export const external_resources: ExternalResourceCollection = {
   // Chapter 5 External Resources
   sports: {
     title: "Sports - Listening Practice",
-    internal_url: "/external-resources/chapter-5/sports",
+    link: "/external-resources/chapter-5/sports",
     external_url: "youtube.com/watch?v=MYuNYVhz3Gs",
     creator_id: "nihongo_learning",
     lesson_type: "video",
@@ -241,7 +235,7 @@ export const external_resources: ExternalResourceCollection = {
   // Chapter 6 External Resources
   "why-your-speaking-sucks": {
     title: "Why Your Speaking Sucks",
-    internal_url: "/external-resources/chapter-6/why-your-speaking-sucks",
+    link: "/external-resources/chapter-6/why-your-speaking-sucks",
     external_url: "youtube.com/watch?v=xLqnAI6mqDo",
     creator_id: "tokini_andy",
     lesson_type: "video",
@@ -255,7 +249,7 @@ export const external_resources: ExternalResourceCollection = {
   // Chapter 8 External Resources
   "how-verbs-work": {
     title: "How Verbs Work",
-    internal_url: "/external-resources/chapter-8/how-verbs-work",
+    link: "/external-resources/chapter-8/how-verbs-work",
     external_url: "youtube.com/watch?v=cGA6Tj9_lSg",
     creator_id: "jozu_juls",
     lesson_type: "video",
@@ -265,7 +259,7 @@ export const external_resources: ExternalResourceCollection = {
   // Chapter 9 External Resources
   colors: {
     title: "Colors",
-    internal_url: "/external-resources/chapter-9/colors",
+    link: "/external-resources/chapter-9/colors",
     external_url: "youtube.com/watch?v=7XKDgSyu2yk",
     creator_id: "nihongo_learning",
     lesson_type: "video",
@@ -275,7 +269,7 @@ export const external_resources: ExternalResourceCollection = {
   // Chapter 10 External Resources
   "comparing-sizes": {
     title: "Comparing Sizes",
-    internal_url: "/external-resources/chapter-10/comparing-sizes",
+    link: "/external-resources/chapter-10/comparing-sizes",
     external_url: "youtube.com/watch?v=vD3_BO4KAdM",
     creator_id: "nihongo_learning",
     lesson_type: "video",
@@ -283,7 +277,7 @@ export const external_resources: ExternalResourceCollection = {
   },
   emotions: {
     title: "Emotions",
-    internal_url: "/external-resources/chapter-10/emotions",
+    link: "/external-resources/chapter-10/emotions",
     external_url: "youtube.com/watch?v=nmmj3N3RnqY",
     creator_id: "nihongo_learning",
     lesson_type: "video",
@@ -305,7 +299,7 @@ export const external_resources: ExternalResourceCollection = {
   // Chapter 15 External Resources
   "hobbies-with-yuta": {
     title: "Hobbies With Yuta",
-    internal_url: "/external-resources/chapter-15/hobbies-with-yuta",
+    link: "/external-resources/chapter-15/hobbies-with-yuta",
     external_url: "youtube.com/watch?v=p37XUVrHP4E",
     creator_id: "nihongo_learning",
     lesson_type: "video",

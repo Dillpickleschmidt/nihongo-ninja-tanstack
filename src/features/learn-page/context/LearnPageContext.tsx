@@ -121,15 +121,15 @@ export const LearnPageProvider: ParentComponent = (props) => {
 
   // Helper to update upcoming modules cookie when position changes
   const updateUpcomingModulesCookie = (newPosition: string) => {
-    const currentModule = deck.learning_path_items.find(
-      (item) => item.id === newPosition,
+    const currentModuleId = deck.learning_path_items.find(
+      (moduleId) => moduleId === newPosition,
     )
     const upcoming = getUpcomingModules(
       newPosition,
       deck.learning_path_items,
       5,
     )
-    const withCurrent = currentModule ? [currentModule, ...upcoming] : upcoming
+    const withCurrent = currentModuleId ? [{ id: currentModuleId }, ...upcoming] : upcoming
     const moduleIds = withCurrent.map((item) => item.id)
 
     updateMutation.mutate({

@@ -12,11 +12,7 @@ import {
   getUpcomingModules,
 } from "@/features/learn-page/utils/learning-position-detector"
 import { getVocabularyForModule } from "@/data/utils/vocab"
-import type {
-  VocabularyItem,
-  TextbookIDEnum,
-  LearningPathItem,
-} from "@/data/types"
+import type { VocabularyItem, TextbookIDEnum } from "@/data/types"
 import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { ResourceProvider } from "@/data/resources-config"
 
@@ -28,9 +24,9 @@ export const vocabHierarchyQueryOptions = (
   queryOptions({
     queryKey: ["vocab-hierarchy", activeTextbook, deck.slug, userOverrides],
     queryFn: async () => {
-      const vocabModuleId = deck.learning_path_items.find((item) =>
-        item.id.endsWith("_vocab-list"),
-      )?.id
+      const vocabModuleId = deck.learning_path_items.find((moduleId) =>
+        moduleId.endsWith("_vocab-list"),
+      )
 
       let chapterVocabulary: VocabularyItem[] = []
       if (vocabModuleId) {
@@ -125,7 +121,7 @@ export const userTextbookProgressQueryOptions = (
 export const shouldPromptPositionUpdateQueryOptions = (
   userId: string | null,
   textbookId: TextbookIDEnum,
-  learningPathItems: LearningPathItem[],
+  learningPathItems: string[],
   completionsWithDates: ModuleCompletion[],
   dismissedPromptId: string | undefined,
   currentPosition: string | null,
@@ -171,25 +167,30 @@ export const shouldPromptPositionUpdateQueryOptions = (
     placeholderData: { shouldPrompt: false, suggestedPosition: null },
   })
 
-export type ModuleWithCurrent = LearningPathItem & { isCurrent?: boolean }
+export type ModuleWithCurrent = {
+  id: string
+  isCurrent?: boolean
+  disabled?: boolean
+}
 
 export const upcomingModulesQueryOptions = (
   userId: string | null,
   textbookId: TextbookIDEnum,
-  learningPathItems: LearningPathItem[],
+  learningPathItems: string[],
   currentPosition: string | null,
   cachedModuleIds?: string[],
 ) => {
   const queryFn = async (): Promise<ModuleWithCurrent[]> => {
-    if (!currentPosition) return learningPathItems.slice(0, 6)
+    if (!currentPosition)
+      return learningPathItems.slice(0, 6).map((id) => ({ id }))
 
-    const currentModule = learningPathItems.find(
-      (item) => item.id === currentPosition,
+    const currentModuleId = learningPathItems.find(
+      (moduleId) => moduleId === currentPosition,
     )
     const upcoming = getUpcomingModules(currentPosition, learningPathItems, 5)
 
-    return currentModule
-      ? [{ ...currentModule, isCurrent: true }, ...upcoming]
+    return currentModuleId
+      ? [{ id: currentModuleId, isCurrent: true }, ...upcoming]
       : upcoming
   }
 
@@ -203,8 +204,8 @@ export const upcomingModulesQueryOptions = (
   if (cachedModuleIds) {
     const initialData = cachedModuleIds
       .map((id, index) => {
-        const found = learningPathItems.find((item) => item.id === id)
-        return found ? { ...found, isCurrent: index === 0 } : null
+        const found = learningPathItems.find((moduleId) => moduleId === id)
+        return found ? { id: found, isCurrent: index === 0 } : null
       })
       .filter((item) => item !== null) as ModuleWithCurrent[]
 

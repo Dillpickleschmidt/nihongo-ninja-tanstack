@@ -15,7 +15,7 @@ export function LearningPathList() {
   return (
     <div
       // data-lessons-section
-      class="grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-2"
+      class="grid max-h-[calc(100vh-471px)] grid-cols-1 gap-x-4 gap-y-4 pb-8 lg:grid-cols-2"
     >
       <LessonsList />
     </div>

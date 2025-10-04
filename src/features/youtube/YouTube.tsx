@@ -60,7 +60,7 @@ export default function YouTubeVideo(props: YouTubeVideoProps) {
 
       <Show when={props.vocabTimestamps}>
         <div class="relative mx-auto max-w-2xl">
-          <div class="bg-background absolute bottom-0 h-48 w-full rounded-3xl border px-3 shadow-md">
+          <div class="bg-background border-card-foreground absolute bottom-0 h-48 w-full rounded-3xl border px-3 shadow-md">
             <div class="absolute bottom-0 w-full">
               <SlidingTimestamps
                 vocabTimestamps={props.vocabTimestamps!}

@@ -1,10 +1,12 @@
 import { Show, For } from "solid-js"
-import { dynamic_modules } from "@/data/dynamic_modules"
 import { static_modules } from "@/data/static_modules"
-import type { LearningPathItem } from "@/data/types"
+import { dynamic_modules } from "@/data/dynamic_modules"
+import { external_resources } from "@/data/external_resources"
 import { cn } from "@/utils"
 import { getModuleCircleClasses } from "@/features/learn-page/utils/loader-helpers"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
+
+const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 
 export function UpcomingLessonsContent() {
   const { upcomingModulesQuery, completionsQuery } = useLearnPageContext()
@@ -17,20 +19,12 @@ export function UpcomingLessonsContent() {
     return first?.isCurrent || (first && isCompleted(first.id))
   }
 
-  const getModuleInfo = (
-    moduleId: string,
-    learningPathItem?: LearningPathItem,
-  ) => {
-    const dynamicModule = dynamic_modules[moduleId]
-    if (dynamicModule) {
-      return { title: dynamicModule.title, type: dynamicModule.session_type }
-    }
-    const staticModule = static_modules[moduleId]
-    if (staticModule) {
-      return { title: staticModule.title, type: staticModule.lesson_type }
-    }
-    if (learningPathItem?.type === "external_resource") {
-      return { title: moduleId.replace(/-/g, " "), type: "video" }
+  const getModuleInfo = (moduleId: string) => {
+    const module = modules[moduleId]
+    if (module) {
+      const type =
+        "session_type" in module ? module.session_type : module.lesson_type
+      return { title: module.title, type }
     }
     return { title: moduleId, type: "misc" }
   }
@@ -55,7 +49,7 @@ export function UpcomingLessonsContent() {
             return (
               <For each={upcomingModulesQuery.data || []}>
                 {(item, index) => {
-                  const moduleInfo = getModuleInfo(item.id, item)
+                  const moduleInfo = getModuleInfo(item.id)
                   const circleClasses = getModuleCircleClasses(moduleInfo.type)
                   const completed = isCompleted(item.id)
                   const isFirstUpcoming =

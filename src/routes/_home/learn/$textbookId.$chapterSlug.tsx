@@ -1,6 +1,6 @@
 // routes/_home/learn/$textbookId.$chapterSlug.tsx
 import { createFileRoute, redirect } from "@tanstack/solid-router"
-import { getDeckBySlug, getExternalResources } from "@/data/utils/core"
+import { getDeckBySlug, getModules } from "@/data/utils/core"
 import { LearnPageContent } from "@/features/learn-page/components/layout/LearnPageContent"
 import { LearnPageProvider } from "@/features/learn-page/context/LearnPageContext"
 import {
@@ -13,7 +13,7 @@ import {
 } from "@/features/learn-page/query/query-options"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
-import type { TextbookIDEnum } from "@/data/types"
+import type { TextbookIDEnum, ExternalResource } from "@/data/types"
 
 export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
   loader: async ({ context, params }) => {
@@ -66,7 +66,12 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
     )
 
     // Pre-fetch all resource thumbnails in parallel (non-blocking, for streaming)
-    const rawResources = getExternalResources(deck)
+    const allModules = getModules(deck)
+    const rawResources = Object.fromEntries(
+      allModules
+        .filter(({ lesson }) => "external_url" in lesson)
+        .map(({ key, lesson }) => [key, lesson as ExternalResource]),
+    )
     const externalResources = enrichExternalResources(rawResources)
     const resourcesArray = Object.values(externalResources)
     resourcesArray.forEach((resource) =>

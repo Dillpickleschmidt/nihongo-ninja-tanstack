@@ -19,14 +19,14 @@ function findComponentPath(resourceId: string): string | null {
   // Find the resource in external_resources data by ID (key)
   const resource = external_resources[resourceId]
 
-  if (!resource || !resource.internal_url) {
+  if (!resource || !resource.link) {
     return null
   }
 
-  // Convert internal_url to component path
+  // Convert link to component path
   // "/external-resources/chapter-0/greetings-japanese-super-immersion"
   // -> "/src/features/external-resources/chapter-0/greetings-japanese-super-immersion"
-  return resource.internal_url.replace(
+  return resource.link.replace(
     "/external-resources/",
     "/src/features/external-resources/",
   )

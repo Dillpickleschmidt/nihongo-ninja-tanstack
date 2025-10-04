@@ -16,7 +16,7 @@ export function LearningPathGrid() {
   return (
     <div
       id="tour-lesson-cards"
-      class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
+      class="-mr-4 grid max-h-[calc(100vh-471px)] grid-cols-1 gap-6 overflow-x-hidden overflow-y-auto pr-2.5 pb-8 lg:grid-cols-2 xl:grid-cols-3"
     >
       <GridLessonsList />
     </div>

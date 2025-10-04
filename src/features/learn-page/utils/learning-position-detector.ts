@@ -1,4 +1,4 @@
-import type { LearningPathItem } from "@/data/types"
+import type { ModuleWithCurrent } from "../query/query-options"
 
 /**
  * Calculate the distance (number of modules) between two modules in a learning path
@@ -7,10 +7,14 @@ import type { LearningPathItem } from "@/data/types"
 export function getModuleDistance(
   moduleId1: string,
   moduleId2: string,
-  learningPathItems: LearningPathItem[],
+  learningPathItems: string[],
 ): number {
-  const index1 = learningPathItems.findIndex((item) => item.id === moduleId1)
-  const index2 = learningPathItems.findIndex((item) => item.id === moduleId2)
+  const index1 = learningPathItems.findIndex(
+    (moduleId) => moduleId === moduleId1,
+  )
+  const index2 = learningPathItems.findIndex(
+    (moduleId) => moduleId === moduleId2,
+  )
 
   if (index1 === -1 || index2 === -1) {
     return -1
@@ -26,7 +30,7 @@ export function getModuleDistance(
 export function shouldUpdatePosition(
   completionModuleId: string,
   currentPosition: string | null,
-  learningPathItems: LearningPathItem[],
+  learningPathItems: string[],
 ): boolean {
   // If no current position, this is the first completion - auto-update
   if (!currentPosition) {
@@ -59,7 +63,7 @@ export function shouldUpdatePosition(
 export function detectSequentialJump(
   recentCompletions: ModuleCompletion[],
   currentPosition: string | null,
-  learningPathItems: LearningPathItem[],
+  learningPathItems: string[],
 ): { shouldPrompt: boolean; suggestedModuleId: string | null } {
   // Need at least 2 completions to detect a pattern
   if (recentCompletions.length < 2) {
@@ -70,10 +74,10 @@ export function detectSequentialJump(
 
   // Check if they are sequential in the learning path
   const mostRecentIndex = learningPathItems.findIndex(
-    (item) => item.id === mostRecent.module_path,
+    (moduleId) => moduleId === mostRecent.module_path,
   )
   const secondRecentIndex = learningPathItems.findIndex(
-    (item) => item.id === secondMostRecent.module_path,
+    (moduleId) => moduleId === secondMostRecent.module_path,
   )
 
   // If either module not found in path, don't prompt
@@ -112,9 +116,9 @@ export function detectSequentialJump(
 
 export function getModuleIndex(
   moduleId: string,
-  learningPathItems: LearningPathItem[],
+  learningPathItems: string[],
 ): number {
-  return learningPathItems.findIndex((item) => item.id === moduleId)
+  return learningPathItems.findIndex((id) => id === moduleId)
 }
 
 /**
@@ -123,16 +127,18 @@ export function getModuleIndex(
  */
 export function getUpcomingModules(
   currentModuleId: string,
-  learningPathItems: LearningPathItem[],
+  learningPathItems: string[],
   count: number = 10,
-): LearningPathItem[] {
+): ModuleWithCurrent[] {
   const currentIndex = getModuleIndex(currentModuleId, learningPathItems)
 
   if (currentIndex === -1) {
     // If current module not found, return first N modules
-    return learningPathItems.slice(0, count)
+    return learningPathItems.slice(0, count).map((id) => ({ id }))
   }
 
   // Return next N modules after current position
-  return learningPathItems.slice(currentIndex + 1, currentIndex + 1 + count)
+  return learningPathItems
+    .slice(currentIndex + 1, currentIndex + 1 + count)
+    .map((id) => ({ id }))
 }

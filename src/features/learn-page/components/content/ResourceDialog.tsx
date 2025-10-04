@@ -18,7 +18,7 @@ export function ResourceCardWrapper(props: {
   thumbnailUrl: (() => string | null | undefined) | string | null | undefined
   variant: "desktop" | "mobile"
 }) {
-  const hasInternalUrl = () => Boolean(props.resource.internal_url)
+  const hasInternalUrl = () => Boolean(props.resource.link)
 
   return (
     <Show
@@ -191,9 +191,9 @@ function ResourceDialogContent(props: { resource: EnrichedExternalResource }) {
   const [hasError, setHasError] = createSignal(false)
   const navigate = useNavigate()
 
-  const resourceId = () => props.resource.internal_url!.split("/").pop() || ""
+  const resourceId = () => props.resource.link!.split("/").pop() || ""
   const componentPath = () =>
-    props.resource.internal_url!.replace(
+    props.resource.link!.replace(
       "/external-resources/",
       "/src/features/external-resources/",
     )
