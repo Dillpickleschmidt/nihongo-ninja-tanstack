@@ -126,8 +126,6 @@ export const UserSettingsSchema = z.object({
   "conjugation-practice": ConjugationPracticeSettingsSchema.default(
     ConjugationPracticeSettingsSchema.parse({}),
   ),
-  // Map of textbook IDs to dismissed prompt module IDs: { "genki_1": "module-id", "genki_2": "module-id" }
-  "dismissed-position-prompts": z.record(z.string(), z.string()).default({}),
   timestamp: z.number().default(0),
 
   // --- DEVICE-SPECIFIC SETTINGS (cookie only, no DB sync) ---

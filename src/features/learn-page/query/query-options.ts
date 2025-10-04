@@ -7,10 +7,7 @@ import { getVocabHierarchy } from "@/features/resolvers/kanji"
 import { getUserProgress } from "@/features/supabase/db/fsrs"
 import { getUserTextbookProgress } from "@/features/supabase/db/user-textbook-progress"
 import { getUserModuleCompletions } from "@/features/supabase/db/module-completions"
-import {
-  detectSequentialJump,
-  getUpcomingModules,
-} from "@/features/learn-page/utils/learning-position-detector"
+import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
 import { getVocabularyForModule } from "@/data/utils/vocab"
 import type { VocabularyItem, TextbookIDEnum } from "@/data/types"
 import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
@@ -116,55 +113,6 @@ export const userTextbookProgressQueryOptions = (
       return getUserTextbookProgress(userId, textbookId)
     },
     placeholderData: null,
-  })
-
-export const shouldPromptPositionUpdateQueryOptions = (
-  userId: string | null,
-  textbookId: TextbookIDEnum,
-  learningPathItems: string[],
-  completionsWithDates: ModuleCompletion[],
-  dismissedPromptId: string | undefined,
-  currentPosition: string | null,
-) =>
-  queryOptions({
-    queryKey: [
-      "should-prompt-position-update",
-      userId,
-      textbookId,
-      // Only include the module paths we actually check (first 2), not full objects with timestamps
-      completionsWithDates.slice(0, 2).map((c) => c.module_path),
-      dismissedPromptId,
-      currentPosition,
-    ],
-    queryFn: async (): Promise<{
-      shouldPrompt: boolean
-      suggestedPosition: string | null
-    }> => {
-      if (!userId) {
-        return { shouldPrompt: false, suggestedPosition: null }
-      }
-
-      // Check for sequential jump pattern
-      const jumpDetection = detectSequentialJump(
-        completionsWithDates.slice(0, 2), // Only need the 2 most recent
-        currentPosition,
-        learningPathItems,
-      )
-
-      // Don't prompt if this suggestion was already dismissed
-      if (
-        jumpDetection.shouldPrompt &&
-        jumpDetection.suggestedModuleId === dismissedPromptId
-      ) {
-        return { shouldPrompt: false, suggestedPosition: null }
-      }
-
-      return {
-        shouldPrompt: jumpDetection.shouldPrompt,
-        suggestedPosition: jumpDetection.suggestedModuleId,
-      }
-    },
-    placeholderData: { shouldPrompt: false, suggestedPosition: null },
   })
 
 export type ModuleWithCurrent = {

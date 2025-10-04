@@ -2,9 +2,7 @@
 import {
   createContext,
   useContext,
-  createSignal,
   createEffect,
-  Show,
   on,
 } from "solid-js"
 import type { ParentComponent } from "solid-js"
@@ -21,7 +19,6 @@ import {
   vocabHierarchyQueryOptions,
   completedModulesQueryOptions,
   fsrsProgressQueryOptions,
-  shouldPromptPositionUpdateQueryOptions,
   userTextbookProgressQueryOptions,
   upcomingModulesQueryOptions,
   type ModuleWithCurrent,
@@ -37,10 +34,9 @@ import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import {
   shouldUpdatePosition,
-  getModuleDistance,
+  detectSequentialJump,
   getUpcomingModules,
 } from "@/features/learn-page/utils/learning-position-detector"
-import { PositionUpdateModal } from "@/features/learn-page/components/shared/PositionUpdateModal"
 
 interface LearnPageContextValue {
   upcomingModulesQuery: UseQueryResult<ModuleWithCurrent[], DefaultError>
@@ -58,13 +54,6 @@ interface LearnPageContextValue {
     Record<string, FSRSCardData> | null,
     DefaultError
   >
-  promptQuery: UseQueryResult<
-    {
-      shouldPrompt: boolean
-      suggestedPosition: string | null
-    },
-    DefaultError
-  >
   dueCardsCountQuery: UseQueryResult<number, DefaultError>
 }
 
@@ -74,11 +63,6 @@ export const LearnPageProvider: ParentComponent = (props) => {
   const { textbookId, deck } = Route.useLoaderData()()
   const userId = Route.useRouteContext()().user?.id || null
   const queryClient = useQueryClient()
-
-  const [showPositionModal, setShowPositionModal] = createSignal(false)
-  const [handledSuggestions, setHandledSuggestions] = createSignal<Set<string>>(
-    new Set(),
-  )
 
   const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
   const completionsQuery = useCustomQuery(() =>
@@ -146,9 +130,6 @@ export const LearnPageProvider: ParentComponent = (props) => {
       queryKey: ["textbook-progress", userId, textbookId],
     })
     queryClient.invalidateQueries({
-      queryKey: ["should-prompt-position-update", userId, textbookId],
-    })
-    queryClient.invalidateQueries({
       queryKey: ["upcoming-modules", userId, textbookId],
     })
   }
@@ -166,19 +147,36 @@ export const LearnPageProvider: ParentComponent = (props) => {
       const mostRecent = completionsQuery.data[0]
       const currentPosition = progressQuery.data?.current_module_id || null
 
-      const shouldUpdate = shouldUpdatePosition(
+      // Check if should update due to nearby completion (±2 modules)
+      const shouldUpdateNearby = shouldUpdatePosition(
         mostRecent.module_path,
         currentPosition,
         deck.learning_path_items,
       )
 
-      if (shouldUpdate) {
+      if (shouldUpdateNearby) {
         await updateUserTextbookProgress(
           userId,
           textbookId,
           mostRecent.module_path,
         )
         return mostRecent.module_path
+      }
+
+      // Check if should update due to sequential jump (>2 modules away)
+      const jumpDetection = detectSequentialJump(
+        completionsQuery.data.slice(0, 2),
+        currentPosition,
+        deck.learning_path_items,
+      )
+
+      if (jumpDetection.shouldPrompt && jumpDetection.suggestedModuleId) {
+        await updateUserTextbookProgress(
+          userId,
+          textbookId,
+          jumpDetection.suggestedModuleId,
+        )
+        return jumpDetection.suggestedModuleId
       }
 
       return null
@@ -204,22 +202,6 @@ export const LearnPageProvider: ParentComponent = (props) => {
     }
   })
 
-  // Check if we should prompt for position update
-  const dismissedPromptId = () =>
-    settingsQuery.data?.["dismissed-position-prompts"]?.[textbookId]
-
-  const currentPosition = () => progressQuery.data?.current_module_id || null
-
-  const promptQuery = useCustomQuery(() =>
-    shouldPromptPositionUpdateQueryOptions(
-      userId,
-      textbookId,
-      deck.learning_path_items,
-      completionsQuery.data || [],
-      dismissedPromptId(),
-      currentPosition(),
-    ),
-  )
 
   // Auto-update position when most recent completion changes
   createEffect(
@@ -227,70 +209,11 @@ export const LearnPageProvider: ParentComponent = (props) => {
       () => completionsQuery.data?.[0]?.module_path,
       (mostRecentId) => {
         if (!mostRecentId) return
-
-        // Early exit: only run mutation if completion is relevant
-        const currentPos = currentPosition()
-        const distance = currentPos
-          ? getModuleDistance(
-              mostRecentId,
-              currentPos,
-              deck.learning_path_items,
-            )
-          : -1
-
-        // Only auto-update if: no position exists, or within ±2 modules
-        if (currentPos && distance > 2) {
-          return
-        }
-
         autoUpdatePositionMutation.mutate()
       },
       { defer: true },
     ),
   )
-
-  // Show modal when prompt is needed (but not if already handled)
-  createEffect(() => {
-    const suggestion = promptQuery.data?.suggestedPosition
-    if (
-      promptQuery.data?.shouldPrompt &&
-      suggestion &&
-      !handledSuggestions().has(suggestion)
-    ) {
-      setShowPositionModal(true)
-    }
-  })
-
-  const handlePositionConfirm = async () => {
-    const suggestedPosition = promptQuery.data?.suggestedPosition
-
-    if (userId && suggestedPosition) {
-      setHandledSuggestions((prev) => new Set(prev).add(suggestedPosition))
-      setShowPositionModal(false)
-
-      await updateUserTextbookProgress(userId, textbookId, suggestedPosition)
-
-      updateUpcomingModulesCookie(suggestedPosition)
-      invalidatePositionQueries()
-    }
-  }
-
-  const handlePositionDismiss = () => {
-    const suggestedPosition = promptQuery.data?.suggestedPosition
-    if (suggestedPosition) {
-      // Mark this suggestion as handled to prevent re-showing
-      setHandledSuggestions((prev) => new Set(prev).add(suggestedPosition))
-
-      // Save dismissed prompt to settings
-      updateMutation.mutate({
-        "dismissed-position-prompts": {
-          ...settingsQuery.data?.["dismissed-position-prompts"],
-          [textbookId]: suggestedPosition,
-        },
-      })
-    }
-    setShowPositionModal(false)
-  }
 
   return (
     <LearnPageContext.Provider
@@ -300,21 +223,10 @@ export const LearnPageProvider: ParentComponent = (props) => {
         settingsQuery,
         vocabHierarchyQuery,
         fsrsProgressQuery,
-        promptQuery,
         dueCardsCountQuery,
       }}
     >
       {props.children}
-      <Show when={promptQuery.data?.suggestedPosition}>
-        <PositionUpdateModal
-          open={showPositionModal()}
-          onOpenChange={(open) => {
-            if (!open) handlePositionDismiss()
-            setShowPositionModal(open)
-          }}
-          onConfirm={handlePositionConfirm}
-        />
-      </Show>
     </LearnPageContext.Provider>
   )
 }
