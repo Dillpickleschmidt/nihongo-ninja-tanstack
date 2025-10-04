@@ -180,19 +180,19 @@ function getDisplayTitle(title: string) {
   return title.startsWith("Practice ") ? title.substring(9) : title
 }
 
-function getLinkTo(lesson: Module, moduleKey: string) {
-  if ("link" in lesson && lesson.link) {
+export function getLinkTo(module: Module, moduleKey: string) {
+  if ("link" in module && module.link) {
     // For external resources, remove chapter folder:
     // /external-resources/chapter-0/resource-id → /external-resources/resource-id
-    if (lesson.link.startsWith("/external-resources/")) {
-      const parts = lesson.link.split("/")
+    if (module.link.startsWith("/external-resources/")) {
+      const parts = module.link.split("/")
       parts.splice(-2, 1) // Remove the second to last element (chapter folder)
       return parts.join("/")
     }
-    return lesson.link
+    return module.link
   }
 
-  if ("session_type" in lesson && lesson.session_type === "vocab-practice") {
+  if ("session_type" in module && module.session_type === "vocab-practice") {
     return `/vocab?import=${moduleKey}`
   }
 
@@ -360,21 +360,21 @@ function getModuleLightBackground(moduleType: string) {
 
 export function enrichLessons(
   lessons: {
-    lesson: Module
+    module: Module
     key: string
     disabled?: boolean
   }[],
 ): EnrichedLearningPathModule[] {
-  return lessons.map(({ lesson, key, disabled }) => {
-    const moduleType = getModuleType(lesson)
-    const displayTitle = getDisplayTitle(lesson.title)
+  return lessons.map(({ module, key, disabled }) => {
+    const moduleType = getModuleType(module)
+    const displayTitle = getDisplayTitle(module.title)
 
     return {
-      ...lesson,
+      ...module,
       moduleId: key,
       moduleType,
       displayTitle,
-      linkTo: getLinkTo(lesson, key),
+      linkTo: getLinkTo(module, key),
       iconClasses: getModuleIconClasses(moduleType),
       gradientClasses: getModuleGradient(moduleType),
       lightBackground: getModuleLightBackground(moduleType),

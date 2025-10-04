@@ -59,32 +59,29 @@ export function getMinifiedTextbookEntries(): [
  */
 export function getModules(deck: BuiltInDeck): {
   key: string
-  lesson: StaticModule | DynamicModule | ExternalResource
+  module: StaticModule | DynamicModule | ExternalResource
   disabled?: boolean
 }[] {
   if (!deck.learning_path_items) return []
 
   return deck.learning_path_items
     .map((moduleId) => {
-      const lesson = modules[moduleId]
+      const module = modules[moduleId]
       const disabled = deck.disabled_modules?.includes(moduleId)
-      return lesson
-        ? { lesson, key: moduleId, ...(disabled && { disabled: true }) }
+      return module
+        ? { module, key: moduleId, ...(disabled && { disabled: true }) }
         : null
     })
     .filter(
       (
         result,
       ): result is {
-        lesson: StaticModule | DynamicModule | ExternalResource
+        module: StaticModule | DynamicModule | ExternalResource
         key: string
         disabled?: boolean
       } => result !== null,
     )
 }
-
-// Backward compatibility alias
-export const getLessons = getModules
 
 /**
  * Helper function to create a vocab chapter from a textbook chapter

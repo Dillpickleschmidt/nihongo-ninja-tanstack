@@ -69,8 +69,8 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
     const allModules = getModules(deck)
     const rawResources = Object.fromEntries(
       allModules
-        .filter(({ lesson }) => "external_url" in lesson)
-        .map(({ key, lesson }) => [key, lesson as ExternalResource]),
+        .filter(({ module }) => "external_url" in module)
+        .map(({ key, module }) => [key, module as ExternalResource]),
     )
     const externalResources = enrichExternalResources(rawResources)
     const resourcesArray = Object.values(externalResources)

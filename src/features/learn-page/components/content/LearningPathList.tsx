@@ -8,7 +8,7 @@ import {
   type EnrichedLearningPathModule,
 } from "@/features/learn-page/utils/loader-helpers"
 import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
-import { getDeckBySlug, getLessons } from "@/data/utils/core"
+import { getDeckBySlug, getModules } from "@/data/utils/core"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import {
   ContextMenu,
@@ -39,8 +39,8 @@ function LessonsList() {
   const lessons = createMemo(() => {
     const deck = activeDeck()
     if (!deck) return []
-    const rawLessons = getLessons(deck)
-    return enrichLessons(rawLessons)
+    const rawModules = getModules(deck)
+    return enrichLessons(rawModules)
   })
 
   const midpoint = () => Math.ceil(lessons().length / 2)
