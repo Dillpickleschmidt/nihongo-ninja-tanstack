@@ -20,7 +20,7 @@ import {
   ColorModeScript,
   cookieStorageManagerSSR,
 } from "@kobalte/core"
-import { getCookie } from "@/utils/cookie-utils"
+import { getCookie, setCookie } from "@/utils/cookie-utils"
 import { createEffect } from "solid-js"
 import { createMediaQuery } from "@solid-primitives/media"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
@@ -38,6 +38,7 @@ import {
 } from "@/features/main-cookies/query/query-options"
 import { UserSettingsSchema } from "@/features/main-cookies/schemas/user-settings"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
+import { USER_SETTINGS_COOKIE } from "@/features/main-cookies/types"
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
@@ -102,7 +103,17 @@ export const Route = createRootRouteWithContext<{
           tour: currentData?.tour ?? defaults.tour,
           "device-type": currentData?.["device-type"] ?? defaults["device-type"],
         })
+
+        // Update cache
         queryClient.setQueryData(["user-settings", user.id], mergedData)
+
+        // Update cookie so next page load has fresh data
+        setCookie(USER_SETTINGS_COOKIE, JSON.stringify(mergedData), {
+          httpOnly: false,
+          secure: true,
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24 * 365, // 1 year
+        })
       }
     })
 
