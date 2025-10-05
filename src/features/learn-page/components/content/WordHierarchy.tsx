@@ -2,11 +2,6 @@
 import { For, Show, Suspense } from "solid-js"
 import { useAnimationManager } from "@/hooks/useAnimations"
 import { isServer } from "solid-js/web"
-import { useCustomQuery } from "@/hooks/useCustomQuery"
-import {
-  vocabHierarchyQueryOptions,
-  fsrsProgressQueryOptions,
-} from "@/queries/learn-page-queries"
 import {
   HoverCard,
   HoverCardContent,
@@ -25,13 +20,12 @@ import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import { extractHiragana } from "@/data/utils/vocab"
 import { useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
-import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
-import { userSettingsQueryOptions } from "@/queries/user-settings"
+import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 
 type WordHierarchyVariant = "mobile" | "desktop"
 type ProgressState = "not_seen" | "learning" | "well_known"
 
-// ✅ Local enriched types with progress
+// Local enriched types with progress
 type EnrichedVocabEntry = VocabEntry & { progress?: ProgressState }
 type EnrichedKanjiEntry = KanjiEntry & { progress?: ProgressState }
 type EnrichedRadicalEntry = RadicalEntry & { progress?: ProgressState }
@@ -94,33 +88,11 @@ function enrichHierarchyWithProgress(
 
 export function WordHierarchy(props: WordHierarchyProps) {
   const context = useRouteContext({ from: RootRoute.id })
-  const userId = context().user?.id || null
-  const loaderData = Route.useLoaderData()
-
-  const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
-
-  const vocabDataQuery = useCustomQuery(() =>
-    vocabHierarchyQueryOptions(
-      loaderData().textbookId,
-      loaderData().deck,
-      settingsQuery.data["override-settings"],
-    ),
-  )
-
-  const vocabData = vocabDataQuery.data!
-
-  // Load FSRS progress (depends on vocabData slugs)
-  const progressQuery = useCustomQuery(() =>
-    fsrsProgressQueryOptions(
-      userId,
-      loaderData().textbookId,
-      loaderData().deck.slug,
-      vocabData.slugs,
-    ),
-  )
-
+  const { vocabHierarchyQuery, fsrsProgressQuery } = useLearnPageContext()
   const { animateOnDataChange } = useAnimationManager()
   const hasUser = !!context().user
+
+  const vocabData = vocabHierarchyQuery.data!
 
   // Compute final data
   const enrichedData = () => {
@@ -129,7 +101,7 @@ export function WordHierarchy(props: WordHierarchyProps) {
       return null
     }
 
-    const progress = progressQuery.data
+    const progress = fsrsProgressQuery.data
     if (hasUser && progress) {
       return enrichHierarchyWithProgress(hierarchy, progress)
     }

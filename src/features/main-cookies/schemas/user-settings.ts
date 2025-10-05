@@ -126,6 +126,7 @@ export const UserSettingsSchema = z.object({
   "conjugation-practice": ConjugationPracticeSettingsSchema.default(
     ConjugationPracticeSettingsSchema.parse({}),
   ),
+  "textbook-positions": z.record(z.string(), z.string()).default({}),
   timestamp: z.number().default(0),
 
   // --- DEVICE-SPECIFIC SETTINGS (cookie only, no DB sync) ---

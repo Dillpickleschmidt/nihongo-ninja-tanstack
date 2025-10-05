@@ -1,23 +1,19 @@
 // routes/_home/learn/$textbookId.$chapterSlug.tsx
 import { createFileRoute, redirect } from "@tanstack/solid-router"
-import { getDeckBySlug, getExternalResources } from "@/data/utils/core"
+import { getDeckBySlug, getModules } from "@/data/utils/core"
 import { LearnPageContent } from "@/features/learn-page/components/layout/LearnPageContent"
+import { LearnPageProvider } from "@/features/learn-page/context/LearnPageContext"
 import {
   dueFSRSCardsCountQueryOptions,
   vocabHierarchyQueryOptions,
   completedModulesQueryOptions,
   fsrsProgressQueryOptions,
   resourceThumbnailQueryOptions,
-} from "@/queries/learn-page-queries"
+  upcomingModulesQueryOptions,
+} from "@/features/learn-page/query/query-options"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
-import {
-  userSettingsQueryOptions,
-  updateUserSettingsMutation,
-} from "@/queries/user-settings"
-import type { TextbookIDEnum } from "@/data/types"
-import { useMutation, useQueryClient } from "@tanstack/solid-query"
-import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { createEffect } from "solid-js"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import type { TextbookIDEnum, ExternalResource } from "@/data/types"
 
 export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
   loader: async ({ context, params }) => {
@@ -42,6 +38,15 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
     // Prefetch queries without awaiting (for streaming SSR)
     queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
     queryClient.prefetchQuery(dueFSRSCardsCountQueryOptions(user?.id || null))
+    queryClient.prefetchQuery(
+      upcomingModulesQueryOptions(
+        user?.id || null,
+        textbookId as TextbookIDEnum,
+        deck.learning_path_items,
+        userSettings["textbook-positions"]?.[textbookId as TextbookIDEnum] ||
+          null,
+      ),
+    )
 
     const vocabHierarchyData = await queryClient.ensureQueryData(
       vocabHierarchyQueryOptions(
@@ -61,7 +66,12 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
     )
 
     // Pre-fetch all resource thumbnails in parallel (non-blocking, for streaming)
-    const rawResources = getExternalResources(deck)
+    const allModules = getModules(deck)
+    const rawResources = Object.fromEntries(
+      allModules
+        .filter(({ module }) => "external_url" in module)
+        .map(({ key, module }) => [key, module as ExternalResource]),
+    )
     const externalResources = enrichExternalResources(rawResources)
     const resourcesArray = Object.values(externalResources)
     resourcesArray.forEach((resource) =>
@@ -101,32 +111,16 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       struggles: mockStruggles,
       historyItems: mockHistoryItems,
       externalResources,
+      userSettings,
     }
   },
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { textbookId, deck } = Route.useLoaderData()()
-  const userId = Route.useRouteContext()().user?.id || null
-
-  const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
-  const updateMutation = useMutation(() =>
-    updateUserSettingsMutation(userId, useQueryClient()),
+  return (
+    <LearnPageProvider>
+      <LearnPageContent />
+    </LearnPageProvider>
   )
-
-  // Update active textbook/deck when route params change
-  createEffect(() => {
-    const { "active-textbook": activeTextbook, "active-deck": activeDeck } =
-      settingsQuery.data || {}
-
-    if (activeTextbook !== textbookId || activeDeck !== deck.slug) {
-      updateMutation.mutate({
-        "active-textbook": textbookId,
-        "active-deck": deck.slug,
-      })
-    }
-  })
-
-  return <LearnPageContent />
 }

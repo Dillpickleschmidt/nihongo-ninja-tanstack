@@ -50,15 +50,14 @@ export default function ContentBox(props: ContentBoxProps) {
     mutationFn: ({ userId, moduleId }: { userId: string; moduleId: string }) =>
       addModuleCompletion(userId, moduleId),
     onSuccess: (data, variables) => {
-      // Update cache with the completed module
       queryClient.setQueryData(
         ["module-completions", variables.userId],
-        (old: string[] | undefined) => {
+        (old: ModuleCompletion[] | undefined) => {
           const modulePath = data.module_path
           // If module already in list, return as-is
-          if (old?.includes(modulePath)) return old
-          // Otherwise append the new module
-          return [...(old || []), modulePath]
+          if (old?.some((c) => c.module_path === modulePath)) return old
+          // prepend - most recent first, matching DB sort order
+          return [data, ...(old || [])]
         },
       )
     },
@@ -86,13 +85,14 @@ export default function ContentBox(props: ContentBoxProps) {
     const currentPath = location().pathname
     const moduleId = currentPath.split("/").pop()
 
-    // If user is logged in and we have a moduleId, mark as complete
+    // Mark as complete
     if (props.user && moduleId) {
-      // Fire mutation without awaiting - cache will update via onSuccess
-      addCompletionMutation.mutate({ userId: props.user.id, moduleId })
+      addCompletionMutation.mutate({
+        userId: props.user.id,
+        moduleId,
+      })
     }
 
-    // Navigate immediately
     navigate({ to: "/learn" })
   }
 

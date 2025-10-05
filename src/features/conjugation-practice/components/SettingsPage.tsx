@@ -5,7 +5,7 @@ import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
   userSettingsQueryOptions,
   updateUserSettingsMutation,
-} from "@/queries/user-settings"
+} from "@/features/main-cookies/query/query-options"
 import ToggleOption from "./ToggleOption"
 import { Button } from "@/components/ui/button"
 import {

@@ -15,6 +15,10 @@ export type DynamicModuleCollection = Record<string, DynamicModule>
 // External Resources: Keyed by a unique resource ID
 export type ExternalResourceCollection = Record<string, ExternalResource>
 
+// Unified Module type
+export type Module = StaticModule | DynamicModule | ExternalResource
+export type ModuleCollection = Record<string, Module>
+
 // Vocabulary: Keyed by the vocabulary word itself
 export type VocabularyCollection = Record<string, VocabularyItem>
 
@@ -35,13 +39,6 @@ export interface Textbook {
 }
 export type TextbookIDEnum = "genki_1" | "genki_2"
 
-export interface LearningPathItem {
-  type: "static_module" | "dynamic_module" | "external_resource"
-  id: string
-  daily_prog_amount?: number // number of minutes counted towards daily goal
-  disabled?: boolean
-}
-
 // --- Deck Types ---
 
 // A textbook chapter deck with learning paths and resources
@@ -51,11 +48,11 @@ export interface Deck {
   title: string
   description?: string
   disabled?: boolean
-  external_resource_ids?: string[]
 }
 
 export type BuiltInDeck = Deck & {
-  learning_path_items: LearningPathItem[]
+  learning_path_items: string[]
+  disabled_modules?: string[] // Module IDs that are disabled
 }
 
 // A named set of vocabulary keys (words), for use in modules.
@@ -102,11 +99,9 @@ export interface StaticModule {
 
 // --- External Resource Types ---
 
-export interface ExternalResource {
-  title: string
-  description?: string
-  internal_url?: string
+export interface ExternalResource extends StaticModule {
   external_url: string
+  description?: string
   creator_id: ResourceProvider
   prerequisite_vocab_keys?: string[] // Generally, these won't be presented in the
   //learning path until after completion of the modules before them, but these are
@@ -114,19 +109,6 @@ export interface ExternalResource {
   // learn first, or for resources that aren't even used in the core paths.
   prerequisite_module_ids?: string[]
   difficulty_rating: "easy" | "medium" | "hard"
-  resource_type:
-    | "video"
-    | "article"
-    | "podcast"
-    | "tool"
-    | "forum"
-    | "news"
-    | "textbook_companion"
-    | "listening_practice"
-    | "reading_practice"
-    | "grammar_guide"
-    | "other"
-  daily_prog_amount?: number // Todo: default to 15 minutes if not overridden in LearningPathItem
 }
 
 // --- Vocabulary Types ---

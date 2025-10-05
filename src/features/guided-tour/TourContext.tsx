@@ -6,12 +6,19 @@ import {
   ParentProps,
   onMount,
 } from "solid-js"
-import { useNavigate, useLocation, useRouteContext } from "@tanstack/solid-router"
+import {
+  useNavigate,
+  useLocation,
+  useRouteContext,
+} from "@tanstack/solid-router"
 import { driver } from "driver.js"
 import type { Driver } from "driver.js"
 import { useMutation, useQueryClient } from "@tanstack/solid-query"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions, updateUserSettingsMutation } from "@/queries/user-settings"
+import {
+  userSettingsQueryOptions,
+  updateUserSettingsMutation,
+} from "@/features/main-cookies/query/query-options"
 import { Route as RootRoute } from "@/routes/__root"
 import { TOURS } from "./tours"
 
@@ -35,7 +42,9 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
   const queryClient = useQueryClient()
   const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
 
-  const updateSettingsMutation = useMutation(() => updateUserSettingsMutation(userId, queryClient))
+  const updateSettingsMutation = useMutation(() =>
+    updateUserSettingsMutation(userId, queryClient),
+  )
 
   let driverInstance: Driver | null = null
   let currentTour: string | null = null

@@ -1,4 +1,4 @@
-// queries/user-settings.ts
+// features/main-cookies/query/query-options.ts
 import { queryOptions } from "@tanstack/solid-query"
 import type { MutationOptions } from "@tanstack/solid-query"
 import { getCookie, setCookie } from "@/utils/cookie-utils"
@@ -10,41 +10,39 @@ import type { QueryClient } from "@tanstack/solid-query"
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 
 /**
+ * Fetches user settings from database
+ * Returns null if user not found or error occurs
+ */
+export async function fetchUserSettingsFromDB(userId: string) {
+  const supabase = createSupabaseClient()
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("user_preferences")
+    .eq("user_id", userId)
+    .single()
+
+  return !error && data?.user_preferences ? data.user_preferences : null
+}
+
+/**
  * Query options for combined user settings (device-specific + user-specific)
- * - Device-specific fields (routes, tour, device-type): cookie only
- * - User-specific fields (everything else): cookie + DB sync
+ * - Returns cookie data immediately (fast path)
+ * - DB sync happens in background via fetchUserSettingsFromDB
  */
 export const userSettingsQueryOptions = (userId: string | null) =>
   queryOptions({
     queryKey: ["user-settings", userId],
     queryFn: async () => {
-      // Try to load from cookie first (fast path)
+      // Parse cookie data
       const cookieValue = getCookie(USER_SETTINGS_COOKIE)
       if (cookieValue) {
         try {
           const parsed = JSON.parse(cookieValue)
           const result = UserSettingsSchema.safeParse(parsed)
-          if (result.success) return result.data
+          if (result.success) {
+            return result.data
+          }
         } catch {}
-      }
-
-      // If no cookie or invalid, load user-specific settings from DB (if logged in)
-      if (userId) {
-        const supabase = createSupabaseClient()
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("user_preferences")
-          .eq("user_id", userId)
-          .single()
-
-        if (!error && data?.user_preferences) {
-          // Merge DB data with default device settings
-          const defaults = UserSettingsSchema.parse({})
-          return UserSettingsSchema.parse({
-            ...defaults,
-            ...data.user_preferences,
-          })
-        }
       }
 
       // Fallback to defaults
@@ -77,7 +75,12 @@ export const updateUserSettingsMutation = (
       userId,
     ])
 
-    const newSettings = { ...currentSettings, ...settings } as UserSettings
+    const timestamp = Date.now()
+    const newSettings = {
+      ...currentSettings,
+      ...settings,
+      timestamp,
+    } as UserSettings
 
     // Update cookie
     setCookie(USER_SETTINGS_COOKIE, JSON.stringify(newSettings), {
@@ -100,7 +103,8 @@ export const updateUserSettingsMutation = (
             "completed-tours": newSettings["completed-tours"],
             "override-settings": newSettings["override-settings"],
             "conjugation-practice": newSettings["conjugation-practice"],
-            timestamp: Date.now(),
+            "textbook-positions": newSettings["textbook-positions"],
+            timestamp,
           },
         })
         .eq("user_id", user.id)

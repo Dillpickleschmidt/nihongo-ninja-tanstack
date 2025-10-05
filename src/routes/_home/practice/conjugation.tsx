@@ -2,7 +2,7 @@ import ConjugationPractice from "@/features/conjugation-practice/ConjugationPrac
 import { createFileRoute } from "@tanstack/solid-router"
 import { z } from "zod"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/queries/user-settings"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 import { DEFAULT_CONJUGATION_SETTINGS } from "@/features/conjugation-practice/schemas/settings"
 import type { ConjugationPracticeSettings } from "@/features/conjugation-practice/schemas/settings"
 
