@@ -28,7 +28,7 @@ export const importReviewsServerFn = createServerFn({
   .handler(async ({ data }) => {
     const dependencies: ImportDependencies = {
       getFSRSCards: (userId: string, keys: string[]) =>
-        getFSRSCards({ data: { userId, keys } }),
+        getFSRSCards(userId, keys),
       batchUpsertFSRSCards: (processedCards) =>
         batchUpsertFSRSCardsForUser({ data: processedCards }),
       waniKaniService: getWaniKaniService(),

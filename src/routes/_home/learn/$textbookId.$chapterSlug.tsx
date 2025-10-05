@@ -10,6 +10,7 @@ import {
   fsrsProgressQueryOptions,
   resourceThumbnailQueryOptions,
   upcomingModulesQueryOptions,
+  moduleProgressQueryOptions,
 } from "@/features/learn-page/query/query-options"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
@@ -67,6 +68,19 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
 
     // Pre-fetch all resource thumbnails in parallel (non-blocking, for streaming)
     const allModules = getModules(deck)
+
+    // Prefetch module progress for vocab-practice modules
+    const vocabPracticeModuleIds = allModules
+      .filter(
+        ({ module }) =>
+          "session_type" in module && module.session_type === "vocab-practice",
+      )
+      .map(({ key }) => key)
+
+    queryClient.prefetchQuery(
+      moduleProgressQueryOptions(user?.id || null, vocabPracticeModuleIds),
+    )
+
     const rawResources = Object.fromEntries(
       allModules
         .filter(({ module }) => "external_url" in module)
@@ -107,6 +121,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       user,
       textbookId: textbookId as TextbookIDEnum,
       chapterSlug,
+      vocabPracticeModuleIds,
       deck,
       struggles: mockStruggles,
       historyItems: mockHistoryItems,

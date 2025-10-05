@@ -106,12 +106,7 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
 
       if (context.user && allHierarchySlugs.size > 0) {
         moduleFSRSCards = defer(
-          getFSRSCards({
-            data: {
-              userId: context.user.id,
-              keys: Array.from(allHierarchySlugs),
-            },
-          }),
+          getFSRSCards(context.user.id, Array.from(allHierarchySlugs)),
         )
         dueFSRSCards = defer(getDueFSRSCards({ data: context.user.id }))
       }

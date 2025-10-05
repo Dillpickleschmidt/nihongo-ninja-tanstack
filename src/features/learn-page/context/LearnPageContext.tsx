@@ -15,6 +15,7 @@ import {
   completedModulesQueryOptions,
   fsrsProgressQueryOptions,
   upcomingModulesQueryOptions,
+  moduleProgressQueryOptions,
   type ModuleWithCurrent,
 } from "@/features/learn-page/query/query-options"
 import {
@@ -53,7 +54,7 @@ interface LearnPageContextValue {
 const LearnPageContext = createContext<LearnPageContextValue>()
 
 export const LearnPageProvider: ParentComponent = (props) => {
-  const { textbookId, deck } = Route.useLoaderData()()
+  const { textbookId, deck, vocabPracticeModuleIds } = Route.useLoaderData()()
   const userId = Route.useRouteContext()().user?.id || null
   const queryClient = useQueryClient()
 
@@ -186,6 +187,19 @@ export const LearnPageProvider: ParentComponent = (props) => {
       { defer: true },
     ),
   )
+
+  // Log module progress when available
+  createEffect(() => {
+    if (!userId || vocabPracticeModuleIds.length === 0) return
+
+    const progressData = queryClient.getQueryData(
+      moduleProgressQueryOptions(userId, vocabPracticeModuleIds).queryKey,
+    )
+
+    if (progressData) {
+      console.log("Module Progress:", progressData)
+    }
+  })
 
   return (
     <LearnPageContext.Provider

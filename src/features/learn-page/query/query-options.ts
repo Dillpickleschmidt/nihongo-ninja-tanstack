@@ -2,15 +2,21 @@
 import { queryOptions } from "@tanstack/solid-query"
 import { getDeckBySlug } from "@/data/utils/core"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
-import { getDueFSRSCardsCount } from "@/features/supabase/db/fsrs"
+import { getDueFSRSCardsCount, getFSRSCards } from "@/features/supabase/db/fsrs"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
 import { getUserProgress } from "@/features/supabase/db/fsrs"
 import { getUserModuleCompletions } from "@/features/supabase/db/module-completions"
 import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
-import { getVocabularyForModule } from "@/data/utils/vocab"
+import {
+  getVocabularyForModule,
+  hasKanji,
+  getVocabSets,
+} from "@/data/utils/vocab"
+import { dynamic_modules } from "@/data/dynamic_modules"
 import type { VocabularyItem, TextbookIDEnum } from "@/data/types"
 import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { ResourceProvider } from "@/data/resources-config"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 
 export const vocabHierarchyQueryOptions = (
   activeTextbook: string,
@@ -137,3 +143,146 @@ export const upcomingModulesQueryOptions = (
     queryFn,
   })
 }
+
+export type ModuleProgress = {
+  completed: number
+  total: number
+  percentage: number
+  meanings: {
+    completed: number
+    total: number
+    percentage: number
+  }
+  spellings: {
+    completed: number
+    total: number
+    percentage: number
+  }
+}
+
+export const moduleProgressQueryOptions = (
+  userId: string | null,
+  moduleIds: string[],
+) =>
+  queryOptions({
+    queryKey: ["module-progress", userId, moduleIds] as const,
+    queryFn: async (): Promise<Record<string, ModuleProgress>> => {
+      if (!userId || moduleIds.length === 0) return {}
+
+      // Collect all vocab set IDs needed across all modules
+      const allVocabSetIds = new Set<string>()
+      moduleIds.forEach((moduleId) => {
+        const module = dynamic_modules[moduleId]
+        if (module?.vocab_set_ids) {
+          module.vocab_set_ids.forEach((setId) => allVocabSetIds.add(setId))
+        }
+      })
+
+      // Fetch all vocabulary sets in a single query
+      const vocabSets = await getVocabSets({ data: Array.from(allVocabSetIds) })
+
+      // Build map of moduleId -> vocab keys and collect all unique keys
+      const moduleVocabMap = new Map<string, string[]>()
+      const allVocabKeys = new Set<string>()
+
+      for (const moduleId of moduleIds) {
+        const module = dynamic_modules[moduleId]
+        if (!module || !module.vocab_set_ids) continue
+
+        const vocabKeys: string[] = []
+        for (const setId of module.vocab_set_ids) {
+          const keys = vocabSets[setId]
+          if (keys) {
+            vocabKeys.push(...keys)
+            keys.forEach((key) => allVocabKeys.add(key))
+          }
+        }
+
+        moduleVocabMap.set(moduleId, vocabKeys)
+      }
+
+      // Fetch all FSRS cards in a single query
+      const fsrsCards = await getFSRSCards(userId, Array.from(allVocabKeys))
+
+      // Build HashMap for O(1) lookups: "key:mode" -> FSRSCardData
+      const fsrsCardIndex = new Map<string, FSRSCardData>()
+      fsrsCards.forEach((card) => {
+        if (card.type === "vocabulary") {
+          fsrsCardIndex.set(`${card.practice_item_key}:${card.mode}`, card)
+        }
+      })
+
+      // Build Set of vocab items containing kanji
+      const kanjiVocabSet = new Set<string>()
+      allVocabKeys.forEach((key) => {
+        if (hasKanji(key)) {
+          kanjiVocabSet.add(key)
+        }
+      })
+
+      // Calculate progress for each module
+      const progressMap: Record<string, ModuleProgress> = {}
+
+      for (const [moduleId, vocabKeys] of moduleVocabMap.entries()) {
+        let total = 0
+        let completed = 0
+        let meaningsTotal = 0
+        let meaningsCompleted = 0
+        let spellingsTotal = 0
+        let spellingsCompleted = 0
+
+        for (const key of vocabKeys) {
+          const hasKanjiChar = kanjiVocabSet.has(key)
+
+          // All vocab items need meanings
+          meaningsTotal++
+          const meaningCard = fsrsCardIndex.get(`${key}:meanings`)
+          if (meaningCard) {
+            meaningsCompleted++
+            completed++
+          }
+          total++
+
+          if (hasKanjiChar) {
+            // Kanji words also need spellings
+            spellingsTotal++
+            const spellingCard = fsrsCardIndex.get(`${key}:spellings`)
+            if (spellingCard) {
+              spellingsCompleted++
+              completed++
+            }
+            total++
+          }
+        }
+
+        const percentage = total > 0 ? Math.round((completed / total) * 100) : 0
+        const meaningsPercentage =
+          meaningsTotal > 0
+            ? Math.round((meaningsCompleted / meaningsTotal) * 100)
+            : 0
+        const spellingsPercentage =
+          spellingsTotal > 0
+            ? Math.round((spellingsCompleted / spellingsTotal) * 100)
+            : 100
+
+        progressMap[moduleId] = {
+          completed,
+          total,
+          percentage,
+          meanings: {
+            completed: meaningsCompleted,
+            total: meaningsTotal,
+            percentage: meaningsPercentage,
+          },
+          spellings: {
+            completed: spellingsCompleted,
+            total: spellingsTotal,
+            percentage: spellingsPercentage,
+          },
+        }
+      }
+
+      return progressMap
+    },
+    placeholderData: {},
+  })
