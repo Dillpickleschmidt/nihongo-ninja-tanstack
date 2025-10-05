@@ -30,6 +30,7 @@ import {
   shouldUpdatePosition,
   detectSequentialJump,
 } from "@/features/learn-page/utils/learning-position-detector"
+import { addModuleCompletion } from "@/features/supabase/db/module-completions"
 
 interface LearnPageContextValue {
   upcomingModulesQuery: UseQueryResult<ModuleWithCurrent[], DefaultError>
@@ -163,6 +164,17 @@ export const LearnPageProvider: ParentComponent = (props) => {
     onSuccess: handlePositionUpdate,
   }))
 
+  // Auto-complete vocab-practice modules at >=95% progress
+  const autoCompleteMutation = useMutation(() => ({
+    mutationFn: ({ userId, moduleId }: { userId: string; moduleId: string }) =>
+      addModuleCompletion(userId, moduleId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["module-completions", userId],
+      })
+    },
+  }))
+
   // Update active textbook/deck when route params change
   createEffect(() => {
     const { "active-textbook": activeTextbook, "active-deck": activeDeck } =
@@ -188,7 +200,7 @@ export const LearnPageProvider: ParentComponent = (props) => {
     ),
   )
 
-  // Log module progress when available
+  // Log module progress and auto-complete at >=95%
   createEffect(() => {
     if (!userId || vocabPracticeModuleIds.length === 0) return
 
@@ -198,6 +210,17 @@ export const LearnPageProvider: ParentComponent = (props) => {
 
     if (progressData) {
       console.log("Module Progress:", progressData)
+
+      // Auto-complete modules at >=95%
+      const completedModulePaths = new Set(
+        completionsQuery.data?.map((c) => c.module_path) || [],
+      )
+
+      Object.entries(progressData).forEach(([moduleId, progress]) => {
+        if (progress.percentage >= 95 && !completedModulePaths.has(moduleId)) {
+          autoCompleteMutation.mutate({ userId, moduleId })
+        }
+      })
     }
   })
 
