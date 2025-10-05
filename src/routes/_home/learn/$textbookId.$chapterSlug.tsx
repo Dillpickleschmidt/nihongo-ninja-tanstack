@@ -43,8 +43,8 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
         user?.id || null,
         textbookId as TextbookIDEnum,
         deck.learning_path_items,
-        null,
-        userSettings["upcoming-modules"]?.[textbookId as TextbookIDEnum],
+        userSettings["textbook-positions"]?.[textbookId as TextbookIDEnum] ||
+          null,
       ),
     )
 

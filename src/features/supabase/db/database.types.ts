@@ -200,27 +200,6 @@ export type Database = {
         }
         Relationships: []
       }
-      user_textbook_progress: {
-        Row: {
-          current_module_id: string
-          textbook_id: string
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          current_module_id: string
-          textbook_id: string
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          current_module_id?: string
-          textbook_id?: string
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
       vocabulary_items: {
         Row: {
           created_at: string

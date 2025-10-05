@@ -126,13 +126,12 @@ export const UserSettingsSchema = z.object({
   "conjugation-practice": ConjugationPracticeSettingsSchema.default(
     ConjugationPracticeSettingsSchema.parse({}),
   ),
+  "textbook-positions": z.record(z.string(), z.string()).default({}),
   timestamp: z.number().default(0),
 
   // --- DEVICE-SPECIFIC SETTINGS (cookie only, no DB sync) ---
   routes: RouteSettingsSchema.default(RouteSettingsSchema.parse({})),
   tour: TourSettingsSchema.default(TourSettingsSchema.parse({})),
-  // Map of textbook IDs to upcoming module IDs: { "genki_1": ["module-1", "module-2", ...] }
-  "upcoming-modules": z.record(z.string(), z.array(z.string())).default({}),
   "device-type": z.enum(["mobile", "desktop"]).nullable().default(null),
 })
 

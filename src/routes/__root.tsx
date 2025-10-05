@@ -34,7 +34,10 @@ import { PostHogProvider } from "@/features/posthog/PostHogContext"
 import {
   userSettingsQueryOptions,
   updateUserSettingsMutation,
+  fetchUserSettingsFromDB,
 } from "@/features/main-cookies/query/query-options"
+import { UserSettingsSchema } from "@/features/main-cookies/schemas/user-settings"
+import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
@@ -63,15 +66,45 @@ export const Route = createRootRouteWithContext<{
     const { queryClient } = context
     queryClient.prefetchQuery(userSettingsQueryOptions(user?.id || null))
 
-    return { user }
+    // Start DB fetch immediately (fire-and-forget)
+    const dbSyncPromise = user?.id
+      ? fetchUserSettingsFromDB(user.id)
+      : Promise.resolve(null)
+
+    return { user, dbSyncPromise }
   },
   loader: async ({ context }) => {
-    const { user, queryClient } = context
+    const { user, queryClient, dbSyncPromise } = context
 
     // Await queries to ensure data ready for SSR
     const userSettings = await queryClient.ensureQueryData(
       userSettingsQueryOptions(user?.id || null),
     )
+
+    // When DB fetch completes, compare timestamps and update if DB is newer (fire-and-forget)
+    dbSyncPromise.then((dbData) => {
+      if (!dbData || !user?.id) return
+
+      const currentData = queryClient.getQueryData<UserSettings>([
+        "user-settings",
+        user.id,
+      ])
+      const dbTimestamp = dbData.timestamp || 0
+      const currentTimestamp = currentData?.timestamp || 0
+
+      if (dbTimestamp > currentTimestamp) {
+        const defaults = UserSettingsSchema.parse({})
+        const mergedData = UserSettingsSchema.parse({
+          ...defaults,
+          ...dbData,
+          // Preserve device-specific fields from cookie
+          routes: currentData?.routes ?? defaults.routes,
+          tour: currentData?.tour ?? defaults.tour,
+          "device-type": currentData?.["device-type"] ?? defaults["device-type"],
+        })
+        queryClient.setQueryData(["user-settings", user.id], mergedData)
+      }
+    })
 
     // Check if main tour should auto-start
     const isMainTourCompleted =

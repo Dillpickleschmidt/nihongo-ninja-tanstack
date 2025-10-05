@@ -14,7 +14,6 @@ import {
   vocabHierarchyQueryOptions,
   completedModulesQueryOptions,
   fsrsProgressQueryOptions,
-  userTextbookProgressQueryOptions,
   upcomingModulesQueryOptions,
   type ModuleWithCurrent,
 } from "@/features/learn-page/query/query-options"
@@ -23,14 +22,12 @@ import {
   updateUserSettingsMutation,
 } from "@/features/main-cookies/query/query-options"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
-import { updateUserTextbookProgress } from "@/features/supabase/db/user-textbook-progress"
 import type { VocabularyItem } from "@/data/types"
 import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import {
   shouldUpdatePosition,
   detectSequentialJump,
-  getUpcomingModules,
 } from "@/features/learn-page/utils/learning-position-detector"
 
 interface LearnPageContextValue {
@@ -64,9 +61,6 @@ export const LearnPageProvider: ParentComponent = (props) => {
   const completionsQuery = useCustomQuery(() =>
     completedModulesQueryOptions(userId),
   )
-  const progressQuery = useCustomQuery(() =>
-    userTextbookProgressQueryOptions(userId, textbookId),
-  )
   const dueCardsCountQuery = useCustomQuery(() =>
     dueFSRSCardsCountQueryOptions(userId),
   )
@@ -75,8 +69,7 @@ export const LearnPageProvider: ParentComponent = (props) => {
       userId,
       textbookId,
       deck.learning_path_items,
-      progressQuery.data?.current_module_id || null,
-      settingsQuery.data?.["upcoming-modules"]?.[textbookId],
+      settingsQuery.data?.["textbook-positions"]?.[textbookId] || null,
     ),
   )
   const vocabHierarchyQuery = useCustomQuery(() =>
@@ -99,51 +92,26 @@ export const LearnPageProvider: ParentComponent = (props) => {
     updateUserSettingsMutation(userId, queryClient),
   )
 
-  // Helper to update upcoming modules cookie when position changes
-  const updateUpcomingModulesCookie = (newPosition: string) => {
-    const currentModuleId = deck.learning_path_items.find(
-      (moduleId) => moduleId === newPosition,
-    )
-    const upcoming = getUpcomingModules(
-      newPosition,
-      deck.learning_path_items,
-      5,
-    )
-    const withCurrent = currentModuleId
-      ? [{ id: currentModuleId }, ...upcoming]
-      : upcoming
-    const moduleIds = withCurrent.map((item) => item.id)
-
-    updateMutation.mutate({
-      "upcoming-modules": {
-        ...settingsQuery.data?.["upcoming-modules"],
-        [textbookId]: moduleIds,
-      },
-    })
-  }
-
-  // Shared invalidation helper for all position updates
-  const invalidatePositionQueries = () => {
-    queryClient.invalidateQueries({
-      queryKey: ["textbook-progress", userId, textbookId],
-    })
-    queryClient.invalidateQueries({
-      queryKey: ["upcoming-modules", userId, textbookId],
-    })
-  }
-
   // Shared update function for position changes
   const updatePosition = async (moduleId: string) => {
     if (!userId) return null
-    await updateUserTextbookProgress(userId, textbookId, moduleId)
+
+    updateMutation.mutate({
+      "textbook-positions": {
+        ...settingsQuery.data?.["textbook-positions"],
+        [textbookId]: moduleId,
+      },
+    })
+
     return moduleId
   }
 
   // Shared onSuccess handler for position updates
   const handlePositionUpdate = (moduleId: string | null) => {
     if (moduleId) {
-      updateUpcomingModulesCookie(moduleId)
-      invalidatePositionQueries()
+      queryClient.invalidateQueries({
+        queryKey: ["upcoming-modules", userId, textbookId],
+      })
     }
   }
 
@@ -164,7 +132,8 @@ export const LearnPageProvider: ParentComponent = (props) => {
         return null
 
       const mostRecent = completionsQuery.data[0]
-      const currentPosition = progressQuery.data?.current_module_id || null
+      const currentPosition =
+        settingsQuery.data?.["textbook-positions"]?.[textbookId] || null
 
       // Check if should update due to nearby completion (±2 modules)
       const shouldUpdateNearby = shouldUpdatePosition(

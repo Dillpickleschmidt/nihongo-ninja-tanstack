@@ -5,7 +5,6 @@ import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { getDueFSRSCardsCount } from "@/features/supabase/db/fsrs"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
 import { getUserProgress } from "@/features/supabase/db/fsrs"
-import { getUserTextbookProgress } from "@/features/supabase/db/user-textbook-progress"
 import { getUserModuleCompletions } from "@/features/supabase/db/module-completions"
 import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
 import { getVocabularyForModule } from "@/data/utils/vocab"
@@ -102,19 +101,6 @@ export const resourceThumbnailQueryOptions = (
     queryFn: () => fetchThumbnailUrl(resourceUrl, creatorId),
   })
 
-export const userTextbookProgressQueryOptions = (
-  userId: string | null,
-  textbookId: TextbookIDEnum,
-) =>
-  queryOptions({
-    queryKey: ["textbook-progress", userId, textbookId],
-    queryFn: async () => {
-      if (!userId) return null
-      return getUserTextbookProgress(userId, textbookId)
-    },
-    placeholderData: null,
-  })
-
 export type ModuleWithCurrent = {
   id: string
   isCurrent?: boolean
@@ -126,7 +112,6 @@ export const upcomingModulesQueryOptions = (
   textbookId: TextbookIDEnum,
   learningPathItems: string[],
   currentPosition: string | null,
-  cachedModuleIds?: string[],
 ) => {
   const queryFn = async (): Promise<ModuleWithCurrent[]> => {
     if (!currentPosition)
@@ -142,30 +127,13 @@ export const upcomingModulesQueryOptions = (
       : upcoming
   }
 
-  const queryKey = [
-    "upcoming-modules",
-    userId,
-    textbookId,
-    currentPosition,
-  ] as const
-
-  if (cachedModuleIds) {
-    const initialData = cachedModuleIds
-      .map((id, index) => {
-        const found = learningPathItems.find((moduleId) => moduleId === id)
-        return found ? { id: found, isCurrent: index === 0 } : null
-      })
-      .filter((item) => item !== null) as ModuleWithCurrent[]
-
-    return queryOptions({
-      queryKey,
-      queryFn,
-      initialData,
-    })
-  }
-
   return queryOptions({
-    queryKey,
+    queryKey: [
+      "upcoming-modules",
+      userId,
+      textbookId,
+      currentPosition,
+    ] as const,
     queryFn,
   })
 }

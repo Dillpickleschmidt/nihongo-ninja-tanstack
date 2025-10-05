@@ -55,12 +55,4 @@ declare global {
     SupabaseDB["public"]["Tables"]["user_module_completions"]["Row"]
   type ModuleCompletionInsert =
     SupabaseDB["public"]["Tables"]["user_module_completions"]["Insert"]
-
-  // User Textbook Progress Types
-  type UserTextbookProgress =
-    SupabaseDB["public"]["Tables"]["user_textbook_progress"]["Row"]
-  type UserTextbookProgressInsert =
-    SupabaseDB["public"]["Tables"]["user_textbook_progress"]["Insert"]
-  type UserTextbookProgressUpdate =
-    SupabaseDB["public"]["Tables"]["user_textbook_progress"]["Update"]
 }
