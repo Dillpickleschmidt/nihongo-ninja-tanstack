@@ -1,5 +1,5 @@
 // features/learn-page/components/content/WordHierarchy.tsx
-import { For, Show, Suspense, createSignal, createEffect } from "solid-js"
+import { For, Show, Suspense, createSignal, createEffect, on } from "solid-js"
 import { useAnimationManager } from "@/hooks/useAnimations"
 import { isServer } from "solid-js/web"
 import {
@@ -260,53 +260,46 @@ function WordHierarchyDisplay(props: {
         </div>
 
         {/* Word/Kanji/Radical Content */}
-        <TabsContent
-          value="vocab"
+        <div
+          class="mt-2 rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1.5 pl-4 opacity-0 backdrop-blur-sm"
           data-word-hierarchy-content
-          class="rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1.5 pl-4 opacity-0 backdrop-blur-sm"
         >
-          <Show when={props.enrichedData()}>
-            {(data) => (
-              <VocabularyList
-                hierarchy={data().vocabulary}
-                chapterVocabulary={props.chapterVocabulary()}
-                variant={props.variant}
-              />
-            )}
-          </Show>
-        </TabsContent>
+          <TabsContent value="vocab">
+            <Show when={props.enrichedData()}>
+              {(data) => (
+                <VocabularyList
+                  hierarchy={data().vocabulary}
+                  chapterVocabulary={props.chapterVocabulary()}
+                  variant={props.variant}
+                />
+              )}
+            </Show>
+          </TabsContent>
 
-        <TabsContent
-          value="kanji"
-          data-word-hierarchy-content
-          class="rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-4 backdrop-blur-sm"
-        >
-          <Show when={props.enrichedData()}>
-            {(data) => (
-              <CharacterList
-                title="Kanji"
-                items={data().kanji}
-                variant={props.variant}
-              />
-            )}
-          </Show>
-        </TabsContent>
+          <TabsContent value="kanji">
+            <Show when={props.enrichedData()}>
+              {(data) => (
+                <CharacterList
+                  title="Kanji"
+                  items={data().kanji}
+                  variant={props.variant}
+                />
+              )}
+            </Show>
+          </TabsContent>
 
-        <TabsContent
-          value="radicals"
-          data-word-hierarchy-content
-          class="rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 p-4 backdrop-blur-sm"
-        >
-          <Show when={props.enrichedData()}>
-            {(data) => (
-              <CharacterList
-                title="Radicals"
-                items={data().radicals}
-                variant={props.variant}
-              />
-            )}
-          </Show>
-        </TabsContent>
+          <TabsContent value="radicals">
+            <Show when={props.enrichedData()}>
+              {(data) => (
+                <CharacterList
+                  title="Radicals"
+                  items={data().radicals}
+                  variant={props.variant}
+                />
+              )}
+            </Show>
+          </TabsContent>
+        </div>
       </Tabs>
     </div>
   )
@@ -343,12 +336,17 @@ function ProgressCircleTrigger(props: {
     createSignal(circumference)
 
   // Animate to final values when data changes
-  createEffect(() => {
-    requestAnimationFrame(() => {
-      setAnimatedOffsetLearned(offsetLearned())
-      setAnimatedOffsetTotal(offsetTotal())
-    })
-  })
+  createEffect(
+    on(
+      () => [props.countLearned, props.countInProgress, props.total],
+      () => {
+        requestAnimationFrame(() => {
+          setAnimatedOffsetLearned(offsetLearned())
+          setAnimatedOffsetTotal(offsetTotal())
+        })
+      },
+    ),
+  )
 
   return (
     <HoverCard openDelay={200}>
