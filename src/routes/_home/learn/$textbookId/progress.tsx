@@ -49,8 +49,8 @@ function RouteComponent() {
         <UpcomingModulesList
           variant="lg"
           completedModules={completionsQuery.data || []}
-          upcomingModules={upcomingModules()}
-          moduleProgress={moduleProgressQuery.data || {}}
+          upcomingModules={upcomingModules}
+          moduleProgress={() => moduleProgressQuery.data || {}}
           onLoadMore={loadMoreCompletions}
         />
       </div>
@@ -65,8 +65,8 @@ function RouteComponent() {
           <UpcomingModulesList
             variant="lg"
             completedModules={completionsQuery.data || []}
-            upcomingModules={upcomingModules()}
-            moduleProgress={moduleProgressQuery.data || {}}
+            upcomingModules={upcomingModules}
+            moduleProgress={() => moduleProgressQuery.data || {}}
             onLoadMore={loadMoreCompletions}
           />
         </div>

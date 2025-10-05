@@ -165,16 +165,27 @@ export type ModuleProgress = {
 
 export const moduleProgressQueryOptions = (
   userId: string | null,
-  moduleIds: string[],
-) =>
-  queryOptions({
-    queryKey: ["module-progress", userId, moduleIds] as const,
+  upcomingModules: ModuleWithCurrent[],
+) => {
+  const vocabPracticeModuleIds = upcomingModules
+    .map((item) => item.id)
+    .filter((moduleId) => {
+      const module = dynamic_modules[moduleId]
+      return module && module.session_type === "vocab-practice"
+    })
+
+  return queryOptions({
+    queryKey: [
+      "module-progress",
+      userId,
+      upcomingModules.map((m) => m.id),
+    ] as const,
     queryFn: async (): Promise<Record<string, ModuleProgress>> => {
-      if (!userId || moduleIds.length === 0) return {}
+      if (!userId || vocabPracticeModuleIds.length === 0) return {}
 
       // Collect all vocab set IDs needed across all modules
       const allVocabSetIds = new Set<string>()
-      moduleIds.forEach((moduleId) => {
+      vocabPracticeModuleIds.forEach((moduleId) => {
         const module = dynamic_modules[moduleId]
         if (module?.vocab_set_ids) {
           module.vocab_set_ids.forEach((setId) => allVocabSetIds.add(setId))
@@ -188,7 +199,7 @@ export const moduleProgressQueryOptions = (
       const moduleVocabMap = new Map<string, string[]>()
       const allVocabKeys = new Set<string>()
 
-      for (const moduleId of moduleIds) {
+      for (const moduleId of vocabPracticeModuleIds) {
         const module = dynamic_modules[moduleId]
         if (!module || !module.vocab_set_ids) continue
 
@@ -287,5 +298,7 @@ export const moduleProgressQueryOptions = (
 
       return progressMap
     },
+    enabled: vocabPracticeModuleIds.length > 0,
     placeholderData: {},
   })
+}

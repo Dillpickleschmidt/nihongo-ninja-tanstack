@@ -120,7 +120,7 @@ export const LearnPageProvider: ParentComponent = (props) => {
   )
 
   const moduleProgressQuery = useCustomQuery(() =>
-    moduleProgressQueryOptions(userId, loaderData().vocabPracticeModuleIds),
+    moduleProgressQueryOptions(userId, upcomingModulesQuery.data || []),
   )
 
   const updateMutation = useMutation(() =>
@@ -224,28 +224,22 @@ export const LearnPageProvider: ParentComponent = (props) => {
     ),
   )
 
-  // Log module progress and auto-complete at >=95%
+  // Auto-complete modules at >=95% progress
   createEffect(() => {
-    const currentVocabPracticeModuleIds = loaderData().vocabPracticeModuleIds
-    if (!userId || currentVocabPracticeModuleIds.length === 0) return
+    if (!userId) return
 
-    const progressData = queryClient.getQueryData(
-      moduleProgressQueryOptions(userId, currentVocabPracticeModuleIds)
-        .queryKey,
+    const progressData = moduleProgressQuery.data
+    if (!progressData || Object.keys(progressData).length === 0) return
+
+    const completedModulePaths = new Set(
+      completionsQuery.data?.map((c) => c.module_path) || [],
     )
 
-    if (progressData) {
-      // Auto-complete modules at >=95%
-      const completedModulePaths = new Set(
-        completionsQuery.data?.map((c) => c.module_path) || [],
-      )
-
-      Object.entries(progressData).forEach(([moduleId, progress]) => {
-        if (progress.percentage >= 95 && !completedModulePaths.has(moduleId)) {
-          autoCompleteMutation.mutate({ userId, moduleId })
-        }
-      })
-    }
+    Object.entries(progressData).forEach(([moduleId, progress]) => {
+      if (progress.percentage >= 95 && !completedModulePaths.has(moduleId)) {
+        autoCompleteMutation.mutate({ userId, moduleId })
+      }
+    })
   })
 
   return (

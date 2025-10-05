@@ -20,14 +20,17 @@ const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 interface UpcomingModulesListProps {
   variant: "sm" | "lg"
   completedModules?: ModuleCompletion[]
-  upcomingModules: ModuleWithCurrent[]
-  moduleProgress?: Record<string, ModuleProgress>
+  upcomingModules: () => ModuleWithCurrent[]
+  moduleProgress?: () => Record<string, ModuleProgress>
   onLoadMore?: () => void
 }
 
 export function UpcomingModulesList(props: UpcomingModulesListProps) {
   const isSm = props.variant === "sm"
   const completedToShow = isSm ? 1 : 3
+
+  const moduleProgress = () => props.moduleProgress?.() || {}
+
   const visibleCompleted = () => {
     if (!props.completedModules) return []
     return props.completedModules.slice(0, completedToShow)
@@ -57,7 +60,7 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
   }
 
   const firstIncompleteIndex = () => {
-    return props.upcomingModules.findIndex((item) => !isCompleted(item.id))
+    return props.upcomingModules().findIndex((item) => !isCompleted(item.id))
   }
 
   const isCompleted = (moduleId: string) =>
@@ -97,7 +100,7 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
         <h3 class="text-lg font-semibold">Upcoming Lessons</h3>
 
         <Show
-          when={props.upcomingModules.length}
+          when={props.upcomingModules().length}
           fallback={
             <p class="text-muted-foreground text-sm">
               Complete a lesson to see upcoming modules
@@ -137,7 +140,7 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
             </For>
 
             {/* Upcoming modules */}
-            <For each={props.upcomingModules}>
+            <For each={props.upcomingModules()}>
               {(item, index) => {
                 const moduleInfo = getModuleInfo(item.id)
                 const circleClasses = getModuleCircleClasses(moduleInfo.type)
@@ -156,7 +159,8 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
                         <span
                           class={cn(
                             "ease-instant-hover-100 hover:text-muted-foreground ml-1 flex-1 cursor-pointer text-xs",
-                            isFirstIncomplete && "text-sm font-medium",
+                            isFirstIncomplete &&
+                              "mb-1 text-base leading-2.5 font-medium",
                           )}
                         >
                           <span class="whitespace-nowrap">
@@ -188,7 +192,7 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
           const moduleInfo = getModuleInfo(completion.module_path)
           const ModuleIcon = getModuleIcon(moduleInfo.type)
           const iconClasses = getModuleIconClasses(moduleInfo.type)
-          const progress = props.moduleProgress?.[completion.module_path]
+          const progress = () => moduleProgress()[completion.module_path]
 
           return (
             <div class="rounded px-2 opacity-50">
@@ -201,9 +205,9 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
                     <span class="whitespace-nowrap">{moduleInfo.title}</span>
                   </span>
                   <Show
-                    when={isVocabPractice(completion.module_path) && progress}
+                    when={isVocabPractice(completion.module_path) && progress()}
                   >
-                    <VocabProgressBadges progress={progress!} />
+                    <VocabProgressBadges progress={progress()!} />
                   </Show>
                   <span class="text-sm font-bold text-green-500">✓</span>
                 </div>
@@ -214,14 +218,14 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
       </For>
 
       {/* Upcoming Modules */}
-      <For each={props.upcomingModules}>
+      <For each={props.upcomingModules()}>
         {(module, index) => {
           const moduleInfo = getModuleInfo(module.id)
           const ModuleIcon = getModuleIcon(moduleInfo.type)
           const iconClasses = getModuleIconClasses(moduleInfo.type)
           const isFirst = index() === 0
           const isFirstIncomplete = index() === firstIncompleteIndex()
-          const progress = props.moduleProgress?.[module.id]
+          const progress = () => moduleProgress()[module.id]
 
           return (
             <div
@@ -245,8 +249,8 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
                   >
                     <span class="whitespace-nowrap">{moduleInfo.title}</span>
                   </span>
-                  <Show when={isVocabPractice(module.id) && progress}>
-                    <VocabProgressBadges progress={progress!} />
+                  <Show when={isVocabPractice(module.id) && progress()}>
+                    <VocabProgressBadges progress={progress()!} />
                   </Show>
                 </div>
               </Link>

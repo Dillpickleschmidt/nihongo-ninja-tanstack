@@ -16,6 +16,7 @@ import {
   resourceThumbnailQueryOptions,
   upcomingModulesQueryOptions,
   moduleProgressQueryOptions,
+  type ModuleWithCurrent,
 } from "@/features/learn-page/query/query-options"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
 import {
@@ -143,14 +144,20 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
     // Prefetch textbook-wide queries
     queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
     queryClient.prefetchQuery(dueFSRSCardsCountQueryOptions(user?.id || null))
-    queryClient.prefetchQuery(
-      upcomingModulesQueryOptions(
-        user?.id || null,
-        textbookId as TextbookIDEnum,
-        userSettings["textbook-positions"]?.[textbookId as TextbookIDEnum] ||
-          null,
-      ),
-    )
+    queryClient
+      .ensureQueryData(
+        upcomingModulesQueryOptions(
+          user?.id || null,
+          textbookId as TextbookIDEnum,
+          userSettings["textbook-positions"]?.[textbookId as TextbookIDEnum] ||
+            null,
+        ),
+      )
+      .then((upcomingModules) => {
+        queryClient.prefetchQuery(
+          moduleProgressQueryOptions(user?.id || null, upcomingModules),
+        )
+      })
 
     // Prefetch vocab hierarchy for active chapter
     queryClient.prefetchQuery(
@@ -161,32 +168,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
       ),
     )
 
-    // Prefetch module progress for all vocab-practice modules in textbook
-    const textbookLearningPath = getTextbookLearningPath(
-      textbookId as TextbookIDEnum,
-    )
-    const allModules = textbookLearningPath
-      .map((moduleId) => ({
-        key: moduleId,
-        module: getModules(deck).find((m) => m.key === moduleId)?.module,
-      }))
-      .filter(
-        (
-          item,
-        ): item is { key: string; module: NonNullable<typeof item.module> } =>
-          item.module !== undefined,
-      )
-
-    const vocabPracticeModuleIds = allModules
-      .filter(
-        ({ module }) =>
-          "session_type" in module && module.session_type === "vocab-practice",
-      )
-      .map(({ key }) => key)
-
-    queryClient.prefetchQuery(
-      moduleProgressQueryOptions(user?.id || null, vocabPracticeModuleIds),
-    )
 
     // Pre-fetch all resource thumbnails in parallel
     const currentChapterModules = getModules(deck)
@@ -230,7 +211,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
       user,
       textbookId: textbookId as TextbookIDEnum,
       chapterSlug,
-      vocabPracticeModuleIds,
       deck,
       struggles: mockStruggles,
       historyItems: mockHistoryItems,

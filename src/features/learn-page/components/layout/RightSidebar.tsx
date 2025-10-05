@@ -52,7 +52,7 @@ export function RightSidebar(props: RightSidebarProps) {
         <UpcomingModulesList
           variant="sm"
           completedModules={completionsQuery.data || []}
-          upcomingModules={upcomingModules()}
+          upcomingModules={upcomingModules}
         />
       </Show>
     </div>
