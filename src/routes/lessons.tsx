@@ -31,11 +31,6 @@ function LessonsLayout() {
     // Clear the flag immediately
     sessionStorage.removeItem("animate-lessons")
 
-    console.log("[LessonsLayout] Manual flag check:", {
-      shouldAnimateFlag,
-      isNavigation,
-    })
-
     setShouldAnimate(isNavigation)
   })
 

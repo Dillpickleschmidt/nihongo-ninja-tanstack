@@ -1,6 +1,5 @@
 // features/learn-page/components/content/FeaturedContent.tsx
 import { For } from "solid-js"
-import { Play } from "lucide-solid"
 import { useAnimationManager } from "@/hooks/useAnimations"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { resourceThumbnailQueryOptions } from "@/features/learn-page/query/query-options"
@@ -44,15 +43,9 @@ function MobileFeaturedContent() {
 function DesktopFeaturedContent() {
   return (
     <div class="space-y-1">
-      <div class="flex items-center justify-between px-8">
-        <div>
-          <h2 class="text-2xl font-bold">Featured Content</h2>
-          <p class="text-muted-foreground">You might enjoy</p>
-        </div>
-        <button class="bg-primary/10 flex items-center gap-2 rounded-lg px-4 py-2.5 transition-colors hover:opacity-80">
-          <Play class="h-4 w-4" />
-          <span class="text-sm font-medium">Start Studying</span>
-        </button>
+      <div class="px-8">
+        <h2 class="text-2xl font-bold">Featured Content</h2>
+        <p class="text-muted-foreground">You might enjoy</p>
       </div>
 
       <FeaturedContentGrid />

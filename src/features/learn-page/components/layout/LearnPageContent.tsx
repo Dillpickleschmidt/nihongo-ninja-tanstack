@@ -64,7 +64,7 @@ export function LearnPageContent() {
             <div class="w-[60%]">
               <ChapterContentArea />
             </div>
-            <div class="relative h-[calc(100vh-146px)] w-[20%] overflow-y-auto pt-6 pr-4">
+            <div class="relative h-[calc(100vh-146px)] w-[20%] overflow-y-auto pt-6">
               <RightSidebar variant="desktop" userId={loaderData().user?.id} />
             </div>
           </div>
