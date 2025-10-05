@@ -1,6 +1,6 @@
 // features/learn-page/query/query-options.ts
 import { queryOptions } from "@tanstack/solid-query"
-import { getDeckBySlug } from "@/data/utils/core"
+import { getDeckBySlug, getTextbookLearningPath } from "@/data/utils/core"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { getDueFSRSCardsCount, getFSRSCards } from "@/features/supabase/db/fsrs"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
@@ -71,11 +71,12 @@ export const fsrsProgressQueryOptions = (
   slugs: string[],
 ) =>
   queryOptions({
-    queryKey: ["fsrs-progress", userId, activeTextbook, activeDeck],
+    queryKey: ["fsrs-progress", userId, activeTextbook, activeDeck, slugs],
     queryFn: async () => {
       if (!userId || slugs.length === 0) return null
-      return getUserProgress({ data: { slugs, userId } })
+      return getUserProgress(userId, slugs)
     },
+    enabled: slugs.length > 0,
   })
 
 export const dueFSRSCardsCountQueryOptions = (userId: string | null) =>
@@ -116,12 +117,14 @@ export type ModuleWithCurrent = {
 export const upcomingModulesQueryOptions = (
   userId: string | null,
   textbookId: TextbookIDEnum,
-  learningPathItems: string[],
   currentPosition: string | null,
 ) => {
   const queryFn = async (): Promise<ModuleWithCurrent[]> => {
-    if (!currentPosition)
+    const learningPathItems = getTextbookLearningPath(textbookId)
+
+    if (!currentPosition) {
       return learningPathItems.slice(0, 6).map((id) => ({ id }))
+    }
 
     const currentModuleId = learningPathItems.find(
       (moduleId) => moduleId === currentPosition,

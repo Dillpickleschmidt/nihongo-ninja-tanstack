@@ -1,5 +1,5 @@
 // features/learn-page/components/content/WordHierarchy.tsx
-import { For, Show, Suspense } from "solid-js"
+import { For, Show, Suspense, createSignal, createEffect } from "solid-js"
 import { useAnimationManager } from "@/hooks/useAnimations"
 import { isServer } from "solid-js/web"
 import {
@@ -92,11 +92,11 @@ export function WordHierarchy(props: WordHierarchyProps) {
   const { animateOnDataChange } = useAnimationManager()
   const hasUser = !!context().user
 
-  const vocabData = vocabHierarchyQuery.data!
+  const vocabData = () => vocabHierarchyQuery.data!
 
   // Compute final data
   const enrichedData = () => {
-    const hierarchy = vocabData.wordHierarchyData
+    const hierarchy = vocabData().wordHierarchyData
     if (!hierarchy) {
       return null
     }
@@ -114,7 +114,7 @@ export function WordHierarchy(props: WordHierarchyProps) {
     }
   }
 
-  const chapterVocabulary = () => vocabData.chapterVocabulary
+  const chapterVocabulary = () => vocabData().chapterVocabulary
 
   animateOnDataChange(
     ["[data-word-hierarchy-progress]", "[data-word-hierarchy-content]"],
@@ -336,6 +336,20 @@ function ProgressCircleTrigger(props: {
   const offsetTotal = () => circumference * (1 - progressTotal())
   const seenCount = () => props.countLearned + props.countInProgress
 
+  // Animated offsets (start at circumference = 0% progress)
+  const [animatedOffsetLearned, setAnimatedOffsetLearned] =
+    createSignal(circumference)
+  const [animatedOffsetTotal, setAnimatedOffsetTotal] =
+    createSignal(circumference)
+
+  // Animate to final values when data changes
+  createEffect(() => {
+    requestAnimationFrame(() => {
+      setAnimatedOffsetLearned(offsetLearned())
+      setAnimatedOffsetTotal(offsetTotal())
+    })
+  })
+
   return (
     <HoverCard openDelay={200}>
       <HoverCardTrigger as="div">
@@ -360,7 +374,7 @@ function ProgressCircleTrigger(props: {
                   class={props.colorInProgress}
                   stroke-width="5"
                   stroke-dasharray={circumference}
-                  stroke-dashoffset={offsetTotal()}
+                  stroke-dashoffset={animatedOffsetTotal()}
                   stroke-linecap="round"
                   stroke="currentColor"
                   fill="transparent"
@@ -377,7 +391,7 @@ function ProgressCircleTrigger(props: {
                   class={props.colorLearned}
                   stroke-width="5"
                   stroke-dasharray={circumference}
-                  stroke-dashoffset={offsetLearned()}
+                  stroke-dashoffset={animatedOffsetLearned()}
                   stroke-linecap="round"
                   stroke="currentColor"
                   fill="transparent"

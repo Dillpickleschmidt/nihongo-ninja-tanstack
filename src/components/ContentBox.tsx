@@ -93,7 +93,18 @@ export default function ContentBox(props: ContentBoxProps) {
       })
     }
 
-    navigate({ to: "/learn" })
+    // Get active textbook/deck from cache
+    const userSettings = queryClient.getQueryData([
+      "user-settings",
+      props.user?.id || null,
+    ])
+    const activeTextbook = userSettings?.["active-textbook"] || "genki_1"
+    const activeDeck = userSettings?.["active-deck"] || "chapter-0"
+
+    navigate({
+      to: "/learn/$textbookId/$chapterSlug",
+      params: { textbookId: activeTextbook, chapterSlug: activeDeck },
+    })
   }
 
   const handleNextClick = (e: Event) => {

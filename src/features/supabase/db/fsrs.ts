@@ -59,23 +59,24 @@ export async function getFSRSCards(
 /**
  * Get user progress data for vocabulary items
  */
-export const getUserProgress = createServerFn({ method: "GET" })
-  .inputValidator((data: { slugs: string[]; userId: string }) => data)
-  .handler(async ({ data }): Promise<Record<string, FSRSCardData> | null> => {
-    if (!data || !data.slugs || data.slugs.length === 0 || !data.userId) {
-      return null
-    }
+export async function getUserProgress(
+  userId: string,
+  slugs: string[],
+): Promise<Record<string, FSRSCardData> | null> {
+  if (!userId || !slugs || slugs.length === 0) {
+    return null
+  }
 
-    const fsrsData = await getFSRSCards(data.userId, data.slugs)
+  const fsrsData = await getFSRSCards(userId, slugs)
 
-    // Return a plain object for server JSON serialization
-    const progressRecord: Record<string, FSRSCardData> = {}
-    fsrsData.forEach((card) => {
-      progressRecord[`${card.type}:${card.practice_item_key}`] = card
-    })
-
-    return progressRecord
+  // Return a plain object for server JSON serialization
+  const progressRecord: Record<string, FSRSCardData> = {}
+  fsrsData.forEach((card) => {
+    progressRecord[`${card.type}:${card.practice_item_key}`] = card
   })
+
+  return progressRecord
+}
 
 /**
  * Get count of due FSRS cards for a user

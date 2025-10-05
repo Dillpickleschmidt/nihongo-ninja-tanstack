@@ -1,7 +1,7 @@
 import { Component, Show } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/utils"
-import type { MobileContentView } from "./LearnPageContent"
+import type { MobileContentView } from "@/features/learn-page/context/LearnPageContext"
 import {
   BookOpen,
   Star,

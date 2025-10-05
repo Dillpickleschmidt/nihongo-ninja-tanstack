@@ -25,6 +25,21 @@ export async function fetchUserSettingsFromDB(userId: string) {
 }
 
 /**
+ * Query options for DB-only user settings
+ * - Only fetches from Supabase, doesn't touch cookies
+ * - Used to track DB sync status separately from cookie query
+ */
+export const dbUserSettingsQueryOptions = (userId: string | null) =>
+  queryOptions({
+    queryKey: ["db-user-settings", userId],
+    queryFn: async () => {
+      if (!userId) return null
+      return await fetchUserSettingsFromDB(userId)
+    },
+    enabled: !!userId,
+  })
+
+/**
  * Query options for combined user settings (device-specific + user-specific)
  * - Returns cookie data immediately (fast path)
  * - DB sync happens in background via fetchUserSettingsFromDB
@@ -33,7 +48,6 @@ export const userSettingsQueryOptions = (userId: string | null) =>
   queryOptions({
     queryKey: ["user-settings", userId],
     queryFn: async () => {
-      // Parse cookie data
       const cookieValue = getCookie(USER_SETTINGS_COOKIE)
       if (cookieValue) {
         try {
@@ -45,13 +59,94 @@ export const userSettingsQueryOptions = (userId: string | null) =>
         } catch {}
       }
 
-      // Fallback to defaults
       return UserSettingsSchema.parse({})
     },
     placeholderData: UserSettingsSchema.parse({}),
     staleTime: Infinity,
     gcTime: Infinity,
   })
+
+/**
+ * Helper: Update user settings cookie
+ */
+function updateUserSettingsCookie(settings: UserSettings) {
+  setCookie(USER_SETTINGS_COOKIE, JSON.stringify(settings), {
+    httpOnly: false,
+    secure: true,
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 365, // 1 year
+  })
+}
+
+/**
+ * Helper: Sync user settings to database
+ */
+async function syncUserSettingsToDb(
+  userId: string,
+  settings: UserSettings,
+  timestamp: number,
+) {
+  const supabase = createSupabaseClient()
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      user_preferences: {
+        "service-preferences": settings["service-preferences"],
+        "active-textbook": settings["active-textbook"],
+        "active-deck": settings["active-deck"],
+        "completed-tours": settings["completed-tours"],
+        "override-settings": settings["override-settings"],
+        "conjugation-practice": settings["conjugation-practice"],
+        "textbook-positions": settings["textbook-positions"],
+        timestamp,
+      },
+    })
+    .eq("user_id", userId)
+
+  if (error) throw error
+}
+
+/**
+ * Apply user settings update (cache + cookie + DB)
+ * @param awaitDb - If true, awaits DB sync; if false, syncs in background
+ */
+export async function applyUserSettingsUpdate(
+  userId: string | null,
+  queryClient: QueryClient,
+  updates: Partial<UserSettings>,
+  options: { awaitDb: boolean } = { awaitDb: false },
+): Promise<UserSettings> {
+  const currentSettings = queryClient.getQueryData<UserSettings>([
+    "user-settings",
+    userId,
+  ])
+
+  const timestamp = Date.now()
+  const newSettings = {
+    ...currentSettings,
+    ...updates,
+    timestamp,
+  } as UserSettings
+
+  // Update cache
+  queryClient.setQueryData(["user-settings", userId], newSettings)
+
+  // Update cookie
+  updateUserSettingsCookie(newSettings)
+
+  // Sync to DB
+  if (userId) {
+    const dbPromise = syncUserSettingsToDb(userId, newSettings, timestamp)
+
+    if (options.awaitDb) {
+      await dbPromise
+    } else {
+      dbPromise.catch((error) => console.error("[DB Sync Failed]", error))
+    }
+  }
+
+  return newSettings
+}
 
 /**
  * Mutation for updating user settings
@@ -70,47 +165,12 @@ export const updateUserSettingsMutation = (
 > => ({
   mutationFn: async (settings: Partial<UserSettings>) => {
     const { user } = await getUser()
-    const currentSettings = queryClient.getQueryData<UserSettings>([
-      "user-settings",
-      userId,
-    ])
-
-    const timestamp = Date.now()
-    const newSettings = {
-      ...currentSettings,
-      ...settings,
-      timestamp,
-    } as UserSettings
-
-    // Update cookie
-    setCookie(USER_SETTINGS_COOKIE, JSON.stringify(newSettings), {
-      httpOnly: false,
-      secure: true,
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 365, // 1 year
-    })
-
-    // Sync to DB if logged in
-    if (user) {
-      const supabase = createSupabaseClient()
-      await supabase
-        .from("profiles")
-        .update({
-          user_preferences: {
-            "service-preferences": newSettings["service-preferences"],
-            "active-textbook": newSettings["active-textbook"],
-            "active-deck": newSettings["active-deck"],
-            "completed-tours": newSettings["completed-tours"],
-            "override-settings": newSettings["override-settings"],
-            "conjugation-practice": newSettings["conjugation-practice"],
-            "textbook-positions": newSettings["textbook-positions"],
-            timestamp,
-          },
-        })
-        .eq("user_id", user.id)
-    }
-
-    return newSettings
+    return await applyUserSettingsUpdate(
+      user?.id || null,
+      queryClient,
+      settings,
+      { awaitDb: true }, // Mutation awaits DB
+    )
   },
   onMutate: async (newSettings) => {
     await queryClient.cancelQueries({ queryKey: ["user-settings", userId] })
@@ -137,8 +197,5 @@ export const updateUserSettingsMutation = (
         context.previousSettings,
       )
     }
-  },
-  onSuccess: (newSettings) => {
-    queryClient.setQueryData(["user-settings", userId], newSettings)
   },
 })

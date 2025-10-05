@@ -3,7 +3,8 @@ import { Show } from "solid-js"
 import { Play } from "lucide-solid"
 import { HistoryContent } from "../content/HistoryContent"
 import { StrugglesContent } from "../content/StrugglesContent"
-import { UpcomingLessonsContent } from "../content/UpcomingLessonsContent"
+import { UpcomingModulesList } from "../content/UpcomingModulesList"
+import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import { Button } from "@/components/ui/button"
 
 interface RightSidebarProps {
@@ -12,8 +13,19 @@ interface RightSidebarProps {
 }
 
 export function RightSidebar(props: RightSidebarProps) {
+  const { upcomingModulesQuery, completionsQuery } = useLearnPageContext()
+
   if (props.variant === "mobile") {
     return <HistoryContent variant="mobile" />
+  }
+
+  // Filter out completed modules from upcoming list
+  const upcomingModules = () => {
+    const data = upcomingModulesQuery.data || []
+    const completedSet = new Set(
+      completionsQuery.data?.map((c) => c.module_path) || [],
+    )
+    return data.filter((item) => !completedSet.has(item.id))
   }
 
   // Desktop variant
@@ -37,7 +49,11 @@ export function RightSidebar(props: RightSidebarProps) {
           <Play class="h-4 w-4" />
           <span class="text-sm font-medium">Start Studying</span>
         </Button>
-        <UpcomingLessonsContent />
+        <UpcomingModulesList
+          variant="sm"
+          completedModules={completionsQuery.data || []}
+          upcomingModules={upcomingModules()}
+        />
       </Show>
     </div>
   )
