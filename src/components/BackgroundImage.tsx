@@ -23,7 +23,7 @@ type MediaBackgroundProps = {
   variant: "media"
   backgroundItem: BackgroundMediaItem
   showGradient?: boolean
-  blur?: string
+  blur?: string | (() => string)
   class?: string
 }
 
@@ -63,6 +63,8 @@ export function BackgroundImage(props: BackgroundImageProps) {
     class: className,
   } = props
 
+  const blurValue = () => (typeof blur === "function" ? blur() : blur || "0px")
+
   const {
     source_type,
     src,
@@ -98,7 +100,7 @@ export function BackgroundImage(props: BackgroundImageProps) {
         {`
           .background-media {
             position: ${position};
-            top: ${y_offset_desktop}; 
+            top: ${y_offset_desktop};
             left: 50%;
             transform: translateX(-50%);
             width: 100vw;
@@ -109,7 +111,7 @@ export function BackgroundImage(props: BackgroundImageProps) {
             z-index: ${mediaZIndex};
             pointer-events: none;
             opacity: ${opacity};
-            filter: blur(${blur});
+            transition: filter 500ms ease;
           }
           
           .background-media.horizontal {
@@ -159,7 +161,12 @@ export function BackgroundImage(props: BackgroundImageProps) {
       </style>
 
       {source_type === "img" ? (
-        <img src={src} class={`background-media ${layout}`} alt="Background" />
+        <img
+          src={src}
+          class={`background-media ${layout}`}
+          alt="Background"
+          style={{ filter: `blur(${blurValue()})` }}
+        />
       ) : (
         <video
           src={src}
@@ -169,6 +176,7 @@ export function BackgroundImage(props: BackgroundImageProps) {
           muted
           plays-inline
           preload="auto"
+          style={{ filter: `blur(${blurValue()})` }}
         />
       )}
 

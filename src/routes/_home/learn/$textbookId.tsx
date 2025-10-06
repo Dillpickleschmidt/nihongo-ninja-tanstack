@@ -1,5 +1,10 @@
 // routes/_home/learn/$textbookId.tsx
-import { createFileRoute, Outlet, redirect } from "@tanstack/solid-router"
+import {
+  createFileRoute,
+  Outlet,
+  redirect,
+  useLocation,
+} from "@tanstack/solid-router"
 import {
   getDeckBySlug,
   getModules,
@@ -168,7 +173,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
       ),
     )
 
-
     // Pre-fetch all resource thumbnails in parallel
     const currentChapterModules = getModules(deck)
     const rawResources = Object.fromEntries(
@@ -231,10 +235,14 @@ function RouteComponent() {
 
 function LayoutContent() {
   const loaderData = Route.useLoaderData()
+  const location = useLocation()
   const { mobileContentView, setMobileContentView } = useLearnPageContext()
 
   const activeDeck = () =>
     getDeckBySlug(loaderData().textbookId, loaderData().chapterSlug)
+
+  const blurAmount = () =>
+    location().pathname.endsWith("/progress") ? "32px" : "0px"
 
   return (
     <div class="font-poppins xl:h-screen xl:overflow-y-hidden xl:overscroll-y-contain">
@@ -251,7 +259,7 @@ function LayoutContent() {
         textbook={loaderData().textbookId}
         chapter={activeDeck()?.slug || ""}
         showGradient={true}
-        blur="0px"
+        blur={blurAmount}
       />
       {/* Mobile Layout */}
       <SSRMediaQuery hideFrom="xl">
