@@ -6,7 +6,7 @@ import { useQueryClient, useMutation } from "@tanstack/solid-query"
 import { cva } from "class-variance-authority"
 import { cn } from "@/utils"
 import { User } from "@supabase/supabase-js"
-import { addModuleCompletion } from "@/features/supabase/db/module-completions"
+import { markModuleCompleted } from "@/features/supabase/db/module-progress"
 
 type ContentBoxConfig = {
   nextButtonLink?: string
@@ -48,11 +48,11 @@ export default function ContentBox(props: ContentBoxProps) {
 
   const addCompletionMutation = useMutation(() => ({
     mutationFn: ({ userId, moduleId }: { userId: string; moduleId: string }) =>
-      addModuleCompletion(userId, moduleId),
+      markModuleCompleted(userId, moduleId),
     onSuccess: (data, variables) => {
       queryClient.setQueryData(
-        ["module-completions", variables.userId],
-        (old: ModuleCompletion[] | undefined) => {
+        ["module-progress", variables.userId, "completed"],
+        (old: ModuleProgress[] | undefined) => {
           const modulePath = data.module_path
           // If module already in list, return as-is
           if (old?.some((c) => c.module_path === modulePath)) return old

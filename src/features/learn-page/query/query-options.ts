@@ -5,7 +5,7 @@ import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { getDueFSRSCardsCount, getFSRSCards } from "@/features/supabase/db/fsrs"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
 import { getUserProgress } from "@/features/supabase/db/fsrs"
-import { getUserModuleCompletions } from "@/features/supabase/db/module-completions"
+import { getUserModuleProgress } from "@/features/supabase/db/module-progress"
 import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
 import {
   getVocabularyForModule,
@@ -90,10 +90,14 @@ export const dueFSRSCardsCountQueryOptions = (userId: string | null) =>
 
 export const completedModulesQueryOptions = (userId: string | null) =>
   queryOptions({
-    queryKey: ["module-completions", userId],
+    queryKey: ["module-progress", userId, "completed"],
     queryFn: async () => {
       if (!userId) return []
-      return getUserModuleCompletions(userId)
+      return getUserModuleProgress(userId, {
+        completed: true,
+        orderBy: "completed_at",
+        ascending: false,
+      })
     },
     placeholderData: [],
   })

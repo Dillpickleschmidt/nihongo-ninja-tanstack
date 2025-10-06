@@ -32,7 +32,7 @@ import {
   shouldUpdatePosition,
   detectSequentialJump,
 } from "@/features/learn-page/utils/learning-position-detector"
-import { addModuleCompletion } from "@/features/supabase/db/module-completions"
+import { markModuleCompleted } from "@/features/supabase/db/module-progress"
 import { getTextbookLearningPath } from "@/data/utils/core"
 
 export type MobileContentView =
@@ -44,7 +44,7 @@ export type MobileContentView =
 
 interface LearnPageContextValue {
   upcomingModulesQuery: UseQueryResult<ModuleWithCurrent[], DefaultError>
-  completionsQuery: UseQueryResult<ModuleCompletion[], DefaultError>
+  completionsQuery: UseQueryResult<ModuleProgress[], DefaultError>
   settingsQuery: UseQueryResult<UserSettings, DefaultError>
   dueCardsCountQuery: UseQueryResult<number, DefaultError>
   moduleProgressQuery: UseQueryResult<
@@ -171,10 +171,10 @@ export const LearnPageProvider: ParentComponent = (props) => {
   // Auto-complete vocab-practice modules at >=95% progress
   const autoCompleteMutation = useMutation(() => ({
     mutationFn: ({ userId, moduleId }: { userId: string; moduleId: string }) =>
-      addModuleCompletion(userId, moduleId),
+      markModuleCompleted(userId, moduleId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["module-completions", userId],
+        queryKey: ["module-progress", userId],
       })
     },
   }))
