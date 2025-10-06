@@ -19,24 +19,15 @@ function PostHogPageView() {
 
   createEffect(() => {
     const loc = location()
-    console.log("[PostHog] Pageview effect triggered:", {
-      pathname: loc.pathname,
-      hasPostHog: !!posthog,
-    })
-
     if (loc.pathname && posthog) {
-      console.log("[PostHog] Capturing pageview for:", loc.pathname)
       try {
         posthog.capture("$pageview", {
           $current_url: window.origin + loc.pathname,
           $pathname: loc.pathname,
         })
-        console.log("[PostHog] Pageview capture initiated successfully")
       } catch (error) {
         console.error("[PostHog] Pageview capture failed:", error)
       }
-    } else {
-      console.log("[PostHog] Skipping pageview capture (no pathname or PostHog instance)")
     }
   })
 
@@ -49,9 +40,7 @@ if (!isServer) {
   const { VITE_POSTHOG_KEY: key, VITE_APP_STAGE: stage } = import.meta.env
 
   if (key && stage === "production") {
-    console.log("[PostHog] Initializing PostHog in production mode")
     import("posthog-js").then(({ default: posthog }) => {
-      console.log("[PostHog] PostHog module loaded, calling init...")
       posthog.init(key, {
         api_host: "/api/relay-tefh",
         ui_host: "https://us.posthog.com",
@@ -59,10 +48,7 @@ if (!isServer) {
         capture_pageleave: true,
       })
       posthogInstance = posthog
-      console.log("[PostHog] PostHog initialized successfully")
     })
-  } else {
-    console.log("[PostHog] Skipped - not in production (stage:", stage, ")")
   }
 }
 

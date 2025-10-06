@@ -24,11 +24,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
     const { user, queryClient } = context
     const { textbookId, chapterSlug } = params
 
-    console.log("[Child Loader] Navigation attempt:", {
-      textbookId,
-      chapterSlug,
-    })
-
     // Get user settings (will be instant cache hit from parent)
     const userSettings = await queryClient.ensureQueryData(
       userSettingsQueryOptions(user?.id || null),
@@ -39,7 +34,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
 
     // If invalid chapter slug, redirect to chapter-0
     if (!deck) {
-      console.log("[Child Loader] Invalid chapter, redirecting to chapter-0")
       throw redirect({
         to: "/learn/$textbookId/$chapterSlug",
         params: { textbookId: "genki_1", chapterSlug: "chapter-0" },
@@ -52,11 +46,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       : null
 
     const isDbComplete = dbQueryState?.status === "success"
-
-    console.log("[Child Loader] DB query status:", {
-      isDbComplete,
-      hasUser: !!user?.id,
-    })
 
     // If DB is complete and fresher than cookie, redirect to DB's active chapter
     // This handles cross-device sync when coming from parent redirect
@@ -71,18 +60,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
         const cookieTimestamp = userSettings.timestamp || 0
         const dbTimestamp = dbData.timestamp || 0
 
-        console.log("[Child Loader] DB vs Cookie comparison:", {
-          dbTimestamp,
-          cookieTimestamp,
-          dbIsFresher: dbTimestamp > cookieTimestamp,
-          dbActiveDeck,
-          currentDeckSlug: deck.slug,
-          decksDiffer: dbActiveDeck !== deck.slug,
-          dbActiveTextbook,
-          currentTextbook: textbookId,
-          textbooksDiffer: dbActiveTextbook !== textbookId,
-        })
-
         // Only redirect if DB is fresher than cookie AND differs from URL
         // (corrects stale /learn redirect from other devices)
         if (
@@ -90,10 +67,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
           ((dbActiveDeck && dbActiveDeck !== chapterSlug) ||
             (dbActiveTextbook && dbActiveTextbook !== textbookId))
         ) {
-          console.log("[Child Loader] REDIRECTING to DB-stored chapter:", {
-            from: `${textbookId}/${chapterSlug}`,
-            to: `${dbActiveTextbook || textbookId}/${dbActiveDeck || chapterSlug}`,
-          })
           throw redirect({
             to: "/learn/$textbookId/$chapterSlug",
             params: {
@@ -110,19 +83,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       userSettings["active-deck"] !== chapterSlug ||
       userSettings["active-textbook"] !== (textbookId as TextbookIDEnum)
 
-    console.log("[Child Loader] Settings update check:", {
-      needsUpdate,
-      currentActiveDeck: userSettings["active-deck"],
-      targetDeck: chapterSlug,
-      currentActiveTextbook: userSettings["active-textbook"],
-      targetTextbook: textbookId,
-    })
-
     if (needsUpdate) {
-      console.log("[Child Loader] Applying settings update:", {
-        "active-deck": chapterSlug,
-        "active-textbook": textbookId,
-      })
       await applyUserSettingsUpdate(
         user?.id || null,
         queryClient,
@@ -161,12 +122,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
         ),
       ),
     )
-
-    console.log("[Child Loader] Navigation complete, returning data for:", {
-      textbookId,
-      chapterSlug,
-      deckTitle: deck.title,
-    })
 
     return {
       deck,
