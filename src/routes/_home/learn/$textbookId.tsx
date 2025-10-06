@@ -106,15 +106,13 @@ function RouteComponent() {
 function LayoutContent() {
   const loaderData = Route.useLoaderData()
   const location = useLocation()
-  const { mobileContentView, setMobileContentView } = useLearnPageContext()
+  const { mobileContentView, setMobileContentView, settingsQuery } =
+    useLearnPageContext()
 
-  // Extract chapter slug from pathname for background display
-  const chapterSlug = () => {
-    const pathParts = location().pathname.split("/").filter(Boolean)
-    return pathParts[2] || "chapter-0" // Index: 0=learn, 1=textbookId, 2=chapterSlug
+  const activeDeck = () => {
+    const activeChapterSlug = settingsQuery.data?.["active-deck"] || "chapter-0"
+    return getDeckBySlug(loaderData().textbookId, activeChapterSlug)
   }
-
-  const activeDeck = () => getDeckBySlug(loaderData().textbookId, chapterSlug())
 
   const blurAmount = () =>
     location().pathname.endsWith("/progress") ? "32px" : "0px"

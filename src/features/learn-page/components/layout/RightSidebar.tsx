@@ -15,7 +15,8 @@ interface RightSidebarProps {
 
 export function RightSidebar(props: RightSidebarProps) {
   const context = useRouteContext({ from: RootRoute.id })
-  const { upcomingModulesQuery, completionsQuery } = useLearnPageContext()
+  const { upcomingModulesQuery, completionsQuery, moduleProgressQuery } =
+    useLearnPageContext()
 
   if (props.variant === "mobile") {
     return <HistoryContent variant="mobile" />
@@ -55,6 +56,7 @@ export function RightSidebar(props: RightSidebarProps) {
           variant="sm"
           completedModules={completionsQuery.data || []}
           upcomingModules={upcomingModules}
+          moduleProgress={() => moduleProgressQuery.data || {}}
         />
       </Show>
     </div>

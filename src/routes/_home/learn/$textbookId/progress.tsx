@@ -1,8 +1,14 @@
 // routes/_home/learn/$textbookId.progress.tsx
 import { createFileRoute } from "@tanstack/solid-router"
-import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import { UpcomingModulesList } from "@/features/learn-page/components/content/UpcomingModulesList"
 import { Route as ParentRoute } from "@/routes/_home/learn/$textbookId"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import {
+  completedModulesQueryOptions,
+  upcomingModulesQueryOptions,
+  moduleProgressQueryOptions,
+} from "@/features/learn-page/query/query-options"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 
 export const Route = createFileRoute("/_home/learn/$textbookId/progress")({
   component: RouteComponent,
@@ -10,8 +16,23 @@ export const Route = createFileRoute("/_home/learn/$textbookId/progress")({
 
 function RouteComponent() {
   const loaderData = ParentRoute.useLoaderData()()
-  const { completionsQuery, upcomingModulesQuery, moduleProgressQuery } =
-    useLearnPageContext()
+  const userId = ParentRoute.useRouteContext()().user?.id || null
+
+  const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
+  const completionsQuery = useCustomQuery(() =>
+    completedModulesQueryOptions(userId),
+  )
+  const upcomingModulesQuery = useCustomQuery(() =>
+    upcomingModulesQueryOptions(
+      userId,
+      loaderData.textbookId,
+      settingsQuery.data?.["textbook-positions"]?.[loaderData.textbookId] ||
+        null,
+    ),
+  )
+  const moduleProgressQuery = useCustomQuery(() =>
+    moduleProgressQueryOptions(userId, upcomingModulesQuery.data || []),
+  )
 
   // If no user, show sign-in message
   if (!loaderData.user) {
