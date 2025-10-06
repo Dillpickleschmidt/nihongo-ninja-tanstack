@@ -21,7 +21,6 @@ import {
   resourceThumbnailQueryOptions,
   upcomingModulesQueryOptions,
   moduleProgressQueryOptions,
-  type ModuleWithCurrent,
 } from "@/features/learn-page/query/query-options"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
 import {
@@ -42,6 +41,13 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
     const pathParts = location.pathname.split("/").filter(Boolean)
     const routeSegment = pathParts[2] // Index: 0=learn, 1=textbookId, 2=route
     const isExplicitNavigation = !!routeSegment // User navigated to specific chapter
+
+    console.log("[Loader] Navigation attempt:", {
+      pathname: location.pathname,
+      textbookId,
+      routeSegment,
+      isExplicitNavigation,
+    })
 
     // If no route segment in URL, redirect to active deck or default
     if (!routeSegment) {
@@ -99,6 +105,13 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
 
     const isDbComplete = dbQueryState?.status === "success"
 
+    console.log("[Loader] DB query status:", {
+      isDbComplete,
+      hasUser: !!user?.id,
+      isExplicitNavigation,
+      willCheckDbRedirect: isDbComplete && user?.id && !isExplicitNavigation,
+    })
+
     // If DB is complete, check if it has a different active-deck than current route
     // Only redirect when auto-redirecting from /learn, not during explicit navigation
     if (isDbComplete && user?.id && !isExplicitNavigation) {
@@ -112,6 +125,18 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
         const cookieTimestamp = userSettings.timestamp || 0
         const dbTimestamp = dbData.timestamp || 0
 
+        console.log("[Loader] DB vs Cookie comparison:", {
+          dbTimestamp,
+          cookieTimestamp,
+          dbIsFresher: dbTimestamp > cookieTimestamp,
+          dbActiveDeck,
+          currentDeckSlug: deck.slug,
+          decksDiffer: dbActiveDeck !== deck.slug,
+          dbActiveTextbook,
+          currentTextbook: textbookId,
+          textbooksDiffer: dbActiveTextbook !== textbookId,
+        })
+
         // Only redirect if DB is fresher than cookie AND differs from URL
         // (corrects stale /learn redirect from other devices)
         if (
@@ -120,6 +145,10 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
             (dbActiveTextbook &&
               dbActiveTextbook !== (textbookId as TextbookIDEnum)))
         ) {
+          console.log("[Loader] REDIRECTING to DB-stored chapter:", {
+            from: `${textbookId}/${deck.slug}`,
+            to: `${dbActiveTextbook || textbookId}/${dbActiveDeck || deck.slug}`,
+          })
           throw redirect({
             to: "/learn/$textbookId/$chapterSlug",
             params: {
@@ -136,7 +165,19 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
       userSettings["active-deck"] !== deck.slug ||
       userSettings["active-textbook"] !== (textbookId as TextbookIDEnum)
 
+    console.log("[Loader] Settings update check:", {
+      needsUpdate,
+      currentActiveDeck: userSettings["active-deck"],
+      targetDeck: deck.slug,
+      currentActiveTextbook: userSettings["active-textbook"],
+      targetTextbook: textbookId,
+    })
+
     if (needsUpdate) {
+      console.log("[Loader] Applying settings update:", {
+        "active-deck": deck.slug,
+        "active-textbook": textbookId,
+      })
       userSettings = await applyUserSettingsUpdate(
         user?.id || null,
         queryClient,
@@ -147,6 +188,12 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
         { awaitDb: false }, // Loader doesn't await DB (non-blocking)
       )
     }
+
+    console.log("[Loader] Navigation complete, returning data for:", {
+      textbookId,
+      chapterSlug,
+      deckTitle: deck.title,
+    })
 
     // Prefetch textbook-wide queries
     queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
