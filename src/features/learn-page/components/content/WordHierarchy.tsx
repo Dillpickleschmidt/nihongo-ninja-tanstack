@@ -217,6 +217,7 @@ function WordHierarchyDisplay(props: {
                   colorLearned="text-sky-400"
                   colorInProgress="text-sky-600"
                   hasProgress={props.hasUser}
+                  tabindex="5"
                 />
               }
             >
@@ -229,6 +230,7 @@ function WordHierarchyDisplay(props: {
                 colorLearned="text-sky-400"
                 colorInProgress="text-sky-600"
                 hasProgress={props.hasUser}
+                tabindex="5"
               />
             </Suspense>
             <Suspense
@@ -243,6 +245,7 @@ function WordHierarchyDisplay(props: {
                   colorInProgress="text-pink-600"
                   hasProgress={props.hasUser}
                   dataTour="vocab-trigger"
+                  tabindex="6"
                 />
               }
             >
@@ -256,6 +259,7 @@ function WordHierarchyDisplay(props: {
                 colorInProgress="text-pink-600"
                 hasProgress={props.hasUser}
                 dataTour="vocab-trigger"
+                tabindex="6"
               />
             </Suspense>
             <Suspense
@@ -269,6 +273,7 @@ function WordHierarchyDisplay(props: {
                   colorLearned="text-teal-400"
                   colorInProgress="text-teal-600"
                   hasProgress={props.hasUser}
+                  tabindex="7"
                 />
               }
             >
@@ -281,6 +286,7 @@ function WordHierarchyDisplay(props: {
                 colorLearned="text-teal-400"
                 colorInProgress="text-teal-600"
                 hasProgress={props.hasUser}
+                tabindex="7"
               />
             </Suspense>
           </div>
@@ -291,7 +297,7 @@ function WordHierarchyDisplay(props: {
           class="mt-2 rounded-2xl border border-white/10 bg-gradient-to-br from-slate-600/10 to-gray-600/5 py-4 pr-1.5 pl-4 opacity-0 backdrop-blur-sm"
           data-word-hierarchy-content
         >
-          <TabsContent value="vocab">
+          <TabsContent value="vocab" tabindex="-1">
             <Show when={props.enrichedData()}>
               {(data) => (
                 <VocabularyList
@@ -303,7 +309,7 @@ function WordHierarchyDisplay(props: {
             </Show>
           </TabsContent>
 
-          <TabsContent value="kanji">
+          <TabsContent value="kanji" tabindex="-1">
             <Show when={props.enrichedData()}>
               {(data) => (
                 <CharacterList
@@ -315,7 +321,7 @@ function WordHierarchyDisplay(props: {
             </Show>
           </TabsContent>
 
-          <TabsContent value="radicals">
+          <TabsContent value="radicals" tabindex="-1">
             <Show when={props.enrichedData()}>
               {(data) => (
                 <CharacterList
@@ -342,6 +348,7 @@ function ProgressCircleTrigger(props: {
   colorInProgress: string
   hasProgress?: boolean
   dataTour?: string
+  tabindex?: string
 }) {
   const radius = 24
   const circumference = 2 * Math.PI * radius
@@ -377,10 +384,11 @@ function ProgressCircleTrigger(props: {
 
   return (
     <HoverCard openDelay={200}>
-      <HoverCardTrigger as="div">
+      <HoverCardTrigger>
         <TabsTrigger
           value={props.value}
           data-tour={props.dataTour}
+          tabindex={props.tabindex}
           class="flex h-auto w-full flex-col items-center gap-0.5 rounded-xl p-1.5 hover:bg-white/5 data-[selected]:bg-white/5"
         >
           <div class="relative h-15 w-15">
@@ -571,6 +579,7 @@ function VocabularyList(props: {
           ? "max-h-[calc(100vh-437px)] overflow-y-auto"
           : "h-full overflow-y-auto",
       )}
+      // tabindex="-1"
     >
       <Suspense
         fallback={

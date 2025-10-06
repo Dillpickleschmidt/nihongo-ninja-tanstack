@@ -1,5 +1,6 @@
 import { Component, Show } from "solid-js"
 import { Button } from "@/components/ui/button"
+import { SheetClose } from "@/components/ui/sheet"
 import { cn } from "@/utils"
 import type { MobileContentView } from "@/features/learn-page/context/LearnPageContext"
 import {
@@ -22,7 +23,8 @@ export const NavigationSheet: Component<NavigationSheetProps> = (props) => {
     <nav class="mt-4 flex flex-col space-y-1">
       <Show when={props.variant === "mobile"}>
         <div class="space-y-1">
-          <Button
+          <SheetClose
+            as={Button}
             variant="ghost"
             onClick={() => props.setActiveView?.("learning-path")}
             class={cn(
@@ -40,9 +42,10 @@ export const NavigationSheet: Component<NavigationSheetProps> = (props) => {
               )}
             />
             <span>Learning Path</span>
-          </Button>
+          </SheetClose>
 
-          <Button
+          <SheetClose
+            as={Button}
             variant="ghost"
             onClick={() => props.setActiveView?.("featured-content")}
             class={cn(
@@ -60,11 +63,12 @@ export const NavigationSheet: Component<NavigationSheetProps> = (props) => {
               )}
             />
             <span>Featured Content</span>
-          </Button>
+          </SheetClose>
         </div>
 
         <div class="border-border/50 space-y-1 border-t pt-2">
-          <Button
+          <SheetClose
+            as={Button}
             variant="ghost"
             onClick={() => props.setActiveView?.("your-progress")}
             class={cn(
@@ -82,9 +86,10 @@ export const NavigationSheet: Component<NavigationSheetProps> = (props) => {
               )}
             />
             <span>Your Progress</span>
-          </Button>
+          </SheetClose>
 
-          <Button
+          <SheetClose
+            as={Button}
             variant="ghost"
             onClick={() => props.setActiveView?.("your-struggles")}
             class={cn(
@@ -102,9 +107,10 @@ export const NavigationSheet: Component<NavigationSheetProps> = (props) => {
               )}
             />
             <span>Your Struggles</span>
-          </Button>
+          </SheetClose>
 
-          <Button
+          <SheetClose
+            as={Button}
             variant="ghost"
             onClick={() => props.setActiveView?.("your-history")}
             class={cn(
@@ -122,7 +128,7 @@ export const NavigationSheet: Component<NavigationSheetProps> = (props) => {
               )}
             />
             <span>Your History</span>
-          </Button>
+          </SheetClose>
         </div>
 
         <div class="border-border/50 space-y-1 border-t pt-2">

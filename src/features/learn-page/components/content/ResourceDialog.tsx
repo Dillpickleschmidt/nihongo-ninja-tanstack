@@ -10,6 +10,16 @@ import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 
 // ============================================================================
+// Shared Classes
+// ============================================================================
+
+const MOBILE_CARD_BASE =
+  "bg-card hover:bg-card/90 flex items-center gap-4 rounded-2xl p-4 shadow-sm transition-colors"
+
+const DESKTOP_CARD_BASE =
+  "border-card-foreground/70 relative h-40 w-[220px] overflow-hidden rounded-2xl border opacity-0 backdrop-blur-sm hover:shadow-xl"
+
+// ============================================================================
 // Resource Card Wrapper - Handles dialog vs external link logic
 // ============================================================================
 
@@ -30,9 +40,15 @@ export function ResourceCardWrapper(props: {
           rel="noopener noreferrer"
           class={cn(
             "group block transition-transform hover:scale-[1.02]",
-            props.variant === "mobile" &&
-              "bg-card hover:bg-card/90 flex items-center gap-4 rounded-2xl p-4 shadow-sm transition-colors",
+            props.variant === "mobile" && MOBILE_CARD_BASE,
+            props.variant === "desktop" && DESKTOP_CARD_BASE,
           )}
+          data-featured-item={props.variant === "desktop" ? "" : undefined}
+          style={
+            props.variant === "desktop"
+              ? { "background-image": props.resource.gradientStyle }
+              : undefined
+          }
         >
           <ResourceCardContent
             resource={props.resource}
@@ -44,12 +60,17 @@ export function ResourceCardWrapper(props: {
     >
       <Dialog>
         <DialogTrigger
-          as="button"
           class={cn(
             "group block w-full cursor-pointer text-left transition-transform hover:scale-[1.02]",
-            props.variant === "mobile" &&
-              "bg-card hover:bg-card/90 flex items-center gap-4 rounded-2xl p-4 shadow-sm transition-colors",
+            props.variant === "mobile" && MOBILE_CARD_BASE,
+            props.variant === "desktop" && DESKTOP_CARD_BASE,
           )}
+          data-featured-item={props.variant === "desktop" ? "" : undefined}
+          style={
+            props.variant === "desktop"
+              ? { "background-image": props.resource.gradientStyle }
+              : undefined
+          }
         >
           <ResourceCardContent
             resource={props.resource}
@@ -132,13 +153,9 @@ export function ResourceCardContent(props: {
     )
   }
 
-  // Desktop variant
+  // Desktop variant - content only (wrapper is now on DialogTrigger/anchor)
   return (
-    <div
-      data-featured-item
-      class="border-card-foreground/70 relative h-40 w-[220px] overflow-hidden rounded-2xl border opacity-0 backdrop-blur-sm hover:shadow-xl"
-      style={{ "background-image": props.resource.gradientStyle }}
-    >
+    <>
       <Suspense>
         <Show when={getThumbnailUrl()}>
           <div
@@ -179,7 +196,7 @@ export function ResourceCardContent(props: {
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

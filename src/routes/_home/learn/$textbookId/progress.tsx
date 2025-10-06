@@ -2,13 +2,7 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { UpcomingModulesList } from "@/features/learn-page/components/content/UpcomingModulesList"
 import { Route as ParentRoute } from "@/routes/_home/learn/$textbookId"
-import { useCustomQuery } from "@/hooks/useCustomQuery"
-import {
-  completedModulesQueryOptions,
-  upcomingModulesQueryOptions,
-  moduleProgressQueryOptions,
-} from "@/features/learn-page/query/query-options"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 
 export const Route = createFileRoute("/_home/learn/$textbookId/progress")({
   component: RouteComponent,
@@ -16,23 +10,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId/progress")({
 
 function RouteComponent() {
   const loaderData = ParentRoute.useLoaderData()()
-  const userId = ParentRoute.useRouteContext()().user?.id || null
-
-  const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
-  const completionsQuery = useCustomQuery(() =>
-    completedModulesQueryOptions(userId),
-  )
-  const upcomingModulesQuery = useCustomQuery(() =>
-    upcomingModulesQueryOptions(
-      userId,
-      loaderData.textbookId,
-      settingsQuery.data?.["textbook-positions"]?.[loaderData.textbookId] ||
-        null,
-    ),
-  )
-  const moduleProgressQuery = useCustomQuery(() =>
-    moduleProgressQueryOptions(userId, upcomingModulesQuery.data || []),
-  )
+  const { upcomingModulesQuery, completionsQuery } = useLearnPageContext()
 
   // If no user, show sign-in message
   if (!loaderData.user) {
@@ -58,22 +36,11 @@ function RouteComponent() {
     return data.filter((item) => !completedSet.has(item.id))
   }
 
-  // Pagination - load more completed modules
-  const loadMoreCompletions = () => {
-    // TODO: Implement pagination when backend supports it
-  }
-
   return (
     <>
       {/* Mobile: Full width timeline */}
       <div class="xl:hidden">
-        <UpcomingModulesList
-          variant="lg"
-          completedModules={completionsQuery.data || []}
-          upcomingModules={upcomingModules}
-          moduleProgress={() => moduleProgressQuery.data || {}}
-          onLoadMore={loadMoreCompletions}
-        />
+        <UpcomingModulesList variant="lg" upcomingModules={upcomingModules} />
       </div>
 
       {/* Desktop: 3-column layout with timeline in center */}
@@ -83,13 +50,7 @@ function RouteComponent() {
 
         {/* Center content - timeline */}
         <div class="w-[60%] pt-6">
-          <UpcomingModulesList
-            variant="lg"
-            completedModules={completionsQuery.data || []}
-            upcomingModules={upcomingModules}
-            moduleProgress={() => moduleProgressQuery.data || {}}
-            onLoadMore={loadMoreCompletions}
-          />
+          <UpcomingModulesList variant="lg" upcomingModules={upcomingModules} />
         </div>
 
         {/* Right sidebar - empty */}

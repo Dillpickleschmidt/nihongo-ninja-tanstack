@@ -1,5 +1,6 @@
 import { For } from "solid-js"
 import { Button } from "@/components/ui/button"
+import { SheetClose } from "@/components/ui/sheet"
 import { cn } from "@/utils"
 import {
   getModuleIcon,
@@ -31,7 +32,8 @@ export function ModuleTypesList(props: ModuleTypesListProps) {
           const iconClasses = getModuleIconClasses(moduleType.id)
 
           return (
-            <Button
+            <SheetClose
+              as={Button}
               variant="ghost"
               class={cn(
                 "w-full justify-start gap-3",
@@ -48,7 +50,7 @@ export function ModuleTypesList(props: ModuleTypesListProps) {
               />
               <span class="text-sm">{moduleType.label}</span>
               <div />
-            </Button>
+            </SheetClose>
           )
         }}
       </For>

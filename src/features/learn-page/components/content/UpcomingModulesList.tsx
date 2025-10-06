@@ -1,4 +1,4 @@
-import { Show, For, createEffect, onMount } from "solid-js"
+import { Show, For, createEffect, onMount, createSignal } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { static_modules } from "@/data/static_modules"
 import { dynamic_modules } from "@/data/dynamic_modules"
@@ -10,6 +10,7 @@ import {
   getModuleCircleClasses,
   getLinkTo,
 } from "@/features/learn-page/utils/loader-helpers"
+import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import type {
   ModuleProgress,
   ModuleWithCurrent,
@@ -19,16 +20,48 @@ const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 
 interface UpcomingModulesListProps {
   variant: "sm" | "lg"
-  completedModules?: ModuleCompletion[]
   upcomingModules: () => ModuleWithCurrent[]
-  moduleProgress?: () => Record<string, ModuleProgress>
-  onLoadMore?: () => void
 }
 
 export function UpcomingModulesList(props: UpcomingModulesListProps) {
   const isSm = props.variant === "sm"
-  const moduleProgress = () => props.moduleProgress?.() || {}
-  const visibleCompleted = () => props.completedModules || []
+  const { completionsQuery, moduleProgressQuery } = useLearnPageContext()
+
+  const [visibleCompletedCount, setVisibleCompletedCount] = createSignal(2)
+
+  const allCompletedModules = () => completionsQuery.data || []
+  const visibleCompleted = () =>
+    allCompletedModules().slice(0, visibleCompletedCount())
+  const moduleProgress = () => moduleProgressQuery.data || {}
+
+  // Scroll-based gradient animations (33px transition zone from top edge)
+  const applyScrollAnimations = (container: HTMLElement) => {
+    const containerRect = container.getBoundingClientRect()
+    const containerTop = containerRect.top
+    const items = container.querySelectorAll("[data-module-item]")
+
+    items.forEach((item) => {
+      const rect = item.getBoundingClientRect()
+      const itemTop = rect.top
+
+      // Calculate distance from top edge only
+      const distanceFromTop = itemTop - containerTop
+
+      // Linear interpolation within 33px zone from top
+      let progress = 1
+      if (distanceFromTop < 33) {
+        progress = Math.max(0, distanceFromTop / 33) // 0 at edge, 1 at 33px inside
+      }
+
+      // Calculate opacity and scale
+      const opacity = 0.3 + 0.7 * progress // 0.3 → 1.0
+      const scale = 0.95 + 0.05 * progress // 0.95 → 1.0
+
+      // Apply inline styles
+      ;(item as HTMLElement).style.opacity = opacity.toString()
+      ;(item as HTMLElement).style.transform = `scale(${scale})`
+    })
+  }
 
   const getModuleInfo = (moduleId: string) => {
     const module = modules[moduleId]
@@ -41,9 +74,6 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
     return { title: moduleId, type: "misc", linkTo: "#" }
   }
 
-  const isCompleted = (moduleId: string) =>
-    props.completedModules?.some((c) => c.module_path === moduleId) || false
-
   const isVocabPractice = (moduleId: string) => {
     const module = modules[moduleId]
     return (
@@ -53,12 +83,81 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
     )
   }
 
-  const firstIncompleteIndex = () =>
-    props.upcomingModules().findIndex((item) => !isCompleted(item.id))
-
-  /* ---------------- Sidebar (sm) - unchanged ---------------- */
+  /* ---------------- Sidebar (sm) ---------------- */
   if (isSm) {
-    const completedToShow = 1
+    let containerRef: HTMLDivElement | undefined
+
+    createEffect(() => {
+      if (!containerRef) return
+      let rafId: number | null = null
+
+      const handleScroll = () => {
+        // Load more completed modules when near top
+        if (
+          containerRef!.scrollTop < 15 &&
+          visibleCompletedCount() < allCompletedModules().length
+        ) {
+          // Capture scroll state before adding items
+          const oldScrollHeight = containerRef!.scrollHeight
+          const oldScrollTop = containerRef!.scrollTop
+
+          setVisibleCompletedCount((prev) =>
+            Math.min(prev + 5, allCompletedModules().length),
+          )
+
+          // Restore visual position after DOM updates
+          requestAnimationFrame(() => {
+            const newScrollHeight = containerRef!.scrollHeight
+            const heightDiff = newScrollHeight - oldScrollHeight
+            containerRef!.scrollTop = oldScrollTop + heightDiff
+          })
+        }
+
+        // Apply scroll animations with RAF
+        if (rafId) cancelAnimationFrame(rafId)
+        rafId = requestAnimationFrame(() => {
+          applyScrollAnimations(containerRef!)
+        })
+      }
+
+      containerRef.addEventListener("scroll", handleScroll)
+      return () => {
+        containerRef.removeEventListener("scroll", handleScroll)
+        if (rafId) cancelAnimationFrame(rafId)
+      }
+    })
+
+    // Scroll to show boundary between completed and upcoming once when data loads
+    let hasScrolledToPosition = false
+    createEffect(() => {
+      if (hasScrolledToPosition || !containerRef) return
+
+      const visible = visibleCompleted()
+      if (visible.length === 0) return
+
+      requestAnimationFrame(() => {
+        if (!containerRef) return
+        // Find the first upcoming module element
+        const firstUpcomingEl = containerRef.querySelector(
+          "[data-module-item]:not([data-completed-item])",
+        )
+        if (firstUpcomingEl) {
+          // Scroll so the first upcoming module is visible with some completed modules above
+          const upcomingOffset = (firstUpcomingEl as HTMLElement).offsetTop
+          containerRef.scrollTop = Math.max(0, upcomingOffset - 175)
+          hasScrolledToPosition = true
+          applyScrollAnimations(containerRef)
+        }
+      })
+    })
+
+    // Re-apply animations when visible count changes
+    createEffect(() => {
+      visibleCompletedCount()
+      if (!containerRef) return
+      requestAnimationFrame(() => applyScrollAnimations(containerRef!))
+    })
+
     return (
       <div class="space-y-3">
         <h3 class="text-lg font-semibold">Upcoming Lessons</h3>
@@ -70,15 +169,25 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
             </p>
           }
         >
-          <div class="space-y-1">
-            <For
-              each={[...visibleCompleted()].slice(0, completedToShow).reverse()}
-            >
+          <div
+            ref={containerRef}
+            class="max-h-[300px] space-y-1 overflow-y-auto"
+          >
+            <style>{`
+              [data-module-item] {
+                transition: opacity 100ms ease-out, transform 100ms ease-out;
+              }
+            `}</style>
+            <For each={[...visibleCompleted()].reverse()}>
               {(completion) => {
                 const moduleInfo = getModuleInfo(completion.module_path)
                 const circleClasses = getModuleCircleClasses(moduleInfo.type)
                 return (
-                  <div class="ml-1 rounded px-2 opacity-50">
+                  <div
+                    class="ml-1 rounded px-2 opacity-50"
+                    data-completed-item
+                    data-module-item
+                  >
                     <Link to={moduleInfo.linkTo}>
                       <div class="flex items-center gap-2 py-2">
                         <div
@@ -103,9 +212,9 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
               {(item, index) => {
                 const moduleInfo = getModuleInfo(item.id)
                 const circleClasses = getModuleCircleClasses(moduleInfo.type)
-                const isFirst = index() === firstIncompleteIndex()
+                const isCurrent = index() === 0
                 return (
-                  <div class="ml-1 rounded px-2">
+                  <div class="ml-1 rounded px-2" data-module-item>
                     <Link to={moduleInfo.linkTo}>
                       <div class="flex items-center gap-2 py-2">
                         <div
@@ -117,7 +226,8 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
                         <span
                           class={cn(
                             "hover:text-muted-foreground ml-1 flex-1 cursor-pointer text-xs",
-                            isFirst && "mb-1 text-base leading-2.5 font-medium",
+                            isCurrent &&
+                              "mb-1 text-base leading-2.5 font-medium",
                           )}
                         >
                           {moduleInfo.title}
@@ -136,83 +246,146 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
 
   /* ---------------- Large variant (timeline layout) ---------------- */
   let containerRef: HTMLDivElement | undefined
-  let firstUpcomingRef: HTMLDivElement | undefined
-
-  onMount(() => {
-    if (!containerRef || !firstUpcomingRef) return
-    const container = containerRef
-    const target = firstUpcomingRef
-    const containerHeight = container.clientHeight
-    container.scrollTo({ top: target.offsetTop - containerHeight * 0.25 })
-  })
 
   createEffect(() => {
-    if (!containerRef || !props.onLoadMore) return
+    if (!containerRef) return
+    let rafId: number | null = null
+
     const handleScroll = () => {
-      if (containerRef.scrollTop < 100) props.onLoadMore?.()
+      // Load more completed modules when near top
+      if (
+        containerRef!.scrollTop < 15 &&
+        visibleCompletedCount() < allCompletedModules().length
+      ) {
+        // Capture scroll state before adding items
+        const oldScrollHeight = containerRef!.scrollHeight
+        const oldScrollTop = containerRef!.scrollTop
+
+        setVisibleCompletedCount((prev) =>
+          Math.min(prev + 5, allCompletedModules().length),
+        )
+
+        // Restore visual position after DOM updates
+        requestAnimationFrame(() => {
+          const newScrollHeight = containerRef!.scrollHeight
+          const heightDiff = newScrollHeight - oldScrollHeight
+          containerRef!.scrollTop = oldScrollTop + heightDiff
+        })
+      }
+
+      // Apply scroll animations with RAF
+      if (rafId) cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => {
+        applyScrollAnimations(containerRef!)
+      })
     }
+
     containerRef.addEventListener("scroll", handleScroll)
-    return () => containerRef.removeEventListener("scroll", handleScroll)
+    return () => {
+      containerRef.removeEventListener("scroll", handleScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
   })
 
-  const completedToPreview = () => [...visibleCompleted()].slice(-3).reverse()
+  // Scroll to show boundary between completed and upcoming once when data loads
+  let hasScrolledToPosition = false
+  createEffect(() => {
+    if (hasScrolledToPosition || !containerRef) return
+
+    const visible = visibleCompleted()
+    if (visible.length === 0) return
+
+    requestAnimationFrame(() => {
+      if (!containerRef) return
+      // Find the first upcoming module element
+      const firstUpcomingEl = containerRef.querySelector(
+        "[data-module-item]:not([data-completed-item])",
+      )
+      if (firstUpcomingEl) {
+        // Scroll so the first upcoming module is visible with some completed modules above
+        const upcomingOffset = (firstUpcomingEl as HTMLElement).offsetTop
+        containerRef.scrollTop = Math.max(0, upcomingOffset - 50)
+        hasScrolledToPosition = true
+        applyScrollAnimations(containerRef)
+      }
+    })
+  })
+
+  // Re-apply animations when visible count changes (lg variant)
+  createEffect(() => {
+    visibleCompletedCount()
+    if (!containerRef) return
+    requestAnimationFrame(() => applyScrollAnimations(containerRef!))
+  })
 
   return (
     <div
       ref={containerRef}
-      class="mx-auto max-w-2xl space-y-4 overflow-y-auto px-6"
-      style={{ height: "calc(100vh - 200px)" }}
+      class="mx-auto h-[calc(100vh-141px)] max-w-2xl space-y-4 overflow-y-auto px-6 pb-6 xl:h-[calc(100vh-171px)]"
     >
+      <style>{`
+        [data-module-item] {
+          transition: opacity 100ms ease-out, transform 100ms ease-out;
+        }
+      `}</style>
       <h2 class="mb-6 text-center text-2xl font-semibold">
         Your Learning Path
       </h2>
-
-      {/* Completed previews */}
-      <div class="mb-8 flex flex-col items-center space-y-2">
-        <For each={completedToPreview()}>
-          {(completion, i) => {
-            const moduleInfo = getModuleInfo(completion.module_path)
-            const scale = 1 - (completedToPreview().length - 1 - i()) * 0.08
-            const opacity = 1 - (completedToPreview().length - 1 - i()) * 0.25
-            return (
-              <div
-                class="w-[90%] rounded-md border border-neutral-500/40 bg-neutral-500/5 px-3 py-2 text-center text-sm font-light text-neutral-400"
-                style={{ transform: `scale(${scale})`, opacity }}
-              >
-                {moduleInfo.title}
-              </div>
-            )
-          }}
-        </For>
-      </div>
 
       <div class="relative pl-8">
         {/* Timeline line */}
         <div class="absolute top-0 bottom-0 left-[0.95rem] w-px bg-neutral-600/30" />
 
+        {/* Completed modules */}
+        <For each={[...visibleCompleted()].reverse()}>
+          {(completion) => {
+            const moduleInfo = getModuleInfo(completion.module_path)
+            const ModuleIcon = getModuleIcon(moduleInfo.type)
+            const iconClasses = getModuleIconClasses(moduleInfo.type)
+
+            return (
+              <div
+                class="relative mb-6 last:mb-0"
+                data-module-item
+                data-completed-item
+              >
+                {/* Timeline dot */}
+                <div class="absolute top-3.5 -left-[1.46rem] h-3.5 w-3.5 rounded-full border-2 border-neutral-500 bg-neutral-500" />
+
+                <Link to={moduleInfo.linkTo}>
+                  <div class="rounded-lg border border-neutral-600/40 bg-transparent px-3.5 py-2 transition-all hover:shadow-md">
+                    <div class="flex items-center gap-3">
+                      <ModuleIcon class={cn("h-4.5 w-4.5", iconClasses)} />
+
+                      <span class="flex-1 text-xs text-neutral-400">
+                        {moduleInfo.title}
+                      </span>
+
+                      <span class="font-bold text-neutral-400">✓</span>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            )
+          }}
+        </For>
+
+        {/* Upcoming modules */}
         <For each={props.upcomingModules()}>
           {(module, idx) => {
             const moduleInfo = getModuleInfo(module.id)
             const ModuleIcon = getModuleIcon(moduleInfo.type)
             const iconClasses = getModuleIconClasses(moduleInfo.type)
             const progress = () => moduleProgress()[module.id]
-            const completed = isCompleted(module.id)
-            const current = idx() === firstIncompleteIndex()
+            const isCurrent = idx() === 0
 
             return (
-              <div
-                ref={current ? firstUpcomingRef : undefined}
-                class="relative mb-6 last:mb-0"
-              >
+              <div class="relative mb-6 last:mb-0" data-module-item>
                 {/* Timeline dot */}
                 <div
                   class={cn(
                     "absolute top-4 -left-[1.46rem] h-3.5 w-3.5 rounded-full border-2",
-                    completed
-                      ? "border-neutral-500 bg-neutral-500"
-                      : current
-                        ? "border-neutral-500 bg-neutral-600"
-                        : "border-neutral-700 bg-neutral-800",
+                    "border-neutral-700 bg-neutral-800",
                   )}
                 />
 
@@ -220,23 +393,23 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
                   <div
                     class={cn(
                       "rounded-lg border px-4 py-3 backdrop-blur-sm transition-all hover:shadow-md",
-                      completed
-                        ? "border-neutral-600/40 bg-neutral-500/5 opacity-70"
-                        : current
-                          ? "bg-primary/14 border-neutral-700/40"
-                          : "bg-primary/7 border-neutral-700/40",
+                      isCurrent
+                        ? "bg-primary/14 border-neutral-500"
+                        : "bg-primary/7 border-neutral-700/40",
                     )}
                   >
                     <div class="flex items-center gap-3">
-                      {/* keep original icon color */}
                       <ModuleIcon
-                        class={cn(current ? "h-6 w-6" : "h-5 w-5", iconClasses)}
+                        class={cn(
+                          isCurrent ? "h-6 w-6" : "h-5 w-5",
+                          iconClasses,
+                        )}
                       />
 
                       <span
                         class={cn(
                           "flex-1",
-                          current
+                          isCurrent
                             ? "text-base font-medium text-neutral-200"
                             : "text-sm text-neutral-400",
                         )}
@@ -246,10 +419,6 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
 
                       <Show when={isVocabPractice(module.id) && progress()}>
                         <VocabProgressBadges progress={progress()!} />
-                      </Show>
-
-                      <Show when={completed}>
-                        <span class="font-bold text-neutral-400">✓</span>
                       </Show>
                     </div>
                   </div>
