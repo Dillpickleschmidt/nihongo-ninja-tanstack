@@ -179,23 +179,35 @@ export type Database = {
           },
         ]
       }
-      user_module_completions: {
+      user_module_progress: {
         Row: {
-          completed_at: string
-          id: number
+          completed_at: string | null
+          completion_percentage: number
+          created_at: string
           module_path: string
+          questions_answered: number
+          time_spent_seconds: number
+          updated_at: string
           user_id: string
         }
         Insert: {
-          completed_at?: string
-          id?: number
+          completed_at?: string | null
+          completion_percentage?: number
+          created_at?: string
           module_path: string
+          questions_answered?: number
+          time_spent_seconds?: number
+          updated_at?: string
           user_id: string
         }
         Update: {
-          completed_at?: string
-          id?: number
+          completed_at?: string | null
+          completion_percentage?: number
+          created_at?: string
           module_path?: string
+          questions_answered?: number
+          time_spent_seconds?: number
+          updated_at?: string
           user_id?: string
         }
         Relationships: []

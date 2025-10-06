@@ -51,8 +51,11 @@ declare global {
   type PublicDeckShareUpdate =
     SupabaseDB["public"]["Tables"]["public_deck_shares"]["Update"]
 
-  type ModuleCompletion =
-    SupabaseDB["public"]["Tables"]["user_module_completions"]["Row"]
-  type ModuleCompletionInsert =
-    SupabaseDB["public"]["Tables"]["user_module_completions"]["Insert"]
+  // Module Progress Tracking Types
+  type ModuleProgress =
+    SupabaseDB["public"]["Tables"]["user_module_progress"]["Row"]
+  type ModuleProgressInsert =
+    SupabaseDB["public"]["Tables"]["user_module_progress"]["Insert"]
+  type ModuleProgressUpdate =
+    SupabaseDB["public"]["Tables"]["user_module_progress"]["Update"]
 }
