@@ -1,7 +1,10 @@
 // features/navbar/BottomNav.tsx
-import { Link, useLocation } from "@tanstack/solid-router"
+import { Link, useLocation, useRouteContext } from "@tanstack/solid-router"
 import { Home, GraduationCap, Search, User } from "lucide-solid"
 import { cn } from "@/utils"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { Route as RootRoute } from "@/routes/__root"
 
 interface BottomNavProps {
   dailyProgressPercentage?: number
@@ -9,6 +12,13 @@ interface BottomNavProps {
 
 export function BottomNav(props: BottomNavProps) {
   const location = useLocation()
+  const context = useRouteContext({ from: RootRoute.id })
+  const userId = context().user?.id || null
+
+  const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
+  const activeTextbook = () =>
+    settingsQuery.data?.["active-textbook"] || "genki_1"
+
   const dailyProgress = () => props.dailyProgressPercentage || 65
 
   const navItems = [
@@ -28,7 +38,7 @@ export function BottomNav(props: BottomNavProps) {
       id: "progress",
       icon: null,
       label: `${dailyProgress()}%`,
-      href: "/progress",
+      href: () => `/learn/${activeTextbook()}/progress`,
       isProgress: true,
     },
     {
@@ -46,12 +56,16 @@ export function BottomNav(props: BottomNavProps) {
   ]
 
   // Simple function to check if nav item is active
-  const isActive = (href: string) => {
+  const isActive = (href: string | (() => string)) => {
     const currentPath = location().pathname
-    if (href === "/learn") {
-      return currentPath.startsWith("/learn")
+    const hrefValue = typeof href === "function" ? href() : href
+
+    if (hrefValue === "/learn" || hrefValue.startsWith("/learn/")) {
+      return (
+        currentPath.startsWith("/learn") && !currentPath.endsWith("/progress")
+      )
     }
-    return currentPath === href
+    return currentPath === hrefValue
   }
 
   // Calculate stroke-dashoffset for circular progress
@@ -125,9 +139,11 @@ export function BottomNav(props: BottomNavProps) {
           {navItems.map((item) => {
             if (item.isProgress) {
               const active = isActive(item.href)
+              const hrefValue =
+                typeof item.href === "function" ? item.href() : item.href
               return (
                 <Link
-                  to={item.href}
+                  to={hrefValue}
                   class={cn(
                     "group relative flex h-16 w-16 items-center justify-center rounded-full transition-all duration-200",
                     "hover:scale-110",
@@ -174,11 +190,13 @@ export function BottomNav(props: BottomNavProps) {
 
             const Icon = item.icon
             const active = isActive(item.href)
+            const hrefValue =
+              typeof item.href === "function" ? item.href() : item.href
 
             return (
               <Link
                 id={"tour-" + item.id}
-                to={item.href}
+                to={hrefValue}
                 class={cn(
                   "group flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200",
                   "hover:bg-card-foreground/20 hover:dark:bg-card-foreground/60 hover:scale-110",

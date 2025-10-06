@@ -1,6 +1,8 @@
 // features/learn-page/components/layout/LearnPageHeader.tsx
 import { Link, useNavigate } from "@tanstack/solid-router"
 import { createSignal, Show } from "solid-js"
+import type { UseQueryResult } from "@tanstack/solid-query"
+import type { DefaultError } from "@tanstack/query-core"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Sheet,
@@ -13,9 +15,13 @@ import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
 import { NavigationSheet } from "./NavigationSheet"
 import { HamburgerIcon } from "../shared/HamburgerIcon"
 import { DueCardsDisplay } from "../shared/DueCardsDisplay"
-import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
 import { getDeckBySlug } from "@/data/utils/core"
-import type { MobileContentView } from "./LearnPageContent"
+import {
+  useLearnPageContext,
+  type MobileContentView,
+} from "@/features/learn-page/context/LearnPageContext"
+import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
+import type { TextbookIDEnum } from "@/data/types"
 
 interface LearnPageHeaderProps {
   variant: "mobile" | "desktop"
@@ -25,8 +31,16 @@ interface LearnPageHeaderProps {
 
 export function LearnPageHeader(props: LearnPageHeaderProps) {
   const navigate = useNavigate()
+  const context = useLearnPageContext()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
-  const loaderData = Route.useLoaderData()
+
+  const activeTextbookId = () =>
+    (context.settingsQuery.data?.["active-textbook"] ||
+      "genki_1") as TextbookIDEnum
+  const activeChapterSlug = () =>
+    context.settingsQuery.data?.["active-deck"] || "chapter-0"
+  const activeDeck = () =>
+    getDeckBySlug(activeTextbookId(), activeChapterSlug())
 
   const handleDeckChange = async (
     textbookId: string,
@@ -61,27 +75,15 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
 
           <div class="flex justify-center">
             <DeckSelectionPopover
-              activeTextbookId={loaderData().textbookId}
-              activeDeck={
-                getDeckBySlug(
-                  loaderData().textbookId,
-                  loaderData().chapterSlug,
-                )!
-              }
+              activeTextbookId={activeTextbookId()}
+              activeDeck={activeDeck()!}
               onDeckChange={handleDeckChange}
               isOpen={isPopoverOpen()}
               onOpenChange={setIsPopoverOpen}
               popoverWidth="w-[350px]"
             >
               <div class="hover:bg-card-foreground/40 -mt-0.5 flex min-w-[150px] items-center justify-center space-x-2 rounded-md border-none px-3 py-2 text-center text-lg font-semibold hover:cursor-pointer md:text-xl">
-                <span>
-                  {
-                    getDeckBySlug(
-                      loaderData().textbookId,
-                      loaderData().chapterSlug,
-                    )?.title
-                  }
-                </span>
+                <span>{activeDeck()?.title}</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"

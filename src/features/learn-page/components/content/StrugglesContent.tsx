@@ -2,7 +2,7 @@ import { For } from "solid-js"
 import { Brain } from "lucide-solid"
 import { cn } from "@/utils"
 import { useAnimationManager } from "@/hooks/useAnimations"
-import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
+import { Route } from "@/routes/_home/learn/$textbookId"
 
 interface StrugglesContentProps {
   variant?: "mobile" | "desktop"

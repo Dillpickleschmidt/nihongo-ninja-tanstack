@@ -3,7 +3,7 @@ import { createSignal } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
 import { WordHierarchy } from "../content/WordHierarchy"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
-import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
+import { Route } from "@/routes/_home/learn/$textbookId"
 import { getDeckBySlug } from "@/data/utils/core"
 
 interface LeftSidebarProps {

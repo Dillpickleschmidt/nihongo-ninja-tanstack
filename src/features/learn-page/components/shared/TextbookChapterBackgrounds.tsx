@@ -178,11 +178,14 @@ export function TextbookChapterBackgrounds(props: {
   textbook: string
   chapter: string
   showGradient?: boolean
-  blur?: string
+  blur?: string | (() => string)
   class?: string
 }) {
   const getBackgroundItem = () =>
     textbook_chapter_backgrounds[props.textbook]?.[props.chapter]
+
+  const blurValue = () =>
+    typeof props.blur === "function" ? props.blur() : props.blur || "0px"
 
   return (
     <Show
@@ -200,7 +203,7 @@ export function TextbookChapterBackgrounds(props: {
             y_offset_desktop: "-82px",
           }}
           showGradient={props.showGradient}
-          blur={props.blur}
+          blur={blurValue}
           class={props.class}
         />
       }
@@ -210,7 +213,7 @@ export function TextbookChapterBackgrounds(props: {
           variant="media"
           backgroundItem={backgroundItem}
           showGradient={props.showGradient}
-          blur={props.blur}
+          blur={blurValue}
           class={props.class}
         />
       )}

@@ -25,7 +25,6 @@ import { Route as PracticePracticeIDRouteImport } from './routes/practice/$pract
 import { Route as ExternalResourcesResourceRouteImport } from './routes/external-resources/$resource'
 import { Route as ApiUploadOverrideRouteImport } from './routes/api/upload-override'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
-import { Route as HomeProgressRouteImport } from './routes/_home/progress'
 import { Route as HomeProfileRouteImport } from './routes/_home/profile'
 import { Route as HomeGuidesRouteImport } from './routes/_home/guides'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
@@ -74,10 +73,12 @@ import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
 import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 import { Route as HomePracticeSentencePracticeRouteImport } from './routes/_home/practice/sentence-practice'
 import { Route as HomePracticeConjugationRouteImport } from './routes/_home/practice/conjugation'
+import { Route as HomeLearnTextbookIdRouteImport } from './routes/_home/learn/$textbookId'
 import { Route as HomeGuidesSrsRouteImport } from './routes/_home/guides/srs'
 import { Route as HomeAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/additional-resources/kanji-practice-sheet'
 import { Route as HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/learn/additional-resources.kanji-practice-sheet'
-import { Route as HomeLearnTextbookIdChapterSlugRouteImport } from './routes/_home/learn/$textbookId.$chapterSlug'
+import { Route as HomeLearnTextbookIdProgressRouteImport } from './routes/_home/learn/$textbookId/progress'
+import { Route as HomeLearnTextbookIdChapterSlugRouteImport } from './routes/_home/learn/$textbookId/$chapterSlug'
 
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
@@ -159,11 +160,6 @@ const ApiUploadOverrideRoute = ApiUploadOverrideRouteImport.update({
 const HomeVocabRoute = HomeVocabRouteImport.update({
   id: '/vocab',
   path: '/vocab',
-  getParentRoute: () => HomeRoute,
-} as any)
-const HomeProgressRoute = HomeProgressRouteImport.update({
-  id: '/progress',
-  path: '/progress',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeProfileRoute = HomeProfileRouteImport.update({
@@ -435,6 +431,11 @@ const HomePracticeConjugationRoute = HomePracticeConjugationRouteImport.update({
   path: '/practice/conjugation',
   getParentRoute: () => HomeRoute,
 } as any)
+const HomeLearnTextbookIdRoute = HomeLearnTextbookIdRouteImport.update({
+  id: '/learn/$textbookId',
+  path: '/learn/$textbookId',
+  getParentRoute: () => HomeRoute,
+} as any)
 const HomeGuidesSrsRoute = HomeGuidesSrsRouteImport.update({
   id: '/srs',
   path: '/srs',
@@ -452,11 +453,17 @@ const HomeLearnAdditionalResourcesKanjiPracticeSheetRoute =
     path: '/learn/additional-resources/kanji-practice-sheet',
     getParentRoute: () => HomeRoute,
   } as any)
+const HomeLearnTextbookIdProgressRoute =
+  HomeLearnTextbookIdProgressRouteImport.update({
+    id: '/progress',
+    path: '/progress',
+    getParentRoute: () => HomeLearnTextbookIdRoute,
+  } as any)
 const HomeLearnTextbookIdChapterSlugRoute =
   HomeLearnTextbookIdChapterSlugRouteImport.update({
-    id: '/learn/$textbookId/$chapterSlug',
-    path: '/learn/$textbookId/$chapterSlug',
-    getParentRoute: () => HomeRoute,
+    id: '/$chapterSlug',
+    path: '/$chapterSlug',
+    getParentRoute: () => HomeLearnTextbookIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -471,7 +478,6 @@ export interface FileRoutesByFullPath {
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/guides': typeof HomeGuidesRouteWithChildren
   '/profile': typeof HomeProfileRoute
-  '/progress': typeof HomeProgressRoute
   '/vocab': typeof HomeVocabRoute
   '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
@@ -483,6 +489,7 @@ export interface FileRoutesByFullPath {
   '/practice/review': typeof PracticeReviewRoute
   '/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
   '/guides/srs': typeof HomeGuidesSrsRoute
+  '/learn/$textbookId': typeof HomeLearnTextbookIdRouteWithChildren
   '/practice/conjugation': typeof HomePracticeConjugationRoute
   '/practice/sentence-practice': typeof HomePracticeSentencePracticeRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
@@ -527,6 +534,7 @@ export interface FileRoutesByFullPath {
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
+  '/learn/$textbookId/progress': typeof HomeLearnTextbookIdProgressRoute
   '/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
 }
 export interface FileRoutesByTo {
@@ -541,7 +549,6 @@ export interface FileRoutesByTo {
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/guides': typeof HomeGuidesRouteWithChildren
   '/profile': typeof HomeProfileRoute
-  '/progress': typeof HomeProgressRoute
   '/vocab': typeof HomeVocabRoute
   '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
@@ -553,6 +560,7 @@ export interface FileRoutesByTo {
   '/practice/review': typeof PracticeReviewRoute
   '/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
   '/guides/srs': typeof HomeGuidesSrsRoute
+  '/learn/$textbookId': typeof HomeLearnTextbookIdRouteWithChildren
   '/practice/conjugation': typeof HomePracticeConjugationRoute
   '/practice/sentence-practice': typeof HomePracticeSentencePracticeRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
@@ -597,6 +605,7 @@ export interface FileRoutesByTo {
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
+  '/learn/$textbookId/progress': typeof HomeLearnTextbookIdProgressRoute
   '/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
 }
 export interface FileRoutesById {
@@ -613,7 +622,6 @@ export interface FileRoutesById {
   '/_home/grammar-notes': typeof HomeGrammarNotesRoute
   '/_home/guides': typeof HomeGuidesRouteWithChildren
   '/_home/profile': typeof HomeProfileRoute
-  '/_home/progress': typeof HomeProgressRoute
   '/_home/vocab': typeof HomeVocabRoute
   '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
@@ -625,6 +633,7 @@ export interface FileRoutesById {
   '/practice/review': typeof PracticeReviewRoute
   '/_home/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
   '/_home/guides/srs': typeof HomeGuidesSrsRoute
+  '/_home/learn/$textbookId': typeof HomeLearnTextbookIdRouteWithChildren
   '/_home/practice/conjugation': typeof HomePracticeConjugationRoute
   '/_home/practice/sentence-practice': typeof HomePracticeSentencePracticeRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
@@ -669,6 +678,7 @@ export interface FileRoutesById {
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/_home/learn/': typeof HomeLearnIndexRoute
   '/_home/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
+  '/_home/learn/$textbookId/progress': typeof HomeLearnTextbookIdProgressRoute
   '/_home/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
 }
 export interface FileRouteTypes {
@@ -685,7 +695,6 @@ export interface FileRouteTypes {
     | '/grammar-notes'
     | '/guides'
     | '/profile'
-    | '/progress'
     | '/vocab'
     | '/api/upload-override'
     | '/external-resources/$resource'
@@ -697,6 +706,7 @@ export interface FileRouteTypes {
     | '/practice/review'
     | '/additional-resources/kanji-practice-sheet'
     | '/guides/srs'
+    | '/learn/$textbookId'
     | '/practice/conjugation'
     | '/practice/sentence-practice'
     | '/api/auth/login'
@@ -741,6 +751,7 @@ export interface FileRouteTypes {
     | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
+    | '/learn/$textbookId/progress'
     | '/learn/additional-resources/kanji-practice-sheet'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -755,7 +766,6 @@ export interface FileRouteTypes {
     | '/grammar-notes'
     | '/guides'
     | '/profile'
-    | '/progress'
     | '/vocab'
     | '/api/upload-override'
     | '/external-resources/$resource'
@@ -767,6 +777,7 @@ export interface FileRouteTypes {
     | '/practice/review'
     | '/additional-resources/kanji-practice-sheet'
     | '/guides/srs'
+    | '/learn/$textbookId'
     | '/practice/conjugation'
     | '/practice/sentence-practice'
     | '/api/auth/login'
@@ -811,6 +822,7 @@ export interface FileRouteTypes {
     | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
+    | '/learn/$textbookId/progress'
     | '/learn/additional-resources/kanji-practice-sheet'
   id:
     | '__root__'
@@ -826,7 +838,6 @@ export interface FileRouteTypes {
     | '/_home/grammar-notes'
     | '/_home/guides'
     | '/_home/profile'
-    | '/_home/progress'
     | '/_home/vocab'
     | '/api/upload-override'
     | '/external-resources/$resource'
@@ -838,6 +849,7 @@ export interface FileRouteTypes {
     | '/practice/review'
     | '/_home/additional-resources/kanji-practice-sheet'
     | '/_home/guides/srs'
+    | '/_home/learn/$textbookId'
     | '/_home/practice/conjugation'
     | '/_home/practice/sentence-practice'
     | '/api/auth/login'
@@ -882,6 +894,7 @@ export interface FileRouteTypes {
     | '/practice/$userID/$deckID'
     | '/_home/learn/'
     | '/_home/learn/$textbookId/$chapterSlug'
+    | '/_home/learn/$textbookId/progress'
     | '/_home/learn/additional-resources/kanji-practice-sheet'
   fileRoutesById: FileRoutesById
 }
@@ -1019,13 +1032,6 @@ declare module '@tanstack/solid-router' {
       path: '/vocab'
       fullPath: '/vocab'
       preLoaderRoute: typeof HomeVocabRouteImport
-      parentRoute: typeof HomeRoute
-    }
-    '/_home/progress': {
-      id: '/_home/progress'
-      path: '/progress'
-      fullPath: '/progress'
-      preLoaderRoute: typeof HomeProgressRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/profile': {
@@ -1364,6 +1370,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomePracticeConjugationRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/_home/learn/$textbookId': {
+      id: '/_home/learn/$textbookId'
+      path: '/learn/$textbookId'
+      fullPath: '/learn/$textbookId'
+      preLoaderRoute: typeof HomeLearnTextbookIdRouteImport
+      parentRoute: typeof HomeRoute
+    }
     '/_home/guides/srs': {
       id: '/_home/guides/srs'
       path: '/srs'
@@ -1385,12 +1398,19 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/_home/learn/$textbookId/progress': {
+      id: '/_home/learn/$textbookId/progress'
+      path: '/progress'
+      fullPath: '/learn/$textbookId/progress'
+      preLoaderRoute: typeof HomeLearnTextbookIdProgressRouteImport
+      parentRoute: typeof HomeLearnTextbookIdRoute
+    }
     '/_home/learn/$textbookId/$chapterSlug': {
       id: '/_home/learn/$textbookId/$chapterSlug'
-      path: '/learn/$textbookId/$chapterSlug'
+      path: '/$chapterSlug'
       fullPath: '/learn/$textbookId/$chapterSlug'
       preLoaderRoute: typeof HomeLearnTextbookIdChapterSlugRouteImport
-      parentRoute: typeof HomeRoute
+      parentRoute: typeof HomeLearnTextbookIdRoute
     }
   }
 }
@@ -1422,18 +1442,30 @@ const HomeGuidesRouteWithChildren = HomeGuidesRoute._addFileChildren(
   HomeGuidesRouteChildren,
 )
 
+interface HomeLearnTextbookIdRouteChildren {
+  HomeLearnTextbookIdChapterSlugRoute: typeof HomeLearnTextbookIdChapterSlugRoute
+  HomeLearnTextbookIdProgressRoute: typeof HomeLearnTextbookIdProgressRoute
+}
+
+const HomeLearnTextbookIdRouteChildren: HomeLearnTextbookIdRouteChildren = {
+  HomeLearnTextbookIdChapterSlugRoute: HomeLearnTextbookIdChapterSlugRoute,
+  HomeLearnTextbookIdProgressRoute: HomeLearnTextbookIdProgressRoute,
+}
+
+const HomeLearnTextbookIdRouteWithChildren =
+  HomeLearnTextbookIdRoute._addFileChildren(HomeLearnTextbookIdRouteChildren)
+
 interface HomeRouteChildren {
   HomeAdditionalResourcesRoute: typeof HomeAdditionalResourcesRouteWithChildren
   HomeDashboardRoute: typeof HomeDashboardRoute
   HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
   HomeGuidesRoute: typeof HomeGuidesRouteWithChildren
   HomeProfileRoute: typeof HomeProfileRoute
-  HomeProgressRoute: typeof HomeProgressRoute
   HomeVocabRoute: typeof HomeVocabRoute
+  HomeLearnTextbookIdRoute: typeof HomeLearnTextbookIdRouteWithChildren
   HomePracticeConjugationRoute: typeof HomePracticeConjugationRoute
   HomePracticeSentencePracticeRoute: typeof HomePracticeSentencePracticeRoute
   HomeLearnIndexRoute: typeof HomeLearnIndexRoute
-  HomeLearnTextbookIdChapterSlugRoute: typeof HomeLearnTextbookIdChapterSlugRoute
   HomeLearnAdditionalResourcesKanjiPracticeSheetRoute: typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
 }
 
@@ -1443,12 +1475,11 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeGrammarNotesRoute: HomeGrammarNotesRoute,
   HomeGuidesRoute: HomeGuidesRouteWithChildren,
   HomeProfileRoute: HomeProfileRoute,
-  HomeProgressRoute: HomeProgressRoute,
   HomeVocabRoute: HomeVocabRoute,
+  HomeLearnTextbookIdRoute: HomeLearnTextbookIdRouteWithChildren,
   HomePracticeConjugationRoute: HomePracticeConjugationRoute,
   HomePracticeSentencePracticeRoute: HomePracticeSentencePracticeRoute,
   HomeLearnIndexRoute: HomeLearnIndexRoute,
-  HomeLearnTextbookIdChapterSlugRoute: HomeLearnTextbookIdChapterSlugRoute,
   HomeLearnAdditionalResourcesKanjiPracticeSheetRoute:
     HomeLearnAdditionalResourcesKanjiPracticeSheetRoute,
 }

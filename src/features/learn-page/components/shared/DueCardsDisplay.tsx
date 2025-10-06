@@ -2,16 +2,17 @@ import { Link, useRouteContext } from "@tanstack/solid-router"
 import { Suspense } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { Route as RootRoute } from "@/routes/__root"
-import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
+import { useLearnPageContext } from "../../context/LearnPageContext"
 
 interface DueCardsDisplayProps {
   variant: "mobile" | "desktop"
 }
 
 export function DueCardsDisplay(props: DueCardsDisplayProps) {
-  const context = useRouteContext({ from: RootRoute.id })
+  const routeContext = useRouteContext({ from: RootRoute.id })
+  const context = useLearnPageContext()
 
-  if (!context().user) {
+  if (!routeContext().user) {
     return (
       <Button
         as={Link}
@@ -28,10 +29,8 @@ export function DueCardsDisplay(props: DueCardsDisplayProps) {
     )
   }
 
-  const { dueCardsCountQuery: countQuery } = useLearnPageContext()
-
   const display = () => {
-    const value = countQuery.data!
+    const value = context.dueCardsCountQuery.data!
     return (
       <>
         <div class={value > 0 ? "text-amber-400" : "text-green-500"}>

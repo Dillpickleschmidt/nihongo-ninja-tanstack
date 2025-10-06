@@ -27,56 +27,56 @@ type UpsertFSRSCardArgs = {
 /**
  * Get FSRS cards by practice item keys for a user
  */
-export const getFSRSCards = createServerFn({ method: "GET" })
-  .inputValidator((data: { userId: string; keys: string[] }) => data)
-  .handler(async ({ data }): Promise<FSRSCardData[]> => {
-    if (!data.keys?.length) return []
+export async function getFSRSCards(
+  userId: string,
+  keys: string[],
+): Promise<FSRSCardData[]> {
+  if (!keys?.length) return []
 
-    const supabase = createSupabaseClient()
+  const supabase = createSupabaseClient()
 
-    const { data: cards, error } = await supabase
-      .from("fsrs_cards")
-      .select("*")
-      .eq("user_id", data.userId)
-      .in("practice_item_key", data.keys)
+  const { data: cards, error } = await supabase
+    .from("fsrs_cards")
+    .select("*")
+    .eq("user_id", userId)
+    .in("practice_item_key", keys)
 
-    if (error) {
-      console.error("Error fetching FSRS cards:", error)
-      return []
-    }
+  if (error) {
+    console.error("Error fetching FSRS cards:", error)
+    return []
+  }
 
-    return cards.map((card) => ({
-      user_id: card.user_id,
-      practice_item_key: card.practice_item_key,
-      type: card.type as DBPracticeItemType,
-      fsrs_card: card.fsrs_card as Card,
-      fsrs_logs: card.fsrs_logs as ReviewLog[],
-      mode: card.mode as "meanings" | "spellings",
-    }))
-  })
+  return cards.map((card) => ({
+    user_id: card.user_id,
+    practice_item_key: card.practice_item_key,
+    type: card.type as DBPracticeItemType,
+    fsrs_card: card.fsrs_card as Card,
+    fsrs_logs: card.fsrs_logs as ReviewLog[],
+    mode: card.mode as "meanings" | "spellings",
+  }))
+}
 
 /**
  * Get user progress data for vocabulary items
  */
-export const getUserProgress = createServerFn({ method: "GET" })
-  .inputValidator((data: { slugs: string[]; userId: string }) => data)
-  .handler(async ({ data }): Promise<Record<string, FSRSCardData> | null> => {
-    if (!data || !data.slugs || data.slugs.length === 0 || !data.userId) {
-      return null
-    }
+export async function getUserProgress(
+  userId: string,
+  slugs: string[],
+): Promise<Record<string, FSRSCardData> | null> {
+  if (!userId || !slugs || slugs.length === 0) {
+    return null
+  }
 
-    const fsrsData = await getFSRSCards({
-      data: { userId: data.userId, keys: data.slugs },
-    })
+  const fsrsData = await getFSRSCards(userId, slugs)
 
-    // Return a plain object for server JSON serialization
-    const progressRecord: Record<string, FSRSCardData> = {}
-    fsrsData.forEach((card) => {
-      progressRecord[`${card.type}:${card.practice_item_key}`] = card
-    })
-
-    return progressRecord
+  // Return a plain object for server JSON serialization
+  const progressRecord: Record<string, FSRSCardData> = {}
+  fsrsData.forEach((card) => {
+    progressRecord[`${card.type}:${card.practice_item_key}`] = card
   })
+
+  return progressRecord
+}
 
 /**
  * Get count of due FSRS cards for a user

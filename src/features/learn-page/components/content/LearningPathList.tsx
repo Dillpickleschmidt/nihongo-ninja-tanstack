@@ -7,7 +7,7 @@ import {
   enrichLessons,
   type EnrichedLearningPathModule,
 } from "@/features/learn-page/utils/loader-helpers"
-import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
+import { Route } from "@/routes/_home/learn/$textbookId"
 import { getDeckBySlug, getModules } from "@/data/utils/core"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import {

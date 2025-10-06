@@ -1,6 +1,12 @@
 // features/learn-page/context/LearnPageContext.tsx
-import { createContext, useContext, createEffect, on } from "solid-js"
-import type { ParentComponent } from "solid-js"
+import {
+  createContext,
+  useContext,
+  createEffect,
+  on,
+  createSignal,
+} from "solid-js"
+import type { ParentComponent, Accessor, Setter } from "solid-js"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
   useMutation,
@@ -8,14 +14,16 @@ import {
   type UseQueryResult,
 } from "@tanstack/solid-query"
 import type { DefaultError } from "@tanstack/query-core"
-import { Route } from "@/routes/_home/learn/$textbookId.$chapterSlug"
+import { Route } from "@/routes/_home/learn/$textbookId"
 import {
   dueFSRSCardsCountQueryOptions,
   vocabHierarchyQueryOptions,
   completedModulesQueryOptions,
   fsrsProgressQueryOptions,
   upcomingModulesQueryOptions,
+  moduleProgressQueryOptions,
   type ModuleWithCurrent,
+  type ModuleProgress,
 } from "@/features/learn-page/query/query-options"
 import {
   userSettingsQueryOptions,
@@ -29,6 +37,15 @@ import {
   shouldUpdatePosition,
   detectSequentialJump,
 } from "@/features/learn-page/utils/learning-position-detector"
+import { addModuleCompletion } from "@/features/supabase/db/module-completions"
+import { getTextbookLearningPath } from "@/data/utils/core"
+
+export type MobileContentView =
+  | "learning-path"
+  | "featured-content"
+  | "your-progress"
+  | "your-struggles"
+  | "your-history"
 
 interface LearnPageContextValue {
   upcomingModulesQuery: UseQueryResult<ModuleWithCurrent[], DefaultError>
@@ -47,15 +64,28 @@ interface LearnPageContextValue {
     DefaultError
   >
   dueCardsCountQuery: UseQueryResult<number, DefaultError>
+  moduleProgressQuery: UseQueryResult<
+    Record<string, ModuleProgress>,
+    DefaultError
+  >
+  mobileContentView: Accessor<MobileContentView>
+  setMobileContentView: Setter<MobileContentView>
   setCurrentPosition: (moduleId: string) => void
 }
 
 const LearnPageContext = createContext<LearnPageContextValue>()
 
 export const LearnPageProvider: ParentComponent = (props) => {
-  const { textbookId, deck } = Route.useLoaderData()()
+  const loaderData = Route.useLoaderData()
   const userId = Route.useRouteContext()().user?.id || null
   const queryClient = useQueryClient()
+
+  // Get textbook-wide learning path for position tracking (reactive)
+  const textbookLearningPath = () =>
+    getTextbookLearningPath(loaderData().textbookId)
+
+  const [mobileContentView, setMobileContentView] =
+    createSignal<MobileContentView>("learning-path")
 
   const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
   const completionsQuery = useCustomQuery(() =>
@@ -67,25 +97,30 @@ export const LearnPageProvider: ParentComponent = (props) => {
   const upcomingModulesQuery = useCustomQuery(() =>
     upcomingModulesQueryOptions(
       userId,
-      textbookId,
-      deck.learning_path_items,
-      settingsQuery.data?.["textbook-positions"]?.[textbookId] || null,
+      loaderData().textbookId,
+      settingsQuery.data?.["textbook-positions"]?.[loaderData().textbookId] ||
+        null,
     ),
   )
   const vocabHierarchyQuery = useCustomQuery(() =>
     vocabHierarchyQueryOptions(
-      textbookId,
-      deck,
+      loaderData().textbookId,
+      loaderData().deck,
       settingsQuery.data?.["override-settings"],
     ),
   )
+
   const fsrsProgressQuery = useCustomQuery(() =>
     fsrsProgressQueryOptions(
       userId,
-      textbookId,
-      deck.slug,
+      loaderData().textbookId,
+      loaderData().deck.slug,
       vocabHierarchyQuery.data?.slugs || [],
     ),
+  )
+
+  const moduleProgressQuery = useCustomQuery(() =>
+    moduleProgressQueryOptions(userId, upcomingModulesQuery.data || []),
   )
 
   const updateMutation = useMutation(() =>
@@ -96,10 +131,12 @@ export const LearnPageProvider: ParentComponent = (props) => {
   const updatePosition = async (moduleId: string) => {
     if (!userId) return null
 
+    const currentTextbookId = loaderData().textbookId
+
     updateMutation.mutate({
       "textbook-positions": {
         ...settingsQuery.data?.["textbook-positions"],
-        [textbookId]: moduleId,
+        [currentTextbookId]: moduleId,
       },
     })
 
@@ -110,7 +147,7 @@ export const LearnPageProvider: ParentComponent = (props) => {
   const handlePositionUpdate = (moduleId: string | null) => {
     if (moduleId) {
       queryClient.invalidateQueries({
-        queryKey: ["upcoming-modules", userId, textbookId],
+        queryKey: ["upcoming-modules", userId, loaderData().textbookId],
       })
     }
   }
@@ -131,15 +168,17 @@ export const LearnPageProvider: ParentComponent = (props) => {
       )
         return null
 
+      const currentTextbookId = loaderData().textbookId
+      const currentLearningPath = textbookLearningPath()
       const mostRecent = completionsQuery.data[0]
       const currentPosition =
-        settingsQuery.data?.["textbook-positions"]?.[textbookId] || null
+        settingsQuery.data?.["textbook-positions"]?.[currentTextbookId] || null
 
       // Check if should update due to nearby completion (±2 modules)
       const shouldUpdateNearby = shouldUpdatePosition(
         mostRecent.module_path,
         currentPosition,
-        deck.learning_path_items,
+        currentLearningPath,
       )
 
       if (shouldUpdateNearby) {
@@ -150,7 +189,7 @@ export const LearnPageProvider: ParentComponent = (props) => {
       const jumpDetection = detectSequentialJump(
         completionsQuery.data.slice(0, 2),
         currentPosition,
-        deck.learning_path_items,
+        currentLearningPath,
       )
 
       if (jumpDetection.shouldPrompt && jumpDetection.suggestedModuleId) {
@@ -162,18 +201,16 @@ export const LearnPageProvider: ParentComponent = (props) => {
     onSuccess: handlePositionUpdate,
   }))
 
-  // Update active textbook/deck when route params change
-  createEffect(() => {
-    const { "active-textbook": activeTextbook, "active-deck": activeDeck } =
-      settingsQuery.data || {}
-
-    if (activeTextbook !== textbookId || activeDeck !== deck.slug) {
-      updateMutation.mutate({
-        "active-textbook": textbookId,
-        "active-deck": deck.slug,
+  // Auto-complete vocab-practice modules at >=95% progress
+  const autoCompleteMutation = useMutation(() => ({
+    mutationFn: ({ userId, moduleId }: { userId: string; moduleId: string }) =>
+      addModuleCompletion(userId, moduleId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["module-completions", userId],
       })
-    }
-  })
+    },
+  }))
 
   // Auto-update position when most recent completion changes
   createEffect(
@@ -187,6 +224,24 @@ export const LearnPageProvider: ParentComponent = (props) => {
     ),
   )
 
+  // Auto-complete modules at >=95% progress
+  createEffect(() => {
+    if (!userId) return
+
+    const progressData = moduleProgressQuery.data
+    if (!progressData || Object.keys(progressData).length === 0) return
+
+    const completedModulePaths = new Set(
+      completionsQuery.data?.map((c) => c.module_path) || [],
+    )
+
+    Object.entries(progressData).forEach(([moduleId, progress]) => {
+      if (progress.percentage >= 95 && !completedModulePaths.has(moduleId)) {
+        autoCompleteMutation.mutate({ userId, moduleId })
+      }
+    })
+  })
+
   return (
     <LearnPageContext.Provider
       value={{
@@ -196,6 +251,9 @@ export const LearnPageProvider: ParentComponent = (props) => {
         vocabHierarchyQuery,
         fsrsProgressQuery,
         dueCardsCountQuery,
+        moduleProgressQuery,
+        mobileContentView,
+        setMobileContentView,
         setCurrentPosition: manualUpdatePositionMutation.mutate,
       }}
     >

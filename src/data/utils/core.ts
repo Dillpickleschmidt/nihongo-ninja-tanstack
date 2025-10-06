@@ -31,6 +31,18 @@ export function getDeckBySlug(
   return textbook.chapters.find((chapter) => chapter.slug === deckSlug)
 }
 
+/**
+ * Gets a flattened learning path for an entire textbook across all chapters.
+ * @returns Array of module IDs in order across all chapters
+ */
+export function getTextbookLearningPath(textbookId: TextbookIDEnum): string[] {
+  const textbook = textbooks[textbookId]
+  if (!textbook) {
+    return []
+  }
+  return textbook.chapters.flatMap((chapter) => chapter.learning_path_items)
+}
+
 /* Constructs a minified version of the textbook type
  * Removes learning_path_items from chapter property
  * @returns {MinimalTextbook[]} - Array of textbooks with chapters as Decks

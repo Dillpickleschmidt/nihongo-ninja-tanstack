@@ -85,12 +85,6 @@ function parseMeanings(meaningsJson: string): string[] {
 // MAIN EXPORT FUNCTIONS (SERVER FUNCTIONS)
 // =============================================================================
 
-// Legacy hierarchy function removed - now using centralized resolver at:
-// /features/resolvers/kanji/index.ts -> getVocabHierarchy()
-
-// Legacy getUserProgressForVocab function removed - now using centralized version at:
-// /features/supabase/db/fsrs.ts -> getUserProgress()
-
 export const getWKItemsBySlugs = createServerFn({ method: "GET" })
   .inputValidator((data: { kanji: string[]; radicals: string[] }) => data)
   .handler(
