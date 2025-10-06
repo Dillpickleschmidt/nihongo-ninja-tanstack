@@ -94,7 +94,6 @@ export const completedModulesQueryOptions = (userId: string | null) =>
     queryFn: async () => {
       if (!userId) return []
       return getUserModuleProgress(userId, {
-        completed: true,
         orderBy: "completed_at",
         ascending: false,
       })
