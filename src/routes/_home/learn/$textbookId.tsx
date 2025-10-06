@@ -41,6 +41,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
     // Extract route segment from pathname (e.g., /learn/genki_1/chapter-3 -> chapter-3)
     const pathParts = location.pathname.split("/").filter(Boolean)
     const routeSegment = pathParts[2] // Index: 0=learn, 1=textbookId, 2=route
+    const isExplicitNavigation = !!routeSegment // User navigated to specific chapter
 
     // If no route segment in URL, redirect to active deck or default
     if (!routeSegment) {
@@ -99,7 +100,8 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
     const isDbComplete = dbQueryState?.status === "success"
 
     // If DB is complete, check if it has a different active-deck than current route
-    if (isDbComplete && user?.id) {
+    // Only redirect when auto-redirecting from /learn, not during explicit navigation
+    if (isDbComplete && user?.id && !isExplicitNavigation) {
       const dbData = queryClient.getQueryData<UserSettings>(
         dbUserSettingsQueryOptions(user.id).queryKey,
       )
@@ -111,7 +113,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
         const dbTimestamp = dbData.timestamp || 0
 
         // Only redirect if DB is fresher than cookie AND differs from URL
-        // (corrects stale /learn redirect, but allows intentional navigation)
+        // (corrects stale /learn redirect from other devices)
         if (
           dbTimestamp > cookieTimestamp &&
           ((dbActiveDeck && dbActiveDeck !== deck.slug) ||
