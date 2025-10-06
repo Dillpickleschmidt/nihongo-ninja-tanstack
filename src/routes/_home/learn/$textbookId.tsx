@@ -5,40 +5,22 @@ import {
   redirect,
   useLocation,
 } from "@tanstack/solid-router"
-import {
-  getDeckBySlug,
-  getModules,
-  getTextbookLearningPath,
-} from "@/data/utils/core"
+import { getDeckBySlug } from "@/data/utils/core"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { LearnPageHeader } from "@/features/learn-page/components/layout/LearnPageHeader"
 import { LearnPageProvider } from "@/features/learn-page/context/LearnPageContext"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 import {
   dueFSRSCardsCountQueryOptions,
-  vocabHierarchyQueryOptions,
   completedModulesQueryOptions,
-  resourceThumbnailQueryOptions,
   upcomingModulesQueryOptions,
   moduleProgressQueryOptions,
 } from "@/features/learn-page/query/query-options"
-import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
-import {
-  userSettingsQueryOptions,
-  dbUserSettingsQueryOptions,
-  applyUserSettingsUpdate,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
-import type { TextbookIDEnum, ExternalResource } from "@/data/types"
-import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
+import type { TextbookIDEnum } from "@/data/types"
 
 export const Route = createFileRoute("/_home/learn/$textbookId")({
-  loaderDeps: ({ location }) => {
-    // Extract chapter slug to use as cache dependency
-    const pathParts = location.pathname.split("/").filter(Boolean)
-    const routeSegment = pathParts[2] // Index: 0=learn, 1=textbookId, 2=route
-    return { routeSegment }
-  },
   loader: async ({ context, params, location }) => {
     const { user, queryClient } = context
     const { textbookId } = params
@@ -46,14 +28,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
     // Extract route segment from pathname (e.g., /learn/genki_1/chapter-3 -> chapter-3)
     const pathParts = location.pathname.split("/").filter(Boolean)
     const routeSegment = pathParts[2] // Index: 0=learn, 1=textbookId, 2=route
-    const isExplicitNavigation = !!routeSegment // User navigated to specific chapter
-
-    console.log("[Loader] Navigation attempt:", {
-      pathname: location.pathname,
-      textbookId,
-      routeSegment,
-      isExplicitNavigation,
-    })
 
     // If no route segment in URL, redirect to active deck or default
     if (!routeSegment) {
@@ -68,138 +42,10 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
       })
     }
 
-    // Get user settings (check cache first to avoid waterfall)
-    const userSettingsOptions = userSettingsQueryOptions(user?.id || null)
-    let userSettings = queryClient.getQueryData(userSettingsOptions.queryKey)
-
-    if (!userSettings) {
-      userSettings = await queryClient.ensureQueryData(userSettingsOptions)
-    }
-
-    // Get deck based on route type
-    let deck: ReturnType<typeof getDeckBySlug>
-    let chapterSlug: string
-
-    if (routeSegment === "progress") {
-      // Progress route: get deck from active settings
-      chapterSlug = userSettings["active-deck"] || "chapter-0"
-      deck = getDeckBySlug(textbookId as TextbookIDEnum, chapterSlug)
-    } else {
-      // Chapter route: get deck from URL
-      chapterSlug = routeSegment
-      deck = getDeckBySlug(textbookId as TextbookIDEnum, chapterSlug)
-
-      // If invalid chapter slug, redirect to chapter-0
-      if (!deck) {
-        throw redirect({
-          to: "/learn/$textbookId/$chapterSlug",
-          params: { textbookId: "genki_1", chapterSlug: "chapter-0" },
-        })
-      }
-    }
-
-    // Ensure we always have a valid deck (fallback to chapter-0)
-    if (!deck) {
-      deck = getDeckBySlug(textbookId as TextbookIDEnum, "chapter-0")!
-      chapterSlug = "chapter-0"
-    }
-
-    // Check DB query status to determine if we should update active-deck
-    const dbQueryState = user?.id
-      ? queryClient.getQueryState(dbUserSettingsQueryOptions(user.id).queryKey)
-      : null
-
-    const isDbComplete = dbQueryState?.status === "success"
-
-    console.log("[Loader] DB query status:", {
-      isDbComplete,
-      hasUser: !!user?.id,
-      isExplicitNavigation,
-      willCheckDbRedirect: isDbComplete && user?.id && !isExplicitNavigation,
-    })
-
-    // If DB is complete, check if it has a different active-deck than current route
-    // Only redirect when auto-redirecting from /learn, not during explicit navigation
-    if (isDbComplete && user?.id && !isExplicitNavigation) {
-      const dbData = queryClient.getQueryData<UserSettings>(
-        dbUserSettingsQueryOptions(user.id).queryKey,
-      )
-
-      if (dbData) {
-        const dbActiveDeck = dbData["active-deck"]
-        const dbActiveTextbook = dbData["active-textbook"]
-        const cookieTimestamp = userSettings.timestamp || 0
-        const dbTimestamp = dbData.timestamp || 0
-
-        console.log("[Loader] DB vs Cookie comparison:", {
-          dbTimestamp,
-          cookieTimestamp,
-          dbIsFresher: dbTimestamp > cookieTimestamp,
-          dbActiveDeck,
-          currentDeckSlug: deck.slug,
-          decksDiffer: dbActiveDeck !== deck.slug,
-          dbActiveTextbook,
-          currentTextbook: textbookId,
-          textbooksDiffer: dbActiveTextbook !== textbookId,
-        })
-
-        // Only redirect if DB is fresher than cookie AND differs from URL
-        // (corrects stale /learn redirect from other devices)
-        if (
-          dbTimestamp > cookieTimestamp &&
-          ((dbActiveDeck && dbActiveDeck !== deck.slug) ||
-            (dbActiveTextbook &&
-              dbActiveTextbook !== (textbookId as TextbookIDEnum)))
-        ) {
-          console.log("[Loader] REDIRECTING to DB-stored chapter:", {
-            from: `${textbookId}/${deck.slug}`,
-            to: `${dbActiveTextbook || textbookId}/${dbActiveDeck || deck.slug}`,
-          })
-          throw redirect({
-            to: "/learn/$textbookId/$chapterSlug",
-            params: {
-              textbookId: dbActiveTextbook || (textbookId as TextbookIDEnum),
-              chapterSlug: dbActiveDeck || deck.slug,
-            },
-          })
-        }
-      }
-    }
-
-    // Update active-deck if URL differs (timestamp check prevents race conditions)
-    const needsUpdate =
-      userSettings["active-deck"] !== deck.slug ||
-      userSettings["active-textbook"] !== (textbookId as TextbookIDEnum)
-
-    console.log("[Loader] Settings update check:", {
-      needsUpdate,
-      currentActiveDeck: userSettings["active-deck"],
-      targetDeck: deck.slug,
-      currentActiveTextbook: userSettings["active-textbook"],
-      targetTextbook: textbookId,
-    })
-
-    if (needsUpdate) {
-      console.log("[Loader] Applying settings update:", {
-        "active-deck": deck.slug,
-        "active-textbook": textbookId,
-      })
-      userSettings = await applyUserSettingsUpdate(
-        user?.id || null,
-        queryClient,
-        {
-          "active-deck": deck.slug,
-          "active-textbook": textbookId as TextbookIDEnum,
-        },
-        { awaitDb: false }, // Loader doesn't await DB (non-blocking)
-      )
-    }
-
-    console.log("[Loader] Navigation complete, returning data for:", {
-      textbookId,
-      chapterSlug,
-      deckTitle: deck.title,
-    })
+    // Get user settings (ensure loaded for child routes and prefetching)
+    const userSettings = await queryClient.ensureQueryData(
+      userSettingsQueryOptions(user?.id || null),
+    )
 
     // Prefetch textbook-wide queries
     queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
@@ -218,34 +64,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
           moduleProgressQueryOptions(user?.id || null, upcomingModules),
         )
       })
-
-    // Prefetch vocab hierarchy for active chapter
-    queryClient.prefetchQuery(
-      vocabHierarchyQueryOptions(
-        textbookId,
-        deck,
-        userSettings["override-settings"],
-      ),
-    )
-
-    // Pre-fetch all resource thumbnails in parallel
-    const currentChapterModules = getModules(deck)
-    const rawResources = Object.fromEntries(
-      currentChapterModules
-        .filter(({ module }) => "external_url" in module)
-        .map(({ key, module }) => [key, module as ExternalResource]),
-    )
-    const externalResources = enrichExternalResources(rawResources)
-    const resourcesArray = Object.values(externalResources)
-    resourcesArray.forEach((resource) =>
-      queryClient.prefetchQuery(
-        resourceThumbnailQueryOptions(
-          resource.id,
-          resource.external_url,
-          resource.creator_id,
-        ),
-      ),
-    )
 
     // TODO: Replace with real data from backend
     const mockStruggles = ["食べる", "飲む", "見る", "聞く", "話す"]
@@ -269,12 +87,9 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
     return {
       user,
       textbookId: textbookId as TextbookIDEnum,
-      chapterSlug,
-      deck,
+      userSettings,
       struggles: mockStruggles,
       historyItems: mockHistoryItems,
-      externalResources,
-      userSettings,
     }
   },
   component: RouteComponent,
@@ -293,8 +108,13 @@ function LayoutContent() {
   const location = useLocation()
   const { mobileContentView, setMobileContentView } = useLearnPageContext()
 
-  const activeDeck = () =>
-    getDeckBySlug(loaderData().textbookId, loaderData().chapterSlug)
+  // Extract chapter slug from pathname for background display
+  const chapterSlug = () => {
+    const pathParts = location().pathname.split("/").filter(Boolean)
+    return pathParts[2] || "chapter-0" // Index: 0=learn, 1=textbookId, 2=chapterSlug
+  }
+
+  const activeDeck = () => getDeckBySlug(loaderData().textbookId, chapterSlug())
 
   const blurAmount = () =>
     location().pathname.endsWith("/progress") ? "32px" : "0px"

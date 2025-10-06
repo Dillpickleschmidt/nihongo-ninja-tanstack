@@ -14,7 +14,8 @@ import {
   type UseQueryResult,
 } from "@tanstack/solid-query"
 import type { DefaultError } from "@tanstack/query-core"
-import { Route } from "@/routes/_home/learn/$textbookId"
+import { Route as ParentRoute } from "@/routes/_home/learn/$textbookId"
+import { Route as ChildRoute } from "@/routes/_home/learn/$textbookId/$chapterSlug"
 import {
   dueFSRSCardsCountQueryOptions,
   vocabHierarchyQueryOptions,
@@ -76,13 +77,14 @@ interface LearnPageContextValue {
 const LearnPageContext = createContext<LearnPageContextValue>()
 
 export const LearnPageProvider: ParentComponent = (props) => {
-  const loaderData = Route.useLoaderData()
-  const userId = Route.useRouteContext()().user?.id || null
+  const parentData = ParentRoute.useLoaderData()
+  const childData = ChildRoute.useLoaderData()
+  const userId = ParentRoute.useRouteContext()().user?.id || null
   const queryClient = useQueryClient()
 
   // Get textbook-wide learning path for position tracking (reactive)
   const textbookLearningPath = () =>
-    getTextbookLearningPath(loaderData().textbookId)
+    getTextbookLearningPath(parentData().textbookId)
 
   const [mobileContentView, setMobileContentView] =
     createSignal<MobileContentView>("learning-path")
@@ -97,15 +99,15 @@ export const LearnPageProvider: ParentComponent = (props) => {
   const upcomingModulesQuery = useCustomQuery(() =>
     upcomingModulesQueryOptions(
       userId,
-      loaderData().textbookId,
-      settingsQuery.data?.["textbook-positions"]?.[loaderData().textbookId] ||
+      parentData().textbookId,
+      settingsQuery.data?.["textbook-positions"]?.[parentData().textbookId] ||
         null,
     ),
   )
   const vocabHierarchyQuery = useCustomQuery(() =>
     vocabHierarchyQueryOptions(
-      loaderData().textbookId,
-      loaderData().deck,
+      parentData().textbookId,
+      childData().deck,
       settingsQuery.data?.["override-settings"],
     ),
   )
@@ -113,8 +115,8 @@ export const LearnPageProvider: ParentComponent = (props) => {
   const fsrsProgressQuery = useCustomQuery(() =>
     fsrsProgressQueryOptions(
       userId,
-      loaderData().textbookId,
-      loaderData().deck.slug,
+      parentData().textbookId,
+      childData().deck.slug,
       vocabHierarchyQuery.data?.slugs || [],
     ),
   )
@@ -131,7 +133,7 @@ export const LearnPageProvider: ParentComponent = (props) => {
   const updatePosition = async (moduleId: string) => {
     if (!userId) return null
 
-    const currentTextbookId = loaderData().textbookId
+    const currentTextbookId = parentData().textbookId
 
     updateMutation.mutate({
       "textbook-positions": {
@@ -147,7 +149,7 @@ export const LearnPageProvider: ParentComponent = (props) => {
   const handlePositionUpdate = (moduleId: string | null) => {
     if (moduleId) {
       queryClient.invalidateQueries({
-        queryKey: ["upcoming-modules", userId, loaderData().textbookId],
+        queryKey: ["upcoming-modules", userId, parentData().textbookId],
       })
     }
   }
@@ -168,7 +170,7 @@ export const LearnPageProvider: ParentComponent = (props) => {
       )
         return null
 
-      const currentTextbookId = loaderData().textbookId
+      const currentTextbookId = parentData().textbookId
       const currentLearningPath = textbookLearningPath()
       const mostRecent = completionsQuery.data[0]
       const currentPosition =
