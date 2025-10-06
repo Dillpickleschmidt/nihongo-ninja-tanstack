@@ -15,12 +15,9 @@ import {
 } from "@tanstack/solid-query"
 import type { DefaultError } from "@tanstack/query-core"
 import { Route as ParentRoute } from "@/routes/_home/learn/$textbookId"
-import { Route as ChildRoute } from "@/routes/_home/learn/$textbookId/$chapterSlug"
 import {
   dueFSRSCardsCountQueryOptions,
-  vocabHierarchyQueryOptions,
   completedModulesQueryOptions,
-  fsrsProgressQueryOptions,
   upcomingModulesQueryOptions,
   moduleProgressQueryOptions,
   type ModuleWithCurrent,
@@ -31,9 +28,6 @@ import {
   updateUserSettingsMutation,
 } from "@/features/main-cookies/query/query-options"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
-import type { VocabularyItem } from "@/data/types"
-import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
-import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import {
   shouldUpdatePosition,
   detectSequentialJump,
@@ -52,18 +46,6 @@ interface LearnPageContextValue {
   upcomingModulesQuery: UseQueryResult<ModuleWithCurrent[], DefaultError>
   completionsQuery: UseQueryResult<ModuleCompletion[], DefaultError>
   settingsQuery: UseQueryResult<UserSettings, DefaultError>
-  vocabHierarchyQuery: UseQueryResult<
-    {
-      chapterVocabulary: VocabularyItem[]
-      wordHierarchyData: VocabHierarchy | null
-      slugs: string[]
-    },
-    DefaultError
-  >
-  fsrsProgressQuery: UseQueryResult<
-    Record<string, FSRSCardData> | null,
-    DefaultError
-  >
   dueCardsCountQuery: UseQueryResult<number, DefaultError>
   moduleProgressQuery: UseQueryResult<
     Record<string, ModuleProgress>,
@@ -78,7 +60,6 @@ const LearnPageContext = createContext<LearnPageContextValue>()
 
 export const LearnPageProvider: ParentComponent = (props) => {
   const parentData = ParentRoute.useLoaderData()
-  const childData = ChildRoute.useLoaderData()
   const userId = ParentRoute.useRouteContext()().user?.id || null
   const queryClient = useQueryClient()
 
@@ -102,22 +83,6 @@ export const LearnPageProvider: ParentComponent = (props) => {
       parentData().textbookId,
       settingsQuery.data?.["textbook-positions"]?.[parentData().textbookId] ||
         null,
-    ),
-  )
-  const vocabHierarchyQuery = useCustomQuery(() =>
-    vocabHierarchyQueryOptions(
-      parentData().textbookId,
-      childData().deck,
-      settingsQuery.data?.["override-settings"],
-    ),
-  )
-
-  const fsrsProgressQuery = useCustomQuery(() =>
-    fsrsProgressQueryOptions(
-      userId,
-      parentData().textbookId,
-      childData().deck.slug,
-      vocabHierarchyQuery.data?.slugs || [],
     ),
   )
 
@@ -250,8 +215,6 @@ export const LearnPageProvider: ParentComponent = (props) => {
         upcomingModulesQuery,
         completionsQuery,
         settingsQuery,
-        vocabHierarchyQuery,
-        fsrsProgressQuery,
         dueCardsCountQuery,
         moduleProgressQuery,
         mobileContentView,
