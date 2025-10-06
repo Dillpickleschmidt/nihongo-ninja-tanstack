@@ -185,8 +185,6 @@ export type Database = {
           completion_percentage: number
           created_at: string
           module_path: string
-          questions_answered: number
-          time_spent_seconds: number
           updated_at: string
           user_id: string
         }
@@ -195,8 +193,6 @@ export type Database = {
           completion_percentage?: number
           created_at?: string
           module_path: string
-          questions_answered?: number
-          time_spent_seconds?: number
           updated_at?: string
           user_id: string
         }
@@ -205,9 +201,43 @@ export type Database = {
           completion_percentage?: number
           created_at?: string
           module_path?: string
-          questions_answered?: number
-          time_spent_seconds?: number
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_practice_sessions: {
+        Row: {
+          completion_percentage_after: number | null
+          created_at: string
+          duration_seconds: number | null
+          ended_at: string | null
+          module_path: string
+          questions_answered: number | null
+          session_id: string
+          started_at: string
+          user_id: string
+        }
+        Insert: {
+          completion_percentage_after?: number | null
+          created_at?: string
+          duration_seconds?: number | null
+          ended_at?: string | null
+          module_path: string
+          questions_answered?: number | null
+          session_id?: string
+          started_at?: string
+          user_id: string
+        }
+        Update: {
+          completion_percentage_after?: number | null
+          created_at?: string
+          duration_seconds?: number | null
+          ended_at?: string | null
+          module_path?: string
+          questions_answered?: number | null
+          session_id?: string
+          started_at?: string
           user_id?: string
         }
         Relationships: []
