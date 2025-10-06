@@ -129,7 +129,7 @@ export const upcomingModulesQueryOptions = (
     const currentModuleId = learningPathItems.find(
       (moduleId) => moduleId === currentPosition,
     )
-    const upcoming = getUpcomingModules(currentPosition, learningPathItems, 5)
+    const upcoming = getUpcomingModules(currentPosition, learningPathItems, 15)
 
     return currentModuleId
       ? [{ id: currentModuleId, isCurrent: true }, ...upcoming]
