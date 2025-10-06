@@ -38,11 +38,12 @@ async function handler({ request, params }: { request: Request; params: any }) {
 
     const response = await fetch(targetUrl, fetchOptions)
 
-    // Convert response headers to plain object and filter out problematic ones
-    const responseHeaders: Record<string, string> = {}
+    // Build clean response headers using Headers constructor
+    const cleanHeaders = new Headers()
     response.headers.forEach((value, key) => {
+      // Skip problematic headers that cause Lambda issues
       if (key !== "content-encoding" && key !== "content-length") {
-        responseHeaders[key] = value
+        cleanHeaders.set(key, value)
       }
     })
 
@@ -50,14 +51,14 @@ async function handler({ request, params }: { request: Request; params: any }) {
     if ([204, 304].includes(response.status)) {
       return new Response(null, {
         status: response.status,
-        headers: responseHeaders,
+        headers: cleanHeaders,
       })
     }
 
     // Stream the response back
     return new Response(response.body, {
       status: response.status,
-      headers: responseHeaders,
+      headers: cleanHeaders,
     })
   } catch (error) {
     console.error(`PostHog proxy error:`, error)

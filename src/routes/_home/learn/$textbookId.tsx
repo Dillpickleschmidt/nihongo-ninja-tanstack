@@ -33,6 +33,12 @@ import type { TextbookIDEnum, ExternalResource } from "@/data/types"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 
 export const Route = createFileRoute("/_home/learn/$textbookId")({
+  loaderDeps: ({ location }) => {
+    // Extract chapter slug to use as cache dependency
+    const pathParts = location.pathname.split("/").filter(Boolean)
+    const routeSegment = pathParts[2] // Index: 0=learn, 1=textbookId, 2=route
+    return { routeSegment }
+  },
   loader: async ({ context, params, location }) => {
     const { user, queryClient } = context
     const { textbookId } = params
