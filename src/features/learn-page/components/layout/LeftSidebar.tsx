@@ -5,7 +5,6 @@ import { WordHierarchy } from "../content/WordHierarchy"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
 import { Route as ParentRoute } from "@/routes/_home/learn/$textbookId"
 import { Route as ChildRoute } from "@/routes/_home/learn/$textbookId/$chapterSlug"
-import { getDeckBySlug } from "@/data/utils/core"
 
 interface LeftSidebarProps {
   variant: "mobile" | "desktop"

@@ -1,8 +1,6 @@
 // features/learn-page/components/layout/LearnPageHeader.tsx
 import { Link, useNavigate } from "@tanstack/solid-router"
 import { createSignal, Show } from "solid-js"
-import type { UseQueryResult } from "@tanstack/solid-query"
-import type { DefaultError } from "@tanstack/query-core"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Sheet,
@@ -20,7 +18,6 @@ import {
   useLearnPageContext,
   type MobileContentView,
 } from "@/features/learn-page/context/LearnPageContext"
-import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { TextbookIDEnum } from "@/data/types"
 
 interface LearnPageHeaderProps {
