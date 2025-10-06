@@ -6,7 +6,12 @@ import { useQueryClient, useMutation } from "@tanstack/solid-query"
 import { cva } from "class-variance-authority"
 import { cn } from "@/utils"
 import { User } from "@supabase/supabase-js"
-import { markModuleCompleted } from "@/features/supabase/db/module-progress"
+import {
+  createSession,
+  markModuleCompleted,
+} from "@/features/supabase/db/module-progress"
+import { static_modules } from "@/data/static_modules"
+import { external_resources } from "@/data/external_resources"
 
 type ContentBoxConfig = {
   nextButtonLink?: string
@@ -47,8 +52,20 @@ export default function ContentBox(props: ContentBoxProps) {
   const [showCompleteButton, setShowCompleteButton] = createSignal(false)
 
   const addCompletionMutation = useMutation(() => ({
-    mutationFn: ({ userId, moduleId }: { userId: string; moduleId: string }) =>
-      markModuleCompleted(userId, moduleId),
+    mutationFn: async ({
+      userId,
+      moduleId,
+      durationSeconds,
+    }: {
+      userId: string
+      moduleId: string
+      durationSeconds: number
+    }) => {
+      // Create session record (time spent)
+      await createSession(userId, moduleId, { durationSeconds })
+      // Mark module as completed
+      return markModuleCompleted(userId, moduleId)
+    },
     onSuccess: (data, variables) => {
       queryClient.setQueryData(
         ["module-progress", variables.userId, "completed"],
@@ -85,11 +102,19 @@ export default function ContentBox(props: ContentBoxProps) {
     const currentPath = location().pathname
     const moduleId = currentPath.split("/").pop()
 
-    // Mark as complete
+    // Mark as complete with estimated duration
     if (props.user && moduleId) {
+      // Look up module in static_modules or external_resources
+      const module = static_modules[moduleId] || external_resources[moduleId]
+
+      // Get estimated duration (default to 10 minutes = 600 seconds)
+      const estimatedMinutes = module?.daily_prog_amount ?? 10
+      const durationSeconds = estimatedMinutes * 60
+
       addCompletionMutation.mutate({
         userId: props.user.id,
         moduleId,
+        durationSeconds,
       })
     }
 

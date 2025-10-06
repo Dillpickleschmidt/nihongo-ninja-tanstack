@@ -58,4 +58,12 @@ declare global {
     SupabaseDB["public"]["Tables"]["user_module_progress"]["Insert"]
   type ModuleProgressUpdate =
     SupabaseDB["public"]["Tables"]["user_module_progress"]["Update"]
+
+  // Practice Session Tracking Types
+  type PracticeSession =
+    SupabaseDB["public"]["Tables"]["user_practice_sessions"]["Row"]
+  type PracticeSessionInsert =
+    SupabaseDB["public"]["Tables"]["user_practice_sessions"]["Insert"]
+  type PracticeSessionUpdate =
+    SupabaseDB["public"]["Tables"]["user_practice_sessions"]["Update"]
 }
