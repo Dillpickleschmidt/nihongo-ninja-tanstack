@@ -109,10 +109,10 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
         <div class="px-8 pt-8">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <SheetTrigger class="mr-2">
+              <SheetTrigger class="mr-2" tabindex="1">
                 <HamburgerIcon size="md" class="hover:cursor-pointer" />
               </SheetTrigger>
-              <Link to="/" class="flex items-center gap-3">
+              <Link to="/" class="flex items-center gap-3" tabindex="2">
                 <Avatar class="h-11 w-11">
                   <AvatarImage src="/icons/ninja.png" class="h-full w-full" />
                   <AvatarFallback>N</AvatarFallback>

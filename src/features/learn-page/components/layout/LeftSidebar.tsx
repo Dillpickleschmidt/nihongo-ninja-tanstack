@@ -48,7 +48,7 @@ export function LeftSidebar(props: LeftSidebarProps) {
           isOpen={isPopoverOpen()}
           onOpenChange={setIsPopoverOpen}
         >
-          <div class="group flex items-center gap-3 text-left">
+          <div class="group flex items-center gap-3 text-left" tabindex="4">
             <h1 class="text-foreground group-hover:text-foreground/80 text-2xl font-bold transition-colors">
               {childData().deck.title}
             </h1>
