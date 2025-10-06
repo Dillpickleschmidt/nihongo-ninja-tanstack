@@ -7,8 +7,8 @@ import {
   enrichLessons,
   type EnrichedLearningPathModule,
 } from "@/features/learn-page/utils/loader-helpers"
-import { Route } from "@/routes/_home/learn/$textbookId"
-import { getDeckBySlug, getModules } from "@/data/utils/core"
+import { Route } from "@/routes/_home/learn/$textbookId/$chapterSlug"
+import { getModules } from "@/data/utils/core"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import {
   ContextMenu,
@@ -33,11 +33,9 @@ function LessonsList() {
   const completedModulesSet = () =>
     new Set(completionsQuery.data?.map((c) => c.module_path))
   const loaderData = Route.useLoaderData()
-  const activeDeck = () =>
-    getDeckBySlug(loaderData().textbookId, loaderData().chapterSlug)
 
   const lessons = createMemo(() => {
-    const deck = activeDeck()
+    const deck = loaderData().deck
     if (!deck) return []
     const rawModules = getModules(deck)
     return enrichLessons(rawModules)

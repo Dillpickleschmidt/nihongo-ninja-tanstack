@@ -3,7 +3,8 @@ import { createSignal } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
 import { WordHierarchy } from "../content/WordHierarchy"
 import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
-import { Route } from "@/routes/_home/learn/$textbookId"
+import { Route as ParentRoute } from "@/routes/_home/learn/$textbookId"
+import { Route as ChildRoute } from "@/routes/_home/learn/$textbookId/$chapterSlug"
 import { getDeckBySlug } from "@/data/utils/core"
 
 interface LeftSidebarProps {
@@ -13,7 +14,8 @@ interface LeftSidebarProps {
 export function LeftSidebar(props: LeftSidebarProps) {
   const navigate = useNavigate()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
-  const loaderData = Route.useLoaderData()
+  const parentData = ParentRoute.useLoaderData()
+  const childData = ChildRoute.useLoaderData()
 
   const handleDeckChange = async (
     textbookId: string,
@@ -41,22 +43,15 @@ export function LeftSidebar(props: LeftSidebarProps) {
           Current Chapter
         </div>
         <DeckSelectionPopover
-          activeTextbookId={loaderData().textbookId}
-          activeDeck={
-            getDeckBySlug(loaderData().textbookId, loaderData().chapterSlug)!
-          }
+          activeTextbookId={parentData().textbookId}
+          activeDeck={childData().deck}
           onDeckChange={handleDeckChange}
           isOpen={isPopoverOpen()}
           onOpenChange={setIsPopoverOpen}
         >
           <div class="group flex items-center gap-3 text-left">
             <h1 class="text-foreground group-hover:text-foreground/80 text-2xl font-bold transition-colors">
-              {
-                getDeckBySlug(
-                  loaderData().textbookId,
-                  loaderData().chapterSlug,
-                )!.title
-              }
+              {childData().deck.title}
             </h1>
             <svg
               xmlns="http://www.w3.org/2000/svg"

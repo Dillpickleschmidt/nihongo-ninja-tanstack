@@ -18,33 +18,47 @@ async function handler({ request, params }: { request: Request; params: any }) {
     : `https://us.i.posthog.com/${splatPath}${url.search}`
 
   try {
-    const fetchOptions: any = {
+    // Convert Headers to plain object for Lambda compatibility
+    const requestHeaders: Record<string, string> = {}
+    request.headers.forEach((value, key) => {
+      requestHeaders[key] = value
+    })
+
+    const fetchOptions: RequestInit = {
       method: request.method,
-      headers: request.headers,
+      headers: requestHeaders,
     }
 
     // Always use streaming for POST requests to avoid timeout issues
     if (request.method === "POST") {
       fetchOptions.body = request.body
+      // @ts-ignore - duplex is needed for streaming but not in types
       fetchOptions.duplex = "half"
     }
 
     const response = await fetch(targetUrl, fetchOptions)
 
-    // Clean up problematic headers
-    const headers = new Headers(response.headers)
-    headers.delete("content-encoding")
-    headers.delete("content-length")
+    // Build clean response headers using Headers constructor
+    const cleanHeaders = new Headers()
+    response.headers.forEach((value, key) => {
+      // Skip problematic headers that cause Lambda issues
+      if (key !== "content-encoding" && key !== "content-length") {
+        cleanHeaders.set(key, value)
+      }
+    })
 
     // Handle no-body status codes
     if ([204, 304].includes(response.status)) {
-      return new Response(null, { status: response.status, headers })
+      return new Response(null, {
+        status: response.status,
+        headers: cleanHeaders,
+      })
     }
 
     // Stream the response back
     return new Response(response.body, {
       status: response.status,
-      headers: responseHeaders,
+      headers: cleanHeaders,
     })
   } catch (error) {
     console.error(`PostHog proxy error:`, error)

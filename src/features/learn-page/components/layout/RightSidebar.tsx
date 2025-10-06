@@ -1,18 +1,20 @@
 // features/learn-page/components/layout/RightSidebar.tsx
 import { Show } from "solid-js"
 import { Play } from "lucide-solid"
+import { useRouteContext } from "@tanstack/solid-router"
 import { HistoryContent } from "../content/HistoryContent"
 import { StrugglesContent } from "../content/StrugglesContent"
 import { UpcomingModulesList } from "../content/UpcomingModulesList"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import { Button } from "@/components/ui/button"
+import { Route as RootRoute } from "@/routes/__root"
 
 interface RightSidebarProps {
   variant: "mobile" | "desktop"
-  userId?: string | null
 }
 
 export function RightSidebar(props: RightSidebarProps) {
+  const context = useRouteContext({ from: RootRoute.id })
   const { upcomingModulesQuery, completionsQuery } = useLearnPageContext()
 
   if (props.variant === "mobile") {
@@ -35,7 +37,7 @@ export function RightSidebar(props: RightSidebarProps) {
       class="flex h-full flex-col space-y-6 overflow-x-hidden pb-3"
     >
       <Show
-        when={props.userId}
+        when={context().user}
         fallback={
           <h3 class="text-muted-foreground text-center">
             Your review history here, coming soon.
