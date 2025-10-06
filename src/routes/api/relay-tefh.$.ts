@@ -21,6 +21,10 @@ async function handler({ request, params }: { request: Request; params: any }) {
     // Convert Headers to plain object for Lambda compatibility
     const requestHeaders: Record<string, string> = {}
     request.headers.forEach((value, key) => {
+      // Skip content-length when streaming POST bodies (Lambda may transform the stream)
+      if (request.method === "POST" && key === "content-length") {
+        return
+      }
       requestHeaders[key] = value
     })
 
