@@ -99,6 +99,35 @@ export async function getDueFSRSCardsCount(userId: string): Promise<number> {
   return count || 0
 }
 
+export interface VocabularyStats {
+  vocab_total: number
+  kanji_total: number
+  vocab_week: number
+  kanji_week: number
+}
+
+/**
+ * Get vocabulary and kanji statistics
+ * Uses optimized SQL COUNT(DISTINCT) via RPC function
+ */
+export async function getVocabularyStats(
+  userId: string,
+): Promise<VocabularyStats> {
+  const supabase = createSupabaseClient()
+
+  const weekAgo = new Date()
+  weekAgo.setDate(weekAgo.getDate() - 7)
+
+  const { data, error } = await supabase.rpc("get_vocabulary_stats", {
+    user_id_param: userId,
+    week_ago_param: weekAgo.toISOString(),
+  })
+
+  if (error) throw error
+
+  return data as VocabularyStats
+}
+
 /**
  * Upsert FSRS card data for a user
  */

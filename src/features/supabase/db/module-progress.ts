@@ -284,3 +284,33 @@ export async function getModuleSessions(
   if (error) throw error
   return data
 }
+
+/**
+ * Get time data for the last 7 days (optimized - single query)
+ * Returns array of duration in seconds for each day [day-6, day-5, ..., today]
+ */
+export async function getUserWeekTimeData(userId: string): Promise<number[]> {
+  const weekAgo = new Date()
+  weekAgo.setDate(weekAgo.getDate() - 6)
+  weekAgo.setHours(0, 0, 0, 0)
+
+  const sessions = await getUserSessions(userId, { startDate: weekAgo })
+
+  // Group sessions by day
+  const dayMap = new Map<string, number>()
+  sessions.forEach((session) => {
+    const day = new Date(session.created_at).toDateString()
+    dayMap.set(day, (dayMap.get(day) || 0) + session.duration_seconds)
+  })
+
+  // Build array for last 7 days
+  const weekData: number[] = []
+  const today = new Date()
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(today)
+    date.setDate(date.getDate() - i)
+    weekData.push(dayMap.get(date.toDateString()) || 0)
+  }
+
+  return weekData
+}
