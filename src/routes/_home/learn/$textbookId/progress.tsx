@@ -92,7 +92,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId/progress")({
     const percentChange = () =>
       calculatePercentChange(todaySeconds(), yesterdaySeconds())
     const avgDay = () => calculateAverageDailyTime(sessions(), 30)
-    const totalHours = () => Math.round(totalTime() / 3600)
+    const totalHours = () => Math.floor(totalTime() / 3600)
 
     // Filter completed modules from upcoming (KEY FIX - same as RightSidebar)
     const upcomingFiltered = () => {

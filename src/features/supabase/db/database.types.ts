@@ -289,6 +289,10 @@ export type Database = {
         Args: { operations: Json; user_id: string }
         Returns: undefined
       }
+      get_vocabulary_stats: {
+        Args: { user_id_param: string; week_ago_param: string }
+        Returns: Json
+      }
     }
     Enums: {
       practice_item_type: "vocabulary" | "kanji" | "radical"
