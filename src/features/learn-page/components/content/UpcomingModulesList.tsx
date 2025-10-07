@@ -1,5 +1,5 @@
 // features/learn-page/components/content/UpcomingModulesList.tsx
-import { Show, For, createEffect, onMount, createSignal } from "solid-js"
+import { Show, For, createEffect, createSignal } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { static_modules } from "@/data/static_modules"
 import { dynamic_modules } from "@/data/dynamic_modules"

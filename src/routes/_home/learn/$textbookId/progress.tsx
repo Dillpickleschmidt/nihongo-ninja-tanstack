@@ -1,6 +1,5 @@
 // routes/_home/learn/$textbookId/progress.tsx
 import { createFileRoute } from "@tanstack/solid-router"
-import { Show } from "solid-js"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { UpcomingModulesList } from "@/features/learn-page/components/content/UpcomingModulesList"
 import { HeroDailyProgress } from "@/features/progress-page/components/HeroDailyProgress"
