@@ -1,15 +1,13 @@
 // createSupabaseClient.ts
-import { isServer } from "solid-js/web"
+import { createIsomorphicFn } from "@tanstack/solid-start"
 import { createBrowserClient } from "@supabase/ssr"
 import { createBackendClient } from "./backendClient"
 
-export const createSupabaseClient = () => {
-  if (isServer) {
-    return createBackendClient()
-  } else {
-    return createBrowserClient(
+export const createSupabaseClient = createIsomorphicFn()
+  .server(() => createBackendClient())
+  .client(() =>
+    createBrowserClient(
       import.meta.env.VITE_SUPABASE_URL,
       import.meta.env.VITE_SUPABASE_PUBLISHABLE_OR_ANON_KEY,
-    )
-  }
-}
+    ),
+  )
