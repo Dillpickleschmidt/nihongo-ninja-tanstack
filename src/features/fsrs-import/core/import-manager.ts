@@ -142,7 +142,6 @@ export class ImportSessionManager {
         fsrs_card: finalCard,
         mode,
         fsrs_logs: logs,
-        lesson_id: null,
         source: `${context.source}-${card.source}`,
       }
 

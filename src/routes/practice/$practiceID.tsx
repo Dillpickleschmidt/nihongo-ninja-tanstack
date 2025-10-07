@@ -16,6 +16,7 @@ import type { VocabHierarchy as CleanVocabHierarchy } from "@/data/wanikani/hier
 import type { DeferredPromise } from "@tanstack/solid-router"
 import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
 import { fetchKanjiSvgsBatch } from "@/utils/svg-processor"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 
 export const Route = createFileRoute("/practice/$practiceID")({
   validateSearch: (
@@ -27,8 +28,13 @@ export const Route = createFileRoute("/practice/$practiceID")({
   loaderDeps: ({ search }) => ({ mode: search.mode }),
   loader: async ({ context, params, deps }) => {
     try {
+      const { queryClient, user } = context
       // 1. Get the practice mode from search params (defaults to "meanings")
       const mode: PracticeMode = deps.mode
+
+      const userSettings = await queryClient.ensureQueryData(
+        userSettingsQueryOptions(user?.id || null),
+      )
 
       const moduleVocabulary = await getVocabularyForModule(params.practiceID)
 
@@ -37,8 +43,7 @@ export const Route = createFileRoute("/practice/$practiceID")({
       if (mode === "meanings") {
         // For "meanings" mode, build the full dependency tree
         const vocabWords = moduleVocabulary.map((v) => v.word)
-        const userOverrides =
-          context.initialUserPreferenceData["override-settings"]
+        const userOverrides = userSettings["override-settings"]
         const cleanHierarchy = await getVocabHierarchy({
           data: {
             slugs: vocabWords,
@@ -126,7 +131,7 @@ export const Route = createFileRoute("/practice/$practiceID")({
         user: context.user,
       }
     } catch (error) {
-      console.error(error)
+      console.error("Route loader error for practice route:", error)
       throw notFound()
     }
   },
@@ -146,6 +151,8 @@ function RouteComponent() {
     lockedKeys: new Set(data().serializedInitialState.lockedKeys),
   }
 
+  const params = Route.useParams()
+
   return (
     <VocabPractice
       hierarchy={data().hierarchy}
@@ -157,6 +164,7 @@ function RouteComponent() {
       deckName={data().deckName}
       mode={data().mode}
       user={data().user}
+      moduleId={params().practiceID}
     />
   )
 }

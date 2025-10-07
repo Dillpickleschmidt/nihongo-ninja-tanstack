@@ -44,7 +44,6 @@ describe("ImportSessionManager", () => {
       fsrs_card: {} as any,
       mode: "meanings",
       fsrs_logs: [],
-      lesson_id: null,
       source: "test-source",
     },
   ]

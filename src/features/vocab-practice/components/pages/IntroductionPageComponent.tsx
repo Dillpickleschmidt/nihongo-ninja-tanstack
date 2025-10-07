@@ -19,6 +19,7 @@ export default function IntroductionPageComponent() {
     kanjiAnimationSettings,
     setKanjiAnimationSettings,
     kanjiStyleSettings,
+    addTimeAndQuestions,
   } = useVocabPracticeContext()
 
   const character = () => currentCard()?.vocab.word
@@ -56,6 +57,7 @@ export default function IntroductionPageComponent() {
 
   const handleGotIt = () => {
     if (currentCard()) {
+      addTimeAndQuestions(10, true)
       processIntroduction()
     }
   }

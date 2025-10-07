@@ -13,7 +13,7 @@ import { DEFAULT_KANJI_STACKS } from "@/features/main-cookies/schemas/user-setti
 /**
  * Get vocabulary hierarchy with kanji and radical dependencies
  */
-export const getVocabHierarchy = createServerFn({ method: "GET" })
+export const getVocabHierarchy = createServerFn({ method: "POST" })
   .inputValidator(
     (data: { slugs: string[]; userOverrides?: OverrideSettings }) => data,
   )
@@ -40,7 +40,7 @@ export const getVocabHierarchy = createServerFn({ method: "GET" })
 /**
  * Get detailed kanji and radical information by slugs with stacking support
  */
-export const getKanjiDetails = createServerFn({ method: "GET" })
+export const getKanjiDetails = createServerFn({ method: "POST" })
   .inputValidator(
     (data: {
       kanji: string[]

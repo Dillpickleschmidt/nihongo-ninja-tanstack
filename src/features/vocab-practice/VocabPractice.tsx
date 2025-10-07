@@ -27,11 +27,12 @@ type VocabPracticeProps = {
   deckName: string | JSX.Element
   mode: PracticeMode
   user: User | null
+  moduleId: string
 }
 
 export default function VocabPractice(props: VocabPracticeProps) {
   return (
-    <VocabPracticeContextProvider user={props.user}>
+    <VocabPracticeContextProvider user={props.user} moduleId={props.moduleId}>
       <VocabPracticeContent
         deckName={props.deckName}
         hierarchy={props.hierarchy}

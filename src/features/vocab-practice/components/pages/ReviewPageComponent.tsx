@@ -12,8 +12,13 @@ type ReviewSummaryData = {
 }
 
 export default function ReviewPageComponent() {
-  const { uiState, setUIState, currentCard, getCardFromMap } =
-    useVocabPracticeContext()
+  const {
+    uiState,
+    setUIState,
+    currentCard,
+    getCardFromMap,
+    addTimeAndQuestions,
+  } = useVocabPracticeContext()
 
   let continueButtonRef: HTMLButtonElement | undefined
 
@@ -42,6 +47,9 @@ export default function ReviewPageComponent() {
   })
 
   function handleContinue() {
+    // Track time (no questions)
+    addTimeAndQuestions(5, false)
+
     // Clear the batch history
     setUIState("recentReviewHistory", [])
 

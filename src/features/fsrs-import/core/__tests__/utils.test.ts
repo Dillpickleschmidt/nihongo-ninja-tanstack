@@ -20,7 +20,6 @@ describe("Card Validation and Deduplication Utilities", () => {
     fsrs_card: createEmptyCard(new Date("2024-01-01")),
     mode: "meanings",
     fsrs_logs: [],
-    lesson_id: null,
     source: "test-source",
   }
 
@@ -159,14 +158,6 @@ describe("Card Validation and Deduplication Utilities", () => {
       expect(validateCardStructure({ ...mockCard, fsrs_logs: null })).toBe(
         false,
       )
-    })
-
-    it("should accept null or string lesson_id", () => {
-      expect(validateCardStructure({ ...mockCard, lesson_id: null })).toBe(true)
-      expect(validateCardStructure({ ...mockCard, lesson_id: "lesson1" })).toBe(
-        true,
-      )
-      expect(validateCardStructure({ ...mockCard, lesson_id: 123 })).toBe(false)
     })
   })
 
