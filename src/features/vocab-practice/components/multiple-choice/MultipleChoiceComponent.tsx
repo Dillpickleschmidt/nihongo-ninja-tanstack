@@ -20,7 +20,7 @@ function isVerb(partOfSpeech?: PartOfSpeech): boolean {
 }
 
 export default function MultipleChoiceComponent() {
-  const { uiState, setUIState, currentCard, getCardMap } =
+  const { uiState, setUIState, currentCard, getCardMap, addTimeAndQuestions } =
     useVocabPracticeContext()
 
   const [selectedIndex, setSelectedIndex] = createSignal<number | null>(null)
@@ -104,6 +104,9 @@ export default function MultipleChoiceComponent() {
 
     const isCorrect = selectedCard.key === card.key
     const rating = isCorrect ? Rating.Good : Rating.Again
+
+    // Track time and questions
+    addTimeAndQuestions(5, true)
 
     // Set selected index for immediate visual feedback
     const index = choices().findIndex(

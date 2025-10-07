@@ -16,6 +16,7 @@ import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type { DeferredPromise } from "@tanstack/solid-router"
 import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
 import { fetchKanjiSvgsBatch } from "@/utils/svg-processor"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 
 export const Route = createFileRoute("/practice/$userID/$deckID")({
   validateSearch: (
@@ -27,9 +28,15 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
   loaderDeps: ({ search }) => ({ mode: search.mode }),
   loader: async ({ context, params, deps }) => {
     try {
+      const { queryClient, user } = context
       // Parse deck ID from params
       const deckId = parseInt(params.deckID, 10)
       if (isNaN(deckId)) throw notFound()
+
+      // Fetch user settings (instant cache hit from root loader)
+      const userSettings = await queryClient.ensureQueryData(
+        userSettingsQueryOptions(user?.id || null),
+      )
 
       // 1. Get deck info and vocabulary from database
       const [deckInfo, deckVocabulary] = await Promise.all([
@@ -49,8 +56,7 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
         const fullHierarchy = await getVocabHierarchy({
           data: {
             slugs: deckVocabulary.map((v) => v.word),
-            userOverrides:
-              context.initialUserPreferenceData["override-settings"],
+            userOverrides: userSettings["override-settings"],
           },
         })
         if (!fullHierarchy) throw notFound()

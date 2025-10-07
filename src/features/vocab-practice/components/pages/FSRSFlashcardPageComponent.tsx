@@ -248,6 +248,7 @@ export default function FSRSFlashcardPageComponent() {
     kanjiAnimationSettings,
     setKanjiAnimationSettings,
     kanjiStyleSettings,
+    addTimeAndQuestions,
   } = useVocabPracticeContext()
 
   const [showAnswer, setShowAnswer] = createSignal(false)
@@ -281,6 +282,7 @@ export default function FSRSFlashcardPageComponent() {
   })
 
   const handleAnswer = async (rating: Grade) => {
+    addTimeAndQuestions(5, true)
     await answerCardWithUIUpdate(rating)
   }
 

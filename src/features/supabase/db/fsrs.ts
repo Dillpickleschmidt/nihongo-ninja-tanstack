@@ -21,7 +21,6 @@ type UpsertFSRSCardArgs = {
   fsrs_card: Card
   mode: PracticeMode
   fsrs_logs?: ReviewLog[] | null
-  lesson_id?: string | null
 }
 
 /**
@@ -142,7 +141,6 @@ export const upsertFSRSCardForUser = createServerFn({ method: "POST" })
       user_id: response.user.id,
       practice_item_key: data.practice_item_key,
       type: data.type,
-      lesson_id: data.lesson_id ?? null,
       fsrs_card: data.fsrs_card as unknown as Json,
       mode: data.mode,
       fsrs_logs: (data.fsrs_logs ?? null) as unknown as Json[] | null,
@@ -173,7 +171,6 @@ export const batchUpsertFSRSCardsForUser = createServerFn({ method: "POST" })
       user_id: response.user!.id,
       practice_item_key: item.practice_item_key,
       type: item.type,
-      lesson_id: item.lesson_id ?? null,
       fsrs_card: item.fsrs_card as unknown as Json,
       mode: item.mode,
       fsrs_logs: (item.fsrs_logs ?? null) as unknown as Json[] | null,

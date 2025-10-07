@@ -37,7 +37,10 @@ export function ProgressSummary(props: ProgressSummaryProps) {
             <h4 class="text-muted-foreground mb-1 text-xs tracking-wide uppercase">
               Consistency
             </h4>
-            <p class="text-lg font-semibold text-white">
+            <p
+              class="text-lg font-semibold text-white"
+              title="Calculated from the past 30 days"
+            >
               Avg Day <span class="text-sky-400">{props.avgDay} min</span>
             </p>
             <p class="mt-1.5 text-base font-semibold text-white">

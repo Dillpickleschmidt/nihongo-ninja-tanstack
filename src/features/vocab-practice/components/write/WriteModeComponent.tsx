@@ -11,7 +11,8 @@ import { cn } from "@/utils"
 import { ActionButton } from "../shared/ActionButton"
 
 export default function WriteModeComponent() {
-  const { uiState, setUIState, currentCard } = useVocabPracticeContext()
+  const { uiState, setUIState, currentCard, addTimeAndQuestions } =
+    useVocabPracticeContext()
 
   const [userAnswers, setUserAnswers] = createSignal<string[]>([])
   const [inputCorrectness, setInputCorrectness] = createSignal<boolean[]>([])
@@ -82,6 +83,9 @@ export default function WriteModeComponent() {
   function handleSubmit() {
     const card = currentCard()
     if (uiState.isAnswered || !card) return
+
+    // Track time and questions
+    addTimeAndQuestions(10, true)
 
     const targets = sentenceData().inputValidationTargets
     const answers = userAnswers()

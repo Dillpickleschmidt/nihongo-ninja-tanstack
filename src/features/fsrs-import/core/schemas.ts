@@ -73,7 +73,6 @@ export const ProcessedCardSchema = z.object({
   fsrs_card: FSRSCardSchema,
   mode: PracticeModeSchema,
   fsrs_logs: z.array(FSRSReviewLogSchema),
-  lesson_id: z.string().nullable(),
   source: z.string().min(1),
 })
 export type ProcessedCard = z.infer<typeof ProcessedCardSchema>
