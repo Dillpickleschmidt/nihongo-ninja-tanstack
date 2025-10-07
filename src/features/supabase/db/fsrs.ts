@@ -1,4 +1,4 @@
-// src/features/resolvers/fsrs/index.ts
+// features/supabase/db/fsrs.ts
 import { createServerFn } from "@tanstack/solid-start"
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 import { getUser } from "@/features/supabase/getUser"
