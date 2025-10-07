@@ -1,0 +1,336 @@
+[
+  {
+    "english": "Mr./Ms. Tanaka's teacher is a doctor.",
+    "hint": "Name spelling: たなか",
+    "answers": [
+      {
+        "segments": [
+          "たなか",
+          "さん",
+          "の",
+          "先生[せんせい]",
+          "は",
+          "医者[いしゃ]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Yamada's friend is Japanese.",
+    "hint": "Name spelling: やまだ",
+    "answers": [
+      {
+        "segments": [
+          "やまだ",
+          "さん",
+          "の",
+          "友[とも]だち",
+          "は",
+          "日本人[にほんじん]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Is the student's teacher a lawyer?",
+    "hint": "Use の to show possession",
+    "answers": [
+      {
+        "segments": [
+          "学生[がくせい]",
+          "の",
+          "先生[せんせい]",
+          "は",
+          "弁護士[べんごし]",
+          "です",
+          "か"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The doctor's friend is an office worker.",
+    "hint": "Use の to show possession",
+    "answers": [
+      {
+        "segments": [
+          "医者[いしゃ]",
+          "の",
+          "友[とも]だち",
+          "は",
+          "会社員[かいしゃいん]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "My teacher is a nurse.",
+    "hint": "Use の to show possession",
+    "answers": [
+      {
+        "segments": [
+          "私[わたし]",
+          "の",
+          "先生[せんせい]",
+          "は",
+          "看護師[かんごし]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Is the nurse's friend a university student?",
+    "hint": "Use の to show possession",
+    "answers": [
+      {
+        "segments": [
+          "看護師[かんごし]",
+          "の",
+          "友[とも]だち",
+          "は",
+          "大学生[だいがくせい]",
+          "です",
+          "か"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The Japanese person's teacher is a lawyer.",
+    "hint": "Use の to show possession",
+    "answers": [
+      {
+        "segments": [
+          "日本人[にほんじん]",
+          "の",
+          "先生[せんせい]",
+          "は",
+          "弁護士[べんごし]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The office worker's friend is a high school student.",
+    "hint": "Use の to show possession",
+    "answers": [
+      {
+        "segments": [
+          "会社員[かいしゃいん]",
+          "の",
+          "友[とも]だち",
+          "は",
+          "高校生[こうこうせい]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Is the university student's teacher a doctor?",
+    "hint": "Use の to show possession",
+    "answers": [
+      {
+        "segments": [
+          "大学生[だいがくせい]",
+          "の",
+          "先生[せんせい]",
+          "は",
+          "医者[いしゃ]",
+          "です",
+          "か"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Murata's friend is an international student.",
+    "hint": "Name spelling: むらた",
+    "answers": [
+      {
+        "segments": [
+          "むらた",
+          "さん",
+          "の",
+          "友[とも]だち",
+          "は",
+          "留学生[りゅうがくせい]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Is the teacher's friend an office worker?",
+    "hint": "Use の to show possession",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "の",
+          "友[とも]だち",
+          "は",
+          "会社員[かいしゃいん]",
+          "です",
+          "か"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Yoshida's teacher is Japanese.",
+    "hint": "Name spelling: よしだ",
+    "answers": [
+      {
+        "segments": [
+          "よしだ",
+          "さん",
+          "の",
+          "先生[せんせい]",
+          "は",
+          "日本人[にほんじん]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The lawyer's friend is a university student.",
+    "hint": "Use の to show possession",
+    "answers": [
+      {
+        "segments": [
+          "弁護士[べんごし]",
+          "の",
+          "友[とも]だち",
+          "は",
+          "大学生[だいがくせい]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Is Ms. Hanako's teacher a nurse?",
+    "hint": "Name spelling: はなこ",
+    "answers": [
+      {
+        "segments": [
+          "はなこ",
+          "さん",
+          "の",
+          "先生[せんせい]",
+          "は",
+          "看護師[かんごし]",
+          "です",
+          "か"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The international student's friend is a first-year student.",
+    "hint": "Use の to show possession",
+    "answers": [
+      {
+        "segments": [
+          "留学生[りゅうがくせい]",
+          "の",
+          "友[とも]だち",
+          "は",
+          "一年生[いちねんせい]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Kenji's teacher is a housewife.",
+    "hint": "Name spelling: けんじ",
+    "answers": [
+      {
+        "segments": [
+          "けんじ",
+          "の",
+          "先生[せんせい]",
+          "は",
+          "主婦[しゅふ]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Is Mr./Ms. Mori's friend a lawyer?",
+    "hint": "Name spelling: もり",
+    "answers": [
+      {
+        "segments": [
+          "もり",
+          "さん",
+          "の",
+          "友[とも]だち",
+          "は",
+          "弁護士[べんごし]",
+          "です",
+          "か"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The high school student's teacher is a doctor.",
+    "hint": "Use の to show possession",
+    "answers": [
+      {
+        "segments": [
+          "高校生[こうこうせい]",
+          "の",
+          "先生[せんせい]",
+          "は",
+          "医者[いしゃ]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Inoue's friend is an office worker.",
+    "hint": "Name spelling: いのうえ",
+    "answers": [
+      {
+        "segments": [
+          "いのうえ",
+          "さん",
+          "の",
+          "友[とも]だち",
+          "は",
+          "会社員[かいしゃいん]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Is the housewife's friend a nurse?",
+    "hint": "Use の to show possession",
+    "answers": [
+      {
+        "segments": [
+          "主婦[しゅふ]",
+          "の",
+          "友[とも]だち",
+          "は",
+          "看護師[かんごし]",
+          "です",
+          "か"
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,272 @@
+[
+  {
+    "english": "Takahashi bought notebooks and pencils.",
+    "hint": "pencil -> 鉛筆 (えんぴつ)",
+    "answers": [
+      {
+        "segments": [
+          "高橋[たかはし]",
+          "さん",
+          "は",
+          "ノート",
+          "と",
+          "鉛筆[えんぴつ]",
+          "を",
+          "買[か]いました"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "I went to Kyoto and Osaka.",
+    "answers": [
+      {
+        "segments": [
+          "京都[きょうと]",
+          "と",
+          "大阪[おおさか]",
+          "に",
+          "行きました"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "There are dogs and cats here.",
+    "answers": [
+      {
+        "segments": [
+          "犬[いぬ]",
+          "と",
+          "猫[ねこ]",
+          "は",
+          "ここ",
+          "に",
+          "います"
+        ],
+        "notes": "Emphasizing the presence of the animals."
+      },
+      {
+        "segments": [
+          "ここ",
+          "に",
+          "犬[いぬ]",
+          "と",
+          "猫[ねこ]",
+          "が",
+          "います"
+        ],
+        "notes": "Emphasizing the location in which the animals exist."
+      },
+      {
+        "segments": [
+          "ここ",
+          "に",
+          "は",
+          "犬[いぬ]",
+          "と",
+          "猫[ねこ]",
+          "が",
+          "います"
+        ],
+        "notes": "Highlighting the location more specifically."
+      }
+    ]
+  },
+  {
+    "english": "I studied Japanese with Nakamura.",
+    "answers": [
+      {
+        "segments": [
+          "中村[なかむら]",
+          "さん",
+          "と",
+          "日本語[にほんご]",
+          "を",
+          "勉強[べんきょう]",
+          "しました"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Kimura bought notebooks and pencils.",
+    "hint": "pencil -> 鉛筆 (えんぴつ)",
+    "answers": [
+      {
+        "segments": [
+          "木村[きむら]",
+          "さん",
+          "は",
+          "ノート",
+          "と",
+          "鉛筆[えんぴつ]",
+          "を",
+          "買いました"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "I studied Japanese with Mr. Ito.",
+    "answers": [
+      {
+        "segments": [
+          "伊藤[いとう]先生[せんせい]",
+          "と",
+          "日本語[にほんご]",
+          "を",
+          "勉強[べんきょう]",
+          "しました"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Ayaka will go to Korea with Mayumi.",
+    "answers": [
+      {
+        "segments": [
+          "彩香[あやか]",
+          "さん",
+          "は",
+          "真由美[まゆみ]",
+          "さん",
+          "と",
+          "韓国[かんこく]",
+          "に",
+          "行きます"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Fujita went shopping with me.",
+    "answers": [
+      {
+        "segments": [
+          "藤田[ふじた]",
+          "さん",
+          "は",
+          "私[わたし]",
+          "と",
+          "買い物[かいもの]",
+          "に",
+          "行きました"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "I watched a movie with Yoshida.",
+    "answers": [
+      {
+        "segments": [
+          "吉田[よしだ]",
+          "さん",
+          "と",
+          "映画[えいが]",
+          "を",
+          "見[み]ました"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Sasaki bought bread and juice.",
+    "answers": [
+      {
+        "segments": [
+          "佐々木[ささき]",
+          "さん",
+          "は",
+          "パン",
+          "と",
+          "ジュース",
+          "を",
+          "買いました"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "I read a book with Yamashita.",
+    "answers": [
+      {
+        "segments": [
+          "山下[やました]",
+          "さん",
+          "と",
+          "本[ほん]",
+          "を",
+          "読みました"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Matsumoto bought apples and oranges.",
+    "answers": [
+      {
+        "segments": [
+          "松本[まつもと]",
+          "さん",
+          "は",
+          "りんご",
+          "と",
+          "オレンジ",
+          "を",
+          "買いました"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "I went to school with Shimizu.",
+    "answers": [
+      {
+        "segments": [
+          "清水[しみず]",
+          "さん",
+          "と",
+          "学校[がっこう]",
+          "に",
+          "行きました"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Okada drank tea and water.",
+    "answers": [
+      {
+        "segments": [
+          "岡田[おかだ]",
+          "さん",
+          "は",
+          "お茶[おちゃ]",
+          "と",
+          "お水[みず]",
+          "を",
+          "飲みました"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "I studied for the test with Hashimoto.",
+    "answers": [
+      {
+        "segments": [
+          "橋本[はしもと]",
+          "さん",
+          "と",
+          "テスト",
+          "を",
+          "勉強[べんきょう]",
+          "しました"
+        ]
+      }
+    ]
+  }
+]

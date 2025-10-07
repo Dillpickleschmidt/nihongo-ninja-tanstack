@@ -1,0 +1,99 @@
+[
+  {
+    "english": "Is Mr./Ms. Tanaka a student?",
+    "hint": "Name spelling: たなか",
+    "answers": [
+      {
+        "segments": ["たなか", "さん", "は", "学生[がくせい]", "です", "か"]
+      }
+    ]
+  },
+  {
+    "english": "Is Mr./Ms. Yamada a doctor?",
+    "hint": "Name spelling: やまだ",
+    "answers": [
+      {
+        "segments": ["やまだ", "さん", "は", "医者[いしゃ]", "です", "か"]
+      }
+    ]
+  },
+  {
+    "english": "Is Professor Suzuki a teacher?",
+    "hint": "Name spelling: すずき",
+    "answers": [
+      {
+        "segments": [
+          "すずき",
+          "先生[せんせい]",
+          "は",
+          "先生[せんせい]",
+          "です",
+          "か"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Is Mr./Ms. Yoshida Japanese?",
+    "hint": "Name spelling: よしだ",
+    "answers": [
+      {
+        "segments": ["よしだ", "さん", "は", "日本人[にほんじん]", "です", "か"]
+      }
+    ]
+  },
+  {
+    "english": "Is Ms. Hanako a nurse?",
+    "hint": "Name spelling: はなこ",
+    "answers": [
+      {
+        "segments": ["はなこ", "さん", "は", "看護師[かんごし]", "です", "か"]
+      }
+    ]
+  },
+  {
+    "english": "Is Kenji a university student?",
+    "hint": "Name spelling: けんじ",
+    "answers": [
+      {
+        "segments": ["けんじ", "は", "大学生[だいがくせい]", "です", "か"]
+      }
+    ]
+  },
+  {
+    "english": "Is Mr./Ms. Satou a lawyer?",
+    "hint": "Name spelling: さとう",
+    "answers": [
+      {
+        "segments": ["さとう", "さん", "は", "弁護士[べんごし]", "です", "か"]
+      }
+    ]
+  },
+  {
+    "english": "Is Tarou a first-year student?",
+    "hint": "Name spelling: たろう",
+    "answers": [
+      {
+        "segments": ["たろう", "は", "一年生[いちねんせい]", "です", "か"]
+      }
+    ]
+  },
+  {
+    "english": "Is Ms. Kimura a housewife?",
+    "hint": "Name spelling: きむら",
+    "answers": [
+      {
+        "segments": ["きむら", "さん", "は", "主婦[しゅふ]", "です", "か"]
+      }
+    ]
+  },
+  {
+    "english": "Is Mr./Ms. Mori an office worker?",
+    "hint": "Name spelling: もり",
+    "answers": [
+      {
+        "segments": ["もり", "さん", "は", "会社員[かいしゃいん]", "です", "か"]
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "english": "I read a book at the library, yesterday.",
+    "hint": "Use past tense (ました)",
+    "answers": [
+      {
+        "segments": [
+          "昨日[きのう]",
+          "、",
+          "私[わたし]",
+          "は",
+          "図書館[としょかん]",
+          "で",
+          "本[ほん]",
+          "を",
+          "読みました[よみました]"
+        ],
+        "notes": "Time expression at start"
+      },
+      {
+        "segments": [
+          "昨日[きのう]",
+          "図書館[としょかん]",
+          "で",
+          "本[ほん]",
+          "を",
+          "読みました[よみました]"
+        ],
+        "notes": "Time after topic (if present)"
+      }
+    ]
+  },
+  {
+    "english": "I studied Japanese at home today.",
+    "hint": "Use past tense (ました)",
+    "answers": [
+      {
+        "segments": [
+          "今日[きょう]",
+          "、",
+          "私[わたし]",
+          "は",
+          "家[いえ]",
+          "で",
+          "日本語[にほんご]",
+          "を",
+          "勉強しました[べんきょうしました]"
+        ],
+        "notes": "Time expression at start"
+      },
+      {
+        "segments": [
+          "今日[きょう]",
+          "家[いえ]",
+          "で",
+          "日本語[にほんご]",
+          "を",
+          "勉強しました[べんきょうしました]"
+        ],
+        "notes": "Time after topic (if present)"
+      }
+    ]
+  }
+]

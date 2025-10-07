@@ -1,0 +1,459 @@
+[
+  {
+    "english": "This bag is expensive. That wallet is also expensive.",
+    "hint": "Comparing prices of items",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "鞄[かばん]",
+          "は",
+          "高[たか]い",
+          "です",
+          "。",
+          "その",
+          "財布[さいふ]",
+          "も",
+          "高[たか]い",
+          "です",
+          "。"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Both this hat and that bag are expensive",
+    "hint": "Comparing multiple items' prices",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "帽子[ぼうし]",
+          "も",
+          "その",
+          "鞄[かばん]",
+          "も",
+          "高[たか]い",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This is my dictionary. This is also my notebook.",
+    "hint": "Showing ownership of multiple items",
+    "answers": [
+      {
+        "segments": [
+          "これ",
+          "は",
+          "私[わたし]",
+          "の",
+          "辞書[じしょ]",
+          "です",
+          "。",
+          "これ",
+          "は",
+          "私[わたし]",
+          "の",
+          "ノート",
+          "も",
+          "です",
+          "。"
+        ],
+        "notes": "Using も with です"
+      },
+      {
+        "segments": [
+          "これ",
+          "は",
+          "私[わたし]",
+          "の",
+          "辞書[じしょ]",
+          "です",
+          "。",
+          "この",
+          "ノート",
+          "も",
+          "私[わたし]",
+          "の",
+          "です",
+          "。"
+        ],
+        "notes": "Alternative pattern emphasizing the item"
+      }
+    ]
+  },
+  {
+    "english": "Tanaka is a student. Yamada is also a student.",
+    "hint": "Comparing people's roles",
+    "answers": [
+      {
+        "segments": [
+          "田中[たなか]",
+          "さん",
+          "は",
+          "学生[がくせい]",
+          "です",
+          "。",
+          "山田[やまだ]",
+          "さん",
+          "も",
+          "学生[がくせい]",
+          "です",
+          "。"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Both Tanaka and Sato are Japanese.",
+    "hint": "Describing multiple people's nationality",
+    "answers": [
+      {
+        "segments": [
+          "田中[たなか]",
+          "さん",
+          "も",
+          "佐藤[さとう]",
+          "さん",
+          "も",
+          "日本人[にほんじん]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This is an English book. This is also a Japanese book.",
+    "hint": "Describing books in different languages",
+    "answers": [
+      {
+        "segments": [
+          "これ",
+          "は",
+          "英語[えいご]",
+          "の",
+          "本[ほん]",
+          "です",
+          "。",
+          "これ",
+          "は",
+          "日本語[にほんご]",
+          "の",
+          "本[ほん]",
+          "も",
+          "です",
+          "。"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Both this pen and that pencil are expensive.",
+    "hint": "Comparing prices of stationery items",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "ペン",
+          "も",
+          "その",
+          "鉛筆[えんぴつ]",
+          "も",
+          "高[たか]い",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Yamada is a doctor. He is also a teacher.",
+    "hint": "Describing someone with multiple roles",
+    "answers": [
+      {
+        "segments": [
+          "山田[やまだ]",
+          "さん",
+          "は",
+          "医者[いしゃ]",
+          "です",
+          "。",
+          "先生[せんせい]",
+          "も",
+          "です",
+          "。"
+        ],
+        "notes": "Using も with です"
+      },
+      {
+        "segments": [
+          "山田[やまだ]",
+          "さん",
+          "は",
+          "医者[いしゃ]",
+          "です",
+          "。",
+          "先生[せんせい]",
+          "でも",
+          "あります",
+          "。"
+        ],
+        "notes": "Alternative pattern showing multiple roles"
+      }
+    ]
+  },
+  {
+    "english": "Both this university and that high school are in Japan.",
+    "hint": "Describing locations of schools",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "大学[だいがく]",
+          "も",
+          "その",
+          "高校[こうこう]",
+          "も",
+          "日本[にほん]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Kim is Korean. She is also a university student.",
+    "hint": "Describing someone's nationality and role",
+    "answers": [
+      {
+        "segments": [
+          "キム",
+          "さん",
+          "は",
+          "韓国人[かんこくじん]",
+          "です",
+          "。",
+          "大学生[だいがくせい]",
+          "も",
+          "です",
+          "。"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Both this dictionary and that notebook are mine.",
+    "hint": "Showing ownership of multiple items",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "辞書[じしょ]",
+          "も",
+          "その",
+          "ノート",
+          "も",
+          "私[わたし]",
+          "の",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This is Tanaka's pen. This is also Tanaka's notebook.",
+    "hint": "Showing multiple items belonging to same person",
+    "answers": [
+      {
+        "segments": [
+          "これ",
+          "は",
+          "田中[たなか]",
+          "さん",
+          "の",
+          "ペン",
+          "です",
+          "。",
+          "これ",
+          "は",
+          "田中[たなか]",
+          "さん",
+          "の",
+          "ノート",
+          "も",
+          "です",
+          "。"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Both Yamada and Tanaka are first-year students.",
+    "hint": "Describing multiple people's grade level",
+    "answers": [
+      {
+        "segments": [
+          "山田[やまだ]",
+          "さん",
+          "も",
+          "田中[たなか]",
+          "さん",
+          "も",
+          "一年生[いちねんせい]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This is an international student. This is also a nurse.",
+    "hint": "Introducing people with different roles",
+    "answers": [
+      {
+        "segments": [
+          "これ",
+          "は",
+          "留学生[りゅうがくせい]",
+          "です",
+          "。",
+          "これ",
+          "は",
+          "看護師[かんごし]",
+          "も",
+          "です",
+          "。"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Both this umbrella and that bag are Tanaka's.",
+    "hint": "Multiple items belonging to same person",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "傘[かさ]",
+          "も",
+          "その",
+          "鞄[かばん]",
+          "も",
+          "田中[たなか]",
+          "さん",
+          "の",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This is the English teacher. This is also the Japanese teacher.",
+    "hint": "Introducing teachers of different subjects",
+    "answers": [
+      {
+        "segments": [
+          "これ",
+          "は",
+          "英語[えいご]",
+          "の",
+          "先生[せんせい]",
+          "です",
+          "。",
+          "これ",
+          "は",
+          "日本語[にほんご]",
+          "の",
+          "先生[せんせい]",
+          "も",
+          "です",
+          "。"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Both these shoes and that hat are Yamada's.",
+    "hint": "Multiple items belonging to same person",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "靴[くつ]",
+          "も",
+          "その",
+          "帽子[ぼうし]",
+          "も",
+          "山田[やまだ]",
+          "さん",
+          "の",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This is the university library. This is also the computer room.",
+    "hint": "Introducing different places in a building",
+    "answers": [
+      {
+        "segments": [
+          "これ",
+          "は",
+          "大学[だいがく]",
+          "の",
+          "図書館[としょかん]",
+          "です",
+          "。",
+          "これ",
+          "は",
+          "コンピューター",
+          "の",
+          "部屋[へや]",
+          "も",
+          "です",
+          "。"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Both this bike and that umbrella are expensive.",
+    "hint": "Comparing prices of different items",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "自転車[じてんしゃ]",
+          "も",
+          "その",
+          "傘[かさ]",
+          "も",
+          "高[たか]い",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Tanaka is a lawyer. He is also a university teacher.",
+    "hint": "Describing someone with multiple professions",
+    "answers": [
+      {
+        "segments": [
+          "田中[たなか]",
+          "さん",
+          "は",
+          "弁護士[べんごし]",
+          "です",
+          "。",
+          "大学[だいがく]",
+          "の",
+          "先生[せんせい]",
+          "も",
+          "です",
+          "。"
+        ]
+      }
+    ]
+  }
+]

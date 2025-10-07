@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SentencePracticeDemoRouteImport } from './routes/sentence-practice-demo'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as LessonsRouteImport } from './routes/lessons'
 import { Route as KanjiTestRouteImport } from './routes/kanji-test'
@@ -83,6 +84,11 @@ import { Route as HomeLearnTextbookIdChapterSlugRouteImport } from './routes/_ho
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SentencePracticeDemoRoute = SentencePracticeDemoRouteImport.update({
+  id: '/sentence-practice-demo',
+  path: '/sentence-practice-demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -472,6 +478,7 @@ export interface FileRoutesByFullPath {
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
+  '/sentence-practice-demo': typeof SentencePracticeDemoRoute
   '/settings': typeof SettingsRoute
   '/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
   '/dashboard': typeof HomeDashboardRoute
@@ -543,6 +550,7 @@ export interface FileRoutesByTo {
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
+  '/sentence-practice-demo': typeof SentencePracticeDemoRoute
   '/settings': typeof SettingsRoute
   '/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
   '/dashboard': typeof HomeDashboardRoute
@@ -616,6 +624,7 @@ export interface FileRoutesById {
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
+  '/sentence-practice-demo': typeof SentencePracticeDemoRoute
   '/settings': typeof SettingsRoute
   '/_home/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
   '/_home/dashboard': typeof HomeDashboardRoute
@@ -689,6 +698,7 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
+    | '/sentence-practice-demo'
     | '/settings'
     | '/additional-resources'
     | '/dashboard'
@@ -760,6 +770,7 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
+    | '/sentence-practice-demo'
     | '/settings'
     | '/additional-resources'
     | '/dashboard'
@@ -832,6 +843,7 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
+    | '/sentence-practice-demo'
     | '/settings'
     | '/_home/additional-resources'
     | '/_home/dashboard'
@@ -905,6 +917,7 @@ export interface RootRouteChildren {
   KanjiTestRoute: typeof KanjiTestRoute
   LessonsRoute: typeof LessonsRouteWithChildren
   PricingRoute: typeof PricingRoute
+  SentencePracticeDemoRoute: typeof SentencePracticeDemoRoute
   SettingsRoute: typeof SettingsRoute
   ApiUploadOverrideRoute: typeof ApiUploadOverrideRoute
   ExternalResourcesResourceRoute: typeof ExternalResourcesResourceRoute
@@ -927,6 +940,13 @@ declare module '@tanstack/solid-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sentence-practice-demo': {
+      id: '/sentence-practice-demo'
+      path: '/sentence-practice-demo'
+      fullPath: '/sentence-practice-demo'
+      preLoaderRoute: typeof SentencePracticeDemoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -1578,6 +1598,7 @@ const rootRouteChildren: RootRouteChildren = {
   KanjiTestRoute: KanjiTestRoute,
   LessonsRoute: LessonsRouteWithChildren,
   PricingRoute: PricingRoute,
+  SentencePracticeDemoRoute: SentencePracticeDemoRoute,
   SettingsRoute: SettingsRoute,
   ApiUploadOverrideRoute: ApiUploadOverrideRoute,
   ExternalResourcesResourceRoute: ExternalResourcesResourceRoute,

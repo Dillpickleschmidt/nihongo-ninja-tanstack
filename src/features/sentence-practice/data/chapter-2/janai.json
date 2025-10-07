@@ -1,0 +1,203 @@
+[
+  {
+    "english": "This is not my book.",
+    "hint": "XはYです",
+    "answers": [
+      {
+        "segments": [
+          "これ",
+          "は",
+          "私[わたし]",
+          "の",
+          "本[ほん]",
+          "じゃないです"
+        ],
+        "notes": "Full form with これは"
+      },
+      {
+        "segments": ["私[わたし]", "の", "本[ほん]", "じゃないです"],
+        "notes": "Shorter form without これは"
+      }
+    ]
+  },
+  {
+    "english": "Isn't this Tanaka's bag?",
+    "hint": "Seeking confirmation about ownership",
+    "answers": [
+      {
+        "segments": [
+          "これ",
+          "は",
+          "田中[たなか]",
+          "さん",
+          "の",
+          "かばん",
+          "じゃないです",
+          "か"
+        ],
+        "notes": "Full form with これは"
+      },
+      {
+        "segments": [
+          "田中[たなか]",
+          "さん",
+          "の",
+          "かばん",
+          "じゃないです",
+          "か"
+        ],
+        "notes": "Shorter form without これは"
+      }
+    ]
+  },
+  {
+    "english": "This dictionary is not Tanaka's",
+    "hint": "Denying ownership of a dictionary",
+    "answers": [
+      {
+        "segments": [
+          "これ",
+          "は",
+          "田中[たなか]",
+          "さん",
+          "の",
+          "じしょ",
+          "じゃないです"
+        ],
+        "notes": "Full form with これは"
+      },
+      {
+        "segments": ["田中[たなか]", "さん", "の", "じしょ", "じゃないです"],
+        "notes": "Shorter form without これは"
+      }
+    ]
+  },
+  {
+    "english": "Tanaka is not a student. Yamada is not a student either.",
+    "hint": "Expressing that multiple people aren't students",
+    "answers": [
+      {
+        "segments": [
+          "田中[たなか]",
+          "さん",
+          "は",
+          "学生[がくせい]",
+          "じゃないです",
+          "。",
+          "山田[やまだ]",
+          "さん",
+          "も",
+          "学生[がくせい]",
+          "じゃないです",
+          "。"
+        ],
+        "notes": "Using も to add another person who isn't a student"
+      }
+    ]
+  },
+  {
+    "english": "Isn't that person Chinese?",
+    "hint": "Seeking confirmation about someone's nationality",
+    "answers": [
+      {
+        "segments": [
+          "あの",
+          "人[ひと]",
+          "は",
+          "中国人[ちゅうごくじん]",
+          "じゃないです",
+          "か"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This is not a student.",
+    "hint": "Simple negation of someone's role",
+    "answers": [
+      {
+        "segments": ["これ", "は", "学生[がくせい]", "じゃないです"],
+        "notes": "Full form with これは"
+      },
+      {
+        "segments": ["学生[がくせい]", "じゃないです"],
+        "notes": "Shorter form without これは, when context is clear"
+      }
+    ]
+  },
+  {
+    "english": "Tanaka is not a teacher.",
+    "hint": "Stating what someone is not",
+    "answers": [
+      {
+        "segments": [
+          "田中[たなか]",
+          "さん",
+          "は",
+          "先生[せんせい]",
+          "じゃないです"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Isn't Yamada a nurse?",
+    "hint": "Seeking confirmation about someone's profession",
+    "answers": [
+      {
+        "segments": [
+          "山田[やまだ]",
+          "さん",
+          "は",
+          "看護師[かんごし]",
+          "じゃないです",
+          "か"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This is not an English book.",
+    "hint": "Denying type of book",
+    "answers": [
+      {
+        "segments": [
+          "これ",
+          "は",
+          "英語[えいご]",
+          "の",
+          "本[ほん]",
+          "じゃないです"
+        ],
+        "notes": "Full form with これは"
+      },
+      {
+        "segments": ["英語[えいご]", "の", "本[ほん]", "じゃないです"],
+        "notes": "Shorter form without これは"
+      }
+    ]
+  },
+  {
+    "english": "Yamada is not a doctor. Kim is not a doctor either.",
+    "hint": "Expressing that multiple people aren't doctors",
+    "answers": [
+      {
+        "segments": [
+          "山田[やまだ]",
+          "さん",
+          "は",
+          "医者[いしゃ]",
+          "じゃないです",
+          "。",
+          "キム",
+          "さん",
+          "も",
+          "医者[いしゃ]",
+          "じゃないです",
+          "。"
+        ],
+        "notes": "Using も to add another person who isn't a doctor"
+      }
+    ]
+  }
+]

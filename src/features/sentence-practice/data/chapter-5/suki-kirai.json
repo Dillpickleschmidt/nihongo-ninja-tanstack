@@ -1,0 +1,697 @@
+[
+  {
+    "english": "Mr. Takeda hates children.",
+    "answers": [
+      {
+        "segments": [
+          "武田[たけだ]",
+          "さん",
+          "は",
+          "子供[こども]たち",
+          "が",
+          "大[だい]嫌[きら]い",
+          "です"
+        ],
+        "notes": "Using 大嫌い because this guy has some issues."
+      },
+      {
+        "segments": [
+          "武田[たけだ]",
+          "さん",
+          "は",
+          "子供[こども]たち",
+          "が",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Using 嫌い instead of 大嫌い for a less intense statement."
+      }
+    ]
+  },
+  {
+    "english": "Does Mr. Tanaka like Japanese (the language)?",
+    "answers": [
+      {
+        "segments": [
+          "田中[たなか]",
+          "さん",
+          "は",
+          "日本語[にほんご]",
+          "が",
+          "好[す]き",
+          "です",
+          "か"
+        ],
+        "notes": "Basic question structure with は and が."
+      },
+      {
+        "segments": [
+          "田中[たなか]",
+          "さん",
+          "は",
+          "日本語[にほんご]",
+          "が",
+          "好[す]き",
+          "でしょう",
+          "か"
+        ],
+        "notes": "Using でしょうか for a more inquisitive tone (advanced)."
+      }
+    ]
+  },
+  {
+    "english": "My favorite sport is tennis.",
+    "answers": [
+      {
+        "segments": [
+          "私[わたし]",
+          "の",
+          "好[す]きな",
+          "スポーツ",
+          "は",
+          "テニス",
+          "です"
+        ],
+        "notes": "Basic structure with noun modification using 好きな."
+      },
+      {
+        "segments": ["好[す]きな", "スポーツ", "は", "テニス", "です"],
+        "notes": "Omitting 私 for a more natural sentence."
+      },
+      {
+        "segments": [
+          "私[わたし]",
+          "の",
+          "一番[いちばん]",
+          "好[す]きな",
+          "スポーツ",
+          "は",
+          "テニス",
+          "です"
+        ],
+        "notes": "Using 一番 to emphasize \"most favorite\" with 私 included."
+      },
+      {
+        "segments": [
+          "一番[いちばん]",
+          "好[す]きな",
+          "スポーツ",
+          "は",
+          "テニス",
+          "です"
+        ],
+        "notes": "Omitting 私 for a more natural and casual sentence."
+      },
+      {
+        "segments": [
+          "私[わたし]",
+          "が",
+          "一番[いちばん]",
+          "好[す]きな",
+          "スポーツ",
+          "は",
+          "テニス",
+          "です"
+        ],
+        "notes": "Using 私が instead of 私の for a slightly different nuance."
+      },
+      {
+        "segments": [
+          "スポーツ",
+          "の",
+          "中[なか]で",
+          "一番[いちばん]",
+          "好[す]き",
+          "なの",
+          "は",
+          "テニス",
+          "です"
+        ],
+        "notes": "Using スポーツの中で to explicitly say \"among sports, my favorite is tennis\" (advanced)."
+      },
+      {
+        "segments": [
+          "私[わたし]",
+          "は",
+          "スポーツ",
+          "の",
+          "中[なか]で",
+          "テニス",
+          "が",
+          "一番[いちばん]",
+          "好[す]き",
+          "です"
+        ],
+        "notes": "Rephrased to emphasize \"I like tennis the most among sports\" (advanced)."
+      }
+    ]
+  },
+  {
+    "english": "My younger brother's least favorite food is fish.",
+    "answers": [
+      {
+        "segments": [
+          "弟[おとうと]",
+          "の",
+          "嫌[きら]いな",
+          "食[た]べ 物[もの]",
+          "は",
+          "魚[さかな]",
+          "です"
+        ],
+        "notes": "Basic structure with noun modification using 嫌いな."
+      },
+      {
+        "segments": [
+          "弟[おとうと]",
+          "が",
+          "嫌[きら]いな",
+          "食[た]べ 物[もの]",
+          "は",
+          "魚[さかな]",
+          "です"
+        ],
+        "notes": "Using 弟が instead of 弟の for a slightly different nuance."
+      },
+      {
+        "segments": [
+          "弟[おとうと]",
+          "の",
+          "一番[いちばん]",
+          "嫌[きら]いな",
+          "食[た]べ 物[もの]",
+          "は",
+          "魚[さかな]",
+          "です"
+        ],
+        "notes": "Using 一番 to emphasize \"least favorite\" with the basic structure."
+      },
+      {
+        "segments": [
+          "弟[おとうと]",
+          "が",
+          "一番[いちばん]",
+          "嫌[きら]いな",
+          "食[た]べ 物[もの]",
+          "は",
+          "魚[さかな]",
+          "です"
+        ],
+        "notes": "Using 弟が instead of 弟の with 一番 for emphasis."
+      },
+      {
+        "segments": [
+          "食[た]べ 物[もの]",
+          "の",
+          "中[なか]で",
+          "弟[おとうと]",
+          "が",
+          "一番[いちばん]",
+          "嫌[きら]い",
+          "なの",
+          "は",
+          "魚[さかな]",
+          "です"
+        ],
+        "notes": "Using 食べ物の中で to explicitly say \"among foods, my younger brother dislikes fish the most (advanced).'"
+      },
+      {
+        "segments": [
+          "弟[おとうと]",
+          "は",
+          "食[た]べ 物[もの]",
+          "の",
+          "中[なか]で",
+          "魚[さかな]",
+          "が",
+          "一番[いちばん]",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Rephrased to emphasize \"My younger brother dislikes fish the most among foods (advanced).'"
+      },
+      {
+        "segments": [
+          "弟[おとうと]",
+          "の",
+          "一番[いちばん]",
+          "嫌[きら]い",
+          "なの",
+          "は",
+          "魚[さかな]",
+          "です"
+        ],
+        "notes": "\"the thing my younger brother dislikes the most is fish, with の in place of 食べ物 to mean \"thing\" (advanced).'"
+      }
+    ]
+  },
+  {
+    "english": "My younger sister loves fruit but dislikes vegetables.",
+    "answers": [
+      {
+        "segments": [
+          "妹[いもうと]",
+          "は",
+          "果物[くだもの]",
+          "が",
+          "大[だい]好[す]き",
+          "ですが",
+          "野菜[やさい]",
+          "は",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Using は before 嫌い to emphasize the contrast between fruit and vegetables."
+      },
+      {
+        "segments": [
+          "妹[いもうと]",
+          "は",
+          "果物[くだもの]",
+          "が",
+          "好[す]き",
+          "ですが",
+          "野菜[やさい]",
+          "は",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Using 好き instead of 大好き for a less intense statement,."
+      }
+    ]
+  },
+  {
+    "english": "My father neither likes nor dislikes movies.",
+    "answers": [
+      {
+        "segments": [
+          "父[ちち]",
+          "は",
+          "映画[えいが]",
+          "が",
+          "好[す]きでも",
+          "嫌[きら]いでも",
+          "ない",
+          "です"
+        ],
+        "notes": "Basic structure with neutral expression 好きでも嫌いでもない."
+      },
+      {
+        "segments": [
+          "父[ちち]",
+          "は",
+          "映画[えいが]",
+          "が",
+          "好[す]きでも",
+          "嫌[きら]いでも",
+          "ありません"
+        ],
+        "notes": "Using ありません for a more formal tone."
+      }
+    ]
+  },
+  {
+    "english": "My favorite books are manga.",
+    "hint": "漫画[まんが] - manga",
+    "answers": [
+      {
+        "segments": [
+          "私[わたし]",
+          "の",
+          "好[す]きな",
+          "本[ほん]",
+          "は",
+          "漫画[まんが]",
+          "です"
+        ],
+        "notes": "Basic structure with noun modification using 好きな."
+      },
+      {
+        "segments": ["好[す]きな", "本[ほん]", "は", "漫画[まんが]", "です"],
+        "notes": "Omitting 私 for a more natural sentence."
+      },
+      {
+        "segments": [
+          "私[わたし]",
+          "の",
+          "一番[いちばん]",
+          "好[す]きな",
+          "本[ほん]",
+          "は",
+          "漫画[まんが]",
+          "です"
+        ],
+        "notes": "Using 一番 to emphasize 'most favorite' with 私 included."
+      },
+      {
+        "segments": [
+          "一番[いちばん]",
+          "好[す]きな",
+          "本[ほん]",
+          "は",
+          "漫画[まんが]",
+          "です"
+        ],
+        "notes": "Omitting 私 for a more casual and natural sentence."
+      },
+      {
+        "segments": [
+          "私[わたし]",
+          "が",
+          "一番[いちばん]",
+          "好[す]きな",
+          "本[ほん]",
+          "は",
+          "漫画[まんが]",
+          "です"
+        ],
+        "notes": "Using 私が instead of 私の for a slightly different nuance."
+      },
+      {
+        "segments": [
+          "本[ほん]",
+          "の",
+          "中[なか]で",
+          "一番[いちばん]",
+          "好[す]き",
+          "なの",
+          "は",
+          "漫画[まんが]",
+          "です"
+        ],
+        "notes": "Using 本の中で to explicitly say 'among books, my favorite is manga' with の in place of 本 (advanced)."
+      },
+      {
+        "segments": [
+          "私[わたし]",
+          "は",
+          "本[ほん]",
+          "の",
+          "中[なか]で",
+          "漫画[まんが]",
+          "が",
+          "一番[いちばん]",
+          "好[す]き",
+          "です"
+        ],
+        "notes": "Rephrased to emphasize 'I like manga the most among books' (advanced)."
+      }
+    ]
+  },
+  {
+    "english": "My father likes coffee, but he absolutely hates tea.",
+    "answers": [
+      {
+        "segments": [
+          "父[ちち]",
+          "は",
+          "コーヒー",
+          "が",
+          "好[す]き",
+          "ですが",
+          "お 茶[ちゃ]",
+          "は",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Basic structure with 父 and contrast using は for お茶."
+      },
+      {
+        "segments": [
+          "父[ちち]",
+          "は",
+          "コーヒー",
+          "が",
+          "好[す]き",
+          "ですが",
+          "お 茶[ちゃ]",
+          "は",
+          "大[だい]嫌[きら]い",
+          "です"
+        ],
+        "notes": "Using 大嫌い for stronger emphasis with 父 and は."
+      },
+      {
+        "segments": [
+          "父[ちち]",
+          "は",
+          "コーヒー",
+          "が",
+          "好[す]き",
+          "ですが",
+          "お 茶[ちゃ]",
+          "は",
+          "絶対[ぜったい]",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Adding 絶対 to emphasize 'absolutely hates' tea with 父 and は."
+      },
+      {
+        "segments": [
+          "父[ちち]",
+          "は",
+          "コーヒー",
+          "が",
+          "好[す]き",
+          "ですが",
+          "お 茶[ちゃ]",
+          "は",
+          "絶対[ぜったい]",
+          "大[だい]嫌[きら]い",
+          "です"
+        ],
+        "notes": "Using 絶対 and 大嫌い for stronger emphasis with 父 and は."
+      },
+      {
+        "segments": [
+          "お 父[とう]さん",
+          "は",
+          "コーヒー",
+          "が",
+          "好[す]き",
+          "ですが",
+          "お 茶[ちゃ]",
+          "は",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Basic structure with お父さん and contrast using は for お茶."
+      },
+      {
+        "segments": [
+          "お 父[とう]さん",
+          "は",
+          "コーヒー",
+          "が",
+          "好[す]き",
+          "ですが",
+          "お 茶[ちゃ]",
+          "は",
+          "大[だい]嫌[きら]い",
+          "です"
+        ],
+        "notes": "Using 大嫌い for stronger emphasis with お父さん and は."
+      },
+      {
+        "segments": [
+          "お 父[とう]さん",
+          "は",
+          "コーヒー",
+          "が",
+          "好[す]き",
+          "ですが",
+          "お 茶[ちゃ]",
+          "は",
+          "絶対[ぜったい]",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Adding 絶対 to emphasize 'absolutely hates' tea with お父さん and は."
+      },
+      {
+        "segments": [
+          "お 父[とう]さん",
+          "は",
+          "コーヒー",
+          "が",
+          "好[す]き",
+          "ですが",
+          "お 茶[ちゃ]",
+          "は",
+          "絶対[ぜったい]",
+          "大[だい]嫌[きら]い",
+          "です"
+        ],
+        "notes": "Using 絶対 and 大嫌い for stronger emphasis with お父さん and は."
+      }
+    ]
+  },
+  {
+    "english": "My friend loves traveling. Every year, they go to Europe",
+    "hint": "ヨーロッパ - Europe",
+    "answers": [
+      {
+        "segments": [
+          "友[とも] 達[だち]",
+          "は",
+          "旅行[りょこう]",
+          "が",
+          "大[だい]好[す]き",
+          "です",
+          "。",
+          "毎[まい]年[ねん]",
+          "ヨーロッパ",
+          "に",
+          "行[い]きます"
+        ],
+        "notes": "Basic structure with 大好き and listing examples using や."
+      },
+      {
+        "segments": [
+          "友[とも] 達[だち]",
+          "は",
+          "旅行[りょこう]",
+          "が",
+          "好[す]き",
+          "です",
+          "。",
+          "毎[まい]年[ねん]",
+          "ヨーロッパ",
+          "に",
+          "行[い]きます"
+        ],
+        "notes": "Using 好き instead of 大好き for a less intense statement."
+      },
+      {
+        "segments": [
+          "友[とも]だち",
+          "は",
+          "旅行[りょこう]",
+          "が",
+          "大[だい]好[す]き",
+          "です",
+          "。",
+          "毎[まい]年[ねん]",
+          "ヨーロッパ",
+          "に",
+          "行[い]きます"
+        ],
+        "notes": "Basic structure with 大好き and listing examples using や."
+      },
+      {
+        "segments": [
+          "友[とも]だち",
+          "は",
+          "旅行[りょこう]",
+          "が",
+          "好[す]き",
+          "です",
+          "。",
+          "毎[まい]年[ねん]",
+          "ヨーロッパ",
+          "に",
+          "行[い]きます"
+        ],
+        "notes": "Using 好き instead of 大好き for a less intense statement."
+      }
+    ]
+  },
+  {
+    "english": "I like music, but I dislike homework.",
+    "answers": [
+      {
+        "segments": [
+          "私[わたし]",
+          "は",
+          "音楽[おんがく]",
+          "が",
+          "好[す]き",
+          "です",
+          "。",
+          "でも",
+          "宿題[しゅくだい]",
+          "は",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Basic structure with contrast using でも."
+      },
+      {
+        "segments": [
+          "音楽[おんがく]",
+          "が",
+          "好[す]き",
+          "です",
+          "。",
+          "でも",
+          "宿題[しゅくだい]",
+          "は",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Omitting 私 for a more natural sentence."
+      },
+      {
+        "segments": [
+          "私[わたし]",
+          "は",
+          "音楽[おんがく]",
+          "が",
+          "好[す]き",
+          "です",
+          "が",
+          "宿題[しゅくだい]",
+          "は",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Using が for contrast."
+      },
+      {
+        "segments": [
+          "音楽[おんがく]",
+          "が",
+          "好[す]き",
+          "です",
+          "が",
+          "宿題[しゅくだい]",
+          "は",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Omitting 私 and using が for contrast."
+      },
+      {
+        "segments": [
+          "私[わたし]",
+          "は",
+          "音楽[おんがく]",
+          "が",
+          "好[す]き",
+          "です",
+          "けど",
+          "宿題[しゅくだい]",
+          "は",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Using けど for a polite and conversational contrast."
+      },
+      {
+        "segments": [
+          "音楽[おんがく]",
+          "が",
+          "好[す]き",
+          "です",
+          "けど",
+          "宿題[しゅくだい]",
+          "は",
+          "嫌[きら]い",
+          "です"
+        ],
+        "notes": "Omitting 私 and using けど for a polite and conversational contrast."
+      }
+    ]
+  }
+]

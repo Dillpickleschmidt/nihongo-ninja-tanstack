@@ -1,0 +1,224 @@
+[
+  {
+    "english": "I am a student.",
+    "hint": "Use XはYです pattern",
+    "answers": [
+      {
+        "segments": ["私[わたし]", "は", "学生[がくせい]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Tanaka is a doctor.",
+    "hint": "Name spelling: たなか",
+    "answers": [
+      {
+        "segments": ["田中[たなか]", "さん", "は", "医者[いしゃ]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Yamada is an office worker.",
+    "hint": "Name spelling: やまだ",
+    "answers": [
+      {
+        "segments": [
+          "山田[やまだ]",
+          "さん",
+          "は",
+          "会社員[かいしゃいん]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Satou is Japanese.",
+    "hint": "Name spelling: さとう",
+    "answers": [
+      {
+        "segments": ["佐藤[さとう]", "さん", "は", "日本人[にほんじん]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Professor Hayashi is a teacher.",
+    "hint": "Name spelling: はやし",
+    "answers": [
+      {
+        "segments": [
+          "林[はやし]",
+          "先生[せんせい]",
+          "は",
+          "先生[せんせい]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Yuki is a high school student.",
+    "hint": "Name spelling: ゆき",
+    "answers": [
+      {
+        "segments": ["雪[ゆき]", "は", "高校生[こうこうせい]", "です"]
+      },
+      {
+        "segments": ["ユキ", "は", "高校生[こうこうせい]", "です"]
+      },
+      {
+        "segments": ["ゆき", "は", "高校生[こうこうせい]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Nakamura is a university student.",
+    "hint": "Name spelling: なかむら",
+    "answers": [
+      {
+        "segments": ["なかむら", "さん", "は", "大学生[だいがくせい]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Suzuki is a nurse.",
+    "hint": "Name spelling: すずき",
+    "answers": [
+      {
+        "segments": ["すずき", "さん", "は", "看護師[かんごし]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Tarou is a first-year student.",
+    "hint": "Name spelling: たろう",
+    "answers": [
+      {
+        "segments": ["太郎[たろう]", "は", "一年生[いちねんせい]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Ms. Hanako is a housewife.",
+    "hint": "Name spelling: はなこ",
+    "answers": [
+      {
+        "segments": ["花子[はなこ]", "さん", "は", "主婦[しゅふ]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "I am a graduate student.",
+    "hint": "Use XはYです pattern",
+    "answers": [
+      {
+        "segments": ["私[わたし]", "は", "大学院生[だいがくいんせい]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Kenji is a high school student.",
+    "hint": "Name spelling: けんじ",
+    "answers": [
+      {
+        "segments": ["健二[けんじ]", "は", "高校生[こうこうせい]", "です"]
+      },
+      {
+        "segments": ["賢司[けんじ]", "は", "高校生[こうこうせい]", "です"]
+      },
+      {
+        "segments": ["謙治[けんじ]", "は", "高校生[こうこうせい]", "です"]
+      },
+      {
+        "segments": ["研司[けんじ]", "は", "高校生[こうこうせい]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Murata is a lawyer.",
+    "hint": "Name spelling: むらた",
+    "answers": [
+      {
+        "segments": ["村田[むらた]", "さん", "は", "弁護士[べんごし]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Inoue is a teacher.",
+    "hint": "Name spelling: いのうえ",
+    "answers": [
+      {
+        "segments": ["井上[いのうえ]", "さん", "は", "先生[せんせい]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Yoshida is an international student.",
+    "hint": "Name spelling: よしだ",
+    "answers": [
+      {
+        "segments": [
+          "吉田[よしだ]",
+          "さん",
+          "は",
+          "留学生[りゅうがくせい]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Katou is a doctor.",
+    "hint": "Name spelling: かとう",
+    "answers": [
+      {
+        "segments": ["加藤[かとう]", "さん", "は", "医者[いしゃ]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Okada is an office worker.",
+    "hint": "Name spelling: おかだ",
+    "answers": [
+      {
+        "segments": [
+          "岡田[おかだ]",
+          "さん",
+          "は",
+          "会社員[かいしゃいん]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Abe is a university student.",
+    "hint": "Name spelling: あべ",
+    "answers": [
+      {
+        "segments": ["阿部[あべ]", "さん", "は", "大学生[だいがくせい]", "です"]
+      },
+      {
+        "segments": ["安倍[あべ]", "さん", "は", "大学生[だいがくせい]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Mr./Ms. Mori is a nurse.",
+    "hint": "Name spelling: もり",
+    "answers": [
+      {
+        "segments": ["森[もり]", "さん", "は", "看護師[かんごし]", "です"]
+      }
+    ]
+  },
+  {
+    "english": "Ms. Kimura is a housewife.",
+    "hint": "Name spelling: きむら",
+    "answers": [
+      {
+        "segments": ["木村[きむら]", "さん", "は", "主婦[しゅふ]", "です"]
+      }
+    ]
+  }
+]
