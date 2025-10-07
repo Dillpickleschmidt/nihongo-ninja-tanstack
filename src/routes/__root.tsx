@@ -21,7 +21,7 @@ import {
   cookieStorageManagerSSR,
 } from "@kobalte/core"
 import { getCookie } from "@/utils/cookie-utils"
-import { createEffect, Show } from "solid-js"
+import { createEffect } from "solid-js"
 import { createMediaQuery } from "@solid-primitives/media"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { SolidQueryDevtools } from "@tanstack/solid-query-devtools"
@@ -153,10 +153,8 @@ function RootContent() {
       <ColorModeProvider storageManager={storageManager}>
         <TourProvider shouldStartMainTour={shouldStartMainTour}>
           <Outlet />
-          <Show when={import.meta.env.DEV}>
-            <TanStackRouterDevtools position="bottom-right" />
-            <SolidQueryDevtools buttonPosition="bottom-left" />
-          </Show>
+          <TanStackRouterDevtools position="bottom-right" />
+          <SolidQueryDevtools buttonPosition="bottom-left" />
         </TourProvider>
       </ColorModeProvider>
     </PostHogProvider>
