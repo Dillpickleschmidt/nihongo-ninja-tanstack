@@ -1,3 +1,4 @@
+// features/learn-page/components/content/UpcomingModulesList.tsx
 import { Show, For, createEffect, onMount, createSignal } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { static_modules } from "@/data/static_modules"
@@ -321,16 +322,13 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
   return (
     <div
       ref={containerRef}
-      class="mx-auto h-[calc(100vh-141px)] max-w-2xl space-y-4 overflow-y-auto px-6 pb-6 xl:h-[calc(100vh-171px)]"
+      class="mx-auto h-[calc(100vh-141px)] max-w-2xl space-y-4 overflow-y-auto px-6 pt-9 pb-6 xl:h-[calc(100vh-171px)]"
     >
       <style>{`
         [data-module-item] {
           transition: opacity 100ms ease-out, transform 100ms ease-out;
         }
       `}</style>
-      <h2 class="mb-6 text-center text-2xl font-semibold">
-        Your Learning Path
-      </h2>
 
       <div class="relative pl-8">
         {/* Timeline line */}
@@ -392,10 +390,10 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
                 <Link to={moduleInfo.linkTo}>
                   <div
                     class={cn(
-                      "rounded-lg border px-4 py-3 backdrop-blur-sm transition-all hover:shadow-md",
+                      "rounded-lg px-4 py-3 backdrop-blur-sm transition-all hover:shadow-md",
                       isCurrent
-                        ? "bg-primary/14 border-neutral-500"
-                        : "bg-primary/7 border-neutral-700/40",
+                        ? "bg-primary/9 border-2 border-neutral-600"
+                        : "bg-primary/3 border border-neutral-700/40",
                     )}
                   >
                     <div class="flex items-center gap-3">

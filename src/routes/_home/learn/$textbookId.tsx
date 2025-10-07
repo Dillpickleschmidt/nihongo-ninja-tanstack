@@ -115,7 +115,7 @@ function LayoutContent() {
   }
 
   const blurAmount = () =>
-    location().pathname.endsWith("/progress") ? "32px" : "0px"
+    location().pathname.endsWith("/progress") ? "4px" : "0px"
 
   return (
     <div class="font-poppins xl:h-screen xl:overflow-y-hidden xl:overscroll-y-contain">
