@@ -1,5 +1,5 @@
 // features/progress-page/components/HeroDailyProgress.tsx
-import { createMemo, For } from "solid-js"
+import { For } from "solid-js"
 
 interface HeroDailyProgressProps {
   minutesToday: number
@@ -10,9 +10,8 @@ interface HeroDailyProgressProps {
 }
 
 export function HeroDailyProgress(props: HeroDailyProgressProps) {
-  const completion = createMemo(() =>
-    Math.min(100, (props.minutesToday / props.dailyGoal) * 100),
-  )
+  const completion = () =>
+    Math.min(100, (props.minutesToday / props.dailyGoal) * 100)
 
   return (
     <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-600/20 via-emerald-500/10 to-transparent p-6 shadow-inner backdrop-blur-md">
