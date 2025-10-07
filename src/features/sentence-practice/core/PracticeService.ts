@@ -76,8 +76,8 @@ export class PracticeService {
     unprocessedAnswers: UnprocessedQuestion["answers"],
     english: string,
   ): Answer[] {
-    return unprocessedAnswers.flatMap((answer) => {
-      const processedAnswers = this.processAnswer(answer)
+    return unprocessedAnswers.flatMap((answer, sourceAnswerIndex) => {
+      const processedAnswers = this.processAnswer(answer, sourceAnswerIndex)
       return this.variationGenerator.generateVariations({
         answers: processedAnswers,
         english,
@@ -87,6 +87,7 @@ export class PracticeService {
 
   private processAnswer(
     answer: UnprocessedQuestion["answers"][number],
+    sourceAnswerIndex: number,
   ): Answer[] {
     const politenessVariations = [true, false]
 
@@ -99,6 +100,8 @@ export class PracticeService {
           notes: answer.notes,
           originalPoliteForm: isPolite,
           isVariation: false,
+          sourceAnswerIndex,
+          pronounType: "none",
         }),
       )
     })

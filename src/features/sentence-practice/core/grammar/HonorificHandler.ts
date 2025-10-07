@@ -28,6 +28,11 @@ export class HonorificHandler {
               ...answer,
               segments: newSegments,
               isVariation: true,
+              honorificType: honorific,
+              // Explicitly preserve parent metadata
+              sourceAnswerIndex: answer.sourceAnswerIndex,
+              pronounType: answer.pronounType,
+              originalPoliteForm: answer.originalPoliteForm,
             })
           }
         })

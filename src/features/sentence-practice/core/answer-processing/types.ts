@@ -5,6 +5,9 @@ export type Answer = {
   isVariation?: boolean
   isKanaVariation?: boolean
   originalPoliteForm?: boolean
+  sourceAnswerIndex?: number
+  pronounType?: string
+  honorificType?: string
 }
 
 export type PracticeQuestion = {

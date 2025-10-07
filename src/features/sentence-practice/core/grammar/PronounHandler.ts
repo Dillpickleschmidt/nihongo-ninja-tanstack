@@ -32,6 +32,11 @@ export class PronounHandler {
         ...answer,
         segments: newSegments,
         isVariation: true,
+        pronounType: pronoun + "は",
+        // Explicitly preserve parent metadata
+        sourceAnswerIndex: answer.sourceAnswerIndex,
+        honorificType: answer.honorificType,
+        originalPoliteForm: answer.originalPoliteForm,
       }
     })
   }
@@ -50,6 +55,11 @@ export class PronounHandler {
         ...answer,
         segments: newSegments,
         isVariation: true,
+        pronounType: pronoun + "は",
+        // Explicitly preserve parent metadata
+        sourceAnswerIndex: answer.sourceAnswerIndex,
+        honorificType: answer.honorificType,
+        originalPoliteForm: answer.originalPoliteForm,
       }
     })
   }

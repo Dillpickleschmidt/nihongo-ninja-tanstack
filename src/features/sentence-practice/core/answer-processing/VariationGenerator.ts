@@ -23,6 +23,7 @@ export class VariationGenerator {
         ...answer,
         segments: ["私[わたし]", "は", ...answer.segments],
         isVariation: true,
+        pronounType: "私[わたし]は",
       }))
 
       question.answers = [...originalAnswers, ...answersWithPronouns]
@@ -49,10 +50,17 @@ export class VariationGenerator {
     }
 
     question.answers.forEach((answer) => {
+      // Detect if original answer has an honorific
+      const hasHonorific = this.honorificHandler.hasHonorific(answer.segments)
+      const honorificType = hasHonorific
+        ? answer.segments.find((seg) => seg === "さん") || undefined
+        : undefined
+
       // Add the original answer
       addUniqueVariation({
         ...answer,
         isVariation: false,
+        honorificType,
       })
 
       // Start with pronoun variations if applicable
@@ -111,6 +119,11 @@ export class VariationGenerator {
         segments: kanaSegments,
         isVariation: true,
         isKanaVariation: true,
+        // Preserve all parent metadata
+        sourceAnswerIndex: answer.sourceAnswerIndex,
+        pronounType: answer.pronounType,
+        honorificType: answer.honorificType,
+        originalPoliteForm: answer.originalPoliteForm,
       })
     }
 
