@@ -29,7 +29,6 @@ import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 import { BottomNav } from "@/features/navbar/BottomNav"
 import { SessionModeTabSwitcher } from "../SessionModeTabSwitcher"
-import { createSession } from "@/features/supabase/db/module-progress"
 
 type StartPageProps = {
   hierarchy: CleanVocabHierarchy | null
@@ -83,8 +82,7 @@ export default function StartPageComponent(props: StartPageProps) {
     uiState,
     initializeManager,
     initializeSvgData,
-    setSessionId,
-    moduleId,
+    startSession,
   } = useVocabPracticeContext()
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(props.userId),
@@ -204,13 +202,7 @@ export default function StartPageComponent(props: StartPageProps) {
       }
 
       // Create session if authenticated
-      if (props.userId) {
-        const session = await createSession(props.userId, moduleId, {
-          durationSeconds: 20,
-          questionsAnswered: 0,
-        })
-        setSessionId(session.session_id)
-      }
+      await startSession()
 
       // Initialize manager using the hook (this will automatically set up reactivity)
       initializeManager(reconstructedState)

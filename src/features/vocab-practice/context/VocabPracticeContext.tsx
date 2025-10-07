@@ -5,7 +5,6 @@ import {
   useContext,
   createEffect,
   createSignal,
-  onCleanup,
 } from "solid-js"
 import { createStore, SetStoreFunction } from "solid-js/store"
 import type { Settings, CurrentPage } from "../types"
@@ -23,7 +22,7 @@ import type {
   KanjiAnimationSettings,
   KanjiStyleSettings,
 } from "@/components/KanjiAnimation"
-import { updateSession } from "@/features/supabase/db/module-progress"
+import { useSessionTracking } from "@/features/module-session-manager/useSessionTracking"
 
 // --- LOCAL TYPE DEFINITIONS FOR THE CONTEXT ---
 
@@ -58,11 +57,8 @@ type VocabPracticeContextType = {
   answerCardWithUIUpdate: (rating: Rating) => Promise<void>
 
   // Session tracking
-  moduleId: string
-  sessionId: () => string | null
-  setSessionId: (id: string | null) => void
+  startSession: () => Promise<void>
   addTimeAndQuestions: (seconds: number, incrementQuestions: boolean) => void
-  flushToDatabase: () => void
 
   // Manager hook (reactive practice logic)
 } & PracticeManagerHook
@@ -104,13 +100,11 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     },
   })
 
-  // Session tracking state
-  const [sessionId, setSessionId] = createSignal<string | null>(null)
-  let cumulativeTime = 0
-  let cumulativeQuestions = 0
-  let updateTimer: ReturnType<typeof setTimeout> | null = null
-  let firstEventTime: number | null = null
-  const WINDOW_DURATION = 5000 // 5 seconds
+  // Session tracking
+  const { startSession, addTimeAndQuestions } = useSessionTracking(
+    props.user?.id || null,
+    props.moduleId,
+  )
 
   // SVG data management
   const [svgData, setSvgData] = createSignal<Map<string, string>>(new Map())
@@ -229,74 +223,6 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     })
   }
 
-  // --- SESSION TRACKING HELPERS ---
-
-  const flushToDatabase = () => {
-    const sid = sessionId()
-    if (!sid || !props.user) return
-
-    updateSession(sid, {
-      durationSeconds: cumulativeTime,
-      questionsAnswered: cumulativeQuestions,
-    })
-  }
-
-  const addTimeAndQuestions = (
-    seconds: number,
-    incrementQuestions: boolean,
-  ) => {
-    // Skip if not authenticated
-    if (!props.user) return
-
-    // Update in-memory counters
-    cumulativeTime += seconds
-    if (incrementQuestions) cumulativeQuestions++
-
-    const now = Date.now()
-
-    // Start new window if needed
-    if (firstEventTime === null) {
-      firstEventTime = now
-    }
-
-    // Calculate remaining time in window
-    const timeInWindow = now - firstEventTime
-    const remainingTime = WINDOW_DURATION - timeInWindow
-
-    // Clear existing timer
-    if (updateTimer) {
-      clearTimeout(updateTimer)
-    }
-
-    // If window expired, write immediately and start new window
-    if (remainingTime <= 0) {
-      flushToDatabase()
-      firstEventTime = now
-
-      updateTimer = setTimeout(() => {
-        flushToDatabase()
-        updateTimer = null
-        firstEventTime = null
-      }, WINDOW_DURATION)
-      return
-    }
-
-    // Schedule write for remaining time in window
-    updateTimer = setTimeout(() => {
-      flushToDatabase()
-      updateTimer = null
-      firstEventTime = null
-    }, remainingTime)
-  }
-
-  // Cleanup on unmount
-  onCleanup(() => {
-    if (updateTimer) {
-      clearTimeout(updateTimer)
-      flushToDatabase()
-    }
-  })
-
   const contextValue: VocabPracticeContextType = {
     // UI state
     uiState,
@@ -318,11 +244,8 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     answerCardWithUIUpdate,
 
     // Session tracking
-    moduleId: props.moduleId,
-    sessionId,
-    setSessionId,
+    startSession,
     addTimeAndQuestions,
-    flushToDatabase,
 
     // Manager hook values (spread all manager hook properties)
     ...managerHook,

@@ -64,7 +64,6 @@ export default function FinishPageComponent() {
     dependencyMap,
     getManagerState,
     addTimeAndQuestions,
-    flushToDatabase,
   } = useVocabPracticeContext()
 
   const enableKanjiRadicalPrereqs = () =>
@@ -176,10 +175,7 @@ export default function FinishPageComponent() {
           <Link
             to="/dashboard"
             tabindex={-1}
-            onClick={() => {
-              addTimeAndQuestions(10, false)
-              flushToDatabase()
-            }}
+            onClick={() => addTimeAndQuestions(10, false)}
           >
             <Button class="h-14 w-full rounded-xl bg-orange-500 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] hover:bg-orange-600">
               <span class="flex items-center justify-center gap-2">
