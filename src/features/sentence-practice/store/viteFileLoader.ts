@@ -10,11 +10,25 @@ export class ViteFileLoader implements FileLoader {
       "../data/**/*.json",
       { eager: true },
     )
-    const filePath = `../data/${path}.json`
 
-    if (filePath in questionModules) {
-      return questionModules[filePath].default
+    // If path includes a directory (e.g., "chapter-1/x-wa-y-desu"), use it directly
+    if (path.includes("/")) {
+      const filePath = `../data/${path}.json`
+      if (filePath in questionModules) {
+        return questionModules[filePath].default
+      }
     }
-    throw new Error(`File not found: ${filePath}`)
+
+    // Otherwise, search for the filename across all subdirectories
+    const filename = `${path}.json`
+    const matchingPath = Object.keys(questionModules).find((key) =>
+      key.endsWith(`/${filename}`)
+    )
+
+    if (matchingPath) {
+      return questionModules[matchingPath].default
+    }
+
+    throw new Error(`File not found: ${path}`)
   }
 }

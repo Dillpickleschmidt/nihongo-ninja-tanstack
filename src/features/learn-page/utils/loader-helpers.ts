@@ -182,18 +182,22 @@ function getDisplayTitle(title: string) {
 
 export function getLinkTo(module: Module, moduleKey: string) {
   if ("link" in module && module.link) {
-    // For external resources, remove chapter folder:
-    // /external-resources/chapter-0/resource-id → /external-resources/resource-id
     if (module.link.startsWith("/external-resources/")) {
       const parts = module.link.split("/")
-      parts.splice(-2, 1) // Remove the second to last element (chapter folder)
+      parts.splice(-2, 1)
       return parts.join("/")
     }
     return module.link
   }
 
-  if ("session_type" in module && module.session_type === "vocab-practice") {
-    return `/vocab?import=${moduleKey}`
+  if ("session_type" in module) {
+    if (module.session_type === "vocab-practice") {
+      return `/vocab?import=${moduleKey}`
+    }
+    if (module.session_type === "sentence-practice") {
+      const strippedId = moduleKey.replace(/^sentence-practice-/, "")
+      return `/practice/sentence-practice/${strippedId}`
+    }
   }
 
   return `/practice/${moduleKey}`
