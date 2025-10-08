@@ -1,4 +1,5 @@
 // core/answer-processing/__tests__/AnswerMatcher.test.ts
+import { describe, it, expect } from "vitest"
 import { AnswerMatcher, MatchResult } from "../AnswerMatcher"
 import { ErrorRange } from "../types"
 
@@ -53,7 +54,7 @@ describe("AnswerMatcher", () => {
       },
     ]
 
-    test.each(testCases)(
+    it.each(testCases)(
       "handles $description",
       ({ input, answer, expected }) => {
         const result = matcher.match(input, answer)
@@ -96,7 +97,7 @@ describe("AnswerMatcher", () => {
       },
     ]
 
-    test.each(complexTestCases)(
+    it.each(complexTestCases)(
       "handles $description",
       ({ input, answer, expected }) => {
         const result = matcher.match(input, answer)
@@ -139,7 +140,7 @@ describe("AnswerMatcher", () => {
       // },
     ]
 
-    test.each(edgeCases)(
+    it.each(edgeCases)(
       "handles $description",
       ({ input, answer, expected }) => {
         const result = matcher.match(input, answer)

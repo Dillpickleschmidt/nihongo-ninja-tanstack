@@ -1,4 +1,5 @@
 // core/__tests__/PracticeService.test.ts
+import { describe, it, expect, beforeEach } from "vitest"
 import { PracticeService } from "../PracticeService"
 import type { PracticeQuestion } from "../answer-processing/types"
 import type { UnprocessedQuestion } from "../conjugation/types"
@@ -12,7 +13,7 @@ describe("PracticeService", () => {
   })
 
   describe("Hard Mode", () => {
-    test("processes single input correctly", () => {
+    it("processes single input correctly", () => {
       const question: PracticeQuestion = {
         english: "Test",
         answers: [
@@ -33,7 +34,7 @@ describe("PracticeService", () => {
   })
 
   describe("Easy Mode", () => {
-    test("processes blank inputs correctly", () => {
+    it("processes blank inputs correctly", () => {
       const question: PracticeQuestion = {
         english: "I am a student",
         answers: [
@@ -52,7 +53,7 @@ describe("PracticeService", () => {
       expect(filledInputs.blanks).toEqual(["私", "は", null, "です"])
     })
 
-    test("validates filled blank inputs", () => {
+    it("validates filled blank inputs", () => {
       const question: PracticeQuestion = {
         english: "I am a student",
         answers: [
@@ -74,7 +75,7 @@ describe("PracticeService", () => {
   })
 
   describe("Question Processing", () => {
-    test("prepares questions with blank segments", () => {
+    it("prepares questions with blank segments", () => {
       const unprocessedQuestions: UnprocessedQuestion[] = [
         {
           english: "Test",

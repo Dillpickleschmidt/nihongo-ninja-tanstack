@@ -1,4 +1,5 @@
 // core/answer-processing/__tests__/VariationGenerator.test.ts
+import { describe, it, expect } from "vitest"
 import { VariationGenerator } from "../VariationGenerator"
 import type { PracticeQuestion, Answer } from "../types"
 
@@ -17,7 +18,7 @@ describe("VariationGenerator", () => {
     })
 
   describe("Variation Combinations", () => {
-    test("generates pronoun variations while preserving original", () => {
+    it("generates pronoun variations while preserving original", () => {
       const question: PracticeQuestion = {
         english: "I am Mr. Tanaka.",
         answers: [
@@ -88,13 +89,13 @@ describe("VariationGenerator", () => {
   })
 
   describe("Edge Cases", () => {
-    test("handles empty answers array", () => {
+    it("handles empty answers array", () => {
       const question = createQuestion([])
       const result = generator.generateVariations(question)
       expect(result.answers).toEqual([])
     })
 
-    test("handles answers without kanji or honorifics", () => {
+    it("handles answers without kanji or honorifics", () => {
       const question = createQuestion([
         {
           segments: ["はい"],
@@ -107,7 +108,7 @@ describe("VariationGenerator", () => {
       ])
     })
 
-    test("does not generate pronoun variations for non-first-person sentences", () => {
+    it("does not generate pronoun variations for non-first-person sentences", () => {
       const question = createQuestion([
         {
           segments: ["彼[かれ]", "は", "学生[がくせい]", "です"],
@@ -127,7 +128,7 @@ describe("VariationGenerator", () => {
       })
     })
 
-    test("does not generate honorific variations for answers without honorifics", () => {
+    it("does not generate honorific variations for answers without honorifics", () => {
       const question: PracticeQuestion = {
         english: "This is a book.",
         answers: [
@@ -154,7 +155,7 @@ describe("VariationGenerator", () => {
       })
     })
 
-    test("adds pronoun variations only for sentences starting with 'I '", () => {
+    it("adds pronoun variations only for sentences starting with 'I '", () => {
       const notFirstPerson = [
         "We are",
         "You are",
