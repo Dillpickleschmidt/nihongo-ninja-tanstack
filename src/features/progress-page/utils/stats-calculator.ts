@@ -17,9 +17,14 @@ export function calculateStreak(sessions: PracticeSession[]): number {
     datesWithActivity.add(date.toDateString())
   })
 
-  // Count consecutive days back from today
+  // Count consecutive days back from today or yesterday
   let streak = 0
   const currentDate = new Date(today)
+
+  // If no activity today, start counting from yesterday
+  if (!datesWithActivity.has(currentDate.toDateString())) {
+    currentDate.setDate(currentDate.getDate() - 1)
+  }
 
   while (datesWithActivity.has(currentDate.toDateString())) {
     streak++
