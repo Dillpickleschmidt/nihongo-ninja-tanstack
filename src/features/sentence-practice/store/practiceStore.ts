@@ -22,7 +22,10 @@ const initialState: PracticeState = {
   effectiveDifficulty: "hard",
 }
 
-export function createPracticeStore(fileLoader: FileLoader) {
+export function createPracticeStore(
+  fileLoader: FileLoader,
+  addTimeAndQuestions: (seconds: number, incrementQuestions: boolean) => void,
+) {
   const [store, setStore] = createStore(initialState)
   const practiceService = new PracticeService()
 
@@ -117,6 +120,10 @@ export function createPracticeStore(fileLoader: FileLoader) {
       },
 
       nextQuestion: () => {
+        // Track time and question before moving to next
+        const seconds = store.effectiveDifficulty === "easy" ? 15 : 30
+        addTimeAndQuestions(seconds, true)
+
         if (store.currentQuestionIndex < store.questions.length - 1) {
           const nextIndex = store.currentQuestionIndex + 1
           const newEffectiveDifficulty = calculateEffectiveDifficulty(

@@ -14,9 +14,9 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
-
 interface PracticeContainerProps {
   path: string
+  moduleId: string
 }
 
 function PracticeContent(props: PracticeContainerProps) {
@@ -106,7 +106,7 @@ function PracticeContent(props: PracticeContainerProps) {
 
 export default function PracticeContainer(props: PracticeContainerProps) {
   return (
-    <PracticeProvider>
+    <PracticeProvider moduleId={props.moduleId}>
       <PracticeContent {...props} />
     </PracticeProvider>
   )

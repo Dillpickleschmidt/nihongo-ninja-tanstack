@@ -26,7 +26,10 @@ function RouteComponent() {
           class="opacity-40"
         />
       </div>
-      <PracticeContainer path={params().id} />
+      <PracticeContainer
+        path={params().id}
+        moduleId={`sentence-practice-${params().id}`}
+      />
     </>
   )
 }
