@@ -34,6 +34,9 @@ export class HonorificHandler {
     }> = []
 
     answer.segments.forEach((segment, index) => {
+      // Skip index 0 - honorifics at the start are subjects, not honorific suffixes
+      if (index === 0) return
+
       const validVariations = this.HONORIFIC_VARIATIONS[segment as Honorific]
       if (validVariations) {
         honorificPositions.push({
