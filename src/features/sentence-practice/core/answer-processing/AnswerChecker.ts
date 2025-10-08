@@ -24,12 +24,20 @@ export class AnswerChecker {
     const particles = ["よね", "ね", "よ"]
     const particlesToStrip: string[] = []
 
-    for (const particle of particles) {
-      const anyAnswerEndsWithParticle = answerTexts.some((text) =>
-        text.endsWith(particle),
-      )
-      if (!anyAnswerEndsWithParticle) {
-        particlesToStrip.push(particle)
+    // Check if any answer ends with question markers
+    const anyAnswerIsQuestion = answerTexts.some(
+      (text) => text.endsWith("か") || text.endsWith("？"),
+    )
+
+    // Only consider stripping particles if no answers are questions
+    if (!anyAnswerIsQuestion) {
+      for (const particle of particles) {
+        const anyAnswerEndsWithParticle = answerTexts.some((text) =>
+          text.endsWith(particle),
+        )
+        if (!anyAnswerEndsWithParticle) {
+          particlesToStrip.push(particle)
+        }
       }
     }
 
