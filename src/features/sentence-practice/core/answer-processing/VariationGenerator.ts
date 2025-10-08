@@ -16,19 +16,6 @@ export class VariationGenerator {
   }
 
   generateVariations(question: PracticeQuestion): PracticeQuestion {
-    if (this.shouldIncludeFirstPerson(question.english)) {
-      // Keep original answers and add versions with pronouns
-      const originalAnswers = question.answers
-      const answersWithPronouns = question.answers.map((answer) => ({
-        ...answer,
-        segments: ["私[わたし]", "は", ...answer.segments],
-        isVariation: true,
-        pronounType: "私[わたし]は",
-      }))
-
-      question.answers = [...originalAnswers, ...answersWithPronouns]
-    }
-
     return {
       ...question,
       answers: this.generateAnswerVariations(question),
