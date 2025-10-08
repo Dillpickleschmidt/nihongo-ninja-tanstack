@@ -11,6 +11,11 @@ import type {
 import type { KanaItem } from "@/features/kana-quiz/hooks/useKanaQuiz"
 import type { PracticeMode } from "@/features/vocab-practice/types"
 import { getVocabulary } from "@/features/resolvers/vocabulary"
+import {
+  extractHiragana as _extractHiragana,
+  convertFuriganaToRubyHtml as _convertFuriganaToRubyHtml,
+  parseFuriganaString as _parseFuriganaString,
+} from "./text"
 
 /**
  * Check if text contains kanji characters
@@ -135,73 +140,14 @@ export function addKanaAndRuby(
  * @param furigana - A string or array of strings containing kanji with furigana in brackets.
  * @returns A hiragana string or array of hiragana strings, depending on the input type.
  */
-export function extractHiragana<T extends string | string[]>(
-  furigana: T,
-): T extends string[] ? string[] : string {
-  const extract = (text: string): string => {
-    let reading = text.replace(/([一-龯ぁ-んァ-ン]+)\[(.+?)\]/g, "$2")
-    return reading.replace(/\s/g, "")
-  }
+// Re-export from text.ts for backward compatibility
+export const extractHiragana = _extractHiragana
 
-  if (Array.isArray(furigana)) {
-    return furigana.map(extract) as T extends string[] ? string[] : string
-  } else {
-    return extract(furigana) as T extends string[] ? string[] : string
-  }
-}
+// Re-export from text.ts for backward compatibility
+export const convertFuriganaToRubyHtml = _convertFuriganaToRubyHtml
 
-/**
- * Converts furigana string(s) to HTML ruby text.
- * @param furigana - A string or array of strings containing kanji with furigana in brackets.
- * @param furiganaSize - The font size for the furigana text (default: "0.75rem").
- * @returns An HTML string or array of HTML strings with ruby tags for furigana display,
- *          depending on the input type.
- */
-export function convertFuriganaToRubyHtml<T extends string | string[]>(
-  furigana: T,
-  furiganaSize = "0.75rem",
-): T extends string[] ? string[] : string {
-  const convert = (text: string): string => {
-    if (!text) return ""
-    const sizeStyle = ` style="font-size: ${furiganaSize}; user-select: none;"`
-    // Convert furigana to ruby HTML
-    let convertedHtml = text.replace(
-      /([一-龯ぁ-んァ-ン]+)\[(.+?)\]/g,
-      `<ruby>$1<rp>(</rp><rt><span${sizeStyle}>$2</span></rt><rp>)</rp></ruby>`,
-    )
-
-    // Strip spaces from the text, preserving tags
-    convertedHtml = convertedHtml.replace(/<[^>]+>|\s/g, (match) =>
-      match.startsWith("<") ? match : "",
-    )
-
-    return convertedHtml
-  }
-
-  if (Array.isArray(furigana)) {
-    return furigana.map(convert) as T extends string[] ? string[] : string
-  } else {
-    return convert(furigana) as T extends string[] ? string[] : string
-  }
-}
-
-/**
- * Parses a furigana string and returns both base and kana forms
- * @param furigana - A string containing kanji with furigana in brackets (e.g., "人[ひと]", "食[た]べ 物[もの]")
- * @returns An object with base (kanji without brackets/spaces) and kana (hiragana reading) properties
- */
-export function parseFuriganaString(furigana: string): {
-  base: string
-  kana: string
-} {
-  // Extract base form by removing furigana brackets and spaces
-  const base = furigana.replace(/\[(.+?)\]/g, "").replace(/\s/g, "")
-
-  // Extract kana form using existing function
-  const kana = extractHiragana(furigana)
-
-  return { base, kana }
-}
+// Re-export from text.ts for backward compatibility
+export const parseFuriganaString = _parseFuriganaString
 
 export type ProcessedSentencePart =
   | { type: "html"; content: string }

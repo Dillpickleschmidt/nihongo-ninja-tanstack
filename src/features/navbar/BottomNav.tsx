@@ -19,7 +19,7 @@ export function BottomNav(props: BottomNavProps) {
   const activeTextbook = () =>
     settingsQuery.data?.["active-textbook"] || "genki_1"
 
-  const dailyProgress = () => props.dailyProgressPercentage || 65
+  const dailyProgress = () => props.dailyProgressPercentage ?? 65
 
   const navItems = [
     {
@@ -178,11 +178,16 @@ export function BottomNav(props: BottomNavProps) {
 
                   <span
                     class={cn(
-                      "relative z-10 text-xs font-bold transition-colors duration-200",
-                      active ? "text-primary" : "text-primary/80",
+                      "relative z-10 font-bold transition-colors duration-200",
+                      dailyProgress() === 100
+                        ? "text-sm text-green-500"
+                        : cn(
+                            "text-xs",
+                            active ? "text-primary" : "text-primary/80",
+                          ),
                     )}
                   >
-                    {dailyProgress()}%
+                    {dailyProgress() === 100 ? "百" : `${dailyProgress()}%`}
                   </span>
                 </Link>
               )

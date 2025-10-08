@@ -1,0 +1,241 @@
+[
+  {
+    "english": "Would you like to study at the library?",
+    "answers": [
+      {
+        "segments": [
+          "図書館[としょかん]",
+          "で",
+          "勉強[べんきょう]",
+          "しませんか"
+        ]
+      },
+      {
+        "segments": [
+          "一緒[いっしょ]",
+          "に",
+          "図書館[としょかん]",
+          "で",
+          "勉強[べんきょう]",
+          "しませんか"
+        ],
+        "notes": "With 一緒に"
+      }
+    ]
+  },
+  {
+    "english": "Would you like to watch a movie?",
+    "answers": [
+      {
+        "segments": ["映画[えいが]", "を", "見[み]ませんか"]
+      },
+      {
+        "segments": [
+          "一緒[いっしょ]",
+          "に",
+          "映画[えいが]",
+          "を",
+          "見[み]ませんか"
+        ],
+        "notes": "With 一緒に"
+      }
+    ]
+  },
+  {
+    "english": "Would you like to drink coffee at the cafe?",
+    "answers": [
+      {
+        "segments": ["カフェ", "で", "コーヒー", "を", "飲[の]みませんか"],
+        "notes": "Location first"
+      },
+      {
+        "segments": ["コーヒー", "を", "カフェ", "で", "飲[の]みませんか"],
+        "notes": "Object first"
+      },
+      {
+        "segments": [
+          "一緒[いっしょ]",
+          "に",
+          "カフェ",
+          "で",
+          "コーヒー",
+          "を",
+          "飲[の]みませんか"
+        ],
+        "notes": "With 一緒に, location first"
+      },
+      {
+        "segments": [
+          "一緒[いっしょ]",
+          "に",
+          "コーヒー",
+          "を",
+          "カフェ",
+          "で",
+          "飲[の]みませんか"
+        ],
+        "notes": "With 一緒に, object first"
+      }
+    ]
+  },
+  {
+    "english": "Shall we talk with friends?",
+    "answers": [
+      {
+        "segments": ["友[とも]だち", "と", "話[はな]しませんか"]
+      },
+      {
+        "segments": [
+          "一緒[いっしょ]",
+          "に",
+          "友[とも]だち",
+          "と",
+          "話[はな]しませんか"
+        ],
+        "notes": "With 一緒に"
+      }
+    ]
+  },
+  {
+    "english": "Would you like to read books?",
+    "answers": [
+      {
+        "segments": ["本[ほん]", "を", "読[よ]みませんか"]
+      },
+      {
+        "segments": [
+          "一緒[いっしょ]",
+          "に",
+          "本[ほん]",
+          "を",
+          "読[よ]みませんか"
+        ],
+        "notes": "With 一緒に"
+      }
+    ]
+  },
+  {
+    "english": "Shall we go to school together?",
+    "answers": [
+      {
+        "segments": ["学校[がっこう]", "に", "行[い]きませんか"]
+      },
+      {
+        "segments": ["学校[がっこう]", "へ", "行[い]きませんか"],
+        "notes": "Using へ"
+      },
+      {
+        "segments": [
+          "一緒[いっしょ]",
+          "に",
+          "学校[がっこう]",
+          "に",
+          "行[い]きませんか"
+        ],
+        "notes": "With 一緒に using に"
+      },
+      {
+        "segments": [
+          "一緒[いっしょ]",
+          "に",
+          "学校[がっこう]",
+          "へ",
+          "行[い]きませんか"
+        ],
+        "notes": "With 一緒に using へ"
+      }
+    ]
+  },
+  {
+    "english": "Would you like to listen to music?",
+    "answers": [
+      {
+        "segments": ["音楽[おんがく]", "を", "聞[き]きませんか"]
+      },
+      {
+        "segments": [
+          "一緒[いっしょ]",
+          "に",
+          "音楽[おんがく]",
+          "を",
+          "聞[き]きませんか"
+        ],
+        "notes": "With 一緒に"
+      }
+    ]
+  },
+  {
+    "english": "Shall we eat lunch together?",
+    "answers": [
+      {
+        "segments": ["昼[ひる]ご飯[はん]", "を", "食[た]べませんか"]
+      },
+      {
+        "segments": [
+          "一緒[いっしょ]",
+          "に",
+          "昼[ひる]ご飯[はん]",
+          "を",
+          "食[た]べませんか"
+        ],
+        "notes": "With 一緒に"
+      }
+    ]
+  },
+  {
+    "english": "Would you like to watch TV at my house?",
+    "answers": [
+      {
+        "segments": ["うち", "で", "テレビ", "を", "見[み]ませんか"],
+        "notes": "Location first"
+      },
+      {
+        "segments": ["テレビ", "を", "うち", "で", "見[み]ませんか"],
+        "notes": "Object first"
+      },
+      {
+        "segments": [
+          "一緒[いっしょ]",
+          "に",
+          "うち",
+          "で",
+          "テレビ",
+          "を",
+          "見[み]ませんか"
+        ],
+        "notes": "With 一緒に, location first"
+      },
+      {
+        "segments": [
+          "一緒[いっしょ]",
+          "に",
+          "テレビ",
+          "を",
+          "うち",
+          "で",
+          "見[み]ませんか"
+        ],
+        "notes": "With 一緒に, object first"
+      }
+    ]
+  },
+  {
+    "english": "Shall we study Japanese together?",
+    "answers": [
+      {
+        "segments": ["日本語[にほんご]", "を", "勉強[べんきょう]", "しませんか"]
+      },
+      {
+        "segments": [
+          "一緒[いっしょ]",
+          "に",
+          "日本語[にほんご]",
+          "を",
+          "勉強[べんきょう]",
+          "しませんか"
+        ],
+        "notes": "With 一緒に"
+      }
+    ]
+  }
+]

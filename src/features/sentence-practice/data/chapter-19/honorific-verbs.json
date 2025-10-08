@@ -1,0 +1,658 @@
+[
+  {
+    "english": "The professor is (graciously) reading a book at the library.",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "図書館[としょかん]",
+          "で",
+          "本[ほん]",
+          "を",
+          "お 読[よ]みになっています"
+        ],
+        "notes": "Uses お[verb stem]になる construction."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "図書館[としょかん]",
+          "で",
+          "本[ほん]",
+          "を",
+          "ご 覧[らん]になっています"
+        ],
+        "notes": "Uses ご覧になる for 'reading' in an honorific context."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "図書館[としょかん]",
+          "で",
+          "本[ほん]",
+          "を",
+          "読[よ]んでいらっしゃいます"
+        ],
+        "notes": "Uses ～ていらっしゃいます construction."
+      }
+    ]
+  },
+  {
+    "english": "Where will the professor graciously stay?",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "どちら",
+          "に",
+          "お 泊[と]まりになります",
+          "か"
+        ],
+        "notes": "Uses お[verb stem]になる construction."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "どちら",
+          "に",
+          "泊[と]まっていらっしゃいます",
+          "か"
+        ],
+        "notes": "Uses ～ていらっしゃいます construction."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "どちら",
+          "に",
+          "お 泊[と]まり",
+          "です",
+          "か"
+        ],
+        "notes": "Uses お泊まり as a noun with です."
+      }
+    ]
+  },
+  {
+    "english": "The department manager (graciously) welcomed the new employee.",
+    "answers": [
+      {
+        "segments": [
+          "部長[ぶちょう]",
+          "は",
+          "新[あたら]しい",
+          "社員[しゃいん]",
+          "を",
+          "迎[むか]えていらっしゃいました"
+        ],
+        "notes": "Uses ～ていらっしゃいました construction."
+      },
+      {
+        "segments": [
+          "部長[ぶちょう]",
+          "は",
+          "新[あたら]しい",
+          "社員[しゃいん]",
+          "を",
+          "お 迎[むか]えくださいました"
+        ],
+        "notes": "Uses お[verb stem]くださいました construction."
+      }
+    ]
+  },
+  {
+    "english": "What does the professor (graciously) intend to say?",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "何[なに]",
+          "を",
+          "おっしゃる",
+          "つもり",
+          "です",
+          "か"
+        ],
+        "notes": "Uses おっしゃる (honorific for 言う)."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "何[なん]",
+          "と",
+          "おっしゃいます",
+          "か"
+        ],
+        "notes": "Uses おっしゃいます (present tense of おっしゃる)."
+      }
+    ]
+  },
+  {
+    "english": "The company president was busy, but she (graciously) gave us advice.",
+    "answers": [
+      {
+        "segments": [
+          "社長[しゃちょう]",
+          "は",
+          {
+            "word": "お 忙[いそが]しい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "past",
+            "politeOnly": true
+          },
+          "が",
+          "私[わたし]たち",
+          "に",
+          "アドバイス",
+          "を",
+          "くださいました"
+        ],
+        "notes": "Uses くださいました to emphasize graciousness."
+      },
+      {
+        "segments": [
+          "社長[しゃちょう]",
+          "は",
+          {
+            "word": "お 忙[いそが]しい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "past",
+            "politeOnly": true
+          },
+          "が",
+          "アドバイス",
+          "を",
+          "して",
+          "くださいました"
+        ],
+        "notes": "Uses してくださいました for 'giving advice.'"
+      }
+    ]
+  },
+  {
+    "english": "Mr. Yamamoto's father (graciously) reads the newspaper every morning.",
+    "answers": [
+      {
+        "segments": [
+          "山本[やまもと]さん",
+          "の",
+          "お 父[とう]さん",
+          "は",
+          "毎朝[まいあさ]",
+          "新聞[しんぶん]",
+          "を",
+          "ご 覧[らん]になります"
+        ],
+        "notes": "Uses ご覧になります for 'reading' in an honorific way."
+      },
+      {
+        "segments": [
+          "山本[やまもと]さん",
+          "の",
+          "お 父[とう]様[さま]",
+          "は",
+          "毎朝[まいあさ]",
+          "新聞[しんぶん]",
+          "を",
+          "ご 覧[らん]になります"
+        ],
+        "notes": "Uses お父様 instead of お父さん for added formality."
+      }
+    ]
+  },
+  {
+    "english": "Where did the professor (graciously) come from?",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "どちら",
+          "から",
+          "いらっしゃいました",
+          "か"
+        ],
+        "notes": "Uses いらっしゃいました (honorific for 来る/行く)."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "どちら",
+          "から",
+          "お 越[こ]しになりました",
+          "か"
+        ],
+        "notes": "Uses お越しになる (formal honorific for 来る)."
+      }
+    ]
+  },
+  {
+    "english": "The department manager (graciously) listened to our presentation.",
+    "answers": [
+      {
+        "segments": [
+          "部長[ぶちょう]",
+          "は",
+          "私[わたし]たち",
+          "の",
+          "発表[はっぴょう]",
+          "を",
+          "お 聞[き]きくださいました"
+        ],
+        "notes": "Uses お[verb stem]くださいました construction."
+      },
+      {
+        "segments": [
+          "部長[ぶちょう]",
+          "は",
+          "私[わたし]たち",
+          "の",
+          "発表[はっぴょう]",
+          "を",
+          "聞[き]いてくださいました"
+        ],
+        "notes": "Uses してくださいました for 'listening.'"
+      }
+    ]
+  },
+  {
+    "english": "The professor (graciously) gave me this book.",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "が",
+          "この",
+          "本[ほん]",
+          "を",
+          "くださいました"
+        ],
+        "notes": "Uses くださいました to describe the act of giving."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "が",
+          "この",
+          "本[ほん]",
+          "を",
+          "お 渡[わた]しくださいました"
+        ],
+        "notes": "Uses お[verb stem]くださいました construction."
+      }
+    ]
+  },
+  {
+    "english": "The professor (graciously) talked about next month's trip.",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "来月[らいげつ]",
+          "の",
+          "旅行[りょこう]",
+          "について",
+          "お 話[はな]しになりました"
+        ],
+        "notes": "Uses お[verb stem]になる construction."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "来月[らいげつ]",
+          "の",
+          "旅行[りょこう]",
+          "について",
+          "おっしゃいました"
+        ],
+        "notes": "Uses おっしゃいました (honorific for 言う)."
+      }
+    ]
+  },
+  {
+    "english": "Will you watch this movie?",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "映画[えいが]",
+          "を",
+          "ご 覧[らん]になります",
+          "か"
+        ],
+        "notes": "Uses ご覧になる to ask about watching in an honorific way."
+      }
+    ]
+  },
+  {
+    "english": "Right now, the company president is on the phone.",
+    "answers": [
+      {
+        "segments": [
+          "今[いま]",
+          "社長[しゃちょう]",
+          "は",
+          "電話[でんわ]",
+          "で",
+          "お 話[はな]しになっています"
+        ],
+        "notes": "Uses お[verb stem]になる construction."
+      },
+      {
+        "segments": [
+          "今[いま]",
+          "社長[しゃちょう]",
+          "は",
+          "電話[でんわ]",
+          "で",
+          "話[はな]していらっしゃいます"
+        ],
+        "notes": "Uses ～ていらっしゃいます construction."
+      },
+      {
+        "segments": [
+          "今[いま]",
+          "社長[しゃちょう]",
+          "は",
+          "電話[でんわ]",
+          "に",
+          "出[で]ていらっしゃいます"
+        ],
+        "notes": "Uses ～ていらっしゃいます with 出る to describe answering the phone."
+      },
+      {
+        "segments": [
+          "ただいま",
+          "社長[しゃちょう]",
+          "は",
+          "電話[でんわ]",
+          "で",
+          "お 話[はな]しになっています"
+        ],
+        "notes": "Replaces 今 with ただいま for a more formal tone."
+      },
+      {
+        "segments": [
+          "ただいま",
+          "社長[しゃちょう]",
+          "は",
+          "電話[でんわ]",
+          "で",
+          "話[はな]していらっしゃいます"
+        ],
+        "notes": "Replaces 今 with ただいま and uses ～ていらっしゃいます."
+      },
+      {
+        "segments": [
+          "ただいま",
+          "社長[しゃちょう]",
+          "は",
+          "電話[でんわ]",
+          "に",
+          "出[で]ていらっしゃいます"
+        ],
+        "notes": "Replaces 今 with ただいま and uses 出る with ～ていらっしゃいます."
+      }
+    ]
+  },
+  {
+    "english": "The professor (graciously) watched this movie.",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "この",
+          "映画[えいが]",
+          "を",
+          "ご 覧[らん]になりました"
+        ],
+        "notes": "Uses ご覧になる to describe watching in an honorific way."
+      }
+    ]
+  },
+  {
+    "english": "The professor (graciously) eats at this restaurant.",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "この",
+          "レストラン",
+          "で",
+          "お 食事[しょくじ]になります"
+        ],
+        "notes": "Uses お[verb stem]になる construction."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "この",
+          "レストラン",
+          "で",
+          "召[め]し上[あ]がります"
+        ],
+        "notes": "Uses 召し上がる (honorific for 食べる)."
+      }
+    ]
+  },
+  {
+    "english": "The professor (graciously) answered our questions.",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "私[わたし]たち",
+          "の",
+          "質問[しつもん]",
+          "に",
+          "お 答[こた]えくださいました"
+        ],
+        "notes": "Uses お[verb stem]くださいました construction."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "私[わたし]たち",
+          "の",
+          "質問[しつもん]",
+          "に",
+          "答[こた]えてくださいました"
+        ],
+        "notes": "Uses してくださいました for 'answering.'"
+      }
+    ]
+  },
+  {
+    "english": "Have you ever read that book before?",
+    "answers": [
+      {
+        "segments": [
+          "その",
+          "本[ほん]",
+          "を",
+          "お 読[よ]みになった",
+          "こと",
+          "があります",
+          "か"
+        ],
+        "notes": "Uses お[verb stem]になる construction."
+      },
+      {
+        "segments": [
+          "その",
+          "本[ほん]",
+          "を",
+          "読[よ]んでいらっしゃった",
+          "こと",
+          "があります",
+          "か"
+        ],
+        "notes": "Uses ～ていらっしゃった construction for past action."
+      },
+      {
+        "segments": [
+          "その",
+          "本[ほん]",
+          "を",
+          "ご 覧[らん]になった",
+          "こと",
+          "があります",
+          "か"
+        ],
+        "notes": "Uses ご覧になる to describe 'reading' in an honorific way."
+      }
+    ]
+  },
+  {
+    "english": "The professor is graciously writing a paper in the lab right now.",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "今[いま]",
+          "研究室[けんきゅうしつ]",
+          "で",
+          "論文[ろんぶん]",
+          "を",
+          "書[か]きになっています"
+        ],
+        "notes": "Uses お[verb stem]になる construction."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "今[いま]",
+          "研究室[けんきゅうしつ]",
+          "で",
+          "論文[ろんぶん]",
+          "を",
+          "書[か]いておいでです"
+        ],
+        "notes": "Uses ～ておいでです construction, which is a polite alternative to ～ていらっしゃいます."
+      }
+    ]
+  },
+  {
+    "english": "The professor is (graciously) thinking about the new project.",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "新[あたら]しい",
+          "プロジェクト",
+          "について",
+          "お 考[かんが]えになっています"
+        ],
+        "notes": "Uses お[verb stem]になる construction."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "新[あたら]しい",
+          "プロジェクト",
+          "について",
+          "考[かんが]えていらっしゃいます"
+        ],
+        "notes": "Uses ～ていらっしゃいます construction."
+      }
+    ]
+  },
+  {
+    "english": "The professor (graciously) stopped by the office.",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "事務所[じむしょ]",
+          "に",
+          "寄[よ]っていらっしゃいました"
+        ],
+        "notes": "Uses ～ていらっしゃいました construction for a past action."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "事務所[じむしょ]",
+          "に",
+          "お 寄[よ]りになりました"
+        ],
+        "notes": "Uses お[verb stem]になる construction."
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "オフィス",
+          "に",
+          "寄[よ]っていらっしゃいました"
+        ],
+        "notes": "Uses ～ていらっしゃいました with 'オフィス' instead of '事務所.'"
+      },
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "オフィス",
+          "に",
+          "お 寄[よ]りになりました"
+        ],
+        "notes": "Uses お[verb stem]になる construction with 'オフィス' instead of '事務所.'"
+      }
+    ]
+  },
+  {
+    "english": "The professor (graciously) drinks tea every morning.",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "毎朝[まいあさ]",
+          "お 茶[ちゃ]",
+          "を",
+          "召[め]し上[あ]がります"
+        ],
+        "notes": "Uses 召し上がる (honorific for 飲む)."
+      }
+    ]
+  },
+  {
+    "english": "The professor (graciously) sleeps early every night.",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          "毎晩[まいばん]",
+          "早[はや]く",
+          "お 休[やす]みになります"
+        ],
+        "notes": "Uses お[verb stem]になる construction."
+      }
+    ]
+  }
+]

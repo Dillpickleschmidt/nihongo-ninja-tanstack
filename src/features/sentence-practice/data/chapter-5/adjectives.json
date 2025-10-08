@@ -1,0 +1,844 @@
+[
+  {
+    "english": "The movie is boring.",
+    "answers": [
+      {
+        "segments": [
+          {
+            "word": "映画[えいが]",
+            "blank": true
+          },
+          "は",
+          {
+            "word": {
+              "word": "つまらない",
+              "pos": "i-adjective",
+              "polarity": "positive",
+              "tense": "non-past",
+              "politeOnly": true
+            },
+            "blank": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The trip was not fun.",
+    "answers": [
+      {
+        "segments": [
+          "旅行[りょこう]",
+          "は",
+          {
+            "word": "楽[たの]しい",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The teacher is not scary.",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          {
+            "word": "怖[こわ]い",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This room is clean.",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "部屋[へや]",
+          "は",
+          {
+            "word": "きれい",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      },
+      {
+        "segments": [
+          "部屋[へや]",
+          "は",
+          {
+            "word": "きれい",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This watch is expensive.",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "時計[とけい]",
+          "は",
+          {
+            "word": "高[たか]い",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      },
+      {
+        "segments": [
+          "時計[とけい]",
+          "は",
+          {
+            "word": "高[たか]い",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The homework was difficult.",
+    "answers": [
+      {
+        "segments": [
+          "宿題[しゅくだい]",
+          "は",
+          {
+            "word": "難[むずか]しい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The fruit is not sweet.",
+    "answers": [
+      {
+        "segments": [
+          "果物[くだもの]",
+          "は",
+          {
+            "word": "甘[あま]い",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The sea is beautiful.",
+    "answers": [
+      {
+        "segments": [
+          "海[うみ]",
+          "は",
+          {
+            "word": "きれい",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The weather was not cold.",
+    "answers": [
+      {
+        "segments": [
+          {
+            "word": "寒[さむ]い",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This is a quiet library.",
+    "answers": [
+      {
+        "segments": [
+          "これは",
+          {
+            "word": "静[しず]か",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          },
+          "な",
+          "図書館[としょかん]"
+        ]
+      },
+      {
+        "segments": [
+          {
+            "word": "静[しず]か",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          },
+          "な",
+          "図書館[としょかん]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The book is interesting.",
+    "answers": [
+      {
+        "segments": [
+          "本[ほん]",
+          "は",
+          {
+            "word": "おもしろい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      },
+      {
+        "segments": [
+          "その",
+          "本[ほん]",
+          "は",
+          {
+            "word": "おもしろい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "It was a not-so-clean restaurant.",
+    "answers": [
+      {
+        "segments": [
+          "あまり",
+          {
+            "word": "きれい",
+            "pos": "na-adjective",
+            "polarity": "negative",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "レストラン",
+          "でした"
+        ]
+      },
+      {
+        "segments": [
+          {
+            "word": "きれい",
+            "pos": "na-adjective",
+            "polarity": "negative",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "レストラン",
+          "でした"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This trip is long.",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "旅行[りょこう]",
+          "は",
+          {
+            "word": "長[なが]い",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      },
+      {
+        "segments": [
+          "旅行[りょこう]",
+          "は",
+          {
+            "word": "長[なが]い",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The teacher is compassionate.",
+    "answers": [
+      {
+        "segments": [
+          "先生[せんせい]",
+          "は",
+          {
+            "word": "優[やさ]しい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      },
+      {
+        "segments": [
+          "その",
+          "先生[せんせい]",
+          "は",
+          {
+            "word": "優[やさ]しい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This room is small.",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "部屋[へや]",
+          "は",
+          {
+            "word": "小[ちい]さい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      },
+      {
+        "segments": [
+          "部屋[へや]",
+          "は",
+          {
+            "word": "小[ちい]さい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The weather today is good.",
+    "answers": [
+      {
+        "segments": [
+          "今日[きょう]",
+          "の",
+          "天気[てんき]",
+          "は",
+          {
+            "word": "良[よ]い",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The dog is cute.",
+    "answers": [
+      {
+        "segments": [
+          "犬[いぬ]",
+          "は",
+          {
+            "word": "可愛[かわい]い",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "That was a quiet room.",
+    "answers": [
+      {
+        "segments": [
+          {
+            "word": "静[しず]か",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "な",
+          "部屋[へや]",
+          "でした"
+        ]
+      },
+      {
+        "segments": [
+          "あれ",
+          "は",
+          {
+            "word": "静[しず]か",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "な",
+          "部屋[へや]",
+          "でした"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The fruit is sweet.",
+    "answers": [
+      {
+        "segments": [
+          "果物[くだもの]",
+          "は",
+          {
+            "word": "甘[あま]い",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This is a tall building.",
+    "hint": "building -> 建物 (たてもの)",
+    "answers": [
+      {
+        "segments": [
+          "これ",
+          "は",
+          {
+            "word": "高[たか]い",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "建物[たてもの]",
+          "です"
+        ]
+      },
+      {
+        "segments": [
+          {
+            "word": "高[たか]い",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "建物[たてもの]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This is a difficult test.",
+    "answers": [
+      {
+        "segments": [
+          "これ",
+          "は",
+          {
+            "word": "難[むずか]しい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "テスト",
+          "です"
+        ]
+      },
+      {
+        "segments": [
+          {
+            "word": "難[むずか]しい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "テスト",
+          "です"
+        ]
+      },
+      {
+        "segments": [
+          "これ",
+          "は",
+          {
+            "word": "難[むずか]しい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "試験[しけん]",
+          "です"
+        ]
+      },
+      {
+        "segments": [
+          {
+            "word": "難[むずか]しい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "試験[しけん]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This cat is cute.",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "猫[ねこ]",
+          "は",
+          {
+            "word": "可愛[かわい]い",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      },
+      {
+        "segments": [
+          "猫[ねこ]",
+          "は",
+          {
+            "word": "可愛[かわい]い",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This trip is not fun.",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "旅行[りょこう]",
+          "は",
+          {
+            "word": "楽[たの]しい",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      },
+      {
+        "segments": [
+          "旅行[りょこう]",
+          "は",
+          {
+            "word": "楽[たの]しい",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "The homework is difficult.",
+    "answers": [
+      {
+        "segments": [
+          "宿題[しゅくだい]",
+          "は",
+          {
+            "word": "難[むずか]しい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This is a beautiful flower.",
+    "answers": [
+      {
+        "segments": [
+          "これは",
+          {
+            "word": "きれい",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "な",
+          "花[はな]",
+          "です"
+        ]
+      },
+      {
+        "segments": [
+          {
+            "word": "きれい",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "な",
+          "花[はな]",
+          "です"
+        ]
+      },
+      {
+        "segments": [
+          "これは",
+          {
+            "word": "美[うつく]しい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "花[はな]",
+          "です"
+        ]
+      },
+      {
+        "segments": [
+          {
+            "word": "美[うつく]しい",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "花[はな]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "That test was not difficult.",
+    "answers": [
+      {
+        "segments": [
+          "その",
+          "テスト",
+          "は",
+          {
+            "word": "難[むずか]しい",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "past",
+            "politeOnly": true
+          }
+        ]
+      },
+      {
+        "segments": [
+          "テスト",
+          "は",
+          {
+            "word": "難[むずか]しい",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "past",
+            "politeOnly": true
+          }
+        ]
+      },
+      {
+        "segments": [
+          "その",
+          "試験[しけん]",
+          "は",
+          {
+            "word": "難[むずか]しい",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "past",
+            "politeOnly": true
+          }
+        ]
+      },
+      {
+        "segments": [
+          "試験[しけん]",
+          "は",
+          {
+            "word": "難[むずか]しい",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This is a quiet park.",
+    "answers": [
+      {
+        "segments": [
+          "ここ",
+          "は",
+          {
+            "word": "静[しず]か",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "な",
+          "公園[こうえん]",
+          "です"
+        ]
+      },
+      {
+        "segments": [
+          {
+            "word": "静[しず]か",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "shortOnly": true
+          },
+          "な",
+          "公園[こうえん]",
+          "です"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "This movie is not boring.",
+    "answers": [
+      {
+        "segments": [
+          "この",
+          "映画[えいが]",
+          "は",
+          {
+            "word": "つまらない",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      },
+      {
+        "segments": [
+          "映画[えいが]",
+          "は",
+          {
+            "word": "つまらない",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      }
+    ]
+  }
+]

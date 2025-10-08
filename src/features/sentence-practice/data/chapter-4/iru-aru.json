@@ -1,0 +1,236 @@
+[
+  {
+    "english": "There is a book.",
+    "answers": [
+      {
+        "segments": ["本[ほん]", "が", "あります"]
+      }
+    ]
+  },
+  {
+    "english": "There is a table.",
+    "answers": [
+      {
+        "segments": ["テーブル", "が", "あります"]
+      }
+    ],
+    "hint": "table -> テーブル"
+  },
+  {
+    "english": "There is a teacher.",
+    "answers": [
+      {
+        "segments": ["先生[せんせい]", "が", "います"]
+      }
+    ]
+  },
+  {
+    "english": "There is a dog.",
+    "answers": [
+      {
+        "segments": ["犬[いぬ]", "が", "います"]
+      }
+    ]
+  },
+  {
+    "english": "Tanaka's bag is here.",
+    "answers": [
+      {
+        "segments": ["田中[たなか]", "さん", "の", "かばん", "が", "あります"]
+      },
+      {
+        "segments": [
+          "田中[たなか]",
+          "さん",
+          "の",
+          "かばん",
+          "は",
+          "ここ",
+          "に",
+          "あります"
+        ],
+        "notes": "Specifically \"here\" as opposed to \"there\"."
+      },
+      {
+        "segments": [
+          "ここ",
+          "に",
+          "田中[たなか]",
+          "さん",
+          "の",
+          "かばん",
+          "が",
+          "あります"
+        ],
+        "notes": "Specifically \"here\" as opposed to \"there\"."
+      }
+    ]
+  },
+  {
+    "english": "Suzuki's pen is here.",
+    "answers": [
+      {
+        "segments": ["鈴木[すずき]", "さん", "の", "ペン", "が", "あります"]
+      },
+      {
+        "segments": [
+          "鈴木[すずき]",
+          "さん",
+          "の",
+          "ペン",
+          "は",
+          "ここ",
+          "に",
+          "あります"
+        ],
+        "notes": "Specifically \"here\" as opposed to \"there\"."
+      },
+      {
+        "segments": [
+          "ここ",
+          "に",
+          "鈴木[すずき]",
+          "さん",
+          "の",
+          "ペン",
+          "が",
+          "あります"
+        ],
+        "notes": "Specifically \"here\" as opposed to \"there\"."
+      }
+    ]
+  },
+  {
+    "english": "Is Yamada here?",
+    "answers": [
+      {
+        "segments": ["山田[やまだ]", "さん", "が", "います", "か"]
+      },
+      {
+        "segments": [
+          "山田[やまだ]",
+          "さん",
+          "は",
+          "ここ",
+          "に",
+          "います",
+          "か"
+        ],
+        "notes": "Specifically asking about \"here\" as opposed to \"there\"."
+      },
+      {
+        "segments": [
+          "ここ",
+          "に",
+          "山田[やまだ]",
+          "さん",
+          "が",
+          "います",
+          "か"
+        ],
+        "notes": "Specifically asking about \"here\" as opposed to \"there\"."
+      }
+    ]
+  },
+  {
+    "english": "Nakamura's notebook is here.",
+    "answers": [
+      {
+        "segments": ["中村[なかむら]", "さん", "の", "ノート", "が", "あります"]
+      },
+      {
+        "segments": [
+          "ここ",
+          "に",
+          "中村[なかむら]",
+          "さん",
+          "の",
+          "ノート",
+          "が",
+          "あります"
+        ],
+        "notes": "Specifically \"here\" as opposed to \"there\"."
+      },
+      {
+        "segments": [
+          "中村[なかむら]",
+          "さん",
+          "の",
+          "ノート",
+          "は",
+          "ここ",
+          "に",
+          "あります"
+        ],
+        "notes": "Specifically \"here\" as opposed to \"there\"."
+      }
+    ]
+  },
+  {
+    "english": "There are flowers in the park.",
+    "answers": [
+      {
+        "segments": ["公園[こうえん]", "に", "花[はな]", "が", "あります"]
+      }
+    ]
+  },
+  {
+    "english": "There is a cat in the park.",
+    "answers": [
+      {
+        "segments": ["公園[こうえん]", "に", "猫[ねこ]", "が", "います"]
+      }
+    ]
+  },
+  {
+    "english": "Do you have time today?",
+    "answers": [
+      {
+        "segments": [
+          "今日[きょう]",
+          "は",
+          "時間[じかん]",
+          "が",
+          "あります",
+          "か"
+        ]
+      }
+    ]
+  },
+  {
+    "english": "There is a store nearby.",
+    "answers": [
+      {
+        "segments": ["近[ちか]く", "に", "店[みせ]", "が", "あります"]
+      },
+      {
+        "segments": ["店[みせ]", "が", "近[ちか]く", "に", "あります"],
+        "notes": "Store-focused variation"
+      }
+    ]
+  },
+  {
+    "english": "That person is there.",
+    "answers": [
+      {
+        "segments": ["あの", "人[ひと]", "が", "います"]
+      },
+      {
+        "segments": ["あそこ", "に", "あの", "人[ひと]", "が", "います"],
+        "notes": "Specifically \"over there\" as opposed to somewhere else."
+      },
+      {
+        "segments": ["あの", "人[ひと]", "は", "あそこ", "に", "います"],
+        "notes": "Specifically \"over there\" as opposed to somewhere else."
+      }
+    ]
+  },
+  {
+    "english": "There are people in the park.",
+    "answers": [
+      {
+        "segments": ["公園[こうえん]", "に", "人[ひと]", "が", "います"]
+      }
+    ]
+  }
+]

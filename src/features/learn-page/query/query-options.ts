@@ -7,11 +7,7 @@ import { getVocabHierarchy } from "@/features/resolvers/kanji"
 import { getUserProgress } from "@/features/supabase/db/fsrs"
 import { getUserModuleProgress } from "@/features/supabase/db/module-progress"
 import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
-import {
-  getVocabularyForModule,
-  hasKanji,
-  getVocabSets,
-} from "@/data/utils/vocab"
+import { getVocabularyForModule, getVocabSets } from "@/data/utils/vocab"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import type { VocabularyItem, TextbookIDEnum } from "@/data/types"
 import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
@@ -229,18 +225,20 @@ export const moduleProgressQueryOptions = (
         }
       })
 
-      // Build Set of vocab items containing kanji
-      const kanjiVocabSet = new Set<string>()
-      allVocabKeys.forEach((key) => {
-        if (hasKanji(key)) {
-          kanjiVocabSet.add(key)
-        }
-      })
-
       // Calculate progress for each module
       const progressMap: Record<string, ModuleProgress> = {}
 
       for (const [moduleId, vocabKeys] of moduleVocabMap.entries()) {
+        // Get allowed practice modes for this module
+        const module = dynamic_modules[moduleId]
+        const allowedModes = module?.allowed_practice_modes || [
+          "meanings",
+          "spellings",
+        ]
+
+        const meaningsAllowed = allowedModes.includes("meanings")
+        const spellingsAllowed = allowedModes.includes("spellings")
+
         let total = 0
         let completed = 0
         let meaningsTotal = 0
@@ -249,19 +247,19 @@ export const moduleProgressQueryOptions = (
         let spellingsCompleted = 0
 
         for (const key of vocabKeys) {
-          const hasKanjiChar = kanjiVocabSet.has(key)
-
-          // All vocab items need meanings
-          meaningsTotal++
-          const meaningCard = fsrsCardIndex.get(`${key}:meanings`)
-          if (meaningCard) {
-            meaningsCompleted++
-            completed++
+          // Check meanings if allowed
+          if (meaningsAllowed) {
+            meaningsTotal++
+            const meaningCard = fsrsCardIndex.get(`${key}:meanings`)
+            if (meaningCard) {
+              meaningsCompleted++
+              completed++
+            }
+            total++
           }
-          total++
 
-          if (hasKanjiChar) {
-            // Kanji words also need spellings
+          // Check spellings if allowed
+          if (spellingsAllowed) {
             spellingsTotal++
             const spellingCard = fsrsCardIndex.get(`${key}:spellings`)
             if (spellingCard) {

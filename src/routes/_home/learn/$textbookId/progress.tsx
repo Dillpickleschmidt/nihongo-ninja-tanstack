@@ -1,6 +1,5 @@
 // routes/_home/learn/$textbookId/progress.tsx
 import { createFileRoute } from "@tanstack/solid-router"
-import { Show } from "solid-js"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { UpcomingModulesList } from "@/features/learn-page/components/content/UpcomingModulesList"
 import { HeroDailyProgress } from "@/features/progress-page/components/HeroDailyProgress"
@@ -8,6 +7,7 @@ import { ProgressSummary } from "@/features/progress-page/components/ProgressSum
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import { Route as ParentRoute } from "@/routes/_home/learn/$textbookId"
+import { textbooks } from "@/data/textbooks"
 import {
   userDailyTimeQueryOptions,
   userSessionsQueryOptions,
@@ -111,6 +111,20 @@ export const Route = createFileRoute("/_home/learn/$textbookId/progress")({
     const dueCount = () => dueCountQuery.data || 0
     const dailyGoal = 30 // TODO: make this configurable
 
+    // Textbook and chapter data (from existing loader data)
+    const textbookId = () => loader()?.textbookId
+    const textbook = () => textbooks[textbookId()]
+
+    // Get chapter from first upcoming module
+    const chapter = () => {
+      const moduleId = upcomingFiltered()[0]?.id
+      if (!moduleId) return undefined
+
+      return textbook()?.chapters.find((ch) =>
+        ch.learning_path_items.includes(moduleId),
+      )
+    }
+
     return (
       <SSRMediaQuery showFrom="lg">
         <div class="h-[calc(100vh-141px)] overflow-hidden px-10 py-6">
@@ -138,9 +152,14 @@ export const Route = createFileRoute("/_home/learn/$textbookId/progress")({
 
             {/* RIGHT COLUMN */}
             <div class="bg-card/30 flex flex-col overflow-hidden rounded-xl shadow-inner backdrop-blur-md">
-              <h3 class="text-muted-foreground px-6 pt-5 text-sm font-semibold tracking-wide uppercase">
-                What's Next
-              </h3>
+              <div class="flex justify-between px-6 pt-5">
+                <h3 class="text-muted-foreground text-sm font-semibold tracking-wide uppercase">
+                  What's Next
+                </h3>
+                <h4 class="text-muted-foreground text-xs">
+                  {textbook()?.short_name}・{chapter()?.title}
+                </h4>
+              </div>
               <div class="flex-1 overflow-hidden">
                 <UpcomingModulesList
                   variant="lg"

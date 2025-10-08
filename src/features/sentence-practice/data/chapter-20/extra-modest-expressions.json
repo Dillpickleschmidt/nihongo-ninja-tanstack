@@ -1,0 +1,498 @@
+[
+  {
+    "english": "I will be in Tokyo next week, too.",
+    "answers": [
+      {
+        "segments": [
+          "来週[らいしゅう]",
+          "も",
+          "東京[とうきょう]",
+          "に",
+          "おります"
+        ],
+        "notes": "Uses おる as the extra-modest expression for いる."
+      }
+    ]
+  },
+  {
+    "english": "I will (modestly) go to the park where the company president (graciously) is.",
+    "answers": [
+      {
+        "segments": [
+          "社長[しゃちょう]",
+          "が",
+          "いらっしゃる",
+          "公園[こうえん]",
+          "に",
+          "参[まい]ります"
+        ],
+        "notes": "Uses 参ります as the extra-modest expression for 行く and いらっしゃる as the honorific expression for いる."
+      }
+    ]
+  },
+  {
+    "english": "I will go to Osaka by Shinkansen.",
+    "answers": [
+      {
+        "segments": [
+          "新幹線[しんかんせん]",
+          "で",
+          "大阪[おおさか]",
+          "に",
+          "参[まい]ります"
+        ],
+        "notes": "Uses 参る as the extra-modest expression for 行く."
+      },
+      {
+        "segments": [
+          "新幹線[しんかんせん]",
+          "で",
+          "大阪[おおさか]",
+          "へ",
+          "参[まい]ります"
+        ],
+        "notes": "Uses へ instead of に for the destination particle."
+      }
+    ]
+  },
+  {
+    "english": "This product is on the first floor.",
+    "hint": "商品 (しょうひん) -> product",
+    "answers": [
+      {
+        "segments": [
+          "こちら",
+          "の",
+          "商品[しょうひん]",
+          "は",
+          "一階[いっかい]",
+          "に",
+          "ございます"
+        ],
+        "notes": "Uses ございます as the extra-modest expression for ある."
+      },
+      {
+        "segments": [
+          "こちら",
+          "の",
+          "商品[しょうひん]",
+          "は",
+          "一階[いっかい]",
+          "でございます"
+        ],
+        "notes": "Uses でございます as the extra-modest replacement for です."
+      }
+    ]
+  },
+  {
+    "english": "I am writing a novel as a hobby.",
+    "answers": [
+      {
+        "segments": [
+          "趣味[しゅみ]",
+          "で",
+          "小説[しょうせつ]",
+          "を",
+          "書[か]いております"
+        ],
+        "notes": "Uses ～ておる as the extra-modest expression for ～ている."
+      },
+      {
+        "segments": [
+          "趣味[しゅみ]",
+          "で",
+          "小説[しょうせつ]",
+          "を",
+          "執筆[しっぴつ]",
+          "しております"
+        ],
+        "notes": "Uses 執筆 (formal word for 'writing') with ～ておる."
+      }
+    ]
+  },
+  {
+    "english": "I will continue this project next month, too.",
+    "answers": [
+      {
+        "segments": [
+          "来月[らいげつ]",
+          "も",
+          "この",
+          "プロジェクト",
+          "を",
+          "続[つづ]けております"
+        ],
+        "notes": "Uses ～ておる as the extra-modest expression for ～ている."
+      },
+      {
+        "segments": [
+          "来月[らいげつ]",
+          "も",
+          "この",
+          "プロジェクト",
+          "を",
+          "進[すす]めております"
+        ],
+        "notes": "Uses 進める (to advance) with ～ておる."
+      }
+    ]
+  },
+  {
+    "english": "I went to the travel agency the other day.",
+    "hint": "Use 先日 (せんじつ) instead of この間 for \"'the other day\" as it's more formal.",
+    "answers": [
+      {
+        "segments": [
+          "先日[せんじつ]",
+          "旅行会社[りょこうがいしゃ]",
+          "に",
+          "参[まい]りました"
+        ],
+        "notes": "Uses 参る as the extra-modest expression for 行く."
+      },
+      {
+        "segments": [
+          "先日[せんじつ]",
+          "旅行会社[りょこうがいしゃ]",
+          "へ",
+          "参[まい]りました"
+        ],
+        "notes": "Uses へ instead of に for the destination particle."
+      }
+    ]
+  },
+  {
+    "english": "These sneakers are on the third floor.",
+    "answers": [
+      {
+        "segments": [
+          "こちら",
+          "の",
+          "スニーカー",
+          "は",
+          "三階[さんがい]",
+          "に",
+          "ございます"
+        ],
+        "notes": "Uses ございます as the extra-modest expression for ある."
+      },
+      {
+        "segments": [
+          "こちら",
+          "の",
+          "スニーカー",
+          "は",
+          "三階[さんがい]",
+          "でございます"
+        ],
+        "notes": "Uses でございます as the extra-modest replacement for です."
+      }
+    ]
+  },
+  {
+    "english": "I will (modestly) go to the branch office tomorrow, where the manager (graciously) is.",
+    "answers": [
+      {
+        "segments": [
+          "私[わたし]",
+          "は",
+          "明日[あした]",
+          "部長[ぶちょう]",
+          "が",
+          "いらっしゃる",
+          "支店[してん]",
+          "に",
+          "参[まい]ります"
+        ],
+        "notes": "Uses 参ります as the extra-modest expression for 行く and いらっしゃる as the honorific expression for いる."
+      }
+    ]
+  },
+  {
+    "english": "I submitted my résumé last month.",
+    "hint": "提出する (ていしゅつする) is a formal verb for\"submit\" (for documents, reports, etc.).",
+    "answers": [
+      {
+        "segments": [
+          "先月[せんげつ]",
+          "履歴書[りれきしょ]",
+          "を",
+          "提出[ていしゅつ]",
+          "いたしました"
+        ],
+        "notes": "Uses いたす as the extra-modest expression for する."
+      },
+      {
+        "segments": [
+          "先月[せんげつ]",
+          "履歴書[りれきしょ]",
+          "を",
+          "お 出[だ]しいたしました"
+        ],
+        "notes": "Uses お出しいたす (extra-modest + humble in one)."
+      }
+    ]
+  },
+  {
+    "english": "I am painting as a hobby.",
+    "answers": [
+      {
+        "segments": [
+          "趣味[しゅみ]",
+          "で",
+          "絵[え]",
+          "を",
+          "描[か]いております"
+        ],
+        "notes": "Uses ～ておる as the extra-modest expression for ～ている."
+      },
+      {
+        "segments": [
+          "趣味[しゅみ]",
+          "で",
+          "絵[え]",
+          "を",
+          "制作[せいさく]",
+          "しております"
+        ],
+        "notes": "Uses 制作 (formal word for 'creating') with ～ておる."
+      }
+    ]
+  },
+  {
+    "english": "These headphones are very popular.",
+    "answers": [
+      {
+        "segments": [
+          "こちら",
+          "の",
+          "ヘッドホン",
+          "は",
+          "とても",
+          "人気[にんき]",
+          "が",
+          "ございます"
+        ],
+        "notes": "Uses ございます as the extra-modest expression for ある. \"とても\" to keep things simple."
+      },
+      {
+        "segments": [
+          "こちら",
+          "の",
+          "ヘッドホン",
+          "は",
+          "とても",
+          "人気[にんき]",
+          "でございます"
+        ],
+        "notes": "Uses でございます as the extra-modest replacement for です. \"とても\" to keep things simple."
+      },
+      {
+        "segments": [
+          "こちら",
+          "の",
+          "ヘッドホン",
+          "は",
+          "非常[ひじょう]",
+          "に",
+          "人気[にんき]",
+          "でございます"
+        ],
+        "notes": "Uses でございます as the extra-modest replacement for です. '非常に' is a more formal and refined adverb meaning 'extremely,' appropriate for polite contexts."
+      },
+      {
+        "segments": [
+          "こちら",
+          "の",
+          "ヘッドホン",
+          "は",
+          "非常[ひじょう]",
+          "に",
+          "人気[にんき]",
+          "が",
+          "ございます"
+        ],
+        "notes": "Uses ございます as the extra-modest expression for ある. '非常に' is a formal adverb meaning 'extremely,' suitable for polite speech."
+      }
+    ]
+  },
+  {
+    "english": "I will go to Kyoto by Shinkansen next week, too.",
+    "answers": [
+      {
+        "segments": [
+          "来週[らいしゅう]",
+          "も",
+          "新幹線[しんかんせん]",
+          "で",
+          "京都[きょうと]",
+          "に",
+          "参[まい]ります"
+        ],
+        "notes": "Uses 参る as the extra-modest expression for 行く."
+      },
+      {
+        "segments": [
+          "来週[らいしゅう]",
+          "も",
+          "新幹線[しんかんせん]",
+          "で",
+          "京都[きょうと]",
+          "へ",
+          "参[まい]ります"
+        ],
+        "notes": "Uses へ instead of に for the destination particle."
+      }
+    ]
+  },
+  {
+    "english": "I went to the branch office the other day.",
+    "hint": "Use 先日 (せんじつ) instead of この間 for \"'the other day\" as it's more formal.",
+    "answers": [
+      {
+        "segments": [
+          "先日[せんじつ]",
+          "支店[してん]",
+          "に",
+          "参[まい]りました"
+        ],
+        "notes": "Uses 参る as the extra-modest expression for 行く."
+      },
+      {
+        "segments": [
+          "先日[せんじつ]",
+          "支店[してん]",
+          "へ",
+          "参[まい]りました"
+        ],
+        "notes": "Uses へ instead of に for the destination particle."
+      }
+    ]
+  },
+  {
+    "english": "This branch is scheduled to close next month.",
+    "hint": "Use 閉店する (へいてんする) for permanent closures, such as stores, branches, etc.",
+    "answers": [
+      {
+        "segments": [
+          "こちら",
+          "の",
+          "支店[してん]",
+          "は",
+          "来月[らいげつ]",
+          "閉店[へいてん]する",
+          "予定[よてい]",
+          "でございます"
+        ],
+        "notes": "Uses でございます as the extra-modest replacement for です."
+      },
+      {
+        "segments": [
+          "こちら",
+          "の",
+          "支店[してん]",
+          "は",
+          "来月[らいげつ]",
+          "で",
+          "閉店[へいてん]する",
+          "予定[よてい]",
+          "でございます"
+        ],
+        "notes": "Adds で before 閉店 for emphasis (で meaning by/at next month)."
+      }
+    ]
+  },
+  {
+    "english": "I have recently been taking photos as a hobby.",
+    "answers": [
+      {
+        "segments": [
+          "最近[さいきん]",
+          "趣味[しゅみ]",
+          "で",
+          "写真[しゃしん]",
+          "を",
+          "撮[と]っております"
+        ],
+        "notes": "Uses ～ておる as the extra-modest expression for ～ている."
+      },
+      {
+        "segments": [
+          "最近[さいきん]",
+          "趣味[しゅみ]",
+          "で",
+          "写真[しゃしん]",
+          "を",
+          "撮影[さつえい]",
+          "しております"
+        ],
+        "notes": "Uses 撮影 (formal word for 'taking photos') with ～ておる."
+      }
+    ]
+  },
+  {
+    "english": "I will do this work next week, too.",
+    "answers": [
+      {
+        "segments": [
+          "来週[らいしゅう]",
+          "も",
+          "この",
+          "仕事[しごと]",
+          "を",
+          "いたします"
+        ],
+        "notes": "Uses いたす as the extra-modest expression for する."
+      }
+    ]
+  },
+  {
+    "english": "This fan is very mysterious, isn't it?",
+    "answers": [
+      {
+        "segments": [
+          "こちら",
+          "の",
+          "扇子[せんす]",
+          "は",
+          "とても",
+          "不思議[ふしぎ]",
+          "でございます",
+          "ね"
+        ],
+        "notes": "Uses でございます as the extra-modest replacement for です."
+      },
+      {
+        "segments": [
+          "こちら",
+          "の",
+          "扇子[せんす]",
+          "は",
+          "非常[ひじょう]",
+          "に",
+          "不思議[ふしぎ]",
+          "でございます",
+          "ね"
+        ],
+        "notes": "Uses 非常に instead of とても for 'very.'"
+      }
+    ]
+  },
+  {
+    "english": "I will participate in this project next month, too.",
+    "answers": [
+      {
+        "segments": [
+          "来月[らいげつ]",
+          "も",
+          "この",
+          "プロジェクト",
+          "に",
+          "参加[さんか]",
+          "いたします"
+        ],
+        "notes": "Uses いたす as the extra-modest expression for する."
+      }
+    ]
+  }
+]
