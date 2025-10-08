@@ -1,5 +1,5 @@
 // ui/practice/PracticeContainer.tsx
-import { Show, createEffect } from "solid-js"
+import { Show, createEffect, createSignal } from "solid-js"
 import { PracticeProvider, usePracticeStore } from "../../store/PracticeContext"
 import PromptDisplay from "./PromptDisplay"
 import AnswerInput from "./AnswerInput"
@@ -8,18 +8,30 @@ import ResultDisplay from "./ResultDisplay"
 import DifficultySelector from "./DifficultySelector"
 import FillInBlankInput from "./FillInBlankInput"
 import { DebugPanel } from "../common/DebugPanel"
+import { EasyModeDebugPanel } from "../common/EasyModeDebugPanel"
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/custom/collapsible"
 
 interface PracticeContainerProps {
   path: string
-  showDebug?: boolean
 }
 
 function PracticeContent(props: PracticeContainerProps) {
   const { store, actions } = usePracticeStore()
+  const [isCollapsibleOpen, setIsCollapsibleOpen] = createSignal(false)
 
   createEffect(() => {
     if (props.path !== store.path) {
       actions.loadQuestions(props.path)
+    }
+  })
+
+  createEffect(() => {
+    if (store.effectiveDifficulty === "easy" && store.checkResult?.isCorrect) {
+      setIsCollapsibleOpen(true)
     }
   })
 
@@ -53,12 +65,34 @@ function PracticeContent(props: PracticeContainerProps) {
           />
           <Show when={store.showResult}>
             <ResultDisplay />
-          </Show>
 
-          <Show when={props.showDebug}>
-            <DebugPanel
-              question={store.questions[store.currentQuestionIndex]!}
-            />
+            <Collapsible
+              class="mt-8 flex flex-col items-center"
+              open={isCollapsibleOpen()}
+              onOpenChange={setIsCollapsibleOpen}
+            >
+              <CollapsibleTrigger class="w-fit rounded-full px-4 py-1.5 text-xs">
+                Show all possible
+              </CollapsibleTrigger>
+              <CollapsibleContent class="w-full">
+                <Show
+                  when={store.effectiveDifficulty === "easy"}
+                  fallback={
+                    <DebugPanel
+                      question={store.questions[store.currentQuestionIndex]!}
+                    />
+                  }
+                >
+                  <EasyModeDebugPanel
+                    question={store.questions[store.currentQuestionIndex]!}
+                    rawSegments={
+                      store.rawQuestions[store.currentQuestionIndex]!.answers[0]
+                        .segments
+                    }
+                  />
+                </Show>
+              </CollapsibleContent>
+            </Collapsible>
           </Show>
         </Show>
       </Show>

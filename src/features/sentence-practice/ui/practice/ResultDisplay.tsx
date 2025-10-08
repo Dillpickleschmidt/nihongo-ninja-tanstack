@@ -20,40 +20,42 @@ export default function ResultDisplay() {
             `}
           </style>
           {/* User's Answer Section */}
-          <div class="space-y-1">
-            <div class="font-bold">Your answer:</div>
-            <div class="flex w-full items-center">
-              <div
-                class={`border-card-foreground/70 w-full rounded border-2 p-2 text-xl ${
-                  checkResult.isCorrect
-                    ? "border-green-500/75 bg-green-500/15"
-                    : ""
-                }`}
-              >
-                <For each={checkResult.inputs}>
-                  {(input) => (
-                    <FuriganaText
-                      text={input.value}
-                      errors={input.errors}
-                      highlightClass="rounded-md border-2 border-black bg-red-400 dark:bg-red-500 text-black font-medium highlight"
-                    />
-                  )}
-                </For>
-              </div>
-              <Show
-                when={checkResult.isCorrect}
-                fallback={
-                  <div class="w-12 text-center text-4xl font-bold text-red-500">
-                    ×
-                  </div>
-                }
-              >
-                <div class="w-12 text-center text-3xl font-bold text-green-500">
-                  ✓
+          <Show when={store.effectiveDifficulty !== "easy"}>
+            <div class="space-y-1">
+              <div class="font-bold">Your answer:</div>
+              <div class="flex w-full items-center">
+                <div
+                  class={`border-card-foreground/70 w-full rounded border-2 p-2 text-xl ${
+                    checkResult.isCorrect
+                      ? "border-green-500/75 bg-green-500/15"
+                      : ""
+                  }`}
+                >
+                  <For each={checkResult.inputs}>
+                    {(input) => (
+                      <FuriganaText
+                        text={input.value}
+                        errors={input.errors}
+                        highlightClass="rounded-md border-2 border-black bg-red-400 dark:bg-red-500 text-black font-medium highlight"
+                      />
+                    )}
+                  </For>
                 </div>
-              </Show>
+                <Show
+                  when={checkResult.isCorrect}
+                  fallback={
+                    <div class="w-12 text-center text-4xl font-bold text-red-500">
+                      ×
+                    </div>
+                  }
+                >
+                  <div class="w-12 text-center text-3xl font-bold text-green-500">
+                    ✓
+                  </div>
+                </Show>
+              </div>
             </div>
-          </div>
+          </Show>
 
           {/* Correct Answer Section */}
           <Show when={!checkResult.isCorrect}>
@@ -78,7 +80,12 @@ export default function ResultDisplay() {
           </Show>
 
           {/* Alternative Answers Section */}
-          <Show when={checkResult.allMatches?.length > 1}>
+          <Show
+            when={
+              store.effectiveDifficulty !== "easy" &&
+              checkResult.allMatches?.length > 1
+            }
+          >
             <AlternativeAnswers
               allMatches={checkResult.allMatches}
               currentAnswerIndex={0}

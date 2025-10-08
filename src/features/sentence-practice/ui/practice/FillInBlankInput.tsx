@@ -1,5 +1,5 @@
 // ui/practice/FillInBlankInput.tsx
-import { For } from "solid-js"
+import { For, Show } from "solid-js"
 import { Button } from "@/components/ui/button"
 import type { ConjugatableSegment } from "../../core/conjugation/types"
 import { usePracticeStore } from "../../store/PracticeContext"
@@ -11,6 +11,7 @@ interface FillInBlankInputProps {
 }
 
 const textProcessor = new TextProcessor()
+const answerTextProcessor = new TextProcessor()
 
 export default function FillInBlankInput(props: FillInBlankInputProps) {
   const { store, actions } = usePracticeStore()
@@ -37,26 +38,40 @@ export default function FillInBlankInput(props: FillInBlankInputProps) {
           {(segment, index) => (
             <>
               {segment.isBlank ? (
-                <div class="inline-block">
-                  <PracticeInput
-                    value={store.inputs.blanks?.[index()] || ""}
-                    onInput={(value) => actions.updateInput(value, index())}
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter") {
-                        handleMainButton()
-                      }
-                    }}
-                    class="placeholder:text-muted-foreground/35 mx-1 w-32 text-center text-2xl"
-                    autofocus={index() === 0}
-                    placeholder="答え"
-                  />
-                </div>
+                isAnswerCorrect() ? (
+                  <span class="mx-1 text-green-600 dark:text-green-400">
+                    {answerTextProcessor.removeFurigana(
+                      store.questions[store.currentQuestionIndex]!.answers[0]
+                        .segments[index()],
+                    )}
+                  </span>
+                ) : (
+                  <div class="inline-block">
+                    <PracticeInput
+                      value={store.inputs.blanks?.[index()] || ""}
+                      onInput={(value) => actions.updateInput(value, index())}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          handleMainButton()
+                        }
+                      }}
+                      class="placeholder:text-muted-foreground/35 mx-1 w-32 text-center text-2xl"
+                      autofocus={index() === 0}
+                      placeholder="答え"
+                    />
+                  </div>
+                )
               ) : (
                 <span>{segment.text}</span>
               )}
             </>
           )}
         </For>
+        <Show when={isAnswerCorrect()}>
+          <span class="ml-3 inline-block text-3xl font-bold text-green-500">
+            ✓
+          </span>
+        </Show>
         <p class="text-muted-foreground pt-1 text-sm">*use caps for katakana</p>
       </div>
       <Button

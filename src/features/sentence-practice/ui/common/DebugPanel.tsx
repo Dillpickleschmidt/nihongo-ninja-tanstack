@@ -1,4 +1,4 @@
-import { For, Show, createMemo } from "solid-js"
+import { For, Show } from "solid-js"
 import type {
   PracticeQuestion,
   Answer,
@@ -44,7 +44,7 @@ type HierarchicalGroup = {
 }
 
 export function DebugPanel(props: DebugPanelProps) {
-  const hierarchicalAnswers = createMemo(() => {
+  const hierarchicalAnswers = () => {
     const groups = new Map<number, HierarchicalGroup>()
 
     props.question.answers.forEach((answer) => {
@@ -92,15 +92,27 @@ export function DebugPanel(props: DebugPanelProps) {
     return Array.from(groups.values()).sort(
       (a, b) => a.sourceAnswerIndex - b.sourceAnswerIndex,
     )
-  })
+  }
 
   const formatAnswer = (answer: Answer) => {
-    return answer.segments.map((seg) => textProcessor.removeFurigana(seg)).join("")
+    return answer.segments
+      .map((seg) => textProcessor.removeFurigana(seg))
+      .join("")
   }
 
   return (
-    <div class="border-border bg-card mt-8 rounded-lg border p-4">
-      <h3 class="text-muted-foreground mb-3 font-bold">Debug: Valid Answers</h3>
+    <div class="border-border bg-card mt-4 rounded-lg border p-4">
+      <div class="grid grid-cols-3">
+        <div />
+        <h3 class="text-muted-foreground mb-3 text-center font-bold">
+          All Possible Answers
+        </h3>
+        <p class="text-right text-xs text-neutral-500 italic">
+          We may be missing some.
+          <br />
+          Let us know on Discord!
+        </p>
+      </div>
       <div class="space-y-6 text-sm">
         <For each={hierarchicalAnswers()}>
           {(sourceGroup) => {
