@@ -7,7 +7,7 @@ export type Answer = {
   originalPoliteForm?: boolean
   sourceAnswerIndex?: number
   pronounType?: string
-  honorificType?: string
+  honorificType?: string // Compound key for display (e.g., "くん+先生")
 }
 
 export type PracticeQuestion = {

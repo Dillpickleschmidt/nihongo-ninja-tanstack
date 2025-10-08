@@ -51,10 +51,7 @@ export class VariationGenerator {
 
     question.answers.forEach((answer) => {
       // Detect if original answer has an honorific
-      const hasHonorific = this.honorificHandler.hasHonorific(answer.segments)
-      const honorificType = hasHonorific
-        ? answer.segments.find((seg) => seg === "さん") || undefined
-        : undefined
+      const honorificType = this.honorificHandler.findHonorific(answer.segments)
 
       // Add the original answer
       addUniqueVariation({
@@ -84,7 +81,7 @@ export class VariationGenerator {
         addUniqueVariation(baseVariation)
 
         // Generate honorific variations if applicable
-        if (this.honorificHandler.hasHonorific(baseVariation.segments)) {
+        if (this.honorificHandler.findHonorific(baseVariation.segments)) {
           this.honorificHandler
             .generateHonorificVariations(baseVariation)
             .forEach((honorificVariation) => {

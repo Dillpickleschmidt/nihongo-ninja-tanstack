@@ -12,6 +12,13 @@ export default function ResultDisplay() {
     <Show when={store.checkResult} keyed>
       {(checkResult: CheckResult) => (
         <div class="space-y-4">
+          <style>
+            {`
+              .highlight rt {
+                color: var(--color-primary);
+              }
+            `}
+          </style>
           {/* User's Answer Section */}
           <div class="space-y-1">
             <div class="font-bold">Your answer:</div>

@@ -95,13 +95,7 @@ export function DebugPanel(props: DebugPanelProps) {
   })
 
   const formatAnswer = (answer: Answer) => {
-    return answer.segments
-      .map((seg) =>
-        typeof seg === "string"
-          ? textProcessor.removeFurigana(seg)
-          : textProcessor.removeFurigana(seg.word),
-      )
-      .join("")
+    return answer.segments.map((seg) => textProcessor.removeFurigana(seg)).join("")
   }
 
   return (
