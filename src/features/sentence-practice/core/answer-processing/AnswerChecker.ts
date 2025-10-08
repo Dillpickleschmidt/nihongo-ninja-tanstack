@@ -13,8 +13,35 @@ export class AnswerChecker {
   }
 
   checkAnswer(input: string, question: PracticeQuestion): CheckResult {
-    const userText = this.textProcessor.normalize(input)
+    let userText = this.textProcessor.normalize(input)
     const shouldUseKana = !this.textProcessor.containsKanji(input)
+
+    const answerTexts = question.answers.map((answer) =>
+      this.textProcessor.extractPlainText(answer.segments),
+    )
+
+    // Determine which particles can be stripped from user input
+    const particles = ["よね", "ね", "よ"]
+    const particlesToStrip: string[] = []
+
+    for (const particle of particles) {
+      const anyAnswerEndsWithParticle = answerTexts.some((text) =>
+        text.endsWith(particle),
+      )
+      if (!anyAnswerEndsWithParticle) {
+        particlesToStrip.push(particle)
+      }
+    }
+
+    // Strip applicable particles from user input (longest first, only one)
+    let strippedParticle: string | undefined
+    for (const particle of particlesToStrip) {
+      if (userText.endsWith(particle)) {
+        userText = userText.slice(0, -particle.length)
+        strippedParticle = particle
+        break
+      }
+    }
 
     const matches = question.answers
       .map((answer) => {
@@ -52,6 +79,7 @@ export class AnswerChecker {
         },
       ],
       allMatches: matches,
+      strippedParticle,
     }
   }
 }

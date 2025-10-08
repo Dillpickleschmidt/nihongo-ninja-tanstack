@@ -55,6 +55,7 @@ export function createPracticeStore(fileLoader: FileLoader) {
       effectiveDifficulty: difficulty,
       inputs: difficulty === "easy" ? { blanks: [] } : { single: "" },
       showResult: false,
+      checkResult: undefined,
     }
   }
 

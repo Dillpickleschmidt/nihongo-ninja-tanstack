@@ -1,5 +1,6 @@
 // ui/practice/FillInBlankInput.tsx
 import { For, Show } from "solid-js"
+import { CircleHelp } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import type { ConjugatableSegment } from "../../core/conjugation/types"
 import { usePracticeStore } from "../../store/PracticeContext"
@@ -73,6 +74,16 @@ export default function FillInBlankInput(props: FillInBlankInputProps) {
           </span>
         </Show>
         <p class="text-muted-foreground pt-1 text-sm">*use caps for katakana</p>
+        <Show when={store.checkResult?.strippedParticle}>
+          <div class="text-muted-foreground inline-flex items-center gap-1 pt-0.5 text-sm">
+            <span>
+              {store.checkResult?.strippedParticle} may or may not be correct
+            </span>
+            <div title="We avoid calculating this since it's very contextual. Please use your own judgement.">
+              <CircleHelp class="inline h-3.5 w-3.5 cursor-help" />
+            </div>
+          </div>
+        </Show>
       </div>
       <Button
         onClick={handleMainButton}

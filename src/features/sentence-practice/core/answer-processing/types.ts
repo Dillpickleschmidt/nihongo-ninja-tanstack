@@ -39,4 +39,5 @@ export type CheckResult = {
     errors: ErrorRange[]
   }[]
   allMatches: AnswerMatch[]
+  strippedParticle?: string
 }
