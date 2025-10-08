@@ -3,8 +3,12 @@ import {
   createSession,
   updateSession,
 } from "@/features/supabase/db/module-progress"
+import { useQueryClient } from "@tanstack/solid-query"
+import { userDailyTimeQueryOptions } from "@/features/progress-page/query/query-options"
 
 export function useSessionTracking(userId: string | null, moduleId: string) {
+  const queryClient = useQueryClient()
+
   const [sessionId, setSessionId] = createSignal<string | null>(null)
   let cumulativeTime = 0
   let cumulativeQuestions = 0
@@ -39,6 +43,10 @@ export function useSessionTracking(userId: string | null, moduleId: string) {
     incrementQuestions: boolean,
   ) => {
     if (!userId) return
+
+    // Optimistic update
+    const queryKey = userDailyTimeQueryOptions(userId, new Date()).queryKey
+    queryClient.setQueryData<number>(queryKey, (old) => (old ?? 0) + seconds)
 
     cumulativeTime += seconds
     if (incrementQuestions) cumulativeQuestions++
