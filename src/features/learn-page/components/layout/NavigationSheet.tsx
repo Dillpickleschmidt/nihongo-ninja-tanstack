@@ -2,7 +2,7 @@ import { Component, Show } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { SheetClose } from "@/components/ui/sheet"
 import { cn } from "@/utils"
-import type { MobileContentView } from "@/features/learn-page/context/LearnPageContext"
+import type { MobileContentView } from "@/features/learn-page-v2/context/LearnPageContext"
 import {
   BookOpen,
   Star,

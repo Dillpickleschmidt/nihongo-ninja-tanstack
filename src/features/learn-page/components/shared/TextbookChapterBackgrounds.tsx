@@ -25,7 +25,7 @@ const textbook_chapter_backgrounds: TextbookChapterBackgrounds = {
       src: "/img/backgrounds/morning_village_by_k_jackson_katss_djrsova.jpg",
       position: "absolute",
       layout: "horizontal",
-      opacity: 0.18,
+      opacity: 0.14,
     },
     "chapter-2": {
       source_type: "img",

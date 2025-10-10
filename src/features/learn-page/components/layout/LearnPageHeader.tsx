@@ -17,7 +17,7 @@ import { getDeckBySlug } from "@/data/utils/core"
 import {
   useLearnPageContext,
   type MobileContentView,
-} from "@/features/learn-page/context/LearnPageContext"
+} from "@/features/learn-page-v2/context/LearnPageContext"
 import type { TextbookIDEnum } from "@/data/types"
 
 interface LearnPageHeaderProps {

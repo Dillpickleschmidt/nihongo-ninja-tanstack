@@ -14,7 +14,7 @@ interface ModuleTypesListProps {
 const moduleTypes = [
   { id: "grammar-notes", label: "Grammar Notes" },
   { id: "kanji", label: "Jpdb.io (Kanji)" },
-  { id: "practice-sentence", label: "Sentence Practice" },
+  { id: "sentence-practice", label: "Sentence Practice" },
   { id: "conjugation-practice", label: "Conjugation" },
   { id: "counter-practice", label: "Counters" },
   { id: "vocab-list", label: "Vocab List" },
