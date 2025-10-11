@@ -1,9 +1,8 @@
-// features/learn-page/components/layout/RightSidebar.tsx
+import ProfileCard from "../content/ProfileCard"
 import { Show } from "solid-js"
 import { Play } from "lucide-solid"
 import { useRouteContext, Link } from "@tanstack/solid-router"
-import { HistoryContent } from "../content/HistoryContent"
-import { StrugglesContent } from "../content/StrugglesContent"
+// import { HistoryContent } from "../content/HistoryContent"
 import { UpcomingModulesList } from "../content/UpcomingModulesList"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import { Button } from "@/components/ui/button"
@@ -15,17 +14,13 @@ import { getLinkTo } from "@/features/learn-page/utils/loader-helpers"
 
 const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 
-interface RightSidebarProps {
-  variant: "mobile" | "desktop"
-}
-
-export function RightSidebar(props: RightSidebarProps) {
+function RightColumn() {
   const context = useRouteContext({ from: RootRoute.id })
   const { upcomingModulesQuery, completionsQuery } = useLearnPageContext()
 
-  if (props.variant === "mobile") {
-    return <HistoryContent variant="mobile" />
-  }
+  // if (props.variant === "mobile") {
+  //   return <HistoryContent variant="mobile" />
+  // }
 
   // Filter out completed modules from upcoming list
   const upcomingModules = () => {
@@ -43,49 +38,56 @@ export function RightSidebar(props: RightSidebarProps) {
     return module ? getLinkTo(module, first.id) : null
   }
 
-  // Desktop variant
   return (
-    <div
-      data-right-sidebar
-      class="flex h-full flex-col space-y-6 overflow-x-hidden pb-3"
-    >
-      <Show
-        when={context().user}
-        fallback={
-          <h3 class="text-muted-foreground text-center">
-            Your review history here, coming soon.
-          </h3>
-        }
+    <div class="mt-1 pr-3.5">
+      <div
+        data-right-sidebar
+        class="flex h-full flex-col space-y-3 overflow-x-hidden px-4 pb-3"
       >
+        <ProfileCard />
         <Show
-          when={getFirstUpcomingLink()}
+          when={context().user}
           fallback={
-            <Button
-              variant="ghost"
-              disabled
-              class="bg-primary/10 text-primary w-full cursor-not-allowed rounded-lg px-4 py-2.5 opacity-50"
-            >
-              <Play class="h-4 w-4" />
-              <span class="text-sm font-medium">Start Studying</span>
-            </Button>
+            <h3 class="text-muted-foreground text-center">
+              Your review history here, coming soon.
+            </h3>
           }
         >
-          {(link) => (
-            <Link to={link()} class="px-0.5 pt-0.5" tabindex="-1">
+          <Show
+            when={getFirstUpcomingLink()}
+            fallback={
               <Button
                 variant="ghost"
-                class="bg-primary/10 hover:bg-primary/20 text-primary w-full cursor-pointer rounded-lg px-4 py-2.5 focus-visible:ring-offset-0"
-                onClick={() => {}}
-                tabindex="3"
+                disabled
+                class="bg-primary/10 text-primary w-full cursor-not-allowed rounded-lg px-4 py-2.5 opacity-50"
               >
                 <Play class="h-4 w-4" />
                 <span class="text-sm font-medium">Start Studying</span>
               </Button>
-            </Link>
-          )}
+            }
+          >
+            {(link) => (
+              <Link to={link()} class="px-0.5 pt-0.5" tabindex="-1">
+                <Button
+                  variant="ghost"
+                  class="bg-primary/10 hover:bg-primary/20 text-primary w-full cursor-pointer rounded-lg px-4 py-2.5 focus-visible:ring-offset-0"
+                  onClick={() => {}}
+                  tabindex="3"
+                >
+                  <Play class="h-4 w-4" />
+                  <span class="text-sm font-medium">Start Studying</span>
+                </Button>
+              </Link>
+            )}
+          </Show>
+          <h3 class="pt-3 text-lg font-semibold">Upcoming Lessons</h3>
+          <div class="px-4">
+            <UpcomingModulesList />
+          </div>
         </Show>
-        <UpcomingModulesList variant="sm" upcomingModules={upcomingModules} />
-      </Show>
+      </div>
     </div>
   )
 }
+
+export default RightColumn

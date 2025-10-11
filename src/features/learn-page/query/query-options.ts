@@ -1,18 +1,28 @@
-// features/learn-page/query/query-options.ts
-import { queryOptions } from "@tanstack/solid-query"
+// features/learn-page-v2/query/query-options.ts
+import {
+  queryOptions,
+  type DefaultError,
+  type UseQueryResult,
+} from "@tanstack/solid-query"
 import { getDeckBySlug, getTextbookLearningPath } from "@/data/utils/core"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { getDueFSRSCardsCount, getFSRSCards } from "@/features/supabase/db/fsrs"
-import { getVocabHierarchy } from "@/features/resolvers/kanji"
 import { getUserProgress } from "@/features/supabase/db/fsrs"
 import { getUserModuleProgress } from "@/features/supabase/db/module-progress"
 import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
-import { getVocabularyForModule, getVocabSets } from "@/data/utils/vocab"
+import { getVocabSets, getVocabularyForModule } from "@/data/utils/vocab"
+import { getVocabHierarchy } from "@/features/resolvers/kanji"
 import { dynamic_modules } from "@/data/dynamic_modules"
-import type { VocabularyItem, TextbookIDEnum } from "@/data/types"
-import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
+import type { TextbookIDEnum, VocabularyItem } from "@/data/types"
 import type { ResourceProvider } from "@/data/resources-config"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
+import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
+import {
+  getUserDailyTime,
+  getUserSessions,
+  getUserWeekTimeData,
+} from "@/features/supabase/db/module-progress"
+import { getVocabularyStats } from "@/features/supabase/db/fsrs"
 
 export const vocabHierarchyQueryOptions = (
   activeTextbook: string,
@@ -60,21 +70,6 @@ export const vocabHierarchyQueryOptions = (
     },
   })
 
-export const fsrsProgressQueryOptions = (
-  userId: string | null,
-  activeTextbook: string,
-  activeDeck: string,
-  slugs: string[],
-) =>
-  queryOptions({
-    queryKey: ["fsrs-progress", userId, activeTextbook, activeDeck, slugs],
-    queryFn: async () => {
-      if (!userId || slugs.length === 0) return null
-      return getUserProgress(userId, slugs)
-    },
-    enabled: slugs.length > 0,
-  })
-
 export const dueFSRSCardsCountQueryOptions = (userId: string | null) =>
   queryOptions({
     queryKey: ["fsrs-due-count", userId],
@@ -94,7 +89,6 @@ export const completedModulesQueryOptions = (userId: string | null) =>
         ascending: false,
       })
     },
-    placeholderData: [],
   })
 
 export const resourceThumbnailQueryOptions = (
@@ -146,7 +140,7 @@ export const upcomingModulesQueryOptions = (
   })
 }
 
-export type ModuleProgress = {
+export type VocabModuleProgress = {
   completed: number
   total: number
   percentage: number
@@ -164,22 +158,23 @@ export type ModuleProgress = {
 
 export const moduleProgressQueryOptions = (
   userId: string | null,
-  upcomingModules: ModuleWithCurrent[],
+  upcomingModulesQuery: UseQueryResult<ModuleWithCurrent[], DefaultError>,
 ) => {
-  const vocabPracticeModuleIds = upcomingModules
-    .map((item) => item.id)
-    .filter((moduleId) => {
-      const module = dynamic_modules[moduleId]
-      return module && module.session_type === "vocab-practice"
-    })
-
   return queryOptions({
     queryKey: [
       "module-progress",
       userId,
-      upcomingModules.map((m) => m.id),
+      upcomingModulesQuery.data?.map((m) => m.id),
     ] as const,
-    queryFn: async (): Promise<Record<string, ModuleProgress>> => {
+    queryFn: async (): Promise<Record<string, VocabModuleProgress>> => {
+      const upcomingModules = upcomingModulesQuery.data!
+      const vocabPracticeModuleIds = upcomingModules
+        .map((item) => item.id)
+        .filter((moduleId) => {
+          const module = dynamic_modules[moduleId]
+          return module && module.session_type === "vocab-practice"
+        })
+
       if (!userId || vocabPracticeModuleIds.length === 0) return {}
 
       // Collect all vocab set IDs needed across all modules
@@ -226,7 +221,7 @@ export const moduleProgressQueryOptions = (
       })
 
       // Calculate progress for each module
-      const progressMap: Record<string, ModuleProgress> = {}
+      const progressMap: Record<string, VocabModuleProgress> = {}
 
       for (const [moduleId, vocabKeys] of moduleVocabMap.entries()) {
         // Get allowed practice modes for this module
@@ -299,7 +294,77 @@ export const moduleProgressQueryOptions = (
 
       return progressMap
     },
-    enabled: vocabPracticeModuleIds.length > 0,
-    placeholderData: {},
+    enabled: !upcomingModulesQuery.isPending && !upcomingModulesQuery.isError,
   })
 }
+
+// ============================================================================
+// Progress Page Query Options (from original progress-page)
+// ============================================================================
+
+/**
+ * Query for getting time spent on a specific date
+ */
+export const userDailyTimeQueryOptions = (userId: string | null, date: Date) =>
+  queryOptions({
+    queryKey: ["user-daily-time", userId, date.toDateString()],
+    queryFn: async () => {
+      if (!userId) return 0
+      return getUserDailyTime(userId, date)
+    },
+  })
+
+/**
+ * Query for getting all user sessions
+ */
+export const userSessionsQueryOptions = (
+  userId: string | null,
+  options?: { startDate?: Date; endDate?: Date },
+) =>
+  queryOptions({
+    queryKey: [
+      "user-sessions",
+      userId,
+      options?.startDate?.toISOString(),
+      options?.endDate?.toISOString(),
+    ],
+    queryFn: async () => {
+      if (!userId) return []
+      return getUserSessions(userId, options)
+    },
+  })
+
+/**
+ * Query for getting last 7 days of time data (optimized - single query)
+ */
+export const userWeekTimeDataQueryOptions = (userId: string | null) =>
+  queryOptions({
+    queryKey: ["user-week-time-data", userId],
+    queryFn: async () => {
+      if (!userId) return []
+      return getUserWeekTimeData(userId)
+    },
+  })
+
+/**
+ * Query for vocabulary and kanji counts (total and this week)
+ * Optimized - uses single RPC call instead of 4 separate queries
+ */
+export const vocabularyStatsQueryOptions = (userId: string | null) =>
+  queryOptions({
+    queryKey: ["vocabulary-stats", userId],
+    queryFn: async () => {
+      if (!userId)
+        return {
+          vocab: { total: 0, week: 0 },
+          kanji: { total: 0, week: 0 },
+        }
+
+      const stats = await getVocabularyStats(userId)
+
+      return {
+        vocab: { total: stats.vocab_total, week: stats.vocab_week },
+        kanji: { total: stats.kanji_total, week: stats.kanji_week },
+      }
+    },
+  })

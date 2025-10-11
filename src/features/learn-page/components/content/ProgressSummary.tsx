@@ -2,7 +2,7 @@
 import { Show } from "solid-js"
 import { Loader2 } from "lucide-solid"
 import { Button } from "@/components/ui/button"
-import { useLearnPageContext } from "@/features/learn-page-v2/context/LearnPageContext"
+import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 
 export function ProgressSummary() {
   const context = useLearnPageContext()

@@ -8,7 +8,7 @@ import {
 import { getDeckBySlug } from "@/data/utils/core"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { LearnPageHeader } from "@/features/learn-page/components/layout/LearnPageHeader"
-import { LearnPageProvider } from "@/features/learn-page-v2/context/LearnPageContext"
+import { LearnPageProvider } from "@/features/learn-page/context/LearnPageContext"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 import {
   dueFSRSCardsCountQueryOptions,
@@ -19,9 +19,9 @@ import {
   userWeekTimeDataQueryOptions,
   vocabularyStatsQueryOptions,
   userDailyTimeQueryOptions,
-} from "@/features/learn-page-v2/query/query-options"
+} from "@/features/learn-page/query/query-options"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
-import { useLearnPageContext } from "@/features/learn-page-v2/context/LearnPageContext"
+import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import type { TextbookIDEnum } from "@/data/types"
 
 export const Route = createFileRoute("/_home/learn/$textbookId")({
@@ -165,7 +165,6 @@ function LayoutContent() {
       {/* Desktop Layout */}
       <SSRMediaQuery showFrom="xl">
         <div class="min-h-screen">
-          <LearnPageHeader variant="desktop" />
           <Outlet />
           <div class="pb-8" />
         </div>

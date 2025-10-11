@@ -1,10 +1,10 @@
 // routes/_home/learn/$textbookId.$chapterSlug.tsx
 import { createFileRoute, redirect } from "@tanstack/solid-router"
-import { useLearnPageContext } from "@/features/learn-page-v2/context/LearnPageContext"
+import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import { getDeckBySlug, getModules } from "@/data/utils/core"
 import { vocabHierarchyQueryOptions } from "@/features/learn-page/query/query-options"
-import { resourceThumbnailQueryOptions } from "@/features/learn-page-v2/query/query-options"
-import { enrichExternalResources } from "@/features/learn-page-v2/utils/loader-helpers"
+import { resourceThumbnailQueryOptions } from "@/features/learn-page/query/query-options"
+import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
 import {
   userSettingsQueryOptions,
   dbUserSettingsQueryOptions,
@@ -12,7 +12,7 @@ import {
 } from "@/features/main-cookies/query/query-options"
 import type { TextbookIDEnum, ExternalResource } from "@/data/types"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
-import DesktopLayout from "@/features/learn-page-v2/components/shared/DesktopLayout"
+import DesktopLayout from "@/features/learn-page/components/shared/DesktopLayout"
 
 export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
   loader: async ({ context, params }) => {

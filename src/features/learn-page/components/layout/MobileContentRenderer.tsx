@@ -1,5 +1,5 @@
 import { Switch, Match } from "solid-js"
-import type { MobileContentView } from "@/features/learn-page-v2/context/LearnPageContext"
+import type { MobileContentView } from "@/features/learn-page/context/LearnPageContext"
 import { LearningPathSection } from "../content/LearningPathSection"
 import { FeaturedContent } from "../content/FeaturedContent"
 import { WordHierarchy } from "../content/WordHierarchy"

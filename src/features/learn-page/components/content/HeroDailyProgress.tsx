@@ -1,7 +1,7 @@
 // features/learn-page-v2/components/content/HeroDailyProgress.tsx
 import { For, Show } from "solid-js"
 import { Loader2 } from "lucide-solid"
-import { useLearnPageContext } from "@/features/learn-page-v2/context/LearnPageContext"
+import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 
 export function HeroDailyProgress() {
   const context = useLearnPageContext()

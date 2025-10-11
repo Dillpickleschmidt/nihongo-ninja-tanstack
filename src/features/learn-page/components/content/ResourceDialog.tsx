@@ -17,7 +17,7 @@ const MOBILE_CARD_BASE =
   "bg-card hover:bg-card/90 flex items-center gap-4 rounded-2xl p-4 shadow-sm transition-colors"
 
 const DESKTOP_CARD_BASE =
-  "border-card-foreground/70 relative h-40 w-[220px] overflow-hidden rounded-2xl border opacity-0 backdrop-blur-sm hover:shadow-xl"
+  "border-card-foreground/30 relative h-32 w-[180px] overflow-hidden rounded-2xl border opacity-0 backdrop-blur-sm hover:shadow-xl"
 
 // ============================================================================
 // Resource Card Wrapper - Handles dialog vs external link logic
@@ -28,59 +28,29 @@ export function ResourceCardWrapper(props: {
   thumbnailUrl: (() => string | null | undefined) | string | null | undefined
   variant: "desktop" | "mobile"
 }) {
-  const hasInternalUrl = () => Boolean(props.resource.link)
-
   return (
-    <Show
-      when={hasInternalUrl()}
-      fallback={
-        <a
-          href={props.resource.external_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          class={cn(
-            "group block transition-transform hover:scale-[1.02]",
-            props.variant === "mobile" && MOBILE_CARD_BASE,
-            props.variant === "desktop" && DESKTOP_CARD_BASE,
-          )}
-          data-featured-item={props.variant === "desktop" ? "" : undefined}
-          style={
-            props.variant === "desktop"
-              ? { "background-image": props.resource.gradientStyle }
-              : undefined
-          }
-        >
-          <ResourceCardContent
-            resource={props.resource}
-            thumbnailUrl={props.thumbnailUrl}
-            variant={props.variant}
-          />
-        </a>
-      }
-    >
-      <Dialog>
-        <DialogTrigger
-          class={cn(
-            "group block w-full cursor-pointer text-left transition-transform hover:scale-[1.02]",
-            props.variant === "mobile" && MOBILE_CARD_BASE,
-            props.variant === "desktop" && DESKTOP_CARD_BASE,
-          )}
-          data-featured-item={props.variant === "desktop" ? "" : undefined}
-          style={
-            props.variant === "desktop"
-              ? { "background-image": props.resource.gradientStyle }
-              : undefined
-          }
-        >
-          <ResourceCardContent
-            resource={props.resource}
-            thumbnailUrl={props.thumbnailUrl}
-            variant={props.variant}
-          />
-        </DialogTrigger>
-        <ResourceDialogContent resource={props.resource} />
-      </Dialog>
-    </Show>
+    <Dialog>
+      <DialogTrigger
+        class={cn(
+          "group block w-full cursor-pointer text-left transition-transform hover:scale-[1.02]",
+          props.variant === "mobile" && MOBILE_CARD_BASE,
+          props.variant === "desktop" && DESKTOP_CARD_BASE,
+        )}
+        data-featured-item={props.variant === "desktop" ? "" : undefined}
+        style={
+          props.variant === "desktop"
+            ? { "background-image": props.resource.gradientStyle }
+            : undefined
+        }
+      >
+        <ResourceCardContent
+          resource={props.resource}
+          thumbnailUrl={props.thumbnailUrl}
+          variant={props.variant}
+        />
+      </DialogTrigger>
+      <ResourceDialogContent resource={props.resource} />
+    </Dialog>
   )
 }
 
@@ -130,16 +100,16 @@ export function ResourceCardContent(props: {
         </div>
 
         <div class="min-w-0 flex-1">
-          <h3 class="text-foreground group-hover:text-primary text-base font-semibold transition-colors">
+          <h3 class="text-foreground group-hover:text-primary text-sm font-semibold transition-colors">
             {props.resource.truncatedTitle}
           </h3>
           <div class="mt-1 flex items-center gap-2">
-            <span class="text-muted-foreground text-sm capitalize">
+            <span class="text-muted-foreground text-xs capitalize">
               {props.resource.lesson_type.replace("_", " ")}
             </span>
             <span
               class={cn(
-                "rounded-full px-2 py-1 text-xs font-medium",
+                "rounded-full px-2 py-1 text-[10px] font-medium",
                 props.resource.difficultyColorClass,
               )}
             >
@@ -178,16 +148,16 @@ export function ResourceCardContent(props: {
         </div>
 
         <div class="space-y-2">
-          <h3 class="line-clamp-2 text-base font-semibold drop-shadow-md">
+          <h3 class="line-clamp-2 text-sm font-semibold drop-shadow-md">
             {props.resource.truncatedTitle}
           </h3>
           <div class="flex items-center gap-2">
-            <span class="rounded-full bg-neutral-500 px-2 py-1 text-[11px] text-white/80 capitalize dark:bg-neutral-600">
+            <span class="rounded-full bg-neutral-500 px-2 py-1 text-[9px] text-nowrap text-white/80 capitalize dark:bg-neutral-600">
               {props.resource.lesson_type.replace("_", " ")}
             </span>
             <span
               class={cn(
-                "rounded-full px-2 py-1 text-[11px]",
+                "rounded-full px-2 py-1 text-[9px]",
                 props.resource.difficultyColorClass,
               )}
             >
@@ -228,7 +198,10 @@ function ResourceDialogContent(props: { resource: EnrichedExternalResource }) {
   })
 
   return (
-    <DialogContent class="h-[85vh] w-[90vw] max-w-7xl p-0" tabindex="-1">
+    <DialogContent
+      class="border-card-foreground/70 h-[85vh] w-[90vw] max-w-7xl border-2 p-0"
+      tabindex="-1"
+    >
       <Show
         when={!hasError()}
         fallback={
@@ -245,7 +218,7 @@ function ResourceDialogContent(props: { resource: EnrichedExternalResource }) {
           }
           tabindex="1"
           variant="ghost"
-          class="bg-primary/10 hover:bg-primary/20 absolute top-4 right-4 z-20 flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium backdrop-blur-sm transition-colors"
+          class="bg-primary/10 hover:bg-primary/20 absolute top-4 right-4 z-20 flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium backdrop-blur-sm transition-colors"
         >
           <ExternalLink class="h-4 w-4" />
           Open in New Tab

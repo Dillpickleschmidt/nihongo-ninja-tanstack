@@ -29,17 +29,16 @@ export function BottomNav(props: BottomNavProps) {
       href: "/dashboard",
     },
     {
-      id: "learn",
+      id: "vocab",
       icon: GraduationCap,
-      label: "Learn",
-      href: "/learn",
+      label: "Vocab",
+      href: "/vocab",
     },
     {
-      id: "progress",
+      id: "learn",
       icon: null,
       label: `${dailyProgress()}%`,
-      href: () => `/learn/${activeTextbook()}/progress`,
-      isProgress: true,
+      href: "/learn",
     },
     {
       id: "search",
@@ -60,10 +59,8 @@ export function BottomNav(props: BottomNavProps) {
     const currentPath = location().pathname
     const hrefValue = typeof href === "function" ? href() : href
 
-    if (hrefValue === "/learn" || hrefValue.startsWith("/learn/")) {
-      return (
-        currentPath.startsWith("/learn") && !currentPath.endsWith("/progress")
-      )
+    if (hrefValue === "/learn") {
+      return currentPath.startsWith("/learn")
     }
     return currentPath === hrefValue
   }
@@ -137,7 +134,7 @@ export function BottomNav(props: BottomNavProps) {
       >
         <div class="flex items-center justify-between" style="width: 400px;">
           {navItems.map((item) => {
-            if (item.isProgress) {
+            if (item.id === "learn") {
               const active = isActive(item.href)
               const hrefValue =
                 typeof item.href === "function" ? item.href() : item.href

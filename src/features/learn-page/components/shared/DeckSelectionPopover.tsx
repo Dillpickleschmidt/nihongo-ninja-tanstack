@@ -1,5 +1,6 @@
-// features/learn-page/components/shared/DeckSelectionPopover.tsx
-import { createSignal, For, Show, JSX } from "solid-js"
+// features/learn-page-v2/components/shared/DeckSelectionPopover.tsx
+import { createSignal, For, Show, JSX, createEffect } from "solid-js"
+import { Link } from "@tanstack/solid-router"
 import {
   Popover,
   PopoverContent,
@@ -13,7 +14,6 @@ interface DeckSelectionPopoverProps {
   children: JSX.Element
   activeTextbookId: TextbookIDEnum
   activeDeck: Deck
-  onDeckChange: (textbookId: TextbookIDEnum, deck: Deck) => void
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   popoverWidth?: string
@@ -23,15 +23,20 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
   const [selectedTextbookId, setSelectedTextbookId] =
     createSignal<TextbookIDEnum | null>(null)
 
+  let activeTextbookRef: HTMLButtonElement | undefined
+
   const textbookEntries = getMinifiedTextbookEntries()
 
   const displayedTextbookId = () =>
     selectedTextbookId() || props.activeTextbookId
 
-  const handleDeckChange = (textbookId: TextbookIDEnum, deck: Deck) => {
-    props.onDeckChange(textbookId, deck)
-    props.onOpenChange(false)
-  }
+  // Focus active textbook when popover opens
+  createEffect(() => {
+    if (props.isOpen) {
+      console.log("Popover opened, activeTextbookRef:", activeTextbookRef)
+      activeTextbookRef?.focus()
+    }
+  })
 
   const handleTextbookSelect = (textbookId: TextbookIDEnum) => {
     setSelectedTextbookId(textbookId)
@@ -58,6 +63,11 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
             <For each={textbookEntries}>
               {([textbookId, textbook]) => (
                 <button
+                  ref={(el) => {
+                    if (props.activeTextbookId === textbookId) {
+                      activeTextbookRef = el
+                    }
+                  }}
                   onClick={() => handleTextbookSelect(textbookId)}
                   class={cn(
                     "hover:bg-primary/15 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-medium",
@@ -75,8 +85,10 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
                 <Show when={displayedTextbookId() === textbookId}>
                   <For each={textbook.chapters}>
                     {(deck) => (
-                      <button
-                        onClick={() => handleDeckChange(textbookId, deck)}
+                      <Link
+                        to="/learn/$textbookId/$chapterSlug"
+                        params={{ textbookId, chapterSlug: deck.slug }}
+                        onClick={() => props.onOpenChange(false)}
                         class={cn(
                           "hover:bg-card-foreground/40 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal",
                           props.activeDeck.id === deck.id &&
@@ -93,7 +105,7 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
                             <path d="M5 12l5 5l10 -10" />
                           </svg>
                         </Show>
-                      </button>
+                      </Link>
                     )}
                   </For>
                 </Show>
