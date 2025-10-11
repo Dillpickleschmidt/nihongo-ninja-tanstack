@@ -1,4 +1,4 @@
-// features/progress-page/utils/stats-calculator.ts
+// features/learn-page-v2/utils/stats-calculator.ts
 
 /**
  * Calculate current streak (consecutive days with activity starting from today)

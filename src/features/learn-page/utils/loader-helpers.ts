@@ -1,4 +1,4 @@
-// features/dashboard/utils/loader-helpers.ts
+// features/learn-page-v2/utils/loader-helpers.ts
 import type {
   Module,
   ExternalResource,
@@ -101,7 +101,7 @@ function getResourceGradientStyle(
     "counter-practice":
       "linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%)",
     game: "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(251, 113, 133, 0.1) 100%)",
-    "grammar-notes":
+    "grammar-cheatsheet":
       "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(251, 113, 133, 0.1) 100%)",
     reading:
       "linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%)",
@@ -162,7 +162,7 @@ export function getResourceIconComponent(
     "conjugation-practice": GraduationCap,
     "counter-practice": GraduationCap,
     game: Gamepad,
-    "grammar-notes": ScrollText,
+    "grammar-cheatsheet": ScrollText,
     reading: BookOpenText,
     "culture-note": Coffee,
     "chapter-vocab-overview": Library,
@@ -216,7 +216,8 @@ export function getModuleIcon(moduleType: string) {
     game: Gamepad,
     video: Video,
     audio: Volume2,
-    "grammar-notes": ScrollText,
+    "grammar-cheatsheet": FileText,
+    guides: ScrollText,
     reading: BookOpenText,
     "vocab-list": Library,
     "vocab-test": GraduationCap,
@@ -272,9 +273,13 @@ const MODULE_STYLES = {
     text: "text-purple-500 dark:text-purple-400",
     bg: "bg-purple-500 dark:bg-purple-400",
   },
-  "grammar-notes": {
+  "grammar-cheatsheet": {
     text: "text-red-600 dark:text-red-500 opacity-80",
     bg: "bg-red-600 dark:bg-red-500 opacity-80",
+  },
+  guides: {
+    text: "text-purple-500 dark:text-purple-400",
+    bg: "bg-purple-500 dark:bg-purple-400",
   },
   reading: {
     text: "text-teal-500 dark:text-teal-400",
@@ -331,7 +336,8 @@ function getModuleGradient(moduleType: string) {
     game: "bg-gradient-to-br from-red-500/10 via-card to-red-600/5",
     video: "bg-gradient-to-br from-purple-400/10 via-card to-purple-500/5",
     audio: "bg-gradient-to-br from-purple-400/10 via-card to-purple-500/5",
-    "grammar-notes": "bg-gradient-to-br from-red-500/10 via-card to-red-600/5",
+    "grammar-cheatsheet": "bg-gradient-to-br from-red-500/10 via-card to-red-600/5",
+    guides: "bg-gradient-to-br from-purple-400/10 via-card to-purple-500/5",
     reading: "bg-gradient-to-br from-teal-400/10 via-card to-teal-500/5",
     "vocab-list": "bg-gradient-to-br from-sky-400/10 via-card to-sky-500/5",
     "vocab-test":
@@ -354,7 +360,8 @@ function getModuleLightBackground(moduleType: string) {
     game: "bg-red-50/70",
     video: "bg-purple-50/70",
     audio: "bg-purple-50/70",
-    "grammar-notes": "bg-red-50/70",
+    "grammar-cheatsheet": "bg-red-50/70",
+    guides: "bg-purple-50/70",
     reading: "bg-teal-50/70",
     "vocab-list": "bg-sky-50/70",
     "vocab-test": "bg-yellow-50/70",

@@ -32,7 +32,6 @@ export function shouldUpdatePosition(
   currentPosition: string | null,
   learningPathItems: string[],
 ): boolean {
-  // If no current position, this is the first completion - auto-update
   if (!currentPosition) {
     return true
   }
@@ -61,7 +60,7 @@ export function shouldUpdatePosition(
  * - suggestedModuleId: the module to suggest as new position (most recent completion)
  */
 export function detectSequentialJump(
-  recentCompletions: ModuleCompletion[],
+  recentCompletions: ModuleProgress[],
   currentPosition: string | null,
   learningPathItems: string[],
 ): { shouldPrompt: boolean; suggestedModuleId: string | null } {
@@ -103,7 +102,6 @@ export function detectSequentialJump(
     learningPathItems,
   )
 
-  // If far from current position (> 2 modules), prompt user to update
   if (distanceFromCurrent > 2) {
     return {
       shouldPrompt: true,

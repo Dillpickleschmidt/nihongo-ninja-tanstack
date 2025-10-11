@@ -2,7 +2,7 @@ import { Link, useRouteContext } from "@tanstack/solid-router"
 import { Suspense } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { Route as RootRoute } from "@/routes/__root"
-import { useLearnPageContext } from "../../context/LearnPageContext"
+import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 
 interface DueCardsDisplayProps {
   variant: "mobile" | "desktop"

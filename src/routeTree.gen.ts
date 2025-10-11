@@ -77,7 +77,6 @@ import { Route as HomeGuidesSrsRouteImport } from './routes/_home/guides/srs'
 import { Route as HomeAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/additional-resources/kanji-practice-sheet'
 import { Route as HomePracticeSentencePracticeIdRouteImport } from './routes/_home/practice/sentence-practice/$id'
 import { Route as HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/learn/additional-resources.kanji-practice-sheet'
-import { Route as HomeLearnTextbookIdProgressRouteImport } from './routes/_home/learn/$textbookId/progress'
 import { Route as HomeLearnTextbookIdChapterSlugRouteImport } from './routes/_home/learn/$textbookId/$chapterSlug'
 
 const SettingsRoute = SettingsRouteImport.update({
@@ -453,12 +452,6 @@ const HomeLearnAdditionalResourcesKanjiPracticeSheetRoute =
     path: '/learn/additional-resources/kanji-practice-sheet',
     getParentRoute: () => HomeRoute,
   } as any)
-const HomeLearnTextbookIdProgressRoute =
-  HomeLearnTextbookIdProgressRouteImport.update({
-    id: '/progress',
-    path: '/progress',
-    getParentRoute: () => HomeLearnTextbookIdRoute,
-  } as any)
 const HomeLearnTextbookIdChapterSlugRoute =
   HomeLearnTextbookIdChapterSlugRouteImport.update({
     id: '/$chapterSlug',
@@ -533,7 +526,6 @@ export interface FileRoutesByFullPath {
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
-  '/learn/$textbookId/progress': typeof HomeLearnTextbookIdProgressRoute
   '/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
   '/practice/sentence-practice/$id': typeof HomePracticeSentencePracticeIdRoute
 }
@@ -604,7 +596,6 @@ export interface FileRoutesByTo {
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/learn': typeof HomeLearnIndexRoute
   '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
-  '/learn/$textbookId/progress': typeof HomeLearnTextbookIdProgressRoute
   '/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
   '/practice/sentence-practice/$id': typeof HomePracticeSentencePracticeIdRoute
 }
@@ -677,7 +668,6 @@ export interface FileRoutesById {
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/_home/learn/': typeof HomeLearnIndexRoute
   '/_home/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
-  '/_home/learn/$textbookId/progress': typeof HomeLearnTextbookIdProgressRoute
   '/_home/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
   '/_home/practice/sentence-practice/$id': typeof HomePracticeSentencePracticeIdRoute
 }
@@ -750,7 +740,6 @@ export interface FileRouteTypes {
     | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
-    | '/learn/$textbookId/progress'
     | '/learn/additional-resources/kanji-practice-sheet'
     | '/practice/sentence-practice/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -821,7 +810,6 @@ export interface FileRouteTypes {
     | '/practice/$userID/$deckID'
     | '/learn'
     | '/learn/$textbookId/$chapterSlug'
-    | '/learn/$textbookId/progress'
     | '/learn/additional-resources/kanji-practice-sheet'
     | '/practice/sentence-practice/$id'
   id:
@@ -893,7 +881,6 @@ export interface FileRouteTypes {
     | '/practice/$userID/$deckID'
     | '/_home/learn/'
     | '/_home/learn/$textbookId/$chapterSlug'
-    | '/_home/learn/$textbookId/progress'
     | '/_home/learn/additional-resources/kanji-practice-sheet'
     | '/_home/practice/sentence-practice/$id'
   fileRoutesById: FileRoutesById
@@ -1398,13 +1385,6 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport
       parentRoute: typeof HomeRoute
     }
-    '/_home/learn/$textbookId/progress': {
-      id: '/_home/learn/$textbookId/progress'
-      path: '/progress'
-      fullPath: '/learn/$textbookId/progress'
-      preLoaderRoute: typeof HomeLearnTextbookIdProgressRouteImport
-      parentRoute: typeof HomeLearnTextbookIdRoute
-    }
     '/_home/learn/$textbookId/$chapterSlug': {
       id: '/_home/learn/$textbookId/$chapterSlug'
       path: '/$chapterSlug'
@@ -1444,12 +1424,10 @@ const HomeGuidesRouteWithChildren = HomeGuidesRoute._addFileChildren(
 
 interface HomeLearnTextbookIdRouteChildren {
   HomeLearnTextbookIdChapterSlugRoute: typeof HomeLearnTextbookIdChapterSlugRoute
-  HomeLearnTextbookIdProgressRoute: typeof HomeLearnTextbookIdProgressRoute
 }
 
 const HomeLearnTextbookIdRouteChildren: HomeLearnTextbookIdRouteChildren = {
   HomeLearnTextbookIdChapterSlugRoute: HomeLearnTextbookIdChapterSlugRoute,
-  HomeLearnTextbookIdProgressRoute: HomeLearnTextbookIdProgressRoute,
 }
 
 const HomeLearnTextbookIdRouteWithChildren =

@@ -1,4 +1,4 @@
-// features/progress-page/utils/format-helpers.ts
+// features/learn-page-v2/utils/format-helpers.ts
 
 /**
  * Format duration in seconds to human-readable string

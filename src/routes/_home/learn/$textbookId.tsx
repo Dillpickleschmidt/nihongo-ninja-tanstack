@@ -15,6 +15,10 @@ import {
   completedModulesQueryOptions,
   upcomingModulesQueryOptions,
   moduleProgressQueryOptions,
+  userSessionsQueryOptions,
+  userWeekTimeDataQueryOptions,
+  vocabularyStatsQueryOptions,
+  userDailyTimeQueryOptions,
 } from "@/features/learn-page/query/query-options"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
@@ -65,6 +69,14 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
         )
       })
 
+    // Prefetch progress-page queries
+    queryClient.prefetchQuery(userSessionsQueryOptions(user?.id || null))
+    queryClient.prefetchQuery(userWeekTimeDataQueryOptions(user?.id || null))
+    queryClient.prefetchQuery(vocabularyStatsQueryOptions(user?.id || null))
+    queryClient.prefetchQuery(
+      userDailyTimeQueryOptions(user?.id || null, new Date()),
+    )
+
     // TODO: Replace with real data from backend
     const mockStruggles = ["食べる", "飲む", "見る", "聞く", "話す"]
     const mockHistoryItems = [
@@ -96,8 +108,13 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
 })
 
 function RouteComponent() {
+  const loaderData = Route.useLoaderData()
+
   return (
-    <LearnPageProvider>
+    <LearnPageProvider
+      userId={loaderData().user?.id || null}
+      textbookId={loaderData().textbookId}
+    >
       <LayoutContent />
     </LearnPageProvider>
   )
@@ -148,7 +165,6 @@ function LayoutContent() {
       {/* Desktop Layout */}
       <SSRMediaQuery showFrom="xl">
         <div class="min-h-screen">
-          <LearnPageHeader variant="desktop" />
           <Outlet />
           <div class="pb-8" />
         </div>

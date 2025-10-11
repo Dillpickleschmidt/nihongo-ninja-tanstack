@@ -8,49 +8,60 @@ import {
 } from "@/features/learn-page/utils/loader-helpers"
 
 interface ModuleTypesListProps {
-  variant?: "desktop" | "mobile"
+  fromSheet?: boolean
 }
 
 const moduleTypes = [
-  { id: "grammar-notes", label: "Grammar Notes" },
-  { id: "kanji", label: "Jpdb.io (Kanji)" },
-  { id: "practice-sentence", label: "Sentence Practice" },
-  { id: "conjugation-practice", label: "Conjugation" },
-  { id: "counter-practice", label: "Counters" },
+  { id: "video", label: "Video" },
+  { id: "guides", label: "Guides" },
+  { id: "lesson", label: "Lessons" },
   { id: "vocab-list", label: "Vocab List" },
   { id: "vocab-practice", label: "Vocab Practice" },
-  { id: "listening-material", label: "Listening Material" },
+  { id: "sentence-practice", label: "Sentence Practice" },
+  { id: "conjugation-practice", label: "Conjugation" },
+  { id: "grammar-cheatsheet", label: "Cheatsheets" },
+  { id: "counter-practice", label: "Counters" },
   { id: "misc", label: "Misc" },
 ]
 
+// Override specific colors for this component
+function getOverriddenIconClasses(moduleType: string): string {
+  if (moduleType === "video") {
+    return "text-rose-600 dark:text-rose-500"
+  }
+  return getModuleIconClasses(moduleType)
+}
+
 export function ModuleTypesList(props: ModuleTypesListProps) {
+  const fromSheet = () => props.fromSheet ?? false
   return (
-    <div class={props.variant === "mobile" ? "space-y-1" : "space-y-2"}>
+    <div class="space-y-1">
       <For each={moduleTypes}>
         {(moduleType) => {
           const Icon = getModuleIcon(moduleType.id)
-          const iconClasses = getModuleIconClasses(moduleType.id)
+          const iconClasses = getOverriddenIconClasses(moduleType.id)
 
-          return (
-            <SheetClose
-              as={Button}
-              variant="ghost"
-              class={cn(
-                "w-full justify-start gap-3",
-                props.variant === "mobile"
-                  ? "h-12"
-                  : "border-card-foreground/70 bg-card text-muted-foreground flex h-12 w-full justify-between rounded-md border bg-gradient-to-br text-sm whitespace-nowrap backdrop-blur-sm transition-all duration-200 dark:from-neutral-600/10 dark:to-gray-600/5",
-              )}
-            >
-              <Icon
-                class={cn(
-                  iconClasses,
-                  props.variant === "mobile" ? "size-4!" : "size-4.5!",
-                )}
-              />
+          const buttonClass = cn(
+            "w-full justify-start gap-3",
+            fromSheet() ? "h-12" : "h-11",
+          )
+
+          const buttonContent = (
+            <>
+              <Icon class={cn(iconClasses, "size-4!")} />
               <span class="text-sm">{moduleType.label}</span>
               <div />
+            </>
+          )
+
+          return fromSheet() ? (
+            <SheetClose as={Button} variant="ghost" class={buttonClass}>
+              {buttonContent}
             </SheetClose>
+          ) : (
+            <Button variant="ghost" class={buttonClass}>
+              {buttonContent}
+            </Button>
           )
         }}
       </For>

@@ -135,7 +135,7 @@ export const NavigationSheet: Component<NavigationSheetProps> = (props) => {
           <div class="text-muted-foreground mb-2 px-2 text-xs tracking-wider uppercase">
             Module Types
           </div>
-          <ModuleTypesList variant="mobile" />
+          <ModuleTypesList fromSheet={true} />
         </div>
       </Show>
 
@@ -144,7 +144,7 @@ export const NavigationSheet: Component<NavigationSheetProps> = (props) => {
           <div class="text-muted-foreground mb-2 px-2 text-xs tracking-wider uppercase">
             Module Types
           </div>
-          <ModuleTypesList variant="mobile" />
+          <ModuleTypesList fromSheet={true} />
         </div>
       </Show>
     </nav>
