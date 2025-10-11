@@ -19,6 +19,9 @@ const MOBILE_CARD_BASE =
 const DESKTOP_CARD_BASE =
   "border-card-foreground/30 relative h-32 w-[180px] overflow-hidden rounded-2xl border opacity-0 backdrop-blur-sm hover:shadow-xl"
 
+const DESKTOP_CARD_VISIBLE =
+  "border-card-foreground/30 relative h-32 w-[180px] overflow-hidden rounded-2xl border backdrop-blur-sm hover:shadow-xl"
+
 // ============================================================================
 // Resource Card Wrapper - Handles dialog vs external link logic
 // ============================================================================
@@ -27,6 +30,7 @@ export function ResourceCardWrapper(props: {
   resource: EnrichedExternalResource
   thumbnailUrl: (() => string | null | undefined) | string | null | undefined
   variant: "desktop" | "mobile"
+  forceVisible?: boolean
 }) {
   return (
     <Dialog>
@@ -34,7 +38,8 @@ export function ResourceCardWrapper(props: {
         class={cn(
           "group block w-full cursor-pointer text-left transition-transform hover:scale-[1.02]",
           props.variant === "mobile" && MOBILE_CARD_BASE,
-          props.variant === "desktop" && DESKTOP_CARD_BASE,
+          props.variant === "desktop" &&
+            (props.forceVisible ? DESKTOP_CARD_VISIBLE : DESKTOP_CARD_BASE),
         )}
         data-featured-item={props.variant === "desktop" ? "" : undefined}
         style={
