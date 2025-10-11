@@ -28,6 +28,8 @@ import {
   Ear,
   Eye,
   PenTool,
+  Blocks,
+  MapPlus,
 } from "lucide-solid"
 import { Component } from "solid-js"
 
@@ -223,7 +225,8 @@ export function getModuleIcon(moduleType: string) {
     "vocab-test": GraduationCap,
     kanji: Library,
     "listening-material": Volume2,
-    misc: BookOpen,
+    extension: Blocks,
+    misc: MapPlus,
   }
   return iconComponents[moduleType] || BookOpen
 }
@@ -301,14 +304,23 @@ const MODULE_STYLES = {
     text: "text-purple-500 dark:text-purple-400",
     bg: "bg-purple-500 dark:bg-purple-400",
   },
+  extension: {
+    text: "text-emerald-600 dark:text-emerald-500",
+    bg: "bg-emerald-600 dark:bg-emerald-500",
+  },
   misc: {
-    text: "text-gray-600 dark:text-gray-500",
-    bg: "bg-gray-600 dark:bg-gray-500",
+    text: "text-pink-500 dark:text-pink-400",
+    bg: "bg-pink-500 dark:bg-pink-400",
   },
 }
 
+const DEFAULT_STYLE = {
+  text: "text-gray-600 dark:text-gray-500",
+  bg: "bg-gray-600 dark:bg-gray-500",
+}
+
 function getModuleStyle(moduleType: string) {
-  return MODULE_STYLES[moduleType] || MODULE_STYLES.misc
+  return MODULE_STYLES[moduleType] || DEFAULT_STYLE
 }
 
 export function getModuleIconClasses(moduleType: string) {
@@ -342,6 +354,8 @@ function getModuleGradient(moduleType: string) {
     "vocab-list": "bg-gradient-to-br from-sky-400/10 via-card to-sky-500/5",
     "vocab-test":
       "bg-gradient-to-br from-yellow-500/10 via-card to-yellow-600/5",
+    extension: "bg-gradient-to-br from-emerald-500/10 via-card to-emerald-600/5",
+    misc: "bg-gradient-to-br from-pink-500/10 via-card to-pink-600/5",
   }
   return gradientClasses[moduleType] || "bg-card"
 }
@@ -365,6 +379,8 @@ function getModuleLightBackground(moduleType: string) {
     reading: "bg-teal-50/70",
     "vocab-list": "bg-sky-50/70",
     "vocab-test": "bg-yellow-50/70",
+    extension: "bg-emerald-50/70",
+    misc: "bg-pink-50/70",
   }
   return lightBackgrounds[moduleType] || "bg-card"
 }
