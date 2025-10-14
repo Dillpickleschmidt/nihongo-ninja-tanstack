@@ -20,7 +20,7 @@ Each service has 3 modes:
 
 ## Service-Specific Notes
 
-- Anki: Uses username/password which eventually returns an API key. File upload coming soon.
+- Anki: Uses AnkiConnect plugin for local desktop integration. Requires Anki desktop app running on localhost. No credentials stored (client-side only).
 - WaniKani: Standard API key integration. File upload coming soon.
 - jpdb: Has file upload as alternative import method (API or file upload). Live mode limited to deck previews only (no external reviews) due to jpdb api kanji review restrictions.
 
