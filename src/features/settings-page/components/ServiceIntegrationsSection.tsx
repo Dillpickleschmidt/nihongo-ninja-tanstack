@@ -1,9 +1,12 @@
 // features/settings-page/components/ServiceIntegrationsSection.tsx
+import { createSignal } from "solid-js"
 import { AnkiServiceCard } from "./AnkiServiceCard"
 import { WanikaniServiceCard } from "./WanikaniServiceCard"
 import { JpdbServiceCard } from "./JpdbServiceCard"
+import { ImportReviewDialog } from "./ImportReviewDialog"
 import { jpdbAdapter } from "@/features/fsrs-import/adapters/jpdb-import-adapter"
 import { importReviewsServerFn } from "@/features/fsrs-import/server/importReviewsServerFn"
+import { validateJpdbImportServerFn } from "@/features/fsrs-import/server/validateJpdbImportServerFn"
 import { validateJpdbApiKey } from "@/features/service-api-functions/jpdb/validation"
 import { useMutation, useQueryClient } from "@tanstack/solid-query"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
@@ -19,6 +22,12 @@ import {
   getServiceCredentials,
   updateServiceCredentials,
 } from "@/features/main-cookies/functions/service-credentials"
+import type {
+  MatchedKanjiRadical,
+  UnmatchedKanjiRadical,
+  JpdbValidationResponse,
+} from "@/features/fsrs-import/core/jpdb-validation-types"
+import type { NormalizedCard } from "@/features/fsrs-import/core/schemas"
 
 export const ServiceIntegrationsSection = () => {
   const context = useRouteContext({ from: RootRoute.id })
@@ -31,6 +40,14 @@ export const ServiceIntegrationsSection = () => {
   )
 
   const { setError, clearError, setIsProcessing } = useServiceManagement()
+
+  // Dialog state
+  const [showReviewDialog, setShowReviewDialog] = createSignal(false)
+  const [validationData, setValidationData] =
+    createSignal<JpdbValidationResponse | null>(null)
+  const [normalizedCards, setNormalizedCards] = createSignal<
+    NormalizedCard[] | null
+  >(null)
 
   const handleJpdbImport = async (apiKey: string, file: File) => {
     setIsProcessing(true)
@@ -76,20 +93,52 @@ export const ServiceIntegrationsSection = () => {
       },
     })
 
-    // 2. Process and Import File
+    // 2. Parse and transform JPDB file
     try {
       const fileText = await file.text()
       const rawData = JSON.parse(fileText)
       if (!jpdbAdapter.validateInput(rawData)) {
         throw new Error("Invalid JPDB JSON format.")
       }
-      const normalizedCards = jpdbAdapter.transformCards(rawData)
-      if (normalizedCards.length === 0) {
+      const cards = jpdbAdapter.transformCards(rawData)
+      if (cards.length === 0) {
         throw new Error("No valid cards found in the JPDB export.")
       }
-      const importResult = await importReviewsServerFn({
-        data: { cards: normalizedCards, source: "jpdb" },
+
+      // 3. Validate with server (WaniKani lookup for kanji/radicals)
+      const validation = await validateJpdbImportServerFn({
+        data: { cards },
       })
+
+      // Store data for dialog
+      setValidationData(validation)
+      setNormalizedCards(cards)
+
+      // Show review dialog
+      setShowReviewDialog(true)
+      setIsProcessing(false)
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Unknown error occurred"
+      setError("jpdb", `Import failed: ${errorMessage}`)
+      setIsProcessing(false)
+    }
+  }
+
+  const handleConfirmImport = async () => {
+    const cards = normalizedCards()
+    if (!cards) return
+
+    setShowReviewDialog(false)
+    setIsProcessing(true)
+    clearError("jpdb")
+
+    try {
+      // Import with original normalized cards
+      const importResult = await importReviewsServerFn({
+        data: { cards, source: "jpdb" },
+      })
+
       if (importResult.success) {
         const currentSettings = settingsQuery.data
         updateMutation.mutate({
@@ -110,7 +159,16 @@ export const ServiceIntegrationsSection = () => {
       setError("jpdb", `Import failed: ${errorMessage}`)
     } finally {
       setIsProcessing(false)
+      setValidationData(null)
+      setNormalizedCards(null)
     }
+  }
+
+  const handleCancelImport = () => {
+    setShowReviewDialog(false)
+    setValidationData(null)
+    setNormalizedCards(null)
+    setIsProcessing(false)
   }
 
   const createServiceProps = (service: ServiceType) => ({
@@ -168,6 +226,16 @@ export const ServiceIntegrationsSection = () => {
       <JpdbServiceCard
         {...createServiceProps("jpdb")}
         onImport={handleJpdbImport}
+      />
+
+      {/* Import Review Dialog */}
+      <ImportReviewDialog
+        open={showReviewDialog()}
+        matched={validationData()?.matched || []}
+        unmatched={validationData()?.unmatched || []}
+        vocabularyCount={validationData()?.vocabularyCount || 0}
+        onConfirm={handleConfirmImport}
+        onCancel={handleCancelImport}
       />
     </div>
   )

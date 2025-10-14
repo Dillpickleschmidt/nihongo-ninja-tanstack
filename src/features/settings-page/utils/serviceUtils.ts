@@ -28,7 +28,7 @@ export const getModeDescription = (mode: ServiceMode) => {
         icon: "📡",
         title: "Live Access Mode",
         description:
-          "Connect to your account and access decks in real-time. Continue using your external SRS while browsing content here.",
+          "Connect to your account and access decks in real-time. Do reviews or browse from Nihongo Ninja while keeping your data on the external service.",
       }
     case "imported":
       return {
