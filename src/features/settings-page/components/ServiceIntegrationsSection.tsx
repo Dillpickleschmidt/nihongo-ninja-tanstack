@@ -11,7 +11,7 @@ import {
   userSettingsQueryOptions,
   updateUserSettingsMutation,
 } from "@/features/main-cookies/query/query-options"
-import { useRouteContext } from "@tanstack/solid-router"
+import { Link, useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 import { useServiceManagement } from "../context/ServiceManagementContext"
 import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"
@@ -139,7 +139,30 @@ export const ServiceIntegrationsSection = () => {
 
   return (
     <div class="space-y-6">
-      <h2 class="mb-6 text-2xl font-bold">Service Integrations</h2>
+      <div class="flex items-center space-x-3">
+        <h2 class="text-2xl font-bold">Service Integrations</h2>
+        <p class="text-muted-foreground mt-1">
+          Connect the spaced-repetition programs that you've been using!
+        </p>
+      </div>
+      <ul class="text-muted-foreground ml-5 list-disc space-y-3">
+        <li>
+          <strong>Disabled</strong> - Not being used
+        </li>
+        <li>
+          <strong>Live</strong> - Your changes sync straight to the service
+          immediately, so you can continue from there as you like. See the{" "}
+          <Link to="/guides/comparison" class="underline underline-offset-3">
+            comparison chart
+          </Link>{" "}
+          for supported features.
+        </li>
+        <li>
+          <strong>Import</strong> - One-time import of your existing review data
+          for use in Nihongo Ninja. This won't affect your data on the other
+          service.
+        </li>
+      </ul>
       <AnkiServiceCard {...createServiceProps("anki")} />
       <WanikaniServiceCard {...createServiceProps("wanikani")} />
       <JpdbServiceCard

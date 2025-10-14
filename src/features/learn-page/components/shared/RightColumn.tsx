@@ -1,6 +1,6 @@
 import ProfileCard from "../content/ProfileCard"
 import { Show } from "solid-js"
-import { Play } from "lucide-solid"
+import { History, Pen, Play } from "lucide-solid"
 import { useRouteContext, Link } from "@tanstack/solid-router"
 // import { HistoryContent } from "../content/HistoryContent"
 import { UpcomingModulesList } from "../content/UpcomingModulesList"
@@ -67,17 +67,36 @@ function RightColumn() {
             }
           >
             {(link) => (
-              <Link to={link()} class="px-0.5 pt-0.5" tabindex="-1">
+              <div class="px-0.5 pt-0.5">
                 <Button
                   variant="ghost"
-                  class="bg-primary/10 hover:bg-primary/20 text-primary w-full cursor-pointer rounded-lg px-4 py-2.5 focus-visible:ring-offset-0"
+                  class="text-primary ease-instant-hover-100 mb-2 w-full cursor-pointer rounded-lg border-2 border-[#523142] px-4 py-2.5 backdrop-blur-sm hover:opacity-80 focus-visible:ring-offset-0"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(244, 114, 182, 0.1) 100%)",
+                  }}
                   onClick={() => {}}
                   tabindex="3"
                 >
-                  <Play class="h-4 w-4" />
-                  <span class="text-sm font-medium">Start Studying</span>
+                  <History class="h-4 w-4" />
+                  <span class="text-sm font-medium">Review</span>
                 </Button>
-              </Link>
+                <Link to={link()} class="w-full" tabindex="-1">
+                  <Button
+                    variant="ghost"
+                    class="text-primary ease-instant-hover-100 w-full cursor-pointer rounded-lg border-2 border-[#2d4452] px-4 py-2.5 backdrop-blur-sm hover:opacity-80 focus-visible:ring-offset-0"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%)",
+                    }}
+                    onClick={() => {}}
+                    tabindex="3"
+                  >
+                    <Pen class="h-4 w-4" />
+                    <span class="text-sm font-medium">Start Studying</span>
+                  </Button>
+                </Link>
+              </div>
             )}
           </Show>
           <h3 class="pt-3 text-lg font-semibold">Upcoming Lessons</h3>

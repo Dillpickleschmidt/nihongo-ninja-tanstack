@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as LessonsRouteImport } from './routes/lessons'
 import { Route as KanjiTestRouteImport } from './routes/kanji-test'
@@ -25,7 +24,7 @@ import { Route as PracticePracticeIDRouteImport } from './routes/practice/$pract
 import { Route as ExternalResourcesResourceRouteImport } from './routes/external-resources/$resource'
 import { Route as ApiUploadOverrideRouteImport } from './routes/api/upload-override'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
-import { Route as HomeProfileRouteImport } from './routes/_home/profile'
+import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
 import { Route as HomeGuidesRouteImport } from './routes/_home/guides'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
@@ -74,16 +73,12 @@ import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 import { Route as HomePracticeConjugationRouteImport } from './routes/_home/practice/conjugation'
 import { Route as HomeLearnTextbookIdRouteImport } from './routes/_home/learn/$textbookId'
 import { Route as HomeGuidesSrsRouteImport } from './routes/_home/guides/srs'
+import { Route as HomeGuidesComparisonRouteImport } from './routes/_home/guides/comparison'
 import { Route as HomeAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/additional-resources/kanji-practice-sheet'
 import { Route as HomePracticeSentencePracticeIdRouteImport } from './routes/_home/practice/sentence-practice/$id'
 import { Route as HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/learn/additional-resources.kanji-practice-sheet'
 import { Route as HomeLearnTextbookIdChapterSlugRouteImport } from './routes/_home/learn/$textbookId/$chapterSlug'
 
-const SettingsRoute = SettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
@@ -161,9 +156,9 @@ const HomeVocabRoute = HomeVocabRouteImport.update({
   path: '/vocab',
   getParentRoute: () => HomeRoute,
 } as any)
-const HomeProfileRoute = HomeProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
+const HomeSettingsRoute = HomeSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeGuidesRoute = HomeGuidesRouteImport.update({
@@ -434,6 +429,11 @@ const HomeGuidesSrsRoute = HomeGuidesSrsRouteImport.update({
   path: '/srs',
   getParentRoute: () => HomeGuidesRoute,
 } as any)
+const HomeGuidesComparisonRoute = HomeGuidesComparisonRouteImport.update({
+  id: '/comparison',
+  path: '/comparison',
+  getParentRoute: () => HomeGuidesRoute,
+} as any)
 const HomeAdditionalResourcesKanjiPracticeSheetRoute =
   HomeAdditionalResourcesKanjiPracticeSheetRouteImport.update({
     id: '/kanji-practice-sheet',
@@ -465,12 +465,11 @@ export interface FileRoutesByFullPath {
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
-  '/settings': typeof SettingsRoute
   '/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
   '/dashboard': typeof HomeDashboardRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/guides': typeof HomeGuidesRouteWithChildren
-  '/profile': typeof HomeProfileRoute
+  '/settings': typeof HomeSettingsRoute
   '/vocab': typeof HomeVocabRoute
   '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
@@ -481,6 +480,7 @@ export interface FileRoutesByFullPath {
   '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
   '/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
+  '/guides/comparison': typeof HomeGuidesComparisonRoute
   '/guides/srs': typeof HomeGuidesSrsRoute
   '/learn/$textbookId': typeof HomeLearnTextbookIdRouteWithChildren
   '/practice/conjugation': typeof HomePracticeConjugationRoute
@@ -535,12 +535,11 @@ export interface FileRoutesByTo {
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
-  '/settings': typeof SettingsRoute
   '/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
   '/dashboard': typeof HomeDashboardRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/guides': typeof HomeGuidesRouteWithChildren
-  '/profile': typeof HomeProfileRoute
+  '/settings': typeof HomeSettingsRoute
   '/vocab': typeof HomeVocabRoute
   '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
@@ -551,6 +550,7 @@ export interface FileRoutesByTo {
   '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
   '/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
+  '/guides/comparison': typeof HomeGuidesComparisonRoute
   '/guides/srs': typeof HomeGuidesSrsRoute
   '/learn/$textbookId': typeof HomeLearnTextbookIdRouteWithChildren
   '/practice/conjugation': typeof HomePracticeConjugationRoute
@@ -607,12 +607,11 @@ export interface FileRoutesById {
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
-  '/settings': typeof SettingsRoute
   '/_home/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
   '/_home/dashboard': typeof HomeDashboardRoute
   '/_home/grammar-notes': typeof HomeGrammarNotesRoute
   '/_home/guides': typeof HomeGuidesRouteWithChildren
-  '/_home/profile': typeof HomeProfileRoute
+  '/_home/settings': typeof HomeSettingsRoute
   '/_home/vocab': typeof HomeVocabRoute
   '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
@@ -623,6 +622,7 @@ export interface FileRoutesById {
   '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
   '/_home/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
+  '/_home/guides/comparison': typeof HomeGuidesComparisonRoute
   '/_home/guides/srs': typeof HomeGuidesSrsRoute
   '/_home/learn/$textbookId': typeof HomeLearnTextbookIdRouteWithChildren
   '/_home/practice/conjugation': typeof HomePracticeConjugationRoute
@@ -679,12 +679,11 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
-    | '/settings'
     | '/additional-resources'
     | '/dashboard'
     | '/grammar-notes'
     | '/guides'
-    | '/profile'
+    | '/settings'
     | '/vocab'
     | '/api/upload-override'
     | '/external-resources/$resource'
@@ -695,6 +694,7 @@ export interface FileRouteTypes {
     | '/practice/hiragana-quiz'
     | '/practice/review'
     | '/additional-resources/kanji-practice-sheet'
+    | '/guides/comparison'
     | '/guides/srs'
     | '/learn/$textbookId'
     | '/practice/conjugation'
@@ -749,12 +749,11 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
-    | '/settings'
     | '/additional-resources'
     | '/dashboard'
     | '/grammar-notes'
     | '/guides'
-    | '/profile'
+    | '/settings'
     | '/vocab'
     | '/api/upload-override'
     | '/external-resources/$resource'
@@ -765,6 +764,7 @@ export interface FileRouteTypes {
     | '/practice/hiragana-quiz'
     | '/practice/review'
     | '/additional-resources/kanji-practice-sheet'
+    | '/guides/comparison'
     | '/guides/srs'
     | '/learn/$textbookId'
     | '/practice/conjugation'
@@ -820,12 +820,11 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
-    | '/settings'
     | '/_home/additional-resources'
     | '/_home/dashboard'
     | '/_home/grammar-notes'
     | '/_home/guides'
-    | '/_home/profile'
+    | '/_home/settings'
     | '/_home/vocab'
     | '/api/upload-override'
     | '/external-resources/$resource'
@@ -836,6 +835,7 @@ export interface FileRouteTypes {
     | '/practice/hiragana-quiz'
     | '/practice/review'
     | '/_home/additional-resources/kanji-practice-sheet'
+    | '/_home/guides/comparison'
     | '/_home/guides/srs'
     | '/_home/learn/$textbookId'
     | '/_home/practice/conjugation'
@@ -892,7 +892,6 @@ export interface RootRouteChildren {
   KanjiTestRoute: typeof KanjiTestRoute
   LessonsRoute: typeof LessonsRouteWithChildren
   PricingRoute: typeof PricingRoute
-  SettingsRoute: typeof SettingsRoute
   ApiUploadOverrideRoute: typeof ApiUploadOverrideRoute
   ExternalResourcesResourceRoute: typeof ExternalResourcesResourceRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
@@ -909,13 +908,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/solid-router' {
   interface FileRoutesByPath {
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
@@ -1021,11 +1013,11 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeVocabRouteImport
       parentRoute: typeof HomeRoute
     }
-    '/_home/profile': {
-      id: '/_home/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof HomeProfileRouteImport
+    '/_home/settings': {
+      id: '/_home/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof HomeSettingsRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/guides': {
@@ -1364,6 +1356,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeGuidesSrsRouteImport
       parentRoute: typeof HomeGuidesRoute
     }
+    '/_home/guides/comparison': {
+      id: '/_home/guides/comparison'
+      path: '/comparison'
+      fullPath: '/guides/comparison'
+      preLoaderRoute: typeof HomeGuidesComparisonRouteImport
+      parentRoute: typeof HomeGuidesRoute
+    }
     '/_home/additional-resources/kanji-practice-sheet': {
       id: '/_home/additional-resources/kanji-practice-sheet'
       path: '/kanji-practice-sheet'
@@ -1411,10 +1410,12 @@ const HomeAdditionalResourcesRouteWithChildren =
   )
 
 interface HomeGuidesRouteChildren {
+  HomeGuidesComparisonRoute: typeof HomeGuidesComparisonRoute
   HomeGuidesSrsRoute: typeof HomeGuidesSrsRoute
 }
 
 const HomeGuidesRouteChildren: HomeGuidesRouteChildren = {
+  HomeGuidesComparisonRoute: HomeGuidesComparisonRoute,
   HomeGuidesSrsRoute: HomeGuidesSrsRoute,
 }
 
@@ -1438,7 +1439,7 @@ interface HomeRouteChildren {
   HomeDashboardRoute: typeof HomeDashboardRoute
   HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
   HomeGuidesRoute: typeof HomeGuidesRouteWithChildren
-  HomeProfileRoute: typeof HomeProfileRoute
+  HomeSettingsRoute: typeof HomeSettingsRoute
   HomeVocabRoute: typeof HomeVocabRoute
   HomeLearnTextbookIdRoute: typeof HomeLearnTextbookIdRouteWithChildren
   HomePracticeConjugationRoute: typeof HomePracticeConjugationRoute
@@ -1452,7 +1453,7 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeDashboardRoute: HomeDashboardRoute,
   HomeGrammarNotesRoute: HomeGrammarNotesRoute,
   HomeGuidesRoute: HomeGuidesRouteWithChildren,
-  HomeProfileRoute: HomeProfileRoute,
+  HomeSettingsRoute: HomeSettingsRoute,
   HomeVocabRoute: HomeVocabRoute,
   HomeLearnTextbookIdRoute: HomeLearnTextbookIdRouteWithChildren,
   HomePracticeConjugationRoute: HomePracticeConjugationRoute,
@@ -1556,7 +1557,6 @@ const rootRouteChildren: RootRouteChildren = {
   KanjiTestRoute: KanjiTestRoute,
   LessonsRoute: LessonsRouteWithChildren,
   PricingRoute: PricingRoute,
-  SettingsRoute: SettingsRoute,
   ApiUploadOverrideRoute: ApiUploadOverrideRoute,
   ExternalResourcesResourceRoute: ExternalResourcesResourceRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,
