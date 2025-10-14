@@ -47,10 +47,10 @@ export function BottomNav(props: BottomNavProps) {
       href: "/search",
     },
     {
-      id: "profile",
+      id: "settings",
       icon: User,
-      label: "Profile",
-      href: "/profile",
+      label: "Settings",
+      href: "/settings",
     },
   ]
 

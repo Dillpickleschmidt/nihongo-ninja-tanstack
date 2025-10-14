@@ -1,4 +1,5 @@
 // features/auth/components/Logout.tsx
+import { Button } from "@/components/ui/button"
 import { clearFoldersAndDecks } from "@/features/vocab-page/storage/sessionStorage"
 
 export default function LogoutButton() {
@@ -8,9 +9,12 @@ export default function LogoutButton() {
 
   return (
     <form action="/api/auth/logout" method="post" onSubmit={handleLogout}>
-      <button type="submit" class="rounded bg-red-500 px-5 py-2 text-white">
+      <Button
+        type="submit"
+        class="cursor-pointer bg-red-500 text-white hover:bg-red-600"
+      >
         Logout
-      </button>
+      </Button>
     </form>
   )
 }

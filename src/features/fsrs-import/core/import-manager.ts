@@ -159,6 +159,70 @@ export class ImportSessionManager {
   }
 
   /**
+   * Build a single FSRS card for vocabulary without WaniKani dependency.
+   */
+  static buildVocabularyFSRSCard(
+    card: NormalizedCard,
+    existingCards: any[],
+    context: BatchProcessingContext,
+  ): ProcessedCard | null {
+    try {
+      const practiceItemKey = card.searchTerm
+      const type = "vocabulary"
+
+      // Determine mode based on kanji presence
+      const hasKanji = /[\u4e00-\u9faf]/.test(card.searchTerm)
+      const mode = hasKanji ? "meanings" : "spellings"
+
+      // Find matching existing card
+      const existingCard = existingCards.find(
+        (c) => c.practice_item_key === practiceItemKey && c.type === type,
+      )
+
+      // Convert existing reviews to the format expected by review merger
+      const existingReviews =
+        existingCard?.fsrs_logs?.map((log: any) => ({
+          timestamp: new Date(log.review),
+          grade: log.rating as FSRSProcessingGrade,
+          source: "existing",
+        })) || []
+
+      // Merge reviews using utility
+      const mergedReviews = mergeReviews(existingReviews, card.reviews)
+
+      // Simulate FSRS reviews
+      const initialCard =
+        existingCard?.fsrs_card || createEmptyCard(new Date("2000-01-01"))
+
+      const { finalCard, logs } = simulateFSRSReviews(
+        initialCard,
+        mergedReviews,
+        context.fsrsInstance,
+      )
+
+      const processedCard = {
+        practice_item_key: practiceItemKey,
+        type,
+        fsrs_card: finalCard,
+        mode,
+        fsrs_logs: logs,
+        source: `${context.source}-${card.source}`,
+      }
+
+      // Validate the result with Zod
+      if (!validateCardStructure(processedCard)) {
+        console.error(`Invalid processed card structure for ${card.searchTerm}`)
+        return null
+      }
+
+      return processedCard
+    } catch (error) {
+      console.error(`Error building vocabulary FSRS card for ${card.searchTerm}:`, error)
+      return null
+    }
+  }
+
+  /**
    * Process a batch of cards with pre-fetched data.
    */
   static processCards(
@@ -171,6 +235,15 @@ export class ImportSessionManager {
 
     for (const card of cards) {
       const subjects = waniKaniResults.get(card.searchTerm) || []
+
+      if (subjects.length === 0) {
+        // Only log unmatched kanji/radicals (vocabulary is handled separately)
+        if (card.source.includes("kanji")) {
+          console.log(
+            `[Import] No WaniKani match found for kanji/radical: "${card.searchTerm}" (source: ${card.source})`,
+          )
+        }
+      }
 
       for (const subject of subjects) {
         const processedCard = this.buildFSRSCard(
@@ -379,12 +452,27 @@ export class ImportSessionManager {
     context: BatchProcessingContext,
     dependencies: ImportDependencies,
   ): Promise<ProcessedCard[]> {
-    // Step 1: Get search terms
-    const searchTerms = ImportSessionManager.extractSearchTerms(cards)
+    // Separate vocabulary from kanji/radicals
+    const kanjiRadicalCards: NormalizedCard[] = []
+    const vocabularyCards: NormalizedCard[] = []
 
-    // Step 2: Fetch WaniKani mappings (injected dependency)
+    for (const card of cards) {
+      // Cards with sources containing "kanji" are kanji/radicals
+      if (card.source.includes("kanji")) {
+        kanjiRadicalCards.push(card)
+      } else {
+        vocabularyCards.push(card)
+      }
+    }
+
+    // Step 1: Get search terms for kanji/radicals only
+    const searchTerms = kanjiRadicalCards.map((card) => card.searchTerm)
+
+    // Step 2: Fetch WaniKani mappings for kanji/radicals only
     const waniKaniResults =
-      await dependencies.waniKaniService.batchFindSubjects(searchTerms)
+      searchTerms.length > 0
+        ? await dependencies.waniKaniService.batchFindSubjects(searchTerms)
+        : new Map<string, any[]>()
 
     // Step 3: Extract subject slugs for database query
     const subjectSlugs =
@@ -400,12 +488,38 @@ export class ImportSessionManager {
     const existingCardsData =
       ImportSessionManager.groupExistingCardsBySlug(existingCardsArray)
 
-    // Step 6: Process cards using pure logic
-    return ImportSessionManager.processCards(
-      cards,
+    // Step 6: Process kanji/radical cards with WaniKani lookup
+    const processedKanjiRadicals = ImportSessionManager.processCards(
+      kanjiRadicalCards,
       waniKaniResults,
       existingCardsData,
       context,
     )
+
+    // Step 7: Process vocabulary cards without WaniKani lookup
+    const vocabularyKeys = vocabularyCards.map((card) => card.searchTerm)
+    const existingVocabArray = await dependencies.getFSRSCards(
+      context.userId,
+      vocabularyKeys,
+    )
+    const existingVocabData =
+      ImportSessionManager.groupExistingCardsBySlug(existingVocabArray)
+
+    const processedVocabulary: ProcessedCard[] = []
+    for (const card of vocabularyCards) {
+      const processedCard = ImportSessionManager.buildVocabularyFSRSCard(
+        card,
+        existingVocabData.get(card.searchTerm) || [],
+        context,
+      )
+
+      // Skip never-forget cards and invalid cards
+      if (processedCard && processedCard.fsrs_card.stability !== Infinity) {
+        processedVocabulary.push(processedCard)
+      }
+    }
+
+    // Return combined kanji/radicals and vocabulary
+    return [...processedKanjiRadicals, ...processedVocabulary]
   }
 }

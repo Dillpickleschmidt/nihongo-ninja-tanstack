@@ -10,6 +10,10 @@ import { ServiceCard } from "./ServiceCard"
 import { validateJpdbApiKey } from "@/features/service-api-functions/jpdb/validation"
 import { useServiceManagement } from "../context/ServiceManagementContext"
 import type { ServicePreference } from "@/features/main-cookies/schemas/user-settings"
+import {
+  getServiceCredentials,
+  updateServiceCredentials,
+} from "@/features/main-cookies/functions/service-credentials"
 
 type JpdbServiceCardProps = {
   preference: () => ServicePreference
@@ -33,6 +37,14 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
     const result = await validateJpdbApiKey(apiKey)
 
     if (result.success) {
+      const currentCredentials = await getServiceCredentials()
+      await updateServiceCredentials({
+        data: {
+          ...currentCredentials,
+          jpdb: { ...currentCredentials.jpdb, api_key: apiKey },
+        },
+      })
+
       props.updateServicePreference({
         mode: "live",
         is_api_key_valid: true,

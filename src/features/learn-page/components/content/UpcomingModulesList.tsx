@@ -200,10 +200,7 @@ export function UpcomingModulesList() {
       )
       if (firstUpcomingEl) {
         const elementTop = (firstUpcomingEl as HTMLElement).offsetTop
-        const scrollTop = Math.max(
-          0,
-          elementTop - containerRef.clientHeight - SCROLL_OFFSET_PX,
-        )
+        const scrollTop = Math.max(0, elementTop - 350 - SCROLL_OFFSET_PX)
         initialScrollPosition = scrollTop
         containerRef.scrollTop = scrollTop
         setHasScrolledToPosition(true)

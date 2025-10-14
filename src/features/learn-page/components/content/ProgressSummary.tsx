@@ -1,6 +1,6 @@
 // features/learn-page-v2/components/content/ProgressSummary.tsx
 import { Show } from "solid-js"
-import { Loader2 } from "lucide-solid"
+import { Flame, Loader2 } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 
@@ -18,9 +18,9 @@ export function ProgressSummary() {
       <div class="flex justify-between">
         {/* Knowledge Growth */}
         <div>
-          <h4 class="text-muted-foreground mb-1 text-xs tracking-wide uppercase">
-            Knowledge
-          </h4>
+          {/* <h4 class="text-muted-foreground mb-1 text-xs tracking-wide uppercase"> */}
+          {/*   Knowledge */}
+          {/* </h4> */}
           <Show
             when={
               !context.vocabStatsQuery.isPending &&
@@ -52,9 +52,9 @@ export function ProgressSummary() {
         {/* Consistency — centered column */}
         <div class="flex justify-center">
           <div>
-            <h4 class="text-muted-foreground mb-1 text-xs tracking-wide uppercase">
-              Consistency
-            </h4>
+            {/* <h4 class="text-muted-foreground mb-1 text-xs tracking-wide uppercase"> */}
+            {/*   Consistency */}
+            {/* </h4> */}
             <Show
               when={
                 !context.sessionsQuery.isPending &&
@@ -86,9 +86,9 @@ export function ProgressSummary() {
 
         {/* Streak */}
         <div class="text-right">
-          <h4 class="text-muted-foreground mb-1 text-xs tracking-wide uppercase">
-            Streak
-          </h4>
+          {/* <h4 class="text-muted-foreground mb-1 text-xs tracking-wide uppercase"> */}
+          {/*   Streak */}
+          {/* </h4> */}
           <Show
             when={
               !context.sessionsQuery.isPending && !context.sessionsQuery.isError
@@ -104,6 +104,7 @@ export function ProgressSummary() {
             }
           >
             <p class="text-2xl leading-none font-bold text-amber-400">
+              <Flame class="-mt-1.5 mr-1 -ml-2 inline h-6 w-6" />
               {context.streak().data} days
             </p>
             <p class="text-muted-foreground mt-2 text-xs">

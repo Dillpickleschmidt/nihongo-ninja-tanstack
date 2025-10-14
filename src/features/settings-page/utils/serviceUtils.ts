@@ -28,14 +28,14 @@ export const getModeDescription = (mode: ServiceMode) => {
         icon: "📡",
         title: "Live Access Mode",
         description:
-          "Connect to your account and access decks in real-time. Continue using your external SRS while browsing content here.",
+          "Connect to your account and access decks in real-time. Do reviews or browse from Nihongo Ninja while keeping your data on the external service.",
       }
     case "imported":
       return {
         icon: "📦",
         title: "Import Data Mode",
         description:
-          "Import your data once to switch to our SRS system. Your data becomes detached from other services.",
+          "Import your data once to switch to our SRS system. Your data becomes detached from other services. If you've practiced the same terms in both places, their reviews will be combined (nothing is deleted). Cards with the same review timestamp are deduplicated, so you can re-import as many times as you want without fear of duplicates. ;)",
       }
     default:
       return {

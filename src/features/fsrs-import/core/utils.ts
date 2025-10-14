@@ -1,11 +1,9 @@
-import type { Card, ReviewLog } from "ts-fsrs"
 import {
   type ProcessedCard,
   type DeduplicationStats,
   type NormalizedReview,
   type DBPracticeItemType,
   type PracticeMode,
-  ProcessedCardSchema,
   parseProcessedCard,
 } from "./schemas"
 

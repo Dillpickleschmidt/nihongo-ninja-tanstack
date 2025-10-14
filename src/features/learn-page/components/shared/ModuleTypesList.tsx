@@ -1,4 +1,5 @@
 import { For } from "solid-js"
+import { Link } from "@tanstack/solid-router"
 import { Button } from "@/components/ui/button"
 import { SheetClose } from "@/components/ui/sheet"
 import { cn } from "@/utils"
@@ -12,16 +13,29 @@ interface ModuleTypesListProps {
 }
 
 const moduleTypes = [
-  { id: "video", label: "Video" },
-  { id: "guides", label: "Guides" },
-  { id: "lesson", label: "Lessons" },
-  { id: "vocab-list", label: "Vocab List" },
-  { id: "vocab-practice", label: "Vocab Practice" },
-  { id: "sentence-practice", label: "Sentence Practice" },
-  { id: "conjugation-practice", label: "Conjugation" },
-  { id: "grammar-cheatsheet", label: "Cheatsheets" },
-  { id: "counter-practice", label: "Counters" },
-  { id: "misc", label: "Misc" },
+  { id: "video", label: "Video", href: "/video" },
+  { id: "extension", label: "Extension", href: "/extension" },
+  { id: "guides", label: "Guides", href: "/guides" },
+  { id: "lesson", label: "Lessons", href: "/lessons" },
+  { id: "vocab-list", label: "Vocab List", href: "/vocab-list" },
+  { id: "vocab-practice", label: "Vocab Practice", href: "/vocab" },
+  {
+    id: "sentence-practice",
+    label: "Sentence Practice",
+    href: "/sentence-practice",
+  },
+  {
+    id: "conjugation-practice",
+    label: "Conjugation",
+    href: "/conjugation",
+  },
+  {
+    id: "grammar-cheatsheet",
+    label: "Cheatsheets",
+    href: "/cheatsheets",
+  },
+  { id: "counter-practice", label: "Counters", href: "/counters" },
+  { id: "misc", label: "Misc", href: "/misc" },
 ]
 
 // Override specific colors for this component
@@ -42,7 +56,7 @@ export function ModuleTypesList(props: ModuleTypesListProps) {
           const iconClasses = getOverriddenIconClasses(moduleType.id)
 
           const buttonClass = cn(
-            "w-full justify-start gap-3",
+            "w-full justify-start gap-3 hover:bg-transparent hover:text-muted-foreground transition-all ease-instant-hover-200 origin-left",
             fromSheet() ? "h-12" : "h-11",
           )
 
@@ -55,13 +69,19 @@ export function ModuleTypesList(props: ModuleTypesListProps) {
           )
 
           return fromSheet() ? (
-            <SheetClose as={Button} variant="ghost" class={buttonClass}>
-              {buttonContent}
+            <SheetClose>
+              <Link to={moduleType.href}>
+                <Button variant="ghost" class={buttonClass}>
+                  {buttonContent}
+                </Button>
+              </Link>
             </SheetClose>
           ) : (
-            <Button variant="ghost" class={buttonClass}>
-              {buttonContent}
-            </Button>
+            <Link to={moduleType.href}>
+              <Button variant="ghost" class={buttonClass}>
+                {buttonContent}
+              </Button>
+            </Link>
           )
         }}
       </For>

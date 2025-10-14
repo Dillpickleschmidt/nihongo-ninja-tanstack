@@ -4,13 +4,7 @@ import { CustomFSRSRating as ProcessorCustomFSRSRating } from "../services/space
 
 export const FSRSProcessingGradeSchema = z.union([
   z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
-  z.any().refine((val) => {
-    return (
-      val === ProcessorCustomFSRSRating.Ignore ||
-      val === ProcessorCustomFSRSRating.Forget ||
-      val === ProcessorCustomFSRSRating.NeverForget
-    )
-  }, "Must be a valid custom FSRS rating symbol"),
+  z.enum(["IGNORE_REVIEW", "FORGET_CARD", "NEVER_FORGET_CARD"]),
 ])
 export type FSRSProcessingGrade = z.infer<typeof FSRSProcessingGradeSchema>
 
@@ -30,7 +24,13 @@ export const FSRSCardSchema = z
 
 export const FSRSReviewLogSchema = z
   .object({
-    rating: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
+    rating: z.union([
+      z.literal(0), // Forget rating
+      z.literal(1),
+      z.literal(2),
+      z.literal(3),
+      z.literal(4),
+    ]),
     state: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
     due: z.date(),
     stability: z.number(),
