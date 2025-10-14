@@ -13,13 +13,14 @@ import {
 // CONSTANTS AND TYPES
 // =============================================================================
 
-const NEVER_FORGET_YEARS = 10
+const NEVER_FORGET_YEARS = 100
 
 // Custom actions for specific grades
+// Using string constants instead of Symbols for SSR serialization compatibility
 export const CustomFSRSRating = {
-  Ignore: Symbol("IGNORE_REVIEW"),
-  Forget: Symbol("FORGET_CARD"),
-  NeverForget: Symbol("NEVER_FORGET_CARD"),
+  Ignore: "IGNORE_REVIEW" as const,
+  Forget: "FORGET_CARD" as const,
+  NeverForget: "NEVER_FORGET_CARD" as const,
 } as const
 
 // Type for FSRS Grades or custom actions

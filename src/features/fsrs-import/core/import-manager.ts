@@ -172,6 +172,12 @@ export class ImportSessionManager {
     for (const card of cards) {
       const subjects = waniKaniResults.get(card.searchTerm) || []
 
+      if (subjects.length === 0) {
+        console.log(
+          `[Import] No WaniKani match found for: "${card.searchTerm}" (source: ${card.source})`,
+        )
+      }
+
       for (const subject of subjects) {
         const processedCard = this.buildFSRSCard(
           card,

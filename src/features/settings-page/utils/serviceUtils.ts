@@ -35,7 +35,7 @@ export const getModeDescription = (mode: ServiceMode) => {
         icon: "📦",
         title: "Import Data Mode",
         description:
-          "Import your data once to switch to our SRS system. Your data becomes detached from other services.",
+          "Import your data once to switch to our SRS system. Your data becomes detached from other services. If you've practiced the same terms in both places, their reviews will be combined (nothing is deleted). Cards with the same review timestamp are deduplicated, so you can re-import as many times as you want without fear of duplicates. ;)",
       }
     default:
       return {
