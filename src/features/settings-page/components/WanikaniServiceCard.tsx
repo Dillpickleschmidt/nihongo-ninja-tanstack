@@ -63,11 +63,18 @@ export const WanikaniServiceCard = (props: ServiceCardProps) => {
       onModeChange={(mode) => props.updateServicePreference({ mode })}
     >
       <Show when={props.preference().mode === "live"}>
-        <div class="space-y-4">
+        <form
+          class="space-y-4"
+          onSubmit={(e) => {
+            e.preventDefault()
+            handleConnect()
+          }}
+        >
           <TextField>
             <TextFieldLabel class="text-white">WaniKani API Key</TextFieldLabel>
             <TextFieldInput
               type="password"
+              autocomplete="off"
               placeholder="Enter your WaniKani API key"
               class="border-white/20 bg-white/10 text-white placeholder:text-white/50"
               value={wanikaniApiKey()}
@@ -75,7 +82,7 @@ export const WanikaniServiceCard = (props: ServiceCardProps) => {
             />
           </TextField>
           <Button
-            onClick={handleConnect}
+            type="submit"
             disabled={!wanikaniApiKey() || isProcessing()}
             class="border-white/30 bg-white/20 text-white hover:bg-white/30"
           >
@@ -88,7 +95,7 @@ export const WanikaniServiceCard = (props: ServiceCardProps) => {
               </p>
             </div>
           </Show>
-        </div>
+        </form>
       </Show>
 
       <Show when={props.preference().mode === "imported"}>

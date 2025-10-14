@@ -112,3 +112,22 @@ export const getCardsInfo = createClientOnlyFn(
     return await ankiConnectRequest<any[]>("cardsInfo", { cards: cardIds })
   },
 )
+
+/**
+ * Get all due cards with their details
+ */
+export const getDueCards = createClientOnlyFn(async (): Promise<any[]> => {
+  const dueCardIds = await ankiConnectRequest<number[]>("findCards", {
+    query: "is:due",
+  })
+
+  if (dueCardIds.length === 0) {
+    return []
+  }
+
+  const cardsInfo = await ankiConnectRequest<any[]>("cardsInfo", {
+    cards: dueCardIds,
+  })
+
+  return cardsInfo
+})

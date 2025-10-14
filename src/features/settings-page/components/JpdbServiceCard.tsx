@@ -85,11 +85,18 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
       onModeChange={(mode) => props.updateServicePreference({ mode })}
     >
       <Show when={props.preference().mode === "live"}>
-        <div class="space-y-4">
+        <form
+          class="space-y-4"
+          onSubmit={(e) => {
+            e.preventDefault()
+            handleConnect()
+          }}
+        >
           <TextField>
             <TextFieldLabel class="text-white">jpdb API Key</TextFieldLabel>
             <TextFieldInput
               type="password"
+              autocomplete="off"
               placeholder="Enter your jpdb API key"
               class="border-white/20 bg-white/10 text-white placeholder:text-white/50"
               value={jpdbApiKey()}
@@ -97,7 +104,7 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
             />
           </TextField>
           <Button
-            onClick={handleConnect}
+            type="submit"
             disabled={!jpdbApiKey() || isProcessing()}
             class="border-white/30 bg-white/20 text-white hover:bg-white/30"
           >
@@ -110,16 +117,23 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
               </p>
             </div>
           </Show>
-        </div>
+        </form>
       </Show>
 
       <Show when={props.preference().mode === "imported"}>
         <div class="space-y-4">
-          <div class="space-y-4">
+          <form
+            class="space-y-4"
+            onSubmit={(e) => {
+              e.preventDefault()
+              handleImportClick()
+            }}
+          >
             <TextField>
               <TextFieldLabel class="text-white">jpdb API Key</TextFieldLabel>
               <TextFieldInput
                 type="password"
+                autocomplete="off"
                 placeholder="Enter your jpdb API key"
                 class="border-white/20 bg-white/10 text-white placeholder:text-white/50"
                 value={jpdbApiKey()}
@@ -137,7 +151,7 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
               />
             </div>
             <Button
-              onClick={handleImportClick}
+              type="submit"
               disabled={isProcessing() || !jpdbApiKey() || !selectedFile()}
               class="border-white/30 bg-white/20 text-white hover:bg-white/30"
             >
@@ -150,7 +164,7 @@ export const JpdbServiceCard = (props: JpdbServiceCardProps) => {
               only a very small amount and will minimally affect your
               experience.
             </p>
-          </div>
+          </form>
           <Show when={props.preference().data_imported}>
             <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">
               <p class="text-sm text-green-100">
