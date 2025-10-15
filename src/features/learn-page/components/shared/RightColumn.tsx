@@ -22,17 +22,25 @@ function RightColumn() {
   //   return <HistoryContent variant="mobile" />
   // }
 
-  // Filter out completed modules from upcoming list
-  const upcomingModules = () => {
-    const data = upcomingModulesQuery.data || []
-    const completedSet = new Set(
-      completionsQuery.data?.map((c) => c.module_path) || [],
-    )
-    return data.filter((item) => !completedSet.has(item.id))
-  }
-
+  // Get first upcoming link for "Start Studying" button
   const getFirstUpcomingLink = () => {
-    const first = upcomingModules()[0]
+    if (
+      upcomingModulesQuery.isPending ||
+      upcomingModulesQuery.isError ||
+      completionsQuery.isPending ||
+      completionsQuery.isError
+    ) {
+      return null
+    }
+
+    const completedSet = new Set(
+      completionsQuery.data.map((c) => c.module_path),
+    )
+    const filteredModules = upcomingModulesQuery.data.filter(
+      (item) => !completedSet.has(item.id),
+    )
+
+    const first = filteredModules[0]
     if (!first) return null
     const module = modules[first.id]
     return module ? getLinkTo(module, first.id) : null
@@ -104,7 +112,10 @@ function RightColumn() {
 
           <h3 class="pt-3 text-lg font-semibold">Upcoming Lessons</h3>
           <div class="px-4">
-            <UpcomingModulesList />
+            <UpcomingModulesList
+              upcomingModulesQuery={upcomingModulesQuery}
+              completionsQuery={completionsQuery}
+            />
           </div>
         </Show>
       </div>

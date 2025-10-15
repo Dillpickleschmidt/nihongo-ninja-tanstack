@@ -1,5 +1,6 @@
 import { createSignal, Show } from "solid-js"
 import { createFileRoute, useRouteContext, Link } from "@tanstack/solid-router"
+import { cn } from "@/utils"
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -9,16 +10,47 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
+import { UpcomingModulesList } from "@/features/learn-page/components/content/UpcomingModulesList"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
-import { dueCardsCountQueryOptions } from "@/features/learn-page/query/query-options"
+import {
+  dueCardsCountQueryOptions,
+  upcomingModulesQueryOptions,
+  completedModulesQueryOptions,
+} from "@/features/learn-page/query/query-options"
 import { Route as RootRoute } from "@/routes/__root"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { getActiveLiveService } from "@/features/srs-services/utils"
 import { useServiceSwitcher } from "@/features/settings-page/hooks/useServiceSwitcher"
 import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"
+import { TextbookIDEnum } from "@/data/types"
 
 export const Route = createFileRoute("/_home/review")({
+  loader: async ({ context }) => {
+    const { user, queryClient } = context
+
+    // Get user settings from cache (already loaded in root)
+    const userSettings = queryClient.getQueryData(
+      userSettingsQueryOptions(user?.id || null).queryKey,
+    )!
+
+    // Prefetch queries for review page
+    queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
+    queryClient.prefetchQuery(
+      dueCardsCountQueryOptions(
+        user?.id || null,
+        userSettings["service-preferences"],
+      ),
+    )
+    await queryClient.ensureQueryData(
+      upcomingModulesQueryOptions(
+        user?.id || null,
+        userSettings["active-textbook"] as TextbookIDEnum,
+        userSettings["textbook-positions"]?.[userSettings["active-textbook"]] ||
+          null,
+      ),
+    )
+  },
   component: RouteComponent,
 })
 
@@ -31,6 +63,7 @@ function ReviewCard(props: {
   breakdown?: string
   onClick: () => void
   disabled?: boolean
+  variant: "mobile" | "desktop"
 }) {
   const gradients = {
     blue: "from-sky-500/40 via-sky-400/20 to-sky-600/30",
@@ -50,25 +83,47 @@ function ReviewCard(props: {
     amber: "text-amber-400",
   }
 
+  const isDesktop = props.variant === "desktop"
+
   return (
     <div
-      class={`w-full rounded-xl border sm:w-[300px] ${borders[props.color]} bg-gradient-to-br ${gradients[props.color]} shadow-sm backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-[2px] hover:shadow-md`}
+      class={cn(
+        "w-full rounded-xl border bg-gradient-to-br shadow-sm backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-[2px] hover:shadow-md",
+        borders[props.color],
+        gradients[props.color],
+        isDesktop && "w-[300px]",
+      )}
     >
-      <div class="flex flex-col items-center px-6 py-6 text-center sm:px-8 sm:py-10">
+      <div
+        class={cn(
+          "flex flex-col items-center text-center",
+          isDesktop ? "px-8 py-10" : "px-6 py-6",
+        )}
+      >
         <h2
-          class={`text-base font-semibold sm:text-lg ${textColors[props.color]}`}
+          class={cn(
+            "font-semibold",
+            textColors[props.color],
+            isDesktop ? "text-lg" : "text-base",
+          )}
         >
           {props.label}
         </h2>
 
         <div
-          class={`mt-2 h-[2px] w-10 rounded-full sm:w-12 ${textColors[
-            props.color
-          ].replace("text-", "bg-")}`}
+          class={cn(
+            "mt-2 h-[2px] rounded-full",
+            textColors[props.color].replace("text-", "bg-"),
+            isDesktop ? "w-12" : "w-10",
+          )}
         />
 
         <div
-          class={`mt-2 h-9 text-base font-semibold sm:mt-3 sm:h-11 sm:text-lg ${textColors[props.color]} tracking-tight`}
+          class={cn(
+            "font-semibold tracking-tight",
+            textColors[props.color],
+            isDesktop ? "mt-3 h-11 text-lg" : "mt-2 h-9 text-base",
+          )}
         >
           {props.dueCount === "loading" ? (
             "..."
@@ -90,11 +145,109 @@ function ReviewCard(props: {
         <Button
           onClick={props.onClick}
           disabled={props.disabled}
-          class="mt-3 w-full rounded-md border-white/10 bg-white/10 text-sm text-white transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
+          class={cn(
+            "mt-3 w-full rounded-md border-white/10 bg-white/10 text-white transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50",
+            isDesktop ? "text-base" : "text-sm",
+          )}
         >
           Review
         </Button>
       </div>
+    </div>
+  )
+}
+
+// ————————————————————————————————————————————————————————————————
+
+function PageHeader(props: { variant: "mobile" | "desktop" }) {
+  const isDesktop = props.variant === "desktop"
+
+  return (
+    <div class={cn("space-y-2 text-center", isDesktop && "space-y-3")}>
+      <h1
+        class={cn(
+          "font-poppins font-extrabold drop-shadow-sm",
+          isDesktop ? "text-5xl" : "text-3xl",
+        )}
+      >
+        Review & Practice
+      </h1>
+      <p class={cn("text-muted-foreground", isDesktop ? "text-sm" : "text-xs")}>
+        Continue where you left off or focus on specific skills.
+      </p>
+    </div>
+  )
+}
+
+function ServiceSelector(props: {
+  variant: "mobile" | "desktop"
+  selectedService: () => string
+  services: Array<{ id: string; label: string }>
+  isSwitching: () => boolean
+  switchError: () => string | null
+  onServiceChange: (service: string) => void
+}) {
+  const isDesktop = props.variant === "desktop"
+
+  return (
+    <div
+      class={cn(
+        "text-muted-foreground flex flex-col items-center gap-2",
+        isDesktop ? "text-sm" : "text-xs",
+      )}
+    >
+      <div class="flex flex-wrap items-center justify-center gap-2">
+        <span>Service:</span>
+        <Select
+          value={props.selectedService()}
+          onChange={(v) => v && props.onServiceChange(v)}
+          options={props.services.map((s) => s.id)}
+          placeholder="Select Service"
+          disabled={props.isSwitching()}
+          itemComponent={(itemProps) => (
+            <SelectItem item={itemProps.item}>
+              {
+                props.services.find((s) => s.id === itemProps.item.rawValue)
+                  ?.label
+              }
+            </SelectItem>
+          )}
+        >
+          <SelectTrigger
+            class={cn(
+              "bg-background/40 text-foreground hover:bg-background/60 h-8 rounded-md text-xs transition focus:ring-1 disabled:opacity-50",
+              isDesktop ? "w-56" : "w-48",
+            )}
+          >
+            <SelectValue>
+              {(state) =>
+                props.isSwitching()
+                  ? "Switching..."
+                  : (props.services.find((s) => s.id === state.selectedOption())
+                      ?.label ?? "Select Service")
+              }
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent class="border-border/50 bg-card/90 text-foreground rounded-md border backdrop-blur-xl" />
+        </Select>
+      </div>
+
+      {/* Error display */}
+      <Show when={props.switchError()}>
+        <div class="mt-3 max-w-md rounded-lg border border-red-400/30 bg-red-500/20 p-3">
+          <p class="text-xs text-red-100">✗ {props.switchError()}</p>
+          <p class="mt-2 text-xs text-red-100">
+            Please visit the{" "}
+            <Link
+              to="/settings"
+              class="font-medium underline underline-offset-2"
+            >
+              Settings page
+            </Link>{" "}
+            to configure this service.
+          </p>
+        </div>
+      </Show>
     </div>
   )
 }
@@ -111,29 +264,28 @@ function RouteComponent() {
   const dueCardsQuery = useCustomQuery(() =>
     dueCardsCountQueryOptions(
       context().user?.id || null,
-      settingsQuery.data?.["service-preferences"] ?? {
-        anki: {
-          mode: "disabled",
-          data_imported: false,
-          is_api_key_valid: false,
-        },
-        wanikani: {
-          mode: "disabled",
-          data_imported: false,
-          is_api_key_valid: false,
-        },
-        jpdb: {
-          mode: "disabled",
-          data_imported: false,
-          is_api_key_valid: false,
-        },
-      },
+      settingsQuery.data!["service-preferences"],
     ),
   )
 
   // Service switching hook
   const { switchToService, isSwitching, switchError, clearError } =
     useServiceSwitcher(context().user?.id || null)
+
+  // Queries for upcoming modules list
+  const upcomingModulesQuery = useCustomQuery(() =>
+    upcomingModulesQueryOptions(
+      context().user?.id || null,
+      settingsQuery.data!["active-textbook"] as TextbookIDEnum,
+      settingsQuery.data!["textbook-positions"]?.[
+        settingsQuery.data!["active-textbook"]
+      ] || null,
+    ),
+  )
+
+  const completionsQuery = useCustomQuery(() =>
+    completedModulesQueryOptions(context().user?.id || null),
+  )
 
   const getActiveServiceDisplay = () => {
     const preferences = settingsQuery.data?.["service-preferences"]
@@ -288,20 +440,12 @@ function RouteComponent() {
         blur="32px"
       />
 
-      <div class="text-foreground relative flex min-h-[85vh] flex-col items-center justify-center space-y-4 px-4 pt-4 pb-34 sm:space-y-12 sm:pt-0 sm:pb-0">
-        {/* Header */}
-        <div class="space-y-2 text-center sm:space-y-3">
-          <h1 class="font-poppins text-3xl font-extrabold drop-shadow-sm sm:text-5xl">
-            Review & Practice
-          </h1>
-          <p class="text-muted-foreground text-xs sm:text-sm">
-            Continue where you left off or focus on specific skills.
-          </p>
-        </div>
+      {/* Desktop */}
+      <SSRMediaQuery showFrom="md">
+        <div class="text-foreground relative flex flex-col items-center space-y-12 px-4 pt-[12vh] pb-24">
+          <PageHeader variant="desktop" />
 
-        {/* Desktop layout (3 cards) */}
-        <SSRMediaQuery showFrom="md">
-          <div class="flex flex-wrap justify-center gap-8 sm:gap-10">
+          <div class="flex flex-wrap justify-center gap-10">
             <ReviewCard
               label="Vocab Meanings"
               color="blue"
@@ -311,6 +455,7 @@ function RouteComponent() {
               disabled={["anki", "wanikani", "jpdb"].includes(
                 selectedService(),
               )}
+              variant="desktop"
             />
             <ReviewCard
               label="Vocab Spellings"
@@ -321,18 +466,54 @@ function RouteComponent() {
               disabled={["anki", "wanikani", "jpdb"].includes(
                 selectedService(),
               )}
+              variant="desktop"
             />
             <ReviewCard
               label="Grammar"
               color="amber"
               dueCount={0}
               onClick={() => handleClick("grammar")}
+              variant="desktop"
             />
           </div>
-        </SSRMediaQuery>
 
-        {/* Mobile stacked cards */}
-        <SSRMediaQuery hideFrom="md">
+          <ServiceSelector
+            variant="desktop"
+            selectedService={selectedService}
+            services={services}
+            isSwitching={isSwitching}
+            switchError={switchError}
+            onServiceChange={(v) =>
+              handleServiceChange(v as "nihongo" | ServiceType)
+            }
+          />
+
+          <Button
+            size="lg"
+            class="w-80 rounded-lg border border-white/20 bg-white/10 py-5 text-base text-white shadow-sm transition hover:bg-white/20"
+            onClick={() => handleClick("learn-new")}
+          >
+            Learn New
+          </Button>
+
+          <Show when={context().user}>
+            <div class="w-full max-w-lg px-4">
+              <h3 class="mb-3 text-lg font-semibold">Upcoming Lessons</h3>
+              <UpcomingModulesList
+                upcomingModulesQuery={upcomingModulesQuery}
+                completionsQuery={completionsQuery}
+                class="max-h-[150px]"
+              />
+            </div>
+          </Show>
+        </div>
+      </SSRMediaQuery>
+
+      {/* Mobile */}
+      <SSRMediaQuery hideFrom="md">
+        <div class="text-foreground relative flex flex-col items-center space-y-4 px-4 pt-4 pb-36">
+          <PageHeader variant="mobile" />
+
           <div class="flex w-full max-w-[340px] flex-col gap-5">
             <ReviewCard
               label="Vocab Meanings"
@@ -343,6 +524,7 @@ function RouteComponent() {
               disabled={["anki", "wanikani", "jpdb"].includes(
                 selectedService(),
               )}
+              variant="mobile"
             />
             <ReviewCard
               label="Vocab Spellings"
@@ -353,86 +535,39 @@ function RouteComponent() {
               disabled={["anki", "wanikani", "jpdb"].includes(
                 selectedService(),
               )}
+              variant="mobile"
+            />
+            <ServiceSelector
+              variant="mobile"
+              selectedService={selectedService}
+              services={services}
+              isSwitching={isSwitching}
+              switchError={switchError}
+              onServiceChange={(v) =>
+                handleServiceChange(v as "nihongo" | ServiceType)
+              }
             />
             <ReviewCard
               label="Grammar"
               color="amber"
               dueCount={0}
               onClick={() => handleClick("grammar")}
+              variant="mobile"
             />
           </div>
-        </SSRMediaQuery>
 
-        {/* Selector */}
-        <div class="text-muted-foreground flex flex-col items-center gap-2 text-xs sm:text-sm">
-          <div class="flex flex-wrap items-center justify-center gap-2">
-            <span>Service:</span>
-            <Select
-              value={selectedService()}
-              onChange={(v) =>
-                v && handleServiceChange(v as "nihongo" | ServiceType)
-              }
-              options={services.map((s) => s.id)}
-              placeholder="Select Service"
-              disabled={isSwitching()}
-              itemComponent={(itemProps) => (
-                <SelectItem item={itemProps.item}>
-                  {
-                    services.find((s) => s.id === itemProps.item.rawValue)
-                      ?.label
-                  }
-                </SelectItem>
-              )}
-            >
-              <SelectTrigger class="bg-background/40 text-foreground hover:bg-background/60 h-8 w-48 rounded-md text-xs transition focus:ring-1 disabled:opacity-50 sm:w-56">
-                <SelectValue>
-                  {(state) =>
-                    isSwitching()
-                      ? "Switching..."
-                      : (services.find((s) => s.id === state.selectedOption())
-                          ?.label ?? "Select Service")
-                  }
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent class="border-border/50 bg-card/90 text-foreground rounded-md border backdrop-blur-xl" />
-            </Select>
-          </div>
-
-          {/* Error display */}
-          <Show when={switchError()}>
-            <div class="mt-3 max-w-md rounded-lg border border-red-400/30 bg-red-500/20 p-3">
-              <p class="text-xs text-red-100">✗ {switchError()}</p>
-              <p class="mt-2 text-xs text-red-100">
-                Please visit the{" "}
-                <Link
-                  to="/settings"
-                  class="font-medium underline underline-offset-2"
-                >
-                  Settings page
-                </Link>{" "}
-                to configure this service.
-              </p>
+          <Show when={context().user}>
+            <div class="w-full px-4 pt-4">
+              <h3 class="mb-2 text-lg font-semibold">Upcoming Lessons</h3>
+              <UpcomingModulesList
+                upcomingModulesQuery={upcomingModulesQuery}
+                completionsQuery={completionsQuery}
+              />
             </div>
           </Show>
         </div>
 
-        {/* Desktop Learn New */}
-        <SSRMediaQuery showFrom="md">
-          <div class="pt-8">
-            <Button
-              size="lg"
-              class="w-80 rounded-lg border border-white/20 bg-white/10 py-5 text-base text-white shadow-sm transition hover:bg-white/20"
-              onClick={() => handleClick("learn-new")}
-            >
-              Learn New
-            </Button>
-          </div>
-        </SSRMediaQuery>
-      </div>
-
-      {/* Mobile Learn New - fixed bottom */}
-      <SSRMediaQuery hideFrom="md">
-        <div class="py- fixed right-0 bottom-20 left-0 flex justify-center">
+        <div class="fixed right-0 bottom-20 left-0 flex justify-center">
           <Button
             size="lg"
             class="w-[90%] rounded-lg border border-white/20 bg-white/15 py-4 text-base text-white shadow-sm backdrop-blur-md transition hover:bg-white/25"

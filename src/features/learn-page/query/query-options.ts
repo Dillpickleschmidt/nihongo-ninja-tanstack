@@ -81,7 +81,12 @@ export const dueCardsCountQueryOptions = (
   queryOptions({
     queryKey: ["due-cards-count", userId, preferences],
     queryFn: async () => {
-      if (!userId) return { total: 0, meanings: 0, spellings: 0 }
+      if (!userId)
+        return {
+          total: 0,
+          meanings: { vocab: 0, kanji: 0 },
+          spellings: { vocab: 0, kanji: 0 },
+        }
 
       const adapter = createSRSAdapter(userId, preferences)
       return adapter.getDueCount()

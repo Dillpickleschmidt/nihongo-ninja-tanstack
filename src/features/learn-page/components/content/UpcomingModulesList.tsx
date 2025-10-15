@@ -1,5 +1,5 @@
 // features/learn-page-v2/components/content/UpcomingModulesList.tsx
-import { Show, For, createEffect, createSignal, createMemo } from "solid-js"
+import { Show, For, createEffect, createSignal } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { Loader2, ChevronDown } from "lucide-solid"
 import { Button } from "@/components/ui/button"
@@ -11,7 +11,8 @@ import {
   getModuleCircleClasses,
   getLinkTo,
 } from "@/features/learn-page/utils/loader-helpers"
-import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
+import type { UseQueryResult, DefaultError } from "@tanstack/solid-query"
+import type { ModuleWithCurrent } from "@/features/learn-page/query/query-options"
 
 const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 
@@ -19,7 +20,8 @@ const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 const FADE_ZONE_PX = 33
 const SCROLL_LOAD_THRESHOLD_PX = 15
 const LOAD_BATCH_SIZE = 5
-const SCROLL_OFFSET_PX = 25
+const MODULE_ITEM_HEIGHT_PX = 20
+const ABSOLUTE_SCROLL_OFFSET_PX = 0
 
 // Helper to get module info
 function getModuleInfo(moduleId: string) {
@@ -72,8 +74,33 @@ function ModuleItem(props: {
   )
 }
 
-export function UpcomingModulesList() {
-  const { filteredUpcomingModules, completionsQuery } = useLearnPageContext()
+interface UpcomingModulesListProps {
+  upcomingModulesQuery: UseQueryResult<ModuleWithCurrent[], DefaultError>
+  completionsQuery: UseQueryResult<ModuleProgress[], DefaultError>
+  class?: string
+}
+
+export function UpcomingModulesList(props: UpcomingModulesListProps) {
+  const { upcomingModulesQuery, completionsQuery } = props
+
+  // Filter out completed modules from upcoming list
+  const filteredUpcomingModules = () => {
+    if (
+      upcomingModulesQuery.isPending ||
+      upcomingModulesQuery.isError ||
+      completionsQuery.isPending ||
+      completionsQuery.isError
+    ) {
+      return undefined
+    }
+
+    const completedSet = new Set(
+      completionsQuery.data.map((c) => c.module_path),
+    )
+    return upcomingModulesQuery.data.filter(
+      (item) => !completedSet.has(item.id),
+    )
+  }
 
   const [visibleCompletedCount, setVisibleCompletedCount] =
     createSignal(LOAD_BATCH_SIZE)
@@ -88,13 +115,13 @@ export function UpcomingModulesList() {
     return completionsQuery.data.slice(0, visibleCompletedCount())
   }
 
-  const reversedCompleted = createMemo(() => [...visibleCompleted()].reverse())
+  const reversedCompleted = () => [...visibleCompleted()].reverse()
 
   // Track the first upcoming module ID
-  const firstUpcomingId = createMemo(() => {
+  const firstUpcomingId = () => {
     const modules = filteredUpcomingModules()
     return modules?.[0]?.id
-  })
+  }
 
   // Reset scroll flag when first upcoming module changes
   createEffect(() => {
@@ -187,6 +214,7 @@ export function UpcomingModulesList() {
     if (hasScrolledToPosition() || !containerRef) return
 
     // Track filteredUpcomingModules so effect re-runs when data loads
+    // Returns undefined when either query is pending/error, so we wait for both
     if (!filteredUpcomingModules()) return
 
     const visible = visibleCompleted()
@@ -194,18 +222,29 @@ export function UpcomingModulesList() {
 
     requestAnimationFrame(() => {
       if (!containerRef) return
-      // Find the first upcoming module element
-      const firstUpcomingEl = containerRef.querySelector(
-        "[data-module-item]:not([data-completed-item])",
+
+      // Get actual filtered upcoming modules
+      const upcomingModules = filteredUpcomingModules()
+      if (!upcomingModules || upcomingModules.length === 0) return
+
+      // Calculate offset based on actual number of upcoming modules
+      const offsetFromBottom = MODULE_ITEM_HEIGHT_PX * upcomingModules.length
+
+      // Scroll from bottom with offset
+      const scrollHeight = containerRef.scrollHeight
+      const containerHeight = containerRef.clientHeight
+      const scrollTop = Math.max(
+        0,
+        scrollHeight -
+          containerHeight -
+          offsetFromBottom -
+          ABSOLUTE_SCROLL_OFFSET_PX,
       )
-      if (firstUpcomingEl) {
-        const elementTop = (firstUpcomingEl as HTMLElement).offsetTop
-        const scrollTop = Math.max(0, elementTop - 350 - SCROLL_OFFSET_PX)
-        initialScrollPosition = scrollTop
-        containerRef.scrollTop = scrollTop
-        setHasScrolledToPosition(true)
-        applyScrollAnimations(containerRef)
-      }
+
+      initialScrollPosition = scrollTop
+      containerRef.scrollTop = scrollTop
+      setHasScrolledToPosition(true)
+      applyScrollAnimations(containerRef)
     })
   })
 
@@ -229,7 +268,7 @@ export function UpcomingModulesList() {
         {(modules) => (
           <div
             ref={containerRef}
-            class="max-h-[300px] space-y-1 overflow-y-auto"
+            class={cn("max-h-[300px] space-y-1 overflow-y-auto", props.class)}
           >
             <style>{`
             [data-module-item] {

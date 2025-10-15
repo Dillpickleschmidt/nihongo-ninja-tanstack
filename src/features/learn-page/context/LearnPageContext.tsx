@@ -91,9 +91,6 @@ interface LearnPageContextValue {
   totalHours: Accessor<ComputedStat<number>>
   dailyGoal: number
 
-  // Filtered Data
-  filteredUpcomingModules: Accessor<ModuleWithCurrent[] | undefined>
-
   // UI State
   mobileContentView: Accessor<MobileContentView>
   setMobileContentView: Setter<MobileContentView>
@@ -243,23 +240,6 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
   })
 
   const dailyGoal = 30 // TODO: make this configurable from settings
-
-  const filteredUpcomingModules = () => {
-    if (
-      upcomingModulesQuery.isPending ||
-      upcomingModulesQuery.isError ||
-      completionsQuery.isPending ||
-      completionsQuery.isError
-    )
-      return undefined
-
-    const completedSet = new Set(
-      completionsQuery.data.map((c) => c.module_path),
-    )
-    return upcomingModulesQuery.data.filter(
-      (item) => !completedSet.has(item.id),
-    )
-  }
 
   // ============================================================================
   // Mutations
@@ -413,9 +393,6 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
         avgDay,
         totalHours,
         dailyGoal,
-
-        // Filtered Data
-        filteredUpcomingModules,
 
         // UI State
         mobileContentView,
