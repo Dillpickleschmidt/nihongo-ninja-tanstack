@@ -13,7 +13,12 @@ export class JpdbAdapter implements SRSServiceAdapter {
   readonly type = "jpdb" as const
 
   async getDueCount(): Promise<DueCountResult> {
-    return { count: null, unavailableReason: "NOT_SUPPORTED" }
+    return {
+      total: null,
+      meanings: null,
+      spellings: null,
+      unavailableReason: "NOT_SUPPORTED",
+    }
   }
 
   async getDueCards(): Promise<DueCard[]> {

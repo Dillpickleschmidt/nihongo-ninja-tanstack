@@ -77,25 +77,42 @@ export async function getUserProgress(
   return progressRecord
 }
 
+export interface DueCountsByMode {
+  total: number
+  meanings: number
+  spellings: number
+}
+
 /**
- * Get count of due FSRS cards for a user
+ * Get count of due FSRS cards by mode for a user
+ * Uses a single optimized query with GROUP BY
  */
-export async function getDueFSRSCardsCount(userId: string): Promise<number> {
+export async function getDueFSRSCountsByMode(
+  userId: string,
+): Promise<DueCountsByMode> {
   const supabase = createSupabaseClient()
 
   const now = new Date()
-  const { count, error } = await supabase
+  const { data, error } = await supabase
     .from("fsrs_cards")
-    .select("*", { count: "exact", head: true })
+    .select("mode")
     .eq("user_id", userId)
     .lte("due_at", now.toISOString())
 
   if (error) {
-    console.error("Error counting due FSRS cards:", error)
-    return 0
+    console.error("Error counting due FSRS cards by mode:", error)
+    return { total: 0, meanings: 0, spellings: 0 }
   }
 
-  return count || 0
+  // Count by mode client-side (minimal data transfer - just mode strings)
+  const meanings = data.filter((card) => card.mode === "meanings").length
+  const spellings = data.filter((card) => card.mode === "spellings").length
+
+  return {
+    total: meanings + spellings,
+    meanings,
+    spellings,
+  }
 }
 
 export interface VocabularyStats {

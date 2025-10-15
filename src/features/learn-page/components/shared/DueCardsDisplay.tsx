@@ -57,12 +57,12 @@ export function DueCardsDisplay(props: DueCardsDisplayProps) {
     const result = context.dueCardsCountQuery.data
 
     // Check for CLIENT_ONLY (Anki on SSR)
-    if (result.count === null && result.unavailableReason === "CLIENT_ONLY") {
+    if (result.total === null && result.unavailableReason === "CLIENT_ONLY") {
       return loadingFallback
     }
 
     // Check for NOT_SUPPORTED (JPDB)
-    if (result.count === null && result.unavailableReason === "NOT_SUPPORTED") {
+    if (result.total === null && result.unavailableReason === "NOT_SUPPORTED") {
       return (
         <>
           <div class="text-gray-400">
@@ -76,7 +76,7 @@ export function DueCardsDisplay(props: DueCardsDisplayProps) {
     }
 
     // Handle actual errors or unexpected null counts
-    if (context.dueCardsCountQuery.isError || result.count === null) {
+    if (context.dueCardsCountQuery.isError || result.total === null) {
       return (
         <>
           <div class="text-gray-400">
@@ -93,20 +93,20 @@ export function DueCardsDisplay(props: DueCardsDisplayProps) {
     return (
       <>
         <div
-          class={result.count > 0 ? "text-amber-400" : "text-green-500"}
+          class={result.total > 0 ? "text-amber-400" : "text-green-500"}
           title={getServiceDisplayName()}
         >
           <span class="font-inter text-base font-bold xl:text-lg">
-            {result.count}
+            {result.total}
           </span>
         </div>
         <div
           class="text-muted-foreground text-xs xl:text-sm"
           title={getServiceDisplayName()}
         >
-          {result.count === 0
+          {result.total === 0
             ? "No reviews"
-            : `${result.count === 1 ? "Review" : "Reviews"} Due`}
+            : `${result.total === 1 ? "Review" : "Reviews"} Due`}
         </div>
       </>
     )

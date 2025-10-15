@@ -7,7 +7,9 @@ export type SRSServiceType = "anki" | "jpdb" | "wanikani" | "local"
  * Result type for getDueCount() with explicit unavailable states
  */
 export type DueCountResult = {
-  count: number | null
+  total: number | null
+  meanings: number | null
+  spellings: number | null
   unavailableReason?: "CLIENT_ONLY" | "NOT_SUPPORTED"
 }
 

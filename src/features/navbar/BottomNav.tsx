@@ -1,6 +1,6 @@
 // features/navbar/BottomNav.tsx
 import { Link, useLocation, useRouteContext } from "@tanstack/solid-router"
-import { Home, GraduationCap, Search, User } from "lucide-solid"
+import { Home, BookOpen, Search, User } from "lucide-solid"
 import { cn } from "@/utils"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
@@ -27,16 +27,16 @@ export function BottomNav(props: BottomNavProps) {
       href: "/dashboard",
     },
     {
-      id: "vocab",
-      icon: GraduationCap,
-      label: "Vocab",
-      href: "/vocab",
+      id: "learn",
+      icon: BookOpen,
+      label: "Learn",
+      href: "/learn",
     },
     {
-      id: "learn",
+      id: "review",
       icon: null,
       label: `${dailyProgress()}%`,
-      href: "/learn",
+      href: "/review",
     },
     {
       id: "search",
@@ -132,7 +132,7 @@ export function BottomNav(props: BottomNavProps) {
       >
         <div class="flex items-center justify-between" style="width: 400px;">
           {navItems.map((item) => {
-            if (item.id === "learn") {
+            if (item.id === "review") {
               const active = isActive(item.href)
               const hrefValue =
                 typeof item.href === "function" ? item.href() : item.href

@@ -1,7 +1,7 @@
 // features/srs-services/adapters/local-fsrs-adapter.ts
 import {
-  getDueFSRSCardsCount,
   getDueFSRSCards,
+  getDueFSRSCountsByMode,
   upsertFSRSCardForUser,
   getFSRSVocabularyStats,
 } from "@/features/supabase/db/fsrs"
@@ -25,8 +25,7 @@ export class LocalFSRSAdapter implements SRSServiceAdapter {
   }
 
   async getDueCount(): Promise<DueCountResult> {
-    const count = await getDueFSRSCardsCount(this.userId)
-    return { count }
+    return await getDueFSRSCountsByMode(this.userId)
   }
 
   async getDueCards(): Promise<DueCard[]> {

@@ -25,6 +25,7 @@ import { Route as ExternalResourcesResourceRouteImport } from './routes/external
 import { Route as ApiUploadOverrideRouteImport } from './routes/api/upload-override'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
 import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
+import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeGuidesRouteImport } from './routes/_home/guides'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
@@ -159,6 +160,11 @@ const HomeVocabRoute = HomeVocabRouteImport.update({
 const HomeSettingsRoute = HomeSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeReviewRoute = HomeReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeGuidesRoute = HomeGuidesRouteImport.update({
@@ -469,6 +475,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof HomeDashboardRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/guides': typeof HomeGuidesRouteWithChildren
+  '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
   '/vocab': typeof HomeVocabRoute
   '/api/upload-override': typeof ApiUploadOverrideRoute
@@ -539,6 +546,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof HomeDashboardRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/guides': typeof HomeGuidesRouteWithChildren
+  '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
   '/vocab': typeof HomeVocabRoute
   '/api/upload-override': typeof ApiUploadOverrideRoute
@@ -611,6 +619,7 @@ export interface FileRoutesById {
   '/_home/dashboard': typeof HomeDashboardRoute
   '/_home/grammar-notes': typeof HomeGrammarNotesRoute
   '/_home/guides': typeof HomeGuidesRouteWithChildren
+  '/_home/review': typeof HomeReviewRoute
   '/_home/settings': typeof HomeSettingsRoute
   '/_home/vocab': typeof HomeVocabRoute
   '/api/upload-override': typeof ApiUploadOverrideRoute
@@ -683,6 +692,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/grammar-notes'
     | '/guides'
+    | '/review'
     | '/settings'
     | '/vocab'
     | '/api/upload-override'
@@ -753,6 +763,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/grammar-notes'
     | '/guides'
+    | '/review'
     | '/settings'
     | '/vocab'
     | '/api/upload-override'
@@ -824,6 +835,7 @@ export interface FileRouteTypes {
     | '/_home/dashboard'
     | '/_home/grammar-notes'
     | '/_home/guides'
+    | '/_home/review'
     | '/_home/settings'
     | '/_home/vocab'
     | '/api/upload-override'
@@ -1018,6 +1030,13 @@ declare module '@tanstack/solid-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof HomeSettingsRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/review': {
+      id: '/_home/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof HomeReviewRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/guides': {
@@ -1439,6 +1458,7 @@ interface HomeRouteChildren {
   HomeDashboardRoute: typeof HomeDashboardRoute
   HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
   HomeGuidesRoute: typeof HomeGuidesRouteWithChildren
+  HomeReviewRoute: typeof HomeReviewRoute
   HomeSettingsRoute: typeof HomeSettingsRoute
   HomeVocabRoute: typeof HomeVocabRoute
   HomeLearnTextbookIdRoute: typeof HomeLearnTextbookIdRouteWithChildren
@@ -1453,6 +1473,7 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeDashboardRoute: HomeDashboardRoute,
   HomeGrammarNotesRoute: HomeGrammarNotesRoute,
   HomeGuidesRoute: HomeGuidesRouteWithChildren,
+  HomeReviewRoute: HomeReviewRoute,
   HomeSettingsRoute: HomeSettingsRoute,
   HomeVocabRoute: HomeVocabRoute,
   HomeLearnTextbookIdRoute: HomeLearnTextbookIdRouteWithChildren,

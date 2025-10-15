@@ -23,10 +23,20 @@ export class AnkiAdapter implements SRSServiceAdapter {
 
   async getDueCount(): Promise<DueCountResult> {
     if (isServer) {
-      return { count: null, unavailableReason: "CLIENT_ONLY" }
+      return {
+        total: null,
+        meanings: null,
+        spellings: null,
+        unavailableReason: "CLIENT_ONLY",
+      }
     }
-    const cards = await getDueCards()
-    return { count: cards.length }
+    const cards = await this.getDueCards()
+
+    const meanings = cards.filter((card) => card.mode === "meanings").length
+    const spellings = cards.filter((card) => card.mode === "spellings").length
+    const total = meanings + spellings
+
+    return { total, meanings, spellings }
   }
 
   async getDueCards(): Promise<DueCard[]> {
