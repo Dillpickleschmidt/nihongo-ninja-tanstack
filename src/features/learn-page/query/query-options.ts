@@ -6,8 +6,13 @@ import {
 } from "@tanstack/solid-query"
 import { getDeckBySlug, getTextbookLearningPath } from "@/data/utils/core"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
-import { getDueFSRSCardsCount, getFSRSCards } from "@/features/supabase/db/fsrs"
-import { getUserProgress } from "@/features/supabase/db/fsrs"
+import { getFSRSCards } from "@/features/supabase/db/fsrs"
+import { createSRSAdapter } from "@/features/srs-services/factory"
+import type {
+  DueCountResult,
+  SeenCardsStatsResult,
+} from "@/features/srs-services/types"
+import type { AllServicePreferences } from "@/features/main-cookies/schemas/user-settings"
 import { getUserModuleProgress } from "@/features/supabase/db/module-progress"
 import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
 import { getVocabSets, getVocabularyForModule } from "@/data/utils/vocab"
@@ -22,7 +27,6 @@ import {
   getUserSessions,
   getUserWeekTimeData,
 } from "@/features/supabase/db/module-progress"
-import { getVocabularyStats } from "@/features/supabase/db/fsrs"
 
 export const vocabHierarchyQueryOptions = (
   activeTextbook: string,
@@ -70,12 +74,48 @@ export const vocabHierarchyQueryOptions = (
     },
   })
 
-export const dueFSRSCardsCountQueryOptions = (userId: string | null) =>
+export const dueCardsCountQueryOptions = (
+  userId: string | null,
+  preferences: AllServicePreferences,
+) =>
   queryOptions({
-    queryKey: ["fsrs-due-count", userId],
+    queryKey: ["due-cards-count", userId, preferences],
     queryFn: async () => {
-      if (!userId) return 0
-      return getDueFSRSCardsCount(userId)
+      if (!userId)
+        return {
+          total: 0,
+          meanings: { vocab: 0, kanji: 0 },
+          spellings: 0,
+        }
+
+      const adapter = createSRSAdapter(userId, preferences)
+      return adapter.getDueCount()
+    },
+    staleTime: (query) => {
+      const data = query.state.data as DueCountResult | undefined
+      // If CLIENT_ONLY, mark as immediately stale to force refetch
+      // Once real data is fetched, it becomes cached forever
+      return data?.unavailableReason === "CLIENT_ONLY" ? 0 : Infinity
+    },
+  })
+
+export const seenCardsStatsQueryOptions = (
+  userId: string | null,
+  preferences: AllServicePreferences,
+) =>
+  queryOptions({
+    queryKey: ["seen-cards-stats", userId, preferences],
+    queryFn: async (): Promise<SeenCardsStatsResult> => {
+      if (!userId) return { stats: null }
+
+      const adapter = createSRSAdapter(userId, preferences)
+      return adapter.getSeenCardsStats()
+    },
+    staleTime: (query) => {
+      const data = query.state.data as SeenCardsStatsResult | undefined
+      // If CLIENT_ONLY, mark as immediately stale to force refetch
+      // Once real data is fetched, it becomes cached forever
+      return data?.unavailableReason === "CLIENT_ONLY" ? 0 : Infinity
     },
   })
 
@@ -343,28 +383,5 @@ export const userWeekTimeDataQueryOptions = (userId: string | null) =>
     queryFn: async () => {
       if (!userId) return []
       return getUserWeekTimeData(userId)
-    },
-  })
-
-/**
- * Query for vocabulary and kanji counts (total and this week)
- * Optimized - uses single RPC call instead of 4 separate queries
- */
-export const vocabularyStatsQueryOptions = (userId: string | null) =>
-  queryOptions({
-    queryKey: ["vocabulary-stats", userId],
-    queryFn: async () => {
-      if (!userId)
-        return {
-          vocab: { total: 0, week: 0 },
-          kanji: { total: 0, week: 0 },
-        }
-
-      const stats = await getVocabularyStats(userId)
-
-      return {
-        vocab: { total: stats.vocab_total, week: stats.vocab_week },
-        kanji: { total: stats.kanji_total, week: stats.kanji_week },
-      }
     },
   })

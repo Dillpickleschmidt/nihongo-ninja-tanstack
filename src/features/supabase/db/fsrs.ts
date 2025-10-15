@@ -77,25 +77,68 @@ export async function getUserProgress(
   return progressRecord
 }
 
+export interface DueCountsByMode {
+  total: number
+  meanings: {
+    vocab: number
+    kanji: number
+  }
+  spellings: number
+}
+
 /**
- * Get count of due FSRS cards for a user
+ * Get count of due FSRS cards by mode and type for a user
+ * Uses a single optimized query selecting only mode and type
  */
-export async function getDueFSRSCardsCount(userId: string): Promise<number> {
+export async function getDueFSRSCountsByMode(
+  userId: string,
+): Promise<DueCountsByMode> {
   const supabase = createSupabaseClient()
 
   const now = new Date()
-  const { count, error } = await supabase
+  const { data, error } = await supabase
     .from("fsrs_cards")
-    .select("*", { count: "exact", head: true })
+    .select("mode, type")
     .eq("user_id", userId)
     .lte("due_at", now.toISOString())
 
   if (error) {
-    console.error("Error counting due FSRS cards:", error)
-    return 0
+    console.error("Error counting due FSRS cards by mode:", error)
+    return {
+      total: 0,
+      meanings: { vocab: 0, kanji: 0 },
+      spellings: 0,
+    }
   }
 
-  return count || 0
+  const meaningsBreakdown = { vocab: 0, kanji: 0 }
+  let spellingsCount = 0
+
+  for (const card of data) {
+    const mode = card.mode as "meanings" | "spellings"
+    const type = card.type as "vocabulary" | "kanji" | "radical"
+
+    if (mode === "meanings") {
+      if (type === "vocabulary") {
+        meaningsBreakdown.vocab++
+      } else if (type === "kanji" || type === "radical") {
+        meaningsBreakdown.kanji++
+      }
+    } else if (mode === "spellings") {
+      if (type === "vocabulary") {
+        spellingsCount++
+      }
+    }
+  }
+
+  const total =
+    meaningsBreakdown.vocab + meaningsBreakdown.kanji + spellingsCount
+
+  return {
+    total,
+    meanings: meaningsBreakdown,
+    spellings: spellingsCount,
+  }
 }
 
 export interface VocabularyStats {
@@ -106,10 +149,10 @@ export interface VocabularyStats {
 }
 
 /**
- * Get vocabulary and kanji statistics
+ * Get FSRS vocabulary and kanji statistics
  * Uses optimized SQL COUNT(DISTINCT) via RPC function
  */
-export async function getVocabularyStats(
+export async function getFSRSVocabularyStats(
   userId: string,
 ): Promise<VocabularyStats> {
   const supabase = createSupabaseClient()

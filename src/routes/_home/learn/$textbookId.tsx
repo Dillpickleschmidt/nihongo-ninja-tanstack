@@ -11,13 +11,13 @@ import { LearnPageHeader } from "@/features/learn-page/components/layout/LearnPa
 import { LearnPageProvider } from "@/features/learn-page/context/LearnPageContext"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 import {
-  dueFSRSCardsCountQueryOptions,
+  dueCardsCountQueryOptions,
   completedModulesQueryOptions,
   upcomingModulesQueryOptions,
   moduleProgressQueryOptions,
   userSessionsQueryOptions,
   userWeekTimeDataQueryOptions,
-  vocabularyStatsQueryOptions,
+  seenCardsStatsQueryOptions,
   userDailyTimeQueryOptions,
 } from "@/features/learn-page/query/query-options"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
@@ -33,12 +33,12 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
     const pathParts = location.pathname.split("/").filter(Boolean)
     const routeSegment = pathParts[2] // Index: 0=learn, 1=textbookId, 2=route
 
-    // If no route segment in URL, redirect to active deck or default
+    // If no route segment in URL, redirect to active deck
     if (!routeSegment) {
       const userSettings = await queryClient.ensureQueryData(
         userSettingsQueryOptions(user?.id || null),
       )
-      const activeChapterSlug = userSettings["active-deck"] || "chapter-0"
+      const activeChapterSlug = userSettings["active-deck"]
 
       throw redirect({
         to: "/learn/$textbookId/$chapterSlug",
@@ -53,26 +53,30 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
 
     // Prefetch textbook-wide queries
     queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
-    queryClient.prefetchQuery(dueFSRSCardsCountQueryOptions(user?.id || null))
-    queryClient
-      .ensureQueryData(
-        upcomingModulesQueryOptions(
-          user?.id || null,
-          textbookId as TextbookIDEnum,
-          userSettings["textbook-positions"]?.[textbookId as TextbookIDEnum] ||
-            null,
-        ),
-      )
-      .then((upcomingModules) => {
-        queryClient.prefetchQuery(
-          moduleProgressQueryOptions(user?.id || null, upcomingModules),
-        )
-      })
+    queryClient.prefetchQuery(
+      dueCardsCountQueryOptions(
+        user?.id || null,
+        userSettings["service-preferences"],
+      ),
+    )
+    queryClient.ensureQueryData(
+      upcomingModulesQueryOptions(
+        user?.id || null,
+        textbookId as TextbookIDEnum,
+        userSettings["textbook-positions"]?.[textbookId as TextbookIDEnum] ||
+          null,
+      ),
+    )
 
     // Prefetch progress-page queries
     queryClient.prefetchQuery(userSessionsQueryOptions(user?.id || null))
     queryClient.prefetchQuery(userWeekTimeDataQueryOptions(user?.id || null))
-    queryClient.prefetchQuery(vocabularyStatsQueryOptions(user?.id || null))
+    queryClient.prefetchQuery(
+      seenCardsStatsQueryOptions(
+        user?.id || null,
+        userSettings["service-preferences"],
+      ),
+    )
     queryClient.prefetchQuery(
       userDailyTimeQueryOptions(user?.id || null, new Date()),
     )
@@ -127,7 +131,7 @@ function LayoutContent() {
     useLearnPageContext()
 
   const activeDeck = () => {
-    const activeChapterSlug = settingsQuery.data?.["active-deck"] || "chapter-0"
+    const activeChapterSlug = settingsQuery.data!["active-deck"]
     return getDeckBySlug(loaderData().textbookId, activeChapterSlug)
   }
 

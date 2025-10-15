@@ -1,5 +1,5 @@
 // features/learn-page-v2/components/content/UpcomingModulesList.tsx
-import { Show, For, createEffect, createSignal, createMemo } from "solid-js"
+import { Show, For, createEffect, createSignal } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { Loader2, ChevronDown } from "lucide-solid"
 import { Button } from "@/components/ui/button"
@@ -11,17 +11,15 @@ import {
   getModuleCircleClasses,
   getLinkTo,
 } from "@/features/learn-page/utils/loader-helpers"
-import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
+import type { UseQueryResult, DefaultError } from "@tanstack/solid-query"
+import type { ModuleWithCurrent } from "@/features/learn-page/query/query-options"
 
 const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 
-// Constants
 const FADE_ZONE_PX = 33
 const SCROLL_LOAD_THRESHOLD_PX = 15
 const LOAD_BATCH_SIZE = 5
-const SCROLL_OFFSET_PX = 25
 
-// Helper to get module info
 function getModuleInfo(moduleId: string) {
   const module = modules[moduleId]
   if (module) {
@@ -33,7 +31,6 @@ function getModuleInfo(moduleId: string) {
   return { title: moduleId, type: "misc" as const, linkTo: "#" }
 }
 
-// Reusable module item component
 function ModuleItem(props: {
   moduleId: string
   isCompleted?: boolean
@@ -72,8 +69,32 @@ function ModuleItem(props: {
   )
 }
 
-export function UpcomingModulesList() {
-  const { filteredUpcomingModules, completionsQuery } = useLearnPageContext()
+interface UpcomingModulesListProps {
+  upcomingModulesQuery: UseQueryResult<ModuleWithCurrent[], DefaultError>
+  completionsQuery: UseQueryResult<ModuleProgress[], DefaultError>
+  class?: string
+}
+
+export function UpcomingModulesList(props: UpcomingModulesListProps) {
+  const { upcomingModulesQuery, completionsQuery } = props
+
+  const filteredUpcomingModules = () => {
+    if (
+      upcomingModulesQuery.isPending ||
+      upcomingModulesQuery.isError ||
+      completionsQuery.isPending ||
+      completionsQuery.isError
+    ) {
+      return undefined
+    }
+
+    const completedSet = new Set(
+      completionsQuery.data.map((c) => c.module_path),
+    )
+    return upcomingModulesQuery.data.filter(
+      (item) => !completedSet.has(item.id),
+    )
+  }
 
   const [visibleCompletedCount, setVisibleCompletedCount] =
     createSignal(LOAD_BATCH_SIZE)
@@ -88,15 +109,13 @@ export function UpcomingModulesList() {
     return completionsQuery.data.slice(0, visibleCompletedCount())
   }
 
-  const reversedCompleted = createMemo(() => [...visibleCompleted()].reverse())
+  const reversedCompleted = () => [...visibleCompleted()].reverse()
 
-  // Track the first upcoming module ID
-  const firstUpcomingId = createMemo(() => {
+  const firstUpcomingId = () => {
     const modules = filteredUpcomingModules()
     return modules?.[0]?.id
-  })
+  }
 
-  // Reset scroll flag when first upcoming module changes
   createEffect(() => {
     const firstId = firstUpcomingId()
     if (firstId) {
@@ -104,7 +123,6 @@ export function UpcomingModulesList() {
     }
   })
 
-  // Scroll-based gradient animations
   const applyScrollAnimations = (container: HTMLElement) => {
     const containerRect = container.getBoundingClientRect()
     const containerTop = containerRect.top
@@ -115,23 +133,19 @@ export function UpcomingModulesList() {
       const itemTop = rect.top
       const distanceFromTop = itemTop - containerTop
 
-      // Linear interpolation within fade zone from top
       let progress = 1
       if (distanceFromTop < FADE_ZONE_PX) {
         progress = Math.max(0, distanceFromTop / FADE_ZONE_PX)
       }
 
-      // Calculate opacity and scale
-      const opacity = 0.3 + 0.7 * progress // 0.3 → 1.0
-      const scale = 0.95 + 0.05 * progress // 0.95 → 1.0
+      const opacity = 0.3 + 0.7 * progress
+      const scale = 0.95 + 0.05 * progress
 
-      // Apply inline styles
       ;(item as HTMLElement).style.opacity = opacity.toString()
       ;(item as HTMLElement).style.transform = `scale(${scale})`
     })
   }
 
-  // Scroll handling effect
   createEffect(() => {
     if (!containerRef) return
     let rafId: number | null = null
@@ -139,17 +153,14 @@ export function UpcomingModulesList() {
     const handleScroll = () => {
       if (completionsQuery.isPending || completionsQuery.isError) return
 
-      // Track if scrolled above initial position (with 1px buffer)
       setIsScrolledAboveInitial(
         containerRef!.scrollTop < initialScrollPosition - 1,
       )
 
-      // Load more completed modules when near top
       if (
         containerRef!.scrollTop < SCROLL_LOAD_THRESHOLD_PX &&
         visibleCompletedCount() < completionsQuery.data.length
       ) {
-        // Capture scroll state before adding items
         const oldScrollHeight = containerRef!.scrollHeight
         const oldScrollTop = containerRef!.scrollTop
 
@@ -157,18 +168,14 @@ export function UpcomingModulesList() {
           Math.min(prev + LOAD_BATCH_SIZE, completionsQuery.data.length),
         )
 
-        // Restore visual position after DOM updates
         requestAnimationFrame(() => {
           const newScrollHeight = containerRef!.scrollHeight
           const heightDiff = newScrollHeight - oldScrollHeight
           containerRef!.scrollTop = oldScrollTop + heightDiff
-
-          // Update initial position to account for newly loaded items
           initialScrollPosition = initialScrollPosition + heightDiff
         })
       }
 
-      // Apply scroll animations with RAF
       if (rafId) cancelAnimationFrame(rafId)
       rafId = requestAnimationFrame(() => {
         applyScrollAnimations(containerRef!)
@@ -182,34 +189,42 @@ export function UpcomingModulesList() {
     }
   })
 
-  // Scroll to show boundary between completed and upcoming when data loads or first module changes
   createEffect(() => {
     if (hasScrolledToPosition() || !containerRef) return
-
-    // Track filteredUpcomingModules so effect re-runs when data loads
     if (!filteredUpcomingModules()) return
 
     const visible = visibleCompleted()
     if (visible.length === 0) return
 
     requestAnimationFrame(() => {
-      if (!containerRef) return
-      // Find the first upcoming module element
-      const firstUpcomingEl = containerRef.querySelector(
-        "[data-module-item]:not([data-completed-item])",
-      )
-      if (firstUpcomingEl) {
-        const elementTop = (firstUpcomingEl as HTMLElement).offsetTop
-        const scrollTop = Math.max(0, elementTop - 350 - SCROLL_OFFSET_PX)
+      requestAnimationFrame(() => {
+        if (!containerRef) return
+
+        const upcomingModules = filteredUpcomingModules()
+        if (!upcomingModules || upcomingModules.length === 0) return
+
+        const firstUpcomingEl = containerRef.querySelector(
+          "[data-module-item]:not([data-completed-item])",
+        )
+
+        if (!firstUpcomingEl) return
+
+        const elementRect = firstUpcomingEl.getBoundingClientRect()
+        const containerRect = containerRef.getBoundingClientRect()
+        const elementRelativeTop =
+          elementRect.top - containerRect.top + containerRef.scrollTop
+        const containerHeight = containerRef.clientHeight
+        const targetOffset = containerHeight * 0.15
+        const scrollTop = Math.max(0, elementRelativeTop - targetOffset)
+
         initialScrollPosition = scrollTop
         containerRef.scrollTop = scrollTop
         setHasScrolledToPosition(true)
         applyScrollAnimations(containerRef)
-      }
+      })
     })
   })
 
-  // Re-apply animations when visible count changes
   createEffect(() => {
     visibleCompletedCount()
     if (!containerRef) return
@@ -229,7 +244,7 @@ export function UpcomingModulesList() {
         {(modules) => (
           <div
             ref={containerRef}
-            class="max-h-[300px] space-y-1 overflow-y-auto"
+            class={cn("max-h-[300px] space-y-1 overflow-y-auto", props.class)}
           >
             <style>{`
             [data-module-item] {

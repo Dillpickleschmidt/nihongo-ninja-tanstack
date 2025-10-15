@@ -18,21 +18,24 @@ function RightColumn() {
   const context = useRouteContext({ from: RootRoute.id })
   const { upcomingModulesQuery, completionsQuery } = useLearnPageContext()
 
-  // if (props.variant === "mobile") {
-  //   return <HistoryContent variant="mobile" />
-  // }
-
-  // Filter out completed modules from upcoming list
-  const upcomingModules = () => {
-    const data = upcomingModulesQuery.data || []
-    const completedSet = new Set(
-      completionsQuery.data?.map((c) => c.module_path) || [],
-    )
-    return data.filter((item) => !completedSet.has(item.id))
-  }
-
   const getFirstUpcomingLink = () => {
-    const first = upcomingModules()[0]
+    if (
+      upcomingModulesQuery.isPending ||
+      upcomingModulesQuery.isError ||
+      completionsQuery.isPending ||
+      completionsQuery.isError
+    ) {
+      return null
+    }
+
+    const completedSet = new Set(
+      completionsQuery.data.map((c) => c.module_path),
+    )
+    const filteredModules = upcomingModulesQuery.data.filter(
+      (item) => !completedSet.has(item.id),
+    )
+
+    const first = filteredModules[0]
     if (!first) return null
     const module = modules[first.id]
     return module ? getLinkTo(module, first.id) : null
@@ -53,34 +56,36 @@ function RightColumn() {
             </h3>
           }
         >
-          <Show
-            when={getFirstUpcomingLink()}
-            fallback={
+          <div class="px-0.5 pt-0.5">
+            <Link to="/review" class="w-full" tabindex="-1">
               <Button
                 variant="ghost"
-                disabled
-                class="bg-primary/10 text-primary w-full cursor-not-allowed rounded-lg px-4 py-2.5 opacity-50"
+                class="text-primary ease-instant-hover-100 mb-2 w-full cursor-pointer rounded-lg border-2 border-[#523142] px-4 py-2.5 backdrop-blur-sm hover:opacity-80 focus-visible:ring-offset-0"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(244, 114, 182, 0.1) 100%)",
+                }}
+                onClick={() => {}}
+                tabindex="3"
               >
-                <Play class="h-4 w-4" />
-                <span class="text-sm font-medium">Start Studying</span>
+                <History class="h-4 w-4" />
+                <span class="text-sm font-medium">Review</span>
               </Button>
-            }
-          >
-            {(link) => (
-              <div class="px-0.5 pt-0.5">
+            </Link>
+            <Show
+              when={getFirstUpcomingLink()}
+              fallback={
                 <Button
                   variant="ghost"
-                  class="text-primary ease-instant-hover-100 mb-2 w-full cursor-pointer rounded-lg border-2 border-[#523142] px-4 py-2.5 backdrop-blur-sm hover:opacity-80 focus-visible:ring-offset-0"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(244, 114, 182, 0.1) 100%)",
-                  }}
-                  onClick={() => {}}
-                  tabindex="3"
+                  disabled
+                  class="bg-primary/10 text-primary w-full cursor-not-allowed rounded-lg px-4 py-2.5 opacity-50"
                 >
-                  <History class="h-4 w-4" />
-                  <span class="text-sm font-medium">Review</span>
+                  <Play class="h-4 w-4" />
+                  <span class="text-sm font-medium">Start Studying</span>
                 </Button>
+              }
+            >
+              {(link) => (
                 <Link to={link()} class="w-full" tabindex="-1">
                   <Button
                     variant="ghost"
@@ -96,12 +101,16 @@ function RightColumn() {
                     <span class="text-sm font-medium">Start Studying</span>
                   </Button>
                 </Link>
-              </div>
-            )}
-          </Show>
+              )}
+            </Show>
+          </div>
+
           <h3 class="pt-3 text-lg font-semibold">Upcoming Lessons</h3>
           <div class="px-4">
-            <UpcomingModulesList />
+            <UpcomingModulesList
+              upcomingModulesQuery={upcomingModulesQuery}
+              completionsQuery={completionsQuery}
+            />
           </div>
         </Show>
       </div>
