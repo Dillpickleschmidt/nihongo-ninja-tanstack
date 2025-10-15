@@ -20,8 +20,6 @@ const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 const FADE_ZONE_PX = 33
 const SCROLL_LOAD_THRESHOLD_PX = 15
 const LOAD_BATCH_SIZE = 5
-const MODULE_ITEM_HEIGHT_PX = 20
-const ABSOLUTE_SCROLL_OFFSET_PX = 0
 
 // Helper to get module info
 function getModuleInfo(moduleId: string) {
@@ -221,30 +219,72 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
     if (visible.length === 0) return
 
     requestAnimationFrame(() => {
-      if (!containerRef) return
+      requestAnimationFrame(() => {
+        if (!containerRef) {
+          console.log("[Scroll Debug] No containerRef")
+          return
+        }
 
-      // Get actual filtered upcoming modules
-      const upcomingModules = filteredUpcomingModules()
-      if (!upcomingModules || upcomingModules.length === 0) return
+        console.log(
+          "[Scroll Debug] Visible completed:",
+          visibleCompleted().length,
+        )
+        console.log(
+          "[Scroll Debug] Total completed:",
+          completionsQuery.data?.length,
+        )
 
-      // Calculate offset based on actual number of upcoming modules
-      const offsetFromBottom = MODULE_ITEM_HEIGHT_PX * upcomingModules.length
+        // Get actual filtered upcoming modules
+        const upcomingModules = filteredUpcomingModules()
+        console.log("[Scroll Debug] Upcoming modules:", upcomingModules?.length)
+        if (!upcomingModules || upcomingModules.length === 0) return
 
-      // Scroll from bottom with offset
-      const scrollHeight = containerRef.scrollHeight
-      const containerHeight = containerRef.clientHeight
-      const scrollTop = Math.max(
-        0,
-        scrollHeight -
-          containerHeight -
-          offsetFromBottom -
-          ABSOLUTE_SCROLL_OFFSET_PX,
-      )
+        // Find the first upcoming module element in DOM
+        const firstUpcomingEl = containerRef.querySelector(
+          "[data-module-item]:not([data-completed-item])",
+        )
+        console.log("[Scroll Debug] First upcoming element:", firstUpcomingEl)
 
-      initialScrollPosition = scrollTop
-      containerRef.scrollTop = scrollTop
-      setHasScrolledToPosition(true)
-      applyScrollAnimations(containerRef)
+        if (!firstUpcomingEl) {
+          console.log(
+            "[Scroll Debug] All items:",
+            containerRef.querySelectorAll("[data-module-item]"),
+          )
+          console.log(
+            "[Scroll Debug] Completed items:",
+            containerRef.querySelectorAll("[data-completed-item]"),
+          )
+          return
+        }
+
+        // Get element's bounding rect
+        const elementRect = firstUpcomingEl.getBoundingClientRect()
+        const containerRect = containerRef.getBoundingClientRect()
+
+        // Calculate element's position relative to container's scroll content
+        const elementRelativeTop =
+          elementRect.top - containerRect.top + containerRef.scrollTop
+
+        // Get container's visible height
+        const containerHeight = containerRef.clientHeight
+
+        // Calculate scroll to position element at 15% from top
+        const targetOffset = containerHeight * 0.15
+        const scrollTop = Math.max(0, elementRelativeTop - targetOffset)
+
+        console.log("[Scroll Debug]", {
+          elementRelativeTop,
+          containerHeight,
+          targetOffset,
+          calculatedScrollTop: scrollTop,
+          scrollHeight: containerRef.scrollHeight,
+        })
+
+        initialScrollPosition = scrollTop
+        containerRef.scrollTop = scrollTop
+        setHasScrolledToPosition(true)
+        applyScrollAnimations(containerRef)
+      })
     })
   })
 
