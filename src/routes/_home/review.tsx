@@ -1,5 +1,5 @@
-import { createSignal } from "solid-js"
-import { createFileRoute, useRouteContext } from "@tanstack/solid-router"
+import { createSignal, Show } from "solid-js"
+import { createFileRoute, useRouteContext, Link } from "@tanstack/solid-router"
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -15,6 +15,7 @@ import { dueCardsCountQueryOptions } from "@/features/learn-page/query/query-opt
 import { Route as RootRoute } from "@/routes/__root"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { getActiveLiveService } from "@/features/srs-services/utils"
+import { useServiceSwitcher } from "@/features/settings-page/hooks/useServiceSwitcher"
 import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"
 
 export const Route = createFileRoute("/_home/review")({
@@ -126,6 +127,10 @@ function RouteComponent() {
     ),
   )
 
+  // Service switching hook
+  const { switchToService, isSwitching, switchError, clearError } =
+    useServiceSwitcher(context().user?.id || null)
+
   const getActiveServiceDisplay = () => {
     const preferences = settingsQuery.data?.["service-preferences"]
     if (!preferences) return "nihongo"
@@ -137,6 +142,18 @@ function RouteComponent() {
   const [selectedService, setSelectedService] = createSignal<
     "nihongo" | ServiceType
   >(getActiveServiceDisplay())
+
+  const handleServiceChange = async (newService: "nihongo" | ServiceType) => {
+    clearError()
+    const result = await switchToService(newService)
+
+    if (result.success) {
+      setSelectedService(newService)
+    } else {
+      // Revert selection on error
+      setSelectedService(getActiveServiceDisplay())
+    }
+  }
 
   const services = [
     { id: "nihongo", label: "Nihongo Ninja (Built‑in)" },
@@ -317,9 +334,12 @@ function RouteComponent() {
             <span>Service:</span>
             <Select
               value={selectedService()}
-              onChange={(v) => v && setSelectedService(v as any)}
+              onChange={(v) =>
+                v && handleServiceChange(v as "nihongo" | ServiceType)
+              }
               options={services.map((s) => s.id)}
               placeholder="Select Service"
+              disabled={isSwitching()}
               itemComponent={(itemProps) => (
                 <SelectItem item={itemProps.item}>
                   {
@@ -329,17 +349,36 @@ function RouteComponent() {
                 </SelectItem>
               )}
             >
-              <SelectTrigger class="bg-background/40 text-foreground hover:bg-background/60 h-8 w-48 rounded-md text-xs transition focus:ring-1 sm:w-56">
+              <SelectTrigger class="bg-background/40 text-foreground hover:bg-background/60 h-8 w-48 rounded-md text-xs transition focus:ring-1 disabled:opacity-50 sm:w-56">
                 <SelectValue>
                   {(state) =>
-                    services.find((s) => s.id === state.selectedOption())
-                      ?.label ?? "Select Service"
+                    isSwitching()
+                      ? "Switching..."
+                      : (services.find((s) => s.id === state.selectedOption())
+                          ?.label ?? "Select Service")
                   }
                 </SelectValue>
               </SelectTrigger>
               <SelectContent class="border-border/50 bg-card/90 text-foreground rounded-md border backdrop-blur-xl" />
             </Select>
           </div>
+
+          {/* Error display */}
+          <Show when={switchError()}>
+            <div class="mt-3 max-w-md rounded-lg border border-red-400/30 bg-red-500/20 p-3">
+              <p class="text-xs text-red-100">✗ {switchError()}</p>
+              <p class="mt-2 text-xs text-red-100">
+                Please visit the{" "}
+                <Link
+                  to="/settings"
+                  class="font-medium underline underline-offset-2"
+                >
+                  Settings page
+                </Link>{" "}
+                to configure this service.
+              </p>
+            </div>
+          </Show>
         </div>
 
         {/* Desktop Learn New */}

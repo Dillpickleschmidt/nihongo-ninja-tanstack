@@ -1,8 +1,7 @@
 // features/settings-page/components/ServiceIntegrationsSection.tsx
 import { createSignal } from "solid-js"
-import { AnkiServiceCard } from "./AnkiServiceCard"
-import { WanikaniServiceCard } from "./WanikaniServiceCard"
-import { JpdbServiceCard } from "./JpdbServiceCard"
+import { ImportServiceCard } from "./ImportServiceCard"
+import { LiveServiceSelector } from "./LiveServiceSelector"
 import { ImportReviewDialog } from "./ImportReviewDialog"
 import { jpdbAdapter } from "@/features/fsrs-import/adapters/jpdb-import-adapter"
 import { importReviewsServerFn } from "@/features/fsrs-import/server/importReviewsServerFn"
@@ -14,21 +13,17 @@ import {
   userSettingsQueryOptions,
   updateUserSettingsMutation,
 } from "@/features/main-cookies/query/query-options"
-import { Link, useRouteContext } from "@tanstack/solid-router"
+import { useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 import { useServiceManagement } from "../context/ServiceManagementContext"
+import { useServiceSwitcher } from "../hooks/useServiceSwitcher"
 import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"
 import {
   getServiceCredentials,
   updateServiceCredentials,
 } from "@/features/main-cookies/functions/service-credentials"
-import type {
-  MatchedKanjiRadical,
-  UnmatchedKanjiRadical,
-  JpdbValidationResponse,
-} from "@/features/fsrs-import/core/jpdb-validation-types"
+import type { JpdbValidationResponse } from "@/features/fsrs-import/core/jpdb-validation-types"
 import type { NormalizedCard } from "@/features/fsrs-import/core/schemas"
-import { ensureSingleLiveService } from "@/features/srs-services/utils"
 
 export const ServiceIntegrationsSection = () => {
   const context = useRouteContext({ from: RootRoute.id })
@@ -40,9 +35,12 @@ export const ServiceIntegrationsSection = () => {
     updateUserSettingsMutation(userId, queryClient),
   )
 
-  const { setError, clearError, setIsProcessing } = useServiceManagement()
+  const { errors, setError, clearError, setIsProcessing, isProcessing } =
+    useServiceManagement()
 
-  // Dialog state
+  const { switchToService } = useServiceSwitcher(userId)
+
+  // JPDB import dialog state
   const [showReviewDialog, setShowReviewDialog] = createSignal(false)
   const [validationData, setValidationData] =
     createSignal<JpdbValidationResponse | null>(null)
@@ -50,72 +48,61 @@ export const ServiceIntegrationsSection = () => {
     NormalizedCard[] | null
   >(null)
 
-  const handleJpdbImport = async (apiKey: string, file: File) => {
+  // File input refs for imports
+  let jpdbFileInput: HTMLInputElement | undefined
+
+  const handleJpdbImport = () => {
+    jpdbFileInput?.click()
+  }
+
+  const handleJpdbFileSelect = async (e: Event) => {
+    const input = e.target as HTMLInputElement
+    const file = input.files?.[0]
+    if (!file) return
+
     setIsProcessing(true)
     clearError("jpdb")
 
-    // 1. Validate API Key
-    const validationResult = await validateJpdbApiKey(apiKey)
+    // Need API key for JPDB
+    const credentials = await getServiceCredentials()
+    const apiKey = credentials.jpdb?.api_key
 
-    if (!validationResult.success) {
-      setError("jpdb", validationResult.error || "Invalid API Key")
-      const currentSettings = settingsQuery.data
-      updateMutation.mutate({
-        "service-preferences": {
-          ...currentSettings["service-preferences"],
-          jpdb: {
-            ...currentSettings["service-preferences"].jpdb,
-            is_api_key_valid: false,
-          },
-        },
-      })
+    if (!apiKey) {
+      setError(
+        "jpdb",
+        "Please configure your JPDB API key in Live Service Connection first",
+      )
       setIsProcessing(false)
       return
     }
 
-    // Update credentials in HttpOnly cookie (server-only)
-    const currentCredentials = await getServiceCredentials()
-    await updateServiceCredentials({
-      data: {
-        ...currentCredentials,
-        jpdb: { ...currentCredentials.jpdb, api_key: apiKey },
-      },
-    })
+    // Validate API key
+    const validationResult = await validateJpdbApiKey(apiKey)
+    if (!validationResult.success) {
+      setError("jpdb", validationResult.error || "Invalid API Key")
+      setIsProcessing(false)
+      return
+    }
 
-    // Update settings with validated API key state
-    const currentSettings = settingsQuery.data
-    updateMutation.mutate({
-      "service-preferences": {
-        ...currentSettings["service-preferences"],
-        jpdb: {
-          ...currentSettings["service-preferences"].jpdb,
-          is_api_key_valid: true,
-        },
-      },
-    })
-
-    // 2. Parse and transform JPDB file
+    // Parse and validate file
     try {
       const fileText = await file.text()
       const rawData = JSON.parse(fileText)
+
       if (!jpdbAdapter.validateInput(rawData)) {
         throw new Error("Invalid JPDB JSON format.")
       }
+
       const cards = jpdbAdapter.transformCards(rawData)
       if (cards.length === 0) {
         throw new Error("No valid cards found in the JPDB export.")
       }
 
-      // 3. Validate with server (WaniKani lookup for kanji/radicals)
-      const validation = await validateJpdbImportServerFn({
-        data: { cards },
-      })
+      // Validate with server
+      const validation = await validateJpdbImportServerFn({ data: { cards } })
 
-      // Store data for dialog
       setValidationData(validation)
       setNormalizedCards(cards)
-
-      // Show review dialog
       setShowReviewDialog(true)
       setIsProcessing(false)
     } catch (err) {
@@ -124,6 +111,9 @@ export const ServiceIntegrationsSection = () => {
       setError("jpdb", `Import failed: ${errorMessage}`)
       setIsProcessing(false)
     }
+
+    // Reset file input
+    input.value = ""
   }
 
   const handleConfirmImport = async () => {
@@ -135,7 +125,6 @@ export const ServiceIntegrationsSection = () => {
     clearError("jpdb")
 
     try {
-      // Import with original normalized cards
       const importResult = await importReviewsServerFn({
         data: { cards, source: "jpdb" },
       })
@@ -172,72 +161,95 @@ export const ServiceIntegrationsSection = () => {
     setIsProcessing(false)
   }
 
-  const createServiceProps = (service: ServiceType) => ({
-    preference: () =>
-      settingsQuery.data["service-preferences"][service] || {
-        mode: "disabled",
-        data_imported: false,
-        is_api_key_valid: false,
-      },
-    updateServicePreference: (preferenceUpdate: any) => {
-      const currentServicePrefs = settingsQuery.data["service-preferences"]
-      const currentServicePref = currentServicePrefs[service] || {
-        mode: "disabled",
-        data_imported: false,
-        is_api_key_valid: false,
-      }
+  const handleAnkiImport = () => {
+    setError("anki", "Anki data import not yet implemented")
+  }
 
-      // Check if switching to live mode - auto-disable other services
-      const newMode = preferenceUpdate.mode || currentServicePref.mode
-      const updatedPreferences = ensureSingleLiveService(
-        service,
-        newMode,
-        currentServicePrefs,
-      )
-
-      return updateMutation.mutate({
-        "service-preferences": {
-          ...updatedPreferences,
-          [service]: { ...currentServicePref, ...preferenceUpdate },
-        },
-      })
-    },
-  })
+  const handleWanikaniImport = () => {
+    setError("wanikani", "WaniKani data import not yet implemented")
+  }
 
   return (
-    <div class="space-y-6">
-      <div class="flex items-center space-x-3">
-        <h2 class="text-2xl font-bold">Service Integrations</h2>
-        <p class="text-muted-foreground mt-1">
-          Connect the spaced-repetition programs that you've been using!
-        </p>
-      </div>
-      <ul class="text-muted-foreground ml-5 list-disc space-y-3">
-        <li>
-          <strong>Disabled</strong> - Not being used
-        </li>
-        <li>
-          <strong>Live</strong> - Your changes sync straight to the service
-          immediately, so you can continue from there as you like. See the{" "}
-          <Link to="/guides/comparison" class="underline underline-offset-3">
-            comparison chart
-          </Link>{" "}
-          for supported features.
-        </li>
-        <li>
-          <strong>Import</strong> - One-time import of your existing review data
-          for use in Nihongo Ninja. This won't affect your data on the other
-          service.
-        </li>
-      </ul>
-      <AnkiServiceCard {...createServiceProps("anki")} />
-      <WanikaniServiceCard {...createServiceProps("wanikani")} />
-      <JpdbServiceCard
-        {...createServiceProps("jpdb")}
-        onImport={handleJpdbImport}
-      />
+    <div class="space-y-8">
+      {/* Section 1: Nihongo Ninja (Built-in) */}
+      <div class="space-y-4">
+        <div>
+          <h2 class="text-2xl font-bold">Nihongo Ninja (Built-in FSRS)</h2>
+          <p class="text-muted-foreground mt-1 text-sm">
+            Use Nihongo Ninja's built-in spaced repetition system. Optionally
+            import your existing review data from other services.
+          </p>
+        </div>
 
-      {/* Import Review Dialog */}
+        <div class="space-y-3">
+          <ImportServiceCard
+            service="anki"
+            serviceName="Anki"
+            description="Import review history from Anki"
+            hasImported={
+              settingsQuery.data["service-preferences"].anki.data_imported
+            }
+            isProcessing={isProcessing()}
+            error={errors().anki ?? undefined}
+            onImport={handleAnkiImport}
+          />
+
+          <ImportServiceCard
+            service="wanikani"
+            serviceName="WaniKani"
+            description="Import review history from WaniKani"
+            hasImported={
+              settingsQuery.data["service-preferences"].wanikani.data_imported
+            }
+            isProcessing={isProcessing()}
+            error={errors().wanikani ?? undefined}
+            onImport={handleWanikaniImport}
+          />
+
+          <ImportServiceCard
+            service="jpdb"
+            serviceName="JPDB"
+            description="Import review history from JPDB"
+            hasImported={
+              settingsQuery.data["service-preferences"].jpdb.data_imported
+            }
+            isProcessing={isProcessing()}
+            error={errors().jpdb ?? undefined}
+            onImport={handleJpdbImport}
+          />
+
+          {/* Hidden file input for JPDB */}
+          <input
+            ref={jpdbFileInput}
+            type="file"
+            accept=".json"
+            class="hidden"
+            onChange={handleJpdbFileSelect}
+          />
+        </div>
+      </div>
+
+      {/* Section 2: Live External Service */}
+      <div class="space-y-4">
+        <div>
+          <h2 class="text-2xl font-bold">Live External Service Connection</h2>
+          <p class="text-muted-foreground mt-1 text-sm">
+            Connect to an external SRS service to sync your reviews in
+            real-time. Only one service can be active at a time.
+          </p>
+        </div>
+
+        <LiveServiceSelector
+          preferences={settingsQuery.data["service-preferences"]}
+          onServiceChange={switchToService}
+          isProcessing={isProcessing()}
+          errors={errors()}
+          setError={setError}
+          clearError={clearError}
+        />
+      </div>
+
+      {/* JPDB Import Review Dialog */}
       <ImportReviewDialog
         open={showReviewDialog()}
         matched={validationData()?.matched || []}
