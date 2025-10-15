@@ -3,8 +3,14 @@ import {
   getDueFSRSCardsCount,
   getDueFSRSCards,
   upsertFSRSCardForUser,
+  getFSRSVocabularyStats,
 } from "@/features/supabase/db/fsrs"
-import type { SRSServiceAdapter, DueCard, DueCountResult } from "../types"
+import type {
+  SRSServiceAdapter,
+  DueCard,
+  DueCountResult,
+  SeenCardsStatsResult,
+} from "../types"
 import type { PracticeMode } from "@/features/vocab-practice/types"
 
 /**
@@ -49,5 +55,17 @@ export class LocalFSRSAdapter implements SRSServiceAdapter {
     // 3. Upsert back to database
     // This is a simplified stub - actual implementation would be more complex
     throw new Error("Local FSRS review submission not yet implemented")
+  }
+
+  async getSeenCardsStats(): Promise<SeenCardsStatsResult> {
+    const stats = await getFSRSVocabularyStats(this.userId)
+    return {
+      stats: {
+        vocab: stats.vocab_total,
+        kanji: stats.kanji_total,
+        vocabWeek: stats.vocab_week,
+        kanjiWeek: stats.kanji_week,
+      },
+    }
   }
 }

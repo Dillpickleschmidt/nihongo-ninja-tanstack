@@ -1,5 +1,10 @@
 // features/srs-services/adapters/wanikani-adapter.ts
-import type { SRSServiceAdapter, DueCard, DueCountResult } from "../types"
+import type {
+  SRSServiceAdapter,
+  DueCard,
+  DueCountResult,
+  SeenCardsStatsResult,
+} from "../types"
 
 /**
  * WaniKani adapter - placeholder for future implementation
@@ -18,5 +23,9 @@ export class WanikaniAdapter implements SRSServiceAdapter {
 
   async submitReview(cardId: string, rating: number): Promise<void> {
     throw new Error("WaniKani live mode not yet implemented")
+  }
+
+  async getSeenCardsStats(): Promise<SeenCardsStatsResult> {
+    return { stats: null, unavailableReason: "NOT_SUPPORTED" }
   }
 }

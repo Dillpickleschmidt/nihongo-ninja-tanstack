@@ -1,7 +1,18 @@
 // features/srs-services/adapters/anki-adapter.ts
 import { isServer } from "solid-js/web"
-import { getDueCards } from "@/features/service-api-functions/anki/anki-connect-client"
-import type { SRSServiceAdapter, DueCard, DueCountResult } from "../types"
+import {
+  getDueCards,
+  getAllSeenCards,
+  getWeekSeenCards,
+  extractJapaneseTextFromCard,
+} from "@/features/service-api-functions/anki/anki-connect-client"
+import { isKanji } from "@/data/wanikani/hierarchy-builder"
+import type {
+  SRSServiceAdapter,
+  DueCard,
+  DueCountResult,
+  SeenCardsStatsResult,
+} from "../types"
 
 /**
  * Anki adapter that uses AnkiConnect to communicate with Anki desktop/mobile
@@ -39,5 +50,61 @@ export class AnkiAdapter implements SRSServiceAdapter {
     // TODO: Implement AnkiConnect answerCards endpoint
     // This would call: ankiConnectRequest("answerCards", { cards: [{ cardId, ease: rating }] })
     throw new Error("Anki review submission not yet implemented")
+  }
+
+  async getSeenCardsStats(): Promise<SeenCardsStatsResult> {
+    if (isServer) {
+      return { stats: null, unavailableReason: "CLIENT_ONLY" }
+    }
+
+    // Get all seen cards and weekly cards in parallel
+    const [allCards, weekCards] = await Promise.all([
+      getAllSeenCards(),
+      getWeekSeenCards(),
+    ])
+
+    let kanjiCount = 0
+    let vocabCount = 0
+    let kanjiWeekCount = 0
+    let vocabWeekCount = 0
+
+    // Calculate total counts
+    for (const card of allCards) {
+      const japaneseText = extractJapaneseTextFromCard(card)
+
+      // Skip cards without Japanese text
+      if (!japaneseText) continue
+
+      // Single kanji character = kanji, otherwise = vocab
+      if (japaneseText.length === 1 && isKanji(japaneseText)) {
+        kanjiCount++
+      } else {
+        vocabCount++
+      }
+    }
+
+    // Calculate weekly counts
+    for (const card of weekCards) {
+      const japaneseText = extractJapaneseTextFromCard(card)
+
+      // Skip cards without Japanese text
+      if (!japaneseText) continue
+
+      // Single kanji character = kanji, otherwise = vocab
+      if (japaneseText.length === 1 && isKanji(japaneseText)) {
+        kanjiWeekCount++
+      } else {
+        vocabWeekCount++
+      }
+    }
+
+    return {
+      stats: {
+        vocab: vocabCount,
+        kanji: kanjiCount,
+        vocabWeek: vocabWeekCount,
+        kanjiWeek: kanjiWeekCount,
+      },
+    }
   }
 }

@@ -17,7 +17,7 @@ import {
   moduleProgressQueryOptions,
   userSessionsQueryOptions,
   userWeekTimeDataQueryOptions,
-  vocabularyStatsQueryOptions,
+  seenCardsStatsQueryOptions,
   userDailyTimeQueryOptions,
 } from "@/features/learn-page/query/query-options"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
@@ -59,25 +59,24 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
         userSettings["service-preferences"],
       ),
     )
-    queryClient
-      .ensureQueryData(
-        upcomingModulesQueryOptions(
-          user?.id || null,
-          textbookId as TextbookIDEnum,
-          userSettings["textbook-positions"]?.[textbookId as TextbookIDEnum] ||
-            null,
-        ),
-      )
-      .then((upcomingModules) => {
-        queryClient.prefetchQuery(
-          moduleProgressQueryOptions(user?.id || null, upcomingModules),
-        )
-      })
+    queryClient.ensureQueryData(
+      upcomingModulesQueryOptions(
+        user?.id || null,
+        textbookId as TextbookIDEnum,
+        userSettings["textbook-positions"]?.[textbookId as TextbookIDEnum] ||
+          null,
+      ),
+    )
 
     // Prefetch progress-page queries
     queryClient.prefetchQuery(userSessionsQueryOptions(user?.id || null))
     queryClient.prefetchQuery(userWeekTimeDataQueryOptions(user?.id || null))
-    queryClient.prefetchQuery(vocabularyStatsQueryOptions(user?.id || null))
+    queryClient.prefetchQuery(
+      seenCardsStatsQueryOptions(
+        user?.id || null,
+        userSettings["service-preferences"],
+      ),
+    )
     queryClient.prefetchQuery(
       userDailyTimeQueryOptions(user?.id || null, new Date()),
     )

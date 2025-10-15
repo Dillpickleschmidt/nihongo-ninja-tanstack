@@ -7,50 +7,80 @@ import { useLearnPageContext } from "@/features/learn-page/context/LearnPageCont
 export function ProgressSummary() {
   const context = useLearnPageContext()
 
-  const vocabStats = () =>
-    context.vocabStatsQuery.data?.vocab ?? { total: 0, week: 0 }
-  const kanjiStats = () =>
-    context.vocabStatsQuery.data?.kanji ?? { total: 0, week: 0 }
+  const display = () => {
+    if (context.seenCardsStatsQuery.data === undefined) {
+      return null
+    }
+
+    const result = context.seenCardsStatsQuery.data
+
+    // Check for CLIENT_ONLY (Anki on SSR)
+    if (result.stats === null && result.unavailableReason === "CLIENT_ONLY") {
+      return (
+        <div class="flex min-h-[73px] w-32 items-center justify-center">
+          <Loader2 class="h-8 w-8 animate-spin text-emerald-400" />
+        </div>
+      )
+    }
+
+    // Check for NOT_SUPPORTED (JPDB)
+    if (result.stats === null && result.unavailableReason === "NOT_SUPPORTED") {
+      return (
+        <div class="flex min-h-[73px] w-32 items-center justify-center">
+          <div class="text-center">
+            <div class="text-gray-400">
+              <span class="text-base font-bold xl:text-lg">-</span>
+            </div>
+            <div class="text-muted-foreground text-xs xl:text-sm">
+              Not available
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    // Handle actual errors or unexpected null stats
+    if (context.seenCardsStatsQuery.isError || result.stats === null) {
+      return (
+        <div class="flex min-h-[73px] w-32 items-center justify-center">
+          <div class="text-center">
+            <div class="text-gray-400">
+              <span class="text-base font-bold xl:text-lg">-</span>
+            </div>
+            <div class="text-muted-foreground text-xs xl:text-sm">
+              Unable to load
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    // Normal display for real stats
+    return (
+      <>
+        <p class="text-lg font-semibold text-nowrap text-neutral-200">
+          <span class="text-xl">{result.stats.vocab.toLocaleString()}</span>{" "}
+          Vocab
+        </p>
+        <p class="text-base font-semibold text-neutral-200">
+          {result.stats.kanji.toLocaleString()} Kanji
+        </p>
+        <p class="mt-1 text-xs text-nowrap text-emerald-400">
+          +{result.stats.vocabWeek} V · +{result.stats.kanjiWeek} K this week
+        </p>
+      </>
+    )
+  }
 
   return (
     <div class="text-foreground border-card-foreground/70 rounded-xl border bg-neutral-200/5 px-6 py-5 text-sm backdrop-blur-sm">
       {/* ─── Metrics row ─── */}
-      <div class="flex justify-between">
+      <div class="grid grid-cols-3">
         {/* Knowledge Growth */}
-        <div>
-          {/* <h4 class="text-muted-foreground mb-1 text-xs tracking-wide uppercase"> */}
-          {/*   Knowledge */}
-          {/* </h4> */}
-          <Show
-            when={
-              !context.vocabStatsQuery.isPending &&
-              !context.vocabStatsQuery.isError
-            }
-            fallback={
-              <div class="flex min-h-[73px] w-32 items-center justify-center">
-                {context.vocabStatsQuery.isPending ? (
-                  <Loader2 class="h-8 w-8 animate-spin text-emerald-400" />
-                ) : (
-                  <span class="text-destructive text-sm">Error</span>
-                )}
-              </div>
-            }
-          >
-            <p class="text-lg font-semibold text-nowrap text-neutral-200">
-              <span class="text-xl">{vocabStats().total.toLocaleString()}</span>{" "}
-              Vocab
-            </p>
-            <p class="text-base font-semibold text-neutral-200">
-              {kanjiStats().total.toLocaleString()} Kanji
-            </p>
-            <p class="mt-1 text-xs text-nowrap text-emerald-400">
-              +{vocabStats().week} V · +{kanjiStats().week} K this week
-            </p>
-          </Show>
-        </div>
+        <div>{display()}</div>
 
         {/* Consistency — centered column */}
-        <div class="flex justify-center">
+        <div class="ml-1 flex w-full justify-center">
           <div>
             {/* <h4 class="text-muted-foreground mb-1 text-xs tracking-wide uppercase"> */}
             {/*   Consistency */}

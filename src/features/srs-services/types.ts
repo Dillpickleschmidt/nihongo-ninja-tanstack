@@ -23,6 +23,24 @@ export interface DueCard {
 }
 
 /**
+ * Stats for seen cards broken down by type
+ */
+export interface SeenCardsStats {
+  vocab: number
+  kanji: number
+  vocabWeek: number
+  kanjiWeek: number
+}
+
+/**
+ * Result type for getSeenCardsStats() with explicit unavailable states
+ */
+export type SeenCardsStatsResult = {
+  stats: SeenCardsStats | null
+  unavailableReason?: "CLIENT_ONLY" | "NOT_SUPPORTED"
+}
+
+/**
  * Interface that all SRS service adapters must implement
  */
 export interface SRSServiceAdapter {
@@ -31,4 +49,5 @@ export interface SRSServiceAdapter {
   getDueCount(): Promise<DueCountResult>
   getDueCards(): Promise<DueCard[]>
   submitReview(cardId: string, rating: number): Promise<void>
+  getSeenCardsStats(): Promise<SeenCardsStatsResult>
 }

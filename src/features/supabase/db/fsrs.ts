@@ -106,10 +106,10 @@ export interface VocabularyStats {
 }
 
 /**
- * Get vocabulary and kanji statistics
+ * Get FSRS vocabulary and kanji statistics
  * Uses optimized SQL COUNT(DISTINCT) via RPC function
  */
-export async function getVocabularyStats(
+export async function getFSRSVocabularyStats(
   userId: string,
 ): Promise<VocabularyStats> {
   const supabase = createSupabaseClient()

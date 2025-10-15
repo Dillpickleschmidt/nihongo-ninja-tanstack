@@ -22,11 +22,14 @@ import {
   userDailyTimeQueryOptions,
   userSessionsQueryOptions,
   userWeekTimeDataQueryOptions,
-  vocabularyStatsQueryOptions,
+  seenCardsStatsQueryOptions,
   type ModuleWithCurrent,
   type VocabModuleProgress,
 } from "@/features/learn-page/query/query-options"
-import type { DueCountResult } from "@/features/srs-services/types"
+import type {
+  DueCountResult,
+  SeenCardsStatsResult,
+} from "@/features/srs-services/types"
 import {
   userSettingsQueryOptions,
   updateUserSettingsMutation,
@@ -76,13 +79,7 @@ interface LearnPageContextValue {
   yesterdayTimeQuery: UseQueryResult<number, DefaultError>
   sessionsQuery: UseQueryResult<PracticeSession[], DefaultError>
   weekTimeQuery: UseQueryResult<number[], DefaultError>
-  vocabStatsQuery: UseQueryResult<
-    {
-      vocab: { total: number; week: number }
-      kanji: { total: number; week: number }
-    },
-    DefaultError
-  >
+  seenCardsStatsQuery: UseQueryResult<SeenCardsStatsResult, DefaultError>
 
   // Computed Stats (as signals)
   minutesToday: Accessor<ComputedStat<number>>
@@ -165,8 +162,11 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
   const weekTimeQuery = useCustomQuery(() =>
     userWeekTimeDataQueryOptions(props.userId),
   )
-  const vocabStatsQuery = useCustomQuery(() =>
-    vocabularyStatsQueryOptions(props.userId),
+  const seenCardsStatsQuery = useCustomQuery(() =>
+    seenCardsStatsQueryOptions(
+      props.userId,
+      settingsQuery.data!["service-preferences"],
+    ),
   )
 
   // ============================================================================
@@ -402,7 +402,7 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
         yesterdayTimeQuery,
         sessionsQuery,
         weekTimeQuery,
-        vocabStatsQuery,
+        seenCardsStatsQuery,
 
         // Computed Stats
         minutesToday,
