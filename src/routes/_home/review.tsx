@@ -28,6 +28,7 @@ function ReviewCard(props: {
   label: string
   color: "blue" | "green" | "amber"
   dueCount: number | "loading" | "error" | "unavailable"
+  breakdown?: string
   onClick: () => void
   disabled?: boolean
 }) {
@@ -53,7 +54,7 @@ function ReviewCard(props: {
     <div
       class={`w-full rounded-xl border sm:w-[300px] ${borders[props.color]} bg-gradient-to-br ${gradients[props.color]} shadow-sm backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-[2px] hover:shadow-md`}
     >
-      <div class="flex flex-col items-center gap-3 px-6 py-6 text-center sm:gap-4 sm:px-8 sm:py-10">
+      <div class="flex flex-col items-center px-6 py-6 text-center sm:px-8 sm:py-10">
         <h2
           class={`text-base font-semibold sm:text-lg ${textColors[props.color]}`}
         >
@@ -61,13 +62,13 @@ function ReviewCard(props: {
         </h2>
 
         <div
-          class={`h-[2px] w-10 rounded-full sm:w-12 ${textColors[
+          class={`mt-2 h-[2px] w-10 rounded-full sm:w-12 ${textColors[
             props.color
           ].replace("text-", "bg-")}`}
         />
 
         <div
-          class={`text-base font-semibold sm:text-lg ${textColors[props.color]} tracking-tight`}
+          class={`mt-2 h-9 text-base font-semibold sm:mt-3 sm:h-11 sm:text-lg ${textColors[props.color]} tracking-tight`}
         >
           {props.dueCount === "loading" ? (
             "..."
@@ -81,12 +82,15 @@ function ReviewCard(props: {
               <span class="text-sm font-normal text-white/70"> due</span>
             </>
           )}
+          {props.breakdown && (
+            <p class="text-xs font-normal text-white/60">{props.breakdown}</p>
+          )}
         </div>
 
         <Button
           onClick={props.onClick}
           disabled={props.disabled}
-          class="w-full rounded-md border-white/10 bg-white/10 text-sm text-white transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
+          class="mt-3 w-full rounded-md border-white/10 bg-white/10 text-sm text-white transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
         >
           Review
         </Button>
@@ -201,7 +205,7 @@ function RouteComponent() {
       return "error"
     }
 
-    return result.meanings
+    return result.meanings.vocab + result.meanings.kanji
   }
 
   const getSpellingsDueCount = ():
@@ -236,7 +240,34 @@ function RouteComponent() {
       return "error"
     }
 
-    return result.spellings
+    return result.spellings.vocab + result.spellings.kanji
+  }
+
+  // Get breakdown text for displaying vocab/kanji split
+  const getMeaningsBreakdown = () => {
+    const result = dueCardsQuery.data
+    if (
+      !result ||
+      result.meanings === null ||
+      dueCardsQuery.isPending ||
+      dueCardsQuery.isError
+    ) {
+      return ""
+    }
+    return `${result.meanings.vocab} V · ${result.meanings.kanji} K`
+  }
+
+  const getSpellingsBreakdown = () => {
+    const result = dueCardsQuery.data
+    if (
+      !result ||
+      result.spellings === null ||
+      dueCardsQuery.isPending ||
+      dueCardsQuery.isError
+    ) {
+      return ""
+    }
+    return `${result.spellings.vocab} V · ${result.spellings.kanji} K`
   }
 
   const handleClick = (section: string) => {
@@ -275,6 +306,7 @@ function RouteComponent() {
               label="Vocab Meanings"
               color="blue"
               dueCount={getMeaningsDueCount()}
+              breakdown={getMeaningsBreakdown()}
               onClick={() => handleClick("meanings")}
               disabled={["anki", "wanikani", "jpdb"].includes(
                 selectedService(),
@@ -284,6 +316,7 @@ function RouteComponent() {
               label="Vocab Spellings"
               color="green"
               dueCount={getSpellingsDueCount()}
+              breakdown={getSpellingsBreakdown()}
               onClick={() => handleClick("spellings")}
               disabled={["anki", "wanikani", "jpdb"].includes(
                 selectedService(),
@@ -305,6 +338,7 @@ function RouteComponent() {
               label="Vocab Meanings"
               color="blue"
               dueCount={getMeaningsDueCount()}
+              breakdown={getMeaningsBreakdown()}
               onClick={() => handleClick("meanings")}
               disabled={["anki", "wanikani", "jpdb"].includes(
                 selectedService(),
@@ -314,6 +348,7 @@ function RouteComponent() {
               label="Vocab Spellings"
               color="green"
               dueCount={getSpellingsDueCount()}
+              breakdown={getSpellingsBreakdown()}
               onClick={() => handleClick("spellings")}
               disabled={["anki", "wanikani", "jpdb"].includes(
                 selectedService(),

@@ -30,13 +30,42 @@ export class AnkiAdapter implements SRSServiceAdapter {
         unavailableReason: "CLIENT_ONLY",
       }
     }
-    const cards = await this.getDueCards()
 
-    const meanings = cards.filter((card) => card.mode === "meanings").length
-    const spellings = cards.filter((card) => card.mode === "spellings").length
-    const total = meanings + spellings
+    const ankiCards = await getDueCards()
 
-    return { total, meanings, spellings }
+    // Count by mode and type (radicals combined with kanji)
+    const breakdown = {
+      meanings: { vocab: 0, kanji: 0 },
+      spellings: { vocab: 0, kanji: 0 },
+    }
+
+    for (const card of ankiCards) {
+      const japaneseText = extractJapaneseTextFromCard(card)
+      if (!japaneseText) continue
+
+      // Determine type: single kanji character = kanji, otherwise = vocab
+      const isKanjiCard = japaneseText.length === 1 && isKanji(japaneseText)
+
+      // For now, Anki cards default to meanings mode (no way to distinguish)
+      // This is a limitation of the current AnkiConnect integration
+      if (isKanjiCard) {
+        breakdown.meanings.kanji++
+      } else {
+        breakdown.meanings.vocab++
+      }
+    }
+
+    const total =
+      breakdown.meanings.vocab +
+      breakdown.meanings.kanji +
+      breakdown.spellings.vocab +
+      breakdown.spellings.kanji
+
+    return {
+      total,
+      meanings: breakdown.meanings,
+      spellings: breakdown.spellings,
+    }
   }
 
   async getDueCards(): Promise<DueCard[]> {

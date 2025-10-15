@@ -79,13 +79,19 @@ export async function getUserProgress(
 
 export interface DueCountsByMode {
   total: number
-  meanings: number
-  spellings: number
+  meanings: {
+    vocab: number
+    kanji: number
+  }
+  spellings: {
+    vocab: number
+    kanji: number
+  }
 }
 
 /**
- * Get count of due FSRS cards by mode for a user
- * Uses a single optimized query with GROUP BY
+ * Get count of due FSRS cards by mode and type for a user
+ * Uses a single optimized query selecting only mode and type
  */
 export async function getDueFSRSCountsByMode(
   userId: string,
@@ -95,23 +101,48 @@ export async function getDueFSRSCountsByMode(
   const now = new Date()
   const { data, error } = await supabase
     .from("fsrs_cards")
-    .select("mode")
+    .select("mode, type")
     .eq("user_id", userId)
     .lte("due_at", now.toISOString())
 
   if (error) {
     console.error("Error counting due FSRS cards by mode:", error)
-    return { total: 0, meanings: 0, spellings: 0 }
+    return {
+      total: 0,
+      meanings: { vocab: 0, kanji: 0 },
+      spellings: { vocab: 0, kanji: 0 },
+    }
   }
 
-  // Count by mode client-side (minimal data transfer - just mode strings)
-  const meanings = data.filter((card) => card.mode === "meanings").length
-  const spellings = data.filter((card) => card.mode === "spellings").length
+  // Count by mode and type client-side (minimal data transfer)
+  // Note: Radicals are combined with kanji
+  const breakdown = {
+    meanings: { vocab: 0, kanji: 0 },
+    spellings: { vocab: 0, kanji: 0 },
+  }
+
+  for (const card of data) {
+    const mode = card.mode as "meanings" | "spellings"
+    const type = card.type as "vocabulary" | "kanji" | "radical"
+
+    if (type === "vocabulary") {
+      breakdown[mode].vocab++
+    } else if (type === "kanji" || type === "radical") {
+      // Combine radicals with kanji
+      breakdown[mode].kanji++
+    }
+  }
+
+  const total =
+    breakdown.meanings.vocab +
+    breakdown.meanings.kanji +
+    breakdown.spellings.vocab +
+    breakdown.spellings.kanji
 
   return {
-    total: meanings + spellings,
-    meanings,
-    spellings,
+    total,
+    meanings: breakdown.meanings,
+    spellings: breakdown.spellings,
   }
 }
 
