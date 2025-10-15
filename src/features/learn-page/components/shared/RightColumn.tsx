@@ -18,11 +18,6 @@ function RightColumn() {
   const context = useRouteContext({ from: RootRoute.id })
   const { upcomingModulesQuery, completionsQuery } = useLearnPageContext()
 
-  // if (props.variant === "mobile") {
-  //   return <HistoryContent variant="mobile" />
-  // }
-
-  // Get first upcoming link for "Start Studying" button
   const getFirstUpcomingLink = () => {
     if (
       upcomingModulesQuery.isPending ||

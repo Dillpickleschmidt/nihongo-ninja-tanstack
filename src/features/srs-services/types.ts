@@ -3,22 +3,10 @@ import type { PracticeMode } from "@/features/vocab-practice/types"
 
 export type SRSServiceType = "anki" | "jpdb" | "wanikani" | "local"
 
-/**
- * Breakdown of due counts by practice item type
- * Note: Radicals are combined with kanji
- */
-export interface DueCountBreakdown {
-  vocab: number
-  kanji: number
-}
-
-/**
- * Result type for getDueCount() with breakdown by type
- */
 export type DueCountResult = {
   total: number | null
-  meanings: DueCountBreakdown | null
-  spellings: DueCountBreakdown | null
+  meanings: { vocab: number; kanji: number } | null
+  spellings: number | null
   unavailableReason?: "CLIENT_ONLY" | "NOT_SUPPORTED"
 }
 

@@ -120,9 +120,9 @@ function ReviewCard(props: {
 
         <div
           class={cn(
-            "font-semibold tracking-tight",
+            "mt-2 font-semibold tracking-tight",
             textColors[props.color],
-            isDesktop ? "mt-3 h-11 text-lg" : "mt-2 h-9 text-base",
+            isDesktop ? "h-11 text-lg" : "h-9 text-base",
           )}
         >
           {props.dueCount === "loading" ? (
@@ -173,7 +173,7 @@ function PageHeader(props: { variant: "mobile" | "desktop" }) {
         Review & Practice
       </h1>
       <p class={cn("text-muted-foreground", isDesktop ? "text-sm" : "text-xs")}>
-        Continue where you left off or focus on specific skills.
+        Review due items or start learning new ones.
       </p>
     </div>
   )
@@ -392,7 +392,7 @@ function RouteComponent() {
       return "error"
     }
 
-    return result.spellings.vocab + result.spellings.kanji
+    return result.spellings
   }
 
   // Get breakdown text for displaying vocab/kanji split
@@ -410,16 +410,7 @@ function RouteComponent() {
   }
 
   const getSpellingsBreakdown = () => {
-    const result = dueCardsQuery.data
-    if (
-      !result ||
-      result.spellings === null ||
-      dueCardsQuery.isPending ||
-      dueCardsQuery.isError
-    ) {
-      return ""
-    }
-    return `${result.spellings.vocab} V · ${result.spellings.kanji} K`
+    return ""
   }
 
   const handleClick = (section: string) => {
@@ -447,7 +438,7 @@ function RouteComponent() {
 
           <div class="flex flex-wrap justify-center gap-10">
             <ReviewCard
-              label="Vocab Meanings"
+              label="Meanings"
               color="blue"
               dueCount={getMeaningsDueCount()}
               breakdown={getMeaningsBreakdown()}
@@ -458,7 +449,7 @@ function RouteComponent() {
               variant="desktop"
             />
             <ReviewCard
-              label="Vocab Spellings"
+              label="Spellings"
               color="green"
               dueCount={getSpellingsDueCount()}
               breakdown={getSpellingsBreakdown()}

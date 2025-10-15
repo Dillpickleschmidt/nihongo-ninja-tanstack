@@ -85,7 +85,7 @@ export const dueCardsCountQueryOptions = (
         return {
           total: 0,
           meanings: { vocab: 0, kanji: 0 },
-          spellings: { vocab: 0, kanji: 0 },
+          spellings: 0,
         }
 
       const adapter = createSRSAdapter(userId, preferences)

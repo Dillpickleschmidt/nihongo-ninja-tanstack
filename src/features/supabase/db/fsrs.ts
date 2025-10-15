@@ -83,10 +83,7 @@ export interface DueCountsByMode {
     vocab: number
     kanji: number
   }
-  spellings: {
-    vocab: number
-    kanji: number
-  }
+  spellings: number
 }
 
 /**
@@ -110,39 +107,37 @@ export async function getDueFSRSCountsByMode(
     return {
       total: 0,
       meanings: { vocab: 0, kanji: 0 },
-      spellings: { vocab: 0, kanji: 0 },
+      spellings: 0,
     }
   }
 
-  // Count by mode and type client-side (minimal data transfer)
-  // Note: Radicals are combined with kanji
-  const breakdown = {
-    meanings: { vocab: 0, kanji: 0 },
-    spellings: { vocab: 0, kanji: 0 },
-  }
+  const meaningsBreakdown = { vocab: 0, kanji: 0 }
+  let spellingsCount = 0
 
   for (const card of data) {
     const mode = card.mode as "meanings" | "spellings"
     const type = card.type as "vocabulary" | "kanji" | "radical"
 
-    if (type === "vocabulary") {
-      breakdown[mode].vocab++
-    } else if (type === "kanji" || type === "radical") {
-      // Combine radicals with kanji
-      breakdown[mode].kanji++
+    if (mode === "meanings") {
+      if (type === "vocabulary") {
+        meaningsBreakdown.vocab++
+      } else if (type === "kanji" || type === "radical") {
+        meaningsBreakdown.kanji++
+      }
+    } else if (mode === "spellings") {
+      if (type === "vocabulary") {
+        spellingsCount++
+      }
     }
   }
 
   const total =
-    breakdown.meanings.vocab +
-    breakdown.meanings.kanji +
-    breakdown.spellings.vocab +
-    breakdown.spellings.kanji
+    meaningsBreakdown.vocab + meaningsBreakdown.kanji + spellingsCount
 
   return {
     total,
-    meanings: breakdown.meanings,
-    spellings: breakdown.spellings,
+    meanings: meaningsBreakdown,
+    spellings: spellingsCount,
   }
 }
 
