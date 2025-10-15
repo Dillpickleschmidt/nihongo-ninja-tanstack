@@ -6,8 +6,10 @@ import {
 } from "@tanstack/solid-query"
 import { getDeckBySlug, getTextbookLearningPath } from "@/data/utils/core"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
-import { getDueFSRSCardsCount, getFSRSCards } from "@/features/supabase/db/fsrs"
-import { getUserProgress } from "@/features/supabase/db/fsrs"
+import { getFSRSCards } from "@/features/supabase/db/fsrs"
+import { createSRSAdapter } from "@/features/srs-services/factory"
+import type { DueCountResult } from "@/features/srs-services/types"
+import type { AllServicePreferences } from "@/features/main-cookies/schemas/user-settings"
 import { getUserModuleProgress } from "@/features/supabase/db/module-progress"
 import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
 import { getVocabSets, getVocabularyForModule } from "@/data/utils/vocab"
@@ -70,12 +72,23 @@ export const vocabHierarchyQueryOptions = (
     },
   })
 
-export const dueFSRSCardsCountQueryOptions = (userId: string | null) =>
+export const dueCardsCountQueryOptions = (
+  userId: string | null,
+  preferences: AllServicePreferences,
+) =>
   queryOptions({
-    queryKey: ["fsrs-due-count", userId],
+    queryKey: ["due-cards-count", userId, preferences],
     queryFn: async () => {
-      if (!userId) return 0
-      return getDueFSRSCardsCount(userId)
+      if (!userId) return { count: 0 }
+
+      const adapter = createSRSAdapter(userId, preferences)
+      return adapter.getDueCount()
+    },
+    staleTime: (query) => {
+      const data = query.state.data as DueCountResult | undefined
+      // If CLIENT_ONLY, mark as immediately stale to force refetch
+      // Once real data is fetched, it becomes cached forever
+      return data?.unavailableReason === "CLIENT_ONLY" ? 0 : Infinity
     },
   })
 

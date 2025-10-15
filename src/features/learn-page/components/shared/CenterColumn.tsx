@@ -16,15 +16,13 @@ function CenterColumn() {
   const context = useLearnPageContext()
 
   const activeTextbookId = () =>
-    (context.settingsQuery.data?.["active-textbook"] ||
-      "genki_1") as TextbookIDEnum
-  const activeChapterSlug = () =>
-    context.settingsQuery.data?.["active-deck"] || "chapter-0"
+    context.settingsQuery.data!["active-textbook"] as TextbookIDEnum
+  const activeChapterSlug = () => context.settingsQuery.data!["active-deck"]
   const activeDeck = () =>
     getDeckBySlug(activeTextbookId(), activeChapterSlug())
 
   const variant = () =>
-    context.settingsQuery.data?.["device-type"] === "mobile"
+    context.settingsQuery.data!["device-type"] === "mobile"
       ? "mobile"
       : "desktop"
 

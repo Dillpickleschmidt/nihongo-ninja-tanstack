@@ -16,8 +16,6 @@ export function BottomNav(props: BottomNavProps) {
   const userId = context().user?.id || null
 
   const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
-  const activeTextbook = () =>
-    settingsQuery.data?.["active-textbook"] || "genki_1"
 
   const dailyProgress = () => props.dailyProgressPercentage ?? 65
 

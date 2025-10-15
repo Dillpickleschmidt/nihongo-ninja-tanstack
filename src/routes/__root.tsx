@@ -139,7 +139,7 @@ function RootContent() {
         ? "desktop"
         : "mobile"
 
-      if (settingsQuery.data?.["device-type"] !== detectedType) {
+      if (settingsQuery.data!["device-type"] !== detectedType) {
         updateSettingsMutation.mutate({
           "device-type": detectedType,
         })

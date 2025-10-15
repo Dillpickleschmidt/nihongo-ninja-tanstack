@@ -116,8 +116,8 @@ export const UserSettingsSchema = z.object({
   "service-preferences": ServicePreferencesSchema.default(
     ServicePreferencesSchema.parse({}),
   ),
-  "active-textbook": TextbookIDSchema.default(""),
-  "active-deck": z.string().max(20).default(""),
+  "active-textbook": TextbookIDSchema.default("genki_1"),
+  "active-deck": z.string().max(20).default("chapter-0"),
   "completed-tours": z.array(z.string()).default([]),
   "override-settings": OverrideSettingsSchema.default({
     vocabularyOverrides: DEFAULT_VOCABULARY_STACKS,

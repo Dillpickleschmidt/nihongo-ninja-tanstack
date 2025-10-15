@@ -15,7 +15,7 @@ import {
 } from "@tanstack/solid-query"
 import type { DefaultError } from "@tanstack/query-core"
 import {
-  dueFSRSCardsCountQueryOptions,
+  dueCardsCountQueryOptions,
   completedModulesQueryOptions,
   upcomingModulesQueryOptions,
   moduleProgressQueryOptions,
@@ -26,6 +26,7 @@ import {
   type ModuleWithCurrent,
   type VocabModuleProgress,
 } from "@/features/learn-page/query/query-options"
+import type { DueCountResult } from "@/features/srs-services/types"
 import {
   userSettingsQueryOptions,
   updateUserSettingsMutation,
@@ -64,7 +65,7 @@ interface LearnPageContextValue {
   upcomingModulesQuery: UseQueryResult<ModuleWithCurrent[], DefaultError>
   completionsQuery: UseQueryResult<ModuleProgress[], DefaultError>
   settingsQuery: UseQueryResult<UserSettings, DefaultError>
-  dueCardsCountQuery: UseQueryResult<number, DefaultError>
+  dueCardsCountQuery: UseQueryResult<DueCountResult, DefaultError>
   moduleProgressQuery: UseQueryResult<
     Record<string, VocabModuleProgress>,
     DefaultError
@@ -133,13 +134,16 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
     completedModulesQueryOptions(props.userId),
   )
   const dueCardsCountQuery = useCustomQuery(() =>
-    dueFSRSCardsCountQueryOptions(props.userId),
+    dueCardsCountQueryOptions(
+      props.userId,
+      settingsQuery.data!["service-preferences"],
+    ),
   )
   const upcomingModulesQuery = useCustomQuery(() =>
     upcomingModulesQueryOptions(
       props.userId,
       props.textbookId,
-      settingsQuery.data?.["textbook-positions"]?.[props.textbookId] || null,
+      settingsQuery.data!["textbook-positions"]?.[props.textbookId] || null,
     ),
   )
 
@@ -271,7 +275,7 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
 
     updateMutation.mutate({
       "textbook-positions": {
-        ...settingsQuery.data?.["textbook-positions"],
+        ...settingsQuery.data!["textbook-positions"],
         [props.textbookId]: moduleId,
       },
     })
@@ -308,7 +312,7 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
       const currentLearningPath = textbookLearningPath()
       const mostRecent = completionsQuery.data[0]
       const currentPosition =
-        settingsQuery.data?.["textbook-positions"]?.[props.textbookId] || null
+        settingsQuery.data!["textbook-positions"]?.[props.textbookId] || null
 
       // Check if should update due to nearby completion (�2 modules)
       const shouldUpdateNearby = shouldUpdatePosition(

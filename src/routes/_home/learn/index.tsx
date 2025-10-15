@@ -11,21 +11,13 @@ export const Route = createFileRoute("/_home/learn/")({
       userSettingsQueryOptions(user?.id || null),
     )
 
-    // Redirect to active textbook/chapter if set
-    if (settings["active-textbook"] && settings["active-deck"]) {
-      throw redirect({
-        to: "/learn/$textbookId/$chapterSlug",
-        params: {
-          textbookId: settings["active-textbook"],
-          chapterSlug: settings["active-deck"],
-        },
-      })
-    }
-
-    // Fallback to chapter-0
+    // Redirect to active textbook/chapter
     throw redirect({
       to: "/learn/$textbookId/$chapterSlug",
-      params: { textbookId: "genki_1", chapterSlug: "chapter-0" },
+      params: {
+        textbookId: settings["active-textbook"],
+        chapterSlug: settings["active-deck"],
+      },
     })
   },
 })

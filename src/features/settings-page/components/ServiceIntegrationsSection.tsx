@@ -28,6 +28,7 @@ import type {
   JpdbValidationResponse,
 } from "@/features/fsrs-import/core/jpdb-validation-types"
 import type { NormalizedCard } from "@/features/fsrs-import/core/schemas"
+import { ensureSingleLiveService } from "@/features/srs-services/utils"
 
 export const ServiceIntegrationsSection = () => {
   const context = useRouteContext({ from: RootRoute.id })
@@ -186,9 +187,17 @@ export const ServiceIntegrationsSection = () => {
         is_api_key_valid: false,
       }
 
+      // Check if switching to live mode - auto-disable other services
+      const newMode = preferenceUpdate.mode || currentServicePref.mode
+      const updatedPreferences = ensureSingleLiveService(
+        service,
+        newMode,
+        currentServicePrefs,
+      )
+
       return updateMutation.mutate({
         "service-preferences": {
-          ...currentServicePrefs,
+          ...updatedPreferences,
           [service]: { ...currentServicePref, ...preferenceUpdate },
         },
       })
