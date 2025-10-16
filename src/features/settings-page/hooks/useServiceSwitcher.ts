@@ -36,7 +36,7 @@ export function useServiceSwitcher(userId: string | null) {
     clearError()
 
     try {
-      const currentPreferences = settingsQuery.data["service-preferences"]
+      const currentPreferences = settingsQuery.data!["service-preferences"]
 
       // Handle "nihongo" (local FSRS) - just disable all services
       if (service === "nihongo") {

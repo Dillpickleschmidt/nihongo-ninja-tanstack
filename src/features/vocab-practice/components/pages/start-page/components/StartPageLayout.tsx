@@ -7,6 +7,7 @@ import { BottomNav } from "@/features/navbar/BottomNav"
 import { StartPageHeader } from "./StartPageHeader"
 import { StartPageButton } from "./StartPageButton"
 import StartPagePreviewCard from "./StartPagePreviewCard"
+import DependencyOverview from "./DependencyOverview"
 import type { useStartPageLogic } from "../hooks/useStartPageLogic"
 
 type StartPageLayoutProps = {
@@ -55,43 +56,7 @@ export function StartPageLayout(props: StartPageLayoutProps) {
 
       <div class="px-4 pb-24">
         <div class="mx-auto max-w-3xl">
-          <h2 class="text-primary text-center text-lg font-semibold tracking-wide">
-            Module Content
-          </h2>
-          <div class="mt-3 mb-16 grid gap-3 lg:gap-4">
-            <Show
-              when={
-                !props.logic.vocabularyQuery.isPending &&
-                !props.logic.vocabularyQuery.isError
-              }
-              fallback={
-                <div class="flex min-h-[200px] items-center justify-center">
-                  {props.logic.vocabularyQuery.isPending ? (
-                    <Loader2 class="h-8 w-8 animate-spin text-orange-400" />
-                  ) : (
-                    <span class="text-destructive text-sm">
-                      Error loading vocabulary
-                    </span>
-                  )}
-                </div>
-              }
-            >
-              <For each={props.logic.previewCards()}>
-                {(card, index) => (
-                  <StartPagePreviewCard
-                    card={card}
-                    index={index()}
-                    allCards={props.logic.previewCards()}
-                    fsrsQuery={
-                      props.logic.activeService() === "local"
-                        ? props.logic.fsrsCardsQuery
-                        : undefined
-                    }
-                  />
-                )}
-              </For>
-            </Show>
-          </div>
+          <DependencyOverview />
 
           <Show
             when={
