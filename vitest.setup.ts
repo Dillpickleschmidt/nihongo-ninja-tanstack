@@ -8,8 +8,8 @@ vi.mock("@tanstack/solid-start", async () => {
   return {
     createServerFn: vi.fn().mockImplementation(() => {
       const mockFn = vi.fn()
-      mockFn.validator = vi.fn().mockReturnValue({
-        handler: vi.fn()
+      mockFn.inputValidator = vi.fn().mockReturnValue({
+        handler: vi.fn(),
       })
       return mockFn
     }),
@@ -24,3 +24,4 @@ vi.mock("@/features/supabase/db/fsrs", () => ({
   getFSRSCards: vi.fn(),
   getUserProgress: vi.fn(),
 }))
+
