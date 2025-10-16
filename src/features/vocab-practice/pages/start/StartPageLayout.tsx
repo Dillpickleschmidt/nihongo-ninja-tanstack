@@ -6,6 +6,10 @@ import { StartPageHeader } from "./header/Header"
 import { StartPageButton } from "./StartPageButton"
 import { ReviewItemsList } from "./review/ReviewItemsList"
 import DependencyOverview from "./dependency/DependencyOverview"
+import { useRouteContext } from "@tanstack/solid-router"
+import { userDailyTimeQueryOptions } from "@/features/learn-page/query/query-options"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { Route as RootRoute } from "@/routes/__root"
 import type { useStartPageLogic } from "./hooks/useStartPageLogic"
 
 type StartPageLayoutProps = {
@@ -14,6 +18,19 @@ type StartPageLayoutProps = {
 }
 
 export function StartPageLayout(props: StartPageLayoutProps) {
+  const context = useRouteContext({ from: RootRoute.id })
+  const userId = context().user?.id
+
+  const todayTimeQuery = useCustomQuery(() =>
+    userDailyTimeQueryOptions(userId || null, new Date()),
+  )
+
+  const dailyProgressPercentage = () => {
+    if (!userId) return 0
+    const minutesToday = Math.round((todayTimeQuery.data ?? 0) / 60)
+    return Math.min(100, Math.round((minutesToday / 30) * 100))
+  }
+
   // Derive preview count from cards
   const previewCount = () => {
     const vocabCount = props.logic
@@ -94,7 +111,7 @@ export function StartPageLayout(props: StartPageLayoutProps) {
         onClick={props.logic.handleStart}
       />
 
-      <BottomNav dailyProgressPercentage={25} />
+      <BottomNav dailyProgressPercentage={dailyProgressPercentage()} />
     </div>
   )
 }
