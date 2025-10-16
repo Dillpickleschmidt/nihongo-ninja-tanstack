@@ -49,9 +49,9 @@ export function ReviewItemsList(props: ReviewItemsListProps) {
                   card.isDisabled ? "opacity-30" : ""
                 } ${
                   card.practiceItemType === "kanji"
-                    ? "border border-pink-500/10 bg-pink-500/5"
+                    ? "border border-indigo-500/10 bg-indigo-500/5"
                     : card.practiceItemType === "radical"
-                      ? "border border-blue-500/10 bg-blue-500/5"
+                      ? "border border-purple-500/10 bg-purple-500/5"
                       : "bg-card/40 backdrop-blur-sm"
                 }`}
                 title={card.isDisabled ? explanationText : undefined}
@@ -63,12 +63,12 @@ export function ReviewItemsList(props: ReviewItemsListProps) {
                     <div class="flex h-full items-center justify-between p-3">
                       <div class="flex items-center gap-3">
                         {card.practiceItemType === "kanji" && (
-                          <span class="rounded-full bg-pink-500/20 px-2 py-0.5 text-xs font-semibold text-pink-400 uppercase">
+                          <span class="rounded-full bg-indigo-500/20 px-2 py-0.5 text-xs font-semibold text-indigo-400 uppercase">
                             Kanji
                           </span>
                         )}
                         {card.practiceItemType === "radical" && (
-                          <span class="rounded-full bg-blue-500/20 px-2 py-0.5 text-xs font-semibold text-blue-400 uppercase">
+                          <span class="rounded-full bg-purple-500/20 px-2 py-0.5 text-xs font-semibold text-purple-400 uppercase">
                             Radical
                           </span>
                         )}
@@ -78,8 +78,8 @@ export function ReviewItemsList(props: ReviewItemsListProps) {
                               card.isDisabled
                                 ? "text-muted-foreground"
                                 : card.practiceItemType === "kanji"
-                                  ? "text-pink-400"
-                                  : "text-blue-400"
+                                  ? "text-indigo-400"
+                                  : "text-purple-400"
                             }`}
                           >
                             {card.prompt}
@@ -102,8 +102,8 @@ export function ReviewItemsList(props: ReviewItemsListProps) {
                           isLoading={props.isLoading}
                           variant={
                             card.practiceItemType === "kanji"
-                              ? "purple"
-                              : "indigo"
+                              ? "indigo"
+                              : "purple"
                           }
                         />
                       </Show>

@@ -1,5 +1,7 @@
-import { Show } from "solid-js"
+import { Show, createSignal } from "solid-js"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
+import { X } from "lucide-solid"
 import { SummaryCard } from "./SummaryCard"
 import { Chip } from "./Chip"
 import { VocabularyTabContent } from "./VocabTab"
@@ -15,6 +17,7 @@ type FullDependencyViewProps = {
 
   // Data
   vocabList: () => any[] | undefined
+  filteredVocabList: () => any[] | undefined
   kanjiSet: Set<string>
   radicalSet: Set<string>
   filteredKanji: () => string[]
@@ -43,6 +46,22 @@ type FullDependencyViewProps = {
 }
 
 export function FullDependencyView(props: FullDependencyViewProps) {
+  const [selectedTab, setSelectedTab] = createSignal("v2k")
+
+  // Wrapper for VocabTab: select kanji + switch to k2r tab
+  const selectKanjiAndSwitchToK2R = (k: string) => {
+    props.setSelectedKanji(k)
+    props.setSelectedRadical(null)
+    setSelectedTab("k2r")
+  }
+
+  // Wrapper for KanjiTab: select kanji + switch to v2k tab
+  const selectKanjiAndSwitchToV2K = (k: string) => {
+    props.setSelectedKanji(k)
+    props.setSelectedRadical(null)
+    setSelectedTab("v2k")
+  }
+
   return (
     <>
       <div class="grid grid-cols-3 gap-2 md:gap-3">
@@ -50,13 +69,7 @@ export function FullDependencyView(props: FullDependencyViewProps) {
           label="Vocabulary"
           query={props.hierarchyQuery}
           getValue={() => props.vocabList()!.length}
-          onClick={() => {
-            // Focus Vocabulary (Vocab → Kanji) tab
-            const tabEl = document.querySelector(
-              '[data-dep-tabs="true"] [data-value="v2k"]',
-            ) as HTMLButtonElement | null
-            tabEl?.click()
-          }}
+          onClick={() => setSelectedTab("v2k")}
         />
         <SummaryCard
           label="Kanji"
@@ -65,13 +78,9 @@ export function FullDependencyView(props: FullDependencyViewProps) {
           dueCountQuery={props.fsrsCardsQuery}
           getDueCount={() => props.dueCounts?.kanji}
           onClick={() => {
-            // Focus K→R tab and clear selections
             props.setSelectedRadical(null)
             props.setSelectedKanji(null)
-            const tabEl = document.querySelector(
-              '[data-dep-tabs="true"] [data-value="k2r"]',
-            ) as HTMLButtonElement | null
-            tabEl?.click()
+            setSelectedTab("k2r")
           }}
         />
         <SummaryCard
@@ -81,13 +90,9 @@ export function FullDependencyView(props: FullDependencyViewProps) {
           dueCountQuery={props.fsrsCardsQuery}
           getDueCount={() => props.dueCounts?.radicals}
           onClick={() => {
-            // Focus K→R tab and clear selections
             props.setSelectedRadical(null)
             props.setSelectedKanji(null)
-            const tabEl = document.querySelector(
-              '[data-dep-tabs="true"] [data-value="k2r"]',
-            ) as HTMLButtonElement | null
-            tabEl?.click()
+            setSelectedTab("k2r")
           }}
         />
       </div>
@@ -101,7 +106,7 @@ export function FullDependencyView(props: FullDependencyViewProps) {
       </Show>
 
       {/* Tabs */}
-      <Tabs defaultValue="v2k" class="w-full" data-dep-tabs="true">
+      <Tabs value={selectedTab()} onChange={setSelectedTab} class="w-full">
         <div class="flex items-center justify-between">
           <TabsList class="h-8 bg-transparent">
             <TabsTrigger
@@ -127,8 +132,17 @@ export function FullDependencyView(props: FullDependencyViewProps) {
                   label={props.selectedKanji()!}
                   color="indigo"
                   selected
-                  onClick={() => props.setSelectedKanji(null)}
+                  onClick={() => {}}
                 />
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => props.setSelectedKanji(null)}
+                  class="h-5 px-1.5"
+                  title="Clear selection"
+                >
+                  <X class="h-3 w-3" />
+                </Button>
               </span>
             </Show>
             <Show when={props.selectedRadical()}>
@@ -138,8 +152,17 @@ export function FullDependencyView(props: FullDependencyViewProps) {
                   label={props.selectedRadical()!}
                   color="purple"
                   selected
-                  onClick={() => props.setSelectedRadical(null)}
+                  onClick={() => {}}
                 />
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => props.setSelectedRadical(null)}
+                  class="h-5 px-1.5"
+                  title="Clear selection"
+                >
+                  <X class="h-3 w-3" />
+                </Button>
               </span>
             </Show>
           </div>
@@ -149,13 +172,12 @@ export function FullDependencyView(props: FullDependencyViewProps) {
         <TabsContent value="v2k" class="mt-2">
           <VocabularyTabContent
             vocabularyQuery={props.vocabularyQuery}
-            hierarchyQuery={props.hierarchyQuery}
-            vocabList={props.vocabList}
+            vocabList={props.filteredVocabList}
             fsrsMap={props.fsrsMap}
             fsrsCardsQuery={props.fsrsCardsQuery}
             activeService={props.activeService}
             selectedKanji={props.selectedKanji}
-            toggleKanji={props.toggleKanji}
+            toggleKanji={selectKanjiAndSwitchToK2R}
           />
         </TabsContent>
 
@@ -170,7 +192,7 @@ export function FullDependencyView(props: FullDependencyViewProps) {
             fsrsCardsQuery={props.fsrsCardsQuery}
             activeService={props.activeService}
             selectedKanji={props.selectedKanji}
-            toggleKanji={props.toggleKanji}
+            toggleKanji={selectKanjiAndSwitchToV2K}
             toggleRadical={props.toggleRadical}
           />
         </TabsContent>

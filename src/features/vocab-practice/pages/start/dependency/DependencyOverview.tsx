@@ -229,13 +229,13 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
     },
   )
 
-  const filteredVocabAll = createMemo(() => {
+  const filteredVocabAll = () => {
     const vocab = vocabList()
-    if (!vocab) return undefined
+    if (!vocab) return vocabularyQuery.data // Fallback to raw vocab while hierarchy loads
     const kSel = selectedKanji()
     if (!kSel) return vocab
     return vocab.filter((v) => v.kanjiComponents?.includes(kSel))
-  })
+  }
 
   const filteredKanji = createMemo(() => {
     const allKanji = Array.from(kanjiSet().values())
@@ -321,6 +321,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
               hierarchyQuery={hierarchyQuery}
               fsrsCardsQuery={fsrsCardsQuery}
               vocabList={vocabList}
+              filteredVocabList={filteredVocabAll}
               kanjiSet={kanjiSet()}
               radicalSet={radicalSet()}
               filteredKanji={filteredKanji}

@@ -8,7 +8,6 @@ import type { DefaultError } from "@tanstack/query-core"
 
 type VocabularyTabContentProps = {
   vocabularyQuery: UseQueryResult<any, DefaultError>
-  hierarchyQuery: UseQueryResult<any, DefaultError>
   vocabList: () => any[] | undefined
   fsrsMap: Map<string, any>
   fsrsCardsQuery: UseQueryResult<any, DefaultError>
@@ -29,22 +28,16 @@ export function VocabularyTabContent(props: VocabularyTabContentProps) {
         }
       >
         <Show
-          when={props.vocabularyQuery.data && props.vocabularyQuery.data.length > 0}
+          when={props.vocabList() && props.vocabList()!.length > 0}
           fallback={
-            <p class="text-muted-foreground text-sm">No vocabulary to display.</p>
+            <p class="text-muted-foreground text-sm">
+              No vocabulary to display.
+            </p>
           }
         >
           <div class="space-y-3">
-            <For each={props.vocabularyQuery.data}>
+            <For each={props.vocabList()}>
               {(vocabItem) => {
-                // Get kanji components from hierarchy if available
-                const kanjiComponents = () => {
-                  const hierarchyVocab = props.vocabList()?.find(
-                    (v: any) => v.word === vocabItem.word,
-                  )
-                  return hierarchyVocab?.kanjiComponents
-                }
-
                 const fsrsData = () =>
                   props.fsrsMap.get(`vocabulary:${vocabItem.word}`)
                 const { isDue, dueDate } = useFsrsDueDate(fsrsData)
@@ -57,27 +50,20 @@ export function VocabularyTabContent(props: VocabularyTabContentProps) {
                           {vocabItem.word}
                         </div>
                         <div class="mt-2 flex flex-wrap gap-1.5">
-                          <Show
-                            when={!props.hierarchyQuery.isPending}
-                            fallback={
-                              <span class="text-muted-foreground text-xs">—</span>
-                            }
-                          >
-                            <For each={kanjiComponents() || []}>
-                              {(k) => (
-                                <Chip
-                                  label={k}
-                                  color="indigo"
-                                  selected={props.selectedKanji() === k}
-                                  onClick={() => props.toggleKanji(k)}
-                                />
-                              )}
-                            </For>
-                            <Show when={!kanjiComponents()?.length}>
-                              <span class="text-muted-foreground text-xs">
-                                No kanji
-                              </span>
-                            </Show>
+                          <For each={vocabItem.kanjiComponents || []}>
+                            {(k) => (
+                              <Chip
+                                label={k}
+                                color="indigo"
+                                selected={props.selectedKanji() === k}
+                                onClick={() => props.toggleKanji(k)}
+                              />
+                            )}
+                          </For>
+                          <Show when={!vocabItem.kanjiComponents?.length}>
+                            <span class="text-muted-foreground text-xs">
+                              No kanji
+                            </span>
                           </Show>
                         </div>
                       </div>

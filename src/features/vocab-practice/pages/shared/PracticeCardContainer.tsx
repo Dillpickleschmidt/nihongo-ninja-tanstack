@@ -26,9 +26,9 @@ export function PracticeCardContainer(props: {
                 card().practiceItemType === "vocabulary" &&
                   "bg-orange-500/20 text-orange-400",
                 card().practiceItemType === "kanji" &&
-                  "bg-pink-500/20 text-pink-400",
+                  "bg-indigo-500/20 text-indigo-400",
                 card().practiceItemType === "radical" &&
-                  "bg-green-500/20 text-green-400",
+                  "bg-purple-500/20 text-purple-400",
               )}
             >
               {card().practiceItemType}
