@@ -1,16 +1,15 @@
-// vocab-practice/VocabPractice.tsx
 import { Match, Switch } from "solid-js"
 import {
   VocabPracticeContextProvider,
   useVocabPracticeContext,
 } from "./context/VocabPracticeContext"
 import type { PracticeMode } from "./types"
-import StartPageComponent from "./components/pages/StartPageComponent"
-import PracticePageComponent from "./components/pages/PracticePageComponent"
-import ReviewPageComponent from "./components/pages/ReviewPageComponent"
-import FinishPageComponent from "./components/pages/FinishPageComponent"
-import IntroductionPageComponent from "./components/pages/IntroductionPageComponent"
-import FSRSFlashcardPageComponent from "./components/pages/FSRSFlashcardPageComponent"
+import StartPageComponent from "./pages/start/StartPageComponent"
+import PracticePageComponent from "./pages/practice/PracticePage"
+import ReviewPageComponent from "./pages/review/ReviewPage"
+import FinishPageComponent from "./pages/finish/FinishPage"
+import IntroductionPageComponent from "./pages/introduction/IntroductionPage"
+import FSRSFlashcardPageComponent from "./pages/flashcard/FlashcardPage"
 
 type VocabPracticeProps = {
   mode: PracticeMode
