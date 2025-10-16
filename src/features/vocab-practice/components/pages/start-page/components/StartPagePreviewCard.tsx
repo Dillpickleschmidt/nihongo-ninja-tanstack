@@ -1,39 +1,29 @@
 // features/vocab-practice/components/pages/start-page/StartPagePreviewCard.tsx
-import { createMemo, Show } from "solid-js"
-import { Info, Loader2 } from "lucide-solid"
+import { Show } from "solid-js"
+import { Info } from "lucide-solid"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import type { PracticeCard, PracticeSessionState } from "../../../types"
+import type { PracticeCard } from "@/features/vocab-practice/types"
+import type { UseQueryResult } from "@tanstack/solid-query"
+import type { DefaultError } from "@tanstack/query-core"
 
 type StartPagePreviewCardProps = {
   card: PracticeCard
   index: number
   allCards: PracticeCard[]
-  isLoading: boolean
-  hasEnhancedData: boolean
-  currentState: PracticeSessionState
-  getCardMap: (state: PracticeSessionState) => Map<string, PracticeCard>
+  fsrsQuery?: UseQueryResult<any, DefaultError>
 }
 
 export default function StartPagePreviewCard(props: StartPagePreviewCardProps) {
-  const vocabularyDependencies = createMemo(() => {
-    if (props.card.practiceItemType === "vocabulary") return []
-    const unlocksMap = props.currentState.unlocksMap
-    const cardMap = props.getCardMap(props.currentState)
-    return (unlocksMap.get(props.card.key) || [])
-      .map((key) => cardMap.get(key)?.vocab.word)
-      .filter(Boolean)
-  })
-
-  const visibleNumber = createMemo(() => {
+  const visibleNumber = () => {
     const countBefore = props.allCards
       .slice(0, props.index)
       .filter((c) => !c.isDisabled).length
     return countBefore + 1
-  })
+  }
 
   const questionTextClass = () =>
     props.card.practiceMode === "meanings" ||
@@ -42,21 +32,21 @@ export default function StartPagePreviewCard(props: StartPagePreviewCardProps) {
       : "text-lg lg:text-xl"
 
   const answerTextClass = () =>
-    props.card.validAnswers.some((answer) =>
+    props.card.validAnswers.some((answer: string) =>
       /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(answer),
     )
       ? "text-xl lg:text-2xl"
       : "text-base lg:text-lg"
 
-  const isDue = createMemo(() => {
-    if (!props.hasEnhancedData || props.card.isDisabled) return false
+  const isDue = () => {
+    if (props.card.isDisabled) return false
+    if (!props.card.fsrs?.card?.due) return false
     const dueDate = props.card.fsrs.card.due
-    if (!dueDate) return false
     const now = new Date()
     const cardDueDate = new Date(dueDate)
     if (cardDueDate > new Date(now.getTime() - 5000)) return false
     return cardDueDate <= now
-  })
+  }
 
   const explanationText =
     "Kanji & Radical dependencies are skipped for the current lesson if you've seen them before and they aren't due so you can focus on vocabulary."
@@ -70,18 +60,16 @@ export default function StartPagePreviewCard(props: StartPagePreviewCardProps) {
       {/* Top row: Due badge + number */}
       <div class="flex items-center gap-2">
         <Show
-          when={!props.isLoading && isDue()}
+          when={!props.fsrsQuery?.isPending}
           fallback={
-            <Show when={props.isLoading}>
-              <div class="inline-flex items-center rounded-full bg-gray-500/20 px-2 py-0.5">
-                <Loader2 class="h-3 w-3 animate-spin text-gray-400" />
-              </div>
-            </Show>
+            <span class="inline-flex h-[20px] w-[40px] rounded-full bg-amber-500/20" />
           }
         >
-          <span class="inline-flex items-center rounded-full bg-amber-500/20 px-2 py-0.5 text-xs font-semibold text-amber-500 uppercase">
-            Due
-          </span>
+          <Show when={isDue()}>
+            <span class="inline-flex items-center rounded-full bg-amber-500/20 px-2 py-0.5 text-xs font-semibold text-amber-500 uppercase">
+              Due
+            </span>
+          </Show>
         </Show>
 
         {/* Number badge or placeholder */}
@@ -96,10 +84,10 @@ export default function StartPagePreviewCard(props: StartPagePreviewCardProps) {
 
       {/* Bottom row: Due date or skip message */}
       <div class="mt-2">
-        <Show when={!props.isLoading && isDue() && props.card.fsrs.card.due}>
+        <Show when={isDue() && props.card.fsrs?.card?.due}>
           <div class="text-muted-foreground text-[11px]">
             Due:{" "}
-            {new Date(props.card.fsrs.card.due).toLocaleDateString(undefined, {
+            {new Date(props.card.fsrs!.card.due).toLocaleDateString(undefined, {
               weekday: "short",
               month: "short",
               day: "numeric",
@@ -172,11 +160,6 @@ export default function StartPagePreviewCard(props: StartPagePreviewCardProps) {
                   }`}
                 >
                   {props.card.validAnswers.join(", ")}
-                  <Show when={vocabularyDependencies().length > 0}>
-                    <span class="text-muted-foreground/80 ml-2 text-xs">
-                      dependency of {vocabularyDependencies().join(", ")}
-                    </span>
-                  </Show>
                 </p>
               </div>
             </div>

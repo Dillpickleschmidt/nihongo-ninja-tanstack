@@ -5,17 +5,20 @@ import {
   useContext,
   createEffect,
   createSignal,
+  createMemo,
 } from "solid-js"
 import { createStore, SetStoreFunction } from "solid-js/store"
-import type { Settings, CurrentPage } from "../types"
+import type { Settings, CurrentPage, PracticeMode } from "../types"
 import { Rating } from "ts-fsrs"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
-import type { User } from "@supabase/supabase-js"
 import {
   usePracticeManager,
   type PracticeManagerHook,
 } from "../logic/usePracticeManager"
+import { useQueryClient, type QueryClient } from "@tanstack/solid-query"
+import type { UseQueryResult } from "@tanstack/solid-query"
+import type { DefaultError } from "@tanstack/query-core"
 import { fetchAdditionalSvgsForSession } from "../utils/svg-helpers"
 import type {
   KanjiDisplaySettings,
@@ -23,6 +26,8 @@ import type {
   KanjiStyleSettings,
 } from "@/components/KanjiAnimation"
 import { useSessionTracking } from "@/features/module-session-manager/useSessionTracking"
+import { getActiveLiveService } from "@/features/srs-services/utils"
+import type { SRSServiceType } from "@/features/srs-services/types"
 
 // --- LOCAL TYPE DEFINITIONS FOR THE CONTEXT ---
 
@@ -40,6 +45,21 @@ type VocabPracticeContextType = {
   // UI state
   uiState: UIState
   setUIState: SetStoreFunction<UIState>
+
+  // Shared queries
+  settingsQuery: UseQueryResult<any, DefaultError>
+  queryClient: QueryClient
+
+  // Route params
+  mode: PracticeMode
+  userId: string | null
+  moduleId?: string
+  deckId?: number
+
+  // SRS service state
+  activeService: () => SRSServiceType | null
+  prerequisitesEnabled: () => boolean
+  prerequisitesDisabledReason: () => string | null
 
   // SVG data management
   svgData: () => Map<string, string>
@@ -71,16 +91,19 @@ const VocabPracticeContext = createContext<VocabPracticeContextType>()
 
 type ContextProviderProps = {
   children: JSX.Element
-  user: User | null
-  moduleId: string
+  userId: string | null
+  mode: PracticeMode
+  moduleId?: string
+  deckId?: number
 }
 
 export function VocabPracticeContextProvider(props: ContextProviderProps) {
-  // Get default settings from user settings
+  // Shared queries
+  const queryClient = useQueryClient()
   const settingsQuery = useCustomQuery(() =>
-    userSettingsQueryOptions(props.user?.id || null),
+    userSettingsQueryOptions(props.userId),
   )
-  const practiceDefaults = settingsQuery.data.routes["vocab-practice"]
+  const practiceDefaults = settingsQuery.data!.routes["vocab-practice"]
 
   // UI-only state store
   const [uiState, setUIState] = createStore<UIState>({
@@ -92,7 +115,7 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     settings: {
       shuffleAnswers: practiceDefaults["shuffle-answers"],
       enabledAnswerCategories: [],
-      enableKanjiRadicalPrereqs: !!props.user
+      enableKanjiRadicalPrereqs: !!props.userId
         ? practiceDefaults["enable-kanji-radical-prereqs"]
         : false, // Always disabled for unauthenticated users
       flipVocabQA: practiceDefaults["flip-vocab-qa"],
@@ -100,11 +123,18 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     },
   })
 
-  // Session tracking
-  const { startSession, addTimeAndQuestions } = useSessionTracking(
-    props.user?.id || null,
-    props.moduleId,
-  )
+  // Compute session identifier
+  const getSessionIdentifier = () => {
+    if (props.moduleId) return props.moduleId
+    if (props.deckId && props.userId) return `${props.userId}/${props.deckId}`
+    return null
+  }
+
+  // Session tracking - conditionally initialize
+  const sessionIdentifier = getSessionIdentifier()
+  const { startSession, addTimeAndQuestions } = sessionIdentifier
+    ? useSessionTracking(props.userId, sessionIdentifier)
+    : { startSession: async () => {}, addTimeAndQuestions: () => {} }
 
   // SVG data management
   const [svgData, setSvgData] = createSignal<Map<string, string>>(new Map())
@@ -133,6 +163,51 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
 
   // Practice manager hook (handles reactive practice logic)
   const managerHook = usePracticeManager()
+
+  // --- COMPUTED SRS SERVICE STATE ---
+
+  // Get the active live service (if any)
+  // Returns null if using local FSRS, or the service name if a live service is active
+  const activeService = createMemo<SRSServiceType | null>(() => {
+    const preferences = settingsQuery.data!["service-preferences"]
+    const liveService = getActiveLiveService(preferences)
+    // If no live service, we're using local FSRS
+    return liveService ? liveService : "local"
+  })
+
+  // Compute whether prerequisites are actually enabled
+  const prerequisitesEnabled = createMemo(() => {
+    // User preference (the toggle setting)
+    const userPreference = uiState.settings.enableKanjiRadicalPrereqs
+
+    // Prerequisites are disabled if:
+    // 1. User has disabled them
+    if (!userPreference) return false
+
+    // 2. A live service is active (external services don't support our prerequisite system)
+    const service = activeService()
+    if (service !== "local") return false
+
+    // Otherwise, prerequisites are enabled
+    return true
+  })
+
+  // Provide a reason for why prerequisites are disabled (for UI tooltips)
+  const prerequisitesDisabledReason = createMemo<string | null>(() => {
+    if (prerequisitesEnabled()) return null
+
+    const service = activeService()
+    if (service !== "local") {
+      const serviceNames: Record<Exclude<SRSServiceType, "local">, string> = {
+        wanikani: "WaniKani",
+        jpdb: "JPDB",
+        anki: "Anki",
+      }
+      return `Prerequisites are disabled while ${serviceNames[service]} is active`
+    }
+
+    return null
+  })
 
   // --- AUTOMATIC PAGE SWITCHING LOGIC ---
 
@@ -227,6 +302,21 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     // UI state
     uiState,
     setUIState,
+
+    // Shared queries
+    settingsQuery,
+    queryClient,
+
+    // Route params
+    mode: props.mode,
+    userId: props.userId,
+    moduleId: props.moduleId,
+    deckId: props.deckId,
+
+    // SRS service state
+    activeService,
+    prerequisitesEnabled,
+    prerequisitesDisabledReason,
 
     // SVG data management
     svgData,

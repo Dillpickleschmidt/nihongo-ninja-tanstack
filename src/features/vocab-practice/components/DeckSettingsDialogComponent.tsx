@@ -28,14 +28,26 @@ type DeckSettingsDialogProps = {
 export default function DeckSettingsDialogComponent(
   props: DeckSettingsDialogProps,
 ) {
-  const { uiState, setUIState } = useVocabPracticeContext()
+  const {
+    uiState,
+    setUIState,
+    prerequisitesEnabled,
+    prerequisitesDisabledReason,
+    activeService,
+  } = useVocabPracticeContext()
   const [open, setOpen] = createSignal(false)
 
   const context = useRouteContext({ from: RootRoute.id })
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(context().user?.id || null),
   )
-  const defaults = settingsQuery.data.routes["vocab-practice"]
+  const defaults = settingsQuery.data!.routes["vocab-practice"]
+
+  // Determine if the prerequisites checkbox should be disabled
+  const isPrerequisitesCheckboxDisabled = () => {
+    const service = activeService()
+    return service !== "local"
+  }
 
   const handleOkClick = () => {
     setOpen(false)
@@ -65,18 +77,28 @@ export default function DeckSettingsDialogComponent(
 
           <Checkbox
             class="flex items-center space-x-2"
-            checked={uiState.settings.enableKanjiRadicalPrereqs}
+            checked={prerequisitesEnabled()}
             onChange={(isChecked) =>
               setUIState("settings", "enableKanjiRadicalPrereqs", isChecked)
             }
+            disabled={isPrerequisitesCheckboxDisabled()}
           >
             <CheckboxInput />
-            <CheckboxLabel class="flex items-center gap-2">
+            <CheckboxLabel
+              class="flex items-center gap-2"
+              title={prerequisitesDisabledReason() || undefined}
+            >
               Enable Kanji/Radical Prerequisites
+              <Show when={isPrerequisitesCheckboxDisabled()}>
+                <span class="text-muted-foreground text-xs italic">
+                  ({prerequisitesDisabledReason()})
+                </span>
+              </Show>
               <Show
                 when={
+                  !isPrerequisitesCheckboxDisabled() &&
                   uiState.settings.enableKanjiRadicalPrereqs !==
-                  defaults["enable-kanji-radical-prereqs"]
+                    defaults["enable-kanji-radical-prereqs"]
                 }
               >
                 <span class="text-muted-foreground text-xs italic">
@@ -110,7 +132,7 @@ export default function DeckSettingsDialogComponent(
           </Checkbox>
 
           {/* CONDITIONAL: Hide flipKanjiRadicalQA when prerequisites are disabled */}
-          <Show when={uiState.settings.enableKanjiRadicalPrereqs}>
+          <Show when={prerequisitesEnabled()}>
             <Checkbox
               class="flex items-center space-x-2"
               checked={uiState.settings.flipKanjiRadicalQA}

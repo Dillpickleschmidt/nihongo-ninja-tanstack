@@ -230,6 +230,7 @@ export const batchUpsertFSRSCardsForUser = createServerFn({ method: "POST" })
 
 /**
  * Get due FSRS cards for a user
+ * Returns up to 200 most overdue cards to optimize query performance
  */
 export const getDueFSRSCards = createServerFn({ method: "GET" })
   .inputValidator((userId: string) => userId)
@@ -242,6 +243,8 @@ export const getDueFSRSCards = createServerFn({ method: "GET" })
       .select("*")
       .eq("user_id", userId)
       .lte("due_at", now.toISOString())
+      .order("due_at", { ascending: true })
+      .limit(200)
 
     if (error) {
       console.error("Error fetching due FSRS cards:", error)
