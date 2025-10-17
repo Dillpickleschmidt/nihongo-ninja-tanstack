@@ -4,7 +4,8 @@ import {
   useVocabPracticeContext,
 } from "./context/VocabPracticeContext"
 import type { PracticeMode } from "./types"
-import StartPageComponent from "./pages/start/StartPageComponent"
+import { ModuleStartPage } from "./pages/start/ModuleStartPage"
+import { UserDeckStartPage } from "./pages/start/UserDeckStartPage"
 import PracticePageComponent from "./pages/practice/PracticePage"
 import ReviewPageComponent from "./pages/review/ReviewPage"
 import FinishPageComponent from "./pages/finish/FinishPage"
@@ -32,12 +33,15 @@ export default function VocabPractice(props: VocabPracticeProps) {
 }
 
 function VocabPracticeContent() {
-  const { uiState } = useVocabPracticeContext()
+  const { uiState, moduleId, deckId } = useVocabPracticeContext()
 
   return (
     <Switch>
-      <Match when={uiState.currentPage === "start"}>
-        <StartPageComponent />
+      <Match when={uiState.currentPage === "start" && moduleId}>
+        <ModuleStartPage />
+      </Match>
+      <Match when={uiState.currentPage === "start" && deckId}>
+        <UserDeckStartPage />
       </Match>
       <Match when={uiState.currentPage === "practice"}>
         <PracticePageComponent />

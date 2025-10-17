@@ -15,7 +15,7 @@ export function StartPageButton(props: StartPageButtonProps) {
         <Button
           onClick={props.onClick}
           size="lg"
-          class="h-12 w-full rounded-lg bg-orange-500 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.01] hover:bg-orange-600 disabled:opacity-70"
+          class="h-12 w-full rounded-lg border border-white/20 bg-white/10 text-base text-white shadow-sm backdrop-blur-lg transition hover:bg-white/20 disabled:opacity-70"
           disabled={props.loading || props.disabled}
         >
           <span class="flex items-center justify-center gap-2">

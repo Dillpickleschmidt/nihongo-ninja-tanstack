@@ -78,7 +78,6 @@ export function StartPageLayout(props: StartPageLayoutProps) {
         previewCount={previewCount()}
         sessionMode={props.logic.sessionMode()}
         onSessionModeChange={props.logic.setSessionMode}
-        activeService={props.logic.activeService}
       />
 
       <div class="px-4 pb-24">
@@ -98,7 +97,6 @@ export function StartPageLayout(props: StartPageLayoutProps) {
                 props.logic.setVisibleReviewCount((count) => count + 20)
               }
               fsrsMap={fsrsMap()}
-              activeService={props.logic.activeService}
               isLoading={props.logic.fsrsCardsQuery.isPending}
             />
           </Show>

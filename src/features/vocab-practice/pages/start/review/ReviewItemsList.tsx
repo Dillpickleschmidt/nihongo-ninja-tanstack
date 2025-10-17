@@ -2,20 +2,22 @@ import { For, Show } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-solid"
 import { DueBadge } from "./DueBadge"
-import { Chip } from "./Chip"
+import { Chip } from "../dependency/Chip"
 import { useFsrsDueDate } from "@/features/vocab-practice/hooks/useFsrsDueDate"
+import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
 import type { PracticeCard } from "@/features/vocab-practice/types"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 
 type ReviewItemsListProps = {
   reviewItems: PracticeCard[]
   visibleCount: number
   onShowMore: () => void
-  fsrsMap: Map<string, any>
-  activeService: () => "local" | "anki" | "wanikani" | "jpdb"
+  fsrsMap: Map<string, FSRSCardData>
   isLoading: boolean
 }
 
 export function ReviewItemsList(props: ReviewItemsListProps) {
+  const { activeService } = useVocabPracticeContext()
   const visibleItems = () => props.reviewItems.slice(0, props.visibleCount)
 
   return (
@@ -95,7 +97,7 @@ export function ReviewItemsList(props: ReviewItemsListProps) {
                           </p>
                         </div>
                       </div>
-                      <Show when={props.activeService() === "local"}>
+                      <Show when={activeService() === "local"}>
                         <DueBadge
                           isDue={isDue()}
                           dueDate={dueDate()}
@@ -137,7 +139,7 @@ export function ReviewItemsList(props: ReviewItemsListProps) {
                         </p>
                       </div>
                     </div>
-                    <Show when={props.activeService() === "local"}>
+                    <Show when={activeService() === "local"}>
                       <DueBadge
                         isDue={isDue()}
                         dueDate={dueDate()}

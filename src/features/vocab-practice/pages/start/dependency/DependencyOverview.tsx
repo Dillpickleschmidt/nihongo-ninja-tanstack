@@ -9,6 +9,8 @@ import {
 import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
 import { SimpleVocabularyList } from "./SimpleView"
 import { FullDependencyView } from "./FullView"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs"
+import type { VocabularyItem } from "@/data/types"
 
 type DependencyOverviewProps = {
   class?: string
@@ -92,6 +94,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
     return practiceModuleFSRSCardsQueryOptions(
       userId,
       slugs,
+      mode,
       hasData && activeService() === "local" && !!userId,
     )
   })
@@ -105,11 +108,21 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
 
   // Create FSRS data map for efficient lookups
   const fsrsMap = createMemo(() => {
-    const map = new Map<string, any>()
+    const map = new Map<string, FSRSCardData>()
     if (!fsrsCardsQuery.data) return map
     for (const card of fsrsCardsQuery.data) {
       const key = `${card.type}:${card.practice_item_key}`
       map.set(key, card)
+    }
+    return map
+  })
+
+  // Create vocabulary map for efficient lookups
+  const vocabularyMap = createMemo(() => {
+    const map = new Map<string, VocabularyItem>()
+    if (!vocabularyQuery.data) return map
+    for (const vocab of vocabularyQuery.data) {
+      map.set(vocab.word, vocab)
     }
     return map
   })
@@ -122,7 +135,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
 
   // Derived data and indexes
   const vocabList = () => hierarchyQuery.data?.vocabulary
-  const kanjiToRadicals = createMemo(() => {
+  const kanjiToRadicals = () => {
     const map = new Map<string, string[]>()
     const h = hierarchyQuery.data
     if (!h) return map
@@ -130,8 +143,8 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
       map.set(k.kanji, k.radicalComponents || [])
     }
     return map
-  })
-  const vocabToKanji = createMemo(() => {
+  }
+  const vocabToKanji = () => {
     const map = new Map<string, string[]>()
     const h = hierarchyQuery.data
     if (!h) return map
@@ -139,8 +152,8 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
       map.set(v.word, v.kanjiComponents || [])
     }
     return map
-  })
-  const kanjiToVocab = createMemo(() => {
+  }
+  const kanjiToVocab = () => {
     const map = new Map<string, string[]>()
     for (const [word, kanjiArr] of vocabToKanji().entries()) {
       for (const k of kanjiArr) {
@@ -149,8 +162,8 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
       }
     }
     return map
-  })
-  const radicalToKanji = createMemo(() => {
+  }
+  const radicalToKanji = () => {
     const map = new Map<string, string[]>()
     for (const [kanji, radicals] of kanjiToRadicals().entries()) {
       for (const r of radicals) {
@@ -159,8 +172,8 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
       }
     }
     return map
-  })
-  const kanjiSet = createMemo(() => {
+  }
+  const kanjiSet = () => {
     const set = new Set<string>()
     const h = hierarchyQuery.data
     if (!h) return set
@@ -170,14 +183,14 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
       }
     }
     return set
-  })
-  const radicalSet = createMemo(() => {
+  }
+  const radicalSet = () => {
     const set = new Set<string>()
     for (const radicals of kanjiToRadicals().values()) {
       for (const r of radicals) set.add(r)
     }
     return set
-  })
+  }
 
   // Calculate due counts for each item type
   const dueCounts = createMemo(
@@ -237,7 +250,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
     return vocab.filter((v) => v.kanjiComponents?.includes(kSel))
   }
 
-  const filteredKanji = createMemo(() => {
+  const filteredKanji = () => {
     const allKanji = Array.from(kanjiSet().values())
     const rSel = selectedRadical()
     const kSel = selectedKanji()
@@ -251,7 +264,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
       )
     }
     return result
-  })
+  }
 
   const isFlatHierarchy = () => {
     const h = hierarchyQuery.data
@@ -272,15 +285,6 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
 
   return (
     <div class={`space-y-4 ${props.class || ""}`}>
-      {/* Title */}
-      <div class="flex items-baseline justify-between">
-        <h2 class="text-primary text-center text-lg font-semibold tracking-wide">
-          <Show when={prerequisitesEnabled()} fallback="Module Content">
-            Dependency Overview
-          </Show>
-        </h2>
-      </div>
-
       {/* Loading/Error */}
       <Show
         when={!vocabularyQuery.isPending}
@@ -311,8 +315,8 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
               <SimpleVocabularyList
                 vocabularyData={vocabularyQuery.data!}
                 fsrsMap={fsrsMap()}
-                activeService={activeService}
                 fsrsCardsQuery={fsrsCardsQuery}
+                mode={mode}
               />
             }
           >
@@ -328,6 +332,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
               kanjiToRadicals={kanjiToRadicals()}
               kanjiToVocab={kanjiToVocab()}
               fsrsMap={fsrsMap()}
+              vocabularyMap={vocabularyMap()}
               dueCounts={dueCounts()}
               selectedKanji={selectedKanji}
               selectedRadical={selectedRadical}
@@ -335,7 +340,6 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
               setSelectedRadical={setSelectedRadical}
               toggleKanji={toggleKanji}
               toggleRadical={toggleRadical}
-              activeService={activeService}
               isFlatHierarchy={isFlatHierarchy}
             />
           </Show>

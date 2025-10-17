@@ -6,8 +6,11 @@ import { SummaryCard } from "./SummaryCard"
 import { Chip } from "./Chip"
 import { VocabularyTabContent } from "./VocabTab"
 import { KanjiRadicalsTabContent } from "./KanjiTab"
+import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
 import type { UseQueryResult } from "@tanstack/solid-query"
 import type { DefaultError } from "@tanstack/query-core"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs"
+import type { VocabularyItem } from "@/data/types"
 
 type FullDependencyViewProps = {
   // Queries
@@ -23,7 +26,8 @@ type FullDependencyViewProps = {
   filteredKanji: () => string[]
   kanjiToRadicals: Map<string, string[]>
   kanjiToVocab: Map<string, string[]>
-  fsrsMap: Map<string, any>
+  fsrsMap: Map<string, FSRSCardData>
+  vocabularyMap: Map<string, VocabularyItem>
 
   // Counts
   dueCounts:
@@ -38,14 +42,12 @@ type FullDependencyViewProps = {
   toggleKanji: (k: string) => void
   toggleRadical: (r: string) => void
 
-  // Active service
-  activeService: () => "local" | "anki" | "wanikani" | "jpdb"
-
   // Mode info
   isFlatHierarchy: () => boolean
 }
 
 export function FullDependencyView(props: FullDependencyViewProps) {
+  const { mode } = useVocabPracticeContext()
   const [selectedTab, setSelectedTab] = createSignal("v2k")
 
   // Wrapper for VocabTab: select kanji + switch to k2r tab
@@ -64,139 +66,158 @@ export function FullDependencyView(props: FullDependencyViewProps) {
 
   return (
     <>
-      <div class="grid grid-cols-3 gap-2 md:gap-3">
-        <SummaryCard
-          label="Vocabulary"
-          query={props.hierarchyQuery}
-          getValue={() => props.vocabList()!.length}
-          onClick={() => setSelectedTab("v2k")}
-        />
-        <SummaryCard
-          label="Kanji"
-          query={props.hierarchyQuery}
-          getValue={() => props.kanjiSet.size}
-          dueCountQuery={props.fsrsCardsQuery}
-          getDueCount={() => props.dueCounts?.kanji}
-          onClick={() => {
-            props.setSelectedRadical(null)
-            props.setSelectedKanji(null)
-            setSelectedTab("k2r")
-          }}
-        />
-        <SummaryCard
-          label="Radicals"
-          query={props.hierarchyQuery}
-          getValue={() => props.radicalSet.size}
-          dueCountQuery={props.fsrsCardsQuery}
-          getDueCount={() => props.dueCounts?.radicals}
-          onClick={() => {
-            props.setSelectedRadical(null)
-            props.setSelectedKanji(null)
-            setSelectedTab("k2r")
-          }}
-        />
-      </div>
-
-      {/* Mode note */}
-      <Show when={props.isFlatHierarchy()}>
-        <div class="text-muted-foreground bg-card/40 border-card-foreground/70 rounded-lg border p-3 text-xs">
-          Kanji/Radicals are hidden for the current session configuration (live
-          service or spellings mode).
+      {/* Summary cards - only in meanings mode */}
+      <Show when={mode === "meanings"}>
+        <div class="grid grid-cols-3 gap-2 md:gap-3">
+          <SummaryCard
+            label="Vocabulary"
+            query={props.hierarchyQuery}
+            getValue={() => props.vocabList()!.length}
+            onClick={() => setSelectedTab("v2k")}
+          />
+          <SummaryCard
+            label="Kanji"
+            query={props.hierarchyQuery}
+            getValue={() => props.kanjiSet.size}
+            dueCountQuery={props.fsrsCardsQuery}
+            getDueCount={() => props.dueCounts?.kanji}
+            onClick={() => {
+              props.setSelectedRadical(null)
+              props.setSelectedKanji(null)
+              setSelectedTab("k2r")
+            }}
+          />
+          <SummaryCard
+            label="Radicals"
+            query={props.hierarchyQuery}
+            getValue={() => props.radicalSet.size}
+            dueCountQuery={props.fsrsCardsQuery}
+            getDueCount={() => props.dueCounts?.radicals}
+            onClick={() => {
+              props.setSelectedRadical(null)
+              props.setSelectedKanji(null)
+              setSelectedTab("k2r")
+            }}
+          />
         </div>
       </Show>
 
-      {/* Tabs */}
-      <Tabs value={selectedTab()} onChange={setSelectedTab} class="w-full">
-        <div class="flex items-center justify-between">
-          <TabsList class="h-8 bg-transparent">
-            <TabsTrigger
-              value="v2k"
-              class="data-[selected]:dark:bg-card-foreground/70 h-6 px-2"
-            >
-              Vocabulary
-            </TabsTrigger>
-            <TabsTrigger
-              value="k2r"
-              class="data-[selected]:dark:bg-card-foreground/70 h-6 px-2"
-            >
-              Kanji → Radicals
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Selection status and clear */}
-          <div class="text-muted-foreground flex items-center gap-2 text-xs">
-            <Show when={props.selectedKanji()}>
-              <span class="inline-flex items-center gap-1">
-                Selected Kanji:
-                <Chip
-                  label={props.selectedKanji()!}
-                  color="indigo"
-                  selected
-                  onClick={() => {}}
-                />
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => props.setSelectedKanji(null)}
-                  class="h-5 px-1.5"
-                  title="Clear selection"
-                >
-                  <X class="h-3 w-3" />
-                </Button>
-              </span>
-            </Show>
-            <Show when={props.selectedRadical()}>
-              <span class="inline-flex items-center gap-1">
-                Selected Radical:
-                <Chip
-                  label={props.selectedRadical()!}
-                  color="purple"
-                  selected
-                  onClick={() => {}}
-                />
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => props.setSelectedRadical(null)}
-                  class="h-5 px-1.5"
-                  title="Clear selection"
-                >
-                  <X class="h-3 w-3" />
-                </Button>
-              </span>
-            </Show>
-          </div>
+      {/* Mode note */}
+      <Show when={mode === "meanings" && props.isFlatHierarchy()}>
+        <div class="text-muted-foreground bg-card/40 border-card-foreground/70 rounded-lg border p-3 text-xs">
+          Kanji/Radicals are hidden for the current session configuration (live
+          service mode).
         </div>
+      </Show>
 
-        {/* Vocabulary (Vocab → Kanji) */}
-        <TabsContent value="v2k" class="mt-2">
+      {/* Vocabulary list - with or without tabs based on mode and hierarchy */}
+      <Show
+        when={mode === "meanings" && !props.isFlatHierarchy()}
+        fallback={
+          // Spellings mode or flat hierarchy: just show vocabulary directly
           <VocabularyTabContent
             vocabularyQuery={props.vocabularyQuery}
             vocabList={props.filteredVocabList}
             fsrsMap={props.fsrsMap}
+            vocabularyMap={props.vocabularyMap}
             fsrsCardsQuery={props.fsrsCardsQuery}
-            activeService={props.activeService}
             selectedKanji={props.selectedKanji}
             toggleKanji={selectKanjiAndSwitchToK2R}
           />
-        </TabsContent>
+        }
+      >
+        {/* Full tabs structure for meanings mode with hierarchy */}
+        <Tabs value={selectedTab()} onChange={setSelectedTab} class="w-full">
+          <div class="flex items-center justify-between">
+            <TabsList class="h-8 bg-muted/50">
+              <TabsTrigger
+                value="v2k"
+                class="h-6 px-2 data-[selected]:bg-background/60 data-[selected]:text-foreground"
+              >
+                Vocabulary
+              </TabsTrigger>
+              <TabsTrigger
+                value="k2r"
+                class="h-6 px-2 data-[selected]:bg-background/60 data-[selected]:text-foreground"
+              >
+                Kanji → Radicals
+              </TabsTrigger>
+            </TabsList>
 
-        {/* Kanji → Radicals */}
-        <TabsContent value="k2r" class="mt-2">
-          <KanjiRadicalsTabContent
-            hierarchyQuery={props.hierarchyQuery}
-            filteredKanji={props.filteredKanji}
-            kanjiToRadicals={props.kanjiToRadicals}
-            kanjiToVocab={props.kanjiToVocab}
-            fsrsMap={props.fsrsMap}
-            fsrsCardsQuery={props.fsrsCardsQuery}
-            activeService={props.activeService}
-            selectedKanji={props.selectedKanji}
-            toggleKanji={selectKanjiAndSwitchToV2K}
-            toggleRadical={props.toggleRadical}
-          />
-        </TabsContent>
-      </Tabs>
+            {/* Selection status and clear */}
+            <div class="text-muted-foreground flex items-center gap-2 text-xs">
+              <Show when={props.selectedKanji()}>
+                <span class="inline-flex items-center gap-1">
+                  Selected Kanji:
+                  <Chip
+                    label={props.selectedKanji()!}
+                    color="indigo"
+                    selected
+                    onClick={() => {}}
+                  />
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => props.setSelectedKanji(null)}
+                    class="h-5 px-1.5"
+                    title="Clear selection"
+                  >
+                    <X class="h-3 w-3" />
+                  </Button>
+                </span>
+              </Show>
+              <Show when={props.selectedRadical()}>
+                <span class="inline-flex items-center gap-1">
+                  Selected Radical:
+                  <Chip
+                    label={props.selectedRadical()!}
+                    color="purple"
+                    selected
+                    onClick={() => {}}
+                  />
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => props.setSelectedRadical(null)}
+                    class="h-5 px-1.5"
+                    title="Clear selection"
+                  >
+                    <X class="h-3 w-3" />
+                  </Button>
+                </span>
+              </Show>
+            </div>
+          </div>
+
+          {/* Vocabulary (Vocab → Kanji) */}
+          <TabsContent value="v2k" class="mt-2">
+            <VocabularyTabContent
+              vocabularyQuery={props.vocabularyQuery}
+              vocabList={props.filteredVocabList}
+              fsrsMap={props.fsrsMap}
+              vocabularyMap={props.vocabularyMap}
+              fsrsCardsQuery={props.fsrsCardsQuery}
+              selectedKanji={props.selectedKanji}
+              toggleKanji={selectKanjiAndSwitchToK2R}
+            />
+          </TabsContent>
+
+          {/* Kanji → Radicals */}
+          <TabsContent value="k2r" class="mt-2">
+            <KanjiRadicalsTabContent
+              hierarchyQuery={props.hierarchyQuery}
+              filteredKanji={props.filteredKanji}
+              kanjiToRadicals={props.kanjiToRadicals}
+              kanjiToVocab={props.kanjiToVocab}
+              fsrsMap={props.fsrsMap}
+              fsrsCardsQuery={props.fsrsCardsQuery}
+              selectedKanji={props.selectedKanji}
+              toggleKanji={selectKanjiAndSwitchToV2K}
+              toggleRadical={props.toggleRadical}
+            />
+          </TabsContent>
+        </Tabs>
+      </Show>
     </>
   )
 }

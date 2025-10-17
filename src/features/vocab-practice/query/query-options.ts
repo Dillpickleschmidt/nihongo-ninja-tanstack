@@ -84,17 +84,19 @@ export const moduleVocabularyQueryOptions = (moduleId: string) =>
 /**
  * Get FSRS cards for a practice module
  * Only enabled when using local FSRS mode
+ * Filters by practice mode to ensure separate progress tracking
  */
 export const practiceModuleFSRSCardsQueryOptions = (
   userId: string | null,
   slugs: string[],
+  mode: PracticeMode,
   enabled: boolean,
 ) =>
   queryOptions({
-    queryKey: ["practice-module-fsrs", userId, slugs] as const,
+    queryKey: ["practice-module-fsrs", userId, slugs, mode] as const,
     queryFn: async (): Promise<FSRSCardData[]> => {
       if (!userId || slugs.length === 0) return []
-      return await getFSRSCards(userId, slugs)
+      return await getFSRSCards(userId, slugs, mode)
     },
     enabled: enabled && !!userId && slugs.length > 0,
   })

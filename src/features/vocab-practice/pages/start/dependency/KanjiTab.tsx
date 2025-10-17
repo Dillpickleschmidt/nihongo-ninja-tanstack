@@ -2,6 +2,7 @@ import { For, Show } from "solid-js"
 import { Loader2, Info } from "lucide-solid"
 import { Chip } from "./Chip"
 import { useFsrsDueDate } from "@/features/vocab-practice/hooks/useFsrsDueDate"
+import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
 import {
   Popover,
   PopoverContent,
@@ -9,23 +10,24 @@ import {
 } from "@/components/ui/popover"
 import type { UseQueryResult } from "@tanstack/solid-query"
 import type { DefaultError } from "@tanstack/query-core"
+import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 
 type KanjiRadicalsTabContentProps = {
   hierarchyQuery: UseQueryResult<any, DefaultError>
   filteredKanji: () => string[]
   kanjiToRadicals: Map<string, string[]>
   kanjiToVocab: Map<string, string[]>
-  fsrsMap: Map<string, any>
+  fsrsMap: Map<string, FSRSCardData>
   fsrsCardsQuery: UseQueryResult<any, DefaultError>
-  activeService: () => "local" | "anki" | "wanikani" | "jpdb"
   selectedKanji: () => string | null
   toggleKanji: (k: string) => void
   toggleRadical: (r: string) => void
 }
 
 export function KanjiRadicalsTabContent(props: KanjiRadicalsTabContentProps) {
+  const { activeService } = useVocabPracticeContext()
   return (
-    <div class="bg-card/40 border-card-foreground/70 rounded-xl border p-4">
+    <div class="bg-card/40 border-card-foreground/70 rounded-xl border p-4 backdrop-blur-sm">
       <Show
         when={!props.hierarchyQuery.isPending}
         fallback={
@@ -74,7 +76,7 @@ export function KanjiRadicalsTabContent(props: KanjiRadicalsTabContentProps) {
                         </div>
 
                         {/* Due/Skip indicator */}
-                        <Show when={props.activeService() === "local"}>
+                        <Show when={activeService() === "local"}>
                           <div class="flex h-full flex-col justify-between">
                             <Show
                               when={!props.fsrsCardsQuery.isPending}

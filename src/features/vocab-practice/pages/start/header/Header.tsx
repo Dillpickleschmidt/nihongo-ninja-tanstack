@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Settings } from "lucide-solid"
 import { SessionModeTabSwitcher } from "./SessionModeTabSwitcher"
 import DeckSettingsDialogComponent from "./DeckSettingsDialog"
+import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
 import type { PracticeSessionMode } from "@/features/vocab-practice/types"
 
 type StartPageHeaderProps = {
@@ -10,10 +11,10 @@ type StartPageHeaderProps = {
   previewCount: string
   sessionMode: PracticeSessionMode
   onSessionModeChange: (mode: PracticeSessionMode) => void
-  activeService: () => "local" | "jpdb" | "wanikani" | "anki" | null
 }
 
 export function StartPageHeader(props: StartPageHeaderProps) {
+  const { activeService } = useVocabPracticeContext()
   return (
     <div class="relative px-4 pt-10 pb-6 lg:pt-14 lg:pb-8">
       <div class="mx-auto max-w-3xl">
@@ -30,7 +31,7 @@ export function StartPageHeader(props: StartPageHeaderProps) {
             </p>
           </div>
           <div class="absolute top-0 right-0 flex items-center gap-3">
-            <Show when={props.activeService() === "local"}>
+            <Show when={activeService() === "local"}>
               <SessionModeTabSwitcher
                 mode={props.sessionMode}
                 onModeChange={props.onSessionModeChange}

@@ -27,8 +27,6 @@ const initializeSessionClientOnly = createClientOnlyFn(
     dueCards: any[],
     mode: PracticeMode,
     vocabulary: any[],
-    flipVocabQA: boolean,
-    flipKanjiRadicalQA: boolean,
     shuffleAnswers: boolean,
     prerequisitesEnabled: boolean,
     isMixed: boolean,
@@ -39,8 +37,6 @@ const initializeSessionClientOnly = createClientOnlyFn(
       dueCards,
       mode,
       vocabulary,
-      flipVocabQA,
-      flipKanjiRadicalQA,
       shuffleAnswers,
       prerequisitesEnabled,
       isMixed,
@@ -114,6 +110,7 @@ export function useStartPageLogic(params: StartPageLogicParams) {
     return practiceModuleFSRSCardsQueryOptions(
       userId,
       slugs,
+      mode,
       hasHierarchy && activeService() === "local" && !!userId,
     )
   })
@@ -142,10 +139,6 @@ export function useStartPageLogic(params: StartPageLogicParams) {
     }
   })
 
-  // Practice session state
-  const flipVocabQA = () => uiState.settings.flipVocabQA
-  const flipKanjiRadicalQA = () => uiState.settings.flipKanjiRadicalQA
-
   // Progressive preview cards - build as data becomes available
   const previewCards = () =>
     buildPreviewCards(
@@ -153,8 +146,6 @@ export function useStartPageLogic(params: StartPageLogicParams) {
       hierarchy(),
       activeService() === "local" ? fsrsCardsQuery.data : undefined,
       mode,
-      flipVocabQA(),
-      flipKanjiRadicalQA(),
       prerequisitesEnabled(),
     )
 
@@ -188,8 +179,6 @@ export function useStartPageLogic(params: StartPageLogicParams) {
       state.dueCards,
       mode,
       state.vocabulary,
-      flipVocabQA(),
-      flipKanjiRadicalQA(),
       uiState.settings.shuffleAnswers,
       prerequisitesEnabled(),
       sessionMode() === "mixed",
@@ -203,12 +192,13 @@ export function useStartPageLogic(params: StartPageLogicParams) {
   })
 
   const isDataPending = () => {
-    if (hierarchyQuery.isPending || vocabularyQuery.isPending) return true
-    if (metadataQuery?.isPending) return true
+    if (vocabularyQuery.isFetching) return true
+    if (hierarchyQuery.isFetching) return true
+    if (metadataQuery?.isFetching) return true
+    if (svgsQuery.isFetching) return true
     if (activeService() === "local" && userId) {
-      if (fsrsCardsQuery.isPending || dueCardsQuery.isPending) return true
+      if (fsrsCardsQuery.isFetching || dueCardsQuery.isFetching) return true
     }
-    if (svgsQuery.isPending) return true
     return false
   }
 
@@ -279,8 +269,5 @@ export function useStartPageLogic(params: StartPageLogicParams) {
     // Functions
     handleStart,
     getDeckName: params.getDeckName,
-
-    // Context values (re-export for convenience)
-    activeService,
   }
 }

@@ -57,7 +57,7 @@ type VocabPracticeContextType = {
   deckId?: number
 
   // SRS service state
-  activeService: () => SRSServiceType | null
+  activeService: () => SRSServiceType
   prerequisitesEnabled: () => boolean
   prerequisitesDisabledReason: () => string | null
 
@@ -167,8 +167,8 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
   // --- COMPUTED SRS SERVICE STATE ---
 
   // Get the active live service (if any)
-  // Returns null if using local FSRS, or the service name if a live service is active
-  const activeService = createMemo<SRSServiceType | null>(() => {
+  // Returns "local" if using local FSRS, or the service name if a live service is active
+  const activeService = createMemo<SRSServiceType>(() => {
     const preferences = settingsQuery.data!["service-preferences"]
     const liveService = getActiveLiveService(preferences)
     // If no live service, we're using local FSRS

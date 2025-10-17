@@ -14,8 +14,6 @@ export function buildPreviewCards(
   hierarchy: any | undefined,
   fsrsCards: any[] | undefined,
   mode: PracticeMode,
-  flipVocabQA: boolean,
-  flipKanjiRadicalQA: boolean,
   prerequisitesEnabled: boolean,
 ): PracticeCard[] {
   if (!vocabulary) return []
@@ -65,13 +63,13 @@ export function buildPreviewCards(
       if (!vocabItem) return
 
       const prompt =
-        mode === "meanings" && !flipVocabQA
+        mode === "meanings"
           ? vocabItem.word
           : vocabItem.english?.join(", ") || ""
       const validAnswers =
-        mode === "meanings" && !flipVocabQA
+        mode === "meanings"
           ? vocabItem.english || []
-          : [vocabItem.word]
+          : vocabItem.hiragana || [vocabItem.word]
 
       cards.push(
         createBasicCard(vocabItem.word, "vocabulary", prompt, validAnswers),
@@ -81,15 +79,15 @@ export function buildPreviewCards(
     if (prerequisitesEnabled) {
       // Add kanji cards
       hierarchy.kanji.forEach((k: any) => {
-        const prompt = flipKanjiRadicalQA ? k.meanings.join(", ") : k.kanji
-        const validAnswers = flipKanjiRadicalQA ? [k.kanji] : k.meanings
+        const prompt = k.kanji
+        const validAnswers = k.meanings
         cards.push(createBasicCard(k.kanji, "kanji", prompt, validAnswers))
       })
 
       // Add radical cards
       hierarchy.radicals.forEach((r: any) => {
-        const prompt = flipKanjiRadicalQA ? r.meanings.join(", ") : r.radical
-        const validAnswers = flipKanjiRadicalQA ? [r.radical] : r.meanings
+        const prompt = r.radical
+        const validAnswers = r.meanings
         cards.push(createBasicCard(r.radical, "radical", prompt, validAnswers))
       })
     }
@@ -97,13 +95,13 @@ export function buildPreviewCards(
     // Phase 1: Only vocabulary available - show basic vocab cards
     vocabulary.forEach((vocabItem: any) => {
       const prompt =
-        mode === "meanings" && !flipVocabQA
+        mode === "meanings"
           ? vocabItem.word
           : vocabItem.english?.join(", ") || ""
       const validAnswers =
-        mode === "meanings" && !flipVocabQA
+        mode === "meanings"
           ? vocabItem.english || []
-          : [vocabItem.word]
+          : vocabItem.hiragana || [vocabItem.word]
 
       cards.push(
         createBasicCard(vocabItem.word, "vocabulary", prompt, validAnswers),

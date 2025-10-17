@@ -27,8 +27,6 @@ function createPracticeCardFromCleanEntry(
   fsrsData: FSRSCardData | null,
   sessionPracticeMode: PracticeMode,
   vocabularyMap: Map<string, VocabularyItem>,
-  flipVocabQA: boolean,
-  flipKanjiRadicalQA: boolean,
 ): PracticeCard {
   const key = `${type}:${word}`
   const existingFSRS = fsrsData?.fsrs_card
@@ -95,38 +93,18 @@ function createPracticeCardFromCleanEntry(
 
   if (type === "vocabulary") {
     if (practiceMode === "meanings") {
-      if (flipVocabQA) {
-        // Flipped: English prompt, Japanese word answer
-        prompt = richVocab.english.join(", ")
-        validAnswers = [richVocab.word]
-      } else {
-        // Original: Japanese word prompt, English answer
-        prompt = richVocab.word
-        validAnswers = [...richVocab.english]
-      }
+      // Meanings mode: Japanese word prompt, English answer
+      prompt = richVocab.word
+      validAnswers = [...richVocab.english]
     } else {
-      // "spellings" mode
-      if (flipVocabQA) {
-        // Flipped: Hiragana/Kana prompt, English answer
-        prompt = richVocab.hiragana.join(", ") || richVocab.word
-        validAnswers = [...richVocab.english]
-      } else {
-        // Original: English prompt, Hiragana/Kana answer
-        prompt = richVocab.english.join(", ")
-        validAnswers = Array.from(new Set(richVocab.hiragana))
-      }
+      // Spellings mode: English prompt, Kana answer
+      prompt = richVocab.english.join(", ")
+      validAnswers = Array.from(new Set(richVocab.hiragana))
     }
   } else {
-    // Logic for Kanji and Radicals
-    if (flipKanjiRadicalQA) {
-      // Flipped: Meanings prompt, Character answer
-      prompt = meaningsForKanjiRadical.join(", ")
-      validAnswers = [characterForKanjiRadical]
-    } else {
-      // Original: Character prompt, Meanings answer
-      prompt = characterForKanjiRadical
-      validAnswers = meaningsForKanjiRadical
-    }
+    // Kanji and Radicals: Character prompt, Meanings answer
+    prompt = characterForKanjiRadical
+    validAnswers = meaningsForKanjiRadical
   }
 
   let sessionStyle: SessionCardStyle = "multiple-choice"
@@ -136,7 +114,7 @@ function createPracticeCardFromCleanEntry(
     // If it's a new Kanji or Radical, start with an introduction phase
     sessionStyle = "introduction"
   } else if (fsrsInfo.card.state === State.Review) {
-    if (type === "vocabulary" && !flipVocabQA) {
+    if (type === "vocabulary") {
       sessionStyle = "multiple-choice"
     } else {
       // Dependencies or due reviews in review state should be quick flashcards.
@@ -168,8 +146,6 @@ export async function initializePracticeSession(
   allDueFSRSCards: FSRSCardData[],
   sessionPracticeMode: PracticeMode,
   moduleVocabulary: VocabularyItem[],
-  flipVocabQA: boolean,
-  flipKanjiRadicalQA: boolean,
   shuffle = false,
   enablePrerequisites = true,
   includeReviews = true,
@@ -190,8 +166,11 @@ export async function initializePracticeSession(
   hierarchy.vocabulary.forEach((vocabEntry) => {
     const key = `vocabulary:${vocabEntry.word}`
     const fsrsData =
-      moduleFSRSCards.find((c) => c.practice_item_key === vocabEntry.word) ||
-      null
+      moduleFSRSCards.find(
+        (c) =>
+          c.practice_item_key === vocabEntry.word &&
+          c.mode === sessionPracticeMode,
+      ) || null
     const card = createPracticeCardFromCleanEntry(
       vocabEntry.word,
       "vocabulary",
@@ -199,8 +178,6 @@ export async function initializePracticeSession(
       fsrsData,
       sessionPracticeMode,
       vocabularyMap,
-      flipVocabQA,
-      flipKanjiRadicalQA,
     )
     cardMap.set(key, card)
   })
@@ -209,8 +186,11 @@ export async function initializePracticeSession(
     hierarchy.kanji.forEach((kanjiEntry) => {
       const key = `kanji:${kanjiEntry.kanji}`
       const fsrsData =
-        moduleFSRSCards.find((c) => c.practice_item_key === kanjiEntry.kanji) ||
-        null
+        moduleFSRSCards.find(
+          (c) =>
+            c.practice_item_key === kanjiEntry.kanji &&
+            c.mode === sessionPracticeMode,
+        ) || null
       const card = createPracticeCardFromCleanEntry(
         kanjiEntry.kanji,
         "kanji",
@@ -218,8 +198,6 @@ export async function initializePracticeSession(
         fsrsData,
         sessionPracticeMode,
         vocabularyMap,
-        flipVocabQA,
-        flipKanjiRadicalQA,
       )
       cardMap.set(key, card)
     })
@@ -227,7 +205,9 @@ export async function initializePracticeSession(
       const key = `radical:${radicalEntry.radical}`
       const fsrsData =
         moduleFSRSCards.find(
-          (c) => c.practice_item_key === radicalEntry.radical,
+          (c) =>
+            c.practice_item_key === radicalEntry.radical &&
+            c.mode === sessionPracticeMode,
         ) || null
       const card = createPracticeCardFromCleanEntry(
         radicalEntry.radical,
@@ -236,8 +216,6 @@ export async function initializePracticeSession(
         fsrsData,
         sessionPracticeMode,
         vocabularyMap,
-        flipVocabQA,
-        flipKanjiRadicalQA,
       )
       cardMap.set(key, card)
     })
@@ -323,8 +301,6 @@ export async function initializePracticeSession(
         fsrsData,
         fsrsData.mode,
         vocabularyMap,
-        flipVocabQA,
-        flipKanjiRadicalQA,
       )
       reviewCard.sessionScope = "review"
       reviewCard.sessionStyle = "flashcard"
