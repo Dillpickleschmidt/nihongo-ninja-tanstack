@@ -20,7 +20,7 @@ export function SummaryCard(props: SummaryCardProps) {
     <button
       type="button"
       onClick={props.onClick}
-      class="bg-card/40 border-card-foreground/70 hover:bg-accent/40 rounded-xl border p-3 text-left backdrop-blur-sm transition"
+      class="bg-card/40 border-card-foreground/70 hover:bg-accent/40 cursor-pointer rounded-xl border p-3 text-left backdrop-blur-sm transition"
       title={`View ${props.label}`}
     >
       <div class="text-muted-foreground text-xs">{props.label}</div>

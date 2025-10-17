@@ -59,10 +59,10 @@ export function KanjiRadicalsTabContent(props: KanjiRadicalsTabContentProps) {
                   >
                     <div class="flex items-center justify-between gap-2">
                       <button
-                        class={`rounded-md px-2 py-1 text-left text-lg font-bold ${
+                        class={`cursor-pointer rounded-md px-2 py-1 text-left text-lg font-bold ${
                           props.selectedKanji() === k
                             ? "bg-indigo-500/15 text-indigo-400"
-                            : "text-primary hover:bg-accent/30"
+                            : "text-primary ease-instant-hover-150 hover:bg-primary/5"
                         }`}
                         onClick={() => props.toggleKanji(k)}
                         title="Toggle select Kanji"

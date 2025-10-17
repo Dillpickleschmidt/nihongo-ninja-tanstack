@@ -27,24 +27,22 @@ import { KanjiGrid } from "@/components/ui/KanjiGrid"
 function getSideConfig(
   card: PracticeCard,
   side: "prompt" | "answer",
-  uiState: ReturnType<typeof useVocabPracticeContext>["uiState"],
 ) {
-  const { flipVocabQA, flipKanjiRadicalQA } = uiState.settings
   const isPrompt = side === "prompt"
-
   let isJapanese = false
   let text: string | string[] = isPrompt ? card.prompt : card.validAnswers
 
   if (card.practiceItemType === "vocabulary") {
     if (card.practiceMode === "spellings") {
-      isJapanese = isPrompt ? flipVocabQA : !flipVocabQA
+      // Spellings mode: English prompt, Japanese (kana) answer
+      isJapanese = !isPrompt
     } else {
-      // meanings mode
-      isJapanese = isPrompt ? !flipVocabQA : flipVocabQA
+      // Meanings mode: Japanese prompt, English answer
+      isJapanese = isPrompt
     }
   } else {
-    // kanji or radical
-    isJapanese = isPrompt ? !flipKanjiRadicalQA : flipKanjiRadicalQA
+    // Kanji/Radical (meanings mode only): Japanese prompt, English answer
+    isJapanese = isPrompt
   }
 
   const showAsKanjiAnimation =
@@ -64,7 +62,6 @@ function getSideConfig(
 function FlashcardSide(props: {
   side: "prompt" | "answer"
   card: () => PracticeCard
-  uiState: ReturnType<typeof useVocabPracticeContext>["uiState"]
   showAnswer: boolean
   getSvgForCharacter: (char: string) => Promise<string | null>
   kanjiDisplaySettings: ReturnType<
@@ -83,8 +80,7 @@ function FlashcardSide(props: {
     typeof useVocabPracticeContext
   >["kanjiStyleSettings"]
 }) {
-  const sideConfig = () =>
-    getSideConfig(props.card(), props.side, props.uiState)
+  const sideConfig = () => getSideConfig(props.card(), props.side)
 
   // Load SVG data if we should show kanji animation
   const [svgData] = createResource(
@@ -239,7 +235,6 @@ function RatingButtons(props: { onAnswer: (rating: Grade) => void }) {
 
 export default function FSRSFlashcardPageComponent() {
   const {
-    uiState,
     currentCard,
     answerCardWithUIUpdate,
     getSvgForCharacter,
@@ -298,7 +293,6 @@ export default function FSRSFlashcardPageComponent() {
                 <FlashcardSide
                   side="prompt"
                   card={card}
-                  uiState={uiState}
                   showAnswer={showAnswer()}
                   getSvgForCharacter={getSvgForCharacter}
                   kanjiDisplaySettings={kanjiDisplaySettings}
@@ -325,7 +319,6 @@ export default function FSRSFlashcardPageComponent() {
                   <FlashcardSide
                     side="answer"
                     card={card}
-                    uiState={uiState}
                     showAnswer={showAnswer()}
                     getSvgForCharacter={getSvgForCharacter}
                     kanjiDisplaySettings={kanjiDisplaySettings}

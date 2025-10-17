@@ -7,7 +7,7 @@ type ChipProps = {
 
 export function Chip(props: ChipProps) {
   const base =
-    "inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold transition"
+    "inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold transition cursor-pointer"
   const palette = () => {
     switch (props.color) {
       case "indigo":

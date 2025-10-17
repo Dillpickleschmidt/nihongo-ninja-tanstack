@@ -118,8 +118,6 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
       enableKanjiRadicalPrereqs: !!props.userId
         ? practiceDefaults["enable-kanji-radical-prereqs"]
         : false, // Always disabled for unauthenticated users
-      flipVocabQA: practiceDefaults["flip-vocab-qa"],
-      flipKanjiRadicalQA: practiceDefaults["flip-kanji-radical-qa"],
     },
   })
 

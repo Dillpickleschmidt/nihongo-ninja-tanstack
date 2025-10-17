@@ -46,6 +46,11 @@ export function SimpleVocabularyList(props: SimpleVocabularyListProps) {
                     <div class="flex-1">
                       <div class="text-primary text-base font-semibold">
                         {vocabItem.word}
+                        <Show when={props.mode === "meanings" && vocabItem.english}>
+                          <span class="text-muted-foreground ml-2 font-normal">
+                            - {vocabItem.english.join(", ")}
+                          </span>
+                        </Show>
                         <Show when={props.mode === "spellings"}>
                           <span class="text-muted-foreground ml-2 font-normal">
                             {extractHiragana(vocabItem.furigana)}

@@ -21,7 +21,7 @@ export function ReviewItemsList(props: ReviewItemsListProps) {
   const visibleItems = () => props.reviewItems.slice(0, props.visibleCount)
 
   return (
-    <div class="mt-32 mb-20 space-y-3 md:mt-48">
+    <div class="mt-24 mb-20 space-y-3 md:mt-40">
       <h2 class="text-primary text-center text-lg font-semibold tracking-wide">
         Review Items
       </h2>
@@ -116,7 +116,7 @@ export function ReviewItemsList(props: ReviewItemsListProps) {
                   <div class="flex h-full items-start justify-between p-5">
                     <div class="flex-1">
                       <h3
-                        class={`mb-3 text-xl lg:text-2xl font-bold saturate-[125%] ${
+                        class={`mb-3 text-xl font-bold saturate-[125%] lg:text-2xl ${
                           card.isDisabled
                             ? "text-muted-foreground"
                             : "text-orange-400"
@@ -129,7 +129,7 @@ export function ReviewItemsList(props: ReviewItemsListProps) {
                           Answer:
                         </p>
                         <p
-                          class={`text-base lg:text-lg font-bold ${
+                          class={`text-base font-bold lg:text-lg ${
                             card.isDisabled
                               ? "text-muted-foreground"
                               : "text-primary"
