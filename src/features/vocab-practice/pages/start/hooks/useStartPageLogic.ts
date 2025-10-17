@@ -9,6 +9,7 @@ import {
 } from "@/features/vocab-practice/query/query-options"
 import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
 import { buildPreviewCards } from "../utils/preview-cards"
+import { calculateSvgCharacters } from "@/features/vocab-practice/utils/route-loader-helpers"
 import { createClientOnlyFn } from "@tanstack/solid-start"
 import type {
   PracticeMode,
@@ -67,6 +68,7 @@ export function useStartPageLogic(params: StartPageLogicParams) {
     prerequisitesEnabled,
     activeService,
     settingsQuery,
+    queryClient,
     mode,
     userId,
   } = useVocabPracticeContext()
@@ -76,12 +78,12 @@ export function useStartPageLogic(params: StartPageLogicParams) {
     createSignal<PracticeSessionMode>("mixed")
 
   // Destructure queries
-  const { vocabularyQuery, hierarchyQuery, metadataQuery } = params.queries
+  const { vocabularyQuery, hierarchyQuery, metadataQuery} = params.queries
 
   const hierarchy = () => hierarchyQuery.data
   const vocabulary = () => vocabularyQuery.data
 
-  // Extract all slugs for FSRS queries
+  // Extract all slugs for FSRS data
   const allHierarchySlugs = () => {
     const h = hierarchy()
     if (!h) return []
@@ -92,50 +94,46 @@ export function useStartPageLogic(params: StartPageLogicParams) {
     return Array.from(slugs)
   }
 
-  // Extract characters for SVG queries
-  const hierarchyCharacters = () => {
-    const h = hierarchy()
-    if (!h) return []
-    const chars: string[] = []
-    h.kanji.forEach((k: any) => chars.push(k.kanji))
-    h.radicals.forEach((r: any) => chars.push(r.radical))
-    return chars
-  }
-
-  // FSRS queries - only enabled when hierarchy is available
-  const fsrsCardsQuery = useCustomQuery(() => {
-    const slugs = allHierarchySlugs()
-    const hasHierarchy = !!hierarchy()
-
-    return practiceModuleFSRSCardsQueryOptions(
-      userId,
-      slugs,
-      mode,
-      hasHierarchy && activeService() === "local" && !!userId,
-    )
-  })
-
-  const dueCardsQuery = useCustomQuery(() =>
-    practiceDueFSRSCardsQueryOptions(
-      userId,
-      activeService() === "local" && !!userId,
-    ),
+  // Create queries (these will hit cache from loader when keys match)
+  const fsrsCardsQuery = useCustomQuery(() =>
+    activeService() === "local" && userId && hierarchy()
+      ? practiceModuleFSRSCardsQueryOptions(userId, allHierarchySlugs(), mode, true)
+      : { enabled: false, queryKey: ["disabled"], queryFn: () => [] },
   )
 
-  // SVG queries - only enabled when hierarchy is available
-  const svgsQuery = useCustomQuery(() => {
-    const chars = hierarchyCharacters()
-    const hasHierarchy = !!hierarchy()
+  const dueCardsQuery = useCustomQuery(() =>
+    activeService() === "local" && userId
+      ? practiceDueFSRSCardsQueryOptions(userId, true)
+      : { enabled: false, queryKey: ["disabled"], queryFn: () => [] },
+  )
 
-    return {
-      ...hierarchySvgsQueryOptions(chars),
-      enabled: hasHierarchy && chars.length > 0,
-    }
+  // Calculate SVG characters using shared helper
+  const svgCharacters = createMemo(() => {
+    const h = hierarchy()
+    const dueCards = dueCardsQuery.data || []
+    if (!h) return []
+
+    return calculateSvgCharacters({
+      hierarchy: h,
+      dueCards,
+      isLocalService: activeService() === "local",
+    })
   })
 
+  // Create SVG query using calculated characters
+  const svgsQuery = useCustomQuery(() => {
+    const chars = svgCharacters()
+    return chars.length > 0
+      ? hierarchySvgsQueryOptions(chars)
+      : { enabled: false, queryKey: ["disabled"], queryFn: () => new Map() }
+  })
+
+  // Initialize SVG data when query succeeds
   createEffect(() => {
-    if (!svgsQuery.isPending && svgsQuery.data) {
-      initializeSvgData(svgsQuery.data)
+    const svgData = svgsQuery.data
+    if (svgData && svgData.size > 0) {
+      console.log(`[Start Page] Initializing ${svgData.size} SVGs from cache`)
+      initializeSvgData(svgData)
     }
   })
 
@@ -153,10 +151,6 @@ export function useStartPageLogic(params: StartPageLogicParams) {
     const h = hierarchy()
     const vocab = vocabulary()
     if (!h || !vocab) return null
-
-    if (activeService() === "local") {
-      if (fsrsCardsQuery.isPending || dueCardsQuery.isPending) return null
-    }
 
     return {
       hierarchy: h,
@@ -195,26 +189,19 @@ export function useStartPageLogic(params: StartPageLogicParams) {
     if (vocabularyQuery.isFetching) return true
     if (hierarchyQuery.isFetching) return true
     if (metadataQuery?.isFetching) return true
+    if (fsrsCardsQuery.isFetching) return true
+    if (dueCardsQuery.isFetching) return true
     if (svgsQuery.isFetching) return true
-    if (activeService() === "local" && userId) {
-      if (fsrsCardsQuery.isFetching || dueCardsQuery.isFetching) return true
-    }
     return false
   }
 
   const hasError = () => {
-    const baseErrors =
+    return (
       hierarchyQuery.isError ||
       vocabularyQuery.isError ||
       metadataQuery?.isError ||
-      svgsQuery.isError
-
-    // Only check FSRS errors when using local service
-    if (activeService() === "local" && userId) {
-      return baseErrors || fsrsCardsQuery.isError || dueCardsQuery.isError
-    }
-
-    return baseErrors
+      false
+    )
   }
 
   const reviewItems = createMemo(() => {
@@ -259,6 +246,8 @@ export function useStartPageLogic(params: StartPageLogicParams) {
     vocabularyQuery,
     hierarchyQuery,
     fsrsCardsQuery,
+    dueCardsQuery,
+    svgsQuery,
 
     // Computed values
     previewCards,

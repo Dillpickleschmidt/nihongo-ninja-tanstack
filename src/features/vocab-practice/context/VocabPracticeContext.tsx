@@ -229,6 +229,7 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
   // --- SVG DATA MANAGEMENT FUNCTIONS ---
 
   const initializeSvgData = (initialSvgs: Map<string, string>) => {
+    console.log(`[Context] Initializing ${initialSvgs.size} SVGs`)
     setSvgData(initialSvgs)
   }
 
@@ -239,11 +240,17 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
 
     // If we already have the SVG, return it
     if (currentData.has(character)) {
+      console.log(`[Context] getSvgForCharacter('${character}'): Found in cache`)
       return currentData.get(character)!
     }
 
+    console.log(
+      `[Context] getSvgForCharacter('${character}'): NOT in cache (have ${currentData.size} SVGs)`,
+    )
+
     // If we haven't fetched additional SVGs yet and have a manager, try to fetch them
     if (!additionalSvgsFetched() && managerHook.manager()) {
+      console.log(`[Context] Triggering fallback fetch for missing SVGs`)
       const sessionState = managerHook.getManagerState()
       const additionalSvgs = await fetchAdditionalSvgsForSession(
         sessionState,

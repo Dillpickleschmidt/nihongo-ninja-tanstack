@@ -7,10 +7,11 @@ import { getActiveLiveService } from "@/features/srs-services/utils"
 import {
   practiceHierarchyQueryOptions,
   moduleVocabularyQueryOptions,
-  practiceModuleFSRSCardsQueryOptions,
-  practiceDueFSRSCardsQueryOptions,
-  hierarchySvgsQueryOptions,
 } from "@/features/vocab-practice/query/query-options"
+import {
+  extractHierarchySlugs,
+  prefetchFSRSAndSVGs,
+} from "@/features/vocab-practice/utils/route-loader-helpers"
 
 export const Route = createFileRoute("/practice/$practiceID")({
   validateSearch: (
@@ -50,34 +51,15 @@ export const Route = createFileRoute("/practice/$practiceID")({
       .then((hierarchy) => {
         // Only prefetch FSRS and SVGs for local mode with authenticated user
         if (!isLiveServiceActive && user) {
-          const allHierarchySlugs = new Set<string>()
-          hierarchy.vocabulary.forEach((v) => allHierarchySlugs.add(v.word))
-          hierarchy.kanji.forEach((k) => allHierarchySlugs.add(k.kanji))
-          hierarchy.radicals.forEach((r) => allHierarchySlugs.add(r.radical))
+          const hierarchySlugs = extractHierarchySlugs(hierarchy)
 
-          queryClient.prefetchQuery(
-            practiceModuleFSRSCardsQueryOptions(
-              user.id,
-              Array.from(allHierarchySlugs),
-              true,
-            ),
-          )
-          queryClient.prefetchQuery(
-            practiceDueFSRSCardsQueryOptions(user.id, true),
-          )
-
-          // Extract and prefetch SVGs
-          const hierarchyKanjiRadicals: string[] = []
-          hierarchy.kanji.forEach((k) => hierarchyKanjiRadicals.push(k.kanji))
-          hierarchy.radicals.forEach((r) =>
-            hierarchyKanjiRadicals.push(r.radical),
-          )
-
-          if (hierarchyKanjiRadicals.length > 0) {
-            queryClient.prefetchQuery(
-              hierarchySvgsQueryOptions(hierarchyKanjiRadicals),
-            )
-          }
+          prefetchFSRSAndSVGs({
+            queryClient,
+            userId: user.id,
+            hierarchySlugs,
+            hierarchy,
+            mode,
+          })
         }
       })
       .catch((error) => {

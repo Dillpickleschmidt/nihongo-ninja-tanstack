@@ -41,7 +41,15 @@ export default function IntroductionPageComponent() {
   // Create resource for SVG data
   const [svgData] = createResource(
     () => (shouldUseAnimation() ? character() : null),
-    (char) => (char ? getSvgForCharacter(char) : null),
+    async (char) => {
+      if (!char) return null
+      console.log(`[IntroductionPage] Requesting SVG for character '${char}'`)
+      const result = await getSvgForCharacter(char)
+      console.log(
+        `[IntroductionPage] SVG for '${char}': ${result ? "Found" : "Not found"}`,
+      )
+      return result
+    },
   )
 
   let gotItButtonRef: HTMLButtonElement | undefined
