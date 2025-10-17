@@ -25,20 +25,28 @@ type UpsertFSRSCardArgs = {
 
 /**
  * Get FSRS cards by practice item keys for a user
+ * Optionally filter by practice mode
  */
 export async function getFSRSCards(
   userId: string,
   keys: string[],
+  mode?: PracticeMode,
 ): Promise<FSRSCardData[]> {
   if (!keys?.length) return []
 
   const supabase = createSupabaseClient()
 
-  const { data: cards, error } = await supabase
+  let query = supabase
     .from("fsrs_cards")
     .select("*")
     .eq("user_id", userId)
     .in("practice_item_key", keys)
+
+  if (mode) {
+    query = query.eq("mode", mode)
+  }
+
+  const { data: cards, error } = await query
 
   if (error) {
     console.error("Error fetching FSRS cards:", error)
@@ -193,7 +201,9 @@ export const upsertFSRSCardForUser = createServerFn({ method: "POST" })
 
     const { error } = await supabase
       .from("fsrs_cards")
-      .upsert([upsertData], { onConflict: "user_id,practice_item_key,type" })
+      .upsert([upsertData], {
+        onConflict: "user_id,practice_item_key,type,mode",
+      })
 
     if (error) throw error
   })
@@ -223,13 +233,16 @@ export const batchUpsertFSRSCardsForUser = createServerFn({ method: "POST" })
 
     const { error } = await supabase
       .from("fsrs_cards")
-      .upsert(upsertDataArray, { onConflict: "user_id,practice_item_key,type" })
+      .upsert(upsertDataArray, {
+        onConflict: "user_id,practice_item_key,type,mode",
+      })
 
     if (error) throw error
   })
 
 /**
  * Get due FSRS cards for a user
+ * Returns up to 200 most overdue cards to optimize query performance
  */
 export const getDueFSRSCards = createServerFn({ method: "GET" })
   .inputValidator((userId: string) => userId)
@@ -242,6 +255,8 @@ export const getDueFSRSCards = createServerFn({ method: "GET" })
       .select("*")
       .eq("user_id", userId)
       .lte("due_at", now.toISOString())
+      .order("due_at", { ascending: true })
+      .limit(200)
 
     if (error) {
       console.error("Error fetching due FSRS cards:", error)

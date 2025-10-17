@@ -22,13 +22,13 @@ export function parseMnemonicText(text: string): JSX.Element[] {
 
     if (kanjiMatch) {
       return (
-        <span class="inline-flex items-center rounded-[6px] bg-pink-500/20 px-1 py-0.25 text-sm font-normal text-pink-400">
+        <span class="inline-flex items-center rounded-[6px] bg-indigo-500/20 px-1 py-0.25 text-sm font-normal text-indigo-400">
           {kanjiMatch[1]}
         </span>
       )
     } else if (radicalMatch) {
       return (
-        <span class="inline-flex items-center rounded-[6px] bg-green-500/20 px-1 py-0.25 text-sm font-normal text-green-400">
+        <span class="inline-flex items-center rounded-[6px] bg-purple-500/20 px-1 py-0.25 text-sm font-normal text-purple-400">
           {radicalMatch[1]}
         </span>
       )

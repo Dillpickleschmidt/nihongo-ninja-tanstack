@@ -1,22 +1,17 @@
 // src/routes/practice/$practiceID.tsx
-import { createFileRoute, notFound, defer } from "@tanstack/solid-router"
-import {
-  getModuleTitleFromPath,
-  getVocabularyForModule,
-} from "@/data/utils/vocab"
+import { createFileRoute, notFound } from "@tanstack/solid-router"
 import VocabPractice from "@/features/vocab-practice/VocabPractice"
-import {
-  type FSRSCardData,
-  getDueFSRSCards,
-  getFSRSCards,
-} from "@/features/supabase/db/fsrs"
 import type { PracticeMode } from "@/features/vocab-practice/types"
-import { getVocabHierarchy } from "@/features/resolvers/kanji"
-import type { VocabHierarchy as CleanVocabHierarchy } from "@/data/wanikani/hierarchy-builder"
-import type { DeferredPromise } from "@tanstack/solid-router"
-import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
-import { fetchKanjiSvgsBatch } from "@/utils/svg-processor"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { getActiveLiveService } from "@/features/srs-services/utils"
+import {
+  practiceHierarchyQueryOptions,
+  moduleVocabularyQueryOptions,
+} from "@/features/vocab-practice/query/query-options"
+import {
+  extractHierarchySlugs,
+  prefetchFSRSAndSVGs,
+} from "@/features/vocab-practice/utils/route-loader-helpers"
 
 export const Route = createFileRoute("/practice/$practiceID")({
   validateSearch: (
@@ -27,112 +22,54 @@ export const Route = createFileRoute("/practice/$practiceID")({
   }),
   loaderDeps: ({ search }) => ({ mode: search.mode }),
   loader: async ({ context, params, deps }) => {
-    try {
-      const { queryClient, user } = context
-      // 1. Get the practice mode from search params (defaults to "meanings")
-      const mode: PracticeMode = deps.mode
+    const { queryClient, user } = context
+    const mode: PracticeMode = deps.mode
 
-      const userSettings = await queryClient.ensureQueryData(
-        userSettingsQueryOptions(user?.id || null),
-      )
+    if (!params.practiceID) throw notFound()
+    const moduleId = params.practiceID
 
-      const moduleVocabulary = await getVocabularyForModule(params.practiceID)
+    const userSettings = await queryClient.ensureQueryData(
+      userSettingsQueryOptions(user?.id || null),
+    )
 
-      let hierarchy: CleanVocabHierarchy
+    const isLiveServiceActive =
+      getActiveLiveService(userSettings["service-preferences"]) !== null
 
-      if (mode === "meanings") {
-        // For "meanings" mode, build the full dependency tree
-        const vocabWords = moduleVocabulary.map((v) => v.word)
-        const userOverrides = userSettings["override-settings"]
-        const cleanHierarchy = await getVocabHierarchy({
-          data: {
-            slugs: vocabWords,
-            userOverrides,
-          },
-        })
-
-        if (!cleanHierarchy) {
-          throw notFound()
-        }
-
-        hierarchy = cleanHierarchy
-      } else {
-        // For "spellings" mode, create a "flat" hierarchy with NO dependencies
-        hierarchy = {
-          vocabulary: moduleVocabulary.map((vocab) => ({
-            word: vocab.word,
-            kanjiComponents: [], // No kanji dependencies in spellings mode
-          })),
-          kanji: [], // No kanji in spellings mode
-          radicals: [], // No radicals in spellings mode
-        }
-      }
-
-      // 2. Create initial state with just hierarchy data (no FSRS)
-      const initialState = await initializePracticeSession(
-        hierarchy,
-        [], // No module FSRS cards - will be loaded client-side
-        [], // No due FSRS cards - will be loaded client-side
-        mode,
-        moduleVocabulary,
-        false, // Default settings - will be overridden client-side
-        true,
-        false,
-        true,
-      )
-
-      // 3. Serialize for transport
-      const serializedInitialState = {
-        ...initialState,
-        cardMap: Array.from(initialState.cardMap.entries()),
-        dependencyMap: Array.from(initialState.dependencyMap.entries()),
-        unlocksMap: Array.from(initialState.unlocksMap.entries()),
-        lockedKeys: Array.from(initialState.lockedKeys),
-      }
-
-      // 4. Extract all slugs for FSRS data fetching
-      const allHierarchySlugs = new Set<string>()
-
-      hierarchy.vocabulary.forEach((v) => allHierarchySlugs.add(v.word))
-      hierarchy.kanji.forEach((k) => allHierarchySlugs.add(k.kanji))
-      hierarchy.radicals.forEach((r) => allHierarchySlugs.add(r.radical))
-
-      // 5. Extract kanji and radicals for SVG fetching
-      const hierarchyKanjiRadicals: string[] = []
-      hierarchy.kanji.forEach((k) => hierarchyKanjiRadicals.push(k.kanji))
-      hierarchy.radicals.forEach((r) => hierarchyKanjiRadicals.push(r.radical))
-
-      // 6. Defer FSRS data fetching
-      let moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null = null
-      let dueFSRSCards: DeferredPromise<FSRSCardData[]> | null = null
-
-      if (context.user && allHierarchySlugs.size > 0) {
-        moduleFSRSCards = defer(
-          getFSRSCards(context.user.id, Array.from(allHierarchySlugs)),
+    queryClient
+      .ensureQueryData(moduleVocabularyQueryOptions(moduleId))
+      .then((vocabulary) => {
+        return queryClient.ensureQueryData(
+          practiceHierarchyQueryOptions(
+            moduleId,
+            vocabulary,
+            mode,
+            userSettings["override-settings"],
+            isLiveServiceActive,
+          ),
         )
-        dueFSRSCards = defer(getDueFSRSCards({ data: context.user.id }))
-      }
+      })
+      .then((hierarchy) => {
+        // Only prefetch FSRS and SVGs for local mode with authenticated user
+        if (!isLiveServiceActive && user) {
+          const hierarchySlugs = extractHierarchySlugs(hierarchy)
 
-      // 7. Defer SVG fetching for hierarchy kanji/radicals
-      let hierarchySvgs: DeferredPromise<Map<string, string>> | null = null
-      if (hierarchyKanjiRadicals.length > 0) {
-        hierarchySvgs = defer(fetchKanjiSvgsBatch(hierarchyKanjiRadicals))
-      }
+          prefetchFSRSAndSVGs({
+            queryClient,
+            userId: user.id,
+            hierarchySlugs,
+            hierarchy,
+            mode,
+          })
+        }
+      })
+      .catch((error) => {
+        console.error("[Route Loader] Query chain error:", error)
+      })
 
-      return {
-        hierarchy,
-        serializedInitialState,
-        moduleFSRSCards,
-        dueFSRSCards,
-        hierarchySvgs,
-        moduleVocabulary,
-        deckName: getModuleTitleFromPath(params.practiceID),
-        mode,
-        user: context.user,
-      }
-    } catch (error) {
-      console.error("Route loader error for practice route:", error)
-      throw notFound()
+    return {
+      moduleId,
+      mode,
+      userId: user?.id || null,
     }
   },
   component: RouteComponent,
@@ -142,29 +79,11 @@ export const Route = createFileRoute("/practice/$practiceID")({
 function RouteComponent() {
   const data = Route.useLoaderData()
 
-  // Deserialize
-  const initialState = {
-    ...data().serializedInitialState,
-    cardMap: new Map(data().serializedInitialState.cardMap),
-    dependencyMap: new Map(data().serializedInitialState.dependencyMap),
-    unlocksMap: new Map(data().serializedInitialState.unlocksMap),
-    lockedKeys: new Set(data().serializedInitialState.lockedKeys),
-  }
-
-  const params = Route.useParams()
-
   return (
     <VocabPractice
-      hierarchy={data().hierarchy}
-      initialState={initialState}
-      moduleFSRSCards={data().moduleFSRSCards}
-      dueFSRSCards={data().dueFSRSCards}
-      hierarchySvgs={data().hierarchySvgs}
-      moduleVocabulary={data().moduleVocabulary}
-      deckName={data().deckName}
+      moduleId={data().moduleId}
       mode={data().mode}
-      user={data().user}
-      moduleId={params().practiceID}
+      userId={data().userId}
     />
   )
 }

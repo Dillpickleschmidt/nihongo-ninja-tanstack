@@ -91,8 +91,6 @@ const VocabRouteSettingsSchema = z.object({
 const VocabPracticeSettingsSchema = z.object({
   "shuffle-answers": z.boolean().default(true),
   "enable-kanji-radical-prereqs": z.boolean().default(true),
-  "flip-vocab-qa": z.boolean().default(false),
-  "flip-kanji-radical-qa": z.boolean().default(true),
 })
 
 const TourSettingsSchema = z.object({

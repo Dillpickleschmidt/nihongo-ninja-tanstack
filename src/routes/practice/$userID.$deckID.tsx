@@ -1,22 +1,18 @@
 // src/routes/practice/$userID/$deckID.tsx
-import { createFileRoute, notFound, defer } from "@tanstack/solid-router"
+import { createFileRoute, notFound } from "@tanstack/solid-router"
 import VocabPractice from "@/features/vocab-practice/VocabPractice"
-import {
-  type FSRSCardData,
-  getDueFSRSCards,
-  getFSRSCards,
-} from "@/features/supabase/db/fsrs"
-import {
-  getDeckInfoServerFn,
-  getVocabForDeck,
-} from "@/features/supabase/db/deck"
 import type { PracticeMode } from "@/features/vocab-practice/types"
-import { getVocabHierarchy } from "@/features/resolvers/kanji"
-import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
-import type { DeferredPromise } from "@tanstack/solid-router"
-import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
-import { fetchKanjiSvgsBatch } from "@/utils/svg-processor"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { getActiveLiveService } from "@/features/srs-services/utils"
+import {
+  userDeckInfoQueryOptions,
+  userDeckVocabularyQueryOptions,
+  userDeckHierarchyQueryOptions,
+} from "@/features/vocab-practice/query/query-options"
+import {
+  extractHierarchySlugs,
+  prefetchFSRSAndSVGs,
+} from "@/features/vocab-practice/utils/route-loader-helpers"
 
 export const Route = createFileRoute("/practice/$userID/$deckID")({
   validateSearch: (
@@ -27,116 +23,60 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
   }),
   loaderDeps: ({ search }) => ({ mode: search.mode }),
   loader: async ({ context, params, deps }) => {
-    try {
-      const { queryClient, user } = context
-      // Parse deck ID from params
-      const deckId = parseInt(params.deckID, 10)
-      if (isNaN(deckId)) throw notFound()
+    const { queryClient, user } = context
+    const mode: PracticeMode = deps.mode
 
-      // Fetch user settings (instant cache hit from root loader)
-      const userSettings = await queryClient.ensureQueryData(
-        userSettingsQueryOptions(user?.id || null),
-      )
+    const deckId = parseInt(params.deckID, 10)
+    if (isNaN(deckId)) throw notFound()
 
-      // 1. Get deck info and vocabulary from database
-      const [deckInfo, deckVocabulary] = await Promise.all([
-        getDeckInfoServerFn({ data: { deck_id: deckId } }),
-        getVocabForDeck(deckId),
-      ])
+    const userSettings = await queryClient.ensureQueryData(
+      userSettingsQueryOptions(user?.id || null),
+    )
 
-      if (!deckInfo || deckVocabulary.length === 0) throw notFound()
+    const isLiveServiceActive =
+      getActiveLiveService(userSettings["service-preferences"]) !== null
 
-      // 2. Get the practice mode from search params (defaults to "meanings")
-      const mode: PracticeMode = deps.mode
+    // Prefetch deck info (non-blocking)
+    queryClient.prefetchQuery(userDeckInfoQueryOptions(deckId))
 
-      let hierarchy: VocabHierarchy
+    // Chain all queries without blocking the loader
+    queryClient
+      .ensureQueryData(userDeckVocabularyQueryOptions(deckId))
+      .then((vocabulary) => {
+        if (vocabulary.length === 0) throw notFound()
 
-      if (mode === "meanings") {
-        // For "meanings" mode, build the full dependency tree
-        const fullHierarchy = await getVocabHierarchy({
-          data: {
-            slugs: deckVocabulary.map((v) => v.word),
-            userOverrides: userSettings["override-settings"],
-          },
-        })
-        if (!fullHierarchy) throw notFound()
-        hierarchy = fullHierarchy
-      } else {
-        // For "spellings" mode, create a "flat" hierarchy with NO dependencies
-        hierarchy = {
-          vocabulary: deckVocabulary.map((vocab) => ({
-            word: vocab.word,
-            kanjiComponents: [], // No kanji dependencies
-          })),
-          kanji: [], // No kanji
-          radicals: [], // No radicals
-        }
-      }
-
-      // 3. Create initial state with just hierarchy data (no FSRS)
-      const initialState = await initializePracticeSession(
-        hierarchy,
-        [], // No module FSRS cards - will be loaded client-side
-        [], // No due FSRS cards - will be loaded client-side
-        mode,
-        deckVocabulary,
-        false, // Default settings - will be overridden client-side
-        true,
-        false,
-        true,
-      )
-
-      // 4. Serialize for transport
-      const serializedInitialState = {
-        ...initialState,
-        cardMap: Array.from(initialState.cardMap.entries()),
-        dependencyMap: Array.from(initialState.dependencyMap.entries()),
-        unlocksMap: Array.from(initialState.unlocksMap.entries()),
-        lockedKeys: Array.from(initialState.lockedKeys),
-      }
-
-      // 5. Extract all slugs for FSRS data fetching
-      const allHierarchySlugs = new Set<string>()
-      hierarchy.vocabulary.forEach((v) => allHierarchySlugs.add(v.word))
-      hierarchy.kanji.forEach((k) => allHierarchySlugs.add(k.kanji))
-      hierarchy.radicals.forEach((r) => allHierarchySlugs.add(r.radical))
-
-      // 6. Extract kanji and radicals for SVG fetching
-      const hierarchyKanjiRadicals: string[] = []
-      hierarchy.kanji.forEach((k) => hierarchyKanjiRadicals.push(k.kanji))
-      hierarchy.radicals.forEach((r) => hierarchyKanjiRadicals.push(r.radical))
-
-      // 7. Defer FSRS data fetching
-      let moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null = null
-      let dueFSRSCards: DeferredPromise<FSRSCardData[]> | null = null
-
-      if (context.user && allHierarchySlugs.size > 0) {
-        moduleFSRSCards = defer(
-          getFSRSCards(context.user.id, Array.from(allHierarchySlugs)),
+        return queryClient.ensureQueryData(
+          userDeckHierarchyQueryOptions(
+            deckId,
+            vocabulary,
+            mode,
+            userSettings["override-settings"],
+            isLiveServiceActive,
+          ),
         )
-        dueFSRSCards = defer(getDueFSRSCards({ data: context.user.id }))
-      }
+      })
+      .then((hierarchy) => {
+        // Only prefetch FSRS and SVGs for local mode with authenticated user
+        if (!isLiveServiceActive && user) {
+          const hierarchySlugs = extractHierarchySlugs(hierarchy)
 
-      // 8. Defer SVG fetching for hierarchy kanji/radicals
-      let hierarchySvgs: DeferredPromise<Map<string, string>> | null = null
-      if (hierarchyKanjiRadicals.length > 0) {
-        hierarchySvgs = defer(fetchKanjiSvgsBatch(hierarchyKanjiRadicals))
-      }
+          prefetchFSRSAndSVGs({
+            queryClient,
+            userId: user.id,
+            hierarchySlugs,
+            hierarchy,
+            mode,
+          })
+        }
+      })
+      .catch((error) => {
+        console.error("[User Deck Route Loader] Query chain error:", error)
+      })
 
-      return {
-        hierarchy,
-        serializedInitialState,
-        moduleFSRSCards,
-        dueFSRSCards,
-        hierarchySvgs,
-        moduleVocabulary: deckVocabulary,
-        deckName: deckInfo.deck_name,
-        mode,
-        user: context.user,
-      }
-    } catch (error) {
-      console.error(error)
-      throw notFound()
+    return {
+      deckId,
+      mode,
+      userId: user?.id || null,
     }
   },
   component: RouteComponent,
@@ -144,32 +84,13 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
 })
 
 function RouteComponent() {
-  const data = Route.useLoaderData()()
-
-  if (!data) {
-    return <div>Loading...</div>
-  }
-
-  // Deserialize
-  const initialState = {
-    ...data.serializedInitialState,
-    cardMap: new Map(data.serializedInitialState.cardMap),
-    dependencyMap: new Map(data.serializedInitialState.dependencyMap),
-    unlocksMap: new Map(data.serializedInitialState.unlocksMap),
-    lockedKeys: new Set(data.serializedInitialState.lockedKeys),
-  }
+  const data = Route.useLoaderData()
 
   return (
     <VocabPractice
-      hierarchy={data.hierarchy}
-      initialState={initialState}
-      moduleFSRSCards={data.moduleFSRSCards}
-      dueFSRSCards={data.dueFSRSCards}
-      hierarchySvgs={data.hierarchySvgs}
-      moduleVocabulary={data.moduleVocabulary}
-      deckName={data.deckName}
-      mode={data.mode}
-      user={data.user}
+      deckId={data().deckId}
+      mode={data().mode}
+      userId={data().userId}
     />
   )
 }

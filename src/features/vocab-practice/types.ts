@@ -18,8 +18,6 @@ export type Settings = {
   shuffleAnswers: boolean
   enabledAnswerCategories: string[]
   enableKanjiRadicalPrereqs: boolean
-  flipVocabQA: boolean
-  flipKanjiRadicalQA: boolean
 }
 
 export type MultipleChoiceButtonState = {

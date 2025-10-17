@@ -25,7 +25,7 @@ describe("ImportSessionManager", () => {
           source: "test-source",
         },
       ],
-      source: "test-card-1",
+      source: "test-kanji-1",
     },
   ]
 
@@ -44,7 +44,7 @@ describe("ImportSessionManager", () => {
       fsrs_card: {} as any,
       mode: "meanings",
       fsrs_logs: [],
-      source: "test-source",
+      source: "test-source-test-kanji-1",
     },
   ]
 
@@ -138,7 +138,7 @@ describe("ImportSessionManager", () => {
         expect(result).toBeTruthy()
         expect(result?.practice_item_key).toBe("猫")
         expect(result?.type).toBe("vocabulary")
-        expect(result?.source).toBe("test-source-test-card-1")
+        expect(result?.source).toBe("test-source-test-kanji-1")
         expect(result?.fsrs_card).toBeDefined()
         expect(result?.fsrs_logs).toBeDefined()
       })

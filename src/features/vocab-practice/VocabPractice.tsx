@@ -1,71 +1,47 @@
-// vocab-practice/VocabPractice.tsx
-import { JSX, Match, Switch } from "solid-js"
+import { Match, Switch } from "solid-js"
 import {
   VocabPracticeContextProvider,
   useVocabPracticeContext,
 } from "./context/VocabPracticeContext"
-import type { PracticeMode, PracticeSessionState } from "./types"
-import StartPageComponent from "./components/pages/StartPageComponent"
-import PracticePageComponent from "./components/pages/PracticePageComponent"
-import ReviewPageComponent from "./components/pages/ReviewPageComponent"
-import FinishPageComponent from "./components/pages/FinishPageComponent"
-import IntroductionPageComponent from "./components/pages/IntroductionPageComponent"
-import FSRSFlashcardPageComponent from "./components/pages/FSRSFlashcardPageComponent"
-import type { FSRSCardData } from "../supabase/db/fsrs"
-import type { VocabHierarchy as CleanVocabHierarchy } from "@/data/wanikani/hierarchy-builder"
-import type { VocabularyItem } from "@/data/types"
-import type { DeferredPromise } from "@tanstack/solid-router"
-import type { User } from "@supabase/supabase-js"
+import type { PracticeMode } from "./types"
+import { ModuleStartPage } from "./pages/start/ModuleStartPage"
+import { UserDeckStartPage } from "./pages/start/UserDeckStartPage"
+import PracticePageComponent from "./pages/practice/PracticePage"
+import ReviewPageComponent from "./pages/review/ReviewPage"
+import FinishPageComponent from "./pages/finish/FinishPage"
+import IntroductionPageComponent from "./pages/introduction/IntroductionPage"
+import FSRSFlashcardPageComponent from "./pages/flashcard/FlashcardPage"
 
 type VocabPracticeProps = {
-  hierarchy: CleanVocabHierarchy | null
-  initialState: PracticeSessionState
-  moduleFSRSCards: DeferredPromise<FSRSCardData[]> | null
-  dueFSRSCards: DeferredPromise<FSRSCardData[]> | null
-  hierarchySvgs: DeferredPromise<Map<string, string>> | null
-  moduleVocabulary: VocabularyItem[]
-  deckName: string | JSX.Element
   mode: PracticeMode
-  user: User | null
-  moduleId: string
+  userId: string | null
+  moduleId?: string
+  deckId?: number
 }
 
 export default function VocabPractice(props: VocabPracticeProps) {
   return (
-    <VocabPracticeContextProvider user={props.user} moduleId={props.moduleId}>
-      <VocabPracticeContent
-        deckName={props.deckName}
-        hierarchy={props.hierarchy}
-        initialState={props.initialState}
-        moduleFSRSCards={props.moduleFSRSCards}
-        dueFSRSCards={props.dueFSRSCards}
-        hierarchySvgs={props.hierarchySvgs}
-        moduleVocabulary={props.moduleVocabulary}
-        mode={props.mode}
-        user={props.user || null}
-      />
+    <VocabPracticeContextProvider
+      userId={props.userId}
+      mode={props.mode}
+      moduleId={props.moduleId}
+      deckId={props.deckId}
+    >
+      <VocabPracticeContent />
     </VocabPracticeContextProvider>
   )
 }
 
-type VocabPracticeContentProps = VocabPracticeProps
-function VocabPracticeContent(props: VocabPracticeContentProps) {
-  const { uiState } = useVocabPracticeContext()
+function VocabPracticeContent() {
+  const { uiState, moduleId, deckId } = useVocabPracticeContext()
 
   return (
     <Switch>
-      <Match when={uiState.currentPage === "start"}>
-        <StartPageComponent
-          deckName={props.deckName}
-          hierarchy={props.hierarchy}
-          initialState={props.initialState}
-          moduleFSRSCards={props.moduleFSRSCards}
-          dueFSRSCards={props.dueFSRSCards}
-          hierarchySvgs={props.hierarchySvgs}
-          moduleVocabulary={props.moduleVocabulary}
-          mode={props.mode}
-          userId={props.user?.id || null}
-        />
+      <Match when={uiState.currentPage === "start" && moduleId}>
+        <ModuleStartPage />
+      </Match>
+      <Match when={uiState.currentPage === "start" && deckId}>
+        <UserDeckStartPage />
       </Match>
       <Match when={uiState.currentPage === "practice"}>
         <PracticePageComponent />

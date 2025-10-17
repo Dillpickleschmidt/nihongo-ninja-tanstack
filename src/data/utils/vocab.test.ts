@@ -66,14 +66,14 @@ describe("Vocabulary Utils", () => {
   describe("convertFuriganaToRubyHtml", () => {
     it("should correctly convert a simple furigana string and strip spaces", () => {
       const input = "食[た]べる " // Added trailing space
-      const expected = `<ruby>食<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">た</span></rt><rp>)</rp></ruby>べる`
+      const expected = `<ruby>食<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none; position: relative; z-index: 1;">た</span></rt><rp>)</rp></ruby>べる`
       expect(convertFuriganaToRubyHtml(input)).toBe(expected)
     })
 
     it("should convert a complex string and strip spaces outside ruby tags", () => {
       const input = "何[なん]で 食[た]べ 物[もの]がない？"
       // Spaces not in ruby tags are stripped
-      const expected = `<ruby>何<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">なん</span></rt><rp>)</rp></ruby>で<ruby>食<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">た</span></rt><rp>)</rp></ruby>べ<ruby>物<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">もの</span></rt><rp>)</rp></ruby>がない？`
+      const expected = `<ruby>何<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none; position: relative; z-index: 1;">なん</span></rt><rp>)</rp></ruby>で<ruby>食<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none; position: relative; z-index: 1;">た</span></rt><rp>)</rp></ruby>べ<ruby>物<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none; position: relative; z-index: 1;">もの</span></rt><rp>)</rp></ruby>がない？`
       expect(convertFuriganaToRubyHtml(input)).toBe(expected)
     })
   })
@@ -132,7 +132,7 @@ describe("Vocabulary Utils", () => {
       const expectedDisplayParts = [
         {
           type: "html",
-          content: `<ruby>何<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">なん</span></rt><rp>)</rp></ruby>で`,
+          content: `<ruby>何<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none; position: relative; z-index: 1;">なん</span></rt><rp>)</rp></ruby>で`,
         },
         { type: "input", index: 0 },
         { type: "html", content: "がない？" },
@@ -240,7 +240,7 @@ describe("Vocabulary Utils", () => {
       expect(result.hiragana).toEqual(["たべる"])
       // EXPECTED: rubyText content also reflects space stripping in convertFuriganaToRubyHtml
       expect(result.rubyText).toEqual([
-        `<ruby>食<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">た</span></rt><rp>)</rp></ruby>べる`,
+        `<ruby>食<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none; position: relative; z-index: 1;">た</span></rt><rp>)</rp></ruby>べる`,
       ])
     })
     it("should add correct hiragana and rubyText, stripping spaces from word/furigana", () => {
@@ -252,7 +252,7 @@ describe("Vocabulary Utils", () => {
       const result = addKanaAndRuby([vocabItem])[0]
       expect(result.hiragana).toEqual(["みず"])
       expect(result.rubyText).toEqual([
-        `<ruby>水<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none;">みず</span></rt><rp>)</rp></ruby>`, // convertFuriganaToRubyHtml strips spaces
+        `<ruby>水<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none; position: relative; z-index: 1;">みず</span></rt><rp>)</rp></ruby>`, // convertFuriganaToRubyHtml strips spaces
       ])
     })
   })
