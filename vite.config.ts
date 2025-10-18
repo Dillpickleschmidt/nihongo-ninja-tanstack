@@ -5,6 +5,7 @@ import { tanstackStart } from "@tanstack/solid-start/plugin/vite"
 import { nitroV2Plugin } from "@tanstack/nitro-v2-vite-plugin"
 import viteSolid from "vite-plugin-solid"
 import lucidePreprocess from "vite-plugin-lucide-preprocess"
+import solidSvg from "vite-plugin-solid-svg"
 import { visualizer } from "rollup-plugin-visualizer"
 import { copyFileSync, existsSync, mkdirSync } from "fs"
 import { resolve } from "path"
@@ -19,6 +20,7 @@ export default defineConfig({
   plugins: [
     tsConfigPaths(),
     lucidePreprocess(),
+    solidSvg(),
     tanstackStart(),
     nitroV2Plugin({
       preset: "aws-lambda",
