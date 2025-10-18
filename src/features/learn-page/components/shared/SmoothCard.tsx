@@ -16,6 +16,10 @@ interface SmoothCardProps {
     xl?: number
     "2xl"?: number
   }
+  border?: boolean
+  borderClass?: string
+  ring?: boolean
+  ringClass?: string
   class?: string
   style?: JSX.CSSProperties
   children: any
@@ -78,14 +82,52 @@ export function SmoothCard(props: SmoothCardProps) {
 
   return (
     <div
-      style={combinedStyle}
-      class={cn(
-        "bg-card",
-        "shadow-sm shadow-black/5 dark:shadow-black/20",
-        props.class,
-      )}
+      style={{
+        position: "relative",
+        width: `${scaledWidth}px`,
+        height: `${scaledHeight}px`,
+      }}
     >
-      {props.children}
+      <div
+        style={combinedStyle}
+        class={cn(
+          "bg-card",
+          "shadow-sm shadow-black/5 dark:shadow-black/20",
+          props.class,
+        )}
+      >
+        {props.children}
+      </div>
+
+      {props.border && (
+        <svg
+          class={cn("absolute inset-0 overflow-visible", props.borderClass)}
+          style={{
+            width: `${scaledWidth}px`,
+            height: `${scaledHeight}px`,
+          }}
+          viewBox={`0 0 ${scaledWidth} ${scaledHeight}`}
+          preserveAspectRatio="none"
+        >
+          <path d={svgPath} fill="none" shape-rendering="geometricPrecision" />
+        </svg>
+      )}
+
+      <svg
+        class={cn(
+          "absolute inset-0 overflow-visible",
+          props.ring ? "opacity-100" : "opacity-0",
+          props.ringClass,
+        )}
+        style={{
+          width: `${scaledWidth}px`,
+          height: `${scaledHeight}px`,
+        }}
+        viewBox={`0 0 ${scaledWidth} ${scaledHeight}`}
+        preserveAspectRatio="none"
+      >
+        <path d={svgPath} fill="none" shape-rendering="geometricPrecision" />
+      </svg>
     </div>
   )
 }
