@@ -1,6 +1,8 @@
-import { createSignal } from "solid-js"
-import { SmoothCard } from "@/features/learn-page/components/shared/SmoothCard"
+import { createSignal, For } from "solid-js"
 import { cn } from "@/utils"
+import { SmoothCard } from "@/features/learn-page/components/shared/SmoothCard"
+import { getLevelStyles } from "../utils/levelStyles"
+import { WelcomeSection } from "./WelcomeSection"
 
 interface LevelItem {
   level: string
@@ -11,7 +13,7 @@ interface LevelSelectionProps {
   onSelect?: (level: string) => void
 }
 
-const jlptLevels: LevelItem[] = [
+const JLPT_LEVELS: LevelItem[] = [
   { level: "N5", description: "Beginner" },
   { level: "N4", description: "Upper Beginner" },
   { level: "N3", description: "Intermediate" },
@@ -19,57 +21,32 @@ const jlptLevels: LevelItem[] = [
   { level: "N1", description: "Advanced / Fluent" },
 ]
 
-const getLevelStyles = (level: string) => {
-  switch (level) {
-    case "N5":
-      return {
-        gradient: "from-emerald-400/5 to-emerald-600/10",
-        textColor: "text-emerald-400",
-        borderClass: "stroke-emerald-400/35 [stroke-width:0.75]",
-        ringClass: "stroke-emerald-400 [stroke-width:2]",
-      }
-    case "N4":
-      return {
-        gradient: "from-sky-400/5 to-sky-600/10",
-        textColor: "text-sky-400",
-        borderClass: "stroke-sky-400/35 [stroke-width:0.75]",
-        ringClass: "stroke-sky-400 [stroke-width:2]",
-      }
-    case "N3":
-      return {
-        gradient: "from-violet-400/5 to-violet-600/10",
-        textColor: "text-violet-400",
-        borderClass: "stroke-violet-400/35 [stroke-width:0.75]",
-        ringClass: "stroke-violet-400 [stroke-width:2]",
-      }
-    case "N2":
-      return {
-        gradient: "from-amber-400/5 to-amber-600/10",
-        textColor: "text-amber-400",
-        borderClass: "stroke-amber-400/35 [stroke-width:0.75]",
-        ringClass: "stroke-amber-400 [stroke-width:2]",
-      }
-    case "N1":
-      return {
-        gradient: "from-rose-400/5 to-rose-600/10",
-        textColor: "text-rose-400",
-        borderClass: "stroke-rose-400/35 [stroke-width:0.75]",
-        ringClass: "stroke-rose-400 [stroke-width:2]",
-      }
-    default:
-      return {
-        gradient: "from-gray-400/5 to-gray-600/10",
-        textColor: "text-gray-400",
-        borderClass: "stroke-gray-400/35 [stroke-width:0.75]",
-        ringClass: "stroke-gray-400 [stroke-width:2]",
-      }
-  }
+export function LevelSelection(props: LevelSelectionProps) {
+  return (
+    <div class="relative h-[calc(100vh-64px)] w-screen overflow-hidden">
+      <WelcomeSection />
+
+      {/* JLPT Level Cards */}
+      <div class="mx-auto grid max-w-4xl grid-cols-1 justify-items-center gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+        <For each={JLPT_LEVELS}>
+          {(item) => <LevelCard item={item} onSelect={props.onSelect} />}
+        </For>
+      </div>
+
+      <div class="absolute bottom-4 w-full px-6 text-right text-sm opacity-50">
+        <p>
+          Don't worry, there's no additional questions asking for your email or
+          anything :)
+        </p>
+      </div>
+    </div>
+  )
 }
 
-const LevelCard = (props: {
+function LevelCard(props: {
   item: LevelItem
   onSelect?: (level: string) => void
-}) => {
+}) {
   const [isHovered, setIsHovered] = createSignal(false)
   const styles = getLevelStyles(props.item.level)
 
@@ -104,15 +81,5 @@ const LevelCard = (props: {
         </div>
       </SmoothCard>
     </button>
-  )
-}
-
-export function LevelSelection(props: LevelSelectionProps) {
-  return (
-    <div class="mx-auto grid max-w-4xl grid-cols-1 justify-items-center gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-      {jlptLevels.map((item) => (
-        <LevelCard item={item} onSelect={props.onSelect} />
-      ))}
-    </div>
   )
 }
