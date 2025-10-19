@@ -75,6 +75,7 @@ import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 import { Route as HomePracticeConjugationRouteImport } from './routes/_home/practice/conjugation'
 import { Route as HomeLearnTextbookIdRouteImport } from './routes/_home/learn/$textbookId'
 import { Route as HomeGuidesSrsRouteImport } from './routes/_home/guides/srs'
+import { Route as HomeGuidesHomeRouteImport } from './routes/_home/guides/home'
 import { Route as HomeGuidesComparisonRouteImport } from './routes/_home/guides/comparison'
 import { Route as HomeAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/additional-resources/kanji-practice-sheet'
 import { Route as HomePracticeSentencePracticeIdRouteImport } from './routes/_home/practice/sentence-practice/$id'
@@ -441,6 +442,11 @@ const HomeGuidesSrsRoute = HomeGuidesSrsRouteImport.update({
   path: '/srs',
   getParentRoute: () => HomeGuidesRoute,
 } as any)
+const HomeGuidesHomeRoute = HomeGuidesHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => HomeGuidesRoute,
+} as any)
 const HomeGuidesComparisonRoute = HomeGuidesComparisonRouteImport.update({
   id: '/comparison',
   path: '/comparison',
@@ -495,6 +501,7 @@ export interface FileRoutesByFullPath {
   '/practice/review': typeof PracticeReviewRoute
   '/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
   '/guides/comparison': typeof HomeGuidesComparisonRoute
+  '/guides/home': typeof HomeGuidesHomeRoute
   '/guides/srs': typeof HomeGuidesSrsRoute
   '/learn/$textbookId': typeof HomeLearnTextbookIdRouteWithChildren
   '/practice/conjugation': typeof HomePracticeConjugationRoute
@@ -567,6 +574,7 @@ export interface FileRoutesByTo {
   '/practice/review': typeof PracticeReviewRoute
   '/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
   '/guides/comparison': typeof HomeGuidesComparisonRoute
+  '/guides/home': typeof HomeGuidesHomeRoute
   '/guides/srs': typeof HomeGuidesSrsRoute
   '/learn/$textbookId': typeof HomeLearnTextbookIdRouteWithChildren
   '/practice/conjugation': typeof HomePracticeConjugationRoute
@@ -641,6 +649,7 @@ export interface FileRoutesById {
   '/practice/review': typeof PracticeReviewRoute
   '/_home/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
   '/_home/guides/comparison': typeof HomeGuidesComparisonRoute
+  '/_home/guides/home': typeof HomeGuidesHomeRoute
   '/_home/guides/srs': typeof HomeGuidesSrsRoute
   '/_home/learn/$textbookId': typeof HomeLearnTextbookIdRouteWithChildren
   '/_home/practice/conjugation': typeof HomePracticeConjugationRoute
@@ -715,6 +724,7 @@ export interface FileRouteTypes {
     | '/practice/review'
     | '/additional-resources/kanji-practice-sheet'
     | '/guides/comparison'
+    | '/guides/home'
     | '/guides/srs'
     | '/learn/$textbookId'
     | '/practice/conjugation'
@@ -787,6 +797,7 @@ export interface FileRouteTypes {
     | '/practice/review'
     | '/additional-resources/kanji-practice-sheet'
     | '/guides/comparison'
+    | '/guides/home'
     | '/guides/srs'
     | '/learn/$textbookId'
     | '/practice/conjugation'
@@ -860,6 +871,7 @@ export interface FileRouteTypes {
     | '/practice/review'
     | '/_home/additional-resources/kanji-practice-sheet'
     | '/_home/guides/comparison'
+    | '/_home/guides/home'
     | '/_home/guides/srs'
     | '/_home/learn/$textbookId'
     | '/_home/practice/conjugation'
@@ -1395,6 +1407,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeGuidesSrsRouteImport
       parentRoute: typeof HomeGuidesRoute
     }
+    '/_home/guides/home': {
+      id: '/_home/guides/home'
+      path: '/home'
+      fullPath: '/guides/home'
+      preLoaderRoute: typeof HomeGuidesHomeRouteImport
+      parentRoute: typeof HomeGuidesRoute
+    }
     '/_home/guides/comparison': {
       id: '/_home/guides/comparison'
       path: '/comparison'
@@ -1450,11 +1469,13 @@ const HomeAdditionalResourcesRouteWithChildren =
 
 interface HomeGuidesRouteChildren {
   HomeGuidesComparisonRoute: typeof HomeGuidesComparisonRoute
+  HomeGuidesHomeRoute: typeof HomeGuidesHomeRoute
   HomeGuidesSrsRoute: typeof HomeGuidesSrsRoute
 }
 
 const HomeGuidesRouteChildren: HomeGuidesRouteChildren = {
   HomeGuidesComparisonRoute: HomeGuidesComparisonRoute,
+  HomeGuidesHomeRoute: HomeGuidesHomeRoute,
   HomeGuidesSrsRoute: HomeGuidesSrsRoute,
 }
 

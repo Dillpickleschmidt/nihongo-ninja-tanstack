@@ -24,11 +24,11 @@ const getLevelContent = (level: string | null) => {
           "Spaced repetition from the start",
         ],
         tiles: [
-          { title: "Getting Started", subtitle: "Introduction" },
-          { title: "Hiragana Quiz", subtitle: "Interactive kana" },
-          { title: "Lessons", subtitle: "Clear explanations" },
-          { title: "Grammar", subtitle: "Conjugation Practice" },
-          { title: "Vocabulary Practice", subtitle: "SRS from day 1" },
+          { title: "Getting Started", subtitle: "Introduction", href: "/guides/home" },
+          { title: "Hiragana Quiz", subtitle: "Interactive kana", href: "/practice/hiragana-quiz" },
+          { title: "Lessons", subtitle: "Clear explanations", href: "/lessons" },
+          { title: "Grammar", subtitle: "Conjugation Practice", href: "/_home/practice/conjugation" },
+          { title: "Vocabulary Practice", subtitle: "SRS from day 1", href: "/practice/review" },
         ],
       }
     case "N4":
@@ -42,13 +42,13 @@ const getLevelContent = (level: string | null) => {
           "Grammar + vocabulary spaced repetition",
         ],
         tiles: [
-          { title: "Getting Started", subtitle: "Introduction" },
-          { title: "Lessons", subtitle: "Clear explanations" },
-          { title: "Grammar", subtitle: "Sentence Practice" },
-          { title: "Vocabulary Practice", subtitle: "SRS from day 1" },
-          { title: "SRS Practice", subtitle: "Grammar + Vocab" },
-          { title: "Custom Decks", subtitle: "Learn what matters" },
-          { title: "Browser Extension", subtitle: "Pre-configured" },
+          { title: "Getting Started", subtitle: "Introduction", href: "/guides/home" },
+          { title: "Lessons", subtitle: "Clear explanations", href: "/lessons" },
+          { title: "Grammar", subtitle: "Sentence Practice", href: "/_home/practice/conjugation" },
+          { title: "Vocabulary Practice", subtitle: "SRS from day 1", href: "/practice/review" },
+          { title: "SRS Practice", subtitle: "Grammar + Vocab", href: "/practice/review" },
+          { title: "Custom Decks", subtitle: "Learn what matters", href: "/_home/vocab" },
+          { title: "Browser Extension", subtitle: "Pre-configured", href: "#" },
         ],
       }
     case "N3":
@@ -62,11 +62,11 @@ const getLevelContent = (level: string | null) => {
           "Browser extension for sentence-mining with grammar explanations",
         ],
         tiles: [
-          { title: "Getting Started", subtitle: "Introduction" },
-          { title: "Learning Paths", subtitle: "For any show" },
-          { title: "Browser Extension", subtitle: "Mining subtitles" },
-          { title: "SRS Practice", subtitle: "Grammar + Vocab" },
-          { title: "Sentence Building", subtitle: "Grammar" },
+          { title: "Getting Started", subtitle: "Introduction", href: "/guides/home" },
+          { title: "Learning Paths", subtitle: "For any show", href: "#" },
+          { title: "Browser Extension", subtitle: "Mining subtitles", href: "#" },
+          { title: "SRS Practice", subtitle: "Grammar + Vocab", href: "/practice/review" },
+          { title: "Sentence Building", subtitle: "Grammar", href: "#" },
         ],
       }
     case "N2":
@@ -80,11 +80,11 @@ const getLevelContent = (level: string | null) => {
           "Import your existing review data",
         ],
         tiles: [
-          { title: "Getting Started", subtitle: "Introduction" },
-          { title: "Learning Paths", subtitle: "Analyze any show" },
-          { title: "Browser Extension", subtitle: "Mining subtitles" },
-          { title: "SRS Flexibility", subtitle: "Use any platform" },
-          { title: "Sentence Building", subtitle: "Grammar" },
+          { title: "Getting Started", subtitle: "Introduction", href: "/guides/home" },
+          { title: "Learning Paths", subtitle: "Analyze any show", href: "#" },
+          { title: "Browser Extension", subtitle: "Mining subtitles", href: "#" },
+          { title: "SRS Flexibility", subtitle: "Use any platform", href: "#" },
+          { title: "Sentence Building", subtitle: "Grammar", href: "#" },
         ],
       }
     case "N1":
@@ -98,10 +98,10 @@ const getLevelContent = (level: string | null) => {
           "Generate custom kanji practice sheets",
         ],
         tiles: [
-          { title: "Getting Started", subtitle: "Introduction" },
-          { title: "Learning Paths", subtitle: "Analyze any show" },
-          { title: "Browser Extension", subtitle: "Mining subtitles" },
-          { title: "All SRS Platforms", subtitle: "Connected" },
+          { title: "Getting Started", subtitle: "Introduction", href: "/guides/home" },
+          { title: "Learning Paths", subtitle: "Analyze any show", href: "#" },
+          { title: "Browser Extension", subtitle: "Mining subtitles", href: "#" },
+          { title: "All SRS Platforms", subtitle: "Connected", href: "#" },
         ],
       }
     default:
@@ -115,11 +115,11 @@ const getLevelContent = (level: string | null) => {
           "Clear progression path",
         ],
         tiles: [
-          { title: "Getting Started", subtitle: "Introduction" },
-          { title: "Lessons", subtitle: "Structured learning" },
-          { title: "Practice", subtitle: "Multiple formats" },
-          { title: "Resources", subtitle: "Curated content" },
-          { title: "Tools", subtitle: "Built for you" },
+          { title: "Getting Started", subtitle: "Introduction", href: "/guides/home" },
+          { title: "Lessons", subtitle: "Structured learning", href: "/lessons" },
+          { title: "Practice", subtitle: "Multiple formats", href: "/practice/review" },
+          { title: "Resources", subtitle: "Curated content", href: "#" },
+          { title: "Tools", subtitle: "Built for you", href: "#" },
         ],
       }
   }
@@ -243,12 +243,14 @@ export default function PreviewGrid(props: PreviewGridProps) {
           <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
             <For each={content().tiles}>
               {(tile, index) => (
-                <PreviewTile
-                  title={tile.title}
-                  subtitle={tile.subtitle}
-                  level={props.level}
-                  index={index()}
-                />
+                <Link to={tile.href}>
+                  <PreviewTile
+                    title={tile.title}
+                    subtitle={tile.subtitle}
+                    level={props.level}
+                    index={index()}
+                  />
+                </Link>
               )}
             </For>
           </div>
@@ -298,7 +300,7 @@ function PreviewTile(props: {
 }) {
   return (
     <div
-      class={`bg-background/50 ease-instant-hover-200 cursor-pointer rounded-2xl border border-neutral-700/60 p-4 hover:scale-[0.995] hover:ring-2 ${getRingColor(props.level)}`}
+      class={`bg-background/50 ease-instant-hover-200 rounded-2xl border border-neutral-700/60 p-4 hover:scale-[0.995] hover:ring-2 ${getRingColor(props.level)}`}
     >
       {/* Preview area */}
       <div class="bg-background mb-3 h-32 rounded-xl md:h-40" />
