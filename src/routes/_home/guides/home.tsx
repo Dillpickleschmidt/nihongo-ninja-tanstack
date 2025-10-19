@@ -13,6 +13,13 @@ import {
 import { Lightbulb, Repeat, BookOpen, Sparkles, DollarSign } from "lucide-solid"
 
 export const Route = createFileRoute("/_home/guides/home")({
+  loader: () => ({
+    toc: [
+      { id: "how-it-works", title: "How Nihongo Ninja works" },
+      { id: "first-week", title: "Your first week" },
+      { id: "resources", title: "Great resources" },
+    ],
+  }),
   component: RouteComponent,
 })
 
@@ -20,7 +27,7 @@ export const Route = createFileRoute("/_home/guides/home")({
 
 const LEVEL_COLORS: Record<JLPTLevel, { line: string; bullet: string }> = {
   N5: {
-    line: "rgba(52, 211, 153, 0.3)", // emerald-400 with 30% opacity
+    line: "rgba(52, 211, 153, 0.3)",
     bullet: "rgb(52, 211, 153)", // emerald-400
   },
   N4: {
@@ -294,7 +301,6 @@ const ROADMAP_BY_LEVEL: Record<
 /* ===== Components ===== */
 
 function RouteComponent() {
-  // Default to user's level if available, otherwise N5
   const defaultLevel = () => {
     // TODO: Pass selected level from home-v2 context if available
     return "N5"
@@ -312,35 +318,6 @@ function RouteComponent() {
           memory.
         </p>
       </header>
-
-      <nav aria-label="On this page" class="mx-auto mt-6 mb-10">
-        <ul class="flex flex-wrap gap-2 text-base">
-          <li>
-            <a
-              href="#how-it-works"
-              class="text-foreground/90 bg-foreground/5 hover:bg-foreground/10 rounded-full px-3 py-1.5 transition"
-            >
-              How it works
-            </a>
-          </li>
-          <li>
-            <a
-              href="#first-week"
-              class="text-foreground/90 bg-foreground/5 hover:bg-foreground/10 rounded-full px-3 py-1.5 transition"
-            >
-              Your first week
-            </a>
-          </li>
-          <li>
-            <a
-              href="#resources"
-              class="text-foreground/90 bg-foreground/5 hover:bg-foreground/10 rounded-full px-3 py-1.5 transition"
-            >
-              Great resources
-            </a>
-          </li>
-        </ul>
-      </nav>
 
       <section id="how-it-works" aria-labelledby="how-it-works-heading">
         <div class="relative mb-10 overflow-hidden rounded-xl border border-white/10 bg-white/3 p-7 shadow-md shadow-black/20 backdrop-blur-md">
@@ -440,7 +417,7 @@ function RouteComponent() {
                     aria-label={`Show ${level} plan`}
                   >
                     <span
-                      class={`${getLevelStyles(level).textColor} inline-block size-1.5 rounded-full bg-current`}
+                      class={`${getLevelStyles(level).textColor} inline-block size-2.5 rounded-full bg-current`}
                       aria-hidden="true"
                     />
                     {level}

@@ -2,12 +2,20 @@
 import { createFileRoute } from "@tanstack/solid-router"
 
 export const Route = createFileRoute("/_home/guides/srs")({
+  loader: () => ({
+    toc: [
+      { id: "traditional-srs", title: "Why Traditional SRS Can Feel Limiting" },
+      { id: "our-approach", title: "Our Approach: Let Practice Count" },
+      { id: "the-result", title: "The Result" },
+      { id: "same-science", title: "Same Science, Different Experience" },
+    ],
+  }),
   component: RouteComponent,
 })
 
 function RouteComponent() {
   return (
-    <>
+    <div class="pt-16 pb-24">
       {/* Intro */}
       <header class="text-center">
         <h1 class="mb-4 text-3xl font-bold">Our Spaced Repetition System</h1>
@@ -18,7 +26,7 @@ function RouteComponent() {
       </header>
 
       {/* Problem */}
-      <section>
+      <section id="traditional-srs">
         <h2 class="mb-3 text-2xl font-semibold">
           Why Traditional SRS Can Feel Limiting
         </h2>
@@ -34,7 +42,7 @@ function RouteComponent() {
       </section>
 
       {/* Approach */}
-      <section>
+      <section id="our-approach">
         <h2 class="mb-3 text-2xl font-semibold">
           Our Approach: Let Practice Count
         </h2>
@@ -60,7 +68,7 @@ function RouteComponent() {
       </section>
 
       {/* Result */}
-      <section>
+      <section id="the-result">
         <h2 class="mb-3 text-2xl font-semibold">The Result</h2>
         <p class="text-muted-foreground mb-4 text-base">
           Because your practice is spread across multiple activities, you don’t
@@ -77,7 +85,7 @@ function RouteComponent() {
       </section>
 
       {/* Science */}
-      <section>
+      <section id="same-science">
         <h2 class="mb-3 text-2xl font-semibold">
           Same Science, Different Experience
         </h2>
@@ -101,6 +109,6 @@ function RouteComponent() {
           from it.
         </p>
       </footer>
-    </>
+    </div>
   )
 }

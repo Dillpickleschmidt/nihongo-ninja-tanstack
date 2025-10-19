@@ -5,6 +5,7 @@ import {
   Link,
   Outlet,
   useLocation,
+  useMatches,
 } from "@tanstack/solid-router"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
@@ -25,6 +26,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { BackgroundLayers } from "@/features/homepage-v2/components/BackgroundLayers"
 import LogoutButton from "@/features/auth/components/Logout"
+import { TableOfContents, type TOCItem } from "@/components/TableOfContents"
 
 export const Route = createFileRoute("/_home/guides")({
   loader: async ({ context }) => {
@@ -110,12 +112,20 @@ const guidesNavigation = [
 function RouteComponent() {
   const { user } = Route.useLoaderData()()
   const location = useLocation()
+  const matches = useMatches()
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(user?.id || null),
   )
 
   const isActive = (href: string) => {
     return location().pathname === href
+  }
+
+  const toc = () => {
+    const currentMatch = matches()[matches().length - 1]
+    return (
+      (currentMatch?.loaderData as { toc?: TOCItem[] } | undefined)?.toc || []
+    )
   }
 
   return (
@@ -180,8 +190,15 @@ function RouteComponent() {
 
         <SidebarInset class="bg-transparent">
           <SidebarTrigger class="bg-card/70 absolute top-2 left-2 p-4" />
-          <div class="px-6 py-4">
-            <Outlet />
+          <div class="flex gap-6 px-6 py-4">
+            <div class="mx-auto w-full">
+              <Outlet />
+            </div>
+            <aside class="mt-[20vh] hidden w-32 flex-shrink-0 md:w-64 lg:block">
+              <div class="sticky top-40">
+                <TableOfContents items={toc()} />
+              </div>
+            </aside>
           </div>
         </SidebarInset>
       </SidebarProvider>
