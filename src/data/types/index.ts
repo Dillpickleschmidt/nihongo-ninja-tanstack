@@ -6,6 +6,12 @@ import { ResourceProvider } from "../resources-config"
 // Textbooks: Keyed by a unique textbook ID
 export type TextbookCollection = Record<TextbookIDEnum, Textbook>
 
+// Chapters: Nested by textbook ID, then keyed by chapter slug
+export type ChapterCollection = Record<
+  TextbookIDEnum,
+  Record<string, BuiltInDeck>
+>
+
 // StaticModules: Keyed by a unique static module ID
 export type StaticModuleCollection = Record<string, StaticModule>
 
@@ -35,7 +41,7 @@ export interface Textbook {
   publication_year?: number
   cover_image_url?: string
   level: string
-  chapters: BuiltInDeck[]
+  chapterSlugs: string[] // Chapter slugs for this textbook
 }
 export type TextbookIDEnum = "genki_1" | "genki_2" | "getting_started"
 
@@ -43,7 +49,6 @@ export type TextbookIDEnum = "genki_1" | "genki_2" | "getting_started"
 
 // A textbook chapter deck with learning paths and resources
 export interface Deck {
-  id: string // e.g., "genki_1_ch1"
   slug: string // e.g., "chapter-1"
   title: string
   description?: string

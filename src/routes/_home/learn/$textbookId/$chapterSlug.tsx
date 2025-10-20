@@ -26,11 +26,11 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
     // Get deck for current chapter
     const deck = getDeckBySlug(textbookId as TextbookIDEnum, chapterSlug)
 
-    // If invalid chapter slug, redirect to chapter-0
+    // If invalid chapter slug, redirect to active chapter
     if (!deck) {
       throw redirect({
         to: "/learn/$textbookId/$chapterSlug",
-        params: { textbookId: "genki_1", chapterSlug: "chapter-0" },
+        params: { textbookId: textbookId as TextbookIDEnum, chapterSlug: userSettings["active-deck"] },
       })
     }
 
@@ -49,7 +49,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       )
 
       if (dbData) {
-        const dbActiveDeck = dbData["active-deck"]
+        const dbActiveDeck = dbData["active-deck"] // This is already a slug
         const dbActiveTextbook = dbData["active-textbook"]
         const cookieTimestamp = userSettings.timestamp || 0
         const dbTimestamp = dbData.timestamp || 0
@@ -119,7 +119,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
 
     return {
       deck,
-      chapterSlug,
       externalResources,
     }
   },

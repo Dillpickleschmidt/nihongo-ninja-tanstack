@@ -1,6 +1,7 @@
 // src/data/utils/core.ts
 // TODO: use server functions for fetching or make functions lazy in other files
 import { textbooks } from "@/data/textbooks"
+import { chapters } from "@/data/chapters"
 import { static_modules } from "@/data/static_modules"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import { external_resources } from "@/data/external_resources"
@@ -24,11 +25,7 @@ export function getDeckBySlug(
   textbookId: TextbookIDEnum,
   deckSlug: string,
 ): BuiltInDeck | undefined {
-  const textbook = textbooks[textbookId]
-  if (!textbook) {
-    return undefined
-  }
-  return textbook.chapters.find((chapter) => chapter.slug === deckSlug)
+  return chapters[textbookId]?.[deckSlug]
 }
 
 /**
@@ -36,18 +33,18 @@ export function getDeckBySlug(
  * @returns Array of module IDs in order across all chapters
  */
 export function getTextbookLearningPath(textbookId: TextbookIDEnum): string[] {
-  const textbook = textbooks[textbookId]
-  if (!textbook) {
-    return []
-  }
-  return textbook.chapters.flatMap((chapter) => chapter.learning_path_items)
+  const textbookChaptersMap = chapters[textbookId]
+  if (!textbookChaptersMap) return []
+  return Object.values(textbookChaptersMap).flatMap(
+    (chapter) => chapter.learning_path_items,
+  )
 }
 
 /* Constructs a minified version of the textbook type
- * Removes learning_path_items from chapter property
+ * Returns chapters as Decks (without learning_path_items)
  * @returns {MinimalTextbook[]} - Array of textbooks with chapters as Decks
  */
-type MinimalTextbook = Omit<Textbook, "chapters"> & {
+type MinimalTextbook = Omit<Textbook, "chapterSlugs"> & {
   chapters: Deck[]
 }
 export function getMinifiedTextbookEntries(): [
@@ -58,10 +55,14 @@ export function getMinifiedTextbookEntries(): [
     textbookId as TextbookIDEnum,
     {
       ...textbook,
-      chapters: textbook.chapters.map(
-        ({ learning_path_items, disabled_modules, ...chapter }) =>
-          chapter as Deck,
-      ),
+      chapters: textbook.chapterSlugs
+        .map((slug) => {
+          const chapter = chapters[textbookId as TextbookIDEnum]?.[slug]
+          if (!chapter) return null
+          const { learning_path_items, disabled_modules, ...deckInfo } = chapter
+          return deckInfo as Deck
+        })
+        .filter((ch): ch is Deck => ch !== null),
     },
   ])
 }
@@ -98,7 +99,11 @@ export function getModules(deck: BuiltInDeck): {
 /**
  * Helper function to create a vocab chapter from a textbook chapter
  */
-function createVocabChapter(chapter: BuiltInDeck): Chapter {
+function createVocabChapter(
+  chapter: BuiltInDeck,
+  textbookId: TextbookIDEnum,
+  chapterSlug: string,
+): Chapter {
   const chapterNumber = parseInt(chapter.slug.split("-").pop()!)
 
   const vocabModules = chapter.learning_path_items
@@ -121,11 +126,22 @@ function createVocabChapter(chapter: BuiltInDeck): Chapter {
   }))
 
   return {
-    id: chapter.id,
+    id: `${textbookId}_${chapterSlug}`,
     number: chapterNumber,
     title: chapter.title,
     decks,
   }
+}
+
+/**
+ * Maps chapter slugs to full chapter objects for a given textbook.
+ */
+export function getTextbookChapters(textbookId: TextbookIDEnum) {
+  const textbook = textbooks[textbookId]
+  if (!textbook) return []
+  const textbookChaptersMap = chapters[textbookId]
+  if (!textbookChaptersMap) return []
+  return textbook.chapterSlugs.map((slug) => textbookChaptersMap[slug])
 }
 
 /**
@@ -137,19 +153,24 @@ export function getVocabPracticeModulesFromTextbooks(): [
 ][] {
   return Object.entries(textbooks)
     .map(([textbookId, textbook]) => {
-      const chapters = textbook.chapters
-        .map((chapter) => createVocabChapter(chapter))
+      const tbId = textbookId as TextbookIDEnum
+      const chapterList = getTextbookChapters(tbId)
+      const chapterVocabs = chapterList
+        .map((chapter, index) => {
+          const slug = textbook.chapterSlugs[index]
+          return createVocabChapter(chapter, tbId, slug)
+        })
         .filter((chapter) => chapter.decks.length > 0)
 
       return [
-        textbookId as TextbookIDEnum,
+        tbId,
         {
           id: textbook.id,
           name: textbook.name,
           short_name: textbook.short_name || textbook.name,
-          chapters,
+          chapters: chapterVocabs,
         },
       ] as [TextbookIDEnum, VocabTextbook]
     })
-    .filter(([, textbook]) => textbook.chapters.length > 0)
+    .filter(([, textbook]) => textbook.chapters && textbook.chapters.length > 0)
 }

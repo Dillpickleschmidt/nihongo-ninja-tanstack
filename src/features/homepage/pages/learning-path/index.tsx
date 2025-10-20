@@ -1,28 +1,39 @@
-import { createSignal } from "solid-js"
+import { createSignal, createEffect } from "solid-js"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { useQueryClient } from "@tanstack/solid-query"
 import { completedModulesQueryOptions } from "@/features/learn-page/query/query-options"
 import type { User } from "@supabase/supabase-js"
+import type { TextbookIDEnum } from "@/data/types"
 import { getChapterContent } from "./utils/getChapterContent"
 import { ChapterHeader } from "./components/ChapterHeader"
 import { ModuleTilesGrid } from "./components/ModuleTilesGrid"
 import { ProgressFooter } from "./components/ProgressFooter"
 
 interface LearningPathPageProps {
-  initialChapterId: string
-  textbookId: string
-  onChapterChange?: (chapterId: string) => void
+  chapterSlug: string
+  textbookId: TextbookIDEnum
+  onChapterChange?: (chapterSlug: string) => void
   user?: User | null
 }
 
 export function LearningPathPage(props: LearningPathPageProps) {
-  const [chapterId, setChapterId] = createSignal<string>(props.initialChapterId)
+  const queryClient = useQueryClient()
+  const [selectedChapterSlug, setSelectedChapterSlug] = createSignal<string>(
+    props.chapterSlug,
+  )
 
-  const handleChapterChange = (newChapterId: string) => {
-    setChapterId(newChapterId)
-    props.onChapterChange?.(newChapterId)
+  // Sync with prop changes from external sources (e.g., Nav2 deck selector)
+  createEffect(() => {
+    setSelectedChapterSlug(props.chapterSlug)
+  })
+
+  const handleChapterChange = (newChapterSlug: string) => {
+    setSelectedChapterSlug(newChapterSlug)
+    props.onChapterChange?.(newChapterSlug)
   }
 
-  const content = () => getChapterContent(props.textbookId, chapterId())
+  const content = () =>
+    getChapterContent(props.textbookId, selectedChapterSlug())
 
   const completedModulesQuery = useCustomQuery(() =>
     completedModulesQueryOptions(props.user?.id || null),
@@ -42,22 +53,25 @@ export function LearningPathPage(props: LearningPathPageProps) {
         heading={content().heading}
         description={content().description}
         features={content().features}
-        chapterId={chapterId()}
+        chapterSlug={selectedChapterSlug()}
+        textbookId={props.textbookId}
         onChapterChange={handleChapterChange}
       />
 
       <ModuleTilesGrid
         tiles={content().tiles}
-        chapterId={chapterId()}
+        chapterSlug={selectedChapterSlug()}
         isModuleCompleted={isModuleCompleted}
         firstIncompleteIndex={getFirstIncompleteIndex()}
       />
 
       <ProgressFooter
-        chapterId={chapterId()}
+        chapterSlug={selectedChapterSlug()}
         textbookId={props.textbookId}
         tiles={content().tiles}
         isModuleCompleted={isModuleCompleted}
+        userId={props.user?.id || null}
+        queryClient={queryClient}
       />
     </section>
   )

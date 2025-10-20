@@ -515,9 +515,12 @@ interface RoadmapLevel {
   links: Array<{ label: string; href: string }>
 }
 
-function RoadmapTimeline(props: { chapterId: string; items: RoadmapLevel[] }) {
-  const levelStyles = getChapterStyles(props.chapterId)
-  const colors = CHAPTER_COLORS[props.chapterId]
+function RoadmapTimeline(props: {
+  chapterSlug: string
+  items: RoadmapLevel[]
+}) {
+  const levelStyles = getChapterStyles(props.chapterSlug)
+  const colors = CHAPTER_COLORS[props.chapterSlug]
 
   const timelineItems: TimelinePropsItem[] = props.items.map((item) => ({
     bullet: undefined,

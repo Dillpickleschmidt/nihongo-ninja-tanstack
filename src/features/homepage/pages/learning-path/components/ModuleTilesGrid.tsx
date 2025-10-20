@@ -5,7 +5,7 @@ import type { ChapterContent } from "../utils/getChapterContent"
 
 interface ModuleTilesGridProps {
   tiles: ChapterContent["tiles"]
-  chapterId: string
+  chapterSlug: string
   isModuleCompleted: (href: string) => boolean
   firstIncompleteIndex: number
 }
@@ -20,7 +20,7 @@ export function ModuleTilesGrid(props: ModuleTilesGridProps) {
               <PreviewTile
                 title={tile.title}
                 description={tile.description}
-                chapterId={props.chapterId}
+                chapterSlug={props.chapterSlug}
                 index={index()}
                 href={tile.href}
                 isCompleted={props.isModuleCompleted(tile.href)}

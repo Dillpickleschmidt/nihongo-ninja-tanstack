@@ -33,6 +33,7 @@ import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeAdditionalResourcesRouteImport } from './routes/_home/additional-resources'
+import { Route as TextbookIdChapterSlugRouteImport } from './routes/$textbookId.$chapterSlug'
 import { Route as HomeLearnIndexRouteImport } from './routes/_home/learn/index'
 import { Route as PracticeUserIDDeckIDRouteImport } from './routes/practice/$userID.$deckID'
 import { Route as LessonsChapter3WordOrderRouteImport } from './routes/lessons/_chapter-3/word-order'
@@ -202,6 +203,11 @@ const HomeAdditionalResourcesRoute = HomeAdditionalResourcesRouteImport.update({
   id: '/additional-resources',
   path: '/additional-resources',
   getParentRoute: () => HomeRoute,
+} as any)
+const TextbookIdChapterSlugRoute = TextbookIdChapterSlugRouteImport.update({
+  id: '/$textbookId/$chapterSlug',
+  path: '/$textbookId/$chapterSlug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const HomeLearnIndexRoute = HomeLearnIndexRouteImport.update({
   id: '/learn/',
@@ -478,6 +484,7 @@ export interface FileRoutesByFullPath {
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
+  '/$textbookId/$chapterSlug': typeof TextbookIdChapterSlugRoute
   '/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
   '/dashboard': typeof HomeDashboardRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
@@ -550,6 +557,7 @@ export interface FileRoutesByTo {
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
+  '/$textbookId/$chapterSlug': typeof TextbookIdChapterSlugRoute
   '/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
   '/dashboard': typeof HomeDashboardRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
@@ -624,6 +632,7 @@ export interface FileRoutesById {
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
+  '/$textbookId/$chapterSlug': typeof TextbookIdChapterSlugRoute
   '/_home/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
   '/_home/dashboard': typeof HomeDashboardRoute
   '/_home/grammar-notes': typeof HomeGrammarNotesRoute
@@ -698,6 +707,7 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
+    | '/$textbookId/$chapterSlug'
     | '/additional-resources'
     | '/dashboard'
     | '/grammar-notes'
@@ -770,6 +780,7 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
+    | '/$textbookId/$chapterSlug'
     | '/additional-resources'
     | '/dashboard'
     | '/grammar-notes'
@@ -843,6 +854,7 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
+    | '/$textbookId/$chapterSlug'
     | '/_home/additional-resources'
     | '/_home/dashboard'
     | '/_home/grammar-notes'
@@ -917,6 +929,7 @@ export interface RootRouteChildren {
   KanjiTestRoute: typeof KanjiTestRoute
   LessonsRoute: typeof LessonsRouteWithChildren
   PricingRoute: typeof PricingRoute
+  TextbookIdChapterSlugRoute: typeof TextbookIdChapterSlugRoute
   ApiUploadOverrideRoute: typeof ApiUploadOverrideRoute
   ExternalResourcesResourceRoute: typeof ExternalResourcesResourceRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
@@ -1100,6 +1113,13 @@ declare module '@tanstack/solid-router' {
       fullPath: '/additional-resources'
       preLoaderRoute: typeof HomeAdditionalResourcesRouteImport
       parentRoute: typeof HomeRoute
+    }
+    '/$textbookId/$chapterSlug': {
+      id: '/$textbookId/$chapterSlug'
+      path: '/$textbookId/$chapterSlug'
+      fullPath: '/$textbookId/$chapterSlug'
+      preLoaderRoute: typeof TextbookIdChapterSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_home/learn/': {
       id: '/_home/learn/'
@@ -1598,6 +1618,7 @@ const rootRouteChildren: RootRouteChildren = {
   KanjiTestRoute: KanjiTestRoute,
   LessonsRoute: LessonsRouteWithChildren,
   PricingRoute: PricingRoute,
+  TextbookIdChapterSlugRoute: TextbookIdChapterSlugRoute,
   ApiUploadOverrideRoute: ApiUploadOverrideRoute,
   ExternalResourcesResourceRoute: ExternalResourcesResourceRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,

@@ -6,7 +6,7 @@ import TryThisSvg from "@/features/homepage/shared/assets/try-this.svg"
 interface PreviewTileProps {
   title: string
   description?: string
-  chapterId: string
+  chapterSlug: string
   index: number
   href: string
   isCompleted: boolean
@@ -14,7 +14,7 @@ interface PreviewTileProps {
 }
 
 export function PreviewTile(props: PreviewTileProps) {
-  const styles = () => getChapterStyles(props.chapterId)
+  const styles = () => getChapterStyles(props.chapterSlug)
   const [isHovered, setIsHovered] = createSignal(false)
 
   const shouldShowStartHere = () =>

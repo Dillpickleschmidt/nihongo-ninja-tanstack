@@ -1,13 +1,15 @@
 import { ChapterPagination } from "./ChapterPagination"
 import { FeatureList } from "./FeatureList"
 import ViewingIsEnough from "@/features/homepage/shared/assets/viewing-is-enough.svg"
+import type { TextbookIDEnum } from "@/data/types"
 
 interface ChapterHeaderProps {
   heading: string | undefined
   description: string | undefined
   features: string[] | undefined
-  chapterId: string
-  onChapterChange?: (chapterId: string) => void
+  chapterSlug: string
+  textbookId: TextbookIDEnum
+  onChapterChange?: (chapterSlug: string) => void
 }
 
 export function ChapterHeader(props: ChapterHeaderProps) {
@@ -16,7 +18,8 @@ export function ChapterHeader(props: ChapterHeaderProps) {
       <div class="mb-4 flex justify-between">
         <h2 class="text-2xl font-semibold md:text-3xl">{props.heading}</h2>
         <ChapterPagination
-          currentChapterId={props.chapterId}
+          currentChapterSlug={props.chapterSlug}
+          textbookId={props.textbookId}
           onChapterChange={props.onChapterChange}
         />
       </div>

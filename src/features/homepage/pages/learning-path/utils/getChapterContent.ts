@@ -1,5 +1,6 @@
-import { textbooks } from "@/data/textbooks"
+import { getDeckBySlug } from "@/data/utils/core"
 import { static_modules } from "@/data/static_modules"
+import type { TextbookIDEnum } from "@/data/types"
 
 interface ModuleTile {
   title: string
@@ -15,11 +16,13 @@ export interface ChapterContent {
 }
 
 export const getChapterContent = (
-  textbookId: string,
-  chapterId: string,
+  textbookId: TextbookIDEnum,
+  chapterSlug: string,
 ): ChapterContent => {
-  const textbook = textbooks[textbookId as keyof typeof textbooks]
-  const chapter = textbook.chapters.find((ch) => ch.id === chapterId)!
+  const chapter = getDeckBySlug(textbookId, chapterSlug)
+  if (!chapter) {
+    throw new Error(`Chapter not found: ${textbookId}/${chapterSlug}`)
+  }
 
   // Build tiles from learning_path_items using static_modules data
   const tiles = chapter.learning_path_items

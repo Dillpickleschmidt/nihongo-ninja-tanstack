@@ -14,7 +14,6 @@ import {
   dueCardsCountQueryOptions,
   completedModulesQueryOptions,
   upcomingModulesQueryOptions,
-  moduleProgressQueryOptions,
   userSessionsQueryOptions,
   userWeekTimeDataQueryOptions,
   seenCardsStatsQueryOptions,

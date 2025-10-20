@@ -1,52 +1,51 @@
 import { Show } from "solid-js"
 import { ChevronLeft, ChevronRight } from "lucide-solid"
 import { getChapterStyles } from "@/data/chapter_colors"
-import { textbooks } from "@/data/textbooks"
+import { getDeckBySlug, getTextbookChapters } from "@/data/utils/core"
+import type { TextbookIDEnum } from "@/data/types"
 
 interface ChapterPaginationProps {
-  currentChapterId: string
-  textbookId?: string
-  onChapterChange?: (chapterId: string) => void
+  currentChapterSlug: string
+  textbookId: TextbookIDEnum
+  onChapterChange?: (chapterSlug: string) => void
 }
 
 export function ChapterPagination(props: ChapterPaginationProps) {
-  const textbookId = () => props.textbookId || "getting_started"
-  const textbook = () => textbooks[textbookId() as keyof typeof textbooks]
+  const textbookId = () => props.textbookId as TextbookIDEnum
+  const textbookChapters = () => getTextbookChapters(textbookId())
 
   const chapterIndex = () => {
-    const tb = textbook()
-    return tb
-      ? tb.chapters.findIndex((ch) => ch.id === props.currentChapterId)
-      : -1
+    return textbookChapters().findIndex(
+      (ch) => ch.slug === props.currentChapterSlug,
+    )
   }
 
   const canGoBack = () => chapterIndex() > 0
   const canGoForward = () => {
-    const tb = textbook()
-    return tb ? chapterIndex() < tb.chapters.length - 1 : false
+    return chapterIndex() < textbookChapters().length - 1
   }
 
   const handlePrevious = () => {
-    const tb = textbook()
-    if (canGoBack() && tb && props.onChapterChange) {
-      props.onChapterChange(tb.chapters[chapterIndex() - 1].id)
+    const chapters = textbookChapters()
+    if (canGoBack() && props.onChapterChange) {
+      const prevChapter = chapters[chapterIndex() - 1]
+      props.onChapterChange(prevChapter.slug)
     }
   }
 
   const handleNext = () => {
-    const tb = textbook()
-    if (canGoForward() && tb && props.onChapterChange) {
-      props.onChapterChange(tb.chapters[chapterIndex() + 1].id)
+    const chapters = textbookChapters()
+    if (canGoForward() && props.onChapterChange) {
+      const nextChapter = chapters[chapterIndex() + 1]
+      props.onChapterChange(nextChapter.slug)
     }
   }
 
-  const styles = () => getChapterStyles(props.currentChapterId)
-  const textbook_data = () => textbook()
-  const chapter = () =>
-    textbook_data()?.chapters.find((ch) => ch.id === props.currentChapterId)
+  const styles = () => getChapterStyles(props.currentChapterSlug)
+  const chapter = () => getDeckBySlug(textbookId(), props.currentChapterSlug)
 
   return (
-    <Show when={props.currentChapterId}>
+    <Show when={props.currentChapterSlug}>
       <div class="flex items-center justify-center gap-3">
         <button
           onClick={handlePrevious}

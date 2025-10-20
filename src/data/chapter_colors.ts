@@ -12,7 +12,7 @@ export interface ChapterStyles {
 
 export const chapterColors: Record<string, ChapterStyles> = {
   // Getting Started - N5 (Emerald)
-  getting_started_n5: {
+  "n5-introduction": {
     textColor: "text-emerald-400",
     ringColor1: "ring-emerald-400/20",
     ringColor2: "ring-emerald-400/30",
@@ -24,7 +24,7 @@ export const chapterColors: Record<string, ChapterStyles> = {
     ringClass: "stroke-emerald-400 [stroke-width:2]",
   },
   // Getting Started - N4 (Sky)
-  getting_started_n4: {
+  "n4-introduction": {
     textColor: "text-sky-400",
     ringColor1: "ring-sky-400/20",
     ringColor2: "ring-sky-400/30",
@@ -36,7 +36,7 @@ export const chapterColors: Record<string, ChapterStyles> = {
     ringClass: "stroke-sky-400 [stroke-width:2]",
   },
   // Getting Started - N3 (Violet)
-  getting_started_n3: {
+  "n3-introduction": {
     textColor: "text-violet-400",
     ringColor1: "ring-violet-400/20",
     ringColor2: "ring-violet-400/30",
@@ -48,7 +48,7 @@ export const chapterColors: Record<string, ChapterStyles> = {
     ringClass: "stroke-violet-400 [stroke-width:2]",
   },
   // Getting Started - N2 (Amber)
-  getting_started_n2: {
+  "n2-introduction": {
     textColor: "text-amber-400",
     ringColor1: "ring-amber-400/20",
     ringColor2: "ring-amber-400/30",
@@ -60,7 +60,7 @@ export const chapterColors: Record<string, ChapterStyles> = {
     ringClass: "stroke-amber-400 [stroke-width:2]",
   },
   // Getting Started - N1 (Rose)
-  getting_started_n1: {
+  "n1-introduction": {
     textColor: "text-rose-400",
     ringColor1: "ring-rose-400/20",
     ringColor2: "ring-rose-400/30",
@@ -73,8 +73,8 @@ export const chapterColors: Record<string, ChapterStyles> = {
   },
 }
 
-export const getChapterStyles = (chapterId: string | null): ChapterStyles => {
-  if (!chapterId) {
+export const getChapterStyles = (chapterSlug: string | null): ChapterStyles => {
+  if (!chapterSlug) {
     return {
       textColor: "text-gray-400",
       ringColor1: "ring-gray-400/20",
@@ -88,7 +88,7 @@ export const getChapterStyles = (chapterId: string | null): ChapterStyles => {
     }
   }
   return (
-    chapterColors[chapterId] || {
+    chapterColors[chapterSlug] || {
       textColor: "text-gray-400",
       ringColor1: "ring-gray-400/20",
       ringColor2: "ring-gray-400/30",
