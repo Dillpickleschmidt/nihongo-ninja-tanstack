@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as LessonsRouteImport } from './routes/lessons'
 import { Route as KanjiTestRouteImport } from './routes/kanji-test'
-import { Route as HomeV2RouteImport } from './routes/home-v2'
 import { Route as GuidesRouteImport } from './routes/guides'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as HomeRouteImport } from './routes/_home'
@@ -95,11 +94,6 @@ const LessonsRoute = LessonsRouteImport.update({
 const KanjiTestRoute = KanjiTestRouteImport.update({
   id: '/kanji-test',
   path: '/kanji-test',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HomeV2Route = HomeV2RouteImport.update({
-  id: '/home-v2',
-  path: '/home-v2',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GuidesRoute = GuidesRouteImport.update({
@@ -481,7 +475,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/guides': typeof GuidesRouteWithChildren
-  '/home-v2': typeof HomeV2Route
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
@@ -554,7 +547,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/guides': typeof GuidesRouteWithChildren
-  '/home-v2': typeof HomeV2Route
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
@@ -629,7 +621,6 @@ export interface FileRoutesById {
   '/_home': typeof HomeRouteWithChildren
   '/auth': typeof AuthRoute
   '/guides': typeof GuidesRouteWithChildren
-  '/home-v2': typeof HomeV2Route
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
@@ -704,7 +695,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/guides'
-    | '/home-v2'
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
@@ -777,7 +767,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/guides'
-    | '/home-v2'
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
@@ -851,7 +840,6 @@ export interface FileRouteTypes {
     | '/_home'
     | '/auth'
     | '/guides'
-    | '/home-v2'
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
@@ -926,7 +914,6 @@ export interface RootRouteChildren {
   HomeRoute: typeof HomeRouteWithChildren
   AuthRoute: typeof AuthRoute
   GuidesRoute: typeof GuidesRouteWithChildren
-  HomeV2Route: typeof HomeV2Route
   KanjiTestRoute: typeof KanjiTestRoute
   LessonsRoute: typeof LessonsRouteWithChildren
   PricingRoute: typeof PricingRoute
@@ -965,13 +952,6 @@ declare module '@tanstack/solid-router' {
       path: '/kanji-test'
       fullPath: '/kanji-test'
       preLoaderRoute: typeof KanjiTestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/home-v2': {
-      id: '/home-v2'
-      path: '/home-v2'
-      fullPath: '/home-v2'
-      preLoaderRoute: typeof HomeV2RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/guides': {
@@ -1615,7 +1595,6 @@ const rootRouteChildren: RootRouteChildren = {
   HomeRoute: HomeRouteWithChildren,
   AuthRoute: AuthRoute,
   GuidesRoute: GuidesRouteWithChildren,
-  HomeV2Route: HomeV2Route,
   KanjiTestRoute: KanjiTestRoute,
   LessonsRoute: LessonsRouteWithChildren,
   PricingRoute: PricingRoute,

@@ -24,10 +24,10 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
-import { BackgroundLayers } from "@/features/homepage-v2/components/BackgroundLayers"
+import { BackgroundLayers } from "@/features/homepage/components/BackgroundLayers"
 import LogoutButton from "@/features/auth/components/Logout"
 import { TableOfContents, type TOCItem } from "@/components/TableOfContents"
-import GoHomeSvg from "@/features/homepage-v2/go-home.svg"
+import GoHomeSvg from "@/features/homepage/go-home.svg"
 
 export const Route = createFileRoute("/guides")({
   loader: async ({ context }) => {
@@ -217,7 +217,7 @@ function RouteComponent() {
       <div class="mb-12 flex w-full justify-center">
         <Button
           as={Link}
-          to="/home-v2"
+          to="/"
           variant="ghost"
           class="bg-background flex h-10 w-40 rounded-xl border p-0 opacity-80 hover:opacity-100 [&_svg]:size-full"
           onClick={() => {}}

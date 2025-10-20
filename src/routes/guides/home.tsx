@@ -14,15 +14,15 @@ import {
   getLevelStyles,
   JLPT_LEVELS,
   type JLPTLevel,
-} from "@/features/homepage-v2/utils/levelStyles"
+} from "@/features/homepage/utils/levelStyles"
 import { Repeat, BookOpen, Sparkles, DollarSign } from "lucide-solid"
-import BestMaterialsRightTimeSvg from "@/features/homepage-v2/best-materials-right-time.svg"
+import BestMaterialsRightTimeSvg from "@/features/homepage/best-materials-right-time.svg"
 
 export const Route = createFileRoute("/guides/home")({
   loader: () => ({
     toc: [
       { id: "how-it-works", title: "What is Nihongo Ninja?" },
-      { id: "first-week", title: "Your first week" },
+      // { id: "first-week", title: "Your first week" },
       { id: "resources", title: "Great resources" },
     ],
   }),
@@ -89,40 +89,27 @@ const PHILOSOPHY_POINTS = [
     ),
   },
   {
-    icon: BookOpen,
-    title: "Practice that actually builds connections",
+    icon: Repeat,
+    title: "Flexible practice that builds connections",
     description: (
       <>
         We use research‑backed spaced repetition like Anki,{" "}
         <span class="font-extrabold">
           but we don't make you live in flashcards.
         </span>{" "}
-        Your activity—writing sentences, conjugating an adjective, watching a
-        show or reading something online—feeds the same memory schedule. You
-        keep learning naturally, while the system quietly tracks what needs
-        review.
+        Your activity—writing, conjugating, watching—feeds the same memory
+        schedule. Already using other tools?{" "}
+        <span class="font-extrabold">
+          Keep them—our system works alongside whatever you prefer,
+        </span>{" "}
+        without locking you in.
       </>
     ),
     bullets: [
-      "Short reviews that reinforce recent exposure",
-      "Written/MC practice that updates the same schedule",
-      "Grammar/vocab strengthened through normal study",
+      "Writing sentences updates your SRS",
+      "Practice vocabulary while consuming content",
+      "Flexible review: flashcards, quizzes, writing, multiple choice",
     ],
-  },
-  {
-    icon: Repeat,
-    title: "Flexible, not locked‑in",
-    description: (
-      <>
-        Already using Anki, WaniKani, or JPDB? Keep them.{" "}
-        <span class="font-extrabold">
-          Our tools are designed to play nicely with the ones you already like.
-        </span>{" "}
-        Or, you can start with us directly if you want a no-hassle setup. You
-        can switch between any later without losing progress or getting trapped
-        in a single workflow.
-      </>
-    ),
   },
 ]
 
@@ -309,7 +296,7 @@ const ROADMAP_BY_LEVEL: Record<
 
 function RouteComponent() {
   const defaultLevel = () => {
-    // TODO: Pass selected level from home-v2 context if available
+    // TODO: Pass selected level from root context if available
     return "N5"
   }
 
@@ -444,80 +431,80 @@ function RouteComponent() {
         </div>
 
         {/* Roadmap Section */}
-        <section
-          id="first-week"
-          aria-labelledby="first-week-heading"
-          class="border-foreground/10 mt-12 border-t pt-12"
-        >
-          <p class="text-muted-foreground mb-8">
-            Each level starts differently—here are some examples of how your
-            path might look.
-          </p>
-
-          <Tabs defaultValue={defaultLevel()}>
-            <TabsList class="mb-6 flex h-auto flex-wrap justify-start gap-3 bg-transparent p-0">
-              <For each={JLPT_LEVELS as unknown as JLPTLevel[]}>
-                {(level) => (
-                  <TabsTrigger
-                    value={level}
-                    class={`text-foreground/80 gap-2 rounded-full border border-white/5 bg-white/5 px-3 py-0.75 text-base backdrop-blur-sm transition-colors hover:border-white/10 hover:bg-white/10 data-[selected]:border-white/15 data-[selected]:bg-white/10 data-[selected]:text-white`}
-                    aria-label={`Show ${level} plan`}
-                  >
-                    <span
-                      class={`${getLevelStyles(level).textColor} inline-block size-2.25 rounded-full bg-current`}
-                      aria-hidden="true"
-                    />
-                    {level}
-                  </TabsTrigger>
-                )}
-              </For>
-            </TabsList>
-
-            <For each={JLPT_LEVELS as unknown as JLPTLevel[]}>
-              {(level) => (
-                <TabsContent value={level}>
-                  <Collapsible defaultOpen={false}>
-                    <CollapsibleTrigger class="w-auto py-1 pr-3 pl-1.5 hover:bg-neutral-400/5">
-                      Show Timeline
-                    </CollapsibleTrigger>
-                    <CollapsibleContent class="mt-4">
-                      <RoadmapTimeline
-                        level={level}
-                        items={ROADMAP_BY_LEVEL[level]}
-                      />
-                    </CollapsibleContent>
-                  </Collapsible>
-                </TabsContent>
-              )}
-            </For>
-          </Tabs>
-        </section>
+        {/* <section */}
+        {/*   id="first-week" */}
+        {/*   aria-labelledby="first-week-heading" */}
+        {/*   class="border-foreground/10 mt-12 border-t pt-12" */}
+        {/* > */}
+        {/*   <p class="text-muted-foreground mb-8"> */}
+        {/*     Each level starts differently—here are some examples of how your */}
+        {/*     path might look. */}
+        {/*   </p> */}
+        {/**/}
+        {/*   <Tabs defaultValue={defaultLevel()}> */}
+        {/*     <TabsList class="mb-6 flex h-auto flex-wrap justify-start gap-3 bg-transparent p-0"> */}
+        {/*       <For each={JLPT_LEVELS as unknown as JLPTLevel[]}> */}
+        {/*         {(level) => ( */}
+        {/*           <TabsTrigger */}
+        {/*             value={level} */}
+        {/*             class={`text-foreground/80 gap-2 rounded-full border border-white/5 bg-white/5 px-3 py-0.75 text-base backdrop-blur-sm transition-colors hover:border-white/10 hover:bg-white/10 data-[selected]:border-white/15 data-[selected]:bg-white/10 data-[selected]:text-white`} */}
+        {/*             aria-label={`Show ${level} plan`} */}
+        {/*           > */}
+        {/*             <span */}
+        {/*               class={`${getLevelStyles(level).textColor} inline-block size-2.25 rounded-full bg-current`} */}
+        {/*               aria-hidden="true" */}
+        {/*             /> */}
+        {/*             {level} */}
+        {/*           </TabsTrigger> */}
+        {/*         )} */}
+        {/*       </For> */}
+        {/*     </TabsList> */}
+        {/**/}
+        {/*     <For each={JLPT_LEVELS as unknown as JLPTLevel[]}> */}
+        {/*       {(level) => ( */}
+        {/*         <TabsContent value={level}> */}
+        {/*           <Collapsible defaultOpen={false}> */}
+        {/*             <CollapsibleTrigger class="w-auto py-1 pr-3 pl-1.5 hover:bg-neutral-400/5"> */}
+        {/*               Show Timeline */}
+        {/*             </CollapsibleTrigger> */}
+        {/*             <CollapsibleContent class="mt-4"> */}
+        {/*               <RoadmapTimeline */}
+        {/*                 level={level} */}
+        {/*                 items={ROADMAP_BY_LEVEL[level]} */}
+        {/*               /> */}
+        {/*             </CollapsibleContent> */}
+        {/*           </Collapsible> */}
+        {/*         </TabsContent> */}
+        {/*       )} */}
+        {/*     </For> */}
+        {/*   </Tabs> */}
+        {/* </section> */}
 
         {/* External Resources Section */}
-        <section
-          id="resources"
-          aria-labelledby="resources-heading"
-          class="border-foreground/10 mt-12 border-t pt-12"
-        >
-          <h2 class="text-lg font-semibold">Find Your Favorite Creators</h2>
-          <p class="text-muted-foreground mt-2 mb-6">
-            We&apos;ve curated a list of great external resources to help you
-            dive deeper into Japanese learning. Whether you&apos;re looking for
-            YouTube channels, websites, or tools, these resources are handpicked
-            to enhance your learning experience.
-          </p>
-          <ExternalResourceIcons />
-          <p class="mt-6">
-            See{" "}
-            <Link
-              to="guides/creator-support"
-              class="text-sky-400 underline-offset-3 hover:underline"
-            >
-              Support The Creators
-            </Link>{" "}
-            for more information.
-          </p>
-        </section>
+        {/* <section */}
+        {/*   id="resources" */}
+        {/*   aria-labelledby="resources-heading" */}
+        {/*   class="border-foreground/10 mt-12 border-t pt-12" */}
+        {/* > */}
+        {/*   <h2 class="text-lg font-semibold">Find Your Favorite Creators</h2> */}
+        {/*   <p class="text-muted-foreground mt-2 mb-6"> */}
+        {/*     We&apos;ve curated a list of great external resources to help you */}
+        {/*     dive deeper into Japanese learning. Whether you&apos;re looking for */}
+        {/*     YouTube channels, websites, or tools, these resources are handpicked */}
+        {/*     to enhance your learning experience. */}
+        {/*   </p> */}
+        {/*   <ExternalResourceIcons /> */}
+        {/*   <p class="mt-6"> */}
+        {/*     See{" "} */}
+        {/*     <Link */}
+        {/*       to="guides/creator-support" */}
+        {/*       class="text-sky-400 underline-offset-3 hover:underline" */}
+        {/*     > */}
+        {/*       Support The Creators */}
+        {/*     </Link>{" "} */}
+        {/*     for more information. */}
+        {/*   </p> */}
+        {/* </section> */}
       </div>
     </div>
   )

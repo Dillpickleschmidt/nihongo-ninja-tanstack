@@ -1,66 +1,83 @@
-// src/routes/index.tsx
-import Nav from "@/features/homepage/Nav"
-import { createFileRoute } from "@tanstack/solid-router"
-
-import Hero from "@/features/homepage/sections/Hero"
-import PreviewGrid from "@/features/homepage/sections/PreviewGrid"
-import FeatureBlocks from "@/features/homepage/sections/FeatureBlocks"
-import Excite from "@/features/homepage/sections/Excite"
+import { createFileRoute, useRouteContext } from "@tanstack/solid-router"
+import { Route as RootRoute } from "@/routes/__root"
+import { createSignal, Switch, Match } from "solid-js"
+import Nav from "@/features/homepage/Nav2"
+import LoginMessage from "@/features/homepage/login-message.svg"
+import { BackgroundLayers } from "@/features/homepage/components/BackgroundLayers"
+import { LevelSelection } from "@/features/homepage/components/LevelSelection"
+import PreviewGrid from "@/features/homepage/components/PreviewGrid"
+import {
+  createSlideWithFadeOutAnimation,
+  createSlideWithFadeInAnimation,
+  prepareElementForEnter,
+} from "@/utils/animations"
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
-  staleTime: Infinity,
 })
 
 function RouteComponent() {
+  const context = useRouteContext({ from: RootRoute.id })
+  const [currentStep, setCurrentStep] = createSignal(1)
+  const [selectedLevel, setSelectedLevel] = createSignal<string | null>(null)
+
+  let stepRef: HTMLDivElement | undefined
+
+  const handleStepTransition = async (nextStep: number, level?: string) => {
+    if (stepRef) {
+      try {
+        // Animate out current step
+        await createSlideWithFadeOutAnimation(stepRef, "up")
+
+        // Store selected level before switching step so PreviewGrid gets the correct prop
+        if (level) {
+          setSelectedLevel(level)
+        }
+
+        // Switch to next step
+        setCurrentStep(nextStep)
+
+        // Wait for next step to mount
+        await new Promise((resolve) => setTimeout(resolve, 50))
+
+        if (stepRef) {
+          // Animate in next step
+          prepareElementForEnter(stepRef, "up", true)
+          await createSlideWithFadeInAnimation(stepRef, "up")
+        }
+      } catch (error) {
+        console.error("Animation error:", error)
+        setCurrentStep(nextStep)
+      }
+    }
+  }
+
+  const handleLevelSelect = (level: string) => {
+    handleStepTransition(2, level)
+  }
+
+  const handleLevelChange = async (level: string) => {
+    setSelectedLevel(level)
+  }
+
   return (
-    <div class="relative min-h-screen">
+    <>
+      <BackgroundLayers />
       <Nav />
-
-      <h2 class="absolute top-20 left-1/2 -translate-x-1/2 text-2xl font-semibold text-red-500">
-        Everything in this page is pre-alpha and will change significantly in
-        the future!
-      </h2>
-
-      <section class="relative">
-        <Hero />
-        <CurveDivider />
-      </section>
-
-      <PreviewGrid />
-
-      <div class="mx-auto max-w-4xl pt-4">
-        <p class="text-muted-foreground text-center text-xs">
-          Nihongo Ninja is not affiliated with any of the listed sources. We
-          only embed videos as per YouTube&apos;s Terms of Service, use public
-          APIs provided by these sites, or provide URLs to visit them. We love
-          these creators and would love to bring more attention to them.
-        </p>
+      <LoginMessage class="fixed top-6 right-24 hidden h-auto w-64 text-neutral-500 md:block" />
+      <div ref={stepRef}>
+        <Switch>
+          <Match when={currentStep() === 1}>
+            <LevelSelection onSelect={handleLevelSelect} />
+          </Match>
+          <Match when={currentStep() === 2}>
+            <PreviewGrid
+              level={selectedLevel()}
+              onLevelChange={handleLevelChange}
+            />
+          </Match>
+        </Switch>
       </div>
-
-      <section class="relative">
-        <FeatureBlocks />
-        <CurveDivider flip />
-      </section>
-
-      <Excite />
-    </div>
-  )
-}
-
-function CurveDivider(props: { flip?: boolean }) {
-  return (
-    <div class="relative">
-      <svg
-        class={`text-muted -mb-1 h-10 w-full ${props.flip ? "rotate-180" : ""}`}
-        preserveAspectRatio="none"
-        viewBox="0 0 1200 120"
-      >
-        <path
-          d="M321.39,56.44C187.9,77.16,81.47,95.22,0,120H1200V0C1071.31,13.21,974.61,35.44,821.69,53.58,655.39,73.44,532.6,40.14,321.39,56.44Z"
-          fill="currentColor"
-        />
-      </svg>
-    </div>
+    </>
   )
 }
