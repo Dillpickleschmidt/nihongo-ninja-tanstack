@@ -9,8 +9,10 @@ interface HomepageProps {
 }
 
 export function HomepagePages(props: HomepageProps) {
-  const [currentPage, setCurrentPage] = createSignal<PageType>(props.initialPage ?? "jlpt")
-  const [selectedLevel, setSelectedLevel] = createSignal<string | null>(null)
+  const [currentPage, setCurrentPage] = createSignal<PageType>(
+    props.initialPage ?? "jlpt",
+  )
+  const [selectedLevel, setSelectedLevel] = createSignal<string>("N5")
 
   const handleLevelSelect = (level: string) => {
     setSelectedLevel(level)

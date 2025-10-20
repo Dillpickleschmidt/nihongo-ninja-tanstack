@@ -11,8 +11,13 @@ import {
   createSlideWithFadeInAnimation,
   prepareElementForEnter,
 } from "@/utils/animations"
+import { completedModulesQueryOptions } from "@/features/learn-page/query/query-options"
 
 export const Route = createFileRoute("/")({
+  loader: async ({ context }) => {
+    const { user, queryClient } = context
+    queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
+  },
   component: RouteComponent,
 })
 
@@ -74,6 +79,7 @@ function RouteComponent() {
             <PreviewGrid
               level={selectedLevel()}
               onLevelChange={handleLevelChange}
+              user={context().user}
             />
           </Match>
         </Switch>

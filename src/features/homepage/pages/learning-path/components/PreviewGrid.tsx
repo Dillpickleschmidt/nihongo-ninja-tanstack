@@ -1,4 +1,4 @@
-import { Show, For } from "solid-js"
+import { Show, For, createSignal } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { ReviewCard } from "@/routes/_home/review"
 import { Button } from "@/components/ui/button"
@@ -6,68 +6,53 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-solid"
 import { getLevelStyles, JLPT_LEVELS } from "../../../shared/utils/levelStyles"
 import { textbooks } from "@/data/textbooks"
 import { static_modules } from "@/data/static_modules"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { completedModulesQueryOptions } from "@/features/learn-page/query/query-options"
+import type { User } from "@supabase/supabase-js"
 
 import StartHereSvg from "@/features/homepage/shared/assets/start-here.svg"
+import TryThisSvg from "@/features/homepage/shared/assets/try-this.svg"
 import ViewingIsEnough from "@/features/homepage/shared/assets/viewing-is-enough.svg"
 import LearnNew from "@/features/homepage/shared/assets/learn-new.svg"
 
 interface PreviewGridProps {
-  level: string | null
+  level: string
   onLevelChange?: (level: string) => void
+  user?: User | null
 }
 
-const getLevelContent = (level: string | null) => {
-  // Get the getting_started textbook
+const CHAPTER_MAP = {
+  N5: "getting_started_n5",
+  N4: "getting_started_n4",
+  N3: "getting_started_n3",
+  N2: "getting_started_n2",
+  N1: "getting_started_n1",
+} as const
+
+const getLevelContent = (level: string) => {
   const gettingStarted = textbooks.getting_started
+  const chapterId = CHAPTER_MAP[level as keyof typeof CHAPTER_MAP]
+  const chapter = gettingStarted.chapters.find((ch) => ch.id === chapterId)!
 
-  // Find the chapter matching the level
-  const chapterMap: Record<string, string> = {
-    N5: "getting_started_n5",
-    N4: "getting_started_n4",
-    N3: "getting_started_n3",
-    N2: "getting_started_n2",
-    N1: "getting_started_n1",
-  }
+  // Build tiles from learning_path_items using static_modules data
+  const tiles = chapter.learning_path_items
+    .map((itemId) => {
+      const module = static_modules[itemId as keyof typeof static_modules]
+      if (!module) return null
 
-  const chapterId = level ? chapterMap[level] : null
-  const chapter = chapterId
-    ? gettingStarted.chapters.find((ch) => ch.id === chapterId)
-    : null
+      return {
+        title: module.title,
+        subtitle: module.description || "",
+        href: "link" in module ? module.link : "#",
+      }
+    })
+    .filter(Boolean)
 
-  if (chapter && chapter.heading && chapter.description && chapter.features) {
-    // Build tiles from learning_path_items using static_modules data
-    const tiles = chapter.learning_path_items
-      .map((itemId) => {
-        const module = static_modules[itemId as keyof typeof static_modules]
-        if (!module) return null
-
-        return {
-          title: module.title,
-          subtitle: module.description || "",
-          href: "link" in module ? module.link : "#",
-        }
-      })
-      .filter((tile) => tile !== null)
-
-    return {
-      heading: chapter.heading,
-      description: chapter.description,
-      features: chapter.features,
-      tiles,
-    }
-  }
-
-  // Fallback for when no level is selected
   return {
-    heading: "Select your level",
-    description:
-      "Choose your Japanese proficiency level to see content tailored specifically for you.",
-    features: [
-      "Personalized resources",
-      "Level-appropriate content",
-      "Clear progression path",
-    ],
-    tiles: [],
+    heading: chapter.heading,
+    description: chapter.description,
+    features: chapter.features,
+    tiles,
   }
 }
 
@@ -126,6 +111,17 @@ function LevelPagination(props: {
 
 export default function PreviewGrid(props: PreviewGridProps) {
   const content = () => getLevelContent(props.level)
+  const completedModulesQuery = useCustomQuery(() =>
+    completedModulesQueryOptions(props.user?.id || null),
+  )
+
+  const isModuleCompleted = (moduleHref: string) =>
+    completedModulesQuery.data?.some(
+      (module) => module.module_path === moduleHref,
+    ) ?? false
+
+  const getFirstIncompleteIndex = () =>
+    content().tiles.findIndex((tile) => !isModuleCompleted(tile.href))
 
   return (
     <section class="mx-auto w-full max-w-7xl px-4 pt-4 pb-24 md:pt-24">
@@ -191,6 +187,9 @@ export default function PreviewGrid(props: PreviewGridProps) {
                   subtitle={tile.subtitle}
                   level={props.level}
                   index={index()}
+                  href={tile.href}
+                  isCompleted={isModuleCompleted(tile.href)}
+                  firstIncompleteIndex={getFirstIncompleteIndex()}
                 />
               </Link>
             )}
@@ -238,12 +237,27 @@ function PreviewTile(props: {
   subtitle: string
   level: string | null
   index: number
+  href: string
+  isCompleted: boolean
+  firstIncompleteIndex: number
 }) {
   const styles = () => getLevelStyles(props.level)
+  const [isHovered, setIsHovered] = createSignal(false)
+
+  const shouldShowStartHere = () =>
+    props.index === props.firstIncompleteIndex && props.index === 0
+  const shouldShowTryThis = () =>
+    props.index === props.firstIncompleteIndex && props.index > 0
 
   return (
     <div
-      class={`bg-background/50 ease-instant-hover-200 rounded-2xl border border-neutral-700/60 p-4 hover:scale-[0.995] hover:ring-2 ${styles().tileRingColor}`}
+      class={`ease-instant-hover-200 rounded-2xl border border-neutral-700/60 p-4 hover:scale-[0.995] ${
+        props.isCompleted
+          ? `bg-gradient-to-br ${styles().gradient} ring-2 ${styles().ringColor2}`
+          : `bg-background/50 ${isHovered() ? `ring-2 ${styles().ringColor1}` : ""}`
+      }`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {/* Preview area */}
       <div class="bg-background mb-3 h-32 rounded-xl md:h-40" />
@@ -254,12 +268,20 @@ function PreviewTile(props: {
           <h3 class="text-lg font-medium">{props.title}</h3>
         </div>
         <div>
-          <Show when={props.index === 0}>
+          <Show when={shouldShowStartHere()}>
             <StartHereSvg class="mr-1 inline-flex h-auto w-32 text-pink-300 saturate-[75%]" />
           </Show>
+          <Show when={shouldShowTryThis()}>
+            <TryThisSvg class="mr-1 inline-flex h-auto w-28 text-[#d3d3d3]" />
+          </Show>
           <span
-            class={`h-auto rounded-lg px-4 py-2 text-sm ${props.index === 0 && "ring"} ${styles().backgroundColor} ${styles().textColor}`}
+            class={`relative h-auto rounded-lg px-4 py-2 text-sm ${styles().bgColor} ${styles().textColor}`}
           >
+            <Show when={props.index === props.firstIncompleteIndex}>
+              <span
+                class={`animate-ring-pulse absolute inset-0 rounded-lg ring ${styles().ringColorBright}`}
+              />
+            </Show>
             Explore
           </span>
         </div>

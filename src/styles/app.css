@@ -253,11 +253,22 @@
     }
   }
 
+  @keyframes ring-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-content-show: content-show 0.2s ease-out;
   --animate-content-hide: content-hide 0.2s ease-out;
   --animate-caret-blink: caret-blink 1.25s ease-out infinite;
+  --animate-ring-pulse: ring-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @utility container {

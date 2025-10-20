@@ -6,9 +6,11 @@ import {
   Outlet,
   useLocation,
   useMatches,
+  useNavigate,
 } from "@tanstack/solid-router"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { useQueryClient, useMutation } from "@tanstack/solid-query"
 import {
   Sidebar,
   SidebarContent,
@@ -28,6 +30,11 @@ import { BackgroundLayers } from "@/features/homepage/shared/components/Backgrou
 import LogoutButton from "@/features/auth/components/Logout"
 import { TableOfContents, type TOCItem } from "@/components/TableOfContents"
 import GoHomeSvg from "@/features/homepage/shared/assets/go-home.svg"
+import {
+  createSession,
+  markModuleCompleted,
+} from "@/features/supabase/db/module-progress"
+import { static_modules } from "@/data/static_modules"
 
 export const Route = createFileRoute("/guides")({
   loader: async ({ context }) => {
@@ -119,9 +126,40 @@ function RouteComponent() {
   const { user } = Route.useLoaderData()()
   const location = useLocation()
   const matches = useMatches()
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(user?.id || null),
   )
+
+  const addCompletionMutation = useMutation(() => ({
+    mutationFn: async ({
+      userId,
+      moduleId,
+      durationSeconds,
+    }: {
+      userId: string
+      moduleId: string
+      durationSeconds: number
+    }) => {
+      // Create session record (time spent)
+      await createSession(userId, moduleId, { durationSeconds })
+      // Mark module as completed
+      return markModuleCompleted(userId, moduleId)
+    },
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData(
+        ["module-progress", variables.userId, "completed"],
+        (old: ModuleProgress[] | undefined) => {
+          const modulePath = data.module_path
+          // If module already in list, return as-is
+          if (old?.some((c) => c.module_path === modulePath)) return old
+          // prepend - most recent first, matching DB sort order
+          return [data, ...(old || [])]
+        },
+      )
+    },
+  }))
 
   const isActive = (href: string) => {
     return location().pathname === href
@@ -132,6 +170,32 @@ function RouteComponent() {
     return (
       (currentMatch?.loaderData as { toc?: TOCItem[] } | undefined)?.toc || []
     )
+  }
+
+  const handleGoHomeClick = (e: Event) => {
+    e.preventDefault()
+
+    const currentPath = location().pathname
+    const moduleId = currentPath
+
+    // Mark as complete with estimated duration if user is logged in
+    if (user && moduleId) {
+      // Look up module in static_modules
+      const module = static_modules[moduleId as keyof typeof static_modules]
+
+      // Get estimated duration (default to 10 minutes = 600 seconds)
+      const estimatedMinutes = module?.daily_prog_amount ?? 10
+      const durationSeconds = estimatedMinutes * 60
+
+      addCompletionMutation.mutate({
+        userId: user.id,
+        moduleId,
+        durationSeconds,
+      })
+    }
+
+    // Navigate home
+    navigate({ to: "/" })
   }
 
   return (
@@ -216,11 +280,9 @@ function RouteComponent() {
       </SidebarProvider>
       <div class="mb-12 flex w-full justify-center">
         <Button
-          as={Link}
-          to="/"
           variant="ghost"
           class="bg-background flex h-10 w-40 rounded-xl border p-0 opacity-80 hover:opacity-100 [&_svg]:size-full"
-          onClick={() => {}}
+          onClick={handleGoHomeClick}
         >
           <GoHomeSvg class="" />
         </Button>
