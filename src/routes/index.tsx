@@ -5,13 +5,21 @@ import Nav from "@/features/homepage/shared/components/Nav2"
 import LoginMessage from "@/features/homepage/shared/assets/login-message.svg"
 import { BackgroundLayers } from "@/features/homepage/shared/components/BackgroundLayers"
 import { LevelSelection } from "@/features/homepage/pages/jlpt/components/LevelSelection"
-import PreviewGrid from "@/features/homepage/pages/learning-path/components/PreviewGrid"
+import { LearningPathPage } from "@/features/homepage/pages/learning-path"
 import {
   createSlideWithFadeOutAnimation,
   createSlideWithFadeInAnimation,
   prepareElementForEnter,
 } from "@/utils/animations"
 import { completedModulesQueryOptions } from "@/features/learn-page/query/query-options"
+
+const LEVEL_TO_CHAPTER_MAP: Record<string, string> = {
+  N5: "getting_started_n5",
+  N4: "getting_started_n4",
+  N3: "getting_started_n3",
+  N2: "getting_started_n2",
+  N1: "getting_started_n1",
+}
 
 export const Route = createFileRoute("/")({
   loader: async ({ context }) => {
@@ -24,7 +32,7 @@ export const Route = createFileRoute("/")({
 function RouteComponent() {
   const context = useRouteContext({ from: RootRoute.id })
   const [currentStep, setCurrentStep] = createSignal(1)
-  const [selectedLevel, setSelectedLevel] = createSignal<string | null>(null)
+  const [selectedChapterId, setSelectedChapterId] = createSignal<string>("getting_started_n5")
 
   let stepRef: HTMLDivElement | undefined
 
@@ -34,9 +42,9 @@ function RouteComponent() {
         // Animate out current step
         await createSlideWithFadeOutAnimation(stepRef, "up")
 
-        // Store selected level before switching step so PreviewGrid gets the correct prop
+        // Store selected chapter before switching step
         if (level) {
-          setSelectedLevel(level)
+          setSelectedChapterId(LEVEL_TO_CHAPTER_MAP[level] || "getting_started_n5")
         }
 
         // Switch to next step
@@ -61,8 +69,8 @@ function RouteComponent() {
     handleStepTransition(2, level)
   }
 
-  const handleLevelChange = async (level: string) => {
-    setSelectedLevel(level)
+  const handleChapterChange = async (chapterId: string) => {
+    setSelectedChapterId(chapterId)
   }
 
   return (
@@ -76,9 +84,10 @@ function RouteComponent() {
             <LevelSelection onSelect={handleLevelSelect} />
           </Match>
           <Match when={currentStep() === 2}>
-            <PreviewGrid
-              level={selectedLevel()}
-              onLevelChange={handleLevelChange}
+            <LearningPathPage
+              initialChapterId={selectedChapterId()}
+              textbookId="getting_started"
+              onChapterChange={handleChapterChange}
               user={context().user}
             />
           </Match>

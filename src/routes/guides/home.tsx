@@ -10,11 +10,7 @@ import {
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
 import ExternalResourceIcons from "@/features/homepage/shared/components/ExternalResourceIcons"
-import {
-  getLevelStyles,
-  JLPT_LEVELS,
-  type JLPTLevel,
-} from "@/features/homepage/shared/utils/levelStyles"
+import { getChapterStyles } from "@/data/chapter_colors"
 import { Repeat, BookOpen, Sparkles, DollarSign } from "lucide-solid"
 import BestMaterialsRightTimeSvg from "@/features/homepage/shared/assets/best-materials-right-time.svg"
 
@@ -31,24 +27,24 @@ export const Route = createFileRoute("/guides/home")({
 
 /* ===== Data ===== */
 
-const LEVEL_COLORS: Record<JLPTLevel, { line: string; bullet: string }> = {
-  N5: {
+const CHAPTER_COLORS: Record<string, { line: string; bullet: string }> = {
+  getting_started_n5: {
     line: "rgba(52, 211, 153, 0.3)",
     bullet: "rgb(52, 211, 153)", // emerald-400
   },
-  N4: {
+  getting_started_n4: {
     line: "rgba(56, 189, 248, 0.3)", // sky-400
     bullet: "rgb(56, 189, 248)",
   },
-  N3: {
+  getting_started_n3: {
     line: "rgba(167, 139, 250, 0.3)", // violet-400
     bullet: "rgb(167, 139, 250)",
   },
-  N2: {
+  getting_started_n2: {
     line: "rgba(251, 191, 36, 0.3)", // amber-400
     bullet: "rgb(251, 191, 36)",
   },
-  N1: {
+  getting_started_n1: {
     line: "rgba(248, 113, 113, 0.3)", // rose-400
     bullet: "rgb(248, 113, 113)",
   },
@@ -113,8 +109,8 @@ const PHILOSOPHY_POINTS = [
   },
 ]
 
-const ROADMAP_BY_LEVEL: Record<
-  JLPTLevel,
+const ROADMAP_BY_CHAPTER: Record<
+  string,
   Array<{
     day: string
     title: string
@@ -122,7 +118,7 @@ const ROADMAP_BY_LEVEL: Record<
     links: Array<{ label: string; href: string }>
   }>
 > = {
-  N5: [
+  getting_started_n5: [
     {
       day: "Days 1–3",
       title: "Master Kana & Numbers",
@@ -185,7 +181,7 @@ const ROADMAP_BY_LEVEL: Record<
       ],
     },
   ],
-  N4: [
+  getting_started_n4: [
     {
       day: "Day 1",
       title: "Conjugation warmup",
@@ -213,7 +209,7 @@ const ROADMAP_BY_LEVEL: Record<
       links: [],
     },
   ],
-  N3: [
+  getting_started_n3: [
     {
       day: "Day 1",
       title: "Pick actual content you enjoy",
@@ -239,7 +235,7 @@ const ROADMAP_BY_LEVEL: Record<
       links: [],
     },
   ],
-  N2: [
+  getting_started_n2: [
     {
       day: "Day 1",
       title: "Choose a series/article arc",
@@ -265,7 +261,7 @@ const ROADMAP_BY_LEVEL: Record<
       links: [],
     },
   ],
-  N1: [
+  getting_started_n1: [
     {
       day: "Day 1–2",
       title: "Deep input in your domain",
@@ -519,9 +515,9 @@ interface RoadmapLevel {
   links: Array<{ label: string; href: string }>
 }
 
-function RoadmapTimeline(props: { level: JLPTLevel; items: RoadmapLevel[] }) {
-  const levelStyles = getLevelStyles(props.level)
-  const colors = LEVEL_COLORS[props.level]
+function RoadmapTimeline(props: { chapterId: string; items: RoadmapLevel[] }) {
+  const levelStyles = getChapterStyles(props.chapterId)
+  const colors = CHAPTER_COLORS[props.chapterId]
 
   const timelineItems: TimelinePropsItem[] = props.items.map((item) => ({
     bullet: undefined,

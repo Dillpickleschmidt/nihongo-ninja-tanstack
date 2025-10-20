@@ -1,8 +1,16 @@
 import { createSignal, For } from "solid-js"
 import { cn } from "@/utils"
 import { SmoothCard } from "@/features/learn-page/components/shared/SmoothCard"
-import { getLevelStyles } from "@/features/homepage/shared/utils/levelStyles"
+import { getChapterStyles } from "@/data/chapter_colors"
 import { WelcomeSection } from "./WelcomeSection"
+
+const LEVEL_TO_CHAPTER_MAP: Record<string, string> = {
+  N5: "getting_started_n5",
+  N4: "getting_started_n4",
+  N3: "getting_started_n3",
+  N2: "getting_started_n2",
+  N1: "getting_started_n1",
+}
 
 interface LevelItem {
   level: string
@@ -48,7 +56,8 @@ function LevelCard(props: {
   onSelect?: (level: string) => void
 }) {
   const [isHovered, setIsHovered] = createSignal(false)
-  const styles = getLevelStyles(props.item.level)
+  const chapterId = LEVEL_TO_CHAPTER_MAP[props.item.level]
+  const styles = getChapterStyles(chapterId)
 
   return (
     <button
