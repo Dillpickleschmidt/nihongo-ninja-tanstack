@@ -62,7 +62,7 @@ function LevelCard(props: {
         height={208}
         cornerRadius={16}
         border={true}
-        borderClass={styles.borderClass}
+        borderClass={styles.svgBorderClass}
         ring={isHovered()}
         ringClass={cn(
           styles.ringClass,

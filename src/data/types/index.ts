@@ -37,7 +37,7 @@ export interface Textbook {
   level: string
   chapters: BuiltInDeck[]
 }
-export type TextbookIDEnum = "genki_1" | "genki_2"
+export type TextbookIDEnum = "genki_1" | "genki_2" | "getting_started"
 
 // --- Deck Types ---
 
@@ -51,6 +51,8 @@ export interface Deck {
 }
 
 export type BuiltInDeck = Deck & {
+  heading?: string
+  features?: string[]
   learning_path_items: string[]
   disabled_modules?: string[] // Module IDs that are disabled
 }
@@ -94,6 +96,7 @@ export interface StaticModule {
     | "reading"
     | "culture-note"
     | "game"
+  description?: string
   daily_prog_amount?: number // Todo: default to 10 minutes
 }
 

@@ -1,6 +1,123 @@
 import type { TextbookCollection } from "./types"
 
 export const textbooks: TextbookCollection = {
+  getting_started: {
+    id: "getting_started",
+    name: "Getting Started with Nihongo Ninja",
+    short_name: "Getting Started",
+    publisher: "Nihongo Ninja",
+    level: "N5",
+    cover_image_url: "/images/textbooks/getting_started_cover.jpg",
+    chapters: [
+      {
+        id: "getting_started_n5",
+        slug: "n5-introduction",
+        title: "N5 Introduction",
+        heading: "Beautiful tools. Engaging content.",
+        description:
+          "Most beginner resources overcomplicate grammar. Finding engaging content at your level feels impossible. We've simplified it: curated YouTube from teachers who actually explain well, clear lessons, and interactive practice from day one. Learn Japanese with great resources from across the web.",
+        features: [
+          "Interactive hiragana & katakana quizzes",
+          "Free lessons ordered to match Genki + curated YouTube videos",
+          "Spaced repetition from the start",
+        ],
+        learning_path_items: [
+          "getting_started",
+          "getting_started_n5_hiragana-quiz",
+          "getting_started_n5_lessons",
+          "getting_started_n5_grammar",
+          "getting_started_n5_vocabulary-practice",
+        ],
+        disabled_modules: [],
+      },
+      {
+        id: "getting_started_n4",
+        slug: "n4-introduction",
+        title: "N4 Introduction",
+        heading: "Learn what you actually care about",
+        description:
+          "You're tired of textbook phrases that nobody actually says. Build vocabulary around what you care about—anime, games, whatever keeps you motivated. Master the conjugations you'll actually hear. When you're ready, the browser extension is already set up and waiting. No PhD in software required.",
+        features: [
+          "Conjugation practice (11 different forms)",
+          "Custom vocabulary decks for your interests",
+          "Grammar + vocabulary spaced repetition",
+        ],
+        learning_path_items: [
+          "getting_started",
+          "getting_started_n4_lessons",
+          "getting_started_n4_grammar",
+          "getting_started_n4_vocabulary-practice",
+          "getting_started_n4_srs-practice",
+          "getting_started_n4_custom-decks",
+          "getting_started_n4_browser-extension",
+        ],
+        disabled_modules: [],
+      },
+      {
+        id: "getting_started_n3",
+        slug: "n3-introduction",
+        title: "N3 Introduction",
+        heading: "Start watching what you love",
+        description:
+          "You're tired of pausing every sentence. Pick the anime or show you've been wanting to watch, and we'll show you exactly what stands between you and understanding it. Not generic lessons—a custom learning path built for that specific content. Grammar becomes your unlock key instead of a chore.",
+        features: [
+          "Generate custom learning paths for any show",
+          "Grammar-focused spaced repetition (unique!)",
+          "Browser extension for sentence-mining with grammar explanations",
+        ],
+        learning_path_items: [
+          "getting_started",
+          "getting_started_n3_learning-paths",
+          "getting_started_n3_browser-extension",
+          "getting_started_n3_srs-practice",
+          "getting_started_n3_sentence-building",
+        ],
+        disabled_modules: [],
+      },
+      {
+        id: "getting_started_n2",
+        slug: "n2-introduction",
+        title: "N2 Introduction",
+        heading: "Pick any content. We'll show you what to learn.",
+        description:
+          "You know what you want to watch next. We'll analyze exactly what you need to learn for it. Already using Anki or WaniKani? Keep using them—import your data, switch platforms anytime. You've outgrown rigid systems. Time for tools that respect how you actually learn.",
+        features: [
+          "Show/movie learning path generator",
+          "Switch between Anki, WaniKani, JPDB anytime",
+          "Import your existing review data",
+        ],
+        learning_path_items: [
+          "getting_started",
+          "getting_started_n2_learning-paths",
+          "getting_started_n2_browser-extension",
+          "getting_started_n2_srs-flexibility",
+          "getting_started_n2_sentence-building",
+        ],
+        disabled_modules: [],
+      },
+      {
+        id: "getting_started_n1",
+        slug: "n1-introduction",
+        title: "N1 Introduction",
+        heading: "Complete toolkit. Complete flexibility.",
+        description:
+          "You're past needing hand-holding. Full dictionary access, every SRS platform connected, the extension's most advanced features, learning paths for any content no matter how niche. The complete toolkit with zero restrictions. Learn what you want, how you want.",
+        features: [
+          "Full dictionary integration (Jotoba + WaniKani)",
+          "All SRS platforms connected seamlessly",
+          "Generate custom kanji practice sheets",
+        ],
+        learning_path_items: [
+          "getting_started",
+          "getting_started_n1_learning-paths",
+          "getting_started_n1_browser-extension",
+          "getting_started_n1_all-srs-platforms",
+        ],
+        disabled_modules: [],
+      },
+    ],
+  },
+
   genki_1: {
     id: "genki_1",
     name: "Genki I: An Integrated Course in Elementary Japanese (3rd Edition)",
