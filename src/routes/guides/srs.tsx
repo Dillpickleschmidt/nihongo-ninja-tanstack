@@ -1,7 +1,7 @@
 // routes/guides/srs.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 
-export const Route = createFileRoute("/_home/guides/srs")({
+export const Route = createFileRoute("/guides/srs")({
   loader: () => ({
     toc: [
       { id: "traditional-srs", title: "Why Traditional SRS Can Feel Limiting" },
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_home/guides/srs")({
 
 function RouteComponent() {
   return (
-    <div class="pt-16 pb-24">
+    <div class="mx-auto max-w-3xl space-y-12 pt-16 pb-24">
       {/* Intro */}
       <header class="text-center">
         <h1 class="mb-4 text-3xl font-bold">Our Spaced Repetition System</h1>

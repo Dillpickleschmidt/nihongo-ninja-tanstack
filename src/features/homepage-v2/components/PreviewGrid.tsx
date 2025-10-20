@@ -24,11 +24,31 @@ const getLevelContent = (level: string | null) => {
           "Spaced repetition from the start",
         ],
         tiles: [
-          { title: "Getting Started", subtitle: "Introduction", href: "/guides/home" },
-          { title: "Hiragana Quiz", subtitle: "Interactive kana", href: "/practice/hiragana-quiz" },
-          { title: "Lessons", subtitle: "Clear explanations", href: "/lessons" },
-          { title: "Grammar", subtitle: "Conjugation Practice", href: "/_home/practice/conjugation" },
-          { title: "Vocabulary Practice", subtitle: "SRS from day 1", href: "/practice/review" },
+          {
+            title: "Getting Started",
+            subtitle: "Introduction",
+            href: "/guides/home",
+          },
+          {
+            title: "Hiragana Quiz",
+            subtitle: "Interactive kana",
+            href: "/practice/hiragana-quiz",
+          },
+          {
+            title: "Lessons",
+            subtitle: "Clear explanations",
+            href: "/lessons",
+          },
+          {
+            title: "Grammar",
+            subtitle: "Conjugation Practice",
+            href: "/practice/conjugation",
+          },
+          {
+            title: "Vocabulary Practice",
+            subtitle: "SRS from day 1",
+            href: "/vocab",
+          },
         ],
       }
     case "N4":
@@ -42,12 +62,36 @@ const getLevelContent = (level: string | null) => {
           "Grammar + vocabulary spaced repetition",
         ],
         tiles: [
-          { title: "Getting Started", subtitle: "Introduction", href: "/guides/home" },
-          { title: "Lessons", subtitle: "Clear explanations", href: "/lessons" },
-          { title: "Grammar", subtitle: "Sentence Practice", href: "/_home/practice/conjugation" },
-          { title: "Vocabulary Practice", subtitle: "SRS from day 1", href: "/practice/review" },
-          { title: "SRS Practice", subtitle: "Grammar + Vocab", href: "/practice/review" },
-          { title: "Custom Decks", subtitle: "Learn what matters", href: "/_home/vocab" },
+          {
+            title: "Getting Started",
+            subtitle: "Introduction",
+            href: "/guides/home",
+          },
+          {
+            title: "Lessons",
+            subtitle: "Clear explanations",
+            href: "/lessons",
+          },
+          {
+            title: "Grammar",
+            subtitle: "Sentence Practice",
+            href: "/_home/practice/conjugation",
+          },
+          {
+            title: "Vocabulary Practice",
+            subtitle: "SRS from day 1",
+            href: "/practice/review",
+          },
+          {
+            title: "SRS Practice",
+            subtitle: "Grammar + Vocab",
+            href: "/practice/review",
+          },
+          {
+            title: "Custom Decks",
+            subtitle: "Learn what matters",
+            href: "/_home/vocab",
+          },
           { title: "Browser Extension", subtitle: "Pre-configured", href: "#" },
         ],
       }
@@ -62,10 +106,22 @@ const getLevelContent = (level: string | null) => {
           "Browser extension for sentence-mining with grammar explanations",
         ],
         tiles: [
-          { title: "Getting Started", subtitle: "Introduction", href: "/guides/home" },
+          {
+            title: "Getting Started",
+            subtitle: "Introduction",
+            href: "/guides/home",
+          },
           { title: "Learning Paths", subtitle: "For any show", href: "#" },
-          { title: "Browser Extension", subtitle: "Mining subtitles", href: "#" },
-          { title: "SRS Practice", subtitle: "Grammar + Vocab", href: "/practice/review" },
+          {
+            title: "Browser Extension",
+            subtitle: "Mining subtitles",
+            href: "#",
+          },
+          {
+            title: "SRS Practice",
+            subtitle: "Grammar + Vocab",
+            href: "/practice/review",
+          },
           { title: "Sentence Building", subtitle: "Grammar", href: "#" },
         ],
       }
@@ -80,9 +136,17 @@ const getLevelContent = (level: string | null) => {
           "Import your existing review data",
         ],
         tiles: [
-          { title: "Getting Started", subtitle: "Introduction", href: "/guides/home" },
+          {
+            title: "Getting Started",
+            subtitle: "Introduction",
+            href: "/guides/home",
+          },
           { title: "Learning Paths", subtitle: "Analyze any show", href: "#" },
-          { title: "Browser Extension", subtitle: "Mining subtitles", href: "#" },
+          {
+            title: "Browser Extension",
+            subtitle: "Mining subtitles",
+            href: "#",
+          },
           { title: "SRS Flexibility", subtitle: "Use any platform", href: "#" },
           { title: "Sentence Building", subtitle: "Grammar", href: "#" },
         ],
@@ -98,9 +162,17 @@ const getLevelContent = (level: string | null) => {
           "Generate custom kanji practice sheets",
         ],
         tiles: [
-          { title: "Getting Started", subtitle: "Introduction", href: "/guides/home" },
+          {
+            title: "Getting Started",
+            subtitle: "Introduction",
+            href: "/guides/home",
+          },
           { title: "Learning Paths", subtitle: "Analyze any show", href: "#" },
-          { title: "Browser Extension", subtitle: "Mining subtitles", href: "#" },
+          {
+            title: "Browser Extension",
+            subtitle: "Mining subtitles",
+            href: "#",
+          },
           { title: "All SRS Platforms", subtitle: "Connected", href: "#" },
         ],
       }
@@ -115,9 +187,21 @@ const getLevelContent = (level: string | null) => {
           "Clear progression path",
         ],
         tiles: [
-          { title: "Getting Started", subtitle: "Introduction", href: "/guides/home" },
-          { title: "Lessons", subtitle: "Structured learning", href: "/lessons" },
-          { title: "Practice", subtitle: "Multiple formats", href: "/practice/review" },
+          {
+            title: "Getting Started",
+            subtitle: "Introduction",
+            href: "/guides/home",
+          },
+          {
+            title: "Lessons",
+            subtitle: "Structured learning",
+            href: "/lessons",
+          },
+          {
+            title: "Practice",
+            subtitle: "Multiple formats",
+            href: "/practice/review",
+          },
           { title: "Resources", subtitle: "Curated content", href: "#" },
           { title: "Tools", subtitle: "Built for you", href: "#" },
         ],

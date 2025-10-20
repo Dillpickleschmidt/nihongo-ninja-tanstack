@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-export const Route = createFileRoute("/_home/guides/comparison")({
+export const Route = createFileRoute("/guides/comparison")({
   loader: () => ({
     toc: [
       { id: "comparison-table", title: "Feature Comparison" },

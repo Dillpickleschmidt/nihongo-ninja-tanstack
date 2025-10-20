@@ -27,8 +27,9 @@ import { Button } from "@/components/ui/button"
 import { BackgroundLayers } from "@/features/homepage-v2/components/BackgroundLayers"
 import LogoutButton from "@/features/auth/components/Logout"
 import { TableOfContents, type TOCItem } from "@/components/TableOfContents"
+import GoHomeSvg from "@/features/homepage-v2/go-home.svg"
 
-export const Route = createFileRoute("/_home/guides")({
+export const Route = createFileRoute("/guides")({
   loader: async ({ context }) => {
     const { user } = context
     return { user }
@@ -80,6 +81,11 @@ const guidesNavigation = [
       //   title: "Grammar Cheatsheets",
       //   href: "/guides/grammar-cheatsheets",
       // },
+      {
+        id: "creator-support",
+        title: "Support the Creators",
+        href: "/guides/creator-support",
+      },
     ],
   },
   {
@@ -131,13 +137,19 @@ function RouteComponent() {
   return (
     <>
       <BackgroundLayers />
-      <SidebarProvider>
+      <SidebarProvider
+        style={{
+          "--sidebar-width": "18rem",
+        }}
+      >
         <Sidebar>
-          <SidebarContent class="bg-background/70 shadow-[2px_0_8px_-2px_rgba(0,0,0,0.05)] backdrop-blur-md dark:shadow-[2px_0_8px_-2px_rgba(0,0,0,0.15)]">
+          <SidebarContent class="bg-background/70 pt-4 pl-3 shadow-[2px_0_8px_-2px_rgba(0,0,0,0.05)] backdrop-blur-md dark:shadow-[2px_0_8px_-2px_rgba(0,0,0,0.15)]">
             <For each={guidesNavigation}>
               {(section) => (
                 <SidebarGroup>
-                  <SidebarGroupLabel>{section.category}</SidebarGroupLabel>
+                  <SidebarGroupLabel class="text-muted-foreground">
+                    {section.category}
+                  </SidebarGroupLabel>
                   <SidebarGroupContent>
                     <SidebarMenu>
                       <For each={section.items}>
@@ -202,6 +214,17 @@ function RouteComponent() {
           </div>
         </SidebarInset>
       </SidebarProvider>
+      <div class="mb-12 flex w-full justify-center">
+        <Button
+          as={Link}
+          to="/home-v2"
+          variant="ghost"
+          class="bg-background flex h-10 w-40 rounded-xl border p-0 opacity-80 hover:opacity-100 [&_svg]:size-full"
+          onClick={() => {}}
+        >
+          <GoHomeSvg class="" />
+        </Button>
+      </div>
     </>
   )
 }

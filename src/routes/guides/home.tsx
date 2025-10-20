@@ -4,18 +4,24 @@ import { Link } from "@tanstack/solid-router"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Timeline, type TimelinePropsItem } from "@/components/ui/timeline"
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/custom/collapsible"
 import ExternalResourceIcons from "@/features/homepage/ExternalResourceIcons"
 import {
   getLevelStyles,
   JLPT_LEVELS,
   type JLPTLevel,
 } from "@/features/homepage-v2/utils/levelStyles"
-import { Lightbulb, Repeat, BookOpen, Sparkles, DollarSign } from "lucide-solid"
+import { Repeat, BookOpen, Sparkles, DollarSign } from "lucide-solid"
+import BestMaterialsRightTimeSvg from "@/features/homepage-v2/best-materials-right-time.svg"
 
-export const Route = createFileRoute("/_home/guides/home")({
+export const Route = createFileRoute("/guides/home")({
   loader: () => ({
     toc: [
-      { id: "how-it-works", title: "How Nihongo Ninja works" },
+      { id: "how-it-works", title: "What is Nihongo Ninja?" },
       { id: "first-week", title: "Your first week" },
       { id: "resources", title: "Great resources" },
     ],
@@ -50,41 +56,20 @@ const LEVEL_COLORS: Record<JLPTLevel, { line: string; bullet: string }> = {
 
 const PHILOSOPHY_POINTS = [
   {
-    icon: Lightbulb,
-    title: "The right resource at the right time",
+    icon: Sparkles,
+    title: "We make it enjoyable",
     description: (
       <>
-        Great teachers and materials already exist.{" "}
+        Learn from content you actually want to watch—not kids' shows or
+        beginner materials.{" "}
         <span class="font-extrabold">
-          Our job is to surface them in a way that matches your level and
-          interests.
+          Set up custom learning paths tailored to the exact episode, movie, or
+          series you care about.
         </span>{" "}
-        If you're new, we focus on clear explanations and comprehensible input.
-        If you're further along, we match you with content that stretches your
-        abilities at just the right pace.
+        We analyze what you need to understand that specific content, so your
+        study time feels purposeful instead of generic.
       </>
     ),
-  },
-  {
-    icon: BookOpen,
-    title: "Practice that actually builds memory",
-    description: (
-      <>
-        We use research‑backed spaced repetition like Anki,{" "}
-        <span class="font-extrabold">
-          but we don't make you live in flashcards.
-        </span>{" "}
-        Your activity—writing sentences, conjugating an adjective, watching a
-        show or reading something online—feeds the same memory schedule. You
-        keep learning naturally, while the system quietly tracks what needs
-        review.
-      </>
-    ),
-    bullets: [
-      "Short reviews that reinforce recent exposure",
-      "Written/MC practice that updates the same schedule",
-      "Grammar/vocab strengthened through normal study",
-    ],
   },
   {
     icon: DollarSign,
@@ -104,6 +89,27 @@ const PHILOSOPHY_POINTS = [
     ),
   },
   {
+    icon: BookOpen,
+    title: "Practice that actually builds connections",
+    description: (
+      <>
+        We use research‑backed spaced repetition like Anki,{" "}
+        <span class="font-extrabold">
+          but we don't make you live in flashcards.
+        </span>{" "}
+        Your activity—writing sentences, conjugating an adjective, watching a
+        show or reading something online—feeds the same memory schedule. You
+        keep learning naturally, while the system quietly tracks what needs
+        review.
+      </>
+    ),
+    bullets: [
+      "Short reviews that reinforce recent exposure",
+      "Written/MC practice that updates the same schedule",
+      "Grammar/vocab strengthened through normal study",
+    ],
+  },
+  {
     icon: Repeat,
     title: "Flexible, not locked‑in",
     description: (
@@ -112,24 +118,9 @@ const PHILOSOPHY_POINTS = [
         <span class="font-extrabold">
           Our tools are designed to play nicely with the ones you already like.
         </span>{" "}
-        You can switch later or mix approaches without losing progress or
-        getting trapped in a single workflow.
-      </>
-    ),
-  },
-  {
-    icon: Sparkles,
-    title: "Make it enjoyable",
-    description: (
-      <>
-        Learn from content you actually want to watch—not kids' shows or
-        beginner materials.{" "}
-        <span class="font-extrabold">
-          Set up custom learning paths tailored to the exact episode, movie, or
-          series you care about.
-        </span>{" "}
-        We analyze what you need to understand that specific content, so your
-        study time feels purposeful instead of generic.
+        Or, you can start with us directly if you want a no-hassle setup. You
+        can switch between any later without losing progress or getting trapped
+        in a single workflow.
       </>
     ),
   },
@@ -146,49 +137,65 @@ const ROADMAP_BY_LEVEL: Record<
 > = {
   N5: [
     {
-      day: "Day 1",
-      title: "Start Hiragana + short quiz",
+      day: "Days 1–3",
+      title: "Master Kana & Numbers",
       details:
-        "Learn the first handful of characters. Keep it short and familiar.",
+        "Learn hiragana and contracted sounds, pass the quiz, then count 0–100. By day 3, you can read and count.",
       links: [
+        { label: "Start Hiragana", href: "/lessons/hiragana" },
         { label: "Hiragana Quiz", href: "/practice/hiragana-quiz" },
-        {
-          label: "Tofugu Hiragana PDF",
-          href: "https://files.tofugu.com/articles/japanese/2022-07-05-learn-hiragana-book-pdf/tofugu-learn-hiragana-book.pdf",
-        },
+        { label: "Numbers 0–100", href: "/lessons/numbers-0-100" },
       ],
     },
     {
-      day: "Day 2",
-      title: "Finish core Hiragana + watch 1 beginner video",
+      day: "Days 4–6",
+      title: "Greetings & Self-Introduction",
       details:
-        "Build comfort reading kana and hear natural Japanese at your level.",
+        "Learn greetings and introduce yourself formally. Master the は and が particles with basic politeness patterns.",
       links: [
+        { label: "Greetings", href: "/lessons/greetings" },
         {
-          label: "Beginner greetings video",
+          label: "Watch native speakers",
           href: "/external-resources/greetings-japanese-super-immersion",
         },
+        { label: "Self-Introductions", href: "/lessons/self-introductions" },
       ],
     },
     {
-      day: "Day 3",
-      title: "Light review + short reading",
+      day: "Days 7–9",
+      title: "Ask About People & Things",
       details:
-        "Do a small review session and read a few lines of very simple text.",
-      links: [{ label: "Start a review", href: "/practice/review" }],
+        "Learn to ask about people, their occupations, and nationalities. Start forming real questions.",
+      links: [
+        { label: "Occupations & Majors", href: "/lessons/occupations-majors" },
+        {
+          label: "Questions with か",
+          href: "/lessons/questions-with-ka",
+        },
+      ],
     },
     {
-      day: "Day 4",
-      title: "Practice kana in context",
-      details: "Sound out simple words, notice patterns (like し=shi, ち=chi).",
-      links: [],
+      day: "Days 10–13",
+      title: "Learn Katakana & More Particles",
+      details: "Master katakana, then learn particles も and negation.",
+      links: [
+        { label: "Start Katakana", href: "/lessons/katakana" },
+        { label: "Katakana Quiz", href: "/practice/katakana-quiz" },
+        { label: "Particles & Negation", href: "/lessons/particles-mo" },
+      ],
     },
     {
-      day: "Day 5–7",
-      title: "Stabilize",
+      day: "Days 14–17",
+      title: "Verbs & What People Do",
       details:
-        "Alternate short reviews with easy input. Keep it light and consistent.",
-      links: [],
+        "Learn verb conjugation (masu form), describe daily activities, and what people do.",
+      links: [
+        { label: "Verb Conjugation", href: "/lessons/verb-conj-masu" },
+        {
+          label: "Practice Conjugation",
+          href: "/practice/conjugation-practice",
+        },
+      ],
     },
   ],
   N4: [
@@ -309,49 +316,94 @@ function RouteComponent() {
   return (
     <div class="mx-auto max-w-4xl pb-24">
       <header class="pt-16 text-center">
-        <h1 class="mb-2 text-3xl font-bold tracking-tight md:text-4xl">
-          How Nihongo Ninja Works
+        <h1 class="mb-3 text-4xl font-bold tracking-tight">
+          What is Nihongo Ninja?
         </h1>
-        <div class="bg-foreground/20 mx-auto mb-5 h-0.5 w-12 rounded" />
-        <p class="text-muted-foreground text-lg md:text-xl">
-          Input-first learning, flexible tools, and practice that builds lasting
-          memory.
+        <div class="mx-auto mb-6 h-1 w-16 rounded bg-pink-300" />
+        <p class="text-muted-foreground mb-6 italic">
+          See why you might love learning Japanese with us.
         </p>
       </header>
 
       <section id="how-it-works" aria-labelledby="how-it-works-heading">
-        <div class="relative mb-10 overflow-hidden rounded-xl border border-white/10 bg-white/3 p-7 shadow-md shadow-black/20 backdrop-blur-md">
-          <div
-            class="pointer-events-none absolute inset-y-0 left-0 w-1.25 rounded-l-xl bg-indigo-400/35"
-            aria-hidden="true"
-          />
-          <p class="text-foreground text-lg leading-normal">
-            Great Japanese resources exist across the web—but they're scattered
-            and hard to find at the right time.
-            <span class="font-semibold text-indigo-300">
-              {" "}
-              We personalize them with our own tools and strategies to support
-              your learning.
-            </span>{" "}
-            We don't profit from the brilliant work already out there—that's why
-            the core learning path stays free.
+        <div class="space-y-4">
+          <p>
+            Nihongo Ninja is both a roadmap and a collection of tools built to
+            aid your Japanese learning journey in a way that you want. It's
+            designed to help anime fans, drama lovers, manga readers, and more
+            to connect with the language through content they enjoy.
           </p>
-        </div>
+          <h1 class="mb-2 pt-4 font-serif text-xl leading-tight tracking-tight sm:text-2xl">
+            <BestMaterialsRightTimeSvg class="h-auto w-[460px] text-[#d3d3d3]" />
+          </h1>
+          <div class="bg-background/20 relative -mt-2 overflow-hidden rounded-xl border border-white/10 p-7 shadow-md backdrop-blur-md">
+            <div
+              class="pointer-events-none absolute inset-y-0 left-0 w-1.25 rounded-l-xl bg-pink-300/70"
+              aria-hidden="true"
+            />
+            <p class="text-foreground text-lg leading-normal">
+              🌷 Great Japanese resources exist across the web—but they're
+              scattered and hard to find at the right time.
+              <span class="font-semibold text-pink-300">
+                {" "}
+                We personalize them with our own tools and strategies to support
+                your learning.
+              </span>{" "}
+              We don't profit from the brilliant work already out there—that's
+              why the core learning path stays free.
+            </p>
+          </div>
 
-        <ul class="space-y-6 pt-6">
+          <p class="text-muted-foreground mt-4 text-sm leading-relaxed sm:text-base">
+            Great teachers and materials already exist.{" "}
+            <span class="font-extrabold">
+              Our job is to bring the good ones to you.
+            </span>{" "}
+            Then, we fill in the gaps and help make content stick—through
+            writing practice, memory reinforcement, and scheduling designed for
+            long-term retention.
+          </p>
+
+          <div class="border-border bg-background relative mx-auto aspect-[16/10] w-full max-w-2xl overflow-hidden rounded-lg border">
+            {/* Video placeholder content */}
+            <div class="flex h-full items-center justify-center">
+              <div class="text-center">
+                <div class="bg-primary/10 mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full">
+                  <svg
+                    class="text-primary h-7 w-7"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+                <p class="text-muted-foreground text-sm">Preview video</p>
+                <p class="text-foreground/80 mt-1 text-xs">See how it works</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="mx-auto max-w-3xl">
+        <p class="pt-12 text-center text-2xl font-semibold">
+          Why should I use Nihongo Ninja?
+        </p>
+
+        <ul class="space-y-6 pt-8">
           <For each={PHILOSOPHY_POINTS}>
             {(point) => (
               <li class="group before:bg-foreground/10 relative pl-6 transition before:absolute before:inset-y-2 before:left-0 before:w-[2px] before:rounded before:content-['']">
                 <div class="mb-2 flex items-center gap-3 text-base">
                   <div class="ring-foreground/10 flex size-8 items-center justify-center rounded-full ring-1">
                     <point.icon
-                      class="size-4 text-indigo-300"
+                      class="size-4 text-emerald-300"
                       aria-hidden="true"
                     />
                   </div>
                   <h3 class="text-lg font-semibold">{point.title}</h3>
                 </div>
-                <p class="text-muted-foreground text-lg leading-relaxed">
+                <p class="text-muted-foreground leading-relaxed">
                   {point.description}
                 </p>
                 {point.bullets && (
@@ -374,7 +426,7 @@ function RouteComponent() {
           <a href="/guides/srs">
             <Button
               variant="ghost"
-              class="text-foreground hover:bg-foreground/5 bg-transparent transition"
+              class="bg-foreground/5 hover:bg-foreground/10"
               aria-label="Learn how our spaced repetition system works"
             >
               How our SRS works
@@ -383,41 +435,36 @@ function RouteComponent() {
           <a href="/guides/comparison">
             <Button
               variant="ghost"
-              class="text-foreground hover:bg-foreground/5 bg-transparent transition"
+              class="bg-foreground/5 hover:bg-foreground/10"
               aria-label="Compare SRS platforms"
             >
               SRS platform comparison
             </Button>
           </a>
         </div>
-      </section>
 
-      {/* Roadmap Section */}
-      <section
-        id="first-week"
-        aria-labelledby="first-week-heading"
-        class="border-foreground/10 mt-12 border-t pt-12"
-      >
-        <h2 id="first-week-heading" class="mb-2 text-3xl font-semibold">
-          Your First Week
-        </h2>
-        <p class="text-muted-foreground mb-8 text-lg">
-          Here's how the philosophy translates to action. Each level starts
-          differently—this shows what a typical first week looks like for you.
-        </p>
+        {/* Roadmap Section */}
+        <section
+          id="first-week"
+          aria-labelledby="first-week-heading"
+          class="border-foreground/10 mt-12 border-t pt-12"
+        >
+          <p class="text-muted-foreground mb-8">
+            Each level starts differently—here are some examples of how your
+            path might look.
+          </p>
 
-        <div class="p-0">
-          <Tabs defaultValue={defaultLevel()} class="w-full">
+          <Tabs defaultValue={defaultLevel()}>
             <TabsList class="mb-6 flex h-auto flex-wrap justify-start gap-3 bg-transparent p-0">
               <For each={JLPT_LEVELS as unknown as JLPTLevel[]}>
                 {(level) => (
                   <TabsTrigger
                     value={level}
-                    class={`text-foreground/80 gap-2 rounded-full border border-white/5 bg-white/5 px-4 py-1.5 text-base backdrop-blur-sm transition-colors hover:border-white/10 hover:bg-white/10 data-[selected]:border-white/15 data-[selected]:bg-white/10 data-[selected]:text-white`}
+                    class={`text-foreground/80 gap-2 rounded-full border border-white/5 bg-white/5 px-3 py-0.75 text-base backdrop-blur-sm transition-colors hover:border-white/10 hover:bg-white/10 data-[selected]:border-white/15 data-[selected]:bg-white/10 data-[selected]:text-white`}
                     aria-label={`Show ${level} plan`}
                   >
                     <span
-                      class={`${getLevelStyles(level).textColor} inline-block size-2.5 rounded-full bg-current`}
+                      class={`${getLevelStyles(level).textColor} inline-block size-2.25 rounded-full bg-current`}
                       aria-hidden="true"
                     />
                     {level}
@@ -429,43 +476,49 @@ function RouteComponent() {
             <For each={JLPT_LEVELS as unknown as JLPTLevel[]}>
               {(level) => (
                 <TabsContent value={level}>
-                  <RoadmapTimeline
-                    level={level}
-                    items={ROADMAP_BY_LEVEL[level]}
-                  />
+                  <Collapsible defaultOpen={false}>
+                    <CollapsibleTrigger class="w-auto py-1 pr-3 pl-1.5 hover:bg-neutral-400/5">
+                      Show Timeline
+                    </CollapsibleTrigger>
+                    <CollapsibleContent class="mt-4">
+                      <RoadmapTimeline
+                        level={level}
+                        items={ROADMAP_BY_LEVEL[level]}
+                      />
+                    </CollapsibleContent>
+                  </Collapsible>
                 </TabsContent>
               )}
             </For>
           </Tabs>
-        </div>
-      </section>
+        </section>
 
-      {/* External Resources Section */}
-      <section
-        id="resources"
-        aria-labelledby="resources-heading"
-        class="border-foreground/10 mt-12 border-t pt-12"
-      >
-        <h2 id="resources-heading" class="mb-2 text-3xl font-semibold">
-          Great Places to Learn
-        </h2>
-        <p class="text-muted-foreground mb-6 text-lg">
-          We highlight and connect the internet's best Japanese teachers.
-        </p>
-
-        <div class="relative overflow-hidden rounded-xl border border-white/5 bg-white/3 p-5 shadow-md shadow-black/20 backdrop-blur-md">
+        {/* External Resources Section */}
+        <section
+          id="resources"
+          aria-labelledby="resources-heading"
+          class="border-foreground/10 mt-12 border-t pt-12"
+        >
+          <h2 class="text-lg font-semibold">Find Your Favorite Creators</h2>
+          <p class="text-muted-foreground mt-2 mb-6">
+            We&apos;ve curated a list of great external resources to help you
+            dive deeper into Japanese learning. Whether you&apos;re looking for
+            YouTube channels, websites, or tools, these resources are handpicked
+            to enhance your learning experience.
+          </p>
           <ExternalResourceIcons />
-        </div>
-        <p class="text-muted-foreground mt-4 text-base">
-          We surface creators known for clarity and quality. Explore them in app
-          or visit their platforms directly when you're ready.
-        </p>
-        <p class="text-muted-foreground mt-4 text-sm">
-          We're not affiliated with listed sources. We embed videos per
-          YouTube's Terms of Service, use public APIs when available, or link
-          directly out. Support these creators—they're excellent.
-        </p>
-      </section>
+          <p class="mt-6">
+            See{" "}
+            <Link
+              to="guides/creator-support"
+              class="text-sky-400 underline-offset-3 hover:underline"
+            >
+              Support The Creators
+            </Link>{" "}
+            for more information.
+          </p>
+        </section>
+      </div>
     </div>
   )
 }
@@ -492,7 +545,7 @@ function RoadmapTimeline(props: { level: JLPTLevel; items: RoadmapLevel[] }) {
       </div>
     ),
     description: (
-      <div class="space-y-2 text-base md:text-lg">
+      <div class="space-y-2 text-base md:text-lg md:leading-6">
         <p>{item.details}</p>
         {item.links.length > 0 && (
           <div class="flex flex-wrap gap-2">
@@ -509,12 +562,11 @@ function RoadmapTimeline(props: { level: JLPTLevel; items: RoadmapLevel[] }) {
                     {link.label}
                   </a>
                 ) : (
-                  <Link to={link.href}>
-                    <a
-                      class={`text-sm ${levelStyles.textColor} underline-offset-2 hover:underline`}
-                    >
-                      {link.label}
-                    </a>
+                  <Link
+                    to={link.href}
+                    class={`text-sm ${levelStyles.textColor} underline-offset-2 hover:underline`}
+                  >
+                    {link.label}
                   </Link>
                 )
               }
