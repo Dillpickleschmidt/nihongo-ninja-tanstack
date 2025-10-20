@@ -1,6 +1,6 @@
 // Nav.tsx
 import { Button } from "@/components/ui/button"
-import ModeToggle from "../navbar/ModeToggle"
+import ModeToggle from "@/features/navbar/ModeToggle"
 import { Link, useLocation } from "@tanstack/solid-router"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 

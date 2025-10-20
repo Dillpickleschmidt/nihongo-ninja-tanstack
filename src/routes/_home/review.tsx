@@ -56,7 +56,7 @@ export const Route = createFileRoute("/_home/review")({
 
 // ————————————————————————————————————————————————————————————————
 
-function ReviewCard(props: {
+export function ReviewCard(props: {
   label: string
   color: "blue" | "green" | "amber"
   dueCount: number | "loading" | "error" | "unavailable"

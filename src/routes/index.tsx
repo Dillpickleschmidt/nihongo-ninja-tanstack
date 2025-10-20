@@ -1,11 +1,11 @@
 import { createFileRoute, useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 import { createSignal, Switch, Match } from "solid-js"
-import Nav from "@/features/homepage/Nav2"
-import LoginMessage from "@/features/homepage/login-message.svg"
-import { BackgroundLayers } from "@/features/homepage/components/BackgroundLayers"
-import { LevelSelection } from "@/features/homepage/components/LevelSelection"
-import PreviewGrid from "@/features/homepage/components/PreviewGrid"
+import Nav from "@/features/homepage/shared/components/Nav2"
+import LoginMessage from "@/features/homepage/shared/assets/login-message.svg"
+import { BackgroundLayers } from "@/features/homepage/shared/components/BackgroundLayers"
+import { LevelSelection } from "@/features/homepage/pages/jlpt/components/LevelSelection"
+import PreviewGrid from "@/features/homepage/pages/learning-path/components/PreviewGrid"
 import {
   createSlideWithFadeOutAnimation,
   createSlideWithFadeInAnimation,

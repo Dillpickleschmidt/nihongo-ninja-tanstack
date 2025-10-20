@@ -1,4 +1,4 @@
-import Nav from "@/features/homepage/Nav"
+import Nav from "@/features/homepage/shared/components/Nav"
 import { createFileRoute } from "@tanstack/solid-router"
 
 export const Route = createFileRoute("/pricing")({

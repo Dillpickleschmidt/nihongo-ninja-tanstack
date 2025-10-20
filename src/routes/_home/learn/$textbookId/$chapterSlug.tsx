@@ -1,6 +1,5 @@
-// routes/_home/learn/$textbookId.$chapterSlug.tsx
+// routes/_home/learn/$textbookId/$chapterSlug.tsx
 import { createFileRoute, redirect } from "@tanstack/solid-router"
-import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import { getDeckBySlug, getModules } from "@/data/utils/core"
 import { vocabHierarchyQueryOptions } from "@/features/learn-page/query/query-options"
 import { resourceThumbnailQueryOptions } from "@/features/learn-page/query/query-options"

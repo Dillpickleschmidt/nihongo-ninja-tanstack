@@ -1,10 +1,12 @@
-import { Button } from "@/components/ui/button"
-import { getLevelStyles, JLPT_LEVELS } from "../utils/levelStyles"
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-solid"
-import StartHereSvg from "../start-here.svg"
-import ViewingIsEnough from "../viewing-is-enough.svg"
 import { Show, For } from "solid-js"
 import { Link } from "@tanstack/solid-router"
+import { ReviewCard } from "@/routes/_home/review"
+import { Button } from "@/components/ui/button"
+import { getLevelStyles, JLPT_LEVELS } from "@/features/homepage/shared/utils/levelStyles"
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-solid"
+import StartHereSvg from "@/features/homepage/shared/assets/start-here.svg"
+import ViewingIsEnough from "@/features/homepage/shared/assets/viewing-is-enough.svg"
+import LearnNew from "@/features/homepage/shared/assets/learn-new.svg"
 
 interface PreviewGridProps {
   level: string | null
@@ -301,61 +303,90 @@ export default function PreviewGrid(props: PreviewGridProps) {
 
   return (
     <section class="mx-auto w-full max-w-7xl px-4 pt-4 pb-24 md:pt-24">
-      <div class="relative overflow-hidden">
-        {/* Content section */}
-        <div class="p-4 md:p-6">
-          <div class="mb-4 flex justify-between">
-            <h2 class="text-2xl font-semibold md:text-3xl">
-              {content().heading}
-            </h2>
-            <LevelPagination
-              currentLevel={props.level}
-              onLevelChange={props.onLevelChange}
-            />
-          </div>
-          <p class="text-muted-foreground mt-4 max-w-3xl">
-            {content().description}
-          </p>
-          <div class="flex w-full justify-between">
-            <FeatureList features={content().features} />
-            <ViewingIsEnough class="-mr-8 -mb-20 h-auto w-68 text-neutral-400" />
-          </div>
+      {/* Review Cards - temporarily shown */}
+      <Show when={false}>
+        <div class="mb-3 flex flex-wrap justify-center gap-8">
+          <ReviewCard
+            label="Meanings"
+            color="blue"
+            dueCount={12}
+            breakdown="8 V · 4 K"
+            onClick={() => console.log("meanings clicked")}
+            variant="desktop"
+          />
+          <ReviewCard
+            label="Spellings"
+            color="green"
+            dueCount={5}
+            onClick={() => console.log("spellings clicked")}
+            variant="desktop"
+          />
+          <ReviewCard
+            label="Grammar"
+            color="amber"
+            dueCount={0}
+            onClick={() => console.log("grammar clicked")}
+            variant="desktop"
+          />
         </div>
+        <div class="-mb-2 flex justify-center">
+          <LearnNew class="h-20 text-[#d3d3d3]" />
+        </div>
+      </Show>
 
-        {/* Preview tiles */}
-        <div class="px-4 pt-2 pb-4 md:px-6 md:pb-6">
-          <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <For each={content().tiles}>
-              {(tile, index) => (
-                <Link to={tile.href}>
-                  <PreviewTile
-                    title={tile.title}
-                    subtitle={tile.subtitle}
-                    level={props.level}
-                    index={index()}
-                  />
-                </Link>
-              )}
-            </For>
-          </div>
+      {/* Content section */}
+      <div class="p-4 md:p-6">
+        <div class="mb-4 flex justify-between">
+          <h2 class="text-2xl font-semibold md:text-3xl">
+            {content().heading}
+          </h2>
+          <LevelPagination
+            currentLevel={props.level}
+            onLevelChange={props.onLevelChange}
+          />
         </div>
+        <p class="text-muted-foreground mt-4 max-w-3xl">
+          {content().description}
+        </p>
+        <div class="flex w-full justify-between">
+          <FeatureList features={content().features} />
+          <ViewingIsEnough class="-mr-8 -mb-20 h-auto w-68 text-neutral-400" />
+        </div>
+      </div>
 
-        <div class="flex w-full flex-col items-center gap-6 pt-6">
-          <p class="text-muted-foreground text-xl font-semibold">
-            <span class={getLevelStyles(props.level).textColor}>2/5</span>{" "}
-            Complete
-          </p>
-          <Link to="/dashboard">
-            <Button
-              class="font-poppins font-semibold"
-              variant="secondary"
-              onClick={() => {}}
-            >
-              See your dashboard
-              <ArrowRight size={16} />
-            </Button>
-          </Link>
+      {/* Preview tiles */}
+      <div class="px-4 pt-2 pb-4 md:px-6 md:pb-6">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <For each={content().tiles}>
+            {(tile, index) => (
+              <Link to={tile.href}>
+                <PreviewTile
+                  title={tile.title}
+                  subtitle={tile.subtitle}
+                  level={props.level}
+                  index={index()}
+                />
+              </Link>
+            )}
+          </For>
         </div>
+      </div>
+
+      <div class="flex w-full flex-col items-center gap-6 pt-6">
+        <p class="text-muted-foreground text-xl font-semibold">
+          <span class={getLevelStyles(props.level).textColor}>2/5</span>{" "}
+          Complete
+        </p>
+        <Link to="/dashboard">
+          <Button
+            class="font-poppins font-semibold"
+            variant="secondary"
+            onClick={() => {}}
+          >
+            See your dashboard
+            <ArrowRight size={16} />
+          </Button>
+        </Link>
       </div>
     </section>
   )

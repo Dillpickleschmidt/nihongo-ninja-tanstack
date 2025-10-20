@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/solid-router"
 import { createSignal, onMount } from "solid-js"
 import { FeaturedToolsSection } from "@/features/dashboard/components/FeaturedToolsSection"
 import { ResourceDirectorySection } from "@/features/dashboard/components/ResourceDirectorySection"
-import Nav from "@/features/homepage/Nav"
+import Nav from "@/features/homepage/shared/components/Nav"
 import { useTour } from "@/features/guided-tour/TourContext"
 
 export const Route = createFileRoute("/_home/dashboard")({

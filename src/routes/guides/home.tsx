@@ -9,14 +9,14 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
-import ExternalResourceIcons from "@/features/homepage/ExternalResourceIcons"
+import ExternalResourceIcons from "@/features/homepage/shared/components/ExternalResourceIcons"
 import {
   getLevelStyles,
   JLPT_LEVELS,
   type JLPTLevel,
-} from "@/features/homepage/utils/levelStyles"
+} from "@/features/homepage/shared/utils/levelStyles"
 import { Repeat, BookOpen, Sparkles, DollarSign } from "lucide-solid"
-import BestMaterialsRightTimeSvg from "@/features/homepage/best-materials-right-time.svg"
+import BestMaterialsRightTimeSvg from "@/features/homepage/shared/assets/best-materials-right-time.svg"
 
 export const Route = createFileRoute("/guides/home")({
   loader: () => ({

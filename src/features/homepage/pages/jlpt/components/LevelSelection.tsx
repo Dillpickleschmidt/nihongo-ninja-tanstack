@@ -1,7 +1,7 @@
 import { createSignal, For } from "solid-js"
 import { cn } from "@/utils"
 import { SmoothCard } from "@/features/learn-page/components/shared/SmoothCard"
-import { getLevelStyles } from "../utils/levelStyles"
+import { getLevelStyles } from "@/features/homepage/shared/utils/levelStyles"
 import { WelcomeSection } from "./WelcomeSection"
 
 interface LevelItem {

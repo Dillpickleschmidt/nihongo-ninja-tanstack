@@ -24,10 +24,10 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
-import { BackgroundLayers } from "@/features/homepage/components/BackgroundLayers"
+import { BackgroundLayers } from "@/features/homepage/shared/components/BackgroundLayers"
 import LogoutButton from "@/features/auth/components/Logout"
 import { TableOfContents, type TOCItem } from "@/components/TableOfContents"
-import GoHomeSvg from "@/features/homepage/go-home.svg"
+import GoHomeSvg from "@/features/homepage/shared/assets/go-home.svg"
 
 export const Route = createFileRoute("/guides")({
   loader: async ({ context }) => {
