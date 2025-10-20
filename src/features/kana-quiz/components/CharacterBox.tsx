@@ -30,6 +30,8 @@ export default function CharacterBox(props: CharacterBoxProps) {
       height={195}
       cornerRadius={20}
       cornerSmoothing={1}
+      border={true}
+      borderClass="stroke-neutral-400/35 [stroke-width:0.75]"
       class={`flex flex-col items-center justify-center ${getBackground()} p-4 shadow-md backdrop-blur-sm transition-all duration-200`}
     >
       {/* Kana character */}
