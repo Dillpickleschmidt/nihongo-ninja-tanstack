@@ -39,7 +39,7 @@ export const Route = createFileRoute("/api/auth/login")({
         // Cookies are automatically set by the Supabase backend client via setAll()
         return new Response(null, {
           status: 302,
-          headers: [["Location", "/dashboard"]],
+          headers: [["Location", "/"]],
         })
       },
     },
