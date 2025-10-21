@@ -94,6 +94,7 @@ async function syncUserSettingsToDb(
         "service-preferences": settings["service-preferences"],
         "active-textbook": settings["active-textbook"],
         "active-deck": settings["active-deck"],
+        "has-completed-onboarding": settings["has-completed-onboarding"],
         "completed-tours": settings["completed-tours"],
         "override-settings": settings["override-settings"],
         "conjugation-practice": settings["conjugation-practice"],

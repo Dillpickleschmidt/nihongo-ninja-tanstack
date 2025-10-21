@@ -29,20 +29,17 @@ type ContentBoxProps = {
   user?: User | null
 }
 
-export const contentBoxVariants = cva(
-  "w-full min-h-screen relative bg-background/60",
-  {
-    variants: {
-      size: {
-        default: "max-w-4xl ",
-        lg: "",
-      },
-    },
-    defaultVariants: {
-      size: "default",
+export const contentBoxVariants = cva("w-full relative", {
+  variants: {
+    size: {
+      default: "max-w-4xl",
+      lg: "max-w-6xl md:max-w-7xl",
     },
   },
-)
+  defaultVariants: {
+    size: "default",
+  },
+})
 
 export default function ContentBox(props: ContentBoxProps) {
   const location = useLocation()
@@ -94,7 +91,8 @@ export default function ContentBox(props: ContentBoxProps) {
 
   const isVisible = () =>
     location().pathname.startsWith("/lessons/") ||
-    location().pathname.startsWith("/external-resources/")
+    location().pathname.startsWith("/external-resources/") ||
+    location().pathname === "/guides/home"
 
   const handleCompleteClick = (e: Event) => {
     e.preventDefault()

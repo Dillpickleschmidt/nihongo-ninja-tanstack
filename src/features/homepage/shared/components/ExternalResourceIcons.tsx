@@ -5,11 +5,13 @@ import {
 import { RESOURCE_CONFIGS } from "@/data/resources-config"
 
 export default function ExternalResourceIcons() {
-  const avatarItems: AvatarGroupItem[] = RESOURCE_CONFIGS.map((config) => ({
-    src: config.profile_img,
-    fallback: config.fallback,
-    notes_internal: config.name,
-  }))
+  const avatarItems: AvatarGroupItem[] = Object.values(RESOURCE_CONFIGS).map(
+    (config) => ({
+      src: config.profile_img,
+      fallback: config.fallback,
+      notes_internal: config.creator_name,
+    })
+  )
 
   return (
     <div>

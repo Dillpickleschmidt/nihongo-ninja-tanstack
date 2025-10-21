@@ -1,4 +1,6 @@
 import { createSignal } from "solid-js"
+import { useNavigate } from "@tanstack/solid-router"
+import { useQueryClient } from "@tanstack/solid-query"
 import { useLearnPageContext } from "../../context/LearnPageContext"
 import { HeroDailyProgress } from "../content/HeroDailyProgress"
 import { ProgressSummary } from "../content/ProgressSummary"
@@ -13,6 +15,8 @@ import type { TextbookIDEnum } from "@/data/types"
 
 function CenterColumn() {
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const context = useLearnPageContext()
 
   const activeTextbookId = () =>
@@ -20,6 +24,16 @@ function CenterColumn() {
   const activeChapterSlug = () => context.settingsQuery.data!["active-deck"]
   const activeDeck = () =>
     getDeckBySlug(activeTextbookId(), activeChapterSlug())
+
+  const handleDeckSelect = (textbookId: TextbookIDEnum, deckSlug: string) => {
+    const deck = getDeckBySlug(textbookId, deckSlug)
+    if (deck) {
+      navigate({
+        to: "/learn/$textbookId/$chapterSlug",
+        params: { textbookId, chapterSlug: deckSlug },
+      })
+    }
+  }
 
   const variant = () =>
     context.settingsQuery.data!["device-type"] === "mobile"
@@ -37,6 +51,9 @@ function CenterColumn() {
                 <DeckSelectionPopover
                   activeTextbookId={activeTextbookId()}
                   activeDeck={activeDeck()!}
+                  queryClient={queryClient}
+                  userId={context.userId}
+                  onDeckSelect={handleDeckSelect}
                   isOpen={isPopoverOpen()}
                   onOpenChange={setIsPopoverOpen}
                 >

@@ -9,7 +9,12 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-export const Route = createFileRoute("/_home/guides/comparison")({
+export const Route = createFileRoute("/guides/comparison")({
+  loader: () => ({
+    toc: [
+      { id: "comparison-table", title: "Feature Comparison" },
+    ],
+  }),
   component: RouteComponent,
 })
 
@@ -26,7 +31,7 @@ function RouteComponent() {
       </header>
 
       {/* Comparison Table */}
-      <section class="mx-auto max-w-4xl">
+      <section id="comparison-table" class="mx-auto max-w-4xl">
         {/* Clarification Note */}
         <div class="bg-muted/50 mb-6 rounded-lg border p-4">
           <p class="text-muted-foreground text-base">

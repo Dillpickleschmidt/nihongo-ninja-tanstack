@@ -1,66 +1,184 @@
-// src/routes/index.tsx
-import Nav from "@/features/homepage/Nav"
-import { createFileRoute } from "@tanstack/solid-router"
+import {
+  createFileRoute,
+  useRouteContext,
+  useMatchRoute,
+  useRouterState,
+} from "@tanstack/solid-router"
+import { Route as RootRoute } from "@/routes/__root"
+import { createSignal, Show, createEffect } from "solid-js"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { useQueryClient } from "@tanstack/solid-query"
+import {
+  userSettingsQueryOptions,
+  applyUserSettingsUpdate,
+} from "@/features/main-cookies/query/query-options"
+import { BackgroundLayers } from "@/features/homepage/shared/components/BackgroundLayers"
+import Nav from "@/features/homepage/shared/components/Nav2"
+import LoginMessage from "@/features/homepage/shared/assets/login-message.svg"
+import { JlptPage } from "@/features/homepage/pages/jlpt"
+import { LearningPathPage } from "@/features/homepage/pages/learning-path"
+import {
+  createSlideWithFadeOutAnimation,
+  createSlideWithFadeInAnimation,
+  prepareElementForEnter,
+} from "@/utils/animations"
+import { completedModulesQueryOptions } from "@/features/learn-page/query/query-options"
 
-import Hero from "@/features/homepage/sections/Hero"
-import PreviewGrid from "@/features/homepage/sections/PreviewGrid"
-import FeatureBlocks from "@/features/homepage/sections/FeatureBlocks"
-import Excite from "@/features/homepage/sections/Excite"
+// Map JLPT levels to chapter slugs
+const LEVEL_TO_CHAPTER_MAP: Record<string, string> = {
+  N5: "n5-introduction",
+  N4: "n4-introduction",
+  N3: "n3-introduction",
+  N2: "n2-introduction",
+  N1: "n1-introduction",
+}
 
 export const Route = createFileRoute("/")({
+  loader: async ({ context }) => {
+    const { user, queryClient } = context
+
+    // Get user settings
+    await queryClient.ensureQueryData(
+      userSettingsQueryOptions(user?.id || null),
+    )
+
+    queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
+  },
   component: RouteComponent,
-  staleTime: Infinity,
 })
 
 function RouteComponent() {
-  return (
-    <div class="relative min-h-screen">
-      <Nav />
+  const context = useRouteContext({ from: RootRoute.id })
+  const queryClient = useQueryClient()
+  const matchRoute = useMatchRoute()
+  const routerState = useRouterState()
+  const [showLearningPath, setShowLearningPath] = createSignal(false)
+  const [isNavigating, setIsNavigating] = createSignal(false)
 
-      <h2 class="absolute top-20 left-1/2 -translate-x-1/2 text-2xl font-semibold text-red-500">
-        Everything in this page is pre-alpha and will change significantly in
-        the future!
-      </h2>
+  let stepRef: HTMLDivElement | undefined
+  let learningPathRef: HTMLDivElement | undefined
 
-      <section class="relative">
-        <Hero />
-        <CurveDivider />
-      </section>
-
-      <PreviewGrid />
-
-      <div class="mx-auto max-w-4xl pt-4">
-        <p class="text-muted-foreground text-center text-xs">
-          Nihongo Ninja is not affiliated with any of the listed sources. We
-          only embed videos as per YouTube&apos;s Terms of Service, use public
-          APIs provided by these sites, or provide URLs to visit them. We love
-          these creators and would love to bring more attention to them.
-        </p>
-      </div>
-
-      <section class="relative">
-        <FeatureBlocks />
-        <CurveDivider flip />
-      </section>
-
-      <Excite />
-    </div>
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(context().user?.id || null),
   )
-}
 
-function CurveDivider(props: { flip?: boolean }) {
+  createEffect(() => {
+    routerState()
+    // Only clear the flag when navigating AND no longer on the "/" route
+    if (isNavigating() && !matchRoute({ to: "/" })) {
+      setIsNavigating(false)
+    }
+  })
+
+  const handleLevelSelect = async (level: string) => {
+    const newChapterSlug = LEVEL_TO_CHAPTER_MAP[level] || "n5-introduction"
+
+    if (stepRef) {
+      try {
+        await createSlideWithFadeOutAnimation(stepRef, "up")
+
+        await applyUserSettingsUpdate(
+          context().user?.id || null,
+          queryClient,
+          {
+            "active-textbook": "getting_started",
+            "active-deck": newChapterSlug,
+            "has-completed-onboarding": true,
+          },
+          { awaitDb: false },
+        )
+
+        setShowLearningPath(true)
+        await new Promise((resolve) => requestAnimationFrame(resolve))
+        prepareElementForEnter(stepRef, "up", true)
+        await createSlideWithFadeInAnimation(stepRef, "up")
+      } catch (error) {
+        console.error("Animation error:", error)
+        setShowLearningPath(true)
+      }
+    }
+  }
+
+  const handleChapterChange = async (chapterSlug: string) => {
+    await applyUserSettingsUpdate(
+      context().user?.id || null,
+      queryClient,
+      {
+        "active-deck": chapterSlug,
+      },
+      { awaitDb: false },
+    )
+  }
+
+  const handleBack = async () => {
+    if (learningPathRef) {
+      try {
+        await createSlideWithFadeOutAnimation(learningPathRef, "down")
+
+        await applyUserSettingsUpdate(
+          context().user?.id || null,
+          queryClient,
+          {
+            "has-completed-onboarding": false,
+          },
+          { awaitDb: false },
+        )
+
+        setShowLearningPath(false)
+        await new Promise((resolve) => requestAnimationFrame(resolve))
+        prepareElementForEnter(stepRef, "down", true)
+        await createSlideWithFadeInAnimation(stepRef, "down")
+      } catch (error) {
+        console.error("Animation error:", error)
+        setShowLearningPath(false)
+      }
+    }
+  }
+
   return (
-    <div class="relative">
-      <svg
-        class={`text-muted -mb-1 h-10 w-full ${props.flip ? "rotate-180" : ""}`}
-        preserveAspectRatio="none"
-        viewBox="0 0 1200 120"
+    <>
+      <BackgroundLayers />
+      <Nav />
+      <Show when={!context().user}>
+        <LoginMessage class="fixed top-6 right-24 hidden h-auto w-64 text-neutral-500 md:block" />
+      </Show>
+      <Show
+        when={!settingsQuery.data?.["has-completed-onboarding"]}
+        fallback={
+          <div ref={learningPathRef}>
+            <LearningPathPage
+              settingsQuery={settingsQuery}
+              onChapterChange={handleChapterChange}
+              onBack={
+                settingsQuery.data?.["active-textbook"] === "getting_started"
+                  ? handleBack
+                  : undefined
+              }
+              user={context().user}
+              isNavigating={isNavigating()}
+              onNavigationStart={() => setIsNavigating(true)}
+            />
+          </div>
+        }
       >
-        <path
-          d="M321.39,56.44C187.9,77.16,81.47,95.22,0,120H1200V0C1071.31,13.21,974.61,35.44,821.69,53.58,655.39,73.44,532.6,40.14,321.39,56.44Z"
-          fill="currentColor"
-        />
-      </svg>
-    </div>
+        <div ref={stepRef}>
+          <Show
+            when={showLearningPath()}
+            fallback={<JlptPage onLevelSelect={handleLevelSelect} />}
+          >
+            <div ref={learningPathRef}>
+              <LearningPathPage
+                settingsQuery={settingsQuery}
+                onChapterChange={handleChapterChange}
+                onBack={handleBack}
+                user={context().user}
+                isNavigating={isNavigating()}
+                onNavigationStart={() => setIsNavigating(true)}
+              />
+            </div>
+          </Show>
+        </div>
+      </Show>
+    </>
   )
 }

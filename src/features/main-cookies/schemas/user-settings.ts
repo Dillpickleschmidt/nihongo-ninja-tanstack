@@ -25,7 +25,9 @@ const ServicePreferencesSchema = z.object({
 // TEXTBOOK & DECK SETTINGS (user-specific, syncs to DB)
 // ============================================================================
 
-const TextbookIDSchema = z.enum(["genki_1", "genki_2"]).or(z.string().length(0))
+const TextbookIDSchema = z
+  .enum(["getting_started", "genki_1", "genki_2"])
+  .or(z.string().length(0))
 
 // ============================================================================
 // STACK OVERRIDE SETTINGS (user-specific, syncs to DB)
@@ -114,8 +116,9 @@ export const UserSettingsSchema = z.object({
   "service-preferences": ServicePreferencesSchema.default(
     ServicePreferencesSchema.parse({}),
   ),
-  "active-textbook": TextbookIDSchema.default("genki_1"),
-  "active-deck": z.string().max(20).default("chapter-0"),
+  "active-textbook": TextbookIDSchema.default("getting_started"),
+  "active-deck": z.string().max(20).default("n5-introduction"),
+  "has-completed-onboarding": z.boolean().default(false),
   "completed-tours": z.array(z.string()).default([]),
   "override-settings": OverrideSettingsSchema.default({
     vocabularyOverrides: DEFAULT_VOCABULARY_STACKS,

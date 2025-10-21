@@ -1,6 +1,7 @@
 // features/learn-page/components/layout/LearnPageHeader.tsx
 import { Link, useNavigate } from "@tanstack/solid-router"
 import { createSignal, Show } from "solid-js"
+import { useQueryClient } from "@tanstack/solid-query"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Sheet,
@@ -28,6 +29,7 @@ interface LearnPageHeaderProps {
 
 export function LearnPageHeader(props: LearnPageHeaderProps) {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const context = useLearnPageContext()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
 
@@ -37,25 +39,14 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
   const activeDeck = () =>
     getDeckBySlug(activeTextbookId(), activeChapterSlug())
 
-  const handleDeckChange = async (
-    textbookId: string,
-    deck: { slug: string; title: string },
-  ) => {
-    try {
-      // Then navigate to new route
+  const handleDeckSelect = (textbookId: TextbookIDEnum, deckSlug: string) => {
+    const deck = getDeckBySlug(textbookId, deckSlug)
+    if (deck) {
       navigate({
         to: "/learn/$textbookId/$chapterSlug",
-        params: { textbookId, chapterSlug: deck.slug },
-      })
-    } catch (error) {
-      console.error("Failed to update preferences:", error)
-      // Still navigate even if preference update fails
-      navigate({
-        to: "/learn/$textbookId/$chapterSlug",
-        params: { textbookId, chapterSlug: deck.slug },
+        params: { textbookId, chapterSlug: deckSlug },
       })
     }
-    setIsPopoverOpen(false)
   }
 
   return (
@@ -72,7 +63,9 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
             <DeckSelectionPopover
               activeTextbookId={activeTextbookId()}
               activeDeck={activeDeck()!}
-              onDeckChange={handleDeckChange}
+              queryClient={queryClient}
+              userId={context.userId}
+              onDeckSelect={handleDeckSelect}
               isOpen={isPopoverOpen()}
               onOpenChange={setIsPopoverOpen}
               popoverWidth="w-[350px]"

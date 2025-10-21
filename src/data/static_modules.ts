@@ -1,6 +1,150 @@
 import type { StaticModuleCollection } from "./types"
 
 export const static_modules: StaticModuleCollection = {
+  getting_started: {
+    title: "Getting Started",
+    link: "/guides/home",
+    lesson_type: "lesson",
+    description: "Introduction",
+  },
+
+  // Getting Started N5 Modules
+  "getting_started_n5_hiragana-quiz": {
+    title: "Hiragana Quiz",
+    link: "/practice/hiragana-quiz",
+    lesson_type: "lesson",
+    description: "Interactive kana",
+  },
+  getting_started_n5_lessons: {
+    title: "Lessons",
+    link: "/lessons",
+    lesson_type: "lesson",
+    description: "Clear explanations",
+  },
+  getting_started_n5_grammar: {
+    title: "Grammar",
+    link: "/practice/conjugation",
+    lesson_type: "lesson",
+    description: "Conjugation Practice",
+  },
+  "getting_started_n5_vocabulary-practice": {
+    title: "Vocabulary Practice",
+    link: "/vocab",
+    lesson_type: "lesson",
+    description: "SRS from day 1",
+  },
+
+  // Getting Started N4 Modules
+  getting_started_n4_lessons: {
+    title: "Lessons",
+    link: "/lessons",
+    lesson_type: "lesson",
+    description: "Clear explanations",
+  },
+  getting_started_n4_grammar: {
+    title: "Grammar",
+    link: "/_home/practice/conjugation",
+    lesson_type: "lesson",
+    description: "Sentence Practice",
+  },
+  "getting_started_n4_vocabulary-practice": {
+    title: "Vocabulary Practice",
+    link: "/practice/review",
+    lesson_type: "lesson",
+    description: "SRS from day 1",
+  },
+  "getting_started_n4_srs-practice": {
+    title: "SRS Practice",
+    link: "/practice/review",
+    lesson_type: "lesson",
+    description: "Grammar + Vocab",
+  },
+  "getting_started_n4_custom-decks": {
+    title: "Custom Decks",
+    link: "/_home/vocab",
+    lesson_type: "lesson",
+    description: "Learn what matters",
+  },
+  "getting_started_n4_browser-extension": {
+    title: "Browser Extension",
+    link: "#",
+    lesson_type: "lesson",
+    description: "Pre-configured",
+  },
+
+  // Getting Started N3 Modules
+  "getting_started_n3_learning-paths": {
+    title: "Learning Paths",
+    link: "#",
+    lesson_type: "lesson",
+    description: "For any show",
+  },
+  "getting_started_n3_browser-extension": {
+    title: "Browser Extension",
+    link: "#",
+    lesson_type: "lesson",
+    description: "Mining subtitles",
+  },
+  "getting_started_n3_srs-practice": {
+    title: "SRS Practice",
+    link: "/practice/review",
+    lesson_type: "lesson",
+    description: "Grammar + Vocab",
+  },
+  "getting_started_n3_sentence-building": {
+    title: "Sentence Building",
+    link: "#",
+    lesson_type: "lesson",
+    description: "Grammar",
+  },
+
+  // Getting Started N2 Modules
+  "getting_started_n2_learning-paths": {
+    title: "Learning Paths",
+    link: "#",
+    lesson_type: "lesson",
+    description: "Analyze any show",
+  },
+  "getting_started_n2_browser-extension": {
+    title: "Browser Extension",
+    link: "#",
+    lesson_type: "lesson",
+    description: "Mining subtitles",
+  },
+  "getting_started_n2_srs-flexibility": {
+    title: "SRS Flexibility",
+    link: "#",
+    lesson_type: "lesson",
+    description: "Use any platform",
+  },
+  "getting_started_n2_sentence-building": {
+    title: "Sentence Building",
+    link: "#",
+    lesson_type: "lesson",
+    description: "Grammar",
+  },
+
+  // Getting Started N1 Modules
+  "getting_started_n1_learning-paths": {
+    title: "Learning Paths",
+    link: "#",
+    lesson_type: "lesson",
+    description: "Analyze any show",
+  },
+  "getting_started_n1_browser-extension": {
+    title: "Browser Extension",
+    link: "#",
+    lesson_type: "lesson",
+    description: "Mining subtitles",
+  },
+  "getting_started_n1_all-srs-platforms": {
+    title: "All SRS Platforms",
+    link: "#",
+    lesson_type: "lesson",
+    description: "Connected",
+  },
+
+  // Normal Modules
   "welcome-overview": {
     title: "Welcome & Overview",
     link: "/lessons/welcome-overview",

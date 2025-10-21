@@ -5,6 +5,7 @@ import { type DeferredPromise } from "@tanstack/solid-router"
 import { DEFAULT_EXPANDED_TEXTBOOKS, NEWLY_IMPORTED_TIMEOUT } from "../types"
 import type { ImportRequest, VocabBuiltInDeck, VocabTextbook } from "../types"
 import type { TextbookIDEnum } from "@/data/types"
+import { getTextbookChapters } from "@/data/utils/core"
 import type { FoldersAndDecksData } from "@/features/supabase/db/folder"
 import type { User } from "@supabase/supabase-js"
 import {
@@ -129,7 +130,7 @@ export function useVocabPageState(
       textbookId,
       {
         ...textbook,
-        chapters: textbook.chapters.map((chapter) => ({
+        chapters: getTextbookChapters(textbookId as TextbookIDEnum).map((chapter) => ({
           ...chapter,
           decks: chapter.decks.map((deck) => ({
             ...deck,

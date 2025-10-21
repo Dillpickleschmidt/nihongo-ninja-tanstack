@@ -153,8 +153,8 @@ function RootContent() {
       <ColorModeProvider storageManager={storageManager}>
         <TourProvider shouldStartMainTour={shouldStartMainTour}>
           <Outlet />
-          <TanStackRouterDevtools position="bottom-right" />
-          <SolidQueryDevtools buttonPosition="bottom-left" />
+          {/* <TanStackRouterDevtools position="bottom-right" /> */}
+          {/* <SolidQueryDevtools buttonPosition="bottom-left" /> */}
         </TourProvider>
       </ColorModeProvider>
     </PostHogProvider>
