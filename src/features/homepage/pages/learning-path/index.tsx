@@ -9,6 +9,7 @@ import { getChapterContent } from "./utils/getChapterContent"
 import { ChapterHeader } from "./components/ChapterHeader"
 import { ModuleTilesGrid } from "./components/ModuleTilesGrid"
 import { ProgressFooter } from "./components/ProgressFooter"
+import { QuickAccessCards } from "./components/QuickAccessCards"
 import { ArrowBigLeft } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import type { TextbookIDEnum } from "@/data/types"
@@ -66,6 +67,16 @@ export function LearningPathPage(props: LearningPathPageProps) {
           </Button>
         </Show>
       </div>
+
+      <Show
+        when={
+          frozenSettingsQuery().data!["active-textbook"] !== "getting_started"
+        }
+      >
+        <div class="-mt-12">
+          <QuickAccessCards />
+        </div>
+      </Show>
 
       <ChapterHeader
         heading={content().heading}
