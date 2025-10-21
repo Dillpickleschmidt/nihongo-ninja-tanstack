@@ -1,5 +1,6 @@
 import { Show, createSignal, For } from "solid-js"
 import { Link, useNavigate } from "@tanstack/solid-router"
+import { useQueryClient } from "@tanstack/solid-query"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -13,21 +14,23 @@ import { getChapterStyles } from "@/data/chapter_colors"
 import { getMinifiedTextbookEntries } from "@/data/utils/core"
 import { applyUserSettingsUpdate } from "@/features/main-cookies/query/query-options"
 import type { ChapterContent } from "../utils/getChapterContent"
+import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
+import type { UseQueryResult } from "@tanstack/solid-query"
 import type { TextbookIDEnum } from "@/data/types"
-import type { QueryClient } from "@tanstack/solid-query"
 
 interface ProgressFooterProps {
-  chapterSlug: string
-  textbookId: TextbookIDEnum
+  settingsQuery: UseQueryResult<UserSettings, Error>
   tiles: ChapterContent["tiles"]
   isModuleCompleted: (href: string) => boolean
   userId: string | null
-  queryClient: QueryClient
 }
 
 export function ProgressFooter(props: ProgressFooterProps) {
   const [isDialogOpen, setIsDialogOpen] = createSignal(false)
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
+  const activeTextbook = () => props.settingsQuery.data!["active-textbook"]
+  const activeDeck = () => props.settingsQuery.data!["active-deck"]
 
   const completedCount = () =>
     props.tiles.filter((tile) => props.isModuleCompleted(tile.href)).length
@@ -44,10 +47,17 @@ export function ProgressFooter(props: ProgressFooterProps) {
 
     if (!firstChapterSlug) return
 
-    await applyUserSettingsUpdate(props.userId, props.queryClient, {
-      "active-textbook": textbookId,
-      "active-deck": firstChapterSlug,
-    })
+    // Update settings before navigating to ensure consistency
+    await applyUserSettingsUpdate(
+      props.userId,
+      queryClient,
+      {
+        "active-textbook": textbookId,
+        "active-deck": firstChapterSlug,
+      },
+      { awaitDb: false },
+    )
+
     setIsDialogOpen(false)
     navigate({
       to: "/learn/$textbookId/$chapterSlug",
@@ -58,7 +68,7 @@ export function ProgressFooter(props: ProgressFooterProps) {
   return (
     <div class="flex w-full flex-col items-center gap-6 pt-6">
       <p class="text-muted-foreground text-xl font-semibold">
-        <span class={getChapterStyles(props.chapterSlug).textColor}>
+        <span class={getChapterStyles(activeDeck()).textColor}>
           {completedCount()}/{totalCount()}
         </span>{" "}
         Complete
@@ -67,7 +77,7 @@ export function ProgressFooter(props: ProgressFooterProps) {
         fallback={
           <Link
             to="/learn/$textbookId"
-            params={{ textbookId: props.textbookId }}
+            params={{ textbookId: activeTextbook() }}
           >
             <Button class="font-poppins font-semibold" variant="secondary">
               See your dashboard
@@ -75,7 +85,7 @@ export function ProgressFooter(props: ProgressFooterProps) {
             </Button>
           </Link>
         }
-        when={props.textbookId === "getting_started"}
+        when={activeTextbook() === "getting_started"}
       >
         <div>
           <span>Complete the above to see your new dashboard, or</span>

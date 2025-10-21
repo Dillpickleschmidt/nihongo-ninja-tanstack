@@ -118,6 +118,7 @@ export const UserSettingsSchema = z.object({
   ),
   "active-textbook": TextbookIDSchema.default("getting_started"),
   "active-deck": z.string().max(20).default("n5-introduction"),
+  "has-completed-onboarding": z.boolean().default(false),
   "completed-tours": z.array(z.string()).default([]),
   "override-settings": OverrideSettingsSchema.default({
     vocabularyOverrides: DEFAULT_VOCABULARY_STACKS,

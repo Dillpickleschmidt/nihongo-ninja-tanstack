@@ -2,22 +2,23 @@ import { Show } from "solid-js"
 import { ChevronLeft, ChevronRight } from "lucide-solid"
 import { getChapterStyles } from "@/data/chapter_colors"
 import { getDeckBySlug, getTextbookChapters } from "@/data/utils/core"
+import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
+import type { UseQueryResult } from "@tanstack/solid-query"
 import type { TextbookIDEnum } from "@/data/types"
 
 interface ChapterPaginationProps {
-  currentChapterSlug: string
-  textbookId: TextbookIDEnum
+  settingsQuery: UseQueryResult<UserSettings, Error>
   onChapterChange?: (chapterSlug: string) => void
 }
 
 export function ChapterPagination(props: ChapterPaginationProps) {
-  const textbookId = () => props.textbookId as TextbookIDEnum
-  const textbookChapters = () => getTextbookChapters(textbookId())
+  const activeTextbook = () =>
+    props.settingsQuery.data!["active-textbook"] as TextbookIDEnum
+  const activeDeck = () => props.settingsQuery.data!["active-deck"]
+  const textbookChapters = () => getTextbookChapters(activeTextbook())
 
   const chapterIndex = () => {
-    return textbookChapters().findIndex(
-      (ch) => ch.slug === props.currentChapterSlug,
-    )
+    return textbookChapters().findIndex((ch) => ch.slug === activeDeck())
   }
 
   const canGoBack = () => chapterIndex() > 0
@@ -41,11 +42,11 @@ export function ChapterPagination(props: ChapterPaginationProps) {
     }
   }
 
-  const styles = () => getChapterStyles(props.currentChapterSlug)
-  const chapter = () => getDeckBySlug(textbookId(), props.currentChapterSlug)
+  const styles = () => getChapterStyles(activeDeck())
+  const chapter = () => getDeckBySlug(activeTextbook(), activeDeck())
 
   return (
-    <Show when={props.currentChapterSlug}>
+    <Show when={activeDeck()}>
       <div class="flex items-center justify-center gap-3">
         <button
           onClick={handlePrevious}

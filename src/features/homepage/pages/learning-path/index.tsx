@@ -1,39 +1,34 @@
-import { createSignal, createEffect } from "solid-js"
+import { Show } from "solid-js"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { useQueryClient } from "@tanstack/solid-query"
 import { completedModulesQueryOptions } from "@/features/learn-page/query/query-options"
 import type { User } from "@supabase/supabase-js"
-import type { TextbookIDEnum } from "@/data/types"
+import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
+import type { UseQueryResult } from "@tanstack/solid-query"
 import { getChapterContent } from "./utils/getChapterContent"
 import { ChapterHeader } from "./components/ChapterHeader"
 import { ModuleTilesGrid } from "./components/ModuleTilesGrid"
 import { ProgressFooter } from "./components/ProgressFooter"
+import { ArrowBigLeft } from "lucide-solid"
+import { Button } from "@/components/ui/button"
+import type { TextbookIDEnum } from "@/data/types"
 
 interface LearningPathPageProps {
-  chapterSlug: string
-  textbookId: TextbookIDEnum
+  settingsQuery: UseQueryResult<UserSettings, Error>
   onChapterChange?: (chapterSlug: string) => void
+  onBack?: () => void
   user?: User | null
 }
 
 export function LearningPathPage(props: LearningPathPageProps) {
-  const queryClient = useQueryClient()
-  const [selectedChapterSlug, setSelectedChapterSlug] = createSignal<string>(
-    props.chapterSlug,
-  )
-
-  // Sync with prop changes from external sources (e.g., Nav2 deck selector)
-  createEffect(() => {
-    setSelectedChapterSlug(props.chapterSlug)
-  })
-
   const handleChapterChange = (newChapterSlug: string) => {
-    setSelectedChapterSlug(newChapterSlug)
     props.onChapterChange?.(newChapterSlug)
   }
 
   const content = () =>
-    getChapterContent(props.textbookId, selectedChapterSlug())
+    getChapterContent(
+      props.settingsQuery.data!["active-textbook"] as TextbookIDEnum,
+      props.settingsQuery.data!["active-deck"],
+    )
 
   const completedModulesQuery = useCustomQuery(() =>
     completedModulesQueryOptions(props.user?.id || null),
@@ -48,30 +43,44 @@ export function LearningPathPage(props: LearningPathPageProps) {
     content().tiles.findIndex((tile) => !isModuleCompleted(tile.href))
 
   return (
-    <section class="mx-auto w-full max-w-7xl px-4 pt-4 pb-24 md:pt-24">
+    <section class="mx-auto w-full max-w-7xl px-4 pt-4 pb-24 md:pt-8">
+      <div class="flex h-16 items-center pl-4">
+        <Show
+          when={
+            props.settingsQuery.data!["active-textbook"] ===
+              "getting_started" && props.onBack
+          }
+        >
+          <Button
+            variant="ghost"
+            onClick={props.onBack}
+            class="h-auto rounded-full border-2 border-white/30 bg-transparent p-1.25 opacity-60 hover:bg-neutral-400/10 [&_svg]:size-auto"
+          >
+            <ArrowBigLeft class="h-12 w-12 text-white" />
+          </Button>
+        </Show>
+      </div>
+
       <ChapterHeader
         heading={content().heading}
         description={content().description}
         features={content().features}
-        chapterSlug={selectedChapterSlug()}
-        textbookId={props.textbookId}
+        settingsQuery={props.settingsQuery}
         onChapterChange={handleChapterChange}
       />
 
       <ModuleTilesGrid
         tiles={content().tiles}
-        chapterSlug={selectedChapterSlug()}
+        settingsQuery={props.settingsQuery}
         isModuleCompleted={isModuleCompleted}
         firstIncompleteIndex={getFirstIncompleteIndex()}
       />
 
       <ProgressFooter
-        chapterSlug={selectedChapterSlug()}
-        textbookId={props.textbookId}
+        settingsQuery={props.settingsQuery}
         tiles={content().tiles}
         isModuleCompleted={isModuleCompleted}
         userId={props.user?.id || null}
-        queryClient={queryClient}
       />
     </section>
   )

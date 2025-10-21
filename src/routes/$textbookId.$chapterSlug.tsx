@@ -4,6 +4,7 @@ import {
   userSettingsQueryOptions,
   applyUserSettingsUpdate,
 } from "@/features/main-cookies/query/query-options"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { BackgroundLayers } from "@/features/homepage/shared/components/BackgroundLayers"
 import Nav from "@/features/homepage/shared/components/Nav2"
 import LoginMessage from "@/features/homepage/shared/assets/login-message.svg"
@@ -44,22 +45,16 @@ export const Route = createFileRoute("/$textbookId/$chapterSlug")({
 
 function RouteComponent() {
   const context = useRouteContext({ from: RootRoute.id })
-  const loaderData = Route.useLoaderData()
-  const { textbookId, chapterSlug } = loaderData() as {
-    textbookId: string
-    chapterSlug: string
-  }
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(context().user?.id || null),
+  )
 
   return (
     <>
       <BackgroundLayers />
       <Nav />
       <LoginMessage class="fixed top-6 right-24 hidden h-auto w-64 text-neutral-500 md:block" />
-      <LearningPathPage
-        chapterSlug={chapterSlug}
-        textbookId={textbookId}
-        user={context().user}
-      />
+      <LearningPathPage settingsQuery={settingsQuery} user={context().user} />
     </>
   )
 }

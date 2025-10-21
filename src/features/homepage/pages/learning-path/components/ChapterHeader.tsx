@@ -1,14 +1,14 @@
 import { ChapterPagination } from "./ChapterPagination"
 import { FeatureList } from "./FeatureList"
 import ViewingIsEnough from "@/features/homepage/shared/assets/viewing-is-enough.svg"
-import type { TextbookIDEnum } from "@/data/types"
+import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
+import type { UseQueryResult } from "@tanstack/solid-query"
 
 interface ChapterHeaderProps {
   heading: string | undefined
   description: string | undefined
   features: string[] | undefined
-  chapterSlug: string
-  textbookId: TextbookIDEnum
+  settingsQuery: UseQueryResult<UserSettings, Error>
   onChapterChange?: (chapterSlug: string) => void
 }
 
@@ -18,8 +18,7 @@ export function ChapterHeader(props: ChapterHeaderProps) {
       <div class="mb-4 flex justify-between">
         <h2 class="text-2xl font-semibold md:text-3xl">{props.heading}</h2>
         <ChapterPagination
-          currentChapterSlug={props.chapterSlug}
-          textbookId={props.textbookId}
+          settingsQuery={props.settingsQuery}
           onChapterChange={props.onChapterChange}
         />
       </div>
