@@ -139,7 +139,9 @@ function RouteComponent() {
     <>
       <BackgroundLayers />
       <Nav />
-      <LoginMessage class="fixed top-6 right-24 hidden h-auto w-64 text-neutral-500 md:block" />
+      <Show when={!context().user}>
+        <LoginMessage class="fixed top-6 right-24 hidden h-auto w-64 text-neutral-500 md:block" />
+      </Show>
       <Show
         when={!settingsQuery.data?.["has-completed-onboarding"]}
         fallback={

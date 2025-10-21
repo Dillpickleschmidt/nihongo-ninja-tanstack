@@ -1,6 +1,6 @@
 // Nav.tsx
 import { createSignal, Show } from "solid-js"
-import { useNavigate } from "@tanstack/solid-router"
+import { Link, useNavigate } from "@tanstack/solid-router"
 import { useQueryClient } from "@tanstack/solid-query"
 import { Button } from "@/components/ui/button"
 import { useLocation, useRouteContext } from "@tanstack/solid-router"
@@ -101,9 +101,15 @@ export default function Nav() {
           </button>
         </DeckSelectionPopover>
       </Show>
-      <Button class="h-8.5 border-2 border-black bg-indigo-400 opacity-70 transition-opacity duration-200 hover:bg-indigo-400 hover:opacity-100">
-        Login
-      </Button>
+      <Show when={!context().user}>
+        <Button
+          as={Link}
+          to="/auth"
+          class="h-8.5 border-2 border-black bg-indigo-400 opacity-70 transition-opacity duration-200 hover:bg-indigo-400 hover:opacity-100"
+        >
+          Login
+        </Button>
+      </Show>
     </nav>
   )
 }
