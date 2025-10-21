@@ -1,6 +1,11 @@
-import { createFileRoute, useRouteContext } from "@tanstack/solid-router"
+import {
+  createFileRoute,
+  useRouteContext,
+  useMatchRoute,
+  useRouterState,
+} from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
-import { createSignal, Show, createEffect, on } from "solid-js"
+import { createSignal, Show, createEffect } from "solid-js"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { useQueryClient } from "@tanstack/solid-query"
 import {
@@ -45,9 +50,10 @@ export const Route = createFileRoute("/")({
 function RouteComponent() {
   const context = useRouteContext({ from: RootRoute.id })
   const queryClient = useQueryClient()
-  const [selectedChapterSlug, setSelectedChapterSlug] =
-    createSignal<string>("n5-introduction")
+  const matchRoute = useMatchRoute()
+  const routerState = useRouterState()
   const [showLearningPath, setShowLearningPath] = createSignal(false)
+  const [isNavigating, setIsNavigating] = createSignal(false)
 
   let stepRef: HTMLDivElement | undefined
   let learningPathRef: HTMLDivElement | undefined
@@ -56,24 +62,16 @@ function RouteComponent() {
     userSettingsQueryOptions(context().user?.id || null),
   )
 
-  // Sync selected chapter slug with active deck from settings (for getting_started only)
-  createEffect(
-    on(
-      () => [
-        settingsQuery.data?.["active-deck"],
-        settingsQuery.data?.["active-textbook"],
-      ],
-      ([activeDeck, textbook]) => {
-        if (activeDeck && textbook === "getting_started") {
-          setSelectedChapterSlug(activeDeck)
-        }
-      },
-    ),
-  )
+  createEffect(() => {
+    routerState()
+    // Only clear the flag when navigating AND no longer on the "/" route
+    if (isNavigating() && !matchRoute({ to: "/" })) {
+      setIsNavigating(false)
+    }
+  })
 
   const handleLevelSelect = async (level: string) => {
     const newChapterSlug = LEVEL_TO_CHAPTER_MAP[level] || "n5-introduction"
-    setSelectedChapterSlug(newChapterSlug)
 
     if (stepRef) {
       try {
@@ -102,8 +100,6 @@ function RouteComponent() {
   }
 
   const handleChapterChange = async (chapterSlug: string) => {
-    setSelectedChapterSlug(chapterSlug)
-
     await applyUserSettingsUpdate(
       context().user?.id || null,
       queryClient,
@@ -157,6 +153,8 @@ function RouteComponent() {
                   : undefined
               }
               user={context().user}
+              isNavigating={isNavigating()}
+              onNavigationStart={() => setIsNavigating(true)}
             />
           </div>
         }
@@ -172,6 +170,8 @@ function RouteComponent() {
                 onChapterChange={handleChapterChange}
                 onBack={handleBack}
                 user={context().user}
+                isNavigating={isNavigating()}
+                onNavigationStart={() => setIsNavigating(true)}
               />
             </div>
           </Show>

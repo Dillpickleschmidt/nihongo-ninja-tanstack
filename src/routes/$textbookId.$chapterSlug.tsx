@@ -1,9 +1,6 @@
 import { createFileRoute, useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
-import {
-  userSettingsQueryOptions,
-  applyUserSettingsUpdate,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { BackgroundLayers } from "@/features/homepage/shared/components/BackgroundLayers"
 import Nav from "@/features/homepage/shared/components/Nav2"
@@ -24,20 +21,8 @@ export const Route = createFileRoute("/$textbookId/$chapterSlug")({
       throw new Error(`Chapter not found: ${chapterSlug}`)
     }
 
-    // Sync route params to user settings (slug format)
-    await applyUserSettingsUpdate(
-      user?.id || null,
-      queryClient,
-      {
-        "active-textbook": textbookId as TextbookIDEnum,
-        "active-deck": chapterSlug,
-      },
-      { awaitDb: false },
-    )
-
     // Prefetch completed modules
     queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
-
     return { textbookId, chapterSlug }
   },
   component: RouteComponent,

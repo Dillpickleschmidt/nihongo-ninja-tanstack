@@ -1,5 +1,6 @@
-import { Show } from "solid-js"
+import { Show, createMemo } from "solid-js"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { useFrozenQuery } from "@/features/homepage/hooks/useFrozenQuery"
 import { completedModulesQueryOptions } from "@/features/learn-page/query/query-options"
 import type { User } from "@supabase/supabase-js"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
@@ -17,18 +18,23 @@ interface LearningPathPageProps {
   onChapterChange?: (chapterSlug: string) => void
   onBack?: () => void
   user?: User | null
+  isNavigating?: boolean
+  onNavigationStart?: () => void
 }
 
 export function LearningPathPage(props: LearningPathPageProps) {
-  const handleChapterChange = (newChapterSlug: string) => {
-    props.onChapterChange?.(newChapterSlug)
-  }
+  // Freeze settings query during navigation to prevent content flashing
+  const frozenSettingsQuery = useFrozenQuery(
+    props.settingsQuery,
+    () => props.isNavigating || false,
+  )
 
-  const content = () =>
-    getChapterContent(
-      props.settingsQuery.data!["active-textbook"] as TextbookIDEnum,
-      props.settingsQuery.data!["active-deck"],
-    )
+  const content = createMemo(() => {
+    const settings = frozenSettingsQuery().data!
+    const textbook = settings["active-textbook"] as TextbookIDEnum
+    const chapter = settings["active-deck"]
+    return getChapterContent(textbook, chapter)
+  })
 
   const completedModulesQuery = useCustomQuery(() =>
     completedModulesQueryOptions(props.user?.id || null),
@@ -47,7 +53,7 @@ export function LearningPathPage(props: LearningPathPageProps) {
       <div class="flex h-16 items-center pl-4">
         <Show
           when={
-            props.settingsQuery.data!["active-textbook"] ===
+            frozenSettingsQuery().data!["active-textbook"] ===
               "getting_started" && props.onBack
           }
         >
@@ -65,22 +71,23 @@ export function LearningPathPage(props: LearningPathPageProps) {
         heading={content().heading}
         description={content().description}
         features={content().features}
-        settingsQuery={props.settingsQuery}
-        onChapterChange={handleChapterChange}
+        settingsQuery={frozenSettingsQuery()}
+        onChapterChange={props.onChapterChange}
       />
 
       <ModuleTilesGrid
         tiles={content().tiles}
-        settingsQuery={props.settingsQuery}
+        settingsQuery={frozenSettingsQuery()}
         isModuleCompleted={isModuleCompleted}
         firstIncompleteIndex={getFirstIncompleteIndex()}
       />
 
       <ProgressFooter
-        settingsQuery={props.settingsQuery}
+        settingsQuery={frozenSettingsQuery()}
         tiles={content().tiles}
         isModuleCompleted={isModuleCompleted}
         userId={props.user?.id || null}
+        onNavigationStart={props.onNavigationStart}
       />
     </section>
   )

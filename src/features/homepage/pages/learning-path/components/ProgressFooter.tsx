@@ -1,6 +1,5 @@
 import { Show, createSignal, For } from "solid-js"
 import { Link, useNavigate } from "@tanstack/solid-router"
-import { useQueryClient } from "@tanstack/solid-query"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -12,7 +11,6 @@ import {
 import { ArrowRight } from "lucide-solid"
 import { getChapterStyles } from "@/data/chapter_colors"
 import { getMinifiedTextbookEntries } from "@/data/utils/core"
-import { applyUserSettingsUpdate } from "@/features/main-cookies/query/query-options"
 import type { ChapterContent } from "../utils/getChapterContent"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { UseQueryResult } from "@tanstack/solid-query"
@@ -23,12 +21,12 @@ interface ProgressFooterProps {
   tiles: ChapterContent["tiles"]
   isModuleCompleted: (href: string) => boolean
   userId: string | null
+  onNavigationStart?: () => void
 }
 
 export function ProgressFooter(props: ProgressFooterProps) {
   const [isDialogOpen, setIsDialogOpen] = createSignal(false)
   const navigate = useNavigate()
-  const queryClient = useQueryClient()
   const activeTextbook = () => props.settingsQuery.data!["active-textbook"]
   const activeDeck = () => props.settingsQuery.data!["active-deck"]
 
@@ -40,25 +38,16 @@ export function ProgressFooter(props: ProgressFooterProps) {
   const otherTextbooks = () =>
     textbookEntries.filter(([id]) => id !== "getting_started")
 
-  const handleTextbookSelect = async (textbookId: TextbookIDEnum) => {
+  const handleTextbookSelect = (textbookId: TextbookIDEnum) => {
     // Get first chapter of selected textbook
     const textbook = textbookEntries.find(([id]) => id === textbookId)?.[1]
     const firstChapterSlug = textbook?.chapters[0]?.slug
 
     if (!firstChapterSlug) return
-
-    // Update settings before navigating to ensure consistency
-    await applyUserSettingsUpdate(
-      props.userId,
-      queryClient,
-      {
-        "active-textbook": textbookId,
-        "active-deck": firstChapterSlug,
-      },
-      { awaitDb: false },
-    )
-
     setIsDialogOpen(false)
+    props.onNavigationStart?.()
+
+    // let the route loader handle settings update
     navigate({
       to: "/learn/$textbookId/$chapterSlug",
       params: { textbookId, chapterSlug: firstChapterSlug },
