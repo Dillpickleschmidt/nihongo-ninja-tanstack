@@ -27,6 +27,7 @@ import {
   getUserSessions,
   getUserWeekTimeData,
 } from "@/features/supabase/db/module-progress"
+import { getLocalCompletions } from "@/features/module-completion/localStorage"
 
 export const vocabHierarchyQueryOptions = (
   activeTextbook: string,
@@ -122,12 +123,41 @@ export const seenCardsStatsQueryOptions = (
 export const completedModulesQueryOptions = (userId: string | null) =>
   queryOptions({
     queryKey: ["module-progress", userId, "completed"],
+    refetchOnMount: "always", // Ensure localStorage completions load on client
     queryFn: async () => {
-      if (!userId) return []
-      return getUserModuleProgress(userId, {
+      const localCompletions = getLocalCompletions()
+
+      if (!userId) {
+        // Not logged in - return only local completions
+        return localCompletions.map((modulePath) => ({
+          module_path: modulePath,
+          user_id: null,
+          completed_at: null,
+        })) as ModuleProgress[]
+      }
+
+      // Logged in - fetch from DB and merge with local (for pending sync items)
+      const dbCompletions = await getUserModuleProgress(userId, {
         orderBy: "completed_at",
         ascending: false,
       })
+
+      // Get unique module paths from both sources
+      const dbPaths = new Set(dbCompletions.map((c) => c.module_path))
+
+      // Add any local-only items (not yet synced)
+      const localOnly = localCompletions
+        .filter((path) => !dbPaths.has(path))
+        .map(
+          (modulePath) =>
+            ({
+              module_path: modulePath,
+              user_id: userId,
+              completed_at: null, // pending sync
+            }) as ModuleProgress,
+        )
+
+      return [...dbCompletions, ...localOnly]
     },
   })
 

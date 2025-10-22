@@ -1,6 +1,7 @@
 // features/auth/components/Logout.tsx
 import { Button } from "@/components/ui/button"
 import { clearFoldersAndDecks } from "@/features/vocab-page/storage/sessionStorage"
+import { clearLocalCompletions } from "@/features/module-completion/localStorage"
 import { cn } from "@/utils"
 
 interface LogoutButtonProps {
@@ -10,6 +11,7 @@ interface LogoutButtonProps {
 export default function LogoutButton(props: LogoutButtonProps) {
   const handleLogout = () => {
     clearFoldersAndDecks()
+    clearLocalCompletions()
   }
 
   return (

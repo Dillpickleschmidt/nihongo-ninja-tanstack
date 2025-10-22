@@ -54,16 +54,23 @@ export default function ContentBox(props: ContentBoxProps) {
       moduleId,
       durationSeconds,
     }: {
-      userId: string
+      userId: string | null
       moduleId: string
       durationSeconds: number
     }) => {
-      // Create session record (time spent)
       await createSession(userId, moduleId, { durationSeconds })
-      // Mark module as completed
       return markModuleCompleted(userId, moduleId)
     },
     onSuccess: (data, variables) => {
+      if (!data) {
+        // Local-only - invalidate query to refresh
+        queryClient.invalidateQueries({
+          queryKey: ["module-progress", null, "completed"],
+        })
+        return
+      }
+
+      // DB - update cache
       queryClient.setQueryData(
         ["module-progress", variables.userId, "completed"],
         (old: ModuleProgress[] | undefined) => {
@@ -101,7 +108,7 @@ export default function ContentBox(props: ContentBoxProps) {
     const moduleId = currentPath.split("/").pop()
 
     // Mark as complete with estimated duration
-    if (props.user && moduleId) {
+    if (moduleId) {
       // Look up module in static_modules or external_resources
       const module = static_modules[moduleId] || external_resources[moduleId]
 
@@ -110,7 +117,7 @@ export default function ContentBox(props: ContentBoxProps) {
       const durationSeconds = estimatedMinutes * 60
 
       addCompletionMutation.mutate({
-        userId: props.user.id,
+        userId: props.user?.id || null,
         moduleId,
         durationSeconds,
       })

@@ -138,23 +138,27 @@ function RouteComponent() {
       moduleId,
       durationSeconds,
     }: {
-      userId: string
+      userId: string | null
       moduleId: string
       durationSeconds: number
     }) => {
-      // Create session record (time spent)
       await createSession(userId, moduleId, { durationSeconds })
-      // Mark module as completed
       return markModuleCompleted(userId, moduleId)
     },
     onSuccess: (data, variables) => {
+      if (!data) {
+        // Local-only - invalidate query to refresh
+        queryClient.invalidateQueries({
+          queryKey: ["module-progress", null, "completed"],
+        })
+        return
+      }
+
+      // DB - update cache
       queryClient.setQueryData(
         ["module-progress", variables.userId, "completed"],
         (old: ModuleProgress[] | undefined) => {
-          const modulePath = data.module_path
-          // If module already in list, return as-is
-          if (old?.some((c) => c.module_path === modulePath)) return old
-          // prepend - most recent first, matching DB sort order
+          if (old?.some((c) => c.module_path === data.module_path)) return old
           return [data, ...(old || [])]
         },
       )
@@ -175,26 +179,18 @@ function RouteComponent() {
   const handleGoHomeClick = (e: Event) => {
     e.preventDefault()
 
-    const currentPath = location().pathname
-    const moduleId = currentPath
+    const moduleId = location().pathname
+    const module = static_modules[moduleId as keyof typeof static_modules]
+    const durationSeconds = (module?.daily_prog_amount ?? 10) * 60
 
-    // Mark as complete with estimated duration if user is logged in
-    if (user && moduleId) {
-      // Look up module in static_modules
-      const module = static_modules[moduleId as keyof typeof static_modules]
-
-      // Get estimated duration (default to 10 minutes = 600 seconds)
-      const estimatedMinutes = module?.daily_prog_amount ?? 10
-      const durationSeconds = estimatedMinutes * 60
-
+    if (moduleId) {
       addCompletionMutation.mutate({
-        userId: user.id,
+        userId: user?.id || null,
         moduleId,
         durationSeconds,
       })
     }
 
-    // Navigate home
     navigate({ to: "/" })
   }
 
