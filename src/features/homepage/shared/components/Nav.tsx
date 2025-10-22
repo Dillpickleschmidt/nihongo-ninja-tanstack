@@ -28,10 +28,7 @@ export default function Nav() {
 
         {/* Right: Actions */}
         <div class="hidden items-center gap-2 sm:flex">
-          <Link
-            to="/dashboard"
-            class={`transition-colors ${active("/dashboard")}`}
-          >
+          <Link to="/" class={`transition-colors ${active("/")}`}>
             <Button variant="ghost" class="px-3">
               <span class="font-medium">日本語</span>
             </Button>
@@ -43,7 +40,7 @@ export default function Nav() {
           {/*   </Button> */}
           {/* </Link> */}
 
-          <Link to="/dashboard">
+          <Link to="/">
             <Button variant="ghost" class="ml-1 px-3">
               <span class="text-primary font-bold saturate-50 dark:text-orange-200">
                 Dive in! →
@@ -58,7 +55,7 @@ export default function Nav() {
 
         {/* Compact for small screens */}
         <div class="flex items-center gap-2 sm:hidden">
-          <Link to="/dashboard">
+          <Link to="/">
             <Button size="sm" variant="secondary">
               日本語
             </Button>
@@ -68,7 +65,7 @@ export default function Nav() {
               Pricing
             </Button>
           </Link>
-          <Link to="/dashboard">
+          <Link to="/">
             <Button size="sm" variant="ghost">
               <span class="text-primary font-bold dark:text-orange-200">
                 Dive in! →

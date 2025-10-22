@@ -31,7 +31,6 @@ import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
 import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
 import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
-import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeAdditionalResourcesRouteImport } from './routes/_home/additional-resources'
 import { Route as TextbookIdChapterSlugRouteImport } from './routes/$textbookId.$chapterSlug'
 import { Route as HomeLearnIndexRouteImport } from './routes/_home/learn/index'
@@ -192,11 +191,6 @@ const HomeReviewRoute = HomeReviewRouteImport.update({
 const HomeGrammarNotesRoute = HomeGrammarNotesRouteImport.update({
   id: '/grammar-notes',
   path: '/grammar-notes',
-  getParentRoute: () => HomeRoute,
-} as any)
-const HomeDashboardRoute = HomeDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeAdditionalResourcesRoute = HomeAdditionalResourcesRouteImport.update({
@@ -486,7 +480,6 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/$textbookId/$chapterSlug': typeof TextbookIdChapterSlugRoute
   '/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
-  '/dashboard': typeof HomeDashboardRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
@@ -559,7 +552,6 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/$textbookId/$chapterSlug': typeof TextbookIdChapterSlugRoute
   '/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
-  '/dashboard': typeof HomeDashboardRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
@@ -634,7 +626,6 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/$textbookId/$chapterSlug': typeof TextbookIdChapterSlugRoute
   '/_home/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
-  '/_home/dashboard': typeof HomeDashboardRoute
   '/_home/grammar-notes': typeof HomeGrammarNotesRoute
   '/_home/review': typeof HomeReviewRoute
   '/_home/settings': typeof HomeSettingsRoute
@@ -709,7 +700,6 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/$textbookId/$chapterSlug'
     | '/additional-resources'
-    | '/dashboard'
     | '/grammar-notes'
     | '/review'
     | '/settings'
@@ -782,7 +772,6 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/$textbookId/$chapterSlug'
     | '/additional-resources'
-    | '/dashboard'
     | '/grammar-notes'
     | '/review'
     | '/settings'
@@ -856,7 +845,6 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/$textbookId/$chapterSlug'
     | '/_home/additional-resources'
-    | '/_home/dashboard'
     | '/_home/grammar-notes'
     | '/_home/review'
     | '/_home/settings'
@@ -1098,13 +1086,6 @@ declare module '@tanstack/solid-router' {
       path: '/grammar-notes'
       fullPath: '/grammar-notes'
       preLoaderRoute: typeof HomeGrammarNotesRouteImport
-      parentRoute: typeof HomeRoute
-    }
-    '/_home/dashboard': {
-      id: '/_home/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof HomeDashboardRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/additional-resources': {
@@ -1481,7 +1462,6 @@ const HomeLearnTextbookIdRouteWithChildren =
 
 interface HomeRouteChildren {
   HomeAdditionalResourcesRoute: typeof HomeAdditionalResourcesRouteWithChildren
-  HomeDashboardRoute: typeof HomeDashboardRoute
   HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
   HomeReviewRoute: typeof HomeReviewRoute
   HomeSettingsRoute: typeof HomeSettingsRoute
@@ -1495,7 +1475,6 @@ interface HomeRouteChildren {
 
 const HomeRouteChildren: HomeRouteChildren = {
   HomeAdditionalResourcesRoute: HomeAdditionalResourcesRouteWithChildren,
-  HomeDashboardRoute: HomeDashboardRoute,
   HomeGrammarNotesRoute: HomeGrammarNotesRoute,
   HomeReviewRoute: HomeReviewRoute,
   HomeSettingsRoute: HomeSettingsRoute,
