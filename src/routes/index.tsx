@@ -23,6 +23,9 @@ import {
   prepareElementForEnter,
 } from "@/utils/animations"
 import { completedModulesQueryOptions } from "@/features/learn-page/query/query-options"
+import { getDeckBySlug, getModules } from "@/data/utils/core"
+import { enrichLessons } from "@/features/learn-page/utils/loader-helpers"
+import type { TextbookIDEnum } from "@/data/types"
 
 // Map JLPT levels to chapter slugs
 const LEVEL_TO_CHAPTER_MAP: Record<string, string> = {

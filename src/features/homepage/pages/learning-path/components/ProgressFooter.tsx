@@ -17,7 +17,13 @@ import type { TextbookIDEnum } from "@/data/types"
 
 interface ProgressFooterProps {
   settingsQuery: UseQueryResult<UserSettings, Error>
-  tiles: Array<{ title: string; description?: string; href: string }>
+  tiles: Array<{
+    title: string
+    description?: string
+    href: string
+    moduleType: string
+    iconClasses: string
+  }>
   isModuleCompleted: (href: string) => boolean
   userId: string | null
   onNavigationStart?: () => void

@@ -5,7 +5,13 @@ import type { UserSettings } from "@/features/main-cookies/schemas/user-settings
 import type { UseQueryResult } from "@tanstack/solid-query"
 
 interface ModuleTilesGridProps {
-  tiles: Array<{ title: string; description?: string; href: string }>
+  tiles: Array<{
+    title: string
+    description?: string
+    href: string
+    moduleType: string
+    iconClasses: string
+  }>
   settingsQuery: UseQueryResult<UserSettings, Error>
   isModuleCompleted: (href: string) => boolean
   firstIncompleteIndex: number
@@ -23,11 +29,14 @@ export function ModuleTilesGrid(props: ModuleTilesGridProps) {
               <PreviewTile
                 title={tile.title}
                 description={tile.description}
+                moduleType={tile.moduleType}
+                iconClasses={tile.iconClasses}
                 chapterSlug={activeDeck()}
                 index={index()}
                 href={tile.href}
                 isCompleted={props.isModuleCompleted(tile.href)}
                 firstIncompleteIndex={props.firstIncompleteIndex}
+                settingsQuery={props.settingsQuery}
               />
             </Link>
           )}
