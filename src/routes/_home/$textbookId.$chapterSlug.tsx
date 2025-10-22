@@ -11,7 +11,7 @@ import { getDeckBySlug, getModules } from "@/data/utils/core"
 import { enrichLessons } from "@/features/learn-page/utils/loader-helpers"
 import type { TextbookIDEnum } from "@/data/types"
 
-export const Route = createFileRoute("/$textbookId/$chapterSlug")({
+export const Route = createFileRoute("/_home/$textbookId/$chapterSlug")({
   loader: async ({ context, params }) => {
     const { user, queryClient } = context
     const { textbookId, chapterSlug } = params

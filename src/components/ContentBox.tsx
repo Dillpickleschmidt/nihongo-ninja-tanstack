@@ -6,10 +6,7 @@ import { useQueryClient, useMutation } from "@tanstack/solid-query"
 import { cva } from "class-variance-authority"
 import { cn } from "@/utils"
 import { User } from "@supabase/supabase-js"
-import {
-  createSession,
-  markModuleCompleted,
-} from "@/features/supabase/db/module-progress"
+import { markModuleCompletedMutation } from "@/features/learn-page/query/query-options"
 import { static_modules } from "@/data/static_modules"
 import { external_resources } from "@/data/external_resources"
 
@@ -48,41 +45,9 @@ export default function ContentBox(props: ContentBoxProps) {
   const queryClient = useQueryClient()
   const [showCompleteButton, setShowCompleteButton] = createSignal(false)
 
-  const addCompletionMutation = useMutation(() => ({
-    mutationFn: async ({
-      userId,
-      moduleId,
-      durationSeconds,
-    }: {
-      userId: string | null
-      moduleId: string
-      durationSeconds: number
-    }) => {
-      await createSession(userId, moduleId, { durationSeconds })
-      return markModuleCompleted(userId, moduleId)
-    },
-    onSuccess: (data, variables) => {
-      if (!data) {
-        // Local-only - invalidate query to refresh
-        queryClient.invalidateQueries({
-          queryKey: ["module-progress", null, "completed"],
-        })
-        return
-      }
-
-      // DB - update cache
-      queryClient.setQueryData(
-        ["module-progress", variables.userId, "completed"],
-        (old: ModuleProgress[] | undefined) => {
-          const modulePath = data.module_path
-          // If module already in list, return as-is
-          if (old?.some((c) => c.module_path === modulePath)) return old
-          // prepend - most recent first, matching DB sort order
-          return [data, ...(old || [])]
-        },
-      )
-    },
-  }))
+  const addCompletionMutation = useMutation(() =>
+    markModuleCompletedMutation(queryClient),
+  )
 
   const config = (): ContentBoxConfig => {
     const currentPath = location().pathname
@@ -99,7 +64,7 @@ export default function ContentBox(props: ContentBoxProps) {
   const isVisible = () =>
     location().pathname.startsWith("/lessons/") ||
     location().pathname.startsWith("/external-resources/") ||
-    location().pathname === "/guides/home"
+    location().pathname === "/guides"
 
   const handleCompleteClick = (e: Event) => {
     e.preventDefault()

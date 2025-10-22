@@ -14,7 +14,7 @@ import { getChapterStyles } from "@/data/chapter_colors"
 import { Repeat, BookOpen, Sparkles, DollarSign } from "lucide-solid"
 import BestMaterialsRightTimeSvg from "@/features/homepage/shared/assets/best-materials-right-time.svg"
 
-export const Route = createFileRoute("/guides/home")({
+export const Route = createFileRoute("/guides/")({
   loader: () => ({
     toc: [
       { id: "how-it-works", title: "What is Nihongo Ninja?" },

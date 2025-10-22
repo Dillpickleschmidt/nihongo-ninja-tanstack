@@ -36,7 +36,7 @@ const LEVEL_TO_CHAPTER_MAP: Record<string, string> = {
   N1: "n1-introduction",
 }
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_home/")({
   loader: async ({ context }) => {
     const { user, queryClient } = context
 

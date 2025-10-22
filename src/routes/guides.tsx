@@ -10,6 +10,7 @@ import {
 } from "@tanstack/solid-router"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { markModuleCompletedMutation } from "@/features/learn-page/query/query-options"
 import { useQueryClient, useMutation } from "@tanstack/solid-query"
 import {
   Sidebar,
@@ -30,10 +31,6 @@ import { BackgroundLayers } from "@/features/homepage/shared/components/Backgrou
 import LogoutButton from "@/features/auth/components/Logout"
 import { TableOfContents, type TOCItem } from "@/components/TableOfContents"
 import GoHomeSvg from "@/features/homepage/shared/assets/go-home.svg"
-import {
-  createSession,
-  markModuleCompleted,
-} from "@/features/supabase/db/module-progress"
 import { static_modules } from "@/data/static_modules"
 
 export const Route = createFileRoute("/guides")({
@@ -51,7 +48,7 @@ const guidesNavigation = [
       {
         id: "home",
         title: "Home",
-        href: "/guides/home",
+        href: "/guides",
       },
     ],
   },
@@ -132,38 +129,9 @@ function RouteComponent() {
     userSettingsQueryOptions(user?.id || null),
   )
 
-  const addCompletionMutation = useMutation(() => ({
-    mutationFn: async ({
-      userId,
-      moduleId,
-      durationSeconds,
-    }: {
-      userId: string | null
-      moduleId: string
-      durationSeconds: number
-    }) => {
-      await createSession(userId, moduleId, { durationSeconds })
-      return markModuleCompleted(userId, moduleId)
-    },
-    onSuccess: (data, variables) => {
-      if (!data) {
-        // Local-only - invalidate query to refresh
-        queryClient.invalidateQueries({
-          queryKey: ["module-progress", null, "completed"],
-        })
-        return
-      }
-
-      // DB - update cache
-      queryClient.setQueryData(
-        ["module-progress", variables.userId, "completed"],
-        (old: ModuleProgress[] | undefined) => {
-          if (old?.some((c) => c.module_path === data.module_path)) return old
-          return [data, ...(old || [])]
-        },
-      )
-    },
-  }))
+  const addCompletionMutation = useMutation(() =>
+    markModuleCompletedMutation(queryClient),
+  )
 
   const isActive = (href: string) => {
     return location().pathname === href
@@ -180,10 +148,14 @@ function RouteComponent() {
     e.preventDefault()
 
     const moduleId = location().pathname
-    const module = static_modules[moduleId as keyof typeof static_modules]
-    const durationSeconds = (module?.daily_prog_amount ?? 10) * 60
 
     if (moduleId) {
+      // Mark as complete with estimated duration
+      // Look up module in static_modules
+      const module = static_modules[moduleId as keyof typeof static_modules]
+      // Get estimated duration (default to 10 minutes = 600 seconds)
+      const durationSeconds = (module?.daily_prog_amount ?? 10) * 60
+
       addCompletionMutation.mutate({
         userId: user?.id || null,
         moduleId,

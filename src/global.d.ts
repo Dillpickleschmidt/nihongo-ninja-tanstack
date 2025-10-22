@@ -58,6 +58,12 @@ declare global {
     SupabaseDB["public"]["Tables"]["user_module_progress"]["Insert"]
   type ModuleProgressUpdate =
     SupabaseDB["public"]["Tables"]["user_module_progress"]["Update"]
+  // Module progress including local-only completions (with nullable fields)
+  type ModuleProgressWithLocal = {
+    module_path: string
+    user_id: string | null
+    completed_at: string | null
+  }
 
   // Practice Session Tracking Types
   type PracticeSession =
