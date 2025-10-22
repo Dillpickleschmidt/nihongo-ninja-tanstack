@@ -1,12 +1,11 @@
 import { For } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { PreviewTile } from "./PreviewTile"
-import type { ChapterContent } from "../utils/getChapterContent"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { UseQueryResult } from "@tanstack/solid-query"
 
 interface ModuleTilesGridProps {
-  tiles: ChapterContent["tiles"]
+  tiles: Array<{ title: string; description?: string; href: string }>
   settingsQuery: UseQueryResult<UserSettings, Error>
   isModuleCompleted: (href: string) => boolean
   firstIncompleteIndex: number

@@ -11,14 +11,13 @@ import {
 import { ArrowRight } from "lucide-solid"
 import { getChapterStyles } from "@/data/chapter_colors"
 import { getMinifiedTextbookEntries } from "@/data/utils/core"
-import type { ChapterContent } from "../utils/getChapterContent"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { UseQueryResult } from "@tanstack/solid-query"
 import type { TextbookIDEnum } from "@/data/types"
 
 interface ProgressFooterProps {
   settingsQuery: UseQueryResult<UserSettings, Error>
-  tiles: ChapterContent["tiles"]
+  tiles: Array<{ title: string; description?: string; href: string }>
   isModuleCompleted: (href: string) => boolean
   userId: string | null
   onNavigationStart?: () => void

@@ -5,7 +5,7 @@ import { completedModulesQueryOptions } from "@/features/learn-page/query/query-
 import type { User } from "@supabase/supabase-js"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { UseQueryResult } from "@tanstack/solid-query"
-import { getChapterContent } from "./utils/getChapterContent"
+import { getDeckBySlug, getModules } from "@/data/utils/core"
 import { ChapterHeader } from "./components/ChapterHeader"
 import { ModuleTilesGrid } from "./components/ModuleTilesGrid"
 import { ProgressFooter } from "./components/ProgressFooter"
@@ -30,11 +30,21 @@ export function LearningPathPage(props: LearningPathPageProps) {
     () => props.isNavigating || false,
   )
 
-  const content = createMemo(() => {
+  const deckData = createMemo(() => {
     const settings = frozenSettingsQuery().data!
     const textbook = settings["active-textbook"] as TextbookIDEnum
     const chapter = settings["active-deck"]
-    return getChapterContent(textbook, chapter)
+    return getDeckBySlug(textbook, chapter)
+  })
+
+  const tiles = createMemo(() => {
+    const deck = deckData()
+    if (!deck) return []
+    return getModules(deck).map(({ module }) => ({
+      title: module.title,
+      description: module.description,
+      href: module.link,
+    }))
   })
 
   const completedModulesQuery = useCustomQuery(() =>
@@ -47,7 +57,7 @@ export function LearningPathPage(props: LearningPathPageProps) {
     ) ?? false
 
   const getFirstIncompleteIndex = () =>
-    content().tiles.findIndex((tile) => !isModuleCompleted(tile.href))
+    tiles().findIndex((tile) => !isModuleCompleted(tile.href))
 
   return (
     <section class="mx-auto w-full max-w-7xl px-4 pt-4 pb-24 md:pt-8">
@@ -79,15 +89,15 @@ export function LearningPathPage(props: LearningPathPageProps) {
       </Show>
 
       <ChapterHeader
-        heading={content().heading}
-        description={content().description}
-        features={content().features}
+        heading={deckData()?.heading}
+        description={deckData()?.description}
+        features={deckData()?.features}
         settingsQuery={frozenSettingsQuery()}
         onChapterChange={props.onChapterChange}
       />
 
       <ModuleTilesGrid
-        tiles={content().tiles}
+        tiles={tiles()}
         settingsQuery={frozenSettingsQuery()}
         isModuleCompleted={isModuleCompleted}
         firstIncompleteIndex={getFirstIncompleteIndex()}
@@ -95,7 +105,7 @@ export function LearningPathPage(props: LearningPathPageProps) {
 
       <ProgressFooter
         settingsQuery={frozenSettingsQuery()}
-        tiles={content().tiles}
+        tiles={tiles()}
         isModuleCompleted={isModuleCompleted}
         userId={props.user?.id || null}
         onNavigationStart={props.onNavigationStart}
