@@ -1,21 +1,28 @@
 import { Show, createSignal } from "solid-js"
 import { getChapterStyles } from "@/data/chapter_colors"
+import { getModuleIcon } from "@/features/learn-page/utils/loader-helpers"
 import StartHereSvg from "@/features/homepage/shared/assets/start-here.svg"
 import TryThisSvg from "@/features/homepage/shared/assets/try-this.svg"
+import type { UseQueryResult } from "@tanstack/solid-query"
+import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 
 interface PreviewTileProps {
   title: string
   description?: string
+  moduleType: string
+  iconClasses: string
   chapterSlug: string
   index: number
   href: string
   isCompleted: boolean
   firstIncompleteIndex: number
+  settingsQuery: UseQueryResult<UserSettings, Error>
 }
 
 export function PreviewTile(props: PreviewTileProps) {
   const styles = () => getChapterStyles(props.chapterSlug)
   const [isHovered, setIsHovered] = createSignal(false)
+  const ModuleIcon = getModuleIcon(props.moduleType)
 
   const shouldShowStartHere = () =>
     props.index === props.firstIncompleteIndex && props.index === 0
@@ -38,7 +45,17 @@ export function PreviewTile(props: PreviewTileProps) {
       <div class="flex items-center justify-between">
         <div>
           <p class="text-muted-foreground text-sm">{props.description}</p>
-          <h3 class="text-lg font-medium">{props.title}</h3>
+          <div class="flex items-center gap-2">
+            <Show
+              when={
+                props.settingsQuery.data!["active-textbook"] !==
+                  "getting_started"
+              }
+            >
+              <ModuleIcon size="20px" class={props.iconClasses} />
+            </Show>
+            <h3 class="text-lg font-medium">{props.title}</h3>
+          </div>
         </div>
         <div>
           <Show when={shouldShowStartHere()}>

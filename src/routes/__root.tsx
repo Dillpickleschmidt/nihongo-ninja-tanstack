@@ -21,7 +21,7 @@ import {
   cookieStorageManagerSSR,
 } from "@kobalte/core"
 import { getCookie } from "@/utils/cookie-utils"
-import { createEffect } from "solid-js"
+import { createEffect, onCleanup, onMount } from "solid-js"
 import { createMediaQuery } from "@solid-primitives/media"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { SolidQueryDevtools } from "@tanstack/solid-query-devtools"
@@ -36,6 +36,7 @@ import {
   updateUserSettingsMutation,
   dbUserSettingsQueryOptions,
 } from "@/features/main-cookies/query/query-options"
+import { setupAuthSync } from "@/features/module-completion/setupAuthSync"
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
@@ -144,6 +145,29 @@ function RootContent() {
           "device-type": detectedType,
         })
       }
+    })
+
+    // Initialize auth sync listener (runs once on mount)
+    onMount(() => {
+      const unsubscribe = setupAuthSync(queryClient)
+      onCleanup(() => unsubscribe())
+    })
+
+    // Multi-tab sync: listen for storage changes from other tabs
+    createEffect(() => {
+      const handleStorageChange = (e: StorageEvent) => {
+        if (e.key === "nihongo-ninja:local-completions") {
+          queryClient.invalidateQueries({
+            queryKey: ["module-progress", user?.id || null, "completed"],
+          })
+        }
+      }
+
+      window.addEventListener("storage", handleStorageChange)
+
+      onCleanup(() => {
+        window.removeEventListener("storage", handleStorageChange)
+      })
     })
   }
 

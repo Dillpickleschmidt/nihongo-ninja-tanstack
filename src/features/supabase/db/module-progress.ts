@@ -1,4 +1,5 @@
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
+import { addLocalCompletion } from "@/features/module-completion/localStorage"
 
 /**
  * Get progress for a specific module
@@ -45,12 +46,18 @@ export async function getUserModuleProgress(
 }
 
 /**
- * Mark a module as completed
+ * Mark a module as completed.
+ * If userId is null, saves to localStorage; otherwise saves to database.
  */
 export async function markModuleCompleted(
-  userId: string,
+  userId: string | null,
   moduleId: string,
-): Promise<ModuleProgress> {
+): Promise<ModuleProgress | null> {
+  if (!userId) {
+    addLocalCompletion(moduleId)
+    return null
+  }
+
   const supabase = createSupabaseClient()
 
   const { data, error } = await supabase
@@ -77,18 +84,21 @@ export async function markModuleCompleted(
 // ============================================
 
 /**
- * Create a new practice session
- * Can be created with initial values (static modules) or empty (vocab practice)
- * Returns session with session_id for future updates
+ * Create a new practice session.
+ * If userId is null, returns null (no session tracking for logged-out users).
  */
 export async function createSession(
-  userId: string,
+  userId: string | null,
   moduleId: string,
   data?: {
     durationSeconds?: number
     questionsAnswered?: number
   },
-): Promise<PracticeSession> {
+): Promise<PracticeSession | null> {
+  if (!userId) {
+    return null
+  }
+
   const supabase = createSupabaseClient()
 
   const now = new Date().toISOString()

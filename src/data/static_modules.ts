@@ -3,7 +3,7 @@ import type { StaticModuleCollection } from "./types"
 export const static_modules: StaticModuleCollection = {
   getting_started: {
     title: "Getting Started",
-    link: "/guides/home",
+    link: "/guides",
     lesson_type: "lesson",
     description: "Introduction",
   },

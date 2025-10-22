@@ -3,6 +3,8 @@ import {
   queryOptions,
   type DefaultError,
   type UseQueryResult,
+  type MutationOptions,
+  type QueryClient,
 } from "@tanstack/solid-query"
 import { getDeckBySlug, getTextbookLearningPath } from "@/data/utils/core"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
@@ -13,7 +15,11 @@ import type {
   SeenCardsStatsResult,
 } from "@/features/srs-services/types"
 import type { AllServicePreferences } from "@/features/main-cookies/schemas/user-settings"
-import { getUserModuleProgress } from "@/features/supabase/db/module-progress"
+import {
+  getUserModuleProgress,
+  createSession,
+  markModuleCompleted,
+} from "@/features/supabase/db/module-progress"
 import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
 import { getVocabSets, getVocabularyForModule } from "@/data/utils/vocab"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
@@ -27,6 +33,7 @@ import {
   getUserSessions,
   getUserWeekTimeData,
 } from "@/features/supabase/db/module-progress"
+import { getLocalCompletions } from "@/features/module-completion/localStorage"
 
 export const vocabHierarchyQueryOptions = (
   activeTextbook: string,
@@ -122,14 +129,111 @@ export const seenCardsStatsQueryOptions = (
 export const completedModulesQueryOptions = (userId: string | null) =>
   queryOptions({
     queryKey: ["module-progress", userId, "completed"],
-    queryFn: async () => {
-      if (!userId) return []
-      return getUserModuleProgress(userId, {
+    refetchOnMount: "always", // Ensure localStorage completions load on client
+    queryFn: async (): Promise<ModuleProgressWithLocal[]> => {
+      const localCompletions = getLocalCompletions()
+
+      if (!userId) {
+        // Not logged in - return only local completions
+        return localCompletions.map((modulePath) => ({
+          module_path: modulePath,
+          user_id: null,
+          completed_at: null,
+        }))
+      }
+
+      // Logged in - fetch from DB and merge with local (for pending sync items)
+      const dbCompletions = await getUserModuleProgress(userId, {
         orderBy: "completed_at",
         ascending: false,
       })
+
+      // Get unique module paths from both sources
+      const dbPaths = new Set(dbCompletions.map((c) => c.module_path))
+
+      // Add any local-only items (not yet synced)
+      const localOnly = localCompletions
+        .filter((path) => !dbPaths.has(path))
+        .map(
+          (modulePath) =>
+            ({
+              module_path: modulePath,
+              user_id: userId,
+              completed_at: null, // pending sync
+            }) as ModuleProgressWithLocal,
+        )
+
+      return [...dbCompletions, ...localOnly]
     },
   })
+
+type CompletionResult =
+  | { type: "completed"; data: ModuleProgress }
+  | { type: "already-completed" }
+  | { type: "local-only" }
+
+export const markModuleCompletedMutation = (
+  queryClient: QueryClient,
+): MutationOptions<
+  CompletionResult,
+  Error,
+  {
+    userId: string | null
+    moduleId: string
+    durationSeconds: number
+  }
+> => ({
+  mutationFn: async ({ userId, moduleId, durationSeconds }) => {
+    // Check cache to see if already completed
+    const completedModules = queryClient.getQueryData<
+      ModuleProgressWithLocal[]
+    >(["module-progress", userId, "completed"])
+    const isAlreadyCompleted = completedModules?.some(
+      (c) => c.module_path === moduleId,
+    )
+
+    if (isAlreadyCompleted) {
+      return { type: "already-completed" }
+    }
+
+    // Not completed yet - proceed with marking complete
+    await createSession(userId, moduleId, { durationSeconds })
+    const result = await markModuleCompleted(userId, moduleId)
+
+    return result ? { type: "completed", data: result } : { type: "local-only" }
+  },
+  onSuccess: (result, variables) => {
+    // Skip cache updates if already completed
+    if (result.type === "already-completed") {
+      return
+    }
+
+    // Local-only completion - invalidate to refresh
+    if (result.type === "local-only") {
+      queryClient.invalidateQueries({
+        queryKey: ["module-progress", null, "completed"],
+      })
+      return
+    }
+
+    // DB completion - update cache and invalidate daily time
+    queryClient.setQueryData(
+      ["module-progress", variables.userId, "completed"],
+      (old: ModuleProgressWithLocal[] | undefined) => {
+        const modulePath = result.data.module_path
+        // If module already in list, return as-is
+        if (old?.some((c) => c.module_path === modulePath)) return old
+        // prepend - most recent first, matching DB sort order
+        return [result.data, ...(old || [])]
+      },
+    )
+
+    // Invalidate daily time query to refresh BottomNav
+    queryClient.invalidateQueries({
+      queryKey: ["user-daily-time", variables.userId],
+    })
+  },
+})
 
 export const resourceThumbnailQueryOptions = (
   resourceId: string,

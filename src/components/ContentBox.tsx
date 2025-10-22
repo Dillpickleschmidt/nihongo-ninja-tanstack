@@ -6,10 +6,7 @@ import { useQueryClient, useMutation } from "@tanstack/solid-query"
 import { cva } from "class-variance-authority"
 import { cn } from "@/utils"
 import { User } from "@supabase/supabase-js"
-import {
-  createSession,
-  markModuleCompleted,
-} from "@/features/supabase/db/module-progress"
+import { markModuleCompletedMutation } from "@/features/learn-page/query/query-options"
 import { static_modules } from "@/data/static_modules"
 import { external_resources } from "@/data/external_resources"
 
@@ -48,34 +45,9 @@ export default function ContentBox(props: ContentBoxProps) {
   const queryClient = useQueryClient()
   const [showCompleteButton, setShowCompleteButton] = createSignal(false)
 
-  const addCompletionMutation = useMutation(() => ({
-    mutationFn: async ({
-      userId,
-      moduleId,
-      durationSeconds,
-    }: {
-      userId: string
-      moduleId: string
-      durationSeconds: number
-    }) => {
-      // Create session record (time spent)
-      await createSession(userId, moduleId, { durationSeconds })
-      // Mark module as completed
-      return markModuleCompleted(userId, moduleId)
-    },
-    onSuccess: (data, variables) => {
-      queryClient.setQueryData(
-        ["module-progress", variables.userId, "completed"],
-        (old: ModuleProgress[] | undefined) => {
-          const modulePath = data.module_path
-          // If module already in list, return as-is
-          if (old?.some((c) => c.module_path === modulePath)) return old
-          // prepend - most recent first, matching DB sort order
-          return [data, ...(old || [])]
-        },
-      )
-    },
-  }))
+  const addCompletionMutation = useMutation(() =>
+    markModuleCompletedMutation(queryClient),
+  )
 
   const config = (): ContentBoxConfig => {
     const currentPath = location().pathname
@@ -92,7 +64,7 @@ export default function ContentBox(props: ContentBoxProps) {
   const isVisible = () =>
     location().pathname.startsWith("/lessons/") ||
     location().pathname.startsWith("/external-resources/") ||
-    location().pathname === "/guides/home"
+    location().pathname === "/guides"
 
   const handleCompleteClick = (e: Event) => {
     e.preventDefault()
@@ -101,7 +73,7 @@ export default function ContentBox(props: ContentBoxProps) {
     const moduleId = currentPath.split("/").pop()
 
     // Mark as complete with estimated duration
-    if (props.user && moduleId) {
+    if (moduleId) {
       // Look up module in static_modules or external_resources
       const module = static_modules[moduleId] || external_resources[moduleId]
 
@@ -110,7 +82,7 @@ export default function ContentBox(props: ContentBoxProps) {
       const durationSeconds = estimatedMinutes * 60
 
       addCompletionMutation.mutate({
-        userId: props.user.id,
+        userId: props.user?.id || null,
         moduleId,
         durationSeconds,
       })

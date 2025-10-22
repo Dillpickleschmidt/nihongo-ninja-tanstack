@@ -16,14 +16,14 @@ export const TOURS: Record<string, TourStep[]> = {
       description: "Take a quick tour, or skip and explore on your own!",
     },
     {
-      route: "/dashboard",
+      route: "/",
       title: "Your Dashboard",
       description:
         "Start at the homepage to access your most important learning tools.",
     },
     {
       element: "#tour-featured-tools",
-      route: "/dashboard",
+      route: "/",
       title: "Featured Tools",
       description: "Focus on your most important learning tools right here.",
       side: "bottom",
@@ -31,7 +31,7 @@ export const TOURS: Record<string, TourStep[]> = {
     },
     {
       element: "#tour-learn-card",
-      route: "/dashboard",
+      route: "/",
       title: "Learn Card",
       description: "Access your lessons and track your learning progress here.",
       side: "bottom",
@@ -39,7 +39,7 @@ export const TOURS: Record<string, TourStep[]> = {
     },
     {
       element: "#tour-learn",
-      route: "/dashboard",
+      route: "/",
       title: "Learn Button",
       description: "You can also access that via your navbar.",
       side: "top",
@@ -63,7 +63,7 @@ export const TOURS: Record<string, TourStep[]> = {
     },
     {
       element: "#tour-vocab-card",
-      route: "/dashboard",
+      route: "/",
       title: "Vocab Card",
       description: "Manage your vocabulary decks and practice anytime.",
       side: "bottom",

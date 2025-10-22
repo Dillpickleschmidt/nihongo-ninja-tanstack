@@ -7,10 +7,11 @@ import Nav from "@/features/homepage/shared/components/Nav2"
 import LoginMessage from "@/features/homepage/shared/assets/login-message.svg"
 import { LearningPathPage } from "@/features/homepage/pages/learning-path"
 import { completedModulesQueryOptions } from "@/features/learn-page/query/query-options"
-import { getDeckBySlug } from "@/data/utils/core"
+import { getDeckBySlug, getModules } from "@/data/utils/core"
+import { enrichLessons } from "@/features/learn-page/utils/loader-helpers"
 import type { TextbookIDEnum } from "@/data/types"
 
-export const Route = createFileRoute("/$textbookId/$chapterSlug")({
+export const Route = createFileRoute("/_home/$textbookId/$chapterSlug")({
   loader: async ({ context, params }) => {
     const { user, queryClient } = context
     const { textbookId, chapterSlug } = params
@@ -23,13 +24,18 @@ export const Route = createFileRoute("/$textbookId/$chapterSlug")({
 
     // Prefetch completed modules
     queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
-    return { textbookId, chapterSlug }
+
+    const rawModules = getModules(chapter)
+    const enrichedModules = enrichLessons(rawModules)
+
+    return { textbookId, chapterSlug, deck: chapter, enrichedModules }
   },
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const context = useRouteContext({ from: RootRoute.id })
+  const loaderData = Route.useLoaderData()
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(context().user?.id || null),
   )
@@ -39,7 +45,12 @@ function RouteComponent() {
       <BackgroundLayers />
       <Nav />
       <LoginMessage class="fixed top-6 right-24 hidden h-auto w-64 text-neutral-500 md:block" />
-      <LearningPathPage settingsQuery={settingsQuery} user={context().user} />
+      <LearningPathPage
+        settingsQuery={settingsQuery}
+        user={context().user}
+        deck={loaderData.deck}
+        enrichedModules={loaderData.enrichedModules}
+      />
     </>
   )
 }

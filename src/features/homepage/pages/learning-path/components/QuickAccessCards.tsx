@@ -3,8 +3,8 @@ import { useNavigate } from "@tanstack/solid-router"
 import { cn } from "@/utils"
 import { SmoothCard } from "@/features/learn-page/components/shared/SmoothCard"
 import { SSRMediaQuery } from "~/components/SSRMediaQuery"
-import { featuredTools } from "@/features/dashboard/data/featured-tools"
-import type { Tool } from "@/features/dashboard/types"
+import { featuredTools } from "@/features/homepage/shared/featured-tools"
+import type { Tool } from "@/features/homepage/types"
 
 // Tool styling - defines complete Tailwind classes
 const TOOL_STYLES: Record<

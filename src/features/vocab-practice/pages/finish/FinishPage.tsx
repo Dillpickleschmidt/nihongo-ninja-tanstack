@@ -171,7 +171,7 @@ export default function FinishPageComponent() {
       <div class="fixed right-0 bottom-0 left-0 z-50 p-4">
         <div class="mx-auto max-w-md">
           <Link
-            to="/dashboard"
+            to="/"
             tabindex={-1}
             onClick={() => addTimeAndQuestions(10, false)}
           >
