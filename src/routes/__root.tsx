@@ -79,18 +79,8 @@ export const Route = createRootRouteWithContext<{
       queryClient.prefetchQuery(dbUserSettingsQueryOptions(user.id))
     }
 
-    // Check if main tour should auto-start
-    const isMainTourCompleted =
-      userSettings["completed-tours"].includes("app-onboarding") ||
-      userSettings.tour.currentTourStep === -2
-    const isDismissed = userSettings.tour.currentTourStep === -1
-    const hasActiveTour = userSettings.tour.currentTourId
-    const shouldStartMainTour =
-      !isMainTourCompleted && !isDismissed && !hasActiveTour
-
     return {
       user,
-      shouldStartMainTour,
     }
   },
   component: RootComponent,
@@ -120,7 +110,7 @@ function RootComponent() {
 
 function RootContent() {
   const loaderData = Route.useLoaderData()
-  const { user, shouldStartMainTour } = loaderData()
+  const { user } = loaderData()
   const queryClient = useQueryClient()
   const colorModeCookies = `kb-color-mode=${getCookie("kb-color-mode")}`
 
@@ -175,7 +165,7 @@ function RootContent() {
     <PostHogProvider user={user}>
       <ColorModeScript storageType={storageManager?.type} />
       <ColorModeProvider storageManager={storageManager}>
-        <TourProvider shouldStartMainTour={shouldStartMainTour}>
+        <TourProvider>
           <Outlet />
           {/* <TanStackRouterDevtools position="bottom-right" /> */}
           {/* <SolidQueryDevtools buttonPosition="bottom-left" /> */}

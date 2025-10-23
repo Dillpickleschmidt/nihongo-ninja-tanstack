@@ -13,7 +13,10 @@ export function HeroDailyProgress() {
   }
 
   return (
-    <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-600/15 via-emerald-500/5 to-neutral-200/5 px-5 py-4 shadow-inner backdrop-blur-md">
+    <div
+      id="hero-daily-progress"
+      class="relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-600/15 via-emerald-500/5 to-neutral-200/5 px-5 py-4 shadow-inner backdrop-blur-md"
+    >
       <div class="mb-5 flex items-center justify-between">
         <div>
           <p class="text-muted-foreground text-xs tracking-wide uppercase">

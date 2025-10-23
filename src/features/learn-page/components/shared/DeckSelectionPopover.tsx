@@ -56,7 +56,9 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
   return (
     <div>
       <Popover open={props.isOpen} onOpenChange={handleOpenChange}>
-        <PopoverTrigger>{props.children}</PopoverTrigger>
+        <PopoverTrigger id="deck-selection-popover-trigger">
+          {props.children}
+        </PopoverTrigger>
         <PopoverContent
           class={cn(
             "border-card-foreground bg-neutral-950/70 p-2 backdrop-blur-2xl",

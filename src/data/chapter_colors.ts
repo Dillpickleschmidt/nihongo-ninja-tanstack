@@ -71,6 +71,17 @@ export const chapterColors: Record<string, ChapterStyles> = {
     svgBorderClass: "stroke-rose-400/35 [stroke-width:0.75]",
     ringClass: "stroke-rose-400 [stroke-width:2]",
   },
+  "chapter-0": {
+    textColor: "text-red-400",
+    ringColor1: "ring-red-400/20",
+    ringColor2: "ring-red-400/30",
+    ringColorBright: "ring-red-400",
+    bgColor: "bg-red-400/10",
+    borderColor: "border-red-400/35",
+    gradient: "from-red-400/5 to-red-600/10",
+    svgBorderClass: "stroke-red-400/35 [stroke-width:0.75]",
+    ringClass: "stroke-red-400 [stroke-width:2]",
+  },
 }
 
 export const getChapterStyles = (chapterSlug: string | null): ChapterStyles => {

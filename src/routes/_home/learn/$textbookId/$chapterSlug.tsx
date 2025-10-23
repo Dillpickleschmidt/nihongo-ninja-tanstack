@@ -1,6 +1,13 @@
 // routes/_home/learn/$textbookId/$chapterSlug.tsx
-import { createFileRoute, redirect } from "@tanstack/solid-router"
+import { onMount } from "solid-js"
+import {
+  createFileRoute,
+  redirect,
+  useRouteContext,
+} from "@tanstack/solid-router"
 import { getDeckBySlug, getModules } from "@/data/utils/core"
+import { useTour } from "@/features/guided-tour/TourContext"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { vocabHierarchyQueryOptions } from "@/features/learn-page/query/query-options"
 import { resourceThumbnailQueryOptions } from "@/features/learn-page/query/query-options"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
@@ -11,6 +18,7 @@ import {
 } from "@/features/main-cookies/query/query-options"
 import type { TextbookIDEnum, ExternalResource } from "@/data/types"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
+import { Route as RootRoute } from "@/routes/__root"
 import DesktopLayout from "@/features/learn-page/components/shared/DesktopLayout"
 
 export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
@@ -30,7 +38,10 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
     if (!deck) {
       throw redirect({
         to: "/learn/$textbookId/$chapterSlug",
-        params: { textbookId: textbookId as TextbookIDEnum, chapterSlug: userSettings["active-deck"] },
+        params: {
+          textbookId: textbookId as TextbookIDEnum,
+          chapterSlug: userSettings["active-deck"],
+        },
       })
     }
 
@@ -126,5 +137,24 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
 })
 
 function RouteComponent() {
+  const { startTour } = useTour()
+  const context = useRouteContext({ from: RootRoute.id })
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(context().user?.id || null),
+  )
+
+  onMount(() => {
+    const settings = settingsQuery.data
+    const tourId = "learn-page-intro"
+
+    const isCompleted = settings?.["completed-tours"].includes(tourId)
+    const isDismissed = settings?.tour.currentTourStep === -1
+    const hasActiveTour = settings?.tour.currentTourId
+
+    if (!isCompleted && !isDismissed && !hasActiveTour) {
+      startTour(tourId)
+    }
+  })
+
   return <DesktopLayout />
 }

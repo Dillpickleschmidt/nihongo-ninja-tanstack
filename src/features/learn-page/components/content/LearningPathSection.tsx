@@ -21,7 +21,10 @@ export function LearningPathContent(props: LearningPathSectionProps) {
   const variant = props.variant || "desktop"
 
   return (
-    <div class={variant === "mobile" ? "w-full px-6 pt-4" : "w-full pt-4"}>
+    <div
+      id="learning-path-content"
+      class={variant === "mobile" ? "w-full px-6 pt-4" : "w-full pt-4"}
+    >
       <TabsContent value="list" class="mt-0">
         <LearningPathList />
       </TabsContent>
