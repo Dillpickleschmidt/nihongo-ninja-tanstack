@@ -147,13 +147,10 @@ function RouteComponent() {
   const handleGoHomeClick = (e: Event) => {
     e.preventDefault()
 
-    const moduleId = location().pathname
+    const moduleId = location().pathname.split("/").pop()
 
     if (moduleId) {
-      // Mark as complete with estimated duration
-      // Look up module in static_modules
       const module = static_modules[moduleId as keyof typeof static_modules]
-      // Get estimated duration (default to 10 minutes = 600 seconds)
       const durationSeconds = (module?.daily_prog_amount ?? 10) * 60
 
       addCompletionMutation.mutate({

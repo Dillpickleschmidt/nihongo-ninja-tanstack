@@ -91,9 +91,7 @@ export const TOURS: Record<string, TourStep[]> = {
     {
       route: "/learn",
       title: "That's it!",
-      description: (
-        <div>You're all set! Start exploring and happy learning!</div>
-      ),
+      description: "You're all set! Start exploring and happy learning!",
     },
   ],
 }

@@ -60,10 +60,12 @@ export function LearningPathPage(props: LearningPathPageProps) {
     completedModulesQueryOptions(props.user?.id || null),
   )
 
-  const isModuleCompleted = (moduleHref: string) =>
-    completedModulesQuery.data?.some(
-      (module) => module.module_path === moduleHref,
+  const isModuleCompleted = (moduleHref: string) => {
+    const moduleId = moduleHref.split('/').pop()
+    return completedModulesQuery.data?.some(
+      (module) => module.module_path === moduleId,
     ) ?? false
+  }
 
   const tiles = createMemo(() =>
     enrichedModules().map((module) => ({
