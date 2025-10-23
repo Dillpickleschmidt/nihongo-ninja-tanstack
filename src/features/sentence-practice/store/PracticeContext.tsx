@@ -29,6 +29,8 @@ interface PracticeContextValue {
     updateInput: (value: string, index?: number) => void
     loadQuestions: (path: string) => Promise<void>
     setDifficulty: (difficulty: Difficulty) => void
+    setUserInputTokens: (tokens: import("../kagome/types/kagome").KagomeToken[]) => void
+    setUserInputOverlay: (overlay: import("../core/text/KanaToKanjiOverlay").OverlayResult | undefined) => void
   }
   kagomeReady: () => boolean
   kagomeWorker: KagomeWorkerManager | null

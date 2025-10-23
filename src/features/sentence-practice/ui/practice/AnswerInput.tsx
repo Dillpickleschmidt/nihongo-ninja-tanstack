@@ -5,23 +5,64 @@ import { Button } from "@/components/ui/button"
 import { usePracticeStore } from "../../store/PracticeContext"
 import PracticeInput from "./PracticeInput"
 import PosHintDisplay from "./PosHintDisplay"
+import UserInputPosDisplay from "./UserInputPosDisplay"
+import { KanaToKanjiOverlay } from "../../core/text/KanaToKanjiOverlay"
+import { TextProcessor } from "../../core/text/TextProcessor"
+import { AnswerChecker } from "../../core/answer-processing/AnswerChecker"
 
 export default function AnswerInput() {
   const { store, actions, kagomeReady, kagomeWorker } = usePracticeStore()
 
+  // Initialize utilities for overlay
+  const textProcessor = new TextProcessor()
+  const answerChecker = new AnswerChecker()
+  const overlay = new KanaToKanjiOverlay(answerChecker, textProcessor)
+
+  const currentQuestion = () => store.questions[store.currentQuestionIndex]
+  const currentRawQuestion = () => store.rawQuestions[store.currentQuestionIndex]
+
   // Tokenize input asynchronously via worker (doesn't block UI)
   createEffect(() => {
-    if (kagomeReady() && kagomeWorker && store.inputs.single) {
+    const userInput = store.inputs.single
+    const question = currentQuestion()
+    const rawQuestion = currentRawQuestion()
+
+    if (kagomeReady() && kagomeWorker && userInput && question && rawQuestion) {
+      // Determine what text to parse
+      let textToParse = userInput
+
+      // Apply overlay if pure kana
+      const containsKanji = textProcessor.containsKanji(userInput)
+
+      if (!containsKanji) {
+        const overlayResult = overlay.overlayKanji(userInput, question, rawQuestion)
+        if (overlayResult) {
+          textToParse = overlayResult.overlaidText
+          actions.setUserInputOverlay(overlayResult)
+        } else {
+          actions.setUserInputOverlay(undefined)
+        }
+      } else {
+        actions.setUserInputOverlay(undefined)
+      }
+
+      // Tokenize with kagome
       kagomeWorker
-        .tokenize(store.inputs.single)
+        .tokenize(textToParse)
         .then((tokens) => {
-          console.log("[Tokens]", tokens)
+          actions.setUserInputTokens(tokens)
         })
         .catch((error) => {
           console.error("[Kagome] Tokenization failed:", error)
+          actions.setUserInputTokens([])
         })
+    } else if (!userInput) {
+      // Clear tokens and overlay when input is empty
+      actions.setUserInputTokens([])
+      actions.setUserInputOverlay(undefined)
     }
   })
+
   const isLastQuestion =
     store.currentQuestionIndex === store.questions.length - 1
 
@@ -35,8 +76,6 @@ export default function AnswerInput() {
     }
   }
 
-  const currentQuestion = () => store.questions[store.currentQuestionIndex]
-
   return (
     <div class="space-y-4">
       <div>
@@ -44,6 +83,13 @@ export default function AnswerInput() {
         <Show when={currentQuestion()?.modelAnswerPOS}>
           <PosHintDisplay modelAnswerPOS={currentQuestion()!.modelAnswerPOS!} />
         </Show>
+
+        {/* User Input POS Display - shows colored boxes for user's input */}
+        <UserInputPosDisplay
+          tokens={store.userInputTokens}
+          overlayResult={store.userInputOverlay}
+          originalInput={store.inputs.single || ""}
+        />
 
         <div class="relative">
           <PracticeInput

@@ -143,6 +143,8 @@ export function createPracticeStore(
         })
       },
       toggleFurigana: () => setStore("showFurigana", (prev) => !prev),
+      setUserInputTokens: (tokens) => setStore("userInputTokens", tokens),
+      setUserInputOverlay: (overlay) => setStore("userInputOverlay", overlay),
       loadQuestions: async (path: string) => {
         setStore({
           path,

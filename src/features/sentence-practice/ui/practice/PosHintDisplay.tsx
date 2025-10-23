@@ -8,14 +8,14 @@ interface PosHintDisplayProps {
 
 /**
  * Determines the width for a POS hint box based on category
- * Orange (nouns/na-adj): 2 characters
- * Green (verbs/i-adj): 3 characters
+ * Orange (nouns/na-adj): 3 characters
+ * Green (verbs/i-adj): 4 characters
  * Blue (particles/copulas): 1 character
  */
 function getWidthForCategory(category: PosCategory): number {
   const widths: Record<PosCategory, number> = {
-    orange: 2,
-    green: 3,
+    orange: 3,
+    green: 4,
     blue: 1,
   }
   return widths[category]
