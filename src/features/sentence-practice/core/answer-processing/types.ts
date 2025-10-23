@@ -14,6 +14,7 @@ export type PracticeQuestion = {
   english: string
   hint?: string
   answers: Answer[]
+  modelAnswerPOS?: string[][] // POS tags from Kagome for first answer (added by parse-sentences script)
 }
 
 export type ErrorRange = {

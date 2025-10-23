@@ -4,6 +4,7 @@ import { CircleHelp, Loader2 } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { usePracticeStore } from "../../store/PracticeContext"
 import PracticeInput from "./PracticeInput"
+import PosHintDisplay from "./PosHintDisplay"
 
 export default function AnswerInput() {
   const { store, actions, kagomeReady, kagomeWorker } = usePracticeStore()
@@ -34,9 +35,16 @@ export default function AnswerInput() {
     }
   }
 
+  const currentQuestion = () => store.questions[store.currentQuestionIndex]
+
   return (
     <div class="space-y-4">
       <div>
+        {/* POS Hint Display - shows colored boxes for model answer structure */}
+        <Show when={currentQuestion()?.modelAnswerPOS}>
+          <PosHintDisplay modelAnswerPOS={currentQuestion()!.modelAnswerPOS!} />
+        </Show>
+
         <div class="relative">
           <PracticeInput
             value={store.inputs.single || ""}

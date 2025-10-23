@@ -11,7 +11,8 @@
     "deploy-stage": "sst deploy --stage staging",
     "deploy-prod": "sst deploy --stage production",
     "test": "vitest",
-    "migrate": "bunx supabase db diff --linked --use-migra -f staging"
+    "migrate": "bunx supabase db diff --linked --use-migra -f staging",
+    "parse-sentences": "bun run scripts/parse-sentences.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
