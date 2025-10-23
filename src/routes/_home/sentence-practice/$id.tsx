@@ -5,7 +5,7 @@ import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 import { Route as RootRoute } from "@/routes/__root"
 
-export const Route = createFileRoute("/_home/practice/sentence-practice/$id")({
+export const Route = createFileRoute("/_home/sentence-practice/$id")({
   component: RouteComponent,
 })
 

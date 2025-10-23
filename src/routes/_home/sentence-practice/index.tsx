@@ -18,7 +18,7 @@ import {
   getModuleIconClasses,
 } from "@/features/learn-page/utils/loader-helpers"
 
-export const Route = createFileRoute("/_home/practice/sentence-practice/")({
+export const Route = createFileRoute("/_home/sentence-practice/")({
   component: RouteComponent,
 })
 
@@ -39,7 +39,7 @@ function enrich(mod: { id: string } & DynamicModule): EnrichedSentenceModule {
     id: mod.id,
     title: mod.title,
     description: mod.instructions || mod.description,
-    linkTo: `/practice/sentence-practice/${strippedId}`,
+    linkTo: `/sentence-practice/${strippedId}`,
     iconClass: getModuleIconClasses("sentence-practice"),
   }
 }

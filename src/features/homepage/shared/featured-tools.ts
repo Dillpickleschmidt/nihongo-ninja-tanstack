@@ -27,9 +27,8 @@ export const featuredTools: Tool[] = [
     title: "Sentence Practice",
     description: "Build sentences and improve comprehension",
     icon: "💬",
-    href: "/practice/sentences",
+    href: "/sentence-practice",
     gradient: "from-orange-400 to-orange-600",
-    disabled: true,
   },
   {
     title: "Conjugation",
