@@ -15,7 +15,7 @@ function findVocabPracticeDeck(deckId: string): {
 
   for (const [textbookId, textbook] of allTextbooks) {
     for (const chapter of textbook.chapters) {
-      const deck = chapter.decks.find((d) => d.id === deckId)
+      const deck = chapter.decks.find((d) => d.slug === deckId)
       if (deck) {
         return { deck, textbookId, chapterId: chapter.id }
       }
@@ -34,7 +34,7 @@ export const Route = createFileRoute("/_home/vocab")({
     // For unsigned users, data will be loaded from session storage in the component
     const foldersAndDecksPromise = context.user
       ? getUserFoldersAndDecks(context.user.id)
-      : Promise.resolve({ folders: [], decks: [] })
+      : Promise.resolve({ folders: [], decks: [], shareStatus: {} })
 
     return {
       importRequest: result
