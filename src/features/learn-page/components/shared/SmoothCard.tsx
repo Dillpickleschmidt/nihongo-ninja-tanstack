@@ -1,7 +1,7 @@
 // features/learn-page/components/shared/SmoothCard.tsx
 import { getSvgPath } from "figma-squircle"
 import { createMediaQuery } from "@solid-primitives/media"
-import { JSX } from "solid-js"
+import { JSX, createSignal } from "solid-js"
 import { cn } from "@/utils"
 
 interface SmoothCardProps {
@@ -18,8 +18,10 @@ interface SmoothCardProps {
   }
   border?: boolean
   borderClass?: string
-  ring?: boolean
-  ringClass?: string
+  tabIndex?: number
+  focusRing?: boolean
+  focusRingClass?: string
+  focusStrokeWidth?: number
   class?: string
   style?: JSX.CSSProperties
   children: any
@@ -34,6 +36,9 @@ const breakpointMap = {
 }
 
 export function SmoothCard(props: SmoothCardProps) {
+  // Focus state for focus ring
+  const [isFocused, setIsFocused] = createSignal(false)
+
   // Create media queries for each breakpoint
   const isXl = createMediaQuery(`(min-width: ${breakpointMap.xl}px)`)
   const is2xl = createMediaQuery(`(min-width: ${breakpointMap["2xl"]}px)`)
@@ -80,6 +85,22 @@ export function SmoothCard(props: SmoothCardProps) {
     ...props.style,
   }
 
+  // Determine if outline should be visible
+  const showOutline = () => props.border || (props.focusRing && isFocused())
+
+  // Determine which outline class to use
+  const activeOutlineClass = () => {
+    if (props.focusRing && isFocused()) return props.focusRingClass
+    if (props.border) return props.borderClass
+    return undefined
+  }
+
+  // Determine stroke width for outline
+  const outlineStrokeWidth = () => {
+    if (props.focusRing && isFocused()) return props.focusStrokeWidth || 2
+    return 1
+  }
+
   return (
     <div
       style={{
@@ -87,6 +108,10 @@ export function SmoothCard(props: SmoothCardProps) {
         width: `${scaledWidth}px`,
         height: `${scaledHeight}px`,
       }}
+      tabIndex={props.tabIndex}
+      onFocus={() => props.focusRing && setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      class={props.focusRing ? "outline-none" : undefined}
     >
       <div
         style={combinedStyle}
@@ -99,25 +124,11 @@ export function SmoothCard(props: SmoothCardProps) {
         {props.children}
       </div>
 
-      {props.border && (
-        <svg
-          class={cn("absolute inset-0 overflow-visible", props.borderClass)}
-          style={{
-            width: `${scaledWidth}px`,
-            height: `${scaledHeight}px`,
-          }}
-          viewBox={`0 0 ${scaledWidth} ${scaledHeight}`}
-          preserveAspectRatio="none"
-        >
-          <path d={svgPath} fill="none" shape-rendering="geometricPrecision" />
-        </svg>
-      )}
-
       <svg
         class={cn(
           "absolute inset-0 overflow-visible",
-          props.ring ? "opacity-100" : "opacity-0",
-          props.ringClass,
+          showOutline() ? "opacity-100" : "opacity-0",
+          activeOutlineClass(),
         )}
         style={{
           width: `${scaledWidth}px`,
@@ -126,7 +137,12 @@ export function SmoothCard(props: SmoothCardProps) {
         viewBox={`0 0 ${scaledWidth} ${scaledHeight}`}
         preserveAspectRatio="none"
       >
-        <path d={svgPath} fill="none" shape-rendering="geometricPrecision" />
+        <path
+          d={svgPath}
+          fill="none"
+          shape-rendering="geometricPrecision"
+          stroke-width={outlineStrokeWidth()}
+        />
       </svg>
     </div>
   )

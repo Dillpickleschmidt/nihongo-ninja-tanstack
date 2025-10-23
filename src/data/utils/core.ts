@@ -97,6 +97,39 @@ export function getModules(deck: BuiltInDeck): {
 }
 
 /**
+ * Gets all dynamic modules by their session type for a specific textbook.
+ * @param textbookId The textbook to filter modules from
+ * @param sessionType The session type to filter by (e.g., "sentence-practice", "vocab-practice")
+ * @returns Array of modules with matching session type, with their IDs included
+ */
+export function getModulesBySessionType(
+  textbookId: TextbookIDEnum,
+  sessionType: DynamicModule["session_type"],
+): Array<{ id: string } & DynamicModule> {
+  const filteredModules: Array<{ id: string } & DynamicModule> = []
+
+  const textbookChapters = chapters[textbookId]
+  if (!textbookChapters) return []
+
+  // Get modules from each chapter using getModules
+  for (const chapter of Object.values(textbookChapters)) {
+    const chapterModules = getModules(chapter)
+
+    // Filter for modules with matching session_type
+    chapterModules.forEach(({ module, key }) => {
+      if ("session_type" in module && module.session_type === sessionType) {
+        filteredModules.push({
+          id: key,
+          ...(module as DynamicModule),
+        })
+      }
+    })
+  }
+
+  return filteredModules
+}
+
+/**
  * Helper function to create a vocab chapter from a textbook chapter
  */
 function createVocabChapter(

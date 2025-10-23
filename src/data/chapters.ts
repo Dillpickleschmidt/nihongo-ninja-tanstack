@@ -115,9 +115,9 @@ export const chapters: ChapterCollection = {
     "chapter-0": {
       slug: "chapter-0",
       title: "Chapter 0",
-      heading: "Start from scratch. Actually stick with it.",
+      heading: "Chapter 0: Japanese from scratch.",
       description:
-        "Your entry point into Japanese. Master the sounds, learn the symbols, practice the greetings you'll say a thousand times. It's foundational work, but there's genuine satisfaction in the moment hiragana stops being a puzzle and starts being readable.",
+        "Your entry point into Japanese. Master the sounds, learn the symbols, practice the greetings you'll say a thousand times. It's foundational work, but there's genuine satisfaction in the moment hiragana stops being a puzzle and starts becoming readable.",
       features: [
         "Hiragana mastery through progressive quizzes",
         "Natural greetings and everyday expressions",

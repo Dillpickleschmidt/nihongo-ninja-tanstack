@@ -31,12 +31,11 @@ export function JlptPage(props: JlptPageProps) {
         </For>
       </div>
 
-      {/* <div class="absolute bottom-4 w-full px-6 text-right text-sm opacity-50"> */}
-      {/*   <p> */}
-      {/*     Don't worry, there's no additional questions asking for your email or */}
-      {/*     anything :) */}
-      {/*   </p> */}
-      {/* </div> */}
+      <div class="absolute bottom-4 w-full px-6 text-right text-sm opacity-50">
+        <p>
+          Don't worry, there's no additional questions asking for your email :)
+        </p>
+      </div>
     </div>
   )
 }
