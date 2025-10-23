@@ -154,6 +154,7 @@ export function ProgressSummary() {
         </Button>
 
         <Button
+          id="adjust-target-button"
           variant="ghost"
           class="border-foreground/10 bg-card/30 text-muted-foreground h-auto rounded-md border px-4 py-2 text-[10px] transition hover:border-sky-400/40 hover:bg-sky-500/10 hover:text-sky-300"
         >

@@ -1,6 +1,8 @@
 // routes/_home/learn/$textbookId/$chapterSlug.tsx
+import { onMount } from "solid-js"
 import { createFileRoute, redirect } from "@tanstack/solid-router"
 import { getDeckBySlug, getModules } from "@/data/utils/core"
+import { useTour } from "@/features/guided-tour/TourContext"
 import { vocabHierarchyQueryOptions } from "@/features/learn-page/query/query-options"
 import { resourceThumbnailQueryOptions } from "@/features/learn-page/query/query-options"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
@@ -126,5 +128,11 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
 })
 
 function RouteComponent() {
+  const { startTour } = useTour()
+
+  onMount(() => {
+    startTour("learn-page-intro")
+  })
+
   return <DesktopLayout />
 }

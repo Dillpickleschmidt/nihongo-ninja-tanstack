@@ -49,7 +49,7 @@ function getOverriddenIconClasses(moduleType: string): string {
 export function ModuleTypesList(props: ModuleTypesListProps) {
   const fromSheet = () => props.fromSheet ?? false
   return (
-    <div class="space-y-1">
+    <div id="module-types-list" class="space-y-1">
       <For each={moduleTypes}>
         {(moduleType) => {
           const Icon = getModuleIcon(moduleType.id)
@@ -61,11 +61,11 @@ export function ModuleTypesList(props: ModuleTypesListProps) {
           )
 
           const buttonContent = (
-            <>
+            <div id={`module-types-list-${moduleType.id}`} class="flex gap-3">
               <Icon class={cn(iconClasses, "size-4!")} />
               <span class="text-sm">{moduleType.label}</span>
               <div />
-            </>
+            </div>
           )
 
           return fromSheet() ? (

@@ -5,7 +5,9 @@ import {
   Component,
   ParentProps,
   onMount,
+  type JSX,
 } from "solid-js"
+import { render as renderSolidJS } from "solid-js/web"
 import {
   useNavigate,
   useLocation,
@@ -29,9 +31,7 @@ interface TourContextType {
 
 const TourContext = createContext<TourContextType>()
 
-interface TourProviderProps extends ParentProps {
-  shouldStartMainTour?: boolean
-}
+interface TourProviderProps extends ParentProps {}
 
 export const TourProvider: Component<TourProviderProps> = (props) => {
   const navigate = useNavigate()
@@ -50,13 +50,6 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
   let currentTour: string | null = null
   let currentStepIndex: number = 0
   let tourStartPath: string = location().pathname
-
-  // Auto-start main tour if requested
-  onMount(() => {
-    if (props.shouldStartMainTour) {
-      startTour("app-onboarding")
-    }
-  })
 
   const startTour = (tourId: string) => {
     // Check if there's already an active tour
@@ -109,19 +102,48 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     driverInstance = driver({
       showProgress: true,
       popoverClass: "nihongo-ninja-tour",
-      steps: steps.map((s, index) => ({
-        element: s.element,
-        popover: {
-          title: s.title,
-          description: s.description,
-          side: s.side || "bottom",
-          align: s.align,
-          onNextClick: () => handleNext(steps, index),
-          onPrevClick: () => handlePrevious(steps, index),
-        },
-      })),
+      steps: steps.map((s, index) => {
+        // Check if description is a string or JSX
+        const isJSXDescription = typeof s.description !== "string"
+
+        return {
+          element: s.element,
+          popover: {
+            title: s.title,
+            // Needs some kind of string provided or it adds the hidden class
+            description: isJSXDescription ? " " : (s.description as string),
+            side: s.side || "bottom",
+            align: s.align,
+            onNextClick: () => handleNext(steps, index),
+            onPrevClick: () => handlePrevious(steps, index),
+          },
+        }
+      }),
       onDestroyStarted: dismissTour, // 👈 reuse
       onPopoverRender: (popover, { state }) => {
+        const currentStep = steps[state.activeIndex!]
+        const isJSXDescription = typeof currentStep?.description !== "string"
+
+        // Inject JSX description if present
+        if (isJSXDescription && currentStep) {
+          // Query the description element from the document
+          const descriptionElement = document.querySelector(
+            ".driver-popover-description",
+          ) as HTMLElement | null
+
+          if (descriptionElement) {
+            // Create a container for the JSX content
+            const container = document.createElement("div")
+            descriptionElement.appendChild(container)
+
+            // Render JSX into the container
+            renderSolidJS(
+              () => currentStep.description as JSX.Element,
+              container,
+            )
+          }
+        }
+
         if (state.activeIndex === 0) {
           const skipButton = document.createElement("button")
           skipButton.innerText = "Skip"
@@ -199,7 +221,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     if (!currentTour) return
 
     // Add to completed tours
-    const completed = settingsQuery.data["completed-tours"]
+    const completed = settingsQuery.data!["completed-tours"]
     await updateSettingsMutation.mutateAsync({
       "completed-tours": [...completed, currentTour],
     })
@@ -211,17 +233,6 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
 
     // Navigate back to the original page
     await navigate({ to: tourStartPath })
-
-    // If we just completed the main tour, check if we should start a route-specific tour
-    if (currentTour === "app-onboarding") {
-      const currentRoute = location().pathname
-      // Small delay to let the state updates settle, then try to start route tour
-      setTimeout(() => {
-        if (TOURS[currentRoute]) {
-          startTour(currentRoute)
-        }
-      }, 100)
-    }
 
     cleanup()
   }
@@ -244,7 +255,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
 
   const resetTour = async (tourId: string) => {
     // Reset completion status
-    const completed = settingsQuery.data["completed-tours"]
+    const completed = settingsQuery.data!["completed-tours"]
     await updateSettingsMutation.mutateAsync({
       "completed-tours": completed.filter((id) => id !== tourId),
     })
