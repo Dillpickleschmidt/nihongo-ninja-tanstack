@@ -1,6 +1,13 @@
 import type { MergeDeep } from "type-fest"
 import type { Database as DatabaseGenerated } from "./features/supabase/db/database.types"
 import type { UserPreferences } from "./features/main-cookies/schemas/user-preferences"
+import type {
+  KagomeToken,
+  GrammarMatch,
+  WordClass,
+  POS,
+  KagomeTokenizationResult,
+} from "./features/sentence-practice/kagome/types/kagome"
 
 declare global {
   // Enhanced Database type with properly typed user_preferences

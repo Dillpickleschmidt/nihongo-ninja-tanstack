@@ -51,7 +51,7 @@
     ]
   },
   {
-    "english": "This dictionary is not Tanaka's",
+    "english": "This is not Tanaka's dictionary.",
     "hint": "Denying ownership of a dictionary",
     "answers": [
       {
@@ -119,6 +119,11 @@
         "segments": ["これ", "は", "学生[がくせい]", "じゃないです"],
         "notes": "Full form with これは"
       },
+      {
+        "segments": ["これ", "が", "学生[がくせい]", "じゃないです"],
+        "notes": "Full form with これは"
+      },
+
       {
         "segments": ["学生[がくせい]", "じゃないです"],
         "notes": "Shorter form without これは, when context is clear"
