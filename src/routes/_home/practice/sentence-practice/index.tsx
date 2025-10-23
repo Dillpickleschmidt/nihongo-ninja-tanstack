@@ -1,11 +1,10 @@
 import { For, Show, createMemo, createSignal } from "solid-js"
-import { createFileRoute, Link, useRouteContext } from "@tanstack/solid-router"
-import { Search } from "lucide-solid"
-
-import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
-import { SmoothCard } from "@/features/learn-page/components/shared/SmoothCard"
-import { Button } from "@/components/ui/button"
+import { createFileRoute, useRouteContext } from "@tanstack/solid-router"
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
+import { Button } from "@/components/ui/button"
+import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
+import { SmoothCardLink } from "@/features/learn-page/components/shared/SmoothCard"
+import { Search } from "lucide-solid"
 import { cn } from "@/utils"
 
 import { useCustomQuery } from "@/hooks/useCustomQuery"
@@ -151,15 +150,13 @@ function RouteComponent() {
               <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
                 <For each={filteredModules()}>
                   {(m) => (
-                    <SmoothCard
-                      as={Link}
+                    <SmoothCardLink
                       to={m.linkTo}
                       width={360}
                       height={130}
                       cornerRadius={22}
                       cornerSmoothing={0.8}
                       scales={{ sm: 0.9, md: 0.95, lg: 1, xl: 1, "2xl": 1 }}
-                      tabIndex={0}
                       border
                       borderClass="stroke-yellow-500/30"
                       focusRing
@@ -191,6 +188,7 @@ function RouteComponent() {
                               size="sm"
                               variant="ghost"
                               class="border-card-foreground/40 h-7 rounded-full border px-3 text-xs font-medium text-yellow-600 hover:bg-yellow-500/10 hover:text-yellow-500 dark:text-yellow-500"
+                              tabindex="-1"
                             >
                               Explore
                             </Button>
@@ -203,7 +201,7 @@ function RouteComponent() {
                           </div>
                         </div>
                       </div>
-                    </SmoothCard>
+                    </SmoothCardLink>
                   )}
                 </For>
               </div>

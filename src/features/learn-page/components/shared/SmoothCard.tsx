@@ -1,7 +1,8 @@
 // features/learn-page/components/shared/SmoothCard.tsx
 import { getSvgPath } from "figma-squircle"
 import { createMediaQuery } from "@solid-primitives/media"
-import { JSX, createSignal } from "solid-js"
+import { JSX, createSignal, Accessor, splitProps } from "solid-js"
+import { createLink, LinkComponent } from "@tanstack/solid-router"
 import { cn } from "@/utils"
 
 interface SmoothCardProps {
@@ -18,13 +19,15 @@ interface SmoothCardProps {
   }
   border?: boolean
   borderClass?: string
-  tabIndex?: number
-  focusRing?: boolean
-  focusRingClass?: string
-  focusStrokeWidth?: number
   class?: string
   style?: JSX.CSSProperties
   children: any
+}
+
+interface SmoothCardLinkProps extends SmoothCardProps {
+  focusRing?: boolean
+  focusRingClass?: string
+  focusStrokeWidth?: number
 }
 
 const breakpointMap = {
@@ -35,10 +38,26 @@ const breakpointMap = {
   "2xl": 1536,
 }
 
-export function SmoothCard(props: SmoothCardProps) {
-  // Focus state for focus ring
-  const [isFocused, setIsFocused] = createSignal(false)
+interface ComputedInternals {
+  scaledWidth: number
+  scaledHeight: number
+  combinedStyle: any
+  svgPath: string
+  showOutline: Accessor<boolean>
+  activeOutlineClass: Accessor<string | undefined>
+  outlineStrokeWidth: Accessor<number>
+}
 
+type FocusConfig = Pick<
+  SmoothCardLinkProps,
+  "focusRing" | "focusRingClass" | "focusStrokeWidth"
+>
+
+function useSmoothCardInternals(
+  props: SmoothCardProps,
+  isFocused: Accessor<boolean>,
+  focusConfig?: FocusConfig,
+): ComputedInternals {
   // Create media queries for each breakpoint
   const isXl = createMediaQuery(`(min-width: ${breakpointMap.xl}px)`)
   const is2xl = createMediaQuery(`(min-width: ${breakpointMap["2xl"]}px)`)
@@ -86,35 +105,45 @@ export function SmoothCard(props: SmoothCardProps) {
   }
 
   // Determine if outline should be visible
-  const showOutline = () => props.border || (props.focusRing && isFocused())
+  const showOutline = () =>
+    !!(props.border || (focusConfig?.focusRing && isFocused()))
 
   // Determine which outline class to use
   const activeOutlineClass = () => {
-    if (props.focusRing && isFocused()) return props.focusRingClass
+    if (focusConfig?.focusRing && isFocused()) return focusConfig.focusRingClass
     if (props.border) return props.borderClass
     return undefined
   }
 
   // Determine stroke width for outline
   const outlineStrokeWidth = () => {
-    if (props.focusRing && isFocused()) return props.focusStrokeWidth || 2
+    if (focusConfig?.focusRing && isFocused())
+      return focusConfig.focusStrokeWidth || 2
     return 1
   }
 
+  return {
+    scaledWidth,
+    scaledHeight,
+    combinedStyle,
+    svgPath,
+    showOutline,
+    activeOutlineClass,
+    outlineStrokeWidth,
+  }
+}
+
+interface SmoothCardContentProps {
+  internals: ComputedInternals
+  class?: string
+  children: any
+}
+
+function SmoothCardContent(props: SmoothCardContentProps) {
   return (
-    <div
-      style={{
-        position: "relative",
-        width: `${scaledWidth}px`,
-        height: `${scaledHeight}px`,
-      }}
-      tabIndex={props.tabIndex}
-      onFocus={() => props.focusRing && setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
-      class={props.focusRing ? "outline-none" : undefined}
-    >
+    <>
       <div
-        style={combinedStyle}
+        style={props.internals.combinedStyle}
         class={cn(
           "bg-card",
           "shadow-sm shadow-black/5 dark:shadow-black/20",
@@ -127,23 +156,106 @@ export function SmoothCard(props: SmoothCardProps) {
       <svg
         class={cn(
           "absolute inset-0 overflow-visible",
-          showOutline() ? "opacity-100" : "opacity-0",
-          activeOutlineClass(),
+          props.internals.showOutline() ? "opacity-100" : "opacity-0",
+          props.internals.activeOutlineClass(),
         )}
         style={{
-          width: `${scaledWidth}px`,
-          height: `${scaledHeight}px`,
+          width: `${props.internals.scaledWidth}px`,
+          height: `${props.internals.scaledHeight}px`,
         }}
-        viewBox={`0 0 ${scaledWidth} ${scaledHeight}`}
+        viewBox={`0 0 ${props.internals.scaledWidth} ${props.internals.scaledHeight}`}
         preserveAspectRatio="none"
       >
         <path
-          d={svgPath}
+          d={props.internals.svgPath}
           fill="none"
           shape-rendering="geometricPrecision"
-          stroke-width={outlineStrokeWidth()}
+          stroke-width={props.internals.outlineStrokeWidth()}
         />
       </svg>
+    </>
+  )
+}
+
+export function SmoothCard(props: SmoothCardProps) {
+  const internals = useSmoothCardInternals(props, () => false)
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: `${internals.scaledWidth}px`,
+        height: `${internals.scaledHeight}px`,
+      }}
+    >
+      <SmoothCardContent internals={internals} class={props.class}>
+        {props.children}
+      </SmoothCardContent>
     </div>
   )
+}
+
+// Base link component for createLink
+type SmoothCardLinkBaseProps = JSX.IntrinsicElements["a"] &
+  Omit<SmoothCardLinkProps, "children"> & {
+    children: any
+  }
+
+const SmoothCardLinkBase = (props: SmoothCardLinkBaseProps) => {
+  const [isFocused, setIsFocused] = createSignal(false)
+
+  // Separate smooth card props from anchor/router props
+  const [smoothCardProps, restProps] = splitProps(props, [
+    "width",
+    "height",
+    "cornerRadius",
+    "cornerSmoothing",
+    "scales",
+    "border",
+    "borderClass",
+    "focusRing",
+    "focusRingClass",
+    "focusStrokeWidth",
+    "class",
+    "style",
+    "children",
+  ])
+
+  const internals = useSmoothCardInternals(smoothCardProps, isFocused, {
+    focusRing: smoothCardProps.focusRing,
+    focusRingClass: smoothCardProps.focusRingClass,
+    focusStrokeWidth: smoothCardProps.focusStrokeWidth,
+  })
+
+  return (
+    <a
+      {...restProps}
+      style={{
+        position: "relative",
+        width: `${internals.scaledWidth}px`,
+        height: `${internals.scaledHeight}px`,
+        display: "block",
+        "text-decoration": "none",
+        ...(smoothCardProps.style || {}),
+      }}
+      onFocus={() => {
+        smoothCardProps.focusRing && setIsFocused(true)
+      }}
+      onBlur={() => {
+        setIsFocused(false)
+      }}
+      class="outline-none"
+    >
+      <SmoothCardContent internals={internals} class={smoothCardProps.class}>
+        {smoothCardProps.children}
+      </SmoothCardContent>
+    </a>
+  )
+}
+
+export const SmoothCardLink: LinkComponent<typeof SmoothCardLinkBase> = (
+  props,
+) => {
+  const CreatedLink = createLink(SmoothCardLinkBase)
+  return <CreatedLink {...props} />
 }
