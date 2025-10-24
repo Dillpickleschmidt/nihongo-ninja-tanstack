@@ -1,20 +1,11 @@
-import { Show, createSignal, For } from "solid-js"
-import { Link, useNavigate } from "@tanstack/solid-router"
+import { Show } from "solid-js"
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 import { ArrowRight } from "lucide-solid"
 import { getChapterStyles } from "@/data/chapter_colors"
-import { getMinifiedTextbookEntries } from "@/data/utils/core"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { UseQueryResult } from "@tanstack/solid-query"
-import type { TextbookIDEnum } from "@/data/types"
 import SeeYourDashboardSvg from "@/features/homepage/shared/assets/see-your-dashboard.svg?component-solid"
+import TextbookSelectionDialog from "./TextbookSelectionDialog"
 
 interface ProgressFooterProps {
   settingsQuery: UseQueryResult<UserSettings, Error>
@@ -31,34 +22,12 @@ interface ProgressFooterProps {
 }
 
 export function ProgressFooter(props: ProgressFooterProps) {
-  const [isDialogOpen, setIsDialogOpen] = createSignal(false)
-  const navigate = useNavigate()
   const activeTextbook = () => props.settingsQuery.data!["active-textbook"]
   const activeDeck = () => props.settingsQuery.data!["active-deck"]
 
   const completedCount = () =>
     props.tiles.filter((tile) => props.isModuleCompleted(tile.href)).length
   const totalCount = () => props.tiles.length
-
-  const textbookEntries = getMinifiedTextbookEntries()
-  const otherTextbooks = () =>
-    textbookEntries.filter(([id]) => id !== "getting_started")
-
-  const handleTextbookSelect = (textbookId: TextbookIDEnum) => {
-    // Get first chapter of selected textbook
-    const textbook = textbookEntries.find(([id]) => id === textbookId)?.[1]
-    const firstChapterSlug = textbook?.chapters[0]?.slug
-
-    if (!firstChapterSlug) return
-    setIsDialogOpen(false)
-    props.onNavigationStart?.()
-
-    // let the route loader handle settings update
-    navigate({
-      to: "/learn/$textbookId/$chapterSlug",
-      params: { textbookId, chapterSlug: firstChapterSlug },
-    })
-  }
 
   return (
     <div class="flex w-full flex-col items-center gap-6 pt-6">
@@ -70,46 +39,23 @@ export function ProgressFooter(props: ProgressFooterProps) {
       </p>
       <Show
         fallback={
-          <Link
-            to="/learn/$textbookId"
-            params={{ textbookId: activeTextbook() }}
-          >
-            <SeeYourDashboardSvg class="text-muted-foreground absolute bottom-16 left-[23%] h-auto w-64" />
-          </Link>
+          <SeeYourDashboardSvg class="text-muted-foreground absolute bottom-16 left-[23%] h-auto w-64" />
         }
         when={activeTextbook() === "getting_started"}
       >
-        <div>
-          <span>Complete the above to see your new dashboard, or</span>
-          <Dialog open={isDialogOpen()} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger
-              as={Button}
+        <div class="pb-20">
+          <span>Complete the above and then see your new dashboard, or</span>
+          <TextbookSelectionDialog onNavigationStart={props.onNavigationStart}>
+            <Button
               class="text-muted-foreground ml-1 h-auto px-2.5 py-1 text-base underline underline-offset-3"
               variant="ghost"
             >
               Skip
               <ArrowRight size={16} class="-mr-1" />
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Choose a textbook</DialogTitle>
-              </DialogHeader>
-              <div class="grid grid-cols-2 gap-4">
-                <For each={otherTextbooks()}>
-                  {([textbookId, textbook]) => (
-                    <Button
-                      variant="outline"
-                      class="w-full"
-                      onClick={() => handleTextbookSelect(textbookId)}
-                    >
-                      {textbook.short_name || textbook.name}
-                    </Button>
-                  )}
-                </For>
-              </div>
-            </DialogContent>
-          </Dialog>
+            </Button>
+          </TextbookSelectionDialog>
         </div>
+        <SeeYourDashboardSvg class="text-muted-foreground absolute bottom-16 left-[23%] h-auto w-64" />
       </Show>
     </div>
   )
