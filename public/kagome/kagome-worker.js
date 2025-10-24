@@ -3,6 +3,9 @@
  * Runs Go WASM initialization in a separate thread to keep main thread responsive
  */
 
+// Import grammar WASM module (ES module)
+import init, { analyze_single } from "/grammar/grammar_wasm.js"
+
 // Go WASM runtime initialization (adapted from extension)
 function initGoRuntime() {
   const enosys = () => {
@@ -560,6 +563,7 @@ class Go {
 
 // WASM initialization
 let kagomeLoaded = false
+let grammarLoaded = false
 let loadPromise = null
 
 async function loadKagomeWasm() {
@@ -571,28 +575,39 @@ async function loadKagomeWasm() {
 
   loadPromise = (async () => {
     try {
+      console.time("[Kagome] Total load time")
+
+      console.time("[Kagome] Go runtime init")
       console.log("[Kagome Worker] Initializing Go runtime...")
       initGoRuntime()
+      console.timeEnd("[Kagome] Go runtime init")
 
+      console.time("[Kagome] WASM fetch + instantiate")
       const wasmUrl = "/kagome/kagome.wasm"
       const go = new Go()
       const result = await WebAssembly.instantiateStreaming(
         fetch(wasmUrl),
         go.importObject,
       )
+      console.timeEnd("[Kagome] WASM fetch + instantiate")
 
+      console.time("[Kagome] Go program execution")
       console.log("[Kagome Worker] Running Go program...")
       // Don't await go.run() - it blocks on a channel and never completes
       // Just start it and let it run in the background
       go.run(result.instance)
+      console.timeEnd("[Kagome] Go program execution")
 
       // Wait for kagome_tokenize function to be registered
+      console.time("[Kagome] Wait for tokenize function")
       let attempts = 0
       return new Promise((resolve, reject) => {
         const checkInterval = setInterval(() => {
           if (typeof self.kagome_tokenize === "function") {
             clearInterval(checkInterval)
+            console.timeEnd("[Kagome] Wait for tokenize function")
             kagomeLoaded = true
+            console.timeEnd("[Kagome] Total load time")
             console.log("[Kagome Worker] Kagome WASM loaded successfully")
             resolve()
           } else if (attempts >= 100) {
@@ -615,6 +630,28 @@ async function loadKagomeWasm() {
   return loadPromise
 }
 
+async function loadGrammarWasm() {
+  if (grammarLoaded) return
+
+  try {
+    console.time("[Grammar] Total load time")
+    console.log("[Kagome Worker] Initializing Grammar WASM...")
+    const wasmUrl = "/grammar/grammar_wasm_bg.wasm"
+
+    console.time("[Grammar] WASM fetch + init")
+    // Initialize the WASM module using imported init function
+    await init(wasmUrl)
+    console.timeEnd("[Grammar] WASM fetch + init")
+
+    grammarLoaded = true
+    console.timeEnd("[Grammar] Total load time")
+    console.log("[Kagome Worker] Grammar WASM loaded successfully")
+  } catch (error) {
+    console.error("[Kagome Worker] Failed to load Grammar WASM:", error)
+    throw error
+  }
+}
+
 // Worker message handler for tokenization requests
 self.onmessage = async (event) => {
   const { type, id, text } = event.data
@@ -622,10 +659,18 @@ self.onmessage = async (event) => {
   if (type === "tokenize") {
     try {
       const tokens = self.kagome_tokenize(text)
+
+      // Analyze grammar patterns if grammar WASM is loaded
+      let grammarMatches = []
+      if (grammarLoaded) {
+        grammarMatches = analyze_single(tokens)
+      }
+
       self.postMessage({
         type: "tokenize-result",
         id,
         tokens,
+        grammarMatches,
       })
     } catch (error) {
       self.postMessage({
@@ -638,8 +683,12 @@ self.onmessage = async (event) => {
 }
 
 // Start initialization immediately and notify main thread when ready
-loadKagomeWasm()
+console.time("[Worker] Total parallel init time")
+console.log("[Kagome Worker] Starting parallel WASM initialization...")
+Promise.all([loadKagomeWasm(), loadGrammarWasm()])
   .then(() => {
+    console.timeEnd("[Worker] Total parallel init time")
+    console.log("[Kagome Worker] Both WASMs loaded, worker ready")
     // Notify main thread that worker is ready for tokenization
     self.postMessage({ type: "ready" })
   })

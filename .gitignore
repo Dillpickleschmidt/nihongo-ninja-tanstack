@@ -36,6 +36,9 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 *.tsbuildinfo
 .sentence-parse-cache.json
 
+# native binaries
+bin/
+
 # IntelliJ based IDEs
 .idea
 

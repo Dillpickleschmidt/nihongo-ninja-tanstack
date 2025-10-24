@@ -3,10 +3,15 @@
  * Handles communication with the Kagome WASM worker thread
  */
 
-import type { KagomeToken } from "./types/kagome"
+import type { KagomeToken, GrammarMatch } from "./types/kagome"
+
+export interface TokenizationResult {
+  tokens: KagomeToken[]
+  grammarMatches: GrammarMatch[]
+}
 
 interface PendingRequest {
-  resolve: (tokens: KagomeToken[]) => void
+  resolve: (result: TokenizationResult) => void
   reject: (error: Error) => void
 }
 
@@ -20,7 +25,8 @@ export class KagomeWorkerManager {
 
   constructor() {
     // Create worker that runs off-thread to keep main thread responsive
-    this.worker = new Worker("/kagome/kagome-worker.js")
+    // Use module worker to support ES6 imports (for grammar WASM)
+    this.worker = new Worker("/kagome/kagome-worker.js", { type: "module" })
 
     // Setup message handler
     this.worker.onmessage = (event) => {
@@ -44,11 +50,14 @@ export class KagomeWorkerManager {
       this.ready = true
       this.resolveReady()
     } else if (data.type === "tokenize-result") {
-      const { id, tokens } = data
+      const { id, tokens, grammarMatches } = data
       const request = this.pendingRequests.get(id)
       if (request) {
         this.pendingRequests.delete(id)
-        request.resolve(tokens)
+        request.resolve({
+          tokens,
+          grammarMatches: grammarMatches || [],
+        })
       }
     } else if (data.type === "tokenize-error") {
       const { id, message } = data
@@ -70,7 +79,7 @@ export class KagomeWorkerManager {
     return this.ready
   }
 
-  async tokenize(text: string): Promise<KagomeToken[]> {
+  async tokenize(text: string): Promise<TokenizationResult> {
     // Ensure worker is ready before tokenizing
     await this.readyPromise
 

@@ -9,6 +9,7 @@ import UserInputPosDisplay from "./UserInputPosDisplay"
 import { KanaToKanjiOverlay } from "../../core/text/KanaToKanjiOverlay"
 import { TextProcessor } from "../../core/text/TextProcessor"
 import { AnswerChecker } from "../../core/answer-processing/AnswerChecker"
+import { combineConjugationTokens } from "../../kagome/utils/combineConjugationTokens"
 
 export default function AnswerInput() {
   const { store, actions, kagomeReady, kagomeWorker } = usePracticeStore()
@@ -46,11 +47,17 @@ export default function AnswerInput() {
         actions.setUserInputOverlay(undefined)
       }
 
-      // Tokenize with kagome
+      // Tokenize with kagome and combine conjugation tokens
       kagomeWorker
         .tokenize(textToParse)
-        .then((tokens) => {
-          actions.setUserInputTokens(tokens)
+        .then(({ tokens, grammarMatches }) => {
+          // Combine tokens based on conjugation patterns (e.g., 飲み + ます → 飲みます)
+          const combinedTokens = combineConjugationTokens(
+            textToParse,
+            tokens,
+            grammarMatches,
+          )
+          actions.setUserInputTokens(combinedTokens)
         })
         .catch((error) => {
           console.error("[Kagome] Tokenization failed:", error)

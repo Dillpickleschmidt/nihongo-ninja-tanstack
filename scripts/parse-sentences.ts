@@ -1,18 +1,21 @@
 /**
  * Parse Sentences Script
  *
- * Pre-parses sentence practice questions with Kagome morphological analyzer
+ * Pre-parses sentence practice questions with Kagome morphological analyzer,
+ * analyzes grammar patterns to detect conjugations, combines conjugation tokens,
  * and stores POS (part of speech) tags for real-time comparison during practice.
  *
  * Prerequisites:
  * - Kagome CLI must be installed (https://github.com/ikawaha/kagome)
  *   Installation: go install github.com/ikawaha/kagome/v2@latest
+ * - Grammar CLI binary must be present at bin/grammar-cli
+ *   (Built from ~/Programming-Projects/japanese-subtitle-search/grammar-lib)
  *
  * Usage:
  *   bun run parse-sentences
  */
 
-import { spawn, ChildProcess } from "child_process"
+import { spawn, ChildProcess, execSync } from "child_process"
 import { readFileSync, writeFileSync, existsSync } from "fs"
 import { join, relative } from "path"
 import { createHash } from "crypto"
@@ -23,6 +26,7 @@ import type {
   ConjugatedWord,
   BlankableWord,
 } from "../src/features/sentence-practice/core/conjugation/types"
+import { combineConjugationTokens } from "../src/features/sentence-practice/kagome/utils/combineConjugationTokens"
 
 // --- Types ---
 
@@ -66,6 +70,15 @@ interface TokenizeResponse {
   tokens: KagomeToken[]
 }
 
+interface GrammarMatch {
+  pattern_name: string
+  confidence: number
+  start_char: number
+  end_char: number
+  category: "Construction" | "Conjugation"
+  conjugation_pattern: string
+}
+
 interface FileCache {
   [filePath: string]: string // filePath -> hash
 }
@@ -75,6 +88,7 @@ interface FileCache {
 const KAGOME_PORT = 6060
 const DATA_DIR = join(process.cwd(), "src/features/sentence-practice/data")
 const CACHE_FILE = join(process.cwd(), ".sentence-parse-cache.json")
+const GRAMMAR_CLI = join(process.cwd(), "bin/grammar-cli")
 
 // --- Kagome Server Manager ---
 
@@ -142,6 +156,24 @@ class KagomeServer {
 }
 
 // --- Helper Functions ---
+
+/**
+ * Analyze grammar patterns using the CLI binary
+ */
+function analyzeGrammar(tokens: KagomeToken[]): GrammarMatch[] {
+  try {
+    const input = JSON.stringify(tokens)
+    const output = execSync(GRAMMAR_CLI, {
+      input,
+      encoding: "utf-8",
+      maxBuffer: 10 * 1024 * 1024, // 10MB buffer
+    })
+    return JSON.parse(output)
+  } catch (error) {
+    console.error("  ✗ Grammar analysis failed:", error)
+    return []
+  }
+}
 
 /**
  * Compute MD5 hash of file contents for change detection
@@ -242,8 +274,15 @@ async function parseQuestionsFile(
 
     try {
       const tokens = await kagome.tokenize(text)
-      // Store only POS arrays (all features from kagome)
-      question.modelAnswerPOS = tokens.map((token) => token.pos)
+
+      // Analyze grammar patterns to detect conjugations
+      const grammarMatches = analyzeGrammar(tokens)
+
+      // Combine conjugation tokens (e.g., 飲み + ます → 飲みます)
+      const combinedTokens = combineConjugationTokens(text, tokens, grammarMatches)
+
+      // Store only POS arrays from combined tokens
+      question.modelAnswerPOS = combinedTokens.map((token) => token.pos)
       parsedCount++
     } catch (error) {
       console.error(`  ✗ Error parsing "${text}": ${error}`)
