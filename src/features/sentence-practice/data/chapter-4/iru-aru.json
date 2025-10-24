@@ -130,6 +130,7 @@
   },
   {
     "english": "Tanaka's bag is here.",
+    "hint": "For this practice session, use います・あります, not です.",
     "answers": [
       {
         "segments": [
@@ -298,6 +299,15 @@
           "か"
         ]
       },
+            {
+        "segments": [
+          "山田[やまだ]",
+          "さん",
+          "は",
+          "います",
+          "か"
+        ]
+      },
       {
         "segments": [
           "山田[やまだ]",
@@ -308,7 +318,7 @@
           "います",
           "か"
         ],
-        "notes": "Specifically asking about \"here\" as opposed to \"there\"."
+        "notes": ""
       },
       {
         "segments": [
@@ -320,7 +330,7 @@
           "います",
           "か"
         ],
-        "notes": "Specifically asking about \"here\" as opposed to \"there\"."
+        "notes": ""
       }
     ],
     "modelAnswerPOS": [
@@ -637,7 +647,7 @@
     ]
   },
   {
-    "english": "That person is there.",
+    "english": "That person is over there.",
     "answers": [
       {
         "segments": [
