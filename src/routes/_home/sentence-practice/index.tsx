@@ -54,10 +54,13 @@ function RouteComponent() {
 
   // All sentence-practice modules for the active textbook
   const allModules = createMemo(() => {
-    const activeTb = settingsQuery.data?.["active-textbook"] as
+    let activeTb = settingsQuery.data?.["active-textbook"] as
       | TextbookIDEnum
       | undefined
     if (!activeTb) return []
+    if (activeTb === "getting_started") {
+      activeTb = "genki_1" // fallback for onboarding
+    }
     return getModulesBySessionType(activeTb, "sentence-practice").map(enrich)
   })
 

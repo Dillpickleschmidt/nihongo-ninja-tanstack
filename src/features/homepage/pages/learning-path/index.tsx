@@ -61,10 +61,12 @@ export function LearningPathPage(props: LearningPathPageProps) {
   )
 
   const isModuleCompleted = (moduleHref: string) => {
-    const moduleId = moduleHref.split('/').pop()
-    return completedModulesQuery.data?.some(
-      (module) => module.module_path === moduleId,
-    ) ?? false
+    const moduleId = moduleHref.split("/").pop()
+    return (
+      completedModulesQuery.data?.some(
+        (module) => module.module_path === moduleId,
+      ) ?? false
+    )
   }
 
   const tiles = createMemo(() =>
