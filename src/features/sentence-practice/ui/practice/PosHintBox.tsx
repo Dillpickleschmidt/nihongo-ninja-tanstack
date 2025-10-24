@@ -36,11 +36,23 @@ function getPosCategory(pos: string[]): PosCategory {
  */
 function getCategoryColorClass(category: PosCategory): string {
   const colors: Record<PosCategory, string> = {
-    orange: "bg-orange-400 dark:bg-orange-500",
-    green: "bg-green-400 dark:bg-green-500",
-    blue: "bg-blue-400 dark:bg-blue-500",
+    orange: "bg-orange-400 dark:bg-amber-400 text-black",
+    green: "bg-emerald-400 dark:bg-fuchsia-300 text-black",
+    blue: "bg-sky-400 dark:bg-teal-400 text-black",
   }
   return colors[category]
+}
+
+/**
+ * Maps POS category to user-friendly description for tooltip
+ */
+function getCategoryDescription(category: PosCategory): string {
+  const descriptions: Record<PosCategory, string> = {
+    orange: "Noun or な-Adjective",
+    green: "Verb or い-Adjective",
+    blue: "Particle, copula, etc.",
+  }
+  return descriptions[category]
 }
 
 /**
@@ -57,7 +69,7 @@ const PosHintBox: Component<PosHintBoxProps> = (props) => {
   return (
     <span
       class={`${colorClass()} inline-block rounded-md px-1 py-0.5 font-mono text-sm`}
-      title={`${category()}: ${props.pos.join(", ")}`}
+      title={getCategoryDescription(category())}
     >
       {content()}
     </span>

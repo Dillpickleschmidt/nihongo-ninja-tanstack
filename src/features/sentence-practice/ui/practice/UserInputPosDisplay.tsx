@@ -25,9 +25,9 @@ function getPosCategory(pos: string[]): PosCategory {
  */
 function getCategoryColorClass(category: PosCategory): string {
   const colors: Record<PosCategory, string> = {
-    orange: "bg-orange-400 dark:bg-orange-500",
-    green: "bg-green-400 dark:bg-green-500",
-    blue: "bg-blue-400 dark:bg-blue-500",
+    orange: "bg-orange-400 dark:bg-amber-400 text-black",
+    green: "bg-emerald-400 dark:bg-fuchsia-300 text-black",
+    blue: "bg-sky-400 dark:bg-teal-400 text-black",
   }
   return colors[category]
 }
@@ -78,7 +78,7 @@ const UserInputPosDisplay: Component<UserInputPosDisplayProps> = (props) => {
   return (
     <Show when={props.tokens && props.tokens.length > 0}>
       <div
-        class="mb-2 flex min-h-[28px] flex-wrap items-center gap-1"
+        class="mb-2 flex min-h-[28px] flex-wrap items-center gap-0.5"
         role="status"
         aria-label="User input part of speech"
       >
@@ -90,7 +90,7 @@ const UserInputPosDisplay: Component<UserInputPosDisplayProps> = (props) => {
 
             return (
               <span
-                class={`${colorClass} inline-block rounded px-1 py-0.5 text-sm`}
+                class={`${colorClass} font-japanese inline-block rounded-md px-1 py-0.5 text-base font-medium`}
                 title={`${category}: ${token.pos.join(", ")}`}
               >
                 {originalText}
