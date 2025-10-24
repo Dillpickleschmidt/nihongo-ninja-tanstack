@@ -5,6 +5,8 @@ import { cn } from "@/utils"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { Route as RootRoute } from "@/routes/__root"
+import { Show } from "solid-js"
+import TextbookSelectionDialog from "@/features/homepage/pages/learning-path/components/TextbookSelectionDialog"
 
 interface BottomNavProps {
   dailyProgressPercentage?: number
@@ -15,7 +17,10 @@ export function BottomNav(props: BottomNavProps) {
   const context = useRouteContext({ from: RootRoute.id })
   const userId = context().user?.id || null
 
-  const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(userId),
+  )
+  const activeTextbook = () => settingsQuery.data?.["active-textbook"]
 
   const dailyProgress = () => props.dailyProgressPercentage ?? 65
 
@@ -192,6 +197,30 @@ export function BottomNav(props: BottomNavProps) {
             const active = isActive(item.href)
             const hrefValue =
               typeof item.href === "function" ? item.href() : item.href
+
+            // Special handling for Learn nav item when in getting_started
+            if (item.id === "learn" && activeTextbook() === "getting_started") {
+              return (
+                <TextbookSelectionDialog>
+                  <div
+                    id={"tour-" + item.id}
+                    class={cn(
+                      "group flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 cursor-pointer",
+                      "hover:bg-card-foreground/20 hover:dark:bg-card-foreground/60 hover:scale-110",
+                      active &&
+                        "bg-card-foreground/10 dark:bg-card-foreground/60 scale-110",
+                    )}
+                  >
+                    <Icon
+                      class={cn(
+                        "h-5 w-5 transition-colors duration-200",
+                        active ? "text-primary" : "text-primary/60",
+                      )}
+                    />
+                  </div>
+                </TextbookSelectionDialog>
+              )
+            }
 
             return (
               <Link
