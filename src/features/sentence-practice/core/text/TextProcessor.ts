@@ -5,7 +5,7 @@ import * as wanakana from "wanakana"
 
 export class TextProcessor {
   normalize(text: string): string {
-    return text.trim().normalize("NFKC").replace(/、/g, "").replace(/。$/, "")
+    return text.trim().normalize("NFKC").replace(/、/g, "").replace(/[。?!]$/, "")
   }
 
   isBlankableWord(segment: ConjugatableSegment): segment is BlankableWord {
