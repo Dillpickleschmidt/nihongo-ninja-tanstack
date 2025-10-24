@@ -21,11 +21,17 @@ export const static_modules: StaticModuleCollection = {
     lesson_type: "lesson",
     description: "Clear explanations",
   },
-  getting_started_n5_grammar: {
-    title: "Grammar",
+  "getting_started_n5_conjugation-practice": {
+    title: "Conjugation Practice",
     link: "/practice/conjugation",
     lesson_type: "lesson",
-    description: "Conjugation Practice",
+    description: "Verbs & Adjectives",
+  },
+  "getting_started_n5_sentence-practice": {
+    title: "Sentence Practice",
+    link: "/sentence-practice",
+    lesson_type: "lesson",
+    description: "You'll like this one!",
   },
   "getting_started_n5_vocabulary-practice": {
     title: "Vocabulary Practice",
@@ -35,17 +41,17 @@ export const static_modules: StaticModuleCollection = {
   },
 
   // Getting Started N4 Modules
-  getting_started_n4_lessons: {
-    title: "Lessons",
-    link: "/lessons",
+  "getting_started_n4_sentence-practice": {
+    title: "Sentence Practice",
+    link: "/_home/sentence-practice",
     lesson_type: "lesson",
-    description: "Clear explanations",
+    description: "You'll like this one!",
   },
-  getting_started_n4_grammar: {
-    title: "Grammar",
-    link: "/_home/practice/conjugation",
+  "getting_started_n4_conjugation-practice": {
+    title: "Conjugation Practice",
+    link: "/practice/conjugation",
     lesson_type: "lesson",
-    description: "Sentence Practice",
+    description: "Verbs & Adjectives",
   },
   "getting_started_n4_vocabulary-practice": {
     title: "Vocabulary Practice",
@@ -53,11 +59,11 @@ export const static_modules: StaticModuleCollection = {
     lesson_type: "lesson",
     description: "SRS from day 1",
   },
-  "getting_started_n4_srs-practice": {
-    title: "SRS Practice",
-    link: "/practice/review",
+  getting_started_n4_srs: {
+    title: "SRS Integration",
+    link: "/guides/srs",
     lesson_type: "lesson",
-    description: "Grammar + Vocab",
+    description: "Anki, WaniKani, and more",
   },
   "getting_started_n4_custom-decks": {
     title: "Custom Decks",
@@ -85,11 +91,11 @@ export const static_modules: StaticModuleCollection = {
     lesson_type: "lesson",
     description: "Mining subtitles",
   },
-  "getting_started_n3_srs-practice": {
-    title: "SRS Practice",
-    link: "/practice/review",
+  getting_started_n3_srs: {
+    title: "SRS Integration",
+    link: "/guides/srs",
     lesson_type: "lesson",
-    description: "Grammar + Vocab",
+    description: "Anki, WaniKani, and more",
   },
   "getting_started_n3_sentence-building": {
     title: "Sentence Building",

@@ -14,6 +14,7 @@ import { getMinifiedTextbookEntries } from "@/data/utils/core"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { UseQueryResult } from "@tanstack/solid-query"
 import type { TextbookIDEnum } from "@/data/types"
+import SeeYourDashboardSvg from "@/features/homepage/shared/assets/see-your-dashboard.svg?component-solid"
 
 interface ProgressFooterProps {
   settingsQuery: UseQueryResult<UserSettings, Error>
@@ -61,7 +62,7 @@ export function ProgressFooter(props: ProgressFooterProps) {
 
   return (
     <div class="flex w-full flex-col items-center gap-6 pt-6">
-      <p class="text-muted-foreground text-xl font-semibold">
+      <p class="text-muted-foreground pb-8 text-xl font-semibold">
         <span class={getChapterStyles(activeDeck()).textColor}>
           {completedCount()}/{totalCount()}
         </span>{" "}
@@ -73,10 +74,7 @@ export function ProgressFooter(props: ProgressFooterProps) {
             to="/learn/$textbookId"
             params={{ textbookId: activeTextbook() }}
           >
-            <Button class="font-poppins font-semibold" variant="secondary">
-              See your dashboard
-              <ArrowRight size={16} />
-            </Button>
+            <SeeYourDashboardSvg class="text-muted-foreground absolute bottom-16 left-[23%] h-auto w-64" />
           </Link>
         }
         when={activeTextbook() === "getting_started"}

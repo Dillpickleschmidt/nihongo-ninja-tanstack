@@ -7,6 +7,8 @@ import { TextProcessor } from "../../core/text/TextProcessor"
 
 const textProcessor = new TextProcessor()
 
+const SPACE_REGEX = /\s+/g
+
 interface DebugPanelProps {
   question: PracticeQuestion
 }
@@ -98,6 +100,7 @@ export function DebugPanel(props: DebugPanelProps) {
     return answer.segments
       .map((seg) => textProcessor.removeFurigana(seg))
       .join("")
+      .replace(SPACE_REGEX, "")
   }
 
   return (

@@ -1,5 +1,13 @@
 // store/PracticeContext.tsx
-import { createContext, useContext, JSX, createEffect } from "solid-js"
+import {
+  createContext,
+  useContext,
+  JSX,
+  createEffect,
+  createSignal,
+  onMount,
+} from "solid-js"
+import { isServer } from "solid-js/web"
 import type { Difficulty, PracticeState } from "./types"
 import type { SetStoreFunction } from "solid-js/store"
 import type { CheckResult } from "../core/answer-processing/types"
@@ -8,6 +16,7 @@ import { ViteFileLoader } from "./viteFileLoader"
 import { useSessionTracking } from "@/features/module-session-manager/useSessionTracking"
 import { useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
+import { KagomeWorkerManager } from "../kagome/kagome-worker-manager"
 
 interface PracticeContextValue {
   store: PracticeState
@@ -20,7 +29,11 @@ interface PracticeContextValue {
     updateInput: (value: string, index?: number) => void
     loadQuestions: (path: string) => Promise<void>
     setDifficulty: (difficulty: Difficulty) => void
+    setUserInputTokens: (tokens: import("../kagome/types/kagome").KagomeToken[]) => void
+    setUserInputOverlay: (overlay: import("../core/text/KanaToKanjiOverlay").OverlayResult | undefined) => void
   }
+  kagomeReady: () => boolean
+  kagomeWorker: KagomeWorkerManager | null
 }
 
 const PracticeContext = createContext<PracticeContextValue>()
@@ -40,6 +53,20 @@ export function PracticeProvider(props: {
     sessionTracking.addTimeAndQuestions,
   )
 
+  // Initialize Kagome worker only on client (runs on separate thread, doesn't block main thread)
+  const kagomeWorker = !isServer ? new KagomeWorkerManager() : null
+
+  // Track when Kagome WASM is ready
+  const [kagomeReady, setKagomeReady] = createSignal(false)
+  onMount(() => {
+    if (kagomeWorker) {
+      kagomeWorker
+        .waitForReady()
+        .then(() => setKagomeReady(true))
+        .catch((err) => console.error("[Kagome] Failed:", err))
+    }
+  })
+
   // Start session when questions are loaded
   createEffect(() => {
     if (
@@ -50,8 +77,14 @@ export function PracticeProvider(props: {
     }
   })
 
+  const contextValue: PracticeContextValue = {
+    ...practiceStore,
+    kagomeReady,
+    kagomeWorker,
+  }
+
   return (
-    <PracticeContext.Provider value={practiceStore}>
+    <PracticeContext.Provider value={contextValue}>
       {props.children}
     </PracticeContext.Provider>
   )

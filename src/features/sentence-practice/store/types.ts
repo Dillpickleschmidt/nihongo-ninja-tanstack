@@ -4,7 +4,9 @@ import type {
   CheckResult,
   ErrorRange,
 } from "../core/answer-processing/types"
-import type { UnprocessedQuestion } from "../core/conjugation/types"
+import type { UnprocessedQuestion } from "../conjugation/types"
+import type { KagomeToken } from "../kagome/types/kagome"
+import type { OverlayResult } from "../core/text/KanaToKanjiOverlay"
 
 export type Difficulty = "easy" | "hard"
 
@@ -21,6 +23,8 @@ export type PracticeState = {
   selectedDifficulty: Difficulty
   effectiveDifficulty: Difficulty
   checkResult?: CheckResult
+  userInputTokens?: KagomeToken[]
+  userInputOverlay?: OverlayResult
 }
 
 export type AnswerInputs = {

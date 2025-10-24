@@ -5,6 +5,8 @@ import { TextProcessor } from "../../core/text/TextProcessor"
 
 const textProcessor = new TextProcessor()
 
+const SPACE_REGEX = /\s+/g
+
 interface EasyModeDebugPanelProps {
   question: PracticeQuestion
   rawSegments: ConjugatableSegment[]
@@ -38,15 +40,17 @@ export function EasyModeDebugPanel(props: EasyModeDebugPanelProps) {
 
         if (answer.segments[blankIndex]) {
           const segment = answer.segments[blankIndex]
-          variationSet.add(textProcessor.removeFurigana(segment))
+          variationSet.add(
+            textProcessor.removeFurigana(segment).replace(SPACE_REGEX, ""),
+          )
         }
       })
 
       variations.push({
         blankIndex,
-        word: textProcessor.removeFurigana(
-          props.question.answers[0].segments[blankIndex],
-        ),
+        word: textProcessor
+          .removeFurigana(props.question.answers[0].segments[blankIndex])
+          .replace(SPACE_REGEX, ""),
         variations: Array.from(variationSet).sort(),
       })
     })

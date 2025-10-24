@@ -3,7 +3,14 @@
     "english": "The book is on the desk.",
     "answers": [
       {
-        "segments": ["本[ほん]", "は", "机[つくえ]", "の", "上[うえ]", "です"],
+        "segments": [
+          "本[ほん]",
+          "は",
+          "机[つくえ]",
+          "の",
+          "上[うえ]",
+          "です"
+        ],
         "notes": "Someone asks where the book is."
       },
       {
@@ -31,16 +38,68 @@
         "notes": "Emphasizing the book's existence on the desk."
       },
       {
-        "segments": ["机[つくえ]", "の", "上[うえ]", "は", "本[ほん]", "です"],
+        "segments": [
+          "机[つくえ]",
+          "の",
+          "上[うえ]",
+          "は",
+          "本[ほん]",
+          "です"
+        ],
         "notes": "Focusing on the desk's top being occupied by the book."
       }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "係助詞",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "連体化",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "非自立",
+        "副詞可能",
+        "*"
+      ],
+      [
+        "助動詞",
+        "*",
+        "*",
+        "*"
+      ]
     ]
   },
   {
     "english": "The chair is under the table.",
     "answers": [
       {
-        "segments": ["椅子[いす]", "は", "テーブル", "の", "下[した]", "です"],
+        "segments": [
+          "椅子[いす]",
+          "は",
+          "テーブル",
+          "の",
+          "下[した]",
+          "です"
+        ],
         "notes": "Describing where the chair is when cleaning."
       },
       {
@@ -68,9 +127,54 @@
         "notes": "Emphasizing the chair's location under the table."
       },
       {
-        "segments": ["テーブル", "の", "下[した]", "は", "椅子[いす]", "です"],
+        "segments": [
+          "テーブル",
+          "の",
+          "下[した]",
+          "は",
+          "椅子[いす]",
+          "です"
+        ],
         "notes": "Focusing on the table's underside being occupied by the chair."
       }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "係助詞",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "連体化",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "非自立",
+        "一般",
+        "*"
+      ],
+      [
+        "助動詞",
+        "*",
+        "*",
+        "*"
+      ]
     ]
   },
   {
@@ -122,6 +226,44 @@
         ],
         "notes": "Focusing on the area behind the park being occupied by the dog."
       }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "係助詞",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "連体化",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助動詞",
+        "*",
+        "*",
+        "*"
+      ]
     ]
   },
   {
@@ -173,6 +315,44 @@
         ],
         "notes": "Focusing on the area next to the computer being occupied by the notebook."
       }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "係助詞",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "連体化",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助動詞",
+        "*",
+        "*",
+        "*"
+      ]
     ]
   },
   {
@@ -232,6 +412,62 @@
         ],
         "notes": "Focusing on the area between the bank and the post office being occupied by the library."
       }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "係助詞",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "並立助詞",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "接尾",
+        "一般",
+        "*"
+      ],
+      [
+        "助詞",
+        "連体化",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助動詞",
+        "*",
+        "*",
+        "*"
+      ]
     ]
   },
   {
@@ -239,11 +475,24 @@
     "hint": "box -> 箱[はこ]",
     "answers": [
       {
-        "segments": ["猫[ねこ]", "は", "箱[はこ]", "に", "います"],
+        "segments": [
+          "猫[ねこ]",
+          "は",
+          "箱[はこ]",
+          "に",
+          "います"
+        ],
         "notes": "Casual, more straightforward way to say the cat is in the box."
       },
       {
-        "segments": ["猫[ねこ]", "は", "箱[はこ]", "の", "中[なか]", "です"],
+        "segments": [
+          "猫[ねこ]",
+          "は",
+          "箱[はこ]",
+          "の",
+          "中[なか]",
+          "です"
+        ],
         "notes": "Ex: Explaining the cat's location after hearing noises."
       },
       {
@@ -271,9 +520,48 @@
         "notes": "Emphasizing the cat's existence inside the box."
       },
       {
-        "segments": ["箱[はこ]", "の", "中[なか]", "は", "猫[ねこ]", "です"],
+        "segments": [
+          "箱[はこ]",
+          "の",
+          "中[なか]",
+          "は",
+          "猫[ねこ]",
+          "です"
+        ],
         "notes": "Focusing on the area inside the box being occupied by the cat."
       }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "係助詞",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "格助詞",
+        "一般",
+        "*"
+      ],
+      [
+        "動詞",
+        "自立",
+        "*",
+        "*"
+      ]
     ]
   },
   {
@@ -281,7 +569,14 @@
     "hint": "eraser -> 消しゴム",
     "answers": [
       {
-        "segments": ["消しゴム", "は", "本[ほん]", "の", "左[ひだり]", "です"],
+        "segments": [
+          "消しゴム",
+          "は",
+          "本[ほん]",
+          "の",
+          "左[ひだり]",
+          "です"
+        ],
         "notes": "Pointing out the eraser's location during study."
       },
       {
@@ -319,6 +614,44 @@
         ],
         "notes": "Focusing on the area to the left of the book being occupied by the eraser."
       }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "係助詞",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "連体化",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助動詞",
+        "*",
+        "*",
+        "*"
+      ]
     ]
   },
   {
@@ -370,6 +703,44 @@
         ],
         "notes": "Focusing on the area to the right of the notebook being occupied by the pencil."
       }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "係助詞",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "連体化",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助動詞",
+        "*",
+        "*",
+        "*"
+      ]
     ]
   },
   {
@@ -421,6 +792,50 @@
         ],
         "notes": "Focusing on the area behind the library being occupied by the post office."
       }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "接尾",
+        "一般",
+        "*"
+      ],
+      [
+        "助詞",
+        "係助詞",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "連体化",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助動詞",
+        "*",
+        "*",
+        "*"
+      ]
     ]
   },
   {
@@ -477,13 +892,58 @@
         ],
         "notes": "Focusing on the area in front of the station being occupied by the bus stop."
       }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "係助詞",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "連体化",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "副詞可能",
+        "*",
+        "*"
+      ],
+      [
+        "助動詞",
+        "*",
+        "*",
+        "*"
+      ]
     ]
   },
   {
     "english": "The bag is behind the chair.",
     "answers": [
       {
-        "segments": ["かばん", "は", "椅子[いす]", "の", "後[うし]ろ", "です"],
+        "segments": [
+          "かばん",
+          "は",
+          "椅子[いす]",
+          "の",
+          "後[うし]ろ",
+          "です"
+        ],
         "notes": "Describing the bag's position relative to the chair."
       },
       {
@@ -511,9 +971,54 @@
         "notes": "Emphasizing the bag's existence behind the chair."
       },
       {
-        "segments": ["椅子[いす]", "の", "後[うし]ろ", "は", "かばん", "です"],
+        "segments": [
+          "椅子[いす]",
+          "の",
+          "後[うし]ろ",
+          "は",
+          "かばん",
+          "です"
+        ],
         "notes": "Focusing on the area behind the chair being occupied by the bag."
       }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "係助詞",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "連体化",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助動詞",
+        "*",
+        "*",
+        "*"
+      ]
     ]
   },
   {
@@ -565,6 +1070,44 @@
         ],
         "notes": "Focusing on the area near the school being a park."
       }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "係助詞",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "連体化",
+        "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "副詞可能",
+        "*",
+        "*"
+      ],
+      [
+        "助動詞",
+        "*",
+        "*",
+        "*"
+      ]
     ]
   }
 ]

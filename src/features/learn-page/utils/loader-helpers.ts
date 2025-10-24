@@ -198,7 +198,7 @@ export function getLinkTo(module: Module, moduleKey: string) {
     }
     if (module.session_type === "sentence-practice") {
       const strippedId = moduleKey.replace(/^sentence-practice-/, "")
-      return `/practice/sentence-practice/${strippedId}`
+      return `/sentence-practice/${strippedId}`
     }
   }
 
@@ -348,13 +348,15 @@ function getModuleGradient(moduleType: string) {
     game: "bg-gradient-to-br from-red-500/10 via-card to-red-600/5",
     video: "bg-gradient-to-br from-purple-400/10 via-card to-purple-500/5",
     audio: "bg-gradient-to-br from-purple-400/10 via-card to-purple-500/5",
-    "grammar-cheatsheet": "bg-gradient-to-br from-red-500/10 via-card to-red-600/5",
+    "grammar-cheatsheet":
+      "bg-gradient-to-br from-red-500/10 via-card to-red-600/5",
     guides: "bg-gradient-to-br from-purple-400/10 via-card to-purple-500/5",
     reading: "bg-gradient-to-br from-teal-400/10 via-card to-teal-500/5",
     "vocab-list": "bg-gradient-to-br from-sky-400/10 via-card to-sky-500/5",
     "vocab-test":
       "bg-gradient-to-br from-yellow-500/10 via-card to-yellow-600/5",
-    extension: "bg-gradient-to-br from-emerald-500/10 via-card to-emerald-600/5",
+    extension:
+      "bg-gradient-to-br from-emerald-500/10 via-card to-emerald-600/5",
     misc: "bg-gradient-to-br from-pink-500/10 via-card to-pink-600/5",
   }
   return gradientClasses[moduleType] || "bg-card"

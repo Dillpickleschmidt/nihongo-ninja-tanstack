@@ -173,7 +173,7 @@ export function QuickAccessCards() {
     <>
       {/* Desktop */}
       <SSRMediaQuery showFrom="md">
-        <div class="mb-12">
+        <div class="mb-8">
           <div class="grid justify-items-center gap-6 md:grid-cols-3 lg:grid-cols-5">
             <For each={featuredTools}>
               {(tool, index) => <DesktopCard tool={tool} index={index} />}
@@ -184,7 +184,7 @@ export function QuickAccessCards() {
 
       {/* Mobile */}
       <SSRMediaQuery hideFrom="md">
-        <div class="mb-8 space-y-3 px-4">
+        <div class="mb-4 space-y-3 px-4">
           <For each={featuredTools}>
             {(tool, index) => <MobileCard tool={tool} index={index} />}
           </For>

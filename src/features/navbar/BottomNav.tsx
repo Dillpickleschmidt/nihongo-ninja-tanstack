@@ -1,6 +1,6 @@
 // features/navbar/BottomNav.tsx
 import { Link, useLocation, useRouteContext } from "@tanstack/solid-router"
-import { Home, BookOpen, Search, User } from "lucide-solid"
+import { Home, GraduationCap, Search, User } from "lucide-solid"
 import { cn } from "@/utils"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
@@ -28,7 +28,7 @@ export function BottomNav(props: BottomNavProps) {
     },
     {
       id: "learn",
-      icon: BookOpen,
+      icon: GraduationCap,
       label: "Learn",
       href: "/learn",
     },
