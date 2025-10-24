@@ -204,7 +204,9 @@ function saveCache(cache: FileCache): void {
 /**
  * Type guards
  */
-function isBlankableWord(segment: ConjugatableSegment): segment is BlankableWord {
+function isBlankableWord(
+  segment: ConjugatableSegment,
+): segment is BlankableWord {
   return (
     typeof segment === "object" &&
     "blank" in segment &&
@@ -217,6 +219,9 @@ function isConjugatedWord(
 ): segment is ConjugatedWord {
   return typeof segment === "object" && "pos" in segment
 }
+
+// Remove furigana brackets and spaces
+const CLEANUP_REGEX = /\[([^\]]+)\]|\s+/g
 
 /**
  * Extract Japanese text from segments for parsing
@@ -231,7 +236,9 @@ function segmentsToText(
   return segments
     .map((segment) => {
       // Handle blank words first
-      const transformedSegment = isBlankableWord(segment) ? segment.word : segment
+      const transformedSegment = isBlankableWord(segment)
+        ? segment.word
+        : segment
 
       // Handle conjugatable words
       if (isConjugatedWord(transformedSegment)) {
@@ -241,13 +248,13 @@ function segmentsToText(
         )
         // Use first variation (polite form)
         const text = conjugated[0]?.[0] || ""
-        // Remove furigana brackets
-        return text.replace(/\[([^\]]+)\]/g, "")
+        // Remove furigana brackets and spaces
+        return text.replace(CLEANUP_REGEX, "")
       }
 
       // Handle plain strings
       const text = transformedSegment as string
-      return text.replace(/\[([^\]]+)\]/g, "")
+      return text.replace(CLEANUP_REGEX, "")
     })
     .join("")
 }
@@ -279,7 +286,11 @@ async function parseQuestionsFile(
       const grammarMatches = analyzeGrammar(tokens)
 
       // Combine conjugation tokens (e.g., 飲み + ます → 飲みます)
-      const combinedTokens = combineConjugationTokens(text, tokens, grammarMatches)
+      const combinedTokens = combineConjugationTokens(
+        text,
+        tokens,
+        grammarMatches,
+      )
 
       // Store only POS arrays from combined tokens
       question.modelAnswerPOS = combinedTokens.map((token) => token.pos)

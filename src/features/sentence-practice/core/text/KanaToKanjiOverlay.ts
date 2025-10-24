@@ -4,6 +4,9 @@ import type { UnprocessedQuestion } from "../conjugation/types"
 import { AnswerChecker } from "../answer-processing/AnswerChecker"
 import { TextProcessor } from "./TextProcessor"
 
+// Remove furigana brackets and spaces (matches parse-sentences.ts behavior)
+const CLEANUP_REGEX = /\[([^\]]+)\]|\s+/g
+
 export interface SegmentMapping {
   overlaidStart: number
   overlaidEnd: number
@@ -72,8 +75,8 @@ export class KanaToKanjiOverlay {
       }
 
       return {
-        kanji: this.textProcessor.removeFurigana(segmentText),
-        kana: this.textProcessor.convertToKana(segmentText),
+        kanji: this.textProcessor.removeFurigana(segmentText).replace(CLEANUP_REGEX, ""),
+        kana: this.textProcessor.convertToKana(segmentText).replace(CLEANUP_REGEX, ""),
       }
     })
 
