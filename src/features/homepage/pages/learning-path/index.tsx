@@ -84,7 +84,7 @@ export function LearningPathPage(props: LearningPathPageProps) {
     tiles().findIndex((tile) => !isModuleCompleted(tile.href))
 
   return (
-    <section class="mx-auto w-full max-w-7xl px-4 pt-4 pb-24 md:pt-8">
+    <section class="relative mx-auto w-full max-w-7xl px-4 pt-4 pb-16 md:pt-8">
       <div class="flex h-16 items-center pl-4">
         <Show
           when={
