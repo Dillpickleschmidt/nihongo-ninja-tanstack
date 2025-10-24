@@ -56,7 +56,7 @@ const PosHintBox: Component<PosHintBoxProps> = (props) => {
 
   return (
     <span
-      class={`${colorClass()} inline-block rounded px-1 py-0.5 font-mono text-sm`}
+      class={`${colorClass()} inline-block rounded-md px-1 py-0.5 font-mono text-sm`}
       title={`${category()}: ${props.pos.join(", ")}`}
     >
       {content()}
