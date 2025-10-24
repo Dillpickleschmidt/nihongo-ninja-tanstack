@@ -11,7 +11,12 @@ import { TextProcessor } from "../../core/text/TextProcessor"
 import { AnswerChecker } from "../../core/answer-processing/AnswerChecker"
 import { combineConjugationTokens } from "../../kagome/utils/combineConjugationTokens"
 
-export default function AnswerInput() {
+interface AnswerInputProps {
+  showLegend: () => boolean
+  setShowLegend: (show: boolean) => void
+}
+
+export default function AnswerInput(props: AnswerInputProps) {
   const { store, actions, kagomeReady, kagomeWorker } = usePracticeStore()
 
   // Initialize utilities for overlay
@@ -92,20 +97,32 @@ export default function AnswerInput() {
     <div class="space-y-4">
       <div>
         {/* POS Hint Display - shows colored boxes for model answer structure */}
-        <div class="flex w-full flex-col">
+        <div class="flex justify-between">
           <Show when={currentQuestion()?.modelAnswerPOS}>
             <PosHintDisplay
               modelAnswerPOS={currentQuestion()!.modelAnswerPOS!}
             />
           </Show>
-
-          {/* User Input POS Display - shows colored boxes for user's input */}
-          <UserInputPosDisplay
-            tokens={store.userInputTokens}
-            overlayResult={store.userInputOverlay}
-            originalInput={store.inputs.single || ""}
-          />
+          <Button
+            class={
+              props.showLegend()
+                ? "bg-background/50 hover:bg-background/50 -mt-1.5 h-8"
+                : "bg-background/0 hover:bg-background/20 -mt-1.5 h-8"
+            }
+            variant="outline"
+            size="sm"
+            onClick={() => props.setShowLegend(!props.showLegend())}
+          >
+            {props.showLegend() ? "Hide Legend" : "Show Legend"}
+          </Button>
         </div>
+
+        {/* User Input POS Display - shows colored boxes for user's input */}
+        <UserInputPosDisplay
+          tokens={store.userInputTokens}
+          overlayResult={store.userInputOverlay}
+          originalInput={store.inputs.single || ""}
+        />
 
         <div class="relative">
           <PracticeInput

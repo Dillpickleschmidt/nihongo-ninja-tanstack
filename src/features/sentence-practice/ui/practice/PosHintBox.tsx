@@ -36,9 +36,9 @@ function getPosCategory(pos: string[]): PosCategory {
  */
 function getCategoryColorClass(category: PosCategory): string {
   const colors: Record<PosCategory, string> = {
-    orange: "bg-orange-400 dark:bg-amber-400 text-black",
-    green: "bg-emerald-400 dark:bg-green-400 text-black",
-    blue: "bg-sky-400 dark:bg-teal-400 text-black",
+    orange: "bg-amber-500 dark:bg-amber-400 text-black",
+    green: "bg-green-500 dark:bg-green-400 text-black",
+    blue: "bg-teal-500 dark:bg-teal-400 text-black",
   }
   return colors[category]
 }

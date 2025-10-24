@@ -1,17 +1,32 @@
 import { For, Show, createMemo, createSignal } from "solid-js"
 import { createFileRoute, useRouteContext } from "@tanstack/solid-router"
+import { useQueryClient } from "@tanstack/solid-query"
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
 import { Button } from "@/components/ui/button"
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 import { SmoothCardLink } from "@/features/learn-page/components/shared/SmoothCard"
 import { Search } from "lucide-solid"
 import { cn } from "@/utils"
+import FindMoreHereSvg from "@/features/homepage/shared/assets/find-more-here.svg?component-solid"
 
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import {
+  userSettingsQueryOptions,
+  applyUserSettingsUpdate,
+} from "@/features/main-cookies/query/query-options"
 import { Route as RootRoute } from "@/routes/__root"
 
-import { getModulesBySessionType } from "@/data/utils/core"
+import {
+  getModulesBySessionType,
+  getMinifiedTextbookEntries,
+} from "@/data/utils/core"
 import type { DynamicModule, TextbookIDEnum } from "@/data/types"
 import {
   getModuleIcon,
@@ -46,11 +61,19 @@ function enrich(mod: { id: string } & DynamicModule): EnrichedSentenceModule {
 
 function RouteComponent() {
   const context = useRouteContext({ from: RootRoute.id })
+  const queryClient = useQueryClient()
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(context().user?.id || null),
   )
 
   const [search, setSearch] = createSignal("")
+
+  // Get available textbooks for selection (exclude getting_started)
+  const availableTextbooks = createMemo(() =>
+    getMinifiedTextbookEntries().filter(
+      ([textbookId]) => textbookId !== "getting_started",
+    ),
+  )
 
   // All sentence-practice modules for the active textbook
   const allModules = createMemo(() => {
@@ -93,7 +116,50 @@ function RouteComponent() {
         </div>
       </Show>
 
-      <div class="mx-auto w-full max-w-6xl px-4 pt-10 pb-28 lg:pt-16">
+      <div class="relative mx-auto mt-10 w-full max-w-6xl px-4 pb-28 lg:pt-16">
+        <div class="absolute -top-14 right-4 flex items-center gap-1 lg:top-16">
+          <Show when={settingsQuery.data}>
+            <FindMoreHereSvg class="w-44 text-neutral-400" />
+            <Select
+              value={settingsQuery.data!["active-textbook"]}
+              onChange={async (value) => {
+                await applyUserSettingsUpdate(
+                  context().user?.id || null,
+                  queryClient,
+                  {
+                    "active-textbook": value as TextbookIDEnum,
+                  },
+                )
+              }}
+              options={availableTextbooks().map(([id]) => id)}
+              placeholder="Select textbook"
+              itemComponent={(props) => (
+                <SelectItem item={props.item}>
+                  {availableTextbooks().find(
+                    ([id]) => id === props.item.rawValue,
+                  )?.[1].short_name ||
+                    availableTextbooks().find(
+                      ([id]) => id === props.item.rawValue,
+                    )?.[1].name}
+                </SelectItem>
+              )}
+            >
+              <SelectTrigger class="bg-background/40 w-[180px]">
+                <SelectValue<string>>
+                  {(state) =>
+                    availableTextbooks().find(
+                      ([id]) => id === state.selectedOption(),
+                    )?.[1].short_name ||
+                    availableTextbooks().find(
+                      ([id]) => id === state.selectedOption(),
+                    )?.[1].name
+                  }
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent class="bg-background border-card-foreground/70" />
+            </Select>
+          </Show>
+        </div>
         {/* Header */}
         <div class="mb-6 flex flex-col gap-2 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
           <div>

@@ -12,7 +12,7 @@ interface PosHintDisplayProps {
  * Green (verbs/i-adj): 4 characters
  * Blue (particles/copulas): 1 character
  */
-function getWidthForCategory(category: PosCategory): number {
+export function getWidthForCategory(category: PosCategory): number {
   const widths: Record<PosCategory, number> = {
     orange: 3,
     green: 4,
