@@ -38,7 +38,11 @@ function getPosCategory(pos: string[]): PosCategory {
  */
 const PosHintDisplay: Component<PosHintDisplayProps> = (props) => {
   return (
-    <div class="mb-3 flex flex-wrap items-center gap-1" role="status" aria-label="Part of speech hint">
+    <div
+      class="mb-3 flex flex-wrap items-center gap-1"
+      role="status"
+      aria-label="Part of speech hint"
+    >
       <For each={props.modelAnswerPOS}>
         {(pos, index) => {
           const category = getPosCategory(pos)

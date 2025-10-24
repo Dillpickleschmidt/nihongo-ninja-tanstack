@@ -20,7 +20,8 @@ export default function AnswerInput() {
   const overlay = new KanaToKanjiOverlay(answerChecker, textProcessor)
 
   const currentQuestion = () => store.questions[store.currentQuestionIndex]
-  const currentRawQuestion = () => store.rawQuestions[store.currentQuestionIndex]
+  const currentRawQuestion = () =>
+    store.rawQuestions[store.currentQuestionIndex]
 
   // Tokenize input asynchronously via worker (doesn't block UI)
   createEffect(() => {
@@ -36,7 +37,11 @@ export default function AnswerInput() {
       const containsKanji = textProcessor.containsKanji(userInput)
 
       if (!containsKanji) {
-        const overlayResult = overlay.overlayKanji(userInput, question, rawQuestion)
+        const overlayResult = overlay.overlayKanji(
+          userInput,
+          question,
+          rawQuestion,
+        )
         if (overlayResult) {
           textToParse = overlayResult.overlaidText
           actions.setUserInputOverlay(overlayResult)
@@ -87,16 +92,20 @@ export default function AnswerInput() {
     <div class="space-y-4">
       <div>
         {/* POS Hint Display - shows colored boxes for model answer structure */}
-        <Show when={currentQuestion()?.modelAnswerPOS}>
-          <PosHintDisplay modelAnswerPOS={currentQuestion()!.modelAnswerPOS!} />
-        </Show>
+        <div class="flex w-full flex-col">
+          <Show when={currentQuestion()?.modelAnswerPOS}>
+            <PosHintDisplay
+              modelAnswerPOS={currentQuestion()!.modelAnswerPOS!}
+            />
+          </Show>
 
-        {/* User Input POS Display - shows colored boxes for user's input */}
-        <UserInputPosDisplay
-          tokens={store.userInputTokens}
-          overlayResult={store.userInputOverlay}
-          originalInput={store.inputs.single || ""}
-        />
+          {/* User Input POS Display - shows colored boxes for user's input */}
+          <UserInputPosDisplay
+            tokens={store.userInputTokens}
+            overlayResult={store.userInputOverlay}
+            originalInput={store.inputs.single || ""}
+          />
+        </div>
 
         <div class="relative">
           <PracticeInput
