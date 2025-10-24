@@ -185,71 +185,6 @@
     ]
   },
   {
-    "english": "Shall we talk with friends?",
-    "answers": [
-      {
-        "segments": [
-          "友[とも]だち",
-          "と",
-          "話[はな]しませんか"
-        ]
-      },
-      {
-        "segments": [
-          "一緒[いっしょ]",
-          "に",
-          "友[とも]だち",
-          "と",
-          "話[はな]しませんか"
-        ],
-        "notes": "With 一緒に"
-      },
-            {
-        "segments": [
-          "友[とも]だち",
-          "と",
-          "しゃべりませんか"
-        ]
-      },
-      {
-        "segments": [
-          "一緒[いっしょ]",
-          "に",
-          "友[とも]だち",
-          "と",
-          "しゃべりませんか"
-        ],
-        "notes": "With 一緒に"
-      }
-    ],
-    "modelAnswerPOS": [
-      [
-        "名詞",
-        "一般",
-        "*",
-        "*"
-      ],
-      [
-        "助詞",
-        "格助詞",
-        "引用",
-        "*"
-      ],
-      [
-        "動詞",
-        "自立",
-        "*",
-        "*"
-      ],
-      [
-        "助詞",
-        "副助詞／並立助詞／終助詞",
-        "*",
-        "*"
-      ]
-    ]
-  },
-  {
     "english": "Would you like to read books?",
     "answers": [
       {
@@ -298,7 +233,7 @@
     ]
   },
   {
-    "english": "Shall we go to school together?",
+    "english": "Would you like go to school together?",
     "answers": [
       {
         "segments": [
@@ -337,6 +272,18 @@
       }
     ],
     "modelAnswerPOS": [
+      [
+        "名詞",
+        "サ変接続",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "格助詞",
+        "一般",
+        "*"
+      ],
       [
         "名詞",
         "一般",
@@ -412,7 +359,7 @@
     ]
   },
   {
-    "english": "Shall we eat lunch together?",
+    "english": "Would you like to eat lunch together?",
     "answers": [
       {
         "segments": [
@@ -436,6 +383,18 @@
       [
         "名詞",
         "副詞可能",
+        "*",
+        "*"
+      ],
+      [
+        "接頭詞",
+        "名詞接続",
+        "*",
+        "*"
+      ],
+      [
+        "記号",
+        "空白",
         "*",
         "*"
       ],
@@ -553,7 +512,7 @@
     ]
   },
   {
-    "english": "Shall we study Japanese together?",
+    "english": "Would you study Japanese with me?",
     "answers": [
       {
         "segments": [
@@ -576,6 +535,18 @@
       }
     ],
     "modelAnswerPOS": [
+      [
+        "名詞",
+        "サ変接続",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "格助詞",
+        "一般",
+        "*"
+      ],
       [
         "名詞",
         "一般",
