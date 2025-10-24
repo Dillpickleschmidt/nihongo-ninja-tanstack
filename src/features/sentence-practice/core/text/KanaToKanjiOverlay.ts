@@ -1,22 +1,18 @@
 // core/text/KanaToKanjiOverlay.ts
 import type { PracticeQuestion } from "../answer-processing/types"
-import type { UnprocessedQuestion } from "../conjugation/types"
+import type {
+  ConjugatableSegment,
+  UnprocessedQuestion,
+} from "../conjugation/types"
 import { AnswerChecker } from "../answer-processing/AnswerChecker"
 import { TextProcessor } from "./TextProcessor"
 
 // Remove furigana brackets and spaces (matches parse-sentences.ts behavior)
 const CLEANUP_REGEX = /\[([^\]]+)\]|\s+/g
 
-export interface SegmentMapping {
-  overlaidStart: number
-  overlaidEnd: number
-  userStart: number
-  userEnd: number
-}
-
 export interface OverlayResult {
   overlaidText: string
-  segmentMappings: SegmentMapping[]
+  characterMap: Map<number, number> // overlaid position → user position (boundary mappings)
 }
 
 /**
@@ -59,25 +55,35 @@ export class KanaToKanjiOverlay {
     }
 
     // Extract kanji and kana forms from raw answer (preserves furigana notation)
-    const rawSegments = rawQuestion.answers[bestMatch.answer.sourceAnswerIndex].segments
+    const rawSegments =
+      rawQuestion.answers[bestMatch.answer.sourceAnswerIndex!].segments
 
     // Process each segment individually to extract both kanji and kana forms
-    const parts = rawSegments.map((segment) => {
+    // Split on and remove spaces for accurate character mappings (e.g., "お 弁当[べんとう]" → ["お", "弁当[べんとう]"])
+    const parts = rawSegments.flatMap((segment: ConjugatableSegment) => {
       let segmentText: string
 
       if (typeof segment === "string") {
         segmentText = segment
       } else if ("word" in segment) {
         // Handle conjugation objects - extract the word
-        segmentText = typeof segment.word === "string" ? segment.word : segment.word.word
+        segmentText =
+          typeof segment.word === "string" ? segment.word : segment.word.word
       } else {
         segmentText = ""
       }
 
-      return {
-        kanji: this.textProcessor.removeFurigana(segmentText).replace(CLEANUP_REGEX, ""),
-        kana: this.textProcessor.convertToKana(segmentText).replace(CLEANUP_REGEX, ""),
-      }
+      return segmentText
+        .split(/\s+/)
+        .filter((piece) => piece.length > 0)
+        .map((piece) => ({
+          kanji: this.textProcessor
+            .removeFurigana(piece)
+            .replace(/\[([^\]]+)\]/g, ""),
+          kana: this.textProcessor
+            .convertToKana(piece)
+            .replace(/\[([^\]]+)\]/g, ""),
+        }))
     })
 
     // Build segment range mappings
@@ -109,7 +115,7 @@ export class KanaToKanjiOverlay {
   /**
    * Left-to-right overlay of kanji onto user's kana using segment ranges
    * When a full segment's kana matches, replace with its kanji (output once, not per character)
-   * Returns both overlaid text and segment mappings
+   * Returns overlaid text and character boundary mappings
    */
   private applyKanjiOverlay(
     userKana: string,
@@ -117,11 +123,12 @@ export class KanaToKanjiOverlay {
     segmentRanges: Array<{ kanaStart: number; kanaEnd: number; kanji: string }>,
   ): OverlayResult {
     let overlaidText = ""
-    const segmentMappings: SegmentMapping[] = []
+    const characterMap = new Map<number, number>()
     let userPos = 0
     let matchPos = 0
-    let matchedSegments = 0
-    let mismatchedChars = 0
+
+    // Record starting boundary
+    characterMap.set(0, 0)
 
     while (userPos < userKana.length && matchPos < matchKana.length) {
       // Find current segment in match
@@ -131,15 +138,9 @@ export class KanaToKanjiOverlay {
 
       if (!segment) {
         // No segment found (shouldn't happen) - output user char
-        const overlaidStart = overlaidText.length
         overlaidText += userKana[userPos]
-        segmentMappings.push({
-          overlaidStart,
-          overlaidEnd: overlaidText.length,
-          userStart: userPos,
-          userEnd: userPos + 1,
-        })
         userPos++
+        characterMap.set(overlaidText.length, userPos)
         continue
       }
 
@@ -152,52 +153,39 @@ export class KanaToKanjiOverlay {
       )
 
       if (userSegment === matchSegment) {
-        // Full segment match - output kanji once and record segment mapping
+        // Full segment match - output kanji and record character boundaries
+        const kanjiLength = segment.kanji.length
+        const kanaLength = segmentLength
         const overlaidStart = overlaidText.length
-        const userSegmentStart = userPos
-        const userSegmentEnd = userPos + segmentLength
+        const userStart = userPos
 
         overlaidText += segment.kanji
 
-        segmentMappings.push({
-          overlaidStart,
-          overlaidEnd: overlaidText.length,
-          userStart: userSegmentStart,
-          userEnd: userSegmentEnd,
-        })
+        // Record character boundaries within this segment
+        // For each kanji character, map to proportional position in kana
+        for (let i = 1; i <= kanjiLength; i++) {
+          const proportionalKanaPos = Math.round((kanaLength * i) / kanjiLength)
+          characterMap.set(overlaidStart + i, userStart + proportionalKanaPos)
+        }
 
         userPos += segmentLength
         matchPos += segmentLength
-        matchedSegments++
       } else {
-        // Segment doesn't match - output user's character and skip this segment in match
-        const overlaidStart = overlaidText.length
+        // Segment doesn't match - output user's character
         overlaidText += userKana[userPos]
-        segmentMappings.push({
-          overlaidStart,
-          overlaidEnd: overlaidText.length,
-          userStart: userPos,
-          userEnd: userPos + 1,
-        })
         userPos++
+        characterMap.set(overlaidText.length, userPos)
         matchPos = segment.kanaEnd // Skip to next segment in match
-        mismatchedChars++
       }
     }
 
     // Append any remaining user characters
     while (userPos < userKana.length) {
-      const overlaidStart = overlaidText.length
       overlaidText += userKana[userPos]
-      segmentMappings.push({
-        overlaidStart,
-        overlaidEnd: overlaidText.length,
-        userStart: userPos,
-        userEnd: userPos + 1,
-      })
       userPos++
+      characterMap.set(overlaidText.length, userPos)
     }
 
-    return { overlaidText, segmentMappings }
+    return { overlaidText, characterMap }
   }
 }

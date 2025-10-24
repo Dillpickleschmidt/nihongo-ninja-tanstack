@@ -33,13 +33,25 @@ function getCategoryColorClass(category: PosCategory): string {
 }
 
 /**
+ * Maps POS category to user-friendly description for tooltip
+ */
+function getCategoryDescription(category: PosCategory): string {
+  const descriptions: Record<PosCategory, string> = {
+    orange: "Noun or な-Adjective",
+    green: "Verb or い-Adjective",
+    blue: "Particle, copula, etc.",
+  }
+  return descriptions[category]
+}
+
+/**
  * Displays POS boxes for user's input with original kana text
  * Shows variable-width colored boxes based on POS category
  * Provides visual comparison with model answer structure
  */
 const UserInputPosDisplay: Component<UserInputPosDisplayProps> = (props) => {
   /**
-   * Extract original text for a token using proportional segment mapping
+   * Extract original text for a token using character boundary mappings
    */
   const getOriginalText = (token: KagomeToken): string => {
     // If no overlay, tokens are from original input (user typed with kanji)
@@ -47,32 +59,15 @@ const UserInputPosDisplay: Component<UserInputPosDisplayProps> = (props) => {
       return token.surface
     }
 
-    // Find segment containing this token's start position
-    const segment = props.overlayResult.segmentMappings.find(
-      (s) => token.start >= s.overlaidStart && token.start < s.overlaidEnd,
-    )
+    // Use character boundary mappings for exact lookup
+    const userStart = props.overlayResult.characterMap.get(token.start)
+    const userEnd = props.overlayResult.characterMap.get(token.end)
 
-    if (!segment) {
-      return token.surface // Fallback
+    if (userStart === undefined || userEnd === undefined) {
+      return token.surface
     }
 
-    // Calculate proportional position within segment
-    const offsetInSegment = token.start - segment.overlaidStart
-    const tokenLength = token.end - token.start
-
-    const overlaidSegmentLength = segment.overlaidEnd - segment.overlaidStart
-    const userSegmentLength = segment.userEnd - segment.userStart
-
-    // Proportionally map to user text
-    const userStart =
-      segment.userStart +
-      Math.floor((offsetInSegment * userSegmentLength) / overlaidSegmentLength)
-
-    const userLength = Math.ceil(
-      (tokenLength * userSegmentLength) / overlaidSegmentLength,
-    )
-
-    return props.originalInput.substring(userStart, userStart + userLength)
+    return props.originalInput.substring(userStart, userEnd)
   }
 
   return (
@@ -91,7 +86,7 @@ const UserInputPosDisplay: Component<UserInputPosDisplayProps> = (props) => {
             return (
               <span
                 class={`${colorClass} font-japanese inline-block rounded-md px-1 py-0.5 text-base font-medium`}
-                title={`${category}: ${token.pos.join(", ")}`}
+                title={getCategoryDescription(category)}
               >
                 {originalText}
               </span>

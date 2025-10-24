@@ -266,11 +266,47 @@
     "answers": [
       {
         "segments": [
+          "すみません",
+          "、",
+          "写真[しゃしん]",
+          "を",
+          "撮[と]りませんでした"
+        ]
+      },
+      {
+        "segments": [
+          "すみません",
+          "。",
+          "写真[しゃしん]",
+          "を",
+          "撮[と]りませんでした"
+        ]
+      },
+      {
+        "segments": [
+          "ごめんなさい",
+          "、",
+          "写真[しゃしん]",
+          "を",
+          "撮[と]りませんでした"
+        ]
+      },
+      {
+        "segments": [
           "ごめんなさい",
           "。",
           "写真[しゃしん]",
           "を",
           "撮[と]りませんでした"
+        ]
+      },
+      {
+        "segments": [
+          "写真[しゃしん]",
+          "を",
+          "撮[と]りました",
+          "。",
+          "すみません"
         ]
       },
       {
@@ -292,7 +328,7 @@
       ],
       [
         "記号",
-        "句点",
+        "読点",
         "*",
         "*"
       ],
@@ -402,7 +438,7 @@
     ]
   },
   {
-    "english": "Yesterday, I met my friend, and then I went shopping.",
+    "english": "Yesterday, I met my friend. After that, I did shopping.",
     "hint": "lit. \"did shopping\"",
     "answers": [
       {
@@ -743,18 +779,46 @@
   },
   {
     "english": "The children read (past-tense) at the park.",
-    "hint": "attach たち for clear pluralization",
     "answers": [
       {
         "segments": [
+          "公園[こうえん]",
+          "で",
           "子供[こども]",
-          "たち",
+          "が",
+          "読[よ]みました"
+        ],
+        "notes": "It never happens."
+      },
+      {
+        "segments": [
+          "子供[こども]",
+          "が",
+          "公園[こうえん]",
+          "で",
+          "読[よ]みました"
+        ],
+        "notes": "It never happens."
+      },
+      {
+        "segments": [
+          "子供[こども]",
           "は",
           "公園[こうえん]",
           "で",
           "読[よ]みました"
         ],
         "notes": "It never happens."
+      },
+      {
+        "segments": [
+          "子供[こども]たち",
+          "は",
+          "公園[こうえん]",
+          "で",
+          "読[よ]みました"
+        ],
+        "notes": "たち - explicit plural marker"
       }
     ],
     "modelAnswerPOS": [
@@ -765,15 +829,9 @@
         "*"
       ],
       [
-        "名詞",
-        "接尾",
-        "一般",
-        "*"
-      ],
-      [
         "助詞",
-        "係助詞",
-        "*",
+        "格助詞",
+        "一般",
         "*"
       ],
       [
@@ -854,7 +912,7 @@
     "answers": [
       {
         "segments": [
-          "机",
+          "机[つくえ]",
           "に",
           "書[か]きました"
         ]
