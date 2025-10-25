@@ -11,7 +11,7 @@ export default function ResultDisplay() {
   return (
     <Show when={store.checkResult} keyed>
       {(checkResult: CheckResult) => (
-        <div class="space-y-4">
+        <div id="sentence-practice-results" class="space-y-4">
           <style>
             {`
               .highlight rt {

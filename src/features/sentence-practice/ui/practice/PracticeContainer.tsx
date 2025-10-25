@@ -43,7 +43,10 @@ function PracticeContent(props: PracticeContainerProps) {
       <Show when={showLegend()}>
         <HintLegend />
       </Show>
-      <div class="relative mx-auto max-w-2xl space-y-4 px-4 pt-12 pb-32 lg:pt-24">
+      <div
+        id="sentence-practice-container"
+        class="relative mx-auto max-w-2xl space-y-4 px-4 pt-12 pb-32 lg:pt-24"
+      >
         <DifficultySelector class="flex justify-end" />
         <Show
           when={!store.isLoading}
@@ -57,58 +60,62 @@ function PracticeContent(props: PracticeContainerProps) {
               question={store.questions[store.currentQuestionIndex]!}
             />
 
-            <Show
-              when={store.effectiveDifficulty === "easy"}
-              fallback={
-                <AnswerInput
-                  showLegend={showLegend}
-                  setShowLegend={setShowLegend}
-                />
-              }
-            >
-              <FillInBlankInput
-                segments={
-                  store.rawQuestions[store.currentQuestionIndex]!.answers[0]
-                    .segments
+            <div id="sentence-practice-answer-area">
+              <Show
+                when={store.effectiveDifficulty === "easy"}
+                fallback={
+                  <AnswerInput
+                    showLegend={showLegend}
+                    setShowLegend={setShowLegend}
+                  />
                 }
-              />
-            </Show>
-
-            <ProgressDisplay
-              attempted={store.currentQuestionIndex + 1}
-              total={store.questions.length}
-            />
-            <Show when={store.showResult}>
-              <ResultDisplay />
-
-              <Collapsible
-                class="mt-8 flex flex-col items-center"
-                open={isCollapsibleOpen()}
-                onOpenChange={setIsCollapsibleOpen}
               >
-                <CollapsibleTrigger class="w-fit rounded-full px-4 py-1.5 text-xs">
-                  Show all possible
-                </CollapsibleTrigger>
-                <CollapsibleContent class="w-full">
-                  <Show
-                    when={store.effectiveDifficulty === "easy"}
-                    fallback={
-                      <DebugPanel
-                        question={store.questions[store.currentQuestionIndex]!}
-                      />
-                    }
-                  >
-                    <EasyModeDebugPanel
-                      question={store.questions[store.currentQuestionIndex]!}
-                      rawSegments={
-                        store.rawQuestions[store.currentQuestionIndex]!
-                          .answers[0].segments
+                <FillInBlankInput
+                  segments={
+                    store.rawQuestions[store.currentQuestionIndex]!.answers[0]
+                      .segments
+                  }
+                />
+              </Show>
+
+              <ProgressDisplay
+                attempted={store.currentQuestionIndex + 1}
+                total={store.questions.length}
+              />
+              <Show when={store.showResult}>
+                <ResultDisplay />
+
+                <Collapsible
+                  class="mt-8 flex flex-col items-center"
+                  open={isCollapsibleOpen()}
+                  onOpenChange={setIsCollapsibleOpen}
+                >
+                  <CollapsibleTrigger class="w-fit rounded-full px-4 py-1.5 text-xs">
+                    Show all possible
+                  </CollapsibleTrigger>
+                  <CollapsibleContent class="w-full">
+                    <Show
+                      when={store.effectiveDifficulty === "easy"}
+                      fallback={
+                        <DebugPanel
+                          question={
+                            store.questions[store.currentQuestionIndex]!
+                          }
+                        />
                       }
-                    />
-                  </Show>
-                </CollapsibleContent>
-              </Collapsible>
-            </Show>
+                    >
+                      <EasyModeDebugPanel
+                        question={store.questions[store.currentQuestionIndex]!}
+                        rawSegments={
+                          store.rawQuestions[store.currentQuestionIndex]!
+                            .answers[0].segments
+                        }
+                      />
+                    </Show>
+                  </CollapsibleContent>
+                </Collapsible>
+              </Show>
+            </div>
           </Show>
         </Show>
 
@@ -129,7 +136,7 @@ function HintLegend() {
   const blueContent = () => "　".repeat(blueWidth)
 
   return (
-    <div class="bg-card-foreground/10 text-muted-foreground/70 ease-instant-hover-100 fixed right-0 bottom-16 flex h-46 w-44 flex-col items-start gap-1 rounded-tl border p-4 font-semibold backdrop-blur-md lg:top-[40vh] lg:rounded-l">
+    <div class="bg-card-foreground/10 text-muted-foreground/70 ease-instant-hover-100 fixed right-0 bottom-16 z-10 flex h-46 w-44 flex-col items-start gap-1 rounded-tl border p-4 font-semibold backdrop-blur-md lg:top-[40vh] lg:rounded-l">
       <div>
         <span class="mr-2 inline-block rounded-md bg-amber-400 px-1 text-base">
           {orangeContent()}

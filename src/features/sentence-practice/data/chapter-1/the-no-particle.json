@@ -1,11 +1,11 @@
 [
   {
     "english": "Mr./Ms. Tanaka's teacher is a doctor.",
-    "hint": "Name spelling: たなか",
+    "hint": "Name spelling: 田中（たなか）",
     "answers": [
       {
         "segments": [
-          "たなか",
+          "田中[たなか]",
           "さん",
           "の",
           "先生[せんせい]",
@@ -17,16 +17,10 @@
     ],
     "modelAnswerPOS": [
       [
-        "助動詞",
-        "*",
-        "*",
-        "*"
-      ],
-      [
         "名詞",
         "固有名詞",
         "人名",
-        "名"
+        "姓"
       ],
       [
         "名詞",
@@ -68,11 +62,11 @@
   },
   {
     "english": "Mr./Ms. Yamada's friend is Japanese.",
-    "hint": "Name spelling: やまだ",
+    "hint": "Name spelling: 山田（やまだ）",
     "answers": [
       {
         "segments": [
-          "やまだ",
+          "山田[やまだ]",
           "さん",
           "の",
           "友[とも]だち",
@@ -562,11 +556,11 @@
   },
   {
     "english": "Mr./Ms. Murata's friend is an international student.",
-    "hint": "Name spelling: むらた",
+    "hint": "Name spelling: 村田（むらた）",
     "answers": [
       {
         "segments": [
-          "むらた",
+          "村田[むらた]",
           "さん",
           "の",
           "友[とも]だち",
@@ -579,15 +573,9 @@
     "modelAnswerPOS": [
       [
         "名詞",
-        "一般",
-        "*",
-        "*"
-      ],
-      [
-        "助動詞",
-        "*",
-        "*",
-        "*"
+        "固有名詞",
+        "人名",
+        "姓"
       ],
       [
         "名詞",
@@ -696,11 +684,11 @@
   },
   {
     "english": "Mr./Ms. Yoshida's teacher is Japanese.",
-    "hint": "Name spelling: よしだ",
+    "hint": "Name spelling: 吉田（よしだ）",
     "answers": [
       {
         "segments": [
-          "よしだ",
+          "吉田[よしだ]",
           "さん",
           "の",
           "先生[せんせい]",
@@ -712,16 +700,10 @@
     ],
     "modelAnswerPOS": [
       [
-        "副詞",
-        "一般",
-        "*",
-        "*"
-      ],
-      [
-        "助動詞",
-        "*",
-        "*",
-        "*"
+        "名詞",
+        "固有名詞",
+        "人名",
+        "姓"
       ],
       [
         "名詞",
@@ -817,11 +799,11 @@
   },
   {
     "english": "Is Ms. Hanako's teacher a nurse?",
-    "hint": "Name spelling: はなこ",
+    "hint": "Name spelling: 花子（はなこ）",
     "answers": [
       {
         "segments": [
-          "はなこ",
+          "花子[はなこ]",
           "さん",
           "の",
           "先生[せんせい]",
@@ -838,12 +820,6 @@
         "固有名詞",
         "人名",
         "名"
-      ],
-      [
-        "名詞",
-        "一般",
-        "*",
-        "*"
       ],
       [
         "名詞",
@@ -956,12 +932,13 @@
     ]
   },
   {
-    "english": "Kenji's teacher is a housewife.",
-    "hint": "Name spelling: けんじ",
+    "english": "Kobayashi's teacher is a housewife.",
+    "hint": "Name spelling: 小林（こばやし）",
     "answers": [
       {
         "segments": [
-          "けんじ",
+          "小林[こばやし]",
+          "さん",
           "の",
           "先生[せんせい]",
           "は",
@@ -972,9 +949,15 @@
     ],
     "modelAnswerPOS": [
       [
-        "動詞",
-        "自立",
-        "*",
+        "名詞",
+        "固有名詞",
+        "人名",
+        "姓"
+      ],
+      [
+        "名詞",
+        "接尾",
+        "人名",
         "*"
       ],
       [
@@ -1011,11 +994,11 @@
   },
   {
     "english": "Is Mr./Ms. Mori's friend a lawyer?",
-    "hint": "Name spelling: もり",
+    "hint": "Name spelling: 森（もり）",
     "answers": [
       {
         "segments": [
-          "もり",
+          "森[もり]",
           "さん",
           "の",
           "友[とも]だち",
@@ -1028,21 +1011,15 @@
     ],
     "modelAnswerPOS": [
       [
-        "動詞",
-        "自立",
-        "*",
-        "*"
+        "名詞",
+        "固有名詞",
+        "人名",
+        "姓"
       ],
       [
         "名詞",
         "接尾",
-        "特殊",
-        "*"
-      ],
-      [
-        "名詞",
-        "非自立",
-        "一般",
+        "人名",
         "*"
       ],
       [
@@ -1139,11 +1116,11 @@
   },
   {
     "english": "Mr./Ms. Inoue's friend is an office worker.",
-    "hint": "Name spelling: いのうえ",
+    "hint": "Name spelling: 井上（いのうえ）",
     "answers": [
       {
         "segments": [
-          "いのうえ",
+          "井上[いのうえ]",
           "さん",
           "の",
           "友[とも]だち",

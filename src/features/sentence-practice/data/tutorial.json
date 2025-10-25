@@ -1,0 +1,122 @@
+[
+  {
+    "english": "I am a student.",
+    "answers": [
+      {
+        "segments": [
+          {
+            "word": "学生[がくせい]",
+            "blank": true
+          },
+          "です"
+        ]
+      },
+      {
+        "segments": [
+          "私[わたし]",
+          "は",
+          {
+            "word": "学生[がくせい]",
+            "blank": true
+          },
+          "です"
+        ]
+      },
+      {
+        "segments": [
+          "私[わたし]",
+          "が",
+          {
+            "word": "学生[がくせい]",
+            "blank": true
+          },
+          "です"
+        ]
+      }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助動詞",
+        "*",
+        "*",
+        "*"
+      ]
+    ]
+  },
+  {
+    "english": "I eat bananas.",
+    "hint": "bananas - バナナ",
+    "answers": [
+      {
+        "segments": [
+          "バナナ",
+          "を",
+          {
+            "word": "食[た]べる",
+            "blank": true,
+            "pos": "Ichidan verb",
+            "form": "normal",
+            "polarity": "positive",
+            "tense": "non-past"
+          }
+        ]
+      },
+      {
+        "segments": [
+          "私[わたし]",
+          "は",
+          "バナナ",
+          "を",
+          {
+            "word": "食[た]べる",
+            "pos": "Ichidan verb",
+            "form": "normal",
+            "polarity": "positive",
+            "tense": "non-past"
+          }
+        ]
+      },
+      {
+        "segments": [
+          "私[わたし]",
+          "が",
+          "バナナ",
+          "を",
+          {
+            "word": "食[た]べる",
+            "pos": "Ichidan verb",
+            "form": "normal",
+            "polarity": "positive",
+            "tense": "non-past"
+          }
+        ]
+      }
+    ],
+    "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "格助詞",
+        "一般",
+        "*"
+      ],
+      [
+        "動詞",
+        "自立",
+        "*",
+        "*"
+      ]
+    ]
+  }
+]

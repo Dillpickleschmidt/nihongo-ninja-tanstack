@@ -1,8 +1,10 @@
 // ui/practice/AnswerInput.tsx
 import { Show, createEffect } from "solid-js"
 import { CircleHelp, Loader2 } from "lucide-solid"
+import { useRouterState, useNavigate } from "@tanstack/solid-router"
 import { Button } from "@/components/ui/button"
 import { usePracticeStore } from "../../store/PracticeContext"
+import { useTour } from "@/features/guided-tour/TourContext"
 import PracticeInput from "./PracticeInput"
 import PosHintDisplay from "./PosHintDisplay"
 import UserInputPosDisplay from "./UserInputPosDisplay"
@@ -18,6 +20,9 @@ interface AnswerInputProps {
 
 export default function AnswerInput(props: AnswerInputProps) {
   const { store, actions, kagomeReady, kagomeWorker } = usePracticeStore()
+  const navigate = useNavigate()
+  const location = useRouterState({ select: (s) => s.location })
+  const { nextStep } = useTour()
 
   // Initialize utilities for overlay
   const textProcessor = new TextProcessor()
@@ -87,9 +92,17 @@ export default function AnswerInput(props: AnswerInputProps) {
 
   const handleMainButton = () => {
     if (isAnswerCorrect()) {
-      actions.nextQuestion()
+      if (isLastQuestion) {
+        navigate({ to: "/sentence-practice" })
+      } else {
+        actions.nextQuestion()
+      }
+      // Advance tour step if on tutorial route
     } else {
       actions.checkAnswer()
+    }
+    if (location().pathname === "/sentence-practice/tutorial") {
+      nextStep()
     }
   }
 
@@ -113,7 +126,7 @@ export default function AnswerInput(props: AnswerInputProps) {
             size="sm"
             onClick={() => props.setShowLegend(!props.showLegend())}
           >
-            {props.showLegend() ? "Hide Legend" : "Show Legend"}
+            {props.showLegend() ? "Hide Key" : "Show Key"}
           </Button>
         </div>
 
@@ -124,7 +137,7 @@ export default function AnswerInput(props: AnswerInputProps) {
           originalInput={store.inputs.single || ""}
         />
 
-        <div class="relative">
+        <div id="sentence-practice-answer-input" class="relative">
           <PracticeInput
             value={store.inputs.single || ""}
             onInput={(value) => actions.updateInput(value)}
