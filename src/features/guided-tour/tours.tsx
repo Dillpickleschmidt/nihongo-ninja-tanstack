@@ -8,6 +8,7 @@ interface TourStep {
   description: string | JSX.Element
   side?: "top" | "bottom" | "left" | "right"
   align?: "start" | "center" | "end"
+  width?: string // Optional - e.g., "600px", "80vw", "50rem"
 }
 
 export const TOURS: Record<string, TourStep[]> = {
@@ -105,6 +106,7 @@ export const TOURS: Record<string, TourStep[]> = {
           <p class="pt-2">Click 'Next' to get started!</p>
         </div>
       ),
+      width: "325px",
     },
     {
       element: "#sentence-practice-container",
@@ -169,6 +171,7 @@ export const TOURS: Record<string, TourStep[]> = {
         </div>
       ),
       side: "right",
+      width: "350px",
     },
     {
       element: "#sentence-practice-answer-area",

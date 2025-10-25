@@ -140,6 +140,12 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
         const currentStep = steps[state.activeIndex!]
         const isJSXDescription = typeof currentStep?.description !== "string"
 
+        // Apply custom width if specified (override driver.js's max-width: 300px)
+        if (currentStep?.width) {
+          popover.wrapper.style.width = currentStep.width
+          popover.wrapper.style.maxWidth = currentStep.width
+        }
+
         // Inject JSX description if present
         if (isJSXDescription && currentStep) {
           // Query the description element from the document
