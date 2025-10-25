@@ -11,6 +11,7 @@ interface TourStep {
   width?: string
   dialog?: boolean
   showNextButton?: boolean
+  allowInput?: boolean
 }
 
 export const TOURS: Record<string, TourStep[]> = {
@@ -202,6 +203,7 @@ export const TOURS: Record<string, TourStep[]> = {
       side: "right",
       dialog: false,
       showNextButton: false,
+      allowInput: true,
     },
     {
       element: "#sentence-practice-results",
@@ -224,11 +226,12 @@ export const TOURS: Record<string, TourStep[]> = {
       side: "right",
       dialog: false,
       showNextButton: false,
+      allowInput: true,
     },
     {
       element: "#sentence-practice-answer-area",
       route: "/sentence-practice/tutorial",
-      title: "Give it a try!",
+      title: "One more...",
       description: (
         <div>
           <p>
@@ -244,6 +247,7 @@ export const TOURS: Record<string, TourStep[]> = {
       side: "right",
       dialog: false,
       showNextButton: false,
+      allowInput: true,
     },
     {
       route: "/sentence-practice/tutorial",

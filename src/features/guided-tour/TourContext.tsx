@@ -52,6 +52,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
   let currentTour: string | null = null
   let currentStepIndex: number = 0
   let tourStartPath: string = location().pathname
+  let keyboardHandler: ((e: KeyboardEvent) => void) | null = null
 
   onMount(() => {
     // Inject styles for tooltip mode (pointer-events override)
@@ -168,20 +169,35 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
           popover.wrapper.style.maxWidth = currentStep.width
         }
 
-        // Make it more like a tooltip if dialog is false
         const overlay = document.querySelector(
           ".driver-overlay",
         ) as HTMLElement | null
         if (overlay) {
           const isTooltipMode = currentStep?.dialog === false
           overlay.style.display = isTooltipMode ? "none" : ""
+        }
 
-          // Toggle tooltip mode class for pointer-events override
-          if (isTooltipMode) {
-            document.body.classList.add("tour-tooltip-mode")
-          } else {
-            document.body.classList.remove("tour-tooltip-mode")
+        // Toggle tooltip mode class for pointer-events override
+        if (currentStep?.dialog === false) {
+          document.body.classList.add("tour-tooltip-mode")
+        } else {
+          document.body.classList.remove("tour-tooltip-mode")
+        }
+
+        // Block all input when allowInput is false (default)
+        const existingBlocker = document.getElementById(
+          "tour-input-blocker",
+        ) as HTMLElement | null
+        if (currentStep?.allowInput !== true) {
+          if (!existingBlocker) {
+            const blocker = document.createElement("div")
+            blocker.id = "tour-input-blocker"
+            blocker.style.cssText =
+              "position: fixed; inset: 0; z-index: 10000; pointer-events: auto;"
+            document.body.appendChild(blocker)
           }
+        } else {
+          existingBlocker?.remove()
         }
 
         // Hide Next button if showNextButton is false
@@ -233,6 +249,18 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
         }
       },
     })
+
+    keyboardHandler = (e: KeyboardEvent) => {
+      const activeIndex = (driverInstance as any).state.activeIndex
+      const currentStep = steps[activeIndex]
+      // Block keyboard input when allowInput is false (default)
+      if (currentStep?.allowInput !== true) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    }
+
+    document.addEventListener("keydown", keyboardHandler, true)
 
     // Start from specific step
     driverInstance.drive(stepIndex)
@@ -331,9 +359,15 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
       driverInstance.destroy()
       driverInstance = null
     }
+    if (keyboardHandler) {
+      document.removeEventListener("keydown", keyboardHandler, true)
+      keyboardHandler = null
+    }
+    const blocker = document.getElementById("tour-input-blocker")
+    blocker?.remove()
+    document.body.classList.remove("tour-tooltip-mode")
     currentTour = null
     currentStepIndex = 0
-    document.body.classList.remove("tour-tooltip-mode")
   }
 
   const resetTour = async (tourId: string) => {
