@@ -75,7 +75,6 @@
           "を",
           {
             "word": "食[た]べる",
-            "blank": true,
             "pos": "Ichidan verb",
             "form": "normal",
             "polarity": "positive",
@@ -91,7 +90,6 @@
           "を",
           {
             "word": "食[た]べる",
-            "blank": true,
             "pos": "Ichidan verb",
             "form": "normal",
             "polarity": "positive",

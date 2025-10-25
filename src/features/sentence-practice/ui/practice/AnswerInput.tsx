@@ -121,7 +121,7 @@ export default function AnswerInput(props: AnswerInputProps) {
             size="sm"
             onClick={() => props.setShowLegend(!props.showLegend())}
           >
-            {props.showLegend() ? "Hide Legend" : "Show Legend"}
+            {props.showLegend() ? "Hide Key" : "Show Key"}
           </Button>
         </div>
 

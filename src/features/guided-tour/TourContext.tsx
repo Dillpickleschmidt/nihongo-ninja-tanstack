@@ -52,6 +52,16 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
   let currentStepIndex: number = 0
   let tourStartPath: string = location().pathname
 
+  // Inject CSS for tooltip mode (pointer-events override)
+  if (!document.getElementById("tour-tooltip-styles")) {
+    const style = document.createElement("style")
+    style.id = "tour-tooltip-styles"
+    style.textContent = `.tour-tooltip-mode.driver-active * {
+  pointer-events: auto !important;
+}`
+    document.head.appendChild(style)
+  }
+
   const startTour = (tourId: string) => {
     // Check if there's already an active tour
     const tourStatus = settingsQuery.data!.tours[tourId]
@@ -160,7 +170,15 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
           ".driver-overlay",
         ) as HTMLElement | null
         if (overlay) {
-          overlay.style.display = currentStep?.dialog === false ? "none" : ""
+          const isTooltipMode = currentStep?.dialog === false
+          overlay.style.display = isTooltipMode ? "none" : ""
+
+          // Toggle tooltip mode class for pointer-events override
+          if (isTooltipMode) {
+            document.body.classList.add("tour-tooltip-mode")
+          } else {
+            document.body.classList.remove("tour-tooltip-mode")
+          }
         }
 
         // Inject JSX description if present
@@ -302,6 +320,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     }
     currentTour = null
     currentStepIndex = 0
+    document.body.classList.remove("tour-tooltip-mode")
   }
 
   const resetTour = async (tourId: string) => {
