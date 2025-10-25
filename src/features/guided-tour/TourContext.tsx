@@ -251,6 +251,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     })
 
     keyboardHandler = (e: KeyboardEvent) => {
+      if (!driverInstance || !(driverInstance as any).state) return
       const activeIndex = (driverInstance as any).state.activeIndex
       const currentStep = steps[activeIndex]
       // Block keyboard input when allowInput is false (default)

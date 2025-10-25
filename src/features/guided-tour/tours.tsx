@@ -218,8 +218,8 @@ export const TOURS: Record<string, TourStep[]> = {
           </p>
           <p class="pt-2">You can see alternative answers below as well.</p>
           <p class="pt-2">
-            Make any necessary corrections, then click{" "}
-            <strong>Next Question</strong> when you're ready!
+            Make any necessary corrections, then click the green{" "}
+            <strong>Next Question</strong> button when you're ready!
           </p>
         </div>
       ),

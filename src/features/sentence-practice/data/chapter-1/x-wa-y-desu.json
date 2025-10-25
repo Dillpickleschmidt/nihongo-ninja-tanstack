@@ -41,7 +41,7 @@
   },
   {
     "english": "Mr./Ms. Tanaka is a doctor.",
-    "hint": "Name spelling: たなか",
+    "hint": "Name spelling: 田中（たなか）",
     "answers": [
       {
         "segments": [
@@ -88,7 +88,7 @@
   },
   {
     "english": "Mr./Ms. Yamada is an office worker.",
-    "hint": "Name spelling: やまだ",
+    "hint": "Name spelling: 山田（やまだ）",
     "answers": [
       {
         "segments": [
@@ -141,7 +141,7 @@
   },
   {
     "english": "Mr./Ms. Satou is Japanese.",
-    "hint": "Name spelling: さとう",
+    "hint": "Name spelling: 砂糖（さとう）",
     "answers": [
       {
         "segments": [
@@ -188,7 +188,7 @@
   },
   {
     "english": "Professor Hayashi is a teacher.",
-    "hint": "Name spelling: はやし",
+    "hint": "Name spelling: 林（はやし）",
     "answers": [
       {
         "segments": [
@@ -235,7 +235,7 @@
   },
   {
     "english": "Yuki is a high school student.",
-    "hint": "Name spelling: ゆき",
+    "hint": "Name spelling: 雪（ゆき）",
     "answers": [
       {
         "segments": [
@@ -291,11 +291,11 @@
   },
   {
     "english": "Mr./Ms. Nakamura is a university student.",
-    "hint": "Name spelling: なかむら",
+    "hint": "Name spelling: 中村（なかむら）",
     "answers": [
       {
         "segments": [
-          "なかむら",
+          "中村[なかむら]",
           "さん",
           "は",
           "大学生[だいがくせい]",
@@ -306,15 +306,9 @@
     "modelAnswerPOS": [
       [
         "名詞",
-        "一般",
-        "*",
-        "*"
-      ],
-      [
-        "名詞",
-        "一般",
-        "*",
-        "*"
+        "固有名詞",
+        "人名",
+        "姓"
       ],
       [
         "名詞",
@@ -344,11 +338,11 @@
   },
   {
     "english": "Mr./Ms. Suzuki is a nurse.",
-    "hint": "Name spelling: すずき",
+    "hint": "Name spelling: 鈴木（すずき）",
     "answers": [
       {
         "segments": [
-          "すずき",
+          "鈴木[すずき]",
           "さん",
           "は",
           "看護師[かんごし]",
@@ -397,7 +391,7 @@
   },
   {
     "english": "Tarou is a first-year student.",
-    "hint": "Name spelling: たろう",
+    "hint": "Name spelling: 太郎（たろう）",
     "answers": [
       {
         "segments": [
@@ -443,7 +437,7 @@
   },
   {
     "english": "Ms. Hanako is a housewife.",
-    "hint": "Name spelling: はなこ",
+    "hint": "Name spelling: 花子（はなこ）",
     "answers": [
       {
         "segments": [
@@ -529,12 +523,13 @@
     ]
   },
   {
-    "english": "Kenji is a high school student.",
-    "hint": "Name spelling: けんじ",
+    "english": "Kobayashi is a high school student.",
+    "hint": "Name spelling: 小林（こばやし）",
     "answers": [
       {
         "segments": [
-          "健二[けんじ]",
+          "小林[こばやし]",
+          "さん",
           "は",
           "高校生[こうこうせい]",
           "です"
@@ -570,7 +565,13 @@
         "名詞",
         "固有名詞",
         "人名",
-        "名"
+        "姓"
+      ],
+      [
+        "名詞",
+        "接尾",
+        "人名",
+        "*"
       ],
       [
         "助詞",
@@ -594,7 +595,7 @@
   },
   {
     "english": "Mr./Ms. Murata is a lawyer.",
-    "hint": "Name spelling: むらた",
+    "hint": "Name spelling: 村田（むらた）",
     "answers": [
       {
         "segments": [
@@ -641,7 +642,7 @@
   },
   {
     "english": "Mr./Ms. Inoue is a teacher.",
-    "hint": "Name spelling: いのうえ",
+    "hint": "Name spelling: 井上（いのうえ）",
     "answers": [
       {
         "segments": [
@@ -688,7 +689,7 @@
   },
   {
     "english": "Mr./Ms. Yoshida is an international student.",
-    "hint": "Name spelling: よしだ",
+    "hint": "Name spelling: 吉田（よしだ）",
     "answers": [
       {
         "segments": [
@@ -735,7 +736,7 @@
   },
   {
     "english": "Mr./Ms. Katou is a doctor.",
-    "hint": "Name spelling: かとう",
+    "hint": "Name spelling: 加藤（かとう）",
     "answers": [
       {
         "segments": [
@@ -782,7 +783,7 @@
   },
   {
     "english": "Mr./Ms. Okada is an office worker.",
-    "hint": "Name spelling: おかだ",
+    "hint": "Name spelling: 岡田（おかだ）",
     "answers": [
       {
         "segments": [
@@ -835,7 +836,7 @@
   },
   {
     "english": "Mr./Ms. Abe is a university student.",
-    "hint": "Name spelling: あべ",
+    "hint": "Name spelling: 阿部（あべ） or 安倍（あべ）",
     "answers": [
       {
         "segments": [
@@ -891,7 +892,7 @@
   },
   {
     "english": "Mr./Ms. Mori is a nurse.",
-    "hint": "Name spelling: もり",
+    "hint": "Name spelling: 森（もり）",
     "answers": [
       {
         "segments": [
@@ -944,7 +945,7 @@
   },
   {
     "english": "Ms. Kimura is a housewife.",
-    "hint": "Name spelling: きむら",
+    "hint": "Name spelling: 木村（きむら）",
     "answers": [
       {
         "segments": [

@@ -1,7 +1,7 @@
 // ui/practice/AnswerInput.tsx
 import { Show, createEffect } from "solid-js"
 import { CircleHelp, Loader2 } from "lucide-solid"
-import { useRouterState } from "@tanstack/solid-router"
+import { useRouterState, useNavigate } from "@tanstack/solid-router"
 import { Button } from "@/components/ui/button"
 import { usePracticeStore } from "../../store/PracticeContext"
 import { useTour } from "@/features/guided-tour/TourContext"
@@ -20,6 +20,7 @@ interface AnswerInputProps {
 
 export default function AnswerInput(props: AnswerInputProps) {
   const { store, actions, kagomeReady, kagomeWorker } = usePracticeStore()
+  const navigate = useNavigate()
   const location = useRouterState({ select: (s) => s.location })
   const { nextStep } = useTour()
 
@@ -91,7 +92,11 @@ export default function AnswerInput(props: AnswerInputProps) {
 
   const handleMainButton = () => {
     if (isAnswerCorrect()) {
-      actions.nextQuestion()
+      if (isLastQuestion) {
+        navigate({ to: "/sentence-practice" })
+      } else {
+        actions.nextQuestion()
+      }
       // Advance tour step if on tutorial route
     } else {
       actions.checkAnswer()

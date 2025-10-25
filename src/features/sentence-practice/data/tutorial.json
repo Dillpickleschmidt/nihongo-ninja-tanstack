@@ -50,12 +50,12 @@
     ]
   },
   {
-    "english": "I eat potatoes.",
-    "hint": "Potatoes - ポテト",
+    "english": "I eat bananas.",
+    "hint": "bananas - バナナ",
     "answers": [
       {
         "segments": [
-          "ポテト",
+          "バナナ",
           "を",
           {
             "word": "食[た]べる",
@@ -71,7 +71,7 @@
         "segments": [
           "私[わたし]",
           "は",
-          "ポテト",
+          "バナナ",
           "を",
           {
             "word": "食[た]べる",
@@ -86,7 +86,7 @@
         "segments": [
           "私[わたし]",
           "が",
-          "ポテト",
+          "バナナ",
           "を",
           {
             "word": "食[た]べる",

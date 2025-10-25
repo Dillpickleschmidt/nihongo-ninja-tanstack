@@ -1,11 +1,11 @@
 [
   {
     "english": "Is Mr./Ms. Tanaka a student?",
-    "hint": "Name spelling: たなか",
+    "hint": "Name spelling: 田中（たなか）",
     "answers": [
       {
         "segments": [
-          "たなか",
+          "田中[たなか]",
           "さん",
           "は",
           "学生[がくせい]",
@@ -16,16 +16,10 @@
     ],
     "modelAnswerPOS": [
       [
-        "助動詞",
-        "*",
-        "*",
-        "*"
-      ],
-      [
         "名詞",
         "固有名詞",
         "人名",
-        "名"
+        "姓"
       ],
       [
         "名詞",
@@ -61,11 +55,11 @@
   },
   {
     "english": "Is Mr./Ms. Yamada a doctor?",
-    "hint": "Name spelling: やまだ",
+    "hint": "Name spelling: 山田（やまだ）",
     "answers": [
       {
         "segments": [
-          "やまだ",
+          "山田[やまだ]",
           "さん",
           "は",
           "医者[いしゃ]",
@@ -114,15 +108,15 @@
     ]
   },
   {
-    "english": "Is Professor Suzuki a teacher?",
-    "hint": "Name spelling: すずき",
+    "english": "How old is Professor Suzuki?",
+    "hint": "Name spelling: 鈴木（すずき）",
     "answers": [
       {
         "segments": [
-          "すずき",
+          "鈴木[すずき]",
           "先生[せんせい]",
           "は",
-          "先生[せんせい]",
+          "何[なん]歳[さい]",
           "です",
           "か"
         ]
@@ -149,8 +143,14 @@
       ],
       [
         "名詞",
-        "一般",
+        "数",
         "*",
+        "*"
+      ],
+      [
+        "名詞",
+        "接尾",
+        "助数詞",
         "*"
       ],
       [
@@ -169,11 +169,11 @@
   },
   {
     "english": "Is Mr./Ms. Yoshida Japanese?",
-    "hint": "Name spelling: よしだ",
+    "hint": "Name spelling: 吉田（よしだ）",
     "answers": [
       {
         "segments": [
-          "よしだ",
+          "吉田[よしだ]",
           "さん",
           "は",
           "日本人[にほんじん]",
@@ -184,16 +184,10 @@
     ],
     "modelAnswerPOS": [
       [
-        "副詞",
-        "一般",
-        "*",
-        "*"
-      ],
-      [
-        "助動詞",
-        "*",
-        "*",
-        "*"
+        "名詞",
+        "固有名詞",
+        "人名",
+        "姓"
       ],
       [
         "名詞",
@@ -229,11 +223,11 @@
   },
   {
     "english": "Is Ms. Hanako a nurse?",
-    "hint": "Name spelling: はなこ",
+    "hint": "Name spelling: 花子（はなこ）",
     "answers": [
       {
         "segments": [
-          "はなこ",
+          "花子[はなこ]",
           "さん",
           "は",
           "看護師[かんごし]",
@@ -248,12 +242,6 @@
         "固有名詞",
         "人名",
         "名"
-      ],
-      [
-        "名詞",
-        "一般",
-        "*",
-        "*"
       ],
       [
         "名詞",
@@ -294,12 +282,13 @@
     ]
   },
   {
-    "english": "Is Kenji a university student?",
-    "hint": "Name spelling: けんじ",
+    "english": "Is Katou a university student?",
+    "hint": "Name spelling: 加藤（かとう）",
     "answers": [
       {
         "segments": [
-          "けんじ",
+          "加藤[かとう]",
+          "さん",
           "は",
           "大学生[だいがくせい]",
           "です",
@@ -309,9 +298,15 @@
     ],
     "modelAnswerPOS": [
       [
-        "動詞",
-        "自立",
-        "*",
+        "名詞",
+        "固有名詞",
+        "人名",
+        "姓"
+      ],
+      [
+        "名詞",
+        "接尾",
+        "人名",
         "*"
       ],
       [
@@ -342,11 +337,11 @@
   },
   {
     "english": "Is Mr./Ms. Satou a lawyer?",
-    "hint": "Name spelling: さとう",
+    "hint": "Name spelling: 砂糖（さとう）",
     "answers": [
       {
         "segments": [
-          "さとう",
+          "砂糖[さとう]",
           "さん",
           "は",
           "弁護士[べんごし]",
@@ -358,8 +353,8 @@
     "modelAnswerPOS": [
       [
         "名詞",
-        "固有名詞",
-        "組織",
+        "一般",
+        "*",
         "*"
       ],
       [
@@ -396,11 +391,12 @@
   },
   {
     "english": "Is Tarou a first-year student?",
-    "hint": "Name spelling: たろう",
+    "hint": "Name spelling: 太郎（たろう）",
     "answers": [
       {
         "segments": [
-          "たろう",
+          "太郎[たろう]",
+          "さん",
           "は",
           "一年生[いちねんせい]",
           "です",
@@ -410,15 +406,15 @@
     ],
     "modelAnswerPOS": [
       [
-        "助動詞",
-        "*",
-        "*",
-        "*"
+        "名詞",
+        "固有名詞",
+        "人名",
+        "名"
       ],
       [
-        "助動詞",
-        "*",
-        "*",
+        "名詞",
+        "接尾",
+        "人名",
         "*"
       ],
       [
@@ -455,11 +451,11 @@
   },
   {
     "english": "Is Ms. Kimura a housewife?",
-    "hint": "Name spelling: きむら",
+    "hint": "Name spelling: 木村（きむら）",
     "answers": [
       {
         "segments": [
-          "きむら",
+          "木村[きむら]",
           "さん",
           "は",
           "主婦[しゅふ]",
@@ -470,16 +466,10 @@
     ],
     "modelAnswerPOS": [
       [
-        "動詞",
-        "自立",
-        "*",
-        "*"
-      ],
-      [
         "名詞",
-        "一般",
-        "*",
-        "*"
+        "固有名詞",
+        "人名",
+        "姓"
       ],
       [
         "名詞",
@@ -514,12 +504,12 @@
     ]
   },
   {
-    "english": "Is Mr./Ms. Mori an office worker?",
-    "hint": "Name spelling: もり",
+    "english": "Is Mr./Ms. Inoue an office worker?",
+    "hint": "Name spelling: 井上（いのうえ）",
     "answers": [
       {
         "segments": [
-          "もり",
+          "井上[いのうえ]",
           "さん",
           "は",
           "会社員[かいしゃいん]",
@@ -530,21 +520,15 @@
     ],
     "modelAnswerPOS": [
       [
-        "動詞",
-        "自立",
-        "*",
-        "*"
+        "名詞",
+        "固有名詞",
+        "人名",
+        "姓"
       ],
       [
         "名詞",
         "接尾",
-        "特殊",
-        "*"
-      ],
-      [
-        "名詞",
-        "非自立",
-        "一般",
+        "人名",
         "*"
       ],
       [
