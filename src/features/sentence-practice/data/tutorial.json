@@ -51,6 +51,7 @@
   },
   {
     "english": "I eat potatoes.",
+    "hint": "Potatoes - ポテト",
     "answers": [
       {
         "segments": [

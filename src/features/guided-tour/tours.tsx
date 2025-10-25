@@ -8,7 +8,8 @@ interface TourStep {
   description: string | JSX.Element
   side?: "top" | "bottom" | "left" | "right"
   align?: "start" | "center" | "end"
-  width?: string // Optional - e.g., "600px", "80vw", "50rem"
+  width?: string
+  dialog?: boolean
 }
 
 export const TOURS: Record<string, TourStep[]> = {
@@ -102,7 +103,7 @@ export const TOURS: Record<string, TourStep[]> = {
       description: (
         <div>
           Looks like it's your first time here! Let's quickly understand how to
-          use this awesome feature.
+          use this awesome tool.
           <p class="pt-2">Click 'Next' to get started!</p>
         </div>
       ),
@@ -180,8 +181,8 @@ export const TOURS: Record<string, TourStep[]> = {
       description: (
         <div>
           <p>
-            Go ahead and type your answer in the input box below. For this
-            tutorial, you could do:
+            Go ahead and type your answer in the input box. For this tutorial,
+            you could do:
           </p>
           <ul>
             <li>がくせいです</li>
@@ -198,6 +199,46 @@ export const TOURS: Record<string, TourStep[]> = {
         </div>
       ),
       side: "right",
+      dialog: false,
+    },
+    {
+      element: "#sentence-practice-results",
+      route: "/sentence-practice/tutorial",
+      title: "See results...",
+      description: (
+        <div>
+          <p>
+            Below, you can see how you did. Anything you added that shouldn't be
+            there will be highlighted in red. Anything you forgot will be
+            highlighted in green.
+          </p>
+          <p class="pt-2">You can see alternative answers below as well.</p>
+          <p class="pt-2">
+            Click <strong>Next Question</strong> when you're ready!
+          </p>
+        </div>
+      ),
+      side: "right",
+      dialog: false,
+    },
+    {
+      element: "#sentence-practice-answer-area",
+      route: "/sentence-practice/tutorial",
+      title: "Give it a try!",
+      description: (
+        <div>
+          <p>
+            Nice! Now try this one. This time try taking a look at the
+            part-of-speech hints. The key is placed on the right of the page.
+          </p>
+          <p class="pt-2">The hints should guide you to the right answer.</p>
+          <p class="pt-2">
+            Click <strong>Check Answer</strong> when you're ready!
+          </p>
+        </div>
+      ),
+      side: "right",
+      dialog: false,
     },
     {
       route: "/sentence-practice/tutorial",

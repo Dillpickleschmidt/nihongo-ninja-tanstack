@@ -4,7 +4,6 @@ import {
   useContext,
   Component,
   ParentProps,
-  onMount,
   type JSX,
 } from "solid-js"
 import { render as renderSolidJS } from "solid-js/web"
@@ -27,6 +26,7 @@ import { TOURS } from "./tours"
 interface TourContextType {
   startTour: (tourId: string) => void
   resumeTour: (tourId: string, stepIndex: number) => void
+  nextStep: () => void
   resetTour: (tourId: string) => Promise<void>
 }
 
@@ -54,7 +54,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
 
   const startTour = (tourId: string) => {
     // Check if there's already an active tour
-    const tourStatus = settingsQuery.data.tours[tourId]
+    const tourStatus = settingsQuery.data!.tours[tourId]
     if (tourStatus !== undefined && tourStatus >= 0) return
 
     const steps = TOURS[tourId]
@@ -72,7 +72,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
 
     updateSettingsMutation.mutate({
       tours: {
-        ...settingsQuery.data.tours,
+        ...settingsQuery.data!.tours,
         [tourId]: 0,
       },
     })
@@ -92,6 +92,15 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     currentStepIndex = stepIndex
 
     initializeDriver(steps, stepIndex)
+  }
+
+  const nextStep = () => {
+    if (!currentTour) return
+
+    const steps = TOURS[currentTour]
+    if (!steps) return
+
+    handleNext(steps, currentStepIndex)
   }
 
   const initializeDriver = async (steps: any[], stepIndex: number) => {
@@ -144,6 +153,14 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
         if (currentStep?.width) {
           popover.wrapper.style.width = currentStep.width
           popover.wrapper.style.maxWidth = currentStep.width
+        }
+
+        // Make it more like a tooltip if dialog is false
+        const overlay = document.querySelector(
+          ".driver-overlay",
+        ) as HTMLElement | null
+        if (overlay) {
+          overlay.style.display = currentStep?.dialog === false ? "none" : ""
         }
 
         // Inject JSX description if present
@@ -203,7 +220,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     if (currentTour) {
       updateSettingsMutation.mutate({
         tours: {
-          ...settingsQuery.data.tours,
+          ...settingsQuery.data!.tours,
           [currentTour]: nextIndex,
         },
       })
@@ -230,7 +247,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     if (currentTour) {
       updateSettingsMutation.mutate({
         tours: {
-          ...settingsQuery.data.tours,
+          ...settingsQuery.data!.tours,
           [currentTour]: prevIndex,
         },
       })
@@ -255,7 +272,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     // Mark as completed (-2)
     await updateSettingsMutation.mutateAsync({
       tours: {
-        ...settingsQuery.data.tours,
+        ...settingsQuery.data!.tours,
         [currentTour]: -2,
       },
     })
@@ -271,7 +288,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     if (currentTour) {
       updateSettingsMutation.mutate({
         tours: {
-          ...settingsQuery.data.tours,
+          ...settingsQuery.data!.tours,
           [currentTour]: -1,
         },
       })
@@ -289,7 +306,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
 
   const resetTour = async (tourId: string) => {
     // Delete tour entry (resets to undefined = not started)
-    const newTours = { ...settingsQuery.data.tours }
+    const newTours = { ...settingsQuery.data!.tours }
     delete newTours[tourId]
 
     await updateSettingsMutation.mutateAsync({
@@ -300,6 +317,7 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
   const contextValue = {
     startTour,
     resumeTour,
+    nextStep,
     resetTour,
   }
 
