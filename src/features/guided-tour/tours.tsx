@@ -2,14 +2,15 @@
 import type { JSX } from "solid-js"
 
 interface TourStep {
-  element?: string // Optional - omit for centered modal
-  route: string // Use '*' for wildcard (any route)
+  element?: string
+  route: string
   title: string
   description: string | JSX.Element
   side?: "top" | "bottom" | "left" | "right"
   align?: "start" | "center" | "end"
   width?: string
   dialog?: boolean
+  showNextButton?: boolean
 }
 
 export const TOURS: Record<string, TourStep[]> = {
@@ -200,6 +201,7 @@ export const TOURS: Record<string, TourStep[]> = {
       ),
       side: "right",
       dialog: false,
+      showNextButton: false,
     },
     {
       element: "#sentence-practice-results",
@@ -221,6 +223,7 @@ export const TOURS: Record<string, TourStep[]> = {
       ),
       side: "right",
       dialog: false,
+      showNextButton: false,
     },
     {
       element: "#sentence-practice-answer-area",
@@ -240,6 +243,7 @@ export const TOURS: Record<string, TourStep[]> = {
       ),
       side: "right",
       dialog: false,
+      showNextButton: false,
     },
     {
       route: "/sentence-practice/tutorial",

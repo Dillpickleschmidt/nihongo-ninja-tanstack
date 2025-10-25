@@ -181,6 +181,16 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
           }
         }
 
+        // Hide Next button if showNextButton is false
+        if (currentStep?.showNextButton === false) {
+          const nextBtn = popover.footerButtons.querySelector(
+            ".driver-popover-next-btn",
+          ) as HTMLElement | null
+          if (nextBtn) {
+            nextBtn.style.display = "none"
+          }
+        }
+
         // Inject JSX description if present
         if (isJSXDescription && currentStep) {
           // Query the description element from the document
