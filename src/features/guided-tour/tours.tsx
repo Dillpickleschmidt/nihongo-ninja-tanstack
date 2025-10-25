@@ -94,4 +94,124 @@ export const TOURS: Record<string, TourStep[]> = {
       description: "You're all set! Start exploring and happy learning!",
     },
   ],
+  "sentence-practice-intro": [
+    {
+      route: "*",
+      title: "Welcome to Sentence Practice!",
+      description: (
+        <div>
+          Looks like it's your first time here! Let's quickly understand how to
+          use this awesome feature.
+          <p class="pt-2">Click 'Next' to get started!</p>
+        </div>
+      ),
+    },
+    {
+      element: "#sentence-practice-container",
+      route: "/sentence-practice/tutorial",
+      title: "What you're looking at...",
+      description: (
+        <div>
+          <p>
+            You'll be given an English prompt, and your task is to type the
+            correct Japanese translation here in the input box.
+          </p>
+        </div>
+      ),
+      side: "bottom",
+    },
+    {
+      element: "#sentence-practice-prompt",
+      route: "/sentence-practice/tutorial",
+      title: "How to Translate...",
+      description: (
+        <div>
+          <p>
+            There are often many ways to translate sentences, and we try to
+            support every variation you're likely to think of. We support plain
+            kana answers or answers with Kanji, casual form, polite form,
+            different pronoun choice, different word order, and more!
+          </p>
+        </div>
+      ),
+      side: "right",
+    },
+    {
+      element: "#sentence-practice-answer-input",
+      route: "/sentence-practice/tutorial",
+      title: "How To Type Japanese",
+      description: (
+        <div>
+          <p>
+            We automatically convert your typing to hiragana—no setup needed.
+            Hold shift or capslock to type katakana. You can also use your own
+            IME to type kanji, and we'll accept that too.
+          </p>
+        </div>
+      ),
+      side: "right",
+    },
+    {
+      element: "#pos-hints",
+      route: "/sentence-practice/tutorial",
+      title: "Part-of-Speech Hints",
+      description: (
+        <div>
+          <p>
+            To make things a bit easier, we provide part-of-speech hints for the
+            model answer. These colored boxes give you a sense of the structure
+            of the expected answer without revealing any actual words.
+          </p>
+          <p class="pt-2">
+            These hints only represent one possible correct answer. You could
+            type something different that is still correct!
+          </p>
+        </div>
+      ),
+      side: "right",
+    },
+    {
+      element: "#sentence-practice-answer-area",
+      route: "/sentence-practice/tutorial",
+      title: "Give it a try!",
+      description: (
+        <div>
+          <p>
+            Go ahead and type your answer in the input box below. For this
+            tutorial, you could do:
+          </p>
+          <ul>
+            <li>がくせいです</li>
+            <li>わたしはがくせいです</li>
+            <li>学生です</li>
+            <li>私は学生です</li>
+            <li>僕は学生です</li>
+            <li>俺が学生です</li>
+            <li>etc.</li>
+          </ul>
+          <p class="pt-2">
+            Click <strong>Check Answer</strong> when you're ready!
+          </p>
+        </div>
+      ),
+      side: "right",
+    },
+    {
+      route: "/sentence-practice/tutorial",
+      title: "You're All Set!",
+      description: (
+        <div>
+          <p>
+            Now you can start building sentences using all the new grammar that
+            you're learning.
+          </p>
+          <p class="text-muted-foreground pt-2">
+            Note that this tool is work-in-progress and may occasionally have
+            bugs or missing variations. It will continue to be improved over
+            time.
+          </p>
+        </div>
+      ),
+    },
+  ],
 }

@@ -95,10 +95,6 @@ const VocabPracticeSettingsSchema = z.object({
   "enable-kanji-radical-prereqs": z.boolean().default(true),
 })
 
-const TourSettingsSchema = z.object({
-  currentTourId: z.string().nullable().default(null),
-  currentTourStep: z.number().default(0), // -1 = dismissed, 0+ = active step
-})
 
 const RouteSettingsSchema = z.object({
   vocab: VocabRouteSettingsSchema.default(VocabRouteSettingsSchema.parse({})),
@@ -119,7 +115,7 @@ export const UserSettingsSchema = z.object({
   "active-textbook": TextbookIDSchema.default("getting_started"),
   "active-deck": z.string().max(20).default("n5-introduction"),
   "has-completed-onboarding": z.boolean().default(false),
-  "completed-tours": z.array(z.string()).default([]),
+  "tours": z.record(z.string(), z.number()).default({}), // tourId -> step (-2=completed, -1=dismissed, 0+=active)
   "override-settings": OverrideSettingsSchema.default({
     vocabularyOverrides: DEFAULT_VOCABULARY_STACKS,
     kanjiOverrides: DEFAULT_KANJI_STACKS,
@@ -132,7 +128,6 @@ export const UserSettingsSchema = z.object({
 
   // --- DEVICE-SPECIFIC SETTINGS (cookie only, no DB sync) ---
   routes: RouteSettingsSchema.default(RouteSettingsSchema.parse({})),
-  tour: TourSettingsSchema.default(TourSettingsSchema.parse({})),
   "device-type": z.enum(["mobile", "desktop"]).nullable().default(null),
 })
 

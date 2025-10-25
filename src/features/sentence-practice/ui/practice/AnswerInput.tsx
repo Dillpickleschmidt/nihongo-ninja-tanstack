@@ -124,7 +124,7 @@ export default function AnswerInput(props: AnswerInputProps) {
           originalInput={store.inputs.single || ""}
         />
 
-        <div class="relative">
+        <div id="sentence-practice-answer-input" class="relative">
           <PracticeInput
             value={store.inputs.single || ""}
             onInput={(value) => actions.updateInput(value)}

@@ -26,6 +26,7 @@ import { TOURS } from "./tours"
 
 interface TourContextType {
   startTour: (tourId: string) => void
+  resumeTour: (tourId: string, stepIndex: number) => void
   resetTour: (tourId: string) => Promise<void>
 }
 
@@ -53,13 +54,14 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
 
   const startTour = (tourId: string) => {
     // Check if there's already an active tour
-    if (settingsQuery.data.tour.currentTourId) return
+    const tourStatus = settingsQuery.data.tours[tourId]
+    if (tourStatus !== undefined && tourStatus >= 0) return
 
     const steps = TOURS[tourId]
     if (!steps) return
 
-    // Check if already completed
-    if (settingsQuery.data["completed-tours"].includes(tourId)) return
+    // Check if already completed or dismissed
+    if (tourStatus === -2 || tourStatus === -1) return
 
     // Capture the current location as the starting point
     tourStartPath = location().pathname
@@ -69,13 +71,27 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     currentStepIndex = 0
 
     updateSettingsMutation.mutate({
-      tour: {
-        currentTourId: tourId,
-        currentTourStep: 0,
+      tours: {
+        ...settingsQuery.data.tours,
+        [tourId]: 0,
       },
     })
 
     initializeDriver(steps, 0)
+  }
+
+  const resumeTour = (tourId: string, stepIndex: number) => {
+    const steps = TOURS[tourId]
+    if (!steps || stepIndex < 0 || stepIndex >= steps.length) return
+
+    // Capture the current location as the starting point (for returning later)
+    tourStartPath = location().pathname
+
+    // Resume the tour
+    currentTour = tourId
+    currentStepIndex = stepIndex
+
+    initializeDriver(steps, stepIndex)
   }
 
   const initializeDriver = async (steps: any[], stepIndex: number) => {
@@ -178,9 +194,14 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
     }
 
     currentStepIndex = nextIndex
-    updateSettingsMutation.mutate({
-      tour: { currentTourId: currentTour, currentTourStep: nextIndex },
-    })
+    if (currentTour) {
+      updateSettingsMutation.mutate({
+        tours: {
+          ...settingsQuery.data.tours,
+          [currentTour]: nextIndex,
+        },
+      })
+    }
 
     const nextStep = steps[nextIndex]
     const currentRoute = location().pathname
@@ -200,9 +221,14 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
 
     const prevIndex = currentIndex - 1
     currentStepIndex = prevIndex
-    updateSettingsMutation.mutate({
-      tour: { currentTourId: currentTour, currentTourStep: prevIndex },
-    })
+    if (currentTour) {
+      updateSettingsMutation.mutate({
+        tours: {
+          ...settingsQuery.data.tours,
+          [currentTour]: prevIndex,
+        },
+      })
+    }
 
     const prevStep = steps[prevIndex]
     const currentRoute = location().pathname
@@ -220,15 +246,12 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
   const handleComplete = async () => {
     if (!currentTour) return
 
-    // Add to completed tours
-    const completed = settingsQuery.data!["completed-tours"]
-    await updateSettingsMutation.mutateAsync({
-      "completed-tours": [...completed, currentTour],
-    })
-
     // Mark as completed (-2)
-    updateSettingsMutation.mutate({
-      tour: { currentTourId: null, currentTourStep: -2 },
+    await updateSettingsMutation.mutateAsync({
+      tours: {
+        ...settingsQuery.data.tours,
+        [currentTour]: -2,
+      },
     })
 
     // Navigate back to the original page
@@ -238,10 +261,15 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
   }
 
   const handleDismiss = () => {
-    // Mark as dismissed
-    updateSettingsMutation.mutate({
-      tour: { currentTourId: null, currentTourStep: -1 },
-    })
+    // Mark as dismissed (-1)
+    if (currentTour) {
+      updateSettingsMutation.mutate({
+        tours: {
+          ...settingsQuery.data.tours,
+          [currentTour]: -1,
+        },
+      })
+    }
   }
 
   const cleanup = () => {
@@ -254,20 +282,18 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
   }
 
   const resetTour = async (tourId: string) => {
-    // Reset completion status
-    const completed = settingsQuery.data!["completed-tours"]
-    await updateSettingsMutation.mutateAsync({
-      "completed-tours": completed.filter((id) => id !== tourId),
-    })
+    // Delete tour entry (resets to undefined = not started)
+    const newTours = { ...settingsQuery.data.tours }
+    delete newTours[tourId]
 
-    // Reset tour settings
-    updateSettingsMutation.mutate({
-      tour: { currentTourId: null, currentTourStep: 0 },
+    await updateSettingsMutation.mutateAsync({
+      tours: newTours,
     })
   }
 
   const contextValue = {
     startTour,
+    resumeTour,
     resetTour,
   }
 

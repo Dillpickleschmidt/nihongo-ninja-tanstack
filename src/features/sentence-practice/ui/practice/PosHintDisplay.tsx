@@ -39,6 +39,7 @@ function getPosCategory(pos: string[]): PosCategory {
 const PosHintDisplay: Component<PosHintDisplayProps> = (props) => {
   return (
     <div
+      id="pos-hints"
       class="mb-3 flex flex-wrap items-center gap-0.5"
       role="status"
       aria-label="Part of speech hint"

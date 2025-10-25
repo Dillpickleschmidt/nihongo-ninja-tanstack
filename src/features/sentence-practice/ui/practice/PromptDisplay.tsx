@@ -8,7 +8,10 @@ interface PromptDisplayProps {
 export default function PromptDisplay(props: PromptDisplayProps) {
   return (
     <div class="mb-6 space-y-2">
-      <p class="border-b-2 border-amber-400 pb-4 text-2xl font-semibold dark:border-amber-500">
+      <p
+        id="sentence-practice-prompt"
+        class="border-b-2 border-amber-400 pb-4 text-2xl font-semibold dark:border-amber-500"
+      >
         {props.question.english}
       </p>
       {props.question.hint && (

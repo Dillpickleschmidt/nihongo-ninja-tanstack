@@ -137,7 +137,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
 })
 
 function RouteComponent() {
-  const { startTour } = useTour()
+  const { startTour, resumeTour } = useTour()
   const context = useRouteContext({ from: RootRoute.id })
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(context().user?.id || null),
@@ -146,13 +146,14 @@ function RouteComponent() {
   onMount(() => {
     const settings = settingsQuery.data
     const tourId = "learn-page-intro"
+    const tourStep = settings?.tours[tourId]
 
-    const isCompleted = settings?.["completed-tours"].includes(tourId)
-    const isDismissed = settings?.tour.currentTourStep === -1
-    const hasActiveTour = settings?.tour.currentTourId
-
-    if (!isCompleted && !isDismissed && !hasActiveTour) {
+    if (tourStep === undefined) {
+      // Not started - start from beginning
       startTour(tourId)
+    } else if (tourStep >= 0) {
+      // In progress - resume from saved step
+      resumeTour(tourId, tourStep)
     }
   })
 

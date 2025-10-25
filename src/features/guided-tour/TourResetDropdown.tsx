@@ -22,17 +22,12 @@ export function TourResetDropdown() {
   const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
 
   const getTourStatus = (tourId: string) => {
-    const isCompleted = settingsQuery.data["completed-tours"].includes(tourId)
-    const deviceTour = settingsQuery.data.tour
-    const isDismissed = deviceTour.currentTourStep === -1
-    const isMarkedCompleted = deviceTour.currentTourStep === -2
-    const isActive =
-      deviceTour.currentTourId === tourId && deviceTour.currentTourStep >= 0
+    const tourStep = settingsQuery.data.tours[tourId]
 
-    if (isCompleted || isMarkedCompleted) return "✅"
-    if (isActive) return "▶️"
-    if (isDismissed) return "❌"
-    return "⚪"
+    if (tourStep === -2) return "✅" // completed
+    if (tourStep === -1) return "❌" // dismissed
+    if (tourStep !== undefined && tourStep >= 0) return "▶️" // in progress
+    return "⚪" // not started
   }
 
   const handleResetTour = async (tourId: string) => {
