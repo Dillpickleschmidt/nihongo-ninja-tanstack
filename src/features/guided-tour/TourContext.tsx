@@ -4,6 +4,7 @@ import {
   useContext,
   Component,
   ParentProps,
+  onMount,
   type JSX,
 } from "solid-js"
 import { render as renderSolidJS } from "solid-js/web"
@@ -52,15 +53,17 @@ export const TourProvider: Component<TourProviderProps> = (props) => {
   let currentStepIndex: number = 0
   let tourStartPath: string = location().pathname
 
-  // Inject CSS for tooltip mode (pointer-events override)
-  if (!document.getElementById("tour-tooltip-styles")) {
-    const style = document.createElement("style")
-    style.id = "tour-tooltip-styles"
-    style.textContent = `.tour-tooltip-mode.driver-active * {
+  onMount(() => {
+    // Inject styles for tooltip mode (pointer-events override)
+    if (!document.getElementById("tour-tooltip-styles")) {
+      const style = document.createElement("style")
+      style.id = "tour-tooltip-styles"
+      style.textContent = `.tour-tooltip-mode.driver-active * {
   pointer-events: auto !important;
 }`
-    document.head.appendChild(style)
-  }
+      document.head.appendChild(style)
+    }
+  })
 
   const startTour = (tourId: string) => {
     // Check if there's already an active tour
