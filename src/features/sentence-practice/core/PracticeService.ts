@@ -46,30 +46,22 @@ export class PracticeService {
     segments: ConjugatableSegment[],
     isPolite: boolean,
   ): string[][] {
-    return segments.map((segment) => {
-      // First handle blank words
-      const transformedSegment = this.transformBlankWords(segment)
-      // Then handle any conjugatable words
-      return this.transformConjugatableWords(transformedSegment, isPolite)
-    })
+    // First handle blank words
+    const transformedSegments = segments.map((segment) =>
+      this.transformBlankWords(segment),
+    )
+
+    // Conjugate all segments together so engine can see following words
+    return this.conjugationEngine.conjugateSegments(
+      transformedSegments,
+      isPolite,
+    )
   }
 
   private transformBlankWords(
     segment: ConjugatableSegment,
   ): string | ConjugatedWord {
     return this.isBlankableWord(segment) ? segment.word : segment
-  }
-
-  private transformConjugatableWords(
-    segment: string | ConjugatedWord,
-    isPolite: boolean,
-  ): string[] {
-    if (this.isConjugatedWord(segment)) {
-      return this.conjugationEngine
-        .conjugateSegments([segment], isPolite)
-        .flat()
-    }
-    return [segment as string]
   }
 
   private processAnswers(

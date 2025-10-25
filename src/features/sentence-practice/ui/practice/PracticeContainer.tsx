@@ -129,7 +129,7 @@ function HintLegend() {
   const blueContent = () => "　".repeat(blueWidth)
 
   return (
-    <div class="bg-card-foreground/10 text-muted-foreground/70 ease-instant-hover-100 fixed right-0 bottom-16 flex h-46 w-44 flex-col items-start gap-1 rounded-tl border p-4 font-semibold backdrop-blur-md lg:top-[40vh] lg:rounded-l">
+    <div class="bg-card-foreground/10 text-muted-foreground/70 ease-instant-hover-100 fixed right-0 bottom-16 z-10 flex h-46 w-44 flex-col items-start gap-1 rounded-tl border p-4 font-semibold backdrop-blur-md lg:top-[40vh] lg:rounded-l">
       <div>
         <span class="mr-2 inline-block rounded-md bg-amber-400 px-1 text-base">
           {orangeContent()}
