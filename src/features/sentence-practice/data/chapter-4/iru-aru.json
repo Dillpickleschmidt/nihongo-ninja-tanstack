@@ -130,14 +130,14 @@
   },
   {
     "english": "Tanaka's bag is here.",
-    "hint": "For this practice session, use います・あります, not です.",
+    "hint": "For this practice session, use います・あります, not です. \nbag - 鞄（かばん）",
     "answers": [
       {
         "segments": [
           "田中[たなか]",
           "さん",
           "の",
-          "かばん",
+          "鞄[かばん]",
           "が",
           "あります"
         ]

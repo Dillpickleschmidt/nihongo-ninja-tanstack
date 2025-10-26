@@ -1,6 +1,7 @@
 [
   {
     "english": "Mr. Takeda hates children.",
+    "hint": "武田（たけだ）- Takeda",
     "answers": [
       {
         "segments": [
@@ -9,8 +10,13 @@
           "は",
           "子供[こども]たち",
           "が",
-          "大[だい]嫌[きら]い",
-          "です"
+          {
+            "word": "大[だい]嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Using 大嫌い because this guy has some issues."
       },
@@ -21,8 +27,13 @@
           "は",
           "子供[こども]",
           "が",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Using 嫌い instead of 大嫌い for a less intense statement."
       }
@@ -74,6 +85,7 @@
   },
   {
     "english": "Does Mr. Tanaka like Japanese (the language)?",
+    "hint": "田中（たなか）- Tanaka",
     "answers": [
       {
         "segments": [
@@ -170,7 +182,7 @@
           "テニス",
           "です"
         ],
-        "notes": "Omitting 私 for a more natural sentence."
+        "notes": "Omitting 私."
       },
       {
         "segments": [
@@ -233,8 +245,13 @@
           "テニス",
           "が",
           "一番[いちばん]",
-          "好[す]き",
-          "です"
+          {
+            "word": "好[す]き",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Rephrased to emphasize \"I like tennis the most among sports\" (advanced)."
       }
@@ -363,8 +380,13 @@
           "魚[さかな]",
           "が",
           "一番[いちばん]",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Rephrased to emphasize \"My younger brother dislikes fish the most among foods (advanced).'"
       },
@@ -436,12 +458,24 @@
           "は",
           "果物[くだもの]",
           "が",
-          "大[だい]好[す]き",
-          "ですが",
+          {
+            "word": "大[だい]好[す]き",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          },
+          "が",
+          "、",
           "野菜[やさい]",
           "は",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Using は before 嫌い to emphasize the contrast between fruit and vegetables."
       },
@@ -455,8 +489,13 @@
           "ですが",
           "野菜[やさい]",
           "は",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Using 好き instead of 大好き for a less intense statement,."
       }
@@ -495,6 +534,12 @@
       [
         "助詞",
         "接続助詞",
+        "*",
+        "*"
+      ],
+      [
+        "記号",
+        "読点",
         "*",
         "*"
       ],
@@ -697,8 +742,13 @@
           "漫画[まんが]",
           "が",
           "一番[いちばん]",
-          "好[す]き",
-          "です"
+          {
+            "word": "好[す]き",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Rephrased to emphasize 'I like manga the most among books' (advanced)."
       }
@@ -758,11 +808,18 @@
           "コーヒー",
           "が",
           "好[す]き",
-          "ですが",
+          "です",
+          "が",
+          "、",
           "お 茶[ちゃ]",
           "は",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Basic structure with 父 and contrast using は for お茶."
       },
@@ -776,8 +833,13 @@
           "ですが",
           "お 茶[ちゃ]",
           "は",
-          "大[だい]嫌[きら]い",
-          "です"
+          {
+            "word": "大[だい]嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Using 大嫌い for stronger emphasis with 父 and は."
       },
@@ -792,8 +854,13 @@
           "お 茶[ちゃ]",
           "は",
           "絶対[ぜったい]",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Adding 絶対 to emphasize 'absolutely hates' tea with 父 and は."
       },
@@ -808,8 +875,13 @@
           "お 茶[ちゃ]",
           "は",
           "絶対[ぜったい]",
-          "大[だい]嫌[きら]い",
-          "です"
+          {
+            "word": "大[だい]嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Using 絶対 and 大嫌い for stronger emphasis with 父 and は."
       },
@@ -823,8 +895,13 @@
           "ですが",
           "お 茶[ちゃ]",
           "は",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Basic structure with お父さん and contrast using は for お茶."
       },
@@ -838,8 +915,13 @@
           "ですが",
           "お 茶[ちゃ]",
           "は",
-          "大[だい]嫌[きら]い",
-          "です"
+          {
+            "word": "大[だい]嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Using 大嫌い for stronger emphasis with お父さん and は."
       },
@@ -854,8 +936,13 @@
           "お 茶[ちゃ]",
           "は",
           "絶対[ぜったい]",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Adding 絶対 to emphasize 'absolutely hates' tea with お父さん and は."
       },
@@ -870,8 +957,13 @@
           "お 茶[ちゃ]",
           "は",
           "絶対[ぜったい]",
-          "大[だい]嫌[きら]い",
-          "です"
+          {
+            "word": "大[だい]嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Using 絶対 and 大嫌い for stronger emphasis with お父さん and は."
       }
@@ -914,6 +1006,12 @@
         "*"
       ],
       [
+        "記号",
+        "読点",
+        "*",
+        "*"
+      ],
+      [
         "名詞",
         "一般",
         "*",
@@ -943,8 +1041,13 @@
           "は",
           "旅行[りょこう]",
           "が",
-          "大[だい]好[す]き",
-          "です",
+          {
+            "word": "大[だい]好[す]き",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          },
           "。",
           "毎[まい]年[ねん]",
           "ヨーロッパ",
@@ -1080,8 +1183,13 @@
           "でも",
           "宿題[しゅくだい]",
           "は",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Basic structure with contrast using でも."
       },
@@ -1095,8 +1203,13 @@
           "でも",
           "宿題[しゅくだい]",
           "は",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Omitting 私 for a more natural sentence."
       },
@@ -1109,10 +1222,16 @@
           "好[す]き",
           "です",
           "が",
+          "、",
           "宿題[しゅくだい]",
           "は",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Using が for contrast."
       },
@@ -1123,10 +1242,16 @@
           "好[す]き",
           "です",
           "が",
+          "、",
           "宿題[しゅくだい]",
           "は",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Omitting 私 and using が for contrast."
       },
@@ -1139,10 +1264,16 @@
           "好[す]き",
           "です",
           "けど",
+          "、",
           "宿題[しゅくだい]",
           "は",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Using けど for a polite and conversational contrast."
       },
@@ -1153,10 +1284,16 @@
           "好[す]き",
           "です",
           "けど",
+          "、",
           "宿題[しゅくだい]",
           "は",
-          "嫌[きら]い",
-          "です"
+          {
+            "word": "嫌[きら]い",
+            "pos": "na-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
         ],
         "notes": "Omitting 私 and using けど for a polite and conversational contrast."
       }

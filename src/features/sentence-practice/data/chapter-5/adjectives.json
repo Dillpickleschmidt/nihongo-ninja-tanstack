@@ -354,6 +354,8 @@
     "answers": [
       {
         "segments": [
+          "天気[てんき]",
+          "は",
           {
             "word": "寒[さむ]い",
             "pos": "i-adjective",
@@ -365,6 +367,18 @@
       }
     ],
     "modelAnswerPOS": [
+      [
+        "名詞",
+        "一般",
+        "*",
+        "*"
+      ],
+      [
+        "助詞",
+        "係助詞",
+        "*",
+        "*"
+      ],
       [
         "形容詞",
         "自立",
@@ -379,27 +393,14 @@
       {
         "segments": [
           "これは",
-          {
-            "word": "静[しず]か",
-            "pos": "na-adjective",
-            "polarity": "positive",
-            "tense": "non-past",
-            "politeOnly": true
-          },
-          "な",
-          "図書館[としょかん]"
+          "静[しず]かな",
+          "図書館[としょかん]",
+          "です"
         ]
       },
       {
         "segments": [
-          {
-            "word": "静[しず]か",
-            "pos": "na-adjective",
-            "polarity": "positive",
-            "tense": "non-past",
-            "politeOnly": true
-          },
-          "な",
+          "静[しず]かな",
           "図書館[としょかん]",
           "です"
         ]
@@ -425,14 +426,14 @@
         "*"
       ],
       [
-        "助詞",
-        "終助詞",
+        "名詞",
+        "一般",
         "*",
         "*"
       ],
       [
-        "名詞",
-        "一般",
+        "助動詞",
+        "*",
         "*",
         "*"
       ]
@@ -699,6 +700,33 @@
             "politeOnly": true
           }
         ]
+      },
+      {
+        "segments": [
+          "この",
+          "部屋[へや]",
+          "は",
+          {
+            "word": "広い",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
+      },
+      {
+        "segments": [
+          "部屋[へや]",
+          "は",
+          {
+            "word": "広い",
+            "pos": "i-adjective",
+            "polarity": "negative",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
       }
     ],
     "modelAnswerPOS": [
@@ -795,6 +823,19 @@
             "politeOnly": true
           }
         ]
+      },
+      {
+        "segments": [
+          "犬[いぬ]",
+          "が",
+          {
+            "word": "可愛[かわい]い",
+            "pos": "i-adjective",
+            "polarity": "positive",
+            "tense": "non-past",
+            "politeOnly": true
+          }
+        ]
       }
     ],
     "modelAnswerPOS": [
@@ -823,14 +864,7 @@
     "answers": [
       {
         "segments": [
-          {
-            "word": "静[しず]か",
-            "pos": "na-adjective",
-            "polarity": "positive",
-            "tense": "non-past",
-            "shortOnly": true
-          },
-          "な",
+          "静[しず]かな",
           "部屋[へや]",
           "でした"
         ]
@@ -856,12 +890,6 @@
       [
         "名詞",
         "形容動詞語幹",
-        "*",
-        "*"
-      ],
-      [
-        "助詞",
-        "終助詞",
         "*",
         "*"
       ],
@@ -1236,28 +1264,14 @@
       {
         "segments": [
           "これは",
-          {
-            "word": "きれい",
-            "pos": "na-adjective",
-            "polarity": "positive",
-            "tense": "non-past",
-            "shortOnly": true
-          },
-          "な",
+          "きれいな",
           "花[はな]",
           "です"
         ]
       },
       {
         "segments": [
-          {
-            "word": "きれい",
-            "pos": "na-adjective",
-            "polarity": "positive",
-            "tense": "non-past",
-            "shortOnly": true
-          },
-          "な",
+          "きれいな",
           "花[はな]",
           "です"
         ]
@@ -1306,12 +1320,6 @@
       [
         "名詞",
         "形容動詞語幹",
-        "*",
-        "*"
-      ],
-      [
-        "助詞",
-        "終助詞",
         "*",
         "*"
       ],
@@ -1421,27 +1429,14 @@
         "segments": [
           "ここ",
           "は",
-          {
-            "word": "静[しず]か",
-            "pos": "na-adjective",
-            "polarity": "positive",
-            "tense": "non-past",
-            "shortOnly": true
-          },
-          "な",
+          "静[しず]かな",
           "公園[こうえん]",
           "です"
         ]
       },
       {
         "segments": [
-          {
-            "word": "静[しず]か",
-            "pos": "na-adjective",
-            "polarity": "positive",
-            "tense": "non-past",
-            "shortOnly": true
-          },
+          "静[しず]かな",
           "な",
           "公園[こうえん]",
           "です"
@@ -1464,12 +1459,6 @@
       [
         "名詞",
         "形容動詞語幹",
-        "*",
-        "*"
-      ],
-      [
-        "助詞",
-        "終助詞",
         "*",
         "*"
       ],

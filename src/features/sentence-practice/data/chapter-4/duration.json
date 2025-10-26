@@ -40,13 +40,14 @@
   },
   {
     "english": "Sakura waited for Kenji for thirty minutes.",
+    "hint": "Name spellings: Sakura - 桜（さくら）, Kenji - ケンジ",
     "answers": [
       {
         "segments": [
-          "さくら",
+          "桜[さくら]",
           "さん",
           "は",
-          "けんじ",
+          "ケンジ",
           "さん",
           "を",
           "三[さん]",
@@ -76,21 +77,15 @@
         "*"
       ],
       [
-        "動詞",
-        "自立",
-        "*",
-        "*"
+        "名詞",
+        "固有名詞",
+        "人名",
+        "名"
       ],
       [
         "名詞",
         "接尾",
-        "特殊",
-        "*"
-      ],
-      [
-        "名詞",
-        "非自立",
-        "一般",
+        "人名",
         "*"
       ],
       [
@@ -127,11 +122,12 @@
   },
   {
     "english": "I studied English with Yuko for four hours today.",
+    "hint": "優子（ゆうこ）",
     "answers": [
       {
         "segments": [
           "今日[きょう]",
-          "ゆうこ",
+          "優子[ゆうこ]",
           "さん",
           "と",
           "英語[えいご]",
@@ -215,11 +211,11 @@
   },
   {
     "english": "Taro practiced Japanese for two and a half hours yesterday.",
-    "hint": "practice -> 練習する (れんしゅうする)",
+    "hint": "practice -> 練習する (れんしゅうする), 太郎（たろう）",
     "answers": [
       {
         "segments": [
-          "たろう",
+          "太郎[たろう]",
           "さん",
           "は",
           "昨日[きのう]",
@@ -234,16 +230,10 @@
     ],
     "modelAnswerPOS": [
       [
-        "助動詞",
-        "*",
-        "*",
-        "*"
-      ],
-      [
-        "助動詞",
-        "*",
-        "*",
-        "*"
+        "名詞",
+        "固有名詞",
+        "人名",
+        "名"
       ],
       [
         "名詞",
@@ -303,10 +293,11 @@
   },
   {
     "english": "Hiroko ate at the restaurant for one and a half hours.",
+    "hint": "寛子（ひろこ）",
     "answers": [
       {
         "segments": [
-          "ひろこ",
+          "寛子[ひろこ]",
           "さん",
           "は",
           "レストラン",
@@ -377,10 +368,11 @@
   },
   {
     "english": "Jiro studied for one hour yesterday.",
+    "hint": "次郎（じろう）",
     "answers": [
       {
         "segments": [
-          "じろう",
+          "次郎[じろう]",
           "さん",
           "は",
           "昨日[きのう]",
@@ -437,10 +429,11 @@
   },
   {
     "english": "Aiko read a book for thirty minutes.",
+    "hint": "愛子（あいこ）",
     "answers": [
       {
         "segments": [
-          "あいこ",
+          "愛子[あいこ]",
           "さん",
           "は",
           "三[さん]",
@@ -578,10 +571,11 @@
   },
   {
     "english": "Ryota watched TV for forty-five minutes.",
+    "hint": "亮太（りょうた）",
     "answers": [
       {
         "segments": [
-          "りょうた",
+          "亮太[りょうた]",
           "さん",
           "は",
           "テレビ",
@@ -597,15 +591,9 @@
     "modelAnswerPOS": [
       [
         "名詞",
-        "一般",
-        "*",
-        "*"
-      ],
-      [
-        "助動詞",
-        "*",
-        "*",
-        "*"
+        "固有名詞",
+        "人名",
+        "名"
       ],
       [
         "名詞",
@@ -665,10 +653,11 @@
   },
   {
     "english": "Kaori listened to music for one and a half hours yesterday.",
+    "hint": "香織（かおり）",
     "answers": [
       {
         "segments": [
-          "かおり",
+          "香織[かおり]",
           "さん",
           "は",
           "昨日[きのう]",

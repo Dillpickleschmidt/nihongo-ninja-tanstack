@@ -233,29 +233,20 @@ function segmentsToText(
 ): string {
   const USE_POLITE_FORM = true
 
-  return segments
-    .map((segment) => {
-      // Handle blank words first
-      const transformedSegment = isBlankableWord(segment)
-        ? segment.word
-        : segment
+  // Handle blank words first
+  const transformedSegments = segments.map((segment) =>
+    isBlankableWord(segment) ? segment.word : segment,
+  )
 
-      // Handle conjugatable words
-      if (isConjugatedWord(transformedSegment)) {
-        const conjugated = conjugationEngine.conjugateSegments(
-          [transformedSegment],
-          USE_POLITE_FORM,
-        )
-        // Use first variation (polite form)
-        const text = conjugated[0]?.[0] || ""
-        // Remove furigana brackets and spaces
-        return text.replace(CLEANUP_REGEX, "")
-      }
+  // Conjugate all segments together so engine can see following words for context
+  const conjugated = conjugationEngine.conjugateSegments(
+    transformedSegments,
+    USE_POLITE_FORM,
+  )
 
-      // Handle plain strings
-      const text = transformedSegment as string
-      return text.replace(CLEANUP_REGEX, "")
-    })
+  // Use first variation (polite form), clean up furigana brackets and spaces
+  return conjugated
+    .map((variations) => (variations[0] || "").replace(CLEANUP_REGEX, ""))
     .join("")
 }
 

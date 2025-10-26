@@ -223,7 +223,7 @@ export const chapters: ChapterCollection = {
         "sentence-practice-janai",
         "kikusasaizu-2-1",
         "ne-yo-particles",
-        "sentence-practice-ne-yo",
+        // "sentence-practice-ne-yo",
         "kikusasaizu-2-2",
         "genki_1_ch2_places-money-food",
         "genki_1_ch2_places-money-food",
