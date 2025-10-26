@@ -85,14 +85,14 @@ export default function AnswerInput(props: AnswerInputProps) {
     }
   })
 
-  const isLastQuestion =
+  const isLastQuestion = () =>
     store.currentQuestionIndex === store.questions.length - 1
 
   const isAnswerCorrect = () => store.showResult && store.checkResult?.isCorrect
 
   const handleMainButton = () => {
     if (isAnswerCorrect()) {
-      if (isLastQuestion) {
+      if (isLastQuestion()) {
         navigate({ to: "/sentence-practice" })
       } else {
         actions.nextQuestion()
@@ -171,7 +171,7 @@ export default function AnswerInput(props: AnswerInputProps) {
         class={`${isAnswerCorrect() ? "bg-green-400 hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600" : "bg-amber-400 dark:bg-amber-500 dark:saturate-[85%]"} w-full py-3 text-sm text-black lg:text-base`}
       >
         {isAnswerCorrect()
-          ? isLastQuestion
+          ? isLastQuestion()
             ? "Finish"
             : "Next Question"
           : "Check Answer"}
