@@ -2,7 +2,7 @@
 import { Link, useLocation, useRouteContext } from "@tanstack/solid-router"
 import { Home, GraduationCap, Search, User } from "lucide-solid"
 import { cn } from "@/utils"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { Route as RootRoute } from "@/routes/__root"
 import { Show } from "solid-js"

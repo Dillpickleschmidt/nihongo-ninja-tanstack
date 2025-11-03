@@ -5,7 +5,7 @@ import { ServiceIntegrationsSection } from "@/features/settings-page/components/
 import { ServiceManagementProvider } from "@/features/settings-page/context/ServiceManagementContext"
 import { Route as RootRoute } from "@/routes/__root"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 
 export const Route = createFileRoute("/_home/settings")({

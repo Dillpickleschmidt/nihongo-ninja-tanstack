@@ -1,7 +1,7 @@
 import { Show, createMemo } from "solid-js"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { useFrozenQuery } from "@/features/homepage/hooks/useFrozenQuery"
-import { completedModulesQueryOptions } from "@/features/learn-page/query/query-options"
+import { completedModulesQueryOptions } from "@/query/query-options"
 import type { User } from "@supabase/supabase-js"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { UseQueryResult } from "@tanstack/solid-query"

@@ -18,8 +18,8 @@ import {
   userWeekTimeDataQueryOptions,
   seenCardsStatsQueryOptions,
   userDailyTimeQueryOptions,
-} from "@/features/learn-page/query/query-options"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+} from "@/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import type { TextbookIDEnum } from "@/data/types"
 

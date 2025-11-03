@@ -9,7 +9,7 @@ import type { Deck, TextbookIDEnum } from "@/data/types"
 import type { QueryClient } from "@tanstack/solid-query"
 import { cn } from "@/utils"
 import { getMinifiedTextbookEntries } from "@/data/utils/core"
-import { applyUserSettingsUpdate } from "@/features/main-cookies/query/query-options"
+import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
 
 interface LearningPathChapterSelectorProps {
   children: JSX.Element

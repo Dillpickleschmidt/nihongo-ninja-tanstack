@@ -5,7 +5,7 @@ import {
   moduleVocabularyQueryOptions,
   practiceModuleFSRSCardsQueryOptions,
   practiceDueFSRSCardsQueryOptions,
-} from "@/features/vocab-practice/query/query-options"
+} from "@/query/query-options"
 import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
 import { SimpleVocabularyList } from "./SimpleView"
 import { FullDependencyView } from "./FullView"

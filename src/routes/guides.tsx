@@ -9,8 +9,8 @@ import {
   useNavigate,
 } from "@tanstack/solid-router"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
-import { markModuleCompletedMutation } from "@/features/learn-page/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
+import { markModuleCompletedMutation } from "@/query/query-mutations"
 import { useQueryClient, useMutation } from "@tanstack/solid-query"
 import {
   Sidebar,

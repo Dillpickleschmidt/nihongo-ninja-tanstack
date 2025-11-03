@@ -1,6 +1,6 @@
 import { BottomNav } from "@/features/navbar/BottomNav"
 import { createFileRoute, Outlet, useRouteContext } from "@tanstack/solid-router"
-import { userDailyTimeQueryOptions } from "@/features/learn-page/query/query-options"
+import { userDailyTimeQueryOptions } from "@/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { Route as RootRoute } from "@/routes/__root"
 

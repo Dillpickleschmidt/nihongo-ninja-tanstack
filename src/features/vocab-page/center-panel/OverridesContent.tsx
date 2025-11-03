@@ -4,10 +4,8 @@ import { StackEditor } from "./overrides/StackEditor"
 import type { Stack } from "@/features/resolvers/types"
 import { useMutation, useQueryClient } from "@tanstack/solid-query"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import {
-  userSettingsQueryOptions,
-  updateUserSettingsMutation,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
+import { updateUserSettingsMutation } from "@/query/query-mutations"
 import type { User } from "@supabase/supabase-js"
 import { FileUploadDialog } from "@/components/FileUploadDialog"
 import { Button } from "@/components/ui/button"

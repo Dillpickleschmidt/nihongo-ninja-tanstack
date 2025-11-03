@@ -17,10 +17,8 @@ import {
 } from "@/components/ui/dialog"
 import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import {
-  userSettingsQueryOptions,
-  updateUserSettingsMutation,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
+import { updateUserSettingsMutation } from "@/query/query-mutations"
 import { useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 import { useMutation, useQueryClient } from "@tanstack/solid-query"

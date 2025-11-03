@@ -8,14 +8,14 @@ import {
 import { getDeckBySlug, getModules } from "@/data/utils/core"
 import { useTour } from "@/features/guided-tour/TourContext"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { vocabHierarchyQueryOptions } from "@/features/learn-page/query/query-options"
-import { resourceThumbnailQueryOptions } from "@/features/learn-page/query/query-options"
+import { vocabHierarchyQueryOptions } from "@/query/query-options"
+import { resourceThumbnailQueryOptions } from "@/query/query-options"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
 import {
   userSettingsQueryOptions,
   dbUserSettingsQueryOptions,
-  applyUserSettingsUpdate,
-} from "@/features/main-cookies/query/query-options"
+} from "@/query/query-options"
+import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
 import type { TextbookIDEnum, ExternalResource } from "@/data/types"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import { Route as RootRoute } from "@/routes/__root"

@@ -4,6 +4,7 @@ import {
   getLocalCompletions,
   clearLocalCompletions,
 } from "./localStorage"
+import { queryKeys } from "@/query/utils/query-keys"
 
 /**
  * Sync local module completions to the database.
@@ -47,7 +48,7 @@ export async function syncLocalCompletionsOnLogin(
 
     // Refresh the completions query to show synced data
     queryClient.invalidateQueries({
-      queryKey: ["module-progress", userId, "completed"],
+      queryKey: queryKeys.completedModules(userId),
     })
   } catch (error) {
     console.error("Error syncing local completions:", error)

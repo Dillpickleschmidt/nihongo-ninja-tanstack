@@ -3,7 +3,7 @@ import { createFileRoute, useRouteContext } from "@tanstack/solid-router"
 import PracticeContainer from "@/features/sentence-practice/ui/practice/PracticeContainer"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import { useTour } from "@/features/guided-tour/TourContext"
 import { Route as RootRoute } from "@/routes/__root"
 

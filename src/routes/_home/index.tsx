@@ -10,8 +10,8 @@ import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { useQueryClient } from "@tanstack/solid-query"
 import {
   userSettingsQueryOptions,
-  applyUserSettingsUpdate,
-} from "@/features/main-cookies/query/query-options"
+} from "@/query/query-options"
+import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
 import { BackgroundLayers } from "@/features/homepage/shared/components/BackgroundLayers"
 import Nav from "@/features/homepage/shared/components/Nav2"
 import LoginMessage from "@/features/homepage/shared/assets/login-message.svg"
@@ -22,7 +22,7 @@ import {
   createSlideWithFadeInAnimation,
   prepareElementForEnter,
 } from "@/utils/animations"
-import { completedModulesQueryOptions } from "@/features/learn-page/query/query-options"
+import { completedModulesQueryOptions } from "@/query/query-options"
 import { getDeckBySlug, getModules } from "@/data/utils/core"
 import { enrichLessons } from "@/features/learn-page/utils/loader-helpers"
 import type { TextbookIDEnum } from "@/data/types"

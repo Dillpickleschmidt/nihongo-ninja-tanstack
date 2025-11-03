@@ -12,12 +12,12 @@ import {
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 import { UpcomingModulesList } from "@/features/learn-page/components/content/UpcomingModulesList"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import {
   dueCardsCountQueryOptions,
   upcomingModulesQueryOptions,
   completedModulesQueryOptions,
-} from "@/features/learn-page/query/query-options"
+} from "@/query/query-options"
 import { Route as RootRoute } from "@/routes/__root"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { getActiveLiveService } from "@/features/srs-services/utils"

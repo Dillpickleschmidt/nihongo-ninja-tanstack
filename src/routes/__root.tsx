@@ -33,9 +33,10 @@ import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { PostHogProvider } from "@/features/posthog/PostHogContext"
 import {
   userSettingsQueryOptions,
-  updateUserSettingsMutation,
   dbUserSettingsQueryOptions,
-} from "@/features/main-cookies/query/query-options"
+} from "@/query/query-options"
+import { updateUserSettingsMutation } from "@/query/query-mutations"
+import { queryKeys } from "@/query/utils/query-keys"
 import { setupAuthSync } from "@/features/module-completion/setupAuthSync"
 
 export const Route = createRootRouteWithContext<{
@@ -148,7 +149,7 @@ function RootContent() {
       const handleStorageChange = (e: StorageEvent) => {
         if (e.key === "nihongo-ninja:local-completions") {
           queryClient.invalidateQueries({
-            queryKey: ["module-progress", user?.id || null, "completed"],
+            queryKey: queryKeys.completedModules(user?.id || null),
           })
         }
       }

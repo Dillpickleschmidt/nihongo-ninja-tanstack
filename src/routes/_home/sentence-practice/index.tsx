@@ -17,10 +17,8 @@ import { cn } from "@/utils"
 import FindMoreHereSvg from "@/features/homepage/shared/assets/find-more-here.svg?component-solid"
 
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import {
-  userSettingsQueryOptions,
-  applyUserSettingsUpdate,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
+import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
 import { Route as RootRoute } from "@/routes/__root"
 
 import {

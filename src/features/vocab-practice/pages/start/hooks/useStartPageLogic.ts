@@ -6,7 +6,7 @@ import {
   practiceModuleFSRSCardsQueryOptions,
   practiceDueFSRSCardsQueryOptions,
   hierarchySvgsQueryOptions,
-} from "@/features/vocab-practice/query/query-options"
+} from "@/query/query-options"
 import { initializePracticeSession } from "@/features/vocab-practice/logic/data-initialization"
 import { buildPreviewCards } from "../utils/preview-cards"
 import { calculateSvgCharacters } from "@/features/vocab-practice/utils/route-loader-helpers"

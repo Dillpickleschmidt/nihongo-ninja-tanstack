@@ -23,7 +23,7 @@ import type { DeckCreationInitialData } from "./deck-creation/stores/deck-creati
 import { copyDeck } from "@/features/vocab-page/utils/deckCopyUtils"
 import { TextbookChapterBackgrounds } from "../learn-page/components/shared/TextbookChapterBackgrounds"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 
 interface DesktopVocabPageProps {
   importRequest?: ImportRequest | null

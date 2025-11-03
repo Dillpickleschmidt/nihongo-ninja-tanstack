@@ -25,15 +25,14 @@ import {
   seenCardsStatsQueryOptions,
   type ModuleWithCurrent,
   type VocabModuleProgress,
-} from "@/features/learn-page/query/query-options"
+} from "@/query/query-options"
 import type {
   DueCountResult,
   SeenCardsStatsResult,
 } from "@/features/srs-services/types"
-import {
-  userSettingsQueryOptions,
-  updateUserSettingsMutation,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
+import { updateUserSettingsMutation } from "@/query/query-mutations"
+import { queryKeys } from "@/query/utils/query-keys"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import {
   shouldUpdatePosition,
@@ -267,7 +266,7 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
   const handlePositionUpdate = (moduleId: string | null) => {
     if (moduleId) {
       queryClient.invalidateQueries({
-        queryKey: ["upcoming-modules", props.userId, props.textbookId],
+        queryKey: queryKeys.upcomingModules(props.userId, props.textbookId, null),
       })
     }
   }
@@ -327,7 +326,7 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
       markModuleCompleted(userId, moduleId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["module-progress", props.userId],
+        queryKey: queryKeys.moduleProgress(props.userId, []),
       })
     },
   }))
