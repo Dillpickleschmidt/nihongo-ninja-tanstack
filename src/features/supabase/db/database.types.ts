@@ -170,21 +170,21 @@ export type Database = {
       }
       public_deck_shares: {
         Row: {
-          deck_id: number
+          deck_id: string
           import_count: number
           shared_at: string
           shared_by: string
           updated_at: string
         }
         Insert: {
-          deck_id: number
+          deck_id: string
           import_count?: number
           shared_at?: string
           shared_by: string
           updated_at?: string
         }
         Update: {
-          deck_id?: number
+          deck_id?: string
           import_count?: number
           shared_at?: string
           shared_by?: string
@@ -205,7 +205,7 @@ export type Database = {
           allowed_practice_modes: Database["public"]["Enums"]["practice_mode_enum"][]
           created_at: string
           deck_description: string | null
-          deck_id: number
+          deck_id: string
           deck_name: string
           folder_id: number | null
           original_deck_id: string | null
@@ -216,7 +216,7 @@ export type Database = {
           allowed_practice_modes: Database["public"]["Enums"]["practice_mode_enum"][]
           created_at?: string
           deck_description?: string | null
-          deck_id?: never
+          deck_id?: string
           deck_name: string
           folder_id?: number | null
           original_deck_id?: string | null
@@ -227,7 +227,7 @@ export type Database = {
           allowed_practice_modes?: Database["public"]["Enums"]["practice_mode_enum"][]
           created_at?: string
           deck_description?: string | null
-          deck_id?: never
+          deck_id?: string
           deck_name?: string
           folder_id?: number | null
           original_deck_id?: string | null
@@ -295,7 +295,7 @@ export type Database = {
       vocabulary_items: {
         Row: {
           created_at: string
-          deck_id: number
+          deck_id: string
           english: string[]
           example_sentences: Json | null
           furigana: string | null
@@ -309,7 +309,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          deck_id: number
+          deck_id: string
           english: string[]
           example_sentences?: Json | null
           furigana?: string | null
@@ -323,7 +323,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          deck_id?: number
+          deck_id?: string
           english?: string[]
           example_sentences?: Json | null
           furigana?: string | null
@@ -354,6 +354,7 @@ export type Database = {
         Args: { operations: Json; user_id: string }
         Returns: undefined
       }
+      generate_deck_id: { Args: never; Returns: string }
       get_vocabulary_stats: {
         Args: { user_id_param: string; week_ago_param: string }
         Returns: Json
