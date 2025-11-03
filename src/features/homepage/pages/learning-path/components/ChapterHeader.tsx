@@ -1,6 +1,5 @@
 import { ChapterPagination } from "./ChapterPagination"
 import { FeatureList } from "./FeatureList"
-import ViewingIsEnough from "@/features/homepage/shared/assets/viewing-is-enough.svg"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { UseQueryResult } from "@tanstack/solid-query"
 
@@ -23,10 +22,7 @@ export function ChapterHeader(props: ChapterHeaderProps) {
         />
       </div>
       <p class="text-muted-foreground mt-4 max-w-3xl">{props.description}</p>
-      <div class="flex w-full justify-between">
-        <FeatureList features={props.features} />
-        <ViewingIsEnough class="-mr-8 -mb-20 h-auto w-68 text-neutral-400" />
-      </div>
+      <FeatureList features={props.features} />
     </div>
   )
 }

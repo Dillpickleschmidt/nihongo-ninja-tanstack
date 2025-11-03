@@ -13,8 +13,13 @@ import { ProgressFooter } from "./components/ProgressFooter"
 import { QuickAccessCards } from "./components/QuickAccessCards"
 import { ArrowBigLeft } from "lucide-solid"
 import { Button } from "@/components/ui/button"
+import { FeatureList } from "./components/FeatureList"
+import ViewingIsEnough from "@/features/homepage/shared/assets/viewing-is-enough.svg"
+
 import type { TextbookIDEnum, BuiltInDeck } from "@/data/types"
 import type { EnrichedLearningPathModule } from "@/features/learn-page/utils/loader-helpers"
+import { SSRMediaQuery } from "@/components/SSRMediaQuery"
+import StudyHeader from "./components/StudyHeader"
 
 interface LearningPathPageProps {
   settingsQuery: UseQueryResult<UserSettings, Error>
@@ -85,13 +90,13 @@ export function LearningPathPage(props: LearningPathPageProps) {
 
   return (
     <section class="relative mx-auto w-full max-w-7xl px-4 pt-4 pb-16 md:pt-8">
-      <div class="flex h-16 items-center pl-4">
-        <Show
-          when={
-            frozenSettingsQuery().data!["active-textbook"] ===
-              "getting_started" && props.onBack
-          }
-        >
+      <Show
+        when={
+          frozenSettingsQuery().data!["active-textbook"] ===
+            "getting_started" && props.onBack
+        }
+      >
+        <div class="mb-4 flex h-16 items-center pl-4">
           <Button
             variant="ghost"
             onClick={props.onBack}
@@ -99,18 +104,26 @@ export function LearningPathPage(props: LearningPathPageProps) {
           >
             <ArrowBigLeft class="h-12 w-12 text-white" />
           </Button>
-        </Show>
-      </div>
+        </div>
+      </Show>
+
+      <SSRMediaQuery hideFrom="md">
+        <StudyHeader />
+      </SSRMediaQuery>
 
       <Show
         when={
           frozenSettingsQuery().data!["active-textbook"] !== "getting_started"
         }
       >
-        <div class="-mt-12">
+        <div class="py-4">
           <QuickAccessCards />
         </div>
       </Show>
+
+      <SSRMediaQuery showFrom="md">
+        <StudyHeader />
+      </SSRMediaQuery>
 
       <ChapterHeader
         heading={deckData()?.heading}
@@ -119,6 +132,11 @@ export function LearningPathPage(props: LearningPathPageProps) {
         settingsQuery={frozenSettingsQuery()}
         onChapterChange={props.onChapterChange}
       />
+
+      <div class="flex w-full justify-between md:-mt-16">
+        <div />
+        <ViewingIsEnough class="-mb-0 h-auto w-68 text-neutral-400" />
+      </div>
 
       <ModuleTilesGrid
         tiles={tiles()}

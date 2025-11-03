@@ -125,7 +125,7 @@ export function QuickAccessCards() {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         class={cn(
-          "group w-full cursor-pointer transition-transform duration-150",
+          "group cursor-pointer transition-transform duration-150",
           isDisabled ? "cursor-not-allowed" : "hover:scale-[1.01]",
           "transition-all",
           animated()
@@ -139,7 +139,7 @@ export function QuickAccessCards() {
         }}
       >
         <SmoothCard
-          width={295}
+          width={330}
           height={130}
           cornerRadius={12}
           border={true}
@@ -184,7 +184,7 @@ export function QuickAccessCards() {
 
       {/* Mobile */}
       <SSRMediaQuery hideFrom="md">
-        <div class="mb-4 space-y-3 px-4">
+        <div class="mb-4 flex flex-col items-center space-y-3 px-4">
           <For each={featuredTools}>
             {(tool, index) => <MobileCard tool={tool} index={index} />}
           </For>
