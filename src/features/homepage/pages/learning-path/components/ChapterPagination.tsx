@@ -13,12 +13,12 @@ interface ChapterPaginationProps {
 
 export function ChapterPagination(props: ChapterPaginationProps) {
   const activeTextbook = () =>
-    props.settingsQuery.data!["active-textbook"] as TextbookIDEnum
-  const activeDeck = () => props.settingsQuery.data!["active-deck"]
+    props.settingsQuery.data!["active-learning-path"] as TextbookIDEnum
+  const activeChapter = () => props.settingsQuery.data!["active-chapter"]
   const textbookChapters = () => getTextbookChapters(activeTextbook())
 
   const chapterIndex = () => {
-    return textbookChapters().findIndex((ch) => ch.slug === activeDeck())
+    return textbookChapters().findIndex((ch) => ch.slug === activeChapter())
   }
 
   const canGoBack = () => chapterIndex() > 0
@@ -42,11 +42,11 @@ export function ChapterPagination(props: ChapterPaginationProps) {
     }
   }
 
-  const styles = () => getChapterStyles(activeDeck())
-  const chapter = () => getDeckBySlug(activeTextbook(), activeDeck())
+  const styles = () => getChapterStyles(activeChapter())
+  const chapter = () => getDeckBySlug(activeTextbook(), activeChapter())
 
   return (
-    <Show when={activeDeck()}>
+    <Show when={activeChapter()}>
       <div class="flex items-center justify-center gap-3">
         <button
           onClick={handlePrevious}

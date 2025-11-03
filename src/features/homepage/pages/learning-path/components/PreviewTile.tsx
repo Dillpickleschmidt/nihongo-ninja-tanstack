@@ -48,7 +48,7 @@ export function PreviewTile(props: PreviewTileProps) {
           <div class="flex items-center gap-2">
             <Show
               when={
-                props.settingsQuery.data!["active-textbook"] !==
+                props.settingsQuery.data!["active-learning-path"] !==
                   "getting_started"
               }
             >

@@ -26,8 +26,8 @@ export function useDeckSelection(
       const parsed = parseBuiltInDeckId(deck.original_deck_id)
       if (parsed) {
         updateMutation.mutate({
-          "active-textbook": parsed.textbook,
-          "active-deck": parsed.chapter,
+          "active-learning-path": parsed.textbook,
+          "active-chapter": parsed.chapter,
         })
       }
     }
@@ -41,8 +41,8 @@ export function useDeckSelection(
     const parsed = parseBuiltInDeckId(deck.id)
     if (parsed) {
       updateMutation.mutate({
-        "active-textbook": parsed.textbook,
-        "active-deck": parsed.chapter,
+        "active-learning-path": parsed.textbook,
+        "active-chapter": parsed.chapter,
       })
     }
     setSelectedUserDeck(null) // Clear user deck selection

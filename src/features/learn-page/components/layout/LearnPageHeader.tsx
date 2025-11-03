@@ -10,7 +10,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet"
-import { DeckSelectionPopover } from "../shared/DeckSelectionPopover"
+import { LearningPathChapterSelector } from "../shared/LearningPathChapterSelector"
 import { NavigationSheet } from "./NavigationSheet"
 import { HamburgerIcon } from "../shared/HamburgerIcon"
 import { DueCardsDisplay } from "../shared/DueCardsDisplay"
@@ -33,18 +33,18 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
   const context = useLearnPageContext()
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
 
-  const activeTextbookId = () =>
-    context.settingsQuery.data!["active-textbook"] as TextbookIDEnum
-  const activeChapterSlug = () => context.settingsQuery.data!["active-deck"]
-  const activeDeck = () =>
-    getDeckBySlug(activeTextbookId(), activeChapterSlug())
+  const activeLearningPathId = () =>
+    context.settingsQuery.data!["active-learning-path"] as string
+  const activeChapterSlug = () => context.settingsQuery.data!["active-chapter"]
+  const activeChapter = () =>
+    getDeckBySlug(activeLearningPathId(), activeChapterSlug())
 
-  const handleDeckSelect = (textbookId: TextbookIDEnum, deckSlug: string) => {
-    const deck = getDeckBySlug(textbookId, deckSlug)
+  const handleDeckSelect = (learningPathId: string, chapterSlug: string) => {
+    const deck = getDeckBySlug(learningPathId, chapterSlug)
     if (deck) {
       navigate({
         to: "/learn/$textbookId/$chapterSlug",
-        params: { textbookId, chapterSlug: deckSlug },
+        params: { textbookId: learningPathId, chapterSlug: chapterSlug },
       })
     }
   }
@@ -60,18 +60,18 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
           </div>
 
           <div class="flex justify-center">
-            <DeckSelectionPopover
-              activeTextbookId={activeTextbookId()}
-              activeDeck={activeDeck()!}
+            <LearningPathChapterSelector
+              activeLearningPathId={activeLearningPathId()}
+              activeChapter={activeChapter()!}
               queryClient={queryClient}
               userId={context.userId}
-              onDeckSelect={handleDeckSelect}
+              onChapterSelect={handleDeckSelect}
               isOpen={isPopoverOpen()}
               onOpenChange={setIsPopoverOpen}
               popoverWidth="w-[350px]"
             >
               <div class="hover:bg-card-foreground/40 -mt-0.5 flex min-w-[150px] items-center justify-center space-x-2 rounded-md border-none px-3 py-2 text-center text-lg font-semibold hover:cursor-pointer md:text-xl">
-                <span>{activeDeck()?.title}</span>
+                <span>{activeChapter()?.title}</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -86,7 +86,7 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
                   <path d="M16 15l-4 4l-4 -4" />
                 </svg>
               </div>
-            </DeckSelectionPopover>
+            </LearningPathChapterSelector>
           </div>
 
           <div class="flex justify-center">

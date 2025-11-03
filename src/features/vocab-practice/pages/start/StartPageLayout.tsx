@@ -66,8 +66,8 @@ export function StartPageLayout(props: StartPageLayoutProps) {
     <div class="min-h-screen">
       <div class="fixed inset-0 -z-1">
         <TextbookChapterBackgrounds
-          textbook={props.logic.settingsQuery.data!["active-textbook"]}
-          chapter={props.logic.settingsQuery.data!["active-deck"]}
+          textbook={props.logic.settingsQuery.data!["active-learning-path"]}
+          chapter={props.logic.settingsQuery.data!["active-chapter"]}
           showGradient={false}
           blur="6px"
         />

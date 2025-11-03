@@ -137,7 +137,7 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
     upcomingModulesQueryOptions(
       props.userId,
       props.textbookId,
-      settingsQuery.data!["textbook-positions"]?.[props.textbookId] || null,
+      settingsQuery.data!["learning-path-positions"]?.[props.textbookId] || null,
     ),
   )
 
@@ -254,8 +254,8 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
     if (!props.userId) return null
 
     updateMutation.mutate({
-      "textbook-positions": {
-        ...settingsQuery.data!["textbook-positions"],
+      "learning-path-positions": {
+        ...settingsQuery.data!["learning-path-positions"],
         [props.textbookId]: moduleId,
       },
     })
@@ -292,7 +292,7 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
       const currentLearningPath = textbookLearningPath()
       const mostRecent = completionsQuery.data[0]
       const currentPosition =
-        settingsQuery.data!["textbook-positions"]?.[props.textbookId] || null
+        settingsQuery.data!["learning-path-positions"]?.[props.textbookId] || null
 
       // Check if should update due to nearby completion (�2 modules)
       const shouldUpdateNearby = shouldUpdatePosition(

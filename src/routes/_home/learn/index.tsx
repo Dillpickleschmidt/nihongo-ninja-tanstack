@@ -15,8 +15,8 @@ export const Route = createFileRoute("/_home/learn/")({
     throw redirect({
       to: "/learn/$textbookId/$chapterSlug",
       params: {
-        textbookId: settings["active-textbook"],
-        chapterSlug: settings["active-deck"],
+        textbookId: settings["active-learning-path"],
+        chapterSlug: settings["active-chapter"],
       },
     })
   },

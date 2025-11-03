@@ -20,7 +20,7 @@ export function BottomNav(props: BottomNavProps) {
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(userId),
   )
-  const activeTextbook = () => settingsQuery.data?.["active-textbook"]
+  const activeTextbook = () => settingsQuery.data?.["active-learning-path"]
 
   const dailyProgress = () => props.dailyProgressPercentage ?? 65
 

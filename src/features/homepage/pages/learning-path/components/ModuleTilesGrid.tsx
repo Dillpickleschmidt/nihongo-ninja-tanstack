@@ -18,7 +18,7 @@ interface ModuleTilesGridProps {
 }
 
 export function ModuleTilesGrid(props: ModuleTilesGridProps) {
-  const activeDeck = () => props.settingsQuery.data!["active-deck"]
+  const activeChapter = () => props.settingsQuery.data!["active-chapter"]
 
   return (
     <div class="px-4 pt-2 pb-4 md:px-6 md:pb-6">
@@ -31,7 +31,7 @@ export function ModuleTilesGrid(props: ModuleTilesGridProps) {
                 description={tile.description}
                 moduleType={tile.moduleType}
                 iconClasses={tile.iconClasses}
-                chapterSlug={activeDeck()}
+                chapterSlug={activeChapter()}
                 index={index()}
                 href={tile.href}
                 isCompleted={props.isModuleCompleted(tile.href)}

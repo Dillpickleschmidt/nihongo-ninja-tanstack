@@ -22,8 +22,8 @@ function RouteComponent() {
     <>
       <div class="fixed inset-0 -z-1">
         <TextbookChapterBackgrounds
-          textbook={settingsQuery.data["active-textbook"]}
-          chapter={settingsQuery.data["active-deck"]}
+          textbook={settingsQuery.data["active-learning-path"]}
+          chapter={settingsQuery.data["active-chapter"]}
           showGradient={false}
           blur="16px"
           class="opacity-50"

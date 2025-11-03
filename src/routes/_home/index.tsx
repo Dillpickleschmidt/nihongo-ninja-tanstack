@@ -84,8 +84,8 @@ function RouteComponent() {
           context().user?.id || null,
           queryClient,
           {
-            "active-textbook": "getting_started",
-            "active-deck": newChapterSlug,
+            "active-learning-path": "getting_started",
+            "active-chapter": newChapterSlug,
             "has-completed-onboarding": true,
           },
           { awaitDb: false },
@@ -107,7 +107,7 @@ function RouteComponent() {
       context().user?.id || null,
       queryClient,
       {
-        "active-deck": chapterSlug,
+        "active-chapter": chapterSlug,
       },
       { awaitDb: false },
     )
@@ -153,7 +153,7 @@ function RouteComponent() {
               settingsQuery={settingsQuery}
               onChapterChange={handleChapterChange}
               onBack={
-                settingsQuery.data?.["active-textbook"] === "getting_started"
+                settingsQuery.data?.["active-learning-path"] === "getting_started"
                   ? handleBack
                   : undefined
               }

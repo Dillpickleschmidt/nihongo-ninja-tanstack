@@ -40,7 +40,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
         to: "/learn/$textbookId/$chapterSlug",
         params: {
           textbookId: textbookId as TextbookIDEnum,
-          chapterSlug: userSettings["active-deck"],
+          chapterSlug: userSettings["active-chapter"],
         },
       })
     }
@@ -60,8 +60,8 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
       )
 
       if (dbData) {
-        const dbActiveDeck = dbData["active-deck"] // This is already a slug
-        const dbActiveTextbook = dbData["active-textbook"]
+        const dbActiveDeck = dbData["active-chapter"] // This is already a slug
+        const dbActiveTextbook = dbData["active-learning-path"]
         const cookieTimestamp = userSettings.timestamp || 0
         const dbTimestamp = dbData.timestamp || 0
 
@@ -85,16 +85,16 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
 
     // Update active-deck if URL differs from current settings
     const needsUpdate =
-      userSettings["active-deck"] !== chapterSlug ||
-      userSettings["active-textbook"] !== (textbookId as TextbookIDEnum)
+      userSettings["active-chapter"] !== chapterSlug ||
+      userSettings["active-learning-path"] !== (textbookId as TextbookIDEnum)
 
     if (needsUpdate) {
       await applyUserSettingsUpdate(
         user?.id || null,
         queryClient,
         {
-          "active-deck": chapterSlug,
-          "active-textbook": textbookId as TextbookIDEnum,
+          "active-chapter": chapterSlug,
+          "active-learning-path": textbookId as TextbookIDEnum,
         },
         { awaitDb: false }, // Don't await DB (non-blocking)
       )

@@ -92,13 +92,13 @@ async function syncUserSettingsToDb(
     .update({
       user_preferences: {
         "service-preferences": settings["service-preferences"],
-        "active-textbook": settings["active-textbook"],
-        "active-deck": settings["active-deck"],
+        "active-learning-path": settings["active-learning-path"],
+        "active-chapter": settings["active-chapter"],
         "has-completed-onboarding": settings["has-completed-onboarding"],
         "tours": settings["tours"],
         "override-settings": settings["override-settings"],
         "conjugation-practice": settings["conjugation-practice"],
-        "textbook-positions": settings["textbook-positions"],
+        "learning-path-positions": settings["learning-path-positions"],
         timestamp,
       },
     })

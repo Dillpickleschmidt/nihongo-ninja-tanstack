@@ -45,8 +45,8 @@ export function LearningPathPage(props: LearningPathPageProps) {
 
     // Otherwise, derive from settings
     const settings = frozenSettingsQuery().data!
-    const textbook = settings["active-textbook"] as TextbookIDEnum
-    const chapter = settings["active-deck"]
+    const textbook = settings["active-learning-path"] as TextbookIDEnum
+    const chapter = settings["active-chapter"]
     return getDeckBySlug(textbook, chapter)
   })
 
@@ -92,7 +92,7 @@ export function LearningPathPage(props: LearningPathPageProps) {
     <section class="relative mx-auto w-full max-w-7xl px-4 pt-4 pb-16 md:pt-8">
       <Show
         when={
-          frozenSettingsQuery().data!["active-textbook"] ===
+          frozenSettingsQuery().data!["active-learning-path"] ===
             "getting_started" && props.onBack
         }
       >
@@ -113,7 +113,7 @@ export function LearningPathPage(props: LearningPathPageProps) {
 
       <Show
         when={
-          frozenSettingsQuery().data!["active-textbook"] !== "getting_started"
+          frozenSettingsQuery().data!["active-learning-path"] !== "getting_started"
         }
       >
         <div class="py-4">

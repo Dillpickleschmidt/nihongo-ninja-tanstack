@@ -22,8 +22,8 @@ interface ProgressFooterProps {
 }
 
 export function ProgressFooter(props: ProgressFooterProps) {
-  const activeTextbook = () => props.settingsQuery.data!["active-textbook"]
-  const activeDeck = () => props.settingsQuery.data!["active-deck"]
+  const activeTextbook = () => props.settingsQuery.data!["active-learning-path"]
+  const activeChapter = () => props.settingsQuery.data!["active-chapter"]
 
   const completedCount = () =>
     props.tiles.filter((tile) => props.isModuleCompleted(tile.href)).length
@@ -32,7 +32,7 @@ export function ProgressFooter(props: ProgressFooterProps) {
   return (
     <div class="flex w-full flex-col items-center gap-6 pt-6">
       <p class="text-muted-foreground pb-8 text-xl font-semibold">
-        <span class={getChapterStyles(activeDeck()).textColor}>
+        <span class={getChapterStyles(activeChapter()).textColor}>
           {completedCount()}/{totalCount()}
         </span>{" "}
         Complete

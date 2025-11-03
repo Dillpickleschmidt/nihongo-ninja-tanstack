@@ -93,12 +93,12 @@ export default function ContentBox(props: ContentBoxProps) {
       "user-settings",
       props.user?.id || null,
     ])
-    const activeTextbook = userSettings!["active-textbook"]
-    const activeDeck = userSettings!["active-deck"]
+    const activeTextbook = userSettings!["active-learning-path"]
+    const activeChapter = userSettings!["active-chapter"]
 
     navigate({
       to: "/learn/$textbookId/$chapterSlug",
-      params: { textbookId: activeTextbook, chapterSlug: activeDeck },
+      params: { textbookId: activeTextbook, chapterSlug: activeChapter },
     })
   }
 

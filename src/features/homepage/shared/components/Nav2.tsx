@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { useLocation, useRouteContext } from "@tanstack/solid-router"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
-import { DeckSelectionPopover } from "@/features/learn-page/components/shared/DeckSelectionPopover"
+import { LearningPathChapterSelector } from "@/features/learn-page/components/shared/LearningPathChapterSelector"
 import { getDeckBySlug, getMinifiedTextbookEntries } from "@/data/utils/core"
 import { Route as RootRoute } from "@/routes/__root"
 import type { TextbookIDEnum } from "@/data/types"
@@ -22,19 +22,19 @@ export default function Nav() {
     userSettingsQueryOptions(context().user?.id || null),
   )
 
-  const activeTextbookId = () =>
-    settingsQuery.data?.["active-textbook"] as TextbookIDEnum | undefined
-  const activeChapterSlug = () => settingsQuery.data?.["active-deck"]
+  const activeLearningPathId = () =>
+    settingsQuery.data?.["active-learning-path"] as string | undefined
+  const activeChapterSlug = () => settingsQuery.data?.["active-chapter"]
 
-  const activeDeck = () => {
-    const textbookId = activeTextbookId()
+  const activeChapter = () => {
+    const learningPathId = activeLearningPathId()
     const chapterSlug = activeChapterSlug()
-    if (!textbookId || !chapterSlug) return null
-    return getDeckBySlug(textbookId, chapterSlug)
+    if (!learningPathId || !chapterSlug) return null
+    return getDeckBySlug(learningPathId, chapterSlug)
   }
 
-  const handleDeckSelect = (textbookId: TextbookIDEnum, deckSlug: string) => {
-    if (textbookId === "getting_started") {
+  const handleDeckSelect = (learningPathId: string, chapterSlug: string) => {
+    if (learningPathId === "getting_started") {
       // For getting_started, navigate to homepage "/"
       // unless we're already there
       if (location().pathname !== "/") {
@@ -43,11 +43,11 @@ export default function Nav() {
       return
     }
     // Navigate to appropriate route for other textbooks
-    const deck = getDeckBySlug(textbookId, deckSlug)
+    const deck = getDeckBySlug(learningPathId, chapterSlug)
     if (deck) {
       navigate({
         to: "/$textbookId/$chapterSlug",
-        params: { textbookId, chapterSlug: deckSlug },
+        params: { textbookId: learningPathId, chapterSlug: chapterSlug },
       })
     }
   }
@@ -61,18 +61,18 @@ export default function Nav() {
     <nav class="sticky top-0 z-50 flex h-16 w-full items-center justify-between overflow-hidden px-6 py-2">
       <Show
         when={
-          activeTextbookId() &&
-          activeDeck() &&
-          activeTextbookId() !== "getting_started"
+          activeLearningPathId() &&
+          activeChapter() &&
+          activeLearningPathId() !== "getting_started"
         }
         fallback={<div />}
       >
-        <DeckSelectionPopover
-          activeTextbookId={activeTextbookId()!}
-          activeDeck={activeDeck()!}
+        <LearningPathChapterSelector
+          activeLearningPathId={activeLearningPathId()!}
+          activeChapter={activeChapter()!}
           queryClient={queryClient}
           userId={context().user?.id || null}
-          onDeckSelect={handleDeckSelect}
+          onChapterSelect={handleDeckSelect}
           isOpen={isPopoverOpen()}
           onOpenChange={setIsPopoverOpen}
         >
@@ -80,11 +80,11 @@ export default function Nav() {
             <span class="text-sm font-semibold">
               {
                 getMinifiedTextbookEntries().find(
-                  ([id]) => id === activeTextbookId(),
+                  ([id]) => id === activeLearningPathId(),
                 )?.[1]?.short_name
               }
             </span>
-            <span class="text-sm font-medium">{activeDeck()?.title}</span>
+            <span class="text-sm font-medium">{activeChapter()?.title}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -99,7 +99,7 @@ export default function Nav() {
               <path d="M16 15l-4 4l-4 -4" />
             </svg>
           </button>
-        </DeckSelectionPopover>
+        </LearningPathChapterSelector>
       </Show>
       <Show when={!context().user}>
         <Button

@@ -26,7 +26,7 @@ export default function TextbookSelectionDialog(
   const otherTextbooks = () =>
     textbookEntries.filter(([id]) => id !== "getting_started")
 
-  const handleTextbookSelect = (textbookId: TextbookIDEnum) => {
+  const handleLearningPathSelect = (textbookId: TextbookIDEnum) => {
     // Get first chapter of selected textbook
     const textbook = textbookEntries.find(([id]) => id === textbookId)?.[1]
     const firstChapterSlug = textbook?.chapters[0]?.slug
@@ -55,7 +55,7 @@ export default function TextbookSelectionDialog(
               <Button
                 variant="outline"
                 class="w-full"
-                onClick={() => handleTextbookSelect(textbookId)}
+                onClick={() => handleLearningPathSelect(textbookId)}
               >
                 {textbook.short_name || textbook.name}
               </Button>
