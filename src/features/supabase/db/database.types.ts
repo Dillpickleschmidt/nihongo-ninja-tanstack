@@ -85,6 +85,71 @@ export type Database = {
         }
         Relationships: []
       }
+      learning_path_module_sources: {
+        Row: {
+          grammar_pattern_id: string | null
+          module_id: string
+          path_id: string
+          source_type: string
+          transcript_line_ids: number[]
+          vocabulary_key: string | null
+        }
+        Insert: {
+          grammar_pattern_id?: string | null
+          module_id: string
+          path_id: string
+          source_type: string
+          transcript_line_ids: number[]
+          vocabulary_key?: string | null
+        }
+        Update: {
+          grammar_pattern_id?: string | null
+          module_id?: string
+          path_id?: string
+          source_type?: string
+          transcript_line_ids?: number[]
+          vocabulary_key?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_path_module_sources_path_id_fkey"
+            columns: ["path_id"]
+            isOneToOne: false
+            referencedRelation: "learning_path_transcripts"
+            referencedColumns: ["path_id"]
+          },
+        ]
+      }
+      learning_path_transcripts: {
+        Row: {
+          created_at: string
+          episode_name: string | null
+          name: string
+          path_id: string
+          show_name: string | null
+          transcript_data: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          episode_name?: string | null
+          name: string
+          path_id?: string
+          show_name?: string | null
+          transcript_data: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          episode_name?: string | null
+          name?: string
+          path_id?: string
+          show_name?: string | null
+          transcript_data?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           display_name: string | null

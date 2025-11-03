@@ -11,9 +11,9 @@
     "deploy-stage": "sst deploy --stage staging",
     "deploy-prod": "sst deploy --stage production",
     "test": "vitest",
-    "migrate": "bunx supabase db diff --linked --use-migra -f staging",
     "parse-sentences": "bun run scripts/parse-sentences.ts",
-    "sync-grammar": "bunx tsx scripts/sync-grammar-patterns.ts ~/Programming-Projects/japanese-subtitle-search/src-tauri/transcripts.db"
+    "sync-grammar": "bunx tsx scripts/sync-grammar-patterns.ts ~/Programming-Projects/japanese-subtitle-search/src-tauri/transcripts.db",
+    "generate-types": "bunx supabase gen types typescript --project-id zsllzwieciplioikzzmq --schema public > src/features/supabase/db/database.types.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
