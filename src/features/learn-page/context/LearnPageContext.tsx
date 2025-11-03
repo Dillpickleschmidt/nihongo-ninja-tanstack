@@ -40,7 +40,7 @@ import {
   detectSequentialJump,
 } from "@/features/learn-page/utils/learning-position-detector"
 import { markModuleCompleted } from "@/features/supabase/db/module-progress"
-import { getTextbookLearningPath } from "@/data/utils/core"
+import { getLearningPathModules } from "@/data/utils/core"
 import type { TextbookIDEnum } from "@/data/types"
 import {
   calculateStreak,
@@ -111,8 +111,8 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
 ) => {
   const queryClient = useQueryClient()
 
-  // Get textbook-wide learning path for position tracking (reactive)
-  const textbookLearningPath = () => getTextbookLearningPath(props.textbookId)
+  // Get learning path for position tracking (reactive)
+  const textbookLearningPath = () => getLearningPathModules(props.textbookId)
 
   const [mobileContentView, setMobileContentView] =
     createSignal<MobileContentView>("learning-path")

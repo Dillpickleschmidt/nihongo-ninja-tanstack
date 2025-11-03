@@ -12,7 +12,8 @@
     "deploy-prod": "sst deploy --stage production",
     "test": "vitest",
     "migrate": "bunx supabase db diff --linked --use-migra -f staging",
-    "parse-sentences": "bun run scripts/parse-sentences.ts"
+    "parse-sentences": "bun run scripts/parse-sentences.ts",
+    "sync-grammar": "bunx tsx scripts/sync-grammar-patterns.ts ~/Programming-Projects/japanese-subtitle-search/src-tauri/transcripts.db"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",

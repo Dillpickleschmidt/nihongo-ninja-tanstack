@@ -6,7 +6,7 @@ import {
   type MutationOptions,
   type QueryClient,
 } from "@tanstack/solid-query"
-import { getDeckBySlug, getTextbookLearningPath } from "@/data/utils/core"
+import { getDeckBySlug, getLearningPathModules } from "@/data/utils/core"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { getFSRSCards } from "@/features/supabase/db/fsrs"
 import { createSRSAdapter } from "@/features/srs-services/factory"
@@ -257,7 +257,7 @@ export const upcomingModulesQueryOptions = (
   currentPosition: string | null,
 ) => {
   const queryFn = async (): Promise<ModuleWithCurrent[]> => {
-    const learningPathItems = getTextbookLearningPath(textbookId)
+    const learningPathItems = getLearningPathModules(textbookId)
 
     if (!currentPosition) {
       return learningPathItems.slice(0, 6).map((id) => ({ id }))

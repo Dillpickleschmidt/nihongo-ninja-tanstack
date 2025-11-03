@@ -19,23 +19,25 @@ import type { Chapter, VocabTextbook } from "@/features/vocab-page/types"
 const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 
 /**
- * Retrieves a specific deck (chapter) from a textbook by its slug.
+ * Retrieves a specific deck (chapter) from a textbook or learning path by its slug.
+ * Supports both textbook IDs and learning path IDs (as long as they're in the chapters structure).
  */
 export function getDeckBySlug(
-  textbookId: TextbookIDEnum,
+  learningPathId: string,
   deckSlug: string,
 ): BuiltInDeck | undefined {
-  return chapters[textbookId]?.[deckSlug]
+  return chapters[learningPathId as TextbookIDEnum]?.[deckSlug]
 }
 
 /**
- * Gets a flattened learning path for an entire textbook across all chapters.
+ * Gets a flattened learning path for an entire textbook or learning path across all chapters.
+ * Works with both textbook IDs and generated learning path IDs.
  * @returns Array of module IDs in order across all chapters
  */
-export function getTextbookLearningPath(textbookId: TextbookIDEnum): string[] {
-  const textbookChaptersMap = chapters[textbookId]
-  if (!textbookChaptersMap) return []
-  return Object.values(textbookChaptersMap).flatMap(
+export function getLearningPathModules(learningPathId: string): string[] {
+  const pathChaptersMap = chapters[learningPathId as TextbookIDEnum]
+  if (!pathChaptersMap) return []
+  return Object.values(pathChaptersMap).flatMap(
     (chapter) => chapter.learning_path_items,
   )
 }
@@ -167,14 +169,20 @@ function createVocabChapter(
 }
 
 /**
- * Maps chapter slugs to full chapter objects for a given textbook.
+ * Gets chapters for a learning path (textbook or generated).
+ * Works with both static textbook IDs and generated learning path IDs.
  */
-export function getTextbookChapters(textbookId: TextbookIDEnum) {
-  const textbook = textbooks[textbookId]
-  if (!textbook) return []
-  const textbookChaptersMap = chapters[textbookId]
-  if (!textbookChaptersMap) return []
-  return textbook.chapterSlugs.map((slug) => textbookChaptersMap[slug])
+export function getChapters(learningPathId: string): BuiltInDeck[] {
+  const textbook = textbooks[learningPathId as TextbookIDEnum]
+
+  if (textbook) {
+    const textbookChaptersMap = chapters[learningPathId as TextbookIDEnum]
+    if (!textbookChaptersMap) return []
+    return textbook.chapterSlugs.map((slug) => textbookChaptersMap[slug])
+  }
+
+  // TODO: Implement for generated learning paths when DB tables are ready
+  return []
 }
 
 /**
@@ -187,7 +195,7 @@ export function getVocabPracticeModulesFromTextbooks(): [
   return Object.entries(textbooks)
     .map(([textbookId, textbook]) => {
       const tbId = textbookId as TextbookIDEnum
-      const chapterList = getTextbookChapters(tbId)
+      const chapterList = getChapters(tbId)
       const chapterVocabs = chapterList
         .map((chapter, index) => {
           const slug = textbook.chapterSlugs[index]

@@ -1,7 +1,7 @@
 import { Show } from "solid-js"
 import { ChevronLeft, ChevronRight } from "lucide-solid"
 import { getChapterStyles } from "@/data/chapter_colors"
-import { getDeckBySlug, getTextbookChapters } from "@/data/utils/core"
+import { getDeckBySlug, getChapters } from "@/data/utils/core"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { UseQueryResult } from "@tanstack/solid-query"
 import type { TextbookIDEnum } from "@/data/types"
@@ -15,7 +15,7 @@ export function ChapterPagination(props: ChapterPaginationProps) {
   const activeTextbook = () =>
     props.settingsQuery.data!["active-learning-path"] as TextbookIDEnum
   const activeChapter = () => props.settingsQuery.data!["active-chapter"]
-  const textbookChapters = () => getTextbookChapters(activeTextbook())
+  const textbookChapters = () => getChapters(activeTextbook())
 
   const chapterIndex = () => {
     return textbookChapters().findIndex((ch) => ch.slug === activeChapter())
