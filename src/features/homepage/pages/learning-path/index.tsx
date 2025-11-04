@@ -1,6 +1,6 @@
 import { Show, createMemo } from "solid-js"
-import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { completedModulesQueryOptions } from "@/query/query-options"
+import { useModuleProgress } from "./hooks/useModuleProgress"
+import { useScrollToIncomplete } from "./hooks/useScrollToIncomplete"
 import type { User } from "@supabase/supabase-js"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { UseQueryResult } from "@tanstack/solid-query"
@@ -10,7 +10,7 @@ import { ChapterHeader } from "./components/ChapterHeader"
 import { ModuleTilesGrid } from "./components/ModuleTilesGrid"
 import { ProgressFooter } from "./components/ProgressFooter"
 import { QuickAccessCards } from "./components/QuickAccessCards"
-import { ArrowBigLeft } from "lucide-solid"
+import { ArrowBigLeft, ChevronDown } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { FeatureList } from "./components/FeatureList"
 import ViewingIsEnough from "@/features/homepage/shared/assets/viewing-is-enough.svg"
@@ -52,19 +52,6 @@ export function LearningPathPage(props: LearningPathPageProps) {
     return enrichLessons(rawModules)
   })
 
-  const completedModulesQuery = useCustomQuery(() =>
-    completedModulesQueryOptions(props.user?.id || null),
-  )
-
-  const isModuleCompleted = (moduleHref: string) => {
-    const moduleId = moduleHref.split("/").pop()
-    return (
-      completedModulesQuery.data?.some(
-        (module) => module.module_path === moduleId,
-      ) ?? false
-    )
-  }
-
   const tiles = createMemo(() =>
     enrichedModules().map((module) => ({
       moduleId: module.moduleId,
@@ -76,8 +63,17 @@ export function LearningPathPage(props: LearningPathPageProps) {
     })),
   )
 
-  const getFirstIncompleteIndex = () =>
-    tiles().findIndex((tile) => !isModuleCompleted(tile.href))
+  const { isModuleCompleted, getFirstIncompleteIndex } = useModuleProgress(
+    props.user?.id || null,
+    tiles,
+  )
+
+  const {
+    handleTileRef,
+    handleScrollToNext,
+    blinkingTileIndex,
+    shouldShowButton,
+  } = useScrollToIncomplete(getFirstIncompleteIndex)
 
   return (
     <section class="relative mx-auto w-full max-w-7xl px-4 pt-4 pb-16 md:pt-8">
@@ -104,7 +100,8 @@ export function LearningPathPage(props: LearningPathPageProps) {
 
       <Show
         when={
-          props.settingsQuery.data!["active-learning-path"] !== "getting_started"
+          props.settingsQuery.data!["active-learning-path"] !==
+          "getting_started"
         }
       >
         <div class="py-4">
@@ -134,6 +131,8 @@ export function LearningPathPage(props: LearningPathPageProps) {
         settingsQuery={props.settingsQuery}
         isModuleCompleted={isModuleCompleted}
         firstIncompleteIndex={getFirstIncompleteIndex()}
+        tileRefs={handleTileRef}
+        blinkingTileIndex={blinkingTileIndex()}
       />
 
       <ProgressFooter
@@ -142,6 +141,15 @@ export function LearningPathPage(props: LearningPathPageProps) {
         isModuleCompleted={isModuleCompleted}
         userId={props.user?.id || null}
       />
+      <Show when={shouldShowButton()}>
+        <Button
+          onClick={handleScrollToNext}
+          class="bg-background fixed bottom-20 left-1/2 z-40 h-10 w-10 -translate-x-1/2 rounded-full p-0"
+          variant="outline"
+        >
+          <ChevronDown class="h-6 w-6" />
+        </Button>
+      </Show>
     </section>
   )
 }

@@ -15,6 +15,8 @@ interface ModuleTilesGridProps {
   settingsQuery: UseQueryResult<UserSettings, Error>
   isModuleCompleted: (href: string) => boolean
   firstIncompleteIndex: number
+  tileRefs?: (el: HTMLElement, index: number) => void
+  blinkingTileIndex?: number | null
 }
 
 export function ModuleTilesGrid(props: ModuleTilesGridProps) {
@@ -25,20 +27,25 @@ export function ModuleTilesGrid(props: ModuleTilesGridProps) {
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <For each={props.tiles}>
           {(tile, index) => (
-            <Link to={tile.href}>
-              <PreviewTile
-                title={tile.title}
-                description={tile.description}
-                moduleType={tile.moduleType}
-                iconClasses={tile.iconClasses}
-                chapterSlug={activeChapter()}
-                index={index()}
-                href={tile.href}
-                isCompleted={props.isModuleCompleted(tile.href)}
-                firstIncompleteIndex={props.firstIncompleteIndex}
-                settingsQuery={props.settingsQuery}
-              />
-            </Link>
+            <div
+              ref={(el) => props.tileRefs?.(el, index())}
+            >
+              <Link to={tile.href}>
+                <PreviewTile
+                  title={tile.title}
+                  description={tile.description}
+                  moduleType={tile.moduleType}
+                  iconClasses={tile.iconClasses}
+                  chapterSlug={activeChapter()}
+                  index={index()}
+                  href={tile.href}
+                  isCompleted={props.isModuleCompleted(tile.href)}
+                  firstIncompleteIndex={props.firstIncompleteIndex}
+                  settingsQuery={props.settingsQuery}
+                  shouldBlink={props.blinkingTileIndex === index()}
+                />
+              </Link>
+            </div>
           )}
         </For>
       </div>

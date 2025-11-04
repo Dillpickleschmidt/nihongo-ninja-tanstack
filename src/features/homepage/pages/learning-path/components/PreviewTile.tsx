@@ -17,6 +17,7 @@ interface PreviewTileProps {
   isCompleted: boolean
   firstIncompleteIndex: number
   settingsQuery: UseQueryResult<UserSettings, Error>
+  shouldBlink?: boolean
 }
 
 export function PreviewTile(props: PreviewTileProps) {
@@ -30,52 +31,61 @@ export function PreviewTile(props: PreviewTileProps) {
     props.index === props.firstIncompleteIndex && props.index > 0
 
   return (
-    <div
-      class={`ease-instant-hover-200 rounded-2xl border border-neutral-700/60 p-4 hover:scale-[0.995] ${
-        props.isCompleted
-          ? `bg-gradient-to-br ${styles().gradient} ring-2 ${styles().ringColor2}`
-          : `bg-background/50 ${isHovered() ? `ring-2 ${styles().ringColor1}` : ""}`
-      }`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Preview area */}
-      <div class="bg-background mb-3 h-32 rounded-xl md:h-40" />
+    <div class="relative">
+      <div
+        class={`ease-instant-hover-200 rounded-2xl border border-neutral-700/60 p-4 hover:scale-[0.995] ${
+          props.isCompleted
+            ? `bg-gradient-to-br ${styles().gradient} ring-2 ${styles().ringColor2}`
+            : `bg-background/50 ${isHovered() ? `ring-2 ${styles().ringColor1}` : ""}`
+        }`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* Preview area */}
+        <div class="bg-background mb-3 h-32 rounded-xl md:h-40" />
 
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-muted-foreground text-sm">{props.description}</p>
-          <div class="flex items-center gap-2">
-            <Show
-              when={
-                props.settingsQuery.data!["active-learning-path"] !==
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-muted-foreground text-sm">{props.description}</p>
+            <div class="flex items-center gap-2">
+              <Show
+                when={
+                  props.settingsQuery.data!["active-learning-path"] !==
                   "getting_started"
-              }
-            >
-              <ModuleIcon size="20px" class={props.iconClasses} />
+                }
+              >
+                <ModuleIcon size="20px" class={props.iconClasses} />
+              </Show>
+              <h3 class="text-lg font-medium">{props.title}</h3>
+            </div>
+          </div>
+          <div>
+            <Show when={shouldShowStartHere()}>
+              <StartHereSvg class="mr-1 inline-flex h-auto w-32 text-pink-300 saturate-[75%]" />
             </Show>
-            <h3 class="text-lg font-medium">{props.title}</h3>
+            <Show when={shouldShowTryThis()}>
+              <TryThisSvg class="mr-1 inline-flex h-auto w-28 text-[#d3d3d3]" />
+            </Show>
+            <span
+              class={`relative h-auto rounded-lg px-4 py-2 text-sm ${styles().bgColor} ${styles().textColor}`}
+            >
+              <Show when={props.index === props.firstIncompleteIndex}>
+                <span
+                  class={`animate-ring-pulse absolute inset-0 rounded-lg ring ${styles().ringColorBright}`}
+                />
+              </Show>
+              Explore
+            </span>
           </div>
         </div>
-        <div>
-          <Show when={shouldShowStartHere()}>
-            <StartHereSvg class="mr-1 inline-flex h-auto w-32 text-pink-300 saturate-[75%]" />
-          </Show>
-          <Show when={shouldShowTryThis()}>
-            <TryThisSvg class="mr-1 inline-flex h-auto w-28 text-[#d3d3d3]" />
-          </Show>
-          <span
-            class={`relative h-auto rounded-lg px-4 py-2 text-sm ${styles().bgColor} ${styles().textColor}`}
-          >
-            <Show when={props.index === props.firstIncompleteIndex}>
-              <span
-                class={`animate-ring-pulse absolute inset-0 rounded-lg ring ${styles().ringColorBright}`}
-              />
-            </Show>
-            Explore
-          </span>
-        </div>
       </div>
+
+      {/* Ring blink overlay - only shows when blinking */}
+      <Show when={props.shouldBlink}>
+        <div
+          class={`absolute inset-0 rounded-2xl ring-2 ${styles().ringColorBright} animate-ring-blink pointer-events-none`}
+        />
+      </Show>
     </div>
   )
 }
