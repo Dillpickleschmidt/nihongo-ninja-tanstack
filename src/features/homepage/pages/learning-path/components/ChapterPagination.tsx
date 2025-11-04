@@ -1,21 +1,23 @@
 import { Show } from "solid-js"
 import { ChevronLeft, ChevronRight } from "lucide-solid"
-import { getChapterStyles } from "@/data/chapter_colors"
-import { getDeckBySlug, getChapters } from "@/data/utils/core"
+import { Button } from "@/components/ui/button"
+import { Link } from "@tanstack/solid-router"
+import { useChapterData } from "../hooks/useChapterData"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { UseQueryResult } from "@tanstack/solid-query"
-import type { TextbookIDEnum } from "@/data/types"
 
 interface ChapterPaginationProps {
   settingsQuery: UseQueryResult<UserSettings, Error>
   onChapterChange?: (chapterSlug: string) => void
+  firstIncompleteHref?: string
 }
 
 export function ChapterPagination(props: ChapterPaginationProps) {
-  const activeTextbook = () =>
-    props.settingsQuery.data!["active-learning-path"] as TextbookIDEnum
-  const activeChapter = () => props.settingsQuery.data!["active-chapter"]
-  const textbookChapters = () => getChapters(activeTextbook())
+  const {
+    activeChapter,
+    chapters: textbookChapters,
+    styles,
+  } = useChapterData(props.settingsQuery)
 
   const chapterIndex = () => {
     return textbookChapters().findIndex((ch) => ch.slug === activeChapter())
@@ -42,34 +44,34 @@ export function ChapterPagination(props: ChapterPaginationProps) {
     }
   }
 
-  const styles = () => getChapterStyles(activeChapter())
-  const chapter = () => getDeckBySlug(activeTextbook(), activeChapter())
-
   return (
     <Show when={activeChapter()}>
       <div class="flex items-center justify-center gap-3">
-        <button
+        <Button
+          variant="ghost"
           onClick={handlePrevious}
           disabled={!canGoBack()}
-          class="hover:bg-muted rounded p-1 transition-colors disabled:cursor-not-allowed disabled:opacity-30"
+          class="hover:bg-muted h-auto rounded p-1 transition-colors disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronLeft size={16} />
-        </button>
+        </Button>
 
-        <div
-          class={`flex size-10 items-center justify-center rounded-lg border bg-gradient-to-br font-bold shadow-lg backdrop-blur-md transition-colors duration-150 ${styles().borderColor} ${styles().gradient} ${styles().textColor}`}
-          title={chapter()?.title}
+        <Button
+          as={Link}
+          to={props.firstIncompleteHref || ""}
+          class={`flex h-10 rounded-lg border bg-gradient-to-br px-4 text-sm font-bold text-nowrap shadow-lg backdrop-blur-md transition-colors duration-150 ${styles().borderColor} ${styles().hoverBorderColor} hover:bg-transparent ${styles().hoverGradient} ${styles().gradient} ${styles().textColor}`}
         >
-          {chapter()?.title.match(/N[1-5]/)?.[0] || "?"}
-        </div>
+          Study Now
+        </Button>
 
-        <button
+        <Button
+          variant="ghost"
           onClick={handleNext}
           disabled={!canGoForward()}
-          class="hover:bg-muted rounded p-1 transition-colors disabled:cursor-not-allowed disabled:opacity-30"
+          class="hover:bg-muted h-auto rounded p-1 transition-colors disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronRight size={16} />
-        </button>
+        </Button>
       </div>
     </Show>
   )

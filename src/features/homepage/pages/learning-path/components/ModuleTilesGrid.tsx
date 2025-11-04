@@ -3,15 +3,10 @@ import { Link } from "@tanstack/solid-router"
 import { PreviewTile } from "./PreviewTile"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { UseQueryResult } from "@tanstack/solid-query"
+import type { Tile } from "../types"
 
 interface ModuleTilesGridProps {
-  tiles: Array<{
-    title: string
-    description?: string
-    href: string
-    moduleType: string
-    iconClasses: string
-  }>
+  tiles: Tile[]
   settingsQuery: UseQueryResult<UserSettings, Error>
   isModuleCompleted: (href: string) => boolean
   firstIncompleteIndex: number
@@ -27,9 +22,7 @@ export function ModuleTilesGrid(props: ModuleTilesGridProps) {
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <For each={props.tiles}>
           {(tile, index) => (
-            <div
-              ref={(el) => props.tileRefs?.(el, index())}
-            >
+            <div ref={(el) => props.tileRefs?.(el, index())}>
               <Link to={tile.href}>
                 <PreviewTile
                   title={tile.title}

@@ -6,6 +6,8 @@ export interface ChapterStyles {
   bgColor: string
   borderColor: string
   gradient: string
+  hoverGradient: string
+  hoverBorderColor: string
   svgBorderClass: string
   ringClass: string
 }
@@ -20,6 +22,8 @@ export const chapterColors: Record<string, ChapterStyles> = {
     bgColor: "bg-emerald-400/10",
     borderColor: "border-emerald-400/35",
     gradient: "from-emerald-400/5 to-emerald-600/10",
+    hoverGradient: "hover:from-emerald-400/10 hover:to-emerald-600/15",
+    hoverBorderColor: "hover:border-emerald-400/45",
     svgBorderClass: "stroke-emerald-400/35 [stroke-width:0.75]",
     ringClass: "stroke-emerald-400 [stroke-width:2]",
   },
@@ -32,6 +36,8 @@ export const chapterColors: Record<string, ChapterStyles> = {
     bgColor: "bg-sky-400/10",
     borderColor: "border-sky-400/35",
     gradient: "from-sky-400/5 to-sky-600/10",
+    hoverGradient: "hover:from-sky-400/10 hover:to-sky-600/15",
+    hoverBorderColor: "hover:border-sky-400/45",
     svgBorderClass: "stroke-sky-400/35 [stroke-width:0.75]",
     ringClass: "stroke-sky-400 [stroke-width:2]",
   },
@@ -44,6 +50,8 @@ export const chapterColors: Record<string, ChapterStyles> = {
     bgColor: "bg-violet-400/10",
     borderColor: "border-violet-400/35",
     gradient: "from-violet-400/5 to-violet-600/10",
+    hoverGradient: "hover:from-violet-400/10 hover:to-violet-600/15",
+    hoverBorderColor: "hover:border-violet-400/45",
     svgBorderClass: "stroke-violet-400/35 [stroke-width:0.75]",
     ringClass: "stroke-violet-400 [stroke-width:2]",
   },
@@ -56,6 +64,8 @@ export const chapterColors: Record<string, ChapterStyles> = {
     bgColor: "bg-amber-400/10",
     borderColor: "border-amber-400/35",
     gradient: "from-amber-400/5 to-amber-600/10",
+    hoverGradient: "hover:from-amber-400/10 hover:to-amber-600/15",
+    hoverBorderColor: "hover:border-amber-400/45",
     svgBorderClass: "stroke-amber-400/35 [stroke-width:0.75]",
     ringClass: "stroke-amber-400 [stroke-width:2]",
   },
@@ -68,6 +78,8 @@ export const chapterColors: Record<string, ChapterStyles> = {
     bgColor: "bg-rose-400/10",
     borderColor: "border-rose-400/35",
     gradient: "from-rose-400/5 to-rose-600/10",
+    hoverGradient: "hover:from-rose-400/10 hover:to-rose-600/15",
+    hoverBorderColor: "hover:border-rose-400/45",
     svgBorderClass: "stroke-rose-400/35 [stroke-width:0.75]",
     ringClass: "stroke-rose-400 [stroke-width:2]",
   },
@@ -79,6 +91,8 @@ export const chapterColors: Record<string, ChapterStyles> = {
     bgColor: "bg-red-400/10",
     borderColor: "border-red-400/35",
     gradient: "from-red-400/5 to-red-600/10",
+    hoverGradient: "hover:from-red-400/10 hover:to-red-600/15",
+    hoverBorderColor: "hover:border-red-400/45",
     svgBorderClass: "stroke-red-400/35 [stroke-width:0.75]",
     ringClass: "stroke-red-400 [stroke-width:2]",
   },
@@ -94,6 +108,8 @@ export const getChapterStyles = (chapterSlug: string | null): ChapterStyles => {
       bgColor: "bg-gray-400/10",
       borderColor: "border-gray-400/35",
       gradient: "from-gray-400/5 to-gray-600/10",
+      hoverGradient: "hover:from-gray-400/10 hover:to-gray-600/15",
+      hoverBorderColor: "hover:border-gray-400/45",
       svgBorderClass: "stroke-gray-400/35 [stroke-width:0.75]",
       ringClass: "stroke-gray-400 [stroke-width:2]",
     }
@@ -107,6 +123,8 @@ export const getChapterStyles = (chapterSlug: string | null): ChapterStyles => {
       bgColor: "bg-gray-400/10",
       borderColor: "border-gray-400/35",
       gradient: "from-gray-400/5 to-gray-600/10",
+      hoverGradient: "hover:from-gray-400/10 hover:to-gray-600/15",
+      hoverBorderColor: "hover:border-gray-400/45",
       svgBorderClass: "stroke-gray-400/35 [stroke-width:0.75]",
       ringClass: "stroke-gray-400 [stroke-width:2]",
     }

@@ -1,28 +1,22 @@
 import { Show } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-solid"
-import { getChapterStyles } from "@/data/chapter_colors"
+import { useChapterData } from "../hooks/useChapterData"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import type { UseQueryResult } from "@tanstack/solid-query"
+import type { Tile } from "../types"
 import SeeYourDashboardSvg from "@/features/homepage/shared/assets/see-your-dashboard.svg?component-solid"
 import TextbookSelectionDialog from "./TextbookSelectionDialog"
 
 interface ProgressFooterProps {
   settingsQuery: UseQueryResult<UserSettings, Error>
-  tiles: Array<{
-    title: string
-    description?: string
-    href: string
-    moduleType: string
-    iconClasses: string
-  }>
+  tiles: Tile[]
   isModuleCompleted: (href: string) => boolean
   userId: string | null
 }
 
 export function ProgressFooter(props: ProgressFooterProps) {
-  const activeTextbook = () => props.settingsQuery.data!["active-learning-path"]
-  const activeChapter = () => props.settingsQuery.data!["active-chapter"]
+  const { activeTextbook, styles } = useChapterData(props.settingsQuery)
 
   const completedCount = () =>
     props.tiles.filter((tile) => props.isModuleCompleted(tile.href)).length
@@ -31,7 +25,7 @@ export function ProgressFooter(props: ProgressFooterProps) {
   return (
     <div class="flex w-full flex-col items-center gap-6 pt-6">
       <p class="text-muted-foreground pb-8 text-xl font-semibold">
-        <span class={getChapterStyles(activeChapter()).textColor}>
+        <span class={styles().textColor}>
           {completedCount()}/{totalCount()}
         </span>{" "}
         Complete

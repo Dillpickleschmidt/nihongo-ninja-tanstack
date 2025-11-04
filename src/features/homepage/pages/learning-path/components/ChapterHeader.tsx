@@ -9,19 +9,25 @@ interface ChapterHeaderProps {
   features: string[] | undefined
   settingsQuery: UseQueryResult<UserSettings, Error>
   onChapterChange?: (chapterSlug: string) => void
+  firstIncompleteHref?: string
 }
 
 export function ChapterHeader(props: ChapterHeaderProps) {
   return (
     <div class="p-4 md:p-6">
-      <div class="mb-4 flex justify-between">
-        <h2 class="text-2xl font-semibold md:text-3xl">{props.heading}</h2>
-        <ChapterPagination
-          settingsQuery={props.settingsQuery}
-          onChapterChange={props.onChapterChange}
-        />
+      <div class="mb-5">
+        <div class="float-right">
+          <ChapterPagination
+            settingsQuery={props.settingsQuery}
+            onChapterChange={props.onChapterChange}
+            firstIncompleteHref={props.firstIncompleteHref}
+          />
+        </div>
+        <h2 class="text-3xl font-semibold">{props.heading}</h2>
       </div>
-      <p class="text-muted-foreground mt-4 max-w-3xl">{props.description}</p>
+      <p class="text-muted-foreground clear-both max-w-3xl">
+        {props.description}
+      </p>
       <FeatureList features={props.features} />
     </div>
   )
