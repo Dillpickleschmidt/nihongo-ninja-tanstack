@@ -1,7 +1,7 @@
 import { Grid3x3, List } from "lucide-solid"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { LearningPathGrid } from "./LearningPathGrid"
-import { LearningPathCompact } from "./LearningPathCompact"
+import { LearningPathCategorized } from "./LearningPathCategorized"
 
 interface LearningPathSectionProps {
   lessonRefs?: (el: HTMLElement, index: number) => void
@@ -21,7 +21,7 @@ export function LearningPathSection(props: LearningPathSectionProps) {
             />
           </TabsContent>
           <TabsContent value="compact" class="mt-0">
-            <LearningPathCompact
+            <LearningPathCategorized
               lessonRefs={props.lessonRefs}
               blinkingLessonIndex={props.blinkingLessonIndex}
             />
