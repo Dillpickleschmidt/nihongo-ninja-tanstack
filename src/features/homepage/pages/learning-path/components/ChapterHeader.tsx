@@ -1,34 +1,38 @@
+import { For } from "solid-js"
 import { ChapterPagination } from "./ChapterPagination"
-import { FeatureList } from "./FeatureList"
-import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
-import type { UseQueryResult } from "@tanstack/solid-query"
+import { useLearningPath } from "../LearningPathContext"
 
 interface ChapterHeaderProps {
-  heading: string | undefined
-  description: string | undefined
-  features: string[] | undefined
-  settingsQuery: UseQueryResult<UserSettings, Error>
   onChapterChange?: (chapterSlug: string) => void
-  firstIncompleteHref?: string
 }
 
 export function ChapterHeader(props: ChapterHeaderProps) {
+  const context = useLearningPath()
+
   return (
     <div class="p-4 md:p-6">
       <div class="mb-5">
         <div class="float-right">
-          <ChapterPagination
-            settingsQuery={props.settingsQuery}
-            onChapterChange={props.onChapterChange}
-            firstIncompleteHref={props.firstIncompleteHref}
-          />
+          <ChapterPagination onChapterChange={props.onChapterChange} />
         </div>
-        <h2 class="text-3xl font-semibold">{props.heading}</h2>
+        <h2 class="text-3xl font-semibold">
+          {context.learningPathData()?.heading}
+        </h2>
       </div>
       <p class="text-muted-foreground clear-both max-w-3xl">
-        {props.description}
+        {context.learningPathData()?.description}
       </p>
-      <FeatureList features={props.features} />
+      {/* Feature List - Inline merged from FeatureList component */}
+      <ul class="text-muted-foreground mt-4 space-y-2 text-sm">
+        <For each={context.learningPathData()?.features || []}>
+          {(feature) => (
+            <li class="flex items-center gap-2">
+              <span class="bg-primary h-1.5 w-1.5 rounded-full" />
+              {feature}
+            </li>
+          )}
+        </For>
+      </ul>
     </div>
   )
 }

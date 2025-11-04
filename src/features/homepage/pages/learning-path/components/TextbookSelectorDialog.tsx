@@ -13,14 +13,14 @@ import { getMinifiedTextbookEntries } from "@/data/utils/core"
 import type { TextbookIDEnum } from "@/data/types"
 import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
 
-interface TextbookSelectionDialogProps {
+interface TextbookSelectorDialogProps {
   children: JSX.Element
   link?: string
   userId: string | null
 }
 
-export default function TextbookSelectionDialog(
-  props: TextbookSelectionDialogProps,
+export default function TextbookSelectorDialog(
+  props: TextbookSelectorDialogProps,
 ) {
   const [isDialogOpen, setIsDialogOpen] = createSignal(false)
   const navigate = useNavigate()

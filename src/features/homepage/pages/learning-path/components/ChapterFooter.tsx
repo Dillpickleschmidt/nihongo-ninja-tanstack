@@ -1,31 +1,26 @@
 import { Show } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-solid"
-import { useChapterData } from "../hooks/useChapterData"
-import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
-import type { UseQueryResult } from "@tanstack/solid-query"
-import type { Tile } from "../types"
+import { useLearningPath } from "../LearningPathContext"
 import SeeYourDashboardSvg from "@/features/homepage/shared/assets/see-your-dashboard.svg?component-solid"
-import TextbookSelectionDialog from "./TextbookSelectionDialog"
+import TextbookSelectorDialog from "./TextbookSelectorDialog"
 
-interface ProgressFooterProps {
-  settingsQuery: UseQueryResult<UserSettings, Error>
-  tiles: Tile[]
-  isModuleCompleted: (href: string) => boolean
+interface ChapterFooterProps {
   userId: string | null
 }
 
-export function ProgressFooter(props: ProgressFooterProps) {
-  const { activeTextbook, styles } = useChapterData(props.settingsQuery)
+export function ChapterFooter(props: ChapterFooterProps) {
+  const context = useLearningPath()
 
   const completedCount = () =>
-    props.tiles.filter((tile) => props.isModuleCompleted(tile.href)).length
-  const totalCount = () => props.tiles.length
+    context.lessons().filter((lesson) => context.isLessonCompleted(lesson.href))
+      .length
+  const totalCount = () => context.lessons().length
 
   return (
     <div class="flex w-full flex-col items-center gap-6 pt-6">
       <p class="text-muted-foreground pb-8 text-xl font-semibold">
-        <span class={styles().textColor}>
+        <span class={context.chapterStyles().textColor}>
           {completedCount()}/{totalCount()}
         </span>{" "}
         Complete
@@ -34,11 +29,11 @@ export function ProgressFooter(props: ProgressFooterProps) {
         fallback={
           <SeeYourDashboardSvg class="text-muted-foreground absolute bottom-16 left-[23%] h-auto w-64" />
         }
-        when={activeTextbook() === "getting_started"}
+        when={context.activeLearningPath() === "getting_started"}
       >
         <div class="pb-20">
           <span>Complete the above and then see your new dashboard, or</span>
-          <TextbookSelectionDialog userId={props.userId}>
+          <TextbookSelectorDialog userId={props.userId}>
             <Button
               class="text-muted-foreground ml-1 h-auto px-2.5 py-1 text-base underline underline-offset-3"
               variant="ghost"
@@ -46,7 +41,7 @@ export function ProgressFooter(props: ProgressFooterProps) {
               Skip
               <ArrowRight size={16} class="-mr-1" />
             </Button>
-          </TextbookSelectionDialog>
+          </TextbookSelectorDialog>
         </div>
         <SeeYourDashboardSvg class="text-muted-foreground absolute bottom-16 left-[23%] h-auto w-64" />
       </Show>

@@ -6,7 +6,7 @@ import { userSettingsQueryOptions } from "@/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { Route as RootRoute } from "@/routes/__root"
 import { Show } from "solid-js"
-import TextbookSelectionDialog from "@/features/homepage/pages/learning-path/components/TextbookSelectionDialog"
+import TextbookSelectorDialog from "@/features/homepage/pages/learning-path/components/TextbookSelectorDialog"
 
 interface BottomNavProps {
   dailyProgressPercentage?: number
@@ -201,7 +201,7 @@ export function BottomNav(props: BottomNavProps) {
             // Special handling for Learn nav item when in getting_started
             if (item.id === "learn" && activeTextbook() === "getting_started") {
               return (
-                <TextbookSelectionDialog link={hrefValue} userId={userId}>
+                <TextbookSelectorDialog link={hrefValue} userId={userId}>
                   <div
                     id={"tour-" + item.id}
                     class={cn(
@@ -218,7 +218,7 @@ export function BottomNav(props: BottomNavProps) {
                       )}
                     />
                   </div>
-                </TextbookSelectionDialog>
+                </TextbookSelectorDialog>
               )
             }
 

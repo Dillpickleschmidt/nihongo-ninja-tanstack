@@ -2,34 +2,28 @@ import { Show } from "solid-js"
 import { ChevronLeft, ChevronRight } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { Link } from "@tanstack/solid-router"
-import { useChapterData } from "../hooks/useChapterData"
-import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
-import type { UseQueryResult } from "@tanstack/solid-query"
+import { useLearningPath } from "../LearningPathContext"
 
 interface ChapterPaginationProps {
-  settingsQuery: UseQueryResult<UserSettings, Error>
   onChapterChange?: (chapterSlug: string) => void
-  firstIncompleteHref?: string
 }
 
 export function ChapterPagination(props: ChapterPaginationProps) {
-  const {
-    activeChapter,
-    chapters: textbookChapters,
-    styles,
-  } = useChapterData(props.settingsQuery)
+  const context = useLearningPath()
 
   const chapterIndex = () => {
-    return textbookChapters().findIndex((ch) => ch.slug === activeChapter())
+    return context
+      .availableChapters()
+      .findIndex((ch) => ch.slug === context.activeChapter())
   }
 
   const canGoBack = () => chapterIndex() > 0
   const canGoForward = () => {
-    return chapterIndex() < textbookChapters().length - 1
+    return chapterIndex() < context.availableChapters().length - 1
   }
 
   const handlePrevious = () => {
-    const chapters = textbookChapters()
+    const chapters = context.availableChapters()
     if (canGoBack() && props.onChapterChange) {
       const prevChapter = chapters[chapterIndex() - 1]
       props.onChapterChange(prevChapter.slug)
@@ -37,7 +31,7 @@ export function ChapterPagination(props: ChapterPaginationProps) {
   }
 
   const handleNext = () => {
-    const chapters = textbookChapters()
+    const chapters = context.availableChapters()
     if (canGoForward() && props.onChapterChange) {
       const nextChapter = chapters[chapterIndex() + 1]
       props.onChapterChange(nextChapter.slug)
@@ -45,7 +39,7 @@ export function ChapterPagination(props: ChapterPaginationProps) {
   }
 
   return (
-    <Show when={activeChapter()}>
+    <Show when={context.activeChapter()}>
       <div class="flex items-center justify-center gap-3">
         <Button
           variant="ghost"
@@ -58,8 +52,8 @@ export function ChapterPagination(props: ChapterPaginationProps) {
 
         <Button
           as={Link}
-          to={props.firstIncompleteHref || ""}
-          class={`flex h-10 rounded-lg border bg-gradient-to-br px-4 text-sm font-bold text-nowrap shadow-lg backdrop-blur-md transition-colors duration-150 ${styles().borderColor} ${styles().hoverBorderColor} hover:bg-transparent ${styles().hoverGradient} ${styles().gradient} ${styles().textColor}`}
+          to={context.firstIncompleteHref() || ""}
+          class={`flex h-10 rounded-lg border bg-gradient-to-br px-4 text-sm font-bold text-nowrap shadow-lg backdrop-blur-md transition-colors duration-150 ${context.chapterStyles().borderColor} ${context.chapterStyles().hoverBorderColor} hover:bg-transparent ${context.chapterStyles().hoverGradient} ${context.chapterStyles().gradient} ${context.chapterStyles().textColor}`}
         >
           Study Now
         </Button>

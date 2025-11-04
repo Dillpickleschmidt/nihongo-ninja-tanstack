@@ -1,29 +1,33 @@
 import { createSignal, createEffect, onCleanup } from "solid-js"
 
+/**
+ * Manages scroll-to-incomplete lesson behavior with visual feedback
+ * Returns refs handler, scroll callback, blinking state, and button visibility
+ */
 export function useScrollToIncomplete(getFirstIncompleteIndex: () => number) {
-  const tileRefs: HTMLElement[] = []
-  const [blinkingTileIndex, setBlinkingTileIndex] = createSignal<number | null>(
-    null,
-  )
+  const lessonRefs: HTMLElement[] = []
+  const [blinkingLessonIndex, setBlinkingLessonIndex] = createSignal<
+    number | null
+  >(null)
   const [isTargetVisible, setIsTargetVisible] = createSignal(false)
 
-  const handleTileRef = (el: HTMLElement, index: number) => {
-    tileRefs[index] = el
+  const handleLessonRef = (el: HTMLElement, index: number) => {
+    lessonRefs[index] = el
   }
 
   const handleScrollToNext = () => {
     const firstIncompleteIndex = getFirstIncompleteIndex()
     if (firstIncompleteIndex >= 0) {
-      const element = tileRefs[firstIncompleteIndex]
+      const element = lessonRefs[firstIncompleteIndex]
       if (element) {
         // Trigger blink animation
-        setBlinkingTileIndex(firstIncompleteIndex)
+        setBlinkingLessonIndex(firstIncompleteIndex)
 
         // Scroll to element
         element.scrollIntoView({ behavior: "smooth", block: "center" })
 
         // Remove blink after animation completes (1.2s)
-        setTimeout(() => setBlinkingTileIndex(null), 1200)
+        setTimeout(() => setBlinkingLessonIndex(null), 1200)
       }
     }
   }
@@ -32,7 +36,7 @@ export function useScrollToIncomplete(getFirstIncompleteIndex: () => number) {
   createEffect(() => {
     const firstIncompleteIndex = getFirstIncompleteIndex()
     const targetElement =
-      firstIncompleteIndex >= 0 ? tileRefs[firstIncompleteIndex] : null
+      firstIncompleteIndex >= 0 ? lessonRefs[firstIncompleteIndex] : null
 
     if (targetElement) {
       const checkPosition = () => {
@@ -50,9 +54,9 @@ export function useScrollToIncomplete(getFirstIncompleteIndex: () => number) {
   })
 
   return {
-    handleTileRef,
+    handleLessonRef,
     handleScrollToNext,
-    blinkingTileIndex,
+    blinkingLessonIndex,
     shouldShowButton: () =>
       getFirstIncompleteIndex() >= 0 && !isTargetVisible(),
   }

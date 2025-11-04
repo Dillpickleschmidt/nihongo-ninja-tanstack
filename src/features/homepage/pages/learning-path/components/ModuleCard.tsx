@@ -1,34 +1,37 @@
 import { Show, createSignal } from "solid-js"
 import { getChapterStyles } from "@/data/chapter_colors"
 import { getModuleIcon } from "@/features/learn-page/utils/loader-helpers"
+import { useLearningPath } from "../LearningPathContext"
 import StartHereSvg from "@/features/homepage/shared/assets/start-here.svg"
 import TryThisSvg from "@/features/homepage/shared/assets/try-this.svg"
-import type { UseQueryResult } from "@tanstack/solid-query"
-import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 
-interface PreviewTileProps {
+interface ModuleCardProps {
   title: string
   description?: string
   moduleType: string
   iconClasses: string
-  chapterSlug: string
-  index: number
   href: string
   isCompleted: boolean
-  firstIncompleteIndex: number
-  settingsQuery: UseQueryResult<UserSettings, Error>
   shouldBlink?: boolean
 }
 
-export function PreviewTile(props: PreviewTileProps) {
-  const styles = () => getChapterStyles(props.chapterSlug)
+export function ModuleCard(props: ModuleCardProps) {
+  const context = useLearningPath()
   const [isHovered, setIsHovered] = createSignal(false)
   const ModuleIcon = getModuleIcon(props.moduleType)
 
+  const lessonIndex = () => {
+    const lessons = context.lessons()
+    return lessons.findIndex((lesson) => lesson.href === props.href)
+  }
+
+  const firstIncompleteIndex = () => context.getFirstIncompleteIndex()
+  const styles = () => getChapterStyles(context.activeChapter())
+
   const shouldShowStartHere = () =>
-    props.index === props.firstIncompleteIndex && props.index === 0
+    lessonIndex() === firstIncompleteIndex() && lessonIndex() === 0
   const shouldShowTryThis = () =>
-    props.index === props.firstIncompleteIndex && props.index > 0
+    lessonIndex() === firstIncompleteIndex() && lessonIndex() > 0
 
   return (
     <div class="relative">
@@ -48,12 +51,7 @@ export function PreviewTile(props: PreviewTileProps) {
           <div>
             <p class="text-muted-foreground text-sm">{props.description}</p>
             <div class="flex items-center gap-2">
-              <Show
-                when={
-                  props.settingsQuery.data!["active-learning-path"] !==
-                  "getting_started"
-                }
-              >
+              <Show when={context.activeLearningPath() !== "getting_started"}>
                 <ModuleIcon size="20px" class={props.iconClasses} />
               </Show>
               <h3 class="text-lg font-medium">{props.title}</h3>
@@ -69,7 +67,7 @@ export function PreviewTile(props: PreviewTileProps) {
             <span
               class={`relative h-auto rounded-lg px-4 py-2 text-sm ${styles().bgColor} ${styles().textColor}`}
             >
-              <Show when={props.index === props.firstIncompleteIndex}>
+              <Show when={lessonIndex() === firstIncompleteIndex()}>
                 <span
                   class={`animate-ring-pulse absolute inset-0 rounded-lg ring ${styles().ringColorBright}`}
                 />
