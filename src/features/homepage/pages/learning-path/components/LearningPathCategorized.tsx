@@ -149,7 +149,7 @@ export function LearningPathCategorized(props: LearningPathCategorizedProps) {
                             class={`text-sm ${
                               context.isLessonCompleted(lesson.href)
                                 ? "text-green-400/70"
-                                : "text-white"
+                                : "ease-instant-hover-200 text-white hover:text-neutral-300"
                             }`}
                           >
                             <div class="flex items-center gap-2">
@@ -160,7 +160,7 @@ export function LearningPathCategorized(props: LearningPathCategorizedProps) {
                               <span>{lesson.title}</span>
                             </div>
                             <p class="text-muted-foreground/60 mt-1 text-xs">
-                              Description coming soon
+                              {originalIndex + 1}. Description coming soon
                             </p>
                           </div>
                         </Link>

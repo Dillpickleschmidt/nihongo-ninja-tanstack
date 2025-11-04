@@ -19,7 +19,7 @@ export function ChapterFooter(props: ChapterFooterProps) {
 
   return (
     <div class="flex w-full flex-col items-center gap-6 pt-6">
-      <p class="text-muted-foreground pb-8 text-xl font-semibold">
+      <p class="text-muted-foreground pb-16 text-xl font-semibold">
         <span class={context.chapterStyles().textColor}>
           {completedCount()}/{totalCount()}
         </span>{" "}
@@ -31,7 +31,7 @@ export function ChapterFooter(props: ChapterFooterProps) {
         }
         when={context.activeLearningPath() === "getting_started"}
       >
-        <div class="pb-20">
+        <div class="-mt-16 pb-20">
           <span>Complete the above and then see your new dashboard, or</span>
           <TextbookSelectorDialog userId={props.userId}>
             <Button

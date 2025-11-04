@@ -13,6 +13,7 @@ import ViewingIsEnough from "@/features/homepage/shared/assets/viewing-is-enough
 
 import type { BuiltInDeck } from "@/data/types"
 import type { EnrichedLearningPathModule } from "@/features/learn-page/utils/loader-helpers"
+import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 
 interface LearningPathPageProps {
   settingsQuery: UseQueryResult<UserSettings, Error>
@@ -65,10 +66,11 @@ function LearningPathPageContent() {
         <ChapterHeader onChapterChange={context.onChapterChange} />
       </Show>
 
-      <div class="flex w-full justify-between md:-mt-15">
-        <div />
-        <ViewingIsEnough class="-mb-0 h-auto w-68 text-neutral-400" />
-      </div>
+      <Show when={context.activeLearningPath() === "getting_started"}>
+        <SSRMediaQuery showFrom="md">
+          <ViewingIsEnough class="pointer-events-none absolute right-4 -mt-7 h-auto w-68 text-neutral-400 md:right-6" />
+        </SSRMediaQuery>
+      </Show>
 
       <LearningPathSection
         lessonRefs={context.handleLessonRef}

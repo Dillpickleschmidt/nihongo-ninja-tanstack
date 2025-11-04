@@ -1,7 +1,9 @@
 import { Grid3x3, List } from "lucide-solid"
+import { Show } from "solid-js"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { LearningPathGrid } from "./LearningPathGrid"
 import { LearningPathCategorized } from "./LearningPathCategorized"
+import { useLearningPath } from "../LearningPathContext"
 
 interface LearningPathSectionProps {
   lessonRefs?: (el: HTMLElement, index: number) => void
@@ -9,8 +11,31 @@ interface LearningPathSectionProps {
 }
 
 export function LearningPathSection(props: LearningPathSectionProps) {
+  const context = useLearningPath()
+
   return (
     <Tabs defaultValue="grid" class="w-full">
+      <Show
+        when={context.activeLearningPath() !== "getting_started"}
+        fallback={<div class="h-6" />}
+      >
+        <div class="-mt-2 flex justify-end px-4 md:px-6">
+          <TabsList class="h-8 bg-transparent">
+            <TabsTrigger
+              value="grid"
+              class="data-[selected]:dark:bg-card-foreground/70 h-6 px-2"
+            >
+              <Grid3x3 class="h-4 w-4" />
+            </TabsTrigger>
+            <TabsTrigger
+              value="compact"
+              class="data-[selected]:dark:bg-card-foreground/70 h-6 px-2"
+            >
+              <List class="h-4 w-4" />
+            </TabsTrigger>
+          </TabsList>
+        </div>
+      </Show>
       <div class="flex flex-col">
         {/* Grid/Compact Content */}
         <div>
@@ -29,22 +54,6 @@ export function LearningPathSection(props: LearningPathSectionProps) {
         </div>
 
         {/* Tab Triggers Below Grid */}
-        <div class="px-4 pb-4 md:px-6 md:pb-6">
-          <TabsList class="h-8 bg-transparent">
-            <TabsTrigger
-              value="grid"
-              class="data-[selected]:dark:bg-card-foreground/70 h-6 px-2"
-            >
-              <Grid3x3 class="h-4 w-4" />
-            </TabsTrigger>
-            <TabsTrigger
-              value="compact"
-              class="data-[selected]:dark:bg-card-foreground/70 h-6 px-2"
-            >
-              <List class="h-4 w-4" />
-            </TabsTrigger>
-          </TabsList>
-        </div>
       </div>
     </Tabs>
   )

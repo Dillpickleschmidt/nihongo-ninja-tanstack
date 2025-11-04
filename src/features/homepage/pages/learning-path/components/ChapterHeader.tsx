@@ -10,7 +10,7 @@ export function ChapterHeader(props: ChapterHeaderProps) {
   const context = useLearningPath()
 
   return (
-    <div class="p-4 md:p-6">
+    <div class="px-4 pt-4 md:px-6 md:pt-6">
       <div class="mb-5">
         <div class="float-right">
           <ChapterPagination onChapterChange={props.onChapterChange} />
