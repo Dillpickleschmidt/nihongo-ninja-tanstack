@@ -11,13 +11,9 @@ import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { vocabHierarchyQueryOptions } from "@/query/query-options"
 import { resourceThumbnailQueryOptions } from "@/query/query-options"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
-import {
-  userSettingsQueryOptions,
-  dbUserSettingsQueryOptions,
-} from "@/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
 import type { TextbookIDEnum, ExternalResource } from "@/data/types"
-import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import { Route as RootRoute } from "@/routes/__root"
 import DesktopLayout from "@/features/learn-page/components/shared/DesktopLayout"
 
@@ -43,44 +39,6 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
           chapterSlug: userSettings["active-chapter"],
         },
       })
-    }
-
-    // Check DB query status to determine if we should redirect based on cross-device sync
-    const dbQueryState = user?.id
-      ? queryClient.getQueryState(dbUserSettingsQueryOptions(user.id).queryKey)
-      : null
-
-    const isDbComplete = dbQueryState?.status === "success"
-
-    // If DB is complete and fresher than cookie, redirect to DB's active chapter
-    // This handles cross-device sync when coming from parent redirect
-    if (isDbComplete && user?.id) {
-      const dbData = queryClient.getQueryData<UserSettings>(
-        dbUserSettingsQueryOptions(user.id).queryKey,
-      )
-
-      if (dbData) {
-        const dbActiveDeck = dbData["active-chapter"] // This is already a slug
-        const dbActiveTextbook = dbData["active-learning-path"]
-        const cookieTimestamp = userSettings.timestamp || 0
-        const dbTimestamp = dbData.timestamp || 0
-
-        // Only redirect if DB is fresher than cookie AND differs from URL
-        // (corrects stale /learn redirect from other devices)
-        if (
-          dbTimestamp > cookieTimestamp &&
-          ((dbActiveDeck && dbActiveDeck !== chapterSlug) ||
-            (dbActiveTextbook && dbActiveTextbook !== textbookId))
-        ) {
-          throw redirect({
-            to: "/learn/$textbookId/$chapterSlug",
-            params: {
-              textbookId: dbActiveTextbook || (textbookId as TextbookIDEnum),
-              chapterSlug: dbActiveDeck || chapterSlug,
-            },
-          })
-        }
-      }
     }
 
     // Update active-deck if URL differs from current settings

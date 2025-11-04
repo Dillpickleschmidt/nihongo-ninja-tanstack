@@ -9,8 +9,6 @@ import type { AllServicePreferences } from "@/features/main-cookies/schemas/user
 export const queryKeys = {
   // User Settings
   userSettings: (userId: string | null) => ["user-settings", userId] as const,
-  dbUserSettings: (userId: string | null) =>
-    ["db-user-settings", userId] as const,
 
   // Vocab Practice
   practiceHierarchy: (

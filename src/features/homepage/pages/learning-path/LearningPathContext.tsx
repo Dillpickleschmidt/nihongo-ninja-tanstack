@@ -38,7 +38,7 @@ interface LearningPathContextType {
   userId: () => string | null
 
   onBack?: () => void
-  onChapterChange?: (chapterSlug: string) => void
+  onChapterChange: (chapterSlug: string) => void
 
   handleLessonRef: (el: HTMLElement, index: number) => void
   handleScrollToNext: () => void
@@ -51,7 +51,7 @@ interface LearningPathProviderProps {
   settingsQuery: UseQueryResult<UserSettings, Error>
   deck?: BuiltInDeck
   enrichedModules?: EnrichedLearningPathModule[]
-  onChapterChange?: (chapterSlug: string) => void
+  onChapterChange: (chapterSlug: string) => void
   onBack?: () => void
   userId: string | null
 }

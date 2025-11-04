@@ -5,6 +5,7 @@ import {
 } from "@tanstack/solid-query"
 import { getCookie } from "@/utils/cookie-utils"
 import { UserSettingsSchema } from "@/features/main-cookies/schemas/user-settings"
+import { USER_SETTINGS_COOKIE } from "@/features/main-cookies/types"
 import {
   getDueFSRSCards,
   getFSRSCards,
@@ -37,7 +38,11 @@ import {
 import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import type { ResourceProvider } from "@/data/resources-config"
-import { fetchUserSettingsFromDB } from "@/query/utils/user-settings"
+import {
+  fetchUserSettingsFromDB,
+  updateUserSettingsCookie,
+} from "@/query/utils/user-settings"
+import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import { buildVocabHierarchy } from "@/query/utils/hierarchy-builder"
 import { mergeCompletionsWithLocal } from "@/query/utils/completion-manager"
 import { buildModuleProgressMap } from "@/query/utils/progress-calculator"
@@ -48,46 +53,69 @@ import { queryKeys } from "@/query/utils/query-keys"
 // ============================================================================
 
 /**
- * Query options for DB-only user settings
- * - Only fetches from Supabase, doesn't touch cookies
- * - Used to track DB sync status separately from cookie query
+ * Parse user settings from cookie, returning parsed data or defaults
  */
-export const dbUserSettingsQueryOptions = (userId: string | null) =>
-  queryOptions({
-    queryKey: queryKeys.dbUserSettings(userId),
-    queryFn: async () => {
-      if (!userId) return null
-      return await fetchUserSettingsFromDB(userId)
-    },
-    enabled: !!userId,
-  })
+function parseUserSettingsCookie(): UserSettings {
+  const cookieValue = getCookie(USER_SETTINGS_COOKIE)
+  if (!cookieValue) return UserSettingsSchema.parse({})
+
+  try {
+    return UserSettingsSchema.parse(JSON.parse(cookieValue))
+  } catch {
+    return UserSettingsSchema.parse({})
+  }
+}
 
 /**
- * Query options for combined user settings (device-specific + user-specific)
- * - Returns cookie data immediately (fast path)
- * - DB sync happens in background via fetchUserSettingsFromDB
+ * Returns settings with newest timestamp (cookie or DB) for multi-device sync
  */
-export const userSettingsQueryOptions = (userId: string | null) =>
-  queryOptions({
+export const userSettingsQueryOptions = (userId: string | null) => {
+  const initialData = parseUserSettingsCookie()
+
+  return queryOptions({
     queryKey: queryKeys.userSettings(userId),
     queryFn: async () => {
-      const cookieValue = getCookie("user-settings")
-      if (cookieValue) {
-        try {
-          const parsed = JSON.parse(cookieValue)
-          const result = UserSettingsSchema.safeParse(parsed)
-          if (result.success) {
-            return result.data
-          }
-        } catch {}
+      const cookieData = parseUserSettingsCookie()
+
+      // If no user, return cookie only
+      if (!userId) {
+        return cookieData
       }
 
-      return UserSettingsSchema.parse({})
+      // Fetch from DB
+      const dbSettings = await fetchUserSettingsFromDB(userId)
+      if (!dbSettings) {
+        return cookieData
+      }
+
+      // Special case: If cookie has default "getting_started" but DB has real progress,
+      // prefer DB (user likely signed out and local cookie is stale)
+      if (
+        cookieData["active-learning-path"] === "getting_started" &&
+        dbSettings["active-learning-path"] !== "getting_started"
+      ) {
+        updateUserSettingsCookie(dbSettings)
+        return dbSettings
+      }
+
+      // Compare timestamps
+      const cookieTimestamp = cookieData.timestamp || 0
+      const dbTimestamp = dbSettings.timestamp || 0
+
+      // If DB is fresher, use it and update cookie
+      if (dbTimestamp > cookieTimestamp) {
+        updateUserSettingsCookie(dbSettings)
+        return dbSettings
+      }
+
+      // Cookie is fresher or equal
+      return cookieData
     },
-    placeholderData: UserSettingsSchema.parse({}),
+    initialData,
     staleTime: Infinity,
     gcTime: Infinity,
   })
+}
 
 // ============================================================================
 // Vocab Practice Query Options

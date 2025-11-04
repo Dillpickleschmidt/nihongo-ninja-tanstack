@@ -18,7 +18,7 @@ interface LearningPathPageProps {
   settingsQuery: UseQueryResult<UserSettings, Error>
   deck?: BuiltInDeck
   enrichedModules?: EnrichedLearningPathModule[]
-  onChapterChange?: (chapterSlug: string) => void
+  onChapterChange: (chapterSlug: string) => void
   onBack?: () => void
   user?: User | null
 }
@@ -62,7 +62,7 @@ function LearningPathPageContent() {
       </Show>
 
       <Show when={context.learningPathData()}>
-        <ChapterHeader onChapterChange={undefined} />
+        <ChapterHeader onChapterChange={context.onChapterChange} />
       </Show>
 
       <div class="flex w-full justify-between md:-mt-15">

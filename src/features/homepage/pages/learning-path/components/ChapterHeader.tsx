@@ -3,7 +3,7 @@ import { ChapterPagination } from "./ChapterPagination"
 import { useLearningPath } from "../LearningPathContext"
 
 interface ChapterHeaderProps {
-  onChapterChange?: (chapterSlug: string) => void
+  onChapterChange: (chapterSlug: string) => void
 }
 
 export function ChapterHeader(props: ChapterHeaderProps) {

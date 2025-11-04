@@ -5,7 +5,7 @@ import { Link } from "@tanstack/solid-router"
 import { useLearningPath } from "../LearningPathContext"
 
 interface ChapterPaginationProps {
-  onChapterChange?: (chapterSlug: string) => void
+  onChapterChange: (chapterSlug: string) => void
 }
 
 export function ChapterPagination(props: ChapterPaginationProps) {
@@ -24,7 +24,7 @@ export function ChapterPagination(props: ChapterPaginationProps) {
 
   const handlePrevious = () => {
     const chapters = context.availableChapters()
-    if (canGoBack() && props.onChapterChange) {
+    if (canGoBack()) {
       const prevChapter = chapters[chapterIndex() - 1]
       props.onChapterChange(prevChapter.slug)
     }
@@ -32,10 +32,15 @@ export function ChapterPagination(props: ChapterPaginationProps) {
 
   const handleNext = () => {
     const chapters = context.availableChapters()
-    if (canGoForward() && props.onChapterChange) {
+    if (canGoForward()) {
       const nextChapter = chapters[chapterIndex() + 1]
       props.onChapterChange(nextChapter.slug)
     }
+  }
+
+  const studyButtonClass = () => {
+    const styles = context.chapterStyles()
+    return `flex h-10 rounded-lg border bg-gradient-to-br px-4 text-sm font-bold text-nowrap shadow-lg backdrop-blur-md ${styles.borderColor} ${styles.hoverBorderColor} hover:bg-transparent ${styles.hoverGradient} ${styles.gradient} ${styles.textColor}`
   }
 
   return (
@@ -50,13 +55,11 @@ export function ChapterPagination(props: ChapterPaginationProps) {
           <ChevronLeft size={16} />
         </Button>
 
-        <Button
-          as={Link}
-          to={context.firstIncompleteHref() || ""}
-          class={`flex h-10 rounded-lg border bg-gradient-to-br px-4 text-sm font-bold text-nowrap shadow-lg backdrop-blur-md transition-colors duration-150 ${context.chapterStyles().borderColor} ${context.chapterStyles().hoverBorderColor} hover:bg-transparent ${context.chapterStyles().hoverGradient} ${context.chapterStyles().gradient} ${context.chapterStyles().textColor}`}
-        >
-          Study Now
-        </Button>
+        <Link to={context.firstIncompleteHref() || ""}>
+          <Button class={studyButtonClass()} onClick={() => {}}>
+            Study Now
+          </Button>
+        </Link>
 
         <Button
           variant="ghost"
