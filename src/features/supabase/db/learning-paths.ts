@@ -1,40 +1,67 @@
+import type { POS } from "@/features/sentence-practice/kagome/types/kagome"
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 
-export async function createLearningPath(
-  transcript: Omit<LearningPathTranscriptInsert, "path_id">,
-  modules: Omit<LearningPathModuleSourceInsert, "path_id">[],
+// Upload learning path to database with vocabulary decks and module sources
+export interface UploadLearningPathInput {
+  userId: string
+  transcript: {
+    name: string
+    show_name?: string
+    episode_name?: string
+    transcript_data: unknown
+  }
+  selectedGrammarModules: Array<{
+    moduleId: string
+    transcriptLineIds: number[]
+  }>
+  selectedVocabDecks: Array<{
+    posTag: POS
+    words: Array<{
+      word: string
+      baseForm: string
+      furigana?: string
+      english?: string
+    }>
+    transcriptLineIds: number[]
+  }>
+}
+
+export async function uploadLearningPath(
+  input: UploadLearningPathInput,
 ): Promise<string> {
   const supabase = createSupabaseClient()
 
-  const { data, error: transcriptError } = await supabase
-    .from("learning_path_transcripts")
-    .insert([transcript])
-    .select()
-    .single()
-
-  if (transcriptError || !data) {
-    throw new Error(
-      `Failed to create learning path transcript: ${transcriptError?.message}`,
-    )
-  }
-
-  const pathId = data.path_id
-  const modulesWithPathId = modules.map((module) => ({
-    ...module,
-    path_id: pathId,
+  // Build vocabulary deck data for RPC
+  const vocabDecks = input.selectedVocabDecks.map((deck, index) => ({
+    ...deck,
+    deckName: `${deck.posTag} - Part ${index + 1}`,
+    deckDescription: `Vocabulary from ${input.transcript.name}`,
   }))
 
-  const { error: modulesError } = await supabase
-    .from("learning_path_module_sources")
-    .insert(modulesWithPathId)
+  // Build module sources data for RPC (grammar only)
+  // Vocabulary module sources are created by RPC after generating deck_ids
+  const moduleSources = input.selectedGrammarModules.map((module) => ({
+    ...module,
+    sourceType: "grammar",
+  }))
 
-  if (modulesError) {
-    throw new Error(
-      `Failed to insert learning path modules: ${modulesError.message}`,
-    )
+  // Call RPC function to upload everything atomically
+  const { data, error } = await supabase.rpc("upload_learning_path", {
+    user_id_param: input.userId,
+    transcript_data: input.transcript,
+    vocab_decks: vocabDecks,
+    module_sources: moduleSources,
+  })
+
+  if (error) {
+    throw new Error(`Failed to upload learning path: ${error.message}`)
   }
 
-  return pathId
+  if (!data || typeof data !== "object" || !("path_id" in data)) {
+    throw new Error("Invalid response from upload_learning_path")
+  }
+
+  return (data as { path_id: string }).path_id
 }
 
 export async function getLearningPathData(pathId: string): Promise<{

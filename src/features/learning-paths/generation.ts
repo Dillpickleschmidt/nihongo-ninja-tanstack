@@ -179,12 +179,7 @@ function chunkVocabularyByCategory(
     verbChunks.forEach((chunk) => {
       decks.push({
         previewId: `vocab-preview-${previewIdCounter++}`,
-        words: chunk.map((w) => ({
-          word: w.word,
-          baseForm: w.baseForm,
-          furigana: w.furigana,
-          english: w.english,
-        })),
+        words: chunk.map(({ pos, transcriptLineId, ...rest }) => rest),
         posTag: "動詞",
         transcriptLineIds: chunk.map((w) => w.transcriptLineId),
         checked: true,
@@ -198,12 +193,7 @@ function chunkVocabularyByCategory(
     nonVerbChunks.forEach((chunk) => {
       decks.push({
         previewId: `vocab-preview-${previewIdCounter++}`,
-        words: chunk.map((w) => ({
-          word: w.word,
-          baseForm: w.baseForm,
-          furigana: w.furigana,
-          english: w.english,
-        })),
+        words: chunk.map(({ pos, transcriptLineId, ...rest }) => rest),
         posTag: chunk[0]!.pos, // Use first word's POS as category
         transcriptLineIds: chunk.map((w) => w.transcriptLineId),
         checked: true,
