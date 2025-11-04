@@ -231,27 +231,42 @@ export function LearningPathCompact(props: LearningPathCompactProps) {
       {/* Flex rows with snaking direction */}
       <div class="flex flex-col gap-8">
         <For each={rows()}>
-          {(rowItems, rowIndex) => (
-            <div
-              class={`flex gap-8 ${rowIndex() % 2 === 1 ? "flex-row-reverse" : ""}`}
-            >
-              <For each={rowItems}>
-                {(item) => (
-                  <Link
-                    to={item.lesson.href}
-                    ref={(el) => handleModuleRef(el, item.index)}
-                    class="flex-1"
-                  >
-                    <CompactModuleItem
-                      lesson={item.lesson}
-                      isCompleted={context.isLessonCompleted(item.lesson.href)}
-                      shouldBlink={props.blinkingLessonIndex === item.index}
-                    />
-                  </Link>
-                )}
-              </For>
-            </div>
-          )}
+          {(rowItems, rowIndex) => {
+            const isReversed = rowIndex() % 2 === 1
+            return (
+              <div class={`flex ${isReversed ? "flex-row-reverse" : ""}`}>
+                <For each={rowItems}>
+                  {(item, itemIndex) => {
+                    const alignment = isReversed
+                      ? itemIndex() === 0
+                        ? "justify-end"
+                        : "justify-start"
+                      : itemIndex() === rowItems.length - 1
+                        ? "justify-end"
+                        : "justify-start"
+                    return (
+                      <div class={`flex flex-1 ${alignment}`}>
+                        <Link
+                          to={item.lesson.href}
+                          ref={(el) => handleModuleRef(el, item.index)}
+                        >
+                          <CompactModuleItem
+                            lesson={item.lesson}
+                            isCompleted={context.isLessonCompleted(
+                              item.lesson.href,
+                            )}
+                            shouldBlink={
+                              props.blinkingLessonIndex === item.index
+                            }
+                          />
+                        </Link>
+                      </div>
+                    )
+                  }}
+                </For>
+              </div>
+            )
+          }}
         </For>
       </div>
     </div>
@@ -278,29 +293,31 @@ function CompactModuleItem(props: CompactModuleItemProps) {
   const styles = () => getChapterStyles(context.activeChapter())
 
   return (
-    <div class="relative">
-      {/* Icon + Title */}
-      <div class="mb-1 flex items-center gap-2">
-        <ModuleIcon
-          size="18px"
-          class={`flex-shrink-0 ${props.lesson.iconClasses}`}
-        />
-        <h3 class="line-clamp-1 text-sm font-medium text-white">
-          {props.lesson.title}
-        </h3>
+    <div class="relative flex flex-col">
+      {/* Boxed icon + title */}
+      <div class="relative w-fit rounded-lg px-3 py-2">
+        <div class="flex items-center gap-2">
+          <ModuleIcon
+            size="18px"
+            class={`flex-shrink-0 ${props.lesson.iconClasses}`}
+          />
+          <h3 class="text-sm font-medium whitespace-nowrap text-white">
+            {props.lesson.title}
+          </h3>
+        </div>
+
+        {/* Blink ring */}
+        {props.shouldBlink && (
+          <div
+            class={`absolute -inset-1 rounded-lg ring-2 ${styles().ringColorBright} animate-ring-blink pointer-events-none`}
+          />
+        )}
       </div>
 
-      {/* Placeholder description text */}
-      <p class="text-muted-foreground/60 line-clamp-1 text-xs">
+      {/* Placeholder description text below */}
+      <p class="text-muted-foreground/60 mt-2 line-clamp-1 text-xs">
         Description coming soon
       </p>
-
-      {/* Blink ring */}
-      {props.shouldBlink && (
-        <div
-          class={`absolute -inset-1 rounded ring-2 ${styles().ringColorBright} animate-ring-blink pointer-events-none`}
-        />
-      )}
     </div>
   )
 }
