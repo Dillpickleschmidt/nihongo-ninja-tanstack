@@ -18,7 +18,6 @@ interface ProgressFooterProps {
   }>
   isModuleCompleted: (href: string) => boolean
   userId: string | null
-  onNavigationStart?: () => void
 }
 
 export function ProgressFooter(props: ProgressFooterProps) {
@@ -45,7 +44,7 @@ export function ProgressFooter(props: ProgressFooterProps) {
       >
         <div class="pb-20">
           <span>Complete the above and then see your new dashboard, or</span>
-          <TextbookSelectionDialog onNavigationStart={props.onNavigationStart}>
+          <TextbookSelectionDialog userId={props.userId}>
             <Button
               class="text-muted-foreground ml-1 h-auto px-2.5 py-1 text-base underline underline-offset-3"
               variant="ghost"

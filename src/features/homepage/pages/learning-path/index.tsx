@@ -1,6 +1,5 @@
 import { Show, createMemo } from "solid-js"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { useFrozenQuery } from "@/features/homepage/hooks/useFrozenQuery"
 import { completedModulesQueryOptions } from "@/query/query-options"
 import type { User } from "@supabase/supabase-js"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
@@ -28,23 +27,15 @@ interface LearningPathPageProps {
   onChapterChange?: (chapterSlug: string) => void
   onBack?: () => void
   user?: User | null
-  isNavigating?: boolean
-  onNavigationStart?: () => void
 }
 
 export function LearningPathPage(props: LearningPathPageProps) {
-  // Freeze settings query during navigation to prevent content flashing
-  const frozenSettingsQuery = useFrozenQuery(
-    props.settingsQuery,
-    () => props.isNavigating || false,
-  )
-
   const deckData = createMemo(() => {
     // If deck is provided via props, use it (from route loader)
     if (props.deck) return props.deck
 
     // Otherwise, derive from settings
-    const settings = frozenSettingsQuery().data!
+    const settings = props.settingsQuery.data!
     const textbook = settings["active-learning-path"] as TextbookIDEnum
     const chapter = settings["active-chapter"]
     return getDeckBySlug(textbook, chapter)
@@ -92,7 +83,7 @@ export function LearningPathPage(props: LearningPathPageProps) {
     <section class="relative mx-auto w-full max-w-7xl px-4 pt-4 pb-16 md:pt-8">
       <Show
         when={
-          frozenSettingsQuery().data!["active-learning-path"] ===
+          props.settingsQuery.data!["active-learning-path"] ===
             "getting_started" && props.onBack
         }
       >
@@ -113,7 +104,7 @@ export function LearningPathPage(props: LearningPathPageProps) {
 
       <Show
         when={
-          frozenSettingsQuery().data!["active-learning-path"] !== "getting_started"
+          props.settingsQuery.data!["active-learning-path"] !== "getting_started"
         }
       >
         <div class="py-4">
@@ -129,7 +120,7 @@ export function LearningPathPage(props: LearningPathPageProps) {
         heading={deckData()?.heading}
         description={deckData()?.description}
         features={deckData()?.features}
-        settingsQuery={frozenSettingsQuery()}
+        settingsQuery={props.settingsQuery}
         onChapterChange={props.onChapterChange}
       />
 
@@ -140,17 +131,16 @@ export function LearningPathPage(props: LearningPathPageProps) {
 
       <ModuleTilesGrid
         tiles={tiles()}
-        settingsQuery={frozenSettingsQuery()}
+        settingsQuery={props.settingsQuery}
         isModuleCompleted={isModuleCompleted}
         firstIncompleteIndex={getFirstIncompleteIndex()}
       />
 
       <ProgressFooter
-        settingsQuery={frozenSettingsQuery()}
+        settingsQuery={props.settingsQuery}
         tiles={tiles()}
         isModuleCompleted={isModuleCompleted}
         userId={props.user?.id || null}
-        onNavigationStart={props.onNavigationStart}
       />
     </section>
   )

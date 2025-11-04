@@ -201,7 +201,7 @@ export function BottomNav(props: BottomNavProps) {
             // Special handling for Learn nav item when in getting_started
             if (item.id === "learn" && activeTextbook() === "getting_started") {
               return (
-                <TextbookSelectionDialog>
+                <TextbookSelectionDialog link={hrefValue} userId={userId}>
                   <div
                     id={"tour-" + item.id}
                     class={cn(
