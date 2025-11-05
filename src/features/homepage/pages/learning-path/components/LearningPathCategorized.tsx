@@ -148,7 +148,7 @@ export function LearningPathCategorized(props: LearningPathCategorizedProps) {
                           <div
                             class={`text-sm ${
                               context.isLessonCompleted(lesson.href)
-                                ? "text-green-400/70"
+                                ? "text-green-500"
                                 : "ease-instant-hover-200 text-white hover:text-neutral-300"
                             }`}
                           >

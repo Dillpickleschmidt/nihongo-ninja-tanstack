@@ -43,9 +43,15 @@ export function ChapterPagination(props: ChapterPaginationProps) {
     return `flex h-10 rounded-lg border bg-gradient-to-br px-4 text-sm font-bold text-nowrap shadow-lg backdrop-blur-md ${styles.borderColor} ${styles.hoverBorderColor} hover:bg-transparent ${styles.hoverGradient} ${styles.gradient} ${styles.textColor}`
   }
 
+  const chapterNumber = () => {
+    const slug = context.activeChapter()
+    const match = slug.match(/(\d+)(?!.*\d)/)
+    return match ? match[1] : "?"
+  }
+
   return (
     <Show when={context.activeChapter()}>
-      <div class="flex items-center justify-center gap-3">
+      <div class="group relative flex items-center justify-center gap-3">
         <Button
           variant="ghost"
           onClick={handlePrevious}
@@ -60,6 +66,10 @@ export function ChapterPagination(props: ChapterPaginationProps) {
             Study Now
           </Button>
         </Link>
+
+        <div class="text-muted-foreground absolute -bottom-6 left-1/2 hidden -translate-x-1/2 text-xs group-hover:block">
+          Chapter {chapterNumber()}
+        </div>
 
         <Button
           variant="ghost"
