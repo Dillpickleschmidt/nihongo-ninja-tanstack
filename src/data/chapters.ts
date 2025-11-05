@@ -156,8 +156,15 @@ export const chapters: ChapterCollection = {
     "chapter-1": {
       slug: "chapter-1",
       title: "Chapter 1",
+      heading: "Chapter 1: Basic Sentences",
       description:
-        "Learn to introduce yourself, talk about your nationality and occupation, and use the particle は.",
+        "The symbols make sense now. Build your first real sentences—introductions, descriptions, and the particles that hold them together. It's your first real conversation—simple sentences that actually mean something about you.",
+      features: [
+        "Build up your vocabulary",
+        "Introduce yourself",
+        "Learn the foundational Japanese sentence structure",
+      ],
+
       learning_path_items: [
         "genki_1_ch1_vocab-list",
         "grammar-notes",
