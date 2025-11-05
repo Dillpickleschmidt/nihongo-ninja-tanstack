@@ -17,10 +17,8 @@ import { cn } from "@/utils"
 import FindMoreHereSvg from "@/features/homepage/shared/assets/find-more-here.svg?component-solid"
 
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import {
-  userSettingsQueryOptions,
-  applyUserSettingsUpdate,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
+import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
 import { Route as RootRoute } from "@/routes/__root"
 
 import {
@@ -77,7 +75,7 @@ function RouteComponent() {
 
   // All sentence-practice modules for the active textbook
   const allModules = createMemo(() => {
-    let activeTb = settingsQuery.data?.["active-textbook"] as
+    let activeTb = settingsQuery.data?.["active-learning-path"] as
       | TextbookIDEnum
       | undefined
     if (!activeTb) return []
@@ -107,8 +105,8 @@ function RouteComponent() {
       <Show when={settingsQuery.data}>
         <div class="fixed inset-0 -z-1">
           <TextbookChapterBackgrounds
-            textbook={settingsQuery.data!["active-textbook"]}
-            chapter={settingsQuery.data!["active-deck"]}
+            textbook={settingsQuery.data!["active-learning-path"]}
+            chapter={settingsQuery.data!["active-chapter"]}
             showGradient={false}
             blur="4px"
             class="opacity-35"
@@ -121,13 +119,13 @@ function RouteComponent() {
           <Show when={settingsQuery.data}>
             <FindMoreHereSvg class="w-44 text-neutral-400" />
             <Select
-              value={settingsQuery.data!["active-textbook"]}
+              value={settingsQuery.data!["active-learning-path"]}
               onChange={async (value) => {
                 await applyUserSettingsUpdate(
                   context().user?.id || null,
                   queryClient,
                   {
-                    "active-textbook": value as TextbookIDEnum,
+                    "active-learning-path": value as TextbookIDEnum,
                   },
                 )
               }}

@@ -4,7 +4,7 @@ import {
   updateSession,
 } from "@/features/supabase/db/module-progress"
 import { useQueryClient } from "@tanstack/solid-query"
-import { userDailyTimeQueryOptions } from "@/features/learn-page/query/query-options"
+import { userDailyTimeQueryOptions } from "@/query/query-options"
 
 export function useSessionTracking(userId: string | null, moduleId: string) {
   const queryClient = useQueryClient()

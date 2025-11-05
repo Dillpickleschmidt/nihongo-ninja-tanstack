@@ -5,7 +5,7 @@ import { ServiceIntegrationsSection } from "@/features/settings-page/components/
 import { ServiceManagementProvider } from "@/features/settings-page/context/ServiceManagementContext"
 import { Route as RootRoute } from "@/routes/__root"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 
 export const Route = createFileRoute("/_home/settings")({
@@ -20,8 +20,8 @@ function RouteComponent() {
   return (
     <ServiceManagementProvider>
       <TextbookChapterBackgrounds
-        textbook={settingsQuery.data["active-textbook"]}
-        chapter={settingsQuery.data["active-deck"]}
+        textbook={settingsQuery.data["active-learning-path"]}
+        chapter={settingsQuery.data["active-chapter"]}
         showGradient={false}
         blur="32px"
       />

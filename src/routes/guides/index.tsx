@@ -317,14 +317,14 @@ function RouteComponent() {
             to connect with the language through content they enjoy.
           </p>
           <h1 class="mb-2 pt-4 font-serif text-xl leading-tight tracking-tight sm:text-2xl">
-            <BestMaterialsRightTimeSvg class="h-auto w-[460px] text-[#d3d3d3]" />
+            <BestMaterialsRightTimeSvg class="h-auto w-[400px] text-[#d3d3d3] md:w-[460px]" />
           </h1>
           <div class="bg-background/20 relative -mt-2 overflow-hidden rounded-xl border border-white/10 p-7 shadow-md backdrop-blur-md">
             <div
               class="pointer-events-none absolute inset-y-0 left-0 w-1.25 rounded-l-xl bg-pink-300/70"
               aria-hidden="true"
             />
-            <p class="text-foreground text-lg leading-normal">
+            <p class="text-foreground text-base leading-normal md:text-lg">
               🌷 Great Japanese resources exist across the web—but they're
               scattered and hard to find at the right time.
               <span class="font-semibold text-pink-300">

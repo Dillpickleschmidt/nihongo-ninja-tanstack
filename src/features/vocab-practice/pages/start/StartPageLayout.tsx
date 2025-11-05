@@ -7,7 +7,7 @@ import { StartPageButton } from "./StartPageButton"
 import { ReviewItemsList } from "./review/ReviewItemsList"
 import DependencyOverview from "./dependency/DependencyOverview"
 import { useRouteContext } from "@tanstack/solid-router"
-import { userDailyTimeQueryOptions } from "@/features/learn-page/query/query-options"
+import { userDailyTimeQueryOptions } from "@/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { Route as RootRoute } from "@/routes/__root"
 import type { useStartPageLogic } from "./hooks/useStartPageLogic"
@@ -66,8 +66,8 @@ export function StartPageLayout(props: StartPageLayoutProps) {
     <div class="min-h-screen">
       <div class="fixed inset-0 -z-1">
         <TextbookChapterBackgrounds
-          textbook={props.logic.settingsQuery.data!["active-textbook"]}
-          chapter={props.logic.settingsQuery.data!["active-deck"]}
+          textbook={props.logic.settingsQuery.data!["active-learning-path"]}
+          chapter={props.logic.settingsQuery.data!["active-chapter"]}
           showGradient={false}
           blur="6px"
         />

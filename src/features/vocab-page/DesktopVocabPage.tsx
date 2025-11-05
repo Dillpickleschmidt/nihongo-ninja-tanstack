@@ -23,7 +23,7 @@ import type { DeckCreationInitialData } from "./deck-creation/stores/deck-creati
 import { copyDeck } from "@/features/vocab-page/utils/deckCopyUtils"
 import { TextbookChapterBackgrounds } from "../learn-page/components/shared/TextbookChapterBackgrounds"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 
 interface DesktopVocabPageProps {
   importRequest?: ImportRequest | null
@@ -201,8 +201,8 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
     <div class="flex h-screen">
       <div class="absolute inset-0">
         <TextbookChapterBackgrounds
-          textbook={settingsQuery.data["active-textbook"]}
-          chapter={settingsQuery.data["active-deck"]}
+          textbook={settingsQuery.data["active-learning-path"]}
+          chapter={settingsQuery.data["active-chapter"]}
           showGradient={false}
           blur="6px"
         />

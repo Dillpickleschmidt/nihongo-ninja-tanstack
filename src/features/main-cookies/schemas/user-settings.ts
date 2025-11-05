@@ -22,7 +22,7 @@ const ServicePreferencesSchema = z.object({
 })
 
 // ============================================================================
-// TEXTBOOK & DECK SETTINGS (user-specific, syncs to DB)
+// LEARNING PATH & CHAPTER SETTINGS (user-specific, syncs to DB)
 // ============================================================================
 
 const TextbookIDSchema = z
@@ -112,8 +112,8 @@ export const UserSettingsSchema = z.object({
   "service-preferences": ServicePreferencesSchema.default(
     ServicePreferencesSchema.parse({}),
   ),
-  "active-textbook": TextbookIDSchema.default("getting_started"),
-  "active-deck": z.string().max(20).default("n5-introduction"),
+  "active-learning-path": z.string().default("getting_started"),
+  "active-chapter": z.string().max(20).default("n5-introduction"),
   "has-completed-onboarding": z.boolean().default(false),
   "tours": z.record(z.string(), z.number()).default({}), // tourId -> step (-2=completed, -1=dismissed, 0+=active)
   "override-settings": OverrideSettingsSchema.default({
@@ -123,7 +123,7 @@ export const UserSettingsSchema = z.object({
   "conjugation-practice": ConjugationPracticeSettingsSchema.default(
     ConjugationPracticeSettingsSchema.parse({}),
   ),
-  "textbook-positions": z.record(z.string(), z.string()).default({}),
+  "learning-path-positions": z.record(z.string(), z.string()).default({}),
   timestamp: z.number().default(0),
 
   // --- DEVICE-SPECIFIC SETTINGS (cookie only, no DB sync) ---

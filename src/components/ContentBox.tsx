@@ -6,7 +6,8 @@ import { useQueryClient, useMutation } from "@tanstack/solid-query"
 import { cva } from "class-variance-authority"
 import { cn } from "@/utils"
 import { User } from "@supabase/supabase-js"
-import { markModuleCompletedMutation } from "@/features/learn-page/query/query-options"
+import { markModuleCompletedMutation } from "@/query/query-mutations"
+import { queryKeys } from "@/query/utils/query-keys"
 import { static_modules } from "@/data/static_modules"
 import { external_resources } from "@/data/external_resources"
 
@@ -89,16 +90,15 @@ export default function ContentBox(props: ContentBoxProps) {
     }
 
     // Get active textbook/deck from cache
-    const userSettings = queryClient.getQueryData([
-      "user-settings",
-      props.user?.id || null,
-    ])
-    const activeTextbook = userSettings!["active-textbook"]
-    const activeDeck = userSettings!["active-deck"]
+    const userSettings = queryClient.getQueryData(
+      queryKeys.userSettings(props.user?.id || null),
+    )
+    const activeTextbook = userSettings!["active-learning-path"]
+    const activeChapter = userSettings!["active-chapter"]
 
     navigate({
       to: "/learn/$textbookId/$chapterSlug",
-      params: { textbookId: activeTextbook, chapterSlug: activeDeck },
+      params: { textbookId: activeTextbook, chapterSlug: activeChapter },
     })
   }
 

@@ -15,27 +15,39 @@ import type {
   ExternalResource,
 } from "@/data/types"
 import type { Chapter, VocabTextbook } from "@/features/vocab-page/types"
+import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 
 const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 
-/**
- * Retrieves a specific deck (chapter) from a textbook by its slug.
- */
-export function getDeckBySlug(
-  textbookId: TextbookIDEnum,
-  deckSlug: string,
-): BuiltInDeck | undefined {
-  return chapters[textbookId]?.[deckSlug]
+const MODULES_PER_CHAPTER = 30
+
+type TranscriptLine = {
+  line_id: number
+  text: string
+  english: string
+  timestamp?: string
 }
 
 /**
- * Gets a flattened learning path for an entire textbook across all chapters.
+ * Retrieves a specific deck (chapter) from a textbook or learning path by its slug.
+ * Supports both textbook IDs and learning path IDs (as long as they're in the chapters structure).
+ */
+export function getDeckBySlug(
+  learningPathId: string,
+  deckSlug: string,
+): BuiltInDeck | undefined {
+  return chapters[learningPathId as TextbookIDEnum]?.[deckSlug]
+}
+
+/**
+ * Gets a flattened learning path for an entire textbook or learning path across all chapters.
+ * Works with both textbook IDs and generated learning path IDs.
  * @returns Array of module IDs in order across all chapters
  */
-export function getTextbookLearningPath(textbookId: TextbookIDEnum): string[] {
-  const textbookChaptersMap = chapters[textbookId]
-  if (!textbookChaptersMap) return []
-  return Object.values(textbookChaptersMap).flatMap(
+export function getLearningPathModules(learningPathId: string): string[] {
+  const pathChaptersMap = chapters[learningPathId as TextbookIDEnum]
+  if (!pathChaptersMap) return []
+  return Object.values(pathChaptersMap).flatMap(
     (chapter) => chapter.learning_path_items,
   )
 }
@@ -167,14 +179,93 @@ function createVocabChapter(
 }
 
 /**
- * Maps chapter slugs to full chapter objects for a given textbook.
+ * Gets chapters for a learning path (textbook or generated).
+ * Works with both static textbook IDs and generated learning path IDs.
  */
-export function getTextbookChapters(textbookId: TextbookIDEnum) {
-  const textbook = textbooks[textbookId]
-  if (!textbook) return []
-  const textbookChaptersMap = chapters[textbookId]
-  if (!textbookChaptersMap) return []
-  return textbook.chapterSlugs.map((slug) => textbookChaptersMap[slug])
+export function getChapters(learningPathId: string): BuiltInDeck[] {
+  const textbook = textbooks[learningPathId as TextbookIDEnum]
+
+  if (textbook) {
+    const textbookChaptersMap = chapters[learningPathId as TextbookIDEnum]
+    if (!textbookChaptersMap) return []
+    return textbook.chapterSlugs.map((slug) => textbookChaptersMap[slug])
+  }
+
+  return []
+}
+
+/**
+ * Gets chapters for a generated learning path from database.
+ * Segments modules into chapters (MODULES_PER_CHAPTER per chapter).
+ */
+export async function getChaptersAsync(pathId: string): Promise<BuiltInDeck[]> {
+  // Try static textbooks first
+  const staticResult = getChapters(pathId)
+  if (staticResult.length > 0) return staticResult
+
+  // Query generated learning path from DB
+  const supabase = createSupabaseClient()
+
+  const { data: moduleSources } = await supabase
+    .from("learning_path_module_sources")
+    .select("module_id")
+    .eq("path_id", pathId)
+
+  if (!moduleSources?.length) return []
+
+  const moduleIds = moduleSources.map((m) => m.module_id)
+  const chapters: BuiltInDeck[] = []
+
+  for (let i = 0; i < moduleIds.length; i += MODULES_PER_CHAPTER) {
+    const chapterNum = Math.floor(i / MODULES_PER_CHAPTER) + 1
+    chapters.push({
+      slug: `chapter-${chapterNum}`,
+      title: `Chapter ${chapterNum}`,
+      learning_path_items: moduleIds.slice(i, i + MODULES_PER_CHAPTER),
+    })
+  }
+
+  return chapters
+}
+
+/**
+ * Gets transcript source examples for why a module was included in a learning path.
+ */
+export async function getModuleSources(
+  pathId: string,
+  moduleId: string,
+): Promise<{
+  sourceType: "grammar" | "vocabulary"
+  examples: TranscriptLine[]
+} | null> {
+  const supabase = createSupabaseClient()
+
+  const { data: moduleSource } = await supabase
+    .from("learning_path_module_sources")
+    .select("source_type, transcript_line_ids")
+    .eq("path_id", pathId)
+    .eq("module_id", moduleId)
+    .single()
+
+  if (!moduleSource) return null
+
+  const { data: transcript } = await supabase
+    .from("learning_path_transcripts")
+    .select("transcript_data")
+    .eq("path_id", pathId)
+    .single()
+
+  if (!transcript) return null
+
+  const transcriptLines = transcript.transcript_data as TranscriptLine[]
+  const examples = moduleSource.transcript_line_ids
+    .map((idx) => transcriptLines[idx])
+    .filter(Boolean)
+
+  return {
+    sourceType: moduleSource.source_type as "grammar" | "vocabulary",
+    examples,
+  }
 }
 
 /**
@@ -187,7 +278,7 @@ export function getVocabPracticeModulesFromTextbooks(): [
   return Object.entries(textbooks)
     .map(([textbookId, textbook]) => {
       const tbId = textbookId as TextbookIDEnum
-      const chapterList = getTextbookChapters(tbId)
+      const chapterList = getChapters(tbId)
       const chapterVocabs = chapterList
         .map((chapter, index) => {
           const slug = textbook.chapterSlugs[index]

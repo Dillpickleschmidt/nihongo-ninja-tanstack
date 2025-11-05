@@ -18,8 +18,8 @@ import {
   userWeekTimeDataQueryOptions,
   seenCardsStatsQueryOptions,
   userDailyTimeQueryOptions,
-} from "@/features/learn-page/query/query-options"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+} from "@/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
 import type { TextbookIDEnum } from "@/data/types"
 
@@ -37,7 +37,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
       const userSettings = await queryClient.ensureQueryData(
         userSettingsQueryOptions(user?.id || null),
       )
-      const activeChapterSlug = userSettings["active-deck"]
+      const activeChapterSlug = userSettings["active-chapter"]
 
       throw redirect({
         to: "/learn/$textbookId/$chapterSlug",
@@ -62,7 +62,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
       upcomingModulesQueryOptions(
         user?.id || null,
         textbookId as TextbookIDEnum,
-        userSettings["textbook-positions"]?.[textbookId as TextbookIDEnum] ||
+        userSettings["learning-path-positions"]?.[textbookId as TextbookIDEnum] ||
           null,
       ),
     )
@@ -129,8 +129,8 @@ function LayoutContent() {
   const { mobileContentView, setMobileContentView, settingsQuery } =
     useLearnPageContext()
 
-  const activeDeck = () => {
-    const activeChapterSlug = settingsQuery.data!["active-deck"]
+  const activeChapter = () => {
+    const activeChapterSlug = settingsQuery.data!["active-chapter"]
     return getDeckBySlug(loaderData().textbookId, activeChapterSlug)
   }
 
@@ -150,7 +150,7 @@ function LayoutContent() {
       `}</style>
       <TextbookChapterBackgrounds
         textbook={loaderData().textbookId}
-        chapter={activeDeck()?.slug || ""}
+        chapter={activeChapter()?.slug || ""}
         showGradient={true}
         blur={blurAmount}
       />

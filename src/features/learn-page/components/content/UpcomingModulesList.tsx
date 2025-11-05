@@ -12,7 +12,7 @@ import {
   getLinkTo,
 } from "@/features/learn-page/utils/loader-helpers"
 import type { UseQueryResult, DefaultError } from "@tanstack/solid-query"
-import type { ModuleWithCurrent } from "@/features/learn-page/query/query-options"
+import type { ModuleWithCurrent } from "@/query/query-options"
 
 const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 

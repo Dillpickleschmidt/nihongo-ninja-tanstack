@@ -9,10 +9,8 @@ import { validateJpdbImportServerFn } from "@/features/fsrs-import/server/valida
 import { validateJpdbApiKey } from "@/features/service-api-functions/jpdb/validation"
 import { useMutation, useQueryClient } from "@tanstack/solid-query"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import {
-  userSettingsQueryOptions,
-  updateUserSettingsMutation,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
+import { updateUserSettingsMutation } from "@/query/query-mutations"
 import { useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 import { useServiceManagement } from "../context/ServiceManagementContext"

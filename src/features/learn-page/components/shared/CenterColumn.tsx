@@ -9,7 +9,7 @@ import {
   LearningPathHeader,
   LearningPathContent,
 } from "../content/LearningPathSection"
-import { DeckSelectionPopover } from "./DeckSelectionPopover"
+import { LearningPathChapterSelector } from "./LearningPathChapterSelector"
 import { getDeckBySlug } from "@/data/utils/core"
 import type { TextbookIDEnum } from "@/data/types"
 
@@ -19,18 +19,18 @@ function CenterColumn() {
   const queryClient = useQueryClient()
   const context = useLearnPageContext()
 
-  const activeTextbookId = () =>
-    context.settingsQuery.data!["active-textbook"] as TextbookIDEnum
-  const activeChapterSlug = () => context.settingsQuery.data!["active-deck"]
-  const activeDeck = () =>
-    getDeckBySlug(activeTextbookId(), activeChapterSlug())
+  const activeLearningPathId = () =>
+    context.settingsQuery.data!["active-learning-path"] as string
+  const activeChapterSlug = () => context.settingsQuery.data!["active-chapter"]
+  const activeChapter = () =>
+    getDeckBySlug(activeLearningPathId(), activeChapterSlug())
 
-  const handleDeckSelect = (textbookId: TextbookIDEnum, deckSlug: string) => {
-    const deck = getDeckBySlug(textbookId, deckSlug)
+  const handleDeckSelect = (learningPathId: string, chapterSlug: string) => {
+    const deck = getDeckBySlug(learningPathId, chapterSlug)
     if (deck) {
       navigate({
         to: "/learn/$textbookId/$chapterSlug",
-        params: { textbookId, chapterSlug: deckSlug },
+        params: { textbookId: learningPathId, chapterSlug: chapterSlug },
       })
     }
   }
@@ -48,18 +48,18 @@ function CenterColumn() {
             <ProgressSummary />
             <div class="mt-5 flex items-center justify-between">
               <div class="pl-2">
-                <DeckSelectionPopover
-                  activeTextbookId={activeTextbookId()}
-                  activeDeck={activeDeck()!}
+                <LearningPathChapterSelector
+                  activeLearningPathId={activeLearningPathId()}
+                  activeChapter={activeChapter()!}
                   queryClient={queryClient}
                   userId={context.userId}
-                  onDeckSelect={handleDeckSelect}
+                  onChapterSelect={handleDeckSelect}
                   isOpen={isPopoverOpen()}
                   onOpenChange={setIsPopoverOpen}
                 >
                   <div class="group flex items-center gap-2 text-left">
                     <h3 class="text-foreground group-hover:text-foreground/80 text-xl font-semibold transition-colors">
-                      {activeDeck()?.title}
+                      {activeChapter()?.title}
                     </h3>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +75,7 @@ function CenterColumn() {
                       <path d="M16 15l-4 4l-4 -4" />
                     </svg>
                   </div>
-                </DeckSelectionPopover>
+                </LearningPathChapterSelector>
               </div>
               <LearningPathHeader variant={variant()} />
             </div>

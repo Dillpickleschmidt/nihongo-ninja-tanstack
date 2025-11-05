@@ -21,6 +21,7 @@ type YouTubeIframeProps = {
   startTime?: number
   seekTime?: number | null
   onTimeUpdate?: (currentTime: number) => void
+  autoFocus?: boolean
 }
 
 export function YouTubeIframe(props: YouTubeIframeProps) {
@@ -47,8 +48,9 @@ export function YouTubeIframe(props: YouTubeIframeProps) {
           setIsLoading(false)
           setPlayer(event.target)
 
-          // Only auto-focus the first YouTube player on the page (by DOM order)
+          // Only auto-focus the first YouTube player on the page if enabled (by DOM order)
           if (
+            props.autoFocus &&
             !hasAutoFocusedPlayer &&
             document.querySelector("[data-youtube-container]") === containerRef
           ) {

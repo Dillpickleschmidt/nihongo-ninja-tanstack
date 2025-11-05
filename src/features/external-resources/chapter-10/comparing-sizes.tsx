@@ -7,6 +7,7 @@ export default function page() {
         videoId="vD3_BO4KAdM"
         title="Comprehensible Japanese (beginner) -Big,Small　大きい、小さい　おおきい、ちいさい"
         credit="Nihongo-Learning"
+        autoFocus
       />
       <div class="mx-auto max-w-2xl space-y-3 px-4 pb-32">
         <div class="w-full border-b pt-6 pb-6 text-center text-4xl font-semibold lg:px-12 lg:pt-12">

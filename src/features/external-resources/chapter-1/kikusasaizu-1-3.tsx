@@ -7,6 +7,7 @@ export default function page() {
         videoId="VKETvr5uXsk"
         title="kikusasaizu-1-3"
         credit="Nihongo Kikusasaizu"
+        autoFocus
       />
     </div>
   )

@@ -127,6 +127,7 @@ class KagomeServer {
   }
 
   async tokenize(text: string): Promise<KagomeToken[]> {
+    console.log(`[Kagome] Tokenizing: "${text}"`)
     const request: TokenizeRequest = {
       sentence: text,
       mode: "normal",

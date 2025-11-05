@@ -3,7 +3,7 @@ import { createMediaQuery } from "@solid-primitives/media"
 import { Show, type ParentProps } from "solid-js"
 import { isServer } from "solid-js/web"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import { useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 

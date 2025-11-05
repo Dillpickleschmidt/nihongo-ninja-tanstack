@@ -79,4 +79,19 @@ declare global {
     SupabaseDB["public"]["Tables"]["user_practice_sessions"]["Insert"]
   type PracticeSessionUpdate =
     SupabaseDB["public"]["Tables"]["user_practice_sessions"]["Update"]
+
+  // Learning Path Types
+  type LearningPathTranscript =
+    SupabaseDB["public"]["Tables"]["learning_path_transcripts"]["Row"]
+  type LearningPathTranscriptInsert =
+    SupabaseDB["public"]["Tables"]["learning_path_transcripts"]["Insert"]
+  type LearningPathTranscriptUpdate =
+    SupabaseDB["public"]["Tables"]["learning_path_transcripts"]["Update"]
+
+  type LearningPathModuleSource =
+    SupabaseDB["public"]["Tables"]["learning_path_module_sources"]["Row"]
+  type LearningPathModuleSourceInsert =
+    SupabaseDB["public"]["Tables"]["learning_path_module_sources"]["Insert"]
+  type LearningPathModuleSourceUpdate =
+    SupabaseDB["public"]["Tables"]["learning_path_module_sources"]["Update"]
 }

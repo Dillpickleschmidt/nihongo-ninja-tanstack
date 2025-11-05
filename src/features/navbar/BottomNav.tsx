@@ -2,11 +2,11 @@
 import { Link, useLocation, useRouteContext } from "@tanstack/solid-router"
 import { Home, GraduationCap, Search, User } from "lucide-solid"
 import { cn } from "@/utils"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { Route as RootRoute } from "@/routes/__root"
 import { Show } from "solid-js"
-import TextbookSelectionDialog from "@/features/homepage/pages/learning-path/components/TextbookSelectionDialog"
+import TextbookSelectorDialog from "@/features/homepage/pages/learning-path/components/TextbookSelectorDialog"
 
 interface BottomNavProps {
   dailyProgressPercentage?: number
@@ -20,7 +20,7 @@ export function BottomNav(props: BottomNavProps) {
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(userId),
   )
-  const activeTextbook = () => settingsQuery.data?.["active-textbook"]
+  const activeTextbook = () => settingsQuery.data?.["active-learning-path"]
 
   const dailyProgress = () => props.dailyProgressPercentage ?? 65
 
@@ -201,7 +201,7 @@ export function BottomNav(props: BottomNavProps) {
             // Special handling for Learn nav item when in getting_started
             if (item.id === "learn" && activeTextbook() === "getting_started") {
               return (
-                <TextbookSelectionDialog>
+                <TextbookSelectorDialog link={hrefValue} userId={userId}>
                   <div
                     id={"tour-" + item.id}
                     class={cn(
@@ -218,7 +218,7 @@ export function BottomNav(props: BottomNavProps) {
                       )}
                     />
                   </div>
-                </TextbookSelectionDialog>
+                </TextbookSelectorDialog>
               )
             }
 

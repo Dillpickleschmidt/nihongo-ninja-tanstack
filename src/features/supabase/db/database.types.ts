@@ -85,6 +85,71 @@ export type Database = {
         }
         Relationships: []
       }
+      learning_path_module_sources: {
+        Row: {
+          grammar_pattern_id: string | null
+          module_id: string
+          path_id: string
+          source_type: string
+          transcript_line_ids: number[]
+          vocabulary_key: string | null
+        }
+        Insert: {
+          grammar_pattern_id?: string | null
+          module_id: string
+          path_id: string
+          source_type: string
+          transcript_line_ids: number[]
+          vocabulary_key?: string | null
+        }
+        Update: {
+          grammar_pattern_id?: string | null
+          module_id?: string
+          path_id?: string
+          source_type?: string
+          transcript_line_ids?: number[]
+          vocabulary_key?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_path_module_sources_path_id_fkey"
+            columns: ["path_id"]
+            isOneToOne: false
+            referencedRelation: "learning_path_transcripts"
+            referencedColumns: ["path_id"]
+          },
+        ]
+      }
+      learning_path_transcripts: {
+        Row: {
+          created_at: string
+          episode_name: string | null
+          name: string
+          path_id: string
+          show_name: string | null
+          transcript_data: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          episode_name?: string | null
+          name: string
+          path_id?: string
+          show_name?: string | null
+          transcript_data: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          episode_name?: string | null
+          name?: string
+          path_id?: string
+          show_name?: string | null
+          transcript_data?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           display_name: string | null
@@ -105,21 +170,21 @@ export type Database = {
       }
       public_deck_shares: {
         Row: {
-          deck_id: number
+          deck_id: string
           import_count: number
           shared_at: string
           shared_by: string
           updated_at: string
         }
         Insert: {
-          deck_id: number
+          deck_id: string
           import_count?: number
           shared_at?: string
           shared_by: string
           updated_at?: string
         }
         Update: {
-          deck_id?: number
+          deck_id?: string
           import_count?: number
           shared_at?: string
           shared_by?: string
@@ -140,7 +205,7 @@ export type Database = {
           allowed_practice_modes: Database["public"]["Enums"]["practice_mode_enum"][]
           created_at: string
           deck_description: string | null
-          deck_id: number
+          deck_id: string
           deck_name: string
           folder_id: number | null
           original_deck_id: string | null
@@ -151,7 +216,7 @@ export type Database = {
           allowed_practice_modes: Database["public"]["Enums"]["practice_mode_enum"][]
           created_at?: string
           deck_description?: string | null
-          deck_id?: never
+          deck_id?: string
           deck_name: string
           folder_id?: number | null
           original_deck_id?: string | null
@@ -162,7 +227,7 @@ export type Database = {
           allowed_practice_modes?: Database["public"]["Enums"]["practice_mode_enum"][]
           created_at?: string
           deck_description?: string | null
-          deck_id?: never
+          deck_id?: string
           deck_name?: string
           folder_id?: number | null
           original_deck_id?: string | null
@@ -230,7 +295,7 @@ export type Database = {
       vocabulary_items: {
         Row: {
           created_at: string
-          deck_id: number
+          deck_id: string
           english: string[]
           example_sentences: Json | null
           furigana: string | null
@@ -244,7 +309,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          deck_id: number
+          deck_id: string
           english: string[]
           example_sentences?: Json | null
           furigana?: string | null
@@ -258,7 +323,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          deck_id?: number
+          deck_id?: string
           english?: string[]
           example_sentences?: Json | null
           furigana?: string | null
@@ -289,6 +354,7 @@ export type Database = {
         Args: { operations: Json; user_id: string }
         Returns: undefined
       }
+      generate_deck_id: { Args: never; Returns: string }
       get_vocabulary_stats: {
         Args: { user_id_param: string; week_ago_param: string }
         Returns: Json

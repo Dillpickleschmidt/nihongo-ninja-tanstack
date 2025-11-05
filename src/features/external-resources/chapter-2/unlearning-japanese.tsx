@@ -7,6 +7,7 @@ export default function page() {
         videoId="BH9n_fNA7Z8"
         title="Unlearning Japanese - Real Real Japan #01"
         credit="Real Real Japan"
+        autoFocus
       />
       <div class="mx-auto max-w-2xl space-y-3 px-4 pb-32">
         <div class="w-full border-b px-6 pt-6 pb-6 text-center text-4xl font-semibold lg:pt-12">

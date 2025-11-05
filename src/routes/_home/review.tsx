@@ -12,12 +12,12 @@ import {
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 import { UpcomingModulesList } from "@/features/learn-page/components/content/UpcomingModulesList"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import {
   dueCardsCountQueryOptions,
   upcomingModulesQueryOptions,
   completedModulesQueryOptions,
-} from "@/features/learn-page/query/query-options"
+} from "@/query/query-options"
 import { Route as RootRoute } from "@/routes/__root"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { getActiveLiveService } from "@/features/srs-services/utils"
@@ -45,8 +45,8 @@ export const Route = createFileRoute("/_home/review")({
     await queryClient.ensureQueryData(
       upcomingModulesQueryOptions(
         user?.id || null,
-        userSettings["active-textbook"] as TextbookIDEnum,
-        userSettings["textbook-positions"]?.[userSettings["active-textbook"]] ||
+        userSettings["active-learning-path"] as TextbookIDEnum,
+        userSettings["learning-path-positions"]?.[userSettings["active-learning-path"]] ||
           null,
       ),
     )
@@ -276,9 +276,9 @@ function RouteComponent() {
   const upcomingModulesQuery = useCustomQuery(() =>
     upcomingModulesQueryOptions(
       context().user?.id || null,
-      settingsQuery.data!["active-textbook"] as TextbookIDEnum,
-      settingsQuery.data!["textbook-positions"]?.[
-        settingsQuery.data!["active-textbook"]
+      settingsQuery.data!["active-learning-path"] as TextbookIDEnum,
+      settingsQuery.data!["learning-path-positions"]?.[
+        settingsQuery.data!["active-learning-path"]
       ] || null,
     ),
   )
@@ -425,8 +425,8 @@ function RouteComponent() {
   return (
     <>
       <TextbookChapterBackgrounds
-        textbook={settingsQuery.data["active-textbook"]}
-        chapter={settingsQuery.data["active-deck"]}
+        textbook={settingsQuery.data["active-learning-path"]}
+        chapter={settingsQuery.data["active-chapter"]}
         showGradient={false}
         blur="32px"
       />

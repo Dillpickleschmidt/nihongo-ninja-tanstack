@@ -3,7 +3,7 @@ import { createSignal } from "solid-js"
 import type { VocabBuiltInDeck } from "../types"
 import type { NavTabId } from "../center-panel/CenterNavBar"
 import { useMutation, useQueryClient } from "@tanstack/solid-query"
-import { updateUserSettingsMutation } from "@/features/main-cookies/query/query-options"
+import { updateUserSettingsMutation } from "@/query/query-mutations"
 import { parseBuiltInDeckId } from "../utils/deckIdParser"
 
 export function useDeckSelection(
@@ -26,8 +26,8 @@ export function useDeckSelection(
       const parsed = parseBuiltInDeckId(deck.original_deck_id)
       if (parsed) {
         updateMutation.mutate({
-          "active-textbook": parsed.textbook,
-          "active-deck": parsed.chapter,
+          "active-learning-path": parsed.textbook,
+          "active-chapter": parsed.chapter,
         })
       }
     }
@@ -41,8 +41,8 @@ export function useDeckSelection(
     const parsed = parseBuiltInDeckId(deck.id)
     if (parsed) {
       updateMutation.mutate({
-        "active-textbook": parsed.textbook,
-        "active-deck": parsed.chapter,
+        "active-learning-path": parsed.textbook,
+        "active-chapter": parsed.chapter,
       })
     }
     setSelectedUserDeck(null) // Clear user deck selection

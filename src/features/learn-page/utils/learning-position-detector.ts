@@ -1,4 +1,7 @@
-import type { ModuleWithCurrent } from "../query/query-options"
+import type { ModuleWithCurrent } from "@/query/query-options"
+import { getUserModuleProgress } from "@/features/supabase/db/module-progress"
+
+type ModuleProgress = Awaited<ReturnType<typeof getUserModuleProgress>>[number]
 
 /**
  * Calculate the distance (number of modules) between two modules in a learning path

@@ -7,7 +7,7 @@ import {
   practiceModuleFSRSCardsQueryOptions,
   practiceDueFSRSCardsQueryOptions,
   hierarchySvgsQueryOptions,
-} from "@/features/vocab-practice/query/query-options"
+} from "@/query/query-options"
 
 /**
  * Extract all practice item slugs from hierarchy

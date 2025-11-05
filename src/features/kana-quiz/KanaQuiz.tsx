@@ -12,7 +12,7 @@ import { HeaderCard } from "./components/HeaderCard"
 import { ActionButton } from "./components/ActionButton"
 import { TextbookChapterBackgrounds } from "../learn-page/components/shared/TextbookChapterBackgrounds"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 
 type KanaQuizProps = {
   kana: KanaItem[]
@@ -100,8 +100,8 @@ export function KanaQuiz(props: KanaQuizProps) {
       {/* Background */}
       <div class="fixed inset-0 -z-10">
         <TextbookChapterBackgrounds
-          textbook={settingsQuery.data["active-textbook"]}
-          chapter={settingsQuery.data["active-deck"]}
+          textbook={settingsQuery.data["active-learning-path"]}
+          chapter={settingsQuery.data["active-chapter"]}
           showGradient={false}
           blur="16px"
         />

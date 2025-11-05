@@ -3,7 +3,7 @@ import { createFileRoute, useRouteContext } from "@tanstack/solid-router"
 import PracticeContainer from "@/features/sentence-practice/ui/practice/PracticeContainer"
 import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import { useTour } from "@/features/guided-tour/TourContext"
 import { Route as RootRoute } from "@/routes/__root"
 
@@ -40,8 +40,8 @@ function RouteComponent() {
     <>
       <div class="fixed inset-0 -z-1">
         <TextbookChapterBackgrounds
-          textbook={settingsQuery.data!["active-textbook"]}
-          chapter={settingsQuery.data!["active-deck"]}
+          textbook={settingsQuery.data!["active-learning-path"]}
+          chapter={settingsQuery.data!["active-chapter"]}
           showGradient={false}
           blur="4px"
           class="opacity-40"

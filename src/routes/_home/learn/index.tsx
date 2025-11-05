@@ -1,6 +1,6 @@
 // routes/_home/learn/index.tsx
 import { createFileRoute, redirect } from "@tanstack/solid-router"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 
 export const Route = createFileRoute("/_home/learn/")({
   loader: async ({ context }) => {
@@ -15,8 +15,8 @@ export const Route = createFileRoute("/_home/learn/")({
     throw redirect({
       to: "/learn/$textbookId/$chapterSlug",
       params: {
-        textbookId: settings["active-textbook"],
-        chapterSlug: settings["active-deck"],
+        textbookId: settings["active-learning-path"],
+        chapterSlug: settings["active-chapter"],
       },
     })
   },

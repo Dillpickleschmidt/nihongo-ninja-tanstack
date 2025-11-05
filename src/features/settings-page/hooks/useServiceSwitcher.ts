@@ -2,10 +2,8 @@
 import { createSignal } from "solid-js"
 import { useMutation, useQueryClient } from "@tanstack/solid-query"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import {
-  userSettingsQueryOptions,
-  updateUserSettingsMutation,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
+import { updateUserSettingsMutation } from "@/query/query-mutations"
 import { validateAnkiConnect } from "@/features/service-api-functions/anki/anki-connect-client"
 import { ensureSingleLiveService } from "@/features/srs-services/utils"
 import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"

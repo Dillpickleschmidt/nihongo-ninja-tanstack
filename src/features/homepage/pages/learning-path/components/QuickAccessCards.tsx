@@ -61,10 +61,26 @@ export function QuickAccessCards() {
     }
   }
 
-  const DesktopCard = (props: { tool: Tool; index: () => number }) => {
+  const Card = (props: {
+    tool: Tool
+    index: () => number
+    isDesktop: boolean
+  }) => {
     const isDisabled = props.tool.disabled
     const styles = TOOL_STYLES[props.tool.title]
     const [isHovered, setIsHovered] = createSignal(false)
+
+    const cardProps = {
+      desktop: {
+        width: 210,
+        height: 290,
+        radius: 16,
+        scale: "1.015",
+        delay: 50,
+      },
+      mobile: { width: 350, height: 80, radius: 12, scale: "1.01", delay: 100 },
+    }
+    const config = props.isDesktop ? cardProps.desktop : cardProps.mobile
 
     return (
       <button
@@ -73,7 +89,7 @@ export function QuickAccessCards() {
         onMouseLeave={() => setIsHovered(false)}
         class={cn(
           "group cursor-pointer transition-transform duration-150",
-          isDisabled ? "cursor-not-allowed" : "hover:scale-[1.015]",
+          isDisabled ? "cursor-not-allowed" : `hover:scale-[${config.scale}]`,
           "transition-all",
           animated()
             ? isDisabled
@@ -82,13 +98,13 @@ export function QuickAccessCards() {
             : "translate-y-4 opacity-0",
         )}
         style={{
-          "transition-delay": `${props.index() * 50 + 100}ms`,
+          "transition-delay": `${props.index() * config.delay + 100}ms`,
         }}
       >
         <SmoothCard
-          width={210}
-          height={290}
-          cornerRadius={16}
+          width={config.width}
+          height={config.height}
+          cornerRadius={config.radius}
           border={true}
           borderClass={styles.border}
           ring={isHovered() && !isDisabled}
@@ -98,72 +114,33 @@ export function QuickAccessCards() {
             styles.gradient,
           )}
         >
-          <div class="flex h-full flex-col items-center justify-center gap-4 px-5">
-            <div class="text-[2.625rem] transition-transform duration-300 group-hover:scale-110">
-              {props.tool.icon}
-            </div>
-            <h3 class={cn("text-center text-lg font-bold", styles.text)}>
-              {props.tool.title}
-            </h3>
-            <p class="line-clamp-2 text-center text-sm opacity-70">
-              {props.tool.description}
-            </p>
-          </div>
-        </SmoothCard>
-      </button>
-    )
-  }
-
-  const MobileCard = (props: { tool: Tool; index: () => number }) => {
-    const isDisabled = props.tool.disabled
-    const styles = TOOL_STYLES[props.tool.title]
-    const [isHovered, setIsHovered] = createSignal(false)
-
-    return (
-      <button
-        onClick={() => handleCardClick(props.tool)}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        class={cn(
-          "group w-full cursor-pointer transition-transform duration-150",
-          isDisabled ? "cursor-not-allowed" : "hover:scale-[1.01]",
-          "transition-all",
-          animated()
-            ? isDisabled
-              ? "translate-y-0 opacity-50"
-              : "translate-y-0 opacity-100"
-            : "translate-y-4 opacity-0",
-        )}
-        style={{
-          "transition-delay": `${props.index() * 100 + 100}ms`,
-        }}
-      >
-        <SmoothCard
-          width={295}
-          height={130}
-          cornerRadius={12}
-          border={true}
-          borderClass={styles.border}
-          ring={isHovered() && !isDisabled}
-          ringClass={styles.ring}
-          class={cn(
-            "bg-gradient-to-br shadow-lg shadow-black/30 backdrop-blur-md transition-colors duration-150",
-            styles.gradient,
-          )}
-        >
-          <div class="flex h-full items-center gap-4 px-4">
-            <div class="text-[2.063rem] transition-transform duration-300 group-hover:scale-110">
-              {props.tool.icon}
-            </div>
-            <div class="flex-1 text-left">
-              <h3 class={cn("mb-1 text-base font-bold", styles.text)}>
+          {props.isDesktop ? (
+            <div class="flex h-full flex-col items-center justify-center gap-4 px-5">
+              <div class="text-[2.625rem] transition-transform duration-300 group-hover:scale-110">
+                {props.tool.icon}
+              </div>
+              <h3 class={cn("text-center text-lg font-bold", styles.text)}>
                 {props.tool.title}
               </h3>
-              <p class="line-clamp-1 text-sm opacity-70">
+              <p class="line-clamp-2 text-center text-sm opacity-70">
                 {props.tool.description}
               </p>
             </div>
-          </div>
+          ) : (
+            <div class="flex h-full items-center gap-3 px-4 md:gap-4">
+              <div class="text-2xl transition-transform duration-300 group-hover:scale-110 md:text-[2.063rem]">
+                {props.tool.icon}
+              </div>
+              <div class="flex-1 text-left">
+                <h3 class={cn("mb-1 text-base font-bold", styles.text)}>
+                  {props.tool.title}
+                </h3>
+                <p class="line-clamp-1 text-sm opacity-70">
+                  {props.tool.description}
+                </p>
+              </div>
+            </div>
+          )}
         </SmoothCard>
       </button>
     )
@@ -176,7 +153,9 @@ export function QuickAccessCards() {
         <div class="mb-8">
           <div class="grid justify-items-center gap-6 md:grid-cols-3 lg:grid-cols-5">
             <For each={featuredTools}>
-              {(tool, index) => <DesktopCard tool={tool} index={index} />}
+              {(tool, index) => (
+                <Card tool={tool} index={index} isDesktop={true} />
+              )}
             </For>
           </div>
         </div>
@@ -184,9 +163,11 @@ export function QuickAccessCards() {
 
       {/* Mobile */}
       <SSRMediaQuery hideFrom="md">
-        <div class="mb-4 space-y-3 px-4">
+        <div class="mb-4 flex flex-col items-center space-y-3 px-4">
           <For each={featuredTools}>
-            {(tool, index) => <MobileCard tool={tool} index={index} />}
+            {(tool, index) => (
+              <Card tool={tool} index={index} isDesktop={false} />
+            )}
           </For>
         </div>
       </SSRMediaQuery>

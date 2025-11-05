@@ -1,4 +1,4 @@
-// features/learn-page-v2/components/shared/DeckSelectionPopover.tsx
+// features/learn-page-v2/components/shared/LearningPathChapterSelector.tsx
 import { createSignal, For, Show, JSX, createEffect } from "solid-js"
 import {
   Popover,
@@ -9,46 +9,46 @@ import type { Deck, TextbookIDEnum } from "@/data/types"
 import type { QueryClient } from "@tanstack/solid-query"
 import { cn } from "@/utils"
 import { getMinifiedTextbookEntries } from "@/data/utils/core"
-import { applyUserSettingsUpdate } from "@/features/main-cookies/query/query-options"
+import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
 
-interface DeckSelectionPopoverProps {
+interface LearningPathChapterSelectorProps {
   children: JSX.Element
-  activeTextbookId: TextbookIDEnum
-  activeDeck: Deck
+  activeLearningPathId: string
+  activeChapter: Deck
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   queryClient: QueryClient
   userId: string | null
-  onDeckSelect: (textbookId: TextbookIDEnum, deckSlug: string) => void
+  onChapterSelect: (learningPathId: string, chapterSlug: string) => void
   popoverWidth?: string
 }
 
-export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
-  const [selectedTextbookId, setSelectedTextbookId] =
-    createSignal<TextbookIDEnum | null>(null)
+export function LearningPathChapterSelector(props: LearningPathChapterSelectorProps) {
+  const [selectedLearningPathId, setSelectedLearningPathId] =
+    createSignal<string | null>(null)
 
-  let activeTextbookRef: HTMLButtonElement | undefined
+  let activeLearningPathRef: HTMLButtonElement | undefined
 
   const textbookEntries = getMinifiedTextbookEntries()
 
-  const displayedTextbookId = () =>
-    selectedTextbookId() || props.activeTextbookId
+  const displayedLearningPathId = () =>
+    selectedLearningPathId() || props.activeLearningPathId
 
-  // Focus active textbook when popover opens
+  // Focus active learning path when popover opens
   createEffect(() => {
     if (props.isOpen) {
-      console.log("Popover opened, activeTextbookRef:", activeTextbookRef)
-      activeTextbookRef?.focus()
+      console.log("Popover opened, activeLearningPathRef:", activeLearningPathRef)
+      activeLearningPathRef?.focus()
     }
   })
 
-  const handleTextbookSelect = (textbookId: TextbookIDEnum) => {
-    setSelectedTextbookId(textbookId)
+  const handleLearningPathSelect = (learningPathId: string) => {
+    setSelectedLearningPathId(learningPathId)
   }
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
-      setSelectedTextbookId(null)
+      setSelectedLearningPathId(null)
     }
     props.onOpenChange(open)
   }
@@ -68,17 +68,17 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
           <div class="grid grid-cols-[1fr_2fr]">
             <div class="border-primary/10 border-r p-1">
               <For each={textbookEntries}>
-                {([textbookId, textbook]) => (
+                {([learningPathId, textbook]) => (
                   <button
                     ref={(el) => {
-                      if (props.activeTextbookId === textbookId) {
-                        activeTextbookRef = el
+                      if (props.activeLearningPathId === learningPathId) {
+                        activeLearningPathRef = el
                       }
                     }}
-                    onClick={() => handleTextbookSelect(textbookId)}
+                    onClick={() => handleLearningPathSelect(learningPathId)}
                     class={cn(
                       "hover:bg-primary/15 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-medium",
-                      displayedTextbookId() === textbookId && "bg-primary/10",
+                      displayedLearningPathId() === learningPathId && "bg-primary/10",
                     )}
                   >
                     <span>{textbook.short_name || textbook.name}</span>
@@ -88,31 +88,31 @@ export function DeckSelectionPopover(props: DeckSelectionPopoverProps) {
             </div>
             <div class="p-1">
               <For each={textbookEntries}>
-                {([textbookId, textbook]) => (
-                  <Show when={displayedTextbookId() === textbookId}>
+                {([learningPathId, textbook]) => (
+                  <Show when={displayedLearningPathId() === learningPathId}>
                     <For each={textbook.chapters}>
-                      {(deck) => (
+                      {(chapter) => (
                         <button
                           onClick={async () => {
                             await applyUserSettingsUpdate(
                               props.userId,
                               props.queryClient,
                               {
-                                "active-textbook": textbookId,
-                                "active-deck": deck.slug,
+                                "active-learning-path": learningPathId,
+                                "active-chapter": chapter.slug,
                               },
                             )
-                            props.onDeckSelect(textbookId, deck.slug)
+                            props.onChapterSelect(learningPathId, chapter.slug)
                             props.onOpenChange(false)
                           }}
                           class={cn(
                             "hover:bg-card-foreground/40 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal",
-                            props.activeDeck.slug === deck.slug &&
+                            props.activeChapter.slug === chapter.slug &&
                               "bg-primary/10 hover:bg-primary/15 font-semibold",
                           )}
                         >
-                          <span>{deck.title}</span>
-                          <Show when={props.activeDeck.slug === deck.slug}>
+                          <span>{chapter.title}</span>
+                          <Show when={props.activeChapter.slug === chapter.slug}>
                             <svg
                               class="size-4"
                               viewBox="0 0 24 24"

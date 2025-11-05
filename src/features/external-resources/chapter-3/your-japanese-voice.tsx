@@ -8,6 +8,7 @@ export default function page() {
         videoId="Phr8z5X5Sf4"
         title="Should your 'Japanese voice' sound different?"
         credit="Dogen"
+        autoFocus
       />
     </div>
   )

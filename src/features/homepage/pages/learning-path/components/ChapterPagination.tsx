@@ -1,75 +1,84 @@
 import { Show } from "solid-js"
 import { ChevronLeft, ChevronRight } from "lucide-solid"
-import { getChapterStyles } from "@/data/chapter_colors"
-import { getDeckBySlug, getTextbookChapters } from "@/data/utils/core"
-import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
-import type { UseQueryResult } from "@tanstack/solid-query"
-import type { TextbookIDEnum } from "@/data/types"
+import { Button } from "@/components/ui/button"
+import { Link } from "@tanstack/solid-router"
+import { useLearningPath } from "../LearningPathContext"
 
 interface ChapterPaginationProps {
-  settingsQuery: UseQueryResult<UserSettings, Error>
-  onChapterChange?: (chapterSlug: string) => void
+  onChapterChange: (chapterSlug: string) => void
 }
 
 export function ChapterPagination(props: ChapterPaginationProps) {
-  const activeTextbook = () =>
-    props.settingsQuery.data!["active-textbook"] as TextbookIDEnum
-  const activeDeck = () => props.settingsQuery.data!["active-deck"]
-  const textbookChapters = () => getTextbookChapters(activeTextbook())
+  const context = useLearningPath()
 
   const chapterIndex = () => {
-    return textbookChapters().findIndex((ch) => ch.slug === activeDeck())
+    return context
+      .availableChapters()
+      .findIndex((ch) => ch.slug === context.activeChapter())
   }
 
   const canGoBack = () => chapterIndex() > 0
   const canGoForward = () => {
-    return chapterIndex() < textbookChapters().length - 1
+    return chapterIndex() < context.availableChapters().length - 1
   }
 
   const handlePrevious = () => {
-    const chapters = textbookChapters()
-    if (canGoBack() && props.onChapterChange) {
+    const chapters = context.availableChapters()
+    if (canGoBack()) {
       const prevChapter = chapters[chapterIndex() - 1]
       props.onChapterChange(prevChapter.slug)
     }
   }
 
   const handleNext = () => {
-    const chapters = textbookChapters()
-    if (canGoForward() && props.onChapterChange) {
+    const chapters = context.availableChapters()
+    if (canGoForward()) {
       const nextChapter = chapters[chapterIndex() + 1]
       props.onChapterChange(nextChapter.slug)
     }
   }
 
-  const styles = () => getChapterStyles(activeDeck())
-  const chapter = () => getDeckBySlug(activeTextbook(), activeDeck())
+  const studyButtonClass = () => {
+    const styles = context.chapterStyles()
+    return `flex h-10 rounded-lg border bg-gradient-to-br px-4 text-sm font-bold text-nowrap shadow-lg backdrop-blur-md ${styles.borderColor} ${styles.hoverBorderColor} hover:bg-transparent ${styles.hoverGradient} ${styles.gradient} ${styles.textColor}`
+  }
+
+  const chapterNumber = () => {
+    const slug = context.activeChapter()
+    const match = slug.match(/(\d+)(?!.*\d)/)
+    return match ? match[1] : "?"
+  }
 
   return (
-    <Show when={activeDeck()}>
-      <div class="flex items-center justify-center gap-3">
-        <button
+    <Show when={context.activeChapter()}>
+      <div class="group relative flex items-center justify-center gap-3">
+        <Button
+          variant="ghost"
           onClick={handlePrevious}
           disabled={!canGoBack()}
-          class="hover:bg-muted rounded p-1 transition-colors disabled:cursor-not-allowed disabled:opacity-30"
+          class="hover:bg-muted h-auto rounded p-1 transition-colors disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronLeft size={16} />
-        </button>
+        </Button>
 
-        <div
-          class={`flex size-10 items-center justify-center rounded-lg border bg-gradient-to-br font-bold shadow-lg backdrop-blur-md transition-colors duration-150 ${styles().borderColor} ${styles().gradient} ${styles().textColor}`}
-          title={chapter()?.title}
-        >
-          {chapter()?.title.match(/N[1-5]/)?.[0] || "?"}
+        <Link to={context.firstIncompleteHref() || ""}>
+          <Button class={studyButtonClass()} onClick={() => {}}>
+            Study Now
+          </Button>
+        </Link>
+
+        <div class="text-muted-foreground absolute -bottom-6 left-1/2 hidden -translate-x-1/2 text-xs group-hover:block">
+          Chapter {chapterNumber()}
         </div>
 
-        <button
+        <Button
+          variant="ghost"
           onClick={handleNext}
           disabled={!canGoForward()}
-          class="hover:bg-muted rounded p-1 transition-colors disabled:cursor-not-allowed disabled:opacity-30"
+          class="hover:bg-muted h-auto rounded p-1 transition-colors disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronRight size={16} />
-        </button>
+        </Button>
       </div>
     </Show>
   )

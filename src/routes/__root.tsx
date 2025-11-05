@@ -31,11 +31,9 @@ import type { User } from "@supabase/supabase-js"
 import { useMutation } from "@tanstack/solid-query"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { PostHogProvider } from "@/features/posthog/PostHogContext"
-import {
-  userSettingsQueryOptions,
-  updateUserSettingsMutation,
-  dbUserSettingsQueryOptions,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
+import { updateUserSettingsMutation } from "@/query/query-mutations"
+import { queryKeys } from "@/query/utils/query-keys"
 import { setupAuthSync } from "@/features/module-completion/setupAuthSync"
 
 export const Route = createRootRouteWithContext<{
@@ -63,21 +61,16 @@ export const Route = createRootRouteWithContext<{
 
     const { queryClient } = context
     queryClient.prefetchQuery(userSettingsQueryOptions(user?.id || null))
-    queryClient.prefetchQuery(dbUserSettingsQueryOptions(user?.id || null))
 
     return { user }
   },
   loader: async ({ context }) => {
     const { user, queryClient } = context
 
-    // Await cookie query to ensure data ready for SSR
+    // Await settings query to ensure data ready for SSR
     const userSettings = await queryClient.ensureQueryData(
       userSettingsQueryOptions(user?.id || null),
     )
-
-    if (user?.id) {
-      queryClient.prefetchQuery(dbUserSettingsQueryOptions(user.id))
-    }
 
     return {
       user,
@@ -148,7 +141,7 @@ function RootContent() {
       const handleStorageChange = (e: StorageEvent) => {
         if (e.key === "nihongo-ninja:local-completions") {
           queryClient.invalidateQueries({
-            queryKey: ["module-progress", user?.id || null, "completed"],
+            queryKey: queryKeys.completedModules(user?.id || null),
           })
         }
       }

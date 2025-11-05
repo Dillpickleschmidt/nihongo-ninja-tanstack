@@ -11,7 +11,7 @@ import { createStore, SetStoreFunction } from "solid-js/store"
 import type { Settings, CurrentPage, PracticeMode } from "../types"
 import { Rating } from "ts-fsrs"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import {
   usePracticeManager,
   type PracticeManagerHook,

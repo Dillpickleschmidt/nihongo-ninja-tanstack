@@ -2,10 +2,8 @@
 import { For } from "solid-js"
 import { useMutation, useQueryClient } from "@tanstack/solid-query"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import {
-  userSettingsQueryOptions,
-  updateUserSettingsMutation,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
+import { updateUserSettingsMutation } from "@/query/query-mutations"
 import ToggleOption from "./ToggleOption"
 import { Button } from "@/components/ui/button"
 import {
@@ -137,8 +135,8 @@ export default function SettingsPage({
     <>
       <div class="fixed inset-0 -z-1">
         <TextbookChapterBackgrounds
-          textbook={settingsQuery.data["active-textbook"]}
-          chapter={settingsQuery.data["active-deck"]}
+          textbook={settingsQuery.data["active-learning-path"]}
+          chapter={settingsQuery.data["active-chapter"]}
           showGradient={false}
           blur="16px"
           class="opacity-40"

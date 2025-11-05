@@ -17,10 +17,8 @@ import { driver } from "driver.js"
 import type { Driver } from "driver.js"
 import { useMutation, useQueryClient } from "@tanstack/solid-query"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import {
-  userSettingsQueryOptions,
-  updateUserSettingsMutation,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
+import { updateUserSettingsMutation } from "@/query/query-mutations"
 import { Route as RootRoute } from "@/routes/__root"
 import { TOURS } from "./tours"
 

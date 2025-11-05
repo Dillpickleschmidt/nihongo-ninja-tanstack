@@ -2,12 +2,12 @@
 import { createFileRoute, notFound } from "@tanstack/solid-router"
 import VocabPractice from "@/features/vocab-practice/VocabPractice"
 import type { PracticeMode } from "@/features/vocab-practice/types"
-import { userSettingsQueryOptions } from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import { getActiveLiveService } from "@/features/srs-services/utils"
 import {
   practiceHierarchyQueryOptions,
   moduleVocabularyQueryOptions,
-} from "@/features/vocab-practice/query/query-options"
+} from "@/query/query-options"
 import {
   extractHierarchySlugs,
   prefetchFSRSAndSVGs,

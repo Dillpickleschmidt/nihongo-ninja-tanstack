@@ -25,22 +25,21 @@ import {
   seenCardsStatsQueryOptions,
   type ModuleWithCurrent,
   type VocabModuleProgress,
-} from "@/features/learn-page/query/query-options"
+} from "@/query/query-options"
 import type {
   DueCountResult,
   SeenCardsStatsResult,
 } from "@/features/srs-services/types"
-import {
-  userSettingsQueryOptions,
-  updateUserSettingsMutation,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
+import { updateUserSettingsMutation } from "@/query/query-mutations"
+import { queryKeys } from "@/query/utils/query-keys"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import {
   shouldUpdatePosition,
   detectSequentialJump,
 } from "@/features/learn-page/utils/learning-position-detector"
 import { markModuleCompleted } from "@/features/supabase/db/module-progress"
-import { getTextbookLearningPath } from "@/data/utils/core"
+import { getLearningPathModules } from "@/data/utils/core"
 import type { TextbookIDEnum } from "@/data/types"
 import {
   calculateStreak,
@@ -111,8 +110,8 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
 ) => {
   const queryClient = useQueryClient()
 
-  // Get textbook-wide learning path for position tracking (reactive)
-  const textbookLearningPath = () => getTextbookLearningPath(props.textbookId)
+  // Get learning path for position tracking (reactive)
+  const textbookLearningPath = () => getLearningPathModules(props.textbookId)
 
   const [mobileContentView, setMobileContentView] =
     createSignal<MobileContentView>("learning-path")
@@ -137,7 +136,7 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
     upcomingModulesQueryOptions(
       props.userId,
       props.textbookId,
-      settingsQuery.data!["textbook-positions"]?.[props.textbookId] || null,
+      settingsQuery.data!["learning-path-positions"]?.[props.textbookId] || null,
     ),
   )
 
@@ -254,8 +253,8 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
     if (!props.userId) return null
 
     updateMutation.mutate({
-      "textbook-positions": {
-        ...settingsQuery.data!["textbook-positions"],
+      "learning-path-positions": {
+        ...settingsQuery.data!["learning-path-positions"],
         [props.textbookId]: moduleId,
       },
     })
@@ -267,7 +266,7 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
   const handlePositionUpdate = (moduleId: string | null) => {
     if (moduleId) {
       queryClient.invalidateQueries({
-        queryKey: ["upcoming-modules", props.userId, props.textbookId],
+        queryKey: queryKeys.upcomingModules(props.userId, props.textbookId, null),
       })
     }
   }
@@ -292,7 +291,7 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
       const currentLearningPath = textbookLearningPath()
       const mostRecent = completionsQuery.data[0]
       const currentPosition =
-        settingsQuery.data!["textbook-positions"]?.[props.textbookId] || null
+        settingsQuery.data!["learning-path-positions"]?.[props.textbookId] || null
 
       // Check if should update due to nearby completion (�2 modules)
       const shouldUpdateNearby = shouldUpdatePosition(
@@ -327,7 +326,7 @@ export const LearnPageProvider: ParentComponent<LearnPageProviderProps> = (
       markModuleCompleted(userId, moduleId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["module-progress", props.userId],
+        queryKey: queryKeys.moduleProgress(props.userId, []),
       })
     },
   }))

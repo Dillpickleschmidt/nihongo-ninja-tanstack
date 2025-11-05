@@ -1,5 +1,6 @@
 import { createSignal, For, type JSX } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
+import { useQueryClient } from "@tanstack/solid-query"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -10,36 +11,59 @@ import {
 } from "@/components/ui/dialog"
 import { getMinifiedTextbookEntries } from "@/data/utils/core"
 import type { TextbookIDEnum } from "@/data/types"
+import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
 
-interface TextbookSelectionDialogProps {
+interface TextbookSelectorDialogProps {
   children: JSX.Element
-  onNavigationStart?: () => void
+  link?: string
+  userId: string | null
 }
 
-export default function TextbookSelectionDialog(
-  props: TextbookSelectionDialogProps,
+export default function TextbookSelectorDialog(
+  props: TextbookSelectorDialogProps,
 ) {
   const [isDialogOpen, setIsDialogOpen] = createSignal(false)
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const textbookEntries = getMinifiedTextbookEntries()
   const otherTextbooks = () =>
     textbookEntries.filter(([id]) => id !== "getting_started")
 
-  const handleTextbookSelect = (textbookId: TextbookIDEnum) => {
+  const handleLearningPathSelect = async (textbookId: TextbookIDEnum) => {
     // Get first chapter of selected textbook
     const textbook = textbookEntries.find(([id]) => id === textbookId)?.[1]
     const firstChapterSlug = textbook?.chapters[0]?.slug
 
     if (!firstChapterSlug) return
-    setIsDialogOpen(false)
-    props.onNavigationStart?.()
 
-    // let the route loader handle settings update
-    navigate({
-      to: "/learn/$textbookId/$chapterSlug",
-      params: { textbookId, chapterSlug: firstChapterSlug },
-    })
+    setIsDialogOpen(false)
+
+    if (props.link) {
+      // Navigate - route loader will handle settings update
+      navigate({
+        to: props.link as any,
+        params: { textbookId, chapterSlug: firstChapterSlug },
+      })
+    } else {
+      // No navigation - manually update settings cache
+      await applyUserSettingsUpdate(
+        props.userId,
+        queryClient,
+        {
+          "active-learning-path": textbookId,
+          "active-chapter": firstChapterSlug,
+        },
+        { awaitDb: false },
+      )
+
+      // Scroll to top after DOM updates - use double RAF for reliability
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, behavior: "smooth" })
+        })
+      })
+    }
   }
 
   return (
@@ -55,7 +79,7 @@ export default function TextbookSelectionDialog(
               <Button
                 variant="outline"
                 class="w-full"
-                onClick={() => handleTextbookSelect(textbookId)}
+                onClick={() => handleLearningPathSelect(textbookId)}
               >
                 {textbook.short_name || textbook.name}
               </Button>

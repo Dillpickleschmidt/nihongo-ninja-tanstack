@@ -8,16 +8,12 @@ import {
 import { getDeckBySlug, getModules } from "@/data/utils/core"
 import { useTour } from "@/features/guided-tour/TourContext"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { vocabHierarchyQueryOptions } from "@/features/learn-page/query/query-options"
-import { resourceThumbnailQueryOptions } from "@/features/learn-page/query/query-options"
+import { vocabHierarchyQueryOptions } from "@/query/query-options"
+import { resourceThumbnailQueryOptions } from "@/query/query-options"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
-import {
-  userSettingsQueryOptions,
-  dbUserSettingsQueryOptions,
-  applyUserSettingsUpdate,
-} from "@/features/main-cookies/query/query-options"
+import { userSettingsQueryOptions } from "@/query/query-options"
+import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
 import type { TextbookIDEnum, ExternalResource } from "@/data/types"
-import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import { Route as RootRoute } from "@/routes/__root"
 import DesktopLayout from "@/features/learn-page/components/shared/DesktopLayout"
 
@@ -40,61 +36,23 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
         to: "/learn/$textbookId/$chapterSlug",
         params: {
           textbookId: textbookId as TextbookIDEnum,
-          chapterSlug: userSettings["active-deck"],
+          chapterSlug: userSettings["active-chapter"],
         },
       })
     }
 
-    // Check DB query status to determine if we should redirect based on cross-device sync
-    const dbQueryState = user?.id
-      ? queryClient.getQueryState(dbUserSettingsQueryOptions(user.id).queryKey)
-      : null
-
-    const isDbComplete = dbQueryState?.status === "success"
-
-    // If DB is complete and fresher than cookie, redirect to DB's active chapter
-    // This handles cross-device sync when coming from parent redirect
-    if (isDbComplete && user?.id) {
-      const dbData = queryClient.getQueryData<UserSettings>(
-        dbUserSettingsQueryOptions(user.id).queryKey,
-      )
-
-      if (dbData) {
-        const dbActiveDeck = dbData["active-deck"] // This is already a slug
-        const dbActiveTextbook = dbData["active-textbook"]
-        const cookieTimestamp = userSettings.timestamp || 0
-        const dbTimestamp = dbData.timestamp || 0
-
-        // Only redirect if DB is fresher than cookie AND differs from URL
-        // (corrects stale /learn redirect from other devices)
-        if (
-          dbTimestamp > cookieTimestamp &&
-          ((dbActiveDeck && dbActiveDeck !== chapterSlug) ||
-            (dbActiveTextbook && dbActiveTextbook !== textbookId))
-        ) {
-          throw redirect({
-            to: "/learn/$textbookId/$chapterSlug",
-            params: {
-              textbookId: dbActiveTextbook || (textbookId as TextbookIDEnum),
-              chapterSlug: dbActiveDeck || chapterSlug,
-            },
-          })
-        }
-      }
-    }
-
     // Update active-deck if URL differs from current settings
     const needsUpdate =
-      userSettings["active-deck"] !== chapterSlug ||
-      userSettings["active-textbook"] !== (textbookId as TextbookIDEnum)
+      userSettings["active-chapter"] !== chapterSlug ||
+      userSettings["active-learning-path"] !== (textbookId as TextbookIDEnum)
 
     if (needsUpdate) {
       await applyUserSettingsUpdate(
         user?.id || null,
         queryClient,
         {
-          "active-deck": chapterSlug,
-          "active-textbook": textbookId as TextbookIDEnum,
+          "active-chapter": chapterSlug,
+          "active-learning-path": textbookId as TextbookIDEnum,
         },
         { awaitDb: false }, // Don't await DB (non-blocking)
       )
