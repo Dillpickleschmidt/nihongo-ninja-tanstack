@@ -20,7 +20,7 @@ export function LearningPathSection(props: LearningPathSectionProps) {
         when={context.activeLearningPath() !== "getting_started"}
         fallback={<div class="h-6" />}
       >
-        <div class="-mt-2 flex justify-end px-2 md:px-3">
+        <div class="mt-1 flex justify-end px-2 md:-mt-2 md:px-3">
           <TabsList class="h-8 bg-transparent">
             <TabsTrigger
               value="grid"

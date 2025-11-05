@@ -68,7 +68,7 @@ function LearningPathPageContent() {
 
       <Show when={context.activeLearningPath() === "getting_started"}>
         <SSRMediaQuery showFrom="md">
-          <ViewingIsEnough class="pointer-events-none absolute right-4 -mt-7 h-auto w-68 text-neutral-400 md:right-6" />
+          <ViewingIsEnough class="pointer-events-none absolute right-2 -mt-9 h-auto w-68 text-neutral-400 md:right-4" />
         </SSRMediaQuery>
       </Show>
 
