@@ -22,6 +22,7 @@ export default function page() {
         credit="Japanese super immersion"
         seekTime={seekTime}
         setSeekTime={setSeekTime}
+        autoFocus
       />
       <div class="mx-auto max-w-2xl space-y-6 px-6">
         <div class="w-full border-b pt-6 pb-6 lg:pt-12">

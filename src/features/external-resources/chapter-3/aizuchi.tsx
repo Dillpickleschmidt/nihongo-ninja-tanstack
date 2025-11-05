@@ -8,6 +8,7 @@ export default function page() {
           videoId="r0io_xgmcSs"
           title="Aizuchi: The Noises Japanese Make"
           credit="Kaname Naito"
+          autoFocus
         />
       </div>
     </>

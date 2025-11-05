@@ -8,6 +8,7 @@ export default function page() {
         videoId="p37XUVrHP4E"
         title="Easy Japanese - Hobbies"
         credit="Nihongo-Learning"
+        autoFocus
       />
       <div class="mx-auto max-w-2xl space-y-3 px-4 pb-32">
         <div class="w-full border-b px-12 pt-6 pb-6 text-center text-4xl font-semibold lg:px-28 lg:pt-12">

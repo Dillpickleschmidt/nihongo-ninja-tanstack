@@ -28,6 +28,7 @@ type YouTubeVideoProps = {
   seekTime?: Accessor<number | null>
   setSeekTime?: Setter<number | null>
   class?: string
+  autoFocus?: boolean
 }
 
 export default function YouTubeVideo(props: YouTubeVideoProps) {
@@ -47,6 +48,7 @@ export default function YouTubeVideo(props: YouTubeVideoProps) {
       startTime={props.startTime}
       seekTime={seekTime()}
       onTimeUpdate={setCurrentTime}
+      autoFocus={props.autoFocus}
     />
   )
 
