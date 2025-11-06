@@ -6,7 +6,7 @@ import { getUser } from "@/features/supabase/getUser"
 export type FoldersAndDecksData = {
   folders: DeckFolder[]
   decks: UserDeck[]
-  shareStatus: Record<number, boolean> // deck_id -> isShared
+  shareStatus: Record<string, boolean> // deck_id -> isShared
 }
 
 /**
@@ -42,7 +42,7 @@ export async function getUserFoldersAndDecks(
   if (sharesResult.error) throw sharesResult.error
 
   // Build share status map
-  const shareStatus: Record<number, boolean> = {}
+  const shareStatus: Record<string, boolean> = {}
   sharesResult.data?.forEach((share) => {
     shareStatus[share.deck_id] = true
   })

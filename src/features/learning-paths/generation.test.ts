@@ -17,9 +17,12 @@ vi.mock("@/data/utils/core", () => ({
 describe("Learning path generation", () => {
   describe("chunkVocabularyByCategory", () => {
     it("distributes vocabulary evenly across chunks", () => {
-      const createVocabWord = (word: string, pos: string, lineId: number): VocabWord => ({
+      const createVocabWord = (
+        word: string,
+        pos: string,
+        lineId: number,
+      ): VocabWord => ({
         word,
-        baseForm: word,
         furigana: undefined,
         english: word,
         pos: pos as any,
@@ -39,7 +42,9 @@ describe("Learning path generation", () => {
       const result = createLearningPath(data, "genki_1")
 
       // 50 verbs with target of 15 → 3 chunks: [17, 17, 16]
-      const verbDecks = result.vocabularyDecks.filter((d) => d.posTag === "動詞")
+      const verbDecks = result.vocabularyDecks.filter(
+        (d) => d.posTag === "動詞",
+      )
       expect(verbDecks.length).toBe(3)
       expect(verbDecks[0]!.words.length).toBe(17)
       expect(verbDecks[1]!.words.length).toBe(17)
@@ -47,9 +52,12 @@ describe("Learning path generation", () => {
     })
 
     it("separates verbs from non-verbs", () => {
-      const createVocabWord = (word: string, pos: string, lineId: number): VocabWord => ({
+      const createVocabWord = (
+        word: string,
+        pos: string,
+        lineId: number,
+      ): VocabWord => ({
         word,
-        baseForm: word,
         furigana: undefined,
         english: word,
         pos: pos as any,
@@ -69,8 +77,12 @@ describe("Learning path generation", () => {
 
       const result = createLearningPath(data, "genki_1")
 
-      const verbDecks = result.vocabularyDecks.filter((d) => d.posTag === "動詞")
-      const nonVerbDecks = result.vocabularyDecks.filter((d) => d.posTag !== "動詞")
+      const verbDecks = result.vocabularyDecks.filter(
+        (d) => d.posTag === "動詞",
+      )
+      const nonVerbDecks = result.vocabularyDecks.filter(
+        (d) => d.posTag !== "動詞",
+      )
 
       expect(verbDecks.length).toBe(1)
       expect(verbDecks[0]!.words.length).toBe(2)

@@ -10,6 +10,7 @@ import { useRouteContext } from "@tanstack/solid-router"
 import { userDailyTimeQueryOptions } from "@/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { Route as RootRoute } from "@/routes/__root"
+import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
 import type { useStartPageLogic } from "./hooks/useStartPageLogic"
 
 type StartPageLayoutProps = {
@@ -20,6 +21,7 @@ type StartPageLayoutProps = {
 export function StartPageLayout(props: StartPageLayoutProps) {
   const context = useRouteContext({ from: RootRoute.id })
   const userId = context().user?.id
+  const { prerequisitesEnabled } = useVocabPracticeContext()
 
   const todayTimeQuery = useCustomQuery(() =>
     userDailyTimeQueryOptions(userId || null, new Date()),
@@ -82,7 +84,14 @@ export function StartPageLayout(props: StartPageLayoutProps) {
 
       <div class="px-4 pb-24">
         <div class="mx-auto max-w-3xl">
-          <DependencyOverview />
+          <Show when={prerequisitesEnabled()}>
+            <DependencyOverview
+              vocabularyQuery={props.logic.vocabularyQuery}
+              hierarchyQuery={props.logic.hierarchyQuery}
+              fsrsCardsQuery={props.logic.fsrsCardsQuery}
+              dueCardsQuery={props.logic.dueCardsQuery}
+            />
+          </Show>
 
           <Show
             when={

@@ -148,28 +148,8 @@ export function useVocabPageState(
     if (user) {
       const data = foldersAndDecks() as FoldersAndDecksData | undefined
       if (data && data.decks.length > 0) {
-        const selectedDeck = deckSelection.selectedUserDeck()
-        const hasTemporaryDeck =
-          selectedDeck &&
-          selectedDeck.deck_id < 0 &&
-          selectedDeck.source === "built-in"
-
-        if (hasTemporaryDeck) {
-          const realDeck = data.decks.find(
-            (deck) =>
-              deck.source === "built-in" &&
-              deck.original_deck_id === selectedDeck.original_deck_id &&
-              deck.deck_id > 0,
-          )
-
-          if (realDeck && realDeck.deck_id !== selectedDeck.deck_id) {
-            setUserData(reconcile(data, { key: "deck_id" }))
-            setCurrentViewFolderId(realDeck.folder_id)
-            deckSelection.handleUserDeckSelect(realDeck)
-          }
-        } else {
-          setUserData(reconcile(data, { key: "deck_id" }))
-        }
+        // Simply sync the data to local state
+        setUserData(reconcile(data, { key: "deck_id" }))
       }
     }
   })

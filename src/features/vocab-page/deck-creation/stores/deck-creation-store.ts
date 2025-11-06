@@ -9,7 +9,7 @@ import {
 
 // Optional initial data for editing existing decks
 export interface DeckCreationInitialData {
-  deckId?: number
+  deckId?: string
   name?: string
   description?: string
   folderId?: string

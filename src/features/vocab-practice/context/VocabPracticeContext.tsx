@@ -54,7 +54,7 @@ type VocabPracticeContextType = {
   mode: PracticeMode
   userId: string | null
   moduleId?: string
-  deckId?: number
+  deckId?: string
 
   // SRS service state
   activeService: () => SRSServiceType
@@ -94,7 +94,7 @@ type ContextProviderProps = {
   userId: string | null
   mode: PracticeMode
   moduleId?: string
-  deckId?: number
+  deckId?: string
 }
 
 export function VocabPracticeContextProvider(props: ContextProviderProps) {

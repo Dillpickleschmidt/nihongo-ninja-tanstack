@@ -143,7 +143,7 @@ export function createSingleTransaction(
  * Helper function to create a deck update transaction
  */
 export function createDeckUpdateTransaction(
-  deckId: number,
+  deckId: string,
   updates: { name?: string; folderId?: number | null },
 ): EditTransaction {
   const transaction = new EditTransaction()
@@ -174,7 +174,7 @@ export function createFolderUpdateTransaction(
 /**
  * Helper function to create a deck deletion transaction
  */
-export function createDeckDeletionTransaction(deckId: number): EditTransaction {
+export function createDeckDeletionTransaction(deckId: string): EditTransaction {
   const transaction = new EditTransaction()
   transaction.add({
     type: "delete-deck",
@@ -204,7 +204,7 @@ export function createFolderDeletionTransaction(
  * and optionally renames it at the same time
  */
 export function createDeckMoveTransaction(
-  deckId: number,
+  deckId: string,
   targetFolderId: number | null,
   newName?: string,
 ): EditTransaction {

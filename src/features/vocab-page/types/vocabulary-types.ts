@@ -69,7 +69,7 @@ export function dbItemToVocabularyItem(
 // For built-in vocabulary imports only
 export function builtInVocabToDBInsert(
   item: VocabularyItem,
-  deckId: number,
+  deckId: string,
 ): DBVocabularyItemInsert {
   return {
     deck_id: deckId,
@@ -108,7 +108,7 @@ export function vocabularyItemToFormData(
 
 export function formDataToDBInsert(
   formData: VocabItemFormData,
-  deckId: number,
+  deckId: string,
 ): DBVocabularyItemInsert | null {
   if (
     !formData.word.trim() ||
@@ -180,7 +180,7 @@ export function createEmptyVocabItemFormData(): VocabItemFormData {
 // Helper to convert multiple built-in VocabularyItems to DB inserts
 export function builtInVocabItemsToDBInserts(
   items: VocabularyItem[],
-  deckId: number,
+  deckId: string,
 ): DBVocabularyItemInsert[] {
   return items.map((item) => builtInVocabToDBInsert(item, deckId))
 }

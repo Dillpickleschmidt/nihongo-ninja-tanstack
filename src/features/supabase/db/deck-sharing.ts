@@ -9,7 +9,7 @@ import { getUserFoldersAndDecks } from "./folder"
  * Creates a public share for a user's deck
  */
 export const createDeckShareServerFn = createServerFn({ method: "POST" })
-  .inputValidator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: string }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -53,7 +53,7 @@ export const createDeckShareServerFn = createServerFn({ method: "POST" })
  * Removes public sharing for a user's deck
  */
 export const removeDeckShareServerFn = createServerFn({ method: "POST" })
-  .inputValidator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: string }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -73,7 +73,7 @@ export const removeDeckShareServerFn = createServerFn({ method: "POST" })
  * Checks if a user's deck is currently shared
  */
 export const getDeckShareStatusServerFn = createServerFn({ method: "POST" })
-  .inputValidator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: string }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -142,7 +142,7 @@ export const getSharedDecksServerFn = createServerFn({ method: "GET" })
  * Gets detailed information about a shared deck for preview before import
  */
 export const getSharedDeckInfoServerFn = createServerFn({ method: "POST" })
-  .inputValidator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: string }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
 
@@ -187,7 +187,7 @@ export const getSharedDeckInfoServerFn = createServerFn({ method: "POST" })
  */
 export const importSharedDeckServerFn = createServerFn({ method: "POST" })
   .inputValidator(
-    (data: { deck_id: number; target_folder_id?: number | null }) => data,
+    (data: { deck_id: string; target_folder_id?: number | null }) => data,
   )
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()

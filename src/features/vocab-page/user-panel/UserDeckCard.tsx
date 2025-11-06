@@ -220,9 +220,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
             title={
               props.deck.source === "built-in"
                 ? "Built-in deck editing is disabled. Right click and make a copy instead."
-                : props.deck.deck_id < 0
-                  ? "Deck is still syncing. Refresh to enable editing."
-                  : "Edit deck"
+                : "Edit deck"
             }
           >
             <Button
@@ -231,16 +229,13 @@ export function UserDeckCard(props: UserDeckCardProps) {
               class="h-6 w-6 p-0"
               classList={{
                 "hover:cursor-pointer":
-                  props.deck.source !== "built-in" && props.deck.deck_id > 0,
+                  props.deck.source !== "built-in",
                 "cursor-not-allowed opacity-50 pointer-events-none":
-                  props.deck.source === "built-in" || props.deck.deck_id < 0,
+                  props.deck.source === "built-in",
               }}
               onClick={(e) => {
                 e.stopPropagation()
-                if (
-                  props.deck.source !== "built-in" &&
-                  props.deck.deck_id > 0
-                ) {
+                if (props.deck.source !== "built-in") {
                   props.onEdit?.(props.deck)
                 }
               }}
@@ -310,10 +305,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
               disabled={props.deck.source === "built-in"}
               class="disabled:cursor-not-allowed disabled:opacity-50"
               onClick={() => {
-                if (
-                  props.deck.source !== "built-in" &&
-                  props.deck.deck_id > 0
-                ) {
+                if (props.deck.source !== "built-in") {
                   props.onEdit?.(props.deck)
                 }
               }}
@@ -386,7 +378,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
             </ContextMenuPortal>
           </ContextMenuSub>
           <ContextMenuItem
-            disabled={props.deck.deck_id < 0 || isSharing()}
+            disabled={isSharing()}
             class="disabled:cursor-not-allowed disabled:opacity-50"
             onClick={() => {
               if (props.deck.source === "built-in") {

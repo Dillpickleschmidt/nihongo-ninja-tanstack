@@ -23,7 +23,6 @@ const VOCAB_TARGET_SIZE = 15
 // Types
 export interface VocabWord {
   word: string
-  baseForm: string
   furigana?: string
   english?: string
   pos: POS
@@ -54,7 +53,6 @@ export interface VocabDeckPreview {
   previewId: string
   words: Array<{
     word: string
-    baseForm: string
     furigana?: string
     english?: string
   }>

@@ -37,11 +37,11 @@ export const queryKeys = {
     ["hierarchy-svgs", characters] as const,
 
   // User Decks
-  userDeckInfo: (deckId: number) => ["user-deck-info", deckId] as const,
-  userDeckVocabulary: (deckId: number) =>
+  userDeckInfo: (deckId: string) => ["user-deck-info", deckId] as const,
+  userDeckVocabulary: (deckId: string) =>
     ["user-deck-vocabulary", deckId] as const,
   userDeckHierarchy: (
-    deckId: number,
+    deckId: string,
     mode: PracticeMode,
     userOverrides: any,
     isLiveService: boolean,

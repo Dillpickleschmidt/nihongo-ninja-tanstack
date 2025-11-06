@@ -1,116 +1,44 @@
 import { Show, createMemo, createSignal } from "solid-js"
-import { useCustomQuery } from "@/hooks/useCustomQuery"
-import {
-  practiceHierarchyQueryOptions,
-  moduleVocabularyQueryOptions,
-  practiceModuleFSRSCardsQueryOptions,
-  practiceDueFSRSCardsQueryOptions,
-} from "@/query/query-options"
 import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
 import { SimpleVocabularyList } from "./SimpleView"
 import { FullDependencyView } from "./FullView"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import type { VocabularyItem } from "@/data/types"
+import type { UseQueryResult } from "@tanstack/solid-query"
+import type { DefaultError } from "@tanstack/query-core"
 
 type DependencyOverviewProps = {
   class?: string
+  /** Vocabulary query from parent */
+  vocabularyQuery: UseQueryResult<any, DefaultError>
+  /** Hierarchy query from parent */
+  hierarchyQuery: UseQueryResult<any, DefaultError>
+  /** FSRS cards query from parent */
+  fsrsCardsQuery: UseQueryResult<any, DefaultError>
+  /** Due FSRS cards query from parent */
+  dueCardsQuery: UseQueryResult<any, DefaultError>
 }
 
 /**
  * DependencyOverview
  *
  * Minimal first draft visualization for:
- * - Core counts: Vocabulary, Kanji, Radicals (scoped to this practice module)
+ * - Core counts: Vocabulary, Kanji, Radicals (scoped to this practice module/deck)
  * - Tabs:
  *   - Vocabulary (vocab grouped with kanji chips)
  *   - Kanji → Radicals (kanji cards with radical chips and dependent vocab count)
  *
  * Notes:
  * - In live-service or spellings mode, hierarchy will be flat (no kanji/radicals).
- * - This component reuses cached queries from ModuleStartPage and is safe to mount alongside it.
  */
 export default function DependencyOverview(props: DependencyOverviewProps) {
-  const {
-    moduleId,
-    mode,
-    activeService,
-    settingsQuery,
-    userId,
-    prerequisitesEnabled,
-  } = useVocabPracticeContext()
-
-  // Queries (will hit cache if ModuleStartPage already prefetched)
-  const vocabularyQuery = useCustomQuery(() =>
-    moduleVocabularyQueryOptions(moduleId!),
-  )
-
-  const hierarchyQuery = useCustomQuery(() => {
-    const vocabData = vocabularyQuery.data
-    // Skip hierarchy when prerequisites are disabled or no vocab data
-    if (!vocabData || !prerequisitesEnabled()) {
-      return {
-        queryKey: ["disabled-module-hierarchy"] as const,
-        queryFn: () =>
-          Promise.resolve({ vocabulary: [], kanji: [], radicals: [] }),
-        enabled: false,
-      }
-    }
-
-    return practiceHierarchyQueryOptions(
-      moduleId!,
-      vocabData,
-      mode,
-      settingsQuery.data!["override-settings"],
-      activeService() !== "local",
-    )
-  })
-
-  // Extract all slugs for FSRS queries
-  const allHierarchySlugs = createMemo(() => {
-    const h = hierarchyQuery.data
-    // When prerequisites enabled, use full hierarchy
-    if (h) {
-      const slugs = new Set<string>()
-      h.vocabulary?.forEach((v: any) => slugs.add(v.word))
-      h.kanji?.forEach((k: any) => slugs.add(k.kanji))
-      h.radicals?.forEach((r: any) => slugs.add(r.radical))
-      return Array.from(slugs)
-    }
-
-    // When prerequisites disabled, just get vocabulary slugs
-    const vocab = vocabularyQuery.data
-    if (vocab) {
-      return vocab.map((v: any) => v.word)
-    }
-
-    return []
-  })
-
-  // FSRS queries - enabled when we have data (hierarchy or vocabulary) and using local service
-  const fsrsCardsQuery = useCustomQuery(() => {
-    const slugs = allHierarchySlugs()
-    const hasData = slugs.length > 0
-
-    return practiceModuleFSRSCardsQueryOptions(
-      userId,
-      slugs,
-      mode,
-      hasData && activeService() === "local" && !!userId,
-    )
-  })
-
-  const dueCardsQuery = useCustomQuery(() =>
-    practiceDueFSRSCardsQueryOptions(
-      userId,
-      activeService() === "local" && !!userId,
-    ),
-  )
+  const { activeService, prerequisitesEnabled } = useVocabPracticeContext()
 
   // Create FSRS data map for efficient lookups
   const fsrsMap = createMemo(() => {
     const map = new Map<string, FSRSCardData>()
-    if (!fsrsCardsQuery.data) return map
-    for (const card of fsrsCardsQuery.data) {
+    if (!props.fsrsCardsQuery.data) return map
+    for (const card of props.fsrsCardsQuery.data) {
       const key = `${card.type}:${card.practice_item_key}`
       map.set(key, card)
     }
@@ -120,8 +48,8 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
   // Create vocabulary map for efficient lookups
   const vocabularyMap = createMemo(() => {
     const map = new Map<string, VocabularyItem>()
-    if (!vocabularyQuery.data) return map
-    for (const vocab of vocabularyQuery.data) {
+    if (!props.vocabularyQuery.data) return map
+    for (const vocab of props.vocabularyQuery.data) {
       map.set(vocab.word, vocab)
     }
     return map
@@ -134,10 +62,10 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
   )
 
   // Derived data and indexes
-  const vocabList = () => hierarchyQuery.data?.vocabulary
+  const vocabList = () => props.hierarchyQuery.data?.vocabulary
   const kanjiToRadicals = () => {
     const map = new Map<string, string[]>()
-    const h = hierarchyQuery.data
+    const h = props.hierarchyQuery.data
     if (!h) return map
     for (const k of h.kanji ?? []) {
       map.set(k.kanji, k.radicalComponents || [])
@@ -146,7 +74,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
   }
   const vocabToKanji = () => {
     const map = new Map<string, string[]>()
-    const h = hierarchyQuery.data
+    const h = props.hierarchyQuery.data
     if (!h) return map
     for (const v of h.vocabulary ?? []) {
       map.set(v.word, v.kanjiComponents || [])
@@ -175,7 +103,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
   }
   const kanjiSet = () => {
     const set = new Set<string>()
-    const h = hierarchyQuery.data
+    const h = props.hierarchyQuery.data
     if (!h) return set
     for (const v of h.vocabulary ?? []) {
       for (const k of v.kanjiComponents ?? []) {
@@ -197,7 +125,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
     ():
       | { vocabulary: number; kanji: number; radicals: number; total: number }
       | undefined => {
-      if (!fsrsCardsQuery.data || activeService() !== "local") {
+      if (!props.fsrsCardsQuery.data || activeService() !== "local") {
         return undefined
       }
 
@@ -244,7 +172,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
 
   const filteredVocabAll = () => {
     const vocab = vocabList()
-    if (!vocab) return vocabularyQuery.data // Fallback to raw vocab while hierarchy loads
+    if (!vocab) return props.vocabularyQuery.data // Fallback to raw vocab while hierarchy loads
     const kSel = selectedKanji()
     if (!kSel) return vocab
     return vocab.filter((v) => v.kanjiComponents?.includes(kSel))
@@ -267,7 +195,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
   }
 
   const isFlatHierarchy = () => {
-    const h = hierarchyQuery.data
+    const h = props.hierarchyQuery.data
     if (!h) return false
     // Live service or spellings mode produce empty kanji/radicals in queryFn
     return (h.kanji?.length ?? 0) === 0 && (h.radicals?.length ?? 0) === 0
@@ -283,11 +211,13 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
     setSelectedRadical((prev) => (prev === r ? null : r))
   }
 
+  const { mode } = useVocabPracticeContext()
+
   return (
     <div class={`space-y-4 ${props.class || ""}`}>
       {/* Loading/Error */}
       <Show
-        when={!vocabularyQuery.isPending}
+        when={!props.vocabularyQuery.isPending}
         fallback={
           <div class="bg-card/40 border-card-foreground/70 flex items-center justify-center rounded-xl border p-8">
             <span class="text-muted-foreground text-sm">
@@ -302,7 +232,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
         }
       >
         <Show
-          when={!vocabularyQuery.isError}
+          when={!props.vocabularyQuery.isError}
           fallback={
             <div class="bg-destructive/10 border-destructive/40 text-destructive rounded-xl border p-4">
               Failed to load dependency data.
@@ -313,17 +243,17 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
             when={prerequisitesEnabled()}
             fallback={
               <SimpleVocabularyList
-                vocabularyData={vocabularyQuery.data!}
+                vocabularyData={props.vocabularyQuery.data!}
                 fsrsMap={fsrsMap()}
-                fsrsCardsQuery={fsrsCardsQuery}
+                fsrsCardsQuery={props.fsrsCardsQuery}
                 mode={mode}
               />
             }
           >
             <FullDependencyView
-              vocabularyQuery={vocabularyQuery}
-              hierarchyQuery={hierarchyQuery}
-              fsrsCardsQuery={fsrsCardsQuery}
+              vocabularyQuery={props.vocabularyQuery}
+              hierarchyQuery={props.hierarchyQuery}
+              fsrsCardsQuery={props.fsrsCardsQuery}
               vocabList={vocabList}
               filteredVocabList={filteredVocabAll}
               kanjiSet={kanjiSet()}

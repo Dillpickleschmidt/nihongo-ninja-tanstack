@@ -28,6 +28,7 @@ import { Route as GuidesComparisonRouteImport } from './routes/guides/comparison
 import { Route as ExternalResourcesResourceRouteImport } from './routes/external-resources/$resource'
 import { Route as ApiUploadOverrideRouteImport } from './routes/api/upload-override'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
+import { Route as HomeVideoRouteImport } from './routes/_home/video'
 import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
 import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
@@ -177,6 +178,11 @@ const ApiUploadOverrideRoute = ApiUploadOverrideRouteImport.update({
 const HomeVocabRoute = HomeVocabRouteImport.update({
   id: '/vocab',
   path: '/vocab',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeVideoRoute = HomeVideoRouteImport.update({
+  id: '/video',
+  path: '/video',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeSettingsRoute = HomeSettingsRouteImport.update({
@@ -488,6 +494,7 @@ export interface FileRoutesByFullPath {
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
+  '/video': typeof HomeVideoRoute
   '/vocab': typeof HomeVocabRoute
   '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
@@ -560,6 +567,7 @@ export interface FileRoutesByTo {
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
+  '/video': typeof HomeVideoRoute
   '/vocab': typeof HomeVocabRoute
   '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
@@ -635,6 +643,7 @@ export interface FileRoutesById {
   '/_home/grammar-notes': typeof HomeGrammarNotesRoute
   '/_home/review': typeof HomeReviewRoute
   '/_home/settings': typeof HomeSettingsRoute
+  '/_home/video': typeof HomeVideoRoute
   '/_home/vocab': typeof HomeVocabRoute
   '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
@@ -710,6 +719,7 @@ export interface FileRouteTypes {
     | '/grammar-notes'
     | '/review'
     | '/settings'
+    | '/video'
     | '/vocab'
     | '/api/upload-override'
     | '/external-resources/$resource'
@@ -782,6 +792,7 @@ export interface FileRouteTypes {
     | '/grammar-notes'
     | '/review'
     | '/settings'
+    | '/video'
     | '/vocab'
     | '/api/upload-override'
     | '/external-resources/$resource'
@@ -856,6 +867,7 @@ export interface FileRouteTypes {
     | '/_home/grammar-notes'
     | '/_home/review'
     | '/_home/settings'
+    | '/_home/video'
     | '/_home/vocab'
     | '/api/upload-override'
     | '/external-resources/$resource'
@@ -1074,6 +1086,13 @@ declare module '@tanstack/solid-router' {
       path: '/vocab'
       fullPath: '/vocab'
       preLoaderRoute: typeof HomeVocabRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/video': {
+      id: '/_home/video'
+      path: '/video'
+      fullPath: '/video'
+      preLoaderRoute: typeof HomeVideoRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/settings': {
@@ -1481,6 +1500,7 @@ interface HomeRouteChildren {
   HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
   HomeReviewRoute: typeof HomeReviewRoute
   HomeSettingsRoute: typeof HomeSettingsRoute
+  HomeVideoRoute: typeof HomeVideoRoute
   HomeVocabRoute: typeof HomeVocabRoute
   HomeIndexRoute: typeof HomeIndexRoute
   HomeTextbookIdChapterSlugRoute: typeof HomeTextbookIdChapterSlugRoute
@@ -1497,6 +1517,7 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeGrammarNotesRoute: HomeGrammarNotesRoute,
   HomeReviewRoute: HomeReviewRoute,
   HomeSettingsRoute: HomeSettingsRoute,
+  HomeVideoRoute: HomeVideoRoute,
   HomeVocabRoute: HomeVocabRoute,
   HomeIndexRoute: HomeIndexRoute,
   HomeTextbookIdChapterSlugRoute: HomeTextbookIdChapterSlugRoute,

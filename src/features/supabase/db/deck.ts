@@ -60,7 +60,7 @@ export const createUserDeckServerFn = createServerFn({ method: "POST" })
 export const updateUserDeckServerFn = createServerFn({ method: "POST" })
   .inputValidator(
     (data: {
-      deck_id: number
+      deck_id: string
       deck_name?: string
       deck_description?: string | null
       folder_id?: number | null
@@ -272,7 +272,7 @@ export const getDeckIdByOriginalIdServerFn = createServerFn({ method: "POST" })
   })
 
 export async function getVocabForDeck(
-  deck_id: number,
+  deck_id: string,
 ): Promise<VocabularyItem[]> {
   const supabase = createSupabaseClient()
 
@@ -290,7 +290,7 @@ export async function getVocabForDeck(
  * Gets deck information by deck_id for practice sessions
  */
 export const getDeckInfoServerFn = createServerFn({ method: "POST" })
-  .inputValidator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: string }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -319,7 +319,7 @@ export const getDeckInfoServerFn = createServerFn({ method: "POST" })
  */
 export async function insertVocabularyItems(
   vocabularyItems: VocabularyItem[],
-  deckId: number,
+  deckId: string,
 ): Promise<void> {
   if (vocabularyItems.length === 0) return
 

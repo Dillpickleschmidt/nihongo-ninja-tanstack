@@ -166,25 +166,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
 
   // Delete deck handler
   const handleDeleteDeck = async (deck: UserDeck) => {
-    // For built-in decks with temp IDs, get the real deck_id from database
-    if (
-      deck.deck_id < 0 &&
-      deck.source === "built-in" &&
-      deck.original_deck_id
-    ) {
-      try {
-        const realDeckId = await getDeckIdByOriginalIdServerFn({
-          data: { original_deck_id: deck.original_deck_id },
-        })
-        editOperations.deleteDeck(realDeckId)
-        return
-      } catch (error) {
-        alert("Deck is still syncing. Please wait a moment and try again.")
-        return
-      }
-    }
-
-    // Original logic for normal decks
+    // All deck IDs are now strings from the database, so use them directly
     editOperations.deleteDeck(deck.deck_id)
   }
 

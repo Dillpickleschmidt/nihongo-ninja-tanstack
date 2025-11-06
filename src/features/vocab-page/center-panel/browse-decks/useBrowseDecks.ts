@@ -8,7 +8,7 @@ import {
 import type { User } from "@supabase/supabase-js"
 
 export type SharedDeck = {
-  deck_id: number
+  deck_id: string
   shared_at: string
   shared_by: string
   import_count: number
@@ -37,10 +37,10 @@ export function useBrowseDecks(props: UseBrowseDecksProps) {
   const [error, setError] = createSignal<string | null>(null)
   const [searchQuery, setSearchQuery] = createSignal("")
   const [sortBy, setSortBy] = createSignal<SortOption>("recent")
-  const [importingDeckIds, setImportingDeckIds] = createSignal<Set<number>>(
+  const [importingDeckIds, setImportingDeckIds] = createSignal<Set<string>>(
     new Set(),
   )
-  const [unsharingDeckIds, setUnsharingDeckIds] = createSignal<Set<number>>(
+  const [unsharingDeckIds, setUnsharingDeckIds] = createSignal<Set<string>>(
     new Set(),
   )
 

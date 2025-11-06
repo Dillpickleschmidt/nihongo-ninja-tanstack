@@ -61,10 +61,10 @@ export const DeckNameValidationSchema = z
       z.object({
         deck_name: z.string(),
         folder_id: z.number().nullable(),
-        deck_id: z.number(),
+        deck_id: z.string(),
       }),
     ),
-    excludeId: z.number().optional(),
+    excludeId: z.string().optional(),
   })
   .refine((data) => {
     const targetFolderId =
@@ -118,7 +118,7 @@ export function validateDeckNameUnique(
   name: string,
   folderId: number | null,
   decks: UserDeck[],
-  excludeDeckId?: number,
+  excludeDeckId?: string,
 ): ValidationResult {
   const duplicate = decks.find(
     (deck) =>
@@ -198,7 +198,7 @@ export function validateDeckComplete(
   name: string,
   folderId: number | null,
   decks: UserDeck[],
-  excludeDeckId?: number,
+  excludeDeckId?: string,
 ): ValidationResult {
   // First validate the name format
   const nameValidation = validateName(name)

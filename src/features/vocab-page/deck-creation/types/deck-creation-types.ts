@@ -24,7 +24,7 @@ export interface DeckCreationStore {
   }
   // Original data for edit mode comparison
   original: {
-    deckId?: number
+    deckId?: string
     name: string
     description: string
     folderId: string

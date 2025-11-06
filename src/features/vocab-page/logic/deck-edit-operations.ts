@@ -14,7 +14,7 @@ import {
 // Operation type definitions
 export interface UpdateDeckOperation {
   type: "update-deck"
-  deckId: number
+  deckId: string
   updates: {
     name?: string
     folderId?: number | null
@@ -33,7 +33,7 @@ export interface UpdateFolderOperation {
 
 export interface DeleteDeckOperation {
   type: "delete-deck"
-  deckId: number
+  deckId: string
 }
 
 export interface DeleteFolderOperation {
@@ -44,7 +44,7 @@ export interface DeleteFolderOperation {
 
 export interface UpdateDeckVocabularyOperation {
   type: "update-deck-vocabulary"
-  deckId: number
+  deckId: string
   vocabularyItems: DBVocabularyItemInsert[]
 }
 

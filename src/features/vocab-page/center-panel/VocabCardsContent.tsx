@@ -56,7 +56,7 @@ function VocabularyPreview(props: VocabularyPreviewProps) {
       if (builtInId) {
         // Use stable built-in ID for caching (survives import process)
         return `builtin:${builtInId}`
-      } else if (props.selectedDeck && props.selectedDeck.deck_id > 0) {
+      } else if (props.selectedDeck) {
         // Use database ID for user-created decks
         return `deck:${props.selectedDeck.deck_id}`
       }
@@ -74,7 +74,7 @@ function VocabularyPreview(props: VocabularyPreviewProps) {
           return []
         }
         return getVocabularyForSet(module.vocab_set_ids)
-      } else if (props.selectedDeck && props.selectedDeck.deck_id > 0) {
+      } else if (props.selectedDeck) {
         // User decks: load from database
         return getVocabForDeck(props.selectedDeck.deck_id)
       }

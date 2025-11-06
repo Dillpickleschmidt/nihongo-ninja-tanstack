@@ -210,7 +210,7 @@ export const hierarchySvgsQueryOptions = (characters: string[]) =>
 /**
  * Get user deck info
  */
-export const userDeckInfoQueryOptions = (deckId: number) =>
+export const userDeckInfoQueryOptions = (deckId: string) =>
   queryOptions({
     queryKey: queryKeys.userDeckInfo(deckId),
     queryFn: () => getDeckInfoServerFn({ data: { deck_id: deckId } }),
@@ -219,7 +219,7 @@ export const userDeckInfoQueryOptions = (deckId: number) =>
 /**
  * Get vocabulary for a user deck
  */
-export const userDeckVocabularyQueryOptions = (deckId: number) =>
+export const userDeckVocabularyQueryOptions = (deckId: string) =>
   queryOptions({
     queryKey: queryKeys.userDeckVocabulary(deckId),
     queryFn: () => getVocabForDeck(deckId),
@@ -229,7 +229,7 @@ export const userDeckVocabularyQueryOptions = (deckId: number) =>
  * Get hierarchy for a user deck
  */
 export const userDeckHierarchyQueryOptions = (
-  deckId: number,
+  deckId: string,
   vocabulary: VocabularyItem[],
   mode: PracticeMode,
   userOverrides: any,

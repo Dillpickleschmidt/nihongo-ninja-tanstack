@@ -14,7 +14,7 @@ export const getVocabulary = createServerFn({ method: "GET" })
     (data: {
       keys: string[]
       userOverrides?: OverrideSettings
-      deck_id?: number
+      deck_id?: string
     }) => data,
   )
   .handler(

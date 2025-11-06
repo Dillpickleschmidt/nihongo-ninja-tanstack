@@ -12,7 +12,7 @@ interface UseEditOperationsProps {
   setUserData: SetStoreFunction<{
     folders: DeckFolder[]
     decks: UserDeck[]
-    shareStatus: Record<number, boolean>
+    shareStatus: Record<string, boolean>
   }>
   refetchFoldersAndDecks: () => void
   user?: User | null
@@ -66,7 +66,7 @@ export function useEditOperations(props: UseEditOperationsProps) {
 
   // Individual edit operation helpers
   const editDeck = async (
-    deckId: number,
+    deckId: string,
     updates: { name?: string; folderId?: number | null },
   ) => {
     const transaction = new EditTransaction()
@@ -91,7 +91,7 @@ export function useEditOperations(props: UseEditOperationsProps) {
     await executeEdit(transaction)
   }
 
-  const deleteDeck = async (deckId: number) => {
+  const deleteDeck = async (deckId: string) => {
     const transaction = new EditTransaction()
     transaction.add({
       type: "delete-deck",
