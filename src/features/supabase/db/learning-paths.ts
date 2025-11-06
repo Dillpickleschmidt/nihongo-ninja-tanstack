@@ -1,5 +1,15 @@
 import type { POS } from "@/features/sentence-practice/kagome/types/kagome"
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
+import type { BuiltInDeck } from "@/data/types"
+
+const MODULES_PER_CHAPTER = 30
+
+type TranscriptLine = {
+  line_id: number
+  text: string
+  english: string
+  timestamp?: string
+}
 
 // Upload learning path to database with vocabulary decks and module sources
 export interface UploadLearningPathInput {
@@ -94,5 +104,74 @@ export async function getLearningPathData(pathId: string): Promise<{
   return {
     transcript: transcript as LearningPathTranscript,
     modules: (modules || []) as LearningPathModuleSource[],
+  }
+}
+
+/**
+ * Gets chapters for a generated learning path from database.
+ * Segments modules into chapters (MODULES_PER_CHAPTER per chapter).
+ */
+export async function getChaptersAsync(pathId: string): Promise<BuiltInDeck[]> {
+  const supabase = createSupabaseClient()
+
+  const { data: moduleSources } = await supabase
+    .from("learning_path_module_sources")
+    .select("module_id")
+    .eq("path_id", pathId)
+
+  if (!moduleSources?.length) return []
+
+  const moduleIds = moduleSources.map((m) => m.module_id)
+  const chapters: BuiltInDeck[] = []
+
+  for (let i = 0; i < moduleIds.length; i += MODULES_PER_CHAPTER) {
+    const chapterNum = Math.floor(i / MODULES_PER_CHAPTER) + 1
+    chapters.push({
+      slug: `chapter-${chapterNum}`,
+      title: `Chapter ${chapterNum}`,
+      learning_path_items: moduleIds.slice(i, i + MODULES_PER_CHAPTER),
+    })
+  }
+
+  return chapters
+}
+
+/**
+ * Gets transcript source examples for why a module was included in a learning path.
+ */
+export async function getModuleSources(
+  pathId: string,
+  moduleId: string,
+): Promise<{
+  sourceType: "grammar" | "vocabulary"
+  examples: TranscriptLine[]
+} | null> {
+  const supabase = createSupabaseClient()
+
+  const { data: moduleSource } = await supabase
+    .from("learning_path_module_sources")
+    .select("source_type, transcript_line_ids")
+    .eq("path_id", pathId)
+    .eq("module_id", moduleId)
+    .single()
+
+  if (!moduleSource) return null
+
+  const { data: transcript } = await supabase
+    .from("learning_path_transcripts")
+    .select("transcript_data")
+    .eq("path_id", pathId)
+    .single()
+
+  if (!transcript) return null
+
+  const transcriptLines = transcript.transcript_data as TranscriptLine[]
+  const examples = moduleSource.transcript_line_ids
+    .map((idx) => transcriptLines[idx])
+    .filter(Boolean)
+
+  return {
+    sourceType: moduleSource.source_type as "grammar" | "vocabulary",
+    examples,
   }
 }
