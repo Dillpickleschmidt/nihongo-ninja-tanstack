@@ -9,6 +9,14 @@ export function analyze_batch(token_arrays_js: any): any;
  * Analyze single subtitle's tokens
  */
 export function analyze_single(tokens_js: any): any;
+/**
+ * Analyze single subtitle's tokens with vocabulary extraction
+ */
+export function analyze_single_all(tokens_js: any): any;
+/**
+ * Analyze batch of subtitles, returns array of match arrays
+ */
+export function analyze_batch_all(token_arrays_js: any): any;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
@@ -17,6 +25,8 @@ export interface InitOutput {
   readonly init: () => void;
   readonly analyze_batch: (a: any) => [number, number, number];
   readonly analyze_single: (a: any) => [number, number, number];
+  readonly analyze_single_all: (a: any) => [number, number, number];
+  readonly analyze_batch_all: (a: any) => [number, number, number];
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_exn_store: (a: number) => void;
