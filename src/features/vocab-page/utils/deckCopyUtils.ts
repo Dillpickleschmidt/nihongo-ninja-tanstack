@@ -1,27 +1,15 @@
 // features/vocab-page/utils/deckCopyUtils.ts
 
 import { getVocabularyForSet } from "@/data/utils/vocab"
+import { extractSegmentText } from "@/data/utils/text"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import {
   getVocabForDeck,
   createCustomDeckServerFn,
 } from "@/features/supabase/db/deck"
-import type { VocabItemFormData } from "@/features/vocab-page/types/vocabulary-types"
-import { isVerbPartOfSpeech } from "@/features/vocab-page/types/vocabulary-types"
+import type { VocabItemFormData } from "@/features/vocab-page/types/vocabulary"
+import { isVerbPartOfSpeech } from "@/features/vocab-page/types/vocabulary"
 import type { VocabularyItem } from "@/data/types"
-
-/**
- * Helper to extract text from example sentence items that can be strings or objects with 't' property
- */
-function extractText(items: (string | { t: string })[]): string {
-  if (!items || items.length === 0) return ""
-  return items
-    .map((item) => {
-      if (typeof item === "string") return item
-      return item.t || ""
-    })
-    .join("")
-}
 
 /**
  * Converts a VocabularyItem to VocabItemFormData with proper handling of all fields
@@ -41,8 +29,8 @@ function vocabularyItemToFormData(item: VocabularyItem): VocabItemFormData {
       : [],
     examples: item.example_sentences
       ? item.example_sentences.map((ex) => ({
-          japanese: extractText(ex.japanese),
-          english: extractText(ex.english),
+          japanese: extractSegmentText(ex.japanese),
+          english: extractSegmentText(ex.english),
         }))
       : [],
     readingMnemonics: item.mnemonics?.reading

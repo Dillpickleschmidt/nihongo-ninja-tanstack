@@ -1,99 +1,71 @@
 // features/vocab-page/hooks/useVocabPageState.ts
 import { createSignal, createEffect, createResource } from "solid-js"
 import { createStore, reconcile } from "solid-js/store"
-import { type DeferredPromise } from "@tanstack/solid-router"
-import { DEFAULT_EXPANDED_TEXTBOOKS, NEWLY_IMPORTED_TIMEOUT } from "../types"
-import type { ImportRequest, VocabBuiltInDeck, VocabTextbook } from "../types"
-import type { TextbookIDEnum } from "@/data/types"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { userSettingsQueryOptions } from "@/query/query-options"
 import type { FoldersAndDecksData } from "@/features/supabase/db/folder"
 import type { User } from "@supabase/supabase-js"
 import {
   buildBreadcrumbPath,
   getFolderContents,
   getParentFolderId,
-} from "../logic/folder-hierarchy"
+} from "../logic/folder-utils"
 import { getUserFoldersAndDecks } from "@/features/supabase/db/folder"
-import { importBuiltInDeckServerFn } from "@/features/supabase/db/deck"
 import {
   saveFoldersAndDecks,
   loadFoldersAndDecks,
 } from "@/features/vocab-page/storage/sessionStorage"
-import {
-  importDeckWithFolders,
-  isDeckAlreadyImported,
-} from "@/features/vocab-page/logic/deck-import-logic"
 import type { NavTabId } from "@/features/vocab-page/center-panel/CenterNavBar"
-import { useDeckSelection } from "./useDeckSelection"
 
 export function useVocabPageState(
-  importRequest?: ImportRequest | null,
-  initialTextbooks?: [TextbookIDEnum, VocabTextbook][],
-  foldersAndDecksPromise?: DeferredPromise<FoldersAndDecksData>,
-  user?: User | null,
+  foldersAndDecksPromise: Promise<FoldersAndDecksData>,
+  user: User | null,
 ) {
   // === SIGNALS ===
   // Panel state
-  const [leftPanelOpen, setLeftPanelOpen] = createSignal(true)
   const [rightPanelOpen, setRightPanelOpen] = createSignal(true)
+  const [leftPanelOpen, setLeftPanelOpen] = createSignal(true)
 
   // Center panel navigation state
   const [activeNavTab, setActiveNavTab] = createSignal<NavTabId>("vocab-cards")
   const [vocabCardsTabState, setVocabCardsTabState] =
     createSignal<UserDeck | null>(null)
 
-  // Extract expansion data from import request for auto-expansion
-  const expansionData = importRequest?.location
-  const initialExpandedTextbooks = new Set(DEFAULT_EXPANDED_TEXTBOOKS)
-  const initialExpandedChapters = new Set<string>()
-
-  if (expansionData) {
-    initialExpandedTextbooks.add(expansionData.textbookId)
-    initialExpandedChapters.add(expansionData.chapterId)
-  }
-
-  // Expansion state
-  const [expandedTextbooks, setExpandedTextbooks] = createSignal<Set<string>>(
-    initialExpandedTextbooks,
-  )
-  const [expandedChapters, setExpandedChapters] = createSignal<Set<string>>(
-    initialExpandedChapters,
-  )
-
   // Folder/deck data (immediate UI updates)
   const initialLocalData = user
     ? { folders: [], decks: [], shareStatus: {} }
     : { ...loadFoldersAndDecks(), shareStatus: {} }
   const [userData, setUserData] = createStore(initialLocalData)
-  const [newlyImportedDecks, setNewlyImportedDecks] = createSignal<Set<string>>(
-    new Set(),
+
+  // Get settings for active learning path
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(user?.id || null),
+  )
+
+  // Deck selection state
+  const [selectedUserDeck, setSelectedUserDeck] = createSignal<UserDeck | null>(
+    null,
   )
 
   // Enhanced tab change handler
   const handleTabChange = (newTab: NavTabId) => {
     if (activeNavTab() === "vocab-cards" && newTab !== "vocab-cards") {
       // Leaving vocab-cards: save whatever the current state is
-      setVocabCardsTabState(deckSelection.selectedUserDeck())
+      setVocabCardsTabState(selectedUserDeck())
     }
 
     if (newTab === "vocab-cards") {
       // Entering vocab-cards: only restore saved state if nothing is currently selected
-      if (
-        vocabCardsTabState() &&
-        !deckSelection.selectedUserDeck() &&
-        !deckSelection.selectedBuiltInDeck()
-      ) {
-        deckSelection.handleUserDeckSelect(vocabCardsTabState()!)
+      if (vocabCardsTabState() && !selectedUserDeck()) {
+        setSelectedUserDeck(vocabCardsTabState()!)
       }
     } else {
       // On other tabs: always deselect
-      deckSelection.handleDeselect()
+      setSelectedUserDeck(null)
     }
 
     setActiveNavTab(newTab)
   }
-
-  // Deck selection hook
-  const deckSelection = useDeckSelection(handleTabChange, user?.id || null)
 
   // Folder navigation state (which folder user is viewing)
   const [currentViewFolderId, setCurrentViewFolderId] = createSignal<
@@ -111,11 +83,6 @@ export function useVocabPageState(
     },
   )
 
-  // Use pre-loaded textbooks from server
-  const [textbooks, setTextbooks] = createSignal<
-    [TextbookIDEnum, VocabTextbook][]
-  >(initialTextbooks || [])
-
   // === COMPUTED VALUES ===
   // Folder navigation computations
   const viewBreadcrumbPath = () =>
@@ -124,23 +91,12 @@ export function useVocabPageState(
     getFolderContents(userData.folders, userData.decks, currentViewFolderId())
   const canNavigateUp = () => currentViewFolderId() !== null
 
-  const textbooksWithImportStatus = () => {
-    const tb = textbooks()
-    if (!tb) return []
-    return tb.map(([textbookId, textbook]) => [
-      textbookId,
-      {
-        ...textbook,
-        chapters: textbook.chapters.map((chapter) => ({
-          ...chapter,
-          decks: chapter.decks.map((deck) => ({
-            ...deck,
-            isImported: isDeckAlreadyImported(userData.decks, deck.id),
-          })),
-        })),
-      },
-    ]) as [TextbookIDEnum, VocabTextbook][]
-  }
+  // Get active learning path ID from settings
+  const activeLearningPathId = () =>
+    settingsQuery.data?.["active-learning-path"] || "getting_started"
+
+  // Get active chapter from settings
+  const activeChapter = () => settingsQuery.data?.["active-chapter"] || ""
 
   // === UI SYNC EFFECTS ===
   // Sync database resource data to local signals for signed-in users
@@ -163,25 +119,6 @@ export function useVocabPageState(
     }
   })
 
-  // === HELPER FUNCTIONS ===
-  const toggleTextbook = (textbookId: string) => {
-    setExpandedTextbooks((prev) => {
-      const newSet = new Set(prev)
-      newSet.has(textbookId)
-        ? newSet.delete(textbookId)
-        : newSet.add(textbookId)
-      return newSet
-    })
-  }
-
-  const toggleChapter = (chapterId: string) => {
-    setExpandedChapters((prev) => {
-      const newSet = new Set(prev)
-      newSet.has(chapterId) ? newSet.delete(chapterId) : newSet.add(chapterId)
-      return newSet
-    })
-  }
-
   // Folder navigation actions
   const navigateToParentView = () => {
     const parentId = getParentFolderId(userData.folders, currentViewFolderId())
@@ -195,121 +132,35 @@ export function useVocabPageState(
       setCurrentViewFolderId(deck.folder_id)
     }
 
-    deckSelection.handleUserDeckSelect(deck)
+    setSelectedUserDeck(deck)
+    handleTabChange("vocab-cards")
     setVocabCardsTabState(deck) // Keep vocab-cards state in sync
   }
 
   const handleDeckDeselect = () => {
-    deckSelection.handleDeselect()
+    setSelectedUserDeck(null)
     if (activeNavTab() === "vocab-cards") {
       setVocabCardsTabState(null) // Update vocab-cards state when explicitly deselecting
     }
   }
 
-  // Get stable key for deck tracking
-  const getDeckTrackingKey = (deck: UserDeck) => {
-    return deck.original_deck_id || deck.deck_id.toString()
-  }
-
-  // === UI SYNC LOGIC ===
-  // Optimistic update for immediate UI feedback
-  const updateLocalStateOptimistically = (
-    operation: string,
-    builtInDeck: VocabBuiltInDeck,
-  ) => {
-    const userId = user?.id || "session-user"
-    const localResult = importDeckWithFolders(
-      userData.folders,
-      userData.decks,
-      builtInDeck,
-      textbooks(),
-      userId,
-    )
-
-    setUserData({
-      folders: localResult.folders,
-      decks: localResult.decks,
-      shareStatus: localResult.shareStatus,
-    })
-
-    deckSelection.handleUserDeckSelect(localResult.importedDeck)
-
-    if (localResult.targetFolderId !== null) {
-      setCurrentViewFolderId(localResult.targetFolderId)
-    }
-
-    const importedDeckKey = getDeckTrackingKey(localResult.importedDeck)
-    setNewlyImportedDecks((prev) => new Set([...prev, importedDeckKey]))
-
-    return { localResult, userData }
-  }
-
-  const syncToDatabase = async (
-    builtInDeck: VocabBuiltInDeck,
-    fallbackData: any,
-  ) => {
-    try {
-      if (user) {
-        await importBuiltInDeckServerFn({
-          data: {
-            builtInDeck,
-            textbooks: textbooks(),
-          },
-        })
-        await refetchFoldersAndDecks()
-      } else {
-        saveFoldersAndDecks(userData)
-      }
-    } catch (error) {
-      console.error("Database sync failed:", error)
-      setUserData(fallbackData.userData)
-      deckSelection.handleDeselect()
-      setCurrentViewFolderId(null)
-      alert("Failed to save deck to your account. Please try again.")
-    }
-  }
-
-  // Combined operation (local + background sync)
-  const importDeck = async (builtInDeck: VocabBuiltInDeck) => {
-    const fallbackData = updateLocalStateOptimistically("import", builtInDeck)
-
-    // Background sync (don't await)
-    syncToDatabase(builtInDeck, fallbackData)
-
-    // Remove from newly imported after timeout
-    const importedDeckKey = getDeckTrackingKey(
-      fallbackData.localResult.importedDeck,
-    )
-    setTimeout(() => {
-      setNewlyImportedDecks((prev) => {
-        const newSet = new Set(prev)
-        newSet.delete(importedDeckKey)
-        return newSet
-      })
-    }, NEWLY_IMPORTED_TIMEOUT)
-  }
-
   return {
     // Panel state
-    leftPanelOpen,
-    setLeftPanelOpen,
     rightPanelOpen,
     setRightPanelOpen,
+    leftPanelOpen,
+    setLeftPanelOpen,
 
     // Center panel navigation
     activeNavTab,
     setActiveNavTab,
 
     // Content state
-    textbooks: textbooksWithImportStatus,
-    expandedTextbooks,
-    expandedChapters,
     userDecks: () => userData.decks,
     folders: () => userData.folders,
     shareStatus: () => userData.shareStatus,
-    newlyImportedDecks,
-    selectedUserDeck: deckSelection.selectedUserDeck,
-    selectedBuiltInDeck: deckSelection.selectedBuiltInDeck,
+    newlyImportedDecks: () => new Set<string>(), // No longer tracking imports
+    selectedUserDeck,
 
     // Folder view navigation
     currentViewFolderId,
@@ -319,16 +170,14 @@ export function useVocabPageState(
     setCurrentViewFolderId,
     navigateToParentView,
 
-    // Actions
-    toggleTextbook,
-    toggleChapter,
-    importDeck,
+    // Active learning path
+    activeLearningPathId,
+    activeChapter,
 
     // Enhanced tab and deck selection handlers
     handleTabChange,
     handleDeckSelect,
     handleDeckDeselect,
-    handleBuiltInDeckSelect: deckSelection.handleBuiltInDeckSelect,
 
     // Internal state setters (for edit operations hook)
     setUserData,

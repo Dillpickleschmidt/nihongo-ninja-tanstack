@@ -7,9 +7,10 @@ import {
   enrichLessons,
   type EnrichedLearningPathModule,
 } from "@/features/learn-page/utils/loader-helpers"
-import { Route } from "@/routes/_home/learn/$textbookId/$chapterSlug"
-import { getModules } from "@/data/utils/core"
+import { Route } from "@/routes/_home/learn/$learningPathId/$chapterSlug"
+import { chapterModulesQueryOptions } from "@/query/query-options"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
   ContextMenu,
   ContextMenuTrigger,
@@ -32,17 +33,15 @@ import { getVocabSets } from "@/data/utils/vocab"
 // Helper functions
 function getEstimatedTime(module: Module): string {
   // For dynamic modules
-  if ("session_type" in module) {
-    if (module.session_type === "vocab-list") return "2 min"
-    if (module.session_type === "vocab-test") return "15 min"
-    if (module.session_type === "vocab-practice") {
-      // Rough estimate: 15 seconds per vocab item
-      return "~10 min"
-    }
-    if (module.session_type === "sentence-practice") {
-      // 1 minute per answer
-      return "~15 min"
-    }
+  if (module.source_type === "vocab-list") return "2 min"
+  if (module.source_type === "vocab-test") return "15 min"
+  if (module.source_type === "vocab-practice") {
+    // Rough estimate: 15 seconds per vocab item
+    return "~10 min"
+  }
+  if (module.source_type === "sentence-practice") {
+    // 1 minute per answer
+    return "~15 min"
   }
 
   // For static modules
@@ -75,11 +74,17 @@ export function LearningPathList() {
     new Set(completionsQuery.data?.map((c) => c.module_path))
   const loaderData = Route.useLoaderData()
 
+  // Fetch chapter modules with TQ (prefetched by route loader)
+  const modulesQuery = useCustomQuery(() =>
+    chapterModulesQueryOptions(
+      loaderData().learningPathId,
+      loaderData().chapterSlug,
+    ),
+  )
+
   const lessons = createMemo(() => {
-    const deck = loaderData().deck
-    if (!deck) return []
-    const rawModules = getModules(deck)
-    return enrichLessons(rawModules)
+    if (!modulesQuery.data) return []
+    return enrichLessons(modulesQuery.data)
   })
 
   return (
@@ -96,15 +101,46 @@ export function LearningPathList() {
           </TableRow>
         </TableHeader>
         <TableBody class="backdrop-blur-xs">
-          <For each={lessons()}>
-            {(module, index) => (
-              <LessonItem
-                module={module}
-                number={index() + 1}
-                completedModulesSet={completedModulesSet}
-              />
-            )}
-          </For>
+          <Show
+            when={!modulesQuery.isPending}
+            fallback={
+              // Skeleton loading state - show 6 placeholder rows
+              <>
+                {[1, 2, 3, 4, 5, 6].map(() => (
+                  <TableRow class="bg-neutral-500/5 hover:bg-neutral-500/5">
+                    <TableCell class="p-0">
+                      <div class="h-12 w-8 animate-pulse" />
+                    </TableCell>
+                    <TableCell class="p-0">
+                      <div class="m-2 h-4 w-40 animate-pulse rounded bg-neutral-700" />
+                    </TableCell>
+                    <TableCell class="p-0">
+                      <div class="m-2 h-4 w-24 animate-pulse rounded bg-neutral-700" />
+                    </TableCell>
+                    <TableCell class="p-0">
+                      <div class="m-2 h-4 w-16 animate-pulse rounded bg-neutral-700" />
+                    </TableCell>
+                    <TableCell class="p-0">
+                      <div class="m-2 h-4 w-8 animate-pulse rounded bg-neutral-700" />
+                    </TableCell>
+                    <TableCell class="p-0">
+                      <div class="m-2 h-4 w-4 animate-pulse rounded bg-neutral-700" />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </>
+            }
+          >
+            <For each={lessons()}>
+              {(module, index) => (
+                <LessonItem
+                  module={module}
+                  number={index() + 1}
+                  completedModulesSet={completedModulesSet}
+                />
+              )}
+            </For>
+          </Show>
         </TableBody>
       </Table>
     </div>
@@ -121,14 +157,14 @@ function LessonItem(props: {
   completedModulesSet: () => Set<string>
 }) {
   const { setCurrentPosition } = useLearnPageContext()
-  const { moduleId, moduleType, displayTitle, linkTo, iconClasses, disabled } =
+  const { moduleId, source_type, title, linkTo, iconClasses, disabled } =
     props.module
-  const ModuleIcon = getModuleIcon(moduleType)
+  const ModuleIcon = getModuleIcon(source_type)
 
   const isCompleted = () => props.completedModulesSet().has(moduleId)
   const estimatedTime = getEstimatedTime(props.module as any)
   const itemCount = getItemCount(props.module as any)
-  const formattedType = formatModuleType(moduleType)
+  const formattedType = formatModuleType(source_type)
 
   const handleClick = () => {
     if (disabled) return
@@ -183,7 +219,7 @@ function LessonItem(props: {
             >
               <ModuleIcon class={cn("h-4 w-4", iconClasses)} />
               <span class={cn("text-sm", isCompleted() && "font-medium")}>
-                {disabled ? `${displayTitle} (Coming Soon)` : displayTitle}
+                {disabled ? `${title} (Coming Soon)` : title}
               </span>
             </Link>
           </TableCell>

@@ -1,4 +1,4 @@
-// vocab-page/user-panel/FolderCard.tsx
+// vocab-page/right-panel/FolderCard.tsx
 import { Folder, Edit, Trash2 } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import {
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog"
 import { cn } from "@/utils"
 import { createSignal, createMemo } from "solid-js"
-import { countDecksInFolder } from "../logic/folder-manager"
+import { countDecksInFolder } from "../logic/folder-utils"
 import { useFolderTree } from "../hooks/useFolderTree"
 import { DeleteConfirmation } from "../components/DeleteConfirmation"
 import { EditTransaction } from "../logic/edit-transaction"

@@ -22,9 +22,8 @@ import {
 import {
   buildFolderPath,
   getCurrentFolderId,
-} from "@/features/vocab-page/utils/folderUtils"
+} from "@/features/vocab-page/logic/folder-utils"
 import { useFolderTree } from "@/features/vocab-page/hooks/useFolderTree"
-import { LocationBreadcrumb } from "./LocationBreadcrumb"
 import { LocationSelector } from "./LocationSelector"
 import { DeleteConfirmation } from "./DeleteConfirmation"
 
@@ -291,12 +290,6 @@ export function FolderEditModal(props: FolderEditModalProps) {
               </label>
 
               <div class="bg-muted/20 border-card-foreground/70 space-y-3 rounded-lg border p-3 backdrop-blur-sm">
-                <LocationBreadcrumb
-                  currentPath={currentLocationPath()}
-                  selectedPath={selectedLocationPath()}
-                  hasChanges={hasChanges()}
-                />
-
                 <LocationSelector
                   selectedFolderId={selectedFolderId()}
                   selectedFolderName={selectedFolderName()}

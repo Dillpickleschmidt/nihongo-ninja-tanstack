@@ -1,4 +1,4 @@
-import type { VocabItemFormData } from "../../types/vocabulary-types"
+import type { VocabItemFormData } from "../../types/vocabulary"
 
 // Store state structure
 export interface DeckCreationStore {

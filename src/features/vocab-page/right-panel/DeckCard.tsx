@@ -1,4 +1,4 @@
-// features/vocab-page/user-panel/UserDeckCard.tsx
+// features/vocab-page/right-panel/DeckCard.tsx
 import {
   Play,
   ArrowLeft,
@@ -36,7 +36,7 @@ import { PracticeModeModal } from "../components/PracticeModeModal"
 import { getPracticeAction } from "../utils/practiceMode"
 import { useNavigate } from "@tanstack/solid-router"
 
-interface UserDeckCardProps {
+interface DeckCardProps {
   deck: UserDeck
   onPlay?: (deck: UserDeck) => void
   isNewlyImported?: boolean
@@ -54,7 +54,7 @@ interface UserDeckCardProps {
   class?: string
 }
 
-export function UserDeckCard(props: UserDeckCardProps) {
+export function DeckCard(props: DeckCardProps) {
   const navigate = useNavigate()
   const [isHovered, setIsHovered] = createSignal(false)
   const [expandedFolderIds, setExpandedFolderIds] = createSignal<Set<string>>(
@@ -176,15 +176,15 @@ export function UserDeckCard(props: UserDeckCardProps) {
 
   // Navigate to practice with given mode
   const navigateToPractice = (mode: "meanings" | "spellings") => {
-    if (props.deck.source === "built-in") {
-      // Built-in decks use the original route with search params
+    if (props.deck.original_deck_id) {
+      // Static decks (built-in or learning path modules) use the original route
       navigate({
         to: "/practice/$practiceID",
-        params: { practiceID: props.deck.original_deck_id! },
+        params: { practiceID: props.deck.original_deck_id },
         search: { mode },
       })
     } else {
-      // User decks use the new route structure with search params
+      // User-created decks use the new route structure with search params
       navigate({
         to: "/practice/$userID/$deckID",
         params: {
@@ -228,8 +228,7 @@ export function UserDeckCard(props: UserDeckCardProps) {
               variant="ghost"
               class="h-6 w-6 p-0"
               classList={{
-                "hover:cursor-pointer":
-                  props.deck.source !== "built-in",
+                "hover:cursor-pointer": props.deck.source !== "built-in",
                 "cursor-not-allowed opacity-50 pointer-events-none":
                   props.deck.source === "built-in",
               }}

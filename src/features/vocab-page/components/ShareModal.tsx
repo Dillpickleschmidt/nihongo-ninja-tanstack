@@ -1,4 +1,4 @@
-// features/vocab-page/user-panel/UserDeckCard.tsx
+// features/vocab-page/components/ShareModal.tsx
 import { Globe, Building, InfoIcon } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import {

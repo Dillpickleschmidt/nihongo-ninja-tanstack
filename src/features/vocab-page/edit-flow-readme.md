@@ -35,7 +35,7 @@ Core Components Built
 5. Supporting Files
 
 - folderUtils.ts - Path and folder ID utilities
-- Edit triggers - Added to UserDeckCard and FolderCard
+- Edit triggers - Added to DeckCard and FolderCard
 
 User Flow Walkthrough
 

@@ -11,11 +11,11 @@ export const Route = createFileRoute("/_home/learn/")({
       userSettingsQueryOptions(user?.id || null),
     )
 
-    // Redirect to active textbook/chapter
+    // Redirect to active learning path/chapter
     throw redirect({
-      to: "/learn/$textbookId/$chapterSlug",
+      to: "/learn/$learningPathId/$chapterSlug",
       params: {
-        textbookId: settings["active-learning-path"],
+        learningPathId: settings["active-learning-path"],
         chapterSlug: settings["active-chapter"],
       },
     })

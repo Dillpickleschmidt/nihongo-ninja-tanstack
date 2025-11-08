@@ -1,6 +1,6 @@
-import type { TextbookCollection } from "./types"
+import type { TextbookIDEnum, Textbook } from "./types"
 
-export const textbooks: TextbookCollection = {
+export const textbooks: Record<TextbookIDEnum, Textbook> = {
   getting_started: {
     id: "getting_started",
     name: "Getting Started with Nihongo Ninja",

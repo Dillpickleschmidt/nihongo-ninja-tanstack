@@ -11,7 +11,6 @@ import {
 } from "../content/LearningPathSection"
 import { LearningPathChapterSelector } from "./LearningPathChapterSelector"
 import { getDeckBySlug } from "@/data/utils/core"
-import type { TextbookIDEnum } from "@/data/types"
 
 function CenterColumn() {
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
@@ -29,8 +28,8 @@ function CenterColumn() {
     const deck = getDeckBySlug(learningPathId, chapterSlug)
     if (deck) {
       navigate({
-        to: "/learn/$textbookId/$chapterSlug",
-        params: { textbookId: learningPathId, chapterSlug: chapterSlug },
+        to: "/learn/$learningPathId/$chapterSlug",
+        params: { learningPathId: learningPathId, chapterSlug: chapterSlug },
       })
     }
   }

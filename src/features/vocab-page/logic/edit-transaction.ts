@@ -104,13 +104,13 @@ export class EditTransaction {
   private describeOperation(operation: EditOperation): string {
     switch (operation.type) {
       case "update-deck":
-        const deckUpdates = []
+        const deckUpdates: string[] = []
         if (operation.updates.name) deckUpdates.push("name")
         if (operation.updates.folderId !== undefined) deckUpdates.push("folder")
         return `update deck ${operation.deckId} (${deckUpdates.join(", ")})`
 
       case "update-folder":
-        const folderUpdates = []
+        const folderUpdates: string[] = []
         if (operation.updates.name) folderUpdates.push("name")
         if (operation.updates.parentId !== undefined)
           folderUpdates.push("parent")

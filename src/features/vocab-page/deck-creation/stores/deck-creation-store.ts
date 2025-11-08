@@ -5,7 +5,7 @@ import {
   vocabularyItemToFormData,
   type VocabItemFormData,
   type VocabularyItem,
-} from "../../types/vocabulary-types"
+} from "../../types/vocabulary"
 
 // Optional initial data for editing existing decks
 export interface DeckCreationInitialData {

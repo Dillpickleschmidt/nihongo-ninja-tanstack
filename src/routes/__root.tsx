@@ -31,7 +31,10 @@ import type { User } from "@supabase/supabase-js"
 import { useMutation } from "@tanstack/solid-query"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { PostHogProvider } from "@/features/posthog/PostHogContext"
-import { userSettingsQueryOptions } from "@/query/query-options"
+import {
+  userSettingsQueryOptions,
+  allLearningPathsQueryOptions,
+} from "@/query/query-options"
 import { updateUserSettingsMutation } from "@/query/query-mutations"
 import { queryKeys } from "@/query/utils/query-keys"
 import { setupAuthSync } from "@/features/module-completion/setupAuthSync"
@@ -61,14 +64,14 @@ export const Route = createRootRouteWithContext<{
 
     const { queryClient } = context
     queryClient.prefetchQuery(userSettingsQueryOptions(user?.id || null))
-
+    queryClient.prefetchQuery(allLearningPathsQueryOptions(user?.id || null))
     return { user }
   },
   loader: async ({ context }) => {
     const { user, queryClient } = context
 
     // Await settings query to ensure data ready for SSR
-    const userSettings = await queryClient.ensureQueryData(
+    await queryClient.ensureQueryData(
       userSettingsQueryOptions(user?.id || null),
     )
 
@@ -77,14 +80,14 @@ export const Route = createRootRouteWithContext<{
     }
   },
   component: RootComponent,
-  notFoundComponent: () => (
-    <div class="flex min-h-screen items-center justify-center">
-      <div class="text-center">
-        <h1 class="text-4xl font-bold">404</h1>
-        <p class="mt-2 text-lg">Page not found</p>
-      </div>
-    </div>
-  ),
+  // notFoundComponent: () => (
+  //   <div class="flex min-h-screen items-center justify-center">
+  //     <div class="text-center">
+  //       <h1 class="text-4xl font-bold">404</h1>
+  //       <p class="mt-2 text-lg">Page not found</p>
+  //     </div>
+  //   </div>
+  // ),
 })
 
 function RootComponent() {

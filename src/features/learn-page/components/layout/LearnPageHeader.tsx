@@ -19,7 +19,6 @@ import {
   useLearnPageContext,
   type MobileContentView,
 } from "@/features/learn-page/context/LearnPageContext"
-import type { TextbookIDEnum } from "@/data/types"
 
 interface LearnPageHeaderProps {
   variant: "mobile" | "desktop"
@@ -43,8 +42,8 @@ export function LearnPageHeader(props: LearnPageHeaderProps) {
     const deck = getDeckBySlug(learningPathId, chapterSlug)
     if (deck) {
       navigate({
-        to: "/learn/$textbookId/$chapterSlug",
-        params: { textbookId: learningPathId, chapterSlug: chapterSlug },
+        to: "/learn/$learningPathId/$chapterSlug",
+        params: { learningPathId: learningPathId, chapterSlug: chapterSlug },
       })
     }
   }

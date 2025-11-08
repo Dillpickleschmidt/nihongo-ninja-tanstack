@@ -1,5 +1,5 @@
-// Unified Vocabulary Type System
-// This file provides conversion utilities between existing types and form data structures
+// features/vocab-page/types/vocabulary.ts
+// Vocabulary type system and conversion utilities
 
 import type {
   VocabularyItem,
@@ -9,6 +9,7 @@ import type {
   Particle,
 } from "@/data/types"
 import { Json } from "@/features/supabase/db/database.types"
+import { extractSegmentText } from "@/data/utils/text"
 
 // Re-export existing types for convenience
 export type { VocabularyItem } from "@/data/types"
@@ -40,7 +41,7 @@ export interface VocabItemFormData {
   english: string[]
   isVerb: boolean
   notes: string[]
-  particles: Array<{ particle: string; label: string }>
+  particles: Array<{ particle: string; label?: string }>
   examples: Array<{ japanese: string; english: string }>
   readingMnemonics: string[]
   kanjiMnemonics: string[]
@@ -98,8 +99,8 @@ export function vocabularyItemToFormData(
     particles: item.particles || [],
     examples:
       item.example_sentences?.map((ex) => ({
-        japanese: ex.japanese[0] || "",
-        english: ex.english[0] || "",
+        japanese: extractSegmentText(ex.japanese),
+        english: extractSegmentText(ex.english),
       })) || [],
     readingMnemonics: item.mnemonics?.reading || [],
     kanjiMnemonics: item.mnemonics?.kanji || [],
@@ -132,7 +133,7 @@ export function formDataToDBInsert(
     example_sentences: null,
     particles:
       formData.particles.length > 0
-        ? formData.particles.filter((p) => p.particle.trim() || p.label.trim())
+        ? formData.particles.filter((p) => p.particle.trim() || p.label?.trim())
         : null,
     videos: null,
   }

@@ -4,21 +4,9 @@ import {
   getSharedDecksServerFn,
   importSharedDeckServerFn,
   removeDeckShareServerFn,
+  type SharedDeck,
 } from "@/features/supabase/db/deck-sharing"
 import type { User } from "@supabase/supabase-js"
-
-export type SharedDeck = {
-  deck_id: string
-  shared_at: string
-  shared_by: string
-  import_count: number
-  user_decks: {
-    deck_name: string
-    deck_description: string | null
-    source: string
-    created_at: string
-  }
-}
 
 export type SortOption = "recent" | "popular"
 
@@ -142,13 +130,14 @@ export function useBrowseDecks(props: UseBrowseDecksProps) {
     // Create temporary UserDeck object for preview
     const previewDeck: UserDeck = {
       deck_id: deck.deck_id,
-      deck_name: deck.user_decks.deck_name,
-      deck_description: deck.user_decks.deck_description,
+      deck_name: deck.user_decks[0]?.deck_name ?? "",
+      deck_description: deck.user_decks[0]?.deck_description ?? null,
       source: "preview",
       original_deck_id: null,
       folder_id: null,
       user_id: "",
       created_at: new Date().toISOString(),
+      allowed_practice_modes: ["meanings", "spellings"],
     }
 
     // Use existing deck selection handler

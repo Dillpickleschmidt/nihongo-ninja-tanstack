@@ -5,7 +5,7 @@ import { useAnimationManager } from "@/hooks/useAnimations"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { resourceThumbnailQueryOptions } from "@/query/query-options"
 import { ResourceCardWrapper } from "./ResourceDialog"
-import { Route } from "@/routes/_home/learn/$textbookId/$chapterSlug"
+import { Route } from "@/routes/_home/learn/$learningPathId/$chapterSlug"
 import type { EnrichedExternalResource } from "@/features/learn-page/utils/loader-helpers"
 
 const ANIMATION_DURATION = 700

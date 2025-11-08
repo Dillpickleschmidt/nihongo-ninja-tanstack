@@ -73,3 +73,15 @@ export function parseFuriganaString(furigana: string): {
 
   return { base, kana }
 }
+
+/**
+ * Extracts and concatenates plain text from an array of segments
+ * @param items - Array of strings or rich text objects ({ t: string })
+ * @returns The concatenated plain text string
+ */
+export function extractSegmentText(items: (string | { t: string })[]): string {
+  if (!items || items.length === 0) return ""
+  return items
+    .map((item) => (typeof item === "string" ? item : item.t || ""))
+    .join("")
+}

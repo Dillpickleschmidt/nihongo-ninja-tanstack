@@ -2,8 +2,6 @@
 import type {
   Module,
   ExternalResource,
-  StaticModule,
-  DynamicModule,
   ExternalResourceCollection,
 } from "@/data/types"
 import {
@@ -52,24 +50,17 @@ export type EnrichedExternalResourceCollection = Record<
   EnrichedExternalResource
 >
 
-export interface EnrichedLearningPathModule
-  extends StaticModule,
-    DynamicModule {
+export type EnrichedLearningPathModule = Module & {
   moduleId: string
-  moduleType: string
-  displayTitle: string
   linkTo: string
   iconClasses: string
-  gradientClasses: string
-  lightBackground: string
-  truncatedTitle: string
   disabled?: boolean
 }
 
 // --- Enrichment Functions for External Resources ---
 
 function getResourceGradientStyle(
-  lessonType: ExternalResource["lesson_type"],
+  sourceType: ExternalResource["source_type"],
 ): string {
   const gradients = {
     video:
@@ -112,7 +103,7 @@ function getResourceGradientStyle(
     "chapter-vocab-overview":
       "linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%)",
   }
-  return gradients[lessonType as keyof typeof gradients] || gradients.lesson
+  return gradients[sourceType as keyof typeof gradients] || gradients.lesson
 }
 
 function getResourceDifficultyColorClass(
@@ -139,7 +130,7 @@ export function enrichExternalResources(
     enriched[key] = {
       ...resource,
       id: key,
-      gradientStyle: getResourceGradientStyle(resource.lesson_type),
+      gradientStyle: getResourceGradientStyle(resource.source_type),
       difficultyColorClass: getResourceDifficultyColorClass(
         resource.difficulty_rating,
       ),
@@ -151,9 +142,9 @@ export function enrichExternalResources(
   return enriched
 }
 
-// Helper function to map lesson type to Lucide icon component
+// Helper function to map source type to Lucide icon component
 export function getResourceIconComponent(
-  lessonType: ExternalResource["lesson_type"],
+  sourceType: ExternalResource["source_type"],
 ): Component<any> {
   const iconMap = {
     video: Video,
@@ -169,18 +160,10 @@ export function getResourceIconComponent(
     "culture-note": Coffee,
     "chapter-vocab-overview": Library,
   }
-  return iconMap[lessonType as keyof typeof iconMap] || BookOpen
+  return iconMap[sourceType as keyof typeof iconMap] || BookOpen
 }
 
 // --- Enrichment Functions for Learning Path Modules (Lessons) ---
-
-function getModuleType(module: Module) {
-  return "lesson_type" in module ? module.lesson_type : module.session_type
-}
-
-function getDisplayTitle(title: string) {
-  return title.startsWith("Practice ") ? title.substring(9) : title
-}
 
 export function getLinkTo(module: Module, moduleKey: string) {
   if ("link" in module && module.link) {
@@ -192,14 +175,14 @@ export function getLinkTo(module: Module, moduleKey: string) {
     return module.link
   }
 
-  if ("session_type" in module) {
-    if (module.session_type === "vocab-practice") {
-      return `/vocab?import=${moduleKey}`
-    }
-    if (module.session_type === "sentence-practice") {
-      const strippedId = moduleKey.replace(/^sentence-practice-/, "")
-      return `/sentence-practice/${strippedId}`
-    }
+  // Handle dynamic modules by source_type
+  if (module.source_type === "vocab-practice") {
+    return `/vocab?import=${moduleKey}`
+  }
+
+  if (module.source_type === "sentence-practice") {
+    const strippedId = moduleKey.replace(/^sentence-practice-/, "")
+    return `/sentence-practice/${strippedId}`
   }
 
   return `/practice/${moduleKey}`
@@ -319,72 +302,12 @@ const DEFAULT_STYLE = {
   bg: "bg-gray-600 dark:bg-gray-500",
 }
 
-function getModuleStyle(moduleType: string) {
-  return MODULE_STYLES[moduleType] || DEFAULT_STYLE
-}
-
 export function getModuleIconClasses(moduleType: string) {
-  return getModuleStyle(moduleType).text
+  return (MODULE_STYLES[moduleType] || DEFAULT_STYLE).text
 }
 
 export function getModuleCircleClasses(moduleType: string) {
-  return getModuleStyle(moduleType).bg
-}
-
-function getModuleGradient(moduleType: string) {
-  const gradientClasses = {
-    lesson: "bg-gradient-to-br from-green-500/10 via-card to-green-600/5",
-    worksheet: "bg-gradient-to-br from-teal-400/10 via-card to-teal-500/5",
-    "practice-sentence":
-      "bg-gradient-to-br from-yellow-500/10 via-card to-yellow-600/5",
-    "culture-note": "bg-gradient-to-br from-pink-400/10 via-card to-pink-500/5",
-    vocab: "bg-gradient-to-br from-sky-400/10 via-card to-sky-500/5",
-    "vocab-practice":
-      "bg-gradient-to-br from-orange-500/10 via-card to-orange-600/5",
-    "conjugation-practice":
-      "bg-gradient-to-br from-teal-400/10 via-card to-teal-500/5",
-    "counter-practice":
-      "bg-gradient-to-br from-green-500/10 via-card to-green-600/5",
-    game: "bg-gradient-to-br from-red-500/10 via-card to-red-600/5",
-    video: "bg-gradient-to-br from-purple-400/10 via-card to-purple-500/5",
-    audio: "bg-gradient-to-br from-purple-400/10 via-card to-purple-500/5",
-    "grammar-cheatsheet":
-      "bg-gradient-to-br from-red-500/10 via-card to-red-600/5",
-    guides: "bg-gradient-to-br from-purple-400/10 via-card to-purple-500/5",
-    reading: "bg-gradient-to-br from-teal-400/10 via-card to-teal-500/5",
-    "vocab-list": "bg-gradient-to-br from-sky-400/10 via-card to-sky-500/5",
-    "vocab-test":
-      "bg-gradient-to-br from-yellow-500/10 via-card to-yellow-600/5",
-    extension:
-      "bg-gradient-to-br from-emerald-500/10 via-card to-emerald-600/5",
-    misc: "bg-gradient-to-br from-pink-500/10 via-card to-pink-600/5",
-  }
-  return gradientClasses[moduleType] || "bg-card"
-}
-
-function getModuleLightBackground(moduleType: string) {
-  // ... (implementation from previous refactor)
-  const lightBackgrounds = {
-    lesson: "bg-green-50/70",
-    worksheet: "bg-teal-50/70",
-    "practice-sentence": "bg-yellow-50/70",
-    "culture-note": "bg-pink-50/70",
-    vocab: "bg-sky-50/70",
-    "vocab-practice": "bg-orange-50/70",
-    "conjugation-practice": "bg-teal-50/70",
-    "counter-practice": "bg-green-50/70",
-    game: "bg-red-50/70",
-    video: "bg-purple-50/70",
-    audio: "bg-purple-50/70",
-    "grammar-cheatsheet": "bg-red-50/70",
-    guides: "bg-purple-50/70",
-    reading: "bg-teal-50/70",
-    "vocab-list": "bg-sky-50/70",
-    "vocab-test": "bg-yellow-50/70",
-    extension: "bg-emerald-50/70",
-    misc: "bg-pink-50/70",
-  }
-  return lightBackgrounds[moduleType] || "bg-card"
+  return (MODULE_STYLES[moduleType] || DEFAULT_STYLE).bg
 }
 
 export function enrichLessons(
@@ -394,21 +317,14 @@ export function enrichLessons(
     disabled?: boolean
   }[],
 ): EnrichedLearningPathModule[] {
-  return lessons.map(({ module, key, disabled }) => {
-    const moduleType = getModuleType(module)
-    const displayTitle = getDisplayTitle(module.title)
-
-    return {
-      ...module,
-      moduleId: key,
-      moduleType,
-      displayTitle,
-      linkTo: getLinkTo(module, key),
-      iconClasses: getModuleIconClasses(moduleType),
-      gradientClasses: getModuleGradient(moduleType),
-      lightBackground: getModuleLightBackground(moduleType),
-      truncatedTitle: truncateText(displayTitle, 25),
-      disabled,
-    } as EnrichedLearningPathModule
-  })
+  return lessons.map(
+    ({ module, key, disabled }) =>
+      ({
+        ...module,
+        moduleId: key,
+        linkTo: getLinkTo(module, key),
+        iconClasses: getModuleIconClasses(module.source_type),
+        disabled,
+      }) as EnrichedLearningPathModule,
+  )
 }

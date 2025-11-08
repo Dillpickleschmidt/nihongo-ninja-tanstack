@@ -8,11 +8,16 @@ import {
   TextFieldInput,
   TextFieldLabel,
 } from "@/components/ui/text-field"
-import { Checkbox, CheckboxInput, CheckboxLabel } from "@/components/ui/checkbox"
+import {
+  Checkbox,
+  CheckboxInput,
+  CheckboxLabel,
+} from "@/components/ui/checkbox"
 import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
 import { useVocabItemValidation } from "../hooks/useVocabItemValidation"
-import { createEmptyVocabItemFormData } from "../../types/vocabulary-types"
+import { createEmptyVocabItemFormData } from "../../types/vocabulary"
 import { Label } from "@/components/ui/label"
+import type { FieldValidationState } from "../types/deck-creation-types"
 
 interface VocabItemEditorProps {
   itemId: number
@@ -165,11 +170,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
     })
 
   // Required indicator helpers
-  const getRequiredIndicator = (validation: {
-    showError: boolean
-    isRequired: boolean
-    error?: string
-  }) => {
+  const getRequiredIndicator = (validation: FieldValidationState) => {
     const hasAttemptedSubmit = store.validation.hasAttemptedSubmit
     const isFirstCard = props.isFirstItem
 

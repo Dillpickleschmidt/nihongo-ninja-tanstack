@@ -14,15 +14,24 @@ import {
 import { getVocabularyForModule } from "@/data/utils/vocab"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
 import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
-import type { VocabularyItem, TextbookIDEnum } from "@/data/types"
+import type {
+  VocabularyItem,
+  TextbookIDEnum,
+  LearningPathChapter,
+} from "@/data/types"
 import type { PracticeMode } from "@/features/vocab-practice/types"
 import { fetchKanjiSvgsBatch } from "@/utils/svg-processor"
 import {
   getDeckInfoServerFn,
   getVocabForDeck,
 } from "@/features/supabase/db/deck"
-import { getDeckBySlug, getLearningPathModules } from "@/data/utils/core"
+import {
+  getLearningPathChapterItems,
+  fetchAllLearningPaths,
+} from "@/data/utils/core"
+import { chapters } from "@/data/chapters"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
+import { dynamic_modules } from "@/data/dynamic_modules"
 import { createSRSAdapter } from "@/features/srs-services/factory"
 import type {
   DueCountResult,
@@ -36,10 +45,10 @@ import {
   getUserWeekTimeData,
 } from "@/features/supabase/db/module-progress"
 import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
-import { dynamic_modules } from "@/data/dynamic_modules"
 import type { ResourceProvider } from "@/data/resources-config"
 import {
   fetchUserSettingsFromDB,
+  syncUserSettingsToDb,
   updateUserSettingsCookie,
 } from "@/query/utils/user-settings"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
@@ -57,11 +66,15 @@ import { queryKeys } from "@/query/utils/query-keys"
  */
 function parseUserSettingsCookie(): UserSettings {
   const cookieValue = getCookie(USER_SETTINGS_COOKIE)
-  if (!cookieValue) return UserSettingsSchema.parse({})
+  if (!cookieValue) {
+    return UserSettingsSchema.parse({})
+  }
 
   try {
-    return UserSettingsSchema.parse(JSON.parse(cookieValue))
-  } catch {
+    const parsed = UserSettingsSchema.parse(JSON.parse(cookieValue))
+    return parsed
+  } catch (e) {
+    console.error("[parseUserSettingsCookie] Failed to parse cookie:", e)
     return UserSettingsSchema.parse({})
   }
 }
@@ -85,6 +98,10 @@ export const userSettingsQueryOptions = (userId: string | null) => {
       // Fetch from DB
       const dbSettings = await fetchUserSettingsFromDB(userId)
       if (!dbSettings) {
+        // Shouldn't happen but in case the db somehow didn't get set during sign-up
+        syncUserSettingsToDb(userId, cookieData, Date.now()).catch((err) =>
+          console.warn("Failed to write default settings", err),
+        )
         return cookieData
       }
 
@@ -92,6 +109,7 @@ export const userSettingsQueryOptions = (userId: string | null) => {
       // prefer DB (user likely signed out and local cookie is stale)
       if (
         cookieData["active-learning-path"] === "getting_started" &&
+        dbSettings["active-learning-path"] &&
         dbSettings["active-learning-path"] !== "getting_started"
       ) {
         updateUserSettingsCookie(dbSettings)
@@ -112,7 +130,6 @@ export const userSettingsQueryOptions = (userId: string | null) => {
       return cookieData
     },
     initialData,
-    staleTime: Infinity,
     gcTime: Infinity,
   })
 }
@@ -204,7 +221,6 @@ export const hierarchySvgsQueryOptions = (characters: string[]) =>
       if (characters.length === 0) return new Map()
       return await fetchKanjiSvgsBatch(characters)
     },
-    staleTime: Infinity, // SVGs never change
   })
 
 /**
@@ -258,7 +274,7 @@ export const userDeckHierarchyQueryOptions = (
 
 export const vocabHierarchyQueryOptions = (
   activeTextbook: string,
-  deck: NonNullable<ReturnType<typeof getDeckBySlug>>,
+  deck: LearningPathChapter,
   userOverrides: any,
 ) =>
   queryOptions({
@@ -268,7 +284,7 @@ export const vocabHierarchyQueryOptions = (
       userOverrides,
     ),
     queryFn: async () => {
-      const vocabModuleId = deck.learning_path_items.find((moduleId) =>
+      const vocabModuleId = deck.learning_path_item_ids.find((moduleId) =>
         moduleId.endsWith("_vocab-list"),
       )
 
@@ -305,6 +321,31 @@ export const vocabHierarchyQueryOptions = (
       slugs: [],
     },
   })
+
+/**
+ * Get all learning paths (static textbooks + user-created)
+ */
+export const allLearningPathsQueryOptions = (userId: string | null) =>
+  queryOptions({
+    queryKey: queryKeys.allLearningPaths(userId),
+    queryFn: () => fetchAllLearningPaths(userId),
+    staleTime: 5 * 60 * 1000, // 5 minutes cache
+  })
+
+/**
+ * Query for getting all modules for a specific chapter in a learning path
+ */
+export const chapterModulesQueryOptions = (
+  learningPathId: string,
+  chapterSlug: string,
+) => {
+  return queryOptions({
+    queryKey: queryKeys.chapterModules(learningPathId, chapterSlug),
+    queryFn: async () => {
+      return await getLearningPathChapterItems(learningPathId, chapterSlug)
+    },
+  })
+}
 
 export const dueCardsCountQueryOptions = (
   userId: string | null,
@@ -364,7 +405,9 @@ export const completedModulesQueryOptions = (userId: string | null) =>
   queryOptions({
     queryKey: queryKeys.completedModules(userId),
     refetchOnMount: "always", // Ensure localStorage completions load on client
-    queryFn: () => mergeCompletionsWithLocal(userId),
+    queryFn: async () => {
+      return await mergeCompletionsWithLocal(userId)
+    },
   })
 
 export const resourceThumbnailQueryOptions = (
@@ -389,7 +432,11 @@ export const upcomingModulesQueryOptions = (
   currentPosition: string | null,
 ) => {
   const queryFn = async (): Promise<ModuleWithCurrent[]> => {
-    const learningPathItems = getLearningPathModules(textbookId)
+    // Get all module IDs for the textbook by flattening all chapters
+    const chapterMap = chapters[textbookId]
+    const learningPathItems = chapterMap
+      ? Object.values(chapterMap).flatMap((ch) => ch.learning_path_item_ids)
+      : []
 
     if (!currentPosition) {
       return learningPathItems.slice(0, 6).map((id) => ({ id }))
@@ -442,7 +489,7 @@ export const moduleProgressQueryOptions = (
         .map((item) => item.id)
         .filter((moduleId) => {
           const module = dynamic_modules[moduleId]
-          return module && module.session_type === "vocab-practice"
+          return module && module.source_type === "vocab-practice"
         })
 
       return await buildModuleProgressMap(userId, vocabPracticeModuleIds)

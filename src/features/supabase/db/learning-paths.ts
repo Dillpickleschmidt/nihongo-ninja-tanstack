@@ -1,6 +1,14 @@
 import type { POS } from "@/features/sentence-practice/kagome/types/kagome"
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
-import type { BuiltInDeck } from "@/data/types"
+import type {
+  LearningPathChapter,
+  ResolvedModule,
+  DynamicModule,
+  Module,
+} from "@/data/types"
+import { static_modules } from "@/data/static_modules"
+import { dynamic_modules } from "@/data/dynamic_modules"
+import { external_resources } from "@/data/external_resources"
 
 const MODULES_PER_CHAPTER = 30
 
@@ -74,44 +82,69 @@ export async function uploadLearningPath(
   return (data as { path_id: string }).path_id
 }
 
-export async function getLearningPathData(pathId: string): Promise<{
-  transcript: LearningPathTranscript
-  modules: LearningPathModuleSource[]
-} | null> {
+// export async function getLearningPathData(pathId: string): Promise<{
+//   transcript: LearningPathTranscript
+//   modules: LearningPathModuleSource[]
+// } | null> {
+//   const supabase = createSupabaseClient()
+//
+//   const { data: transcript, error: transcriptError } = await supabase
+//     .from("learning_path_transcripts")
+//     .select("*")
+//     .eq("path_id", pathId)
+//     .single()
+//
+//   if (transcriptError || !transcript) {
+//     return null
+//   }
+//
+//   const { data: modules, error: modulesError } = await supabase
+//     .from("learning_path_module_sources")
+//     .select("*")
+//     .eq("path_id", pathId)
+//
+//   if (modulesError) {
+//     throw new Error(
+//       `Failed to fetch learning path modules: ${modulesError.message}`,
+//     )
+//   }
+//
+//   return {
+//     transcript: transcript as LearningPathTranscript,
+//     modules: (modules || []) as LearningPathModuleSource[],
+//   }
+// }
+
+/**
+ * Gets all learning paths created by a user.
+ * @param userId - The user ID to fetch learning paths for
+ * @returns Array of learning path transcripts for the user
+ */
+export async function getUserLearningPaths(
+  userId: string,
+): Promise<LearningPathTranscript[]> {
   const supabase = createSupabaseClient()
 
-  const { data: transcript, error: transcriptError } = await supabase
+  const { data, error } = await supabase
     .from("learning_path_transcripts")
     .select("*")
-    .eq("path_id", pathId)
-    .single()
+    .eq("user_id", userId)
 
-  if (transcriptError || !transcript) {
-    return null
+  if (error) {
+    throw new Error(`Failed to fetch user learning paths: ${error.message}`)
   }
 
-  const { data: modules, error: modulesError } = await supabase
-    .from("learning_path_module_sources")
-    .select("*")
-    .eq("path_id", pathId)
-
-  if (modulesError) {
-    throw new Error(
-      `Failed to fetch learning path modules: ${modulesError.message}`,
-    )
-  }
-
-  return {
-    transcript: transcript as LearningPathTranscript,
-    modules: (modules || []) as LearningPathModuleSource[],
-  }
+  return (data || []) as LearningPathTranscript[]
 }
 
 /**
  * Gets chapters for a generated learning path from database.
  * Segments modules into chapters (MODULES_PER_CHAPTER per chapter).
+ * Returns lightweight chapters with module IDs only (no full module data).
  */
-export async function getChaptersAsync(pathId: string): Promise<BuiltInDeck[]> {
+export async function getUserPathChaptersAsync(
+  pathId: string,
+): Promise<LearningPathChapter[]> {
   const supabase = createSupabaseClient()
 
   const { data: moduleSources } = await supabase
@@ -122,14 +155,14 @@ export async function getChaptersAsync(pathId: string): Promise<BuiltInDeck[]> {
   if (!moduleSources?.length) return []
 
   const moduleIds = moduleSources.map((m) => m.module_id)
-  const chapters: BuiltInDeck[] = []
+  const chapters: LearningPathChapter[] = []
 
   for (let i = 0; i < moduleIds.length; i += MODULES_PER_CHAPTER) {
     const chapterNum = Math.floor(i / MODULES_PER_CHAPTER) + 1
     chapters.push({
       slug: `chapter-${chapterNum}`,
       title: `Chapter ${chapterNum}`,
-      learning_path_items: moduleIds.slice(i, i + MODULES_PER_CHAPTER),
+      learning_path_item_ids: moduleIds.slice(i, i + MODULES_PER_CHAPTER),
     })
   }
 
@@ -137,41 +170,134 @@ export async function getChaptersAsync(pathId: string): Promise<BuiltInDeck[]> {
 }
 
 /**
- * Gets transcript source examples for why a module was included in a learning path.
+ * Gets fully resolved modules for a specific chapter in a user-created learning path.
+ * @param pathId - The learning path ID
+ * @param chapterSlug - The chapter slug (e.g., "chapter-1")
+ * @returns Array of resolved modules with full metadata
  */
-export async function getModuleSources(
+export async function getUserPathChapterModules(
   pathId: string,
-  moduleId: string,
-): Promise<{
-  sourceType: "grammar" | "vocabulary"
-  examples: TranscriptLine[]
-} | null> {
+  chapterSlug: string,
+): Promise<ResolvedModule[]> {
   const supabase = createSupabaseClient()
 
-  const { data: moduleSource } = await supabase
+  // Get the chapter to find the module IDs
+  const chapters = await getUserPathChaptersAsync(pathId)
+  const chapter = chapters.find((ch) => ch.slug === chapterSlug)
+
+  if (!chapter) return []
+
+  // Query module sources - just get module_id and source_type
+  const { data: moduleSources, error } = await supabase
     .from("learning_path_module_sources")
-    .select("source_type, transcript_line_ids")
+    .select("module_id, source_type")
     .eq("path_id", pathId)
-    .eq("module_id", moduleId)
-    .single()
+    .in("module_id", chapter.learning_path_item_ids)
 
-  if (!moduleSource) return null
-
-  const { data: transcript } = await supabase
-    .from("learning_path_transcripts")
-    .select("transcript_data")
-    .eq("path_id", pathId)
-    .single()
-
-  if (!transcript) return null
-
-  const transcriptLines = transcript.transcript_data as TranscriptLine[]
-  const examples = moduleSource.transcript_line_ids
-    .map((idx) => transcriptLines[idx])
-    .filter(Boolean)
-
-  return {
-    sourceType: moduleSource.source_type as "grammar" | "vocabulary",
-    examples,
+  if (error) {
+    console.error("[getUserPathChapterModules] Query error:", error)
+    return []
   }
+
+  if (!moduleSources?.length) return []
+
+  // For vocabulary modules, we need to fetch user_deck data separately
+  const vocabModuleIds = moduleSources
+    .filter((m) => m.source_type === "vocabulary")
+    .map((m) => m.module_id)
+
+  let userDecksMap: Record<string, any> = {}
+  if (vocabModuleIds.length > 0) {
+    const { data: userDecks, error: decksError } = await supabase
+      .from("user_decks")
+      .select("deck_id, deck_name, allowed_practice_modes")
+      .in("deck_id", vocabModuleIds)
+
+    if (decksError) {
+      console.error(
+        "[getUserPathChapterModules] Error fetching user decks:",
+        decksError,
+      )
+    } else if (userDecks) {
+      userDecksMap = Object.fromEntries(
+        userDecks.map((deck) => [deck.deck_id, deck]),
+      )
+    }
+  }
+
+  const modules = {
+    ...static_modules,
+    ...dynamic_modules,
+    ...external_resources,
+  }
+
+  return moduleSources
+    .map((row) => {
+      let module: Module | undefined
+
+      if (row.source_type === "grammar") {
+        // Lookup grammar module in static/dynamic/external collections
+        module = modules[row.module_id]
+      } else if (row.source_type === "vocabulary") {
+        // Create DynamicModule from user deck
+        const deckData = userDecksMap[row.module_id]
+        if (deckData) {
+          module = {
+            title: deckData.deck_name,
+            source_type: "vocab-practice" as const,
+            vocab_set_ids: [row.module_id],
+            allowed_practice_modes: deckData.allowed_practice_modes,
+          } as DynamicModule
+        }
+      }
+
+      return {
+        key: row.module_id,
+        module,
+        disabled: false,
+      } as
+        | ResolvedModule
+        | { key: string; module: undefined; disabled: boolean }
+    })
+    .filter((item): item is ResolvedModule => item.module !== undefined)
 }
+
+// /**
+//  * Gets transcript source examples for why a module was included in a learning path.
+//  */
+// export async function getModuleSources(
+//   pathId: string,
+//   moduleId: string,
+// ): Promise<{
+//   sourceType: "grammar" | "vocabulary"
+//   examples: TranscriptLine[]
+// } | null> {
+//   const supabase = createSupabaseClient()
+//
+//   const { data: moduleSource } = await supabase
+//     .from("learning_path_module_sources")
+//     .select("source_type, transcript_line_ids")
+//     .eq("path_id", pathId)
+//     .eq("module_id", moduleId)
+//     .single()
+//
+//   if (!moduleSource) return null
+//
+//   const { data: transcript } = await supabase
+//     .from("learning_path_transcripts")
+//     .select("transcript_data")
+//     .eq("path_id", pathId)
+//     .single()
+//
+//   if (!transcript) return null
+//
+//   const transcriptLines = transcript.transcript_data as TranscriptLine[]
+//   const examples = moduleSource.transcript_line_ids
+//     .map((idx) => transcriptLines[idx])
+//     .filter(Boolean)
+//
+//   return {
+//     sourceType: moduleSource.source_type as "grammar" | "vocabulary",
+//     examples,
+//   }
+// }

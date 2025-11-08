@@ -1,6 +1,7 @@
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { completedModulesQueryOptions } from "@/query/query-options"
-import type { LessonCard } from "../LearningPathContext"
+import type { Accessor } from "solid-js"
+import type { EnrichedLearningPathModule } from "@/features/learn-page/utils/loader-helpers"
 
 /**
  * Tracks lesson completion status for the user
@@ -8,7 +9,7 @@ import type { LessonCard } from "../LearningPathContext"
  */
 export function useLessonCompletion(
   userId: string | null,
-  lessons: () => LessonCard[],
+  lessons: Accessor<EnrichedLearningPathModule[] | undefined>,
 ) {
   const completedLessonsQuery = useCustomQuery(() =>
     completedModulesQueryOptions(userId),
@@ -23,8 +24,11 @@ export function useLessonCompletion(
     )
   }
 
-  const getFirstIncompleteIndex = () =>
-    lessons().findIndex((lesson) => !isLessonCompleted(lesson.href))
+  const getFirstIncompleteIndex = () => {
+    const lessonsList = lessons()
+    if (!lessonsList) return -1
+    return lessonsList.findIndex((lesson) => !isLessonCompleted(lesson.linkTo))
+  }
 
   return { isLessonCompleted, getFirstIncompleteIndex }
 }

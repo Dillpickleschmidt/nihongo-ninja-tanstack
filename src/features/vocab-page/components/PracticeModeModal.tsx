@@ -22,15 +22,15 @@ export function PracticeModeModal(props: PracticeModeModalProps) {
   const handlePracticeMode = (mode: "meanings" | "spellings") => {
     if (!props.deck) return
 
-    if (props.deck.source === "built-in") {
-      // Built-in decks use the original route with search params
+    if (props.deck.original_deck_id) {
+      // Static decks (built-in or learning path modules) use the original route
       navigate({
         to: "/practice/$practiceID",
-        params: { practiceID: props.deck.original_deck_id! },
+        params: { practiceID: props.deck.original_deck_id },
         search: { mode },
       })
     } else {
-      // User decks use the new route structure with search params
+      // User-created decks use the new route structure with search params
       navigate({
         to: "/practice/$userID/$deckID",
         params: {

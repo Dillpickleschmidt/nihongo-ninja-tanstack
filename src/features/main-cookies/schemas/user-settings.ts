@@ -95,7 +95,6 @@ const VocabPracticeSettingsSchema = z.object({
   "enable-kanji-radical-prereqs": z.boolean().default(true),
 })
 
-
 const RouteSettingsSchema = z.object({
   vocab: VocabRouteSettingsSchema.default(VocabRouteSettingsSchema.parse({})),
   "vocab-practice": VocabPracticeSettingsSchema.default(
@@ -104,18 +103,17 @@ const RouteSettingsSchema = z.object({
 })
 
 // ============================================================================
-// COMBINED USER SETTINGS SCHEMA
+// DATABASE-SYNCED SETTINGS SCHEMA (syncs across devices via DB)
 // ============================================================================
 
-export const UserSettingsSchema = z.object({
-  // --- USER-SPECIFIC SETTINGS (syncs to DB) ---
+export const DbSyncedSettingsSchema = z.object({
   "service-preferences": ServicePreferencesSchema.default(
     ServicePreferencesSchema.parse({}),
   ),
   "active-learning-path": z.string().default("getting_started"),
   "active-chapter": z.string().max(20).default("n5-introduction"),
   "has-completed-onboarding": z.boolean().default(false),
-  "tours": z.record(z.string(), z.number()).default({}), // tourId -> step (-2=completed, -1=dismissed, 0+=active)
+  tours: z.record(z.string(), z.number()).default({}), // tourId -> step (-2=completed, -1=dismissed, 0+=active)
   "override-settings": OverrideSettingsSchema.default({
     vocabularyOverrides: DEFAULT_VOCABULARY_STACKS,
     kanjiOverrides: DEFAULT_KANJI_STACKS,
@@ -125,16 +123,30 @@ export const UserSettingsSchema = z.object({
   ),
   "learning-path-positions": z.record(z.string(), z.string()).default({}),
   timestamp: z.number().default(0),
+})
 
-  // --- DEVICE-SPECIFIC SETTINGS (cookie only, no DB sync) ---
+// ============================================================================
+// DEVICE-SPECIFIC SETTINGS SCHEMA (cookie only, no DB sync)
+// ============================================================================
+
+export const DeviceSettingsSchema = z.object({
   routes: RouteSettingsSchema.default(RouteSettingsSchema.parse({})),
   "device-type": z.enum(["mobile", "desktop"]).nullable().default(null),
 })
 
 // ============================================================================
+// COMBINED USER SETTINGS SCHEMA
+// ============================================================================
+
+export const UserSettingsSchema =
+  DbSyncedSettingsSchema.and(DeviceSettingsSchema)
+
+// ============================================================================
 // EXPORTED TYPES
 // ============================================================================
 
+export type DbSyncedSettings = z.infer<typeof DbSyncedSettingsSchema>
+export type DeviceSettings = z.infer<typeof DeviceSettingsSchema>
 export type UserSettings = z.infer<typeof UserSettingsSchema>
 export type ServicePreference = z.infer<typeof ServicePreferenceSchema>
 export type AllServicePreferences = z.infer<typeof ServicePreferencesSchema>

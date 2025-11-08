@@ -5,174 +5,25 @@ import { chapters } from "@/data/chapters"
 import { static_modules } from "@/data/static_modules"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import { external_resources } from "@/data/external_resources"
+import {
+  getUserPathChaptersAsync,
+  getUserPathChapterModules,
+  getUserLearningPaths,
+} from "@/features/supabase/db/learning-paths"
 import type {
   TextbookIDEnum,
-  StaticModule,
-  DynamicModule,
-  BuiltInDeck,
-  Textbook,
-  Deck,
-  ExternalResource,
+  LearningPathChapter,
+  ResolvedModule,
+  LearningPath,
 } from "@/data/types"
-import type { Chapter, VocabTextbook } from "@/features/vocab-page/types"
-
-const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 
 /**
- * Retrieves a specific deck (chapter) from a textbook or learning path by its slug.
- * Supports both textbook IDs and learning path IDs (as long as they're in the chapters structure).
+ * Gets chapters with modules for a static textbook (internal only).
+ * For public access, use getLearningPathChapters() instead.
  */
-export function getDeckBySlug(
+function getStaticTextbookChapters(
   learningPathId: string,
-  deckSlug: string,
-): BuiltInDeck | undefined {
-  return chapters[learningPathId as TextbookIDEnum]?.[deckSlug]
-}
-
-/**
- * Gets a flattened learning path for an entire textbook or learning path across all chapters.
- * Works with both textbook IDs and generated learning path IDs.
- * @returns Array of module IDs in order across all chapters
- */
-export function getLearningPathModules(learningPathId: string): string[] {
-  const pathChaptersMap = chapters[learningPathId as TextbookIDEnum]
-  if (!pathChaptersMap) return []
-  return Object.values(pathChaptersMap).flatMap(
-    (chapter) => chapter.learning_path_items,
-  )
-}
-
-/* Constructs a minified version of the textbook type
- * Returns chapters as Decks (without learning_path_items)
- * @returns {MinimalTextbook[]} - Array of textbooks with chapters as Decks
- */
-type MinimalTextbook = Omit<Textbook, "chapterSlugs"> & {
-  chapters: Deck[]
-}
-export function getMinifiedTextbookEntries(): [
-  TextbookIDEnum,
-  MinimalTextbook,
-][] {
-  return Object.entries(textbooks).map(([textbookId, textbook]) => [
-    textbookId as TextbookIDEnum,
-    {
-      ...textbook,
-      chapters: textbook.chapterSlugs
-        .map((slug) => {
-          const chapter = chapters[textbookId as TextbookIDEnum]?.[slug]
-          if (!chapter) return null
-          const { learning_path_items, disabled_modules, ...deckInfo } = chapter
-          return deckInfo as Deck
-        })
-        .filter((ch): ch is Deck => ch !== null),
-    },
-  ])
-}
-
-/**
- * Retrieves the modules for a given chapter deck.
- */
-export function getModules(deck: BuiltInDeck): {
-  key: string
-  module: StaticModule | DynamicModule | ExternalResource
-  disabled?: boolean
-}[] {
-  if (!deck.learning_path_items) return []
-
-  return deck.learning_path_items
-    .map((moduleId) => {
-      const module = modules[moduleId]
-      const disabled = deck.disabled_modules?.includes(moduleId)
-      return module
-        ? { module, key: moduleId, ...(disabled && { disabled: true }) }
-        : null
-    })
-    .filter(
-      (
-        result,
-      ): result is {
-        module: StaticModule | DynamicModule | ExternalResource
-        key: string
-        disabled?: boolean
-      } => result !== null,
-    )
-}
-
-/**
- * Gets all dynamic modules by their session type for a specific textbook.
- * @param textbookId The textbook to filter modules from
- * @param sessionType The session type to filter by (e.g., "sentence-practice", "vocab-practice")
- * @returns Array of modules with matching session type, with their IDs included
- */
-export function getModulesBySessionType(
-  textbookId: TextbookIDEnum,
-  sessionType: DynamicModule["session_type"],
-): Array<{ id: string } & DynamicModule> {
-  const filteredModules: Array<{ id: string } & DynamicModule> = []
-
-  const textbookChapters = chapters[textbookId]
-  if (!textbookChapters) return []
-
-  // Get modules from each chapter using getModules
-  for (const chapter of Object.values(textbookChapters)) {
-    const chapterModules = getModules(chapter)
-
-    // Filter for modules with matching session_type
-    chapterModules.forEach(({ module, key }) => {
-      if ("session_type" in module && module.session_type === sessionType) {
-        filteredModules.push({
-          id: key,
-          ...(module as DynamicModule),
-        })
-      }
-    })
-  }
-
-  return filteredModules
-}
-
-/**
- * Helper function to create a vocab chapter from a textbook chapter
- */
-function createVocabChapter(
-  chapter: BuiltInDeck,
-  textbookId: TextbookIDEnum,
-  chapterSlug: string,
-): Chapter {
-  const chapterNumber = parseInt(chapter.slug.split("-").pop()!)
-
-  const vocabModules = chapter.learning_path_items
-    .map((moduleId) => ({ moduleId, module: modules[moduleId] }))
-    .filter(
-      (item): item is { moduleId: string; module: DynamicModule } =>
-        item.module !== undefined &&
-        "session_type" in item.module &&
-        item.module.session_type === "vocab-practice",
-    )
-
-  const decks = vocabModules.map(({ moduleId, module }) => ({
-    id: moduleId,
-    slug: moduleId,
-    title: module.title,
-    description: module.instructions || module.description,
-    chapter_number: chapterNumber,
-    learning_path_items: [moduleId],
-    isImported: false,
-  }))
-
-  return {
-    id: `${textbookId}_${chapterSlug}`,
-    number: chapterNumber,
-    title: chapter.title,
-    decks,
-  }
-}
-
-/**
- * Gets chapters for a learning path (textbook or generated).
- * Works with both static textbook IDs and generated learning path IDs.
- */
-export function getChapters(learningPathId: string): BuiltInDeck[] {
+): LearningPathChapter[] {
   const textbook = textbooks[learningPathId as TextbookIDEnum]
 
   if (textbook) {
@@ -185,32 +36,130 @@ export function getChapters(learningPathId: string): BuiltInDeck[] {
 }
 
 /**
- * Extracts vocab-practice dynamic modules from textbooks and returns them as individual BuiltInDecks.
+ * Gets all chapters from any learning path with full module details.
  */
-export function getVocabPracticeModulesFromTextbooks(): [
-  TextbookIDEnum,
-  VocabTextbook,
-][] {
-  return Object.entries(textbooks)
-    .map(([textbookId, textbook]) => {
-      const tbId = textbookId as TextbookIDEnum
-      const chapterList = getChapters(tbId)
-      const chapterVocabs = chapterList
-        .map((chapter, index) => {
-          const slug = textbook.chapterSlugs[index]
-          return createVocabChapter(chapter, tbId, slug)
-        })
-        .filter((chapter) => chapter.decks.length > 0)
+export async function getLearningPathChapters(
+  pathId: string,
+): Promise<LearningPathChapter[]> {
+  // Try static textbook first
+  const staticChapters = getStaticTextbookChapters(pathId)
+  if (staticChapters.length > 0) {
+    return staticChapters
+  }
 
-      return [
-        tbId,
-        {
-          id: textbook.id,
-          name: textbook.name,
-          short_name: textbook.short_name || textbook.name,
-          chapters: chapterVocabs,
-        },
-      ] as [TextbookIDEnum, VocabTextbook]
-    })
-    .filter(([, textbook]) => textbook.chapters && textbook.chapters.length > 0)
+  // Fall back to user-created learning path from database
+  return await getUserPathChaptersAsync(pathId)
+}
+
+/**
+ * Gets all module IDs from a static textbook in chapter order.
+ * Used for ordering modules in learning path generation.
+ * @param textbookId - Textbook ID
+ * @returns Array of module IDs across all chapters in order
+ */
+export function getStaticTextbookModuleIds(
+  textbookId: TextbookIDEnum,
+): string[] {
+  const chapters = getStaticTextbookChapters(textbookId)
+  const moduleIds: string[] = []
+
+  chapters.forEach((chapter) => {
+    moduleIds.push(...chapter.learning_path_item_ids)
+  })
+
+  return moduleIds
+}
+
+/**
+ * Gets resolved module objects for a local (static) chapter.
+ * Converts module IDs to full module objects with disabled status.
+ */
+function getModulesFromLocalChapter(
+  chapter: LearningPathChapter,
+): ResolvedModule[] {
+  const modules = {
+    ...static_modules,
+    ...dynamic_modules,
+    ...external_resources,
+  }
+  const disabledSet = new Set(chapter.disabled_modules || [])
+
+  return chapter.learning_path_item_ids
+    .map((moduleId) => ({
+      key: moduleId,
+      module: modules[moduleId],
+      disabled: disabledSet.has(moduleId),
+    }))
+    .filter((item): item is ResolvedModule => item.module !== undefined)
+}
+
+/**
+ * Gets resolved module objects for a specific chapter in any learning path.
+ * Routes to the appropriate resolver based on whether it's a static textbook or user path.
+ * @param pathId - Textbook ID or learning path ID
+ * @param chapterSlug - Chapter slug to retrieve
+ * @returns Array of module objects with their keys and disabled status
+ */
+export async function getLearningPathChapterItems(
+  pathId: string,
+  chapterSlug: string,
+): Promise<ResolvedModule[]> {
+  // Check if it's a static textbook
+  const textbook = textbooks[pathId as TextbookIDEnum]
+  if (textbook) {
+    // For static textbooks, resolve modules from local data
+    const chapters = await getLearningPathChapters(pathId)
+    const chapter = chapters.find((ch) => ch.slug === chapterSlug)
+    if (!chapter) return []
+    return getModulesFromLocalChapter(chapter)
+  }
+
+  // For user-created learning paths, fetch from database
+  return await getUserPathChapterModules(pathId, chapterSlug)
+}
+
+/**
+ * Fetches all learning paths (both static textbooks and user-created paths).
+ * Combines static textbooks with user-created learning paths if user is logged in.
+ * @param userId - User ID (or null for anonymous users)
+ * @returns Array of all learning paths
+ */
+export async function fetchAllLearningPaths(
+  userId: string | null,
+): Promise<LearningPath[]> {
+  // Get static textbooks
+  const staticTextbooks = await Promise.all(
+    Object.entries(textbooks).map(async ([textbookId, textbook]) => ({
+      id: textbookId as TextbookIDEnum,
+      name: textbook.name,
+      short_name: textbook.short_name || textbook.name,
+      chapters: await getLearningPathChapters(textbookId),
+      isUserCreated: false,
+    })),
+  )
+
+  // Get user-created learning paths if user is logged in
+  if (!userId) {
+    return staticTextbooks
+  }
+
+  try {
+    const userPaths = await getUserLearningPaths(userId)
+
+    const userLearningPaths = await Promise.all(
+      userPaths.map(async (path) => ({
+        id: path.path_id,
+        name: path.name,
+        short_name: path.name,
+        chapters: await getLearningPathChapters(path.path_id),
+        isUserCreated: true,
+      })),
+    )
+
+    return [...staticTextbooks, ...userLearningPaths]
+  } catch (error) {
+    // If user path fetch fails, fall back to static textbooks only
+    console.error("Failed to fetch user learning paths:", error)
+    return staticTextbooks
+  }
 }

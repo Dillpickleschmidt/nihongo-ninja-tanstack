@@ -1,7 +1,7 @@
 // Vocabulary item validation schemas and utilities
 import { z } from "zod"
 import { RequiredStringSchema, NonEmptyStringArraySchema } from "./common"
-import type { VocabItemFormData } from "../types/vocabulary-types"
+import type { VocabItemFormData } from "../types/vocabulary"
 
 // Base vocabulary item validation schema
 export const BaseVocabItemSchema = z.object({

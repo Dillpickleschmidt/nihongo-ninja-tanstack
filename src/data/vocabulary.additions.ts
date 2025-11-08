@@ -1,6 +1,6 @@
-import type { VocabularyCollection } from "./types"
+import type { VocabularyItem } from "./types"
 
-export const vocabulary: VocabularyCollection = {
+export const vocabulary: Record<string, VocabularyItem> = {
   "～か月": {
     word: "～か月",
     furigana: "～か月[～かげつ]",

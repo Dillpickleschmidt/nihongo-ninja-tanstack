@@ -1,18 +1,9 @@
-import { describe, it, expect, vi } from "vitest"
+import { describe, it, expect } from "vitest"
 import {
   createLearningPath,
   type ExtractedData,
   type VocabWord,
 } from "./generation"
-
-vi.mock("@/data/utils/core", () => ({
-  getLearningPathModules: vi.fn(() => [
-    "welcome-overview",
-    "japanese-pronunciation",
-    "writing-systems",
-    "hiragana",
-  ]),
-}))
 
 describe("Learning path generation", () => {
   describe("chunkVocabularyByCategory", () => {

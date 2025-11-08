@@ -5,16 +5,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import type { Deck, TextbookIDEnum } from "@/data/types"
+import type { LearningPathChapter } from "@/data/types"
 import type { QueryClient } from "@tanstack/solid-query"
 import { cn } from "@/utils"
-import { getMinifiedTextbookEntries } from "@/data/utils/core"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import { allLearningPathsQueryOptions } from "@/query/query-options"
 import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
 
 interface LearningPathChapterSelectorProps {
   children: JSX.Element
   activeLearningPathId: string
-  activeChapter: Deck
+  activeChapter: LearningPathChapter
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   queryClient: QueryClient
@@ -23,13 +24,18 @@ interface LearningPathChapterSelectorProps {
   popoverWidth?: string
 }
 
-export function LearningPathChapterSelector(props: LearningPathChapterSelectorProps) {
-  const [selectedLearningPathId, setSelectedLearningPathId] =
-    createSignal<string | null>(null)
+export function LearningPathChapterSelector(
+  props: LearningPathChapterSelectorProps,
+) {
+  const [selectedLearningPathId, setSelectedLearningPathId] = createSignal<
+    string | null
+  >(null)
 
   let activeLearningPathRef: HTMLButtonElement | undefined
 
-  const textbookEntries = getMinifiedTextbookEntries()
+  const pathsQuery = useCustomQuery(() =>
+    allLearningPathsQueryOptions(props.userId),
+  )
 
   const displayedLearningPathId = () =>
     selectedLearningPathId() || props.activeLearningPathId
@@ -37,7 +43,10 @@ export function LearningPathChapterSelector(props: LearningPathChapterSelectorPr
   // Focus active learning path when popover opens
   createEffect(() => {
     if (props.isOpen) {
-      console.log("Popover opened, activeLearningPathRef:", activeLearningPathRef)
+      console.log(
+        "Popover opened, activeLearningPathRef:",
+        activeLearningPathRef,
+      )
       activeLearningPathRef?.focus()
     }
   })
@@ -65,70 +74,93 @@ export function LearningPathChapterSelector(props: LearningPathChapterSelectorPr
             props.popoverWidth || "w-[480px]",
           )}
         >
-          <div class="grid grid-cols-[1fr_2fr]">
-            <div class="border-primary/10 border-r p-1">
-              <For each={textbookEntries}>
-                {([learningPathId, textbook]) => (
-                  <button
-                    ref={(el) => {
-                      if (props.activeLearningPathId === learningPathId) {
-                        activeLearningPathRef = el
-                      }
-                    }}
-                    onClick={() => handleLearningPathSelect(learningPathId)}
-                    class={cn(
-                      "hover:bg-primary/15 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-medium",
-                      displayedLearningPathId() === learningPathId && "bg-primary/10",
-                    )}
-                  >
-                    <span>{textbook.short_name || textbook.name}</span>
-                  </button>
-                )}
-              </For>
-            </div>
-            <div class="p-1">
-              <For each={textbookEntries}>
-                {([learningPathId, textbook]) => (
-                  <Show when={displayedLearningPathId() === learningPathId}>
-                    <For each={textbook.chapters}>
-                      {(chapter) => (
-                        <button
-                          onClick={async () => {
-                            await applyUserSettingsUpdate(
-                              props.userId,
-                              props.queryClient,
-                              {
-                                "active-learning-path": learningPathId,
-                                "active-chapter": chapter.slug,
-                              },
-                            )
-                            props.onChapterSelect(learningPathId, chapter.slug)
-                            props.onOpenChange(false)
-                          }}
-                          class={cn(
-                            "hover:bg-card-foreground/40 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal",
-                            props.activeChapter.slug === chapter.slug &&
-                              "bg-primary/10 hover:bg-primary/15 font-semibold",
-                          )}
-                        >
-                          <span>{chapter.title}</span>
-                          <Show when={props.activeChapter.slug === chapter.slug}>
-                            <svg
-                              class="size-4"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
-                            >
-                              <path d="M5 12l5 5l10 -10" />
-                            </svg>
-                          </Show>
-                        </button>
+          <Show
+            when={!pathsQuery.isPending}
+            fallback={
+              <div class="bg-card/40 border-card-foreground/70 flex items-center justify-center rounded-xl border p-8">
+                <span class="text-muted-foreground text-sm">
+                  Loading learning paths…
+                </span>
+              </div>
+            }
+          >
+            <div class="grid grid-cols-[1fr_2fr]">
+              <div class="border-primary/10 border-r p-1">
+                <For each={pathsQuery.data || []}>
+                  {(path) => (
+                    <button
+                      ref={(el) => {
+                        if (props.activeLearningPathId === path.id) {
+                          activeLearningPathRef = el
+                        }
+                      }}
+                      onClick={() => handleLearningPathSelect(path.id)}
+                      class={cn(
+                        "hover:bg-primary/15 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-medium",
+                        displayedLearningPathId() === path.id &&
+                          "bg-primary/10",
                       )}
-                    </For>
-                  </Show>
-                )}
-              </For>
+                    >
+                      <span class="flex items-center gap-2">
+                        <span>{path.short_name || path.name}</span>
+                        <Show when={path.isUserCreated}>
+                          <span class="text-muted-foreground text-xs">
+                            (Custom)
+                          </span>
+                        </Show>
+                      </span>
+                    </button>
+                  )}
+                </For>
+              </div>
+              <div class="p-1">
+                <For each={pathsQuery.data || []}>
+                  {(path) => (
+                    <Show when={displayedLearningPathId() === path.id}>
+                      <For each={path.chapters}>
+                        {(chapter) => (
+                          <button
+                            onClick={async () => {
+                              await applyUserSettingsUpdate(
+                                props.userId,
+                                props.queryClient,
+                                {
+                                  "active-learning-path": path.id,
+                                  "active-chapter": chapter.slug,
+                                },
+                              )
+                              props.onChapterSelect(path.id, chapter.slug)
+                              props.onOpenChange(false)
+                            }}
+                            class={cn(
+                              "hover:bg-card-foreground/40 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal",
+                              props.activeLearningPathId === path.id &&
+                                props.activeChapter.slug === chapter.slug &&
+                                "bg-primary/10 hover:bg-primary/15 font-semibold",
+                            )}
+                          >
+                            <span>{chapter.title}</span>
+                            <Show
+                              when={props.activeLearningPathId === path.id &&
+                                props.activeChapter.slug === chapter.slug}
+                            >
+                              <svg
+                                class="size-4"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                              >
+                                <path d="M5 12l5 5l10 -10" />
+                              </svg>
+                            </Show>
+                          </button>
+                        )}
+                      </For>
+                    </Show>
+                  )}
+                </For>
+              </div>
             </div>
-          </div>
+          </Show>
         </PopoverContent>
       </Popover>
     </div>

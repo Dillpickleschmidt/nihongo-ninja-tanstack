@@ -5,6 +5,19 @@ import { getUser } from "@/features/supabase/getUser"
 import { insertVocabularyItems, getVocabForDeck } from "./deck"
 import { getUserFoldersAndDecks } from "./folder"
 
+export type SharedDeck = {
+  deck_id: string
+  shared_at: string
+  shared_by: string
+  import_count: number
+  user_decks: {
+    deck_name: string
+    deck_description: string | null
+    source: string
+    created_at: string
+  }[]
+}
+
 /**
  * Creates a public share for a user's deck
  */
@@ -135,7 +148,7 @@ export const getSharedDecksServerFn = createServerFn({ method: "GET" })
 
     if (error) throw error
 
-    return decks || []
+    return (decks || []) as SharedDeck[]
   })
 
 /**
@@ -220,7 +233,7 @@ export const importSharedDeckServerFn = createServerFn({ method: "POST" })
       throw new Error("Cannot import your own shared deck")
     }
 
-    const originalDeck = shareInfo.user_decks as UserDeck
+    const originalDeck = shareInfo.user_decks[0] as UserDeck
 
     // Check if user already imported this deck
     const currentData = await getUserFoldersAndDecks(response.user.id)
@@ -248,6 +261,7 @@ export const importSharedDeckServerFn = createServerFn({ method: "POST" })
       source: "shared",
       original_deck_id: data.deck_id.toString(), // Track the original shared deck
       user_id: response.user.id,
+      allowed_practice_modes: ["meanings", "spellings"],
     }
 
     const { data: newDeck, error: insertError } = await supabase

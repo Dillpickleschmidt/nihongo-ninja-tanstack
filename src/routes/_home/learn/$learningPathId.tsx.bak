@@ -1,11 +1,10 @@
-// routes/_home/learn/$textbookId.tsx
+// routes/_home/learn/$learningPathId.tsx
 import {
   createFileRoute,
   Outlet,
   redirect,
   useLocation,
 } from "@tanstack/solid-router"
-import { getDeckBySlug } from "@/data/utils/core"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { LearnPageHeader } from "@/features/learn-page/components/layout/LearnPageHeader"
 import { LearnPageProvider } from "@/features/learn-page/context/LearnPageContext"
@@ -18,19 +17,20 @@ import {
   userWeekTimeDataQueryOptions,
   seenCardsStatsQueryOptions,
   userDailyTimeQueryOptions,
+  allLearningPathsQueryOptions,
 } from "@/query/query-options"
 import { userSettingsQueryOptions } from "@/query/query-options"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
-import type { TextbookIDEnum } from "@/data/types"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
 
-export const Route = createFileRoute("/_home/learn/$textbookId")({
+export const Route = createFileRoute("/_home/learn/$learningPathId")({
   loader: async ({ context, params, location }) => {
     const { user, queryClient } = context
-    const { textbookId } = params
+    const { learningPathId } = params
 
     // Extract route segment from pathname (e.g., /learn/genki_1/chapter-3 -> chapter-3)
     const pathParts = location.pathname.split("/").filter(Boolean)
-    const routeSegment = pathParts[2] // Index: 0=learn, 1=textbookId, 2=route
+    const routeSegment = pathParts[2] // Index: 0=learn, 1=learningPathId, 2=route
 
     // If no route segment in URL, redirect to active deck
     if (!routeSegment) {
@@ -40,8 +40,8 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
       const activeChapterSlug = userSettings["active-chapter"]
 
       throw redirect({
-        to: "/learn/$textbookId/$chapterSlug",
-        params: { textbookId, chapterSlug: activeChapterSlug },
+        to: "/learn/$learningPathId/$chapterSlug",
+        params: { learningPathId, chapterSlug: activeChapterSlug },
       })
     }
 
@@ -50,7 +50,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
       userSettingsQueryOptions(user?.id || null),
     )
 
-    // Prefetch textbook-wide queries
+    // Prefetch learning-path-wide queries
     queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
     queryClient.prefetchQuery(
       dueCardsCountQueryOptions(
@@ -58,12 +58,12 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
         userSettings["service-preferences"],
       ),
     )
+    queryClient.prefetchQuery(allLearningPathsQueryOptions(user?.id || null))
     queryClient.ensureQueryData(
       upcomingModulesQueryOptions(
         user?.id || null,
-        textbookId as TextbookIDEnum,
-        userSettings["learning-path-positions"]?.[textbookId as TextbookIDEnum] ||
-          null,
+        learningPathId as any,
+        userSettings["learning-path-positions"]?.[learningPathId] || null,
       ),
     )
 
@@ -101,7 +101,7 @@ export const Route = createFileRoute("/_home/learn/$textbookId")({
 
     return {
       user,
-      textbookId: textbookId as TextbookIDEnum,
+      learningPathId,
       userSettings,
       struggles: mockStruggles,
       historyItems: mockHistoryItems,
@@ -116,7 +116,7 @@ function RouteComponent() {
   return (
     <LearnPageProvider
       userId={loaderData().user?.id || null}
-      textbookId={loaderData().textbookId}
+      learningPathId={loaderData().learningPathId}
     >
       <LayoutContent />
     </LearnPageProvider>
@@ -129,9 +129,17 @@ function LayoutContent() {
   const { mobileContentView, setMobileContentView, settingsQuery } =
     useLearnPageContext()
 
+  // Query learning paths to get chapter data
+  const learningPathsQuery = useCustomQuery(() =>
+    allLearningPathsQueryOptions(loaderData().user?.id || null),
+  )
+
   const activeChapter = () => {
     const activeChapterSlug = settingsQuery.data!["active-chapter"]
-    return getDeckBySlug(loaderData().textbookId, activeChapterSlug)
+    const learningPath = learningPathsQuery.data?.find(
+      (p) => p.id === loaderData().learningPathId,
+    )
+    return learningPath?.chapters.find((ch) => ch.slug === activeChapterSlug)
   }
 
   const blurAmount = () =>
@@ -149,7 +157,7 @@ function LayoutContent() {
         }
       `}</style>
       <TextbookChapterBackgrounds
-        textbook={loaderData().textbookId}
+        textbook={loaderData().learningPathId}
         chapter={activeChapter()?.slug || ""}
         showGradient={true}
         blur={blurAmount}

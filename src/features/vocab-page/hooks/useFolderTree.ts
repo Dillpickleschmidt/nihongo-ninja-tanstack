@@ -56,6 +56,7 @@ export function useFolderTree(props: UseFolderTreeProps) {
   const folderContents = createMemo(() => {
     if (!isFolder() || !props.item) return { decks: 0, folders: 0 }
 
+    // Type assertion needed because SolidJS reactive context doesn't narrow types
     const folderId = (props.item as DeckFolder).folder_id
     const descendants = new Set([folderId])
 

@@ -359,6 +359,15 @@ export type Database = {
         Args: { user_id_param: string; week_ago_param: string }
         Returns: Json
       }
+      upload_learning_path: {
+        Args: {
+          module_sources: Json[]
+          transcript_data: Json
+          user_id_param: string
+          vocab_decks: Json[]
+        }
+        Returns: Json
+      }
     }
     Enums: {
       practice_item_type: "vocabulary" | "kanji" | "radical"

@@ -5,11 +5,12 @@ import { useQueryClient } from "@tanstack/solid-query"
 import { Button } from "@/components/ui/button"
 import { useLocation, useRouteContext } from "@tanstack/solid-router"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/query/query-options"
+import {
+  userSettingsQueryOptions,
+  allLearningPathsQueryOptions,
+} from "@/query/query-options"
 import { LearningPathChapterSelector } from "@/features/learn-page/components/shared/LearningPathChapterSelector"
-import { getDeckBySlug, getMinifiedTextbookEntries } from "@/data/utils/core"
 import { Route as RootRoute } from "@/routes/__root"
-import type { TextbookIDEnum } from "@/data/types"
 
 export default function Nav() {
   const location = useLocation()
@@ -22,6 +23,10 @@ export default function Nav() {
     userSettingsQueryOptions(context().user?.id || null),
   )
 
+  const pathsQuery = useCustomQuery(() =>
+    allLearningPathsQueryOptions(context().user?.id || null),
+  )
+
   const activeLearningPathId = () =>
     settingsQuery.data?.["active-learning-path"] as string | undefined
   const activeChapterSlug = () => settingsQuery.data?.["active-chapter"]
@@ -30,7 +35,18 @@ export default function Nav() {
     const learningPathId = activeLearningPathId()
     const chapterSlug = activeChapterSlug()
     if (!learningPathId || !chapterSlug) return null
-    return getDeckBySlug(learningPathId, chapterSlug)
+
+    const path = pathsQuery.data?.find((p) => p.id === learningPathId)
+    return path?.chapters?.find((ch) => ch.slug === chapterSlug) ?? null
+  }
+
+  const activeTextbookShortName = () => {
+    const learningPathId = activeLearningPathId()
+    if (!learningPathId) return null
+
+    return (
+      pathsQuery.data?.find((p) => p.id === learningPathId)?.short_name ?? null
+    )
   }
 
   const handleDeckSelect = (learningPathId: string, chapterSlug: string) => {
@@ -42,14 +58,11 @@ export default function Nav() {
       }
       return
     }
-    // Navigate to appropriate route for other textbooks
-    const deck = getDeckBySlug(learningPathId, chapterSlug)
-    if (deck) {
-      navigate({
-        to: "/$textbookId/$chapterSlug",
-        params: { textbookId: learningPathId, chapterSlug: chapterSlug },
-      })
-    }
+    // Navigate to appropriate route for other learning paths
+    navigate({
+      to: "/$learningPathId/$chapterSlug",
+      params: { learningPathId: learningPathId, chapterSlug: chapterSlug },
+    })
   }
 
   const active = (path: string) =>
@@ -61,6 +74,10 @@ export default function Nav() {
     <nav class="sticky top-0 z-50 flex h-16 w-full items-center justify-between overflow-hidden px-6 py-2">
       <Show
         when={
+          !pathsQuery.isPending &&
+          !pathsQuery.isError &&
+          !settingsQuery.isPending &&
+          !settingsQuery.isError &&
           activeLearningPathId() &&
           activeChapter() &&
           activeLearningPathId() !== "getting_started"
@@ -78,11 +95,7 @@ export default function Nav() {
         >
           <button class="group text-foreground/80 hover:text-foreground flex items-center gap-2">
             <span class="text-sm font-semibold">
-              {
-                getMinifiedTextbookEntries().find(
-                  ([id]) => id === activeLearningPathId(),
-                )?.[1]?.short_name
-              }
+              {activeTextbookShortName()}
             </span>
             <span class="text-sm font-medium">{activeChapter()?.title}</span>
             <svg

@@ -2,7 +2,7 @@ import { GRAMMAR_TO_MODULES } from "@/data/grammar_to_modules"
 import { static_modules } from "@/data/static_modules"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import type { TextbookIDEnum } from "@/data/types"
-import { getLearningPathModules } from "@/data/utils/core"
+import { getStaticTextbookModuleIds } from "@/data/utils/core"
 import type { POS } from "@/features/sentence-practice/kagome/types/kagome"
 
 /*
@@ -207,7 +207,7 @@ function applyTextbookOrdering(
   grammarModules: GrammarModuleOption[],
   textbookId: TextbookIDEnum,
 ): GrammarModuleOption[] {
-  const ordering = getLearningPathModules(textbookId)
+  const ordering = getStaticTextbookModuleIds(textbookId)
   const orderingMap = new Map(ordering.map((id, idx) => [id, idx]))
 
   return grammarModules.sort((a, b) => {

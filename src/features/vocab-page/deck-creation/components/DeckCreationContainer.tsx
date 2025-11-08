@@ -6,7 +6,7 @@ import {
   formDataToDBInsert,
   formDataToVocabularyItem,
   type VocabItemFormData,
-} from "../../types/vocabulary-types"
+} from "../../types/vocabulary"
 import { validateVocabItemMinimal } from "../../validation"
 import { executeEditTransactionServerFn } from "@/features/supabase/db/folder"
 import { createCustomDeckServerFn } from "@/features/supabase/db/deck"
@@ -141,7 +141,7 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
         }
 
         if (props.onNavigateToDeck) {
-          props.onNavigateToDeck(savedDeck as UserDeck)
+          props.onNavigateToDeck(savedDeck)
         }
       }
 
@@ -154,7 +154,7 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
   }
 
   return (
-    <div class="w-full space-y-8 px-2 pb-8 sm:px-4 lg:px-6">
+    <div class="w-full max-w-5xl space-y-8 px-2 pb-8 sm:px-4 lg:px-6">
       <DeckHeader
         onClear={handleClear}
         onSave={handleSaveDeck}

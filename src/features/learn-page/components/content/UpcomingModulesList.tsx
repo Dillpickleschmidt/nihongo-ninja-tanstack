@@ -23,8 +23,7 @@ const LOAD_BATCH_SIZE = 5
 function getModuleInfo(moduleId: string) {
   const module = modules[moduleId]
   if (module) {
-    const type =
-      "session_type" in module ? module.session_type : module.lesson_type
+    const type = module.source_type
     const linkTo = getLinkTo(module, moduleId)
     return { title: module.title, type, linkTo }
   }

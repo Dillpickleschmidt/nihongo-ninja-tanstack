@@ -1,5 +1,5 @@
 // features/learn-page/components/content/LearningPathGrid.tsx
-import { For, createMemo } from "solid-js"
+import { For, createMemo, Show } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { CircleCheckBig } from "lucide-solid"
 import { cn } from "@/utils"
@@ -8,9 +8,10 @@ import {
   enrichLessons,
   type EnrichedLearningPathModule,
 } from "@/features/learn-page/utils/loader-helpers"
-import { Route } from "@/routes/_home/learn/$textbookId/$chapterSlug"
-import { getModules } from "@/data/utils/core"
+import { Route } from "@/routes/_home/learn/$learningPathId/$chapterSlug"
+import { chapterModulesQueryOptions } from "@/query/query-options"
 import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
   ContextMenu,
   ContextMenuTrigger,
@@ -35,23 +36,41 @@ function GridLessonsList() {
     new Set(completionsQuery.data?.map((c) => c.module_path))
   const loaderData = Route.useLoaderData()
 
+  // Fetch chapter modules with TQ (prefetched by route loader)
+  const modulesQuery = useCustomQuery(() =>
+    chapterModulesQueryOptions(
+      loaderData().learningPathId,
+      loaderData().chapterSlug,
+    ),
+  )
+
   const lessons = createMemo(() => {
-    const deck = loaderData().deck
-    if (!deck) return []
-    const rawModules = getModules(deck)
-    return enrichLessons(rawModules)
+    if (!modulesQuery.data) return []
+    return enrichLessons(modulesQuery.data)
   })
 
   return (
-    <For each={lessons()}>
-      {(module, index) => (
-        <GridLessonItem
-          module={module}
-          number={index() + 1}
-          completedModulesSet={completedModulesSet}
-        />
-      )}
-    </For>
+    <Show
+      when={!modulesQuery.isPending}
+      fallback={
+        // Skeleton loading state - show 6 placeholder cards
+        <div class="-mr-4 grid grid-cols-1 gap-6 overflow-x-hidden overflow-y-auto pr-2.5 pb-8 lg:grid-cols-2 xl:max-h-[calc(100vh-403px)] xl:grid-cols-3 xl:overflow-y-auto">
+          {[1, 2, 3, 4, 5, 6].map(() => (
+            <div class="border-card-foreground/40 bg-card/60 h-12 animate-pulse rounded-md border" />
+          ))}
+        </div>
+      }
+    >
+      <For each={lessons()}>
+        {(module, index) => (
+          <GridLessonItem
+            module={module}
+            number={index() + 1}
+            completedModulesSet={completedModulesSet}
+          />
+        )}
+      </For>
+    </Show>
   )
 }
 
@@ -65,9 +84,9 @@ function GridLessonItem(props: {
   completedModulesSet: () => Set<string>
 }) {
   const { setCurrentPosition } = useLearnPageContext()
-  const { moduleId, moduleType, displayTitle, linkTo, iconClasses, disabled } =
+  const { moduleId, source_type, title, linkTo, iconClasses, disabled } =
     props.module
-  const ModuleIcon = getModuleIcon(moduleType)
+  const ModuleIcon = getModuleIcon(source_type)
 
   const isCompleted = () => props.completedModulesSet().has(moduleId)
 
@@ -130,7 +149,7 @@ function GridLessonItem(props: {
                   {isCompleted() && (
                     <CircleCheckBig class="mr-2 inline-flex h-4 w-4 origin-center dark:text-green-500" />
                   )}
-                  {disabled ? `${displayTitle} (Coming Soon)` : displayTitle}
+                  {disabled ? `${title} (Coming Soon)` : title}
                 </span>
               </div>
 

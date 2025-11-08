@@ -1,9 +1,16 @@
 import { Show } from "solid-js"
 import { Button } from "@/components/ui/button"
 
-interface DeleteConfirmationProps {
-  item: UserDeck | DeckFolder
-  itemType: "deck" | "folder"
+type DeckDeleteConfirmationProps = {
+  itemType: "deck"
+  item: UserDeck
+  onCancel: () => void
+  onConfirm: () => void
+}
+
+type FolderDeleteConfirmationProps = {
+  itemType: "folder"
+  item: DeckFolder
   folderContents?: { decks: number; folders: number }
   deleteStrategy: "move-up" | "delete-all"
   onStrategyChange: (strategy: "move-up" | "delete-all") => void
@@ -11,77 +18,87 @@ interface DeleteConfirmationProps {
   onConfirm: () => void
 }
 
-export function DeleteConfirmation(props: DeleteConfirmationProps) {
-  const isDeck = () => props.itemType === "deck"
-  const isFolder = () => props.itemType === "folder"
+type DeleteConfirmationProps =
+  | DeckDeleteConfirmationProps
+  | FolderDeleteConfirmationProps
 
+export function DeleteConfirmation(props: DeleteConfirmationProps) {
   return (
     <div class="space-y-4">
       <Show
-        when={isDeck()}
-        fallback={
-          <div class="space-y-4">
-            <p>Delete "{(props.item as DeckFolder)?.folder_name}"?</p>
+        when={props.itemType === "deck"}
+        fallback={(() => {
+          const folderProps = props as FolderDeleteConfirmationProps
+          return (
+            <div class="space-y-4">
+              <p>Delete "{folderProps.item.folder_name}"?</p>
 
-            <Show
-              when={
-                props.folderContents &&
-                (props.folderContents.decks > 0 ||
-                  props.folderContents.folders > 0)
-              }
-            >
-              <div class="bg-background/40 border-card-foreground/70 rounded border p-3 backdrop-blur-sm">
-                <p class="text-sm">
-                  This folder contains{" "}
-                  <strong>
-                    {props.folderContents!.decks} deck
-                    {props.folderContents!.decks !== 1 ? "s" : ""}
-                  </strong>
-                  <Show when={props.folderContents!.folders > 0}>
-                    {" "}
-                    and{" "}
+              <Show
+                when={
+                  folderProps.folderContents &&
+                  (folderProps.folderContents.decks > 0 ||
+                    folderProps.folderContents.folders > 0)
+                }
+              >
+                <div class="bg-background/40 border-card-foreground/70 rounded border p-3 backdrop-blur-sm">
+                  <p class="text-sm">
+                    This folder contains{" "}
                     <strong>
-                      {props.folderContents!.folders} subfolder
-                      {props.folderContents!.folders !== 1 ? "s" : ""}
+                      {folderProps.folderContents!.decks} deck
+                      {folderProps.folderContents!.decks !== 1 ? "s" : ""}
                     </strong>
-                  </Show>
-                  . What should happen to them?
-                </p>
+                    <Show when={folderProps.folderContents!.folders > 0}>
+                      {" "}
+                      and{" "}
+                      <strong>
+                        {folderProps.folderContents!.folders} subfolder
+                        {folderProps.folderContents!.folders !== 1 ? "s" : ""}
+                      </strong>
+                    </Show>
+                    . What should happen to them?
+                  </p>
 
-                <div class="mt-3 space-y-2">
-                  <label class="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="deleteStrategy"
-                      checked={props.deleteStrategy === "move-up"}
-                      onChange={() => props.onStrategyChange("move-up")}
-                      class="accent-amber-500"
-                    />
-                    <span class="text-sm">Move items to parent folder</span>
-                  </label>
+                  <div class="mt-3 space-y-2">
+                    <label class="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name="deleteStrategy"
+                        checked={folderProps.deleteStrategy === "move-up"}
+                        onChange={() => folderProps.onStrategyChange("move-up")}
+                        class="accent-amber-500"
+                      />
+                      <span class="text-sm">Move items to parent folder</span>
+                    </label>
 
-                  <label class="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="deleteStrategy"
-                      checked={props.deleteStrategy === "delete-all"}
-                      onChange={() => props.onStrategyChange("delete-all")}
-                      class="accent-amber-500"
-                    />
-                    <span class="text-sm">
-                      Delete all items (cannot be undone)
-                    </span>
-                  </label>
+                    <label class="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name="deleteStrategy"
+                        checked={folderProps.deleteStrategy === "delete-all"}
+                        onChange={() =>
+                          folderProps.onStrategyChange("delete-all")
+                        }
+                        class="accent-amber-500"
+                      />
+                      <span class="text-sm">
+                        Delete all items (cannot be undone)
+                      </span>
+                    </label>
+                  </div>
                 </div>
-              </div>
-            </Show>
-          </div>
-        }
+              </Show>
+            </div>
+          )
+        })()}
       >
-        <p class="text-sm">
-          Delete "{(props.item as UserDeck)?.deck_name}"? This action cannot be
-          undone.
-        </p>
+        {(() => {
+          const deckProps = props as DeckDeleteConfirmationProps
+          return (
+            <p class="text-sm">
+              Delete "{deckProps.item.deck_name}"? This action cannot be undone.
+            </p>
+          )
+        })()}
       </Show>
 
       <div class="flex justify-end gap-2">
@@ -89,7 +106,7 @@ export function DeleteConfirmation(props: DeleteConfirmationProps) {
           Cancel
         </Button>
         <Button variant="destructive" onClick={props.onConfirm}>
-          Delete {isDeck() ? "Deck" : "Folder"}
+          Delete {props.itemType === "deck" ? "Deck" : "Folder"}
         </Button>
       </div>
     </div>

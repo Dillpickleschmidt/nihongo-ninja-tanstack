@@ -1,50 +1,39 @@
-// routes/_home/learn/$textbookId/$chapterSlug.tsx
+// routes/_home/learn/$learningPathId/$chapterSlug.tsx
 import { onMount } from "solid-js"
-import {
-  createFileRoute,
-  redirect,
-  useRouteContext,
-} from "@tanstack/solid-router"
-import { getDeckBySlug, getModules } from "@/data/utils/core"
+import { createFileRoute, useRouteContext } from "@tanstack/solid-router"
 import { useTour } from "@/features/guided-tour/TourContext"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { vocabHierarchyQueryOptions } from "@/query/query-options"
+import {
+  chapterModulesQueryOptions,
+  allLearningPathsQueryOptions,
+} from "@/query/query-options"
 import { resourceThumbnailQueryOptions } from "@/query/query-options"
 import { enrichExternalResources } from "@/features/learn-page/utils/loader-helpers"
 import { userSettingsQueryOptions } from "@/query/query-options"
 import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
-import type { TextbookIDEnum, ExternalResource } from "@/data/types"
+import type { ExternalResource } from "@/data/types"
 import { Route as RootRoute } from "@/routes/__root"
 import DesktopLayout from "@/features/learn-page/components/shared/DesktopLayout"
 
-export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
+export const Route = createFileRoute(
+  "/_home/learn/$learningPathId/$chapterSlug",
+)({
   loader: async ({ context, params }) => {
     const { user, queryClient } = context
-    const { textbookId, chapterSlug } = params
+    const { learningPathId, chapterSlug } = params
 
     // Get user settings (will be instant cache hit from parent)
     const userSettings = await queryClient.ensureQueryData(
       userSettingsQueryOptions(user?.id || null),
     )
 
-    // Get deck for current chapter
-    const deck = getDeckBySlug(textbookId as TextbookIDEnum, chapterSlug)
-
-    // If invalid chapter slug, redirect to active chapter
-    if (!deck) {
-      throw redirect({
-        to: "/learn/$textbookId/$chapterSlug",
-        params: {
-          textbookId: textbookId as TextbookIDEnum,
-          chapterSlug: userSettings["active-chapter"],
-        },
-      })
-    }
+    // Prefetch all learning paths to ensure chapters are available
+    queryClient.prefetchQuery(allLearningPathsQueryOptions(user?.id || null))
 
     // Update active-deck if URL differs from current settings
     const needsUpdate =
       userSettings["active-chapter"] !== chapterSlug ||
-      userSettings["active-learning-path"] !== (textbookId as TextbookIDEnum)
+      userSettings["active-learning-path"] !== learningPathId
 
     if (needsUpdate) {
       await applyUserSettingsUpdate(
@@ -52,42 +41,51 @@ export const Route = createFileRoute("/_home/learn/$textbookId/$chapterSlug")({
         queryClient,
         {
           "active-chapter": chapterSlug,
-          "active-learning-path": textbookId as TextbookIDEnum,
+          "active-learning-path": learningPathId,
         },
         { awaitDb: false }, // Don't await DB (non-blocking)
       )
     }
 
-    // Prefetch vocab hierarchy for this chapter
+    // Prefetch chapter modules (supports both static and user-created paths)
     queryClient.prefetchQuery(
-      vocabHierarchyQueryOptions(
-        textbookId,
-        deck,
-        userSettings["override-settings"],
-      ),
+      chapterModulesQueryOptions(learningPathId, chapterSlug),
     )
 
-    // Pre-fetch all resource thumbnails for this chapter
-    const currentChapterModules = getModules(deck)
-    const rawResources = Object.fromEntries(
-      currentChapterModules
-        .filter(({ module }) => "external_url" in module)
-        .map(({ key, module }) => [key, module as ExternalResource]),
-    )
-    const externalResources = enrichExternalResources(rawResources)
-    const resourcesArray = Object.values(externalResources)
-    resourcesArray.forEach((resource) =>
-      queryClient.prefetchQuery(
-        resourceThumbnailQueryOptions(
-          resource.id,
-          resource.external_url,
-          resource.creator_id,
-        ),
-      ),
-    )
+    // Pre-fetch resource thumbnails (get modules from cache after prefetch)
+    let externalResources: Record<string, ExternalResource> = {}
+    try {
+      const cachedModules = queryClient.getQueryData([
+        "chapter-modules",
+        learningPathId,
+        chapterSlug,
+      ]) as Array<{ key: string; module: any }> | undefined
+
+      if (cachedModules) {
+        const rawResources = Object.fromEntries(
+          cachedModules
+            .filter(({ module }) => "external_url" in module)
+            .map(({ key, module }) => [key, module as ExternalResource]),
+        )
+        externalResources = enrichExternalResources(rawResources)
+        const resourcesArray = Object.values(externalResources)
+        resourcesArray.forEach((resource) =>
+          queryClient.prefetchQuery(
+            resourceThumbnailQueryOptions(
+              resource.id,
+              resource.external_url,
+              resource.creator_id,
+            ),
+          ),
+        )
+      }
+    } catch {
+      // Silently fail if resource prefetch fails - not critical for load
+    }
 
     return {
-      deck,
+      learningPathId,
+      chapterSlug,
       externalResources,
     }
   },

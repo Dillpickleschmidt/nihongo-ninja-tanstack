@@ -9,6 +9,7 @@ import type { SetStoreFunction } from "solid-js/store"
 interface UseEditOperationsProps {
   folders: () => DeckFolder[]
   userDecks: () => UserDeck[]
+  shareStatus: () => Record<string, boolean>
   setUserData: SetStoreFunction<{
     folders: DeckFolder[]
     decks: UserDeck[]
@@ -51,7 +52,10 @@ export function useEditOperations(props: UseEditOperationsProps) {
         props.refetchFoldersAndDecks()
       } else {
         // Session storage (atomic write)
-        saveFoldersAndDecks(preview.newState!)
+        saveFoldersAndDecks({
+          ...preview.newState!,
+          shareStatus: props.shareStatus(),
+        })
       }
     } catch (error) {
       // 4. Rollback (same logic for all user types)

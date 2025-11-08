@@ -10,15 +10,10 @@ import { QuickAccessCards } from "./components/QuickAccessCards"
 import { ArrowBigLeft, ChevronDown } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import ViewingIsEnough from "@/features/homepage/shared/assets/viewing-is-enough.svg"
-
-import type { BuiltInDeck } from "@/data/types"
-import type { EnrichedLearningPathModule } from "@/features/learn-page/utils/loader-helpers"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 
 interface LearningPathPageProps {
   settingsQuery: UseQueryResult<UserSettings, Error>
-  deck?: BuiltInDeck
-  enrichedModules?: EnrichedLearningPathModule[]
   onChapterChange: (chapterSlug: string) => void
   onBack?: () => void
   user?: User | null
@@ -28,8 +23,6 @@ export function LearningPathPage(props: LearningPathPageProps) {
   return (
     <LearningPathProvider
       settingsQuery={props.settingsQuery}
-      deck={props.deck}
-      enrichedModules={props.enrichedModules}
       onChapterChange={props.onChapterChange}
       onBack={props.onBack}
       userId={props.user?.id || null}
@@ -42,9 +35,12 @@ export function LearningPathPage(props: LearningPathPageProps) {
 function LearningPathPageContent() {
   const context = useLearningPath()
 
+  const activeLearningPath = () =>
+    context.settingsQuery.data!["active-learning-path"]
+
   return (
     <section class="relative mx-auto w-full max-w-7xl px-4 pt-2 pb-16 md:pt-8">
-      <Show when={context.activeLearningPath() === "getting_started"}>
+      <Show when={activeLearningPath() === "getting_started"}>
         <div class="flex h-16 items-center pl-4">
           <Button
             onClick={context.onBack}
@@ -56,17 +52,15 @@ function LearningPathPageContent() {
         </div>
       </Show>
 
-      <Show when={context.activeLearningPath() !== "getting_started"}>
+      <Show when={activeLearningPath() !== "getting_started"}>
         <div class="py-4">
           <QuickAccessCards />
         </div>
       </Show>
 
-      <Show when={context.learningPathData()}>
-        <ChapterHeader onChapterChange={context.onChapterChange} />
-      </Show>
+      <ChapterHeader />
 
-      <Show when={context.activeLearningPath() === "getting_started"}>
+      <Show when={activeLearningPath() === "getting_started"}>
         <SSRMediaQuery showFrom="md">
           <ViewingIsEnough class="pointer-events-none absolute right-2 -mt-9 h-auto w-68 text-neutral-400 md:right-4" />
         </SSRMediaQuery>
@@ -77,7 +71,7 @@ function LearningPathPageContent() {
         blinkingLessonIndex={context.blinkingLessonIndex()}
       />
 
-      <ChapterFooter userId={context.userId()} />
+      <ChapterFooter />
       <Show when={context.shouldShowButton()}>
         <Button
           onClick={context.handleScrollToNext}

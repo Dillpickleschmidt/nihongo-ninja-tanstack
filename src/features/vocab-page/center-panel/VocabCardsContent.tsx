@@ -1,16 +1,13 @@
 // features/vocab-page/center-panel/VocabCardsContent.tsx
-import { For, Show, Switch, Match, createResource } from "solid-js"
+import { For, Switch, Match, createResource } from "solid-js"
 import { getVocabularyForSet } from "@/data/utils/vocab"
 import { dynamic_modules } from "@/data/dynamic_modules"
-import type { VocabularyItem } from "@/data/types"
 import { DefaultContent } from "./DefaultContent"
 import { VocabularyCard } from "@/features/vocab-page/components/VocabularyCard"
 import { getVocabForDeck } from "@/features/supabase/db/deck"
-import type { VocabBuiltInDeck } from "../types"
 
 interface VocabCardsContentProps {
   selectedUserDeck: UserDeck | null
-  selectedBuiltInDeck?: VocabBuiltInDeck | null
 }
 
 export function VocabCardsContent(props: VocabCardsContentProps) {
@@ -19,37 +16,26 @@ export function VocabCardsContent(props: VocabCardsContentProps) {
       <Match when={props.selectedUserDeck}>
         <VocabularyPreview selectedDeck={props.selectedUserDeck!} />
       </Match>
-      <Match when={props.selectedBuiltInDeck}>
-        <VocabularyPreview selectedBuiltInDeck={props.selectedBuiltInDeck!} />
-      </Match>
     </Switch>
   )
 }
 
 interface VocabularyPreviewProps {
   selectedDeck?: UserDeck
-  selectedBuiltInDeck?: VocabBuiltInDeck
 }
 
 function VocabularyPreview(props: VocabularyPreviewProps) {
-  const deckName = () =>
-    props.selectedDeck?.deck_name || props.selectedBuiltInDeck?.title || ""
+  const deckName = () => props.selectedDeck?.deck_name || ""
 
-  // Helper to get built-in deck ID for vocabulary loading
+  // Get module ID for static learning path modules
   const getBuiltInDeckId = () => {
-    if (props.selectedBuiltInDeck) {
-      return props.selectedBuiltInDeck.id
-    }
-    if (
-      props.selectedDeck?.source === "built-in" &&
-      props.selectedDeck.original_deck_id
-    ) {
+    if (props.selectedDeck?.original_deck_id) {
       return props.selectedDeck.original_deck_id
     }
     return null
   }
 
-  // Load vocabulary data with stable caching - built-in decks use static data, user decks use database
+  // Load vocabulary with stable caching
   const [vocabularyItems] = createResource(
     () => {
       const builtInId = getBuiltInDeckId()
@@ -65,7 +51,6 @@ function VocabularyPreview(props: VocabularyPreviewProps) {
     async (deckIdentifier) => {
       if (!deckIdentifier) return []
 
-      // Determine data source based on deck type
       const builtInId = getBuiltInDeckId()
       if (builtInId) {
         // Built-in decks: load from static vocabulary data

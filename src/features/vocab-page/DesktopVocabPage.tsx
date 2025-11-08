@@ -1,65 +1,41 @@
 // featuers/vocab-page/DesktopVocabPage.tsx
-import type { DeferredPromise } from "@tanstack/solid-router"
 import { createSignal } from "solid-js"
 import { CollapsiblePanel } from "./shared/CollapsiblePanel"
-import { BuiltInDecksPanel } from "./built-in-panel/BuiltInDecksPanel"
-import { UserDecksPanel } from "./user-panel/UserDecksPanel"
+import { VocabRightPanel } from "./right-panel/VocabRightPanel"
 import { CenterPanel } from "./center-panel/CenterPanel"
-import { ImportConfirmationModal } from "./shared/ImportConfirmationModal"
 import { FolderEditModal } from "./components/FolderEditModal"
 import { DeckCopyModal } from "./components/DeckCopyModal"
 import { useVocabPageState } from "./hooks/useVocabPageState"
-import { useImportModal } from "./hooks/useImportModal"
 import { useEditOperations } from "./hooks/useEditOperations"
-import type { ImportRequest, VocabTextbook } from "./types"
-import type { TextbookIDEnum } from "@/data/types"
 import type { FoldersAndDecksData } from "@/features/supabase/db/folder"
-import {
-  getVocabForDeck,
-  getDeckIdByOriginalIdServerFn,
-} from "@/features/supabase/db/deck"
+import { getVocabForDeck } from "@/features/supabase/db/deck"
 import type { User } from "@supabase/supabase-js"
 import type { DeckCreationInitialData } from "./deck-creation/stores/deck-creation-store"
 import { copyDeck } from "@/features/vocab-page/utils/deckCopyUtils"
 import { TextbookChapterBackgrounds } from "../learn-page/components/shared/TextbookChapterBackgrounds"
+import { ModuleTypesList } from "../learn-page/components/shared/ModuleTypesList"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { userSettingsQueryOptions } from "@/query/query-options"
 
 interface DesktopVocabPageProps {
-  importRequest?: ImportRequest | null
-  textbooks: [TextbookIDEnum, VocabTextbook][]
-  foldersAndDecksPromise: DeferredPromise<FoldersAndDecksData>
+  foldersAndDecksPromise: Promise<FoldersAndDecksData>
   user: User | null
 }
 
 export function DesktopVocabPage(props: DesktopVocabPageProps) {
-  const settingsQuery = useCustomQuery(() =>
-    userSettingsQueryOptions(props.user?.id || null),
-  )
-  const state = useVocabPageState(
-    props.importRequest,
-    props.textbooks,
-    props.foldersAndDecksPromise,
-    props.user,
-  )
-
-  // Import modal management
-  const importModal = useImportModal(
-    props.importRequest,
-    state.importDeck,
-    state.setLeftPanelOpen,
-  )
+  const state = useVocabPageState(props.foldersAndDecksPromise, props.user)
 
   // Edit operations management
   const editOperations = useEditOperations({
     folders: state.folders,
     userDecks: state.userDecks,
+    shareStatus: state.shareStatus,
     setUserData: state.setUserData,
     refetchFoldersAndDecks: state.refetchFoldersAndDecks,
     user: props.user,
   })
-  let userDecksPanelRef!: HTMLDivElement
-  let builtInDecksPanelRef!: HTMLDivElement
+  let rightPanelRef!: HTMLDivElement
+  let leftPanelRef!: HTMLDivElement
 
   // Edit modal state
   const [folderEditModalOpen, setFolderEditModalOpen] = createSignal(false)
@@ -77,13 +53,6 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
 
   // Edit handlers
   const handleEditDeck = async (deck: UserDeck) => {
-    // Prevent editing of built-in decks
-    if (deck.source === "built-in") {
-      // Built-in decks cannot be edited because they use static vocabulary data
-      // Users should copy the deck first to create an editable version
-      return
-    }
-
     try {
       // Load vocabulary items for the deck
       const vocabItems = await getVocabForDeck(deck.deck_id)
@@ -183,35 +152,22 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
     <div class="flex h-screen">
       <div class="absolute inset-0">
         <TextbookChapterBackgrounds
-          textbook={settingsQuery.data["active-learning-path"]}
-          chapter={settingsQuery.data["active-chapter"]}
+          textbook={state.activeLearningPathId()}
+          chapter={state.activeChapter()}
           showGradient={false}
           blur="6px"
         />
       </div>
-      {/* Left panel — subtle gradient */}
-      <div id="tour-builtin-panel" class="h-[calc(100vh-65px)]">
+
+      {/* Left panel - module types navigation */}
+      <div id="tour-modules" class="h-[calc(100vh-65px)]">
         <CollapsiblePanel
-          title="Built-in Decks"
           isOpen={state.leftPanelOpen()}
           onToggle={() => state.setLeftPanelOpen(!state.leftPanelOpen())}
           position="left"
-          ref={builtInDecksPanelRef!}
-          toggleButtonId="tour-builtin-toggle"
+          ref={leftPanelRef}
         >
-          <BuiltInDecksPanel
-            textbooks={state.textbooks()}
-            expandedTextbooks={state.expandedTextbooks()}
-            expandedChapters={state.expandedChapters()}
-            onToggleTextbook={state.toggleTextbook}
-            onToggleChapter={state.toggleChapter}
-            onImportDeck={state.importDeck}
-            onPlayDeck={() => {}}
-            onSelectDeck={state.handleBuiltInDeckSelect}
-            selectedBuiltInDeck={state.selectedBuiltInDeck()}
-            onDeselect={state.handleDeckDeselect}
-            panelRef={builtInDecksPanelRef}
-          />
+          <ModuleTypesList />
         </CollapsiblePanel>
       </div>
 
@@ -220,7 +176,6 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
         <div class="absolute inset-0 -z-1" />
         <CenterPanel
           selectedUserDeck={state.selectedUserDeck()}
-          selectedBuiltInDeck={state.selectedBuiltInDeck()}
           activeNavTab={state.activeNavTab()}
           onNavTabChange={handleTabChange}
           folders={state.folders()}
@@ -232,26 +187,21 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
         />
       </div>
 
-      {/* Right panel — same gradients as left */}
+      {/* Right panel — learning path chapters + user decks */}
       <div id="tour-user-panel" class="h-[calc(100vh-65px)]">
         <CollapsiblePanel
-          title="Your Decks"
           isOpen={state.rightPanelOpen()}
           onToggle={() => state.setRightPanelOpen(!state.rightPanelOpen())}
           position="right"
-          ref={userDecksPanelRef!}
+          title="Your Decks"
+          description="Browse and manage your vocabulary decks. Click the practice button to start learning."
+          ref={rightPanelRef}
         >
-          <UserDecksPanel
+          <VocabRightPanel
             userDecks={state.userDecks()}
             folders={state.folders()}
             shareStatus={state.shareStatus()}
             onShareStatusChange={state.refetchFoldersAndDecks}
-            currentViewFolderId={state.currentViewFolderId}
-            viewBreadcrumbPath={state.viewBreadcrumbPath}
-            currentViewContent={state.currentViewContent}
-            canNavigateUp={state.canNavigateUp}
-            setCurrentViewFolderId={state.setCurrentViewFolderId}
-            navigateToParentView={state.navigateToParentView}
             onPlayDeck={() => {}}
             newlyImportedDecks={state.newlyImportedDecks()}
             selectedUserDeck={state.selectedUserDeck()}
@@ -273,17 +223,10 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
             onTabChange={handleTabChange}
             onRefetch={state.refetchFoldersAndDecks}
             userId={props.user?.id}
-            panelRef={userDecksPanelRef}
+            panelRef={rightPanelRef}
           />
         </CollapsiblePanel>
       </div>
-
-      <ImportConfirmationModal
-        isOpen={importModal.showImportModal()}
-        onClose={importModal.handleImportCancel}
-        onConfirm={importModal.handleImportConfirm}
-        deckTitle={importModal.pendingImportDeck()?.title ?? ""}
-      />
 
       <FolderEditModal
         folder={editingFolder()}

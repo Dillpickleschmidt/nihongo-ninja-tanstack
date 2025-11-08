@@ -60,6 +60,10 @@ export const queryKeys = {
     deckSlug: string,
     userOverrides: any,
   ) => ["vocab-hierarchy", activeTextbook, deckSlug, userOverrides] as const,
+  allLearningPaths: (userId: string | null) =>
+    ["all-learning-paths", userId] as const,
+  chapterModules: (learningPathId: string, chapterSlug: string) =>
+    ["chapter-modules", learningPathId, chapterSlug] as const,
   dueCardsCount: (userId: string | null, preferences: AllServicePreferences) =>
     ["due-cards-count", userId, preferences] as const,
   seenCardsStats: (userId: string | null, preferences: AllServicePreferences) =>

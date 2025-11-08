@@ -34,7 +34,6 @@ import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
 import { Route as HomeAdditionalResourcesRouteImport } from './routes/_home/additional-resources'
 import { Route as HomeSentencePracticeIndexRouteImport } from './routes/_home/sentence-practice/index'
-import { Route as HomeLearnIndexRouteImport } from './routes/_home/learn/index'
 import { Route as PracticeUserIDDeckIDRouteImport } from './routes/practice/$userID.$deckID'
 import { Route as LessonsChapter3WordOrderRouteImport } from './routes/lessons/_chapter-3/word-order'
 import { Route as LessonsChapter3VerbConjMasuRouteImport } from './routes/lessons/_chapter-3/verb-conj-masu'
@@ -77,11 +76,9 @@ import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
 import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 import { Route as HomeSentencePracticeIdRouteImport } from './routes/_home/sentence-practice/$id'
 import { Route as HomePracticeConjugationRouteImport } from './routes/_home/practice/conjugation'
-import { Route as HomeLearnTextbookIdRouteImport } from './routes/_home/learn/$textbookId'
 import { Route as HomeAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/additional-resources/kanji-practice-sheet'
-import { Route as HomeTextbookIdChapterSlugRouteImport } from './routes/_home/$textbookId.$chapterSlug'
+import { Route as HomeLearningPathIdChapterSlugRouteImport } from './routes/_home/$learningPathId.$chapterSlug'
 import { Route as HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/learn/additional-resources.kanji-practice-sheet'
-import { Route as HomeLearnTextbookIdChapterSlugRouteImport } from './routes/_home/learn/$textbookId/$chapterSlug'
 
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
@@ -211,11 +208,6 @@ const HomeSentencePracticeIndexRoute =
     path: '/sentence-practice/',
     getParentRoute: () => HomeRoute,
   } as any)
-const HomeLearnIndexRoute = HomeLearnIndexRouteImport.update({
-  id: '/learn/',
-  path: '/learn/',
-  getParentRoute: () => HomeRoute,
-} as any)
 const PracticeUserIDDeckIDRoute = PracticeUserIDDeckIDRouteImport.update({
   id: '/practice/$userID/$deckID',
   path: '/practice/$userID/$deckID',
@@ -454,21 +446,16 @@ const HomePracticeConjugationRoute = HomePracticeConjugationRouteImport.update({
   path: '/practice/conjugation',
   getParentRoute: () => HomeRoute,
 } as any)
-const HomeLearnTextbookIdRoute = HomeLearnTextbookIdRouteImport.update({
-  id: '/learn/$textbookId',
-  path: '/learn/$textbookId',
-  getParentRoute: () => HomeRoute,
-} as any)
 const HomeAdditionalResourcesKanjiPracticeSheetRoute =
   HomeAdditionalResourcesKanjiPracticeSheetRouteImport.update({
     id: '/kanji-practice-sheet',
     path: '/kanji-practice-sheet',
     getParentRoute: () => HomeAdditionalResourcesRoute,
   } as any)
-const HomeTextbookIdChapterSlugRoute =
-  HomeTextbookIdChapterSlugRouteImport.update({
-    id: '/$textbookId/$chapterSlug',
-    path: '/$textbookId/$chapterSlug',
+const HomeLearningPathIdChapterSlugRoute =
+  HomeLearningPathIdChapterSlugRouteImport.update({
+    id: '/$learningPathId/$chapterSlug',
+    path: '/$learningPathId/$chapterSlug',
     getParentRoute: () => HomeRoute,
   } as any)
 const HomeLearnAdditionalResourcesKanjiPracticeSheetRoute =
@@ -476,12 +463,6 @@ const HomeLearnAdditionalResourcesKanjiPracticeSheetRoute =
     id: '/learn/additional-resources/kanji-practice-sheet',
     path: '/learn/additional-resources/kanji-practice-sheet',
     getParentRoute: () => HomeRoute,
-  } as any)
-const HomeLearnTextbookIdChapterSlugRoute =
-  HomeLearnTextbookIdChapterSlugRouteImport.update({
-    id: '/$chapterSlug',
-    path: '/$chapterSlug',
-    getParentRoute: () => HomeLearnTextbookIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -508,9 +489,8 @@ export interface FileRoutesByFullPath {
   '/practice/review': typeof PracticeReviewRoute
   '/': typeof HomeIndexRoute
   '/guides/': typeof GuidesIndexRoute
-  '/$textbookId/$chapterSlug': typeof HomeTextbookIdChapterSlugRoute
+  '/$learningPathId/$chapterSlug': typeof HomeLearningPathIdChapterSlugRoute
   '/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
-  '/learn/$textbookId': typeof HomeLearnTextbookIdRouteWithChildren
   '/practice/conjugation': typeof HomePracticeConjugationRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
@@ -553,9 +533,7 @@ export interface FileRoutesByFullPath {
   '/lessons/verb-conj-masu': typeof LessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof LessonsChapter3WordOrderRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
-  '/learn': typeof HomeLearnIndexRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
-  '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
   '/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
 }
 export interface FileRoutesByTo {
@@ -581,9 +559,8 @@ export interface FileRoutesByTo {
   '/practice/review': typeof PracticeReviewRoute
   '/': typeof HomeIndexRoute
   '/guides': typeof GuidesIndexRoute
-  '/$textbookId/$chapterSlug': typeof HomeTextbookIdChapterSlugRoute
+  '/$learningPathId/$chapterSlug': typeof HomeLearningPathIdChapterSlugRoute
   '/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
-  '/learn/$textbookId': typeof HomeLearnTextbookIdRouteWithChildren
   '/practice/conjugation': typeof HomePracticeConjugationRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
@@ -626,9 +603,7 @@ export interface FileRoutesByTo {
   '/lessons/verb-conj-masu': typeof LessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof LessonsChapter3WordOrderRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
-  '/learn': typeof HomeLearnIndexRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
-  '/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
   '/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
 }
 export interface FileRoutesById {
@@ -657,9 +632,8 @@ export interface FileRoutesById {
   '/practice/review': typeof PracticeReviewRoute
   '/_home/': typeof HomeIndexRoute
   '/guides/': typeof GuidesIndexRoute
-  '/_home/$textbookId/$chapterSlug': typeof HomeTextbookIdChapterSlugRoute
+  '/_home/$learningPathId/$chapterSlug': typeof HomeLearningPathIdChapterSlugRoute
   '/_home/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
-  '/_home/learn/$textbookId': typeof HomeLearnTextbookIdRouteWithChildren
   '/_home/practice/conjugation': typeof HomePracticeConjugationRoute
   '/_home/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
@@ -702,9 +676,7 @@ export interface FileRoutesById {
   '/lessons/_chapter-3/verb-conj-masu': typeof LessonsChapter3VerbConjMasuRoute
   '/lessons/_chapter-3/word-order': typeof LessonsChapter3WordOrderRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
-  '/_home/learn/': typeof HomeLearnIndexRoute
   '/_home/sentence-practice/': typeof HomeSentencePracticeIndexRoute
-  '/_home/learn/$textbookId/$chapterSlug': typeof HomeLearnTextbookIdChapterSlugRoute
   '/_home/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
 }
 export interface FileRouteTypes {
@@ -733,9 +705,8 @@ export interface FileRouteTypes {
     | '/practice/review'
     | '/'
     | '/guides/'
-    | '/$textbookId/$chapterSlug'
+    | '/$learningPathId/$chapterSlug'
     | '/additional-resources/kanji-practice-sheet'
-    | '/learn/$textbookId'
     | '/practice/conjugation'
     | '/sentence-practice/$id'
     | '/api/auth/login'
@@ -778,9 +749,7 @@ export interface FileRouteTypes {
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
     | '/practice/$userID/$deckID'
-    | '/learn'
     | '/sentence-practice'
-    | '/learn/$textbookId/$chapterSlug'
     | '/learn/additional-resources/kanji-practice-sheet'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -806,9 +775,8 @@ export interface FileRouteTypes {
     | '/practice/review'
     | '/'
     | '/guides'
-    | '/$textbookId/$chapterSlug'
+    | '/$learningPathId/$chapterSlug'
     | '/additional-resources/kanji-practice-sheet'
-    | '/learn/$textbookId'
     | '/practice/conjugation'
     | '/sentence-practice/$id'
     | '/api/auth/login'
@@ -851,9 +819,7 @@ export interface FileRouteTypes {
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
     | '/practice/$userID/$deckID'
-    | '/learn'
     | '/sentence-practice'
-    | '/learn/$textbookId/$chapterSlug'
     | '/learn/additional-resources/kanji-practice-sheet'
   id:
     | '__root__'
@@ -881,9 +847,8 @@ export interface FileRouteTypes {
     | '/practice/review'
     | '/_home/'
     | '/guides/'
-    | '/_home/$textbookId/$chapterSlug'
+    | '/_home/$learningPathId/$chapterSlug'
     | '/_home/additional-resources/kanji-practice-sheet'
-    | '/_home/learn/$textbookId'
     | '/_home/practice/conjugation'
     | '/_home/sentence-practice/$id'
     | '/api/auth/login'
@@ -926,9 +891,7 @@ export interface FileRouteTypes {
     | '/lessons/_chapter-3/verb-conj-masu'
     | '/lessons/_chapter-3/word-order'
     | '/practice/$userID/$deckID'
-    | '/_home/learn/'
     | '/_home/sentence-practice/'
-    | '/_home/learn/$textbookId/$chapterSlug'
     | '/_home/learn/additional-resources/kanji-practice-sheet'
   fileRoutesById: FileRoutesById
 }
@@ -1128,13 +1091,6 @@ declare module '@tanstack/solid-router' {
       path: '/sentence-practice'
       fullPath: '/sentence-practice'
       preLoaderRoute: typeof HomeSentencePracticeIndexRouteImport
-      parentRoute: typeof HomeRoute
-    }
-    '/_home/learn/': {
-      id: '/_home/learn/'
-      path: '/learn'
-      fullPath: '/learn'
-      preLoaderRoute: typeof HomeLearnIndexRouteImport
       parentRoute: typeof HomeRoute
     }
     '/practice/$userID/$deckID': {
@@ -1431,13 +1387,6 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomePracticeConjugationRouteImport
       parentRoute: typeof HomeRoute
     }
-    '/_home/learn/$textbookId': {
-      id: '/_home/learn/$textbookId'
-      path: '/learn/$textbookId'
-      fullPath: '/learn/$textbookId'
-      preLoaderRoute: typeof HomeLearnTextbookIdRouteImport
-      parentRoute: typeof HomeRoute
-    }
     '/_home/additional-resources/kanji-practice-sheet': {
       id: '/_home/additional-resources/kanji-practice-sheet'
       path: '/kanji-practice-sheet'
@@ -1445,11 +1394,11 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeAdditionalResourcesKanjiPracticeSheetRouteImport
       parentRoute: typeof HomeAdditionalResourcesRoute
     }
-    '/_home/$textbookId/$chapterSlug': {
-      id: '/_home/$textbookId/$chapterSlug'
-      path: '/$textbookId/$chapterSlug'
-      fullPath: '/$textbookId/$chapterSlug'
-      preLoaderRoute: typeof HomeTextbookIdChapterSlugRouteImport
+    '/_home/$learningPathId/$chapterSlug': {
+      id: '/_home/$learningPathId/$chapterSlug'
+      path: '/$learningPathId/$chapterSlug'
+      fullPath: '/$learningPathId/$chapterSlug'
+      preLoaderRoute: typeof HomeLearningPathIdChapterSlugRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/learn/additional-resources/kanji-practice-sheet': {
@@ -1458,13 +1407,6 @@ declare module '@tanstack/solid-router' {
       fullPath: '/learn/additional-resources/kanji-practice-sheet'
       preLoaderRoute: typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport
       parentRoute: typeof HomeRoute
-    }
-    '/_home/learn/$textbookId/$chapterSlug': {
-      id: '/_home/learn/$textbookId/$chapterSlug'
-      path: '/$chapterSlug'
-      fullPath: '/learn/$textbookId/$chapterSlug'
-      preLoaderRoute: typeof HomeLearnTextbookIdChapterSlugRouteImport
-      parentRoute: typeof HomeLearnTextbookIdRoute
     }
   }
 }
@@ -1484,17 +1426,6 @@ const HomeAdditionalResourcesRouteWithChildren =
     HomeAdditionalResourcesRouteChildren,
   )
 
-interface HomeLearnTextbookIdRouteChildren {
-  HomeLearnTextbookIdChapterSlugRoute: typeof HomeLearnTextbookIdChapterSlugRoute
-}
-
-const HomeLearnTextbookIdRouteChildren: HomeLearnTextbookIdRouteChildren = {
-  HomeLearnTextbookIdChapterSlugRoute: HomeLearnTextbookIdChapterSlugRoute,
-}
-
-const HomeLearnTextbookIdRouteWithChildren =
-  HomeLearnTextbookIdRoute._addFileChildren(HomeLearnTextbookIdRouteChildren)
-
 interface HomeRouteChildren {
   HomeAdditionalResourcesRoute: typeof HomeAdditionalResourcesRouteWithChildren
   HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
@@ -1503,11 +1434,9 @@ interface HomeRouteChildren {
   HomeVideoRoute: typeof HomeVideoRoute
   HomeVocabRoute: typeof HomeVocabRoute
   HomeIndexRoute: typeof HomeIndexRoute
-  HomeTextbookIdChapterSlugRoute: typeof HomeTextbookIdChapterSlugRoute
-  HomeLearnTextbookIdRoute: typeof HomeLearnTextbookIdRouteWithChildren
+  HomeLearningPathIdChapterSlugRoute: typeof HomeLearningPathIdChapterSlugRoute
   HomePracticeConjugationRoute: typeof HomePracticeConjugationRoute
   HomeSentencePracticeIdRoute: typeof HomeSentencePracticeIdRoute
-  HomeLearnIndexRoute: typeof HomeLearnIndexRoute
   HomeSentencePracticeIndexRoute: typeof HomeSentencePracticeIndexRoute
   HomeLearnAdditionalResourcesKanjiPracticeSheetRoute: typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
 }
@@ -1520,11 +1449,9 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeVideoRoute: HomeVideoRoute,
   HomeVocabRoute: HomeVocabRoute,
   HomeIndexRoute: HomeIndexRoute,
-  HomeTextbookIdChapterSlugRoute: HomeTextbookIdChapterSlugRoute,
-  HomeLearnTextbookIdRoute: HomeLearnTextbookIdRouteWithChildren,
+  HomeLearningPathIdChapterSlugRoute: HomeLearningPathIdChapterSlugRoute,
   HomePracticeConjugationRoute: HomePracticeConjugationRoute,
   HomeSentencePracticeIdRoute: HomeSentencePracticeIdRoute,
-  HomeLearnIndexRoute: HomeLearnIndexRoute,
   HomeSentencePracticeIndexRoute: HomeSentencePracticeIndexRoute,
   HomeLearnAdditionalResourcesKanjiPracticeSheetRoute:
     HomeLearnAdditionalResourcesKanjiPracticeSheetRoute,

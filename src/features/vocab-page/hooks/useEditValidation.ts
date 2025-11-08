@@ -12,15 +12,36 @@ interface UseEditValidationProps {
   decks: UserDeck[]
 }
 
-export function useEditValidation(props: UseEditValidationProps) {
-  const isDeck = () => props.item && "deck_id" in props.item
-  const isFolder = () => props.item && "folder_id" in props.item
+function extractDeckData(
+  item: UserDeck | DeckFolder | null,
+): { id: string; name: string; folderId: number | null } | null {
+  if (!item || !("deck_id" in item)) return null
+  const deck = item as UserDeck
+  return {
+    id: deck.deck_id,
+    name: deck.deck_name,
+    folderId: deck.folder_id,
+  }
+}
 
+function extractFolderData(
+  item: UserDeck | DeckFolder | null,
+): { id: number; name: string; parentId: number | null } | null {
+  if (!item || !("folder_id" in item)) return null
+  const folder = item as DeckFolder
+  return {
+    id: folder.folder_id,
+    name: folder.folder_name,
+    parentId: folder.parent_folder_id,
+  }
+}
+
+export function useEditValidation(props: UseEditValidationProps) {
   const nameValidation = createMemo(() => {
     if (!props.item) return { isValid: true }
 
-    if (isDeck()) {
-      const deck = props.item as UserDeck
+    const deckData = extractDeckData(props.item)
+    if (deckData) {
       const targetFolderId =
         props.selectedFolderId() === "root"
           ? null
@@ -30,10 +51,12 @@ export function useEditValidation(props: UseEditValidationProps) {
         props.name(),
         targetFolderId,
         props.decks,
-        deck.deck_id,
+        deckData.id,
       )
-    } else {
-      const folder = props.item as DeckFolder
+    }
+
+    const folderData = extractFolderData(props.item)
+    if (folderData) {
       const targetParentId =
         props.selectedFolderId() === "root"
           ? null
@@ -42,36 +65,41 @@ export function useEditValidation(props: UseEditValidationProps) {
       return validateFolderComplete(
         props.name(),
         targetParentId,
-        folder.folder_id,
+        folderData.id,
         props.folders,
-        folder.folder_id,
+        folderData.id,
       )
     }
+
+    return { isValid: true }
   })
 
   const hasChanges = createMemo(() => {
-    // Force reactivity by accessing all dependencies at the top
     const currentName = props.name()
     const currentFolderId = props.selectedFolderId()
     const currentItem = props.item
 
     if (!currentItem) return false
 
-    if (isDeck()) {
-      const deck = currentItem as UserDeck
+    const deckData = extractDeckData(currentItem)
+    if (deckData) {
       const targetFolderId =
         currentFolderId === "root" ? null : parseInt(currentFolderId)
-      const nameChanged = currentName !== deck.deck_name
-      const locationChanged = targetFolderId !== deck.folder_id
-      return nameChanged || locationChanged
-    } else {
-      const folder = currentItem as DeckFolder
-      const targetParentId =
-        currentFolderId === "root" ? null : parseInt(currentFolderId)
-      const nameChanged = currentName !== folder.folder_name
-      const locationChanged = targetParentId !== folder.parent_folder_id
+      const nameChanged = currentName !== deckData.name
+      const locationChanged = targetFolderId !== deckData.folderId
       return nameChanged || locationChanged
     }
+
+    const folderData = extractFolderData(currentItem)
+    if (folderData) {
+      const targetParentId =
+        currentFolderId === "root" ? null : parseInt(currentFolderId)
+      const nameChanged = currentName !== folderData.name
+      const locationChanged = targetParentId !== folderData.parentId
+      return nameChanged || locationChanged
+    }
+
+    return false
   })
 
   const canSave = createMemo(() => nameValidation().isValid && hasChanges())

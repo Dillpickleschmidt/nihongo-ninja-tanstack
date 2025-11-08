@@ -15,7 +15,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover"
-import type { SharedDeck } from "./useBrowseDecks"
+import type { SharedDeck } from "@/features/supabase/db/deck-sharing"
 
 interface SharedDeckCardProps {
   deck: SharedDeck
@@ -44,7 +44,7 @@ export function SharedDeckCard(props: SharedDeckCardProps) {
             {/* Deck Title */}
             <div class="flex items-center gap-2">
               <h3 class="text-lg leading-tight font-bold">
-                {props.deck.user_decks.deck_name}
+                {props.deck.user_decks[0]?.deck_name}
               </h3>
               <Show when={props.isOwnDeck}>
                 <Crown class="h-3.5 w-3.5 flex-shrink-0 text-amber-400" />
@@ -52,9 +52,9 @@ export function SharedDeckCard(props: SharedDeckCardProps) {
             </div>
 
             {/* Description */}
-            <Show when={props.deck.user_decks.deck_description}>
+            <Show when={props.deck.user_decks[0]?.deck_description}>
               <p class="text-muted-foreground text-xs leading-relaxed">
-                {props.deck.user_decks.deck_description}
+                {props.deck.user_decks[0]?.deck_description}
               </p>
             </Show>
 
@@ -144,12 +144,12 @@ export function SharedDeckCard(props: SharedDeckCardProps) {
                       onClick={() => {
                         const newName = window.prompt(
                           "Enter new deck name:",
-                          props.deck.user_decks.deck_name,
+                          props.deck.user_decks[0]?.deck_name,
                         )
                         if (
                           newName &&
                           newName.trim() &&
-                          newName.trim() !== props.deck.user_decks.deck_name
+                          newName.trim() !== props.deck.user_decks[0]?.deck_name
                         ) {
                           alert("Rename feature coming soon!")
                         }
