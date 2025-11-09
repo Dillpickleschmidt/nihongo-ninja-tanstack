@@ -1,31 +1,33 @@
-import { createFileRoute, useRouteContext } from "@tanstack/solid-router"
+import { createFileRoute } from "@tanstack/solid-router"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { GeneralSettings } from "@/features/settings-page/components/GeneralSettings"
 import { ServiceIntegrationsSection } from "@/features/settings-page/components/ServiceIntegrationsSection"
 import { ServiceManagementProvider } from "@/features/settings-page/context/ServiceManagementContext"
-import { Route as RootRoute } from "@/routes/__root"
-import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/query/query-options"
-import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
+import { queryKeys } from "@/query/utils/query-keys"
 
 export const Route = createFileRoute("/_home/settings")({
+  loader: ({ context }) => {
+    // Set background settings for settings page
+    context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+      blur: 32,
+      backgroundOpacityOffset: 0,
+      showGradient: false,
+    })
+  },
+  onLeave: ({ context }) => {
+    // Reset background settings to defaults
+    context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+      blur: undefined,
+      backgroundOpacityOffset: 0,
+      showGradient: true,
+    })
+  },
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const context = useRouteContext({ from: RootRoute.id })
-  const settingsQuery = useCustomQuery(() =>
-    userSettingsQueryOptions(context().user?.id || null),
-  )
   return (
     <ServiceManagementProvider>
-      <TextbookChapterBackgrounds
-        textbook={settingsQuery.data["active-learning-path"]}
-        chapter={settingsQuery.data["active-chapter"]}
-        showGradient={false}
-        blur="32px"
-      />
-
       <div class="min-h-screen pb-16">
         <div class="mx-auto max-w-7xl p-6">
           <h1 class="mt-6 text-center text-4xl font-bold">Settings</h1>

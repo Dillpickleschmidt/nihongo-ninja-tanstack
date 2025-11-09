@@ -1,4 +1,4 @@
-// features/learn-page-v2/components/content/UpcomingModulesList.tsx
+// src/components/UpcomingModulesList.tsx
 import { Show, For, createEffect, createSignal } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { Loader2, ChevronDown } from "lucide-solid"
@@ -10,7 +10,7 @@ import { cn } from "@/utils"
 import {
   getModuleCircleClasses,
   getLinkTo,
-} from "@/features/learn-page/utils/loader-helpers"
+} from "@/features/stats-page/loader-helpers"
 import type { UseQueryResult, DefaultError } from "@tanstack/solid-query"
 import type { ModuleWithCurrent } from "@/query/query-options"
 

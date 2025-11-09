@@ -7,7 +7,7 @@ import {
   vocabularyToKana,
 } from "@/data/utils/vocab"
 
-export const Route = createFileRoute("/practice/contracted-sounds-quiz")({
+export const Route = createFileRoute("/_home/practice/contracted-sounds-quiz")({
   loader: async ({ location }) => {
     const segments = location.pathname.split("/")
     const moduleId = segments[segments.length - 1]

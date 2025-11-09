@@ -7,6 +7,9 @@ import type { AllServicePreferences } from "@/features/main-cookies/schemas/user
  * Ensures consistency and prevents key typos across the application
  */
 export const queryKeys = {
+  // UI Settings
+  backgroundSettings: () => ["background-settings"] as const,
+
   // User Settings
   userSettings: (userId: string | null) => ["user-settings", userId] as const,
 

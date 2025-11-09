@@ -1,10 +1,18 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { VocabPage } from "@/features/vocab-page/VocabPage"
 import { getUserFoldersAndDecks } from "@/features/supabase/db/folder"
+import { queryKeys } from "@/query/utils/query-keys"
 import type { User } from "@supabase/supabase-js"
 
 export const Route = createFileRoute("/_home/vocab")({
   loader: ({ context }) => {
+    // Set background settings for vocab page
+    context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+      blur: 6,
+      backgroundOpacityOffset: -0.22,
+      showGradient: false,
+    })
+
     // Fetch user folders and decks if authenticated
     // For unsigned users, data will be loaded from session storage in the component
     const foldersAndDecksPromise = context.user
@@ -15,6 +23,14 @@ export const Route = createFileRoute("/_home/vocab")({
       foldersAndDecksPromise,
       user: context.user,
     }
+  },
+  onLeave: ({ context }) => {
+    // Reset background settings to defaults
+    context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+      blur: undefined,
+      backgroundOpacityOffset: 0,
+      showGradient: true,
+    })
   },
   component: () => {
     const data = Route.useLoaderData()()

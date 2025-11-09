@@ -1,7 +1,7 @@
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { completedModulesQueryOptions } from "@/query/query-options"
 import type { Accessor } from "solid-js"
-import type { EnrichedLearningPathModule } from "@/features/learn-page/utils/loader-helpers"
+import type { EnrichedLearningPathModule } from "@/features/stats-page/loader-helpers"
 
 /**
  * Tracks lesson completion status for the user

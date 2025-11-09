@@ -7,13 +7,13 @@ import type {
   LearningPath,
   ResolvedModule,
 } from "@/data/types"
-import type { EnrichedLearningPathModule } from "@/features/learn-page/utils/loader-helpers"
+import type { EnrichedLearningPathModule } from "@/features/stats-page/loader-helpers"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
   allLearningPathsQueryOptions,
   chapterModulesQueryOptions,
 } from "@/query/query-options"
-import { enrichLessons } from "@/features/learn-page/utils/loader-helpers"
+import { enrichLessons } from "@/features/stats-page/loader-helpers"
 import { useLessonCompletion } from "./hooks/useLessonCompletion"
 import { useScrollToIncomplete } from "./hooks/useScrollToIncomplete"
 

@@ -44,7 +44,7 @@ import {
   getUserSessions,
   getUserWeekTimeData,
 } from "@/features/supabase/db/module-progress"
-import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
+import { getUpcomingModules } from "@/query/utils/learning-position-detector"
 import type { ResourceProvider } from "@/data/resources-config"
 import {
   fetchUserSettingsFromDB,
@@ -56,6 +56,32 @@ import { buildVocabHierarchy } from "@/query/utils/hierarchy-builder"
 import { mergeCompletionsWithLocal } from "@/query/utils/completion-manager"
 import { buildModuleProgressMap } from "@/query/utils/progress-calculator"
 import { queryKeys } from "@/query/utils/query-keys"
+
+// ============================================================================
+// Background Settings Query Options
+// ============================================================================
+
+export type BackgroundSettings = {
+  blur: number | undefined
+  backgroundOpacityOffset: number
+  showGradient: boolean
+}
+
+const defaultBackgroundSettings: BackgroundSettings = {
+  blur: undefined,
+  backgroundOpacityOffset: 0,
+  showGradient: true,
+}
+
+export const backgroundSettingsQueryOptions = () => {
+  return queryOptions({
+    queryKey: queryKeys.backgroundSettings(),
+    queryFn: async () => defaultBackgroundSettings,
+    initialData: defaultBackgroundSettings,
+    staleTime: Infinity,
+    gcTime: Infinity,
+  })
+}
 
 // ============================================================================
 // User Settings Query Options

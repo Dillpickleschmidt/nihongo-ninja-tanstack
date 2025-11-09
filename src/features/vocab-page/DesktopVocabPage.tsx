@@ -12,10 +12,7 @@ import { getVocabForDeck } from "@/features/supabase/db/deck"
 import type { User } from "@supabase/supabase-js"
 import type { DeckCreationInitialData } from "./deck-creation/stores/deck-creation-store"
 import { copyDeck } from "@/features/vocab-page/utils/deckCopyUtils"
-import { TextbookChapterBackgrounds } from "../learn-page/components/shared/TextbookChapterBackgrounds"
-import { ModuleTypesList } from "../learn-page/components/shared/ModuleTypesList"
-import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/query/query-options"
+import { Sidebar } from "../homepage/shared/components/Sidebar"
 
 interface DesktopVocabPageProps {
   foldersAndDecksPromise: Promise<FoldersAndDecksData>
@@ -149,31 +146,12 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
   }
 
   return (
-    <div class="flex h-screen">
-      <div class="absolute inset-0">
-        <TextbookChapterBackgrounds
-          textbook={state.activeLearningPathId()}
-          chapter={state.activeChapter()}
-          showGradient={false}
-          blur="6px"
-        />
+    <div class="flex">
+      <div class="sticky top-0 -mt-16 self-start 2xl:fixed 2xl:mt-0">
+        <Sidebar user={props.user?.id || null} isActive={() => false} />
       </div>
-
-      {/* Left panel - module types navigation */}
-      <div id="tour-modules" class="h-[calc(100vh-65px)]">
-        <CollapsiblePanel
-          isOpen={state.leftPanelOpen()}
-          onToggle={() => state.setLeftPanelOpen(!state.leftPanelOpen())}
-          position="left"
-          ref={leftPanelRef}
-        >
-          <ModuleTypesList />
-        </CollapsiblePanel>
-      </div>
-
-      {/* Center panel — faint orange and neutral vignette */}
-      <div id="tour-vocab-center" class="relative z-0 w-full">
-        <div class="absolute inset-0 -z-1" />
+      {/* <div class="2xl:pl-12" /> */}
+      <div id="tour-vocab-center" class="relative z-0 mx-auto">
         <CenterPanel
           selectedUserDeck={state.selectedUserDeck()}
           activeNavTab={state.activeNavTab()}

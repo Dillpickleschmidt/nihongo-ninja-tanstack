@@ -9,15 +9,15 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select"
-import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
-import { UpcomingModulesList } from "@/features/learn-page/components/content/UpcomingModulesList"
+import { UpcomingModulesList } from "@/components/UpcomingModulesList"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/query/query-options"
 import {
+  userSettingsQueryOptions,
   dueCardsCountQueryOptions,
   upcomingModulesQueryOptions,
   completedModulesQueryOptions,
 } from "@/query/query-options"
+import { queryKeys } from "@/query/utils/query-keys"
 import { Route as RootRoute } from "@/routes/__root"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { getActiveLiveService } from "@/features/srs-services/utils"
@@ -29,12 +29,16 @@ export const Route = createFileRoute("/_home/review")({
   loader: async ({ context }) => {
     const { user, queryClient } = context
 
-    // Get user settings from cache (already loaded in root)
+    queryClient.setQueryData(queryKeys.backgroundSettings(), {
+      blur: 32,
+      backgroundOpacityOffset: 0,
+      showGradient: true,
+    })
+
     const userSettings = queryClient.getQueryData(
       userSettingsQueryOptions(user?.id || null).queryKey,
     )!
 
-    // Prefetch queries for review page
     queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
     queryClient.prefetchQuery(
       dueCardsCountQueryOptions(
@@ -46,10 +50,19 @@ export const Route = createFileRoute("/_home/review")({
       upcomingModulesQueryOptions(
         user?.id || null,
         userSettings["active-learning-path"] as TextbookIDEnum,
-        userSettings["learning-path-positions"]?.[userSettings["active-learning-path"]] ||
-          null,
+        userSettings["learning-path-positions"]?.[
+          userSettings["active-learning-path"]
+        ] || null,
       ),
     )
+  },
+  onLeave: ({ context }) => {
+    // Reset background settings to defaults
+    context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+      blur: undefined,
+      backgroundOpacityOffset: 0,
+      showGradient: true,
+    })
   },
   component: RouteComponent,
 })
@@ -256,6 +269,7 @@ function ServiceSelector(props: {
 
 function RouteComponent() {
   const context = useRouteContext({ from: RootRoute.id })
+
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(context().user?.id || null),
   )
@@ -424,13 +438,6 @@ function RouteComponent() {
 
   return (
     <>
-      <TextbookChapterBackgrounds
-        textbook={settingsQuery.data["active-learning-path"]}
-        chapter={settingsQuery.data["active-chapter"]}
-        showGradient={false}
-        blur="32px"
-      />
-
       {/* Desktop */}
       <SSRMediaQuery showFrom="md">
         <div class="text-foreground relative flex flex-col items-center space-y-12 px-4 pt-[12vh] pb-24">

@@ -18,10 +18,6 @@ import { Route as HomeRouteImport } from './routes/_home'
 import { Route as GuidesIndexRouteImport } from './routes/guides/index'
 import { Route as HomeIndexRouteImport } from './routes/_home/index'
 import { Route as PracticeReviewRouteImport } from './routes/practice/review'
-import { Route as PracticeHiraganaQuizRouteImport } from './routes/practice/hiragana-quiz'
-import { Route as PracticeDakutenHandakutenQuizRouteImport } from './routes/practice/dakuten-handakuten-quiz'
-import { Route as PracticeContractedSoundsQuizRouteImport } from './routes/practice/contracted-sounds-quiz'
-import { Route as PracticeAllHiraganaQuizRouteImport } from './routes/practice/all-hiragana-quiz'
 import { Route as PracticePracticeIDRouteImport } from './routes/practice/$practiceID'
 import { Route as GuidesSrsRouteImport } from './routes/guides/srs'
 import { Route as GuidesComparisonRouteImport } from './routes/guides/comparison'
@@ -32,7 +28,6 @@ import { Route as HomeVideoRouteImport } from './routes/_home/video'
 import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
 import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
-import { Route as HomeAdditionalResourcesRouteImport } from './routes/_home/additional-resources'
 import { Route as HomeSentencePracticeIndexRouteImport } from './routes/_home/sentence-practice/index'
 import { Route as PracticeUserIDDeckIDRouteImport } from './routes/practice/$userID.$deckID'
 import { Route as LessonsChapter3WordOrderRouteImport } from './routes/lessons/_chapter-3/word-order'
@@ -75,7 +70,11 @@ import { Route as ApiRelayTefhSplatRouteImport } from './routes/api/relay-tefh.$
 import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
 import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 import { Route as HomeSentencePracticeIdRouteImport } from './routes/_home/sentence-practice/$id'
+import { Route as HomePracticeHiraganaQuizRouteImport } from './routes/_home/practice/hiragana-quiz'
+import { Route as HomePracticeDakutenHandakutenQuizRouteImport } from './routes/_home/practice/dakuten-handakuten-quiz'
+import { Route as HomePracticeContractedSoundsQuizRouteImport } from './routes/_home/practice/contracted-sounds-quiz'
 import { Route as HomePracticeConjugationRouteImport } from './routes/_home/practice/conjugation'
+import { Route as HomePracticeAllHiraganaQuizRouteImport } from './routes/_home/practice/all-hiragana-quiz'
 import { Route as HomeAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/additional-resources/kanji-practice-sheet'
 import { Route as HomeLearningPathIdChapterSlugRouteImport } from './routes/_home/$learningPathId.$chapterSlug'
 import { Route as HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/learn/additional-resources.kanji-practice-sheet'
@@ -122,28 +121,6 @@ const HomeIndexRoute = HomeIndexRouteImport.update({
 const PracticeReviewRoute = PracticeReviewRouteImport.update({
   id: '/practice/review',
   path: '/practice/review',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PracticeHiraganaQuizRoute = PracticeHiraganaQuizRouteImport.update({
-  id: '/practice/hiragana-quiz',
-  path: '/practice/hiragana-quiz',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PracticeDakutenHandakutenQuizRoute =
-  PracticeDakutenHandakutenQuizRouteImport.update({
-    id: '/practice/dakuten-handakuten-quiz',
-    path: '/practice/dakuten-handakuten-quiz',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const PracticeContractedSoundsQuizRoute =
-  PracticeContractedSoundsQuizRouteImport.update({
-    id: '/practice/contracted-sounds-quiz',
-    path: '/practice/contracted-sounds-quiz',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const PracticeAllHiraganaQuizRoute = PracticeAllHiraganaQuizRouteImport.update({
-  id: '/practice/all-hiragana-quiz',
-  path: '/practice/all-hiragana-quiz',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PracticePracticeIDRoute = PracticePracticeIDRouteImport.update({
@@ -195,11 +172,6 @@ const HomeReviewRoute = HomeReviewRouteImport.update({
 const HomeGrammarNotesRoute = HomeGrammarNotesRouteImport.update({
   id: '/grammar-notes',
   path: '/grammar-notes',
-  getParentRoute: () => HomeRoute,
-} as any)
-const HomeAdditionalResourcesRoute = HomeAdditionalResourcesRouteImport.update({
-  id: '/additional-resources',
-  path: '/additional-resources',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeSentencePracticeIndexRoute =
@@ -441,16 +413,40 @@ const HomeSentencePracticeIdRoute = HomeSentencePracticeIdRouteImport.update({
   path: '/sentence-practice/$id',
   getParentRoute: () => HomeRoute,
 } as any)
+const HomePracticeHiraganaQuizRoute =
+  HomePracticeHiraganaQuizRouteImport.update({
+    id: '/practice/hiragana-quiz',
+    path: '/practice/hiragana-quiz',
+    getParentRoute: () => HomeRoute,
+  } as any)
+const HomePracticeDakutenHandakutenQuizRoute =
+  HomePracticeDakutenHandakutenQuizRouteImport.update({
+    id: '/practice/dakuten-handakuten-quiz',
+    path: '/practice/dakuten-handakuten-quiz',
+    getParentRoute: () => HomeRoute,
+  } as any)
+const HomePracticeContractedSoundsQuizRoute =
+  HomePracticeContractedSoundsQuizRouteImport.update({
+    id: '/practice/contracted-sounds-quiz',
+    path: '/practice/contracted-sounds-quiz',
+    getParentRoute: () => HomeRoute,
+  } as any)
 const HomePracticeConjugationRoute = HomePracticeConjugationRouteImport.update({
   id: '/practice/conjugation',
   path: '/practice/conjugation',
   getParentRoute: () => HomeRoute,
 } as any)
+const HomePracticeAllHiraganaQuizRoute =
+  HomePracticeAllHiraganaQuizRouteImport.update({
+    id: '/practice/all-hiragana-quiz',
+    path: '/practice/all-hiragana-quiz',
+    getParentRoute: () => HomeRoute,
+  } as any)
 const HomeAdditionalResourcesKanjiPracticeSheetRoute =
   HomeAdditionalResourcesKanjiPracticeSheetRouteImport.update({
-    id: '/kanji-practice-sheet',
-    path: '/kanji-practice-sheet',
-    getParentRoute: () => HomeAdditionalResourcesRoute,
+    id: '/additional-resources/kanji-practice-sheet',
+    path: '/additional-resources/kanji-practice-sheet',
+    getParentRoute: () => HomeRoute,
   } as any)
 const HomeLearningPathIdChapterSlugRoute =
   HomeLearningPathIdChapterSlugRouteImport.update({
@@ -471,7 +467,6 @@ export interface FileRoutesByFullPath {
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
-  '/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
@@ -482,16 +477,16 @@ export interface FileRoutesByFullPath {
   '/guides/comparison': typeof GuidesComparisonRoute
   '/guides/srs': typeof GuidesSrsRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
-  '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
-  '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
-  '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
-  '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
   '/': typeof HomeIndexRoute
   '/guides/': typeof GuidesIndexRoute
   '/$learningPathId/$chapterSlug': typeof HomeLearningPathIdChapterSlugRoute
   '/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
+  '/practice/all-hiragana-quiz': typeof HomePracticeAllHiraganaQuizRoute
   '/practice/conjugation': typeof HomePracticeConjugationRoute
+  '/practice/contracted-sounds-quiz': typeof HomePracticeContractedSoundsQuizRoute
+  '/practice/dakuten-handakuten-quiz': typeof HomePracticeDakutenHandakutenQuizRoute
+  '/practice/hiragana-quiz': typeof HomePracticeHiraganaQuizRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
@@ -541,7 +536,6 @@ export interface FileRoutesByTo {
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
-  '/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
@@ -552,16 +546,16 @@ export interface FileRoutesByTo {
   '/guides/comparison': typeof GuidesComparisonRoute
   '/guides/srs': typeof GuidesSrsRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
-  '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
-  '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
-  '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
-  '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
   '/': typeof HomeIndexRoute
   '/guides': typeof GuidesIndexRoute
   '/$learningPathId/$chapterSlug': typeof HomeLearningPathIdChapterSlugRoute
   '/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
+  '/practice/all-hiragana-quiz': typeof HomePracticeAllHiraganaQuizRoute
   '/practice/conjugation': typeof HomePracticeConjugationRoute
+  '/practice/contracted-sounds-quiz': typeof HomePracticeContractedSoundsQuizRoute
+  '/practice/dakuten-handakuten-quiz': typeof HomePracticeDakutenHandakutenQuizRoute
+  '/practice/hiragana-quiz': typeof HomePracticeHiraganaQuizRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
@@ -614,7 +608,6 @@ export interface FileRoutesById {
   '/kanji-test': typeof KanjiTestRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/pricing': typeof PricingRoute
-  '/_home/additional-resources': typeof HomeAdditionalResourcesRouteWithChildren
   '/_home/grammar-notes': typeof HomeGrammarNotesRoute
   '/_home/review': typeof HomeReviewRoute
   '/_home/settings': typeof HomeSettingsRoute
@@ -625,16 +618,16 @@ export interface FileRoutesById {
   '/guides/comparison': typeof GuidesComparisonRoute
   '/guides/srs': typeof GuidesSrsRoute
   '/practice/$practiceID': typeof PracticePracticeIDRoute
-  '/practice/all-hiragana-quiz': typeof PracticeAllHiraganaQuizRoute
-  '/practice/contracted-sounds-quiz': typeof PracticeContractedSoundsQuizRoute
-  '/practice/dakuten-handakuten-quiz': typeof PracticeDakutenHandakutenQuizRoute
-  '/practice/hiragana-quiz': typeof PracticeHiraganaQuizRoute
   '/practice/review': typeof PracticeReviewRoute
   '/_home/': typeof HomeIndexRoute
   '/guides/': typeof GuidesIndexRoute
   '/_home/$learningPathId/$chapterSlug': typeof HomeLearningPathIdChapterSlugRoute
   '/_home/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
+  '/_home/practice/all-hiragana-quiz': typeof HomePracticeAllHiraganaQuizRoute
   '/_home/practice/conjugation': typeof HomePracticeConjugationRoute
+  '/_home/practice/contracted-sounds-quiz': typeof HomePracticeContractedSoundsQuizRoute
+  '/_home/practice/dakuten-handakuten-quiz': typeof HomePracticeDakutenHandakutenQuizRoute
+  '/_home/practice/hiragana-quiz': typeof HomePracticeHiraganaQuizRoute
   '/_home/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
@@ -687,7 +680,6 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
-    | '/additional-resources'
     | '/grammar-notes'
     | '/review'
     | '/settings'
@@ -698,16 +690,16 @@ export interface FileRouteTypes {
     | '/guides/comparison'
     | '/guides/srs'
     | '/practice/$practiceID'
-    | '/practice/all-hiragana-quiz'
-    | '/practice/contracted-sounds-quiz'
-    | '/practice/dakuten-handakuten-quiz'
-    | '/practice/hiragana-quiz'
     | '/practice/review'
     | '/'
     | '/guides/'
     | '/$learningPathId/$chapterSlug'
     | '/additional-resources/kanji-practice-sheet'
+    | '/practice/all-hiragana-quiz'
     | '/practice/conjugation'
+    | '/practice/contracted-sounds-quiz'
+    | '/practice/dakuten-handakuten-quiz'
+    | '/practice/hiragana-quiz'
     | '/sentence-practice/$id'
     | '/api/auth/login'
     | '/api/auth/logout'
@@ -757,7 +749,6 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
-    | '/additional-resources'
     | '/grammar-notes'
     | '/review'
     | '/settings'
@@ -768,16 +759,16 @@ export interface FileRouteTypes {
     | '/guides/comparison'
     | '/guides/srs'
     | '/practice/$practiceID'
-    | '/practice/all-hiragana-quiz'
-    | '/practice/contracted-sounds-quiz'
-    | '/practice/dakuten-handakuten-quiz'
-    | '/practice/hiragana-quiz'
     | '/practice/review'
     | '/'
     | '/guides'
     | '/$learningPathId/$chapterSlug'
     | '/additional-resources/kanji-practice-sheet'
+    | '/practice/all-hiragana-quiz'
     | '/practice/conjugation'
+    | '/practice/contracted-sounds-quiz'
+    | '/practice/dakuten-handakuten-quiz'
+    | '/practice/hiragana-quiz'
     | '/sentence-practice/$id'
     | '/api/auth/login'
     | '/api/auth/logout'
@@ -829,7 +820,6 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/lessons'
     | '/pricing'
-    | '/_home/additional-resources'
     | '/_home/grammar-notes'
     | '/_home/review'
     | '/_home/settings'
@@ -840,16 +830,16 @@ export interface FileRouteTypes {
     | '/guides/comparison'
     | '/guides/srs'
     | '/practice/$practiceID'
-    | '/practice/all-hiragana-quiz'
-    | '/practice/contracted-sounds-quiz'
-    | '/practice/dakuten-handakuten-quiz'
-    | '/practice/hiragana-quiz'
     | '/practice/review'
     | '/_home/'
     | '/guides/'
     | '/_home/$learningPathId/$chapterSlug'
     | '/_home/additional-resources/kanji-practice-sheet'
+    | '/_home/practice/all-hiragana-quiz'
     | '/_home/practice/conjugation'
+    | '/_home/practice/contracted-sounds-quiz'
+    | '/_home/practice/dakuten-handakuten-quiz'
+    | '/_home/practice/hiragana-quiz'
     | '/_home/sentence-practice/$id'
     | '/api/auth/login'
     | '/api/auth/logout'
@@ -905,10 +895,6 @@ export interface RootRouteChildren {
   ApiUploadOverrideRoute: typeof ApiUploadOverrideRoute
   ExternalResourcesResourceRoute: typeof ExternalResourcesResourceRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
-  PracticeAllHiraganaQuizRoute: typeof PracticeAllHiraganaQuizRoute
-  PracticeContractedSoundsQuizRoute: typeof PracticeContractedSoundsQuizRoute
-  PracticeDakutenHandakutenQuizRoute: typeof PracticeDakutenHandakutenQuizRoute
-  PracticeHiraganaQuizRoute: typeof PracticeHiraganaQuizRoute
   PracticeReviewRoute: typeof PracticeReviewRoute
   ApiAuthLoginRoute: typeof ApiAuthLoginRoute
   ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
@@ -981,34 +967,6 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof PracticeReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/practice/hiragana-quiz': {
-      id: '/practice/hiragana-quiz'
-      path: '/practice/hiragana-quiz'
-      fullPath: '/practice/hiragana-quiz'
-      preLoaderRoute: typeof PracticeHiraganaQuizRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/practice/dakuten-handakuten-quiz': {
-      id: '/practice/dakuten-handakuten-quiz'
-      path: '/practice/dakuten-handakuten-quiz'
-      fullPath: '/practice/dakuten-handakuten-quiz'
-      preLoaderRoute: typeof PracticeDakutenHandakutenQuizRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/practice/contracted-sounds-quiz': {
-      id: '/practice/contracted-sounds-quiz'
-      path: '/practice/contracted-sounds-quiz'
-      fullPath: '/practice/contracted-sounds-quiz'
-      preLoaderRoute: typeof PracticeContractedSoundsQuizRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/practice/all-hiragana-quiz': {
-      id: '/practice/all-hiragana-quiz'
-      path: '/practice/all-hiragana-quiz'
-      fullPath: '/practice/all-hiragana-quiz'
-      preLoaderRoute: typeof PracticeAllHiraganaQuizRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/practice/$practiceID': {
       id: '/practice/$practiceID'
       path: '/practice/$practiceID'
@@ -1077,13 +1035,6 @@ declare module '@tanstack/solid-router' {
       path: '/grammar-notes'
       fullPath: '/grammar-notes'
       preLoaderRoute: typeof HomeGrammarNotesRouteImport
-      parentRoute: typeof HomeRoute
-    }
-    '/_home/additional-resources': {
-      id: '/_home/additional-resources'
-      path: '/additional-resources'
-      fullPath: '/additional-resources'
-      preLoaderRoute: typeof HomeAdditionalResourcesRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/sentence-practice/': {
@@ -1380,6 +1331,27 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeSentencePracticeIdRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/_home/practice/hiragana-quiz': {
+      id: '/_home/practice/hiragana-quiz'
+      path: '/practice/hiragana-quiz'
+      fullPath: '/practice/hiragana-quiz'
+      preLoaderRoute: typeof HomePracticeHiraganaQuizRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/practice/dakuten-handakuten-quiz': {
+      id: '/_home/practice/dakuten-handakuten-quiz'
+      path: '/practice/dakuten-handakuten-quiz'
+      fullPath: '/practice/dakuten-handakuten-quiz'
+      preLoaderRoute: typeof HomePracticeDakutenHandakutenQuizRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/practice/contracted-sounds-quiz': {
+      id: '/_home/practice/contracted-sounds-quiz'
+      path: '/practice/contracted-sounds-quiz'
+      fullPath: '/practice/contracted-sounds-quiz'
+      preLoaderRoute: typeof HomePracticeContractedSoundsQuizRouteImport
+      parentRoute: typeof HomeRoute
+    }
     '/_home/practice/conjugation': {
       id: '/_home/practice/conjugation'
       path: '/practice/conjugation'
@@ -1387,12 +1359,19 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomePracticeConjugationRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/_home/practice/all-hiragana-quiz': {
+      id: '/_home/practice/all-hiragana-quiz'
+      path: '/practice/all-hiragana-quiz'
+      fullPath: '/practice/all-hiragana-quiz'
+      preLoaderRoute: typeof HomePracticeAllHiraganaQuizRouteImport
+      parentRoute: typeof HomeRoute
+    }
     '/_home/additional-resources/kanji-practice-sheet': {
       id: '/_home/additional-resources/kanji-practice-sheet'
-      path: '/kanji-practice-sheet'
+      path: '/additional-resources/kanji-practice-sheet'
       fullPath: '/additional-resources/kanji-practice-sheet'
       preLoaderRoute: typeof HomeAdditionalResourcesKanjiPracticeSheetRouteImport
-      parentRoute: typeof HomeAdditionalResourcesRoute
+      parentRoute: typeof HomeRoute
     }
     '/_home/$learningPathId/$chapterSlug': {
       id: '/_home/$learningPathId/$chapterSlug'
@@ -1411,23 +1390,7 @@ declare module '@tanstack/solid-router' {
   }
 }
 
-interface HomeAdditionalResourcesRouteChildren {
-  HomeAdditionalResourcesKanjiPracticeSheetRoute: typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
-}
-
-const HomeAdditionalResourcesRouteChildren: HomeAdditionalResourcesRouteChildren =
-  {
-    HomeAdditionalResourcesKanjiPracticeSheetRoute:
-      HomeAdditionalResourcesKanjiPracticeSheetRoute,
-  }
-
-const HomeAdditionalResourcesRouteWithChildren =
-  HomeAdditionalResourcesRoute._addFileChildren(
-    HomeAdditionalResourcesRouteChildren,
-  )
-
 interface HomeRouteChildren {
-  HomeAdditionalResourcesRoute: typeof HomeAdditionalResourcesRouteWithChildren
   HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
   HomeReviewRoute: typeof HomeReviewRoute
   HomeSettingsRoute: typeof HomeSettingsRoute
@@ -1435,14 +1398,18 @@ interface HomeRouteChildren {
   HomeVocabRoute: typeof HomeVocabRoute
   HomeIndexRoute: typeof HomeIndexRoute
   HomeLearningPathIdChapterSlugRoute: typeof HomeLearningPathIdChapterSlugRoute
+  HomeAdditionalResourcesKanjiPracticeSheetRoute: typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
+  HomePracticeAllHiraganaQuizRoute: typeof HomePracticeAllHiraganaQuizRoute
   HomePracticeConjugationRoute: typeof HomePracticeConjugationRoute
+  HomePracticeContractedSoundsQuizRoute: typeof HomePracticeContractedSoundsQuizRoute
+  HomePracticeDakutenHandakutenQuizRoute: typeof HomePracticeDakutenHandakutenQuizRoute
+  HomePracticeHiraganaQuizRoute: typeof HomePracticeHiraganaQuizRoute
   HomeSentencePracticeIdRoute: typeof HomeSentencePracticeIdRoute
   HomeSentencePracticeIndexRoute: typeof HomeSentencePracticeIndexRoute
   HomeLearnAdditionalResourcesKanjiPracticeSheetRoute: typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
 }
 
 const HomeRouteChildren: HomeRouteChildren = {
-  HomeAdditionalResourcesRoute: HomeAdditionalResourcesRouteWithChildren,
   HomeGrammarNotesRoute: HomeGrammarNotesRoute,
   HomeReviewRoute: HomeReviewRoute,
   HomeSettingsRoute: HomeSettingsRoute,
@@ -1450,7 +1417,14 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeVocabRoute: HomeVocabRoute,
   HomeIndexRoute: HomeIndexRoute,
   HomeLearningPathIdChapterSlugRoute: HomeLearningPathIdChapterSlugRoute,
+  HomeAdditionalResourcesKanjiPracticeSheetRoute:
+    HomeAdditionalResourcesKanjiPracticeSheetRoute,
+  HomePracticeAllHiraganaQuizRoute: HomePracticeAllHiraganaQuizRoute,
   HomePracticeConjugationRoute: HomePracticeConjugationRoute,
+  HomePracticeContractedSoundsQuizRoute: HomePracticeContractedSoundsQuizRoute,
+  HomePracticeDakutenHandakutenQuizRoute:
+    HomePracticeDakutenHandakutenQuizRoute,
+  HomePracticeHiraganaQuizRoute: HomePracticeHiraganaQuizRoute,
   HomeSentencePracticeIdRoute: HomeSentencePracticeIdRoute,
   HomeSentencePracticeIndexRoute: HomeSentencePracticeIndexRoute,
   HomeLearnAdditionalResourcesKanjiPracticeSheetRoute:
@@ -1569,10 +1543,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiUploadOverrideRoute: ApiUploadOverrideRoute,
   ExternalResourcesResourceRoute: ExternalResourcesResourceRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,
-  PracticeAllHiraganaQuizRoute: PracticeAllHiraganaQuizRoute,
-  PracticeContractedSoundsQuizRoute: PracticeContractedSoundsQuizRoute,
-  PracticeDakutenHandakutenQuizRoute: PracticeDakutenHandakutenQuizRoute,
-  PracticeHiraganaQuizRoute: PracticeHiraganaQuizRoute,
   PracticeReviewRoute: PracticeReviewRoute,
   ApiAuthLoginRoute: ApiAuthLoginRoute,
   ApiAuthLogoutRoute: ApiAuthLogoutRoute,

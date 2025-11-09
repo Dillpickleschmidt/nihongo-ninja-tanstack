@@ -5,7 +5,7 @@ import { cn } from "@/utils"
 import {
   getModuleIcon,
   type EnrichedLearningPathModule,
-} from "@/features/learn-page/utils/loader-helpers"
+} from "@/features/stats-page/loader-helpers"
 import { useLearningPath } from "../LearningPathContext"
 
 interface LearningPathListProps {

@@ -9,7 +9,7 @@ import {
   userSettingsQueryOptions,
   allLearningPathsQueryOptions,
 } from "@/query/query-options"
-import { LearningPathChapterSelector } from "@/features/learn-page/components/shared/LearningPathChapterSelector"
+import { LearningPathChapterSelector } from "@/features/homepage/shared/components/LearningPathChapterSelector"
 import { Route as RootRoute } from "@/routes/__root"
 
 export default function Nav() {

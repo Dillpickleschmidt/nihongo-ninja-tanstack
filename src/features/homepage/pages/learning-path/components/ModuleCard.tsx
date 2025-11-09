@@ -1,8 +1,8 @@
 import { Show, createSignal } from "solid-js"
 import { getChapterStyles } from "@/data/chapter_colors"
-import { getModuleIcon } from "@/features/learn-page/utils/loader-helpers"
+import { getModuleIcon } from "@/features/stats-page/loader-helpers"
 import { useLearningPath } from "../LearningPathContext"
-import type { EnrichedLearningPathModule } from "@/features/learn-page/utils/loader-helpers"
+import type { EnrichedLearningPathModule } from "@/features/stats-page/loader-helpers"
 import StartHereSvg from "@/features/homepage/shared/assets/start-here.svg"
 import TryThisSvg from "@/features/homepage/shared/assets/try-this.svg"
 

@@ -10,7 +10,6 @@ import {
   chapterModulesQueryOptions,
 } from "@/query/query-options"
 import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
-import { BackgroundLayers } from "@/features/homepage/shared/components/BackgroundLayers"
 import Nav from "@/features/homepage/shared/components/Nav2"
 import LoginMessage from "@/features/homepage/shared/assets/login-message.svg"
 import { JlptPage } from "@/features/homepage/pages/jlpt"
@@ -124,31 +123,29 @@ function RouteComponent() {
 
   return (
     <>
-      <BackgroundLayers />
       <Nav />
       <Show when={!context().user}>
         <LoginMessage class="fixed top-6 right-24 hidden h-auto w-64 text-neutral-500 md:block" />
       </Show>
       <Show
-        when={!settingsQuery.data?.["has-completed-onboarding"]}
+        when={settingsQuery.data!["has-completed-onboarding"]}
         fallback={
-          <div ref={learningPathRef}>
-            <LearningPathPage
-              settingsQuery={settingsQuery}
-              onChapterChange={handleChapterChange}
-              onBack={
-                settingsQuery.data?.["active-learning-path"] ===
-                "getting_started"
-                  ? handleBack
-                  : undefined
-              }
-              user={context().user}
-            />
+          <div ref={stepRef}>
+            <JlptPage onLevelSelect={handleLevelSelect} />
           </div>
         }
       >
-        <div ref={stepRef}>
-          <JlptPage onLevelSelect={handleLevelSelect} />
+        <div ref={learningPathRef}>
+          <LearningPathPage
+            settingsQuery={settingsQuery}
+            onChapterChange={handleChapterChange}
+            onBack={
+              settingsQuery.data?.["active-learning-path"] === "getting_started"
+                ? handleBack
+                : undefined
+            }
+            user={context().user}
+          />
         </div>
       </Show>
     </>

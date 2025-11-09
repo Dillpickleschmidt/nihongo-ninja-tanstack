@@ -5,7 +5,7 @@ import {
   getModuleIcon,
   getModuleIconClasses,
   type EnrichedLearningPathModule,
-} from "@/features/learn-page/utils/loader-helpers"
+} from "@/features/stats-page/loader-helpers"
 
 interface LearningPathCategorizedProps {
   lessonRefs?: (el: HTMLElement, index: number) => void

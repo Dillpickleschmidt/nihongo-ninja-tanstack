@@ -1,6 +1,6 @@
 // features/vocab-practice/components/pages/start-page/components/StartPageLayout.tsx
 import { Show, type JSX } from "solid-js"
-import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
+import { TextbookChapterBackgrounds } from "@/features/homepage/shared/components/TextbookChapterBackgrounds"
 import { BottomNav } from "@/features/navbar/BottomNav"
 import { StartPageHeader } from "./header/Header"
 import { StartPageButton } from "./StartPageButton"

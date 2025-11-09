@@ -27,7 +27,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
-import { BackgroundLayers } from "@/features/homepage/shared/components/BackgroundLayers"
+import { TextbookChapterBackgrounds } from "@/features/homepage/shared/components/TextbookChapterBackgrounds"
 import LogoutButton from "@/features/auth/components/Logout"
 import { TableOfContents, type TOCItem } from "@/components/TableOfContents"
 import GoHomeSvg from "@/features/homepage/shared/assets/go-home.svg"
@@ -165,7 +165,7 @@ function RouteComponent() {
 
   return (
     <>
-      <BackgroundLayers />
+      <TextbookChapterBackgrounds />
       <SidebarProvider
         style={{
           "--sidebar-width": "18rem",
