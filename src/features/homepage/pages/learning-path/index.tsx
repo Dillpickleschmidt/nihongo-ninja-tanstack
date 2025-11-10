@@ -41,8 +41,8 @@ function LearningPathPageContent() {
 
   return (
     <div class="flex">
-      <div class="sticky top-0 -mt-16 self-start 2xl:fixed 2xl:mt-0">
-        <Sidebar user={context.userId} isActive={() => false} />
+      <div class="sticky top-0 z-50 -mt-16 self-start md:z-0 2xl:fixed 2xl:mt-0">
+        <Sidebar user={context.userId} />
       </div>
       <div class="2xl:pl-12" />
       <div class="relative mx-auto w-full max-w-7xl px-4 pt-2 pb-16 md:pt-8">

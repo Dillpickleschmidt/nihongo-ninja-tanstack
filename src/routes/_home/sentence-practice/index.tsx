@@ -133,7 +133,7 @@ function RouteComponent() {
   return (
     <div class="flex">
       <div class="sticky top-0 -mt-16 self-start 2xl:fixed 2xl:mt-0">
-        <Sidebar user={context().user?.id || null} isActive={() => false} />
+        <Sidebar user={context().user?.id || null} />
       </div>
       <div class="2xl:pl-12" />
       <div class="relative mx-auto mt-10 w-full max-w-6xl px-4 pb-28 lg:pt-16">

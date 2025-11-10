@@ -28,6 +28,7 @@ import { Route as HomeVideoRouteImport } from './routes/_home/video'
 import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
 import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
+import { Route as HomeVocabIndexRouteImport } from './routes/_home/vocab/index'
 import { Route as HomeSentencePracticeIndexRouteImport } from './routes/_home/sentence-practice/index'
 import { Route as PracticeUserIDDeckIDRouteImport } from './routes/practice/$userID.$deckID'
 import { Route as LessonsChapter3WordOrderRouteImport } from './routes/lessons/_chapter-3/word-order'
@@ -69,6 +70,9 @@ import { Route as LessonsChapter0CommonExpressionsRouteImport } from './routes/l
 import { Route as ApiRelayTefhSplatRouteImport } from './routes/api/relay-tefh.$'
 import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
 import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
+import { Route as HomeVocabSettingsRouteImport } from './routes/_home/vocab/settings'
+import { Route as HomeVocabCreateRouteImport } from './routes/_home/vocab/create'
+import { Route as HomeVocabBrowseRouteImport } from './routes/_home/vocab/browse'
 import { Route as HomeSentencePracticeIdRouteImport } from './routes/_home/sentence-practice/$id'
 import { Route as HomePracticeHiraganaQuizRouteImport } from './routes/_home/practice/hiragana-quiz'
 import { Route as HomePracticeDakutenHandakutenQuizRouteImport } from './routes/_home/practice/dakuten-handakuten-quiz'
@@ -173,6 +177,11 @@ const HomeGrammarNotesRoute = HomeGrammarNotesRouteImport.update({
   id: '/grammar-notes',
   path: '/grammar-notes',
   getParentRoute: () => HomeRoute,
+} as any)
+const HomeVocabIndexRoute = HomeVocabIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HomeVocabRoute,
 } as any)
 const HomeSentencePracticeIndexRoute =
   HomeSentencePracticeIndexRouteImport.update({
@@ -408,6 +417,21 @@ const ApiAuthLoginRoute = ApiAuthLoginRouteImport.update({
   path: '/api/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HomeVocabSettingsRoute = HomeVocabSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => HomeVocabRoute,
+} as any)
+const HomeVocabCreateRoute = HomeVocabCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => HomeVocabRoute,
+} as any)
+const HomeVocabBrowseRoute = HomeVocabBrowseRouteImport.update({
+  id: '/browse',
+  path: '/browse',
+  getParentRoute: () => HomeVocabRoute,
+} as any)
 const HomeSentencePracticeIdRoute = HomeSentencePracticeIdRouteImport.update({
   id: '/sentence-practice/$id',
   path: '/sentence-practice/$id',
@@ -471,7 +495,7 @@ export interface FileRoutesByFullPath {
   '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
   '/video': typeof HomeVideoRoute
-  '/vocab': typeof HomeVocabRoute
+  '/vocab': typeof HomeVocabRouteWithChildren
   '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
   '/guides/comparison': typeof GuidesComparisonRoute
@@ -488,6 +512,9 @@ export interface FileRoutesByFullPath {
   '/practice/dakuten-handakuten-quiz': typeof HomePracticeDakutenHandakutenQuizRoute
   '/practice/hiragana-quiz': typeof HomePracticeHiraganaQuizRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
+  '/vocab/browse': typeof HomeVocabBrowseRoute
+  '/vocab/create': typeof HomeVocabCreateRoute
+  '/vocab/settings': typeof HomeVocabSettingsRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
@@ -529,6 +556,7 @@ export interface FileRoutesByFullPath {
   '/lessons/word-order': typeof LessonsChapter3WordOrderRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
+  '/vocab/': typeof HomeVocabIndexRoute
   '/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
 }
 export interface FileRoutesByTo {
@@ -540,7 +568,6 @@ export interface FileRoutesByTo {
   '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
   '/video': typeof HomeVideoRoute
-  '/vocab': typeof HomeVocabRoute
   '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
   '/guides/comparison': typeof GuidesComparisonRoute
@@ -557,6 +584,9 @@ export interface FileRoutesByTo {
   '/practice/dakuten-handakuten-quiz': typeof HomePracticeDakutenHandakutenQuizRoute
   '/practice/hiragana-quiz': typeof HomePracticeHiraganaQuizRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
+  '/vocab/browse': typeof HomeVocabBrowseRoute
+  '/vocab/create': typeof HomeVocabCreateRoute
+  '/vocab/settings': typeof HomeVocabSettingsRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
@@ -598,6 +628,7 @@ export interface FileRoutesByTo {
   '/lessons/word-order': typeof LessonsChapter3WordOrderRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
+  '/vocab': typeof HomeVocabIndexRoute
   '/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
 }
 export interface FileRoutesById {
@@ -612,7 +643,7 @@ export interface FileRoutesById {
   '/_home/review': typeof HomeReviewRoute
   '/_home/settings': typeof HomeSettingsRoute
   '/_home/video': typeof HomeVideoRoute
-  '/_home/vocab': typeof HomeVocabRoute
+  '/_home/vocab': typeof HomeVocabRouteWithChildren
   '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
   '/guides/comparison': typeof GuidesComparisonRoute
@@ -629,6 +660,9 @@ export interface FileRoutesById {
   '/_home/practice/dakuten-handakuten-quiz': typeof HomePracticeDakutenHandakutenQuizRoute
   '/_home/practice/hiragana-quiz': typeof HomePracticeHiraganaQuizRoute
   '/_home/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
+  '/_home/vocab/browse': typeof HomeVocabBrowseRoute
+  '/_home/vocab/create': typeof HomeVocabCreateRoute
+  '/_home/vocab/settings': typeof HomeVocabSettingsRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
@@ -670,6 +704,7 @@ export interface FileRoutesById {
   '/lessons/_chapter-3/word-order': typeof LessonsChapter3WordOrderRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/_home/sentence-practice/': typeof HomeSentencePracticeIndexRoute
+  '/_home/vocab/': typeof HomeVocabIndexRoute
   '/_home/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
 }
 export interface FileRouteTypes {
@@ -701,6 +736,9 @@ export interface FileRouteTypes {
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/sentence-practice/$id'
+    | '/vocab/browse'
+    | '/vocab/create'
+    | '/vocab/settings'
     | '/api/auth/login'
     | '/api/auth/logout'
     | '/api/relay-tefh/$'
@@ -742,6 +780,7 @@ export interface FileRouteTypes {
     | '/lessons/word-order'
     | '/practice/$userID/$deckID'
     | '/sentence-practice'
+    | '/vocab/'
     | '/learn/additional-resources/kanji-practice-sheet'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -753,7 +792,6 @@ export interface FileRouteTypes {
     | '/review'
     | '/settings'
     | '/video'
-    | '/vocab'
     | '/api/upload-override'
     | '/external-resources/$resource'
     | '/guides/comparison'
@@ -770,6 +808,9 @@ export interface FileRouteTypes {
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/sentence-practice/$id'
+    | '/vocab/browse'
+    | '/vocab/create'
+    | '/vocab/settings'
     | '/api/auth/login'
     | '/api/auth/logout'
     | '/api/relay-tefh/$'
@@ -811,6 +852,7 @@ export interface FileRouteTypes {
     | '/lessons/word-order'
     | '/practice/$userID/$deckID'
     | '/sentence-practice'
+    | '/vocab'
     | '/learn/additional-resources/kanji-practice-sheet'
   id:
     | '__root__'
@@ -841,6 +883,9 @@ export interface FileRouteTypes {
     | '/_home/practice/dakuten-handakuten-quiz'
     | '/_home/practice/hiragana-quiz'
     | '/_home/sentence-practice/$id'
+    | '/_home/vocab/browse'
+    | '/_home/vocab/create'
+    | '/_home/vocab/settings'
     | '/api/auth/login'
     | '/api/auth/logout'
     | '/api/relay-tefh/$'
@@ -882,6 +927,7 @@ export interface FileRouteTypes {
     | '/lessons/_chapter-3/word-order'
     | '/practice/$userID/$deckID'
     | '/_home/sentence-practice/'
+    | '/_home/vocab/'
     | '/_home/learn/additional-resources/kanji-practice-sheet'
   fileRoutesById: FileRoutesById
 }
@@ -1036,6 +1082,13 @@ declare module '@tanstack/solid-router' {
       fullPath: '/grammar-notes'
       preLoaderRoute: typeof HomeGrammarNotesRouteImport
       parentRoute: typeof HomeRoute
+    }
+    '/_home/vocab/': {
+      id: '/_home/vocab/'
+      path: '/'
+      fullPath: '/vocab/'
+      preLoaderRoute: typeof HomeVocabIndexRouteImport
+      parentRoute: typeof HomeVocabRoute
     }
     '/_home/sentence-practice/': {
       id: '/_home/sentence-practice/'
@@ -1324,6 +1377,27 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof ApiAuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_home/vocab/settings': {
+      id: '/_home/vocab/settings'
+      path: '/settings'
+      fullPath: '/vocab/settings'
+      preLoaderRoute: typeof HomeVocabSettingsRouteImport
+      parentRoute: typeof HomeVocabRoute
+    }
+    '/_home/vocab/create': {
+      id: '/_home/vocab/create'
+      path: '/create'
+      fullPath: '/vocab/create'
+      preLoaderRoute: typeof HomeVocabCreateRouteImport
+      parentRoute: typeof HomeVocabRoute
+    }
+    '/_home/vocab/browse': {
+      id: '/_home/vocab/browse'
+      path: '/browse'
+      fullPath: '/vocab/browse'
+      preLoaderRoute: typeof HomeVocabBrowseRouteImport
+      parentRoute: typeof HomeVocabRoute
+    }
     '/_home/sentence-practice/$id': {
       id: '/_home/sentence-practice/$id'
       path: '/sentence-practice/$id'
@@ -1390,12 +1464,30 @@ declare module '@tanstack/solid-router' {
   }
 }
 
+interface HomeVocabRouteChildren {
+  HomeVocabBrowseRoute: typeof HomeVocabBrowseRoute
+  HomeVocabCreateRoute: typeof HomeVocabCreateRoute
+  HomeVocabSettingsRoute: typeof HomeVocabSettingsRoute
+  HomeVocabIndexRoute: typeof HomeVocabIndexRoute
+}
+
+const HomeVocabRouteChildren: HomeVocabRouteChildren = {
+  HomeVocabBrowseRoute: HomeVocabBrowseRoute,
+  HomeVocabCreateRoute: HomeVocabCreateRoute,
+  HomeVocabSettingsRoute: HomeVocabSettingsRoute,
+  HomeVocabIndexRoute: HomeVocabIndexRoute,
+}
+
+const HomeVocabRouteWithChildren = HomeVocabRoute._addFileChildren(
+  HomeVocabRouteChildren,
+)
+
 interface HomeRouteChildren {
   HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
   HomeReviewRoute: typeof HomeReviewRoute
   HomeSettingsRoute: typeof HomeSettingsRoute
   HomeVideoRoute: typeof HomeVideoRoute
-  HomeVocabRoute: typeof HomeVocabRoute
+  HomeVocabRoute: typeof HomeVocabRouteWithChildren
   HomeIndexRoute: typeof HomeIndexRoute
   HomeLearningPathIdChapterSlugRoute: typeof HomeLearningPathIdChapterSlugRoute
   HomeAdditionalResourcesKanjiPracticeSheetRoute: typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
@@ -1414,7 +1506,7 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeReviewRoute: HomeReviewRoute,
   HomeSettingsRoute: HomeSettingsRoute,
   HomeVideoRoute: HomeVideoRoute,
-  HomeVocabRoute: HomeVocabRoute,
+  HomeVocabRoute: HomeVocabRouteWithChildren,
   HomeIndexRoute: HomeIndexRoute,
   HomeLearningPathIdChapterSlugRoute: HomeLearningPathIdChapterSlugRoute,
   HomeAdditionalResourcesKanjiPracticeSheetRoute:

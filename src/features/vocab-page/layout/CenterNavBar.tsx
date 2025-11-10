@@ -1,5 +1,6 @@
-// features/vocab-page/center-panel/CenterNavBar.tsx
-import { For } from "solid-js"
+// features/vocab-page/layout/CenterNavBar.tsx
+import { For, createMemo } from "solid-js"
+import { useLocation, useNavigate } from "@tanstack/solid-router"
 import { Button } from "@/components/ui/button"
 import { Plus, Search, Settings } from "lucide-solid"
 import { cn } from "@/utils"
@@ -26,44 +27,59 @@ const CardDeckIcon = (props: { class?: string }) => (
   </svg>
 )
 
-export type NavTabId =
-  | "vocab-cards"
-  | "deck-builder"
-  | "browse-decks"
-  | "overrides"
-
 interface NavItem {
-  id: NavTabId
   label: string
   icon: any
-}
-
-interface CenterNavBarProps {
-  activeTab: NavTabId
-  onTabChange: (tabId: NavTabId) => void
+  href: string
+  isActive: (pathname: string) => boolean
 }
 
 const navItems: NavItem[] = [
-  { id: "vocab-cards", label: "Vocab Cards", icon: CardDeckIcon },
-  { id: "deck-builder", label: "Create Decks", icon: Plus },
-  { id: "browse-decks", label: "Browse Decks", icon: Search },
-  { id: "overrides", label: "Overrides", icon: Settings },
+  {
+    label: "Vocab Cards",
+    icon: CardDeckIcon,
+    href: "/vocab",
+    isActive: (p) => p === "/vocab" || p === "/vocab/",
+  },
+  {
+    label: "Create Decks",
+    icon: Plus,
+    href: "/vocab/create",
+    isActive: (p) => p.startsWith("/vocab/create"),
+  },
+  {
+    label: "Browse Decks",
+    icon: Search,
+    href: "/vocab/browse",
+    isActive: (p) => p.startsWith("/vocab/browse"),
+  },
+  {
+    label: "Overrides",
+    icon: Settings,
+    href: "/vocab/settings",
+    isActive: (p) => p.startsWith("/vocab/settings"),
+  },
 ]
 
-export function CenterNavBar(props: CenterNavBarProps) {
+export function CenterNavBar() {
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const currentPathname = createMemo(() => location().pathname)
+
   return (
     <div class="sticky top-0 z-10 flex items-center justify-center px-4 py-3">
       <div class="bg-background/50 border-card-foreground/70 flex rounded-[10px] border p-1 shadow-md backdrop-blur-md">
         <For each={navItems}>
           {(item) => {
-            const isActive = () => props.activeTab === item.id
+            const isActive = () => item.isActive(currentPathname())
             const IconComponent = item.icon
 
             return (
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => props.onTabChange(item.id)}
+                onClick={() => navigate({ to: item.href })}
                 class={cn(
                   "flex h-8 items-center gap-2 rounded-md px-3 transition-all duration-200",
                   isActive()

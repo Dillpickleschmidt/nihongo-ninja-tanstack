@@ -1,6 +1,6 @@
 import { For, Show } from "solid-js"
 import type { VocabularyItem } from "@/data/types"
-import { VocabularyCard } from "@/features/vocab-page/components/VocabularyCard"
+import { VocabularyCard } from "@/features/vocab-page/pages/main/components/VocabularyCard"
 
 interface VocabPreviewProps {
   vocabularyItems: VocabularyItem[]

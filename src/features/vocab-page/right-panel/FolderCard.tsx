@@ -18,7 +18,7 @@ import { cn } from "@/utils"
 import { createSignal, createMemo } from "solid-js"
 import { countDecksInFolder } from "../logic/folder-utils"
 import { useFolderTree } from "../hooks/useFolderTree"
-import { DeleteConfirmation } from "../components/DeleteConfirmation"
+import { DeleteConfirmation } from "../shared/components/DeleteConfirmation"
 import { EditTransaction } from "../logic/edit-transaction"
 
 interface FolderCardProps {

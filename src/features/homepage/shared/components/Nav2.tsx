@@ -71,7 +71,7 @@ export default function Nav() {
       : "text-foreground/80 hover:text-foreground dark:text-orange-100/70 hover:dark:text-orange-100"
 
   return (
-    <nav class="sticky top-0 z-50 flex h-16 w-full items-center justify-between overflow-hidden px-6 py-2">
+    <nav class="sticky top-0 z-40 flex h-16 w-full items-center justify-between overflow-hidden px-6 py-2">
       <Show
         when={
           !pathsQuery.isPending &&
@@ -84,6 +84,7 @@ export default function Nav() {
         }
         fallback={<div />}
       >
+        <div class="block md:hidden" />
         <LearningPathChapterSelector
           activeLearningPathId={activeLearningPathId()!}
           activeChapter={activeChapter()!}

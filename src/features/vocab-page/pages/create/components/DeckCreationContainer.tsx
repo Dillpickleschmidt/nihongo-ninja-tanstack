@@ -6,14 +6,14 @@ import {
   formDataToDBInsert,
   formDataToVocabularyItem,
   type VocabItemFormData,
-} from "../../types/vocabulary"
-import { validateVocabItemMinimal } from "../../validation"
+} from "@/features/vocab-page/types/vocabulary"
+import { validateVocabItemMinimal } from "@/features/vocab-page/validation"
 import { executeEditTransactionServerFn } from "@/features/supabase/db/folder"
 import { createCustomDeckServerFn } from "@/features/supabase/db/deck"
 import type {
   UpdateDeckOperation,
   UpdateDeckVocabularyOperation,
-} from "../../logic/deck-edit-operations"
+} from "@/features/vocab-page/logic/deck-edit-operations"
 import { DeckHeader } from "./DeckHeader"
 import { DeckDetails } from "./DeckDetails"
 import { VocabItemsList } from "./VocabItemsList"

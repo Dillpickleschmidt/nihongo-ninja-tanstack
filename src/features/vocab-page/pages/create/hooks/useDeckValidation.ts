@@ -1,5 +1,8 @@
 import { createMemo } from "solid-js"
-import { DeckMetadataSchema, DeckNameValidationSchema } from "../../validation"
+import {
+  DeckMetadataSchema,
+  DeckNameValidationSchema,
+} from "@/features/vocab-page/validation"
 import type { DeckCreationStore } from "../types/deck-creation-types"
 
 interface UseDeckValidationProps {

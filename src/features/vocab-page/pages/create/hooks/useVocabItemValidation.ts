@@ -1,5 +1,5 @@
 import { createMemo } from "solid-js"
-import { VocabItemFieldValidationSchema } from "../../validation"
+import { VocabItemFieldValidationSchema } from "@/features/vocab-page/validation"
 import type {
   VocabItemValidationContext,
   FieldValidationState,

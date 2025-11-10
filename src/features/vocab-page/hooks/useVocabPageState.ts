@@ -15,7 +15,6 @@ import {
   saveFoldersAndDecks,
   loadFoldersAndDecks,
 } from "@/features/vocab-page/storage/sessionStorage"
-import type { NavTabId } from "@/features/vocab-page/center-panel/CenterNavBar"
 
 export function useVocabPageState(
   foldersAndDecksPromise: Promise<FoldersAndDecksData>,
@@ -24,12 +23,6 @@ export function useVocabPageState(
   // === SIGNALS ===
   // Panel state
   const [rightPanelOpen, setRightPanelOpen] = createSignal(true)
-  const [leftPanelOpen, setLeftPanelOpen] = createSignal(true)
-
-  // Center panel navigation state
-  const [activeNavTab, setActiveNavTab] = createSignal<NavTabId>("vocab-cards")
-  const [vocabCardsTabState, setVocabCardsTabState] =
-    createSignal<UserDeck | null>(null)
 
   // Folder/deck data (immediate UI updates)
   const initialLocalData = user
@@ -46,26 +39,6 @@ export function useVocabPageState(
   const [selectedUserDeck, setSelectedUserDeck] = createSignal<UserDeck | null>(
     null,
   )
-
-  // Enhanced tab change handler
-  const handleTabChange = (newTab: NavTabId) => {
-    if (activeNavTab() === "vocab-cards" && newTab !== "vocab-cards") {
-      // Leaving vocab-cards: save whatever the current state is
-      setVocabCardsTabState(selectedUserDeck())
-    }
-
-    if (newTab === "vocab-cards") {
-      // Entering vocab-cards: only restore saved state if nothing is currently selected
-      if (vocabCardsTabState() && !selectedUserDeck()) {
-        setSelectedUserDeck(vocabCardsTabState()!)
-      }
-    } else {
-      // On other tabs: always deselect
-      setSelectedUserDeck(null)
-    }
-
-    setActiveNavTab(newTab)
-  }
 
   // Folder navigation state (which folder user is viewing)
   const [currentViewFolderId, setCurrentViewFolderId] = createSignal<
@@ -125,7 +98,7 @@ export function useVocabPageState(
     setCurrentViewFolderId(parentId)
   }
 
-  // Enhanced deck selection handlers
+  // Deck selection handlers
   const handleDeckSelect = (deck: UserDeck) => {
     // Navigate to the deck's folder if we're not already there
     if (deck.folder_id !== currentViewFolderId()) {
@@ -133,33 +106,21 @@ export function useVocabPageState(
     }
 
     setSelectedUserDeck(deck)
-    handleTabChange("vocab-cards")
-    setVocabCardsTabState(deck) // Keep vocab-cards state in sync
   }
 
   const handleDeckDeselect = () => {
     setSelectedUserDeck(null)
-    if (activeNavTab() === "vocab-cards") {
-      setVocabCardsTabState(null) // Update vocab-cards state when explicitly deselecting
-    }
   }
 
   return {
     // Panel state
     rightPanelOpen,
     setRightPanelOpen,
-    leftPanelOpen,
-    setLeftPanelOpen,
-
-    // Center panel navigation
-    activeNavTab,
-    setActiveNavTab,
 
     // Content state
     userDecks: () => userData.decks,
     folders: () => userData.folders,
     shareStatus: () => userData.shareStatus,
-    newlyImportedDecks: () => new Set<string>(), // No longer tracking imports
     selectedUserDeck,
 
     // Folder view navigation
@@ -174,8 +135,7 @@ export function useVocabPageState(
     activeLearningPathId,
     activeChapter,
 
-    // Enhanced tab and deck selection handlers
-    handleTabChange,
+    // Deck selection handlers
     handleDeckSelect,
     handleDeckDeselect,
 

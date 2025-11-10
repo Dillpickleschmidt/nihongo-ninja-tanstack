@@ -85,4 +85,3 @@ export function StackItem(props: StackItemProps) {
     </div>
   )
 }
-

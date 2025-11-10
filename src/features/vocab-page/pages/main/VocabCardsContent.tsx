@@ -1,9 +1,9 @@
-// features/vocab-page/center-panel/VocabCardsContent.tsx
+// features/vocab-page/pages/main/VocabCardsContent.tsx
 import { For, Switch, Match, createResource } from "solid-js"
 import { getVocabularyForSet } from "@/data/utils/vocab"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import { DefaultContent } from "./DefaultContent"
-import { VocabularyCard } from "@/features/vocab-page/components/VocabularyCard"
+import { VocabularyCard } from "./components/VocabularyCard"
 import { getVocabForDeck } from "@/features/supabase/db/deck"
 
 interface VocabCardsContentProps {

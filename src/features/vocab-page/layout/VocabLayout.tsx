@@ -1,26 +1,33 @@
-// featuers/vocab-page/DesktopVocabPage.tsx
-import { createSignal } from "solid-js"
-import { CollapsiblePanel } from "./shared/CollapsiblePanel"
-import { VocabRightPanel } from "./right-panel/VocabRightPanel"
-import { CenterPanel } from "./center-panel/CenterPanel"
-import { FolderEditModal } from "./components/FolderEditModal"
-import { DeckCopyModal } from "./components/DeckCopyModal"
-import { useVocabPageState } from "./hooks/useVocabPageState"
-import { useEditOperations } from "./hooks/useEditOperations"
-import type { FoldersAndDecksData } from "@/features/supabase/db/folder"
+// features/vocab-page/layout/VocabLayout.tsx
+import { createSignal, Suspense } from "solid-js"
+import { Outlet, useLocation } from "@tanstack/solid-router"
+import { CollapsiblePanel } from "../shared/CollapsiblePanel"
+import { VocabRightPanel } from "../right-panel/VocabRightPanel"
+import { FolderEditModal } from "../shared/components/FolderEditModal"
+import { DeckCopyModal } from "../shared/components/DeckCopyModal"
+import { useEditOperations } from "../hooks/useEditOperations"
+import { useVocabPageContext } from "./VocabPageProvider"
 import { getVocabForDeck } from "@/features/supabase/db/deck"
-import type { User } from "@supabase/supabase-js"
-import type { DeckCreationInitialData } from "./deck-creation/stores/deck-creation-store"
+import type { DeckCreationInitialData } from "../pages/create/stores/deck-creation-store"
+import type { EditTransaction } from "../logic/edit-transaction"
 import { copyDeck } from "@/features/vocab-page/utils/deckCopyUtils"
-import { Sidebar } from "../homepage/shared/components/Sidebar"
+import { Sidebar } from "../../homepage/shared/components/Sidebar"
+import { CenterNavBar } from "./CenterNavBar"
+import type { User } from "@supabase/supabase-js"
 
-interface DesktopVocabPageProps {
-  foldersAndDecksPromise: Promise<FoldersAndDecksData>
+interface VocabLayoutProps {
   user: User | null
 }
 
-export function DesktopVocabPage(props: DesktopVocabPageProps) {
-  const state = useVocabPageState(props.foldersAndDecksPromise, props.user)
+export function VocabLayout(props: VocabLayoutProps) {
+  const state = useVocabPageContext()
+  const location = useLocation()
+
+  // Determine if we're on the main /vocab route (hide sidebar there)
+  const isMainVocabRoute = () => {
+    const path = location().pathname
+    return path === "/vocab" || path === "/vocab/"
+  }
 
   // Edit operations management
   const editOperations = useEditOperations({
@@ -31,8 +38,8 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
     refetchFoldersAndDecks: state.refetchFoldersAndDecks,
     user: props.user,
   })
+
   let rightPanelRef!: HTMLDivElement
-  let leftPanelRef!: HTMLDivElement
 
   // Edit modal state
   const [folderEditModalOpen, setFolderEditModalOpen] = createSignal(false)
@@ -43,10 +50,6 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
   // Copy modal state
   const [copyModalOpen, setCopyModalOpen] = createSignal(false)
   const [copyingDeck, setCopyingDeck] = createSignal<UserDeck | null>(null)
-
-  // Deck edit state for center panel
-  const [deckEditData, setDeckEditData] =
-    createSignal<DeckCreationInitialData | null>(null)
 
   // Edit handlers
   const handleEditDeck = async (deck: UserDeck) => {
@@ -67,9 +70,13 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
         vocabItems: vocabItems,
       }
 
-      // Set edit data and switch to deck-builder tab
-      setDeckEditData(initialData)
-      state.handleTabChange("deck-builder")
+      // Store edit data and navigate to create page
+      // This will be accessed by the create route
+      // For now, we'll use sessionStorage as a temporary solution
+      sessionStorage.setItem("vocabPageDeckEdit", JSON.stringify(initialData))
+
+      // Navigate to create page
+      window.location.hash = "#/vocab/create"
     } catch (error) {
       console.error("Failed to load deck data for editing:", error)
     }
@@ -85,7 +92,7 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
     setEditingFolder(null)
   }
 
-  const handleSaveFolderEdit = (transaction: any) => {
+  const handleSaveFolderEdit = (transaction: EditTransaction) => {
     editOperations.executeEdit(transaction)
     handleCloseFolderEditModal()
   }
@@ -132,41 +139,30 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
 
   // Delete deck handler
   const handleDeleteDeck = async (deck: UserDeck) => {
-    // All deck IDs are now strings from the database, so use them directly
     editOperations.deleteDeck(deck.deck_id)
   }
 
-  // Enhanced tab change handler to clear edit data
-  const handleTabChange = (tabId: any) => {
-    // Clear deck edit data when leaving deck-builder
-    if (state.activeNavTab() === "deck-builder" && tabId !== "deck-builder") {
-      setDeckEditData(null)
-    }
-    state.handleTabChange(tabId)
-  }
-
   return (
-    <div class="flex">
-      <div class="sticky top-0 -mt-16 self-start 2xl:fixed 2xl:mt-0">
-        <Sidebar user={props.user?.id || null} isActive={() => false} />
+    <div class="grid grid-cols-[auto_1fr] md:grid-cols-[18rem_1fr_24rem]">
+      <div class="sticky top-0 z-20 -mt-16 self-start">
+        <Sidebar user={props.user?.id || null} />
       </div>
-      {/* <div class="2xl:pl-12" /> */}
-      <div id="tour-vocab-center" class="relative z-0 mx-auto">
-        <CenterPanel
-          selectedUserDeck={state.selectedUserDeck()}
-          activeNavTab={state.activeNavTab()}
-          onNavTabChange={handleTabChange}
-          folders={state.folders()}
-          decks={state.userDecks()}
-          deckEditData={deckEditData()}
-          onRefetch={() => state.refetchFoldersAndDecks() as Promise<void>}
-          onNavigateToDeck={state.handleDeckSelect}
-          user={props.user}
-        />
+      <div id="tour-vocab-center" class="relative z-0 w-full">
+        <div class="flex h-[calc(100vh-65px)] flex-col overflow-y-auto">
+          <CenterNavBar />
+          <div class="flex flex-1 items-center justify-center px-8">
+            <Suspense>
+              <Outlet />
+            </Suspense>
+          </div>
+        </div>
       </div>
 
-      {/* Right panel — learning path chapters + user decks */}
-      <div id="tour-user-panel" class="h-[calc(100vh-65px)]">
+      {/* Right panel — learning path chapters + user decks (always reserves space) */}
+      <div
+        id="tour-user-panel"
+        class={`hidden h-[calc(100vh-65px)] md:block ${isMainVocabRoute() ? "pointer-events-none invisible" : ""}`}
+      >
         <CollapsiblePanel
           isOpen={state.rightPanelOpen()}
           onToggle={() => state.setRightPanelOpen(!state.rightPanelOpen())}
@@ -181,7 +177,6 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
             shareStatus={state.shareStatus()}
             onShareStatusChange={state.refetchFoldersAndDecks}
             onPlayDeck={() => {}}
-            newlyImportedDecks={state.newlyImportedDecks()}
             selectedUserDeck={state.selectedUserDeck()}
             onSelectDeck={state.handleDeckSelect}
             onDeselectDeck={state.handleDeckDeselect}
@@ -198,7 +193,6 @@ export function DesktopVocabPage(props: DesktopVocabPageProps) {
             }}
             onCopyDeck={handleOpenCopyModal}
             onDeleteDeck={handleDeleteDeck}
-            onTabChange={handleTabChange}
             onRefetch={state.refetchFoldersAndDecks}
             userId={props.user?.id}
             panelRef={rightPanelRef}

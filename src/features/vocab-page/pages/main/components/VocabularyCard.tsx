@@ -1,4 +1,4 @@
-// components/shared/VocabularyCard.tsx
+// features/vocab-page/pages/main/components/VocabularyCard.tsx
 import { For } from "solid-js"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Book, Grid2x2 } from "lucide-solid"

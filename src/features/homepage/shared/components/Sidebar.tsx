@@ -1,7 +1,15 @@
-import { Component, For, Show } from "solid-js"
-import { Link } from "@tanstack/solid-router"
+import {
+  Component,
+  For,
+  Show,
+  createSignal,
+  createEffect,
+  onCleanup,
+} from "solid-js"
+import { Link, useLocation } from "@tanstack/solid-router"
 import { Button } from "@/components/ui/button"
 import LogoutButton from "@/features/auth/components/Logout"
+import { HamburgerIcon } from "@/components/HamburgerIcon"
 import { cn } from "@/utils"
 import {
   Home,
@@ -33,7 +41,6 @@ interface NavigationSection {
 
 interface SidebarProps {
   user: any
-  isActive: (href: string) => boolean
 }
 
 const navigation: NavigationSection[] = [
@@ -105,7 +112,7 @@ const navigation: NavigationSection[] = [
         title: "Kana",
         href: "/kana",
         icon: Italic,
-        class: "text-sky-600 dar:text-sky-500",
+        class: "text-sky-600 dark:text-sky-500",
       },
     ],
   },
@@ -137,79 +144,157 @@ const navigation: NavigationSection[] = [
   },
 ]
 
-export function Sidebar(props: SidebarProps) {
-  return (
-    <div class="h-[calc(100vh-65px)] w-72">
-      <div class="flex h-full flex-col justify-between px-6 pt-24">
-        {/* Navigation Groups */}
-        <div class="flex-1 space-y-1">
-          <For each={navigation}>
-            {(section) => (
-              <div class="flex flex-col space-y-1 py-4">
-                <Show when={section.label}>
-                  <div class="text-muted-foreground px-3 py-1 text-[0.68rem] font-semibold tracking-wide uppercase">
-                    {section.label}
-                  </div>
-                </Show>
-                <For each={section.items}>
-                  {(item) => (
-                    <Button
-                      as={Link}
-                      to={item.href}
-                      variant="ghost"
-                      class={cn(
-                        "hover:bg-card-foreground/50 justify-start px-2",
-                        // isActive(item.href) && "bg-card-foreground/40",
-                      )}
-                    >
-                      <item.icon
-                        class={cn(
-                          "mx-1 size-4!",
-                          item.class,
-                          props.isActive(item.href) && "text-indigo-400",
-                        )}
-                      />
-                      <span
-                        class={cn(
-                          "text-[0.85rem] font-medium",
-                          props.isActive(item.href) && "text-indigo-400",
-                        )}
-                      >
-                        {item.title}
-                      </span>
-                    </Button>
-                  )}
-                </For>
-              </div>
-            )}
-          </For>
-        </div>
+interface NavigationContentProps {
+  isActive: (href: string) => boolean
+  onNavigate?: () => void
+}
 
-        {/* Footer */}
-        {/* <div class="border-border border-t py-4"> */}
-        {/*   <Show */}
-        {/*     when={props.user} */}
-        {/*     fallback={ */}
-        {/*       <Button */}
-        {/*         as={Link} */}
-        {/*         href="/auth" */}
-        {/*         class="h-8 w-20 border-2 border-black bg-indigo-400 opacity-70 transition-opacity duration-200 hover:bg-indigo-400 hover:opacity-100" */}
-        {/*       > */}
-        {/*         Login */}
-        {/*       </Button> */}
-        {/*     } */}
-        {/*   > */}
-        {/*     <div class="flex items-center gap-3 rounded-lg p-2"> */}
-        {/*       <div class="text-sm"> */}
-        {/*         <p class="text-foreground/90 font-medium"> */}
-        {/*           {props.user?.email} */}
-        {/*         </p> */}
-        {/*         <LogoutButton class="text-muted-foreground hover:text-foreground h-auto bg-transparent p-0 text-xs hover:bg-transparent" /> */}
-        {/*       </div> */}
-        {/*     </div> */}
-        {/*   </Show> */}
-        {/* </div> */}
-      </div>
+const NavigationContent: Component<NavigationContentProps> = (props) => (
+  <div class="flex h-full flex-col justify-between px-6 pt-24">
+    {/* Navigation Groups */}
+    <div class="flex-1 space-y-1">
+      <For each={navigation}>
+        {(section) => (
+          <div class="flex flex-col space-y-1 py-4">
+            <Show when={section.label}>
+              <div class="text-muted-foreground px-3 py-1 text-[0.68rem] font-semibold tracking-wide uppercase">
+                {section.label}
+              </div>
+            </Show>
+            <For each={section.items}>
+              {(item) => (
+                <Button
+                  as={Link}
+                  to={item.href}
+                  variant="ghost"
+                  class={cn("hover:bg-card-foreground/50 justify-start px-2")}
+                  onClick={props.onNavigate}
+                >
+                  <item.icon
+                    class={cn(
+                      "mx-1 size-4!",
+                      item.class,
+                      props.isActive(item.href) && "text-indigo-400",
+                    )}
+                  />
+                  <span
+                    class={cn(
+                      "text-[0.85rem] font-medium",
+                      props.isActive(item.href) && "text-indigo-400",
+                    )}
+                  >
+                    {item.title}
+                  </span>
+                </Button>
+              )}
+            </For>
+          </div>
+        )}
+      </For>
     </div>
+
+    {/* Footer */}
+    {/* <div class="border-border border-t py-4"> */}
+    {/*   <Show */}
+    {/*     when={props.user} */}
+    {/*     fallback={ */}
+    {/*       <Button */}
+    {/*         as={Link} */}
+    {/*         href="/auth" */}
+    {/*         class="h-8 w-20 border-2 border-black bg-indigo-400 opacity-70 transition-opacity duration-200 hover:bg-indigo-400 hover:opacity-100" */}
+    {/*       > */}
+    {/*         Login */}
+    {/*       </Button> */}
+    {/*     } */}
+    {/*   > */}
+    {/*     <div class="flex items-center gap-3 rounded-lg p-2"> */}
+    {/*       <div class="text-sm"> */}
+    {/*         <p class="text-foreground/90 font-medium"> */}
+    {/*           {props.user?.email} */}
+    {/*         </p> */}
+    {/*         <LogoutButton class="text-muted-foreground hover:text-foreground h-auto bg-transparent p-0 text-xs hover:bg-transparent" /> */}
+    {/*       </div> */}
+    {/*     </div> */}
+    {/*   </Show> */}
+    {/* </div> */}
+  </div>
+)
+
+export function Sidebar(props: SidebarProps) {
+  const location = useLocation()
+
+  // Check if a navigation item is active based on current route
+  const isActive = (href: string) => {
+    const pathname = location().pathname
+    return href === "/"
+      ? pathname === "/"
+      : pathname === href || pathname.startsWith(href + "/")
+  }
+
+  // Initialize collapsed state: default collapsed on mobile, expanded on md+
+  const [isCollapsed, setIsCollapsed] = createSignal(
+    typeof window !== "undefined" ? window.innerWidth < 768 : true,
+  )
+
+  // Set up media query listener for responsive behavior
+  createEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 768px)")
+
+    // Set initial state based on media query
+    setIsCollapsed(!mediaQuery.matches)
+
+    const handler = (e: MediaQueryListEvent) => {
+      setIsCollapsed(!e.matches)
+    }
+
+    mediaQuery.addEventListener("change", handler)
+
+    onCleanup(() => {
+      mediaQuery.removeEventListener("change", handler)
+    })
+  })
+
+  return (
+    <>
+      {/* Hamburger button - absolutely positioned in top left */}
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setIsCollapsed(!isCollapsed())}
+        class="fixed top-4 left-4 z-50 md:hidden"
+      >
+        <HamburgerIcon size="sm" />
+      </Button>
+
+      {/* Desktop sidebar - grid participant, stays in normal flow */}
+      <div
+        class={cn(
+          "hidden h-[calc(100vh-65px)] md:block",
+          "overflow-hidden transition-all duration-200 ease-in-out",
+          isCollapsed() ? "md:w-0" : "md:w-72",
+        )}
+      >
+        <Show when={!isCollapsed()}>
+          <NavigationContent isActive={isActive} />
+        </Show>
+      </div>
+
+      {/* Mobile overlay - backdrop and drawer */}
+      <Show when={!isCollapsed()}>
+        {/* Backdrop */}
+        <div
+          class="fixed inset-0 z-40 bg-black/50 md:hidden"
+          onClick={() => setIsCollapsed(true)}
+        />
+
+        {/* Mobile sidebar drawer */}
+        <div class="bg-background/50 fixed top-0 left-0 z-50 h-full w-72 backdrop-blur-md md:hidden">
+          <NavigationContent
+            isActive={isActive}
+            onNavigate={() => setIsCollapsed(true)}
+          />
+        </div>
+      </Show>
+    </>
   )
 }

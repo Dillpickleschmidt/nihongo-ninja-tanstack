@@ -1,8 +1,8 @@
 // features/vocab-page/center-panel/BrowseDecksContent.tsx
 import { For, Show, onMount } from "solid-js"
-import { useBrowseDecks } from "./browse-decks/useBrowseDecks"
-import { SharedDeckCard } from "./browse-decks/SharedDeckCard"
-import { BrowseDecksControls } from "./browse-decks/BrowseDecksControls"
+import { useBrowseDecks } from "./useBrowseDecks"
+import { SharedDeckCard } from "./SharedDeckCard"
+import { BrowseDecksControls } from "./BrowseDecksControls"
 import type { User } from "@supabase/supabase-js"
 
 interface BrowseDecksContentProps {

@@ -1,6 +1,6 @@
 import { Show, createSignal } from "solid-js"
 import { createMediaQuery } from "@solid-primitives/media"
-import { StackEditor } from "./overrides/StackEditor"
+import { StackEditor } from "./StackEditor"
 import type { Stack } from "@/features/resolvers/types"
 import { useMutation, useQueryClient } from "@tanstack/solid-query"
 import { useCustomQuery } from "@/hooks/useCustomQuery"

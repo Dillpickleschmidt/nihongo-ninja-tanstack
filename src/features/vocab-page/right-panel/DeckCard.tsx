@@ -31,8 +31,8 @@ import {
   createDeckShareServerFn,
   removeDeckShareServerFn,
 } from "@/features/supabase/db/deck-sharing"
-import { ShareModal } from "../components/ShareModal"
-import { PracticeModeModal } from "../components/PracticeModeModal"
+import { ShareModal } from "../shared/components/ShareModal"
+import { PracticeModeModal } from "../shared/components/PracticeModeModal"
 import { getPracticeAction } from "../utils/practiceMode"
 import { useNavigate } from "@tanstack/solid-router"
 
