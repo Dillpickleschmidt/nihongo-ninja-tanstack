@@ -11,8 +11,9 @@ import type { POS } from "@/features/sentence-practice/kagome/types/kagome"
 
 /**
  * Extracts grammar patterns and vocabulary from transcript lines
+ * Vocabulary is aggregated by base_form with frequency counts
  * @param transcriptLines - Array of transcript lines with text and English translation
- * @returns ExtractedData with grammar patterns, vocabulary, and transcript metadata
+ * @returns ExtractedData with grammar patterns, vocabulary sorted by frequency, and transcript metadata
  */
 export async function extractTranscriptData(
   transcriptLines: Array<{
@@ -26,9 +27,19 @@ export async function extractTranscriptData(
   await workerManager.waitForReady()
 
   const grammarPatternSet = new Set<string>()
-  const vocabularyMap = new Map<string, VocabWord>()
   const foundGrammarPatterns: string[] = []
-  const vocabularyList: VocabWord[] = []
+
+  // Vocabulary map: base_form -> {furigana, pos, english, transcriptLineId, count}
+  const vocabularyMap = new Map<
+    string,
+    {
+      furigana: string
+      pos: POS
+      english?: string
+      transcriptLineId: number
+      count: number
+    }
+  >()
 
   // Process each line
   for (let lineId = 0; lineId < transcriptLines.length; lineId++) {
@@ -43,17 +54,17 @@ export async function extractTranscriptData(
       // Extract grammar patterns from matches
       if (grammarMatches && grammarMatches.length > 0) {
         for (const match of grammarMatches) {
-          // Map pattern name to module IDs
+          // Check if this pattern exists in the mapping
           const moduleIds =
             GRAMMAR_TO_MODULES[
               match.pattern_name as keyof typeof GRAMMAR_TO_MODULES
             ]
           if (moduleIds) {
-            for (const moduleId of moduleIds) {
-              if (!grammarPatternSet.has(moduleId)) {
-                grammarPatternSet.add(moduleId)
-                foundGrammarPatterns.push(moduleId)
-              }
+            // Store the pattern ID itself, not the module IDs
+            // generation.ts will look up the pattern ID to get modules
+            if (!grammarPatternSet.has(match.pattern_name)) {
+              grammarPatternSet.add(match.pattern_name)
+              foundGrammarPatterns.push(match.pattern_name)
             }
           }
         }
@@ -66,18 +77,21 @@ export async function extractTranscriptData(
         // Skip particles and punctuation
         if (primaryPos === "助詞" || primaryPos === "補助記号") continue
 
-        const key = `${token.base_form}|${token.reading}`
+        const baseForm = token.base_form
 
-        if (!vocabularyMap.has(key)) {
-          const word: VocabWord = {
-            word: token.base_form,
+        if (vocabularyMap.has(baseForm)) {
+          // Increment count for existing word
+          const existing = vocabularyMap.get(baseForm)!
+          existing.count++
+        } else {
+          // First occurrence of this word
+          vocabularyMap.set(baseForm, {
             furigana: token.reading,
-            english: undefined, // Would need additional lookup
             pos: primaryPos,
+            english: undefined, // Would need additional lookup
             transcriptLineId: lineId,
-          }
-          vocabularyMap.set(key, word)
-          vocabularyList.push(word)
+            count: 1,
+          })
         }
       }
     } catch (error) {
@@ -85,6 +99,17 @@ export async function extractTranscriptData(
       // Continue with next line on error
     }
   }
+
+  // Convert map to array and sort by frequency (descending)
+  const vocabularyList: VocabWord[] = Array.from(vocabularyMap.entries())
+    .sort((a, b) => b[1].count - a[1].count)
+    .map(([word, data]) => ({
+      word,
+      furigana: data.furigana,
+      english: data.english,
+      pos: data.pos,
+      transcriptLineId: data.transcriptLineId,
+    }))
 
   return {
     grammarPatterns: foundGrammarPatterns,

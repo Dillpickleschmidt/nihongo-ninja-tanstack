@@ -31,16 +31,17 @@ export interface UploadLearningPathInput {
   selectedGrammarModules: Array<{
     moduleId: string
     transcriptLineIds: number[]
+    orderIndex: number
   }>
   selectedVocabDecks: Array<{
-    posTag: POS
+    isVerbDeck: boolean
     words: Array<{
       word: string
-      baseForm: string
       furigana?: string
       english?: string
     }>
     transcriptLineIds: number[]
+    orderIndex: number
   }>
 }
 
@@ -50,11 +51,14 @@ export async function uploadLearningPath(
   const supabase = createSupabaseClient()
 
   // Build vocabulary deck data for RPC
-  const vocabDecks = input.selectedVocabDecks.map((deck, index) => ({
-    ...deck,
-    deckName: `${deck.posTag} - Part ${index + 1}`,
-    deckDescription: `Vocabulary from ${input.transcript.name}`,
-  }))
+  const vocabDecks = input.selectedVocabDecks.map((deck, index) => {
+    const posLabel = deck.isVerbDeck ? "Verbs" : "Non-Verbs"
+    return {
+      ...deck,
+      deckName: `${posLabel} - Part ${index + 1}`,
+      deckDescription: `Vocabulary from ${input.transcript.name}`,
+    }
+  })
 
   // Build module sources data for RPC (grammar only)
   // Vocabulary module sources are created by RPC after generating deck_ids
@@ -82,39 +86,6 @@ export async function uploadLearningPath(
   return (data as { path_id: string }).path_id
 }
 
-// export async function getLearningPathData(pathId: string): Promise<{
-//   transcript: LearningPathTranscript
-//   modules: LearningPathModuleSource[]
-// } | null> {
-//   const supabase = createSupabaseClient()
-//
-//   const { data: transcript, error: transcriptError } = await supabase
-//     .from("learning_path_transcripts")
-//     .select("*")
-//     .eq("path_id", pathId)
-//     .single()
-//
-//   if (transcriptError || !transcript) {
-//     return null
-//   }
-//
-//   const { data: modules, error: modulesError } = await supabase
-//     .from("learning_path_module_sources")
-//     .select("*")
-//     .eq("path_id", pathId)
-//
-//   if (modulesError) {
-//     throw new Error(
-//       `Failed to fetch learning path modules: ${modulesError.message}`,
-//     )
-//   }
-//
-//   return {
-//     transcript: transcript as LearningPathTranscript,
-//     modules: (modules || []) as LearningPathModuleSource[],
-//   }
-// }
-
 /**
  * Gets all learning paths created by a user.
  * @param userId - The user ID to fetch learning paths for
@@ -141,6 +112,7 @@ export async function getUserLearningPaths(
  * Gets chapters for a generated learning path from database.
  * Segments modules into chapters (MODULES_PER_CHAPTER per chapter).
  * Returns lightweight chapters with module IDs only (no full module data).
+ * Modules are ordered by order_index (deterministic ordering).
  */
 export async function getUserPathChaptersAsync(
   pathId: string,
@@ -151,6 +123,7 @@ export async function getUserPathChaptersAsync(
     .from("learning_path_module_sources")
     .select("module_id")
     .eq("path_id", pathId)
+    .order("order_index", { ascending: true })
 
   if (!moduleSources?.length) return []
 
@@ -193,6 +166,7 @@ export async function getUserPathChapterModules(
     .select("module_id, source_type")
     .eq("path_id", pathId)
     .in("module_id", chapter.learning_path_item_ids)
+    .order("order_index", { ascending: true })
 
   if (error) {
     console.error("[getUserPathChapterModules] Query error:", error)
@@ -261,43 +235,3 @@ export async function getUserPathChapterModules(
     })
     .filter((item): item is ResolvedModule => item.module !== undefined)
 }
-
-// /**
-//  * Gets transcript source examples for why a module was included in a learning path.
-//  */
-// export async function getModuleSources(
-//   pathId: string,
-//   moduleId: string,
-// ): Promise<{
-//   sourceType: "grammar" | "vocabulary"
-//   examples: TranscriptLine[]
-// } | null> {
-//   const supabase = createSupabaseClient()
-//
-//   const { data: moduleSource } = await supabase
-//     .from("learning_path_module_sources")
-//     .select("source_type, transcript_line_ids")
-//     .eq("path_id", pathId)
-//     .eq("module_id", moduleId)
-//     .single()
-//
-//   if (!moduleSource) return null
-//
-//   const { data: transcript } = await supabase
-//     .from("learning_path_transcripts")
-//     .select("transcript_data")
-//     .eq("path_id", pathId)
-//     .single()
-//
-//   if (!transcript) return null
-//
-//   const transcriptLines = transcript.transcript_data as TranscriptLine[]
-//   const examples = moduleSource.transcript_line_ids
-//     .map((idx) => transcriptLines[idx])
-//     .filter(Boolean)
-//
-//   return {
-//     sourceType: moduleSource.source_type as "grammar" | "vocabulary",
-//     examples,
-//   }
-// }

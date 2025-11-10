@@ -42,19 +42,11 @@ function RouteComponent() {
         throw new Error("No file selected")
       }
 
-      console.log(`[Upload] Starting with file: ${file.name}`)
-
       // Read file content
       const content = await file.text()
-      console.log(`[Parse] Reading SRT file (${content.length} bytes)`)
 
       // Parse SRT
       const subtitles = parseSRT(content)
-      console.log(`[Parse] Parsed ${subtitles.length} subtitles`)
-      console.log(
-        "[Parse] Sample subtitles:",
-        subtitles.slice(0, 2).map((s) => ({ number: s.number, text: s.text })),
-      )
 
       // Convert to transcript format
       const transcript = subtitles.map((sub) => ({
@@ -64,57 +56,34 @@ function RouteComponent() {
       }))
 
       // Extract grammar patterns and vocabulary
-      console.log("[Extract] Starting transcript extraction...")
       const extractedData = await extractTranscriptData(transcript)
-      console.log(
-        `[Extract] Found ${extractedData.grammarPatterns.length} grammar patterns`,
-      )
-      console.log(
-        "[Extract] Sample patterns:",
-        extractedData.grammarPatterns.slice(0, 3),
-      )
-      console.log(
-        `[Extract] Found ${extractedData.vocabulary.length} vocabulary words`,
-      )
-      console.log(
-        "[Extract] Sample vocab:",
-        extractedData.vocabulary.slice(0, 3).map((v) => ({
-          word: v.word,
-          pos: v.pos,
-        })),
-      )
 
       // Generate learning path
-      console.log("[Generate] Creating learning path...")
-      const preview = createLearningPath(extractedData, textbookId(), undefined)
-      console.log(
-        `[Generate] Generated ${preview.grammarModules.length} grammar modules`,
+      const preview = await createLearningPath(
+        extractedData,
+        textbookId(),
+        undefined,
       )
-      console.log(
-        "[Generate] Sample modules:",
-        preview.grammarModules.slice(0, 3).map((m) => ({
+
+      // Prepare data for upload - separate by type
+      const selectedGrammarModules = preview.modules
+        .filter((m) => m.type === "grammar")
+        .map((m) => ({
           moduleId: m.moduleId,
-          title: m.title,
-        })),
-      )
-      console.log(
-        `[Generate] Generated ${preview.vocabularyDecks.length} vocabulary decks`,
-      )
+          transcriptLineIds: m.transcriptLineIds,
+          orderIndex: m.orderIndex,
+        }))
 
-      // Prepare data for upload
-      const selectedGrammarModules = preview.grammarModules.map((m) => ({
-        moduleId: m.moduleId,
-        transcriptLineIds: m.transcriptLineIds,
-      }))
-
-      const selectedVocabDecks = preview.vocabularyDecks.map((d) => ({
-        posTag: d.posTag,
-        words: d.words,
-        transcriptLineIds: d.transcriptLineIds,
-      }))
+      const selectedVocabDecks = preview.modules
+        .filter((m) => m.type === "vocabulary")
+        .map((d) => ({
+          isVerbDeck: d.isVerbDeck,
+          words: d.words,
+          transcriptLineIds: d.transcriptLineIds,
+          orderIndex: d.orderIndex,
+        }))
 
       // Upload to database
-      console.log("[Upload] Uploading learning path to database...")
       const pathId = await uploadLearningPath({
         userId: user.id,
         transcript: {
@@ -126,10 +95,9 @@ function RouteComponent() {
         selectedGrammarModules,
         selectedVocabDecks,
       })
-
-      console.log(`[Upload] Success! Path ID: ${pathId}`)
       setResult(
         `Successfully created learning path! Path ID: ${pathId}\n` +
+          `Total modules: ${preview.modules.length}\n` +
           `Grammar modules: ${selectedGrammarModules.length}\n` +
           `Vocabulary decks: ${selectedVocabDecks.length}`,
       )

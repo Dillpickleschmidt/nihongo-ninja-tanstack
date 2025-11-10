@@ -89,6 +89,7 @@ export type Database = {
         Row: {
           grammar_pattern_id: string | null
           module_id: string
+          order_index: number
           path_id: string
           source_type: string
           transcript_line_ids: number[]
@@ -97,6 +98,7 @@ export type Database = {
         Insert: {
           grammar_pattern_id?: string | null
           module_id: string
+          order_index?: number
           path_id: string
           source_type: string
           transcript_line_ids: number[]
@@ -105,6 +107,7 @@ export type Database = {
         Update: {
           grammar_pattern_id?: string | null
           module_id?: string
+          order_index?: number
           path_id?: string
           source_type?: string
           transcript_line_ids?: number[]
