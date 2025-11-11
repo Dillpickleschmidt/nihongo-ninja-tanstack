@@ -99,4 +99,10 @@ export const queryKeys = {
     ] as const,
   userWeekTimeData: (userId: string | null) =>
     ["user-week-time-data", userId] as const,
+
+  // Module Detail Dialog
+  transcriptData: (learningPathId: string) =>
+    ["transcript-data", learningPathId] as const,
+  moduleMetadata: (learningPathId: string, moduleId: string) =>
+    ["module-metadata", learningPathId, moduleId] as const,
 }

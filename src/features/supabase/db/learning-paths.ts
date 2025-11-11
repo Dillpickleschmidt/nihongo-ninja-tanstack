@@ -1,4 +1,3 @@
-import type { POS } from "@/features/sentence-practice/kagome/types/kagome"
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 import type {
   LearningPathChapter,
@@ -12,7 +11,7 @@ import { external_resources } from "@/data/external_resources"
 
 const MODULES_PER_CHAPTER = 30
 
-type TranscriptLine = {
+export type TranscriptLine = {
   line_id: number
   text: string
   english: string
@@ -234,4 +233,109 @@ export async function getUserPathChapterModules(
         | { key: string; module: undefined; disabled: boolean }
     })
     .filter((item): item is ResolvedModule => item.module !== undefined)
+}
+
+/**
+ * Gets transcript data for a learning path.
+ * Shared across all modules in the path for efficient caching.
+ * @param pathId - The learning path ID
+ * @returns Array of transcript lines with text and english
+ */
+export async function getTranscriptData(
+  pathId: string,
+): Promise<TranscriptLine[]> {
+  const supabase = createSupabaseClient()
+
+  const { data: transcript, error } = await supabase
+    .from("learning_path_transcripts")
+    .select("transcript_data")
+    .eq("path_id", pathId)
+    .single()
+
+  if (error) {
+    console.error("[getTranscriptData] Query error:", error)
+    throw new Error(`Failed to fetch transcript data: ${error.message}`)
+  }
+
+  if (!transcript?.transcript_data) {
+    return []
+  }
+
+  // transcript_data is stored as JSONB array
+  return (transcript.transcript_data as TranscriptLine[]) || []
+}
+
+/**
+ * Gets metadata for a specific module in a learning path.
+ * Includes transcript line IDs and vocabulary items (if applicable).
+ * @param pathId - The learning path ID
+ * @param moduleId - The module ID
+ * @returns Module metadata with transcript references and vocab items
+ */
+export interface ModuleMetadata {
+  sourceType: "grammar" | "vocabulary"
+  transcriptLineIds: number[][]
+  vocabularyItems?: Array<{
+    word: string
+    furigana?: string
+    english?: string
+  }>
+}
+
+export async function getModuleMetadata(
+  pathId: string,
+  moduleId: string,
+): Promise<ModuleMetadata> {
+  const supabase = createSupabaseClient()
+
+  // Get module source data
+  const { data: moduleSource, error: sourceError } = await supabase
+    .from("learning_path_module_sources")
+    .select("source_type, transcript_line_ids")
+    .eq("path_id", pathId)
+    .eq("module_id", moduleId)
+    .single()
+
+  if (sourceError) {
+    console.error("[getModuleMetadata] Source query error:", sourceError)
+    throw new Error(`Failed to fetch module metadata: ${sourceError.message}`)
+  }
+
+  if (!moduleSource) {
+    throw new Error(`Module ${moduleId} not found in path ${pathId}`)
+  }
+
+  const sourceType = moduleSource.source_type as "grammar" | "vocabulary"
+  const transcriptLineIds =
+    (moduleSource.transcript_line_ids as number[][]) || []
+
+  // For vocabulary modules, fetch vocabulary items
+  let vocabularyItems: ModuleMetadata["vocabularyItems"] = undefined
+  if (sourceType === "vocabulary") {
+    const { data: vocabItems, error: vocabError } = await supabase
+      .from("vocabulary_items")
+      .select("word, furigana, english")
+      .eq("deck_id", moduleId)
+      .order("created_at", { ascending: true })
+
+    if (vocabError) {
+      console.error("[getModuleMetadata] Vocab query error:", vocabError)
+    } else if (vocabItems) {
+      // Format english array to string
+      vocabularyItems = vocabItems.map((item) => ({
+        word: item.word,
+        furigana: item.furigana,
+        english:
+          Array.isArray(item.english) && item.english.length > 0
+            ? item.english[0]
+            : undefined,
+      }))
+    }
+  }
+
+  return {
+    sourceType,
+    transcriptLineIds,
+    vocabularyItems,
+  }
 }

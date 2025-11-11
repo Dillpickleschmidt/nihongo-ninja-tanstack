@@ -11,6 +11,10 @@ import {
   getFSRSCards,
   type FSRSCardData,
 } from "@/features/supabase/db/fsrs"
+import {
+  getTranscriptData,
+  getModuleMetadata,
+} from "@/features/supabase/db/learning-paths"
 import { getVocabularyForModule } from "@/data/utils/vocab"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
 import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
@@ -565,4 +569,34 @@ export const userWeekTimeDataQueryOptions = (userId: string | null) =>
       if (!userId) return []
       return getUserWeekTimeData(userId)
     },
+  })
+
+// ============================================================================
+// Module Detail Dialog Query Options
+// ============================================================================
+
+/**
+ * Get transcript data for a learning path.
+ */
+export const transcriptDataQueryOptions = (learningPathId: string) =>
+  queryOptions({
+    queryKey: queryKeys.transcriptData(learningPathId),
+    queryFn: () => getTranscriptData(learningPathId),
+    staleTime: Infinity,
+    gcTime: Infinity,
+  })
+
+/**
+ * Get metadata for a specific module (transcript line IDs and vocab items).
+ * Only enabled when the dialog is open to avoid unnecessary queries.
+ */
+export const moduleMetadataQueryOptions = (
+  learningPathId: string,
+  moduleId: string,
+  enabled: boolean,
+) =>
+  queryOptions({
+    queryKey: queryKeys.moduleMetadata(learningPathId, moduleId),
+    queryFn: () => getModuleMetadata(learningPathId, moduleId),
+    enabled,
   })
