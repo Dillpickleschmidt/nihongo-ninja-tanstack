@@ -1,43 +1,58 @@
 import { For, Show } from "solid-js"
-import { static_modules } from "@/data/static_modules"
-import { dynamic_modules } from "@/data/dynamic_modules"
+import { useNavigate } from "@tanstack/solid-router"
 import { DeckCard } from "../../../right-panel/DeckCard"
-import { transformModuleToDeckLike } from "../../../utils/learningPathToDeckAdapter"
 import type { UseQueryResult, DefaultError } from "@tanstack/solid-query"
-import type { ModuleWithCurrent } from "@/query/query-options"
-import type { DynamicModule } from "@/data/types"
-
-const modules = { ...static_modules, ...dynamic_modules }
+import type { UpcomingModule } from "@/query/query-options"
 
 interface ComingUpSectionProps {
-  upcomingModulesQuery: UseQueryResult<ModuleWithCurrent[], DefaultError>
-  onSelectDeck?: (deck: UserDeck) => void
+  upcomingModulesQuery: UseQueryResult<UpcomingModule[], DefaultError>
   class?: string
 }
 
 /**
  * Coming Up section showing next vocab-practice modules to study
- * Displayed as horizontal scrollable deck cards using DeckCard component
+ * Uses DeckCard with pre-computed linkTo for navigation
  */
 export function ComingUpSection(props: ComingUpSectionProps) {
-  // Filter for vocab-practice modules and transform to UserDeck format
-  const vocabDecks = () => {
+  const navigate = useNavigate()
+
+  // Filter for vocab-practice modules only
+  const vocabModules = () => {
     const data = props.upcomingModulesQuery.data
     if (!data) return []
 
     return data
-      .filter((item) => {
-        const module = modules[item.id]
-        return (
-          module &&
-          module.source_type === "vocab-practice" &&
-          "vocab_set_ids" in module
-        )
-      })
-      .slice(0, 10) // Limit to 10
-      .map((item) =>
-        transformModuleToDeckLike(item.id, modules[item.id] as DynamicModule),
-      )
+      .filter((item) => item.sourceType === "vocab-practice")
+      .slice(0, 10)
+  }
+
+  // Transform to UserDeck format with linkTo field
+  const vocabDecks = () => {
+    return vocabModules().map(
+      (module) =>
+        ({
+          deck_id: module.moduleId,
+          deck_name: module.title,
+          deck_description: null,
+          source: "learning_path",
+          folder_id: null,
+          original_deck_id: module.moduleId,
+          user_id: "",
+          created_at: new Date().toISOString(),
+          allowed_practice_modes: ["meanings", "spellings"] as (
+            | "meanings"
+            | "spellings"
+          )[],
+          linkTo: module.linkTo,
+        }) as UserDeck & { linkTo: string },
+    )
+  }
+
+  // Navigate using pre-computed linkTo (no reverse lookup!)
+  const handleSelectDeck = (deck: UserDeck & { linkTo?: string }) => {
+    if (deck.linkTo) {
+      navigate({ to: deck.linkTo })
+    }
   }
 
   return (
@@ -65,7 +80,7 @@ export function ComingUpSection(props: ComingUpSectionProps) {
             <For each={vocabDecks()}>
               {(deck) => (
                 <div class="min-w-[250px] flex-shrink-0">
-                  <DeckCard deck={deck} onSelect={props.onSelectDeck} />
+                  <DeckCard deck={deck} onSelect={handleSelectDeck} />
                 </div>
               )}
             </For>

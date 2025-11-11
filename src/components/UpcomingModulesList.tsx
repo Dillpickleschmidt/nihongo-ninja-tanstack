@@ -12,7 +12,7 @@ import {
   getLinkTo,
 } from "@/features/stats-page/loader-helpers"
 import type { UseQueryResult, DefaultError } from "@tanstack/solid-query"
-import type { ModuleWithCurrent } from "@/query/query-options"
+import type { UpcomingModule } from "@/query/query-options"
 
 const modules = { ...static_modules, ...dynamic_modules, ...external_resources }
 
@@ -20,23 +20,34 @@ const FADE_ZONE_PX = 33
 const SCROLL_LOAD_THRESHOLD_PX = 15
 const LOAD_BATCH_SIZE = 5
 
-function getModuleInfo(moduleId: string) {
-  const module = modules[moduleId]
-  if (module) {
-    const type = module.source_type
-    const linkTo = getLinkTo(module, moduleId)
-    return { title: module.title, type, linkTo }
-  }
-  return { title: moduleId, type: "misc" as const, linkTo: "#" }
-}
-
 function ModuleItem(props: {
-  moduleId: string
+  module?: UpcomingModule
+  moduleId?: string
   isCompleted?: boolean
-  isCurrent?: boolean
 }) {
-  const moduleInfo = getModuleInfo(props.moduleId)
-  const circleClasses = getModuleCircleClasses(moduleInfo.type)
+  // Use pre-computed UpcomingModule data when available (no recomputation!)
+  const moduleData = () => {
+    if (props.module) {
+      return {
+        title: props.module.title,
+        linkTo: props.module.linkTo,
+        sourceType: props.module.sourceType,
+      }
+    }
+    // Fallback for completed items that only have moduleId
+    const mod = modules[props.moduleId!]
+    if (mod) {
+      return {
+        title: mod.title,
+        linkTo: getLinkTo(mod, props.moduleId!),
+        sourceType: mod.source_type,
+      }
+    }
+    return { title: props.moduleId!, linkTo: "#", sourceType: "misc" as const }
+  }
+
+  const data = moduleData()
+  const circleClasses = getModuleCircleClasses(data.sourceType)
 
   return (
     <div
@@ -44,7 +55,7 @@ function ModuleItem(props: {
       data-module-item
       data-completed-item={props.isCompleted || undefined}
     >
-      <Link to={moduleInfo.linkTo}>
+      <Link to={data.linkTo}>
         <div class="flex items-center gap-2 py-2">
           <div
             class={cn("h-2 w-2 flex-shrink-0 rounded-full", circleClasses)}
@@ -54,10 +65,9 @@ function ModuleItem(props: {
               "hover:text-muted-foreground ml-1 flex-1 cursor-pointer text-xs",
               props.isCompleted &&
                 "text-muted-foreground hover:text-muted-foreground/70 font-light",
-              props.isCurrent && "mb-1 text-base leading-2.5 font-medium",
             )}
           >
-            {moduleInfo.title}
+            {data.title}
             {props.isCompleted && (
               <span class="ml-2 text-sm font-bold text-neutral-400">✓</span>
             )}
@@ -69,7 +79,7 @@ function ModuleItem(props: {
 }
 
 interface UpcomingModulesListProps {
-  upcomingModulesQuery: UseQueryResult<ModuleWithCurrent[], DefaultError>
+  upcomingModulesQuery: UseQueryResult<UpcomingModule[], DefaultError>
   completionsQuery: UseQueryResult<ModuleProgress[], DefaultError>
   class?: string
 }
@@ -77,22 +87,12 @@ interface UpcomingModulesListProps {
 export function UpcomingModulesList(props: UpcomingModulesListProps) {
   const { upcomingModulesQuery, completionsQuery } = props
 
-  const filteredUpcomingModules = () => {
-    if (
-      upcomingModulesQuery.isPending ||
-      upcomingModulesQuery.isError ||
-      completionsQuery.isPending ||
-      completionsQuery.isError
-    ) {
+  // Upcoming modules are already filtered by the query
+  const upcomingModules = () => {
+    if (upcomingModulesQuery.isPending || upcomingModulesQuery.isError) {
       return undefined
     }
-
-    const completedSet = new Set(
-      completionsQuery.data.map((c) => c.module_path),
-    )
-    return upcomingModulesQuery.data.filter(
-      (item) => !completedSet.has(item.id),
-    )
+    return upcomingModulesQuery.data
   }
 
   const [visibleCompletedCount, setVisibleCompletedCount] =
@@ -111,8 +111,8 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
   const reversedCompleted = () => [...visibleCompleted()].reverse()
 
   const firstUpcomingId = () => {
-    const modules = filteredUpcomingModules()
-    return modules?.[0]?.id
+    const modules = upcomingModules()
+    return modules?.[0]?.moduleId
   }
 
   createEffect(() => {
@@ -190,7 +190,7 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
 
   createEffect(() => {
     if (hasScrolledToPosition() || !containerRef) return
-    if (!filteredUpcomingModules()) return
+    if (!upcomingModules()) return
 
     const visible = visibleCompleted()
     if (visible.length === 0) return
@@ -199,8 +199,8 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
       requestAnimationFrame(() => {
         if (!containerRef) return
 
-        const upcomingModules = filteredUpcomingModules()
-        if (!upcomingModules || upcomingModules.length === 0) return
+        const upcomingMods = upcomingModules()
+        if (!upcomingMods || upcomingMods.length === 0) return
 
         const firstUpcomingEl = containerRef.querySelector(
           "[data-module-item]:not([data-completed-item])",
@@ -233,7 +233,7 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
   return (
     <div>
       <Show
-        when={filteredUpcomingModules()}
+        when={upcomingModules()}
         fallback={
           <div class="flex items-center justify-center p-8">
             <Loader2 class="h-8 w-8 animate-spin text-neutral-400" />
@@ -269,11 +269,7 @@ export function UpcomingModulesList(props: UpcomingModulesListProps) {
                 />
               )}
             </For>
-            <For each={modules()}>
-              {(item, index) => (
-                <ModuleItem moduleId={item.id} isCurrent={index() === 0} />
-              )}
-            </For>
+            <For each={modules()}>{(item) => <ModuleItem module={item} />}</For>
           </div>
         )}
       </Show>

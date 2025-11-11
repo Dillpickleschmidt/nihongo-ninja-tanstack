@@ -39,13 +39,6 @@ export function VocabDashboard(props: VocabDashboardProps) {
     dashboard.navigateToPath(`/vocab/${learningPathId}`)
   }
 
-  // Handle coming up deck selection
-  const handleSelectComingUpDeck = (deck: UserDeck) => {
-    // Coming up modules use their module ID as deck_id (from transformModuleToDeckLike)
-    dashboard.navigateToPath(`/vocab/${deck.deck_id}`)
-    props.onSelectDeck(deck)
-  }
-
   return (
     <div class={cn("space-y-8", props.class)}>
       {/* Recently Studied Section */}
@@ -55,10 +48,7 @@ export function VocabDashboard(props: VocabDashboardProps) {
       />
 
       {/* Coming Up Section */}
-      <ComingUpSection
-        upcomingModulesQuery={dashboard.upcomingModulesQuery}
-        onSelectDeck={handleSelectComingUpDeck}
-      />
+      <ComingUpSection upcomingModulesQuery={dashboard.upcomingModulesQuery} />
 
       {/* Folder Browser Grid */}
       <FolderBrowserGrid

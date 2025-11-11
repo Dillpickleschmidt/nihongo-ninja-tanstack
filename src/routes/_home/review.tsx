@@ -50,9 +50,7 @@ export const Route = createFileRoute("/_home/review")({
       upcomingModulesQueryOptions(
         user?.id || null,
         userSettings["active-learning-path"] as TextbookIDEnum,
-        userSettings["learning-path-positions"]?.[
-          userSettings["active-learning-path"]
-        ] || null,
+        userSettings["active-chapter"] as string,
       ),
     )
   },
@@ -291,9 +289,7 @@ function RouteComponent() {
     upcomingModulesQueryOptions(
       context().user?.id || null,
       settingsQuery.data!["active-learning-path"] as TextbookIDEnum,
-      settingsQuery.data!["learning-path-positions"]?.[
-        settingsQuery.data!["active-learning-path"]
-      ] || null,
+      settingsQuery.data!["active-chapter"] as string,
     ),
   )
 

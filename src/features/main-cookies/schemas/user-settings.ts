@@ -121,7 +121,6 @@ export const DbSyncedSettingsSchema = z.object({
   "conjugation-practice": ConjugationPracticeSettingsSchema.default(
     ConjugationPracticeSettingsSchema.parse({}),
   ),
-  "learning-path-positions": z.record(z.string(), z.string()).default({}),
   timestamp: z.number().default(0),
 })
 

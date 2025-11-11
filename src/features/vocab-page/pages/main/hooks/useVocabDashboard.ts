@@ -50,17 +50,16 @@ export function useVocabDashboard() {
     ),
   )
 
-  // Upcoming modules from active learning path
+  // Upcoming modules from active learning path and chapter
   const upcomingModulesQuery = useCustomQuery(() => {
     const activePath = settingsQuery.data![
       "active-learning-path"
     ] as TextbookIDEnum
-    const currentPosition =
-      settingsQuery.data!["learning-path-positions"]?.[activePath] ?? null
+    const activeChapter = settingsQuery.data!["active-chapter"] as string
     return upcomingModulesQueryOptions(
       context().user?.id || null,
       activePath,
-      currentPosition,
+      activeChapter,
     )
   })
 

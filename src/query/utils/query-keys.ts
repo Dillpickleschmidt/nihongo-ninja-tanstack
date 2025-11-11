@@ -80,8 +80,8 @@ export const queryKeys = {
   upcomingModules: (
     userId: string | null,
     textbookId: TextbookIDEnum,
-    currentPosition: string | null,
-  ) => ["upcoming-modules", userId, textbookId, currentPosition] as const,
+    chapterSlug: string,
+  ) => ["upcoming-modules", userId, textbookId, chapterSlug] as const,
   moduleProgress: (userId: string | null, moduleIds: string[] | undefined) =>
     ["module-progress", userId, moduleIds] as const,
 

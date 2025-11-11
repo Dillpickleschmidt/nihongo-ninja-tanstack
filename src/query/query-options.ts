@@ -36,6 +36,8 @@ import {
 import { chapters } from "@/data/chapters"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { dynamic_modules } from "@/data/dynamic_modules"
+import { static_modules } from "@/data/static_modules"
+import { external_resources } from "@/data/external_resources"
 import { createSRSAdapter } from "@/features/srs-services/factory"
 import type {
   DueCountResult,
@@ -50,7 +52,6 @@ import {
 } from "@/features/supabase/db/module-progress"
 import { transformSessionsToDeck } from "@/features/vocab-page/pages/main/utils/recentlyStudiedAdapter"
 import type { RecentlyStudiedDeck } from "@/features/vocab-page/pages/main/utils/recentlyStudiedAdapter"
-import { getUpcomingModules } from "@/query/utils/learning-position-detector"
 import type { ResourceProvider } from "@/data/resources-config"
 import {
   fetchUserSettingsFromDB,
@@ -452,40 +453,78 @@ export const resourceThumbnailQueryOptions = (
     queryFn: () => fetchThumbnailUrl(resourceUrl, creatorId),
   })
 
-export type ModuleWithCurrent = {
-  id: string
-  isCurrent?: boolean
-  disabled?: boolean
+export type UpcomingModule = {
+  moduleId: string
+  title: string
+  sourceType: string
+  linkTo: string
+  learningPathId: string
+  chapterSlug: string
+  chapterTitle: string
 }
 
 export const upcomingModulesQueryOptions = (
   userId: string | null,
-  textbookId: TextbookIDEnum,
-  currentPosition: string | null,
+  learningPathId: TextbookIDEnum,
+  chapterSlug: string,
 ) => {
-  const queryFn = async (): Promise<ModuleWithCurrent[]> => {
-    // Get all module IDs for the textbook by flattening all chapters
-    const chapterMap = chapters[textbookId]
-    const learningPathItems = chapterMap
-      ? Object.values(chapterMap).flatMap((ch) => ch.learning_path_item_ids)
-      : []
+  const queryFn = async (): Promise<UpcomingModule[]> => {
+    // Get the active chapter
+    const chapter = chapters[learningPathId]?.[chapterSlug]
+    if (!chapter) return []
 
-    if (!currentPosition) {
-      return learningPathItems.slice(0, 6).map((id) => ({ id }))
+    // Get completed modules
+    const completedModules = userId
+      ? await mergeCompletionsWithLocal(userId)
+      : []
+    const completedSet = new Set(completedModules.map((c) => c.module_path))
+
+    // Filter to incomplete modules from this chapter only
+    const incompleteModuleIds = chapter.learning_path_item_ids
+      .filter((id) => !completedSet.has(id))
+      .slice(0, 10) // First 10 incomplete modules
+
+    // Merge all module sources
+    const modules = {
+      ...static_modules,
+      ...dynamic_modules,
+      ...external_resources,
     }
 
-    const currentModuleId = learningPathItems.find(
-      (moduleId) => moduleId === currentPosition,
-    )
-    const upcoming = getUpcomingModules(currentPosition, learningPathItems, 15)
+    // Enrich with full context
+    return incompleteModuleIds.map((moduleId) => {
+      const module = modules[moduleId]
 
-    return currentModuleId
-      ? [{ id: currentModuleId, isCurrent: true }, ...upcoming]
-      : upcoming
+      // Build proper link with chapter context
+      let linkTo = `/practice/${moduleId}` // Default fallback
+
+      if (module) {
+        if ("link" in module && module.link) {
+          // Static modules and external resources have direct links
+          linkTo = module.link
+        } else if (module.source_type === "vocab-practice") {
+          // Vocab practice goes to the learning path chapter view
+          linkTo = `/vocab/${learningPathId}/${chapterSlug}/${moduleId}`
+        } else if (module.source_type === "sentence-practice") {
+          const strippedId = moduleId.replace(/^sentence-practice-/, "")
+          linkTo = `/sentence-practice/${strippedId}`
+        }
+      }
+
+      return {
+        moduleId,
+        title: module?.title || moduleId,
+        sourceType: module?.source_type || "misc",
+        linkTo,
+        learningPathId,
+        chapterSlug,
+        chapterTitle: chapter.title,
+      }
+    })
   }
 
   return queryOptions({
-    queryKey: queryKeys.upcomingModules(userId, textbookId, currentPosition),
+    queryKey: queryKeys.upcomingModules(userId, learningPathId, chapterSlug),
     queryFn,
   })
 }
@@ -508,22 +547,21 @@ export type VocabModuleProgress = {
 
 export const moduleProgressQueryOptions = (
   userId: string | null,
-  upcomingModulesQuery: UseQueryResult<ModuleWithCurrent[], DefaultError>,
+  upcomingModulesQuery: UseQueryResult<UpcomingModule[], DefaultError>,
 ) => {
   return queryOptions({
     queryKey: queryKeys.moduleProgress(
       userId,
-      upcomingModulesQuery.data?.map((m) => m.id),
+      upcomingModulesQuery.data?.map((m) => m.moduleId),
     ),
     queryFn: async (): Promise<Record<string, VocabModuleProgress>> => {
       const upcomingModules = upcomingModulesQuery.data!
+      // Filter for vocab-practice modules only
       const vocabPracticeModuleIds = upcomingModules
-        .map((item) => item.id)
-        .filter((moduleId) => {
-          const module = dynamic_modules[moduleId]
-          return module && module.source_type === "vocab-practice"
-        })
+        .filter((item) => item.sourceType === "vocab-practice")
+        .map((item) => item.moduleId)
 
+      if (!userId) return {}
       return await buildModuleProgressMap(userId, vocabPracticeModuleIds)
     },
     enabled: !upcomingModulesQuery.isPending && !upcomingModulesQuery.isError,
