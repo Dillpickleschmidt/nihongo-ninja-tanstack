@@ -56,6 +56,8 @@ export const queryKeys = {
       JSON.stringify(userOverrides),
       isLiveService,
     ] as const,
+  recentlyStudiedDecks: (userId: string | null) =>
+    ["recently-studied-decks", userId] as const,
 
   // Learn Page
   vocabHierarchy: (

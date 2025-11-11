@@ -177,7 +177,7 @@ export function DeckCard(props: DeckCardProps) {
   // Navigate to practice with given mode
   const navigateToPractice = (mode: "meanings" | "spellings") => {
     if (props.deck.original_deck_id) {
-      // Static decks (built-in or learning path modules) use the original route
+      // Built-in decks (from dynamic_modules or learning path modules) use the original route
       navigate({
         to: "/practice/$practiceID",
         params: { practiceID: props.deck.original_deck_id },

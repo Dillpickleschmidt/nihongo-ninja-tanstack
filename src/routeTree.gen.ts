@@ -73,6 +73,7 @@ import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 import { Route as HomeVocabSettingsRouteImport } from './routes/_home/vocab/settings'
 import { Route as HomeVocabCreateRouteImport } from './routes/_home/vocab/create'
 import { Route as HomeVocabBrowseRouteImport } from './routes/_home/vocab/browse'
+import { Route as HomeVocabSplatRouteImport } from './routes/_home/vocab/$'
 import { Route as HomeSentencePracticeIdRouteImport } from './routes/_home/sentence-practice/$id'
 import { Route as HomePracticeHiraganaQuizRouteImport } from './routes/_home/practice/hiragana-quiz'
 import { Route as HomePracticeDakutenHandakutenQuizRouteImport } from './routes/_home/practice/dakuten-handakuten-quiz'
@@ -432,6 +433,11 @@ const HomeVocabBrowseRoute = HomeVocabBrowseRouteImport.update({
   path: '/browse',
   getParentRoute: () => HomeVocabRoute,
 } as any)
+const HomeVocabSplatRoute = HomeVocabSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => HomeVocabRoute,
+} as any)
 const HomeSentencePracticeIdRoute = HomeSentencePracticeIdRouteImport.update({
   id: '/sentence-practice/$id',
   path: '/sentence-practice/$id',
@@ -512,6 +518,7 @@ export interface FileRoutesByFullPath {
   '/practice/dakuten-handakuten-quiz': typeof HomePracticeDakutenHandakutenQuizRoute
   '/practice/hiragana-quiz': typeof HomePracticeHiraganaQuizRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
+  '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
   '/vocab/settings': typeof HomeVocabSettingsRoute
@@ -584,6 +591,7 @@ export interface FileRoutesByTo {
   '/practice/dakuten-handakuten-quiz': typeof HomePracticeDakutenHandakutenQuizRoute
   '/practice/hiragana-quiz': typeof HomePracticeHiraganaQuizRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
+  '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
   '/vocab/settings': typeof HomeVocabSettingsRoute
@@ -660,6 +668,7 @@ export interface FileRoutesById {
   '/_home/practice/dakuten-handakuten-quiz': typeof HomePracticeDakutenHandakutenQuizRoute
   '/_home/practice/hiragana-quiz': typeof HomePracticeHiraganaQuizRoute
   '/_home/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
+  '/_home/vocab/$': typeof HomeVocabSplatRoute
   '/_home/vocab/browse': typeof HomeVocabBrowseRoute
   '/_home/vocab/create': typeof HomeVocabCreateRoute
   '/_home/vocab/settings': typeof HomeVocabSettingsRoute
@@ -736,6 +745,7 @@ export interface FileRouteTypes {
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/sentence-practice/$id'
+    | '/vocab/$'
     | '/vocab/browse'
     | '/vocab/create'
     | '/vocab/settings'
@@ -808,6 +818,7 @@ export interface FileRouteTypes {
     | '/practice/dakuten-handakuten-quiz'
     | '/practice/hiragana-quiz'
     | '/sentence-practice/$id'
+    | '/vocab/$'
     | '/vocab/browse'
     | '/vocab/create'
     | '/vocab/settings'
@@ -883,6 +894,7 @@ export interface FileRouteTypes {
     | '/_home/practice/dakuten-handakuten-quiz'
     | '/_home/practice/hiragana-quiz'
     | '/_home/sentence-practice/$id'
+    | '/_home/vocab/$'
     | '/_home/vocab/browse'
     | '/_home/vocab/create'
     | '/_home/vocab/settings'
@@ -1398,6 +1410,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeVocabBrowseRouteImport
       parentRoute: typeof HomeVocabRoute
     }
+    '/_home/vocab/$': {
+      id: '/_home/vocab/$'
+      path: '/$'
+      fullPath: '/vocab/$'
+      preLoaderRoute: typeof HomeVocabSplatRouteImport
+      parentRoute: typeof HomeVocabRoute
+    }
     '/_home/sentence-practice/$id': {
       id: '/_home/sentence-practice/$id'
       path: '/sentence-practice/$id'
@@ -1465,6 +1484,7 @@ declare module '@tanstack/solid-router' {
 }
 
 interface HomeVocabRouteChildren {
+  HomeVocabSplatRoute: typeof HomeVocabSplatRoute
   HomeVocabBrowseRoute: typeof HomeVocabBrowseRoute
   HomeVocabCreateRoute: typeof HomeVocabCreateRoute
   HomeVocabSettingsRoute: typeof HomeVocabSettingsRoute
@@ -1472,6 +1492,7 @@ interface HomeVocabRouteChildren {
 }
 
 const HomeVocabRouteChildren: HomeVocabRouteChildren = {
+  HomeVocabSplatRoute: HomeVocabSplatRoute,
   HomeVocabBrowseRoute: HomeVocabBrowseRoute,
   HomeVocabCreateRoute: HomeVocabCreateRoute,
   HomeVocabSettingsRoute: HomeVocabSettingsRoute,

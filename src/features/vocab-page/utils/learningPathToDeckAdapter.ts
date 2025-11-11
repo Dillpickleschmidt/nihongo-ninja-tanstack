@@ -14,7 +14,7 @@ export interface LearningPathDeckLike extends Omit<UserDeck, "module"> {
 }
 
 /**
- * Result type for filtering modules - can be either a static vocab-practice module
+ * Result type for filtering modules - can be either a built-in vocab-practice module
  * or a user-created learning path module (deck with source === "learning_path")
  */
 export type ModuleOrDeck =
@@ -22,7 +22,7 @@ export type ModuleOrDeck =
   | { moduleId: string; deck: UserDeck }
 
 /**
- * Filters a chapter's modules to include both static vocab-practice modules
+ * Filters a chapter's modules to include both built-in vocab-practice modules
  * and user-created learning path modules
  */
 export function filterVocabPracticeModules(
@@ -30,23 +30,24 @@ export function filterVocabPracticeModules(
   userDecks?: UserDeck[],
 ): ModuleOrDeck[] {
   const results: ModuleOrDeck[] = []
+  const decksArray = userDecks || []
 
-  // Add static vocab-practice modules
   for (const moduleId of chapter.learning_path_item_ids) {
-    const module = dynamic_modules[moduleId]
-    if (module && module.source_type === "vocab-practice") {
-      results.push({ moduleId, module })
-    }
-  }
+    const resolved = resolveModuleToUserDeck(moduleId, decksArray)
 
-  // Add user deck modules with source === "learning_path"
-  if (userDecks) {
-    for (const deck of userDecks) {
-      if (
-        deck.source === "learning_path" &&
-        chapter.learning_path_item_ids.includes(deck.deck_id)
-      ) {
-        results.push({ moduleId: deck.deck_id, deck })
+    if (resolved) {
+      // Check if this is a built-in module (has the module property) or user deck
+      const isBuiltInModule =
+        (resolved as LearningPathDeckLike).module !== undefined
+
+      if (isBuiltInModule) {
+        results.push({
+          moduleId,
+          module: (resolved as LearningPathDeckLike).module!,
+        })
+      } else if (resolved.source === "learning_path") {
+        // User deck modules with source === "learning_path"
+        results.push({ moduleId, deck: resolved })
       }
     }
   }
@@ -65,7 +66,7 @@ export function transformModuleToDeckLike(
     source: "learning_path",
     folder_id: null,
     original_deck_id: moduleId, // Preserve module ID for routing to static route
-    user_id: "", // Empty string for static modules (UserDeck requires non-null)
+    user_id: "", // Empty string for built-in modules (UserDeck requires non-null)
     created_at: new Date().toISOString(),
     allowed_practice_modes: module.allowed_practice_modes || [
       "meanings",
@@ -73,4 +74,24 @@ export function transformModuleToDeckLike(
     ],
     module,
   }
+}
+
+/** Resolves a module path to UserDeck (checks user decks, then dynamic_modules) */
+export function resolveModuleToUserDeck(
+  modulePath: string,
+  userDecks: UserDeck[],
+): UserDeck | null {
+  // First check if it's a user-created deck
+  const userDeck = userDecks.find((d) => d.deck_id === modulePath)
+  if (userDeck) {
+    return userDeck
+  }
+
+  // Then check if it's a built-in vocab-practice module
+  const builtInModule = dynamic_modules[modulePath]
+  if (builtInModule && builtInModule.source_type === "vocab-practice") {
+    return transformModuleToDeckLike(modulePath, builtInModule)
+  }
+
+  return null
 }

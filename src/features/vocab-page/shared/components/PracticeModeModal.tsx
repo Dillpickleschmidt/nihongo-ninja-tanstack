@@ -23,7 +23,7 @@ export function PracticeModeModal(props: PracticeModeModalProps) {
     if (!props.deck) return
 
     if (props.deck.original_deck_id) {
-      // Static decks (built-in or learning path modules) use the original route
+      // Built-in decks use the original route
       navigate({
         to: "/practice/$practiceID",
         params: { practiceID: props.deck.original_deck_id },

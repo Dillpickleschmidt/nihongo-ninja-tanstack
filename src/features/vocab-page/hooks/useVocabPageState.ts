@@ -64,13 +64,6 @@ export function useVocabPageState(
     getFolderContents(userData.folders, userData.decks, currentViewFolderId())
   const canNavigateUp = () => currentViewFolderId() !== null
 
-  // Get active learning path ID from settings
-  const activeLearningPathId = () =>
-    settingsQuery.data?.["active-learning-path"] || "getting_started"
-
-  // Get active chapter from settings
-  const activeChapter = () => settingsQuery.data?.["active-chapter"] || ""
-
   // === UI SYNC EFFECTS ===
   // Sync database resource data to local signals for signed-in users
   createEffect(() => {
@@ -130,10 +123,6 @@ export function useVocabPageState(
     canNavigateUp,
     setCurrentViewFolderId,
     navigateToParentView,
-
-    // Active learning path
-    activeLearningPathId,
-    activeChapter,
 
     // Deck selection handlers
     handleDeckSelect,

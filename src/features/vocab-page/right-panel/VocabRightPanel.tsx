@@ -102,10 +102,15 @@ export function VocabRightPanel(props: VocabRightPanelProps) {
       <div class="space-y-4 pb-24">
         {/* All Learning Paths with their Chapters */}
         <Show
-          when={learningPathsQuery.data && learningPathsQuery.data.length > 0}
+          when={
+            !learningPathsQuery.isPending &&
+            !learningPathsQuery.isError &&
+            learningPathsQuery.data &&
+            learningPathsQuery.data.length > 0
+          }
         >
           <div class="mb-6 space-y-2">
-            <For each={learningPathsQuery.data || []}>
+            <For each={learningPathsQuery.data}>
               {(path) => (
                 <CollapsibleSection
                   title={path.short_name}

@@ -27,7 +27,7 @@ interface VocabularyPreviewProps {
 function VocabularyPreview(props: VocabularyPreviewProps) {
   const deckName = () => props.selectedDeck?.deck_name || ""
 
-  // Get module ID for static learning path modules
+  // Get module ID for built-in learning path modules
   const getBuiltInDeckId = () => {
     if (props.selectedDeck?.original_deck_id) {
       return props.selectedDeck.original_deck_id
@@ -53,7 +53,7 @@ function VocabularyPreview(props: VocabularyPreviewProps) {
 
       const builtInId = getBuiltInDeckId()
       if (builtInId) {
-        // Built-in decks: load from static vocabulary data
+        // Built-in decks: load from vocabulary data via dynamic_modules
         const module = dynamic_modules[builtInId]
         if (!module?.vocab_set_ids) {
           return []

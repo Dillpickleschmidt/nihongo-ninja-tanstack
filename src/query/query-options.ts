@@ -48,6 +48,8 @@ import {
   getUserSessions,
   getUserWeekTimeData,
 } from "@/features/supabase/db/module-progress"
+import { transformSessionsToDeck } from "@/features/vocab-page/pages/main/utils/recentlyStudiedAdapter"
+import type { RecentlyStudiedDeck } from "@/features/vocab-page/pages/main/utils/recentlyStudiedAdapter"
 import { getUpcomingModules } from "@/query/utils/learning-position-detector"
 import type { ResourceProvider } from "@/data/resources-config"
 import {
@@ -569,6 +571,29 @@ export const userWeekTimeDataQueryOptions = (userId: string | null) =>
       if (!userId) return []
       return getUserWeekTimeData(userId)
     },
+  })
+
+// ============================================================================
+// Vocab Dashboard Query Options
+// ============================================================================
+
+/**
+ * Query for getting recently studied decks (from user practice sessions)
+ * Returns up to 10 most recently practiced decks
+ */
+export const recentlyStudiedDecksQueryOptions = (
+  userId: string | null,
+  userDecks: UserDeck[],
+) =>
+  queryOptions({
+    queryKey: queryKeys.recentlyStudiedDecks(userId),
+    queryFn: async (): Promise<RecentlyStudiedDeck[]> => {
+      if (!userId) return []
+      const sessions = await getUserSessions(userId)
+      return transformSessionsToDeck(sessions, userDecks, 10)
+    },
+    enabled: !!userId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   })
 
 // ============================================================================

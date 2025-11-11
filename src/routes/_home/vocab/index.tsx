@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/solid-router"
-import { VocabCardsContent } from "@/features/vocab-page/pages/main/VocabCardsContent"
+import { VocabDashboard } from "@/features/vocab-page/pages/main/components/VocabDashboard"
 import { useVocabPageContext } from "@/features/vocab-page/layout/VocabPageProvider"
 
 export const Route = createFileRoute("/_home/vocab/")({
@@ -9,5 +9,9 @@ export const Route = createFileRoute("/_home/vocab/")({
 function RouteComponent() {
   const state = useVocabPageContext()
 
-  return <VocabCardsContent selectedUserDeck={state.selectedUserDeck()} />
+  return (
+    <div class="w-full px-6 py-8">
+      <VocabDashboard onSelectDeck={state.handleDeckSelect} />
+    </div>
+  )
 }

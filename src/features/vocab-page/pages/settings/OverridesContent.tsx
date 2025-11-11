@@ -1,4 +1,4 @@
-import { Show, createSignal } from "solid-js"
+import { createSignal, Show } from "solid-js"
 import { createMediaQuery } from "@solid-primitives/media"
 import { StackEditor } from "./StackEditor"
 import type { Stack } from "@/features/resolvers/types"
@@ -52,7 +52,7 @@ export function OverridesContent(props: OverridesContentProps) {
   const handleVocabularyStacksChange = async (newStacks: Stack[]) => {
     await updateMutation.mutateAsync({
       "override-settings": {
-        ...settingsQuery.data["override-settings"],
+        ...settingsQuery.data!["override-settings"],
         vocabularyOverrides: newStacks,
       },
     })
@@ -61,7 +61,7 @@ export function OverridesContent(props: OverridesContentProps) {
   const handleKanjiStacksChange = async (newStacks: Stack[]) => {
     await updateMutation.mutateAsync({
       "override-settings": {
-        ...settingsQuery.data["override-settings"],
+        ...settingsQuery.data!["override-settings"],
         kanjiOverrides: newStacks,
       },
     })
@@ -108,14 +108,14 @@ export function OverridesContent(props: OverridesContentProps) {
   // Upload handlers
   const handleVocabularyUpload = createUploadHandler(
     "vocabulary",
-    () => settingsQuery.data["override-settings"].vocabularyOverrides,
+    () => settingsQuery.data!["override-settings"].vocabularyOverrides,
     handleVocabularyStacksChange,
     "Vocabulary",
   )
 
   const handleKanjiUpload = createUploadHandler(
     "kanji",
-    () => settingsQuery.data["override-settings"].kanjiOverrides,
+    () => settingsQuery.data!["override-settings"].kanjiOverrides,
     handleKanjiStacksChange,
     "Kanji",
   )
@@ -154,7 +154,7 @@ export function OverridesContent(props: OverridesContentProps) {
             <StackEditor
               title="Vocabulary Overrides"
               stacks={
-                settingsQuery.data["override-settings"].vocabularyOverrides
+                settingsQuery.data!["override-settings"].vocabularyOverrides
               }
               onChange={handleVocabularyStacksChange}
               onAddNew={handleAddVocabularyStack}
@@ -164,7 +164,7 @@ export function OverridesContent(props: OverridesContentProps) {
           <div class="border-card-foreground/70 bg-background/40 flex flex-col rounded-lg border p-6 backdrop-blur-sm">
             <StackEditor
               title="Kanji Overrides"
-              stacks={settingsQuery.data["override-settings"].kanjiOverrides}
+              stacks={settingsQuery.data!["override-settings"].kanjiOverrides}
               onChange={handleKanjiStacksChange}
               onAddNew={handleAddKanjiStack}
             />

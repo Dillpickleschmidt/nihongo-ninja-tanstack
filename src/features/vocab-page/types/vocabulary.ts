@@ -67,25 +67,6 @@ export function dbItemToVocabularyItem(
   }
 }
 
-// For built-in vocabulary imports only
-export function builtInVocabToDBInsert(
-  item: VocabularyItem,
-  deckId: string,
-): DBVocabularyItemInsert {
-  return {
-    deck_id: deckId,
-    word: item.word,
-    furigana: item.furigana || null,
-    english: item.english,
-    is_verb: isVerbPartOfSpeech(item.part_of_speech),
-    info: item.info || null,
-    mnemonics: item.mnemonics || null,
-    example_sentences: (item.example_sentences as unknown as Json) || null,
-    particles: item.particles || null,
-    videos: item.videos || null,
-  }
-}
-
 // For converting static vocabulary to form data (deck copying/editing)
 export function vocabularyItemToFormData(
   item: VocabularyItem,
