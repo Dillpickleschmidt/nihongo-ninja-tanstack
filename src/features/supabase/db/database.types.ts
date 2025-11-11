@@ -87,31 +87,25 @@ export type Database = {
       }
       learning_path_module_sources: {
         Row: {
-          grammar_pattern_id: string | null
           module_id: string
           order_index: number
           path_id: string
           source_type: string
-          transcript_line_ids: number[]
-          vocabulary_key: string | null
+          transcript_line_ids: Json
         }
         Insert: {
-          grammar_pattern_id?: string | null
           module_id: string
           order_index?: number
           path_id: string
           source_type: string
-          transcript_line_ids: number[]
-          vocabulary_key?: string | null
+          transcript_line_ids: Json
         }
         Update: {
-          grammar_pattern_id?: string | null
           module_id?: string
           order_index?: number
           path_id?: string
           source_type?: string
-          transcript_line_ids?: number[]
-          vocabulary_key?: string | null
+          transcript_line_ids?: Json
         }
         Relationships: [
           {

@@ -24,7 +24,7 @@ export interface VocabWord {
   furigana?: string
   english?: string
   pos: POS
-  transcriptLineId: number
+  transcriptLineIds: number[]
 }
 
 interface VocabWordWithFrequency extends VocabWord {
@@ -33,6 +33,7 @@ interface VocabWordWithFrequency extends VocabWord {
 
 export interface ExtractedData {
   grammarPatterns: string[]
+  grammarPatternLineIds: Record<string, number[]>
   vocabulary: VocabWord[]
   transcript: Array<{
     line_id: number
@@ -45,8 +46,7 @@ export interface ExtractedData {
 export interface GrammarModuleOption {
   type: "grammar"
   moduleId: string
-  matchedPatterns: string[]
-  transcriptLineIds: number[]
+  transcriptLineIds: number[][]
   checked: boolean
   orderIndex: number
 }
@@ -60,7 +60,7 @@ export interface VocabDeckPreview {
     english?: string
   }>
   isVerbDeck: boolean
-  transcriptLineIds: number[]
+  transcriptLineIds: number[][]
   checked: boolean
   orderIndex: number
 }
@@ -110,14 +110,21 @@ function enrichGrammarModules(
     }
   })
 
-  return moduleIds.map((moduleId) => ({
-    type: "grammar" as const,
-    moduleId,
-    matchedPatterns: Array.from(grammarToPatterns.get(moduleId) || []),
-    transcriptLineIds: [], // Will be populated from transcript references
-    checked: true,
-    orderIndex: 0, // Will be set during interleaving
-  }))
+  return moduleIds.map((moduleId) => {
+    // Collect all transcript line IDs for the patterns that trigger this module
+    const patterns = Array.from(grammarToPatterns.get(moduleId) || [])
+    const transcriptLineIds: number[][] = patterns.map(
+      (pattern) => extractedData.grammarPatternLineIds[pattern] || [],
+    )
+
+    return {
+      type: "grammar" as const,
+      moduleId,
+      transcriptLineIds,
+      checked: true,
+      orderIndex: 0, // Will be set during interleaving
+    }
+  })
 }
 
 // Helper: Distribute items evenly into chunks
@@ -321,7 +328,7 @@ function chunkVocabularyByFrequency(
         english,
       })),
       isVerbDeck,
-      transcriptLineIds: moduleWords.map((w) => w.transcriptLineId),
+      transcriptLineIds: moduleWords.map((w) => w.transcriptLineIds),
       checked: true,
       orderIndex: 0, // Will be set during interleaving
     })

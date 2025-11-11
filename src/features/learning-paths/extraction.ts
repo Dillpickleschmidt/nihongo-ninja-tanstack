@@ -29,14 +29,17 @@ export async function extractTranscriptData(
   const grammarPatternSet = new Set<string>()
   const foundGrammarPatterns: string[] = []
 
-  // Vocabulary map: base_form -> {furigana, pos, english, transcriptLineId, count}
+  // Grammar pattern map: pattern_name -> array of transcript line IDs
+  const grammarPatternMap = new Map<string, number[]>()
+
+  // Vocabulary map: base_form -> {furigana, pos, english, transcriptLineIds, count}
   const vocabularyMap = new Map<
     string,
     {
       furigana: string
       pos: POS
       english?: string
-      transcriptLineId: number
+      transcriptLineIds: number[]
       count: number
     }
   >()
@@ -66,6 +69,12 @@ export async function extractTranscriptData(
               grammarPatternSet.add(match.pattern_name)
               foundGrammarPatterns.push(match.pattern_name)
             }
+
+            // Track all line IDs where this pattern appears
+            if (!grammarPatternMap.has(match.pattern_name)) {
+              grammarPatternMap.set(match.pattern_name, [])
+            }
+            grammarPatternMap.get(match.pattern_name)!.push(lineId)
           }
         }
       }
@@ -80,8 +89,11 @@ export async function extractTranscriptData(
         const baseForm = token.base_form
 
         if (vocabularyMap.has(baseForm)) {
-          // Increment count for existing word
+          // Increment count and track this line ID for existing word
           const existing = vocabularyMap.get(baseForm)!
+          if (!existing.transcriptLineIds.includes(lineId)) {
+            existing.transcriptLineIds.push(lineId)
+          }
           existing.count++
         } else {
           // First occurrence of this word
@@ -89,7 +101,7 @@ export async function extractTranscriptData(
             furigana: token.reading,
             pos: primaryPos,
             english: undefined, // Would need additional lookup
-            transcriptLineId: lineId,
+            transcriptLineIds: [lineId],
             count: 1,
           })
         }
@@ -108,11 +120,15 @@ export async function extractTranscriptData(
       furigana: data.furigana,
       english: data.english,
       pos: data.pos,
-      transcriptLineId: data.transcriptLineId,
+      transcriptLineIds: data.transcriptLineIds,
     }))
+
+  // Build grammar pattern map for return value
+  const grammarPatternLineIds = Object.fromEntries(grammarPatternMap)
 
   return {
     grammarPatterns: foundGrammarPatterns,
+    grammarPatternLineIds,
     vocabulary: vocabularyList,
     transcript: transcriptLines.map((line, idx) => ({
       line_id: idx,
