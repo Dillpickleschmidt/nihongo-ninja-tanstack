@@ -10,6 +10,7 @@ import {
   Trash2,
   Share,
 } from "lucide-solid"
+import { navigateToPractice } from "../utils/practiceNavigation"
 import { Button } from "@/components/ui/button"
 import {
   ContextMenu,
@@ -27,6 +28,7 @@ import { createSignal } from "solid-js"
 import { TreeView } from "@/components/ui/tree-view"
 import { useFolderTree } from "../hooks/useFolderTree"
 import { Folder, Home } from "lucide-solid"
+import { getFolderPath } from "../utils/folderTreeUtils"
 import {
   createDeckShareServerFn,
   removeDeckShareServerFn,
@@ -35,19 +37,13 @@ import { ShareModal } from "../shared/components/ShareModal"
 import { PracticeModeModal } from "../shared/components/PracticeModeModal"
 import { getPracticeAction } from "../utils/practiceMode"
 import { useNavigate } from "@tanstack/solid-router"
+import { useVocabPageContext } from "../layout/VocabPageProvider"
 
 interface DeckCardProps {
   deck: UserDeck
-  onPlay?: (deck: UserDeck) => void
   isNewlyImported?: boolean
   isSelected?: boolean
   onSelect?: (deck: UserDeck) => void
-  onEdit?: (deck: UserDeck) => void
-  folders?: DeckFolder[]
-  onMove?: (deck: UserDeck, targetFolderId: string) => void
-  onRename?: (deck: UserDeck, newName: string) => void
-  onCopy?: (deck: UserDeck) => void
-  onDelete?: (deck: UserDeck) => void
   userId?: string
   isShared?: boolean
   onShareStatusChange?: () => void // Callback to refresh share status
@@ -56,6 +52,7 @@ interface DeckCardProps {
 
 export function DeckCard(props: DeckCardProps) {
   const navigate = useNavigate()
+  const state = useVocabPageContext()
   const [isHovered, setIsHovered] = createSignal(false)
   const [expandedFolderIds, setExpandedFolderIds] = createSignal<Set<string>>(
     new Set(),
@@ -66,38 +63,15 @@ export function DeckCard(props: DeckCardProps) {
 
   // Build folder tree for move functionality
   const { folderTreeNodes } = useFolderTree({
-    folders: props.folders || [],
+    folders: state.folders(),
     decks: [],
     item: props.deck,
   })
 
   // Auto-expand to show current folder location
   const getCurrentFolderPath = () => {
-    if (!props.deck.folder_id || !props.folders) return []
-
-    const expandPath = (
-      targetId: number,
-      folders: DeckFolder[],
-      path: number[] = [],
-    ): number[] | null => {
-      for (const folder of folders) {
-        if (folder.folder_id === targetId) return [...path, targetId]
-
-        const childFolders = folders.filter(
-          (f) => f.parent_folder_id === folder.folder_id,
-        )
-        if (childFolders.length > 0) {
-          const found = expandPath(targetId, childFolders, [
-            ...path,
-            folder.folder_id,
-          ])
-          if (found) return found
-        }
-      }
-      return null
-    }
-
-    return expandPath(props.deck.folder_id, props.folders) || []
+    if (!props.deck.folder_id) return []
+    return getFolderPath(props.deck.folder_id, state.folders())
   }
 
   const handleToggleFolder = (id: string) => {
@@ -113,7 +87,8 @@ export function DeckCard(props: DeckCardProps) {
   }
 
   const handleMoveToFolder = (folderId: string, node: any) => {
-    props.onMove?.(props.deck, folderId)
+    const handler = state.deckMoveHandler()
+    handler?.(props.deck, folderId)
   }
 
   // Initialize expanded state with current folder path
@@ -163,10 +138,10 @@ export function DeckCard(props: DeckCardProps) {
 
     switch (action) {
       case "direct-meanings":
-        navigateToPractice("meanings")
+        handleNavigateToPractice("meanings")
         break
       case "direct-spellings":
-        navigateToPractice("spellings")
+        handleNavigateToPractice("spellings")
         break
       case "show-modal":
         setShowPracticeModeModal(true)
@@ -175,25 +150,8 @@ export function DeckCard(props: DeckCardProps) {
   }
 
   // Navigate to practice with given mode
-  const navigateToPractice = (mode: "meanings" | "spellings") => {
-    if (props.deck.original_deck_id) {
-      // Built-in decks (from dynamic_modules or learning path modules) use the original route
-      navigate({
-        to: "/practice/$practiceID",
-        params: { practiceID: props.deck.original_deck_id },
-        search: { mode },
-      })
-    } else {
-      // User-created decks use the new route structure with search params
-      navigate({
-        to: "/practice/$userID/$deckID",
-        params: {
-          userID: props.userId || "unknown",
-          deckID: props.deck.deck_id.toString(),
-        },
-        search: { mode },
-      })
-    }
+  const handleNavigateToPractice = (mode: "meanings" | "spellings") => {
+    navigateToPractice(props.deck, mode, navigate, props.userId)
   }
 
   return (
@@ -235,7 +193,8 @@ export function DeckCard(props: DeckCardProps) {
               onClick={(e) => {
                 e.stopPropagation()
                 if (props.deck.source !== "built-in") {
-                  props.onEdit?.(props.deck)
+                  const handler = state.deckEditHandler()
+                  handler?.(props.deck)
                 }
               }}
             >
@@ -305,7 +264,8 @@ export function DeckCard(props: DeckCardProps) {
               class="disabled:cursor-not-allowed disabled:opacity-50"
               onClick={() => {
                 if (props.deck.source !== "built-in") {
-                  props.onEdit?.(props.deck)
+                  const handler = state.deckEditHandler()
+                  handler?.(props.deck)
                 }
               }}
             >
@@ -325,7 +285,8 @@ export function DeckCard(props: DeckCardProps) {
                 newName.trim() &&
                 newName.trim() !== props.deck.deck_name
               ) {
-                props.onRename?.(props.deck, newName.trim())
+                const handler = state.deckRenameHandler()
+                handler?.(props.deck, newName.trim())
               }
             }}
           >
@@ -387,7 +348,8 @@ export function DeckCard(props: DeckCardProps) {
                 )
                 if (shouldCopy) {
                   // Open copy modal - user can then edit the copy
-                  props.onCopy?.(props.deck)
+                  const handler = state.deckCopyHandler()
+                  handler?.(props.deck)
                 }
               } else if (props.isShared) {
                 handleUnshare()
@@ -409,7 +371,8 @@ export function DeckCard(props: DeckCardProps) {
           </ContextMenuItem>
           <ContextMenuItem
             onClick={() => {
-              props.onCopy?.(props.deck)
+              const handler = state.deckCopyHandler()
+              handler?.(props.deck)
             }}
           >
             <Copy class="mr-2 h-3 w-3" />
@@ -424,7 +387,8 @@ export function DeckCard(props: DeckCardProps) {
                   : `Are you sure you want to delete "${props.deck.deck_name}"? This action cannot be undone.`
 
               if (window.confirm(message)) {
-                props.onDelete?.(props.deck)
+                const handler = state.deckDeleteHandler()
+                handler?.(props.deck)
               }
             }}
             class="text-red-600 focus:bg-red-50 focus:text-red-900 dark:text-red-400 dark:focus:bg-red-950 dark:focus:text-red-300"

@@ -8,7 +8,6 @@ import { CollapsibleSection } from "../shared/CollapsibleSection"
 import { BookOpen, Folder, Plus } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/utils"
-import { EditTransaction } from "@/features/vocab-page/logic/edit-transaction"
 import {
   filterVocabPracticeModules,
   transformModuleToDeckLike,
@@ -28,13 +27,6 @@ interface VocabRightPanelProps {
   selectedUserDeck: UserDeck | null
   onSelectDeck: (deck: UserDeck) => void
   onDeselectDeck: () => void
-  onEditDeck: (deck: UserDeck) => void
-  onEditFolder: (folder: DeckFolder) => void
-  onDeleteFolder: (transaction: EditTransaction) => void
-  onRenameDeck: (deck: UserDeck, newName: string) => void
-  onMoveDeck: (deck: UserDeck, targetFolderId: string) => void
-  onCopyDeck?: (deck: UserDeck) => void
-  onDeleteDeck?: (deck: UserDeck) => void
   onRefetch?: () => void
   userId?: string
   panelRef?: HTMLDivElement
@@ -188,6 +180,7 @@ export function VocabRightPanel(props: VocabRightPanelProps) {
                     `folder-${folder.folder_id}`,
                   )}
                   onToggle={() => toggleSection(`folder-${folder.folder_id}`)}
+                  folderData={folder}
                 >
                   <div class="space-y-2">
                     <For
@@ -205,12 +198,6 @@ export function VocabRightPanel(props: VocabRightPanelProps) {
                             props.selectedUserDeck?.deck_id === deck.deck_id
                           }
                           onSelect={props.onSelectDeck}
-                          onEdit={props.onEditDeck}
-                          folders={props.folders}
-                          onRename={props.onRenameDeck}
-                          onMove={props.onMoveDeck}
-                          onCopy={props.onCopyDeck}
-                          onDelete={props.onDeleteDeck}
                           userId={props.userId}
                           isShared={!!props.shareStatus[deck.deck_id]}
                           onShareStatusChange={props.onShareStatusChange}
@@ -235,12 +222,6 @@ export function VocabRightPanel(props: VocabRightPanelProps) {
                   onPlay={props.onPlayDeck}
                   isSelected={props.selectedUserDeck?.deck_id === deck.deck_id}
                   onSelect={props.onSelectDeck}
-                  onEdit={props.onEditDeck}
-                  folders={props.folders}
-                  onRename={props.onRenameDeck}
-                  onMove={props.onMoveDeck}
-                  onCopy={props.onCopyDeck}
-                  onDelete={props.onDeleteDeck}
                   userId={props.userId}
                   isShared={!!props.shareStatus[deck.deck_id]}
                   onShareStatusChange={props.onShareStatusChange}

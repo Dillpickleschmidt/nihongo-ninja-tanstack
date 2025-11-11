@@ -147,6 +147,22 @@ export function VocabLayout(props: VocabLayoutProps) {
     editOperations.deleteDeck(deck.deck_id)
   }
 
+  // Register folder edit handlers in context so they're accessible from child routes
+  state.setFolderEditHandler(() => handleEditFolder)
+  state.setFolderDeleteHandler(() => handleSaveFolderEdit)
+
+  // Register deck operation handlers in context
+  state.setDeckEditHandler(() => handleEditDeck)
+  state.setDeckRenameHandler(() => (deck: UserDeck, newName: string) => {
+    editOperations.editDeck(deck.deck_id, { name: newName })
+  })
+  state.setDeckMoveHandler(() => (deck: UserDeck, targetFolderId: string) => {
+    const folderId = targetFolderId === "root" ? null : parseInt(targetFolderId)
+    editOperations.editDeck(deck.deck_id, { folderId })
+  })
+  state.setDeckCopyHandler(() => handleOpenCopyModal)
+  state.setDeckDeleteHandler(() => handleDeleteDeck)
+
   return (
     <div class="grid grid-cols-[auto_1fr] md:grid-cols-[18rem_1fr_24rem]">
       <div class="sticky top-0 z-20 -mt-16 self-start">
@@ -155,7 +171,7 @@ export function VocabLayout(props: VocabLayoutProps) {
       <div id="tour-vocab-center" class="relative z-0 w-full">
         <div class="flex h-[calc(100vh-65px)] flex-col overflow-y-auto">
           <CenterNavBar />
-          <div class="flex flex-1 items-center justify-center px-8">
+          <div class="px-8 md:pt-12">
             <Suspense>
               <Outlet />
             </Suspense>
@@ -183,19 +199,6 @@ export function VocabLayout(props: VocabLayoutProps) {
               selectedUserDeck={state.selectedUserDeck()}
               onSelectDeck={state.handleDeckSelect}
               onDeselectDeck={state.handleDeckDeselect}
-              onEditDeck={handleEditDeck}
-              onEditFolder={handleEditFolder}
-              onDeleteFolder={handleSaveFolderEdit}
-              onRenameDeck={(deck, newName) => {
-                editOperations.editDeck(deck.deck_id, { name: newName })
-              }}
-              onMoveDeck={(deck, targetFolderId) => {
-                const folderId =
-                  targetFolderId === "root" ? null : parseInt(targetFolderId)
-                editOperations.editDeck(deck.deck_id, { folderId })
-              }}
-              onCopyDeck={handleOpenCopyModal}
-              onDeleteDeck={handleDeleteDeck}
               onRefetch={state.refetchFoldersAndDecks}
               userId={props.user?.id}
               panelRef={rightPanelRef}

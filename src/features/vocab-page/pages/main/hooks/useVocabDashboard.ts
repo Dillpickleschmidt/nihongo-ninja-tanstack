@@ -12,7 +12,6 @@ import {
 } from "@/query/query-options"
 import { useVocabPageContext } from "@/features/vocab-page/layout/VocabPageProvider"
 import type { TextbookIDEnum } from "@/data/types"
-import type { RecentlyStudiedDeck } from "../utils/recentlyStudiedAdapter"
 
 export interface BreadcrumbItem {
   label: string

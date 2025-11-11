@@ -5,6 +5,7 @@ import { DeckCard } from "../../../right-panel/DeckCard"
 import { transformModuleToDeckLike } from "../../../utils/learningPathToDeckAdapter"
 import type { UseQueryResult, DefaultError } from "@tanstack/solid-query"
 import type { ModuleWithCurrent } from "@/query/query-options"
+import type { DynamicModule } from "@/data/types"
 
 const modules = { ...static_modules, ...dynamic_modules }
 
@@ -27,10 +28,16 @@ export function ComingUpSection(props: ComingUpSectionProps) {
     return data
       .filter((item) => {
         const module = modules[item.id]
-        return module && module.source_type === "vocab-practice"
+        return (
+          module &&
+          module.source_type === "vocab-practice" &&
+          "vocab_set_ids" in module
+        )
       })
       .slice(0, 10) // Limit to 10
-      .map((item) => transformModuleToDeckLike(item.id, modules[item.id]))
+      .map((item) =>
+        transformModuleToDeckLike(item.id, modules[item.id] as DynamicModule),
+      )
   }
 
   return (

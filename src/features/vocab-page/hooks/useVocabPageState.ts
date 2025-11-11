@@ -1,5 +1,6 @@
 // features/vocab-page/hooks/useVocabPageState.ts
-import { createSignal, createEffect, createResource } from "solid-js"
+import { createSignal, createEffect, createResource, Accessor } from "solid-js"
+import type { EditTransaction } from "../logic/edit-transaction"
 import { createStore, reconcile } from "solid-js/store"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { userSettingsQueryOptions } from "@/query/query-options"
@@ -105,6 +106,36 @@ export function useVocabPageState(
     setSelectedUserDeck(null)
   }
 
+  // Folder edit handlers (set by VocabLayout)
+  const [folderEditHandler, setFolderEditHandler] = createSignal<
+    ((folder: DeckFolder) => void) | undefined
+  >(undefined)
+
+  const [folderDeleteHandler, setFolderDeleteHandler] = createSignal<
+    ((transaction: EditTransaction) => void) | undefined
+  >(undefined)
+
+  // Deck operation handlers (set by VocabLayout)
+  const [deckEditHandler, setDeckEditHandler] = createSignal<
+    ((deck: UserDeck) => void) | undefined
+  >(undefined)
+
+  const [deckRenameHandler, setDeckRenameHandler] = createSignal<
+    ((deck: UserDeck, newName: string) => void) | undefined
+  >(undefined)
+
+  const [deckMoveHandler, setDeckMoveHandler] = createSignal<
+    ((deck: UserDeck, targetFolderId: string) => void) | undefined
+  >(undefined)
+
+  const [deckCopyHandler, setDeckCopyHandler] = createSignal<
+    ((deck: UserDeck) => void) | undefined
+  >(undefined)
+
+  const [deckDeleteHandler, setDeckDeleteHandler] = createSignal<
+    ((deck: UserDeck) => void) | undefined
+  >(undefined)
+
   return {
     // Panel state
     rightPanelOpen,
@@ -127,6 +158,24 @@ export function useVocabPageState(
     // Deck selection handlers
     handleDeckSelect,
     handleDeckDeselect,
+
+    // Folder edit handlers (accessible via context)
+    folderEditHandler,
+    setFolderEditHandler,
+    folderDeleteHandler,
+    setFolderDeleteHandler,
+
+    // Deck operation handlers (accessible via context)
+    deckEditHandler,
+    setDeckEditHandler,
+    deckRenameHandler,
+    setDeckRenameHandler,
+    deckMoveHandler,
+    setDeckMoveHandler,
+    deckCopyHandler,
+    setDeckCopyHandler,
+    deckDeleteHandler,
+    setDeckDeleteHandler,
 
     // Internal state setters (for edit operations hook)
     setUserData,

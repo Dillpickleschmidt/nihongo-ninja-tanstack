@@ -1,0 +1,116 @@
+import { createSignal, Show } from "solid-js"
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Edit3, Trash2 } from "lucide-solid"
+import { useFolderTree } from "../../hooks/useFolderTree"
+import { DeleteConfirmation } from "./DeleteConfirmation"
+import { EditTransaction } from "../../logic/edit-transaction"
+import { useVocabPageContext } from "../../layout/VocabPageProvider"
+
+interface FolderContextMenuProps {
+  folderData: DeckFolder
+  children: any
+}
+
+/**
+ * Shared folder context menu component
+ * Provides consistent Edit/Delete menu for folders across the app
+ * Accesses handlers and data directly from context (no prop drilling)
+ */
+export function FolderContextMenu(props: FolderContextMenuProps) {
+  const state = useVocabPageContext()
+  const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false)
+  const [deleteStrategy, setDeleteStrategy] = createSignal<
+    "move-up" | "delete-all"
+  >("move-up")
+
+  const folderTree = useFolderTree({
+    folders: state.folders(),
+    decks: state.userDecks(),
+    item: props.folderData,
+  })
+
+  const handleDelete = () => {
+    const transaction = new EditTransaction()
+    transaction.add({
+      type: "delete-folder",
+      folderId: props.folderData.folder_id,
+      strategy: deleteStrategy(),
+    })
+
+    const deleteHandler = state.folderDeleteHandler()
+    if (deleteHandler) {
+      deleteHandler(transaction)
+    }
+    setShowDeleteConfirm(false)
+  }
+
+  return (
+    <>
+      <ContextMenu>
+        <ContextMenuTrigger as="div">
+          {props.children}
+        </ContextMenuTrigger>
+
+        <ContextMenuContent class="w-48 bg-card border-card-foreground outline-none">
+          <div>
+            <ContextMenuItem
+              onClick={() => {
+                const editHandler = state.folderEditHandler()
+                if (editHandler) {
+                  editHandler(props.folderData)
+                }
+              }}
+            >
+              <Edit3 class="mr-2 h-3 w-3" />
+              <span>Edit folder</span>
+            </ContextMenuItem>
+
+            <ContextMenuSeparator class="border-card-foreground" />
+
+            <ContextMenuItem
+              onClick={() => setShowDeleteConfirm(true)}
+              class="text-red-600 focus:bg-red-50 focus:text-red-900 dark:text-red-400 dark:focus:bg-red-950 dark:focus:text-red-300"
+            >
+              <Trash2 class="mr-2 h-3 w-3" />
+              <span>Delete folder</span>
+            </ContextMenuItem>
+          </div>
+        </ContextMenuContent>
+      </ContextMenu>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={showDeleteConfirm()}
+        onOpenChange={(open) => !open && setShowDeleteConfirm(false)}
+      >
+        <DialogContent class="border-card-foreground sm:max-w-lg [&]:animate-none [&]:duration-0">
+          <DialogHeader>
+            <DialogTitle>Delete {props.folderData.folder_name}</DialogTitle>
+          </DialogHeader>
+
+          <DeleteConfirmation
+            item={props.folderData}
+            itemType="folder"
+            folderContents={folderTree.folderContents()}
+            deleteStrategy={deleteStrategy()}
+            onStrategyChange={setDeleteStrategy}
+            onCancel={() => setShowDeleteConfirm(false)}
+            onConfirm={handleDelete}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
+  )
+}

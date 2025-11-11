@@ -1,7 +1,8 @@
-import { For, Show } from "solid-js"
+import { For } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
 import { DeckCard } from "../../../right-panel/DeckCard"
-import { VocabBreadcrumb } from "./VocabBreadcrumb"
+import { ViewContainer } from "../../../shared/components/ViewContainer"
+import { GridContainer } from "../../../shared/components/GridContainer"
 import {
   filterVocabPracticeModules,
   transformModuleToDeckLike,
@@ -37,18 +38,6 @@ export function ChapterView(props: ChapterViewProps) {
       .filter(Boolean) as UserDeck[]
   }
 
-  const breadcrumbs = () => [
-    { label: "Vocabulary", href: "/vocab" },
-    {
-      label: props.learningPath.name,
-      href: `/vocab/${props.learningPath.id}`,
-    },
-    {
-      label: props.chapter.title,
-      href: `/vocab/${props.learningPath.id}/${props.chapter.slug}`,
-    },
-  ]
-
   const handleSelectDeck = (deck: UserDeck) => {
     // Navigate to the module for practice
     navigate({
@@ -57,24 +46,16 @@ export function ChapterView(props: ChapterViewProps) {
   }
 
   return (
-    <div class="space-y-6">
-      {/* Breadcrumb Navigation */}
-      <VocabBreadcrumb items={breadcrumbs()} />
-
-      {/* Chapter Title */}
-      <div>
-        <h1 class="text-foreground text-2xl font-bold">
-          {props.chapter.title}
-        </h1>
-        <Show when={props.chapter.description}>
-          <p class="text-muted-foreground mt-2 text-sm">
-            {props.chapter.description}
-          </p>
-        </Show>
-      </div>
-
-      {/* Modules Grid */}
-      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <ViewContainer
+      breadcrumbs={[
+        { label: "Vocabulary", href: "/vocab" },
+        { label: props.learningPath.name, href: `/vocab/${props.learningPath.id}` },
+        { label: props.chapter.title, href: `/vocab/${props.learningPath.id}/${props.chapter.slug}` }
+      ]}
+      title={props.chapter.title}
+      description={props.chapter.description}
+    >
+      <GridContainer items={modules} emptyMessage="No modules available">
         <For each={modules()}>
           {(deck) => (
             <DeckCard
@@ -85,7 +66,7 @@ export function ChapterView(props: ChapterViewProps) {
             />
           )}
         </For>
-      </div>
-    </div>
+      </GridContainer>
+    </ViewContainer>
   )
 }

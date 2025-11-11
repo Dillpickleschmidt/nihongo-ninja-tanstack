@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "@tanstack/solid-router"
+import { navigateToPractice } from "../../utils/practiceNavigation"
 
 interface PracticeModeModalProps {
   deck: UserDeck | null
@@ -22,25 +23,7 @@ export function PracticeModeModal(props: PracticeModeModalProps) {
   const handlePracticeMode = (mode: "meanings" | "spellings") => {
     if (!props.deck) return
 
-    if (props.deck.original_deck_id) {
-      // Built-in decks use the original route
-      navigate({
-        to: "/practice/$practiceID",
-        params: { practiceID: props.deck.original_deck_id },
-        search: { mode },
-      })
-    } else {
-      // User-created decks use the new route structure with search params
-      navigate({
-        to: "/practice/$userID/$deckID",
-        params: {
-          userID: props.userId || "unknown",
-          deckID: props.deck.deck_id.toString(),
-        },
-        search: { mode },
-      })
-    }
-
+    navigateToPractice(props.deck, mode, navigate, props.userId)
     props.onClose()
   }
 

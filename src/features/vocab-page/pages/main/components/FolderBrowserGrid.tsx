@@ -41,6 +41,7 @@ export function FolderBrowserGrid(props: FolderBrowserGridProps) {
                 title={folder.folder_name}
                 subtitle="Folder"
                 onClick={() => props.onFolderClick(folder.folder_id.toString())}
+                folderData={folder}
               />
             )}
           </For>
