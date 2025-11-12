@@ -23,11 +23,6 @@ interface FolderContextMenuProps {
   children: any
 }
 
-/**
- * Shared folder context menu component
- * Provides consistent Edit/Delete menu for folders across the app
- * Accesses handlers and data directly from context (no prop drilling)
- */
 export function FolderContextMenu(props: FolderContextMenuProps) {
   const state = useVocabPageContext()
   const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false)
@@ -49,10 +44,7 @@ export function FolderContextMenu(props: FolderContextMenuProps) {
       strategy: deleteStrategy(),
     })
 
-    const deleteHandler = state.folderDeleteHandler()
-    if (deleteHandler) {
-      deleteHandler(transaction)
-    }
+    state.handleSaveFolderEdit(transaction)
     setShowDeleteConfirm(false)
   }
 
@@ -65,10 +57,7 @@ export function FolderContextMenu(props: FolderContextMenuProps) {
           <div>
             <ContextMenuItem
               onClick={() => {
-                const editHandler = state.folderEditHandler()
-                if (editHandler) {
-                  editHandler(props.folderData)
-                }
+                state.setEditingFolder(props.folderData)
               }}
             >
               <Edit3 class="mr-2 h-3 w-3" />
@@ -88,7 +77,6 @@ export function FolderContextMenu(props: FolderContextMenuProps) {
         </ContextMenuContent>
       </ContextMenu>
 
-      {/* Delete Confirmation Dialog */}
       <Dialog
         open={showDeleteConfirm()}
         onOpenChange={(open) => !open && setShowDeleteConfirm(false)}

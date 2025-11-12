@@ -10,21 +10,12 @@ import type {
   FieldValidationState,
 } from "../types/deck-creation-types"
 
-// ============================================================================
-// Deck Metadata Validation
-// ============================================================================
-
 interface UseDeckValidationProps {
   store: () => DeckCreationStore
   existingDecks: UserDeck[]
 }
 
-/**
- * Hook for validating deck metadata (name, location, etc.)
- * Used in the deck details form
- */
 export function useDeckValidation(props: UseDeckValidationProps) {
-  // Validate deck metadata
   const deckMetadataValidation = createMemo(() => {
     const store = props.store()
     const result = DeckMetadataSchema.safeParse(store.deck)
@@ -39,7 +30,6 @@ export function useDeckValidation(props: UseDeckValidationProps) {
     }
   })
 
-  // Validate deck name uniqueness
   const deckNameValidation = createMemo(() => {
     const store = props.store()
     const validationData = {
@@ -56,7 +46,6 @@ export function useDeckValidation(props: UseDeckValidationProps) {
     }
   })
 
-  // Check if deck name field should show required indicator
   const shouldShowNameRequired = createMemo(() => {
     const store = props.store()
     const hasAttemptedSubmit = store.validation.hasAttemptedSubmit
@@ -72,18 +61,9 @@ export function useDeckValidation(props: UseDeckValidationProps) {
   }
 }
 
-// ============================================================================
-// Vocab Item Field Validation
-// ============================================================================
-
-/**
- * Hook for validating individual vocabulary item fields (word, english)
- * Used in the vocab item editor form
- */
 export function useVocabItemValidation(
   context: () => VocabItemValidationContext,
 ) {
-  // Validate word field
   const wordValidation = createMemo((): FieldValidationState => {
     const ctx = context()
     const word = ctx.formData.word.trim()
@@ -99,7 +79,6 @@ export function useVocabItemValidation(
     }
   })
 
-  // Validate english meanings field
   const englishValidation = createMemo((): FieldValidationState => {
     const ctx = context()
     const englishMeanings = ctx.formData.english
@@ -119,7 +98,6 @@ export function useVocabItemValidation(
     }
   })
 
-  // Overall item validation
   const itemValidation = createMemo(() => {
     const ctx = context()
     const result = VocabItemFieldValidationSchema.safeParse({

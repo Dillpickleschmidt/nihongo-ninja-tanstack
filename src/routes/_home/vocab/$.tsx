@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { createMemo, Switch, Match } from "solid-js"
-import { useVocabPageContext } from "@/features/vocab-page/layout/VocabPageProvider"
+import { useVocabPageContext } from "@/features/vocab-page/layout/VocabPageContext"
 import { VocabCardsContent } from "@/features/vocab-page/pages/main/VocabCardsContent"
 import { useVocabDashboard } from "@/features/vocab-page/pages/main/hooks/useVocabDashboard"
 import { FolderView } from "@/features/vocab-page/pages/main/components/FolderView"
@@ -37,7 +37,6 @@ function RouteComponent() {
   const vocabPageState = useVocabPageContext()
   const dashboardState = useVocabDashboard()
 
-  // Get the splat path (everything after /vocab/)
   const pathSegments = () => {
     const splatPath = params()?._splat || ""
     if (!splatPath) {
@@ -46,7 +45,6 @@ function RouteComponent() {
     return splatPath.split("/").filter(Boolean)
   }
 
-  // Determine the view type and extract relevant IDs
   const viewInfo = createMemo((): ViewInfo => {
     const segments = pathSegments()
 
@@ -90,12 +88,10 @@ function RouteComponent() {
           .userDecks()
           .find((d) => d.deck_id === deckId)
 
-        // Must be either a module or user deck
         if (!module && !userDeck) {
           return { type: "dashboard" }
         }
 
-        // Transform module to deck format, or use user deck directly
         const deck = module
           ? transformModuleToDeckLike(deckId, module)
           : userDeck!
@@ -108,19 +104,16 @@ function RouteComponent() {
         }
       }
     } else {
-      // User folder/deck navigation
       const allDecks = vocabPageState.userDecks()
       const lastSegment = segments[segments.length - 1]
       const deck = allDecks.find((d) => d.deck_id === lastSegment)
 
-      // If last segment is a deck, show that deck
       if (deck) {
         const folderId =
           segments.length > 1 ? Number(segments[segments.length - 2]) : null
         return { type: "folder-deck", folderId, deck }
       }
 
-      // Otherwise, it's a folder view
       const folderId = Number(firstSegment)
       return {
         type: "folder",

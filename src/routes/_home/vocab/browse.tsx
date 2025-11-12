@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { BrowseDecksContent } from "@/features/vocab-page/pages/browse/BrowseDecksContent"
-import { useVocabPageContext } from "@/features/vocab-page/layout/VocabPageProvider"
+import { useVocabPageContext } from "@/features/vocab-page/layout/VocabPageContext"
 import { Route as VocabParentRoute } from "@/routes/_home/vocab"
 
 export const Route = createFileRoute("/_home/vocab/browse")({

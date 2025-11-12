@@ -23,11 +23,11 @@ import {
   saveFoldersAndDecks,
   loadFoldersAndDecks,
 } from "@/features/vocab-page/storage/sessionStorage"
-import { useEditOperations } from "../hooks/useEditOperations"
 import { EditTransaction } from "../logic/edit-transaction"
 import { getVocabForDeck } from "@/features/supabase/db/deck"
 import type { DeckCreationInitialData } from "../pages/create/stores/deck-creation-store"
 import { copyDeck } from "@/features/vocab-page/utils/deckCopyUtils"
+import { executeEditTransactionServerFn } from "@/features/supabase/db/folder"
 
 interface VocabPageProviderProps {
   user: User | null
@@ -36,46 +36,32 @@ interface VocabPageProviderProps {
 function useVocabPageState(user: User | null) {
   const queryClient = useQueryClient()
 
-  // === QUERIES ===
-  // Settings query
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(user?.id || null),
   )
 
-  // Folders and decks query
   const foldersAndDecksQuery = useCustomQuery(() =>
     userFoldersAndDecksQueryOptions(user?.id || null),
   )
 
-  // === SIGNALS ===
-  // Panel state
   const [rightPanelOpen, setRightPanelOpen] = createSignal(true)
 
-  // Local data for unsigned users (session storage)
   const initialLocalData = { ...loadFoldersAndDecks(), shareStatus: {} }
   const [localUserData, setLocalUserData] = createStore(initialLocalData)
 
-  // Deck selection state
   const [selectedUserDeck, setSelectedUserDeck] = createSignal<UserDeck | null>(
     null,
   )
 
-  // Folder navigation state (which folder user is viewing)
   const [currentViewFolderId, setCurrentViewFolderId] = createSignal<
     number | null
   >(null)
 
-  // Modal opener handlers (set by VocabLayout)
-  const [folderEditHandler, setFolderEditHandler] = createSignal<
-    ((folder: DeckFolder) => void) | undefined
-  >(undefined)
+  const [editingFolder, setEditingFolder] = createSignal<DeckFolder | null>(
+    null,
+  )
+  const [copyingDeck, setCopyingDeck] = createSignal<UserDeck | null>(null)
 
-  const [deckCopyHandler, setDeckCopyHandler] = createSignal<
-    ((deck: UserDeck) => void) | undefined
-  >(undefined)
-
-  // === COMPUTED VALUES ===
-  // Get data from query (signed-in) or local storage (unsigned)
   const userData = () => {
     if (user) {
       return (
@@ -85,7 +71,6 @@ function useVocabPageState(user: User | null) {
     return localUserData
   }
 
-  // Folder navigation computations
   const viewBreadcrumbPath = () =>
     buildBreadcrumbPath(userData().folders, currentViewFolderId())
   const currentViewContent = () =>
@@ -96,8 +81,6 @@ function useVocabPageState(user: User | null) {
     )
   const canNavigateUp = () => currentViewFolderId() !== null
 
-  // === EFFECTS ===
-  // Auto-sync local state to session storage for unsigned users
   createEffect(() => {
     if (!user) {
       if (
@@ -109,7 +92,6 @@ function useVocabPageState(user: User | null) {
     }
   })
 
-  // Folder navigation actions
   const navigateToParentView = () => {
     const parentId = getParentFolderId(
       userData().folders,
@@ -118,9 +100,7 @@ function useVocabPageState(user: User | null) {
     setCurrentViewFolderId(parentId)
   }
 
-  // Deck selection handlers
   const handleDeckSelect = (deck: UserDeck) => {
-    // Navigate to the deck's folder if we're not already there
     if (deck.folder_id !== currentViewFolderId()) {
       setCurrentViewFolderId(deck.folder_id)
     }
@@ -132,14 +112,11 @@ function useVocabPageState(user: User | null) {
     setSelectedUserDeck(null)
   }
 
-  // === EDIT OPERATIONS ===
-  // Optimistic update function that works for both signed-in and unsigned users
   const updateData = (updates: {
     folders?: DeckFolder[]
     decks?: UserDeck[]
   }) => {
     if (user) {
-      // Signed-in: update TanStack Query cache
       const currentData = foldersAndDecksQuery.data || {
         folders: [],
         decks: [],
@@ -153,36 +130,68 @@ function useVocabPageState(user: User | null) {
         },
       )
     } else {
-      // Unsigned: update local store
       if (updates.folders) setLocalUserData("folders", updates.folders)
       if (updates.decks) setLocalUserData("decks", updates.decks)
     }
   }
 
-  // Call useEditOperations with required props
-  const editOperations = useEditOperations({
-    folders: () => userData().folders,
-    userDecks: () => userData().decks,
-    shareStatus: () => userData().shareStatus,
-    updateData,
-    refetchFoldersAndDecks: () => foldersAndDecksQuery.refetch(),
-    user,
-  })
+  // Core edit transaction execution (inlined from useEditOperations)
+  const executeEdit = async (transaction: EditTransaction) => {
+    const currentState = {
+      folders: userData().folders,
+      decks: userData().decks,
+    }
 
-  // === HANDLER FUNCTIONS ===
-  // These were previously in VocabLayout and set via signals
+    // 1. Validate transaction
+    const preview = transaction.preview(currentState)
+    if (!preview.success) {
+      alert(`Edit failed: ${preview.error}`)
+      return
+    }
+
+    // 2. Optimistic update
+    updateData({
+      folders: preview.newState!.folders,
+      decks: preview.newState!.decks,
+    })
+
+    // 3. Persistence (different strategies)
+    try {
+      if (user) {
+        // Database transaction
+        await executeEditTransactionServerFn({
+          data: { operations: transaction.getOperations() },
+        })
+        // Refetch to get updated data and real IDs
+        foldersAndDecksQuery.refetch()
+      } else {
+        // Session storage (atomic write)
+        saveFoldersAndDecks({
+          ...preview.newState!,
+          shareStatus: userData().shareStatus,
+        })
+      }
+    } catch (error) {
+      // 4. Rollback
+      updateData({
+        folders: currentState.folders,
+        decks: currentState.decks,
+      })
+      console.error("Edit failed:", error)
+      alert(
+        `Edit failed: ${error instanceof Error ? error.message : "Unknown error"}`,
+      )
+    }
+  }
 
   const handleEditDeck = async (deck: UserDeck) => {
     try {
-      // Load vocabulary items for the deck
       const vocabItems = await getVocabForDeck(deck.deck_id)
 
-      // Find folder information
       const folder = userData().folders.find(
         (f) => f.folder_id === deck.folder_id,
       )
 
-      // Prepare initial data for editing
       const initialData: DeckCreationInitialData = {
         deckId: deck.deck_id,
         name: deck.deck_name,
@@ -192,32 +201,36 @@ function useVocabPageState(user: User | null) {
         vocabItems: vocabItems,
       }
 
-      // Store edit data and navigate to create page
       sessionStorage.setItem("vocabPageDeckEdit", JSON.stringify(initialData))
-
-      // Navigate to create page
       window.location.hash = "#/vocab/create"
     } catch (error) {
       console.error("Failed to load deck data for editing:", error)
     }
   }
 
-  const handleEditFolder = (folder: DeckFolder) => {
-    // Will be called by FolderEditModal via context
-    return folder
-  }
-
   const handleSaveFolderEdit = (transaction: EditTransaction) => {
-    editOperations.executeEdit(transaction)
+    executeEdit(transaction)
   }
 
   const handleDeckRename = (deck: UserDeck, newName: string) => {
-    editOperations.editDeck(deck.deck_id, { name: newName })
+    const transaction = new EditTransaction()
+    transaction.add({
+      type: "update-deck",
+      deckId: deck.deck_id,
+      updates: { name: newName },
+    })
+    executeEdit(transaction)
   }
 
   const handleDeckMove = (deck: UserDeck, targetFolderId: string) => {
     const folderId = targetFolderId === "root" ? null : parseInt(targetFolderId)
-    editOperations.editDeck(deck.deck_id, { folderId })
+    const transaction = new EditTransaction()
+    transaction.add({
+      type: "update-deck",
+      deckId: deck.deck_id,
+      updates: { folderId },
+    })
+    executeEdit(transaction)
   }
 
   const handleCopyDeck = async (
@@ -248,8 +261,13 @@ function useVocabPageState(user: User | null) {
     }
   }
 
-  const handleDeleteDeck = async (deck: UserDeck) => {
-    editOperations.deleteDeck(deck.deck_id)
+  const handleDeleteDeck = (deck: UserDeck) => {
+    const transaction = new EditTransaction()
+    transaction.add({
+      type: "delete-deck",
+      deckId: deck.deck_id,
+    })
+    executeEdit(transaction)
   }
 
   return {
@@ -279,20 +297,19 @@ function useVocabPageState(user: User | null) {
     handleDeckSelect,
     handleDeckDeselect,
 
-    // Edit operation handlers (direct access)
+    // Modal state (managed in context, rendered in VocabLayout)
+    editingFolder,
+    setEditingFolder,
+    copyingDeck,
+    setCopyingDeck,
+
+    // Edit operation handlers
     handleSaveFolderEdit,
-
-    // Deck operation handlers (direct references - no modals needed)
-    deckEditHandler: () => handleEditDeck,
-    deckRenameHandler: () => handleDeckRename,
-    deckMoveHandler: () => handleDeckMove,
-    deckDeleteHandler: () => handleDeleteDeck,
-
-    // Modal opener handlers (set by VocabLayout)
-    folderEditHandler,
-    setFolderEditHandler,
-    deckCopyHandler,
-    setDeckCopyHandler,
+    handleEditDeck,
+    handleDeckRename,
+    handleDeckMove,
+    handleDeleteDeck,
+    handleCopyDeck,
 
     // Internal state setters
     refetchFoldersAndDecks: () => foldersAndDecksQuery.refetch(),

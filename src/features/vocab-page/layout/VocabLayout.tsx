@@ -1,5 +1,5 @@
 // features/vocab-page/layout/VocabLayout.tsx
-import { createSignal, Show, Suspense, createEffect } from "solid-js"
+import { Show, Suspense } from "solid-js"
 import { Outlet, useLocation } from "@tanstack/solid-router"
 import { CollapsiblePanel } from "../shared/CollapsiblePanel"
 import { VocabRightPanel } from "../right-panel/VocabRightPanel"
@@ -20,7 +20,6 @@ export function VocabLayout(props: VocabLayoutProps) {
   const state = useVocabPageContext()
   const location = useLocation()
 
-  // Determine which sidebar to show
   const showVocabRightPanel = () => {
     const path = location().pathname
     return (
@@ -32,40 +31,10 @@ export function VocabLayout(props: VocabLayoutProps) {
 
   let rightPanelRef!: HTMLDivElement
 
-  // Folder edit modal state
-  const [folderEditModalOpen, setFolderEditModalOpen] = createSignal(false)
-  const [editingFolder, setEditingFolder] = createSignal<DeckFolder | null>(
-    null,
-  )
-
-  // Copy modal state
-  const [copyModalOpen, setCopyModalOpen] = createSignal(false)
-  const [copyingDeck, setCopyingDeck] = createSignal<UserDeck | null>(null)
-
-  // Local modal handlers
-  const handleEditFolder = (folder: DeckFolder) => {
-    setEditingFolder(folder)
-    setFolderEditModalOpen(true)
-  }
-
-  const handleCloseFolderEditModal = () => {
-    setFolderEditModalOpen(false)
-    setEditingFolder(null)
-  }
-
+  // Modal handlers (wrap context handlers to close modal after execution)
   const handleSaveFolderEdit = (transaction: EditTransaction) => {
     state.handleSaveFolderEdit(transaction)
-    handleCloseFolderEditModal()
-  }
-
-  const handleOpenCopyModal = (deck: UserDeck) => {
-    setCopyingDeck(deck)
-    setCopyModalOpen(true)
-  }
-
-  const handleCloseCopyModal = () => {
-    setCopyModalOpen(false)
-    setCopyingDeck(null)
+    state.setEditingFolder(null)
   }
 
   const handleCopyDeck = async (
@@ -74,14 +43,8 @@ export function VocabLayout(props: VocabLayoutProps) {
     targetFolderId: string,
   ) => {
     await state.handleCopyDeck(deck, newName, targetFolderId)
-    handleCloseCopyModal()
+    state.setCopyingDeck(null)
   }
-
-  // Register modal opener handlers with context so child components can access them
-  createEffect(() => {
-    state.setFolderEditHandler(() => handleEditFolder)
-    state.setDeckCopyHandler(() => handleOpenCopyModal)
-  })
 
   return (
     <div class="grid grid-cols-[auto_1fr] md:grid-cols-[18rem_1fr_24rem]">
@@ -99,7 +62,6 @@ export function VocabLayout(props: VocabLayoutProps) {
         </div>
       </div>
 
-      {/* Right panel */}
       <div id="tour-user-panel" class="hidden h-[calc(100vh-65px)] md:block">
         <Show when={showVocabRightPanel()} fallback={<PlaceholderSidebar />}>
           <CollapsiblePanel
@@ -128,21 +90,21 @@ export function VocabLayout(props: VocabLayoutProps) {
       </div>
 
       <FolderEditModal
-        folder={editingFolder()}
-        isOpen={folderEditModalOpen()}
+        folder={state.editingFolder()}
+        isOpen={state.editingFolder() !== null}
         folders={state.folders()}
         decks={state.userDecks()}
-        onClose={handleCloseFolderEditModal}
+        onClose={() => state.setEditingFolder(null)}
         onSave={handleSaveFolderEdit}
         onDelete={handleSaveFolderEdit}
       />
 
       <DeckCopyModal
-        deck={copyingDeck()}
-        isOpen={copyModalOpen()}
+        deck={state.copyingDeck()}
+        isOpen={state.copyingDeck() !== null}
         folders={state.folders()}
         decks={state.userDecks()}
-        onClose={handleCloseCopyModal}
+        onClose={() => state.setCopyingDeck(null)}
         onCopy={handleCopyDeck}
       />
     </div>

@@ -61,14 +61,12 @@ export function DeckCard(props: DeckCardProps) {
   const [showPracticeModeModal, setShowPracticeModeModal] = createSignal(false)
   const [isSharing, setIsSharing] = createSignal(false)
 
-  // Build folder tree for move functionality
   const { folderTreeNodes } = useFolderTree({
     folders: state.folders(),
     decks: [],
     item: props.deck,
   })
 
-  // Auto-expand to show current folder location
   const getCurrentFolderPath = () => {
     if (!props.deck.folder_id) return []
     return getFolderPath(props.deck.folder_id, state.folders())
@@ -87,17 +85,14 @@ export function DeckCard(props: DeckCardProps) {
   }
 
   const handleMoveToFolder = (folderId: string, node: any) => {
-    const handler = state.deckMoveHandler()
-    handler?.(props.deck, folderId)
+    state.handleDeckMove(props.deck, folderId)
   }
 
-  // Initialize expanded state with current folder path
   const initializeExpandedState = () => {
     const path = getCurrentFolderPath()
     setExpandedFolderIds(new Set(["root", ...path.map((id) => id.toString())]))
   }
 
-  // Handle public sharing
   const handlePublicShare = async () => {
     if (!props.deck?.deck_id) return
 
@@ -114,7 +109,6 @@ export function DeckCard(props: DeckCardProps) {
     }
   }
 
-  // Handle unsharing
   const handleUnshare = async () => {
     if (!props.deck?.deck_id) return
 
@@ -130,7 +124,6 @@ export function DeckCard(props: DeckCardProps) {
     }
   }
 
-  // Handle practice button click with mode logic
   const handlePracticeClick = (e: MouseEvent) => {
     e.stopPropagation()
 
@@ -149,7 +142,6 @@ export function DeckCard(props: DeckCardProps) {
     }
   }
 
-  // Navigate to practice with given mode
   const handleNavigateToPractice = (mode: "meanings" | "spellings") => {
     navigateToPractice(props.deck, mode, navigate, props.userId)
   }
@@ -169,7 +161,6 @@ export function DeckCard(props: DeckCardProps) {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          {/* Edit button - appears on hover */}
           <div
             class={cn(
               "absolute top-2 right-2 transition-opacity duration-200",
@@ -193,8 +184,7 @@ export function DeckCard(props: DeckCardProps) {
               onClick={(e) => {
                 e.stopPropagation()
                 if (props.deck.source !== "built-in") {
-                  const handler = state.deckEditHandler()
-                  handler?.(props.deck)
+                  state.handleEditDeck(props.deck)
                 }
               }}
             >
@@ -264,8 +254,7 @@ export function DeckCard(props: DeckCardProps) {
               class="disabled:cursor-not-allowed disabled:opacity-50"
               onClick={() => {
                 if (props.deck.source !== "built-in") {
-                  const handler = state.deckEditHandler()
-                  handler?.(props.deck)
+                  state.handleEditDeck(props.deck)
                 }
               }}
             >
@@ -285,8 +274,7 @@ export function DeckCard(props: DeckCardProps) {
                 newName.trim() &&
                 newName.trim() !== props.deck.deck_name
               ) {
-                const handler = state.deckRenameHandler()
-                handler?.(props.deck, newName.trim())
+                state.handleDeckRename(props.deck, newName.trim())
               }
             }}
           >
@@ -348,8 +336,7 @@ export function DeckCard(props: DeckCardProps) {
                 )
                 if (shouldCopy) {
                   // Open copy modal - user can then edit the copy
-                  const handler = state.deckCopyHandler()
-                  handler?.(props.deck)
+                  state.setCopyingDeck(props.deck)
                 }
               } else if (props.isShared) {
                 handleUnshare()
@@ -371,8 +358,7 @@ export function DeckCard(props: DeckCardProps) {
           </ContextMenuItem>
           <ContextMenuItem
             onClick={() => {
-              const handler = state.deckCopyHandler()
-              handler?.(props.deck)
+              state.setCopyingDeck(props.deck)
             }}
           >
             <Copy class="mr-2 h-3 w-3" />
@@ -387,8 +373,7 @@ export function DeckCard(props: DeckCardProps) {
                   : `Are you sure you want to delete "${props.deck.deck_name}"? This action cannot be undone.`
 
               if (window.confirm(message)) {
-                const handler = state.deckDeleteHandler()
-                handler?.(props.deck)
+                state.handleDeleteDeck(props.deck)
               }
             }}
             class="text-red-600 focus:bg-red-50 focus:text-red-900 dark:text-red-400 dark:focus:bg-red-950 dark:focus:text-red-300"

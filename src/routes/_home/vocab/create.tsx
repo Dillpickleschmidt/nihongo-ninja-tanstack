@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/solid-router"
 import { createSignal, Show } from "solid-js"
 import { DeckCreationContainer } from "@/features/vocab-page/pages/create/components/DeckCreationContainer"
 import { DeckCreationStoreProvider } from "@/features/vocab-page/pages/create/context/DeckCreationStoreContext"
-import { useVocabPageContext } from "@/features/vocab-page/layout/VocabPageProvider"
+import { useVocabPageContext } from "@/features/vocab-page/layout/VocabPageContext"
 import type { DeckCreationInitialData } from "@/features/vocab-page/pages/create/stores/deck-creation-store"
 
 export const Route = createFileRoute("/_home/vocab/create")({
@@ -12,11 +12,9 @@ export const Route = createFileRoute("/_home/vocab/create")({
 function RouteComponent() {
   const state = useVocabPageContext()
 
-  // Check for edit data in sessionStorage
   const [deckEditData, setDeckEditData] =
     createSignal<DeckCreationInitialData | null>(null)
 
-  // Try to load deck edit data from sessionStorage on mount
   const savedData = sessionStorage.getItem("vocabPageDeckEdit")
   if (savedData && !deckEditData()) {
     try {

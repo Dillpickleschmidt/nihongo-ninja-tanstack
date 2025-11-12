@@ -6,7 +6,6 @@ import { cn } from "@/utils"
 
 interface VocabDashboardProps {
   onSelectDeck: (deck: UserDeck) => void
-  class?: string
 }
 
 /**
@@ -29,28 +28,21 @@ export function VocabDashboard(props: VocabDashboardProps) {
     props.onSelectDeck(deck)
   }
 
-  // Handle folder click
   const handleFolderClick = (folderIdStr: string) => {
     dashboard.navigate({ to: `/vocab/${folderIdStr}` })
   }
 
-  // Handle learning path click
   const handleLearningPathClick = (learningPathId: string) => {
     dashboard.navigate({ to: `/vocab/${learningPathId}` })
   }
 
   return (
-    <div class={cn("space-y-8", props.class)}>
-      {/* Recently Studied Section */}
+    <div class="space-y-8">
       <RecentlyStudiedSection
         query={dashboard.recentlyStudiedQuery}
         onSelectDeck={handleSelectRecentDeck}
       />
-
-      {/* Coming Up Section */}
       <ComingUpSection upcomingModulesQuery={dashboard.upcomingModulesQuery} />
-
-      {/* Folder Browser Grid */}
       <FolderBrowserGrid
         folders={dashboard.folders()}
         learningPaths={dashboard.learningPaths()}
