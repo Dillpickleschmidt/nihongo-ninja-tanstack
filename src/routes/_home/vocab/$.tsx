@@ -30,7 +30,7 @@ type ViewInfo =
       deck: UserDeck
     }
   | { type: "folder"; folderId: number | null }
-  | { type: "folder-deck"; folderId: number; deck: UserDeck }
+  | { type: "folder-deck"; folderId: number | null; deck: UserDeck }
 
 function RouteComponent() {
   const params = Route.useParams()
@@ -181,7 +181,7 @@ function RouteComponent() {
               folderId={info().folderId}
               folders={vocabPageState.folders()}
               decks={vocabPageState.userDecks()}
-              onSelectDeck={vocabPageState.handleDeckSelect}
+              onSelectDeck={vocabPageState.handleSelectDeck}
             />
           )}
         </Match>

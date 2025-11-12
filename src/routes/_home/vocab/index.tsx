@@ -11,7 +11,7 @@ function RouteComponent() {
 
   return (
     <div class="w-full px-6 py-8">
-      <VocabDashboard onSelectDeck={state.handleDeckSelect} />
+      <VocabDashboard onSelectDeck={state.handleSelectDeck} />
     </div>
   )
 }

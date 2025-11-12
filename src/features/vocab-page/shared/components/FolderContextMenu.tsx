@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js"
+import { createSignal, Show } from "solid-js"
 import {
   ContextMenu,
   ContextMenuContent,
@@ -19,7 +19,8 @@ import { EditTransaction } from "../../logic/edit-transaction"
 import { useVocabPageContext } from "../../layout/VocabPageContext"
 
 interface FolderContextMenuProps {
-  folderData: DeckFolder
+  folderData?: DeckFolder
+  onClick: () => void
   children: any
 }
 
@@ -33,10 +34,12 @@ export function FolderContextMenu(props: FolderContextMenuProps) {
   const folderTree = useFolderTree({
     folders: state.folders(),
     decks: state.userDecks(),
-    item: props.folderData,
+    item: props.folderData || null,
   })
 
   const handleDelete = () => {
+    if (!props.folderData) return
+
     const transaction = new EditTransaction()
     transaction.add({
       type: "delete-folder",
@@ -51,52 +54,66 @@ export function FolderContextMenu(props: FolderContextMenuProps) {
   return (
     <>
       <ContextMenu>
-        <ContextMenuTrigger as="div">{props.children}</ContextMenuTrigger>
+        <ContextMenuTrigger
+          as="div"
+          onClick={props.onClick}
+          class="bg-card/60 hover:bg-card/70 border-card-foreground/70 cursor-pointer rounded-lg border p-4 shadow-sm backdrop-blur-sm transition-colors hover:shadow-md"
+        >
+          {props.children}
+        </ContextMenuTrigger>
 
-        <ContextMenuContent class="bg-card border-card-foreground w-48 outline-none">
-          <div>
-            <ContextMenuItem
-              onClick={() => {
-                state.setEditingFolder(props.folderData)
-              }}
-            >
-              <Edit3 class="mr-2 h-3 w-3" />
-              <span>Edit folder</span>
-            </ContextMenuItem>
+        <Show when={props.folderData}>
+          {(folderData) => (
+            <ContextMenuContent class="bg-card border-card-foreground w-48 outline-none">
+              <div>
+                <ContextMenuItem
+                  onClick={() => {
+                    state.setEditingFolder(folderData())
+                  }}
+                >
+                  <Edit3 class="mr-2 h-3 w-3" />
+                  <span>Edit folder</span>
+                </ContextMenuItem>
 
-            <ContextMenuSeparator class="border-card-foreground" />
+                <ContextMenuSeparator class="border-card-foreground" />
 
-            <ContextMenuItem
-              onClick={() => setShowDeleteConfirm(true)}
-              class="text-red-600 focus:bg-red-50 focus:text-red-900 dark:text-red-400 dark:focus:bg-red-950 dark:focus:text-red-300"
-            >
-              <Trash2 class="mr-2 h-3 w-3" />
-              <span>Delete folder</span>
-            </ContextMenuItem>
-          </div>
-        </ContextMenuContent>
+                <ContextMenuItem
+                  onClick={() => setShowDeleteConfirm(true)}
+                  class="text-red-600 focus:bg-red-50 focus:text-red-900 dark:text-red-400 dark:focus:bg-red-950 dark:focus:text-red-300"
+                >
+                  <Trash2 class="mr-2 h-3 w-3" />
+                  <span>Delete folder</span>
+                </ContextMenuItem>
+              </div>
+            </ContextMenuContent>
+          )}
+        </Show>
       </ContextMenu>
 
-      <Dialog
-        open={showDeleteConfirm()}
-        onOpenChange={(open) => !open && setShowDeleteConfirm(false)}
-      >
-        <DialogContent class="border-card-foreground sm:max-w-lg [&]:animate-none [&]:duration-0">
-          <DialogHeader>
-            <DialogTitle>Delete {props.folderData.folder_name}</DialogTitle>
-          </DialogHeader>
+      <Show when={props.folderData}>
+        {(folderData) => (
+          <Dialog
+            open={showDeleteConfirm()}
+            onOpenChange={(open) => !open && setShowDeleteConfirm(false)}
+          >
+            <DialogContent class="border-card-foreground sm:max-w-lg [&]:animate-none [&]:duration-0">
+              <DialogHeader>
+                <DialogTitle>Delete {folderData().folder_name}</DialogTitle>
+              </DialogHeader>
 
-          <DeleteConfirmation
-            item={props.folderData}
-            itemType="folder"
-            folderContents={folderTree.folderContents()}
-            deleteStrategy={deleteStrategy()}
-            onStrategyChange={setDeleteStrategy}
-            onCancel={() => setShowDeleteConfirm(false)}
-            onConfirm={handleDelete}
-          />
-        </DialogContent>
-      </Dialog>
+              <DeleteConfirmation
+                item={folderData()}
+                itemType="folder"
+                folderContents={folderTree.folderContents()}
+                deleteStrategy={deleteStrategy()}
+                onStrategyChange={setDeleteStrategy}
+                onCancel={() => setShowDeleteConfirm(false)}
+                onConfirm={handleDelete}
+              />
+            </DialogContent>
+          </Dialog>
+        )}
+      </Show>
     </>
   )
 }

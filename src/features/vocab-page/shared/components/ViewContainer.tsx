@@ -5,14 +5,10 @@
 
 import { JSX } from "solid-js"
 import { VocabBreadcrumb } from "../../pages/main/components/VocabBreadcrumb"
-
-export interface Breadcrumb {
-  label: string
-  href: string
-}
+import type { BreadcrumbItem } from "../../pages/main/hooks/useVocabDashboard"
 
 interface ViewContainerProps {
-  breadcrumbs: Breadcrumb[]
+  breadcrumbs: BreadcrumbItem[]
   title: string
   description?: string
   children: JSX.Element

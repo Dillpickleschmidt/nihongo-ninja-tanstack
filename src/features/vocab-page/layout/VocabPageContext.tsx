@@ -16,11 +16,6 @@ import {
 } from "@/query/query-options"
 import type { User } from "@supabase/supabase-js"
 import {
-  buildBreadcrumbPath,
-  getFolderContents,
-  getParentFolderId,
-} from "../logic/folder-utils"
-import {
   saveFoldersAndDecks,
   loadFoldersAndDecks,
 } from "@/features/vocab-page/storage/sessionStorage"
@@ -55,10 +50,6 @@ function useVocabPageState(user: User | null) {
     null,
   )
 
-  const [currentViewFolderId, setCurrentViewFolderId] = createSignal<
-    number | null
-  >(null)
-
   const [editingFolder, setEditingFolder] = createSignal<DeckFolder | null>(
     null,
   )
@@ -73,16 +64,6 @@ function useVocabPageState(user: User | null) {
     return localUserData
   }
 
-  const viewBreadcrumbPath = () =>
-    buildBreadcrumbPath(userData().folders, currentViewFolderId())
-  const currentViewContent = () =>
-    getFolderContents(
-      userData().folders,
-      userData().decks,
-      currentViewFolderId(),
-    )
-  const canNavigateUp = () => currentViewFolderId() !== null
-
   createEffect(() => {
     if (!user) {
       if (
@@ -94,15 +75,7 @@ function useVocabPageState(user: User | null) {
     }
   })
 
-  const navigateToParentView = () => {
-    const parentId = getParentFolderId(
-      userData().folders,
-      currentViewFolderId(),
-    )
-    setCurrentViewFolderId(parentId)
-  }
-
-  const handleDeckSelect = (deck: UserDeck) => {
+  const handleSelectDeck = (deck: UserDeck) => {
     if (deck.folder_id === null) {
       navigate({ to: `/vocab/${deck.deck_id}` })
     } else {
@@ -112,7 +85,7 @@ function useVocabPageState(user: User | null) {
     setSelectedUserDeck(deck)
   }
 
-  const handleDeckDeselect = () => {
+  const handleDeselectDeck = () => {
     setSelectedUserDeck(null)
   }
 
@@ -275,6 +248,9 @@ function useVocabPageState(user: User | null) {
   }
 
   return {
+    // User state
+    userId: user?.id || null,
+
     // Panel state
     rightPanelOpen,
     setRightPanelOpen,
@@ -289,17 +265,9 @@ function useVocabPageState(user: User | null) {
     shareStatus: () => userData().shareStatus,
     selectedUserDeck,
 
-    // Folder view navigation
-    currentViewFolderId,
-    viewBreadcrumbPath,
-    currentViewContent,
-    canNavigateUp,
-    setCurrentViewFolderId,
-    navigateToParentView,
-
     // Deck selection handlers
-    handleDeckSelect,
-    handleDeckDeselect,
+    handleSelectDeck,
+    handleDeselectDeck,
 
     // Modal state (managed in context, rendered in VocabLayout)
     editingFolder,

@@ -69,3 +69,25 @@ export function buildBreadcrumbPath(
 
   return path
 }
+
+/**
+ * Build breadcrumbs for folder view
+ * Returns array of breadcrumb items including root "Vocabulary" crumb
+ */
+export function buildFolderBreadcrumbs(
+  folders: DeckFolder[],
+  folderId: number | null,
+): Array<{ label: string; href: string }> {
+  if (folderId === null) {
+    return [{ label: "Vocabulary", href: "/vocab" }]
+  }
+
+  const path = buildBreadcrumbPath(folders, folderId)
+  return [
+    { label: "Vocabulary", href: "/vocab" },
+    ...path.map((folder) => ({
+      label: folder.folder_name,
+      href: `/vocab/${folder.folder_id}`,
+    })),
+  ]
+}

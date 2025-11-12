@@ -22,7 +22,6 @@ interface VocabRightPanelProps {
   userDecks: UserDeck[]
   folders: DeckFolder[]
   shareStatus: Record<number, boolean>
-  onShareStatusChange: () => void
 
   onPlayDeck: (deck: UserDeck) => void
   selectedUserDeck: UserDeck | null
@@ -147,7 +146,6 @@ export function VocabRightPanel(props: VocabRightPanelProps) {
             deck={deck}
             onSelect={props.onSelectDeck}
             isSelected={props.selectedUserDeck?.deck_id === node.id}
-            userId={props.userId}
             class="deck-card"
           />
         )
@@ -170,9 +168,7 @@ export function VocabRightPanel(props: VocabRightPanelProps) {
             deck={node.data}
             isSelected={props.selectedUserDeck?.deck_id === node.data.deck_id}
             onSelect={props.onSelectDeck}
-            userId={props.userId}
             isShared={!!props.shareStatus[node.data.deck_id]}
-            onShareStatusChange={props.onShareStatusChange}
             class="deck-card"
           />
         )

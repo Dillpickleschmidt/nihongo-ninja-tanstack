@@ -44,9 +44,7 @@ interface DeckCardProps {
   isNewlyImported?: boolean
   isSelected?: boolean
   onSelect?: (deck: UserDeck) => void
-  userId?: string
   isShared?: boolean
-  onShareStatusChange?: () => void // Callback to refresh share status
   class?: string
 }
 
@@ -100,7 +98,7 @@ export function DeckCard(props: DeckCardProps) {
     try {
       await createDeckShareServerFn({ data: { deck_id: props.deck.deck_id } })
       setShowShareModal(false)
-      props.onShareStatusChange?.()
+      state.refetchFoldersAndDecks()
       alert("Deck shared publicly!")
     } catch (error) {
       alert(error instanceof Error ? error.message : "Failed to share deck")
@@ -115,7 +113,7 @@ export function DeckCard(props: DeckCardProps) {
     setIsSharing(true)
     try {
       await removeDeckShareServerFn({ data: { deck_id: props.deck.deck_id } })
-      props.onShareStatusChange?.()
+      state.refetchFoldersAndDecks()
       alert("Deck unshared!")
     } catch (error) {
       alert(error instanceof Error ? error.message : "Failed to unshare deck")
@@ -143,7 +141,7 @@ export function DeckCard(props: DeckCardProps) {
   }
 
   const handleNavigateToPractice = (mode: "meanings" | "spellings") => {
-    navigateToPractice(props.deck, mode, navigate, props.userId)
+    navigateToPractice(props.deck, mode, navigate, state.userId || undefined)
   }
 
   return (
@@ -396,7 +394,7 @@ export function DeckCard(props: DeckCardProps) {
         deck={props.deck}
         isOpen={showPracticeModeModal()}
         onClose={() => setShowPracticeModeModal(false)}
-        userId={props.userId}
+        userId={state.userId || undefined}
       />
     </>
   )

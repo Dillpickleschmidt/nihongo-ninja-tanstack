@@ -5,15 +5,13 @@ import { GridContainer } from "../../../shared/components/GridContainer"
 import { FolderCard } from "../../../shared/components/FolderCard"
 import { DeckCard } from "../../../right-panel/DeckCard"
 import { getFolderContents, findFolder } from "../../../logic/folder-utils"
-import { buildBreadcrumbPath } from "../../../utils/folderTreeUtils"
+import { buildFolderBreadcrumbs } from "../../../utils/folderTreeUtils"
 
 interface FolderViewProps {
   folderId: number | null // null for root level
   folders: DeckFolder[]
   decks: UserDeck[]
-  userId?: string
-  onSelectDeck?: (deck: UserDeck) => void
-  onShareStatusChange?: () => void
+  onSelectDeck: (deck: UserDeck) => void
 }
 
 /**
@@ -26,19 +24,8 @@ export function FolderView(props: FolderViewProps) {
   const folderContents = () =>
     getFolderContents(props.folders, props.decks, props.folderId)
 
-  const breadcrumbs = () => {
-    if (props.folderId === null) {
-      return [{ label: "Vocabulary", href: "/vocab" }]
-    }
-    const path = buildBreadcrumbPath(props.folders, props.folderId)
-    return [
-      { label: "Vocabulary", href: "/vocab" },
-      ...path.map((folder) => ({
-        label: folder.folder_name,
-        href: `/vocab/${folder.folder_id}`,
-      })),
-    ]
-  }
+  const breadcrumbs = () =>
+    buildFolderBreadcrumbs(props.folders, props.folderId)
 
   const currentFolderName = () => {
     if (props.folderId === null) return "Vocabulary"
@@ -74,14 +61,7 @@ export function FolderView(props: FolderViewProps) {
 
         {/* Render decks */}
         <For each={folderContents().decks}>
-          {(deck) => (
-            <DeckCard
-              deck={deck}
-              userId={props.userId}
-              onSelect={props.onSelectDeck}
-              onShareStatusChange={props.onShareStatusChange}
-            />
-          )}
+          {(deck) => <DeckCard deck={deck} onSelect={props.onSelectDeck} />}
         </For>
       </GridContainer>
     </ViewContainer>

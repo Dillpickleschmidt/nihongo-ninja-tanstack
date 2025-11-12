@@ -76,11 +76,10 @@ export function VocabLayout(props: VocabLayoutProps) {
               userDecks={state.userDecks()}
               folders={state.folders()}
               shareStatus={state.shareStatus()}
-              onShareStatusChange={state.refetchFoldersAndDecks}
               onPlayDeck={() => {}}
               selectedUserDeck={state.selectedUserDeck()}
-              onSelectDeck={state.handleDeckSelect}
-              onDeselectDeck={state.handleDeckDeselect}
+              onSelectDeck={state.handleSelectDeck}
+              onDeselectDeck={state.handleDeselectDeck}
               onRefetch={state.refetchFoldersAndDecks}
               userId={props.user?.id}
               panelRef={rightPanelRef}
