@@ -1,5 +1,5 @@
 // features/vocab-page/right-panel/VocabRightPanel.tsx
-import { createSignal, Show, For } from "solid-js"
+import { createSignal, Show, createMemo, For, type JSX } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { allLearningPathsQueryOptions } from "@/query/query-options"
@@ -8,19 +8,15 @@ import { CollapsibleSection } from "../shared/CollapsibleSection"
 import { BookOpen, Folder, Plus } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/utils"
-import {
-  filterVocabPracticeModules,
-  transformModuleToDeckLike,
-} from "../utils/learningPathToDeckAdapter"
-import {
-  getRootFolders,
-  getDecksInFolder,
-  getRootDecks,
-} from "../logic/folder-utils"
+import { transformModuleToDeckLike } from "../utils/learningPathToDeckAdapter"
 import { CreateModal } from "../shared/components/CreateModal"
 import { createFolderServerFn } from "@/features/supabase/db/folder"
 import { validateFolderNameUnique } from "../validation/deck-folder-validation"
 import { validateName } from "../validation/common"
+import {
+  buildVocabHierarchy,
+  type HierarchyNode,
+} from "../logic/hierarchy-builder"
 
 interface VocabRightPanelProps {
   userDecks: UserDeck[]
@@ -62,6 +58,12 @@ export function VocabRightPanel(props: VocabRightPanelProps) {
     setExpandedSections(newExpanded)
   }
 
+  // Build complete hierarchy from all data sources
+  const hierarchy = createMemo(() => {
+    const learningPaths = learningPathsQuery.data || []
+    return buildVocabHierarchy(props.folders, props.userDecks, learningPaths)
+  })
+
   const handleCreateFolder = async () => {
     const folderName = window.prompt("Enter folder name:")
     if (!folderName?.trim()) return
@@ -94,138 +96,129 @@ export function VocabRightPanel(props: VocabRightPanelProps) {
     }
   }
 
+  // Local recursive component for rendering hierarchy
+  const RenderHierarchy = (props: { nodes: HierarchyNode[] }) => (
+    <For each={props.nodes}>
+      {(node) =>
+        renderNode(node, () => <RenderHierarchy nodes={node.children} />)
+      }
+    </For>
+  )
+
+  // Render function for hierarchy nodes
+  const renderNode = (
+    node: HierarchyNode,
+    renderChildren: () => JSX.Element,
+  ): JSX.Element => {
+    switch (node.type) {
+      case "learning-path":
+        return (
+          <CollapsibleSection
+            title={node.data.short_name}
+            icon={BookOpen}
+            isExpanded={expandedSections().has(node.id)}
+            onToggle={() => toggleSection(node.id)}
+          >
+            <div class="space-y-2">{renderChildren()}</div>
+          </CollapsibleSection>
+        )
+
+      case "chapter":
+        return (
+          <CollapsibleSection
+            title={node.data.title}
+            isExpanded={expandedSections().has(node.id)}
+            onToggle={() => toggleSection(node.id)}
+          >
+            <div class="space-y-2">{renderChildren()}</div>
+          </CollapsibleSection>
+        )
+
+      case "module":
+        const moduleData = node.data
+        const deck =
+          "module" in moduleData
+            ? transformModuleToDeckLike(node.id, moduleData.module)
+            : moduleData.deck
+
+        return (
+          <DeckCard
+            deck={deck}
+            onSelect={props.onSelectDeck}
+            isSelected={props.selectedUserDeck?.deck_id === node.id}
+            userId={props.userId}
+            class="deck-card"
+          />
+        )
+
+      case "folder":
+        return (
+          <CollapsibleSection
+            title={node.data.folder_name}
+            isExpanded={expandedSections().has(node.id)}
+            onToggle={() => toggleSection(node.id)}
+            folderData={node.data}
+          >
+            <div class="space-y-2">{renderChildren()}</div>
+          </CollapsibleSection>
+        )
+
+      case "deck":
+        return (
+          <DeckCard
+            deck={node.data}
+            isSelected={props.selectedUserDeck?.deck_id === node.data.deck_id}
+            onSelect={props.onSelectDeck}
+            userId={props.userId}
+            isShared={!!props.shareStatus[node.data.deck_id]}
+            onShareStatusChange={props.onShareStatusChange}
+            class="deck-card"
+          />
+        )
+    }
+  }
+
   return (
     <>
       <div class="space-y-4 pb-24">
         {/* All Learning Paths with their Chapters */}
         <Show
           when={
-            !learningPathsQuery.isPending &&
-            !learningPathsQuery.isError &&
-            learningPathsQuery.data &&
-            learningPathsQuery.data.length > 0
+            hierarchy().filter((node) => node.type === "learning-path").length >
+            0
           }
         >
           <div class="mb-6 space-y-2">
-            <For each={learningPathsQuery.data}>
-              {(path) => (
-                <CollapsibleSection
-                  title={path.short_name}
-                  icon={BookOpen}
-                  isExpanded={expandedSections().has(`path-${path.id}`)}
-                  onToggle={() => toggleSection(`path-${path.id}`)}
-                >
-                  <div class="space-y-2">
-                    <For each={path.chapters}>
-                      {(chapter) => (
-                        <CollapsibleSection
-                          title={chapter.title}
-                          isExpanded={expandedSections().has(
-                            `chapter-${chapter.slug}`,
-                          )}
-                          onToggle={() =>
-                            toggleSection(`chapter-${chapter.slug}`)
-                          }
-                        >
-                          <div class="space-y-2">
-                            <For
-                              each={filterVocabPracticeModules(
-                                chapter,
-                                props.userDecks,
-                              )}
-                            >
-                              {(item) => (
-                                <DeckCard
-                                  deck={
-                                    "module" in item
-                                      ? transformModuleToDeckLike(
-                                          item.moduleId,
-                                          item.module,
-                                        )
-                                      : item.deck
-                                  }
-                                  onPlay={() => {}}
-                                  onSelect={props.onSelectDeck}
-                                  isSelected={
-                                    props.selectedUserDeck?.deck_id ===
-                                    item.moduleId
-                                  }
-                                  userId={props.userId}
-                                  class="deck-card"
-                                />
-                              )}
-                            </For>
-                          </div>
-                        </CollapsibleSection>
-                      )}
-                    </For>
-                  </div>
-                </CollapsibleSection>
+            <RenderHierarchy
+              nodes={hierarchy().filter(
+                (node) => node.type === "learning-path",
               )}
-            </For>
+            />
           </div>
         </Show>
 
         {/* User Decks Section */}
-        <CollapsibleSection
-          title="User Decks"
-          icon={Folder}
-          isExpanded={expandedSections().has("user-decks")}
-          onToggle={() => toggleSection("user-decks")}
+        <Show
+          when={
+            hierarchy().filter((node) => node.type !== "learning-path").length >
+            0
+          }
         >
-          <div class="space-y-2">
-            {/* User Folders */}
-            <For each={getRootFolders(props.folders)}>
-              {(folder) => (
-                <CollapsibleSection
-                  title={folder.folder_name}
-                  isExpanded={expandedSections().has(
-                    `folder-${folder.folder_id}`,
-                  )}
-                  onToggle={() => toggleSection(`folder-${folder.folder_id}`)}
-                  folderData={folder}
-                >
-                  <div class="space-y-2">
-                    <For
-                      each={getDecksInFolder(props.userDecks, folder.folder_id)}
-                    >
-                      {(deck) => (
-                        <DeckCard
-                          deck={deck}
-                          onPlay={props.onPlayDeck}
-                          isSelected={
-                            props.selectedUserDeck?.deck_id === deck.deck_id
-                          }
-                          onSelect={props.onSelectDeck}
-                          userId={props.userId}
-                          isShared={!!props.shareStatus[deck.deck_id]}
-                          onShareStatusChange={props.onShareStatusChange}
-                          class="deck-card"
-                        />
-                      )}
-                    </For>
-                  </div>
-                </CollapsibleSection>
-              )}
-            </For>
-
-            {/* Root-level User Decks (not in any folder) */}
-            <For each={getRootDecks(props.userDecks)}>
-              {(deck) => (
-                <DeckCard
-                  deck={deck}
-                  onPlay={props.onPlayDeck}
-                  isSelected={props.selectedUserDeck?.deck_id === deck.deck_id}
-                  onSelect={props.onSelectDeck}
-                  userId={props.userId}
-                  isShared={!!props.shareStatus[deck.deck_id]}
-                  onShareStatusChange={props.onShareStatusChange}
-                  class="deck-card"
-                />
-              )}
-            </For>
-          </div>
-        </CollapsibleSection>
+          <CollapsibleSection
+            title="User Decks"
+            icon={Folder}
+            isExpanded={expandedSections().has("user-decks")}
+            onToggle={() => toggleSection("user-decks")}
+          >
+            <div class="space-y-2">
+              <RenderHierarchy
+                nodes={hierarchy().filter(
+                  (node) => node.type !== "learning-path",
+                )}
+              />
+            </div>
+          </CollapsibleSection>
+        </Show>
       </div>
 
       {/* Create New Button - positioned at bottom right, above instruction bar */}

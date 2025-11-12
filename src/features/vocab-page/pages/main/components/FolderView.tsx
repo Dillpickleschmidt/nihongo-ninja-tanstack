@@ -1,6 +1,9 @@
+import { For } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
-import { FolderGrid } from "../../../shared/components/FolderGrid"
 import { ViewContainer } from "../../../shared/components/ViewContainer"
+import { GridContainer } from "../../../shared/components/GridContainer"
+import { FolderCard } from "../../../shared/components/FolderCard"
+import { DeckCard } from "../../../right-panel/DeckCard"
 import { getFolderContents, findFolder } from "../../../logic/folder-utils"
 import { buildBreadcrumbPath } from "../../../utils/folderTreeUtils"
 
@@ -20,7 +23,8 @@ interface FolderViewProps {
 export function FolderView(props: FolderViewProps) {
   const navigate = useNavigate()
 
-  const folderContents = () => getFolderContents(props.folders, props.decks, props.folderId)
+  const folderContents = () =>
+    getFolderContents(props.folders, props.decks, props.folderId)
 
   const breadcrumbs = () => {
     if (props.folderId === null) {
@@ -32,7 +36,7 @@ export function FolderView(props: FolderViewProps) {
       ...path.map((folder) => ({
         label: folder.folder_name,
         href: `/vocab/${folder.folder_id}`,
-      }))
+      })),
     ]
   }
 
@@ -46,16 +50,40 @@ export function FolderView(props: FolderViewProps) {
     navigate({ to: `/vocab/${folderId}` })
   }
 
+  const combinedItems = () => [
+    ...folderContents().folders,
+    ...folderContents().decks,
+  ]
+
   return (
     <ViewContainer breadcrumbs={breadcrumbs()} title={currentFolderName()}>
-      <FolderGrid
-        folders={folderContents().folders}
-        decks={folderContents().decks}
-        userId={props.userId}
-        onFolderClick={handleFolderClick}
-        onSelectDeck={props.onSelectDeck}
-        onShareStatusChange={props.onShareStatusChange}
-      />
+      <GridContainer
+        items={combinedItems}
+        emptyMessage="No folders or decks yet"
+      >
+        {/* Render folders */}
+        <For each={folderContents().folders}>
+          {(folder) => (
+            <FolderCard
+              title={folder.folder_name}
+              onClick={() => handleFolderClick(folder.folder_id)}
+              folderData={folder}
+            />
+          )}
+        </For>
+
+        {/* Render decks */}
+        <For each={folderContents().decks}>
+          {(deck) => (
+            <DeckCard
+              deck={deck}
+              userId={props.userId}
+              onSelect={props.onSelectDeck}
+              onShareStatusChange={props.onShareStatusChange}
+            />
+          )}
+        </For>
+      </GridContainer>
     </ViewContainer>
   )
 }

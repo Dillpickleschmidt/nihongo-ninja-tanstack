@@ -1,8 +1,8 @@
 import { For, Show } from "solid-js"
 import { FolderCard } from "../../../shared/components/FolderCard"
 import { DeckCard } from "../../../right-panel/DeckCard"
-import { getRootDecks } from "../../../logic/folder-utils"
 import type { LearningPath } from "@/data/types"
+import { getRootLevelItems } from "../../../logic/hierarchy-builder"
 
 interface FolderBrowserGridProps {
   folders: DeckFolder[]
@@ -16,18 +16,15 @@ interface FolderBrowserGridProps {
 
 /**
  * Grid of folders, decks, and learning paths for navigation
+ * Uses declarative hierarchy to ensure consistency with VocabRightPanel
  */
 export function FolderBrowserGrid(props: FolderBrowserGridProps) {
-  const rootDecks = () => (props.decks ? getRootDecks(props.decks) : [])
-
-  const hasContent = () =>
-    props.folders.length > 0 ||
-    props.learningPaths.length > 0 ||
-    rootDecks().length > 0
+  const rootItems = () =>
+    getRootLevelItems(props.folders, props.decks || [], props.learningPaths)
 
   return (
     <Show
-      when={hasContent()}
+      when={rootItems().length > 0}
       fallback={
         <div class="border-border/50 rounded-lg border border-dashed p-8 text-center">
           <p class="text-muted-foreground text-sm">
@@ -41,37 +38,42 @@ export function FolderBrowserGrid(props: FolderBrowserGridProps) {
           All Decks & Paths
         </h2>
         <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Render folders */}
-          <For each={props.folders}>
-            {(folder) => (
-              <FolderCard
-                title={folder.folder_name}
-                subtitle="Folder"
-                onClick={() => props.onFolderClick(folder.folder_id.toString())}
-                folderData={folder}
-              />
-            )}
-          </For>
+          <For each={rootItems()}>
+            {(node) => {
+              switch (node.type) {
+                case "learning-path":
+                  return (
+                    <FolderCard
+                      title={node.data.name}
+                      subtitle="Learning Path"
+                      onClick={() => props.onLearningPathClick(node.data.id)}
+                    />
+                  )
 
-          {/* Render learning paths */}
-          <For each={props.learningPaths}>
-            {(learningPath) => (
-              <FolderCard
-                title={learningPath.name}
-                subtitle="Learning Path"
-                onClick={() => props.onLearningPathClick(learningPath.id)}
-              />
-            )}
-          </For>
+                case "folder":
+                  return (
+                    <FolderCard
+                      title={node.data.folder_name}
+                      subtitle="Folder"
+                      onClick={() =>
+                        props.onFolderClick(node.data.folder_id.toString())
+                      }
+                      folderData={node.data}
+                    />
+                  )
 
-          {/* Render root-level decks */}
-          <For each={rootDecks()}>
-            {(deck) => (
-              <DeckCard
-                deck={deck}
-                onSelect={(d) => props.onDeckClick?.(d)}
-              />
-            )}
+                case "deck":
+                  return (
+                    <DeckCard
+                      deck={node.data}
+                      onSelect={(d) => props.onDeckClick?.(d)}
+                    />
+                  )
+
+                default:
+                  return null
+              }
+            }}
           </For>
         </div>
       </div>
