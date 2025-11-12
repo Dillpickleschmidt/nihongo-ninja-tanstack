@@ -14,7 +14,7 @@ import {
   CheckboxLabel,
 } from "@/components/ui/checkbox"
 import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
-import { useVocabItemValidation } from "../hooks/useVocabItemValidation"
+import { useVocabItemValidation } from "../hooks/useDeckCreationValidation"
 import { createEmptyVocabItemFormData } from "@/features/vocab-page/types/vocabulary"
 import { Label } from "@/components/ui/label"
 import type { FieldValidationState } from "../types/deck-creation-types"

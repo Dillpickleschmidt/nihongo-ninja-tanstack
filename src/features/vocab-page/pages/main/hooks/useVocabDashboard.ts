@@ -8,7 +8,7 @@ import {
   completedModulesQueryOptions,
   recentlyStudiedDecksQueryOptions,
 } from "@/query/query-options"
-import { useVocabPageContext } from "@/features/vocab-page/layout/VocabPageProvider"
+import { useVocabPageContext } from "@/features/vocab-page/layout/VocabPageContext"
 import type { TextbookIDEnum } from "@/data/types"
 
 export interface BreadcrumbItem {
@@ -49,7 +49,9 @@ export function useVocabDashboard() {
   // Upcoming modules from active learning path and chapter
   // Settings are guaranteed to be available from __root.tsx loader
   const upcomingModulesQuery = useCustomQuery(() => {
-    const activePath = settingsQuery.data!["active-learning-path"] as TextbookIDEnum
+    const activePath = settingsQuery.data![
+      "active-learning-path"
+    ] as TextbookIDEnum
     const activeChapter = settingsQuery.data!["active-chapter"] as string
 
     return upcomingModulesQueryOptions(

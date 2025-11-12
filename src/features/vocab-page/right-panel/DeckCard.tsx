@@ -37,7 +37,7 @@ import { ShareModal } from "../shared/components/ShareModal"
 import { PracticeModeModal } from "../shared/components/PracticeModeModal"
 import { getPracticeAction } from "../utils/practiceMode"
 import { useNavigate } from "@tanstack/solid-router"
-import { useVocabPageContext } from "../layout/VocabPageProvider"
+import { useVocabPageContext } from "../layout/VocabPageContext"
 
 interface DeckCardProps {
   deck: UserDeck

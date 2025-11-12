@@ -1,7 +1,7 @@
 import { createMemo, createSignal } from "solid-js"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
-import { useDeckValidation } from "../hooks/useDeckValidation"
+import { useDeckValidation } from "../hooks/useDeckCreationValidation"
 import {
   formDataToDBInsert,
   formDataToVocabularyItem,

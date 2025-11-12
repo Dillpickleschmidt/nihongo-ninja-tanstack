@@ -7,6 +7,10 @@ interface UseFolderTreeProps {
   item: UserDeck | DeckFolder | null
 }
 
+/**
+ * Hook for building folder tree and getting folder contents
+ * Used in folder selectors and edit modals
+ */
 export function useFolderTree(props: UseFolderTreeProps) {
   const isFolder = () => props.item && "folder_id" in props.item
 

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/solid-router"
-import { VocabPageProvider } from "@/features/vocab-page/layout/VocabPageProvider"
+import { VocabPageProvider } from "@/features/vocab-page/layout/VocabPageContext"
 import { VocabLayout } from "@/features/vocab-page/layout/VocabLayout"
 import { queryKeys } from "@/query/utils/query-keys"
 import type { User } from "@supabase/supabase-js"

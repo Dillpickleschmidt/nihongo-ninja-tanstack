@@ -1,4 +1,4 @@
-import { createSignal, Show } from "solid-js"
+import { createSignal } from "solid-js"
 import {
   ContextMenu,
   ContextMenuContent,
@@ -16,7 +16,7 @@ import { Edit3, Trash2 } from "lucide-solid"
 import { useFolderTree } from "../../hooks/useFolderTree"
 import { DeleteConfirmation } from "./DeleteConfirmation"
 import { EditTransaction } from "../../logic/edit-transaction"
-import { useVocabPageContext } from "../../layout/VocabPageProvider"
+import { useVocabPageContext } from "../../layout/VocabPageContext"
 
 interface FolderContextMenuProps {
   folderData: DeckFolder
@@ -59,11 +59,9 @@ export function FolderContextMenu(props: FolderContextMenuProps) {
   return (
     <>
       <ContextMenu>
-        <ContextMenuTrigger as="div">
-          {props.children}
-        </ContextMenuTrigger>
+        <ContextMenuTrigger as="div">{props.children}</ContextMenuTrigger>
 
-        <ContextMenuContent class="w-48 bg-card border-card-foreground outline-none">
+        <ContextMenuContent class="bg-card border-card-foreground w-48 outline-none">
           <div>
             <ContextMenuItem
               onClick={() => {

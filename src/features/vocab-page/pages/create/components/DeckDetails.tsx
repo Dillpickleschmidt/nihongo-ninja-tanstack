@@ -12,7 +12,7 @@ import {
 import { LocationSelector } from "@/features/vocab-page/shared/components/LocationSelector"
 import { useFolderTree } from "@/features/vocab-page/hooks/useFolderTree"
 import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
-import { useDeckValidation } from "../hooks/useDeckValidation"
+import { useDeckValidation } from "../hooks/useDeckCreationValidation"
 
 interface DeckDetailsProps {
   folders: DeckFolder[]
