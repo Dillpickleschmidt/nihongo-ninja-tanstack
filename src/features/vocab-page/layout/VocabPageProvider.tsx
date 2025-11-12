@@ -2,21 +2,19 @@
 import { createContext, useContext, ParentComponent } from "solid-js"
 import { useVocabPageState } from "../hooks/useVocabPageState"
 import type { User } from "@supabase/supabase-js"
-import type { FoldersAndDecksData } from "@/features/supabase/db/folder"
 
 type VocabPageState = ReturnType<typeof useVocabPageState>
 
 const VocabPageContext = createContext<VocabPageState | undefined>()
 
 interface VocabPageProviderProps {
-  foldersAndDecksPromise: Promise<FoldersAndDecksData>
   user: User | null
 }
 
 export const VocabPageProvider: ParentComponent<VocabPageProviderProps> = (
   props,
 ) => {
-  const state = useVocabPageState(props.foldersAndDecksPromise, props.user)
+  const state = useVocabPageState(props.user)
 
   return (
     <VocabPageContext.Provider value={state}>

@@ -24,19 +24,19 @@ export function VocabDashboard(props: VocabDashboardProps) {
   const handleSelectRecentDeck = (deck: UserDeck & { lastPracticed: Date }) => {
     // Navigate to deck if it has a folder
     if (deck.folder_id) {
-      dashboard.navigateToPath(`/vocab/${deck.folder_id}/${deck.deck_id}`)
+      dashboard.navigate({ to: `/vocab/${deck.folder_id}/${deck.deck_id}` })
     }
     props.onSelectDeck(deck)
   }
 
   // Handle folder click
   const handleFolderClick = (folderIdStr: string) => {
-    dashboard.navigateToPath(`/vocab/${folderIdStr}`)
+    dashboard.navigate({ to: `/vocab/${folderIdStr}` })
   }
 
   // Handle learning path click
   const handleLearningPathClick = (learningPathId: string) => {
-    dashboard.navigateToPath(`/vocab/${learningPathId}`)
+    dashboard.navigate({ to: `/vocab/${learningPathId}` })
   }
 
   return (

@@ -1,10 +1,8 @@
 import { useNavigate } from "@tanstack/solid-router"
-import { createMemo } from "solid-js"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 import {
-  userSettingsQueryOptions,
   allLearningPathsQueryOptions,
   upcomingModulesQueryOptions,
   completedModulesQueryOptions,
@@ -29,20 +27,18 @@ export function useVocabDashboard() {
   const context = useRouteContext({ from: RootRoute.id })
   const navigate = useNavigate()
 
-  // Vocab page context with folders and decks
+  // Vocab page context with folders and decks (already has settingsQuery)
   const vocabState = useVocabPageContext()
 
-  // User settings
-  const settingsQuery = useCustomQuery(() =>
-    userSettingsQueryOptions(context().user?.id || null),
-  )
+  // Get settings from vocabState (reuses query from useVocabPageState)
+  const settingsQuery = vocabState.settingsQuery
 
-  // Learning paths data
+  // Learning paths data (prefetched in __root.tsx)
   const learningPathsQuery = useCustomQuery(() =>
     allLearningPathsQueryOptions(context().user?.id || null),
   )
 
-  // Recently studied decks
+  // Recently studied decks (prefetched in vocab loader)
   const recentlyStudiedQuery = useCustomQuery(() =>
     recentlyStudiedDecksQueryOptions(
       context().user?.id || null,
@@ -51,11 +47,11 @@ export function useVocabDashboard() {
   )
 
   // Upcoming modules from active learning path and chapter
+  // Settings are guaranteed to be available from __root.tsx loader
   const upcomingModulesQuery = useCustomQuery(() => {
-    const activePath = settingsQuery.data![
-      "active-learning-path"
-    ] as TextbookIDEnum
+    const activePath = settingsQuery.data!["active-learning-path"] as TextbookIDEnum
     const activeChapter = settingsQuery.data!["active-chapter"] as string
+
     return upcomingModulesQueryOptions(
       context().user?.id || null,
       activePath,
@@ -63,39 +59,9 @@ export function useVocabDashboard() {
     )
   })
 
-  // Completed modules (to filter upcoming)
+  // Completed modules (prefetched in vocab loader)
   const completedModulesQuery = useCustomQuery(() =>
     completedModulesQueryOptions(context().user?.id || null),
-  )
-
-  // Navigation actions
-  const navigateToPath = (path: string) => {
-    navigate({ to: path })
-  }
-
-  const navigateToDashboard = () => {
-    navigate({ to: "/vocab" })
-  }
-
-  // Computed values for loading states
-  const isLoadingRecent = createMemo(
-    () => recentlyStudiedQuery.isPending || recentlyStudiedQuery.isError,
-  )
-
-  const isLoadingComingUp = createMemo(
-    () =>
-      upcomingModulesQuery.isPending ||
-      upcomingModulesQuery.isError ||
-      completedModulesQuery.isPending ||
-      completedModulesQuery.isError,
-  )
-
-  const isLoading = createMemo(
-    () =>
-      settingsQuery.isPending ||
-      learningPathsQuery.isPending ||
-      isLoadingRecent() ||
-      isLoadingComingUp(),
   )
 
   return {
@@ -103,6 +69,7 @@ export function useVocabDashboard() {
     recentlyStudiedQuery,
     upcomingModulesQuery,
     completedModulesQuery,
+    learningPathsQuery,
 
     // Data
     folders: () => vocabState.folders(),
@@ -114,14 +81,7 @@ export function useVocabDashboard() {
       return learningPathsQuery.data || []
     },
 
-    // Actions
-    navigateToPath,
-    navigateToDashboard,
-
-    // Loading states
-    isLoadingRecent,
-    isLoadingComingUp,
-    isLoading,
-    isLoadingSettings: () => settingsQuery.isPending,
+    // Navigation (inline wrapper removed - return navigate directly)
+    navigate,
   }
 }

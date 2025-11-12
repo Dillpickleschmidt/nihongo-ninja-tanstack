@@ -1,40 +1,42 @@
 // features/vocab-page/hooks/useVocabPageState.ts
-import { createSignal, createEffect, createResource, Accessor } from "solid-js"
+import { createSignal, createEffect } from "solid-js"
 import type { EditTransaction } from "../logic/edit-transaction"
-import { createStore, reconcile } from "solid-js/store"
+import { createStore } from "solid-js/store"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/query/query-options"
-import type { FoldersAndDecksData } from "@/features/supabase/db/folder"
+import {
+  userSettingsQueryOptions,
+  userFoldersAndDecksQueryOptions,
+} from "@/query/query-options"
 import type { User } from "@supabase/supabase-js"
 import {
   buildBreadcrumbPath,
   getFolderContents,
   getParentFolderId,
 } from "../logic/folder-utils"
-import { getUserFoldersAndDecks } from "@/features/supabase/db/folder"
 import {
   saveFoldersAndDecks,
   loadFoldersAndDecks,
 } from "@/features/vocab-page/storage/sessionStorage"
 
-export function useVocabPageState(
-  foldersAndDecksPromise: Promise<FoldersAndDecksData>,
-  user: User | null,
-) {
+export function useVocabPageState(user: User | null) {
+  // === QUERIES ===
+  // Settings query
+  const settingsQuery = useCustomQuery(() =>
+    userSettingsQueryOptions(user?.id || null),
+  )
+
+  // Folders and decks query (replaces createResource)
+  const foldersAndDecksQuery = useCustomQuery(() =>
+    userFoldersAndDecksQueryOptions(user?.id || null),
+  )
+
   // === SIGNALS ===
   // Panel state
   const [rightPanelOpen, setRightPanelOpen] = createSignal(true)
 
-  // Folder/deck data (immediate UI updates)
-  const initialLocalData = user
-    ? { folders: [], decks: [], shareStatus: {} }
-    : { ...loadFoldersAndDecks(), shareStatus: {} }
-  const [userData, setUserData] = createStore(initialLocalData)
-
-  // Get settings for active learning path
-  const settingsQuery = useCustomQuery(() =>
-    userSettingsQueryOptions(user?.id || null),
-  )
+  // Local data for unsigned users (session storage)
+  const initialLocalData = { ...loadFoldersAndDecks(), shareStatus: {} }
+  const [localUserData, setLocalUserData] = createStore(initialLocalData)
 
   // Deck selection state
   const [selectedUserDeck, setSelectedUserDeck] = createSignal<UserDeck | null>(
@@ -46,42 +48,30 @@ export function useVocabPageState(
     number | null
   >(null)
 
-  // Database resource (background updates)
-  const [foldersAndDecks, { refetch: refetchFoldersAndDecks }] = createResource(
-    foldersAndDecksPromise,
-    async (resolvedInitialData, { refetching }) => {
-      if (refetching && user?.id) {
-        return getUserFoldersAndDecks(user.id)
-      }
-      return resolvedInitialData || { folders: [], decks: [], shareStatus: {} }
-    },
-  )
-
   // === COMPUTED VALUES ===
+  // Get data from query (signed-in) or local storage (unsigned)
+  const userData = () => {
+    if (user) {
+      return (
+        foldersAndDecksQuery.data || { folders: [], decks: [], shareStatus: {} }
+      )
+    }
+    return localUserData
+  }
+
   // Folder navigation computations
   const viewBreadcrumbPath = () =>
-    buildBreadcrumbPath(userData.folders, currentViewFolderId())
+    buildBreadcrumbPath(userData().folders, currentViewFolderId())
   const currentViewContent = () =>
-    getFolderContents(userData.folders, userData.decks, currentViewFolderId())
+    getFolderContents(userData().folders, userData().decks, currentViewFolderId())
   const canNavigateUp = () => currentViewFolderId() !== null
 
-  // === UI SYNC EFFECTS ===
-  // Sync database resource data to local signals for signed-in users
-  createEffect(() => {
-    if (user) {
-      const data = foldersAndDecks() as FoldersAndDecksData | undefined
-      if (data && data.decks.length > 0) {
-        // Simply sync the data to local state
-        setUserData(reconcile(data, { key: "deck_id" }))
-      }
-    }
-  })
-
+  // === EFFECTS ===
   // Auto-sync local state to session storage for unsigned users
   createEffect(() => {
     if (!user) {
-      if (userData.folders.length > 0 || userData.decks.length > 0) {
-        saveFoldersAndDecks(userData)
+      if (localUserData.folders?.length > 0 || localUserData.decks?.length > 0) {
+        saveFoldersAndDecks(localUserData)
       }
     }
   })
@@ -141,10 +131,14 @@ export function useVocabPageState(
     rightPanelOpen,
     setRightPanelOpen,
 
+    // Queries
+    settingsQuery,
+    foldersAndDecksQuery,
+
     // Content state
-    userDecks: () => userData.decks,
-    folders: () => userData.folders,
-    shareStatus: () => userData.shareStatus,
+    userDecks: () => userData().decks,
+    folders: () => userData().folders,
+    shareStatus: () => userData().shareStatus,
     selectedUserDeck,
 
     // Folder view navigation
@@ -178,7 +172,7 @@ export function useVocabPageState(
     setDeckDeleteHandler,
 
     // Internal state setters (for edit operations hook)
-    setUserData,
-    refetchFoldersAndDecks,
+    setUserData: user ? undefined : setLocalUserData,
+    refetchFoldersAndDecks: () => foldersAndDecksQuery.refetch(),
   }
 }

@@ -1,4 +1,4 @@
-import { For, Show } from "solid-js"
+import { For, Show, createMemo } from "solid-js"
 import { useNavigate } from "@tanstack/solid-router"
 import { DeckCard } from "../../../right-panel/DeckCard"
 import type { UseQueryResult, DefaultError } from "@tanstack/solid-query"
@@ -16,18 +16,20 @@ interface ComingUpSectionProps {
 export function ComingUpSection(props: ComingUpSectionProps) {
   const navigate = useNavigate()
 
-  // Filter for vocab-practice modules only
-  const vocabModules = () => {
+  // Filter for vocab-practice modules only (memoized to prevent recalculation)
+  const vocabModules = createMemo(() => {
     const data = props.upcomingModulesQuery.data
     if (!data) return []
 
-    return data
+    const filtered = data
       .filter((item) => item.sourceType === "vocab-practice")
       .slice(0, 10)
-  }
 
-  // Transform to UserDeck format with linkTo field
-  const vocabDecks = () => {
+    return filtered
+  })
+
+  // Transform to UserDeck format with linkTo field (memoized)
+  const vocabDecks = createMemo(() => {
     return vocabModules().map(
       (module) =>
         ({
@@ -46,7 +48,7 @@ export function ComingUpSection(props: ComingUpSectionProps) {
           linkTo: module.linkTo,
         }) as UserDeck & { linkTo: string },
     )
-  }
+  })
 
   // Navigate using pre-computed linkTo (no reverse lookup!)
   const handleSelectDeck = (deck: UserDeck & { linkTo?: string }) => {

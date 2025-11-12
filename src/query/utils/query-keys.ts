@@ -40,6 +40,8 @@ export const queryKeys = {
     ["hierarchy-svgs", characters] as const,
 
   // User Decks
+  userFoldersAndDecks: (userId: string | null) =>
+    ["user-folders-and-decks", userId] as const,
   userDeckInfo: (deckId: string) => ["user-deck-info", deckId] as const,
   userDeckVocabulary: (deckId: string) =>
     ["user-deck-vocabulary", deckId] as const,

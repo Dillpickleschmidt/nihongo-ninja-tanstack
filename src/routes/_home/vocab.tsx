@@ -1,12 +1,19 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { VocabPageProvider } from "@/features/vocab-page/layout/VocabPageProvider"
 import { VocabLayout } from "@/features/vocab-page/layout/VocabLayout"
-import { getUserFoldersAndDecks } from "@/features/supabase/db/folder"
 import { queryKeys } from "@/query/utils/query-keys"
 import type { User } from "@supabase/supabase-js"
+import {
+  completedModulesQueryOptions,
+  recentlyStudiedDecksQueryOptions,
+  userFoldersAndDecksQueryOptions,
+  upcomingModulesQueryOptions,
+  userSettingsQueryOptions,
+} from "@/query/query-options"
+import type { TextbookIDEnum } from "@/data/types"
 
 export const Route = createFileRoute("/_home/vocab")({
-  loader: ({ context }) => {
+  loader: async ({ context }) => {
     // Set background settings for vocab page
     context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
       blur: 6,
@@ -14,14 +21,42 @@ export const Route = createFileRoute("/_home/vocab")({
       showGradient: false,
     })
 
-    // Fetch user folders and decks if authenticated
-    // For unsigned users, data will be loaded from session storage in the component
-    const foldersAndDecksPromise = context.user
-      ? getUserFoldersAndDecks(context.user.id)
-      : Promise.resolve({ folders: [], decks: [], shareStatus: {} })
+    // Prefetch folders and decks into query cache
+    if (context.user) {
+      await context.queryClient.prefetchQuery(
+        userFoldersAndDecksQueryOptions(context.user.id),
+      )
+
+      // Get the prefetched data from cache for dependent queries
+      const foldersAndDecks = context.queryClient.getQueryData(
+        userFoldersAndDecksQueryOptions(context.user.id).queryKey,
+      )
+
+      // Get settings from cache (prefetched in __root.tsx)
+      const settings = context.queryClient.getQueryData(
+        userSettingsQueryOptions(context.user.id).queryKey,
+      )
+
+      // Prefetch dependent queries
+      context.queryClient.prefetchQuery(
+        completedModulesQueryOptions(context.user.id),
+      )
+      if (foldersAndDecks) {
+        context.queryClient.prefetchQuery(
+          recentlyStudiedDecksQueryOptions(
+            context.user.id,
+            foldersAndDecks.decks,
+          ),
+        )
+      }
+      const activePath = settings["active-learning-path"] as TextbookIDEnum
+      const activeChapter = settings["active-chapter"] as string
+      context.queryClient.prefetchQuery(
+        upcomingModulesQueryOptions(context.user.id, activePath, activeChapter),
+      )
+    }
 
     return {
-      foldersAndDecksPromise,
       user: context.user,
     }
   },
@@ -40,10 +75,7 @@ function RouteComponent() {
   const data = Route.useLoaderData()()
 
   return (
-    <VocabPageProvider
-      foldersAndDecksPromise={data.foldersAndDecksPromise}
-      user={data.user as User | null}
-    >
+    <VocabPageProvider user={data.user as User | null}>
       <VocabLayout user={data.user as User | null} />
     </VocabPageProvider>
   )

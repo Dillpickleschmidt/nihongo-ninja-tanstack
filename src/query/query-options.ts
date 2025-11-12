@@ -30,6 +30,10 @@ import {
   getVocabForDeck,
 } from "@/features/supabase/db/deck"
 import {
+  getUserFoldersAndDecks,
+  type FoldersAndDecksData,
+} from "@/features/supabase/db/folder"
+import {
   getLearningPathChapterItems,
   fetchAllLearningPaths,
 } from "@/data/utils/core"
@@ -299,6 +303,22 @@ export const userDeckHierarchyQueryOptions = (
         isLiveService,
         "userDeckHierarchyQueryOptions",
       ),
+  })
+
+/**
+ * Get user folders and decks
+ */
+export const userFoldersAndDecksQueryOptions = (userId: string | null) =>
+  queryOptions({
+    queryKey: queryKeys.userFoldersAndDecks(userId),
+    queryFn: async (): Promise<FoldersAndDecksData> => {
+      if (!userId) {
+        return { folders: [], decks: [], shareStatus: {} }
+      }
+      return await getUserFoldersAndDecks(userId)
+    },
+    enabled: !!userId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   })
 
 // ============================================================================
