@@ -3,13 +3,12 @@ import {
   For,
   Show,
   createSignal,
-  createEffect,
-  onCleanup,
 } from "solid-js"
 import { Link, useLocation } from "@tanstack/solid-router"
 import { Button } from "@/components/ui/button"
 import LogoutButton from "@/features/auth/components/Logout"
 import { HamburgerIcon } from "@/components/HamburgerIcon"
+import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { cn } from "@/utils"
 import {
   Home,
@@ -231,70 +230,47 @@ export function Sidebar(props: SidebarProps) {
       : pathname === href || pathname.startsWith(href + "/")
   }
 
-  // Initialize collapsed state: default collapsed on mobile, expanded on md+
-  const [isCollapsed, setIsCollapsed] = createSignal(
-    typeof window !== "undefined" ? window.innerWidth < 768 : true,
-  )
-
-  // Set up media query listener for responsive behavior
-  createEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 768px)")
-
-    // Set initial state based on media query
-    setIsCollapsed(!mediaQuery.matches)
-
-    const handler = (e: MediaQueryListEvent) => {
-      setIsCollapsed(!e.matches)
-    }
-
-    mediaQuery.addEventListener("change", handler)
-
-    onCleanup(() => {
-      mediaQuery.removeEventListener("change", handler)
-    })
-  })
+  // Mobile overlay open state (starts closed)
+  const [isMobileOpen, setIsMobileOpen] = createSignal(false)
 
   return (
     <>
-      {/* Hamburger button - absolutely positioned in top left */}
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => setIsCollapsed(!isCollapsed())}
-        class="fixed top-4 left-4 z-50 md:hidden"
-      >
-        <HamburgerIcon size="sm" />
-      </Button>
+      {/* Mobile: Hamburger button and overlay drawer */}
+      <SSRMediaQuery hideFrom="md">
+        {/* Hamburger button */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setIsMobileOpen(!isMobileOpen())}
+          class="fixed top-4 left-4 z-50"
+        >
+          <HamburgerIcon size="sm" />
+        </Button>
 
-      {/* Desktop sidebar - grid participant, stays in normal flow */}
-      <div
-        class={cn(
-          "hidden h-[calc(100vh-65px)] md:block",
-          "overflow-hidden transition-all duration-200 ease-in-out",
-          isCollapsed() ? "md:w-0" : "md:w-72",
-        )}
-      >
-        <Show when={!isCollapsed()}>
-          <NavigationContent isActive={isActive} />
-        </Show>
-      </div>
-
-      {/* Mobile overlay - backdrop and drawer */}
-      <Show when={!isCollapsed()}>
-        {/* Backdrop */}
-        <div
-          class="fixed inset-0 z-40 bg-black/50 md:hidden"
-          onClick={() => setIsCollapsed(true)}
-        />
-
-        {/* Mobile sidebar drawer */}
-        <div class="bg-background/50 fixed top-0 left-0 z-50 h-full w-72 backdrop-blur-md md:hidden">
-          <NavigationContent
-            isActive={isActive}
-            onNavigate={() => setIsCollapsed(true)}
+        {/* Mobile overlay - backdrop and drawer */}
+        <Show when={isMobileOpen()}>
+          {/* Backdrop */}
+          <div
+            class="fixed inset-0 z-40 bg-black/50"
+            onClick={() => setIsMobileOpen(false)}
           />
+
+          {/* Mobile sidebar drawer */}
+          <div class="bg-background/50 fixed top-0 left-0 z-50 h-full w-72 backdrop-blur-md">
+            <NavigationContent
+              isActive={isActive}
+              onNavigate={() => setIsMobileOpen(false)}
+            />
+          </div>
+        </Show>
+      </SSRMediaQuery>
+
+      {/* Desktop: Always visible sidebar in normal flow */}
+      <SSRMediaQuery showFrom="md">
+        <div class="h-[calc(100vh-65px)] w-72">
+          <NavigationContent isActive={isActive} />
         </div>
-      </Show>
+      </SSRMediaQuery>
     </>
   )
 }
