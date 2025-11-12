@@ -1,22 +1,29 @@
 import { For, Show } from "solid-js"
 import { FolderCard } from "../../../shared/components/FolderCard"
+import { DeckCard } from "../../../right-panel/DeckCard"
+import { getRootDecks } from "../../../logic/folder-utils"
 import type { LearningPath } from "@/data/types"
 
 interface FolderBrowserGridProps {
   folders: DeckFolder[]
+  decks?: UserDeck[]
   learningPaths: LearningPath[]
   onFolderClick: (folderId: string) => void
+  onDeckClick?: (deck: UserDeck) => void
   onLearningPathClick: (learningPathId: string) => void
   class?: string
 }
 
 /**
- * Grid of folders and learning paths for navigation
- * All displayed as unified FolderCard components
+ * Grid of folders, decks, and learning paths for navigation
  */
 export function FolderBrowserGrid(props: FolderBrowserGridProps) {
+  const rootDecks = () => (props.decks ? getRootDecks(props.decks) : [])
+
   const hasContent = () =>
-    props.folders.length > 0 || props.learningPaths.length > 0
+    props.folders.length > 0 ||
+    props.learningPaths.length > 0 ||
+    rootDecks().length > 0
 
   return (
     <Show
@@ -24,7 +31,7 @@ export function FolderBrowserGrid(props: FolderBrowserGridProps) {
       fallback={
         <div class="border-border/50 rounded-lg border border-dashed p-8 text-center">
           <p class="text-muted-foreground text-sm">
-            No folders or learning paths yet
+            No folders, decks, or learning paths yet
           </p>
         </div>
       }
@@ -53,6 +60,16 @@ export function FolderBrowserGrid(props: FolderBrowserGridProps) {
                 title={learningPath.name}
                 subtitle="Learning Path"
                 onClick={() => props.onLearningPathClick(learningPath.id)}
+              />
+            )}
+          </For>
+
+          {/* Render root-level decks */}
+          <For each={rootDecks()}>
+            {(deck) => (
+              <DeckCard
+                deck={deck}
+                onSelect={(d) => props.onDeckClick?.(d)}
               />
             )}
           </For>

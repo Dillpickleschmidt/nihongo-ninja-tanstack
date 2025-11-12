@@ -12,6 +12,11 @@ import {
   filterVocabPracticeModules,
   transformModuleToDeckLike,
 } from "../utils/learningPathToDeckAdapter"
+import {
+  getRootFolders,
+  getDecksInFolder,
+  getRootDecks,
+} from "../logic/folder-utils"
 import { CreateModal } from "../shared/components/CreateModal"
 import { createFolderServerFn } from "@/features/supabase/db/folder"
 import { validateFolderNameUnique } from "../validation/deck-folder-validation"
@@ -170,9 +175,7 @@ export function VocabRightPanel(props: VocabRightPanelProps) {
         >
           <div class="space-y-2">
             {/* User Folders */}
-            <For
-              each={props.folders.filter((f) => f.parent_folder_id === null)}
-            >
+            <For each={getRootFolders(props.folders)}>
               {(folder) => (
                 <CollapsibleSection
                   title={folder.folder_name}
@@ -184,11 +187,7 @@ export function VocabRightPanel(props: VocabRightPanelProps) {
                 >
                   <div class="space-y-2">
                     <For
-                      each={props.userDecks.filter(
-                        (d) =>
-                          d.folder_id === folder.folder_id &&
-                          d.source !== "learning_path",
-                      )}
+                      each={getDecksInFolder(props.userDecks, folder.folder_id)}
                     >
                       {(deck) => (
                         <DeckCard
@@ -211,11 +210,7 @@ export function VocabRightPanel(props: VocabRightPanelProps) {
             </For>
 
             {/* Root-level User Decks (not in any folder) */}
-            <For
-              each={props.userDecks.filter(
-                (d) => !d.folder_id && d.source !== "learning_path",
-              )}
-            >
+            <For each={getRootDecks(props.userDecks)}>
               {(deck) => (
                 <DeckCard
                   deck={deck}

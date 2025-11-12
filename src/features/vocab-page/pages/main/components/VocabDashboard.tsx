@@ -45,8 +45,10 @@ export function VocabDashboard(props: VocabDashboardProps) {
       <ComingUpSection upcomingModulesQuery={dashboard.upcomingModulesQuery} />
       <FolderBrowserGrid
         folders={dashboard.folders()}
+        decks={dashboard.userDecks()}
         learningPaths={dashboard.learningPaths()}
         onFolderClick={handleFolderClick}
+        onDeckClick={props.onSelectDeck}
         onLearningPathClick={handleLearningPathClick}
       />
     </div>

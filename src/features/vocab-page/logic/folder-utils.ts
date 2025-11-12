@@ -1,26 +1,11 @@
 // vocab-page/logic/folder-utils.ts
 
 /**
- * Unified folder management, hierarchy, and navigation functions.
- * These functions handle all folder operations without side effects.
- *
- * Organized into sections:
- * 1. Basic queries (find, get children, etc.)
- * 2. Path and hierarchy operations
- * 3. CRUD operations
- * 4. Tree building and flattening
- * 5. Search and statistics
+ * Folder management utilities for hierarchy, navigation, and CRUD operations.
+ * All functions are pure with no side effects.
  */
 
 import type { FolderContent } from "../types/learning-path"
-
-// ============================================================================
-// SECTION 1: Basic Queries
-// ============================================================================
-
-/**
- * Finds a folder by ID
- */
 export function findFolder(
   folders: DeckFolder[],
   folderId: number,
@@ -28,9 +13,6 @@ export function findFolder(
   return folders.find((folder) => folder.folder_id === folderId) || null
 }
 
-/**
- * Gets immediate children of a folder (or root level if parentId is null)
- */
 export function getFolderChildren(
   folders: DeckFolder[],
   parentId: number | null,
@@ -38,9 +20,31 @@ export function getFolderChildren(
   return folders.filter((folder) => folder.parent_folder_id === parentId)
 }
 
+export function getRootFolders(folders: DeckFolder[]): DeckFolder[] {
+  return getFolderChildren(folders, null)
+}
+
+export function getUserCreatedDecks(decks: UserDeck[]): UserDeck[] {
+  return decks.filter((deck) => deck.source !== "learning_path")
+}
+
 /**
- * Finds a folder by name within a parent folder
+ * Gets decks in a specific folder (or root level if folderId is null)
+ * By default, only returns user-created decks (excludes learning path decks)
  */
+export function getDecksInFolder(
+  decks: UserDeck[],
+  folderId: number | null,
+  includeAllDecks: boolean = false,
+): UserDeck[] {
+  const filteredDecks = includeAllDecks ? decks : getUserCreatedDecks(decks)
+  return filteredDecks.filter((deck) => deck.folder_id === folderId)
+}
+
+export function getRootDecks(decks: UserDeck[]): UserDeck[] {
+  return getDecksInFolder(decks, null)
+}
+
 export function findFolderByName(
   folders: DeckFolder[],
   name: string,
@@ -54,9 +58,6 @@ export function findFolderByName(
   )
 }
 
-/**
- * Gets the path from root to a folder as an array of folder IDs
- */
 export function getFolderPath(
   folders: DeckFolder[],
   folderId: number | null,
@@ -75,9 +76,6 @@ export function getFolderPath(
   return path
 }
 
-/**
- * Gets all folder IDs in a subtree rooted at the given folder
- */
 export function getAllDescendantIds(
   folders: DeckFolder[],
   rootId: number,
@@ -98,13 +96,6 @@ export function getAllDescendantIds(
   return descendants
 }
 
-// ============================================================================
-// SECTION 2: Path and Hierarchy Operations
-// ============================================================================
-
-/**
- * Builds the breadcrumb path from root to the current folder
- */
 export function buildBreadcrumbPath(
   folders: DeckFolder[],
   currentFolderId: number | null,
@@ -124,9 +115,6 @@ export function buildBreadcrumbPath(
   return path
 }
 
-/**
- * Gets the contents (folders and decks) of a specific folder level
- */
 export function getFolderContents(
   folders: DeckFolder[],
   decks: UserDeck[],
@@ -141,9 +129,6 @@ export function getFolderContents(
   }
 }
 
-/**
- * Builds a folder path from a folder ID to the root
- */
 export function buildFolderPath(
   folderId: string | number | null,
   folders: DeckFolder[],
@@ -167,9 +152,6 @@ export function buildFolderPath(
   return path
 }
 
-/**
- * Gets the current folder ID for an item
- */
 export function getCurrentFolderId(item: UserDeck | DeckFolder): number | null {
   if ("deck_id" in item) {
     return item.folder_id
@@ -191,9 +173,6 @@ export function getFolderDepth(
   return path.length
 }
 
-/**
- * Gets the parent folder ID of a given folder
- */
 export function getParentFolderId(
   folders: DeckFolder[],
   folderId: number | null,
@@ -204,9 +183,6 @@ export function getParentFolderId(
   return folder?.parent_folder_id || null
 }
 
-/**
- * Checks if a folder is an ancestor of another folder
- */
 export function isFolderAncestor(
   folders: DeckFolder[],
   ancestorId: number,
@@ -216,9 +192,6 @@ export function isFolderAncestor(
   return path.includes(ancestorId)
 }
 
-/**
- * Gets the root folder of a folder hierarchy
- */
 export function getRootFolder(
   folders: DeckFolder[],
   folderId: number,
@@ -229,9 +202,6 @@ export function getRootFolder(
   return findFolder(folders, path[0])
 }
 
-/**
- * Gets all folders at a specific depth level
- */
 export function getFoldersAtDepth(
   folders: DeckFolder[],
   depth: number,
@@ -257,15 +227,8 @@ export function validateFolderMove(
   return !descendants.has(newParentId)
 }
 
-// ============================================================================
-// SECTION 3: CRUD Operations
-// ============================================================================
-
 let nextFolderId = 1000 // Start from 1000 to avoid conflicts with other IDs
 
-/**
- * Creates a new folder and adds it to the collection
- */
 export function createFolder(
   folders: DeckFolder[],
   name: string,
@@ -286,9 +249,6 @@ export function createFolder(
   }
 }
 
-/**
- * Updates an existing folder in the collection
- */
 export function updateFolder(
   folders: DeckFolder[],
   folderId: number,
@@ -306,7 +266,6 @@ export function deleteFolder(
   folders: DeckFolder[],
   folderId: number,
 ): DeckFolder[] {
-  // Get all descendant folder IDs to delete
   const toDelete = getAllDescendantIds(folders, folderId)
   toDelete.add(folderId) // Include the folder itself
 
@@ -329,14 +288,12 @@ export function findOrCreateFolderPath(
   let nextId = -Date.now()
 
   for (const folderName of pathNames) {
-    // Try to find existing folder
     let existingFolder = currentFolders.find(
       (f) =>
         f.folder_name === folderName && f.parent_folder_id === currentParentId,
     )
 
     if (!existingFolder) {
-      // Create new folder
       const newFolder: DeckFolder = {
         folder_id: nextId--,
         folder_name: folderName,
@@ -364,10 +321,6 @@ export function findOrCreateFolderPath(
 export function resetFolderIdCounter(startId: number = 1000): void {
   nextFolderId = startId
 }
-
-// ============================================================================
-// SECTION 4: Tree Building and Flattening
-// ============================================================================
 
 /**
  * Builds a hierarchical tree structure from flat folder list
@@ -416,7 +369,6 @@ export function flattenFolderTree(
       hasChildren: children.length > 0,
     })
 
-    // Recursively add children
     result.push(
       ...flattenFolderTree(folders, folder.folder_id, currentDepth + 1),
     )
@@ -424,10 +376,6 @@ export function flattenFolderTree(
 
   return result
 }
-
-// ============================================================================
-// SECTION 5: Search and Statistics
-// ============================================================================
 
 /**
  * Searches for folders by name (case-insensitive, partial match)
@@ -452,10 +400,8 @@ export function countDecksInFolder(
   decks: UserDeck[],
   folderId: number | null,
 ): number {
-  // Count decks directly in this folder
   let count = decks.filter((deck) => deck.folder_id === folderId).length
 
-  // Count decks in all subfolders
   const subfolders = getFolderChildren(folders, folderId)
   for (const subfolder of subfolders) {
     count += countDecksInFolder(folders, decks, subfolder.folder_id)
@@ -464,9 +410,6 @@ export function countDecksInFolder(
   return count
 }
 
-/**
- * Gets folder statistics
- */
 export interface FolderStats {
   totalFolders: number
   maxDepth: number
