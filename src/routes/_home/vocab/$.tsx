@@ -181,6 +181,7 @@ function RouteComponent() {
               folderId={info().folderId}
               folders={vocabPageState.folders()}
               decks={vocabPageState.userDecks()}
+              onSelectDeck={vocabPageState.handleDeckSelect}
             />
           )}
         </Match>

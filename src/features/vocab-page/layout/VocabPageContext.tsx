@@ -7,6 +7,7 @@ import {
   createEffect,
 } from "solid-js"
 import { createStore } from "solid-js/store"
+import { useNavigate } from "@tanstack/solid-router"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { useQueryClient } from "@tanstack/solid-query"
 import {
@@ -35,6 +36,7 @@ interface VocabPageProviderProps {
 
 function useVocabPageState(user: User | null) {
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
 
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(user?.id || null),
@@ -101,8 +103,10 @@ function useVocabPageState(user: User | null) {
   }
 
   const handleDeckSelect = (deck: UserDeck) => {
-    if (deck.folder_id !== currentViewFolderId()) {
-      setCurrentViewFolderId(deck.folder_id)
+    if (deck.folder_id === null) {
+      navigate({ to: `/vocab/${deck.deck_id}` })
+    } else {
+      navigate({ to: `/vocab/${deck.folder_id}/${deck.deck_id}` })
     }
 
     setSelectedUserDeck(deck)

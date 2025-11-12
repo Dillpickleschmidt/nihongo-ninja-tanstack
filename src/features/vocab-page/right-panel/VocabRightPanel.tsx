@@ -35,6 +35,7 @@ interface VocabRightPanelProps {
 
 export function VocabRightPanel(props: VocabRightPanelProps) {
   const navigate = useNavigate()
+
   // Fetch learning paths
   const learningPathsQuery = useCustomQuery(() =>
     allLearningPathsQueryOptions(props.userId || null),
@@ -96,9 +97,9 @@ export function VocabRightPanel(props: VocabRightPanelProps) {
     }
   }
 
-  // Local recursive component for rendering hierarchy
-  const RenderHierarchy = (props: { nodes: HierarchyNode[] }) => (
-    <For each={props.nodes}>
+  // Recursive component for rendering hierarchy
+  const RenderHierarchy = (renderProps: { nodes: HierarchyNode[] }) => (
+    <For each={renderProps.nodes}>
       {(node) =>
         renderNode(node, () => <RenderHierarchy nodes={node.children} />)
       }
