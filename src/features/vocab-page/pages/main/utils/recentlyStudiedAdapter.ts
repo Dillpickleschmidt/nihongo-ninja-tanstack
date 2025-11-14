@@ -25,33 +25,58 @@ export function transformSessionsToDeck(
     return []
   }
 
-  // Group sessions by module_path (deck_id)
-  const sessionsByDeck = new Map<string, PracticeSession>()
+  // Group sessions by module_path and aggregate stats
+  const sessionsByDeck = new Map<
+    string,
+    {
+      totalDurationSeconds: number
+      totalQuestionsAnswered: number
+      mostRecentDate: Date
+    }
+  >()
 
-  // Keep only the most recent session per deck
   sessions.forEach((session) => {
-    const existing = sessionsByDeck.get(session.module_path)
-    if (
-      !existing ||
-      new Date(session.last_updated_at) > new Date(existing.last_updated_at)
-    ) {
-      sessionsByDeck.set(session.module_path, session)
+    const modulePath = session.module_path
+    const existing = sessionsByDeck.get(modulePath)
+
+    const sessionDate = new Date(session.last_updated_at)
+    const durationSeconds = session.duration_seconds || 0
+    const questionsAnswered = session.questions_answered || 0
+
+    if (existing) {
+      // Aggregate: sum duration and questions, keep most recent date
+      sessionsByDeck.set(modulePath, {
+        totalDurationSeconds: existing.totalDurationSeconds + durationSeconds,
+        totalQuestionsAnswered:
+          existing.totalQuestionsAnswered + questionsAnswered,
+        mostRecentDate:
+          sessionDate > existing.mostRecentDate
+            ? sessionDate
+            : existing.mostRecentDate,
+      })
+    } else {
+      // First session for this module
+      sessionsByDeck.set(modulePath, {
+        totalDurationSeconds: durationSeconds,
+        totalQuestionsAnswered: questionsAnswered,
+        mostRecentDate: sessionDate,
+      })
     }
   })
 
   // Transform to recently studied format
   const recentlyStudied: RecentlyStudiedDeck[] = Array.from(
-    sessionsByDeck.values(),
+    sessionsByDeck.entries(),
   )
-    .map((session) => {
-      const deck = resolveModuleToUserDeck(session.module_path, decks)
+    .map(([modulePath, stats]) => {
+      const deck = resolveModuleToUserDeck(modulePath, decks)
       if (!deck) return null
 
       return {
         ...deck,
-        lastPracticed: new Date(session.last_updated_at),
-        durationSeconds: session.duration_seconds || 0,
-        questionsAnswered: session.questions_answered || 0,
+        lastPracticed: stats.mostRecentDate,
+        durationSeconds: stats.totalDurationSeconds,
+        questionsAnswered: stats.totalQuestionsAnswered,
       }
     })
     .filter((d): d is RecentlyStudiedDeck => d !== null)

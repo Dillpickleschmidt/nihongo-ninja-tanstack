@@ -272,7 +272,7 @@ export const external_resources: Record<string, ExternalResource> = {
     link: "/external-resources/chapter-10/comparing-sizes",
     external_url: "youtube.com/watch?v=vD3_BO4KAdM",
     creator_id: "nihongo_learning",
-    source_typu: "video",
+    source_type: "video",
     difficulty_rating: "medium",
   },
   emotions: {

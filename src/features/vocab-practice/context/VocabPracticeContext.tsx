@@ -131,7 +131,7 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
   // Session tracking - conditionally initialize
   const sessionIdentifier = getSessionIdentifier()
   const { startSession, addTimeAndQuestions } = sessionIdentifier
-    ? useSessionTracking(props.userId, sessionIdentifier)
+    ? useSessionTracking(props.userId, sessionIdentifier, "vocab-practice")
     : { startSession: async () => {}, addTimeAndQuestions: () => {} }
 
   // SVG data management
@@ -240,7 +240,9 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
 
     // If we already have the SVG, return it
     if (currentData.has(character)) {
-      console.log(`[Context] getSvgForCharacter('${character}'): Found in cache`)
+      console.log(
+        `[Context] getSvgForCharacter('${character}'): Found in cache`,
+      )
       return currentData.get(character)!
     }
 

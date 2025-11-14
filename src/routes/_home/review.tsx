@@ -51,6 +51,7 @@ export const Route = createFileRoute("/_home/review")({
         user?.id || null,
         userSettings["active-learning-path"] as TextbookIDEnum,
         userSettings["active-chapter"] as string,
+        queryClient,
       ),
     )
   },

@@ -1,12 +1,6 @@
 // Deck and folder validation schemas and utilities
 import { z } from "zod"
-import {
-  VALIDATION_RULES,
-  validateName,
-  validateUniqueness,
-  type ValidationResult,
-} from "./common"
-import { VocabItemFormDataSchema } from "./vocabulary-validation"
+import { VALIDATION_RULES, validateName, type ValidationResult } from "./common"
 
 // Deck metadata validation schema
 export const DeckMetadataSchema = z.object({
@@ -25,31 +19,6 @@ export const DeckMetadataSchema = z.object({
     ),
   selectedFolderId: z.string(),
   selectedFolderName: z.string(),
-})
-
-// Complete deck creation validation schema
-export const DeckCreationSchema = z.object({
-  deck: DeckMetadataSchema,
-  vocabItems: z.record(z.string(), VocabItemFormDataSchema).refine((items) => {
-    const validItems = Object.values(items).filter(
-      (item) =>
-        item.word.trim().length > 0 &&
-        item.english.some((meaning) => meaning.trim().length > 0),
-    )
-    return validItems.length >= 1
-  }, "At least one complete vocabulary item is required"),
-})
-
-// Folder validation schema
-export const FolderSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Folder name is required")
-    .max(
-      VALIDATION_RULES.NAME_MAX_LENGTH,
-      `Folder name must be ${VALIDATION_RULES.NAME_MAX_LENGTH} characters or less`,
-    ),
-  parentFolderId: z.string().nullable(),
 })
 
 // Deck name uniqueness validation schema
@@ -108,8 +77,6 @@ export const FolderNameValidationSchema = z
 
 // Type inference
 export type DeckMetadata = z.infer<typeof DeckMetadataSchema>
-export type DeckCreationData = z.infer<typeof DeckCreationSchema>
-export type FolderData = z.infer<typeof FolderSchema>
 export type DeckNameValidation = z.infer<typeof DeckNameValidationSchema>
 export type FolderNameValidation = z.infer<typeof FolderNameValidationSchema>
 

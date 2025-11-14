@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/solid-router"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { useRouteContext } from "@tanstack/solid-router"
+import { useQueryClient } from "@tanstack/solid-query"
 import { Route as RootRoute } from "@/routes/__root"
 import {
   allLearningPathsQueryOptions,
@@ -26,6 +27,7 @@ export interface BreadcrumbItem {
 export function useVocabDashboard() {
   const context = useRouteContext({ from: RootRoute.id })
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   // Vocab page context with folders and decks (already has settingsQuery)
   const vocabState = useVocabPageContext()
@@ -43,6 +45,7 @@ export function useVocabDashboard() {
     recentlyStudiedDecksQueryOptions(
       context().user?.id || null,
       vocabState.userDecks(),
+      queryClient,
     ),
   )
 
@@ -58,6 +61,7 @@ export function useVocabDashboard() {
       context().user?.id || null,
       activePath,
       activeChapter,
+      queryClient,
     )
   })
 

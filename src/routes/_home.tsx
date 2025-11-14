@@ -3,10 +3,11 @@ import {
   Outlet,
   useRouteContext,
 } from "@tanstack/solid-router"
+import { useQueryClient } from "@tanstack/solid-query"
 import { Route as RootRoute } from "@/routes/__root"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
-  userDailyTimeQueryOptions,
+  userDailyAggregatesQueryOptions,
   backgroundSettingsQueryOptions,
 } from "@/query/query-options"
 import { BottomNav } from "@/features/navbar/BottomNav"
@@ -22,17 +23,20 @@ function RouteComponent() {
 
 function Home() {
   const context = useRouteContext({ from: RootRoute.id })
+  const queryClient = useQueryClient()
   const userId = context().user?.id
 
-  const todayTimeQuery = useCustomQuery(() =>
-    userDailyTimeQueryOptions(userId || null, new Date()),
+  const aggregatesQuery = useCustomQuery(() =>
+    userDailyAggregatesQueryOptions(userId || null),
   )
 
   const backgroundQuery = useCustomQuery(() => backgroundSettingsQueryOptions())
 
   const dailyProgressPercentage = () => {
     if (!userId) return 0
-    const minutesToday = Math.round((todayTimeQuery.data ?? 0) / 60)
+    const todayKey = new Date().toISOString().split("T")[0]
+    const secondsToday = aggregatesQuery.data?.[todayKey] ?? 0
+    const minutesToday = Math.round(secondsToday / 60)
     return Math.min(100, Math.round((minutesToday / 30) * 100))
   }
 

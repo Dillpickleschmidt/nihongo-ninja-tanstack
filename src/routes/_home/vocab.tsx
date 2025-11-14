@@ -13,7 +13,7 @@ import {
 import type { TextbookIDEnum } from "@/data/types"
 
 export const Route = createFileRoute("/_home/vocab")({
-  loader: async ({ context }) => {
+  loader: async ({ context, location }) => {
     // Set background settings for vocab page
     context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
       blur: 6,
@@ -46,18 +46,25 @@ export const Route = createFileRoute("/_home/vocab")({
           recentlyStudiedDecksQueryOptions(
             context.user.id,
             foldersAndDecks.decks,
+            context.queryClient,
           ),
         )
       }
-      const activePath = settings["active-learning-path"] as TextbookIDEnum
-      const activeChapter = settings["active-chapter"] as string
+      const activePath = settings["active-learning-path"]
+      const activeChapter = settings["active-chapter"]
       context.queryClient.prefetchQuery(
-        upcomingModulesQueryOptions(context.user.id, activePath, activeChapter),
+        upcomingModulesQueryOptions(
+          context.user.id,
+          activePath,
+          activeChapter,
+          context.queryClient,
+        ),
       )
     }
 
     return {
       user: context.user,
+      pathname: location.pathname,
     }
   },
   onLeave: ({ context }) => {
@@ -72,11 +79,12 @@ export const Route = createFileRoute("/_home/vocab")({
 })
 
 function RouteComponent() {
-  const data = Route.useLoaderData()()
+  const data = Route.useLoaderData()
+  const pathname = () => data().pathname
 
   return (
-    <VocabPageProvider user={data.user as User | null}>
-      <VocabLayout user={data.user as User | null} />
+    <VocabPageProvider user={data().user as User | null}>
+      <VocabLayout user={data().user as User | null} pathname={pathname} />
     </VocabPageProvider>
   )
 }

@@ -1,5 +1,6 @@
 // features/vocab-practice/components/pages/start-page/components/StartPageLayout.tsx
 import { Show, type JSX } from "solid-js"
+import { useQueryClient } from "@tanstack/solid-query"
 import { TextbookChapterBackgrounds } from "@/features/homepage/shared/components/TextbookChapterBackgrounds"
 import { BottomNav } from "@/features/navbar/BottomNav"
 import { StartPageHeader } from "./header/Header"
@@ -7,7 +8,7 @@ import { StartPageButton } from "./StartPageButton"
 import { ReviewItemsList } from "./review/ReviewItemsList"
 import DependencyOverview from "./dependency/DependencyOverview"
 import { useRouteContext } from "@tanstack/solid-router"
-import { userDailyTimeQueryOptions } from "@/query/query-options"
+import { userDailyAggregatesQueryOptions } from "@/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { Route as RootRoute } from "@/routes/__root"
 import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
@@ -20,16 +21,19 @@ type StartPageLayoutProps = {
 
 export function StartPageLayout(props: StartPageLayoutProps) {
   const context = useRouteContext({ from: RootRoute.id })
+  const queryClient = useQueryClient()
   const userId = context().user?.id
   const { prerequisitesEnabled } = useVocabPracticeContext()
 
-  const todayTimeQuery = useCustomQuery(() =>
-    userDailyTimeQueryOptions(userId || null, new Date()),
+  const aggregatesQuery = useCustomQuery(() =>
+    userDailyAggregatesQueryOptions(userId || null),
   )
 
   const dailyProgressPercentage = () => {
     if (!userId) return 0
-    const minutesToday = Math.round((todayTimeQuery.data ?? 0) / 60)
+    const todayKey = new Date().toISOString().split("T")[0]
+    const secondsToday = aggregatesQuery.data?.[todayKey] ?? 0
+    const minutesToday = Math.round(secondsToday / 60)
     return Math.min(100, Math.round((minutesToday / 30) * 100))
   }
 

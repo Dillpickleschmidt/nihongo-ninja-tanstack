@@ -49,10 +49,9 @@ import type {
 } from "@/features/srs-services/types"
 import type { AllServicePreferences } from "@/features/main-cookies/schemas/user-settings"
 import {
-  getUserDailyTime,
-  getUserModuleProgress,
-  getUserSessions,
-  getUserWeekTimeData,
+  getUserDailyAggregates,
+  getSessionsPaginated,
+  getUserModuleCompletions,
 } from "@/features/supabase/db/module-progress"
 import { transformSessionsToDeck } from "@/features/vocab-page/pages/main/utils/recentlyStudiedAdapter"
 import type { RecentlyStudiedDeck } from "@/features/vocab-page/pages/main/utils/recentlyStudiedAdapter"
@@ -64,7 +63,7 @@ import {
 } from "@/query/utils/user-settings"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import { buildVocabHierarchy } from "@/query/utils/hierarchy-builder"
-import { mergeCompletionsWithLocal } from "@/query/utils/completion-manager"
+import { getCompletedModules } from "@/query/utils/completion-manager"
 import { buildModuleProgressMap } from "@/query/utils/progress-calculator"
 import { queryKeys } from "@/query/utils/query-keys"
 
@@ -132,7 +131,6 @@ export const userSettingsQueryOptions = (userId: string | null) => {
         return cookieData
       }
 
-      // Fetch from DB
       const dbSettings = await fetchUserSettingsFromDB(userId)
       if (!dbSettings) {
         // Shouldn't happen but in case the db somehow didn't get set during sign-up
@@ -153,7 +151,6 @@ export const userSettingsQueryOptions = (userId: string | null) => {
         return dbSettings
       }
 
-      // Compare timestamps
       const cookieTimestamp = cookieData.timestamp || 0
       const dbTimestamp = dbSettings.timestamp || 0
 
@@ -445,7 +442,9 @@ export const seenCardsStatsQueryOptions = (
     },
   })
 
-type ModuleProgress = Awaited<ReturnType<typeof getUserModuleProgress>>[number]
+type ModuleProgress = Awaited<
+  ReturnType<typeof getUserModuleCompletions>
+>[number]
 export type ModuleProgressWithLocal =
   | ModuleProgress
   | {
@@ -457,9 +456,8 @@ export type ModuleProgressWithLocal =
 export const completedModulesQueryOptions = (userId: string | null) =>
   queryOptions({
     queryKey: queryKeys.completedModules(userId),
-    refetchOnMount: "always", // Ensure localStorage completions load on client
     queryFn: async () => {
-      return await mergeCompletionsWithLocal(userId)
+      return await getCompletedModules(userId)
     },
   })
 
@@ -487,15 +485,16 @@ export const upcomingModulesQueryOptions = (
   userId: string | null,
   learningPathId: TextbookIDEnum,
   chapterSlug: string,
+  queryClient: any, // QueryClient for cache reuse
 ) => {
   const queryFn = async (): Promise<UpcomingModule[]> => {
     // Get the active chapter
     const chapter = chapters[learningPathId]?.[chapterSlug]
     if (!chapter) return []
 
-    // Get completed modules
+    // Get completed modules (reuses cache if prefetched)
     const completedModules = userId
-      ? await mergeCompletionsWithLocal(userId)
+      ? await queryClient.ensureQueryData(completedModulesQueryOptions(userId))
       : []
     const completedSet = new Set(completedModules.map((c) => c.module_path))
 
@@ -589,46 +588,45 @@ export const moduleProgressQueryOptions = (
 }
 
 /**
- * Query for getting time spent on a specific date
+ * Query for getting all-time daily aggregates via RPC
+ * Returns a dictionary mapping dates (YYYY-MM-DD) to total seconds practiced
  */
-export const userDailyTimeQueryOptions = (userId: string | null, date: Date) =>
+export const userDailyAggregatesQueryOptions = (userId: string | null) =>
   queryOptions({
-    queryKey: queryKeys.userDailyTime(userId, date),
+    queryKey: queryKeys.userDailyAggregates(userId),
     queryFn: async () => {
-      if (!userId) return 0
-      return getUserDailyTime(userId, date)
+      if (!userId) return {}
+      return await getUserDailyAggregates(userId)
     },
   })
 
 /**
- * Query for getting all user sessions
+ * Query for getting paginated practice sessions with optional module_type filtering
+ * Returns recent sessions, newest first
  */
-export const userSessionsQueryOptions = (
+export const userSessionsPaginatedQueryOptions = (
   userId: string | null,
-  options?: { startDate?: Date; endDate?: Date },
+  moduleType: string | null,
+  offset: number,
+  limit: number,
 ) =>
   queryOptions({
-    queryKey: queryKeys.userSessions(
+    queryKey: queryKeys.userSessionsPaginated(
       userId,
-      options?.startDate,
-      options?.endDate,
+      moduleType,
+      offset,
+      limit,
     ),
     queryFn: async () => {
       if (!userId) return []
-      return getUserSessions(userId, options)
+      return await getSessionsPaginated(
+        userId,
+        offset,
+        limit,
+        moduleType || undefined,
+      )
     },
-  })
-
-/**
- * Query for getting last 7 days of time data (optimized - single query)
- */
-export const userWeekTimeDataQueryOptions = (userId: string | null) =>
-  queryOptions({
-    queryKey: queryKeys.userWeekTimeData(userId),
-    queryFn: async () => {
-      if (!userId) return []
-      return getUserWeekTimeData(userId)
-    },
+    enabled: !!userId,
   })
 
 // ============================================================================
@@ -637,17 +635,21 @@ export const userWeekTimeDataQueryOptions = (userId: string | null) =>
 
 /**
  * Query for getting recently studied decks (from user practice sessions)
- * Returns up to 10 most recently practiced decks
+ * Returns up to 10 most recently practiced decks (filtered to vocab-practice sessions)
+ * Reuses cached paginated session data to avoid duplicate fetches
  */
 export const recentlyStudiedDecksQueryOptions = (
   userId: string | null,
   userDecks: UserDeck[],
+  queryClient: any, // QueryClient for cache reuse
 ) =>
   queryOptions({
     queryKey: queryKeys.recentlyStudiedDecks(userId),
     queryFn: async (): Promise<RecentlyStudiedDeck[]> => {
       if (!userId) return []
-      const sessions = await getUserSessions(userId)
+      const sessions = await queryClient.ensureQueryData(
+        userSessionsPaginatedQueryOptions(userId, "vocab-practice", 0, 20),
+      )
       return transformSessionsToDeck(sessions, userDecks, 10)
     },
     enabled: !!userId,

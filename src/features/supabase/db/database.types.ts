@@ -265,6 +265,7 @@ export type Database = {
           duration_seconds: number
           last_updated_at: string
           module_path: string
+          module_type: string
           questions_answered: number | null
           session_id: string
           user_id: string
@@ -274,6 +275,7 @@ export type Database = {
           duration_seconds?: number
           last_updated_at?: string
           module_path: string
+          module_type: string
           questions_answered?: number | null
           session_id?: string
           user_id: string
@@ -283,6 +285,7 @@ export type Database = {
           duration_seconds?: number
           last_updated_at?: string
           module_path?: string
+          module_type?: string
           questions_answered?: number | null
           session_id?: string
           user_id?: string
@@ -352,6 +355,10 @@ export type Database = {
         Returns: undefined
       }
       generate_deck_id: { Args: never; Returns: string }
+      get_user_daily_aggregates: {
+        Args: { user_id_param: string }
+        Returns: Json
+      }
       get_vocabulary_stats: {
         Args: { user_id_param: string; week_ago_param: string }
         Returns: Json

@@ -1,27 +1,27 @@
 // features/vocab-page/layout/VocabLayout.tsx
 import { Show, Suspense } from "solid-js"
-import { Outlet, useLocation } from "@tanstack/solid-router"
+import { Outlet } from "@tanstack/solid-router"
 import { CollapsiblePanel } from "../shared/CollapsiblePanel"
 import { VocabRightPanel } from "../right-panel/VocabRightPanel"
 import { PlaceholderSidebar } from "../pages/main/components/PlaceholderSidebar"
 import { FolderEditModal } from "../shared/components/FolderEditModal"
 import { DeckCopyModal } from "../shared/components/DeckCopyModal"
 import { useVocabPageContext } from "./VocabPageContext"
-import type { EditTransaction } from "../logic/edit-transaction"
 import { Sidebar } from "../../homepage/shared/components/Sidebar"
 import { CenterNavBar } from "./CenterNavBar"
+import type { EditTransaction } from "../logic/edit-transaction"
 import type { User } from "@supabase/supabase-js"
 
 interface VocabLayoutProps {
   user: User | null
+  pathname: () => string
 }
 
 export function VocabLayout(props: VocabLayoutProps) {
   const state = useVocabPageContext()
-  const location = useLocation()
 
   const showVocabRightPanel = () => {
-    const path = location().pathname
+    const path = props.pathname()
     return (
       path.startsWith("/vocab/create") ||
       path.startsWith("/vocab/browse") ||

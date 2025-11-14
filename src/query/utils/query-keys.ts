@@ -88,21 +88,14 @@ export const queryKeys = {
     ["module-progress", userId, moduleIds] as const,
 
   // Time Tracking
-  userDailyTime: (userId: string | null, date: Date) =>
-    ["user-daily-time", userId, date.toDateString()] as const,
-  userSessions: (
+  userDailyAggregates: (userId: string | null) =>
+    ["user-daily-aggregates", userId] as const,
+  userSessionsPaginated: (
     userId: string | null,
-    startDate: Date | undefined,
-    endDate: Date | undefined,
-  ) =>
-    [
-      "user-sessions",
-      userId,
-      startDate?.toISOString(),
-      endDate?.toISOString(),
-    ] as const,
-  userWeekTimeData: (userId: string | null) =>
-    ["user-week-time-data", userId] as const,
+    moduleType: string | null,
+    offset: number,
+    limit: number,
+  ) => ["user-sessions-paginated", userId, moduleType, offset, limit] as const,
 
   // Module Detail Dialog
   transcriptData: (learningPathId: string) =>

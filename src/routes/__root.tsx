@@ -34,6 +34,7 @@ import { PostHogProvider } from "@/features/posthog/PostHogContext"
 import {
   userSettingsQueryOptions,
   allLearningPathsQueryOptions,
+  userDailyAggregatesQueryOptions,
 } from "@/query/query-options"
 import { updateUserSettingsMutation } from "@/query/query-mutations"
 import { queryKeys } from "@/query/utils/query-keys"
@@ -65,6 +66,7 @@ export const Route = createRootRouteWithContext<{
     const { queryClient } = context
     queryClient.prefetchQuery(userSettingsQueryOptions(user?.id || null))
     queryClient.prefetchQuery(allLearningPathsQueryOptions(user?.id || null))
+    queryClient.prefetchQuery(userDailyAggregatesQueryOptions(user?.id || null))
     return { user }
   },
   loader: async ({ context }) => {

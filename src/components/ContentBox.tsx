@@ -78,13 +78,19 @@ export default function ContentBox(props: ContentBoxProps) {
       // Look up module in static_modules or external_resources
       const module = static_modules[moduleId] || external_resources[moduleId]
 
+      if (!module) {
+        console.error(`Module not found: ${moduleId}`)
+        return
+      }
+
       // Get estimated duration (default to 10 minutes = 600 seconds)
-      const estimatedMinutes = module?.daily_prog_amount ?? 10
+      const estimatedMinutes = module.daily_prog_amount ?? 10
       const durationSeconds = estimatedMinutes * 60
 
       addCompletionMutation.mutate({
         userId: props.user?.id || null,
         moduleId,
+        moduleType: module.source_type,
         durationSeconds,
       })
     }
@@ -97,7 +103,7 @@ export default function ContentBox(props: ContentBoxProps) {
     const activeChapter = userSettings!["active-chapter"]
 
     navigate({
-      to: "/learn/$learningPathId/$chapterSlug",
+      to: "/$learningPathId/$chapterSlug",
       params: { learningPathId: activeTextbook, chapterSlug: activeChapter },
     })
   }
