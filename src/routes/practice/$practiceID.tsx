@@ -73,7 +73,6 @@ export const Route = createFileRoute("/practice/$practiceID")({
     }
   },
   component: RouteComponent,
-  notFoundComponent: () => <div>404 Not found</div>,
 })
 
 function RouteComponent() {

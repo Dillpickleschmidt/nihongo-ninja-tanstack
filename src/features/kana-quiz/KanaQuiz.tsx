@@ -10,15 +10,11 @@ import { createMediaQuery } from "@solid-primitives/media"
 import { RotateCcw } from "lucide-solid"
 import { HeaderCard } from "./components/HeaderCard"
 import { ActionButton } from "./components/ActionButton"
-import { TextbookChapterBackgrounds } from "../learn-page/components/shared/TextbookChapterBackgrounds"
-import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/query/query-options"
 
 type KanaQuizProps = {
   kana: KanaItem[]
   nextLesson: string
   title: string
-  userId: string | null
 }
 
 export function KanaQuiz(props: KanaQuizProps) {
@@ -30,10 +26,6 @@ export function KanaQuiz(props: KanaQuizProps) {
     handleSubmit,
     handleRetry,
   } = useKanaQuiz(props.kana)
-  const settingsQuery = useCustomQuery(() =>
-    userSettingsQueryOptions(props.userId),
-  )
-
   // Media queries
   const isMobile = createMediaQuery("(max-width: 640px)")
   const isTablet = createMediaQuery(
@@ -97,16 +89,6 @@ export function KanaQuiz(props: KanaQuizProps) {
 
   return (
     <div class="relative min-h-screen">
-      {/* Background */}
-      <div class="fixed inset-0 -z-10">
-        <TextbookChapterBackgrounds
-          textbook={settingsQuery.data["active-learning-path"]}
-          chapter={settingsQuery.data["active-chapter"]}
-          showGradient={false}
-          blur="16px"
-        />
-      </div>
-
       {/* Header */}
       <header class="px-4 pt-6 pb-4 text-center">
         <Show
@@ -124,7 +106,7 @@ export function KanaQuiz(props: KanaQuizProps) {
       </header>
 
       {/* Character Grid */}
-      <main class="container mx-auto mt-10 grid grid-cols-[repeat(auto-fill,minmax(145px,_1fr))] gap-3 p-3 pb-32">
+      <main class="container mx-auto mt-10 grid grid-cols-[repeat(auto-fill,minmax(145px,_1fr))] gap-3 p-3 pb-48">
         <For each={characterBoxes()}>
           {(box, idx) => (
             <CharacterBox
@@ -141,7 +123,7 @@ export function KanaQuiz(props: KanaQuizProps) {
       </main>
 
       {/* Footer / Action Bar */}
-      <footer class="bg-background/80 border-border fixed inset-x-0 bottom-0 z-50 border-t p-4 backdrop-blur-lg">
+      <footer class="bg-background/80 border-border fixed inset-x-0 bottom-16 z-50 border-t p-4 backdrop-blur-lg">
         <div class="mx-auto flex max-w-lg justify-center gap-3">
           <Show
             when={showResults()}

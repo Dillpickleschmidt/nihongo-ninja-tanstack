@@ -1,4 +1,4 @@
-// features/vocab-practice/components/pages/start-page/components/ModuleStartPage.tsx
+// features/vocab-practice/pages/start/ModuleStartPage.tsx
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
   practiceHierarchyQueryOptions,
@@ -42,7 +42,7 @@ export function ModuleStartPage() {
       vocabularyQuery,
       hierarchyQuery,
     },
-    getDeckName: () => getModuleTitleFromPath(moduleId!) as string, // assumes route returned 404 if moduleId is invalid
+    getDeckName: () => getModuleTitleFromPath(moduleId!) as string,
     onStart: async () => {
       const vocab = await queryClient.ensureQueryData(
         moduleVocabularyQueryOptions(moduleId!),

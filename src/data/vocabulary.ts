@@ -1,4 +1,4 @@
-import type { VocabularyCollection, VocabularyItem } from "./types"
+import type { VocabularyItem } from "./types"
 
 // Extend VocabularyItem locally to include chapter for my visual reference
 type VocabularyItemWithChapter = VocabularyItem & {

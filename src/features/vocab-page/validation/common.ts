@@ -24,8 +24,6 @@ export interface ValidationError {
 // Base Zod schemas for reuse
 export const RequiredStringSchema = z.string().min(1, "This field is required")
 
-export const OptionalStringSchema = z.string().optional()
-
 export const NonEmptyStringArraySchema = z
   .array(z.string())
   .min(1, "At least one item is required")

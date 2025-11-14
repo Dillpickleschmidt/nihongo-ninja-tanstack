@@ -25,7 +25,7 @@ export async function resolveVocabularyEntries(
   terms: string[],
   stacks: Stack[],
   jsonLoader: JsonDataLoader = loadJsonSources,
-  deck_id?: number,
+  deck_id?: string,
 ): Promise<Map<string, VocabularyItem>> {
   if (terms.length === 0) return new Map()
 
@@ -81,7 +81,7 @@ async function loadVocabularyData(
  */
 async function loadUserDeckData(
   terms: string[],
-  deck_id: number,
+  deck_id: string,
 ): Promise<Map<string, VocabularyItem>> {
   const cache = new Map<string, VocabularyItem>()
   try {

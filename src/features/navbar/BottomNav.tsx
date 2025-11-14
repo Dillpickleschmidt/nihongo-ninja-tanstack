@@ -17,9 +17,7 @@ export function BottomNav(props: BottomNavProps) {
   const context = useRouteContext({ from: RootRoute.id })
   const userId = context().user?.id || null
 
-  const settingsQuery = useCustomQuery(() =>
-    userSettingsQueryOptions(userId),
-  )
+  const settingsQuery = useCustomQuery(() => userSettingsQueryOptions(userId))
   const activeTextbook = () => settingsQuery.data?.["active-learning-path"]
 
   const dailyProgress = () => props.dailyProgressPercentage ?? 65
@@ -32,10 +30,10 @@ export function BottomNav(props: BottomNavProps) {
       href: "/",
     },
     {
-      id: "learn",
+      id: "vocab",
       icon: GraduationCap,
-      label: "Learn",
-      href: "/learn",
+      label: "Vocab",
+      href: "/vocab",
     },
     {
       id: "review",
@@ -136,11 +134,10 @@ export function BottomNav(props: BottomNavProps) {
         )}
       >
         <div class="flex items-center justify-between" style="width: 400px;">
-          {navItems.map((item) => {
+          {navItems.map((item, index) => {
             if (item.id === "review") {
               const active = isActive(item.href)
-              const hrefValue =
-                typeof item.href === "function" ? item.href() : item.href
+              const hrefValue = item.href
               return (
                 <Link
                   to={hrefValue}
@@ -195,8 +192,7 @@ export function BottomNav(props: BottomNavProps) {
 
             const Icon = item.icon
             const active = isActive(item.href)
-            const hrefValue =
-              typeof item.href === "function" ? item.href() : item.href
+            const hrefValue = item.href
 
             // Special handling for Learn nav item when in getting_started
             if (item.id === "learn" && activeTextbook() === "getting_started") {
@@ -205,7 +201,7 @@ export function BottomNav(props: BottomNavProps) {
                   <div
                     id={"tour-" + item.id}
                     class={cn(
-                      "group flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 cursor-pointer",
+                      "group flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-all duration-200",
                       "hover:bg-card-foreground/20 hover:dark:bg-card-foreground/60 hover:scale-110",
                       active &&
                         "bg-card-foreground/10 dark:bg-card-foreground/60 scale-110",

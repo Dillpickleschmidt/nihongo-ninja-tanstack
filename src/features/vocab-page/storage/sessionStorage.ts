@@ -65,39 +65,3 @@ export function clearFoldersAndDecks(): void {
     console.warn("Failed to clear session storage:", error)
   }
 }
-
-/**
- * Checks if session storage has any vocab data
- */
-export function hasStoredData(): boolean {
-  // Return false during SSR
-  if (isServer) {
-    return false
-  }
-
-  try {
-    return sessionStorage.getItem(STORAGE_KEY) !== null
-  } catch (error) {
-    return false
-  }
-}
-
-/**
- * Gets the size of stored data (for debugging)
- */
-export function getStorageInfo(): { hasData: boolean; size: number } {
-  // Return empty info during SSR
-  if (isServer) {
-    return { hasData: false, size: 0 }
-  }
-
-  try {
-    const data = sessionStorage.getItem(STORAGE_KEY)
-    return {
-      hasData: data !== null,
-      size: data ? data.length : 0,
-    }
-  } catch (error) {
-    return { hasData: false, size: 0 }
-  }
-}

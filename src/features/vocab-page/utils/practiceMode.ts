@@ -26,25 +26,3 @@ export function getPracticeAction(allowedModes: PracticeModeEnum[]): PracticeAct
   return 'show-modal'
 }
 
-/**
- * Checks if only meanings practice is allowed
- */
-export function isMeaningsOnly(allowedModes: PracticeModeEnum[]): boolean {
-  return allowedModes.length === 1 && allowedModes[0] === 'meanings'
-}
-
-/**
- * Checks if only spellings practice is allowed
- */
-export function isSpellingsOnly(allowedModes: PracticeModeEnum[]): boolean {
-  return allowedModes.length === 1 && allowedModes[0] === 'spellings'
-}
-
-/**
- * Checks if both practice modes are allowed
- */
-export function isBothModesAllowed(allowedModes: PracticeModeEnum[]): boolean {
-  return allowedModes.length === 2 && 
-         allowedModes.includes('meanings') && 
-         allowedModes.includes('spellings')
-}

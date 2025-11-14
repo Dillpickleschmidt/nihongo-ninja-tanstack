@@ -5,7 +5,7 @@ import ContentBox from "@/components/ContentBox"
 import { useAnimationManager } from "@/hooks/useAnimations"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { userSettingsQueryOptions } from "@/query/query-options"
-import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
+import { TextbookChapterBackgrounds } from "@/features/homepage/shared/components/TextbookChapterBackgrounds"
 
 export const Route = createFileRoute("/lessons")({
   loader: async ({ context }) => {

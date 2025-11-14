@@ -2,19 +2,13 @@
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 import { createServerFn } from "@tanstack/solid-start"
 import { getUser } from "@/features/supabase/getUser"
-import type { VocabBuiltInDeck } from "@/features/vocab-page/types"
-import { generateDeckTitle } from "@/features/vocab-page/logic/deck-import-logic"
 import { VocabularyItem } from "@/data/types"
 import {
   dbItemToVocabularyItem,
   formDataToDBInsert,
   builtInVocabItemsToDBInserts,
   type VocabItemFormData,
-} from "@/features/vocab-page/types/vocabulary-types"
-import { ensureFolderHierarchy, getUserFoldersAndDecks } from "./folder"
-import { extractTextbookInfo } from "@/features/vocab-page/logic/deck-import-logic"
-import { getVocabularyForSet } from "@/data/utils/vocab"
-import { dynamic_modules } from "@/data/dynamic_modules"
+} from "@/features/vocab-page/types/vocabulary"
 
 /**
  * Creates a new user deck for the current user
@@ -60,7 +54,7 @@ export const createUserDeckServerFn = createServerFn({ method: "POST" })
 export const updateUserDeckServerFn = createServerFn({ method: "POST" })
   .inputValidator(
     (data: {
-      deck_id: number
+      deck_id: string
       deck_name?: string
       deck_description?: string | null
       folder_id?: number | null
@@ -90,100 +84,6 @@ export const updateUserDeckServerFn = createServerFn({ method: "POST" })
 
     if (error) throw error
     return deck as UserDeck
-  })
-
-/**
- * Server function that imports a built-in deck with automatic folder creation
- */
-export const importBuiltInDeckServerFn = createServerFn({ method: "POST" })
-  .inputValidator(
-    (data: { builtInDeck: VocabBuiltInDeck; textbooks: [string, any][] }) =>
-      data,
-  )
-  .handler(async ({ data }) => {
-    const supabase = createSupabaseClient()
-    const response = await getUser()
-    if (!response.user) throw new Error("User not authenticated")
-
-    const { builtInDeck, textbooks } = data
-
-    // Get current user folders and decks
-    const currentData = await getUserFoldersAndDecks(response.user.id)
-
-    // Check if deck already imported
-    const existingDeck = currentData.decks.find(
-      (deck) => deck.original_deck_id === builtInDeck.id,
-    )
-    if (existingDeck) {
-      throw new Error("Deck already imported")
-    }
-
-    // Extract textbook info from deck
-    const textbookInfo = extractTextbookInfo(builtInDeck, textbooks)
-
-    // Create folder hierarchy if needed
-    const folderPath = textbookInfo
-      ? [textbookInfo.textbookName, textbookInfo.chapterName]
-      : []
-    const { targetFolderId } = await ensureFolderHierarchy(
-      currentData.folders,
-      folderPath,
-      response.user.id,
-    )
-
-    // Get module configuration for practice modes
-    const module = dynamic_modules[builtInDeck.id]
-    const allowedPracticeModes = module?.allowed_practice_modes || [
-      "meanings",
-      "spellings",
-    ]
-
-    // Create the user deck
-    const insertData: UserDeckInsert = {
-      deck_name: textbookInfo
-        ? generateDeckTitle(textbookInfo)
-        : builtInDeck.title,
-      deck_description: builtInDeck.description || null,
-      folder_id: targetFolderId,
-      original_deck_id: builtInDeck.id,
-      source: "built-in",
-      user_id: response.user.id,
-      allowed_practice_modes: allowedPracticeModes,
-    }
-
-    const { data: newDeck, error } = await supabase
-      .from("user_decks")
-      .insert([insertData])
-      .select()
-      .single()
-
-    if (error) throw error
-
-    // Import vocabulary items from the built-in deck
-    if (module?.vocab_set_ids) {
-      try {
-        const vocabularyItems = await getVocabularyForSet(module.vocab_set_ids)
-        if (vocabularyItems.length > 0) {
-          await insertVocabularyItems(vocabularyItems, newDeck.deck_id)
-        }
-      } catch (vocabError) {
-        console.error("[Import] Vocabulary import failed:", vocabError)
-        // If vocabulary import fails, we should rollback the deck creation
-        await supabase
-          .from("user_decks")
-          .delete()
-          .eq("deck_id", newDeck.deck_id)
-
-        throw new Error(
-          `Failed to import vocabulary: ${vocabError instanceof Error ? vocabError.message : "Unknown error"}`,
-        )
-      }
-    }
-
-    return {
-      importedDeck: newDeck as UserDeck,
-      targetFolderId,
-    }
   })
 
 /**
@@ -272,7 +172,7 @@ export const getDeckIdByOriginalIdServerFn = createServerFn({ method: "POST" })
   })
 
 export async function getVocabForDeck(
-  deck_id: number,
+  deck_id: string,
 ): Promise<VocabularyItem[]> {
   const supabase = createSupabaseClient()
 
@@ -290,7 +190,7 @@ export async function getVocabForDeck(
  * Gets deck information by deck_id for practice sessions
  */
 export const getDeckInfoServerFn = createServerFn({ method: "POST" })
-  .inputValidator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: string }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -319,7 +219,7 @@ export const getDeckInfoServerFn = createServerFn({ method: "POST" })
  */
 export async function insertVocabularyItems(
   vocabularyItems: VocabularyItem[],
-  deckId: number,
+  deckId: string,
 ): Promise<void> {
   if (vocabularyItems.length === 0) return
 

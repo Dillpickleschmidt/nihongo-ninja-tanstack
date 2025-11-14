@@ -4,7 +4,7 @@ import { For, Show } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { getVocabularyForModule } from "@/data/utils/vocab"
 import MultipleChoiceText from "@/components/text/MultipleChoiceText"
-import { VocabularyCard } from "@/features/vocab-page/components/VocabularyCard"
+import { VocabularyCard } from "@/features/vocab-page/pages/main/components/VocabularyCard"
 
 export const Route = createFileRoute("/lessons/_chapter-0/common-expressions")({
   loader: async () => {

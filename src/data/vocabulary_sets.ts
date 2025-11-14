@@ -1,6 +1,6 @@
-import type { VocabularySetCollection } from "./types"
+import type { IndividualVocabularySet } from "./types"
 
-export const vocabularySets: VocabularySetCollection = {
+export const vocabularySets: Record<string, IndividualVocabularySet> = {
   hiragana: {
     keys: [
       "あ",
