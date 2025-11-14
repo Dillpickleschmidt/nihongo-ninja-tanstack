@@ -28,9 +28,11 @@ import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
 import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeLessonsRouteImport } from './routes/_home/lessons'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
+import { Route as HomeExtracurricularsV2RouteImport } from './routes/_home/extracurriculars-v2'
 import { Route as HomeExtracurricularsRouteImport } from './routes/_home/extracurriculars'
 import { Route as HomeVocabIndexRouteImport } from './routes/_home/vocab/index'
 import { Route as HomeSentencePracticeIndexRouteImport } from './routes/_home/sentence-practice/index'
+import { Route as HomeExtracurricularsV2IndexRouteImport } from './routes/_home/extracurriculars-v2/index'
 import { Route as PracticeUserIDDeckIDRouteImport } from './routes/practice/$userID.$deckID'
 import { Route as ApiRelayTefhSplatRouteImport } from './routes/api/relay-tefh.$'
 import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
@@ -180,6 +182,11 @@ const HomeGrammarNotesRoute = HomeGrammarNotesRouteImport.update({
   path: '/grammar-notes',
   getParentRoute: () => HomeRoute,
 } as any)
+const HomeExtracurricularsV2Route = HomeExtracurricularsV2RouteImport.update({
+  id: '/extracurriculars-v2',
+  path: '/extracurriculars-v2',
+  getParentRoute: () => HomeRoute,
+} as any)
 const HomeExtracurricularsRoute = HomeExtracurricularsRouteImport.update({
   id: '/extracurriculars',
   path: '/extracurriculars',
@@ -195,6 +202,12 @@ const HomeSentencePracticeIndexRoute =
     id: '/sentence-practice/',
     path: '/sentence-practice/',
     getParentRoute: () => HomeRoute,
+  } as any)
+const HomeExtracurricularsV2IndexRoute =
+  HomeExtracurricularsV2IndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => HomeExtracurricularsV2Route,
   } as any)
 const PracticeUserIDDeckIDRoute = PracticeUserIDDeckIDRouteImport.update({
   id: '/practice/$userID/$deckID',
@@ -510,6 +523,7 @@ export interface FileRoutesByFullPath {
   '/kanji-test': typeof KanjiTestRoute
   '/pricing': typeof PricingRoute
   '/extracurriculars': typeof HomeExtracurricularsRoute
+  '/extracurriculars-v2': typeof HomeExtracurricularsV2RouteWithChildren
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
@@ -540,6 +554,7 @@ export interface FileRoutesByFullPath {
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
+  '/extracurriculars-v2/': typeof HomeExtracurricularsV2IndexRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
   '/vocab/': typeof HomeVocabIndexRoute
   '/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
@@ -614,6 +629,7 @@ export interface FileRoutesByTo {
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
+  '/extracurriculars-v2': typeof HomeExtracurricularsV2IndexRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
   '/vocab': typeof HomeVocabIndexRoute
   '/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
@@ -662,6 +678,7 @@ export interface FileRoutesById {
   '/kanji-test': typeof KanjiTestRoute
   '/pricing': typeof PricingRoute
   '/_home/extracurriculars': typeof HomeExtracurricularsRoute
+  '/_home/extracurriculars-v2': typeof HomeExtracurricularsV2RouteWithChildren
   '/_home/grammar-notes': typeof HomeGrammarNotesRoute
   '/_home/lessons': typeof HomeLessonsRouteWithChildren
   '/_home/review': typeof HomeReviewRoute
@@ -692,6 +709,7 @@ export interface FileRoutesById {
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
+  '/_home/extracurriculars-v2/': typeof HomeExtracurricularsV2IndexRoute
   '/_home/sentence-practice/': typeof HomeSentencePracticeIndexRoute
   '/_home/vocab/': typeof HomeVocabIndexRoute
   '/_home/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
@@ -740,6 +758,7 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/pricing'
     | '/extracurriculars'
+    | '/extracurriculars-v2'
     | '/grammar-notes'
     | '/lessons'
     | '/review'
@@ -770,6 +789,7 @@ export interface FileRouteTypes {
     | '/api/auth/logout'
     | '/api/relay-tefh/$'
     | '/practice/$userID/$deckID'
+    | '/extracurriculars-v2/'
     | '/sentence-practice'
     | '/vocab/'
     | '/learn/additional-resources/kanji-practice-sheet'
@@ -844,6 +864,7 @@ export interface FileRouteTypes {
     | '/api/auth/logout'
     | '/api/relay-tefh/$'
     | '/practice/$userID/$deckID'
+    | '/extracurriculars-v2'
     | '/sentence-practice'
     | '/vocab'
     | '/learn/additional-resources/kanji-practice-sheet'
@@ -891,6 +912,7 @@ export interface FileRouteTypes {
     | '/kanji-test'
     | '/pricing'
     | '/_home/extracurriculars'
+    | '/_home/extracurriculars-v2'
     | '/_home/grammar-notes'
     | '/_home/lessons'
     | '/_home/review'
@@ -921,6 +943,7 @@ export interface FileRouteTypes {
     | '/api/auth/logout'
     | '/api/relay-tefh/$'
     | '/practice/$userID/$deckID'
+    | '/_home/extracurriculars-v2/'
     | '/_home/sentence-practice/'
     | '/_home/vocab/'
     | '/_home/learn/additional-resources/kanji-practice-sheet'
@@ -1113,6 +1136,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeGrammarNotesRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/_home/extracurriculars-v2': {
+      id: '/_home/extracurriculars-v2'
+      path: '/extracurriculars-v2'
+      fullPath: '/extracurriculars-v2'
+      preLoaderRoute: typeof HomeExtracurricularsV2RouteImport
+      parentRoute: typeof HomeRoute
+    }
     '/_home/extracurriculars': {
       id: '/_home/extracurriculars'
       path: '/extracurriculars'
@@ -1133,6 +1163,13 @@ declare module '@tanstack/solid-router' {
       fullPath: '/sentence-practice'
       preLoaderRoute: typeof HomeSentencePracticeIndexRouteImport
       parentRoute: typeof HomeRoute
+    }
+    '/_home/extracurriculars-v2/': {
+      id: '/_home/extracurriculars-v2/'
+      path: '/'
+      fullPath: '/extracurriculars-v2/'
+      preLoaderRoute: typeof HomeExtracurricularsV2IndexRouteImport
+      parentRoute: typeof HomeExtracurricularsV2Route
     }
     '/practice/$userID/$deckID': {
       id: '/practice/$userID/$deckID'
@@ -1508,6 +1545,20 @@ declare module '@tanstack/solid-router' {
   }
 }
 
+interface HomeExtracurricularsV2RouteChildren {
+  HomeExtracurricularsV2IndexRoute: typeof HomeExtracurricularsV2IndexRoute
+}
+
+const HomeExtracurricularsV2RouteChildren: HomeExtracurricularsV2RouteChildren =
+  {
+    HomeExtracurricularsV2IndexRoute: HomeExtracurricularsV2IndexRoute,
+  }
+
+const HomeExtracurricularsV2RouteWithChildren =
+  HomeExtracurricularsV2Route._addFileChildren(
+    HomeExtracurricularsV2RouteChildren,
+  )
+
 interface HomeLessonsRouteChildren {
   HomeLessonsChapter0CommonExpressionsRoute: typeof HomeLessonsChapter0CommonExpressionsRoute
   HomeLessonsChapter0ContractedSoundsRoute: typeof HomeLessonsChapter0ContractedSoundsRoute
@@ -1628,6 +1679,7 @@ const HomeVocabRouteWithChildren = HomeVocabRoute._addFileChildren(
 
 interface HomeRouteChildren {
   HomeExtracurricularsRoute: typeof HomeExtracurricularsRoute
+  HomeExtracurricularsV2Route: typeof HomeExtracurricularsV2RouteWithChildren
   HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
   HomeLessonsRoute: typeof HomeLessonsRouteWithChildren
   HomeReviewRoute: typeof HomeReviewRoute
@@ -1649,6 +1701,7 @@ interface HomeRouteChildren {
 
 const HomeRouteChildren: HomeRouteChildren = {
   HomeExtracurricularsRoute: HomeExtracurricularsRoute,
+  HomeExtracurricularsV2Route: HomeExtracurricularsV2RouteWithChildren,
   HomeGrammarNotesRoute: HomeGrammarNotesRoute,
   HomeLessonsRoute: HomeLessonsRouteWithChildren,
   HomeReviewRoute: HomeReviewRoute,

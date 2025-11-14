@@ -11,8 +11,8 @@ import {
   useQueryClient,
 } from "@tanstack/solid-query"
 import type { QueryClient } from "@tanstack/solid-query"
-import { Provider as UrqlProvider } from '@urql/solid'
-import type { Client as UrqlClient, SSRExchange } from '@urql/core'
+import type { Client as UrqlClient, SSRExchange } from "@urql/core"
+import { Provider as UrqlProvider } from "@urql/solid"
 import "@fontsource-variable/inter"
 import "@fontsource/poppins"
 import "driver.js/dist/driver.css"
@@ -41,11 +41,14 @@ import {
 import { updateUserSettingsMutation } from "@/query/query-mutations"
 import { queryKeys } from "@/query/utils/query-keys"
 import { setupAuthSync } from "@/features/module-completion/setupAuthSync"
-import { createUrqlClient } from "@/features/extracurriculars/api/anilist"
 
-export const Route = createRootRouteWithContext<{
+export interface RouterContext {
   queryClient: QueryClient
-}>()({
+  urqlClient?: UrqlClient
+  urqlSSR?: SSRExchange
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   head: () => ({
     meta: [
       { charset: "utf-8" },
@@ -96,9 +99,7 @@ export const Route = createRootRouteWithContext<{
 })
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext()()
-  // Temporarily: create URQL client here instead of getting from context
-  const { client: urqlClient } = createUrqlClient()
+  const { queryClient, urqlClient } = Route.useRouteContext()()
 
   return (
     <>
