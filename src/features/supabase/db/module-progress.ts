@@ -154,8 +154,12 @@ export async function getUserDailyAggregates(
 ): Promise<Record<string, number>> {
   const supabase = createSupabaseClient()
 
+  // Get user's timezone
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
   const { data, error } = await supabase.rpc("get_user_daily_aggregates", {
     user_id_param: userId,
+    timezone_param: timezone,
   })
 
   if (error) throw error

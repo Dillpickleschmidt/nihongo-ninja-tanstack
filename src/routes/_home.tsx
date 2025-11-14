@@ -3,7 +3,6 @@ import {
   Outlet,
   useRouteContext,
 } from "@tanstack/solid-router"
-import { useQueryClient } from "@tanstack/solid-query"
 import { Route as RootRoute } from "@/routes/__root"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
@@ -23,7 +22,6 @@ function RouteComponent() {
 
 function Home() {
   const context = useRouteContext({ from: RootRoute.id })
-  const queryClient = useQueryClient()
   const userId = context().user?.id
 
   const aggregatesQuery = useCustomQuery(() =>
@@ -34,7 +32,9 @@ function Home() {
 
   const dailyProgressPercentage = () => {
     if (!userId) return 0
-    const todayKey = new Date().toISOString().split("T")[0]
+
+    // Calculate today in user's local timezone
+    const todayKey = new Date().toLocaleDateString("en-CA") // en-CA is YYYY-MM-DD
     const secondsToday = aggregatesQuery.data?.[todayKey] ?? 0
     const minutesToday = Math.round(secondsToday / 60)
     return Math.min(100, Math.round((minutesToday / 30) * 100))

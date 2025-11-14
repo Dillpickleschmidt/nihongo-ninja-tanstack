@@ -50,11 +50,14 @@ export function createSlideWithFadeInAnimation(
   }
 
   // Position animation
-  const posAnim = element.animate([getStartPosition(direction), getEndPosition(direction)], {
-    duration: duration,
-    easing: ANIMATION_CONFIG.easings.transform,
-    fill: "forwards",
-  })
+  const posAnim = element.animate(
+    [getStartPosition(direction), getEndPosition(direction)],
+    {
+      duration: duration,
+      easing: ANIMATION_CONFIG.easings.transform,
+      fill: "forwards",
+    },
+  )
   animations.push(posAnim)
 
   // Opacity animation (if requested)
@@ -155,26 +158,55 @@ export function prepareElementForEnter(
 
 // Animation configuration for component-specific animations
 const COMPONENT_ANIMATION_CONFIG = {
-  "[data-word-hierarchy-progress]": { direction: "right" as const, baseDelay: 0, staggerDelay: 0 },
-  "[data-word-hierarchy-content]": { direction: "right" as const, baseDelay: 75, staggerDelay: 0 },
-  "[data-history-item]": { direction: "left" as const, baseDelay: 0, staggerDelay: 0 },
-  "[data-featured-item]": { direction: "left" as const, baseDelay: 0, staggerDelay: 50 },
-  "[data-struggles-item]": { direction: "left" as const, baseDelay: 0, staggerDelay: 0 },
-  "[data-lessons-section]": { direction: "up" as const, baseDelay: 0, staggerDelay: 0 },
+  "[data-word-hierarchy-progress]": {
+    direction: "right" as const,
+    baseDelay: 0,
+    staggerDelay: 0,
+  },
+  "[data-word-hierarchy-content]": {
+    direction: "right" as const,
+    baseDelay: 75,
+    staggerDelay: 0,
+  },
+  "[data-history-item]": {
+    direction: "left" as const,
+    baseDelay: 0,
+    staggerDelay: 0,
+  },
+  "[data-featured-item]": {
+    direction: "left" as const,
+    baseDelay: 0,
+    staggerDelay: 50,
+  },
+  "[data-struggles-item]": {
+    direction: "left" as const,
+    baseDelay: 0,
+    staggerDelay: 0,
+  },
+  "[data-lessons-layout]": {
+    direction: "up" as const,
+    baseDelay: 0,
+    staggerDelay: 0,
+  },
 } as const
 
 // Utility function for components to trigger their own animations
 export function triggerComponentAnimations(selectors: string[]) {
   selectors.forEach((selector) => {
-    const config = COMPONENT_ANIMATION_CONFIG[selector as keyof typeof COMPONENT_ANIMATION_CONFIG]
+    const config =
+      COMPONENT_ANIMATION_CONFIG[
+        selector as keyof typeof COMPONENT_ANIMATION_CONFIG
+      ]
     if (!config) return
 
-    const elements = document.querySelectorAll(selector) as NodeListOf<HTMLElement>
+    const elements = document.querySelectorAll(
+      selector,
+    ) as NodeListOf<HTMLElement>
     elements.forEach((element, index) => {
       if (element) {
         prepareElementForEnter(element, config.direction, true)
 
-        const delay = config.baseDelay + (index * config.staggerDelay)
+        const delay = config.baseDelay + index * config.staggerDelay
         requestAnimationFrame(() => {
           setTimeout(() => {
             createSlideWithFadeInAnimation(element, config.direction, {

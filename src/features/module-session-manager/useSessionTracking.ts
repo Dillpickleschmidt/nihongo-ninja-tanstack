@@ -72,7 +72,7 @@ export function useSessionTracking(
     if (!userId) return
 
     // Optimistic update: add time to today's aggregate
-    const todayKey = new Date().toISOString().split("T")[0]
+    const todayKey = new Date().toLocaleDateString("en-CA")
     queryClient.setQueryData<Record<string, number>>(
       queryKeys.userDailyAggregates(userId),
       (old) => ({

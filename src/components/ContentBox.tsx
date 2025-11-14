@@ -30,7 +30,7 @@ type ContentBoxProps = {
 export const contentBoxVariants = cva("w-full relative", {
   variants: {
     size: {
-      default: "max-w-4xl",
+      default: "bg-card/40 max-w-4xl",
       lg: "max-w-6xl md:max-w-7xl",
     },
   },
@@ -141,7 +141,7 @@ export default function ContentBox(props: ContentBoxProps) {
   return (
     <>
       <Show when={isVisible()}>
-        <div class="flex w-full justify-center">
+        <div class="flex w-full justify-center pb-16">
           <div
             class={cn(
               contentBoxVariants({ size: config().size }),
@@ -155,7 +155,7 @@ export default function ContentBox(props: ContentBoxProps) {
 
       {/* Mark as Complete button that appears on scroll */}
       <Show when={isVisible() && showCompleteButton()}>
-        <div class="fixed bottom-8 left-1/2 z-50 -translate-x-1/2 transform">
+        <div class="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 transform">
           <Button
             as="a"
             href="/learn"

@@ -5,7 +5,6 @@ import { cn } from "@/utils"
 import { userSettingsQueryOptions } from "@/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { Route as RootRoute } from "@/routes/__root"
-import { Show } from "solid-js"
 import TextbookSelectorDialog from "@/features/homepage/pages/learning-path/components/TextbookSelectorDialog"
 
 interface BottomNavProps {

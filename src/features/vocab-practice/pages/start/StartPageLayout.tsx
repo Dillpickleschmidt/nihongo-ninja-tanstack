@@ -1,6 +1,5 @@
 // features/vocab-practice/components/pages/start-page/components/StartPageLayout.tsx
 import { Show, type JSX } from "solid-js"
-import { useQueryClient } from "@tanstack/solid-query"
 import { TextbookChapterBackgrounds } from "@/features/homepage/shared/components/TextbookChapterBackgrounds"
 import { BottomNav } from "@/features/navbar/BottomNav"
 import { StartPageHeader } from "./header/Header"
@@ -21,7 +20,6 @@ type StartPageLayoutProps = {
 
 export function StartPageLayout(props: StartPageLayoutProps) {
   const context = useRouteContext({ from: RootRoute.id })
-  const queryClient = useQueryClient()
   const userId = context().user?.id
   const { prerequisitesEnabled } = useVocabPracticeContext()
 
@@ -31,7 +29,7 @@ export function StartPageLayout(props: StartPageLayoutProps) {
 
   const dailyProgressPercentage = () => {
     if (!userId) return 0
-    const todayKey = new Date().toISOString().split("T")[0]
+    const todayKey = new Date().toLocaleDateString("en-CA")
     const secondsToday = aggregatesQuery.data?.[todayKey] ?? 0
     const minutesToday = Math.round(secondsToday / 60)
     return Math.min(100, Math.round((minutesToday / 30) * 100))
