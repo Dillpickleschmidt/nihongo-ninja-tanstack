@@ -1,6 +1,5 @@
 import { Component, createSignal, onCleanup, createEffect } from 'solid-js'
 import { Volume2, VolumeX } from 'lucide-solid'
-import { click as clickDirective } from '../../../utils/navigate'
 
 interface YoutubeIframeProps {
   id: string

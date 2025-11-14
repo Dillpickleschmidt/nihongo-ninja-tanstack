@@ -1,5 +1,4 @@
 import { createPersisted } from '../../utils/solid-helpers'
-import { createMemo } from 'solid-js'
 import SUPPORTS from '../supports'
 
 const alID = '26159' // Development client ID
@@ -9,13 +8,8 @@ export const anilistClientID = createPersisted('anilist-client-id', alID)
 export const malClientID = createPersisted('mal-client-id', malID)
 
 // NSFW content filter settings
+// Note: nsfw derived value is computed in AnilistContext provider
 export const showHentai = createPersisted('extracurriculars-show-hentai', false)
-
-// Derived signal: returns the genre filter to exclude
-// Returns ['Hentai'] when filtering is enabled, null when disabled
-export const nsfw = createMemo(() =>
-  showHentai.value ? null : (['Hentai'] as const)
-)
 
 // Export SUPPORTS for use in other modules
 export { SUPPORTS }

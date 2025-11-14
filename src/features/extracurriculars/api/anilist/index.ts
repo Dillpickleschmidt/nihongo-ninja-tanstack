@@ -1,4 +1,5 @@
-export { default as client } from './client'
+export { anilistClient } from './client'
+export { AnilistProvider, useAnilist } from './AnilistContext'
 export { createUrqlClient } from './urql-client'
 export * from './queries'
 export * from './types'

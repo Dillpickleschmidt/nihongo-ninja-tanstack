@@ -41,11 +41,10 @@ import {
 import { updateUserSettingsMutation } from "@/query/query-mutations"
 import { queryKeys } from "@/query/utils/query-keys"
 import { setupAuthSync } from "@/features/module-completion/setupAuthSync"
+import { createUrqlClient } from "@/features/extracurriculars/api/anilist"
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
-  urqlClient: UrqlClient
-  urqlSSR: SSRExchange
 }>()({
   head: () => ({
     meta: [
@@ -97,7 +96,9 @@ export const Route = createRootRouteWithContext<{
 })
 
 function RootComponent() {
-  const { queryClient, urqlClient } = Route.useRouteContext()()
+  const { queryClient } = Route.useRouteContext()()
+  // Temporarily: create URQL client here instead of getting from context
+  const { client: urqlClient } = createUrqlClient()
 
   return (
     <>

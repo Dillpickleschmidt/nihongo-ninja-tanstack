@@ -2,49 +2,20 @@ import { Component, For, Show, createEffect, createSignal, onCleanup } from 'sol
 import Skeleton from './skeleton'
 import SmallCard from './small'
 import type { ResultOf } from 'gql.tada'
-import type { Search } from '../../anilist/queries'
+import type { Search } from '../../../api/anilist/queries'
+import type { OperationResult } from '@urql/core'
 
 interface QueryCardProps {
-  query: {
-    fetching: () => boolean
-    error?: { message: string } | null
-    data?: ResultOf<typeof Search> | null
-    isPaused?: () => boolean
-    resume?: () => void
-  }
+  query: OperationResult<ResultOf<typeof Search>>
 }
 
 const QueryCard: Component<QueryCardProps> = (props) => {
-  const [shouldObserve, setShouldObserve] = createSignal(props.query.isPaused?.() ?? false)
   let observerDiv: HTMLDivElement | undefined
-
-  // Setup lazy loading with IntersectionObserver
-  createEffect(() => {
-    if (!shouldObserve() || !observerDiv) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          props.query.resume?.()
-          observer.unobserve(observerDiv!)
-        }
-      },
-      { threshold: 0 }
-    )
-
-    observer.observe(observerDiv)
-
-    onCleanup(() => observer.unobserve(observerDiv!))
-  })
 
   return (
     <>
-      <Show when={shouldObserve()}>
-        <div ref={observerDiv} class="w-0 h-0" />
-      </Show>
-
       <Show
-        when={props.query.fetching()}
+        when={props.query.fetching}
         fallback={
           <Show
             when={props.query.error}
@@ -59,7 +30,7 @@ const QueryCard: Component<QueryCardProps> = (props) => {
               >
                 {(data) => (
                   <Show
-                    when={data().Page?.media && data().Page!.media!.length > 0}
+                    when={data.Page?.media && data.Page!.media!.length > 0}
                     fallback={
                       <div class="p-5 flex items-center justify-center w-full h-80">
                         <div>
@@ -72,10 +43,10 @@ const QueryCard: Component<QueryCardProps> = (props) => {
                     }
                   >
                     {(mediaList) => (
-                      <For each={mediaList()} fallback={<Skeleton />}>
+                      <For each={mediaList} fallback={<Skeleton />}>
                         {(media, i) => (
                           <Show when={media}>
-                            {(m) => <SmallCard media={m()} />}
+                            {(m) => <SmallCard media={m} />}
                           </Show>
                         )}
                       </For>
@@ -93,7 +64,7 @@ const QueryCard: Component<QueryCardProps> = (props) => {
                     Looks like something went wrong!
                   </div>
                   <div class="text-lg text-center text-muted-foreground">
-                    {error().message}
+                    {error.message}
                   </div>
                 </div>
               </div>
@@ -109,6 +80,5 @@ const QueryCard: Component<QueryCardProps> = (props) => {
   )
 }
 
-export default QueryCard
 export { QueryCard }
 export type { QueryCardProps }

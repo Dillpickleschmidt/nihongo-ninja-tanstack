@@ -3,8 +3,7 @@ import type { Media } from '../../../api/anilist'
 import Heart from '../../icons/animated/heart'
 import { Button, iconSizes } from './index'
 import type { ButtonProps } from './index'
-import { authAggregator, fav } from '../../../api/auth'
-import { click as clickDirective } from '../../../utils/navigate'
+import { useAuthAggregator, fav } from '../../../api/auth'
 import { cn } from '../../../utils'
 
 interface FavoriteButtonProps extends Omit<ButtonProps, 'children' | 'onClick'> {
@@ -23,6 +22,7 @@ const FavoriteButton: Component<FavoriteButtonProps> = (props) => {
     ...rest
   } = props
 
+  const authAggregator = useAuthAggregator()
   const [key, setKey] = createSignal(1)
 
   const toggleFav = async () => {

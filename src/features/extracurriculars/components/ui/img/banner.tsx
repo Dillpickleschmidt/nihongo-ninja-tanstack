@@ -1,4 +1,4 @@
-import { Component, JSX, createEffect, createSignal, Show } from 'solid-js'
+import { Component, JSX, createEffect, createSignal, createResource, Show } from 'solid-js'
 import Load from './load'
 import type { Media } from '../../../api/anilist'
 import { banner, cover, title } from '../../../api/anilist'
@@ -16,6 +16,9 @@ const Banner: Component<BannerProps> = (props) => {
   const [isYoutube, setIsYoutube] = createSignal(false)
   const [sizeAttempt, setSizeAttempt] = createSignal(0)
   const [isMd, setIsMd] = createSignal(typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches)
+
+  // Create resource for episodes data
+  const [episodesData] = createResource(() => media.id, episodes)
 
   // Monitor media query
   createEffect(() => {
@@ -50,7 +53,7 @@ const Banner: Component<BannerProps> = (props) => {
   return (
     <Show when={isMd()}>
       <Show
-        when={episodes(media.id)}
+        when={episodesData()}
         fallback={
           <Show when={src()}>
             <Load
@@ -92,6 +95,5 @@ const Banner: Component<BannerProps> = (props) => {
   )
 }
 
-export default Banner
 export { Banner }
 export type { BannerProps }

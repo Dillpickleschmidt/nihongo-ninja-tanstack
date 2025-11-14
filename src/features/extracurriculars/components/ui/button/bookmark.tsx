@@ -3,7 +3,7 @@ import type { Media } from '../../../api/anilist'
 import Bookmark from '../../icons/animated/bookmark'
 import { Button, iconSizes } from './index'
 import type { ButtonProps } from './index'
-import { authAggregator, list, lists } from '../../../api/auth'
+import { useAuthAggregator, list, lists } from '../../../api/auth'
 import { cn } from '../../../utils'
 
 interface BookmarkButtonProps extends Omit<ButtonProps, 'children' | 'onClick'> {
@@ -22,6 +22,7 @@ const BookmarkButton: Component<BookmarkButtonProps> = (props) => {
     ...rest
   } = props
 
+  const authAggregator = useAuthAggregator()
   const [key, setKey] = createSignal(1)
 
   const toggleBookmark = async () => {

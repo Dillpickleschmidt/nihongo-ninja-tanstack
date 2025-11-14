@@ -1,7 +1,7 @@
 import Debug from 'debug'
 import { createMemo, createEffect } from 'solid-js'
 
-import { client, type Media } from '../anilist'
+import { anilistClient, type Media } from '../anilist'
 import { mappings, mappingsByKitsuId } from '../anizip'
 import native from '../../modules/native'
 
@@ -393,7 +393,7 @@ export default new class KitsuSync {
   schedule(onList: boolean | null = true) {
     const ids = Object.keys(this.userlist.value).map((id) => parseInt(id))
     debug('Kitsu schedule called with onList:', onList, 'and ids:', ids)
-    return client.schedule(onList && ids.length ? ids : undefined)
+    return anilistClient.schedule(onList && ids.length ? ids : undefined)
   }
 
   async toggleFav(id: number) {

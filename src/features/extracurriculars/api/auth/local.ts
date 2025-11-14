@@ -3,7 +3,7 @@ import { createStore as createSolidStore, SetStoreFunction, unwrap } from 'solid
 import { createMemo, createEffect } from 'solid-js'
 import { isServer } from 'solid-js/web'
 
-import { client, type Media } from '../anilist'
+import { anilistClient, type Media } from '../anilist'
 
 import type { Entry } from '../anilist/queries'
 import type { VariablesOf } from 'gql.tada'
@@ -85,11 +85,11 @@ export default new class LocalSync {
     }
   }
 
-  schedule(onList: boolean | null = true): ReturnType<typeof client.schedule> {
+  schedule(onList: boolean | null = true): ReturnType<typeof anilistClient.schedule> {
     const ids = Object.values(this.entries)
       .map(({ mediaListEntry }) => mediaListEntry?.id)
       .filter((e) => e != null) as number[]
-    return client.schedule(onList && ids.length ? ids : undefined)
+    return anilistClient.schedule(onList && ids.length ? ids : undefined)
   }
 
   toggleFav(id: number) {

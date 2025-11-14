@@ -2,7 +2,7 @@
 import { createRouter } from "@tanstack/solid-router"
 import { routeTree } from "./routeTree.gen"
 import { dehydrate, hydrate, QueryClient } from "@tanstack/solid-query"
-import type { Client as UrqlClient, SSRExchange } from '@urql/core'
+import type { Client as UrqlClient, SSRExchange } from "@urql/core"
 import { createUrqlClient } from "@/features/extracurriculars/api/anilist"
 
 export function getRouter() {
@@ -16,15 +16,15 @@ export function getRouter() {
     },
   })
 
-  // Create URQL client with SSR support
+  // Create URQL client with SSR support (request-scoped for Lambda)
   const { client: urqlClient, ssr: urqlSSR } = createUrqlClient()
 
   return createRouter({
     routeTree,
     context: {
       queryClient,
-      urqlClient,
-      urqlSSR,
+      // urqlClient,
+      // urqlSSR,
     },
     scrollRestoration: true,
     dehydrate: () => {

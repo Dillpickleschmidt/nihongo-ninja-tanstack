@@ -1,7 +1,7 @@
 import Debug from 'debug'
 import { createMemo, createEffect } from 'solid-js'
 
-import { client, type Media } from '../anilist'
+import { anilistClient, type Media } from '../anilist'
 import { mappings, mappingsByMalId } from '../anizip'
 import native from '../../modules/native'
 import { malClientID, SUPPORTS } from '../../modules/settings'
@@ -341,7 +341,7 @@ export default new class MALSync {
 
     debug('MAL user list loaded with', data.length, 'entries and IDs:', ids)
 
-    const malToAl = await client.malIdsCompound(ids)
+    const malToAl = await anilistClient.malIdsCompound(ids)
     for (const item of data) {
       const malId = item.node.id
       const alId = malToAl[malId] ?? (await this._getAlId(malId))
@@ -411,7 +411,7 @@ export default new class MALSync {
   schedule(onList: boolean | null = true) {
     const ids = Object.keys(this.userlist.value).map((id) => parseInt(id))
     debug('Fetching MAL schedule with IDs:', ids)
-    return client.schedule(onList && ids.length ? ids : undefined)
+    return anilistClient.schedule(onList && ids.length ? ids : undefined)
   }
 
   async toggleFav(id: number) {

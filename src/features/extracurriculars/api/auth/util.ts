@@ -1,37 +1,35 @@
 import { episodes, type Media } from '../anilist'
 
-import { authAggregator } from '.'
-
 export function progress(media: Pick<Media, 'mediaListEntry' | 'id'>): number | undefined {
-  return authAggregator.mediaListEntry(media)?.progress ?? undefined
+  return media.mediaListEntry?.progress ?? undefined
 }
 
 export function fav(media: Pick<Media, 'isFavourite' | 'id'>): boolean {
-  return !!authAggregator.isFavourite(media)
+  return !!media.isFavourite
 }
 
 export function list(
   media: { id: Media['id']; mediaListEntry: Pick<Media['mediaListEntry'] & {}, 'status' | 'id'> | null }
 ): 'CURRENT' | 'PLANNING' | 'COMPLETED' | 'DROPPED' | 'PAUSED' | 'REPEATING' | null | undefined {
-  return authAggregator.mediaListEntry(media as Media)?.status
+  return media.mediaListEntry?.status
 }
 
 export function lists(
   media: Pick<Media, 'mediaListEntry' | 'id'>
 ): Array<{ enabled: boolean; name: string }> | undefined {
-  return authAggregator.mediaListEntry(media)?.customLists as Array<{ enabled: boolean; name: string }> | undefined
+  return media.mediaListEntry?.customLists as Array<{ enabled: boolean; name: string }> | undefined
 }
 
 export function repeat(media: Pick<Media, 'mediaListEntry' | 'id'>): number | null | undefined {
-  return authAggregator.mediaListEntry(media)?.repeat
+  return media.mediaListEntry?.repeat
 }
 
 export function score(media: Pick<Media, 'mediaListEntry' | 'id'>): number | null | undefined {
-  return authAggregator.mediaListEntry(media)?.score
+  return media.mediaListEntry?.score
 }
 
 export function entry(media: Pick<Media, 'mediaListEntry' | 'id'>): Media['mediaListEntry'] {
-  return authAggregator.mediaListEntry(media) ?? null
+  return media.mediaListEntry ?? null
 }
 
 export function of(

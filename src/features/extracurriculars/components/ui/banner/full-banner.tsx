@@ -1,13 +1,13 @@
 import { Component, For, Show, createEffect, createSignal, onCleanup } from 'solid-js'
+import { isServer } from 'solid-js/web'
 import { useNavigate } from '@tanstack/solid-router'
 import { Button } from '../button'
 import PlayButton from '../button/play'
 import FavoriteButton from '../button/favorite'
 import BookmarkButton from '../button/bookmark'
-import { setBannerSrc } from './banner-image'
+import { useBanner } from './BannerContext'
 import { desc, duration, format, getTextColorForRating, season, status, title, type Media } from '../../../api/anilist'
 import { of } from '../../../api/auth'
-import { click as clickDirective } from '../../../utils/navigate'
 import { colors } from '../../../utils'
 
 interface FullBannerProps {
@@ -35,6 +35,7 @@ function shuffleAndFilter(media: Array<Media | null>): Media[] {
 
 const FullBanner: Component<FullBannerProps> = (props) => {
   const navigate = useNavigate()
+  const { setBannerSrc } = useBanner()
   const shuffled = shuffleAndFilter(props.mediaList)
 
   if (shuffled.length === 0) {
@@ -49,6 +50,26 @@ const FullBanner: Component<FullBannerProps> = (props) => {
     '--green': 0,
     '--blue': 0
   })
+
+  // Only run carousel logic on client to avoid serialization of Timeout objects
+  if (isServer) {
+    return (
+      <div class="md:pl-5 pb-2 grid grid-cols-1 md:grid-cols-2 mt-auto w-full max-h-full" style={cssVars()}>
+        <div class="w-full flex flex-col items-center text-center md:items-start md:text-left">
+          <a
+            href={`/app/anime/${current().id}`}
+            onClick={(e) => {
+              e.preventDefault()
+              navigate(`/app/anime/${current().id}`)
+            }}
+            class="text-white font-black text-3xl md:text-4xl line-clamp-2 w-[900px] max-w-[85%] leading-tight text-balance fade-in hover:text-neutral-300 hover:underline cursor-pointer"
+          >
+            {title(current())}
+          </a>
+        </div>
+      </div>
+    )
+  }
 
   // Update banner source
   createEffect(() => {
@@ -260,6 +281,5 @@ const FullBanner: Component<FullBannerProps> = (props) => {
   )
 }
 
-export default FullBanner
 export { FullBanner }
 export type { FullBannerProps }

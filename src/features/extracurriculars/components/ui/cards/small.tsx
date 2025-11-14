@@ -7,7 +7,6 @@ import PreviewCard from './preview'
 import type { Media } from '../../../api/anilist'
 import { coverMedium, format, title } from '../../../api/anilist/util'
 import { list } from '../../../api/auth'
-import { hover } from '../../../utils/navigate'
 
 interface SmallCardProps {
   media: Media

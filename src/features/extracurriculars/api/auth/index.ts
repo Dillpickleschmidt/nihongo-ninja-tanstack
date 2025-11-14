@@ -1,3 +1,4 @@
-export { default as authAggregator } from './client'
+// Context providers and hooks
+export { AuthAggregatorProvider, useAuthAggregator } from './AuthAggregatorContext'
 
 export * from './util'
