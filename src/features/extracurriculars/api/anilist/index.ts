@@ -1,3 +1,4 @@
+export { default as client } from './client'
 export { createUrqlClient } from './urql-client'
 export * from './queries'
 export * from './types'

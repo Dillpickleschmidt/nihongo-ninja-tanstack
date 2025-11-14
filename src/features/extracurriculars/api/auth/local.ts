@@ -1,6 +1,7 @@
 import { createStore, set, get } from 'idb-keyval'
-import { createStore as createSolidStore, SetStoreFunction } from 'solid-js/store'
+import { createStore as createSolidStore, SetStoreFunction, unwrap } from 'solid-js/store'
 import { createMemo, createEffect } from 'solid-js'
+import { isServer } from 'solid-js/web'
 
 import { client, type Media } from '../anilist'
 
@@ -16,9 +17,7 @@ interface LocalStore {
 }
 
 export default new class LocalSync {
-  idbStore = createStore('watchlist', 'local')
-
-  [Symbol.for('solid')] = true // Mark as SolidJS store
+  idbStore = !isServer ? createStore('watchlist', 'local') : null
 
   private _entries: Record<number, StoredMedia> = {}
   private _setEntries: SetStoreFunction<Record<number, StoredMedia>>
@@ -29,16 +28,20 @@ export default new class LocalSync {
     this._setEntries = setEntries
 
     // Load from IndexedDB
-    get('entries', this.idbStore).then((stored) => {
-      const data = stored ?? {}
-      this._entries = data
-      setEntries(data)
-    })
+    if (this.idbStore) {
+      get('entries', this.idbStore).then((stored) => {
+        const data = stored ?? {}
+        this._entries = data
+        setEntries(data)
+      })
+    }
 
     // Sync to IndexedDB when entries change
     createEffect(() => {
       const current = entries
-      set('entries', current, this.idbStore)
+      if (this.idbStore) {
+        set('entries', unwrap(current), this.idbStore)
+      }
       this.subscribers.forEach((cb) => cb(current))
     })
   }
@@ -147,9 +150,7 @@ export default new class LocalSync {
       const keys = ['status', 'score', 'repeat', 'progress'] as Array<keyof typeof variables>
       for (const key of keys) {
         let value = variables[key]
-        // @ts-expect-error idk how to fix this tbf
         if (key === 'score' && value != null) value /= 10
-        // @ts-expect-error idk how to fix this tbf
         entry.mediaListEntry[key] = value ?? entry.mediaListEntry[key] ?? null
       }
       return { ...entries, [variables.id]: entry }

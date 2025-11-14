@@ -213,6 +213,5 @@ export default Object.assign<Partial<Native>, Partial<Native>>(
     debug: async () => undefined,
     profile: async () => undefined
   },
-  // @ts-expect-error - merge with global native if it exists
   typeof globalThis !== 'undefined' && (globalThis as any).native ? (globalThis as any).native : {}
 ) as Native

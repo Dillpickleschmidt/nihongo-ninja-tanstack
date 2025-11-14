@@ -20,7 +20,7 @@ export default new class AuthAggregator {
   // AUTH
 
   anilist() {
-    return !!client.client.viewer.value?.viewer?.id
+    return !!client.getViewer()?.viewer?.id
   }
 
   kitsu() {
@@ -36,14 +36,14 @@ export default new class AuthAggregator {
   }
 
   id() {
-    if (this.anilist()) return client.client.viewer.value!.viewer?.id
+    if (this.anilist()) return client.getViewer()!.viewer?.id
     if (this.kitsu()) return kitsu.id()
 
     return -1
   }
 
   profile(): ResultOf<typeof UserFrag> | undefined {
-    if (this.anilist()) return client.client.viewer.value?.viewer ?? undefined
+    if (this.anilist()) return client.getViewer()?.viewer ?? undefined
     if (this.kitsu()) return kitsu.profile()
     if (this.mal()) return mal.profile()
   }

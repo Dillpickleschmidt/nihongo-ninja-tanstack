@@ -85,7 +85,7 @@ export function createUrqlClient() {
       refocusExchange(60_000),
       offlineExchange({
         schema,
-        storage,
+        ...(storage ? { storage } : {}),
         updates: {
           Mutation: {
             ToggleFavourite (result: ResultOf<typeof ToggleFavourite>, args, cache) {

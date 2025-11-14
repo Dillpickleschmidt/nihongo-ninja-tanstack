@@ -25,7 +25,7 @@ export const refocusExchange = (minimumTime = 0): Exchange => {
       const watchedOperations = new Map<number, Operation>()
       const observedOperations = new Map<number, number>()
 
-      let timeout = 0
+      let timeout: ReturnType<typeof setTimeout> | number = 0
 
       window.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
