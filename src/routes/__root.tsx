@@ -11,6 +11,8 @@ import {
   useQueryClient,
 } from "@tanstack/solid-query"
 import type { QueryClient } from "@tanstack/solid-query"
+import { Provider as UrqlProvider } from '@urql/solid'
+import type { Client as UrqlClient, SSRExchange } from '@urql/core'
 import "@fontsource-variable/inter"
 import "@fontsource/poppins"
 import "driver.js/dist/driver.css"
@@ -42,6 +44,8 @@ import { setupAuthSync } from "@/features/module-completion/setupAuthSync"
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
+  urqlClient: UrqlClient
+  urqlSSR: SSRExchange
 }>()({
   head: () => ({
     meta: [
@@ -93,14 +97,16 @@ export const Route = createRootRouteWithContext<{
 })
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext()()
+  const { queryClient, urqlClient } = Route.useRouteContext()()
 
   return (
     <>
       <HeadContent />
-      <QueryClientProvider client={queryClient}>
-        <RootContent />
-      </QueryClientProvider>
+      <UrqlProvider value={urqlClient}>
+        <QueryClientProvider client={queryClient}>
+          <RootContent />
+        </QueryClientProvider>
+      </UrqlProvider>
       <Scripts />
     </>
   )

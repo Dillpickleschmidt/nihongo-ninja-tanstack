@@ -2,6 +2,8 @@
 import { createRouter } from "@tanstack/solid-router"
 import { routeTree } from "./routeTree.gen"
 import { dehydrate, hydrate, QueryClient } from "@tanstack/solid-query"
+import type { Client as UrqlClient, SSRExchange } from '@urql/core'
+import { createUrqlClient } from "@/features/extracurriculars/api/anilist"
 
 export function getRouter() {
   // Create a new QueryClient for each request (server) or app initialization (client)
@@ -14,10 +16,15 @@ export function getRouter() {
     },
   })
 
+  // Create URQL client with SSR support
+  const { client: urqlClient, ssr: urqlSSR } = createUrqlClient()
+
   return createRouter({
     routeTree,
     context: {
       queryClient,
+      urqlClient,
+      urqlSSR,
     },
     scrollRestoration: true,
     dehydrate: () => {
@@ -26,10 +33,14 @@ export function getRouter() {
           shouldDehydrateQuery: () => true, // Include all queries (even pending)
           shouldDehydrateMutation: () => true, // Include all mutations
         }),
+        urqlState: urqlSSR.extractData(),
       } as any
     },
     hydrate: (dehydrated) => {
       hydrate(queryClient, dehydrated.queryClientState)
+      if (dehydrated.urqlState) {
+        urqlSSR.restoreData(dehydrated.urqlState)
+      }
     },
     // notFoundMode: "root",
     defaultNotFoundComponent: () => (
