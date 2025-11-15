@@ -8,7 +8,7 @@ export function createUrqlClient(isServer: boolean) {
   const client = new Client({
     url: "https://graphql.anilist.co",
     preferGetMethod: false,
-    exchanges: [cacheExchange, ssr, fetchExchange],
+    exchanges: [ssr, cacheExchange, fetchExchange],
   })
 
   return { client, ssr }

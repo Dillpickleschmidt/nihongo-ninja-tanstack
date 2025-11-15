@@ -1,4 +1,4 @@
-import gql from './gql'
+import gql from "./gql"
 
 export const FullMediaList = gql(`
   fragment FullMediaList on MediaList @_unmask {
@@ -22,7 +22,8 @@ const RelationMedia = gql(`
   }
 `)
 
-export const MediaEdgeFrag = gql(`
+export const MediaEdgeFrag = gql(
+  `
   fragment MediaEdgeFrag on MediaEdge @_unmask {
     relationType(version:2),
     node {
@@ -55,9 +56,12 @@ export const MediaEdgeFrag = gql(`
       }
     }
   }
-`, [RelationMedia])
+`,
+  [RelationMedia],
+)
 
-export const FullMedia = gql(`
+export const FullMedia = gql(
+  `
   fragment FullMedia on Media @_unmask {
 id,
 idMal,
@@ -127,7 +131,9 @@ relations {
     ...MediaEdgeFrag
   }
 }
-}`, [FullMediaList, MediaEdgeFrag])
+}`,
+  [FullMediaList, MediaEdgeFrag],
+)
 
 export const UserFrag = gql(`
   fragment UserFrag on User @_unmask {
@@ -159,7 +165,8 @@ export const UserFrag = gql(`
   }
 `)
 
-export const Search = gql(`
+export const Search = gql(
+  `
   query Search($page: Int, $perPage: Int, $search: String, $genre: [String], $format: [MediaFormat], $status: [MediaStatus], $statusNot: [MediaStatus], $season: MediaSeason, $seasonYear: Int, $isAdult: Boolean, $sort: [MediaSort], $onList: Boolean, $ids: [Int], $nsfw: [String]) {
     Page(page: $page, perPage: $perPage) {
       pageInfo {
@@ -170,17 +177,23 @@ export const Search = gql(`
       }
     }
   }
-`, [FullMedia])
+`,
+  [FullMedia],
+)
 
-export const IDMedia = gql(`
+export const IDMedia = gql(
+  `
   query IDMedia($id: Int!) {
     Media(id: $id, type: ANIME) {
       ...FullMedia
     }
   }
-`, [FullMedia])
+`,
+  [FullMedia],
+)
 
-export const Viewer = gql(`
+export const Viewer = gql(
+  `
   query Viewer {
     Viewer {
       ...UserFrag,
@@ -191,9 +204,12 @@ export const Viewer = gql(`
       }
     }
   }
-`, [UserFrag])
+`,
+  [UserFrag],
+)
 
-export const UserLists = gql(`
+export const UserLists = gql(
+  `
   query UserLists($id: Int) {
     MediaListCollection(userId: $id, type: ANIME, forceSingleCompletedList: true, sort: UPDATED_TIME_DESC) {
       user {
@@ -225,7 +241,9 @@ export const UserLists = gql(`
       }
     }
   }
-`, [FullMediaList])
+`,
+  [FullMediaList],
+)
 
 export const CustomLists = gql(`
   mutation CustomLists($lists: [String]) {
@@ -260,7 +278,8 @@ export const ScheduleMedia = gql(`
   }
 `)
 
-export const Schedule = gql(`
+export const Schedule = gql(
+  `
   query Schedule($seasonCurrent: MediaSeason, $seasonYearCurrent: Int, $seasonLast: MediaSeason, $seasonYearLast: Int, $seasonNext: MediaSeason, $seasonYearNext: Int, $onList: Boolean, $ids: [Int], $formatNot: MediaFormat, $nsfw: [String]) {
     curr1: Page(page: 1) {
       media(type: ANIME, season: $seasonCurrent, seasonYear: $seasonYearCurrent, format_not: $formatNot, onList: $onList, id_in: $ids, genre_not_in: $nsfw) {
@@ -293,9 +312,12 @@ export const Schedule = gql(`
       }
     }
   }
-`, [ScheduleMedia])
+`,
+  [ScheduleMedia],
+)
 
-export const Following = gql(`
+export const Following = gql(
+  `
   query Following($id: Int!) {
     Page {
       mediaList(mediaId: $id, isFollowing: true, sort: UPDATED_TIME_DESC) {
@@ -309,10 +331,13 @@ export const Following = gql(`
       }
     }
   }
-`, [UserFrag])
+`,
+  [UserFrag],
+)
 
 // AL API is dog, fullmedialist is NULL when queried inside media..., it's possible this can cause cache loops, but there's no other way to do this!!!
-export const Entry = gql(`
+export const Entry = gql(
+  `
   mutation Entry($lists: [String], $id: Int!, $status: MediaListStatus, $progress: Int, $repeat: Int, $score: Int) {
     SaveMediaListEntry(mediaId: $id, status: $status, progress: $progress, repeat: $repeat, scoreRaw: $score, customLists: $lists) {
       id,
@@ -322,7 +347,9 @@ export const Entry = gql(`
       }
     }
   }
-`, [FullMediaList])
+`,
+  [FullMediaList],
+)
 
 export const DeleteEntry = gql(`
   mutation DeleteEntry($id: Int!) {
@@ -338,7 +365,8 @@ export const ToggleFavourite = gql(`
   }
 `)
 
-export const ThreadFrag = gql(`
+export const ThreadFrag = gql(
+  `
   fragment ThreadFrag on Thread @_unmask {
     id,
     title,
@@ -360,9 +388,12 @@ export const ThreadFrag = gql(`
       name
     }
   }
-`, [UserFrag])
+`,
+  [UserFrag],
+)
 
-export const Threads = gql(`
+export const Threads = gql(
+  `
   query Threads($id: Int!, $page: Int, $perPage: Int) {
     Page(page: $page, perPage: $perPage) {
       pageInfo {
@@ -374,17 +405,23 @@ export const Threads = gql(`
       }
     }
   }
-`, [ThreadFrag])
+`,
+  [ThreadFrag],
+)
 
-export const Thread = gql(`
+export const Thread = gql(
+  `
   query Thread($threadId: Int!) {
     Thread(id: $threadId) {
       ...ThreadFrag
     }
   }
-`, [ThreadFrag])
+`,
+  [ThreadFrag],
+)
 
-export const CommentFrag = gql(`
+export const CommentFrag = gql(
+  `
   fragment CommentFrag on ThreadComment @_unmask {
     id,
     comment,
@@ -397,7 +434,9 @@ export const CommentFrag = gql(`
     childComments,
     isLocked
   }
-`, [UserFrag])
+`,
+  [UserFrag],
+)
 
 // AL in their infinite wisdom decided to make childComments infer the schema of the parent comment, but fragments break it, so we can't use any fragments here
 export const Comments = gql(`
@@ -464,13 +503,16 @@ export const ToggleLike = gql(`
   }
 `)
 
-export const SaveThreadComment = gql(`
+export const SaveThreadComment = gql(
+  `
   mutation SaveThreadComment ($id: Int, $threadId: Int, $parentCommentId: Int, $comment: String) {
     SaveThreadComment(id: $id, threadId: $threadId, parentCommentId: $parentCommentId, comment: $comment) {
       ...CommentFrag
     }
   }
-`, [CommentFrag])
+`,
+  [CommentFrag],
+)
 
 export const DeleteThreadComment = gql(`
   mutation DeleteThreadComment ($id: Int) {
@@ -480,7 +522,8 @@ export const DeleteThreadComment = gql(`
   }
 `)
 
-export const RecrusiveRelations = gql(`
+export const RecrusiveRelations = gql(
+  `
   query RecrusiveRelations ($ids: [Int]!) {
     Page {
       pageInfo { hasNextPage },
@@ -507,4 +550,6 @@ export const RecrusiveRelations = gql(`
       }
     }
   }
-`, [RelationMedia])
+`,
+  [RelationMedia],
+)

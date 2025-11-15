@@ -1,9 +1,4 @@
-import {
-  Component,
-  For,
-  Show,
-  createSignal,
-} from "solid-js"
+import { Component, For, Show, createSignal } from "solid-js"
 import { Link, useLocation } from "@tanstack/solid-router"
 import { Button } from "@/components/ui/button"
 import LogoutButton from "@/features/auth/components/Logout"
@@ -62,7 +57,7 @@ const navigation: NavigationSection[] = [
       {
         id: "extracurriculars",
         title: "Real Content",
-        href: "/extracurriculars",
+        href: "/extracurriculars-v2",
         icon: Sparkles,
         class: "text-primary",
       },
@@ -162,29 +157,29 @@ const NavigationContent: Component<NavigationContentProps> = (props) => (
             </Show>
             <For each={section.items}>
               {(item) => (
-                <Button
-                  as={Link}
-                  to={item.href}
-                  variant="ghost"
-                  class={cn("hover:bg-card-foreground/50 justify-start px-2")}
-                  onClick={props.onNavigate}
-                >
-                  <item.icon
-                    class={cn(
-                      "mx-1 size-4!",
-                      item.class,
-                      props.isActive(item.href) && "text-indigo-400",
-                    )}
-                  />
-                  <span
-                    class={cn(
-                      "text-[0.85rem] font-medium",
-                      props.isActive(item.href) && "text-indigo-400",
-                    )}
+                <Link to={item.href} onClick={props.onNavigate}>
+                  <Button
+                    variant="ghost"
+                    class={cn("hover:bg-card-foreground/50 justify-start px-2")}
+                    onClick={() => {}}
                   >
-                    {item.title}
-                  </span>
-                </Button>
+                    <item.icon
+                      class={cn(
+                        "mx-1 size-4!",
+                        item.class,
+                        props.isActive(item.href) && "text-indigo-400",
+                      )}
+                    />
+                    <span
+                      class={cn(
+                        "text-[0.85rem] font-medium",
+                        props.isActive(item.href) && "text-indigo-400",
+                      )}
+                    >
+                      {item.title}
+                    </span>
+                  </Button>
+                </Link>
               )}
             </For>
           </div>

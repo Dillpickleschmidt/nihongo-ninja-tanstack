@@ -1,55 +1,93 @@
-import { createFileRoute } from "@tanstack/solid-router"
+import { createFileRoute, Await } from "@tanstack/solid-router"
 import { For } from "solid-js"
-import { createQuery } from "@urql/solid"
 import { Search } from "@/features/extracurriculars-v2/api/anilist/queries"
+import { getHomepageSections } from "@/features/extracurriculars-v2/utils/section-configs"
+import { AnimeSection } from "@/features/extracurriculars-v2/components/AnimeSection"
+
+const sections = getHomepageSections()
 
 export const Route = createFileRoute("/_home/extracurriculars-v2/")({
   loader: async ({ context }) => {
     const { urqlClient } = context as any
 
-    try {
-      // Prefetch data on server-side (client-side navigation uses cache)
-      await urqlClient
-        .query(Search, { page: 1, perPage: 5, sort: ["TRENDING_DESC"] })
-        .toPromise()
-    } catch (error) {
-      console.error("Error prefetching trending anime:", error)
-    }
+    const sectionPromises = sections.map((section) => ({
+      config: section,
+      promise: urqlClient.query(Search, section.queryVars).toPromise(),
+    }))
 
-    // Router handles SSR state extraction and hydration
-    return {}
+    return { sectionPromises }
   },
 
   component: () => {
-    return <TrendingAnimeSection />
+    return <HomePage />
   },
 })
 
-function TrendingAnimeSection() {
-  // This should use cached data from SSR, not refetch
-  const [query] = createQuery({
-    query: Search,
-    variables: { page: 1, perPage: 5, sort: ["TRENDING_DESC"] },
-  })
+function HomePage() {
+  const { sectionPromises } = Route.useLoaderData()()
 
   return (
-    <div class="p-4">
-      <h1 class="mb-4 text-2xl font-bold">Trending Anime (SSR Test)</h1>
-      <div class="space-y-2">
-        <For each={query.data?.Page?.media}>
-          {(anime) => (
-            <div class="bg-card rounded p-2">
-              <p>
-                {anime?.id}: {anime?.title?.romaji}
-              </p>
+    <div class="mx-auto max-w-7xl p-4">
+      <h1 class="mb-8 text-3xl font-bold">Extracurriculars</h1>
+
+      <For each={sectionPromises}>
+        {(item) => (
+          <Await
+            promise={item.promise}
+            fallback={<SectionSkeleton title={item.config.title} />}
+          >
+            {(result: any) => (
+              <AnimeSection
+                title={item.config.title}
+                data={result.data?.Page?.media}
+                viewMoreLink={item.config.viewMoreLink}
+              />
+            )}
+          </Await>
+        )}
+      </For>
+
+      {/* Auth sections stubs */}
+      <div class="mt-12 space-y-8">
+        <div class="rounded bg-gray-100 p-6 text-center">
+          <h2 class="mb-2 text-xl font-bold">Continue Watching</h2>
+          <p class="text-gray-600">
+            Sign in to see anime you're currently watching
+          </p>
+        </div>
+
+        <div class="rounded bg-gray-100 p-6 text-center">
+          <h2 class="mb-2 text-xl font-bold">Your List</h2>
+          <p class="text-gray-600">
+            Sign in to see your personalized anime list
+          </p>
+        </div>
+
+        <div class="rounded bg-gray-100 p-6 text-center">
+          <h2 class="mb-2 text-xl font-bold">Sequels You Missed</h2>
+          <p class="text-gray-600">
+            Sign in to see sequels of anime you've completed
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SectionSkeleton(props: { title: string }) {
+  return (
+    <div class="mb-8">
+      <h2 class="mb-4 text-xl font-bold">{props.title}</h2>
+      <div class="flex gap-4 overflow-x-auto pb-2">
+        <For each={Array(5)}>
+          {() => (
+            <div class="w-40 flex-shrink-0 space-y-2">
+              <div class="h-56 w-full animate-pulse rounded bg-gray-200" />
+              <div class="h-4 w-full animate-pulse rounded bg-gray-200" />
+              <div class="h-3 w-2/3 animate-pulse rounded bg-gray-200" />
             </div>
           )}
         </For>
-      </div>
-      <div class="mt-4 text-sm text-gray-600">
-        {query.fetching && <p>Loading...</p>}
-        {query.error && <p>Error: {query.error.message}</p>}
-        {!query.fetching && !query.error && !query.data && <p>No data</p>}
       </div>
     </div>
   )
