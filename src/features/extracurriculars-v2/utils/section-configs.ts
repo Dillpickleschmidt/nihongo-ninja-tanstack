@@ -13,14 +13,14 @@ export interface SectionConfig {
  * Get current anime season and year
  */
 export function getCurrentSeason(): {
-  season: string
+  season: "WINTER" | "SPRING" | "SUMMER" | "FALL"
   year: number
 } {
   const now = new Date()
   const month = now.getMonth() + 1
   const year = now.getFullYear()
 
-  let season: string
+  let season: "WINTER" | "SPRING" | "SUMMER" | "FALL"
   if (month >= 1 && month <= 3) {
     season = "WINTER"
   } else if (month >= 4 && month <= 6) {

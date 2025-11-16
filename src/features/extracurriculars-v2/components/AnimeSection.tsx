@@ -5,7 +5,7 @@ import { AnimeCard } from "./AnimeCard"
 
 interface AnimeSectionProps {
   title: string
-  data: (FragmentOf<typeof FullMedia> | null)[] | undefined
+  data: (FragmentOf<typeof FullMedia> | null)[] | null
   isLoading?: boolean
   error?: Error | null
   viewMoreLink?: string
@@ -14,7 +14,7 @@ interface AnimeSectionProps {
 export function AnimeSection(props: AnimeSectionProps) {
   return (
     <div class="mb-8">
-      <div class="flex items-center justify-between mb-4">
+      <div class="mb-4 flex items-center justify-between">
         <h2 class="text-xl font-bold">{props.title}</h2>
         <Show when={props.viewMoreLink}>
           {(link) => (
@@ -36,14 +36,14 @@ export function AnimeSection(props: AnimeSectionProps) {
         }
       >
         {(error) => (
-          <div class="text-red-600 text-sm">
+          <div class="text-sm text-red-600">
             Error loading {props.title}: {error().message}
           </div>
         )}
       </Show>
 
       <Show when={props.isLoading}>
-        <div class="text-gray-500 text-sm">Loading...</div>
+        <div class="text-sm text-gray-500">Loading...</div>
       </Show>
     </div>
   )

@@ -44,7 +44,7 @@ import { setupAuthSync } from "@/features/module-completion/setupAuthSync"
 
 export interface RouterContext {
   queryClient: QueryClient
-  urqlClient?: UrqlClient
+  urqlClient: UrqlClient
   urqlSSR?: SSRExchange
 }
 
