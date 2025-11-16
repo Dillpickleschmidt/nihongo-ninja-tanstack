@@ -1,14 +1,14 @@
 import { createSignal, createEffect, onCleanup, Show } from "solid-js"
 import type { FragmentOf } from "gql.tada"
-import { FullMedia } from "@/features/extracurriculars-v2/api/anilist/queries"
-import type { EpisodesResponse } from "@/features/extracurriculars-v2/api/anizip"
+import { FullMedia } from "@/features/explore/api/anilist/queries"
+import type { EpisodesResponse } from "@/features/explore/api/anizip"
 import { FullBanner } from "./full-banner"
 import { BannerSkeleton } from "./skeleton-banner"
 import {
   hexToRgb,
   getContrastTextColor,
   formatColorForCSS,
-} from "@/features/extracurriculars-v2/utils/banner-utils"
+} from "@/features/explore/utils/banner-utils"
 
 interface BannerProps {
   bannerData: (FragmentOf<typeof FullMedia> | null)[]

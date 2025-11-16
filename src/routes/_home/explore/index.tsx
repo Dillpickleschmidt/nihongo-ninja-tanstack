@@ -1,21 +1,18 @@
 import { createFileRoute, Await } from "@tanstack/solid-router"
 import { For, Show } from "solid-js"
-import {
-  Search,
-  FullMedia,
-} from "@/features/extracurriculars-v2/api/anilist/queries"
-import { fetchEpisodes } from "@/features/extracurriculars-v2/api/anizip"
-import { shuffle } from "@/features/extracurriculars-v2/utils/banner-utils"
+import { Search, FullMedia } from "@/features/explore/api/anilist/queries"
+import { fetchEpisodes } from "@/features/explore/api/anizip"
+import { shuffle } from "@/features/explore/utils/banner-utils"
 import {
   getHomepageSections,
   getCurrentSeason,
-} from "@/features/extracurriculars-v2/utils/section-configs"
-import { Banner } from "@/features/extracurriculars-v2/components/ui/banner/banner"
-import { BannerSkeleton } from "@/features/extracurriculars-v2/components/ui/banner/skeleton-banner"
-import { AnimeQuerySection } from "@/features/extracurriculars-v2/components/ui/cards/query-card"
+} from "@/features/explore/utils/section-configs"
+import { Banner } from "@/features/explore/components/ui/banner/banner"
+import { BannerSkeleton } from "@/features/explore/components/ui/banner/skeleton-banner"
+import { AnimeQuerySection } from "@/features/explore/components/ui/cards/query-card"
 import { userSettingsQueryOptions } from "@/query/query-options"
 import type { ResultOf, FragmentOf } from "gql.tada"
-import type { EpisodesResponse } from "@/features/extracurriculars-v2/api/anizip"
+import type { EpisodesResponse } from "@/features/explore/api/anizip"
 
 const sections = getHomepageSections()
 
@@ -27,7 +24,7 @@ type CombinedBannerData = {
   anizipDataArray: (EpisodesResponse | null)[]
 }
 
-export const Route = createFileRoute("/_home/extracurriculars-v2/")({
+export const Route = createFileRoute("/_home/explore/")({
   loader: async ({ context }) => {
     const { urqlClient, queryClient, user } = context as any
 
@@ -127,7 +124,7 @@ function HomePage() {
       </Await>
 
       {/* Sections */}
-      <div class="mx-auto max-w-7xl">
+      <div class="mx-auto pb-16 sm:px-2">
         <For each={sectionConfigs}>
           {(config) => (
             <>

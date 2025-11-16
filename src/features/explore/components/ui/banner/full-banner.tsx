@@ -3,11 +3,11 @@ import { Link } from "@tanstack/solid-router"
 import { Play } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import type { FragmentOf } from "gql.tada"
-import { FullMedia } from "@/features/extracurriculars-v2/api/anilist/queries"
-import type { EpisodesResponse } from "@/features/extracurriculars-v2/api/anizip"
+import { FullMedia } from "@/features/explore/api/anilist/queries"
+import type { EpisodesResponse } from "@/features/explore/api/anizip"
 import { BannerImage } from "./banner-image"
-import { AnimatedHeart } from "@/features/extracurriculars-v2/components/icons/animated/heart"
-import { AnimatedBookmark } from "@/features/extracurriculars-v2/components/icons/animated/bookmark"
+import { AnimatedHeart } from "@/features/explore/components/icons/animated/heart"
+import { AnimatedBookmark } from "@/features/explore/components/icons/animated/bookmark"
 import {
   stripHtml,
   formatEpisodeCount,
@@ -17,7 +17,7 @@ import {
   formatStatus,
   formatFormat,
   formatColorForCSS,
-} from "@/features/extracurriculars-v2/utils/banner-utils"
+} from "@/features/explore/utils/banner-utils"
 
 interface FullBannerProps {
   current: FragmentOf<typeof FullMedia> | null | undefined

@@ -55,9 +55,9 @@ const navigation: NavigationSection[] = [
         class: "text-primary",
       },
       {
-        id: "extracurriculars",
+        id: "explore",
         title: "Real Content",
-        href: "/extracurriculars-v2",
+        href: "/explore",
         icon: Sparkles,
         class: "text-primary",
       },

@@ -1,6 +1,6 @@
 import { Show, For } from "solid-js"
 import type { FragmentOf } from "gql.tada"
-import { FullMedia } from "@/features/extracurriculars-v2/api/anilist/queries"
+import { FullMedia } from "@/features/explore/api/anilist/queries"
 import { AnimeCard } from "./AnimeCard"
 
 interface AnimeSectionProps {

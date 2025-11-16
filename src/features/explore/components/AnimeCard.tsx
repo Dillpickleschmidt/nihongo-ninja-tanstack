@@ -1,6 +1,6 @@
 import { Show } from "solid-js"
 import type { FragmentOf } from "gql.tada"
-import { FullMedia } from "@/features/extracurriculars-v2/api/anilist/queries"
+import { FullMedia } from "@/features/explore/api/anilist/queries"
 
 interface AnimeCardProps {
   anime: FragmentOf<typeof FullMedia> | null | undefined
