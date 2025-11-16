@@ -278,6 +278,15 @@
     }
   }
 
+  @keyframes load-in {
+    from {
+      transform: translate3d(0, 1.2rem, 0) scale(0.95);
+    }
+    to {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
   /* Animation definitions */
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
@@ -415,6 +424,11 @@
   100% {
     transform: scale(1) rotate(0deg);
   }
+}
+
+/* Card item load-in animation */
+.item {
+  animation: 0.3s ease 0s 1 load-in;
 }
 
 /* Driver.js tour popover styling */

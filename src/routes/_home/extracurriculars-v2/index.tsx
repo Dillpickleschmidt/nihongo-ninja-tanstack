@@ -10,9 +10,9 @@ import {
   getHomepageSections,
   getCurrentSeason,
 } from "@/features/extracurriculars-v2/utils/section-configs"
-import { AnimeSection } from "@/features/extracurriculars-v2/components/AnimeSection"
 import { Banner } from "@/features/extracurriculars-v2/components/ui/banner/banner"
 import { BannerSkeleton } from "@/features/extracurriculars-v2/components/ui/banner/skeleton-banner"
+import { AnimeQuerySection } from "@/features/extracurriculars-v2/components/ui/cards/query-card"
 import { userSettingsQueryOptions } from "@/query/query-options"
 import type { ResultOf, FragmentOf } from "gql.tada"
 import type { EpisodesResponse } from "@/features/extracurriculars-v2/api/anizip"
@@ -93,23 +93,16 @@ export const Route = createFileRoute("/_home/extracurriculars-v2/")({
       },
     )
 
-    const sectionPromises = sections.map((section) => ({
-      config: section,
-      promise: urqlClient
-        .query(Search, section.queryVars)
-        .toPromise()
-        .then((result) => ({ data: result.data, error: result.error })),
-    }))
-
-    return { combinedBannerPromise, isDesktop, sectionPromises }
+    return { combinedBannerPromise, isDesktop, sectionConfigs: sections }
   },
 
   component: HomePage,
 })
 
 function HomePage() {
-  const { combinedBannerPromise, isDesktop, sectionPromises } =
+  const { combinedBannerPromise, isDesktop, sectionConfigs } =
     Route.useLoaderData()()
+  const { urqlClient } = Route.useRouteContext()()
 
   return (
     <div>
@@ -134,82 +127,23 @@ function HomePage() {
       </Await>
 
       {/* Sections */}
-      <div class="mx-auto max-w-7xl p-4">
-        <For each={sectionPromises}>
-          {(item) => (
-            <Await
-              promise={item.promise}
-              fallback={<SectionSkeleton title={item.config.title} />}
-            >
-              {(result: {
-                data: ResultOf<typeof Search> | null | undefined
-                error?: any
-              }) => (
-                <Show
-                  when={!result.error}
-                  fallback={
-                    <div class="mb-8">
-                      <h2 class="mb-4 text-xl font-bold">
-                        {item.config.title}
-                      </h2>
-                      <div class="rounded bg-red-50 p-4 text-red-600">
-                        Error loading:{" "}
-                        {result.error?.message ?? "Unknown error"}
-                      </div>
-                    </div>
-                  }
-                >
-                  <AnimeSection
-                    title={item.config.title}
-                    data={result.data?.Page?.media ?? null}
-                    viewMoreLink={item.config.viewMoreLink}
-                  />
-                </Show>
-              )}
-            </Await>
-          )}
-        </For>
+      <div class="mx-auto max-w-7xl">
+        <For each={sectionConfigs}>
+          {(config) => (
+            <>
+              {/* Section Header */}
+              <div class="text-muted-foreground flex cursor-pointer items-end px-4 pt-5">
+                <div class="text-lg leading-none font-semibold">
+                  {config.title}
+                </div>
+                <div class="ml-auto text-xs">View More</div>
+              </div>
 
-        {/* Auth sections stubs */}
-        <div class="mt-12 space-y-8">
-          <div class="rounded bg-gray-100 p-6 text-center">
-            <h2 class="mb-2 text-xl font-bold">Continue Watching</h2>
-            <p class="text-gray-600">
-              Sign in to see anime you're currently watching
-            </p>
-          </div>
-
-          <div class="rounded bg-gray-100 p-6 text-center">
-            <h2 class="mb-2 text-xl font-bold">Your List</h2>
-            <p class="text-gray-600">
-              Sign in to see your personalized anime list
-            </p>
-          </div>
-
-          <div class="rounded bg-gray-100 p-6 text-center">
-            <h2 class="mb-2 text-xl font-bold">Sequels You Missed</h2>
-            <p class="text-gray-600">
-              Sign in to see sequels of anime you've completed
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function SectionSkeleton(props: { title: string }) {
-  return (
-    <div class="mb-8">
-      <h2 class="mb-4 text-xl font-bold">{props.title}</h2>
-      <div class="flex gap-4 overflow-x-auto pb-2">
-        <For each={Array(5)}>
-          {() => (
-            <div class="w-40 flex-shrink-0 space-y-2">
-              <div class="h-56 w-full animate-pulse rounded bg-gray-200" />
-              <div class="h-4 w-full animate-pulse rounded bg-gray-200" />
-              <div class="h-3 w-2/3 animate-pulse rounded bg-gray-200" />
-            </div>
+              {/* Horizontal Scroll Container */}
+              <div class="flex overflow-x-auto pb-4">
+                <AnimeQuerySection config={config} urqlClient={urqlClient} />
+              </div>
+            </>
           )}
         </For>
       </div>
