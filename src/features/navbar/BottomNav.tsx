@@ -9,6 +9,7 @@ import TextbookSelectorDialog from "@/features/homepage/pages/learning-path/comp
 
 interface BottomNavProps {
   dailyProgressPercentage?: number
+  class?: string
 }
 
 export function BottomNav(props: BottomNavProps) {
@@ -130,6 +131,7 @@ export function BottomNav(props: BottomNavProps) {
           "bg-background/50 text-primary",
           "border-card-foreground/50 border-t backdrop-blur-lg transition-all duration-200",
           "shadow-lg shadow-black/10",
+          props.class,
         )}
       >
         <div class="flex items-center justify-between" style="width: 400px;">
@@ -196,7 +198,7 @@ export function BottomNav(props: BottomNavProps) {
             // Special handling for Learn nav item when in getting_started
             if (item.id === "learn" && activeTextbook() === "getting_started") {
               return (
-                <TextbookSelectorDialog link={hrefValue} userId={userId}>
+                <TextbookSelectorDialog userId={userId}>
                   <div
                     id={"tour-" + item.id}
                     class={cn(

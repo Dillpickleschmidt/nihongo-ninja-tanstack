@@ -88,8 +88,14 @@ export const backgroundSettingsQueryOptions = () => {
     queryKey: queryKeys.backgroundSettings(),
     queryFn: async () => defaultBackgroundSettings,
     initialData: defaultBackgroundSettings,
-    staleTime: Infinity,
-    gcTime: Infinity,
+  })
+}
+
+export const bottomNavClassQueryOptions = () => {
+  return queryOptions({
+    queryKey: queryKeys.bottomNavClass(),
+    queryFn: async () => "",
+    initialData: "",
   })
 }
 

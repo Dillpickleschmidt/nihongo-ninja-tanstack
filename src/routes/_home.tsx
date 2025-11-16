@@ -8,6 +8,7 @@ import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
   userDailyAggregatesQueryOptions,
   backgroundSettingsQueryOptions,
+  bottomNavClassQueryOptions,
 } from "@/query/query-options"
 import { BottomNav } from "@/features/navbar/BottomNav"
 import { TextbookChapterBackgrounds } from "@/features/homepage/shared/components/TextbookChapterBackgrounds"
@@ -29,6 +30,9 @@ function Home() {
   )
 
   const backgroundQuery = useCustomQuery(() => backgroundSettingsQueryOptions())
+  const bottomNavQuery = useCustomQuery(() => bottomNavClassQueryOptions())
+
+  const bottomNavClass = () => bottomNavQuery.data ?? ""
 
   const dailyProgressPercentage = () => {
     if (!userId) return 0
@@ -50,7 +54,10 @@ function Home() {
       />
       <Outlet />
       <div class="fixed bottom-0">
-        <BottomNav dailyProgressPercentage={dailyProgressPercentage()} />
+        <BottomNav
+          class={bottomNavClass()}
+          dailyProgressPercentage={dailyProgressPercentage()}
+        />
       </div>
     </>
   )

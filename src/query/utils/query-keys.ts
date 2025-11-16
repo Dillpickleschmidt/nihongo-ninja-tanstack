@@ -9,6 +9,7 @@ import type { AllServicePreferences } from "@/features/main-cookies/schemas/user
 export const queryKeys = {
   // UI Settings
   backgroundSettings: () => ["background-settings"] as const,
+  bottomNavClass: () => ["bottom-nav-class"] as const,
 
   // User Settings
   userSettings: (userId: string | null) => ["user-settings", userId] as const,

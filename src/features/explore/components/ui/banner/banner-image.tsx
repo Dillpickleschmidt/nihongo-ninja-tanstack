@@ -29,7 +29,7 @@ export function BannerImage(props: BannerImageProps) {
         style={{
           height: "300px",
           background:
-            "linear-gradient(to top, rgb(3, 3, 3) 8.98%, rgba(0, 0, 0, 0) 100%)",
+            "linear-gradient(to top, hsl(0 0% 9.8%) 8.98%, rgba(0, 0, 0, 0) 100%)",
         }}
       />
     </>
