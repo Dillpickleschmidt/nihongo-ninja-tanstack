@@ -3,7 +3,7 @@ import { createRouter } from "@tanstack/solid-router"
 import { routeTree } from "./routeTree.gen"
 import { isServer } from "solid-js/web"
 import { dehydrate, hydrate, QueryClient } from "@tanstack/solid-query"
-import { createUrqlClient } from "@/features/extracurriculars-v2/api/anilist/client"
+import { createUrqlClient } from "@/features/extracurriculars-v2/api/anilist/urql-client"
 
 export function getRouter() {
   // Create a new QueryClient for each request (server) or app initialization (client)

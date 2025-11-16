@@ -1,13 +1,10 @@
 import { createFileRoute, Await } from "@tanstack/solid-router"
-import { For } from "solid-js"
-import type { ResultOf, FragmentOf } from "gql.tada"
-import type { OperationResult } from "@urql/core"
+import { For, Show } from "solid-js"
 import {
   Search,
   FullMedia,
 } from "@/features/extracurriculars-v2/api/anilist/queries"
 import { fetchEpisodes } from "@/features/extracurriculars-v2/api/anizip"
-import type { EpisodesResponse } from "@/features/extracurriculars-v2/api/anizip"
 import { shuffle } from "@/features/extracurriculars-v2/utils/banner-utils"
 import {
   getHomepageSections,
@@ -17,6 +14,8 @@ import { AnimeSection } from "@/features/extracurriculars-v2/components/AnimeSec
 import { Banner } from "@/features/extracurriculars-v2/components/ui/banner/banner"
 import { BannerSkeleton } from "@/features/extracurriculars-v2/components/ui/banner/skeleton-banner"
 import { userSettingsQueryOptions } from "@/query/query-options"
+import type { ResultOf, FragmentOf } from "gql.tada"
+import type { EpisodesResponse } from "@/features/extracurriculars-v2/api/anizip"
 
 const sections = getHomepageSections()
 
@@ -52,13 +51,17 @@ export const Route = createFileRoute("/_home/extracurriculars-v2/")({
         statusNot: ["NOT_YET_RELEASED"],
       })
       .toPromise()
+      .then((result) => ({ data: result.data, error: result.error }))
 
     // Shuffle, filter, and pre-fetch AniZip for all 5 banner items
     const combinedBannerPromise = bannerPromise.then(
-      (bannerResult: OperationResult<ResultOf<typeof Search>>) => {
+      (result: {
+        data: ResultOf<typeof Search> | null | undefined
+        error?: any
+      }) => {
         // Shuffle and filter to get 5 items (same logic as Banner component would do)
         const shuffledBannerData = shuffle(
-          bannerResult.data?.Page?.media?.filter(
+          result.data?.Page?.media?.filter(
             (media) => media && (media.bannerImage ?? media.trailer?.id),
           ) || [],
         )
@@ -80,10 +83,11 @@ export const Route = createFileRoute("/_home/extracurriculars-v2/")({
         return Promise.all([shuffledBannerData, anizipPromise]).then(
           ([bannerData, anizipData]) => ({
             bannerResult: {
-              Page: bannerResult.data?.Page,
+              Page: result.data?.Page,
               shuffledBannerData: bannerData,
             },
             anizipDataArray: anizipData,
+            error: result.error,
           }),
         )
       },
@@ -91,7 +95,10 @@ export const Route = createFileRoute("/_home/extracurriculars-v2/")({
 
     const sectionPromises = sections.map((section) => ({
       config: section,
-      promise: urqlClient.query(Search, section.queryVars).toPromise(),
+      promise: urqlClient
+        .query(Search, section.queryVars)
+        .toPromise()
+        .then((result) => ({ data: result.data, error: result.error })),
     }))
 
     return { combinedBannerPromise, isDesktop, sectionPromises }
@@ -108,25 +115,22 @@ function HomePage() {
     <div>
       {/* Banner */}
       <Await promise={combinedBannerPromise} fallback={<BannerSkeleton />}>
-        {(data: CombinedBannerData) => {
-          const { bannerResult, anizipDataArray } = data
-
-          // Fallback to skeleton if data invalid
-          if (
-            !bannerResult.shuffledBannerData ||
-            bannerResult.shuffledBannerData.length === 0
-          ) {
-            return <BannerSkeleton />
-          }
-
-          return (
+        {(data: CombinedBannerData & { error?: any }) => (
+          <Show
+            when={!data.error}
+            fallback={
+              <div class="w-full bg-red-50 p-4 text-red-600">
+                Error loading banner: {data.error?.message ?? "Unknown error"}
+              </div>
+            }
+          >
             <Banner
-              bannerData={bannerResult.shuffledBannerData}
-              anizipDataArray={anizipDataArray ?? null}
+              bannerData={data.bannerResult.shuffledBannerData}
+              anizipDataArray={data.anizipDataArray ?? null}
               isDesktop={isDesktop}
             />
-          )
-        }}
+          </Show>
+        )}
       </Await>
 
       {/* Sections */}
@@ -137,12 +141,30 @@ function HomePage() {
               promise={item.promise}
               fallback={<SectionSkeleton title={item.config.title} />}
             >
-              {(result: OperationResult<ResultOf<typeof Search>>) => (
-                <AnimeSection
-                  title={item.config.title}
-                  data={result.data?.Page?.media ?? null}
-                  viewMoreLink={item.config.viewMoreLink}
-                />
+              {(result: {
+                data: ResultOf<typeof Search> | null | undefined
+                error?: any
+              }) => (
+                <Show
+                  when={!result.error}
+                  fallback={
+                    <div class="mb-8">
+                      <h2 class="mb-4 text-xl font-bold">
+                        {item.config.title}
+                      </h2>
+                      <div class="rounded bg-red-50 p-4 text-red-600">
+                        Error loading:{" "}
+                        {result.error?.message ?? "Unknown error"}
+                      </div>
+                    </div>
+                  }
+                >
+                  <AnimeSection
+                    title={item.config.title}
+                    data={result.data?.Page?.media ?? null}
+                    viewMoreLink={item.config.viewMoreLink}
+                  />
+                </Show>
               )}
             </Await>
           )}
