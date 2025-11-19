@@ -48,6 +48,7 @@ import { Route as HomePracticeDakutenHandakutenQuizRouteImport } from './routes/
 import { Route as HomePracticeContractedSoundsQuizRouteImport } from './routes/_home/practice/contracted-sounds-quiz'
 import { Route as HomePracticeConjugationRouteImport } from './routes/_home/practice/conjugation'
 import { Route as HomePracticeAllHiraganaQuizRouteImport } from './routes/_home/practice/all-hiragana-quiz'
+import { Route as HomeExploreSearchRouteImport } from './routes/_home/explore/search'
 import { Route as HomeAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/additional-resources/kanji-practice-sheet'
 import { Route as HomeLearningPathIdChapterSlugRouteImport } from './routes/_home/$learningPathId.$chapterSlug'
 import { Route as HomeLessonsChapter3WordOrderRouteImport } from './routes/_home/lessons/_chapter-3/word-order'
@@ -288,6 +289,11 @@ const HomePracticeAllHiraganaQuizRoute =
     path: '/practice/all-hiragana-quiz',
     getParentRoute: () => HomeRoute,
   } as any)
+const HomeExploreSearchRoute = HomeExploreSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => HomeExploreRoute,
+} as any)
 const HomeAdditionalResourcesKanjiPracticeSheetRoute =
   HomeAdditionalResourcesKanjiPracticeSheetRouteImport.update({
     id: '/additional-resources/kanji-practice-sheet',
@@ -545,6 +551,7 @@ export interface FileRoutesByFullPath {
   '/guides/': typeof GuidesIndexRoute
   '/$learningPathId/$chapterSlug': typeof HomeLearningPathIdChapterSlugRoute
   '/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
+  '/explore/search': typeof HomeExploreSearchRoute
   '/practice/all-hiragana-quiz': typeof HomePracticeAllHiraganaQuizRoute
   '/practice/conjugation': typeof HomePracticeConjugationRoute
   '/practice/contracted-sounds-quiz': typeof HomePracticeContractedSoundsQuizRoute
@@ -621,6 +628,7 @@ export interface FileRoutesByTo {
   '/guides': typeof GuidesIndexRoute
   '/$learningPathId/$chapterSlug': typeof HomeLearningPathIdChapterSlugRoute
   '/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
+  '/explore/search': typeof HomeExploreSearchRoute
   '/practice/all-hiragana-quiz': typeof HomePracticeAllHiraganaQuizRoute
   '/practice/conjugation': typeof HomePracticeConjugationRoute
   '/practice/contracted-sounds-quiz': typeof HomePracticeContractedSoundsQuizRoute
@@ -702,6 +710,7 @@ export interface FileRoutesById {
   '/guides/': typeof GuidesIndexRoute
   '/_home/$learningPathId/$chapterSlug': typeof HomeLearningPathIdChapterSlugRoute
   '/_home/additional-resources/kanji-practice-sheet': typeof HomeAdditionalResourcesKanjiPracticeSheetRoute
+  '/_home/explore/search': typeof HomeExploreSearchRoute
   '/_home/practice/all-hiragana-quiz': typeof HomePracticeAllHiraganaQuizRoute
   '/_home/practice/conjugation': typeof HomePracticeConjugationRoute
   '/_home/practice/contracted-sounds-quiz': typeof HomePracticeContractedSoundsQuizRoute
@@ -783,6 +792,7 @@ export interface FileRouteTypes {
     | '/guides/'
     | '/$learningPathId/$chapterSlug'
     | '/additional-resources/kanji-practice-sheet'
+    | '/explore/search'
     | '/practice/all-hiragana-quiz'
     | '/practice/conjugation'
     | '/practice/contracted-sounds-quiz'
@@ -859,6 +869,7 @@ export interface FileRouteTypes {
     | '/guides'
     | '/$learningPathId/$chapterSlug'
     | '/additional-resources/kanji-practice-sheet'
+    | '/explore/search'
     | '/practice/all-hiragana-quiz'
     | '/practice/conjugation'
     | '/practice/contracted-sounds-quiz'
@@ -939,6 +950,7 @@ export interface FileRouteTypes {
     | '/guides/'
     | '/_home/$learningPathId/$chapterSlug'
     | '/_home/additional-resources/kanji-practice-sheet'
+    | '/_home/explore/search'
     | '/_home/practice/all-hiragana-quiz'
     | '/_home/practice/conjugation'
     | '/_home/practice/contracted-sounds-quiz'
@@ -1289,6 +1301,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomePracticeAllHiraganaQuizRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/_home/explore/search': {
+      id: '/_home/explore/search'
+      path: '/search'
+      fullPath: '/explore/search'
+      preLoaderRoute: typeof HomeExploreSearchRouteImport
+      parentRoute: typeof HomeExploreRoute
+    }
     '/_home/additional-resources/kanji-practice-sheet': {
       id: '/_home/additional-resources/kanji-practice-sheet'
       path: '/additional-resources/kanji-practice-sheet'
@@ -1566,10 +1585,12 @@ declare module '@tanstack/solid-router' {
 }
 
 interface HomeExploreRouteChildren {
+  HomeExploreSearchRoute: typeof HomeExploreSearchRoute
   HomeExploreIndexRoute: typeof HomeExploreIndexRoute
 }
 
 const HomeExploreRouteChildren: HomeExploreRouteChildren = {
+  HomeExploreSearchRoute: HomeExploreSearchRoute,
   HomeExploreIndexRoute: HomeExploreIndexRoute,
 }
 
