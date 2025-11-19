@@ -2,7 +2,7 @@
 import { createServerFn } from "@tanstack/solid-start"
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 import { getUser } from "@/features/supabase/getUser"
-import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"
+import type { AnimeServiceType } from "@/features/main-cookies/schemas/user-settings"
 
 /**
  * Store anime service token in database
@@ -11,7 +11,7 @@ import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"
 export const storeTokenInDB = createServerFn({ method: "POST" })
   .inputValidator(
     (data: {
-      service: ServiceType
+      service: AnimeServiceType
       accessToken: string
       refreshToken?: string
       expiresAt?: string
@@ -57,7 +57,7 @@ export const storeTokenInDB = createServerFn({ method: "POST" })
  * Returns null if token not found or expired
  */
 export const getTokenFromDB = createServerFn({ method: "POST" })
-  .inputValidator((data: { service: ServiceType }) => data)
+  .inputValidator((data: { service: AnimeServiceType }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -113,7 +113,7 @@ export const getTokenFromDB = createServerFn({ method: "POST" })
  * Called on logout
  */
 export const deleteTokenFromDB = createServerFn({ method: "POST" })
-  .inputValidator((data: { service: ServiceType }) => data)
+  .inputValidator((data: { service: AnimeServiceType }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()

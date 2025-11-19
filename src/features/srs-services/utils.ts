@@ -1,8 +1,8 @@
 // features/srs-services/utils.ts
 import type {
-  ServiceType,
-  AllServicePreferences,
-  ServiceMode,
+  SRSServiceType,
+  AllSRSServicePreferences,
+  SRSServiceMode,
 } from "@/features/main-cookies/schemas/user-settings"
 
 /**
@@ -10,11 +10,11 @@ import type {
  * Returns null if no service is in live mode with valid API key
  */
 export function getActiveLiveService(
-  preferences: AllServicePreferences,
-): ServiceType | null {
+  preferences: AllSRSServicePreferences,
+): SRSServiceType | null {
   for (const [service, pref] of Object.entries(preferences)) {
     if (pref.mode === "live" && pref.is_api_key_valid) {
-      return service as ServiceType
+      return service as SRSServiceType
     }
   }
   return null
@@ -25,10 +25,10 @@ export function getActiveLiveService(
  * Auto-disables other services when switching one to live mode
  */
 export function ensureSingleLiveService(
-  targetService: ServiceType,
-  newMode: ServiceMode,
-  currentPreferences: AllServicePreferences,
-): AllServicePreferences {
+  targetService: SRSServiceType,
+  newMode: SRSServiceMode,
+  currentPreferences: AllSRSServicePreferences,
+): AllSRSServicePreferences {
   // If not switching to live mode, no changes needed
   if (newMode !== "live") {
     return currentPreferences
@@ -37,7 +37,7 @@ export function ensureSingleLiveService(
   // Create new preferences object with all other services disabled
   const updatedPreferences = { ...currentPreferences }
 
-  for (const service of Object.keys(updatedPreferences) as ServiceType[]) {
+  for (const service of Object.keys(updatedPreferences) as SRSServiceType[]) {
     if (service !== targetService) {
       updatedPreferences[service] = {
         ...updatedPreferences[service],

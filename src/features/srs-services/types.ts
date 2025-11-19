@@ -1,7 +1,8 @@
 // features/srs-services/types.ts
 import type { PracticeMode } from "@/features/vocab-practice/types"
+import type { SRSServiceType as BaseSRSServiceType } from "@/features/main-cookies/schemas/user-settings"
 
-export type SRSServiceType = "anki" | "jpdb" | "wanikani" | "local"
+export type SRSServiceType = BaseSRSServiceType | "local"
 
 export type DueCountResult = {
   total: number | null

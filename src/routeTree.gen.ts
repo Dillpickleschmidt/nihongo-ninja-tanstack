@@ -37,7 +37,7 @@ import { Route as PracticeUserIDDeckIDRouteImport } from './routes/practice/$use
 import { Route as ApiRelayTefhSplatRouteImport } from './routes/api/relay-tefh.$'
 import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
 import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
-import { Route as ApiAuthServiceRouteImport } from './routes/api/auth/$service'
+import { Route as ApiAuthAnimeServiceRouteImport } from './routes/api/auth/$anime-service'
 import { Route as HomeVocabSettingsRouteImport } from './routes/_home/vocab/settings'
 import { Route as HomeVocabCreateRouteImport } from './routes/_home/vocab/create'
 import { Route as HomeVocabBrowseRouteImport } from './routes/_home/vocab/browse'
@@ -229,9 +229,9 @@ const ApiAuthLoginRoute = ApiAuthLoginRouteImport.update({
   path: '/api/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiAuthServiceRoute = ApiAuthServiceRouteImport.update({
-  id: '/api/auth/$service',
-  path: '/api/auth/$service',
+const ApiAuthAnimeServiceRoute = ApiAuthAnimeServiceRouteImport.update({
+  id: '/api/auth/$anime-service',
+  path: '/api/auth/$anime-service',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeVocabSettingsRoute = HomeVocabSettingsRouteImport.update({
@@ -555,7 +555,7 @@ export interface FileRoutesByFullPath {
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
   '/vocab/settings': typeof HomeVocabSettingsRoute
-  '/api/auth/$service': typeof ApiAuthServiceRoute
+  '/api/auth/$anime-service': typeof ApiAuthAnimeServiceRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
@@ -631,7 +631,7 @@ export interface FileRoutesByTo {
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
   '/vocab/settings': typeof HomeVocabSettingsRoute
-  '/api/auth/$service': typeof ApiAuthServiceRoute
+  '/api/auth/$anime-service': typeof ApiAuthAnimeServiceRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
@@ -712,7 +712,7 @@ export interface FileRoutesById {
   '/_home/vocab/browse': typeof HomeVocabBrowseRoute
   '/_home/vocab/create': typeof HomeVocabCreateRoute
   '/_home/vocab/settings': typeof HomeVocabSettingsRoute
-  '/api/auth/$service': typeof ApiAuthServiceRoute
+  '/api/auth/$anime-service': typeof ApiAuthAnimeServiceRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
@@ -793,7 +793,7 @@ export interface FileRouteTypes {
     | '/vocab/browse'
     | '/vocab/create'
     | '/vocab/settings'
-    | '/api/auth/$service'
+    | '/api/auth/$anime-service'
     | '/api/auth/login'
     | '/api/auth/logout'
     | '/api/relay-tefh/$'
@@ -869,7 +869,7 @@ export interface FileRouteTypes {
     | '/vocab/browse'
     | '/vocab/create'
     | '/vocab/settings'
-    | '/api/auth/$service'
+    | '/api/auth/$anime-service'
     | '/api/auth/login'
     | '/api/auth/logout'
     | '/api/relay-tefh/$'
@@ -949,7 +949,7 @@ export interface FileRouteTypes {
     | '/_home/vocab/browse'
     | '/_home/vocab/create'
     | '/_home/vocab/settings'
-    | '/api/auth/$service'
+    | '/api/auth/$anime-service'
     | '/api/auth/login'
     | '/api/auth/logout'
     | '/api/relay-tefh/$'
@@ -1007,7 +1007,7 @@ export interface RootRouteChildren {
   ExternalResourcesResourceRoute: typeof ExternalResourcesResourceRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
   PracticeReviewRoute: typeof PracticeReviewRoute
-  ApiAuthServiceRoute: typeof ApiAuthServiceRoute
+  ApiAuthAnimeServiceRoute: typeof ApiAuthAnimeServiceRoute
   ApiAuthLoginRoute: typeof ApiAuthLoginRoute
   ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
   ApiRelayTefhSplatRoute: typeof ApiRelayTefhSplatRoute
@@ -1212,11 +1212,11 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof ApiAuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/auth/$service': {
-      id: '/api/auth/$service'
-      path: '/api/auth/$service'
-      fullPath: '/api/auth/$service'
-      preLoaderRoute: typeof ApiAuthServiceRouteImport
+    '/api/auth/$anime-service': {
+      id: '/api/auth/$anime-service'
+      path: '/api/auth/$anime-service'
+      fullPath: '/api/auth/$anime-service'
+      preLoaderRoute: typeof ApiAuthAnimeServiceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_home/vocab/settings': {
@@ -1768,7 +1768,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExternalResourcesResourceRoute: ExternalResourcesResourceRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,
   PracticeReviewRoute: PracticeReviewRoute,
-  ApiAuthServiceRoute: ApiAuthServiceRoute,
+  ApiAuthAnimeServiceRoute: ApiAuthAnimeServiceRoute,
   ApiAuthLoginRoute: ApiAuthLoginRoute,
   ApiAuthLogoutRoute: ApiAuthLogoutRoute,
   ApiRelayTefhSplatRoute: ApiRelayTefhSplatRoute,

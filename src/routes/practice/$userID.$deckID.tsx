@@ -37,7 +37,7 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
     )
 
     const isLiveServiceActive =
-      getActiveLiveService(userSettings["service-preferences"]) !== null
+      getActiveLiveService(userSettings["srs-service-preferences"]) !== null
 
     // Prefetch deck info (non-blocking)
     queryClient.prefetchQuery(userDeckInfoQueryOptions(deckId))

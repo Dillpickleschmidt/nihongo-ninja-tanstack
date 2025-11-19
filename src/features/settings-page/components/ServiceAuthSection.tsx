@@ -3,13 +3,13 @@ import { useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 import { useServiceManagement } from "../context/ServiceManagementContext"
 import { Button } from "@/components/ui/button"
+import type { AnimeServiceType } from "@/features/main-cookies/schemas/user-settings"
 import {
   getServiceCredentials,
   updateServiceCredentials,
 } from "@/features/main-cookies/functions/service-credentials"
 import { deleteTokenFromDB } from "@/features/supabase/db/anime-auth"
 import { clearAniListToken } from "@/features/explore/api/anilist/urql-client"
-type AnimeServiceType = "anilist" | "kitsu" | "mal"
 
 interface AnimeService {
   id: AnimeServiceType
@@ -43,8 +43,13 @@ export const ServiceAuthSection = () => {
   const context = useRouteContext({ from: RootRoute.id })
   const userId = context().user?.id || null
 
-  const { setError, clearError, setIsProcessing, isProcessing, errors } =
-    useServiceManagement()
+  const {
+    setAnimeError,
+    clearAnimeError,
+    setIsProcessing,
+    isProcessing,
+    animeErrors,
+  } = useServiceManagement()
 
   const [connectedServices, setConnectedServices] = createSignal<
     Record<AnimeServiceType, { username: string; expiresAt?: string } | null>
@@ -99,7 +104,7 @@ export const ServiceAuthSection = () => {
   const handleLogout = async (serviceId: AnimeServiceType) => {
     try {
       setIsProcessing(true)
-      clearError(serviceId)
+      clearAnimeError(serviceId)
 
       // Clear from cookie
       const credentials = await getServiceCredentials()
@@ -134,7 +139,7 @@ export const ServiceAuthSection = () => {
       }))
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : "Logout failed"
-      setError(serviceId, errorMsg)
+      setAnimeError(serviceId, errorMsg)
     } finally {
       setIsProcessing(false)
     }
@@ -146,7 +151,7 @@ export const ServiceAuthSection = () => {
     } catch (error) {
       const errorMsg =
         error instanceof Error ? error.message : "Failed to load credentials"
-      setError(serviceId, errorMsg)
+      setAnimeError(serviceId, errorMsg)
     }
   }
 
@@ -155,7 +160,7 @@ export const ServiceAuthSection = () => {
     const clientId = import.meta.env.VITE_ANILIST_CLIENT_ID
 
     if (!clientId) {
-      setError("anilist", "AniList not configured")
+      setAnimeError("anilist", "AniList not configured")
       return
     }
 
@@ -263,9 +268,9 @@ export const ServiceAuthSection = () => {
                   </div>
 
                   {/* Error Display */}
-                  <Show when={errors()[service.id]}>
+                  <Show when={animeErrors()[service.id]}>
                     <div class="border-t border-red-800 bg-red-900/20 px-4 py-2 text-sm text-red-400">
-                      {errors()[service.id]}
+                      {animeErrors()[service.id]}
                     </div>
                   </Show>
                 </div>

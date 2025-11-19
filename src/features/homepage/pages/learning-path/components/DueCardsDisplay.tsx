@@ -14,7 +14,7 @@ export function DueCardsDisplay(props: DueCardsDisplayProps) {
   const context = useLearnPageContext()
 
   const getServiceDisplayName = () => {
-    const preferences = context.settingsQuery.data!["service-preferences"]
+    const preferences = context.settingsQuery.data!["srs-service-preferences"]
     if (!preferences) return "Local FSRS"
 
     const activeService = getActiveLiveService(preferences)

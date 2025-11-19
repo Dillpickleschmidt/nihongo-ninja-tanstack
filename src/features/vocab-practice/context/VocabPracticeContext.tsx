@@ -167,7 +167,7 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
   // Get the active live service (if any)
   // Returns "local" if using local FSRS, or the service name if a live service is active
   const activeService = createMemo<SRSServiceType>(() => {
-    const preferences = settingsQuery.data!["service-preferences"]
+    const preferences = settingsQuery.data!["srs-service-preferences"]
     const liveService = getActiveLiveService(preferences)
     // If no live service, we're using local FSRS
     return liveService ? liveService : "local"

@@ -1,39 +1,38 @@
 /**
- * Service-Specific OAuth Configuration
- * Defines token exchange logic for each anime service
+ * Anime Service OAuth Configuration
+ * Defines token exchange logic for each anime tracking service (AniList, Kitsu, MyAnimeList)
  */
 
 import { Resource } from "sst"
+import type { AnimeServiceType } from "@/features/main-cookies/schemas/user-settings"
 
-export type AnimeServiceType = "anilist" | "kitsu" | "mal"
-
-export interface ExchangeTokenRequest {
+export interface AnimeOAuthTokenRequest {
   code?: string
   codeChallenge?: string
   email?: string
   password?: string
 }
 
-export interface ExchangeTokenResponse {
+export interface AnimeOAuthTokenResponse {
   accessToken: string
   refreshToken: string
   expiresAt: string
 }
 
-export interface ServiceAuthConfig {
+export interface AnimeServiceAuthConfig {
   service: AnimeServiceType
   validateRequest: (body: any) => { error?: string }
   exchangeToken: (
-    request: ExchangeTokenRequest,
+    request: AnimeOAuthTokenRequest,
     redirectUri: string,
-  ) => Promise<ExchangeTokenResponse>
+  ) => Promise<AnimeOAuthTokenResponse>
 }
 
 /**
  * AniList OAuth Configuration
  * Uses authorization code grant with client secret
  */
-const anilistConfig: ServiceAuthConfig = {
+const anilistConfig: AnimeServiceAuthConfig = {
   service: "anilist",
 
   validateRequest: (body) => {
@@ -89,7 +88,7 @@ const anilistConfig: ServiceAuthConfig = {
  * Kitsu OAuth Configuration
  * Uses password grant (username/password)
  */
-const kitsuConfig: ServiceAuthConfig = {
+const kitsuConfig: AnimeServiceAuthConfig = {
   service: "kitsu",
 
   validateRequest: (body) => {
@@ -140,7 +139,7 @@ const kitsuConfig: ServiceAuthConfig = {
  * MyAnimeList (MAL) OAuth Configuration
  * Uses PKCE (Proof Key for Code Exchange) flow
  */
-const malConfig: ServiceAuthConfig = {
+const malConfig: AnimeServiceAuthConfig = {
   service: "mal",
 
   validateRequest: (body) => {
@@ -201,7 +200,10 @@ const malConfig: ServiceAuthConfig = {
 /**
  * Map of all anime service OAuth configurations
  */
-export const serviceConfigs: Record<AnimeServiceType, ServiceAuthConfig> = {
+export const animeServiceAuthConfigs: Record<
+  AnimeServiceType,
+  AnimeServiceAuthConfig
+> = {
   anilist: anilistConfig,
   kitsu: kitsuConfig,
   mal: malConfig,

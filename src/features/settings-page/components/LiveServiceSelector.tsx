@@ -17,8 +17,8 @@ import {
 import { validateAnkiConnect } from "@/features/service-api-functions/anki/anki-connect-client"
 import { validateJpdbApiKey } from "@/features/service-api-functions/jpdb/validation"
 import type {
-  ServiceType,
-  AllServicePreferences,
+  SRSServiceType,
+  AllSRSServicePreferences,
 } from "@/features/main-cookies/schemas/user-settings"
 import { getActiveLiveService } from "@/features/srs-services/utils"
 import {
@@ -27,12 +27,12 @@ import {
 } from "@/features/main-cookies/functions/service-credentials"
 
 interface LiveServiceSelectorProps {
-  preferences: AllServicePreferences
-  onServiceChange: (service: "nihongo" | ServiceType) => Promise<void>
+  preferences: AllSRSServicePreferences
+  onServiceChange: (service: "nihongo" | SRSServiceType) => Promise<void>
   isProcessing: boolean
-  errors: Record<ServiceType, string | null>
-  setError: (service: ServiceType, error: string) => void
-  clearError: (service: ServiceType) => void
+  errors: Record<SRSServiceType, string | null>
+  setError: (service: SRSServiceType, error: string) => void
+  clearError: (service: SRSServiceType) => void
 }
 
 export const LiveServiceSelector = (props: LiveServiceSelectorProps) => {
@@ -44,7 +44,7 @@ export const LiveServiceSelector = (props: LiveServiceSelectorProps) => {
     getActiveLiveService(props.preferences) || "nihongo"
 
   const handleServiceSelect = async (value: string) => {
-    await props.onServiceChange(value as "nihongo" | ServiceType)
+    await props.onServiceChange(value as "nihongo" | SRSServiceType)
   }
 
   const handleAnkiConnect = async () => {

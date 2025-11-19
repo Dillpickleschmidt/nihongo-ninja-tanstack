@@ -6,37 +6,27 @@ import { ConjugationPracticeSettingsSchema } from "@/features/conjugation-practi
 // SERVICE PREFERENCES (user-specific, syncs to DB)
 // ============================================================================
 
-export type ServiceType =
-  | "anki"
-  | "wanikani"
-  | "jpdb"
-  | "anilist"
-  | "kitsu"
-  | "mal"
-export type ServiceMode = "disabled" | "live" | "imported"
+export type SRSServiceType = "anki" | "wanikani" | "jpdb"
+export type AnimeServiceType = "anilist" | "kitsu" | "mal"
+export type SRSServiceMode = "disabled" | "live" | "imported"
 
-const ServicePreferenceSchema = z.object({
+const SRSServicePreferenceSchema = z.object({
   mode: z.string().default("disabled"),
   data_imported: z.boolean().default(false),
   is_api_key_valid: z.boolean().default(false),
 })
 
-const ServicePreferencesSchema = z.object({
-  anki: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
-  wanikani: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
-  jpdb: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
-  anilist: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
-  kitsu: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
-  mal: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
+const SRSServicePreferencesSchema = z.object({
+  anki: SRSServicePreferenceSchema.default(
+    SRSServicePreferenceSchema.parse({}),
+  ),
+  wanikani: SRSServicePreferenceSchema.default(
+    SRSServicePreferenceSchema.parse({}),
+  ),
+  jpdb: SRSServicePreferenceSchema.default(
+    SRSServicePreferenceSchema.parse({}),
+  ),
 })
-
-// ============================================================================
-// LEARNING PATH & CHAPTER SETTINGS (user-specific, syncs to DB)
-// ============================================================================
-
-const TextbookIDSchema = z
-  .enum(["getting_started", "genki_1", "genki_2"])
-  .or(z.string().length(0))
 
 // ============================================================================
 // STACK OVERRIDE SETTINGS (user-specific, syncs to DB)
@@ -116,8 +106,8 @@ const RouteSettingsSchema = z.object({
 // ============================================================================
 
 export const DbSyncedSettingsSchema = z.object({
-  "service-preferences": ServicePreferencesSchema.default(
-    ServicePreferencesSchema.parse({}),
+  "srs-service-preferences": SRSServicePreferencesSchema.default(
+    SRSServicePreferencesSchema.parse({}),
   ),
   "active-learning-path": z.string().default("getting_started"),
   "active-chapter": z.string().max(20).default("n5-introduction"),
@@ -156,5 +146,7 @@ export const UserSettingsSchema =
 export type DbSyncedSettings = z.infer<typeof DbSyncedSettingsSchema>
 export type DeviceSettings = z.infer<typeof DeviceSettingsSchema>
 export type UserSettings = z.infer<typeof UserSettingsSchema>
-export type ServicePreference = z.infer<typeof ServicePreferenceSchema>
-export type AllServicePreferences = z.infer<typeof ServicePreferencesSchema>
+export type SRSServicePreference = z.infer<typeof SRSServicePreferenceSchema>
+export type AllSRSServicePreferences = z.infer<
+  typeof SRSServicePreferencesSchema
+>
