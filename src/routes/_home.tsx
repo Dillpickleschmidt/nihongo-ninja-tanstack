@@ -12,8 +12,17 @@ import {
 } from "@/query/query-options"
 import { BottomNav } from "@/features/navbar/BottomNav"
 import { TextbookChapterBackgrounds } from "@/features/homepage/shared/components/TextbookChapterBackgrounds"
+import { queryKeys } from "@/query/utils/query-keys"
 
 export const Route = createFileRoute("/_home")({
+  loader: ({ context }) => {
+    context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+      blur: undefined,
+      backgroundOpacityOffset: 0,
+      showGradient: true,
+    })
+    context.queryClient.setQueryData(queryKeys.bottomNavClass(), "")
+  },
   component: RouteComponent,
 })
 

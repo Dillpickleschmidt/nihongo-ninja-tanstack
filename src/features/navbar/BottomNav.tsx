@@ -45,7 +45,7 @@ export function BottomNav(props: BottomNavProps) {
       id: "search",
       icon: Search,
       label: "Search",
-      href: "/search",
+      href: "/explore",
     },
     {
       id: "settings",

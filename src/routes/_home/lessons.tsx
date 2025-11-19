@@ -15,14 +15,6 @@ export const Route = createFileRoute("/_home/lessons")({
     })
     return { user }
   },
-  onLeave: ({ context }) => {
-    // Reset background settings to defaults
-    context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
-      blur: undefined,
-      backgroundOpacityOffset: 0,
-      showGradient: true,
-    })
-  },
   component: LessonsLayout,
 })
 

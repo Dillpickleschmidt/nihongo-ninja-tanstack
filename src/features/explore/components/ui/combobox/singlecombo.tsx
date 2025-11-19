@@ -8,7 +8,7 @@ interface FilterFormat {
 }
 
 interface SingleComboboxProps {
-  items: FilterFormat[]
+  items: readonly FilterFormat[]
   value: FilterFormat[]
   onChange: (value: FilterFormat[]) => void
   placeholder?: string
