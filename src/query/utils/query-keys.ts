@@ -111,4 +111,7 @@ export const queryKeys = {
     ["transcript-data", learningPathId] as const,
   moduleMetadata: (learningPathId: string, moduleId: string) =>
     ["module-metadata", learningPathId, moduleId] as const,
+
+  // AniZip
+  anizipData: (animeId: number) => ["anizip-data", animeId] as const,
 }

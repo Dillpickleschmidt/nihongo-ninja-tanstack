@@ -67,6 +67,7 @@ import { buildVocabHierarchy } from "@/query/utils/hierarchy-builder"
 import { getCompletedModules } from "@/query/utils/completion-manager"
 import { buildModuleProgressMap } from "@/query/utils/progress-calculator"
 import { queryKeys } from "@/query/utils/query-keys"
+import { fetchAniZipImagesServerFn } from "@/features/explore/api/anizip"
 
 // ============================================================================
 // Background Settings Query Options
@@ -703,4 +704,20 @@ export const moduleMetadataQueryOptions = (
     queryKey: queryKeys.moduleMetadata(learningPathId, moduleId),
     queryFn: () => getModuleMetadata(learningPathId, moduleId),
     enabled,
+  })
+
+// ============================================================================
+// AniZip Query Options
+// ============================================================================
+
+/**
+ * Fetch AniZip episode metadata for a given anime ID
+ * Cached for 24 hours since AniZip data rarely changes
+ */
+export const anizipDataQueryOptions = (animeId: number) =>
+  queryOptions({
+    queryKey: queryKeys.anizipData(animeId),
+    queryFn: () => fetchAniZipImagesServerFn({ data: { id: animeId } }),
+    staleTime: 24 * 60 * 60 * 1000, // 24 hours
+    gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
   })

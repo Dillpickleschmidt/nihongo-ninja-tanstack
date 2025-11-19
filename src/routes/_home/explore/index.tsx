@@ -5,7 +5,6 @@ import {
   UserLists,
   Viewer,
 } from "@/features/explore/api/anilist/queries"
-import { fetchAniZipImagesServerFn } from "@/features/explore/api/anizip"
 import { shuffle } from "@/features/explore/utils/banner-utils"
 import {
   getGenericSections,
@@ -16,8 +15,12 @@ import { extractUserListIds } from "@/features/explore/utils/id-extractors"
 import { Banner } from "@/features/explore/components/ui/banner/banner"
 import { BannerSkeleton } from "@/features/explore/components/ui/banner/skeleton-banner"
 import { AnimeQuerySection } from "@/features/explore/components/ui/cards/query-card"
-import { userSettingsQueryOptions } from "@/query/query-options"
+import {
+  userSettingsQueryOptions,
+  anizipDataQueryOptions,
+} from "@/query/query-options"
 import { queryAniList } from "@/features/explore/api/anilist/query-wrapper"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
 import type { FragmentOf } from "gql.tada"
 import type { FullMedia } from "@/features/explore/api/anilist/queries"
 
@@ -101,28 +104,30 @@ const BannerData: Component<{
     // Filter, shuffle, and select 5 items for banner
     const media = result.data.Page.media
     const filtered = media.filter(
-      (item) => item && (item.bannerImage ?? item.trailer?.id),
+      (item: FragmentOf<typeof FullMedia> | null) =>
+        !!item && !!(item.bannerImage ?? item.trailer?.id),
     )
     const shuffled = shuffle(filtered)
     return shuffled.slice(0, 5).filter((m) => m !== null)
   })
 
-  // Fetch AniZip data after banner data resolves
-  const [anizipData] = createResource(
-    () => (isDesktop ? bannerData() : null),
-    async (items) => {
-      if (!items || items.length === 0) return []
+  // Get anime IDs for banner to fetch AniZip data
+  const bannerAnimeIds = () => {
+    const items = bannerData()
+    if (!items || items.length === 0) return []
+    return (items as Array<FragmentOf<typeof FullMedia> | null>)
+      .map((m) => m?.id)
+      .filter(Boolean) as number[]
+  }
 
-      const animeIds = items.map((m) => m?.id).filter(Boolean)
-      return Promise.all(
-        animeIds.map((id) =>
-          fetchAniZipImagesServerFn({ data: { id: id as number } }).catch(
-            () => null,
-          ),
-        ),
-      ).catch(() => Array(items.length).fill(null))
-    },
-  )
+  // Fetch AniZip data for all banner anime using useCustomQuery
+  const anizipQueries = () =>
+    bannerAnimeIds().map((id) =>
+      useCustomQuery(() => anizipDataQueryOptions(id)),
+    )
+
+  // Map query results to data array
+  const anizipData = () => anizipQueries().map((q) => q.data ?? null)
 
   return (
     <Show when={!bannerData.loading} fallback={<BannerSkeleton />}>
@@ -138,9 +143,7 @@ const BannerData: Component<{
           bannerData={
             (bannerData() || []) as (FragmentOf<typeof FullMedia> | null)[]
           }
-          anizipDataArray={
-            anizipData() || Array((bannerData() || []).length).fill(null)
-          }
+          anizipDataArray={anizipData()}
           isDesktop={isDesktop}
         />
       </Show>
