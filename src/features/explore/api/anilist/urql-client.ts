@@ -11,21 +11,6 @@ class FetchError extends Error {
   }
 }
 
-// In-memory token cache (per-client instance, SSR-safe)
-let tokenCache: { token: string; expiresAt: number } | null = null
-
-export function setAniListToken(token: string, expiresAt: string) {
-  const expiresAtTime = new Date(expiresAt).getTime()
-  tokenCache = {
-    token,
-    expiresAt: expiresAtTime,
-  }
-}
-
-export function clearAniListToken() {
-  tokenCache = null
-}
-
 export function createUrqlClient(isServer: boolean) {
   // Create instance-level limiter for this client
   const limiter = new Bottleneck({
@@ -114,18 +99,7 @@ export function createUrqlClient(isServer: boolean) {
     url: "https://graphql.anilist.co",
     preferGetMethod: false,
     fetch: handleRequest,
-    fetchOptions: () => {
-      // Add auth header if token exists and hasn't expired
-      if (!tokenCache || tokenCache.expiresAt < Date.now()) {
-        return {}
-      }
-
-      return {
-        headers: {
-          Authorization: `Bearer ${tokenCache.token}`,
-        },
-      }
-    },
+    fetchOptions: () => ({}),
     exchanges: [ssr, cacheExchange, fetchExchange],
   })
 

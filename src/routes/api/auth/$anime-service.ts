@@ -6,7 +6,6 @@ import {
   updateServiceCredentials,
 } from "@/features/main-cookies/functions/service-credentials"
 import { storeTokenInDB } from "@/features/supabase/db/anime-auth"
-import { setAniListToken } from "@/features/explore/api/anilist/urql-client"
 import { animeServiceAuthConfigs } from "@/features/explore/api/auth/anime-service-auth-configs"
 import type { AnimeServiceType } from "@/features/main-cookies/schemas/user-settings"
 
@@ -67,11 +66,6 @@ export const Route = createFileRoute("/api/auth/$anime-service")({
           }
 
           await updateServiceCredentials({ data: updatedCredentials })
-
-          // Set token in URQL client cache for AniList
-          if (service === "anilist") {
-            setAniListToken(tokenData.accessToken, tokenData.expiresAt)
-          }
 
           // Store token in database for cross-device sync
           try {

@@ -20,8 +20,7 @@ import { AnimeQuerySection } from "@/features/explore/components/ui/cards/query-
 import { userSettingsQueryOptions } from "@/query/query-options"
 import type { ResultOf, FragmentOf } from "gql.tada"
 import type { EpisodesResponse } from "@/features/explore/api/anizip"
-import { getServiceCredentials } from "@/features/main-cookies/functions/service-credentials"
-import { setAniListToken } from "@/features/explore/api/anilist/urql-client"
+import { queryAniList } from "@/features/explore/api/anilist/query-wrapper"
 
 type CombinedBannerData = {
   bannerResult: {
@@ -33,7 +32,7 @@ type CombinedBannerData = {
 
 export const Route = createFileRoute("/_home/explore/")({
   loader: async ({ context }) => {
-    const { urqlClient, queryClient, user } = context
+    const { urqlClient, urqlSSR, queryClient, user } = context
 
     const { season, year } = getCurrentSeason()
 
@@ -43,18 +42,10 @@ export const Route = createFileRoute("/_home/explore/")({
     )
     const isDesktop = settings["device-type"] === "desktop"
 
-    // Preload AniList token from cookie into URQL client cache
-    const credentials = await getServiceCredentials()
-    if (credentials.anilist?.accessToken && credentials.anilist?.expiresAt) {
-      setAniListToken(
-        credentials.anilist.accessToken,
-        credentials.anilist.expiresAt,
-      )
-    }
-
     return {
       combinedBannerPromise: loadBannerData(
         urqlClient,
+        urqlSSR,
         season,
         year,
         isDesktop,
@@ -63,6 +54,7 @@ export const Route = createFileRoute("/_home/explore/")({
       genericSections: getGenericSections(),
       personalizedSectionsPromise: loadPersonalizedSections(
         urqlClient,
+        urqlSSR,
         user?.id,
       ),
     }
@@ -78,7 +70,7 @@ function HomePage() {
     genericSections,
     personalizedSectionsPromise,
   } = Route.useLoaderData()()
-  const { urqlClient } = Route.useRouteContext()()
+  const { urqlClient, urqlSSR } = Route.useRouteContext()()
 
   // Use createResource to handle the promise - resolves to array of personalized sections
   const [personalizedSections] = createResource(
@@ -139,41 +131,47 @@ function HomePage() {
 }
 
 // fetch seasonal anime → select banner items → prefetch episodes
-function loadBannerData(
+async function loadBannerData(
   urqlClient: any,
+  urqlSSR: any,
   season: string,
   year: number,
   isDesktop: boolean,
 ) {
-  return fetchSeasonalAnime(urqlClient, season, year).then((result) => {
-    const bannerItems = selectBannerItems(result.data?.Page?.media || [])
-    const episodesPromise = prefetchEpisodeData(bannerItems, isDesktop)
+  return fetchSeasonalAnime(urqlClient, urqlSSR, season, year).then(
+    (result) => {
+      const bannerItems = selectBannerItems(result.data?.Page?.media || [])
+      const episodesPromise = prefetchEpisodeData(bannerItems, isDesktop)
 
-    return Promise.all([bannerItems, episodesPromise]).then(
-      ([bannerData, anizipData]) => ({
-        bannerResult: {
-          Page: result.data?.Page,
-          shuffledBannerData: bannerData,
-        },
-        anizipDataArray: anizipData,
-        error: result.error,
-      }),
-    )
-  })
+      return Promise.all([bannerItems, episodesPromise]).then(
+        ([bannerData, anizipData]) => ({
+          bannerResult: {
+            Page: result.data?.Page,
+            shuffledBannerData: bannerData,
+          },
+          anizipDataArray: anizipData,
+          error: result.error,
+        }),
+      )
+    },
+  )
 }
 
 // Fetch popular seasonal anime from AniList
-function fetchSeasonalAnime(urqlClient: any, season: string, year: number) {
-  return urqlClient
-    .query(Search, {
-      page: 1,
-      perPage: 15,
-      sort: ["POPULARITY_DESC"],
-      season,
-      seasonYear: year,
-      statusNot: ["NOT_YET_RELEASED"],
-    })
-    .toPromise()
+async function fetchSeasonalAnime(
+  urqlClient: any,
+  urqlSSR: any,
+  season: string,
+  year: number,
+) {
+  return queryAniList(urqlClient, urqlSSR, Search, {
+    page: 1,
+    perPage: 15,
+    sort: ["POPULARITY_DESC"],
+    season,
+    seasonYear: year,
+    statusNot: ["NOT_YET_RELEASED"],
+  })
 }
 
 function selectBannerItems(media: any[]) {
@@ -200,29 +198,33 @@ async function prefetchEpisodeData(bannerItems: any[], isDesktop: boolean) {
 
 // Load personalized sections
 // Promise chain: Viewer → UserLists → extract IDs → create personalized sections
-function loadPersonalizedSections(urqlClient: any, userId?: string) {
+async function loadPersonalizedSections(
+  urqlClient: any,
+  urqlSSR: any,
+  userId?: string,
+) {
   if (!userId) {
-    return Promise.resolve([])
+    return []
   }
 
-  return urqlClient
-    .query(Viewer, {})
-    .toPromise()
-    .then((viewerResult) => {
-      const anilistUserId = viewerResult.data?.Viewer?.id
-      if (!anilistUserId) {
-        return Promise.resolve([])
-      }
+  try {
+    const viewerResult = await queryAniList(urqlClient, urqlSSR, Viewer, {})
+    const anilistUserId = viewerResult.data?.Viewer?.id
+    if (!anilistUserId) {
+      return []
+    }
 
-      return urqlClient.query(UserLists, { id: anilistUserId }).toPromise()
+    const userListsResult = await queryAniList(urqlClient, urqlSSR, UserLists, {
+      id: anilistUserId,
     })
-    .then((userListsResult) => {
-      if (!userListsResult?.data) {
-        return []
-      }
+    if (!userListsResult?.data) {
+      return []
+    }
 
-      const userListIds = extractUserListIds(userListsResult.data)
-      return getPersonalizedSections(userListIds)
-    })
-    .catch(() => []) // Return empty array on error
+    const userListIds = extractUserListIds(userListsResult.data)
+    return getPersonalizedSections(userListIds)
+  } catch (error) {
+    console.error('[Personalized] Error loading sections:', error)
+    return [] // Return empty array on error
+  }
 }

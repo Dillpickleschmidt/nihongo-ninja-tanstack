@@ -1,6 +1,6 @@
 import type { TextbookIDEnum } from "@/data/types"
 import type { PracticeMode } from "@/features/vocab-practice/types"
-import type { AllServicePreferences } from "@/features/main-cookies/schemas/user-settings"
+import type { AllSRSServicePreferences } from "@/features/main-cookies/schemas/user-settings"
 
 /**
  * Centralized query key definitions
@@ -13,6 +13,10 @@ export const queryKeys = {
 
   // User Settings
   userSettings: (userId: string | null) => ["user-settings", userId] as const,
+
+  // Service Connection Status
+  serviceConnectionStatus: (userId: string | null) =>
+    ["service-connection-status", userId] as const,
 
   // Vocab Practice
   practiceHierarchy: (
@@ -72,10 +76,14 @@ export const queryKeys = {
     ["all-learning-paths", userId] as const,
   chapterModules: (learningPathId: string, chapterSlug: string) =>
     ["chapter-modules", learningPathId, chapterSlug] as const,
-  dueCardsCount: (userId: string | null, preferences: AllServicePreferences) =>
-    ["due-cards-count", userId, preferences] as const,
-  seenCardsStats: (userId: string | null, preferences: AllServicePreferences) =>
-    ["seen-cards-stats", userId, preferences] as const,
+  dueCardsCount: (
+    userId: string | null,
+    preferences: AllSRSServicePreferences,
+  ) => ["due-cards-count", userId, preferences] as const,
+  seenCardsStats: (
+    userId: string | null,
+    preferences: AllSRSServicePreferences,
+  ) => ["seen-cards-stats", userId, preferences] as const,
   completedModules: (userId: string | null) =>
     ["module-progress", userId, "completed"] as const,
   resourceThumbnail: (resourceId: string) =>

@@ -62,6 +62,7 @@ import {
   updateUserSettingsCookie,
 } from "@/query/utils/user-settings"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
+import { getServiceConnectionStatus } from "@/features/main-cookies/functions/service-credentials"
 import { buildVocabHierarchy } from "@/query/utils/hierarchy-builder"
 import { getCompletedModules } from "@/query/utils/completion-manager"
 import { buildModuleProgressMap } from "@/query/utils/progress-calculator"
@@ -171,6 +172,18 @@ export const userSettingsQueryOptions = (userId: string | null) => {
     },
     initialData,
     gcTime: Infinity,
+  })
+}
+
+/**
+ * Service connection status query (returns only booleans, never exposes tokens)
+ * Safe to cache in TanStack Query - no sensitive data exposed to client
+ */
+export const serviceConnectionStatusQueryOptions = (userId: string | null) => {
+  return queryOptions({
+    queryKey: queryKeys.serviceConnectionStatus(userId),
+    queryFn: () => getServiceConnectionStatus(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   })
 }
 

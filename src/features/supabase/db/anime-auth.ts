@@ -53,60 +53,51 @@ export const storeTokenInDB = createServerFn({ method: "POST" })
   })
 
 /**
- * Get anime service token from database
- * Returns null if token not found or expired
+ * Get all anime service tokens from database
+ * Used for cross-device token sync when cookie is empty
+ * Returns null if no tokens found or all are expired
  */
-export const getTokenFromDB = createServerFn({ method: "POST" })
-  .inputValidator((data: { service: AnimeServiceType }) => data)
-  .handler(async ({ data }) => {
+export const getTokensFromDB = createServerFn({ method: "GET" }).handler(
+  async () => {
     const supabase = createSupabaseClient()
     const response = await getUser()
 
     if (!response.user) {
-      throw new Error("User not authenticated")
-    }
-
-    const { service } = data
-
-    // Validate service
-    if (!["anilist", "kitsu", "mal"].includes(service)) {
-      throw new Error("Invalid service")
-    }
-
-    const { data: token, error } = await supabase
-      .from("user_service_tokens")
-      .select("access_token, refresh_token, expires_at")
-      .eq("user_id", response.user.id)
-      .eq("service", service)
-      .single()
-
-    if (error) {
-      if (error.code === "PGRST116") {
-        // Not found
-        return null
-      }
-      console.error("Error fetching token from DB:", error)
-      throw new Error("Failed to fetch token")
-    }
-
-    if (!token) {
       return null
     }
 
-    // Check if token is expired
-    if (token.expires_at) {
-      const expiresAt = new Date(token.expires_at).getTime()
-      if (expiresAt < Date.now()) {
-        return null // Token expired
+    const { data: tokens, error } = await supabase
+      .from("user_service_tokens")
+      .select("service, access_token, refresh_token, expires_at")
+      .eq("user_id", response.user.id)
+
+    if (error || !tokens) {
+      return null
+    }
+
+    // Convert array to ServiceCredentials format, filtering expired tokens
+    const credentials: Record<string, any> = {}
+    for (const token of tokens) {
+      const service = token.service as AnimeServiceType
+
+      // Skip expired tokens
+      if (token.expires_at) {
+        const expiresAt = new Date(token.expires_at).getTime()
+        if (expiresAt < Date.now()) {
+          continue
+        }
+      }
+
+      credentials[service] = {
+        accessToken: token.access_token,
+        refreshToken: token.refresh_token || "",
+        expiresAt: token.expires_at,
       }
     }
 
-    return {
-      accessToken: token.access_token,
-      refreshToken: token.refresh_token || "",
-      expiresAt: token.expires_at,
-    }
-  })
+    return Object.keys(credentials).length > 0 ? credentials : null
+  },
+)
 
 /**
  * Delete anime service token from database
