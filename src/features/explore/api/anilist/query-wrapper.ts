@@ -4,7 +4,6 @@ import { queryAniListAuthenticated } from "./anilist-server-query"
 
 /**
  * Determines if a GraphQL query requires authentication
- * Checks query definition names
  */
 function requiresAuthentication(query: any): boolean {
   if (!query.definitions) return false
@@ -21,7 +20,7 @@ function requiresAuthentication(query: any): boolean {
  */
 export async function queryAniList(
   urqlClient: Client,
-  ssr: any,
+  urqlSSR: any,
   query: any,
   variables: any = {},
 ) {
@@ -39,7 +38,7 @@ export async function queryAniList(
 
     // Generate cache key and inject into SSR cache
     const request = createRequest(query, variables)
-    ssr.restoreData({
+    urqlSSR.restoreData({
       [request.key]: {
         data: JSON.stringify(result.data),
       },
