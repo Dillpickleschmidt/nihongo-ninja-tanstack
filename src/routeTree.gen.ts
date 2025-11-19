@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as OauthCallbackRouteImport } from './routes/oauth-callback'
 import { Route as KanjiTestRouteImport } from './routes/kanji-test'
 import { Route as GuidesRouteImport } from './routes/guides'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -36,6 +37,7 @@ import { Route as PracticeUserIDDeckIDRouteImport } from './routes/practice/$use
 import { Route as ApiRelayTefhSplatRouteImport } from './routes/api/relay-tefh.$'
 import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
 import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
+import { Route as ApiAuthServiceRouteImport } from './routes/api/auth/$service'
 import { Route as HomeVocabSettingsRouteImport } from './routes/_home/vocab/settings'
 import { Route as HomeVocabCreateRouteImport } from './routes/_home/vocab/create'
 import { Route as HomeVocabBrowseRouteImport } from './routes/_home/vocab/browse'
@@ -89,6 +91,11 @@ import { Route as HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport } fr
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OauthCallbackRoute = OauthCallbackRouteImport.update({
+  id: '/oauth-callback',
+  path: '/oauth-callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KanjiTestRoute = KanjiTestRouteImport.update({
@@ -220,6 +227,11 @@ const ApiAuthLogoutRoute = ApiAuthLogoutRouteImport.update({
 const ApiAuthLoginRoute = ApiAuthLoginRouteImport.update({
   id: '/api/auth/login',
   path: '/api/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthServiceRoute = ApiAuthServiceRouteImport.update({
+  id: '/api/auth/$service',
+  path: '/api/auth/$service',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeVocabSettingsRoute = HomeVocabSettingsRouteImport.update({
@@ -514,6 +526,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/guides': typeof GuidesRouteWithChildren
   '/kanji-test': typeof KanjiTestRoute
+  '/oauth-callback': typeof OauthCallbackRoute
   '/pricing': typeof PricingRoute
   '/explore': typeof HomeExploreRouteWithChildren
   '/grammar-notes': typeof HomeGrammarNotesRoute
@@ -542,6 +555,7 @@ export interface FileRoutesByFullPath {
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
   '/vocab/settings': typeof HomeVocabSettingsRoute
+  '/api/auth/$service': typeof ApiAuthServiceRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
@@ -590,6 +604,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/kanji-test': typeof KanjiTestRoute
+  '/oauth-callback': typeof OauthCallbackRoute
   '/pricing': typeof PricingRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
@@ -616,6 +631,7 @@ export interface FileRoutesByTo {
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
   '/vocab/settings': typeof HomeVocabSettingsRoute
+  '/api/auth/$service': typeof ApiAuthServiceRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
@@ -667,6 +683,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/guides': typeof GuidesRouteWithChildren
   '/kanji-test': typeof KanjiTestRoute
+  '/oauth-callback': typeof OauthCallbackRoute
   '/pricing': typeof PricingRoute
   '/_home/explore': typeof HomeExploreRouteWithChildren
   '/_home/grammar-notes': typeof HomeGrammarNotesRoute
@@ -695,6 +712,7 @@ export interface FileRoutesById {
   '/_home/vocab/browse': typeof HomeVocabBrowseRoute
   '/_home/vocab/create': typeof HomeVocabCreateRoute
   '/_home/vocab/settings': typeof HomeVocabSettingsRoute
+  '/api/auth/$service': typeof ApiAuthServiceRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/relay-tefh/$': typeof ApiRelayTefhSplatRoute
@@ -746,6 +764,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/guides'
     | '/kanji-test'
+    | '/oauth-callback'
     | '/pricing'
     | '/explore'
     | '/grammar-notes'
@@ -774,6 +793,7 @@ export interface FileRouteTypes {
     | '/vocab/browse'
     | '/vocab/create'
     | '/vocab/settings'
+    | '/api/auth/$service'
     | '/api/auth/login'
     | '/api/auth/logout'
     | '/api/relay-tefh/$'
@@ -822,6 +842,7 @@ export interface FileRouteTypes {
   to:
     | '/auth'
     | '/kanji-test'
+    | '/oauth-callback'
     | '/pricing'
     | '/grammar-notes'
     | '/lessons'
@@ -848,6 +869,7 @@ export interface FileRouteTypes {
     | '/vocab/browse'
     | '/vocab/create'
     | '/vocab/settings'
+    | '/api/auth/$service'
     | '/api/auth/login'
     | '/api/auth/logout'
     | '/api/relay-tefh/$'
@@ -898,6 +920,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/guides'
     | '/kanji-test'
+    | '/oauth-callback'
     | '/pricing'
     | '/_home/explore'
     | '/_home/grammar-notes'
@@ -926,6 +949,7 @@ export interface FileRouteTypes {
     | '/_home/vocab/browse'
     | '/_home/vocab/create'
     | '/_home/vocab/settings'
+    | '/api/auth/$service'
     | '/api/auth/login'
     | '/api/auth/logout'
     | '/api/relay-tefh/$'
@@ -977,11 +1001,13 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   GuidesRoute: typeof GuidesRouteWithChildren
   KanjiTestRoute: typeof KanjiTestRoute
+  OauthCallbackRoute: typeof OauthCallbackRoute
   PricingRoute: typeof PricingRoute
   ApiUploadOverrideRoute: typeof ApiUploadOverrideRoute
   ExternalResourcesResourceRoute: typeof ExternalResourcesResourceRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
   PracticeReviewRoute: typeof PracticeReviewRoute
+  ApiAuthServiceRoute: typeof ApiAuthServiceRoute
   ApiAuthLoginRoute: typeof ApiAuthLoginRoute
   ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
   ApiRelayTefhSplatRoute: typeof ApiRelayTefhSplatRoute
@@ -995,6 +1021,13 @@ declare module '@tanstack/solid-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oauth-callback': {
+      id: '/oauth-callback'
+      path: '/oauth-callback'
+      fullPath: '/oauth-callback'
+      preLoaderRoute: typeof OauthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/kanji-test': {
@@ -1177,6 +1210,13 @@ declare module '@tanstack/solid-router' {
       path: '/api/auth/login'
       fullPath: '/api/auth/login'
       preLoaderRoute: typeof ApiAuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/$service': {
+      id: '/api/auth/$service'
+      path: '/api/auth/$service'
+      fullPath: '/api/auth/$service'
+      preLoaderRoute: typeof ApiAuthServiceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_home/vocab/settings': {
@@ -1722,11 +1762,13 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   GuidesRoute: GuidesRouteWithChildren,
   KanjiTestRoute: KanjiTestRoute,
+  OauthCallbackRoute: OauthCallbackRoute,
   PricingRoute: PricingRoute,
   ApiUploadOverrideRoute: ApiUploadOverrideRoute,
   ExternalResourcesResourceRoute: ExternalResourcesResourceRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,
   PracticeReviewRoute: PracticeReviewRoute,
+  ApiAuthServiceRoute: ApiAuthServiceRoute,
   ApiAuthLoginRoute: ApiAuthLoginRoute,
   ApiAuthLogoutRoute: ApiAuthLogoutRoute,
   ApiRelayTefhSplatRoute: ApiRelayTefhSplatRoute,

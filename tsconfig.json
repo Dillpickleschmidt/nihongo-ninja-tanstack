@@ -21,7 +21,7 @@
       {
         "name": "gql.tada/ts-plugin",
         "schema": "https://graphql.anilist.co",
-        "tadaOutputLocation": "./src/features/extracurriculars/api/anilist/graphql-env.d.ts"
+        "tadaOutputLocation": "./src/features/explore/api/anilist/graphql-env.d.ts"
       }
     ]
   }

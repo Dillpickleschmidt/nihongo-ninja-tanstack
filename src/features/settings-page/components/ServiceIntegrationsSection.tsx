@@ -3,6 +3,7 @@ import { createSignal } from "solid-js"
 import { ImportServiceCard } from "./ImportServiceCard"
 import { LiveServiceSelector } from "./LiveServiceSelector"
 import { ImportReviewDialog } from "./ImportReviewDialog"
+import { ServiceAuthSection } from "./ServiceAuthSection"
 import { jpdbAdapter } from "@/features/fsrs-import/adapters/jpdb-import-adapter"
 import { importReviewsServerFn } from "@/features/fsrs-import/server/importReviewsServerFn"
 import { validateJpdbImportServerFn } from "@/features/fsrs-import/server/validateJpdbImportServerFn"
@@ -15,13 +16,9 @@ import { useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 import { useServiceManagement } from "../context/ServiceManagementContext"
 import { useServiceSwitcher } from "../hooks/useServiceSwitcher"
-import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"
-import {
-  getServiceCredentials,
-  updateServiceCredentials,
-} from "@/features/main-cookies/functions/service-credentials"
 import type { JpdbValidationResponse } from "@/features/fsrs-import/core/jpdb-validation-types"
 import type { NormalizedCard } from "@/features/fsrs-import/core/schemas"
+import { getServiceCredentials } from "@/features/main-cookies/functions/service-credentials"
 
 export const ServiceIntegrationsSection = () => {
   const context = useRouteContext({ from: RootRoute.id })
@@ -169,6 +166,9 @@ export const ServiceIntegrationsSection = () => {
 
   return (
     <div class="space-y-8">
+      {/* Section 0: Anime Service Connections */}
+      <ServiceAuthSection />
+
       {/* Section 1: Nihongo Ninja (Built-in) */}
       <div class="space-y-4">
         <div>

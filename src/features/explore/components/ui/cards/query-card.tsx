@@ -21,8 +21,8 @@ export function AnimeQuerySection(props: AnimeQuerySectionProps) {
   // Create paused query - will fetch when scrolled into view
   const [query] = createQuery({
     query: Search,
-    variables: props.config.queryVars,
-    pause: isPaused,
+    variables: () => props.config.queryVars,
+    pause: () => isPaused(),
     context: { client: props.urqlClient },
   })
 
@@ -50,7 +50,9 @@ export function AnimeQuerySection(props: AnimeQuerySectionProps) {
 
     observer.observe(element)
 
-    onCleanup(() => observer.unobserve(element))
+    onCleanup(() => {
+      observer.unobserve(element)
+    })
   }
 
   return (

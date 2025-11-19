@@ -19,6 +19,8 @@ interface SmallAnimeCardProps {
 }
 
 export function SmallAnimeCard(props: SmallAnimeCardProps) {
+  // TODO: Implement hover effects for card details display
+  // TODO: Implement navigation to anime detail page (currently links to '.', needs `/explore/anime/${props.media.id}`)
   const [hidden, setHidden] = createSignal(true)
 
   const coverUrl = () => coverMedium(props.media as any) ?? ""
@@ -26,26 +28,17 @@ export function SmallAnimeCard(props: SmallAnimeCardProps) {
   const formatText = () => format(props.media as any)
   const year = () => props.media.seasonYear ?? "TBA"
 
-  function onclick() {
-    // Navigation happens automatically via <A> link
-  }
-
-  function onhover(state: boolean) {
-    setHidden(!state)
-  }
-
   return (
     <Link
       to={`.`}
-      // to={`/extracurriculars-v2/anime/${props.media.id}`}
+      // TODO: Update to {`/explore/anime/${props.media.id}`} when detail page is ready
       class="pointer-events-auto relative shrink-0 cursor-pointer p-4 text-white [contain-intrinsic-size:auto_152px_auto_290.4px] [content-visibility:auto]"
       classList={{
         "![content-visibility:visible]": !hidden(),
-        "z-40": !hidden(),
+        "": !hidden(), // original z-40 class
       }}
-      onMouseEnter={() => onhover(true)}
-      onMouseLeave={() => onhover(false)}
-      onClick={onclick}
+      onMouseEnter={() => setHidden(false)}
+      onMouseLeave={() => setHidden(true)}
     >
       <div
         class="item flex w-[9.5rem] flex-col"

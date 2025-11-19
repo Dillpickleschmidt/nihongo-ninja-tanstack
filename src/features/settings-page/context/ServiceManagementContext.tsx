@@ -22,6 +22,9 @@ export const ServiceManagementProvider: Component<ParentProps> = (props) => {
     jpdb: "",
     wanikani: "",
     anki: "",
+    anilist: "",
+    kitsu: "",
+    mal: "",
   })
 
   const [isProcessing, setIsProcessing] = createSignal(false)

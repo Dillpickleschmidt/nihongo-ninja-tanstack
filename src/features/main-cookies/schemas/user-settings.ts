@@ -6,7 +6,13 @@ import { ConjugationPracticeSettingsSchema } from "@/features/conjugation-practi
 // SERVICE PREFERENCES (user-specific, syncs to DB)
 // ============================================================================
 
-export type ServiceType = "anki" | "wanikani" | "jpdb"
+export type ServiceType =
+  | "anki"
+  | "wanikani"
+  | "jpdb"
+  | "anilist"
+  | "kitsu"
+  | "mal"
 export type ServiceMode = "disabled" | "live" | "imported"
 
 const ServicePreferenceSchema = z.object({
@@ -19,6 +25,9 @@ const ServicePreferencesSchema = z.object({
   anki: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
   wanikani: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
   jpdb: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
+  anilist: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
+  kitsu: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
+  mal: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
 })
 
 // ============================================================================

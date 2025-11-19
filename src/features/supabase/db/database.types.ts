@@ -292,6 +292,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_service_tokens: {
+        Row: {
+          access_token: string
+          created_at: string | null
+          expires_at: string | null
+          id: number
+          refresh_token: string | null
+          service: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          access_token: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: number
+          refresh_token?: string | null
+          service: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          access_token?: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: number
+          refresh_token?: string | null
+          service?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       vocabulary_items: {
         Row: {
           created_at: string
@@ -355,10 +388,12 @@ export type Database = {
         Returns: undefined
       }
       generate_deck_id: { Args: never; Returns: string }
-      get_user_daily_aggregates: {
-        Args: { user_id_param: string }
-        Returns: Json
-      }
+      get_user_daily_aggregates:
+        | {
+            Args: { timezone_param?: string; user_id_param: string }
+            Returns: Json
+          }
+        | { Args: { user_id_param: string }; Returns: Json }
       get_vocabulary_stats: {
         Args: { user_id_param: string; week_ago_param: string }
         Returns: Json

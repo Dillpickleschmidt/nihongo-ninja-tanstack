@@ -11,6 +11,21 @@ class FetchError extends Error {
   }
 }
 
+// In-memory token cache (per-client instance, SSR-safe)
+let tokenCache: { token: string; expiresAt: number } | null = null
+
+export function setAniListToken(token: string, expiresAt: string) {
+  const expiresAtTime = new Date(expiresAt).getTime()
+  tokenCache = {
+    token,
+    expiresAt: expiresAtTime,
+  }
+}
+
+export function clearAniListToken() {
+  tokenCache = null
+}
+
 export function createUrqlClient(isServer: boolean) {
   // Create instance-level limiter for this client
   const limiter = new Bottleneck({
@@ -45,10 +60,16 @@ export function createUrqlClient(isServer: boolean) {
     if (error.name === "AbortError") return undefined
 
     // Give up after 8 retries
-    if (jobInfo.retryCount > 8) return undefined
+    if (jobInfo.retryCount > 8) {
+      console.error(`[AniList] Failed after ${jobInfo.retryCount} retries`)
+      return undefined
+    }
 
     // Network failure: wait 60 seconds
     if (error.message === "Failed to fetch") {
+      console.warn(
+        `[AniList] Network error (retry ${jobInfo.retryCount}/8, waiting 60s)`,
+      )
       return setRateLimit(60000)
     }
 
@@ -56,11 +77,20 @@ export function createUrqlClient(isServer: boolean) {
     if (!(error instanceof FetchError)) return 0
 
     // Server error: wait 1 second
-    if (error.res.status === 500) return 1000
+    if (error.res.status === 500) {
+      console.warn(
+        `[AniList] Server error 500 (retry ${jobInfo.retryCount}/8, waiting 1s)`,
+      )
+      return 1000
+    }
 
     // Rate limit error: use Retry-After header or default to 60 seconds
-    const delay =
-      (parseInt(error.res.headers.get("retry-after") ?? "60") + 1) * 1000
+    // Add +1 second as buffer to ensure rate limit window passes
+    const retryAfter = parseInt(error.res.headers.get("retry-after") ?? "60")
+    const delay = (retryAfter + 1) * 1000
+    console.warn(
+      `[AniList] Rate limited (retry ${jobInfo.retryCount}/8, waiting ${retryAfter}s)`,
+    )
 
     return setRateLimit(delay)
   })
@@ -84,6 +114,18 @@ export function createUrqlClient(isServer: boolean) {
     url: "https://graphql.anilist.co",
     preferGetMethod: false,
     fetch: handleRequest,
+    fetchOptions: () => {
+      // Add auth header if token exists and hasn't expired
+      if (!tokenCache || tokenCache.expiresAt < Date.now()) {
+        return {}
+      }
+
+      return {
+        headers: {
+          Authorization: `Bearer ${tokenCache.token}`,
+        },
+      }
+    },
     exchanges: [ssr, cacheExchange, fetchExchange],
   })
 
