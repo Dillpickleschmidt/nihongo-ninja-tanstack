@@ -1,0 +1,69 @@
+import { Show } from "solid-js"
+import { BookOpen, Star } from "lucide-solid"
+import { cn } from "@/utils"
+import type { ImportItem } from "../data/jlpt-data"
+import type { ItemStatus } from "../types"
+
+interface ImportItemRowProps {
+  item: ImportItem
+  index: number
+  isSelected: boolean
+  status: ItemStatus
+  groupIds: string[]
+  onClick: (e: MouseEvent) => void
+  onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
+}
+
+export function ImportItemRow(props: ImportItemRowProps) {
+  return (
+    <div
+      data-import-item-id={props.item.id}
+      class={cn(
+        "group relative flex cursor-pointer items-center justify-between rounded-sm px-2 py-2 transition-colors select-none touch-manipulation",
+        props.isSelected
+          ? "bg-accent text-accent-foreground"
+          : "hover:bg-muted/50 text-muted-foreground hover:text-foreground",
+      )}
+      onClick={props.onClick}
+      onPointerDown={(e) => props.onPointerDown(e, props.item.id, props.groupIds)}
+    >
+      {/* Left: Content */}
+      <div class="flex items-center">
+        {/* Numbering */}
+        <div
+          class={cn(
+            "text-muted-foreground/40 mr-3 w-5 text-right font-mono text-xs tabular-nums",
+            props.isSelected ? "text-accent-foreground/60" : "",
+          )}
+        >
+          {props.index + 1}
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div class="text-foreground/90 min-w-[80px] text-base font-medium">
+            {props.item.main}
+          </div>
+          <div class="text-muted-foreground/70 max-w-[180px] truncate text-sm transition-opacity group-hover:opacity-100 sm:max-w-sm">
+            {props.item.meaning}
+          </div>
+        </div>
+      </div>
+
+      {/* Right: Status Icons */}
+      <div class="flex items-center gap-3">
+        <Show when={props.status === "decent"}>
+          <div class="flex items-center gap-1.5 rounded border border-blue-500/10 bg-blue-500/10 px-2 py-0.5 text-xs font-medium text-blue-400">
+            <BookOpen class="size-3.5" />
+            <span class="hidden sm:inline">Decent</span>
+          </div>
+        </Show>
+        <Show when={props.status === "mastered"}>
+          <div class="flex items-center gap-1.5 rounded border border-yellow-500/10 bg-yellow-500/10 px-2 py-0.5 text-xs font-medium text-yellow-400">
+            <Star class="size-3.5 fill-current" />
+            <span class="hidden sm:inline">Mastered</span>
+          </div>
+        </Show>
+      </div>
+    </div>
+  )
+}

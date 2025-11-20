@@ -29,6 +29,7 @@ import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
 import { Route as HomeSearchRouteImport } from './routes/_home/search'
 import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeLessonsRouteImport } from './routes/_home/lessons'
+import { Route as HomeImportRouteImport } from './routes/_home/import'
 import { Route as HomeGrammarNotesRouteImport } from './routes/_home/grammar-notes'
 import { Route as HomeExploreRouteImport } from './routes/_home/explore'
 import { Route as HomeVocabIndexRouteImport } from './routes/_home/vocab/index'
@@ -186,6 +187,11 @@ const HomeReviewRoute = HomeReviewRouteImport.update({
 const HomeLessonsRoute = HomeLessonsRouteImport.update({
   id: '/lessons',
   path: '/lessons',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeImportRoute = HomeImportRouteImport.update({
+  id: '/import',
+  path: '/import',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeGrammarNotesRoute = HomeGrammarNotesRouteImport.update({
@@ -530,6 +536,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/explore': typeof HomeExploreRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
+  '/import': typeof HomeImportRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
   '/search': typeof HomeSearchRoute
@@ -608,6 +615,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/explore': typeof HomeExploreRoute
   '/grammar-notes': typeof HomeGrammarNotesRoute
+  '/import': typeof HomeImportRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
   '/search': typeof HomeSearchRoute
@@ -688,6 +696,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/_home/explore': typeof HomeExploreRoute
   '/_home/grammar-notes': typeof HomeGrammarNotesRoute
+  '/_home/import': typeof HomeImportRoute
   '/_home/lessons': typeof HomeLessonsRouteWithChildren
   '/_home/review': typeof HomeReviewRoute
   '/_home/search': typeof HomeSearchRoute
@@ -769,6 +778,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/explore'
     | '/grammar-notes'
+    | '/import'
     | '/lessons'
     | '/review'
     | '/search'
@@ -847,6 +857,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/explore'
     | '/grammar-notes'
+    | '/import'
     | '/lessons'
     | '/review'
     | '/search'
@@ -926,6 +937,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/_home/explore'
     | '/_home/grammar-notes'
+    | '/_home/import'
     | '/_home/lessons'
     | '/_home/review'
     | '/_home/search'
@@ -1156,6 +1168,13 @@ declare module '@tanstack/solid-router' {
       path: '/lessons'
       fullPath: '/lessons'
       preLoaderRoute: typeof HomeLessonsRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/import': {
+      id: '/_home/import'
+      path: '/import'
+      fullPath: '/import'
+      preLoaderRoute: typeof HomeImportRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/grammar-notes': {
@@ -1688,6 +1707,7 @@ const HomeVocabRouteWithChildren = HomeVocabRoute._addFileChildren(
 interface HomeRouteChildren {
   HomeExploreRoute: typeof HomeExploreRoute
   HomeGrammarNotesRoute: typeof HomeGrammarNotesRoute
+  HomeImportRoute: typeof HomeImportRoute
   HomeLessonsRoute: typeof HomeLessonsRouteWithChildren
   HomeReviewRoute: typeof HomeReviewRoute
   HomeSearchRoute: typeof HomeSearchRoute
@@ -1710,6 +1730,7 @@ interface HomeRouteChildren {
 const HomeRouteChildren: HomeRouteChildren = {
   HomeExploreRoute: HomeExploreRoute,
   HomeGrammarNotesRoute: HomeGrammarNotesRoute,
+  HomeImportRoute: HomeImportRoute,
   HomeLessonsRoute: HomeLessonsRouteWithChildren,
   HomeReviewRoute: HomeReviewRoute,
   HomeSearchRoute: HomeSearchRoute,
