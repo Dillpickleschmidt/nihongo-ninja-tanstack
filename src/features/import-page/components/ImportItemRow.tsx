@@ -1,3 +1,4 @@
+// src/features/import-page/components/ImportItemRow.tsx
 import { Show } from "solid-js"
 import { BookOpen, Star } from "lucide-solid"
 import { cn } from "@/utils"
@@ -19,33 +20,33 @@ export function ImportItemRow(props: ImportItemRowProps) {
     <div
       data-import-item-id={props.item.id}
       class={cn(
-        "group relative flex cursor-pointer items-center justify-between rounded-sm px-2 py-2 transition-colors select-none touch-manipulation",
+        "group relative flex cursor-pointer touch-manipulation items-center justify-between rounded-sm px-2 py-2 transition-colors select-none",
         props.isSelected
           ? "bg-accent text-accent-foreground"
           : "hover:bg-muted/50 text-muted-foreground hover:text-foreground",
       )}
       onClick={props.onClick}
-      onPointerDown={(e) => props.onPointerDown(e, props.item.id, props.groupIds)}
+      onPointerDown={(e) =>
+        props.onPointerDown(e, props.item.id, props.groupIds)
+      }
     >
       {/* Left: Content */}
-      <div class="flex items-center">
+      <div class="flex items-center gap-4">
         {/* Numbering */}
         <div
           class={cn(
-            "text-muted-foreground/40 mr-3 w-5 text-right font-mono text-xs tabular-nums",
+            "text-muted-foreground/40 w-5 text-right font-mono text-xs tabular-nums",
             props.isSelected ? "text-accent-foreground/60" : "",
           )}
         >
           {props.index + 1}
         </div>
 
-        <div class="flex items-center gap-4">
-          <div class="text-foreground/90 min-w-[80px] text-base font-medium">
-            {props.item.main}
-          </div>
-          <div class="text-muted-foreground/70 max-w-[180px] truncate text-sm transition-opacity group-hover:opacity-100 sm:max-w-sm">
-            {props.item.meaning}
-          </div>
+        <div class="text-foreground/90 min-w-[80px] text-base font-medium">
+          {props.item.main}
+        </div>
+        <div class="text-muted-foreground/70 max-w-[180px] truncate text-sm group-hover:opacity-100 sm:max-w-sm">
+          {props.item.meaning}
         </div>
       </div>
 

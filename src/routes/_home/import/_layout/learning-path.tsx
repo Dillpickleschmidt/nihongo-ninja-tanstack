@@ -1,3 +1,4 @@
+// src/routes/_home/import/_layout/learning-path.tsx
 import { createFileRoute, useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 import { createSignal, Show } from "solid-js"
@@ -7,7 +8,7 @@ import { createLearningPath } from "@/features/learning-paths/generation"
 import { uploadLearningPath } from "@/features/supabase/db/learning-paths"
 import type { TextbookIDEnum } from "@/data/types"
 
-export const Route = createFileRoute("/_home/video")({
+export const Route = createFileRoute("/_home/import/_layout/learning-path")({
   component: RouteComponent,
 })
 
@@ -114,7 +115,7 @@ function RouteComponent() {
     <div class="min-h-screen pb-16">
       <div class="mx-auto max-w-2xl p-6">
         <h1 class="mt-6 text-center text-4xl font-bold">
-          Generate Learning Path from Video
+          Generate Custom Path
         </h1>
 
         <form onSubmit={handleSubmit} class="mt-10 space-y-6">
@@ -202,9 +203,9 @@ function RouteComponent() {
 
         {/* Result */}
         <Show when={result()}>
-          <div class="mt-8 rounded bg-green-100 p-4 text-green-800">
-            <p class="font-mono text-sm whitespace-pre-wrap">{result()}</p>
-          </div>
+          <p class="mt-8 rounded bg-green-100 p-4 font-mono text-sm whitespace-pre-wrap text-green-800">
+            {result()}
+          </p>
         </Show>
 
         {/* Error */}

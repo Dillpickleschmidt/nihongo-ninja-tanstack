@@ -1,3 +1,4 @@
+// src/features/import-page/components/FloatingActionBar.tsx
 import { createSignal } from "solid-js"
 import { Portal } from "solid-js/web"
 import { X, BookOpen, Star, HelpCircle, MousePointerClick } from "lucide-solid"
@@ -36,13 +37,13 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
     <Portal>
       <div
         class={cn(
-          "fixed bottom-6 left-1/2 z-50 flex w-full max-w-4xl -translate-x-1/2 transform flex-col gap-2 px-4 transition-all duration-300 ease-in-out md:bottom-8",
+          "fixed bottom-6 left-1/2 z-50 flex w-full max-w-4xl -translate-x-1/2 flex-col gap-2 px-4 transition-all duration-300 ease-in-out md:bottom-8",
           props.selectedCount > 0
             ? "translate-y-0 opacity-100"
             : "pointer-events-none translate-y-10 opacity-0",
         )}
       >
-        <div class="flex items-center justify-between gap-4 rounded-xl border border-white/10 bg-zinc-950/90 p-2 shadow-2xl shadow-black/50 backdrop-blur-md">
+        <div class="flex items-center justify-between gap-4 rounded-xl border border-white/10 bg-neutral-950/80 p-2 shadow-2xl shadow-black/50 backdrop-blur-md">
           {/* Counter */}
           <div class="flex items-center gap-3 pl-3">
             <div class="flex size-8 items-center justify-center rounded-full bg-white/10 font-mono text-sm font-bold text-white">
@@ -70,7 +71,7 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
               onClick={() => handleApply("decent")}
             >
               <BookOpen class="hidden size-4 sm:inline" />
-              <span class="">Decent</span>
+              <span>Decent</span>
               <Tooltip placement="top" open={decentOpen()}>
                 <TooltipTrigger
                   as="div"
@@ -100,7 +101,7 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
               onClick={() => handleApply("mastered")}
             >
               <Star class="hidden size-4 fill-current sm:inline" />
-              <span class="">Mastered</span>
+              <span>Mastered</span>
               <Tooltip placement="top" open={masteredOpen()}>
                 <TooltipTrigger
                   as="div"
@@ -109,7 +110,7 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
                     e.stopPropagation()
                     setMasteredOpen(!masteredOpen())
                   }}
-                  onMouseOver={() => setMasteredOpen(true)}
+                  onMouseEnter={() => setMasteredOpen(true)}
                   onMouseLeave={() => setMasteredOpen(false)}
                 >
                   <HelpCircle class="size-3.5" />
@@ -141,21 +142,19 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
             </Tooltip>
 
             {/* 4. Close / Deselect */}
-            <div class="hidden md:block">
-              <Tooltip placement="top">
-                <TooltipTrigger>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    class="size-9"
-                    onClick={handleClearSelection}
-                  >
-                    <X class="size-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Deselect all</TooltipContent>
-              </Tooltip>
-            </div>
+            <Tooltip placement="top" class="hidden md:block">
+              <TooltipTrigger>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  class="size-9"
+                  onClick={handleClearSelection}
+                >
+                  <X class="size-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Deselect all</TooltipContent>
+            </Tooltip>
           </div>
         </div>
       </div>

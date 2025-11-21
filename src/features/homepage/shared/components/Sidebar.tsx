@@ -83,7 +83,7 @@ const navigation: NavigationSection[] = [
       {
         id: "conjugation",
         title: "Conjugation",
-        href: "/conjugation",
+        href: "/practice/conjugation",
         icon: Repeat2,
         class: "text-teal-500 dark:text-teal-400",
       },

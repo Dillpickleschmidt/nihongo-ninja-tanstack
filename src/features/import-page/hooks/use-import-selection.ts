@@ -1,4 +1,5 @@
-import { createSignal, batch } from "solid-js"
+// src/features/import-page/hooks/use-import-selection.ts
+import { createSignal } from "solid-js"
 import type { ItemStatus, ImportState } from "../types"
 
 const LONG_PRESS_DURATION = 300
@@ -172,12 +173,14 @@ export function useImportSelection() {
 
     // If long-press occurred, prevent the subsequent click event
     if (didLongPress) {
-      const preventClick = (e: MouseEvent) => {
-        e.stopPropagation()
-        e.preventDefault()
-        document.removeEventListener("click", preventClick, true)
-      }
-      document.addEventListener("click", preventClick, true)
+      document.addEventListener(
+        "click",
+        (e) => {
+          e.stopPropagation()
+          e.preventDefault()
+        },
+        { capture: true, once: true },
+      )
     }
 
     // Clear drag state
@@ -264,15 +267,13 @@ export function useImportSelection() {
     const currentStates = { ...itemStates() }
     const selected = selectedIds()
 
-    batch(() => {
-      selected.forEach((id) => {
-        if (status === null) delete currentStates[id]
-        else currentStates[id] = status
-      })
-      setItemStates(currentStates)
-      setSelectedIds(new Set<string>())
-      setAnchorId(null)
+    selected.forEach((id) => {
+      if (status === null) delete currentStates[id]
+      else currentStates[id] = status
     })
+    setItemStates(currentStates)
+    setSelectedIds(new Set<string>())
+    setAnchorId(null)
   }
 
   const clearSelection = () => {
