@@ -9,8 +9,10 @@ import {
 import { ImportLevelSection } from "@/features/import-page/components/ImportLevelSection"
 import { FloatingActionBar } from "@/features/import-page/components/FloatingActionBar"
 import { StatisticsSummary } from "@/features/import-page/components/StatisticsSummary"
+import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { useImportSelection } from "@/features/import-page/hooks/use-import-selection"
 import { jlptData } from "@/features/import-page/data/jlpt-data"
+import type { ImportCategory } from "@/features/import-page/data/jlpt-data"
 
 export const Route = createFileRoute("/_home/import/_layout/manual")({
   component: ManualImportPage,
@@ -26,6 +28,28 @@ function ManualImportPage() {
     applyStatus,
     clearSelection,
   } = useImportSelection()
+
+  // Aggregate all categories across all JLPT levels
+  const aggregatedCategories = createMemo(() => {
+    const categoryMap = new Map<string, ImportCategory>()
+
+    // Flatten all categories from all JLPT levels, keying by title to merge duplicates
+    for (const level of jlptData) {
+      for (const category of level.categories) {
+        if (!categoryMap.has(category.title)) {
+          categoryMap.set(category.title, {
+            id: category.title.toLowerCase(),
+            title: category.title,
+            subcategories: [],
+          })
+        }
+        const existingCategory = categoryMap.get(category.title)!
+        existingCategory.subcategories.push(...category.subcategories)
+      }
+    }
+
+    return Array.from(categoryMap.values())
+  })
 
   return (
     <div
@@ -60,6 +84,14 @@ function ManualImportPage() {
           {/* --- LEFT: CONTENT LIST --- */}
           <div class="min-w-0 pb-16 lg:col-span-7 xl:col-span-8">
             <main class="space-y-10">
+              {/* Mobile Aggregated Statistics */}
+              <SSRMediaQuery hideFrom="lg">
+                <StatisticsSummary
+                  itemStates={itemStates}
+                  categories={aggregatedCategories()}
+                  showLearning={false}
+                />
+              </SSRMediaQuery>
               <For each={jlptData}>
                 {(level) => (
                   <ImportLevelSection
@@ -83,10 +115,10 @@ function ManualImportPage() {
           {/* --- RIGHT: SUMMARY PANEL (DESKTOP ONLY) --- */}
           <aside class="hidden lg:col-span-5 lg:block xl:col-span-4">
             <div class="sticky top-24 space-y-6">
-              {/* Statistics Summary Component - shows Grammar, Vocabulary, Kanji */}
+              {/* Statistics Summary Component - shows Grammar, Vocabulary, Kanji (aggregated across all levels) */}
               <StatisticsSummary
                 itemStates={itemStates}
-                categories={jlptData[0].categories}
+                categories={aggregatedCategories()}
                 showLearning={false}
               />
 

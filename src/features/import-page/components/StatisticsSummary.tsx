@@ -27,12 +27,16 @@ export function StatisticsSummary(props: StatisticsSummaryProps) {
       const itemIds = items.map((i) => i.id)
 
       // Calculate statistics
+      const learning = itemIds.filter((id) => props.itemStates[id] === "learning").length
+      const decent = itemIds.filter((id) => props.itemStates[id] === "decent").length
+      const mastered = itemIds.filter((id) => props.itemStates[id] === "mastered").length
+
       return {
         title: category.title,
-        total: itemIds.length,
-        learning: itemIds.filter((id) => props.itemStates[id] === "learning").length,
-        decent: itemIds.filter((id) => props.itemStates[id] === "decent").length,
-        mastered: itemIds.filter((id) => props.itemStates[id] === "mastered").length,
+        total: learning + decent + mastered,
+        learning,
+        decent,
+        mastered,
       }
     })
   })

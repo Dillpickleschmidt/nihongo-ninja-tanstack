@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import { ImportAccordion } from "@/features/import-page/components/ImportAccordion"
 import { FloatingActionBar } from "@/features/import-page/components/FloatingActionBar"
 import { StatisticsSummary } from "@/features/import-page/components/StatisticsSummary"
+import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { useImportSelection } from "@/features/import-page/hooks/use-import-selection"
 import type { ImportSubCategory } from "@/features/import-page/data/jlpt-data"
 import { buildInitialStateFromData } from "@/features/import-page/utils/build-initial-state"
@@ -271,6 +272,18 @@ function ResultsView(props: {
             <h3 class="text-muted-foreground px-1 text-sm font-semibold tracking-wider uppercase">
               Detected Vocabulary
             </h3>
+            {/* Mobile Vocabulary Summary */}
+            <SSRMediaQuery hideFrom="lg">
+              <StatisticsSummary
+                itemStates={props.itemStates}
+                categories={[{
+                  id: "vocab",
+                  title: "Vocabulary",
+                  subcategories: [{ id: "vocab-items", title: "Vocabulary", items: props.vocabStore.items }],
+                }]}
+                showLearning={true}
+              />
+            </SSRMediaQuery>
             <ImportAccordion
               sub={props.vocabStore}
               selectedIds={props.selectedIds}
@@ -288,6 +301,18 @@ function ResultsView(props: {
             <h3 class="text-muted-foreground px-1 text-sm font-semibold tracking-wider uppercase">
               Detected Kanji
             </h3>
+            {/* Mobile Kanji Summary */}
+            <SSRMediaQuery hideFrom="lg">
+              <StatisticsSummary
+                itemStates={props.itemStates}
+                categories={[{
+                  id: "kanji",
+                  title: "Kanji",
+                  subcategories: [{ id: "kanji-items", title: "Kanji", items: props.kanjiStore.items }],
+                }]}
+                showLearning={true}
+              />
+            </SSRMediaQuery>
             <ImportAccordion
               sub={props.kanjiStore}
               selectedIds={props.selectedIds}
