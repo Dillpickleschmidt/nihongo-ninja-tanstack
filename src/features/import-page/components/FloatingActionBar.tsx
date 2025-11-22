@@ -1,7 +1,7 @@
 // src/features/import-page/components/FloatingActionBar.tsx
-import { createSignal } from "solid-js"
+import { createSignal, Show } from "solid-js"
 import { Portal } from "solid-js/web"
-import { X, BookOpen, Star, HelpCircle, MousePointerClick } from "lucide-solid"
+import { X, BookOpen, Star, HelpCircle, MousePointerClick, GraduationCap } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import {
   Tooltip,
@@ -15,6 +15,7 @@ interface FloatingActionBarProps {
   selectedCount: number
   onApply: (status: ItemStatus) => void
   onClearSelection: () => void
+  mode?: "manual" | "automatic"
 }
 
 export function FloatingActionBar(props: FloatingActionBarProps) {
@@ -64,10 +65,25 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
 
           {/* Actions Group */}
           <div class="flex items-center">
+            {/* AUTOMATIC MODE: Learning Button */}
+            <Show when={props.mode === "automatic"}>
+              <Button
+                variant="secondary"
+                class="h-9 gap-2 border border-green-500/20 bg-green-500/10 text-green-400 hover:bg-green-500/20 hover:text-green-300"
+                onClick={() => handleApply("learning")}
+              >
+                <GraduationCap class="hidden size-4 sm:inline" />
+                <span>Learning</span>
+              </Button>
+            </Show>
+
             {/* 1. Decent Button */}
             <Button
               variant="secondary"
-              class="h-9 gap-2 border border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300"
+              class={cn(
+                "h-9 gap-2 border border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300",
+                props.mode === "automatic" ? "ml-2" : "",
+              )}
               onClick={() => handleApply("decent")}
             >
               <BookOpen class="hidden size-4 sm:inline" />
@@ -123,27 +139,31 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
                 </TooltipContent>
               </Tooltip>
             </Button>
-            {/* Divider */}
+
+            {/* MANUAL MODE: Clear Status Button */}
+            <Show when={props.mode !== "automatic"}>
+              <>
+                <div class="mx-2 h-6 w-px bg-white/10" />
+                <Tooltip placement="top">
+                  <TooltipTrigger>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      class="text-muted-foreground hover:bg-destructive/10 hover:text-destructive size-9"
+                      onClick={() => handleApply(null)}
+                    >
+                      <MousePointerClick class="size-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Clear status</TooltipContent>
+                </Tooltip>
+              </>
+            </Show>
+
+            {/* Deselect / Close Button */}
             <div class="mx-2 h-6 w-px bg-white/10" />
-
-            {/* 3. Clear Status */}
             <Tooltip placement="top">
-              <TooltipTrigger>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  class="text-muted-foreground hover:bg-destructive/10 hover:text-destructive size-9"
-                  onClick={() => handleApply(null)}
-                >
-                  <MousePointerClick class="size-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Clear status</TooltipContent>
-            </Tooltip>
-
-            {/* 4. Close / Deselect */}
-            <Tooltip placement="top" class="hidden md:block">
-              <TooltipTrigger>
+              <TooltipTrigger class="hidden md:block">
                 <Button
                   variant="ghost"
                   size="icon"

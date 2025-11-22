@@ -6,7 +6,7 @@ export const Route = createFileRoute("/_home/import/_layout")({
   loader: async ({ context }) => {
     context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
       blur: 16,
-      backgroundOpacityOffset: -0.3,
+      backgroundOpacityOffset: -0.25,
       showGradient: true,
     })
   },

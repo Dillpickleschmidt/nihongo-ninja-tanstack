@@ -31,11 +31,11 @@ function ImportGatewayPage() {
           <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
             Import Your{" "}
             {/* Simplified Gradient: Matching your blue/purple brand identity */}
-            <span class="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+            <span class="bg-linear-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
               Knowledge
             </span>{" "}
             and{" "}
-            <span class="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
+            <span class="bg-linear-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
               Target Media
             </span>
           </h1>
@@ -120,7 +120,7 @@ function ImportOptionCard(props: ImportOptionCardProps) {
         // GLASS BASE
         "border-white/5",
         "bg-background/60 backdrop-blur-sm",
-        "bg-gradient-to-b from-white/[0.02] to-transparent",
+        "bg-linear-to-b from-white/2 to-transparent",
 
         // INTERACTION
         "hover:-translate-y-1",

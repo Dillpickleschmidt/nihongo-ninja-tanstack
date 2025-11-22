@@ -7,8 +7,11 @@ const LONG_PRESS_TOLERANCE = 10
 const SCROLL_EDGE_THRESHOLD = 80
 const MAX_SCROLL_SPEED = 20
 
-export function useImportSelection() {
-  const [itemStates, setItemStates] = createSignal<ImportState>({})
+export function useImportSelection(
+  initialState?: ImportState,
+  deleteItems?: (ids: string[]) => void,
+) {
+  const [itemStates, setItemStates] = createSignal<ImportState>(initialState ?? {})
   const [selectedIds, setSelectedIds] = createSignal<Set<string>>(new Set())
   const [anchorId, setAnchorId] = createSignal<string | null>(null)
 
@@ -281,6 +284,18 @@ export function useImportSelection() {
     setAnchorId(null)
   }
 
+  const handleDelete = (id: string) => {
+    const idsToDelete = selectedIds().has(id) ? Array.from(selectedIds()) : [id]
+    deleteItems?.(idsToDelete)
+    const currentStates = { ...itemStates() }
+    idsToDelete.forEach((deleteId) => {
+      delete currentStates[deleteId]
+    })
+    setItemStates(currentStates)
+    setSelectedIds(new Set<string>())
+    setAnchorId(null)
+  }
+
   return {
     itemStates,
     selectedIds,
@@ -290,5 +305,6 @@ export function useImportSelection() {
     toggleSelectGroup,
     applyStatus,
     clearSelection,
+    handleDelete,
   }
 }

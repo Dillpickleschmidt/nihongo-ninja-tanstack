@@ -27,7 +27,7 @@ export function ImportLevelSection(props: ImportLevelSectionProps) {
         <span class="text-muted-foreground text-xs font-bold tracking-widest uppercase">
           {props.level.description}
         </span>
-        <div class="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+        <div class="h-px flex-1 bg-linear-to-r from-white/10 to-transparent" />
       </div>
 
       {/* Categories Grid */}

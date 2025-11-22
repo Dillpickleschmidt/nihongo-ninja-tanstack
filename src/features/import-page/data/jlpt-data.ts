@@ -1,9 +1,12 @@
 // features/import-page/data/jlpt-data.ts
 
+import type { ItemStatus } from "../types"
+
 export interface ImportItem {
   id: string
   main: string // Kanji or Grammar Pattern
   meaning: string // English definition
+  status?: ItemStatus // Optional initial status
 }
 
 export interface ImportSubCategory {

@@ -13,6 +13,8 @@ interface ImportAccordionProps {
   onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
   onGroupToggle: (ids: string[]) => void
   onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
+  showDelete?: boolean
+  onDelete?: (id: string) => void
 }
 
 export function ImportAccordion(props: ImportAccordionProps) {
@@ -21,10 +23,10 @@ export function ImportAccordion(props: ImportAccordionProps) {
   const groupIds = props.sub.items.map((i) => i.id)
 
   return (
-    <div class="bg-background/50 overflow-hidden rounded-lg bg-gradient-to-b from-white/[0.01] to-transparent backdrop-blur-sm">
+    <div class="bg-background/50 overflow-hidden rounded-lg bg-linear-to-b from-white/1 to-transparent backdrop-blur-sm">
       {/* Header */}
       <div
-        class="flex cursor-pointer items-center justify-between px-4 py-3 transition-colors select-none hover:bg-white/5"
+        class="flex cursor-pointer items-center justify-between px-4 py-3 transition-colors select-none hover:bg-card-foreground/40"
         onClick={(e) => {
           e.stopPropagation()
           setIsOpen(!isOpen())
@@ -68,7 +70,7 @@ export function ImportAccordion(props: ImportAccordionProps) {
             }}
           >
             {groupIds.length > 0 &&
-            groupIds.filter((id) => props.selectedIds.has(id)).length ===
+              groupIds.filter((id) => props.selectedIds.has(id)).length ===
               groupIds.length
               ? "Deselect All"
               : "Select All"}
@@ -93,6 +95,8 @@ export function ImportAccordion(props: ImportAccordionProps) {
                 groupIds={groupIds}
                 onClick={(e) => props.onItemClick(e, item.id, groupIds)}
                 onPointerDown={props.onPointerDown}
+                showDelete={props.showDelete}
+                onDelete={() => props.onDelete?.(item.id)}
               />
             )}
           </For>
