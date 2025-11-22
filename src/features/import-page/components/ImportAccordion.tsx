@@ -18,7 +18,7 @@ interface ImportAccordionProps {
 }
 
 export function ImportAccordion(props: ImportAccordionProps) {
-  const [isOpen, setIsOpen] = createSignal(true)
+  const [isOpen, setIsOpen] = createSignal(false)
 
   // Memoize groupIds to prevent prop changes on every render
   const groupIds = createMemo(() => props.sub.items.map((i) => i.id))

@@ -42,7 +42,7 @@ export function StatisticsSummary(props: StatisticsSummaryProps) {
   })
 
   return (
-    <div class="space-y-6">
+    <>
       {categoryStats().map((stats) => (
         <div class="border-border bg-card/50 rounded-lg border px-5 py-4">
           {/* Category Header */}
@@ -94,6 +94,6 @@ export function StatisticsSummary(props: StatisticsSummaryProps) {
           </div>
         </div>
       ))}
-    </div>
+    </>
   )
 }

@@ -2,8 +2,8 @@
 import { createFileRoute, Link } from "@tanstack/solid-router"
 import { createSignal, Show, createMemo } from "solid-js"
 import { createStore } from "solid-js/store"
+import { Dynamic } from "solid-js/web"
 import {
-  ChevronLeft,
   UploadCloud,
   FileType,
   Loader2,
@@ -17,6 +17,7 @@ import { FloatingActionBar } from "@/features/import-page/components/FloatingAct
 import { StatisticsSummary } from "@/features/import-page/components/StatisticsSummary"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { useImportSelection } from "@/features/import-page/hooks/use-import-selection"
+import { statusConfig } from "@/features/import-page/constants/status-config"
 import type { ImportSubCategory } from "@/features/import-page/data/jlpt-data"
 import { buildInitialStateFromData } from "@/features/import-page/utils/build-initial-state"
 import { cn } from "@/utils"
@@ -105,55 +106,27 @@ function AutomaticImportPage() {
   }
 
   return (
-    <div
-      onClick={clearSelection}
-      class="animate-in fade-in slide-in-from-bottom-4 min-h-screen w-full duration-500"
-    >
-      {/* HEADER */}
-      <header class="bg-neutral-900 sticky top-0 z-40 w-full shadow-sm backdrop-blur-md">
-        <div class="container flex h-16 items-center justify-between px-4 md:px-8">
-          <div class="flex items-center gap-4">
-            <Link
-              to="/import"
-              class="text-muted-foreground hover:text-foreground flex size-9 items-center justify-center rounded-full transition-colors hover:bg-white/5"
-            >
-              <ChevronLeft class="size-5" />
-            </Link>
-            <div>
-              <h1 class="text-foreground text-lg leading-none font-bold tracking-tight md:text-xl">
-                Import from File
-              </h1>
-              <p class="text-muted-foreground hidden text-xs md:block">
-                Upload Anki or JPDB exports to sync progress
-              </p>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* MAIN CONTENT AREA */}
-      <div class="container min-h-[calc(100vh-4rem)] px-4 py-6 md:px-8 md:py-8">
-        <Show
-          when={hasUploaded()}
-          fallback={
-            <UploadView
-              onUpload={handleSimulatedUpload}
-              isProcessing={isProcessing()}
-            />
-          }
-        >
-          <ResultsView
-            vocabStore={vocabStore}
-            kanjiStore={kanjiStore}
-            itemStates={itemStates}
-            selectedIds={selectedIds()}
-            handleItemClick={handleItemClick}
-            handlePointerDown={handlePointerDown}
-            toggleSelectGroup={toggleSelectGroup}
-            handleDelete={handleDelete}
+    <div onClick={clearSelection} class="container px-4 py-6 md:px-8 md:py-8">
+      <Show
+        when={hasUploaded()}
+        fallback={
+          <UploadView
+            onUpload={handleSimulatedUpload}
+            isProcessing={isProcessing()}
           />
-        </Show>
-      </div>
+        }
+      >
+        <ResultsView
+          vocabStore={vocabStore}
+          kanjiStore={kanjiStore}
+          itemStates={itemStates}
+          selectedIds={selectedIds()}
+          handleItemClick={handleItemClick}
+          handlePointerDown={handlePointerDown}
+          toggleSelectGroup={toggleSelectGroup}
+          handleDelete={handleDelete}
+        />
+      </Show>
 
       {/* FLOATING ACTION BAR */}
       <FloatingActionBar
@@ -174,7 +147,7 @@ function UploadView(props: { onUpload: () => void; isProcessing: boolean }) {
       <div
         class={cn(
           // REVERTED to neutral background/border interactions for subtlety
-          "group relative flex w-full max-w-xl cursor-pointer flex-col items-center justify-center gap-6 rounded-3xl border-2 border-dashed p-12 text-center transition-all duration-300",
+          "group relative flex w-full max-w-xl cursor-pointer flex-col items-center justify-center gap-6 rounded-3xl border-2 border-dashed p-12 text-center transition-colors",
           "bg-card/30 border-neutral-800",
           "hover:bg-card/50 hover:border-neutral-700", // Neutral hover
           props.isProcessing ? "pointer-events-none opacity-80" : "",
@@ -196,16 +169,14 @@ function UploadView(props: { onUpload: () => void; isProcessing: boolean }) {
           </Show>
         </div>
 
-        <div class="space-y-2">
-          <h3 class="text-foreground text-xl font-bold">
-            {props.isProcessing ? "Processing File..." : "Drop your file here"}
-          </h3>
-          <p class="text-muted-foreground text-sm">
-            {props.isProcessing
-              ? "Analyzing vocabulary and kanji mastery..."
-              : "Support for Anki (.apkg), JPDB (.json), or CSV files."}
-          </p>
-        </div>
+        <h3 class="text-foreground text-xl font-bold mb-2">
+          {props.isProcessing ? "Processing File..." : "Drop your file here"}
+        </h3>
+        <p class="text-muted-foreground text-sm">
+          {props.isProcessing
+            ? "Analyzing vocabulary and kanji mastery..."
+            : "Support for Anki (.apkg), JPDB (.json), or CSV files."}
+        </p>
 
         <Show when={!props.isProcessing}>
           <div class="flex gap-4 pt-4">
@@ -246,14 +217,35 @@ function ResultsView(props: {
   ])
 
   return (
-    <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12 xl:gap-16">
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
       {/* --- LEFT: CONTENT LIST --- */}
-      <div class="min-w-0 pb-16 lg:col-span-7 xl:col-span-8">
+      <div class="pb-16 lg:col-span-7 xl:col-span-8">
         <main class="animate-in fade-in slide-in-from-bottom-8 space-y-8 duration-700">
           {/* Section Header */}
+          <h1 class="text-2xl lg:text-3xl mb-4 font-semibold text-muted-foreground">Here's what we found.</h1>
+          <div class="text-muted-foreground lg:font-semibold">Based on your import history, we've estimated where you are with each item. We'll use your detailed review data to schedule future reviews accurately. If our initial estimates seem off, adjust the{" "}
+            <div class="inline-flex items-center gap-x-2">
+              <Dynamic component={statusConfig.learning.icon} class={`size-4 ${statusConfig.learning.textColor}`} />
+              <Dynamic component={statusConfig.decent.icon} class={`size-4 ${statusConfig.decent.textColor}`} />
+              <Dynamic component={statusConfig.mastered.icon} class={`size-4 ${statusConfig.mastered.textColor}`} />
+            </div>
+            {" "}badges and we'll schedule accordingly.
+          </div>
+          <p class="mt-3 text-sm lg:text-base text-muted-foreground italic">You may want to check out <Link to="/import/manual" class="underline font-medium">Manual Importing</Link> for skipping grammar that you know as well.</p>
+          {/* Mobile Aggregated Statistics */}
+          <SSRMediaQuery hideFrom="lg">
+            <div class="-mt-5">
+              <StatisticsSummary
+                itemStates={props.itemStates}
+                categories={displayCategories()}
+                showLearning={true}
+              />
+            </div>
+          </SSRMediaQuery>
+
           <div class="flex items-center justify-between border-b border-white/5 pb-4">
-            <div class="space-y-1">
-              <h2 class="text-foreground flex items-center gap-3 font-bold">
+            <div>
+              <h2 class="text-foreground flex items-center gap-3 font-bold mb-1">
                 {/* Purple Badge for Identity */}
                 <span class="flex size-6 items-center justify-center rounded-full bg-purple-500/20 text-xs font-bold text-purple-400">
                   <CheckCircle2 class="size-3.5" />
@@ -269,21 +261,9 @@ function ResultsView(props: {
 
           {/* Vocabulary Section */}
           <div class="space-y-3">
-            <h3 class="text-muted-foreground px-1 text-sm font-semibold tracking-wider uppercase">
+            <h3 class="text-muted-foreground text-sm font-semibold tracking-wider uppercase">
               Detected Vocabulary
             </h3>
-            {/* Mobile Vocabulary Summary */}
-            <SSRMediaQuery hideFrom="lg">
-              <StatisticsSummary
-                itemStates={props.itemStates}
-                categories={[{
-                  id: "vocab",
-                  title: "Vocabulary",
-                  subcategories: [{ id: "vocab-items", title: "Vocabulary", items: props.vocabStore.items }],
-                }]}
-                showLearning={true}
-              />
-            </SSRMediaQuery>
             <ImportAccordion
               sub={props.vocabStore}
               selectedIds={props.selectedIds}
@@ -298,21 +278,9 @@ function ResultsView(props: {
 
           {/* Kanji Section */}
           <div class="space-y-3">
-            <h3 class="text-muted-foreground px-1 text-sm font-semibold tracking-wider uppercase">
+            <h3 class="text-muted-foreground text-sm font-semibold tracking-wider uppercase">
               Detected Kanji
             </h3>
-            {/* Mobile Kanji Summary */}
-            <SSRMediaQuery hideFrom="lg">
-              <StatisticsSummary
-                itemStates={props.itemStates}
-                categories={[{
-                  id: "kanji",
-                  title: "Kanji",
-                  subcategories: [{ id: "kanji-items", title: "Kanji", items: props.kanjiStore.items }],
-                }]}
-                showLearning={true}
-              />
-            </SSRMediaQuery>
             <ImportAccordion
               sub={props.kanjiStore}
               selectedIds={props.selectedIds}
@@ -333,33 +301,31 @@ function ResultsView(props: {
       </div>
 
       {/* --- RIGHT: SUMMARY PANEL (DESKTOP ONLY) --- */}
-      <aside class="hidden lg:col-span-5 lg:block xl:col-span-4">
-        <div class="sticky top-24 space-y-6">
-          {/* Statistics Summary Component */}
-          <StatisticsSummary
-            itemStates={props.itemStates}
-            categories={displayCategories()}
-            showLearning={true}
-          />
+      <aside class="hidden lg:col-span-5 lg:block xl:col-span-4 sticky top-24 space-y-6">
+        {/* Statistics Summary Component */}
+        <StatisticsSummary
+          itemStates={props.itemStates}
+          categories={displayCategories()}
+          showLearning={true}
+        />
 
-          {/* Shortcuts Hint */}
-          <div class="text-muted-foreground flex items-start gap-3 px-1 text-xs">
-            <Keyboard class="mt-0.5 size-4 shrink-0 opacity-50" />
-            <div class="space-y-1">
-              <p class="leading-relaxed">
-                <strong class="text-muted-foreground">Shift + Click</strong>{" "}
-                to select a range.
-              </p>
-              <p class="leading-relaxed">
-                <strong class="text-muted-foreground">
-                  Cmd/Ctrl + Click
-                </strong>{" "}
-                to toggle individually.
-              </p>
-            </div>
+        {/* Shortcuts Hint */}
+        <div class="text-muted-foreground flex items-start gap-3 px-1 text-xs">
+          <Keyboard class="mt-0.5 size-4 shrink-0 opacity-50" />
+          <div>
+            <p class="leading-relaxed">
+              <strong class="text-muted-foreground">Shift + Click</strong>{" "}
+              to select a range.
+            </p>
+            <p class="leading-relaxed mt-1">
+              <strong class="text-muted-foreground">
+                Cmd/Ctrl + Click
+              </strong>{" "}
+              to toggle individually.
+            </p>
           </div>
         </div>
       </aside>
-    </div >
+    </div>
   )
 }

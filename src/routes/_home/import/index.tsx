@@ -29,14 +29,10 @@ function ImportGatewayPage() {
         {/* Hero Header */}
         <div class="mb-4 max-w-6xl space-y-4 text-center sm:mb-16">
           <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
-            Import Your{" "}
+            Personalize Your{" "}
             {/* Simplified Gradient: Matching your blue/purple brand identity */}
             <span class="bg-linear-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
-              Knowledge
-            </span>{" "}
-            and{" "}
-            <span class="bg-linear-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
-              Target Media
+              Learning Path
             </span>
           </h1>
           <p class="text-muted-foreground mx-auto max-w-2xl text-lg md:text-xl">
