@@ -1,5 +1,5 @@
 // src/features/import-page/components/ImportAccordion.tsx
-import { createSignal, Show, For } from "solid-js"
+import { createSignal, Show, Index, createMemo } from "solid-js"
 import { ChevronDown, ChevronRight } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import type { ImportSubCategory } from "../data/jlpt-data"
@@ -20,7 +20,23 @@ interface ImportAccordionProps {
 export function ImportAccordion(props: ImportAccordionProps) {
   const [isOpen, setIsOpen] = createSignal(true)
 
-  const groupIds = props.sub.items.map((i) => i.id)
+  // Memoize groupIds to prevent prop changes on every render
+  const groupIds = createMemo(() => props.sub.items.map((i) => i.id))
+
+  // Memoize selected count to avoid triple-filtering per render
+  const selectedCount = createMemo(() => {
+    let count = 0
+    const ids = groupIds()
+    for (const id of ids) {
+      if (props.selectedIds.has(id)) count++
+    }
+    return count
+  })
+
+  const allSelected = () => {
+    const ids = groupIds()
+    return ids.length > 0 && selectedCount() === ids.length
+  }
 
   return (
     <div class="bg-background/50 overflow-hidden rounded-lg bg-linear-to-b from-white/1 to-transparent backdrop-blur-sm">
@@ -51,12 +67,9 @@ export function ImportAccordion(props: ImportAccordionProps) {
 
         {/* Right Side Actions */}
         <div class="flex items-center gap-3">
-          <Show
-            when={groupIds.filter((id) => props.selectedIds.has(id)).length > 0}
-          >
+          <Show when={selectedCount() > 0}>
             <span class="text-xs font-medium text-blue-400">
-              {groupIds.filter((id) => props.selectedIds.has(id)).length}{" "}
-              selected
+              {selectedCount()} selected
             </span>
           </Show>
 
@@ -66,40 +79,32 @@ export function ImportAccordion(props: ImportAccordionProps) {
             class="text-muted-foreground hover:text-foreground h-6 px-2 text-[11px] font-bold tracking-wider uppercase"
             onClick={(e) => {
               e.stopPropagation()
-              props.onGroupToggle(groupIds)
+              props.onGroupToggle(groupIds())
             }}
           >
-            {groupIds.length > 0 &&
-              groupIds.filter((id) => props.selectedIds.has(id)).length ===
-              groupIds.length
-              ? "Deselect All"
-              : "Select All"}
+            {allSelected() ? "Deselect All" : "Select All"}
           </Button>
         </div>
       </div>
 
       {/* List Content */}
       <Show when={isOpen()}>
-        {/* 
-            gap-0.5: Restores the gap between rows
-            p-1: Adds slight padding inside the container so rows don't touch edges
-        */}
         <div class="flex flex-col gap-0.5 border-t border-white/5 p-1">
-          <For each={props.sub.items}>
+          <Index each={props.sub.items}>
             {(item, index) => (
               <ImportItemRow
-                item={item}
-                index={index()}
-                isSelected={props.selectedIds.has(item.id)}
-                status={props.itemStates[item.id]}
-                groupIds={groupIds}
-                onClick={(e) => props.onItemClick(e, item.id, groupIds)}
+                item={item()}
+                index={index}
+                isSelected={props.selectedIds.has(item().id)}
+                status={props.itemStates[item().id]}
+                groupIds={groupIds()}
+                onClick={(e) => props.onItemClick(e, item().id, groupIds())}
                 onPointerDown={props.onPointerDown}
                 showDelete={props.showDelete}
-                onDelete={() => props.onDelete?.(item.id)}
+                onDelete={() => props.onDelete?.(item().id)}
               />
             )}
-          </For>
+          </Index>
         </div>
       </Show>
     </div>

@@ -1,15 +1,14 @@
 // src/routes/_home/import/_layout/manual.tsx
 import { createFileRoute, Link } from "@tanstack/solid-router"
-import { For } from "solid-js"
+import { For, createMemo } from "solid-js"
 import {
-  BookOpen,
-  Star,
   CheckCircle2,
   ChevronLeft,
   Keyboard,
 } from "lucide-solid"
 import { ImportLevelSection } from "@/features/import-page/components/ImportLevelSection"
 import { FloatingActionBar } from "@/features/import-page/components/FloatingActionBar"
+import { StatisticsSummary } from "@/features/import-page/components/StatisticsSummary"
 import { useImportSelection } from "@/features/import-page/hooks/use-import-selection"
 import { jlptData } from "@/features/import-page/data/jlpt-data"
 
@@ -66,7 +65,7 @@ function ManualImportPage() {
                   <ImportLevelSection
                     level={level}
                     selectedIds={selectedIds()}
-                    itemStates={itemStates()}
+                    itemStates={itemStates}
                     onItemClick={handleItemClick}
                     onGroupToggle={toggleSelectGroup}
                     onPointerDown={handlePointerDown}
@@ -84,38 +83,12 @@ function ManualImportPage() {
           {/* --- RIGHT: SUMMARY PANEL (DESKTOP ONLY) --- */}
           <aside class="hidden lg:col-span-5 lg:block xl:col-span-4">
             <div class="sticky top-24 space-y-6">
-              {/* Flat Summary Stats */}
-              <div class="border-border bg-card/50 rounded-lg border px-5 py-4">
-                <div class="text-muted-foreground mb-3 text-xs font-bold tracking-wider uppercase">
-                  Session Summary
-                </div>
-                <div class="space-y-2 text-sm">
-                  <div class="flex justify-between">
-                    <span class="text-muted-foreground flex items-center gap-2">
-                      <BookOpen class="size-3.5 text-blue-500" /> Decent
-                    </span>
-                    <span class="text-foreground font-mono font-medium">
-                      {
-                        Object.values(itemStates()).filter(
-                          (s) => s === "decent",
-                        ).length
-                      }
-                    </span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-muted-foreground flex items-center gap-2">
-                      <Star class="size-3.5 text-yellow-500" /> Mastered
-                    </span>
-                    <span class="text-foreground font-mono font-medium">
-                      {
-                        Object.values(itemStates()).filter(
-                          (s) => s === "mastered",
-                        ).length
-                      }
-                    </span>
-                  </div>
-                </div>
-              </div>
+              {/* Statistics Summary Component - shows Grammar, Vocabulary, Kanji */}
+              <StatisticsSummary
+                itemStates={itemStates}
+                categories={jlptData[0].categories}
+                showLearning={false}
+              />
 
               {/* Shortcuts Hint */}
               <div class="text-muted-foreground flex items-start gap-3 px-1 text-xs">

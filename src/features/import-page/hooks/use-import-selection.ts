@@ -1,17 +1,38 @@
 // src/features/import-page/hooks/use-import-selection.ts
 import { createSignal } from "solid-js"
+import { createStore, produce } from "solid-js/store"
 import type { ItemStatus, ImportState } from "../types"
+import { createAutoScroller } from "@/utils/auto-scroll"
+import { getItemIdAtPoint } from "@/utils/dom-helpers"
 
 const LONG_PRESS_DURATION = 300
 const LONG_PRESS_TOLERANCE = 10
-const SCROLL_EDGE_THRESHOLD = 80
-const MAX_SCROLL_SPEED = 20
+
+/**
+ * Calculates the range of items between two IDs in a list
+ * Used for shift-click and drag selection
+ */
+function calculateRange(
+  groupIds: string[],
+  startId: string,
+  endId: string,
+): string[] {
+  const startIdx = groupIds.indexOf(startId)
+  const endIdx = groupIds.indexOf(endId)
+
+  if (startIdx === -1 || endIdx === -1) {
+    return []
+  }
+
+  const [min, max] = [Math.min(startIdx, endIdx), Math.max(startIdx, endIdx)]
+  return groupIds.slice(min, max + 1)
+}
 
 export function useImportSelection(
   initialState?: ImportState,
   deleteItems?: (ids: string[]) => void,
 ) {
-  const [itemStates, setItemStates] = createSignal<ImportState>(initialState ?? {})
+  const [itemStates, setItemStates] = createStore<ImportState>(initialState ?? {})
   const [selectedIds, setSelectedIds] = createSignal<Set<string>>(new Set())
   const [anchorId, setAnchorId] = createSignal<string | null>(null)
 
@@ -26,36 +47,13 @@ export function useImportSelection(
   let dragMode: "select" | "deselect" | null = null
   let didLongPress = false
 
-  // Find item ID under pointer using elementsFromPoint
-  const getItemIdAtPoint = (x: number, y: number): string | null => {
-    const elements = document.elementsFromPoint(x, y)
-    for (const el of elements) {
-      const itemId = (el as HTMLElement).getAttribute("data-import-item-id")
-      if (itemId) return itemId
-    }
-    return null
-  }
+  // Create auto-scroller instance
+  const handleAutoScroll = createAutoScroller()
 
-  // Handle auto-scroll based on pointer distance from edges
-  const handleAutoScroll = (clientY: number) => {
-    const distFromTop = clientY
-    const distFromBottom = window.innerHeight - clientY
-
-    let scrollAmount = 0
-
-    if (distFromTop < SCROLL_EDGE_THRESHOLD) {
-      // Near top: scroll up
-      const intensity = 1 - distFromTop / SCROLL_EDGE_THRESHOLD
-      scrollAmount = -Math.round(intensity * MAX_SCROLL_SPEED)
-    } else if (distFromBottom < SCROLL_EDGE_THRESHOLD) {
-      // Near bottom: scroll down
-      const intensity = 1 - distFromBottom / SCROLL_EDGE_THRESHOLD
-      scrollAmount = Math.round(intensity * MAX_SCROLL_SPEED)
-    }
-
-    if (scrollAmount !== 0) {
-      window.scrollBy(0, scrollAmount)
-    }
+  // Helper to reset selection state
+  const resetSelection = () => {
+    setSelectedIds(new Set<string>())
+    setAnchorId(null)
   }
 
   const handlePointerDown = (
@@ -125,7 +123,7 @@ export function useImportSelection(
 
     // If we're in long-press mode, update selection based on current pointer
     if (isLongPressing()) {
-      const itemId = getItemIdAtPoint(e.clientX, e.clientY)
+      const itemId = getItemIdAtPoint(e.clientX, e.clientY, "data-import-item-id")
       const groupIds = dragGroupIds()
       const anchor = dragAnchorId()
 
@@ -135,13 +133,7 @@ export function useImportSelection(
         groupIds.includes(itemId) &&
         groupIds.includes(anchor)
       ) {
-        const startIdx = groupIds.indexOf(anchor)
-        const endIdx = groupIds.indexOf(itemId)
-        const [min, max] = [
-          Math.min(startIdx, endIdx),
-          Math.max(startIdx, endIdx),
-        ]
-        const range = groupIds.slice(min, max + 1)
+        const range = calculateRange(groupIds, anchor, itemId)
 
         if (dragMode === "deselect") {
           // Remove items in range from selection
@@ -219,13 +211,7 @@ export function useImportSelection(
       allIdsInGroup.includes(currentAnchor) &&
       allIdsInGroup.includes(id)
     ) {
-      const startIdx = allIdsInGroup.indexOf(currentAnchor)
-      const endIdx = allIdsInGroup.indexOf(id)
-      const [min, max] = [
-        Math.min(startIdx, endIdx),
-        Math.max(startIdx, endIdx),
-      ]
-      const range = allIdsInGroup.slice(min, max + 1)
+      const range = calculateRange(allIdsInGroup, currentAnchor, id)
       setSelectedIds(new Set(range))
       return
     }
@@ -233,9 +219,7 @@ export function useImportSelection(
     // 2. Meta/Ctrl-Click (Toggle Selection)
     if (metaKey) {
       const currentSelected = new Set(selectedIds())
-      if (currentSelected.has(id)) currentSelected.delete(id)
-      else currentSelected.add(id)
-
+      currentSelected.has(id) ? currentSelected.delete(id) : currentSelected.add(id)
       setSelectedIds(currentSelected)
       setAnchorId(id)
       return
@@ -245,8 +229,7 @@ export function useImportSelection(
     const currentSelected = new Set(selectedIds())
 
     if (currentSelected.has(id) && currentSelected.size === 1) {
-      setSelectedIds(new Set<string>())
-      setAnchorId(null)
+      resetSelection()
     } else {
       setSelectedIds(new Set([id]))
       setAnchorId(id)
@@ -257,43 +240,39 @@ export function useImportSelection(
     const currentSelected = new Set(selectedIds())
     const allInGroupSelected = ids.every((id) => currentSelected.has(id))
 
-    if (allInGroupSelected) {
-      ids.forEach((id) => currentSelected.delete(id))
-    } else {
-      ids.forEach((id) => currentSelected.add(id))
-    }
+    ids.forEach((id) =>
+      allInGroupSelected ? currentSelected.delete(id) : currentSelected.add(id)
+    )
     setSelectedIds(currentSelected)
     setAnchorId(null)
   }
 
   const applyStatus = (status: ItemStatus) => {
-    const currentStates = { ...itemStates() }
     const selected = selectedIds()
 
-    selected.forEach((id) => {
-      if (status === null) delete currentStates[id]
-      else currentStates[id] = status
-    })
-    setItemStates(currentStates)
-    setSelectedIds(new Set<string>())
-    setAnchorId(null)
+    if (status === null) {
+      setItemStates(
+        produce((states) => {
+          selected.forEach((id) => delete states[id])
+        })
+      )
+    } else {
+      selected.forEach((id) => setItemStates(id, status))
+    }
+    resetSelection()
   }
 
-  const clearSelection = () => {
-    setSelectedIds(new Set<string>())
-    setAnchorId(null)
-  }
+  const clearSelection = resetSelection
 
   const handleDelete = (id: string) => {
     const idsToDelete = selectedIds().has(id) ? Array.from(selectedIds()) : [id]
     deleteItems?.(idsToDelete)
-    const currentStates = { ...itemStates() }
-    idsToDelete.forEach((deleteId) => {
-      delete currentStates[deleteId]
-    })
-    setItemStates(currentStates)
-    setSelectedIds(new Set<string>())
-    setAnchorId(null)
+    setItemStates(
+      produce((states) => {
+        idsToDelete.forEach((deleteId) => delete states[deleteId])
+      })
+    )
+    resetSelection()
   }
 
   return {

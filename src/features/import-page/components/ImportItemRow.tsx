@@ -1,9 +1,10 @@
 // src/features/import-page/components/ImportItemRow.tsx
 import { Show } from "solid-js"
-import { BookOpen, Star, GraduationCap, Trash2 } from "lucide-solid"
+import { Trash2 } from "lucide-solid"
 import { cn } from "@/utils"
 import type { ImportItem } from "../data/jlpt-data"
 import type { ItemStatus } from "../types"
+import { StatusBadge } from "./StatusBadge"
 
 interface ImportItemRowProps {
   item: ImportItem
@@ -54,26 +55,7 @@ export function ImportItemRow(props: ImportItemRowProps) {
 
       {/* Right: Status Icons & Actions */}
       <div class="flex items-center gap-3">
-        <Show when={props.status === "learning"}>
-          <div class="flex items-center gap-1.5 rounded border border-green-500/10 bg-green-500/10 px-2 py-0.5 text-xs font-medium text-green-400">
-            <GraduationCap class="size-3.5" />
-            <span class="hidden sm:inline">Learning</span>
-          </div>
-        </Show>
-        <Show when={props.status === "decent"}>
-          <div class="flex items-center gap-1.5 rounded border border-blue-500/10 bg-blue-500/10 px-2 py-0.5 text-xs font-medium text-blue-400">
-            <BookOpen class="size-3.5" />
-            <span class="hidden sm:inline">Decent</span>
-          </div>
-        </Show>
-        <Show when={props.status === "mastered"}>
-          <div class="flex items-center gap-1.5 rounded border border-yellow-500/10 bg-yellow-500/10 px-2 py-0.5 text-xs font-medium text-yellow-400">
-            <Star class="size-3.5 fill-current" />
-            <span class="hidden sm:inline">Mastered</span>
-          </div>
-        </Show>
-
-        {/* Delete Button (automatic mode only) */}
+        <StatusBadge status={props.status} />
         <Show when={props.showDelete}>
           <button
             onClick={(e) => {

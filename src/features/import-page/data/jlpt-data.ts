@@ -38,6 +38,29 @@ export const jlptData: JLPTLevel[] = [
     color: "#21b959", // Green
     categories: [
       {
+        id: "n5-grammar",
+        title: "Grammar",
+        subcategories: [
+          {
+            id: "n5-gram-basics",
+            title: "Basic Particles",
+            items: [
+              { id: "g1", main: "は", meaning: "Topic marker" },
+              { id: "g2", main: "が", meaning: "Subject marker" },
+              { id: "g3", main: "を", meaning: "Object marker" },
+            ],
+          },
+          {
+            id: "n5-gram-verb",
+            title: "Verb Conjugations",
+            items: [
+              { id: "g4", main: "～ます", meaning: "Polite form" },
+              { id: "g5", main: "～ません", meaning: "Polite negative" },
+            ],
+          },
+        ],
+      },
+      {
         id: "n5-vocab",
         title: "Vocabulary",
         subcategories: [
@@ -66,24 +89,19 @@ export const jlptData: JLPTLevel[] = [
         ],
       },
       {
-        id: "n5-grammar",
-        title: "Grammar",
+        id: "n5-kanji",
+        title: "Kanji",
         subcategories: [
           {
-            id: "n5-gram-basics",
-            title: "Basic Particles",
+            id: "n5-kanji-basic",
+            title: "Basic Kanji",
+            description: "Essential kanji for N5 proficiency.",
             items: [
-              { id: "g1", main: "は", meaning: "Topic marker" },
-              { id: "g2", main: "が", meaning: "Subject marker" },
-              { id: "g3", main: "を", meaning: "Object marker" },
-            ],
-          },
-          {
-            id: "n5-gram-verb",
-            title: "Verb Conjugations",
-            items: [
-              { id: "g4", main: "～ます", meaning: "Polite form" },
-              { id: "g5", main: "～ません", meaning: "Polite negative" },
+              { id: "k5-1", main: "人", meaning: "person" },
+              { id: "k5-2", main: "火", meaning: "fire" },
+              { id: "k5-3", main: "水", meaning: "water" },
+              { id: "k5-4", main: "木", meaning: "tree; wood" },
+              { id: "k5-5", main: "金", meaning: "gold; money" },
             ],
           },
         ],
@@ -96,6 +114,20 @@ export const jlptData: JLPTLevel[] = [
     description: "Elementary",
     color: "#eab308", // Yellow
     categories: [
+      {
+        id: "n4-grammar",
+        title: "Grammar",
+        subcategories: [
+          {
+            id: "n4-gram-cond",
+            title: "Conditionals",
+            items: [
+              { id: "g4-1", main: "～たら", meaning: "If; when" },
+              { id: "g4-2", main: "～なら", meaning: "If (contextual)" },
+            ],
+          },
+        ],
+      },
       {
         id: "n4-vocab",
         title: "Vocabulary",
@@ -112,15 +144,18 @@ export const jlptData: JLPTLevel[] = [
         ],
       },
       {
-        id: "n4-grammar",
-        title: "Grammar",
+        id: "n4-kanji",
+        title: "Kanji",
         subcategories: [
           {
-            id: "n4-gram-cond",
-            title: "Conditionals",
+            id: "n4-kanji-core",
+            title: "Core Kanji",
+            description: "Essential kanji for N4 proficiency.",
             items: [
-              { id: "g4-1", main: "～たら", meaning: "If; when" },
-              { id: "g4-2", main: "～なら", meaning: "If (contextual)" },
+              { id: "k4-1", main: "日", meaning: "day; sun" },
+              { id: "k4-2", main: "月", meaning: "moon; month" },
+              { id: "k4-3", main: "山", meaning: "mountain" },
+              { id: "k4-4", main: "川", meaning: "river" },
             ],
           },
         ],
@@ -134,6 +169,20 @@ export const jlptData: JLPTLevel[] = [
     color: "#bf2c2c", // Red
     categories: [
       {
+        id: "n1-grammar",
+        title: "Grammar",
+        subcategories: [
+          {
+            id: "n1-gram-advanced",
+            title: "Advanced Structures",
+            items: [
+              { id: "g1-1", main: "～ものなら", meaning: "if it were possible" },
+              { id: "g1-2", main: "～ばかりか", meaning: "not only... but also" },
+            ],
+          },
+        ],
+      },
+      {
         id: "n1-vocab",
         title: "Vocabulary",
         subcategories: [
@@ -143,6 +192,22 @@ export const jlptData: JLPTLevel[] = [
             items: [
               { id: "v1-1", main: "概念", meaning: "concept" },
               { id: "v1-2", main: "供給", meaning: "supply" },
+            ],
+          },
+        ],
+      },
+      {
+        id: "n1-kanji",
+        title: "Kanji",
+        subcategories: [
+          {
+            id: "n1-kanji-advanced",
+            title: "Advanced Kanji",
+            description: "Complex kanji for N1 proficiency.",
+            items: [
+              { id: "k1-1", main: "龍", meaning: "dragon" },
+              { id: "k1-2", main: "馬", meaning: "horse" },
+              { id: "k1-3", main: "鳥", meaning: "bird" },
             ],
           },
         ],

@@ -1,6 +1,6 @@
 // src/routes/_home/import/_layout/automatic.tsx
 import { createFileRoute, Link } from "@tanstack/solid-router"
-import { createSignal, Show } from "solid-js"
+import { createSignal, Show, createMemo } from "solid-js"
 import { createStore } from "solid-js/store"
 import {
   ChevronLeft,
@@ -8,46 +8,21 @@ import {
   FileType,
   Loader2,
   CheckCircle2,
-  BookOpen,
-  Star,
   Keyboard,
   FileCode,
-  GraduationCap,
 } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { ImportAccordion } from "@/features/import-page/components/ImportAccordion"
 import { FloatingActionBar } from "@/features/import-page/components/FloatingActionBar"
+import { StatisticsSummary } from "@/features/import-page/components/StatisticsSummary"
 import { useImportSelection } from "@/features/import-page/hooks/use-import-selection"
 import type { ImportSubCategory } from "@/features/import-page/data/jlpt-data"
-import type { ImportState } from "@/features/import-page/types"
+import { buildInitialStateFromData } from "@/features/import-page/utils/build-initial-state"
 import { cn } from "@/utils"
 
 export const Route = createFileRoute("/_home/import/_layout/automatic")({
   component: AutomaticImportPage,
 })
-
-// --- Helper Function ---
-
-function buildInitialStateFromData(
-  vocab: ImportSubCategory,
-  kanji: ImportSubCategory,
-): ImportState {
-  const state: ImportState = {}
-
-  vocab.items.forEach((item) => {
-    if (item.status !== undefined) {
-      state[item.id] = item.status
-    }
-  })
-
-  kanji.items.forEach((item) => {
-    if (item.status !== undefined) {
-      state[item.id] = item.status
-    }
-  })
-
-  return state
-}
 
 // --- Placeholder Data ---
 
@@ -169,7 +144,7 @@ function AutomaticImportPage() {
           <ResultsView
             vocabStore={vocabStore}
             kanjiStore={kanjiStore}
-            itemStates={itemStates()}
+            itemStates={itemStates}
             selectedIds={selectedIds()}
             handleItemClick={handleItemClick}
             handlePointerDown={handlePointerDown}
@@ -263,6 +238,12 @@ function ResultsView(props: {
   toggleSelectGroup: any
   handleDelete: (id: string) => void
 }) {
+  // Create mock categories for statistics display (automatic mode shows vocab + kanji only)
+  const displayCategories = createMemo(() => [
+    { id: "vocab", title: "Vocabulary", subcategories: [{ id: "vocab-items", title: "Vocabulary", items: props.vocabStore.items }] },
+    { id: "kanji", title: "Kanji", subcategories: [{ id: "kanji-items", title: "Kanji", items: props.kanjiStore.items }] },
+  ])
+
   return (
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12 xl:gap-16">
       {/* --- LEFT: CONTENT LIST --- */}
@@ -328,64 +309,13 @@ function ResultsView(props: {
 
       {/* --- RIGHT: SUMMARY PANEL (DESKTOP ONLY) --- */}
       <aside class="hidden lg:col-span-5 lg:block xl:col-span-4">
-        <div class="animate-in fade-in slide-in-from-right-8 sticky top-24 space-y-6 duration-700 delay-100">
-          {/* Flat Summary Stats */}
-          <div class="border-border bg-card/50 rounded-lg border px-5 py-4">
-            <div class="text-muted-foreground mb-3 text-xs font-bold tracking-wider uppercase">
-              Import Summary
-            </div>
-            <div class="space-y-2 text-sm">
-              <div class="mb-2 flex justify-between border-b border-white/5 pb-2">
-                <span class="text-muted-foreground">Total Items</span>
-                <span class="text-foreground font-mono font-medium">
-                  {props.vocabStore.items.length +
-                    props.kanjiStore.items.length}
-                </span>
-              </div>
-
-              {/* Dynamic Stats based on user selection in this session */}
-              <div class="flex justify-between">
-                <span class="text-muted-foreground flex items-center gap-2">
-                  <GraduationCap class="size-3.5 text-green-500" /> Learning
-                </span>
-                <span class="text-foreground font-mono font-medium">
-                  {(() => {
-                    const allItemIds = [
-                      ...props.vocabStore.items.map((i) => i.id),
-                      ...props.kanjiStore.items.map((i) => i.id),
-                    ]
-                    return allItemIds.filter(
-                      (id) => props.itemStates[id] === "learning",
-                    ).length
-                  })()}
-                </span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-muted-foreground flex items-center gap-2">
-                  <BookOpen class="size-3.5 text-blue-500" /> Decent
-                </span>
-                <span class="text-foreground font-mono font-medium">
-                  {
-                    Object.values(props.itemStates).filter(
-                      (s) => s === "decent",
-                    ).length
-                  }
-                </span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-muted-foreground flex items-center gap-2">
-                  <Star class="size-3.5 text-yellow-500" /> Mastered
-                </span>
-                <span class="text-foreground font-mono font-medium">
-                  {
-                    Object.values(props.itemStates).filter(
-                      (s) => s === "mastered",
-                    ).length
-                  }
-                </span>
-              </div>
-            </div>
-          </div>
+        <div class="sticky top-24 space-y-6">
+          {/* Statistics Summary Component */}
+          <StatisticsSummary
+            itemStates={props.itemStates}
+            categories={displayCategories()}
+            showLearning={true}
+          />
 
           {/* Shortcuts Hint */}
           <div class="text-muted-foreground flex items-start gap-3 px-1 text-xs">
@@ -405,6 +335,6 @@ function ResultsView(props: {
           </div>
         </div>
       </aside>
-    </div>
+    </div >
   )
 }

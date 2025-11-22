@@ -1,7 +1,7 @@
 // src/features/import-page/components/FloatingActionBar.tsx
-import { createSignal, Show } from "solid-js"
+import { Show } from "solid-js"
 import { Portal } from "solid-js/web"
-import { X, BookOpen, Star, HelpCircle, MousePointerClick, GraduationCap } from "lucide-solid"
+import { X, MousePointerClick } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import {
   Tooltip,
@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/tooltip"
 import { cn } from "@/utils"
 import type { ItemStatus } from "../types"
+import { StatusButton } from "./StatusButton"
 
 interface FloatingActionBarProps {
   selectedCount: number
@@ -19,21 +20,6 @@ interface FloatingActionBarProps {
 }
 
 export function FloatingActionBar(props: FloatingActionBarProps) {
-  const [decentOpen, setDecentOpen] = createSignal(false)
-  const [masteredOpen, setMasteredOpen] = createSignal(false)
-
-  const handleApply = (status: ItemStatus) => {
-    setDecentOpen(false)
-    setMasteredOpen(false)
-    props.onApply(status)
-  }
-
-  const handleClearSelection = () => {
-    setDecentOpen(false)
-    setMasteredOpen(false)
-    props.onClearSelection()
-  }
-
   return (
     <Portal>
       <div
@@ -57,7 +43,7 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
               variant="ghost"
               size="icon"
               class="text-muted-foreground hover:text-foreground size-8 md:hidden"
-              onClick={handleClearSelection}
+              onClick={() => props.onClearSelection()}
             >
               <X class="size-4" />
             </Button>
@@ -67,78 +53,25 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
           <div class="flex items-center">
             {/* AUTOMATIC MODE: Learning Button */}
             <Show when={props.mode === "automatic"}>
-              <Button
-                variant="secondary"
-                class="h-9 gap-2 border border-green-500/20 bg-green-500/10 text-green-400 hover:bg-green-500/20 hover:text-green-300"
-                onClick={() => handleApply("learning")}
-              >
-                <GraduationCap class="hidden size-4 sm:inline" />
-                <span>Learning</span>
-              </Button>
+              <StatusButton
+                status="learning"
+                onClick={() => props.onApply("learning")}
+              />
             </Show>
 
-            {/* 1. Decent Button */}
-            <Button
-              variant="secondary"
-              class={cn(
-                "h-9 gap-2 border border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300",
-                props.mode === "automatic" ? "ml-2" : "",
-              )}
-              onClick={() => handleApply("decent")}
-            >
-              <BookOpen class="hidden size-4 sm:inline" />
-              <span>Decent</span>
-              <Tooltip placement="top" open={decentOpen()}>
-                <TooltipTrigger
-                  as="div"
-                  class="ml-1 cursor-help opacity-50 hover:opacity-100"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setDecentOpen(!decentOpen())
-                  }}
-                  onMouseEnter={() => setDecentOpen(true)}
-                  onMouseLeave={() => setDecentOpen(false)}
-                >
-                  <HelpCircle class="size-3.5" />
-                </TooltipTrigger>
-                <TooltipContent class="max-w-xs">
-                  <p>
-                    I've practiced this before but wouldn't mind occasional
-                    review.
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </Button>
+            {/* Decent Button */}
+            <StatusButton
+              status="decent"
+              onClick={() => props.onApply("decent")}
+              class={props.mode === "automatic" ? "ml-2" : ""}
+            />
 
-            {/* 2. Mastered Button */}
-            <Button
-              variant="secondary"
-              class="ml-2 h-9 gap-2 border border-yellow-500/20 bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20 hover:text-yellow-300"
-              onClick={() => handleApply("mastered")}
-            >
-              <Star class="hidden size-4 fill-current sm:inline" />
-              <span>Mastered</span>
-              <Tooltip placement="top" open={masteredOpen()}>
-                <TooltipTrigger
-                  as="div"
-                  class="ml-1 cursor-help opacity-50 hover:opacity-100"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setMasteredOpen(!masteredOpen())
-                  }}
-                  onMouseEnter={() => setMasteredOpen(true)}
-                  onMouseLeave={() => setMasteredOpen(false)}
-                >
-                  <HelpCircle class="size-3.5" />
-                </TooltipTrigger>
-                <TooltipContent class="max-w-xs">
-                  <p>
-                    I've got a very good grip on this and will almost never need
-                    to review it.
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </Button>
+            {/* Mastered Button */}
+            <StatusButton
+              status="mastered"
+              onClick={() => props.onApply("mastered")}
+              class="ml-2"
+            />
 
             {/* MANUAL MODE: Clear Status Button */}
             <Show when={props.mode !== "automatic"}>
@@ -150,7 +83,7 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
                       variant="ghost"
                       size="icon"
                       class="text-muted-foreground hover:bg-destructive/10 hover:text-destructive size-9"
-                      onClick={() => handleApply(null)}
+                      onClick={() => props.onApply(null)}
                     >
                       <MousePointerClick class="size-4" />
                     </Button>
@@ -168,7 +101,7 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
                   variant="ghost"
                   size="icon"
                   class="size-9"
-                  onClick={handleClearSelection}
+                  onClick={() => props.onClearSelection()}
                 >
                   <X class="size-4" />
                 </Button>
