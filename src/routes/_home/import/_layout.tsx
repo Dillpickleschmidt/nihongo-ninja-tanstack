@@ -23,6 +23,10 @@ const ROUTE_CONFIG = {
     title: "Import from File",
     subtitle: "Upload Anki or JPDB exports to sync progress",
   },
+  "learning-path": {
+    title: "Generate Custom Path",
+    subtitle: "Upload content to create a personalized learning path",
+  },
 }
 
 function ImportWrapper() {

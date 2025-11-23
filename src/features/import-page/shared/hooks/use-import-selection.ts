@@ -278,7 +278,6 @@ export function useImportSelection(
   return {
     itemStates,
     selectedIds,
-    anchorId,
     handleItemClick,
     handlePointerDown,
     toggleSelectGroup,

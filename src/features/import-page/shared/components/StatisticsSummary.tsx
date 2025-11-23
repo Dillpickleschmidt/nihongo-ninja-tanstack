@@ -7,7 +7,8 @@ import type { ImportState } from "../types"
 interface StatisticsSummaryProps {
   itemStates: ImportState
   categories: ImportCategory[]
-  showLearning?: boolean // When true, shows "Learning" count (automatic mode)
+  showLearning: boolean // When true, shows "Learning" count (automatic mode)
+  isLearningPath?: boolean // When true, total excludes mastered items
 }
 
 interface CategoryStats {
@@ -31,9 +32,14 @@ export function StatisticsSummary(props: StatisticsSummaryProps) {
       const decent = itemIds.filter((id) => props.itemStates[id] === "decent").length
       const mastered = itemIds.filter((id) => props.itemStates[id] === "mastered").length
 
+      // Calculate total: for learning path, exclude mastered items; otherwise count only marked items
+      const total = props.isLearningPath
+        ? itemIds.length - mastered
+        : learning + decent + mastered
+
       return {
         title: category.title,
-        total: learning + decent + mastered,
+        total,
         learning,
         decent,
         mastered,

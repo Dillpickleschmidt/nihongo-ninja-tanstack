@@ -16,7 +16,7 @@ interface FloatingActionBarProps {
   selectedCount: number
   onApply: (status: ItemStatus) => void
   onClearSelection: () => void
-  mode?: "manual" | "automatic"
+  mode: "manual" | "automatic"
 }
 
 export function FloatingActionBar(props: FloatingActionBarProps) {
