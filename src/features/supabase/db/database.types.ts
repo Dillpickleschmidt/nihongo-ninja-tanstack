@@ -447,6 +447,39 @@ export type Database = {
         }
         Relationships: []
       }
+      wanikani_items: {
+        Row: {
+          character_image_url: string | null
+          character_type: string
+          characters: string | null
+          component_ids: number[] | null
+          id: number
+          meaning_mnemonic: string
+          meanings: string[]
+          reading_mnemonic: string | null
+        }
+        Insert: {
+          character_image_url?: string | null
+          character_type: string
+          characters?: string | null
+          component_ids?: number[] | null
+          id: number
+          meaning_mnemonic: string
+          meanings: string[]
+          reading_mnemonic?: string | null
+        }
+        Update: {
+          character_image_url?: string | null
+          character_type?: string
+          characters?: string | null
+          component_ids?: number[] | null
+          id?: number
+          meaning_mnemonic?: string
+          meanings?: string[]
+          reading_mnemonic?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

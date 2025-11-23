@@ -17,7 +17,7 @@ import {
 } from "@/features/supabase/db/learning-paths"
 import { getVocabularyForModule } from "@/data/utils/vocabulary/queries"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
-import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
+import type { VocabHierarchy } from "@/features/resolvers/util/hierarchy-builder"
 import type {
   VocabularyItem,
   TextbookIDEnum,
@@ -47,7 +47,7 @@ import type {
   DueCountResult,
   SeenCardsStatsResult,
 } from "@/features/srs-services/types"
-import type { AllServicePreferences } from "@/features/main-cookies/schemas/user-settings"
+import type { AllSRSServicePreferences } from "@/features/main-cookies/schemas/user-settings"
 import {
   getUserDailyAggregates,
   getSessionsPaginated,
@@ -199,21 +199,18 @@ export const practiceHierarchyQueryOptions = (
   moduleId: string,
   vocabulary: VocabularyItem[],
   mode: PracticeMode,
-  userOverrides: any,
   isLiveService: boolean,
 ) =>
   queryOptions({
     queryKey: queryKeys.practiceHierarchy(
       moduleId,
       mode,
-      userOverrides,
       isLiveService,
     ),
     queryFn: () =>
       buildVocabHierarchy(
         vocabulary,
         mode,
-        userOverrides,
         isLiveService,
         "practiceHierarchyQueryOptions",
       ),
@@ -302,21 +299,18 @@ export const userDeckHierarchyQueryOptions = (
   deckId: string,
   vocabulary: VocabularyItem[],
   mode: PracticeMode,
-  userOverrides: any,
   isLiveService: boolean,
 ) =>
   queryOptions({
     queryKey: queryKeys.userDeckHierarchy(
       deckId,
       mode,
-      userOverrides,
       isLiveService,
     ),
     queryFn: () =>
       buildVocabHierarchy(
         vocabulary,
         mode,
-        userOverrides,
         isLiveService,
         "userDeckHierarchyQueryOptions",
       ),
@@ -345,13 +339,11 @@ export const userFoldersAndDecksQueryOptions = (userId: string | null) =>
 export const vocabHierarchyQueryOptions = (
   activeTextbook: string,
   deck: LearningPathChapter,
-  userOverrides: any,
 ) =>
   queryOptions({
     queryKey: queryKeys.vocabHierarchy(
       activeTextbook,
       deck.slug,
-      userOverrides,
     ),
     queryFn: async () => {
       const vocabModuleId = deck.learning_path_item_ids.find((moduleId) =>
@@ -364,12 +356,9 @@ export const vocabHierarchyQueryOptions = (
       }
 
       const vocabForHierarchy = chapterVocabulary.map((item) => item.word)
-      const wkHierarchyData: VocabHierarchy | null = await getVocabHierarchy({
-        data: {
-          slugs: vocabForHierarchy,
-          userOverrides,
-        },
-      })
+      const wkHierarchyData: VocabHierarchy | null = await getVocabHierarchy(
+        vocabForHierarchy,
+      )
 
       const slugs = [
         ...new Set([
@@ -419,7 +408,7 @@ export const chapterModulesQueryOptions = (
 
 export const dueCardsCountQueryOptions = (
   userId: string | null,
-  preferences: AllServicePreferences,
+  preferences: AllSRSServicePreferences,
 ) =>
   queryOptions({
     queryKey: queryKeys.dueCardsCount(userId, preferences),
@@ -444,7 +433,7 @@ export const dueCardsCountQueryOptions = (
 
 export const seenCardsStatsQueryOptions = (
   userId: string | null,
-  preferences: AllServicePreferences,
+  preferences: AllSRSServicePreferences,
 ) =>
   queryOptions({
     queryKey: queryKeys.seenCardsStats(userId, preferences),
@@ -468,10 +457,10 @@ type ModuleProgress = Awaited<
 export type ModuleProgressWithLocal =
   | ModuleProgress
   | {
-      module_path: string
-      user_id: string | null
-      completed_at: null
-    }
+    module_path: string
+    user_id: string | null
+    completed_at: null
+  }
 
 export const completedModulesQueryOptions = (userId: string | null) =>
   queryOptions({

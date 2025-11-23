@@ -22,14 +22,12 @@ export const queryKeys = {
   practiceHierarchy: (
     moduleId: string,
     mode: PracticeMode,
-    userOverrides: any,
     isLiveService: boolean,
   ) =>
     [
       "practice-hierarchy",
       moduleId,
       mode,
-      JSON.stringify(userOverrides),
       isLiveService,
     ] as const,
   moduleVocabulary: (moduleId: string) =>
@@ -53,14 +51,12 @@ export const queryKeys = {
   userDeckHierarchy: (
     deckId: string,
     mode: PracticeMode,
-    userOverrides: any,
     isLiveService: boolean,
   ) =>
     [
       "user-deck-hierarchy",
       deckId,
       mode,
-      JSON.stringify(userOverrides),
       isLiveService,
     ] as const,
   recentlyStudiedDecks: (userId: string | null) =>
@@ -70,8 +66,7 @@ export const queryKeys = {
   vocabHierarchy: (
     activeTextbook: string,
     deckSlug: string,
-    userOverrides: any,
-  ) => ["vocab-hierarchy", activeTextbook, deckSlug, userOverrides] as const,
+  ) => ["vocab-hierarchy", activeTextbook, deckSlug] as const,
   allLearningPaths: (userId: string | null) =>
     ["all-learning-paths", userId] as const,
   chapterModules: (learningPathId: string, chapterSlug: string) =>

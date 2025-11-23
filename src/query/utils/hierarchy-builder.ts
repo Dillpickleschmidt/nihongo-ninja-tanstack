@@ -1,5 +1,5 @@
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
-import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
+import type { VocabHierarchy } from "@/features/resolvers/util/hierarchy-builder"
 import type { VocabularyItem } from "@/data/types"
 import type { PracticeMode } from "@/features/vocab-practice/types"
 
@@ -11,7 +11,6 @@ import type { PracticeMode } from "@/features/vocab-practice/types"
 export async function buildVocabHierarchy(
   vocabulary: VocabularyItem[],
   mode: PracticeMode,
-  userOverrides: any,
   isLiveService: boolean,
   errorContext: string,
 ): Promise<VocabHierarchy> {
@@ -29,12 +28,7 @@ export async function buildVocabHierarchy(
 
   // For meanings mode with local FSRS, build full hierarchy
   const vocabWords = vocabulary.map((v) => v.word)
-  const hierarchy = await getVocabHierarchy({
-    data: {
-      slugs: vocabWords,
-      userOverrides,
-    },
-  })
+  const hierarchy = await getVocabHierarchy(vocabWords)
 
   if (!hierarchy) {
     console.error(`[${errorContext}] getVocabHierarchy returned null!`)

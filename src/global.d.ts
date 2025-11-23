@@ -56,6 +56,9 @@ declare global {
   type CoreVocabularySet =
     SupabaseDB["public"]["Tables"]["core_vocabulary_sets"]["Row"]
 
+  // WaniKani Types (read-only reference data)
+  type WaniKaniItem = SupabaseDB["public"]["Tables"]["wanikani_items"]["Row"]
+
   // Deck Sharing Types
   type PublicDeckShare =
     SupabaseDB["public"]["Tables"]["public_deck_shares"]["Row"]

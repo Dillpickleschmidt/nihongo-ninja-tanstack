@@ -4,7 +4,7 @@ import { Chip } from "./Chip"
 import { DueBadge } from "../review/DueBadge"
 import { useFsrsDueDate } from "@/features/vocab-practice/hooks/useFsrsDueDate"
 import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
-import { hasKanji } from "@/data/utils/text/japanese"
+import { containsKanji } from "@/data/utils/text/japanese"
 import { extractHiragana } from "@/data/utils/text/furigana"
 import type { UseQueryResult } from "@tanstack/solid-query"
 import type { DefaultError } from "@tanstack/query-core"
@@ -29,7 +29,7 @@ export function VocabularyTabContent(props: VocabularyTabContentProps) {
     const list = props.vocabList()
     if (!list) return undefined
     if (mode === "spellings") {
-      return list.filter((v) => hasKanji(v.word))
+      return list.filter((v) => containsKanji(v.word))
     }
     return list
   }

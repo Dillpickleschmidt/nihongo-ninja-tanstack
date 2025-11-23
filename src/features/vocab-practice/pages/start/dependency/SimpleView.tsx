@@ -2,7 +2,7 @@ import { For, Show } from "solid-js"
 import { DueBadge } from "../review/DueBadge"
 import { useFsrsDueDate } from "@/features/vocab-practice/hooks/useFsrsDueDate"
 import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
-import { hasKanji } from "@/data/utils/text/japanese"
+import { containsKanji } from "@/data/utils/text/japanese"
 import { extractHiragana } from "@/data/utils/text/furigana"
 import type { UseQueryResult } from "@tanstack/solid-query"
 import type { DefaultError } from "@tanstack/query-core"
@@ -21,7 +21,7 @@ export function SimpleVocabularyList(props: SimpleVocabularyListProps) {
   // Filter vocabulary for spellings mode (only show words with kanji)
   const displayVocab = () => {
     if (props.mode === "spellings") {
-      return props.vocabularyData.filter((v) => hasKanji(v.word))
+      return props.vocabularyData.filter((v) => containsKanji(v.word))
     }
     return props.vocabularyData
   }
