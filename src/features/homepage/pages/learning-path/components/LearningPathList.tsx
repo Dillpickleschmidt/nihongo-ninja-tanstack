@@ -2,7 +2,10 @@ import { For, Show } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { CircleCheckBig } from "lucide-solid"
 import { cn } from "@/utils"
-import { getModuleIcon } from "@/features/learn-page/utils/loader-helpers"
+import {
+  getModuleIcon,
+  type EnrichedLearningPathModule,
+} from "@/features/stats-page/loader-helpers"
 import { useLearningPath } from "../LearningPathContext"
 
 interface LearningPathListProps {
@@ -27,13 +30,13 @@ export function LearningPathList(props: LearningPathListProps) {
       `}</style>
       <div class="px-4 pt-2 pb-4 md:px-6 md:pb-6">
         <div class="-mr-4 grid grid-cols-1 gap-6 overflow-x-hidden overflow-y-auto pr-2.5 pb-8 lg:grid-cols-2 xl:grid-cols-3">
-          <For each={context.lessons()}>
+          <For each={context.modules.data}>
             {(lesson, index) => (
               <GridLessonItem
                 lesson={lesson}
                 index={index()}
                 number={index() + 1}
-                isCompleted={context.isLessonCompleted(lesson.href)}
+                isCompleted={context.isLessonCompleted(lesson.linkTo)}
                 shouldBlink={props.blinkingLessonIndex === index()}
                 lessonRef={(el) => props.lessonRefs?.(el, index())}
               />
@@ -50,7 +53,7 @@ export function LearningPathList(props: LearningPathListProps) {
 // ============================================================================
 
 interface GridLessonItemProps {
-  lesson: ReturnType<typeof useLearningPath>["lessons"][number]
+  lesson: EnrichedLearningPathModule
   index: number
   number: number
   isCompleted: boolean
@@ -59,8 +62,8 @@ interface GridLessonItemProps {
 }
 
 function GridLessonItem(props: GridLessonItemProps) {
-  const { moduleType, title, href, iconClasses } = props.lesson
-  const ModuleIcon = getModuleIcon(moduleType)
+  const { source_type, title, linkTo, iconClasses } = props.lesson
+  const ModuleIcon = getModuleIcon(source_type)
 
   return (
     <div
@@ -71,7 +74,7 @@ function GridLessonItem(props: GridLessonItemProps) {
       )}
     >
       <Link
-        to={href}
+        to={linkTo}
         data-lessons-section
         class={cn(
           "group bg-card font-inter relative block h-12 w-full rounded-md text-sm whitespace-nowrap",

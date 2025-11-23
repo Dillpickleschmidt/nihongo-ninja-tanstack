@@ -15,11 +15,11 @@ import type { EditOperation } from "./deck-edit-operations"
 
 // Mock data helpers
 const createMockDeck = (
-  id: number,
+  id: string | number,
   name: string,
   folderId: number | null = null,
 ): UserDeck => ({
-  deck_id: id,
+  deck_id: String(id),
   deck_name: name,
   deck_description: null,
   original_deck_id: null,
@@ -27,6 +27,7 @@ const createMockDeck = (
   source: "built-in",
   user_id: "test-user",
   created_at: new Date().toISOString(),
+  allowed_practice_modes: ["meanings", "spellings"],
 })
 
 const createMockFolder = (
@@ -65,7 +66,7 @@ describe("EditTransaction", () => {
       const transaction = new EditTransaction()
       const operation: EditOperation = {
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { name: "New Name" },
       }
 
@@ -79,7 +80,7 @@ describe("EditTransaction", () => {
       const transaction = new EditTransaction()
       const op1: EditOperation = {
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { name: "New Name" },
       }
       const op2: EditOperation = {
@@ -98,7 +99,7 @@ describe("EditTransaction", () => {
       const transaction = new EditTransaction()
       transaction.add({
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { name: "New Name" },
       })
 
@@ -122,7 +123,7 @@ describe("EditTransaction", () => {
       const transaction = new EditTransaction()
       transaction.add({
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { name: "New Name" },
       })
 
@@ -131,7 +132,7 @@ describe("EditTransaction", () => {
 
       expect(result.success).toBe(true)
       expect(
-        result.newState!.decks.find((d) => d.deck_id === 1)!.deck_name,
+        result.newState!.decks.find((d) => d.deck_id === "1")!.deck_name,
       ).toBe("New Name")
     })
 
@@ -139,7 +140,7 @@ describe("EditTransaction", () => {
       const transaction = new EditTransaction()
       transaction.add({
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { name: "New Deck Name" },
       })
       transaction.add({
@@ -153,7 +154,7 @@ describe("EditTransaction", () => {
 
       expect(result.success).toBe(true)
       expect(
-        result.newState!.decks.find((d) => d.deck_id === 1)!.deck_name,
+        result.newState!.decks.find((d) => d.deck_id === "1")!.deck_name,
       ).toBe("New Deck Name")
       expect(
         result.newState!.folders.find((f) => f.folder_id === 1)!.folder_name,
@@ -164,7 +165,7 @@ describe("EditTransaction", () => {
       const transaction = new EditTransaction()
       transaction.add({
         type: "update-deck",
-        deckId: 999, // Non-existent deck
+        deckId: "999", // Non-existent deck
         updates: { name: "New Name" },
       })
       transaction.add({
@@ -187,13 +188,13 @@ describe("EditTransaction", () => {
       // First operation: move deck 1 to folder 1
       transaction.add({
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { folderId: 1 },
       })
       // Second operation: try to rename deck 1 to same name as deck 2 (which is already in folder 1)
       transaction.add({
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { name: "Deck Two" },
       })
 
@@ -210,12 +211,12 @@ describe("EditTransaction", () => {
       // Move deck 1 to folder 1, then rename it
       transaction.add({
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { folderId: 1 },
       })
       transaction.add({
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { name: "Moved and Renamed" },
       })
 
@@ -223,7 +224,7 @@ describe("EditTransaction", () => {
       const result = transaction.validate(state)
 
       expect(result.success).toBe(true)
-      const updatedDeck = result.newState!.decks.find((d) => d.deck_id === 1)!
+      const updatedDeck = result.newState!.decks.find((d) => d.deck_id === "1")!
       expect(updatedDeck.folder_id).toBe(1)
       expect(updatedDeck.deck_name).toBe("Moved and Renamed")
     })
@@ -234,7 +235,7 @@ describe("EditTransaction", () => {
       const transaction = new EditTransaction()
       transaction.add({
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { name: "New Name" },
       })
 
@@ -251,7 +252,7 @@ describe("EditTransaction", () => {
       it("creates transaction with single operation", () => {
         const operation: EditOperation = {
           type: "update-deck",
-          deckId: 1,
+          deckId: "1",
           updates: { name: "New Name" },
         }
 
@@ -263,7 +264,7 @@ describe("EditTransaction", () => {
 
     describe("createDeckUpdateTransaction", () => {
       it("creates deck update transaction", () => {
-        const transaction = createDeckUpdateTransaction(1, {
+        const transaction = createDeckUpdateTransaction("1", {
           name: "New Name",
           folderId: 2,
         })
@@ -271,7 +272,7 @@ describe("EditTransaction", () => {
         expect(transaction.size()).toBe(1)
         const operation = transaction.getOperations()[0]
         expect(operation.type).toBe("update-deck")
-        expect((operation as any).deckId).toBe(1)
+        expect((operation as any).deckId).toBe("1")
         expect((operation as any).updates).toEqual({
           name: "New Name",
           folderId: 2,
@@ -299,12 +300,12 @@ describe("EditTransaction", () => {
 
     describe("createDeckDeletionTransaction", () => {
       it("creates deck deletion transaction", () => {
-        const transaction = createDeckDeletionTransaction(1)
+        const transaction = createDeckDeletionTransaction("1")
 
         expect(transaction.size()).toBe(1)
         const operation = transaction.getOperations()[0]
         expect(operation.type).toBe("delete-deck")
-        expect((operation as any).deckId).toBe(1)
+        expect((operation as any).deckId).toBe("1")
       })
     })
 
@@ -322,22 +323,22 @@ describe("EditTransaction", () => {
 
     describe("createDeckMoveTransaction", () => {
       it("creates deck move transaction without rename", () => {
-        const transaction = createDeckMoveTransaction(1, 2)
+        const transaction = createDeckMoveTransaction("1", 2)
 
         expect(transaction.size()).toBe(1)
         const operation = transaction.getOperations()[0]
         expect(operation.type).toBe("update-deck")
-        expect((operation as any).deckId).toBe(1)
+        expect((operation as any).deckId).toBe("1")
         expect((operation as any).updates).toEqual({ folderId: 2 })
       })
 
       it("creates deck move transaction with rename", () => {
-        const transaction = createDeckMoveTransaction(1, 2, "New Name")
+        const transaction = createDeckMoveTransaction("1", 2, "New Name")
 
         expect(transaction.size()).toBe(1)
         const operation = transaction.getOperations()[0]
         expect(operation.type).toBe("update-deck")
-        expect((operation as any).deckId).toBe(1)
+        expect((operation as any).deckId).toBe("1")
         expect((operation as any).updates).toEqual({
           folderId: 2,
           name: "New Name",
@@ -376,7 +377,7 @@ describe("EditTransaction", () => {
       const transaction = new EditTransaction()
       transaction.add({
         type: "update-deck",
-        deckId: 999,
+        deckId: "999",
         updates: { name: "New Name", folderId: 1 },
       })
 

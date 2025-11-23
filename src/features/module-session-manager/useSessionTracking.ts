@@ -4,9 +4,13 @@ import {
   updateSession,
 } from "@/features/supabase/db/module-progress"
 import { useQueryClient } from "@tanstack/solid-query"
-import { userDailyTimeQueryOptions } from "@/query/query-options"
+import { queryKeys } from "@/query/utils/query-keys"
 
-export function useSessionTracking(userId: string | null, moduleId: string) {
+export function useSessionTracking(
+  userId: string | null,
+  moduleId: string,
+  moduleType: string,
+) {
   const queryClient = useQueryClient()
 
   const [sessionId, setSessionId] = createSignal<string | null>(null)
@@ -26,15 +30,38 @@ export function useSessionTracking(userId: string | null, moduleId: string) {
     }).catch((err) => {
       console.warn("Failed to update session:", err)
     })
+
+    queryClient.invalidateQueries({
+      queryKey: queryKeys.userDailyAggregates(userId),
+    })
+
+    // Invalidate only this module type's session caches
+    queryClient.invalidateQueries({
+      predicate: (query) =>
+        query.queryKey[0] === "user-sessions-paginated" &&
+        query.queryKey[1] === userId &&
+        query.queryKey[2] === moduleType,
+    })
+
+    // Conditionally invalidate dependent queries based on module type
+    if (moduleType === "vocab-practice") {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.recentlyStudiedDecks(userId),
+      })
+    }
   }
 
   const startSession = async () => {
     if (!userId) return
 
-    const session = await createSession(userId, moduleId, {
+    const session = await createSession(userId, moduleId, moduleType, {
       durationSeconds: 20,
       questionsAnswered: 0,
     })
+    if (!session) {
+      console.warn("Failed to create session")
+      return
+    }
     setSessionId(session.session_id)
   }
 
@@ -44,9 +71,15 @@ export function useSessionTracking(userId: string | null, moduleId: string) {
   ) => {
     if (!userId) return
 
-    // Optimistic update
-    const queryKey = userDailyTimeQueryOptions(userId, new Date()).queryKey
-    queryClient.setQueryData<number>(queryKey, (old) => (old ?? 0) + seconds)
+    // Optimistic update: add time to today's aggregate
+    const todayKey = new Date().toLocaleDateString("en-CA")
+    queryClient.setQueryData<Record<string, number>>(
+      queryKeys.userDailyAggregates(userId),
+      (old) => ({
+        ...old,
+        [todayKey]: (old?.[todayKey] ?? 0) + seconds,
+      }),
+    )
 
     cumulativeTime += seconds
     if (incrementQuestions) cumulativeQuestions++

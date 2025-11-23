@@ -26,15 +26,18 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
     const { queryClient, user } = context
     const mode: PracticeMode = deps.mode
 
-    const deckId = parseInt(params.deckID, 10)
-    if (isNaN(deckId)) throw notFound()
+    const deckId = params.deckID // deckID is now a string, not numeric
+    if (!deckId) {
+      console.error(`[User Deck Route] Missing deckID`)
+      throw notFound()
+    }
 
     const userSettings = await queryClient.ensureQueryData(
       userSettingsQueryOptions(user?.id || null),
     )
 
     const isLiveServiceActive =
-      getActiveLiveService(userSettings["service-preferences"]) !== null
+      getActiveLiveService(userSettings["srs-service-preferences"]) !== null
 
     // Prefetch deck info (non-blocking)
     queryClient.prefetchQuery(userDeckInfoQueryOptions(deckId))
@@ -43,7 +46,12 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
     queryClient
       .ensureQueryData(userDeckVocabularyQueryOptions(deckId))
       .then((vocabulary) => {
-        if (vocabulary.length === 0) throw notFound()
+        if (vocabulary.length === 0) {
+          console.error(
+            `[User Deck Route] No vocabulary found for deck ${deckId} - throwing notFound()`,
+          )
+          throw notFound()
+        }
 
         return queryClient.ensureQueryData(
           userDeckHierarchyQueryOptions(
@@ -70,7 +78,10 @@ export const Route = createFileRoute("/practice/$userID/$deckID")({
         }
       })
       .catch((error) => {
-        console.error("[User Deck Route Loader] Query chain error:", error)
+        console.error(
+          `[User Deck Route Loader] Query chain error for deck ${deckId}:`,
+          error,
+        )
       })
 
     return {

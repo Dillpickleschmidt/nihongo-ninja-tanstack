@@ -99,7 +99,7 @@ export const fetchJPDBSpecialDecks = createServerFn()
 export const fetchJPDBDeckVocabulary = createServerFn()
   .inputValidator(
     z.object({
-      deckId: z.number(),
+      deckId: z.string(),
     }),
   )
   .handler(async ({ data }) => {

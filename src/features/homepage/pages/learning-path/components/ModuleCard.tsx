@@ -1,16 +1,13 @@
 import { Show, createSignal } from "solid-js"
 import { getChapterStyles } from "@/data/chapter_colors"
-import { getModuleIcon } from "@/features/learn-page/utils/loader-helpers"
+import { getModuleIcon } from "@/features/stats-page/loader-helpers"
 import { useLearningPath } from "../LearningPathContext"
+import type { EnrichedLearningPathModule } from "@/features/stats-page/loader-helpers"
 import StartHereSvg from "@/features/homepage/shared/assets/start-here.svg"
 import TryThisSvg from "@/features/homepage/shared/assets/try-this.svg"
 
 interface ModuleCardProps {
-  title: string
-  description?: string
-  moduleType: string
-  iconClasses: string
-  href: string
+  module: EnrichedLearningPathModule
   isCompleted: boolean
   shouldBlink?: boolean
 }
@@ -18,15 +15,17 @@ interface ModuleCardProps {
 export function ModuleCard(props: ModuleCardProps) {
   const context = useLearningPath()
   const [isHovered, setIsHovered] = createSignal(false)
-  const ModuleIcon = getModuleIcon(props.moduleType)
+  const ModuleIcon = getModuleIcon(props.module.source_type)
 
   const lessonIndex = () => {
-    const lessons = context.lessons()
-    return lessons.findIndex((lesson) => lesson.href === props.href)
+    const lessons = context.modules.data
+    if (!lessons) return -1
+    return lessons.findIndex((lesson) => lesson.linkTo === props.module.linkTo)
   }
 
   const firstIncompleteIndex = () => context.getFirstIncompleteIndex()
-  const styles = () => getChapterStyles(context.activeChapter())
+  const styles = () =>
+    getChapterStyles(context.settingsQuery.data!["active-chapter"])
 
   const shouldShowStartHere = () =>
     lessonIndex() === firstIncompleteIndex() && lessonIndex() === 0
@@ -49,12 +48,19 @@ export function ModuleCard(props: ModuleCardProps) {
 
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-muted-foreground text-sm">{props.description}</p>
+            <p class="text-muted-foreground text-sm">
+              {props.module.description}
+            </p>
             <div class="flex items-center gap-2">
-              <Show when={context.activeLearningPath() !== "getting_started"}>
-                <ModuleIcon size="20px" class={props.iconClasses} />
+              <Show
+                when={
+                  context.settingsQuery.data!["active-learning-path"] !==
+                  "getting_started"
+                }
+              >
+                <ModuleIcon size="20px" class={props.module.iconClasses} />
               </Show>
-              <h3 class="text-lg font-medium">{props.title}</h3>
+              <h3 class="text-lg font-medium">{props.module.title}</h3>
             </div>
           </div>
           <div>

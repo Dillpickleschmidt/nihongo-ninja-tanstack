@@ -217,6 +217,32 @@ export function analyze_single(tokens_js) {
     return takeFromExternrefTable0(ret[0]);
 }
 
+/**
+ * Analyze single subtitle's tokens with vocabulary extraction
+ * @param {any} tokens_js
+ * @returns {any}
+ */
+export function analyze_single_all(tokens_js) {
+    const ret = wasm.analyze_single_all(tokens_js);
+    if (ret[2]) {
+        throw takeFromExternrefTable0(ret[1]);
+    }
+    return takeFromExternrefTable0(ret[0]);
+}
+
+/**
+ * Analyze batch of subtitles, returns array of match arrays
+ * @param {any} token_arrays_js
+ * @returns {any}
+ */
+export function analyze_batch_all(token_arrays_js) {
+    const ret = wasm.analyze_batch_all(token_arrays_js);
+    if (ret[2]) {
+        throw takeFromExternrefTable0(ret[1]);
+    }
+    return takeFromExternrefTable0(ret[0]);
+}
+
 const EXPECTED_RESPONSE_TYPES = new Set(['basic', 'cors', 'default']);
 
 async function __wbg_load(module, imports) {

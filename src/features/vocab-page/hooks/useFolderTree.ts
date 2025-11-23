@@ -15,13 +15,10 @@ export function useFolderTree(props: UseFolderTreeProps) {
 
     let availableFolders = props.folders
 
-    // For folder editing, exclude self and descendants
-    // Only apply exclusion for folders, not decks
     if (props.item && !("deck_id" in props.item)) {
       const folderId = props.item.folder_id
       const excludeIds = new Set([folderId])
 
-      // Add all descendants
       const addDescendants = (id: number) => {
         props.folders.forEach((f) => {
           if (f.parent_folder_id === id && !excludeIds.has(f.folder_id)) {
@@ -52,14 +49,13 @@ export function useFolderTree(props: UseFolderTreeProps) {
     return buildTreeNodes(null)
   })
 
-  // Get folder contents for delete confirmation
   const folderContents = createMemo(() => {
     if (!isFolder() || !props.item) return { decks: 0, folders: 0 }
 
+    // Type assertion needed because SolidJS reactive context doesn't narrow types
     const folderId = (props.item as DeckFolder).folder_id
     const descendants = new Set([folderId])
 
-    // Add all descendants
     const addDescendants = (id: number) => {
       props.folders.forEach((f) => {
         if (f.parent_folder_id === id && !descendants.has(f.folder_id)) {

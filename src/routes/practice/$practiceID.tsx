@@ -33,7 +33,7 @@ export const Route = createFileRoute("/practice/$practiceID")({
     )
 
     const isLiveServiceActive =
-      getActiveLiveService(userSettings["service-preferences"]) !== null
+      getActiveLiveService(userSettings["srs-service-preferences"]) !== null
 
     queryClient
       .ensureQueryData(moduleVocabularyQueryOptions(moduleId))
@@ -73,7 +73,6 @@ export const Route = createFileRoute("/practice/$practiceID")({
     }
   },
   component: RouteComponent,
-  notFoundComponent: () => <div>404 Not found</div>,
 })
 
 function RouteComponent() {

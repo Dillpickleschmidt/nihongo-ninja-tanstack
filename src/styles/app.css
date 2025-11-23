@@ -2,8 +2,10 @@
 @import "tw-animate-css";
 
 @custom-variant dark (.dark &,[data-kb-theme="dark"] &);
+@custom-variant select (&:hover, &:focus-visible, &:active);
 
 @layer base {
+  /* Light theme (default) */
   :root {
     --color-background: hsl(0 0% 100%);
     --color-foreground: hsl(240 10% 3.9%);
@@ -56,6 +58,7 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  /* Dark theme */
   .dark,
   [data-kb-theme="dark"] {
     --color-background: hsl(0 0% 9.8%);
@@ -115,9 +118,6 @@
 
   body {
     @apply bg-background text-foreground font-inter antialiased;
-    /* font-feature-settings:
-      "rlig" 1,
-      "calt" 1; */
   }
 
   @media (max-width: 640px) {
@@ -126,6 +126,7 @@
     }
   }
 
+  /* Scrollbar styles */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -142,6 +143,7 @@
     display: none;
   }
 
+  /* Border color for all pseudo-elements */
   *,
   ::after,
   ::before,
@@ -201,6 +203,7 @@
   --font-japanese: "NotoSansJP Variable", "sans-serif";
   --font-poppins: "Poppins", "sans-serif";
 
+  /* Animation keyframes */
   @keyframes accordion-down {
     from {
       height: 0;
@@ -275,6 +278,16 @@
     }
   }
 
+  @keyframes load-in {
+    from {
+      transform: translate3d(0, 1.2rem, 0) scale(0.95);
+    }
+    to {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
+  /* Animation definitions */
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-content-show: content-show 0.2s ease-out;
@@ -295,7 +308,130 @@
   }
 }
 
-/* Popover container */
+/* Numbered list step counter */
+@utility step {
+  counter-increment: step;
+
+  &:before {
+    @apply bg-muted border-background absolute inline-flex h-9 w-9 items-center justify-center rounded-full border-4 text-center -indent-px font-mono text-base font-medium;
+    @apply mt-[-4px] ml-[-50px];
+    content: counter(step);
+  }
+}
+
+@utility ease-instant-hover-* {
+  transition: none;
+  &:not(:hover) {
+    transition: all calc(--value(integer) * 1ms) ease-in-out;
+  }
+}
+
+/* Dynamic color utilities - uses CSS variables for anime color */
+@utility text-custom {
+  color: var(--custom);
+}
+
+@utility bg-custom {
+  background-color: var(--custom);
+}
+
+/* Text color that contrasts with custom background color */
+@utility text-contrast {
+  --accessible-color: calc(
+    (
+        (
+            (
+                (var(--custom-r) * 299) + (var(--custom-g) * 587) +
+                  (var(--custom-b) * 114)
+              ) /
+              1000
+          ) -
+          128
+      ) *
+      -1000
+  );
+  color: rgb(
+    var(--accessible-color),
+    var(--accessible-color),
+    var(--accessible-color)
+  );
+  fill: rgb(
+    var(--accessible-color),
+    var(--accessible-color),
+    var(--accessible-color)
+  );
+}
+
+/* animated SVG icons */
+.animated-icon:not(:hover):not(:focus-visible):not(:active)
+  .target-animated-icon-heart,
+.animated-icon:not(:hover):not(:focus-visible):not(:active)
+  .target-animated-icon-bookmark {
+  animation: none !important;
+  transform: translateX(0) translateX(0) translateZ(0) translate(0, 0) !important;
+}
+
+/* Force SVG icons to inherit color from parent button */
+.animated-icon svg {
+  color: inherit;
+}
+
+/* Heart icon animation */
+.target-animated-icon-heart {
+  transform-origin: center;
+  animation: heartBeat 1.2s ease-in-out;
+}
+
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  16.67% {
+    transform: scale(1.1);
+  }
+  33.33% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  66.67% {
+    transform: scale(1);
+  }
+  83.33% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Bookmark icon animation */
+.target-animated-icon-bookmark {
+  animation: primaryAnimation 0.5s ease-in-out;
+}
+
+@keyframes primaryAnimation {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  20% {
+    transform: scale(1.05) rotate(-7deg);
+  }
+  40% {
+    transform: scale(1.05) rotate(7deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Card item load-in animation */
+.item {
+  animation: 0.3s ease 0s 1 load-in;
+}
+
+/* Driver.js tour popover styling */
 .driver-popover.nihongo-ninja-tour {
   background: var(--color-background);
   color: var(--color-primary);
@@ -303,7 +439,7 @@
     color-mix(in srgb, var(--color-card-foreground) 70%, transparent);
 }
 
-/* Text */
+/* Popover text styles */
 .driver-popover.nihongo-ninja-tour .driver-popover-title {
   color: var(--color-primary);
 }
@@ -316,7 +452,7 @@
   color: var(--color-muted-foreground);
 }
 
-/* Buttons (outline variant style) */
+/* Popover button styles */
 .driver-popover.nihongo-ninja-tour button {
   background-color: transparent;
   color: var(--color-primary);
@@ -330,7 +466,7 @@
   text-shadow: none;
 }
 
-/* Close button */
+/* Popover close button styles */
 .driver-popover.nihongo-ninja-tour .driver-popover-close-btn {
   background-color: transparent;
   color: var(--color-muted-foreground);
@@ -344,7 +480,7 @@
   text-shadow: none;
 }
 
-/* Arrow styling */
+/* Popover arrow styles */
 .driver-popover.nihongo-ninja-tour
   .driver-popover-arrow-side-left.driver-popover-arrow {
   border-left-color: var(--color-card);
@@ -363,22 +499,4 @@
 .driver-popover.nihongo-ninja-tour
   .driver-popover-arrow-side-bottom.driver-popover-arrow {
   border-bottom-color: var(--color-card);
-}
-
-@utility step {
-  counter-increment: step;
-
-  &:before {
-    @apply bg-muted border-background absolute inline-flex h-9 w-9 items-center justify-center rounded-full border-4 text-center -indent-px font-mono text-base font-medium;
-    @apply mt-[-4px] ml-[-50px];
-    content: counter(step);
-  }
-}
-
-/* Custom instant hover utilities */
-@utility ease-instant-hover-* {
-  transition: none;
-  &:not(:hover) {
-    transition: all calc(--value(integer) * 1ms) ease-in-out;
-  }
 }

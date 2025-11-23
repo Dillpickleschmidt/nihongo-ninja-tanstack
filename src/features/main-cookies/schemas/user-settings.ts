@@ -6,28 +6,27 @@ import { ConjugationPracticeSettingsSchema } from "@/features/conjugation-practi
 // SERVICE PREFERENCES (user-specific, syncs to DB)
 // ============================================================================
 
-export type ServiceType = "anki" | "wanikani" | "jpdb"
-export type ServiceMode = "disabled" | "live" | "imported"
+export type SRSServiceType = "anki" | "wanikani" | "jpdb"
+export type AnimeServiceType = "anilist" | "kitsu" | "mal"
+export type SRSServiceMode = "disabled" | "live" | "imported"
 
-const ServicePreferenceSchema = z.object({
+const SRSServicePreferenceSchema = z.object({
   mode: z.string().default("disabled"),
   data_imported: z.boolean().default(false),
   is_api_key_valid: z.boolean().default(false),
 })
 
-const ServicePreferencesSchema = z.object({
-  anki: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
-  wanikani: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
-  jpdb: ServicePreferenceSchema.default(ServicePreferenceSchema.parse({})),
+const SRSServicePreferencesSchema = z.object({
+  anki: SRSServicePreferenceSchema.default(
+    SRSServicePreferenceSchema.parse({}),
+  ),
+  wanikani: SRSServicePreferenceSchema.default(
+    SRSServicePreferenceSchema.parse({}),
+  ),
+  jpdb: SRSServicePreferenceSchema.default(
+    SRSServicePreferenceSchema.parse({}),
+  ),
 })
-
-// ============================================================================
-// LEARNING PATH & CHAPTER SETTINGS (user-specific, syncs to DB)
-// ============================================================================
-
-const TextbookIDSchema = z
-  .enum(["getting_started", "genki_1", "genki_2"])
-  .or(z.string().length(0))
 
 // ============================================================================
 // STACK OVERRIDE SETTINGS (user-specific, syncs to DB)
@@ -95,7 +94,6 @@ const VocabPracticeSettingsSchema = z.object({
   "enable-kanji-radical-prereqs": z.boolean().default(true),
 })
 
-
 const RouteSettingsSchema = z.object({
   vocab: VocabRouteSettingsSchema.default(VocabRouteSettingsSchema.parse({})),
   "vocab-practice": VocabPracticeSettingsSchema.default(
@@ -104,18 +102,17 @@ const RouteSettingsSchema = z.object({
 })
 
 // ============================================================================
-// COMBINED USER SETTINGS SCHEMA
+// DATABASE-SYNCED SETTINGS SCHEMA (syncs across devices via DB)
 // ============================================================================
 
-export const UserSettingsSchema = z.object({
-  // --- USER-SPECIFIC SETTINGS (syncs to DB) ---
-  "service-preferences": ServicePreferencesSchema.default(
-    ServicePreferencesSchema.parse({}),
+export const DbSyncedSettingsSchema = z.object({
+  "srs-service-preferences": SRSServicePreferencesSchema.default(
+    SRSServicePreferencesSchema.parse({}),
   ),
   "active-learning-path": z.string().default("getting_started"),
   "active-chapter": z.string().max(20).default("n5-introduction"),
   "has-completed-onboarding": z.boolean().default(false),
-  "tours": z.record(z.string(), z.number()).default({}), // tourId -> step (-2=completed, -1=dismissed, 0+=active)
+  tours: z.record(z.string(), z.number()).default({}), // tourId -> step (-2=completed, -1=dismissed, 0+=active)
   "override-settings": OverrideSettingsSchema.default({
     vocabularyOverrides: DEFAULT_VOCABULARY_STACKS,
     kanjiOverrides: DEFAULT_KANJI_STACKS,
@@ -123,18 +120,33 @@ export const UserSettingsSchema = z.object({
   "conjugation-practice": ConjugationPracticeSettingsSchema.default(
     ConjugationPracticeSettingsSchema.parse({}),
   ),
-  "learning-path-positions": z.record(z.string(), z.string()).default({}),
   timestamp: z.number().default(0),
+})
 
-  // --- DEVICE-SPECIFIC SETTINGS (cookie only, no DB sync) ---
+// ============================================================================
+// DEVICE-SPECIFIC SETTINGS SCHEMA (cookie only, no DB sync)
+// ============================================================================
+
+export const DeviceSettingsSchema = z.object({
   routes: RouteSettingsSchema.default(RouteSettingsSchema.parse({})),
   "device-type": z.enum(["mobile", "desktop"]).nullable().default(null),
 })
 
 // ============================================================================
+// COMBINED USER SETTINGS SCHEMA
+// ============================================================================
+
+export const UserSettingsSchema =
+  DbSyncedSettingsSchema.and(DeviceSettingsSchema)
+
+// ============================================================================
 // EXPORTED TYPES
 // ============================================================================
 
+export type DbSyncedSettings = z.infer<typeof DbSyncedSettingsSchema>
+export type DeviceSettings = z.infer<typeof DeviceSettingsSchema>
 export type UserSettings = z.infer<typeof UserSettingsSchema>
-export type ServicePreference = z.infer<typeof ServicePreferenceSchema>
-export type AllServicePreferences = z.infer<typeof ServicePreferencesSchema>
+export type SRSServicePreference = z.infer<typeof SRSServicePreferenceSchema>
+export type AllSRSServicePreferences = z.infer<
+  typeof SRSServicePreferencesSchema
+>

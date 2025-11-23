@@ -1,10 +1,10 @@
 // features/settings-page/components/ImportServiceCard.tsx
 import { Show } from "solid-js"
 import { Button } from "@/components/ui/button"
-import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"
+import type { SRSServiceType } from "@/features/main-cookies/schemas/user-settings"
 
 interface ImportServiceCardProps {
-  service: ServiceType
+  service: SRSServiceType
   serviceName: string
   description: string
   hasImported: boolean

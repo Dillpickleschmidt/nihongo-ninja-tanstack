@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/utils"
 
 interface CollapsiblePanelProps {
-  title: string
   isOpen: boolean
   onToggle: () => void
   position: "left" | "right"
   children: JSX.Element
+  title?: string
+  description?: string
   class?: string
   ref?: HTMLDivElement
   toggleButtonId?: string
@@ -33,10 +34,19 @@ export function CollapsiblePanel(props: CollapsiblePanelProps) {
             isLeft ? "border-r" : "border-l",
           )}
         >
-          <div class="mb-4 flex items-center justify-between">
-            <h2 class="text-lg font-semibold">{props.title}</h2>
-          </div>
-          <div>{props.children}</div>
+          <Show when={props.title || props.description}>
+            <div class="mb-4">
+              <Show when={props.title}>
+                <h2 class="text-lg font-semibold">{props.title}</h2>
+              </Show>
+              <Show when={props.description}>
+                <p class="text-muted-foreground mt-4 text-sm">
+                  {props.description}
+                </p>
+              </Show>
+            </div>
+          </Show>
+          {props.children}
         </div>
       </Show>
       {/* Arrow button - always positioned at the edge, vertically centered */}

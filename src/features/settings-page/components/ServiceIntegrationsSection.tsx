@@ -3,6 +3,7 @@ import { createSignal } from "solid-js"
 import { ImportServiceCard } from "./ImportServiceCard"
 import { LiveServiceSelector } from "./LiveServiceSelector"
 import { ImportReviewDialog } from "./ImportReviewDialog"
+import { ServiceAuthSection } from "./ServiceAuthSection"
 import { jpdbAdapter } from "@/features/fsrs-import/adapters/jpdb-import-adapter"
 import { importReviewsServerFn } from "@/features/fsrs-import/server/importReviewsServerFn"
 import { validateJpdbImportServerFn } from "@/features/fsrs-import/server/validateJpdbImportServerFn"
@@ -15,13 +16,9 @@ import { useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 import { useServiceManagement } from "../context/ServiceManagementContext"
 import { useServiceSwitcher } from "../hooks/useServiceSwitcher"
-import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"
-import {
-  getServiceCredentials,
-  updateServiceCredentials,
-} from "@/features/main-cookies/functions/service-credentials"
 import type { JpdbValidationResponse } from "@/features/fsrs-import/core/jpdb-validation-types"
 import type { NormalizedCard } from "@/features/fsrs-import/core/schemas"
+import { getServiceCredentials } from "@/features/main-cookies/functions/service-credentials"
 
 export const ServiceIntegrationsSection = () => {
   const context = useRouteContext({ from: RootRoute.id })
@@ -33,8 +30,13 @@ export const ServiceIntegrationsSection = () => {
     updateUserSettingsMutation(userId, queryClient),
   )
 
-  const { errors, setError, clearError, setIsProcessing, isProcessing } =
-    useServiceManagement()
+  const {
+    srsErrors,
+    setSRSError,
+    clearSRSError,
+    setIsProcessing,
+    isProcessing,
+  } = useServiceManagement()
 
   const { switchToService } = useServiceSwitcher(userId)
 
@@ -59,14 +61,14 @@ export const ServiceIntegrationsSection = () => {
     if (!file) return
 
     setIsProcessing(true)
-    clearError("jpdb")
+    clearSRSError("jpdb")
 
     // Need API key for JPDB
     const credentials = await getServiceCredentials()
     const apiKey = credentials.jpdb?.api_key
 
     if (!apiKey) {
-      setError(
+      setSRSError(
         "jpdb",
         "Please configure your JPDB API key in Live Service Connection first",
       )
@@ -77,7 +79,7 @@ export const ServiceIntegrationsSection = () => {
     // Validate API key
     const validationResult = await validateJpdbApiKey(apiKey)
     if (!validationResult.success) {
-      setError("jpdb", validationResult.error || "Invalid API Key")
+      setSRSError("jpdb", validationResult.error || "Invalid API Key")
       setIsProcessing(false)
       return
     }
@@ -106,7 +108,7 @@ export const ServiceIntegrationsSection = () => {
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Unknown error occurred"
-      setError("jpdb", `Import failed: ${errorMessage}`)
+      setSRSError("jpdb", `Import failed: ${errorMessage}`)
       setIsProcessing(false)
     }
 
@@ -120,7 +122,7 @@ export const ServiceIntegrationsSection = () => {
 
     setShowReviewDialog(false)
     setIsProcessing(true)
-    clearError("jpdb")
+    clearSRSError("jpdb")
 
     try {
       const importResult = await importReviewsServerFn({
@@ -130,10 +132,10 @@ export const ServiceIntegrationsSection = () => {
       if (importResult.success) {
         const currentSettings = settingsQuery.data
         updateMutation.mutate({
-          "service-preferences": {
-            ...currentSettings["service-preferences"],
+          "srs-service-preferences": {
+            ...currentSettings["srs-service-preferences"],
             jpdb: {
-              ...currentSettings["service-preferences"].jpdb,
+              ...currentSettings["srs-service-preferences"].jpdb,
               data_imported: true,
             },
           },
@@ -144,7 +146,7 @@ export const ServiceIntegrationsSection = () => {
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Unknown error occurred"
-      setError("jpdb", `Import failed: ${errorMessage}`)
+      setSRSError("jpdb", `Import failed: ${errorMessage}`)
     } finally {
       setIsProcessing(false)
       setValidationData(null)
@@ -160,15 +162,18 @@ export const ServiceIntegrationsSection = () => {
   }
 
   const handleAnkiImport = () => {
-    setError("anki", "Anki data import not yet implemented")
+    setSRSError("anki", "Anki data import not yet implemented")
   }
 
   const handleWanikaniImport = () => {
-    setError("wanikani", "WaniKani data import not yet implemented")
+    setSRSError("wanikani", "WaniKani data import not yet implemented")
   }
 
   return (
     <div class="space-y-8">
+      {/* Section 0: Anime Service Connections */}
+      <ServiceAuthSection />
+
       {/* Section 1: Nihongo Ninja (Built-in) */}
       <div class="space-y-4">
         <div>
@@ -185,10 +190,10 @@ export const ServiceIntegrationsSection = () => {
             serviceName="Anki"
             description="Import review history from Anki"
             hasImported={
-              settingsQuery.data["service-preferences"].anki.data_imported
+              settingsQuery.data["srs-service-preferences"].anki.data_imported
             }
             isProcessing={isProcessing()}
-            error={errors().anki ?? undefined}
+            error={srsErrors().anki ?? undefined}
             onImport={handleAnkiImport}
           />
 
@@ -197,10 +202,11 @@ export const ServiceIntegrationsSection = () => {
             serviceName="WaniKani"
             description="Import review history from WaniKani"
             hasImported={
-              settingsQuery.data["service-preferences"].wanikani.data_imported
+              settingsQuery.data["srs-service-preferences"].wanikani
+                .data_imported
             }
             isProcessing={isProcessing()}
-            error={errors().wanikani ?? undefined}
+            error={srsErrors().wanikani ?? undefined}
             onImport={handleWanikaniImport}
           />
 
@@ -209,10 +215,10 @@ export const ServiceIntegrationsSection = () => {
             serviceName="JPDB"
             description="Import review history from JPDB"
             hasImported={
-              settingsQuery.data["service-preferences"].jpdb.data_imported
+              settingsQuery.data["srs-service-preferences"].jpdb.data_imported
             }
             isProcessing={isProcessing()}
-            error={errors().jpdb ?? undefined}
+            error={srsErrors().jpdb ?? undefined}
             onImport={handleJpdbImport}
           />
 
@@ -238,12 +244,12 @@ export const ServiceIntegrationsSection = () => {
         </div>
 
         <LiveServiceSelector
-          preferences={settingsQuery.data["service-preferences"]}
+          preferences={settingsQuery.data["srs-service-preferences"]}
           onServiceChange={switchToService}
           isProcessing={isProcessing()}
-          errors={errors()}
-          setError={setError}
-          clearError={clearError}
+          errors={srsErrors()}
+          setError={setSRSError}
+          clearError={clearSRSError}
         />
       </div>
 

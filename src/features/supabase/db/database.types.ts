@@ -87,28 +87,25 @@ export type Database = {
       }
       learning_path_module_sources: {
         Row: {
-          grammar_pattern_id: string | null
           module_id: string
+          order_index: number
           path_id: string
           source_type: string
-          transcript_line_ids: number[]
-          vocabulary_key: string | null
+          transcript_line_ids: Json
         }
         Insert: {
-          grammar_pattern_id?: string | null
           module_id: string
+          order_index?: number
           path_id: string
           source_type: string
-          transcript_line_ids: number[]
-          vocabulary_key?: string | null
+          transcript_line_ids: Json
         }
         Update: {
-          grammar_pattern_id?: string | null
           module_id?: string
+          order_index?: number
           path_id?: string
           source_type?: string
-          transcript_line_ids?: number[]
-          vocabulary_key?: string | null
+          transcript_line_ids?: Json
         }
         Relationships: [
           {
@@ -268,6 +265,7 @@ export type Database = {
           duration_seconds: number
           last_updated_at: string
           module_path: string
+          module_type: string
           questions_answered: number | null
           session_id: string
           user_id: string
@@ -277,6 +275,7 @@ export type Database = {
           duration_seconds?: number
           last_updated_at?: string
           module_path: string
+          module_type: string
           questions_answered?: number | null
           session_id?: string
           user_id: string
@@ -286,8 +285,42 @@ export type Database = {
           duration_seconds?: number
           last_updated_at?: string
           module_path?: string
+          module_type?: string
           questions_answered?: number | null
           session_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_service_tokens: {
+        Row: {
+          access_token: string
+          created_at: string | null
+          expires_at: string | null
+          id: number
+          refresh_token: string | null
+          service: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          access_token: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: number
+          refresh_token?: string | null
+          service: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          access_token?: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: number
+          refresh_token?: string | null
+          service?: string
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -355,8 +388,23 @@ export type Database = {
         Returns: undefined
       }
       generate_deck_id: { Args: never; Returns: string }
+      get_user_daily_aggregates:
+        | {
+            Args: { timezone_param?: string; user_id_param: string }
+            Returns: Json
+          }
+        | { Args: { user_id_param: string }; Returns: Json }
       get_vocabulary_stats: {
         Args: { user_id_param: string; week_ago_param: string }
+        Returns: Json
+      }
+      upload_learning_path: {
+        Args: {
+          module_sources: Json[]
+          transcript_data: Json
+          user_id_param: string
+          vocab_decks: Json[]
+        }
         Returns: Json
       }
     }

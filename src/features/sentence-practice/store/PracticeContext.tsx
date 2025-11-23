@@ -29,8 +29,14 @@ interface PracticeContextValue {
     updateInput: (value: string, index?: number) => void
     loadQuestions: (path: string) => Promise<void>
     setDifficulty: (difficulty: Difficulty) => void
-    setUserInputTokens: (tokens: import("../kagome/types/kagome").KagomeToken[]) => void
-    setUserInputOverlay: (overlay: import("../core/text/KanaToKanjiOverlay").OverlayResult | undefined) => void
+    setUserInputTokens: (
+      tokens: import("../kagome/types/kagome").KagomeToken[],
+    ) => void
+    setUserInputOverlay: (
+      overlay:
+        | import("../core/text/KanaToKanjiOverlay").OverlayResult
+        | undefined,
+    ) => void
   }
   kagomeReady: () => boolean
   kagomeWorker: KagomeWorkerManager | null
@@ -46,6 +52,7 @@ export function PracticeProvider(props: {
   const sessionTracking = useSessionTracking(
     context().user?.id || null,
     props.moduleId,
+    "sentence-practice",
   )
   const fileLoader = new ViteFileLoader()
   const practiceStore = createPracticeStore(

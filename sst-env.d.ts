@@ -5,6 +5,18 @@
 
 declare module "sst" {
   export interface Resource {
+    "ANILIST_CLIENT_ID": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "ANILIST_CLIENT_SECRET": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "MAL_CLIENT_ID": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "MyWeb": {
       "type": "sst.aws.TanstackStart"
       "url": string

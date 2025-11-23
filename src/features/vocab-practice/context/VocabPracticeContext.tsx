@@ -54,7 +54,7 @@ type VocabPracticeContextType = {
   mode: PracticeMode
   userId: string | null
   moduleId?: string
-  deckId?: number
+  deckId?: string
 
   // SRS service state
   activeService: () => SRSServiceType
@@ -94,7 +94,7 @@ type ContextProviderProps = {
   userId: string | null
   mode: PracticeMode
   moduleId?: string
-  deckId?: number
+  deckId?: string
 }
 
 export function VocabPracticeContextProvider(props: ContextProviderProps) {
@@ -131,7 +131,7 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
   // Session tracking - conditionally initialize
   const sessionIdentifier = getSessionIdentifier()
   const { startSession, addTimeAndQuestions } = sessionIdentifier
-    ? useSessionTracking(props.userId, sessionIdentifier)
+    ? useSessionTracking(props.userId, sessionIdentifier, "vocab-practice")
     : { startSession: async () => {}, addTimeAndQuestions: () => {} }
 
   // SVG data management
@@ -167,7 +167,7 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
   // Get the active live service (if any)
   // Returns "local" if using local FSRS, or the service name if a live service is active
   const activeService = createMemo<SRSServiceType>(() => {
-    const preferences = settingsQuery.data!["service-preferences"]
+    const preferences = settingsQuery.data!["srs-service-preferences"]
     const liveService = getActiveLiveService(preferences)
     // If no live service, we're using local FSRS
     return liveService ? liveService : "local"
@@ -240,7 +240,9 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
 
     // If we already have the SVG, return it
     if (currentData.has(character)) {
-      console.log(`[Context] getSvgForCharacter('${character}'): Found in cache`)
+      console.log(
+        `[Context] getSvgForCharacter('${character}'): Found in cache`,
+      )
       return currentData.get(character)!
     }
 
