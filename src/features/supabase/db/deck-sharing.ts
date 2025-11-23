@@ -183,7 +183,7 @@ export const getSharedDeckInfoServerFn = createServerFn({ method: "POST" })
 
     // Get vocabulary count
     const { count, error: countError } = await supabase
-      .from("vocabulary_items")
+      .from("deck_vocabulary_items")
       .select("*", { count: "exact", head: true })
       .eq("deck_id", data.deck_id)
 

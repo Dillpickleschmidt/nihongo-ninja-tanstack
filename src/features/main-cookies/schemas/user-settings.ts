@@ -28,57 +28,6 @@ const SRSServicePreferencesSchema = z.object({
   ),
 })
 
-// ============================================================================
-// STACK OVERRIDE SETTINGS (user-specific, syncs to DB)
-// ============================================================================
-
-export const StackSchema = z.object({
-  name: z.string(),
-  enabled: z.boolean(),
-  locked: z.boolean(),
-  sourceId: z.string(),
-  priority: z.number(),
-})
-
-export const DEFAULT_VOCABULARY_STACKS: z.infer<typeof StackSchema>[] = [
-  {
-    name: "Your Decks",
-    enabled: true,
-    locked: true,
-    sourceId: "user-decks",
-    priority: 0,
-  },
-  {
-    name: "Built-in Vocabulary",
-    enabled: true,
-    locked: true,
-    sourceId: "vocabulary.ts",
-    priority: 999,
-  },
-]
-
-export const DEFAULT_KANJI_STACKS: z.infer<typeof StackSchema>[] = [
-  {
-    name: "JPDB Keywords",
-    enabled: false,
-    locked: false,
-    sourceId:
-      "https://zsllzwieciplioikzzmq.supabase.co/storage/v1/object/public/jpdb-keywords/jpdb-keywords.json",
-    priority: 500,
-  },
-  {
-    name: "WaniKani",
-    enabled: true,
-    locked: true,
-    sourceId: "wanikani.db",
-    priority: 999,
-  },
-]
-
-export const OverrideSettingsSchema = z.object({
-  vocabularyOverrides: z.array(StackSchema),
-  kanjiOverrides: z.array(StackSchema),
-})
 
 // ============================================================================
 // DEVICE-SPECIFIC UI SETTINGS (device-specific, cookie only)
@@ -113,10 +62,6 @@ export const DbSyncedSettingsSchema = z.object({
   "active-chapter": z.string().max(20).default("n5-introduction"),
   "has-completed-onboarding": z.boolean().default(false),
   tours: z.record(z.string(), z.number()).default({}), // tourId -> step (-2=completed, -1=dismissed, 0+=active)
-  "override-settings": OverrideSettingsSchema.default({
-    vocabularyOverrides: DEFAULT_VOCABULARY_STACKS,
-    kanjiOverrides: DEFAULT_KANJI_STACKS,
-  }),
   "conjugation-practice": ConjugationPracticeSettingsSchema.default(
     ConjugationPracticeSettingsSchema.parse({}),
   ),

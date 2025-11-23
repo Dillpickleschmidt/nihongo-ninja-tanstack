@@ -20,7 +20,7 @@ export async function getUserFoldersAndDecks(
   // Fetch folders, decks, and share status in parallel
   const [foldersResult, decksResult, sharesResult] = await Promise.all([
     supabase
-      .from("deck_folders")
+      .from("user_deck_folders")
       .select("*")
       .eq("user_id", userId)
       .order("created_at", { ascending: true }),
@@ -73,7 +73,7 @@ export const createFolderServerFn = createServerFn({ method: "POST" })
     }
 
     const { data: folder, error } = await supabase
-      .from("deck_folders")
+      .from("user_deck_folders")
       .insert([insertData])
       .select()
       .single()
@@ -105,7 +105,7 @@ export const updateFolderServerFn = createServerFn({ method: "POST" })
       updateData.parent_folder_id = data.parent_folder_id
 
     const { data: folder, error } = await supabase
-      .from("deck_folders")
+      .from("user_deck_folders")
       .update(updateData)
       .eq("folder_id", data.folder_id)
       .eq("user_id", response.user.id) // Ensure user owns the folder
@@ -136,7 +136,7 @@ export const deleteFolderServerFn = createServerFn({ method: "POST" })
 
     // Delete the folder (will cascade to child folders)
     const { error } = await supabase
-      .from("deck_folders")
+      .from("user_deck_folders")
       .delete()
       .eq("folder_id", data.folder_id)
       .eq("user_id", response.user.id)
@@ -177,7 +177,7 @@ export async function ensureFolderHierarchy(
       }
 
       const { data: newFolder, error } = await supabase
-        .from("deck_folders")
+        .from("user_deck_folders")
         .insert([insertData])
         .select()
         .single()

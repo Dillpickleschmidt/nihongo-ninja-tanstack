@@ -1,6 +1,6 @@
 // features/vocab-page/pages/main/VocabCardsContent.tsx
 import { For, Switch, Match, createResource } from "solid-js"
-import { getVocabularyForSet } from "@/data/utils/vocab"
+import { getVocabularyBySets } from "@/features/supabase/db/core-vocab"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import { DefaultContent } from "./DefaultContent"
 import { VocabularyCard } from "./components/VocabularyCard"
@@ -58,7 +58,7 @@ function VocabularyPreview(props: VocabularyPreviewProps) {
         if (!module?.vocab_set_ids) {
           return []
         }
-        return getVocabularyForSet(module.vocab_set_ids)
+        return getVocabularyBySets(module.vocab_set_ids)
       } else if (props.selectedDeck) {
         // User decks: load from database
         return getVocabForDeck(props.selectedDeck.deck_id)

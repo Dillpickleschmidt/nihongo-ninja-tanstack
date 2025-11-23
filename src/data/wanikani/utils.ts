@@ -85,7 +85,7 @@ function parseMeanings(meaningsJson: string): string[] {
 // MAIN EXPORT FUNCTIONS (SERVER FUNCTIONS)
 // =============================================================================
 
-export const getWKItemsBySlugs = createServerFn({ method: "GET" })
+export const getWanikaniItems = createServerFn({ method: "GET" })
   .inputValidator((data: { kanji: string[]; radicals: string[] }) => data)
   .handler(
     async ({

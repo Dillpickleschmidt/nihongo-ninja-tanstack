@@ -1,4 +1,4 @@
-import type { VocabularyItem } from "./types"
+import type { VocabularyItem } from "@/data/types"
 
 // Extend VocabularyItem locally to include chapter for my visual reference
 type VocabularyItemWithChapter = VocabularyItem & {
@@ -13062,7 +13062,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     part_of_speech: "I-adjective",
     info: [
       'Note: 近く (chikaku) is used as a noun meaning "vicinity" or "neighborhood", ' +
-        "and as an adverb with the に particle (e.g., 駅に近い).",
+      "and as an adverb with the に particle (e.g., 駅に近い).",
     ],
     example_sentences: [
       {
@@ -16859,4 +16859,4 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
 }
 
 // Export as the original type (chapter property gets stripped at type level)
-export const vocabulary: VocabularyCollection = vocabularyWithChapter
+export const vocabulary: LocalVocabularyCollection = vocabularyWithChapter

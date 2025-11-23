@@ -1,4 +1,4 @@
-import type { IndividualVocabularySet } from "./types"
+import type { IndividualVocabularySet } from "@/data/types"
 
 export const vocabularySets: Record<string, IndividualVocabularySet> = {
   hiragana: {

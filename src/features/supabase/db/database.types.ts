@@ -14,76 +14,127 @@ export type Database = {
   }
   public: {
     Tables: {
-      deck_folders: {
+      core_vocabulary_items: {
+        Row: {
+          created_at: string | null
+          english: string[]
+          example_sentences: Json | null
+          furigana: string
+          info: string[] | null
+          key: string
+          mnemonics: Json | null
+          overwrite_word: string | null
+          part_of_speech:
+            | Database["public"]["Enums"]["part_of_speech_enum"]
+            | null
+          particles: Json | null
+          videos: Json | null
+          word: string
+        }
+        Insert: {
+          created_at?: string | null
+          english: string[]
+          example_sentences?: Json | null
+          furigana: string
+          info?: string[] | null
+          key: string
+          mnemonics?: Json | null
+          overwrite_word?: string | null
+          part_of_speech?:
+            | Database["public"]["Enums"]["part_of_speech_enum"]
+            | null
+          particles?: Json | null
+          videos?: Json | null
+          word: string
+        }
+        Update: {
+          created_at?: string | null
+          english?: string[]
+          example_sentences?: Json | null
+          furigana?: string
+          info?: string[] | null
+          key?: string
+          mnemonics?: Json | null
+          overwrite_word?: string | null
+          part_of_speech?:
+            | Database["public"]["Enums"]["part_of_speech_enum"]
+            | null
+          particles?: Json | null
+          videos?: Json | null
+          word?: string
+        }
+        Relationships: []
+      }
+      core_vocabulary_sets: {
+        Row: {
+          created_at: string | null
+          set_id: string
+          vocabulary_keys: string[]
+        }
+        Insert: {
+          created_at?: string | null
+          set_id: string
+          vocabulary_keys: string[]
+        }
+        Update: {
+          created_at?: string | null
+          set_id?: string
+          vocabulary_keys?: string[]
+        }
+        Relationships: []
+      }
+      deck_vocabulary_items: {
         Row: {
           created_at: string
-          folder_id: number
-          folder_name: string
-          parent_folder_id: number | null
-          user_id: string
+          deck_id: string
+          english: string[]
+          example_sentences: Json | null
+          furigana: string | null
+          id: number
+          info: string[] | null
+          is_verb: boolean | null
+          mnemonics: Json | null
+          particles: Json | null
+          videos: Json | null
+          word: string
         }
         Insert: {
           created_at?: string
-          folder_id?: never
-          folder_name: string
-          parent_folder_id?: number | null
-          user_id: string
+          deck_id: string
+          english: string[]
+          example_sentences?: Json | null
+          furigana?: string | null
+          id?: never
+          info?: string[] | null
+          is_verb?: boolean | null
+          mnemonics?: Json | null
+          particles?: Json | null
+          videos?: Json | null
+          word: string
         }
         Update: {
           created_at?: string
-          folder_id?: never
-          folder_name?: string
-          parent_folder_id?: number | null
-          user_id?: string
+          deck_id?: string
+          english?: string[]
+          example_sentences?: Json | null
+          furigana?: string | null
+          id?: never
+          info?: string[] | null
+          is_verb?: boolean | null
+          mnemonics?: Json | null
+          particles?: Json | null
+          videos?: Json | null
+          word?: string
         }
         Relationships: [
           {
-            foreignKeyName: "deck_folders_parent_fkey"
-            columns: ["parent_folder_id"]
+            foreignKeyName: "deck_vocabulary_items_deck_id_fkey"
+            columns: ["deck_id"]
             isOneToOne: false
-            referencedRelation: "deck_folders"
-            referencedColumns: ["folder_id"]
+            referencedRelation: "user_decks"
+            referencedColumns: ["deck_id"]
           },
         ]
-      }
-      fsrs_cards: {
-        Row: {
-          created_at: string
-          due_at: string
-          fsrs_card: Json
-          fsrs_logs: Json[] | null
-          id: number
-          mode: string
-          practice_item_key: string
-          stability: number
-          type: Database["public"]["Enums"]["practice_item_type"]
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          due_at: string
-          fsrs_card: Json
-          fsrs_logs?: Json[] | null
-          id?: number
-          mode?: string
-          practice_item_key: string
-          stability: number
-          type?: Database["public"]["Enums"]["practice_item_type"]
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          due_at?: string
-          fsrs_card?: Json
-          fsrs_logs?: Json[] | null
-          id?: number
-          mode?: string
-          practice_item_key?: string
-          stability?: number
-          type?: Database["public"]["Enums"]["practice_item_type"]
-          user_id?: string
-        }
-        Relationships: []
       }
       learning_path_module_sources: {
         Row: {
@@ -197,6 +248,56 @@ export type Database = {
           },
         ]
       }
+      user_completed_modules: {
+        Row: {
+          completed_at: string
+          module_path: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          module_path: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          module_path?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_deck_folders: {
+        Row: {
+          created_at: string
+          folder_id: number
+          folder_name: string
+          parent_folder_id: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          folder_id?: never
+          folder_name: string
+          parent_folder_id?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          folder_id?: never
+          folder_name?: string
+          parent_folder_id?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_deck_folders_parent_fkey"
+            columns: ["parent_folder_id"]
+            isOneToOne: false
+            referencedRelation: "user_deck_folders"
+            referencedColumns: ["folder_id"]
+          },
+        ]
+      }
       user_decks: {
         Row: {
           allowed_practice_modes: Database["public"]["Enums"]["practice_mode_enum"][]
@@ -236,25 +337,46 @@ export type Database = {
             foreignKeyName: "user_decks_folder_id_fkey"
             columns: ["folder_id"]
             isOneToOne: false
-            referencedRelation: "deck_folders"
+            referencedRelation: "user_deck_folders"
             referencedColumns: ["folder_id"]
           },
         ]
       }
-      user_module_progress: {
+      user_fsrs_cards: {
         Row: {
-          completed_at: string
-          module_path: string
+          created_at: string
+          due_at: string
+          fsrs_card: Json
+          fsrs_logs: Json[] | null
+          id: number
+          mode: string
+          practice_item_key: string
+          stability: number
+          type: Database["public"]["Enums"]["practice_item_type"]
           user_id: string
         }
         Insert: {
-          completed_at?: string
-          module_path: string
+          created_at?: string
+          due_at: string
+          fsrs_card: Json
+          fsrs_logs?: Json[] | null
+          id?: number
+          mode?: string
+          practice_item_key: string
+          stability: number
+          type?: Database["public"]["Enums"]["practice_item_type"]
           user_id: string
         }
         Update: {
-          completed_at?: string
-          module_path?: string
+          created_at?: string
+          due_at?: string
+          fsrs_card?: Json
+          fsrs_logs?: Json[] | null
+          id?: number
+          mode?: string
+          practice_item_key?: string
+          stability?: number
+          type?: Database["public"]["Enums"]["practice_item_type"]
           user_id?: string
         }
         Relationships: []
@@ -325,59 +447,6 @@ export type Database = {
         }
         Relationships: []
       }
-      vocabulary_items: {
-        Row: {
-          created_at: string
-          deck_id: string
-          english: string[]
-          example_sentences: Json | null
-          furigana: string | null
-          id: number
-          info: string[] | null
-          is_verb: boolean | null
-          mnemonics: Json | null
-          particles: Json | null
-          videos: Json | null
-          word: string
-        }
-        Insert: {
-          created_at?: string
-          deck_id: string
-          english: string[]
-          example_sentences?: Json | null
-          furigana?: string | null
-          id?: never
-          info?: string[] | null
-          is_verb?: boolean | null
-          mnemonics?: Json | null
-          particles?: Json | null
-          videos?: Json | null
-          word: string
-        }
-        Update: {
-          created_at?: string
-          deck_id?: string
-          english?: string[]
-          example_sentences?: Json | null
-          furigana?: string | null
-          id?: never
-          info?: string[] | null
-          is_verb?: boolean | null
-          mnemonics?: Json | null
-          particles?: Json | null
-          videos?: Json | null
-          word?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "vocabulary_items_deck_id_fkey"
-            columns: ["deck_id"]
-            isOneToOne: false
-            referencedRelation: "user_decks"
-            referencedColumns: ["deck_id"]
-          },
-        ]
-      }
     }
     Views: {
       [_ in never]: never
@@ -394,6 +463,22 @@ export type Database = {
             Returns: Json
           }
         | { Args: { user_id_param: string }; Returns: Json }
+      get_vocabulary_by_sets: {
+        Args: { set_ids: string[] }
+        Returns: {
+          english: string[]
+          example_sentences: Json
+          furigana: string
+          info: string[]
+          key: string
+          mnemonics: Json
+          overwrite_word: string
+          part_of_speech: Database["public"]["Enums"]["part_of_speech_enum"]
+          particles: Json
+          videos: Json
+          word: string
+        }[]
+      }
       get_vocabulary_stats: {
         Args: { user_id_param: string; week_ago_param: string }
         Returns: Json
@@ -409,6 +494,26 @@ export type Database = {
       }
     }
     Enums: {
+      part_of_speech_enum:
+        | "Ichidan verb"
+        | "Godan verb with 'u' ending"
+        | "Godan verb with 'tsu' ending"
+        | "Godan verb with 'ru' ending"
+        | "Godan verb - Iku/Yuku special class"
+        | "Godan verb with 'ku' ending"
+        | "Godan verb with 'gu' ending"
+        | "Godan verb with 'bu' ending"
+        | "Godan verb with 'mu' ending"
+        | "Godan verb with 'nu' ending"
+        | "Godan verb with 'su' ending"
+        | "Godan verb with 'ru' ending (irregular verb)"
+        | "Godan verb - -aru special class"
+        | "Suru verb - included"
+        | "Suru verb - compound word"
+        | "Suru verb - special class"
+        | "Kuru verb - special class"
+        | "I-adjective"
+        | "Na-adjective"
       practice_item_type: "vocabulary" | "kanji" | "radical"
       practice_mode_enum: "meanings" | "spellings"
     }
@@ -538,6 +643,27 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      part_of_speech_enum: [
+        "Ichidan verb",
+        "Godan verb with 'u' ending",
+        "Godan verb with 'tsu' ending",
+        "Godan verb with 'ru' ending",
+        "Godan verb - Iku/Yuku special class",
+        "Godan verb with 'ku' ending",
+        "Godan verb with 'gu' ending",
+        "Godan verb with 'bu' ending",
+        "Godan verb with 'mu' ending",
+        "Godan verb with 'nu' ending",
+        "Godan verb with 'su' ending",
+        "Godan verb with 'ru' ending (irregular verb)",
+        "Godan verb - -aru special class",
+        "Suru verb - included",
+        "Suru verb - compound word",
+        "Suru verb - special class",
+        "Kuru verb - special class",
+        "I-adjective",
+        "Na-adjective",
+      ],
       practice_item_type: ["vocabulary", "kanji", "radical"],
       practice_mode_enum: ["meanings", "spellings"],
     },

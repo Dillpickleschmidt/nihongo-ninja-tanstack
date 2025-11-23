@@ -1,7 +1,6 @@
 // src/data/utils/vocab.ts
-import { createServerFn } from "@tanstack/solid-start"
 import { dynamic_modules } from "@/data/dynamic_modules"
-import { vocabularySets } from "@/data/vocabulary_sets"
+import { getVocabularyBySets } from "@/features/supabase/db/core-vocab"
 import type {
   DynamicModule,
   ExampleSentence,
@@ -10,7 +9,6 @@ import type {
 } from "@/data/types"
 import type { KanaItem } from "@/features/kana-quiz/hooks/useKanaQuiz"
 import type { PracticeMode } from "@/features/vocab-practice/types"
-import { getVocabulary } from "@/features/resolvers/vocabulary"
 import {
   extractHiragana as _extractHiragana,
   convertFuriganaToRubyHtml as _convertFuriganaToRubyHtml,
@@ -23,25 +21,6 @@ import {
 export function hasKanji(text: string): boolean {
   return /[一-龯]/.test(text)
 }
-
-/**
- * Get vocabulary set keys by set IDs
- * Returns a map of setId -> array of vocabulary keys
- */
-export const getVocabSets = createServerFn({ method: "POST" })
-  .inputValidator((setIds: string[]) => setIds)
-  .handler(async ({ data: setIds }): Promise<Record<string, string[]>> => {
-    const result: Record<string, string[]> = {}
-
-    setIds.forEach((setId) => {
-      const set = vocabularySets[setId]
-      if (set?.keys) {
-        result[setId] = set.keys
-      }
-    })
-
-    return result
-  })
 
 function getModuleFromPath(path: string): DynamicModule | null {
   const segments = path.split("/")
@@ -57,32 +36,7 @@ export async function getVocabularyForModule(
     return []
   }
 
-  return getVocabularyForSet(module.vocab_set_ids)
-}
-
-export async function getVocabularyForSet(
-  vocabSetIds: string[],
-): Promise<VocabularyItem[]> {
-  // Fetch vocabulary sets from server
-  const vocabSets = await getVocabSets({ data: vocabSetIds })
-
-  // Gather all vocab keys from all sets, preserving order and uniqueness
-  const seen = new Set<string>()
-  const vocabKeys: string[] = []
-  for (const setId of vocabSetIds) {
-    const keys = vocabSets[setId]
-    if (keys && Array.isArray(keys)) {
-      for (const key of keys) {
-        if (!seen.has(key)) {
-          seen.add(key)
-          vocabKeys.push(key)
-        }
-      }
-    }
-  }
-
-  // Use resolver to get vocabulary items
-  return getVocabulary({ data: { keys: vocabKeys } })
+  return getVocabularyBySets(module.vocab_set_ids)
 }
 
 /**

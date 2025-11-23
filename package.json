@@ -14,7 +14,8 @@
     "parse-sentences": "bun run scripts/parse-sentences.ts",
     "sync-grammar": "bunx tsx scripts/sync-grammar-patterns.ts ~/Programming-Projects/japanese-subtitle-search/src-tauri/transcripts.db",
     "generate-types": "bunx supabase gen types typescript --project-id zsllzwieciplioikzzmq --schema public > src/features/supabase/db/database.types.ts",
-    "gql:check": "node ./node_modules/gql.tada/bin/cli.js check"
+    "gql:check": "node ./node_modules/gql.tada/bin/cli.js check",
+    "upsert-vocab": "bun run scripts/upsert-core-vocab.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",

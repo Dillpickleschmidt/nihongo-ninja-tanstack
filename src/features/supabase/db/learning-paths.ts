@@ -313,7 +313,7 @@ export async function getModuleMetadata(
   let vocabularyItems: ModuleMetadata["vocabularyItems"] = undefined
   if (sourceType === "vocabulary") {
     const { data: vocabItems, error: vocabError } = await supabase
-      .from("vocabulary_items")
+      .from("deck_vocabulary_items")
       .select("word, furigana, english")
       .eq("deck_id", moduleId)
       .order("created_at", { ascending: true })

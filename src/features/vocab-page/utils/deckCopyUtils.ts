@@ -1,6 +1,6 @@
 // features/vocab-page/utils/deckCopyUtils.ts
 
-import { getVocabularyForSet } from "@/data/utils/vocab"
+import { getVocabularyBySets } from "@/features/supabase/db/core-vocab"
 import { extractSegmentText } from "@/data/utils/text"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import {
@@ -50,7 +50,7 @@ export async function loadDeckVocabulary(
     // Load from local files for built-in decks
     const module = dynamic_modules[deck.original_deck_id]
     if (module && module.vocab_set_ids) {
-      const vocab = await getVocabularyForSet(module.vocab_set_ids)
+      const vocab = await getVocabularyBySets(module.vocab_set_ids)
       return vocab.map(vocabularyItemToFormData)
     }
   } else {

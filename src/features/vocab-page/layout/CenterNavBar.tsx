@@ -2,7 +2,7 @@
 import { For, createMemo } from "solid-js"
 import { useLocation, useNavigate } from "@tanstack/solid-router"
 import { Button } from "@/components/ui/button"
-import { Plus, Search, Settings } from "lucide-solid"
+import { Import, Plus, Search } from "lucide-solid"
 import { cn } from "@/utils"
 
 // Custom Card/Deck Icon Component
@@ -53,12 +53,12 @@ const navItems: NavItem[] = [
     href: "/vocab/browse",
     isActive: (p) => p.startsWith("/vocab/browse"),
   },
-  {
-    label: "Overrides",
-    icon: Settings,
-    href: "/vocab/settings",
-    isActive: (p) => p.startsWith("/vocab/settings"),
-  },
+  // {
+  //   label: "Import",
+  //   icon: Import,
+  //   href: "/vocab/settings",
+  //   isActive: (p) => p.startsWith("/vocab/settings"),
+  // },
 ]
 
 export function CenterNavBar() {

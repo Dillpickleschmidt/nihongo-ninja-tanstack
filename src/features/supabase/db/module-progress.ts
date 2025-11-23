@@ -10,7 +10,7 @@ export async function getModuleProgress(
 ): Promise<ModuleProgress | null> {
   const supabase = createSupabaseClient()
   const { data, error } = await supabase
-    .from("user_module_progress")
+    .from("user_completed_modules")
     .select()
     .eq("user_id", userId)
     .eq("module_path", moduleId)
@@ -36,7 +36,7 @@ export async function getUserModuleCompletions(
   const ascending = options?.ascending ?? false
 
   const { data, error } = await supabase
-    .from("user_module_progress")
+    .from("user_completed_modules")
     .select()
     .eq("user_id", userId)
     .order(orderBy, { ascending })
@@ -61,7 +61,7 @@ export async function markModuleCompleted(
   const supabase = createSupabaseClient()
 
   const { data, error } = await supabase
-    .from("user_module_progress")
+    .from("user_completed_modules")
     .upsert(
       {
         user_id: userId,

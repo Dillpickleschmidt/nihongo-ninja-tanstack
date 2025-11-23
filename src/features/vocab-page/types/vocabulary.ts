@@ -26,14 +26,6 @@ export function isVerbPartOfSpeech(
   return !adjectiveTypes.includes(partOfSpeech as PartOfSpeech)
 }
 
-// Database types from global.d.ts (which import from database.types.ts)
-export type DBVocabularyItem =
-  SupabaseDB["public"]["Tables"]["vocabulary_items"]["Row"]
-export type DBVocabularyItemInsert =
-  SupabaseDB["public"]["Tables"]["vocabulary_items"]["Insert"]
-export type DBVocabularyItemUpdate =
-  SupabaseDB["public"]["Tables"]["vocabulary_items"]["Update"]
-
 // Form data structure (for user input in deck creation)
 export interface VocabItemFormData {
   word: string
@@ -181,16 +173,16 @@ export function formDataToVocabularyItem(
     example_sentences:
       formData.examples.length > 0
         ? formData.examples.map((ex) => ({
-            japanese: [ex.japanese],
-            english: [ex.english],
-          }))
+          japanese: [ex.japanese],
+          english: [ex.english],
+        }))
         : undefined,
     mnemonics:
       formData.readingMnemonics.length > 0 || formData.kanjiMnemonics.length > 0
         ? {
-            reading: formData.readingMnemonics,
-            kanji: formData.kanjiMnemonics,
-          }
+          reading: formData.readingMnemonics,
+          kanji: formData.kanjiMnemonics,
+        }
         : undefined,
     videos: undefined,
     overwrite_word: undefined,

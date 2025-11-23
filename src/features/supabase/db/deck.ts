@@ -137,7 +137,7 @@ export const createCustomDeckServerFn = createServerFn({ method: "POST" })
         .filter((item): item is NonNullable<typeof item> => item !== null)
 
       const { error: vocabError } = await supabase
-        .from("vocabulary_items")
+        .from("deck_vocabulary_items")
         .insert(vocabularyInserts)
 
       if (vocabError) {
@@ -177,7 +177,7 @@ export async function getVocabForDeck(
   const supabase = createSupabaseClient()
 
   const { data, error } = await supabase
-    .from("vocabulary_items")
+    .from("deck_vocabulary_items")
     .select("*")
     .eq("deck_id", deck_id)
 
@@ -230,7 +230,7 @@ export async function insertVocabularyItems(
   )
 
   const { error } = await supabase
-    .from("vocabulary_items")
+    .from("deck_vocabulary_items")
     .insert(vocabularyInserts)
 
   if (error) {
