@@ -2,7 +2,7 @@
 import { For } from "solid-js"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Book, Grid2x2 } from "lucide-solid"
-import { convertFuriganaToRubyHtml } from "@/data/utils/vocab"
+import { convertFuriganaToRubyHtml } from "@/data/utils/text/furigana"
 import type { VocabularyItem } from "@/data/types"
 
 interface VocabularyCardProps {
@@ -14,9 +14,8 @@ export function VocabularyCard(props: VocabularyCardProps) {
   return (
     <div class="w-full">
       <div
-        class={`border-card-foreground/70 relative rounded-lg border shadow-md backdrop-blur-sm ${
-          (props.index + 1) % 2 === 0 ? "bg-card/60" : "bg-card/50"
-        }`}
+        class={`border-card-foreground/70 relative rounded-lg border shadow-md backdrop-blur-sm ${(props.index + 1) % 2 === 0 ? "bg-card/60" : "bg-card/50"
+          }`}
       >
         <div class="px-6 py-6">
           <div class="border-border mb-6 border-b pb-4">
@@ -145,7 +144,7 @@ function VocabExamples(props: { item: VocabularyItem }) {
   return (
     <div class="space-y-3">
       {props.item.example_sentences &&
-      props.item.example_sentences.length > 0 ? (
+        props.item.example_sentences.length > 0 ? (
         <>
           <h4 class="text-foreground mb-3 text-sm font-medium">
             Example Sentences

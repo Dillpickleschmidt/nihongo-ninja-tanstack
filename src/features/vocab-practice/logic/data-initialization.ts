@@ -8,7 +8,7 @@ import type {
   FSRSInfo,
   SessionCardStyle,
 } from "../types"
-import { addKanaAndRuby } from "@/data/utils/vocab"
+import { addKanaAndRuby } from "@/data/utils/vocabulary/transforms"
 import type {
   VocabHierarchy,
   VocabEntry,

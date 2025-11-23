@@ -20,7 +20,7 @@ import {
   loadFoldersAndDecks,
 } from "@/features/vocab-page/storage/sessionStorage"
 import { EditTransaction } from "../logic/edit-transaction"
-import { getVocabForDeck } from "@/features/supabase/db/deck"
+import { getVocabForDeckConverted } from "@/features/supabase/db/deck"
 import type { DeckCreationInitialData } from "../pages/create/stores/deck-creation-store"
 import { copyDeck } from "@/features/vocab-page/utils/deckCopyUtils"
 import { executeEditTransactionServerFn } from "@/features/supabase/db/folder"
@@ -163,7 +163,7 @@ function useVocabPageState(user: User | null) {
 
   const handleEditDeck = async (deck: UserDeck) => {
     try {
-      const vocabItems = await getVocabForDeck(deck.deck_id)
+      const vocabItems = await getVocabForDeckConverted(deck.deck_id)
 
       const folder = userData().folders.find(
         (f) => f.folder_id === deck.folder_id,

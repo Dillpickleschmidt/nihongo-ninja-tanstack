@@ -7,7 +7,7 @@ import {
 import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
 import { useStartPageLogic } from "./hooks/useStartPageLogic"
 import { StartPageLayout } from "./StartPageLayout"
-import { getModuleTitleFromPath } from "@/data/utils/vocab"
+import { getModuleTitleFromPath } from "@/data/utils/modules"
 
 export function ModuleStartPage() {
   const { moduleId, mode, activeService, settingsQuery, queryClient } =

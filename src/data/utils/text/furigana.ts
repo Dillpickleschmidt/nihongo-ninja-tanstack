@@ -1,4 +1,4 @@
-// Pure text utility functions with no external dependencies
+// Pure furigana text utility functions with no external dependencies
 // These can be safely imported in test environments
 
 /**

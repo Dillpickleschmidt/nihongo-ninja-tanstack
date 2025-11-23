@@ -24,7 +24,6 @@ import { Route as PracticePracticeIDRouteImport } from './routes/practice/$pract
 import { Route as GuidesSrsRouteImport } from './routes/guides/srs'
 import { Route as GuidesComparisonRouteImport } from './routes/guides/comparison'
 import { Route as ExternalResourcesResourceRouteImport } from './routes/external-resources/$resource'
-import { Route as ApiUploadOverrideRouteImport } from './routes/api/upload-override'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
 import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
 import { Route as HomeSearchRouteImport } from './routes/_home/search'
@@ -40,7 +39,6 @@ import { Route as ApiRelayTefhSplatRouteImport } from './routes/api/relay-tefh.$
 import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
 import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 import { Route as ApiAuthAnimeServiceRouteImport } from './routes/api/auth/$anime-service'
-import { Route as HomeVocabSettingsRouteImport } from './routes/_home/vocab/settings'
 import { Route as HomeVocabCreateRouteImport } from './routes/_home/vocab/create'
 import { Route as HomeVocabBrowseRouteImport } from './routes/_home/vocab/browse'
 import { Route as HomeVocabSplatRouteImport } from './routes/_home/vocab/$'
@@ -166,11 +164,6 @@ const ExternalResourcesResourceRoute =
     path: '/external-resources/$resource',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiUploadOverrideRoute = ApiUploadOverrideRouteImport.update({
-  id: '/api/upload-override',
-  path: '/api/upload-override',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const HomeVocabRoute = HomeVocabRouteImport.update({
   id: '/vocab',
   path: '/vocab',
@@ -246,11 +239,6 @@ const ApiAuthAnimeServiceRoute = ApiAuthAnimeServiceRouteImport.update({
   id: '/api/auth/$anime-service',
   path: '/api/auth/$anime-service',
   getParentRoute: () => rootRouteImport,
-} as any)
-const HomeVocabSettingsRoute = HomeVocabSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => HomeVocabRoute,
 } as any)
 const HomeVocabCreateRoute = HomeVocabCreateRouteImport.update({
   id: '/create',
@@ -569,7 +557,6 @@ export interface FileRoutesByFullPath {
   '/search': typeof HomeSearchRoute
   '/settings': typeof HomeSettingsRoute
   '/vocab': typeof HomeVocabRouteWithChildren
-  '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
   '/guides/comparison': typeof GuidesComparisonRoute
   '/guides/srs': typeof GuidesSrsRoute
@@ -589,7 +576,6 @@ export interface FileRoutesByFullPath {
   '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
-  '/vocab/settings': typeof HomeVocabSettingsRoute
   '/api/auth/$anime-service': typeof ApiAuthAnimeServiceRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
@@ -650,7 +636,6 @@ export interface FileRoutesByTo {
   '/review': typeof HomeReviewRoute
   '/search': typeof HomeSearchRoute
   '/settings': typeof HomeSettingsRoute
-  '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
   '/guides/comparison': typeof GuidesComparisonRoute
   '/guides/srs': typeof GuidesSrsRoute
@@ -670,7 +655,6 @@ export interface FileRoutesByTo {
   '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
-  '/vocab/settings': typeof HomeVocabSettingsRoute
   '/api/auth/$anime-service': typeof ApiAuthAnimeServiceRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
@@ -734,7 +718,6 @@ export interface FileRoutesById {
   '/_home/search': typeof HomeSearchRoute
   '/_home/settings': typeof HomeSettingsRoute
   '/_home/vocab': typeof HomeVocabRouteWithChildren
-  '/api/upload-override': typeof ApiUploadOverrideRoute
   '/external-resources/$resource': typeof ExternalResourcesResourceRoute
   '/guides/comparison': typeof GuidesComparisonRoute
   '/guides/srs': typeof GuidesSrsRoute
@@ -755,7 +738,6 @@ export interface FileRoutesById {
   '/_home/vocab/$': typeof HomeVocabSplatRoute
   '/_home/vocab/browse': typeof HomeVocabBrowseRoute
   '/_home/vocab/create': typeof HomeVocabCreateRoute
-  '/_home/vocab/settings': typeof HomeVocabSettingsRoute
   '/api/auth/$anime-service': typeof ApiAuthAnimeServiceRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
@@ -820,7 +802,6 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/vocab'
-    | '/api/upload-override'
     | '/external-resources/$resource'
     | '/guides/comparison'
     | '/guides/srs'
@@ -840,7 +821,6 @@ export interface FileRouteTypes {
     | '/vocab/$'
     | '/vocab/browse'
     | '/vocab/create'
-    | '/vocab/settings'
     | '/api/auth/$anime-service'
     | '/api/auth/login'
     | '/api/auth/logout'
@@ -901,7 +881,6 @@ export interface FileRouteTypes {
     | '/review'
     | '/search'
     | '/settings'
-    | '/api/upload-override'
     | '/external-resources/$resource'
     | '/guides/comparison'
     | '/guides/srs'
@@ -921,7 +900,6 @@ export interface FileRouteTypes {
     | '/vocab/$'
     | '/vocab/browse'
     | '/vocab/create'
-    | '/vocab/settings'
     | '/api/auth/$anime-service'
     | '/api/auth/login'
     | '/api/auth/logout'
@@ -984,7 +962,6 @@ export interface FileRouteTypes {
     | '/_home/search'
     | '/_home/settings'
     | '/_home/vocab'
-    | '/api/upload-override'
     | '/external-resources/$resource'
     | '/guides/comparison'
     | '/guides/srs'
@@ -1005,7 +982,6 @@ export interface FileRouteTypes {
     | '/_home/vocab/$'
     | '/_home/vocab/browse'
     | '/_home/vocab/create'
-    | '/_home/vocab/settings'
     | '/api/auth/$anime-service'
     | '/api/auth/login'
     | '/api/auth/logout'
@@ -1063,7 +1039,6 @@ export interface RootRouteChildren {
   KanjiTestRoute: typeof KanjiTestRoute
   OauthCallbackRoute: typeof OauthCallbackRoute
   PricingRoute: typeof PricingRoute
-  ApiUploadOverrideRoute: typeof ApiUploadOverrideRoute
   ExternalResourcesResourceRoute: typeof ExternalResourcesResourceRoute
   PracticePracticeIDRoute: typeof PracticePracticeIDRoute
   PracticeReviewRoute: typeof PracticeReviewRoute
@@ -1174,13 +1149,6 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof ExternalResourcesResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/upload-override': {
-      id: '/api/upload-override'
-      path: '/api/upload-override'
-      fullPath: '/api/upload-override'
-      preLoaderRoute: typeof ApiUploadOverrideRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_home/vocab': {
       id: '/_home/vocab'
       path: '/vocab'
@@ -1285,13 +1253,6 @@ declare module '@tanstack/solid-router' {
       fullPath: '/api/auth/$anime-service'
       preLoaderRoute: typeof ApiAuthAnimeServiceRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_home/vocab/settings': {
-      id: '/_home/vocab/settings'
-      path: '/settings'
-      fullPath: '/vocab/settings'
-      preLoaderRoute: typeof HomeVocabSettingsRouteImport
-      parentRoute: typeof HomeVocabRoute
     }
     '/_home/vocab/create': {
       id: '/_home/vocab/create'
@@ -1762,7 +1723,6 @@ interface HomeVocabRouteChildren {
   HomeVocabSplatRoute: typeof HomeVocabSplatRoute
   HomeVocabBrowseRoute: typeof HomeVocabBrowseRoute
   HomeVocabCreateRoute: typeof HomeVocabCreateRoute
-  HomeVocabSettingsRoute: typeof HomeVocabSettingsRoute
   HomeVocabIndexRoute: typeof HomeVocabIndexRoute
 }
 
@@ -1770,7 +1730,6 @@ const HomeVocabRouteChildren: HomeVocabRouteChildren = {
   HomeVocabSplatRoute: HomeVocabSplatRoute,
   HomeVocabBrowseRoute: HomeVocabBrowseRoute,
   HomeVocabCreateRoute: HomeVocabCreateRoute,
-  HomeVocabSettingsRoute: HomeVocabSettingsRoute,
   HomeVocabIndexRoute: HomeVocabIndexRoute,
 }
 
@@ -1878,7 +1837,6 @@ const rootRouteChildren: RootRouteChildren = {
   KanjiTestRoute: KanjiTestRoute,
   OauthCallbackRoute: OauthCallbackRoute,
   PricingRoute: PricingRoute,
-  ApiUploadOverrideRoute: ApiUploadOverrideRoute,
   ExternalResourcesResourceRoute: ExternalResourcesResourceRoute,
   PracticePracticeIDRoute: PracticePracticeIDRoute,
   PracticeReviewRoute: PracticeReviewRoute,

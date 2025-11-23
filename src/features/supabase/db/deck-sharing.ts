@@ -2,7 +2,7 @@
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 import { createServerFn } from "@tanstack/solid-start"
 import { getUser } from "@/features/supabase/getUser"
-import { insertVocabularyItems, getVocabForDeck } from "./deck"
+import { insertVocabularyItemsFromDB, getVocabForDeckRaw } from "./deck"
 import { getUserFoldersAndDecks } from "./folder"
 
 export type SharedDeck = {
@@ -248,7 +248,7 @@ export const importSharedDeckServerFn = createServerFn({ method: "POST" })
     }
 
     // Get vocabulary from the shared deck using service client for elevated access
-    const vocabularyItems = await getVocabForDeck(data.deck_id)
+    const vocabularyItems = await getVocabForDeckRaw(data.deck_id)
     if (vocabularyItems.length === 0) {
       throw new Error("Shared deck contains no vocabulary items")
     }
@@ -274,7 +274,7 @@ export const importSharedDeckServerFn = createServerFn({ method: "POST" })
 
     // Import all vocabulary items
     try {
-      await insertVocabularyItems(vocabularyItems, newDeck.deck_id)
+      await insertVocabularyItemsFromDB(vocabularyItems, newDeck.deck_id)
     } catch (vocabError) {
       // Rollback deck creation if vocabulary import fails
       await supabase.from("user_decks").delete().eq("deck_id", newDeck.deck_id)

@@ -85,14 +85,12 @@ export function StartPageLayout(props: StartPageLayoutProps) {
 
       <div class="px-4 pb-24">
         <div class="mx-auto max-w-3xl">
-          <Show when={prerequisitesEnabled()}>
-            <DependencyOverview
-              vocabularyQuery={props.logic.vocabularyQuery}
-              hierarchyQuery={props.logic.hierarchyQuery}
-              fsrsCardsQuery={props.logic.fsrsCardsQuery}
-              dueCardsQuery={props.logic.dueCardsQuery}
-            />
-          </Show>
+          <DependencyOverview
+            vocabularyQuery={props.logic.vocabularyQuery}
+            hierarchyQuery={props.logic.hierarchyQuery}
+            fsrsCardsQuery={props.logic.fsrsCardsQuery}
+            dueCardsQuery={props.logic.dueCardsQuery}
+          />
 
           <Show
             when={

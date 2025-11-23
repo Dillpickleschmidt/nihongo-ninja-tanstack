@@ -6,7 +6,6 @@ import { VocabularyItem } from "@/data/types"
 import {
   dbItemToVocabularyItem,
   formDataToDBInsert,
-  builtInVocabItemsToDBInserts,
   type VocabItemFormData,
 } from "@/features/vocab-page/types/vocabulary"
 
@@ -171,7 +170,10 @@ export const getDeckIdByOriginalIdServerFn = createServerFn({ method: "POST" })
     return deck.deck_id
   })
 
-export async function getVocabForDeck(
+/**
+ * Gets vocabulary items for a deck, converted to VocabularyItem format
+ */
+export async function getVocabForDeckConverted(
   deck_id: string,
 ): Promise<VocabularyItem[]> {
   const supabase = createSupabaseClient()
@@ -184,6 +186,24 @@ export async function getVocabForDeck(
   if (error) throw error
 
   return (data || []).map(dbItemToVocabularyItem)
+}
+
+/**
+ * Gets raw DB vocabulary items for a deck (no conversion to VocabularyItem)
+ */
+export async function getVocabForDeckRaw(
+  deck_id: string,
+): Promise<DBVocabularyItem[]> {
+  const supabase = createSupabaseClient()
+
+  const { data, error } = await supabase
+    .from("deck_vocabulary_items")
+    .select("*")
+    .eq("deck_id", deck_id)
+
+  if (error) throw error
+
+  return data || []
 }
 
 /**
@@ -215,18 +235,30 @@ export const getDeckInfoServerFn = createServerFn({ method: "POST" })
   })
 
 /**
- * Batch insert vocabulary items for a deck
+ * Batch insert DB vocabulary items for a deck (copies from another deck)
  */
-export async function insertVocabularyItems(
-  vocabularyItems: VocabularyItem[],
-  deckId: string,
+export async function insertVocabularyItemsFromDB(
+  vocabularyItems: DBVocabularyItem[],
+  newDeckId: string,
 ): Promise<void> {
   if (vocabularyItems.length === 0) return
 
   const supabase = createSupabaseClient()
-  const vocabularyInserts = builtInVocabItemsToDBInserts(
-    vocabularyItems,
-    deckId,
+
+  // Convert DB items to insert format, updating deck_id
+  const vocabularyInserts: DBVocabularyItemInsert[] = vocabularyItems.map(
+    (item) => ({
+      deck_id: newDeckId,
+      word: item.word,
+      furigana: item.furigana,
+      english: item.english,
+      is_verb: item.is_verb,
+      info: item.info,
+      mnemonics: item.mnemonics,
+      example_sentences: item.example_sentences,
+      particles: item.particles,
+      videos: item.videos,
+    }),
   )
 
   const { error } = await supabase

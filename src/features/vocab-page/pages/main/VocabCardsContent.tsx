@@ -4,7 +4,7 @@ import { getVocabularyBySets } from "@/features/supabase/db/core-vocab"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import { DefaultContent } from "./DefaultContent"
 import { VocabularyCard } from "./components/VocabularyCard"
-import { getVocabForDeck } from "@/features/supabase/db/deck"
+import { getVocabForDeckConverted } from "@/features/supabase/db/deck"
 
 interface VocabCardsContentProps {
   selectedUserDeck: UserDeck | null
@@ -61,7 +61,7 @@ function VocabularyPreview(props: VocabularyPreviewProps) {
         return getVocabularyBySets(module.vocab_set_ids)
       } else if (props.selectedDeck) {
         // User decks: load from database
-        return getVocabForDeck(props.selectedDeck.deck_id)
+        return getVocabForDeckConverted(props.selectedDeck.deck_id)
       }
       return []
     },

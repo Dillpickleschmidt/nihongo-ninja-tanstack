@@ -1,21 +1,13 @@
-// src/data/utils/core.ts
-// TODO: use server functions for fetching or make functions lazy in other files
+// Learning paths and chapters queries
 import { textbooks } from "@/data/textbooks"
 import { chapters } from "@/data/chapters"
-import { static_modules } from "@/data/static_modules"
-import { dynamic_modules } from "@/data/dynamic_modules"
-import { external_resources } from "@/data/external_resources"
 import {
   getUserPathChaptersAsync,
   getUserPathChapterModules,
   getUserLearningPaths,
 } from "@/features/supabase/db/learning-paths"
-import type {
-  TextbookIDEnum,
-  LearningPathChapter,
-  ResolvedModule,
-  LearningPath,
-} from "@/data/types"
+import type { TextbookIDEnum, LearningPathChapter, ResolvedModule, LearningPath } from "@/data/types"
+import { getModulesFromLocalChapter } from "@/data/utils/modules"
 
 /**
  * Gets chapters with modules for a static textbook (internal only).
@@ -38,7 +30,7 @@ function getStaticTextbookChapters(
 /**
  * Gets all chapters from any learning path with full module details.
  */
-export async function getLearningPathChapters(
+async function getLearningPathChapters(
   pathId: string,
 ): Promise<LearningPathChapter[]> {
   // Try static textbook first
@@ -49,48 +41,6 @@ export async function getLearningPathChapters(
 
   // Fall back to user-created learning path from database
   return await getUserPathChaptersAsync(pathId)
-}
-
-/**
- * Gets all module IDs from a static textbook in chapter order.
- * Used for ordering modules in learning path generation.
- * @param textbookId - Textbook ID
- * @returns Array of module IDs across all chapters in order
- */
-export function getStaticTextbookModuleIds(
-  textbookId: TextbookIDEnum,
-): string[] {
-  const chapters = getStaticTextbookChapters(textbookId)
-  const moduleIds: string[] = []
-
-  chapters.forEach((chapter) => {
-    moduleIds.push(...chapter.learning_path_item_ids)
-  })
-
-  return moduleIds
-}
-
-/**
- * Gets resolved module objects for a local (static) chapter.
- * Converts module IDs to full module objects with disabled status.
- */
-function getModulesFromLocalChapter(
-  chapter: LearningPathChapter,
-): ResolvedModule[] {
-  const modules = {
-    ...static_modules,
-    ...dynamic_modules,
-    ...external_resources,
-  }
-  const disabledSet = new Set(chapter.disabled_modules || [])
-
-  return chapter.learning_path_item_ids
-    .map((moduleId) => ({
-      key: moduleId,
-      module: modules[moduleId],
-      disabled: disabledSet.has(moduleId),
-    }))
-    .filter((item): item is ResolvedModule => item.module !== undefined)
 }
 
 /**

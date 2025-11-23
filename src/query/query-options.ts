@@ -15,7 +15,7 @@ import {
   getTranscriptData,
   getModuleMetadata,
 } from "@/features/supabase/db/learning-paths"
-import { getVocabularyForModule } from "@/data/utils/vocab"
+import { getVocabularyForModule } from "@/data/utils/vocabulary/queries"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
 import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
 import type {
@@ -27,7 +27,7 @@ import type { PracticeMode } from "@/features/vocab-practice/types"
 import { fetchKanjiSvgsBatch } from "@/utils/svg-processor"
 import {
   getDeckInfoServerFn,
-  getVocabForDeck,
+  getVocabForDeckConverted,
 } from "@/features/supabase/db/deck"
 import {
   getUserFoldersAndDecks,
@@ -36,7 +36,7 @@ import {
 import {
   getLearningPathChapterItems,
   fetchAllLearningPaths,
-} from "@/data/utils/core"
+} from "@/data/utils/learning-paths"
 import { chapters } from "@/data/chapters"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
 import { dynamic_modules } from "@/data/dynamic_modules"
@@ -292,7 +292,7 @@ export const userDeckInfoQueryOptions = (deckId: string) =>
 export const userDeckVocabularyQueryOptions = (deckId: string) =>
   queryOptions({
     queryKey: queryKeys.userDeckVocabulary(deckId),
-    queryFn: () => getVocabForDeck(deckId),
+    queryFn: () => getVocabForDeckConverted(deckId),
   })
 
 /**

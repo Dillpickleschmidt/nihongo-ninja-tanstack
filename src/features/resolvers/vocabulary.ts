@@ -1,6 +1,6 @@
 // src/features/resolvers/vocabulary.ts
 import { getCoreVocabularyByKeys } from "@/features/supabase/db/core-vocab"
-import { getVocabForDeck } from "@/features/supabase/db/deck"
+import { getVocabForDeckConverted } from "@/features/supabase/db/deck"
 import type { VocabularyItem } from "@/data/types"
 
 /**
@@ -15,7 +15,7 @@ export async function getVocabFromDB(
 ): Promise<VocabularyItem[]> {
   const [coreVocab, deckVocab] = await Promise.all([
     getCoreVocabularyByKeys(keys),
-    deckId ? getVocabForDeck(deckId) : Promise.resolve(new Map()),
+    deckId ? getVocabForDeckConverted(deckId) : Promise.resolve([]),
   ])
 
   // Merge: deck items override core items for matching keys

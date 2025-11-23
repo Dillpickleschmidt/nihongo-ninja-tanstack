@@ -1,5 +1,5 @@
 // core/text/TextProcessor.ts
-import { extractHiragana, convertFuriganaToRubyHtml } from "@/data/utils/text"
+import { extractHiragana, convertFuriganaToRubyHtml } from "@/data/utils/text/furigana"
 import type { ConjugatableSegment, BlankableWord } from "../conjugation/types"
 import * as wanakana from "wanakana"
 

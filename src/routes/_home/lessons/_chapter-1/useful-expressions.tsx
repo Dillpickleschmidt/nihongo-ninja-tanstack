@@ -2,7 +2,7 @@
 import { createFileRoute, Link } from "@tanstack/solid-router"
 import { For, Show } from "solid-js"
 import { Button } from "@/components/ui/button"
-import { getVocabularyForModule } from "@/data/utils/vocab"
+import { getVocabularyForModule } from "@/data/utils/vocabulary/queries"
 import MultipleChoiceText from "@/components/text/MultipleChoiceText"
 import { VocabularyCard } from "@/features/vocab-page/pages/main/components/VocabularyCard"
 

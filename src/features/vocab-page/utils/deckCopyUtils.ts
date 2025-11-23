@@ -1,10 +1,10 @@
 // features/vocab-page/utils/deckCopyUtils.ts
 
 import { getVocabularyBySets } from "@/features/supabase/db/core-vocab"
-import { extractSegmentText } from "@/data/utils/text"
+import { extractSegmentText } from "@/data/utils/text/furigana"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import {
-  getVocabForDeck,
+  getVocabForDeckConverted,
   createCustomDeckServerFn,
 } from "@/features/supabase/db/deck"
 import type { VocabItemFormData } from "@/features/vocab-page/types/vocabulary"
@@ -55,7 +55,7 @@ export async function loadDeckVocabulary(
     }
   } else {
     // Load from database for user decks
-    const vocab = await getVocabForDeck(deck.deck_id)
+    const vocab = await getVocabForDeckConverted(deck.deck_id)
     return vocab.map(vocabularyItemToFormData)
   }
 

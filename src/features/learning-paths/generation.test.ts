@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from "vitest"
 
-// Mock @/data/utils/core to provide test implementation
-vi.mock("@/data/utils/core", () => ({
-  getStaticTextbookModuleIds: (textbookId: string) => [
+// Mock @/data/utils/modules to provide test implementation
+vi.mock("@/data/utils/modules", () => ({
+  getStaticTextbookModuleIds: () => [
     "welcome-overview",
     "japanese-pronunciation",
     "writing-systems",
@@ -18,6 +18,7 @@ vi.mock("@/data/utils/core", () => ({
 
 import {
   createLearningPath,
+  type GrammarModuleOption,
   type ExtractedData,
   type VocabWord,
 } from "./generation"
@@ -33,12 +34,13 @@ describe("Learning path generation", () => {
     furigana: undefined,
     english: word,
     pos: pos as any,
-    transcriptLineId: lineId,
+    transcriptLineIds: [lineId],
   })
 
   describe("chunkVocabularyByFrequency", () => {
     it("filters out unwanted POS", async () => {
       const data: ExtractedData = {
+        grammarPatternLineIds: {},
         grammarPatterns: [],
         vocabulary: [
           createVocabWord("する", "動詞", 0),
@@ -68,6 +70,7 @@ describe("Learning path generation", () => {
     it("creates modules with optimal sizes using distributeEvenly", async () => {
       // 50 verbs + 76 nouns = 126 total
       const data: ExtractedData = {
+        grammarPatternLineIds: {},
         grammarPatterns: [],
         vocabulary: [
           ...Array.from({ length: 50 }, (_, i) =>
@@ -107,6 +110,7 @@ describe("Learning path generation", () => {
       // For now, we test that higher-indexed vocab appears in later modules
 
       const data: ExtractedData = {
+        grammarPatternLineIds: {},
         grammarPatterns: [],
         vocabulary: [
           // Create 50 nouns - lower index = appears first in input = higher frequency assumption
@@ -133,6 +137,7 @@ describe("Learning path generation", () => {
       // This test checks that verb and non-verb modules appear in frequency order
 
       const data: ExtractedData = {
+        grammarPatternLineIds: {},
         grammarPatterns: [],
         vocabulary: [
           // Mix of verbs and nouns
@@ -159,6 +164,7 @@ describe("Learning path generation", () => {
     it("handles edge case with remaining items", async () => {
       // Small amounts: 8 verbs + 7 nouns (won't fill a full 15-item bucket)
       const data: ExtractedData = {
+        grammarPatternLineIds: {},
         grammarPatterns: [],
         vocabulary: [
           ...Array.from({ length: 8 }, (_, i) =>
@@ -188,6 +194,7 @@ describe("Learning path generation", () => {
   describe("createLearningPath integration", () => {
     it("includes always-included modules", async () => {
       const data: ExtractedData = {
+        grammarPatternLineIds: {},
         grammarPatterns: [],
         vocabulary: [],
         transcript: [],
@@ -202,7 +209,9 @@ describe("Learning path generation", () => {
         "hiragana",
       ]
 
-      const grammarModules = result.modules.filter((m) => m.type === "grammar")
+      const grammarModules = result.modules.filter(
+        (m) => m.type === "grammar",
+      ) as GrammarModuleOption[]
       alwaysIncluded.forEach((moduleId) => {
         expect(grammarModules.some((m) => m.moduleId === moduleId)).toBe(true)
       })
@@ -210,6 +219,7 @@ describe("Learning path generation", () => {
 
     it("always-included modules appear first (orderIndex 0-3)", async () => {
       const data: ExtractedData = {
+        grammarPatternLineIds: {},
         grammarPatterns: [],
         vocabulary: [],
         transcript: [],
@@ -224,7 +234,7 @@ describe("Learning path generation", () => {
         "hiragana",
       ]
 
-      const first4Modules = result.modules.slice(0, 4)
+      const first4Modules = result.modules.slice(0, 4) as GrammarModuleOption[]
       first4Modules.forEach((module, idx) => {
         expect(module.type).toBe("grammar")
         expect(module.orderIndex).toBe(idx)
@@ -234,6 +244,7 @@ describe("Learning path generation", () => {
 
     it("unchecks completed modules", async () => {
       const data: ExtractedData = {
+        grammarPatternLineIds: {},
         grammarPatterns: [],
         vocabulary: [],
         transcript: [],
@@ -242,7 +253,9 @@ describe("Learning path generation", () => {
       const completedIds = ["welcome-overview", "japanese-pronunciation"]
       const result = await createLearningPath(data, "genki_1", completedIds)
 
-      const grammarModules = result.modules.filter((m) => m.type === "grammar")
+      const grammarModules = result.modules.filter(
+        (m) => m.type === "grammar",
+      ) as GrammarModuleOption[]
       const checkedModules = grammarModules.filter(
         (m) => completedIds.includes(m.moduleId) && m.checked,
       )
@@ -252,6 +265,7 @@ describe("Learning path generation", () => {
 
     it("orderIndex values are sequential", async () => {
       const data: ExtractedData = {
+        grammarPatternLineIds: {},
         grammarPatterns: ["masen_ka"], // 1 pattern → 1 grammar module
         vocabulary: [
           ...Array.from({ length: 10 }, (_, i) =>
@@ -270,6 +284,7 @@ describe("Learning path generation", () => {
 
     it("no duplicate orderIndex values", async () => {
       const data: ExtractedData = {
+        grammarPatternLineIds: {},
         grammarPatterns: ["masen_ka", "tara_conditional"],
         vocabulary: [
           ...Array.from({ length: 20 }, (_, i) =>
@@ -292,6 +307,7 @@ describe("Learning path generation", () => {
     it("interleaves grammar with vocab when baseRatio < 4", async () => {
       // 6 grammar (after removing always-included: 2 other), 25 vocab → baseRatio = 12, capped at 4
       const data: ExtractedData = {
+        grammarPatternLineIds: {},
         grammarPatterns: [
           "masen_ka",
           "tara_conditional",
@@ -330,6 +346,7 @@ describe("Learning path generation", () => {
     it("caps vocab per grammar at 4 when baseRatio >= 4", async () => {
       // 5 grammar, 50 vocab → baseRatio = 10, capped at 4
       const data: ExtractedData = {
+        grammarPatternLineIds: {},
         grammarPatterns: [
           "masen_ka",
           "tara_conditional",

@@ -3716,7 +3716,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
   全然: {
     word: "全然",
-    furigana: "全然[ぜんぜん ＋ negative]",
+    furigana: "全然[ぜんぜん] ＋ negative",
     english: ["not at all"],
     chapter: 3,
     info: [

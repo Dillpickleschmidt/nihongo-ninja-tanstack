@@ -9,7 +9,7 @@ import type {
   Particle,
 } from "@/data/types"
 import { Json } from "@/features/supabase/db/database.types"
-import { extractSegmentText } from "@/data/utils/text"
+import { extractSegmentText } from "@/data/utils/text/furigana"
 
 // Re-export existing types for convenience
 export type { VocabularyItem } from "@/data/types"
@@ -149,14 +149,6 @@ export function createEmptyVocabItemFormData(): VocabItemFormData {
     readingMnemonics: [],
     kanjiMnemonics: [],
   }
-}
-
-// Helper to convert multiple built-in VocabularyItems to DB inserts
-export function builtInVocabItemsToDBInserts(
-  items: VocabularyItem[],
-  deckId: string,
-): DBVocabularyItemInsert[] {
-  return items.map((item) => builtInVocabToDBInsert(item, deckId))
 }
 
 // Lightweight conversion for preview purposes only

@@ -217,14 +217,14 @@ function calculateDistributions(
   const verbsDistribution =
     verbCount > 0
       ? distributeEvenly(Array(verbCount).fill(0), VOCAB_TARGET_SIZE).map(
-          (c) => c.length,
-        )
+        (c) => c.length,
+      )
       : []
   const nonVerbsDistribution =
     nonVerbCount > 0
       ? distributeEvenly(Array(nonVerbCount).fill(0), VOCAB_TARGET_SIZE).map(
-          (c) => c.length,
-        )
+        (c) => c.length,
+      )
       : []
 
   return { verbsDistribution, nonVerbsDistribution }
@@ -343,7 +343,7 @@ async function applyTextbookOrdering(
   textbookId: TextbookIDEnum,
 ): Promise<GrammarModuleOption[]> {
   // Lazy import to avoid loading the supabase/db chain in tests
-  const { getStaticTextbookModuleIds } = await import("@/data/utils/core")
+  const { getStaticTextbookModuleIds } = await import("@/data/utils/modules")
   const ordering = getStaticTextbookModuleIds(textbookId)
   const orderingMap = new Map(ordering.map((id, idx) => [id, idx]))
 

@@ -1,11 +1,9 @@
 // src/routes/practice/dakuten-handakuten-quiz.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import { KanaQuiz } from "@/features/kana-quiz/KanaQuiz"
-import {
-  getVocabularyForModule,
-  getModuleTitleFromPath,
-  vocabularyToKana,
-} from "@/data/utils/vocab"
+import { getVocabularyForModule } from "@/data/utils/vocabulary/queries"
+import { getModuleTitleFromPath } from "@/data/utils/modules"
+import { vocabularyToKana } from "@/data/utils/vocabulary/transforms"
 
 export const Route = createFileRoute("/_home/practice/dakuten-handakuten-quiz")({
   loader: async ({ location }) => {

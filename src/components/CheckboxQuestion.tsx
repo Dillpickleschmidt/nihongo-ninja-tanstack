@@ -3,7 +3,7 @@ import { createSignal, For } from "solid-js"
 import { cn } from "@/utils"
 import { Checkbox, CheckboxInput, CheckboxLabel } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
-import { extractHiragana, convertFuriganaToRubyHtml } from "@/data/utils/vocab"
+import { extractHiragana, convertFuriganaToRubyHtml } from "@/data/utils/text/furigana"
 
 type CheckboxQuestionProps = {
   questions: string[]
