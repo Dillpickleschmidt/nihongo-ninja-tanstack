@@ -56,7 +56,7 @@ const vocabularySetItems: CoreVocabularySetInsert[] = Object.entries(
   vocabularySets,
 ).map(([setId, set]) => ({
   set_id: setId,
-  vocabulary_keys: set.keys,
+  vocabulary_keys: Array.from(set.keys),
 }))
 
 console.log(`📊 Total vocabulary sets to upsert: ${vocabularySetItems.length}`)

@@ -69,7 +69,7 @@ export interface LearningPathChapterWithModules
 
 // A named set of vocabulary keys (words), for use in modules.
 export interface IndividualVocabularySet {
-  keys: string[]
+  keys: Set<string>
 }
 
 // --- Dynamic Module Types ---
@@ -78,10 +78,10 @@ export interface DynamicModule {
   // Anything dynamic that has data needing to be passed
   title: string
   source_type:
-    | "vocab-list" // Counts for 2 minutes
-    | "vocab-practice" // Each partial answer counts for 15 seconds
-    | "sentence-practice" // Each answer counts for 1 minute
-    | "vocab-test" // Completing it counts for 15 minutes
+  | "vocab-list" // Counts for 2 minutes
+  | "vocab-practice" // Each partial answer counts for 15 seconds
+  | "sentence-practice" // Each answer counts for 1 minute
+  | "vocab-test" // Completing it counts for 15 minutes
   vocab_set_ids: string[]
   description?: string
   instructions?: string
@@ -94,18 +94,18 @@ export interface StaticModule {
   title: string
   link: string // URL to the static content
   source_type:
-    | "grammar-notes"
-    | "chapter-vocab-overview"
-    | "lesson"
-    | "vocab-test"
-    | "conjugation-practice" // static base url
-    | "counter-practice" // static base url
-    | "worksheet"
-    | "video"
-    | "audio"
-    | "reading"
-    | "culture-note"
-    | "game"
+  | "grammar-notes"
+  | "chapter-vocab-overview"
+  | "lesson"
+  | "vocab-test"
+  | "conjugation-practice" // static base url
+  | "counter-practice" // static base url
+  | "worksheet"
+  | "video"
+  | "audio"
+  | "reading"
+  | "culture-note"
+  | "game"
   description?: string
   daily_prog_amount?: number // Todo: default to 10 minutes
 }
