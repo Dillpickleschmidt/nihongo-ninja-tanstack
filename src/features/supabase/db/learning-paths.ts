@@ -29,7 +29,7 @@ export interface UploadLearningPathInput {
   }
   selectedGrammarModules: Array<{
     moduleId: string
-    transcriptLineIds: number[]
+    transcriptLineIds: number[][]
     orderIndex: number
   }>
   selectedVocabDecks: Array<{
@@ -39,7 +39,7 @@ export interface UploadLearningPathInput {
       furigana?: string
       english?: string
     }>
-    transcriptLineIds: number[]
+    transcriptLineIds: number[][]
     orderIndex: number
   }>
 }

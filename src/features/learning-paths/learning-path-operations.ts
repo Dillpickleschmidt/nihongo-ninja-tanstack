@@ -72,9 +72,9 @@ export function prepareSaveData(
     orderIndex: number
   }>
 } {
-  // Filter and extract grammar modules
+  // Extract grammar modules (all are included, not filtered by selection)
   const selectedGrammarModules = processedData.modules
-    .filter((m) => m.type === "grammar" && selectedIds.has(`grammar-${m.moduleId}`))
+    .filter((m) => m.type === "grammar")
     .map((m) => ({
       moduleId: (m as any).moduleId,
       transcriptLineIds: (m as any).transcriptLineIds,
