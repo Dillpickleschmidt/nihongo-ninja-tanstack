@@ -6,7 +6,10 @@ import { FloatingActionBar } from "@/features/import-page/shared/components/Floa
 import { useImportSelection } from "@/features/import-page/shared/hooks/use-import-selection"
 import { uploadLearningPath } from "@/features/supabase/db/learning-paths"
 import { transformModulesToUIFormat } from "@/features/learning-paths/ui-adapter"
-import { processLearningPathFile, prepareSaveData } from "@/features/learning-paths/learning-path-operations"
+import {
+  processLearningPathFile,
+  prepareSaveData,
+} from "@/features/learning-paths/learning-path-operations"
 import { LearningPathUploadView } from "@/features/import-page/learning-path/components/LearningPathUploadView"
 import { LearningPathResultsView } from "@/features/import-page/learning-path/components/LearningPathResultsView"
 import type { ProcessedData } from "@/features/learning-paths/learning-path-operations"
@@ -28,7 +31,9 @@ function LearningPathPage() {
   // UI state
   const [hasUploaded, setHasUploaded] = createSignal(false)
   const [isProcessing, setIsProcessing] = createSignal(false)
-  const [processedData, setProcessedData] = createSignal<ProcessedData | null>(null)
+  const [processedData, setProcessedData] = createSignal<ProcessedData | null>(
+    null,
+  )
   const [error, setError] = createSignal<string | null>(null)
 
   // Single UI data transformation
@@ -36,48 +41,6 @@ function LearningPathPage() {
     const data = processedData()
     if (!data) return null
     return transformModulesToUIFormat(data.modules, data.grammarPatterns)
-  })
-
-  // Display categories for useImportSelection
-  const displayCategories = createMemo(() => {
-    const ui = uiData()
-    if (!ui) return []
-
-    return [
-      {
-        id: "grammar",
-        title: "Grammar",
-        subcategories: [
-          {
-            id: "grammar-items",
-            title: "Grammar Patterns",
-            items: ui.grammar.items,
-          },
-        ],
-      },
-      {
-        id: "vocabulary",
-        title: "Vocabulary",
-        subcategories: [
-          {
-            id: "vocab-items",
-            title: "Vocabulary",
-            items: ui.vocabulary.items,
-          },
-        ],
-      },
-      {
-        id: "kanji",
-        title: "Kanji",
-        subcategories: [
-          {
-            id: "kanji-items",
-            title: "Kanji",
-            items: ui.kanji.items,
-          },
-        ],
-      },
-    ]
   })
 
   const {
@@ -88,7 +51,7 @@ function LearningPathPage() {
     toggleSelectGroup,
     applyStatus,
     clearSelection,
-  } = useImportSelection(displayCategories().length > 0 ? { grammar: "decent", vocabulary: "decent", kanji: "decent" } : {})
+  } = useImportSelection()
 
   const handleFileUpload = async (file: File) => {
     setIsProcessing(true)
@@ -166,7 +129,6 @@ function LearningPathPage() {
       >
         <LearningPathResultsView
           uiData={uiData()}
-          displayCategories={displayCategories()}
           itemStates={itemStates}
           selectedIds={selectedIds()}
           handleItemClick={handleItemClick}

@@ -3,20 +3,26 @@ import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { ImportAccordion } from "@/features/import-page/shared/components/ImportAccordion"
 import { StatisticsSummary } from "@/features/import-page/shared/components/StatisticsSummary"
 import { KeyboardShortcutsHint } from "@/features/import-page/shared/components/KeyboardShortcutsHint"
-import { ImportActionButtonDesktop, ImportActionButtonMobile } from "@/features/import-page/shared/components/ImportActionButton"
+import {
+  ImportActionButtonDesktop,
+  ImportActionButtonMobile,
+} from "@/features/import-page/shared/components/ImportActionButton"
 import { EndOfListIndicator } from "@/features/import-page/shared/components/EndOfListIndicator"
 import { LearningPathFormFields } from "./LearningPathFormFields"
 import type { TextbookIDEnum } from "@/data/types"
 import type { transformModulesToUIFormat } from "@/features/learning-paths/ui-adapter"
+import type {
+  ImportState,
+  ImportItem,
+} from "@/features/import-page/shared/types"
 
 interface LearningPathResultsViewProps {
   uiData: ReturnType<typeof transformModulesToUIFormat> | null
-  displayCategories: any[]
-  itemStates: any
+  itemStates: ImportState
   selectedIds: Set<string>
-  handleItemClick: any
-  handlePointerDown: any
-  toggleSelectGroup: any
+  handleItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
+  handlePointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
+  toggleSelectGroup: (ids: string[]) => void
   pathName: string
   setPathName: (value: string) => void
   showName: string
@@ -30,11 +36,28 @@ interface LearningPathResultsViewProps {
 }
 
 export function LearningPathResultsView(props: LearningPathResultsViewProps) {
+  // Create resolved promises for statistics display
+  const grammarStatPromise = Promise.resolve(
+    props.uiData?.grammar.items.map((item: ImportItem) => ({
+      id: item.id,
+    })) || [],
+  )
+  const vocabStatPromise = Promise.resolve(
+    props.uiData?.vocabulary.items.map((item: ImportItem) => ({
+      id: item.id,
+    })) || [],
+  )
+  const kanjiStatPromise = Promise.resolve(
+    props.uiData?.kanji.items.map((item: ImportItem) => ({
+      id: item.id,
+    })) || [],
+  )
+
   return (
     <div>
       {/* Mobile inputs - appear at very top on mobile */}
       <SSRMediaQuery hideFrom="lg">
-        <div class="space-y-4 mb-8">
+        <div class="mb-8 space-y-4">
           <LearningPathFormFields
             pathName={props.pathName}
             setPathName={props.setPathName}
@@ -52,7 +75,7 @@ export function LearningPathResultsView(props: LearningPathResultsViewProps) {
         {/* --- LEFT: CONTENT LIST --- */}
         <div class="pb-16 lg:col-span-7 xl:col-span-8">
           <main class="animate-in fade-in slide-in-from-bottom-8 space-y-8 duration-700">
-            <h1 class="text-2xl lg:text-3xl mb-4 font-semibold text-muted-foreground">
+            <h1 class="text-muted-foreground mb-4 text-2xl font-semibold lg:text-3xl">
               Here's what we found.
             </h1>
 
@@ -61,7 +84,22 @@ export function LearningPathResultsView(props: LearningPathResultsViewProps) {
               <div class="space-y-2">
                 <StatisticsSummary
                   itemStates={props.itemStates}
-                  categories={props.displayCategories}
+                  itemsPromise={grammarStatPromise}
+                  title="Grammar"
+                  showLearning={false}
+                  isLearningPath={true}
+                />
+                <StatisticsSummary
+                  itemStates={props.itemStates}
+                  itemsPromise={vocabStatPromise}
+                  title="Vocabulary"
+                  showLearning={false}
+                  isLearningPath={true}
+                />
+                <StatisticsSummary
+                  itemStates={props.itemStates}
+                  itemsPromise={kanjiStatPromise}
+                  title="Kanji"
                   showLearning={false}
                   isLearningPath={true}
                 />
@@ -125,7 +163,7 @@ export function LearningPathResultsView(props: LearningPathResultsViewProps) {
 
         {/* --- RIGHT: SIDEBAR --- */}
         <SSRMediaQuery showFrom="lg">
-          <aside class="lg:col-span-5 xl:col-span-4 space-y-5">
+          <aside class="space-y-5 lg:col-span-5 xl:col-span-4">
             {/* Inputs (desktop) - scroll away */}
             <LearningPathFormFields
               pathName={props.pathName}
@@ -140,11 +178,26 @@ export function LearningPathResultsView(props: LearningPathResultsViewProps) {
             />
 
             {/* Sticky container for summary, shortcuts, and save button */}
-            <div class="lg:sticky lg:top-24 space-y-2">
+            <div class="space-y-2 lg:sticky lg:top-24">
               {/* Statistics Summary Component */}
               <StatisticsSummary
                 itemStates={props.itemStates}
-                categories={props.displayCategories}
+                itemsPromise={grammarStatPromise}
+                title="Grammar"
+                showLearning={false}
+                isLearningPath={true}
+              />
+              <StatisticsSummary
+                itemStates={props.itemStates}
+                itemsPromise={vocabStatPromise}
+                title="Vocabulary"
+                showLearning={false}
+                isLearningPath={true}
+              />
+              <StatisticsSummary
+                itemStates={props.itemStates}
+                itemsPromise={kanjiStatPromise}
+                title="Kanji"
                 showLearning={false}
                 isLearningPath={true}
               />
@@ -174,9 +227,9 @@ export function LearningPathResultsView(props: LearningPathResultsViewProps) {
 
       {/* Error message */}
       <Show when={props.error}>
-        <div class="fixed bottom-4 left-4 right-4 rounded bg-red-500/10 p-4 border border-red-500/20 text-red-400">
+        <div class="fixed right-4 bottom-4 left-4 rounded border border-red-500/20 bg-red-500/10 p-4 text-red-400">
           <p class="font-semibold">Error:</p>
-          <p class="text-sm mt-1">{props.error}</p>
+          <p class="mt-1 text-sm">{props.error}</p>
         </div>
       </Show>
     </div>

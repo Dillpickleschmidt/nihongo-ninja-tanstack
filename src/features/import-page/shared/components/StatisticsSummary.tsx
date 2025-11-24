@@ -13,6 +13,7 @@ interface StatisticsSummaryProps {
   itemsPromise: Promise<ItemWithId[]>
   title: string
   showLearning: boolean // When true, shows "Learning" count (automatic mode)
+  isLearningPath?: boolean // When true, total = all items minus mastered (for learning paths)
 }
 
 export function StatisticsSummary(props: StatisticsSummaryProps) {
@@ -27,7 +28,9 @@ export function StatisticsSummary(props: StatisticsSummaryProps) {
     const mastered = ids.filter(
       (id) => props.itemStates[id] === "mastered",
     ).length
-    const total = learning + decent + mastered
+    const total = props.isLearningPath
+      ? ids.length - mastered
+      : learning + decent + mastered
     return { learning, decent, mastered, total }
   })
 
