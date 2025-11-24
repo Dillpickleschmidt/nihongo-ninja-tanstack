@@ -2,8 +2,7 @@
 import { createSignal, Show, Index, createMemo } from "solid-js"
 import { ChevronDown, ChevronRight } from "lucide-solid"
 import { Button } from "@/components/ui/button"
-import type { ImportSubCategory } from "../data/jlpt-data"
-import type { ImportState } from "../types"
+import type { ImportSubCategory, ImportState } from "../types"
 import { ImportItemRow } from "./ImportItemRow"
 
 interface ImportAccordionProps {
@@ -42,7 +41,7 @@ export function ImportAccordion(props: ImportAccordionProps) {
     <div class="bg-background/50 overflow-hidden rounded-lg bg-linear-to-b from-white/1 to-transparent backdrop-blur-sm">
       {/* Header */}
       <div
-        class="flex cursor-pointer items-center justify-between px-4 py-3 transition-colors select-none hover:bg-card-foreground/40"
+        class="hover:bg-card-foreground/40 flex cursor-pointer items-center justify-between px-4 py-3 transition-colors select-none"
         onClick={(e) => {
           e.stopPropagation()
           setIsOpen(!isOpen())

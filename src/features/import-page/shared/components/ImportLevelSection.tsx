@@ -1,6 +1,6 @@
 // src/features/import-page/components/ImportLevelSection.tsx
 import { For } from "solid-js"
-import type { JLPTLevel } from "../data/jlpt-data"
+import type { JLPTLevel } from "../types"
 import type { ImportState } from "../types"
 import { ImportAccordion } from "./ImportAccordion"
 
