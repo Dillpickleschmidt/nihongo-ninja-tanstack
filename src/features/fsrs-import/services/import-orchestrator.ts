@@ -5,7 +5,7 @@ import {
 } from "./spaced-repetition-processor"
 import { mergeReviews } from "../shared/utils/review-merger"
 import { determineMode, validateCardStructure } from "../shared/utils/import-orchestrator-utils"
-import { deduplicateCards, groupCardsByKey } from "../shared/utils/card-deduplication"
+import { deduplicateCards } from "../shared/utils/card-deduplication"
 import { processBatches } from "../shared/utils/batch-processing"
 import type { ImportAdapter } from "../adapters/import-adapter-interface"
 import type { ProcessedCard } from "../shared/types/fsrs-types"

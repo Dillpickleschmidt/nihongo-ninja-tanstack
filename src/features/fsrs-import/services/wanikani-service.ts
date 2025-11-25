@@ -12,12 +12,10 @@ import {
   type DBPracticeItemType,
 } from "../shared/types/fsrs-types"
 
-const WaniKaniSubjectSchema = z
-  .object({
-    slug: z.string(),
-    type: DBPracticeItemTypeSchema,
-  })
-  .passthrough()
+const WaniKaniSubjectSchema = z.looseObject({
+  slug: z.string(),
+  type: DBPracticeItemTypeSchema,
+})
 
 export type WaniKaniSubject = z.infer<typeof WaniKaniSubjectSchema>
 

@@ -64,28 +64,24 @@ describe("ImportSessionManager", () => {
 
   describe("Static Methods - Pure Logic", () => {
     describe("card processing utilities", () => {
-      it("should extract search terms from normalized cards", () => {
+      it("should extract search terms from normalized cards (including empty arrays)", () => {
         const searchTerms =
           ImportSessionManager.extractSearchTerms(mockNormalizedCards)
-
         expect(searchTerms).toEqual(["猫"])
+
+        // Empty array case
+        const emptySearchTerms = ImportSessionManager.extractSearchTerms([])
+        expect(emptySearchTerms).toEqual([])
       })
 
-      it("should handle empty cards array", () => {
-        const searchTerms = ImportSessionManager.extractSearchTerms([])
-
-        expect(searchTerms).toEqual([])
-      })
-
-      it("should extract unique slugs from WaniKani results", () => {
+      it("should extract unique slugs from WaniKani results (including multiple subjects per term)", () => {
+        // Basic case
         const slugs =
           ImportSessionManager.extractSubjectSlugs(mockWaniKaniResults)
-
         expect(slugs).toEqual(expect.arrayContaining(["猫", "犬"]))
         expect(slugs).toHaveLength(2)
-      })
 
-      it("should handle multiple subjects per search term", () => {
+        // Multiple subjects per search term
         const resultsWithMultiple = new Map([
           [
             "本",
@@ -95,12 +91,10 @@ describe("ImportSessionManager", () => {
             ],
           ],
         ])
-
-        const slugs =
+        const multiSlugs =
           ImportSessionManager.extractSubjectSlugs(resultsWithMultiple)
-
-        expect(slugs).toEqual(expect.arrayContaining(["本-vocab", "本-kanji"]))
-        expect(slugs).toHaveLength(2)
+        expect(multiSlugs).toEqual(expect.arrayContaining(["本-vocab", "本-kanji"]))
+        expect(multiSlugs).toHaveLength(2)
       })
 
       it("should group existing cards by practice_item_key", () => {
@@ -200,65 +194,51 @@ describe("ImportSessionManager", () => {
         expect(result.errors).toHaveLength(0)
       })
 
-      it("should reject invalid cards array", () => {
-        const input = {
-          cards: "not-an-array",
-          source: "test-source",
-        }
+      it("should reject invalid input (missing/wrong types for cards and source)", () => {
+        // Invalid cards array
+        const result1 = ImportSessionManager.validateInput(
+          { cards: "not-an-array", source: "test-source" },
+          mockAdapter,
+        )
+        expect(result1.valid).toBe(false)
+        expect(result1.errors).toContain("Invalid data: cards array required")
 
-        const result = ImportSessionManager.validateInput(input, mockAdapter)
-
-        expect(result.valid).toBe(false)
-        expect(result.errors).toContain("Invalid data: cards array required")
+        // Missing source
+        const result2 = ImportSessionManager.validateInput(
+          { cards: mockNormalizedCards, source: null },
+          mockAdapter,
+        )
+        expect(result2.valid).toBe(false)
+        expect(result2.errors).toContain("Invalid data: source string required")
       })
 
-      it("should reject missing source", () => {
-        const input = {
-          cards: mockNormalizedCards,
-          source: null,
-        }
-
-        const result = ImportSessionManager.validateInput(input, mockAdapter)
-
-        expect(result.valid).toBe(false)
-        expect(result.errors).toContain("Invalid data: source string required")
-      })
-
-      it("should reject adapter validation failure", () => {
+      it("should reject when adapter validation fails or no cards produced", () => {
+        // Adapter validation failure
         const invalidAdapter = {
           ...mockAdapter,
-          validateInput: vi.fn().mockReturnValue(false),
+          validateInput: vi.fn().mockReturnValue(false) as any,
         }
+        const result1 = ImportSessionManager.validateInput(
+          { cards: mockNormalizedCards, source: "test-source" },
+          invalidAdapter,
+        )
+        expect(result1.valid).toBe(false)
+        expect(result1.errors).toContain("Invalid data format for adapter")
 
-        const input = {
-          cards: mockNormalizedCards,
-          source: "test-source",
-        }
-
-        const result = ImportSessionManager.validateInput(input, invalidAdapter)
-
-        expect(result.valid).toBe(false)
-        expect(result.errors).toContain("Invalid data format for adapter")
-      })
-
-      it("should reject when no cards are produced", () => {
+        // Empty adapter results
         const emptyAdapter = {
           ...mockAdapter,
           transformCards: vi.fn().mockReturnValue([]),
         }
-
-        const input = {
-          cards: mockNormalizedCards,
-          source: "test-source",
-        }
-
-        const result = ImportSessionManager.validateInput(input, emptyAdapter)
-
-        expect(result.valid).toBe(false)
-        expect(result.errors).toContain("No valid cards found in input data")
+        const result2 = ImportSessionManager.validateInput(
+          { cards: mockNormalizedCards, source: "test-source" },
+          emptyAdapter,
+        )
+        expect(result2.valid).toBe(false)
+        expect(result2.errors).toContain("No valid cards found in input data")
       })
 
-      it("should handle validation errors gracefully", () => {
+      it("should handle transform errors gracefully", () => {
         const errorAdapter = {
           ...mockAdapter,
           transformCards: vi.fn().mockImplementation(() => {
@@ -266,12 +246,10 @@ describe("ImportSessionManager", () => {
           }),
         }
 
-        const input = {
-          cards: mockNormalizedCards,
-          source: "test-source",
-        }
-
-        const result = ImportSessionManager.validateInput(input, errorAdapter)
+        const result = ImportSessionManager.validateInput(
+          { cards: mockNormalizedCards, source: "test-source" },
+          errorAdapter,
+        )
 
         expect(result.valid).toBe(false)
         expect(result.errors[0]).toContain("Transform failed")
@@ -294,13 +272,11 @@ describe("ImportSessionManager", () => {
 
         expect(result.deduplicatedCards).toHaveLength(2)
         expect(result.duplicatesRemoved).toBe(1)
-      })
 
-      it("should handle empty array", () => {
-        const result = ImportSessionManager.deduplicateProcessedCards([])
-
-        expect(result.deduplicatedCards).toHaveLength(0)
-        expect(result.duplicatesRemoved).toBe(0)
+        // Empty array case
+        const emptyResult = ImportSessionManager.deduplicateProcessedCards([])
+        expect(emptyResult.deduplicatedCards).toHaveLength(0)
+        expect(emptyResult.duplicatesRemoved).toBe(0)
       })
     })
   })
@@ -326,13 +302,8 @@ describe("ImportSessionManager", () => {
         const mockDependencies = createMockDependencies()
         const sessionManager = new ImportSessionManager()
 
-        const input = {
-          cards: mockNormalizedCards,
-          source: "test-source",
-        }
-
         const result = await sessionManager.importCards(
-          input,
+          { cards: mockNormalizedCards, source: "test-source" },
           mockAdapter,
           mockDependencies,
         )
@@ -344,67 +315,42 @@ describe("ImportSessionManager", () => {
         expect(mockDependencies.batchUpsertFSRSCards).toHaveBeenCalledTimes(1)
       })
 
-      it("should fail on validation error", async () => {
-        const mockDependencies = createMockDependencies()
-        const sessionManager = new ImportSessionManager()
-
-        const invalidInput = {
-          cards: "invalid",
-          source: "test-source",
-        }
-
-        const result = await sessionManager.importCards(
-          invalidInput,
+      it("should fail on validation, authentication, or data lookup errors", async () => {
+        // Validation error
+        const deps1 = createMockDependencies()
+        const result1 = await new ImportSessionManager().importCards(
+          { cards: "invalid", source: "test-source" },
           mockAdapter,
-          mockDependencies,
+          deps1,
         )
+        expect(result1.success).toBe(false)
+        expect(result1.message).toContain("Validation failed")
 
-        expect(result.success).toBe(false)
-        expect(result.message).toContain("Validation failed")
-      })
-
-      it("should fail on authentication error", async () => {
-        const mockDependencies = createMockDependencies()
-        mockDependencies.getCurrentUser = vi
+        // Authentication error
+        const deps2 = createMockDependencies()
+        deps2.getCurrentUser = vi
           .fn()
           .mockResolvedValue({ user: null })
-
-        const sessionManager = new ImportSessionManager()
-        const input = {
-          cards: mockNormalizedCards,
-          source: "test-source",
-        }
-
-        const result = await sessionManager.importCards(
-          input,
+        const result2 = await new ImportSessionManager().importCards(
+          { cards: mockNormalizedCards, source: "test-source" },
           mockAdapter,
-          mockDependencies,
+          deps2,
         )
+        expect(result2.success).toBe(false)
+        expect(result2.message).toBe("Authentication required")
 
-        expect(result.success).toBe(false)
-        expect(result.message).toBe("Authentication required")
-      })
-
-      it("should fail when no WaniKani subjects found", async () => {
-        const mockDependencies = createMockDependencies()
-        mockDependencies.waniKaniService.batchFindSubjects = vi
+        // No WaniKani subjects found
+        const deps3 = createMockDependencies()
+        deps3.waniKaniService.batchFindSubjects = vi
           .fn()
           .mockResolvedValue(new Map())
-
-        const sessionManager = new ImportSessionManager()
-        const input = {
-          cards: mockNormalizedCards,
-          source: "test-source",
-        }
-
-        const result = await sessionManager.importCards(
-          input,
+        const result3 = await new ImportSessionManager().importCards(
+          { cards: mockNormalizedCards, source: "test-source" },
           mockAdapter,
-          mockDependencies,
+          deps3,
         )
-
-        expect(result.success).toBe(false)
-        expect(result.message).toBe(
+        expect(result3.success).toBe(false)
+        expect(result3.message).toBe(
           "No valid WaniKani subjects found for your cards",
         )
       })
@@ -415,14 +361,8 @@ describe("ImportSessionManager", () => {
           .fn()
           .mockRejectedValue(new Error("Database error"))
 
-        const sessionManager = new ImportSessionManager()
-        const input = {
-          cards: mockNormalizedCards,
-          source: "test-source",
-        }
-
-        const result = await sessionManager.importCards(
-          input,
+        const result = await new ImportSessionManager().importCards(
+          { cards: mockNormalizedCards, source: "test-source" },
           mockAdapter,
           mockDependencies,
         )

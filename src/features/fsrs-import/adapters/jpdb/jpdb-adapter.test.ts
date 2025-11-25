@@ -47,45 +47,27 @@ describe("jpdbAdapter", () => {
   })
 
   describe("normalizeGrade", () => {
-    it("maps 'okay' to Rating.Good", () => {
+    it("maps jpdb grades to FSRS ratings and custom ratings", () => {
+      // Standard FSRS ratings
       expect(jpdbAdapter.normalizeGrade("okay")).toBe(Rating.Good)
-    })
-
-    it("maps 'hard' to Rating.Hard", () => {
       expect(jpdbAdapter.normalizeGrade("hard")).toBe(Rating.Hard)
-    })
-
-    it("maps 'something' to Rating.Again", () => {
       expect(jpdbAdapter.normalizeGrade("something")).toBe(Rating.Again)
-    })
-
-    it("maps 'easy' to Rating.Easy", () => {
       expect(jpdbAdapter.normalizeGrade("easy")).toBe(Rating.Easy)
-    })
-
-    it("maps 'known' to Rating.Good", () => {
       expect(jpdbAdapter.normalizeGrade("known")).toBe(Rating.Good)
-    })
 
-    it("maps 'unknown' to CustomFSRSRating.Ignore", () => {
+      // Custom ratings
       expect(jpdbAdapter.normalizeGrade("unknown")).toBe(
         CustomFSRSRating.Ignore,
       )
-    })
-
-    it("maps 'nothing' to CustomFSRSRating.Forget", () => {
       expect(jpdbAdapter.normalizeGrade("nothing")).toBe(
         CustomFSRSRating.Forget,
       )
-    })
-
-    it("maps 'never-forget' to CustomFSRSRating.NeverForget", () => {
       expect(jpdbAdapter.normalizeGrade("never-forget")).toBe(
         CustomFSRSRating.NeverForget,
       )
     })
 
-    it("handles unknown grades with fallback", () => {
+    it("handles unknown grades with fallback to Rating.Again", () => {
       expect(jpdbAdapter.normalizeGrade("invalid-grade")).toBe(Rating.Again)
     })
   })
@@ -254,71 +236,7 @@ describe("jpdbAdapter", () => {
   })
 
   describe("jpdb card type processing", () => {
-    it("processes vocabulary JP->EN cards correctly", () => {
-      const jpdbData: JpdbJsonData = {
-        cards_vocabulary_jp_en: [
-          { vid: 1, spelling: "日本語", reading: "にほんご", reviews: [] },
-        ],
-        cards_vocabulary_en_jp: [],
-        cards_kanji_keyword_char: [],
-        cards_kanji_char_keyword: [],
-      }
-
-      const result = jpdbAdapter.transformCards(jpdbData)
-
-      expect(result).toHaveLength(1)
-      expect(result[0].source).toContain("vocabulary-jp-en")
-      expect(result[0].searchTerm).toBe("日本語")
-    })
-
-    it("processes vocabulary EN->JP cards correctly", () => {
-      const jpdbData: JpdbJsonData = {
-        cards_vocabulary_jp_en: [],
-        cards_vocabulary_en_jp: [
-          { vid: 1, spelling: "language", reading: "げんご", reviews: [] },
-        ],
-        cards_kanji_keyword_char: [],
-        cards_kanji_char_keyword: [],
-      }
-
-      const result = jpdbAdapter.transformCards(jpdbData)
-
-      expect(result).toHaveLength(1)
-      expect(result[0].source).toContain("vocabulary-en-jp")
-      expect(result[0].searchTerm).toBe("language")
-    })
-
-    it("processes kanji keyword->char cards correctly", () => {
-      const jpdbData: JpdbJsonData = {
-        cards_vocabulary_jp_en: [],
-        cards_vocabulary_en_jp: [],
-        cards_kanji_keyword_char: [{ character: "学", reviews: [] }],
-        cards_kanji_char_keyword: [],
-      }
-
-      const result = jpdbAdapter.transformCards(jpdbData)
-
-      expect(result).toHaveLength(1)
-      expect(result[0].source).toContain("kanji-keyword-char")
-      expect(result[0].searchTerm).toBe("学")
-    })
-
-    it("processes kanji char->keyword cards correctly", () => {
-      const jpdbData: JpdbJsonData = {
-        cards_vocabulary_jp_en: [],
-        cards_vocabulary_en_jp: [],
-        cards_kanji_keyword_char: [],
-        cards_kanji_char_keyword: [{ character: "習", reviews: [] }],
-      }
-
-      const result = jpdbAdapter.transformCards(jpdbData)
-
-      expect(result).toHaveLength(1)
-      expect(result[0].source).toContain("kanji-char-keyword")
-      expect(result[0].searchTerm).toBe("習")
-    })
-
-    it("processes multiple card types together", () => {
+    it("processes all card types correctly with proper source labels", () => {
       const jpdbData: JpdbJsonData = {
         cards_vocabulary_jp_en: [
           { vid: 1, spelling: "単語", reading: "たんご", reviews: [] },
@@ -334,20 +252,18 @@ describe("jpdbAdapter", () => {
 
       expect(result).toHaveLength(4)
 
-      const sources = result.map((card) => card.source)
+      // Verify each card type is processed with correct source
+      expect(result[0].searchTerm).toBe("単語")
+      expect(result[0].source).toContain("vocabulary-jp-en")
 
-      expect(
-        sources.some((source) => source.includes("vocabulary-jp-en")),
-      ).toBe(true)
-      expect(
-        sources.some((source) => source.includes("vocabulary-en-jp")),
-      ).toBe(true)
-      expect(
-        sources.some((source) => source.includes("kanji-keyword-char")),
-      ).toBe(true)
-      expect(
-        sources.some((source) => source.includes("kanji-char-keyword")),
-      ).toBe(true)
+      expect(result[1].searchTerm).toBe("word")
+      expect(result[1].source).toContain("vocabulary-en-jp")
+
+      expect(result[2].searchTerm).toBe("単")
+      expect(result[2].source).toContain("kanji-keyword-char")
+
+      expect(result[3].searchTerm).toBe("語")
+      expect(result[3].source).toContain("kanji-char-keyword")
     })
   })
 })

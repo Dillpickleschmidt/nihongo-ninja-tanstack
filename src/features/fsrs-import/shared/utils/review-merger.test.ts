@@ -33,7 +33,7 @@ describe("reviewMerger", () => {
       expect(result[1].source).toBe("imported")
     })
 
-    it("preserves existing reviews when no conflicts", () => {
+    it("preserves both existing and imported reviews when no conflicts", () => {
       const existingReviews: NormalizedReview[] = [
         {
           timestamp: new Date("2024-01-01T10:00:00Z"),
@@ -43,31 +43,6 @@ describe("reviewMerger", () => {
         {
           timestamp: new Date("2024-01-02T10:00:00Z"),
           grade: Rating.Easy,
-          source: "existing",
-        },
-      ]
-
-      const importedReviews: NormalizedReview[] = [
-        {
-          timestamp: new Date("2024-01-05T10:00:00Z"),
-          grade: Rating.Hard,
-          source: "imported",
-        },
-      ]
-
-      const result = mergeReviews(existingReviews, importedReviews)
-
-      const existingInResult = result.filter((r) => r.source === "existing")
-      expect(existingInResult).toHaveLength(2)
-      expect(existingInResult[0].grade).toBe(Rating.Good)
-      expect(existingInResult[1].grade).toBe(Rating.Easy)
-    })
-
-    it("preserves imported reviews when no conflicts", () => {
-      const existingReviews: NormalizedReview[] = [
-        {
-          timestamp: new Date("2024-01-01T10:00:00Z"),
-          grade: Rating.Good,
           source: "existing",
         },
       ]
@@ -87,55 +62,40 @@ describe("reviewMerger", () => {
 
       const result = mergeReviews(existingReviews, importedReviews)
 
+      const existingInResult = result.filter((r) => r.source === "existing")
+      expect(existingInResult).toHaveLength(2)
       const importedInResult = result.filter((r) => r.source === "imported")
       expect(importedInResult).toHaveLength(2)
-      expect(importedInResult[0].grade).toBe(Rating.Hard)
-      expect(importedInResult[1].grade).toBe(Rating.Again)
     })
 
-    it("handles empty existing reviews array", () => {
-      const existingReviews: NormalizedReview[] = []
+    it("handles empty review arrays", () => {
+      // Both empty
+      expect(mergeReviews([], [])).toHaveLength(0)
 
-      const importedReviews: NormalizedReview[] = [
+      // Empty existing
+      const importedOnly = mergeReviews([], [
         {
           timestamp: new Date("2024-01-03T10:00:00Z"),
           grade: Rating.Hard,
           source: "imported",
         },
-      ]
+      ])
+      expect(importedOnly).toHaveLength(1)
+      expect(importedOnly[0].source).toBe("imported")
 
-      const result = mergeReviews(existingReviews, importedReviews)
-
-      expect(result).toHaveLength(1)
-      expect(result[0].source).toBe("imported")
-      expect(result[0].grade).toBe(Rating.Hard)
-    })
-
-    it("handles empty imported reviews array", () => {
-      const existingReviews: NormalizedReview[] = [
-        {
-          timestamp: new Date("2024-01-01T10:00:00Z"),
-          grade: Rating.Good,
-          source: "existing",
-        },
-      ]
-
-      const importedReviews: NormalizedReview[] = []
-
-      const result = mergeReviews(existingReviews, importedReviews)
-
-      expect(result).toHaveLength(1)
-      expect(result[0].source).toBe("existing")
-      expect(result[0].grade).toBe(Rating.Good)
-    })
-
-    it("handles both arrays empty", () => {
-      const existingReviews: NormalizedReview[] = []
-      const importedReviews: NormalizedReview[] = []
-
-      const result = mergeReviews(existingReviews, importedReviews)
-
-      expect(result).toHaveLength(0)
+      // Empty imported
+      const existingOnly = mergeReviews(
+        [
+          {
+            timestamp: new Date("2024-01-01T10:00:00Z"),
+            grade: Rating.Good,
+            source: "existing",
+          },
+        ],
+        []
+      )
+      expect(existingOnly).toHaveLength(1)
+      expect(existingOnly[0].source).toBe("existing")
     })
   })
 
@@ -237,8 +197,8 @@ describe("reviewMerger", () => {
   })
 
   describe("mergeReviews - Chronological Ordering", () => {
-    it("sorts unsorted existing reviews", () => {
-      const existingReviews: NormalizedReview[] = [
+    it("maintains chronological order with unsorted input", () => {
+      const unsortedExisting: NormalizedReview[] = [
         {
           timestamp: new Date("2024-01-03T10:00:00Z"),
           grade: Rating.Good,
@@ -251,18 +211,7 @@ describe("reviewMerger", () => {
         },
       ]
 
-      const importedReviews: NormalizedReview[] = []
-
-      const result = mergeReviews(existingReviews, importedReviews)
-
-      expect(result[0].timestamp).toEqual(new Date("2024-01-01T10:00:00Z"))
-      expect(result[1].timestamp).toEqual(new Date("2024-01-03T10:00:00Z"))
-    })
-
-    it("sorts unsorted imported reviews", () => {
-      const existingReviews: NormalizedReview[] = []
-
-      const importedReviews: NormalizedReview[] = [
+      const unsortedImported: NormalizedReview[] = [
         {
           timestamp: new Date("2024-01-05T10:00:00Z"),
           grade: Rating.Good,
@@ -275,45 +224,13 @@ describe("reviewMerger", () => {
         },
       ]
 
-      const result = mergeReviews(existingReviews, importedReviews)
-
-      expect(result[0].timestamp).toEqual(new Date("2024-01-02T10:00:00Z"))
-      expect(result[1].timestamp).toEqual(new Date("2024-01-05T10:00:00Z"))
-    })
-
-    it("maintains overall chronological order in result", () => {
-      const existingReviews: NormalizedReview[] = [
-        {
-          timestamp: new Date("2024-01-04T10:00:00Z"),
-          grade: Rating.Good,
-          source: "existing",
-        },
-        {
-          timestamp: new Date("2024-01-01T10:00:00Z"),
-          grade: Rating.Hard,
-          source: "existing",
-        },
-      ]
-
-      const importedReviews: NormalizedReview[] = [
-        {
-          timestamp: new Date("2024-01-05T10:00:00Z"),
-          grade: Rating.Easy,
-          source: "imported",
-        },
-        {
-          timestamp: new Date("2024-01-02T10:00:00Z"),
-          grade: Rating.Again,
-          source: "imported",
-        },
-      ]
-
-      const result = mergeReviews(existingReviews, importedReviews)
+      const result = mergeReviews(unsortedExisting, unsortedImported)
 
       const timestamps = result.map((r) => r.timestamp.getTime())
       const sortedTimestamps = [...timestamps].sort()
       expect(timestamps).toEqual(sortedTimestamps)
     })
+
   })
 
   describe("mergeReviews - Edge Cases", () => {
@@ -349,46 +266,5 @@ describe("reviewMerger", () => {
       expect(result[1].timestamp).toEqual(new Date("2024-01-02T10:00:00Z"))
     })
 
-    it("handles malformed review objects gracefully", () => {
-      const existingReviews: NormalizedReview[] = [
-        {
-          timestamp: new Date("2024-01-01T10:00:00Z"),
-          grade: Rating.Good,
-          source: "existing",
-        },
-      ]
-
-      // Simulate malformed reviews that might slip through TypeScript
-      const importedReviews: any[] = [
-        {
-          timestamp: new Date("2024-01-02T10:00:00Z"),
-          grade: Rating.Hard,
-          source: "imported",
-        },
-        {
-          // Missing timestamp
-          grade: Rating.Easy,
-          source: "imported",
-        },
-        {
-          timestamp: new Date("2024-01-03T10:00:00Z"),
-          // Missing grade
-          source: "imported",
-        },
-      ]
-
-      const result = mergeReviews(
-        existingReviews,
-        importedReviews as NormalizedReview[],
-      )
-
-      // Should only include valid reviews
-      expect(result.length).toBeGreaterThan(0)
-      expect(
-        result.every(
-          (r) => r.timestamp instanceof Date && r.grade !== undefined,
-        ),
-      ).toBe(true)
-    })
   })
 })

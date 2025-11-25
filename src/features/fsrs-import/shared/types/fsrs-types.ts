@@ -6,40 +6,36 @@ export const FSRSProcessingGradeSchema = z.union([
 ])
 export type FSRSProcessingGrade = z.infer<typeof FSRSProcessingGradeSchema>
 
-export const FSRSCardSchema = z
-  .object({
-    due: z.date(),
-    stability: z.number(),
-    difficulty: z.number(),
-    elapsed_days: z.number(),
-    scheduled_days: z.number(),
-    reps: z.number(),
-    lapses: z.number(),
-    state: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
-    learning_steps: z.number().optional(),
-  })
-  .passthrough()
+export const FSRSCardSchema = z.looseObject({
+  due: z.date(),
+  stability: z.number(),
+  difficulty: z.number(),
+  elapsed_days: z.number(),
+  scheduled_days: z.number(),
+  reps: z.number(),
+  lapses: z.number(),
+  state: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
+  learning_steps: z.number().optional(),
+})
 
-export const FSRSReviewLogSchema = z
-  .object({
-    rating: z.union([
-      z.literal(0), // Forget rating
-      z.literal(1),
-      z.literal(2),
-      z.literal(3),
-      z.literal(4),
-    ]),
-    state: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
-    due: z.date(),
-    stability: z.number(),
-    difficulty: z.number(),
-    elapsed_days: z.number(),
-    last_elapsed_days: z.number(),
-    scheduled_days: z.number(),
-    learning_steps: z.number(),
-    review: z.date(),
-  })
-  .passthrough()
+export const FSRSReviewLogSchema = z.looseObject({
+  rating: z.union([
+    z.literal(0), // Forget rating
+    z.literal(1),
+    z.literal(2),
+    z.literal(3),
+    z.literal(4),
+  ]),
+  state: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
+  due: z.date(),
+  stability: z.number(),
+  difficulty: z.number(),
+  elapsed_days: z.number(),
+  last_elapsed_days: z.number(),
+  scheduled_days: z.number(),
+  learning_steps: z.number(),
+  review: z.date(),
+})
 
 export const DBPracticeItemTypeSchema = z.enum([
   "vocabulary",

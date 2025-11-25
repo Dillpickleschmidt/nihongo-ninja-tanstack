@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { ProcessedCardSchema, type ProcessedCard } from "./fsrs-types"
+import { ProcessedCardSchema, FSRSProcessingGradeSchema } from "./fsrs-types"
 
 // =============================================================================
 // NORMALIZED DATA MODELS (from import sources)
@@ -7,7 +7,7 @@ import { ProcessedCardSchema, type ProcessedCard } from "./fsrs-types"
 
 export const NormalizedReviewSchema = z.object({
   timestamp: z.date(),
-  grade: z.any(),
+  grade: FSRSProcessingGradeSchema,
   source: z.string(),
 })
 export type NormalizedReview = z.infer<typeof NormalizedReviewSchema>
