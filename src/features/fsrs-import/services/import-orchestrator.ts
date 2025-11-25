@@ -1,26 +1,23 @@
 import { createEmptyCard, FSRS } from "ts-fsrs"
-import { mergeReviews } from "./utils"
 import {
   simulateFSRSReviews,
   type FSRSProcessingGrade,
-} from "../services/spaced-repetition-processor"
-import {
-  determineMode,
-  deduplicateCards,
-  processBatches,
-  validateCardStructure,
-} from "./utils"
+} from "./spaced-repetition-processor"
+import { mergeReviews } from "../shared/utils/review-merger"
+import { determineMode, validateCardStructure } from "../shared/utils/import-orchestrator-utils"
+import { deduplicateCards, groupCardsByKey } from "../shared/utils/card-deduplication"
+import { processBatches } from "../shared/utils/batch-processing"
 import type { ImportAdapter } from "../adapters/import-adapter-interface"
+import type { ProcessedCard } from "../shared/types/fsrs-types"
 import {
   type NormalizedCard,
-  type ProcessedCard,
   type ValidationResult,
   type ImportResult,
   type BatchProcessingContext,
   type DeduplicationStats,
   safeParseImportInput,
   ImportResultSchema,
-} from "./schemas"
+} from "../shared/types/import-data-models"
 
 // =============================================================================
 // DEPENDENCY INJECTION INTERFACE

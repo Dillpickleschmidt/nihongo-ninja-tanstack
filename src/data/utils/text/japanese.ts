@@ -5,6 +5,11 @@ export function containsKanji(text: string): boolean {
   return /[\u4e00-\u9faf]/.test(text)
 }
 
+// Check if text contains any Japanese characters (kanji, hiragana, or katakana)
+export function containsJapanese(text: string): boolean {
+  return /[\u4e00-\u9faf\u3040-\u309f\u30a0-\u30ff]/.test(text)
+}
+
 /**
  * Extract all kanji characters from text using Unicode ranges
  * @param text - Input text that may contain kanji

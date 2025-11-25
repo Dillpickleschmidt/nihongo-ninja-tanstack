@@ -1,10 +1,12 @@
 import { createServerFn } from "@tanstack/solid-start"
-import { getWaniKaniService } from "../services/wanikani-service"
-import { type NormalizedCard } from "../core/schemas"
+import { getWaniKaniService, type WaniKaniSubject } from "../../services/wanikani-service"
+import { type NormalizedCard } from "../../shared/types/import-data-models"
 import {
   type JpdbValidationResponse,
+  type MatchedKanjiRadical,
+  type UnmatchedKanjiRadical,
   JpdbValidationResponseSchema,
-} from "../core/jpdb-validation-types"
+} from "../../adapters/jpdb/jpdb-validation-types"
 import { z } from "zod"
 
 const ValidateJpdbImportInputSchema = z.object({
@@ -48,20 +50,20 @@ export const validateJpdbImportServerFn = createServerFn({
     const waniKaniResults =
       await waniKaniService.batchFindSubjects(searchTerms)
 
-    const matched = []
-    const unmatched = []
+    const matched: MatchedKanjiRadical[] = []
+    const unmatched: UnmatchedKanjiRadical[] = []
 
     for (const card of kanjiRadicalCards) {
       const subjects = waniKaniResults.get(card.searchTerm) || []
 
       if (subjects.length > 0) {
-        // Take the first subject's meanings
-        const subject = subjects[0]
-        const meanings = subject.meanings?.map((m: any) => m.meaning).join(", ") || "No meaning available"
+        // Character found in WaniKani - use subject slug as meaning placeholder
+        const subject: WaniKaniSubject = subjects[0]
+        const meaning = subject.slug
 
         matched.push({
           character: card.searchTerm,
-          meaning: meanings,
+          meaning,
           source: card.source,
         })
       } else {

@@ -1,18 +1,8 @@
-import {
-  type ImportAdapter,
-  type NormalizedCard,
-  type NormalizedReview,
-  normalizeReview,
-} from "./import-adapter-interface"
-import {
-  type JpdbJsonData,
-  type JpdbVocabularyCard,
-  type JpdbKanjiCard,
-  type JpdbReview,
-  safeParseJpdbJsonData,
-  mapJpdbGradeToFSRS,
-  normalizeTimestamp,
-} from "../core/schemas"
+import { type ImportAdapter } from "../import-adapter-interface"
+import { type NormalizedCard, NormalizedReviewSchema } from "../../shared/types/import-data-models"
+import { normalizeTimestamp } from "../adapter-utils"
+import type { JpdbJsonData, JpdbVocabularyCard, JpdbKanjiCard, JpdbReview } from "./jpdb-types"
+import { safeParseJpdbJsonData, mapJpdbGradeToFSRS } from "./jpdb-schemas"
 
 /**
  * jpdb.io import adapter implementation
@@ -127,12 +117,13 @@ function transformKanjiCard(
 function transformReviews(
   jpdbReviews: JpdbReview[],
   source: string,
-): NormalizedReview[] {
+) {
   return jpdbReviews.map((review) => {
-    return normalizeReview({
+    const normalized = {
       timestamp: normalizeTimestamp(review.timestamp),
       grade: mapJpdbGradeToFSRS(review.grade),
       source: source,
-    })
+    }
+    return NormalizedReviewSchema.parse(normalized)
   })
 }

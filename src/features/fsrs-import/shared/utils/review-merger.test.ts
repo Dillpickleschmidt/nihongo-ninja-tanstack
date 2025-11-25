@@ -1,9 +1,9 @@
-// src/features/fsrs-import/__tests__/reviewMerger.test.ts
+// src/features/fsrs-import/shared/utils/review-merger.test.ts
 
 import { describe, it, expect } from "vitest"
 import { Rating } from "ts-fsrs"
-import { mergeReviews } from "../reviewMerger"
-import { type NormalizedReview } from "../../core/schemas"
+import { mergeReviews } from "./review-merger"
+import { type NormalizedReview } from "../types/import-data-models"
 
 describe("reviewMerger", () => {
   describe("mergeReviews - Basic Merging", () => {

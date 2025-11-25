@@ -1,13 +1,18 @@
 import {
   type NormalizedCard,
   type NormalizedReview,
-  type FSRSProcessingGrade,
-  type RawReview,
-  normalizeTimestamp,
   NormalizedReviewSchema,
-} from "../core/schemas"
+} from "../shared/types/import-data-models"
+import { type FSRSProcessingGrade } from "../shared/types/fsrs-types"
+import { normalizeTimestamp } from "./adapter-utils"
 
 export { type NormalizedCard, type NormalizedReview }
+
+export interface RawReview {
+  timestamp: unknown
+  grade: any
+  source: string
+}
 
 export interface ImportAdapter<TInput> {
   validateInput(data: any): data is TInput

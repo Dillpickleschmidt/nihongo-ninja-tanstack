@@ -5,13 +5,10 @@ import { FSRS } from "ts-fsrs"
 import {
   ImportSessionManager,
   type ImportDependencies,
-} from "../import-manager"
-import {
-  type ProcessedCard,
-  type NormalizedCard,
-  type BatchProcessingContext,
-} from "../schemas"
-import type { ImportAdapter } from "../../adapters/import-adapter-interface"
+} from "./import-orchestrator"
+import type { ProcessedCard } from "../shared/types/fsrs-types"
+import type { BatchProcessingContext, NormalizedCard } from "../shared/types/import-data-models"
+import type { ImportAdapter } from "../adapters/import-adapter-interface"
 
 describe("ImportSessionManager", () => {
   // Mock data

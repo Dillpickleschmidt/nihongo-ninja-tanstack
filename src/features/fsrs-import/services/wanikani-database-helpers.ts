@@ -1,6 +1,6 @@
 // src/features/fsrs-import/wanikaniHelpers.ts
 
-import { type DBPracticeItemType } from "../core/schemas"
+import { type DBPracticeItemType } from "../shared/types/fsrs-types"
 
 export type WaniKaniSubjectMapping = {
   id: number

@@ -8,9 +8,9 @@ import {
   groupSubjectsBySearchTerm,
   type WaniKaniSubjectMapping,
   type WaniKaniApiSubjectRow,
-} from "../wanikani-database-helpers"
+} from "./wanikani-database-helpers"
 
-const mockConsoleWarn = vi.spyOn(console, "warn").mockImplementation(() => {})
+const mockConsoleWarn = vi.spyOn(console, "warn").mockImplementation(() => { })
 
 beforeEach(() => {
   mockConsoleWarn.mockClear()

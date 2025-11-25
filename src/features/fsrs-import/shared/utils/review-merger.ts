@@ -1,8 +1,4 @@
-// src/features/fsrs-import/reviewMerger.ts
-
-import { type NormalizedReview } from "../core/schemas"
-
-export { type NormalizedReview }
+import { type NormalizedReview } from "../types/import-data-models"
 
 /**
  * Merges existing and imported reviews chronologically.

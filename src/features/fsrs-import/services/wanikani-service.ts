@@ -1,3 +1,4 @@
+import { z } from "zod"
 import { type Database as SQLiteDB } from "better-sqlite3"
 import { getDbConnection } from "@/data/wanikani/utils"
 import {
@@ -6,7 +7,19 @@ import {
   type WaniKaniSubjectMapping,
   type WaniKaniApiSubjectRow,
 } from "./wanikani-database-helpers"
-import { type WaniKaniSubject, WaniKaniSubjectSchema } from "../core/schemas"
+import {
+  DBPracticeItemTypeSchema,
+  type DBPracticeItemType,
+} from "../shared/types/fsrs-types"
+
+const WaniKaniSubjectSchema = z
+  .object({
+    slug: z.string(),
+    type: DBPracticeItemTypeSchema,
+  })
+  .passthrough()
+
+export type WaniKaniSubject = z.infer<typeof WaniKaniSubjectSchema>
 
 // Singleton instance
 let serviceInstance: WaniKaniService | null = null

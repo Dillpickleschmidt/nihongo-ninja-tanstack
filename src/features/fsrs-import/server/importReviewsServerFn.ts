@@ -8,9 +8,9 @@ import { getWaniKaniService } from "../services/wanikani-service"
 import {
   ImportSessionManager,
   type ImportDependencies,
-} from "../core/import-manager"
+} from "../services/import-orchestrator"
 import type { ImportAdapter } from "../adapters/import-adapter-interface"
-import { type NormalizedCard } from "../core/schemas"
+import { type NormalizedCard } from "../shared/types/import-data-models"
 import { z } from "zod"
 
 const ImportReviewsInputSchema = z.object({
