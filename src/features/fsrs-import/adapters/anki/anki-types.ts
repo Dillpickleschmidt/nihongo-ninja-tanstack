@@ -50,7 +50,7 @@ export const AnkiExtractedDataSchema = z.object({
   notes: z.array(AnkiNoteSchema),
   cards: z.map(z.number(), z.array(AnkiCardSchema)), // keyed by note ID
   reviews: z.map(z.number(), z.array(AnkiReviewSchema)), // keyed by card ID
-  fieldCount: z.number().int().positive(),
+  fieldCount: z.number().int().nonnegative(), // 0 if field count cannot be determined
   totalCards: z.number().int().nonnegative(),
   skippedCards: z.number().int().nonnegative(), // no reviews (reps = 0)
 })

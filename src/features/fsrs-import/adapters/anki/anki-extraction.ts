@@ -1,5 +1,5 @@
 import { unzip } from "fflate"
-import { ZSTDDecoder } from "zstddec"
+import { decompress } from "fzstd"
 import initSqlJs from "sql.js"
 import type {
   AnkiNote,
@@ -9,7 +9,22 @@ import type {
 } from "./anki-types"
 import { AnkiNoteSchema, AnkiCardSchema, AnkiReviewSchema } from "./anki-types"
 
-export async function extractApkgFile(
+/**
+ * Helper function to create a mapping of column names to their indices
+ * Reduces repetitive columns.indexOf() calls when parsing SQL results
+ */
+function createColumnMapper<T extends string>(
+  columns: string[],
+  fields: readonly T[],
+): Record<T, number> {
+  const indexMap = {} as Record<T, number>
+  for (const field of fields) {
+    indexMap[field] = columns.indexOf(field)
+  }
+  return indexMap
+}
+
+async function extractApkgFile(
   file: File,
 ): Promise<Map<string, Uint8Array>> {
   const buffer = await file.arrayBuffer()
@@ -31,33 +46,9 @@ export async function extractApkgFile(
   })
 }
 
-export async function decompressZstd(
-  buffer: Uint8Array,
-): Promise<Uint8Array> {
+function decompressZstd(buffer: Uint8Array): Uint8Array {
   try {
-    const decoder = new ZSTDDecoder()
-    await decoder.init()
-
-    // Try to decode with unknown size first
-    try {
-      const decompressed = decoder.decode(buffer)
-      return decompressed
-    } catch (sizeError) {
-      // If size is needed, try to extract from zstd frame header
-      // zstd frame header contains content size in bytes 4-11
-      // If content size is unknown (flag bit set), we may need to handle differently
-      console.warn(
-        "[AnkiExtraction] Failed to decompress zstd without size info",
-        sizeError,
-      )
-
-      // Fallback: try to find the uncompressed size from metadata
-      // This is a limitation of the zstddec library
-      throw new Error(
-        "Failed to decompress .anki21b: zstddec requires content size. " +
-        "This may indicate a corrupted file or unsupported Anki version.",
-      )
-    }
+    return decompress(buffer)
   } catch (error) {
     throw new Error(
       `Failed to decompress zstd buffer: ${error instanceof Error ? error.message : String(error)}`,
@@ -65,25 +56,21 @@ export async function decompressZstd(
   }
 }
 
-export async function parseAnkiDatabase(
+async function parseAnkiDatabase(
   buffer: Uint8Array,
 ): Promise<AnkiExtractedData> {
   // WASM file deployed to public/sql-wasm/
   const SQL = await initSqlJs({
-    locateFile: file => `/sql-wasm/${file}`,
+    locateFile: (file) => `/sql-wasm/${file}`,
   })
   const db = new SQL.Database(buffer)
 
   try {
     let fieldCount = 0
     try {
-      const modelsResult = db.exec(
-        "SELECT models FROM col LIMIT 1",
-      )
+      const modelsResult = db.exec("SELECT models FROM col LIMIT 1")
       if (modelsResult.length > 0 && modelsResult[0].values.length > 0) {
-        const modelsJson = JSON.parse(
-          modelsResult[0].values[0][0] as string,
-        )
+        const modelsJson = JSON.parse(modelsResult[0].values[0][0] as string)
         // Get the first model (typically the default one)
         const firstModelId = Object.keys(modelsJson)[0]
         if (firstModelId) {
@@ -91,8 +78,7 @@ export async function parseAnkiDatabase(
           fieldCount = (model.flds as Array<unknown>).length || 0
         }
       }
-    } catch (err) {
-      console.warn("[AnkiExtraction] Failed to extract field count:", err)
+    } catch {
       fieldCount = 0
     }
 
@@ -102,29 +88,31 @@ export async function parseAnkiDatabase(
     const notes: AnkiNote[] = []
 
     if (notesResult.length > 0) {
-      const columns = notesResult[0].columns
-      const idIdx = columns.indexOf("id")
-      const guidIdx = columns.indexOf("guid")
-      const midIdx = columns.indexOf("mid")
-      const modIdx = columns.indexOf("mod")
-      const usnIdx = columns.indexOf("usn")
-      const tagsIdx = columns.indexOf("tags")
-      const fldsIdx = columns.indexOf("flds")
+      const noteFields = [
+        "id",
+        "guid",
+        "mid",
+        "mod",
+        "usn",
+        "tags",
+        "flds",
+      ] as const
+      const noteIdx = createColumnMapper(notesResult[0].columns, noteFields)
 
       for (const row of notesResult[0].values) {
         try {
           const note = AnkiNoteSchema.parse({
-            id: row[idIdx],
-            guid: row[guidIdx],
-            mid: row[midIdx],
-            mod: row[modIdx],
-            usn: row[usnIdx],
-            tags: row[tagsIdx],
-            flds: row[fldsIdx],
+            id: row[noteIdx.id],
+            guid: row[noteIdx.guid],
+            mid: row[noteIdx.mid],
+            mod: row[noteIdx.mod],
+            usn: row[noteIdx.usn],
+            tags: row[noteIdx.tags],
+            flds: row[noteIdx.flds],
           })
           notes.push(note)
-        } catch (error) {
-          console.warn("[AnkiExtraction] Failed to parse note:", error)
+        } catch {
+          // Skip note on parse error
         }
       }
     }
@@ -138,48 +126,50 @@ export async function parseAnkiDatabase(
     let skippedCards = 0
 
     if (cardsResult.length > 0) {
-      const columns = cardsResult[0].columns
-      const idIdx = columns.indexOf("id")
-      const nidIdx = columns.indexOf("nid")
-      const didIdx = columns.indexOf("did")
-      const ordIdx = columns.indexOf("ord")
-      const modIdx = columns.indexOf("mod")
-      const usnIdx = columns.indexOf("usn")
-      const typeIdx = columns.indexOf("type")
-      const queueIdx = columns.indexOf("queue")
-      const dueIdx = columns.indexOf("due")
-      const ivlIdx = columns.indexOf("ivl")
-      const factorIdx = columns.indexOf("factor")
-      const repsIdx = columns.indexOf("reps")
-      const lapsesIdx = columns.indexOf("lapses")
-      const leftIdx = columns.indexOf("left")
-      const odueIdx = columns.indexOf("odue")
-      const odidIdx = columns.indexOf("odid")
-      const flagsIdx = columns.indexOf("flags")
-      const dataIdx = columns.indexOf("data")
+      const cardFields = [
+        "id",
+        "nid",
+        "did",
+        "ord",
+        "mod",
+        "usn",
+        "type",
+        "queue",
+        "due",
+        "ivl",
+        "factor",
+        "reps",
+        "lapses",
+        "left",
+        "odue",
+        "odid",
+        "flags",
+        "data",
+      ] as const
+      const cardIdx = createColumnMapper(cardsResult[0].columns, cardFields)
 
       for (const row of cardsResult[0].values) {
         totalCards++
         try {
           const card = AnkiCardSchema.parse({
-            id: row[idIdx],
-            nid: row[nidIdx],
-            did: row[didIdx],
-            ord: row[ordIdx],
-            mod: row[modIdx],
-            usn: row[usnIdx],
-            type: row[typeIdx],
-            queue: row[queueIdx],
-            due: row[dueIdx],
-            ivl: row[ivlIdx],
-            factor: row[factorIdx],
-            reps: row[repsIdx],
-            lapses: row[lapsesIdx],
-            left: row[leftIdx],
-            odue: row[odueIdx],
-            odid: row[odidIdx],
-            flags: row[flagsIdx],
-            data: row[dataIdx],
+            id: row[cardIdx.id],
+            nid: row[cardIdx.nid],
+            did: row[cardIdx.did],
+            ord: row[cardIdx.ord],
+            mod: row[cardIdx.mod],
+            usn: row[cardIdx.usn],
+            type: row[cardIdx.type],
+            queue: row[cardIdx.queue],
+            due: row[cardIdx.due],
+            ivl: row[cardIdx.ivl],
+            factor: row[cardIdx.factor],
+            reps: row[cardIdx.reps],
+            lapses: row[cardIdx.lapses],
+            left: row[cardIdx.left],
+            odue: row[cardIdx.odue],
+            odid: row[cardIdx.odid],
+            flags: row[cardIdx.flags],
+            data: row[cardIdx.data],
           })
 
           const nid = card.nid
@@ -187,8 +177,7 @@ export async function parseAnkiDatabase(
             cardsMap.set(nid, [])
           }
           cardsMap.get(nid)!.push(card)
-        } catch (error) {
-          console.warn("[AnkiExtraction] Failed to parse card:", error)
+        } catch {
           skippedCards++
         }
       }
@@ -200,29 +189,34 @@ export async function parseAnkiDatabase(
     const reviewsMap = new Map<number, AnkiReview[]>()
 
     if (reviewsResult.length > 0) {
-      const columns = reviewsResult[0].columns
-      const idIdx = columns.indexOf("id")
-      const cidIdx = columns.indexOf("cid")
-      const usnIdx = columns.indexOf("usn")
-      const easeIdx = columns.indexOf("ease")
-      const ivlIdx = columns.indexOf("ivl")
-      const lastIvlIdx = columns.indexOf("lastIvl")
-      const factorIdx = columns.indexOf("factor")
-      const timeIdx = columns.indexOf("time")
-      const typeIdx = columns.indexOf("type")
+      const reviewFields = [
+        "id",
+        "cid",
+        "usn",
+        "ease",
+        "ivl",
+        "lastIvl",
+        "factor",
+        "time",
+        "type",
+      ] as const
+      const reviewIdx = createColumnMapper(
+        reviewsResult[0].columns,
+        reviewFields,
+      )
 
       for (const row of reviewsResult[0].values) {
         try {
           const review = AnkiReviewSchema.parse({
-            id: row[idIdx],
-            cid: row[cidIdx],
-            usn: row[usnIdx],
-            ease: row[easeIdx],
-            ivl: row[ivlIdx],
-            lastIvl: row[lastIvlIdx],
-            factor: row[factorIdx],
-            time: row[timeIdx],
-            type: row[typeIdx],
+            id: row[reviewIdx.id],
+            cid: row[reviewIdx.cid],
+            usn: row[reviewIdx.usn],
+            ease: row[reviewIdx.ease],
+            ivl: row[reviewIdx.ivl],
+            lastIvl: row[reviewIdx.lastIvl],
+            factor: row[reviewIdx.factor],
+            time: row[reviewIdx.time],
+            type: row[reviewIdx.type],
           })
 
           const cid = review.cid
@@ -230,8 +224,8 @@ export async function parseAnkiDatabase(
             reviewsMap.set(cid, [])
           }
           reviewsMap.get(cid)!.push(review)
-        } catch (error) {
-          console.warn("[AnkiExtraction] Failed to parse review:", error)
+        } catch {
+          // Skip review on parse error
         }
       }
     }
@@ -250,19 +244,15 @@ export async function parseAnkiDatabase(
 }
 
 export async function extractAnkiData(file: File): Promise<AnkiExtractedData> {
-  console.log("[AnkiExtraction] Starting extraction of", file.name)
-
   try {
     const files = await extractApkgFile(file)
     let dbBuffer: Uint8Array | null = null
 
     // Try .anki21b (zstd compressed) first, fallback to .anki2
     if (files.has("collection.anki21b")) {
-      console.log("[AnkiExtraction] Decompressing collection.anki21b...")
       const compressed = files.get("collection.anki21b")!
-      dbBuffer = await decompressZstd(compressed)
+      dbBuffer = decompressZstd(compressed)
     } else if (files.has("collection.anki2")) {
-      console.log("[AnkiExtraction] Found collection.anki2")
       dbBuffer = files.get("collection.anki2")!
     } else {
       throw new Error(
@@ -270,19 +260,9 @@ export async function extractAnkiData(file: File): Promise<AnkiExtractedData> {
       )
     }
 
-    const extractedData = await parseAnkiDatabase(dbBuffer)
-
-    console.log(
-      `[AnkiExtraction] Successfully extracted data:`,
-      `${extractedData.notes.length} notes,`,
-      `${extractedData.totalCards} cards with reviews,`,
-      `${extractedData.skippedCards} cards skipped (no reviews)`,
-    )
-
-    return extractedData
+    return await parseAnkiDatabase(dbBuffer)
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : String(error)
+    const message = error instanceof Error ? error.message : String(error)
     console.error("[AnkiExtraction] Extraction failed:", message)
     throw new Error(`Failed to extract Anki data: ${message}`)
   }

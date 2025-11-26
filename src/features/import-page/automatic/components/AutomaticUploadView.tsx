@@ -1,19 +1,27 @@
 import { Show } from "solid-js"
-import {
-  UploadCloud,
-  FileType,
-  Loader2,
-  FileCode,
-} from "lucide-solid"
+import { UploadCloud, FileType, Loader2 } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/utils"
 
 interface AutomaticUploadViewProps {
-  onUpload: () => void
+  onUpload: (file: File) => void
   isProcessing: boolean
 }
 
 export function AutomaticUploadView(props: AutomaticUploadViewProps) {
+  const handleFileSelect = () => {
+    if (props.isProcessing) return
+
+    const input = document.createElement("input")
+    input.type = "file"
+    input.accept = ".apkg"
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0]
+      if (file) props.onUpload(file)
+    }
+    input.click()
+  }
+
   return (
     <div class="flex h-[60vh] flex-col items-center justify-center">
       <div
@@ -24,7 +32,7 @@ export function AutomaticUploadView(props: AutomaticUploadViewProps) {
           "hover:bg-card/50 hover:border-neutral-700", // Neutral hover
           props.isProcessing ? "pointer-events-none opacity-80" : "",
         )}
-        onClick={() => !props.isProcessing && props.onUpload()}
+        onClick={handleFileSelect}
       >
         <div
           class={cn(
@@ -35,34 +43,33 @@ export function AutomaticUploadView(props: AutomaticUploadViewProps) {
         >
           <Show
             when={!props.isProcessing}
-            fallback={<Loader2 class="text-purple-400 size-10 animate-spin" />}
+            fallback={<Loader2 class="size-10 animate-spin text-purple-400" />}
           >
-            <UploadCloud class="text-purple-400 size-10" />
+            <UploadCloud class="size-10 text-purple-400" />
           </Show>
         </div>
 
-        <h3 class="text-foreground text-xl font-bold mb-2">
+        <h3 class="text-foreground mb-2 text-xl font-bold">
           {props.isProcessing ? "Processing File..." : "Drop your file here"}
         </h3>
         <p class="text-muted-foreground text-sm">
           {props.isProcessing
-            ? "Analyzing vocabulary and kanji mastery..."
-            : "Support for Anki (.apkg), JPDB (.json), or CSV files."}
+            ? "Analyzing vocabulary mastery..."
+            : "Support for Anki (.apkg) files."}
         </p>
 
         <Show when={!props.isProcessing}>
           <div class="flex gap-4 pt-4">
-            <div class="bg-neutral-900 flex items-center gap-2 rounded-lg border border-white/5 px-3 py-2 text-xs font-medium text-white/50">
+            <div class="flex items-center gap-2 rounded-lg border border-white/5 bg-neutral-900 px-3 py-2 text-xs font-medium text-white/50">
               <FileType class="size-3.5" /> Anki
             </div>
-            <div class="bg-neutral-900 flex items-center gap-2 rounded-lg border border-white/5 px-3 py-2 text-xs font-medium text-white/50">
-              <FileCode class="size-3.5" /> JPDB
-            </div>
+            {/* TODO: Add JPDB and CSV support in future */}
           </div>
 
           <Button
             variant="outline"
             class="mt-4 border-white/10 hover:bg-white/5"
+            onClick={handleFileSelect}
           >
             Browse Files
           </Button>

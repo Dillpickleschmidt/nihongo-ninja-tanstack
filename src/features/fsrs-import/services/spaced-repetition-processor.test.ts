@@ -1,6 +1,10 @@
 import { describe, it, expect, vi } from "vitest"
-import { FSRS, createEmptyCard, Rating, State } from "ts-fsrs"
-import { mapGradeToFSRS, simulateFSRSReviews, CustomFSRSRating } from "./spaced-repetition-processor"
+import { createEmptyCard, Rating, State } from "ts-fsrs"
+import {
+  mapGradeToFSRS,
+  simulateFSRSReviews,
+  CustomFSRSRating,
+} from "./spaced-repetition-processor"
 import { type NormalizedReview } from "../shared/types/import-data-models"
 
 describe("Spaced Repetition Processor", () => {
@@ -15,9 +19,15 @@ describe("Spaced Repetition Processor", () => {
 
     // Custom ratings
     it("returns custom FSRS ratings as-is", () => {
-      expect(mapGradeToFSRS(CustomFSRSRating.Ignore)).toBe(CustomFSRSRating.Ignore)
-      expect(mapGradeToFSRS(CustomFSRSRating.Forget)).toBe(CustomFSRSRating.Forget)
-      expect(mapGradeToFSRS(CustomFSRSRating.NeverForget)).toBe(CustomFSRSRating.NeverForget)
+      expect(mapGradeToFSRS(CustomFSRSRating.Ignore)).toBe(
+        CustomFSRSRating.Ignore,
+      )
+      expect(mapGradeToFSRS(CustomFSRSRating.Forget)).toBe(
+        CustomFSRSRating.Forget,
+      )
+      expect(mapGradeToFSRS(CustomFSRSRating.NeverForget)).toBe(
+        CustomFSRSRating.NeverForget,
+      )
     })
 
     // Edge cases - invalid values default to Rating.Again
@@ -32,10 +42,12 @@ describe("Spaced Repetition Processor", () => {
 
     // Console warning for unknown grade
     it("logs warning for unknown grade", () => {
-      const consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {})
+      const consoleWarnSpy = vi
+        .spyOn(console, "warn")
+        .mockImplementation(() => { })
       mapGradeToFSRS("unknown")
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Unhandled grade")
+        expect.stringContaining("Unhandled grade"),
       )
       consoleWarnSpy.mockRestore()
     })
@@ -55,7 +67,11 @@ describe("Spaced Repetition Processor", () => {
     it("processes single valid review", () => {
       const initialCard = createEmptyCard()
       const reviews: NormalizedReview[] = [
-        { timestamp: new Date("2024-01-01T00:00:00Z"), grade: Rating.Good, source: "test" }
+        {
+          timestamp: new Date("2024-01-01T00:00:00Z"),
+          grade: Rating.Good,
+          source: "test",
+        },
       ]
 
       const { finalCard, logs } = simulateFSRSReviews(initialCard, reviews)
@@ -69,7 +85,7 @@ describe("Spaced Repetition Processor", () => {
       const initialCard = createEmptyCard(new Date("1990-01-01"))
       const firstReviewDate = new Date("2024-01-01")
       const reviews: NormalizedReview[] = [
-        { timestamp: firstReviewDate, grade: Rating.Good, source: "test" }
+        { timestamp: firstReviewDate, grade: Rating.Good, source: "test" },
       ]
 
       const { finalCard } = simulateFSRSReviews(initialCard, reviews)
@@ -81,9 +97,21 @@ describe("Spaced Repetition Processor", () => {
     it("processes multiple reviews in order", () => {
       const initialCard = createEmptyCard()
       const reviews: NormalizedReview[] = [
-        { timestamp: new Date("2024-01-01"), grade: Rating.Again, source: "test" },
-        { timestamp: new Date("2024-01-02"), grade: Rating.Good, source: "test" },
-        { timestamp: new Date("2024-01-03"), grade: Rating.Easy, source: "test" }
+        {
+          timestamp: new Date("2024-01-01"),
+          grade: Rating.Again,
+          source: "test",
+        },
+        {
+          timestamp: new Date("2024-01-02"),
+          grade: Rating.Good,
+          source: "test",
+        },
+        {
+          timestamp: new Date("2024-01-03"),
+          grade: Rating.Easy,
+          source: "test",
+        },
       ]
 
       const { finalCard, logs } = simulateFSRSReviews(initialCard, reviews)
@@ -96,8 +124,16 @@ describe("Spaced Repetition Processor", () => {
     it("skips reviews with Ignore grade", () => {
       const initialCard = createEmptyCard()
       const reviews: NormalizedReview[] = [
-        { timestamp: new Date("2024-01-01"), grade: CustomFSRSRating.Ignore, source: "test" },
-        { timestamp: new Date("2024-01-02"), grade: Rating.Good, source: "test" }
+        {
+          timestamp: new Date("2024-01-01"),
+          grade: CustomFSRSRating.Ignore,
+          source: "test",
+        },
+        {
+          timestamp: new Date("2024-01-02"),
+          grade: Rating.Good,
+          source: "test",
+        },
       ]
 
       const { finalCard, logs } = simulateFSRSReviews(initialCard, reviews)
@@ -110,8 +146,16 @@ describe("Spaced Repetition Processor", () => {
     it("resets card to new state with Forget grade", () => {
       const initialCard = createEmptyCard()
       const reviews: NormalizedReview[] = [
-        { timestamp: new Date("2024-01-01"), grade: Rating.Good, source: "test" },
-        { timestamp: new Date("2024-01-02"), grade: CustomFSRSRating.Forget, source: "test" }
+        {
+          timestamp: new Date("2024-01-01"),
+          grade: Rating.Good,
+          source: "test",
+        },
+        {
+          timestamp: new Date("2024-01-02"),
+          grade: CustomFSRSRating.Forget,
+          source: "test",
+        },
       ]
 
       const { finalCard, logs } = simulateFSRSReviews(initialCard, reviews)
@@ -135,10 +179,14 @@ describe("Spaced Repetition Processor", () => {
       const initialCard = createEmptyCard()
       const reviewDate = new Date("2024-01-01")
       const reviews: NormalizedReview[] = [
-        { timestamp: reviewDate, grade: CustomFSRSRating.NeverForget, source: "test" }
+        {
+          timestamp: reviewDate,
+          grade: CustomFSRSRating.NeverForget,
+          source: "test",
+        },
       ]
 
-      const { finalCard, logs } = simulateFSRSReviews(initialCard, reviews)
+      const { finalCard } = simulateFSRSReviews(initialCard, reviews)
 
       expect(finalCard.state).toBe(State.Review)
       expect(finalCard.stability).toBe(Infinity)
@@ -149,9 +197,21 @@ describe("Spaced Repetition Processor", () => {
     it("terminates processing after NeverForget", () => {
       const initialCard = createEmptyCard()
       const reviews: NormalizedReview[] = [
-        { timestamp: new Date("2024-01-01"), grade: Rating.Good, source: "test" },
-        { timestamp: new Date("2024-01-02"), grade: CustomFSRSRating.NeverForget, source: "test" },
-        { timestamp: new Date("2024-01-03"), grade: Rating.Easy, source: "test" }
+        {
+          timestamp: new Date("2024-01-01"),
+          grade: Rating.Good,
+          source: "test",
+        },
+        {
+          timestamp: new Date("2024-01-02"),
+          grade: CustomFSRSRating.NeverForget,
+          source: "test",
+        },
+        {
+          timestamp: new Date("2024-01-03"),
+          grade: Rating.Easy,
+          source: "test",
+        },
       ]
 
       const { finalCard, logs } = simulateFSRSReviews(initialCard, reviews)
@@ -165,11 +225,31 @@ describe("Spaced Repetition Processor", () => {
     it("handles mixed review types correctly", () => {
       const initialCard = createEmptyCard()
       const reviews: NormalizedReview[] = [
-        { timestamp: new Date("2024-01-01"), grade: Rating.Again, source: "test" },
-        { timestamp: new Date("2024-01-02"), grade: CustomFSRSRating.Ignore, source: "test" },
-        { timestamp: new Date("2024-01-03"), grade: Rating.Good, source: "test" },
-        { timestamp: new Date("2024-01-04"), grade: CustomFSRSRating.Forget, source: "test" },
-        { timestamp: new Date("2024-01-05"), grade: Rating.Easy, source: "test" }
+        {
+          timestamp: new Date("2024-01-01"),
+          grade: Rating.Again,
+          source: "test",
+        },
+        {
+          timestamp: new Date("2024-01-02"),
+          grade: CustomFSRSRating.Ignore,
+          source: "test",
+        },
+        {
+          timestamp: new Date("2024-01-03"),
+          grade: Rating.Good,
+          source: "test",
+        },
+        {
+          timestamp: new Date("2024-01-04"),
+          grade: CustomFSRSRating.Forget,
+          source: "test",
+        },
+        {
+          timestamp: new Date("2024-01-05"),
+          grade: Rating.Easy,
+          source: "test",
+        },
       ]
 
       const { logs } = simulateFSRSReviews(initialCard, reviews)

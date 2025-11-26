@@ -4,138 +4,54 @@ import { createSignal, Show } from "solid-js"
 import { FloatingActionBar } from "@/features/import-page/shared/components/FloatingActionBar"
 import { useImportSelection } from "@/features/import-page/shared/hooks/use-import-selection"
 import { AutomaticUploadView } from "@/features/import-page/automatic/components/AutomaticUploadView"
+import { AnkiFieldMappingView } from "@/features/import-page/automatic/components/AnkiFieldMappingView"
 import { AutomaticResultsView } from "@/features/import-page/automatic/components/AutomaticResultsView"
+import { AnkiWorkerManager } from "@/features/fsrs-import/adapters/anki/anki-worker-manager"
+import { autoDetectFieldMapping } from "@/features/fsrs-import/adapters/anki/anki-field-detector"
+import { transformAnkiToImportItems } from "@/features/fsrs-import/adapters/anki/anki-adapter"
+import type {
+  AnkiExtractedData,
+  FieldMapping,
+} from "@/features/fsrs-import/adapters/anki/anki-types"
 import type { ImportItem } from "@/features/import-page/shared/types"
 
-// --- Placeholder Data Providers ---
+// --- Import Steps Enum ---
 
-function getPlaceholderVocab(): ImportItem[] {
-  return [
-    { id: "imp-v1", main: "冒険", meaning: "adventure", status: "mastered" },
-    {
-      id: "imp-v2",
-      main: "魔法",
-      meaning: "magic",
-      status: "decent",
-    },
-    {
-      id: "imp-v3",
-      main: "攻撃",
-      meaning: "attack",
-      status: "decent",
-    },
-    {
-      id: "imp-v4",
-      main: "防御",
-      meaning: "defense",
-      status: "learning",
-    },
-    {
-      id: "imp-v5",
-      main: "回復",
-      meaning: "recovery; healing",
-      status: "mastered",
-    },
-    {
-      id: "imp-v6",
-      main: "経験値",
-      meaning: "experience points",
-      status: "decent",
-    },
-    {
-      id: "imp-v7",
-      main: "装備",
-      meaning: "equipment",
-      status: "learning",
-    },
-    {
-      id: "imp-v8",
-      main: "伝説",
-      meaning: "legend",
-      status: "mastered",
-    },
-    {
-      id: "imp-v9",
-      main: "召喚",
-      meaning: "summon",
-      status: "decent",
-    },
-    {
-      id: "imp-v10",
-      main: "異世界",
-      meaning: "parallel universe; isekai",
-      status: "learning",
-    },
-  ]
-}
+const IMPORT_STEPS = {
+  UPLOAD: 1,
+  FIELD_MAPPING: 2,
+  RESULTS: 3,
+} as const
 
-function getPlaceholderKanji(): ImportItem[] {
-  return [
-    {
-      id: "imp-k1",
-      main: "冒",
-      meaning: "risk; face; defy; dare",
-      status: "mastered",
-    },
-    {
-      id: "imp-k2",
-      main: "険",
-      meaning: "inaccessible place; sharp eyes",
-      status: "decent",
-    },
-    {
-      id: "imp-k3",
-      main: "魔",
-      meaning: "witch; demon; evil spirit",
-      status: "mastered",
-    },
-    {
-      id: "imp-k4",
-      main: "法",
-      meaning: "method; law; principle",
-      status: "learning",
-    },
-    {
-      id: "imp-k5",
-      main: "攻",
-      meaning: "aggression; attack",
-      status: "decent",
-    },
-    {
-      id: "imp-k6",
-      main: "撃",
-      meaning: "beat; attack; defeat",
-      status: "decent",
-    },
-    {
-      id: "imp-k7",
-      main: "防",
-      meaning: "ward off; defend; protect",
-      status: "learning",
-    },
-    {
-      id: "imp-k8",
-      main: "御",
-      meaning: "honorable; manipulate; govern",
-      status: "mastered",
-    },
-  ]
-}
+type ImportStep = (typeof IMPORT_STEPS)[keyof typeof IMPORT_STEPS]
+
 
 export const Route = createFileRoute("/_home/import/_layout/automatic")({
   component: AutomaticImportPage,
 })
 
 function AutomaticImportPage() {
-  // State
-  const [hasUploaded, setHasUploaded] = createSignal(false)
-  const [isProcessing, setIsProcessing] = createSignal(false)
-  const [vocabItems, setVocabItems] = createSignal<ImportItem[]>([])
-  const [kanjiItems, setKanjiItems] = createSignal<ImportItem[]>([])
+  // Step management
+  const [currentStep, setCurrentStep] = createSignal<ImportStep>(
+    IMPORT_STEPS.UPLOAD,
+  )
+  const [extractedData, setExtractedData] =
+    createSignal<AnkiExtractedData | null>(null)
+  const [fieldMapping, setFieldMapping] = createSignal<FieldMapping | null>(
+    null,
+  )
 
-  // Selection Hook (no initial state needed - will populate after data loads)
+  // Processing
+  const [isProcessing, setIsProcessing] = createSignal(false)
+  const [errorMessage, setErrorMessage] = createSignal<string | null>(null)
+
+  // Results
+  const [vocabItems, setVocabItems] = createSignal<ImportItem[]>([])
+
+  // Selection Hook
   const {
     itemStates,
+    setItemStates,
     selectedIds,
     handleItemClick,
     handlePointerDown,
@@ -145,45 +61,136 @@ function AutomaticImportPage() {
     handleDelete,
   } = useImportSelection()
 
-  const createDeleteHandler =
-    (setter: typeof setVocabItems) => (id: string) => {
-      setter((items) => items.filter((item) => item.id !== id))
-      handleDelete(id)
-    }
 
-  const handleSimulatedUpload = () => {
+  // Step 1: Handle file upload
+  const handleUpload = async (file: File) => {
     setIsProcessing(true)
-    // Simulate processing delay
-    setTimeout(() => {
-      // Get results after simulated processing
-      setVocabItems(getPlaceholderVocab())
-      setKanjiItems(getPlaceholderKanji())
-      setHasUploaded(true)
+    setErrorMessage(null)
+
+    try {
+      // Create worker manager for extraction (runs in background thread)
+      const workerManager = new AnkiWorkerManager()
+
+      await workerManager.waitForReady()
+
+      // Extract Anki data from the uploaded file
+      const extracted = await workerManager.extractAnkiData(file)
+
+      if (extracted.notes.length === 0) {
+        throw new Error("No cards with reviews found in the Anki file")
+      }
+
+      setExtractedData(extracted)
+
+      // Auto-detect field mapping from first note
+      const detected = autoDetectFieldMapping(extracted.notes[0])
+      setFieldMapping(detected)
+
+      setCurrentStep(IMPORT_STEPS.FIELD_MAPPING)
+
+      // Cleanup worker
+      workerManager.terminate()
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to extract Anki data"
+      setErrorMessage(message)
+      console.error("[AutomaticImport] Anki extraction error:", err)
+    } finally {
       setIsProcessing(false)
-    }, 2000)
+    }
+  }
+
+  // Step 2: Handle field mapping and move to results
+  const handleFieldMappingNext = async () => {
+    const extracted = extractedData()
+    const mapping = fieldMapping()
+
+    if (!extracted || !mapping) return
+
+    setIsProcessing(true)
+    setErrorMessage(null)
+
+    try {
+      const vocabItems = transformAnkiToImportItems(extracted, mapping)
+
+      if (vocabItems.length === 0) {
+        throw new Error(
+          `No valid cards could be transformed. Found ${extracted.notes.length} notes, ` +
+          `${extracted.cards.size} notes with cards, ` +
+          `${extracted.reviews.size} cards with reviews.`,
+        )
+      }
+
+      setVocabItems(vocabItems)
+
+      // Populate itemStates with initial status badges from Anki review history
+      vocabItems.forEach((item) => {
+        if (item.status) {
+          setItemStates(item.id, item.status)
+        }
+      })
+
+      setCurrentStep(IMPORT_STEPS.RESULTS)
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to transform data"
+      setErrorMessage(message)
+      console.error("Transform error:", err)
+    } finally {
+      setIsProcessing(false)
+    }
   }
 
   return (
     <div onClick={clearSelection} class="container px-4 py-6 md:px-8 md:py-8">
+      {/* Error Display */}
+      <Show when={errorMessage()}>
+        <div class="mb-6 rounded-lg border border-red-500/20 bg-red-500/10 p-4">
+          <p class="text-sm font-medium text-red-400">{errorMessage()}</p>
+        </div>
+      </Show>
+
+      {/* Step 1: Upload */}
+      <Show when={currentStep() === IMPORT_STEPS.UPLOAD}>
+        <AutomaticUploadView
+          onUpload={handleUpload}
+          isProcessing={isProcessing()}
+        />
+      </Show>
+
+      {/* Step 2: Field Mapping */}
       <Show
-        when={hasUploaded()}
-        fallback={
-          <AutomaticUploadView
-            onUpload={handleSimulatedUpload}
-            isProcessing={isProcessing()}
-          />
+        when={
+          currentStep() === IMPORT_STEPS.FIELD_MAPPING &&
+          extractedData() &&
+          fieldMapping()
         }
       >
+        <AnkiFieldMappingView
+          extractedData={extractedData()!}
+          fieldMapping={fieldMapping()!}
+          onMappingChange={setFieldMapping}
+          onNext={handleFieldMappingNext}
+        />
+      </Show>
+
+      {/* Step 3: Results */}
+      <Show when={currentStep() === IMPORT_STEPS.RESULTS}>
         <AutomaticResultsView
           vocabItems={vocabItems()}
-          kanjiItems={kanjiItems()}
+          kanjiItems={[]}
           itemStates={itemStates}
           selectedIds={selectedIds()}
           handleItemClick={handleItemClick}
           handlePointerDown={handlePointerDown}
           toggleSelectGroup={toggleSelectGroup}
-          onVocabDelete={createDeleteHandler(setVocabItems)}
-          onKanjiDelete={createDeleteHandler(setKanjiItems)}
+          onVocabDelete={(id) => {
+            setVocabItems((items) => items.filter((item) => item.id !== id))
+            handleDelete(id)
+          }}
+          onKanjiDelete={(id) => {
+            handleDelete(id)
+          }}
         />
       </Show>
 

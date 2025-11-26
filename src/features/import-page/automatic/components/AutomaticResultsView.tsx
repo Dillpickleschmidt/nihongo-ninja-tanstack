@@ -29,7 +29,6 @@ interface AutomaticResultsViewProps {
 }
 
 export function AutomaticResultsView(props: AutomaticResultsViewProps) {
-  // Create resolved promises for statistics display
   const vocabStatPromise = Promise.resolve(
     props.vocabItems.map((item) => ({ id: item.id })),
   )
@@ -173,6 +172,7 @@ export function AutomaticResultsView(props: AutomaticResultsViewProps) {
           />
 
           <KeyboardShortcutsHint />
+          {/* TODO: Implement import functionality to create FSRS cards with review history */}
           <ImportActionButtonDesktop
             onClick={() => { }}
             variant="automatic"
@@ -183,6 +183,7 @@ export function AutomaticResultsView(props: AutomaticResultsViewProps) {
 
       {/* Mobile Import Button */}
       <SSRMediaQuery hideFrom="lg">
+        {/* TODO: Implement import functionality to create FSRS cards with review history */}
         <ImportActionButtonMobile
           onClick={() => { }}
           variant="automatic"

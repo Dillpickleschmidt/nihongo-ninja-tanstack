@@ -1,14 +1,17 @@
 import { createEmptyCard, FSRS } from "ts-fsrs"
-import {
-  simulateFSRSReviews,
-  type FSRSProcessingGrade,
-} from "./spaced-repetition-processor"
+import { simulateFSRSReviews } from "./spaced-repetition-processor"
 import { mergeReviews } from "../shared/utils/review-merger"
-import { determineMode, validateCardStructure } from "../shared/utils/import-orchestrator-utils"
+import {
+  determineMode,
+  validateCardStructure,
+} from "../shared/utils/import-orchestrator-utils"
 import { deduplicateCards } from "../shared/utils/card-deduplication"
 import { processBatches } from "../shared/utils/batch-processing"
 import type { ImportAdapter } from "../adapters/import-adapter-interface"
-import type { ProcessedCard } from "../shared/types/fsrs-types"
+import type {
+  ProcessedCard,
+  FSRSProcessingGrade,
+} from "../shared/types/fsrs-types"
 import {
   type NormalizedCard,
   type ValidationResult,
@@ -214,7 +217,10 @@ export class ImportSessionManager {
 
       return processedCard
     } catch (error) {
-      console.error(`Error building vocabulary FSRS card for ${card.searchTerm}:`, error)
+      console.error(
+        `Error building vocabulary FSRS card for ${card.searchTerm}:`,
+        error,
+      )
       return null
     }
   }
