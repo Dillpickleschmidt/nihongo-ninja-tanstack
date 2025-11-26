@@ -14,7 +14,7 @@ export function AutomaticUploadView(props: AutomaticUploadViewProps) {
 
     const input = document.createElement("input")
     input.type = "file"
-    input.accept = ".apkg"
+    input.accept = ".apkg,.json"
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0]
       if (file) props.onUpload(file)
@@ -55,7 +55,7 @@ export function AutomaticUploadView(props: AutomaticUploadViewProps) {
         <p class="text-muted-foreground text-sm">
           {props.isProcessing
             ? "Analyzing vocabulary mastery..."
-            : "Support for Anki (.apkg) files."}
+            : "Support for Anki (.apkg) and JPDB (.json) files."}
         </p>
 
         <Show when={!props.isProcessing}>
@@ -63,7 +63,9 @@ export function AutomaticUploadView(props: AutomaticUploadViewProps) {
             <div class="flex items-center gap-2 rounded-lg border border-white/5 bg-neutral-900 px-3 py-2 text-xs font-medium text-white/50">
               <FileType class="size-3.5" /> Anki
             </div>
-            {/* TODO: Add JPDB and CSV support in future */}
+            <div class="flex items-center gap-2 rounded-lg border border-white/5 bg-neutral-900 px-3 py-2 text-xs font-medium text-white/50">
+              <FileType class="size-3.5" /> JPDB
+            </div>
           </div>
 
           <Button

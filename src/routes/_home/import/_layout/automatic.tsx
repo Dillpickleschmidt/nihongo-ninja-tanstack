@@ -9,11 +9,14 @@ import { AutomaticResultsView } from "@/features/import-page/automatic/component
 import { AnkiWorkerManager } from "@/features/fsrs-import/adapters/anki/anki-worker-manager"
 import { autoDetectFieldMapping } from "@/features/fsrs-import/adapters/anki/anki-field-detector"
 import { transformAnkiToImportItems } from "@/features/fsrs-import/adapters/anki/anki-adapter"
+import { jpdbAdapter } from "@/features/fsrs-import/adapters/jpdb/jpdb-adapter"
+import { transformJpdbToImportItems } from "@/features/fsrs-import/adapters/jpdb/jpdb-adapter"
 import type {
   AnkiExtractedData,
   FieldMapping,
 } from "@/features/fsrs-import/adapters/anki/anki-types"
 import type { ImportItem } from "@/features/import-page/shared/types"
+import type { JpdbJsonData } from "@/features/fsrs-import/adapters/jpdb/jpdb-types"
 
 // --- Import Steps Enum ---
 
@@ -35,6 +38,9 @@ function AutomaticImportPage() {
   const [currentStep, setCurrentStep] = createSignal<ImportStep>(
     IMPORT_STEPS.UPLOAD,
   )
+  const [importSource, setImportSource] = createSignal<"anki" | "jpdb" | null>(
+    null,
+  )
   const [extractedData, setExtractedData] =
     createSignal<AnkiExtractedData | null>(null)
   const [fieldMapping, setFieldMapping] = createSignal<FieldMapping | null>(
@@ -47,6 +53,7 @@ function AutomaticImportPage() {
 
   // Results
   const [vocabItems, setVocabItems] = createSignal<ImportItem[]>([])
+  const [kanjiItems, setKanjiItems] = createSignal<ImportItem[]>([])
 
   // Selection Hook
   const {
@@ -62,39 +69,83 @@ function AutomaticImportPage() {
   } = useImportSelection()
 
 
-  // Step 1: Handle file upload
+  // Step 1: Handle file upload with auto-detection
   const handleUpload = async (file: File) => {
     setIsProcessing(true)
     setErrorMessage(null)
 
     try {
-      // Create worker manager for extraction (runs in background thread)
-      const workerManager = new AnkiWorkerManager()
+      // Detect file type
+      const source = file.name.endsWith(".json") ? "jpdb" : "anki"
+      setImportSource(source)
 
-      await workerManager.waitForReady()
+      if (source === "jpdb") {
+        // JPDB import path: parse JSON and validate
+        const jsonText = await file.text()
+        const jpdbData = JSON.parse(jsonText)
 
-      // Extract Anki data from the uploaded file
-      const extracted = await workerManager.extractAnkiData(file)
+        if (!jpdbAdapter.validateInput(jpdbData)) {
+          throw new Error(
+            "Invalid JPDB JSON format. Please check your file and try again.",
+          )
+        }
 
-      if (extracted.notes.length === 0) {
-        throw new Error("No cards with reviews found in the Anki file")
+        const jpdbTypedData = jpdbData as JpdbJsonData
+
+        // Transform to ImportItems (with batch meaning lookups)
+        const allItems = await transformJpdbToImportItems(jpdbTypedData)
+
+        if (allItems.length === 0) {
+          throw new Error(
+            "No vocabulary or kanji cards found in the JPDB file",
+          )
+        }
+
+        // Separate vocab and kanji items by ID prefix
+        const vocab = allItems.filter((item) => item.id.startsWith("imp-vocab-"))
+        const kanji = allItems.filter((item) => item.id.startsWith("imp-kanji-"))
+
+        setVocabItems(vocab)
+        setKanjiItems(kanji)
+
+        // Populate itemStates with initial status badges from JPDB
+        allItems.forEach((item) => {
+          if (item.status) {
+            setItemStates(item.id, item.status)
+          }
+        })
+
+        // Skip field mapping and go directly to results
+        setCurrentStep(IMPORT_STEPS.RESULTS)
+      } else {
+        // Anki import path: extract and field mapping
+        const workerManager = new AnkiWorkerManager()
+
+        await workerManager.waitForReady()
+
+        // Extract Anki data from the uploaded file
+        const extracted = await workerManager.extractAnkiData(file)
+
+        if (extracted.notes.length === 0) {
+          throw new Error("No cards with reviews found in the Anki file")
+        }
+
+        setExtractedData(extracted)
+
+        // Auto-detect field mapping from first note
+        const detected = autoDetectFieldMapping(extracted.notes[0])
+        setFieldMapping(detected)
+
+        setCurrentStep(IMPORT_STEPS.FIELD_MAPPING)
+
+        // Cleanup worker
+        workerManager.terminate()
       }
-
-      setExtractedData(extracted)
-
-      // Auto-detect field mapping from first note
-      const detected = autoDetectFieldMapping(extracted.notes[0])
-      setFieldMapping(detected)
-
-      setCurrentStep(IMPORT_STEPS.FIELD_MAPPING)
-
-      // Cleanup worker
-      workerManager.terminate()
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : "Failed to extract Anki data"
+        err instanceof Error ? err.message : "Failed to process import file"
       setErrorMessage(message)
-      console.error("[AutomaticImport] Anki extraction error:", err)
+      console.error("[AutomaticImport] Error:", err)
     } finally {
       setIsProcessing(false)
     }
@@ -178,7 +229,7 @@ function AutomaticImportPage() {
       <Show when={currentStep() === IMPORT_STEPS.RESULTS}>
         <AutomaticResultsView
           vocabItems={vocabItems()}
-          kanjiItems={[]}
+          kanjiItems={kanjiItems()}
           itemStates={itemStates}
           selectedIds={selectedIds()}
           handleItemClick={handleItemClick}
@@ -189,6 +240,7 @@ function AutomaticImportPage() {
             handleDelete(id)
           }}
           onKanjiDelete={(id) => {
+            setKanjiItems((items) => items.filter((item) => item.id !== id))
             handleDelete(id)
           }}
         />
