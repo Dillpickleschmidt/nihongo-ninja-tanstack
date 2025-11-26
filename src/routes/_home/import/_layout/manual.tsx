@@ -30,10 +30,16 @@ export const Route = createFileRoute("/_home/import/_layout/manual")({
     })()
 
     const n4KanjiPromise = (async () => {
-      const vocabBySet = await vocabPromise
+      const [vocabBySet, n5Kanji] = await Promise.all([vocabPromise, n5KanjiPromise])
       const vocab = vocabBySet.n4 || []
       const hierarchy = await buildVocabHierarchy(vocab.map((v) => v.word))
-      return hierarchy.kanji.map((k) => ({
+
+      const n5KanjiSet = new Set(n5Kanji.map((k) => k.main))
+
+      // Filter out kanji that are already in n5
+      const filteredKanji = hierarchy.kanji.filter((k) => !n5KanjiSet.has(k.kanji))
+
+      return filteredKanji.map((k) => ({
         id: `n4-k-${k.kanji}`,
         main: k.kanji,
         meaning: k.meanings.join(", "),
