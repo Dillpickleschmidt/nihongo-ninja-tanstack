@@ -1,13 +1,12 @@
 // src/features/import-page/components/ImportLevelSection.tsx
 import { For } from "solid-js"
-import type { JLPTLevel } from "../types"
-import type { ImportState } from "../types"
+import type { JLPTLevel, ItemStatus } from "../types"
 import { ImportAccordion } from "./ImportAccordion"
 
 interface ImportLevelSectionProps {
   level: JLPTLevel
   selectedIds: Set<string>
-  itemStates: ImportState
+  itemStates: Record<string, ItemStatus>
   onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
   onGroupToggle: (ids: string[]) => void
   onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void

@@ -1,6 +1,5 @@
 import type { NormalizedReview, NormalizedCard } from "../../shared/types/import-data-models"
 import type { AnkiExtractedData, AnkiNote, FieldMapping } from "./anki-types"
-import type { ImportAdapter } from "../import-adapter-interface"
 import { mapAnkiEaseToFSRS } from "./anki-schemas"
 import type { ImportItem } from "@/features/import-page/shared/types"
 
@@ -41,7 +40,6 @@ function extractNoteData(
         reviews.push({
           timestamp: new Date(review.id), // Anki review ID is epoch ms
           grade: mapAnkiEaseToFSRS(review.ease),
-          source: "anki",
         })
       }
     }
@@ -107,15 +105,14 @@ export function transformAnkiData(
     // Add to normalized cards for FSRS import
     normalizedCards.push({
       searchTerm: extracted.searchTerm,
+      type: "vocabulary",
       reviews: extracted.reviews, // Already NormalizedReview[]
-      source: `anki-${extracted.noteId}`,
     })
 
     // Create import item for UI display
     const status = getItemStatus(extracted.queue, extracted.ivl)
     importItems.push({
-      id: `imp-vocab-anki-${extracted.noteId}`,
-      main: extracted.searchTerm,
+      id: extracted.searchTerm,
       meaning: extracted.meaning,
       status,
     })
@@ -125,10 +122,10 @@ export function transformAnkiData(
 }
 
 /**
- * Anki ImportAdapter implementation for FSRS import orchestration
+ * Anki adapter for FSRS import
  * Handles transformation of Anki extracted data to NormalizedCard format
  */
-export const ankiAdapter: ImportAdapter<{ data: AnkiExtractedData; mapping: FieldMapping }> = {
+export const ankiAdapter = {
   validateInput: (input: any): input is { data: AnkiExtractedData; mapping: FieldMapping } => {
     return (
       input &&

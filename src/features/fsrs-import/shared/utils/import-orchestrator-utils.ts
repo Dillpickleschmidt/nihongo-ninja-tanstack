@@ -56,11 +56,6 @@ export function validateCardStructure(card: any): card is ProcessedCard {
     return false
   }
 
-  // Validate source
-  if (typeof card.source !== "string" || card.source === null) {
-    return false
-  }
-
   // Validate type
   if (!VALID_TYPES.includes(card.type)) {
     return false

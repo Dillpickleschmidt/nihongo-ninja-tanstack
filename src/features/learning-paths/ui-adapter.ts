@@ -1,5 +1,5 @@
 import type { LearningPathModule } from "./generation"
-import type { ImportSubCategory } from "@/features/import-page/shared/data/jlpt-data"
+import type { ImportSubCategory } from "@/features/import-page/shared/types"
 
 /**
  * Transforms learning path modules into UI-friendly ImportSubCategory format
@@ -22,8 +22,7 @@ export function transformModulesToUIFormat(
   // Use grammar patterns directly
   grammarPatterns.forEach((item) => {
     grammarItems.push({
-      id: `grammar-pattern-${grammarItems.length}`,
-      main: item.pattern,
+      id: item.pattern,
       meaning: "Grammar pattern",
       status: "decent",
     })
@@ -34,8 +33,7 @@ export function transformModulesToUIFormat(
     if (module.type === "vocabulary") {
       module.words.forEach((word) => {
         vocabItems.push({
-          id: `vocab-${globalVocabIndex}`,
-          main: word.word,
+          id: word.word,
           meaning: word.english || word.furigana || "Vocabulary",
           status: "decent",
         })

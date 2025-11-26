@@ -1,4 +1,3 @@
-import { type ImportAdapter } from "../import-adapter-interface"
 import { type NormalizedCard, NormalizedReviewSchema } from "../../shared/types/import-data-models"
 import { normalizeTimestamp } from "../adapter-utils"
 import type { JpdbJsonData, JpdbVocabularyCard, JpdbKanjiCard, JpdbReview } from "./jpdb-types"
@@ -12,7 +11,7 @@ import { getKanjiDetails } from "@/features/resolvers/kanji"
 /**
  * jpdb.io import adapter implementation
  */
-export const jpdbAdapter: ImportAdapter<JpdbJsonData> = {
+export const jpdbAdapter = {
   validateInput: (data: any): data is JpdbJsonData => {
     const result = safeParseJpdbJsonData(data)
     return result.success
@@ -23,7 +22,7 @@ export const jpdbAdapter: ImportAdapter<JpdbJsonData> = {
 
     // Process vocabulary JP->EN cards
     for (const card of data.cards_vocabulary_jp_en) {
-      const normalizedCard = transformVocabularyCard(card, "vocabulary-jp-en")
+      const normalizedCard = transformVocabularyCard(card)
       if (normalizedCard) {
         allCards.push(normalizedCard)
       }
@@ -31,7 +30,7 @@ export const jpdbAdapter: ImportAdapter<JpdbJsonData> = {
 
     // Process vocabulary EN->JP cards
     for (const card of data.cards_vocabulary_en_jp) {
-      const normalizedCard = transformVocabularyCard(card, "vocabulary-en-jp")
+      const normalizedCard = transformVocabularyCard(card)
       if (normalizedCard) {
         allCards.push(normalizedCard)
       }
@@ -39,7 +38,7 @@ export const jpdbAdapter: ImportAdapter<JpdbJsonData> = {
 
     // Process kanji keyword->char cards
     for (const card of data.cards_kanji_keyword_char) {
-      const normalizedCard = transformKanjiCard(card, "kanji-keyword-char")
+      const normalizedCard = transformKanjiCard(card)
       if (normalizedCard) {
         allCards.push(normalizedCard)
       }
@@ -47,7 +46,7 @@ export const jpdbAdapter: ImportAdapter<JpdbJsonData> = {
 
     // Process kanji char->keyword cards
     for (const card of data.cards_kanji_char_keyword) {
-      const normalizedCard = transformKanjiCard(card, "kanji-char-keyword")
+      const normalizedCard = transformKanjiCard(card)
       if (normalizedCard) {
         allCards.push(normalizedCard)
       }
@@ -73,22 +72,18 @@ export const jpdbAdapter: ImportAdapter<JpdbJsonData> = {
  */
 function transformVocabularyCard(
   card: JpdbVocabularyCard,
-  cardType: string,
 ): NormalizedCard | null {
   // Filter out cards with empty or whitespace-only spelling
   if (!card.spelling || card.spelling.trim() === "") {
     return null
   }
 
-  const normalizedReviews = transformReviews(
-    card.reviews,
-    `jpdb-${cardType}-${card.vid}`,
-  )
+  const normalizedReviews = transformReviews(card.reviews)
 
   return {
     searchTerm: card.spelling,
+    type: "vocabulary",
     reviews: normalizedReviews,
-    source: `jpdb-${cardType}-${card.vid}`,
   }
 }
 
@@ -97,22 +92,18 @@ function transformVocabularyCard(
  */
 function transformKanjiCard(
   card: JpdbKanjiCard,
-  cardType: string,
 ): NormalizedCard | null {
   // Filter out cards with empty or whitespace-only character
   if (!card.character || card.character.trim() === "") {
     return null
   }
 
-  const normalizedReviews = transformReviews(
-    card.reviews,
-    `jpdb-${cardType}-${card.character}`,
-  )
+  const normalizedReviews = transformReviews(card.reviews)
 
   return {
     searchTerm: card.character,
+    type: "kanji",
     reviews: normalizedReviews,
-    source: `jpdb-${cardType}-${card.character}`,
   }
 }
 
@@ -121,13 +112,11 @@ function transformKanjiCard(
  */
 function transformReviews(
   jpdbReviews: JpdbReview[],
-  source: string,
 ) {
   return jpdbReviews.map((review) => {
     const normalized = {
       timestamp: normalizeTimestamp(review.timestamp),
       grade: mapJpdbGradeToFSRS(review.grade),
-      source: source,
     }
     return NormalizedReviewSchema.parse(normalized)
   })
@@ -167,7 +156,8 @@ function getItemStatusFromFSRSCard(fsrsCard: any): ItemStatus {
  * Result type for JPDB transformation with both UI and FSRS outputs
  */
 export interface JpdbTransformResult {
-  importItems: ImportItem[]
+  vocabImportItems: ImportItem[]
+  kanjiImportItems: ImportItem[]
   normalizedCards: NormalizedCard[]
 }
 
@@ -180,7 +170,8 @@ export interface JpdbTransformResult {
 export async function transformJpdbData(
   data: JpdbJsonData,
 ): Promise<JpdbTransformResult> {
-  const importItems: ImportItem[] = []
+  const vocabImportItems: ImportItem[] = []
+  const kanjiImportItems: ImportItem[] = []
   const normalizedCards: NormalizedCard[] = []
 
   // Collect vocabulary spellings and kanji characters for batch lookup
@@ -208,7 +199,7 @@ export async function transformJpdbData(
       continue
     }
 
-    const normalizedCard = transformVocabularyCard(card, "vocabulary-jp-en")
+    const normalizedCard = transformVocabularyCard(card)
     if (!normalizedCard) continue
 
     // Add to normalized cards for FSRS import
@@ -222,9 +213,8 @@ export async function transformJpdbData(
     const vocabData = vocabMap.get(card.spelling)
     const meaning = vocabData?.english.join(", ") || ""
 
-    importItems.push({
-      id: `imp-vocab-jpdb-jp-en-${card.vid}`,
-      main: card.spelling,
+    vocabImportItems.push({
+      id: card.spelling,
       meaning,
       status,
     })
@@ -236,7 +226,7 @@ export async function transformJpdbData(
       continue
     }
 
-    const normalizedCard = transformKanjiCard(card, "kanji-keyword-char")
+    const normalizedCard = transformKanjiCard(card)
     if (!normalizedCard) continue
 
     // Add to normalized cards for FSRS import
@@ -250,13 +240,12 @@ export async function transformJpdbData(
     const kanjiData = kanjiMap.get(card.character)
     const meaning = kanjiData?.meanings.join(", ") || ""
 
-    importItems.push({
-      id: `imp-kanji-jpdb-${card.character}`,
-      main: card.character,
+    kanjiImportItems.push({
+      id: card.character,
       meaning,
       status,
     })
   }
 
-  return { importItems, normalizedCards }
+  return { vocabImportItems, kanjiImportItems, normalizedCards }
 }

@@ -240,7 +240,7 @@ export const practiceModuleFSRSCardsQueryOptions = (
     queryKey: queryKeys.practiceModuleFSRS(userId, slugs, mode),
     queryFn: async (): Promise<FSRSCardData[]> => {
       if (!userId || slugs.length === 0) return []
-      return await getFSRSCards(userId, slugs, mode)
+      return await getFSRSCards(userId, slugs, mode, "vocabulary")
     },
     enabled: enabled && !!userId && slugs.length > 0,
   })

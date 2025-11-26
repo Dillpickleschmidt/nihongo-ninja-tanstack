@@ -2,8 +2,7 @@
 import { Show } from "solid-js"
 import { Trash2 } from "lucide-solid"
 import { cn } from "@/utils"
-import type { ImportItem } from "../data/jlpt-data"
-import type { ItemStatus } from "../types"
+import type { ItemStatus, ImportItem } from "../types"
 import { StatusBadge } from "./StatusBadge"
 
 interface ImportItemRowProps {
@@ -46,7 +45,7 @@ export function ImportItemRow(props: ImportItemRowProps) {
         </div>
 
         <div class="text-foreground/90 min-w-20 text-base font-medium">
-          {props.item.main}
+          {props.item.id}
         </div>
         <div class="text-muted-foreground/70 max-w-[180px] truncate text-sm group-hover:opacity-100 sm:max-w-sm">
           {props.item.meaning}

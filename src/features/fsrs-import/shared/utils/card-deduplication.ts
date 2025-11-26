@@ -52,7 +52,7 @@ export function deduplicateCards(cards: ProcessedCard[]): DeduplicationStats {
     if (removedCount > 0) {
       duplicatesRemoved += removedCount
       console.log(
-        `[DuplicateHandling] DUPLICATE ${uniqueKey} - kept source '${bestCard.source}' (stability: ${bestCard.fsrs_card.stability}) over ${removedCount} others`,
+        `[DuplicateHandling] DUPLICATE ${uniqueKey} - kept card with stability ${bestCard.fsrs_card.stability} over ${removedCount} others`,
       )
     }
   }

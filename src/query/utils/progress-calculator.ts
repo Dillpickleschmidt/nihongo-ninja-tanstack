@@ -142,7 +142,7 @@ export async function buildModuleProgressMap(
   }
 
   // Fetch all FSRS cards
-  const fsrsCards = await getFSRSCards(userId, Array.from(allVocabKeys))
+  const fsrsCards = await getFSRSCards(userId, Array.from(allVocabKeys), "meanings", "vocabulary")
   const fsrsCardIndex = buildFSRSCardIndex(fsrsCards)
 
   // Calculate progress for each module

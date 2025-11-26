@@ -66,10 +66,6 @@ describe("jpdbAdapter", () => {
         CustomFSRSRating.NeverForget,
       )
     })
-
-    it("handles unknown grades with fallback to Rating.Again", () => {
-      expect(jpdbAdapter.normalizeGrade("invalid-grade")).toBe(Rating.Again)
-    })
   })
 
   describe("transformCards", () => {
@@ -96,7 +92,6 @@ describe("jpdbAdapter", () => {
       expect(result[0].searchTerm).toBe("食べ物")
       expect(result[0].reviews).toHaveLength(1)
       expect(result[0].reviews[0].grade).toBe(Rating.Good)
-      expect(result[0].source).toContain("vocabulary-jp-en")
     })
 
     it("converts jpdb kanji to common format", () => {
@@ -120,7 +115,6 @@ describe("jpdbAdapter", () => {
       expect(result[0].searchTerm).toBe("食")
       expect(result[0].reviews).toHaveLength(1)
       expect(result[0].reviews[0].grade).toBe(Rating.Hard)
-      expect(result[0].source).toContain("kanji-keyword-char")
     })
 
     it("preserves review history correctly", () => {
@@ -252,18 +246,18 @@ describe("jpdbAdapter", () => {
 
       expect(result).toHaveLength(4)
 
-      // Verify each card type is processed with correct source
+      // Verify each card type is processed correctly
       expect(result[0].searchTerm).toBe("単語")
-      expect(result[0].source).toContain("vocabulary-jp-en")
+      expect(result[0].reviews).toHaveLength(1)
 
       expect(result[1].searchTerm).toBe("word")
-      expect(result[1].source).toContain("vocabulary-en-jp")
+      expect(result[1].reviews).toHaveLength(1)
 
       expect(result[2].searchTerm).toBe("単")
-      expect(result[2].source).toContain("kanji-keyword-char")
+      expect(result[2].reviews).toHaveLength(1)
 
       expect(result[3].searchTerm).toBe("語")
-      expect(result[3].source).toContain("kanji-char-keyword")
+      expect(result[3].reviews).toHaveLength(1)
     })
   })
 })

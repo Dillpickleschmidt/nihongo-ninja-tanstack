@@ -96,24 +96,20 @@ function AutomaticImportPage() {
         const jpdbTypedData = jpdbData as JpdbJsonData
 
         // Transform to both ImportItems and NormalizedCards
-        const { importItems: allItems, normalizedCards: cards } = await transformJpdbData(jpdbTypedData)
+        const { vocabImportItems: vocab, kanjiImportItems: kanji, normalizedCards: cards } = await transformJpdbData(jpdbTypedData)
 
-        if (allItems.length === 0) {
+        if (vocab.length === 0 && kanji.length === 0) {
           throw new Error(
             "No vocabulary or kanji cards found in the JPDB file",
           )
         }
-
-        // Separate vocab and kanji items by ID prefix
-        const vocab = allItems.filter((item) => item.id.startsWith("imp-vocab-"))
-        const kanji = allItems.filter((item) => item.id.startsWith("imp-kanji-"))
 
         setVocabItems(vocab)
         setKanjiItems(kanji)
         setNormalizedCards(cards)
 
         // Populate itemStates with initial status badges from JPDB
-        allItems.forEach((item) => {
+        vocab.concat(kanji).forEach((item) => {
           if (item.status) {
             setItemStates(item.id, item.status)
           }

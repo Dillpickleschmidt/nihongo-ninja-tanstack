@@ -54,7 +54,7 @@ function filterValidReviews(reviews: NormalizedReview[]): NormalizedReview[] {
       return false
     }
 
-    if (!review.timestamp || review.grade === undefined || review.grade === null || !review.source) {
+    if (!review.timestamp || review.grade === undefined || review.grade === null) {
       return false
     }
 

@@ -11,13 +11,13 @@ import { EndOfListIndicator } from "@/features/import-page/shared/components/End
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import type {
   ImportItem,
-  ImportState,
+  ItemStatus,
 } from "@/features/import-page/shared/types"
 import type { VocabularyItem } from "@/data/types"
 
 interface ManualImportViewProps {
   selectedIds: Set<string>
-  itemStates: ImportState
+  itemStates: Record<string, ItemStatus>
   handleItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
   handlePointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
   toggleSelectGroup: (ids: string[]) => void
@@ -37,7 +37,6 @@ export function ManualImportView(props: ManualImportViewProps) {
   const transformVocab = (vocab: VocabularyItem[]): ImportItem[] => {
     return vocab.map((item) => ({
       id: item.word,
-      main: item.word,
       meaning: item.english.join("; "),
     }))
   }

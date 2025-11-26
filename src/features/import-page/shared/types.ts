@@ -1,14 +1,9 @@
 // src/features/import-page/types.ts
 export type ItemStatus = "learning" | "decent" | "mastered" | null
 
-export interface ImportState {
-  [itemId: string]: ItemStatus
-}
-
 // Import-related types
 export interface ImportItem {
-  id: string
-  main: string // Kanji or Grammar Pattern
+  id: string // Kanji character, vocab word, or grammar pattern
   meaning: string // English definition
   status?: ItemStatus // Optional initial status
 }
