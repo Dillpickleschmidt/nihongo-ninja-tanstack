@@ -496,22 +496,7 @@ export type Database = {
             Returns: Json
           }
         | { Args: { user_id_param: string }; Returns: Json }
-      get_vocabulary_by_sets: {
-        Args: { set_ids: string[] }
-        Returns: {
-          english: string[]
-          example_sentences: Json
-          furigana: string
-          info: string[]
-          key: string
-          mnemonics: Json
-          overwrite_word: string
-          part_of_speech: Database["public"]["Enums"]["part_of_speech_enum"]
-          particles: Json
-          videos: Json
-          word: string
-        }[]
-      }
+      get_vocabulary_by_sets: { Args: { set_ids: string[] }; Returns: Json }
       get_vocabulary_stats: {
         Args: { user_id_param: string; week_ago_param: string }
         Returns: Json

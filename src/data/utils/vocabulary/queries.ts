@@ -11,5 +11,6 @@ export async function getVocabularyForModule(
     return []
   }
 
-  return getVocabularyBySets(module.vocab_set_ids)
+  const vocabBySet = await getVocabularyBySets(module.vocab_set_ids)
+  return Object.values(vocabBySet).flat()
 }

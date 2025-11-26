@@ -54,9 +54,9 @@ console.log(`📊 Total vocabulary items to upsert: ${vocabularyItems.length}`)
 // Transform vocabulary sets data to match database schema
 const vocabularySetItems: CoreVocabularySetInsert[] = Object.entries(
   vocabularySets,
-).map(([setId, set]) => ({
+).map(([setId, vocabSet]) => ({
   set_id: setId,
-  vocabulary_keys: Array.from(set.keys),
+  vocabulary_keys: vocabSet.keys,
 }))
 
 console.log(`📊 Total vocabulary sets to upsert: ${vocabularySetItems.length}`)

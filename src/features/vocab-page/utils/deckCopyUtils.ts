@@ -50,7 +50,8 @@ export async function loadDeckVocabulary(
     // Load from local files for built-in decks
     const module = dynamic_modules[deck.original_deck_id]
     if (module && module.vocab_set_ids) {
-      const vocab = await getVocabularyBySets(module.vocab_set_ids)
+      const vocabBySet = await getVocabularyBySets(module.vocab_set_ids)
+      const vocab = Object.values(vocabBySet).flat()
       return vocab.map(vocabularyItemToFormData)
     }
   } else {

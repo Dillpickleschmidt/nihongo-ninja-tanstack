@@ -69,7 +69,7 @@ export interface LearningPathChapterWithModules
 
 // A named set of vocabulary keys (words), for use in modules.
 export interface IndividualVocabularySet {
-  keys: Set<string>
+  keys: string[]
 }
 
 // --- Dynamic Module Types ---

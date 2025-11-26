@@ -85,14 +85,15 @@ export async function getCoreVocabularySets(
 
 /**
  * Fetches vocabulary items for given set IDs in a single query using RPC
+ * Results are segmented by set ID to preserve original array ordering
  * @param setIds Array of set IDs (e.g., ["hiragana", "katakana", "chapter1"])
- * @returns Array of VocabularyItem objects
+ * @returns Record mapping setId -> array of VocabularyItem objects in original order
  */
 export async function getVocabularyBySets(
   setIds: string[],
-): Promise<VocabularyItem[]> {
+): Promise<Record<string, VocabularyItem[]>> {
   if (!setIds || setIds.length === 0) {
-    return []
+    return {}
   }
 
   const supabase = createSupabaseClient()
@@ -103,19 +104,28 @@ export async function getVocabularyBySets(
 
   if (error) {
     console.error("Error fetching vocabulary by sets:", error)
-    return []
+    return {}
   }
 
-  return (data || []).map((row: any) => ({
-    word: row.word,
-    furigana: row.furigana,
-    english: row.english,
-    part_of_speech: row.part_of_speech || undefined,
-    info: row.info || undefined,
-    mnemonics: row.mnemonics || undefined,
-    example_sentences: row.example_sentences || undefined,
-    videos: row.videos || undefined,
-    particles: row.particles || undefined,
-    overwrite_word: row.overwrite_word || undefined,
-  }))
+  // data is now a JSONB object: { "set_id": [...items], ... }
+  const result: Record<string, VocabularyItem[]> = {}
+
+  if (data && typeof data === "object") {
+    for (const [setId, items] of Object.entries(data)) {
+      result[setId] = (items as any[]).map((row) => ({
+        word: row.word,
+        furigana: row.furigana,
+        english: row.english,
+        part_of_speech: row.part_of_speech || undefined,
+        info: row.info || undefined,
+        mnemonics: row.mnemonics || undefined,
+        example_sentences: row.example_sentences || undefined,
+        videos: row.videos || undefined,
+        particles: row.particles || undefined,
+        overwrite_word: row.overwrite_word || undefined,
+      }))
+    }
+  }
+
+  return result
 }

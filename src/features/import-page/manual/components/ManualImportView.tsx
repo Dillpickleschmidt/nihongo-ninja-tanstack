@@ -25,10 +25,7 @@ interface ManualImportViewProps {
     n5: Promise<ImportItem[]>
     n4: Promise<ImportItem[]>
   }
-  vocabPromises: {
-    n5: Promise<VocabularyItem[]>
-    n4: Promise<VocabularyItem[]>
-  }
+  vocabPromise: Promise<Record<string, VocabularyItem[]>>
   kanjiPromises: {
     n5: Promise<ImportItem[]>
     n4: Promise<ImportItem[]>
@@ -45,17 +42,19 @@ export function ManualImportView(props: ManualImportViewProps) {
     }))
   }
 
+  // Extract vocab from segmented record
+  const extractVocab = (vocabBySet: Record<string, VocabularyItem[]>): VocabularyItem[] => {
+    return Object.values(vocabBySet).flat()
+  }
+
   // Combine promises for each category
   const grammarPromise = Promise.all([
     props.grammarPromises.n5,
     props.grammarPromises.n4,
   ]).then(([n5, n4]) => [...n5, ...n4])
 
-  const vocabPromise = Promise.all([
-    props.vocabPromises.n5,
-    props.vocabPromises.n4,
-  ]).then(([n5, n4]) => {
-    const combined = [...n5, ...n4]
+  const vocabListPromise = props.vocabPromise.then((vocabBySet) => {
+    const combined = extractVocab(vocabBySet)
     return combined.map((item) => ({ id: item.word }))
   })
 
@@ -96,7 +95,7 @@ export function ManualImportView(props: ManualImportViewProps) {
                 />
                 <StatisticsSummary
                   itemStates={props.itemStates}
-                  itemsPromise={vocabPromise}
+                  itemsPromise={vocabListPromise}
                   title="Vocabulary"
                   showLearning={false}
                 />
@@ -157,7 +156,10 @@ export function ManualImportView(props: ManualImportViewProps) {
                     Vocabulary
                   </h3>
                   <Await
-                    promise={props.vocabPromises.n5.then(transformVocab)}
+                    promise={props.vocabPromise.then((vocabBySet) => {
+                      const n5Vocab = vocabBySet.n5 || []
+                      return transformVocab(n5Vocab)
+                    })}
                     fallback={
                       <div class="text-muted-foreground px-1 text-sm">
                         Loading...
@@ -253,7 +255,10 @@ export function ManualImportView(props: ManualImportViewProps) {
                     Vocabulary
                   </h3>
                   <Await
-                    promise={props.vocabPromises.n4.then(transformVocab)}
+                    promise={props.vocabPromise.then((vocabBySet) => {
+                      const n4Vocab = vocabBySet.n4 || []
+                      return transformVocab(n4Vocab)
+                    })}
                     fallback={
                       <div class="text-muted-foreground px-1 text-sm">
                         Loading...
@@ -316,7 +321,7 @@ export function ManualImportView(props: ManualImportViewProps) {
             />
             <StatisticsSummary
               itemStates={props.itemStates}
-              itemsPromise={vocabPromise}
+              itemsPromise={vocabListPromise}
               title="Vocabulary"
               showLearning={false}
             />

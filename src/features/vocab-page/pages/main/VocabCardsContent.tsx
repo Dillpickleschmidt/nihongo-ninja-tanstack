@@ -58,7 +58,8 @@ function VocabularyPreview(props: VocabularyPreviewProps) {
         if (!module?.vocab_set_ids) {
           return []
         }
-        return getVocabularyBySets(module.vocab_set_ids)
+        const vocabBySet = await getVocabularyBySets(module.vocab_set_ids)
+        return Object.values(vocabBySet).flat()
       } else if (props.selectedDeck) {
         // User decks: load from database
         return getVocabForDeckConverted(props.selectedDeck.deck_id)

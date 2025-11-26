@@ -14,12 +14,12 @@ export const Route = createFileRoute("/_home/import/_layout/manual")({
   loader: async () => {
     const n5GrammarPromise = getN5Grammar()
     const n4GrammarPromise = getN4Grammar()
-    const n5VocabPromise = getVocabularyBySets(["n5"])
-    const n4VocabPromise = getVocabularyBySets(["n4"])
+    const vocabPromise = getVocabularyBySets(["n5", "n4"])
 
     // Build kanji hierarchies from vocabulary
     const n5KanjiPromise = (async () => {
-      const vocab = await n5VocabPromise
+      const vocabBySet = await vocabPromise
+      const vocab = vocabBySet.n5 || []
       const hierarchy = await buildVocabHierarchy(vocab.map((v) => v.word))
       return hierarchy.kanji.map((k) => ({
         id: `n5-k-${k.kanji}`,
@@ -30,7 +30,8 @@ export const Route = createFileRoute("/_home/import/_layout/manual")({
     })()
 
     const n4KanjiPromise = (async () => {
-      const vocab = await n4VocabPromise
+      const vocabBySet = await vocabPromise
+      const vocab = vocabBySet.n4 || []
       const hierarchy = await buildVocabHierarchy(vocab.map((v) => v.word))
       return hierarchy.kanji.map((k) => ({
         id: `n4-k-${k.kanji}`,
@@ -43,8 +44,7 @@ export const Route = createFileRoute("/_home/import/_layout/manual")({
     return {
       n5GrammarPromise,
       n4GrammarPromise,
-      n5VocabPromise,
-      n4VocabPromise,
+      vocabPromise,
       n5KanjiPromise,
       n4KanjiPromise,
     }
@@ -77,10 +77,7 @@ function ManualImportPage() {
           n5: loaderData().n5GrammarPromise,
           n4: loaderData().n4GrammarPromise,
         }}
-        vocabPromises={{
-          n5: loaderData().n5VocabPromise,
-          n4: loaderData().n4VocabPromise,
-        }}
+        vocabPromise={loaderData().vocabPromise}
         kanjiPromises={{
           n5: loaderData().n5KanjiPromise,
           n4: loaderData().n4KanjiPromise,

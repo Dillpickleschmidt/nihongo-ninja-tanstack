@@ -47,18 +47,32 @@ export type VocabHierarchy = {
 export async function buildVocabHierarchy(
   vocabularyWords: string[],
 ): Promise<VocabHierarchy> {
-  // 1. Extract all unique kanji from all vocabulary words
-  const allKanjiChars = [
-    ...new Set(vocabularyWords.flatMap((word) => extractKanjiCharacters(word))),
-  ]
+  // 1. Extract all unique kanji from all vocabulary words (preserving order)
+  const allKanjiChars: string[] = []
+  const seenKanji = new Set<string>()
+  for (const word of vocabularyWords) {
+    for (const kanji of extractKanjiCharacters(word)) {
+      if (!seenKanji.has(kanji)) {
+        seenKanji.add(kanji)
+        allKanjiChars.push(kanji)
+      }
+    }
+  }
 
   // 2. Query database for kanji and their radicals (batch operations)
   const kanjiEntries = (await getWanikaniItems(allKanjiChars)).kanji
 
-  // 3. Get all unique radicals from kanji components and fetch their data
-  const allRadicalChars = [
-    ...new Set(kanjiEntries.flatMap((k) => k.radicalComponents)),
-  ]
+  // 3. Get all unique radicals from kanji components and fetch their data (preserving order)
+  const allRadicalChars: string[] = []
+  const seenRadicals = new Set<string>()
+  for (const kanji of kanjiEntries) {
+    for (const radical of kanji.radicalComponents) {
+      if (!seenRadicals.has(radical)) {
+        seenRadicals.add(radical)
+        allRadicalChars.push(radical)
+      }
+    }
+  }
 
   const radicalResult = await getWanikaniItems([], allRadicalChars)
   const radicalEntries = radicalResult.radicals
