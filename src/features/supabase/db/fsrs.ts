@@ -37,7 +37,7 @@ export async function getFSRSCards(
   const supabase = createSupabaseClient()
 
   let query = supabase
-    .from("fsrs_cards")
+    .from("user_fsrs_cards")
     .select("*")
     .eq("user_id", userId)
     .in("practice_item_key", keys)
@@ -105,7 +105,7 @@ export async function getDueFSRSCountsByMode(
 
   const now = new Date()
   const { data, error } = await supabase
-    .from("fsrs_cards")
+    .from("user_fsrs_cards")
     .select("mode, type")
     .eq("user_id", userId)
     .lte("due_at", now.toISOString())
@@ -200,7 +200,7 @@ export const upsertFSRSCardForUser = createServerFn({ method: "POST" })
     }
 
     const { error } = await supabase
-      .from("fsrs_cards")
+      .from("user_fsrs_cards")
       .upsert([upsertData], {
         onConflict: "user_id,practice_item_key,type,mode",
       })
@@ -232,7 +232,7 @@ export const batchUpsertFSRSCardsForUser = createServerFn({ method: "POST" })
     }))
 
     const { error } = await supabase
-      .from("fsrs_cards")
+      .from("user_fsrs_cards")
       .upsert(upsertDataArray, {
         onConflict: "user_id,practice_item_key,type,mode",
       })
@@ -251,7 +251,7 @@ export const getDueFSRSCards = createServerFn({ method: "GET" })
 
     const now = new Date()
     const { data: cards, error } = await supabase
-      .from("fsrs_cards")
+      .from("user_fsrs_cards")
       .select("*")
       .eq("user_id", userId)
       .lte("due_at", now.toISOString())

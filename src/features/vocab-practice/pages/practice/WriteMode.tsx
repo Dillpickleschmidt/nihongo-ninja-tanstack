@@ -6,7 +6,7 @@ import { Rating } from "ts-fsrs"
 import {
   getExampleSentenceParts,
   type ProcessedSentenceResult,
-} from "@/data/utils/vocab"
+} from "@/data/utils/sentence-processing"
 import { cn } from "@/utils"
 import { ActionButton } from "../shared/ActionButton"
 
@@ -184,7 +184,7 @@ export default function WriteModeComponent() {
                       class={cn(
                         "border-b-2 border-gray-400 bg-transparent text-center text-xl font-bold outline-none focus:border-blue-500 sm:text-2xl",
                         uiState.isAnswered &&
-                          (wasCorrect() ? "text-green-500" : "text-red-500"),
+                        (wasCorrect() ? "text-green-500" : "text-red-500"),
                       )}
                     />
                   }
@@ -223,17 +223,17 @@ export default function WriteModeComponent() {
                               class={cn(
                                 "inline-block min-w-[4rem] border-b-2 border-gray-400 bg-transparent text-center font-bold outline-none focus:border-blue-500",
                                 uiState.isAnswered &&
-                                  (inputCorrectness()[part.index]
-                                    ? "border-green-500 text-green-500"
-                                    : "border-red-500 text-red-500"),
+                                (inputCorrectness()[part.index]
+                                  ? "border-green-500 text-green-500"
+                                  : "border-red-500 text-red-500"),
                               )}
                               style={{
                                 width: `${Math.max(
                                   4,
                                   card().practiceMode === "spellings"
                                     ? (userAnswers()[part.index] || "").length *
-                                        1.5 +
-                                        1
+                                    1.5 +
+                                    1
                                     : (userAnswers()[part.index] || "").length,
                                 )}ch`,
                               }}

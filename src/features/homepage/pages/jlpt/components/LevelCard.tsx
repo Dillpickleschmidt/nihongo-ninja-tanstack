@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js"
 import { cn } from "@/utils"
-import { SmoothCard } from "@/features/learn-page/components/shared/SmoothCard"
+import { SmoothCard } from "@/components/SmoothCard"
 import { getChapterStyles } from "@/data/chapter_colors"
 
 const LEVEL_TO_CHAPTER_MAP: Record<string, string> = {

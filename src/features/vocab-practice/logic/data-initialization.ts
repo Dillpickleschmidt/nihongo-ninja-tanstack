@@ -8,13 +8,13 @@ import type {
   FSRSInfo,
   SessionCardStyle,
 } from "../types"
-import { addKanaAndRuby } from "@/data/utils/vocab"
+import { addKanaAndRuby } from "@/data/utils/vocabulary/transforms"
 import type {
   VocabHierarchy,
   VocabEntry,
   KanjiEntry,
   RadicalEntry,
-} from "@/data/wanikani/hierarchy-builder"
+} from "@/features/resolvers/util/hierarchy-builder"
 import { getKanjiDetails } from "@/features/resolvers/kanji"
 
 /**
@@ -244,9 +244,7 @@ export async function initializePracticeSession(
       radicals: [] as RadicalEntry[],
     }
     if (missingKanjiSlugs.length > 0 || missingRadicalSlugs.length > 0) {
-      fetchedData = await getKanjiDetails({
-        data: { kanji: missingKanjiSlugs, radicals: missingRadicalSlugs },
-      })
+      fetchedData = await getKanjiDetails(missingKanjiSlugs, missingRadicalSlugs)
     }
 
     const kanjiLookup = new Map(

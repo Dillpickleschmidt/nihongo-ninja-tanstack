@@ -17,7 +17,10 @@ export function LearningPathSection(props: LearningPathSectionProps) {
   return (
     <Tabs defaultValue="grid" class="w-full">
       <Show
-        when={context.activeLearningPath() !== "getting_started"}
+        when={
+          context.settingsQuery.data!["active-learning-path"] !==
+          "getting_started"
+        }
         fallback={<div class="h-6" />}
       >
         <div class="mt-1 flex justify-end px-2 md:-mt-2 md:px-3">

@@ -44,7 +44,7 @@ export function SummaryCard(props: SummaryCardProps) {
           when={
             !props.dueCountQuery?.isPending &&
             props.getDueCount &&
-            props.getDueCount() > 0 &&
+            (props.getDueCount() ?? 0) > 0 &&
             activeService() === "local"
           }
         >

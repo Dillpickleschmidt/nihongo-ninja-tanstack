@@ -9,7 +9,7 @@ import type { PartOfSpeech, ExampleSentence } from "@/data/types"
 
 // Mock all external dependencies
 vi.mock("@/features/vocab-practice/context/VocabPracticeContext")
-vi.mock("@/data/utils/vocab")
+vi.mock("@/data/utils/sentence-processing")
 vi.mock("@/features/resolvers/vocabulary", () => ({
   getVocabulary: vi.fn(),
 }))
@@ -29,18 +29,15 @@ vi.mock("@/components/ui/button", () => ({
 
 // Import mocked functions
 import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
-import { getExampleSentenceParts } from "@/data/utils/vocab"
+import { getExampleSentenceParts } from "@/data/utils/sentence-processing"
 
-const mockUseVocabPracticeContext = useVocabPracticeContext as ReturnType<
-  typeof vi.fn
->
-const mockGetExampleSentenceParts = getExampleSentenceParts as ReturnType<
-  typeof vi.fn
->
+const mockUseVocabPracticeContext = vi.mocked(useVocabPracticeContext)
+const mockGetExampleSentenceParts = vi.mocked(getExampleSentenceParts)
 
 // Mock functions for context
 const mockCurrentCard = vi.fn()
 const mockSetUIState = vi.fn()
+const mockAddTimeAndQuestions = vi.fn()
 
 const createMockCard = (
   validAnswers: string[],
@@ -55,8 +52,8 @@ const createMockCard = (
     english: validAnswers,
     example_sentences: hasExampleSentence
       ? ([
-          { japanese: ["mock"], english: ["mock"] },
-        ] satisfies ExampleSentence[])
+        { japanese: ["mock"], english: ["mock"] },
+      ] satisfies ExampleSentence[])
       : undefined,
     part_of_speech: hasExampleSentence
       ? ("I-adjective" satisfies PartOfSpeech)
@@ -82,6 +79,7 @@ describe("WriteModeComponent", () => {
 
     // Reset mock functions
     mockCurrentCard.mockReturnValue(null)
+    mockAddTimeAndQuestions.mockReturnValue(undefined)
 
     mockUseVocabPracticeContext.mockReturnValue({
       currentCard: mockCurrentCard,
@@ -90,7 +88,8 @@ describe("WriteModeComponent", () => {
         lastRating: null,
       },
       setUIState: mockSetUIState,
-    })
+      addTimeAndQuestions: mockAddTimeAndQuestions,
+    } as any)
   })
 
   describe("Single Input Mode", () => {

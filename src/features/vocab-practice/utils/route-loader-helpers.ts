@@ -1,6 +1,6 @@
 // Shared utility functions for route loaders and start page logic
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
-import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
+import type { VocabHierarchy } from "@/features/resolvers/util/hierarchy-builder"
 import type { PracticeMode } from "@/features/vocab-practice/types"
 import type { QueryClient } from "@tanstack/solid-query"
 import {

@@ -1,6 +1,10 @@
 import { setCookie } from "@/utils/cookie-utils"
 import { USER_SETTINGS_COOKIE } from "@/features/main-cookies/types"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
+import {
+  extractDbSyncedFields,
+  hasDbSyncedChanges,
+} from "@/features/main-cookies/utils"
 import type { QueryClient } from "@tanstack/solid-query"
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 import { queryKeys } from "@/query/utils/query-keys"
@@ -34,6 +38,7 @@ export function updateUserSettingsCookie(settings: UserSettings) {
 
 /**
  * Sync user settings to database
+ * Only syncs DB-synced fields (device-specific settings are excluded)
  */
 export async function syncUserSettingsToDb(
   userId: string,
@@ -41,18 +46,15 @@ export async function syncUserSettingsToDb(
   timestamp: number,
 ) {
   const supabase = createSupabaseClient()
+
+  // Extract only DB-synced fields to ensure device-specific settings are not written to DB
+  const dbSettings = extractDbSyncedFields(settings)
+
   const { error } = await supabase
     .from("profiles")
     .update({
       user_preferences: {
-        "service-preferences": settings["service-preferences"],
-        "active-learning-path": settings["active-learning-path"],
-        "active-chapter": settings["active-chapter"],
-        "has-completed-onboarding": settings["has-completed-onboarding"],
-        tours: settings["tours"],
-        "override-settings": settings["override-settings"],
-        "conjugation-practice": settings["conjugation-practice"],
-        "learning-path-positions": settings["learning-path-positions"],
+        ...dbSettings,
         timestamp,
       },
     })
@@ -73,7 +75,7 @@ export async function applyUserSettingsUpdate(
 ): Promise<UserSettings> {
   const currentSettings = queryClient.getQueryData<UserSettings>(
     queryKeys.userSettings(userId),
-  )
+  )!
 
   const timestamp = Date.now()
   const newSettings = {
@@ -88,14 +90,14 @@ export async function applyUserSettingsUpdate(
   // Update cookie
   updateUserSettingsCookie(newSettings)
 
-  // Sync to DB
-  if (userId) {
+  // Sync to DB only if DB-synced fields actually changed
+  if (userId && hasDbSyncedChanges(updates, currentSettings)) {
     const dbPromise = syncUserSettingsToDb(userId, newSettings, timestamp)
 
     if (options.awaitDb) {
       await dbPromise
     } else {
-      dbPromise.catch((error) => console.error("[DB Sync Failed]", error))
+      dbPromise.catch((error) => console.error("DB Sync Failed", error))
     }
   }
 

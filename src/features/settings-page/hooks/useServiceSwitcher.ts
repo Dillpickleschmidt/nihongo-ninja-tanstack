@@ -6,7 +6,7 @@ import { userSettingsQueryOptions } from "@/query/query-options"
 import { updateUserSettingsMutation } from "@/query/query-mutations"
 import { validateAnkiConnect } from "@/features/service-api-functions/anki/anki-connect-client"
 import { ensureSingleLiveService } from "@/features/srs-services/utils"
-import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"
+import type { SRSServiceType } from "@/features/main-cookies/schemas/user-settings"
 
 /**
  * Custom hook for switching between SRS services with validation
@@ -28,13 +28,13 @@ export function useServiceSwitcher(userId: string | null) {
    * Switch to a specific service with validation
    */
   const switchToService = async (
-    service: "nihongo" | ServiceType,
+    service: "nihongo" | SRSServiceType,
   ): Promise<{ success: boolean; error?: string }> => {
     setIsSwitching(true)
     clearError()
 
     try {
-      const currentPreferences = settingsQuery.data!["service-preferences"]
+      const currentPreferences = settingsQuery.data!["srs-service-preferences"]
 
       // Handle "nihongo" (local FSRS) - just disable all services
       if (service === "nihongo") {

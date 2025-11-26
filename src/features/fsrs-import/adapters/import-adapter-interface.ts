@@ -1,25 +1,24 @@
 import {
   type NormalizedCard,
   type NormalizedReview,
-  type FSRSProcessingGrade,
-  type RawReview,
-  normalizeTimestamp,
   NormalizedReviewSchema,
-} from "../core/schemas"
+} from "../shared/types/import-data-models"
+import { type FSRSProcessingGrade } from "../shared/types/fsrs-types"
+import { normalizeTimestamp } from "./adapter-utils"
 
 export { type NormalizedCard, type NormalizedReview }
 
-export interface ImportAdapter<TInput> {
-  validateInput(data: any): data is TInput
-  transformCards(data: TInput): NormalizedCard[]
-  getSupportedCardTypes(): string[]
-  normalizeGrade(grade: any): FSRSProcessingGrade
+export interface RawReview {
+  timestamp: unknown
+  grade: any
+  source: string
 }
 
-export function createAdapter<TInput>(
-  adapter: ImportAdapter<TInput>,
-): ImportAdapter<TInput> {
-  return adapter
+export interface ImportAdapter<TInput> {
+  validateInput(data: any): data is TInput
+  transformCards(data: TInput, options?: any): NormalizedCard[]
+  getSupportedCardTypes(): string[]
+  normalizeGrade(grade: any): FSRSProcessingGrade
 }
 
 export function normalizeReview(rawReview: RawReview): NormalizedReview {

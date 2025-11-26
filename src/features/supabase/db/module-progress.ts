@@ -10,7 +10,7 @@ export async function getModuleProgress(
 ): Promise<ModuleProgress | null> {
   const supabase = createSupabaseClient()
   const { data, error } = await supabase
-    .from("user_module_progress")
+    .from("user_completed_modules")
     .select()
     .eq("user_id", userId)
     .eq("module_path", moduleId)
@@ -23,7 +23,7 @@ export async function getModuleProgress(
 /**
  * Get all completed modules for a user
  */
-export async function getUserModuleProgress(
+export async function getUserModuleCompletions(
   userId: string,
   options?: {
     orderBy?: "completed_at"
@@ -36,7 +36,7 @@ export async function getUserModuleProgress(
   const ascending = options?.ascending ?? false
 
   const { data, error } = await supabase
-    .from("user_module_progress")
+    .from("user_completed_modules")
     .select()
     .eq("user_id", userId)
     .order(orderBy, { ascending })
@@ -61,7 +61,7 @@ export async function markModuleCompleted(
   const supabase = createSupabaseClient()
 
   const { data, error } = await supabase
-    .from("user_module_progress")
+    .from("user_completed_modules")
     .upsert(
       {
         user_id: userId,
@@ -90,6 +90,7 @@ export async function markModuleCompleted(
 export async function createSession(
   userId: string | null,
   moduleId: string,
+  moduleType: string,
   data?: {
     durationSeconds?: number
     questionsAnswered?: number
@@ -107,6 +108,7 @@ export async function createSession(
     .insert({
       user_id: userId,
       module_path: moduleId,
+      module_type: moduleType,
       created_at: now,
       last_updated_at: now,
       duration_seconds: data?.durationSeconds ?? 0,
@@ -144,114 +146,35 @@ export async function updateSession(
 }
 
 /**
- * Get total time spent by user on a specific date
+ * Get all-time daily practice aggregates for a user
+ * Returns a record mapping dates (YYYY-MM-DD) to total seconds practiced
  */
-export async function getUserDailyTime(
+export async function getUserDailyAggregates(
   userId: string,
-  date: Date,
-): Promise<number> {
+): Promise<Record<string, number>> {
   const supabase = createSupabaseClient()
 
-  const startOfDay = new Date(date)
-  startOfDay.setHours(0, 0, 0, 0)
+  // Get user's timezone
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
-  const endOfDay = new Date(date)
-  endOfDay.setHours(23, 59, 59, 999)
-
-  const { data, error } = await supabase
-    .from("user_practice_sessions")
-    .select("duration_seconds")
-    .eq("user_id", userId)
-    .gte("created_at", startOfDay.toISOString())
-    .lte("created_at", endOfDay.toISOString())
+  const { data, error } = await supabase.rpc("get_user_daily_aggregates", {
+    user_id_param: userId,
+    timezone_param: timezone,
+  })
 
   if (error) throw error
-
-  return data.reduce((sum, session) => sum + session.duration_seconds, 0)
+  return data || {}
 }
 
 /**
- * Get time spent on a specific module on a specific date
+ * Get paginated practice sessions for a user
+ * Optionally filter by module type (e.g., 'vocab-practice', 'sentence-practice')
  */
-export async function getModuleDailyTime(
+export async function getSessionsPaginated(
   userId: string,
-  moduleId: string,
-  date: Date,
-): Promise<number> {
-  const supabase = createSupabaseClient()
-
-  const startOfDay = new Date(date)
-  startOfDay.setHours(0, 0, 0, 0)
-
-  const endOfDay = new Date(date)
-  endOfDay.setHours(23, 59, 59, 999)
-
-  const { data, error } = await supabase
-    .from("user_practice_sessions")
-    .select("duration_seconds")
-    .eq("user_id", userId)
-    .eq("module_path", moduleId)
-    .gte("created_at", startOfDay.toISOString())
-    .lte("created_at", endOfDay.toISOString())
-
-  if (error) throw error
-
-  return data.reduce((sum, session) => sum + session.duration_seconds, 0)
-}
-
-/**
- * Get total time spent on a module (all-time)
- */
-export async function getTotalTimeSpent(
-  userId: string,
-  moduleId: string,
-): Promise<number> {
-  const supabase = createSupabaseClient()
-
-  const { data, error } = await supabase
-    .from("user_practice_sessions")
-    .select("duration_seconds")
-    .eq("user_id", userId)
-    .eq("module_path", moduleId)
-
-  if (error) throw error
-
-  return data.reduce((sum, session) => sum + session.duration_seconds, 0)
-}
-
-/**
- * Get total questions answered for a module (all-time)
- */
-export async function getTotalQuestionsAnswered(
-  userId: string,
-  moduleId: string,
-): Promise<number> {
-  const supabase = createSupabaseClient()
-
-  const { data, error } = await supabase
-    .from("user_practice_sessions")
-    .select("questions_answered")
-    .eq("user_id", userId)
-    .eq("module_path", moduleId)
-    .not("questions_answered", "is", null)
-
-  if (error) throw error
-
-  return data.reduce(
-    (sum, session) => sum + (session.questions_answered || 0),
-    0,
-  )
-}
-
-/**
- * Get all activity sessions for a user with optional date filters
- */
-export async function getUserSessions(
-  userId: string,
-  options?: {
-    startDate?: Date
-    endDate?: Date
-  },
+  offset: number,
+  limit: number,
+  moduleType?: string,
 ): Promise<PracticeSession[]> {
   const supabase = createSupabaseClient()
 
@@ -260,67 +183,14 @@ export async function getUserSessions(
     .select()
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
+    .range(offset, offset + limit - 1)
 
-  if (options?.startDate) {
-    query = query.gte("created_at", options.startDate.toISOString())
-  }
-
-  if (options?.endDate) {
-    query = query.lte("created_at", options.endDate.toISOString())
+  if (moduleType) {
+    query = query.eq("module_type", moduleType)
   }
 
   const { data, error } = await query
 
   if (error) throw error
   return data
-}
-
-/**
- * Get all activity sessions for a specific module
- */
-export async function getModuleSessions(
-  userId: string,
-  moduleId: string,
-): Promise<PracticeSession[]> {
-  const supabase = createSupabaseClient()
-
-  const { data, error } = await supabase
-    .from("user_practice_sessions")
-    .select()
-    .eq("user_id", userId)
-    .eq("module_path", moduleId)
-    .order("created_at", { ascending: false })
-
-  if (error) throw error
-  return data
-}
-
-/**
- * Get time data for the last 7 days (optimized - single query)
- * Returns array of duration in seconds for each day [day-6, day-5, ..., today]
- */
-export async function getUserWeekTimeData(userId: string): Promise<number[]> {
-  const weekAgo = new Date()
-  weekAgo.setDate(weekAgo.getDate() - 6)
-  weekAgo.setHours(0, 0, 0, 0)
-
-  const sessions = await getUserSessions(userId, { startDate: weekAgo })
-
-  // Group sessions by day
-  const dayMap = new Map<string, number>()
-  sessions.forEach((session) => {
-    const day = new Date(session.created_at).toDateString()
-    dayMap.set(day, (dayMap.get(day) || 0) + session.duration_seconds)
-  })
-
-  // Build array for last 7 days
-  const weekData: number[] = []
-  const today = new Date()
-  for (let i = 6; i >= 0; i--) {
-    const date = new Date(today)
-    date.setDate(date.getDate() - i)
-    weekData.push(dayMap.get(date.toDateString()) || 0)
-  }
-
-  return weekData
 }

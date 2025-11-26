@@ -7,6 +7,8 @@ import {
   ServiceCredentialsSchema,
   type ServiceCredentials,
 } from "../schemas/service-credentials"
+import { getUser } from "@/features/supabase/getUser"
+import { getTokensFromDB } from "@/features/supabase/db/anime-auth"
 
 /**
  * Server-only function to read service credentials from HttpOnly cookie
@@ -17,16 +19,37 @@ export const getServiceCredentials = createServerFn({
 }).handler(async (): Promise<ServiceCredentials> => {
   const cookieValue = getCookie(SERVICE_CREDENTIALS_COOKIE)
 
-  if (!cookieValue) {
+  // Try cookie first
+  if (cookieValue) {
+    try {
+      const parsed = JSON.parse(cookieValue)
+      return ServiceCredentialsSchema.parse(parsed)
+    } catch {
+      // Fall through to DB check
+    }
+  }
+
+  // Check if user is authenticated
+  const userResult = await getUser()
+  if (!userResult.user) {
     return ServiceCredentialsSchema.parse({})
   }
 
+  // Try to load from DB (cross-device sync)
   try {
-    const parsed = JSON.parse(cookieValue)
-    return ServiceCredentialsSchema.parse(parsed)
-  } catch {
-    return ServiceCredentialsSchema.parse({})
+    const dbTokens = await getTokensFromDB()
+
+    if (dbTokens) {
+      // Merge with defaults and write to cookie
+      const credentials = ServiceCredentialsSchema.parse(dbTokens)
+      await updateServiceCredentials({ data: credentials })
+      return credentials
+    }
+  } catch (error) {
+    console.error("[ServiceCredentials] DB load error:", error)
   }
+
+  return ServiceCredentialsSchema.parse({})
 })
 
 /**
@@ -45,3 +68,24 @@ export const updateServiceCredentials = createServerFn({ method: "POST" })
 
     return { success: true }
   })
+
+/**
+ * Returns anime service connection status
+ */
+export const getServiceConnectionStatus = createServerFn({
+  method: "GET",
+}).handler(
+  async (): Promise<{
+    anilist: boolean
+    kitsu: boolean
+    mal: boolean
+  }> => {
+    const credentials = await getServiceCredentials()
+
+    return {
+      anilist: !!credentials.anilist?.accessToken,
+      kitsu: !!credentials.kitsu?.accessToken,
+      mal: !!credentials.mal?.accessToken,
+    }
+  },
+)

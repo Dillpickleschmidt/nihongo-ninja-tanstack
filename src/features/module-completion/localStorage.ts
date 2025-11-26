@@ -3,11 +3,13 @@
  * Automatically synced to database on login.
  */
 
+import { isServer } from "solid-js/web"
+
 const LOCAL_COMPLETIONS_KEY = "nihongo-ninja:local-completions"
 
 /** Get all locally completed module paths */
 export function getLocalCompletions(): string[] {
-  if (typeof localStorage === "undefined") return []
+  if (isServer) return []
 
   try {
     const data = localStorage.getItem(LOCAL_COMPLETIONS_KEY)
@@ -20,7 +22,7 @@ export function getLocalCompletions(): string[] {
 
 /** Add a module path to local completions (auto-deduplicates) */
 export function addLocalCompletion(modulePath: string): void {
-  if (typeof localStorage === "undefined") return
+  if (isServer) return
 
   try {
     const completions = new Set(getLocalCompletions())
@@ -33,7 +35,7 @@ export function addLocalCompletion(modulePath: string): void {
 
 /** Clear all local completions (on logout or after sync) */
 export function clearLocalCompletions(): void {
-  if (typeof localStorage === "undefined") return
+  if (isServer) return
 
   try {
     localStorage.removeItem(LOCAL_COMPLETIONS_KEY)

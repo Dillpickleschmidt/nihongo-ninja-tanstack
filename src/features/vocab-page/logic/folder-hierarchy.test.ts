@@ -13,7 +13,7 @@ import {
   flattenFolderTree,
   searchFolders,
   getFolderStats,
-} from "./folder-hierarchy"
+} from "./folder-utils"
 
 // Mock data helpers
 const createMockFolder = (
@@ -29,11 +29,11 @@ const createMockFolder = (
 })
 
 const createMockDeck = (
-  id: number,
+  id: string | number,
   name: string,
   folderId: number | null,
 ): UserDeck => ({
-  deck_id: id,
+  deck_id: String(id),
   deck_name: name,
   deck_description: null,
   original_deck_id: null,
@@ -41,6 +41,7 @@ const createMockDeck = (
   source: "built-in",
   user_id: "test-user",
   created_at: new Date().toISOString(),
+  allowed_practice_modes: ["meanings", "spellings"],
 })
 
 describe("folder-hierarchy", () => {

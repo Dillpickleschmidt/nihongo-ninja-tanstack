@@ -1,27 +1,15 @@
 // features/vocab-page/utils/deckCopyUtils.ts
 
-import { getVocabularyForSet } from "@/data/utils/vocab"
+import { getVocabularyBySets } from "@/features/supabase/db/core-vocab"
+import { extractSegmentText } from "@/data/utils/text/furigana"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import {
-  getVocabForDeck,
+  getVocabForDeckConverted,
   createCustomDeckServerFn,
 } from "@/features/supabase/db/deck"
-import type { VocabItemFormData } from "@/features/vocab-page/types/vocabulary-types"
-import { isVerbPartOfSpeech } from "@/features/vocab-page/types/vocabulary-types"
+import type { VocabItemFormData } from "@/features/vocab-page/types/vocabulary"
+import { isVerbPartOfSpeech } from "@/features/vocab-page/types/vocabulary"
 import type { VocabularyItem } from "@/data/types"
-
-/**
- * Helper to extract text from example sentence items that can be strings or objects with 't' property
- */
-function extractText(items: (string | { t: string })[]): string {
-  if (!items || items.length === 0) return ""
-  return items
-    .map((item) => {
-      if (typeof item === "string") return item
-      return item.t || ""
-    })
-    .join("")
-}
 
 /**
  * Converts a VocabularyItem to VocabItemFormData with proper handling of all fields
@@ -41,8 +29,8 @@ function vocabularyItemToFormData(item: VocabularyItem): VocabItemFormData {
       : [],
     examples: item.example_sentences
       ? item.example_sentences.map((ex) => ({
-          japanese: extractText(ex.japanese),
-          english: extractText(ex.english),
+          japanese: extractSegmentText(ex.japanese),
+          english: extractSegmentText(ex.english),
         }))
       : [],
     readingMnemonics: item.mnemonics?.reading
@@ -62,12 +50,13 @@ export async function loadDeckVocabulary(
     // Load from local files for built-in decks
     const module = dynamic_modules[deck.original_deck_id]
     if (module && module.vocab_set_ids) {
-      const vocab = await getVocabularyForSet(module.vocab_set_ids)
+      const vocabBySet = await getVocabularyBySets(module.vocab_set_ids)
+      const vocab = Object.values(vocabBySet).flat()
       return vocab.map(vocabularyItemToFormData)
     }
   } else {
     // Load from database for user decks
-    const vocab = await getVocabForDeck(deck.deck_id)
+    const vocab = await getVocabForDeckConverted(deck.deck_id)
     return vocab.map(vocabularyItemToFormData)
   }
 

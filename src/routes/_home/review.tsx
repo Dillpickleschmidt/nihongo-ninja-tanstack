@@ -9,45 +9,50 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select"
-import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
-import { UpcomingModulesList } from "@/features/learn-page/components/content/UpcomingModulesList"
+import { UpcomingModulesList } from "@/components/UpcomingModulesList"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
-import { userSettingsQueryOptions } from "@/query/query-options"
 import {
+  userSettingsQueryOptions,
   dueCardsCountQueryOptions,
   upcomingModulesQueryOptions,
   completedModulesQueryOptions,
 } from "@/query/query-options"
+import { queryKeys } from "@/query/utils/query-keys"
 import { Route as RootRoute } from "@/routes/__root"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { getActiveLiveService } from "@/features/srs-services/utils"
 import { useServiceSwitcher } from "@/features/settings-page/hooks/useServiceSwitcher"
-import type { ServiceType } from "@/features/main-cookies/schemas/user-settings"
-import { TextbookIDEnum } from "@/data/types"
+import { useQueryClient } from "@tanstack/solid-query"
+import type { SRSServiceType } from "@/features/main-cookies/schemas/user-settings"
+import type { TextbookIDEnum } from "@/data/types"
 
 export const Route = createFileRoute("/_home/review")({
   loader: async ({ context }) => {
     const { user, queryClient } = context
 
-    // Get user settings from cache (already loaded in root)
+    queryClient.setQueryData(queryKeys.backgroundSettings(), {
+      blur: 32,
+      backgroundOpacityOffset: 0,
+      showGradient: true,
+    })
+
     const userSettings = queryClient.getQueryData(
       userSettingsQueryOptions(user?.id || null).queryKey,
     )!
 
-    // Prefetch queries for review page
     queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
     queryClient.prefetchQuery(
       dueCardsCountQueryOptions(
         user?.id || null,
-        userSettings["service-preferences"],
+        userSettings["srs-service-preferences"],
       ),
     )
     await queryClient.ensureQueryData(
       upcomingModulesQueryOptions(
         user?.id || null,
         userSettings["active-learning-path"] as TextbookIDEnum,
-        userSettings["learning-path-positions"]?.[userSettings["active-learning-path"]] ||
-          null,
+        userSettings["active-chapter"] as string,
+        queryClient,
       ),
     )
   },
@@ -256,6 +261,8 @@ function ServiceSelector(props: {
 
 function RouteComponent() {
   const context = useRouteContext({ from: RootRoute.id })
+  const queryClient = useQueryClient()
+
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(context().user?.id || null),
   )
@@ -264,7 +271,7 @@ function RouteComponent() {
   const dueCardsQuery = useCustomQuery(() =>
     dueCardsCountQueryOptions(
       context().user?.id || null,
-      settingsQuery.data!["service-preferences"],
+      settingsQuery.data!["srs-service-preferences"],
     ),
   )
 
@@ -277,9 +284,8 @@ function RouteComponent() {
     upcomingModulesQueryOptions(
       context().user?.id || null,
       settingsQuery.data!["active-learning-path"] as TextbookIDEnum,
-      settingsQuery.data!["learning-path-positions"]?.[
-        settingsQuery.data!["active-learning-path"]
-      ] || null,
+      settingsQuery.data!["active-chapter"] as string,
+      queryClient,
     ),
   )
 
@@ -288,7 +294,7 @@ function RouteComponent() {
   )
 
   const getActiveServiceDisplay = () => {
-    const preferences = settingsQuery.data?.["service-preferences"]
+    const preferences = settingsQuery.data?.["srs-service-preferences"]
     if (!preferences) return "nihongo"
 
     const activeService = getActiveLiveService(preferences)
@@ -296,10 +302,12 @@ function RouteComponent() {
   }
 
   const [selectedService, setSelectedService] = createSignal<
-    "nihongo" | ServiceType
+    "nihongo" | SRSServiceType
   >(getActiveServiceDisplay())
 
-  const handleServiceChange = async (newService: "nihongo" | ServiceType) => {
+  const handleServiceChange = async (
+    newService: "nihongo" | SRSServiceType,
+  ) => {
     clearError()
     const result = await switchToService(newService)
 
@@ -424,13 +432,6 @@ function RouteComponent() {
 
   return (
     <>
-      <TextbookChapterBackgrounds
-        textbook={settingsQuery.data["active-learning-path"]}
-        chapter={settingsQuery.data["active-chapter"]}
-        showGradient={false}
-        blur="32px"
-      />
-
       {/* Desktop */}
       <SSRMediaQuery showFrom="md">
         <div class="text-foreground relative flex flex-col items-center space-y-12 px-4 pt-[12vh] pb-24">
@@ -475,7 +476,7 @@ function RouteComponent() {
             isSwitching={isSwitching}
             switchError={switchError}
             onServiceChange={(v) =>
-              handleServiceChange(v as "nihongo" | ServiceType)
+              handleServiceChange(v as "nihongo" | SRSServiceType)
             }
           />
 
@@ -535,7 +536,7 @@ function RouteComponent() {
               isSwitching={isSwitching}
               switchError={switchError}
               onServiceChange={(v) =>
-                handleServiceChange(v as "nihongo" | ServiceType)
+                handleServiceChange(v as "nihongo" | SRSServiceType)
               }
             />
             <ReviewCard

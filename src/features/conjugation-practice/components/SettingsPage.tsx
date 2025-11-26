@@ -18,7 +18,6 @@ import {
   TextFieldInput,
 } from "@/components/ui/text-field"
 import type { ConjugationPracticeSettings } from "../schemas/settings"
-import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
 
 type SettingsPageProps = {
   settings: () => ConjugationPracticeSettings
@@ -133,15 +132,6 @@ export default function SettingsPage({
 
   return (
     <>
-      <div class="fixed inset-0 -z-1">
-        <TextbookChapterBackgrounds
-          textbook={settingsQuery.data["active-learning-path"]}
-          chapter={settingsQuery.data["active-chapter"]}
-          showGradient={false}
-          blur="16px"
-          class="opacity-40"
-        />
-      </div>
       {/* ↓ narrower now */}
       <div class="bg-background relative min-h-screen w-full max-w-4xl sm:mt-6 sm:rounded-t-xl">
         {/* Header */}

@@ -1,4 +1,4 @@
-// features/vocab-practice/components/pages/start-page/components/UserDeckStartPage.tsx
+// features/vocab-practice/pages/start/UserDeckStartPage.tsx
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
   userDeckInfoQueryOptions,

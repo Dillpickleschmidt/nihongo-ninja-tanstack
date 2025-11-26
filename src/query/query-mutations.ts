@@ -4,7 +4,7 @@ import type { UserSettings } from "@/features/main-cookies/schemas/user-settings
 import {
   createSession,
   markModuleCompleted,
-  getUserModuleProgress,
+  getUserModuleCompletions,
 } from "@/features/supabase/db/module-progress"
 import { isModuleCompleted } from "@/query/utils/completion-manager"
 import { applyUserSettingsUpdate } from "@/query/utils/user-settings"
@@ -14,7 +14,9 @@ import { queryKeys } from "@/query/utils/query-keys"
 // Types
 // ============================================================================
 
-type ModuleProgress = Awaited<ReturnType<typeof getUserModuleProgress>>[number]
+type ModuleProgress = Awaited<
+  ReturnType<typeof getUserModuleCompletions>
+>[number]
 type ModuleProgressWithLocal =
   | ModuleProgress
   | {
@@ -97,11 +99,11 @@ export const markModuleCompletedMutation = (
   {
     userId: string | null
     moduleId: string
+    moduleType: string
     durationSeconds: number
   }
 > => ({
-  mutationFn: async ({ userId, moduleId, durationSeconds }) => {
-    // Check cache to see if already completed
+  mutationFn: async ({ userId, moduleId, moduleType, durationSeconds }) => {
     const completedModules = queryClient.getQueryData<
       ModuleProgressWithLocal[]
     >(queryKeys.completedModules(userId))
@@ -110,8 +112,7 @@ export const markModuleCompletedMutation = (
       return { type: "already-completed" }
     }
 
-    // Not completed yet - proceed with marking complete
-    await createSession(userId, moduleId, { durationSeconds })
+    await createSession(userId, moduleId, moduleType, { durationSeconds })
     const result = await markModuleCompleted(userId, moduleId)
 
     return result ? { type: "completed", data: result } : { type: "local-only" }
@@ -130,21 +131,19 @@ export const markModuleCompletedMutation = (
       return
     }
 
-    // DB completion - update cache and invalidate daily time
+    // DB completion - update cache and invalidate daily aggregates
     queryClient.setQueryData(
       queryKeys.completedModules(variables.userId),
       (old: ModuleProgressWithLocal[] | undefined) => {
         const modulePath = result.data.module_path
-        // If module already in list, return as-is
         if (old?.some((c) => c.module_path === modulePath)) return old
         // prepend - most recent first, matching DB sort order
         return [result.data, ...(old || [])]
       },
     )
 
-    // Invalidate daily time query to refresh BottomNav
     queryClient.invalidateQueries({
-      queryKey: queryKeys.userDailyTime(variables.userId, new Date()),
+      queryKey: queryKeys.userDailyAggregates(variables.userId),
     })
   },
 })

@@ -8,6 +8,8 @@ import {
   type Card,
   type ReviewLog,
 } from "ts-fsrs"
+import type { NormalizedReview } from "../shared/types/import-data-models"
+import type { FSRSProcessingGrade } from "../shared/types/fsrs-types"
 
 // =============================================================================
 // CONSTANTS AND TYPES
@@ -22,18 +24,6 @@ export const CustomFSRSRating = {
   Forget: "FORGET_CARD" as const,
   NeverForget: "NEVER_FORGET_CARD" as const,
 } as const
-
-// Type for FSRS Grades or custom actions
-export type FSRSProcessingGrade =
-  | import("ts-fsrs").Grade
-  | (typeof CustomFSRSRating)[keyof typeof CustomFSRSRating]
-
-// Normalized review format (generic, not jpdb-specific)
-export type NormalizedReview = {
-  timestamp: Date
-  grade: FSRSProcessingGrade
-  source: string
-}
 
 // =============================================================================
 // SPACED REPETITION PROCESSING UTILITIES

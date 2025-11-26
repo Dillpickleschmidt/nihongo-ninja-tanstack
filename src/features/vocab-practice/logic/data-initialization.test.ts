@@ -7,7 +7,7 @@ import type {
   VocabEntry,
   KanjiEntry,
   RadicalEntry,
-} from "@/data/wanikani/hierarchy-builder"
+} from "@/features/resolvers/util/hierarchy-builder"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 
 // Mock resolvers to prevent server function imports
@@ -58,6 +58,7 @@ const createMockFSRSCard = (
   type: "vocabulary" | "kanji" | "radical",
   state: State = State.New,
 ): FSRSCardData => ({
+  user_id: "test-user",
   practice_item_key: key,
   fsrs_card: { ...createEmptyCard(new Date()), state },
   mode,
@@ -65,19 +66,19 @@ const createMockFSRSCard = (
   fsrs_logs:
     state === State.Review
       ? [
-          {
-            rating: Rating.Good,
-            state: State.Review,
-            due: new Date(),
-            stability: 3,
-            difficulty: 5,
-            elapsed_days: 0,
-            last_elapsed_days: 0,
-            scheduled_days: 3,
-            review: new Date(),
-            learning_steps: 0,
-          },
-        ]
+        {
+          rating: Rating.Good,
+          state: State.Review,
+          due: new Date(),
+          stability: 3,
+          difficulty: 5,
+          elapsed_days: 0,
+          last_elapsed_days: 0,
+          scheduled_days: 3,
+          review: new Date(),
+          learning_steps: 0,
+        },
+      ]
       : [],
 })
 
