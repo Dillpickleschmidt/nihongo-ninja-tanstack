@@ -1,5 +1,6 @@
-import type { NormalizedReview } from "../../shared/types/import-data-models"
+import type { NormalizedReview, NormalizedCard } from "../../shared/types/import-data-models"
 import type { AnkiExtractedData, AnkiNote, FieldMapping } from "./anki-types"
+import type { ImportAdapter } from "../import-adapter-interface"
 import { mapAnkiEaseToFSRS } from "./anki-schemas"
 import type { ImportItem } from "@/features/import-page/shared/types"
 
@@ -80,19 +81,39 @@ function getItemStatus(
   return "learning"
 }
 
-export function transformAnkiToImportItems(
+/**
+ * Result type for Anki transformation with both UI and FSRS outputs
+ */
+export interface AnkiTransformResult {
+  importItems: ImportItem[]
+  normalizedCards: NormalizedCard[]
+}
+
+/**
+ * Transforms Anki extracted data to both ImportItem[] (for UI) and NormalizedCard[] (for FSRS import)
+ * Single pass through notes, creating both outputs simultaneously
+ */
+export function transformAnkiData(
   data: AnkiExtractedData,
   fieldMapping: FieldMapping,
-): ImportItem[] {
-  const vocabItems: ImportItem[] = []
+): AnkiTransformResult {
+  const importItems: ImportItem[] = []
+  const normalizedCards: NormalizedCard[] = []
 
   for (const note of data.notes) {
     const extracted = extractNoteData(note, data, fieldMapping)
     if (!extracted) continue
 
-    const status = getItemStatus(extracted.queue, extracted.ivl)
+    // Add to normalized cards for FSRS import
+    normalizedCards.push({
+      searchTerm: extracted.searchTerm,
+      reviews: extracted.reviews, // Already NormalizedReview[]
+      source: `anki-${extracted.noteId}`,
+    })
 
-    vocabItems.push({
+    // Create import item for UI display
+    const status = getItemStatus(extracted.queue, extracted.ivl)
+    importItems.push({
       id: `imp-vocab-anki-${extracted.noteId}`,
       main: extracted.searchTerm,
       meaning: extracted.meaning,
@@ -100,5 +121,30 @@ export function transformAnkiToImportItems(
     })
   }
 
-  return vocabItems
+  return { importItems, normalizedCards }
+}
+
+/**
+ * Anki ImportAdapter implementation for FSRS import orchestration
+ * Handles transformation of Anki extracted data to NormalizedCard format
+ */
+export const ankiAdapter: ImportAdapter<{ data: AnkiExtractedData; mapping: FieldMapping }> = {
+  validateInput: (input: any): input is { data: AnkiExtractedData; mapping: FieldMapping } => {
+    return (
+      input &&
+      typeof input === "object" &&
+      "data" in input &&
+      "mapping" in input &&
+      Array.isArray(input.data?.notes)
+    )
+  },
+
+  transformCards: (input: { data: AnkiExtractedData; mapping: FieldMapping }): NormalizedCard[] => {
+    const { normalizedCards } = transformAnkiData(input.data, input.mapping)
+    return normalizedCards
+  },
+
+  getSupportedCardTypes: (): string[] => ["anki-note"],
+
+  normalizeGrade: mapAnkiEaseToFSRS,
 }

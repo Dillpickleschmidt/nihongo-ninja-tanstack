@@ -4,7 +4,6 @@ import {
   batchUpsertFSRSCardsForUser,
   getFSRSCards,
 } from "@/features/supabase/db/fsrs"
-import { getWaniKaniService } from "../services/wanikani-service"
 import {
   ImportSessionManager,
   type ImportDependencies,
@@ -31,7 +30,6 @@ export const importReviewsServerFn = createServerFn({
         getFSRSCards(userId, keys),
       batchUpsertFSRSCards: (processedCards) =>
         batchUpsertFSRSCardsForUser({ data: processedCards }),
-      waniKaniService: getWaniKaniService(),
       getCurrentUser: getUser,
     }
 

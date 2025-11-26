@@ -1,6 +1,7 @@
 // src/routes/_home/import/_layout/automatic.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import { createSignal, Show } from "solid-js"
+import { toast } from "solid-sonner"
 import { FloatingActionBar } from "@/features/import-page/shared/components/FloatingActionBar"
 import { useImportSelection } from "@/features/import-page/shared/hooks/use-import-selection"
 import { AutomaticUploadView } from "@/features/import-page/automatic/components/AutomaticUploadView"
@@ -8,13 +9,14 @@ import { AnkiFieldMappingView } from "@/features/import-page/automatic/component
 import { AutomaticResultsView } from "@/features/import-page/automatic/components/AutomaticResultsView"
 import { AnkiWorkerManager } from "@/features/fsrs-import/adapters/anki/anki-worker-manager"
 import { autoDetectFieldMapping } from "@/features/fsrs-import/adapters/anki/anki-field-detector"
-import { transformAnkiToImportItems } from "@/features/fsrs-import/adapters/anki/anki-adapter"
-import { jpdbAdapter } from "@/features/fsrs-import/adapters/jpdb/jpdb-adapter"
-import { transformJpdbToImportItems } from "@/features/fsrs-import/adapters/jpdb/jpdb-adapter"
+import { transformAnkiData } from "@/features/fsrs-import/adapters/anki/anki-adapter"
+import { jpdbAdapter, transformJpdbData } from "@/features/fsrs-import/adapters/jpdb/jpdb-adapter"
+import { importReviewsServerFn } from "@/features/fsrs-import/server/importReviewsServerFn"
 import type {
   AnkiExtractedData,
   FieldMapping,
 } from "@/features/fsrs-import/adapters/anki/anki-types"
+import type { NormalizedCard } from "@/features/fsrs-import/shared/types/import-data-models"
 import type { ImportItem } from "@/features/import-page/shared/types"
 import type { JpdbJsonData } from "@/features/fsrs-import/adapters/jpdb/jpdb-types"
 
@@ -54,6 +56,7 @@ function AutomaticImportPage() {
   // Results
   const [vocabItems, setVocabItems] = createSignal<ImportItem[]>([])
   const [kanjiItems, setKanjiItems] = createSignal<ImportItem[]>([])
+  const [normalizedCards, setNormalizedCards] = createSignal<NormalizedCard[]>([])
 
   // Selection Hook
   const {
@@ -92,8 +95,8 @@ function AutomaticImportPage() {
 
         const jpdbTypedData = jpdbData as JpdbJsonData
 
-        // Transform to ImportItems (with batch meaning lookups)
-        const allItems = await transformJpdbToImportItems(jpdbTypedData)
+        // Transform to both ImportItems and NormalizedCards
+        const { importItems: allItems, normalizedCards: cards } = await transformJpdbData(jpdbTypedData)
 
         if (allItems.length === 0) {
           throw new Error(
@@ -107,6 +110,7 @@ function AutomaticImportPage() {
 
         setVocabItems(vocab)
         setKanjiItems(kanji)
+        setNormalizedCards(cards)
 
         // Populate itemStates with initial status badges from JPDB
         allItems.forEach((item) => {
@@ -162,7 +166,7 @@ function AutomaticImportPage() {
     setErrorMessage(null)
 
     try {
-      const vocabItems = transformAnkiToImportItems(extracted, mapping)
+      const { importItems: vocabItems, normalizedCards: cards } = transformAnkiData(extracted, mapping)
 
       if (vocabItems.length === 0) {
         throw new Error(
@@ -173,6 +177,7 @@ function AutomaticImportPage() {
       }
 
       setVocabItems(vocabItems)
+      setNormalizedCards(cards)
 
       // Populate itemStates with initial status badges from Anki review history
       vocabItems.forEach((item) => {
@@ -187,6 +192,44 @@ function AutomaticImportPage() {
         err instanceof Error ? err.message : "Failed to transform data"
       setErrorMessage(message)
       console.error("Transform error:", err)
+    } finally {
+      setIsProcessing(false)
+    }
+  }
+
+  // Step 3: Handle import progress button
+  const handleImportProgress = async () => {
+    const cards = normalizedCards()
+    const source = importSource()
+
+    if (!source || cards.length === 0) {
+      setErrorMessage("No cards to import")
+      return
+    }
+
+    setIsProcessing(true)
+    setErrorMessage(null)
+
+    try {
+      const result = await importReviewsServerFn({
+        data: {
+          cards,
+          source,
+        },
+      })
+
+      if (result.success) {
+        const vocabCount = vocabItems().length
+        const kanjiCount = kanjiItems().length
+        toast.success(`Successfully imported ${vocabCount} vocabulary and ${kanjiCount} kanji items`)
+      } else {
+        toast.error(result.message || "Import failed")
+      }
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Import failed"
+      toast.error(message)
+      console.error("Import error:", err)
     } finally {
       setIsProcessing(false)
     }
@@ -243,6 +286,8 @@ function AutomaticImportPage() {
             setKanjiItems((items) => items.filter((item) => item.id !== id))
             handleDelete(id)
           }}
+          onImportProgress={handleImportProgress}
+          isImporting={isProcessing()}
         />
       </Show>
 

@@ -26,6 +26,8 @@ interface AutomaticResultsViewProps {
   toggleSelectGroup: (ids: string[]) => void
   onVocabDelete: (id: string) => void
   onKanjiDelete: (id: string) => void
+  onImportProgress: () => void
+  isImporting: boolean
 }
 
 export function AutomaticResultsView(props: AutomaticResultsViewProps) {
@@ -172,22 +174,20 @@ export function AutomaticResultsView(props: AutomaticResultsViewProps) {
           />
 
           <KeyboardShortcutsHint />
-          {/* TODO: Implement import functionality to create FSRS cards with review history */}
           <ImportActionButtonDesktop
-            onClick={() => { }}
+            onClick={props.onImportProgress}
             variant="automatic"
-            label="Import Progress"
+            label={props.isImporting ? "Importing..." : "Import Progress"}
           />
         </aside>
       </SSRMediaQuery>
 
       {/* Mobile Import Button */}
       <SSRMediaQuery hideFrom="lg">
-        {/* TODO: Implement import functionality to create FSRS cards with review history */}
         <ImportActionButtonMobile
-          onClick={() => { }}
+          onClick={props.onImportProgress}
           variant="automatic"
-          label="Import Progress"
+          label={props.isImporting ? "Importing..." : "Import Progress"}
         />
       </SSRMediaQuery>
     </div>

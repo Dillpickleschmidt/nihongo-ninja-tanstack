@@ -164,15 +164,24 @@ function getItemStatusFromFSRSCard(fsrsCard: any): ItemStatus {
 }
 
 /**
- * Transforms JPDB JSON data to ImportItem[] for UI display
+ * Result type for JPDB transformation with both UI and FSRS outputs
+ */
+export interface JpdbTransformResult {
+  importItems: ImportItem[]
+  normalizedCards: NormalizedCard[]
+}
+
+/**
+ * Transforms JPDB JSON data to both ImportItem[] (for UI) and NormalizedCard[] (for FSRS import)
  * Filters to only vocabulary JP->EN and kanji keyword->char cards
  * Determines status by simulating FSRS reviews
  * Fetches meanings from database via batch lookups
  */
-export async function transformJpdbToImportItems(
+export async function transformJpdbData(
   data: JpdbJsonData,
-): Promise<ImportItem[]> {
-  const items: ImportItem[] = []
+): Promise<JpdbTransformResult> {
+  const importItems: ImportItem[] = []
+  const normalizedCards: NormalizedCard[] = []
 
   // Collect vocabulary spellings and kanji characters for batch lookup
   const vocabSpellings = data.cards_vocabulary_jp_en
@@ -199,20 +208,21 @@ export async function transformJpdbToImportItems(
       continue
     }
 
-    const normalizedReviews = transformReviews(
-      card.reviews,
-      `jpdb-vocabulary-jp-en-${card.vid}`,
-    )
+    const normalizedCard = transformVocabularyCard(card, "vocabulary-jp-en")
+    if (!normalizedCard) continue
+
+    // Add to normalized cards for FSRS import
+    normalizedCards.push(normalizedCard)
 
     // Simulate FSRS reviews to determine status
-    const { finalCard } = simulateFSRSReviews(createEmptyCard(), normalizedReviews)
+    const { finalCard } = simulateFSRSReviews(createEmptyCard(), normalizedCard.reviews)
     const status = getItemStatusFromFSRSCard(finalCard)
 
     // Fetch meaning from lookup map
     const vocabData = vocabMap.get(card.spelling)
     const meaning = vocabData?.english.join(", ") || ""
 
-    items.push({
+    importItems.push({
       id: `imp-vocab-jpdb-jp-en-${card.vid}`,
       main: card.spelling,
       meaning,
@@ -226,20 +236,21 @@ export async function transformJpdbToImportItems(
       continue
     }
 
-    const normalizedReviews = transformReviews(
-      card.reviews,
-      `jpdb-kanji-keyword-char-${card.character}`,
-    )
+    const normalizedCard = transformKanjiCard(card, "kanji-keyword-char")
+    if (!normalizedCard) continue
+
+    // Add to normalized cards for FSRS import
+    normalizedCards.push(normalizedCard)
 
     // Simulate FSRS reviews to determine status
-    const { finalCard } = simulateFSRSReviews(createEmptyCard(), normalizedReviews)
+    const { finalCard } = simulateFSRSReviews(createEmptyCard(), normalizedCard.reviews)
     const status = getItemStatusFromFSRSCard(finalCard)
 
     // Fetch meaning from lookup map
     const kanjiData = kanjiMap.get(card.character)
     const meaning = kanjiData?.meanings.join(", ") || ""
 
-    items.push({
+    importItems.push({
       id: `imp-kanji-jpdb-${card.character}`,
       main: card.character,
       meaning,
@@ -247,5 +258,5 @@ export async function transformJpdbToImportItems(
     })
   }
 
-  return items
+  return { importItems, normalizedCards }
 }
