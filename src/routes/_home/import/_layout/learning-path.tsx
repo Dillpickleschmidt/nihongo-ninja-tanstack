@@ -2,8 +2,11 @@
 import { createFileRoute, useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 import { createSignal, Show, createMemo } from "solid-js"
+import { toast } from "solid-sonner"
 import { FloatingActionBar } from "@/features/import-page/shared/components/FloatingActionBar"
 import { useImportSelection } from "@/features/import-page/shared/hooks/use-import-selection"
+import { useImportState } from "@/features/import-page/shared/hooks/useImportState"
+import { MasteredConfirmDialog } from "@/features/import-page/shared/components/MasteredConfirmDialog"
 import { uploadLearningPath } from "@/features/supabase/db/learning-paths"
 import { transformModulesToUIFormat } from "@/features/learning-paths/ui-adapter"
 import {
@@ -12,9 +15,10 @@ import {
 } from "@/features/learning-paths/learning-path-operations"
 import { LearningPathUploadView } from "@/features/import-page/learning-path/components/LearningPathUploadView"
 import { LearningPathResultsView } from "@/features/import-page/learning-path/components/LearningPathResultsView"
-import { batchUpsertFSRSCardsForUser, getAllFSRSCardsForUser } from "@/features/supabase/db/fsrs"
 import { fetchItemStatuses } from "@/features/import-page/shared/services/fsrs-status-service"
-import { createEmptyCard } from "ts-fsrs"
+import { useImportHandler } from "@/features/import-page/shared/hooks/useImportHandler"
+import { createVocabularyOnlyTypeResolver } from "@/features/import-page/shared/utils/type-resolver-factory"
+import { extractCardsFromStatuses } from "@/features/import-page/shared/utils/fsrs-map-builder"
 import type { ProcessedData } from "@/features/learning-paths/learning-path-operations"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import type { TextbookIDEnum } from "@/data/types"
@@ -40,6 +44,16 @@ function LearningPathPage() {
   )
   const [error, setError] = createSignal<string | null>(null)
   const [existingFsrsCards, setExistingFsrsCards] = createSignal<FSRSCardData[]>([])
+  const [showMasteredDialog, setShowMasteredDialog] = createSignal(false)
+  const [pendingMasteredItem, setPendingMasteredItem] = createSignal<string | null>(null)
+
+  // Badge state management with initial snapshot
+  const {
+    itemStates: badgeStates,
+    updateItemStatus,
+    initialItemStates,
+    captureInitialState,
+  } = useImportState()
 
   // Single UI data transformation with mastered item filtering
   const uiData = createMemo(() => {
@@ -52,27 +66,37 @@ function LearningPathPage() {
       ...transformed,
       vocabulary: {
         ...transformed.vocabulary,
-        items: transformed.vocabulary.items.filter((item) => itemStates[item.id] !== "mastered"),
+        items: transformed.vocabulary.items.filter((item) => badgeStates()[item.id] !== "mastered"),
       },
       kanji: {
         ...transformed.kanji,
-        items: transformed.kanji.items.filter((item) => itemStates[item.id] !== "mastered"),
+        items: transformed.kanji.items.filter((item) => badgeStates()[item.id] !== "mastered"),
       },
     }
   })
 
   const userId = context().user?.id || null
 
+  // Handle badge changes with mastered confirmation
+  const handleBadgeChange = (id: string, newStatus: any) => {
+    if (newStatus === "mastered") {
+      // Show confirmation dialog
+      setPendingMasteredItem(id)
+      setShowMasteredDialog(true)
+    } else {
+      updateItemStatus(id, newStatus)
+    }
+  }
+
+  // Selection with badge change interception for mastered confirmation
   const {
-    itemStates,
     selectedIds,
     handleItemClick,
     handlePointerDown,
     toggleSelectGroup,
     applyStatus,
     clearSelection,
-    setItemStates,
-  } = useImportSelection()
+  } = useImportSelection(handleBadgeChange)
 
   const handleFileUpload = async (file: File) => {
     setIsProcessing(true)
@@ -94,17 +118,19 @@ function LearningPathPage() {
           // Learning paths don't currently include kanji, so empty for now
           const kanjiIds: string[] = []
 
-          // Fetch all FSRS statuses in one call
+          // Fetch all FSRS statuses (which includes the full card data)
           const statuses = await fetchItemStatuses(userId, vocabIds, kanjiIds)
 
-          // Store FSRS cards for later use in handleSavePath (avoid duplicate fetch)
-          const fsrsCards = await getAllFSRSCardsForUser(userId, "meanings")
-          setExistingFsrsCards(fsrsCards)
+          // Extract cards from status data for later use
+          setExistingFsrsCards(extractCardsFromStatuses(statuses))
 
           // Apply statuses to UI
-          statuses.forEach((status, id) => {
-            setItemStates(id, status)
+          statuses.forEach((statusData, id) => {
+            updateItemStatus(id, statusData.status)
           })
+
+          // Capture as initial state for change detection
+          captureInitialState()
         } catch (fsrsErr) {
           console.error("[Learning Path] Error fetching FSRS:", fsrsErr)
           // Continue without FSRS data if fetch fails
@@ -119,6 +145,20 @@ function LearningPathPage() {
     }
   }
 
+  const handleMasteredConfirm = () => {
+    const id = pendingMasteredItem()
+    if (id) {
+      updateItemStatus(id, "mastered")
+    }
+    setShowMasteredDialog(false)
+    setPendingMasteredItem(null)
+  }
+
+  const handleMasteredCancel = () => {
+    setShowMasteredDialog(false)
+    setPendingMasteredItem(null)
+  }
+
   const handleSavePath = async () => {
     const user = context().user
     if (!user?.id) {
@@ -131,63 +171,36 @@ function LearningPathPage() {
       return
     }
 
+    setIsProcessing(true)
+    setError(null)
+
     try {
-      setIsProcessing(true)
       const data = processedData()!
       const { selectedGrammarModules, selectedVocabDecks } = prepareSaveData(
         data,
         selectedIds(),
       )
 
-      // Extract selected vocab items for FSRS card creation
-      const selectedVocabItems = selectedVocabDecks
-        .flatMap((deck) => deck.words)
-        .filter((word) => selectedIds().has(word.word))
-        .map((word) => ({ id: word.word }))
-
-      // Learning paths don't currently include kanji
-      const selectedKanjiItems: Array<{ id: string }> = []
-
-      // Use FSRS cards fetched during upload (avoid duplicate fetch)
-      const allUserFsrsCards = existingFsrsCards()
-
-      // Get existing cards by type
-      const existingVocabCards = new Set(
-        allUserFsrsCards
-          .filter((c) => c.type === "vocabulary")
-          .map((c) => c.practice_item_key)
-      )
-      const existingKanjiCards = new Set(
-        allUserFsrsCards
-          .filter((c) => c.type === "kanji")
-          .map((c) => c.practice_item_key)
+      // Build existing cards map from fetched FSRS data
+      const existingCardsMap = new Map(
+        existingFsrsCards().map((c) => [c.practice_item_key, c])
       )
 
-      // Find new items to create cards for
-      const newVocabItems = selectedVocabItems.filter((item) => !existingVocabCards.has(item.id))
-      const newKanjiItems = selectedKanjiItems.filter((item) => !existingKanjiCards.has(item.id))
+      const typeResolver = createVocabularyOnlyTypeResolver()
+      const { handleImport } = useImportHandler({
+        itemStates: badgeStates,
+        initialItemStates,
+        getTypeResolver: () => typeResolver,
+        getExistingCards: () => existingCardsMap,
+        routeType: "learning-path",
+      })
 
-      // Create blank FSRS cards for new items
-      const allNewCards = [
-        ...newVocabItems.map((item) => ({
-          practice_item_key: item.id,
-          type: "vocabulary" as const,
-          fsrs_card: createEmptyCard(new Date()),
-          mode: "meanings" as const,
-          fsrs_logs: [],
-        })),
-        ...newKanjiItems.map((item) => ({
-          practice_item_key: item.id,
-          type: "kanji" as const,
-          fsrs_card: createEmptyCard(new Date()),
-          mode: "meanings" as const,
-          fsrs_logs: [],
-        })),
-      ]
+      const result = await handleImport()
 
-      // Batch upsert all new cards at once
-      if (allNewCards.length > 0) {
-        await batchUpsertFSRSCardsForUser(allNewCards)
+      if (!result.success) {
+        toast.error(result.message)
+      } else if (result.upserted > 0) {
+        toast.success(`Created ${result.upserted} FSRS cards from badge selections`)
       }
 
       // Upload learning path
@@ -233,11 +246,13 @@ function LearningPathPage() {
       >
         <LearningPathResultsView
           uiData={uiData()}
-          itemStates={itemStates}
+          itemStates={badgeStates()}
+          initialItemStates={initialItemStates()}
           selectedIds={selectedIds()}
           handleItemClick={handleItemClick}
           handlePointerDown={handlePointerDown}
           toggleSelectGroup={toggleSelectGroup}
+          onUndoItem={(id) => updateItemStatus(id, initialItemStates()[id])}
           pathName={pathName()}
           setPathName={setPathName}
           showName={showName()}
@@ -248,6 +263,13 @@ function LearningPathPage() {
           setTextbookId={setTextbookId}
           onSave={handleSavePath}
           error={error()}
+        />
+
+        {/* Mastered confirmation dialog */}
+        <MasteredConfirmDialog
+          isOpen={showMasteredDialog()}
+          onConfirm={handleMasteredConfirm}
+          onCancel={handleMasteredCancel}
         />
       </Show>
 

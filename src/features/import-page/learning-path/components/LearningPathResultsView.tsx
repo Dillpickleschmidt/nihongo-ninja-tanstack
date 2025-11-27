@@ -12,17 +12,19 @@ import { LearningPathFormFields } from "./LearningPathFormFields"
 import type { TextbookIDEnum } from "@/data/types"
 import type { transformModulesToUIFormat } from "@/features/learning-paths/ui-adapter"
 import type {
-  ImportState,
   ImportItem,
 } from "@/features/import-page/shared/types"
+import type { ImportState } from "@/features/import-page/shared/hooks/useImportState"
 
 interface LearningPathResultsViewProps {
   uiData: ReturnType<typeof transformModulesToUIFormat> | null
   itemStates: ImportState
+  initialItemStates: ImportState
   selectedIds: Set<string>
   handleItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
   handlePointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
   toggleSelectGroup: (ids: string[]) => void
+  onUndoItem: (id: string) => void
   pathName: string
   setPathName: (value: string) => void
   showName: string
@@ -116,9 +118,11 @@ export function LearningPathResultsView(props: LearningPathResultsViewProps) {
                   sub={props.uiData!.grammar}
                   selectedIds={props.selectedIds}
                   itemStates={props.itemStates}
+                  initialItemStates={props.initialItemStates}
                   onItemClick={props.handleItemClick}
                   onGroupToggle={props.toggleSelectGroup}
                   onPointerDown={props.handlePointerDown}
+                  onUndoItem={props.onUndoItem}
                 />
               </Show>
             </div>
@@ -133,9 +137,11 @@ export function LearningPathResultsView(props: LearningPathResultsViewProps) {
                   sub={props.uiData!.vocabulary}
                   selectedIds={props.selectedIds}
                   itemStates={props.itemStates}
+                  initialItemStates={props.initialItemStates}
                   onItemClick={props.handleItemClick}
                   onGroupToggle={props.toggleSelectGroup}
                   onPointerDown={props.handlePointerDown}
+                  onUndoItem={props.onUndoItem}
                 />
               </Show>
             </div>
@@ -150,9 +156,11 @@ export function LearningPathResultsView(props: LearningPathResultsViewProps) {
                   sub={props.uiData!.kanji}
                   selectedIds={props.selectedIds}
                   itemStates={props.itemStates}
+                  initialItemStates={props.initialItemStates}
                   onItemClick={props.handleItemClick}
                   onGroupToggle={props.toggleSelectGroup}
                   onPointerDown={props.handlePointerDown}
+                  onUndoItem={props.onUndoItem}
                 />
               </Show>
             </div>

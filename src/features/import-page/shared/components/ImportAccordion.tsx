@@ -9,11 +9,13 @@ interface ImportAccordionProps {
   sub: ImportSubCategory
   selectedIds: Set<string>
   itemStates: ImportState
+  initialItemStates: ImportState
   onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
   onGroupToggle: (ids: string[]) => void
   onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
   showDelete?: boolean
   onDelete?: (id: string) => void
+  onUndoItem?: (id: string) => void
 }
 
 export function ImportAccordion(props: ImportAccordionProps) {
@@ -96,11 +98,13 @@ export function ImportAccordion(props: ImportAccordionProps) {
                 index={index}
                 isSelected={props.selectedIds.has(item().id)}
                 status={props.itemStates[item().id]}
+                initialStatus={props.initialItemStates[item().id]}
                 groupIds={groupIds()}
                 onClick={(e) => props.onItemClick(e, item().id, groupIds())}
                 onPointerDown={props.onPointerDown}
                 showDelete={props.showDelete}
                 onDelete={() => props.onDelete?.(item().id)}
+                onUndoClick={() => props.onUndoItem?.(item().id)}
               />
             )}
           </Index>

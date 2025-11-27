@@ -13,19 +13,21 @@ import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { statusConfig } from "@/features/import-page/shared/constants/status-config"
 import type {
   ImportItem,
-  ImportState,
 } from "@/features/import-page/shared/types"
+import type { ImportState } from "@/features/import-page/shared/hooks/useImportState"
 
 interface AutomaticResultsViewProps {
   vocabItems: ImportItem[]
   kanjiItems: ImportItem[]
   itemStates: ImportState
+  initialItemStates: ImportState
   selectedIds: Set<string>
   handleItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
   handlePointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
   toggleSelectGroup: (ids: string[]) => void
   onVocabDelete: (id: string) => void
   onKanjiDelete: (id: string) => void
+  onUndoItem: (id: string) => void
   onImportProgress: () => void
   isImporting: boolean
 }
@@ -122,9 +124,11 @@ export function AutomaticResultsView(props: AutomaticResultsViewProps) {
               }}
               selectedIds={props.selectedIds}
               itemStates={props.itemStates}
+              initialItemStates={props.initialItemStates}
               onItemClick={props.handleItemClick}
               onGroupToggle={props.toggleSelectGroup}
               onPointerDown={props.handlePointerDown}
+              onUndoItem={props.onUndoItem}
               showDelete={true}
               onDelete={props.onVocabDelete}
             />
@@ -144,9 +148,11 @@ export function AutomaticResultsView(props: AutomaticResultsViewProps) {
               }}
               selectedIds={props.selectedIds}
               itemStates={props.itemStates}
+              initialItemStates={props.initialItemStates}
               onItemClick={props.handleItemClick}
               onGroupToggle={props.toggleSelectGroup}
               onPointerDown={props.handlePointerDown}
+              onUndoItem={props.onUndoItem}
               showDelete={true}
               onDelete={props.onKanjiDelete}
             />

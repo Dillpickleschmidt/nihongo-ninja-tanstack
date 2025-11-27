@@ -1,7 +1,6 @@
 // src/features/import-page/hooks/use-import-selection.ts
 import { createSignal } from "solid-js"
-import { createStore, produce } from "solid-js/store"
-import type { ItemStatus, ImportState } from "../types"
+import type { ItemStatus } from "../types"
 import { createAutoScroller } from "@/utils/auto-scroll"
 import { getItemIdAtPoint } from "@/utils/dom-helpers"
 
@@ -29,10 +28,9 @@ function calculateRange(
 }
 
 export function useImportSelection(
-  initialState?: ImportState,
+  onUpdateStatus?: (id: string, status: ItemStatus | null) => void,
   deleteItems?: (ids: string[]) => void,
 ) {
-  const [itemStates, setItemStates] = createStore<ImportState>(initialState ?? {})
   const [selectedIds, setSelectedIds] = createSignal<Set<string>>(new Set())
   const [anchorId, setAnchorId] = createSignal<string | null>(null)
 
@@ -249,16 +247,7 @@ export function useImportSelection(
 
   const applyStatus = (status: ItemStatus) => {
     const selected = selectedIds()
-
-    if (status === null) {
-      setItemStates(
-        produce((states) => {
-          selected.forEach((id) => delete states[id])
-        })
-      )
-    } else {
-      selected.forEach((id) => setItemStates(id, status))
-    }
+    selected.forEach((id) => onUpdateStatus?.(id, status))
     resetSelection()
   }
 
@@ -267,17 +256,10 @@ export function useImportSelection(
   const handleDelete = (id: string) => {
     const idsToDelete = selectedIds().has(id) ? Array.from(selectedIds()) : [id]
     deleteItems?.(idsToDelete)
-    setItemStates(
-      produce((states) => {
-        idsToDelete.forEach((deleteId) => delete states[deleteId])
-      })
-    )
     resetSelection()
   }
 
   return {
-    itemStates,
-    setItemStates,
     selectedIds,
     handleItemClick,
     handlePointerDown,

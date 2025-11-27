@@ -310,3 +310,59 @@ export const getDueFSRSCards = createServerFn({ method: "GET" })
       mode: card.mode as "meanings" | "spellings",
     }))
   })
+
+/**
+ * Delete a single FSRS card for a user
+ */
+export async function deleteFSRSCard(
+  practice_item_key: string,
+  type: DBPracticeItemType,
+  mode: PracticeMode,
+): Promise<void> {
+  const supabase = createSupabaseClient()
+  const response = await getUser()
+  if (!response.user) return
+
+  const { error } = await supabase
+    .from("user_fsrs_cards")
+    .delete()
+    .eq("user_id", response.user.id)
+    .eq("practice_item_key", practice_item_key)
+    .eq("type", type)
+    .eq("mode", mode)
+
+  if (error) throw error
+}
+
+/**
+ * Batch delete multiple FSRS cards for a user
+ * Sends delete requests in parallel for performance
+ */
+export async function batchDeleteFSRSCards(
+  items: Array<{
+    practice_item_key: string
+    type: DBPracticeItemType
+    mode: PracticeMode
+  }>,
+): Promise<void> {
+  if (items.length === 0) return
+
+  const response = await getUser()
+  if (!response.user) return
+
+  const deletePromises = items.map((item) =>
+    deleteFSRSCard(item.practice_item_key, item.type, item.mode),
+  )
+
+  const results = await Promise.allSettled(deletePromises)
+  const errors = results.filter((r) => r.status === "rejected")
+
+  if (errors.length > 0) {
+    const errorMessages = errors
+      .map((e) => (e.status === "rejected" ? String(e.reason) : ""))
+      .join("; ")
+    throw new Error(
+      `Failed to delete ${errors.length} cards: ${errorMessages}`,
+    )
+  }
+}

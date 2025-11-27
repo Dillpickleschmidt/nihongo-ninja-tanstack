@@ -4,6 +4,7 @@ import { createSignal, Show } from "solid-js"
 import { toast } from "solid-sonner"
 import { FloatingActionBar } from "@/features/import-page/shared/components/FloatingActionBar"
 import { useImportSelection } from "@/features/import-page/shared/hooks/use-import-selection"
+import { useImportState } from "@/features/import-page/shared/hooks/useImportState"
 import { AutomaticUploadView } from "@/features/import-page/automatic/components/AutomaticUploadView"
 import { AnkiFieldMappingView } from "@/features/import-page/automatic/components/AnkiFieldMappingView"
 import { AutomaticResultsView } from "@/features/import-page/automatic/components/AutomaticResultsView"
@@ -12,6 +13,8 @@ import { autoDetectFieldMapping } from "@/features/fsrs-import/adapters/anki/ank
 import { transformAnkiData } from "@/features/fsrs-import/adapters/anki/anki-adapter"
 import { jpdbAdapter, transformJpdbData } from "@/features/fsrs-import/adapters/jpdb/jpdb-adapter"
 import { importReviewsServerFn } from "@/features/fsrs-import/server/importReviewsServerFn"
+import { useImportHandler } from "@/features/import-page/shared/hooks/useImportHandler"
+import { createNormalizedCardTypeResolver } from "@/features/import-page/shared/utils/type-resolver-factory"
 import type {
   AnkiExtractedData,
   FieldMapping,
@@ -58,10 +61,16 @@ function AutomaticImportPage() {
   const [kanjiItems, setKanjiItems] = createSignal<ImportItem[]>([])
   const [normalizedCards, setNormalizedCards] = createSignal<NormalizedCard[]>([])
 
-  // Selection Hook
+  // Badge state management
   const {
     itemStates,
-    setItemStates,
+    updateItemStatus,
+    initialItemStates,
+    captureInitialState,
+  } = useImportState()
+
+  // Selection Hook
+  const {
     selectedIds,
     handleItemClick,
     handlePointerDown,
@@ -69,7 +78,7 @@ function AutomaticImportPage() {
     applyStatus,
     clearSelection,
     handleDelete,
-  } = useImportSelection()
+  } = useImportSelection(updateItemStatus)
 
 
   // Step 1: Handle file upload with auto-detection
@@ -111,9 +120,12 @@ function AutomaticImportPage() {
         // Populate itemStates with initial status badges from JPDB
         vocab.concat(kanji).forEach((item) => {
           if (item.status) {
-            setItemStates(item.id, item.status)
+            updateItemStatus(item.id, item.status)
           }
         })
+
+        // Capture as initial state for change detection
+        captureInitialState()
 
         // Skip field mapping and go directly to results
         setCurrentStep(IMPORT_STEPS.RESULTS)
@@ -178,9 +190,12 @@ function AutomaticImportPage() {
       // Populate itemStates with initial status badges from Anki review history
       vocabItems.forEach((item) => {
         if (item.status) {
-          setItemStates(item.id, item.status)
+          updateItemStatus(item.id, item.status)
         }
       })
+
+      // Capture as initial state for change detection
+      captureInitialState()
 
       setCurrentStep(IMPORT_STEPS.RESULTS)
     } catch (err) {
@@ -207,23 +222,37 @@ function AutomaticImportPage() {
     setErrorMessage(null)
 
     try {
-      const result = await importReviewsServerFn({
-        data: {
-          cards,
-          source,
-        },
+      const typeResolver = createNormalizedCardTypeResolver(cards)
+      const { handleImport } = useImportHandler({
+        itemStates,
+        initialItemStates,
+        getTypeResolver: () => typeResolver,
+        getExistingCards: () => new Map(),
+        routeType: "automatic",
       })
 
-      if (result.success) {
-        const vocabCount = vocabItems().length
-        const kanjiCount = kanjiItems().length
-        toast.success(`Successfully imported ${vocabCount} vocabulary and ${kanjiCount} kanji items`)
-      } else {
-        toast.error(result.message || "Import failed")
+      const result = await handleImport()
+
+      if (!result.success) {
+        return
       }
+
+      // Process unchanged items via review history
+      const changedIds = new Set(result.changes.map((c) => c.id))
+      const unchangedCards = cards.filter((c) => !changedIds.has(c.searchTerm))
+
+      let unchangedCount = 0
+      if (unchangedCards.length > 0) {
+        await importReviewsServerFn({
+          data: { cards: unchangedCards, source },
+        })
+        unchangedCount = unchangedCards.length
+      }
+
+      const totalCount = unchangedCount + result.upserted + result.deleted
+      toast.success(`Successfully imported ${totalCount} items`)
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Import failed"
+      const message = err instanceof Error ? err.message : "Import failed"
       toast.error(message)
       console.error("Import error:", err)
     } finally {
@@ -269,7 +298,8 @@ function AutomaticImportPage() {
         <AutomaticResultsView
           vocabItems={vocabItems()}
           kanjiItems={kanjiItems()}
-          itemStates={itemStates}
+          itemStates={itemStates()}
+          initialItemStates={initialItemStates()}
           selectedIds={selectedIds()}
           handleItemClick={handleItemClick}
           handlePointerDown={handlePointerDown}
@@ -282,6 +312,7 @@ function AutomaticImportPage() {
             setKanjiItems((items) => items.filter((item) => item.id !== id))
             handleDelete(id)
           }}
+          onUndoItem={(id) => updateItemStatus(id, initialItemStates()[id])}
           onImportProgress={handleImportProgress}
           isImporting={isProcessing()}
         />

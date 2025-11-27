@@ -14,13 +14,18 @@ import type {
   ItemStatus,
 } from "@/features/import-page/shared/types"
 import type { VocabularyItem } from "@/data/types"
+import type { ImportResult } from "@/features/import-page/shared/utils/fsrs-badge-import"
 
 interface ManualImportViewProps {
   selectedIds: Set<string>
   itemStates: Record<string, ItemStatus>
+  initialItemStates: Record<string, ItemStatus>
   handleItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
   handlePointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
   toggleSelectGroup: (ids: string[]) => void
+  onImport: () => Promise<ImportResult>
+  isImporting: boolean
+  onUndoItem?: (id: string) => void
   grammarPromises: {
     n5: Promise<ImportItem[]>
     n4: Promise<ImportItem[]>
@@ -141,9 +146,11 @@ export function ManualImportView(props: ManualImportViewProps) {
                         sub={{ id: "n5-grammar", title: "Grammar", items }}
                         selectedIds={props.selectedIds}
                         itemStates={props.itemStates}
+                        initialItemStates={props.initialItemStates}
                         onItemClick={props.handleItemClick}
                         onGroupToggle={props.toggleSelectGroup}
                         onPointerDown={props.handlePointerDown}
+                        onUndoItem={props.onUndoItem}
                       />
                     )}
                   </Await>
@@ -170,9 +177,11 @@ export function ManualImportView(props: ManualImportViewProps) {
                         sub={{ id: "n5-vocab", title: "Core Vocab", items }}
                         selectedIds={props.selectedIds}
                         itemStates={props.itemStates}
+                        initialItemStates={props.initialItemStates}
                         onItemClick={props.handleItemClick}
                         onGroupToggle={props.toggleSelectGroup}
                         onPointerDown={props.handlePointerDown}
+                        onUndoItem={props.onUndoItem}
                       />
                     )}
                   </Await>
@@ -196,9 +205,11 @@ export function ManualImportView(props: ManualImportViewProps) {
                         sub={{ id: "n5-kanji", title: "Kanji", items }}
                         selectedIds={props.selectedIds}
                         itemStates={props.itemStates}
+                        initialItemStates={props.initialItemStates}
                         onItemClick={props.handleItemClick}
                         onGroupToggle={props.toggleSelectGroup}
                         onPointerDown={props.handlePointerDown}
+                        onUndoItem={props.onUndoItem}
                       />
                     )}
                   </Await>
@@ -240,9 +251,11 @@ export function ManualImportView(props: ManualImportViewProps) {
                         sub={{ id: "n4-grammar", title: "Grammar", items }}
                         selectedIds={props.selectedIds}
                         itemStates={props.itemStates}
+                        initialItemStates={props.initialItemStates}
                         onItemClick={props.handleItemClick}
                         onGroupToggle={props.toggleSelectGroup}
                         onPointerDown={props.handlePointerDown}
+                        onUndoItem={props.onUndoItem}
                       />
                     )}
                   </Await>
@@ -269,9 +282,11 @@ export function ManualImportView(props: ManualImportViewProps) {
                         sub={{ id: "n4-vocab", title: "Core Vocab", items }}
                         selectedIds={props.selectedIds}
                         itemStates={props.itemStates}
+                        initialItemStates={props.initialItemStates}
                         onItemClick={props.handleItemClick}
                         onGroupToggle={props.toggleSelectGroup}
                         onPointerDown={props.handlePointerDown}
+                        onUndoItem={props.onUndoItem}
                       />
                     )}
                   </Await>
@@ -295,9 +310,11 @@ export function ManualImportView(props: ManualImportViewProps) {
                         sub={{ id: "n4-kanji", title: "Kanji", items }}
                         selectedIds={props.selectedIds}
                         itemStates={props.itemStates}
+                        initialItemStates={props.initialItemStates}
                         onItemClick={props.handleItemClick}
                         onGroupToggle={props.toggleSelectGroup}
                         onPointerDown={props.handlePointerDown}
+                        onUndoItem={props.onUndoItem}
                       />
                     )}
                   </Await>
@@ -333,9 +350,9 @@ export function ManualImportView(props: ManualImportViewProps) {
 
             <KeyboardShortcutsHint />
             <ImportActionButtonDesktop
-              onClick={() => { }}
+              onClick={props.onImport}
               variant="manual"
-              label="Import Progress"
+              label={props.isImporting ? "Importing..." : "Import Progress"}
             />
           </aside>
         </SSRMediaQuery>
@@ -344,9 +361,9 @@ export function ManualImportView(props: ManualImportViewProps) {
       {/* Mobile Import Button */}
       <SSRMediaQuery hideFrom="lg">
         <ImportActionButtonMobile
-          onClick={() => { }}
+          onClick={props.onImport}
           variant="manual"
-          label="Import Progress"
+          label={props.isImporting ? "Importing..." : "Import Progress"}
         />
       </SSRMediaQuery>
     </>

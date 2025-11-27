@@ -1,6 +1,6 @@
 // src/features/import-page/components/ImportItemRow.tsx
 import { Show } from "solid-js"
-import { Trash2 } from "lucide-solid"
+import { Trash2, Undo2 } from "lucide-solid"
 import { cn } from "@/utils"
 import type { ItemStatus, ImportItem } from "../types"
 import { StatusBadge } from "./StatusBadge"
@@ -10,11 +10,13 @@ interface ImportItemRowProps {
   index: number
   isSelected: boolean
   status: ItemStatus
+  initialStatus?: ItemStatus
   groupIds: string[]
   onClick: (e: MouseEvent) => void
   onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
   showDelete?: boolean
   onDelete?: () => void
+  onUndoClick?: () => void
 }
 
 export function ImportItemRow(props: ImportItemRowProps) {
@@ -34,15 +36,31 @@ export function ImportItemRow(props: ImportItemRowProps) {
     >
       {/* Left: Content */}
       <div class="flex items-center gap-4">
-        {/* Numbering */}
-        <div
-          class={cn(
-            "text-muted-foreground/40 w-5 text-right font-mono text-xs tabular-nums",
-            props.isSelected ? "text-accent-foreground/60" : "",
-          )}
+        {/* Numbering or Undo Icon */}
+        <Show
+          when={props.status !== props.initialStatus}
+          fallback={
+            <div
+              class={cn(
+                "text-muted-foreground/40 w-5 text-right font-mono text-xs tabular-nums",
+                props.isSelected ? "text-accent-foreground/60" : "",
+              )}
+            >
+              {props.index + 1}
+            </div>
+          }
         >
-          {props.index + 1}
-        </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              props.onUndoClick?.()
+            }}
+            class="text-muted-foreground hover:text-amber-400 transition-colors"
+            title="Undo changes"
+          >
+            <Undo2 class="size-4" />
+          </button>
+        </Show>
 
         <div class="text-foreground/90 min-w-20 text-base font-medium">
           {props.item.id}
