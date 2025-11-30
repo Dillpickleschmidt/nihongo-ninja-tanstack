@@ -2,7 +2,8 @@
 import { createSignal, Show, Index, createMemo } from "solid-js"
 import { ChevronDown, ChevronRight } from "lucide-solid"
 import { Button } from "@/components/ui/button"
-import type { ImportSubCategory, ImportState } from "../types"
+import type { ImportSubCategory } from "../types"
+import type { ImportState } from "../hooks/useImportState"
 import { ImportItemRow } from "./ImportItemRow"
 
 interface ImportAccordionProps {

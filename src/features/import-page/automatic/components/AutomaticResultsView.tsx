@@ -11,28 +11,22 @@ import {
 import { EndOfListIndicator } from "@/features/import-page/shared/components/EndOfListIndicator"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { statusConfig } from "@/features/import-page/shared/constants/status-config"
+import { useImportFlow } from "@/features/import-page/shared/context/ImportFlowContext"
 import type {
   ImportItem,
 } from "@/features/import-page/shared/types"
-import type { ImportState } from "@/features/import-page/shared/hooks/useImportState"
 
 interface AutomaticResultsViewProps {
   vocabItems: ImportItem[]
   kanjiItems: ImportItem[]
-  itemStates: ImportState
-  initialItemStates: ImportState
-  selectedIds: Set<string>
-  handleItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
-  handlePointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
-  toggleSelectGroup: (ids: string[]) => void
   onVocabDelete: (id: string) => void
   onKanjiDelete: (id: string) => void
-  onUndoItem: (id: string) => void
   onImportProgress: () => void
   isImporting: boolean
 }
 
 export function AutomaticResultsView(props: AutomaticResultsViewProps) {
+  const flow = useImportFlow()
   const vocabStatPromise = Promise.resolve(
     props.vocabItems.map((item) => ({ id: item.id })),
   )
@@ -80,13 +74,13 @@ export function AutomaticResultsView(props: AutomaticResultsViewProps) {
           <SSRMediaQuery hideFrom="lg">
             <div class="-mt-5 space-y-2">
               <StatisticsSummary
-                itemStates={props.itemStates}
+                itemStates={flow.itemStates()}
                 itemsPromise={vocabStatPromise}
                 title="Vocabulary"
                 showLearning={true}
               />
               <StatisticsSummary
-                itemStates={props.itemStates}
+                itemStates={flow.itemStates()}
                 itemsPromise={kanjiStatPromise}
                 title="Kanji"
                 showLearning={true}
@@ -122,13 +116,13 @@ export function AutomaticResultsView(props: AutomaticResultsViewProps) {
                 description: "Words extracted from your file",
                 items: props.vocabItems,
               }}
-              selectedIds={props.selectedIds}
-              itemStates={props.itemStates}
-              initialItemStates={props.initialItemStates}
-              onItemClick={props.handleItemClick}
-              onGroupToggle={props.toggleSelectGroup}
-              onPointerDown={props.handlePointerDown}
-              onUndoItem={props.onUndoItem}
+              selectedIds={flow.selectedIds()}
+              itemStates={flow.itemStates()}
+              initialItemStates={flow.initialItemStates()}
+              onItemClick={flow.handleItemClick}
+              onGroupToggle={flow.toggleSelectGroup}
+              onPointerDown={flow.handlePointerDown}
+              onUndoItem={(id) => flow.updateItemStatus(id, flow.initialItemStates()[id])}
               showDelete={true}
               onDelete={props.onVocabDelete}
             />
@@ -146,13 +140,13 @@ export function AutomaticResultsView(props: AutomaticResultsViewProps) {
                 description: "Kanji characters found in vocabulary",
                 items: props.kanjiItems,
               }}
-              selectedIds={props.selectedIds}
-              itemStates={props.itemStates}
-              initialItemStates={props.initialItemStates}
-              onItemClick={props.handleItemClick}
-              onGroupToggle={props.toggleSelectGroup}
-              onPointerDown={props.handlePointerDown}
-              onUndoItem={props.onUndoItem}
+              selectedIds={flow.selectedIds()}
+              itemStates={flow.itemStates()}
+              initialItemStates={flow.initialItemStates()}
+              onItemClick={flow.handleItemClick}
+              onGroupToggle={flow.toggleSelectGroup}
+              onPointerDown={flow.handlePointerDown}
+              onUndoItem={(id) => flow.updateItemStatus(id, flow.initialItemStates()[id])}
               showDelete={true}
               onDelete={props.onKanjiDelete}
             />
@@ -167,13 +161,13 @@ export function AutomaticResultsView(props: AutomaticResultsViewProps) {
         <aside class="sticky top-24 space-y-6 lg:col-span-5 xl:col-span-4">
           {/* Statistics Summary Component */}
           <StatisticsSummary
-            itemStates={props.itemStates}
+            itemStates={flow.itemStates()}
             itemsPromise={vocabStatPromise}
             title="Vocabulary"
             showLearning={true}
           />
           <StatisticsSummary
-            itemStates={props.itemStates}
+            itemStates={flow.itemStates()}
             itemsPromise={kanjiStatPromise}
             title="Kanji"
             showLearning={true}

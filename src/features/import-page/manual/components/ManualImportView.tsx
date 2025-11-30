@@ -9,23 +9,16 @@ import {
 } from "@/features/import-page/shared/components/ImportActionButton"
 import { EndOfListIndicator } from "@/features/import-page/shared/components/EndOfListIndicator"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
+import { useImportFlow } from "@/features/import-page/shared/context/ImportFlowContext"
 import type {
   ImportItem,
-  ItemStatus,
 } from "@/features/import-page/shared/types"
 import type { VocabularyItem } from "@/data/types"
 import type { ImportResult } from "@/features/import-page/shared/utils/fsrs-badge-import"
 
 interface ManualImportViewProps {
-  selectedIds: Set<string>
-  itemStates: Record<string, ItemStatus>
-  initialItemStates: Record<string, ItemStatus>
-  handleItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
-  handlePointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
-  toggleSelectGroup: (ids: string[]) => void
   onImport: () => Promise<ImportResult>
   isImporting: boolean
-  onUndoItem?: (id: string) => void
   grammarPromises: {
     n5: Promise<ImportItem[]>
     n4: Promise<ImportItem[]>
@@ -38,6 +31,7 @@ interface ManualImportViewProps {
 }
 
 export function ManualImportView(props: ManualImportViewProps) {
+  const flow = useImportFlow()
   // Transform VocabularyItem[] to ImportItem[]
   const transformVocab = (vocab: VocabularyItem[]): ImportItem[] => {
     return vocab.map((item) => ({
@@ -92,19 +86,19 @@ export function ManualImportView(props: ManualImportViewProps) {
             <SSRMediaQuery hideFrom="lg">
               <div class="-mt-5 space-y-2">
                 <StatisticsSummary
-                  itemStates={props.itemStates}
+                  itemStates={flow.itemStates()}
                   itemsPromise={grammarPromise}
                   title="Grammar"
                   showLearning={false}
                 />
                 <StatisticsSummary
-                  itemStates={props.itemStates}
+                  itemStates={flow.itemStates()}
                   itemsPromise={vocabListPromise}
                   title="Vocabulary"
                   showLearning={false}
                 />
                 <StatisticsSummary
-                  itemStates={props.itemStates}
+                  itemStates={flow.itemStates()}
                   itemsPromise={kanjiPromise}
                   title="Kanji"
                   showLearning={false}
@@ -144,13 +138,13 @@ export function ManualImportView(props: ManualImportViewProps) {
                     {(items) => (
                       <ImportAccordion
                         sub={{ id: "n5-grammar", title: "Grammar", items }}
-                        selectedIds={props.selectedIds}
-                        itemStates={props.itemStates}
-                        initialItemStates={props.initialItemStates}
-                        onItemClick={props.handleItemClick}
-                        onGroupToggle={props.toggleSelectGroup}
-                        onPointerDown={props.handlePointerDown}
-                        onUndoItem={props.onUndoItem}
+                        selectedIds={flow.selectedIds()}
+                        itemStates={flow.itemStates()}
+                        initialItemStates={flow.initialItemStates()}
+                        onItemClick={flow.handleItemClick}
+                        onGroupToggle={flow.toggleSelectGroup}
+                        onPointerDown={flow.handlePointerDown}
+                        onUndoItem={(id) => flow.updateItemStatus(id, flow.initialItemStates()[id])}
                       />
                     )}
                   </Await>
@@ -175,13 +169,13 @@ export function ManualImportView(props: ManualImportViewProps) {
                     {(items) => (
                       <ImportAccordion
                         sub={{ id: "n5-vocab", title: "Core Vocab", items }}
-                        selectedIds={props.selectedIds}
-                        itemStates={props.itemStates}
-                        initialItemStates={props.initialItemStates}
-                        onItemClick={props.handleItemClick}
-                        onGroupToggle={props.toggleSelectGroup}
-                        onPointerDown={props.handlePointerDown}
-                        onUndoItem={props.onUndoItem}
+                        selectedIds={flow.selectedIds()}
+                        itemStates={flow.itemStates()}
+                        initialItemStates={flow.initialItemStates()}
+                        onItemClick={flow.handleItemClick}
+                        onGroupToggle={flow.toggleSelectGroup}
+                        onPointerDown={flow.handlePointerDown}
+                        onUndoItem={(id) => flow.updateItemStatus(id, flow.initialItemStates()[id])}
                       />
                     )}
                   </Await>
@@ -203,13 +197,13 @@ export function ManualImportView(props: ManualImportViewProps) {
                     {(items) => (
                       <ImportAccordion
                         sub={{ id: "n5-kanji", title: "Kanji", items }}
-                        selectedIds={props.selectedIds}
-                        itemStates={props.itemStates}
-                        initialItemStates={props.initialItemStates}
-                        onItemClick={props.handleItemClick}
-                        onGroupToggle={props.toggleSelectGroup}
-                        onPointerDown={props.handlePointerDown}
-                        onUndoItem={props.onUndoItem}
+                        selectedIds={flow.selectedIds()}
+                        itemStates={flow.itemStates()}
+                        initialItemStates={flow.initialItemStates()}
+                        onItemClick={flow.handleItemClick}
+                        onGroupToggle={flow.toggleSelectGroup}
+                        onPointerDown={flow.handlePointerDown}
+                        onUndoItem={(id) => flow.updateItemStatus(id, flow.initialItemStates()[id])}
                       />
                     )}
                   </Await>
@@ -249,13 +243,13 @@ export function ManualImportView(props: ManualImportViewProps) {
                     {(items) => (
                       <ImportAccordion
                         sub={{ id: "n4-grammar", title: "Grammar", items }}
-                        selectedIds={props.selectedIds}
-                        itemStates={props.itemStates}
-                        initialItemStates={props.initialItemStates}
-                        onItemClick={props.handleItemClick}
-                        onGroupToggle={props.toggleSelectGroup}
-                        onPointerDown={props.handlePointerDown}
-                        onUndoItem={props.onUndoItem}
+                        selectedIds={flow.selectedIds()}
+                        itemStates={flow.itemStates()}
+                        initialItemStates={flow.initialItemStates()}
+                        onItemClick={flow.handleItemClick}
+                        onGroupToggle={flow.toggleSelectGroup}
+                        onPointerDown={flow.handlePointerDown}
+                        onUndoItem={(id) => flow.updateItemStatus(id, flow.initialItemStates()[id])}
                       />
                     )}
                   </Await>
@@ -280,13 +274,13 @@ export function ManualImportView(props: ManualImportViewProps) {
                     {(items) => (
                       <ImportAccordion
                         sub={{ id: "n4-vocab", title: "Core Vocab", items }}
-                        selectedIds={props.selectedIds}
-                        itemStates={props.itemStates}
-                        initialItemStates={props.initialItemStates}
-                        onItemClick={props.handleItemClick}
-                        onGroupToggle={props.toggleSelectGroup}
-                        onPointerDown={props.handlePointerDown}
-                        onUndoItem={props.onUndoItem}
+                        selectedIds={flow.selectedIds()}
+                        itemStates={flow.itemStates()}
+                        initialItemStates={flow.initialItemStates()}
+                        onItemClick={flow.handleItemClick}
+                        onGroupToggle={flow.toggleSelectGroup}
+                        onPointerDown={flow.handlePointerDown}
+                        onUndoItem={(id) => flow.updateItemStatus(id, flow.initialItemStates()[id])}
                       />
                     )}
                   </Await>
@@ -308,13 +302,13 @@ export function ManualImportView(props: ManualImportViewProps) {
                     {(items) => (
                       <ImportAccordion
                         sub={{ id: "n4-kanji", title: "Kanji", items }}
-                        selectedIds={props.selectedIds}
-                        itemStates={props.itemStates}
-                        initialItemStates={props.initialItemStates}
-                        onItemClick={props.handleItemClick}
-                        onGroupToggle={props.toggleSelectGroup}
-                        onPointerDown={props.handlePointerDown}
-                        onUndoItem={props.onUndoItem}
+                        selectedIds={flow.selectedIds()}
+                        itemStates={flow.itemStates()}
+                        initialItemStates={flow.initialItemStates()}
+                        onItemClick={flow.handleItemClick}
+                        onGroupToggle={flow.toggleSelectGroup}
+                        onPointerDown={flow.handlePointerDown}
+                        onUndoItem={(id) => flow.updateItemStatus(id, flow.initialItemStates()[id])}
                       />
                     )}
                   </Await>
@@ -330,19 +324,19 @@ export function ManualImportView(props: ManualImportViewProps) {
         <SSRMediaQuery showFrom="lg">
           <aside class="sticky top-24 space-y-6 lg:col-span-5 xl:col-span-4">
             <StatisticsSummary
-              itemStates={props.itemStates}
+              itemStates={flow.itemStates()}
               itemsPromise={grammarPromise}
               title="Grammar"
               showLearning={false}
             />
             <StatisticsSummary
-              itemStates={props.itemStates}
+              itemStates={flow.itemStates()}
               itemsPromise={vocabListPromise}
               title="Vocabulary"
               showLearning={false}
             />
             <StatisticsSummary
-              itemStates={props.itemStates}
+              itemStates={flow.itemStates()}
               itemsPromise={kanjiPromise}
               title="Kanji"
               showLearning={false}

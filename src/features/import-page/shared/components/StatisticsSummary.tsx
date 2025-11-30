@@ -2,7 +2,7 @@
 import { Show, createSignal, createMemo } from "solid-js"
 import { Await } from "@tanstack/solid-router"
 import { BookOpen, Star, GraduationCap } from "lucide-solid"
-import type { ImportState } from "../types"
+import type { ImportState } from "../hooks/useImportState"
 
 interface ItemWithId {
   id: string

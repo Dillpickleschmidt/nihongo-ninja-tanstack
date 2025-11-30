@@ -4,8 +4,7 @@ import { Route as RootRoute } from "@/routes/__root"
 import { createSignal, Show, createMemo } from "solid-js"
 import { toast } from "solid-sonner"
 import { FloatingActionBar } from "@/features/import-page/shared/components/FloatingActionBar"
-import { useImportSelection } from "@/features/import-page/shared/hooks/use-import-selection"
-import { useImportState } from "@/features/import-page/shared/hooks/useImportState"
+import { ImportFlowProvider, useImportFlow } from "@/features/import-page/shared/context/ImportFlowContext"
 import { MasteredConfirmDialog } from "@/features/import-page/shared/components/MasteredConfirmDialog"
 import { uploadLearningPath } from "@/features/supabase/db/learning-paths"
 import { transformModulesToUIFormat } from "@/features/learning-paths/ui-adapter"
@@ -28,6 +27,15 @@ export const Route = createFileRoute("/_home/import/_layout/learning-path")({
 })
 
 function LearningPathPage() {
+  return (
+    <ImportFlowProvider>
+      <LearningPathPageContent />
+    </ImportFlowProvider>
+  )
+}
+
+function LearningPathPageContent() {
+  const flow = useImportFlow()
   const context = useRouteContext({ from: RootRoute.id })
 
   // Form inputs
@@ -45,15 +53,6 @@ function LearningPathPage() {
   const [error, setError] = createSignal<string | null>(null)
   const [existingFsrsCards, setExistingFsrsCards] = createSignal<FSRSCardData[]>([])
   const [showMasteredDialog, setShowMasteredDialog] = createSignal(false)
-  const [pendingMasteredItem, setPendingMasteredItem] = createSignal<string | null>(null)
-
-  // Badge state management with initial snapshot
-  const {
-    itemStates: badgeStates,
-    updateItemStatus,
-    initialItemStates,
-    captureInitialState,
-  } = useImportState()
 
   // Single UI data transformation with mastered item filtering
   const uiData = createMemo(() => {
@@ -66,37 +65,27 @@ function LearningPathPage() {
       ...transformed,
       vocabulary: {
         ...transformed.vocabulary,
-        items: transformed.vocabulary.items.filter((item) => badgeStates()[item.id] !== "mastered"),
+        items: transformed.vocabulary.items.filter((item) => flow.itemStates()[item.id] !== "mastered"),
       },
       kanji: {
         ...transformed.kanji,
-        items: transformed.kanji.items.filter((item) => badgeStates()[item.id] !== "mastered"),
+        items: transformed.kanji.items.filter((item) => flow.itemStates()[item.id] !== "mastered"),
       },
     }
   })
 
   const userId = context().user?.id || null
 
-  // Handle badge changes with mastered confirmation
-  const handleBadgeChange = (id: string, newStatus: any) => {
-    if (newStatus === "mastered") {
-      // Show confirmation dialog
-      setPendingMasteredItem(id)
+  // Handle badge changes with mastered confirmation (intercept before updating state)
+  const handleBadgeChange = (status: any) => {
+    if (status === "mastered" && flow.selectedIds().size > 0) {
+      // Show confirmation dialog for batch mastered operation
       setShowMasteredDialog(true)
     } else {
-      updateItemStatus(id, newStatus)
+      // Non-mastered status: apply directly via flow
+      flow.applyStatus(status)
     }
   }
-
-  // Selection with badge change interception for mastered confirmation
-  const {
-    selectedIds,
-    handleItemClick,
-    handlePointerDown,
-    toggleSelectGroup,
-    applyStatus,
-    clearSelection,
-  } = useImportSelection(handleBadgeChange)
 
   const handleFileUpload = async (file: File) => {
     setIsProcessing(true)
@@ -126,11 +115,11 @@ function LearningPathPage() {
 
           // Apply statuses to UI
           statuses.forEach((statusData, id) => {
-            updateItemStatus(id, statusData.status)
+            flow.updateItemStatus(id, statusData.status)
           })
 
           // Capture as initial state for change detection
-          captureInitialState()
+          flow.captureInitialState()
         } catch (fsrsErr) {
           console.error("[Learning Path] Error fetching FSRS:", fsrsErr)
           // Continue without FSRS data if fetch fails
@@ -146,17 +135,13 @@ function LearningPathPage() {
   }
 
   const handleMasteredConfirm = () => {
-    const id = pendingMasteredItem()
-    if (id) {
-      updateItemStatus(id, "mastered")
-    }
+    // Apply mastered status to all currently selected items
+    flow.applyStatus("mastered")
     setShowMasteredDialog(false)
-    setPendingMasteredItem(null)
   }
 
   const handleMasteredCancel = () => {
     setShowMasteredDialog(false)
-    setPendingMasteredItem(null)
   }
 
   const handleSavePath = async () => {
@@ -176,10 +161,17 @@ function LearningPathPage() {
 
     try {
       const data = processedData()!
+      const itemStates = flow.itemStates()
       const { selectedGrammarModules, selectedVocabDecks } = prepareSaveData(
         data,
-        selectedIds(),
+        flow.selectedIds(),
       )
+
+      // Filter out mastered items from the learning path upload
+      const filteredVocabDecks = selectedVocabDecks.map((deck) => ({
+        ...deck,
+        words: deck.words.filter((word) => itemStates[word.word] !== "mastered"),
+      }))
 
       // Build existing cards map from fetched FSRS data
       const existingCardsMap = new Map(
@@ -188,8 +180,8 @@ function LearningPathPage() {
 
       const typeResolver = createVocabularyOnlyTypeResolver()
       const { handleImport } = useImportHandler({
-        itemStates: badgeStates,
-        initialItemStates,
+        itemStates: flow.itemStates,
+        initialItemStates: flow.initialItemStates,
         getTypeResolver: () => typeResolver,
         getExistingCards: () => existingCardsMap,
         routeType: "learning-path",
@@ -203,7 +195,7 @@ function LearningPathPage() {
         toast.success(`Created ${result.upserted} FSRS cards from badge selections`)
       }
 
-      // Upload learning path
+      // Upload learning path (excluding mastered items)
       await uploadLearningPath({
         userId: user.id,
         transcript: {
@@ -213,7 +205,7 @@ function LearningPathPage() {
           transcript_data: [],
         },
         selectedGrammarModules,
-        selectedVocabDecks,
+        selectedVocabDecks: filteredVocabDecks,
       })
 
       // Reset form
@@ -233,7 +225,7 @@ function LearningPathPage() {
   }
 
   return (
-    <div onClick={clearSelection} class="container px-4 py-6 md:px-8 md:py-8">
+    <div onClick={flow.clearSelection} class="container px-4 py-6 md:px-8 md:py-8">
       <Show
         when={hasUploaded()}
         fallback={
@@ -246,13 +238,6 @@ function LearningPathPage() {
       >
         <LearningPathResultsView
           uiData={uiData()}
-          itemStates={badgeStates()}
-          initialItemStates={initialItemStates()}
-          selectedIds={selectedIds()}
-          handleItemClick={handleItemClick}
-          handlePointerDown={handlePointerDown}
-          toggleSelectGroup={toggleSelectGroup}
-          onUndoItem={(id) => updateItemStatus(id, initialItemStates()[id])}
           pathName={pathName()}
           setPathName={setPathName}
           showName={showName()}
@@ -276,9 +261,9 @@ function LearningPathPage() {
       {/* FLOATING ACTION BAR */}
       <Show when={hasUploaded()}>
         <FloatingActionBar
-          selectedCount={selectedIds().size}
-          onApply={applyStatus}
-          onClearSelection={clearSelection}
+          selectedCount={flow.selectedIds().size}
+          onApply={handleBadgeChange}
+          onClearSelection={flow.clearSelection}
           mode="manual"
         />
       </Show>

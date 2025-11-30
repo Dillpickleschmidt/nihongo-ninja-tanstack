@@ -9,22 +9,15 @@ import {
 } from "@/features/import-page/shared/components/ImportActionButton"
 import { EndOfListIndicator } from "@/features/import-page/shared/components/EndOfListIndicator"
 import { LearningPathFormFields } from "./LearningPathFormFields"
+import { useImportFlow } from "@/features/import-page/shared/context/ImportFlowContext"
 import type { TextbookIDEnum } from "@/data/types"
 import type { transformModulesToUIFormat } from "@/features/learning-paths/ui-adapter"
 import type {
   ImportItem,
 } from "@/features/import-page/shared/types"
-import type { ImportState } from "@/features/import-page/shared/hooks/useImportState"
 
 interface LearningPathResultsViewProps {
   uiData: ReturnType<typeof transformModulesToUIFormat> | null
-  itemStates: ImportState
-  initialItemStates: ImportState
-  selectedIds: Set<string>
-  handleItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
-  handlePointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
-  toggleSelectGroup: (ids: string[]) => void
-  onUndoItem: (id: string) => void
   pathName: string
   setPathName: (value: string) => void
   showName: string
@@ -38,6 +31,7 @@ interface LearningPathResultsViewProps {
 }
 
 export function LearningPathResultsView(props: LearningPathResultsViewProps) {
+  const flow = useImportFlow()
   // Create resolved promises for statistics display
   const grammarStatPromise = Promise.resolve(
     props.uiData?.grammar.items.map((item: ImportItem) => ({
@@ -85,21 +79,21 @@ export function LearningPathResultsView(props: LearningPathResultsViewProps) {
             <SSRMediaQuery hideFrom="lg">
               <div class="space-y-2">
                 <StatisticsSummary
-                  itemStates={props.itemStates}
+                  itemStates={flow.itemStates()}
                   itemsPromise={grammarStatPromise}
                   title="Grammar"
                   showLearning={false}
                   isLearningPath={true}
                 />
                 <StatisticsSummary
-                  itemStates={props.itemStates}
+                  itemStates={flow.itemStates()}
                   itemsPromise={vocabStatPromise}
                   title="Vocabulary"
                   showLearning={false}
                   isLearningPath={true}
                 />
                 <StatisticsSummary
-                  itemStates={props.itemStates}
+                  itemStates={flow.itemStates()}
                   itemsPromise={kanjiStatPromise}
                   title="Kanji"
                   showLearning={false}
@@ -116,13 +110,13 @@ export function LearningPathResultsView(props: LearningPathResultsViewProps) {
               <Show when={props.uiData?.grammar.items.length! > 0}>
                 <ImportAccordion
                   sub={props.uiData!.grammar}
-                  selectedIds={props.selectedIds}
-                  itemStates={props.itemStates}
-                  initialItemStates={props.initialItemStates}
-                  onItemClick={props.handleItemClick}
-                  onGroupToggle={props.toggleSelectGroup}
-                  onPointerDown={props.handlePointerDown}
-                  onUndoItem={props.onUndoItem}
+                  selectedIds={flow.selectedIds()}
+                  itemStates={flow.itemStates()}
+                  initialItemStates={flow.initialItemStates()}
+                  onItemClick={flow.handleItemClick}
+                  onGroupToggle={flow.toggleSelectGroup}
+                  onPointerDown={flow.handlePointerDown}
+                  onUndoItem={(id) => flow.updateItemStatus(id, flow.initialItemStates()[id])}
                 />
               </Show>
             </div>
@@ -135,13 +129,13 @@ export function LearningPathResultsView(props: LearningPathResultsViewProps) {
               <Show when={props.uiData?.vocabulary.items.length! > 0}>
                 <ImportAccordion
                   sub={props.uiData!.vocabulary}
-                  selectedIds={props.selectedIds}
-                  itemStates={props.itemStates}
-                  initialItemStates={props.initialItemStates}
-                  onItemClick={props.handleItemClick}
-                  onGroupToggle={props.toggleSelectGroup}
-                  onPointerDown={props.handlePointerDown}
-                  onUndoItem={props.onUndoItem}
+                  selectedIds={flow.selectedIds()}
+                  itemStates={flow.itemStates()}
+                  initialItemStates={flow.initialItemStates()}
+                  onItemClick={flow.handleItemClick}
+                  onGroupToggle={flow.toggleSelectGroup}
+                  onPointerDown={flow.handlePointerDown}
+                  onUndoItem={(id) => flow.updateItemStatus(id, flow.initialItemStates()[id])}
                 />
               </Show>
             </div>
@@ -154,13 +148,13 @@ export function LearningPathResultsView(props: LearningPathResultsViewProps) {
               <Show when={props.uiData?.kanji.items.length! > 0}>
                 <ImportAccordion
                   sub={props.uiData!.kanji}
-                  selectedIds={props.selectedIds}
-                  itemStates={props.itemStates}
-                  initialItemStates={props.initialItemStates}
-                  onItemClick={props.handleItemClick}
-                  onGroupToggle={props.toggleSelectGroup}
-                  onPointerDown={props.handlePointerDown}
-                  onUndoItem={props.onUndoItem}
+                  selectedIds={flow.selectedIds()}
+                  itemStates={flow.itemStates()}
+                  initialItemStates={flow.initialItemStates()}
+                  onItemClick={flow.handleItemClick}
+                  onGroupToggle={flow.toggleSelectGroup}
+                  onPointerDown={flow.handlePointerDown}
+                  onUndoItem={(id) => flow.updateItemStatus(id, flow.initialItemStates()[id])}
                 />
               </Show>
             </div>
@@ -189,21 +183,21 @@ export function LearningPathResultsView(props: LearningPathResultsViewProps) {
             <div class="space-y-2 lg:sticky lg:top-24">
               {/* Statistics Summary Component */}
               <StatisticsSummary
-                itemStates={props.itemStates}
+                itemStates={flow.itemStates()}
                 itemsPromise={grammarStatPromise}
                 title="Grammar"
                 showLearning={false}
                 isLearningPath={true}
               />
               <StatisticsSummary
-                itemStates={props.itemStates}
+                itemStates={flow.itemStates()}
                 itemsPromise={vocabStatPromise}
                 title="Vocabulary"
                 showLearning={false}
                 isLearningPath={true}
               />
               <StatisticsSummary
-                itemStates={props.itemStates}
+                itemStates={flow.itemStates()}
                 itemsPromise={kanjiStatPromise}
                 title="Kanji"
                 showLearning={false}

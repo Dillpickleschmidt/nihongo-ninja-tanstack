@@ -2,8 +2,7 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { createEffect } from "solid-js"
 import { FloatingActionBar } from "@/features/import-page/shared/components/FloatingActionBar"
-import { useImportSelection } from "@/features/import-page/shared/hooks/use-import-selection"
-import { useImportState } from "@/features/import-page/shared/hooks/useImportState"
+import { ImportFlowProvider, useImportFlow } from "@/features/import-page/shared/context/ImportFlowContext"
 import { ManualImportView } from "@/features/import-page/manual/components/ManualImportView"
 import { getVocabularyBySets } from "@/features/supabase/db/core-vocab"
 import {
@@ -19,6 +18,8 @@ import {
   buildCardTypeIdSets,
 } from "@/features/import-page/shared/utils/fsrs-map-builder"
 import type { DBPracticeItemType } from "@/features/fsrs-import/shared/types/fsrs-types"
+import type { VocabularyItem } from "@/data/types"
+import type { ItemStatusData } from "@/features/import-page/shared/services/fsrs-status-service"
 
 export const Route = createFileRoute("/_home/import/_layout/manual")({
   loader: async ({ context }) => {
@@ -98,23 +99,18 @@ export const Route = createFileRoute("/_home/import/_layout/manual")({
 function ManualImportPage() {
   const loaderData = Route.useLoaderData()
 
-  // State management: badge states
-  const {
-    itemStates,
-    updateItemStatus,
-    initialItemStates,
-    captureInitialState,
-  } = useImportState()
+  return (
+    <ImportFlowProvider>
+      <ManualImportPageContent loaderData={loaderData} />
+    </ImportFlowProvider>
+  )
+}
 
-  // UI state: selection
-  const {
-    selectedIds,
-    handleItemClick,
-    handlePointerDown,
-    toggleSelectGroup,
-    applyStatus,
-    clearSelection,
-  } = useImportSelection(updateItemStatus)
+function ManualImportPageContent(props: {
+  loaderData: ReturnType<typeof Route.useLoaderData>
+}) {
+  const flow = useImportFlow()
+  const loaderData = props.loaderData
 
   let typeResolver: (id: string) => DBPracticeItemType
   let existingCardsMap = new Map()
@@ -126,12 +122,17 @@ function ManualImportPage() {
       loaderData().n5KanjiPromise,
       loaderData().n4KanjiPromise,
     ])
-      .then(([statusMap, vocabBySet, n5Kanji, n4Kanji]) => {
+      .then(([statusMap, vocabBySet, n5Kanji, n4Kanji]: [
+        Map<string, ItemStatusData>,
+        Record<string, VocabularyItem[]>,
+        Array<{ id: string; meaning: string }>,
+        Array<{ id: string; meaning: string }>
+      ]) => {
         // Update badge states from FSRS
         statusMap.forEach((statusData, id) => {
-          updateItemStatus(id, statusData.status)
+          flow.updateItemStatus(id, statusData.status)
         })
-        captureInitialState()
+        flow.captureInitialState()
 
         // Build derived data structures
         const { vocabIds, kanjiIds } = buildCardTypeIdSets(statusMap)
@@ -152,25 +153,18 @@ function ManualImportPage() {
   })
 
   const { handleImport, isImporting } = useImportHandler({
-    itemStates,
-    initialItemStates,
+    itemStates: flow.itemStates,
+    initialItemStates: flow.initialItemStates,
     getTypeResolver: () => typeResolver,
     getExistingCards: () => existingCardsMap,
     routeType: "manual",
   })
 
   return (
-    <div onClick={clearSelection} class="container px-4 py-6 md:px-8 md:py-8">
+    <div onClick={flow.clearSelection} class="container px-4 py-6 md:px-8 md:py-8">
       <ManualImportView
-        selectedIds={selectedIds()}
-        itemStates={itemStates()}
-        initialItemStates={initialItemStates()}
-        handleItemClick={handleItemClick}
-        handlePointerDown={handlePointerDown}
-        toggleSelectGroup={toggleSelectGroup}
         onImport={handleImport}
         isImporting={isImporting()}
-        onUndoItem={(id) => updateItemStatus(id, initialItemStates()[id])}
         grammarPromises={{
           n5: loaderData().n5GrammarPromise,
           n4: loaderData().n4GrammarPromise,
@@ -183,9 +177,9 @@ function ManualImportPage() {
       />
 
       <FloatingActionBar
-        selectedCount={selectedIds().size}
-        onApply={applyStatus}
-        onClearSelection={clearSelection}
+        selectedCount={flow.selectedIds().size}
+        onApply={flow.applyStatus}
+        onClearSelection={flow.clearSelection}
         mode="manual"
       />
     </div>
