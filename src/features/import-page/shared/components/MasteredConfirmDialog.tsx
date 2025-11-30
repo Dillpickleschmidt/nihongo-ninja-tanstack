@@ -24,7 +24,7 @@ export function MasteredConfirmDialog(props: MasteredConfirmDialogProps) {
             <DialogDescription class="mt-3 space-y-2">
               <p>Marking as <strong>mastered</strong> removes it from your learning path.</p>
               <p class="text-xs text-muted-foreground">
-                It won't be added to spaced repetition during import, but you can add it later.
+                We'll still add the selected item(s) to your knowledgebase so you don't have to manually mark it again.
               </p>
             </DialogDescription>
           </div>

@@ -11,7 +11,7 @@ import { EndOfListIndicator } from "@/features/import-page/shared/components/End
 import { LearningPathFormFields } from "./LearningPathFormFields"
 import { useImportFlow } from "@/features/import-page/shared/context/ImportFlowContext"
 import type { TextbookIDEnum } from "@/data/types"
-import type { transformModulesToUIFormat } from "@/features/learning-paths/ui-adapter"
+import type { transformModulesToUIFormat } from "../path-generation/ui-adapter"
 import type {
   ImportItem,
 } from "@/features/import-page/shared/types"

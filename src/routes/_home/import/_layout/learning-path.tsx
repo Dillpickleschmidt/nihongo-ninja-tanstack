@@ -7,18 +7,18 @@ import { FloatingActionBar } from "@/features/import-page/shared/components/Floa
 import { ImportFlowProvider, useImportFlow } from "@/features/import-page/shared/context/ImportFlowContext"
 import { MasteredConfirmDialog } from "@/features/import-page/shared/components/MasteredConfirmDialog"
 import { uploadLearningPath } from "@/features/supabase/db/learning-paths"
-import { transformModulesToUIFormat } from "@/features/learning-paths/ui-adapter"
+import { transformModulesToUIFormat } from "@/features/import-page/learning-path/path-generation/ui-adapter"
 import {
   processLearningPathFile,
   prepareSaveData,
-} from "@/features/learning-paths/learning-path-operations"
+  type ProcessedData
+} from "@/features/import-page/learning-path/path-generation/learning-path-operations"
 import { LearningPathUploadView } from "@/features/import-page/learning-path/components/LearningPathUploadView"
 import { LearningPathResultsView } from "@/features/import-page/learning-path/components/LearningPathResultsView"
 import { fetchItemStatuses } from "@/features/import-page/shared/services/fsrs-status-service"
 import { useImportHandler } from "@/features/import-page/shared/hooks/useImportHandler"
 import { createVocabularyOnlyTypeResolver } from "@/features/import-page/shared/utils/type-resolver-factory"
 import { extractCardsFromStatuses } from "@/features/import-page/shared/utils/fsrs-map-builder"
-import type { ProcessedData } from "@/features/learning-paths/learning-path-operations"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import type { TextbookIDEnum } from "@/data/types"
 
@@ -164,7 +164,6 @@ function LearningPathPageContent() {
       const itemStates = flow.itemStates()
       const { selectedGrammarModules, selectedVocabDecks } = prepareSaveData(
         data,
-        flow.selectedIds(),
       )
 
       // Filter out mastered items from the learning path upload

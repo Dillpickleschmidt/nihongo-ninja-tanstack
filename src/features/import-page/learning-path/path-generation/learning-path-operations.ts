@@ -58,7 +58,6 @@ export async function processLearningPathFile(
  */
 export function prepareSaveData(
   processedData: ProcessedData,
-  selectedIds: Set<string>,
 ): {
   selectedGrammarModules: Array<{
     moduleId: string
@@ -72,7 +71,7 @@ export function prepareSaveData(
     orderIndex: number
   }>
 } {
-  // Extract grammar modules (all are included, not filtered by selection)
+  // Extract grammar modules
   const selectedGrammarModules = processedData.modules
     .filter((m) => m.type === "grammar")
     .map((m) => ({
@@ -81,7 +80,7 @@ export function prepareSaveData(
       orderIndex: m.orderIndex,
     }))
 
-  // Extract vocabulary decks (all are included, not filtered by selection)
+  // Extract vocabulary decks
   const selectedVocabDecks = processedData.modules
     .filter((m) => m.type === "vocabulary")
     .map((d) => ({

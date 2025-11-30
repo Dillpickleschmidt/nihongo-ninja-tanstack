@@ -60,7 +60,7 @@ export async function extractTranscriptData(
           // Check if this pattern exists in the mapping
           const moduleIds =
             GRAMMAR_TO_MODULES[
-              match.pattern_name as keyof typeof GRAMMAR_TO_MODULES
+            match.pattern_name as keyof typeof GRAMMAR_TO_MODULES
             ]
           if (moduleIds) {
             // Store the pattern ID itself, not the module IDs
