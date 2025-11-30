@@ -33,11 +33,10 @@ export default function VocabularyModuleContent(
               {/* Word badge - floating above */}
               <button
                 onClick={() => setFocusedIndex(index())}
-                class={`mx-auto mb-3 block rounded-full px-3 py-1 text-sm font-medium transition-colors ${
-                  focusedIndex() === index()
+                class={`mx-auto mb-3 block rounded-full px-3 py-1 text-sm font-medium transition-colors ${focusedIndex() === index()
                     ? "bg-primary text-primary-foreground ring-primary/30 ring-2"
                     : "bg-accent text-muted-foreground hover:bg-accent/80"
-                }`}
+                  }`}
               >
                 {word.word}
                 <Show when={word.furigana}>
@@ -49,9 +48,8 @@ export default function VocabularyModuleContent(
 
               {/* Sentences for this word */}
               <div
-                class={`space-y-2 transition-opacity ${
-                  focusedIndex() === index() ? "opacity-100" : "opacity-50"
-                }`}
+                class={`space-y-2 transition-opacity ${focusedIndex() === index() ? "opacity-100" : "opacity-50"
+                  }`}
               >
                 <For each={props.sentences[index()] || []}>
                   {(sentence) => (

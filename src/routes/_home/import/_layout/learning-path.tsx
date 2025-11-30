@@ -53,6 +53,7 @@ function LearningPathPageContent() {
   const [error, setError] = createSignal<string | null>(null)
   const [existingFsrsCards, setExistingFsrsCards] = createSignal<FSRSCardData[]>([])
   const [showMasteredDialog, setShowMasteredDialog] = createSignal(false)
+  const [pendingMasteredIds, setPendingMasteredIds] = createSignal<string[]>([])
 
   // Single UI data transformation with mastered item filtering
   const uiData = createMemo(() => {
@@ -61,15 +62,19 @@ function LearningPathPageContent() {
     const transformed = transformModulesToUIFormat(data.modules, data.grammarPatterns)
     if (!transformed) return null
 
+    const itemStates = flow.itemStates()
+    const filteredVocab = transformed.vocabulary.items.filter((item) => itemStates[item.id] !== "mastered")
+    const filteredKanji = transformed.kanji.items.filter((item) => itemStates[item.id] !== "mastered")
+
     return {
       ...transformed,
       vocabulary: {
         ...transformed.vocabulary,
-        items: transformed.vocabulary.items.filter((item) => flow.itemStates()[item.id] !== "mastered"),
+        items: filteredVocab,
       },
       kanji: {
         ...transformed.kanji,
-        items: transformed.kanji.items.filter((item) => flow.itemStates()[item.id] !== "mastered"),
+        items: filteredKanji,
       },
     }
   })
@@ -79,7 +84,7 @@ function LearningPathPageContent() {
   // Handle badge changes with mastered confirmation (intercept before updating state)
   const handleBadgeChange = (status: any) => {
     if (status === "mastered" && flow.selectedIds().size > 0) {
-      // Show confirmation dialog for batch mastered operation
+      setPendingMasteredIds(Array.from(flow.selectedIds()))
       setShowMasteredDialog(true)
     } else {
       // Non-mastered status: apply directly via flow
@@ -135,12 +140,15 @@ function LearningPathPageContent() {
   }
 
   const handleMasteredConfirm = () => {
-    // Apply mastered status to all currently selected items
-    flow.applyStatus("mastered")
+    // Apply mastered status to the IDs that were pending
+    const idsToMaster = pendingMasteredIds()
+    idsToMaster.forEach(id => flow.updateItemStatus(id, "mastered"))
+    setPendingMasteredIds([])
     setShowMasteredDialog(false)
   }
 
   const handleMasteredCancel = () => {
+    setPendingMasteredIds([])
     setShowMasteredDialog(false)
   }
 
@@ -167,10 +175,18 @@ function LearningPathPageContent() {
       )
 
       // Filter out mastered items from the learning path upload
-      const filteredVocabDecks = selectedVocabDecks.map((deck) => ({
-        ...deck,
-        words: deck.words.filter((word) => itemStates[word.word] !== "mastered"),
-      }))
+      // Keep words and transcriptLineIds arrays in sync
+      const filteredVocabDecks = selectedVocabDecks.map((deck) => {
+        const keptIndices = deck.words
+          .map((word, idx) => (itemStates[word.word] !== "mastered" ? idx : -1))
+          .filter((idx) => idx !== -1)
+
+        return {
+          ...deck,
+          words: keptIndices.map((idx) => deck.words[idx]),
+          transcriptLineIds: keptIndices.map((idx) => deck.transcriptLineIds[idx]),
+        }
+      })
 
       // Build existing cards map from fetched FSRS data
       const existingCardsMap = new Map(
@@ -201,7 +217,7 @@ function LearningPathPageContent() {
           name: pathName(),
           show_name: showName() || undefined,
           episode_name: episodeName() || undefined,
-          transcript_data: [],
+          transcript_data: data.transcript,
         },
         selectedGrammarModules,
         selectedVocabDecks: filteredVocabDecks,

@@ -12,6 +12,7 @@ import type { TextbookIDEnum } from "@/data/types"
 export type ProcessedData = {
   modules: LearningPathModule[]
   grammarPatterns: Array<{ pattern: string; lineIds: number[] }>
+  transcript: Array<{ line_id: number; text: string; english: string; timestamp?: string }>
 }
 
 interface SRTSubtitle {
@@ -42,13 +43,22 @@ export async function processLearningPathFile(
     undefined,
   )
 
-  // Return processed data with both modules and raw patterns
+  // Convert transcript to expected format with line_id, text, english, timestamp
+  const transcriptData = transcript.map((line, index) => ({
+    line_id: index,
+    text: line.text,
+    english: line.english,
+    timestamp: line.timestamp,
+  }))
+
+  // Return processed data with modules, patterns, and transcript
   return {
     modules: learningPath.modules,
     grammarPatterns: extracted.grammarPatterns.map((pattern) => ({
       pattern,
       lineIds: extracted.grammarPatternLineIds[pattern] || [],
     })),
+    transcript: transcriptData,
   }
 }
 

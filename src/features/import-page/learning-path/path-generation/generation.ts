@@ -319,6 +319,7 @@ function chunkVocabularyByFrequency(
     if (moduleWords.length === 0) return
 
     const isVerbDeck = moduleWords[0]!.pos === "動詞"
+    const deckTranscriptLineIds = moduleWords.map((w) => w.transcriptLineIds)
     decks.push({
       type: "vocabulary" as const,
       previewId: `vocab-preview-${previewIdCounter++}`,
@@ -328,7 +329,7 @@ function chunkVocabularyByFrequency(
         english,
       })),
       isVerbDeck,
-      transcriptLineIds: moduleWords.map((w) => w.transcriptLineIds),
+      transcriptLineIds: deckTranscriptLineIds,
       checked: true,
       orderIndex: 0, // Will be set during interleaving
     })

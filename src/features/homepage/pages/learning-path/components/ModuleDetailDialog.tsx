@@ -32,7 +32,7 @@ export default function ModuleDetailDialog(props: ModuleDetailDialogProps) {
     if (!moduleQuery.data || !transcriptQuery.data) return []
 
     return moduleQuery.data.transcriptLineIds.map((lineIds) =>
-      lineIds.map((id) => transcriptQuery.data[id]).filter(Boolean),
+      lineIds.map((index) => transcriptQuery.data[index]).filter(Boolean),
     )
   }
 
