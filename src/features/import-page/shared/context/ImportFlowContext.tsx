@@ -26,7 +26,6 @@ const ImportFlowContext = createContext<ImportFlowContextValue>()
 export function ImportFlowProvider(props: {
   children: JSXElement
 }) {
-  // Badge state management
   const {
     itemStates,
     updateItemStatus,
@@ -34,7 +33,6 @@ export function ImportFlowProvider(props: {
     captureInitialState,
   } = useImportState()
 
-  // Selection state management
   const {
     selectedIds,
     handleItemClick,

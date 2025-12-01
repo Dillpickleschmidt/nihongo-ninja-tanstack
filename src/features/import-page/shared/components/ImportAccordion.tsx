@@ -41,10 +41,10 @@ export function ImportAccordion(props: ImportAccordionProps) {
   }
 
   return (
-    <div class="bg-background/50 overflow-hidden rounded-lg bg-linear-to-b from-white/1 to-transparent backdrop-blur-sm">
+    <div class="bg-card/50 overflow-hidden rounded-lg bg-linear-to-b from-white/1 to-transparent backdrop-blur-sm">
       {/* Header */}
       <div
-        class="hover:bg-card-foreground/40 flex cursor-pointer items-center justify-between px-4 py-3 transition-colors select-none"
+        class="bg-background/20 hover:bg-card-foreground/40 flex cursor-pointer items-center justify-between px-4 py-3 transition-colors select-none"
         onClick={(e) => {
           e.stopPropagation()
           setIsOpen(!isOpen())

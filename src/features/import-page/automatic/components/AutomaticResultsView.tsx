@@ -65,7 +65,7 @@ export function AutomaticResultsView(props: AutomaticResultsViewProps) {
           </div>
           <p class="text-muted-foreground mt-3 text-sm italic lg:text-base">
             You may want to check out{" "}
-            <Link to="/import/manual" class="font-medium underline">
+            <Link to="/import/nihongo/manual" class="font-medium underline">
               Manual Importing
             </Link>{" "}
             for skipping grammar that you know as well.

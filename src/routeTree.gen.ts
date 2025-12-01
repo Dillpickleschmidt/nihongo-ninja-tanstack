@@ -88,9 +88,12 @@ import { Route as HomeLessonsChapter0DakutenHandakutenRouteImport } from './rout
 import { Route as HomeLessonsChapter0ContractedSoundsRouteImport } from './routes/_home/lessons/_chapter-0/contracted-sounds'
 import { Route as HomeLessonsChapter0CommonExpressionsRouteImport } from './routes/_home/lessons/_chapter-0/common-expressions'
 import { Route as HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport } from './routes/_home/learn/additional-resources.kanji-practice-sheet'
-import { Route as HomeImportLayoutManualRouteImport } from './routes/_home/import/_layout/manual'
 import { Route as HomeImportLayoutLearningPathRouteImport } from './routes/_home/import/_layout/learning-path'
-import { Route as HomeImportLayoutAutomaticRouteImport } from './routes/_home/import/_layout/automatic'
+import { Route as HomeImportLayoutNihongoIndexRouteImport } from './routes/_home/import/_layout/nihongo/index'
+import { Route as HomeImportLayoutAnkiIndexRouteImport } from './routes/_home/import/_layout/anki/index'
+import { Route as HomeImportLayoutNihongoManualRouteImport } from './routes/_home/import/_layout/nihongo/manual'
+import { Route as HomeImportLayoutNihongoAutomaticRouteImport } from './routes/_home/import/_layout/nihongo/automatic'
+import { Route as HomeImportLayoutAnkiConnectRouteImport } from './routes/_home/import/_layout/anki/connect'
 
 const HomeImportRouteImport = createFileRoute('/_home/import')()
 
@@ -526,21 +529,40 @@ const HomeLearnAdditionalResourcesKanjiPracticeSheetRoute =
     path: '/learn/additional-resources/kanji-practice-sheet',
     getParentRoute: () => HomeRoute,
   } as any)
-const HomeImportLayoutManualRoute = HomeImportLayoutManualRouteImport.update({
-  id: '/manual',
-  path: '/manual',
-  getParentRoute: () => HomeImportLayoutRoute,
-} as any)
 const HomeImportLayoutLearningPathRoute =
   HomeImportLayoutLearningPathRouteImport.update({
     id: '/learning-path',
     path: '/learning-path',
     getParentRoute: () => HomeImportLayoutRoute,
   } as any)
-const HomeImportLayoutAutomaticRoute =
-  HomeImportLayoutAutomaticRouteImport.update({
-    id: '/automatic',
-    path: '/automatic',
+const HomeImportLayoutNihongoIndexRoute =
+  HomeImportLayoutNihongoIndexRouteImport.update({
+    id: '/nihongo/',
+    path: '/nihongo/',
+    getParentRoute: () => HomeImportLayoutRoute,
+  } as any)
+const HomeImportLayoutAnkiIndexRoute =
+  HomeImportLayoutAnkiIndexRouteImport.update({
+    id: '/anki/',
+    path: '/anki/',
+    getParentRoute: () => HomeImportLayoutRoute,
+  } as any)
+const HomeImportLayoutNihongoManualRoute =
+  HomeImportLayoutNihongoManualRouteImport.update({
+    id: '/nihongo/manual',
+    path: '/nihongo/manual',
+    getParentRoute: () => HomeImportLayoutRoute,
+  } as any)
+const HomeImportLayoutNihongoAutomaticRoute =
+  HomeImportLayoutNihongoAutomaticRouteImport.update({
+    id: '/nihongo/automatic',
+    path: '/nihongo/automatic',
+    getParentRoute: () => HomeImportLayoutRoute,
+  } as any)
+const HomeImportLayoutAnkiConnectRoute =
+  HomeImportLayoutAnkiConnectRouteImport.update({
+    id: '/anki/connect',
+    path: '/anki/connect',
     getParentRoute: () => HomeImportLayoutRoute,
   } as any)
 
@@ -584,9 +606,7 @@ export interface FileRoutesByFullPath {
   '/import/': typeof HomeImportIndexRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
   '/vocab/': typeof HomeVocabIndexRoute
-  '/import/automatic': typeof HomeImportLayoutAutomaticRoute
   '/import/learning-path': typeof HomeImportLayoutLearningPathRoute
-  '/import/manual': typeof HomeImportLayoutManualRoute
   '/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
   '/lessons/common-expressions': typeof HomeLessonsChapter0CommonExpressionsRoute
   '/lessons/contracted-sounds': typeof HomeLessonsChapter0ContractedSoundsRoute
@@ -624,6 +644,11 @@ export interface FileRoutesByFullPath {
   '/lessons/polite-invitations': typeof HomeLessonsChapter3PoliteInvitationsRoute
   '/lessons/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof HomeLessonsChapter3WordOrderRoute
+  '/import/anki/connect': typeof HomeImportLayoutAnkiConnectRoute
+  '/import/nihongo/automatic': typeof HomeImportLayoutNihongoAutomaticRoute
+  '/import/nihongo/manual': typeof HomeImportLayoutNihongoManualRoute
+  '/import/anki': typeof HomeImportLayoutAnkiIndexRoute
+  '/import/nihongo': typeof HomeImportLayoutNihongoIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
@@ -662,9 +687,7 @@ export interface FileRoutesByTo {
   '/practice/$userID/$deckID': typeof PracticeUserIDDeckIDRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
   '/vocab': typeof HomeVocabIndexRoute
-  '/import/automatic': typeof HomeImportLayoutAutomaticRoute
   '/import/learning-path': typeof HomeImportLayoutLearningPathRoute
-  '/import/manual': typeof HomeImportLayoutManualRoute
   '/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
   '/lessons/common-expressions': typeof HomeLessonsChapter0CommonExpressionsRoute
   '/lessons/contracted-sounds': typeof HomeLessonsChapter0ContractedSoundsRoute
@@ -702,6 +725,11 @@ export interface FileRoutesByTo {
   '/lessons/polite-invitations': typeof HomeLessonsChapter3PoliteInvitationsRoute
   '/lessons/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof HomeLessonsChapter3WordOrderRoute
+  '/import/anki/connect': typeof HomeImportLayoutAnkiConnectRoute
+  '/import/nihongo/automatic': typeof HomeImportLayoutNihongoAutomaticRoute
+  '/import/nihongo/manual': typeof HomeImportLayoutNihongoManualRoute
+  '/import/anki': typeof HomeImportLayoutAnkiIndexRoute
+  '/import/nihongo': typeof HomeImportLayoutNihongoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -746,9 +774,7 @@ export interface FileRoutesById {
   '/_home/import/': typeof HomeImportIndexRoute
   '/_home/sentence-practice/': typeof HomeSentencePracticeIndexRoute
   '/_home/vocab/': typeof HomeVocabIndexRoute
-  '/_home/import/_layout/automatic': typeof HomeImportLayoutAutomaticRoute
   '/_home/import/_layout/learning-path': typeof HomeImportLayoutLearningPathRoute
-  '/_home/import/_layout/manual': typeof HomeImportLayoutManualRoute
   '/_home/learn/additional-resources/kanji-practice-sheet': typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
   '/_home/lessons/_chapter-0/common-expressions': typeof HomeLessonsChapter0CommonExpressionsRoute
   '/_home/lessons/_chapter-0/contracted-sounds': typeof HomeLessonsChapter0ContractedSoundsRoute
@@ -786,6 +812,11 @@ export interface FileRoutesById {
   '/_home/lessons/_chapter-3/polite-invitations': typeof HomeLessonsChapter3PoliteInvitationsRoute
   '/_home/lessons/_chapter-3/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/_home/lessons/_chapter-3/word-order': typeof HomeLessonsChapter3WordOrderRoute
+  '/_home/import/_layout/anki/connect': typeof HomeImportLayoutAnkiConnectRoute
+  '/_home/import/_layout/nihongo/automatic': typeof HomeImportLayoutNihongoAutomaticRoute
+  '/_home/import/_layout/nihongo/manual': typeof HomeImportLayoutNihongoManualRoute
+  '/_home/import/_layout/anki/': typeof HomeImportLayoutAnkiIndexRoute
+  '/_home/import/_layout/nihongo/': typeof HomeImportLayoutNihongoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -829,9 +860,7 @@ export interface FileRouteTypes {
     | '/import/'
     | '/sentence-practice'
     | '/vocab/'
-    | '/import/automatic'
     | '/import/learning-path'
-    | '/import/manual'
     | '/learn/additional-resources/kanji-practice-sheet'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
@@ -869,6 +898,11 @@ export interface FileRouteTypes {
     | '/lessons/polite-invitations'
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
+    | '/import/anki/connect'
+    | '/import/nihongo/automatic'
+    | '/import/nihongo/manual'
+    | '/import/anki'
+    | '/import/nihongo'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -907,9 +941,7 @@ export interface FileRouteTypes {
     | '/practice/$userID/$deckID'
     | '/sentence-practice'
     | '/vocab'
-    | '/import/automatic'
     | '/import/learning-path'
-    | '/import/manual'
     | '/learn/additional-resources/kanji-practice-sheet'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
@@ -947,6 +979,11 @@ export interface FileRouteTypes {
     | '/lessons/polite-invitations'
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
+    | '/import/anki/connect'
+    | '/import/nihongo/automatic'
+    | '/import/nihongo/manual'
+    | '/import/anki'
+    | '/import/nihongo'
   id:
     | '__root__'
     | '/_home'
@@ -990,9 +1027,7 @@ export interface FileRouteTypes {
     | '/_home/import/'
     | '/_home/sentence-practice/'
     | '/_home/vocab/'
-    | '/_home/import/_layout/automatic'
     | '/_home/import/_layout/learning-path'
-    | '/_home/import/_layout/manual'
     | '/_home/learn/additional-resources/kanji-practice-sheet'
     | '/_home/lessons/_chapter-0/common-expressions'
     | '/_home/lessons/_chapter-0/contracted-sounds'
@@ -1030,6 +1065,11 @@ export interface FileRouteTypes {
     | '/_home/lessons/_chapter-3/polite-invitations'
     | '/_home/lessons/_chapter-3/verb-conj-masu'
     | '/_home/lessons/_chapter-3/word-order'
+    | '/_home/import/_layout/anki/connect'
+    | '/_home/import/_layout/nihongo/automatic'
+    | '/_home/import/_layout/nihongo/manual'
+    | '/_home/import/_layout/anki/'
+    | '/_home/import/_layout/nihongo/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1597,13 +1637,6 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRouteImport
       parentRoute: typeof HomeRoute
     }
-    '/_home/import/_layout/manual': {
-      id: '/_home/import/_layout/manual'
-      path: '/manual'
-      fullPath: '/import/manual'
-      preLoaderRoute: typeof HomeImportLayoutManualRouteImport
-      parentRoute: typeof HomeImportLayoutRoute
-    }
     '/_home/import/_layout/learning-path': {
       id: '/_home/import/_layout/learning-path'
       path: '/learning-path'
@@ -1611,11 +1644,39 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeImportLayoutLearningPathRouteImport
       parentRoute: typeof HomeImportLayoutRoute
     }
-    '/_home/import/_layout/automatic': {
-      id: '/_home/import/_layout/automatic'
-      path: '/automatic'
-      fullPath: '/import/automatic'
-      preLoaderRoute: typeof HomeImportLayoutAutomaticRouteImport
+    '/_home/import/_layout/nihongo/': {
+      id: '/_home/import/_layout/nihongo/'
+      path: '/nihongo'
+      fullPath: '/import/nihongo'
+      preLoaderRoute: typeof HomeImportLayoutNihongoIndexRouteImport
+      parentRoute: typeof HomeImportLayoutRoute
+    }
+    '/_home/import/_layout/anki/': {
+      id: '/_home/import/_layout/anki/'
+      path: '/anki'
+      fullPath: '/import/anki'
+      preLoaderRoute: typeof HomeImportLayoutAnkiIndexRouteImport
+      parentRoute: typeof HomeImportLayoutRoute
+    }
+    '/_home/import/_layout/nihongo/manual': {
+      id: '/_home/import/_layout/nihongo/manual'
+      path: '/nihongo/manual'
+      fullPath: '/import/nihongo/manual'
+      preLoaderRoute: typeof HomeImportLayoutNihongoManualRouteImport
+      parentRoute: typeof HomeImportLayoutRoute
+    }
+    '/_home/import/_layout/nihongo/automatic': {
+      id: '/_home/import/_layout/nihongo/automatic'
+      path: '/nihongo/automatic'
+      fullPath: '/import/nihongo/automatic'
+      preLoaderRoute: typeof HomeImportLayoutNihongoAutomaticRouteImport
+      parentRoute: typeof HomeImportLayoutRoute
+    }
+    '/_home/import/_layout/anki/connect': {
+      id: '/_home/import/_layout/anki/connect'
+      path: '/anki/connect'
+      fullPath: '/import/anki/connect'
+      preLoaderRoute: typeof HomeImportLayoutAnkiConnectRouteImport
       parentRoute: typeof HomeImportLayoutRoute
     }
   }
@@ -1738,15 +1799,21 @@ const HomeVocabRouteWithChildren = HomeVocabRoute._addFileChildren(
 )
 
 interface HomeImportLayoutRouteChildren {
-  HomeImportLayoutAutomaticRoute: typeof HomeImportLayoutAutomaticRoute
   HomeImportLayoutLearningPathRoute: typeof HomeImportLayoutLearningPathRoute
-  HomeImportLayoutManualRoute: typeof HomeImportLayoutManualRoute
+  HomeImportLayoutAnkiConnectRoute: typeof HomeImportLayoutAnkiConnectRoute
+  HomeImportLayoutNihongoAutomaticRoute: typeof HomeImportLayoutNihongoAutomaticRoute
+  HomeImportLayoutNihongoManualRoute: typeof HomeImportLayoutNihongoManualRoute
+  HomeImportLayoutAnkiIndexRoute: typeof HomeImportLayoutAnkiIndexRoute
+  HomeImportLayoutNihongoIndexRoute: typeof HomeImportLayoutNihongoIndexRoute
 }
 
 const HomeImportLayoutRouteChildren: HomeImportLayoutRouteChildren = {
-  HomeImportLayoutAutomaticRoute: HomeImportLayoutAutomaticRoute,
   HomeImportLayoutLearningPathRoute: HomeImportLayoutLearningPathRoute,
-  HomeImportLayoutManualRoute: HomeImportLayoutManualRoute,
+  HomeImportLayoutAnkiConnectRoute: HomeImportLayoutAnkiConnectRoute,
+  HomeImportLayoutNihongoAutomaticRoute: HomeImportLayoutNihongoAutomaticRoute,
+  HomeImportLayoutNihongoManualRoute: HomeImportLayoutNihongoManualRoute,
+  HomeImportLayoutAnkiIndexRoute: HomeImportLayoutAnkiIndexRoute,
+  HomeImportLayoutNihongoIndexRoute: HomeImportLayoutNihongoIndexRoute,
 }
 
 const HomeImportLayoutRouteWithChildren =

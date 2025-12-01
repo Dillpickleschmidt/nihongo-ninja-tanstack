@@ -1,9 +1,10 @@
-// src/routes/_home/import/_layout/manual.tsx
+// src/routes/_home/import/_layout/nihongo/manual.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import { createEffect } from "solid-js"
 import { FloatingActionBar } from "@/features/import-page/shared/components/FloatingActionBar"
 import { ImportFlowProvider, useImportFlow } from "@/features/import-page/shared/context/ImportFlowContext"
 import { ManualImportView } from "@/features/import-page/manual/components/ManualImportView"
+import { queryKeys } from "@/query/utils/query-keys"
 import { getVocabularyBySets } from "@/features/supabase/db/core-vocab"
 import {
   getN5Grammar,
@@ -21,13 +22,25 @@ import type { DBPracticeItemType } from "@/features/fsrs-import/shared/types/fsr
 import type { VocabularyItem } from "@/data/types"
 import type { ItemStatusData } from "@/features/import-page/shared/services/fsrs-status-service"
 
-export const Route = createFileRoute("/_home/import/_layout/manual")({
+export const Route = createFileRoute("/_home/import/_layout/nihongo/manual")({
+  staticData: {
+    headerConfig: {
+      title: "Mark What You Know",
+      backLabel: "Back to Nihongo",
+      backTo: "/import/nihongo",
+    },
+  },
   loader: async ({ context }) => {
+    context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+      blur: 16,
+      backgroundOpacityOffset: -0.25,
+      showGradient: true,
+    })
+
     const n5GrammarPromise = getN5Grammar()
     const n4GrammarPromise = getN4Grammar()
     const vocabPromise = getVocabularyBySets(["n5", "n4"])
 
-    // Build kanji hierarchies - fetch all kanji at once, then split by JLPT level
     const kanjiPromise = (async () => {
       const vocabBySet = await vocabPromise
       const n5Vocab = vocabBySet.n5 || []
@@ -36,7 +49,6 @@ export const Route = createFileRoute("/_home/import/_layout/manual")({
       const allVocabWords = [...n5Vocab, ...n4Vocab].map((v) => v.word)
       const hierarchy = await buildVocabHierarchy(allVocabWords)
 
-      // Split kanji by JLPT level based on which vocab they appear in
       const n5Kanji = hierarchy.kanji
         .filter((k) => n5Vocab.some((v) => v.word.includes(k.kanji)))
         .map((k) => ({
@@ -128,13 +140,11 @@ function ManualImportPageContent(props: {
         Array<{ id: string; meaning: string }>,
         Array<{ id: string; meaning: string }>
       ]) => {
-        // Update badge states from FSRS
         statusMap.forEach((statusData, id) => {
           flow.updateItemStatus(id, statusData.status)
         })
         flow.captureInitialState()
 
-        // Build derived data structures
         const { vocabIds, kanjiIds } = buildCardTypeIdSets(statusMap)
         const allVocab = Object.values(vocabBySet).flat()
         const allKanji = [...n5Kanji, ...n4Kanji]
@@ -161,27 +171,31 @@ function ManualImportPageContent(props: {
   })
 
   return (
-    <div onClick={flow.clearSelection} class="container px-4 py-6 md:px-8 md:py-8">
-      <ManualImportView
-        onImport={handleImport}
-        isImporting={isImporting()}
-        grammarPromises={{
-          n5: loaderData().n5GrammarPromise,
-          n4: loaderData().n4GrammarPromise,
-        }}
-        vocabPromise={loaderData().vocabPromise}
-        kanjiPromises={{
-          n5: loaderData().n5KanjiPromise,
-          n4: loaderData().n4KanjiPromise,
-        }}
-      />
+    <div class="animate-in fade-in slide-in-from-bottom-4 min-h-screen w-full duration-500 pt-12 pb-24 md:py-24">
+      <div class="container relative flex flex-col items-center">
+        <div class="w-full" onClick={flow.clearSelection}>
+          <ManualImportView
+            onImport={handleImport}
+            isImporting={isImporting()}
+            grammarPromises={{
+              n5: loaderData().n5GrammarPromise,
+              n4: loaderData().n4GrammarPromise,
+            }}
+            vocabPromise={loaderData().vocabPromise}
+            kanjiPromises={{
+              n5: loaderData().n5KanjiPromise,
+              n4: loaderData().n4KanjiPromise,
+            }}
+          />
 
-      <FloatingActionBar
-        selectedCount={flow.selectedIds().size}
-        onApply={flow.applyStatus}
-        onClearSelection={flow.clearSelection}
-        mode="manual"
-      />
+          <FloatingActionBar
+            selectedCount={flow.selectedIds().size}
+            onApply={flow.applyStatus}
+            onClearSelection={flow.clearSelection}
+            mode="manual"
+          />
+        </div>
+      </div>
     </div>
   )
 }

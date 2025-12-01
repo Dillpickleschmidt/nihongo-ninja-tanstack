@@ -1,12 +1,13 @@
-// src/routes/_home/import/_layout/automatic.tsx
-import { createFileRoute } from "@tanstack/solid-router"
+// src/routes/_home/import/_layout/nihongo/automatic.tsx
+import { createFileRoute, useNavigate } from "@tanstack/solid-router"
 import { createSignal, Show } from "solid-js"
 import { toast } from "solid-sonner"
 import { FloatingActionBar } from "@/features/import-page/shared/components/FloatingActionBar"
 import { ImportFlowProvider, useImportFlow } from "@/features/import-page/shared/context/ImportFlowContext"
-import { AutomaticUploadView } from "@/features/import-page/automatic/components/AutomaticUploadView"
+import { FileUploadArea } from "@/features/import-page/shared/components/FileUploadArea"
 import { AnkiFieldMappingView } from "@/features/import-page/automatic/components/AnkiFieldMappingView"
 import { AutomaticResultsView } from "@/features/import-page/automatic/components/AutomaticResultsView"
+import { queryKeys } from "@/query/utils/query-keys"
 import { transformAnkiData } from "@/features/fsrs-import/adapters/anki/anki-adapter"
 import { importReviewsServerFn } from "@/features/fsrs-import/server/importReviewsServerFn"
 import { processJpdbFile } from "@/features/import-page/automatic/services/jpdb-processor"
@@ -19,19 +20,28 @@ import type {
 } from "@/features/fsrs-import/adapters/anki/anki-types"
 import type { NormalizedCard } from "@/features/fsrs-import/shared/types/import-data-models"
 import type { ImportItem } from "@/features/import-page/shared/types"
+import { z } from "zod"
 
-// --- Import Steps Enum ---
+const automaticSearchSchema = z.object({
+  step: z.number().optional().catch(1),
+})
 
-const IMPORT_STEPS = {
-  UPLOAD: 1,
-  FIELD_MAPPING: 2,
-  RESULTS: 3,
-} as const
-
-type ImportStep = (typeof IMPORT_STEPS)[keyof typeof IMPORT_STEPS]
-
-
-export const Route = createFileRoute("/_home/import/_layout/automatic")({
+export const Route = createFileRoute("/_home/import/_layout/nihongo/automatic")({
+  staticData: {
+    headerConfig: {
+      title: "Import from File",
+      backLabel: "Back to Nihongo",
+      backTo: "/import/nihongo",
+    },
+  },
+  validateSearch: (search) => automaticSearchSchema.parse(search),
+  loader: async ({ context }) => {
+    context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+      blur: 16,
+      backgroundOpacityOffset: -0.25,
+      showGradient: true,
+    })
+  },
   component: AutomaticImportPage,
 })
 
@@ -45,69 +55,58 @@ function AutomaticImportPage() {
 
 function AutomaticImportPageContent() {
   const flow = useImportFlow()
+  const search = Route.useSearch()
+  const navigate = useNavigate({ from: Route.fullPath })
 
-  // Step management
-  const [currentStep, setCurrentStep] = createSignal<ImportStep>(
-    IMPORT_STEPS.UPLOAD,
-  )
-  const [importSource, setImportSource] = createSignal<"anki" | "jpdb" | null>(
-    null,
-  )
-  const [extractedData, setExtractedData] =
-    createSignal<AnkiExtractedData | null>(null)
-  const [fieldMapping, setFieldMapping] = createSignal<FieldMapping | null>(
-    null,
-  )
+  const currentStep = () => search().step || 1
 
-  // Processing
+  // Processing & Data State
+  const [importSource, setImportSource] = createSignal<"anki" | "jpdb" | null>(null)
+  const [extractedData, setExtractedData] = createSignal<AnkiExtractedData | null>(null)
+  const [fieldMapping, setFieldMapping] = createSignal<FieldMapping | null>(null)
   const [isProcessing, setIsProcessing] = createSignal(false)
   const [errorMessage, setErrorMessage] = createSignal<string | null>(null)
-
-  // Results
   const [vocabItems, setVocabItems] = createSignal<ImportItem[]>([])
   const [kanjiItems, setKanjiItems] = createSignal<ImportItem[]>([])
   const [normalizedCards, setNormalizedCards] = createSignal<NormalizedCard[]>([])
 
+  // Navigation Helper (updates URL with masking)
+  const navigateToStep = (step: number) => {
+    navigate({
+      search: { step },
+      mask: { to: "/import/nihongo/automatic" }
+    })
+  }
 
-
-  // Step 1: Handle file upload with auto-detection
   const handleUpload = async (file: File) => {
     setIsProcessing(true)
     setErrorMessage(null)
 
     try {
-      // Detect file type
       const source = file.name.endsWith(".json") ? "jpdb" : "anki"
       setImportSource(source)
 
       if (source === "jpdb") {
-        // JPDB import path: use service to process
         const { vocabImportItems: vocab, kanjiImportItems: kanji, normalizedCards: cards } = await processJpdbFile(file)
 
         setVocabItems(vocab)
         setKanjiItems(kanji)
         setNormalizedCards(cards)
 
-        // Populate itemStates with initial status badges from JPDB
         vocab.concat(kanji).forEach((item) => {
           if (item.status) {
             flow.updateItemStatus(item.id, item.status)
           }
         })
-
-        // Capture as initial state for change detection
         flow.captureInitialState()
-
-        // Skip field mapping and go directly to results
-        setCurrentStep(IMPORT_STEPS.RESULTS)
+        navigateToStep(3)
       } else {
-        // Anki import path: use service to process
         const { extractedData, detectedFieldMapping } = await processAnkiFile(file)
 
         setExtractedData(extractedData)
         setFieldMapping(detectedFieldMapping)
 
-        setCurrentStep(IMPORT_STEPS.FIELD_MAPPING)
+        navigateToStep(2)
       }
     } catch (err) {
       const message =
@@ -119,7 +118,6 @@ function AutomaticImportPageContent() {
     }
   }
 
-  // Step 2: Handle field mapping and move to results
   const handleFieldMappingNext = async () => {
     const extracted = extractedData()
     const mapping = fieldMapping()
@@ -143,17 +141,13 @@ function AutomaticImportPageContent() {
       setVocabItems(vocabItems)
       setNormalizedCards(cards)
 
-      // Populate itemStates with initial status badges from Anki review history
       vocabItems.forEach((item) => {
         if (item.status) {
           flow.updateItemStatus(item.id, item.status)
         }
       })
-
-      // Capture as initial state for change detection
       flow.captureInitialState()
-
-      setCurrentStep(IMPORT_STEPS.RESULTS)
+      navigateToStep(3)
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to transform data"
@@ -164,7 +158,6 @@ function AutomaticImportPageContent() {
     }
   }
 
-  // Step 3: Handle import progress button
   const handleImportProgress = async () => {
     const cards = normalizedCards()
     const source = importSource()
@@ -193,7 +186,6 @@ function AutomaticImportPageContent() {
         return
       }
 
-      // Process unchanged items via review history
       const changedIds = new Set(result.changes.map((c) => c.id))
       const unchangedCards = cards.filter((c) => !changedIds.has(c.searchTerm))
 
@@ -217,63 +209,71 @@ function AutomaticImportPageContent() {
   }
 
   return (
-    <div onClick={flow.clearSelection} class="container px-4 py-6 md:px-8 md:py-8">
-      {/* Error Display */}
-      <Show when={errorMessage()}>
-        <div class="mb-6 rounded-lg border border-red-500/20 bg-red-500/10 p-4">
-          <p class="text-sm font-medium text-red-400">{errorMessage()}</p>
+    <div class="animate-in fade-in slide-in-from-bottom-4 min-h-screen w-full duration-500 pt-12 pb-24 md:py-24">
+      <div class="container relative flex flex-col items-center">
+        <div class="w-full" onClick={flow.clearSelection}>
+          {/* Error Display */}
+          <Show when={errorMessage()}>
+            <div class="mb-6 rounded-lg border border-red-500/20 bg-red-500/10 p-4">
+              <p class="text-sm font-medium text-red-400">{errorMessage()}</p>
+            </div>
+          </Show>
+
+          {/* Step 1: Upload */}
+          <Show when={currentStep() === 1}>
+            <FileUploadArea
+              onUpload={handleUpload}
+              isProcessing={isProcessing()}
+              accept=".apkg,.json"
+              accentColor="purple"
+              description="Support for Anki (.apkg) and JPDB (.json) files."
+              processingDescription="Analyzing vocabulary mastery..."
+            />
+          </Show>
+
+          {/* Step 2: Field Mapping */}
+          <Show
+            when={
+              currentStep() === 2 &&
+              extractedData() &&
+              fieldMapping()
+            }
+          >
+            <AnkiFieldMappingView
+              extractedData={extractedData()!}
+              fieldMapping={fieldMapping()!}
+              onMappingChange={setFieldMapping}
+              onNext={handleFieldMappingNext}
+            />
+          </Show>
+
+          {/* Step 3: Results */}
+          <Show when={currentStep() === 3}>
+            <AutomaticResultsView
+              vocabItems={vocabItems()}
+              kanjiItems={kanjiItems()}
+              onVocabDelete={(id) => {
+                setVocabItems((items) => items.filter((item) => item.id !== id))
+                flow.handleDelete(id)
+              }}
+              onKanjiDelete={(id) => {
+                setKanjiItems((items) => items.filter((item) => item.id !== id))
+                flow.handleDelete(id)
+              }}
+              onImportProgress={handleImportProgress}
+              isImporting={isProcessing()}
+            />
+          </Show>
+
+          {/* FLOATING ACTION BAR */}
+          <FloatingActionBar
+            selectedCount={flow.selectedIds().size}
+            onApply={flow.applyStatus}
+            onClearSelection={flow.clearSelection}
+            mode="automatic"
+          />
         </div>
-      </Show>
-
-      {/* Step 1: Upload */}
-      <Show when={currentStep() === IMPORT_STEPS.UPLOAD}>
-        <AutomaticUploadView
-          onUpload={handleUpload}
-          isProcessing={isProcessing()}
-        />
-      </Show>
-
-      {/* Step 2: Field Mapping */}
-      <Show
-        when={
-          currentStep() === IMPORT_STEPS.FIELD_MAPPING &&
-          extractedData() &&
-          fieldMapping()
-        }
-      >
-        <AnkiFieldMappingView
-          extractedData={extractedData()!}
-          fieldMapping={fieldMapping()!}
-          onMappingChange={setFieldMapping}
-          onNext={handleFieldMappingNext}
-        />
-      </Show>
-
-      {/* Step 3: Results */}
-      <Show when={currentStep() === IMPORT_STEPS.RESULTS}>
-        <AutomaticResultsView
-          vocabItems={vocabItems()}
-          kanjiItems={kanjiItems()}
-          onVocabDelete={(id) => {
-            setVocabItems((items) => items.filter((item) => item.id !== id))
-            flow.handleDelete(id)
-          }}
-          onKanjiDelete={(id) => {
-            setKanjiItems((items) => items.filter((item) => item.id !== id))
-            flow.handleDelete(id)
-          }}
-          onImportProgress={handleImportProgress}
-          isImporting={isProcessing()}
-        />
-      </Show>
-
-      {/* FLOATING ACTION BAR */}
-      <FloatingActionBar
-        selectedCount={flow.selectedIds().size}
-        onApply={flow.applyStatus}
-        onClearSelection={flow.clearSelection}
-        mode="automatic"
-      />
+      </div>
     </div>
   )
 }

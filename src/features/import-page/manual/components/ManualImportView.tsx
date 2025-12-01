@@ -1,5 +1,4 @@
 import { Await } from "@tanstack/solid-router"
-import { Link } from "@tanstack/solid-router"
 import { ImportAccordion } from "@/features/import-page/shared/components/ImportAccordion"
 import { StatisticsSummary } from "@/features/import-page/shared/components/StatisticsSummary"
 import { KeyboardShortcutsHint } from "@/features/import-page/shared/components/KeyboardShortcutsHint"
@@ -32,7 +31,7 @@ interface ManualImportViewProps {
 
 export function ManualImportView(props: ManualImportViewProps) {
   const flow = useImportFlow()
-  // Transform VocabularyItem[] to ImportItem[]
+
   const transformVocab = (vocab: VocabularyItem[]): ImportItem[] => {
     return vocab.map((item) => ({
       id: item.word,
@@ -40,12 +39,10 @@ export function ManualImportView(props: ManualImportViewProps) {
     }))
   }
 
-  // Extract vocab from segmented record
   const extractVocab = (vocabBySet: Record<string, VocabularyItem[]>): VocabularyItem[] => {
     return Object.values(vocabBySet).flat()
   }
 
-  // Combine promises for each category
   const grammarPromise = Promise.all([
     props.grammarPromises.n5,
     props.grammarPromises.n4,
@@ -68,20 +65,6 @@ export function ManualImportView(props: ManualImportViewProps) {
         {/* --- LEFT: CONTENT LIST --- */}
         <div class="pb-16 lg:col-span-7 xl:col-span-8">
           <main class="space-y-10">
-            <p class="text-muted-foreground mb-4 text-xl lg:text-2xl">
-              Manually mark the <span class="font-extrabold">grammar</span>,{" "}
-              <span class="font-extrabold">vocab</span>, &{" "}
-              <span class="font-extrabold">kanji</span> that you already know so
-              you don't waste time on them.
-            </p>
-            <p class="text-muted-foreground text-sm italic lg:text-base">
-              Already have your history stored somewhere? See{" "}
-              <Link to="/import/automatic" class="font-medium underline">
-                Automatic Importing
-              </Link>
-              .
-            </p>
-
             {/* Mobile Aggregated Statistics */}
             <SSRMediaQuery hideFrom="lg">
               <div class="-mt-5 space-y-2">
