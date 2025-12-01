@@ -230,14 +230,13 @@ export const ServiceAuthSection = () => {
           <For each={ANIME_SERVICES}>
             {(service) => (
               <div
-                class={`overflow-hidden rounded-lg border border-neutral-700 transition-all ${
-                  !!connectionStatusQuery.data?.[service.id]
-                    ? "bg-neutral-900"
-                    : "bg-neutral-950"
-                }`}
+                class={`overflow-hidden rounded-lg border border-neutral-700 transition-all ${!!connectionStatusQuery.data?.[service.id]
+                  ? "bg-neutral-900"
+                  : "bg-neutral-950"
+                  }`}
               >
                 {/* Top Row - Connection Status */}
-                <div class={`bg-gradient-to-r ${service.color} p-4`}>
+                <div class={`bg-linear-to-r ${service.color} p-4`}>
                   <div class="flex items-center gap-3">
                     <div class="text-2xl">{service.icon}</div>
                     <div class="flex-1">

@@ -20,7 +20,7 @@ import {
 import { queryKeys } from "@/query/utils/query-keys"
 import { Route as RootRoute } from "@/routes/__root"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
-import { getActiveLiveService } from "@/features/srs-services/utils"
+import { getActiveService } from "@/features/srs-services/utils"
 import { useServiceSwitcher } from "@/features/settings-page/hooks/useServiceSwitcher"
 import { useQueryClient } from "@tanstack/solid-query"
 import type { SRSServiceType } from "@/features/main-cookies/schemas/user-settings"
@@ -297,7 +297,7 @@ function RouteComponent() {
     const preferences = settingsQuery.data?.["srs-service-preferences"]
     if (!preferences) return "nihongo"
 
-    const activeService = getActiveLiveService(preferences)
+    const activeService = getActiveService(preferences)
     return activeService || "nihongo"
   }
 
@@ -322,14 +322,10 @@ function RouteComponent() {
   const services = [
     { id: "nihongo", label: "Nihongo Ninja (Built‑in)" },
     { id: "anki", label: "Anki" },
-    { id: "wanikani", label: "WaniKani" },
-    { id: "jpdb", label: "JPDB" },
   ]
 
   const externalLinks: Record<string, string> = {
     anki: "https://apps.ankiweb.net/",
-    wanikani: "https://www.wanikani.com/",
-    jpdb: "https://jpdb.io/",
   }
 
   // Calculate due counts based on query results
@@ -444,9 +440,7 @@ function RouteComponent() {
               dueCount={getMeaningsDueCount()}
               breakdown={getMeaningsBreakdown()}
               onClick={() => handleClick("meanings")}
-              disabled={["anki", "wanikani", "jpdb"].includes(
-                selectedService(),
-              )}
+              disabled={selectedService() === "anki"}
               variant="desktop"
             />
             <ReviewCard
@@ -455,9 +449,7 @@ function RouteComponent() {
               dueCount={getSpellingsDueCount()}
               breakdown={getSpellingsBreakdown()}
               onClick={() => handleClick("spellings")}
-              disabled={["anki", "wanikani", "jpdb"].includes(
-                selectedService(),
-              )}
+              disabled={selectedService() === "anki"}
               variant="desktop"
             />
             <ReviewCard
@@ -513,9 +505,7 @@ function RouteComponent() {
               dueCount={getMeaningsDueCount()}
               breakdown={getMeaningsBreakdown()}
               onClick={() => handleClick("meanings")}
-              disabled={["anki", "wanikani", "jpdb"].includes(
-                selectedService(),
-              )}
+              disabled={selectedService() === "anki"}
               variant="mobile"
             />
             <ReviewCard
@@ -524,9 +514,7 @@ function RouteComponent() {
               dueCount={getSpellingsDueCount()}
               breakdown={getSpellingsBreakdown()}
               onClick={() => handleClick("spellings")}
-              disabled={["anki", "wanikani", "jpdb"].includes(
-                selectedService(),
-              )}
+              disabled={selectedService() === "anki"}
               variant="mobile"
             />
             <ServiceSelector

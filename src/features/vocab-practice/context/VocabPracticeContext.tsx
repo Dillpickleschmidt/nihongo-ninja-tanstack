@@ -26,7 +26,7 @@ import type {
   KanjiStyleSettings,
 } from "@/components/KanjiAnimation"
 import { useSessionTracking } from "@/features/module-session-manager/useSessionTracking"
-import { getActiveLiveService } from "@/features/srs-services/utils"
+import { getActiveService } from "@/features/srs-services/utils"
 import type { SRSServiceType } from "@/features/srs-services/types"
 
 // --- LOCAL TYPE DEFINITIONS FOR THE CONTEXT ---
@@ -132,7 +132,7 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
   const sessionIdentifier = getSessionIdentifier()
   const { startSession, addTimeAndQuestions } = sessionIdentifier
     ? useSessionTracking(props.userId, sessionIdentifier, "vocab-practice")
-    : { startSession: async () => {}, addTimeAndQuestions: () => {} }
+    : { startSession: async () => { }, addTimeAndQuestions: () => { } }
 
   // SVG data management
   const [svgData, setSvgData] = createSignal<Map<string, string>>(new Map())
@@ -164,13 +164,13 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
 
   // --- COMPUTED SRS SERVICE STATE ---
 
-  // Get the active live service (if any)
-  // Returns "local" if using local FSRS, or the service name if a live service is active
+  // Get the active service (if any)
+  // Returns "local" if using local FSRS, or the service name if an external service is active
   const activeService = createMemo<SRSServiceType>(() => {
     const preferences = settingsQuery.data!["srs-service-preferences"]
-    const liveService = getActiveLiveService(preferences)
-    // If no live service, we're using local FSRS
-    return liveService ? liveService : "local"
+    const externalService = getActiveService(preferences)
+    // If no external service, we're using local FSRS
+    return externalService ? externalService : "local"
   })
 
   // Compute whether prerequisites are actually enabled
@@ -197,8 +197,6 @@ export function VocabPracticeContextProvider(props: ContextProviderProps) {
     const service = activeService()
     if (service !== "local") {
       const serviceNames: Record<Exclude<SRSServiceType, "local">, string> = {
-        wanikani: "WaniKani",
-        jpdb: "JPDB",
         anki: "Anki",
       }
       return `Prerequisites are disabled while ${serviceNames[service]} is active`

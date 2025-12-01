@@ -32,8 +32,6 @@ export const ServiceManagementProvider: Component<ParentProps> = (props) => {
   const [srsErrors, setSRSErrors] = createSignal<
     Record<SRSServiceType, string>
   >({
-    jpdb: "",
-    wanikani: "",
     anki: "",
   })
 

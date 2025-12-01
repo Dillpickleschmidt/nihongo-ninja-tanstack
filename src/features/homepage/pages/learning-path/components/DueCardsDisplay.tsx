@@ -2,8 +2,8 @@ import { Link, useRouteContext } from "@tanstack/solid-router"
 import { Suspense } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { Route as RootRoute } from "@/routes/__root"
-import { useLearnPageContext } from "@/features/learn-page/context/LearnPageContext"
-import { getActiveLiveService } from "@/features/srs-services/utils"
+import { useLearningPath } from "@/features/homepage/pages/learning-path/LearningPathContext"
+import { getActiveService } from "@/features/srs-services/utils"
 
 interface DueCardsDisplayProps {
   variant: "mobile" | "desktop"
@@ -11,22 +11,18 @@ interface DueCardsDisplayProps {
 
 export function DueCardsDisplay(props: DueCardsDisplayProps) {
   const routeContext = useRouteContext({ from: RootRoute.id })
-  const context = useLearnPageContext()
+  const context = useLearningPath()
 
   const getServiceDisplayName = () => {
     const preferences = context.settingsQuery.data!["srs-service-preferences"]
     if (!preferences) return "Local FSRS"
 
-    const activeService = getActiveLiveService(preferences)
+    const activeService = getActiveService(preferences)
     if (!activeService) return "Local FSRS"
 
     switch (activeService) {
       case "anki":
-        return "Anki (Live)"
-      case "jpdb":
-        return "jpdb (Live)"
-      case "wanikani":
-        return "WaniKani (Live)"
+        return "Anki"
       default:
         return "Local FSRS"
     }

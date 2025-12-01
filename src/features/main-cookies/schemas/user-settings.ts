@@ -6,9 +6,9 @@ import { ConjugationPracticeSettingsSchema } from "@/features/conjugation-practi
 // SERVICE PREFERENCES (user-specific, syncs to DB)
 // ============================================================================
 
-export type SRSServiceType = "anki" | "wanikani" | "jpdb"
+export type SRSServiceType = "anki"
 export type AnimeServiceType = "anilist" | "kitsu" | "mal"
-export type SRSServiceMode = "disabled" | "live" | "imported"
+export type SRSServiceMode = "disabled" | "enabled"
 
 const SRSServicePreferenceSchema = z.object({
   mode: z.string().default("disabled"),
@@ -18,12 +18,6 @@ const SRSServicePreferenceSchema = z.object({
 
 const SRSServicePreferencesSchema = z.object({
   anki: SRSServicePreferenceSchema.default(
-    SRSServicePreferenceSchema.parse({}),
-  ),
-  wanikani: SRSServicePreferenceSchema.default(
-    SRSServicePreferenceSchema.parse({}),
-  ),
-  jpdb: SRSServicePreferenceSchema.default(
     SRSServicePreferenceSchema.parse({}),
   ),
 })

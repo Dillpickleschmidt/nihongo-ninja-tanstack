@@ -1,4 +1,5 @@
-import { Component, For, Show, createSignal } from "solid-js"
+import { For, Show, createSignal } from "solid-js"
+import { Dynamic } from "solid-js/web"
 import { Link, useLocation } from "@tanstack/solid-router"
 import { Button } from "@/components/ui/button"
 import LogoutButton from "@/features/auth/components/Logout"
@@ -15,16 +16,17 @@ import {
   Hash,
   FileText,
   Italic,
-  Scroll,
   Package,
   MoreHorizontal,
+  Import,
+  type LucideIcon,
 } from "lucide-solid"
 
 interface NavigationItem {
   id: string
   title: string
   href: string
-  icon: Component
+  icon: LucideIcon
   class: string
 }
 
@@ -128,6 +130,13 @@ const navigation: NavigationSection[] = [
         class: "text-primary",
       },
       {
+        id: "import",
+        title: "Import",
+        href: "/import",
+        icon: Import,
+        class: "text-primary",
+      },
+      {
         id: "misc",
         title: "Misc",
         href: "/misc",
@@ -143,76 +152,79 @@ interface NavigationContentProps {
   onNavigate?: () => void
 }
 
-const NavigationContent: Component<NavigationContentProps> = (props) => (
-  <div class="flex h-full flex-col justify-between px-6 pt-24">
-    {/* Navigation Groups */}
-    <div class="flex-1 space-y-1">
-      <For each={navigation}>
-        {(section) => (
-          <div class="flex flex-col space-y-1 py-4">
-            <Show when={section.label}>
-              <div class="text-muted-foreground px-3 py-1 text-[0.68rem] font-semibold tracking-wide uppercase">
-                {section.label}
-              </div>
-            </Show>
-            <For each={section.items}>
-              {(item) => (
-                <Link to={item.href} onClick={props.onNavigate}>
-                  <Button
-                    variant="ghost"
-                    class={cn("hover:bg-card-foreground/50 justify-start px-2")}
-                    onClick={() => {}}
-                  >
-                    <item.icon
-                      class={cn(
-                        "mx-1 size-4!",
-                        item.class,
-                        props.isActive(item.href) && "text-indigo-400",
-                      )}
-                    />
-                    <span
-                      class={cn(
-                        "text-[0.85rem] font-medium",
-                        props.isActive(item.href) && "text-indigo-400",
-                      )}
+function NavigationContent(props: NavigationContentProps) {
+  return (
+    <div class="flex h-full flex-col justify-between px-6 pt-24">
+      {/* Navigation Groups */}
+      <div class="flex-1 space-y-1">
+        <For each={navigation}>
+          {(section) => (
+            <div class="flex flex-col space-y-1 py-4">
+              <Show when={section.label}>
+                <div class="text-muted-foreground px-3 py-1 text-[0.68rem] font-semibold tracking-wide uppercase">
+                  {section.label}
+                </div>
+              </Show>
+              <For each={section.items}>
+                {(item) => (
+                  <Link to={item.href} onClick={props.onNavigate}>
+                    <Button
+                      variant="ghost"
+                      class={cn("hover:bg-card-foreground/50 justify-start px-2")}
+                      onClick={() => { }}
                     >
-                      {item.title}
-                    </span>
-                  </Button>
-                </Link>
-              )}
-            </For>
-          </div>
-        )}
-      </For>
-    </div>
+                      <Dynamic
+                        component={item.icon}
+                        class={cn(
+                          "mx-1 size-4!",
+                          item.class,
+                          props.isActive(item.href) && "text-indigo-400",
+                        )}
+                      />
+                      <span
+                        class={cn(
+                          "text-[0.85rem] font-medium",
+                          props.isActive(item.href) && "text-indigo-400",
+                        )}
+                      >
+                        {item.title}
+                      </span>
+                    </Button>
+                  </Link>
+                )}
+              </For>
+            </div>
+          )}
+        </For>
+      </div>
 
-    {/* Footer */}
-    {/* <div class="border-border border-t py-4"> */}
-    {/*   <Show */}
-    {/*     when={props.user} */}
-    {/*     fallback={ */}
-    {/*       <Button */}
-    {/*         as={Link} */}
-    {/*         href="/auth" */}
-    {/*         class="h-8 w-20 border-2 border-black bg-indigo-400 opacity-70 transition-opacity duration-200 hover:bg-indigo-400 hover:opacity-100" */}
-    {/*       > */}
-    {/*         Login */}
-    {/*       </Button> */}
-    {/*     } */}
-    {/*   > */}
-    {/*     <div class="flex items-center gap-3 rounded-lg p-2"> */}
-    {/*       <div class="text-sm"> */}
-    {/*         <p class="text-foreground/90 font-medium"> */}
-    {/*           {props.user?.email} */}
-    {/*         </p> */}
-    {/*         <LogoutButton class="text-muted-foreground hover:text-foreground h-auto bg-transparent p-0 text-xs hover:bg-transparent" /> */}
-    {/*       </div> */}
-    {/*     </div> */}
-    {/*   </Show> */}
-    {/* </div> */}
-  </div>
-)
+      {/* Footer */}
+      {/* <div class="border-border border-t py-4"> */}
+      {/*   <Show */}
+      {/*     when={props.user} */}
+      {/*     fallback={ */}
+      {/*       <Button */}
+      {/*         as={Link} */}
+      {/*         href="/auth" */}
+      {/*         class="h-8 w-20 border-2 border-black bg-indigo-400 opacity-70 transition-opacity duration-200 hover:bg-indigo-400 hover:opacity-100" */}
+      {/*       > */}
+      {/*         Login */}
+      {/*       </Button> */}
+      {/*     } */}
+      {/*   > */}
+      {/*     <div class="flex items-center gap-3 rounded-lg p-2"> */}
+      {/*       <div class="text-sm"> */}
+      {/*         <p class="text-foreground/90 font-medium"> */}
+      {/*           {props.user?.email} */}
+      {/*         </p> */}
+      {/*         <LogoutButton class="text-muted-foreground hover:text-foreground h-auto bg-transparent p-0 text-xs hover:bg-transparent" /> */}
+      {/*       </div> */}
+      {/*     </div> */}
+      {/*   </Show> */}
+      {/* </div> */}
+    </div>
+  )
+}
 
 export function Sidebar(props: SidebarProps) {
   const location = useLocation()

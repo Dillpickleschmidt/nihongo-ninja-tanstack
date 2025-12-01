@@ -3,7 +3,7 @@ import { createFileRoute, notFound } from "@tanstack/solid-router"
 import VocabPractice from "@/features/vocab-practice/VocabPractice"
 import type { PracticeMode } from "@/features/vocab-practice/types"
 import { userSettingsQueryOptions } from "@/query/query-options"
-import { getActiveLiveService } from "@/features/srs-services/utils"
+import { getActiveService } from "@/features/srs-services/utils"
 import {
   practiceHierarchyQueryOptions,
   moduleVocabularyQueryOptions,
@@ -32,8 +32,8 @@ export const Route = createFileRoute("/practice/$practiceID")({
       userSettingsQueryOptions(user?.id || null),
     )
 
-    const isLiveServiceActive =
-      getActiveLiveService(userSettings["srs-service-preferences"]) !== null
+    const isExternalServiceActive =
+      getActiveService(userSettings["srs-service-preferences"]) !== null
 
     queryClient
       .ensureQueryData(moduleVocabularyQueryOptions(moduleId))
@@ -44,13 +44,13 @@ export const Route = createFileRoute("/practice/$practiceID")({
             vocabulary,
             mode,
             userSettings["override-settings"],
-            isLiveServiceActive,
+            isExternalServiceActive,
           ),
         )
       })
       .then((hierarchy) => {
         // Only prefetch FSRS and SVGs for local mode with authenticated user
-        if (!isLiveServiceActive && user) {
+        if (!isExternalServiceActive && user) {
           const hierarchySlugs = extractHierarchySlugs(hierarchy)
 
           prefetchFSRSAndSVGs({

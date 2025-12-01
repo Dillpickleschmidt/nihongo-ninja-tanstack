@@ -1,11 +1,6 @@
 // features/settings-page/components/LiveServiceSelector.tsx
-import { Show, createSignal } from "solid-js"
+import { Show } from "solid-js"
 import { Button } from "@/components/ui/button"
-import {
-  TextField,
-  TextFieldInput,
-  TextFieldLabel,
-} from "@/components/ui/text-field"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import {
   Select,
@@ -15,16 +10,11 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { validateAnkiConnect } from "@/features/service-api-functions/anki/anki-connect-client"
-import { validateJpdbApiKey } from "@/features/service-api-functions/jpdb/validation"
 import type {
   SRSServiceType,
   AllSRSServicePreferences,
 } from "@/features/main-cookies/schemas/user-settings"
-import { getActiveLiveService } from "@/features/srs-services/utils"
-import {
-  getServiceCredentials,
-  updateServiceCredentials,
-} from "@/features/main-cookies/functions/service-credentials"
+import { getActiveService } from "@/features/srs-services/utils"
 
 interface LiveServiceSelectorProps {
   preferences: AllSRSServicePreferences
@@ -36,12 +26,7 @@ interface LiveServiceSelectorProps {
 }
 
 export const LiveServiceSelector = (props: LiveServiceSelectorProps) => {
-  const [ankiApiKey, setAnkiApiKey] = createSignal("")
-  const [wanikaniApiKey, setWanikaniApiKey] = createSignal("")
-  const [jpdbApiKey, setJpdbApiKey] = createSignal("")
-
-  const activeService = () =>
-    getActiveLiveService(props.preferences) || "nihongo"
+  const activeService = () => getActiveService(props.preferences) || "nihongo"
 
   const handleServiceSelect = async (value: string) => {
     await props.onServiceChange(value as "nihongo" | SRSServiceType)
@@ -56,42 +41,9 @@ export const LiveServiceSelector = (props: LiveServiceSelectorProps) => {
     }
   }
 
-  const handleWanikaniConnect = async () => {
-    const apiKey = wanikaniApiKey()
-    if (!apiKey) return
-
-    props.clearError("wanikani")
-    // TODO: Implement WaniKani API validation
-    props.setError("wanikani", "WaniKani integration not yet fully implemented")
-  }
-
-  const handleJpdbConnect = async () => {
-    const apiKey = jpdbApiKey()
-    if (!apiKey) return
-
-    props.clearError("jpdb")
-
-    const result = await validateJpdbApiKey(apiKey)
-    if (!result.success) {
-      props.setError("jpdb", result.error || "Invalid API key")
-      return
-    }
-
-    // Save API key to credentials
-    const currentCredentials = await getServiceCredentials()
-    await updateServiceCredentials({
-      data: {
-        ...currentCredentials,
-        jpdb: { ...currentCredentials.jpdb, api_key: apiKey },
-      },
-    })
-  }
-
   const services = [
     { value: "nihongo", label: "None (use Nihongo Ninja)" },
     { value: "anki", label: "Anki" },
-    { value: "wanikani", label: "WaniKani" },
-    { value: "jpdb", label: "JPDB" },
   ]
 
   return (
@@ -121,20 +73,20 @@ export const LiveServiceSelector = (props: LiveServiceSelectorProps) => {
 
       {/* Anki Connection UI */}
       <Show when={activeService() === "anki"}>
-        <div class="rounded-xl border border-blue-400/30 bg-gradient-to-br from-blue-600/90 via-cyan-700/90 to-sky-800/90 p-6 shadow-lg backdrop-blur-sm">
+        <div class="rounded-xl border border-blue-400/30 bg-linear-to-br from-blue-600/90 via-cyan-700/90 to-sky-800/90 p-6 shadow-lg backdrop-blur-sm">
           <h4 class="mb-3 text-sm font-semibold">Anki Connection</h4>
 
           <Tabs defaultValue="pc" class="w-full">
             <TabsList class="grid h-auto w-full grid-cols-2 gap-2 bg-transparent p-0">
               <TabsTrigger
                 value="pc"
-                class="rounded-lg border border-blue-400/30 data-[selected]:border-blue-400/50 data-[selected]:bg-blue-400/30 data-[selected]:text-blue-50"
+                class="rounded-lg border border-blue-400/30 data-selected:border-blue-400/50 data-selected:bg-blue-400/30 data-selected:text-blue-50"
               >
                 PC
               </TabsTrigger>
               <TabsTrigger
                 value="android"
-                class="rounded-lg border border-blue-400/30 data-[selected]:border-blue-400/50 data-[selected]:bg-blue-400/30 data-[selected]:text-blue-50"
+                class="rounded-lg border border-blue-400/30 data-selected:border-blue-400/50 data-selected:bg-blue-400/30 data-selected:text-blue-50"
               >
                 Android
               </TabsTrigger>
@@ -264,101 +216,6 @@ export const LiveServiceSelector = (props: LiveServiceSelectorProps) => {
         </div>
       </Show>
 
-      {/* WaniKani Connection UI */}
-      <Show when={activeService() === "wanikani"}>
-        <div class="rounded-xl border border-green-400/30 bg-gradient-to-br from-green-600/90 via-emerald-700/90 to-teal-800/90 p-6 shadow-lg backdrop-blur-sm">
-          <h4 class="mb-3 text-sm font-semibold">WaniKani Connection</h4>
-
-          <form
-            class="space-y-4"
-            onSubmit={(e) => {
-              e.preventDefault()
-              handleWanikaniConnect()
-            }}
-          >
-            <TextField>
-              <TextFieldLabel class="text-white">
-                WaniKani API Key
-              </TextFieldLabel>
-              <TextFieldInput
-                type="password"
-                autocomplete="off"
-                placeholder="Enter your WaniKani API key"
-                class="border-white/20 bg-white/10 text-white placeholder:text-white/50"
-                value={wanikaniApiKey()}
-                onInput={(e) => setWanikaniApiKey(e.currentTarget.value)}
-              />
-            </TextField>
-            <Button
-              type="submit"
-              disabled={!wanikaniApiKey() || props.isProcessing}
-              class="border-white/30 bg-white/20 text-white hover:bg-white/30"
-            >
-              Connect to WaniKani
-            </Button>
-            <Show when={props.preferences.wanikani.is_api_key_valid}>
-              <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">
-                <p class="text-sm text-green-100">
-                  ✓ Connected to WaniKani - Live access enabled
-                </p>
-              </div>
-            </Show>
-          </form>
-
-          <Show when={props.errors.wanikani}>
-            <div class="mt-4 rounded-lg border border-red-400/30 bg-red-500/20 p-4">
-              <p class="text-sm text-red-100">✗ {props.errors.wanikani}</p>
-            </div>
-          </Show>
-        </div>
-      </Show>
-
-      {/* JPDB Connection UI */}
-      <Show when={activeService() === "jpdb"}>
-        <div class="rounded-xl border border-purple-400/30 bg-gradient-to-br from-purple-600/90 via-purple-700/90 to-indigo-800/90 p-6 shadow-lg backdrop-blur-sm">
-          <h4 class="mb-3 text-sm font-semibold">JPDB Connection</h4>
-
-          <form
-            class="space-y-4"
-            onSubmit={(e) => {
-              e.preventDefault()
-              handleJpdbConnect()
-            }}
-          >
-            <TextField>
-              <TextFieldLabel class="text-white">jpdb API Key</TextFieldLabel>
-              <TextFieldInput
-                type="password"
-                autocomplete="off"
-                placeholder="Enter your jpdb API key"
-                class="border-white/20 bg-white/10 text-white placeholder:text-white/50"
-                value={jpdbApiKey()}
-                onInput={(e) => setJpdbApiKey(e.currentTarget.value)}
-              />
-            </TextField>
-            <Button
-              type="submit"
-              disabled={!jpdbApiKey() || props.isProcessing}
-              class="border-white/30 bg-white/20 text-white hover:bg-white/30"
-            >
-              Connect to jpdb
-            </Button>
-            <Show when={props.preferences.jpdb.is_api_key_valid}>
-              <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">
-                <p class="text-sm text-green-100">
-                  ✓ Connected to jpdb - Live access enabled
-                </p>
-              </div>
-            </Show>
-          </form>
-
-          <Show when={props.errors.jpdb}>
-            <div class="mt-4 rounded-lg border border-red-400/30 bg-red-500/20 p-4">
-              <p class="text-sm text-red-100">✗ {props.errors.jpdb}</p>
-            </div>
-          </Show>
-        </div>
-      </Show>
     </div>
   )
 }
