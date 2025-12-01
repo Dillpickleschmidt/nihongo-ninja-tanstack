@@ -2,7 +2,6 @@ import { For, Show } from "solid-js"
 import { useRouteContext } from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
 import { useServiceManagement } from "../context/ServiceManagementContext"
-import { Button } from "@/components/ui/button"
 import { useQueryClient } from "@tanstack/solid-query"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { serviceConnectionStatusQueryOptions } from "@/query/query-options"
@@ -13,12 +12,14 @@ import {
   updateServiceCredentials,
 } from "@/features/main-cookies/functions/service-credentials"
 import { deleteTokenFromDB } from "@/features/supabase/db/anime-auth"
+import { SettingsSection } from "./SettingsSection"
+import { ServiceConnectionRow } from "./ServiceConnectionRow"
 
 interface AnimeService {
   id: AnimeServiceType
   name: string
   icon: string
-  color: string
+  description: string
 }
 
 const ANIME_SERVICES: AnimeService[] = [
@@ -26,19 +27,19 @@ const ANIME_SERVICES: AnimeService[] = [
     id: "anilist",
     name: "AniList",
     icon: "📺",
-    color: "from-blue-600 to-blue-700",
+    description: "Sync anime progress & tracking.",
   },
   {
     id: "kitsu",
     name: "Kitsu",
     icon: "🎬",
-    color: "from-orange-600 to-orange-700",
+    description: "Share reviews & updates.",
   },
   {
     id: "mal",
     name: "MyAnimeList",
     icon: "🎞️",
-    color: "from-red-600 to-red-700",
+    description: "The world's largest anime DB.",
   },
 ]
 
@@ -199,107 +200,49 @@ export const ServiceAuthSection = () => {
   }
 
   return (
-    <div class="space-y-4">
-      <div>
-        <h2 class="text-2xl font-bold">Anime Service Connections</h2>
-        <p class="text-muted-foreground mt-1 text-sm">
-          Connect to anime tracking services to sync your watching list and get
-          personalized recommendations.
-        </p>
-      </div>
-
+    <SettingsSection
+      title="Anime Service Connections"
+      description="Connect to anime tracking services to sync your watching list and get personalized recommendations."
+    >
       <Show
         when={userId}
         fallback={
-          <div class="rounded-lg border border-neutral-700 bg-neutral-950 p-6">
-            <div class="text-center">
-              <p class="text-muted-foreground mb-4">
-                Log in to your account to connect anime tracking services.
-              </p>
-              <a
-                href="/auth"
-                class="inline-block rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
-              >
-                Log In
-              </a>
-            </div>
+          <div class="rounded-2xl border border-white/10 bg-background/40 p-10 text-center backdrop-blur-sm">
+            <p class="text-muted-foreground mb-6 text-lg">
+              Log in to your account to connect anime tracking services.
+            </p>
+            <a
+              href="/auth"
+              class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-all hover:bg-blue-700 hover:scale-[1.02]"
+            >
+              Log In
+            </a>
           </div>
         }
       >
-        <div class="space-y-3">
+        <div class="overflow-hidden rounded-2xl border border-white/10 bg-background/40 backdrop-blur-sm grid grid-cols-1 lg:grid-cols-3">
           <For each={ANIME_SERVICES}>
-            {(service) => (
-              <div
-                class={`overflow-hidden rounded-lg border border-neutral-700 transition-all ${!!connectionStatusQuery.data?.[service.id]
-                  ? "bg-neutral-900"
-                  : "bg-neutral-950"
-                  }`}
-              >
-                {/* Top Row - Connection Status */}
-                <div class={`bg-linear-to-r ${service.color} p-4`}>
-                  <div class="flex items-center gap-3">
-                    <div class="text-2xl">{service.icon}</div>
-                    <div class="flex-1">
-                      <h3 class="font-semibold text-white">{service.name}</h3>
-                      <Show
-                        when={!!connectionStatusQuery.data?.[service.id]}
-                        fallback={
-                          <p class="text-sm text-white/70">Not connected</p>
-                        }
-                      >
-                        <p class="text-sm text-white/70">Connected</p>
-                      </Show>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Bottom Row - Controls */}
-                <div class="bg-neutral-950 px-4 py-3">
-                  <Show
-                    when={!!connectionStatusQuery.data?.[service.id]}
-                    fallback={
-                      <Show
-                        when={service.id === "anilist"}
-                        fallback={
-                          <Button disabled size="sm" class="w-full">
-                            Coming Soon
-                          </Button>
-                        }
-                      >
-                        <Button
-                          onClick={() => handleConnect(service.id)}
-                          disabled={isProcessing()}
-                          size="sm"
-                          class="w-full"
-                        >
-                          Connect
-                        </Button>
-                      </Show>
-                    }
-                  >
-                    <Button
-                      onClick={() => handleDisconnect(service.id)}
-                      disabled={isProcessing()}
-                      variant="destructive"
-                      size="sm"
-                      class="w-full"
-                    >
-                      Disconnect
-                    </Button>
-                  </Show>
-                </div>
-
-                {/* Error Display */}
-                <Show when={animeErrors()[service.id]}>
-                  <div class="border-t border-red-800 bg-red-900/20 px-4 py-2 text-sm text-red-400">
-                    {animeErrors()[service.id]}
-                  </div>
-                </Show>
-              </div>
+            {(service, index) => (
+              <ServiceConnectionRow
+                name={service.name}
+                icon={service.icon}
+                description={service.description}
+                isConnected={!!connectionStatusQuery.data?.[service.id]}
+                isProcessing={isProcessing()}
+                onConnect={
+                  service.id === "anilist"
+                    ? () => handleConnect(service.id)
+                    : undefined
+                }
+                onDisconnect={() => handleDisconnect(service.id)}
+                error={animeErrors()[service.id]}
+                comingSoon={service.id !== "anilist"}
+                last={index() === ANIME_SERVICES.length - 1}
+              />
             )}
           </For>
         </div>
       </Show>
-    </div>
+    </SettingsSection>
   )
 }

@@ -1,28 +1,35 @@
 import LogoutButton from "@/features/auth/components/Logout"
 import { TourResetDropdown } from "@/features/guided-tour/TourResetDropdown"
+import { SettingsSection } from "./SettingsSection"
 
-// features/settings-page/components/GeneralSettings.tsx
 export const GeneralSettings = () => {
   return (
-    <div class="space-y-6">
-      <h1 class="text-2xl font-bold">Profile</h1>
-      <div class="border-card-foreground/70 bg-card/70 space-y-6 rounded-xl border p-6 shadow-lg">
-        <section>
-          <h2 class="mb-3 text-lg font-semibold">Account Management</h2>
-          <p class="text-muted-foreground mb-3 text-sm">
-            Sign out of your account.
-          </p>
-          <LogoutButton />
-        </section>
+    <SettingsSection title="Profile" description="Manage your account settings and application preferences.">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div class="rounded-2xl border border-white/10 bg-background/40 p-6 backdrop-blur-sm transition-colors hover:bg-background/60">
+          <div class="mb-4">
+            <h3 class="text-lg font-bold text-white">Account Management</h3>
+            <p class="text-sm text-white/60 mt-1">
+              Sign out of your account on this device.
+            </p>
+          </div>
+          <div class="flex">
+            <LogoutButton />
+          </div>
+        </div>
 
-        <section>
-          <h2 class="mb-3 text-lg font-semibold">Tour Management</h2>
-          <p class="text-muted-foreground mb-3 text-sm">
-            Reset tour progress to start tours over again.
-          </p>
-          <TourResetDropdown />
-        </section>
+        <div class="rounded-2xl border border-white/10 bg-background/40 p-6 backdrop-blur-sm transition-colors hover:bg-background/60">
+          <div class="mb-4">
+            <h3 class="text-lg font-bold text-white">Tour Management</h3>
+            <p class="text-sm text-white/60 mt-1">
+              Reset tour progress to see onboarding guides again.
+            </p>
+          </div>
+          <div class="flex">
+            <TourResetDropdown />
+          </div>
+        </div>
       </div>
-    </div>
+    </SettingsSection>
   )
 }

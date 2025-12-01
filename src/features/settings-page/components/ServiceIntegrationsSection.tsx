@@ -28,29 +28,19 @@ export const ServiceIntegrationsSection = () => {
   }
 
   return (
-    <div class="space-y-8">
+    <>
       {/* Section 0: Anime Service Connections */}
       <ServiceAuthSection />
 
       {/* Section 1: Live External Service */}
-      <div class="space-y-4">
-        <div>
-          <h2 class="text-2xl font-bold">Live External Service Connection</h2>
-          <p class="text-muted-foreground mt-1 text-sm">
-            Connect to an external SRS service to sync your reviews in
-            real-time. Only one service can be active at a time.
-          </p>
-        </div>
-
-        <LiveServiceSelector
-          preferences={settingsQuery.data["srs-service-preferences"]}
-          onServiceChange={handleServiceChange}
-          isProcessing={isSwitching()}
-          errors={srsErrors()}
-          setError={setSRSError}
-          clearError={clearSRSError}
-        />
-      </div>
-    </div>
+      <LiveServiceSelector
+        preferences={settingsQuery.data["srs-service-preferences"]}
+        onServiceChange={handleServiceChange}
+        isProcessing={isSwitching()}
+        errors={srsErrors()}
+        setError={setSRSError}
+        clearError={clearSRSError}
+      />
+    </>
   )
 }

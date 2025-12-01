@@ -1,5 +1,4 @@
 import { For, onMount } from "solid-js"
-import { Import } from "lucide-solid"
 import { cn } from "@/utils"
 import { SmoothCardLink } from "@/components/SmoothCard"
 import { SSRMediaQuery } from "~/components/SSRMediaQuery"

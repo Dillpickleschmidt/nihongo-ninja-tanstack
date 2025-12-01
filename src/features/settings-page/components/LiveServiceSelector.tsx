@@ -1,7 +1,4 @@
-// features/settings-page/components/LiveServiceSelector.tsx
 import { Show } from "solid-js"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import {
   Select,
   SelectTrigger,
@@ -9,12 +6,14 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select"
-import { validateAnkiConnect } from "@/features/service-api-functions/anki/anki-connect-client"
 import type {
   SRSServiceType,
   AllSRSServicePreferences,
 } from "@/features/main-cookies/schemas/user-settings"
 import { getActiveService } from "@/features/srs-services/utils"
+import { SettingsSection } from "./SettingsSection"
+import { Link } from "@tanstack/solid-router"
+import { ExternalLink } from "lucide-solid"
 
 interface LiveServiceSelectorProps {
   preferences: AllSRSServicePreferences
@@ -32,190 +31,73 @@ export const LiveServiceSelector = (props: LiveServiceSelectorProps) => {
     await props.onServiceChange(value as "nihongo" | SRSServiceType)
   }
 
-  const handleAnkiConnect = async () => {
-    props.clearError("anki")
-    const result = await validateAnkiConnect()
-
-    if (!result.success) {
-      props.setError("anki", result.error || "Connection failed")
-    }
-  }
-
   const services = [
     { value: "nihongo", label: "None (use Nihongo Ninja)" },
     { value: "anki", label: "Anki" },
   ]
 
   return (
-    <div class="space-y-4">
-      <Select
-        value={activeService()}
-        onChange={handleServiceSelect}
-        options={services.map((s) => s.value)}
-        placeholder="Select service"
-        disabled={props.isProcessing}
-        itemComponent={(itemProps) => (
-          <SelectItem item={itemProps.item}>
-            {services.find((s) => s.value === itemProps.item.rawValue)?.label}
-          </SelectItem>
-        )}
-      >
-        <SelectTrigger class="w-full">
-          <SelectValue>
-            {(state) =>
-              services.find((s) => s.value === state.selectedOption())?.label ??
-              "Select service"
-            }
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent />
-      </Select>
+    <SettingsSection
+      title="Live External Service Connection"
+      description="Connect to an external SRS service to sync your reviews in real-time. Only one service can be active at a time."
+    >
+      <div class="space-y-6">
+        <Select
+          value={activeService()}
+          onChange={handleServiceSelect}
+          options={services.map((s) => s.value)}
+          placeholder="Select service"
+          disabled={props.isProcessing}
+          itemComponent={(itemProps) => (
+            <SelectItem item={itemProps.item}>
+              {services.find((s) => s.value === itemProps.item.rawValue)?.label}
+            </SelectItem>
+          )}
+        >
+          <SelectTrigger class="w-full h-14 border-white/10 bg-background/40 backdrop-blur-sm rounded-xl px-4 text-base hover:bg-background/60 transition-colors">
+            <SelectValue>
+              {(state) =>
+                services.find((s) => s.value === state.selectedOption())?.label ??
+                "Select service"
+              }
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent />
+        </Select>
 
-      {/* Anki Connection UI */}
-      <Show when={activeService() === "anki"}>
-        <div class="rounded-xl border border-blue-400/30 bg-linear-to-br from-blue-600/90 via-cyan-700/90 to-sky-800/90 p-6 shadow-lg backdrop-blur-sm">
-          <h4 class="mb-3 text-sm font-semibold">Anki Connection</h4>
-
-          <Tabs defaultValue="pc" class="w-full">
-            <TabsList class="grid h-auto w-full grid-cols-2 gap-2 bg-transparent p-0">
-              <TabsTrigger
-                value="pc"
-                class="rounded-lg border border-blue-400/30 data-selected:border-blue-400/50 data-selected:bg-blue-400/30 data-selected:text-blue-50"
-              >
-                PC
-              </TabsTrigger>
-              <TabsTrigger
-                value="android"
-                class="rounded-lg border border-blue-400/30 data-selected:border-blue-400/50 data-selected:bg-blue-400/30 data-selected:text-blue-50"
-              >
-                Android
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="pc" class="space-y-4">
-              <div class="rounded-lg border border-blue-400/30 bg-blue-500/20 p-4">
-                <p class="mb-2 text-sm font-semibold text-blue-100">
-                  Setup Instructions:
+        {/* Anki Guide Link */}
+        <Show when={activeService() === "anki"}>
+          <div class="rounded-xl border border-blue-500/20 bg-blue-500/10 p-6 backdrop-blur-sm">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h4 class="text-base font-bold text-blue-100">Anki Connection Setup</h4>
+                <p class="text-sm text-blue-200/70 mt-1">
+                  Need help connecting? Check out our step-by-step guide to setting up AnkiConnect.
                 </p>
-                <ol class="ml-4 list-decimal space-y-1 text-sm text-blue-100">
-                  <li>
-                    Open Anki Desktop and install the AnkiConnect plugin
-                    <div>
-                      (Tools → Add-ons → Get Add-ons → code:{" "}
-                      <code>2055492159</code>)
-                    </div>
-                  </li>
-                  <li>Restart Anki after installation</li>
-                  <li>
-                    Update CORS in AnkiConnect config (Tools → Add-ons →
-                    AnkiConnect → Config)
-                  </li>
-                  <li>
-                    Add{" "}
-                    <code class="rounded bg-blue-900/30 px-1">
-                      "https://nihongoninja.io"
-                    </code>{" "}
-                    to the{" "}
-                    <code class="rounded bg-blue-900/30 px-1">
-                      "webCorsOriginList"
-                    </code>{" "}
-                    array (you must also add a comma to the end of the previous
-                    entry in the array or it will complain):
-                  </li>
-                </ol>
-                <pre class="mt-2 overflow-x-auto rounded bg-blue-900/30 p-2 text-xs text-blue-100">
-                  <code>
-                    {`"webCorsOriginList": [
-  "http://localhost",
-  "https://nihongoninja.io"
-]`}
-                  </code>
-                </pre>
-                <ol
-                  class="ml-4 list-decimal space-y-1 text-sm text-blue-100"
-                  start="6"
-                >
-                  <li>Click OK and restart Anki</li>
-                  <li>Keep Anki desktop running while using live mode</li>
-                </ol>
               </div>
-            </TabsContent>
-
-            <TabsContent value="android" class="space-y-4">
-              <div class="rounded-lg border border-blue-400/30 bg-blue-500/20 p-4">
-                <p class="mb-2 text-sm font-semibold text-blue-100">
-                  Setup Instructions:
-                </p>
-                <ol class="ml-4 list-decimal space-y-1 text-sm text-blue-100">
-                  <li>Install AnkiDroid if not already installed</li>
-                  <li>
-                    Install{" "}
-                    <a
-                      href="https://github.com/KamWithK/AnkiconnectAndroid/releases"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="underline hover:text-blue-200"
-                    >
-                      AnkiConnect Android
-                    </a>{" "}
-                    from GitHub releases or{" "}
-                    <a
-                      href="https://apt.izzysoft.de/fdroid/index/apk/com.kamwithk.ankiconnectandroid"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="underline hover:text-blue-200"
-                    >
-                      IzzyOnDroid repo
-                    </a>
-                  </li>
-                  <li>In the app settings (gear icon), update CORS Host</li>
-                  <li>
-                    Enter{" "}
-                    <code class="rounded bg-blue-900/30 px-1">
-                      "https://nihongoninja.io"
-                    </code>{" "}
-                  </li>
-                </ol>
-                <ol
-                  class="ml-4 list-decimal space-y-1 text-sm text-blue-100"
-                  start="7"
-                >
-                  <li>Save the configuration</li>
-                  <li>Start AnkiConnect Android app and tap "Start Service"</li>
-                  <li>
-                    Keep AnkiConnect Android service running in the background
-                  </li>
-                </ol>
-              </div>
-            </TabsContent>
-          </Tabs>
-
-          <div class="mt-2 space-y-4">
-            <Button
-              onClick={handleAnkiConnect}
-              disabled={props.isProcessing}
-              class="border-white/30 bg-white/20 text-white hover:bg-white/30"
-            >
-              Connect to Anki
-            </Button>
+              <Link
+                to="/import/anki/connect"
+                class="whitespace-nowrap rounded-lg bg-blue-500/20 px-4 py-2 text-sm font-bold text-blue-300 transition-colors hover:bg-blue-500/30 hover:text-blue-200 flex items-center gap-2"
+              >
+                View Guide <ExternalLink class="size-3" />
+              </Link>
+            </div>
 
             <Show when={props.preferences.anki.is_api_key_valid}>
-              <div class="rounded-lg border border-green-400/30 bg-green-500/20 p-4">
-                <p class="text-sm text-green-100">
-                  ✓ Connected to Anki - Live access enabled
-                </p>
+              <div class="mt-4 flex items-center gap-2 text-sm font-medium text-green-400">
+                <div class="size-2 rounded-full bg-green-400 animate-pulse" />
+                Connected to Anki - Live access enabled
+              </div>
+            </Show>
+
+            <Show when={props.errors.anki}>
+              <div class="mt-4 rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-400">
+                ✗ {props.errors.anki}
               </div>
             </Show>
           </div>
-
-          <Show when={props.errors.anki}>
-            <div class="mt-4 rounded-lg border border-red-400/30 bg-red-500/20 p-4">
-              <p class="text-sm text-red-100">✗ {props.errors.anki}</p>
-            </div>
-          </Show>
-        </div>
-      </Show>
-
-    </div>
+        </Show>
+      </div>
+    </SettingsSection>
   )
 }
