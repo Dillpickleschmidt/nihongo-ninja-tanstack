@@ -188,6 +188,16 @@ const COMPONENT_ANIMATION_CONFIG = {
     baseDelay: 0,
     staggerDelay: 0,
   },
+  "[data-quick-access-desktop]": {
+    direction: "up" as const,
+    baseDelay: 0,
+    staggerDelay: 50,
+  },
+  "[data-quick-access-mobile]": {
+    direction: "left" as const,
+    baseDelay: 0,
+    staggerDelay: 100,
+  },
 } as const
 
 // Utility function for components to trigger their own animations

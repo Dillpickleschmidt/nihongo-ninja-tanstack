@@ -16,8 +16,6 @@ import { JlptPage } from "@/features/homepage/pages/jlpt"
 import { LearningPathPage } from "@/features/homepage/pages/learning-path"
 import {
   createSlideWithFadeOutAnimation,
-  createSlideWithFadeInAnimation,
-  prepareElementForEnter,
 } from "@/utils/animations"
 
 // Map JLPT levels to chapter slugs
@@ -59,7 +57,6 @@ export const Route = createFileRoute("/_home/")({
 function RouteComponent() {
   const context = useRouteContext({ from: RootRoute.id })
   const queryClient = useQueryClient()
-  const loaderData = Route.useLoaderData()
 
   let stepRef: HTMLDivElement | undefined
   let learningPathRef: HTMLDivElement | undefined

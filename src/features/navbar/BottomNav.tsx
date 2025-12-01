@@ -1,6 +1,6 @@
 // features/navbar/BottomNav.tsx
 import { Link, useLocation, useRouteContext } from "@tanstack/solid-router"
-import { Home, GraduationCap, Search, User } from "lucide-solid"
+import { Home, Search, User } from "lucide-solid"
 import { cn } from "@/utils"
 import { userSettingsQueryOptions } from "@/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
@@ -31,7 +31,11 @@ export function BottomNav(props: BottomNavProps) {
     },
     {
       id: "vocab",
-      icon: GraduationCap,
+      icon: (
+        <span class="font-medium text-[1.33rem] block -mb-px">
+          あ
+        </span>
+      ),
       label: "Vocab",
       href: "/vocab",
     },
@@ -45,7 +49,7 @@ export function BottomNav(props: BottomNavProps) {
       id: "search",
       icon: Search,
       label: "Search",
-      href: "/explore",
+      href: "/search",
     },
     {
       id: "settings",
@@ -180,9 +184,9 @@ export function BottomNav(props: BottomNavProps) {
                       dailyProgress() === 100
                         ? "text-sm text-green-500"
                         : cn(
-                            "text-xs",
-                            active ? "text-primary" : "text-primary/80",
-                          ),
+                          "text-xs",
+                          active ? "text-primary" : "text-primary/80",
+                        ),
                     )}
                   >
                     {dailyProgress() === 100 ? "百" : `${dailyProgress()}%`}
@@ -191,9 +195,33 @@ export function BottomNav(props: BottomNavProps) {
               )
             }
 
-            const Icon = item.icon
             const active = isActive(item.href)
             const hrefValue = item.href
+            const isLucideIcon = typeof item.icon === "function"
+
+            const renderIcon = () => {
+              if (isLucideIcon) {
+                const Icon = item.icon as typeof Home
+                return (
+                  <Icon
+                    class={cn(
+                      "h-5 w-5 transition-colors duration-200",
+                      active ? "text-primary" : "text-primary/60",
+                    )}
+                  />
+                )
+              }
+              return (
+                <span
+                  class={cn(
+                    "text-lg transition-colors duration-200",
+                    active ? "text-primary" : "text-primary/60",
+                  )}
+                >
+                  {item.icon}
+                </span>
+              )
+            }
 
             // Special handling for Learn nav item when in getting_started
             if (item.id === "learn" && activeTextbook() === "getting_started") {
@@ -205,15 +233,10 @@ export function BottomNav(props: BottomNavProps) {
                       "group flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-all duration-200",
                       "hover:bg-card-foreground/20 hover:dark:bg-card-foreground/60 hover:scale-110",
                       active &&
-                        "bg-card-foreground/10 dark:bg-card-foreground/60 scale-110",
+                      "bg-card-foreground/10 dark:bg-card-foreground/60 scale-110",
                     )}
                   >
-                    <Icon
-                      class={cn(
-                        "h-5 w-5 transition-colors duration-200",
-                        active ? "text-primary" : "text-primary/60",
-                      )}
-                    />
+                    {renderIcon()}
                   </div>
                 </TextbookSelectorDialog>
               )
@@ -227,15 +250,10 @@ export function BottomNav(props: BottomNavProps) {
                   "group flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200",
                   "hover:bg-card-foreground/20 hover:dark:bg-card-foreground/60 hover:scale-110",
                   active &&
-                    "bg-card-foreground/10 dark:bg-card-foreground/60 scale-110",
+                  "bg-card-foreground/10 dark:bg-card-foreground/60 scale-110",
                 )}
               >
-                <Icon
-                  class={cn(
-                    "h-5 w-5 transition-colors duration-200",
-                    active ? "text-primary" : "text-primary/60",
-                  )}
-                />
+                {renderIcon()}
               </Link>
             )
           })}

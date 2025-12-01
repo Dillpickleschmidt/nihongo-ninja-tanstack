@@ -17,7 +17,7 @@ import { queryKeys } from "@/query/utils/query-keys"
 export const Route = createFileRoute("/_home")({
   loader: ({ context }) => {
     context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
-      blur: 20,
+      blur: 16,
       backgroundOpacityOffset: 0,
       showGradient: true,
     })

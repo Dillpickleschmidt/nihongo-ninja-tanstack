@@ -36,7 +36,7 @@ const textbook_chapter_backgrounds: TextbookChapterBackgrounds = {
       source_type: "img",
       src: "/img/backgrounds/moujib-aghrout-s9ESRUFnKDg-unsplash.jpg",
       layout: "horizontal",
-      opacity: 0.6,
+      opacity: 0.5,
     },
     "chapter-3": {
       source_type: "img",
