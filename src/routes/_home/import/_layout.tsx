@@ -26,7 +26,7 @@ function ImportLayoutComponent() {
     <>
       <Show when={headerConfig()}>
         {(config) => (
-          <div class="fixed top-0 left-0 right-0 z-20 container pt-4">
+          <div class="fixed top-0 left-0 right-0 z-20 mx-auto max-w-7xl px-2 pt-4">
             <ImportHeader
               title={config().title}
               backLabel={config().backLabel}

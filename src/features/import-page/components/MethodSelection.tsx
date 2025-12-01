@@ -60,7 +60,7 @@ export function MethodSelection(props: MethodSelectionProps) {
               title="Connect Anki"
               description="Connect to your local Anki instance via AnkiConnect to sync reviews."
               icon={LinkIcon}
-              time="Instant"
+              time="~7m"
               accentColor="green"
               actionText="Setup Connection"
             />
