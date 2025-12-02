@@ -176,7 +176,7 @@ function RouteComponent() {
         <div class="mb-6 flex flex-col gap-2 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div class="mb-1">
-              <span class="text-xs font-medium tracking-wide text-yellow-500/90 uppercase">
+              <span class="text-xs font-medium tracking-wide text-green-500/90 uppercase">
                 Vocab + Grammar
               </span>
             </div>
@@ -199,7 +199,7 @@ function RouteComponent() {
                   placeholder="Search sentence sets..."
                   value={search()}
                   onInput={(e) => setSearch(e.currentTarget.value)}
-                  class="pl-9"
+                  class="pl-9 focus-visible:ring-green-500"
                 />
               </div>
             </TextField>
@@ -239,19 +239,19 @@ function RouteComponent() {
                       cornerSmoothing={0.8}
                       scales={{ sm: 0.9, md: 0.95, lg: 1, xl: 1, "2xl": 1 }}
                       border
-                      borderClass="stroke-yellow-500/30"
+                      borderClass="stroke-green-500/20"
                       focusRing
-                      focusRingClass="stroke-yellow-500/50"
+                      focusRingClass="stroke-green-500/50"
                       focusStrokeWidth={2.5}
                       class={cn(
                         "relative overflow-hidden",
-                        "via-card bg-gradient-to-br from-yellow-500/10 to-yellow-600/5",
-                        "backdrop-blur-sm",
-                        "ease-instant-hover-150 hover:scale-[0.985]",
+                        "bg-transparent bg-gradient-to-br from-green-500/10 to-green-600/10",
+                        "backdrop-blur-md shadow-lg shadow-black/20",
+                        "ease-instant-hover-150 hover:scale-[1.02]",
                       )}
                     >
                       {/* subtle radial highlight */}
-                      <div class="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full bg-yellow-400/10 blur-2xl" />
+                      <div class="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full bg-green-400/10 blur-2xl" />
 
                       <div class="relative flex h-full items-stretch justify-between p-4.5">
                         <div class="min-w-0 pr-3">
@@ -268,7 +268,7 @@ function RouteComponent() {
                             <Button
                               size="sm"
                               variant="ghost"
-                              class="border-card-foreground/40 h-7 rounded-full border px-3 text-xs font-medium text-yellow-600 hover:bg-yellow-500/10 hover:text-yellow-500 dark:text-yellow-500"
+                              class="border-card-foreground/40 h-7 rounded-full border px-3 text-xs font-medium text-green-600 hover:bg-green-500/10 hover:text-green-500 dark:text-green-500"
                               tabindex="-1"
                             >
                               Explore
@@ -277,8 +277,8 @@ function RouteComponent() {
                         </div>
 
                         <div class="flex items-end">
-                          <div class="flex size-10 items-center justify-center rounded-xl bg-yellow-500/10">
-                            <ModuleIcon class={cn(m.iconClass, "size-5")} />
+                          <div class="flex size-10 items-center justify-center rounded-xl bg-green-500/10">
+                            <ModuleIcon class="size-5 text-green-600 dark:text-green-500" />
                           </div>
                         </div>
                       </div>
