@@ -49,7 +49,7 @@ export async function extractTranscriptData(
     const line = transcriptLines[lineId]
 
     try {
-      // Tokenize the line (this includes grammar analysis via analyze_single)
+      // Tokenize the line (this includes grammar analysis via WASM)
       const { tokens, grammarMatches } = await workerManager.tokenize(line.text)
 
       if (tokens.length === 0) continue

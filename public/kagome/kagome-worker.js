@@ -4,7 +4,7 @@
  */
 
 // Import grammar WASM module (ES module)
-import init, { analyze_single } from "/grammar/grammar_wasm.js"
+import init, { analyze } from "/grammar/grammar_wasm.js"
 
 // Go WASM runtime initialization (adapted from extension)
 function initGoRuntime() {
@@ -658,12 +658,16 @@ self.onmessage = async (event) => {
 
   if (type === "tokenize") {
     try {
-      const tokens = self.kagome_tokenize(text)
+      const rawTokens = self.kagome_tokenize(text)
 
-      // Analyze grammar patterns if grammar WASM is loaded
+      let tokens = rawTokens
       let grammarMatches = []
+      let compoundSpans = []
       if (grammarLoaded) {
-        grammarMatches = analyze_single(tokens)
+        const analysisResult = analyze(text, rawTokens)
+        tokens = analysisResult.tokens
+        grammarMatches = analysisResult.grammar_matches
+        compoundSpans = analysisResult.compound_spans
       }
 
       self.postMessage({
@@ -671,6 +675,7 @@ self.onmessage = async (event) => {
         id,
         tokens,
         grammarMatches,
+        compoundSpans,
       })
     } catch (error) {
       self.postMessage({

@@ -1,43 +1,37 @@
 /* tslint:disable */
 /* eslint-disable */
+
+/**
+ * Analyze a single subtitle: combines tokens, detects grammar patterns, finds compounds
+ */
+export function analyze(text: string, tokens_js: any): any;
+
+/**
+ * Analyze batch of subtitles: combines tokens, detects grammar patterns, finds compounds
+ */
+export function analyze_batch(texts_js: any, token_arrays_js: any): any;
+
 export function init(): void;
-/**
- * Analyze batch of subtitles, returns array of match arrays
- */
-export function analyze_batch(token_arrays_js: any): any;
-/**
- * Analyze single subtitle's tokens
- */
-export function analyze_single(tokens_js: any): any;
-/**
- * Analyze single subtitle's tokens with vocabulary extraction
- */
-export function analyze_single_all(tokens_js: any): any;
-/**
- * Analyze batch of subtitles, returns array of match arrays
- */
-export function analyze_batch_all(token_arrays_js: any): any;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
+  readonly analyze: (a: number, b: number, c: any) => [number, number, number];
+  readonly analyze_batch: (a: any, b: any) => [number, number, number];
   readonly init: () => void;
-  readonly analyze_batch: (a: any) => [number, number, number];
-  readonly analyze_single: (a: any) => [number, number, number];
-  readonly analyze_single_all: (a: any) => [number, number, number];
-  readonly analyze_batch_all: (a: any) => [number, number, number];
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_exn_store: (a: number) => void;
   readonly __externref_table_alloc: () => number;
-  readonly __wbindgen_export_4: WebAssembly.Table;
+  readonly __wbindgen_externrefs: WebAssembly.Table;
   readonly __wbindgen_free: (a: number, b: number, c: number) => void;
   readonly __externref_table_dealloc: (a: number) => void;
   readonly __wbindgen_start: () => void;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;
+
 /**
 * Instantiates the given `module`, which can either be bytes or
 * a precompiled `WebAssembly.Module`.

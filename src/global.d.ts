@@ -3,7 +3,9 @@ import type { Database as DatabaseGenerated } from "./features/supabase/db/datab
 import type { UserPreferences } from "./features/main-cookies/schemas/user-preferences"
 import type {
   KagomeToken,
-  GrammarMatch,
+  PatternMatch,
+  CompoundSpan,
+  AnalysisResult,
   WordClass,
   POS,
   KagomeTokenizationResult,

@@ -3,11 +3,12 @@
  * Handles communication with the Kagome WASM worker thread
  */
 
-import type { KagomeToken, GrammarMatch } from "./types/kagome"
+import type { KagomeToken, PatternMatch, CompoundSpan } from "./types/kagome"
 
 export interface TokenizationResult {
   tokens: KagomeToken[]
-  grammarMatches: GrammarMatch[]
+  grammarMatches: PatternMatch[]
+  compoundSpans: CompoundSpan[]
 }
 
 interface PendingRequest {
@@ -50,13 +51,14 @@ export class KagomeWorkerManager {
       this.ready = true
       this.resolveReady()
     } else if (data.type === "tokenize-result") {
-      const { id, tokens, grammarMatches } = data
+      const { id, tokens, grammarMatches, compoundSpans } = data
       const request = this.pendingRequests.get(id)
       if (request) {
         this.pendingRequests.delete(id)
         request.resolve({
           tokens,
           grammarMatches: grammarMatches || [],
+          compoundSpans: compoundSpans || [],
         })
       }
     } else if (data.type === "tokenize-error") {
