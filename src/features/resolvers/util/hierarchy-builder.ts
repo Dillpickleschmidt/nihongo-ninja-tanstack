@@ -8,10 +8,7 @@ import { extractKanjiCharacters } from "@/data/utils/text/japanese"
 // CLEAN TYPES - Simple, focused objects
 // =============================================================================
 
-export type VocabEntry = {
-  word: string // "二十三"
-  kanjiComponents: string[] // ["二", "十", "三"]
-}
+// --- Display Data Types (full data for rendering) ---
 
 export type KanjiEntry = {
   kanji: string // "二"
@@ -27,10 +24,27 @@ export type RadicalEntry = {
   meaning_mnemonic: string
 }
 
+// --- Relationship Types (lightweight, for dependency tracking) ---
+
+export type VocabRelationship = {
+  word: string // "二十三"
+  kanjiComponents: string[] // ["二", "十", "三"]
+}
+
+export type KanjiRelationship = {
+  kanji: string // "二"
+  radicalComponents: string[] // ["一", "亅"]
+}
+
+/**
+ * VocabHierarchy contains ONLY relationship data (no display data like meanings).
+ * Used for dependency tracking and prerequisite logic.
+ * Display data (KanjiEntry[], RadicalEntry[]) is stored separately.
+ */
 export type VocabHierarchy = {
-  vocabulary: VocabEntry[]
-  kanji: KanjiEntry[]
-  radicals: RadicalEntry[]
+  vocabulary: VocabRelationship[]
+  kanji: KanjiRelationship[]
+  radicals: string[] // Just the radical characters
 }
 
 // =============================================================================
@@ -38,15 +52,17 @@ export type VocabHierarchy = {
 // =============================================================================
 
 /**
- * Build a clean vocabulary hierarchy from vocabulary words
- * This is the main entry point for the hierarchy system
+ * Build a vocabulary hierarchy from vocabulary words.
+ * Fetches kanji and radical data from the database.
  *
  * @param vocabularyWords - Array of vocabulary words (e.g., ["一", "二十三", "学校"])
- * @returns Clean hierarchy with vocabulary → kanji → radicals structure
+ * @returns Hierarchy (relationships only) + display data (kanji/radicals with meanings)
  */
-export async function buildVocabHierarchy(
-  vocabularyWords: string[],
-): Promise<VocabHierarchy> {
+export async function buildVocabHierarchy(vocabularyWords: string[]): Promise<{
+  hierarchy: VocabHierarchy
+  kanji: KanjiEntry[]
+  radicals: RadicalEntry[]
+}> {
   // 1. Extract all unique kanji from all vocabulary words (preserving order)
   const allKanjiChars: string[] = []
   const seenKanji = new Set<string>()
@@ -77,18 +93,48 @@ export async function buildVocabHierarchy(
   const radicalResult = await getWanikaniItems([], allRadicalChars)
   const radicalEntries = radicalResult.radicals
 
-  // 4. Build clean vocabulary entries with their kanji dependencies
-  const vocabularyEntries: VocabEntry[] = vocabularyWords.map((word) => ({
+  // 4. Build lightweight hierarchy (relationships only)
+  const hierarchy = buildHierarchyFromData(
+    vocabularyWords,
+    kanjiEntries,
+    radicalEntries,
+  )
+
+  return {
+    hierarchy,
+    kanji: kanjiEntries,
+    radicals: radicalEntries,
+  }
+}
+
+/**
+ * Build a lightweight hierarchy from already-fetched data.
+ * This avoids re-fetching when display data is already available.
+ *
+ * @param vocabularyWords - Array of vocabulary words
+ * @param kanjiEntries - Already-fetched kanji display data
+ * @param radicalEntries - Already-fetched radical display data
+ * @returns Lightweight hierarchy with only relationship data
+ */
+export function buildHierarchyFromData(
+  vocabularyWords: string[],
+  kanjiEntries: KanjiEntry[],
+  radicalEntries: RadicalEntry[],
+): VocabHierarchy {
+  // Build vocabulary relationships
+  const vocabulary: VocabRelationship[] = vocabularyWords.map((word) => ({
     word,
     kanjiComponents: extractKanjiCharacters(word),
   }))
 
-  const result: VocabHierarchy = {
-    vocabulary: vocabularyEntries,
-    kanji: kanjiEntries,
-    radicals: radicalEntries,
-  }
+  // Build kanji relationships (strip display data)
+  const kanji: KanjiRelationship[] = kanjiEntries.map((k) => ({
+    kanji: k.kanji,
+    radicalComponents: k.radicalComponents,
+  }))
 
-  return result
+  // Just the radical characters
+  const radicals: string[] = radicalEntries.map((r) => r.radical)
+
+  return { vocabulary, kanji, radicals }
 }
-

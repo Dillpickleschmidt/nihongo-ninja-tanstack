@@ -12,7 +12,7 @@ import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import type { VocabularyItem } from "@/data/types"
 
 type VocabularyTabContentProps = {
-  vocabularyQuery: UseQueryResult<any, DefaultError>
+  moduleAllQuery: UseQueryResult<any, DefaultError>
   vocabList: () => any[] | undefined
   fsrsMap: Map<string, FSRSCardData>
   vocabularyMap: Map<string, VocabularyItem>
@@ -37,7 +37,7 @@ export function VocabularyTabContent(props: VocabularyTabContentProps) {
   return (
     <div class="bg-card/40 border-card-foreground/70 rounded-xl border p-4 backdrop-blur-sm">
       <Show
-        when={!props.vocabularyQuery.isPending}
+        when={!props.moduleAllQuery.isPending}
         fallback={
           <div class="flex items-center justify-center py-8">
             <Loader2 class="text-muted-foreground/50 h-8 w-8 animate-spin" />
@@ -66,12 +66,16 @@ export function VocabularyTabContent(props: VocabularyTabContentProps) {
                       <div class="flex-1">
                         <div class="text-primary text-base font-semibold">
                           {vocabItem.word}
-                          <Show when={mode === "meanings" && fullVocab()?.english}>
+                          <Show
+                            when={mode === "meanings" && fullVocab()?.english}
+                          >
                             <span class="text-muted-foreground ml-2 font-normal">
                               - {fullVocab()!.english.join(", ")}
                             </span>
                           </Show>
-                          <Show when={mode === "spellings" && fullVocab()?.furigana}>
+                          <Show
+                            when={mode === "spellings" && fullVocab()?.furigana}
+                          >
                             <span class="text-muted-foreground ml-2 font-normal">
                               {extractHiragana(fullVocab()!.furigana)}
                             </span>

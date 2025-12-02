@@ -14,8 +14,7 @@ import type { VocabularyItem } from "@/data/types"
 
 type FullDependencyViewProps = {
   // Queries
-  vocabularyQuery: UseQueryResult<any, DefaultError>
-  hierarchyQuery: UseQueryResult<any, DefaultError>
+  moduleAllQuery: UseQueryResult<any, DefaultError>
   fsrsCardsQuery: UseQueryResult<any, DefaultError>
 
   // Data
@@ -71,13 +70,13 @@ export function FullDependencyView(props: FullDependencyViewProps) {
         <div class="grid grid-cols-3 gap-2 md:gap-3">
           <SummaryCard
             label="Vocabulary"
-            query={props.hierarchyQuery}
+            query={props.moduleAllQuery}
             getValue={() => props.vocabList()!.length}
             onClick={() => setSelectedTab("v2k")}
           />
           <SummaryCard
             label="Kanji"
-            query={props.hierarchyQuery}
+            query={props.moduleAllQuery}
             getValue={() => props.kanjiSet.size}
             dueCountQuery={props.fsrsCardsQuery}
             getDueCount={() => props.dueCounts?.kanji}
@@ -89,7 +88,7 @@ export function FullDependencyView(props: FullDependencyViewProps) {
           />
           <SummaryCard
             label="Radicals"
-            query={props.hierarchyQuery}
+            query={props.moduleAllQuery}
             getValue={() => props.radicalSet.size}
             dueCountQuery={props.fsrsCardsQuery}
             getDueCount={() => props.dueCounts?.radicals}
@@ -116,7 +115,7 @@ export function FullDependencyView(props: FullDependencyViewProps) {
         fallback={
           // Spellings mode or flat hierarchy: just show vocabulary directly
           <VocabularyTabContent
-            vocabularyQuery={props.vocabularyQuery}
+            moduleAllQuery={props.moduleAllQuery}
             vocabList={props.filteredVocabList}
             fsrsMap={props.fsrsMap}
             vocabularyMap={props.vocabularyMap}
@@ -129,16 +128,16 @@ export function FullDependencyView(props: FullDependencyViewProps) {
         {/* Full tabs structure for meanings mode with hierarchy */}
         <Tabs value={selectedTab()} onChange={setSelectedTab} class="w-full">
           <div class="flex items-center justify-between">
-            <TabsList class="h-8 bg-muted/50">
+            <TabsList class="bg-muted/50 h-8">
               <TabsTrigger
                 value="v2k"
-                class="h-6 px-2 data-[selected]:bg-background/60 data-[selected]:text-foreground"
+                class="data-selected:bg-background/60 data-selected:text-foreground h-6 px-2"
               >
                 Vocabulary
               </TabsTrigger>
               <TabsTrigger
                 value="k2r"
-                class="h-6 px-2 data-[selected]:bg-background/60 data-[selected]:text-foreground"
+                class="data-selected:bg-background/60 data-selected:text-foreground h-6 px-2"
               >
                 Kanji → Radicals
               </TabsTrigger>
@@ -192,7 +191,7 @@ export function FullDependencyView(props: FullDependencyViewProps) {
           {/* Vocabulary (Vocab → Kanji) */}
           <TabsContent value="v2k" class="mt-2">
             <VocabularyTabContent
-              vocabularyQuery={props.vocabularyQuery}
+              moduleAllQuery={props.moduleAllQuery}
               vocabList={props.filteredVocabList}
               fsrsMap={props.fsrsMap}
               vocabularyMap={props.vocabularyMap}
@@ -205,7 +204,7 @@ export function FullDependencyView(props: FullDependencyViewProps) {
           {/* Kanji → Radicals */}
           <TabsContent value="k2r" class="mt-2">
             <KanjiRadicalsTabContent
-              hierarchyQuery={props.hierarchyQuery}
+              moduleAllQuery={props.moduleAllQuery}
               filteredKanji={props.filteredKanji}
               kanjiToRadicals={props.kanjiToRadicals}
               kanjiToVocab={props.kanjiToVocab}

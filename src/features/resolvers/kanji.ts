@@ -16,12 +16,14 @@ function ensureKanjiEntries(
 ): KanjiEntry[] {
   return requestedChars.map((char) => {
     const found = foundEntries.find((k) => k.kanji === char)
-    return found ?? {
-      kanji: char,
-      radicalComponents: [],
-      meanings: [],
-      meaning_mnemonic: "",
-    }
+    return (
+      found ?? {
+        kanji: char,
+        radicalComponents: [],
+        meanings: [],
+        meaning_mnemonic: "",
+      }
+    )
   })
 }
 
@@ -34,25 +36,30 @@ function ensureRadicalEntries(
 ): RadicalEntry[] {
   return requestedChars.map((char) => {
     const found = foundEntries.find((r) => r.radical === char)
-    return found ?? {
-      radical: char,
-      meanings: [],
-      meaning_mnemonic: "",
-    }
+    return (
+      found ?? {
+        radical: char,
+        meanings: [],
+        meaning_mnemonic: "",
+      }
+    )
   })
 }
 
 /**
  * Get vocabulary hierarchy with kanji and radical dependencies
+ * Returns both the lightweight hierarchy (for dependency tracking)
+ * and full display data (for rendering)
  */
-export async function getVocabHierarchy(
-  slugs: string[],
-): Promise<VocabHierarchy | null> {
+export async function getVocabHierarchy(slugs: string[]): Promise<{
+  hierarchy: VocabHierarchy
+  kanji: KanjiEntry[]
+  radicals: RadicalEntry[]
+} | null> {
   if (!slugs || slugs.length === 0) return null
 
   try {
-    const cleanHierarchy = await buildVocabHierarchy(slugs)
-    return cleanHierarchy
+    return await buildVocabHierarchy(slugs)
   } catch (error) {
     console.error("Failed to build vocab hierarchy:", error)
     return null

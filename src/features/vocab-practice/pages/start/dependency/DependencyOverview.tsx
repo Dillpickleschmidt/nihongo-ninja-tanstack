@@ -4,15 +4,14 @@ import { SimpleVocabularyList } from "./SimpleView"
 import { FullDependencyView } from "./FullView"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 import type { VocabularyItem } from "@/data/types"
+import type { VocabRelationship } from "@/features/resolvers/util/hierarchy-builder"
 import type { UseQueryResult } from "@tanstack/solid-query"
 import type { DefaultError } from "@tanstack/query-core"
 
 type DependencyOverviewProps = {
   class?: string
-  /** Vocabulary query from parent */
-  vocabularyQuery: UseQueryResult<any, DefaultError>
-  /** Hierarchy query from parent */
-  hierarchyQuery: UseQueryResult<any, DefaultError>
+  /** Combined module query with vocabulary, hierarchy, kanji, radicals */
+  moduleAllQuery: UseQueryResult<any, DefaultError>
   /** FSRS cards query from parent */
   fsrsCardsQuery: UseQueryResult<any, DefaultError>
   /** Due FSRS cards query from parent */
@@ -48,8 +47,9 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
   // Create vocabulary map for efficient lookups
   const vocabularyMap = createMemo(() => {
     const map = new Map<string, VocabularyItem>()
-    if (!props.vocabularyQuery.data) return map
-    for (const vocab of props.vocabularyQuery.data) {
+    const vocabulary = props.moduleAllQuery.data?.vocabulary
+    if (!vocabulary) return map
+    for (const vocab of vocabulary) {
       map.set(vocab.word, vocab)
     }
     return map
@@ -62,10 +62,10 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
   )
 
   // Derived data and indexes
-  const vocabList = () => props.hierarchyQuery.data?.vocabulary
+  const vocabList = () => props.moduleAllQuery.data?.hierarchy?.vocabulary
   const kanjiToRadicals = () => {
     const map = new Map<string, string[]>()
-    const h = props.hierarchyQuery.data
+    const h = props.moduleAllQuery.data?.hierarchy
     if (!h) return map
     for (const k of h.kanji ?? []) {
       map.set(k.kanji, k.radicalComponents || [])
@@ -74,7 +74,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
   }
   const vocabToKanji = () => {
     const map = new Map<string, string[]>()
-    const h = props.hierarchyQuery.data
+    const h = props.moduleAllQuery.data?.hierarchy
     if (!h) return map
     for (const v of h.vocabulary ?? []) {
       map.set(v.word, v.kanjiComponents || [])
@@ -91,19 +91,9 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
     }
     return map
   }
-  const radicalToKanji = () => {
-    const map = new Map<string, string[]>()
-    for (const [kanji, radicals] of kanjiToRadicals().entries()) {
-      for (const r of radicals) {
-        if (!map.has(r)) map.set(r, [])
-        map.get(r)!.push(kanji)
-      }
-    }
-    return map
-  }
   const kanjiSet = () => {
     const set = new Set<string>()
-    const h = props.hierarchyQuery.data
+    const h = props.moduleAllQuery.data?.hierarchy
     if (!h) return set
     for (const v of h.vocabulary ?? []) {
       for (const k of v.kanjiComponents ?? []) {
@@ -172,10 +162,12 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
 
   const filteredVocabAll = () => {
     const vocab = vocabList()
-    if (!vocab) return props.vocabularyQuery.data // Fallback to raw vocab while hierarchy loads
+    if (!vocab) return props.moduleAllQuery.data?.vocabulary // Fallback to raw vocab while hierarchy loads
     const kSel = selectedKanji()
     if (!kSel) return vocab
-    return vocab.filter((v) => v.kanjiComponents?.includes(kSel))
+    return vocab.filter((v: VocabRelationship) =>
+      v.kanjiComponents?.includes(kSel),
+    )
   }
 
   const filteredKanji = () => {
@@ -195,7 +187,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
   }
 
   const isFlatHierarchy = () => {
-    const h = props.hierarchyQuery.data
+    const h = props.moduleAllQuery.data?.hierarchy
     if (!h) return false
     // Live service or spellings mode produce empty kanji/radicals in queryFn
     return (h.kanji?.length ?? 0) === 0 && (h.radicals?.length ?? 0) === 0
@@ -217,7 +209,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
     <div class={`space-y-4 ${props.class || ""}`}>
       {/* Loading/Error */}
       <Show
-        when={!props.vocabularyQuery.isPending}
+        when={!props.moduleAllQuery.isPending}
         fallback={
           <div class="bg-card/40 border-card-foreground/70 flex items-center justify-center rounded-xl border p-8">
             <span class="text-muted-foreground text-sm">
@@ -232,7 +224,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
         }
       >
         <Show
-          when={!props.vocabularyQuery.isError}
+          when={!props.moduleAllQuery.isError}
           fallback={
             <div class="bg-destructive/10 border-destructive/40 text-destructive rounded-xl border p-4">
               Failed to load dependency data.
@@ -243,7 +235,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
             when={prerequisitesEnabled()}
             fallback={
               <SimpleVocabularyList
-                vocabularyData={props.vocabularyQuery.data!}
+                vocabularyData={props.moduleAllQuery.data?.vocabulary!}
                 fsrsMap={fsrsMap()}
                 fsrsCardsQuery={props.fsrsCardsQuery}
                 mode={mode}
@@ -251,8 +243,7 @@ export default function DependencyOverview(props: DependencyOverviewProps) {
             }
           >
             <FullDependencyView
-              vocabularyQuery={props.vocabularyQuery}
-              hierarchyQuery={props.hierarchyQuery}
+              moduleAllQuery={props.moduleAllQuery}
               fsrsCardsQuery={props.fsrsCardsQuery}
               vocabList={vocabList}
               filteredVocabList={filteredVocabAll}

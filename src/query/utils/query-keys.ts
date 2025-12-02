@@ -19,19 +19,21 @@ export const queryKeys = {
     ["service-connection-status", userId] as const,
 
   // Vocab Practice
-  practiceHierarchy: (
+  vocabModuleVocab: (moduleId: string) =>
+    ["vocab-module-vocab", moduleId] as const,
+  vocabModuleAll: (
     moduleId: string,
     mode: PracticeMode,
     isLiveService: boolean,
+    prerequisitesEnabled: boolean,
   ) =>
     [
-      "practice-hierarchy",
+      "vocab-module-all",
       moduleId,
       mode,
       isLiveService,
+      prerequisitesEnabled,
     ] as const,
-  moduleVocabulary: (moduleId: string) =>
-    ["module-vocabulary", moduleId] as const,
   practiceModuleFSRS: (
     userId: string | null,
     slugs: string[],
@@ -52,21 +54,13 @@ export const queryKeys = {
     deckId: string,
     mode: PracticeMode,
     isLiveService: boolean,
-  ) =>
-    [
-      "user-deck-hierarchy",
-      deckId,
-      mode,
-      isLiveService,
-    ] as const,
+  ) => ["user-deck-hierarchy", deckId, mode, isLiveService] as const,
   recentlyStudiedDecks: (userId: string | null) =>
     ["recently-studied-decks", userId] as const,
 
   // Learn Page
-  vocabHierarchy: (
-    activeTextbook: string,
-    deckSlug: string,
-  ) => ["vocab-hierarchy", activeTextbook, deckSlug] as const,
+  vocabHierarchy: (activeTextbook: string, deckSlug: string) =>
+    ["vocab-hierarchy", activeTextbook, deckSlug] as const,
   allLearningPaths: (userId: string | null) =>
     ["all-learning-paths", userId] as const,
   chapterModules: (learningPathId: string, chapterSlug: string) =>

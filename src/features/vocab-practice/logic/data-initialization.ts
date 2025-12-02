@@ -11,24 +11,32 @@ import type {
 import { addKanaAndRuby } from "@/data/utils/vocabulary/transforms"
 import type {
   VocabHierarchy,
-  VocabEntry,
   KanjiEntry,
   RadicalEntry,
 } from "@/features/resolvers/util/hierarchy-builder"
-import { getKanjiDetails } from "@/features/resolvers/kanji"
 
 /**
- * Creates a unified PracticeCard from clean hierarchy entry types.
+ * Consistent data structure for both module and non-module items
  */
-function createPracticeCardFromCleanEntry(
-  word: string,
+export type PracticeItemData = {
+  vocabulary: VocabularyItem[]
+  kanji: KanjiEntry[]
+  radicals: RadicalEntry[]
+  fsrsCards: FSRSCardData[]
+}
+
+/**
+ * Creates a unified PracticeCard from display data.
+ * - For vocabulary: uses VocabularyItem directly
+ * - For kanji/radicals: uses KanjiEntry/RadicalEntry with meanings and mnemonics
+ */
+function createPracticeCard(
+  key: string,
   type: DBPracticeItemType,
-  cleanEntry: VocabEntry | KanjiEntry | RadicalEntry | null,
+  displayData: VocabularyItem | KanjiEntry | RadicalEntry,
   fsrsData: FSRSCardData | null,
   sessionPracticeMode: PracticeMode,
-  vocabularyMap: Map<string, VocabularyItem>,
 ): PracticeCard {
-  const key = `${type}:${word}`
   const existingFSRS = fsrsData?.fsrs_card
   const practiceMode = fsrsData?.mode || sessionPracticeMode
 
@@ -43,42 +51,41 @@ function createPracticeCardFromCleanEntry(
   let itemMnemonics: Mnemonics | undefined
 
   if (type === "vocabulary") {
-    // For vocabulary, the source of truth is the global collection.
-    vocabItem = vocabularyMap.get(word)!
+    vocabItem = displayData as VocabularyItem
     itemMnemonics = vocabItem?.mnemonics
+  } else if (type === "kanji") {
+    const kanjiEntry = displayData as KanjiEntry
+    characterForKanjiRadical = kanjiEntry.kanji
+    meaningsForKanjiRadical = kanjiEntry.meanings
+
+    const kanjiMnemonics: string[] = []
+    const readingMnemonics: string[] = []
+
+    if (kanjiEntry.meaning_mnemonic)
+      kanjiMnemonics.push(kanjiEntry.meaning_mnemonic)
+    if (kanjiEntry.reading_mnemonic)
+      readingMnemonics.push(kanjiEntry.reading_mnemonic)
+
+    if (kanjiMnemonics.length > 0 || readingMnemonics.length > 0) {
+      itemMnemonics = { kanji: kanjiMnemonics, reading: readingMnemonics }
+    }
+
+    // Create a pseudo-vocabItem for Kanji for consistent `addKanaAndRuby`
+    vocabItem = {
+      word: characterForKanjiRadical,
+      furigana: characterForKanjiRadical,
+      english: meaningsForKanjiRadical,
+    }
   } else {
-    // For Kanji and Radicals, use the clean entry data
-    if (!cleanEntry) {
-      throw new Error(`Missing clean entry for ${type}:${word}`)
+    const radicalEntry = displayData as RadicalEntry
+    characterForKanjiRadical = radicalEntry.radical
+    meaningsForKanjiRadical = radicalEntry.meanings
+
+    if (radicalEntry.meaning_mnemonic) {
+      itemMnemonics = { kanji: [radicalEntry.meaning_mnemonic], reading: [] }
     }
 
-    if (type === "kanji") {
-      const kanjiEntry = cleanEntry as KanjiEntry
-      characterForKanjiRadical = kanjiEntry.kanji
-      meaningsForKanjiRadical = kanjiEntry.meanings
-
-      const kanjiMnemonics: string[] = []
-      const readingMnemonics: string[] = []
-
-      if (kanjiEntry.meaning_mnemonic)
-        kanjiMnemonics.push(kanjiEntry.meaning_mnemonic)
-      if (kanjiEntry.reading_mnemonic)
-        readingMnemonics.push(kanjiEntry.reading_mnemonic)
-
-      if (kanjiMnemonics.length > 0 || readingMnemonics.length > 0) {
-        itemMnemonics = { kanji: kanjiMnemonics, reading: readingMnemonics }
-      }
-    } else {
-      const radicalEntry = cleanEntry as RadicalEntry
-      characterForKanjiRadical = radicalEntry.radical
-      meaningsForKanjiRadical = radicalEntry.meanings
-
-      if (radicalEntry.meaning_mnemonic) {
-        itemMnemonics = { kanji: [radicalEntry.meaning_mnemonic], reading: [] }
-      }
-    }
-
-    // Create a pseudo-vocabItem for Kanji/Radical for consistent `addKanaAndRuby`
+    // Create a pseudo-vocabItem for Radical for consistent `addKanaAndRuby`
     vocabItem = {
       word: characterForKanjiRadical,
       furigana: characterForKanjiRadical,
@@ -138,18 +145,25 @@ function createPracticeCardFromCleanEntry(
 }
 
 /**
- * Initializes a practice session from hierarchical data and separate due reviews.
+ * Initializes a practice session from hierarchical data and pre-fetched display data.
+ *
+ * @param hierarchy - Lightweight relationships only (vocab→kanji→radical dependencies)
+ * @param moduleData - Module items with display data and FSRS cards
+ * @param nonModuleData - Pre-filtered non-module review items with display data already fetched
+ * @param sessionPracticeMode - The practice mode for this session
+ * @param shuffle - Whether to shuffle the module queue
+ * @param enablePrerequisites - Whether to enforce kanji/radical prerequisites
+ * @param includeReviews - Whether to include non-module review items
  */
-export async function initializePracticeSession(
+export function initializePracticeSession(
   hierarchy: VocabHierarchy,
-  moduleFSRSCards: FSRSCardData[],
-  allDueFSRSCards: FSRSCardData[],
+  moduleData: PracticeItemData,
+  nonModuleData: PracticeItemData,
   sessionPracticeMode: PracticeMode,
-  moduleVocabulary: VocabularyItem[],
   shuffle = false,
   enablePrerequisites = true,
   includeReviews = true,
-): Promise<PracticeSessionState> {
+): PracticeSessionState {
   const cardMap = new Map<string, PracticeCard>()
   const dependencyMap = new Map<string, string[]>()
   const unlocksMap = new Map<string, string[]>()
@@ -157,184 +171,158 @@ export async function initializePracticeSession(
   let moduleQueue: string[] = []
   const reviewQueue: string[] = []
 
-  // Create vocabulary lookup map from available module vocabulary
-  const vocabularyMap = new Map(
-    moduleVocabulary.map((item) => [item.word, item]),
-  )
+  // Create lookup maps for display data
+  const vocabLookup = new Map(moduleData.vocabulary.map((v) => [v.word, v]))
+  const kanjiLookup = new Map(moduleData.kanji.map((k) => [k.kanji, k]))
+  const radicalLookup = new Map(moduleData.radicals.map((r) => [r.radical, r]))
 
   // --- Phase 1: Create Module Cards ---
-  hierarchy.vocabulary.forEach((vocabEntry) => {
-    const key = `vocabulary:${vocabEntry.word}`
+
+  // 1a. Create vocabulary cards
+  hierarchy.vocabulary.forEach((vocabRel) => {
+    const key = `vocabulary:${vocabRel.word}`
+    const displayData = vocabLookup.get(vocabRel.word)
+    if (!displayData) return // Skip if no display data
+
     const fsrsData =
-      moduleFSRSCards.find(
+      moduleData.fsrsCards.find(
         (c) =>
-          c.practice_item_key === vocabEntry.word &&
+          c.practice_item_key === vocabRel.word &&
+          c.type === "vocabulary" &&
           c.mode === sessionPracticeMode,
       ) || null
-    const card = createPracticeCardFromCleanEntry(
-      vocabEntry.word,
+
+    const card = createPracticeCard(
+      key,
       "vocabulary",
-      vocabEntry,
+      displayData,
       fsrsData,
       sessionPracticeMode,
-      vocabularyMap,
     )
     cardMap.set(key, card)
   })
 
+  // 1b. Create kanji cards (only if prerequisites enabled)
   if (enablePrerequisites) {
-    hierarchy.kanji.forEach((kanjiEntry) => {
-      const key = `kanji:${kanjiEntry.kanji}`
+    hierarchy.kanji.forEach((kanjiRel) => {
+      const key = `kanji:${kanjiRel.kanji}`
+      const displayData = kanjiLookup.get(kanjiRel.kanji)
+      if (!displayData) return // Skip if no display data
+
       const fsrsData =
-        moduleFSRSCards.find(
+        moduleData.fsrsCards.find(
           (c) =>
-            c.practice_item_key === kanjiEntry.kanji &&
+            c.practice_item_key === kanjiRel.kanji &&
+            c.type === "kanji" &&
             c.mode === sessionPracticeMode,
         ) || null
-      const card = createPracticeCardFromCleanEntry(
-        kanjiEntry.kanji,
+
+      const card = createPracticeCard(
+        key,
         "kanji",
-        kanjiEntry,
+        displayData,
         fsrsData,
         sessionPracticeMode,
-        vocabularyMap,
       )
       cardMap.set(key, card)
     })
-    hierarchy.radicals.forEach((radicalEntry) => {
-      const key = `radical:${radicalEntry.radical}`
+
+    // 1c. Create radical cards (only if prerequisites enabled)
+    hierarchy.radicals.forEach((radicalChar) => {
+      const key = `radical:${radicalChar}`
+      const displayData = radicalLookup.get(radicalChar)
+      if (!displayData) return // Skip if no display data
+
       const fsrsData =
-        moduleFSRSCards.find(
+        moduleData.fsrsCards.find(
           (c) =>
-            c.practice_item_key === radicalEntry.radical &&
+            c.practice_item_key === radicalChar &&
+            c.type === "radical" &&
             c.mode === sessionPracticeMode,
         ) || null
-      const card = createPracticeCardFromCleanEntry(
-        radicalEntry.radical,
+
+      const card = createPracticeCard(
+        key,
         "radical",
-        radicalEntry,
+        displayData,
         fsrsData,
         sessionPracticeMode,
-        vocabularyMap,
       )
       cardMap.set(key, card)
     })
   }
 
-  // --- Phase 2: Process Standalone Due Reviews (only if including reviews) ---
+  // --- Phase 2: Create Non-Module Review Cards ---
   if (includeReviews) {
-    const pureDueReviewCards = allDueFSRSCards.filter(
-      (card) => !cardMap.has(`${card.type}:${card.practice_item_key}`),
+    // Create lookup maps for non-module display data
+    const nonModuleVocabLookup = new Map(
+      nonModuleData.vocabulary.map((v) => [v.word, v]),
     )
-
-    // const dueVocab = pureDueReviewCards.filter((c) => c.type === "vocabulary")
-    const dueKanji = pureDueReviewCards.filter((c) => c.type === "kanji")
-    const dueRadicals = pureDueReviewCards.filter((c) => c.type === "radical")
-
-    // Batch fetch missing kanji/radicals
-    const missingKanjiSlugs = dueKanji
-      .map((c) => c.practice_item_key)
-      .filter((slug) => !hierarchy.kanji.find((k) => k.kanji === slug))
-    const missingRadicalSlugs = dueRadicals
-      .map((c) => c.practice_item_key)
-      .filter((slug) => !hierarchy.radicals.find((r) => r.radical === slug))
-
-    let fetchedData = {
-      kanji: [] as KanjiEntry[],
-      radicals: [] as RadicalEntry[],
-    }
-    if (missingKanjiSlugs.length > 0 || missingRadicalSlugs.length > 0) {
-      fetchedData = await getKanjiDetails(missingKanjiSlugs, missingRadicalSlugs)
-    }
-
-    const kanjiLookup = new Map(
-      [...hierarchy.kanji, ...fetchedData.kanji].map((k) => [k.kanji, k]),
+    const nonModuleKanjiLookup = new Map(
+      nonModuleData.kanji.map((k) => [k.kanji, k]),
     )
-    const radicalLookup = new Map(
-      [...hierarchy.radicals, ...fetchedData.radicals].map((r) => [
-        r.radical,
-        r,
-      ]),
+    const nonModuleRadicalLookup = new Map(
+      nonModuleData.radicals.map((r) => [r.radical, r]),
     )
 
     const now = new Date()
-    let skippedVocabCount = 0
-    let skippedKanjiCount = 0
-    let skippedRadicalCount = 0
 
-    pureDueReviewCards.forEach((fsrsData) => {
+    nonModuleData.fsrsCards.forEach((fsrsData) => {
+      const key = `${fsrsData.type}:${fsrsData.practice_item_key}`
+
+      // Skip if already in module cards
+      if (cardMap.has(key)) return
+
+      // Skip if not due or wrong mode
       const isDue =
         fsrsData.fsrs_card.due && new Date(fsrsData.fsrs_card.due) <= now
       const matchesMode = fsrsData.mode === sessionPracticeMode
       if (!isDue || !matchesMode) return
 
-      const key = `${fsrsData.type}:${fsrsData.practice_item_key}`
-      let cleanEntry: VocabEntry | KanjiEntry | RadicalEntry | null = null
+      // Find display data
+      let displayData: VocabularyItem | KanjiEntry | RadicalEntry | undefined
 
       if (fsrsData.type === "vocabulary") {
-        const vocabItem = vocabularyMap.get(fsrsData.practice_item_key)
-        if (!vocabItem) {
-          skippedVocabCount++ // Skip vocab reviews not in module vocabulary
-          return
-        }
-        cleanEntry = { word: vocabItem.word, kanjiComponents: [] }
+        displayData = nonModuleVocabLookup.get(fsrsData.practice_item_key)
       } else if (fsrsData.type === "kanji") {
-        cleanEntry = kanjiLookup.get(fsrsData.practice_item_key) || null
-        if (!cleanEntry) {
-          skippedKanjiCount++ // Skip kanji reviews not in hierarchy
-          return
-        }
+        displayData = nonModuleKanjiLookup.get(fsrsData.practice_item_key)
       } else if (fsrsData.type === "radical") {
-        cleanEntry = radicalLookup.get(fsrsData.practice_item_key) || null
-        if (!cleanEntry) {
-          skippedRadicalCount++ // Skip radical reviews not in hierarchy
-          return
-        }
+        displayData = nonModuleRadicalLookup.get(fsrsData.practice_item_key)
       }
 
-      const reviewCard = createPracticeCardFromCleanEntry(
-        fsrsData.practice_item_key,
+      if (!displayData) return // Skip if no display data available
+
+      const reviewCard = createPracticeCard(
+        key,
         fsrsData.type,
-        cleanEntry,
+        displayData,
         fsrsData,
-        fsrsData.mode,
-        vocabularyMap,
+        sessionPracticeMode,
       )
       reviewCard.sessionScope = "review"
       reviewCard.sessionStyle = "flashcard"
       cardMap.set(key, reviewCard)
     })
-
-    if (skippedVocabCount > 0) {
-      console.log(
-        `[init] Skipped ${skippedVocabCount} vocab reviews (not in module vocabulary)`,
-      )
-    }
-    if (skippedKanjiCount > 0) {
-      console.log(
-        `[init] Skipped ${skippedKanjiCount} kanji reviews (not in hierarchy)`,
-      )
-    }
-    if (skippedRadicalCount > 0) {
-      console.log(
-        `[init] Skipped ${skippedRadicalCount} radical reviews (not in hierarchy)`,
-      )
-    }
   }
 
   // --- Phase 3: Build Dependencies (Only if prerequisites are enabled) ---
   if (enablePrerequisites) {
     // 3a. Process vocabulary dependencies on kanji
-    hierarchy.vocabulary.forEach((vocabEntry) => {
-      const vocabKey = `vocabulary:${vocabEntry.word}`
-      vocabEntry.kanjiComponents.forEach((kanjiChar) => {
+    hierarchy.vocabulary.forEach((vocabRel) => {
+      const vocabKey = `vocabulary:${vocabRel.word}`
+      if (!cardMap.has(vocabKey)) return
+
+      vocabRel.kanjiComponents.forEach((kanjiChar) => {
         const kanjiKey = `kanji:${kanjiChar}`
         const kanjiCard = cardMap.get(kanjiKey)
         if (!kanjiCard) return
+
         const now = new Date()
         const isDue = !kanjiCard.fsrs.card.due || kanjiCard.fsrs.card.due <= now
+
         if (!unlocksMap.has(kanjiKey)) unlocksMap.set(kanjiKey, [])
         unlocksMap.get(kanjiKey)!.push(vocabKey)
+
         if (isDue) {
           if (!dependencyMap.has(vocabKey)) dependencyMap.set(vocabKey, [])
           dependencyMap.get(vocabKey)!.push(kanjiKey)
@@ -345,17 +333,22 @@ export async function initializePracticeSession(
     })
 
     // 3b. Process kanji dependencies on radicals
-    hierarchy.kanji.forEach((kanjiEntry) => {
-      const kanjiKey = `kanji:${kanjiEntry.kanji}`
-      kanjiEntry.radicalComponents.forEach((radicalChar) => {
+    hierarchy.kanji.forEach((kanjiRel) => {
+      const kanjiKey = `kanji:${kanjiRel.kanji}`
+      if (!cardMap.has(kanjiKey)) return
+
+      kanjiRel.radicalComponents.forEach((radicalChar) => {
         const radicalKey = `radical:${radicalChar}`
         const radicalCard = cardMap.get(radicalKey)
         if (!radicalCard) return
+
         const now = new Date()
         const isDue =
           !radicalCard.fsrs.card.due || radicalCard.fsrs.card.due <= now
+
         if (!unlocksMap.has(radicalKey)) unlocksMap.set(radicalKey, [])
         unlocksMap.get(radicalKey)!.push(kanjiKey)
+
         if (isDue) {
           if (!dependencyMap.has(kanjiKey)) dependencyMap.set(kanjiKey, [])
           dependencyMap.get(kanjiKey)!.push(radicalKey)
@@ -369,6 +362,7 @@ export async function initializePracticeSession(
   // --- Phase 4: Lock Cards and Populate Queues ---
   for (const [key, card] of cardMap.entries()) {
     if (card.isDisabled) continue // Skip disabled cards
+
     if (card.sessionScope === "module") {
       // Only lock if prerequisites are enabled AND there's an actual dependency
       if (enablePrerequisites && dependencyMap.has(key)) {
@@ -377,7 +371,7 @@ export async function initializePracticeSession(
         moduleQueue.push(key)
       }
     } else {
-      // Review cards: if they exist in cardMap, they're already filtered and ready
+      // Review cards go to review queue
       reviewQueue.push(key)
     }
   }

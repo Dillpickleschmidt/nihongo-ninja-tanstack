@@ -10,7 +10,6 @@ import { useRouteContext } from "@tanstack/solid-router"
 import { userDailyAggregatesQueryOptions } from "@/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { Route as RootRoute } from "@/routes/__root"
-import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
 import type { useStartPageLogic } from "./hooks/useStartPageLogic"
 
 type StartPageLayoutProps = {
@@ -21,7 +20,6 @@ type StartPageLayoutProps = {
 export function StartPageLayout(props: StartPageLayoutProps) {
   const context = useRouteContext({ from: RootRoute.id })
   const userId = context().user?.id
-  const { prerequisitesEnabled } = useVocabPracticeContext()
 
   const aggregatesQuery = useCustomQuery(() =>
     userDailyAggregatesQueryOptions(userId || null),
@@ -57,7 +55,7 @@ export function StartPageLayout(props: StartPageLayoutProps) {
   // Create FSRS map for ReviewItemsList
   const fsrsMap = () => {
     const map = new Map<string, any>()
-    const data = props.logic.fsrsCardsQuery.data
+    const data = props.logic.moduleFsrsCardsQuery.data
     if (!data) return map
     for (const card of data) {
       const key = `${card.type}:${card.practice_item_key}`
@@ -86,9 +84,8 @@ export function StartPageLayout(props: StartPageLayoutProps) {
       <div class="px-4 pb-24">
         <div class="mx-auto max-w-3xl">
           <DependencyOverview
-            vocabularyQuery={props.logic.vocabularyQuery}
-            hierarchyQuery={props.logic.hierarchyQuery}
-            fsrsCardsQuery={props.logic.fsrsCardsQuery}
+            moduleAllQuery={props.logic.moduleAllQuery}
+            fsrsCardsQuery={props.logic.moduleFsrsCardsQuery}
             dueCardsQuery={props.logic.dueCardsQuery}
           />
 
@@ -105,7 +102,7 @@ export function StartPageLayout(props: StartPageLayoutProps) {
                 props.logic.setVisibleReviewCount((count) => count + 20)
               }
               fsrsMap={fsrsMap()}
-              isLoading={props.logic.fsrsCardsQuery.isPending}
+              isLoading={props.logic.moduleFsrsCardsQuery.isPending}
             />
           </Show>
         </div>

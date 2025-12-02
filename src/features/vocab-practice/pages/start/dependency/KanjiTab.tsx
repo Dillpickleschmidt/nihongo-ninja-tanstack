@@ -13,7 +13,7 @@ import type { DefaultError } from "@tanstack/query-core"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 
 type KanjiRadicalsTabContentProps = {
-  hierarchyQuery: UseQueryResult<any, DefaultError>
+  moduleAllQuery: UseQueryResult<any, DefaultError>
   filteredKanji: () => string[]
   kanjiToRadicals: Map<string, string[]>
   kanjiToVocab: Map<string, string[]>
@@ -29,7 +29,7 @@ export function KanjiRadicalsTabContent(props: KanjiRadicalsTabContentProps) {
   return (
     <div class="bg-card/40 border-card-foreground/70 rounded-xl border p-4 backdrop-blur-sm">
       <Show
-        when={!props.hierarchyQuery.isPending}
+        when={!props.moduleAllQuery.isPending}
         fallback={
           <div class="flex items-center justify-center py-8">
             <Loader2 class="text-muted-foreground/50 h-8 w-8 animate-spin" />
@@ -81,7 +81,7 @@ export function KanjiRadicalsTabContent(props: KanjiRadicalsTabContentProps) {
                             <Show
                               when={!props.fsrsCardsQuery.isPending}
                               fallback={
-                                <span class="inline-flex h-[20px] w-[40px] rounded-full bg-purple-500/20" />
+                                <span class="inline-flex h-5 w-10 rounded-full bg-purple-500/20" />
                               }
                             >
                               <Show

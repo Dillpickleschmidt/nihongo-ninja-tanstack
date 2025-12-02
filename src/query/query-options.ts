@@ -17,7 +17,11 @@ import {
 } from "@/features/supabase/db/learning-paths"
 import { getVocabularyForModule } from "@/data/utils/vocabulary/queries"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
-import type { VocabHierarchy } from "@/features/resolvers/util/hierarchy-builder"
+import type {
+  VocabHierarchy,
+  KanjiEntry,
+  RadicalEntry,
+} from "@/features/resolvers/util/hierarchy-builder"
 import type {
   VocabularyItem,
   TextbookIDEnum,
@@ -63,7 +67,10 @@ import {
 } from "@/query/utils/user-settings"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
 import { getServiceConnectionStatus } from "@/features/main-cookies/functions/service-credentials"
-import { buildVocabHierarchy } from "@/query/utils/hierarchy-builder"
+import {
+  buildVocabModuleAll,
+  type VocabModuleAllData,
+} from "@/query/utils/hierarchy-builder"
 import { getCompletedModules } from "@/query/utils/completion-manager"
 import { buildModuleProgressMap } from "@/query/utils/progress-calculator"
 import { queryKeys } from "@/query/utils/query-keys"
@@ -193,40 +200,47 @@ export const serviceConnectionStatusQueryOptions = (userId: string | null) => {
 // ============================================================================
 
 /**
- * Get vocabulary hierarchy for a practice module
+ * Get vocabulary list for a practice module (reusable independently)
  */
-export const practiceHierarchyQueryOptions = (
-  moduleId: string,
-  vocabulary: VocabularyItem[],
-  mode: PracticeMode,
-  isLiveService: boolean,
-) =>
+export const vocabModuleVocabQueryOptions = (moduleId: string) =>
   queryOptions({
-    queryKey: queryKeys.practiceHierarchy(
-      moduleId,
-      mode,
-      isLiveService,
-    ),
-    queryFn: () =>
-      buildVocabHierarchy(
-        vocabulary,
-        mode,
-        isLiveService,
-        "practiceHierarchyQueryOptions",
-      ),
-  })
-
-/**
- * Get vocabulary list for a practice module
- */
-export const moduleVocabularyQueryOptions = (moduleId: string) =>
-  queryOptions({
-    queryKey: queryKeys.moduleVocabulary(moduleId),
+    queryKey: queryKeys.vocabModuleVocab(moduleId),
     queryFn: () => getVocabularyForModule(moduleId),
   })
 
 /**
- * Get FSRS cards for a practice module
+ * Get all module data: vocabulary + hierarchy (relationships) + kanji/radicals (display data)
+ * Builds on vocabModuleVocabQueryOptions - will use cache if already fetched
+ */
+export const vocabModuleAllQueryOptions = (
+  moduleId: string,
+  mode: PracticeMode,
+  isLiveService: boolean,
+  prerequisitesEnabled: boolean,
+) =>
+  queryOptions({
+    queryKey: queryKeys.vocabModuleAll(
+      moduleId,
+      mode,
+      isLiveService,
+      prerequisitesEnabled,
+    ),
+    queryFn: async (): Promise<VocabModuleAllData> => {
+      // Fetch vocabulary (will hit cache if already prefetched)
+      const vocabulary = await getVocabularyForModule(moduleId)
+
+      // Build hierarchy + kanji/radicals based on mode and settings
+      return buildVocabModuleAll(
+        vocabulary,
+        mode,
+        isLiveService,
+        prerequisitesEnabled,
+      )
+    },
+  })
+
+/**
+ * Get FSRS cards for a practice module (all types: vocabulary, kanji, radicals)
  * Only enabled when using local FSRS mode
  * Filters by practice mode to ensure separate progress tracking
  */
@@ -240,7 +254,13 @@ export const practiceModuleFSRSCardsQueryOptions = (
     queryKey: queryKeys.practiceModuleFSRS(userId, slugs, mode),
     queryFn: async (): Promise<FSRSCardData[]> => {
       if (!userId || slugs.length === 0) return []
-      return await getFSRSCards(userId, slugs, mode, "vocabulary")
+      // Fetch all types in parallel
+      const [vocab, kanji, radicals] = await Promise.all([
+        getFSRSCards(userId, slugs, mode, "vocabulary"),
+        getFSRSCards(userId, slugs, mode, "kanji"),
+        getFSRSCards(userId, slugs, mode, "radical"),
+      ])
+      return [...vocab, ...kanji, ...radicals]
     },
     enabled: enabled && !!userId && slugs.length > 0,
   })
@@ -293,26 +313,23 @@ export const userDeckVocabularyQueryOptions = (deckId: string) =>
   })
 
 /**
- * Get hierarchy for a user deck
+ * Get all data for a user deck: vocabulary + hierarchy + kanji/radicals
  */
-export const userDeckHierarchyQueryOptions = (
+export const userDeckAllQueryOptions = (
   deckId: string,
   vocabulary: VocabularyItem[],
   mode: PracticeMode,
   isLiveService: boolean,
+  prerequisitesEnabled: boolean,
 ) =>
   queryOptions({
-    queryKey: queryKeys.userDeckHierarchy(
-      deckId,
-      mode,
-      isLiveService,
-    ),
-    queryFn: () =>
-      buildVocabHierarchy(
+    queryKey: queryKeys.userDeckHierarchy(deckId, mode, isLiveService),
+    queryFn: (): Promise<VocabModuleAllData> =>
+      buildVocabModuleAll(
         vocabulary,
         mode,
         isLiveService,
-        "userDeckHierarchyQueryOptions",
+        prerequisitesEnabled,
       ),
   })
 
@@ -341,10 +358,7 @@ export const vocabHierarchyQueryOptions = (
   deck: LearningPathChapter,
 ) =>
   queryOptions({
-    queryKey: queryKeys.vocabHierarchy(
-      activeTextbook,
-      deck.slug,
-    ),
+    queryKey: queryKeys.vocabHierarchy(activeTextbook, deck.slug),
     queryFn: async () => {
       const vocabModuleId = deck.learning_path_item_ids.find((moduleId) =>
         moduleId.endsWith("_vocab-list"),
@@ -356,27 +370,29 @@ export const vocabHierarchyQueryOptions = (
       }
 
       const vocabForHierarchy = chapterVocabulary.map((item) => item.word)
-      const wkHierarchyData: VocabHierarchy | null = await getVocabHierarchy(
-        vocabForHierarchy,
-      )
+      const result = await getVocabHierarchy(vocabForHierarchy)
 
-      const slugs = [
-        ...new Set([
-          ...(wkHierarchyData?.vocabulary.map((item) => item.word) || []),
-          ...(wkHierarchyData?.kanji.map((item) => item.kanji) || []),
-          ...(wkHierarchyData?.radicals.map((item) => item.radical) || []),
-        ]),
-      ]
+      // Extract slugs from hierarchy relationships + display data
+      const slugs = result
+        ? [
+            ...new Set([
+              ...result.hierarchy.vocabulary.map((item) => item.word),
+              ...result.hierarchy.kanji.map((item) => item.kanji),
+              ...result.hierarchy.radicals,
+            ]),
+          ]
+        : []
 
       return {
         chapterVocabulary,
-        wordHierarchyData: wkHierarchyData,
+        // Return the full result with hierarchy and display data
+        hierarchyData: result,
         slugs,
       }
     },
     placeholderData: {
       chapterVocabulary: [],
-      wordHierarchyData: null,
+      hierarchyData: null,
       slugs: [],
     },
   })
@@ -457,10 +473,10 @@ type ModuleProgress = Awaited<
 export type ModuleProgressWithLocal =
   | ModuleProgress
   | {
-    module_path: string
-    user_id: string | null
-    completed_at: null
-  }
+      module_path: string
+      user_id: string | null
+      completed_at: null
+    }
 
 export const completedModulesQueryOptions = (userId: string | null) =>
   queryOptions({

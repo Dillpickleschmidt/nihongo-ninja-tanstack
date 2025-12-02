@@ -47,7 +47,9 @@ export async function getAllFSRSCardsForUser(
       fsrs_card: {
         ...fsrsCard,
         due: new Date(fsrsCard.due as unknown as string),
-        last_review: fsrsCard.last_review ? new Date(fsrsCard.last_review as unknown as string) : null,
+        last_review: fsrsCard.last_review
+          ? new Date(fsrsCard.last_review as unknown as string)
+          : null,
       } as Card,
       fsrs_logs: card.fsrs_logs as ReviewLog[],
       mode: card.mode as "meanings" | "spellings",
@@ -93,7 +95,9 @@ export async function getFSRSCards(
       fsrs_card: {
         ...fsrsCard,
         due: new Date(fsrsCard.due as unknown as string),
-        last_review: fsrsCard.last_review ? new Date(fsrsCard.last_review as unknown as string) : null,
+        last_review: fsrsCard.last_review
+          ? new Date(fsrsCard.last_review as unknown as string)
+          : null,
       } as Card,
       fsrs_logs: card.fsrs_logs as ReviewLog[],
       mode: card.mode as "meanings" | "spellings",
@@ -250,7 +254,7 @@ export async function upsertFSRSCardForUser(
  * Batch upsert FSRS cards for a user
  */
 export async function batchUpsertFSRSCardsForUser(
-  data: ProcessedCard[]
+  data: ProcessedCard[],
 ): Promise<void> {
   if (data.length === 0) return
 
@@ -280,7 +284,7 @@ export async function batchUpsertFSRSCardsForUser(
 
 /**
  * Get due FSRS cards for a user
- * Returns up to 200 most overdue cards to optimize query performance
+ * Returns up to 1000 most overdue cards to optimize query performance
  */
 export const getDueFSRSCards = createServerFn({ method: "GET" })
   .inputValidator((userId: string) => userId)
@@ -294,7 +298,7 @@ export const getDueFSRSCards = createServerFn({ method: "GET" })
       .eq("user_id", userId)
       .lte("due_at", now.toISOString())
       .order("due_at", { ascending: true })
-      .limit(200)
+      .limit(1000)
 
     if (error) {
       console.error("Error fetching due FSRS cards:", error)
@@ -361,8 +365,6 @@ export async function batchDeleteFSRSCards(
     const errorMessages = errors
       .map((e) => (e.status === "rejected" ? String(e.reason) : ""))
       .join("; ")
-    throw new Error(
-      `Failed to delete ${errors.length} cards: ${errorMessages}`,
-    )
+    throw new Error(`Failed to delete ${errors.length} cards: ${errorMessages}`)
   }
 }
