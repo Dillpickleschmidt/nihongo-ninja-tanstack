@@ -49,7 +49,7 @@ export type HierarchyNode =
     }
 
 /**
- * Builds the complete vocabulary hierarchy from all data sources
+ * Builds the complete navigation hierarchy from all data sources
  * This is the single source of truth for "what exists in the hierarchy"
  *
  * Structure:
@@ -57,7 +57,7 @@ export type HierarchyNode =
  * - User folders (recursive) → decks
  * - Root-level user decks
  */
-export function buildVocabHierarchy(
+export function buildNavigationHierarchy(
   folders: DeckFolder[],
   decks: UserDeck[],
   learningPaths: LearningPath[],

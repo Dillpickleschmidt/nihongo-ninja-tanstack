@@ -2,7 +2,7 @@ import { For, Show } from "solid-js"
 import { FolderCard } from "../../../shared/components/FolderCard"
 import { DeckCard } from "../../../right-panel/DeckCard"
 import type { LearningPath } from "@/data/types"
-import { getRootLevelItems } from "../../../logic/hierarchy-builder"
+import { getRootLevelItems } from "../../../logic/navigation-hierarchy"
 
 interface FolderBrowserGridProps {
   folders: DeckFolder[]

@@ -14,9 +14,9 @@ import { createFolderServerFn } from "@/features/supabase/db/folder"
 import { validateFolderNameUnique } from "../validation/deck-folder-validation"
 import { validateName } from "../validation/common"
 import {
-  buildVocabHierarchy,
+  buildNavigationHierarchy,
   type HierarchyNode,
-} from "../logic/hierarchy-builder"
+} from "../logic/navigation-hierarchy"
 
 interface VocabRightPanelProps {
   userDecks: UserDeck[]
@@ -61,7 +61,11 @@ export function VocabRightPanel(props: VocabRightPanelProps) {
   // Build complete hierarchy from all data sources
   const hierarchy = createMemo(() => {
     const learningPaths = learningPathsQuery.data || []
-    return buildVocabHierarchy(props.folders, props.userDecks, learningPaths)
+    return buildNavigationHierarchy(
+      props.folders,
+      props.userDecks,
+      learningPaths,
+    )
   })
 
   const handleCreateFolder = async () => {
