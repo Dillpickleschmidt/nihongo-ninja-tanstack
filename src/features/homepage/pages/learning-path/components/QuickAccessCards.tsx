@@ -8,7 +8,7 @@ import type { Tool } from "@/features/homepage/types"
 const featuredTools: Tool[] = [
   {
     title: "Real Content",
-    description: "Discover media and generate learning paths",
+    description: "Learn from stuff you actually like",
     icon: "🎬",
     href: "/explore",
     styles: {
@@ -20,7 +20,7 @@ const featuredTools: Tool[] = [
   },
   {
     title: "Sentence Practice",
-    description: "Build sentences and improve comprehension",
+    description: "See how it all fits",
     icon: "💬",
     href: "/sentence-practice",
     styles: {
@@ -32,7 +32,7 @@ const featuredTools: Tool[] = [
   },
   {
     title: "Vocabulary",
-    description: "Practice vocabulary short-term and long-term",
+    description: "Words, words, words.",
     icon: (
       <span
         style={{
@@ -54,7 +54,7 @@ const featuredTools: Tool[] = [
   },
   {
     title: "Conjugation",
-    description: "Master verb and adjective conjugations",
+    description: "Get your forms down",
     icon: "⚡",
     href: "/practice/conjugation",
     styles: {
@@ -66,7 +66,7 @@ const featuredTools: Tool[] = [
   },
   {
     title: "Import",
-    description: "Import progress or continue with Anki",
+    description: "Bring your own words or keep using Anki",
     icon: "📦",
     href: "/import",
     styles: {
@@ -119,7 +119,7 @@ export function QuickAccessCards() {
           focusRing={true}
           focusRingClass={styles.ring}
           class={cn(
-            "bg-gradient-to-br shadow-lg shadow-black/30 backdrop-blur-md transition-colors duration-150",
+            "bg-gradient-to-br shadow-lg shadow-black/30 transition-colors duration-150",
             styles.gradient,
           )}
         >

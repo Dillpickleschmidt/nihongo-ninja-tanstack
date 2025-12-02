@@ -1,7 +1,6 @@
-import { createSignal, Show } from "solid-js"
+import { createSignal, Show, createMemo, For } from "solid-js"
 import { createFileRoute, useRouteContext, Link } from "@tanstack/solid-router"
 import { cn } from "@/utils"
-import { Button } from "@/components/ui/button"
 import {
   Select,
   SelectTrigger,
@@ -9,30 +8,25 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select"
-import { UpcomingModulesList } from "@/components/UpcomingModulesList"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
   userSettingsQueryOptions,
   dueCardsCountQueryOptions,
-  upcomingModulesQueryOptions,
-  completedModulesQueryOptions,
 } from "@/query/query-options"
 import { queryKeys } from "@/query/utils/query-keys"
 import { Route as RootRoute } from "@/routes/__root"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { getActiveService } from "@/features/srs-services/utils"
 import { useServiceSwitcher } from "@/features/settings-page/hooks/useServiceSwitcher"
-import { useQueryClient } from "@tanstack/solid-query"
 import type { SRSServiceType } from "@/features/main-cookies/schemas/user-settings"
-import type { TextbookIDEnum } from "@/data/types"
 
 export const Route = createFileRoute("/_home/review")({
   loader: async ({ context }) => {
     const { user, queryClient } = context
 
     queryClient.setQueryData(queryKeys.backgroundSettings(), {
-      blur: 32,
-      backgroundOpacityOffset: 0,
+      blur: 16,
+      backgroundOpacityOffset: -0.22,
       showGradient: true,
     })
 
@@ -40,19 +34,10 @@ export const Route = createFileRoute("/_home/review")({
       userSettingsQueryOptions(user?.id || null).queryKey,
     )!
 
-    queryClient.prefetchQuery(completedModulesQueryOptions(user?.id || null))
     queryClient.prefetchQuery(
       dueCardsCountQueryOptions(
         user?.id || null,
         userSettings["srs-service-preferences"],
-      ),
-    )
-    await queryClient.ensureQueryData(
-      upcomingModulesQueryOptions(
-        user?.id || null,
-        userSettings["active-learning-path"] as TextbookIDEnum,
-        userSettings["active-chapter"] as string,
-        queryClient,
       ),
     )
   },
@@ -61,103 +46,101 @@ export const Route = createFileRoute("/_home/review")({
 
 // ————————————————————————————————————————————————————————————————
 
-export function ReviewCard(props: {
-  label: string
-  color: "blue" | "green" | "amber"
-  dueCount: number | "loading" | "error" | "unavailable"
-  breakdown?: string
+function ReviewHero(props: {
+  priorityCategory: { id: string; label: string; count: number; breakdown?: string } | null
   onClick: () => void
   disabled?: boolean
-  variant: "mobile" | "desktop"
+  isLoading?: boolean
 }) {
-  const gradients = {
-    blue: "from-sky-500/40 via-sky-400/20 to-sky-600/30",
-    green: "from-emerald-500/40 via-emerald-400/20 to-emerald-600/30",
-    amber: "from-amber-500/40 via-amber-400/20 to-amber-600/30",
-  }
-
-  const borders = {
-    blue: "border-sky-300/20",
-    green: "border-emerald-300/20",
-    amber: "border-amber-300/20",
-  }
-
-  const textColors = {
-    blue: "text-sky-400",
-    green: "text-emerald-400",
-    amber: "text-amber-400",
-  }
-
-  const isDesktop = props.variant === "desktop"
+  const isCaughtUp = !props.isLoading && (!props.priorityCategory || props.priorityCategory.count === 0)
 
   return (
-    <div
-      class={cn(
-        "w-full rounded-xl border bg-gradient-to-br shadow-sm backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-[2px] hover:shadow-md",
-        borders[props.color],
-        gradients[props.color],
-        isDesktop && "w-[300px]",
-      )}
-    >
-      <div
+    <div class="relative flex flex-col items-center justify-center">
+      {/* Glow effect behind the button when there are reviews */}
+      <Show when={!isCaughtUp && !props.disabled && !props.isLoading}>
+        <div class="absolute animate-pulse inset-0 rounded-full bg-sky-500/20 blur-3xl" />
+      </Show>
+
+      <button
+        onClick={props.onClick}
+        disabled={props.disabled || isCaughtUp || props.isLoading}
         class={cn(
-          "flex flex-col items-center text-center",
-          isDesktop ? "px-8 py-10" : "px-6 py-6",
+          "group relative flex h-64 w-64 flex-col items-center justify-center rounded-full border backdrop-blur-md transition-all duration-500 ease-out",
+          isCaughtUp
+            ? "border-white/10 bg-white/5 cursor-default"
+            : "border-sky-400/30 bg-gradient-to-br from-sky-500/20 via-sky-600/10 to-sky-400/20 hover:scale-105 hover:shadow-lg hover:shadow-sky-500/20 cursor-pointer animate-pulse",
+          props.disabled && "opacity-50 cursor-not-allowed hover:scale-100",
         )}
       >
-        <h2
-          class={cn(
-            "font-semibold",
-            textColors[props.color],
-            isDesktop ? "text-lg" : "text-base",
-          )}
-        >
-          {props.label}
-        </h2>
-
-        <div
-          class={cn(
-            "mt-2 h-[2px] rounded-full",
-            textColors[props.color].replace("text-", "bg-"),
-            isDesktop ? "w-12" : "w-10",
-          )}
-        />
-
-        <div
-          class={cn(
-            "mt-2 font-semibold tracking-tight",
-            textColors[props.color],
-            isDesktop ? "h-11 text-lg" : "h-9 text-base",
-          )}
-        >
-          {props.dueCount === "loading" ? (
-            "..."
-          ) : props.dueCount === "error" ? (
-            "-"
-          ) : props.dueCount === "unavailable" ? (
-            "-"
-          ) : (
-            <>
-              {props.dueCount}
-              <span class="text-sm font-normal text-white/70"> due</span>
-            </>
-          )}
-          {props.breakdown && (
-            <p class="text-xs font-normal text-white/60">{props.breakdown}</p>
-          )}
+        <div class="flex flex-col items-center space-y-2 text-center">
+          <Show
+            when={!props.isLoading}
+            fallback={<div class="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-white" />}
+          >
+            <Show
+              when={!isCaughtUp}
+              fallback={
+                <>
+                  <span class="text-4xl">🎉</span>
+                  <span class="text-lg font-medium text-white/80">All Caught Up</span>
+                </>
+              }
+            >
+              <span class="text-lg font-medium text-sky-300 uppercase tracking-wider">
+                Start Review
+              </span>
+              <span class="font-poppins text-5xl font-bold text-white">
+                {props.priorityCategory?.count}
+              </span>
+              <span class="text-sm text-white/60">
+                {props.priorityCategory?.label} due
+              </span>
+              {props.priorityCategory?.breakdown && (
+                <span class="absolute bottom-12 text-xs font-normal text-white/40">
+                  {props.priorityCategory.breakdown}
+                </span>
+              )}
+            </Show>
+          </Show>
         </div>
+      </button>
+    </div>
+  )
+}
 
-        <Button
-          onClick={props.onClick}
-          disabled={props.disabled}
-          class={cn(
-            "mt-3 w-full rounded-md border-white/10 bg-white/10 text-white transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50",
-            isDesktop ? "text-base" : "text-sm",
-          )}
-        >
-          Review
-        </Button>
-      </div>
+function ReviewCategorySelector(props: {
+  categories: Array<{ id: string; label: string; count: number; color: "blue" | "green" | "amber" }>
+  onSelect: (id: string) => void
+  disabled?: boolean
+  isLoading?: boolean
+}) {
+  const colors = {
+    blue: "text-sky-400 group-hover:text-sky-300",
+    green: "text-emerald-400 group-hover:text-emerald-300",
+    amber: "text-amber-400 group-hover:text-amber-300",
+  }
+
+  return (
+    <div class="flex flex-wrap justify-center gap-4">
+      <For each={props.categories}>
+        {(category) => (
+          <button
+            onClick={() => props.onSelect(category.id)}
+            disabled={props.disabled || props.isLoading}
+            class={cn(
+              "group flex min-w-[120px] flex-col items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 py-4 backdrop-blur-sm transition-all hover:bg-white/10",
+              props.disabled && "opacity-50 cursor-not-allowed",
+            )}
+          >
+            <span class={cn("text-xs font-medium uppercase tracking-wider mb-1", colors[category.color])}>
+              {category.label}
+            </span>
+            <span class="font-poppins text-2xl font-bold text-white">
+              {props.isLoading ? "-" : category.count}
+            </span>
+          </button>
+        )}
+      </For>
     </div>
   )
 }
@@ -171,14 +154,14 @@ function PageHeader(props: { variant: "mobile" | "desktop" }) {
     <div class={cn("space-y-2 text-center", isDesktop && "space-y-3")}>
       <h1
         class={cn(
-          "font-poppins font-extrabold drop-shadow-sm",
-          isDesktop ? "text-5xl" : "text-3xl",
+          "font-bold font-serif italic drop-shadow-sm",
+          isDesktop ? "text-6xl" : "text-4xl",
         )}
       >
         Review & Practice
       </h1>
-      <p class={cn("text-muted-foreground", isDesktop ? "text-sm" : "text-xs")}>
-        Review due items or start learning new ones.
+      <p class={cn("text-muted-foreground", isDesktop ? "text-base" : "text-sm")}>
+        Get those reps in.
       </p>
     </div>
   )
@@ -229,7 +212,7 @@ function ServiceSelector(props: {
                 props.isSwitching()
                   ? "Switching..."
                   : (props.services.find((s) => s.id === state.selectedOption())
-                      ?.label ?? "Select Service")
+                    ?.label ?? "Select Service")
               }
             </SelectValue>
           </SelectTrigger>
@@ -261,7 +244,6 @@ function ServiceSelector(props: {
 
 function RouteComponent() {
   const context = useRouteContext({ from: RootRoute.id })
-  const queryClient = useQueryClient()
 
   const settingsQuery = useCustomQuery(() =>
     userSettingsQueryOptions(context().user?.id || null),
@@ -278,20 +260,6 @@ function RouteComponent() {
   // Service switching hook
   const { switchToService, isSwitching, switchError, clearError } =
     useServiceSwitcher(context().user?.id || null)
-
-  // Queries for upcoming modules list
-  const upcomingModulesQuery = useCustomQuery(() =>
-    upcomingModulesQueryOptions(
-      context().user?.id || null,
-      settingsQuery.data!["active-learning-path"] as TextbookIDEnum,
-      settingsQuery.data!["active-chapter"] as string,
-      queryClient,
-    ),
-  )
-
-  const completionsQuery = useCustomQuery(() =>
-    completedModulesQueryOptions(context().user?.id || null),
-  )
 
   const getActiveServiceDisplay = () => {
     const preferences = settingsQuery.data?.["srs-service-preferences"]
@@ -328,98 +296,69 @@ function RouteComponent() {
     anki: "https://apps.ankiweb.net/",
   }
 
-  // Calculate due counts based on query results
-  const getMeaningsDueCount = ():
-    | number
-    | "loading"
-    | "error"
-    | "unavailable" => {
-    if (dueCardsQuery.isPending) return "loading"
-    if (dueCardsQuery.isError) return "error"
+  // Helper to safely get counts
+  const getCount = (type: "meanings" | "spellings" | "grammar"): number => {
+    if (!dueCardsQuery.data) return 0
+    const data = dueCardsQuery.data
 
-    const result = dueCardsQuery.data
-    if (!result) return "loading"
-
-    // Handle CLIENT_ONLY (Anki on SSR)
-    if (
-      result.meanings === null &&
-      result.unavailableReason === "CLIENT_ONLY"
-    ) {
-      return "loading"
+    if (type === "meanings") {
+      if (!data.meanings || typeof data.meanings !== "object") return 0
+      return (data.meanings.vocab || 0) + (data.meanings.kanji || 0)
     }
 
-    // Handle NOT_SUPPORTED (JPDB)
-    if (
-      result.meanings === null &&
-      result.unavailableReason === "NOT_SUPPORTED"
-    ) {
-      return "unavailable"
+    if (type === "spellings") {
+      return typeof data.spellings === 'number' ? data.spellings : 0
     }
 
-    // Handle errors or unexpected null counts
-    if (result.meanings === null) {
-      return "error"
-    }
-
-    return result.meanings.vocab + result.meanings.kanji
+    return 0 // Grammar not implemented yet
   }
 
-  const getSpellingsDueCount = ():
-    | number
-    | "loading"
-    | "error"
-    | "unavailable" => {
-    if (dueCardsQuery.isPending) return "loading"
-    if (dueCardsQuery.isError) return "error"
+  const getBreakdown = (type: "meanings" | "spellings"): string | undefined => {
+    if (!dueCardsQuery.data) return undefined
+    const data = dueCardsQuery.data
 
-    const result = dueCardsQuery.data
-    if (!result) return "loading"
-
-    // Handle CLIENT_ONLY (Anki on SSR)
-    if (
-      result.spellings === null &&
-      result.unavailableReason === "CLIENT_ONLY"
-    ) {
-      return "loading"
+    if (type === "meanings" && data.meanings && typeof data.meanings === "object") {
+      return `${data.meanings.vocab} V · ${data.meanings.kanji} K`
     }
-
-    // Handle NOT_SUPPORTED (JPDB)
-    if (
-      result.spellings === null &&
-      result.unavailableReason === "NOT_SUPPORTED"
-    ) {
-      return "unavailable"
-    }
-
-    // Handle errors or unexpected null counts
-    if (result.spellings === null) {
-      return "error"
-    }
-
-    return result.spellings
+    return undefined
   }
 
-  // Get breakdown text for displaying vocab/kanji split
-  const getMeaningsBreakdown = () => {
-    const result = dueCardsQuery.data
-    if (
-      !result ||
-      result.meanings === null ||
-      dueCardsQuery.isPending ||
-      dueCardsQuery.isError
-    ) {
-      return ""
-    }
-    return `${result.meanings.vocab} V · ${result.meanings.kanji} K`
-  }
+  // Memoize categories with counts
+  const reviewCategories = createMemo(() => [
+    {
+      id: "meanings",
+      label: "Meanings",
+      count: getCount("meanings"),
+      breakdown: getBreakdown("meanings"),
+      color: "blue" as const
+    },
+    {
+      id: "spellings",
+      label: "Spellings",
+      count: getCount("spellings"),
+      breakdown: getBreakdown("spellings"),
+      color: "green" as const
+    },
+    {
+      id: "grammar",
+      label: "Grammar",
+      count: 0,
+      color: "amber" as const
+    },
+  ])
 
-  const getSpellingsBreakdown = () => {
-    return ""
-  }
+  // Determine priority category
+  const priorityCategory = createMemo(() => {
+    const cats = reviewCategories()
+    // Sort by count descending
+    const sorted = [...cats].sort((a, b) => b.count - a.count)
+    // Return top category if it has items, otherwise null (all caught up)
+    return sorted[0].count > 0 ? sorted[0] : null
+  })
 
   const handleClick = (section: string) => {
     const s = selectedService()
-    if (["meanings", "spellings"].includes(section) && s !== "nihongo") {
+    if (s !== "nihongo") {
       window.open(externalLinks[s], "_blank")
       return
     }
@@ -427,40 +366,40 @@ function RouteComponent() {
   }
 
   return (
-    <>
-      {/* Desktop */}
-      <SSRMediaQuery showFrom="md">
-        <div class="text-foreground relative flex flex-col items-center space-y-12 px-4 pt-[12vh] pb-24">
+    <div class="text-foreground relative flex min-h-screen flex-col items-center px-4 pt-[12vh] pb-24">
+      {/* Responsive Header */}
+      <div class="mb-12 md:mb-16">
+        <SSRMediaQuery showFrom="md">
           <PageHeader variant="desktop" />
+        </SSRMediaQuery>
+        <SSRMediaQuery hideFrom="md">
+          <PageHeader variant="mobile" />
+        </SSRMediaQuery>
+      </div>
 
-          <div class="flex flex-wrap justify-center gap-10">
-            <ReviewCard
-              label="Meanings"
-              color="blue"
-              dueCount={getMeaningsDueCount()}
-              breakdown={getMeaningsBreakdown()}
-              onClick={() => handleClick("meanings")}
-              disabled={selectedService() === "anki"}
-              variant="desktop"
-            />
-            <ReviewCard
-              label="Spellings"
-              color="green"
-              dueCount={getSpellingsDueCount()}
-              breakdown={getSpellingsBreakdown()}
-              onClick={() => handleClick("spellings")}
-              disabled={selectedService() === "anki"}
-              variant="desktop"
-            />
-            <ReviewCard
-              label="Grammar"
-              color="amber"
-              dueCount={0}
-              onClick={() => handleClick("grammar")}
-              variant="desktop"
-            />
-          </div>
+      {/* Hero Section - Priority Action */}
+      <div class="mb-12 md:mb-16">
+        <ReviewHero
+          priorityCategory={priorityCategory()}
+          onClick={() => priorityCategory() && handleClick(priorityCategory()!.id)}
+          disabled={selectedService() === "anki"}
+          isLoading={dueCardsQuery.isPending}
+        />
+      </div>
 
+      {/* Secondary Actions - Category Selectors */}
+      <div class="mb-16 w-full max-w-2xl">
+        <ReviewCategorySelector
+          categories={reviewCategories()}
+          onSelect={handleClick}
+          disabled={selectedService() === "anki"}
+          isLoading={dueCardsQuery.isPending}
+        />
+      </div>
+
+      {/* Footer - Service Selector */}
+      <div class="mt-auto">
+        <SSRMediaQuery showFrom="md">
           <ServiceSelector
             variant="desktop"
             selectedService={selectedService}
@@ -471,92 +410,20 @@ function RouteComponent() {
               handleServiceChange(v as "nihongo" | SRSServiceType)
             }
           />
-
-          <Button
-            size="lg"
-            class="w-80 rounded-lg border border-white/20 bg-white/10 py-5 text-base text-white shadow-sm transition hover:bg-white/20"
-            onClick={() => handleClick("learn-new")}
-          >
-            Learn New
-          </Button>
-
-          <Show when={context().user}>
-            <div class="w-full max-w-lg px-4">
-              <h3 class="mb-3 text-lg font-semibold">Upcoming Lessons</h3>
-              <UpcomingModulesList
-                upcomingModulesQuery={upcomingModulesQuery}
-                completionsQuery={completionsQuery}
-                class="max-h-[150px]"
-              />
-            </div>
-          </Show>
-        </div>
-      </SSRMediaQuery>
-
-      {/* Mobile */}
-      <SSRMediaQuery hideFrom="md">
-        <div class="text-foreground relative flex flex-col items-center space-y-4 px-4 pt-4 pb-36">
-          <PageHeader variant="mobile" />
-
-          <div class="flex w-full max-w-[340px] flex-col gap-5">
-            <ReviewCard
-              label="Vocab Meanings"
-              color="blue"
-              dueCount={getMeaningsDueCount()}
-              breakdown={getMeaningsBreakdown()}
-              onClick={() => handleClick("meanings")}
-              disabled={selectedService() === "anki"}
-              variant="mobile"
-            />
-            <ReviewCard
-              label="Vocab Spellings"
-              color="green"
-              dueCount={getSpellingsDueCount()}
-              breakdown={getSpellingsBreakdown()}
-              onClick={() => handleClick("spellings")}
-              disabled={selectedService() === "anki"}
-              variant="mobile"
-            />
-            <ServiceSelector
-              variant="mobile"
-              selectedService={selectedService}
-              services={services}
-              isSwitching={isSwitching}
-              switchError={switchError}
-              onServiceChange={(v) =>
-                handleServiceChange(v as "nihongo" | SRSServiceType)
-              }
-            />
-            <ReviewCard
-              label="Grammar"
-              color="amber"
-              dueCount={0}
-              onClick={() => handleClick("grammar")}
-              variant="mobile"
-            />
-          </div>
-
-          <Show when={context().user}>
-            <div class="w-full px-4 pt-4">
-              <h3 class="mb-2 text-lg font-semibold">Upcoming Lessons</h3>
-              <UpcomingModulesList
-                upcomingModulesQuery={upcomingModulesQuery}
-                completionsQuery={completionsQuery}
-              />
-            </div>
-          </Show>
-        </div>
-
-        <div class="fixed right-0 bottom-20 left-0 flex justify-center">
-          <Button
-            size="lg"
-            class="w-[90%] rounded-lg border border-white/20 bg-white/15 py-4 text-base text-white shadow-sm backdrop-blur-md transition hover:bg-white/25"
-            onClick={() => handleClick("learn-new")}
-          >
-            Learn New
-          </Button>
-        </div>
-      </SSRMediaQuery>
-    </>
+        </SSRMediaQuery>
+        <SSRMediaQuery hideFrom="md">
+          <ServiceSelector
+            variant="mobile"
+            selectedService={selectedService}
+            services={services}
+            isSwitching={isSwitching}
+            switchError={switchError}
+            onServiceChange={(v) =>
+              handleServiceChange(v as "nihongo" | SRSServiceType)
+            }
+          />
+        </SSRMediaQuery>
+      </div>
+    </div>
   )
 }
