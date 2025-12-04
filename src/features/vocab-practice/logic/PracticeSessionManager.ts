@@ -179,13 +179,11 @@ export class PracticeSessionManager {
     // 2. Persist progress to the database
     try {
       await upsertFSRSCardForUser({
-        data: {
-          practice_item_key: updatedCard.key.split(":")[1], // Get slug from key
-          fsrs_card: updatedCard.fsrs.card,
-          fsrs_logs: updatedCard.fsrs.logs,
-          mode: updatedCard.practiceMode,
-          type: updatedCard.practiceItemType,
-        },
+        practice_item_key: updatedCard.key.split(":")[1], // Get slug from key
+        fsrs_card: updatedCard.fsrs.card,
+        fsrs_logs: updatedCard.fsrs.logs || [],
+        mode: updatedCard.practiceMode,
+        type: updatedCard.practiceItemType,
       })
     } catch (error) {
       console.error("Failed to save FSRS progress to database:", error)

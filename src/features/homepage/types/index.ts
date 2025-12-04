@@ -1,9 +1,16 @@
+import type { JSX } from "solid-js"
+
 export interface Tool {
   title: string
   description: string
-  icon: string
+  icon: JSX.Element | string
   href: string
-  gradient: string
+  styles: {
+    text: string
+    gradient: string
+    border: string
+    ring: string
+  }
   disabled?: boolean
 }
 

@@ -3,7 +3,9 @@ import type { Database as DatabaseGenerated } from "./features/supabase/db/datab
 import type { UserPreferences } from "./features/main-cookies/schemas/user-preferences"
 import type {
   KagomeToken,
-  GrammarMatch,
+  PatternMatch,
+  CompoundSpan,
+  AnalysisResult,
   WordClass,
   POS,
   KagomeTokenizationResult,
@@ -27,7 +29,7 @@ declare global {
   >
 
   type DBProfile = SupabaseDB["public"]["Tables"]["profiles"]["Row"]
-  type DBPracticeItem = SupabaseDB["public"]["Tables"]["fsrs_cards"]["Row"]
+  type DBPracticeItem = SupabaseDB["public"]["Tables"]["user_fsrs_cards"]["Row"]
   type DBPracticeItemType = SupabaseDB["public"]["Enums"]["practice_item_type"]
   type PracticeModeEnum = SupabaseDB["public"]["Enums"]["practice_mode_enum"]
 
@@ -36,19 +38,28 @@ declare global {
   type UserDeckInsert = SupabaseDB["public"]["Tables"]["user_decks"]["Insert"]
   type UserDeckUpdate = SupabaseDB["public"]["Tables"]["user_decks"]["Update"]
 
-  type DeckFolder = SupabaseDB["public"]["Tables"]["deck_folders"]["Row"]
+  type DeckFolder = SupabaseDB["public"]["Tables"]["user_deck_folders"]["Row"]
   type DeckFolderInsert =
-    SupabaseDB["public"]["Tables"]["deck_folders"]["Insert"]
+    SupabaseDB["public"]["Tables"]["user_deck_folders"]["Insert"]
   type DeckFolderUpdate =
-    SupabaseDB["public"]["Tables"]["deck_folders"]["Update"]
+    SupabaseDB["public"]["Tables"]["user_deck_folders"]["Update"]
 
   // Vocabulary SupabaseDB Types
   type DBVocabularyItem =
-    SupabaseDB["public"]["Tables"]["vocabulary_items"]["Row"]
+    SupabaseDB["public"]["Tables"]["deck_vocabulary_items"]["Row"]
   type DBVocabularyItemInsert =
-    SupabaseDB["public"]["Tables"]["vocabulary_items"]["Insert"]
+    SupabaseDB["public"]["Tables"]["deck_vocabulary_items"]["Insert"]
   type DBVocabularyItemUpdate =
-    SupabaseDB["public"]["Tables"]["vocabulary_items"]["Update"]
+    SupabaseDB["public"]["Tables"]["deck_vocabulary_items"]["Update"]
+
+  // Core Vocabulary Types (read-only, shared across all users)
+  type CoreVocabularyItem =
+    SupabaseDB["public"]["Tables"]["core_vocabulary_items"]["Row"]
+  type CoreVocabularySet =
+    SupabaseDB["public"]["Tables"]["core_vocabulary_sets"]["Row"]
+
+  // WaniKani Types (read-only reference data)
+  type WaniKaniItem = SupabaseDB["public"]["Tables"]["wanikani_items"]["Row"]
 
   // Deck Sharing Types
   type PublicDeckShare =
@@ -60,11 +71,11 @@ declare global {
 
   // Module Progress Tracking Types
   type ModuleProgress =
-    SupabaseDB["public"]["Tables"]["user_module_progress"]["Row"]
+    SupabaseDB["public"]["Tables"]["user_completed_modules"]["Row"]
   type ModuleProgressInsert =
-    SupabaseDB["public"]["Tables"]["user_module_progress"]["Insert"]
+    SupabaseDB["public"]["Tables"]["user_completed_modules"]["Insert"]
   type ModuleProgressUpdate =
-    SupabaseDB["public"]["Tables"]["user_module_progress"]["Update"]
+    SupabaseDB["public"]["Tables"]["user_completed_modules"]["Update"]
   // Module progress including local-only completions (with nullable fields)
   type ModuleProgressWithLocal = {
     module_path: string
@@ -94,4 +105,10 @@ declare global {
     SupabaseDB["public"]["Tables"]["learning_path_module_sources"]["Insert"]
   type LearningPathModuleSourceUpdate =
     SupabaseDB["public"]["Tables"]["learning_path_module_sources"]["Update"]
+
+  // Dictionary Types (read-only reference data, mirrors Yomitan IndexedDB)
+  type DictionaryTerm = SupabaseDB["public"]["Tables"]["terms"]["Row"]
+  type DictionaryTermMeta = SupabaseDB["public"]["Tables"]["term_meta"]["Row"]
+  type Dictionary = SupabaseDB["public"]["Tables"]["dictionaries"]["Row"]
+  type DictionaryTagMeta = SupabaseDB["public"]["Tables"]["tag_meta"]["Row"]
 }

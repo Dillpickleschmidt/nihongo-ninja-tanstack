@@ -26,7 +26,10 @@ import type {
   ConjugatedWord,
   BlankableWord,
 } from "../src/features/sentence-practice/core/conjugation/types"
-import { combineConjugationTokens } from "../src/features/sentence-practice/kagome/utils/combineConjugationTokens"
+import type {
+  KagomeToken,
+  AnalysisResult,
+} from "../src/features/sentence-practice/kagome/types/kagome"
 
 // --- Types ---
 
@@ -48,19 +51,6 @@ interface Answer {
   honorificType?: string
 }
 
-interface KagomeToken {
-  id: number
-  start: number
-  end: number
-  surface: string
-  class: string
-  pos: string[]
-  base_form: string
-  reading: string
-  pronunciation: string
-  features: string[]
-}
-
 interface TokenizeRequest {
   sentence: string
   mode: string
@@ -68,15 +58,6 @@ interface TokenizeRequest {
 
 interface TokenizeResponse {
   tokens: KagomeToken[]
-}
-
-interface GrammarMatch {
-  pattern_name: string
-  confidence: number
-  start_char: number
-  end_char: number
-  category: "Construction" | "Conjugation"
-  conjugation_pattern: string
 }
 
 interface FileCache {
@@ -160,8 +141,9 @@ class KagomeServer {
 
 /**
  * Analyze grammar patterns using the CLI binary
+ * Returns combined tokens, grammar matches, and compound spans
  */
-function analyzeGrammar(tokens: KagomeToken[]): GrammarMatch[] {
+function analyzeGrammar(tokens: KagomeToken[]): AnalysisResult {
   try {
     const input = JSON.stringify(tokens)
     const output = execSync(GRAMMAR_CLI, {
@@ -172,7 +154,7 @@ function analyzeGrammar(tokens: KagomeToken[]): GrammarMatch[] {
     return JSON.parse(output)
   } catch (error) {
     console.error("  ✗ Grammar analysis failed:", error)
-    return []
+    return { tokens: [], grammar_matches: [], compound_spans: [] }
   }
 }
 
@@ -272,20 +254,13 @@ async function parseQuestionsFile(
     const text = segmentsToText(firstAnswer.segments, conjugationEngine)
 
     try {
-      const tokens = await kagome.tokenize(text)
+      const rawTokens = await kagome.tokenize(text)
 
-      // Analyze grammar patterns to detect conjugations
-      const grammarMatches = analyzeGrammar(tokens)
-
-      // Combine conjugation tokens (e.g., 飲み + ます → 飲みます)
-      const combinedTokens = combineConjugationTokens(
-        text,
-        tokens,
-        grammarMatches,
-      )
+      // Analyze with grammar CLI - returns combined tokens
+      const analysisResult = analyzeGrammar(rawTokens)
 
       // Store only POS arrays from combined tokens
-      question.modelAnswerPOS = combinedTokens.map((token) => token.pos)
+      question.modelAnswerPOS = analysisResult.tokens.map((token) => token.pos)
       parsedCount++
     } catch (error) {
       console.error(`  ✗ Error parsing "${text}": ${error}`)

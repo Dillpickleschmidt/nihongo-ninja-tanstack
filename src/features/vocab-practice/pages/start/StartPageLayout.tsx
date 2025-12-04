@@ -1,13 +1,13 @@
 // features/vocab-practice/components/pages/start-page/components/StartPageLayout.tsx
 import { Show, type JSX } from "solid-js"
-import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
+import { TextbookChapterBackgrounds } from "@/features/homepage/shared/components/TextbookChapterBackgrounds"
 import { BottomNav } from "@/features/navbar/BottomNav"
 import { StartPageHeader } from "./header/Header"
 import { StartPageButton } from "./StartPageButton"
 import { ReviewItemsList } from "./review/ReviewItemsList"
 import DependencyOverview from "./dependency/DependencyOverview"
 import { useRouteContext } from "@tanstack/solid-router"
-import { userDailyTimeQueryOptions } from "@/query/query-options"
+import { userDailyAggregatesQueryOptions } from "@/query/query-options"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { Route as RootRoute } from "@/routes/__root"
 import type { useStartPageLogic } from "./hooks/useStartPageLogic"
@@ -21,13 +21,15 @@ export function StartPageLayout(props: StartPageLayoutProps) {
   const context = useRouteContext({ from: RootRoute.id })
   const userId = context().user?.id
 
-  const todayTimeQuery = useCustomQuery(() =>
-    userDailyTimeQueryOptions(userId || null, new Date()),
+  const aggregatesQuery = useCustomQuery(() =>
+    userDailyAggregatesQueryOptions(userId || null),
   )
 
   const dailyProgressPercentage = () => {
     if (!userId) return 0
-    const minutesToday = Math.round((todayTimeQuery.data ?? 0) / 60)
+    const todayKey = new Date().toLocaleDateString("en-CA")
+    const secondsToday = aggregatesQuery.data?.[todayKey] ?? 0
+    const minutesToday = Math.round(secondsToday / 60)
     return Math.min(100, Math.round((minutesToday / 30) * 100))
   }
 
@@ -53,7 +55,7 @@ export function StartPageLayout(props: StartPageLayoutProps) {
   // Create FSRS map for ReviewItemsList
   const fsrsMap = () => {
     const map = new Map<string, any>()
-    const data = props.logic.fsrsCardsQuery.data
+    const data = props.logic.moduleFsrsCardsQuery.data
     if (!data) return map
     for (const card of data) {
       const key = `${card.type}:${card.practice_item_key}`
@@ -66,10 +68,9 @@ export function StartPageLayout(props: StartPageLayoutProps) {
     <div class="min-h-screen">
       <div class="fixed inset-0 -z-1">
         <TextbookChapterBackgrounds
-          textbook={props.logic.settingsQuery.data!["active-learning-path"]}
-          chapter={props.logic.settingsQuery.data!["active-chapter"]}
           showGradient={false}
-          blur="6px"
+          blur={6}
+          opacityOffset={-0.22}
         />
       </div>
 
@@ -82,7 +83,11 @@ export function StartPageLayout(props: StartPageLayoutProps) {
 
       <div class="px-4 pb-24">
         <div class="mx-auto max-w-3xl">
-          <DependencyOverview />
+          <DependencyOverview
+            moduleAllQuery={props.logic.moduleAllQuery}
+            fsrsCardsQuery={props.logic.moduleFsrsCardsQuery}
+            dueCardsQuery={props.logic.dueCardsQuery}
+          />
 
           <Show
             when={
@@ -97,7 +102,7 @@ export function StartPageLayout(props: StartPageLayoutProps) {
                 props.logic.setVisibleReviewCount((count) => count + 20)
               }
               fsrsMap={fsrsMap()}
-              isLoading={props.logic.fsrsCardsQuery.isPending}
+              isLoading={props.logic.moduleFsrsCardsQuery.isPending}
             />
           </Show>
         </div>

@@ -16,6 +16,9 @@ export default $config({
       SUPABASE_PUBLISHABLE_OR_ANON_KEY: new sst.Secret(
         "SUPABASE_PUBLISHABLE_OR_ANON_KEY",
       ),
+      ANILIST_CLIENT_ID: new sst.Secret("ANILIST_CLIENT_ID"),
+      ANILIST_CLIENT_SECRET: new sst.Secret("ANILIST_CLIENT_SECRET"),
+      MAL_CLIENT_ID: new sst.Secret("MAL_CLIENT_ID"),
     }
     const allSecrets = Object.values(secrets)
 
@@ -26,6 +29,8 @@ export default $config({
         VITE_SUPABASE_URL: secrets.SUPABASE_URL.value,
         VITE_SUPABASE_PUBLISHABLE_OR_ANON_KEY:
           secrets.SUPABASE_PUBLISHABLE_OR_ANON_KEY.value,
+        VITE_ANILIST_CLIENT_ID: secrets.ANILIST_CLIENT_ID.value,
+        VITE_MAL_CLIENT_ID: secrets.MAL_CLIENT_ID.value,
         VITE_APP_STAGE: $app.stage,
       },
       domain: {

@@ -1,10 +1,11 @@
-import { For, createMemo } from "solid-js"
+import { For, Show, createMemo } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { useLearningPath } from "../LearningPathContext"
 import {
   getModuleIcon,
   getModuleIconClasses,
-} from "@/features/learn-page/utils/loader-helpers"
+  type EnrichedLearningPathModule,
+} from "@/features/stats-page/loader-helpers"
 
 interface LearningPathCategorizedProps {
   lessonRefs?: (el: HTMLElement, index: number) => void
@@ -50,15 +51,18 @@ export function LearningPathCategorized(props: LearningPathCategorizedProps) {
 
   // Group lessons by type
   const groupedLessons = createMemo(() => {
-    const groups: Record<CategoryKey, ReturnType<typeof context.lessons>> = {
+    const groups: Record<CategoryKey, EnrichedLearningPathModule[]> = {
       vocabulary: [],
       lessons: [],
       grammar: [],
       other: [],
     }
 
-    context.lessons().forEach((lesson) => {
-      const lessonType = lesson.moduleType
+    const lessons = context.modules.data
+    if (!lessons) return groups
+
+    lessons.forEach((lesson) => {
+      const lessonType = lesson.source_type
       let found = false
 
       for (const [key, config] of Object.entries(categories)) {
@@ -79,13 +83,15 @@ export function LearningPathCategorized(props: LearningPathCategorizedProps) {
 
   // Create flattened list with indices for refs
   const flatLessons = createMemo(() => {
-    type Lesson = ReturnType<typeof context.lessons>[number]
     const flat: Array<{
-      lesson: Lesson
+      lesson: EnrichedLearningPathModule
       originalIndex: number
     }> = []
     let index = 0
-    context.lessons().forEach((lesson) => {
+    const lessons = context.modules.data
+    if (!lessons) return flat
+
+    lessons.forEach((lesson) => {
       flat.push({ lesson, originalIndex: index })
       index++
     })
@@ -93,86 +99,88 @@ export function LearningPathCategorized(props: LearningPathCategorizedProps) {
   })
 
   return (
-    <div class="px-4 pt-2 pb-4 md:px-6 md:pb-6">
-      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-        <For
-          each={
-            Object.entries(categories) as Array<[CategoryKey, CategoryConfig]>
-          }
-        >
-          {([categoryKey, categoryConfig]) => {
-            const lessons = () => groupedLessons()[categoryKey]
+    <Show when={context.modules.data && !context.modules.isPending}>
+      <div class="px-4 pt-2 pb-4 md:px-6 md:pb-6">
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <For
+            each={
+              Object.entries(categories) as Array<[CategoryKey, CategoryConfig]>
+            }
+          >
+            {([categoryKey, categoryConfig]) => {
+              const lessons = () => groupedLessons()[categoryKey]
 
-            return (
-              <div>
-                {/* Category Header */}
-                <div class="mb-4 flex items-center gap-2">
-                  {(() => {
-                    const HeaderIcon = getModuleIcon(
-                      categoryConfig.iconModuleType,
-                    )
-                    return (
-                      <HeaderIcon
-                        size="20px"
-                        class={getModuleIconClasses(
-                          categoryConfig.iconModuleType,
-                        )}
-                      />
-                    )
-                  })()}
-                  <h3 class="text-muted-foreground text-sm font-semibold">
-                    {categoryConfig.title}
-                  </h3>
-                </div>
-
-                {/* Vertical List */}
-                <div class="space-y-3">
-                  <For each={lessons()}>
-                    {(lesson) => {
-                      const flatItem = flatLessons().find(
-                        (f) => f.lesson.href === lesson.href,
+              return (
+                <div>
+                  {/* Category Header */}
+                  <div class="mb-4 flex items-center gap-2">
+                    {(() => {
+                      const HeaderIcon = getModuleIcon(
+                        categoryConfig.iconModuleType,
                       )
-                      const originalIndex = flatItem?.originalIndex ?? 0
-                      const ModuleIcon = getModuleIcon(lesson.moduleType)
-
                       return (
-                        <Link
-                          to={lesson.href}
-                          ref={(el) => props.lessonRefs?.(el, originalIndex)}
-                          class={`block transition-colors ${
-                            props.blinkingLessonIndex === originalIndex
-                              ? "animate-pulse"
-                              : ""
-                          }`}
-                        >
-                          <div
-                            class={`text-sm ${
-                              context.isLessonCompleted(lesson.href)
-                                ? "text-green-500"
-                                : "ease-instant-hover-200 text-white hover:text-neutral-300"
+                        <HeaderIcon
+                          size="20px"
+                          class={getModuleIconClasses(
+                            categoryConfig.iconModuleType,
+                          )}
+                        />
+                      )
+                    })()}
+                    <h3 class="text-muted-foreground text-sm font-semibold">
+                      {categoryConfig.title}
+                    </h3>
+                  </div>
+
+                  {/* Vertical List */}
+                  <div class="space-y-3">
+                    <For each={lessons()}>
+                      {(lesson) => {
+                        const flatItem = flatLessons().find(
+                          (f) => f.lesson.linkTo === lesson.linkTo,
+                        )
+                        const originalIndex = flatItem?.originalIndex ?? 0
+                        const ModuleIcon = getModuleIcon(lesson.source_type)
+
+                        return (
+                          <Link
+                            to={lesson.linkTo}
+                            ref={(el) => props.lessonRefs?.(el, originalIndex)}
+                            class={`block transition-colors ${
+                              props.blinkingLessonIndex === originalIndex
+                                ? "animate-pulse"
+                                : ""
                             }`}
                           >
-                            <div class="flex items-center gap-2">
-                              <ModuleIcon
-                                size="16px"
-                                class={lesson.iconClasses}
-                              />
-                              <span>{lesson.title}</span>
+                            <div
+                              class={`text-sm ${
+                                context.isLessonCompleted(lesson.linkTo)
+                                  ? "text-green-500"
+                                  : "ease-instant-hover-200 text-white hover:text-neutral-300"
+                              }`}
+                            >
+                              <div class="flex items-center gap-2">
+                                <ModuleIcon
+                                  size="16px"
+                                  class={lesson.iconClasses}
+                                />
+                                <span>{lesson.title}</span>
+                              </div>
+                              <p class="text-muted-foreground/60 mt-1 text-xs">
+                                {originalIndex + 1}. Description coming soon
+                              </p>
                             </div>
-                            <p class="text-muted-foreground/60 mt-1 text-xs">
-                              {originalIndex + 1}. Description coming soon
-                            </p>
-                          </div>
-                        </Link>
-                      )
-                    }}
-                  </For>
+                          </Link>
+                        )
+                      }}
+                    </For>
+                  </div>
                 </div>
-              </div>
-            )
-          }}
-        </For>
+              )
+            }}
+          </For>
+        </div>
       </div>
-    </div>
+    </Show>
   )
 }

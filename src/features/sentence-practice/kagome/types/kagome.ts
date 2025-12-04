@@ -20,15 +20,32 @@ export interface KagomeToken {
 }
 
 /**
- * Grammar pattern match from analysis
+ * Pattern match from grammar analysis
  */
-export interface GrammarMatch {
+export interface PatternMatch {
   readonly pattern_name: string
   readonly confidence: number
   readonly start_char: number
   readonly end_char: number
   readonly category: "Construction" | "Conjugation"
-  readonly conjugation_pattern: string
+}
+
+/**
+ * Compound span (e.g., compound verbs like 目が覚める)
+ */
+export interface CompoundSpan {
+  readonly start: number // token index (inclusive)
+  readonly end: number // token index (inclusive)
+  readonly text: string // dictionary form
+}
+
+/**
+ * Result from WASM analyze() - combined tokens, grammar matches, and compound spans
+ */
+export interface AnalysisResult {
+  readonly tokens: KagomeToken[]
+  readonly grammar_matches: PatternMatch[]
+  readonly compound_spans: CompoundSpan[]
 }
 
 /**

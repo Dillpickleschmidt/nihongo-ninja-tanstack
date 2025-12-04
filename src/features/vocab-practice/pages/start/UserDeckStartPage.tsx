@@ -1,61 +1,61 @@
-// features/vocab-practice/components/pages/start-page/components/UserDeckStartPage.tsx
+// features/vocab-practice/pages/start/UserDeckStartPage.tsx
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import {
   userDeckInfoQueryOptions,
   userDeckVocabularyQueryOptions,
-  userDeckHierarchyQueryOptions,
+  userDeckAllQueryOptions,
 } from "@/query/query-options"
 import { useVocabPracticeContext } from "@/features/vocab-practice/context/VocabPracticeContext"
 import { useStartPageLogic } from "./hooks/useStartPageLogic"
 import { StartPageLayout } from "./StartPageLayout"
 
 export function UserDeckStartPage() {
-  const { deckId, mode, activeService, settingsQuery, queryClient } =
+  const { deckId, mode, activeService, prerequisitesEnabled, queryClient } =
     useVocabPracticeContext()
 
   const deckInfoQuery = useCustomQuery(() => userDeckInfoQueryOptions(deckId!))
 
+  // Fetch vocabulary first
   const deckVocabularyQuery = useCustomQuery(() =>
     userDeckVocabularyQueryOptions(deckId!),
   )
 
-  const deckHierarchyQuery = useCustomQuery(() => {
+  // Combined query depends on vocabulary being available
+  const deckAllQuery = useCustomQuery(() => {
     const vocabData = deckVocabularyQuery.data
     if (!vocabData) {
       return {
-        queryKey: ["disabled-deck-hierarchy"] as const,
-        queryFn: () =>
-          Promise.resolve({ vocabulary: [], kanji: [], radicals: [] }),
+        queryKey: ["disabled-deck-all"] as const,
+        queryFn: () => Promise.resolve(null),
         enabled: false,
       }
     }
 
-    return userDeckHierarchyQueryOptions(
+    return userDeckAllQueryOptions(
       deckId!,
       vocabData,
       mode,
-      settingsQuery.data!["override-settings"],
       activeService() !== "local",
+      prerequisitesEnabled(),
     )
   })
 
   const logic = useStartPageLogic({
-    queries: {
-      vocabularyQuery: deckVocabularyQuery,
-      hierarchyQuery: deckHierarchyQuery,
-      metadataQuery: deckInfoQuery,
-    },
+    moduleAllQuery: deckAllQuery,
+    metadataQuery: deckInfoQuery,
     getDeckName: () => deckInfoQuery.data?.deck_name || "Loading...",
     onStart: async () => {
-      const vocab = deckVocabularyQuery.data!
+      const vocab = await queryClient.ensureQueryData(
+        userDeckVocabularyQueryOptions(deckId!),
+      )
 
       await queryClient.ensureQueryData(
-        userDeckHierarchyQueryOptions(
+        userDeckAllQueryOptions(
           deckId!,
           vocab,
           mode,
-          settingsQuery.data!["override-settings"],
           activeService() !== "local",
+          prerequisitesEnabled(),
         ),
       )
     },

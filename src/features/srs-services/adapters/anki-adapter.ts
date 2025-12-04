@@ -6,7 +6,7 @@ import {
   getWeekSeenCards,
   extractJapaneseTextFromCard,
 } from "@/features/service-api-functions/anki/anki-connect-client"
-import { isKanji } from "@/data/wanikani/hierarchy-builder"
+import { containsKanji } from "@/data/utils/text/japanese"
 import type {
   SRSServiceAdapter,
   DueCard,
@@ -40,7 +40,7 @@ export class AnkiAdapter implements SRSServiceAdapter {
       const japaneseText = extractJapaneseTextFromCard(card)
       if (!japaneseText) continue
 
-      const isKanjiCard = japaneseText.length === 1 && isKanji(japaneseText)
+      const isKanjiCard = japaneseText.length === 1 && containsKanji(japaneseText)
 
       if (isKanjiCard) {
         meaningsBreakdown.kanji++
@@ -105,7 +105,7 @@ export class AnkiAdapter implements SRSServiceAdapter {
       if (!japaneseText) continue
 
       // Single kanji character = kanji, otherwise = vocab
-      if (japaneseText.length === 1 && isKanji(japaneseText)) {
+      if (japaneseText.length === 1 && containsKanji(japaneseText)) {
         kanjiCount++
       } else {
         vocabCount++
@@ -120,7 +120,7 @@ export class AnkiAdapter implements SRSServiceAdapter {
       if (!japaneseText) continue
 
       // Single kanji character = kanji, otherwise = vocab
-      if (japaneseText.length === 1 && isKanji(japaneseText)) {
+      if (japaneseText.length === 1 && containsKanji(japaneseText)) {
         kanjiWeekCount++
       } else {
         vocabWeekCount++

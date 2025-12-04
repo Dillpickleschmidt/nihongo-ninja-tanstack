@@ -1,4 +1,4 @@
-import { getVocabSets } from "@/data/utils/vocab"
+import { getCoreVocabularySets } from "@/features/supabase/db/core-vocab"
 import { getFSRSCards, type FSRSCardData } from "@/features/supabase/db/fsrs"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import type { VocabModuleProgress } from "@/query/query-options"
@@ -21,7 +21,7 @@ export async function fetchVocabSetsForModules(
   if (allVocabSetIds.size === 0) return new Map()
 
   // Fetch all vocabulary sets in a single query
-  const vocabSets = await getVocabSets({ data: Array.from(allVocabSetIds) })
+  const vocabSets = await getCoreVocabularySets(Array.from(allVocabSetIds))
   return new Map(Object.entries(vocabSets))
 }
 
@@ -142,7 +142,7 @@ export async function buildModuleProgressMap(
   }
 
   // Fetch all FSRS cards
-  const fsrsCards = await getFSRSCards(userId, Array.from(allVocabKeys))
+  const fsrsCards = await getFSRSCards(userId, Array.from(allVocabKeys), "meanings", "vocabulary")
   const fsrsCardIndex = buildFSRSCardIndex(fsrsCards)
 
   // Calculate progress for each module

@@ -4,7 +4,7 @@ import { external_resources } from "@/data/external_resources"
 import ContentBox from "@/components/ContentBox"
 import { useCustomQuery } from "@/hooks/useCustomQuery"
 import { userSettingsQueryOptions } from "@/query/query-options"
-import { TextbookChapterBackgrounds } from "@/features/learn-page/components/shared/TextbookChapterBackgrounds"
+import { TextbookChapterBackgrounds } from "@/features/homepage/shared/components/TextbookChapterBackgrounds"
 
 export const Route = createFileRoute("/external-resources/$resource")({
   loader: async ({ context }) => {

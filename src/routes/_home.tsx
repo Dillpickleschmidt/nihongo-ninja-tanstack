@@ -1,32 +1,72 @@
-import { BottomNav } from "@/features/navbar/BottomNav"
-import { createFileRoute, Outlet, useRouteContext } from "@tanstack/solid-router"
-import { userDailyTimeQueryOptions } from "@/query/query-options"
-import { useCustomQuery } from "@/hooks/useCustomQuery"
+import {
+  createFileRoute,
+  Outlet,
+  useRouteContext,
+} from "@tanstack/solid-router"
 import { Route as RootRoute } from "@/routes/__root"
+import { useCustomQuery } from "@/hooks/useCustomQuery"
+import {
+  userDailyAggregatesQueryOptions,
+  backgroundSettingsQueryOptions,
+  bottomNavClassQueryOptions,
+} from "@/query/query-options"
+import { BottomNav } from "@/features/navbar/BottomNav"
+import { TextbookChapterBackgrounds } from "@/features/homepage/shared/components/TextbookChapterBackgrounds"
+import { queryKeys } from "@/query/utils/query-keys"
 
 export const Route = createFileRoute("/_home")({
+  loader: ({ context }) => {
+    context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+      blur: 16,
+      backgroundOpacityOffset: 0,
+      showGradient: true,
+    })
+    context.queryClient.setQueryData(queryKeys.bottomNavClass(), "")
+  },
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  return <Home />
+}
+
+function Home() {
   const context = useRouteContext({ from: RootRoute.id })
   const userId = context().user?.id
 
-  const todayTimeQuery = useCustomQuery(() =>
-    userDailyTimeQueryOptions(userId || null, new Date()),
+  const aggregatesQuery = useCustomQuery(() =>
+    userDailyAggregatesQueryOptions(userId || null),
   )
+
+  const backgroundQuery = useCustomQuery(() => backgroundSettingsQueryOptions())
+  const bottomNavQuery = useCustomQuery(() => bottomNavClassQueryOptions())
+
+  const bottomNavClass = () => bottomNavQuery.data ?? ""
 
   const dailyProgressPercentage = () => {
     if (!userId) return 0
-    const minutesToday = Math.round((todayTimeQuery.data ?? 0) / 60)
+
+    // Calculate today in user's local timezone
+    const todayKey = new Date().toLocaleDateString("en-CA") // en-CA is YYYY-MM-DD
+    const secondsToday = aggregatesQuery.data?.[todayKey] ?? 0
+    const minutesToday = Math.round(secondsToday / 60)
     return Math.min(100, Math.round((minutesToday / 30) * 100))
   }
 
   return (
     <>
+      <TextbookChapterBackgrounds
+        userId={userId}
+        opacityOffset={backgroundQuery.data!.backgroundOpacityOffset}
+        blur={backgroundQuery.data!.blur}
+        showGradient={backgroundQuery.data!.showGradient}
+      />
       <Outlet />
       <div class="fixed bottom-0">
-        <BottomNav dailyProgressPercentage={dailyProgressPercentage()} />
+        <BottomNav
+          class={bottomNavClass()}
+          dailyProgressPercentage={dailyProgressPercentage()}
+        />
       </div>
     </>
   )

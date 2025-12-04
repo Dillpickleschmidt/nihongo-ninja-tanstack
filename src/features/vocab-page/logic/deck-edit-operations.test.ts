@@ -23,11 +23,11 @@ import {
 
 // Mock data helpers
 const createMockDeck = (
-  id: number,
+  id: string | number,
   name: string,
   folderId: number | null = null,
 ): UserDeck => ({
-  deck_id: id,
+  deck_id: String(id),
   deck_name: name,
   deck_description: null,
   original_deck_id: null,
@@ -35,6 +35,7 @@ const createMockDeck = (
   source: "built-in",
   user_id: "test-user",
   created_at: new Date().toISOString(),
+  allowed_practice_modes: ["meanings", "spellings"],
 })
 
 const createMockFolder = (
@@ -112,7 +113,7 @@ describe("deck-edit-operations", () => {
     })
 
     it("allows renaming deck to same name (excludes self)", () => {
-      const result = validateDeckNameUnique("Deck Two", 1, decks, 2)
+      const result = validateDeckNameUnique("Deck Two", 1, decks, "2")
       expect(result.isValid).toBe(true)
     })
 
@@ -232,13 +233,13 @@ describe("deck-edit-operations", () => {
     it("returns decks in folder and descendants", () => {
       const result = getDecksInFolderTree(1, folders, decks)
       const deckIds = result.map((d) => d.deck_id).sort()
-      expect(deckIds).toEqual([2, 3, 4])
+      expect(deckIds).toEqual(["2", "3", "4"])
     })
 
     it("returns only decks in specific folder when no descendants", () => {
       const result = getDecksInFolderTree(2, folders, decks)
       const deckIds = result.map((d) => d.deck_id)
-      expect(deckIds).toEqual([4])
+      expect(deckIds).toEqual(["4"])
     })
   })
 
@@ -252,41 +253,41 @@ describe("deck-edit-operations", () => {
     it("updates deck name successfully", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { name: "New Name" },
       }
 
       const result = applyUpdateDeck(folders, decks, operation)
       expect(result.success).toBe(true)
       expect(
-        result.newState!.decks.find((d) => d.deck_id === 1)!.deck_name,
+        result.newState!.decks.find((d) => d.deck_id === "1")!.deck_name,
       ).toBe("New Name")
     })
 
     it("updates deck folder successfully", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { folderId: 1 },
       }
 
       const result = applyUpdateDeck(folders, decks, operation)
       expect(result.success).toBe(true)
       expect(
-        result.newState!.decks.find((d) => d.deck_id === 1)!.folder_id,
+        result.newState!.decks.find((d) => d.deck_id === "1")!.folder_id,
       ).toBe(1)
     })
 
     it("updates both name and folder", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { name: "New Name", folderId: 1 },
       }
 
       const result = applyUpdateDeck(folders, decks, operation)
       expect(result.success).toBe(true)
-      const updatedDeck = result.newState!.decks.find((d) => d.deck_id === 1)!
+      const updatedDeck = result.newState!.decks.find((d) => d.deck_id === "1")!
       expect(updatedDeck.deck_name).toBe("New Name")
       expect(updatedDeck.folder_id).toBe(1)
     })
@@ -294,7 +295,7 @@ describe("deck-edit-operations", () => {
     it("fails for nonexistent deck", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
-        deckId: 999,
+        deckId: "999",
         updates: { name: "New Name" },
       }
 
@@ -306,7 +307,7 @@ describe("deck-edit-operations", () => {
     it("fails for invalid name", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { name: "" },
       }
 
@@ -318,7 +319,7 @@ describe("deck-edit-operations", () => {
     it("fails for duplicate name in same folder", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { name: "Deck Two", folderId: 1 },
       }
 
@@ -332,7 +333,7 @@ describe("deck-edit-operations", () => {
     it("fails for nonexistent target folder", () => {
       const operation: UpdateDeckOperation = {
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { folderId: 999 },
       }
 
@@ -401,14 +402,14 @@ describe("deck-edit-operations", () => {
     it("deletes deck successfully", () => {
       const operation: DeleteDeckOperation = {
         type: "delete-deck",
-        deckId: 1,
+        deckId: "1",
       }
 
       const result = applyDeleteDeck(folders, decks, operation)
       expect(result.success).toBe(true)
       expect(result.newState!.decks).toHaveLength(1)
       expect(
-        result.newState!.decks.find((d) => d.deck_id === 1),
+        result.newState!.decks.find((d) => d.deck_id === "1"),
       ).toBeUndefined()
     })
   })
@@ -441,8 +442,8 @@ describe("deck-edit-operations", () => {
       expect(result.newState!.folders[0].folder_id).toBe(1)
 
       // Decks should be moved to parent (folder 1)
-      const deck2 = result.newState!.decks.find((d) => d.deck_id === 2)!
-      const deck3 = result.newState!.decks.find((d) => d.deck_id === 3)!
+      const deck2 = result.newState!.decks.find((d) => d.deck_id === "2")!
+      const deck3 = result.newState!.decks.find((d) => d.deck_id === "3")!
       expect(deck2.folder_id).toBe(1) // Moved from folder 2 to its parent (1)
       expect(deck3.folder_id).toBe(1) // Moved from folder 3 to root's parent (1)
     })
@@ -465,7 +466,7 @@ describe("deck-edit-operations", () => {
       const remainingDeckIds = result
         .newState!.decks.map((d) => d.deck_id)
         .sort()
-      expect(remainingDeckIds).toEqual([1, 4]) // Deck 1 (in folder 1) and Deck 4 (no folder)
+      expect(remainingDeckIds).toEqual(["1", "4"]) // Deck 1 (in folder 1) and Deck 4 (no folder)
     })
 
     it("fails for nonexistent folder", () => {
@@ -488,7 +489,7 @@ describe("deck-edit-operations", () => {
     it("delegates to correct operation handler", () => {
       const updateOperation: UpdateDeckOperation = {
         type: "update-deck",
-        deckId: 1,
+        deckId: "1",
         updates: { name: "New Name" },
       }
 

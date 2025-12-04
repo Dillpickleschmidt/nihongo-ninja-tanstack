@@ -4,10 +4,11 @@ import { createEmptyCard, Rating, State } from "ts-fsrs"
 import type { VocabularyItem } from "@/data/types"
 import type {
   VocabHierarchy,
-  VocabEntry,
+  VocabRelationship,
+  KanjiRelationship,
   KanjiEntry,
   RadicalEntry,
-} from "@/data/wanikani/hierarchy-builder"
+} from "@/features/resolvers/util/hierarchy-builder"
 import type { FSRSCardData } from "@/features/supabase/db/fsrs"
 
 // Mock resolvers to prevent server function imports
@@ -18,7 +19,10 @@ vi.mock("@/features/resolvers/kanji", () => ({
   getKanjiDetails: vi.fn(),
 }))
 
-import { initializePracticeSession } from "./data-initialization"
+import {
+  initializePracticeSession,
+  type PracticeItemData,
+} from "./data-initialization"
 
 // --- Mock Data Factory Functions ---
 // These are used to consistently build the base test data structures.
@@ -43,12 +47,20 @@ const createMockKanji = (
   reading_mnemonic: `Mnemonic for ${kanji} reading`,
 })
 
-const createMockVocab = (
+const createMockVocabRelationship = (
   word: string,
   kanjiComponents: string[],
-): VocabEntry => ({
+): VocabRelationship => ({
   word,
   kanjiComponents,
+})
+
+const createMockKanjiRelationship = (
+  kanji: string,
+  radicalComponents: string[],
+): KanjiRelationship => ({
+  kanji,
+  radicalComponents,
 })
 
 // --- Data for FSRS Card Creation ---
@@ -58,6 +70,7 @@ const createMockFSRSCard = (
   type: "vocabulary" | "kanji" | "radical",
   state: State = State.New,
 ): FSRSCardData => ({
+  user_id: "test-user",
   practice_item_key: key,
   fsrs_card: { ...createEmptyCard(new Date()), state },
   mode,
@@ -82,13 +95,15 @@ const createMockFSRSCard = (
 })
 
 // --- Core Mock Data Definitions ---
-const mockRadicals: RadicalEntry[] = [
+
+// Display data (for PracticeItemData)
+const mockRadicalEntries: RadicalEntry[] = [
   createMockRadical("人", ["person", "human"]),
   createMockRadical("口", ["mouth"]),
   createMockRadical("水", ["water"]),
 ]
 
-const mockKanji: KanjiEntry[] = [
+const mockKanjiEntries: KanjiEntry[] = [
   createMockKanji("食", ["food", "meal"], ["人", "口"]),
   createMockKanji("飲", ["drink"], ["水"]),
   createMockKanji("見", ["see", "look"], ["人"]),
@@ -96,16 +111,25 @@ const mockKanji: KanjiEntry[] = [
   createMockKanji("真", ["true", "reality"], []),
 ]
 
-const mockVocabHierarchy: VocabEntry[] = [
-  createMockVocab("食べる", ["食"]),
-  createMockVocab("飲む", ["飲"]),
-  createMockVocab("見る", ["見"]),
+// Hierarchy relationships (lightweight)
+const mockVocabRelationships: VocabRelationship[] = [
+  createMockVocabRelationship("食べる", ["食"]),
+  createMockVocabRelationship("飲む", ["飲"]),
+  createMockVocabRelationship("見る", ["見"]),
+]
+
+const mockKanjiRelationships: KanjiRelationship[] = [
+  createMockKanjiRelationship("食", ["人", "口"]),
+  createMockKanjiRelationship("飲", ["水"]),
+  createMockKanjiRelationship("見", ["人"]),
+  createMockKanjiRelationship("写", []),
+  createMockKanjiRelationship("真", []),
 ]
 
 const mockHierarchy: VocabHierarchy = {
-  vocabulary: mockVocabHierarchy,
-  kanji: mockKanji,
-  radicals: mockRadicals,
+  vocabulary: mockVocabRelationships,
+  kanji: mockKanjiRelationships,
+  radicals: ["人", "口", "水"], // Just the radical characters
 }
 
 const mockVocabularyItems: VocabularyItem[] = [
@@ -121,6 +145,32 @@ const mockVocabularyItems: VocabularyItem[] = [
   { word: "写", furigana: "写", english: ["copy", "be photographed"] },
   { word: "真", furigana: "真", english: ["true", "reality"] },
 ]
+
+// Helper to create moduleData
+const createModuleData = (
+  vocabulary: VocabularyItem[] = mockVocabularyItems,
+  kanji: KanjiEntry[] = mockKanjiEntries,
+  radicals: RadicalEntry[] = mockRadicalEntries,
+  fsrsCards: FSRSCardData[] = [],
+): PracticeItemData => ({
+  vocabulary,
+  kanji,
+  radicals,
+  fsrsCards,
+})
+
+// Helper to create nonModuleData
+const createNonModuleData = (
+  vocabulary: VocabularyItem[] = [],
+  kanji: KanjiEntry[] = [],
+  radicals: RadicalEntry[] = [],
+  fsrsCards: FSRSCardData[] = [],
+): PracticeItemData => ({
+  vocabulary,
+  kanji,
+  radicals,
+  fsrsCards,
+})
 
 // --- Global Mocks for WaniKani Utils ---
 vi.mock("@/data/wanikani/utils", () => {
@@ -198,15 +248,12 @@ describe("Data Initialization", () => {
     vi.clearAllMocks()
   })
   describe("hierarchy processing and card creation", () => {
-    it("should create cards for all hierarchy items with correct keys and types", async () => {
-      const result = await initializePracticeSession(
+    it("should create cards for all hierarchy items with correct keys and types", () => {
+      const result = initializePracticeSession(
         mockHierarchy,
-        [],
-        [],
+        createModuleData(),
+        createNonModuleData(),
         "meanings",
-        mockVocabularyItems,
-        false, // flipVocabQA
-        false, // flipKanjiRadicalQA
         false, // shuffle
         true, // enablePrerequisites
       )
@@ -241,19 +288,16 @@ describe("Data Initialization", () => {
       )
     })
 
-    it("should handle duplicate keys between module and due cards correctly", async () => {
+    it("should handle duplicate keys between module and due cards correctly", () => {
       const duplicateDueCards: FSRSCardData[] = [
         createMockFSRSCard("食べる", "meanings", "vocabulary"),
       ]
 
-      const result = await initializePracticeSession(
+      const result = initializePracticeSession(
         mockHierarchy,
-        [],
-        duplicateDueCards,
+        createModuleData(),
+        createNonModuleData(mockVocabularyItems, [], [], duplicateDueCards),
         "meanings",
-        mockVocabularyItems,
-        false,
-        false,
         false,
         true,
       )
@@ -265,20 +309,17 @@ describe("Data Initialization", () => {
       expect(result.reviewQueue).not.toContain("vocabulary:食べる")
     })
 
-    it("should process standalone due review cards", async () => {
+    it("should process standalone due review cards", () => {
       const mockDueFSRSCards: FSRSCardData[] = [
         createMockFSRSCard("due1", "meanings", "vocabulary"),
         createMockFSRSCard("due2", "meanings", "vocabulary"),
       ]
 
-      const result = await initializePracticeSession(
+      const result = initializePracticeSession(
         mockHierarchy,
-        [],
-        mockDueFSRSCards,
+        createModuleData(),
+        createNonModuleData(mockVocabularyItems, [], [], mockDueFSRSCards),
         "meanings",
-        mockVocabularyItems,
-        false,
-        false,
         false,
         true,
       )
@@ -296,15 +337,12 @@ describe("Data Initialization", () => {
   })
 
   describe("dependency management", () => {
-    it("should build correct dependency relationships", async () => {
-      const result = await initializePracticeSession(
+    it("should build correct dependency relationships", () => {
+      const result = initializePracticeSession(
         mockHierarchy,
-        [],
-        [],
+        createModuleData(),
+        createNonModuleData(),
         "meanings",
-        mockVocabularyItems,
-        false,
-        false,
         false,
         true,
       )
@@ -327,15 +365,12 @@ describe("Data Initialization", () => {
       )
     })
 
-    it("should lock cards with dependencies and unlock cards without", async () => {
-      const result = await initializePracticeSession(
+    it("should lock cards with dependencies and unlock cards without", () => {
+      const result = initializePracticeSession(
         mockHierarchy,
-        [],
-        [],
+        createModuleData(),
+        createNonModuleData(),
         "meanings",
-        mockVocabularyItems,
-        false,
-        false,
         false,
         true,
       )
@@ -368,11 +403,13 @@ describe("Data Initialization", () => {
     })
   })
   describe("edge cases", () => {
-    it("should handle various edge scenarios", async () => {
+    it("should handle various edge scenarios", () => {
       const edgeCases = [
         {
           name: "empty hierarchy",
           hierarchy: { vocabulary: [], kanji: [], radicals: [] },
+          moduleData: createModuleData([], [], []),
+          nonModuleData: createNonModuleData(),
           expectation: (result: any) => {
             expect(result.cardMap.size).toBe(0)
             expect(result.moduleQueue).toHaveLength(0)
@@ -384,8 +421,10 @@ describe("Data Initialization", () => {
           hierarchy: {
             vocabulary: [],
             kanji: [],
-            radicals: mockRadicals,
+            radicals: ["人", "口", "水"],
           },
+          moduleData: createModuleData([], [], mockRadicalEntries),
+          nonModuleData: createNonModuleData(),
           expectation: (result: any) => {
             expect(result.cardMap.size).toBe(3)
             expect(result.moduleQueue).toHaveLength(3)
@@ -395,7 +434,13 @@ describe("Data Initialization", () => {
         {
           name: "only due cards",
           hierarchy: { vocabulary: [], kanji: [], radicals: [] },
-          dueCards: [createMockFSRSCard("due1", "meanings", "vocabulary")],
+          moduleData: createModuleData([], [], []),
+          nonModuleData: createNonModuleData(
+            mockVocabularyItems,
+            [],
+            [],
+            [createMockFSRSCard("due1", "meanings", "vocabulary")],
+          ),
           expectation: (result: any) => {
             expect(result.cardMap.size).toBe(1)
             expect(result.reviewQueue).toContain("vocabulary:due1")
@@ -406,15 +451,17 @@ describe("Data Initialization", () => {
         },
       ]
 
-      for (const { hierarchy, dueCards = [], expectation } of edgeCases) {
-        const result = await initializePracticeSession(
+      for (const {
+        hierarchy,
+        moduleData,
+        nonModuleData,
+        expectation,
+      } of edgeCases) {
+        const result = initializePracticeSession(
           hierarchy as VocabHierarchy,
-          [],
-          dueCards,
+          moduleData,
+          nonModuleData,
           "meanings",
-          mockVocabularyItems,
-          false,
-          false,
           false,
           true,
         )
@@ -424,20 +471,22 @@ describe("Data Initialization", () => {
   })
 
   describe("FSRS data handling", () => {
-    it("should preserve and filter FSRS data correctly", async () => {
+    it("should preserve and filter FSRS data correctly", () => {
       const mockModuleFSRSCards: FSRSCardData[] = [
         createMockFSRSCard("食べる", "meanings", "vocabulary", State.Review),
         createMockFSRSCard("食", "meanings", "kanji", State.New),
       ]
 
-      const result = await initializePracticeSession(
+      const result = initializePracticeSession(
         mockHierarchy,
-        mockModuleFSRSCards,
-        [],
+        createModuleData(
+          mockVocabularyItems,
+          mockKanjiEntries,
+          mockRadicalEntries,
+          mockModuleFSRSCards,
+        ),
+        createNonModuleData(),
         "meanings",
-        mockVocabularyItems,
-        false,
-        false,
         false,
         true,
       )
@@ -451,7 +500,7 @@ describe("Data Initialization", () => {
       expect(kanjiCard?.fsrs.logs).toHaveLength(0)
     })
 
-    it("should filter incoming FSRS data by the current session mode", async () => {
+    it("should filter incoming FSRS data by the current session mode", () => {
       const mixedModeFSRSCards: FSRSCardData[] = [
         createMockFSRSCard("食べる", "meanings", "vocabulary"),
         createMockFSRSCard("食べる", "spellings", "vocabulary"),
@@ -464,14 +513,16 @@ describe("Data Initialization", () => {
       mixedModeFSRSCards[2].fsrs_card.stability = 20
       mixedModeFSRSCards[3].fsrs_card.stability = 60
 
-      const result = await initializePracticeSession(
+      const result = initializePracticeSession(
         mockHierarchy,
-        mixedModeFSRSCards,
-        [],
+        createModuleData(
+          mockVocabularyItems,
+          mockKanjiEntries,
+          mockRadicalEntries,
+          mixedModeFSRSCards,
+        ),
+        createNonModuleData(),
         "meanings",
-        mockVocabularyItems,
-        false,
-        false,
         false,
         true,
       )
@@ -482,47 +533,15 @@ describe("Data Initialization", () => {
       expect(vocabCard?.fsrs.card.stability).toBe(10)
       expect(kanjiCard?.fsrs.card.stability).toBe(20)
     })
-
-    it("should handle null/undefined logs gracefully", async () => {
-      const mockDueFSRSCards: FSRSCardData[] = [
-        {
-          ...createMockFSRSCard("due1", "meanings", "vocabulary"),
-          fsrs_logs: null,
-        },
-        {
-          ...createMockFSRSCard("due2", "meanings", "vocabulary"),
-          fsrs_logs: undefined,
-        },
-      ]
-
-      const result = await initializePracticeSession(
-        mockHierarchy,
-        [],
-        mockDueFSRSCards,
-        "meanings",
-        mockVocabularyItems,
-        false,
-        false,
-        false,
-        true,
-      )
-
-      const card1 = result.cardMap.get("vocabulary:due1")
-      const card2 = result.cardMap.get("vocabulary:due2")
-
-      expect(card1?.fsrs.logs).toBeDefined()
-      expect(card1?.fsrs.logs).toHaveLength(0)
-      expect(card2?.fsrs.logs).toBeDefined()
-      expect(card2?.fsrs.logs).toHaveLength(0)
-    })
   })
 
   describe("session style assignment", () => {
-    it("should assign correct session styles based on card state and type", async () => {
+    it("should assign correct session styles based on card state and type", () => {
       const testCases = [
         {
           name: "new module cards get multiple-choice or introduction",
-          fsrsCards: [],
+          moduleData: createModuleData(),
+          nonModuleData: createNonModuleData(),
           expectations: [
             { key: "vocabulary:食べる", style: "multiple-choice" },
             { key: "kanji:食", style: "introduction" },
@@ -531,42 +550,54 @@ describe("Data Initialization", () => {
         },
         {
           name: "core vocab in review state stays multiple-choice",
-          fsrsCards: [
-            createMockFSRSCard(
-              "食べる",
-              "meanings",
-              "vocabulary",
-              State.Review,
-            ),
-          ],
+          moduleData: createModuleData(
+            mockVocabularyItems,
+            mockKanjiEntries,
+            mockRadicalEntries,
+            [
+              createMockFSRSCard(
+                "食べる",
+                "meanings",
+                "vocabulary",
+                State.Review,
+              ),
+            ],
+          ),
+          nonModuleData: createNonModuleData(),
           expectations: [
             { key: "vocabulary:食べる", style: "multiple-choice" },
           ],
         },
         {
           name: "dependency cards in review state become flashcard",
-          fsrsCards: [
-            createMockFSRSCard("食", "meanings", "kanji", State.Review),
-          ],
+          moduleData: createModuleData(
+            mockVocabularyItems,
+            mockKanjiEntries,
+            mockRadicalEntries,
+            [createMockFSRSCard("食", "meanings", "kanji", State.Review)],
+          ),
+          nonModuleData: createNonModuleData(),
           expectations: [{ key: "kanji:食", style: "flashcard" }],
         },
         {
           name: "due review cards are flashcard",
-          fsrsCards: [],
-          dueFsrsCards: [createMockFSRSCard("due1", "meanings", "vocabulary")],
+          moduleData: createModuleData(),
+          nonModuleData: createNonModuleData(
+            mockVocabularyItems,
+            [],
+            [],
+            [createMockFSRSCard("due1", "meanings", "vocabulary")],
+          ),
           expectations: [{ key: "vocabulary:due1", style: "flashcard" }],
         },
       ]
 
-      for (const { fsrsCards, dueFsrsCards = [], expectations } of testCases) {
-        const result = await initializePracticeSession(
+      for (const { moduleData, nonModuleData, expectations } of testCases) {
+        const result = initializePracticeSession(
           mockHierarchy,
-          fsrsCards,
-          dueFsrsCards,
+          moduleData,
+          nonModuleData,
           "meanings",
-          mockVocabularyItems,
-          false,
-          false,
           false,
           true,
         )
@@ -579,15 +610,12 @@ describe("Data Initialization", () => {
   })
 
   describe("queue initialization", () => {
-    it("should initialize queues correctly", async () => {
-      const result = await initializePracticeSession(
+    it("should initialize queues correctly", () => {
+      const result = initializePracticeSession(
         mockHierarchy,
-        [],
-        [],
+        createModuleData(),
+        createNonModuleData(),
         "meanings",
-        mockVocabularyItems,
-        false,
-        false,
         false,
         true,
       )
@@ -608,19 +636,21 @@ describe("Data Initialization", () => {
       expect(result.isFinished).toBe(false)
     })
 
-    it("should handle cards already in Review state", async () => {
+    it("should handle cards already in Review state", () => {
       const reviewStateFSRS: FSRSCardData[] = [
         createMockFSRSCard("人", "meanings", "radical", State.Review),
       ]
 
-      const result = await initializePracticeSession(
+      const result = initializePracticeSession(
         mockHierarchy,
-        reviewStateFSRS,
-        [],
+        createModuleData(
+          mockVocabularyItems,
+          mockKanjiEntries,
+          mockRadicalEntries,
+          reviewStateFSRS,
+        ),
+        createNonModuleData(),
         "meanings",
-        mockVocabularyItems,
-        false,
-        false,
         false,
         true,
       )
@@ -631,7 +661,7 @@ describe("Data Initialization", () => {
     })
   })
   describe("card disabling functionality", () => {
-    it("should mark cards as disabled when prerequisites aren't due", async () => {
+    it("should mark cards as disabled when prerequisites aren't due", () => {
       const futureDate = new Date()
       futureDate.setDate(futureDate.getDate() + 1)
 
@@ -654,14 +684,16 @@ describe("Data Initialization", () => {
         },
       ]
 
-      const result = await initializePracticeSession(
+      const result = initializePracticeSession(
         mockHierarchy,
-        fsrsCardsWithFutureDates,
-        [],
+        createModuleData(
+          mockVocabularyItems,
+          mockKanjiEntries,
+          mockRadicalEntries,
+          fsrsCardsWithFutureDates,
+        ),
+        createNonModuleData(),
         "meanings",
-        mockVocabularyItems,
-        false,
-        false,
         false,
         true,
       )
@@ -671,7 +703,7 @@ describe("Data Initialization", () => {
       expect(result.cardMap.get("radical:水")?.isDisabled).toBe(false)
     })
 
-    it("should populate unlocksMap even for disabled cards", async () => {
+    it("should populate unlocksMap even for disabled cards", () => {
       const futureDate = new Date()
       futureDate.setDate(futureDate.getDate() + 1)
 
@@ -686,14 +718,16 @@ describe("Data Initialization", () => {
         },
       ]
 
-      const result = await initializePracticeSession(
+      const result = initializePracticeSession(
         mockHierarchy,
-        fsrsCardsWithFutureDates,
-        [],
+        createModuleData(
+          mockVocabularyItems,
+          mockKanjiEntries,
+          mockRadicalEntries,
+          fsrsCardsWithFutureDates,
+        ),
+        createNonModuleData(),
         "meanings",
-        mockVocabularyItems,
-        false,
-        false,
         false,
         true,
       )
@@ -705,7 +739,7 @@ describe("Data Initialization", () => {
       expect(result.dependencyMap.get("kanji:見")).toBeUndefined()
     })
 
-    it("should exclude disabled cards from queues", async () => {
+    it("should exclude disabled cards from queues", () => {
       const futureDate = new Date()
       futureDate.setDate(futureDate.getDate() + 1)
 
@@ -728,14 +762,16 @@ describe("Data Initialization", () => {
         },
       ]
 
-      const result = await initializePracticeSession(
+      const result = initializePracticeSession(
         mockHierarchy,
-        fsrsCardsWithFutureDates,
-        [],
+        createModuleData(
+          mockVocabularyItems,
+          mockKanjiEntries,
+          mockRadicalEntries,
+          fsrsCardsWithFutureDates,
+        ),
+        createNonModuleData(),
         "meanings",
-        mockVocabularyItems,
-        false,
-        false,
         false,
         true,
       )
@@ -750,7 +786,7 @@ describe("Data Initialization", () => {
       expect(result.moduleQueue).toContain("kanji:見")
     })
 
-    it("should keep disabled cards in cardMap", async () => {
+    it("should keep disabled cards in cardMap", () => {
       const futureDate = new Date()
       futureDate.setDate(futureDate.getDate() + 1)
 
@@ -765,14 +801,16 @@ describe("Data Initialization", () => {
         },
       ]
 
-      const result = await initializePracticeSession(
+      const result = initializePracticeSession(
         mockHierarchy,
-        fsrsCardsWithFutureDates,
-        [],
+        createModuleData(
+          mockVocabularyItems,
+          mockKanjiEntries,
+          mockRadicalEntries,
+          fsrsCardsWithFutureDates,
+        ),
+        createNonModuleData(),
         "meanings",
-        mockVocabularyItems,
-        false,
-        false,
         false,
         true,
       )
@@ -801,18 +839,21 @@ describe("Data Initialization", () => {
   })
 
   describe("complex dependency chains", () => {
-    it("should handle complex dependency chains", async () => {
+    it("should handle complex dependency chains", () => {
       const complexKanji: KanjiEntry = createMockKanji(
         "複",
         ["complex", "duplicate"],
         ["人", "口", "水"],
       )
-      const complexVocab: VocabEntry = createMockVocab("複雑", ["複", "食"])
+      const complexVocabRelationship: VocabRelationship =
+        createMockVocabRelationship("複雑", ["複", "食"])
+      const complexKanjiRelationship: KanjiRelationship =
+        createMockKanjiRelationship("複", ["人", "口", "水"])
 
       const complexHierarchy: VocabHierarchy = {
-        vocabulary: [complexVocab],
-        kanji: [...mockHierarchy.kanji, complexKanji],
-        radicals: mockRadicals,
+        vocabulary: [complexVocabRelationship],
+        kanji: [...mockKanjiRelationships, complexKanjiRelationship],
+        radicals: ["人", "口", "水"],
       }
 
       const complexVocabularyItems: VocabularyItem[] = [
@@ -824,14 +865,17 @@ describe("Data Initialization", () => {
         },
       ]
 
-      const result = await initializePracticeSession(
+      const complexKanjiEntries = [...mockKanjiEntries, complexKanji]
+
+      const result = initializePracticeSession(
         complexHierarchy,
-        [],
-        [],
+        createModuleData(
+          complexVocabularyItems,
+          complexKanjiEntries,
+          mockRadicalEntries,
+        ),
+        createNonModuleData(),
         "meanings",
-        complexVocabularyItems,
-        false,
-        false,
         false,
         true,
       )
@@ -850,8 +894,106 @@ describe("Data Initialization", () => {
     })
   })
 
+  describe("prompt and validAnswers correctness", () => {
+    it("should set correct prompt and validAnswers for vocabulary in meanings mode", () => {
+      const result = initializePracticeSession(
+        mockHierarchy,
+        createModuleData(),
+        createNonModuleData(),
+        "meanings",
+        false,
+        true,
+      )
+
+      const vocabCard = result.cardMap.get("vocabulary:食べる")
+      expect(vocabCard).toBeDefined()
+      expect(vocabCard!.prompt).toBe("食べる")
+      expect(vocabCard!.validAnswers).toEqual(["to eat", "eat"])
+    })
+
+    it("should set correct prompt and validAnswers for vocabulary in spellings mode", () => {
+      const result = initializePracticeSession(
+        mockHierarchy,
+        createModuleData(),
+        createNonModuleData(),
+        "spellings",
+        false,
+        false, // disable prerequisites for spellings mode
+      )
+
+      const vocabCard = result.cardMap.get("vocabulary:食べる")
+      expect(vocabCard).toBeDefined()
+      expect(vocabCard!.prompt).toBe("to eat, eat")
+      expect(vocabCard!.validAnswers).toContain("たべる")
+    })
+
+    it("should set correct prompt and validAnswers for kanji cards", () => {
+      const result = initializePracticeSession(
+        mockHierarchy,
+        createModuleData(),
+        createNonModuleData(),
+        "meanings",
+        false,
+        true,
+      )
+
+      const kanjiCard = result.cardMap.get("kanji:食")
+      expect(kanjiCard).toBeDefined()
+      expect(kanjiCard!.prompt).toBe("食")
+      expect(kanjiCard!.validAnswers).toEqual(["food", "meal"])
+    })
+
+    it("should set correct prompt and validAnswers for radical cards", () => {
+      const result = initializePracticeSession(
+        mockHierarchy,
+        createModuleData(),
+        createNonModuleData(),
+        "meanings",
+        false,
+        true,
+      )
+
+      const radicalCard = result.cardMap.get("radical:人")
+      expect(radicalCard).toBeDefined()
+      expect(radicalCard!.prompt).toBe("人")
+      expect(radicalCard!.validAnswers).toEqual(["person", "human"])
+    })
+
+    it("should never have prompt equal to any validAnswer", () => {
+      const result = initializePracticeSession(
+        mockHierarchy,
+        createModuleData(),
+        createNonModuleData(),
+        "meanings",
+        false,
+        true,
+      )
+
+      for (const [key, card] of result.cardMap.entries()) {
+        const promptInAnswers = card.validAnswers.includes(card.prompt)
+        expect(promptInAnswers).toBe(false)
+      }
+    })
+
+    it("should never have prompt equal to any validAnswer in spellings mode", () => {
+      const result = initializePracticeSession(
+        mockHierarchy,
+        createModuleData(),
+        createNonModuleData(),
+        "spellings",
+        false,
+        false,
+      )
+
+      for (const [key, card] of result.cardMap.entries()) {
+        const promptInAnswers = card.validAnswers.includes(card.prompt)
+        expect(promptInAnswers).toBe(false)
+      }
+    })
+  })
+
   describe("review queue filtering", () => {
-    it("should filter review queue by due date and session mode", async () => {
+    it("should filter review queue by due date and session mode", () => {
       const pastDate = new Date(Date.now() - 86400000)
       const futureDate = new Date(Date.now() + 86400000)
 
@@ -887,14 +1029,11 @@ describe("Data Initialization", () => {
         { word: "due2", furigana: "due2", english: ["test"] },
       ]
 
-      const result = await initializePracticeSession(
+      const result = initializePracticeSession(
         mockHierarchy,
-        [],
-        cards,
+        createModuleData(),
+        createNonModuleData(vocabItems, [], [], cards),
         "meanings",
-        vocabItems,
-        false,
-        false,
         false,
         true,
       )
@@ -903,7 +1042,7 @@ describe("Data Initialization", () => {
       expect(result.cardMap.size).toBe(12) // 11 hierarchy + 1 review card
     })
 
-    it("should exclude review cards when includeReviews is false", async () => {
+    it("should exclude review cards when includeReviews is false", () => {
       const pastDate = new Date()
       pastDate.setDate(pastDate.getDate() - 1)
 
@@ -921,14 +1060,16 @@ describe("Data Initialization", () => {
         english: ["external"],
       }
 
-      const result = await initializePracticeSession(
+      const result = initializePracticeSession(
         mockHierarchy,
-        [],
-        [dueReviewCard],
+        createModuleData(),
+        createNonModuleData(
+          [...mockVocabularyItems, externalVocab],
+          [],
+          [],
+          [dueReviewCard],
+        ),
         "meanings",
-        [...mockVocabularyItems, externalVocab],
-        false,
-        false,
         false,
         true,
         false, // includeReviews: false
@@ -937,7 +1078,7 @@ describe("Data Initialization", () => {
       expect(result.reviewQueue).toEqual([])
     })
 
-    it("should include review cards when includeReviews is true", async () => {
+    it("should include review cards when includeReviews is true", () => {
       const pastDate = new Date()
       pastDate.setDate(pastDate.getDate() - 1)
 
@@ -955,14 +1096,16 @@ describe("Data Initialization", () => {
         english: ["external"],
       }
 
-      const result = await initializePracticeSession(
+      const result = initializePracticeSession(
         mockHierarchy,
-        [],
-        [dueReviewCard],
+        createModuleData(),
+        createNonModuleData(
+          [...mockVocabularyItems, externalVocab],
+          [],
+          [],
+          [dueReviewCard],
+        ),
         "meanings",
-        [...mockVocabularyItems, externalVocab],
-        false,
-        false,
         false,
         true,
         true, // includeReviews: true

@@ -27,7 +27,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
-import { BackgroundLayers } from "@/features/homepage/shared/components/BackgroundLayers"
+import { TextbookChapterBackgrounds } from "@/features/homepage/shared/components/TextbookChapterBackgrounds"
 import LogoutButton from "@/features/auth/components/Logout"
 import { TableOfContents, type TOCItem } from "@/components/TableOfContents"
 import GoHomeSvg from "@/features/homepage/shared/assets/go-home.svg"
@@ -125,9 +125,6 @@ function RouteComponent() {
   const matches = useMatches()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const settingsQuery = useCustomQuery(() =>
-    userSettingsQueryOptions(user?.id || null),
-  )
 
   const addCompletionMutation = useMutation(() =>
     markModuleCompletedMutation(queryClient),
@@ -151,11 +148,19 @@ function RouteComponent() {
 
     if (moduleId) {
       const module = static_modules[moduleId as keyof typeof static_modules]
-      const durationSeconds = (module?.daily_prog_amount ?? 10) * 60
+
+      if (!module) {
+        console.error(`Module not found: ${moduleId}`)
+        navigate({ to: "/" })
+        return
+      }
+
+      const durationSeconds = (module.daily_prog_amount ?? 10) * 60
 
       addCompletionMutation.mutate({
         userId: user?.id || null,
         moduleId,
+        moduleType: module.source_type,
         durationSeconds,
       })
     }
@@ -165,7 +170,7 @@ function RouteComponent() {
 
   return (
     <>
-      <BackgroundLayers />
+      <TextbookChapterBackgrounds />
       <SidebarProvider
         style={{
           "--sidebar-width": "18rem",

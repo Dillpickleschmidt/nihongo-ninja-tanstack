@@ -16,7 +16,7 @@ type VocabPracticeProps = {
   mode: PracticeMode
   userId: string | null
   moduleId?: string
-  deckId?: number
+  deckId?: string
 }
 
 export default function VocabPractice(props: VocabPracticeProps) {

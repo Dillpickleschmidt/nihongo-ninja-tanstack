@@ -2,7 +2,7 @@
 import { createFileRoute, notFound } from "@tanstack/solid-router"
 import VocabPractice from "@/features/vocab-practice/VocabPractice"
 import { type FSRSCardData, getDueFSRSCards } from "@/features/supabase/db/fsrs"
-import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
+import type { VocabHierarchy } from "@/features/resolvers/util/hierarchy-builder"
 
 export const Route = createFileRoute("/practice/review")({
   loader: ({ context }) => {

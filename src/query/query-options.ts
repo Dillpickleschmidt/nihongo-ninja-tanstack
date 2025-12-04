@@ -11,42 +11,102 @@ import {
   getFSRSCards,
   type FSRSCardData,
 } from "@/features/supabase/db/fsrs"
-import { getVocabularyForModule } from "@/data/utils/vocab"
+import {
+  getTranscriptData,
+  getModuleMetadata,
+} from "@/features/supabase/db/learning-paths"
+import { getVocabularyForModule } from "@/data/utils/vocabulary/queries"
 import { getVocabHierarchy } from "@/features/resolvers/kanji"
-import type { VocabHierarchy } from "@/data/wanikani/hierarchy-builder"
-import type { VocabularyItem, TextbookIDEnum } from "@/data/types"
+import type {
+  VocabHierarchy,
+  KanjiEntry,
+  RadicalEntry,
+} from "@/features/resolvers/util/hierarchy-builder"
+import type {
+  VocabularyItem,
+  TextbookIDEnum,
+  LearningPathChapter,
+} from "@/data/types"
 import type { PracticeMode } from "@/features/vocab-practice/types"
 import { fetchKanjiSvgsBatch } from "@/utils/svg-processor"
 import {
   getDeckInfoServerFn,
-  getVocabForDeck,
+  getVocabForDeckConverted,
 } from "@/features/supabase/db/deck"
-import { getDeckBySlug, getLearningPathModules } from "@/data/utils/core"
+import {
+  getUserFoldersAndDecks,
+  type FoldersAndDecksData,
+} from "@/features/supabase/db/folder"
+import {
+  getLearningPathChapterItems,
+  fetchAllLearningPaths,
+} from "@/data/utils/learning-paths"
+import { chapters } from "@/data/chapters"
 import { fetchThumbnailUrl } from "@/data/utils/thumbnails"
+import { dynamic_modules } from "@/data/dynamic_modules"
+import { static_modules } from "@/data/static_modules"
+import { external_resources } from "@/data/external_resources"
 import { createSRSAdapter } from "@/features/srs-services/factory"
 import type {
   DueCountResult,
   SeenCardsStatsResult,
 } from "@/features/srs-services/types"
-import type { AllServicePreferences } from "@/features/main-cookies/schemas/user-settings"
+import type { AllSRSServicePreferences } from "@/features/main-cookies/schemas/user-settings"
 import {
-  getUserDailyTime,
-  getUserModuleProgress,
-  getUserSessions,
-  getUserWeekTimeData,
+  getUserDailyAggregates,
+  getSessionsPaginated,
+  getUserModuleCompletions,
 } from "@/features/supabase/db/module-progress"
-import { getUpcomingModules } from "@/features/learn-page/utils/learning-position-detector"
-import { dynamic_modules } from "@/data/dynamic_modules"
+import { transformSessionsToDeck } from "@/features/vocab-page/pages/main/utils/recentlyStudiedAdapter"
+import type { RecentlyStudiedDeck } from "@/features/vocab-page/pages/main/utils/recentlyStudiedAdapter"
 import type { ResourceProvider } from "@/data/resources-config"
 import {
   fetchUserSettingsFromDB,
+  syncUserSettingsToDb,
   updateUserSettingsCookie,
 } from "@/query/utils/user-settings"
 import type { UserSettings } from "@/features/main-cookies/schemas/user-settings"
-import { buildVocabHierarchy } from "@/query/utils/hierarchy-builder"
-import { mergeCompletionsWithLocal } from "@/query/utils/completion-manager"
+import { getServiceConnectionStatus } from "@/features/main-cookies/functions/service-credentials"
+import {
+  buildVocabModuleAll,
+  type VocabModuleAllData,
+} from "@/query/utils/hierarchy-builder"
+import { getCompletedModules } from "@/query/utils/completion-manager"
 import { buildModuleProgressMap } from "@/query/utils/progress-calculator"
 import { queryKeys } from "@/query/utils/query-keys"
+import { fetchAniZipImagesServerFn } from "@/features/explore/api/anizip"
+
+// ============================================================================
+// Background Settings Query Options
+// ============================================================================
+
+export type BackgroundSettings = {
+  blur: number | undefined
+  backgroundOpacityOffset: number
+  showGradient: boolean
+}
+
+const defaultBackgroundSettings: BackgroundSettings = {
+  blur: undefined,
+  backgroundOpacityOffset: 0,
+  showGradient: true,
+}
+
+export const backgroundSettingsQueryOptions = () => {
+  return queryOptions({
+    queryKey: queryKeys.backgroundSettings(),
+    queryFn: async () => defaultBackgroundSettings,
+    initialData: defaultBackgroundSettings,
+  })
+}
+
+export const bottomNavClassQueryOptions = () => {
+  return queryOptions({
+    queryKey: queryKeys.bottomNavClass(),
+    queryFn: async () => "",
+    initialData: "",
+  })
+}
 
 // ============================================================================
 // User Settings Query Options
@@ -57,11 +117,15 @@ import { queryKeys } from "@/query/utils/query-keys"
  */
 function parseUserSettingsCookie(): UserSettings {
   const cookieValue = getCookie(USER_SETTINGS_COOKIE)
-  if (!cookieValue) return UserSettingsSchema.parse({})
+  if (!cookieValue) {
+    return UserSettingsSchema.parse({})
+  }
 
   try {
-    return UserSettingsSchema.parse(JSON.parse(cookieValue))
-  } catch {
+    const parsed = UserSettingsSchema.parse(JSON.parse(cookieValue))
+    return parsed
+  } catch (e) {
+    console.error("[parseUserSettingsCookie] Failed to parse cookie:", e)
     return UserSettingsSchema.parse({})
   }
 }
@@ -82,9 +146,12 @@ export const userSettingsQueryOptions = (userId: string | null) => {
         return cookieData
       }
 
-      // Fetch from DB
       const dbSettings = await fetchUserSettingsFromDB(userId)
       if (!dbSettings) {
+        // Shouldn't happen but in case the db somehow didn't get set during sign-up
+        syncUserSettingsToDb(userId, cookieData, Date.now()).catch((err) =>
+          console.warn("Failed to write default settings", err),
+        )
         return cookieData
       }
 
@@ -92,13 +159,13 @@ export const userSettingsQueryOptions = (userId: string | null) => {
       // prefer DB (user likely signed out and local cookie is stale)
       if (
         cookieData["active-learning-path"] === "getting_started" &&
+        dbSettings["active-learning-path"] &&
         dbSettings["active-learning-path"] !== "getting_started"
       ) {
         updateUserSettingsCookie(dbSettings)
         return dbSettings
       }
 
-      // Compare timestamps
       const cookieTimestamp = cookieData.timestamp || 0
       const dbTimestamp = dbSettings.timestamp || 0
 
@@ -112,8 +179,19 @@ export const userSettingsQueryOptions = (userId: string | null) => {
       return cookieData
     },
     initialData,
-    staleTime: Infinity,
     gcTime: Infinity,
+  })
+}
+
+/**
+ * Service connection status query (returns only booleans, never exposes tokens)
+ * Safe to cache in TanStack Query - no sensitive data exposed to client
+ */
+export const serviceConnectionStatusQueryOptions = (userId: string | null) => {
+  return queryOptions({
+    queryKey: queryKeys.serviceConnectionStatus(userId),
+    queryFn: () => getServiceConnectionStatus(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   })
 }
 
@@ -122,43 +200,47 @@ export const userSettingsQueryOptions = (userId: string | null) => {
 // ============================================================================
 
 /**
- * Get vocabulary hierarchy for a practice module
+ * Get vocabulary list for a practice module (reusable independently)
  */
-export const practiceHierarchyQueryOptions = (
-  moduleId: string,
-  vocabulary: VocabularyItem[],
-  mode: PracticeMode,
-  userOverrides: any,
-  isLiveService: boolean,
-) =>
+export const vocabModuleVocabQueryOptions = (moduleId: string) =>
   queryOptions({
-    queryKey: queryKeys.practiceHierarchy(
-      moduleId,
-      mode,
-      userOverrides,
-      isLiveService,
-    ),
-    queryFn: () =>
-      buildVocabHierarchy(
-        vocabulary,
-        mode,
-        userOverrides,
-        isLiveService,
-        "practiceHierarchyQueryOptions",
-      ),
-  })
-
-/**
- * Get vocabulary list for a practice module
- */
-export const moduleVocabularyQueryOptions = (moduleId: string) =>
-  queryOptions({
-    queryKey: queryKeys.moduleVocabulary(moduleId),
+    queryKey: queryKeys.vocabModuleVocab(moduleId),
     queryFn: () => getVocabularyForModule(moduleId),
   })
 
 /**
- * Get FSRS cards for a practice module
+ * Get all module data: vocabulary + hierarchy (relationships) + kanji/radicals (display data)
+ * Builds on vocabModuleVocabQueryOptions - will use cache if already fetched
+ */
+export const vocabModuleAllQueryOptions = (
+  moduleId: string,
+  mode: PracticeMode,
+  isLiveService: boolean,
+  prerequisitesEnabled: boolean,
+) =>
+  queryOptions({
+    queryKey: queryKeys.vocabModuleAll(
+      moduleId,
+      mode,
+      isLiveService,
+      prerequisitesEnabled,
+    ),
+    queryFn: async (): Promise<VocabModuleAllData> => {
+      // Fetch vocabulary (will hit cache if already prefetched)
+      const vocabulary = await getVocabularyForModule(moduleId)
+
+      // Build hierarchy + kanji/radicals based on mode and settings
+      return buildVocabModuleAll(
+        vocabulary,
+        mode,
+        isLiveService,
+        prerequisitesEnabled,
+      )
+    },
+  })
+
+/**
+ * Get FSRS cards for a practice module (all types: vocabulary, kanji, radicals)
  * Only enabled when using local FSRS mode
  * Filters by practice mode to ensure separate progress tracking
  */
@@ -172,7 +254,13 @@ export const practiceModuleFSRSCardsQueryOptions = (
     queryKey: queryKeys.practiceModuleFSRS(userId, slugs, mode),
     queryFn: async (): Promise<FSRSCardData[]> => {
       if (!userId || slugs.length === 0) return []
-      return await getFSRSCards(userId, slugs, mode)
+      // Fetch all types in parallel
+      const [vocab, kanji, radicals] = await Promise.all([
+        getFSRSCards(userId, slugs, mode, "vocabulary"),
+        getFSRSCards(userId, slugs, mode, "kanji"),
+        getFSRSCards(userId, slugs, mode, "radical"),
+      ])
+      return [...vocab, ...kanji, ...radicals]
     },
     enabled: enabled && !!userId && slugs.length > 0,
   })
@@ -204,13 +292,12 @@ export const hierarchySvgsQueryOptions = (characters: string[]) =>
       if (characters.length === 0) return new Map()
       return await fetchKanjiSvgsBatch(characters)
     },
-    staleTime: Infinity, // SVGs never change
   })
 
 /**
  * Get user deck info
  */
-export const userDeckInfoQueryOptions = (deckId: number) =>
+export const userDeckInfoQueryOptions = (deckId: string) =>
   queryOptions({
     queryKey: queryKeys.userDeckInfo(deckId),
     queryFn: () => getDeckInfoServerFn({ data: { deck_id: deckId } }),
@@ -219,37 +306,47 @@ export const userDeckInfoQueryOptions = (deckId: number) =>
 /**
  * Get vocabulary for a user deck
  */
-export const userDeckVocabularyQueryOptions = (deckId: number) =>
+export const userDeckVocabularyQueryOptions = (deckId: string) =>
   queryOptions({
     queryKey: queryKeys.userDeckVocabulary(deckId),
-    queryFn: () => getVocabForDeck(deckId),
+    queryFn: () => getVocabForDeckConverted(deckId),
   })
 
 /**
- * Get hierarchy for a user deck
+ * Get all data for a user deck: vocabulary + hierarchy + kanji/radicals
  */
-export const userDeckHierarchyQueryOptions = (
-  deckId: number,
+export const userDeckAllQueryOptions = (
+  deckId: string,
   vocabulary: VocabularyItem[],
   mode: PracticeMode,
-  userOverrides: any,
   isLiveService: boolean,
+  prerequisitesEnabled: boolean,
 ) =>
   queryOptions({
-    queryKey: queryKeys.userDeckHierarchy(
-      deckId,
-      mode,
-      userOverrides,
-      isLiveService,
-    ),
-    queryFn: () =>
-      buildVocabHierarchy(
+    queryKey: queryKeys.userDeckHierarchy(deckId, mode, isLiveService),
+    queryFn: (): Promise<VocabModuleAllData> =>
+      buildVocabModuleAll(
         vocabulary,
         mode,
-        userOverrides,
         isLiveService,
-        "userDeckHierarchyQueryOptions",
+        prerequisitesEnabled,
       ),
+  })
+
+/**
+ * Get user folders and decks
+ */
+export const userFoldersAndDecksQueryOptions = (userId: string | null) =>
+  queryOptions({
+    queryKey: queryKeys.userFoldersAndDecks(userId),
+    queryFn: async (): Promise<FoldersAndDecksData> => {
+      if (!userId) {
+        return { folders: [], decks: [], shareStatus: {} }
+      }
+      return await getUserFoldersAndDecks(userId)
+    },
+    enabled: !!userId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   })
 
 // ============================================================================
@@ -258,17 +355,12 @@ export const userDeckHierarchyQueryOptions = (
 
 export const vocabHierarchyQueryOptions = (
   activeTextbook: string,
-  deck: NonNullable<ReturnType<typeof getDeckBySlug>>,
-  userOverrides: any,
+  deck: LearningPathChapter,
 ) =>
   queryOptions({
-    queryKey: queryKeys.vocabHierarchy(
-      activeTextbook,
-      deck.slug,
-      userOverrides,
-    ),
+    queryKey: queryKeys.vocabHierarchy(activeTextbook, deck.slug),
     queryFn: async () => {
-      const vocabModuleId = deck.learning_path_items.find((moduleId) =>
+      const vocabModuleId = deck.learning_path_item_ids.find((moduleId) =>
         moduleId.endsWith("_vocab-list"),
       )
 
@@ -278,37 +370,61 @@ export const vocabHierarchyQueryOptions = (
       }
 
       const vocabForHierarchy = chapterVocabulary.map((item) => item.word)
-      const wkHierarchyData: VocabHierarchy | null = await getVocabHierarchy({
-        data: {
-          slugs: vocabForHierarchy,
-          userOverrides,
-        },
-      })
+      const result = await getVocabHierarchy(vocabForHierarchy)
 
-      const slugs = [
-        ...new Set([
-          ...(wkHierarchyData?.vocabulary.map((item) => item.word) || []),
-          ...(wkHierarchyData?.kanji.map((item) => item.kanji) || []),
-          ...(wkHierarchyData?.radicals.map((item) => item.radical) || []),
-        ]),
-      ]
+      // Extract slugs from hierarchy relationships + display data
+      const slugs = result
+        ? [
+            ...new Set([
+              ...result.hierarchy.vocabulary.map((item) => item.word),
+              ...result.hierarchy.kanji.map((item) => item.kanji),
+              ...result.hierarchy.radicals,
+            ]),
+          ]
+        : []
 
       return {
         chapterVocabulary,
-        wordHierarchyData: wkHierarchyData,
+        // Return the full result with hierarchy and display data
+        hierarchyData: result,
         slugs,
       }
     },
     placeholderData: {
       chapterVocabulary: [],
-      wordHierarchyData: null,
+      hierarchyData: null,
       slugs: [],
     },
   })
 
+/**
+ * Get all learning paths (static textbooks + user-created)
+ */
+export const allLearningPathsQueryOptions = (userId: string | null) =>
+  queryOptions({
+    queryKey: queryKeys.allLearningPaths(userId),
+    queryFn: () => fetchAllLearningPaths(userId),
+    staleTime: 5 * 60 * 1000, // 5 minutes cache
+  })
+
+/**
+ * Query for getting all modules for a specific chapter in a learning path
+ */
+export const chapterModulesQueryOptions = (
+  learningPathId: string,
+  chapterSlug: string,
+) => {
+  return queryOptions({
+    queryKey: queryKeys.chapterModules(learningPathId, chapterSlug),
+    queryFn: async () => {
+      return await getLearningPathChapterItems(learningPathId, chapterSlug)
+    },
+  })
+}
+
 export const dueCardsCountQueryOptions = (
   userId: string | null,
-  preferences: AllServicePreferences,
+  preferences: AllSRSServicePreferences,
 ) =>
   queryOptions({
     queryKey: queryKeys.dueCardsCount(userId, preferences),
@@ -333,7 +449,7 @@ export const dueCardsCountQueryOptions = (
 
 export const seenCardsStatsQueryOptions = (
   userId: string | null,
-  preferences: AllServicePreferences,
+  preferences: AllSRSServicePreferences,
 ) =>
   queryOptions({
     queryKey: queryKeys.seenCardsStats(userId, preferences),
@@ -351,7 +467,9 @@ export const seenCardsStatsQueryOptions = (
     },
   })
 
-type ModuleProgress = Awaited<ReturnType<typeof getUserModuleProgress>>[number]
+type ModuleProgress = Awaited<
+  ReturnType<typeof getUserModuleCompletions>
+>[number]
 export type ModuleProgressWithLocal =
   | ModuleProgress
   | {
@@ -363,8 +481,9 @@ export type ModuleProgressWithLocal =
 export const completedModulesQueryOptions = (userId: string | null) =>
   queryOptions({
     queryKey: queryKeys.completedModules(userId),
-    refetchOnMount: "always", // Ensure localStorage completions load on client
-    queryFn: () => mergeCompletionsWithLocal(userId),
+    queryFn: async () => {
+      return await getCompletedModules(userId)
+    },
   })
 
 export const resourceThumbnailQueryOptions = (
@@ -377,36 +496,79 @@ export const resourceThumbnailQueryOptions = (
     queryFn: () => fetchThumbnailUrl(resourceUrl, creatorId),
   })
 
-export type ModuleWithCurrent = {
-  id: string
-  isCurrent?: boolean
-  disabled?: boolean
+export type UpcomingModule = {
+  moduleId: string
+  title: string
+  sourceType: string
+  linkTo: string
+  learningPathId: string
+  chapterSlug: string
+  chapterTitle: string
 }
 
 export const upcomingModulesQueryOptions = (
   userId: string | null,
-  textbookId: TextbookIDEnum,
-  currentPosition: string | null,
+  learningPathId: TextbookIDEnum,
+  chapterSlug: string,
+  queryClient: any, // QueryClient for cache reuse
 ) => {
-  const queryFn = async (): Promise<ModuleWithCurrent[]> => {
-    const learningPathItems = getLearningPathModules(textbookId)
+  const queryFn = async (): Promise<UpcomingModule[]> => {
+    // Get the active chapter
+    const chapter = chapters[learningPathId]?.[chapterSlug]
+    if (!chapter) return []
 
-    if (!currentPosition) {
-      return learningPathItems.slice(0, 6).map((id) => ({ id }))
+    // Get completed modules (reuses cache if prefetched)
+    const completedModules = userId
+      ? await queryClient.ensureQueryData(completedModulesQueryOptions(userId))
+      : []
+    const completedSet = new Set(completedModules.map((c) => c.module_path))
+
+    // Filter to incomplete modules from this chapter only
+    const incompleteModuleIds = chapter.learning_path_item_ids
+      .filter((id) => !completedSet.has(id))
+      .slice(0, 10) // First 10 incomplete modules
+
+    // Merge all module sources
+    const modules = {
+      ...static_modules,
+      ...dynamic_modules,
+      ...external_resources,
     }
 
-    const currentModuleId = learningPathItems.find(
-      (moduleId) => moduleId === currentPosition,
-    )
-    const upcoming = getUpcomingModules(currentPosition, learningPathItems, 15)
+    // Enrich with full context
+    return incompleteModuleIds.map((moduleId) => {
+      const module = modules[moduleId]
 
-    return currentModuleId
-      ? [{ id: currentModuleId, isCurrent: true }, ...upcoming]
-      : upcoming
+      // Build proper link with chapter context
+      let linkTo = `/practice/${moduleId}` // Default fallback
+
+      if (module) {
+        if ("link" in module && module.link) {
+          // Static modules and external resources have direct links
+          linkTo = module.link
+        } else if (module.source_type === "vocab-practice") {
+          // Vocab practice goes to the learning path chapter view
+          linkTo = `/vocab/${learningPathId}/${chapterSlug}/${moduleId}`
+        } else if (module.source_type === "sentence-practice") {
+          const strippedId = moduleId.replace(/^sentence-practice-/, "")
+          linkTo = `/sentence-practice/${strippedId}`
+        }
+      }
+
+      return {
+        moduleId,
+        title: module?.title || moduleId,
+        sourceType: module?.source_type || "misc",
+        linkTo,
+        learningPathId,
+        chapterSlug,
+        chapterTitle: chapter.title,
+      }
+    })
   }
 
   return queryOptions({
-    queryKey: queryKeys.upcomingModules(userId, textbookId, currentPosition),
+    queryKey: queryKeys.upcomingModules(userId, learningPathId, chapterSlug),
     queryFn,
   })
 }
@@ -429,22 +591,21 @@ export type VocabModuleProgress = {
 
 export const moduleProgressQueryOptions = (
   userId: string | null,
-  upcomingModulesQuery: UseQueryResult<ModuleWithCurrent[], DefaultError>,
+  upcomingModulesQuery: UseQueryResult<UpcomingModule[], DefaultError>,
 ) => {
   return queryOptions({
     queryKey: queryKeys.moduleProgress(
       userId,
-      upcomingModulesQuery.data?.map((m) => m.id),
+      upcomingModulesQuery.data?.map((m) => m.moduleId),
     ),
     queryFn: async (): Promise<Record<string, VocabModuleProgress>> => {
       const upcomingModules = upcomingModulesQuery.data!
+      // Filter for vocab-practice modules only
       const vocabPracticeModuleIds = upcomingModules
-        .map((item) => item.id)
-        .filter((moduleId) => {
-          const module = dynamic_modules[moduleId]
-          return module && module.session_type === "vocab-practice"
-        })
+        .filter((item) => item.sourceType === "vocab-practice")
+        .map((item) => item.moduleId)
 
+      if (!userId) return {}
       return await buildModuleProgressMap(userId, vocabPracticeModuleIds)
     },
     enabled: !upcomingModulesQuery.isPending && !upcomingModulesQuery.isError,
@@ -452,44 +613,116 @@ export const moduleProgressQueryOptions = (
 }
 
 /**
- * Query for getting time spent on a specific date
+ * Query for getting all-time daily aggregates via RPC
+ * Returns a dictionary mapping dates (YYYY-MM-DD) to total seconds practiced
  */
-export const userDailyTimeQueryOptions = (userId: string | null, date: Date) =>
+export const userDailyAggregatesQueryOptions = (userId: string | null) =>
   queryOptions({
-    queryKey: queryKeys.userDailyTime(userId, date),
+    queryKey: queryKeys.userDailyAggregates(userId),
     queryFn: async () => {
-      if (!userId) return 0
-      return getUserDailyTime(userId, date)
+      if (!userId) return {}
+      return await getUserDailyAggregates(userId)
     },
   })
 
 /**
- * Query for getting all user sessions
+ * Query for getting paginated practice sessions with optional module_type filtering
+ * Returns recent sessions, newest first
  */
-export const userSessionsQueryOptions = (
+export const userSessionsPaginatedQueryOptions = (
   userId: string | null,
-  options?: { startDate?: Date; endDate?: Date },
+  moduleType: string | null,
+  offset: number,
+  limit: number,
 ) =>
   queryOptions({
-    queryKey: queryKeys.userSessions(
+    queryKey: queryKeys.userSessionsPaginated(
       userId,
-      options?.startDate,
-      options?.endDate,
+      moduleType,
+      offset,
+      limit,
     ),
     queryFn: async () => {
       if (!userId) return []
-      return getUserSessions(userId, options)
+      return await getSessionsPaginated(
+        userId,
+        offset,
+        limit,
+        moduleType || undefined,
+      )
     },
+    enabled: !!userId,
+  })
+
+// ============================================================================
+// Vocab Dashboard Query Options
+// ============================================================================
+
+/**
+ * Query for getting recently studied decks (from user practice sessions)
+ * Returns up to 10 most recently practiced decks (filtered to vocab-practice sessions)
+ * Reuses cached paginated session data to avoid duplicate fetches
+ */
+export const recentlyStudiedDecksQueryOptions = (
+  userId: string | null,
+  userDecks: UserDeck[],
+  queryClient: any, // QueryClient for cache reuse
+) =>
+  queryOptions({
+    queryKey: queryKeys.recentlyStudiedDecks(userId),
+    queryFn: async (): Promise<RecentlyStudiedDeck[]> => {
+      if (!userId) return []
+      const sessions = await queryClient.ensureQueryData(
+        userSessionsPaginatedQueryOptions(userId, "vocab-practice", 0, 20),
+      )
+      return transformSessionsToDeck(sessions, userDecks, 10)
+    },
+    enabled: !!userId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  })
+
+// ============================================================================
+// Module Detail Dialog Query Options
+// ============================================================================
+
+/**
+ * Get transcript data for a learning path.
+ */
+export const transcriptDataQueryOptions = (learningPathId: string) =>
+  queryOptions({
+    queryKey: queryKeys.transcriptData(learningPathId),
+    queryFn: () => getTranscriptData(learningPathId),
+    staleTime: Infinity,
+    gcTime: Infinity,
   })
 
 /**
- * Query for getting last 7 days of time data (optimized - single query)
+ * Get metadata for a specific module (transcript line IDs and vocab items).
+ * Only enabled when the dialog is open to avoid unnecessary queries.
  */
-export const userWeekTimeDataQueryOptions = (userId: string | null) =>
+export const moduleMetadataQueryOptions = (
+  learningPathId: string,
+  moduleId: string,
+  enabled: boolean,
+) =>
   queryOptions({
-    queryKey: queryKeys.userWeekTimeData(userId),
-    queryFn: async () => {
-      if (!userId) return []
-      return getUserWeekTimeData(userId)
-    },
+    queryKey: queryKeys.moduleMetadata(learningPathId, moduleId),
+    queryFn: () => getModuleMetadata(learningPathId, moduleId),
+    enabled,
+  })
+
+// ============================================================================
+// AniZip Query Options
+// ============================================================================
+
+/**
+ * Fetch AniZip episode metadata for a given anime ID
+ * Cached for 24 hours since AniZip data rarely changes
+ */
+export const anizipDataQueryOptions = (animeId: number) =>
+  queryOptions({
+    queryKey: queryKeys.anizipData(animeId),
+    queryFn: () => fetchAniZipImagesServerFn({ data: { id: animeId } }),
+    staleTime: 24 * 60 * 60 * 1000, // 24 hours
+    gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
   })

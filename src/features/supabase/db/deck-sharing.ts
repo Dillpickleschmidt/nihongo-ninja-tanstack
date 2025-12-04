@@ -2,14 +2,27 @@
 import { createSupabaseClient } from "@/features/supabase/createSupabaseClient"
 import { createServerFn } from "@tanstack/solid-start"
 import { getUser } from "@/features/supabase/getUser"
-import { insertVocabularyItems, getVocabForDeck } from "./deck"
+import { insertVocabularyItemsFromDB, getVocabForDeckRaw } from "./deck"
 import { getUserFoldersAndDecks } from "./folder"
+
+export type SharedDeck = {
+  deck_id: string
+  shared_at: string
+  shared_by: string
+  import_count: number
+  user_decks: {
+    deck_name: string
+    deck_description: string | null
+    source: string
+    created_at: string
+  }[]
+}
 
 /**
  * Creates a public share for a user's deck
  */
 export const createDeckShareServerFn = createServerFn({ method: "POST" })
-  .inputValidator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: string }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -53,7 +66,7 @@ export const createDeckShareServerFn = createServerFn({ method: "POST" })
  * Removes public sharing for a user's deck
  */
 export const removeDeckShareServerFn = createServerFn({ method: "POST" })
-  .inputValidator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: string }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -73,7 +86,7 @@ export const removeDeckShareServerFn = createServerFn({ method: "POST" })
  * Checks if a user's deck is currently shared
  */
 export const getDeckShareStatusServerFn = createServerFn({ method: "POST" })
-  .inputValidator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: string }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
     const response = await getUser()
@@ -135,14 +148,14 @@ export const getSharedDecksServerFn = createServerFn({ method: "GET" })
 
     if (error) throw error
 
-    return decks || []
+    return (decks || []) as SharedDeck[]
   })
 
 /**
  * Gets detailed information about a shared deck for preview before import
  */
 export const getSharedDeckInfoServerFn = createServerFn({ method: "POST" })
-  .inputValidator((data: { deck_id: number }) => data)
+  .inputValidator((data: { deck_id: string }) => data)
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
 
@@ -170,7 +183,7 @@ export const getSharedDeckInfoServerFn = createServerFn({ method: "POST" })
 
     // Get vocabulary count
     const { count, error: countError } = await supabase
-      .from("vocabulary_items")
+      .from("deck_vocabulary_items")
       .select("*", { count: "exact", head: true })
       .eq("deck_id", data.deck_id)
 
@@ -187,7 +200,7 @@ export const getSharedDeckInfoServerFn = createServerFn({ method: "POST" })
  */
 export const importSharedDeckServerFn = createServerFn({ method: "POST" })
   .inputValidator(
-    (data: { deck_id: number; target_folder_id?: number | null }) => data,
+    (data: { deck_id: string; target_folder_id?: number | null }) => data,
   )
   .handler(async ({ data }) => {
     const supabase = createSupabaseClient()
@@ -220,7 +233,7 @@ export const importSharedDeckServerFn = createServerFn({ method: "POST" })
       throw new Error("Cannot import your own shared deck")
     }
 
-    const originalDeck = shareInfo.user_decks as UserDeck
+    const originalDeck = shareInfo.user_decks[0] as UserDeck
 
     // Check if user already imported this deck
     const currentData = await getUserFoldersAndDecks(response.user.id)
@@ -235,7 +248,7 @@ export const importSharedDeckServerFn = createServerFn({ method: "POST" })
     }
 
     // Get vocabulary from the shared deck using service client for elevated access
-    const vocabularyItems = await getVocabForDeck(data.deck_id)
+    const vocabularyItems = await getVocabForDeckRaw(data.deck_id)
     if (vocabularyItems.length === 0) {
       throw new Error("Shared deck contains no vocabulary items")
     }
@@ -248,6 +261,7 @@ export const importSharedDeckServerFn = createServerFn({ method: "POST" })
       source: "shared",
       original_deck_id: data.deck_id.toString(), // Track the original shared deck
       user_id: response.user.id,
+      allowed_practice_modes: ["meanings", "spellings"],
     }
 
     const { data: newDeck, error: insertError } = await supabase
@@ -260,7 +274,7 @@ export const importSharedDeckServerFn = createServerFn({ method: "POST" })
 
     // Import all vocabulary items
     try {
-      await insertVocabularyItems(vocabularyItems, newDeck.deck_id)
+      await insertVocabularyItemsFromDB(vocabularyItems, newDeck.deck_id)
     } catch (vocabError) {
       // Rollback deck creation if vocabulary import fails
       await supabase.from("user_decks").delete().eq("deck_id", newDeck.deck_id)

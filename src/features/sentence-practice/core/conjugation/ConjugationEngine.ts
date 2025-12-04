@@ -1,6 +1,6 @@
 // core/conjugation/ConjugationEngine.ts
 import { conjugate as baseConjugate } from "@/features/conjugation-practice/utils/conjugationUtils"
-import { extractHiragana } from "@/data/utils/text"
+import { extractHiragana } from "@/data/utils/text/furigana"
 import { ConjugationRules } from "./ConjugationRules"
 import type { ConjugatedWord } from "./types"
 import { KanjiProcessor } from "../text/KanjiProcessor"

@@ -1,12 +1,14 @@
-import type { ChapterCollection } from "./types"
+import type { TextbookIDEnum, LearningPathChapter } from "./types"
 
-export const chapters: ChapterCollection = {
+export const chapters: Record<
+  TextbookIDEnum,
+  Record<string, LearningPathChapter>
+> = {
   // Getting Started Chapters
   getting_started: {
     "n5-introduction": {
       slug: "n5-introduction",
-      title: "N5 Introduction",
-      heading: "Beautiful tools. Engaging content.",
+      title: "Beautiful tools. Engaging content.",
       description:
         "Most beginner resources overcomplicate grammar. Finding engaging content at your level feels impossible. We've simplified it: curated YouTube from teachers who actually explain well, clear lessons, and interactive practice from day one. Learn Japanese with great resources from across the web.",
       features: [
@@ -14,7 +16,7 @@ export const chapters: ChapterCollection = {
         "Free lessons ordered to match Genki + curated YouTube videos",
         "Spaced repetition from the start",
       ],
-      learning_path_items: [
+      learning_path_item_ids: [
         "getting_started",
         "getting_started_n5_hiragana-quiz",
         "getting_started_n5_conjugation-practice",
@@ -27,8 +29,7 @@ export const chapters: ChapterCollection = {
 
     "n4-introduction": {
       slug: "n4-introduction",
-      title: "N4 Introduction",
-      heading: "Learn what you actually care about",
+      title: "Learn what you actually care about",
       description:
         "You're tired of textbook phrases that nobody actually says. Build vocabulary around what you care about—anime, games, whatever keeps you motivated. Master the conjugations you'll actually hear. When you're ready, the browser extension is already set up and waiting. No PhD in software required.",
       features: [
@@ -36,7 +37,7 @@ export const chapters: ChapterCollection = {
         "Custom vocabulary decks for your interests",
         "Grammar + vocabulary spaced repetition",
       ],
-      learning_path_items: [
+      learning_path_item_ids: [
         "getting_started",
         "getting_started_n4_sentence-practice",
         "getting_started_n4_conjugation-practice",
@@ -50,8 +51,7 @@ export const chapters: ChapterCollection = {
 
     "n3-introduction": {
       slug: "n3-introduction",
-      title: "N3 Introduction",
-      heading: "Start watching what you love",
+      title: "Start watching what you love",
       description:
         "You're tired of pausing every sentence. Pick the anime or show you've been wanting to watch, and we'll show you exactly what stands between you and understanding it. Not generic lessons—a custom learning path built for that specific content. Grammar becomes your unlock key instead of a chore.",
       features: [
@@ -59,7 +59,7 @@ export const chapters: ChapterCollection = {
         "Grammar-focused spaced repetition (unique!)",
         "Browser extension for sentence-mining with grammar explanations",
       ],
-      learning_path_items: [
+      learning_path_item_ids: [
         "getting_started",
         "getting_started_n3_learning-paths",
         "getting_started_n3_browser-extension",
@@ -71,8 +71,7 @@ export const chapters: ChapterCollection = {
 
     "n2-introduction": {
       slug: "n2-introduction",
-      title: "N2 Introduction",
-      heading: "Pick any content. We'll show you what to learn.",
+      title: "Pick any content. We'll show you what to learn.",
       description:
         "You know what you want to watch next. We'll analyze exactly what you need to learn for it. Already using Anki or WaniKani? Keep using them—import your data, switch platforms anytime. You've outgrown rigid systems. Time for tools that respect how you actually learn.",
       features: [
@@ -80,7 +79,7 @@ export const chapters: ChapterCollection = {
         "Switch between Anki, WaniKani, JPDB anytime",
         "Import your existing review data",
       ],
-      learning_path_items: [
+      learning_path_item_ids: [
         "getting_started",
         "getting_started_n2_learning-paths",
         "getting_started_n2_browser-extension",
@@ -92,8 +91,7 @@ export const chapters: ChapterCollection = {
 
     "n1-introduction": {
       slug: "n1-introduction",
-      title: "N1 Introduction",
-      heading: "Complete toolkit. Complete flexibility.",
+      title: "Complete toolkit. Complete flexibility.",
       description:
         "You're past needing hand-holding. Full dictionary access, every SRS platform connected, the extension's most advanced features, learning paths for any content no matter how niche. The complete toolkit with zero restrictions. Learn what you want, how you want.",
       features: [
@@ -101,7 +99,7 @@ export const chapters: ChapterCollection = {
         "All SRS platforms connected seamlessly",
         "Generate custom kanji practice sheets",
       ],
-      learning_path_items: [
+      learning_path_item_ids: [
         "getting_started",
         "getting_started_n1_learning-paths",
         "getting_started_n1_browser-extension",
@@ -115,8 +113,7 @@ export const chapters: ChapterCollection = {
   genki_1: {
     "chapter-0": {
       slug: "chapter-0",
-      title: "Chapter 0",
-      heading: "Chapter 0: Japanese from scratch.",
+      title: "Chapter 0: Japanese from scratch.",
       description:
         "Your entry point into Japanese. Master the sounds, learn the symbols, practice the greetings you'll say a thousand times. It's foundational work, but there's genuine satisfaction in the moment hiragana stops being a puzzle and starts becoming readable.",
       features: [
@@ -124,7 +121,7 @@ export const chapters: ChapterCollection = {
         "Natural greetings and everyday expressions",
         "Numbers 0-100 with practical applications",
       ],
-      learning_path_items: [
+      learning_path_item_ids: [
         "welcome-overview",
         "japanese-pronunciation",
         "writing-systems",
@@ -155,8 +152,7 @@ export const chapters: ChapterCollection = {
 
     "chapter-1": {
       slug: "chapter-1",
-      title: "Chapter 1",
-      heading: "Chapter 1: Basic Sentences",
+      title: "Chapter 1: Basic Sentences",
       description:
         "The symbols make sense now. Build your first real sentences—introductions, descriptions, and the particles that hold them together. It's your first real conversation—simple sentences that actually mean something about you.",
       features: [
@@ -165,7 +161,7 @@ export const chapters: ChapterCollection = {
         "Learn the foundational Japanese sentence structure",
       ],
 
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_1_ch1_vocab-list",
         "grammar-notes",
         "genki_1_ch1_kanji-numbers",
@@ -209,7 +205,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 2",
       description:
         "Building on introductions, learn to identify and ask about things, use particles が and も, and negate statements.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_1_ch2_vocab-list",
         "grammar-notes",
         "katakana",
@@ -257,7 +253,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 3",
       description:
         "Introduce verbs and adjectives, learn basic conjugations, and use location and direction particles.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_1_ch3_vocab-list",
         "grammar-notes",
         "introduction-to-kanji",
@@ -306,7 +302,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 4",
       description:
         "Learn to talk about existence of things and people, use past tense, and connect nouns with と.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_1_ch4_vocab-list",
         "grammar-notes",
         "genki_1_ch4_nouns-1",
@@ -344,7 +340,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 5",
       description:
         "Learn about い and な adjectives, their conjugations, and how to use them to modify nouns.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_1_ch5_vocab-list",
         "grammar-notes",
         "genki_1_ch5_nouns",
@@ -378,7 +374,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 6",
       description:
         "Learn the essential て-form of verbs, its various uses, and how to connect actions and ideas.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_1_ch6_vocab-list",
         "grammar-notes",
         "genki_1_ch6_nouns",
@@ -408,7 +404,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 7",
       description:
         "Expand vocabulary with nouns, body parts, verbs, and adjectives, and learn about converting adjectives to adverbs.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_1_ch7_vocab-list",
         "grammar-notes",
         "genki_1_ch7_nouns-1",
@@ -430,7 +426,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 8",
       description:
         "Focus on vocabulary expansion with nouns, verbs, adjectives, and adverbs, and explore verb functionality.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_1_ch8_vocab-list",
         "grammar-notes",
         "genki_1_ch8_nouns-1",
@@ -452,7 +448,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 9",
       description:
         "Learn about various noun categories, small item counters, and continue expanding verb and adjective vocabulary.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_1_ch9_vocab-list",
         "grammar-notes",
         "genki_1_ch9_nouns",
@@ -474,7 +470,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 10",
       description:
         "Continue building vocabulary with different noun groups, verbs, and explore concepts like comparing sizes and emotions.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_1_ch10_vocab-list",
         "grammar-notes",
         "genki_1_ch10_nouns-1",
@@ -497,7 +493,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 11",
       description:
         "Delve deeper into nouns and verbs, including irregular verbs, adverbs, and occupations.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_1_ch11_vocab-list",
         "grammar-notes",
         "genki_1_ch11_nouns-1",
@@ -519,7 +515,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 12",
       description:
         "Review and expand vocabulary with more nouns, verbs, adjectives, and adverbs.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_1_ch12_vocab-list",
         "grammar-notes",
         "genki_1_ch12_nouns-1",
@@ -543,7 +539,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 13",
       description:
         "Focus on vocabulary for nouns, adjectives, verbs, and day counts.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_2_ch13_vocab-list",
         "grammar-notes",
         "genki_2_ch13_nouns",
@@ -563,7 +559,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 14",
       description:
         "Introduce more nouns, adjectives, verbs, counters, adverbs, and other miscellaneous vocabulary.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_2_ch14_vocab-list",
         "grammar-notes",
         "genki_2_ch14_nouns-1",
@@ -584,7 +580,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 15",
       description:
         "Focus on different verb types (Ichidan, Godan, Irregular) and continue expanding noun, adverb, and miscellaneous vocabulary.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_2_ch15_vocab-list",
         "grammar-notes",
         "genki_2_ch15_nouns-1",
@@ -606,7 +602,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 16",
       description:
         "Introduce more nouns, adjectives, and verbs (U, Ru, Irregular), along with adverbs and other miscellaneous terms.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_2_ch16_vocab-list",
         "grammar-notes",
         "genki_2_ch16_nouns",
@@ -627,7 +623,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 17",
       description:
         "Expand vocabulary with more nouns, verbs, adjectives, and adverbs, and practice new sentence patterns.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_2_ch17_vocab-list",
         "grammar-notes",
         "genki_2_ch17_nouns-1",
@@ -651,7 +647,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 18",
       description:
         "Further vocabulary expansion with various noun groups, adjectives, and verb types (U, Ru, Irregular).",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_2_ch18_vocab-list",
         "grammar-notes",
         "genki_2_ch18_nouns-1",
@@ -672,7 +668,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 19",
       description:
         "Review and test vocabulary from previous chapters and introduce new vocabulary related to nouns, adjectives, and verbs.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_2_ch19_vocab-list",
         "grammar-notes",
         "genki_2_ch19_chapter-13-18-bonus-vocab",
@@ -698,7 +694,7 @@ export const chapters: ChapterCollection = {
       title: "Chapter 20",
       description:
         "Conclude Genki I with more vocabulary covering nouns, adjectives, and various verb types, and practice different expression levels.",
-      learning_path_items: [
+      learning_path_item_ids: [
         "genki_2_ch20_vocab-list",
         "grammar-notes",
         "genki_2_ch20_nouns",

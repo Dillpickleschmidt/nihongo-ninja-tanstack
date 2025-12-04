@@ -14,101 +14,251 @@ export type Database = {
   }
   public: {
     Tables: {
-      deck_folders: {
+      core_vocabulary_items: {
+        Row: {
+          created_at: string | null
+          english: string[]
+          example_sentences: Json | null
+          furigana: string
+          info: string[] | null
+          key: string
+          mnemonics: Json | null
+          overwrite_word: string | null
+          part_of_speech:
+            | Database["public"]["Enums"]["part_of_speech_enum"]
+            | null
+          particles: Json | null
+          videos: Json | null
+          word: string
+        }
+        Insert: {
+          created_at?: string | null
+          english: string[]
+          example_sentences?: Json | null
+          furigana: string
+          info?: string[] | null
+          key: string
+          mnemonics?: Json | null
+          overwrite_word?: string | null
+          part_of_speech?:
+            | Database["public"]["Enums"]["part_of_speech_enum"]
+            | null
+          particles?: Json | null
+          videos?: Json | null
+          word: string
+        }
+        Update: {
+          created_at?: string | null
+          english?: string[]
+          example_sentences?: Json | null
+          furigana?: string
+          info?: string[] | null
+          key?: string
+          mnemonics?: Json | null
+          overwrite_word?: string | null
+          part_of_speech?:
+            | Database["public"]["Enums"]["part_of_speech_enum"]
+            | null
+          particles?: Json | null
+          videos?: Json | null
+          word?: string
+        }
+        Relationships: []
+      }
+      core_vocabulary_sets: {
+        Row: {
+          created_at: string | null
+          set_id: string
+          vocabulary_keys: string[]
+        }
+        Insert: {
+          created_at?: string | null
+          set_id: string
+          vocabulary_keys: string[]
+        }
+        Update: {
+          created_at?: string | null
+          set_id?: string
+          vocabulary_keys?: string[]
+        }
+        Relationships: []
+      }
+      deck_vocabulary_items: {
         Row: {
           created_at: string
-          folder_id: number
-          folder_name: string
-          parent_folder_id: number | null
-          user_id: string
+          deck_id: string
+          english: string[]
+          example_sentences: Json | null
+          furigana: string | null
+          id: number
+          info: string[] | null
+          is_verb: boolean | null
+          mnemonics: Json | null
+          particles: Json | null
+          videos: Json | null
+          word: string
         }
         Insert: {
           created_at?: string
-          folder_id?: never
-          folder_name: string
-          parent_folder_id?: number | null
-          user_id: string
+          deck_id: string
+          english: string[]
+          example_sentences?: Json | null
+          furigana?: string | null
+          id?: never
+          info?: string[] | null
+          is_verb?: boolean | null
+          mnemonics?: Json | null
+          particles?: Json | null
+          videos?: Json | null
+          word: string
         }
         Update: {
           created_at?: string
-          folder_id?: never
-          folder_name?: string
-          parent_folder_id?: number | null
-          user_id?: string
+          deck_id?: string
+          english?: string[]
+          example_sentences?: Json | null
+          furigana?: string | null
+          id?: never
+          info?: string[] | null
+          is_verb?: boolean | null
+          mnemonics?: Json | null
+          particles?: Json | null
+          videos?: Json | null
+          word?: string
         }
         Relationships: [
           {
-            foreignKeyName: "deck_folders_parent_fkey"
-            columns: ["parent_folder_id"]
+            foreignKeyName: "deck_vocabulary_items_deck_id_fkey"
+            columns: ["deck_id"]
             isOneToOne: false
-            referencedRelation: "deck_folders"
-            referencedColumns: ["folder_id"]
+            referencedRelation: "user_decks"
+            referencedColumns: ["deck_id"]
           },
         ]
       }
-      fsrs_cards: {
+      dictionaries: {
         Row: {
-          created_at: string
-          due_at: string
-          fsrs_card: Json
-          fsrs_logs: Json[] | null
+          attribution: string | null
+          author: string | null
+          created_at: string | null
+          description: string | null
+          format: number
           id: number
-          mode: string
-          practice_item_key: string
-          stability: number
-          type: Database["public"]["Enums"]["practice_item_type"]
-          user_id: string
+          revision: string
+          sequenced: boolean
+          source_language: string | null
+          target_language: string | null
+          title: string
+          url: string | null
         }
         Insert: {
-          created_at?: string
-          due_at: string
-          fsrs_card: Json
-          fsrs_logs?: Json[] | null
+          attribution?: string | null
+          author?: string | null
+          created_at?: string | null
+          description?: string | null
+          format?: number
           id?: number
-          mode?: string
-          practice_item_key: string
-          stability: number
-          type?: Database["public"]["Enums"]["practice_item_type"]
-          user_id: string
+          revision: string
+          sequenced?: boolean
+          source_language?: string | null
+          target_language?: string | null
+          title: string
+          url?: string | null
         }
         Update: {
-          created_at?: string
-          due_at?: string
-          fsrs_card?: Json
-          fsrs_logs?: Json[] | null
+          attribution?: string | null
+          author?: string | null
+          created_at?: string | null
+          description?: string | null
+          format?: number
+          id?: number
+          revision?: string
+          sequenced?: boolean
+          source_language?: string | null
+          target_language?: string | null
+          title?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
+      kanji: {
+        Row: {
+          character: string
+          dictionary: string
+          id: number
+          kunyomi: string | null
+          meanings: Json
+          onyomi: string | null
+          stats: Json | null
+          tags: string | null
+        }
+        Insert: {
+          character: string
+          dictionary: string
+          id?: number
+          kunyomi?: string | null
+          meanings: Json
+          onyomi?: string | null
+          stats?: Json | null
+          tags?: string | null
+        }
+        Update: {
+          character?: string
+          dictionary?: string
+          id?: number
+          kunyomi?: string | null
+          meanings?: Json
+          onyomi?: string | null
+          stats?: Json | null
+          tags?: string | null
+        }
+        Relationships: []
+      }
+      kanji_meta: {
+        Row: {
+          character: string
+          data: Json
+          dictionary: string
+          id: number
+          mode: string
+        }
+        Insert: {
+          character: string
+          data: Json
+          dictionary: string
+          id?: number
+          mode: string
+        }
+        Update: {
+          character?: string
+          data?: Json
+          dictionary?: string
           id?: number
           mode?: string
-          practice_item_key?: string
-          stability?: number
-          type?: Database["public"]["Enums"]["practice_item_type"]
-          user_id?: string
         }
         Relationships: []
       }
       learning_path_module_sources: {
         Row: {
-          grammar_pattern_id: string | null
           module_id: string
+          order_index: number
           path_id: string
           source_type: string
-          transcript_line_ids: number[]
-          vocabulary_key: string | null
+          transcript_line_ids: Json
         }
         Insert: {
-          grammar_pattern_id?: string | null
           module_id: string
+          order_index?: number
           path_id: string
           source_type: string
-          transcript_line_ids: number[]
-          vocabulary_key?: string | null
+          transcript_line_ids: Json
         }
         Update: {
-          grammar_pattern_id?: string | null
           module_id?: string
+          order_index?: number
           path_id?: string
           source_type?: string
-          transcript_line_ids?: number[]
-          vocabulary_key?: string | null
+          transcript_line_ids?: Json
         }
         Relationships: [
           {
@@ -147,6 +297,36 @@ export type Database = {
           show_name?: string | null
           transcript_data?: Json
           user_id?: string
+        }
+        Relationships: []
+      }
+      media: {
+        Row: {
+          content: string | null
+          dictionary: string
+          height: number | null
+          id: number
+          media_type: string
+          path: string
+          width: number | null
+        }
+        Insert: {
+          content?: string | null
+          dictionary: string
+          height?: number | null
+          id?: number
+          media_type: string
+          path: string
+          width?: number | null
+        }
+        Update: {
+          content?: string | null
+          dictionary?: string
+          height?: number | null
+          id?: number
+          media_type?: string
+          path?: string
+          width?: number | null
         }
         Relationships: []
       }
@@ -200,6 +380,149 @@ export type Database = {
           },
         ]
       }
+      tag_meta: {
+        Row: {
+          category: string | null
+          description: string | null
+          dictionary: string
+          id: number
+          name: string
+          score: number | null
+          sort_order: number | null
+        }
+        Insert: {
+          category?: string | null
+          description?: string | null
+          dictionary: string
+          id?: number
+          name: string
+          score?: number | null
+          sort_order?: number | null
+        }
+        Update: {
+          category?: string | null
+          description?: string | null
+          dictionary?: string
+          id?: number
+          name?: string
+          score?: number | null
+          sort_order?: number | null
+        }
+        Relationships: []
+      }
+      term_meta: {
+        Row: {
+          data: Json
+          dictionary: string
+          expression: string
+          id: number
+          mode: string
+        }
+        Insert: {
+          data: Json
+          dictionary: string
+          expression: string
+          id?: number
+          mode: string
+        }
+        Update: {
+          data?: Json
+          dictionary?: string
+          expression?: string
+          id?: number
+          mode?: string
+        }
+        Relationships: []
+      }
+      terms: {
+        Row: {
+          definition_tags: string | null
+          dictionary: string
+          expression: string
+          glossary: Json
+          id: number
+          reading: string
+          rules: string | null
+          score: number
+          sequence: number
+          term_tags: string | null
+        }
+        Insert: {
+          definition_tags?: string | null
+          dictionary: string
+          expression: string
+          glossary: Json
+          id?: number
+          reading: string
+          rules?: string | null
+          score?: number
+          sequence?: number
+          term_tags?: string | null
+        }
+        Update: {
+          definition_tags?: string | null
+          dictionary?: string
+          expression?: string
+          glossary?: Json
+          id?: number
+          reading?: string
+          rules?: string | null
+          score?: number
+          sequence?: number
+          term_tags?: string | null
+        }
+        Relationships: []
+      }
+      user_completed_modules: {
+        Row: {
+          completed_at: string
+          module_path: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          module_path: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          module_path?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_deck_folders: {
+        Row: {
+          created_at: string
+          folder_id: number
+          folder_name: string
+          parent_folder_id: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          folder_id?: never
+          folder_name: string
+          parent_folder_id?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          folder_id?: never
+          folder_name?: string
+          parent_folder_id?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_deck_folders_parent_fkey"
+            columns: ["parent_folder_id"]
+            isOneToOne: false
+            referencedRelation: "user_deck_folders"
+            referencedColumns: ["folder_id"]
+          },
+        ]
+      }
       user_decks: {
         Row: {
           allowed_practice_modes: Database["public"]["Enums"]["practice_mode_enum"][]
@@ -239,25 +562,46 @@ export type Database = {
             foreignKeyName: "user_decks_folder_id_fkey"
             columns: ["folder_id"]
             isOneToOne: false
-            referencedRelation: "deck_folders"
+            referencedRelation: "user_deck_folders"
             referencedColumns: ["folder_id"]
           },
         ]
       }
-      user_module_progress: {
+      user_fsrs_cards: {
         Row: {
-          completed_at: string
-          module_path: string
+          created_at: string
+          due_at: string
+          fsrs_card: Json
+          fsrs_logs: Json[]
+          id: number
+          mode: string
+          practice_item_key: string
+          stability: number
+          type: Database["public"]["Enums"]["practice_item_type"]
           user_id: string
         }
         Insert: {
-          completed_at?: string
-          module_path: string
+          created_at?: string
+          due_at: string
+          fsrs_card: Json
+          fsrs_logs?: Json[]
+          id?: number
+          mode?: string
+          practice_item_key: string
+          stability: number
+          type?: Database["public"]["Enums"]["practice_item_type"]
           user_id: string
         }
         Update: {
-          completed_at?: string
-          module_path?: string
+          created_at?: string
+          due_at?: string
+          fsrs_card?: Json
+          fsrs_logs?: Json[]
+          id?: number
+          mode?: string
+          practice_item_key?: string
+          stability?: number
+          type?: Database["public"]["Enums"]["practice_item_type"]
           user_id?: string
         }
         Relationships: []
@@ -268,6 +612,7 @@ export type Database = {
           duration_seconds: number
           last_updated_at: string
           module_path: string
+          module_type: string
           questions_answered: number | null
           session_id: string
           user_id: string
@@ -277,6 +622,7 @@ export type Database = {
           duration_seconds?: number
           last_updated_at?: string
           module_path: string
+          module_type: string
           questions_answered?: number | null
           session_id?: string
           user_id: string
@@ -286,64 +632,78 @@ export type Database = {
           duration_seconds?: number
           last_updated_at?: string
           module_path?: string
+          module_type?: string
           questions_answered?: number | null
           session_id?: string
           user_id?: string
         }
         Relationships: []
       }
-      vocabulary_items: {
+      user_service_tokens: {
         Row: {
-          created_at: string
-          deck_id: string
-          english: string[]
-          example_sentences: Json | null
-          furigana: string | null
+          access_token: string
+          created_at: string | null
+          expires_at: string | null
           id: number
-          info: string[] | null
-          is_verb: boolean | null
-          mnemonics: Json | null
-          particles: Json | null
-          videos: Json | null
-          word: string
+          refresh_token: string | null
+          service: string
+          updated_at: string | null
+          user_id: string
         }
         Insert: {
-          created_at?: string
-          deck_id: string
-          english: string[]
-          example_sentences?: Json | null
-          furigana?: string | null
-          id?: never
-          info?: string[] | null
-          is_verb?: boolean | null
-          mnemonics?: Json | null
-          particles?: Json | null
-          videos?: Json | null
-          word: string
+          access_token: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: number
+          refresh_token?: string | null
+          service: string
+          updated_at?: string | null
+          user_id: string
         }
         Update: {
-          created_at?: string
-          deck_id?: string
-          english?: string[]
-          example_sentences?: Json | null
-          furigana?: string | null
-          id?: never
-          info?: string[] | null
-          is_verb?: boolean | null
-          mnemonics?: Json | null
-          particles?: Json | null
-          videos?: Json | null
-          word?: string
+          access_token?: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: number
+          refresh_token?: string | null
+          service?: string
+          updated_at?: string | null
+          user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "vocabulary_items_deck_id_fkey"
-            columns: ["deck_id"]
-            isOneToOne: false
-            referencedRelation: "user_decks"
-            referencedColumns: ["deck_id"]
-          },
-        ]
+        Relationships: []
+      }
+      wanikani_items: {
+        Row: {
+          character_image_url: string | null
+          character_type: string
+          characters: string | null
+          component_ids: number[] | null
+          id: number
+          meaning_mnemonic: string
+          meanings: string[]
+          reading_mnemonic: string | null
+        }
+        Insert: {
+          character_image_url?: string | null
+          character_type: string
+          characters?: string | null
+          component_ids?: number[] | null
+          id: number
+          meaning_mnemonic: string
+          meanings: string[]
+          reading_mnemonic?: string | null
+        }
+        Update: {
+          character_image_url?: string | null
+          character_type?: string
+          characters?: string | null
+          component_ids?: number[] | null
+          id?: number
+          meaning_mnemonic?: string
+          meanings?: string[]
+          reading_mnemonic?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {
@@ -354,13 +714,50 @@ export type Database = {
         Args: { operations: Json; user_id: string }
         Returns: undefined
       }
+      find_terms: { Args: { search_expression: string }; Returns: Json }
       generate_deck_id: { Args: never; Returns: string }
+      get_user_daily_aggregates:
+        | {
+            Args: { timezone_param?: string; user_id_param: string }
+            Returns: Json
+          }
+        | { Args: { user_id_param: string }; Returns: Json }
+      get_vocabulary_by_sets: { Args: { set_ids: string[] }; Returns: Json }
       get_vocabulary_stats: {
         Args: { user_id_param: string; week_ago_param: string }
         Returns: Json
       }
+      upload_learning_path: {
+        Args: {
+          module_sources: Json[]
+          transcript_data: Json
+          user_id_param: string
+          vocab_decks: Json[]
+        }
+        Returns: Json
+      }
     }
     Enums: {
+      part_of_speech_enum:
+        | "Ichidan verb"
+        | "Godan verb with 'u' ending"
+        | "Godan verb with 'tsu' ending"
+        | "Godan verb with 'ru' ending"
+        | "Godan verb - Iku/Yuku special class"
+        | "Godan verb with 'ku' ending"
+        | "Godan verb with 'gu' ending"
+        | "Godan verb with 'bu' ending"
+        | "Godan verb with 'mu' ending"
+        | "Godan verb with 'nu' ending"
+        | "Godan verb with 'su' ending"
+        | "Godan verb with 'ru' ending (irregular verb)"
+        | "Godan verb - -aru special class"
+        | "Suru verb - included"
+        | "Suru verb - compound word"
+        | "Suru verb - special class"
+        | "Kuru verb - special class"
+        | "I-adjective"
+        | "Na-adjective"
       practice_item_type: "vocabulary" | "kanji" | "radical"
       practice_mode_enum: "meanings" | "spellings"
     }
@@ -490,6 +887,27 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      part_of_speech_enum: [
+        "Ichidan verb",
+        "Godan verb with 'u' ending",
+        "Godan verb with 'tsu' ending",
+        "Godan verb with 'ru' ending",
+        "Godan verb - Iku/Yuku special class",
+        "Godan verb with 'ku' ending",
+        "Godan verb with 'gu' ending",
+        "Godan verb with 'bu' ending",
+        "Godan verb with 'mu' ending",
+        "Godan verb with 'nu' ending",
+        "Godan verb with 'su' ending",
+        "Godan verb with 'ru' ending (irregular verb)",
+        "Godan verb - -aru special class",
+        "Suru verb - included",
+        "Suru verb - compound word",
+        "Suru verb - special class",
+        "Kuru verb - special class",
+        "I-adjective",
+        "Na-adjective",
+      ],
       practice_item_type: ["vocabulary", "kanji", "radical"],
       practice_mode_enum: ["meanings", "spellings"],
     },

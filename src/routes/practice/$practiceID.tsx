@@ -2,16 +2,12 @@
 import { createFileRoute, notFound } from "@tanstack/solid-router"
 import VocabPractice from "@/features/vocab-practice/VocabPractice"
 import type { PracticeMode } from "@/features/vocab-practice/types"
-import { userSettingsQueryOptions } from "@/query/query-options"
-import { getActiveLiveService } from "@/features/srs-services/utils"
 import {
-  practiceHierarchyQueryOptions,
-  moduleVocabularyQueryOptions,
+  userSettingsQueryOptions,
+  vocabModuleAllQueryOptions,
+  practiceDueFSRSCardsQueryOptions,
 } from "@/query/query-options"
-import {
-  extractHierarchySlugs,
-  prefetchFSRSAndSVGs,
-} from "@/features/vocab-practice/utils/route-loader-helpers"
+import { getActiveService } from "@/features/srs-services/utils"
 
 export const Route = createFileRoute("/practice/$practiceID")({
   validateSearch: (
@@ -28,43 +24,33 @@ export const Route = createFileRoute("/practice/$practiceID")({
     if (!params.practiceID) throw notFound()
     const moduleId = params.practiceID
 
+    // Get user settings (needed for prerequisitesEnabled)
     const userSettings = await queryClient.ensureQueryData(
       userSettingsQueryOptions(user?.id || null),
     )
 
-    const isLiveServiceActive =
-      getActiveLiveService(userSettings["service-preferences"]) !== null
+    const prerequisitesEnabled =
+      userSettings.routes["vocab-practice"]["enable-kanji-radical-prereqs"] ??
+      true
+    const isExternalServiceActive =
+      getActiveService(userSettings["srs-service-preferences"]) !== null
 
-    queryClient
-      .ensureQueryData(moduleVocabularyQueryOptions(moduleId))
-      .then((vocabulary) => {
-        return queryClient.ensureQueryData(
-          practiceHierarchyQueryOptions(
-            moduleId,
-            vocabulary,
-            mode,
-            userSettings["override-settings"],
-            isLiveServiceActive,
-          ),
-        )
-      })
-      .then((hierarchy) => {
-        // Only prefetch FSRS and SVGs for local mode with authenticated user
-        if (!isLiveServiceActive && user) {
-          const hierarchySlugs = extractHierarchySlugs(hierarchy)
+    // Prefetch module data (non-blocking - fire and forget)
+    queryClient.ensureQueryData(
+      vocabModuleAllQueryOptions(
+        moduleId,
+        mode,
+        isExternalServiceActive,
+        prerequisitesEnabled,
+      ),
+    )
 
-          prefetchFSRSAndSVGs({
-            queryClient,
-            userId: user.id,
-            hierarchySlugs,
-            hierarchy,
-            mode,
-          })
-        }
-      })
-      .catch((error) => {
-        console.error("[Route Loader] Query chain error:", error)
-      })
+    // Prefetch due cards for review items (only for local service)
+    if (!isExternalServiceActive && user) {
+      queryClient.ensureQueryData(
+        practiceDueFSRSCardsQueryOptions(user.id, true),
+      )
+    }
 
     return {
       moduleId,
@@ -73,7 +59,6 @@ export const Route = createFileRoute("/practice/$practiceID")({
     }
   },
   component: RouteComponent,
-  notFoundComponent: () => <div>404 Not found</div>,
 })
 
 function RouteComponent() {

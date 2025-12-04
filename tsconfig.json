@@ -16,6 +16,13 @@
       "vite-plugin-solid-svg/types-component-solid",
       "vite/client",
       "@testing-library/jest-dom"
+    ],
+    "plugins": [
+      {
+        "name": "gql.tada/ts-plugin",
+        "schema": "https://graphql.anilist.co",
+        "tadaOutputLocation": "./src/features/explore/api/anilist/graphql-env.d.ts"
+      }
     ]
   }
 }

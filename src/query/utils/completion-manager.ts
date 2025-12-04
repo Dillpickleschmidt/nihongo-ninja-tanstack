@@ -1,12 +1,13 @@
-import { getUserModuleProgress } from "@/features/supabase/db/module-progress"
+import { getUserModuleCompletions } from "@/features/supabase/db/module-progress"
 import { getLocalCompletions } from "@/features/module-completion/localStorage"
 import type { ModuleProgressWithLocal } from "@/query/query-options"
 
 /**
- * Merge DB completions with local storage completions
+ * Get all completed modules for a user
+ * Combines database records with local storage completions (for pending sync items)
  * Returns combined list with DB items first, then local-only pending items
  */
-export async function mergeCompletionsWithLocal(
+export async function getCompletedModules(
   userId: string | null,
 ): Promise<ModuleProgressWithLocal[]> {
   const localCompletions = getLocalCompletions()
@@ -21,7 +22,7 @@ export async function mergeCompletionsWithLocal(
   }
 
   // Logged in - fetch from DB and merge with local (for pending sync items)
-  const dbCompletions = await getUserModuleProgress(userId, {
+  const dbCompletions = await getUserModuleCompletions(userId, {
     orderBy: "completed_at",
     ascending: false,
   })

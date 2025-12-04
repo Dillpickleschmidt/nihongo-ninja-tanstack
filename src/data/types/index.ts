@@ -1,35 +1,19 @@
 // src/data/types/index.ts
-// --- Top-Level Collection Types ---
 
 import { ResourceProvider } from "../resources-config"
 
-// Textbooks: Keyed by a unique textbook ID
-export type TextbookCollection = Record<TextbookIDEnum, Textbook>
-
-// Chapters: Nested by textbook ID, then keyed by chapter slug
-export type ChapterCollection = Record<
-  TextbookIDEnum,
-  Record<string, BuiltInDeck>
->
-
-// StaticModules: Keyed by a unique static module ID
-export type StaticModuleCollection = Record<string, StaticModule>
-
-// DynamicModules: Keyed by a unique dynamic module ID
-export type DynamicModuleCollection = Record<string, DynamicModule>
-
-// External Resources: Keyed by a unique resource ID
-export type ExternalResourceCollection = Record<string, ExternalResource>
-
 // Unified Module type
 export type Module = StaticModule | DynamicModule | ExternalResource
-export type ModuleCollection = Record<string, Module>
 
-// Vocabulary: Keyed by the vocabulary word itself
-export type VocabularyCollection = Record<string, VocabularyItem>
-
-// All vocabulary sets, keyed by their unique ID.
-export type VocabularySetCollection = Record<string, IndividualVocabularySet>
+/**
+ * A module that has been resolved from a chapter's learning path items.
+ * Contains the module's key (ID), the actual module object, and disabled status.
+ */
+export interface ResolvedModule {
+  key: string
+  module: Module
+  disabled: boolean
+}
 
 // --- Textbook and Learning Path Types ---
 
@@ -45,21 +29,42 @@ export interface Textbook {
 }
 export type TextbookIDEnum = "genki_1" | "genki_2" | "getting_started"
 
-// --- Deck Types ---
+// --- Learning Path Types ---
 
-// A textbook chapter deck with learning paths and resources
-export interface Deck {
+/**
+ * A learning path (textbook or user-created).
+ * Combines metadata about the path with its chapters.
+ */
+export interface LearningPath {
+  id: string
+  name: string
+  short_name: string
+  chapters: LearningPathChapter[]
+  isUserCreated: boolean
+}
+
+/**
+ * A chapter in a learning path (textbook or user-created).
+ * Contains metadata with module IDs (lightweight, no full module data).
+ */
+export interface LearningPathChapter {
   slug: string // e.g., "chapter-1"
   title: string
   description?: string
   disabled?: boolean
-}
-
-export type BuiltInDeck = Deck & {
   heading?: string
   features?: string[]
-  learning_path_items: string[]
+  learning_path_item_ids: string[] // Module IDs for this chapter
   disabled_modules?: string[] // Module IDs that are disabled
+}
+
+/**
+ * A learning path chapter with fully resolved module data.
+ * Extends LearningPathChapter but replaces module IDs with actual ResolvedModule objects.
+ */
+export interface LearningPathChapterWithModules
+  extends Omit<LearningPathChapter, "learning_path_item_ids"> {
+  learning_path_items: ResolvedModule[]
 }
 
 // A named set of vocabulary keys (words), for use in modules.
@@ -72,11 +77,11 @@ export interface IndividualVocabularySet {
 export interface DynamicModule {
   // Anything dynamic that has data needing to be passed
   title: string
-  session_type:
-    | "vocab-list" // Counts for 2 minutes
-    | "vocab-practice" // Each partial answer counts for 15 seconds
-    | "sentence-practice" // Each answer counts for 1 minute
-    | "vocab-test" // Completing it counts for 15 minutes
+  source_type:
+  | "vocab-list" // Counts for 2 minutes
+  | "vocab-practice" // Each partial answer counts for 15 seconds
+  | "sentence-practice" // Each answer counts for 1 minute
+  | "vocab-test" // Completing it counts for 15 minutes
   vocab_set_ids: string[]
   description?: string
   instructions?: string
@@ -88,19 +93,19 @@ export interface DynamicModule {
 export interface StaticModule {
   title: string
   link: string // URL to the static content
-  lesson_type:
-    | "grammar-notes"
-    | "chapter-vocab-overview"
-    | "lesson"
-    | "vocab-test"
-    | "conjugation-practice" // static base url
-    | "counter-practice" // static base url
-    | "worksheet"
-    | "video"
-    | "audio"
-    | "reading"
-    | "culture-note"
-    | "game"
+  source_type:
+  | "grammar-notes"
+  | "chapter-vocab-overview"
+  | "lesson"
+  | "vocab-test"
+  | "conjugation-practice" // static base url
+  | "counter-practice" // static base url
+  | "worksheet"
+  | "video"
+  | "audio"
+  | "reading"
+  | "culture-note"
+  | "game"
   description?: string
   daily_prog_amount?: number // Todo: default to 10 minutes
 }
