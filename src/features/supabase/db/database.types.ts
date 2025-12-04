@@ -25,8 +25,8 @@ export type Database = {
           mnemonics: Json | null
           overwrite_word: string | null
           part_of_speech:
-          | Database["public"]["Enums"]["part_of_speech_enum"]
-          | null
+            | Database["public"]["Enums"]["part_of_speech_enum"]
+            | null
           particles: Json | null
           videos: Json | null
           word: string
@@ -41,8 +41,8 @@ export type Database = {
           mnemonics?: Json | null
           overwrite_word?: string | null
           part_of_speech?:
-          | Database["public"]["Enums"]["part_of_speech_enum"]
-          | null
+            | Database["public"]["Enums"]["part_of_speech_enum"]
+            | null
           particles?: Json | null
           videos?: Json | null
           word: string
@@ -57,8 +57,8 @@ export type Database = {
           mnemonics?: Json | null
           overwrite_word?: string | null
           part_of_speech?:
-          | Database["public"]["Enums"]["part_of_speech_enum"]
-          | null
+            | Database["public"]["Enums"]["part_of_speech_enum"]
+            | null
           particles?: Json | null
           videos?: Json | null
           word?: string
@@ -136,6 +136,108 @@ export type Database = {
           },
         ]
       }
+      dictionaries: {
+        Row: {
+          attribution: string | null
+          author: string | null
+          created_at: string | null
+          description: string | null
+          format: number
+          id: number
+          revision: string
+          sequenced: boolean
+          source_language: string | null
+          target_language: string | null
+          title: string
+          url: string | null
+        }
+        Insert: {
+          attribution?: string | null
+          author?: string | null
+          created_at?: string | null
+          description?: string | null
+          format?: number
+          id?: number
+          revision: string
+          sequenced?: boolean
+          source_language?: string | null
+          target_language?: string | null
+          title: string
+          url?: string | null
+        }
+        Update: {
+          attribution?: string | null
+          author?: string | null
+          created_at?: string | null
+          description?: string | null
+          format?: number
+          id?: number
+          revision?: string
+          sequenced?: boolean
+          source_language?: string | null
+          target_language?: string | null
+          title?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
+      kanji: {
+        Row: {
+          character: string
+          dictionary: string
+          id: number
+          kunyomi: string | null
+          meanings: Json
+          onyomi: string | null
+          stats: Json | null
+          tags: string | null
+        }
+        Insert: {
+          character: string
+          dictionary: string
+          id?: number
+          kunyomi?: string | null
+          meanings: Json
+          onyomi?: string | null
+          stats?: Json | null
+          tags?: string | null
+        }
+        Update: {
+          character?: string
+          dictionary?: string
+          id?: number
+          kunyomi?: string | null
+          meanings?: Json
+          onyomi?: string | null
+          stats?: Json | null
+          tags?: string | null
+        }
+        Relationships: []
+      }
+      kanji_meta: {
+        Row: {
+          character: string
+          data: Json
+          dictionary: string
+          id: number
+          mode: string
+        }
+        Insert: {
+          character: string
+          data: Json
+          dictionary: string
+          id?: number
+          mode: string
+        }
+        Update: {
+          character?: string
+          data?: Json
+          dictionary?: string
+          id?: number
+          mode?: string
+        }
+        Relationships: []
+      }
       learning_path_module_sources: {
         Row: {
           module_id: string
@@ -198,6 +300,36 @@ export type Database = {
         }
         Relationships: []
       }
+      media: {
+        Row: {
+          content: string | null
+          dictionary: string
+          height: number | null
+          id: number
+          media_type: string
+          path: string
+          width: number | null
+        }
+        Insert: {
+          content?: string | null
+          dictionary: string
+          height?: number | null
+          id?: number
+          media_type: string
+          path: string
+          width?: number | null
+        }
+        Update: {
+          content?: string | null
+          dictionary?: string
+          height?: number | null
+          id?: number
+          media_type?: string
+          path?: string
+          width?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           display_name: string | null
@@ -247,6 +379,99 @@ export type Database = {
             referencedColumns: ["deck_id"]
           },
         ]
+      }
+      tag_meta: {
+        Row: {
+          category: string | null
+          description: string | null
+          dictionary: string
+          id: number
+          name: string
+          score: number | null
+          sort_order: number | null
+        }
+        Insert: {
+          category?: string | null
+          description?: string | null
+          dictionary: string
+          id?: number
+          name: string
+          score?: number | null
+          sort_order?: number | null
+        }
+        Update: {
+          category?: string | null
+          description?: string | null
+          dictionary?: string
+          id?: number
+          name?: string
+          score?: number | null
+          sort_order?: number | null
+        }
+        Relationships: []
+      }
+      term_meta: {
+        Row: {
+          data: Json
+          dictionary: string
+          expression: string
+          id: number
+          mode: string
+        }
+        Insert: {
+          data: Json
+          dictionary: string
+          expression: string
+          id?: number
+          mode: string
+        }
+        Update: {
+          data?: Json
+          dictionary?: string
+          expression?: string
+          id?: number
+          mode?: string
+        }
+        Relationships: []
+      }
+      terms: {
+        Row: {
+          definition_tags: string | null
+          dictionary: string
+          expression: string
+          glossary: Json
+          id: number
+          reading: string
+          rules: string | null
+          score: number
+          sequence: number
+          term_tags: string | null
+        }
+        Insert: {
+          definition_tags?: string | null
+          dictionary: string
+          expression: string
+          glossary: Json
+          id?: number
+          reading: string
+          rules?: string | null
+          score?: number
+          sequence?: number
+          term_tags?: string | null
+        }
+        Update: {
+          definition_tags?: string | null
+          dictionary?: string
+          expression?: string
+          glossary?: Json
+          id?: number
+          reading?: string
+          rules?: string | null
+          score?: number
+          sequence?: number
+          term_tags?: string | null
+        }
+        Relationships: []
       }
       user_completed_modules: {
         Row: {
@@ -489,13 +714,14 @@ export type Database = {
         Args: { operations: Json; user_id: string }
         Returns: undefined
       }
+      find_terms: { Args: { search_expression: string }; Returns: Json }
       generate_deck_id: { Args: never; Returns: string }
       get_user_daily_aggregates:
-      | {
-        Args: { timezone_param?: string; user_id_param: string }
-        Returns: Json
-      }
-      | { Args: { user_id_param: string }; Returns: Json }
+        | {
+            Args: { timezone_param?: string; user_id_param: string }
+            Returns: Json
+          }
+        | { Args: { user_id_param: string }; Returns: Json }
       get_vocabulary_by_sets: { Args: { set_ids: string[] }; Returns: Json }
       get_vocabulary_stats: {
         Args: { user_id_param: string; week_ago_param: string }
@@ -513,25 +739,25 @@ export type Database = {
     }
     Enums: {
       part_of_speech_enum:
-      | "Ichidan verb"
-      | "Godan verb with 'u' ending"
-      | "Godan verb with 'tsu' ending"
-      | "Godan verb with 'ru' ending"
-      | "Godan verb - Iku/Yuku special class"
-      | "Godan verb with 'ku' ending"
-      | "Godan verb with 'gu' ending"
-      | "Godan verb with 'bu' ending"
-      | "Godan verb with 'mu' ending"
-      | "Godan verb with 'nu' ending"
-      | "Godan verb with 'su' ending"
-      | "Godan verb with 'ru' ending (irregular verb)"
-      | "Godan verb - -aru special class"
-      | "Suru verb - included"
-      | "Suru verb - compound word"
-      | "Suru verb - special class"
-      | "Kuru verb - special class"
-      | "I-adjective"
-      | "Na-adjective"
+        | "Ichidan verb"
+        | "Godan verb with 'u' ending"
+        | "Godan verb with 'tsu' ending"
+        | "Godan verb with 'ru' ending"
+        | "Godan verb - Iku/Yuku special class"
+        | "Godan verb with 'ku' ending"
+        | "Godan verb with 'gu' ending"
+        | "Godan verb with 'bu' ending"
+        | "Godan verb with 'mu' ending"
+        | "Godan verb with 'nu' ending"
+        | "Godan verb with 'su' ending"
+        | "Godan verb with 'ru' ending (irregular verb)"
+        | "Godan verb - -aru special class"
+        | "Suru verb - included"
+        | "Suru verb - compound word"
+        | "Suru verb - special class"
+        | "Kuru verb - special class"
+        | "I-adjective"
+        | "Na-adjective"
       practice_item_type: "vocabulary" | "kanji" | "radical"
       practice_mode_enum: "meanings" | "spellings"
     }
@@ -547,116 +773,116 @@ type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
-  | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-  | { schema: keyof DatabaseWithoutInternals },
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-  ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-    DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-  : never = never,
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-    DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
-  ? R
-  : never
+    ? R
+    : never
   : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-    DefaultSchema["Views"])
-  ? (DefaultSchema["Tables"] &
-    DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-      Row: infer R
-    }
-  ? R
-  : never
-  : never
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
-  | keyof DefaultSchema["Tables"]
-  | { schema: keyof DatabaseWithoutInternals },
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-  ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-  : never = never,
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-    Insert: infer I
-  }
-  ? I
-  : never
+      Insert: infer I
+    }
+    ? I
+    : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-    Insert: infer I
-  }
-  ? I
-  : never
-  : never
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
-  | keyof DefaultSchema["Tables"]
-  | { schema: keyof DatabaseWithoutInternals },
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-  ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-  : never = never,
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-    Update: infer U
-  }
-  ? U
-  : never
+      Update: infer U
+    }
+    ? U
+    : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-    Update: infer U
-  }
-  ? U
-  : never
-  : never
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
-  | keyof DefaultSchema["Enums"]
-  | { schema: keyof DatabaseWithoutInternals },
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-  ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-  : never = never,
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-  ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-  : never
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-  | keyof DefaultSchema["CompositeTypes"]
-  | { schema: keyof DatabaseWithoutInternals },
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-  ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-  : never = never,
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
-  ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-  : never
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
 
 export const Constants = {
   public: {

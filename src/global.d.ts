@@ -105,4 +105,10 @@ declare global {
     SupabaseDB["public"]["Tables"]["learning_path_module_sources"]["Insert"]
   type LearningPathModuleSourceUpdate =
     SupabaseDB["public"]["Tables"]["learning_path_module_sources"]["Update"]
+
+  // Dictionary Types (read-only reference data, mirrors Yomitan IndexedDB)
+  type DictionaryTerm = SupabaseDB["public"]["Tables"]["terms"]["Row"]
+  type DictionaryTermMeta = SupabaseDB["public"]["Tables"]["term_meta"]["Row"]
+  type Dictionary = SupabaseDB["public"]["Tables"]["dictionaries"]["Row"]
+  type DictionaryTagMeta = SupabaseDB["public"]["Tables"]["tag_meta"]["Row"]
 }
