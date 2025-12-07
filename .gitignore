@@ -6,6 +6,7 @@ bun.lock
 .vscode
 .tanstack
 .nitro
+.wrangler
 app.config.timestamp*
 CLAUDE.md
 
@@ -47,10 +48,6 @@ bin/
 
 # sst
 .sst
-
-# Supabase
-supabase/.branches
-supabase/.temp
 
 # dotenvx
 .env.keys

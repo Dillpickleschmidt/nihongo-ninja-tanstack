@@ -112,6 +112,11 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  html {
+    scroll-padding-top: 100px;
+    scroll-snap-type: y proximity;
+  }
+
   * {
     @apply border-border;
   }

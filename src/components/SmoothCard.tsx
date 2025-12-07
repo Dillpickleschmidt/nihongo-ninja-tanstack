@@ -39,10 +39,10 @@ const breakpointMap = {
 }
 
 interface ComputedInternals {
-  scaledWidth: number
-  scaledHeight: number
-  combinedStyle: any
-  svgPath: string
+  scaledWidth: Accessor<number>
+  scaledHeight: Accessor<number>
+  combinedStyle: Accessor<any>
+  svgPath: Accessor<string>
   showOutline: Accessor<boolean>
   activeOutlineClass: Accessor<string | undefined>
   outlineStrokeWidth: Accessor<number>
@@ -84,25 +84,25 @@ function useSmoothCardInternals(
     return 1.0
   }
 
-  const currentScale = getCurrentScale()
-  const scaledWidth = props.width * currentScale
-  const scaledHeight = props.height * currentScale
-  const scaledCornerRadius = (props.cornerRadius || 20) * currentScale
+  // Make these reactive getters so they update when props change
+  const scaledWidth = () => props.width * getCurrentScale()
+  const scaledHeight = () => props.height * getCurrentScale()
+  const scaledCornerRadius = () => (props.cornerRadius || 20) * getCurrentScale()
 
-  const svgPath = getSvgPath({
-    width: scaledWidth,
-    height: scaledHeight,
-    cornerRadius: scaledCornerRadius,
+  const svgPath = () => getSvgPath({
+    width: scaledWidth(),
+    height: scaledHeight(),
+    cornerRadius: scaledCornerRadius(),
     cornerSmoothing: props.cornerSmoothing || 1,
     preserveSmoothing: true,
   })
 
-  const combinedStyle = {
-    width: `${scaledWidth}px`,
-    height: `${scaledHeight}px`,
-    "clip-path": `path('${svgPath}')`,
+  const combinedStyle = () => ({
+    width: `${scaledWidth()}px`,
+    height: `${scaledHeight()}px`,
+    "clip-path": `path('${svgPath()}')`,
     ...props.style,
-  }
+  })
 
   // Determine if outline should be visible
   const showOutline = () =>
@@ -143,9 +143,8 @@ function SmoothCardContent(props: SmoothCardContentProps) {
   return (
     <>
       <div
-        style={props.internals.combinedStyle}
+        style={props.internals.combinedStyle()}
         class={cn(
-          "bg-card",
           "shadow-sm shadow-black/5 dark:shadow-black/20",
           props.class,
         )}
@@ -160,14 +159,14 @@ function SmoothCardContent(props: SmoothCardContentProps) {
           props.internals.activeOutlineClass(),
         )}
         style={{
-          width: `${props.internals.scaledWidth}px`,
-          height: `${props.internals.scaledHeight}px`,
+          width: `${props.internals.scaledWidth()}px`,
+          height: `${props.internals.scaledHeight()}px`,
         }}
-        viewBox={`0 0 ${props.internals.scaledWidth} ${props.internals.scaledHeight}`}
+        viewBox={`0 0 ${props.internals.scaledWidth()} ${props.internals.scaledHeight()}`}
         preserveAspectRatio="none"
       >
         <path
-          d={props.internals.svgPath}
+          d={props.internals.svgPath()}
           fill="none"
           shape-rendering="geometricPrecision"
           stroke-width={props.internals.outlineStrokeWidth()}
@@ -184,8 +183,8 @@ export function SmoothCard(props: SmoothCardProps) {
     <div
       style={{
         position: "relative",
-        width: `${internals.scaledWidth}px`,
-        height: `${internals.scaledHeight}px`,
+        width: `${internals.scaledWidth()}px`,
+        height: `${internals.scaledHeight()}px`,
       }}
     >
       <SmoothCardContent internals={internals} class={props.class}>
@@ -232,8 +231,8 @@ const SmoothCardLinkBase = (props: SmoothCardLinkBaseProps) => {
       {...restProps}
       style={{
         position: "relative",
-        width: `${internals.scaledWidth}px`,
-        height: `${internals.scaledHeight}px`,
+        width: `${internals.scaledWidth()}px`,
+        height: `${internals.scaledHeight()}px`,
         display: "block",
         "text-decoration": "none",
         ...(smoothCardProps.style || {}),

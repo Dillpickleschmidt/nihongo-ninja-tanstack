@@ -1,15 +1,15 @@
-# nihongo-ninja
+### Guide
 
-To install dependencies:
+Rename .env.example to .env.local
 
-```bash
-bun install
-```
+Run
 
-To run:
+- `pnpm i`
+- `pnpx convex dev`
+- `pnpx convex env set SITE_URL http://localhost:3000/`
+- `pnpx convex env set BETTER_AUTH_SECRET=$(openssl rand -base64 32)`
+- `pnpx convex dev` - takes up one terminal
 
-```bash
-bun run index.ts
-```
+In a separate terminal run
 
-This project was created using `bun init` in bun v1.2.13. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+- `pnpm run dev`

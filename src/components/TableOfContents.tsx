@@ -9,19 +9,19 @@ export interface TOCItem {
 interface TableOfContentsProps {
   items: TOCItem[]
   class?: string
+  screenTopOffset?: number
 }
 
 export function TableOfContents(props: TableOfContentsProps) {
   const [activeId, setActiveId] = createSignal<string | null>(null)
 
-  // Use IntersectionObserver to track which section is in view
+  // Track which section is closest to the screen top offset
   createEffect(
     on(
       () => props.items,
       (items) => {
         if (items.length === 0) return
 
-        // Get all target elements upfront with error handling
         const elements = items
           .map((item) => ({
             id: item.id,
@@ -34,26 +34,39 @@ export function TableOfContents(props: TableOfContentsProps) {
 
         if (elements.length === 0) return
 
-        const observer = new IntersectionObserver(
-          (entries) => {
-            const visibleEntries = entries.filter(
-              (entry) => entry.isIntersecting,
-            )
-            if (visibleEntries.length > 0) {
-              // IntersectionObserver already orders entries by position, so get the first
-              setActiveId(visibleEntries[0].target.id)
+        const topOffsetPercent = props.screenTopOffset ?? 50
+
+        const updateActiveSection = () => {
+          const offsetY = window.innerHeight * (topOffsetPercent / 100)
+
+          // Find the section whose top is closest to but above the offset line
+          let activeSection: string | null = null
+          let smallestDistance = Infinity
+
+          for (const { id, el } of elements) {
+            const rect = el.getBoundingClientRect()
+            // Section top must be at or above the offset line
+            if (rect.top <= offsetY) {
+              const distance = offsetY - rect.top
+              if (distance < smallestDistance) {
+                smallestDistance = distance
+                activeSection = id
+              }
             }
-          },
-          {
-            rootMargin: "-20% 0% -66%",
-          },
-        )
+          }
 
-        // Observe all available target elements
-        elements.forEach(({ el }) => observer.observe(el))
+          setActiveId(activeSection)
+        }
 
-        // Proper cleanup
-        onCleanup(() => observer.disconnect())
+        // Initial check
+        updateActiveSection()
+
+        // Listen for scroll
+        window.addEventListener("scroll", updateActiveSection, { passive: true })
+
+        onCleanup(() => {
+          window.removeEventListener("scroll", updateActiveSection)
+        })
       },
     ),
   )
@@ -80,7 +93,7 @@ export function TableOfContents(props: TableOfContentsProps) {
                   class={cn(
                     "hover:text-foreground text-muted-foreground block transition-colors",
                     activeId() === item.id &&
-                      "border-l-primary text-foreground border-l-2 pl-2 font-medium",
+                    "border-l-primary text-foreground border-l-2 pl-2 font-medium",
                   )}
                 >
                   {item.title}

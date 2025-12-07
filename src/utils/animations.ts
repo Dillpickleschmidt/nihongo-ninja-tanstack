@@ -2,230 +2,192 @@
 
 export const ANIMATION_CONFIG = {
   duration: 300,
+  distance: 30,
   easings: {
     transform: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-    opacityEnter: "cubic-bezier(0.25, 1, 0.5, 1)", // Fast start, slow end
-    opacityExit: "cubic-bezier(0.5, 0, 0.75, 0)", // Slow start, fast end
+    opacityEnter: "cubic-bezier(0.25, 1, 0.5, 1)",
+    opacityExit: "cubic-bezier(0.5, 0, 0.75, 0)",
   },
 } as const
 
-type Direction = "left" | "right" | "up" | "down"
+export type Position = "left" | "right" | "up" | "down"
 
-export function createSlideWithFadeInAnimation(
-  element: HTMLElement,
-  direction: Direction,
-  options: { withOpacity?: boolean; duration?: number } = {},
-) {
-  const { withOpacity = true, duration = ANIMATION_CONFIG.duration } = options
-  const animations: Animation[] = []
-
-  // Ensure element has position relative for left/top to work
-  if (element.style.position === "" || element.style.position === "static") {
-    element.style.position = "relative"
-  }
-
-  // Get starting position values based on desired visual movement direction
-  const getStartPosition = (dir: Direction) => {
-    switch (dir) {
-      case "left":
-        return { left: "30px" } // Start from right, slide left
-      case "right":
-        return { left: "-30px" } // Start from left, slide right
-      case "up":
-        return { top: "30px" } // Start from below, slide up
-      case "down":
-        return { top: "-30px" } // Start from above, slide down
-    }
-  }
-
-  const getEndPosition = (dir: Direction) => {
-    switch (dir) {
-      case "left":
-      case "right":
-        return { left: "0px" }
-      case "up":
-      case "down":
-        return { top: "0px" }
-    }
-  }
-
-  // Position animation
-  const posAnim = element.animate(
-    [getStartPosition(direction), getEndPosition(direction)],
-    {
-      duration: duration,
-      easing: ANIMATION_CONFIG.easings.transform,
-      fill: "forwards",
-    },
-  )
-  animations.push(posAnim)
-
-  // Opacity animation (if requested)
-  if (withOpacity) {
-    const opacityAnim = element.animate([{ opacity: 0 }, { opacity: 1 }], {
-      duration: duration,
-      easing: ANIMATION_CONFIG.easings.opacityEnter,
-      fill: "forwards",
-    })
-    animations.push(opacityAnim)
-  }
-
-  return Promise.all(animations.map((anim) => anim.finished))
-}
-
-export function createSlideWithFadeOutAnimation(
-  element: HTMLElement,
-  direction: Direction,
-) {
-  // Ensure element has position relative for left/top to work
-  if (element.style.position === "" || element.style.position === "static") {
-    element.style.position = "relative"
-  }
-
-  // Get ending position values based on desired visual movement direction
-  const getStartPosition = (dir: Direction) => {
-    switch (dir) {
-      case "left":
-      case "right":
-        return { left: "0px" }
-      case "up":
-      case "down":
-        return { top: "0px" }
-    }
-  }
-
-  const getEndPosition = (dir: Direction) => {
-    switch (dir) {
-      case "left":
-        return { left: "-30px" } // End to the left
-      case "right":
-        return { left: "30px" } // End to the right
-      case "up":
-        return { top: "-30px" } // End above
-      case "down":
-        return { top: "30px" } // End below
-    }
-  }
-
-  const positionAnim = element.animate(
-    [getStartPosition(direction), getEndPosition(direction)],
-    {
-      duration: ANIMATION_CONFIG.duration,
-      easing: ANIMATION_CONFIG.easings.transform,
-      fill: "forwards",
-    },
-  )
-
-  const opacityAnim = element.animate([{ opacity: 1 }, { opacity: 0 }], {
-    duration: ANIMATION_CONFIG.duration,
-    easing: ANIMATION_CONFIG.easings.opacityExit,
-    fill: "forwards",
-  })
-
-  return Promise.all([positionAnim.finished, opacityAnim.finished])
-}
-
-export function prepareElementForEnter(
-  element: HTMLElement,
-  direction: Direction,
-  withOpacity = true,
-) {
-  // Ensure element has position relative for left/top to work
-  if (element.style.position === "" || element.style.position === "static") {
-    element.style.position = "relative"
-  }
-
-  // Set initial position based on desired visual movement direction
-  switch (direction) {
+function getTranslateValue(position: Position, distance: number): string {
+  switch (position) {
     case "left":
-      element.style.left = "30px" // Start from right, slide left
-      break
+      return `translate3d(${-distance}px, 0, 0)`
     case "right":
-      element.style.left = "-30px" // Start from left, slide right
-      break
+      return `translate3d(${distance}px, 0, 0)`
     case "up":
-      element.style.top = "30px" // Start from below, slide up
-      break
+      return `translate3d(0, ${-distance}px, 0)`
     case "down":
-      element.style.top = "-30px" // Start from above, slide down
-      break
-  }
-
-  if (withOpacity) {
-    element.style.opacity = "0"
+      return `translate3d(0, ${distance}px, 0)`
   }
 }
 
-// Animation configuration for component-specific animations
-const COMPONENT_ANIMATION_CONFIG = {
-  "[data-word-hierarchy-progress]": {
-    direction: "right" as const,
-    baseDelay: 0,
-    staggerDelay: 0,
-  },
-  "[data-word-hierarchy-content]": {
-    direction: "right" as const,
-    baseDelay: 75,
-    staggerDelay: 0,
-  },
-  "[data-history-item]": {
-    direction: "left" as const,
-    baseDelay: 0,
-    staggerDelay: 0,
-  },
-  "[data-featured-item]": {
-    direction: "left" as const,
-    baseDelay: 0,
-    staggerDelay: 50,
-  },
-  "[data-struggles-item]": {
-    direction: "left" as const,
-    baseDelay: 0,
-    staggerDelay: 0,
-  },
-  "[data-lessons-layout]": {
-    direction: "up" as const,
-    baseDelay: 0,
-    staggerDelay: 0,
-  },
-  "[data-quick-access-desktop]": {
-    direction: "up" as const,
-    baseDelay: 0,
-    staggerDelay: 50,
-  },
-  "[data-quick-access-mobile]": {
-    direction: "left" as const,
-    baseDelay: 0,
-    staggerDelay: 100,
-  },
-} as const
+export function getInitialAnimationStyles(
+  initialPosition: Position,
+  withOpacity = true,
+  distance: number = ANIMATION_CONFIG.distance,
+): Record<string, string> {
+  const styles: Record<string, string> = {
+    "will-change": "transform, opacity",
+    "backface-visibility": "hidden",
+    transform: getTranslateValue(initialPosition, distance),
+  }
 
-// Utility function for components to trigger their own animations
-export function triggerComponentAnimations(selectors: string[]) {
-  selectors.forEach((selector) => {
-    const config =
-      COMPONENT_ANIMATION_CONFIG[
-        selector as keyof typeof COMPONENT_ANIMATION_CONFIG
-      ]
-    if (!config) return
+  if (withOpacity) {
+    styles.opacity = "0"
+  }
 
-    const elements = document.querySelectorAll(
-      selector,
-    ) as NodeListOf<HTMLElement>
-    elements.forEach((element, index) => {
-      if (element) {
-        prepareElementForEnter(element, config.direction, true)
+  return styles
+}
 
-        const delay = config.baseDelay + index * config.staggerDelay
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            createSlideWithFadeInAnimation(element, config.direction, {
-              duration: ANIMATION_CONFIG.duration,
-              withOpacity: true,
-            })
-          }, delay)
-        })
+export function animateElementIn(
+  element: HTMLElement,
+  initialPosition: Position,
+  options: { withOpacity?: boolean; duration?: number; distance?: number } = {},
+): Promise<void> {
+  const { withOpacity = true, duration = ANIMATION_CONFIG.duration, distance = ANIMATION_CONFIG.distance } = options
+
+  return new Promise((resolve) => {
+    element.style.transition = "none"
+    element.style.transform = getTranslateValue(initialPosition, distance)
+    if (withOpacity) {
+      element.style.opacity = "0"
+    }
+
+    void element.offsetHeight // Force reflow
+
+    const transitions = [
+      `transform ${duration}ms ${ANIMATION_CONFIG.easings.transform}`,
+    ]
+    if (withOpacity) {
+      transitions.push(`opacity ${duration}ms ${ANIMATION_CONFIG.easings.opacityEnter}`)
+    }
+    element.style.transition = transitions.join(", ")
+
+    requestAnimationFrame(() => {
+      element.style.transform = "translate3d(0, 0, 0)"
+      if (withOpacity) {
+        element.style.opacity = "1"
       }
     })
+
+    const handleTransitionEnd = (e: TransitionEvent) => {
+      if (e.propertyName === "transform") {
+        element.removeEventListener("transitionend", handleTransitionEnd)
+        element.style.willChange = ""
+        resolve()
+      }
+    }
+    element.addEventListener("transitionend", handleTransitionEnd)
   })
 }
+
+export function animateElementOut(
+  element: HTMLElement,
+  exitPosition: Position,
+  options: { withOpacity?: boolean; duration?: number; distance?: number } = {},
+): Promise<void> {
+  const { withOpacity = true, duration = ANIMATION_CONFIG.duration, distance = ANIMATION_CONFIG.distance } = options
+
+  return new Promise((resolve) => {
+    // Hint to browser for GPU acceleration
+    element.style.willChange = "transform, opacity"
+    element.style.backfaceVisibility = "hidden"
+
+    const transitions = [
+      `transform ${duration}ms ${ANIMATION_CONFIG.easings.transform}`,
+    ]
+    if (withOpacity) {
+      transitions.push(`opacity ${duration}ms ${ANIMATION_CONFIG.easings.opacityExit}`)
+    }
+    element.style.transition = transitions.join(", ")
+
+    requestAnimationFrame(() => {
+      element.style.transform = getTranslateValue(exitPosition, distance)
+      if (withOpacity) {
+        element.style.opacity = "0"
+      }
+    })
+
+    const handleTransitionEnd = (e: TransitionEvent) => {
+      if (e.propertyName === "transform") {
+        element.removeEventListener("transitionend", handleTransitionEnd)
+        element.style.willChange = ""
+        resolve()
+      }
+    }
+    element.addEventListener("transitionend", handleTransitionEnd)
+  })
+}
+
+// Animates element when it enters/exits the "safe zone" (viewport minus offsets).
+// Uses sentinel wrapper to decouple position tracking from animation (no feedback loops).
+export function observeElementForAnimation(
+  element: HTMLElement,
+  options: {
+    screenBottomOffset?: number
+    screenTopOffset?: number
+    initialPosition?: Position
+    startVisible?: boolean
+    noExit?: boolean
+  } = {},
+): () => void {
+  const {
+    screenBottomOffset = 50,
+    screenTopOffset = 50,
+    initialPosition = "left",
+    startVisible = false,
+    noExit = false,
+  } = options
+
+  // Create sentinel wrapper (observing this instead of element avoids animation feedback)
+  const sentinel = document.createElement("div")
+  // Copy snap classes to sentinel so scroll-snap still works
+  if (element.classList.contains("snap-start")) sentinel.classList.add("snap-start")
+  if (element.classList.contains("snap-center")) sentinel.classList.add("snap-center")
+  if (element.classList.contains("snap-end")) sentinel.classList.add("snap-end")
+  element.parentNode?.insertBefore(sentinel, element)
+  sentinel.appendChild(element)
+
+  let isVisible = startVisible
+  let lastScrollY = window.scrollY
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const currentScrollY = window.scrollY
+        const isScrollingDown = currentScrollY > lastScrollY
+        lastScrollY = currentScrollY
+
+        if (entry.isIntersecting && !isVisible) {
+          isVisible = true
+          animateElementIn(element, initialPosition)
+        } else if (!entry.isIntersecting && isVisible && !noExit) {
+          isVisible = false
+          // For vertical animations, exit opposite to scroll direction
+          const isVertical = initialPosition === "up" || initialPosition === "down"
+          const exitPosition = isVertical
+            ? (isScrollingDown ? "up" : "down")
+            : initialPosition
+          animateElementOut(element, exitPosition)
+        }
+      })
+    },
+    {
+      rootMargin: `-${screenTopOffset}% 0px -${screenBottomOffset}% 0px`,
+      threshold: 0,
+    },
+  )
+
+  observer.observe(sentinel)
+
+  return () => {
+    observer.disconnect()
+    sentinel.parentNode?.insertBefore(element, sentinel)
+    sentinel.remove()
+  }
+}
+
