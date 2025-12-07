@@ -7,18 +7,16 @@ import { userPreferencesValidator } from '../validators'
  * Gets the current user's preferences
  */
 export const getUserPreferences = query({
-  args: {},
-  handler: async (ctx) => {
-    const user = await requireAuth(ctx)
-
+  args: { userId: v.string() }, // or v.id("users") if it's a Convex Id
+  handler: async (ctx, args) => {
     const profile = await ctx.db
-      .query('profiles')
-      .withIndex('by_user', (q) => q.eq('userId', user._id))
-      .first()
+      .query("profiles")
+      .withIndex("by_user", q => q.eq("userId", args.userId))
+      .first();
 
-    return profile?.userPreferences ?? null
+    return profile?.userPreferences ?? null;
   },
-})
+});
 
 /**
  * Gets the current user's profile

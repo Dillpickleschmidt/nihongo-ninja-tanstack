@@ -4,7 +4,7 @@ import {
 } from '@convex-dev/better-auth/react-start'
 import { createServerFn } from '@tanstack/solid-start'
 import { getCookie, getRequest } from '@tanstack/solid-start/server'
-import { api } from 'convex/_generated/api'
+import { api } from '../../convex/_generated/api'
 import { fetchMutation } from './auth-server'
 
 // Get auth information for SSR using available cookies

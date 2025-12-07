@@ -177,9 +177,9 @@ export function TextbookChapterBackgrounds(props: {
 
   const preferencesQuery = useQuery(
     api.api.profiles.getUserPreferences,
-    {},
+    { userId: user()!.id },
     () => ({
-      enabled: false // !!user() 
+      enabled: !!user()
     }),
   )
 

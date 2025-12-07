@@ -19,11 +19,14 @@ export function getRouter() {
     defaultErrorComponent: (err) => <p>{err.error.stack}</p>,
     defaultNotFoundComponent: () => <p>not found</p>,
     scrollRestoration: true,
-    dehydrate: () => ({
-      queryClientState: dehydrate(queryClient, {
-        shouldDehydrateQuery: () => true,
-      }),
-    }),
+    dehydrate: () => {
+      return {
+        queryClientState: dehydrate(queryClient, {
+          shouldDehydrateQuery: () => true, // Include all queries (even pending)
+          shouldDehydrateMutation: () => true, // Include all mutations
+        })
+      } as any
+    },
     hydrate: (dehydrated) => {
       hydrate(queryClient, dehydrated.queryClientState)
     },
