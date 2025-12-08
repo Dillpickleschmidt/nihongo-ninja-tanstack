@@ -1,6 +1,6 @@
 import { v } from 'convex/values'
-import { query, internalMutation, type QueryCtx } from '../_generated/server'
-import { vocabularyItemValidator, type VocabularyItem } from '../validators'
+import { query, type QueryCtx } from '../_generated/server'
+import { type VocabularyItem } from '../validators'
 
 /**
  * Shared helper to fetch vocabulary items by keys with deck override
@@ -127,90 +127,5 @@ export const getBySets = query({
         keys.map((key) => itemsMap[key]).filter(Boolean),
       ])
     )
-  },
-})
-
-// ============================================
-// Internal mutations for seeding (CLI only)
-// ============================================
-
-/**
- * Seed core vocabulary items (internal - no auth)
- */
-export const seedItems = internalMutation({
-  args: {
-    items: v.array(vocabularyItemValidator),
-  },
-  handler: async (ctx, args) => {
-    for (const item of args.items) {
-      // Check if exists
-      const existing = await ctx.db
-        .query('coreVocabularyItems')
-        .withIndex('by_key', (q) => q.eq('key', item.key))
-        .first()
-
-      if (existing) {
-        // Update existing
-        await ctx.db.patch(existing._id, item)
-      } else {
-        // Insert new
-        await ctx.db.insert('coreVocabularyItems', item)
-      }
-    }
-
-    return { count: args.items.length }
-  },
-})
-
-/**
- * Seed core vocabulary sets (internal - no auth)
- */
-export const seedSets = internalMutation({
-  args: {
-    sets: v.array(
-      v.object({
-        setId: v.string(),
-        vocabularyKeys: v.array(v.string()),
-      }),
-    ),
-  },
-  handler: async (ctx, args) => {
-    for (const set of args.sets) {
-      // Check if exists
-      const existing = await ctx.db
-        .query('coreVocabularySets')
-        .withIndex('by_setId', (q) => q.eq('setId', set.setId))
-        .first()
-
-      if (existing) {
-        // Update existing
-        await ctx.db.patch(existing._id, { vocabularyKeys: set.vocabularyKeys })
-      } else {
-        // Insert new
-        await ctx.db.insert('coreVocabularySets', set)
-      }
-    }
-
-    return { count: args.sets.length }
-  },
-})
-
-/**
- * Clear all core vocabulary data (internal - for re-seeding)
- */
-export const clearAll = internalMutation({
-  args: {},
-  handler: async (ctx) => {
-    const items = await ctx.db.query('coreVocabularyItems').collect()
-    for (const item of items) {
-      await ctx.db.delete(item._id)
-    }
-
-    const sets = await ctx.db.query('coreVocabularySets').collect()
-    for (const set of sets) {
-      await ctx.db.delete(set._id)
-    }
-
-    return { deletedItems: items.length, deletedSets: sets.length }
   },
 })

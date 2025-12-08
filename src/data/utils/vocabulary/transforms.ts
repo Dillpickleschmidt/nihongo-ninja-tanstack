@@ -3,16 +3,6 @@ import type { VocabularyItem, RichVocabItem } from "convex/validators"
 import { extractHiragana, convertFuriganaToRubyHtml } from "@/data/utils/text/furigana"
 
 /**
- * Transform VocabularyItem[] to KanaItem[]
- */
-// export function vocabularyToKana(vocabulary: VocabularyItem[]): KanaItem[] {
-//   return vocabulary.map((item) => ({
-//     hiragana: item.word,
-//     romaji: item.english,
-//   }))
-// }
-
-/**
  * Adds hiragana and ruby text to VocabularyItem objects.
  * @param items - An array of VocabularyItem objects to transform.
  * @param furiganaSize - Optional font size for furigana text.
