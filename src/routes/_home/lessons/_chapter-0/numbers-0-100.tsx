@@ -107,14 +107,14 @@ function JapaneseNumbers() {
           />
 
           <NumberExample
-            explanation='To make sixty-nine, you combine "six" + "ten" + "nine" →'
+            explanation='To make sixty-seven, you combine "six" + "ten" + "seven" →'
             parts={[
               <span class="text-red-400">
                 <Romaji romaji="roku">ろく</Romaji>
               </span>,
               <Romaji romaji="juu">じゅう</Romaji>,
               <span class="text-orange-400">
-                <Romaji romaji="kyuu">きゅう</Romaji>
+                <Romaji romaji="なな">なな</Romaji>
               </span>,
             ]}
           />
