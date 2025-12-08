@@ -1,6 +1,8 @@
+import { Show } from 'solid-js'
 import { Link, useLocation } from '@tanstack/solid-router'
-import { Home, Clapperboard, GraduationCap, Hammer, LogOut } from 'lucide-solid'
+import { Home, Clapperboard, GraduationCap, Hammer, LogIn, LogOut } from 'lucide-solid'
 import { cn } from '@/utils'
+import { getUser } from '@/lib/auth'
 
 // --- Shared Types ---
 interface NavItem {
@@ -113,6 +115,7 @@ function ProgressCircle(props: ProgressCircleProps) {
 
 // --- TopNav (Desktop) ---
 export function TopNav(props: NavProps) {
+  const user = getUser()
   const dailyProgress = () => props.dailyProgressPercentage ?? 65
   const nav = useNavLogic(dailyProgress())
 
@@ -184,13 +187,26 @@ export function TopNav(props: NavProps) {
 
             <div class="w-px h-8 bg-card-foreground/10" />
 
-            <button
-              onClick={props.onSignOut}
-              class="p-2 text-primary/60 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
-              title="Sign Out"
+            <Show
+              when={user()}
+              fallback={
+                <Link
+                  to="/auth"
+                  class="p-2 text-primary/60 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                  title="Sign In"
+                >
+                  <LogIn class="w-5 h-5" />
+                </Link>
+              }
             >
-              <LogOut class="w-5 h-5" />
-            </button>
+              <button
+                onClick={props.onSignOut}
+                class="p-2 text-primary/60 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                title="Sign Out"
+              >
+                <LogOut class="w-5 h-5" />
+              </button>
+            </Show>
           </div>
         </div>
       </div>

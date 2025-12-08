@@ -24,11 +24,11 @@ import '@fontsource-variable/inter'
 import '@fontsource/poppins'
 import appCss from '@/styles/app.css?url'
 import AppConvexProvider from '@/providers/convex'
-import { getUser } from '@/lib/auth'
 import {
   deviceSettingsQueryOptions,
   updateDeviceSettingsCookie,
 } from '@/query/device-settings'
+import { authQueryOptions } from '@/query/auth'
 
 export interface RouterContext {
   queryClient: QueryClient
@@ -43,9 +43,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     links: [{ rel: 'stylesheet', href: appCss }],
   }),
   beforeLoad: async ({ context }) => {
-    const user = await getUser()
     context.queryClient.prefetchQuery(deviceSettingsQueryOptions())
-    return { user }
+    await context.queryClient.ensureQueryData(authQueryOptions())
+    return {}
   },
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(deviceSettingsQueryOptions())

@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/solid-router"
 import { createEffect, createSignal, For, on, Show } from "solid-js"
 import { useMutation } from "convex-solidjs"
+import { useQueryClient } from "@tanstack/solid-query"
 import { ChevronDown } from "lucide-solid"
 import { authClient } from "~/lib/auth-client"
 import { convexQuery, useConvexQuery } from "@/lib/convex-query"
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/dashboard")({
 
 function DashboardComponent() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const profile = useConvexQuery(api.api.profiles.getProfile, {})
   const updatePreference = useMutation(api.api.profiles.updatePreferenceField)
   const learningPathsQuery = useConvexQuery(
@@ -62,6 +64,7 @@ function DashboardComponent() {
 
   const handleSignOut = async () => {
     await authClient.signOut()
+    queryClient.invalidateQueries({ queryKey: ['auth'] })
     navigate({ to: "/" })
   }
 

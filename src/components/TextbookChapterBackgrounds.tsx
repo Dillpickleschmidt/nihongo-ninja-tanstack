@@ -1,7 +1,7 @@
 import { Show, createMemo } from 'solid-js'
 import { useQuery } from 'convex-solidjs'
-import { useRouteContext } from '@tanstack/solid-router'
 import { api } from 'convex/_generated/api'
+import { getUser } from '@/lib/auth'
 
 type BackgroundMediaItem = {
   source_type: 'img' | 'video'
@@ -172,8 +172,7 @@ export function TextbookChapterBackgrounds(props: {
   opacityOffset?: number
   class?: string
 }) {
-  const context = useRouteContext({ from: '__root__' })
-  const user = () => context().user
+  const user = getUser()
 
   const profileQuery = useQuery(
     api.api.profiles.getProfile,

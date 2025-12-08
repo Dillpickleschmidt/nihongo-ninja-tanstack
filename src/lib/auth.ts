@@ -1,14 +1,21 @@
-import { createIsomorphicFn } from '@tanstack/solid-start'
-import { authClient } from './auth-client'
+import { redirect } from '@tanstack/solid-router'
+import { useQuery } from '@tanstack/solid-query'
+import { authQueryOptions } from '@/query/auth'
 import { fetchAuth } from './server'
 
-export type User = Awaited<ReturnType<typeof getUser>>;
+type AuthData = Awaited<ReturnType<typeof fetchAuth>>
+export type User = NonNullable<AuthData['session']>['user']
 
-export const getUser = createIsomorphicFn()
-  .server(async () => {
-    const { session } = await fetchAuth()
-    return session?.user ?? null
-  })
-  .client(() => {
-    return authClient.useSession()().data?.user ?? null
-  })
+// For components - reactive via useQuery
+export function getUser() {
+  const query = useQuery(() => authQueryOptions())
+  return () => query.data?.session?.user ?? null
+}
+
+// For protected route beforeLoad - fresh server validation
+export async function requireAuth() {
+  const { token } = await fetchAuth()
+  if (!token) {
+    throw redirect({ to: '/auth' })
+  }
+}

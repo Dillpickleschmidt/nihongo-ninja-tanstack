@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/solid-router'
 import { createSignal, For, onMount, onCleanup } from 'solid-js'
+import { useQueryClient } from '@tanstack/solid-query'
 import { authClient } from '~/lib/auth-client'
 import { TopNav, BottomNav } from '@/features/navbar/Nav'
 import { TextbookChapterBackgrounds } from '@/components/TextbookChapterBackgrounds'
@@ -57,6 +58,7 @@ function RouteComponent() {
   let tocRef: HTMLDivElement | undefined
 
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [selectedLevel, setSelectedLevel] = createSignal<string>('N5')
   const [bgBlur, setBgBlur] = createSignal(16)
 
@@ -148,6 +150,7 @@ function RouteComponent() {
 
   const handleSignOut = async () => {
     await authClient.signOut()
+    queryClient.invalidateQueries({ queryKey: ['auth'] })
     navigate({ to: '/' })
   }
 

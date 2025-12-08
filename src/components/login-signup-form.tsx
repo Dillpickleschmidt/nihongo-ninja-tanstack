@@ -1,10 +1,12 @@
 import { useNavigate } from '@tanstack/solid-router'
 import { createSignal } from 'solid-js'
+import { useQueryClient } from '@tanstack/solid-query'
 import { authClient } from '@/lib/auth-client'
 import { createProfile } from '@/lib/server'
 
 export default function LoginSignupForm() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [isLogin, setIsLogin] = createSignal(true)
   const [name, setName] = createSignal('')
   const [email, setEmail] = createSignal('')
@@ -33,6 +35,7 @@ export default function LoginSignupForm() {
         await createProfile()
       }
 
+      queryClient.invalidateQueries({ queryKey: ['auth'] })
       navigate({ to: '/' })
     } catch (err: any) {
       setError(err?.message || 'An error occurred')
