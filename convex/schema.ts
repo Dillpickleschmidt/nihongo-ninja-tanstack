@@ -12,7 +12,7 @@ import {
   userPreferencesValidator,
   practiceModeValidator,
   practiceItemTypeValidator,
-  partOfSpeechValidator,
+  vocabularyItemValidator,
 } from './validators'
 
 export default defineSchema({
@@ -143,19 +143,10 @@ export default defineSchema({
   // ===== Reference/Seed Data Tables =====
 
   // Core Vocabulary Items
-  coreVocabularyItems: defineTable({
-    key: v.string(),
-    word: v.string(),
-    furigana: v.string(),
-    english: v.array(v.string()),
-    partOfSpeech: v.optional(partOfSpeechValidator),
-    info: v.optional(v.array(v.string())),
-    mnemonics: v.optional(mnemonicsValidator),
-    exampleSentences: v.optional(v.array(exampleSentenceValidator)),
-    videos: v.optional(v.array(videoValidator)),
-    particles: v.optional(v.array(particleValidator)),
-    overwriteWord: v.optional(v.string()),
-  }).index('by_key', ['key']),
+  coreVocabularyItems: defineTable(vocabularyItemValidator.fields).index(
+    'by_key',
+    ['key'],
+  ),
 
   // Core Vocabulary Sets
   coreVocabularySets: defineTable({

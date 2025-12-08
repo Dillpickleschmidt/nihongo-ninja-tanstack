@@ -34,7 +34,9 @@ function HomeLayout() {
         <Sidebar user={null} />
       </SSRMediaQuery>
 
-      <BottomNav dailyProgressPercentage={dailyProgress} class="md:hidden" />
+      <SSRMediaQuery hideFrom="md">
+        <BottomNav dailyProgressPercentage={dailyProgress} />
+      </SSRMediaQuery>
     </>
   )
 }

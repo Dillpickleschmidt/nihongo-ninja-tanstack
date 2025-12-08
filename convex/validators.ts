@@ -1,4 +1,4 @@
-import { v } from 'convex/values'
+import { v, type Infer } from 'convex/values'
 
 // === Vocabulary Item Validators ===
 export const mnemonicsValidator = v.object({
@@ -243,3 +243,66 @@ export const partOfSpeechValidator = v.union(
   v.literal('I-adjective'),
   v.literal('Na-adjective'),
 )
+
+// === Core Vocabulary Item Validator ===
+export const vocabularyItemValidator = v.object({
+  key: v.string(),
+  word: v.string(),
+  furigana: v.string(),
+  english: v.array(v.string()),
+  partOfSpeech: v.optional(partOfSpeechValidator),
+  info: v.optional(v.array(v.string())),
+  mnemonics: v.optional(mnemonicsValidator),
+  exampleSentences: v.optional(v.array(exampleSentenceValidator)),
+  videos: v.optional(v.array(videoValidator)),
+  particles: v.optional(v.array(particleValidator)),
+  overwriteWord: v.optional(v.string()),
+})
+
+// Inferred types
+export type VocabularyItem = Infer<typeof vocabularyItemValidator>
+export type RichVocabItem = VocabularyItem & {
+  hiragana: string[]
+  rubyText: string[]
+}
+
+// === Kanji/Radical Validators ===
+export const kanjiEntryValidator = v.object({
+  kanji: v.string(),
+  radicalComponents: v.array(v.string()),
+  meanings: v.array(v.string()),
+  meaningMnemonic: v.string(),
+  readingMnemonic: v.optional(v.string()),
+})
+
+export const radicalEntryValidator = v.object({
+  radical: v.string(),
+  meanings: v.array(v.string()),
+  meaningMnemonic: v.string(),
+})
+
+// Inferred types
+export type KanjiEntry = Infer<typeof kanjiEntryValidator>
+export type RadicalEntry = Infer<typeof radicalEntryValidator>
+
+// === Hierarchy Validators ===
+export const vocabRelationshipValidator = v.object({
+  word: v.string(),
+  kanjiComponents: v.array(v.string()),
+})
+
+export const kanjiRelationshipValidator = v.object({
+  kanji: v.string(),
+  radicalComponents: v.array(v.string()),
+})
+
+export const vocabHierarchyValidator = v.object({
+  vocabulary: v.array(vocabRelationshipValidator),
+  kanji: v.array(kanjiRelationshipValidator),
+  radicals: v.array(v.string()),
+})
+
+// Inferred types
+export type VocabRelationship = Infer<typeof vocabRelationshipValidator>
+export type KanjiRelationship = Infer<typeof kanjiRelationshipValidator>
+export type VocabHierarchy = Infer<typeof vocabHierarchyValidator>

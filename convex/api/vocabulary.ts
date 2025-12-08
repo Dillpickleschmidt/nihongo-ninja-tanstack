@@ -1,54 +1,69 @@
 import { v } from 'convex/values'
-import { query, internalMutation } from '../_generated/server'
-import { partOfSpeechValidator } from '../validators'
+import { query, internalMutation, type QueryCtx } from '../_generated/server'
+import { vocabularyItemValidator, type VocabularyItem } from '../validators'
 
 /**
- * Get core vocabulary items by their unique keys
+ * Shared helper to fetch vocabulary items by keys with deck override
  */
-export const getByKeys = query({
-  args: { keys: v.array(v.string()) },
-  handler: async (ctx, args) => {
-    if (args.keys.length === 0) return {}
+export async function fetchVocabItemsByKeys(
+  ctx: QueryCtx,
+  keys: string[],
+  deckId: string | null
+): Promise<Record<string, VocabularyItem>> {
+  if (keys.length === 0) return {}
 
-    const results: Record<
-      string,
-      {
-        word: string
-        furigana: string
-        english: string[]
-        partOfSpeech?: string
-        info?: string[]
-        mnemonics?: any
-        exampleSentences?: any
-        videos?: any
-        particles?: any
-        overwriteWord?: string
-      }
-    > = {}
+  // Fetch core vocab items
+  const results: Record<string, VocabularyItem> = {}
+  for (const key of keys) {
+    const item = await ctx.db
+      .query('coreVocabularyItems')
+      .withIndex('by_key', (q) => q.eq('key', key))
+      .first()
 
-    for (const key of args.keys) {
-      const item = await ctx.db
-        .query('coreVocabularyItems')
-        .withIndex('by_key', (q) => q.eq('key', key))
-        .first()
+    if (item) {
+      const { _id, _creationTime, ...vocabItem } = item
+      results[key] = vocabItem
+    }
+  }
 
-      if (item) {
-        results[key] = {
-          word: item.word,
-          furigana: item.furigana,
-          english: item.english,
-          partOfSpeech: item.partOfSpeech,
-          info: item.info,
-          mnemonics: item.mnemonics,
-          exampleSentences: item.exampleSentences,
-          videos: item.videos,
-          particles: item.particles,
-          overwriteWord: item.overwriteWord,
-        }
+  // If deckId provided, fetch deck vocab and merge (deck overrides core)
+  if (deckId !== null) {
+    const deckItems = await ctx.db
+      .query('deckVocabularyItems')
+      .withIndex('by_deck', (q) => q.eq('deckId', deckId))
+      .collect()
+
+    for (const deckItem of deckItems) {
+      if (keys.includes(deckItem.word)) {
+        results[deckItem.word] = {
+          key: deckItem.word,
+          word: deckItem.word,
+          furigana: deckItem.furigana ?? '',
+          english: deckItem.english,
+          info: deckItem.info,
+          mnemonics: deckItem.mnemonics,
+          exampleSentences: deckItem.exampleSentences,
+          videos: deckItem.videos,
+          particles: deckItem.particles,
+        } as VocabularyItem
       }
     }
+  }
 
-    return results
+  return results
+}
+
+/**
+ * Get vocabulary items by their unique keys
+ * If deckId is provided, deck items override core items for matching keys
+ */
+export const getByKeys = query({
+  args: {
+    keys: v.array(v.string()),
+    deckId: v.union(v.string(), v.null()),
+  },
+  handler: async (ctx, args) => {
+    return fetchVocabItemsByKeys(ctx, args.keys, args.deckId)
   },
 })
 
@@ -86,8 +101,10 @@ export const getBySets = query({
   handler: async (ctx, args) => {
     if (args.setIds.length === 0) return {}
 
-    // First get all sets
+    // Fetch all sets and collect unique keys
     const sets: Record<string, string[]> = {}
+    const allKeys = new Set<string>()
+
     for (const setId of args.setIds) {
       const set = await ctx.db
         .query('coreVocabularySets')
@@ -96,48 +113,20 @@ export const getBySets = query({
 
       if (set) {
         sets[setId] = set.vocabularyKeys
+        set.vocabularyKeys.forEach((key) => allKeys.add(key))
       }
     }
 
-    // Collect all unique keys
-    const allKeys = new Set<string>()
-    for (const keys of Object.values(sets)) {
-      for (const key of keys) {
-        allKeys.add(key)
-      }
-    }
-
-    // Fetch all items
-    const itemsMap: Record<string, any> = {}
-    for (const key of allKeys) {
-      const item = await ctx.db
-        .query('coreVocabularyItems')
-        .withIndex('by_key', (q) => q.eq('key', key))
-        .first()
-
-      if (item) {
-        itemsMap[key] = {
-          word: item.word,
-          furigana: item.furigana,
-          english: item.english,
-          partOfSpeech: item.partOfSpeech,
-          info: item.info,
-          mnemonics: item.mnemonics,
-          exampleSentences: item.exampleSentences,
-          videos: item.videos,
-          particles: item.particles,
-          overwriteWord: item.overwriteWord,
-        }
-      }
-    }
+    // Fetch all items using shared helper
+    const itemsMap = await fetchVocabItemsByKeys(ctx, [...allKeys], null)
 
     // Build result with items in original order per set
-    const results: Record<string, any[]> = {}
-    for (const [setId, keys] of Object.entries(sets)) {
-      results[setId] = keys.map((key) => itemsMap[key]).filter(Boolean)
-    }
-
-    return results
+    return Object.fromEntries(
+      Object.entries(sets).map(([setId, keys]) => [
+        setId,
+        keys.map((key) => itemsMap[key]).filter(Boolean),
+      ])
+    )
   },
 })
 
@@ -150,21 +139,7 @@ export const getBySets = query({
  */
 export const seedItems = internalMutation({
   args: {
-    items: v.array(
-      v.object({
-        key: v.string(),
-        word: v.string(),
-        furigana: v.string(),
-        english: v.array(v.string()),
-        partOfSpeech: v.optional(partOfSpeechValidator),
-        info: v.optional(v.array(v.string())),
-        mnemonics: v.optional(v.any()),
-        exampleSentences: v.optional(v.any()),
-        videos: v.optional(v.any()),
-        particles: v.optional(v.any()),
-        overwriteWord: v.optional(v.string()),
-      }),
-    ),
+    items: v.array(vocabularyItemValidator),
   },
   handler: async (ctx, args) => {
     for (const item of args.items) {
