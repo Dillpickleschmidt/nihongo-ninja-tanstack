@@ -319,7 +319,7 @@
 
   &:before {
     @apply bg-muted border-background absolute inline-flex h-9 w-9 items-center justify-center rounded-full border-4 text-center -indent-px font-mono text-base font-medium;
-    @apply mt-[-4px] ml-[-50px];
+    @apply -mt-1 ml-[-50px];
     content: counter(step);
   }
 }
@@ -328,6 +328,14 @@
   transition: none;
   &:not(:hover) {
     transition: all calc(--value(integer) * 1ms) ease-in-out;
+  }
+}
+
+@utility scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 

@@ -115,6 +115,10 @@ const srsServicePreferenceValidator = v.object({
   is_api_key_valid: v.boolean(),
 })
 
+const srsServicePreferencesValidator = v.object({
+  anki: srsServicePreferenceValidator,
+})
+
 const conjugationPracticeSettingsValidator = v.object({
   normal: v.boolean(),
   teForm: v.boolean(),
@@ -152,18 +156,55 @@ const conjugationPracticeSettingsValidator = v.object({
 })
 
 export const userPreferencesValidator = v.object({
-  srsServicePreferences: v.optional(
-    v.object({
-      anki: v.optional(srsServicePreferenceValidator),
-    }),
-  ),
-  activeLearningPath: v.optional(v.string()),
-  activeChapter: v.optional(v.string()),
-  hasCompletedOnboarding: v.optional(v.boolean()),
-  tours: v.optional(v.record(v.string(), v.number())),
-  conjugationPractice: v.optional(conjugationPracticeSettingsValidator),
-  timestamp: v.optional(v.number()),
+  srsServicePreferences: srsServicePreferencesValidator,
+  activeLearningPath: v.string(),
+  activeChapter: v.string(),
+  hasCompletedOnboarding: v.boolean(),
+  tours: v.record(v.string(), v.number()),
+  conjugationPractice: conjugationPracticeSettingsValidator,
+  timestamp: v.number(),
 })
+
+// Default values for new user profiles
+export const DEFAULT_USER_PREFERENCES = {
+  srsServicePreferences: {
+    anki: { mode: 'disabled', data_imported: false, is_api_key_valid: false },
+  },
+  activeLearningPath: 'genki_1',
+  activeChapter: 'chapter-0',
+  hasCompletedOnboarding: false,
+  tours: {},
+  conjugationPractice: {
+    normal: true,
+    teForm: false,
+    volitional: false,
+    taiForm: false,
+    tariForm: false,
+    potential: false,
+    imperative: false,
+    conditional: false,
+    passive: false,
+    causative: false,
+    causativePassive: false,
+    verb: true,
+    iAdjective: false,
+    naAdjective: false,
+    polite: true,
+    plain: true,
+    nonPast: true,
+    past: true,
+    positive: true,
+    negative: true,
+    jlptLevel: 'n5' as const,
+    leaveOutSuru: false,
+    reverse: false,
+    amount: 10,
+    showMeaning: false,
+    noFurigana: false,
+    emoji: false,
+  },
+  timestamp: 0,
+}
 
 // === Enum Validators (from Supabase enums) ===
 

@@ -7,11 +7,9 @@ if (!CONVEX_URL) {
   console.error('missing envar CONVEX_URL')
 }
 
+export const convexClient = setupConvex(CONVEX_URL)
+convexClient.setAuth(async () => (await fetchAuth()).token)
+
 export default function AppConvexProvider(props: { children: JSXElement }) {
-  const convexClient = setupConvex(CONVEX_URL)
-  convexClient.setAuth(async () => {
-    const { token } = await fetchAuth()
-    return token
-  })
   return <ConvexProvider client={convexClient}>{props.children}</ConvexProvider>
 }

@@ -21,12 +21,9 @@ export const fetchAuth = createServerFn({ method: 'GET' }).handler(async () => {
   }
 })
 
-// example of calling Convex functions using server functions
-// export const addNumber = createServerFn({ method: 'POST' }).handler(
-//   async () => {
-//     const number = await fetchMutation(api.myFunctions.addNumber, {
-//       value: Math.floor(Math.random() * 100),
-//     })
-//     return number
-//   },
-// )
+// Create profile after signup
+export const createProfile = createServerFn({ method: 'POST' }).handler(
+  async () => {
+    return await fetchMutation(api.api.profiles.ensureProfile, {})
+  },
+)

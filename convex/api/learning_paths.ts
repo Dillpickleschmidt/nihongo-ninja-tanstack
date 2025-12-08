@@ -1,6 +1,12 @@
 import { v } from 'convex/values'
 import { mutation, query } from '../_generated/server'
 import { requireAuth } from '../auth'
+import {
+  getAllTextbooks,
+  isBuiltInTextbook,
+} from '../../src/data/utils/textbooks'
+import { getChaptersByTextbook, getTextbookChapterBySlug } from '../../src/data/utils/chapters'
+import { getModulesFromChapter } from '../../src/data/utils/modules'
 
 const MODULES_PER_CHAPTER = 30
 
@@ -104,74 +110,102 @@ export const upload = mutation({
 })
 
 /**
- * Get all learning paths for a user
+ * Get all learning paths (built-in textbooks + user-created)
+ * Returns unified LearningPath objects with isUserCreated flag
  */
-export const getUserPaths = query({
+export const getAllLearningPaths = query({
   args: {},
   handler: async (ctx) => {
-    const user = await requireAuth(ctx)
+    // Built-in textbooks from code (no DB query)
+    const builtInPaths = getAllTextbooks().map((tb) => ({
+      id: tb.id,
+      name: tb.name,
+      shortName: tb.short_name,
+      isUserCreated: false as const,
+    }))
 
-    const paths = await ctx.db
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity) return builtInPaths
+
+    // User-created learning paths from DB
+    const userPaths = await ctx.db
       .query('learningPathTranscripts')
-      .withIndex('by_user', (q) => q.eq('userId', user._id))
+      .withIndex('by_user', (q) => q.eq('userId', identity.subject))
       .collect()
 
-    return paths
+    const userLearningPaths = userPaths.map((path) => ({
+      id: String(path._id),
+      name: path.name,
+      shortName: path.name,
+      isUserCreated: true as const,
+    }))
+
+    return [...builtInPaths, ...userLearningPaths]
   },
 })
 
 /**
- * Get chapters for a learning path
+ * Get chapters for a learning path (built-in textbook or user-created)
  */
 export const getPathChapters = query({
-  args: { pathId: v.id('learningPathTranscripts') },
-  handler: async (ctx, args) => {
+  args: { pathId: v.string() },
+  handler: async (ctx, { pathId }) => {
+    // Built-in textbook - get chapters from code
+    if (isBuiltInTextbook(pathId)) {
+      return getChaptersByTextbook(pathId)
+    }
+
+    // User path - generate chapters from modules
     const moduleSources = await ctx.db
       .query('learningPathModuleSources')
-      .withIndex('by_path', (q) => q.eq('pathId', args.pathId))
+      .withIndex('by_path', (q) => q.eq('pathId', pathId as any))
       .collect()
 
-    // Sort by orderIndex
     moduleSources.sort((a, b) => a.orderIndex - b.orderIndex)
 
     const moduleIds = moduleSources.map((m) => m.moduleId)
-    const chapters = []
-
-    for (let i = 0; i < moduleIds.length; i += MODULES_PER_CHAPTER) {
-      const chapterNum = Math.floor(i / MODULES_PER_CHAPTER) + 1
-      chapters.push({
-        slug: `chapter-${chapterNum}`,
-        title: `Chapter ${chapterNum}`,
-        learningPathItemIds: moduleIds.slice(i, i + MODULES_PER_CHAPTER),
-      })
-    }
-
-    return chapters
+    return chunkIntoChapters(moduleIds)
   },
 })
 
+function chunkIntoChapters(moduleIds: string[]) {
+  const chapters = []
+  for (let i = 0; i < moduleIds.length; i += MODULES_PER_CHAPTER) {
+    const chapterNum = Math.floor(i / MODULES_PER_CHAPTER) + 1
+    chapters.push({
+      slug: `chapter-${chapterNum}`,
+      title: `Part ${chapterNum}`,
+      learning_path_item_ids: moduleIds.slice(i, i + MODULES_PER_CHAPTER),
+    })
+  }
+  return chapters
+}
+
 /**
- * Get modules for a specific chapter
+ * Get modules for a chapter (built-in textbook or user-created path)
  */
 export const getChapterModules = query({
   args: {
-    pathId: v.id('learningPathTranscripts'),
+    pathId: v.string(),
     chapterSlug: v.string(),
   },
-  handler: async (ctx, args) => {
-    // Get all module sources for this path
+  handler: async (ctx, { pathId, chapterSlug }) => {
+    // Built-in textbook - get modules from code
+    if (isBuiltInTextbook(pathId)) {
+      const chapter = getTextbookChapterBySlug(pathId, chapterSlug)
+      if (!chapter) return []
+      return getModulesFromChapter(chapter)
+    }
+
+    // User path - fetch from DB
     const moduleSources = await ctx.db
       .query('learningPathModuleSources')
-      .withIndex('by_path', (q) => q.eq('pathId', args.pathId))
+      .withIndex('by_path', (q) => q.eq('pathId', pathId as any))
       .collect()
 
     moduleSources.sort((a, b) => a.orderIndex - b.orderIndex)
 
-    // Calculate which modules belong to this chapter
-    const chapterNum = parseInt(args.chapterSlug.replace('chapter-', ''))
-    const startIdx = (chapterNum - 1) * MODULES_PER_CHAPTER
-    const endIdx = startIdx + MODULES_PER_CHAPTER
-    const chapterModules = moduleSources.slice(startIdx, endIdx)
+    const chapterModules = getModulesForChapter(moduleSources, chapterSlug)
 
     // Get deck info for vocabulary modules
     const vocabModuleIds = chapterModules
@@ -190,95 +224,44 @@ export const getChapterModules = query({
       }
     }
 
-    // Build resolved modules
-    const resolvedModules = chapterModules.map((source) => {
+    return chapterModules.map((source) => {
       if (source.sourceType === 'vocabulary') {
-        const deck = userDecksMap[source.moduleId]
-        if (deck) {
-          return {
-            key: source.moduleId,
-            sourceType: 'vocabulary',
-            title: deck.deckName,
-            allowedPracticeModes: deck.allowedPracticeModes,
-          }
-        }
+        return buildVocabModule(source.moduleId, userDecksMap[source.moduleId])
       }
-
-      // Grammar module - return just the ID, frontend will resolve
-      return {
-        key: source.moduleId,
-        sourceType: 'grammar',
-      }
+      return buildGrammarModule(source.moduleId)
     })
-
-    return resolvedModules
   },
 })
 
-/**
- * Get transcript data for a learning path
- */
-export const getTranscriptData = query({
-  args: { pathId: v.id('learningPathTranscripts') },
-  handler: async (ctx, args) => {
-    const path = await ctx.db.get(args.pathId)
-    if (!path) {
-      throw new Error('Learning path not found')
-    }
+function getModulesForChapter<T>(items: T[], chapterSlug: string): T[] {
+  const chapterNum = parseInt(chapterSlug.replace('chapter-', ''))
+  const startIdx = (chapterNum - 1) * MODULES_PER_CHAPTER
+  return items.slice(startIdx, startIdx + MODULES_PER_CHAPTER)
+}
 
-    return path.transcriptData || []
-  },
-})
+function buildVocabModule(moduleId: string, deck: any) {
+  return {
+    key: moduleId,
+    module: deck
+      ? {
+        title: deck.deckName,
+        module_type: 'vocab-practice' as const,
+        vocab_set_ids: [moduleId],
+        allowed_practice_modes: deck.allowedPracticeModes,
+      }
+      : null,
+    disabled: false,
+  }
+}
 
-/**
- * Get metadata for a specific module in a learning path
- */
-export const getModuleMetadata = query({
-  args: {
-    pathId: v.id('learningPathTranscripts'),
-    moduleId: v.string(),
-  },
-  handler: async (ctx, args) => {
-    const moduleSource = await ctx.db
-      .query('learningPathModuleSources')
-      .withIndex('by_path', (q) => q.eq('pathId', args.pathId))
-      .filter((q) => q.eq(q.field('moduleId'), args.moduleId))
-      .first()
-
-    if (!moduleSource) {
-      throw new Error(`Module ${args.moduleId} not found in path`)
-    }
-
-    const result: {
-      sourceType: 'grammar' | 'vocabulary'
-      transcriptLineIds: any
-      vocabularyItems?: Array<{
-        word: string
-        furigana?: string
-        english?: string
-      }>
-    } = {
-      sourceType: moduleSource.sourceType,
-      transcriptLineIds: moduleSource.transcriptLineIds || [],
-    }
-
-    // For vocabulary modules, fetch vocabulary items
-    if (moduleSource.sourceType === 'vocabulary') {
-      const vocabItems = await ctx.db
-        .query('deckVocabularyItems')
-        .withIndex('by_deck', (q) => q.eq('deckId', args.moduleId))
-        .collect()
-
-      result.vocabularyItems = vocabItems.map((item) => ({
-        word: item.word,
-        furigana: item.furigana,
-        english: item.english && item.english.length > 0 ? item.english[0] : undefined,
-      }))
-    }
-
-    return result
-  },
-})
+function buildGrammarModule(moduleId: string) {
+  return {
+    key: moduleId,
+    module: null,
+    disabled: false,
+    sourceType: 'grammar' as const,
+  }
+}
 
 /**
  * Delete a learning path and its associated data

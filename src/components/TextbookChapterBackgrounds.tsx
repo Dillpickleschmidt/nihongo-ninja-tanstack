@@ -175,17 +175,15 @@ export function TextbookChapterBackgrounds(props: {
   const context = useRouteContext({ from: '__root__' })
   const user = () => context().user
 
-  const preferencesQuery = useQuery(
-    api.api.profiles.getUserPreferences,
-    { userId: user()!.id },
-    () => ({
-      enabled: !!user()
-    }),
+  const profileQuery = useQuery(
+    api.api.profiles.getProfile,
+    {},
+    () => ({ enabled: !!user() }),
   )
 
   const getBackgroundItem = () => {
-    const textbook = preferencesQuery.data()?.activeLearningPath
-    const chapter = preferencesQuery.data()?.activeChapter
+    const textbook = profileQuery.data()?.userPreferences?.activeLearningPath
+    const chapter = profileQuery.data()?.userPreferences?.activeChapter
 
     if (!textbook || !chapter) return fallbackBackground
     return (

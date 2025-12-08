@@ -20,7 +20,7 @@ interface NavProps {
 
 // --- Shared Logic ---
 const navItems: NavItem[] = [
-  { id: 'home', label: 'Home', href: '/', icon: Home },
+  { id: 'home', label: 'Home', href: '/dashboard', icon: Home },
   { id: 'guides', label: 'Guides', href: '/guides', icon: GraduationCap },
   { id: 'discover', label: 'Discover', href: '/discover', icon: Clapperboard },
   { id: 'tools', label: 'Tools', href: '/settings', icon: Hammer },

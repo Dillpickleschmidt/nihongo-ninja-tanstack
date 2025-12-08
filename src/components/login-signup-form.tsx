@@ -1,6 +1,7 @@
 import { useNavigate } from '@tanstack/solid-router'
 import { createSignal } from 'solid-js'
 import { authClient } from '@/lib/auth-client'
+import { createProfile } from '@/lib/server'
 
 export default function LoginSignupForm() {
   const navigate = useNavigate()
@@ -28,6 +29,8 @@ export default function LoginSignupForm() {
           email: email(),
           password: password(),
         })
+        // Create profile with default preferences after signup
+        await createProfile()
       }
 
       navigate({ to: '/' })
