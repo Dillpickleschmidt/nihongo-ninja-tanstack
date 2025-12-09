@@ -1,5 +1,4 @@
 import { createIsomorphicFn } from '@tanstack/solid-start'
-import { useHydrated } from '@tanstack/solid-router'
 import { useQuery as useConvexSolidQuery } from 'convex-solidjs'
 import { useQueryClient } from '@tanstack/solid-query'
 import type { FunctionReference, FunctionArgs, FunctionReturnType } from 'convex/server'
@@ -61,23 +60,25 @@ export function useConvexQuery<Query extends FunctionReference<'query'>>(
   options?: MaybeAccessor<QueryOptions>
 ) {
   const queryClient = useQueryClient()
-  const hydrated = useHydrated()
 
-  // Pass args directly - convex-solidjs handles unwrapping internally
-  const live = useConvexSolidQuery(query, args, options)
+  const live = useConvexSolidQuery(query, args, () => {
+    const resolvedArgs = resolve(args)
+    const queryKey = getQueryKey(query, resolvedArgs)
+    const cached = queryClient.getQueryData<FunctionReturnType<Query>>(queryKey)
+
+    return {
+      ...resolve(options),
+      initialData: cached,
+    }
+  })
 
   return {
     data: () => {
       const liveData = live.data()
-      // Only use cached data after hydration to prevent mismatch
-      if (hydrated()) {
+      if (liveData !== undefined) {
         const queryKey = getQueryKey(query, resolve(args))
-        // Sync live data to TQ cache
-        if (liveData !== undefined) {
-          queryClient.setQueryData(queryKey, liveData)
-        }
-        const cached = queryClient.getQueryData<FunctionReturnType<Query>>(queryKey)
-        return liveData ?? cached
+        // sync live data to TQ cache
+        queryClient.setQueryData(queryKey, liveData)
       }
       return liveData
     },
