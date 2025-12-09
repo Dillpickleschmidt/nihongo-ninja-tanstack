@@ -32,6 +32,18 @@ export const createFolder = mutation({
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity()
     if (!identity) throw new Error('Unauthenticated')
+
+    // Business rule: Check for duplicate name in same parent
+    const existingFolders = await Folders.getUserFolders(ctx, identity.subject)
+    const duplicate = existingFolders.find(
+      (f) =>
+        f.folderName.toLowerCase() === args.folderName.toLowerCase() &&
+        f.parentFolderId === args.parentFolderId
+    )
+    if (duplicate) {
+      throw new Error('A folder with this name already exists here')
+    }
+
     return Folders.createFolder(
       ctx,
       identity.subject,

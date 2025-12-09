@@ -15,6 +15,15 @@ export const createDeck = mutation({
     const identity = await ctx.auth.getUserIdentity()
     if (!identity) throw new Error('Unauthenticated')
 
+    // Business rule: Check for duplicate deck name
+    const existingDecks = await Decks.getUserDecks(ctx, identity.subject)
+    const duplicate = existingDecks.find(
+      (d) => d.deckName.toLowerCase() === args.deckName.toLowerCase()
+    )
+    if (duplicate) {
+      throw new Error('A deck with this name already exists')
+    }
+
     const deckId = crypto.randomUUID()
     return Decks.createDeck(ctx, {
       userId: identity.subject,
