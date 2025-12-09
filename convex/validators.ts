@@ -259,6 +259,20 @@ export const vocabularyItemValidator = v.object({
   overwriteWord: v.optional(v.string()),
 })
 
+// === Deck Vocabulary Item Input Validator (for user-created decks) ===
+export const deckVocabItemInputValidator = v.object({
+  word: v.string(),
+  furigana: v.optional(v.string()),
+  english: v.array(v.string()),
+  info: v.optional(v.array(v.string())),
+  mnemonics: v.optional(mnemonicsValidator),
+  exampleSentences: v.optional(v.array(exampleSentenceValidator)),
+  particles: v.optional(v.array(particleValidator)),
+  isVerb: v.optional(v.boolean()),
+})
+
+export type DeckVocabItemInput = Infer<typeof deckVocabItemInputValidator>
+
 // Inferred types
 export type VocabularyItem = Infer<typeof vocabularyItemValidator>
 export type RichVocabItem = VocabularyItem & {

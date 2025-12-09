@@ -8,15 +8,7 @@ import * as LearningPaths from '../model/learning_paths'
  */
 export const getAllLearningPaths = query({
   args: {},
-  handler: async (ctx) => {
-    const builtInPaths = LearningPaths.getBuiltInPaths()
-
-    const identity = await ctx.auth.getUserIdentity()
-    if (!identity) return builtInPaths
-
-    const userPaths = await LearningPaths.getUserPaths(ctx, identity.subject)
-    return [...builtInPaths, ...userPaths]
-  },
+  handler: (ctx) => LearningPaths.getAllLearningPaths(ctx),
 })
 
 /**
@@ -24,7 +16,5 @@ export const getAllLearningPaths = query({
  */
 export const getPathChapters = query({
   args: { pathId: v.string() },
-  handler: async (ctx, { pathId }) => {
-    return LearningPaths.getChaptersForPath(ctx, pathId)
-  },
+  handler: (ctx, { pathId }) => LearningPaths.getChaptersForPath(ctx, pathId),
 })

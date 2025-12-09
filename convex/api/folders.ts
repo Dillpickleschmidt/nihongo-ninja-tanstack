@@ -9,14 +9,10 @@ import * as Decks from '../model/decks'
 export const getUserFoldersAndDecks = query({
   args: {},
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (!identity) return null
-
     const [folders, decks] = await Promise.all([
-      Folders.getUserFolders(ctx, identity.subject),
-      Decks.getUserDecks(ctx, identity.subject),
+      Folders.getUserFolders(ctx),
+      Decks.getUserDecks(ctx),
     ])
-
     return { folders, decks }
   },
 })
@@ -30,26 +26,8 @@ export const createFolder = mutation({
     parentFolderId: v.optional(v.id('userDeckFolders')),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (!identity) throw new Error('Unauthenticated')
-
-    // Business rule: Check for duplicate name in same parent
-    const existingFolders = await Folders.getUserFolders(ctx, identity.subject)
-    const duplicate = existingFolders.find(
-      (f) =>
-        f.folderName.toLowerCase() === args.folderName.toLowerCase() &&
-        f.parentFolderId === args.parentFolderId
-    )
-    if (duplicate) {
-      throw new Error('A folder with this name already exists here')
-    }
-
-    return Folders.createFolder(
-      ctx,
-      identity.subject,
-      args.folderName,
-      args.parentFolderId
-    )
+    await Folders.checkFolderNameUnique(ctx, args.folderName, args.parentFolderId)
+    return Folders.createFolder(ctx, args.folderName, args.parentFolderId)
   },
 })
 
@@ -63,8 +41,7 @@ export const updateFolder = mutation({
     parentFolderId: v.optional(v.union(v.id('userDeckFolders'), v.null())),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (!identity) throw new Error('Unauthenticated')
+    await Folders.verifyFolderOwnership(ctx, args.folderId)
     const { folderId, ...updates } = args
     return Folders.updateFolder(ctx, folderId, updates)
   },
@@ -72,8 +49,6 @@ export const updateFolder = mutation({
 
 /**
  * Delete a folder with strategy for handling child decks
- * - 'move-up': Move decks to parent folder
- * - 'delete-all': Delete all decks in folder tree
  */
 export const deleteFolder = mutation({
   args: {
@@ -81,8 +56,7 @@ export const deleteFolder = mutation({
     strategy: v.union(v.literal('move-up'), v.literal('delete-all')),
   },
   handler: async (ctx, { folderId, strategy }) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (!identity) throw new Error('Unauthenticated')
+    await Folders.verifyFolderOwnership(ctx, folderId)
     return Folders.deleteFolderWithStrategy(ctx, folderId, strategy)
   },
 })

@@ -1,5 +1,9 @@
-import { QueryCtx } from '../_generated/server'
-import { type VocabularyItem } from '../validators'
+import { MutationCtx, QueryCtx } from '../_generated/server'
+import { Id } from '../_generated/dataModel'
+import {
+  type VocabularyItem,
+  type DeckVocabItemInput,
+} from '../validators'
 
 /**
  * Fetches vocabulary items by keys with optional deck override
@@ -7,7 +11,7 @@ import { type VocabularyItem } from '../validators'
 export async function fetchVocabItemsByKeys(
   ctx: QueryCtx,
   keys: string[],
-  deckId: string | null
+  deckId: Id<'userDecks'> | null
 ): Promise<Record<string, VocabularyItem>> {
   if (keys.length === 0) return {}
 
@@ -104,4 +108,76 @@ export async function fetchVocabBySets(
       keys.map((key) => itemsMap[key]).filter(Boolean),
     ])
   )
+}
+
+// ===== Deck Vocabulary Item Helpers =====
+
+/**
+ * Get all vocabulary items for a deck
+ */
+export async function getDeckVocabItems(ctx: QueryCtx, deckId: Id<'userDecks'>) {
+  return ctx.db
+    .query('deckVocabularyItems')
+    .withIndex('by_deck', (q) => q.eq('deckId', deckId))
+    .collect()
+}
+
+/**
+ * Create vocabulary items for a deck (bulk insert)
+ */
+export async function createDeckVocabItems(
+  ctx: MutationCtx,
+  deckId: Id<'userDecks'>,
+  items: DeckVocabItemInput[]
+) {
+  const insertedIds: Id<'deckVocabularyItems'>[] = []
+
+  for (const item of items) {
+    const id = await ctx.db.insert('deckVocabularyItems', {
+      deckId,
+      word: item.word,
+      furigana: item.furigana,
+      english: item.english,
+      info: item.info,
+      mnemonics: item.mnemonics,
+      exampleSentences: item.exampleSentences,
+      particles: item.particles,
+      isVerb: item.isVerb,
+    })
+    insertedIds.push(id)
+  }
+
+  return insertedIds
+}
+
+/**
+ * Delete all vocabulary items for a deck
+ */
+export async function deleteDeckVocabItems(ctx: MutationCtx, deckId: Id<'userDecks'>) {
+  const items = await ctx.db
+    .query('deckVocabularyItems')
+    .withIndex('by_deck', (q) => q.eq('deckId', deckId))
+    .collect()
+
+  for (const item of items) {
+    await ctx.db.delete(item._id)
+  }
+
+  return items.length
+}
+
+/**
+ * Replace all vocabulary items for a deck (delete existing + insert new)
+ * Used for editing a deck's vocabulary
+ */
+export async function replaceDeckVocabItems(
+  ctx: MutationCtx,
+  deckId: Id<'userDecks'>,
+  items: DeckVocabItemInput[]
+) {
+  // Delete existing items
+  await deleteDeckVocabItems(ctx, deckId)
+
+  // Insert new items
+  return createDeckVocabItems(ctx, deckId, items)
 }

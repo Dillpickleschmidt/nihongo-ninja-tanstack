@@ -27,23 +27,27 @@ export function getBuiltInPaths(): LearningPath[] {
 }
 
 /**
- * Gets user-created learning paths from DB
+ * Gets all learning paths (built-in + user-created if authenticated)
  */
-export async function getUserPaths(
-  ctx: QueryCtx,
-  userId: string
-): Promise<LearningPath[]> {
+export async function getAllLearningPaths(ctx: QueryCtx): Promise<LearningPath[]> {
+  const builtInPaths = getBuiltInPaths()
+
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) return builtInPaths
+
   const userPaths = await ctx.db
     .query('learningPathTranscripts')
-    .withIndex('by_user', (q) => q.eq('userId', userId))
+    .withIndex('by_user', (q) => q.eq('userId', identity.subject))
     .collect()
 
-  return userPaths.map((path) => ({
+  const mappedUserPaths = userPaths.map((path) => ({
     id: String(path._id),
     name: path.name,
     shortName: path.name,
     isUserCreated: true,
   }))
+
+  return [...builtInPaths, ...mappedUserPaths]
 }
 
 /**

@@ -7,11 +7,7 @@ import * as Profiles from '../model/profiles'
  */
 export const getProfile = query({
   args: {},
-  handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (!identity) return null
-    return Profiles.getProfileByUserId(ctx, identity.subject)
-  },
+  handler: (ctx) => Profiles.getProfile(ctx),
 })
 
 /**
@@ -22,11 +18,7 @@ export const updatePreferenceField = mutation({
     field: v.string(),
     value: v.any(),
   },
-  handler: async (ctx, { field, value }) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (!identity) throw new Error('Unauthenticated')
-    return Profiles.updatePreference(ctx, identity.subject, field, value)
-  },
+  handler: (ctx, { field, value }) => Profiles.updatePreference(ctx, field, value),
 })
 
 /**
@@ -35,9 +27,5 @@ export const updatePreferenceField = mutation({
  */
 export const ensureProfile = mutation({
   args: {},
-  handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity()
-    if (!identity) return null
-    return Profiles.ensureProfileExists(ctx, identity.subject)
-  },
+  handler: (ctx) => Profiles.ensureProfileExists(ctx),
 })

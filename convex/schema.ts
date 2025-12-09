@@ -35,7 +35,6 @@ export default defineSchema({
   // User Decks
   userDecks: defineTable({
     userId: v.string(),
-    deckId: v.string(), // Generated unique ID
     deckName: v.string(),
     deckDescription: v.optional(v.string()),
     folderId: v.optional(v.id('userDeckFolders')),
@@ -48,15 +47,13 @@ export default defineSchema({
       v.literal('shared'),
       v.literal('learning_path'),
     ),
-    originalDeckId: v.optional(v.string()),
+    originalDeckId: v.optional(v.id('userDecks')),
     allowedPracticeModes: v.array(practiceModeValidator),
-  })
-    .index('by_user', ['userId'])
-    .index('by_deckId', ['deckId']),
+  }).index('by_user', ['userId']),
 
   // Deck Vocabulary Items
   deckVocabularyItems: defineTable({
-    deckId: v.string(),
+    deckId: v.id('userDecks'),
     word: v.string(),
     furigana: v.optional(v.string()),
     english: v.array(v.string()),
@@ -115,7 +112,7 @@ export default defineSchema({
 
   // Public Deck Shares
   publicDeckShares: defineTable({
-    deckId: v.string(),
+    deckId: v.id('userDecks'),
     sharedBy: v.string(), // userId
     importCount: v.number(),
   }).index('by_deck', ['deckId']),

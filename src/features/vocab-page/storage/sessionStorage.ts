@@ -10,7 +10,6 @@ export interface GuestFolder {
 
 export interface GuestDeck {
   id: string
-  deckId: string
   deckName: string
   deckDescription?: string
   folderId?: string

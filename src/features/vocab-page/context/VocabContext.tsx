@@ -29,7 +29,6 @@ type ConvexFolder = {
 type ConvexDeck = {
   _id: Id<'userDecks'>
   userId: string
-  deckId: string
   deckName: string
   deckDescription?: string
   folderId?: Id<'userDeckFolders'>
@@ -44,7 +43,6 @@ export type Folder = {
 
 export type Deck = {
   id: string
-  deckId: string
   deckName: string
   deckDescription?: string
   folderId?: string
@@ -99,7 +97,6 @@ function normalizeFolder(folder: ConvexFolder): Folder {
 function normalizeDeck(deck: ConvexDeck): Deck {
   return {
     id: deck._id,
-    deckId: deck.deckId,
     deckName: deck.deckName,
     deckDescription: deck.deckDescription,
     folderId: deck.folderId,
@@ -119,7 +116,6 @@ function normalizeGuestFolder(folder: GuestFolder): Folder {
 function normalizeGuestDeck(deck: GuestDeck): Deck {
   return {
     id: deck.id,
-    deckId: deck.deckId,
     deckName: deck.deckName,
     deckDescription: deck.deckDescription,
     folderId: deck.folderId,
@@ -284,7 +280,6 @@ export function VocabProvider(props: ParentProps) {
     } else {
       const newDeck: GuestDeck = {
         id: crypto.randomUUID(),
-        deckId: crypto.randomUUID(),
         deckName: name,
         deckDescription: description,
         folderId,

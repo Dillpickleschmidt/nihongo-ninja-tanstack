@@ -1,21 +1,69 @@
 import { MutationCtx, QueryCtx } from '../_generated/server'
 import { Id } from '../_generated/dataModel'
 
-export async function getUserFolders(ctx: QueryCtx, userId: string) {
+// ===== Query Helpers =====
+
+export async function getUserFolders(ctx: QueryCtx) {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) throw new Error('Unauthenticated')
+
   return ctx.db
     .query('userDeckFolders')
-    .withIndex('by_user', (q) => q.eq('userId', userId))
+    .withIndex('by_user', (q) => q.eq('userId', identity.subject))
     .collect()
 }
 
+// ===== Validation Helpers =====
+
+export async function checkFolderNameUnique(
+  ctx: QueryCtx,
+  name: string,
+  parentFolderId?: Id<'userDeckFolders'>,
+  excludeFolderId?: Id<'userDeckFolders'>
+) {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) throw new Error('Unauthenticated')
+
+  const existingFolders = await ctx.db
+    .query('userDeckFolders')
+    .withIndex('by_user', (q) => q.eq('userId', identity.subject))
+    .collect()
+  const duplicate = existingFolders.find(
+    (f) =>
+      f.folderName.toLowerCase() === name.toLowerCase() &&
+      f.parentFolderId === parentFolderId &&
+      f._id !== excludeFolderId
+  )
+  if (duplicate) {
+    throw new Error('A folder with this name already exists here')
+  }
+}
+
+export async function verifyFolderOwnership(
+  ctx: QueryCtx,
+  folderId: Id<'userDeckFolders'>
+) {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) throw new Error('Unauthenticated')
+
+  const folder = await ctx.db.get(folderId)
+  if (!folder) throw new Error('Folder not found')
+  if (folder.userId !== identity.subject) throw new Error('Unauthorized')
+  return folder
+}
+
+// ===== Mutation Helpers =====
+
 export async function createFolder(
   ctx: MutationCtx,
-  userId: string,
   folderName: string,
   parentFolderId?: Id<'userDeckFolders'>
 ) {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) throw new Error('Unauthenticated')
+
   return ctx.db.insert('userDeckFolders', {
-    userId,
+    userId: identity.subject,
     folderName,
     parentFolderId,
   })
@@ -29,9 +77,10 @@ export async function updateFolder(
     parentFolderId?: Id<'userDeckFolders'> | null
   }
 ) {
-  // Convert null to undefined for Convex (optional fields)
-  const patch: { folderName?: string; parentFolderId?: Id<'userDeckFolders'> } =
-    {}
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) throw new Error('Unauthenticated')
+
+  const patch: { folderName?: string; parentFolderId?: Id<'userDeckFolders'> } = {}
   if (updates.folderName !== undefined) {
     patch.folderName = updates.folderName
   }
@@ -41,20 +90,20 @@ export async function updateFolder(
   await ctx.db.patch(folderId, patch)
 }
 
-// Cascade delete with strategy
 export async function deleteFolderWithStrategy(
   ctx: MutationCtx,
   folderId: Id<'userDeckFolders'>,
   strategy: 'move-up' | 'delete-all'
 ) {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) throw new Error('Unauthenticated')
+
   const folder = await ctx.db.get(folderId)
   if (!folder) throw new Error('Folder not found')
 
-  // Get all descendant folders recursively
   const allFolderIds = await getDescendantFolderIds(ctx, folderId)
   allFolderIds.add(folderId)
 
-  // Get all decks in the folder tree
   const allDecks = await ctx.db
     .query('userDecks')
     .withIndex('by_user', (q) => q.eq('userId', folder.userId))
@@ -65,18 +114,15 @@ export async function deleteFolderWithStrategy(
   )
 
   if (strategy === 'move-up') {
-    // Move decks to parent folder
     for (const deck of decksInFolders) {
       await ctx.db.patch(deck._id, { folderId: folder.parentFolderId })
     }
   } else {
-    // Delete all decks in folder tree
     for (const deck of decksInFolders) {
       await ctx.db.delete(deck._id)
     }
   }
 
-  // Delete all folders
   for (const id of allFolderIds) {
     await ctx.db.delete(id)
   }
