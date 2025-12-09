@@ -20,7 +20,7 @@ type ContentBoxProps = {
   children: any
 }
 
-export const contentBoxVariants = cva("w-full mb-16 md:mb-0 pb-16 md:mt-17 relative", {
+export const contentBoxVariants = cva("w-full mb-16 md:mb-0 pb-16 relative", {
   variants: {
     size: {
       default: "bg-card/40 max-w-4xl",

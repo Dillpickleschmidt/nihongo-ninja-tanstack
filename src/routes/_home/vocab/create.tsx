@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/solid-router'
 import { convexQuery } from '@/lib/convex-query'
 import { api } from 'convex/_generated/api'
-import { authQueryOptions } from '@/query/auth'
+import { authQueryOptions } from '@/query/query-options'
 import { DeckCreationContainer } from '@/features/vocab-page/pages/create/components/DeckCreationContainer'
 import { DeckCreationStoreProvider } from '@/features/vocab-page/pages/create/context/DeckCreationStoreContext'
 import { useVocab } from '@/features/vocab-page/context/VocabContext'

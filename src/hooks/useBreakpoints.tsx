@@ -1,7 +1,7 @@
 import { createMediaQuery } from '@solid-primitives/media'
 import { useQueryClient } from '@tanstack/solid-query'
 import { isServer } from 'solid-js/web'
-import { type DeviceSettings } from '@/query/device-settings'
+import { type DeviceSettings } from '@/query/model/device-settings'
 
 const breakpoints = {
   sm: 640,

@@ -171,12 +171,17 @@ function RouteComponent() {
 
       <main class="min-h-screen">
         {/* --- Top Navigation (Desktop Only) --- */}
-        <TopNav
-          ref={(el) => topNavRef = el}
-          dailyProgressPercentage={dailyProgress}
-          onSignOut={handleSignOut}
-          style={getInitialAnimationStyles("up", true, 68)}
-        />
+        <SSRMediaQuery showFrom="md">
+          <div class='fixed top-0 inset-x-0 z-50'>
+            <TopNav
+              ref={(el) => topNavRef = el}
+              dailyProgressPercentage={dailyProgress}
+              onSignOut={handleSignOut}
+              style={getInitialAnimationStyles("up", true, 68)}
+              class="bg-[#191919]/20"
+            />
+          </div>
+        </SSRMediaQuery>
 
         {/* --- Hero Section - JLPT Level Selection --- */}
         <section ref={heroRef} id="difficulty-selection" class="snap-start pb-24 pt-[9vh] md:pt-[25vh] flex flex-col items-center justify-center">
@@ -213,7 +218,7 @@ function RouteComponent() {
       {/* Fixed sidebars (outside main flow) */}
       <SSRMediaQuery showFrom="md">
         <GuidesSidebar ref={(el) => guidesSidebarRef = el} />
-        <Sidebar user={null} ref={(el) => toolsSidebarRef = el} />
+        <Sidebar ref={(el) => toolsSidebarRef = el} animated={true} />
       </SSRMediaQuery>
 
       {/* Fixed Table of Contents */}
@@ -228,10 +233,12 @@ function RouteComponent() {
       </SSRMediaQuery>
 
       {/* --- Bottom Nav (Mobile Only) --- */}
-      <BottomNav
-        dailyProgressPercentage={dailyProgress}
-        class="md:hidden"
-      />
+      <SSRMediaQuery hideFrom="md">
+        <BottomNav
+          dailyProgressPercentage={dailyProgress}
+          class="md:hidden"
+        />
+      </SSRMediaQuery>
     </>
   )
 }

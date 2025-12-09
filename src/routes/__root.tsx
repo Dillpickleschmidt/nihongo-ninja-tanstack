@@ -24,11 +24,10 @@ import '@fontsource-variable/inter'
 import '@fontsource/poppins'
 import appCss from '@/styles/app.css?url'
 import AppConvexProvider from '@/providers/convex'
-import {
-  deviceSettingsQueryOptions,
-  updateDeviceSettingsCookie,
-} from '@/query/device-settings'
-import { authQueryOptions } from '@/query/auth'
+import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
+import { SolidQueryDevtools } from "@tanstack/solid-query-devtools"
+import { authQueryOptions, deviceSettingsQueryOptions } from '@/query/query-options'
+import { updateDeviceSettingsCookie } from '@/query/model/device-settings'
 
 export interface RouterContext {
   queryClient: QueryClient
@@ -61,6 +60,8 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <RootDocument>
         <Outlet />
+        {/* <TanStackRouterDevtools position="bottom-right" /> */}
+        {/* <SolidQueryDevtools buttonPosition="bottom-left" /> */}
       </RootDocument>
     </QueryClientProvider>
   )

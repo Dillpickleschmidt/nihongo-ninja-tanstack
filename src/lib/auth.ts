@@ -1,6 +1,6 @@
 import { redirect } from '@tanstack/solid-router'
 import { useQuery } from '@tanstack/solid-query'
-import { authQueryOptions } from '@/query/auth'
+import { authQueryOptions } from '@/query/query-options'
 import { fetchAuth } from './server'
 
 type AuthData = Awaited<ReturnType<typeof fetchAuth>>

@@ -30,7 +30,7 @@ export function DeckHeader(props: DeckHeaderProps) {
   const isEditMode = actions.isEditMode()
 
   return (
-    <div class="bg-background/50 sticky top-0 z-10 -mx-2 rounded-sm px-2 py-2 backdrop-blur-md">
+    <div class="rounded-lg bg-background/40 -mx-2 p-4 backdrop-blur-md border-card-foreground/70 border">
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-2xl leading-tight font-semibold">

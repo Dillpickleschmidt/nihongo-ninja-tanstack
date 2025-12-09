@@ -166,12 +166,13 @@ const fallbackBackground: BackgroundMediaItem = {
   y_offset_desktop: '0',
 }
 
-export function TextbookChapterBackgrounds(props: {
-  blur?: number
-  showGradient?: boolean
-  opacityOffset?: number
-  class?: string
-}) {
+export type BackgroundSettings = {
+  blur: number | undefined
+  opacityOffset: number
+  showGradient: boolean
+}
+
+export function TextbookChapterBackgrounds(props: BackgroundSettings) {
   const user = getUser()
 
   const profileQuery = useQuery(

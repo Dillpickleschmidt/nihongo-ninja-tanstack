@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { createEffect, createSignal, For, on, Show } from "solid-js"
+import { useQueryClient } from "@tanstack/solid-query"
 import { useMutation } from "convex-solidjs"
 import { ChevronDown } from "lucide-solid"
 import { convexQuery, useConvexQuery } from "@/lib/convex-query"
+import { queryKeys } from "~/query/query-keys"
 import { api } from "../../../convex/_generated/api"
 import { ChapterSection } from "@/features/dashboard/ChapterSection"
 import { LearningPathChapterSelector } from "@/features/dashboard/LearningPathChapterSelector"
@@ -19,6 +21,14 @@ export const Route = createFileRoute("/_home/dashboard")({
 })
 
 function DashboardComponent() {
+  const queryClient = useQueryClient()
+
+  queryClient.setQueryData(queryKeys.backgroundSettings(), {
+    blur: 8,
+    opacityOffset: 0,
+    showGradient: true,
+  })
+
   const profile = useConvexQuery(api.api.profiles.getProfile, {})
   const updatePreference = useMutation(api.api.profiles.updatePreferenceField)
   const learningPathsQuery = useConvexQuery(

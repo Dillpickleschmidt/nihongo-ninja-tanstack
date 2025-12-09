@@ -104,8 +104,8 @@ function ProgressCircle(props: ProgressCircleProps) {
         fill="none"
         stroke-width={props.strokeWidth}
         stroke={props.progressColor}
-        stroke-dasharray={circumference}
-        stroke-dashoffset={offset}
+        stroke-dasharray={String(circumference)}
+        stroke-dashoffset={String(offset)}
         stroke-linecap="round"
         class="transition-all duration-500 ease-out"
       />
@@ -124,7 +124,7 @@ export function TopNav(props: NavProps) {
       ref={props.ref}
       style={props.style}
       class={cn(
-        'hidden md:block fixed top-0 inset-x-0 z-40 bg-[#191919]/10 backdrop-blur-xl border-b border-card-foreground/10',
+        'sticky top-0 z-50 bg-[#191919]/50 backdrop-blur-xl border-b border-card-foreground/10',
         props.class
       )}
     >

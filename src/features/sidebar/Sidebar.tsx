@@ -37,6 +37,7 @@ interface NavigationSection {
 
 interface SidebarProps {
   ref?: (el: HTMLDivElement) => void
+  animated: boolean
 }
 
 const navigation: NavigationSection[] = [
@@ -45,7 +46,7 @@ const navigation: NavigationSection[] = [
       {
         id: "home",
         title: "Home",
-        href: "/",
+        href: "/dashboard",
         icon: Home,
         class: "text-primary",
       },
@@ -226,12 +227,16 @@ function NavigationContent(props: NavigationContentProps) {
   )
 }
 
-function DesktopSidebar(props: { isActive: (href: string) => boolean; ref?: (el: HTMLDivElement) => void }) {
+function DesktopSidebar(props: {
+  isActive: (href: string) => boolean
+  ref?: (el: HTMLDivElement) => void
+  animated: boolean
+}) {
   return (
     <div
       ref={props.ref}
       class="fixed top-17 left-0 h-[calc(100vh-68px)] w-72"
-      style={getInitialAnimationStyles("left")}
+      style={props.animated ? getInitialAnimationStyles("left") : undefined}
     >
       <NavigationContent isActive={props.isActive} />
     </div>
@@ -286,7 +291,7 @@ export function Sidebar(props: SidebarProps) {
 
       {/* Desktop: Fixed sidebar */}
       <SSRMediaQuery showFrom="md">
-        <DesktopSidebar isActive={isActive} ref={props.ref} />
+        <DesktopSidebar isActive={isActive} ref={props.ref} animated={props.animated} />
       </SSRMediaQuery>
     </>
   )
