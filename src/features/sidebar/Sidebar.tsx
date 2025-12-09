@@ -36,7 +36,6 @@ interface NavigationSection {
 }
 
 interface SidebarProps {
-  user: any
   ref?: (el: HTMLDivElement) => void
 }
 

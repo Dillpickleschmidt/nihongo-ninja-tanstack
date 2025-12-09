@@ -13,9 +13,14 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as HomeRouteImport } from './routes/_home'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
 import { Route as HomeLessonsRouteImport } from './routes/_home/lessons'
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
+import { Route as HomeVocabIndexRouteImport } from './routes/_home/vocab/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as HomeVocabCreateRouteImport } from './routes/_home/vocab/create'
+import { Route as HomeVocabBrowseRouteImport } from './routes/_home/vocab/browse'
+import { Route as HomeVocabSplatRouteImport } from './routes/_home/vocab/$'
 import { Route as HomeLessonsChapter3WordOrderRouteImport } from './routes/_home/lessons/_chapter-3/word-order'
 import { Route as HomeLessonsChapter3VerbConjMasuRouteImport } from './routes/_home/lessons/_chapter-3/verb-conj-masu'
 import { Route as HomeLessonsChapter3PoliteInvitationsRouteImport } from './routes/_home/lessons/_chapter-3/polite-invitations'
@@ -72,6 +77,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HomeVocabRoute = HomeVocabRouteImport.update({
+  id: '/vocab',
+  path: '/vocab',
+  getParentRoute: () => HomeRoute,
+} as any)
 const HomeLessonsRoute = HomeLessonsRouteImport.update({
   id: '/lessons',
   path: '/lessons',
@@ -82,10 +92,30 @@ const HomeDashboardRoute = HomeDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => HomeRoute,
 } as any)
+const HomeVocabIndexRoute = HomeVocabIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HomeVocabRoute,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
+} as any)
+const HomeVocabCreateRoute = HomeVocabCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => HomeVocabRoute,
+} as any)
+const HomeVocabBrowseRoute = HomeVocabBrowseRouteImport.update({
+  id: '/browse',
+  path: '/browse',
+  getParentRoute: () => HomeVocabRoute,
+} as any)
+const HomeVocabSplatRoute = HomeVocabSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => HomeVocabRoute,
 } as any)
 const HomeLessonsChapter3WordOrderRoute =
   HomeLessonsChapter3WordOrderRouteImport.update({
@@ -309,7 +339,12 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/dashboard': typeof HomeDashboardRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
+  '/vocab': typeof HomeVocabRouteWithChildren
+  '/vocab/$': typeof HomeVocabSplatRoute
+  '/vocab/browse': typeof HomeVocabBrowseRoute
+  '/vocab/create': typeof HomeVocabCreateRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/vocab/': typeof HomeVocabIndexRoute
   '/lessons/common-expressions': typeof HomeLessonsChapter0CommonExpressionsRoute
   '/lessons/contracted-sounds': typeof HomeLessonsChapter0ContractedSoundsRoute
   '/lessons/dakuten-handakuten': typeof HomeLessonsChapter0DakutenHandakutenRoute
@@ -353,7 +388,11 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/dashboard': typeof HomeDashboardRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
+  '/vocab/$': typeof HomeVocabSplatRoute
+  '/vocab/browse': typeof HomeVocabBrowseRoute
+  '/vocab/create': typeof HomeVocabCreateRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/vocab': typeof HomeVocabIndexRoute
   '/lessons/common-expressions': typeof HomeLessonsChapter0CommonExpressionsRoute
   '/lessons/contracted-sounds': typeof HomeLessonsChapter0ContractedSoundsRoute
   '/lessons/dakuten-handakuten': typeof HomeLessonsChapter0DakutenHandakutenRoute
@@ -399,7 +438,12 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_home/dashboard': typeof HomeDashboardRoute
   '/_home/lessons': typeof HomeLessonsRouteWithChildren
+  '/_home/vocab': typeof HomeVocabRouteWithChildren
+  '/_home/vocab/$': typeof HomeVocabSplatRoute
+  '/_home/vocab/browse': typeof HomeVocabBrowseRoute
+  '/_home/vocab/create': typeof HomeVocabCreateRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/_home/vocab/': typeof HomeVocabIndexRoute
   '/_home/lessons/_chapter-0/common-expressions': typeof HomeLessonsChapter0CommonExpressionsRoute
   '/_home/lessons/_chapter-0/contracted-sounds': typeof HomeLessonsChapter0ContractedSoundsRoute
   '/_home/lessons/_chapter-0/dakuten-handakuten': typeof HomeLessonsChapter0DakutenHandakutenRoute
@@ -445,7 +489,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/lessons'
+    | '/vocab'
+    | '/vocab/$'
+    | '/vocab/browse'
+    | '/vocab/create'
     | '/api/auth/$'
+    | '/vocab/'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
     | '/lessons/dakuten-handakuten'
@@ -489,7 +538,11 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/lessons'
+    | '/vocab/$'
+    | '/vocab/browse'
+    | '/vocab/create'
     | '/api/auth/$'
+    | '/vocab'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
     | '/lessons/dakuten-handakuten'
@@ -534,7 +587,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_home/dashboard'
     | '/_home/lessons'
+    | '/_home/vocab'
+    | '/_home/vocab/$'
+    | '/_home/vocab/browse'
+    | '/_home/vocab/create'
     | '/api/auth/$'
+    | '/_home/vocab/'
     | '/_home/lessons/_chapter-0/common-expressions'
     | '/_home/lessons/_chapter-0/contracted-sounds'
     | '/_home/lessons/_chapter-0/dakuten-handakuten'
@@ -611,6 +669,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_home/vocab': {
+      id: '/_home/vocab'
+      path: '/vocab'
+      fullPath: '/vocab'
+      preLoaderRoute: typeof HomeVocabRouteImport
+      parentRoute: typeof HomeRoute
+    }
     '/_home/lessons': {
       id: '/_home/lessons'
       path: '/lessons'
@@ -625,12 +690,40 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeDashboardRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/_home/vocab/': {
+      id: '/_home/vocab/'
+      path: '/'
+      fullPath: '/vocab/'
+      preLoaderRoute: typeof HomeVocabIndexRouteImport
+      parentRoute: typeof HomeVocabRoute
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
       fullPath: '/api/auth/$'
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_home/vocab/create': {
+      id: '/_home/vocab/create'
+      path: '/create'
+      fullPath: '/vocab/create'
+      preLoaderRoute: typeof HomeVocabCreateRouteImport
+      parentRoute: typeof HomeVocabRoute
+    }
+    '/_home/vocab/browse': {
+      id: '/_home/vocab/browse'
+      path: '/browse'
+      fullPath: '/vocab/browse'
+      preLoaderRoute: typeof HomeVocabBrowseRouteImport
+      parentRoute: typeof HomeVocabRoute
+    }
+    '/_home/vocab/$': {
+      id: '/_home/vocab/$'
+      path: '/$'
+      fullPath: '/vocab/$'
+      preLoaderRoute: typeof HomeVocabSplatRouteImport
+      parentRoute: typeof HomeVocabRoute
     }
     '/_home/lessons/_chapter-3/word-order': {
       id: '/_home/lessons/_chapter-3/word-order'
@@ -985,14 +1078,34 @@ const HomeLessonsRouteWithChildren = HomeLessonsRoute._addFileChildren(
   HomeLessonsRouteChildren,
 )
 
+interface HomeVocabRouteChildren {
+  HomeVocabSplatRoute: typeof HomeVocabSplatRoute
+  HomeVocabBrowseRoute: typeof HomeVocabBrowseRoute
+  HomeVocabCreateRoute: typeof HomeVocabCreateRoute
+  HomeVocabIndexRoute: typeof HomeVocabIndexRoute
+}
+
+const HomeVocabRouteChildren: HomeVocabRouteChildren = {
+  HomeVocabSplatRoute: HomeVocabSplatRoute,
+  HomeVocabBrowseRoute: HomeVocabBrowseRoute,
+  HomeVocabCreateRoute: HomeVocabCreateRoute,
+  HomeVocabIndexRoute: HomeVocabIndexRoute,
+}
+
+const HomeVocabRouteWithChildren = HomeVocabRoute._addFileChildren(
+  HomeVocabRouteChildren,
+)
+
 interface HomeRouteChildren {
   HomeDashboardRoute: typeof HomeDashboardRoute
   HomeLessonsRoute: typeof HomeLessonsRouteWithChildren
+  HomeVocabRoute: typeof HomeVocabRouteWithChildren
 }
 
 const HomeRouteChildren: HomeRouteChildren = {
   HomeDashboardRoute: HomeDashboardRoute,
   HomeLessonsRoute: HomeLessonsRouteWithChildren,
+  HomeVocabRoute: HomeVocabRouteWithChildren,
 }
 
 const HomeRouteWithChildren = HomeRoute._addFileChildren(HomeRouteChildren)
