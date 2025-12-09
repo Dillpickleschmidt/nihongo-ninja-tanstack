@@ -8,20 +8,14 @@
  * @module
  */
 
-import type * as api_decks from "../api/decks.js";
-import type * as api_dictionary from "../api/dictionary.js";
-import type * as api_folders from "../api/folders.js";
-import type * as api_fsrs from "../api/fsrs.js";
-import type * as api_hierarchy from "../api/hierarchy.js";
-import type * as api_kanji from "../api/kanji.js";
 import type * as api_learning_paths from "../api/learning_paths.js";
 import type * as api_profiles from "../api/profiles.js";
-import type * as api_progress from "../api/progress.js";
-import type * as api_service_tokens from "../api/service_tokens.js";
-import type * as api_sharing from "../api/sharing.js";
 import type * as api_vocabulary from "../api/vocabulary.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
+import type * as model_learning_paths from "../model/learning_paths.js";
+import type * as model_profiles from "../model/profiles.js";
+import type * as model_vocabulary from "../model/vocabulary.js";
 import type * as validators from "../validators.js";
 
 import type {
@@ -31,20 +25,14 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
-  "api/decks": typeof api_decks;
-  "api/dictionary": typeof api_dictionary;
-  "api/folders": typeof api_folders;
-  "api/fsrs": typeof api_fsrs;
-  "api/hierarchy": typeof api_hierarchy;
-  "api/kanji": typeof api_kanji;
   "api/learning_paths": typeof api_learning_paths;
   "api/profiles": typeof api_profiles;
-  "api/progress": typeof api_progress;
-  "api/service_tokens": typeof api_service_tokens;
-  "api/sharing": typeof api_sharing;
   "api/vocabulary": typeof api_vocabulary;
   auth: typeof auth;
   http: typeof http;
+  "model/learning_paths": typeof model_learning_paths;
+  "model/profiles": typeof model_profiles;
+  "model/vocabulary": typeof model_vocabulary;
   validators: typeof validators;
 }>;
 

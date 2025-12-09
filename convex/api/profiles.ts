@@ -1,6 +1,6 @@
 import { v } from 'convex/values'
 import { mutation, query } from '../_generated/server'
-import { DEFAULT_USER_PREFERENCES } from '../validators'
+import * as Profiles from '../model/profiles'
 
 /**
  * Gets the current user's profile
@@ -10,13 +10,7 @@ export const getProfile = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity()
     if (!identity) return null
-
-    const profile = await ctx.db
-      .query('profiles')
-      .withIndex('by_user', (q) => q.eq('userId', identity.subject))
-      .first()
-
-    return profile ?? null
+    return Profiles.getProfileByUserId(ctx, identity.subject)
   },
 })
 
@@ -28,26 +22,10 @@ export const updatePreferenceField = mutation({
     field: v.string(),
     value: v.any(),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, { field, value }) => {
     const identity = await ctx.auth.getUserIdentity()
     if (!identity) throw new Error('Unauthenticated')
-
-    const profile = await ctx.db
-      .query('profiles')
-      .withIndex('by_user', (q) => q.eq('userId', identity.subject))
-      .first()
-
-    if (!profile) throw new Error('Profile not found')
-
-    await ctx.db.patch(profile._id, {
-      userPreferences: {
-        ...profile.userPreferences,
-        [args.field]: args.value,
-        timestamp: Date.now(),
-      },
-    })
-
-    return { success: true }
+    return Profiles.updatePreference(ctx, identity.subject, field, value)
   },
 })
 
@@ -60,20 +38,6 @@ export const ensureProfile = mutation({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity()
     if (!identity) return null
-
-    let profile = await ctx.db
-      .query('profiles')
-      .withIndex('by_user', (q) => q.eq('userId', identity.subject))
-      .first()
-
-    if (!profile) {
-      const id = await ctx.db.insert('profiles', {
-        userId: identity.subject as any,
-        userPreferences: DEFAULT_USER_PREFERENCES,
-      })
-      profile = await ctx.db.get(id)
-    }
-
-    return profile
+    return Profiles.ensureProfileExists(ctx, identity.subject)
   },
 })
