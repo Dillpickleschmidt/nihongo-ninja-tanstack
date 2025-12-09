@@ -1,6 +1,7 @@
 import { Show } from 'solid-js'
+import { Dynamic } from 'solid-js/web'
 import { Link, useLocation } from '@tanstack/solid-router'
-import { Home, Clapperboard, GraduationCap, Hammer, LogIn, LogOut } from 'lucide-solid'
+import { Home, Clapperboard, GraduationCap, Hammer, LogIn, LogOut, type LucideIcon } from 'lucide-solid'
 import { cn } from '@/utils'
 import { getUser } from '@/lib/auth'
 
@@ -9,7 +10,7 @@ interface NavItem {
   id: string
   label: string
   href: string
-  icon: typeof Home
+  icon: LucideIcon | null
 }
 
 interface NavProps {
@@ -139,7 +140,6 @@ export function TopNav(props: NavProps) {
             <nav class="flex items-center gap-1">
               {navItems.map((item) => {
                 const active = nav.isActive(item.href)
-                const Icon = item.icon
                 return (
                   <Link
                     to={item.href}
@@ -150,7 +150,7 @@ export function TopNav(props: NavProps) {
                         : 'text-primary/60 hover:text-primary hover:bg-primary/5'
                     )}
                   >
-                    <Icon class="w-4 h-4" />
+                    <Dynamic component={item.icon as LucideIcon} class="w-4 h-4" />
                     {item.label}
                   </Link>
                 )
@@ -279,7 +279,6 @@ export function BottomNav(props: NavProps) {
             }
 
             const active = nav.isActive(item.href)
-            const Icon = item.icon
 
             return (
               <Link
@@ -292,7 +291,8 @@ export function BottomNav(props: NavProps) {
                   'bg-card-foreground/10 dark:bg-card-foreground/60 scale-110'
                 )}
               >
-                <Icon
+                <Dynamic
+                  component={item.icon as LucideIcon}
                   class={cn(
                     'h-5 w-5 transition-colors duration-200',
                     active ? 'text-primary' : 'text-primary/60'

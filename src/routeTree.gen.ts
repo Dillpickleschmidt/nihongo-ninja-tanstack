@@ -14,7 +14,9 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as HomeRouteImport } from './routes/_home'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
+import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeLessonsRouteImport } from './routes/_home/lessons'
+import { Route as HomeDiscoverRouteImport } from './routes/_home/discover'
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeVocabIndexRouteImport } from './routes/_home/vocab/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -83,9 +85,19 @@ const HomeVocabRoute = HomeVocabRouteImport.update({
   path: '/vocab',
   getParentRoute: () => HomeRoute,
 } as any)
+const HomeReviewRoute = HomeReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => HomeRoute,
+} as any)
 const HomeLessonsRoute = HomeLessonsRouteImport.update({
   id: '/lessons',
   path: '/lessons',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeDiscoverRoute = HomeDiscoverRouteImport.update({
+  id: '/discover',
+  path: '/discover',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeDashboardRoute = HomeDashboardRouteImport.update({
@@ -344,7 +356,9 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof HomeDashboardRoute
+  '/discover': typeof HomeDiscoverRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
+  '/review': typeof HomeReviewRoute
   '/vocab': typeof HomeVocabRouteWithChildren
   '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
@@ -394,7 +408,9 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof HomeDashboardRoute
+  '/discover': typeof HomeDiscoverRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
+  '/review': typeof HomeReviewRoute
   '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
@@ -445,7 +461,9 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/_home/dashboard': typeof HomeDashboardRoute
+  '/_home/discover': typeof HomeDiscoverRoute
   '/_home/lessons': typeof HomeLessonsRouteWithChildren
+  '/_home/review': typeof HomeReviewRoute
   '/_home/vocab': typeof HomeVocabRouteWithChildren
   '/_home/vocab/$': typeof HomeVocabSplatRoute
   '/_home/vocab/browse': typeof HomeVocabBrowseRoute
@@ -497,7 +515,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/dashboard'
+    | '/discover'
     | '/lessons'
+    | '/review'
     | '/vocab'
     | '/vocab/$'
     | '/vocab/browse'
@@ -547,7 +567,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/dashboard'
+    | '/discover'
     | '/lessons'
+    | '/review'
     | '/vocab/$'
     | '/vocab/browse'
     | '/vocab/create'
@@ -597,7 +619,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/_home/dashboard'
+    | '/_home/discover'
     | '/_home/lessons'
+    | '/_home/review'
     | '/_home/vocab'
     | '/_home/vocab/$'
     | '/_home/vocab/browse'
@@ -688,11 +712,25 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeVocabRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/_home/review': {
+      id: '/_home/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof HomeReviewRouteImport
+      parentRoute: typeof HomeRoute
+    }
     '/_home/lessons': {
       id: '/_home/lessons'
       path: '/lessons'
       fullPath: '/lessons'
       preLoaderRoute: typeof HomeLessonsRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/discover': {
+      id: '/_home/discover'
+      path: '/discover'
+      fullPath: '/discover'
+      preLoaderRoute: typeof HomeDiscoverRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/dashboard': {
@@ -1119,13 +1157,17 @@ const HomeVocabRouteWithChildren = HomeVocabRoute._addFileChildren(
 
 interface HomeRouteChildren {
   HomeDashboardRoute: typeof HomeDashboardRoute
+  HomeDiscoverRoute: typeof HomeDiscoverRoute
   HomeLessonsRoute: typeof HomeLessonsRouteWithChildren
+  HomeReviewRoute: typeof HomeReviewRoute
   HomeVocabRoute: typeof HomeVocabRouteWithChildren
 }
 
 const HomeRouteChildren: HomeRouteChildren = {
   HomeDashboardRoute: HomeDashboardRoute,
+  HomeDiscoverRoute: HomeDiscoverRoute,
   HomeLessonsRoute: HomeLessonsRouteWithChildren,
+  HomeReviewRoute: HomeReviewRoute,
   HomeVocabRoute: HomeVocabRouteWithChildren,
 }
 

@@ -77,6 +77,7 @@ type CheckboxIndicatorProps<T extends ValidComponent = "div"> =
   CheckboxPrimitive.CheckboxIndicatorProps<T> & {
     class?: string | undefined
     size?: number
+    indeterminate?: boolean
     children?: never // We'll provide our own SVG icons
   }
 
