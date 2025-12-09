@@ -72,6 +72,10 @@ export function useConvexQuery<Query extends FunctionReference<'query'>>(
       // Only use cached data after hydration to prevent mismatch
       if (hydrated()) {
         const queryKey = getQueryKey(query, resolve(args))
+        // Sync live data to TQ cache
+        if (liveData !== undefined) {
+          queryClient.setQueryData(queryKey, liveData)
+        }
         const cached = queryClient.getQueryData<FunctionReturnType<Query>>(queryKey)
         return liveData ?? cached
       }
