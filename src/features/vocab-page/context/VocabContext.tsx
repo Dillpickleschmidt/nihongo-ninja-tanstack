@@ -18,27 +18,14 @@ import {
   type GuestDeck,
 } from '../storage/sessionStorage'
 
-// Types for Convex data
-type ConvexFolder = {
-  _id: Id<'userDeckFolders'>
-  userId: string
-  folderName: string
-  parentFolderId?: Id<'userDeckFolders'>
-}
-
-type ConvexDeck = {
-  _id: Id<'userDecks'>
-  userId: string
-  deckName: string
-  deckDescription?: string
-  folderId?: Id<'userDeckFolders'>
-}
-
 // Unified types for the context
+export type Source = 'user' | 'built-in'
+
 export type Folder = {
   id: string
   folderName: string
   parentFolderId?: string
+  source: Source
 }
 
 export type Deck = {
@@ -46,6 +33,8 @@ export type Deck = {
   deckName: string
   deckDescription?: string
   folderId?: string
+  source: Source
+  vocabSetId?: string
 }
 
 interface VocabContextValue {
@@ -57,6 +46,12 @@ interface VocabContextValue {
   // Selection state
   selectedDeckId: () => string | null
   setSelectedDeckId: (id: string | null) => void
+
+  // Modal state for editing
+  editingFolder: () => Folder | null
+  setEditingFolder: (folder: Folder | null) => void
+  copyingDeck: () => Deck | null
+  setCopyingDeck: (deck: Deck | null) => void
 
   // Folder mutations
   createFolder: (name: string, parentId?: string) => Promise<void>
@@ -84,31 +79,13 @@ interface VocabContextValue {
 
 const VocabContext = createContext<VocabContextValue>()
 
-// Convert Convex folder to unified type
-function normalizeFolder(folder: ConvexFolder): Folder {
-  return {
-    id: folder._id,
-    folderName: folder.folderName,
-    parentFolderId: folder.parentFolderId,
-  }
-}
-
-// Convert Convex deck to unified type
-function normalizeDeck(deck: ConvexDeck): Deck {
-  return {
-    id: deck._id,
-    deckName: deck.deckName,
-    deckDescription: deck.deckDescription,
-    folderId: deck.folderId,
-  }
-}
-
 // Convert guest folder to unified type
 function normalizeGuestFolder(folder: GuestFolder): Folder {
   return {
     id: folder.id,
     folderName: folder.folderName,
     parentFolderId: folder.parentFolderId,
+    source: 'user',
   }
 }
 
@@ -119,43 +96,58 @@ function normalizeGuestDeck(deck: GuestDeck): Deck {
     deckName: deck.deckName,
     deckDescription: deck.deckDescription,
     folderId: deck.folderId,
+    source: 'user',
   }
 }
 
 export function VocabProvider(props: ParentProps) {
   const user = getUser()
 
-  // Convex query (only runs when authenticated)
+  // Convex query - getAllFoldersAndDecks returns unified built-in + user data
+  // Works for both authenticated and unauthenticated users (returns built-in only when not logged in)
   const foldersAndDecksQuery = useConvexQuery(
-    api.api.folders.getUserFoldersAndDecks,
-    {},
-    () => ({ enabled: !!user() })
+    api.api.folders.getAllFoldersAndDecks,
+    {}
   )
 
-  // Guest data (local state)
+  // Guest data (local state for unauthenticated users)
   const [guestData, setGuestData] = createSignal<GuestVocabData>(loadGuestData())
 
-  // Unified data accessors
+  // Unified data accessors - merge Convex unified data with guest data
   const folders = createMemo((): Folder[] => {
-    if (user()) {
-      const data = foldersAndDecksQuery.data()
-      return data?.folders?.map(normalizeFolder) ?? []
+    // Always get built-in + authenticated user folders from Convex
+    const convexFolders = foldersAndDecksQuery.data()?.folders ?? []
+
+    // For guest users, also include guest folders
+    if (!user()) {
+      const guestFolders = guestData().folders.map(normalizeGuestFolder)
+      return [...convexFolders, ...guestFolders]
     }
-    return guestData().folders.map(normalizeGuestFolder)
+
+    return convexFolders
   })
 
   const decks = createMemo((): Deck[] => {
-    if (user()) {
-      const data = foldersAndDecksQuery.data()
-      return data?.decks?.map(normalizeDeck) ?? []
+    // Always get built-in + authenticated user decks from Convex
+    const convexDecks = foldersAndDecksQuery.data()?.decks ?? []
+
+    // For guest users, also include guest decks
+    if (!user()) {
+      const guestDecks = guestData().decks.map(normalizeGuestDeck)
+      return [...convexDecks, ...guestDecks]
     }
-    return guestData().decks.map(normalizeGuestDeck)
+
+    return convexDecks
   })
 
-  const isLoading = () => (user() ? foldersAndDecksQuery.isLoading() : false)
+  const isLoading = () => foldersAndDecksQuery.isLoading()
 
   // Selection state
   const [selectedDeckId, setSelectedDeckId] = createSignal<string | null>(null)
+
+  // Modal state for editing
+  const [editingFolder, setEditingFolder] = createSignal<Folder | null>(null)
+  const [copyingDeck, setCopyingDeck] = createSignal<Deck | null>(null)
 
   // Convex mutations
   const createFolderMutation = useMutation(api.api.folders.createFolder)
@@ -352,12 +344,18 @@ export function VocabProvider(props: ParentProps) {
         isLoading,
         selectedDeckId,
         setSelectedDeckId,
+        // CRUD
         createFolder,
         updateFolder,
         deleteFolder,
         createDeck,
         updateDeck,
         deleteDeck,
+        // Modal states
+        editingFolder,
+        setEditingFolder,
+        copyingDeck,
+        setCopyingDeck,
       }}
     >
       {props.children}

@@ -1,6 +1,8 @@
 import { MutationCtx, QueryCtx } from '../_generated/server'
 import { Id } from '../_generated/dataModel'
 import { deleteDeckVocabItems } from './vocabulary'
+import { chapters } from '../../src/data/chapters'
+import { dynamic_modules } from '../../src/data/dynamic_modules'
 
 type DeckSource =
   | 'built-in'
@@ -12,6 +14,68 @@ type DeckSource =
   | 'learning_path'
 
 type PracticeMode = 'meanings' | 'spellings'
+
+// ===== Unified Deck Type =====
+
+export interface UnifiedDeck {
+  id: string
+  deckName: string
+  deckDescription?: string
+  folderId?: string
+  source: 'user' | 'built-in'
+  vocabSetId?: string
+}
+
+// ===== Built-in Deck Generation =====
+
+export function getBuiltInDecks(): UnifiedDeck[] {
+  const decks: UnifiedDeck[] = []
+
+  for (const [textbookId, textbookChapters] of Object.entries(chapters)) {
+    for (const [chapterSlug, chapter] of Object.entries(textbookChapters)) {
+      const folderId = `${textbookId}/${chapterSlug}`
+
+      for (const moduleId of chapter.learning_path_item_ids) {
+        const module = dynamic_modules[moduleId]
+        // Only include vocab-practice modules as decks (skip vocab-list, vocab-test, sentence-practice)
+        if (module?.module_type === 'vocab-practice') {
+          decks.push({
+            id: `builtin:${moduleId}`,
+            deckName: module.title,
+            folderId,
+            source: 'built-in',
+            vocabSetId: moduleId,
+          })
+        }
+      }
+    }
+  }
+
+  return decks
+}
+
+// ===== Unified Query (built-in + user) =====
+
+export async function getAllDecks(ctx: QueryCtx): Promise<UnifiedDeck[]> {
+  const builtIn = getBuiltInDecks()
+
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) {
+    return builtIn
+  }
+
+  const userDecks = await getUserDecks(ctx)
+
+  const normalized: UnifiedDeck[] = userDecks.map((d) => ({
+    id: d._id,
+    deckName: d.deckName,
+    deckDescription: d.deckDescription,
+    folderId: d.folderId,
+    source: (d.source === 'user' ? 'user' : 'built-in') as 'user' | 'built-in',
+  }))
+
+  return [...builtIn, ...normalized]
+}
 
 // ===== Query Helpers =====
 

@@ -5,44 +5,28 @@ import {
   deckVocabItemToFormData,
   type VocabItemFormData,
 } from '@/features/vocab-page/types/vocabulary'
+import type { Doc } from 'convex/_generated/dataModel'
 
-// Type for deck vocabulary items from DB
-interface DeckVocabItem {
-  word: string
-  furigana?: string
-  english: string[]
-  info?: string[]
-  mnemonics?: { reading: string[]; kanji: string[] }
-  exampleSentences?: Array<{
-    japanese: Array<string | { t: string }>
-    english: Array<string | { t: string }>
-  }>
-  particles?: Array<{ particle: string; label?: string }>
-  isVerb?: boolean
+// Data for editing existing decks
+export interface DeckEditData {
+  deck: Doc<'userDecks'>
+  vocabItems: Doc<'deckVocabularyItems'>[]
+  folderName?: string // UI only - looked up from folders list
 }
 
-// Optional initial data for editing existing decks
-export interface DeckCreationInitialData {
-  deckId?: string
-  name?: string
-  description?: string
-  folderId?: string
-  folderName?: string
-  vocabItems?: DeckVocabItem[]
-  allowedPracticeModes?: PracticeMode[]
-}
-
-// Create initial store state
 const createInitialState = (
-  initialData?: DeckCreationInitialData
+  initialData?: DeckEditData
 ): DeckCreationStore => {
-  // Store original values for comparison in edit mode
-  const originalData = initialData
+  // If we have initial data (edit mode), use DB values directly
+  // Otherwise (create mode), use defaults
+  const isEditMode = !!initialData?.deck
+
+  const originalData = isEditMode
     ? {
-      deckId: initialData.deckId,
-      name: initialData.name || '',
-      description: initialData.description || '',
-      folderId: initialData.folderId || 'root',
+      deckId: initialData.deck._id,
+      name: initialData.deck.deckName,
+      description: initialData.deck.deckDescription || '',
+      folderId: initialData.deck.folderId || 'root',
       folderName: initialData.folderName || 'Root',
     }
     : null
@@ -76,14 +60,13 @@ const createInitialState = (
 
   return {
     deck: {
-      name: initialData?.name || '',
-      description: initialData?.description || '',
-      selectedFolderId: initialData?.folderId || 'root',
-      selectedFolderName: initialData?.folderName || 'Root',
-      allowedPracticeModes: initialData?.allowedPracticeModes || [
-        'meanings',
-        'spellings',
-      ],
+      name: isEditMode ? initialData.deck.deckName : '',
+      description: isEditMode ? (initialData.deck.deckDescription || '') : '',
+      selectedFolderId: isEditMode ? (initialData.deck.folderId || 'root') : 'root',
+      selectedFolderName: isEditMode ? (initialData.folderName || 'Root') : 'Root',
+      allowedPracticeModes: isEditMode
+        ? initialData.deck.allowedPracticeModes
+        : ['meanings', 'spellings'],
     },
     vocabItems: {
       nextId,
@@ -102,7 +85,7 @@ const createInitialState = (
   }
 }
 
-export function createDeckCreationStore(initialData?: DeckCreationInitialData) {
+export function createDeckCreationStore(initialData?: DeckEditData) {
   const [store, setStore] = createStore(createInitialState(initialData))
 
   const actions = {

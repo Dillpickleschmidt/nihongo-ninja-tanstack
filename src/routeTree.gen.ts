@@ -57,6 +57,7 @@ import { Route as HomeLessonsChapter0GreetingsRouteImport } from './routes/_home
 import { Route as HomeLessonsChapter0DakutenHandakutenRouteImport } from './routes/_home/lessons/_chapter-0/dakuten-handakuten'
 import { Route as HomeLessonsChapter0ContractedSoundsRouteImport } from './routes/_home/lessons/_chapter-0/contracted-sounds'
 import { Route as HomeLessonsChapter0CommonExpressionsRouteImport } from './routes/_home/lessons/_chapter-0/common-expressions'
+import { Route as HomeVocabDeckDeckIdEditRouteImport } from './routes/_home/vocab/deck/$deckId/edit'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -332,6 +333,11 @@ const HomeLessonsChapter0CommonExpressionsRoute =
     path: '/common-expressions',
     getParentRoute: () => HomeLessonsRoute,
   } as any)
+const HomeVocabDeckDeckIdEditRoute = HomeVocabDeckDeckIdEditRouteImport.update({
+  id: '/deck/$deckId/edit',
+  path: '/deck/$deckId/edit',
+  getParentRoute: () => HomeVocabRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -381,6 +387,7 @@ export interface FileRoutesByFullPath {
   '/lessons/polite-invitations': typeof HomeLessonsChapter3PoliteInvitationsRoute
   '/lessons/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof HomeLessonsChapter3WordOrderRoute
+  '/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -429,6 +436,7 @@ export interface FileRoutesByTo {
   '/lessons/polite-invitations': typeof HomeLessonsChapter3PoliteInvitationsRoute
   '/lessons/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof HomeLessonsChapter3WordOrderRoute
+  '/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -480,6 +488,7 @@ export interface FileRoutesById {
   '/_home/lessons/_chapter-3/polite-invitations': typeof HomeLessonsChapter3PoliteInvitationsRoute
   '/_home/lessons/_chapter-3/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/_home/lessons/_chapter-3/word-order': typeof HomeLessonsChapter3WordOrderRoute
+  '/_home/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -531,6 +540,7 @@ export interface FileRouteTypes {
     | '/lessons/polite-invitations'
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
+    | '/vocab/deck/$deckId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -579,6 +589,7 @@ export interface FileRouteTypes {
     | '/lessons/polite-invitations'
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
+    | '/vocab/deck/$deckId/edit'
   id:
     | '__root__'
     | '/'
@@ -629,6 +640,7 @@ export interface FileRouteTypes {
     | '/_home/lessons/_chapter-3/polite-invitations'
     | '/_home/lessons/_chapter-3/verb-conj-masu'
     | '/_home/lessons/_chapter-3/word-order'
+    | '/_home/vocab/deck/$deckId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -977,6 +989,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeLessonsChapter0CommonExpressionsRouteImport
       parentRoute: typeof HomeLessonsRoute
     }
+    '/_home/vocab/deck/$deckId/edit': {
+      id: '/_home/vocab/deck/$deckId/edit'
+      path: '/deck/$deckId/edit'
+      fullPath: '/vocab/deck/$deckId/edit'
+      preLoaderRoute: typeof HomeVocabDeckDeckIdEditRouteImport
+      parentRoute: typeof HomeVocabRoute
+    }
   }
 }
 
@@ -1083,6 +1102,7 @@ interface HomeVocabRouteChildren {
   HomeVocabBrowseRoute: typeof HomeVocabBrowseRoute
   HomeVocabCreateRoute: typeof HomeVocabCreateRoute
   HomeVocabIndexRoute: typeof HomeVocabIndexRoute
+  HomeVocabDeckDeckIdEditRoute: typeof HomeVocabDeckDeckIdEditRoute
 }
 
 const HomeVocabRouteChildren: HomeVocabRouteChildren = {
@@ -1090,6 +1110,7 @@ const HomeVocabRouteChildren: HomeVocabRouteChildren = {
   HomeVocabBrowseRoute: HomeVocabBrowseRoute,
   HomeVocabCreateRoute: HomeVocabCreateRoute,
   HomeVocabIndexRoute: HomeVocabIndexRoute,
+  HomeVocabDeckDeckIdEditRoute: HomeVocabDeckDeckIdEditRoute,
 }
 
 const HomeVocabRouteWithChildren = HomeVocabRoute._addFileChildren(

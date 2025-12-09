@@ -1,5 +1,64 @@
 import { MutationCtx, QueryCtx } from '../_generated/server'
 import { Id } from '../_generated/dataModel'
+import { textbooks, type TextbookIDEnum } from '../../src/data/textbooks'
+import { chapters } from '../../src/data/chapters'
+
+// ===== Unified Folder Type =====
+
+export interface UnifiedFolder {
+  id: string
+  folderName: string
+  parentFolderId?: string
+  source: 'user' | 'built-in'
+}
+
+// ===== Built-in Folder Generation =====
+
+export function getBuiltInFolders(): UnifiedFolder[] {
+  const folders: UnifiedFolder[] = []
+
+  for (const [textbookId, textbook] of Object.entries(textbooks)) {
+    // Add textbook as root folder
+    folders.push({
+      id: textbookId,
+      folderName: textbook.short_name,
+      parentFolderId: undefined,
+      source: 'built-in',
+    })
+
+    // Add chapters as child folders
+    const textbookChapters = chapters[textbookId as TextbookIDEnum]
+    for (const [chapterSlug, chapter] of Object.entries(textbookChapters)) {
+      folders.push({
+        id: `${textbookId}/${chapterSlug}`,
+        folderName: chapter.title,
+        parentFolderId: textbookId,
+        source: 'built-in',
+      })
+    }
+  }
+
+  return folders
+}
+
+// ===== Unified Query (built-in + user) =====
+
+export async function getAllFolders(ctx: QueryCtx): Promise<UnifiedFolder[]> {
+  const builtIn = getBuiltInFolders()
+
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) return builtIn
+
+  const userFolders = await getUserFolders(ctx)
+  const normalized: UnifiedFolder[] = userFolders.map((f) => ({
+    id: f._id,
+    folderName: f.folderName,
+    parentFolderId: f.parentFolderId,
+    source: 'user' as const,
+  }))
+
+  return [...builtIn, ...normalized]
+}
 
 // ===== Query Helpers =====
 

@@ -4,7 +4,7 @@ import * as Folders from '../model/folders'
 import * as Decks from '../model/decks'
 
 /**
- * Get all folders and decks for the current user
+ * Get all folders and decks for the current user (user data only)
  */
 export const getUserFoldersAndDecks = query({
   args: {},
@@ -12,6 +12,20 @@ export const getUserFoldersAndDecks = query({
     const [folders, decks] = await Promise.all([
       Folders.getUserFolders(ctx),
       Decks.getUserDecks(ctx),
+    ])
+    return { folders, decks }
+  },
+})
+
+/**
+ * Get all folders and decks (unified: built-in + user)
+ */
+export const getAllFoldersAndDecks = query({
+  args: {},
+  handler: async (ctx) => {
+    const [folders, decks] = await Promise.all([
+      Folders.getAllFolders(ctx),
+      Decks.getAllDecks(ctx),
     ])
     return { folders, decks }
   },

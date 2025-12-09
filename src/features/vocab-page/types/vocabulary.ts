@@ -1,5 +1,6 @@
 // Vocabulary type system and conversion utilities
 import type { DeckVocabItemInput, VocabularyItem } from 'convex/validators'
+import type { Doc } from 'convex/_generated/dataModel'
 import { extractSegmentText } from '@/data/utils/text/furigana'
 import type { VocabItemFormData } from '../validation/vocabulary-validation'
 
@@ -93,23 +94,8 @@ export function formDataToVocabularyItem(formData: VocabItemFormData): Vocabular
   }
 }
 
-// Type for deck vocabulary items from DB (what getDeckVocabItems returns)
-interface DeckVocabItem {
-  word: string
-  furigana?: string
-  english: string[]
-  info?: string[]
-  mnemonics?: { reading: string[]; kanji: string[] }
-  exampleSentences?: Array<{
-    japanese: Array<string | { t: string }>
-    english: Array<string | { t: string }>
-  }>
-  particles?: Array<{ particle: string; label?: string }>
-  isVerb?: boolean
-}
-
 // Convert DB item back to form data (for edit mode)
-export function deckVocabItemToFormData(item: DeckVocabItem): VocabItemFormData {
+export function deckVocabItemToFormData(item: Doc<'deckVocabularyItems'>): VocabItemFormData {
   return {
     word: item.word,
     furigana: item.furigana || item.word,

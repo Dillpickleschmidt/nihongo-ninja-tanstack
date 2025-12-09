@@ -14,14 +14,15 @@ export function useFolderTree(props: UseFolderTreeProps) {
   const folderTreeNodes = createMemo((): TreeNode[] => {
     if (props.folders.length === 0) return []
 
-    let availableFolders = props.folders
+    // Filter to only user folders (built-in folders can't be used as destinations)
+    let availableFolders = props.folders.filter((f) => f.source === 'user')
 
     if (props.item && !('deckName' in props.item)) {
       const folderId = props.item.id
       const excludeIds = new Set([folderId])
 
       const addDescendants = (id: string) => {
-        props.folders.forEach((f) => {
+        availableFolders.forEach((f) => {
           if (f.parentFolderId === id && !excludeIds.has(f.id)) {
             excludeIds.add(f.id)
             addDescendants(f.id)
@@ -30,7 +31,7 @@ export function useFolderTree(props: UseFolderTreeProps) {
       }
       addDescendants(folderId)
 
-      availableFolders = props.folders.filter((f) => !excludeIds.has(f.id))
+      availableFolders = availableFolders.filter((f) => !excludeIds.has(f.id))
     }
 
     const buildTreeNodes = (parentId: string | undefined): TreeNode[] => {

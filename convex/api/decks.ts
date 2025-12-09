@@ -113,3 +113,16 @@ export const getDeckVocabItems = query({
   args: { deckId: v.id('userDecks') },
   handler: (ctx, { deckId }) => Vocabulary.getDeckVocabItems(ctx, deckId),
 })
+
+/**
+ * Get deck metadata and vocabulary items together (for editing)
+ */
+export const getDeckWithVocab = query({
+  args: { deckId: v.id('userDecks') },
+  handler: async (ctx, { deckId }) => {
+    await Decks.verifyDeckOwnership(ctx, deckId)
+    const deck = await ctx.db.get(deckId)
+    const vocabItems = await Vocabulary.getDeckVocabItems(ctx, deckId)
+    return { deck, vocabItems }
+  },
+})
