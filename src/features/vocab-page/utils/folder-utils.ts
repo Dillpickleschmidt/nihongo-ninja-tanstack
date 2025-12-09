@@ -83,6 +83,31 @@ export function resolveFolderFromPath(
   return currentFolder ?? null
 }
 
+/**
+ * Build the full URL path for a deck
+ * Combines folder path with deck ID
+ */
+export function buildDeckUrlPath(deck: Deck, folders: Folder[]): string {
+  if (deck.folderId) {
+    const folderPath = buildFolderUrlPath(deck.folderId, folders)
+    return `${folderPath}/${deck.id}`
+  }
+  return deck.id
+}
+
+/**
+ * Resolve a URL path to a deck by checking if the last segment is a deck ID
+ */
+export function resolveDeckFromPath(
+  pathSegments: string[],
+  decks: Deck[]
+): Deck | null {
+  if (pathSegments.length === 0) return null
+  // Last segment could be a deck ID
+  const lastSegment = pathSegments[pathSegments.length - 1]
+  return decks.find((d) => d.id === lastSegment) ?? null
+}
+
 // ===== Breadcrumb Utilities =====
 
 export interface BreadcrumbItem {

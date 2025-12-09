@@ -40,7 +40,7 @@ export function getBuiltInDecks(): UnifiedDeck[] {
         // Only include vocab-practice modules as decks (skip vocab-list, vocab-test, sentence-practice)
         if (module?.module_type === 'vocab-practice') {
           decks.push({
-            id: `builtin:${moduleId}`,
+            id: moduleId,
             deckName: module.title,
             folderId,
             source: 'built-in',

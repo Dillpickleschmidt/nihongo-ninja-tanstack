@@ -1,5 +1,5 @@
 import { For, Show } from 'solid-js'
-import { useNavigate, Link } from '@tanstack/solid-router'
+import { Link } from '@tanstack/solid-router'
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -11,11 +11,10 @@ import { FolderCard } from '../../../shared/components/FolderCard'
 import { DeckCard } from '../../../shared/components/DeckCard'
 import {
   buildFolderBreadcrumbs,
-  buildFolderUrlPath,
   type BreadcrumbItem as BreadcrumbItemType,
 } from '../../../utils/folder-utils'
 import { getFolderLevelItems } from '../../../utils/navigation-hierarchy'
-import { useVocab, type Folder, type Deck } from '../../../context/VocabContext'
+import { useVocab } from '../../../context/VocabContext'
 
 interface FolderViewProps {
   folderId: string
@@ -27,22 +26,12 @@ interface FolderViewProps {
  */
 export function FolderView(props: FolderViewProps) {
   const ctx = useVocab()
-  const navigate = useNavigate()
 
   const folder = () => ctx.folders().find((f) => f.id === props.folderId)
   const breadcrumbs = () => buildFolderBreadcrumbs(ctx.folders(), props.folderId)
   const items = () => getFolderLevelItems(ctx.folders(), ctx.decks(), props.folderId)
 
   const currentFolderName = () => folder()?.folderName || 'Folder'
-
-  const handleFolderClick = (folder: Folder) => {
-    const path = buildFolderUrlPath(folder.id, ctx.folders())
-    navigate({ to: `/vocab/${path}` })
-  }
-
-  const handleDeckClick = (deck: Deck) => {
-    ctx.setSelectedDeckId(deck.id)
-  }
 
   return (
     <div class="space-y-6">
@@ -64,19 +53,9 @@ export function FolderView(props: FolderViewProps) {
             {(node) => {
               switch (node.type) {
                 case 'folder':
-                  return (
-                    <FolderCard
-                      folder={node.data}
-                      onClick={() => handleFolderClick(node.data)}
-                    />
-                  )
+                  return <FolderCard folder={node.data} />
                 case 'deck':
-                  return (
-                    <DeckCard
-                      deck={node.data}
-                      onSelect={handleDeckClick}
-                    />
-                  )
+                  return <DeckCard deck={node.data} />
                 default:
                   return null
               }

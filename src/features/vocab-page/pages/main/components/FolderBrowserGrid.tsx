@@ -7,8 +7,6 @@ import type { Folder, Deck } from '../../../context/VocabContext'
 interface FolderBrowserGridProps {
   folders: Folder[]
   decks: Deck[]
-  onFolderClick: (folder: Folder) => void
-  onDeckClick?: (deck: Deck) => void
   class?: string
 }
 
@@ -39,21 +37,9 @@ export function FolderBrowserGrid(props: FolderBrowserGridProps) {
             {(node) => {
               switch (node.type) {
                 case 'folder':
-                  return (
-                    <FolderCard
-                      folder={node.data}
-                      onClick={() => props.onFolderClick(node.data)}
-                    />
-                  )
-
+                  return <FolderCard folder={node.data} />
                 case 'deck':
-                  return (
-                    <DeckCard
-                      deck={node.data}
-                      onSelect={(d) => props.onDeckClick?.(d)}
-                    />
-                  )
-
+                  return <DeckCard deck={node.data} />
                 default:
                   return null
               }

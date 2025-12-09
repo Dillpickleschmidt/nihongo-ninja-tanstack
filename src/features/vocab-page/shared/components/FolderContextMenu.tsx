@@ -1,4 +1,5 @@
 import { createSignal, Show, type JSX } from 'solid-js'
+import { Link } from '@tanstack/solid-router'
 import {
   ContextMenu,
   ContextMenuContent,
@@ -19,7 +20,7 @@ import { useVocab, type Folder } from '../../context/VocabContext'
 
 interface FolderContextMenuProps {
   folder?: Folder
-  onClick: () => void
+  to: string
   children: JSX.Element
 }
 
@@ -49,9 +50,9 @@ export function FolderContextMenu(props: FolderContextMenuProps) {
     <>
       <ContextMenu>
         <ContextMenuTrigger
-          as="div"
-          onClick={props.onClick}
-          class="bg-card/60 hover:bg-card/70 border-card-foreground/70 cursor-pointer rounded-lg border p-4 shadow-sm backdrop-blur-sm transition-colors hover:shadow-md"
+          as={Link}
+          to={props.to}
+          class="block bg-card/60 hover:bg-card/70 border-card-foreground/70 cursor-pointer rounded-lg border p-4 shadow-sm backdrop-blur-sm transition-colors hover:shadow-md"
         >
           {props.children}
         </ContextMenuTrigger>

@@ -1,11 +1,11 @@
 import { Folder as FolderIcon } from 'lucide-solid'
 import { Show } from 'solid-js'
 import { FolderContextMenu } from './FolderContextMenu'
-import type { Folder } from '../../context/VocabContext'
+import { useVocab, type Folder } from '../../context/VocabContext'
+import { buildFolderUrlPath } from '../../utils/folder-utils'
 
 interface FolderCardProps {
   folder: Folder
-  onClick: () => void
 }
 
 /**
@@ -13,8 +13,11 @@ interface FolderCardProps {
  * Shows edit/delete options via FolderContextMenu for user folders
  */
 export function FolderCard(props: FolderCardProps) {
+  const ctx = useVocab()
+  const folderPath = () => `/vocab/${buildFolderUrlPath(props.folder.id, ctx.folders())}`
+
   return (
-    <FolderContextMenu folder={props.folder} onClick={props.onClick}>
+    <FolderContextMenu folder={props.folder} to={folderPath()}>
       <CardContent
         title={props.folder.folderName}
         isBuiltIn={props.folder.source === 'built-in'}

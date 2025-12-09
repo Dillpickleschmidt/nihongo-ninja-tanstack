@@ -1,5 +1,4 @@
 import {
-  Play,
   Edit,
   Edit3,
   FileText,
@@ -9,6 +8,7 @@ import {
   Folder,
   Home,
 } from 'lucide-solid'
+import { Link } from '@tanstack/solid-router'
 import { Button } from '@/components/ui/button'
 import {
   ContextMenu,
@@ -25,20 +25,20 @@ import { cn } from '@/utils'
 import { createSignal, Show } from 'solid-js'
 import { TreeView } from '@/components/ui/tree-view'
 import { useFolderTree } from '../../hooks/useFolderTree'
-import { getFolderPath } from '../../utils/folder-utils'
+import { getFolderPath, buildDeckUrlPath } from '../../utils/folder-utils'
 import { useVocab, type Deck } from '../../context/VocabContext'
 import { useNavigate } from '@tanstack/solid-router'
 
 interface DeckCardProps {
   deck: Deck
   isSelected?: boolean
-  onSelect?: (deck: Deck) => void
   class?: string
 }
 
 export function DeckCard(props: DeckCardProps) {
-  const navigate = useNavigate()
   const ctx = useVocab()
+  const navigate = useNavigate()
+  const deckPath = () => `/vocab/${buildDeckUrlPath(props.deck, ctx.folders())}`
   const [isHovered, setIsHovered] = createSignal(false)
   const [expandedFolderIds, setExpandedFolderIds] = createSignal<Set<string>>(
     new Set()
@@ -100,23 +100,18 @@ export function DeckCard(props: DeckCardProps) {
     navigate({ to: `/vocab/deck/${props.deck.id}/edit` })
   }
 
-  const handlePracticeClick = (e: MouseEvent) => {
-    e.stopPropagation()
-    // TODO: Implement practice navigation when practice sessions are ready
-    alert('Practice functionality coming soon!')
-  }
-
   const canEdit = () => props.deck.source === 'user'
 
   return (
     <ContextMenu>
       <ContextMenuTrigger
+        as={Link}
+        to={deckPath()}
         class={cn(
-          'bg-card/60 hover:bg-card/70 border-card-foreground/70 relative cursor-pointer space-y-3 rounded-lg border p-4 shadow-sm backdrop-blur-sm hover:shadow-md',
+          'block bg-card/60 hover:bg-card/70 border-card-foreground/70 relative cursor-pointer space-y-3 rounded-lg border p-4 shadow-sm backdrop-blur-sm hover:shadow-md',
           props.isSelected && 'outline-card-foreground outline-2',
           props.class
         )}
-        onClick={() => props.onSelect?.(props.deck)}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -134,6 +129,7 @@ export function DeckCard(props: DeckCardProps) {
               variant="ghost"
               class="h-6 w-6 p-0 hover:cursor-pointer"
               onClick={(e) => {
+                e.preventDefault()
                 e.stopPropagation()
                 handleEditContents()
               }}
@@ -149,7 +145,7 @@ export function DeckCard(props: DeckCardProps) {
             class={cn(
               'pr-8 text-sm leading-tight font-medium',
               props.deck.source === 'built-in' &&
-                'decoration-muted-foreground/70 underline underline-offset-4'
+              'decoration-muted-foreground/70 underline underline-offset-4'
             )}
             title={
               props.deck.source === 'built-in' ? 'Built-in deck' : undefined
@@ -161,19 +157,6 @@ export function DeckCard(props: DeckCardProps) {
             <p class="text-muted-foreground text-xs">Built-in</p>
           </Show>
         </div>
-
-        {/* Practice button */}
-        <Button
-          variant="default"
-          size="sm"
-          onClick={handlePracticeClick}
-          class="bg-card hover:bg-card-foreground/10 dark:bg-card-foreground text-primary outline-card-foreground/70 relative w-full overflow-hidden text-xs outline backdrop-blur-xs transition-colors dark:outline-none hover:dark:bg-neutral-600"
-        >
-          <div class="flex items-center justify-center">
-            <Play class="mr-1 max-h-3 max-w-3" />
-            Practice
-          </div>
-        </Button>
       </ContextMenuTrigger>
 
       <ContextMenuContent class="bg-card border-card-foreground outline-none">
@@ -237,9 +220,9 @@ export function DeckCard(props: DeckCardProps) {
                   onToggle={handleToggleFolder}
                   renderIcon={(node) =>
                     node.id === 'root' ? (
-                      <Home class="mr-2 h-4 w-4 flex-shrink-0" />
+                      <Home class="mr-2 h-4 w-4 shrink-0" />
                     ) : (
-                      <Folder class="mr-2 h-4 w-4 flex-shrink-0" />
+                      <Folder class="mr-2 h-4 w-4 shrink-0" />
                     )
                   }
                   renderLabel={(node, isSelected) => (

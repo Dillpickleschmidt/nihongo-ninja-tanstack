@@ -43,10 +43,6 @@ interface VocabContextValue {
   decks: () => Deck[]
   isLoading: () => boolean
 
-  // Selection state
-  selectedDeckId: () => string | null
-  setSelectedDeckId: (id: string | null) => void
-
   // Modal state for editing
   editingFolder: () => Folder | null
   setEditingFolder: (folder: Folder | null) => void
@@ -141,9 +137,6 @@ export function VocabProvider(props: ParentProps) {
   })
 
   const isLoading = () => foldersAndDecksQuery.isLoading()
-
-  // Selection state
-  const [selectedDeckId, setSelectedDeckId] = createSignal<string | null>(null)
 
   // Modal state for editing
   const [editingFolder, setEditingFolder] = createSignal<Folder | null>(null)
@@ -342,8 +335,6 @@ export function VocabProvider(props: ParentProps) {
         folders,
         decks,
         isLoading,
-        selectedDeckId,
-        setSelectedDeckId,
         // CRUD
         createFolder,
         updateFolder,

@@ -1,18 +1,19 @@
 import { Show, For } from 'solid-js'
+import { Link, useLocation } from '@tanstack/solid-router'
 import { useVocab, type Deck } from '../context/VocabContext'
+import { buildDeckUrlPath, resolveDeckFromPath } from '../utils/folder-utils'
 import { cn } from '@/utils'
 
 function DeckItem(props: {
   deck: Deck
+  to: string
   isSelected: boolean
-  onClick: () => void
 }) {
   return (
-    <button
-      type="button"
-      onClick={props.onClick}
+    <Link
+      to={props.to}
       class={cn(
-        'w-full rounded-lg px-3 py-2 text-left transition-colors',
+        'block w-full rounded-lg px-3 py-2 text-left transition-colors',
         props.isSelected
           ? 'bg-primary/20 text-primary'
           : 'hover:bg-neutral-800 text-neutral-300'
@@ -24,7 +25,7 @@ function DeckItem(props: {
           {props.deck.deckDescription}
         </div>
       </Show>
-    </button>
+    </Link>
   )
 }
 
@@ -54,8 +55,16 @@ function EmptyDecksMessage() {
 }
 
 export function VocabRightPanel() {
-  const { folders, decks, isLoading, selectedDeckId, setSelectedDeckId } =
-    useVocab()
+  const { folders, decks, isLoading } = useVocab()
+  const location = useLocation()
+
+  // Derive selected deck from URL
+  const selectedDeckId = () => {
+    const path = location().pathname
+    const segments = path.replace('/vocab/', '').split('/').filter(Boolean)
+    const deck = resolveDeckFromPath(segments, decks())
+    return deck?.id ?? null
+  }
 
   // Group decks by folder
   const decksByFolder = () => {
@@ -93,8 +102,8 @@ export function VocabRightPanel() {
                   {(deck) => (
                     <DeckItem
                       deck={deck}
+                      to={`/vocab/${buildDeckUrlPath(deck, folders())}`}
                       isSelected={selectedDeckId() === deck.id}
-                      onClick={() => setSelectedDeckId(deck.id)}
                     />
                   )}
                 </For>
@@ -116,8 +125,8 @@ export function VocabRightPanel() {
                           {(deck) => (
                             <DeckItem
                               deck={deck}
+                              to={`/vocab/${buildDeckUrlPath(deck, folders())}`}
                               isSelected={selectedDeckId() === deck.id}
-                              onClick={() => setSelectedDeckId(deck.id)}
                             />
                           )}
                         </For>
