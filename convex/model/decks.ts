@@ -23,7 +23,6 @@ export interface UnifiedDeck {
   deckDescription?: string
   folderId?: string
   source: 'user' | 'built-in'
-  vocabSetId?: string
 }
 
 // ===== Built-in Deck Generation =====
@@ -44,7 +43,6 @@ export function getBuiltInDecks(): UnifiedDeck[] {
             deckName: module.title,
             folderId,
             source: 'built-in',
-            vocabSetId: moduleId,
           })
         }
       }

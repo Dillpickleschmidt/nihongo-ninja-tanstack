@@ -1,4 +1,3 @@
-// features/vocab-page/pages/main/components/VocabularyCard.tsx
 import { For } from "solid-js"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Book, Grid2x2 } from "lucide-solid"
@@ -19,19 +18,21 @@ export function VocabularyCard(props: VocabularyCardProps) {
       >
         <div class="px-6 py-6">
           <div class="border-border mb-6 border-b pb-4">
-            <div class="flex items-baseline gap-4">
-              <h3 class="font-japanese flex items-baseline text-xl font-bold">
-                <span class="text-muted-foreground mr-3 text-base">
-                  {`${props.index + 1}.`}
+            <div class="flex items-center justify-between gap-4">
+              <div class="flex items-baseline gap-4">
+                <h3 class="font-japanese flex items-baseline text-xl font-bold">
+                  <span class="text-muted-foreground mr-3 text-base">
+                    {`${props.index + 1}.`}
+                  </span>
+                  <span
+                    class="text-xl"
+                    innerHTML={convertFuriganaToRubyHtml(props.item.furigana)}
+                  />
+                </h3>
+                <span class="text-muted-foreground text-sm italic">
+                  {props.item.english.join(", ")}
                 </span>
-                <span
-                  class="text-xl"
-                  innerHTML={convertFuriganaToRubyHtml(props.item.furigana)}
-                />
-              </h3>
-              <span class="text-muted-foreground text-sm italic">
-                {props.item.english.join(", ")}
-              </span>
+              </div>
             </div>
           </div>
 

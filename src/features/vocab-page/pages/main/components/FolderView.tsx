@@ -9,11 +9,11 @@ import {
 } from '@/components/ui/breadcrumb'
 import { FolderCard } from '../../../shared/components/FolderCard'
 import { DeckCard } from '../../../shared/components/DeckCard'
+import { getFolderLevelItems } from '../../../utils/hierarchy'
 import {
   buildFolderBreadcrumbs,
   type BreadcrumbItem as BreadcrumbItemType,
-} from '../../../utils/folder-utils'
-import { getFolderLevelItems } from '../../../utils/navigation-hierarchy'
+} from '../../../utils/navigation'
 import { useVocab } from '../../../context/VocabContext'
 
 interface FolderViewProps {

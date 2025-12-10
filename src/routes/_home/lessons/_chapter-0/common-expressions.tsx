@@ -4,7 +4,7 @@ import { For, Show } from "solid-js"
 import { convexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import MultipleChoiceText from "@/components/text/MultipleChoiceText"
-import { VocabularyCard } from "@/features/vocab-page/pages/main/components/VocabularyCard"
+import { VocabularyCard } from "@/features/vocab-page/pages/main/components/deck-view/VocabularyCard"
 
 export const Route = createFileRoute("/_home/lessons/_chapter-0/common-expressions")({
   loader: async () => {

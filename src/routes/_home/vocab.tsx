@@ -30,10 +30,10 @@ function VocabLayoutComponent() {
         </div>
 
         {/* Center: Nav + Content */}
-        <div class="relative z-0 w-full">
-          <div class="flex  flex-col overflow-y-auto">
+        <div class="relative w-full">
+          <div class="flex flex-col pb-16">
             <CenterNavBar />
-            <div class="px-8 md:pt-12">
+            <div class="px-8">
               <Suspense>
                 <Outlet />
               </Suspense>
@@ -42,7 +42,7 @@ function VocabLayoutComponent() {
         </div>
 
         {/* Right: Panel with user's decks */}
-        <div class="hidden md:block md:h-[calc(100vh-69px)]">
+        <div class="sticky top-17 hidden md:block md:h-[calc(100vh-69px)]">
           <VocabRightPanel />
         </div>
       </div>

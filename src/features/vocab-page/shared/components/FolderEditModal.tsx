@@ -22,8 +22,7 @@ import { NAME_MAX_LENGTH } from '../../validation/constants'
 import { useFolderTree } from '../../hooks/useFolderTree'
 import { LocationSelector } from './LocationSelector'
 import { DeleteConfirmation } from './DeleteConfirmation'
-import { useVocab, type Folder } from '../../context/VocabContext'
-import { getFolderPath } from '../../utils/folder-utils'
+import { useVocab } from '../../context/VocabContext'
 
 export function FolderEditModal() {
   const ctx = useVocab()
@@ -297,7 +296,7 @@ export function FolderEditModal() {
             <div class="border-card-foreground/70 border-t pt-6">
               <div class="border-destructive/30 bg-destructive/10 rounded-lg border p-4 backdrop-blur-xs">
                 <div class="mb-3 flex items-center gap-3">
-                  <div class="flex-shrink-0">
+                  <div class="shrink-0">
                     <Trash2 class="text-destructive h-5 w-5" />
                   </div>
                   <div>

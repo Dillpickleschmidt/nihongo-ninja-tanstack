@@ -1,36 +1,6 @@
 import type { UnifiedFolder } from 'convex/model/folders'
 import type { UnifiedDeck } from 'convex/model/decks'
-
-export type Folder = UnifiedFolder
-export type Deck = UnifiedDeck
-
-export function getRootFolders(folders: Folder[]): Folder[] {
-  return folders.filter((f) => !f.parentFolderId)
-}
-
-export function getRootDecks(decks: Deck[]): Deck[] {
-  return decks.filter((d) => !d.folderId)
-}
-
-export function getFolderChildren(folders: Folder[], parentId: string): Folder[] {
-  return folders.filter((f) => f.parentFolderId === parentId)
-}
-
-export function getDecksInFolder(decks: Deck[], folderId: string): Deck[] {
-  return decks.filter((d) => d.folderId === folderId)
-}
-
-export function getFolderPath(folderId: string, folders: Folder[]): Folder[] {
-  const path: Folder[] = []
-  let current = folders.find((f) => f.id === folderId)
-  while (current) {
-    path.unshift(current)
-    current = current.parentFolderId
-      ? folders.find((f) => f.id === current!.parentFolderId)
-      : undefined
-  }
-  return path
-}
+import { getFolderPath, getFolderChildren } from './hierarchy'
 
 // ===== URL Path Utilities =====
 
@@ -39,7 +9,7 @@ export function getFolderPath(folderId: string, folders: Folder[]): Folder[] {
  * For built-in folders: ID is already the path (e.g., "genki_1/chapter-0")
  * For user folders: walk hierarchy and join IDs
  */
-export function buildFolderUrlPath(folderId: string, folders: Folder[]): string {
+export function buildFolderUrlPath(folderId: string, folders: UnifiedFolder[]): string {
   const folder = folders.find((f) => f.id === folderId)
   if (!folder) return folderId
 
@@ -59,8 +29,8 @@ export function buildFolderUrlPath(folderId: string, folders: Folder[]): string 
  */
 export function resolveFolderFromPath(
   pathSegments: string[],
-  folders: Folder[]
-): Folder | null {
+  folders: UnifiedFolder[]
+): UnifiedFolder | null {
   if (pathSegments.length === 0) return null
 
   // Join segments to form the full path/ID
@@ -70,8 +40,8 @@ export function resolveFolderFromPath(
   const exactMatch = folders.find((f) => f.id === pathAsId)
   if (exactMatch) return exactMatch
 
-  // Fallback: walk hierarchy for user folders (Convex IDs don't match path segments)
-  let currentFolder: Folder | undefined = folders.find(
+  // Else, walk hierarchy for user folders (Convex IDs don't match path segments)
+  let currentFolder: UnifiedFolder | undefined = folders.find(
     (f) => f.id === pathSegments[0] && !f.parentFolderId
   )
 
@@ -87,7 +57,7 @@ export function resolveFolderFromPath(
  * Build the full URL path for a deck
  * Combines folder path with deck ID
  */
-export function buildDeckUrlPath(deck: Deck, folders: Folder[]): string {
+export function buildDeckUrlPath(deck: UnifiedDeck, folders: UnifiedFolder[]): string {
   if (deck.folderId) {
     const folderPath = buildFolderUrlPath(deck.folderId, folders)
     return `${folderPath}/${deck.id}`
@@ -100,8 +70,8 @@ export function buildDeckUrlPath(deck: Deck, folders: Folder[]): string {
  */
 export function resolveDeckFromPath(
   pathSegments: string[],
-  decks: Deck[]
-): Deck | null {
+  decks: UnifiedDeck[]
+): UnifiedDeck | null {
   if (pathSegments.length === 0) return null
   // Last segment could be a deck ID
   const lastSegment = pathSegments[pathSegments.length - 1]
@@ -117,7 +87,7 @@ export interface BreadcrumbItem {
 }
 
 export function buildFolderBreadcrumbs(
-  folders: Folder[],
+  folders: UnifiedFolder[],
   folderId: string | null
 ): BreadcrumbItem[] {
   const crumbs: BreadcrumbItem[] = [{ label: 'Vocabulary', href: '/vocab' }]

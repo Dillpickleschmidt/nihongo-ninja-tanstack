@@ -118,7 +118,7 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
   }
 
   return (
-    <div class="w-full max-w-5xl space-y-8 px-2 pb-8 sm:px-4 lg:px-6">
+    <div class="w-full max-w-5xl space-y-8 p-2 pb-8 sm:px-4 lg:px-6">
       <DeckHeader
         onClear={handleClear}
         onSave={handleSaveDeck}

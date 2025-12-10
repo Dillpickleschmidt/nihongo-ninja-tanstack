@@ -1,7 +1,7 @@
 import { Show, For } from 'solid-js'
 import { Link, useLocation } from '@tanstack/solid-router'
 import { useVocab, type Deck } from '../context/VocabContext'
-import { buildDeckUrlPath, resolveDeckFromPath } from '../utils/folder-utils'
+import { buildDeckUrlPath, resolveDeckFromPath } from '../utils/navigation'
 import { cn } from '@/utils'
 
 function DeckItem(props: {
@@ -89,7 +89,7 @@ export function VocabRightPanel() {
   }
 
   return (
-    <div class="h-full overflow-y-auto p-4">
+    <div class="h-full overflow-y-auto p-4 pb-16">
       <h2 class="text-lg font-semibold text-neutral-300">Your Decks</h2>
 
       <Show when={!isLoading()} fallback={<DecksSkeleton />}>

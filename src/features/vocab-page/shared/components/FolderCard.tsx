@@ -2,7 +2,7 @@ import { Folder as FolderIcon } from 'lucide-solid'
 import { Show } from 'solid-js'
 import { FolderContextMenu } from './FolderContextMenu'
 import { useVocab, type Folder } from '../../context/VocabContext'
-import { buildFolderUrlPath } from '../../utils/folder-utils'
+import { buildFolderUrlPath } from '../../utils/navigation'
 
 interface FolderCardProps {
   folder: Folder

@@ -1,7 +1,7 @@
 import { For, Show } from 'solid-js'
 import { FolderCard } from '../../../shared/components/FolderCard'
 import { DeckCard } from '../../../shared/components/DeckCard'
-import { getRootLevelItems } from '../../../utils/navigation-hierarchy'
+import { getRootLevelItems } from '../../../utils/hierarchy'
 import type { Folder, Deck } from '../../../context/VocabContext'
 
 interface FolderBrowserGridProps {

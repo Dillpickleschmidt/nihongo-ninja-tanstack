@@ -49,7 +49,7 @@ function ModuleListItem(props: ModuleListItemProps) {
         class={cn(
           "group bg-card font-inter relative block h-12 w-full rounded-md text-sm whitespace-nowrap",
           "border-card-foreground/70 border backdrop-blur-sm",
-          "bg-gradient-to-br dark:from-neutral-600/10 dark:to-gray-600/5",
+          "bg-gradient-to-br dark:from-neutral-600/15 dark:to-gray-600/10",
           "ease-instant-hover-200",
           props.isCompleted && "border-green-500/50 font-semibold text-green-500",
           disabled ? "cursor-not-allowed opacity-50" : "hover:bg-accent cursor-pointer"

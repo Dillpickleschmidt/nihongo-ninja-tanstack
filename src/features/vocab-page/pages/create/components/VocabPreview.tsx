@@ -1,5 +1,5 @@
 import { For, Show } from 'solid-js'
-import { VocabularyCard } from '@/features/vocab-page/pages/main/components/VocabularyCard'
+import { VocabularyCard } from '@/features/vocab-page/pages/main/components/deck-view/VocabularyCard'
 import {
   formDataToVocabularyItem,
   type VocabItemFormData,
