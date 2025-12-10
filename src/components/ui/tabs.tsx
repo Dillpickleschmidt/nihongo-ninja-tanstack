@@ -40,7 +40,7 @@ const TabsTrigger = <T extends ValidComponent = "button">(
   return (
     <TabsPrimitive.Trigger
       class={cn(
-        "ring-offset-background focus-visible:ring-ring data-[selected]:bg-background data-[selected]:text-foreground inline-flex cursor-pointer items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 data-[selected]:shadow-sm",
+        "ring-offset-background focus-visible:ring-ring data-selected:bg-background data-selected:text-foreground inline-flex cursor-pointer items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 data-selected:shadow-sm",
         local.class,
       )}
       {...others}
@@ -80,7 +80,7 @@ const TabsIndicator = <T extends ValidComponent = "div">(
   return (
     <TabsPrimitive.Indicator
       class={cn(
-        "duration-250ms absolute transition-all data-[orientation=horizontal]:-bottom-px data-[orientation=horizontal]:h-[2px] data-[orientation=vertical]:-right-px data-[orientation=vertical]:w-[2px]",
+        "duration-250ms absolute transition-all data-orientation=horizontal:-bottom-px data-orientation=horizontal:h-0.5 data-orientation=vertical:-right-px data-orientation=vertical:w-0.5",
         local.class,
       )}
       {...others}

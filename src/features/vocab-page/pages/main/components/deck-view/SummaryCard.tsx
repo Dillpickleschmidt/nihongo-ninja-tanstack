@@ -1,5 +1,5 @@
 import { Show } from 'solid-js'
-import { Loader2 } from 'lucide-solid'
+import { LoaderCircle } from 'lucide-solid'
 
 type SummaryCardProps = {
   label: string
@@ -21,13 +21,13 @@ export function SummaryCard(props: SummaryCardProps) {
         <Show
           when={props.count !== undefined}
           fallback={
-            <Loader2 class="text-muted-foreground/50 mt-1 h-8 w-8 animate-spin" />
+            <LoaderCircle class="text-muted-foreground/50 mt-1 h-8 w-8 animate-spin" />
           }
         >
           <div class="text-primary mt-1 text-2xl font-bold">{props.count}</div>
         </Show>
         <Show when={props.dueCount === undefined}>
-          <Loader2 class="h-4 w-4 animate-spin text-indigo-400/50" />
+          <LoaderCircle class="h-4 w-4 animate-spin text-indigo-400/50" />
         </Show>
         <Show when={props.dueCount !== undefined && props.dueCount > 0}>
           <span class="text-sm font-semibold text-indigo-300">

@@ -1,4 +1,3 @@
-import { createSignal } from "solid-js"
 import { cn } from "@/utils"
 import { SmoothCard } from "@/components/SmoothCard"
 import { getChapterStyles } from "@/data/chapter_colors"

@@ -2,7 +2,7 @@
 import { For, createMemo } from "solid-js"
 import { useLocation, useNavigate } from "@tanstack/solid-router"
 import { Button } from "@/components/ui/button"
-import { Import, Plus, Search } from "lucide-solid"
+import { Plus, Search } from "lucide-solid"
 import { cn } from "@/utils"
 
 // Custom Card/Deck Icon Component

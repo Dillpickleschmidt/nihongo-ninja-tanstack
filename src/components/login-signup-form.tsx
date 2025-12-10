@@ -119,7 +119,7 @@ export default function LoginSignupForm() {
             {error() && (
               <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm flex items-center gap-2">
                 <svg
-                  class="w-5 h-5 flex-shrink-0"
+                  class="w-5 h-5 shrink-0"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >

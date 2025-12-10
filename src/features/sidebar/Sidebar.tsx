@@ -7,8 +7,8 @@ import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { cn } from "@/utils"
 import { getInitialAnimationStyles } from "@/utils/animations"
 import {
-  Home,
-  BarChart2,
+  House,
+  ChartNoAxesColumn,
   Sparkles,
   GraduationCap,
   PencilLine,
@@ -17,7 +17,7 @@ import {
   FileText,
   Italic,
   Package,
-  MoreHorizontal,
+  Ellipsis,
   Import,
   type LucideIcon,
 } from "lucide-solid"
@@ -47,14 +47,14 @@ const navigation: NavigationSection[] = [
         id: "home",
         title: "Home",
         href: "/dashboard",
-        icon: Home,
+        icon: House,
         class: "text-primary",
       },
       {
         id: "stats",
         title: "Your Stats",
         href: "/stats",
-        icon: BarChart2,
+        icon: ChartNoAxesColumn,
         class: "text-primary",
       },
       {
@@ -141,7 +141,7 @@ const navigation: NavigationSection[] = [
         id: "misc",
         title: "Misc",
         href: "/misc",
-        icon: MoreHorizontal,
+        icon: Ellipsis,
         class: "text-primary",
       },
     ],

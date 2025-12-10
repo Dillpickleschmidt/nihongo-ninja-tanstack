@@ -1,12 +1,12 @@
 import {
-  Edit,
-  Edit3,
+  SquarePen,
+  PencilLine,
   FileText,
   FolderPlus,
   Copy,
   Trash2,
   Folder,
-  Home,
+  House,
 } from 'lucide-solid'
 import { Link } from '@tanstack/solid-router'
 import { Button } from '@/components/ui/button'
@@ -135,7 +135,7 @@ export function DeckCard(props: DeckCardProps) {
                 handleEditContents()
               }}
             >
-              <Edit class="h-3 w-3" />
+              <SquarePen class="h-3 w-3" />
             </Button>
           </div>
         </Show>
@@ -174,7 +174,7 @@ export function DeckCard(props: DeckCardProps) {
             class="disabled:cursor-not-allowed disabled:opacity-50"
             onClick={() => canEdit() && handleEditContents()}
           >
-            <Edit3 class="mr-2 h-3 w-3" />
+            <PencilLine class="mr-2 h-3 w-3" />
             Edit contents
           </ContextMenuItem>
         </div>
@@ -221,7 +221,7 @@ export function DeckCard(props: DeckCardProps) {
                   onToggle={handleToggleFolder}
                   renderIcon={(node) =>
                     node.id === 'root' ? (
-                      <Home class="mr-2 h-4 w-4 shrink-0" />
+                      <House class="mr-2 h-4 w-4 shrink-0" />
                     ) : (
                       <Folder class="mr-2 h-4 w-4 shrink-0" />
                     )

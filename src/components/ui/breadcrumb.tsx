@@ -13,7 +13,7 @@ const BreadcrumbList: Component<ComponentProps<"ol">> = (props) => {
   return (
     <ol
       class={cn(
-        "text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm break-words sm:gap-2.5",
+        "text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm wrap-break-words sm:gap-2.5",
         local.class,
       )}
       {...others}
@@ -41,7 +41,7 @@ const BreadcrumbLink = <T extends ValidComponent = "a">(
   return (
     <BreadcrumbPrimitive.Link
       class={cn(
-        "hover:text-foreground data-[current]:text-foreground transition-colors data-[current]:font-normal",
+        "hover:text-foreground data-current:text-foreground transition-colors data-current:font-normal",
         local.class,
       )}
       {...others}

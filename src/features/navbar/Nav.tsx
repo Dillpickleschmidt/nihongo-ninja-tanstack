@@ -1,7 +1,7 @@
 import { Show } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
 import { Link, useLocation } from '@tanstack/solid-router'
-import { Home, Clapperboard, GraduationCap, Hammer, LogIn, LogOut, type LucideIcon } from 'lucide-solid'
+import { House, Clapperboard, GraduationCap, Hammer, LogIn, LogOut, type LucideIcon } from 'lucide-solid'
 import { cn } from '@/utils'
 import { getUser } from '@/lib/auth'
 
@@ -23,7 +23,7 @@ interface NavProps {
 
 // --- Shared Logic ---
 const navItems: NavItem[] = [
-  { id: 'home', label: 'Home', href: '/dashboard', icon: Home },
+  { id: 'home', label: 'Home', href: '/dashboard', icon: House },
   { id: 'guides', label: 'Guides', href: '/guides', icon: GraduationCap },
   { id: 'discover', label: 'Discover', href: '/discover', icon: Clapperboard },
   { id: 'tools', label: 'Tools', href: '/settings', icon: Hammer },

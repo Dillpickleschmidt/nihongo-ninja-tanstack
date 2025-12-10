@@ -32,8 +32,8 @@ export function Button3D(props: Button3DProps) {
       <div
         class={cn(
           "absolute w-full h-full top-[9px] left-0 rounded-[7mm] outline-2 outline-[rgb(36,38,34)] -z-1",
-          "before:absolute before:content-[''] before:w-0.5 before:h-[8px] before:bg-[rgb(36,38,34)] before:bottom-0 before:left-[15%]",
-          "after:absolute after:content-[''] after:w-0.5 after:h-[8px] after:bg-[rgb(36,38,34)] after:bottom-0 after:left-[85%]"
+          "before:absolute before:content-[''] before:w-0.5 before:h-2 before:bg-[rgb(36,38,34)] before:bottom-0 before:left-[15%]",
+          "after:absolute after:content-[''] after:w-0.5 after:h-2 after:bg-[rgb(36,38,34)] after:bottom-0 after:left-[85%]"
         )}
         style={{ "background-color": props.colors?.bottom ?? "rgb(188,188,163)" }}
       />

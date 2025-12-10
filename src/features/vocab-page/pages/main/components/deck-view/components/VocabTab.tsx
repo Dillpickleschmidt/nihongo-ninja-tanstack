@@ -1,5 +1,5 @@
 import { For, Show } from 'solid-js'
-import { Loader2 } from 'lucide-solid'
+import { LoaderCircle } from 'lucide-solid'
 import type { VocabularyItem } from 'convex/validators'
 import { VocabularyCard } from '../VocabularyCard'
 
@@ -13,7 +13,7 @@ export function VocabTab(props: VocabTabProps) {
       when={props.vocabulary !== undefined}
       fallback={
         <div class="flex items-center justify-center py-12">
-          <Loader2 class="text-muted-foreground/50 h-8 w-8 animate-spin" />
+          <LoaderCircle class="text-muted-foreground/50 h-8 w-8 animate-spin" />
         </div>
       }
     >

@@ -15,7 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { MoreHorizontal } from 'lucide-solid'
+import { Ellipsis } from 'lucide-solid'
 import { useDeckCreationStore } from '../context/DeckCreationStoreContext'
 
 interface DeckHeaderProps {
@@ -76,7 +76,7 @@ export function DeckHeader(props: DeckHeaderProps) {
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Button variant="outline" size="sm" class="cursor-pointer">
-                <MoreHorizontal class="mr-2 size-4" />
+                <Ellipsis class="mr-2 size-4" />
                 More
               </Button>
             </DropdownMenuTrigger>

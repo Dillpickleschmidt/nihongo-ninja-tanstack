@@ -1,5 +1,5 @@
 import { For, Show } from 'solid-js'
-import { Loader2 } from 'lucide-solid'
+import { LoaderCircle } from 'lucide-solid'
 import { Chip } from './Chip'
 import { DueBadge } from './DueBadge'
 import type { KanjiEntry } from 'convex/validators'
@@ -20,7 +20,7 @@ export function KanjiTab(props: KanjiTabProps) {
         when={props.kanjiEntries !== undefined}
         fallback={
           <div class="flex items-center justify-center py-8">
-            <Loader2 class="text-muted-foreground/50 h-8 w-8 animate-spin" />
+            <LoaderCircle class="text-muted-foreground/50 h-8 w-8 animate-spin" />
           </div>
         }
       >

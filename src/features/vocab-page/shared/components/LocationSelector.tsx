@@ -7,7 +7,7 @@ import {
   PopoverContent,
 } from '@/components/ui/popover'
 import { TreeView, TreeNode } from '@/components/ui/tree-view'
-import { Folder, Home, ChevronDown } from 'lucide-solid'
+import { Folder, House, ChevronDown } from 'lucide-solid'
 
 interface LocationSelectorProps {
   selectedFolderId: string
@@ -119,7 +119,7 @@ export function LocationSelector(props: LocationSelectorProps) {
             </>
           }
         >
-          <Home class="mr-2 h-4 w-4" />
+          <House class="mr-2 h-4 w-4" />
           Root
         </Show>
         <ChevronDown class="ml-auto h-4 w-4" />
@@ -143,7 +143,7 @@ export function LocationSelector(props: LocationSelectorProps) {
             isSelectable={isSelectableNode}
             renderIcon={(node) =>
               node.id === 'root' ? (
-                <Home class="mr-2 h-4 w-4 shrink-0" />
+                <House class="mr-2 h-4 w-4 shrink-0" />
               ) : (
                 <Folder class="mr-2 h-4 w-4 shrink-0" />
               )

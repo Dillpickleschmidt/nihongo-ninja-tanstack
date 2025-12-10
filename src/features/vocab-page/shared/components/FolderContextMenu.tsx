@@ -13,7 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Edit3, Trash2 } from 'lucide-solid'
+import { PencilLine, Trash2 } from 'lucide-solid'
 import { useFolderTree } from '../../hooks/useFolderTree'
 import { DeleteConfirmation } from './DeleteConfirmation'
 import { useVocab, type Folder } from '../../context/VocabContext'
@@ -66,7 +66,7 @@ export function FolderContextMenu(props: FolderContextMenuProps) {
                     ctx.setEditingFolder(folderData())
                   }}
                 >
-                  <Edit3 class="mr-2 h-3 w-3" />
+                  <PencilLine class="mr-2 h-3 w-3" />
                   <span>Edit folder</span>
                 </ContextMenuItem>
 

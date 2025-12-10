@@ -1,7 +1,7 @@
 // src/features/youtube/components/YouTubeIframe.tsx
 import { createSignal, onMount, createEffect, onCleanup } from "solid-js"
 import { loadYouTubeApi } from "../util/youtubeAPI"
-import { Loader2 } from "lucide-solid"
+import { LoaderCircle } from "lucide-solid"
 
 // Global flag to track if we've already focused a YouTube player (resets on navigation)
 let hasAutoFocusedPlayer = false
@@ -34,7 +34,7 @@ export function YouTubeIframe(props: YouTubeIframeProps) {
   onMount(async () => {
     await loadYouTubeApi()
 
-    const newPlayer = new YT.Player(iframeRef, {
+    new YT.Player(iframeRef, {
       videoId: props.videoId,
       host: "https://www.youtube-nocookie.com",
       playerVars: {
@@ -113,7 +113,7 @@ export function YouTubeIframe(props: YouTubeIframeProps) {
       {isLoading() && (
         <div class="bg-background absolute inset-0 grid place-items-center">
           <div class="flex min-h-48 items-center justify-center">
-            <Loader2 class="h-20 w-20 animate-spin text-neutral-300" />
+            <LoaderCircle class="h-20 w-20 animate-spin text-neutral-300" />
           </div>
         </div>
       )}

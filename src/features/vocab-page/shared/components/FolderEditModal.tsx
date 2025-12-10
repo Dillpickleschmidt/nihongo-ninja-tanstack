@@ -12,7 +12,7 @@ import {
   TextFieldInput,
   TextFieldLabel,
 } from '@/components/ui/text-field'
-import { Trash2, Edit, Check, X } from 'lucide-solid'
+import { Trash2, SquarePen, Check, X } from 'lucide-solid'
 import {
   FolderNameSchema,
   validateFolderNameUnique,
@@ -246,7 +246,7 @@ export function FolderEditModal() {
                         setTimeout(() => nameInputRef?.focus(), 0)
                       }}
                     >
-                      <Edit class="h-3 w-3" />
+                      <SquarePen class="h-3 w-3" />
                     </Button>
                   </Show>
                   <Show when={isEditingName()}>

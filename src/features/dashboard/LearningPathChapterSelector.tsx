@@ -43,9 +43,6 @@ export function LearningPathChapterSelector(
 
   const displayedPathId = () => selectedPathId() || props.activePathId
 
-  const displayedPath = () =>
-    props.learningPaths.find((p) => p.id === displayedPathId())
-
   // Fetch chapters for the displayed path (works for both static and user paths)
   const chaptersQuery = useConvexQuery(
     api.api.learning_paths.getPathChapters,
