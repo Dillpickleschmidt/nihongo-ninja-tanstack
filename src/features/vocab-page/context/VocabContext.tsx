@@ -17,6 +17,7 @@ import {
   type GuestFolder,
   type GuestDeck,
 } from '../storage/sessionStorage'
+import { getFolderPath } from '../utils/hierarchy'
 
 // Unified types for the context
 export type Source = 'user' | 'built-in'
@@ -71,6 +72,12 @@ interface VocabContextValue {
     }
   ) => Promise<void>
   deleteDeck: (deckId: string) => Promise<void>
+
+  // Sidebar expanded state
+  expandedSections: () => Set<string>
+  toggleSection: (id: string) => void
+  initializeExpandedFromDeck: (deckId: string | null) => void
+  initializeExpandedFromFolder: (folderId: string | null) => void
 }
 
 const VocabContext = createContext<VocabContextValue>()
@@ -141,6 +148,46 @@ export function VocabProvider(props: ParentProps) {
   // Modal state for editing
   const [editingFolder, setEditingFolder] = createSignal<Folder | null>(null)
   const [copyingDeck, setCopyingDeck] = createSignal<Deck | null>(null)
+
+  // Sidebar expanded state
+  const [expandedSections, setExpandedSections] = createSignal<Set<string>>(
+    new Set()
+  )
+
+  const toggleSection = (id: string) => {
+    setExpandedSections((prev) => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+      } else {
+        newSet.add(id)
+      }
+      return newSet
+    })
+  }
+
+  const initializeExpandedFromDeck = (deckId: string | null) => {
+    if (!deckId) {
+      setExpandedSections(new Set<string>())
+      return
+    }
+    const deck = decks().find((d) => d.id === deckId)
+    if (!deck?.folderId) {
+      setExpandedSections(new Set<string>())
+      return
+    }
+    const path = getFolderPath(deck.folderId, folders())
+    setExpandedSections(new Set(path.map((f) => f.id)))
+  }
+
+  const initializeExpandedFromFolder = (folderId: string | null) => {
+    if (!folderId) {
+      setExpandedSections(new Set<string>())
+      return
+    }
+    const path = getFolderPath(folderId, folders())
+    setExpandedSections(new Set(path.map((f) => f.id)))
+  }
 
   // Convex mutations
   const createFolderMutation = useMutation(api.api.folders.createFolder)
@@ -347,6 +394,11 @@ export function VocabProvider(props: ParentProps) {
         setEditingFolder,
         copyingDeck,
         setCopyingDeck,
+        // Sidebar expanded state
+        expandedSections,
+        toggleSection,
+        initializeExpandedFromDeck,
+        initializeExpandedFromFolder,
       }}
     >
       {props.children}

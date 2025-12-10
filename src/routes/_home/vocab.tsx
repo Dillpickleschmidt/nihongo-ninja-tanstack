@@ -42,7 +42,7 @@ function VocabLayoutComponent() {
         </div>
 
         {/* Right: Panel with user's decks */}
-        <div class="sticky top-17 hidden md:block md:h-[calc(100vh-69px)]">
+        <div class="sticky top-17 hidden border-border/50 bg-card/30 border-l py-4 pl-4 md:block md:h-[calc(100vh-69px)]">
           <VocabRightPanel />
         </div>
       </div>

@@ -1,144 +1,64 @@
-import { Show, For } from 'solid-js'
-import { Link, useLocation } from '@tanstack/solid-router'
-import { useVocab, type Deck } from '../context/VocabContext'
-import { buildDeckUrlPath, resolveDeckFromPath } from '../utils/navigation'
-import { cn } from '@/utils'
-
-function DeckItem(props: {
-  deck: Deck
-  to: string
-  isSelected: boolean
-}) {
-  return (
-    <Link
-      to={props.to}
-      class={cn(
-        'block w-full rounded-lg px-3 py-2 text-left transition-colors',
-        props.isSelected
-          ? 'bg-primary/20 text-primary'
-          : 'hover:bg-neutral-800 text-neutral-300'
-      )}
-    >
-      <div class="text-sm font-medium">{props.deck.deckName}</div>
-      <Show when={props.deck.deckDescription}>
-        <div class="text-xs text-neutral-500 truncate">
-          {props.deck.deckDescription}
-        </div>
-      </Show>
-    </Link>
-  )
-}
-
-function DecksSkeleton() {
-  return (
-    <div class="space-y-2 mt-4">
-      <For each={[1, 2, 3]}>
-        {() => (
-          <div class="animate-pulse">
-            <div class="h-10 bg-neutral-800 rounded-lg" />
-          </div>
-        )}
-      </For>
-    </div>
-  )
-}
-
-function EmptyDecksMessage() {
-  return (
-    <div class="mt-8 text-center">
-      <p class="text-neutral-500 text-sm">No decks yet</p>
-      <p class="text-neutral-600 text-xs mt-1">
-        Create a deck to get started
-      </p>
-    </div>
-  )
-}
+import { Show, createEffect, createMemo } from 'solid-js'
+import { useLocation } from '@tanstack/solid-router'
+import { useVocab } from '../context/VocabContext'
+import { resolveDeckFromPath, resolveFolderFromPath } from '../utils/navigation'
+import { SidebarUserInfoView } from './vocab-right-panel/components/SidebarUserInfoView'
+import { SidebarHierarchyView } from './vocab-right-panel/components/SidebarHierarchyView'
 
 export function VocabRightPanel() {
-  const { folders, decks, isLoading } = useVocab()
   const location = useLocation()
+  const ctx = useVocab()
 
-  // Derive selected deck from URL
-  const selectedDeckId = () => {
+  // Show full sidebar on all routes except /vocab
+  const showFullSidebar = () => location().pathname !== '/vocab'
+
+  // Single memo that resolves current target from path
+  const currentTarget = createMemo(() => {
     const path = location().pathname
+
+    // Skip routes that don't need resolution
+    if (path === '/vocab' || path === '/vocab/create' || path === '/vocab/browse') {
+      return null
+    }
+
+    // Edit route
+    const editMatch = path.match(/^\/vocab\/deck\/([^/]+)\/edit$/)
+    if (editMatch) return { type: 'deck' as const, id: editMatch[1] }
+
+    // Resolve from path segments
     const segments = path.replace('/vocab/', '').split('/').filter(Boolean)
-    const deck = resolveDeckFromPath(segments, decks())
-    return deck?.id ?? null
+    if (segments.length === 0) return null
+
+    const deck = resolveDeckFromPath(segments, ctx.decks())
+    if (deck) return { type: 'deck' as const, id: deck.id }
+
+    const folder = resolveFolderFromPath(segments, ctx.folders())
+    if (folder) return { type: 'folder' as const, id: folder.id }
+
+    return null
+  })
+
+  // Derive selectedDeckId from currentTarget
+  const selectedDeckId = () => {
+    const target = currentTarget()
+    return target?.type === 'deck' ? target.id : null
   }
 
-  // Group decks by folder
-  const decksByFolder = () => {
-    const folderMap = new Map<string | undefined, Deck[]>()
+  // Auto-expand based on current location
+  createEffect(() => {
+    const target = currentTarget()
+    if (!target) return
 
-    // Initialize with root (undefined folderId)
-    folderMap.set(undefined, [])
-
-    // Initialize folder groups
-    for (const folder of folders()) {
-      folderMap.set(folder.id, [])
+    if (target.type === 'deck') {
+      ctx.initializeExpandedFromDeck(target.id)
+    } else {
+      ctx.initializeExpandedFromFolder(target.id)
     }
-
-    // Assign decks to folders
-    for (const deck of decks()) {
-      const folderId = deck.folderId
-      const existing = folderMap.get(folderId) ?? []
-      folderMap.set(folderId, [...existing, deck])
-    }
-
-    return folderMap
-  }
+  })
 
   return (
-    <div class="h-full overflow-y-auto p-4 pb-16">
-      <h2 class="text-lg font-semibold text-neutral-300">Your Decks</h2>
-
-      <Show when={!isLoading()} fallback={<DecksSkeleton />}>
-        <Show when={decks().length > 0} fallback={<EmptyDecksMessage />}>
-          <div class="mt-4 space-y-4">
-            {/* Root level decks (no folder) */}
-            <Show when={(decksByFolder().get(undefined) ?? []).length > 0}>
-              <div class="space-y-1">
-                <For each={decksByFolder().get(undefined)}>
-                  {(deck) => (
-                    <DeckItem
-                      deck={deck}
-                      to={`/vocab/${buildDeckUrlPath(deck, folders())}`}
-                      isSelected={selectedDeckId() === deck.id}
-                    />
-                  )}
-                </For>
-              </div>
-            </Show>
-
-            {/* Folders with their decks */}
-            <For each={folders()}>
-              {(folder) => {
-                const folderDecks = () => decksByFolder().get(folder.id) ?? []
-                return (
-                  <Show when={folderDecks().length > 0}>
-                    <div>
-                      <div class="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1 px-1">
-                        {folder.folderName}
-                      </div>
-                      <div class="space-y-1">
-                        <For each={folderDecks()}>
-                          {(deck) => (
-                            <DeckItem
-                              deck={deck}
-                              to={`/vocab/${buildDeckUrlPath(deck, folders())}`}
-                              isSelected={selectedDeckId() === deck.id}
-                            />
-                          )}
-                        </For>
-                      </div>
-                    </div>
-                  </Show>
-                )
-              }}
-            </For>
-          </div>
-        </Show>
-      </Show>
-    </div>
+    <Show when={showFullSidebar()} fallback={<SidebarUserInfoView />}>
+      <SidebarHierarchyView selectedDeckId={selectedDeckId()} />
+    </Show>
   )
 }
