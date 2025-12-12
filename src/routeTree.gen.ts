@@ -23,6 +23,7 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as HomeVocabCreateRouteImport } from './routes/_home/vocab/create'
 import { Route as HomeVocabBrowseRouteImport } from './routes/_home/vocab/browse'
 import { Route as HomeVocabSplatRouteImport } from './routes/_home/vocab/$'
+import { Route as HomeVocabPracticeSplatRouteImport } from './routes/_home/vocab/practice/$'
 import { Route as HomeLessonsChapter3WordOrderRouteImport } from './routes/_home/lessons/_chapter-3/word-order'
 import { Route as HomeLessonsChapter3VerbConjMasuRouteImport } from './routes/_home/lessons/_chapter-3/verb-conj-masu'
 import { Route as HomeLessonsChapter3PoliteInvitationsRouteImport } from './routes/_home/lessons/_chapter-3/polite-invitations'
@@ -128,6 +129,11 @@ const HomeVocabBrowseRoute = HomeVocabBrowseRouteImport.update({
 const HomeVocabSplatRoute = HomeVocabSplatRouteImport.update({
   id: '/$',
   path: '/$',
+  getParentRoute: () => HomeVocabRoute,
+} as any)
+const HomeVocabPracticeSplatRoute = HomeVocabPracticeSplatRouteImport.update({
+  id: '/practice/$',
+  path: '/practice/$',
   getParentRoute: () => HomeVocabRoute,
 } as any)
 const HomeLessonsChapter3WordOrderRoute =
@@ -401,6 +407,7 @@ export interface FileRoutesByFullPath {
   '/lessons/polite-invitations': typeof HomeLessonsChapter3PoliteInvitationsRoute
   '/lessons/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof HomeLessonsChapter3WordOrderRoute
+  '/vocab/practice/$': typeof HomeVocabPracticeSplatRoute
   '/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
 export interface FileRoutesByTo {
@@ -452,6 +459,7 @@ export interface FileRoutesByTo {
   '/lessons/polite-invitations': typeof HomeLessonsChapter3PoliteInvitationsRoute
   '/lessons/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof HomeLessonsChapter3WordOrderRoute
+  '/vocab/practice/$': typeof HomeVocabPracticeSplatRoute
   '/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
 export interface FileRoutesById {
@@ -506,6 +514,7 @@ export interface FileRoutesById {
   '/_home/lessons/_chapter-3/polite-invitations': typeof HomeLessonsChapter3PoliteInvitationsRoute
   '/_home/lessons/_chapter-3/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/_home/lessons/_chapter-3/word-order': typeof HomeLessonsChapter3WordOrderRoute
+  '/_home/vocab/practice/$': typeof HomeVocabPracticeSplatRoute
   '/_home/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
 export interface FileRouteTypes {
@@ -560,6 +569,7 @@ export interface FileRouteTypes {
     | '/lessons/polite-invitations'
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
+    | '/vocab/practice/$'
     | '/vocab/deck/$deckId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -611,6 +621,7 @@ export interface FileRouteTypes {
     | '/lessons/polite-invitations'
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
+    | '/vocab/practice/$'
     | '/vocab/deck/$deckId/edit'
   id:
     | '__root__'
@@ -664,6 +675,7 @@ export interface FileRouteTypes {
     | '/_home/lessons/_chapter-3/polite-invitations'
     | '/_home/lessons/_chapter-3/verb-conj-masu'
     | '/_home/lessons/_chapter-3/word-order'
+    | '/_home/vocab/practice/$'
     | '/_home/vocab/deck/$deckId/edit'
   fileRoutesById: FileRoutesById
 }
@@ -773,6 +785,13 @@ declare module '@tanstack/solid-router' {
       path: '/$'
       fullPath: '/vocab/$'
       preLoaderRoute: typeof HomeVocabSplatRouteImport
+      parentRoute: typeof HomeVocabRoute
+    }
+    '/_home/vocab/practice/$': {
+      id: '/_home/vocab/practice/$'
+      path: '/practice/$'
+      fullPath: '/vocab/practice/$'
+      preLoaderRoute: typeof HomeVocabPracticeSplatRouteImport
       parentRoute: typeof HomeVocabRoute
     }
     '/_home/lessons/_chapter-3/word-order': {
@@ -1140,6 +1159,7 @@ interface HomeVocabRouteChildren {
   HomeVocabBrowseRoute: typeof HomeVocabBrowseRoute
   HomeVocabCreateRoute: typeof HomeVocabCreateRoute
   HomeVocabIndexRoute: typeof HomeVocabIndexRoute
+  HomeVocabPracticeSplatRoute: typeof HomeVocabPracticeSplatRoute
   HomeVocabDeckDeckIdEditRoute: typeof HomeVocabDeckDeckIdEditRoute
 }
 
@@ -1148,6 +1168,7 @@ const HomeVocabRouteChildren: HomeVocabRouteChildren = {
   HomeVocabBrowseRoute: HomeVocabBrowseRoute,
   HomeVocabCreateRoute: HomeVocabCreateRoute,
   HomeVocabIndexRoute: HomeVocabIndexRoute,
+  HomeVocabPracticeSplatRoute: HomeVocabPracticeSplatRoute,
   HomeVocabDeckDeckIdEditRoute: HomeVocabDeckDeckIdEditRoute,
 }
 
