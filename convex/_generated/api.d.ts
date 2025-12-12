@@ -13,6 +13,7 @@ import type * as api_folders from "../api/folders.js";
 import type * as api_hierarchy from "../api/hierarchy.js";
 import type * as api_learning_paths from "../api/learning_paths.js";
 import type * as api_profiles from "../api/profiles.js";
+import type * as api_sharing from "../api/sharing.js";
 import type * as api_vocabulary from "../api/vocabulary.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
@@ -22,6 +23,7 @@ import type * as model_hierarchy from "../model/hierarchy.js";
 import type * as model_kanji from "../model/kanji.js";
 import type * as model_learning_paths from "../model/learning_paths.js";
 import type * as model_profiles from "../model/profiles.js";
+import type * as model_sharing from "../model/sharing.js";
 import type * as model_vocabulary from "../model/vocabulary.js";
 import type * as validators from "../validators.js";
 
@@ -37,6 +39,7 @@ declare const fullApi: ApiFromModules<{
   "api/hierarchy": typeof api_hierarchy;
   "api/learning_paths": typeof api_learning_paths;
   "api/profiles": typeof api_profiles;
+  "api/sharing": typeof api_sharing;
   "api/vocabulary": typeof api_vocabulary;
   auth: typeof auth;
   http: typeof http;
@@ -46,6 +49,7 @@ declare const fullApi: ApiFromModules<{
   "model/kanji": typeof model_kanji;
   "model/learning_paths": typeof model_learning_paths;
   "model/profiles": typeof model_profiles;
+  "model/sharing": typeof model_sharing;
   "model/vocabulary": typeof model_vocabulary;
   validators: typeof validators;
 }>;

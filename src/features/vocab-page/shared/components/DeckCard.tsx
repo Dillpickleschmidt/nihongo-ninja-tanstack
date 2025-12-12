@@ -7,8 +7,12 @@ import {
   Trash2,
   Folder,
   House,
+  Share,
 } from 'lucide-solid'
 import { Link } from '@tanstack/solid-router'
+import { useMutation } from 'convex-solidjs'
+import { useConvexQuery } from '@/lib/convex-query'
+import { api } from 'convex/_generated/api'
 import { Button } from '@/components/ui/button'
 import {
   ContextMenu,
@@ -29,6 +33,8 @@ import { getFolderPath } from '../../utils/hierarchy'
 import { buildDeckUrlPath } from '../../utils/navigation'
 import { useVocab, type Deck } from '../../context/VocabContext'
 import { useNavigate } from '@tanstack/solid-router'
+import { getUser } from '@/lib/auth'
+import type { Id } from 'convex/_generated/dataModel'
 
 interface DeckCardProps {
   deck: Deck
@@ -39,11 +45,25 @@ interface DeckCardProps {
 export function DeckCard(props: DeckCardProps) {
   const ctx = useVocab()
   const navigate = useNavigate()
+  const user = getUser()
   const deckPath = () => `/vocab/${buildDeckUrlPath(props.deck, ctx.folders())}`
   const [isHovered, setIsHovered] = createSignal(false)
   const [expandedFolderIds, setExpandedFolderIds] = createSignal<Set<string>>(
     new Set()
   )
+  const [isSharing, setIsSharing] = createSignal(false)
+
+  // Check if deck is shared (only for user decks)
+  const isSharedQuery = useConvexQuery(
+    api.api.sharing.isShared,
+    () => ({ deckId: props.deck.id as Id<'userDecks'> }),
+    () => ({ enabled: props.deck.source === 'user' && !!user() })
+  )
+  const isShared = () => isSharedQuery.data() ?? false
+
+  // Sharing mutations
+  const shareDeckMutation = useMutation(api.api.sharing.shareDeck)
+  const unshareDeckMutation = useMutation(api.api.sharing.unshareDeck)
 
   const { folderTreeNodes } = useFolderTree({
     folders: ctx.folders(),
@@ -102,6 +122,33 @@ export function DeckCard(props: DeckCardProps) {
   }
 
   const canEdit = () => props.deck.source === 'user'
+
+  const handleShare = async () => {
+    if (!canEdit()) return
+    setIsSharing(true)
+    try {
+      if (isShared()) {
+        if (!confirm('Are you sure you want to unshare this deck?')) {
+          setIsSharing(false)
+          return
+        }
+        await unshareDeckMutation.mutate({
+          deckId: props.deck.id as Id<'userDecks'>,
+        })
+      } else {
+        await shareDeckMutation.mutate({
+          deckId: props.deck.id as Id<'userDecks'>,
+        })
+        // Navigate to browse page after sharing
+        navigate({ to: '/vocab/browse' })
+      }
+    } catch (error) {
+      console.error('Failed to share/unshare deck:', error)
+      alert('Failed to update sharing status. Please try again.')
+    } finally {
+      setIsSharing(false)
+    }
+  }
 
   return (
     <ContextMenu>
@@ -237,6 +284,23 @@ export function DeckCard(props: DeckCardProps) {
               </ContextMenuSubContent>
             </ContextMenuPortal>
           </ContextMenuSub>
+        </Show>
+
+        {/* Share/Unshare (user decks only) */}
+        <Show when={canEdit()}>
+          <ContextMenuItem
+            disabled={isSharing()}
+            onClick={handleShare}
+            class={isShared() ? 'text-amber-600 dark:text-amber-400' : ''}
+          >
+            <Show when={isSharing()}>
+              <div class="mr-2 h-3 w-3 animate-spin rounded-full border border-current border-t-transparent" />
+            </Show>
+            <Show when={!isSharing()}>
+              <Share class="mr-2 h-3 w-3" />
+            </Show>
+            {isShared() ? 'Unshare' : 'Share'}
+          </ContextMenuItem>
         </Show>
 
         {/* Copy (always available) */}

@@ -1,4 +1,6 @@
 import { createSignal, createMemo, createEffect, on, Show } from 'solid-js'
+import { useMutation } from 'convex-solidjs'
+import { api } from 'convex/_generated/api'
 import {
   Dialog,
   DialogContent,
@@ -21,9 +23,11 @@ import { DECK_NAME_MAX_LENGTH, DESCRIPTION_MAX_LENGTH } from '../../validation/c
 import { useFolderTree } from '../../hooks/useFolderTree'
 import { LocationSelector } from './LocationSelector'
 import { useVocab } from '../../context/VocabContext'
+import type { Id } from 'convex/_generated/dataModel'
 
 export function DeckCopyModal() {
   const ctx = useVocab()
+  const copyDeckMutation = useMutation(api.api.decks.copyDeck)
 
   // Form state
   const [name, setName] = createSignal('')
@@ -118,15 +122,22 @@ export function DeckCopyModal() {
 
     if (!canSave()) return
 
+    const d = deck()
+    if (!d) return
+
     setIsSaving(true)
 
     try {
-      const folderId =
-        selectedFolderId() === 'root' ? undefined : selectedFolderId()
-
-      // TODO: When copying a built-in deck, we need to also copy the vocabulary items
-      // For now, just create an empty deck with the same name
-      await ctx.createDeck(name().trim(), description().trim() || undefined, folderId)
+      await copyDeckMutation.mutate({
+        deckId: d.id,
+        deckSource: d.source,
+        deckName: name().trim(),
+        deckDescription: description().trim() || undefined,
+        folderId:
+          selectedFolderId() === 'root'
+            ? undefined
+            : (selectedFolderId() as Id<'userDeckFolders'>),
+      })
 
       handleClose()
     } catch (error) {
@@ -196,15 +207,13 @@ export function DeckCopyModal() {
           <div class="space-y-3">
             <label class="text-foreground text-sm font-medium">Location</label>
 
-            <div class="bg-muted/20 border-card-foreground/70 space-y-3 rounded-lg border p-3 backdrop-blur-sm">
-              <LocationSelector
-                selectedFolderId={selectedFolderId()}
-                selectedFolderName={selectedFolderName()}
-                folderTreeNodes={folderTreeNodes()}
-                editingType="deck"
-                onSelect={setSelectedFolderId}
-              />
-            </div>
+            <LocationSelector
+              selectedFolderId={selectedFolderId()}
+              selectedFolderName={selectedFolderName()}
+              folderTreeNodes={folderTreeNodes()}
+              editingType="deck"
+              onSelect={setSelectedFolderId}
+            />
           </div>
 
           {/* Info about copying */}

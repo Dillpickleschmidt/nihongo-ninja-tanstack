@@ -7,6 +7,8 @@ import { Sidebar } from "@/features/sidebar/Sidebar"
 import { CenterNavBar } from "@/features/vocab-page/layout/CenterNavBar"
 import { VocabProvider } from "@/features/vocab-page/context/VocabContext"
 import { VocabRightPanel } from "@/features/vocab-page/layout/VocabRightPanel"
+import { FolderEditModal } from "@/features/vocab-page/shared/components/FolderEditModal"
+import { DeckCopyModal } from "@/features/vocab-page/shared/components/DeckCopyModal"
 
 export const Route = createFileRoute("/_home/vocab")({
   component: VocabLayoutComponent,
@@ -46,6 +48,10 @@ function VocabLayoutComponent() {
           <VocabRightPanel />
         </div>
       </div>
+
+      {/* Global Modals */}
+      <FolderEditModal />
+      <DeckCopyModal />
     </VocabProvider>
   )
 }

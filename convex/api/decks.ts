@@ -126,3 +126,29 @@ export const getDeckWithVocab = query({
     return { deck, vocabItems }
   },
 })
+
+/**
+ * Copy a deck with all vocabulary items
+ */
+export const copyDeck = mutation({
+  args: {
+    deckId: v.string(),
+    deckSource: v.union(v.literal('user'), v.literal('built-in')),
+    deckName: v.string(),
+    deckDescription: v.optional(v.string()),
+    folderId: v.optional(v.id('userDeckFolders')),
+  },
+  handler: async (ctx, args) => {
+    await Decks.checkDeckNameUnique(ctx, args.deckName)
+    const vocabItems = await Vocabulary.fetchDeckVocab(ctx, args.deckId, args.deckSource)
+    const newDeckId = await Decks.createDeck(ctx, {
+      deckName: args.deckName,
+      deckDescription: args.deckDescription,
+      folderId: args.folderId,
+      source: 'user',
+      allowedPracticeModes: ['meanings', 'spellings'],
+    })
+    await Vocabulary.createDeckVocabItems(ctx, newDeckId, vocabItems)
+    return newDeckId
+  },
+})

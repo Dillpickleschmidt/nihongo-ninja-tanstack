@@ -1,6 +1,7 @@
 import { MutationCtx, QueryCtx } from '../_generated/server'
 import { Id } from '../_generated/dataModel'
 import { deleteDeckVocabItems } from './vocabulary'
+import { deleteShareForDeck } from './sharing'
 import { chapters } from '../../src/data/chapters'
 import { dynamic_modules } from '../../src/data/dynamic_modules'
 
@@ -183,5 +184,6 @@ export async function deleteDeck(ctx: MutationCtx, deckId: Id<'userDecks'>) {
   if (!identity) throw new Error('Unauthenticated')
 
   await deleteDeckVocabItems(ctx, deckId)
+  await deleteShareForDeck(ctx, deckId)
   await ctx.db.delete(deckId)
 }

@@ -1,7 +1,5 @@
 import { Show } from 'solid-js'
 import { FolderBrowserGrid } from './FolderBrowserGrid'
-import { FolderEditModal } from '../../../shared/components/FolderEditModal'
-import { DeckCopyModal } from '../../../shared/components/DeckCopyModal'
 import { useVocab } from '../../../context/VocabContext'
 
 /**
@@ -32,10 +30,6 @@ export function VocabDashboard() {
           decks={ctx.decks()}
         />
       </Show>
-
-      {/* Modals */}
-      <FolderEditModal />
-      <DeckCopyModal />
     </div>
   )
 }
