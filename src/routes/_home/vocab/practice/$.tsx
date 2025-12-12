@@ -1,43 +1,63 @@
 import { createFileRoute } from '@tanstack/solid-router'
-import { createResource, createEffect, Show } from 'solid-js'
-import { convexQuery, useConvexQuery } from '@/lib/convex-query'
+import type { QueryClient } from '@tanstack/solid-query'
+import { z } from 'zod'
+import { createSignal, createResource, createEffect, Show } from 'solid-js'
+import { convexQuery } from '@/lib/convex-query'
 import { api } from 'convex/_generated/api'
 import { useVocab } from '@/features/vocab-page/context/VocabContext'
 import { resolveDeckFromPath } from '@/features/vocab-page/utils/navigation'
+import { usePracticeManager } from '@/features/vocab-practice/logic/usePracticeManager'
+import {
+  initializePracticeSession,
+  type PracticeItemData,
+} from '@/features/vocab-practice/logic/data-initialization'
 import type { UnifiedDeck } from 'convex/model/decks'
+import type { DeckHierarchyResult } from 'convex/model/hierarchy'
+import { toTsFsrs, toConvexFsrs, type FSRSCardData } from 'convex/model/fsrs'
+import type { PracticeMode } from 'convex/validators'
+import type { Grade } from 'ts-fsrs'
+import { useMutation } from 'convex-solidjs'
+import { VocabPractice } from '@/features/vocab-practice/VocabPractice'
 
-type LoaderResult =
+type DeckLookupResult =
   | { type: 'deck'; deck: UnifiedDeck }
   | { type: 'not-found'; pathSegments: string[] }
 
+type PracticeData = {
+  hierarchy: DeckHierarchyResult
+  moduleFsrs: FSRSCardData[]
+  reviewFsrs: FSRSCardData[]
+}
+
+const practiceSearchSchema = z.object({
+  mode: z.enum(['meanings', 'spellings']).catch('meanings'),
+})
+
 export const Route = createFileRoute('/_home/vocab/practice/$')({
-  loader: ({ context, params }) => {
-    const splat = params._splat
-    const pathSegments = splat ? splat.split('/').filter(Boolean) : []
+  validateSearch: (search) => practiceSearchSchema.parse(search),
+  loaderDeps: ({ search }) => ({ mode: search.mode }),
+  loader: ({ context, params, deps }) => {
+    const pathSegments = parsePathSegments(params._splat)
+    const mode = deps.mode
 
     const foldersAndDecksPromise = context.queryClient.fetchQuery(
       convexQuery(api.api.folders.getAllFoldersAndDecks, {})
     )
-
-    const resolvedPromise: Promise<LoaderResult> = foldersAndDecksPromise.then(
-      (foldersAndDecks) => {
-        const deck = resolveDeckFromPath(pathSegments, foldersAndDecks.decks)
-
-        if (deck) {
-          context.queryClient.prefetchQuery(
-            convexQuery(api.api.hierarchy.getVocabHierarchyByDeck, {
-              deckId: deck.id,
-              deckSource: deck.source,
-            })
-          )
-          return { type: 'deck' as const, deck }
-        }
-
-        return { type: 'not-found' as const, pathSegments }
-      }
+    const dueCardsPromise = context.queryClient.fetchQuery(
+      convexQuery(api.api.fsrs.getDueFSRSCards, { mode, limit: 50 })
     )
 
-    return { resolvedPromise, pathSegments }
+    const deckLookupPromise = foldersAndDecksPromise.then((data) =>
+      lookupDeck(pathSegments, data.decks)
+    )
+
+    const practiceDataPromise = deckLookupPromise.then((result) =>
+      result.type === 'deck'
+        ? fetchPracticeData(context.queryClient, result.deck, mode, dueCardsPromise)
+        : null
+    )
+
+    return { deckLookupPromise, practiceDataPromise, pathSegments }
   },
   component: PracticeCatchAll,
 })
@@ -45,54 +65,167 @@ export const Route = createFileRoute('/_home/vocab/practice/$')({
 function PracticeCatchAll() {
   const loaderData = Route.useLoaderData()
   const { decks } = useVocab()
+  const search = Route.useSearch()
+  const mode = () => search().mode
 
-  const [resolved] = createResource(() => loaderData().resolvedPromise)
+  const [deckLookup] = createResource(() => loaderData().deckLookupPromise)
+  const [practiceData] = createResource(() => loaderData().practiceDataPromise)
+
+  const [includeReviews] = createSignal(true)
 
   const deck = () => {
-    const data = resolved()
-    if (data?.type === 'deck') return data.deck
-
-    // Guest fallback: check context data (includes sessionStorage guest data)
-    if (data?.type === 'not-found') {
-      return resolveDeckFromPath(data.pathSegments, decks())
+    const result = deckLookup()
+    if (result?.type === 'deck') return result.deck
+    if (result?.type === 'not-found') {
+      return resolveDeckFromPath(result.pathSegments, decks())
     }
-
     return null
   }
 
-  const hierarchyQuery = useConvexQuery(
-    api.api.hierarchy.getVocabHierarchyByDeck,
-    () => ({ deckId: deck()?.id ?? '', deckSource: deck()?.source ?? 'user' }),
-    () => ({ enabled: !!deck() })
-  )
+  const upsertFSRSCardMutation = useMutation(api.api.fsrs.upsertFSRSCard)
 
-  // Log data when available
-  createEffect(() => {
-    const d = deck()
-    const h = hierarchyQuery.data()
-    if (d && h) {
-      console.log('Practice deck:', d)
-      console.log('Hierarchy data:', h)
+  const practiceManager = usePracticeManager(async (card) => {
+    const itemKey = card.key.split(':')[1]
+    const convexData = toConvexFsrs({
+      practiceItemKey: itemKey,
+      fsrsCard: card.fsrs.card,
+      fsrsLogs: card.fsrs.logs || [],
+      mode: card.practiceMode,
+      type: card.practiceItemType,
+    })
+    try {
+      await upsertFSRSCardMutation.mutate(convexData)
+    } catch (error) {
+      console.error('Failed to save FSRS progress:', error)
     }
+  })
+
+  const [sessionInitialized, setSessionInitialized] = createSignal(false)
+
+  createEffect(() => {
+    const data = practiceData()
+    if (!data || sessionInitialized()) return
+
+    const sessionState = buildSessionState(data, mode(), includeReviews())
+    practiceManager.initializeManager(sessionState)
+    setSessionInitialized(true)
   })
 
   return (
     <Show
       when={deck()}
       fallback={
-        <div class="flex flex-col items-center justify-center py-12">
-          <p class="text-muted-foreground text-sm">
-            {resolved() ? 'Deck not found' : 'Loading...'}
-          </p>
+        <div>
+          <p>{deckLookup() ? 'Deck not found' : 'Loading...'}</p>
         </div>
       }
     >
       {(d) => (
-        <div class="p-6">
-          <h1 class="text-xl font-bold">Practice: {d().deckName}</h1>
-          <p class="text-muted-foreground">Check console for data</p>
-        </div>
+        <Show
+          when={sessionInitialized()}
+          fallback={<div>Loading practice session...</div>}
+        >
+          <VocabPractice
+            practiceManager={practiceManager}
+            deckName={d().deckName}
+            mode={mode()}
+            onAnswer={(rating: Grade) => practiceManager.answerCard(rating)}
+            onIntroductionComplete={() => practiceManager.processIntroduction()}
+          />
+        </Show>
       )}
     </Show>
+  )
+}
+
+function parsePathSegments(splat: string | undefined): string[] {
+  return splat ? splat.split('/').filter(Boolean) : []
+}
+
+function lookupDeck(pathSegments: string[], decks: UnifiedDeck[]): DeckLookupResult {
+  const deck = resolveDeckFromPath(pathSegments, decks)
+  if (deck) return { type: 'deck', deck }
+  return { type: 'not-found', pathSegments }
+}
+
+async function fetchPracticeData(
+  queryClient: QueryClient,
+  deck: UnifiedDeck,
+  mode: PracticeMode,
+  dueCardsPromise: Promise<FSRSCardData[]>
+): Promise<PracticeData> {
+  const [hierarchy, reviewFsrs] = await Promise.all([
+    queryClient.fetchQuery(
+      convexQuery(api.api.hierarchy.getVocabHierarchyByDeck, {
+        deckId: deck.id,
+        deckSource: deck.source,
+      })
+    ),
+    dueCardsPromise,
+  ])
+
+  const keys = extractHierarchyKeys(hierarchy)
+  const moduleFsrs =
+    keys.length > 0
+      ? await queryClient.fetchQuery(
+        convexQuery(api.api.fsrs.getFSRSCardsForItems, { keys, mode })
+      )
+      : []
+
+  return { hierarchy, moduleFsrs, reviewFsrs }
+}
+
+function extractHierarchyKeys(hierarchy: DeckHierarchyResult): string[] {
+  return [
+    ...hierarchy.vocabulary.map((v) => v.word),
+    ...hierarchy.kanji.map((k) => k.kanji),
+    ...hierarchy.radicals.map((r) => r.radical),
+  ]
+}
+
+function buildSessionState(
+  data: PracticeData,
+  mode: PracticeMode,
+  includeReviews: boolean
+) {
+  const { hierarchy, moduleFsrs, reviewFsrs } = data
+
+  const moduleData: PracticeItemData = {
+    vocabulary: hierarchy.vocabulary,
+    kanji: hierarchy.kanji,
+    radicals: hierarchy.radicals,
+    fsrsCards: moduleFsrs.map(toTsFsrs),
+  }
+
+  const moduleKeys = {
+    vocabulary: new Set(hierarchy.vocabulary.map((v) => v.word)),
+    kanji: new Set(hierarchy.kanji.map((k) => k.kanji)),
+    radicals: new Set(hierarchy.radicals.map((r) => r.radical)),
+  }
+
+  const filteredReviewFsrs = (reviewFsrs || [])
+    .map(toTsFsrs)
+    .filter((card) => {
+      if (card.type === 'vocabulary') return !moduleKeys.vocabulary.has(card.practiceItemKey)
+      if (card.type === 'kanji') return !moduleKeys.kanji.has(card.practiceItemKey)
+      if (card.type === 'radical') return !moduleKeys.radicals.has(card.practiceItemKey)
+      return true
+    })
+
+  const nonModuleData: PracticeItemData = {
+    vocabulary: [],
+    kanji: [],
+    radicals: [],
+    fsrsCards: filteredReviewFsrs,
+  }
+
+  return initializePracticeSession(
+    hierarchy.hierarchy,
+    moduleData,
+    nonModuleData,
+    mode,
+    false,
+    true,
+    includeReviews
   )
 }

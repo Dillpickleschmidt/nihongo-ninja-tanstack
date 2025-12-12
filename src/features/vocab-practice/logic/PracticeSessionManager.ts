@@ -1,0 +1,375 @@
+// vocab-practice/logic/PracticeSessionManager.ts
+import { Grade } from 'ts-fsrs'
+import type { PracticeSessionState, PracticeCard } from '../types'
+import { handleCardAnswer } from './card-state-handler'
+
+const ACTIVE_QUEUE_MAX_SIZE = 10
+
+// A helper type to represent the state of the queues for our pure functions
+type QueueState = {
+  moduleQueue: string[]
+  reviewQueue: string[]
+  activeQueue: string[]
+}
+
+export class PracticeSessionManager {
+  private state: PracticeSessionState
+  private reviewOnly: boolean
+  private changeCallbacks: (() => void)[] = []
+
+  constructor(initialState: PracticeSessionState, reviewOnly: boolean = false) {
+    this.state = initialState
+    this.reviewOnly = reviewOnly
+
+    // Initial replenishment of the active queue from the source queues
+    if (this.state.activeQueue.length === 0) {
+      const { moduleQueue, reviewQueue, activeQueue } =
+        PracticeSessionManager.replenishActiveQueue(
+          this.state,
+          this.getInterleavingRatio.bind(this),
+        )
+      this.state.moduleQueue = moduleQueue
+      this.state.reviewQueue = reviewQueue
+      this.state.activeQueue = activeQueue
+      this.notifyChange()
+    }
+  }
+
+  // --- OBSERVER PATTERN FOR REACTIVITY ---
+
+  /**
+   * Register a callback to be called when manager state changes
+   */
+  onChange(callback: () => void): void {
+    this.changeCallbacks.push(callback)
+  }
+
+  /**
+   * Notify all registered callbacks that state has changed
+   */
+  private notifyChange(): void {
+    this.changeCallbacks.forEach((callback) => callback())
+  }
+
+  // --- PURE, STATIC, TESTABLE LOGIC ---
+
+  public static determineKeyFate(
+    key: string,
+    originalCard: PracticeCard,
+    updatedCard: PracticeCard,
+    currentQueues: QueueState,
+  ): QueueState {
+    const { moduleQueue, reviewQueue, activeQueue } = currentQueues
+
+    const wasFlashcard = originalCard.sessionStyle === "flashcard"
+    const isNowDone = updatedCard.sessionStyle === "done"
+    const isReviewSuccessful =
+      wasFlashcard && updatedCard.sessionStyle === "flashcard"
+    const isNowPromoted =
+      wasFlashcard && updatedCard.sessionStyle === "multiple-choice"
+
+    // A failed flashcard is promoted to the back of the active queue to be learned properly.
+    if (isNowPromoted) {
+      return {
+        activeQueue: [...activeQueue, key],
+        reviewQueue: reviewQueue.filter((k) => k !== key),
+        moduleQueue,
+      }
+    }
+    // A completed card (either by finishing the cycle or a successful review) is removed.
+    else if (isNowDone || isReviewSuccessful) {
+      return { moduleQueue, reviewQueue, activeQueue }
+    }
+    // Any other card is cycled to the back of the active queue.
+    else {
+      return {
+        moduleQueue,
+        reviewQueue,
+        activeQueue: [...activeQueue, key],
+      }
+    }
+  }
+
+  /**
+   * Refills the active queue from the module and review queues.
+   * This function is pure and does not modify state.
+   */
+  public static replenishActiveQueue(
+    currentQueues: QueueState,
+    getInterleavingRatio: () => number,
+  ): QueueState {
+    let { moduleQueue, reviewQueue, activeQueue } = currentQueues
+    // Create copies to avoid direct mutation
+    moduleQueue = [...moduleQueue]
+    reviewQueue = [...reviewQueue]
+    activeQueue = [...activeQueue]
+
+    while (
+      activeQueue.length < ACTIVE_QUEUE_MAX_SIZE &&
+      (moduleQueue.length > 0 || reviewQueue.length > 0)
+    ) {
+      const pullFromReview = Math.random() < getInterleavingRatio()
+      let nextKey: string | undefined
+
+      if (pullFromReview && reviewQueue.length > 0) {
+        nextKey = reviewQueue.shift()
+      } else if (moduleQueue.length > 0) {
+        nextKey = moduleQueue.shift()
+      } else if (reviewQueue.length > 0) {
+        nextKey = reviewQueue.shift()
+      }
+
+      if (nextKey) {
+        activeQueue.push(nextKey)
+      } else {
+        break // No more cards in source queues
+      }
+    }
+    return { moduleQueue, reviewQueue, activeQueue }
+  }
+
+  // --- INSTANCE METHODS ---
+
+  /**
+   * Processes the completion of an introduction card.
+   * This transitions and  cycles it to the back of the active queue without applying an FSRS rating.
+   */
+  public processIntroductionCompletion(): void {
+    if (this.isFinished() || this.state.activeQueue.length === 0) {
+      console.warn(
+        "Attempted to process introduction completion with no active card or finished session.",
+      )
+      return
+    }
+    // Assumes that if this method is called, its sessionStyle is 'introduction'.
+    const key = this.state.activeQueue[0]
+    const currentCard = this.state.cardMap.get(key)
+    if (!currentCard) {
+      console.error(`Card with key ${key} not found in map.`)
+      return
+    }
+
+    // Transition from 'introduction' to 'multiple-choice'
+    const updatedCard: PracticeCard = {
+      ...currentCard,
+      sessionStyle: "multiple-choice",
+    }
+    this.state.cardMap.set(key, updatedCard)
+
+    // Cycle the card to the back of the active queue
+    this.state.activeQueue.shift() // Remove from front
+    this.state.activeQueue.push(key) // Add to back
+
+    this.notifyChange()
+  }
+
+  public processAnswer(rating: Grade, replenish = true): PracticeCard | null {
+    if (this.isFinished() || this.state.activeQueue.length === 0) {
+      return null
+    }
+
+    const key = this.state.activeQueue[0]
+    const originalCard = this.state.cardMap.get(key)!
+
+    // 1. Update card state based on answer
+    const updatedCard = handleCardAnswer(originalCard, rating)
+    this.state.cardMap.set(key, updatedCard)
+
+    // 2. Check if this completion unlocks other cards
+    const wasFlashcard = originalCard.sessionStyle === "flashcard"
+    const isSessionComplete =
+      updatedCard.sessionStyle === "done" ||
+      (wasFlashcard && updatedCard.sessionStyle === "flashcard")
+
+    if (isSessionComplete) {
+      this.unlockDependents(key)
+    }
+
+    // 4. Determine where the answered card's key should go next
+    const queuesAfterFate = PracticeSessionManager.determineKeyFate(
+      key,
+      originalCard,
+      updatedCard,
+      {
+        moduleQueue: this.state.moduleQueue,
+        reviewQueue: this.state.reviewQueue,
+        activeQueue: this.state.activeQueue.slice(1), // Pass queue without the current card
+      },
+    )
+
+    this.state.moduleQueue = queuesAfterFate.moduleQueue
+    this.state.reviewQueue = queuesAfterFate.reviewQueue
+    this.state.activeQueue = queuesAfterFate.activeQueue
+
+    // 5. Replenish the active queue if enabled
+    if (replenish) {
+      const finalQueues = PracticeSessionManager.replenishActiveQueue(
+        this.state,
+        this.getInterleavingRatio.bind(this),
+      )
+      this.state.moduleQueue = finalQueues.moduleQueue
+      this.state.reviewQueue = finalQueues.reviewQueue
+      this.state.activeQueue = finalQueues.activeQueue
+    }
+
+    // 6. Check if the entire session is finished
+    this.checkIfFinished()
+
+    this.notifyChange()
+
+    // 7. Return the updated card for persistence by caller
+    return updatedCard
+  }
+
+  private unlockDependents(completedKey: string): void {
+    const dependentsToUnlock = this.state.unlocksMap.get(completedKey)
+    if (!dependentsToUnlock) return
+
+    dependentsToUnlock.forEach((dependentKey) => {
+      const prerequisites = this.state.dependencyMap.get(dependentKey)
+      if (!prerequisites) return
+
+      // Remove the completed prerequisite from the list
+      const updatedPrerequisites = prerequisites.filter(
+        (p) => p !== completedKey,
+      )
+
+      if (updatedPrerequisites.length === 0) {
+        // All prerequisites are met! Unlock the card.
+        this.state.dependencyMap.delete(dependentKey)
+        this.state.lockedKeys.delete(dependentKey)
+        this.state.moduleQueue.push(dependentKey) // Unlocked cards are always module work
+      } else {
+        // Update the list of remaining prerequisites
+        this.state.dependencyMap.set(dependentKey, updatedPrerequisites)
+      }
+    })
+  }
+
+  private checkIfFinished(): void {
+    if (this.reviewOnly) {
+      if (
+        this.state.moduleQueue.length === 0 &&
+        this.state.reviewQueue.length === 0 &&
+        this.state.activeQueue.length === 0
+      ) {
+        this.state.isFinished = true
+      }
+    } else {
+      // In a standard module session, finish when all module work is done.
+      const hasActiveModuleCards = this.state.activeQueue.some(
+        (key) => this.state.cardMap.get(key)!.sessionScope === "module",
+      )
+
+      if (
+        this.state.moduleQueue.length === 0 &&
+        this.state.lockedKeys.size === 0 &&
+        !hasActiveModuleCards
+      ) {
+        this.state.isFinished = true
+        // Clear the active queue completely when finished to stop the session.
+        this.state.activeQueue = []
+      }
+    }
+  }
+
+  // --- Getters and other public methods ---
+
+  public getCurrentCard(): PracticeCard {
+    if (this.state.activeQueue.length === 0) {
+      throw new Error("Cannot get current card from an empty active queue.")
+    }
+    return this.state.cardMap.get(this.state.activeQueue[0])!
+  }
+
+  public isFinished(): boolean {
+    return this.state.isFinished
+  }
+
+  public getActiveQueue(): string[] {
+    return [...this.state.activeQueue]
+  }
+
+  public getSourceQueueSizes(): { module: number; review: number } {
+    return {
+      module: this.state.moduleQueue.length,
+      review: this.state.reviewQueue.length,
+    }
+  }
+
+  public getCardFromMap(key: string): PracticeCard | undefined {
+    return this.state.cardMap.get(key)
+  }
+
+  public getCardMap(): Map<string, PracticeCard> {
+    return this.state.cardMap
+  }
+
+  public getState(): PracticeSessionState {
+    return this.state
+  }
+
+  /**
+   * Returns the total amount of module work that needs to be completed in this session.
+   * This is calculated once and represents all non-disabled module cards.
+   */
+  public getTotalModuleWork(): number {
+    if (!this._totalModuleWork) {
+      // Calculate once: count all module cards that aren't disabled
+      this._totalModuleWork = Array.from(this.state.cardMap.values()).filter(
+        (card) => card.sessionScope === "module" && !card.isDisabled,
+      ).length
+    }
+    return this._totalModuleWork
+  }
+
+  /**
+   * Returns the number of module cards remaining to be completed.
+   */
+  public getModuleWorkRemaining(): number {
+    // Count active module cards (cards currently being practiced that are module scope)
+    const activeModuleCardsCount = this.state.activeQueue
+      .map((key) => this.state.cardMap.get(key))
+      .filter((card) => card && card.sessionScope === "module").length
+
+    return (
+      this.state.moduleQueue.length +
+      this.state.lockedKeys.size +
+      activeModuleCardsCount
+    )
+  }
+
+  /**
+   * Returns complete progress information for module work.
+   */
+  public getModuleProgress(): {
+    done: number
+    total: number
+    percentage: number
+  } {
+    const total = this.getTotalModuleWork()
+    const remaining = this.getModuleWorkRemaining()
+    const done = total - remaining
+    const percentage = total === 0 ? 0 : (done / total) * 100
+
+    return { done, total, percentage }
+  }
+
+  // Cache the total module work calculation
+  private _totalModuleWork?: number
+
+  /**
+   * Returns the percentage of review cards to module cards
+   */
+  private getInterleavingRatio(): number {
+    const moduleLength = this.state.moduleQueue.length
+    const reviewLength = this.state.reviewQueue.length
+
+    if (moduleLength === 0) return 1
+    if (reviewLength === 0) return 0
+
+    // Linear scaling: ratio increases from 0 to 0.33 as review/module ratio goes from 0 to 3
+    const reviewToModuleRatio = reviewLength / moduleLength
+    return Math.min(reviewToModuleRatio * (0.33 / 3), 0.33)
+  }
+}

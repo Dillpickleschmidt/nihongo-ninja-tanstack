@@ -10,11 +10,19 @@ import type {
 import { extractKanjiCharacters } from '../../src/data/utils/text/japanese'
 import { fetchKanjiAndRadicals } from './kanji'
 
-/**
- * Build full hierarchy for a deck's vocabulary
- * Orchestrates existing helpers into complete hierarchy build
- */
-export async function buildDeckHierarchy(ctx: QueryCtx, vocabulary: VocabularyItem[]) {
+export type DeckHierarchyResult = {
+  vocabulary: VocabularyItem[]
+  hierarchy: VocabHierarchy
+  kanji: KanjiEntry[]
+  radicals: RadicalEntry[]
+  skippedKanji: string[]
+  skippedRadicals: string[]
+}
+
+export async function buildDeckHierarchy(
+  ctx: QueryCtx,
+  vocabulary: VocabularyItem[]
+): Promise<DeckHierarchyResult> {
   const kanjiChars = extractAllKanjiFromVocab(vocabulary)
   const kanjiResult = await fetchKanjiAndRadicals(ctx, kanjiChars, [])
   const radicalChars = extractAllRadicalsFromKanji(kanjiResult.kanji)

@@ -320,3 +320,6 @@ export const vocabHierarchyValidator = v.object({
 export type VocabRelationship = Infer<typeof vocabRelationshipValidator>
 export type KanjiRelationship = Infer<typeof kanjiRelationshipValidator>
 export type VocabHierarchy = Infer<typeof vocabHierarchyValidator>
+export type Mnemonics = Infer<typeof mnemonicsValidator>
+export type PracticeMode = Infer<typeof practiceModeValidator>
+export type PracticeItemType = Infer<typeof practiceItemTypeValidator>

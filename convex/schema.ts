@@ -76,9 +76,9 @@ export default defineSchema({
     mode: practiceModeValidator,
     type: practiceItemTypeValidator,
   })
-    .index('by_user', ['userId'])
     .index('by_user_key_mode_type', ['userId', 'practiceItemKey', 'mode', 'type'])
-    .index('by_user_due', ['userId', 'dueAt']),
+    .index('by_user_key_mode', ['userId', 'practiceItemKey', 'mode'])
+    .index('by_user_mode_due', ['userId', 'mode', 'dueAt']),
 
   // User Completed Modules
   userCompletedModules: defineTable({

@@ -39,17 +39,15 @@ async function fetchWanikaniItemsByCharacters(
   ctx: QueryCtx,
   characters: string[]
 ): Promise<WanikaniItem[]> {
-  const items: WanikaniItem[] = []
-  for (const char of characters) {
-    const item = await ctx.db
-      .query('wanikaniItems')
-      .withIndex('by_character', (q) => q.eq('characters', char))
-      .first()
-    if (item) {
-      items.push(item)
-    }
-  }
-  return items
+  const results = await Promise.all(
+    characters.map((char) =>
+      ctx.db
+        .query('wanikaniItems')
+        .withIndex('by_character', (q) => q.eq('characters', char))
+        .first()
+    )
+  )
+  return results.filter((item): item is WanikaniItem => item !== null)
 }
 
 function partitionItemsByType(items: WanikaniItem[]): {
@@ -82,13 +80,17 @@ async function buildComponentRadicalMap(
   const map = new Map<number, string>()
   if (componentIds.size === 0) return map
 
-  const allRadicals = await ctx.db.query('wanikaniItems').collect()
-  for (const item of allRadicals) {
-    if (
-      item.characterType === 'radical' &&
-      item.characters &&
-      componentIds.has(item.wanikaniId)
-    ) {
+  const results = await Promise.all(
+    [...componentIds].map((id) =>
+      ctx.db
+        .query('wanikaniItems')
+        .withIndex('by_wanikaniId', (q) => q.eq('wanikaniId', id))
+        .first()
+    )
+  )
+
+  for (const item of results) {
+    if (item?.characterType === 'radical' && item.characters) {
       map.set(item.wanikaniId, item.characters)
     }
   }
