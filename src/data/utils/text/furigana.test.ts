@@ -66,5 +66,17 @@ describe("Furigana Utilities", () => {
       const expected = `<ruby>何<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none; position: relative; z-index: 1;">なん</span></rt><rp>)</rp></ruby>で<ruby>食<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none; position: relative; z-index: 1;">た</span></rt><rp>)</rp></ruby>べ<ruby>物<rp>(</rp><rt><span style="font-size: 0.75rem; user-select: none; position: relative; z-index: 1;">もの</span></rt><rp>)</rp></ruby>がない？`
       expect(convertFuriganaToRubyHtml(input)).toBe(expected)
     })
+
+    it("handles segments separated by unit separator", () => {
+      // Unit separator (\x1F) prevents regex from matching across segment boundaries
+      const input = "鍵[かぎ]\x1Fが\x1F壊[こわ]れたら"
+      const result = convertFuriganaToRubyHtml(input)
+      // Should have separate ruby tags for 鍵 and 壊, not combining が with 壊
+      expect(result).toContain("<ruby>鍵")
+      expect(result).toContain("<ruby>壊")
+      expect(result).not.toContain("<ruby>が壊")
+      // Unit separator should be stripped from output
+      expect(result).not.toContain("\x1F")
+    })
   })
 })

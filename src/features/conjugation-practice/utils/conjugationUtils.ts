@@ -625,15 +625,16 @@ export function normalForm(
   options: ConjugationOptions = {},
 ): string[] {
   // Default these options to false if not provided
-  const { polite = false, negative = false, past = false } = options
+  const { polite = false, negative = false, past = false, adverb = false } =
+    options
   const form = getForm(partOfSpeech)
 
   if (form === "i-adjective") {
-    return iAdjectiveNormalForm(reading, { polite, negative, past })
+    return iAdjectiveNormalForm(reading, { polite, negative, past, adverb })
   }
 
   if (form === "na-adjective") {
-    return naAdjectiveNormalForm(reading, { polite, negative, past })
+    return naAdjectiveNormalForm(reading, { polite, negative, past, adverb })
   }
 
   // Verbs

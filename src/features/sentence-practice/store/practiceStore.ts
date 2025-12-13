@@ -1,165 +1,234 @@
-// store/practiceStore.ts
 import { createStore } from "solid-js/store"
-import type { PracticeState, Difficulty } from "./types"
-import { PracticeService } from "../core/PracticeService"
-import type { Doc } from "convex/_generated/dataModel"
-import type { KagomeToken } from "../kagome/types/kagome"
-import type { OverlayResult } from "../core/text/KanaToKanjiOverlay"
+import type { Doc } from "../../../../convex/_generated/dataModel"
+import type { ProcessedQuestion, CheckResult } from "../core/types"
+import { prepareQuestion } from "../core/questionProcessor"
+import { checkAnswer } from "../core/answerChecker"
+import { anyContainsKanji } from "../core/textProcessor"
+
+export type Difficulty = "easy" | "hard"
+
+export interface PracticeState {
+  questions: ProcessedQuestion[]
+  currentQuestionIndex: number
+  // Easy mode: array of inputs (one per blank, null = blank not yet filled, undefined = not a blank)
+  blankInputs: (string | null | undefined)[]
+  // Hard mode: single input string
+  singleInput: string
+  showResult: boolean
+  checkResult: CheckResult | undefined
+  difficulty: Difficulty
+  effectiveDifficulty: Difficulty
+  showFurigana: boolean
+  isLoading: boolean
+}
 
 const initialState: PracticeState = {
   questions: [],
-  rawQuestions: [],
   currentQuestionIndex: 0,
-  inputs: {
-    single: "",
-    blanks: [],
-  },
+  blankInputs: [],
+  singleInput: "",
   showResult: false,
-  isLoading: true,
-  error: null,
-  showFurigana: true,
-  selectedDifficulty: "hard",
+  checkResult: undefined,
+  difficulty: "hard",
   effectiveDifficulty: "hard",
+  showFurigana: true,
+  isLoading: true,
 }
 
 export function createPracticeStore() {
-  const [store, setStore] = createStore(initialState)
-  const practiceService = new PracticeService()
+  const [store, setStore] = createStore<PracticeState>(initialState)
 
+  // Get current processed question
+  function getCurrentQuestion(): ProcessedQuestion | undefined {
+    return store.questions[store.currentQuestionIndex]
+  }
+
+  // Check if current question has blank segments (supports easy mode)
+  function hasBlankSegments(question: ProcessedQuestion): boolean {
+    return question.answers[0]?.some((seg) => seg.isBlank) ?? false
+  }
+
+  // Calculate effective difficulty based on selection and question structure
   function calculateEffectiveDifficulty(
     selectedDifficulty: Difficulty,
-    currentQuestion?: Doc<"sentencePracticeQuestions">,
+    question?: ProcessedQuestion,
   ): Difficulty {
     if (selectedDifficulty === "hard") return "hard"
-
-    const hasBlankSegments = currentQuestion?.answers[0]?.segments.some(
-      (segment) =>
-        typeof segment === "object" && "blank" in segment && segment.blank,
-    )
-
-    return hasBlankSegments ? "easy" : "hard"
+    if (!question) return "hard"
+    return hasBlankSegments(question) ? "easy" : "hard"
   }
 
-  function prepareBlankInputs(
-    currentRawQuestion: Doc<"sentencePracticeQuestions">,
-    currentInputs: (string | null | undefined)[] = [],
-  ): (string | null | undefined)[] {
-    return currentRawQuestion.answers[0].segments.map((segment, i) => {
-      const isBlank = typeof segment === "object" && "blank" in segment
-      return currentInputs[i] || (isBlank ? null : undefined)
-    })
+  // Initialize blank inputs array for a question
+  function initializeBlankInputs(question: ProcessedQuestion): (string | null | undefined)[] {
+    const firstAnswer = question.answers[0]
+    if (!firstAnswer) return []
+    return firstAnswer.map((seg) => (seg.isBlank ? null : undefined))
   }
 
-  function resetInputsForDifficulty(difficulty: Difficulty) {
-    return {
-      effectiveDifficulty: difficulty,
-      inputs: difficulty === "easy" ? { blanks: [] } : { single: "" },
-      showResult: false,
-      checkResult: undefined,
+  // Get user's current answer text
+  function getUserAnswer(): string {
+    const question = getCurrentQuestion()
+    if (!question) return ""
+
+    if (store.effectiveDifficulty === "easy") {
+      // Join segment texts, replacing blanks with user inputs
+      const firstAnswer = question.answers[0]
+      if (!firstAnswer) return ""
+
+      // Check if user typed kanji in any blank (v1 approach)
+      // If kana input → use pre-computed kana for all segments
+      // If kanji input → use pre-computed plain (kanji without brackets)
+      const blankValues = store.blankInputs.filter(
+        (v): v is string => typeof v === "string",
+      )
+      const shouldUseKana = !anyContainsKanji(blankValues)
+
+      return firstAnswer
+        .map((seg, i) => {
+          if (seg.isBlank) {
+            return store.blankInputs[i] ?? ""
+          }
+          // Use pre-computed properties from RichSegment
+          return shouldUseKana ? seg.kana : seg.plain
+        })
+        .join("")
+    } else {
+      return store.singleInput
     }
   }
 
-  // Extracted here for reuse in updateInput
-  function checkCurrentAnswer(updateStore = true) {
-    const currentQuestion = store.questions[store.currentQuestionIndex]
-    const currentRawQuestion = store.rawQuestions[store.currentQuestionIndex]
-    if (!currentQuestion) return
+  // Check the current answer
+  function doCheckAnswer(): CheckResult | undefined {
+    const question = getCurrentQuestion()
+    if (!question) return undefined
 
-    const inputs =
-      store.effectiveDifficulty === "easy"
-        ? {
-          blanks: prepareBlankInputs(currentRawQuestion, store.inputs.blanks),
-        }
-        : { single: store.inputs.single }
-
-    const answers = practiceService.fillBlankInputs(inputs, currentQuestion)
-    const result = practiceService.checkAnswer(answers, currentQuestion)
-
-    if (updateStore) {
-      setStore({ showResult: true, checkResult: result })
-    }
-    return result
+    const userAnswer = getUserAnswer()
+    return checkAnswer(userAnswer, question.validAnswers)
   }
 
   return {
     store,
     setStore,
     actions: {
-      checkAnswer: () => checkCurrentAnswer(),
+      // Initialize with raw questions from Convex
+      setQuestions: (rawQuestions: Doc<"sentencePracticeQuestions">[]) => {
+        const processedQuestions = rawQuestions.map(prepareQuestion)
+        const firstQuestion = processedQuestions[0]
+        const effectiveDifficulty = calculateEffectiveDifficulty(
+          store.difficulty,
+          firstQuestion,
+        )
+        const blankInputs = firstQuestion
+          ? initializeBlankInputs(firstQuestion)
+          : []
 
+        setStore({
+          questions: processedQuestions,
+          currentQuestionIndex: 0,
+          blankInputs,
+          singleInput: "",
+          showResult: false,
+          checkResult: undefined,
+          effectiveDifficulty,
+          isLoading: false,
+        })
+      },
+
+      // Update input for easy mode (by index) or hard mode (single)
       updateInput: (value: string, index?: number) => {
         if (store.effectiveDifficulty === "easy" && typeof index === "number") {
-          setStore("inputs", "blanks", (blanks = []) => {
-            const newBlanks = [...(blanks || [])]
-            newBlanks[index] = value
-            return newBlanks
-          })
+          setStore("blankInputs", index, value)
         } else {
-          setStore("inputs", "single", value)
+          setStore("singleInput", value)
         }
 
-        // If showing result, recheck answer with current question
+        // If showing result, recheck immediately
         if (store.showResult) {
-          const result = checkCurrentAnswer(false)
+          const result = doCheckAnswer()
           setStore("checkResult", result)
         }
       },
 
-      setDifficulty: (difficulty: Difficulty) => {
-        const newEffectiveDifficulty = calculateEffectiveDifficulty(
-          difficulty,
-          store.rawQuestions[store.currentQuestionIndex],
-        )
+      // Check the current answer
+      checkAnswer: () => {
+        const result = doCheckAnswer()
         setStore({
-          selectedDifficulty: difficulty,
-          ...resetInputsForDifficulty(newEffectiveDifficulty),
+          showResult: true,
+          checkResult: result,
         })
       },
 
+      // Move to next question
       nextQuestion: () => {
-        if (store.currentQuestionIndex < store.questions.length - 1) {
-          const nextIndex = store.currentQuestionIndex + 1
-          const newEffectiveDifficulty = calculateEffectiveDifficulty(
-            store.selectedDifficulty,
-            store.rawQuestions[nextIndex],
-          )
-          setStore({
-            currentQuestionIndex: nextIndex,
-            ...resetInputsForDifficulty(newEffectiveDifficulty),
-          })
-        }
-      },
+        const nextIndex = store.currentQuestionIndex + 1
+        if (nextIndex >= store.questions.length) return
 
-      resetInput: () => {
-        setStore({
-          ...resetInputsForDifficulty(store.effectiveDifficulty),
-        })
-      },
-      toggleFurigana: () => setStore("showFurigana", (prev) => !prev),
-      setUserInputTokens: (tokens: KagomeToken[]) =>
-        setStore("userInputTokens", tokens),
-      setUserInputOverlay: (overlay: OverlayResult | undefined) =>
-        setStore("userInputOverlay", overlay),
-      setQuestions: (rawQuestions: Doc<"sentencePracticeQuestions">[]) => {
-        const processedQuestions =
-          practiceService.prepareQuestions(rawQuestions)
-
-        const initialEffectiveDifficulty = calculateEffectiveDifficulty(
-          store.selectedDifficulty,
-          rawQuestions[0],
+        const nextQuestion = store.questions[nextIndex]
+        const effectiveDifficulty = calculateEffectiveDifficulty(
+          store.difficulty,
+          nextQuestion,
         )
+        const blankInputs = initializeBlankInputs(nextQuestion)
 
         setStore({
-          rawQuestions,
-          questions: processedQuestions,
-          currentQuestionIndex: 0,
-          inputs: { single: "", blanks: [] },
+          currentQuestionIndex: nextIndex,
+          blankInputs,
+          singleInput: "",
           showResult: false,
-          isLoading: false,
-          error: null,
-          effectiveDifficulty: initialEffectiveDifficulty,
+          checkResult: undefined,
+          effectiveDifficulty,
         })
       },
+
+      // Reset current question
+      resetInput: () => {
+        const question = getCurrentQuestion()
+        const blankInputs = question ? initializeBlankInputs(question) : []
+
+        setStore({
+          blankInputs,
+          singleInput: "",
+          showResult: false,
+          checkResult: undefined,
+        })
+      },
+
+      // Change difficulty
+      setDifficulty: (difficulty: Difficulty) => {
+        const question = getCurrentQuestion()
+        const effectiveDifficulty = calculateEffectiveDifficulty(
+          difficulty,
+          question,
+        )
+        const blankInputs = question ? initializeBlankInputs(question) : []
+
+        setStore({
+          difficulty,
+          effectiveDifficulty,
+          blankInputs,
+          singleInput: "",
+          showResult: false,
+          checkResult: undefined,
+        })
+      },
+
+      // Toggle furigana display
+      toggleFurigana: () => {
+        setStore("showFurigana", (prev) => !prev)
+      },
+    },
+    // Computed values
+    computed: {
+      getCurrentQuestion,
+      getUserAnswer,
+      hasMoreQuestions: () =>
+        store.currentQuestionIndex < store.questions.length - 1,
+      isComplete: () =>
+        store.currentQuestionIndex >= store.questions.length - 1 &&
+        store.showResult &&
+        store.checkResult?.isCorrect,
     },
   }
 }
+
+export type PracticeStore = ReturnType<typeof createPracticeStore>

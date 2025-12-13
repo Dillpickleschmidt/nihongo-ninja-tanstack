@@ -2,8 +2,8 @@
 import { conjugate as baseConjugate } from "@/features/conjugation-practice/utils/conjugationUtils"
 import { extractHiragana } from "@/data/utils/text/furigana"
 import { ConjugationRules } from "./ConjugationRules"
+import { KanjiProcessor } from "./KanjiProcessor"
 import type { ConjugatedWord } from "./types"
-import { KanjiProcessor } from "../text/KanjiProcessor"
 
 export class ConjugationEngine {
   private rules: ConjugationRules

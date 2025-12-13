@@ -4,7 +4,7 @@ import { convexQuery } from '@/lib/convex-query'
 import { api } from 'convex/_generated/api'
 import { useQueryClient } from '@tanstack/solid-query'
 import { queryKeys } from '@/query/query-keys'
-import PracticeContainer from '@/features/sentence-practice/ui/practice/PracticeContainer'
+import { PracticeProvider, PracticeContainer } from '@/features/sentence-practice'
 import { Sidebar } from '~/features/sidebar/Sidebar'
 
 export const Route = createFileRoute('/_home/sentence-practice/$id')({
@@ -44,7 +44,9 @@ function RouteComponent() {
           <div class="flex flex-col pb-16">
             <div class="px-8">
               <Suspense fallback={<div class="text-muted-foreground py-12 text-center">Loading...</div>}>
-                <PracticeContainer questions={questions()!} />
+                <PracticeProvider>
+                  <PracticeContainer questions={questions()!} />
+                </PracticeProvider>
               </Suspense>
             </div>
           </div>

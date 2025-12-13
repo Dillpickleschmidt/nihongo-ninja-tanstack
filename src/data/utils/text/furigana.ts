@@ -46,6 +46,9 @@ export function convertFuriganaToRubyHtml<T extends string | string[]>(
       match.startsWith("<") ? match : "",
     )
 
+    // Strip unit separator used for segment boundaries
+    convertedHtml = convertedHtml.replace(/\x1F/g, "")
+
     return convertedHtml
   }
 

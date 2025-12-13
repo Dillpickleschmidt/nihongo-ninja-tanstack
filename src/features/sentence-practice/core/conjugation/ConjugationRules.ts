@@ -42,6 +42,8 @@ export class ConjugationRules {
         return "tai-form"
       case "potential-adv-form":
         return "potential"
+      case "adverb":
+        return "normal" // adverb form uses "normal" with adverb: true option
       default:
         return form
     }
