@@ -9,6 +9,7 @@ import {
   getMnemonic,
   formatMnemonic,
 } from '../utils/card-display'
+import { generateDistractors, shuffleArray } from '../utils/distractor-generation'
 
 type Props = {
   card: PracticeCard
@@ -195,41 +196,3 @@ export function MultipleChoiceCard(props: Props) {
   )
 }
 
-// Helper functions
-
-function generateDistractors(
-  currentCard: PracticeCard,
-  allCards: PracticeCard[],
-  count: number,
-): string[] {
-  const correctAnswers = currentCard.validAnswers.map((a) => a.toLowerCase())
-
-  // Get all possible answers of the same type
-  const sameTypeCards = allCards.filter(
-    (card) => card.practiceItemType === currentCard.practiceItemType,
-  )
-  const otherAnswers = sameTypeCards
-    .flatMap((card) => card.validAnswers)
-    .filter((answer) => !correctAnswers.includes(answer.toLowerCase()))
-
-  // If not enough same-type distractors, add from other types
-  const allOtherAnswers = allCards
-    .flatMap((card) => card.validAnswers)
-    .filter((answer) => !correctAnswers.includes(answer.toLowerCase()))
-
-  const distractorPool = otherAnswers.length >= count ? otherAnswers : allOtherAnswers
-
-  // Shuffle and take required count (deduplicated)
-  const uniqueDistractors = [...new Set(distractorPool)]
-  const shuffled = shuffleArray(uniqueDistractors)
-  return shuffled.slice(0, count)
-}
-
-function shuffleArray<T>(array: T[]): T[] {
-  const shuffled = [...array]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled
-}
