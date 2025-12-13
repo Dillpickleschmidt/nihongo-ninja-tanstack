@@ -14,6 +14,7 @@ import type * as api_fsrs from "../api/fsrs.js";
 import type * as api_hierarchy from "../api/hierarchy.js";
 import type * as api_learning_paths from "../api/learning_paths.js";
 import type * as api_profiles from "../api/profiles.js";
+import type * as api_sentencePractice from "../api/sentencePractice.js";
 import type * as api_sharing from "../api/sharing.js";
 import type * as api_vocabulary from "../api/vocabulary.js";
 import type * as auth from "../auth.js";
@@ -42,6 +43,7 @@ declare const fullApi: ApiFromModules<{
   "api/hierarchy": typeof api_hierarchy;
   "api/learning_paths": typeof api_learning_paths;
   "api/profiles": typeof api_profiles;
+  "api/sentencePractice": typeof api_sentencePractice;
   "api/sharing": typeof api_sharing;
   "api/vocabulary": typeof api_vocabulary;
   auth: typeof auth;

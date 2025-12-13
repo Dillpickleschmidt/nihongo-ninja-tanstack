@@ -23,6 +23,7 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as HomeVocabCreateRouteImport } from './routes/_home/vocab/create'
 import { Route as HomeVocabBrowseRouteImport } from './routes/_home/vocab/browse'
 import { Route as HomeVocabSplatRouteImport } from './routes/_home/vocab/$'
+import { Route as HomeSentencePracticeIdRouteImport } from './routes/_home/sentence-practice/$id'
 import { Route as HomeVocabPracticeSplatRouteImport } from './routes/_home/vocab/practice/$'
 import { Route as HomeLessonsChapter3WordOrderRouteImport } from './routes/_home/lessons/_chapter-3/word-order'
 import { Route as HomeLessonsChapter3VerbConjMasuRouteImport } from './routes/_home/lessons/_chapter-3/verb-conj-masu'
@@ -130,6 +131,11 @@ const HomeVocabSplatRoute = HomeVocabSplatRouteImport.update({
   id: '/$',
   path: '/$',
   getParentRoute: () => HomeVocabRoute,
+} as any)
+const HomeSentencePracticeIdRoute = HomeSentencePracticeIdRouteImport.update({
+  id: '/sentence-practice/$id',
+  path: '/sentence-practice/$id',
+  getParentRoute: () => HomeRoute,
 } as any)
 const HomeVocabPracticeSplatRoute = HomeVocabPracticeSplatRouteImport.update({
   id: '/practice/$',
@@ -366,6 +372,7 @@ export interface FileRoutesByFullPath {
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
   '/vocab': typeof HomeVocabRouteWithChildren
+  '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
@@ -418,6 +425,7 @@ export interface FileRoutesByTo {
   '/discover': typeof HomeDiscoverRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
+  '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
@@ -473,6 +481,7 @@ export interface FileRoutesById {
   '/_home/lessons': typeof HomeLessonsRouteWithChildren
   '/_home/review': typeof HomeReviewRoute
   '/_home/vocab': typeof HomeVocabRouteWithChildren
+  '/_home/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/_home/vocab/$': typeof HomeVocabSplatRoute
   '/_home/vocab/browse': typeof HomeVocabBrowseRoute
   '/_home/vocab/create': typeof HomeVocabCreateRoute
@@ -528,6 +537,7 @@ export interface FileRouteTypes {
     | '/lessons'
     | '/review'
     | '/vocab'
+    | '/sentence-practice/$id'
     | '/vocab/$'
     | '/vocab/browse'
     | '/vocab/create'
@@ -580,6 +590,7 @@ export interface FileRouteTypes {
     | '/discover'
     | '/lessons'
     | '/review'
+    | '/sentence-practice/$id'
     | '/vocab/$'
     | '/vocab/browse'
     | '/vocab/create'
@@ -634,6 +645,7 @@ export interface FileRouteTypes {
     | '/_home/lessons'
     | '/_home/review'
     | '/_home/vocab'
+    | '/_home/sentence-practice/$id'
     | '/_home/vocab/$'
     | '/_home/vocab/browse'
     | '/_home/vocab/create'
@@ -786,6 +798,13 @@ declare module '@tanstack/solid-router' {
       fullPath: '/vocab/$'
       preLoaderRoute: typeof HomeVocabSplatRouteImport
       parentRoute: typeof HomeVocabRoute
+    }
+    '/_home/sentence-practice/$id': {
+      id: '/_home/sentence-practice/$id'
+      path: '/sentence-practice/$id'
+      fullPath: '/sentence-practice/$id'
+      preLoaderRoute: typeof HomeSentencePracticeIdRouteImport
+      parentRoute: typeof HomeRoute
     }
     '/_home/vocab/practice/$': {
       id: '/_home/vocab/practice/$'
@@ -1182,6 +1201,7 @@ interface HomeRouteChildren {
   HomeLessonsRoute: typeof HomeLessonsRouteWithChildren
   HomeReviewRoute: typeof HomeReviewRoute
   HomeVocabRoute: typeof HomeVocabRouteWithChildren
+  HomeSentencePracticeIdRoute: typeof HomeSentencePracticeIdRoute
 }
 
 const HomeRouteChildren: HomeRouteChildren = {
@@ -1190,6 +1210,7 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeLessonsRoute: HomeLessonsRouteWithChildren,
   HomeReviewRoute: HomeReviewRoute,
   HomeVocabRoute: HomeVocabRouteWithChildren,
+  HomeSentencePracticeIdRoute: HomeSentencePracticeIdRoute,
 }
 
 const HomeRouteWithChildren = HomeRoute._addFileChildren(HomeRouteChildren)

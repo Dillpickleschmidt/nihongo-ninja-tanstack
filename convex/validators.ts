@@ -342,3 +342,9 @@ export const sentenceAnswerValidator = v.object({
   segments: v.array(sentenceSegmentValidator),
   notes: v.optional(v.string()),
 })
+
+// Inferred types for sentence practice
+export type SentenceConjugation = Infer<typeof sentenceConjugationValidator>
+export type SentenceSegment = Infer<typeof sentenceSegmentValidator>
+export type SentenceAnswer = Infer<typeof sentenceAnswerValidator>
+export type PartOfSpeech = Infer<typeof partOfSpeechValidator>
