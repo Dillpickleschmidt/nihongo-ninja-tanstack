@@ -44,7 +44,7 @@ export const questions: Question[] = [
             blank: true
           },
           {
-            text: "、まっすぐ帰[かえ]り"
+            text: "、まっすぐ帰[かえ]りたく"
           },
           {
             text: "なる",

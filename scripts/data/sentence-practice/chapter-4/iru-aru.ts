@@ -2,266 +2,238 @@ import type { Question } from "../types"
 
 export const questions: Question[] = [
   {
-    "english": "There is a book.",
-    "answers": [
+    english: "There is a book.",
+    answers: [
       {
-        "segments": [
-          {
-            "text": "本[ほん]があります"
-          }
+        segments: [
+          { text: "本[ほん]が" },
+          { text: "あります", blank: true }
         ]
       }
     ]
   },
   {
-    "english": "There is a table.",
-    "hint": "table -> テーブル",
-    "answers": [
+    english: "There is a table.",
+    hint: "table -> テーブル",
+    answers: [
       {
-        "segments": [
-          {
-            "text": "テーブルがあります"
-          }
+        segments: [
+          { text: "テーブルが" },
+          { text: "あります", blank: true }
         ]
       }
     ]
   },
   {
-    "english": "There is a teacher.",
-    "answers": [
+    english: "There is a teacher.",
+    answers: [
       {
-        "segments": [
-          {
-            "text": "先生[せんせい]がいます"
-          }
+        segments: [
+          { text: "先生[せんせい]が" },
+          { text: "います", blank: true }
         ]
       }
     ]
   },
   {
-    "english": "There is a dog.",
-    "answers": [
+    english: "There is a dog.",
+    answers: [
       {
-        "segments": [
-          {
-            "text": "犬[いぬ]がいます"
-          }
+        segments: [
+          { text: "犬[いぬ]が" },
+          { text: "います", blank: true }
         ]
       }
     ]
   },
   {
-    "english": "Tanaka's bag is here.",
-    "hint": "For this practice session, use います・あります, not です. \nbag - 鞄（かばん）",
-    "answers": [
+    english: "Tanaka's bag is here.",
+    hint: "For this practice session, use います・あります, not です. \nbag - 鞄（かばん）",
+    answers: [
       {
-        "segments": [
-          {
-            "text": "田中[たなか]さんの 鞄[かばん]があります"
-          }
+        segments: [
+          { text: "田中[たなか]さんの 鞄[かばん]が" },
+          { text: "あります", blank: true }
         ]
       },
       {
-        "segments": [
-          {
-            "text": "田中[たなか]さんのかばんはここにあります"
-          }
+        segments: [
+          { text: "田中[たなか]さんのかばんはここに" },
+          { text: "あります", blank: true }
         ],
-        "notes": "Specifically \"here\" as opposed to \"there\"."
+        notes: "Specifically \"here\" as opposed to \"there\"."
       },
       {
-        "segments": [
-          {
-            "text": "ここに 田中[たなか]さんのかばんがあります"
-          }
+        segments: [
+          { text: "ここに 田中[たなか]さんのかばんが" },
+          { text: "あります", blank: true }
         ],
-        "notes": "Specifically \"here\" as opposed to \"there\"."
+        notes: "Specifically \"here\" as opposed to \"there\"."
       }
     ]
   },
   {
-    "english": "Suzuki's pen is here.",
-    "answers": [
+    english: "Suzuki's pen is here.",
+    answers: [
       {
-        "segments": [
-          {
-            "text": "鈴木[すずき]さんのペンがあります"
-          }
+        segments: [
+          { text: "鈴木[すずき]さんのペンが" },
+          { text: "あります", blank: true }
         ]
       },
       {
-        "segments": [
-          {
-            "text": "鈴木[すずき]さんのペンはここにあります"
-          }
+        segments: [
+          { text: "鈴木[すずき]さんのペンはここに" },
+          { text: "あります", blank: true }
         ],
-        "notes": "Specifically \"here\" as opposed to \"there\"."
+        notes: "Specifically \"here\" as opposed to \"there\"."
       },
       {
-        "segments": [
-          {
-            "text": "ここに 鈴木[すずき]さんのペンがあります"
-          }
+        segments: [
+          { text: "ここに 鈴木[すずき]さんのペンが" },
+          { text: "あります", blank: true }
         ],
-        "notes": "Specifically \"here\" as opposed to \"there\"."
+        notes: "Specifically \"here\" as opposed to \"there\"."
       }
     ]
   },
   {
-    "english": "Is Yamada here?",
-    "answers": [
+    english: "Is Yamada here?",
+    answers: [
       {
-        "segments": [
-          {
-            "text": "山田[やまだ]さんがいますか"
-          }
+        segments: [
+          { text: "山田[やまだ]さんが" },
+          { text: "いますか", blank: true }
         ]
       },
       {
-        "segments": [
-          {
-            "text": "山田[やまだ]さんはいますか"
-          }
+        segments: [
+          { text: "山田[やまだ]さんは" },
+          { text: "いますか", blank: true }
         ]
       },
       {
-        "segments": [
-          {
-            "text": "山田[やまだ]さんはここにいますか"
-          }
-        ],
-        "notes": ""
-      },
-      {
-        "segments": [
-          {
-            "text": "ここに 山田[やまだ]さんがいますか"
-          }
-        ],
-        "notes": ""
-      }
-    ]
-  },
-  {
-    "english": "Nakamura's notebook is here.",
-    "answers": [
-      {
-        "segments": [
-          {
-            "text": "中村[なかむら]さんのノートがあります"
-          }
+        segments: [
+          { text: "山田[やまだ]さんはここに" },
+          { text: "いますか", blank: true }
         ]
       },
       {
-        "segments": [
-          {
-            "text": "ここに 中村[なかむら]さんのノートがあります"
-          }
-        ],
-        "notes": "Specifically \"here\" as opposed to \"there\"."
-      },
-      {
-        "segments": [
-          {
-            "text": "中村[なかむら]さんのノートはここにあります"
-          }
-        ],
-        "notes": "Specifically \"here\" as opposed to \"there\"."
-      }
-    ]
-  },
-  {
-    "english": "There are flowers in the park.",
-    "answers": [
-      {
-        "segments": [
-          {
-            "text": "公園[こうえん]に 花[はな]があります"
-          }
+        segments: [
+          { text: "ここに 山田[やまだ]さんが" },
+          { text: "いますか", blank: true }
         ]
       }
     ]
   },
   {
-    "english": "There is a cat in the park.",
-    "answers": [
+    english: "Nakamura's notebook is here.",
+    answers: [
       {
-        "segments": [
-          {
-            "text": "公園[こうえん]に 猫[ねこ]がいます"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "english": "Do you have time today?",
-    "answers": [
-      {
-        "segments": [
-          {
-            "text": "今日[きょう]は 時間[じかん]がありますか"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "english": "There is a store nearby.",
-    "answers": [
-      {
-        "segments": [
-          {
-            "text": "近[ちか]くに 店[みせ]があります"
-          }
+        segments: [
+          { text: "中村[なかむら]さんのノートが" },
+          { text: "あります", blank: true }
         ]
       },
       {
-        "segments": [
-          {
-            "text": "店[みせ]が 近[ちか]くにあります"
-          }
+        segments: [
+          { text: "ここに 中村[なかむら]さんのノートが" },
+          { text: "あります", blank: true }
         ],
-        "notes": "Store-focused variation"
+        notes: "Specifically \"here\" as opposed to \"there\"."
+      },
+      {
+        segments: [
+          { text: "中村[なかむら]さんのノートはここに" },
+          { text: "あります", blank: true }
+        ],
+        notes: "Specifically \"here\" as opposed to \"there\"."
       }
     ]
   },
   {
-    "english": "That person is over there.",
-    "answers": [
+    english: "There are flowers in the park.",
+    answers: [
       {
-        "segments": [
-          {
-            "text": "あの 人[ひと]がいます"
-          }
+        segments: [
+          { text: "公園[こうえん]に 花[はな]が" },
+          { text: "あります", blank: true }
+        ]
+      }
+    ]
+  },
+  {
+    english: "There is a cat in the park.",
+    answers: [
+      {
+        segments: [
+          { text: "公園[こうえん]に 猫[ねこ]が" },
+          { text: "います", blank: true }
+        ]
+      }
+    ]
+  },
+  {
+    english: "Do you have time today?",
+    answers: [
+      {
+        segments: [
+          { text: "今日[きょう]は 時間[じかん]が" },
+          { text: "ありますか", blank: true }
+        ]
+      }
+    ]
+  },
+  {
+    english: "There is a store nearby.",
+    answers: [
+      {
+        segments: [
+          { text: "近[ちか]くに 店[みせ]が" },
+          { text: "あります", blank: true }
         ]
       },
       {
-        "segments": [
-          {
-            "text": "あそこにあの 人[ひと]がいます"
-          }
+        segments: [
+          { text: "店[みせ]が 近[ちか]くに" },
+          { text: "あります", blank: true }
         ],
-        "notes": "Specifically \"over there\" as opposed to somewhere else."
-      },
-      {
-        "segments": [
-          {
-            "text": "あの 人[ひと]はあそこにいます"
-          }
-        ],
-        "notes": "Specifically \"over there\" as opposed to somewhere else."
+        notes: "Store-focused variation"
       }
     ]
   },
   {
-    "english": "There are people in the park.",
-    "answers": [
+    english: "That person is over there.",
+    answers: [
       {
-        "segments": [
-          {
-            "text": "公園[こうえん]に 人[ひと]がいます"
-          }
+        segments: [
+          { text: "あの 人[ひと]が" },
+          { text: "います", blank: true }
+        ]
+      },
+      {
+        segments: [
+          { text: "あそこにあの 人[ひと]が" },
+          { text: "います", blank: true }
+        ],
+        notes: "Specifically \"over there\" as opposed to somewhere else."
+      },
+      {
+        segments: [
+          { text: "あの 人[ひと]はあそこに" },
+          { text: "います", blank: true }
+        ],
+        notes: "Specifically \"over there\" as opposed to somewhere else."
+      }
+    ]
+  },
+  {
+    english: "There are people in the park.",
+    answers: [
+      {
+        segments: [
+          { text: "公園[こうえん]に 人[ひと]が" },
+          { text: "います", blank: true }
         ]
       }
     ]
