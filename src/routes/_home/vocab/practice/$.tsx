@@ -192,8 +192,8 @@ function buildSessionState(
 
   const moduleData: PracticeItemData = {
     vocabulary: hierarchy.vocabulary,
-    kanji: hierarchy.kanji,
-    radicals: hierarchy.radicals,
+    kanji: mode === 'meanings' ? hierarchy.kanji : [],
+    radicals: mode === 'meanings' ? hierarchy.radicals : [],
     fsrsCards: moduleFsrs.map(toTsFsrs),
   }
 
