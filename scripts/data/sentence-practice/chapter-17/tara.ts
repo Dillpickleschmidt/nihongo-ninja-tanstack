@@ -2,250 +2,186 @@ import type { Question } from "../types"
 
 export const questions: Question[] = [
   {
-    "english": "Let's go to the shopping mall after we get our salary",
-    "answers": [
+    english: "Let's go to the shopping mall after we get our salary",
+    answers: [
       {
-        "segments": [
+        segments: [
           {
-            "text": "給料[きゅうりょう]を"
+            text: "給料[きゅうりょう]を"
           },
           {
-            "text": "もらったら",
+            text: "もらったら",
             blank: true
           },
           {
-            "text": "、ショッピングモールに"
+            text: "、ショッピングモールに"
           },
           {
-            "text": "行[い]く",
-            "conjugation": {
-              "pos": "Godan verb - Iku/Yuku special class",
-              "form": "volitional",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "行[い]く",
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Basic pattern with を for salary"
+        notes: "Basic pattern with を for salary"
       }
     ]
   },
   {
-    "english": "When I get tired from work, I just want to go straight home",
-    "hint": "Use たら since that's what we're practicing",
-    "answers": [
+    english: "When I get tired from work, I just want to go straight home",
+    hint: "Use たら since that's what we're practicing",
+    answers: [
       {
-        "segments": [
+        segments: [
           {
-            "text": "仕事[しごと]で"
+            text: "仕事[しごと]で"
           },
           {
-            "text": "疲[つか]れたら"
+            text: "疲[つか]れたら",
+            blank: true
           },
           {
-            "text": "、まっすぐ"
+            text: "、まっすぐ帰[かえ]り"
           },
           {
-            "text": "帰[かえ]る",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "form": "tai-adv-form",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "なる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "なる",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using たい + なる to express a desire"
+        notes: "Using たい + なる to express a desire"
       },
       {
-        "segments": [
+        segments: [
           {
-            "text": "仕事[しごと]で"
+            text: "仕事[しごと]で"
           },
           {
-            "text": "疲[つか]れる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
+            text: "疲[つか]れたら",
+            blank: true
           },
           {
-            "text": "たら、まっすぐ"
+            text: "、まっすぐ"
           },
           {
-            "text": "帰[かえ]る",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "form": "tai-form",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "帰[かえ]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "tai-form",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using たい to express desire"
+        notes: "Using たい to express desire"
       }
     ]
   },
   {
-    "english": "If the lock isn't working, we should contact the landlord",
-    "answers": [
+    english: "If the lock isn't working, we should contact the landlord",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "鍵[かぎ]が" },
+          { text: "壊[こわ]れたら", blank: true },
+          { text: "、大家[おおや]さんに" },
           {
-            "text": "鍵[かぎ]が"
-          },
-          {
-            "text": "壊[こわ]れる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "たら、大家[おおや]さんに"
-          },
-          {
-            "text": "連絡[れんらく]する",
-            "conjugation": {
-              "pos": "Suru verb - compound word",
-              "form": "volitional",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "連絡[れんらく]する",
+            conjugation: {
+              pos: "Suru verb - compound word",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using 壊れる instead of 使えない"
+        notes: "Using 壊れる instead of 使えない"
       }
     ]
   },
   {
-    "english": "Once the baby is born, we probably won't be able to travel much anymore",
-    "answers": [
+    english: "Once the baby is born, we probably won't be able to travel much anymore",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "赤[あか]ちゃんが" },
+          { text: "生[う]まれたら", blank: true },
+          { text: "、たぶん旅行[りょこう]があまり" },
           {
-            "text": "赤[あか]ちゃんが"
-          },
-          {
-            "text": "生[う]まれる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "たら、たぶん 旅行[りょこう]があまり"
-          },
-          {
-            "text": "できる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "negative",
-              "tense": "non-past"
+            text: "できる",
+            conjugation: {
+              pos: "Ichidan verb",
+              polarity: "negative",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using できる for potential form (SHOULD BE なくなります)"
+        notes: "Using できる for potential form (SHOULD BE なくなります)"
       }
     ]
   },
   {
-    "english": "I become envious whenever I see people getting married",
-    "answers": [
+    english: "I become envious whenever I see people getting married",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "人[ひと]が" },
           {
-            "text": "人[ひと]が"
-          },
-          {
-            "text": "結婚[けっこん]する",
-            "conjugation": {
-              "pos": "Suru verb - compound word",
-              "form": "te-form",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "結婚[けっこん]する",
+            conjugation: {
+              pos: "Suru verb - compound word",
+              form: "te-form",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "いるのを" },
+          { text: "見[み]たら", blank: true },
           {
-            "text": "いるのを"
-          },
-          {
-            "text": "見[み]る",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "たら、"
-          },
-          {
-            "text": "うらやましい",
-            "conjugation": {
-              "pos": "I-adjective",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "うらやましい",
+            conjugation: {
+              pos: "I-adjective",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ]
       },
       {
-        "segments": [
+        segments: [
+          { text: "人[ひと]が" },
           {
-            "text": "人[ひと]が"
-          },
-          {
-            "text": "結婚[けっこん]する",
-            "conjugation": {
-              "pos": "Suru verb - compound word",
-              "form": "te-form",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "結婚[けっこん]する",
+            conjugation: {
+              pos: "Suru verb - compound word",
+              form: "te-form",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "いるのを" },
+          { text: "見[み]たら", blank: true },
           {
-            "text": "いるのを"
-          },
-          {
-            "text": "見[み]る",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "うらやましい",
+            conjugation: {
+              pos: "I-adjective",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "に" },
           {
-            "text": "たら、"
-          },
-          {
-            "text": "うらやましい",
-            "conjugation": {
-              "pos": "I-adjective",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "に"
-          },
-          {
-            "text": "なる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "なる",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ]
@@ -253,736 +189,503 @@ export const questions: Question[] = [
     ]
   },
   {
-    "english": "When the preparation is complete, please let me know",
-    "answers": [
+    english: "When the preparation is complete, please let me know",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "準備[じゅんび]が" },
+          { text: "終[お]わったら", blank: true },
+          { text: "、" },
           {
-            "text": "準備[じゅんび]が"
-          },
-          {
-            "text": "終[お]わる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "教[おし]える",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "te-form",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
-          {
-            "text": "たら、"
-          },
-          {
-            "text": "教[おし]える",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "form": "te-form",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "ください"
-          }
+          { text: "ください" }
         ],
-        "notes": "Using 終わる for completion"
+        notes: "Using 終わる for completion"
       }
     ]
   },
   {
-    "english": "If I become a salaryman, I wonder if I'll get used to wearing a suit every day",
-    "answers": [
+    english: "If I become a salaryman, I wonder if I'll get used to wearing a suit every day",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "サラリーマンに" },
+          { text: "なったら", blank: true },
+          { text: "、毎日[まいにち]スーツを" },
           {
-            "text": "サラリーマンに"
-          },
-          {
-            "text": "なる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "着[き]る",
+            conjugation: {
+              pos: "Ichidan verb",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "ことに" },
           {
-            "text": "たら、毎日[まいにち]スーツを"
-          },
-          {
-            "text": "着[き]る",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "慣[な]れる",
+            conjugation: {
+              pos: "Ichidan verb",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "かなと" },
           {
-            "text": "ことに"
-          },
-          {
-            "text": "慣[な]れる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "かなと"
-          },
-          {
-            "text": "思[おも]う",
-            "conjugation": {
-              "pos": "Godan verb with 'u' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "思[おも]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using こと to nominalize the action"
+        notes: "Using こと to nominalize the action"
       },
       {
-        "segments": [
+        segments: [
+          { text: "サラリーマンに" },
+          { text: "なったら", blank: true },
+          { text: "、毎日[まいにち]スーツを" },
           {
-            "text": "サラリーマンに"
-          },
-          {
-            "text": "なる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "着[き]る",
+            conjugation: {
+              pos: "Ichidan verb",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "ことに" },
           {
-            "text": "たら、毎日[まいにち]スーツを"
-          },
-          {
-            "text": "着[き]る",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "慣[な]れる",
+            conjugation: {
+              pos: "Ichidan verb",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "と" },
           {
-            "text": "ことに"
-          },
-          {
-            "text": "慣[な]れる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "と"
-          },
-          {
-            "text": "思[おも]う",
-            "conjugation": {
-              "pos": "Godan verb with 'u' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "思[おも]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using こと to nominalize the action"
+        notes: "Using こと to nominalize the action"
       },
       {
-        "segments": [
+        segments: [
+          { text: "サラリーマンに" },
+          { text: "なったら", blank: true },
+          { text: "、毎日[まいにち]スーツを" },
           {
-            "text": "サラリーマンに"
-          },
-          {
-            "text": "なる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "着[き]る",
+            conjugation: {
+              pos: "Ichidan verb",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "ことに" },
           {
-            "text": "たら、毎日[まいにち]スーツを"
-          },
-          {
-            "text": "着[き]る",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "ことに"
-          },
-          {
-            "text": "慣[な]れる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "慣[な]れる",
+            conjugation: {
+              pos: "Ichidan verb",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using こと to nominalize the action"
+        notes: "Using こと to nominalize the action"
       }
     ]
   },
   {
-    "english": "Once you get divorced, you'll feel much more free",
-    "answers": [
+    english: "Once you get divorced, you'll feel much more free",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "離婚[りこん]したら", blank: true },
+          { text: "、もっと" },
           {
-            "text": "離婚[りこん]する",
-            "conjugation": {
-              "pos": "Suru verb - compound word",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "自由[じゆう]",
+            conjugation: {
+              pos: "Na-adjective",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "に" },
           {
-            "text": "たら、もっと"
-          },
-          {
-            "text": "自由[じゆう]",
-            "conjugation": {
-              "pos": "Na-adjective",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "に"
-          },
-          {
-            "text": "なる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "なる",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using もっと for emphasis"
+        notes: "Using もっと for emphasis"
       },
       {
-        "segments": [
+        segments: [
+          { text: "離婚[りこん]したら", blank: true },
+          { text: "、もっと" },
           {
-            "text": "離婚[りこん]する",
-            "conjugation": {
-              "pos": "Suru verb - compound word",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "自由[じゆう]",
+            conjugation: {
+              pos: "Na-adjective",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "に" },
           {
-            "text": "たら、もっと"
-          },
-          {
-            "text": "自由[じゆう]",
-            "conjugation": {
-              "pos": "Na-adjective",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "なる",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
-          {
-            "text": "に"
-          },
-          {
-            "text": "なる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "よ"
-          }
+          { text: "よ" }
         ],
-        "notes": "Using もっと + よ for emphasis"
+        notes: "Using もっと + よ for emphasis"
       }
     ]
   },
   {
-    "english": "The room becomes quite lonely after the guests leave",
-    "answers": [
+    english: "The room becomes quite lonely after the guests leave",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "お客[きゃく]さんが" },
+          { text: "帰[かえ]ったら", blank: true },
+          { text: "、部屋[へや]が" },
           {
-            "text": "お客[きゃく]さんが"
-          },
-          {
-            "text": "帰[かえ]る",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "寂[さび]しい",
+            conjugation: {
+              pos: "I-adjective",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
           {
-            "text": "たら、部屋[へや]が"
-          },
-          {
-            "text": "寂[さび]しい",
-            "conjugation": {
-              "pos": "I-adjective",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "なる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "なる",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using が to mark both subject and object"
+        notes: "Using が to mark both subject and object"
       }
     ]
   },
   {
-    "english": "When there's a difference of opinion, it's better to talk it through",
-    "answers": [
+    english: "When there's a difference of opinion, it's better to talk it through",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "意見[いけん]の違[ちが]いが" },
+          { text: "あったら", blank: true },
+          { text: "、" },
           {
-            "text": "意見[いけん]の 違[ちが]いが"
-          },
-          {
-            "text": "ある",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending (irregular verb)",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "話[はな]し合[あ]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
-          {
-            "text": "たら、"
-          },
-          {
-            "text": "話[はな]し合[あ]う",
-            "conjugation": {
-              "pos": "Godan verb with 'u' ending",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "方[ほう]がいいです"
-          }
+          { text: "方[ほう]がいいです" }
         ],
-        "notes": "Using 話し合う for mutual discussion"
+        notes: "Using 話し合う for mutual discussion"
       }
     ]
   },
   {
-    "english": "I get really worried if the news doesn't come on time",
-    "answers": [
+    english: "I get really worried if the news doesn't come on time",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "ニュースが" },
+          { text: "遅[おく]れたら", blank: true },
+          { text: "、" },
           {
-            "text": "ニュースが"
-          },
-          {
-            "text": "遅[おく]れる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "心配[しんぱい]",
+            conjugation: {
+              pos: "Na-adjective",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "に" },
           {
-            "text": "たら、"
-          },
-          {
-            "text": "心配[しんぱい]",
-            "conjugation": {
-              "pos": "Na-adjective",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "に"
-          },
-          {
-            "text": "なる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "なる",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using 遅れる for delay"
+        notes: "Using 遅れる for delay"
       }
     ]
   },
   {
-    "english": "Once you've chosen a job, you can't easily quit",
-    "answers": [
+    english: "Once you've chosen a job, you can't easily quit",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "仕事[しごと]を" },
+          { text: "選[えら]んだら", blank: true },
+          { text: "、簡単[かんたん]に" },
           {
-            "text": "仕事[しごと]を"
-          },
-          {
-            "text": "選[えら]ぶ",
-            "conjugation": {
-              "pos": "Godan verb with 'bu' ending",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "たら、簡単[かんたん]に"
-          },
-          {
-            "text": "やめる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "form": "potential",
-              "polarity": "negative",
-              "tense": "non-past"
+            text: "やめる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "potential",
+              polarity: "negative",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using に with 簡単"
+        notes: "Using に with 簡単"
       }
     ]
   },
   {
-    "english": "If the hot water isn't enough, just boil some more",
-    "hint": "Don't literally translate word-for-word",
-    "answers": [
+    english: "If the hot water isn't enough, just boil some more",
+    hint: "Don't literally translate word-for-word",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "お湯[ゆ]が" },
+          { text: "足[た]りなかったら", blank: true },
+          { text: "、もっと" },
           {
-            "text": "お湯[ゆ]が"
-          },
-          {
-            "text": "足[た]りる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "negative",
-              "tense": "non-past"
+            text: "沸[わ]かす",
+            conjugation: {
+              pos: "Godan verb with 'su' ending",
+              form: "te-form",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
-          {
-            "text": "たら、もっと"
-          },
-          {
-            "text": "沸[わ]かす",
-            "conjugation": {
-              "pos": "Godan verb with 'su' ending",
-              "form": "te-form",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "ください"
-          }
+          { text: "ください" }
         ],
-        "notes": "Using もっと for 'more'"
+        notes: "Using もっと for 'more'"
       }
     ]
   },
   {
-    "english": "When I get my full-time job, let's have a celebration party",
-    "hint": "お祝い（おいわい）- celebration",
-    "answers": [
+    english: "When I get my full-time job, let's have a celebration party",
+    hint: "お祝い（おいわい）- celebration",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "就職[しゅうしょく]したら", blank: true },
+          { text: "、お祝[いわ]いパーティーを" },
           {
-            "text": "就職[しゅうしょく]する",
-            "conjugation": {
-              "pos": "Suru verb - compound word",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "たら、お 祝[いわ]いパーティーを"
-          },
-          {
-            "text": "する",
-            "conjugation": {
-              "pos": "Suru verb - special class",
-              "form": "volitional",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "する",
+            conjugation: {
+              pos: "Suru verb - special class",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using お祝い for celebration"
+        notes: "Using お祝い for celebration"
       }
     ]
   },
   {
-    "english": "If the prime minister resigns, what do you think will happen?",
-    "answers": [
+    english: "If the prime minister resigns, what do you think will happen?",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "首相[しゅしょう]が" },
+          { text: "辞[や]めたら", blank: true },
+          { text: "、どう" },
           {
-            "text": "首相[しゅしょう]が"
-          },
-          {
-            "text": "辞[や]める",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "なる",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "と" },
           {
-            "text": "たら、どう"
-          },
-          {
-            "text": "なる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "と"
-          },
-          {
-            "text": "思[おも]う",
-            "conjugation": {
-              "pos": "Godan verb with 'u' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "思[おも]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using どう for 'what/how'"
+        notes: "Using どう for 'what/how'"
       }
     ]
   },
   {
-    "english": "Once you get used to living alone, cooking becomes more enjoyable",
-    "answers": [
+    english: "Once you get used to living alone, cooking becomes more enjoyable",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "一人暮[ひとりぐ]らしに" },
+          { text: "慣[な]れたら", blank: true },
+          { text: "、料理[りょうり]が" },
           {
-            "text": "一人暮[ひとりぐ]らしに"
-          },
-          {
-            "text": "慣[な]れる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "楽[たの]しい",
+            conjugation: {
+              pos: "I-adjective",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
           {
-            "text": "たら、料理[りょうり]が"
-          },
-          {
-            "text": "楽[たの]しい",
-            "conjugation": {
-              "pos": "I-adjective",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "なる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "なる",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using に with 慣れる"
+        notes: "Using に with 慣れる"
       }
     ]
   },
   {
-    "english": "If it seems dangerous, you don't have to force yourself to go",
-    "answers": [
+    english: "If it seems dangerous, you don't have to force yourself to go",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "危[あぶ]なかったら", blank: true },
+          { text: "、無理[むり]して" },
           {
-            "text": "危[あぶ]ない",
-            "conjugation": {
-              "pos": "I-adjective",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "行[い]く",
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              polarity: "negative",
+              tense: "non-past"
             }
           },
-          {
-            "text": "たら、無理[むり]して"
-          },
-          {
-            "text": "行[い]く",
-            "conjugation": {
-              "pos": "Godan verb - Iku/Yuku special class",
-              "polarity": "negative",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "てもいい"
-          }
+          { text: "てもいい" }
         ],
-        "notes": "Using 無理して for 'force yourself'"
+        notes: "Using 無理して for 'force yourself'"
       }
     ]
   },
   {
-    "english": "When the scheduling doesn't work out, I get depressed",
-    "answers": [
+    english: "When the scheduling doesn't work out, I get depressed",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "都合[つごう]が" },
+          { text: "悪[わる]かったら", blank: true },
+          { text: "、" },
           {
-            "text": "都合[つごう]が"
-          },
-          {
-            "text": "悪[わる]い",
-            "conjugation": {
-              "pos": "I-adjective",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "たら、"
-          },
-          {
-            "text": "落[お]ち込[こ]む",
-            "conjugation": {
-              "pos": "Godan verb with 'mu' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "落[お]ち込[こ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using 落ち込む for 'get depressed'"
+        notes: "Using 落ち込む for 'get depressed'"
       },
       {
-        "segments": [
+        segments: [
+          { text: "都合[つごう]が" },
+          { text: "悪[わる]かったら", blank: true },
+          { text: "、" },
           {
-            "text": "都合[つごう]が"
-          },
-          {
-            "text": "悪[わる]い",
-            "conjugation": {
-              "pos": "I-adjective",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "落[お]ち込[こ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "に" },
           {
-            "text": "たら、"
-          },
-          {
-            "text": "落[お]ち込[こ]む",
-            "conjugation": {
-              "pos": "Godan verb with 'mu' ending",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "に"
-          },
-          {
-            "text": "なる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "なる",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using 落ち込む for 'get depressed'"
+        notes: "Using 落ち込む for 'get depressed'"
       }
     ]
   },
   {
-    "english": "If you win the lottery, what's the first thing you'd buy?",
-    "answers": [
+    english: "If you win the lottery, what's the first thing you'd buy?",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "宝[たから]くじに" },
+          { text: "当[あ]たったら", blank: true },
+          { text: "、最初[さいしょ]に何[なに]を" },
           {
-            "text": "宝[たから]くじに"
-          },
-          {
-            "text": "当[あ]たる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "買[か]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
-          {
-            "text": "たら、最初[さいしょ]に 何[なに]を"
-          },
-          {
-            "text": "買[か]う",
-            "conjugation": {
-              "pos": "Godan verb with 'u' ending",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "か"
-          }
+          { text: "か" }
         ],
-        "notes": "Using に with 最初"
+        notes: "Using に with 最初"
       }
     ]
   },
   {
-    "english": "Once you get strong enough, even difficult things become possible",
-    "answers": [
+    english: "Once you get strong enough, even difficult things become possible",
+    answers: [
       {
-        "segments": [
+        segments: [
+          { text: "強[つよ]かったら", blank: true },
+          { text: "、難[むずか]しいことでも" },
           {
-            "text": "強[つよ]い",
-            "conjugation": {
-              "pos": "I-adjective",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "できる",
+            conjugation: {
+              pos: "Ichidan verb",
+              polarity: "positive",
+              tense: "non-past"
             }
           },
+          { text: "ように" },
           {
-            "text": "たら、難[むずか]しいことでも"
-          },
-          {
-            "text": "できる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          },
-          {
-            "text": "ように"
-          },
-          {
-            "text": "なる",
-            "conjugation": {
-              "pos": "Godan verb with 'ru' ending",
-              "polarity": "positive",
-              "tense": "non-past"
+            text: "なる",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              polarity: "positive",
+              tense: "non-past"
             }
           }
         ],
-        "notes": "Using でも for 'even'"
+        notes: "Using でも for 'even'"
       }
     ]
   }
