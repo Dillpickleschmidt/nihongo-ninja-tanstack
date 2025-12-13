@@ -38,11 +38,14 @@ export type PromptDisplay = {
 }
 
 export function getPromptDisplay(card: PracticeCard, rubySize = '0.85rem'): PromptDisplay {
-  if (card.practiceItemType === 'vocabulary' && card.vocab.furigana) {
-    return {
-      html: convertFuriganaToRubyHtml(card.vocab.furigana, rubySize),
-      isHtml: true,
+  if (card.practiceItemType === 'vocabulary' && card.practiceMode === 'meanings') {
+    if (card.vocab.furigana) {
+      return {
+        html: convertFuriganaToRubyHtml(card.vocab.furigana, rubySize),
+        isHtml: true,
+      }
     }
+    return { text: card.vocab.word, isHtml: false }
   }
   return { text: card.prompt, isHtml: false }
 }
