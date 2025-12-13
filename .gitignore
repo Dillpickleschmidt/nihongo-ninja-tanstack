@@ -26,10 +26,8 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .eslintcache
 .cache
 *.tsbuildinfo
-.sentence-parse-cache.json
+scripts/.sentence-practice-cache.json
 
-# native binaries
-bin/
 
 # IntelliJ based IDEs
 .idea

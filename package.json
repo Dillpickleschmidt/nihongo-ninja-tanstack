@@ -12,6 +12,7 @@
     "deploy:cf": "bunx wrangler deploy",
     "test": "vitest",
     "upsert-vocab": "bun run scripts/upsert-core-vocab.ts",
+    "upsert-sentence-practice": "bun run scripts/upsert-sentence-practice.ts",
     "import-wanikani": "bun run scripts/import-wanikani.ts"
   },
   "dependencies": {

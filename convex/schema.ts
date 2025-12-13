@@ -13,6 +13,7 @@ import {
   practiceModeValidator,
   practiceItemTypeValidator,
   vocabularyItemValidator,
+  sentenceAnswerValidator,
 } from './validators'
 
 export default defineSchema({
@@ -225,4 +226,14 @@ export default defineSchema({
     mode: v.string(), // freq, pitch, or ipa
     data: metaDataValidator, // Frequency data (kanji only uses freq mode)
   }).index('by_character', ['character']),
+
+  // Sentence Practice Questions
+  sentencePracticeQuestions: defineTable({
+    setId: v.string(),
+    order: v.number(),
+    english: v.string(),
+    hint: v.optional(v.string()),
+    answers: v.array(sentenceAnswerValidator),
+    modelAnswerPOS: v.array(v.array(v.string())),
+  }).index('by_setId', ['setId']),
 })

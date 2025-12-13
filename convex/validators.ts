@@ -323,3 +323,22 @@ export type VocabHierarchy = Infer<typeof vocabHierarchyValidator>
 export type Mnemonics = Infer<typeof mnemonicsValidator>
 export type PracticeMode = Infer<typeof practiceModeValidator>
 export type PracticeItemType = Infer<typeof practiceItemTypeValidator>
+
+// === Sentence Practice Validators ===
+export const sentenceConjugationValidator = v.object({
+  pos: v.string(),
+  form: v.optional(v.string()),
+  polarity: v.union(v.literal('positive'), v.literal('negative')),
+  tense: v.union(v.literal('past'), v.literal('non-past')),
+})
+
+export const sentenceSegmentValidator = v.object({
+  text: v.string(),
+  blank: v.optional(v.boolean()),
+  conjugation: v.optional(sentenceConjugationValidator),
+})
+
+export const sentenceAnswerValidator = v.object({
+  segments: v.array(sentenceSegmentValidator),
+  notes: v.optional(v.string()),
+})
