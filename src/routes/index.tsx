@@ -38,9 +38,9 @@ const JLPT_LEVELS: LevelItem[] = [
 
 const TOC_ITEMS = [
   { id: 'difficulty-selection', title: 'Knowledge Selection' },
+  { id: 'getting-started', title: 'Getting Started' },
   { id: 'your-japanese-companion', title: 'Your Japanese Companion' },
   { id: 'features', title: 'Details' },
-  { id: 'getting-started', title: 'Getting Started' },
 ]
 
 function RouteComponent() {
@@ -73,15 +73,6 @@ function RouteComponent() {
         createScrollObserver(guidesSectionRef, {
           onEnter: () => setBgBlur(0),
           onExitUp: () => setBgBlur(16),
-        })
-      )
-    }
-
-    if (toolsSectionRef) {
-      cleanups.push(
-        createScrollObserver(toolsSectionRef, {
-          onEnter: () => setBgBlur(16),
-          onExitUp: () => setBgBlur(0),
         })
       )
     }
@@ -134,7 +125,7 @@ function RouteComponent() {
 
   const handleLevelSelect = (level: string) => {
     setSelectedLevel(level)
-    document.getElementById("your-japanese-companion")?.scrollIntoView({ behavior: "smooth" })
+    document.getElementById("getting-started")?.scrollIntoView({ behavior: "smooth" })
   }
 
   const dailyProgress = 65
@@ -161,18 +152,18 @@ function RouteComponent() {
         <div class="flex">
           {/* Left side: Sections with sidebars */}
           <div class='flex-1'>
+            {/* --- Learning Path Section --- */}
+            <section id="getting-started" class="flex">
+              <div ref={toolsSectionRef} class="snap-start relative w-full mx-auto max-w-7xl">
+                <ToolsSection selectedLevel={selectedLevel()} onLevelChange={setSelectedLevel} />
+              </div>
+            </section>
+
             {/* --- Guides Section --- */}
             <section class="flex">
               <div ref={guidesSectionRef} class="relative w-full mx-auto max-w-7xl">
                 <GuidesSection />
                 <FeaturesSection />
-              </div>
-            </section>
-
-            {/* --- Learning Path Section --- */}
-            <section id="getting-started" class="flex">
-              <div ref={toolsSectionRef} class="snap-start relative w-full mx-auto max-w-7xl">
-                <ToolsSection selectedLevel={selectedLevel()} onLevelChange={setSelectedLevel} />
               </div>
             </section>
           </div>
