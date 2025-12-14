@@ -1,8 +1,6 @@
-import { createFileRoute, useNavigate } from '@tanstack/solid-router'
+import { createFileRoute } from '@tanstack/solid-router'
 import { createSignal, For, onMount, onCleanup } from 'solid-js'
-import { useQueryClient } from '@tanstack/solid-query'
-import { authClient } from '~/lib/auth-client'
-import { TopNav, BottomNav } from '@/features/navbar/Nav'
+import { BottomNav } from '@/features/navbar/Nav'
 import { TextbookChapterBackgrounds } from '@/components/TextbookChapterBackgrounds'
 import { LevelCard } from '@/features/homepage/hero/LevelCard'
 import { WelcomeSection } from '@/features/homepage/hero/WelcomeSection'
@@ -52,13 +50,10 @@ function RouteComponent() {
   let toolsSectionRef: HTMLDivElement | undefined
 
   // Refs for target elements (sidebars, nav)
-  let topNavRef: HTMLDivElement | undefined
   let guidesSidebarRef: HTMLDivElement | undefined
   let toolsSidebarRef: HTMLDivElement | undefined
   let tocRef: HTMLDivElement | undefined
 
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
   const [selectedLevel, setSelectedLevel] = createSignal<string>('N5')
   const [bgBlur, setBgBlur] = createSignal(16)
 
@@ -128,17 +123,6 @@ function RouteComponent() {
       )
     }
 
-    // TopNav - only exits on scroll up
-    if (guidesSectionRef && topNavRef) {
-      const ref = topNavRef
-      cleanups.push(
-        createScrollObserver(guidesSectionRef, {
-          onEnter: () => animateElementIn(ref, "up", { distance: 68 }),
-          onExitUp: () => animateElementOut(ref, "up", { distance: 68 }),
-        })
-      )
-    }
-
     // === Snap behavior ===
     const snapElements = document.querySelectorAll('.snap-start, .snap-center, .snap-end')
     snapElements.forEach(el => {
@@ -147,12 +131,6 @@ function RouteComponent() {
 
     onCleanup(() => cleanups.forEach(cleanup => cleanup()))
   })
-
-  const handleSignOut = async () => {
-    await authClient.signOut()
-    queryClient.invalidateQueries({ queryKey: ['auth'] })
-    navigate({ to: '/' })
-  }
 
   const handleLevelSelect = (level: string) => {
     setSelectedLevel(level)
@@ -170,19 +148,6 @@ function RouteComponent() {
       />
 
       <main class="min-h-screen">
-        {/* --- Top Navigation (Desktop Only) --- */}
-        <SSRMediaQuery showFrom="md">
-          <div class='fixed top-0 inset-x-0 z-50'>
-            <TopNav
-              ref={(el) => topNavRef = el}
-              dailyProgressPercentage={dailyProgress}
-              onSignOut={handleSignOut}
-              style={getInitialAnimationStyles("up", true, 68)}
-              class="bg-[#191919]/20"
-            />
-          </div>
-        </SSRMediaQuery>
-
         {/* --- Hero Section - JLPT Level Selection --- */}
         <section ref={heroRef} id="difficulty-selection" class="snap-start pb-24 pt-[9vh] md:pt-[25vh] flex flex-col items-center justify-center">
           <WelcomeSection />

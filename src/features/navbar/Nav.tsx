@@ -1,9 +1,7 @@
-import { Show } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
 import { Link, useLocation } from '@tanstack/solid-router'
-import { House, Clapperboard, GraduationCap, Hammer, LogIn, LogOut, type LucideIcon } from 'lucide-solid'
+import { House, Search, GraduationCap, Hammer, type LucideIcon } from 'lucide-solid'
 import { cn } from '@/utils'
-import { getUser } from '@/lib/auth'
 
 // --- Shared Types ---
 interface NavItem {
@@ -25,7 +23,7 @@ interface NavProps {
 const navItems: NavItem[] = [
   { id: 'home', label: 'Home', href: '/dashboard', icon: House },
   { id: 'guides', label: 'Guides', href: '/guides', icon: GraduationCap },
-  { id: 'discover', label: 'Discover', href: '/discover', icon: Clapperboard },
+  { id: 'search', label: 'Search', href: '/search', icon: Search },
   { id: 'tools', label: 'Tools', href: '/settings', icon: Hammer },
 ]
 
@@ -114,106 +112,6 @@ function ProgressCircle(props: ProgressCircleProps) {
   )
 }
 
-// --- TopNav (Desktop) ---
-export function TopNav(props: NavProps) {
-  const user = getUser()
-  const dailyProgress = () => props.dailyProgressPercentage ?? 65
-  const nav = useNavLogic(dailyProgress())
-
-  return (
-    <div
-      ref={props.ref}
-      style={props.style}
-      class={cn(
-        'sticky top-0 z-50 bg-[#191919]/50 backdrop-blur-xl border-b border-card-foreground/10',
-        props.class
-      )}
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-17">
-        <div class="flex items-center justify-between h-full">
-          {/* Left Side */}
-          <div class="flex items-center gap-8">
-            <h1 class="text-xl font-bold text-primary tracking-tight">
-              Nihongo Ninja
-            </h1>
-
-            <nav class="flex items-center gap-1">
-              {navItems.map((item) => {
-                const active = nav.isActive(item.href)
-                return (
-                  <Link
-                    to={item.href}
-                    class={cn(
-                      'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2',
-                      active
-                        ? 'text-primary'
-                        : 'text-primary/60 hover:text-primary hover:bg-primary/5'
-                    )}
-                  >
-                    <Dynamic component={item.icon as LucideIcon} class="w-4 h-4" />
-                    {item.label}
-                  </Link>
-                )
-              })}
-            </nav>
-          </div>
-
-          {/* Right Side */}
-          <div class="flex items-center gap-4">
-            <Link to="/review" class="flex items-center gap-3 group">
-              <div class="relative w-8 h-8 flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
-                <ProgressCircle
-                  size={32}
-                  radius={13}
-                  strokeWidth={2.5}
-                  progress={dailyProgress()}
-                  progressColor={nav.getProgressColor()}
-                  bgColor={nav.getProgressColor(0.2)}
-                  class="w-full h-full"
-                />
-              </div>
-              <div class="flex flex-col items-start leading-none gap-0.5">
-                <span class="text-sm font-bold text-primary/90 group-hover:text-primary">
-                  Review
-                </span>
-                <span
-                  class="text-[10px] font-medium"
-                  style={{ color: nav.getProgressColor() }}
-                >
-                  {dailyProgress()}% Complete
-                </span>
-              </div>
-            </Link>
-
-            <div class="w-px h-8 bg-card-foreground/10" />
-
-            <Show
-              when={user()}
-              fallback={
-                <Link
-                  to="/auth"
-                  class="p-2 text-primary/60 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                  title="Sign In"
-                >
-                  <LogIn class="w-5 h-5" />
-                </Link>
-              }
-            >
-              <button
-                onClick={props.onSignOut}
-                class="p-2 text-primary/60 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
-                title="Sign Out"
-              >
-                <LogOut class="w-5 h-5" />
-              </button>
-            </Show>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 // --- BottomNav (Mobile) ---
 export function BottomNav(props: NavProps) {
   const dailyProgress = () => props.dailyProgressPercentage ?? 65
@@ -226,7 +124,7 @@ export function BottomNav(props: NavProps) {
   ]
 
   return (
-    <div class={cn('fixed right-0 bottom-0 left-0 z-50', props.class)}>
+    <div class={cn('fixed right-0 bottom-0 left-0 z-40', props.class)}>
       <div
         class={cn(
           'pb-safe flex items-center justify-center px-6',

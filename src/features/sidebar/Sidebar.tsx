@@ -9,7 +9,7 @@ import { getInitialAnimationStyles } from "@/utils/animations"
 import {
   House,
   ChartNoAxesColumn,
-  Sparkles,
+  Clapperboard,
   GraduationCap,
   PencilLine,
   Repeat2,
@@ -19,8 +19,11 @@ import {
   Package,
   Ellipsis,
   Import,
+  LogIn,
+  LogOut,
   type LucideIcon,
 } from "lucide-solid"
+import { getUser } from "@/lib/auth"
 
 interface NavigationItem {
   id: string
@@ -38,6 +41,7 @@ interface NavigationSection {
 interface SidebarProps {
   ref?: (el: HTMLDivElement) => void
   animated: boolean
+  onSignOut?: () => void
 }
 
 const navigation: NavigationSection[] = [
@@ -58,10 +62,10 @@ const navigation: NavigationSection[] = [
         class: "text-primary",
       },
       {
-        id: "explore",
+        id: "discover",
         title: "Real Content",
-        href: "/explore",
-        icon: Sparkles,
+        href: "/discover",
+        icon: Clapperboard,
         class: "text-primary",
       },
     ],
@@ -151,9 +155,12 @@ const navigation: NavigationSection[] = [
 interface NavigationContentProps {
   isActive: (href: string) => boolean
   onNavigate?: () => void
+  onSignOut?: () => void
 }
 
 function NavigationContent(props: NavigationContentProps) {
+  const user = getUser()
+
   return (
     <div class="flex h-full flex-col justify-between px-6 pt-24">
       {/* Navigation Groups */}
@@ -171,7 +178,7 @@ function NavigationContent(props: NavigationContentProps) {
                   <Link to={item.href} onClick={props.onNavigate}>
                     <Button
                       variant="ghost"
-                      class={cn("hover:bg-card-foreground/50 justify-start px-2")}
+                      class={cn("w-full hover:bg-card-foreground/50 justify-start px-2")}
                       onClick={() => { }}
                     >
                       <Dynamic
@@ -199,30 +206,32 @@ function NavigationContent(props: NavigationContentProps) {
         </For>
       </div>
 
-      {/* Footer */}
-      {/* <div class="border-border border-t py-4"> */}
-      {/*   <Show */}
-      {/*     when={props.user} */}
-      {/*     fallback={ */}
-      {/*       <Button */}
-      {/*         as={Link} */}
-      {/*         href="/auth" */}
-      {/*         class="h-8 w-20 border-2 border-black bg-indigo-400 opacity-70 transition-opacity duration-200 hover:bg-indigo-400 hover:opacity-100" */}
-      {/*       > */}
-      {/*         Login */}
-      {/*       </Button> */}
-      {/*     } */}
-      {/*   > */}
-      {/*     <div class="flex items-center gap-3 rounded-lg p-2"> */}
-      {/*       <div class="text-sm"> */}
-      {/*         <p class="text-foreground/90 font-medium"> */}
-      {/*           {props.user?.email} */}
-      {/*         </p> */}
-      {/*         <LogoutButton class="text-muted-foreground hover:text-foreground h-auto bg-transparent p-0 text-xs hover:bg-transparent" /> */}
-      {/*       </div> */}
-      {/*     </div> */}
-      {/*   </Show> */}
-      {/* </div> */}
+      {/* Footer - Auth Section */}
+      <div class="py-4">
+        <Show
+          when={user()}
+          fallback={
+            <Link to="/auth">
+              <Button
+                variant="ghost"
+                class="w-full justify-start gap-2 text-primary/60 hover:text-primary"
+              >
+                <LogIn class="w-4 h-4" />
+                Sign In
+              </Button>
+            </Link>
+          }
+        >
+          <Button
+            variant="ghost"
+            onClick={props.onSignOut}
+            class="w-full justify-start gap-2 text-primary/60 hover:text-red-400"
+          >
+            <LogOut class="w-4 h-4" />
+            Sign Out
+          </Button>
+        </Show>
+      </div>
     </div>
   )
 }
@@ -231,14 +240,18 @@ function DesktopSidebar(props: {
   isActive: (href: string) => boolean
   ref?: (el: HTMLDivElement) => void
   animated: boolean
+  onSignOut?: () => void
 }) {
   return (
     <div
       ref={props.ref}
-      class="fixed top-17 left-0 h-[calc(100vh-68px)] w-72"
+      class="fixed top-0 left-0 h-screen w-72 z-50"
       style={props.animated ? getInitialAnimationStyles("left") : undefined}
     >
-      <NavigationContent isActive={props.isActive} />
+      <NavigationContent
+        isActive={props.isActive}
+        onSignOut={props.onSignOut}
+      />
     </div>
   )
 }
@@ -284,6 +297,7 @@ export function Sidebar(props: SidebarProps) {
             <NavigationContent
               isActive={isActive}
               onNavigate={() => setIsMobileOpen(false)}
+              onSignOut={props.onSignOut}
             />
           </div>
         </Show>
@@ -291,7 +305,12 @@ export function Sidebar(props: SidebarProps) {
 
       {/* Desktop: Fixed sidebar */}
       <SSRMediaQuery showFrom="md">
-        <DesktopSidebar isActive={isActive} ref={props.ref} animated={props.animated} />
+        <DesktopSidebar
+          isActive={isActive}
+          ref={props.ref}
+          animated={props.animated}
+          onSignOut={props.onSignOut}
+        />
       </SSRMediaQuery>
     </>
   )

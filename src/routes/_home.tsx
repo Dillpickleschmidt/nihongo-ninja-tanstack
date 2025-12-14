@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, useNavigate } from '@tanstack/solid-router'
 import { useQuery, useQueryClient } from '@tanstack/solid-query'
 import { authClient } from '@/lib/auth-client'
 import { backgroundSettingsQueryOptions } from '~/query/query-options'
-import { TopNav, BottomNav } from '@/features/navbar/Nav'
+import { BottomNav } from '@/features/navbar/Nav'
 import { TextbookChapterBackgrounds } from '@/components/TextbookChapterBackgrounds'
 import { Sidebar } from '@/features/sidebar/Sidebar'
 import { SSRMediaQuery } from '@/components/SSRMediaQuery'
@@ -19,8 +19,6 @@ function HomeLayout() {
     () => backgroundSettingsQueryOptions()
   )
 
-  const dailyProgress = 65
-
   const handleSignOut = async () => {
     await authClient.signOut()
     queryClient.invalidateQueries({ queryKey: ['auth'] })
@@ -31,19 +29,16 @@ function HomeLayout() {
     <>
       <TextbookChapterBackgrounds {...backgroundSettingsQuery.data} />
 
-      <SSRMediaQuery showFrom="md">
-        <TopNav dailyProgressPercentage={dailyProgress} onSignOut={handleSignOut} />
-      </SSRMediaQuery>
-
       <Outlet />
 
       <SSRMediaQuery showFrom="md">
-        <Sidebar animated={false} />
+        <Sidebar
+          animated={false}
+          onSignOut={handleSignOut}
+        />
       </SSRMediaQuery>
 
-      <SSRMediaQuery hideFrom="md">
-        <BottomNav dailyProgressPercentage={dailyProgress} />
-      </SSRMediaQuery>
+      <BottomNav dailyProgressPercentage={65} />
     </>
   )
 }
