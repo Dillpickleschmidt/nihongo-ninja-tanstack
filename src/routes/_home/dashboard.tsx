@@ -8,6 +8,7 @@ import { queryKeys } from "~/query/query-keys"
 import { api } from "../../../convex/_generated/api"
 import { ChapterSection } from "@/features/dashboard/ChapterSection"
 import { LearningPathChapterSelector } from "@/features/dashboard/LearningPathChapterSelector"
+import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { cn } from "@/utils"
 
 export const Route = createFileRoute("/_home/dashboard")({
@@ -97,7 +98,9 @@ function DashboardComponent() {
               >
                 <span>{selectedPath()?.shortName}</span>
                 <span class="text-neutral-500">—</span>
-                <span>{selectedChapter()?.title}</span>
+                <span>
+                  Chapter {getChapterDisplayNumber(selectedChapter()?.slug ?? "")}
+                </span>
                 <ChevronDown class="h-4 w-4 ml-1" />
               </div>
             </LearningPathChapterSelector>

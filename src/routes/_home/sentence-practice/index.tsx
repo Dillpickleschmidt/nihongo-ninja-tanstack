@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select"
 import { Search, PencilLine, ChevronRight, BookOpen } from "lucide-solid"
 import { cn } from "@/utils"
+import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { dynamic_modules, type DynamicModule } from "@/data/dynamic_modules"
 import { chapters, type LearningPathChapter } from "@/data/chapters"
 import { textbooks } from "@/data/textbooks"
@@ -58,9 +59,8 @@ function SentencePracticeList() {
   const [search, setSearch] = createSignal("")
 
   // Get active learning path from user preferences
-  const activeLearningPath = createMemo(() => {
-    return profileQuery.data()?.userPreferences?.activeLearningPath || "genki_1"
-  })
+  const activeLearningPath = () =>
+    profileQuery.data()?.userPreferences?.activeLearningPath || "genki_1"
 
   // Mutation to update learning path
   const updateLearningPath = useMutation(api.api.profiles.updatePreferenceField)
@@ -259,7 +259,7 @@ function ChapterGroupItem(props: { group: ChapterGroup }) {
       {/* Chapter header */}
       <div class="mb-1.5 flex items-center gap-2">
         <div class="flex size-6 items-center justify-center rounded-md bg-gradient-to-br from-amber-500/20 to-orange-500/20 text-xs font-bold text-amber-400">
-          {props.group.chapter.slug.replace("chapter-", "").replace(/^0/, "")}
+          {getChapterDisplayNumber(props.group.chapter.slug)}
         </div>
         <span class="text-muted-foreground/60 text-xs">
           · {props.group.modules.length} {props.group.modules.length === 1 ? "pattern" : "patterns"}

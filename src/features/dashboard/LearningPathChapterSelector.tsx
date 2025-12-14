@@ -8,6 +8,7 @@ import {
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "../../../convex/_generated/api"
 import type { LearningPathChapter } from "@/data/chapters"
+import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { cn } from "@/utils"
 
 // Infer LearningPath from props (comes from Convex query)
@@ -150,7 +151,9 @@ export function LearningPathChapterSelector(
                         "bg-primary/10 hover:bg-primary/15 font-semibold",
                     )}
                   >
-                    <span>{chapter.title}</span>
+                    <span>
+                      Chapter {getChapterDisplayNumber(chapter.slug)}
+                    </span>
                     <Show
                       when={
                         props.activePathId === displayedPathId() &&
