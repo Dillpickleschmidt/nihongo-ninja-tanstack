@@ -164,3 +164,98 @@ describe("checkAnswer", () => {
     ])
   })
 })
+
+describe("allMatches and bestMatchIndex", () => {
+  it("returns allMatches array with AnswerMatch objects", () => {
+    const validAnswers = toRichAnswers(["行きましょう", "行こう"])
+    const result = checkAnswer("行きましょう", validAnswers)
+
+    // Verify allMatches exists and has correct structure
+    expect(result.allMatches).toBeDefined()
+    expect(result.allMatches).toHaveLength(2)
+
+    // Verify each match has required fields
+    result.allMatches.forEach((match) => {
+      expect(match.answer).toBeDefined()
+      expect(match.displayText).toBeDefined()
+      expect(match.similarity).toBeGreaterThanOrEqual(0)
+      expect(match.similarity).toBeLessThanOrEqual(1)
+      expect(match.userErrors).toBeDefined()
+      expect(match.answerErrors).toBeDefined()
+    })
+  })
+
+  it("sets bestMatchIndex to highest similarity match", () => {
+    const validAnswers = toRichAnswers([
+      "行きます", // Lower similarity
+      "行きましょう", // Exact match (highest similarity)
+      "行こう", // Lower similarity
+    ])
+    const result = checkAnswer("行きましょう", validAnswers)
+
+    // bestMatchIndex should point to the exact match
+    expect(result.bestMatchIndex).toBe(0) // Always 0 after sorting
+    expect(result.allMatches[result.bestMatchIndex].similarity).toBe(1)
+    expect(result.allMatches[result.bestMatchIndex].answer.original).toBe(
+      "行きましょう",
+    )
+  })
+
+  it("sorts allMatches by similarity (highest first)", () => {
+    const validAnswers = toRichAnswers([
+      "全然違う", // Very low similarity
+      "行きます", // Medium similarity
+      "行きましょう", // Exact match
+    ])
+    const result = checkAnswer("行きましょう", validAnswers)
+
+    // Verify sorted descending by similarity
+    for (let i = 0; i < result.allMatches.length - 1; i++) {
+      expect(result.allMatches[i].similarity).toBeGreaterThanOrEqual(
+        result.allMatches[i + 1].similarity,
+      )
+    }
+
+    // First match should be exact match
+    expect(result.allMatches[0].similarity).toBe(1)
+  })
+
+  it("preserves RichAnswer metadata in matches", () => {
+    const validAnswers: RichAnswer[] = [
+      {
+        original: "行きましょう",
+        plain: "行きましょう",
+        kana: "いきましょう",
+        originalPoliteForm: true,
+        pronounType: "none",
+        honorificType: "none",
+        sourceAnswerIndex: 0,
+      },
+      {
+        original: "行こう",
+        plain: "行こう",
+        kana: "いこう",
+        originalPoliteForm: false,
+        pronounType: "none",
+        honorificType: "none",
+        sourceAnswerIndex: 0,
+      },
+    ]
+    const result = checkAnswer("行きましょう", validAnswers)
+
+    // Verify metadata is accessible in allMatches
+    const politeMatch = result.allMatches.find(
+      (m) => m.answer.originalPoliteForm === true,
+    )
+    const casualMatch = result.allMatches.find(
+      (m) => m.answer.originalPoliteForm === false,
+    )
+
+    expect(politeMatch).toBeDefined()
+    expect(politeMatch!.answer.originalPoliteForm).toBe(true)
+    expect(politeMatch!.answer.sourceAnswerIndex).toBe(0)
+
+    expect(casualMatch).toBeDefined()
+    expect(casualMatch!.answer.originalPoliteForm).toBe(false)
+  })
+})

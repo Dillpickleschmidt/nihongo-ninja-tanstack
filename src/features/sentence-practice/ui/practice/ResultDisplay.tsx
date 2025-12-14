@@ -2,6 +2,7 @@
 import { Show } from "solid-js"
 import { usePractice } from "../../store/PracticeContext"
 import FuriganaText from "../common/FuriganaText"
+import AlternativeAnswers from "./AlternativeAnswers"
 
 export default function ResultDisplay() {
   const { store, computed } = usePractice()
@@ -80,6 +81,15 @@ export default function ResultDisplay() {
           <div class="text-muted-foreground text-sm">
             Similarity: {Math.round(store.checkResult!.similarity * 100)}%
           </div>
+        </Show>
+
+        {/* Alternative Answers - shown whenever user answers */}
+        <Show when={store.checkResult}>
+          <AlternativeAnswers
+            allMatches={store.checkResult!.allMatches}
+            bestMatchIndex={store.checkResult!.bestMatchIndex}
+            showFurigana={store.showFurigana}
+          />
         </Show>
       </div>
     </Show>

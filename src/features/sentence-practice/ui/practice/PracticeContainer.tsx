@@ -1,5 +1,5 @@
 // ui/PracticeContainer.tsx
-import { Show, createEffect } from "solid-js"
+import { Show, createEffect, createSignal } from "solid-js"
 import type { Doc } from "../../../../../convex/_generated/dataModel"
 import { usePractice } from "../../store/PracticeContext"
 import PromptDisplay from "./PromptDisplay"
@@ -8,6 +8,13 @@ import FullInput from "./FullInput"
 import ResultDisplay from "./ResultDisplay"
 import DifficultySelector from "./DifficultySelector"
 import ProgressDisplay from "./ProgressDisplay"
+import DebugPanel from "./DebugPanel"
+import EasyModeDebugPanel from "./EasyModeDebugPanel"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/custom/collapsible"
 
 interface PracticeContainerProps {
   questions: Doc<"sentencePracticeQuestions">[]
@@ -16,10 +23,20 @@ interface PracticeContainerProps {
 export default function PracticeContainer(props: PracticeContainerProps) {
   const { store, actions, computed } = usePractice()
 
+  // Collapsible state for debug panel
+  const [isCollapsibleOpen, setIsCollapsibleOpen] = createSignal(false)
+
   // Initialize questions when component mounts or questions change
   createEffect(() => {
     if (props.questions.length > 0) {
       actions.setQuestions(props.questions)
+    }
+  })
+
+  // Auto-expand debug panel when answer is correct in easy mode
+  createEffect(() => {
+    if (store.effectiveDifficulty === "easy" && store.checkResult?.isCorrect) {
+      setIsCollapsibleOpen(true)
     }
   })
 
@@ -57,6 +74,27 @@ export default function PracticeContainer(props: PracticeContainerProps) {
 
             {/* Results */}
             <ResultDisplay />
+
+            {/* Debug Panels - collapsible, shown after answering */}
+            <Show when={store.showResult}>
+              <Collapsible
+                class="mt-8 flex flex-col items-center"
+                open={isCollapsibleOpen()}
+                onOpenChange={setIsCollapsibleOpen}
+              >
+                <CollapsibleTrigger class="w-fit rounded-full px-4 py-1.5 text-xs">
+                  Show all possible
+                </CollapsibleTrigger>
+                <CollapsibleContent class="w-full">
+                  <Show
+                    when={store.effectiveDifficulty === "hard"}
+                    fallback={<EasyModeDebugPanel currentQuestion={question()} />}
+                  >
+                    <DebugPanel allAnswers={question().validAnswers} />
+                  </Show>
+                </CollapsibleContent>
+              </Collapsible>
+            </Show>
           </div>
         )}
       </Show>

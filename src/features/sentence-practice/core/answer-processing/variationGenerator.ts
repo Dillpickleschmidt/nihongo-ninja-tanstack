@@ -10,77 +10,190 @@ const HONORIFIC_VARIATIONS: Record<string, string[]> = {
   "先生[せんせい]": ["さん"],
 }
 
+// Escape special regex characters
+function escapeRegex(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+}
+
+// Replace only the Nth occurrence of a pattern
+function replaceAtIndex(
+  str: string,
+  search: string,
+  replace: string,
+  occurrenceIndex: number,
+): string {
+  let count = 0
+  return str.replace(new RegExp(escapeRegex(search), "g"), (match) =>
+    count++ === occurrenceIndex ? replace : match,
+  )
+}
+
 // Adds kana-only version for answers containing kanji
-export function generateKanaVariations(answers: string[]): string[] {
-  const result = new Set<string>(answers)
+function generateKanaVariations(answers: RichAnswer[]): RichAnswer[] {
+  const resultMap = new Map<string, RichAnswer>()
+
   for (const answer of answers) {
-    if (answer.includes("[")) {
-      result.add(convertToKana(answer))
+    resultMap.set(answer.original, answer)
+
+    if (answer.original.includes("[")) {
+      const newOriginal = convertToKana(answer.original)
+      if (!resultMap.has(newOriginal)) {
+        resultMap.set(newOriginal, {
+          ...answer,
+          original: newOriginal,
+          plain: removeFurigana(newOriginal),
+          kana: newOriginal,
+          isKanaVariation: true,
+        })
+      }
     }
   }
-  return Array.from(result)
+
+  return Array.from(resultMap.values())
 }
 
-// Replaces 私/僕/俺 with alternatives
-export function generatePronounVariations(answers: string[]): string[] {
-  const result = new Set<string>(answers)
+// Replaces 私/僕/俺 with alternatives (position-based)
+function generatePronounVariations(answers: RichAnswer[]): RichAnswer[] {
+  const resultMap = new Map<string, RichAnswer>()
 
   for (const answer of answers) {
-    for (const pronoun of PRONOUNS) {
-      if (answer.includes(pronoun + "は")) {
+    resultMap.set(answer.original, answer)
+  }
+
+  for (const answer of answers) {
+    // Single pronouns
+    for (const basePronoun of PRONOUNS) {
+      const regex = new RegExp(escapeRegex(basePronoun), "g")
+      const occurrences = (answer.original.match(regex) || []).length
+
+      for (let i = 0; i < occurrences; i++) {
         for (const altPronoun of PRONOUNS) {
-          if (altPronoun !== pronoun) {
-            result.add(answer.replace(pronoun + "は", altPronoun + "は"))
+          if (altPronoun !== basePronoun) {
+            const newOriginal = replaceAtIndex(answer.original, basePronoun, altPronoun, i)
+            if (!resultMap.has(newOriginal)) {
+              resultMap.set(newOriginal, {
+                ...answer,
+                original: newOriginal,
+                plain: removeFurigana(newOriginal),
+                kana: convertToKana(newOriginal),
+                pronounType: altPronoun,
+              })
+            }
           }
         }
-        if (pronoun === "私[わたし]") {
-          result.add(answer.replace(pronoun + "は", ""))
+
+        // Special case: drop "私[わたし]は" at beginning
+        if (basePronoun === "私[わたし]" && i === 0 && answer.original.startsWith("私[わたし]は")) {
+          const newOriginal = answer.original.replace("私[わたし]は", "")
+          if (newOriginal !== answer.original && !resultMap.has(newOriginal)) {
+            resultMap.set(newOriginal, {
+              ...answer,
+              original: newOriginal,
+              plain: removeFurigana(newOriginal),
+              kana: convertToKana(newOriginal),
+              pronounType: "dropped",
+            })
+          }
         }
       }
     }
 
-    for (const pronoun of PLURAL_PRONOUNS) {
-      if (answer.includes(pronoun + "は")) {
+    // Plural pronouns (same pattern)
+    for (const basePronoun of PLURAL_PRONOUNS) {
+      const regex = new RegExp(escapeRegex(basePronoun), "g")
+      const occurrences = (answer.original.match(regex) || []).length
+
+      for (let i = 0; i < occurrences; i++) {
         for (const altPronoun of PLURAL_PRONOUNS) {
-          if (altPronoun !== pronoun) {
-            result.add(answer.replace(pronoun + "は", altPronoun + "は"))
+          if (altPronoun !== basePronoun) {
+            const newOriginal = replaceAtIndex(answer.original, basePronoun, altPronoun, i)
+            if (!resultMap.has(newOriginal)) {
+              resultMap.set(newOriginal, {
+                ...answer,
+                original: newOriginal,
+                plain: removeFurigana(newOriginal),
+                kana: convertToKana(newOriginal),
+                pronounType: altPronoun,
+              })
+            }
           }
         }
       }
     }
   }
 
-  return Array.from(result)
+  return Array.from(resultMap.values())
 }
 
-// Replaces さん/くん/ちゃん with alternatives
-export function generateHonorificVariations(answers: string[]): string[] {
-  const result = new Set<string>(answers)
+// Replaces さん/くん/ちゃん with alternatives (position-based)
+function generateHonorificVariations(answers: RichAnswer[]): RichAnswer[] {
+  const resultMap = new Map<string, RichAnswer>()
+
   for (const answer of answers) {
-    for (const [honorific, variations] of Object.entries(HONORIFIC_VARIATIONS)) {
-      if (answer.includes(honorific)) {
-        for (const altHonorific of variations) {
-          result.add(answer.replace(honorific, altHonorific))
+    resultMap.set(answer.original, answer)
+  }
+
+  for (const answer of answers) {
+    for (const [baseHonorific, alternatives] of Object.entries(HONORIFIC_VARIATIONS)) {
+      const regex = new RegExp(escapeRegex(baseHonorific), "g")
+      const occurrences = (answer.original.match(regex) || []).length
+
+      for (let i = 0; i < occurrences; i++) {
+        for (const altHonorific of alternatives) {
+          const newOriginal = replaceAtIndex(answer.original, baseHonorific, altHonorific, i)
+          if (!resultMap.has(newOriginal)) {
+            resultMap.set(newOriginal, {
+              ...answer,
+              original: newOriginal,
+              plain: removeFurigana(newOriginal),
+              kana: convertToKana(newOriginal),
+              honorificType: altHonorific,
+            })
+          }
         }
       }
     }
   }
-  return Array.from(result)
+
+  return Array.from(resultMap.values())
 }
 
-export function generateValidAnswers(segments: RichSegment[]): RichAnswer[] {
-  const baseAnswer = segments.map((s) => s.original).join(SEGMENT_SEPARATOR)
-  if (baseAnswer === "") return [{ original: "", plain: "", kana: "" }]
+export function generateValidAnswers(
+  segments: RichSegment[],
+  sourceAnswerIndex: number,
+  isPoliteForm: boolean,
+): RichAnswer[] {
+  const baseAnswerString = segments.map((s) => s.original).join(SEGMENT_SEPARATOR)
+  if (baseAnswerString === "") {
+    return [
+      {
+        original: "",
+        plain: "",
+        kana: "",
+        sourceAnswerIndex,
+        originalPoliteForm: isPoliteForm,
+        pronounType: "none",
+        honorificType: "none",
+        isKanaVariation: false,
+      },
+    ]
+  }
 
-  let answers = [baseAnswer]
-  answers = generatePronounVariations(answers)
-  answers = generateHonorificVariations(answers)
-  answers = generateKanaVariations(answers)
+  const baseAnswer: RichAnswer = {
+    original: baseAnswerString,
+    plain: removeFurigana(baseAnswerString),
+    kana: convertToKana(baseAnswerString),
+    sourceAnswerIndex,
+    originalPoliteForm: isPoliteForm,
+    pronounType: "none",
+    honorificType: "none",
+    isKanaVariation: false,
+  }
 
-  // Convert each variation to RichAnswer with pre-computed forms
-  return answers.map((original) => ({
-    original,
-    plain: removeFurigana(original),
-    kana: convertToKana(original),
-  }))
+  let variations = [baseAnswer]
+  variations = generatePronounVariations(variations)
+  variations = generateHonorificVariations(variations)
+  variations = generateKanaVariations(variations)
+
+  return variations
 }

@@ -9,7 +9,7 @@ export function prepareQuestion(question: Doc<"sentencePracticeQuestions">): Pro
   const { english, hint, answers: rawAnswers } = question
   const processedAnswers: RichSegment[][] = []
 
-  for (const rawAnswer of rawAnswers) {
+  for (const [sourceIndex, rawAnswer] of rawAnswers.entries()) {
     const politeSegments = processSegments(rawAnswer.segments, true)
     processedAnswers.push(politeSegments)
 
@@ -23,9 +23,19 @@ export function prepareQuestion(question: Doc<"sentencePracticeQuestions">): Pro
 
   // Use Map for deduplication (keyed by original string)
   const validAnswers = new Map<string, RichAnswer>()
-  for (const segments of processedAnswers) {
-    for (const answer of generateValidAnswers(segments)) {
+  for (const [sourceIndex, rawAnswer] of rawAnswers.entries()) {
+    const politeSegments = processSegments(rawAnswer.segments, true)
+    for (const answer of generateValidAnswers(politeSegments, sourceIndex, true)) {
       validAnswers.set(answer.original, answer)
+    }
+
+    const casualSegments = processSegments(rawAnswer.segments, false)
+    const politeJoined = politeSegments.map((s) => s.original).join(SEGMENT_SEPARATOR)
+    const casualJoined = casualSegments.map((s) => s.original).join(SEGMENT_SEPARATOR)
+    if (casualJoined !== politeJoined) {
+      for (const answer of generateValidAnswers(casualSegments, sourceIndex, false)) {
+        validAnswers.set(answer.original, answer)
+      }
     }
   }
 

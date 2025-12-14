@@ -167,7 +167,9 @@ export function checkAnswer(input: string, validAnswers: RichAnswer[]): CheckRes
         end: toOriginal(e.end),
       }))
 
+      // Return AnswerMatch with full RichAnswer
       return {
+        answer: richAnswer,
         displayText: kanaWon ? richAnswer.kana : richAnswer.plain,
         similarity: Math.max(kanjiMatch.similarity, kanaMatch.similarity),
         userErrors: mappedUserErrors,
@@ -176,14 +178,16 @@ export function checkAnswer(input: string, validAnswers: RichAnswer[]): CheckRes
     })
     .sort((a, b) => b.similarity - a.similarity)
 
-  const best = matches[0]
+  const bestMatchIndex = 0
 
   return {
-    isCorrect: best.similarity === 1,
-    bestMatch: best.displayText,
-    similarity: best.similarity,
-    errorRanges: best.userErrors,
-    bestMatchErrors: best.answerErrors,
+    isCorrect: matches[0].similarity === 1,
+    bestMatch: matches[0].displayText,
+    similarity: matches[0].similarity,
+    errorRanges: matches[0].userErrors,
+    bestMatchErrors: matches[0].answerErrors,
     strippedParticle,
+    allMatches: matches,
+    bestMatchIndex,
   }
 }
