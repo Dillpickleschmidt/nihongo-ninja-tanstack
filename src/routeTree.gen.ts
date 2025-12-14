@@ -19,6 +19,7 @@ import { Route as HomeLessonsRouteImport } from './routes/_home/lessons'
 import { Route as HomeDiscoverRouteImport } from './routes/_home/discover'
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeVocabIndexRouteImport } from './routes/_home/vocab/index'
+import { Route as HomeSentencePracticeIndexRouteImport } from './routes/_home/sentence-practice/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as HomeVocabCreateRouteImport } from './routes/_home/vocab/create'
 import { Route as HomeVocabBrowseRouteImport } from './routes/_home/vocab/browse'
@@ -112,6 +113,12 @@ const HomeVocabIndexRoute = HomeVocabIndexRouteImport.update({
   path: '/',
   getParentRoute: () => HomeVocabRoute,
 } as any)
+const HomeSentencePracticeIndexRoute =
+  HomeSentencePracticeIndexRouteImport.update({
+    id: '/sentence-practice/',
+    path: '/sentence-practice/',
+    getParentRoute: () => HomeRoute,
+  } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -377,6 +384,7 @@ export interface FileRoutesByFullPath {
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/sentence-practice': typeof HomeSentencePracticeIndexRoute
   '/vocab/': typeof HomeVocabIndexRoute
   '/lessons/common-expressions': typeof HomeLessonsChapter0CommonExpressionsRoute
   '/lessons/contracted-sounds': typeof HomeLessonsChapter0ContractedSoundsRoute
@@ -430,6 +438,7 @@ export interface FileRoutesByTo {
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/sentence-practice': typeof HomeSentencePracticeIndexRoute
   '/vocab': typeof HomeVocabIndexRoute
   '/lessons/common-expressions': typeof HomeLessonsChapter0CommonExpressionsRoute
   '/lessons/contracted-sounds': typeof HomeLessonsChapter0ContractedSoundsRoute
@@ -486,6 +495,7 @@ export interface FileRoutesById {
   '/_home/vocab/browse': typeof HomeVocabBrowseRoute
   '/_home/vocab/create': typeof HomeVocabCreateRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/_home/sentence-practice/': typeof HomeSentencePracticeIndexRoute
   '/_home/vocab/': typeof HomeVocabIndexRoute
   '/_home/lessons/_chapter-0/common-expressions': typeof HomeLessonsChapter0CommonExpressionsRoute
   '/_home/lessons/_chapter-0/contracted-sounds': typeof HomeLessonsChapter0ContractedSoundsRoute
@@ -542,6 +552,7 @@ export interface FileRouteTypes {
     | '/vocab/browse'
     | '/vocab/create'
     | '/api/auth/$'
+    | '/sentence-practice'
     | '/vocab/'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
@@ -595,6 +606,7 @@ export interface FileRouteTypes {
     | '/vocab/browse'
     | '/vocab/create'
     | '/api/auth/$'
+    | '/sentence-practice'
     | '/vocab'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
@@ -650,6 +662,7 @@ export interface FileRouteTypes {
     | '/_home/vocab/browse'
     | '/_home/vocab/create'
     | '/api/auth/$'
+    | '/_home/sentence-practice/'
     | '/_home/vocab/'
     | '/_home/lessons/_chapter-0/common-expressions'
     | '/_home/lessons/_chapter-0/contracted-sounds'
@@ -770,6 +783,13 @@ declare module '@tanstack/solid-router' {
       fullPath: '/vocab/'
       preLoaderRoute: typeof HomeVocabIndexRouteImport
       parentRoute: typeof HomeVocabRoute
+    }
+    '/_home/sentence-practice/': {
+      id: '/_home/sentence-practice/'
+      path: '/sentence-practice'
+      fullPath: '/sentence-practice'
+      preLoaderRoute: typeof HomeSentencePracticeIndexRouteImport
+      parentRoute: typeof HomeRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -1202,6 +1222,7 @@ interface HomeRouteChildren {
   HomeReviewRoute: typeof HomeReviewRoute
   HomeVocabRoute: typeof HomeVocabRouteWithChildren
   HomeSentencePracticeIdRoute: typeof HomeSentencePracticeIdRoute
+  HomeSentencePracticeIndexRoute: typeof HomeSentencePracticeIndexRoute
 }
 
 const HomeRouteChildren: HomeRouteChildren = {
@@ -1211,6 +1232,7 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeReviewRoute: HomeReviewRoute,
   HomeVocabRoute: HomeVocabRouteWithChildren,
   HomeSentencePracticeIdRoute: HomeSentencePracticeIdRoute,
+  HomeSentencePracticeIndexRoute: HomeSentencePracticeIndexRoute,
 }
 
 const HomeRouteWithChildren = HomeRoute._addFileChildren(HomeRouteChildren)
