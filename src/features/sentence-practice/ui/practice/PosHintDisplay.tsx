@@ -1,9 +1,9 @@
 // PosHintDisplay - shows colored POS boxes for the model answer structure
 
 import { For, Show, type Component } from "solid-js"
-import type { KagomeToken } from "../kagome/types"
+import type { KagomeToken } from "../../kagome/types"
 import PosHintBox from "./PosHintBox"
-import { getPosCategory, getWidthForCategory } from "./posHelpers"
+import { getPosCategory, getWidthForCategory } from "../common/posHelpers"
 
 interface PosHintDisplayProps {
   tokens: KagomeToken[] | undefined

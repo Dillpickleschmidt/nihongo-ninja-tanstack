@@ -1,4 +1,4 @@
-// core/variationGenerator.test.ts
+// core/answer-processing/variationGenerator.test.ts
 import { describe, it, expect } from "vitest"
 import {
   generateValidAnswers,
@@ -6,8 +6,8 @@ import {
   generateHonorificVariations,
   generateKanaVariations,
 } from "./variationGenerator"
-import type { RichSegment } from "./types"
-import { createRichSegment } from "./textProcessor"
+import type { RichSegment } from "../types"
+import { createRichSegment } from "../textProcessor"
 
 // Helper to strip segment separators for test assertions
 const stripSeparators = (s: string) => s.replace(/\x1F/g, "")

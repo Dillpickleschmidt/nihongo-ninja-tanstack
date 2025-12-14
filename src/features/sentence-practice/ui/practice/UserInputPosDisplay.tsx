@@ -1,9 +1,9 @@
 // UserInputPosDisplay - shows tokenized user input with colored POS boxes
 
 import { For, Show, type Component } from "solid-js"
-import type { KagomeToken } from "../kagome/types"
-import type { OverlayResult } from "../core/kanaToKanjiOverlay"
-import { getPosCategory, getCategoryColorClass, getCategoryDescription } from "./posHelpers"
+import type { KagomeToken } from "../../kagome/types"
+import type { OverlayResult } from "../../core/kanaToKanjiOverlay"
+import { getPosCategory, getCategoryColorClass, getCategoryDescription } from "../common/posHelpers"
 
 interface UserInputPosDisplayProps {
   tokens: KagomeToken[] | undefined

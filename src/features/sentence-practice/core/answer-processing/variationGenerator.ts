@@ -1,5 +1,5 @@
-import type { RichSegment, RichAnswer } from "./types"
-import { convertToKana, removeFurigana, SEGMENT_SEPARATOR } from "./textProcessor"
+import type { RichSegment, RichAnswer } from "../types"
+import { convertToKana, removeFurigana, SEGMENT_SEPARATOR } from "../textProcessor"
 
 const PRONOUNS = ["私[わたし]", "私[わたくし]", "僕[ぼく]", "俺[おれ]", "あたし", "うち"]
 const PLURAL_PRONOUNS = ["私[わたし]たち", "僕[ぼく]たち", "俺[おれ]たち"]

@@ -1,7 +1,7 @@
 import type { Doc } from "../../../../convex/_generated/dataModel"
 import type { ProcessedQuestion, RichSegment, RichAnswer } from "./types"
 import { processSegments } from "./segmentProcessor"
-import { generateValidAnswers } from "./variationGenerator"
+import { generateValidAnswers } from "./answer-processing/variationGenerator"
 import { SEGMENT_SEPARATOR } from "./textProcessor"
 
 // Processes segments (polite + casual) and generates all valid answer strings

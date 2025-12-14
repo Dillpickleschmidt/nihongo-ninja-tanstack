@@ -1,8 +1,8 @@
-// core/answerChecker.test.ts
+// core/answer-processing/answerChecker.test.ts
 import { describe, it, expect } from "vitest"
 import { checkAnswer, matchAnswer } from "./answerChecker"
-import type { RichAnswer } from "./types"
-import { removeFurigana, convertToKana } from "./textProcessor"
+import type { RichAnswer } from "../types"
+import { removeFurigana, convertToKana } from "../textProcessor"
 
 // Helper to convert string answers to RichAnswer format for tests
 function toRichAnswers(answers: string[]): RichAnswer[] {

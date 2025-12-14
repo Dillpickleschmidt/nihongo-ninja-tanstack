@@ -1,7 +1,7 @@
 import { For, Show } from "solid-js"
 import { CircleQuestionMark } from "lucide-solid"
 import { Button } from "@/components/ui/button"
-import { usePractice } from "../store/PracticeContext"
+import { usePractice } from "../../store/PracticeContext"
 import PracticeInput from "./PracticeInput"
 
 export default function FillInBlankInput() {

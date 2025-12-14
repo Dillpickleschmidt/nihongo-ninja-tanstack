@@ -4,7 +4,7 @@ import type { ProcessedQuestion, CheckResult } from "../core/types"
 import type { KagomeToken } from "../kagome/types"
 import type { OverlayResult } from "../core/kanaToKanjiOverlay"
 import { prepareQuestion } from "../core/questionProcessor"
-import { checkAnswer } from "../core/answerChecker"
+import { checkAnswer } from "../core/answer-processing/answerChecker"
 import { anyContainsKanji } from "../core/textProcessor"
 
 export type Difficulty = "easy" | "hard"

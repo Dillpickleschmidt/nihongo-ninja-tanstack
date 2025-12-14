@@ -1,7 +1,7 @@
 // ui/ResultDisplay.tsx
 import { Show } from "solid-js"
-import { usePractice } from "../store/PracticeContext"
-import FuriganaText from "./FuriganaText"
+import { usePractice } from "../../store/PracticeContext"
+import FuriganaText from "../common/FuriganaText"
 
 export default function ResultDisplay() {
   const { store, computed } = usePractice()

@@ -6,7 +6,7 @@ import {
   getPosCategory,
   getCategoryColorClass,
   getCategoryDescription,
-} from "./posHelpers"
+} from "../common/posHelpers"
 
 interface PosHintBoxProps {
   pos: string[]

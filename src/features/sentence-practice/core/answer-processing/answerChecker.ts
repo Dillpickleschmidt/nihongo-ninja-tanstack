@@ -1,5 +1,5 @@
-import type { CheckResult, ErrorRange, RichAnswer } from "./types"
-import { normalizeWithPositions } from "./textProcessor"
+import type { CheckResult, ErrorRange, RichAnswer } from "../types"
+import { normalizeWithPositions } from "../textProcessor"
 
 export interface MatchResult {
   similarity: number

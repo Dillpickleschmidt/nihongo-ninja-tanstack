@@ -1,5 +1,5 @@
 // ui/ProgressDisplay.tsx
-import { usePractice } from "../store/PracticeContext"
+import { usePractice } from "../../store/PracticeContext"
 
 export default function ProgressDisplay() {
   const { store } = usePractice()

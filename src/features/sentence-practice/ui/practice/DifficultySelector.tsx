@@ -1,7 +1,7 @@
 // ui/DifficultySelector.tsx
 import { Button } from "@/components/ui/button"
-import { usePractice } from "../store/PracticeContext"
-import type { Difficulty } from "../store/practiceStore"
+import { usePractice } from "../../store/PracticeContext"
+import type { Difficulty } from "../../store/practiceStore"
 
 export default function DifficultySelector() {
   const { store, actions } = usePractice()

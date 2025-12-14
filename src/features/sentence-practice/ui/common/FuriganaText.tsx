@@ -1,6 +1,6 @@
 import { createMemo } from "solid-js"
-import { convertToRuby, removeFurigana, calculatePositionMap } from "../core/textProcessor"
-import type { ErrorRange } from "../core/types"
+import { convertToRuby, removeFurigana, calculatePositionMap } from "../../core/textProcessor"
+import type { ErrorRange } from "../../core/types"
 
 interface FuriganaTextProps {
   text: string

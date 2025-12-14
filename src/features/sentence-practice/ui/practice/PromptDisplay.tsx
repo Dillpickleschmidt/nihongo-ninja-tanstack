@@ -1,6 +1,6 @@
 // ui/PromptDisplay.tsx
 import { Show } from "solid-js"
-import type { ProcessedQuestion } from "../core/types"
+import type { ProcessedQuestion } from "../../core/types"
 
 interface PromptDisplayProps {
   question: ProcessedQuestion

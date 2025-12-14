@@ -1,7 +1,7 @@
 // ui/PracticeContainer.tsx
 import { Show, createEffect } from "solid-js"
-import type { Doc } from "../../../../convex/_generated/dataModel"
-import { usePractice } from "../store/PracticeContext"
+import type { Doc } from "../../../../../convex/_generated/dataModel"
+import { usePractice } from "../../store/PracticeContext"
 import PromptDisplay from "./PromptDisplay"
 import FillInBlankInput from "./FillInBlankInput"
 import FullInput from "./FullInput"
