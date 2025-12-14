@@ -3,10 +3,16 @@ import { Show } from "solid-js"
 import { CircleQuestionMark } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import { usePractice } from "../store/PracticeContext"
+import { useTokenization } from "../hooks/useTokenization"
 import PracticeInput from "./PracticeInput"
+import PosHintDisplay from "./PosHintDisplay"
+import UserInputPosDisplay from "./UserInputPosDisplay"
 
 export default function FullInput() {
   const { store, actions, computed } = usePractice()
+
+  // Initialize tokenization effects
+  useTokenization()
 
   const isAnswerCorrect = () =>
     store.showResult && store.checkResult?.isCorrect
@@ -21,6 +27,16 @@ export default function FullInput() {
 
   return (
     <div class="space-y-4">
+      {/* POS hint boxes */}
+      <div>
+        <PosHintDisplay tokens={store.modelAnswerTokens} />
+        <UserInputPosDisplay
+          tokens={store.userInputTokens}
+          overlayResult={store.overlayResult}
+          originalInput={store.singleInput}
+        />
+      </div>
+
       <div>
         <PracticeInput
           value={store.singleInput}

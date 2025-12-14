@@ -1,6 +1,8 @@
 import { createStore } from "solid-js/store"
 import type { Doc } from "../../../../convex/_generated/dataModel"
 import type { ProcessedQuestion, CheckResult } from "../core/types"
+import type { KagomeToken } from "../kagome/types"
+import type { OverlayResult } from "../core/kanaToKanjiOverlay"
 import { prepareQuestion } from "../core/questionProcessor"
 import { checkAnswer } from "../core/answerChecker"
 import { anyContainsKanji } from "../core/textProcessor"
@@ -20,6 +22,11 @@ export interface PracticeState {
   effectiveDifficulty: Difficulty
   showFurigana: boolean
   isLoading: boolean
+  // Tokenization state
+  kagomeReady: boolean
+  modelAnswerTokens: KagomeToken[]
+  userInputTokens: KagomeToken[]
+  overlayResult: OverlayResult | null
 }
 
 const initialState: PracticeState = {
@@ -33,6 +40,11 @@ const initialState: PracticeState = {
   effectiveDifficulty: "hard",
   showFurigana: true,
   isLoading: true,
+  // Tokenization initial state
+  kagomeReady: false,
+  modelAnswerTokens: [],
+  userInputTokens: [],
+  overlayResult: null,
 }
 
 export function createPracticeStore() {
@@ -131,6 +143,10 @@ export function createPracticeStore() {
           checkResult: undefined,
           effectiveDifficulty,
           isLoading: false,
+          // Reset tokenization state
+          modelAnswerTokens: [],
+          userInputTokens: [],
+          overlayResult: null,
         })
       },
 
@@ -177,6 +193,10 @@ export function createPracticeStore() {
           showResult: false,
           checkResult: undefined,
           effectiveDifficulty,
+          // Reset tokenization state
+          modelAnswerTokens: [],
+          userInputTokens: [],
+          overlayResult: null,
         })
       },
 
@@ -215,6 +235,29 @@ export function createPracticeStore() {
       // Toggle furigana display
       toggleFurigana: () => {
         setStore("showFurigana", (prev) => !prev)
+      },
+
+      // Tokenization actions
+      setKagomeReady: (ready: boolean) => {
+        setStore("kagomeReady", ready)
+      },
+
+      setModelAnswerTokens: (tokens: KagomeToken[]) => {
+        setStore("modelAnswerTokens", tokens)
+      },
+
+      setUserInputTokens: (tokens: KagomeToken[], overlayResult: OverlayResult | null) => {
+        setStore({
+          userInputTokens: tokens,
+          overlayResult,
+        })
+      },
+
+      clearUserInputTokens: () => {
+        setStore({
+          userInputTokens: [],
+          overlayResult: null,
+        })
       },
     },
     // Computed values
