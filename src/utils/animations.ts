@@ -143,6 +143,11 @@ export function observeElementForAnimation(
     noExit = false,
   } = options
 
+  // Apply initial animation styles only if element should start hidden
+  if (!startVisible) {
+    Object.assign(element.style, getInitialAnimationStyles(initialPosition))
+  }
+
   // Create sentinel wrapper (observing this instead of element avoids animation feedback)
   const sentinel = document.createElement("div")
   // Copy snap classes to sentinel so scroll-snap still works

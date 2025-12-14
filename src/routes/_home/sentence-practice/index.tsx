@@ -1,8 +1,7 @@
-import { For, Show, createMemo, createSignal } from "solid-js"
-import { createFileRoute } from "@tanstack/solid-router"
+import { For, Show, createMemo, createSignal, onMount, onCleanup } from "solid-js"
+import { createFileRoute, Link } from "@tanstack/solid-router"
 import { useMutation } from "convex-solidjs"
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
-import { Button } from "@/components/ui/button"
 import {
   Select,
   SelectTrigger,
@@ -10,11 +9,10 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select"
-import { SmoothCardLink } from "@/components/SmoothCard"
-import { Search, PencilLine } from "lucide-solid"
+import { Search, PencilLine, ChevronRight, BookOpen } from "lucide-solid"
 import { cn } from "@/utils"
 import { dynamic_modules, type DynamicModule } from "@/data/dynamic_modules"
-import { chapters } from "@/data/chapters"
+import { chapters, type LearningPathChapter } from "@/data/chapters"
 import { textbooks } from "@/data/textbooks"
 import { Sidebar } from "@/features/sidebar/Sidebar"
 import { getUser } from '@/lib/auth'
@@ -22,6 +20,7 @@ import { useConvexQuery, convexQuery } from "@/lib/convex-query"
 import { useQueryClient } from '@tanstack/solid-query'
 import { queryKeys } from "~/query/query-keys"
 import { api } from "../../../../convex/_generated/api"
+import { getInitialAnimationStyles, observeElementForAnimation } from "@/utils/animations"
 
 export const Route = createFileRoute("/_home/sentence-practice/")({
   loader: ({ context }) => {
@@ -33,21 +32,9 @@ export const Route = createFileRoute("/_home/sentence-practice/")({
   component: SentencePracticeList,
 })
 
-type EnrichedSentenceModule = {
-  id: string
-  title: string
-  description?: string
-  linkTo: string
-}
-
-function enrichModule(mod: { id: string } & DynamicModule): EnrichedSentenceModule {
-  const strippedId = mod.id.replace(/^sentence-practice-/, "")
-  return {
-    id: mod.id,
-    title: mod.title,
-    description: mod.instructions || mod.description,
-    linkTo: `/sentence-practice/${strippedId}`,
-  }
+type ChapterGroup = {
+  chapter: LearningPathChapter
+  modules: EnrichedSentenceModule[]
 }
 
 function SentencePracticeList() {
@@ -85,44 +72,55 @@ function SentencePracticeList() {
       .map(([id, textbook]) => ({ id, name: textbook.short_name || textbook.name }))
   )
 
-  // Get all sentence-practice module IDs for active textbook
-  const textbookSentenceModuleIds = createMemo(() => {
+  // Group modules by chapter
+  const groupedByChapter = createMemo((): ChapterGroup[] => {
     const learningPath = activeLearningPath()
     const textbookChapters = chapters[learningPath as keyof typeof chapters]
     if (!textbookChapters) return []
 
-    const moduleIds = new Set<string>()
-    Object.values(textbookChapters).forEach((chapter) => {
+    const groups: ChapterGroup[] = []
+
+    Object.entries(textbookChapters).forEach(([chapterSlug, chapter]) => {
+      const chapterModules: EnrichedSentenceModule[] = []
+
       chapter.learning_path_item_ids.forEach((itemId) => {
         if (itemId.startsWith("sentence-practice-")) {
-          moduleIds.add(itemId)
+          const module = dynamic_modules[itemId]
+          if (module) {
+            chapterModules.push(enrichModule({ id: itemId, ...module }, chapterSlug))
+          }
         }
       })
+
+      if (chapterModules.length > 0) {
+        groups.push({ chapter, modules: chapterModules })
+      }
     })
 
-    return Array.from(moduleIds)
-  })
-
-  // Filter dynamic_modules to only show modules for active textbook
-  const allModules = createMemo(() => {
-    const allowedIds = textbookSentenceModuleIds()
-    return Object.entries(dynamic_modules)
-      .filter(([moduleId]) => allowedIds.includes(moduleId))
-      .map(([id, module]) => ({ id, ...module }))
-      .map(enrichModule)
+    return groups
   })
 
   // Filter modules based on search
-  const filteredModules = createMemo(() => {
+  const filteredGroups = createMemo((): ChapterGroup[] => {
     const q = search().trim().toLowerCase()
-    if (!q) return allModules()
-    return allModules().filter(
-      (m) =>
-        m.title.toLowerCase().includes(q) ||
-        (m.description || "").toLowerCase().includes(q) ||
-        m.id.toLowerCase().includes(q),
-    )
+    if (!q) return groupedByChapter()
+
+    return groupedByChapter()
+      .map(group => ({
+        ...group,
+        modules: group.modules.filter(
+          (m) =>
+            m.title.toLowerCase().includes(q) ||
+            (m.description || "").toLowerCase().includes(q) ||
+            m.id.toLowerCase().includes(q),
+        )
+      }))
+      .filter(group => group.modules.length > 0)
   })
+
+  const totalModules = createMemo(() =>
+    groupedByChapter().reduce((acc, g) => acc + g.modules.length, 0)
+  )
 
   return (
     <div class="flex">
@@ -130,7 +128,7 @@ function SentencePracticeList() {
         <Sidebar animated={false} />
       </div>
       <div class="2xl:pl-12" />
-      <div class="relative mx-auto mt-10 w-full max-w-6xl px-4 pb-28 lg:pt-16">
+      <div class="relative mx-auto mt-10 w-full max-w-5xl px-4 pb-28 lg:pt-16">
         {/* Textbook selector (top-right) */}
         <div class="absolute -top-14 right-4 flex items-center gap-1 lg:top-16">
           <Show when={profileQuery.data}>
@@ -161,32 +159,32 @@ function SentencePracticeList() {
         </div>
 
         {/* Header */}
-        <div class="mb-6 flex flex-col gap-2 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
+        <div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <div class="mb-1">
-              <span class="text-xs font-medium tracking-wide text-yellow-500/90 uppercase">
-                Vocab + Grammar
+            <div class="mb-2 flex items-center gap-2">
+              <PencilLine class="size-4 text-amber-400" />
+              <span class="text-xs font-semibold tracking-widest text-amber-400/90 uppercase">
+                Sentence Practice
               </span>
             </div>
-            <h1 class="font-display text-3xl leading-tight font-bold tracking-tight md:text-4xl">
-              Sentence Practice
+            <h1 class="font-japanese text-4xl leading-tight font-bold tracking-tight md:text-5xl">
+              文型練習
             </h1>
-            <p class="text-muted-foreground mt-1 max-w-prose text-sm md:text-base">
-              Practice building and understanding sentences with guided prompts.
-              Your available sets come from the currently selected textbook.
+            <p class="text-muted-foreground mt-2 max-w-lg text-sm leading-relaxed md:text-base">
+              Master sentence patterns chapter by chapter. Build your understanding progressively.
             </p>
           </div>
 
           {/* Search */}
-          <div class="w-full sm:w-80">
+          <div class="w-full sm:w-72">
             <TextField class="w-full">
               <div class="relative">
-                <Search class="text-muted-foreground pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+                <Search class="text-muted-foreground pointer-events-none absolute top-1/2 left-3 h-4 w-4 z-10 -translate-y-1/2" />
                 <TextFieldInput
-                  placeholder="Search sentence sets..."
+                  placeholder="Search patterns..."
                   value={search()}
                   onInput={(e) => setSearch(e.currentTarget.value)}
-                  class="pl-9 focus-visible:ring-yellow-500"
+                  class="bg-card/40 border-card-foreground/20 pl-9 backdrop-blur-sm focus-visible:ring-amber-500/50"
                 />
               </div>
             </TextField>
@@ -197,90 +195,40 @@ function SentencePracticeList() {
         <Show
           when={!profileQuery.isLoading()}
           fallback={
-            <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-              <For each={Array.from({ length: 6 })}>
+            <div class="space-y-8">
+              <For each={Array.from({ length: 3 })}>
                 {() => (
-                  <div class="border-card-foreground/40 bg-card/60 h-[130px] animate-pulse rounded-2xl border" />
+                  <div class="space-y-3">
+                    <div class="bg-card/40 h-8 w-48 animate-pulse rounded-lg" />
+                    <div class="bg-card/40 h-24 animate-pulse rounded-xl" />
+                  </div>
                 )}
               </For>
             </div>
           }
         >
           <Show
-            when={allModules().length > 0}
+            when={totalModules() > 0}
             fallback={
-              <div class="text-muted-foreground">
-                No sentence practice modules found for this textbook.
+              <div class="text-muted-foreground py-12 text-center">
+                <BookOpen class="mx-auto mb-3 size-12 opacity-50" />
+                <p>No sentence practice modules found for this textbook.</p>
               </div>
             }
           >
-            <div class="flex flex-col items-center">
-              <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-                <For each={filteredModules()}>
-                  {(m) => (
-                    <SmoothCardLink
-                      to={m.linkTo}
-                      width={360}
-                      height={130}
-                      cornerRadius={22}
-                      cornerSmoothing={0.8}
-                      scales={{ sm: 0.9, md: 0.95, lg: 1, xl: 1, "2xl": 1 }}
-                      border
-                      borderClass="stroke-yellow-500/20"
-                      focusRing
-                      focusRingClass="stroke-yellow-500/50"
-                      focusStrokeWidth={2.5}
-                      class={cn(
-                        "relative overflow-hidden",
-                        "bg-transparent bg-gradient-to-br from-yellow-500/10 to-yellow-600/10",
-                        "backdrop-blur-md shadow-lg shadow-black/20",
-                        "ease-instant-hover-150 hover:scale-[1.02]",
-                      )}
-                    >
-                      {/* Subtle radial highlight */}
-                      <div class="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full bg-yellow-400/10 blur-2xl" />
-
-                      <div class="relative flex h-full items-stretch justify-between p-4.5">
-                        <div class="min-w-0 pr-3">
-                          <h3 class="line-clamp-2 text-base leading-snug font-semibold">
-                            {m.title}
-                          </h3>
-                          <Show when={m.description}>
-                            <p class="text-muted-foreground mt-1 line-clamp-2 text-xs">
-                              {m.description}
-                            </p>
-                          </Show>
-
-                          <div class="mt-3">
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              class="border-card-foreground/40 h-7 rounded-full border px-3 text-xs font-medium text-yellow-600 hover:bg-yellow-500/10 hover:text-yellow-500 dark:text-yellow-500"
-                              tabindex="-1"
-                            >
-                              Explore
-                            </Button>
-                          </div>
-                        </div>
-
-                        <div class="flex items-end">
-                          <div class="flex size-10 items-center justify-center rounded-xl bg-yellow-500/10">
-                            <PencilLine class="size-5 text-yellow-600 dark:text-yellow-500 saturate-75" />
-                          </div>
-                        </div>
-                      </div>
-                    </SmoothCardLink>
-                  )}
-                </For>
-              </div>
+            {/* Chapter groups */}
+            <div class="space-y-6">
+              <For each={filteredGroups()}>
+                {(group) => <ChapterGroupItem group={group} />}
+              </For>
             </div>
 
             {/* Empty search results */}
-            <Show
-              when={filteredModules().length === 0 && allModules().length > 0}
-            >
-              <div class="text-muted-foreground mt-6 text-sm">
-                No results for "{search()}". Try a different search.
+            <Show when={filteredGroups().length === 0 && totalModules() > 0}>
+              <div class="text-muted-foreground py-12 text-center">
+                <Search class="mx-auto mb-3 size-10 opacity-50" />
+                <p>No results for "{search()}"</p>
+                <p class="mt-1 text-sm opacity-70">Try a different search term</p>
               </div>
             </Show>
           </Show>
@@ -288,4 +236,88 @@ function SentencePracticeList() {
       </div>
     </div>
   )
+}
+
+function ChapterGroupItem(props: { group: ChapterGroup }) {
+  let ref: HTMLDivElement | undefined
+
+  onMount(() => {
+    if (ref) {
+      const cleanup = observeElementForAnimation(ref, {
+        initialPosition: "down",
+        startVisible: false,
+        noExit: true,
+        screenBottomOffset: 15,
+        screenTopOffset: 15,
+      })
+      onCleanup(cleanup)
+    }
+  })
+
+  return (
+    <div ref={ref} style={getInitialAnimationStyles("down")}>
+      {/* Chapter header */}
+      <div class="mb-1.5 flex items-center gap-2">
+        <div class="flex size-6 items-center justify-center rounded-md bg-gradient-to-br from-amber-500/20 to-orange-500/20 text-xs font-bold text-amber-400">
+          {props.group.chapter.slug.replace("chapter-", "").replace(/^0/, "")}
+        </div>
+        <span class="text-muted-foreground/60 text-xs">
+          · {props.group.modules.length} {props.group.modules.length === 1 ? "pattern" : "patterns"}
+        </span>
+      </div>
+
+      {/* Module list */}
+      <ul class="relative ml-[7px] border-l-2 border-card-foreground/10">
+        <For each={props.group.modules}>
+          {(m, index) => (
+            <li class={cn("relative", index() !== props.group.modules.length - 1 && "pb-1")}>
+              <Link
+                to={m.linkTo}
+                class={cn(
+                  "group flex items-center gap-3 rounded-lg py-2.5 pr-3 pl-6 transition-all duration-150",
+                  "hover:bg-amber-500/5",
+                  "focus-visible:outline-none focus-visible:bg-amber-500/10"
+                )}
+              >
+                {/* Timeline dot - vertically centered */}
+                <div class="absolute left-[-7px] top-1/2 -translate-y-1/2 size-3 rounded-full border-2 border-card-foreground/20 bg-background transition-colors group-hover:border-amber-500 group-hover:bg-amber-500" />
+
+                <div class="min-w-0 flex-1">
+                  <h3 class="text-sm font-medium leading-tight transition-colors group-hover:text-amber-400">
+                    {m.title}
+                  </h3>
+                  <Show when={m.description}>
+                    <p class="text-muted-foreground mt-0.5 line-clamp-1 text-xs">
+                      {m.description}
+                    </p>
+                  </Show>
+                </div>
+
+                <ChevronRight class="size-4 shrink-0 text-muted-foreground/40 transition-all group-hover:translate-x-0.5 group-hover:text-amber-400" />
+              </Link>
+            </li>
+          )}
+        </For>
+      </ul>
+    </div>
+  )
+}
+
+type EnrichedSentenceModule = {
+  id: string
+  title: string
+  description?: string
+  linkTo: string
+  chapterSlug?: string
+}
+
+function enrichModule(mod: { id: string } & DynamicModule, chapterSlug?: string): EnrichedSentenceModule {
+  const strippedId = mod.id.replace(/^sentence-practice-/, "")
+  return {
+    id: mod.id,
+    title: mod.title,
+    description: mod.instructions || mod.description,
+    linkTo: `/sentence-practice/${strippedId}`,
+    chapterSlug,
+  }
 }
