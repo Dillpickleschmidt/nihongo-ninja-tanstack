@@ -1,7 +1,7 @@
 import { internalAction, mutation, internalMutation, query } from '../_generated/server'
 import { internal } from '../_generated/api'
 import { v } from 'convex/values'
-import { Search } from '../../src/features/discover/api/anilist/queries'
+import { DiscoverSearch } from '../../src/features/discover/api/anilist/queries'
 import * as animeModel from '../model/anime'
 
 // Unified query for all anime sections (trending, popular, genre, etc.)
@@ -121,7 +121,7 @@ export const fetchAllSections = internalAction({
 
     await Promise.all(
       args.sections.map(async (section) => {
-        const data = await animeModel.fetchFromAniList(Search, section.queryVars)
+        const data = await animeModel.fetchFromAniList(DiscoverSearch, section.queryVars)
 
         let hqImages: Record<string, string> | undefined
         if (section.type === 'trending') {

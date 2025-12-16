@@ -134,6 +134,32 @@ relations {
   [FullMediaList, MediaEdgeFrag],
 )
 
+export const DiscoverMedia = gql(`
+  fragment DiscoverMedia on Media @_unmask {
+    id
+    title {
+      romaji
+      english
+      native
+      userPreferred
+    }
+    coverImage {
+      extraLarge
+      medium
+      color
+    }
+    bannerImage
+    description
+    episodes
+    format
+    status
+    season
+    seasonYear
+    averageScore
+    genres
+  }
+`)
+
 export const UserFrag = gql(`
   fragment UserFrag on User @_unmask {
     id,
@@ -178,6 +204,22 @@ export const Search = gql(
   }
 `,
   [FullMedia],
+)
+
+export const DiscoverSearch = gql(
+  `
+  query DiscoverSearch($page: Int, $perPage: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat, $sort: [MediaSort], $genre: [String], $statusNot: [MediaStatus]) {
+    Page(page: $page, perPage: $perPage) {
+      pageInfo {
+        hasNextPage
+      },
+      media(type: ANIME, season: $season, seasonYear: $seasonYear, format: $format, sort: $sort, genre_in: $genre, status_not_in: $statusNot) {
+        ...DiscoverMedia
+      }
+    }
+  }
+`,
+  [DiscoverMedia],
 )
 
 export const IDMedia = gql(
