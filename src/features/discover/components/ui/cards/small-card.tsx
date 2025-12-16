@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/solid-router"
-import { Show, createSignal } from "solid-js"
+import { Show, createSignal, onMount } from "solid-js"
 import { CalendarDays, Tv } from "lucide-solid"
 import { StatusDot } from "../status-dot"
 import { LoadImage } from "../img/load-image"
@@ -22,6 +22,19 @@ export function SmallAnimeCard(props: SmallAnimeCardProps) {
   // TODO: Implement hover effects for card details display
   // TODO: Implement navigation to anime detail page (currently links to '.', needs `/explore/anime/${props.media.id}`)
   const [hidden, setHidden] = createSignal(true)
+  let cardRef: HTMLDivElement | undefined
+
+  onMount(() => {
+    // Use Web Animations API - runs once via JavaScript, immune to CSS animation restarts
+    cardRef?.animate([
+      { transform: 'translate3d(0, 1.2rem, 0) scale(0.95)' },
+      { transform: 'translate3d(0, 0, 0) scale(1)' }
+    ], {
+      duration: 300,
+      easing: 'ease',
+      fill: 'forwards'
+    })
+  })
 
   const coverUrl = () => coverMedium(props.media as any) ?? ""
   const titleText = () => title(props.media as any)
@@ -41,7 +54,8 @@ export function SmallAnimeCard(props: SmallAnimeCardProps) {
       onMouseLeave={() => setHidden(true)}
     >
       <div
-        class="item flex w-38 flex-col"
+        ref={cardRef}
+        class="flex w-38 flex-col"
         style={{ "aspect-ratio": "152/290" }}
       >
         {/* Cover Image */}

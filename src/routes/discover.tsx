@@ -3,44 +3,37 @@ import { useQueryClient } from '@tanstack/solid-query'
 import { queryKeys } from '~/query/query-keys'
 import { getGenericSections, getCurrentSeason } from '~/features/discover/utils/section-configs'
 import { BannerSection } from '~/features/discover/components/ui/homepage/banner-section'
-import { PersonalizedSections } from '~/features/discover/components/ui/homepage/personalized-sections'
 import { GenericSections } from '~/features/discover/components/ui/homepage/generic-sections'
-import { getUser } from '~/lib/auth'
-import { convexMutation, convexQuery } from '~/lib/convex-query'
+import { convexQuery, convexMutation } from '~/lib/convex-query'
 import { api } from '~/../convex/_generated/api'
 import { BottomNav } from '~/features/navbar/Nav'
 
 export const Route = createFileRoute('/discover')({
   loader: ({ context }) => {
     const { season, year } = getCurrentSeason()
+    const genericSections = getGenericSections(season, year)
 
-    const mutationFn = convexMutation(api.api.anime.ensureTrendingAnime, {
-      season,
-      year,
+    const sections = genericSections.map(section => ({
+      type: section.type!,
+      params: section.params,
+      queryVars: section.queryVars,
+    }))
+
+    const mutationFn = convexMutation(api.api.anime.ensureAllSections, {
+      sections,
     })
     mutationFn().catch(() => { })
 
-    const popularSeasonFn = convexMutation(api.api.anime.ensurePopularSeasonAnime, {
-      season,
-      year,
-    })
-    popularSeasonFn().catch(() => { })
-
-    const allTimePopularFn = convexMutation(api.api.anime.ensureAllTimePopularAnime, {})
-    allTimePopularFn().catch(() => { })
-
-    const genres = ['Romance', 'Action', 'Adventure', 'Fantasy']
-    genres.forEach((genre) => {
-      const genreFn = convexMutation(api.api.anime.ensureGenreAnime, { genre })
-      genreFn().catch(() => { })
-    })
-
     context.queryClient.prefetchQuery(
-      convexQuery(api.api.anime.getTrendingAnime, { season, year })
+      convexQuery(api.api.anime.getSectionAnime, {
+        sectionType: 'trending',
+        season,
+        year
+      })
     )
 
     return {
-      genericSections: getGenericSections(),
+      genericSections,
     }
   },
   component: DiscoverPage,
@@ -48,7 +41,6 @@ export const Route = createFileRoute('/discover')({
 
 function DiscoverPage() {
   const loaderData = Route.useLoaderData()
-  const user = getUser()
   const queryClient = useQueryClient()
 
   queryClient.setQueryData(queryKeys.backgroundSettings(), {
@@ -62,7 +54,6 @@ function DiscoverPage() {
       <BannerSection />
 
       <div class="mx-auto pb-16 sm:px-2">
-        {/* <PersonalizedSections userId={user()?.id} /> */}
         <GenericSections sections={loaderData().genericSections} />
       </div>
 

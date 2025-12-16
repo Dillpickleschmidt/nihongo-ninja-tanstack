@@ -439,10 +439,7 @@
   }
 }
 
-/* Card item load-in animation */
-.item {
-  animation: 0.3s ease 0s 1 load-in;
-}
+/* Card load-in animation now handled via Web Animations API in JavaScript */
 
 /* Driver.js tour popover styling */
 .driver-popover.nihongo-ninja-tour {

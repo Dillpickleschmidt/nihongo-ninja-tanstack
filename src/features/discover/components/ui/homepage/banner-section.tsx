@@ -12,8 +12,8 @@ export function BannerSection() {
 
   // Use Convex query for reactivity
   const trendingQuery = useConvexQuery(
-    api.api.anime.getTrendingAnime,
-    () => ({ season, year })
+    api.api.anime.getSectionAnime,
+    () => ({ sectionType: 'trending' as const, season, year })
   )
 
   // Derive banner data using shuffled indices from Convex
