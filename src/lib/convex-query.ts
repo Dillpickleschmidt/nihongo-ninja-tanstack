@@ -42,6 +42,48 @@ export const convexQuery = createIsomorphicFn()
     })
   )
 
+// For actions - isomorphic (works on both server and client)
+export const convexAction = createIsomorphicFn()
+  .server(
+    <Action extends FunctionReference<'action'>>(
+      action: Action,
+      args: FunctionArgs<Action>
+    ) => async (): Promise<FunctionReturnType<Action>> => {
+      const { fetchAction } = await import('./auth-server')
+      return fetchAction(action, args)
+    }
+  )
+  .client(
+    <Action extends FunctionReference<'action'>>(
+      action: Action,
+      args: FunctionArgs<Action>
+    ) => async (): Promise<FunctionReturnType<Action>> => {
+      const { convexClient } = await import('@/providers/convex')
+      return convexClient.action(action, args)
+    }
+  )
+
+// For mutations - isomorphic (works on both server and client)
+export const convexMutation = createIsomorphicFn()
+  .server(
+    <Mutation extends FunctionReference<'mutation'>>(
+      mutation: Mutation,
+      args: FunctionArgs<Mutation>
+    ) => async (): Promise<FunctionReturnType<Mutation>> => {
+      const { fetchMutation } = await import('./auth-server')
+      return fetchMutation(mutation, args)
+    }
+  )
+  .client(
+    <Mutation extends FunctionReference<'mutation'>>(
+      mutation: Mutation,
+      args: FunctionArgs<Mutation>
+    ) => async (): Promise<FunctionReturnType<Mutation>> => {
+      const { convexClient } = await import('@/providers/convex')
+      return convexClient.mutation(mutation, args)
+    }
+  )
+
 type MaybeAccessor<T> = T | (() => T)
 
 interface QueryOptions {

@@ -124,9 +124,9 @@ function SentencePracticeList() {
 
   return (
     <div class="flex">
-      <div class="sticky top-0 -mt-16 self-start 2xl:fixed 2xl:mt-0">
-        <Sidebar animated={false} />
-      </div>
+      {/* <div class="sticky top-0 -mt-16 self-start 2xl:fixed 2xl:mt-0"> */}
+      {/*   <Sidebar animated={false} /> */}
+      {/* </div> */}
       <div class="2xl:pl-12" />
       <div class="relative mx-auto mt-10 w-full max-w-5xl px-4 pb-28 lg:pt-16">
         {/* Textbook selector (top-right) */}
@@ -193,7 +193,7 @@ function SentencePracticeList() {
 
         {/* Content */}
         <Show
-          when={!profileQuery.isLoading()}
+          when={profileQuery.data() !== undefined}
           fallback={
             <div class="space-y-8">
               <For each={Array.from({ length: 3 })}>

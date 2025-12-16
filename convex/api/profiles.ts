@@ -29,3 +29,23 @@ export const ensureProfile = mutation({
   args: {},
   handler: (ctx) => Profiles.ensureProfileExists(ctx),
 })
+
+/**
+ * Gets a service token (AniList, Kitsu, MAL) for the authenticated user
+ */
+export const getServiceToken = query({
+  args: {
+    service: v.union(v.literal('anilist'), v.literal('kitsu'), v.literal('mal')),
+  },
+  handler: async (ctx, { service }) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity) return null
+
+    return await ctx.db
+      .query('userServiceTokens')
+      .withIndex('by_user_service', (q) =>
+        q.eq('userId', identity.subject).eq('service', service),
+      )
+      .first()
+  },
+})

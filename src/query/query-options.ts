@@ -3,6 +3,8 @@ import { fetchAuth } from '@/lib/server'
 import { queryKeys } from './query-keys'
 import { parseDeviceSettingsCookie } from './model/device-settings'
 import type { BackgroundSettings } from '~/components/TextbookChapterBackgrounds'
+import { queryAniList } from '~/features/discover/api/anilist/query-wrapper'
+import type { VariablesOf } from 'gql.tada'
 
 // ============================================================================
 // Auth Query Options
@@ -50,6 +52,32 @@ export const backgroundSettingsQueryOptions = () => {
     queryKey: queryKeys.backgroundSettings(),
     queryFn: async () => defaultBackgroundSettings,
     initialData: defaultBackgroundSettings,
+    staleTime: Infinity,  // Background settings never go stale
+    gcTime: Infinity,     // Keep in cache forever
+  })
+}
+
+// ============================================================================
+// AniList Query Options (Personalized Sections Only)
+// ============================================================================
+
+/**
+ * Create TanStack Query options for AniList GraphQL queries
+ *
+ * NOTE: This is kept for personalized sections (Continue Watching, Planning to Watch, etc.)
+ * which use user-specific queries that cannot be cached globally in Convex.
+ * Generic sections (Popular, Trending, etc.) use Convex queries instead.
+ */
+export function anilistQueryOptions<T extends { definitions: readonly any[] }>(
+  query: T,
+  variables: VariablesOf<T> = {} as VariablesOf<T>,
+) {
+  const queryName = query.definitions?.[0]?.name?.value ?? 'unknown'
+
+  return queryOptions({
+    queryKey: ['anilist', queryName, variables],
+    queryFn: () => queryAniList(query, variables),
+    staleTime: Infinity,
   })
 }
 

@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as HomeRouteImport } from './routes/_home'
@@ -16,7 +17,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
 import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeLessonsRouteImport } from './routes/_home/lessons'
-import { Route as HomeDiscoverRouteImport } from './routes/_home/discover'
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeVocabIndexRouteImport } from './routes/_home/vocab/index'
 import { Route as HomeSentencePracticeIndexRouteImport } from './routes/_home/sentence-practice/index'
@@ -64,6 +64,11 @@ import { Route as HomeLessonsChapter0ContractedSoundsRouteImport } from './route
 import { Route as HomeLessonsChapter0CommonExpressionsRouteImport } from './routes/_home/lessons/_chapter-0/common-expressions'
 import { Route as HomeVocabDeckDeckIdEditRouteImport } from './routes/_home/vocab/deck/$deckId/edit'
 
+const DiscoverRoute = DiscoverRouteImport.update({
+  id: '/discover',
+  path: '/discover',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -96,11 +101,6 @@ const HomeReviewRoute = HomeReviewRouteImport.update({
 const HomeLessonsRoute = HomeLessonsRouteImport.update({
   id: '/lessons',
   path: '/lessons',
-  getParentRoute: () => HomeRoute,
-} as any)
-const HomeDiscoverRoute = HomeDiscoverRouteImport.update({
-  id: '/discover',
-  path: '/discover',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeDashboardRoute = HomeDashboardRouteImport.update({
@@ -374,8 +374,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/discover': typeof DiscoverRoute
   '/dashboard': typeof HomeDashboardRoute
-  '/discover': typeof HomeDiscoverRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
   '/vocab': typeof HomeVocabRouteWithChildren
@@ -429,8 +429,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/discover': typeof DiscoverRoute
   '/dashboard': typeof HomeDashboardRoute
-  '/discover': typeof HomeDiscoverRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
@@ -485,8 +485,8 @@ export interface FileRoutesById {
   '/_home': typeof HomeRouteWithChildren
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/discover': typeof DiscoverRoute
   '/_home/dashboard': typeof HomeDashboardRoute
-  '/_home/discover': typeof HomeDiscoverRoute
   '/_home/lessons': typeof HomeLessonsRouteWithChildren
   '/_home/review': typeof HomeReviewRoute
   '/_home/vocab': typeof HomeVocabRouteWithChildren
@@ -542,8 +542,8 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
-    | '/dashboard'
     | '/discover'
+    | '/dashboard'
     | '/lessons'
     | '/review'
     | '/vocab'
@@ -597,8 +597,8 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
-    | '/dashboard'
     | '/discover'
+    | '/dashboard'
     | '/lessons'
     | '/review'
     | '/sentence-practice/$id'
@@ -652,8 +652,8 @@ export interface FileRouteTypes {
     | '/_home'
     | '/about'
     | '/auth'
+    | '/discover'
     | '/_home/dashboard'
-    | '/_home/discover'
     | '/_home/lessons'
     | '/_home/review'
     | '/_home/vocab'
@@ -709,11 +709,19 @@ export interface RootRouteChildren {
   HomeRoute: typeof HomeRouteWithChildren
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
+  DiscoverRoute: typeof DiscoverRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/solid-router' {
   interface FileRoutesByPath {
+    '/discover': {
+      id: '/discover'
+      path: '/discover'
+      fullPath: '/discover'
+      preLoaderRoute: typeof DiscoverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -761,13 +769,6 @@ declare module '@tanstack/solid-router' {
       path: '/lessons'
       fullPath: '/lessons'
       preLoaderRoute: typeof HomeLessonsRouteImport
-      parentRoute: typeof HomeRoute
-    }
-    '/_home/discover': {
-      id: '/_home/discover'
-      path: '/discover'
-      fullPath: '/discover'
-      preLoaderRoute: typeof HomeDiscoverRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/dashboard': {
@@ -1217,7 +1218,6 @@ const HomeVocabRouteWithChildren = HomeVocabRoute._addFileChildren(
 
 interface HomeRouteChildren {
   HomeDashboardRoute: typeof HomeDashboardRoute
-  HomeDiscoverRoute: typeof HomeDiscoverRoute
   HomeLessonsRoute: typeof HomeLessonsRouteWithChildren
   HomeReviewRoute: typeof HomeReviewRoute
   HomeVocabRoute: typeof HomeVocabRouteWithChildren
@@ -1227,7 +1227,6 @@ interface HomeRouteChildren {
 
 const HomeRouteChildren: HomeRouteChildren = {
   HomeDashboardRoute: HomeDashboardRoute,
-  HomeDiscoverRoute: HomeDiscoverRoute,
   HomeLessonsRoute: HomeLessonsRouteWithChildren,
   HomeReviewRoute: HomeReviewRoute,
   HomeVocabRoute: HomeVocabRouteWithChildren,
@@ -1242,6 +1241,7 @@ const rootRouteChildren: RootRouteChildren = {
   HomeRoute: HomeRouteWithChildren,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
+  DiscoverRoute: DiscoverRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

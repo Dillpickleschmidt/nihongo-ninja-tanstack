@@ -236,4 +236,15 @@ export default defineSchema({
     answers: v.array(sentenceAnswerValidator),
     modelAnswerPOS: v.array(v.array(v.string())),
   }).index('by_setId', ['setId']),
+
+  // ===== Cached External API Data =====
+
+  // Cached AniList Anime Data (Trending, Popular, Genres, etc.)
+  cachedAnime: defineTable({
+    cacheKey: v.string(), // "trending:SPRING:2024", "popular-season:SPRING:2024", "genre:Romance", etc.
+    data: v.any(), // ResultOf<typeof Search> from gql.tada - type safety at query layer
+    hqImages: v.optional(v.record(v.string(), v.string())), // Map of anilistId -> imageUrl (trending only)
+    fetchedAt: v.number(), // timestamp
+    expiresAt: v.number(), // timestamp (fetchedAt + cache duration)
+  }).index('by_cache_key', ['cacheKey']),
 })

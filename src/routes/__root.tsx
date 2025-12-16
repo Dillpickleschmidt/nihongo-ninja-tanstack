@@ -60,8 +60,8 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <RootDocument>
         <Outlet />
-        {/* <TanStackRouterDevtools position="bottom-right" /> */}
         {/* <SolidQueryDevtools buttonPosition="bottom-left" /> */}
+        {/* <TanStackRouterDevtools position="bottom-right" /> */}
       </RootDocument>
     </QueryClientProvider>
   )

@@ -124,13 +124,14 @@ export function BottomNav(props: NavProps) {
   ]
 
   return (
-    <div class={cn('fixed right-0 bottom-0 left-0 z-40', props.class)}>
+    <div class={cn('fixed right-0 bottom-0 left-0 z-40')}>
       <div
         class={cn(
           'pb-safe flex items-center justify-center px-6',
           'bg-background/50 text-primary',
           'border-card-foreground/50 border-t backdrop-blur-lg transition-all duration-200',
-          'shadow-lg shadow-black/10'
+          'shadow-lg shadow-black/10',
+          props.class
         )}
       >
         <nav class="flex items-center justify-between" style="width: 400px;">
