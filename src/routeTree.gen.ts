@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
@@ -64,6 +65,11 @@ import { Route as HomeLessonsChapter0ContractedSoundsRouteImport } from './route
 import { Route as HomeLessonsChapter0CommonExpressionsRouteImport } from './routes/_home/lessons/_chapter-0/common-expressions'
 import { Route as HomeVocabDeckDeckIdEditRouteImport } from './routes/_home/vocab/deck/$deckId/edit'
 
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DiscoverRoute = DiscoverRouteImport.update({
   id: '/discover',
   path: '/discover',
@@ -375,6 +381,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/discover': typeof DiscoverRoute
+  '/search': typeof SearchRoute
   '/dashboard': typeof HomeDashboardRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
@@ -430,6 +437,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/discover': typeof DiscoverRoute
+  '/search': typeof SearchRoute
   '/dashboard': typeof HomeDashboardRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
@@ -486,6 +494,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/discover': typeof DiscoverRoute
+  '/search': typeof SearchRoute
   '/_home/dashboard': typeof HomeDashboardRoute
   '/_home/lessons': typeof HomeLessonsRouteWithChildren
   '/_home/review': typeof HomeReviewRoute
@@ -543,6 +552,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/discover'
+    | '/search'
     | '/dashboard'
     | '/lessons'
     | '/review'
@@ -598,6 +608,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/discover'
+    | '/search'
     | '/dashboard'
     | '/lessons'
     | '/review'
@@ -653,6 +664,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/discover'
+    | '/search'
     | '/_home/dashboard'
     | '/_home/lessons'
     | '/_home/review'
@@ -710,11 +722,19 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   DiscoverRoute: typeof DiscoverRoute
+  SearchRoute: typeof SearchRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/solid-router' {
   interface FileRoutesByPath {
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/discover': {
       id: '/discover'
       path: '/discover'
@@ -1242,6 +1262,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   DiscoverRoute: DiscoverRoute,
+  SearchRoute: SearchRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

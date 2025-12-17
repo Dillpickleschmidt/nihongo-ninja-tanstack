@@ -62,9 +62,9 @@ export const ensureAllSections = mutation({
 
     for (const section of args.sections) {
       const cacheKey = animeModel.generateCacheKey(section.type, section.params || {})
-      const cached = await animeModel.getCachedAnime(ctx, cacheKey)
+      const isStale = await animeModel.checkCacheStaleness(ctx, cacheKey)
 
-      if (animeModel.isCacheStale(cached)) {
+      if (isStale) {
         sectionsToFetch.push({
           type: section.type,
           params: section.params || {},

@@ -41,7 +41,7 @@ export function getPopularSeasonConfig(season: string, year: number): SectionCon
     params: { season, year },
     queryVars: {
       page: 1,
-      perPage: 50,
+      perPage: 10,
       sort: ['POPULARITY_DESC'],
       season,
       seasonYear: year,
@@ -57,7 +57,7 @@ export function getTrendingConfig(season: string, year: number): SectionConfig {
     params: { season, year },
     queryVars: {
       page: 1,
-      perPage: 50,
+      perPage: 15,
       sort: ['POPULARITY_DESC'],
       season,
       seasonYear: year,
@@ -73,7 +73,7 @@ export function getAllTimePopularConfig(): SectionConfig {
     title: "All Time Popular",
     queryVars: {
       page: 1,
-      perPage: 50,
+      perPage: 10,
       sort: ['POPULARITY_DESC'],
     },
     viewMoreLink: "/explore/popular",
@@ -90,7 +90,7 @@ export function getGenreConfig(
     params: { genre },
     queryVars: {
       page: 1,
-      perPage: 50,
+      perPage: 10,
       genre: [genre],
       sort: [sort],
     },
