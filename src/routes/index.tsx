@@ -1,200 +1,95 @@
-import { createFileRoute } from '@tanstack/solid-router'
-import { createSignal, For, onMount, onCleanup } from 'solid-js'
-import { BottomNav } from '@/features/navbar/Nav'
-import { TextbookChapterBackgrounds } from '@/components/TextbookChapterBackgrounds'
-import { LevelCard } from '@/features/homepage/hero/LevelCard'
-import { WelcomeSection } from '@/features/homepage/hero/WelcomeSection'
-import { ToolsSection } from '@/features/homepage/tools/ToolsSection'
-import { GuidesSection } from '@/features/homepage/guides/GuidesSection'
-import { GuidesSidebar } from '@/features/homepage/guides/GuidesSidebar'
-import { FeaturesSection } from "@/features/homepage/guides/FeaturesSection"
-import { Sidebar } from '@/features/sidebar/Sidebar'
-import { TableOfContents } from '@/components/TableOfContents'
-import { SSRMediaQuery } from '@/components/SSRMediaQuery'
-import {
-  getInitialAnimationStyles,
-  observeElementForAnimation,
-  animateElementIn,
-  animateElementOut,
-} from '@/utils/animations'
-import { createScrollObserver, observeOneWaySnap } from '@/utils/scroll'
+import { createFileRoute, Link } from '@tanstack/solid-router'
+import { createSignal, onMount } from 'solid-js'
+import { FloatingKanji } from '@/features/homepage/components/floating-kanji'
+import { TextbookSelectionDialog } from '@/features/homepage/components/textbook-selection-dialog'
+import { HeroSection } from '@/features/homepage/sections/hero-section'
+import { QuickFeatures } from '@/features/homepage/sections/quick-features'
+import { MainFeatures } from '@/features/homepage/sections/main-features'
+import { StatsSection } from '@/features/homepage/sections/stats-section'
+import { VideoShowcaseSection } from '@/features/homepage/sections/video-showcase-section'
+import { CTASection } from '@/features/homepage/sections/cta-section'
+import { PremiumCallout } from '@/features/homepage/sections/premium-callout'
+import { Footer } from '@/features/homepage/sections/footer'
+import { useColorAnimation } from '@/features/homepage/lib/use-color-animation'
 
 export const Route = createFileRoute('/')({
-  component: RouteComponent,
+  component: Homepage,
 })
 
-interface LevelItem {
-  level: string
-  description: string
-}
+function Homepage() {
+  const [heroLoaded, setHeroLoaded] = createSignal(false)
+  const [dialogOpen, setDialogOpen] = createSignal(false)
 
-const JLPT_LEVELS: LevelItem[] = [
-  { level: 'N5', description: 'Beginner' },
-  { level: 'N4', description: 'Upper Beginner' },
-  { level: 'N3', description: 'Intermediate' },
-  { level: 'N2', description: 'Upper Intermediate' },
-  { level: 'N1', description: 'Advanced / Fluent' },
-]
-
-const TOC_ITEMS = [
-  { id: 'difficulty-selection', title: 'Knowledge Selection' },
-  { id: 'getting-started', title: 'Getting Started' },
-  { id: 'your-japanese-companion', title: 'Your Japanese Companion' },
-  { id: 'features', title: 'Details' },
-]
-
-function RouteComponent() {
-  // Refs for trigger elements (content sections)
-  let heroRef: HTMLElement | undefined
-  let guidesSectionRef: HTMLDivElement | undefined
-  let toolsSectionRef: HTMLDivElement | undefined
-
-  // Refs for target elements (sidebars, nav)
-  let guidesSidebarRef: HTMLDivElement | undefined
-  let toolsSidebarRef: HTMLDivElement | undefined
-  let tocRef: HTMLDivElement | undefined
-
-  const [selectedLevel, setSelectedLevel] = createSignal<string>('N5')
-  const [bgBlur, setBgBlur] = createSignal(16)
+  // Initialize color cycling animation
+  useColorAnimation()
 
   onMount(() => {
-    const cleanups: (() => void)[] = []
-
-    // Hero section - self-animating
-    if (heroRef) {
-      cleanups.push(
-        observeElementForAnimation(heroRef, { initialPosition: "down", startVisible: true, noExit: true })
-      )
-    }
-
-    // === Blur behaviors (works on all screen sizes) ===
-    if (guidesSectionRef) {
-      cleanups.push(
-        createScrollObserver(guidesSectionRef, {
-          onEnter: () => setBgBlur(0),
-          onExitUp: () => setBgBlur(16),
-        })
-      )
-    }
-
-    // === Sidebar/Nav animations (desktop only, refs may be undefined on mobile) ===
-
-    // GuidesSidebar - exits both directions
-    if (guidesSectionRef && guidesSidebarRef) {
-      const ref = guidesSidebarRef
-      cleanups.push(
-        createScrollObserver(guidesSectionRef, {
-          onEnter: () => animateElementIn(ref, "left"),
-          onExitUp: () => animateElementOut(ref, "left"),
-          onExitDown: () => animateElementOut(ref, "left"),
-        })
-      )
-    }
-
-    // ToolsSidebar - exits both directions
-    if (toolsSectionRef && toolsSidebarRef) {
-      const ref = toolsSidebarRef
-      cleanups.push(
-        createScrollObserver(toolsSectionRef, {
-          onEnter: () => animateElementIn(ref, "left"),
-          onExitUp: () => animateElementOut(ref, "left"),
-          onExitDown: () => animateElementOut(ref, "left"),
-        })
-      )
-    }
-
-    // TOC - only exits on scroll up
-    if (guidesSectionRef && tocRef) {
-      const ref = tocRef
-      cleanups.push(
-        createScrollObserver(guidesSectionRef, {
-          onEnter: () => animateElementIn(ref, "right"),
-          onExitUp: () => animateElementOut(ref, "right"),
-        })
-      )
-    }
-
-    // === Snap behavior ===
-    const snapElements = document.querySelectorAll('.snap-start, .snap-center, .snap-end')
-    snapElements.forEach(el => {
-      cleanups.push(observeOneWaySnap(el as HTMLElement))
-    })
-
-    onCleanup(() => cleanups.forEach(cleanup => cleanup()))
+    // Trigger hero animation
+    setTimeout(() => setHeroLoaded(true), 100)
   })
 
-  const handleLevelSelect = (level: string) => {
-    setSelectedLevel(level)
-    document.getElementById("getting-started")?.scrollIntoView({ behavior: "smooth" })
-  }
-
-  const dailyProgress = 65
-
   return (
-    <>
-      <TextbookChapterBackgrounds
-        blur={bgBlur()}
-        opacityOffset={0}
-        showGradient={true}
-      />
+    <div class="z-0 relative min-h-screen bg-neutral-950 text-white overflow-x-hidden">
+      <style>{`
+        @property --accent { syntax: "<color>"; inherits: true; initial-value: #f59e0b; }
+        @property --accent-end { syntax: "<color>"; inherits: true; initial-value: #f43f5e; }
 
-      <main class="min-h-screen">
-        {/* --- Hero Section - JLPT Level Selection --- */}
-        <section ref={heroRef} id="difficulty-selection" class="snap-start pb-24 pt-[9vh] md:pt-[25vh] flex flex-col items-center justify-center">
-          <WelcomeSection />
-          <div class="mx-auto flex flex-wrap justify-center gap-4 md:gap-6 px-4">
-            <For each={JLPT_LEVELS}>
-              {(item) => <LevelCard item={item} onSelect={handleLevelSelect} />}
-            </For>
+        :root { transition: --accent 2s ease-in-out, --accent-end 2s ease-in-out; }
+
+        .accent-gradient { background: linear-gradient(to right, var(--accent), var(--accent-end)); }
+      `}</style>
+
+      {/* Floating kanji decorations - furthest back */}
+      <FloatingKanji char="忍" class="top-20 left-[10%] -z-20" delay={0} />
+      <FloatingKanji char="語" class="top-[40%] right-[5%] -z-20" delay={200} />
+      <FloatingKanji char="学" class="bottom-[20%] left-[15%] -z-20" delay={400} />
+
+      {/* Noise texture - above kanji, below content */}
+      <div class="fixed inset-0 -z-10">
+        <div class="absolute inset-0 opacity-[0.015]" style={{
+          'background-image': `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }} />
+      </div>
+
+      {/* Navigation */}
+      <nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 backdrop-blur-xl bg-neutral-950/70">
+        <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+          <Link to="/" class="flex items-center gap-2 text-lg font-bold">
+            <img src="/icons/ninja.png" alt="Ninja" class="size-8 -mb-1.25" />
+            <span class="bg-clip-text text-transparent bg-linear-to-r from-white to-white/70">
+              Nihongo Ninja
+            </span>
+          </Link>
+          <div class="hidden items-center gap-8 text-sm text-white/60 md:flex">
+            <a href="#features" class="hover:text-white transition-colors">Features</a>
+            <Link to="/discover" class="hover:text-white transition-colors">Discover</Link>
+            <Link to="/about" class="hover:text-white transition-colors">About</Link>
           </div>
-        </section>
-
-        <div class="flex">
-          {/* Left side: Sections with sidebars */}
-          <div class='flex-1'>
-            {/* --- Learning Path Section --- */}
-            <section id="getting-started" class="flex">
-              <div ref={toolsSectionRef} class="snap-start relative w-full mx-auto max-w-7xl">
-                <ToolsSection selectedLevel={selectedLevel()} onLevelChange={setSelectedLevel} />
-              </div>
-            </section>
-
-            {/* --- Guides Section --- */}
-            <section class="flex">
-              <div ref={guidesSectionRef} class="relative w-full mx-auto max-w-7xl">
-                <GuidesSection />
-                <FeaturesSection />
-              </div>
-            </section>
-          </div>
-
+          <button
+            type="button"
+            onClick={() => setDialogOpen(true)}
+            class="accent-gradient rounded-full px-5 py-2 text-sm font-medium text-white transition-all hover:scale-105"
+            style={{
+              "box-shadow": "0 10px 15px -3px color-mix(in srgb, var(--accent) 20%, transparent), 0 4px 6px -4px color-mix(in srgb, var(--accent) 20%, transparent)"
+            }}
+          >
+            Explore
+          </button>
         </div>
-      </main>
+      </nav>
 
-      {/* Fixed sidebars (outside main flow) */}
-      <SSRMediaQuery showFrom="md">
-        <GuidesSidebar ref={(el) => guidesSidebarRef = el} />
-        <Sidebar ref={(el) => toolsSidebarRef = el} animated={true} />
-      </SSRMediaQuery>
+      {/* Page Sections */}
+      <HeroSection heroLoaded={heroLoaded} onExplore={() => setDialogOpen(true)} />
+      <QuickFeatures />
+      <MainFeatures />
+      <StatsSection />
+      <PremiumCallout />
+      <VideoShowcaseSection />
+      <CTASection onExplore={() => setDialogOpen(true)} />
+      <Footer />
 
-      {/* Fixed Table of Contents */}
-      <SSRMediaQuery showFrom="xl">
-        <div
-          ref={tocRef}
-          class="fixed top-32 right-6 w-64"
-          style={getInitialAnimationStyles("right")}
-        >
-          <TableOfContents items={TOC_ITEMS} />
-        </div>
-      </SSRMediaQuery>
-
-      {/* --- Bottom Nav (Mobile Only) --- */}
-      <SSRMediaQuery hideFrom="md">
-        <BottomNav
-          dailyProgressPercentage={dailyProgress}
-          class="md:hidden"
-        />
-      </SSRMediaQuery>
-    </>
+      {/* Textbook Selection Dialog */}
+      <TextbookSelectionDialog open={dialogOpen()} onOpenChange={setDialogOpen} />
+    </div>
   )
 }

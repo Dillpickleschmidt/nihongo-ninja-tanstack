@@ -249,15 +249,13 @@ export function TextbookChapterBackgrounds(props: BackgroundSettings) {
       </Show>
 
       {/* Gradient Overlay */}
-      <Show when={props.showGradient !== false}>
-        <div
-          class="pointer-events-none fixed inset-0 -z-5"
-          style={{
-            background:
-              'linear-gradient(to bottom, transparent 30%, rgba(18, 18, 18, 1) 100%)',
-          }}
-        />
-      </Show>
+      <div
+        class={`pointer-events-none fixed inset-0 -z-5 transition-opacity duration-300 ${props.showGradient == false ? "opacity-0" : "opacity-100"}`}
+        style={{
+          background:
+            'linear-gradient(to bottom, transparent 30%, rgba(18, 18, 18, 1) 100%)',
+        }}
+      />
     </>
   )
 }

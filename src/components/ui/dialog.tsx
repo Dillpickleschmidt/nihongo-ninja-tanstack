@@ -41,6 +41,7 @@ const DialogOverlay = <T extends ValidComponent = "div">(
 type DialogContentProps<T extends ValidComponent = "div"> =
   DialogPrimitive.DialogContentProps<T> & {
     class?: string | undefined
+    overlayClass?: string | undefined
     children?: JSX.Element
   }
 
@@ -49,14 +50,15 @@ const DialogContent = <T extends ValidComponent = "div">(
 ) => {
   const [, rest] = splitProps(props as DialogContentProps, [
     "class",
+    "overlayClass",
     "children",
   ])
   return (
     <DialogPortal>
-      <DialogOverlay />
+      <DialogOverlay class={props.overlayClass} />
       <DialogPrimitive.Content
         class={cn(
-          "bg-background data-expanded:animate-in data-closed:animate-out data-closed:fade-out-0 data-expanded:fade-in-0 data-closed:zoom-out-95 data-expanded:zoom-in-95 data-closed:slide-out-to-left-1/2 data-closed:slide-out-to-top-[48%] data-expanded:slide-in-from-left-1/2 data-expanded:slide-in-from-top-[48%] fixed top-1/2 left-1/2 z-50 grid max-h-screen w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto border p-6 shadow-lg duration-200 sm:rounded-lg",
+          "bg-background data-expanded:animate-in data-closed:animate-out data-closed:fade-out-0 data-expanded:fade-in-0 data-expanded:slide-in-from-bottom-4 data-closed:slide-out-to-bottom-4 fixed top-1/2 left-1/2 z-50 grid max-h-screen w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto border p-6 shadow-lg duration-200 sm:rounded-lg",
           props.class,
         )}
         onCloseAutoFocus={(event) => {
@@ -66,7 +68,7 @@ const DialogContent = <T extends ValidComponent = "div">(
         {...rest}
       >
         {props.children}
-        <DialogPrimitive.CloseButton class="ring-offset-background focus:ring-ring data-expanded:bg-accent data-expanded:text-muted-foreground absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none">
+        <DialogPrimitive.CloseButton class="ring-offset-background focus:ring-ring data-expanded:bg-accent data-expanded:text-muted-foreground absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"

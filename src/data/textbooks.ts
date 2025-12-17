@@ -17,7 +17,7 @@ export const textbooks: Record<TextbookIDEnum, Textbook> = {
     short_name: "Genki I",
     publisher: "The Japan Times",
     level: "N5",
-    cover_image_url: "/images/textbooks/genki_1_cover.jpg",
+    cover_image_url: "/img/textbooks/genki_1.png",
   },
 
   genki_2: {
@@ -26,6 +26,6 @@ export const textbooks: Record<TextbookIDEnum, Textbook> = {
     short_name: "Genki II",
     publisher: "The Japan Times",
     level: "N4",
-    cover_image_url: "/images/textbooks/genki_2_cover.jpg",
+    cover_image_url: "/img/textbooks/genki_2.png",
   },
 }
