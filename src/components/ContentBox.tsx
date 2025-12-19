@@ -109,7 +109,7 @@ export default function ContentBox(props: ContentBoxProps) {
 
       {/* Mark as Complete button that appears on scroll */}
       <Show when={isVisible() && showCompleteButton()}>
-        <div class="fixed bottom-24 md:bottom-8 left-1/2 z-50 -translate-x-1/2 transform">
+        <div class="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 transform">
           <Button
             as="a"
             href="/dashboard"

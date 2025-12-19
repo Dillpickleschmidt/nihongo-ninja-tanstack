@@ -126,7 +126,7 @@ export function FlashcardCard(props: Props) {
       </div>
 
       {/* Action buttons at fixed bottom */}
-      <div class="fixed bottom-8 left-1/2 -translate-x-1/2">
+      <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
         <Show
           when={isRevealed()}
           fallback={

@@ -199,7 +199,7 @@ export function WriteCard(props: Props) {
 
       {/* Next button */}
       <Show when={isAnswered()}>
-        <div class="fixed bottom-8 left-1/2 -translate-x-1/2">
+        <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
           <Button
             size="lg"
             class={cn(

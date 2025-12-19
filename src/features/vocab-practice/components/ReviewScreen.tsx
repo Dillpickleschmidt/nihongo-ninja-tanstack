@@ -48,32 +48,28 @@ export function ReviewScreen(props: Props) {
           </div>
         </div>
 
-        {/* Grid of cards (from yjo) */}
+        {/* Grid of cards */}
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           <For each={props.results}>
             {(result) => {
               const promptDisplay = getCardPrompt(result.card)
               return (
-                <div class="flex flex-col items-center gap-2 rounded-lg border bg-card p-4 text-center">
+                <div
+                  class="flex flex-col items-center gap-2 rounded-lg p-4 text-center bg-(--accent)/25 backdrop-blur-sm"
+                >
                   {/* Japanese prompt */}
                   <Show
                     when={promptDisplay.isHtml}
                     fallback={
                       <div
-                        class={cn(
-                          'font-japanese text-3xl font-bold',
-                          TYPE_TEXT_COLORS[result.card.practiceItemType],
-                        )}
+                        class='font-japanese text-3xl font-bold text-(--accent)'
                       >
                         {promptDisplay.text}
                       </div>
                     }
                   >
                     <div
-                      class={cn(
-                        'font-japanese text-3xl font-bold',
-                        TYPE_TEXT_COLORS[result.card.practiceItemType],
-                      )}
+                      class='font-japanese text-3xl font-bold text-(--accent)'
                       innerHTML={promptDisplay.html}
                     />
                   </Show>
@@ -101,7 +97,7 @@ export function ReviewScreen(props: Props) {
         </div>
 
         {/* Fixed bottom continue button */}
-        <div class="fixed bottom-8 left-1/2 -translate-x-1/2">
+        <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
           <Button
             size="lg"
             class="h-14 rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 px-12 text-lg font-semibold text-white shadow-lg transition-all hover:from-violet-600 hover:to-purple-600 hover:shadow-xl"
