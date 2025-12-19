@@ -21,11 +21,14 @@ import { Route as HomeLessonsRouteImport } from './routes/_home/lessons'
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeVocabIndexRouteImport } from './routes/_home/vocab/index'
 import { Route as HomeSentencePracticeIndexRouteImport } from './routes/_home/sentence-practice/index'
+import { Route as HomeImportIndexRouteImport } from './routes/_home/import/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as HomeVocabCreateRouteImport } from './routes/_home/vocab/create'
 import { Route as HomeVocabBrowseRouteImport } from './routes/_home/vocab/browse'
 import { Route as HomeVocabSplatRouteImport } from './routes/_home/vocab/$'
 import { Route as HomeSentencePracticeIdRouteImport } from './routes/_home/sentence-practice/$id'
+import { Route as HomeImportAnkiRouteImport } from './routes/_home/import/anki'
+import { Route as HomeImportBuiltinIndexRouteImport } from './routes/_home/import/builtin/index'
 import { Route as HomeVocabPracticeSplatRouteImport } from './routes/_home/vocab/practice/$'
 import { Route as HomeLessonsChapter3WordOrderRouteImport } from './routes/_home/lessons/_chapter-3/word-order'
 import { Route as HomeLessonsChapter3VerbConjMasuRouteImport } from './routes/_home/lessons/_chapter-3/verb-conj-masu'
@@ -63,6 +66,8 @@ import { Route as HomeLessonsChapter0GreetingsRouteImport } from './routes/_home
 import { Route as HomeLessonsChapter0DakutenHandakutenRouteImport } from './routes/_home/lessons/_chapter-0/dakuten-handakuten'
 import { Route as HomeLessonsChapter0ContractedSoundsRouteImport } from './routes/_home/lessons/_chapter-0/contracted-sounds'
 import { Route as HomeLessonsChapter0CommonExpressionsRouteImport } from './routes/_home/lessons/_chapter-0/common-expressions'
+import { Route as HomeImportBuiltinUploadRouteImport } from './routes/_home/import/builtin/upload'
+import { Route as HomeImportBuiltinManualRouteImport } from './routes/_home/import/builtin/manual'
 import { Route as HomeVocabDeckDeckIdEditRouteImport } from './routes/_home/vocab/deck/$deckId/edit'
 
 const SearchRoute = SearchRouteImport.update({
@@ -125,6 +130,11 @@ const HomeSentencePracticeIndexRoute =
     path: '/sentence-practice/',
     getParentRoute: () => HomeRoute,
   } as any)
+const HomeImportIndexRoute = HomeImportIndexRouteImport.update({
+  id: '/import/',
+  path: '/import/',
+  getParentRoute: () => HomeRoute,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -148,6 +158,16 @@ const HomeVocabSplatRoute = HomeVocabSplatRouteImport.update({
 const HomeSentencePracticeIdRoute = HomeSentencePracticeIdRouteImport.update({
   id: '/sentence-practice/$id',
   path: '/sentence-practice/$id',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeImportAnkiRoute = HomeImportAnkiRouteImport.update({
+  id: '/import/anki',
+  path: '/import/anki',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeImportBuiltinIndexRoute = HomeImportBuiltinIndexRouteImport.update({
+  id: '/import/builtin/',
+  path: '/import/builtin/',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeVocabPracticeSplatRoute = HomeVocabPracticeSplatRouteImport.update({
@@ -370,6 +390,16 @@ const HomeLessonsChapter0CommonExpressionsRoute =
     path: '/common-expressions',
     getParentRoute: () => HomeLessonsRoute,
   } as any)
+const HomeImportBuiltinUploadRoute = HomeImportBuiltinUploadRouteImport.update({
+  id: '/import/builtin/upload',
+  path: '/import/builtin/upload',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeImportBuiltinManualRoute = HomeImportBuiltinManualRouteImport.update({
+  id: '/import/builtin/manual',
+  path: '/import/builtin/manual',
+  getParentRoute: () => HomeRoute,
+} as any)
 const HomeVocabDeckDeckIdEditRoute = HomeVocabDeckDeckIdEditRouteImport.update({
   id: '/deck/$deckId/edit',
   path: '/deck/$deckId/edit',
@@ -386,13 +416,17 @@ export interface FileRoutesByFullPath {
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
   '/vocab': typeof HomeVocabRouteWithChildren
+  '/import/anki': typeof HomeImportAnkiRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/import': typeof HomeImportIndexRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
   '/vocab/': typeof HomeVocabIndexRoute
+  '/import/builtin/manual': typeof HomeImportBuiltinManualRoute
+  '/import/builtin/upload': typeof HomeImportBuiltinUploadRoute
   '/lessons/common-expressions': typeof HomeLessonsChapter0CommonExpressionsRoute
   '/lessons/contracted-sounds': typeof HomeLessonsChapter0ContractedSoundsRoute
   '/lessons/dakuten-handakuten': typeof HomeLessonsChapter0DakutenHandakutenRoute
@@ -430,6 +464,7 @@ export interface FileRoutesByFullPath {
   '/lessons/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof HomeLessonsChapter3WordOrderRoute
   '/vocab/practice/$': typeof HomeVocabPracticeSplatRoute
+  '/import/builtin': typeof HomeImportBuiltinIndexRoute
   '/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
 export interface FileRoutesByTo {
@@ -441,13 +476,17 @@ export interface FileRoutesByTo {
   '/dashboard': typeof HomeDashboardRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
+  '/import/anki': typeof HomeImportAnkiRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/import': typeof HomeImportIndexRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
   '/vocab': typeof HomeVocabIndexRoute
+  '/import/builtin/manual': typeof HomeImportBuiltinManualRoute
+  '/import/builtin/upload': typeof HomeImportBuiltinUploadRoute
   '/lessons/common-expressions': typeof HomeLessonsChapter0CommonExpressionsRoute
   '/lessons/contracted-sounds': typeof HomeLessonsChapter0ContractedSoundsRoute
   '/lessons/dakuten-handakuten': typeof HomeLessonsChapter0DakutenHandakutenRoute
@@ -485,6 +524,7 @@ export interface FileRoutesByTo {
   '/lessons/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof HomeLessonsChapter3WordOrderRoute
   '/vocab/practice/$': typeof HomeVocabPracticeSplatRoute
+  '/import/builtin': typeof HomeImportBuiltinIndexRoute
   '/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
 export interface FileRoutesById {
@@ -499,13 +539,17 @@ export interface FileRoutesById {
   '/_home/lessons': typeof HomeLessonsRouteWithChildren
   '/_home/review': typeof HomeReviewRoute
   '/_home/vocab': typeof HomeVocabRouteWithChildren
+  '/_home/import/anki': typeof HomeImportAnkiRoute
   '/_home/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/_home/vocab/$': typeof HomeVocabSplatRoute
   '/_home/vocab/browse': typeof HomeVocabBrowseRoute
   '/_home/vocab/create': typeof HomeVocabCreateRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/_home/import/': typeof HomeImportIndexRoute
   '/_home/sentence-practice/': typeof HomeSentencePracticeIndexRoute
   '/_home/vocab/': typeof HomeVocabIndexRoute
+  '/_home/import/builtin/manual': typeof HomeImportBuiltinManualRoute
+  '/_home/import/builtin/upload': typeof HomeImportBuiltinUploadRoute
   '/_home/lessons/_chapter-0/common-expressions': typeof HomeLessonsChapter0CommonExpressionsRoute
   '/_home/lessons/_chapter-0/contracted-sounds': typeof HomeLessonsChapter0ContractedSoundsRoute
   '/_home/lessons/_chapter-0/dakuten-handakuten': typeof HomeLessonsChapter0DakutenHandakutenRoute
@@ -543,6 +587,7 @@ export interface FileRoutesById {
   '/_home/lessons/_chapter-3/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/_home/lessons/_chapter-3/word-order': typeof HomeLessonsChapter3WordOrderRoute
   '/_home/vocab/practice/$': typeof HomeVocabPracticeSplatRoute
+  '/_home/import/builtin/': typeof HomeImportBuiltinIndexRoute
   '/_home/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
 export interface FileRouteTypes {
@@ -557,13 +602,17 @@ export interface FileRouteTypes {
     | '/lessons'
     | '/review'
     | '/vocab'
+    | '/import/anki'
     | '/sentence-practice/$id'
     | '/vocab/$'
     | '/vocab/browse'
     | '/vocab/create'
     | '/api/auth/$'
+    | '/import'
     | '/sentence-practice'
     | '/vocab/'
+    | '/import/builtin/manual'
+    | '/import/builtin/upload'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
     | '/lessons/dakuten-handakuten'
@@ -601,6 +650,7 @@ export interface FileRouteTypes {
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
     | '/vocab/practice/$'
+    | '/import/builtin'
     | '/vocab/deck/$deckId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -612,13 +662,17 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/lessons'
     | '/review'
+    | '/import/anki'
     | '/sentence-practice/$id'
     | '/vocab/$'
     | '/vocab/browse'
     | '/vocab/create'
     | '/api/auth/$'
+    | '/import'
     | '/sentence-practice'
     | '/vocab'
+    | '/import/builtin/manual'
+    | '/import/builtin/upload'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
     | '/lessons/dakuten-handakuten'
@@ -656,6 +710,7 @@ export interface FileRouteTypes {
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
     | '/vocab/practice/$'
+    | '/import/builtin'
     | '/vocab/deck/$deckId/edit'
   id:
     | '__root__'
@@ -669,13 +724,17 @@ export interface FileRouteTypes {
     | '/_home/lessons'
     | '/_home/review'
     | '/_home/vocab'
+    | '/_home/import/anki'
     | '/_home/sentence-practice/$id'
     | '/_home/vocab/$'
     | '/_home/vocab/browse'
     | '/_home/vocab/create'
     | '/api/auth/$'
+    | '/_home/import/'
     | '/_home/sentence-practice/'
     | '/_home/vocab/'
+    | '/_home/import/builtin/manual'
+    | '/_home/import/builtin/upload'
     | '/_home/lessons/_chapter-0/common-expressions'
     | '/_home/lessons/_chapter-0/contracted-sounds'
     | '/_home/lessons/_chapter-0/dakuten-handakuten'
@@ -713,6 +772,7 @@ export interface FileRouteTypes {
     | '/_home/lessons/_chapter-3/verb-conj-masu'
     | '/_home/lessons/_chapter-3/word-order'
     | '/_home/vocab/practice/$'
+    | '/_home/import/builtin/'
     | '/_home/vocab/deck/$deckId/edit'
   fileRoutesById: FileRoutesById
 }
@@ -812,6 +872,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeSentencePracticeIndexRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/_home/import/': {
+      id: '/_home/import/'
+      path: '/import'
+      fullPath: '/import'
+      preLoaderRoute: typeof HomeImportIndexRouteImport
+      parentRoute: typeof HomeRoute
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -845,6 +912,20 @@ declare module '@tanstack/solid-router' {
       path: '/sentence-practice/$id'
       fullPath: '/sentence-practice/$id'
       preLoaderRoute: typeof HomeSentencePracticeIdRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/import/anki': {
+      id: '/_home/import/anki'
+      path: '/import/anki'
+      fullPath: '/import/anki'
+      preLoaderRoute: typeof HomeImportAnkiRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/import/builtin/': {
+      id: '/_home/import/builtin/'
+      path: '/import/builtin'
+      fullPath: '/import/builtin'
+      preLoaderRoute: typeof HomeImportBuiltinIndexRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/vocab/practice/$': {
@@ -1106,6 +1187,20 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeLessonsChapter0CommonExpressionsRouteImport
       parentRoute: typeof HomeLessonsRoute
     }
+    '/_home/import/builtin/upload': {
+      id: '/_home/import/builtin/upload'
+      path: '/import/builtin/upload'
+      fullPath: '/import/builtin/upload'
+      preLoaderRoute: typeof HomeImportBuiltinUploadRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/import/builtin/manual': {
+      id: '/_home/import/builtin/manual'
+      path: '/import/builtin/manual'
+      fullPath: '/import/builtin/manual'
+      preLoaderRoute: typeof HomeImportBuiltinManualRouteImport
+      parentRoute: typeof HomeRoute
+    }
     '/_home/vocab/deck/$deckId/edit': {
       id: '/_home/vocab/deck/$deckId/edit'
       path: '/deck/$deckId/edit'
@@ -1241,8 +1336,13 @@ interface HomeRouteChildren {
   HomeLessonsRoute: typeof HomeLessonsRouteWithChildren
   HomeReviewRoute: typeof HomeReviewRoute
   HomeVocabRoute: typeof HomeVocabRouteWithChildren
+  HomeImportAnkiRoute: typeof HomeImportAnkiRoute
   HomeSentencePracticeIdRoute: typeof HomeSentencePracticeIdRoute
+  HomeImportIndexRoute: typeof HomeImportIndexRoute
   HomeSentencePracticeIndexRoute: typeof HomeSentencePracticeIndexRoute
+  HomeImportBuiltinManualRoute: typeof HomeImportBuiltinManualRoute
+  HomeImportBuiltinUploadRoute: typeof HomeImportBuiltinUploadRoute
+  HomeImportBuiltinIndexRoute: typeof HomeImportBuiltinIndexRoute
 }
 
 const HomeRouteChildren: HomeRouteChildren = {
@@ -1250,8 +1350,13 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeLessonsRoute: HomeLessonsRouteWithChildren,
   HomeReviewRoute: HomeReviewRoute,
   HomeVocabRoute: HomeVocabRouteWithChildren,
+  HomeImportAnkiRoute: HomeImportAnkiRoute,
   HomeSentencePracticeIdRoute: HomeSentencePracticeIdRoute,
+  HomeImportIndexRoute: HomeImportIndexRoute,
   HomeSentencePracticeIndexRoute: HomeSentencePracticeIndexRoute,
+  HomeImportBuiltinManualRoute: HomeImportBuiltinManualRoute,
+  HomeImportBuiltinUploadRoute: HomeImportBuiltinUploadRoute,
+  HomeImportBuiltinIndexRoute: HomeImportBuiltinIndexRoute,
 }
 
 const HomeRouteWithChildren = HomeRoute._addFileChildren(HomeRouteChildren)

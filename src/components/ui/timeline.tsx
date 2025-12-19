@@ -22,6 +22,7 @@ export type TimelineProps = {
   activeItem: number
   bulletSize?: number
   lineSize?: number
+  bulletClass?: string
 }
 
 /*
@@ -54,6 +55,7 @@ const Timeline: Component<TimelineProps> = (rawProps) => {
             }
             bulletSize={props.bulletSize}
             lineSize={props.lineSize}
+            bulletClass={props.bulletClass}
           />
         )}
       </For>
@@ -71,6 +73,7 @@ export type TimelineItemProps = {
   class?: string
   bulletSize: number
   lineSize: number
+  bulletClass?: string
 }
 
 const TimelineItem: Component<TimelineItemProps> = (props) => {
@@ -84,6 +87,7 @@ const TimelineItem: Component<TimelineItemProps> = (props) => {
     "isActiveBullet",
     "bulletSize",
     "lineSize",
+    "bulletClass",
   ])
   return (
     <li
@@ -102,6 +106,7 @@ const TimelineItem: Component<TimelineItemProps> = (props) => {
         lineSize={local.lineSize}
         bulletSize={local.bulletSize}
         isActive={local.isActiveBullet}
+        class={local.bulletClass}
       >
         {local.bullet}
       </TimelineItemBullet>
@@ -118,14 +123,17 @@ export type TimelineItemBulletProps = {
   isActive?: boolean
   bulletSize: number
   lineSize: number
+  class?: string
 }
 
 const TimelineItemBullet: Component<TimelineItemBulletProps> = (props) => {
   return (
     <div
       class={cn(
-        `bg-background absolute top-0 flex items-center justify-center rounded-full border`,
+        "absolute top-0 flex items-center justify-center rounded-full border",
+        !props.class && "bg-background",
         props.isActive && "border-primary",
+        props.class,
       )}
       style={{
         width: `${props.bulletSize}px`,
