@@ -1,6 +1,6 @@
 import { Dynamic } from 'solid-js/web'
 import { Link, useLocation } from '@tanstack/solid-router'
-import { House, Search, GraduationCap, Hammer, type LucideIcon } from 'lucide-solid'
+import { House, Search, GraduationCap, Settings, type LucideIcon } from 'lucide-solid'
 import { cn } from '@/utils'
 
 // --- Shared Types ---
@@ -24,7 +24,7 @@ const navItems: NavItem[] = [
   { id: 'home', label: 'Home', href: '/dashboard', icon: House },
   { id: 'guides', label: 'Guides', href: '/guides', icon: GraduationCap },
   { id: 'search', label: 'Search', href: '/search', icon: Search },
-  { id: 'tools', label: 'Tools', href: '/settings', icon: Hammer },
+  { id: 'tools', label: 'Tools', href: '/settings', icon: Settings },
 ]
 
 function useNavLogic(dailyProgress: number) {

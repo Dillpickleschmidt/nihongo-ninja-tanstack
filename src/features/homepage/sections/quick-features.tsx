@@ -25,12 +25,12 @@ export function QuickFeatures() {
                 <div
                   ref={ref}
                   class={cn(
-                    "group relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] p-6 transition-all duration-500 hover:border-(--accent)/20 hover:bg-white/[0.04]",
+                    "group relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] p-6 transition-all duration-500 hover:border-(--landing-accent)/20 hover:bg-white/[0.04]",
                     visible() ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                   )}
                   style={{ 'transition-delay': `${i() * 100}ms` }}
                 >
-                  <div class="mb-4 text-4xl font-japanese text-(--accent)/80 transition-transform duration-300 group-hover:scale-110">
+                  <div class="mb-4 text-4xl font-japanese text-(--landing-accent)/80 transition-transform duration-300 group-hover:scale-110">
                     {feature.icon}
                   </div>
                   <h3 class="mb-1 font-semibold text-white">{feature.title}</h3>

@@ -24,7 +24,7 @@ export function CurrentChapterCard(props: CurrentChapterCardProps) {
   return (
     <div
       ref={cardRef}
-      class="relative overflow-hidden rounded-2xl min-h-40"
+      class="relative overflow-hidden rounded-2xl min-h-34"
       style={props.skipAnimation ? {} : getInitialAnimationStyles("down")}
     >
       <Suspense
@@ -134,14 +134,10 @@ function CurrentChapterCardContent() {
             isOpen={isSelectorOpen()}
             onOpenChange={setIsSelectorOpen}
             onChapterSelect={handleChapterSelect}
+            class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition-all hover:bg-white/10 hover:text-white cursor-pointer"
           >
-            <button
-              type="button"
-              class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition-all hover:bg-white/10 hover:text-white"
-            >
-              Change chapter
-              <ChevronRight class="size-4" />
-            </button>
+            Change chapter
+            <ChevronRight class="size-4" />
           </LearningPathChapterSelector>
         </Show>
       </div>

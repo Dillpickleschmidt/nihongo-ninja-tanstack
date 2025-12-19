@@ -39,7 +39,7 @@ export function ChapterSection(props: ChapterSectionProps) {
     >
       {/* Chapter Header */}
       <div class="mb-6">
-        <h2 class="text-2xl font-bold text-white mb-2">
+        <h2 class="text-2xl font-bold mb-2">
           {props.chapter.title}
         </h2>
         <Show when={props.chapter.description}>

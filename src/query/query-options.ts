@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/solid-query'
 import { fetchAuth } from '@/lib/server'
 import { queryKeys } from './query-keys'
 import { parseDeviceSettingsCookie } from './model/device-settings'
-import type { BackgroundSettings } from '~/components/TextbookChapterBackgrounds'
+import type { BackgroundSettings, BackgroundColor } from '~/components/TextbookChapterBackgrounds'
 
 // ============================================================================
 // Auth Query Options
@@ -52,6 +52,21 @@ export const backgroundSettingsQueryOptions = () => {
     initialData: defaultBackgroundSettings,
     staleTime: Infinity,  // Background settings never go stale
     gcTime: Infinity,     // Keep in cache forever
+  })
+}
+
+const defaultBackgroundColor: BackgroundColor = {
+  hex: "#ffffff",
+  isDark: false,
+}
+
+export const backgroundColorQueryOptions = () => {
+  return queryOptions({
+    queryKey: queryKeys.backgroundColor(),
+    queryFn: async () => defaultBackgroundColor,
+    initialData: defaultBackgroundColor,
+    staleTime: Infinity,
+    gcTime: Infinity,
   })
 }
 

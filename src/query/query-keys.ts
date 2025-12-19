@@ -4,4 +4,5 @@ export const queryKeys = {
 
   // UI Settings
   backgroundSettings: () => ["background-settings"] as const,
+  backgroundColor: () => ["background-color"] as const,
 }

@@ -27,7 +27,7 @@ export function StatCounter(props: { value: string; label: string; delay: number
       )}
       style={{ 'transition-delay': `${props.delay}ms` }}
     >
-      <div class="text-4xl font-bold text-transparent bg-clip-text bg-linear-to-r from-(--accent) to-(--accent-end) lg:text-5xl">
+      <div class="text-4xl font-bold text-transparent bg-clip-text bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end) lg:text-5xl">
         {props.value}
       </div>
       <div class="mt-2 text-sm text-white/50 uppercase tracking-wider">{props.label}</div>

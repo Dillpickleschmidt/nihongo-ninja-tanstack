@@ -32,6 +32,7 @@
     "clsx": "^2.1.1",
     "convex": "^1.28.2",
     "convex-solidjs": "github:Dillpickleschmidt/convex-solidjs",
+    "fast-average-color": "^9.5.0",
     "figma-squircle": "^1.1.0",
     "gql.tada": "^1.9.0",
     "graphql": "^16.12.0",

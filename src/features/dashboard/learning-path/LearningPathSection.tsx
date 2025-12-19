@@ -54,10 +54,7 @@ export function LearningPathSection(props: LearningPathSectionProps) {
         <div class="mb-8 flex items-center justify-between">
           <div>
             <h2 class="text-xl font-bold text-white md:text-2xl">
-              Your{" "}
-              <span class="text-transparent bg-clip-text bg-linear-to-r from-(--accent) to-(--accent-end)">
-                Learning Path
-              </span>
+              Your <span class="text-(--accent)">Learning Path</span>
             </h2>
             <p class="mt-1 text-sm text-white/50">
               {selectedPathName() ?? "Select a textbook to begin"}

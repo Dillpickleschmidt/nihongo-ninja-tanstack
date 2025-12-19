@@ -39,10 +39,10 @@ export function FeatureVideoCard(props: {
     >
       <div class={cn(props.flipped && "lg:order-2")}>
         <div class="mb-4 flex items-center gap-3">
-          <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-(--accent)/20 to-(--accent-end)/20 text-sm font-bold text-(--accent)">
+          <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-(--landing-accent)/20 to-(--landing-accent-end)/20 text-sm font-bold text-(--landing-accent)">
             {String(props.index + 1).padStart(2, '0')}
           </span>
-          <div class="h-px flex-1 bg-linear-to-r from-(--accent)/20 to-transparent" />
+          <div class="h-px flex-1 bg-linear-to-r from-(--landing-accent)/20 to-transparent" />
         </div>
         <h3 class="mb-3 text-2xl font-bold text-white lg:text-3xl">{props.title}</h3>
         <p class="text-base text-white/60 leading-relaxed lg:text-lg">{props.description}</p>

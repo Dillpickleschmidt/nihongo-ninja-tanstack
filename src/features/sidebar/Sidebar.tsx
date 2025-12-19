@@ -15,7 +15,6 @@ import {
   Repeat2,
   Hash,
   FileText,
-  Italic,
   Package,
   Ellipsis,
   Import,
@@ -29,7 +28,7 @@ interface NavigationItem {
   id: string
   title: string
   href: string
-  icon: LucideIcon
+  icon: LucideIcon | string
   class: string
 }
 
@@ -112,7 +111,7 @@ const navigation: NavigationSection[] = [
         id: "kana",
         title: "Kana",
         href: "/kana",
-        icon: Italic,
+        icon: "あ",
         class: "text-sky-600 dark:text-sky-500",
       },
     ],
@@ -184,21 +183,36 @@ function NavigationContent(props: NavigationContentProps) {
                   <Link to={item.href} onClick={props.onNavigate}>
                     <Button
                       variant="ghost"
-                      class={cn("w-full hover:bg-card-foreground/50 justify-start px-2")}
+                      class={cn("w-full justify-start px-2 hover:bg-(--accent)/20")}
                       onClick={() => { }}
                     >
-                      <Dynamic
-                        component={item.icon}
-                        class={cn(
-                          "mx-1 size-4!",
-                          item.class,
-                          props.isActive(item.href) && "text-indigo-400",
-                        )}
-                      />
+                      <Show
+                        when={typeof item.icon === "string"}
+                        fallback={
+                          <Dynamic
+                            component={item.icon as LucideIcon}
+                            class={cn(
+                              "mx-1 size-4!",
+                              item.class,
+                              props.isActive(item.href) && "text-(--accent) brightness-150",
+                            )}
+                          />
+                        }
+                      >
+                        <span
+                          class={cn(
+                            "mx-1 size-4 flex items-center justify-center text-base font-japanese font-medium",
+                            item.class,
+                            props.isActive(item.href) && "text-(--accent) brightness-150",
+                          )}
+                        >
+                          {item.icon as string}
+                        </span>
+                      </Show>
                       <span
                         class={cn(
                           "text-[0.85rem] font-medium",
-                          props.isActive(item.href) && "text-indigo-400",
+                          props.isActive(item.href) && "text-(--accent) brightness-150",
                         )}
                       >
                         {item.title}

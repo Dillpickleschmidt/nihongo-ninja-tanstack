@@ -9,7 +9,7 @@ export const FEATURES = [
     title: "SRS That Works With You",
     description: (
       <>
-        Practice vocabulary, grammar, and kanji with a spaced repetition system that tracks everything together. Already use<span class="text-transparent bg-clip-text bg-linear-to-r from-(--accent) to-(--accent-end) opacity-80 font-semibold" > Anki </span>? Nihongo Ninja supports that too—use what fits your workflow.
+        Practice vocabulary, grammar, and kanji with a spaced repetition system that tracks everything together. Already use<span class="text-transparent bg-clip-text bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end) opacity-80 font-semibold" > Anki </span>? Nihongo Ninja supports that too—use what fits your workflow.
       </>
     ),
     videoTitle: "Spaced Repetition",

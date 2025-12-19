@@ -35,11 +35,8 @@ export function HeroSection(props: HeroSectionProps) {
         >
           <HeroBadge />
         </Suspense>
-        <h1 class="text-2xl font-bold md:text-3xl lg:text-4xl">
-          <span class="text-transparent bg-clip-text bg-linear-to-r from-(--accent) to-(--accent-end)">
-            Continue
-          </span>{" "}
-          your journey
+        <h1 class="text-3xl font-bold lg:text-4xl">
+          <span class="text-(--accent)">Continue</span> your journey
         </h1>
       </div>
 

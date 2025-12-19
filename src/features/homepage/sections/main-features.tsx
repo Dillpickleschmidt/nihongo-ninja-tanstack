@@ -10,7 +10,7 @@ export function MainFeatures() {
         <div class="mb-16 text-center lg:mb-24">
           <h2 class="mb-4 text-3xl font-bold lg:text-4xl">
             Tools & Resources
-            <span class="text-transparent bg-clip-text bg-linear-to-r from-(--accent) to-(--accent-end)"> That Actually Help</span>
+            <span class="text-transparent bg-clip-text bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end)"> That Actually Help</span>
           </h2>
           <p class="mx-auto max-w-2xl text-white/50 lg:text-lg">
             Everything here is designed to make learning Japanese more enjoyable and effective.

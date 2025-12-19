@@ -13,10 +13,10 @@ export function HeroSection(props: { heroLoaded: Accessor<boolean>; onExplore?: 
             "transition-all duration-1000 delay-200",
             props.heroLoaded() ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}>
-            <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-(--accent)/20 bg-(--accent)/10 px-4 py-1.5 text-sm text-(--accent)">
+            <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-(--landing-accent)/20 bg-(--landing-accent)/10 px-4 py-1.5 text-sm text-(--landing-accent)">
               <span class="relative flex h-2 w-2">
-                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--accent) opacity-75" />
-                <span class="relative inline-flex h-2 w-2 rounded-full bg-(--accent)" />
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--landing-accent) opacity-75" />
+                <span class="relative inline-flex h-2 w-2 rounded-full bg-(--landing-accent)" />
               </span>
               Creating an account is optional
             </div>
@@ -24,7 +24,7 @@ export function HeroSection(props: { heroLoaded: Accessor<boolean>; onExplore?: 
             <h1 class="mb-6 text-4xl font-bold leading-tight tracking-tight md:text-5xl lg:text-6xl">
               Learn Japanese
               <br />
-              <span class="text-transparent bg-clip-text bg-linear-to-r from-(--accent) to-(--accent-end)">
+              <span class="text-transparent bg-clip-text bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end)">
                 Through the Content You Love
               </span>
             </h1>
@@ -37,9 +37,9 @@ export function HeroSection(props: { heroLoaded: Accessor<boolean>; onExplore?: 
               <button
                 type="button"
                 onClick={props.onExplore}
-                class="group inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-(--accent) to-(--accent-end) px-8 py-4 font-semibold text-white transition-all hover:scale-[1.02]"
+                class="group inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end) px-8 py-4 font-semibold text-white transition-all hover:scale-[1.02]"
                 style={{
-                  "box-shadow": "0 10px 12.5px -2.5px color-mix(in srgb, var(--accent) 25%, transparent), 0 4px 5px -3px color-mix(in srgb, var(--accent) 25%, transparent)"
+                  "box-shadow": "0 10px 12.5px -2.5px color-mix(in srgb, var(--landing-accent) 25%, transparent), 0 4px 5px -3px color-mix(in srgb, var(--landing-accent) 25%, transparent)"
                 }}
               >
                 Explore the Tools
@@ -65,7 +65,7 @@ export function HeroSection(props: { heroLoaded: Accessor<boolean>; onExplore?: 
             props.heroLoaded() ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
           )}>
             {/* Glow effect behind video */}
-            <div class="absolute -inset-4 rounded-3xl bg-linear-to-r from-(--accent)/20 to-(--accent-end)/20 blur-2xl" />
+            <div class="absolute -inset-4 rounded-3xl bg-linear-to-r from-(--landing-accent)/20 to-(--landing-accent-end)/20 blur-2xl" />
 
             <VideoShowcase
               title="See Nihongo Ninja in Action"
@@ -83,7 +83,7 @@ export function HeroSection(props: { heroLoaded: Accessor<boolean>; onExplore?: 
 
             <div class="absolute -right-4 bottom-8 rounded-xl border border-white/10 bg-neutral-900/90 px-4 py-2 shadow-xl backdrop-blur-sm lg:-right-8">
               <div class="text-xs text-white/50">Words mastered</div>
-              <div class="font-medium text-(--accent)">2,847</div>
+              <div class="font-medium text-(--landing-accent)">2,847</div>
             </div>
           </div>
         </div>

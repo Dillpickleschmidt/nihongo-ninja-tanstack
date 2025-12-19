@@ -19,9 +19,9 @@ export const chapters: Record<
   genki_1: {
     "chapter-0": {
       slug: "chapter-0",
-      title: "Japanese from scratch.",
+      title: "Chapter 0: Japanese from scratch.",
       description:
-        "Your entry point into Japanese. Master the sounds, learn the symbols, practice the greetings you'll say a thousand times. It's foundational work, but there's genuine satisfaction in the moment hiragana stops being a puzzle and starts becoming readable.",
+        "Comprehend all the Japanese sounds, master hiragana, learn essential greetings, and count to 100. It's critical, foundational work.",
       features: [
         "Hiragana mastery through progressive quizzes",
         "Natural greetings and everyday expressions",
@@ -58,9 +58,9 @@ export const chapters: Record<
 
     "chapter-1": {
       slug: "chapter-1",
-      title: "Basic Sentences",
+      title: "Chapter 1: Basic Sentences",
       description:
-        "The symbols make sense now. Build your first real sentences—introductions, descriptions, and the particles that hold them together. It's your first real conversation—simple sentences that actually mean something about you.",
+        "The symbols make sense now. Build your first real sentences—introductions, descriptions, and the particles that hold them together.",
       features: [
         "Build up your vocabulary",
         "Introduce yourself",

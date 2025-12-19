@@ -57,7 +57,7 @@ export function VideoShowcase(props: {
       </Show>
 
       {/* Gradient overlay */}
-      <div class="absolute inset-0 bg-linear-to-br from-(--accent)/5 via-transparent to-(--accent-end)/5 pointer-events-none" />
+      <div class="absolute inset-0 bg-linear-to-br from-(--landing-accent)/5 via-transparent to-(--landing-accent-end)/5 pointer-events-none" />
 
       {/* Content overlay */}
       <div class={cn(
@@ -66,12 +66,12 @@ export function VideoShowcase(props: {
       )}>
         {/* Play/Pause button */}
         <div class="relative mb-4">
-          <div class="absolute inset-0 rounded-full bg-(--accent)/20 blur-xl scale-150 group-hover:scale-[2] transition-transform duration-700" />
+          <div class="absolute inset-0 rounded-full bg-(--landing-accent)/20 blur-xl scale-150 group-hover:scale-[2] transition-transform duration-700" />
           <button
             onClick={togglePlay}
-            class="relative flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-(--accent) to-(--accent-end) transition-all duration-300 group-hover:scale-110"
+            class="relative flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-(--landing-accent) to-(--landing-accent-end) transition-all duration-300 group-hover:scale-110"
             style={{
-              "box-shadow": "0 10px 15px -3px color-mix(in srgb, var(--accent) 25%, transparent), 0 4px 6px -4px color-mix(in srgb, var(--accent) 25%, transparent)"
+              "box-shadow": "0 10px 15px -3px color-mix(in srgb, var(--landing-accent) 25%, transparent), 0 4px 6px -4px color-mix(in srgb, var(--landing-accent) 25%, transparent)"
             }}
           >
             <Show when={isPlaying()} fallback={
@@ -93,10 +93,10 @@ export function VideoShowcase(props: {
       </div>
 
       {/* Corner decorations */}
-      <div class="absolute top-3 left-3 h-6 w-6 border-l-2 border-t-2 border-(--accent)/30 rounded-tl-lg pointer-events-none" />
-      <div class="absolute top-3 right-3 h-6 w-6 border-r-2 border-t-2 border-(--accent)/30 rounded-tr-lg pointer-events-none" />
-      <div class="absolute bottom-3 left-3 h-6 w-6 border-l-2 border-b-2 border-(--accent)/30 rounded-bl-lg pointer-events-none" />
-      <div class="absolute bottom-3 right-3 h-6 w-6 border-r-2 border-b-2 border-(--accent)/30 rounded-br-lg pointer-events-none" />
+      <div class="absolute top-3 left-3 h-6 w-6 border-l-2 border-t-2 border-(--landing-accent)/30 rounded-tl-lg pointer-events-none" />
+      <div class="absolute top-3 right-3 h-6 w-6 border-r-2 border-t-2 border-(--landing-accent)/30 rounded-tr-lg pointer-events-none" />
+      <div class="absolute bottom-3 left-3 h-6 w-6 border-l-2 border-b-2 border-(--landing-accent)/30 rounded-bl-lg pointer-events-none" />
+      <div class="absolute bottom-3 right-3 h-6 w-6 border-r-2 border-b-2 border-(--landing-accent)/30 rounded-br-lg pointer-events-none" />
     </div>
   )
 }

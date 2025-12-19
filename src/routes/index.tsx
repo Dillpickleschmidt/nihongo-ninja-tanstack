@@ -31,12 +31,12 @@ function Homepage() {
   return (
     <div class="z-0 relative min-h-screen bg-neutral-950 text-white overflow-x-hidden">
       <style>{`
-        @property --accent { syntax: "<color>"; inherits: true; initial-value: #f59e0b; }
-        @property --accent-end { syntax: "<color>"; inherits: true; initial-value: #f43f5e; }
+        @property --landing-accent { syntax: "<color>"; inherits: true; initial-value: #f59e0b; }
+        @property --landing-accent-end { syntax: "<color>"; inherits: true; initial-value: #f43f5e; }
 
-        :root { transition: --accent 2s ease-in-out, --accent-end 2s ease-in-out; }
+        :root { transition: --landing-accent 2s ease-in-out, --landing-accent-end 2s ease-in-out; }
 
-        .accent-gradient { background: linear-gradient(to right, var(--accent), var(--accent-end)); }
+        .landing-accent-gradient { background: linear-gradient(to right, var(--landing-accent), var(--landing-accent-end)); }
       `}</style>
 
       {/* Floating kanji decorations - furthest back */}
@@ -68,9 +68,9 @@ function Homepage() {
           <button
             type="button"
             onClick={() => setDialogOpen(true)}
-            class="accent-gradient rounded-full px-5 py-2 text-sm font-medium text-white transition-all hover:scale-105"
+            class="landing-accent-gradient rounded-full px-5 py-2 text-sm font-medium text-white transition-all hover:scale-105"
             style={{
-              "box-shadow": "0 10px 15px -3px color-mix(in srgb, var(--accent) 20%, transparent), 0 4px 6px -4px color-mix(in srgb, var(--accent) 20%, transparent)"
+              "box-shadow": "0 10px 15px -3px color-mix(in srgb, var(--landing-accent) 20%, transparent), 0 4px 6px -4px color-mix(in srgb, var(--landing-accent) 20%, transparent)"
             }}
           >
             Explore

@@ -30,7 +30,7 @@ export function TextbookSelectionDialog(props: {
         <DialogHeader>
           <DialogTitle class="text-xl xl:text-2xl font-bold text-white">
             Which{" "}
-            <span class="text-transparent bg-clip-text bg-linear-to-r from-(--accent) to-(--accent-end)">
+            <span class="text-transparent bg-clip-text bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end)">
               textbook
             </span>
             {" "}are you following?
@@ -58,7 +58,7 @@ export function TextbookSelectionDialog(props: {
                   class={cn(
                     "absolute top-2.5 right-2.5 size-5 rounded-full border-2 transition-all duration-200 flex items-center justify-center",
                     selectedTextbook() === textbook.id
-                      ? "border-(--accent) bg-(--accent)"
+                      ? "border-(--landing-accent) bg-(--landing-accent)"
                       : "border-white/20"
                   )}
                 >
@@ -107,9 +107,9 @@ export function TextbookSelectionDialog(props: {
           <Button
             variant="ghost"
             onClick={handleContinue}
-            class="group inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-(--accent) to-(--accent-end) transition-all hover:scale-[1.02]"
+            class="group inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end) transition-all hover:scale-[1.02]"
             style={{
-              "box-shadow": "0 8px 16px -4px color-mix(in srgb, var(--accent) 30%, transparent)"
+              "box-shadow": "0 8px 16px -4px color-mix(in srgb, var(--landing-accent) 30%, transparent)"
             }}
           >
             Continue

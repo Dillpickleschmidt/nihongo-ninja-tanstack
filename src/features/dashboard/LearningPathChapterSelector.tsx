@@ -28,6 +28,7 @@ interface LearningPathChapterSelectorProps {
   onOpenChange: (open: boolean) => void
   onChapterSelect: (pathId: string, chapter: LearningPathChapter) => void
   popoverWidth?: string
+  class?: string
 }
 
 export function LearningPathChapterSelector(
@@ -72,21 +73,51 @@ export function LearningPathChapterSelector(
   }
 
   return (
-    <div>
-      <Popover open={props.isOpen} onOpenChange={handleOpenChange}>
-        <PopoverTrigger id="deck-selection-popover-trigger">
-          {props.children}
-        </PopoverTrigger>
-        <PopoverContent
-          class={cn(
-            "border-card-foreground bg-neutral-950/70 p-2 backdrop-blur-2xl",
-            props.popoverWidth || "w-[480px]",
-          )}
-        >
-          <div class="grid grid-cols-[1fr_2fr]">
-            <div class="border-primary/10 border-r p-1">
-              {/* Built-in Textbooks */}
-              <For each={builtInTextbooks()}>
+    <Popover open={props.isOpen} onOpenChange={handleOpenChange}>
+      <PopoverTrigger id="deck-selection-popover-trigger" class={props.class}>
+        {props.children}
+      </PopoverTrigger>
+      <PopoverContent
+        class={cn(
+          "border-card-foreground p-2 backdrop-blur-2xl",
+          props.popoverWidth || "w-[400px] md:w-[450px]",
+        )}
+        style={{
+          "background-color": "color-mix(in srgb, var(--accent) 15%, rgb(10 10 10 / 0.7))"
+        }}
+      >
+        <div class="grid grid-cols-[2fr_3fr]">
+          <div class="border-primary/10 border-r p-1">
+            {/* Built-in Textbooks */}
+            <For each={builtInTextbooks()}>
+              {(path) => (
+                <button
+                  ref={(el) => {
+                    if (props.activePathId === path.id) {
+                      activePathRef = el
+                    }
+                  }}
+                  onClick={() => handlePathSelect(path.id)}
+                  class={cn(
+                    "hover:bg-primary/15 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-medium",
+                    displayedPathId() === path.id && "bg-primary/10",
+                  )}
+                >
+                  <span class="flex items-center gap-2">
+                    <span>{path.shortName}</span>
+                  </span>
+                </button>
+              )}
+            </For>
+
+            {/* User Learning Paths */}
+            <Show when={userPaths().length > 0}>
+              <div class="border-primary/10 my-2 border-t pt-2">
+                <span class="px-2 text-xs text-neutral-500">
+                  Your Learning Paths
+                </span>
+              </div>
+              <For each={userPaths()}>
                 {(path) => (
                   <button
                     ref={(el) => {
@@ -106,75 +137,46 @@ export function LearningPathChapterSelector(
                   </button>
                 )}
               </For>
-
-              {/* User Learning Paths */}
-              <Show when={userPaths().length > 0}>
-                <div class="border-primary/10 my-2 border-t pt-2">
-                  <span class="px-2 text-xs text-neutral-500">
-                    Your Learning Paths
-                  </span>
-                </div>
-                <For each={userPaths()}>
-                  {(path) => (
-                    <button
-                      ref={(el) => {
-                        if (props.activePathId === path.id) {
-                          activePathRef = el
-                        }
-                      }}
-                      onClick={() => handlePathSelect(path.id)}
-                      class={cn(
-                        "hover:bg-primary/15 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-medium",
-                        displayedPathId() === path.id && "bg-primary/10",
-                      )}
-                    >
-                      <span class="flex items-center gap-2">
-                        <span>{path.shortName}</span>
-                      </span>
-                    </button>
-                  )}
-                </For>
-              </Show>
-            </div>
-            <div class="max-h-[400px] overflow-y-auto p-1">
-              <For each={displayedChapters()}>
-                {(chapter) => (
-                  <button
-                    onClick={() => {
-                      props.onChapterSelect(displayedPathId(), chapter)
-                      props.onOpenChange(false)
-                    }}
-                    class={cn(
-                      "hover:bg-card-foreground/40 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal",
-                      props.activePathId === displayedPathId() &&
-                        props.activeChapter.slug === chapter.slug &&
-                        "bg-primary/10 hover:bg-primary/15 font-semibold",
-                    )}
-                  >
-                    <span>
-                      Chapter {getChapterDisplayNumber(chapter.slug)}
-                    </span>
-                    <Show
-                      when={
-                        props.activePathId === displayedPathId() &&
-                        props.activeChapter.slug === chapter.slug
-                      }
-                    >
-                      <svg
-                        class="size-4"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M5 12l5 5l10 -10" />
-                      </svg>
-                    </Show>
-                  </button>
-                )}
-              </For>
-            </div>
+            </Show>
           </div>
-        </PopoverContent>
-      </Popover>
-    </div>
+          <div class="max-h-[480px] overflow-y-auto p-1">
+            <For each={displayedChapters()}>
+              {(chapter) => (
+                <button
+                  onClick={() => {
+                    props.onChapterSelect(displayedPathId(), chapter)
+                    props.onOpenChange(false)
+                  }}
+                  class={cn(
+                    "hover:bg-card-foreground/40 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal",
+                    props.activePathId === displayedPathId() &&
+                    props.activeChapter.slug === chapter.slug &&
+                    "bg-primary/10 hover:bg-primary/15 font-semibold",
+                  )}
+                >
+                  <span>
+                    Chapter {getChapterDisplayNumber(chapter.slug)}
+                  </span>
+                  <Show
+                    when={
+                      props.activePathId === displayedPathId() &&
+                      props.activeChapter.slug === chapter.slug
+                    }
+                  >
+                    <svg
+                      class="size-4"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M5 12l5 5l10 -10" />
+                    </svg>
+                  </Show>
+                </button>
+              )}
+            </For>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
   )
 }

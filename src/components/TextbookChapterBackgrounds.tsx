@@ -1,9 +1,18 @@
 import { Show, createMemo } from 'solid-js'
-import { useQuery as useTanstackQuery } from '@tanstack/solid-query'
+import { useQuery as useTanstackQuery, useQueryClient } from '@tanstack/solid-query'
+import { FastAverageColor } from 'fast-average-color'
 import { api } from 'convex/_generated/api'
 import { getUser } from '@/lib/auth'
 import { backgroundSettingsQueryOptions } from '~/query/query-options'
 import { useConvexQuery } from '@/lib/convex-query'
+import { queryKeys } from '~/query/query-keys'
+
+export type BackgroundColor = {
+  hex: string
+  isDark: boolean
+}
+
+const fac = new FastAverageColor()
 
 type BackgroundMediaItem = {
   source_type: 'img' | 'video'
@@ -26,13 +35,13 @@ const textbook_chapter_backgrounds: TextbookChapterBackgrounds = {
       source_type: 'img',
       src: '/img/backgrounds/tranquil_village_by_k_jackson_katss_djqxpcz.png',
       layout: 'horizontal',
-      opacity: 0.4,
+      opacity: 0.44,
     },
     'chapter-1': {
       source_type: 'img',
       src: '/img/backgrounds/morning_village_by_k_jackson_katss_djrsova.jpg',
       layout: 'horizontal',
-      opacity: 0.36,
+      opacity: 0.4,
     },
     'chapter-2': {
       source_type: 'img',
@@ -47,11 +56,10 @@ const textbook_chapter_backgrounds: TextbookChapterBackgrounds = {
       opacity: 0.4,
     },
     'chapter-4': {
-      source_type: 'img',
-      src: '/img/backgrounds/jordan-duca-aOqEXM_zI_4-unsplash.jpg',
+      source_type: 'video',
+      src: '/video/backgrounds/AdobeStock_621205133_Video_HD_Preview.mp4',
       layout: 'vertical',
-      opacity: 0.5,
-      y_offset_desktop: '-418px',
+      opacity: 0.44,
     },
     'chapter-5': {
       source_type: 'img',
@@ -176,6 +184,7 @@ export type BackgroundSettings = {
 
 export function TextbookChapterBackgrounds() {
   const user = getUser()
+  const queryClient = useQueryClient()
 
   const backgroundSettingsQuery = useTanstackQuery(() => backgroundSettingsQueryOptions())
   const settings = () => backgroundSettingsQuery.data
@@ -185,6 +194,19 @@ export function TextbookChapterBackgrounds() {
     {},
     () => ({ enabled: !!user() }),
   )
+
+  const extractAndSetColor = (element: HTMLImageElement | HTMLVideoElement) => {
+    try {
+      const color = fac.getColor(element)
+      queryClient.setQueryData(queryKeys.backgroundColor(), {
+        hex: color.hex,
+        isDark: color.isDark,
+      } satisfies BackgroundColor)
+      document.documentElement.style.setProperty("--accent", color.hex)
+    } catch (e) {
+      console.warn('Failed to extract color from background:', e)
+    }
+  }
 
   const getBackgroundItem = () => {
     const textbook = profileQuery.data()?.userPreferences?.activeLearningPath
@@ -204,6 +226,17 @@ export function TextbookChapterBackgrounds() {
   const finalOpacity = () =>
     backgroundItem().opacity + (settings()?.opacityOffset || 0)
 
+  // Calculate height to compensate for negative y-offset
+  const heightValue = () => {
+    const offset = yOffset()
+    if (offset.startsWith('-')) {
+      // Extract numeric value and add it to 100%
+      const offsetPx = offset.slice(1) // Remove the minus sign
+      return `calc(100% + ${offsetPx})`
+    }
+    return '100%'
+  }
+
   return (
     <>
       <Show
@@ -212,6 +245,11 @@ export function TextbookChapterBackgrounds() {
           <>
             {/* Video Background */}
             <video
+              ref={(el) => {
+                if (el.readyState >= 2) {
+                  extractAndSetColor(el)
+                }
+              }}
               src={backgroundItem().src}
               class="pointer-events-none fixed inset-0 -z-10 -mt-8"
               style={{
@@ -222,7 +260,7 @@ export function TextbookChapterBackgrounds() {
                 filter: `blur(${blurValue()})`,
                 transition: 'filter 300ms ease-out',
                 width: '100%',
-                height: '100%',
+                height: heightValue(),
                 top: yOffset(),
               }}
               autoplay
@@ -230,12 +268,18 @@ export function TextbookChapterBackgrounds() {
               muted
               playsinline
               preload="auto"
+              onLoadedData={(e) => extractAndSetColor(e.currentTarget)}
             />
           </>
         }
       >
         {/* Image Background */}
         <img
+          ref={(el) => {
+            if (el.complete) {
+              extractAndSetColor(el)
+            }
+          }}
           src={backgroundItem().src}
           class="pointer-events-none fixed inset-0 -z-10 -mt-8"
           alt="Background"
@@ -247,9 +291,10 @@ export function TextbookChapterBackgrounds() {
             filter: `blur(${blurValue()})`,
             transition: 'filter 300ms ease-out',
             width: '100%',
-            height: '100%',
+            height: heightValue(),
             top: yOffset(),
           }}
+          onLoad={(e) => extractAndSetColor(e.currentTarget)}
         />
       </Show>
 

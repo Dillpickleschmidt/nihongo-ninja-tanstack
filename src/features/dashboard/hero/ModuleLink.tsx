@@ -2,6 +2,7 @@ import { Link } from "@tanstack/solid-router"
 import { Show } from "solid-js"
 import { ChevronRight, Play } from "lucide-solid"
 import { cn } from "@/utils"
+import { Button } from "@/components/ui/button"
 
 interface ModuleLinkProps {
   linkTo: string
@@ -11,19 +12,20 @@ interface ModuleLinkProps {
 
 export function ModuleLink(props: ModuleLinkProps) {
   return (
-    <Link
+    <Button
+      as={Link}
       to={props.linkTo}
       class={cn(
         "group flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm transition-all",
         props.isPrimary
-          ? "bg-linear-to-r from-(--accent) to-(--accent-end) text-white font-medium hover:scale-[1.02]"
-          : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+          ? "bg-(--accent)/80 text-white font-medium hover:scale-[1.02] hover:bg-(--accent)"
+          : "bg-white/5 text-white/70 hover:text-white hover:bg-(--accent)/20"
       )}
       style={
         props.isPrimary
           ? {
             "box-shadow":
-              "0 8px 20px -4px color-mix(in srgb, var(--accent) 30%, transparent)",
+              "0 8px 15px -4px color-mix(in srgb, var(--accent) 30%, transparent)",
           }
           : {}
       }
@@ -38,6 +40,6 @@ export function ModuleLink(props: ModuleLinkProps) {
           props.isPrimary && "group-hover:translate-x-0.5"
         )}
       />
-    </Link>
+    </Button>
   )
 }
