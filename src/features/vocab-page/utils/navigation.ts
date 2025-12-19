@@ -78,6 +78,16 @@ export function resolveDeckFromPath(
   return decks.find((d) => d.id === lastSegment) ?? null
 }
 
+// ===== Practice Route Utilities =====
+
+/**
+ * Build practice route from current vocab path
+ * e.g., /vocab/genki_1/chapter-0/deck123 → /vocab/practice/genki_1/chapter-0/deck123
+ */
+export function buildPracticePath(currentPath: string): string {
+  return currentPath.replace('/vocab/', '/vocab/practice/')
+}
+
 // ===== Breadcrumb Utilities =====
 
 export interface BreadcrumbItem {

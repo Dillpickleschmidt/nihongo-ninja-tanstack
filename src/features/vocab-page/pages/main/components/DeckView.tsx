@@ -1,6 +1,11 @@
 import { Show } from 'solid-js'
+import { Link, useLocation } from '@tanstack/solid-router'
+import { Play, ChevronRight } from 'lucide-solid'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Button } from '@/components/ui/button'
+import { SSRMediaQuery } from '@/components/SSRMediaQuery'
 import type { UnifiedDeck } from 'convex/model/decks'
+import { buildPracticePath } from '../../../utils/navigation'
 import { useDeckView, type TabValue } from './deck-view/hooks/useDeckView'
 import { DeckHeader } from './deck-view/components/DeckHeader'
 import { SummaryCardsRow } from './deck-view/components/SummaryCardsRow'
@@ -13,6 +18,7 @@ interface DeckViewProps {
 }
 
 export function DeckView(props: DeckViewProps) {
+  const location = useLocation()
   const view = useDeckView({ deck: props.deck })
 
   return (
@@ -78,6 +84,23 @@ export function DeckView(props: DeckViewProps) {
           </TabsContent>
         </Tabs>
       </div>
+
+      <SSRMediaQuery hideFrom="md">
+        <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
+          <Button
+            as={Link}
+            to={buildPracticePath(location().pathname)}
+            class="group flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm transition-all bg-(--accent)/80 text-white font-medium hover:scale-[1.02] hover:bg-(--accent)"
+            style={{
+              "box-shadow": "0 8px 15px -4px color-mix(in srgb, var(--accent) 30%, transparent)",
+            }}
+          >
+            <Play class="size-4" />
+            <span>Start practicing</span>
+            <ChevronRight class="size-4 transition-transform group-hover:translate-x-0.5" />
+          </Button>
+        </div>
+      </SSRMediaQuery>
     </div>
   )
 }
