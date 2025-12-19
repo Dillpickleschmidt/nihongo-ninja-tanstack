@@ -1,4 +1,4 @@
-import { Show } from 'solid-js'
+import { Show, Suspense } from 'solid-js'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/utils'
 import type { PracticeCard } from '../types'
@@ -8,6 +8,7 @@ import {
   getPromptDisplay,
   formatMnemonic,
 } from '../utils/card-display'
+import { KanjiDisplay } from './KanjiDisplay'
 
 type Props = {
   card: PracticeCard
@@ -17,6 +18,14 @@ type Props = {
 }
 
 export function IntroductionCard(props: Props) {
+  // Check if we should show kanji animation
+  const character = () => props.card.vocab.word
+  const shouldUseAnimation = () => {
+    const type = props.card.practiceItemType
+    const char = character()
+    return (type === 'kanji' || type === 'radical') && char && char.length === 1
+  }
+
   // IntroductionCard shows both meaning and reading mnemonics
   const getMnemonic = () => {
     const mnemonics = props.card.vocab.mnemonics
@@ -37,6 +46,21 @@ export function IntroductionCard(props: Props) {
   const promptDisplay = () => getPromptDisplay(props.card, '1rem')
   const mnemonic = () => getMnemonic()
   const progress = () => ((props.currentIndex + 1) / props.totalItems) * 100
+
+  // Plain text fallback component
+  const PlainTextDisplay = () => (
+    <Show
+      when={promptDisplay().isHtml}
+      fallback={
+        <div class="font-japanese text-7xl font-bold">{promptDisplay().text}</div>
+      }
+    >
+      <div
+        class="font-japanese text-5xl font-bold tracking-wide"
+        innerHTML={promptDisplay().html}
+      />
+    </Show>
+  )
 
   return (
     <div class="flex flex-col items-center p-4">
@@ -71,15 +95,12 @@ export function IntroductionCard(props: Props) {
           {/* Main character/word */}
           <div class="mb-4 text-center">
             <Show
-              when={promptDisplay().isHtml}
-              fallback={
-                <div class="font-japanese text-7xl font-bold">{promptDisplay().text}</div>
-              }
+              when={shouldUseAnimation()}
+              fallback={<PlainTextDisplay />}
             >
-              <div
-                class="font-japanese text-5xl font-bold tracking-wide"
-                innerHTML={promptDisplay().html}
-              />
+              <Suspense fallback={<PlainTextDisplay />}>
+                <KanjiDisplay character={character()} />
+              </Suspense>
             </Show>
           </div>
 
