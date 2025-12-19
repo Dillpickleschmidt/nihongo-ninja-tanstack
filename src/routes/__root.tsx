@@ -23,7 +23,7 @@ import { createMediaQuery } from '@solid-primitives/media'
 import '@fontsource-variable/inter'
 import '@fontsource/poppins'
 import appCss from '@/styles/app.css?url'
-import AppConvexProvider from '@/providers/convex'
+import AppConvexProvider, { convexQueryClient } from '@/providers/convex'
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { SolidQueryDevtools } from "@tanstack/solid-query-devtools"
 import { authQueryOptions, deviceSettingsQueryOptions } from '@/query/query-options'
@@ -43,7 +43,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   }),
   beforeLoad: async ({ context }) => {
     context.queryClient.prefetchQuery(deviceSettingsQueryOptions())
-    await context.queryClient.ensureQueryData(authQueryOptions())
+    const auth = await context.queryClient.ensureQueryData(authQueryOptions())
+
+    if (auth.token) {
+      convexQueryClient.serverHttpClient?.setAuth(auth.token)
+    }
+
     return {}
   },
   loader: async ({ context }) => {
@@ -90,13 +95,11 @@ function RootDocument(props: { children: JSX.Element }) {
       </head>
       <body>
         <HeadContent />
-        <Suspense>
-          <ColorModeProvider storageManager={storageManager}>
-            <AppConvexProvider>
-              {props.children}
-            </AppConvexProvider>
-          </ColorModeProvider>
-        </Suspense>
+        <ColorModeProvider storageManager={storageManager}>
+          <AppConvexProvider>
+            {props.children}
+          </AppConvexProvider>
+        </ColorModeProvider>
         <Scripts />
       </body>
     </html>

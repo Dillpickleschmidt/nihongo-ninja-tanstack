@@ -26,10 +26,6 @@ export function ModuleListView(props: ModuleListViewProps) {
   )
 }
 
-// ============================================================================
-// Module List Item Component
-// ============================================================================
-
 interface ModuleListItemProps {
   module: ResolvedModule
   index: number

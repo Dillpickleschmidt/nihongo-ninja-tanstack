@@ -60,7 +60,7 @@ function Homepage() {
               Nihongo Ninja
             </span>
           </Link>
-          <div class="hidden items-center gap-8 text-sm text-white/60 md:flex">
+          <div class="hidden items-center gap-8 text-sm -ml-20 text-white/60 md:flex">
             <a href="#features" class="hover:text-white transition-colors">Features</a>
             <Link to="/discover" class="hover:text-white transition-colors">Discover</Link>
             <Link to="/about" class="hover:text-white transition-colors">About</Link>

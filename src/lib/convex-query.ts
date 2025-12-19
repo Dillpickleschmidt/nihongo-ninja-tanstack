@@ -36,8 +36,8 @@ export const convexQuery = createIsomorphicFn()
     ) => ({
       queryKey: getQueryKey(query, args),
       queryFn: async () => {
-        const { convexClient } = await import('@/providers/convex')
-        return convexClient.query(query, args)
+        const { convexQueryClient } = await import('@/providers/convex')
+        return convexQueryClient.client.query(query, args)
       },
     })
   )
@@ -58,8 +58,8 @@ export const convexAction = createIsomorphicFn()
       action: Action,
       args: FunctionArgs<Action>
     ) => async (): Promise<FunctionReturnType<Action>> => {
-      const { convexClient } = await import('@/providers/convex')
-      return convexClient.action(action, args)
+      const { convexQueryClient } = await import('@/providers/convex')
+      return convexQueryClient.client.action(action, args)
     }
   )
 
@@ -79,8 +79,8 @@ export const convexMutation = createIsomorphicFn()
       mutation: Mutation,
       args: FunctionArgs<Mutation>
     ) => async (): Promise<FunctionReturnType<Mutation>> => {
-      const { convexClient } = await import('@/providers/convex')
-      return convexClient.mutation(mutation, args)
+      const { convexQueryClient } = await import('@/providers/convex')
+      return convexQueryClient.client.mutation(mutation, args)
     }
   )
 

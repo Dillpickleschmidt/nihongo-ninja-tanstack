@@ -1,0 +1,150 @@
+import { Show, For, createSignal, Suspense, onMount } from "solid-js"
+import { ChevronRight } from "lucide-solid"
+import { useMutation } from "convex-solidjs"
+import { useConvexQuery } from "@/lib/convex-query"
+import { api } from "convex/_generated/api"
+import { getModulesFromChapter } from "@/data/utils/modules"
+import { animateElementIn, getInitialAnimationStyles } from "@/utils/animations"
+import { LearningPathChapterSelector } from "../LearningPathChapterSelector"
+import { ModuleLink } from "./ModuleLink"
+
+interface CurrentChapterCardProps {
+  skipAnimation?: boolean
+}
+
+export function CurrentChapterCard(props: CurrentChapterCardProps) {
+  let cardRef: HTMLDivElement | undefined
+
+  onMount(() => {
+    if (!props.skipAnimation && cardRef) {
+      animateElementIn(cardRef, "down")
+    }
+  })
+
+  return (
+    <div
+      ref={cardRef}
+      class="relative overflow-hidden rounded-2xl min-h-40"
+      style={props.skipAnimation ? {} : getInitialAnimationStyles("down")}
+    >
+      <Suspense
+        fallback={
+          <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+            <div class="flex-1">
+              <div class="h-7 w-48 bg-white/10 rounded animate-pulse mb-2" />
+              <div class="h-4 w-96 bg-white/5 rounded animate-pulse mb-4" />
+              <div class="flex flex-wrap gap-2">
+                <div class="h-8 w-32 bg-white/5 rounded-lg animate-pulse" />
+                <div class="h-8 w-28 bg-white/5 rounded-lg animate-pulse" />
+              </div>
+            </div>
+            <div class="flex items-center gap-4 lg:flex-col lg:items-end">
+              <div class="h-10 w-16 bg-white/5 rounded animate-pulse" />
+            </div>
+          </div>
+        }
+      >
+        <CurrentChapterCardContent />
+      </Suspense>
+    </div>
+  )
+}
+
+function CurrentChapterCardContent() {
+  const [isSelectorOpen, setIsSelectorOpen] = createSignal(false)
+
+  // Queries
+  const updatePreference = useMutation(api.api.profiles.updatePreferenceField)
+  const profile = useConvexQuery(api.api.profiles.getProfile, {})
+  const learningPathsQuery = useConvexQuery(
+    api.api.learning_paths.getAllLearningPaths,
+    {}
+  )
+
+  const selectedPathId = () =>
+    profile.data()?.userPreferences.activeLearningPath
+
+  const pathChaptersQuery = useConvexQuery(
+    api.api.learning_paths.getPathChapters,
+    () => ({ pathId: selectedPathId()! }),
+    () => ({ enabled: !!selectedPathId() })
+  )
+
+  const currentChapter = () => {
+    const chapterSlug = profile.data()?.userPreferences.activeChapter
+    if (!chapterSlug) return undefined
+    return pathChaptersQuery.data()?.find((c) => c.slug === chapterSlug)
+  }
+
+  const currentModules = () => {
+    const chapter = currentChapter()
+    if (chapter === undefined) return undefined
+    return getModulesFromChapter(chapter)
+  }
+
+  const nextModules = () => currentModules()?.slice(0, 3) ?? []
+
+  const handleChapterSelect = (pathId: string, chapter: { slug: string }) => {
+    updatePreference.mutate({ field: "activeLearningPath", value: pathId })
+    updatePreference.mutate({ field: "activeChapter", value: chapter.slug })
+  }
+
+  return (
+    <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+      <div class="flex-1">
+        <h2 class="text-xl font-semibold text-white mb-2 md:text-2xl">
+          {currentChapter()?.title}
+        </h2>
+        <Show when={(currentChapter() as { description?: string })?.description}>
+          <p class="text-sm text-white/50 mb-4 max-w-2xl line-clamp-2 md:text-base">
+            {(currentChapter() as { description?: string })?.description}
+          </p>
+        </Show>
+
+        {/* Quick module list */}
+        <div class="flex flex-wrap gap-2 mb-4">
+          <For each={nextModules()}>
+            {(module, index) => (
+              <ModuleLink
+                linkTo={module.linkTo}
+                title={module.module.title}
+                isPrimary={index() === 0}
+              />
+            )}
+          </For>
+        </div>
+      </div>
+
+      {/* Progress indicator */}
+      <div class="flex items-center gap-4 lg:flex-col lg:items-end">
+        <Show when={currentModules() !== undefined}>
+          <div class="text-right">
+            <div class="text-2xl font-bold text-(--accent) md:text-3xl">
+              {currentModules()!.length}
+            </div>
+            <div class="text-xs text-white/40">modules</div>
+          </div>
+        </Show>
+        {/* Selector needs non-null values - wrap in Show */}
+        <Show when={currentChapter() && learningPathsQuery.data() && selectedPathId()}>
+          <LearningPathChapterSelector
+            learningPaths={learningPathsQuery.data()!}
+            activePathId={selectedPathId()!}
+            activeChapter={currentChapter()!}
+            isOpen={isSelectorOpen()}
+            onOpenChange={setIsSelectorOpen}
+            onChapterSelect={handleChapterSelect}
+          >
+            <button
+              type="button"
+              class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition-all hover:bg-white/10 hover:text-white"
+            >
+              Change chapter
+              <ChevronRight class="size-4" />
+            </button>
+          </LearningPathChapterSelector>
+        </Show>
+      </div>
+    </div>
+  )
+}

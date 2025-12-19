@@ -1,15 +1,15 @@
 import { createFileRoute } from "@tanstack/solid-router"
-import { createEffect, createSignal, For, on, Show } from "solid-js"
-import { useQueryClient } from "@tanstack/solid-query"
-import { useMutation } from "convex-solidjs"
-import { ChevronDown } from "lucide-solid"
-import { convexQuery, useConvexQuery } from "@/lib/convex-query"
-import { queryKeys } from "~/query/query-keys"
+import { isServer } from "solid-js/web"
+import { Suspense, createSignal, createEffect, onMount, onCleanup } from "solid-js"
+import { convexQuery } from "@/lib/convex-query"
 import { api } from "../../../convex/_generated/api"
-import { ChapterSection } from "@/features/dashboard/ChapterSection"
-import { LearningPathChapterSelector } from "@/features/dashboard/LearningPathChapterSelector"
-import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
-import { cn } from "@/utils"
+import { useQueryClient } from "@tanstack/solid-query"
+import { queryKeys } from "~/query/query-keys"
+import { useColorAnimation } from "@/features/homepage/lib/use-color-animation"
+import { FloatingKanji } from "@/features/homepage/components/floating-kanji"
+import { HeroSection } from "@/features/dashboard/hero/HeroSection"
+import { PracticeToolsSection } from "@/features/dashboard/practice-tools/PracticeToolsSection"
+import { LearningPathSection } from "@/features/dashboard/learning-path/LearningPathSection"
 
 export const Route = createFileRoute("/_home/dashboard")({
   loader: ({ context }) => {
@@ -17,119 +17,68 @@ export const Route = createFileRoute("/_home/dashboard")({
     context.queryClient.prefetchQuery(
       convexQuery(api.api.learning_paths.getAllLearningPaths, {})
     )
+    return { didSSR: isServer }
   },
   component: DashboardComponent,
 })
 
 function DashboardComponent() {
+  const { didSSR } = Route.useLoaderData()()
+  const [scrollY, setScrollY] = createSignal(0)
   const queryClient = useQueryClient()
 
-  queryClient.setQueryData(queryKeys.backgroundSettings(), {
-    blur: 8,
-    opacityOffset: 0,
-    showGradient: true,
+  // Dynamic background blur: 4 at top, 0 when scrolled
+  createEffect(() => {
+    const atTop = scrollY() < 400
+    queryClient.setQueryData(queryKeys.backgroundSettings(), {
+      blur: atTop ? 4 : 0,
+      opacityOffset: -0.22,
+      showGradient: false,
+    })
   })
 
-  const profile = useConvexQuery(api.api.profiles.getProfile, {})
-  const updatePreference = useMutation(api.api.profiles.updatePreferenceField)
-  const learningPathsQuery = useConvexQuery(
-    api.api.learning_paths.getAllLearningPaths,
-    {}
-  )
-  const selectedPathId = () =>
-    profile.data()?.userPreferences.activeLearningPath
+  useColorAnimation()
 
-  const selectedPath = () =>
-    learningPathsQuery.data()?.find((p) => p.id === selectedPathId())
-
-  // Fetch chapters for the selected path (works for both static and user paths)
-  const pathChaptersQuery = useConvexQuery(
-    api.api.learning_paths.getPathChapters,
-    () => ({ pathId: selectedPathId()! }),
-    () => ({ enabled: !!selectedPathId() })
-  )
-
-  const selectedChapter = () => {
-    const chapterSlug = profile.data()?.userPreferences.activeChapter
-    if (!chapterSlug) return undefined
-    return pathChaptersQuery.data()?.find((c) => c.slug === chapterSlug)
-  }
-
-  const [isSelectorOpen, setIsSelectorOpen] = createSignal(false)
-  const chapterRefs = new Map<string, HTMLDivElement>()
-
-  // Auto-scroll to selected chapter when it changes
-  createEffect(on(selectedChapter, (chapter) => {
-    if (chapter) {
-      chapterRefs.get(chapter.slug)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  }))
+  onMount(() => {
+    const handleScroll = () => setScrollY(window.scrollY)
+    window.addEventListener("scroll", handleScroll)
+    onCleanup(() => window.removeEventListener("scroll", handleScroll))
+  })
 
   return (
-    <main class="min-h-screen">
-      <div class="pt-28 pb-32 md:pb-12">
-        {/* Header - always visible */}
-        <div class="mx-auto max-w-7xl px-4 md:px-6 mb-8">
-          <h1 class="text-3xl font-bold text-white mb-4">Learning Dashboard</h1>
-          <p class="text-neutral-300 mb-6">
-            Track your progress through structured learning paths. Choose a textbook to begin.
-          </p>
+    <div class="relative min-h-screen text-white overflow-x-hidden">
+      <style>{`
+        @property --accent { syntax: "<color>"; inherits: true; initial-value: #f59e0b; }
+        @property --accent-end { syntax: "<color>"; inherits: true; initial-value: #f43f5e; }
+        :root { transition: --accent 2s ease-in-out, --accent-end 2s ease-in-out; }
+        .accent-gradient { background: linear-gradient(to right, var(--accent), var(--accent-end)); }
+        @keyframes fade-up {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up { animation: fade-up 0.3s ease-out forwards; }
+      `}</style>
 
-          <Show
-            when={profile.data() && selectedPath() && selectedChapter()}
-            fallback={<div class="h-10 w-48 bg-white/10 rounded animate-pulse" />}
-          >
-            <LearningPathChapterSelector
-              learningPaths={learningPathsQuery.data()!}
-              activePathId={selectedPathId()!}
-              activeChapter={selectedChapter()!}
-              isOpen={isSelectorOpen()}
-              onOpenChange={setIsSelectorOpen}
-              onChapterSelect={(pathId, chapter) => {
-                updatePreference.mutate({ field: "activeLearningPath", value: pathId })
-                updatePreference.mutate({ field: "activeChapter", value: chapter.slug })
-              }}
-            >
-              <div
-                class={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer",
-                  "bg-white/10 text-neutral-300 hover:bg-white/20"
-                )}
-              >
-                <span>{selectedPath()?.shortName}</span>
-                <span class="text-neutral-500">—</span>
-                <span>
-                  Chapter {getChapterDisplayNumber(selectedChapter()?.slug ?? "")}
-                </span>
-                <ChevronDown class="h-4 w-4 ml-1" />
-              </div>
-            </LearningPathChapterSelector>
-          </Show>
-        </div>
+      <FloatingKanji char="忍" class="top-20 left-[10%]" delay={0} />
 
+      <div
+        class="fixed inset-0 pointer-events-none opacity-[0.015]"
+        style={{
+          "background-image": `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }}
+      />
+
+      <main class="relative pt-28 pb-32 md:pb-12">
         <div class="mx-auto max-w-7xl px-4 md:px-6">
-          <Show
-            when={profile.data() && pathChaptersQuery.data()}
-            fallback={
-              <div class="space-y-4">
-                <div class="h-24 bg-white/10 rounded animate-pulse" />
-                <div class="h-24 bg-white/10 rounded animate-pulse" />
-              </div>
-            }
-          >
-            <For each={pathChaptersQuery.data()}>
-              {(chapter) => (
-                <div
-                  ref={(el) => chapterRefs.set(chapter.slug, el)}
-                  class="scroll-mt-32"
-                >
-                  <ChapterSection chapter={chapter} />
-                </div>
-              )}
-            </For>
-          </Show>
+          <HeroSection skipAnimation={didSSR} />
+
+          <PracticeToolsSection />
+
+          <Suspense>
+            <LearningPathSection skipAnimation={didSSR} />
+          </Suspense>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   )
 }

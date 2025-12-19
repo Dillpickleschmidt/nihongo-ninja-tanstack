@@ -162,9 +162,15 @@ function NavigationContent(props: NavigationContentProps) {
   const user = getUser()
 
   return (
-    <div class="flex h-full flex-col justify-between px-6 pt-24">
+    <div class="flex h-full flex-col justify-between px-6 pt-4">
+      {/* <Link to="/" class="flex items-center gap-2 text-lg tracking-tight font-bold"> */}
+      {/*   <img src="/icons/ninja.png" alt="Ninja" class="size-8 -mb-1.25" /> */}
+      {/*   <span class="text-muted-foreground"> */}
+      {/*     Nihongo Ninja */}
+      {/*   </span> */}
+      {/* </Link> */}
       {/* Navigation Groups */}
-      <div class="flex-1 space-y-1">
+      <div class="flex-1 space-y-1 pt-24">
         <For each={navigation}>
           {(section) => (
             <div class="flex flex-col space-y-1 py-4">

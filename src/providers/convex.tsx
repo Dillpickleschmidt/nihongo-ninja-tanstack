@@ -8,8 +8,10 @@ if (!CONVEX_URL) {
   console.error('missing envar CONVEX_URL')
 }
 
-export const convexClient = setupConvex(CONVEX_URL)
-convexClient.setAuth(async ({ forceRefreshToken }) => {
+export const convexQueryClient = setupConvex(CONVEX_URL)
+
+// Set auth on the WebSocket client (for client-side real-time updates)
+convexQueryClient.client.setAuth(async ({ forceRefreshToken }) => {
   if (forceRefreshToken) {
     // Force BetterAuth to refresh the session and get new JWT
     await authClient.getSession({ query: { disableCookieCache: true } })
@@ -19,5 +21,5 @@ convexClient.setAuth(async ({ forceRefreshToken }) => {
 })
 
 export default function AppConvexProvider(props: { children: JSXElement }) {
-  return <ConvexProvider client={convexClient}>{props.children}</ConvexProvider>
+  return <ConvexProvider client={convexQueryClient}>{props.children}</ConvexProvider>
 }

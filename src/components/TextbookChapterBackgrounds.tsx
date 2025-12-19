@@ -1,7 +1,9 @@
 import { Show, createMemo } from 'solid-js'
-import { useQuery } from 'convex-solidjs'
+import { useQuery as useTanstackQuery } from '@tanstack/solid-query'
 import { api } from 'convex/_generated/api'
 import { getUser } from '@/lib/auth'
+import { backgroundSettingsQueryOptions } from '~/query/query-options'
+import { useConvexQuery } from '@/lib/convex-query'
 
 type BackgroundMediaItem = {
   source_type: 'img' | 'video'
@@ -172,10 +174,13 @@ export type BackgroundSettings = {
   showGradient: boolean
 }
 
-export function TextbookChapterBackgrounds(props: BackgroundSettings) {
+export function TextbookChapterBackgrounds() {
   const user = getUser()
 
-  const profileQuery = useQuery(
+  const backgroundSettingsQuery = useTanstackQuery(() => backgroundSettingsQueryOptions())
+  const settings = () => backgroundSettingsQuery.data
+
+  const profileQuery = useConvexQuery(
     api.api.profiles.getProfile,
     {},
     () => ({ enabled: !!user() }),
@@ -192,12 +197,12 @@ export function TextbookChapterBackgrounds(props: BackgroundSettings) {
   }
 
   const blurValue = () =>
-    props.blur !== undefined ? `${props.blur}px` : '16px'
+    settings()?.blur !== undefined ? `${settings()?.blur}px` : '16px'
 
   const backgroundItem = createMemo(() => getBackgroundItem())
   const yOffset = () => backgroundItem().y_offset_desktop || '0'
   const finalOpacity = () =>
-    backgroundItem().opacity + (props.opacityOffset || 0)
+    backgroundItem().opacity + (settings()?.opacityOffset || 0)
 
   return (
     <>
@@ -250,7 +255,7 @@ export function TextbookChapterBackgrounds(props: BackgroundSettings) {
 
       {/* Gradient Overlay */}
       <div
-        class={`pointer-events-none fixed inset-0 -z-5 transition-opacity duration-300 ${props.showGradient == false ? "opacity-0" : "opacity-100"}`}
+        class={`pointer-events-none fixed inset-0 -z-5 transition-opacity duration-300 ${settings()?.showGradient == false ? "opacity-0" : "opacity-100"}`}
         style={{
           background:
             'linear-gradient(to bottom, transparent 30%, rgba(18, 18, 18, 1) 100%)',
