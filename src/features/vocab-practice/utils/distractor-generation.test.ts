@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { getPosCategory, generateDistractors } from './distractor-generation'
+import { generateDistractors } from './distractor-generation'
+import { getPosCategory } from '@/data/utils/vocabulary/part-of-speech'
 import type { PracticeCard } from '../types'
 
 // Helper to create mock cards
@@ -43,7 +44,9 @@ describe('getPosCategory', () => {
 
   it('should return "other" for undefined or unknown types', () => {
     expect(getPosCategory(undefined)).toBe('other')
+    // @ts-expect-error - testing runtime behavior with invalid input
     expect(getPosCategory('noun')).toBe('other')
+    // @ts-expect-error - testing runtime behavior with invalid input
     expect(getPosCategory('')).toBe('other')
   })
 })

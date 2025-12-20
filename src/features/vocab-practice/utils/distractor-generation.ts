@@ -1,14 +1,5 @@
 import type { PracticeCard } from '../types'
-
-export function getPosCategory(
-  pos: string | undefined,
-): 'verb' | 'adjective' | 'other' {
-  if (!pos) return 'other'
-  const lower = pos.toLowerCase()
-  if (lower.includes('verb')) return 'verb'
-  if (lower.includes('adjective')) return 'adjective'
-  return 'other'
-}
+import { getPosCategory } from '@/data/utils/vocabulary/part-of-speech'
 
 export function generateDistractors(
   currentCard: PracticeCard,

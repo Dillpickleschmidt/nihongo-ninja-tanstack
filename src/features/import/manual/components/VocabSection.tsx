@@ -1,9 +1,21 @@
-import { For, Show } from "solid-js"
+import { createMemo, For, Show } from "solid-js"
 import type { VocabularyItem } from "convex/validators"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { cn } from "@/utils"
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/custom/collapsible"
+import { getPosCategory, type PosCategorySimplified } from "@/data/utils/vocabulary/part-of-speech"
 import { JLPT_SETS } from "../consts"
+
+const POS_CATEGORIES = [
+  { key: "verb", label: "Verbs" },
+  { key: "adjective", label: "Adjectives" },
+  { key: "other", label: "Other" },
+] as const
 
 export function VocabSection(props: {
   level: string
@@ -17,6 +29,7 @@ export function VocabSection(props: {
   )
 
   const items = () => vocabQuery.data()?.[props.level.toLowerCase()]
+
   const allSelected = () => {
     const list = items()
     return list !== undefined && list.length > 0 && list.every((i) => props.selectedKeys.has(i.key))
@@ -31,21 +44,55 @@ export function VocabSection(props: {
         </div>
       }
     >
-      {(itemList) => (
-        <>
-          <SelectAllHeader
-            level={props.level}
-            selectedCount={props.selectedKeys.size}
-            allSelected={allSelected()}
-            onToggle={(checked) => props.onToggleAll(itemList(), checked)}
-          />
-          <VocabGrid
-            items={itemList()}
-            selectedKeys={props.selectedKeys}
-            onToggle={props.onToggle}
-          />
-        </>
-      )}
+      {(itemList) => {
+        const grouped = createMemo(() => {
+          const result: Record<PosCategorySimplified, VocabularyItem[]> = {
+            verb: [],
+            adjective: [],
+            other: [],
+          }
+          for (const item of itemList()) {
+            result[getPosCategory(item.partOfSpeech)].push(item)
+          }
+          return result
+        })
+
+        const nonEmptyCategories = createMemo(() =>
+          POS_CATEGORIES.filter((c) => grouped()[c.key].length > 0)
+        )
+
+        return (
+          <>
+            <SelectAllHeader
+              level={props.level}
+              selectedCount={props.selectedKeys.size}
+              allSelected={allSelected()}
+              onToggle={(checked) => props.onToggleAll(itemList(), checked)}
+            />
+            <div class="divide-y divide-white/10">
+              <For each={nonEmptyCategories()}>
+                {(category, index) => (
+                  <Collapsible
+                    defaultOpen={index() === nonEmptyCategories().length - 1}
+                    class="py-2 first:pt-0"
+                  >
+                    <CollapsibleTrigger class="rounded-lg px-2 py-2 text-white/80 hover:bg-white/10">
+                      {category.label} ({grouped()[category.key].length})
+                    </CollapsibleTrigger>
+                    <CollapsibleContent class="pt-2">
+                      <VocabGrid
+                        items={grouped()[category.key]}
+                        selectedKeys={props.selectedKeys}
+                        onToggle={props.onToggle}
+                      />
+                    </CollapsibleContent>
+                  </Collapsible>
+                )}
+              </For>
+            </div>
+          </>
+        )
+      }}
     </Show>
   )
 }
