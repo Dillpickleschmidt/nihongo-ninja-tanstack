@@ -39,6 +39,14 @@ export const getDueFSRSCardsCount = query({
 })
 
 /**
+ * Get item statuses (state + scheduled_days) for batch status calculation
+ */
+export const getItemStatuses = query({
+  args: { keys: v.array(v.string()) },
+  handler: (ctx, args) => FSRS.getItemStatuses(ctx, args.keys),
+})
+
+/**
  * Upsert FSRS card after answering
  */
 export const upsertFSRSCard = mutation({

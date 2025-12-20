@@ -122,6 +122,41 @@ export async function getDueFSRSCards(
   }))
 }
 
+export async function getItemStatuses(
+  ctx: QueryCtx,
+  keys: string[]
+): Promise<Record<string, { state: number; scheduled_days: number }>> {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) return {}
+
+  const userId = identity.subject
+
+  const results = await Promise.all(
+    keys.map((key) =>
+      ctx.db
+        .query('userFsrsCards')
+        .withIndex('by_user_key_mode', (q) =>
+          q.eq('userId', userId).eq('practiceItemKey', key).eq('mode', 'meanings')
+        )
+        .first()
+    )
+  )
+
+  const statusMap: Record<string, { state: number; scheduled_days: number }> = {}
+  for (let i = 0; i < keys.length; i++) {
+    const card = results[i]
+    if (card) {
+      // Encode key to avoid non-ASCII characters in object keys
+      statusMap[encodeURIComponent(keys[i])] = {
+        state: card.fsrsCard.state,
+        scheduled_days: card.fsrsCard.scheduled_days,
+      }
+    }
+  }
+
+  return statusMap
+}
+
 export async function getDueFSRSCardsCount(ctx: QueryCtx): Promise<number> {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) return 0

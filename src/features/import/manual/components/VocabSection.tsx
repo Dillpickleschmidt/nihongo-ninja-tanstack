@@ -3,6 +3,7 @@ import type { VocabularyItem } from "convex/validators"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { cn } from "@/utils"
+import { getUser } from "@/lib/auth"
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -11,6 +12,8 @@ import {
 import { Checkbox, CheckboxInput, CheckboxLabel } from "@/components/ui/checkbox"
 import { getPosCategory, type PosCategorySimplified } from "@/data/utils/vocabulary/part-of-speech"
 import { JLPT_SETS } from "../consts"
+import { calculateItemStatus, type ItemStatus } from "../../shared/status"
+import { StatusBadge } from "../../shared/StatusBadge"
 
 const POS_CATEGORIES = [
   { key: "verb", label: "Verbs" },
@@ -24,12 +27,26 @@ export function VocabSection(props: {
   onToggle: (key: string, checked: boolean) => void
   onToggleAll: (items: VocabularyItem[], checked: boolean) => void
 }) {
+  const user = getUser()
   const vocabQuery = useConvexQuery(
     api.api.vocabulary.getBySets,
     () => ({ setIds: [...JLPT_SETS] })
   )
 
   const items = () => vocabQuery.data()?.[props.level.toLowerCase()]
+
+  const allKeys = createMemo(() => items()?.map((i) => i.key) ?? [])
+
+  const statusesQuery = useConvexQuery(
+    api.api.fsrs.getItemStatuses,
+    () => ({ keys: allKeys() }),
+    () => ({ enabled: !!user() && allKeys().length > 0 })
+  )
+
+  const getStatus = (key: string): ItemStatus => {
+    const data = statusesQuery.data()?.[encodeURIComponent(key)]
+    return data ? calculateItemStatus(data) : null
+  }
 
   const allSelected = () => {
     const list = items()
@@ -87,6 +104,7 @@ export function VocabSection(props: {
                         items={grouped()[category.key]}
                         selectedKeys={props.selectedKeys}
                         onToggle={props.onToggle}
+                        getStatus={getStatus}
                       />
                     </CollapsibleContent>
                   </Collapsible>
@@ -146,6 +164,7 @@ function VocabGrid(props: {
   items: VocabularyItem[]
   selectedKeys: Record<string, boolean>
   onToggle: (key: string, checked: boolean) => void
+  getStatus: (key: string) => ItemStatus
 }) {
   return (
     <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -155,6 +174,7 @@ function VocabGrid(props: {
             item={item}
             checked={props.selectedKeys[item.key] ?? false}
             onToggle={props.onToggle}
+            status={props.getStatus(item.key)}
           />
         )}
       </For>
@@ -166,13 +186,14 @@ function VocabItem(props: {
   item: VocabularyItem
   checked: boolean
   onToggle: (key: string, checked: boolean) => void
+  status: ItemStatus
 }) {
   return (
     <Checkbox
       checked={props.checked}
       onChange={(checked) => props.onToggle(props.item.key, checked)}
       class={cn(
-        "flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors ease-instant-hover-150",
+        "relative flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors ease-instant-hover-150",
         props.checked
           ? "border-(--accent)/30 bg-(--accent)/10"
           : "border-white/10 bg-white/2 hover:border-white/20"
@@ -182,6 +203,7 @@ function VocabItem(props: {
       <CheckboxLabel class="min-w-0 flex-1 cursor-pointer text-base leading-normal! font-normal">
         <p class="truncate font-medium text-white">{props.item.word}</p>
         <p class="truncate text-xs text-white/40">{props.item.english[0]}</p>
+        <StatusBadge status={props.status} />
       </CheckboxLabel>
     </Checkbox>
   )
