@@ -1,8 +1,9 @@
-import { batch, createSignal, For, Show, Suspense } from "solid-js"
+import { batch, createSignal, For, Match, Suspense, Switch } from "solid-js"
 import { createStore } from "solid-js/store"
-import type { VocabularyItem } from "convex/validators"
+import type { VocabularyItem, KanjiEntry } from "convex/validators"
 import { cn } from "@/utils"
 import { VocabSection, VocabSectionSkeleton } from "./components/VocabSection"
+import { KanjiSection, KanjiSectionSkeleton } from "./components/KanjiSection"
 
 const JLPT_LEVELS = ["N5", "N4", "N3", "N2", "N1"] as const
 const CATEGORIES = ["Vocabulary", "Grammar", "Kanji"] as const
@@ -16,10 +17,18 @@ export function ManualMarkingSection() {
     setSelectedKeys(key, checked)
   }
 
-  const toggleAll = (items: VocabularyItem[], checked: boolean) => {
+  const toggleAllVocab = (items: VocabularyItem[], checked: boolean) => {
     batch(() => {
       for (const item of items) {
         setSelectedKeys(item.key, checked)
+      }
+    })
+  }
+
+  const toggleAllKanji = (items: KanjiEntry[], checked: boolean) => {
+    batch(() => {
+      for (const item of items) {
+        setSelectedKeys(item.kanji, checked)
       }
     })
   }
@@ -32,23 +41,33 @@ export function ManualMarkingSection() {
       <CategoryTabs selected={selectedCategory()} onSelect={setSelectedCategory} />
 
       <div class="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-        <Show
-          when={selectedCategory() === "Vocabulary"}
-          fallback={
+        <Switch>
+          <Match when={selectedCategory() === "Vocabulary"}>
+            <Suspense fallback={<VocabSectionSkeleton />}>
+              <VocabSection
+                level={selectedLevel()}
+                selectedKeys={selectedKeys}
+                onToggle={toggleItem}
+                onToggleAll={toggleAllVocab}
+              />
+            </Suspense>
+          </Match>
+          <Match when={selectedCategory() === "Kanji"}>
+            <Suspense fallback={<KanjiSectionSkeleton />}>
+              <KanjiSection
+                level={selectedLevel()}
+                selectedKeys={selectedKeys}
+                onToggle={toggleItem}
+                onToggleAll={toggleAllKanji}
+              />
+            </Suspense>
+          </Match>
+          <Match when={selectedCategory() === "Grammar"}>
             <div class="py-12 text-center text-white/40">
-              {selectedCategory()} marking coming soon
+              Grammar marking coming soon
             </div>
-          }
-        >
-          <Suspense fallback={<VocabSectionSkeleton />}>
-            <VocabSection
-              level={selectedLevel()}
-              selectedKeys={selectedKeys}
-              onToggle={toggleItem}
-              onToggleAll={toggleAll}
-            />
-          </Suspense>
-        </Show>
+          </Match>
+        </Switch>
       </div>
 
       <div class="mt-6 flex justify-end">
