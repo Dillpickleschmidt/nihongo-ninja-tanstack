@@ -26,11 +26,25 @@ const items = Object.entries(vocabulary).map(([key, item]) => ({
   overwriteWord: item.overwriteWord,
 }))
 
-// Transform vocabulary sets
-const sets = Object.entries(vocabularySets).map(([setId, vocabSet]) => ({
-  setId,
-  vocabularyKeys: vocabSet.keys,
-}))
+// Generate JLPT sets dynamically from vocabulary items
+const jlptLevels = ["n5", "n4", "n3", "n2", "n1"] as const
+const jlptSets = jlptLevels
+  .map((level) => ({
+    setId: level,
+    vocabularyKeys: Object.entries(vocabulary)
+      .filter(([_, item]) => item.jlptLevel === level)
+      .map(([key]) => key),
+  }))
+  .filter((set) => set.vocabularyKeys.length > 0)
+
+// Transform vocabulary sets and merge with JLPT sets
+const sets = [
+  ...jlptSets,
+  ...Object.entries(vocabularySets).map(([setId, vocabSet]) => ({
+    setId,
+    vocabularyKeys: vocabSet.keys,
+  })),
+]
 
 // Write JSONLines files (one JSON object per line)
 const itemsFile = "scripts/.tmp-vocab-items.jsonl"

@@ -1,9 +1,12 @@
 import type { VocabularyItem } from "convex/validators"
 
+type JlptLevel = "n5" | "n4" | "n3" | "n2" | "n1"
+
 // Extend VocabularyItem locally to include chapter for my visual reference
 type VocabularyItemWithChapter = Omit<VocabularyItem, "key"> & {
   chapter?: number
   extra?: string
+  jlptLevel?: JlptLevel
 }
 type LocalVocabularyCollection = Record<string, VocabularyItemWithChapter>
 
@@ -661,6 +664,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
 
   おはようございます: {
+    jlptLevel: "n5",
     word: "おはようございます",
     furigana: "おはようございます",
     english: ["Good Morning (polite)"],
@@ -680,6 +684,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おはよう: {
+    jlptLevel: "n5",
     word: "おはよう",
     furigana: "おはよう",
     english: ["Good morning."],
@@ -687,6 +692,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
 
   こんにちは: {
+    jlptLevel: "n5",
     word: "こんにちは",
     furigana: "こんにちは",
     english: ["Good Afternoon", "Hello"],
@@ -706,6 +712,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   こんばんは: {
+    jlptLevel: "n5",
     word: "こんばんは",
     furigana: "こんばんは",
     english: ["Good Evening"],
@@ -723,6 +730,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   じゃあね: {
+    jlptLevel: "n5",
     word: "じゃあね",
     furigana: "じゃあね",
     english: ["See you", "Bye"],
@@ -742,6 +750,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     overwriteWord: "じゃあね",
   },
   またね: {
+    jlptLevel: "n5",
     word: "またね",
     furigana: "またね",
     english: ["See you later"],
@@ -760,6 +769,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     overwriteWord: "またね",
   },
   ありがとうございます: {
+    jlptLevel: "n5",
     word: "ありがとうございます",
     furigana: "ありがとうございます",
     english: ["Thank you (polite)"],
@@ -771,6 +781,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     videos: [],
   },
   ありがとう: {
+    jlptLevel: "n5",
     word: "ありがとう",
     furigana: "ありがとう",
     english: ["Thank you."],
@@ -778,6 +789,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
 
   さようなら: {
+    jlptLevel: "n5",
     word: "さようなら",
     furigana: "さようなら",
     english: ["Goodbye (for a long time)"],
@@ -796,6 +808,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   すみません: {
+    jlptLevel: "n5",
     word: "すみません",
     furigana: "すみません",
     english: ["Excuse Me"],
@@ -813,6 +826,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   いいえ: {
+    jlptLevel: "n5",
     word: "いいえ",
     furigana: "いいえ",
     english: ["No"],
@@ -831,6 +845,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おやすみ: {
+    jlptLevel: "n5",
     word: "おやすみ",
     furigana: "おやすみ",
     english: ["Goodnight"],
@@ -846,6 +861,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おやすみなさい: {
+    jlptLevel: "n5",
     word: "おやすみなさい",
     furigana: "おやすみなさい",
     english: ["Goodnight (polite)"],
@@ -859,6 +875,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   いってきます: {
+    jlptLevel: "n5",
     word: "いってきます",
     furigana: "いってきます",
     english: ["I'll go and come back", "I'm off"],
@@ -875,6 +892,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   いってらっしゃい: {
+    jlptLevel: "n5",
     word: "いってらっしゃい",
     furigana: "いってらっしゃい",
     english: ["Go and come back", "Have a nice day"],
@@ -891,6 +909,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ただいま: {
+    jlptLevel: "n5",
     word: "ただいま",
     furigana: "ただいま",
     english: ["I'm home"],
@@ -907,6 +926,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おかえり: {
+    jlptLevel: "n5",
     word: "おかえり",
     furigana: "おかえり",
     english: ["Welcome home"],
@@ -923,6 +943,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おかえりなさい: {
+    jlptLevel: "n5",
     word: "おかえりなさい",
     furigana: "おかえりなさい",
     english: ["Welcome home (polite)"],
@@ -936,6 +957,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   いただきます: {
+    jlptLevel: "n5",
     word: "いただきます",
     furigana: "いただきます",
     english: ["Thanks for the food", "said before eating"],
@@ -952,6 +974,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ごちそうさまでした: {
+    jlptLevel: "n5",
     word: "ごちそうさまでした",
     furigana: "ごちそうさまでした",
     english: ["Thank you for the meal (after eating)"],
@@ -968,6 +991,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   はじめまして: {
+    jlptLevel: "n5",
     word: "はじめまして",
     furigana: "はじめまして",
     english: ["Nice to meet you"],
@@ -985,6 +1009,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   よろしくお願いします: {
+    jlptLevel: "n5",
     word: "よろしくお願いします",
     furigana: "よろしくお 願[ねが]いします",
     english: ["Please be kind to me", "Please take care of me"],
@@ -1001,6 +1026,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ようこそ: {
+    jlptLevel: "n5",
     word: "ようこそ",
     furigana: "ようこそ",
     english: ["Welcome"],
@@ -1024,78 +1050,91 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     chapter: 0,
   },
   れい: {
+    jlptLevel: "n5",
     word: "れい",
     furigana: "れい",
     english: ["Zero", "0"],
     chapter: 0,
   },
   いち: {
+    jlptLevel: "n5",
     word: "いち",
     furigana: "いち",
     english: ["One", "1"],
     chapter: 0,
   },
   に1: {
+    jlptLevel: "n5",
     word: "に",
     furigana: "に",
     english: ["Two", "2"],
     chapter: 0,
   },
   さん: {
+    jlptLevel: "n5",
     word: "さん",
     furigana: "さん",
     english: ["Three", "3"],
     chapter: 0,
   },
   よん: {
+    jlptLevel: "n5",
     word: "よん",
     furigana: "よん",
     english: ["Four", "4"],
     chapter: 0,
   },
   し1: {
+    jlptLevel: "n5",
     word: "し",
     furigana: "し",
     english: ["Four", "4"],
     chapter: 0,
   },
   ご1: {
+    jlptLevel: "n5",
     word: "ご",
     furigana: "ご",
     english: ["Five", "5"],
     chapter: 0,
   },
   ろく: {
+    jlptLevel: "n5",
     word: "ろく",
     furigana: "ろく",
     english: ["Six", "6"],
     chapter: 0,
   },
   なな: {
+    jlptLevel: "n5",
     word: "なな",
     furigana: "なな",
     english: ["Seven", "7"],
     chapter: 0,
   },
   しち: {
+    jlptLevel: "n5",
     word: "しち",
     furigana: "しち",
     english: ["Seven", "7"],
     chapter: 0,
   },
   はち: {
+    jlptLevel: "n5",
     word: "はち",
     furigana: "はち",
     english: ["Eight", "8"],
     chapter: 0,
   },
   きゅう: {
+    jlptLevel: "n5",
     word: "きゅう",
     furigana: "きゅう",
     english: ["Nine", "9"],
     chapter: 0,
   },
   く1: {
+    jlptLevel: "n5",
     word: "く",
     furigana: "く",
     english: ["Nine", "9"],
@@ -1282,6 +1321,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     chapter: 0,
   },
   ひゃく: {
+    jlptLevel: "n5",
     word: "ひゃく",
     furigana: "ひゃく",
     english: ["One hundred", "100"],
@@ -1290,6 +1330,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
 
   // From List 1 (Time, Countries)
   今: {
+    jlptLevel: "n5",
     word: "今",
     furigana: "今[いま]",
     english: ["now", "right now"],
@@ -1300,6 +1341,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   午前: {
+    jlptLevel: "n5",
     word: "午前",
     furigana: "午前[ごぜん]",
     english: ["A.M.", "morning"],
@@ -1310,6 +1352,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   午後: {
+    jlptLevel: "n5",
     word: "午後",
     furigana: "午後[ごご]",
     english: ["P.M.", "afternoon"],
@@ -1320,6 +1363,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～時": {
+    jlptLevel: "n5",
     word: "～時",
     furigana: "～時[じ]",
     english: ["...o'clock", "...hour"],
@@ -1330,6 +1374,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   一時: {
+    jlptLevel: "n5",
     word: "一時",
     furigana: "一時[いちじ]",
     english: ["one o'clock", "1:00"],
@@ -1340,6 +1385,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   半: {
+    jlptLevel: "n5",
     word: "半",
     furigana: "半[はん]",
     english: ["half", "half past"],
@@ -1350,6 +1396,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   二時半: {
+    jlptLevel: "n5",
     word: "二時半",
     furigana: "二時半[にじはん]",
     english: ["half past two", "2:30"],
@@ -1360,6 +1407,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   日本: {
+    jlptLevel: "n5",
     word: "日本",
     furigana: "日本[にほん]",
     english: ["Japan"],
@@ -1370,6 +1418,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   アメリカ: {
+    jlptLevel: "n5",
     word: "アメリカ",
     furigana: "アメリカ",
     english: ["America", "USA"],
@@ -1380,6 +1429,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   イギリス: {
+    jlptLevel: "n5",
     word: "イギリス",
     furigana: "イギリス",
     english: ["UK", "Britain", "England"],
@@ -1390,6 +1440,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   オーストラリア: {
+    jlptLevel: "n5",
     word: "オーストラリア",
     furigana: "オーストラリア",
     english: ["Australia"],
@@ -1400,6 +1451,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   韓国: {
+    jlptLevel: "n5",
     word: "韓国",
     furigana: "韓国[かんこく]",
     english: ["Korea", "South Korea"],
@@ -1410,6 +1462,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   カナダ: {
+    jlptLevel: "n5",
     word: "カナダ",
     furigana: "カナダ",
     english: ["Canada"],
@@ -1420,6 +1473,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   中国: {
+    jlptLevel: "n5",
     word: "中国",
     furigana: "中国[ちゅうごく]",
     english: ["China"],
@@ -1430,6 +1484,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   インド: {
+    jlptLevel: "n5",
     word: "インド",
     furigana: "インド",
     english: ["India"],
@@ -1440,6 +1495,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   エジプト: {
+    jlptLevel: "n5",
     word: "エジプト",
     furigana: "エジプト",
     english: ["Egypt"],
@@ -1450,6 +1506,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   フィリピン: {
+    jlptLevel: "n5",
     word: "フィリピン",
     furigana: "フィリピン",
     english: ["Philippines"],
@@ -1462,6 +1519,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
 
   // From List 2 (Family, School)
   お母さん: {
+    jlptLevel: "n5",
     word: "お母さん",
     furigana: "お 母[かあ]さん",
     english: ["mother"],
@@ -1473,6 +1531,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お父さん: {
+    jlptLevel: "n5",
     word: "お父さん",
     furigana: "お 父[とう]さん",
     english: ["father"],
@@ -1484,6 +1543,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お姉さん: {
+    jlptLevel: "n5",
     word: "お姉さん",
     furigana: "お 姉[ねえ]さん",
     english: ["older sister"],
@@ -1495,6 +1555,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お兄さん: {
+    jlptLevel: "n5",
     word: "お兄さん",
     furigana: "お 兄[にい]さん",
     english: ["older brother"],
@@ -1506,6 +1567,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   妹: {
+    jlptLevel: "n5",
     word: "妹",
     furigana: "妹[いもうと]",
     english: ["younger sister"],
@@ -1517,6 +1579,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   弟: {
+    jlptLevel: "n5",
     word: "弟",
     furigana: "弟[おとうと]",
     english: ["younger brother"],
@@ -1528,6 +1591,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おばあさん: {
+    jlptLevel: "n5",
     word: "おばあさん",
     furigana: "おばあさん",
     english: ["grandmother", "old woman"],
@@ -1539,6 +1603,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おじいさん: {
+    jlptLevel: "n5",
     word: "おじいさん",
     furigana: "おじいさん",
     english: ["grandfather", "old man"],
@@ -1550,6 +1615,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おばさん: {
+    jlptLevel: "n5",
     word: "おばさん",
     furigana: "おばさん",
     english: ["aunt"],
@@ -1561,6 +1627,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おじさん: {
+    jlptLevel: "n5",
     word: "おじさん",
     furigana: "おじさん",
     english: ["uncle"],
@@ -1572,6 +1639,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   大学: {
+    jlptLevel: "n5",
     word: "大学",
     furigana: "大学[だいがく]",
     english: ["college", "university"],
@@ -1583,6 +1651,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   高校: {
+    jlptLevel: "n5",
     word: "高校",
     furigana: "高校[こうこう]",
     english: ["high school"],
@@ -1594,6 +1663,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   学生: {
+    jlptLevel: "n5",
     word: "学生",
     furigana: "学生[がくせい]",
     english: ["student"],
@@ -1604,6 +1674,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   大学生: {
+    jlptLevel: "n5",
     word: "大学生",
     furigana: "大学生[だいがくせい]",
     english: ["college student"],
@@ -1615,6 +1686,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   留学生: {
+    jlptLevel: "n5",
     word: "留学生",
     furigana: "留学生[りゅうがくせい]",
     english: ["international student"],
@@ -1626,6 +1698,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～年生": {
+    jlptLevel: "n5",
     word: "～年生",
     furigana: "～ 年生[ねんせい]",
     english: ["...year student"],
@@ -1637,6 +1710,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     overwriteWord: "年生",
   },
   一年生: {
+    jlptLevel: "n5",
     word: "一年生",
     furigana: "一年生[いちねんせい]",
     english: ["first-year student"],
@@ -1649,6 +1723,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     overwriteWord: "一年生",
   },
   専攻: {
+    jlptLevel: "n5",
     word: "専攻",
     furigana: "専攻[せんこう]",
     english: ["major"],
@@ -1662,6 +1737,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
 
   // From List 3 (Kanji Numbers)
   一: {
+    jlptLevel: "n5",
     word: "一",
     furigana: "一[いち]",
     english: ["1", "one"],
@@ -1674,6 +1750,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     },
   },
   二: {
+    jlptLevel: "n5",
     word: "二",
     furigana: "二[に]",
     english: ["2", "two"],
@@ -1686,6 +1763,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     },
   },
   三: {
+    jlptLevel: "n5",
     word: "三",
     furigana: "三[さん]",
     english: ["3", "three"],
@@ -1693,6 +1771,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     mnemonics: { kanji: ["A pictograph of three lines."], reading: [] },
   },
   四: {
+    jlptLevel: "n5",
     word: "四",
     furigana: "四[よん]",
     english: ["4", "four"],
@@ -1705,6 +1784,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     },
   },
   五: {
+    jlptLevel: "n5",
     word: "五",
     furigana: "五[ご]",
     english: ["5", "five"],
@@ -1716,6 +1796,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     info: ["Anime: My Hero Academia"],
   },
   六: {
+    jlptLevel: "n5",
     word: "六",
     furigana: "六[ろく]",
     english: ["6", "six"],
@@ -1728,6 +1809,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     },
   },
   七: {
+    jlptLevel: "n5",
     word: "七",
     furigana: "七[なな]",
     english: ["7", "seven"],
@@ -1740,6 +1822,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     },
   },
   八: {
+    jlptLevel: "n5",
     word: "八",
     furigana: "八[はち]",
     english: ["8", "eight"],
@@ -1753,6 +1836,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     },
   },
   九: {
+    jlptLevel: "n5",
     word: "九",
     furigana: "九[きゅう]",
     english: ["9", "nine"],
@@ -1765,6 +1849,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     },
   },
   十: {
+    jlptLevel: "n5",
     word: "十",
     furigana: "十[じゅう]",
     english: ["10", "ten"],
@@ -1777,60 +1862,70 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     },
   },
   十七: {
+    jlptLevel: "n5",
     word: "十七",
     furigana: "十七[じゅうなな]",
     english: ["17", "seventeen"],
     chapter: 1,
   },
   二十三: {
+    jlptLevel: "n5",
     word: "二十三",
     furigana: "二十三[にじゅうさん]",
     english: ["23", "twenty-three"],
     chapter: 1,
   },
   三十一: {
+    jlptLevel: "n5",
     word: "三十一",
     furigana: "三十一[さんじゅういち]",
     english: ["31", "thirty-one"],
     chapter: 1,
   },
   三十八: {
+    jlptLevel: "n5",
     word: "三十八",
     furigana: "三十八[さんじゅうはち]",
     english: ["38", "thirty-eight"],
     chapter: 1,
   },
   四十二: {
+    jlptLevel: "n5",
     word: "四十二",
     furigana: "四十二[よんじゅうに]",
     english: ["42", "forty-two"],
     chapter: 1,
   },
   五十五: {
+    jlptLevel: "n5",
     word: "五十五",
     furigana: "五十五[ごじゅうご]",
     english: ["55", "fifty-five"],
     chapter: 1,
   },
   六十九: {
+    jlptLevel: "n5",
     word: "六十九",
     furigana: "六十九[ろくじゅうきゅう]",
     english: ["69", "sixty-nine"],
     chapter: 1,
   },
   七十四: {
+    jlptLevel: "n5",
     word: "七十四",
     furigana: "七十四[ななじゅうよん]",
     english: ["74", "seventy-four"],
     chapter: 1,
   },
   八十六: {
+    jlptLevel: "n5",
     word: "八十六",
     furigana: "八十六[はちじゅうろく]",
     english: ["86", "eighty-six"],
     chapter: 1,
   },
   九十八: {
+    jlptLevel: "n5",
     word: "九十八",
     furigana: "九十八[きゅうじゅうはち]",
     english: ["98", "ninety-eight"],
@@ -1997,6 +2092,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
 
   // From List 5 (Occupations, Fields of Study, English)
   医者: {
+    jlptLevel: "n5",
     word: "医者",
     furigana: "医者[いしゃ]",
     english: ["doctor"],
@@ -2006,6 +2102,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   会社員: {
+    jlptLevel: "n5",
     word: "会社員",
     furigana: "会社員[かいしゃいん]",
     english: ["office worker", "company employee"],
@@ -2016,6 +2113,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   高校生: {
+    jlptLevel: "n5",
     word: "高校生",
     furigana: "高校生[こうこうせい]",
     english: ["high school student"],
@@ -2026,6 +2124,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   大学院生: {
+    jlptLevel: "n5",
     word: "大学院生",
     furigana: "大学院生[だいがくいんせい]",
     english: ["graduate student"],
@@ -2036,6 +2135,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   看護師: {
+    jlptLevel: "n5",
     word: "看護師",
     furigana: "看護師[かんごし]",
     english: ["nurse"],
@@ -2046,6 +2146,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   弁護士: {
+    jlptLevel: "n5",
     word: "弁護士",
     furigana: "弁護士[べんごし]",
     english: ["lawyer"],
@@ -2056,6 +2157,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   主婦: {
+    jlptLevel: "n5",
     word: "主婦",
     furigana: "主婦[しゅふ]",
     english: ["housewife", "homemaker"],
@@ -2066,6 +2168,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   アジア研究: {
+    jlptLevel: "n5",
     word: "アジア研究",
     furigana: "アジア研究[あじあけんきゅう]",
     english: ["Asian studies"],
@@ -2077,6 +2180,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     overwriteWord: "アジア研究",
   },
   経済: {
+    jlptLevel: "n5",
     word: "経済",
     furigana: "経済[けいざい]",
     english: ["economics"],
@@ -2087,6 +2191,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   工学: {
+    jlptLevel: "n5",
     word: "工学",
     furigana: "工学[こうがく]",
     english: ["engineering"],
@@ -2097,6 +2202,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   国際関係: {
+    jlptLevel: "n5",
     word: "国際関係",
     furigana: "国際関係[こくさいかんけい]",
     english: ["international relations"],
@@ -2107,6 +2213,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   コンピューター: {
+    jlptLevel: "n5",
     word: "コンピューター",
     furigana: "コンピューター[こんぴゅうたあ]",
     english: ["computer"],
@@ -2116,6 +2223,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   政治: {
+    jlptLevel: "n5",
     word: "政治",
     furigana: "政治[せいじ]",
     english: ["politics"],
@@ -2126,6 +2234,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   生物学: {
+    jlptLevel: "n5",
     word: "生物学",
     furigana: "生物学[せいぶつがく]",
     english: ["biology"],
@@ -2136,6 +2245,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ビジネス: {
+    jlptLevel: "n5",
     word: "ビジネス",
     furigana: "ビジネス[びじねす]",
     english: ["business"],
@@ -2145,6 +2255,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   文学: {
+    jlptLevel: "n5",
     word: "文学",
     furigana: "文学[ぶんがく]",
     english: ["literature"],
@@ -2155,6 +2266,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   歴史: {
+    jlptLevel: "n5",
     word: "歴史",
     furigana: "歴史[れきし]",
     english: ["history"],
@@ -2165,6 +2277,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   英語: {
+    jlptLevel: "n5",
     word: "英語",
     furigana: "英語[えいご]",
     english: ["English language"],
@@ -2176,6 +2289,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
 
   // From List 6 (Pronouns, People, Common Words)
   私: {
+    jlptLevel: "n5",
     word: "私",
     furigana: "私[わたし]",
     english: ["I", "me", "my"],
@@ -2187,6 +2301,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   友達: {
+    jlptLevel: "n5",
     word: "友達",
     furigana: "友[とも]達[だち]",
     english: ["friend"],
@@ -2197,6 +2312,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～さん": {
+    jlptLevel: "n5",
     word: "～さん",
     furigana: "～さん",
     english: ["Mr.", "Mrs.", "Ms."],
@@ -2211,6 +2327,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～人": {
+    jlptLevel: "n5",
     word: "～人",
     furigana: "～ 人[じん]",
     english: ["...people"],
@@ -2222,6 +2339,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   日本人: {
+    jlptLevel: "n5",
     word: "日本人",
     furigana: "日本人[にほんじん]",
     english: ["Japanese people", "Japanese person"],
@@ -2229,6 +2347,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     info: ['It combines "にほん" (Japan) and "じん" (people).'],
   },
   先生: {
+    jlptLevel: "n5",
     word: "先生",
     furigana: "先生[せんせい]",
     english: ["Teacher", "Professor", "Dr."],
@@ -2240,6 +2359,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～歳": {
+    jlptLevel: "n5",
     word: "～歳",
     furigana: "～ 歳[さい]",
     english: ["...years old"],
@@ -2251,6 +2371,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～語": {
+    jlptLevel: "n5",
     word: "～語",
     furigana: "～ 語[ご]",
     english: ["...language"],
@@ -2262,6 +2383,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   日本語: {
+    jlptLevel: "n5",
     word: "日本語",
     furigana: "日本語[にほんご]",
     english: ["Japanese language"],
@@ -2273,6 +2395,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   電話: {
+    jlptLevel: "n5",
     word: "電話",
     furigana: "電話[でんわ]",
     english: ["telephone"],
@@ -2283,6 +2406,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～番": {
+    jlptLevel: "n5",
     word: "～番",
     furigana: "～ 番[ばん]",
     english: ["...number"],
@@ -2293,6 +2417,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   番号: {
+    jlptLevel: "n5",
     word: "番号",
     furigana: "番号[ばんごう]",
     english: ["number"],
@@ -2304,6 +2429,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   名前: {
+    jlptLevel: "n5",
     word: "名前",
     furigana: "名前[なまえ]",
     english: ["name"],
@@ -2325,6 +2451,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   何: {
+    jlptLevel: "n5",
     word: "何",
     furigana: "何[なん/なに]",
     english: ["what"],
@@ -2337,6 +2464,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     overwriteWord: "何",
   },
   あのう: {
+    jlptLevel: "n5",
     word: "あのう",
     furigana: "あのう",
     english: ["um...", "excuse me"],
@@ -2349,6 +2477,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   はい: {
+    jlptLevel: "n5",
     word: "はい",
     furigana: "はい",
     english: ["yes"],
@@ -2360,6 +2489,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   そうです: {
+    jlptLevel: "n5",
     word: "そうです",
     furigana: "そうです",
     english: ["That's right."],
@@ -2370,6 +2500,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   そうですか: {
+    jlptLevel: "n5",
     word: "そうですか",
     furigana: "そうですか",
     english: ["I see", "Is that so?"],
@@ -2384,6 +2515,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   出身: {
+    jlptLevel: "n5",
     word: "出身",
     furigana: "出身[しゅっしん]",
     english: ["hometown", "place of origin"],
@@ -2504,30 +2636,35 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     chapter: 1,
   },
   あさ: {
+    jlptLevel: "n5",
     word: "あさ",
     furigana: "あさ",
     english: ["morning"],
     chapter: 1,
   },
   ひる: {
+    jlptLevel: "n5",
     word: "ひる",
     furigana: "ひる",
     english: ["midday"],
     chapter: 1,
   },
   ゆうがた: {
+    jlptLevel: "n5",
     word: "ゆうがた",
     furigana: "ゆうがた",
     english: ["evening"],
     chapter: 1,
   },
   よる: {
+    jlptLevel: "n5",
     word: "よる",
     furigana: "よる",
     english: ["night"],
     chapter: 1,
   },
   なんじですか: {
+    jlptLevel: "n5",
     word: "なんじですか",
     furigana: "なんじですか",
     english: ["what time is it?"],
@@ -2547,6 +2684,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "わかりました。": {
+    jlptLevel: "n5",
     word: "わかりました。",
     furigana: "わかりました",
     english: ["I understand.", "I understood."],
@@ -2557,6 +2695,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "わかりません。": {
+    jlptLevel: "n5",
     word: "わかりません。",
     furigana: "わかりません",
     english: ["I don't understand.", "I don't know."],
@@ -2566,6 +2705,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "ゆっくりいってください。": {
+    jlptLevel: "n5",
     word: "ゆっくりいってください。",
     furigana: "ゆっくりいってください",
     english: ["Please say it slowly."],
@@ -2576,6 +2716,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "もういちどいってください。": {
+    jlptLevel: "n5",
     word: "もういちどいってください。",
     furigana: "もういちどいってください",
     english: ["Please say it again."],
@@ -2586,6 +2727,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "ちょっとまってください。": {
+    jlptLevel: "n5",
     word: "ちょっとまってください。",
     furigana: "ちょっとまってください",
     english: ["Please wait for a while."],
@@ -2597,6 +2739,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "きいてください。": {
+    jlptLevel: "n5",
     word: "きいてください。",
     furigana: "きいてください",
     english: ["Please listen.", "Please ask."],
@@ -2617,6 +2760,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "はじめまして。": {
+    jlptLevel: "n5",
     word: "はじめまして。",
     furigana: "はじめまして",
     english: ["How do you do.", "Nice to meet you."],
@@ -2748,294 +2892,343 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
 
   これ: {
+    jlptLevel: "n5",
     word: "これ",
     furigana: "これ",
     english: ["this one"],
     chapter: 2,
   },
   それ: {
+    jlptLevel: "n5",
     word: "それ",
     furigana: "それ",
     english: ["that one"],
     chapter: 2,
   },
   あれ: {
+    jlptLevel: "n5",
     word: "あれ",
     furigana: "あれ",
     english: ["that one (over there)"],
     chapter: 2,
   },
   どれ: {
+    jlptLevel: "n5",
     word: "どれ",
     furigana: "どれ",
     english: ["which one"],
     chapter: 2,
   },
   この: {
+    jlptLevel: "n5",
     word: "この",
     furigana: "この",
     english: ["this..."],
     chapter: 2,
   },
   その: {
+    jlptLevel: "n5",
     word: "その",
     furigana: "その",
     english: ["that..."],
     chapter: 2,
   },
   あの: {
+    jlptLevel: "n5",
     word: "あの",
     furigana: "あの",
     english: ["that... (over there)"],
     chapter: 2,
   },
   どの: {
+    jlptLevel: "n5",
     word: "どの",
     furigana: "どの",
     english: ["which..."],
     chapter: 2,
   },
   ここ: {
+    jlptLevel: "n5",
     word: "ここ",
     furigana: "ここ",
     english: ["here"],
     chapter: 2,
   },
   そこ: {
+    jlptLevel: "n5",
     word: "そこ",
     furigana: "そこ",
     english: ["there"],
     chapter: 2,
   },
   あそこ: {
+    jlptLevel: "n5",
     word: "あそこ",
     furigana: "あそこ",
     english: ["over there"],
     chapter: 2,
   },
   どこ: {
+    jlptLevel: "n5",
     word: "どこ",
     furigana: "どこ",
     english: ["where"],
     chapter: 2,
   },
   だれ: {
+    jlptLevel: "n5",
     word: "だれ",
     furigana: "だれ",
     english: ["who"],
     chapter: 2,
   },
   おいしい: {
+    jlptLevel: "n5",
     word: "おいしい",
     furigana: "おいしい",
     english: ["delicious"],
     chapter: 2,
   },
   魚: {
+    jlptLevel: "n5",
     word: "魚",
     furigana: "魚[さかな]",
     english: ["fish"],
     chapter: 2,
   },
   とんかつ: {
+    jlptLevel: "n5",
     word: "とんかつ",
     furigana: "とんかつ",
     english: ["pork cutlet"],
     chapter: 2,
   },
   肉: {
+    jlptLevel: "n5",
     word: "肉",
     furigana: "肉[にく]",
     english: ["meat"],
     chapter: 2,
   },
   メニュー: {
+    jlptLevel: "n5",
     word: "メニュー",
     furigana: "メニュー",
     english: ["menu"],
     chapter: 2,
   },
   野菜: {
+    jlptLevel: "n5",
     word: "野菜",
     furigana: "野菜[やさい]",
     english: ["vegetable"],
     chapter: 2,
   },
   傘: {
+    jlptLevel: "n5",
     word: "傘",
     furigana: "傘[かさ]",
     english: ["umbrella"],
     chapter: 2,
   },
   かばん: {
+    jlptLevel: "n5",
     word: "かばん",
     furigana: "かばん",
     english: ["bag"],
     chapter: 2,
   },
   靴: {
+    jlptLevel: "n5",
     word: "靴",
     furigana: "靴[くつ]",
     english: ["shoes"],
     chapter: 2,
   },
   財布: {
+    jlptLevel: "n5",
     word: "財布",
     furigana: "財布[さいふ]",
     english: ["wallet"],
     chapter: 2,
   },
   ジーンズ: {
+    jlptLevel: "n5",
     word: "ジーンズ",
     furigana: "ジーンズ",
     english: ["jeans"],
     chapter: 2,
   },
   自転車: {
+    jlptLevel: "n5",
     word: "自転車",
     furigana: "自転車[じてんしゃ]",
     english: ["bicycle"],
     chapter: 2,
   },
   新聞: {
+    jlptLevel: "n5",
     word: "新聞",
     furigana: "新聞[しんぶん]",
     english: ["newspaper"],
     chapter: 2,
   },
   スマホ: {
+    jlptLevel: "n5",
     word: "スマホ",
     furigana: "スマホ",
     english: ["smartphone; mobile"],
     chapter: 2,
   },
   Ｔシャツ: {
+    jlptLevel: "n5",
     word: "Ｔシャツ",
     furigana: "ティーシャツ",
     english: ["T-shirt"],
     chapter: 2,
   },
   時計: {
+    jlptLevel: "n5",
     word: "時計",
     furigana: "時計[とけい]",
     english: ["watch; clock"],
     chapter: 2,
   },
   ノート: {
+    jlptLevel: "n5",
     word: "ノート",
     furigana: "ノート",
     english: ["notebook"],
     chapter: 2,
   },
   ペン: {
+    jlptLevel: "n5",
     word: "ペン",
     furigana: "ペン",
     english: ["pen"],
     chapter: 2,
   },
   帽子: {
+    jlptLevel: "n5",
     word: "帽子",
     furigana: "帽子[ぼうし]",
     english: ["hat; cap"],
     chapter: 2,
   },
   本: {
+    jlptLevel: "n5",
     word: "本",
     furigana: "本[ほん]",
     english: ["book"],
     chapter: 2,
   },
   銀行: {
+    jlptLevel: "n5",
     word: "銀行",
     furigana: "銀行[ぎんこう]",
     english: ["bank"],
     chapter: 2,
   },
   コンビニ: {
+    jlptLevel: "n5",
     word: "コンビニ",
     furigana: "コンビニ",
     english: ["convenience store"],
     chapter: 2,
   },
   トイレ: {
+    jlptLevel: "n5",
     word: "トイレ",
     furigana: "トイレ",
     english: ["toilet; restroom"],
     chapter: 2,
   },
   図書館: {
+    jlptLevel: "n5",
     word: "図書館",
     furigana: "図書館[としょかん]",
     english: ["library"],
     chapter: 2,
   },
   郵便局: {
+    jlptLevel: "n5",
     word: "郵便局",
     furigana: "郵便局[ゆうびんきょく]",
     english: ["post office"],
     chapter: 2,
   },
   いくら: {
+    jlptLevel: "n5",
     word: "いくら",
     furigana: "いくら",
     english: ["how much"],
     chapter: 2,
   },
   "～円": {
+    jlptLevel: "n5",
     word: "～円",
     furigana: "～ 円[えん]",
     english: ["...yen"],
     chapter: 2,
   },
   千: {
+    jlptLevel: "n5",
     word: "千",
     furigana: "千[せん]",
     english: ["thousand"],
     chapter: 2,
   },
   万: {
+    jlptLevel: "n5",
     word: "万",
     furigana: "万[まん]",
     english: ["ten thousand"],
     chapter: 2,
   },
   高い: {
+    jlptLevel: "n5",
     word: "高い",
     furigana: "高い[たかい]",
     english: ["expensive; high"],
     chapter: 2,
   },
   いらっしゃいませ: {
+    jlptLevel: "n5",
     word: "いらっしゃいませ",
     furigana: "いらっしゃいませ",
     english: ["Welcome (to our store)."],
     chapter: 2,
   },
   "（～を）おねがいします": {
+    jlptLevel: "n5",
     word: "（～を）おねがいします",
     furigana: "（～を）おねがいします",
     english: ["..., please."],
     chapter: 2,
   },
   "（～を）ください": {
+    jlptLevel: "n5",
     word: "（～を）ください",
     furigana: "（～を）ください",
     english: ["Please give me..."],
     chapter: 2,
   },
   じゃあ: {
+    jlptLevel: "n5",
     word: "じゃあ",
     furigana: "じゃあ",
     english: ["then...; if that is the case,..."],
     chapter: 2,
   },
   どうぞ: {
+    jlptLevel: "n5",
     word: "どうぞ",
     furigana: "どうぞ",
     english: ["Please.; Here it is."],
     chapter: 2,
   },
   どうも: {
+    jlptLevel: "n5",
     word: "どうも",
     furigana: "どうも",
     english: ["Thank you."],
@@ -3044,48 +3237,56 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
 
   // Chapter 3
   映画: {
+    jlptLevel: "n5",
     word: "映画",
     furigana: "映画[えいが]",
     english: ["movie"],
     chapter: 3,
   },
   音楽: {
+    jlptLevel: "n5",
     word: "音楽",
     furigana: "音楽[おんがく]",
     english: ["music"],
     chapter: 3,
   },
   雑誌: {
+    jlptLevel: "n5",
     word: "雑誌",
     furigana: "雑誌[ざっし]",
     english: ["magazine"],
     chapter: 3,
   },
   スポーツ: {
+    jlptLevel: "n5",
     word: "スポーツ",
     furigana: "スポーツ",
     english: ["sports"],
     chapter: 3,
   },
   デート: {
+    jlptLevel: "n5",
     word: "デート",
     furigana: "デート",
     english: ["date (romantic, not calendar)"],
     chapter: 3,
   },
   テニス: {
+    jlptLevel: "n5",
     word: "テニス",
     furigana: "テニス",
     english: ["tennis"],
     chapter: 3,
   },
   テレビ: {
+    jlptLevel: "n5",
     word: "テレビ",
     furigana: "テレビ",
     english: ["TV"],
     chapter: 3,
   },
   アイスクリーム: {
+    jlptLevel: "n5",
     word: "アイスクリーム",
     furigana: "アイスクリーム",
     english: ["ice cream"],
@@ -3098,72 +3299,84 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     chapter: 3,
   },
   お酒: {
+    jlptLevel: "n5",
     word: "お酒",
     furigana: "お 酒[さけ]",
     english: ["sake; alcoholic drink"],
     chapter: 3,
   },
   お茶: {
+    jlptLevel: "n5",
     word: "お茶",
     furigana: "お茶[おちゃ]",
     english: ["green tea"],
     chapter: 3,
   },
   コーヒー: {
+    jlptLevel: "n5",
     word: "コーヒー",
     furigana: "コーヒー",
     english: ["coffee"],
     chapter: 3,
   },
   水: {
+    jlptLevel: "n5",
     word: "水",
     furigana: "水[みず]",
     english: ["water"],
     chapter: 3,
   },
   朝ご飯: {
+    jlptLevel: "n5",
     word: "朝ご飯",
     furigana: "朝ご飯[あさごはん]",
     english: ["breakfast"],
     chapter: 3,
   },
   昼ご飯: {
+    jlptLevel: "n5",
     word: "昼ご飯",
     furigana: "昼ご飯[ひるごはん]",
     english: ["lunch"],
     chapter: 3,
   },
   晩ご飯: {
+    jlptLevel: "n5",
     word: "晩ご飯",
     furigana: "晩ご飯[ばんごはん]",
     english: ["dinner"],
     chapter: 3,
   },
   家: {
+    jlptLevel: "n5",
     word: "家",
     furigana: "家[いえ]",
     english: ["home", "house"],
     chapter: 3,
   },
   うち: {
+    jlptLevel: "n5",
     word: "うち",
     furigana: "うち",
     english: ["home", "house", "my place"],
     chapter: 3,
   },
   学校: {
+    jlptLevel: "n5",
     word: "学校",
     furigana: "学校[がっこう]",
     english: ["school"],
     chapter: 3,
   },
   カフェ: {
+    jlptLevel: "n5",
     word: "カフェ",
     furigana: "カフェ",
     english: ["cafe"],
     chapter: 3,
   },
   明日: {
+    jlptLevel: "n5",
     word: "明日",
     furigana: "明日[あした]",
     english: ["tomorrow"],
@@ -3184,6 +3397,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   今日: {
+    jlptLevel: "n5",
     word: "今日",
     furigana: "今日[きょう]",
     english: ["today"],
@@ -3196,6 +3410,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   朝: {
+    jlptLevel: "n5",
     word: "朝",
     furigana: "朝[あさ]",
     english: ["morning"],
@@ -3208,6 +3423,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   今晩: {
+    jlptLevel: "n5",
     word: "今晩",
     furigana: "今晩[こんばん]",
     english: ["tonight"],
@@ -3224,6 +3440,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   毎日: {
+    jlptLevel: "n5",
     word: "毎日",
     furigana: "毎日[まいにち]",
     english: ["every day"],
@@ -3239,6 +3456,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   毎晩: {
+    jlptLevel: "n5",
     word: "毎晩",
     furigana: "毎晩[まいばん]",
     english: ["every night"],
@@ -3251,6 +3469,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   週末: {
+    jlptLevel: "n5",
     word: "週末",
     furigana: "週末[しゅうまつ]",
     english: ["weekend"],
@@ -3272,6 +3491,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   日曜日: {
+    jlptLevel: "n5",
     word: "日曜日",
     furigana: "日曜日[にちようび]",
     english: ["Sunday"],
@@ -3294,6 +3514,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   月曜日: {
+    jlptLevel: "n5",
     word: "月曜日",
     furigana: "月曜日[げつようび]",
     english: ["Monday"],
@@ -3313,6 +3534,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   火曜日: {
+    jlptLevel: "n5",
     word: "火曜日",
     furigana: "火曜日[かようび]",
     english: ["Tuesday"],
@@ -3332,6 +3554,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   水曜日: {
+    jlptLevel: "n5",
     word: "水曜日",
     furigana: "水曜日[すいようび]",
     english: ["Wednesday"],
@@ -3351,6 +3574,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   木曜日: {
+    jlptLevel: "n5",
     word: "木曜日",
     furigana: "木曜日[もくようび]",
     english: ["Thursday"],
@@ -3370,6 +3594,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   金曜日: {
+    jlptLevel: "n5",
     word: "金曜日",
     furigana: "金曜日[きんようび]",
     english: ["Friday"],
@@ -3383,6 +3608,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   土曜日: {
+    jlptLevel: "n5",
     word: "土曜日",
     furigana: "土曜日[どようび]",
     english: ["Saturday"],
@@ -3399,18 +3625,21 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   いつ: {
+    jlptLevel: "n5",
     word: "いつ",
     furigana: "いつ",
     english: ["when"],
     chapter: 3,
   },
   "～ごろ": {
+    jlptLevel: "n5",
     word: "～ごろ",
     furigana: "～ごろ",
     english: ["at about..."],
     chapter: 3,
   },
   行く: {
+    jlptLevel: "n5",
     word: "行く",
     furigana: "行く[いく]",
     english: ["to go"],
@@ -3428,6 +3657,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   来る: {
+    jlptLevel: "n5",
     word: "来る",
     furigana: "来る[くる]",
     english: ["to come"],
@@ -3445,6 +3675,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   帰る: {
+    jlptLevel: "n5",
     word: "帰る",
     furigana: "帰る[かえる]",
     english: ["to go back", "to return"],
@@ -3462,6 +3693,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   話す: {
+    jlptLevel: "n5",
     word: "話す",
     furigana: "話[はな]す",
     english: ["to speak", "to talk"],
@@ -3490,6 +3722,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   読む: {
+    jlptLevel: "n5",
     word: "読む",
     furigana: "読[よ]む",
     english: ["to read"],
@@ -3508,6 +3741,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   食べる: {
+    jlptLevel: "n5",
     word: "食べる",
     furigana: "食[た]べる",
     english: ["to eat"],
@@ -3529,6 +3763,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   飲む: {
+    jlptLevel: "n5",
     word: "飲む",
     furigana: "飲[の]む",
     english: ["to drink"],
@@ -3547,6 +3782,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   起きる: {
+    jlptLevel: "n5",
     word: "起きる",
     furigana: "起[お]きる",
     english: ["to wake up", "to get up"],
@@ -3564,6 +3800,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   寝る: {
+    jlptLevel: "n5",
     word: "寝る",
     furigana: "寝[ね]る",
     english: ["to sleep", "to go to sleep", "to go to bed"],
@@ -3581,6 +3818,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   聞く: {
+    jlptLevel: "n5",
     word: "聞く",
     furigana: "聞[き]く",
     english: ["to listen", "to hear", "to ask"],
@@ -3605,6 +3843,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   見る: {
+    jlptLevel: "n5",
     word: "見る",
     furigana: "見[み]る",
     english: ["to see", "to look at", "to watch"],
@@ -3631,6 +3870,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   する: {
+    jlptLevel: "n5",
     word: "する",
     furigana: "する",
     english: ["to do"],
@@ -3655,6 +3895,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   勉強する: {
+    jlptLevel: "n5",
     word: "勉強する",
     furigana: "勉強[べんきょう]する",
     english: ["to study"],
@@ -3678,6 +3919,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   いい: {
+    jlptLevel: "n5",
     word: "いい",
     furigana: "いい",
     english: ["good", "fine", "okay"],
@@ -3695,6 +3937,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   早い: {
+    jlptLevel: "n5",
     word: "早い",
     furigana: "早[はや]い",
     english: ["early"],
@@ -3716,6 +3959,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   全然: {
+    jlptLevel: "n5",
     word: "全然",
     furigana: "全然[ぜんぜん] ＋ negative",
     english: ["not at all"],
@@ -3736,48 +3980,56 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   たいてい: {
+    jlptLevel: "n5",
     word: "たいてい",
     furigana: "たいてい",
     english: ["usually"],
     chapter: 3,
   },
   ちょっと: {
+    jlptLevel: "n5",
     word: "ちょっと",
     furigana: "ちょっと",
     english: ["a little"],
     chapter: 3,
   },
   時々: {
+    jlptLevel: "n5",
     word: "時々",
     furigana: "時々[ときどき]",
     english: ["sometimes"],
     chapter: 3,
   },
   よく: {
+    jlptLevel: "n5",
     word: "よく",
     furigana: "よく",
     english: ["often", "much"],
     chapter: 3,
   },
   そうですね: {
+    jlptLevel: "n5",
     word: "そうですね",
     furigana: "そうですね",
     english: ["That’s right.", "Let me see."],
     chapter: 3,
   },
   どうですか: {
+    jlptLevel: "n5",
     word: "どうですか",
     furigana: "どうですか",
     english: ["How about... ?", "How is... ?"],
     chapter: 3,
   },
   ええ: {
+    jlptLevel: "n5",
     word: "ええ",
     furigana: "ええ",
     english: ["yes"],
     chapter: 3,
   },
   ゲーム: {
+    jlptLevel: "n5",
     word: "ゲーム",
     furigana: "ゲーム",
     english: ["game"],
@@ -3790,6 +4042,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   アルバイト: {
+    jlptLevel: "n5",
     word: "アルバイト",
     furigana: "アルバイト",
     english: ["part-time job"],
@@ -3802,6 +4055,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   買い物: {
+    jlptLevel: "n5",
     word: "買い物",
     furigana: "買[か]い 物[もの]",
     english: ["shopping"],
@@ -3818,6 +4072,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   クラス: {
+    jlptLevel: "n5",
     word: "クラス",
     furigana: "クラス",
     english: ["class"],
@@ -3834,6 +4089,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   犬: {
+    jlptLevel: "n5",
     word: "犬",
     furigana: "犬[いぬ]",
     english: ["dog"],
@@ -3846,6 +4102,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   猫: {
+    jlptLevel: "n5",
     word: "猫",
     furigana: "猫[ねこ]",
     english: ["cat"],
@@ -3862,6 +4119,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   人: {
+    jlptLevel: "n5",
     word: "人",
     furigana: "人[ひと]",
     english: ["person"],
@@ -3878,6 +4136,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   子供: {
+    jlptLevel: "n5",
     word: "子供",
     furigana: "子[こ]供[ども]",
     english: ["child"],
@@ -3897,6 +4156,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   あなた: {
+    jlptLevel: "n5",
     word: "あなた",
     furigana: "あなた",
     english: ["you"],
@@ -3909,6 +4169,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   椅子: {
+    jlptLevel: "n5",
     word: "椅子",
     furigana: "椅子[いす]",
     english: ["chair"],
@@ -3925,6 +4186,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   机: {
+    jlptLevel: "n5",
     word: "机",
     furigana: "机[つくえ]",
     english: ["desk"],
@@ -3942,6 +4204,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   写真: {
+    jlptLevel: "n5",
     word: "写真",
     furigana: "写[しゃ]真[しん]",
     english: ["picture", "photograph"],
@@ -3962,6 +4225,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   花: {
+    jlptLevel: "n5",
     word: "花",
     furigana: "花[はな]",
     english: ["flower"],
@@ -3974,6 +4238,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   レポート: {
+    jlptLevel: "n5",
     word: "レポート",
     furigana: "レポート",
     english: ["(term) paper"],
@@ -3990,6 +4255,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ご飯: {
+    jlptLevel: "n5",
     word: "ご飯",
     furigana: "ご 飯[はん]",
     english: ["food", "meal", "cooked rice"],
@@ -4002,6 +4268,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   パン: {
+    jlptLevel: "n5",
     word: "パン",
     furigana: "パン",
     english: ["bread"],
@@ -4022,6 +4289,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お寺: {
+    jlptLevel: "n5",
     word: "お寺",
     furigana: "お 寺[てら]",
     english: ["temple"],
@@ -4038,6 +4306,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   公園: {
+    jlptLevel: "n5",
     word: "公園",
     furigana: "公[こう]園[えん]",
     english: ["park"],
@@ -4054,6 +4323,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   スーパー: {
+    jlptLevel: "n5",
     word: "スーパー",
     furigana: "スーパー",
     english: ["supermarket"],
@@ -4070,6 +4340,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   バス停: {
+    jlptLevel: "n5",
     word: "バス停",
     furigana: "バス 停[てい]",
     english: ["bus stop"],
@@ -4090,6 +4361,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   病院: {
+    jlptLevel: "n5",
     word: "病院",
     furigana: "病[びょう]院[いん]",
     english: ["hospital"],
@@ -4106,6 +4378,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ホテル: {
+    jlptLevel: "n5",
     word: "ホテル",
     furigana: "ホテル",
     english: ["hotel"],
@@ -4122,6 +4395,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   本屋: {
+    jlptLevel: "n5",
     word: "本屋",
     furigana: "本[ほん]屋[や]",
     english: ["bookstore"],
@@ -4141,6 +4415,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   町: {
+    jlptLevel: "n5",
     word: "町",
     furigana: "町[まち]",
     english: ["town", "city"],
@@ -4158,6 +4433,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   レストラン: {
+    jlptLevel: "n5",
     word: "レストラン",
     furigana: "レストラン",
     english: ["restaurant"],
@@ -4178,6 +4454,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   昨日: {
+    jlptLevel: "n5",
     word: "昨日",
     furigana: "昨[さく]日[じつ]",
     english: ["yesterday"],
@@ -4210,6 +4487,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   一時間: {
+    jlptLevel: "n5",
     word: "一時間",
     furigana: "一[いち]時[じ]間[かん]",
     english: ["one hour"],
@@ -4222,6 +4500,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   先週: {
+    jlptLevel: "n5",
     word: "先週",
     furigana: "先[せん]週[しゅう]",
     english: ["last week"],
@@ -4241,6 +4520,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   時: {
+    jlptLevel: "n5",
     word: "時",
     furigana: "時[とき]",
     english: ["when...", "at the time of..."],
@@ -4260,6 +4540,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   会う: {
+    jlptLevel: "n5",
     word: "会う",
     furigana: "会[あ]う",
     english: ["to meet", "to see (a person)"],
@@ -4282,6 +4563,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ある: {
+    jlptLevel: "n5",
     word: "ある",
     furigana: "ある",
     english: ["there is ..."],
@@ -4309,6 +4591,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   買う: {
+    jlptLevel: "n5",
     word: "買う",
     furigana: "買[か]う",
     english: ["to buy"],
@@ -4327,6 +4610,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   書く: {
+    jlptLevel: "n5",
     word: "書く",
     furigana: "書[か]く",
     english: ["to write"],
@@ -4350,6 +4634,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   撮る: {
+    jlptLevel: "n5",
     word: "撮る",
     furigana: "撮[と]る",
     english: ["to take (a picture)"],
@@ -4372,6 +4657,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   待つ: {
+    jlptLevel: "n5",
     word: "待つ",
     furigana: "待[ま]つ",
     english: ["to wait"],
@@ -4394,6 +4680,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   分かる: {
+    jlptLevel: "n5",
     word: "分かる",
     furigana: "分[わ]かる",
     english: ["to understand"],
@@ -4412,6 +4699,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   いる: {
+    jlptLevel: "n5",
     word: "いる",
     furigana: "いる",
     english: ["(a person) is in...", "stays at ..."],
@@ -4435,6 +4723,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～ぐらい": {
+    jlptLevel: "n5",
     word: "～ぐらい",
     furigana: "～ぐらい",
     english: ["about (approximate measure)"],
@@ -4447,6 +4736,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ごめんなさい: {
+    jlptLevel: "n5",
     word: "ごめんなさい",
     furigana: "ごめんなさい",
     english: ["I'm sorry."],
@@ -4459,12 +4749,14 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   それから: {
+    jlptLevel: "n5",
     word: "それから",
     furigana: "それから",
     english: ["and then"],
     chapter: 4,
   },
   だから: {
+    jlptLevel: "n5",
     word: "だから",
     furigana: "だから",
     english: ["so", "therefore"],
@@ -4485,6 +4777,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   たくさん: {
+    jlptLevel: "n5",
     word: "たくさん",
     furigana: "たくさん",
     english: ["many", "a lot"],
@@ -4501,6 +4794,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～と": {
+    jlptLevel: "n5",
     word: "～と",
     furigana: "～と",
     english: ["together with (a person)"],
@@ -4517,6 +4811,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   どうして: {
+    jlptLevel: "n5",
     word: "どうして",
     furigana: "どうして",
     english: ["why"],
@@ -4529,6 +4824,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   一人で: {
+    jlptLevel: "n5",
     word: "一人で",
     furigana: "一人で",
     english: ["alone"],
@@ -4541,6 +4837,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   もしもし: {
+    jlptLevel: "n5",
     word: "もしもし",
     furigana: "もしもし",
     english: ["Hello? (used on the phone)"],
@@ -4553,6 +4850,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   右: {
+    jlptLevel: "n5",
     word: "右",
     furigana: "右[みぎ]",
     english: ["right"],
@@ -4570,6 +4868,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   左: {
+    jlptLevel: "n5",
     word: "左",
     furigana: "左[ひだり]",
     english: ["left"],
@@ -4591,6 +4890,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   前: {
+    jlptLevel: "n5",
     word: "前",
     furigana: "前[まえ]",
     english: ["front"],
@@ -4608,6 +4908,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   後ろ: {
+    jlptLevel: "n5",
     word: "後ろ",
     furigana: "後[うし]ろ",
     english: ["back"],
@@ -4626,6 +4927,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   中: {
+    jlptLevel: "n5",
     word: "中",
     furigana: "中[なか]",
     english: ["inside"],
@@ -4639,6 +4941,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   上: {
+    jlptLevel: "n5",
     word: "上",
     furigana: "上[うえ]",
     english: ["on"],
@@ -4657,6 +4960,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   下: {
+    jlptLevel: "n5",
     word: "下",
     furigana: "下[した]",
     english: ["under"],
@@ -4670,6 +4974,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   近く: {
+    jlptLevel: "n5",
     word: "近く",
     furigana: "近[ちか]く",
     english: ["near"],
@@ -4683,6 +4988,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   隣: {
+    jlptLevel: "n5",
     word: "隣",
     furigana: "隣[となり]",
     english: ["next to"],
@@ -4700,6 +5006,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   間: {
+    jlptLevel: "n5",
     word: "間",
     furigana: "間[あいだ]",
     english: ["between"],
@@ -4731,6 +5038,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
 
   食べ物: {
+    jlptLevel: "n5",
     word: "食べ物",
     furigana: "食[た]べ 物[もの]",
     english: ["food"],
@@ -4747,6 +5055,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   飲み物: {
+    jlptLevel: "n5",
     word: "飲み物",
     furigana: "飲[の]み 物[もの]",
     english: ["drinks"],
@@ -4763,6 +5072,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   果物: {
+    jlptLevel: "n5",
     word: "果物",
     furigana: "果[くだ]物[もの]",
     english: ["fruit"],
@@ -4779,6 +5089,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   休み: {
+    jlptLevel: "n5",
     word: "休み",
     furigana: "休[やす]み",
     english: ["holiday", "day off", "absence"],
@@ -4795,6 +5106,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   旅行: {
+    jlptLevel: "n5",
     word: "旅行",
     furigana: "旅[りょ]行[こう]",
     english: ["travel"],
@@ -4811,6 +5123,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   海: {
+    jlptLevel: "n5",
     word: "海",
     furigana: "海[うみ]",
     english: ["sea"],
@@ -4823,6 +5136,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   サーフィン: {
+    jlptLevel: "n5",
     word: "サーフィン",
     furigana: "サーフィン",
     english: ["surfing"],
@@ -4835,6 +5149,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お土産: {
+    jlptLevel: "n5",
     word: "お土産",
     furigana: "お 土[み]産[やげ]",
     english: ["souvenir"],
@@ -4851,6 +5166,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   バス: {
+    jlptLevel: "n5",
     word: "バス",
     furigana: "バス",
     english: ["bus"],
@@ -4863,6 +5179,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   天気: {
+    jlptLevel: "n5",
     word: "天気",
     furigana: "天[てん]気[き]",
     english: ["weather"],
@@ -4875,6 +5192,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   宿題: {
+    jlptLevel: "n5",
     word: "宿題",
     furigana: "宿[しゅく]題[だい]",
     english: ["homework"],
@@ -4891,6 +5209,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   テスト: {
+    jlptLevel: "n5",
     word: "テスト",
     furigana: "テスト",
     english: ["test"],
@@ -4903,6 +5222,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   誕生日: {
+    jlptLevel: "n5",
     word: "誕生日",
     furigana: "誕[たん]生[じょう]日[び]",
     english: ["birthday"],
@@ -4919,6 +5239,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   部屋: {
+    jlptLevel: "n5",
     word: "部屋",
     furigana: "部[へ]屋[や]",
     english: ["room"],
@@ -4935,6 +5256,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   僕: {
+    jlptLevel: "n5",
     word: "僕",
     furigana: "僕[ぼく]",
     english: ["I (used by boys)"],
@@ -4959,6 +5281,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   新しい: {
+    jlptLevel: "n5",
     word: "新しい",
     furigana: "新[あたら]しい",
     english: ["new"],
@@ -4978,6 +5301,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   // FIX: add examples to the next 5 words:
   //
   古い: {
+    jlptLevel: "n5",
     word: "古い",
     furigana: "古[ふる]い",
     english: ["old"],
@@ -4985,6 +5309,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     partOfSpeech: "I-adjective",
   },
   暑い: {
+    jlptLevel: "n5",
     word: "暑い",
     furigana: "暑[あつ]い",
     english: ["hot (weather)"],
@@ -4992,6 +5317,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     partOfSpeech: "I-adjective",
   },
   寒い: {
+    jlptLevel: "n5",
     word: "寒い",
     furigana: "寒[さむ]い",
     english: ["cold (weather)"],
@@ -4999,6 +5325,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     partOfSpeech: "I-adjective",
   },
   熱い: {
+    jlptLevel: "n5",
     word: "熱い",
     furigana: "熱[あつ]い",
     english: ["hot (thing)"],
@@ -5007,6 +5334,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
 
   忙しい: {
+    jlptLevel: "n5",
     word: "忙しい",
     furigana: "忙[いそが]しい",
     english: ["busy (people/days)"],
@@ -5020,6 +5348,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   大きい: {
+    jlptLevel: "n5",
     word: "大きい",
     furigana: "大[おお]きい",
     english: ["large"],
@@ -5033,6 +5362,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   小さい: {
+    jlptLevel: "n5",
     word: "小さい",
     furigana: "小[ちい]さい",
     english: ["small"],
@@ -5046,6 +5376,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   面白い: {
+    jlptLevel: "n5",
     word: "面白い",
     furigana: "面[おも]白[しろ]い",
     english: ["interesting", "funny"],
@@ -5059,6 +5390,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   つまらない: {
+    jlptLevel: "n5",
     word: "つまらない",
     furigana: "つまらない",
     english: ["boring"],
@@ -5072,6 +5404,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   やさしい: {
+    jlptLevel: "n5",
     word: "やさしい",
     furigana: "やさしい",
     english: ["kind (person)", "easy (problem)"],
@@ -5085,6 +5418,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   難しい: {
+    jlptLevel: "n5",
     word: "難しい",
     furigana: "難[むずか]しい",
     english: ["difficult"],
@@ -5098,6 +5432,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   かっこいい: {
+    jlptLevel: "n5",
     word: "かっこいい",
     furigana: "かっこいい",
     english: ["good-looking", "cool"],
@@ -5112,6 +5447,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   怖い: {
+    jlptLevel: "n5",
     word: "怖い",
     furigana: "怖[こわ]い",
     english: ["frightening"],
@@ -5125,6 +5461,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   楽しい: {
+    jlptLevel: "n5",
     word: "楽しい",
     furigana: "楽[たの]しい",
     english: ["fun"],
@@ -5138,6 +5475,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   安い: {
+    jlptLevel: "n5",
     word: "安い",
     furigana: "安[やす]い",
     english: ["cheap", "inexpensive"],
@@ -5151,6 +5489,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   好き: {
+    jlptLevel: "n5",
     word: "好き",
     furigana: "好[す]き",
     english: ["fond of", "to like"],
@@ -5175,6 +5514,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   嫌い: {
+    jlptLevel: "n5",
     word: "嫌い",
     furigana: "嫌[きら]い",
     english: ["disgusted with", "to dislike"],
@@ -5198,6 +5538,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   大好き: {
+    jlptLevel: "n5",
     word: "大好き",
     furigana: "大[だい]好[す]き",
     english: ["very fond of", "to love"],
@@ -5217,6 +5558,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   大嫌い: {
+    jlptLevel: "n5",
     word: "大嫌い",
     furigana: "大[だい]嫌[きら]い",
     english: ["to hate"],
@@ -5240,6 +5582,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   きれい: {
+    jlptLevel: "n5",
     word: "きれい",
     furigana: "きれい",
     english: ["beautiful", "clean"],
@@ -5254,6 +5597,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   元気: {
+    jlptLevel: "n5",
     word: "元気",
     furigana: "元[げん]気[き]",
     english: ["healthy", "energetic"],
@@ -5268,6 +5612,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   静か: {
+    jlptLevel: "n5",
     word: "静か",
     furigana: "静[しず]か",
     english: ["quiet"],
@@ -5286,6 +5631,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   にぎやか: {
+    jlptLevel: "n5",
     word: "にぎやか",
     furigana: "にぎやか",
     english: ["lively"],
@@ -5300,6 +5646,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   暇: {
+    jlptLevel: "n5",
     word: "暇",
     furigana: "暇[ひま]",
     english: ["not busy", "free (time)"],
@@ -5315,6 +5662,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
 
   泳ぐ: {
+    jlptLevel: "n5",
     word: "泳ぐ",
     furigana: "泳[およ]ぐ",
     english: ["to swim"],
@@ -5346,6 +5694,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   乗る: {
+    jlptLevel: "n5",
     word: "乗る",
     furigana: "乗[の]る",
     english: ["to ride", "to board"],
@@ -5363,6 +5712,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   やる: {
+    jlptLevel: "n5",
     word: "やる",
     furigana: "やる",
     english: ["to do", "to perform"],
@@ -5385,6 +5735,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   出かける: {
+    jlptLevel: "n5",
     word: "出かける",
     furigana: "出[で]かける",
     english: ["to go out"],
@@ -5397,6 +5748,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   一緒に: {
+    jlptLevel: "n5",
     word: "一緒に",
     furigana: "一[いっ]緒[しょ]に",
     english: ["together"],
@@ -5412,6 +5764,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   すごく: {
+    jlptLevel: "n5",
     word: "すごく",
     furigana: "すごく",
     english: ["extremely"],
@@ -5428,6 +5781,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   大丈夫: {
+    jlptLevel: "n5",
     word: "大丈夫",
     furigana: "大[だい]丈[じょう]夫[ぶ]",
     english: ["It's okay.", "Not to worry.", "Everything is under control."],
@@ -5440,6 +5794,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   とても: {
+    jlptLevel: "n5",
     word: "とても",
     furigana: "とても",
     english: ["very"],
@@ -5452,6 +5807,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   どんな: {
+    jlptLevel: "n5",
     word: "どんな",
     furigana: "どんな",
     english: ["what kind of ..."],
@@ -5464,6 +5820,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "〜枚": {
+    jlptLevel: "n5",
     word: "〜枚",
     furigana: "〜 枚[まい]",
     english: ["[counter for flat objects]"],
@@ -5482,114 +5839,133 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
 
   // Chapter 6
   漢字: {
+    jlptLevel: "n5",
     word: "漢字",
     furigana: "漢字[かんじ]",
     english: ["kanji", "Chinese character"],
     chapter: 6,
   },
   教科書: {
+    jlptLevel: "n5",
     word: "教科書",
     furigana: "教科書[きょうかしょ]",
     english: ["textbook"],
     chapter: 6,
   },
   ページ: {
+    jlptLevel: "n5",
     word: "ページ",
     furigana: "ページ",
     english: ["page"],
     chapter: 6,
   },
   次: {
+    jlptLevel: "n5",
     word: "次",
     furigana: "次[つぎ]",
     english: ["next"],
     chapter: 6,
   },
   お金: {
+    jlptLevel: "n5",
     word: "お金",
     furigana: "お金[おかね]",
     english: ["money"],
     chapter: 6,
   },
   荷物: {
+    jlptLevel: "n5",
     word: "荷物",
     furigana: "荷物[にもつ]",
     english: ["baggage"],
     chapter: 6,
   },
   パソコン: {
+    jlptLevel: "n5",
     word: "パソコン",
     furigana: "パソコン",
     english: ["personal computer"],
     chapter: 6,
   },
   シャワー: {
+    jlptLevel: "n5",
     word: "シャワー",
     furigana: "シャワー",
     english: ["shower"],
     chapter: 6,
   },
   エアコン: {
+    jlptLevel: "n5",
     word: "エアコン",
     furigana: "エアコン",
     english: ["air conditioner"],
     chapter: 6,
   },
   電気: {
+    jlptLevel: "n5",
     word: "電気",
     furigana: "電気[でんき]",
     english: ["electricity", "light"],
     chapter: 6,
   },
   窓: {
+    jlptLevel: "n5",
     word: "窓",
     furigana: "窓[まど]",
     english: ["window"],
     chapter: 6,
   },
   電車: {
+    jlptLevel: "n5",
     word: "電車",
     furigana: "電車[でんしゃ]",
     english: ["train"],
     chapter: 6,
   },
   国: {
+    jlptLevel: "n5",
     word: "国",
     furigana: "国[くに]",
     english: ["country", "place of origin"],
     chapter: 6,
   },
   今週: {
+    jlptLevel: "n5",
     word: "今週",
     furigana: "今[いま]週[しゅう]",
     english: ["this week"],
     chapter: 6,
   },
   来週: {
+    jlptLevel: "n5",
     word: "来週",
     furigana: "来[らい]週[しゅう]",
     english: ["next week"],
     chapter: 6,
   },
   来年: {
+    jlptLevel: "n5",
     word: "来年",
     furigana: "来[らい]年[ねん]",
     english: ["next year"],
     chapter: 6,
   },
   夜: {
+    jlptLevel: "n5",
     word: "夜",
     furigana: "夜[よる]",
     english: ["night"],
     chapter: 6,
   },
   大変: {
+    jlptLevel: "n5",
     word: "大変",
     furigana: "大[だい]変[へん]",
     english: ["tough (situation)", "troublesome", "Oh no!"],
     chapter: 6,
   },
   遊ぶ: {
+    jlptLevel: "n5",
     word: "遊ぶ",
     furigana: "遊ぶ[あそぶ]",
     english: ["to play", "to spend time pleasantly"],
@@ -5603,6 +5979,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   急ぐ: {
+    jlptLevel: "n5",
     word: "急ぐ",
     furigana: "急ぐ[いそぐ]",
     english: ["to hurry"],
@@ -5619,6 +5996,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   返す: {
+    jlptLevel: "n5",
     word: "返す",
     furigana: "返す[かえす]",
     english: ["to return (a thing)"],
@@ -5636,6 +6014,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   消す: {
+    jlptLevel: "n5",
     word: "消す",
     furigana: "消す[けす]",
     english: ["to turn off", "to erase"],
@@ -5650,6 +6029,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   死ぬ: {
+    jlptLevel: "n5",
     word: "死ぬ",
     furigana: "死ぬ[しぬ]",
     english: ["to die"],
@@ -5687,6 +6067,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   座る: {
+    jlptLevel: "n5",
     word: "座る",
     furigana: "座る[すわる]",
     english: ["to sit down"],
@@ -5713,6 +6094,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   立つ: {
+    jlptLevel: "n5",
     word: "立つ",
     furigana: "立つ[たつ]",
     english: ["to stand up", "to be erected"],
@@ -5754,6 +6136,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   たばこを吸う: {
+    jlptLevel: "n5",
     word: "たばこを吸う",
     furigana: "たばこを吸う[たばこをすう]",
     english: ["to smoke"],
@@ -5790,6 +6173,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   使う: {
+    jlptLevel: "n5",
     word: "使う",
     furigana: "使う[つかう]",
     english: ["to use"],
@@ -5812,6 +6196,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   手伝う: {
+    jlptLevel: "n5",
     word: "手伝う",
     furigana: "手伝う[てつだう]",
     english: ["to help"],
@@ -5834,6 +6219,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   入る: {
+    jlptLevel: "n5",
     word: "入る",
     furigana: "入る[はいる]",
     english: ["to enter", "to join", "to go in"],
@@ -5875,6 +6261,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   持つ: {
+    jlptLevel: "n5",
     word: "持つ",
     furigana: "持つ[もつ]",
     english: ["to carry", "to hold"],
@@ -5914,6 +6301,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   休む: {
+    jlptLevel: "n5",
     word: "休む",
     furigana: "休む[やすむ]",
     english: ["to be absent (from)", "to rest"],
@@ -5940,6 +6328,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   開ける: {
+    jlptLevel: "n5",
     word: "開ける",
     furigana: "開ける[あける]",
     english: ["to open (something)"],
@@ -5986,6 +6375,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   閉める: {
+    jlptLevel: "n5",
     word: "閉める",
     furigana: "閉める[しめる]",
     english: ["to close (something)"],
@@ -6036,6 +6426,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   教える: {
+    jlptLevel: "n5",
     word: "教える",
     furigana: "教える[おしえる]",
     english: ["to teach", "to instruct"],
@@ -6073,6 +6464,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   忘れる: {
+    jlptLevel: "n5",
     word: "忘れる",
     furigana: "忘れる[わすれる]",
     english: ["to forget", "to leave behind"],
@@ -6095,6 +6487,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   降りる: {
+    jlptLevel: "n5",
     word: "降りる",
     furigana: "降りる[おりる]",
     english: ["to get off", "to descend"],
@@ -6128,6 +6521,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   借りる: {
+    jlptLevel: "n5",
     word: "借りる",
     furigana: "借りる[かりる]",
     english: ["to borrow"],
@@ -6186,6 +6580,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   つける: {
+    jlptLevel: "n5",
     word: "つける",
     furigana: "つける",
     english: ["to turn on", "to put on"],
@@ -6238,6 +6633,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   連れてくる: {
+    jlptLevel: "n5",
     word: "連れてくる",
     furigana: "連れてくる[つれてくる]",
     english: ["to bring (a person)"],
@@ -6264,6 +6660,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   持ってくる: {
+    jlptLevel: "n5",
     word: "持ってくる",
     furigana: "持ってくる[もってくる]",
     english: ["to bring (a thing)"],
@@ -6286,30 +6683,35 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   後で: {
+    jlptLevel: "n5",
     word: "後で",
     furigana: "後で[あとで]",
     english: ["later on"],
     chapter: 6,
   },
   すぐ: {
+    jlptLevel: "n5",
     word: "すぐ",
     furigana: "すぐ",
     english: ["right away"],
     chapter: 6,
   },
   ゆっくり: {
+    jlptLevel: "n5",
     word: "ゆっくり",
     furigana: "ゆっくり",
     english: ["slowly", "leisurely", "unhurriedly"],
     chapter: 6,
   },
   結構です: {
+    jlptLevel: "n5",
     word: "結構です",
     furigana: "結構です[けっこうです]",
     english: ["That would be fine.", "That wouldn’t be necessary."],
     chapter: 6,
   },
   本当ですか: {
+    jlptLevel: "n5",
     word: "本当ですか",
     furigana: "本当ですか[ほんとうですか]",
     english: ["Really?"],
@@ -6317,6 +6719,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
 
   家族: {
+    jlptLevel: "n5",
     word: "家族",
     furigana: "家[か]族[ぞく]",
     english: ["family"],
@@ -6341,6 +6744,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おじいさん1: {
+    jlptLevel: "n5",
     word: "おじいさん",
     furigana: "おじいさん",
     english: ["grandfather", "old man"],
@@ -6361,6 +6765,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おばあさん1: {
+    jlptLevel: "n5",
     word: "おばあさん",
     furigana: "おばあさん",
     english: ["grandmother", "old woman"],
@@ -6388,6 +6793,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お兄さん1: {
+    jlptLevel: "n5",
     word: "お兄さん",
     furigana: "お 兄[にい]さん",
     english: ["older brother"],
@@ -6407,6 +6813,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お姉さん1: {
+    jlptLevel: "n5",
     word: "お姉さん",
     furigana: "お 姉[ねえ]さん",
     english: ["older sister"],
@@ -6433,6 +6840,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   父: {
+    jlptLevel: "n5",
     word: "父",
     furigana: "父[ちち]",
     english: ["my father"],
@@ -6452,6 +6860,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   母: {
+    jlptLevel: "n5",
     word: "母",
     furigana: "母[はは]",
     english: ["my mother"],
@@ -6480,6 +6889,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   兄: {
+    jlptLevel: "n5",
     word: "兄",
     furigana: "兄[あに]",
     english: ["my older brother"],
@@ -6512,6 +6922,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   姉: {
+    jlptLevel: "n5",
     word: "姉",
     furigana: "姉[あね]",
     english: ["my older sister"],
@@ -6534,6 +6945,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   妹1: {
+    jlptLevel: "n5",
     word: "妹",
     furigana: "妹[いもうと]",
     english: ["younger sister", "little sister"],
@@ -6563,6 +6975,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   弟1: {
+    jlptLevel: "n5",
     word: "弟",
     furigana: "弟[おとうと]",
     english: ["younger brother", "little brother"],
@@ -6592,6 +7005,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   兄弟: {
+    jlptLevel: "n5",
     word: "兄弟",
     furigana: "兄[きょう] 弟[だい]",
     english: ["brothers and sisters", "siblings"],
@@ -6614,6 +7028,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   男の人: {
+    jlptLevel: "n5",
     word: "男の人",
     furigana: "男[おとこ]の 人[ひと]",
     english: ["man"],
@@ -6630,6 +7045,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   女の人: {
+    jlptLevel: "n5",
     word: "女の人",
     furigana: "女[おんな]の 人[ひと]",
     english: ["woman"],
@@ -6646,6 +7062,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   会社: {
+    jlptLevel: "n5",
     word: "会社",
     furigana: "会[かい] 社[しゃ]",
     english: ["company"],
@@ -6662,6 +7079,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   食堂: {
+    jlptLevel: "n5",
     word: "食堂",
     furigana: "食[しょく] 堂[どう]",
     english: ["cafeteria"],
@@ -6688,6 +7106,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   デパート: {
+    jlptLevel: "n5",
     word: "デパート",
     furigana: "デパート",
     english: ["department store"],
@@ -6712,6 +7131,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   歌: {
+    jlptLevel: "n5",
     word: "歌",
     furigana: "歌[うた]",
     english: ["song"],
@@ -6732,6 +7152,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   サークル: {
+    jlptLevel: "n5",
     word: "サークル",
     furigana: "サークル",
     english: ["club activity"],
@@ -6752,6 +7173,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   車: {
+    jlptLevel: "n5",
     word: "車",
     furigana: "車[くるま]",
     english: ["car"],
@@ -6768,6 +7190,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   長い: {
+    jlptLevel: "n5",
     word: "長い",
     furigana: "長[なが]い",
     english: ["long"],
@@ -6782,6 +7205,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   短い: {
+    jlptLevel: "n5",
     word: "短い",
     furigana: "短[みじか]い",
     english: ["short (length)"],
@@ -6805,6 +7229,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   速い: {
+    jlptLevel: "n5",
     word: "速い",
     furigana: "速[はや]い",
     english: ["fast"],
@@ -6834,6 +7259,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   背が高い: {
+    jlptLevel: "n5",
     word: "背が高い",
     furigana: "背[せ]が 高[たか]い",
     english: ["tall (stature)"],
@@ -6847,6 +7273,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   背が低い: {
+    jlptLevel: "n5",
     word: "背が低い",
     furigana: "背[せ]が 低[ひく]い",
     english: ["short (stature)"],
@@ -6860,6 +7287,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   頭がいい: {
+    jlptLevel: "n5",
     word: "頭がいい",
     furigana: "頭[あたま]がいい",
     english: ["bright", "smart", "clever"],
@@ -6905,6 +7333,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   親切: {
+    jlptLevel: "n5",
     word: "親切",
     furigana: "親[しん]切[せつ]",
     english: ["kind"],
@@ -6928,6 +7357,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   便利: {
+    jlptLevel: "n5",
     word: "便利",
     furigana: "便利[べんり]",
     english: ["convenient"],
@@ -6947,6 +7377,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   歌う: {
+    jlptLevel: "n5",
     word: "歌う",
     furigana: "歌う[うたう]",
     english: ["to sing"],
@@ -7002,6 +7433,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   知る: {
+    jlptLevel: "n5",
     word: "知る",
     furigana: "知[し]る",
     english: ["to get to know"],
@@ -7029,6 +7461,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   知っています: {
+    jlptLevel: "n5",
     word: "知っています",
     furigana: "知[し]っています",
     english: ["I know"],
@@ -7060,6 +7493,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   知りません: {
+    jlptLevel: "n5",
     word: "知りません",
     furigana: "知[し]りません",
     english: ["I do not know"],
@@ -7079,6 +7513,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   住む: {
+    jlptLevel: "n5",
     word: "住む",
     furigana: "住[す]む",
     english: ["to live"],
@@ -7100,6 +7535,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   働く: {
+    jlptLevel: "n5",
     word: "働く",
     furigana: "働[はたら]く",
     english: ["to work"],
@@ -7129,6 +7565,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   太る: {
+    jlptLevel: "n5",
     word: "太る",
     furigana: "太[ふと]る",
     english: ["to gain weight", "overweight"],
@@ -7158,6 +7595,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   太っています: {
+    jlptLevel: "n5",
     word: "太っています",
     furigana: "太[ふと]っています",
     english: ["to be on the heavy side"],
@@ -7198,6 +7636,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   着る: {
+    jlptLevel: "n5",
     word: "着る",
     furigana: "着[き]る",
     english: ["to put on (clothes above your waist)"],
@@ -7269,6 +7708,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   結婚する: {
+    jlptLevel: "n5",
     word: "結婚する",
     furigana: "結婚[けっこん]する",
     english: ["to get married"],
@@ -7288,6 +7728,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～が": {
+    jlptLevel: "n5",
     word: "～が",
     furigana: "～が",
     english: ["...but"],
@@ -7304,6 +7745,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   何も: {
+    jlptLevel: "n5",
     word: "何も",
     furigana: "何[なに]も",
     english: ["not...anything"],
@@ -7332,6 +7774,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   一人: {
+    jlptLevel: "n5",
     word: "一人",
     furigana: "一[ひと]人[り]",
     english: ["one person"],
@@ -7349,6 +7792,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   二人: {
+    jlptLevel: "n5",
     word: "二人",
     furigana: "二[ふた]人[り]",
     english: ["two people"],
@@ -7369,6 +7813,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   別に: {
+    jlptLevel: "n5",
     word: "別に",
     furigana: "別[べつ]に",
     english: ["nothing in particular"],
@@ -7430,6 +7875,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   よかったら: {
+    jlptLevel: "n5",
     word: "よかったら",
     furigana: "よかったら",
     english: ["if you like"],
@@ -7448,6 +7894,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   鼻: {
+    jlptLevel: "n5",
     word: "鼻",
     furigana: "鼻[はな]",
     english: ["nose"],
@@ -7460,6 +7907,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   耳: {
+    jlptLevel: "n5",
     word: "耳",
     furigana: "耳[みみ]",
     english: ["ear"],
@@ -7472,6 +7920,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   歯: {
+    jlptLevel: "n5",
     word: "歯",
     furigana: "歯[は]",
     english: ["teeth"],
@@ -7490,6 +7939,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   眉毛: {
+    jlptLevel: "n5",
     word: "眉毛",
     furigana: "眉[まゆ] 毛[げ]",
     english: ["eyebrows"],
@@ -7506,6 +7956,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   髪: {
+    jlptLevel: "n5",
     word: "髪",
     furigana: "髪[かみ]",
     english: ["hair"],
@@ -7518,6 +7969,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   口: {
+    jlptLevel: "n5",
     word: "口",
     furigana: "口[くち]",
     english: ["mouth"],
@@ -7536,6 +7988,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   目: {
+    jlptLevel: "n5",
     word: "目",
     furigana: "目[め]",
     english: ["eye"],
@@ -7572,6 +8025,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   頭: {
+    jlptLevel: "n5",
     word: "頭",
     furigana: "頭[あたま]",
     english: ["head"],
@@ -7584,6 +8038,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   顔: {
+    jlptLevel: "n5",
     word: "顔",
     furigana: "顔[かお]",
     english: ["face"],
@@ -7610,6 +8065,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   首: {
+    jlptLevel: "n5",
     word: "首",
     furigana: "首[くび]",
     english: ["neck"],
@@ -7628,6 +8084,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   肩: {
+    jlptLevel: "n5",
     word: "肩",
     furigana: "肩[かた]",
     english: ["shoulder"],
@@ -7646,6 +8103,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   手: {
+    jlptLevel: "n5",
     word: "手",
     furigana: "手[て]",
     english: ["hand"],
@@ -7658,6 +8116,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   指: {
+    jlptLevel: "n5",
     word: "指",
     furigana: "指[ゆび]",
     english: ["finger"],
@@ -7676,6 +8135,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   胸: {
+    jlptLevel: "n5",
     word: "胸",
     furigana: "胸[むね]",
     english: ["chest"],
@@ -7694,6 +8154,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   背中: {
+    jlptLevel: "n5",
     word: "背中",
     furigana: "背[せ] 中[なか]",
     english: ["back"],
@@ -7712,6 +8173,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おなか: {
+    jlptLevel: "n5",
     word: "おなか",
     furigana: "おなか",
     english: ["stomach"],
@@ -7749,6 +8211,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   足: {
+    jlptLevel: "n5",
     word: "足",
     furigana: "足[あし]",
     english: ["leg/foot"],
@@ -7762,6 +8225,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
 
   晴れ: {
+    jlptLevel: "n5",
     word: "晴れ",
     furigana: "晴[は]れ",
     english: ["sunny weather"],
@@ -7774,6 +8238,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   雨: {
+    jlptLevel: "n5",
     word: "雨",
     furigana: "雨[あめ]",
     english: ["rain"],
@@ -7802,6 +8267,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   雪: {
+    jlptLevel: "n5",
     word: "雪",
     furigana: "雪[ゆき]",
     english: ["snow"],
@@ -7814,6 +8280,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   天気予報: {
+    jlptLevel: "n5",
     word: "天気予報",
     furigana: "天気[てんき]予報[よほう]",
     english: ["weather forecast"],
@@ -7826,6 +8293,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   気温: {
+    jlptLevel: "n5",
     word: "気温",
     furigana: "気[き]温[おん]",
     english: ["temperature (weather)"],
@@ -7842,6 +8310,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   夏: {
+    jlptLevel: "n5",
     word: "夏",
     furigana: "夏[なつ]",
     english: ["summer"],
@@ -7854,6 +8323,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   冬: {
+    jlptLevel: "n5",
     word: "冬",
     furigana: "冬[ふゆ]",
     english: ["winter"],
@@ -7866,6 +8336,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   今朝: {
+    jlptLevel: "n5",
     word: "今朝",
     furigana: "今朝[けさ]",
     english: ["this morning"],
@@ -7878,6 +8349,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   あさって: {
+    jlptLevel: "n5",
     word: "あさって",
     furigana: "あさって",
     english: ["the day after tomorrow"],
@@ -7894,6 +8366,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   毎週: {
+    jlptLevel: "n5",
     word: "毎週",
     furigana: "毎週[まいしゅう]",
     english: ["every week"],
@@ -7909,6 +8382,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   今月: {
+    jlptLevel: "n5",
     word: "今月",
     furigana: "今月[こんげつ]",
     english: ["this month"],
@@ -7921,6 +8395,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   来月: {
+    jlptLevel: "n5",
     word: "来月",
     furigana: "来月[らいげつ]",
     english: ["next month"],
@@ -7933,6 +8408,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   仕事: {
+    jlptLevel: "n5",
     word: "仕事",
     furigana: "仕事[しごと]",
     english: ["job", "work", "occupation"],
@@ -7961,6 +8437,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   カメラ: {
+    jlptLevel: "n5",
     word: "カメラ",
     furigana: "カメラ",
     english: ["camera"],
@@ -7976,6 +8453,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   カラオケ: {
+    jlptLevel: "n5",
     word: "カラオケ",
     furigana: "カラオケ",
     english: ["karaoke"],
@@ -7988,6 +8466,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   所: {
+    jlptLevel: "n5",
     word: "所",
     furigana: "所[ところ]",
     english: ["place"],
@@ -8004,6 +8483,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   トマト: {
+    jlptLevel: "n5",
     word: "トマト",
     furigana: "トマト",
     english: ["tomato"],
@@ -8016,6 +8496,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   はし: {
+    jlptLevel: "n5",
     word: "はし",
     furigana: "はし",
     english: ["chopsticks"],
@@ -8032,6 +8513,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   パーティー: {
+    jlptLevel: "n5",
     word: "パーティー",
     furigana: "パーティー",
     english: ["party"],
@@ -8054,6 +8536,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   バーベキュー: {
+    jlptLevel: "n5",
     word: "バーベキュー",
     furigana: "バーベキュー",
     english: ["barbecue"],
@@ -8074,6 +8557,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ホームステイ: {
+    jlptLevel: "n5",
     word: "ホームステイ",
     furigana: "ホームステイ",
     english: ["homestay", "living with a local family"],
@@ -8090,6 +8574,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お風呂: {
+    jlptLevel: "n5",
     word: "お風呂",
     furigana: "お 風呂[ふろ]",
     english: ["bath"],
@@ -8118,6 +8603,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   スペイン: {
+    jlptLevel: "n5",
     word: "スペイン",
     furigana: "スペイン",
     english: ["Spain"],
@@ -8133,6 +8619,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   何か: {
+    jlptLevel: "n5",
     word: "何か",
     furigana: "何[なに]か",
     english: ["something"],
@@ -8146,6 +8633,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   上手: {
+    jlptLevel: "n5",
     word: "上手",
     furigana: "上手[じょうず]",
     english: ["skillful", "good at..."],
@@ -8169,6 +8657,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   下手: {
+    jlptLevel: "n5",
     word: "下手",
     furigana: "下手[へた]",
     english: ["clumsy", "poor at..."],
@@ -8188,6 +8677,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   有名: {
+    jlptLevel: "n5",
     word: "有名",
     furigana: "有名[ゆうめい]",
     english: ["famous"],
@@ -8202,6 +8692,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   洗う: {
+    jlptLevel: "n5",
     word: "洗う",
     furigana: "洗[あら]う",
     english: ["to wash"],
@@ -8223,6 +8714,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   言う: {
+    jlptLevel: "n5",
     word: "言う",
     furigana: "言[い]う",
     english: ["to say"],
@@ -8256,6 +8748,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   遅くなる: {
+    jlptLevel: "n5",
     word: "遅くなる",
     furigana: "遅[おそ]くなる",
     english: ["to be late"],
@@ -8268,6 +8761,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お風呂に入る: {
+    jlptLevel: "n5",
     word: "お風呂に入る",
     furigana: "お 風呂[ふろ]に 入[はい]る",
     english: ["to take a bath"],
@@ -8296,6 +8790,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   思う: {
+    jlptLevel: "n5",
     word: "思う",
     furigana: "思[おも]う",
     english: ["to think"],
@@ -8312,6 +8807,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   切る: {
+    jlptLevel: "n5",
     word: "切る",
     furigana: "切[き]る",
     english: ["to cut"],
@@ -8329,6 +8825,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   作る: {
+    jlptLevel: "n5",
     word: "作る",
     furigana: "作[つく]る",
     english: ["to make"],
@@ -8350,6 +8847,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   降る: {
+    jlptLevel: "n5",
     word: "降る",
     furigana: "降[ふ]る",
     english: ["(rain/snow) falls"],
@@ -8372,6 +8870,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   持っていく: {
+    jlptLevel: "n5",
     word: "持っていく",
     furigana: "持[も]っていく",
     english: ["to take (a thing)"],
@@ -8389,6 +8888,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   捨てる: {
+    jlptLevel: "n5",
     word: "捨てる",
     furigana: "捨[す]てる",
     english: ["to throw away"],
@@ -8407,6 +8907,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   始める: {
+    jlptLevel: "n5",
     word: "始める",
     furigana: "始[はじ]める",
     english: ["to begin"],
@@ -8429,6 +8930,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   運転する: {
+    jlptLevel: "n5",
     word: "運転する",
     furigana: "運転[うんてん]する",
     english: ["to drive"],
@@ -8451,6 +8953,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   洗濯する: {
+    jlptLevel: "n5",
     word: "洗濯する",
     furigana: "洗濯[せんたく]する",
     english: ["to do laundry"],
@@ -8469,6 +8972,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   掃除する: {
+    jlptLevel: "n5",
     word: "掃除する",
     furigana: "掃除[そうじ]する",
     english: ["to clean"],
@@ -8491,6 +8995,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   料理する: {
+    jlptLevel: "n5",
     word: "料理する",
     furigana: "料理[りょうり]する",
     english: ["to cook"],
@@ -8508,6 +9013,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   うん: {
+    jlptLevel: "n5",
     word: "うん",
     furigana: "うん",
     english: ["uh-huh", "yes"],
@@ -8524,6 +9030,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ううん: {
+    jlptLevel: "n5",
     word: "ううん",
     furigana: "ううん",
     english: ["uh-uh", "no"],
@@ -8540,6 +9047,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   いつも: {
+    jlptLevel: "n5",
     word: "いつも",
     furigana: "いつも",
     english: ["always"],
@@ -8556,6 +9064,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おそく: {
+    jlptLevel: "n5",
     word: "おそく",
     furigana: "おそく",
     english: ["(do something) late"],
@@ -8568,6 +9077,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   乾杯: {
+    jlptLevel: "n5",
     word: "乾杯",
     furigana: "乾杯[かんぱい]",
     english: ["Cheers! (a toast)"],
@@ -8584,6 +9094,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   みんなで: {
+    jlptLevel: "n5",
     word: "みんなで",
     furigana: "みんなで",
     english: ["all (of the people) together"],
@@ -8596,6 +9107,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   残念: {
+    jlptLevel: "n5",
     word: "残念",
     furigana: "残念[ざんねん]",
     english: ["That's too bad."],
@@ -8615,6 +9127,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   まだ: {
+    jlptLevel: "n5",
     word: "まだ",
     furigana: "まだ",
     english: ["not... yet"],
@@ -8691,6 +9204,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   どう: {
+    jlptLevel: "n5",
     word: "どう",
     furigana: "どう",
     english: ["how"],
@@ -8703,6 +9217,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   単語: {
+    jlptLevel: "n5",
     word: "単語",
     furigana: "単[たん]語[ご]",
     english: ["word", "vocabulary"],
@@ -8719,6 +9234,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   作文: {
+    jlptLevel: "n5",
     word: "作文",
     furigana: "作[さく]文[ぶん]",
     english: ["essay", "composition"],
@@ -8739,6 +9255,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   試験: {
+    jlptLevel: "n5",
     word: "試験",
     furigana: "試[し]験[けん]",
     english: ["exam"],
@@ -8755,6 +9272,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   手紙: {
+    jlptLevel: "n5",
     word: "手紙",
     furigana: "手[て]紙[がみ]",
     english: ["letter"],
@@ -8771,6 +9289,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   メール: {
+    jlptLevel: "n5",
     word: "メール",
     furigana: "メール",
     english: ["e-mail"],
@@ -8787,6 +9306,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ギター: {
+    jlptLevel: "n5",
     word: "ギター",
     furigana: "ギター",
     english: ["guitar"],
@@ -8799,6 +9319,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ピアノ: {
+    jlptLevel: "n5",
     word: "ピアノ",
     furigana: "ピアノ",
     english: ["piano"],
@@ -8815,6 +9336,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   コンサート: {
+    jlptLevel: "n5",
     word: "コンサート",
     furigana: "コンサート",
     english: ["concert"],
@@ -8835,6 +9357,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   チケット: {
+    jlptLevel: "n5",
     word: "チケット",
     furigana: "チケット",
     english: ["ticket"],
@@ -8847,6 +9370,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   歌舞伎: {
+    jlptLevel: "n5",
     word: "歌舞伎",
     furigana: "歌舞伎[かぶき]",
     english: ["Kabuki", "traditional Japanese theatrical art"],
@@ -8863,6 +9387,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   スキー: {
+    jlptLevel: "n5",
     word: "スキー",
     furigana: "スキー",
     english: ["ski"],
@@ -8875,6 +9400,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お弁当: {
+    jlptLevel: "n5",
     word: "お弁当",
     furigana: "お 弁当[べんとう]",
     english: ["boxed lunch"],
@@ -8891,6 +9417,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ピザ: {
+    jlptLevel: "n5",
     word: "ピザ",
     furigana: "ピザ",
     english: ["pizza"],
@@ -8903,6 +9430,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   病気: {
+    jlptLevel: "n5",
     word: "病気",
     furigana: "病[びょう]気[き]",
     english: ["illness", "sickness"],
@@ -8923,6 +9451,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   薬: {
+    jlptLevel: "n5",
     word: "薬",
     furigana: "薬[くすり]",
     english: ["medicine"],
@@ -8938,6 +9467,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   いい子: {
+    jlptLevel: "n5",
     word: "いい子",
     furigana: "いい子[こ]",
     english: ["good child"],
@@ -8950,6 +9480,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   色: {
+    jlptLevel: "n5",
     word: "色",
     furigana: "色[いろ]",
     english: ["color"],
@@ -8962,6 +9493,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   今度: {
+    jlptLevel: "n5",
     word: "今度",
     furigana: "今度[こんど]",
     english: ["near future"],
@@ -8981,6 +9513,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   先月: {
+    jlptLevel: "n5",
     word: "先月",
     furigana: "先[せん]月[げつ]",
     english: ["last month"],
@@ -8996,6 +9529,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   去年: {
+    jlptLevel: "n5",
     word: "去年",
     furigana: "去[きょ]年[ねん]",
     english: ["last year"],
@@ -9011,6 +9545,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   青い: {
+    jlptLevel: "n5",
     word: "青い",
     furigana: "青[あお]い",
     english: ["blue"],
@@ -9024,6 +9559,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   赤い: {
+    jlptLevel: "n5",
     word: "赤い",
     furigana: "赤[あか]い",
     english: ["red"],
@@ -9041,6 +9577,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   黒い: {
+    jlptLevel: "n5",
     word: "黒い",
     furigana: "黒[くろ]い",
     english: ["black"],
@@ -9058,6 +9595,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   白い: {
+    jlptLevel: "n5",
     word: "白い",
     furigana: "白[しろ]い",
     english: ["white"],
@@ -9071,6 +9609,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   寂しい: {
+    jlptLevel: "n5",
     word: "寂しい",
     furigana: "寂[さび]しい",
     english: ["lonely"],
@@ -9088,6 +9627,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   若い: {
+    jlptLevel: "n5",
     word: "若い",
     furigana: "若[わか]い",
     english: ["young"],
@@ -9109,6 +9649,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   意地悪: {
+    jlptLevel: "n5",
     word: "意地悪",
     furigana: "意地[いじ]悪[わる]",
     english: ["mean-spirited"],
@@ -9126,6 +9667,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   踊る: {
+    jlptLevel: "n5",
     word: "踊る",
     furigana: "踊[おど]る",
     english: ["to dance"],
@@ -9142,6 +9684,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   終わる: {
+    jlptLevel: "n5",
     word: "終わる",
     furigana: "終[お]わる",
     english: ["(something) ends"],
@@ -9158,6 +9701,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   薬を飲む: {
+    jlptLevel: "n5",
     word: "薬を飲む",
     furigana: "薬[くすり]を飲[の]む",
     english: ["to take medicine"],
@@ -9174,6 +9718,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   人気がある: {
+    jlptLevel: "n5",
     word: "人気がある",
     furigana: "人気[にんき]がある",
     english: ["to be popular"],
@@ -9190,6 +9735,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   始まる: {
+    jlptLevel: "n5",
     word: "始まる",
     furigana: "始[はじ]まる",
     english: ["(something) begins"],
@@ -9211,6 +9757,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   弾く: {
+    jlptLevel: "n5",
     word: "弾く",
     furigana: "弾[ひ]く",
     english: ["to play (a string instrument or piano)"],
@@ -9232,6 +9779,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   もらう: {
+    jlptLevel: "n5",
     word: "もらう",
     furigana: "もらう",
     english: ["to get (from somebody)"],
@@ -9254,6 +9802,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   覚える: {
+    jlptLevel: "n5",
     word: "覚える",
     furigana: "覚[おぼ]える",
     english: ["to memorize"],
@@ -9280,6 +9829,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   出る: {
+    jlptLevel: "n5",
     word: "出る",
     furigana: "出[で]る",
     english: ["to appear", "to attend", "to exit"],
@@ -9315,6 +9865,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   運動する: {
+    jlptLevel: "n5",
     word: "運動する",
     furigana: "運動[うんどう]する",
     english: ["to do physical exercises"],
@@ -9332,6 +9883,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   散歩する: {
+    jlptLevel: "n5",
     word: "散歩する",
     furigana: "散歩[さんぽ]する",
     english: ["to take a walk"],
@@ -9345,6 +9897,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   そう: {
+    jlptLevel: "n5",
     word: "そう",
     furigana: "そう",
     english: ["(I think) so."],
@@ -9367,6 +9920,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   から: {
+    jlptLevel: "n5",
     word: "から",
     furigana: "から",
     english: ["from..."],
@@ -9384,6 +9938,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   まで: {
+    jlptLevel: "n5",
     word: "まで",
     furigana: "まで",
     english: ["to (a place)", "as far as (a place)", "till (a time)"],
@@ -9409,6 +9964,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ぜひ: {
+    jlptLevel: "n5",
     word: "ぜひ",
     furigana: "ぜひ",
     english: ["by all means"],
@@ -9451,6 +10007,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ところで: {
+    jlptLevel: "n5",
     word: "ところで",
     furigana: "ところで",
     english: ["by the way"],
@@ -9483,6 +10040,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   もう: {
+    jlptLevel: "n5",
     word: "もう",
     furigana: "もう",
     english: ["already"],
@@ -9495,6 +10053,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   一つ: {
+    jlptLevel: "n5",
     word: "一つ",
     furigana: "一[ひと]つ",
     english: ["one"],
@@ -9508,6 +10067,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   二つ: {
+    jlptLevel: "n5",
     word: "二つ",
     furigana: "二[ふた]つ",
     english: ["two"],
@@ -9521,6 +10081,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   三つ: {
+    jlptLevel: "n5",
     word: "三つ",
     furigana: "三[みっ]つ",
     english: ["three"],
@@ -9534,6 +10095,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   四つ: {
+    jlptLevel: "n5",
     word: "四つ",
     furigana: "四[よっ]つ",
     english: ["four"],
@@ -9551,6 +10113,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   五つ: {
+    jlptLevel: "n5",
     word: "五つ",
     furigana: "五[いつ]つ",
     english: ["five"],
@@ -9568,6 +10131,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   六つ: {
+    jlptLevel: "n5",
     word: "六つ",
     furigana: "六[むっ]つ",
     english: ["six"],
@@ -9581,6 +10145,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   七つ: {
+    jlptLevel: "n5",
     word: "七つ",
     furigana: "七[なな]つ",
     english: ["seven"],
@@ -9598,6 +10163,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   八つ: {
+    jlptLevel: "n5",
     word: "八つ",
     furigana: "八[やっ]つ",
     english: ["eight"],
@@ -9611,6 +10177,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   九つ: {
+    jlptLevel: "n5",
     word: "九つ",
     furigana: "九[ここの]つ",
     english: ["nine"],
@@ -9646,6 +10213,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
 
   季節: {
+    jlptLevel: "n5",
     word: "季節",
     furigana: "季[き]節[せつ]",
     english: ["season"],
@@ -9658,6 +10226,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   春: {
+    jlptLevel: "n5",
     word: "春",
     furigana: "春[はる]",
     english: ["spring"],
@@ -9670,6 +10239,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   秋: {
+    jlptLevel: "n5",
     word: "秋",
     furigana: "秋[あき]",
     english: ["fall", "autumn"],
@@ -9682,6 +10252,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   牛乳: {
+    jlptLevel: "n5",
     word: "牛乳",
     furigana: "牛[ぎゅう]乳[にゅう]",
     english: ["milk"],
@@ -9701,6 +10272,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ケーキ: {
+    jlptLevel: "n5",
     word: "ケーキ",
     furigana: "ケーキ",
     english: ["cake"],
@@ -9729,6 +10301,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   天ぷら: {
+    jlptLevel: "n5",
     word: "天ぷら",
     furigana: "天[てん]ぷら",
     english: ["tempura"],
@@ -9741,6 +10314,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   りんご: {
+    jlptLevel: "n5",
     word: "りんご",
     furigana: "りんご",
     english: ["apple"],
@@ -9753,6 +10327,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   料理: {
+    jlptLevel: "n5",
     word: "料理",
     furigana: "料[りょう]理[り]",
     english: ["cuisine"],
@@ -9769,6 +10344,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   サッカー: {
+    jlptLevel: "n5",
     word: "サッカー",
     furigana: "サッカー",
     english: ["soccer"],
@@ -9781,6 +10357,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   野球: {
+    jlptLevel: "n5",
     word: "野球",
     furigana: "野[や]球[きゅう]",
     english: ["baseball"],
@@ -9813,6 +10390,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お金持ち: {
+    jlptLevel: "n5",
     word: "お金持ち",
     furigana: "お 金[かね]持[も]ち",
     english: ["rich person"],
@@ -9825,6 +10403,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   有名人: {
+    jlptLevel: "n5",
     word: "有名人",
     furigana: "有名[ゆうめい]人[じん]",
     english: ["celebrity"],
@@ -9838,6 +10417,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
   // 顔 (include here for chapter 10, already defined above)
   年上: {
+    jlptLevel: "n5",
     word: "年上",
     furigana: "年[とし]上[うえ]",
     english: ["someone older"],
@@ -9850,6 +10430,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   駅: {
+    jlptLevel: "n5",
     word: "駅",
     furigana: "駅[えき]",
     english: ["station"],
@@ -9862,6 +10443,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   新幹線: {
+    jlptLevel: "n5",
     word: "新幹線",
     furigana: "新[しん]幹[かん]線[せん]",
     english: ["Shinkansen", "Bullet Train"],
@@ -9881,6 +10463,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   地下鉄: {
+    jlptLevel: "n5",
     word: "地下鉄",
     furigana: "地[ち]下[か]鉄[てつ]",
     english: ["subway"],
@@ -9893,6 +10476,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   船: {
+    jlptLevel: "n5",
     word: "船",
     furigana: "船[ふね]",
     english: ["ship", "boat"],
@@ -9905,6 +10489,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   飛行機: {
+    jlptLevel: "n5",
     word: "飛行機",
     furigana: "飛[ひ]行[こう]機[き]",
     english: ["airplane"],
@@ -9917,6 +10502,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   予約: {
+    jlptLevel: "n5",
     word: "予約",
     furigana: "予[よ]約[やく]",
     english: ["reservation"],
@@ -9929,6 +10515,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ツアー: {
+    jlptLevel: "n5",
     word: "ツアー",
     furigana: "ツアー",
     english: ["tour"],
@@ -9941,6 +10528,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   動物園: {
+    jlptLevel: "n5",
     word: "動物園",
     furigana: "動[どう]物[ぶつ]園[えん]",
     english: ["zoo"],
@@ -9953,6 +10541,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   時間: {
+    jlptLevel: "n5",
     word: "時間",
     furigana: "時[じ]間[かん]",
     english: ["time"],
@@ -9965,6 +10554,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   世界: {
+    jlptLevel: "n5",
     word: "世界",
     furigana: "世[せ]界[かい]",
     english: ["world"],
@@ -9977,6 +10567,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   美容院: {
+    jlptLevel: "n5",
     word: "美容院",
     furigana: "美容院[びよういん]",
     english: ["beauty parlor"],
@@ -9989,6 +10580,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   手袋: {
+    jlptLevel: "n5",
     word: "手袋",
     furigana: "手[て]袋[ぶくろ]",
     english: ["gloves"],
@@ -10001,6 +10593,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   生活: {
+    jlptLevel: "n5",
     word: "生活",
     furigana: "生[せい]活[かつ]",
     english: ["life", "living"],
@@ -10017,6 +10610,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   今年: {
+    jlptLevel: "n5",
     word: "今年",
     furigana: "今[こ]年[とし]",
     english: ["this year"],
@@ -10058,6 +10652,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   冷たい: {
+    jlptLevel: "n5",
     word: "冷たい",
     furigana: "冷[つめ]たい",
     english: ["cold (things/people)"],
@@ -10407,6 +11002,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   後: {
+    jlptLevel: "n5",
     word: "後",
     furigana: "後[ご]",
     english: ["in... time", "after..."],
@@ -10445,6 +11041,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
 
   外国: {
+    jlptLevel: "n5",
     word: "外国",
     furigana: "外[がい]国[こく]",
     english: ["foreign country"],
@@ -10475,6 +11072,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   川: {
+    jlptLevel: "n5",
     word: "川",
     furigana: "川[かわ]",
     english: ["river"],
@@ -10488,6 +11086,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   温泉: {
+    jlptLevel: "n5",
     word: "温泉",
     furigana: "温[おん]泉[せん]",
     english: ["spa", "hot spring"],
@@ -10508,6 +11107,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   つり: {
+    jlptLevel: "n5",
     word: "つり",
     furigana: "つり",
     english: ["fishing"],
@@ -10529,6 +11129,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   湖: {
+    jlptLevel: "n5",
     word: "湖",
     furigana: "湖[みずうみ]",
     english: ["lake"],
@@ -10545,6 +11146,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   山: {
+    jlptLevel: "n5",
     word: "山",
     furigana: "山[やま]",
     english: ["mountain"],
@@ -10558,6 +11160,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   キャンプ: {
+    jlptLevel: "n5",
     word: "キャンプ",
     furigana: "キャンプ",
     english: ["camp"],
@@ -10579,6 +11182,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ドライブ: {
+    jlptLevel: "n5",
     word: "ドライブ",
     furigana: "ドライブ",
     english: ["drive (for leisure)"],
@@ -10596,6 +11200,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   神社: {
+    jlptLevel: "n5",
     word: "神社",
     furigana: "神[じん]社[じゃ]",
     english: ["shrine"],
@@ -10609,6 +11214,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   美術館: {
+    jlptLevel: "n5",
     word: "美術館",
     furigana: "美[び]術[じゅつ]館[かん]",
     english: ["art museum"],
@@ -10629,6 +11235,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   社長: {
+    jlptLevel: "n5",
     word: "社長",
     furigana: "社[しゃ]長[ちょう]",
     english: ["president of a company"],
@@ -10649,6 +11256,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   歌手: {
+    jlptLevel: "n5",
     word: "歌手",
     furigana: "歌[か]手[しゅ]",
     english: ["singer"],
@@ -10666,6 +11274,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ルームメート: {
+    jlptLevel: "n5",
     word: "ルームメート",
     furigana: "ルームメート",
     english: ["roommate"],
@@ -10682,6 +11291,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ホストファミリー: {
+    jlptLevel: "n5",
     word: "ホストファミリー",
     furigana: "ホストファミリー",
     english: ["host family"],
@@ -10698,6 +11308,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   将来: {
+    jlptLevel: "n5",
     word: "将来",
     furigana: "将[しょう]来[らい]",
     english: ["future"],
@@ -10718,6 +11329,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   夢: {
+    jlptLevel: "n5",
     word: "夢",
     furigana: "夢[ゆめ]",
     english: ["dream"],
@@ -10739,6 +11351,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お祭り: {
+    jlptLevel: "n5",
     word: "お祭り",
     furigana: "お 祭[まつ]り",
     english: ["festival"],
@@ -10759,6 +11372,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お正月: {
+    jlptLevel: "n5",
     word: "お正月",
     furigana: "お 正[しょう]月[がつ]",
     english: ["New Year's"],
@@ -10779,6 +11393,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お菓子: {
+    jlptLevel: "n5",
     word: "お菓子",
     furigana: "お 菓[か]子[し]",
     english: ["snack", "sweets"],
@@ -10795,6 +11410,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ビール: {
+    jlptLevel: "n5",
     word: "ビール",
     furigana: "ビール",
     english: ["beer"],
@@ -10811,6 +11427,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おもちゃ: {
+    jlptLevel: "n5",
     word: "おもちゃ",
     furigana: "おもちゃ",
     english: ["toy"],
@@ -10832,6 +11449,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   今学期: {
+    jlptLevel: "n5",
     word: "今学期",
     furigana: "今[こん]学[がっ]期[き]",
     english: ["this semester"],
@@ -10852,6 +11470,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   来学期: {
+    jlptLevel: "n5",
     word: "来学期",
     furigana: "来[らい]学[がっ]期[き]",
     english: ["next semester"],
@@ -10872,6 +11491,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   授業: {
+    jlptLevel: "n5",
     word: "授業",
     furigana: "授[じゅ]業[ぎょう]",
     english: ["class"],
@@ -10892,6 +11512,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   こちら: {
+    jlptLevel: "n5",
     word: "こちら",
     furigana: "こちら",
     english: ["this person (polite)"],
@@ -10912,6 +11533,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   うそをつく: {
+    jlptLevel: "n5",
     word: "うそをつく",
     furigana: "うそをつく",
     english: ["to tell a lie"],
@@ -10925,6 +11547,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おなかがすく: {
+    jlptLevel: "n5",
     word: "おなかがすく",
     furigana: "おなかがすく",
     english: ["to become hungry"],
@@ -10942,6 +11565,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   飼う: {
+    jlptLevel: "n5",
     word: "飼う",
     furigana: "飼[か]う",
     english: ["to own (a pet)"],
@@ -10960,6 +11584,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   サボる: {
+    jlptLevel: "n5",
     word: "サボる",
     furigana: "サボる",
     english: ["to cut (classes)"],
@@ -10982,6 +11607,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   取る: {
+    jlptLevel: "n5",
     word: "取る",
     furigana: "取[と]る",
     english: ["to take (a class)", "to get (a grade)"],
@@ -11004,6 +11630,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   習う: {
+    jlptLevel: "n5",
     word: "習う",
     furigana: "習[なら]う",
     english: ["to learn"],
@@ -11022,6 +11649,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   登る: {
+    jlptLevel: "n5",
     word: "登る",
     furigana: "登[のぼ]る",
     english: ["to climb"],
@@ -11045,6 +11673,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   走る: {
+    jlptLevel: "n5",
     word: "走る",
     furigana: "走[はし]る",
     english: ["to run"],
@@ -11058,6 +11687,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   疲れる: {
+    jlptLevel: "n5",
     word: "疲れる",
     furigana: "疲[つか]れる",
     english: ["to get tired"],
@@ -11076,6 +11706,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   やめる: {
+    jlptLevel: "n5",
     word: "やめる",
     furigana: "やめる",
     english: ["to quit"],
@@ -11095,6 +11726,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   けんかする: {
+    jlptLevel: "n5",
     word: "けんかする",
     furigana: "けんかする",
     english: ["to have a fight", "to quarrel"],
@@ -11107,6 +11739,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   紹介する: {
+    jlptLevel: "n5",
     word: "紹介する",
     furigana: "紹[しょう]介[かい]する",
     english: ["to introduce"],
@@ -11135,6 +11768,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ダイエットする: {
+    jlptLevel: "n5",
     word: "ダイエットする",
     furigana: "ダイエットする",
     english: ["to go on a diet"],
@@ -11147,6 +11781,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   遅刻する: {
+    jlptLevel: "n5",
     word: "遅刻する",
     furigana: "遅[ち]刻[こく]する",
     english: ["to be late (for an appointment)"],
@@ -11169,6 +11804,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   留学する: {
+    jlptLevel: "n5",
     word: "留学する",
     furigana: "留[りゅう]学[がく]する",
     english: ["to study abroad"],
@@ -11208,6 +11844,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   久しぶり: {
+    jlptLevel: "n5",
     word: "久しぶり",
     furigana: "久[ひさ]しぶり",
     english: ["it has been a long time"],
@@ -11221,6 +11858,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   まあまあ: {
+    jlptLevel: "n5",
     word: "まあまあ",
     furigana: "まあまあ",
     english: ["okay", "so-so"],
@@ -11234,6 +11872,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   もっと: {
+    jlptLevel: "n5",
     word: "もっと",
     furigana: "もっと",
     english: ["more"],
@@ -11273,6 +11912,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   そして: {
+    jlptLevel: "n5",
     word: "そして",
     furigana: "そして",
     english: ["and then"],
@@ -11290,6 +11930,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～だけ": {
+    jlptLevel: "n5",
     word: "～だけ",
     furigana: "～だけ",
     english: ["just...", "only..."],
@@ -11303,6 +11944,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   点: {
+    jlptLevel: "n5",
     word: "点",
     furigana: "点[てん]",
     english: ["...points"],
@@ -11320,6 +11962,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   どちらでもいい: {
+    jlptLevel: "n5",
     word: "どちらでもいい",
     furigana: "どちらでもいい",
     english: ["Both are fine."],
@@ -11333,6 +11976,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   作家: {
+    jlptLevel: "n5",
     word: "作家",
     furigana: "作[さっ]家[か]",
     english: ["writer"],
@@ -11349,6 +11993,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ジャーナリスト: {
+    jlptLevel: "n5",
     word: "ジャーナリスト",
     furigana: "ジャーナリスト",
     english: ["journalist"],
@@ -11361,6 +12006,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   警察官: {
+    jlptLevel: "n5",
     word: "警察官",
     furigana: "警[けい]察[さつ]官[かん]",
     english: ["police officer"],
@@ -11376,6 +12022,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   消防士: {
+    jlptLevel: "n5",
     word: "消防士",
     furigana: "消[しょう]防[ぼう]士[し]",
     english: ["firefighter"],
@@ -11391,6 +12038,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   教師: {
+    jlptLevel: "n5",
     word: "教師",
     furigana: "教[きょう]師[し]",
     english: ["schoolteacher"],
@@ -11403,6 +12051,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   研究者: {
+    jlptLevel: "n5",
     word: "研究者",
     furigana: "研[けん]究[きゅう]者[しゃ]",
     english: ["researcher"],
@@ -11418,6 +12067,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   宇宙飛行士: {
+    jlptLevel: "n5",
     word: "宇宙飛行士",
     furigana: "宇[う]宙[ちゅう]飛[ひ]行[こう]士[し]",
     english: ["astronaut"],
@@ -11433,6 +12083,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   スポーツ選手: {
+    jlptLevel: "n5",
     word: "スポーツ選手",
     furigana: "スポーツ選[せん]手[しゅ]",
     english: ["athlete"],
@@ -11445,6 +12096,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   大統領: {
+    jlptLevel: "n5",
     word: "大統領",
     furigana: "大[だい]統[とう]領[りょう]",
     english: ["president of a country"],
@@ -11460,6 +12112,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   俳優: {
+    jlptLevel: "n5",
     word: "俳優",
     furigana: "俳[はい]優[ゆう]",
     english: ["actor", "actress"],
@@ -11491,6 +12144,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   シェフ: {
+    jlptLevel: "n5",
     word: "シェフ",
     furigana: "シェフ",
     english: ["chef"],
@@ -11503,6 +12157,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   漫画家: {
+    jlptLevel: "n5",
     word: "漫画家",
     furigana: "漫[まん]画[が]家[か]",
     english: ["cartoonist"],
@@ -11535,6 +12190,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   のど: {
+    jlptLevel: "n5",
     word: "のど",
     furigana: "のど",
     english: ["throat"],
@@ -11570,6 +12226,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   インフルエンザ: {
+    jlptLevel: "n5",
     word: "インフルエンザ",
     furigana: "インフルエンザ",
     english: ["influenza"],
@@ -11582,6 +12239,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   風邪: {
+    jlptLevel: "n5",
     word: "風邪",
     furigana: "風邪[かぜ]",
     english: ["cold"],
@@ -11602,6 +12260,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   せき: {
+    jlptLevel: "n5",
     word: "せき",
     furigana: "せき",
     english: ["cough"],
@@ -11621,6 +12280,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   二日酔い: {
+    jlptLevel: "n5",
     word: "二日酔い",
     furigana: "二[ふつ]日[か]酔[よ]い",
     english: ["hangover"],
@@ -11641,6 +12301,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ホームシック: {
+    jlptLevel: "n5",
     word: "ホームシック",
     furigana: "ホームシック",
     english: ["homesickness"],
@@ -11657,6 +12318,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   アレルギー: {
+    jlptLevel: "n5",
     word: "アレルギー",
     furigana: "アレルギー",
     english: ["allergy"],
@@ -11673,6 +12335,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ジュース: {
+    jlptLevel: "n5",
     word: "ジュース",
     furigana: "ジュース",
     english: ["juice"],
@@ -11692,6 +12355,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   たまご: {
+    jlptLevel: "n5",
     word: "たまご",
     furigana: "たまご",
     english: ["egg"],
@@ -11708,6 +12372,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   服: {
+    jlptLevel: "n5",
     word: "服",
     furigana: "服[ふく]",
     english: ["clothes"],
@@ -11724,6 +12389,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   物: {
+    jlptLevel: "n5",
     word: "物",
     furigana: "物[もの]",
     english: ["thing (concrete object)"],
@@ -11740,6 +12406,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   プレゼント: {
+    jlptLevel: "n5",
     word: "プレゼント",
     furigana: "プレゼント",
     english: ["present"],
@@ -11752,6 +12419,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   切符: {
+    jlptLevel: "n5",
     word: "切符",
     furigana: "切[きっ]符[ぷ]",
     english: ["train ticket"],
@@ -11772,6 +12440,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   代: {
+    jlptLevel: "n5",
     word: "代",
     furigana: "代[だい]",
     english: ["charge", "fee"],
@@ -11793,6 +12462,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   用事: {
+    jlptLevel: "n5",
     word: "用事",
     furigana: "用[よう]事[じ]",
     english: ["errand", "business to take care of"],
@@ -11808,6 +12478,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お手洗い: {
+    jlptLevel: "n5",
     word: "お手洗い",
     furigana: "お手[て]洗[あら]い",
     english: ["restroom"],
@@ -11820,6 +12491,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   試合: {
+    jlptLevel: "n5",
     word: "試合",
     furigana: "試[し]合[あい]",
     english: ["match", "game"],
@@ -11848,6 +12520,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   成績: {
+    jlptLevel: "n5",
     word: "成績",
     furigana: "成[せい]績[せき]",
     english: ["grade (on a test, etc.)"],
@@ -11864,6 +12537,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   彼女: {
+    jlptLevel: "n5",
     word: "彼女",
     furigana: "彼[かの]女[じょ]",
     english: ["girlfriend", "she"],
@@ -11879,6 +12553,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   彼氏: {
+    jlptLevel: "n5",
     word: "彼氏",
     furigana: "彼[かれ]氏[し]",
     english: ["boyfriend", "he"],
@@ -11894,6 +12569,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   意味: {
+    jlptLevel: "n5",
     word: "意味",
     furigana: "意[い]味[み]",
     english: ["meaning"],
@@ -11910,6 +12586,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   狭い: {
+    jlptLevel: "n5",
     word: "狭い",
     furigana: "狭[せま]い",
     english: ["narrow", "not spacious"],
@@ -11923,6 +12600,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   広い: {
+    jlptLevel: "n5",
     word: "広い",
     furigana: "広[ひろ]い",
     english: ["spacious", "wide"],
@@ -11936,6 +12614,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   悪い: {
+    jlptLevel: "n5",
     word: "悪い",
     furigana: "悪[わる]い",
     english: ["bad"],
@@ -11953,6 +12632,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   痛い: {
+    jlptLevel: "n5",
     word: "痛い",
     furigana: "痛[いた]い",
     english: ["hurt", "painful"],
@@ -11970,6 +12650,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   甘い: {
+    jlptLevel: "n5",
     word: "甘い",
     furigana: "甘[あま]い",
     english: ["sweet"],
@@ -11983,6 +12664,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   多い: {
+    jlptLevel: "n5",
     word: "多い",
     furigana: "多[おお]い",
     english: ["there are many..."],
@@ -12000,6 +12682,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   素敵: {
+    jlptLevel: "n5",
     word: "素敵",
     furigana: "素[す]敵[てき]",
     english: ["nice"],
@@ -12014,6 +12697,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   歩く: {
+    jlptLevel: "n5",
     word: "歩く",
     furigana: "歩[ある]く",
     english: ["to walk"],
@@ -12030,6 +12714,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   風邪をひく: {
+    jlptLevel: "n5",
     word: "風邪をひく",
     furigana: "風邪[かぜ]をひく",
     english: ["to catch a cold"],
@@ -12050,6 +12735,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   熱がある: {
+    jlptLevel: "n5",
     word: "熱がある",
     furigana: "熱[ねつ]がある",
     english: ["to have a fever"],
@@ -12065,6 +12751,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   のどが渇く: {
+    jlptLevel: "n5",
     word: "のどが渇く",
     furigana: "のどが 渇[かわ]く",
     english: ["to become thirsty"],
@@ -12081,6 +12768,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   払う: {
+    jlptLevel: "n5",
     word: "払う",
     furigana: "払[はら]う",
     english: ["to pay"],
@@ -12102,6 +12790,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   なくす: {
+    jlptLevel: "n5",
     word: "なくす",
     furigana: "なくす",
     english: ["to lose"],
@@ -12119,6 +12808,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   興味がある: {
+    jlptLevel: "n5",
     word: "興味がある",
     furigana: "興味[きょうみ]がある",
     english: ["to be interested (in ...)"],
@@ -12141,6 +12831,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   せきが出る: {
+    jlptLevel: "n5",
     word: "せきが出る",
     furigana: "せきが出[で]る",
     english: ["to cough"],
@@ -12166,6 +12857,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   別れる: {
+    jlptLevel: "n5",
     word: "別れる",
     furigana: "別[わか]れる",
     english: ["to break up", "to separate"],
@@ -12189,6 +12881,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   緊張する: {
+    jlptLevel: "n5",
     word: "緊張する",
     furigana: "緊[きん]張[ちょう]する",
     english: ["to get nervous"],
@@ -12206,6 +12899,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   心配する: {
+    jlptLevel: "n5",
     word: "心配する",
     furigana: "心[しん]配[ぱい]する",
     english: ["to worry"],
@@ -12223,6 +12917,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お大事に: {
+    jlptLevel: "n5",
     word: "お大事に",
     furigana: "お大[だい]事[じ]に",
     english: ["Get well soon."],
@@ -12236,6 +12931,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   元気がない: {
+    jlptLevel: "n5",
     word: "元気がない",
     furigana: "元気[げんき]がない",
     english: ["don't look well"],
@@ -12253,6 +12949,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   できるだけ: {
+    jlptLevel: "n5",
     word: "できるだけ",
     furigana: "できるだけ",
     english: ["as much as possible"],
@@ -12265,6 +12962,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   多分: {
+    jlptLevel: "n5",
     word: "多分",
     furigana: "多[た]分[ぶん]",
     english: ["probably", "maybe"],
@@ -12281,6 +12979,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   もうすぐ: {
+    jlptLevel: "n5",
     word: "もうすぐ",
     furigana: "もうすぐ",
     english: ["very soon", "in a few moments/days"],
@@ -12293,6 +12992,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   初めて: {
+    jlptLevel: "n5",
     word: "初めて",
     furigana: "初[はじ]めて",
     english: ["for the first time"],
@@ -12313,6 +13013,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   二三日: {
+    jlptLevel: "n5",
     word: "二三日",
     furigana: "二[に]三[さん]日[にち]",
     english: ["for two to three days"],
@@ -12325,6 +13026,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   それに: {
+    jlptLevel: "n5",
     word: "それに",
     furigana: "それに",
     english: ["moreover", "besides"],
@@ -12345,6 +13047,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   同じ: {
+    jlptLevel: "n5",
     word: "同じ",
     furigana: "同[おな]じ",
     english: ["same"],
@@ -12361,6 +13064,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   大人: {
+    jlptLevel: "n5",
     word: "大人",
     furigana: "大人[おとな]",
     english: ["adult"],
@@ -12404,6 +13108,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   私1: {
+    jlptLevel: "n5",
     word: "私",
     furigana: "私[わたくし]",
     english: ["I (formal)"],
@@ -12423,6 +13128,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   カレー: {
+    jlptLevel: "n5",
     word: "カレー",
     furigana: "カレー",
     english: ["curry"],
@@ -12441,6 +13147,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   紅茶: {
+    jlptLevel: "n5",
     word: "紅茶",
     furigana: "紅茶[こうちゃ]",
     english: ["black tea"],
@@ -12461,6 +13168,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   着物: {
+    jlptLevel: "n5",
     word: "着物",
     furigana: "着物[きもの]",
     english: ["kimono", "Japanese traditional dress"],
@@ -12484,6 +13192,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   セーター: {
+    jlptLevel: "n5",
     word: "セーター",
     furigana: "セーター",
     english: ["sweater"],
@@ -12497,6 +13206,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   楽器: {
+    jlptLevel: "n5",
     word: "楽器",
     furigana: "楽器[がっき]",
     english: ["musical instrument"],
@@ -12521,6 +13231,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   空手: {
+    jlptLevel: "n5",
     word: "空手",
     furigana: "空手[からて]",
     english: ["karate"],
@@ -12534,6 +13245,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ゴルフ: {
+    jlptLevel: "n5",
     word: "ゴルフ",
     furigana: "ゴルフ",
     english: ["golf"],
@@ -12551,6 +13263,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   バイク: {
+    jlptLevel: "n5",
     word: "バイク",
     furigana: "バイク",
     english: ["motorcycle"],
@@ -12564,6 +13277,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   象: {
+    jlptLevel: "n5",
     word: "象",
     furigana: "象[ぞう]",
     english: ["elephant"],
@@ -12584,6 +13298,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   体: {
+    jlptLevel: "n5",
     word: "体",
     furigana: "体[からだ]",
     english: ["body"],
@@ -12616,6 +13331,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   外国語: {
+    jlptLevel: "n5",
     word: "外国語",
     furigana: "外国語[がいこくご]",
     english: ["foreign language"],
@@ -12635,6 +13351,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   言葉: {
+    jlptLevel: "n5",
     word: "言葉",
     furigana: "言葉[ことば]",
     english: ["language", "word", "speech"],
@@ -12680,6 +13397,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   文法: {
+    jlptLevel: "n5",
     word: "文法",
     furigana: "文法[ぶんぽう]",
     english: ["grammar"],
@@ -12700,6 +13418,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   アプリ: {
+    jlptLevel: "n5",
     word: "アプリ",
     furigana: "アプリ",
     english: ["application", "app"],
@@ -12716,6 +13435,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   アパート: {
+    jlptLevel: "n5",
     word: "アパート",
     furigana: "アパート",
     english: ["apartment", "smaller apartment building"],
@@ -12733,6 +13453,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   マンション: {
+    jlptLevel: "n5",
     word: "マンション",
     furigana: "マンション",
     english: ["larger apartment building", "condominium"],
@@ -12754,6 +13475,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   空港: {
+    jlptLevel: "n5",
     word: "空港",
     furigana: "空港[くうこう]",
     english: ["airport"],
@@ -12767,6 +13489,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   店: {
+    jlptLevel: "n5",
     word: "店",
     furigana: "店[みせ]",
     english: ["shop", "store"],
@@ -12783,6 +13506,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   物価: {
+    jlptLevel: "n5",
     word: "物価",
     furigana: "物価[ぶっか]",
     english: ["consumer prices", "cost of living"],
@@ -12800,6 +13524,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   広告: {
+    jlptLevel: "n5",
     word: "広告",
     furigana: "広告[こうこく]",
     english: ["advertisement"],
@@ -12844,6 +13569,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   募集: {
+    jlptLevel: "n5",
     word: "募集",
     furigana: "募集[ぼしゅう]",
     english: ["recruitment"],
@@ -12860,6 +13586,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   約束: {
+    jlptLevel: "n5",
     word: "約束",
     furigana: "約束[やくそく]",
     english: ["promise", "appointment"],
@@ -12884,6 +13611,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   経験: {
+    jlptLevel: "n5",
     word: "経験",
     furigana: "経験[けいけん]",
     english: ["experience"],
@@ -12950,6 +13678,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   うれしい: {
+    jlptLevel: "n5",
     word: "うれしい",
     furigana: "うれしい",
     english: ["glad"],
@@ -12967,6 +13696,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   悲しい: {
+    jlptLevel: "n5",
     word: "悲しい",
     furigana: "悲[かな]しい",
     english: ["sad"],
@@ -12988,6 +13718,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   厳しい: {
+    jlptLevel: "n5",
     word: "厳しい",
     furigana: "厳[きび]しい",
     english: ["strict"],
@@ -13006,6 +13737,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   気分が悪い: {
+    jlptLevel: "n5",
     word: "気分が悪い",
     furigana: "気分[きぶん]が 悪[わる]い",
     english: ["to feel sick"],
@@ -13023,6 +13755,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   辛い: {
+    jlptLevel: "n5",
     word: "辛い",
     furigana: "辛[から]い",
     english: ["hot and spicy", "salty"],
@@ -13039,6 +13772,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   すごい: {
+    jlptLevel: "n5",
     word: "すごい",
     furigana: "すごい",
     english: ["incredible", "awesome"],
@@ -13056,6 +13790,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   近い: {
+    jlptLevel: "n5",
     word: "近い",
     furigana: "近[ちか]い",
     english: ["close", "near"],
@@ -13077,6 +13812,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   いろいろ: {
+    jlptLevel: "n5",
     word: "いろいろ",
     furigana: "いろいろ",
     english: ["various", "different kinds of"],
@@ -13094,6 +13830,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   幸せ: {
+    jlptLevel: "n5",
     word: "幸せ",
     furigana: "幸[しあわ]せ",
     english: ["happy (lasting happiness)"],
@@ -13108,6 +13845,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   だめ: {
+    jlptLevel: "n5",
     word: "だめ",
     furigana: "だめ",
     english: ["no good"],
@@ -13121,6 +13859,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   直す: {
+    jlptLevel: "n5",
     word: "直す",
     furigana: "直す[なおす]",
     english: ["to fix", "to repair", "to correct"],
@@ -13144,6 +13883,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   編む: {
+    jlptLevel: "n5",
     word: "編む",
     furigana: "編[あ]む",
     english: ["to knit"],
@@ -13166,6 +13906,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   頑張る: {
+    jlptLevel: "n5",
     word: "頑張る",
     furigana: "頑張[がんば]る",
     english: ["to do one's best", "to try hard", "to try one's best"],
@@ -13178,6 +13919,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   泣く: {
+    jlptLevel: "n5",
     word: "泣く",
     furigana: "泣[な]く",
     english: ["to cry"],
@@ -13195,6 +13937,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   磨く: {
+    jlptLevel: "n5",
     word: "磨く",
     furigana: "磨[みが]く",
     english: ["to brush (teeth)", "to polish"],
@@ -13212,6 +13955,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   約束を守る: {
+    jlptLevel: "n5",
     word: "約束を守る",
     furigana: "約束[やくそく]を 守[まも]る",
     english: ["to keep a promise"],
@@ -13228,6 +13972,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   感動する: {
+    jlptLevel: "n5",
     word: "感動する",
     furigana: "感動[かんどう]する",
     english: ["to be moved (emotionally)", "to be touched (emotionally)"],
@@ -13255,6 +14000,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～回": {
+    jlptLevel: "n5",
     word: "～回",
     furigana: "～ 回[かい]",
     english: ["...times"],
@@ -13283,6 +14029,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～キロ": {
+    jlptLevel: "n5",
     word: "～キロ",
     furigana: "～キロ",
     english: ["...kilometers", "...kilograms"],
@@ -13303,6 +14050,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   全部: {
+    jlptLevel: "n5",
     word: "全部",
     furigana: "全部[ぜんぶ]",
     english: ["all"],
@@ -13318,6 +14066,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～と申します": {
+    jlptLevel: "n5",
     word: "～と申します",
     furigana: "～と 申[もう]します",
     english: ["my name is..."],
@@ -13334,6 +14083,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   特に: {
+    jlptLevel: "n5",
     word: "特に",
     furigana: "特[とく]に",
     english: ["especially"],
@@ -13354,6 +14104,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   一日: {
+    jlptLevel: "n5",
     word: "一日",
     furigana: "一日[ついたち]",
     english: ["one day", "1 day"],
@@ -13370,6 +14121,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   二日: {
+    jlptLevel: "n5",
     word: "二日",
     furigana: "二日[ふつか]",
     english: ["two days", "2 days"],
@@ -13382,6 +14134,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   三日: {
+    jlptLevel: "n5",
     word: "三日",
     furigana: "三日[みっか]",
     english: ["three days", "3 days"],
@@ -13394,6 +14147,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   四日: {
+    jlptLevel: "n5",
     word: "四日",
     furigana: "四日[よっか]",
     english: ["four days", "4 days"],
@@ -13406,6 +14160,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   五日: {
+    jlptLevel: "n5",
     word: "五日",
     furigana: "五日[いつか]",
     english: ["five days", "5 days"],
@@ -13426,6 +14181,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   六日: {
+    jlptLevel: "n5",
     word: "六日",
     furigana: "六日[むいか]",
     english: ["six days", "6 days"],
@@ -13441,6 +14197,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   七日: {
+    jlptLevel: "n5",
     word: "七日",
     furigana: "七日[なのか]",
     english: ["seven days", "7 days"],
@@ -13457,6 +14214,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   八日: {
+    jlptLevel: "n5",
     word: "八日",
     furigana: "八日[ようか]",
     english: ["eight days", "8 days"],
@@ -13473,6 +14231,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   九日: {
+    jlptLevel: "n5",
     word: "九日",
     furigana: "九日[ここのか]",
     english: ["nine days", "9 days"],
@@ -13489,6 +14248,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   十日: {
+    jlptLevel: "n5",
     word: "十日",
     furigana: "十日[とおか]",
     english: ["ten days", "10 days"],
@@ -13505,6 +14265,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   奥さん: {
+    jlptLevel: "n4",
     word: "奥さん",
     furigana: "奥[おく]さん",
     english: ["(your/someone's) wife"],
@@ -13529,6 +14290,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ご主人: {
+    jlptLevel: "n4",
     word: "ご主人",
     furigana: "ご 主人[しゅじん]",
     english: ["(your/someone's) husband"],
@@ -13555,6 +14317,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   パートナー: {
+    jlptLevel: "n4",
     word: "パートナー",
     furigana: "パートナー",
     english: ["partner"],
@@ -13625,6 +14388,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   両親: {
+    jlptLevel: "n4",
     word: "両親",
     furigana: "両親[りょうしん]",
     english: ["parents"],
@@ -13650,6 +14414,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   大家さん: {
+    jlptLevel: "n4",
     word: "大家さん",
     furigana: "大家[おおや]さん",
     english: ["landlord", "landlady"],
@@ -13674,6 +14439,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   皆さん: {
+    jlptLevel: "n4",
     word: "皆さん",
     furigana: "皆[みな]さん",
     english: ["everyone", "all of you"],
@@ -13690,6 +14456,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   みかん: {
+    jlptLevel: "n4",
     word: "みかん",
     furigana: "みかん",
     english: ["mandarin orange", "tangerine"],
@@ -13714,6 +14481,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   トレーナー: {
+    jlptLevel: "n4",
     word: "トレーナー",
     furigana: "トレーナー",
     english: ["sweatshirt", "trainer top"],
@@ -13739,6 +14507,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   シャツ: {
+    jlptLevel: "n4",
     word: "シャツ",
     furigana: "シャツ",
     english: ["shirt"],
@@ -13757,6 +14526,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ネクタイ: {
+    jlptLevel: "n4",
     word: "ネクタイ",
     furigana: "ネクタイ",
     english: ["necktie"],
@@ -13775,6 +14545,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   チョコレート: {
+    jlptLevel: "n4",
     word: "チョコレート",
     furigana: "チョコレート",
     english: ["chocolate"],
@@ -13796,6 +14567,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   マフラー: {
+    jlptLevel: "n4",
     word: "マフラー",
     furigana: "マフラー",
     english: ["scarf", "winter scarf"],
@@ -13823,6 +14595,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   指輪: {
+    jlptLevel: "n4",
     word: "指輪",
     furigana: "指輪[ゆびわ]",
     english: ["ring"],
@@ -13850,6 +14623,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   鉛筆: {
+    jlptLevel: "n4",
     word: "鉛筆",
     furigana: "鉛筆[えんぴつ]",
     english: ["pencil"],
@@ -13867,6 +14641,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ぬいぐるみ: {
+    jlptLevel: "n4",
     word: "ぬいぐるみ",
     furigana: "ぬいぐるみ",
     english: ["stuffed animal"],
@@ -13884,6 +14659,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   漫画: {
+    jlptLevel: "n4",
     word: "漫画",
     furigana: "漫画[まんが]",
     english: ["manga", "comic book"],
@@ -13901,6 +14677,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   化粧品: {
+    jlptLevel: "n4",
     word: "化粧品",
     furigana: "化粧品[けしょうひん]",
     english: ["cosmetics"],
@@ -13928,6 +14705,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ラジオ: {
+    jlptLevel: "n4",
     word: "ラジオ",
     furigana: "ラジオ",
     english: ["radio"],
@@ -13950,6 +14728,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お皿: {
+    jlptLevel: "n4",
     word: "お皿",
     furigana: "お 皿[さら]",
     english: ["plate", "dish"],
@@ -13967,6 +14746,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お返し: {
+    jlptLevel: "n4",
     word: "お返し",
     furigana: "お 返[かえ]し",
     english: ["return (as a token of gratitude)"],
@@ -13987,6 +14767,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   履歴書: {
+    jlptLevel: "n4",
     word: "履歴書",
     furigana: "履歴書[りれきしょ]",
     english: ["resume", "résumé"],
@@ -14011,6 +14792,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   クリスマス: {
+    jlptLevel: "n4",
     word: "クリスマス",
     furigana: "クリスマス",
     english: ["Christmas"],
@@ -14035,6 +14817,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   バレンタインデー: {
+    jlptLevel: "n4",
     word: "バレンタインデー",
     furigana: "バレンタインデー",
     english: ["Valentine's Day"],
@@ -14061,6 +14844,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ホワイトデー: {
+    jlptLevel: "n4",
     word: "ホワイトデー",
     furigana: "ホワイトデー",
     english: ["White Day"],
@@ -14084,6 +14868,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   欲しい: {
+    jlptLevel: "n4",
     word: "欲しい",
     furigana: "欲[ほ]しい",
     english: ["to want"],
@@ -14120,6 +14905,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おしゃれ: {
+    jlptLevel: "n4",
     word: "おしゃれ",
     furigana: "おしゃれ",
     english: ["fashionable", "stylish"],
@@ -14138,6 +14924,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   けち: {
+    jlptLevel: "n4",
     word: "けち",
     furigana: "けち",
     english: ["stingy", "cheap"],
@@ -14160,6 +14947,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   送る: {
+    jlptLevel: "n4",
     word: "送る",
     furigana: "送[おく]る",
     english: ["to send"],
@@ -14186,6 +14974,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   似合う: {
+    jlptLevel: "n4",
     word: "似合う",
     furigana: "似合[にあ]う",
     english: ["to look good (on somebody)", "to suit"],
@@ -14204,6 +14993,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   あきらめる: {
+    jlptLevel: "n4",
     word: "あきらめる",
     furigana: "あきらめる",
     english: ["to give up"],
@@ -14226,6 +15016,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   あげる: {
+    jlptLevel: "n4",
     word: "あげる",
     furigana: "あげる",
     english: ["to give (to others)"],
@@ -14253,6 +15044,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   くれる: {
+    jlptLevel: "n4",
     word: "くれる",
     furigana: "くれる",
     english: ["to give (me)"],
@@ -14280,6 +15072,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   できる: {
+    jlptLevel: "n4",
     word: "できる",
     furigana: "できる",
     english: ["to come into existence", "to be made"],
@@ -14303,6 +15096,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   相談する: {
+    jlptLevel: "n4",
     word: "相談する",
     furigana: "相談[そうだん]する",
     english: ["to consult"],
@@ -14336,6 +15130,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   注意する: {
+    jlptLevel: "n4",
     word: "注意する",
     furigana: "注意[ちゅうい]する",
     english: ["to give warning", "to watch out"],
@@ -14372,6 +15167,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   プロポーズする: {
+    jlptLevel: "n4",
     word: "プロポーズする",
     furigana: "プロポーズする",
     english: ["to propose marriage"],
@@ -14395,6 +15191,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～君": {
+    jlptLevel: "n4",
     word: "～君",
     furigana: "～ 君[くん]",
     english: ["Mr./Ms.... (casual)"],
@@ -14418,6 +15215,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～たち": {
+    jlptLevel: "n4",
     word: "～たち",
     furigana: "～たち",
     english: ["makes a noun plural"],
@@ -14446,6 +15244,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "こんな～": {
+    jlptLevel: "n4",
     word: "こんな～",
     furigana: "こんな～",
     english: ["...like this", "this kind of..."],
@@ -14469,6 +15268,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   急に: {
+    jlptLevel: "n4",
     word: "急に",
     furigana: "急[きゅう]に",
     english: ["suddenly"],
@@ -14505,6 +15305,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ちょうど: {
+    jlptLevel: "n4",
     word: "ちょうど",
     furigana: "ちょうど",
     english: ["exactly"],
@@ -14538,6 +15339,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   さあ: {
+    jlptLevel: "n4",
     word: "さあ",
     furigana: "さあ",
     english: ["I am not sure..."],
@@ -14570,6 +15372,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   どうしたらいい: {
+    jlptLevel: "n4",
     word: "どうしたらいい",
     furigana: "どうしたらいい",
     english: ["what should one do"],
@@ -14598,6 +15401,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～個": {
+    jlptLevel: "n4",
     word: "～個",
     furigana: "～ 個[こ]",
     english: ["generic counter for smaller items"],
@@ -14627,6 +15431,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～冊": {
+    jlptLevel: "n4",
     word: "～冊",
     furigana: "～ 冊[さつ]",
     english: ["counter for bound volumes"],
@@ -14646,6 +15451,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～台": {
+    jlptLevel: "n4",
     word: "～台",
     furigana: "～ 台[だい]",
     english: ["counter for equipment"],
@@ -14670,6 +15476,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～匹": {
+    jlptLevel: "n4",
     word: "～匹",
     furigana: "～ 匹[ひき]",
     english: ["counter for smaller animals"],
@@ -14704,6 +15511,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～本": {
+    jlptLevel: "n4",
     word: "～本",
     furigana: "～ 本[ほん]",
     english: ["counter for long cylindrical objects"],
@@ -14735,6 +15543,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   外国人: {
+    jlptLevel: "n4",
     word: "外国人",
     furigana: "外国人[がいこくじん]",
     english: ["foreigner"],
@@ -14758,6 +15567,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   そば: {
+    jlptLevel: "n4",
     word: "そば",
     furigana: "そば",
     english: ["soba", "Japanese buckwheat noodles"],
@@ -14782,6 +15592,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   絵: {
+    jlptLevel: "n4",
     word: "絵",
     furigana: "絵[え]",
     english: ["painting", "picture", "drawing"],
@@ -14807,6 +15618,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   地図: {
+    jlptLevel: "n4",
     word: "地図",
     furigana: "地図[ちず]",
     english: ["map"],
@@ -14833,6 +15645,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   辞書: {
+    jlptLevel: "n4",
     word: "辞書",
     furigana: "辞書[じしょ]",
     english: ["dictionary"],
@@ -14858,6 +15671,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   家具: {
+    jlptLevel: "n4",
     word: "家具",
     furigana: "家具[かぐ]",
     english: ["furniture"],
@@ -14882,6 +15696,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   割引券: {
+    jlptLevel: "n4",
     word: "割引券",
     furigana: "割引券[わりびきけん]",
     english: ["discount coupon"],
@@ -14908,6 +15723,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   インターネット: {
+    jlptLevel: "n4",
     word: "インターネット",
     furigana: "インターネット",
     english: ["internet"],
@@ -14928,6 +15744,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   教室: {
+    jlptLevel: "n4",
     word: "教室",
     furigana: "教室[きょうしつ]",
     english: ["classroom"],
@@ -14950,6 +15767,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   建物: {
+    jlptLevel: "n4",
     word: "建物",
     furigana: "建物[たてもの]",
     english: ["building"],
@@ -14973,6 +15791,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   プール: {
+    jlptLevel: "n4",
     word: "プール",
     furigana: "プール",
     english: ["swimming pool"],
@@ -14994,6 +15813,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   映画館: {
+    jlptLevel: "n4",
     word: "映画館",
     furigana: "映画館[えいがかん]",
     english: ["movie theater"],
@@ -15021,6 +15841,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   旅館: {
+    jlptLevel: "n4",
     word: "旅館",
     furigana: "旅館[りょかん]",
     english: ["Japanese inn"],
@@ -15051,6 +15872,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   庭: {
+    jlptLevel: "n4",
     word: "庭",
     furigana: "庭[にわ]",
     english: ["garden"],
@@ -15072,6 +15894,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ボランティア: {
+    jlptLevel: "n4",
     word: "ボランティア",
     furigana: "ボランティア",
     english: ["volunteer"],
@@ -15095,6 +15918,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   活動: {
+    jlptLevel: "n4",
     word: "活動",
     furigana: "活動[かつどう]",
     english: ["activity"],
@@ -15125,6 +15949,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
   // 経験 (include here for chapter 15, defined above)
   習慣: {
+    jlptLevel: "n4",
     word: "習慣",
     furigana: "習慣[しゅうかん]",
     english: ["custom"],
@@ -15150,6 +15975,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   締め切り: {
+    jlptLevel: "n4",
     word: "締め切り",
     furigana: "締[し]め 切[き]り",
     english: ["deadline"],
@@ -15176,6 +16002,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   予定: {
+    jlptLevel: "n4",
     word: "予定",
     furigana: "予定[よてい]",
     english: ["schedule", "plan"],
@@ -15202,6 +16029,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   卒業式: {
+    jlptLevel: "n4",
     word: "卒業式",
     furigana: "卒業式[そつぎょうしき]",
     english: ["graduation ceremony"],
@@ -15231,6 +16059,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   結婚式: {
+    jlptLevel: "n4",
     word: "結婚式",
     furigana: "結婚式[けっこんしき]",
     english: ["wedding"],
@@ -15256,6 +16085,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   地震: {
+    jlptLevel: "n4",
     word: "地震",
     furigana: "地震[じしん]",
     english: ["earthquake"],
@@ -15282,6 +16112,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   保険: {
+    jlptLevel: "n4",
     word: "保険",
     furigana: "保険[ほけん]",
     english: ["insurance"],
@@ -15311,6 +16142,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   税金: {
+    jlptLevel: "n4",
     word: "税金",
     furigana: "税金[ぜいきん]",
     english: ["tax"],
@@ -15338,6 +16170,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   電池: {
+    jlptLevel: "n4",
     word: "電池",
     furigana: "電池[でんち]",
     english: ["battery"],
@@ -15359,6 +16192,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ジャケット: {
+    jlptLevel: "n4",
     word: "ジャケット",
     furigana: "ジャケット",
     english: ["jacket"],
@@ -15376,6 +16210,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ペット: {
+    jlptLevel: "n4",
     word: "ペット",
     furigana: "ペット",
     english: ["pet"],
@@ -15393,6 +16228,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   売る: {
+    jlptLevel: "n4",
     word: "売る",
     furigana: "売[う]る",
     english: ["to sell"],
@@ -15412,6 +16248,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   下ろす: {
+    jlptLevel: "n4",
     word: "下ろす",
     furigana: "下[お]ろす",
     english: ["to withdraw (money)", "to unload"],
@@ -15436,6 +16273,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   描く: {
+    jlptLevel: "n4",
     word: "描く",
     furigana: "描[えが]く",
     english: ["to draw", "to paint"],
@@ -15459,6 +16297,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   探す: {
+    jlptLevel: "n4",
     word: "探す",
     furigana: "探[さが]す",
     english: ["to look for"],
@@ -15488,6 +16327,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   誘う: {
+    jlptLevel: "n4",
     word: "誘う",
     furigana: "誘[さそ]う",
     english: ["to invite"],
@@ -15508,6 +16348,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   しゃべる: {
+    jlptLevel: "n4",
     word: "しゃべる",
     furigana: "しゃべる",
     english: ["to chat"],
@@ -15525,6 +16366,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   付き合う: {
+    jlptLevel: "n4",
     word: "付き合う",
     furigana: "付[つ]き 合[あ]う",
     english: ["to date (someone)", "to keep company"],
@@ -15552,6 +16394,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   着く: {
+    jlptLevel: "n4",
     word: "着く",
     furigana: "着[つ]く",
     english: ["to arrive"],
@@ -15571,6 +16414,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   保険に入る: {
+    jlptLevel: "n4",
     word: "保険に入る",
     furigana: "保険[ほけん]に 入[はい]る",
     english: ["to buy insurance", "to get insurance"],
@@ -15593,6 +16437,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   気をつける: {
+    jlptLevel: "n4",
     word: "気をつける",
     furigana: "気[き]をつける",
     english: ["to be cautious", "to be careful"],
@@ -15616,6 +16461,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   調べる: {
+    jlptLevel: "n4",
     word: "調べる",
     furigana: "調[しら]べる",
     english: ["to look into (a matter)", "to examine"],
@@ -15639,6 +16485,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   見える: {
+    jlptLevel: "n4",
     word: "見える",
     furigana: "見[み]える",
     english: ["to be visible"],
@@ -15683,6 +16530,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   観光する: {
+    jlptLevel: "n4",
     word: "観光する",
     furigana: "観光[かんこう]する",
     english: ["to do sightseeing"],
@@ -15697,6 +16545,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   予約する: {
+    jlptLevel: "n4",
     word: "予約する",
     furigana: "予約[よやく]する",
     english: ["to reserve", "to make a reservation", "to book an appointment"],
@@ -15728,6 +16577,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   参加する: {
+    jlptLevel: "n4",
     word: "参加する",
     furigana: "参加[さんか]する",
     english: ["to participate"],
@@ -15754,6 +16604,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   卒業する: {
+    jlptLevel: "n4",
     word: "卒業する",
     furigana: "卒業[そつぎょう]する",
     english: ["to graduate (from...)"],
@@ -15785,6 +16636,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   発表する: {
+    jlptLevel: "n4",
     word: "発表する",
     furigana: "発表[はっぴょう]する",
     english: ["to make a presentation", "to make public"],
@@ -15802,6 +16654,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～けど": {
+    jlptLevel: "n4",
     word: "～けど",
     furigana: "～けど",
     english: ["..., but", "..., so"],
@@ -15814,6 +16667,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～目": {
+    jlptLevel: "n4",
     word: "～目",
     furigana: "～ 目[め]",
     english: ["-th (counter suffix)"],
@@ -15831,6 +16685,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   一日中: {
+    jlptLevel: "n4",
     word: "一日中",
     furigana: "一日中[いちにちじゅう]",
     english: ["all day long"],
@@ -15847,6 +16702,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   最近: {
+    jlptLevel: "n4",
     word: "最近",
     furigana: "最近[さいきん]",
     english: ["recently"],
@@ -15868,6 +16724,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   もう一度: {
+    jlptLevel: "n4",
     word: "もう一度",
     furigana: "もう 一度[いちど]",
     english: ["one more time"],
@@ -15883,6 +16740,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   楽しみです: {
+    jlptLevel: "n4",
     word: "楽しみです",
     furigana: "楽[たの]しみです",
     english: ["cannot wait", "to look forward to it"],
@@ -15897,6 +16755,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   // FIX add chapter 16 sentences here!!
 
   赤ちゃん: {
+    jlptLevel: "n4",
     word: "赤ちゃん",
     furigana: "赤[あか]ちゃん",
     english: ["baby"],
@@ -15909,6 +16768,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お客さん: {
+    jlptLevel: "n4",
     word: "お客さん",
     furigana: "お 客[きゃく]さん",
     english: ["guest", "visitor", "client", "customer"],
@@ -15925,6 +16785,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   首相: {
+    jlptLevel: "n4",
     word: "首相",
     furigana: "首相[しゅしょう]",
     english: ["prime minister"],
@@ -15938,6 +16799,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   サラリーマン: {
+    jlptLevel: "n4",
     word: "サラリーマン",
     furigana: "サラリーマン",
     english: ["salaryman", "office worker"],
@@ -15953,6 +16815,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   給料: {
+    jlptLevel: "n4",
     word: "給料",
     furigana: "給料[きゅうりょう]",
     english: ["salary"],
@@ -15968,6 +16831,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   残業: {
+    jlptLevel: "n4",
     word: "残業",
     furigana: "残業[ざんぎょう]",
     english: ["overtime work"],
@@ -15985,6 +16849,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   パンダ: {
+    jlptLevel: "n4",
     word: "パンダ",
     furigana: "パンダ",
     english: ["panda"],
@@ -16001,6 +16866,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   コンタクト: {
+    jlptLevel: "n4",
     word: "コンタクト",
     furigana: "コンタクト",
     english: ["contact lenses"],
@@ -16014,6 +16880,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ひげ: {
+    jlptLevel: "n4",
     word: "ひげ",
     furigana: "ひげ",
     english: ["beard"],
@@ -16026,6 +16893,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ブーツ: {
+    jlptLevel: "n4",
     word: "ブーツ",
     furigana: "ブーツ",
     english: ["boots"],
@@ -16038,6 +16906,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   かぎ: {
+    jlptLevel: "n4",
     word: "かぎ",
     furigana: "かぎ",
     english: ["lock", "key"],
@@ -16050,6 +16919,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   宝くじ: {
+    jlptLevel: "n4",
     word: "宝くじ",
     furigana: "宝[たから]くじ",
     english: ["lottery"],
@@ -16063,6 +16933,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   紙: {
+    jlptLevel: "n4",
     word: "紙",
     furigana: "紙[かみ]",
     english: ["paper"],
@@ -16084,6 +16955,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   スプーン: {
+    jlptLevel: "n4",
     word: "スプーン",
     furigana: "スプーン",
     english: ["spoon"],
@@ -16096,6 +16968,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お湯: {
+    jlptLevel: "n4",
     word: "お湯",
     furigana: "お 湯[ゆ]",
     english: ["hot water"],
@@ -16109,6 +16982,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   電子レンジ: {
+    jlptLevel: "n4",
     word: "電子レンジ",
     furigana: "電子[でんし]レンジ",
     english: ["microwave oven"],
@@ -16124,6 +16998,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ヒーター: {
+    jlptLevel: "n4",
     word: "ヒーター",
     furigana: "ヒーター",
     english: ["heater"],
@@ -16139,6 +17014,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ニュース: {
+    jlptLevel: "n4",
     word: "ニュース",
     furigana: "ニュース",
     english: ["news"],
@@ -16152,6 +17028,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   火事: {
+    jlptLevel: "n4",
     word: "火事",
     furigana: "火事[かじ]",
     english: ["fire"],
@@ -16168,6 +17045,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   旅行会社: {
+    jlptLevel: "n4",
     word: "旅行会社",
     furigana: "旅行[りょこう]会社[がいしゃ]",
     english: ["travel agency"],
@@ -16183,6 +17061,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ショッピングモール: {
+    jlptLevel: "n4",
     word: "ショッピングモール",
     furigana: "ショッピングモール",
     english: ["shopping mall"],
@@ -16198,6 +17077,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   寮: {
+    jlptLevel: "n4",
     word: "寮",
     furigana: "寮[りょう]",
     english: ["dormitory"],
@@ -16212,6 +17092,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   違い: {
+    jlptLevel: "n4",
     word: "違い",
     furigana: "違[ちが]い",
     english: ["difference"],
@@ -16233,6 +17114,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   秘密: {
+    jlptLevel: "n4",
     word: "秘密",
     furigana: "秘密[ひみつ]",
     english: ["secret"],
@@ -16254,6 +17136,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   準備: {
+    jlptLevel: "n4",
     word: "準備",
     furigana: "準備[じゅんび]",
     english: ["preparation"],
@@ -16274,6 +17157,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   自分: {
+    jlptLevel: "n4",
     word: "自分",
     furigana: "自分[じぶん]",
     english: ["oneself"],
@@ -16290,6 +17174,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   危ない: {
+    jlptLevel: "n4",
     word: "危ない",
     furigana: "危[あぶ]ない",
     english: ["dangerous"],
@@ -16303,6 +17188,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   うらやましい: {
+    jlptLevel: "n4",
     word: "うらやましい",
     furigana: "うらやましい",
     english: ["envious"],
@@ -16320,6 +17206,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   少ない: {
+    jlptLevel: "n4",
     word: "少ない",
     furigana: "少[すく]ない",
     english: ["a little", "a few"],
@@ -16344,6 +17231,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   都合が悪い: {
+    jlptLevel: "n4",
     word: "都合が悪い",
     furigana: "都合[つごう]が 悪[わる]い",
     english: ["inconvenient", "to have a scheduling conflict"],
@@ -16361,6 +17249,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   強い: {
+    jlptLevel: "n4",
     word: "強い",
     furigana: "強[つよ]い",
     english: ["strong"],
@@ -16375,6 +17264,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   最悪: {
+    jlptLevel: "n4",
     word: "最悪",
     furigana: "最悪[さいあく]",
     english: ["the worst"],
@@ -16388,6 +17278,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   選ぶ: {
+    jlptLevel: "n4",
     word: "選ぶ",
     furigana: "選[えら]ぶ",
     english: ["to choose", "to select"],
@@ -16406,6 +17297,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お湯を沸かす: {
+    jlptLevel: "n4",
     word: "お湯を沸かす",
     furigana: "お 湯[ゆ]を 沸[わ]かす",
     english: ["to boil water"],
@@ -16418,6 +17310,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   髪をとかす: {
+    jlptLevel: "n4",
     word: "髪をとかす",
     furigana: "髪[かみ]をとかす",
     english: ["to comb one's hair"],
@@ -16430,6 +17323,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ひげをそる: {
+    jlptLevel: "n4",
     word: "ひげをそる",
     furigana: "ひげをそる",
     english: ["to shave one's beard"],
@@ -16446,6 +17340,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   脱ぐ: {
+    jlptLevel: "n4",
     word: "脱ぐ",
     furigana: "脱[ぬ]ぐ",
     english: ["to take off (clothes)"],
@@ -16468,6 +17363,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   混む: {
+    jlptLevel: "n4",
     word: "混む",
     furigana: "混[こ]む",
     english: ["to get crowded"],
@@ -16486,6 +17382,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   宝くじに当たる: {
+    jlptLevel: "n4",
     word: "宝くじに当たる",
     furigana: "宝[たから]くじに 当[あ]たる",
     english: ["to win a lottery"],
@@ -16502,6 +17399,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   いれる: {
+    jlptLevel: "n4",
     word: "いれる",
     furigana: "いれる",
     english: ["to make tea, coffee, etc."],
@@ -16520,6 +17418,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   生まれる: {
+    jlptLevel: "n4",
     word: "生まれる",
     furigana: "生[う]まれる",
     english: ["to be born"],
@@ -16546,6 +17445,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   かぎをかける: {
+    jlptLevel: "n4",
     word: "かぎをかける",
     furigana: "かぎをかける",
     english: ["to lock"],
@@ -16564,6 +17464,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   足りる: {
+    jlptLevel: "n4",
     word: "足りる",
     furigana: "足[た]りる",
     english: ["to be sufficient", "to be enough"],
@@ -16582,6 +17483,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   慣れる: {
+    jlptLevel: "n4",
     word: "慣れる",
     furigana: "慣[な]れる",
     english: ["to get used to"],
@@ -16604,6 +17506,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   お祈りする: {
+    jlptLevel: "n4",
     word: "お祈りする",
     furigana: "お祈[いの]りする",
     english: ["to pray"],
@@ -16628,6 +17531,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   化粧する: {
+    jlptLevel: "n4",
     word: "化粧する",
     furigana: "化粧[けしょう]する",
     english: ["to put makeup on", "to put on makeup"],
@@ -16646,6 +17550,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   就職する: {
+    jlptLevel: "n4",
     word: "就職する",
     furigana: "就職[しゅうしょく]する",
     english: ["to get a full-time job"],
@@ -16674,6 +17579,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   離婚する: {
+    jlptLevel: "n4",
     word: "離婚する",
     furigana: "離婚[りこん]する",
     english: ["to get a divorce"],
@@ -16701,6 +17607,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   ずいぶん: {
+    jlptLevel: "n4",
     word: "ずいぶん",
     furigana: "ずいぶん",
     english: ["very"],
@@ -16733,6 +17640,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   例えば: {
+    jlptLevel: "n4",
     word: "例えば",
     furigana: "例[たと]えば",
     english: ["for example"],
@@ -16753,6 +17661,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～に比べて": {
+    jlptLevel: "n4",
     word: "～に比べて",
     furigana: "に 比[くら]べて",
     english: ["compared with..."],
@@ -16769,6 +17678,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～によると": {
+    jlptLevel: "n4",
     word: "～によると",
     furigana: "によると",
     english: ["according to..."],
@@ -16805,6 +17715,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   やっぱり: {
+    jlptLevel: "n4",
     word: "やっぱり",
     furigana: "やっぱり",
     english: ["after all"],
@@ -16818,6 +17729,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   "～かな（あ）": {
+    jlptLevel: "n4",
     word: "～かな（あ）",
     furigana: "かな（あ）",
     english: ["I wonder... (casual)"],
@@ -16831,6 +17743,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   そうか: {
+    jlptLevel: "n4",
     word: "そうか",
     furigana: "そうか",
     english: ["I see. (casual)"],
@@ -16844,6 +17757,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     ],
   },
   おめでとうございます: {
+    jlptLevel: "n4",
     word: "おめでとうございます",
     furigana: "おめでとうございます",
     english: ["Congratulations!"],
