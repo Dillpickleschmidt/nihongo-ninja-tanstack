@@ -31,6 +31,14 @@ export const getDueFSRSCards = query({
 })
 
 /**
+ * Get count of all due FSRS cards across all modes
+ */
+export const getDueFSRSCardsCount = query({
+  args: {},
+  handler: (ctx) => FSRS.getDueFSRSCardsCount(ctx),
+})
+
+/**
  * Upsert FSRS card after answering
  */
 export const upsertFSRSCard = mutation({

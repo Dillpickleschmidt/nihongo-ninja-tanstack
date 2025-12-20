@@ -122,6 +122,31 @@ export async function getDueFSRSCards(
   }))
 }
 
+export async function getDueFSRSCardsCount(ctx: QueryCtx): Promise<number> {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) return 0
+
+  const userId = identity.subject
+  const now = Date.now()
+
+  const [meaningsCards, spellingsCards] = await Promise.all([
+    ctx.db
+      .query('userFsrsCards')
+      .withIndex('by_user_mode_due', (q) =>
+        q.eq('userId', userId).eq('mode', 'meanings').lte('dueAt', now)
+      )
+      .collect(),
+    ctx.db
+      .query('userFsrsCards')
+      .withIndex('by_user_mode_due', (q) =>
+        q.eq('userId', userId).eq('mode', 'spellings').lte('dueAt', now)
+      )
+      .collect(),
+  ])
+
+  return meaningsCards.length + spellingsCards.length
+}
+
 export async function upsertFSRSCard(
   ctx: MutationCtx,
   data: {

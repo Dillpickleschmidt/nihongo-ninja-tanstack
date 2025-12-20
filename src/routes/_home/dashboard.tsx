@@ -16,6 +16,9 @@ export const Route = createFileRoute("/_home/dashboard")({
     context.queryClient.prefetchQuery(
       convexQuery(api.api.learning_paths.getAllLearningPaths, {})
     )
+    context.queryClient.prefetchQuery(
+      convexQuery(api.api.fsrs.getDueFSRSCardsCount, {})
+    )
     return { didSSR: isServer }
   },
   component: DashboardComponent,

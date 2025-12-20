@@ -5,6 +5,7 @@ import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { getModulesFromChapter } from "@/data/utils/modules"
 import { animateElementIn, getInitialAnimationStyles } from "@/utils/animations"
+import { getUser } from "@/lib/auth"
 import { LearningPathChapterSelector } from "../LearningPathChapterSelector"
 import { ModuleLink } from "./ModuleLink"
 
@@ -84,6 +85,13 @@ function CurrentChapterCardContent() {
 
   const nextModules = () => currentModules()?.slice(0, 3) ?? []
 
+  const user = getUser()
+  const dueCardsQuery = useConvexQuery(
+    api.api.fsrs.getDueFSRSCardsCount,
+    {},
+    () => ({ enabled: !!user() })
+  )
+
   const handleChapterSelect = (pathId: string, chapter: { slug: string }) => {
     updatePreference.mutate({ field: "activeLearningPath", value: pathId })
     updatePreference.mutate({ field: "activeChapter", value: chapter.slug })
@@ -117,12 +125,12 @@ function CurrentChapterCardContent() {
 
       {/* Progress indicator */}
       <div class="flex items-center gap-4 lg:flex-col lg:items-end">
-        <Show when={currentModules() !== undefined}>
+        <Show when={dueCardsQuery.data() !== undefined}>
           <div class="text-right">
-            <div class="text-2xl font-bold text-(--accent) md:text-3xl">
-              {currentModules()!.length}
+            <div class="text-2xl font-bold text-(--accent) brightness-150 md:text-3xl">
+              {dueCardsQuery.data()}
             </div>
-            <div class="text-xs text-white/40">modules</div>
+            <div class="text-xs text-white/40">due cards</div>
           </div>
         </Show>
         {/* Selector needs non-null values - wrap in Show */}

@@ -3,6 +3,7 @@ import { Sparkles } from "lucide-solid"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
+import { getModulesFromChapter } from "@/data/utils/modules"
 import { animateElementIn, getInitialAnimationStyles } from "@/utils/animations"
 import { CurrentChapterCard } from "./CurrentChapterCard"
 
@@ -70,6 +71,12 @@ function HeroBadge() {
     return pathChaptersQuery.data()?.find((c) => c.slug === chapterSlug)
   }
 
+  const moduleCount = () => {
+    const chapter = currentChapter()
+    if (chapter === undefined) return undefined
+    return getModulesFromChapter(chapter).length
+  }
+
   return (
     <div class="flex items-center gap-3 mb-2">
       <div class="flex items-center gap-2 rounded-full border border-(--accent)/20 bg-(--accent)/10 px-3 py-1 text-xs text-(--accent)">
@@ -81,6 +88,12 @@ function HeroBadge() {
         <span class="text-sm text-white/50">
           Chapter {getChapterDisplayNumber(currentChapter()?.slug ?? "")}
         </span>
+        <Show when={moduleCount() !== undefined}>
+          <span class="text-white/30">•</span>
+          <span class="text-sm text-white/50">
+            {moduleCount()} modules
+          </span>
+        </Show>
       </Show>
     </div>
   )
