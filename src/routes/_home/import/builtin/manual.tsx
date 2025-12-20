@@ -1,11 +1,19 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { useQueryClient } from "@tanstack/solid-query"
 import { onMount } from "solid-js"
+import { convexQuery } from "@/lib/convex-query"
+import { api } from "convex/_generated/api"
 import { queryKeys } from "@/query/query-keys"
 import { ImportPageHeader } from "@/features/import/shared/ImportPageHeader"
 import { ManualMarkingSection } from "@/features/import/manual/ManualMarkingSection"
+import { JLPT_SETS } from "@/features/import/manual/consts"
 
 export const Route = createFileRoute("/_home/import/builtin/manual")({
+  loader: ({ context }) => {
+    context.queryClient.prefetchQuery(
+      convexQuery(api.api.vocabulary.getBySets, { setIds: [...JLPT_SETS] })
+    )
+  },
   component: ManualMarkingPage,
 })
 

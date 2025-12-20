@@ -1,0 +1,151 @@
+import { For, Show } from "solid-js"
+import type { VocabularyItem } from "convex/validators"
+import { useConvexQuery } from "@/lib/convex-query"
+import { api } from "convex/_generated/api"
+import { cn } from "@/utils"
+import { JLPT_SETS } from "../consts"
+
+export function VocabSection(props: {
+  level: string
+  selectedKeys: Set<string>
+  onToggle: (key: string, checked: boolean) => void
+  onToggleAll: (items: VocabularyItem[], checked: boolean) => void
+}) {
+  const vocabQuery = useConvexQuery(
+    api.api.vocabulary.getBySets,
+    () => ({ setIds: [...JLPT_SETS] })
+  )
+
+  const items = () => vocabQuery.data()?.[props.level.toLowerCase()]
+  const allSelected = () => {
+    const list = items()
+    return list !== undefined && list.length > 0 && list.every((i) => props.selectedKeys.has(i.key))
+  }
+
+  return (
+    <Show
+      when={items()}
+      fallback={
+        <div class="py-12 text-center text-white/40">
+          No vocabulary available for {props.level}
+        </div>
+      }
+    >
+      {(itemList) => (
+        <>
+          <SelectAllHeader
+            level={props.level}
+            selectedCount={props.selectedKeys.size}
+            allSelected={allSelected()}
+            onToggle={(checked) => props.onToggleAll(itemList(), checked)}
+          />
+          <VocabGrid
+            items={itemList()}
+            selectedKeys={props.selectedKeys}
+            onToggle={props.onToggle}
+          />
+        </>
+      )}
+    </Show>
+  )
+}
+
+export function VocabSectionSkeleton() {
+  return (
+    <>
+      <div class="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
+        <div class="flex items-center gap-3">
+          <div class="size-4 animate-pulse rounded bg-white/10" />
+          <div class="h-4 w-40 animate-pulse rounded bg-white/10" />
+        </div>
+        <div class="h-4 w-20 animate-pulse rounded bg-white/10" />
+      </div>
+      <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <For each={Array.from({ length: 12 })}>
+          {() => <VocabItemSkeleton />}
+        </For>
+      </div>
+    </>
+  )
+}
+
+function SelectAllHeader(props: {
+  level: string
+  selectedCount: number
+  allSelected: boolean
+  onToggle: (checked: boolean) => void
+}) {
+  return (
+    <div class="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
+      <div class="flex items-center gap-3">
+        <input
+          type="checkbox"
+          checked={props.allSelected}
+          onChange={(e) => props.onToggle(e.currentTarget.checked)}
+          class="size-4 rounded border-white/30 bg-white/10 text-(--accent) focus:ring-(--accent)/50"
+        />
+        <span class="text-sm font-medium text-white">
+          Select all {props.level} vocabulary
+        </span>
+      </div>
+      <span class="text-sm text-white/40">{props.selectedCount} selected</span>
+    </div>
+  )
+}
+
+function VocabGrid(props: {
+  items: VocabularyItem[]
+  selectedKeys: Set<string>
+  onToggle: (key: string, checked: boolean) => void
+}) {
+  return (
+    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      <For each={props.items}>
+        {(item) => (
+          <VocabItem
+            item={item}
+            checked={props.selectedKeys.has(item.key)}
+            onToggle={props.onToggle}
+          />
+        )}
+      </For>
+    </div>
+  )
+}
+
+function VocabItem(props: {
+  item: VocabularyItem
+  checked: boolean
+  onToggle: (key: string, checked: boolean) => void
+}) {
+  return (
+    <label
+      class={cn(
+        "flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-all",
+        props.checked
+          ? "border-(--accent)/30 bg-(--accent)/10"
+          : "border-white/10 bg-white/2 hover:border-white/20"
+      )}
+    >
+      <input
+        type="checkbox"
+        checked={props.checked}
+        onChange={(e) => props.onToggle(props.item.key, e.currentTarget.checked)}
+        class="size-4 rounded border-white/30 bg-white/10 text-(--accent) focus:ring-(--accent)/50"
+      />
+      <div class="min-w-0 flex-1">
+        <p class="truncate font-medium text-white">{props.item.word}</p>
+        <p class="truncate text-xs text-white/40">{props.item.english[0]}</p>
+      </div>
+    </label>
+  )
+}
+
+function VocabItemSkeleton() {
+  return (
+    <div class="animate-pulse rounded-lg border border-white/10 bg-white/2 p-3">
+      <div class="mb-2 h-4 w-16 rounded bg-white/10" />
+      <div class="h-3 w-24 rounded bg-white/5" />
+    </div>
+  )
+}
