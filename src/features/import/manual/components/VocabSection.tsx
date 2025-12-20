@@ -8,6 +8,7 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
+import { Checkbox, CheckboxInput, CheckboxLabel } from "@/components/ui/checkbox"
 import { getPosCategory, type PosCategorySimplified } from "@/data/utils/vocabulary/part-of-speech"
 import { JLPT_SETS } from "../consts"
 
@@ -19,7 +20,7 @@ const POS_CATEGORIES = [
 
 export function VocabSection(props: {
   level: string
-  selectedKeys: Set<string>
+  selectedKeys: Record<string, boolean>
   onToggle: (key: string, checked: boolean) => void
   onToggleAll: (items: VocabularyItem[], checked: boolean) => void
 }) {
@@ -32,8 +33,10 @@ export function VocabSection(props: {
 
   const allSelected = () => {
     const list = items()
-    return list !== undefined && list.length > 0 && list.every((i) => props.selectedKeys.has(i.key))
+    return list !== undefined && list.length > 0 && list.every((i) => props.selectedKeys[i.key])
   }
+
+  const selectedCount = () => Object.values(props.selectedKeys).filter(Boolean).length
 
   return (
     <Show
@@ -65,7 +68,7 @@ export function VocabSection(props: {
           <>
             <SelectAllHeader
               level={props.level}
-              selectedCount={props.selectedKeys.size}
+              selectedCount={selectedCount()}
               allSelected={allSelected()}
               onToggle={(checked) => props.onToggleAll(itemList(), checked)}
             />
@@ -124,17 +127,16 @@ function SelectAllHeader(props: {
 }) {
   return (
     <div class="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
-      <div class="flex items-center gap-3">
-        <input
-          type="checkbox"
-          checked={props.allSelected}
-          onChange={(e) => props.onToggle(e.currentTarget.checked)}
-          class="size-4 rounded border-white/30 bg-white/10 text-(--accent) focus:ring-(--accent)/50"
-        />
-        <span class="text-sm font-medium text-white">
+      <Checkbox
+        checked={props.allSelected}
+        onChange={props.onToggle}
+        class="flex items-center gap-3"
+      >
+        <CheckboxInput class="border-white/30 bg-white/10 data-checked:bg-(--accent) data-checked:text-white" />
+        <CheckboxLabel class="text-white">
           Select all {props.level} vocabulary
-        </span>
-      </div>
+        </CheckboxLabel>
+      </Checkbox>
       <span class="text-sm text-white/40">{props.selectedCount} selected</span>
     </div>
   )
@@ -142,7 +144,7 @@ function SelectAllHeader(props: {
 
 function VocabGrid(props: {
   items: VocabularyItem[]
-  selectedKeys: Set<string>
+  selectedKeys: Record<string, boolean>
   onToggle: (key: string, checked: boolean) => void
 }) {
   return (
@@ -151,7 +153,7 @@ function VocabGrid(props: {
         {(item) => (
           <VocabItem
             item={item}
-            checked={props.selectedKeys.has(item.key)}
+            checked={props.selectedKeys[item.key] ?? false}
             onToggle={props.onToggle}
           />
         )}
@@ -166,25 +168,22 @@ function VocabItem(props: {
   onToggle: (key: string, checked: boolean) => void
 }) {
   return (
-    <label
+    <Checkbox
+      checked={props.checked}
+      onChange={(checked) => props.onToggle(props.item.key, checked)}
       class={cn(
-        "flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-all",
+        "flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors ease-instant-hover-150",
         props.checked
           ? "border-(--accent)/30 bg-(--accent)/10"
           : "border-white/10 bg-white/2 hover:border-white/20"
       )}
     >
-      <input
-        type="checkbox"
-        checked={props.checked}
-        onChange={(e) => props.onToggle(props.item.key, e.currentTarget.checked)}
-        class="size-4 rounded border-white/30 bg-white/10 text-(--accent) focus:ring-(--accent)/50"
-      />
-      <div class="min-w-0 flex-1">
+      <CheckboxInput class="border-white/30 bg-white/10 data-checked:bg-(--accent) data-checked:text-white" />
+      <CheckboxLabel class="min-w-0 flex-1 cursor-pointer text-base leading-normal! font-normal">
         <p class="truncate font-medium text-white">{props.item.word}</p>
         <p class="truncate text-xs text-white/40">{props.item.english[0]}</p>
-      </div>
-    </label>
+      </CheckboxLabel>
+    </Checkbox>
   )
 }
 

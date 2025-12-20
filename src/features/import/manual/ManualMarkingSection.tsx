@@ -1,4 +1,5 @@
-import { createSignal, For, Show, Suspense } from "solid-js"
+import { batch, createSignal, For, Show, Suspense } from "solid-js"
+import { createStore } from "solid-js/store"
 import type { VocabularyItem } from "convex/validators"
 import { cn } from "@/utils"
 import { VocabSection, VocabSectionSkeleton } from "./components/VocabSection"
@@ -9,23 +10,21 @@ const CATEGORIES = ["Vocabulary", "Grammar", "Kanji"] as const
 export function ManualMarkingSection() {
   const [selectedLevel, setSelectedLevel] = createSignal<(typeof JLPT_LEVELS)[number]>("N5")
   const [selectedCategory, setSelectedCategory] = createSignal<(typeof CATEGORIES)[number]>("Vocabulary")
-  const [selectedKeys, setSelectedKeys] = createSignal<Set<string>>(new Set())
+  const [selectedKeys, setSelectedKeys] = createStore<Record<string, boolean>>({})
 
   const toggleItem = (key: string, checked: boolean) => {
-    setSelectedKeys((prev) => {
-      const next = new Set(prev)
-      if (checked) {
-        next.add(key)
-      } else {
-        next.delete(key)
-      }
-      return next
-    })
+    setSelectedKeys(key, checked)
   }
 
   const toggleAll = (items: VocabularyItem[], checked: boolean) => {
-    setSelectedKeys(checked ? new Set(items.map((i) => i.key)) : new Set<string>())
+    batch(() => {
+      for (const item of items) {
+        setSelectedKeys(item.key, checked)
+      }
+    })
   }
+
+  const selectedCount = () => Object.values(selectedKeys).filter(Boolean).length
 
   return (
     <>
@@ -44,7 +43,7 @@ export function ManualMarkingSection() {
           <Suspense fallback={<VocabSectionSkeleton />}>
             <VocabSection
               level={selectedLevel()}
-              selectedKeys={selectedKeys()}
+              selectedKeys={selectedKeys}
               onToggle={toggleItem}
               onToggleAll={toggleAll}
             />
@@ -55,10 +54,10 @@ export function ManualMarkingSection() {
       <div class="mt-6 flex justify-end">
         <button
           type="button"
-          disabled={selectedKeys().size === 0}
+          disabled={selectedCount() === 0}
           class={cn(
             "rounded-xl px-6 py-3 font-medium transition-all",
-            selectedKeys().size > 0
+            selectedCount() > 0
               ? "bg-(--accent) text-white hover:brightness-110"
               : "bg-white/10 text-white/40 cursor-not-allowed"
           )}
