@@ -15,6 +15,16 @@ export const getBySets = query({
 })
 
 /**
+ * Get vocabulary items by their keys (word spellings)
+ */
+export const getByKeys = query({
+  args: { keys: v.array(v.string()) },
+  handler: async (ctx, { keys }) => {
+    return Vocabulary.fetchVocabItemsByKeys(ctx, keys, null)
+  },
+})
+
+/**
  * Get kanji entries for given kanji characters
  */
 export const getKanjiByChars = query({

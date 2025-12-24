@@ -1,6 +1,4 @@
-import { batch, createSignal, For, Match, Suspense, Switch } from "solid-js"
-import { createStore } from "solid-js/store"
-import type { VocabularyItem, KanjiEntry } from "convex/validators"
+import { createSignal, For, Match, Suspense, Switch } from "solid-js"
 import { cn } from "@/utils"
 import { VocabSection, VocabSectionSkeleton } from "./components/VocabSection"
 import { KanjiSection, KanjiSectionSkeleton } from "./components/KanjiSection"
@@ -12,30 +10,14 @@ const CATEGORIES = ["Vocabulary", "Grammar", "Kanji"] as const
 export function ManualMarkingSection() {
   const [selectedLevel, setSelectedLevel] = createSignal<(typeof JLPT_LEVELS)[number]>("N5")
   const [selectedCategory, setSelectedCategory] = createSignal<(typeof CATEGORIES)[number]>("Vocabulary")
-  const [selectedKeys, setSelectedKeys] = createStore<Record<string, boolean>>({})
 
-  const { handleItemClick, handlePointerDown } = useImportSelection(
+  const {
     selectedKeys,
-    setSelectedKeys
-  )
-
-  const toggleAllVocab = (items: VocabularyItem[], checked: boolean) => {
-    batch(() => {
-      for (const item of items) {
-        setSelectedKeys(item.key, checked)
-      }
-    })
-  }
-
-  const toggleAllKanji = (items: KanjiEntry[], checked: boolean) => {
-    batch(() => {
-      for (const item of items) {
-        setSelectedKeys(item.kanji, checked)
-      }
-    })
-  }
-
-  const selectedCount = () => Object.values(selectedKeys).filter(Boolean).length
+    handleItemClick,
+    handlePointerDown,
+    selectedCount,
+    toggleAll,
+  } = useImportSelection()
 
   return (
     <>
@@ -49,7 +31,7 @@ export function ManualMarkingSection() {
               <VocabSection
                 level={selectedLevel()}
                 selectedKeys={selectedKeys}
-                onToggleAll={toggleAllVocab}
+                onToggleAll={(items, checked) => toggleAll(items, (i) => i.key, checked)}
                 onItemClick={handleItemClick}
                 onPointerDown={handlePointerDown}
               />
@@ -60,7 +42,7 @@ export function ManualMarkingSection() {
               <KanjiSection
                 level={selectedLevel()}
                 selectedKeys={selectedKeys}
-                onToggleAll={toggleAllKanji}
+                onToggleAll={(items, checked) => toggleAll(items, (i) => i.kanji, checked)}
                 onItemClick={handleItemClick}
                 onPointerDown={handlePointerDown}
               />

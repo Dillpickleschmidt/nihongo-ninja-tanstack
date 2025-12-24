@@ -6,6 +6,7 @@ import {
   practiceItemTypeValidator,
   fsrsCardValidator,
   fsrsReviewLogValidator,
+  importCardValidator,
 } from '../validators'
 
 /**
@@ -58,4 +59,15 @@ export const upsertFSRSCard = mutation({
     type: practiceItemTypeValidator,
   },
   handler: (ctx, args) => FSRS.upsertFSRSCard(ctx, args),
+})
+
+/**
+ * Import pre-processed FSRS cards in batch (e.g., from JPDB JSON)
+ * Cards are simulated client-side; this mutation just stores them.
+ */
+export const batchImportFSRSCards = mutation({
+  args: {
+    cards: v.array(importCardValidator),
+  },
+  handler: (ctx, { cards }) => FSRS.batchImportFSRSCards(ctx, cards),
 })

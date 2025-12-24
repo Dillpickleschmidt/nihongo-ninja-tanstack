@@ -1,5 +1,5 @@
 import { batch, createSignal } from "solid-js"
-import { SetStoreFunction } from "solid-js/store"
+import { createStore } from "solid-js/store"
 import { createAutoScroller } from "@/utils/auto-scroll"
 import { getItemIdAtPoint } from "@/utils/dom-helpers"
 
@@ -8,7 +8,6 @@ const LONG_PRESS_TOLERANCE = 10
 
 /**
  * Calculates the range of items between two IDs in a list
- * Used for shift-click and drag selection
  */
 function calculateRange(groupIds: string[], startId: string, endId: string): string[] {
   const startIdx = groupIds.indexOf(startId)
@@ -22,10 +21,12 @@ function calculateRange(groupIds: string[], startId: string, endId: string): str
   return groupIds.slice(min, max + 1)
 }
 
-export function useImportSelection(
-  selectedKeys: Record<string, boolean>,
-  setSelectedKeys: SetStoreFunction<Record<string, boolean>>
-) {
+/**
+ * Encapsulates all selection state and handlers for import pages.
+ * Supports click, shift-click, ctrl/meta-click, and long-press drag selection.
+ */
+export function useImportSelection() {
+  const [selectedKeys, setSelectedKeys] = createStore<Record<string, boolean>>({})
   const [anchorId, setAnchorId] = createSignal<string | null>(null)
 
   // Long-press and drag tracking
@@ -39,6 +40,8 @@ export function useImportSelection(
   let didLongPress = false
 
   const handleAutoScroll = createAutoScroller()
+
+  const selectedCount = () => Object.values(selectedKeys).filter(Boolean).length
 
   const resetSelection = () => {
     batch(() => {
@@ -61,15 +64,28 @@ export function useImportSelection(
 
   const setOnlySelected = (ids: string[]) => {
     batch(() => {
-      // Clear all
       for (const key of Object.keys(selectedKeys)) {
         if (selectedKeys[key]) {
           setSelectedKeys(key, false)
         }
       }
-      // Set new selection
       for (const id of ids) {
         setSelectedKeys(id, true)
+      }
+    })
+  }
+
+  /**
+   * Toggle all items on/off using a key extractor function
+   */
+  const toggleAll = <T>(
+    items: T[],
+    keyExtractor: (item: T) => string,
+    checked: boolean
+  ) => {
+    batch(() => {
+      for (const item of items) {
+        setSelectedKeys(keyExtractor(item), checked)
       }
     })
   }
@@ -206,8 +222,11 @@ export function useImportSelection(
   }
 
   return {
+    selectedKeys,
     handleItemClick,
     handlePointerDown,
     resetSelection,
+    selectedCount,
+    toggleAll,
   }
 }

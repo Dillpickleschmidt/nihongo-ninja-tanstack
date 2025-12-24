@@ -221,6 +221,14 @@ export const practiceItemTypeValidator = v.union(
   v.literal('radical'),
 )
 
+// === Import Processing Validators ===
+export const importCardValidator = v.object({
+  searchTerm: v.string(),
+  type: practiceItemTypeValidator,
+  fsrsCard: fsrsCardValidator,
+  fsrsLogs: v.array(fsrsReviewLogValidator),
+})
+
 // part_of_speech_enum: verb conjugations, adjectives
 export const partOfSpeechValidator = v.union(
   v.literal('Ichidan verb'),

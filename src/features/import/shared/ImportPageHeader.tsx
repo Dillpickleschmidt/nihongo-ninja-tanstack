@@ -6,6 +6,7 @@ interface ImportPageHeaderProps {
   subtitle?: string
   backTo?: string
   backLabel?: string
+  onBackClick?: (e: MouseEvent) => void
 }
 
 export function ImportPageHeader(props: ImportPageHeaderProps) {
@@ -14,6 +15,7 @@ export function ImportPageHeader(props: ImportPageHeaderProps) {
       <Show when={props.backTo}>
         <Link
           to={props.backTo!}
+          onClick={props.onBackClick}
           class="mb-4 inline-flex items-center gap-1.5 text-sm text-white/50 transition-colors hover:text-white group"
         >
           <svg

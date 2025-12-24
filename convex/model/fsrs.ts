@@ -1,5 +1,7 @@
 import { MutationCtx, QueryCtx } from '../_generated/server'
 import type { PracticeMode, PracticeItemType } from '../validators'
+import type { Infer } from 'convex/values'
+import type { importCardValidator } from '../validators'
 import { type Card, type ReviewLog } from 'ts-fsrs'
 
 // Convex storage format (timestamps instead of Dates)
@@ -227,4 +229,32 @@ export async function upsertFSRSCard(
   } else {
     await ctx.db.insert('userFsrsCards', cardData)
   }
+}
+
+type ImportCard = Infer<typeof importCardValidator>
+
+/**
+ * Import FSRS cards in batch.
+ */
+export async function batchImportFSRSCards(
+  ctx: MutationCtx,
+  cards: ImportCard[]
+): Promise<{ imported: number }> {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) {
+    throw new Error('Must be authenticated to import cards')
+  }
+
+  await Promise.all(
+    cards.map((card) => {
+      const { searchTerm, ...rest } = card
+      return upsertFSRSCard(ctx, {
+        practiceItemKey: searchTerm,
+        mode: 'meanings', // Import always targets meanings mode for now
+        ...rest,
+      })
+    })
+  )
+
+  return { imported: cards.length }
 }

@@ -1,12 +1,71 @@
+import { createSignal, Show } from "solid-js"
 import { FileDropZone } from "@/features/import/shared/FileDropZone"
+import { processJpdbFile, type JpdbProcessResult } from "./jpdb/jpdb-processor"
 
-export function UploadHistorySection() {
+interface UploadHistorySectionProps {
+  onProcessed?: (result: JpdbProcessResult) => void
+}
+
+export function UploadHistorySection(props: UploadHistorySectionProps) {
+  const [isProcessing, setIsProcessing] = createSignal(false)
+  const [error, setError] = createSignal<string | null>(null)
+
+  const handleFileSelect = async (file: File) => {
+    setIsProcessing(true)
+    setError(null)
+
+    try {
+      if (file.name.endsWith(".json")) {
+        const result = await processJpdbFile(file)
+        props.onProcessed?.(result)
+      } else if (file.name.endsWith(".apkg")) {
+        setError("Anki import is not yet supported")
+      } else {
+        setError("Unsupported file format")
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to process file")
+    } finally {
+      setIsProcessing(false)
+    }
+  }
+
   return (
     <>
       <FileDropZone
         accept=".apkg,.json"
         description="Supports Anki .apkg exports and jpdb .json files"
+        onFile={handleFileSelect}
       />
+
+      {/* Processing indicator */}
+      <Show when={isProcessing()}>
+        <div class="mt-4 flex items-center justify-center gap-2 text-white/60">
+          <svg class="size-4 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            />
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            />
+          </svg>
+          <span>Processing...</span>
+        </div>
+      </Show>
+
+      {/* Error Message */}
+      <Show when={error()}>
+        <div class="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 p-4">
+          <p class="text-sm text-red-400">{error()}</p>
+        </div>
+      </Show>
 
       {/* Supported Formats Info */}
       <div class="mt-8 rounded-xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
@@ -22,17 +81,6 @@ export function UploadHistorySection() {
             description="Export from jpdb.io settings page"
           />
         </div>
-      </div>
-
-      {/* Process Button */}
-      <div class="mt-6 flex justify-end">
-        <button
-          type="button"
-          class="rounded-xl bg-(--accent) px-6 py-3 font-medium text-white opacity-50 cursor-not-allowed"
-          disabled
-        >
-          Process File
-        </button>
       </div>
     </>
   )

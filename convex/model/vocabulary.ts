@@ -43,7 +43,7 @@ export async function fetchVocabBySets(
   return Object.fromEntries(
     Object.entries(sets).map(([setId, keys]) => [
       setId,
-      keys.map((key) => itemsMap[key]).filter(Boolean),
+      keys.map((key) => itemsMap[encodeURIComponent(key)]).filter(Boolean),
     ])
   )
 }
@@ -164,7 +164,7 @@ async function fetchSetsByIds(
 /**
  * Fetches vocabulary items by keys with optional deck override
  */
-async function fetchVocabItemsByKeys(
+export async function fetchVocabItemsByKeys(
   ctx: QueryCtx,
   keys: string[],
   deckId: Id<'userDecks'> | null
@@ -172,27 +172,35 @@ async function fetchVocabItemsByKeys(
   if (keys.length === 0) return {}
 
   const results: Record<string, VocabularyItem> = {}
-  for (const key of keys) {
-    const item = await ctx.db
-      .query('coreVocabularyItems')
-      .withIndex('by_key', (q) => q.eq('key', key))
-      .first()
 
+  // Parallel fetch all vocab items
+  const items = await Promise.all(
+    keys.map((key) =>
+      ctx.db
+        .query('coreVocabularyItems')
+        .withIndex('by_key', (q) => q.eq('key', key))
+        .first()
+    )
+  )
+
+  for (let i = 0; i < keys.length; i++) {
+    const item = items[i]
     if (item) {
       const { _id, _creationTime, ...vocabItem } = item
-      results[key] = vocabItem
+      results[encodeURIComponent(keys[i])] = vocabItem
     }
   }
 
   if (deckId !== null) {
+    const keySet = new Set(keys)
     const deckItems = await ctx.db
       .query('deckVocabularyItems')
       .withIndex('by_deck', (q) => q.eq('deckId', deckId))
       .collect()
 
     for (const deckItem of deckItems) {
-      if (keys.includes(deckItem.word)) {
-        results[deckItem.word] = {
+      if (keySet.has(deckItem.word)) {
+        results[encodeURIComponent(deckItem.word)] = {
           key: deckItem.word,
           word: deckItem.word,
           furigana: deckItem.furigana ?? '',

@@ -1,9 +1,9 @@
 export type ItemStatus = "learning" | "decent" | "mastered" | null
 
 export const STATUS_CONFIG = {
-  learning: { label: "Learning" },
-  decent: { label: "Decent" },
-  mastered: { label: "Mastered" },
+  learning: { label: "Learning", color: "amber" },
+  decent: { label: "Decent", color: "sky" },
+  mastered: { label: "Mastered", color: "emerald" },
 } as const
 
 export function calculateItemStatus(fsrsCard: {

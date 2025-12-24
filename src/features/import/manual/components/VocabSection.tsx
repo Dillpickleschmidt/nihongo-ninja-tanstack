@@ -2,8 +2,6 @@ import { createMemo, For, Show } from "solid-js"
 import type { VocabularyItem } from "convex/validators"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
-import { cn } from "@/utils"
-import { getUser } from "@/lib/auth"
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -11,10 +9,10 @@ import {
 } from "@/components/ui/custom/collapsible"
 import { getPosCategory, type PosCategorySimplified } from "@/data/utils/vocabulary/part-of-speech"
 import { JLPT_SETS } from "../consts"
-import { calculateItemStatus, type ItemStatus } from "../../shared/status"
-import { StatusBadge } from "../../shared/StatusBadge"
+import { useItemStatuses } from "../../shared/hooks/useItemStatuses"
+import type { ItemStatus } from "../../shared/status"
 import { SelectAllHeader } from "../../shared/SelectAllHeader"
-import { CheckIcon } from "../../shared/CheckIcon"
+import { ImportVocabItem, ImportVocabItemSkeleton } from "../../shared/ImportVocabItem"
 
 const POS_CATEGORIES = [
   { key: "verb", label: "Verbs" },
@@ -29,7 +27,6 @@ export function VocabSection(props: {
   onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
   onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
 }) {
-  const user = getUser()
   const vocabQuery = useConvexQuery(
     api.api.vocabulary.getBySets,
     () => ({ setIds: [...JLPT_SETS] })
@@ -39,16 +36,7 @@ export function VocabSection(props: {
 
   const allKeys = createMemo(() => items()?.map((i) => i.key) ?? [])
 
-  const statusesQuery = useConvexQuery(
-    api.api.fsrs.getItemStatuses,
-    () => ({ keys: allKeys() }),
-    () => ({ enabled: !!user() && allKeys().length > 0 })
-  )
-
-  const getStatus = (key: string): ItemStatus => {
-    const data = statusesQuery.data()?.[encodeURIComponent(key)]
-    return data ? calculateItemStatus(data) : null
-  }
+  const getStoredStatus = useItemStatuses(allKeys)
 
   const allSelected = () => {
     const list = items()
@@ -106,7 +94,7 @@ export function VocabSection(props: {
                       <VocabGrid
                         items={grouped()[category.key]}
                         selectedKeys={props.selectedKeys}
-                        getStatus={getStatus}
+                        getStoredStatus={getStoredStatus}
                         allKeys={allKeys()}
                         onItemClick={props.onItemClick}
                         onPointerDown={props.onPointerDown}
@@ -135,7 +123,7 @@ export function VocabSectionSkeleton() {
       </div>
       <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         <For each={Array.from({ length: 12 })}>
-          {() => <VocabItemSkeleton />}
+          {() => <ImportVocabItemSkeleton />}
         </For>
       </div>
     </>
@@ -145,7 +133,7 @@ export function VocabSectionSkeleton() {
 function VocabGrid(props: {
   items: VocabularyItem[]
   selectedKeys: Record<string, boolean>
-  getStatus: (key: string) => ItemStatus
+  getStoredStatus: (key: string) => ItemStatus
   allKeys: string[]
   onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
   onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
@@ -154,64 +142,19 @@ function VocabGrid(props: {
     <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
       <For each={props.items}>
         {(item) => (
-          <VocabItem
-            item={item}
+          <ImportVocabItem
+            id={item.key}
+            label={item.word}
+            sublabel={item.english[0]}
             checked={props.selectedKeys[item.key] ?? false}
-            status={props.getStatus(item.key)}
-            allKeys={props.allKeys}
+            importStatus={null}
+            storedStatus={props.getStoredStatus(item.key)}
+            allIds={props.allKeys}
             onItemClick={props.onItemClick}
             onPointerDown={props.onPointerDown}
           />
         )}
       </For>
-    </div>
-  )
-}
-
-function VocabItem(props: {
-  item: VocabularyItem
-  checked: boolean
-  status: ItemStatus
-  allKeys: string[]
-  onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
-  onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
-}) {
-  return (
-    <div
-      data-import-item-id={props.item.key}
-      onClick={(e) => props.onItemClick(e, props.item.key, props.allKeys)}
-      onPointerDown={(e) => props.onPointerDown(e, props.item.key, props.allKeys)}
-      class={cn(
-        "relative flex cursor-pointer touch-manipulation items-center gap-3 rounded-lg border p-3 transition-colors ease-instant-hover-150 select-none",
-        props.checked
-          ? "border-(--accent)/30 bg-(--accent)/10"
-          : "border-white/10 bg-white/2 hover:border-white/20"
-      )}
-    >
-      <div
-        class={cn(
-          "size-4 shrink-0 rounded border transition-colors",
-          props.checked
-            ? "border-(--accent) bg-(--accent) text-white"
-            : "border-white/30 bg-white/10"
-        )}
-      >
-        {props.checked && <CheckIcon />}
-      </div>
-      <div class="min-w-0 flex-1">
-        <p class="truncate font-medium text-white">{props.item.word}</p>
-        <p class="truncate text-xs text-white/40">{props.item.english[0]}</p>
-        <StatusBadge status={props.status} />
-      </div>
-    </div>
-  )
-}
-
-function VocabItemSkeleton() {
-  return (
-    <div class="animate-pulse rounded-lg border border-white/10 bg-white/2 p-3">
-      <div class="mb-2 h-4 w-16 rounded bg-white/10" />
-      <div class="h-3 w-24 rounded bg-white/5" />
     </div>
   )
 }
