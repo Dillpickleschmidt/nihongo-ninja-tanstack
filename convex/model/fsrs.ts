@@ -65,6 +65,31 @@ export function toConvexFsrs(ts: TsFSRSCardData): FSRSCardData {
   }
 }
 
+// Helper: fetch existing card by key/mode/type
+function fetchExistingCard(
+  ctx: MutationCtx | QueryCtx,
+  userId: string,
+  key: string,
+  mode: PracticeMode,
+  type: PracticeItemType
+) {
+  return ctx.db
+    .query('userFsrsCards')
+    .withIndex('by_user_key_mode_type', (q) =>
+      q.eq('userId', userId).eq('practiceItemKey', key).eq('mode', mode).eq('type', type)
+    )
+    .first()
+}
+
+// Helper: check if incoming card should be imported over existing
+function shouldImportCard(
+  incomingScheduledDays: number,
+  existing: { fsrsCard: { scheduled_days: number } } | null
+): boolean {
+  if (!existing) return true
+  return incomingScheduledDays >= existing.fsrsCard.scheduled_days
+}
+
 export async function getFSRSCardsForItems(
   ctx: QueryCtx,
   keys: string[],
@@ -200,18 +225,7 @@ export async function upsertFSRSCard(
   }
 
   const userId = identity.subject
-
-  // Check if card exists
-  const existing = await ctx.db
-    .query('userFsrsCards')
-    .withIndex('by_user_key_mode_type', (q) =>
-      q
-        .eq('userId', userId)
-        .eq('practiceItemKey', data.practiceItemKey)
-        .eq('mode', data.mode)
-        .eq('type', data.type)
-    )
-    .first()
+  const existing = await fetchExistingCard(ctx, userId, data.practiceItemKey, data.mode, data.type)
 
   const cardData = {
     userId,
@@ -233,8 +247,13 @@ export async function upsertFSRSCard(
 
 type ImportCard = Infer<typeof importCardValidator>
 
+// Skip importing cards where existing has a longer interval (better knowledge)
+const SKIP_WORSE_IMPORTS = true
+
 /**
  * Import FSRS cards in batch.
+ * When SKIP_WORSE_IMPORTS is true, skips cards where the existing stored card
+ * has a longer interval than the incoming card.
  */
 export async function batchImportFSRSCards(
   ctx: MutationCtx,
@@ -245,16 +264,41 @@ export async function batchImportFSRSCards(
     throw new Error('Must be authenticated to import cards')
   }
 
+  const userId = identity.subject
+
+  // Batch fetch existing cards
+  const existingCards = await Promise.all(
+    cards.map((card) => fetchExistingCard(ctx, userId, card.searchTerm, 'meanings', card.type))
+  )
+
+  // Filter + upsert in one pass
+  let importedCount = 0
   await Promise.all(
-    cards.map((card) => {
-      const { searchTerm, ...rest } = card
-      return upsertFSRSCard(ctx, {
-        practiceItemKey: searchTerm,
-        mode: 'meanings', // Import always targets meanings mode for now
-        ...rest,
-      })
+    cards.map((card, i) => {
+      const existing = existingCards[i]
+
+      if (SKIP_WORSE_IMPORTS && !shouldImportCard(card.fsrsCard.scheduled_days, existing)) {
+        return null
+      }
+
+      importedCount++
+
+      const cardData = {
+        userId,
+        practiceItemKey: card.searchTerm,
+        fsrsCard: card.fsrsCard,
+        fsrsLogs: card.fsrsLogs,
+        dueAt: card.fsrsCard.due,
+        stability: card.fsrsCard.stability,
+        mode: 'meanings' as const, // Import always targets meanings mode for now
+        type: card.type,
+      }
+
+      return existing
+        ? ctx.db.patch(existing._id, cardData)
+        : ctx.db.insert('userFsrsCards', cardData)
     })
   )
 
-  return { imported: cards.length }
+  return { imported: importedCount }
 }
