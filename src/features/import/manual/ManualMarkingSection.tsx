@@ -4,6 +4,7 @@ import type { VocabularyItem, KanjiEntry } from "convex/validators"
 import { cn } from "@/utils"
 import { VocabSection, VocabSectionSkeleton } from "./components/VocabSection"
 import { KanjiSection, KanjiSectionSkeleton } from "./components/KanjiSection"
+import { useImportSelection } from "../shared/hooks/useImportSelection"
 
 const JLPT_LEVELS = ["N5", "N4", "N3", "N2", "N1"] as const
 const CATEGORIES = ["Vocabulary", "Grammar", "Kanji"] as const
@@ -13,9 +14,10 @@ export function ManualMarkingSection() {
   const [selectedCategory, setSelectedCategory] = createSignal<(typeof CATEGORIES)[number]>("Vocabulary")
   const [selectedKeys, setSelectedKeys] = createStore<Record<string, boolean>>({})
 
-  const toggleItem = (key: string, checked: boolean) => {
-    setSelectedKeys(key, checked)
-  }
+  const { handleItemClick, handlePointerDown } = useImportSelection(
+    selectedKeys,
+    setSelectedKeys
+  )
 
   const toggleAllVocab = (items: VocabularyItem[], checked: boolean) => {
     batch(() => {
@@ -47,8 +49,9 @@ export function ManualMarkingSection() {
               <VocabSection
                 level={selectedLevel()}
                 selectedKeys={selectedKeys}
-                onToggle={toggleItem}
                 onToggleAll={toggleAllVocab}
+                onItemClick={handleItemClick}
+                onPointerDown={handlePointerDown}
               />
             </Suspense>
           </Match>
@@ -57,8 +60,9 @@ export function ManualMarkingSection() {
               <KanjiSection
                 level={selectedLevel()}
                 selectedKeys={selectedKeys}
-                onToggle={toggleItem}
                 onToggleAll={toggleAllKanji}
+                onItemClick={handleItemClick}
+                onPointerDown={handlePointerDown}
               />
             </Suspense>
           </Match>

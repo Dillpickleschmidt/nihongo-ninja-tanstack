@@ -4,17 +4,19 @@ import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { cn } from "@/utils"
 import { getUser } from "@/lib/auth"
-import { Checkbox, CheckboxInput } from "@/components/ui/checkbox"
 import { extractKanjiCharacters } from "@/data/utils/text/japanese"
 import { JLPT_SETS } from "../consts"
 import { calculateItemStatus, type ItemStatus } from "../../shared/status"
 import { StatusBadge } from "../../shared/StatusBadge"
+import { SelectAllHeader } from "../../shared/SelectAllHeader"
+import { CheckIcon } from "../../shared/CheckIcon"
 
 export function KanjiSection(props: {
   level: string
   selectedKeys: Record<string, boolean>
-  onToggle: (key: string, checked: boolean) => void
   onToggleAll: (items: KanjiEntry[], checked: boolean) => void
+  onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
+  onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
 }) {
   const user = getUser()
 
@@ -84,6 +86,7 @@ export function KanjiSection(props: {
         <>
           <SelectAllHeader
             level={props.level}
+            category="kanji"
             selectedCount={selectedCount()}
             allSelected={allSelected()}
             onToggle={(checked) => props.onToggleAll(itemList(), checked)}
@@ -91,8 +94,10 @@ export function KanjiSection(props: {
           <KanjiGrid
             items={itemList()}
             selectedKeys={props.selectedKeys}
-            onToggle={props.onToggle}
             getStatus={getStatus}
+            allKeys={allKeys()}
+            onItemClick={props.onItemClick}
+            onPointerDown={props.onPointerDown}
           />
         </>
       )}
@@ -119,32 +124,13 @@ export function KanjiSectionSkeleton() {
   )
 }
 
-function SelectAllHeader(props: {
-  level: string
-  selectedCount: number
-  allSelected: boolean
-  onToggle: (checked: boolean) => void
-}) {
-  return (
-    <div class="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
-      <Checkbox
-        checked={props.allSelected}
-        onChange={props.onToggle}
-        class="flex items-center gap-3"
-      >
-        <CheckboxInput class="border-white/30 bg-white/10 data-checked:bg-(--accent) data-checked:text-white" />
-        <span class="text-white">Select all {props.level} kanji</span>
-      </Checkbox>
-      <span class="text-sm text-white/40">{props.selectedCount} selected</span>
-    </div>
-  )
-}
-
 function KanjiGrid(props: {
   items: KanjiEntry[]
   selectedKeys: Record<string, boolean>
-  onToggle: (key: string, checked: boolean) => void
   getStatus: (key: string) => ItemStatus
+  allKeys: string[]
+  onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
+  onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
 }) {
   return (
     <div class="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">
@@ -153,8 +139,10 @@ function KanjiGrid(props: {
           <KanjiItem
             item={item}
             checked={props.selectedKeys[item.kanji] ?? false}
-            onToggle={props.onToggle}
             status={props.getStatus(item.kanji)}
+            allKeys={props.allKeys}
+            onItemClick={props.onItemClick}
+            onPointerDown={props.onPointerDown}
           />
         )}
       </For>
@@ -165,26 +153,34 @@ function KanjiGrid(props: {
 function KanjiItem(props: {
   item: KanjiEntry
   checked: boolean
-  onToggle: (key: string, checked: boolean) => void
   status: ItemStatus
+  allKeys: string[]
+  onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
+  onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
 }) {
   return (
-    <Checkbox
-      checked={props.checked}
-      onChange={(checked) => props.onToggle(props.item.kanji, checked)}
+    <div
+      data-import-item-id={props.item.kanji}
+      onClick={(e) => props.onItemClick(e, props.item.kanji, props.allKeys)}
+      onPointerDown={(e) => props.onPointerDown(e, props.item.kanji, props.allKeys)}
       class={cn(
-        "relative flex aspect-square cursor-pointer flex-col items-center justify-center rounded-lg border p-2 transition-colors ease-instant-hover-150",
+        "relative flex aspect-square cursor-pointer touch-manipulation flex-col items-center justify-center rounded-lg border p-2 transition-colors ease-instant-hover-150 select-none",
         props.checked
           ? "border-(--accent)/30 bg-(--accent)/10"
           : "border-white/10 bg-white/2 hover:border-white/20"
       )}
     >
+      {props.checked && (
+        <div class="absolute top-1.5 left-1.5 size-3.5 rounded border border-(--accent) bg-(--accent) text-white">
+          <CheckIcon class="size-3.5" />
+        </div>
+      )}
       <span class="text-2xl font-medium text-white">{props.item.kanji}</span>
       <span class="mt-1 truncate text-[10px] text-white/40 max-w-full px-1">
         {props.item.meanings[0]}
       </span>
-      <StatusBadge status={props.status} />
-    </Checkbox>
+      <StatusBadge status={props.status} class="top-1 right-1" />
+    </div>
   )
 }
 

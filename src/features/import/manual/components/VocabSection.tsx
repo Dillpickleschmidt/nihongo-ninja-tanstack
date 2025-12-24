@@ -9,11 +9,12 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
-import { Checkbox, CheckboxInput, CheckboxLabel } from "@/components/ui/checkbox"
 import { getPosCategory, type PosCategorySimplified } from "@/data/utils/vocabulary/part-of-speech"
 import { JLPT_SETS } from "../consts"
 import { calculateItemStatus, type ItemStatus } from "../../shared/status"
 import { StatusBadge } from "../../shared/StatusBadge"
+import { SelectAllHeader } from "../../shared/SelectAllHeader"
+import { CheckIcon } from "../../shared/CheckIcon"
 
 const POS_CATEGORIES = [
   { key: "verb", label: "Verbs" },
@@ -24,8 +25,9 @@ const POS_CATEGORIES = [
 export function VocabSection(props: {
   level: string
   selectedKeys: Record<string, boolean>
-  onToggle: (key: string, checked: boolean) => void
   onToggleAll: (items: VocabularyItem[], checked: boolean) => void
+  onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
+  onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
 }) {
   const user = getUser()
   const vocabQuery = useConvexQuery(
@@ -85,6 +87,7 @@ export function VocabSection(props: {
           <>
             <SelectAllHeader
               level={props.level}
+              category="vocabulary"
               selectedCount={selectedCount()}
               allSelected={allSelected()}
               onToggle={(checked) => props.onToggleAll(itemList(), checked)}
@@ -103,8 +106,10 @@ export function VocabSection(props: {
                       <VocabGrid
                         items={grouped()[category.key]}
                         selectedKeys={props.selectedKeys}
-                        onToggle={props.onToggle}
                         getStatus={getStatus}
+                        allKeys={allKeys()}
+                        onItemClick={props.onItemClick}
+                        onPointerDown={props.onPointerDown}
                       />
                     </CollapsibleContent>
                   </Collapsible>
@@ -137,34 +142,13 @@ export function VocabSectionSkeleton() {
   )
 }
 
-function SelectAllHeader(props: {
-  level: string
-  selectedCount: number
-  allSelected: boolean
-  onToggle: (checked: boolean) => void
-}) {
-  return (
-    <div class="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
-      <Checkbox
-        checked={props.allSelected}
-        onChange={props.onToggle}
-        class="flex items-center gap-3"
-      >
-        <CheckboxInput class="border-white/30 bg-white/10 data-checked:bg-(--accent) data-checked:text-white" />
-        <CheckboxLabel class="text-white">
-          Select all {props.level} vocabulary
-        </CheckboxLabel>
-      </Checkbox>
-      <span class="text-sm text-white/40">{props.selectedCount} selected</span>
-    </div>
-  )
-}
-
 function VocabGrid(props: {
   items: VocabularyItem[]
   selectedKeys: Record<string, boolean>
-  onToggle: (key: string, checked: boolean) => void
   getStatus: (key: string) => ItemStatus
+  allKeys: string[]
+  onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
+  onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
 }) {
   return (
     <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -173,8 +157,10 @@ function VocabGrid(props: {
           <VocabItem
             item={item}
             checked={props.selectedKeys[item.key] ?? false}
-            onToggle={props.onToggle}
             status={props.getStatus(item.key)}
+            allKeys={props.allKeys}
+            onItemClick={props.onItemClick}
+            onPointerDown={props.onPointerDown}
           />
         )}
       </For>
@@ -185,27 +171,39 @@ function VocabGrid(props: {
 function VocabItem(props: {
   item: VocabularyItem
   checked: boolean
-  onToggle: (key: string, checked: boolean) => void
   status: ItemStatus
+  allKeys: string[]
+  onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
+  onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
 }) {
   return (
-    <Checkbox
-      checked={props.checked}
-      onChange={(checked) => props.onToggle(props.item.key, checked)}
+    <div
+      data-import-item-id={props.item.key}
+      onClick={(e) => props.onItemClick(e, props.item.key, props.allKeys)}
+      onPointerDown={(e) => props.onPointerDown(e, props.item.key, props.allKeys)}
       class={cn(
-        "relative flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors ease-instant-hover-150",
+        "relative flex cursor-pointer touch-manipulation items-center gap-3 rounded-lg border p-3 transition-colors ease-instant-hover-150 select-none",
         props.checked
           ? "border-(--accent)/30 bg-(--accent)/10"
           : "border-white/10 bg-white/2 hover:border-white/20"
       )}
     >
-      <CheckboxInput class="border-white/30 bg-white/10 data-checked:bg-(--accent) data-checked:text-white" />
-      <CheckboxLabel class="min-w-0 flex-1 cursor-pointer text-base leading-normal! font-normal">
+      <div
+        class={cn(
+          "size-4 shrink-0 rounded border transition-colors",
+          props.checked
+            ? "border-(--accent) bg-(--accent) text-white"
+            : "border-white/30 bg-white/10"
+        )}
+      >
+        {props.checked && <CheckIcon />}
+      </div>
+      <div class="min-w-0 flex-1">
         <p class="truncate font-medium text-white">{props.item.word}</p>
         <p class="truncate text-xs text-white/40">{props.item.english[0]}</p>
         <StatusBadge status={props.status} />
-      </CheckboxLabel>
-    </Checkbox>
+      </div>
+    </div>
   )
 }
 
