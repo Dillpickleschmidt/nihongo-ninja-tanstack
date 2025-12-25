@@ -28,21 +28,15 @@ const COLOR_CLASSES = {
 export function MainStatusBadge(props: { status: ItemStatus; class?: string }) {
   return (
     <Show when={props.status}>
-      {(status) => {
-        const config = STATUS_CONFIG[status()]
-        const Icon = STATUS_ICONS[status()]
-        const colorClass = COLOR_CLASSES[config.color]
-
-        return (
-          <div
-            class={`absolute flex items-center gap-1 rounded border px-1.5 py-0.5 text-[10px] font-medium ${colorClass} ${props.class ?? "bottom-1.5 left-1/2 -translate-x-1/2"}`}
-            title="detected status"
-          >
-            <Icon class="size-3" />
-            <span>{config.label}</span>
-          </div>
-        )
-      }}
+      {(status) => (
+        <div
+          class={`absolute flex items-center gap-1 rounded border px-1.5 py-0.5 text-[10px] font-medium ${COLOR_CLASSES[STATUS_CONFIG[status()].color]} ${props.class ?? "bottom-1.5 left-1/2 -translate-x-1/2"}`}
+          title="detected status"
+        >
+          {STATUS_ICONS[status()]({ class: "size-3" })}
+          <span>{STATUS_CONFIG[status()].label}</span>
+        </div>
+      )}
     </Show>
   )
 }

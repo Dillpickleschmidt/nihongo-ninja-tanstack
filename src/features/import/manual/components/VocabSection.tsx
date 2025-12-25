@@ -1,5 +1,5 @@
 import { createMemo, For, Show } from "solid-js"
-import type { VocabularyItem } from "convex/validators"
+import type { VocabularyItem, PracticeItemType } from "convex/validators"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import {
@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/custom/collapsible"
 import { getPosCategory, type PosCategorySimplified } from "@/data/utils/vocabulary/part-of-speech"
 import { JLPT_SETS } from "../consts"
-import { useItemStatuses } from "../../shared/hooks/useItemStatuses"
+import { useSectionItems } from "../../shared/hooks/useSectionItems"
 import type { ItemStatus } from "../../shared/status"
 import { SelectAllHeader } from "../../shared/SelectAllHeader"
-import { ImportVocabItem, ImportVocabItemSkeleton } from "../../shared/ImportVocabItem"
+import { ImportItem, ImportItemSkeleton } from "../../shared/ImportItem"
 
 const POS_CATEGORIES = [
   { key: "verb", label: "Verbs" },
@@ -22,10 +22,12 @@ const POS_CATEGORIES = [
 
 export function VocabSection(props: {
   level: string
-  selectedKeys: Record<string, boolean>
+  isSelected: (key: string) => boolean
   onToggleAll: (items: VocabularyItem[], checked: boolean) => void
-  onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
-  onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
+  onItemClick: (e: MouseEvent, id: string, type: PracticeItemType, groupIds: string[]) => void
+  onPointerDown: (e: PointerEvent, id: string, type: PracticeItemType, groupIds: string[]) => void
+  getOverrideStatus: (key: string, type: PracticeItemType) => ItemStatus | undefined
+  onUndoClick: (e: MouseEvent, key: string, type: PracticeItemType) => void
 }) {
   const vocabQuery = useConvexQuery(
     api.api.vocabulary.getBySets,
@@ -34,16 +36,12 @@ export function VocabSection(props: {
 
   const items = () => vocabQuery.data()?.[props.level.toLowerCase()]
 
-  const allKeys = createMemo(() => items()?.map((i) => i.key) ?? [])
-
-  const getStoredStatus = useItemStatuses(allKeys)
-
-  const allSelected = () => {
-    const list = items()
-    return list !== undefined && list.length > 0 && list.every((i) => props.selectedKeys[i.key])
-  }
-
-  const selectedCount = () => Object.values(props.selectedKeys).filter(Boolean).length
+  const { allKeys, getStoredStatus, allSelected, selectedCount } = useSectionItems({
+    items,
+    getKey: (i) => i.key,
+    type: "vocabulary",
+    isSelected: props.isSelected,
+  })
 
   return (
     <Show
@@ -91,14 +89,26 @@ export function VocabSection(props: {
                       {category.label} ({grouped()[category.key].length})
                     </CollapsibleTrigger>
                     <CollapsibleContent class="pt-2">
-                      <VocabGrid
-                        items={grouped()[category.key]}
-                        selectedKeys={props.selectedKeys}
-                        getStoredStatus={getStoredStatus}
-                        allKeys={allKeys()}
-                        onItemClick={props.onItemClick}
-                        onPointerDown={props.onPointerDown}
-                      />
+                      <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                        <For each={grouped()[category.key]}>
+                          {(item) => (
+                            <ImportItem
+                              variant="vocab"
+                              id={item.key}
+                              label={item.word}
+                              sublabel={item.english[0]}
+                              checked={props.isSelected(item.key)}
+                              importStatus={null}
+                              storedStatus={getStoredStatus(item.key, "vocabulary")}
+                              overrideStatus={props.getOverrideStatus(item.key, "vocabulary")}
+                              allIds={allKeys()}
+                              onItemClick={props.onItemClick}
+                              onPointerDown={props.onPointerDown}
+                              onUndoClick={props.onUndoClick}
+                            />
+                          )}
+                        </For>
+                      </div>
                     </CollapsibleContent>
                   </Collapsible>
                 )}
@@ -123,38 +133,9 @@ export function VocabSectionSkeleton() {
       </div>
       <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         <For each={Array.from({ length: 12 })}>
-          {() => <ImportVocabItemSkeleton />}
+          {() => <ImportItemSkeleton variant="vocab" />}
         </For>
       </div>
     </>
-  )
-}
-
-function VocabGrid(props: {
-  items: VocabularyItem[]
-  selectedKeys: Record<string, boolean>
-  getStoredStatus: (key: string) => ItemStatus
-  allKeys: string[]
-  onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
-  onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
-}) {
-  return (
-    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-      <For each={props.items}>
-        {(item) => (
-          <ImportVocabItem
-            id={item.key}
-            label={item.word}
-            sublabel={item.english[0]}
-            checked={props.selectedKeys[item.key] ?? false}
-            importStatus={null}
-            storedStatus={props.getStoredStatus(item.key)}
-            allIds={props.allKeys}
-            onItemClick={props.onItemClick}
-            onPointerDown={props.onPointerDown}
-          />
-        )}
-      </For>
-    </div>
   )
 }

@@ -24,7 +24,7 @@ function normalizeTimestamp(timestamp: number): Date {
 /**
  * Import item for UI display
  */
-export interface ImportItem {
+export interface JpdbImportItem {
   id: string
   status: ItemStatus
 }
@@ -43,8 +43,8 @@ export interface ProcessedCard {
  * Result from processing a JPDB file
  */
 export interface JpdbProcessResult {
-  vocabItems: ImportItem[]
-  kanjiItems: ImportItem[]
+  vocabItems: JpdbImportItem[]
+  kanjiItems: JpdbImportItem[]
   processedCards: ProcessedCard[]
 }
 
@@ -88,8 +88,8 @@ function transformReviews(jpdbReviews: JpdbReview[]) {
  * Processes validated JPDB JSON data and returns import items and processed cards
  */
 export function processJpdbData(data: JpdbJsonData): JpdbProcessResult {
-  const vocabItems: ImportItem[] = []
-  const kanjiItems: ImportItem[] = []
+  const vocabItems: JpdbImportItem[] = []
+  const kanjiItems: JpdbImportItem[] = []
   const processedCards: ProcessedCard[] = []
 
   // Process vocabulary JP->EN cards

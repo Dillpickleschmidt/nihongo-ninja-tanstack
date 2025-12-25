@@ -47,7 +47,7 @@ export async function buildDeckHierarchy(
  * Extract all unique kanji characters from vocabulary items
  * Preserves order of first appearance
  */
-function extractAllKanjiFromVocab(vocabulary: VocabularyItem[]): string[] {
+export function extractAllKanjiFromVocab(vocabulary: VocabularyItem[]): string[] {
   const seen = new Set<string>()
   const result: string[] = []
 

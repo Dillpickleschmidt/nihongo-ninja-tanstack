@@ -149,32 +149,35 @@ export async function getDueFSRSCards(
   }))
 }
 
+type StatusData = { state: number; scheduled_days: number }
+type StatusesByType = Record<PracticeItemType, Record<string, StatusData>>
+
 export async function getItemStatuses(
   ctx: QueryCtx,
-  keys: string[]
-): Promise<Record<string, { state: number; scheduled_days: number }>> {
+  items: { key: string; type: PracticeItemType }[]
+): Promise<StatusesByType> {
   const identity = await ctx.auth.getUserIdentity()
-  if (!identity) return {}
+  if (!identity) return { vocabulary: {}, kanji: {}, radical: {} }
 
   const userId = identity.subject
 
   const results = await Promise.all(
-    keys.map((key) =>
+    items.map((item) =>
       ctx.db
         .query('userFsrsCards')
-        .withIndex('by_user_key_mode', (q) =>
-          q.eq('userId', userId).eq('practiceItemKey', key).eq('mode', 'meanings')
+        .withIndex('by_user_key_mode_type', (q) =>
+          q.eq('userId', userId).eq('practiceItemKey', item.key).eq('mode', 'meanings').eq('type', item.type)
         )
         .first()
     )
   )
 
-  const statusMap: Record<string, { state: number; scheduled_days: number }> = {}
-  for (let i = 0; i < keys.length; i++) {
+  const statusMap: StatusesByType = { vocabulary: {}, kanji: {}, radical: {} }
+  for (let i = 0; i < items.length; i++) {
     const card = results[i]
     if (card) {
-      // Encode key to avoid non-ASCII characters in object keys
-      statusMap[encodeURIComponent(keys[i])] = {
+      // Convex requires ASCII field names, so encode Japanese keys
+      statusMap[items[i].type][encodeURIComponent(items[i].key)] = {
         state: card.fsrsCard.state,
         scheduled_days: card.fsrsCard.scheduled_days,
       }

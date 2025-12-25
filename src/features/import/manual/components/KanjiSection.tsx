@@ -1,20 +1,22 @@
 import { createMemo, For, Show } from "solid-js"
-import type { KanjiEntry } from "convex/validators"
+import type { KanjiEntry, PracticeItemType } from "convex/validators"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
-import { extractKanjiCharacters } from "@/data/utils/text/japanese"
+import { extractAllKanjiFromVocab } from "convex/model/hierarchy"
 import { JLPT_SETS } from "../consts"
-import { useItemStatuses } from "../../shared/hooks/useItemStatuses"
+import { useSectionItems } from "../../shared/hooks/useSectionItems"
 import type { ItemStatus } from "../../shared/status"
 import { SelectAllHeader } from "../../shared/SelectAllHeader"
-import { ImportKanjiItem, ImportKanjiItemSkeleton } from "../../shared/ImportKanjiItem"
+import { ImportItem, ImportItemSkeleton } from "../../shared/ImportItem"
 
 export function KanjiSection(props: {
   level: string
-  selectedKeys: Record<string, boolean>
+  isSelected: (key: string) => boolean
   onToggleAll: (items: KanjiEntry[], checked: boolean) => void
-  onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
-  onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
+  onItemClick: (e: MouseEvent, id: string, type: PracticeItemType, groupIds: string[]) => void
+  onPointerDown: (e: PointerEvent, id: string, type: PracticeItemType, groupIds: string[]) => void
+  getOverrideStatus: (key: string, type: PracticeItemType) => ItemStatus | undefined
+  onUndoClick: (e: MouseEvent, key: string, type: PracticeItemType) => void
 }) {
   // Reuse vocab query (cache hit from VocabSection)
   const vocabQuery = useConvexQuery(
@@ -26,18 +28,7 @@ export function KanjiSection(props: {
   const kanjiChars = createMemo(() => {
     const vocab = vocabQuery.data()?.[props.level.toLowerCase()]
     if (!vocab) return []
-
-    const seen = new Set<string>()
-    const chars: string[] = []
-    for (const item of vocab) {
-      for (const char of extractKanjiCharacters(item.word)) {
-        if (!seen.has(char)) {
-          seen.add(char)
-          chars.push(char)
-        }
-      }
-    }
-    return chars
+    return extractAllKanjiFromVocab(vocab)
   })
 
   // Fetch KanjiEntry data for derived characters
@@ -49,16 +40,12 @@ export function KanjiSection(props: {
 
   const items = () => kanjiQuery.data()
 
-  const allKeys = createMemo(() => items()?.map((i) => i.kanji) ?? [])
-
-  const getStoredStatus = useItemStatuses(allKeys)
-
-  const allSelected = () => {
-    const list = items()
-    return list !== undefined && list.length > 0 && list.every((i) => props.selectedKeys[i.kanji])
-  }
-
-  const selectedCount = () => Object.values(props.selectedKeys).filter(Boolean).length
+  const { allKeys, getStoredStatus, allSelected, selectedCount } = useSectionItems({
+    items,
+    getKey: (i) => i.kanji,
+    type: "kanji",
+    isSelected: props.isSelected,
+  })
 
   return (
     <Show
@@ -78,14 +65,26 @@ export function KanjiSection(props: {
             allSelected={allSelected()}
             onToggle={(checked) => props.onToggleAll(itemList(), checked)}
           />
-          <KanjiGrid
-            items={itemList()}
-            selectedKeys={props.selectedKeys}
-            getStoredStatus={getStoredStatus}
-            allKeys={allKeys()}
-            onItemClick={props.onItemClick}
-            onPointerDown={props.onPointerDown}
-          />
+          <div class="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">
+            <For each={itemList()}>
+              {(item) => (
+                <ImportItem
+                  variant="kanji"
+                  id={item.kanji}
+                  label={item.kanji}
+                  sublabel={item.meanings[0]}
+                  checked={props.isSelected(item.kanji)}
+                  importStatus={null}
+                  storedStatus={getStoredStatus(item.kanji, "kanji")}
+                  overrideStatus={props.getOverrideStatus(item.kanji, "kanji")}
+                  allIds={allKeys()}
+                  onItemClick={props.onItemClick}
+                  onPointerDown={props.onPointerDown}
+                  onUndoClick={props.onUndoClick}
+                />
+              )}
+            </For>
+          </div>
         </>
       )}
     </Show>
@@ -104,38 +103,9 @@ export function KanjiSectionSkeleton() {
       </div>
       <div class="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">
         <For each={Array.from({ length: 16 })}>
-          {() => <ImportKanjiItemSkeleton />}
+          {() => <ImportItemSkeleton variant="kanji" />}
         </For>
       </div>
     </>
-  )
-}
-
-function KanjiGrid(props: {
-  items: KanjiEntry[]
-  selectedKeys: Record<string, boolean>
-  getStoredStatus: (key: string) => ItemStatus
-  allKeys: string[]
-  onItemClick: (e: MouseEvent, id: string, groupIds: string[]) => void
-  onPointerDown: (e: PointerEvent, id: string, groupIds: string[]) => void
-}) {
-  return (
-    <div class="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">
-      <For each={props.items}>
-        {(item) => (
-          <ImportKanjiItem
-            id={item.kanji}
-            label={item.kanji}
-            sublabel={item.meanings[0]}
-            checked={props.selectedKeys[item.kanji] ?? false}
-            importStatus={null}
-            storedStatus={props.getStoredStatus(item.kanji)}
-            allIds={props.allKeys}
-            onItemClick={props.onItemClick}
-            onPointerDown={props.onPointerDown}
-          />
-        )}
-      </For>
-    </div>
   )
 }

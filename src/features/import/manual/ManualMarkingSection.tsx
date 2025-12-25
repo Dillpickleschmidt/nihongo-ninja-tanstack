@@ -1,8 +1,16 @@
-import { createSignal, For, Match, Suspense, Switch } from "solid-js"
+import { createSignal, createMemo, For, Match, Suspense, Switch, onMount } from "solid-js"
+import { useConvexQuery } from "@/lib/convex-query"
+import { api } from "convex/_generated/api"
+import type { PracticeItemType } from "convex/validators"
 import { cn } from "@/utils"
+import { extractAllKanjiFromVocab } from "convex/model/hierarchy"
 import { VocabSection, VocabSectionSkeleton } from "./components/VocabSection"
 import { KanjiSection, KanjiSectionSkeleton } from "./components/KanjiSection"
-import { useImportSelection } from "../shared/hooks/useImportSelection"
+import { JLPT_SETS } from "./consts"
+import { useImportFlow } from "../shared/hooks/useImportFlow"
+import { useItemStatuses, type StatusItem } from "../shared/hooks/useItemStatuses"
+import { FloatingActionBar } from "../shared/FloatingActionBar"
+import { ConfirmActionDialog } from "../shared/ConfirmActionDialog"
 
 const JLPT_LEVELS = ["N5", "N4", "N3", "N2", "N1"] as const
 const CATEGORIES = ["Vocabulary", "Grammar", "Kanji"] as const
@@ -11,13 +19,27 @@ export function ManualMarkingSection() {
   const [selectedLevel, setSelectedLevel] = createSignal<(typeof JLPT_LEVELS)[number]>("N5")
   const [selectedCategory, setSelectedCategory] = createSignal<(typeof CATEGORIES)[number]>("Vocabulary")
 
-  const {
-    selectedKeys,
-    handleItemClick,
-    handlePointerDown,
-    selectedCount,
-    toggleAll,
-  } = useImportSelection()
+  // Query vocab data (same as VocabSection - cache hit)
+  const vocabQuery = useConvexQuery(
+    api.api.vocabulary.getBySets,
+    () => ({ setIds: [...JLPT_SETS] })
+  )
+
+  // Derive all items for current level (vocab + kanji) with types
+  const allItems = createMemo<StatusItem[]>(() => {
+    const vocab = vocabQuery.data()?.[selectedLevel().toLowerCase()] ?? []
+    const vocabItems: StatusItem[] = vocab.map((i) => ({ key: i.key, type: "vocabulary" }))
+    const kanjiItems: StatusItem[] = extractAllKanjiFromVocab(vocab).map((k) => ({ key: k, type: "kanji" }))
+    return [...vocabItems, ...kanjiItems]
+  })
+
+  const getStoredStatus = useItemStatuses(allItems)
+
+  const flow = useImportFlow({
+    getBaseStatus: (key: string, type: PracticeItemType) => getStoredStatus(key, type),
+  })
+
+  onMount(() => flow.setupClickOutside())
 
   return (
     <>
@@ -30,10 +52,12 @@ export function ManualMarkingSection() {
             <Suspense fallback={<VocabSectionSkeleton />}>
               <VocabSection
                 level={selectedLevel()}
-                selectedKeys={selectedKeys}
-                onToggleAll={(items, checked) => toggleAll(items, (i) => i.key, checked)}
-                onItemClick={handleItemClick}
-                onPointerDown={handlePointerDown}
+                isSelected={flow.isSelected}
+                onToggleAll={(items, checked) => flow.toggleAll(items, (i) => i.key, "vocabulary", checked)}
+                onItemClick={flow.handleItemClick}
+                onPointerDown={flow.handlePointerDown}
+                getOverrideStatus={flow.getOverrideStatus}
+                onUndoClick={flow.handleUndoClick}
               />
             </Suspense>
           </Match>
@@ -41,10 +65,12 @@ export function ManualMarkingSection() {
             <Suspense fallback={<KanjiSectionSkeleton />}>
               <KanjiSection
                 level={selectedLevel()}
-                selectedKeys={selectedKeys}
-                onToggleAll={(items, checked) => toggleAll(items, (i) => i.kanji, checked)}
-                onItemClick={handleItemClick}
-                onPointerDown={handlePointerDown}
+                isSelected={flow.isSelected}
+                onToggleAll={(items, checked) => flow.toggleAll(items, (i) => i.kanji, "kanji", checked)}
+                onItemClick={flow.handleItemClick}
+                onPointerDown={flow.handlePointerDown}
+                getOverrideStatus={flow.getOverrideStatus}
+                onUndoClick={flow.handleUndoClick}
               />
             </Suspense>
           </Match>
@@ -59,10 +85,10 @@ export function ManualMarkingSection() {
       <div class="mt-6 flex justify-end">
         <button
           type="button"
-          disabled={selectedCount() === 0}
+          disabled={flow.selectedCount() === 0}
           class={cn(
             "rounded-xl px-6 py-3 font-medium transition-all",
-            selectedCount() > 0
+            flow.selectedCount() > 0
               ? "bg-(--accent) text-white hover:brightness-110"
               : "bg-white/10 text-white/40 cursor-not-allowed"
           )}
@@ -70,6 +96,31 @@ export function ManualMarkingSection() {
           Save Progress
         </button>
       </div>
+
+      {/* Floating Action Bar */}
+      <FloatingActionBar
+        selectedCount={flow.selectedCount()}
+        onApply={flow.handleApplyStatus}
+        onClearSelection={flow.resetSelection}
+        onClearOverrides={flow.handleClearOverrides}
+        mode="manual"
+        getCountAtOrAbove={flow.countSelectedAtOrAbove}
+      />
+
+      {/* Undo Confirmation Dialog */}
+      <ConfirmActionDialog
+        open={flow.showUndoDialog()}
+        onOpenChange={flow.setShowUndoDialog}
+        title="Undo Override"
+        description={flow.pendingUndoItem()
+          ? `Undo override for this item, or all ${flow.undoDialogSelectedCount()} selected items with overrides?`
+          : `Undo override for ${flow.undoDialogSelectedCount()} selected item${flow.undoDialogSelectedCount() !== 1 ? "s" : ""}?`
+        }
+        confirmLabel={`Undo ${flow.undoDialogSelectedCount()} Selected`}
+        onConfirm={flow.handleUndoSelected}
+        secondaryLabel={flow.pendingUndoItem() ? "Undo This Item" : undefined}
+        onSecondary={flow.pendingUndoItem() ? flow.handleUndoSingle : undefined}
+      />
     </>
   )
 }

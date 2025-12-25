@@ -4,6 +4,7 @@ import * as FSRS from '../model/fsrs'
 import {
   practiceModeValidator,
   practiceItemTypeValidator,
+  practiceItemKeyValidator,
   fsrsCardValidator,
   fsrsReviewLogValidator,
   importCardValidator,
@@ -43,8 +44,8 @@ export const getDueFSRSCardsCount = query({
  * Get item statuses (state + scheduled_days) for batch status calculation
  */
 export const getItemStatuses = query({
-  args: { keys: v.array(v.string()) },
-  handler: (ctx, args) => FSRS.getItemStatuses(ctx, args.keys),
+  args: { items: v.array(practiceItemKeyValidator) },
+  handler: (ctx, args) => FSRS.getItemStatuses(ctx, args.items),
 })
 
 /**

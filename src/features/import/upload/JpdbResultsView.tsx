@@ -1,20 +1,22 @@
-import { createSignal, For, Show, createMemo } from "solid-js"
+import { createSignal, For, Show, createMemo, onMount } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { convexMutation, useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { toConvexFsrs } from "convex/model/fsrs"
-import { useImportSelection } from "../shared/hooks/useImportSelection"
-import { useItemStatuses } from "../shared/hooks/useItemStatuses"
+import { useImportFlow } from "../shared/hooks/useImportFlow"
+import { useItemStatuses, type StatusItem } from "../shared/hooks/useItemStatuses"
 import { SelectAllHeader } from "../shared/SelectAllHeader"
-import { ImportVocabItem } from "../shared/ImportVocabItem"
-import { ImportKanjiItem } from "../shared/ImportKanjiItem"
+import { ImportItem } from "../shared/ImportItem"
+import { FloatingActionBar } from "../shared/FloatingActionBar"
+import { ConfirmActionDialog } from "../shared/ConfirmActionDialog"
+import { createConvexCardFromStatus } from "../shared/utils/fsrs-card-factory"
 import { Button } from "@/components/ui/button"
 import {
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
-import type { JpdbProcessResult, ImportItem, ProcessedCard } from "./jpdb/jpdb-processor"
+import type { JpdbProcessResult, JpdbImportItem, ProcessedCard } from "./jpdb/jpdb-processor"
 
 interface JpdbResultsViewProps {
   result: JpdbProcessResult
@@ -26,12 +28,27 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
   const [importError, setImportError] = createSignal<string | null>(null)
   const [importResult, setImportResult] = createSignal<{ imported: number } | null>(null)
 
-  const {
-    selectedKeys,
-    handleItemClick,
-    handlePointerDown,
-    toggleAll,
-  } = useImportSelection()
+  // Build status map from import data (before database filtering)
+  const baseStatusMap = createMemo(() => {
+    const map: Record<string, Record<string, typeof props.result.vocabItems[0]["status"]>> = {
+      vocabulary: {},
+      kanji: {},
+      radical: {},
+    }
+    for (const item of props.result.vocabItems) {
+      map.vocabulary[item.id] = item.status
+    }
+    for (const item of props.result.kanjiItems) {
+      map.kanji[item.id] = item.status
+    }
+    return map
+  })
+
+  const flow = useImportFlow({
+    getBaseStatus: (key, type) => baseStatusMap()[type]?.[key] ?? null,
+  })
+
+  onMount(() => flow.setupClickOutside())
 
   // Build a map of searchTerm -> ProcessedCard for quick lookup
   const cardMap = createMemo(() => {
@@ -72,10 +89,10 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
   // Partition items into found (with meanings) and skipped (no match in DB)
   const partitionedVocab = createMemo(() => {
     const vocabData = vocabQuery.data()
-    if (!vocabData) return { found: [] as (ImportItem & { meaning: string })[], skipped: [] as ImportItem[] }
+    if (!vocabData) return { found: [] as (JpdbImportItem & { meaning: string })[], skipped: [] as JpdbImportItem[] }
 
-    const found: (ImportItem & { meaning: string })[] = []
-    const skipped: ImportItem[] = []
+    const found: (JpdbImportItem & { meaning: string })[] = []
+    const skipped: JpdbImportItem[] = []
 
     for (const item of props.result.vocabItems) {
       const dbItem = vocabData[encodeURIComponent(item.id)]
@@ -91,11 +108,11 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
   const partitionedKanji = createMemo(() => {
     const kanjiMeanings = kanjiMeaningsMap()
     if (kanjiMeanings.size === 0 && kanjiIds().length > 0 && kanjiQuery.data() === undefined) {
-      return { found: [] as (ImportItem & { meaning: string })[], skipped: [] as ImportItem[] }
+      return { found: [] as (JpdbImportItem & { meaning: string })[], skipped: [] as JpdbImportItem[] }
     }
 
-    const found: (ImportItem & { meaning: string })[] = []
-    const skipped: ImportItem[] = []
+    const found: (JpdbImportItem & { meaning: string })[] = []
+    const skipped: JpdbImportItem[] = []
 
     for (const item of props.result.kanjiItems) {
       const meaning = kanjiMeanings.get(item.id)
@@ -116,16 +133,22 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
   const foundVocabIds = createMemo(() => foundVocab().map((i) => i.id))
   const foundKanjiIds = createMemo(() => foundKanji().map((i) => i.id))
   const allFoundIds = createMemo(() => [...foundVocabIds(), ...foundKanjiIds()])
-  const getStoredStatus = useItemStatuses(allFoundIds)
 
-  const vocabSelectedCount = createMemo(() => foundVocab().filter((i) => selectedKeys[i.id]).length)
-  const kanjiSelectedCount = createMemo(() => foundKanji().filter((i) => selectedKeys[i.id]).length)
+  // Build typed items for status lookup
+  const statusItems = createMemo<StatusItem[]>(() => [
+    ...foundVocab().map((i) => ({ key: i.id, type: "vocabulary" as const })),
+    ...foundKanji().map((i) => ({ key: i.id, type: "kanji" as const })),
+  ])
+  const getStoredStatus = useItemStatuses(statusItems)
+
+  const vocabSelectedCount = createMemo(() => foundVocab().filter((i) => flow.isSelected(i.id)).length)
+  const kanjiSelectedCount = createMemo(() => foundKanji().filter((i) => flow.isSelected(i.id)).length)
 
   const allVocabSelected = () =>
-    foundVocab().length > 0 && foundVocab().every((i) => selectedKeys[i.id])
+    foundVocab().length > 0 && foundVocab().every((i) => flow.isSelected(i.id))
 
   const allKanjiSelected = () =>
-    foundKanji().length > 0 && foundKanji().every((i) => selectedKeys[i.id])
+    foundKanji().length > 0 && foundKanji().every((i) => flow.isSelected(i.id))
 
   const handleImport = async () => {
     const idsToImport = allFoundIds()
@@ -135,11 +158,26 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
     setImportError(null)
 
     try {
-      // Get the processed cards for all found items, converting to wire format
+      // Get the processed cards for all found items, applying overrides where set
       const cardsToImport = idsToImport
-        .map((id) => cardMap().get(id))
-        .filter((card): card is ProcessedCard => card !== undefined)
-        .map((card) => {
+        .map((id) => {
+          const card = cardMap().get(id)
+          if (!card) return undefined
+
+          const override = flow.getOverrideStatus(id, card.type)
+
+          // If there's an override, create a new card from the status
+          if (override) {
+            const fsrsCard = createConvexCardFromStatus(override)
+            return {
+              searchTerm: card.searchTerm,
+              type: card.type,
+              fsrsCard,
+              fsrsLogs: [], // Fresh start with override
+            }
+          }
+
+          // Otherwise use the original processed card
           const converted = toConvexFsrs({
             practiceItemKey: card.searchTerm,
             fsrsCard: card.fsrsCard,
@@ -154,6 +192,7 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
             fsrsLogs: converted.fsrsLogs,
           }
         })
+        .filter((card): card is NonNullable<typeof card> => card !== undefined)
 
       const result = await convexMutation(api.api.fsrs.batchImportFSRSCards, { cards: cardsToImport })()
       setImportResult(result)
@@ -222,21 +261,24 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
               category="vocabulary"
               selectedCount={vocabSelectedCount()}
               allSelected={allVocabSelected()}
-              onToggle={(checked) => toggleAll(foundVocab(), (i) => i.id, checked)}
+              onToggle={(checked) => flow.toggleAll(foundVocab(), (i) => i.id, "vocabulary", checked)}
             />
             <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               <For each={foundVocab()}>
                 {(item) => (
-                  <ImportVocabItem
+                  <ImportItem
+                    variant="vocab"
                     id={item.id}
                     label={item.id}
                     sublabel={item.meaning}
-                    checked={selectedKeys[item.id] ?? false}
+                    checked={flow.isSelected(item.id)}
                     importStatus={item.status}
-                    storedStatus={getStoredStatus(item.id)}
+                    storedStatus={getStoredStatus(item.id, "vocabulary")}
+                    overrideStatus={flow.getOverrideStatus(item.id, "vocabulary")}
                     allIds={foundVocabIds()}
-                    onItemClick={handleItemClick}
-                    onPointerDown={handlePointerDown}
+                    onItemClick={flow.handleItemClick}
+                    onPointerDown={flow.handlePointerDown}
+                    onUndoClick={flow.handleUndoClick}
                   />
                 )}
               </For>
@@ -257,21 +299,24 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
               category="kanji"
               selectedCount={kanjiSelectedCount()}
               allSelected={allKanjiSelected()}
-              onToggle={(checked) => toggleAll(foundKanji(), (i) => i.id, checked)}
+              onToggle={(checked) => flow.toggleAll(foundKanji(), (i) => i.id, "kanji", checked)}
             />
             <div class="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">
               <For each={foundKanji()}>
                 {(item) => (
-                  <ImportKanjiItem
+                  <ImportItem
+                    variant="kanji"
                     id={item.id}
                     label={item.id}
                     sublabel={item.meaning}
-                    checked={selectedKeys[item.id] ?? false}
+                    checked={flow.isSelected(item.id)}
                     importStatus={item.status}
-                    storedStatus={getStoredStatus(item.id)}
+                    storedStatus={getStoredStatus(item.id, "kanji")}
+                    overrideStatus={flow.getOverrideStatus(item.id, "kanji")}
                     allIds={foundKanjiIds()}
-                    onItemClick={handleItemClick}
-                    onPointerDown={handlePointerDown}
+                    onItemClick={flow.handleItemClick}
+                    onPointerDown={flow.handlePointerDown}
+                    onUndoClick={flow.handleUndoClick}
                   />
                 )}
               </For>
@@ -358,6 +403,27 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
           </Button>
         </div>
       </Show>
+
+      {/* Floating Action Bar */}
+      <FloatingActionBar
+        selectedCount={flow.selectedCount()}
+        onApply={flow.handleApplyStatus}
+        onClearSelection={flow.resetSelection}
+        mode="automatic"
+        getCountAtOrAbove={flow.countSelectedAtOrAbove}
+      />
+
+      {/* Undo Confirmation Dialog */}
+      <ConfirmActionDialog
+        open={flow.showUndoDialog()}
+        onOpenChange={flow.setShowUndoDialog}
+        title="Undo Override"
+        description={`Undo override for this item, or all ${flow.undoDialogSelectedCount()} selected items with overrides?`}
+        confirmLabel={`Undo ${flow.undoDialogSelectedCount()} Selected`}
+        onConfirm={flow.handleUndoSelected}
+        secondaryLabel="Undo This Item"
+        onSecondary={flow.handleUndoSingle}
+      />
     </div>
   )
 }

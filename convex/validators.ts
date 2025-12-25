@@ -221,6 +221,12 @@ export const practiceItemTypeValidator = v.union(
   v.literal('radical'),
 )
 
+// Key + type for status lookups
+export const practiceItemKeyValidator = v.object({
+  key: v.string(),
+  type: practiceItemTypeValidator,
+})
+
 // === Import Processing Validators ===
 export const importCardValidator = v.object({
   searchTerm: v.string(),
@@ -331,6 +337,7 @@ export type VocabHierarchy = Infer<typeof vocabHierarchyValidator>
 export type Mnemonics = Infer<typeof mnemonicsValidator>
 export type PracticeMode = Infer<typeof practiceModeValidator>
 export type PracticeItemType = Infer<typeof practiceItemTypeValidator>
+export type PracticeItemKey = Infer<typeof practiceItemKeyValidator>
 
 // === Sentence Practice Validators ===
 export const sentenceConjugationValidator = v.object({
