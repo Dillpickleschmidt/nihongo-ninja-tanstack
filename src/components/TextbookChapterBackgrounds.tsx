@@ -51,7 +51,7 @@ const textbook_chapter_backgrounds: TextbookChapterBackgrounds = {
     },
     'chapter-3': {
       source_type: 'img',
-      src: '/img/backgrounds/lanterns-with-text-hanging-temple.jpg',
+      src: '/img/backgrounds/red-temple.jpg',
       layout: 'horizontal',
       opacity: 0.4,
     },
