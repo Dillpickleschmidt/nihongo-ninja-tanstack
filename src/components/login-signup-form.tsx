@@ -1,22 +1,22 @@
-import { useNavigate } from '@tanstack/solid-router'
-import { createSignal } from 'solid-js'
-import { useQueryClient } from '@tanstack/solid-query'
-import { authClient } from '@/lib/auth-client'
-import { createProfile } from '@/lib/server'
+import { useNavigate } from "@tanstack/solid-router"
+import { createSignal } from "solid-js"
+import { useQueryClient } from "@tanstack/solid-query"
+import { authClient } from "@/lib/auth-client"
+import { createProfile } from "@/lib/server"
 
 export default function LoginSignupForm() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [isLogin, setIsLogin] = createSignal(true)
-  const [name, setName] = createSignal('')
-  const [email, setEmail] = createSignal('')
-  const [password, setPassword] = createSignal('')
-  const [error, setError] = createSignal('')
+  const [name, setName] = createSignal("")
+  const [email, setEmail] = createSignal("")
+  const [password, setPassword] = createSignal("")
+  const [error, setError] = createSignal("")
   const [loading, setLoading] = createSignal(false)
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault()
-    setError('')
+    setError("")
     setLoading(true)
 
     try {
@@ -35,10 +35,10 @@ export default function LoginSignupForm() {
         await createProfile()
       }
 
-      queryClient.invalidateQueries({ queryKey: ['auth'] })
-      navigate({ to: '/' })
+      queryClient.invalidateQueries({ queryKey: ["auth"] })
+      navigate({ to: "/" })
     } catch (err: any) {
-      setError(err?.message || 'An error occurred')
+      setError(err?.message || "An error occurred")
     } finally {
       setLoading(false)
     }
@@ -50,12 +50,12 @@ export default function LoginSignupForm() {
         <div class="bg-white rounded-2xl shadow-xl p-8 md:p-10">
           <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">
-              {isLogin() ? 'Welcome Back' : 'Create Account'}
+              {isLogin() ? "Welcome Back" : "Create Account"}
             </h1>
             <p class="text-gray-600 text-sm">
               {isLogin()
-                ? 'Sign in to continue to your account'
-                : 'Get started with your free account'}
+                ? "Sign in to continue to your account"
+                : "Get started with your free account"}
             </p>
           </div>
 
@@ -136,10 +136,11 @@ export default function LoginSignupForm() {
             <button
               type="submit"
               disabled={loading()}
-              class={`w-full px-4 py-3 rounded-lg font-semibold text-white transition-all duration-200 ${loading()
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
-                }`}
+              class={`w-full px-4 py-3 rounded-lg font-semibold text-white transition-all duration-200 ${
+                loading()
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              }`}
             >
               {loading() ? (
                 <span class="flex items-center justify-center gap-2">
@@ -166,9 +167,9 @@ export default function LoginSignupForm() {
                   Processing...
                 </span>
               ) : isLogin() ? (
-                'Sign In'
+                "Sign In"
               ) : (
-                'Create Account'
+                "Create Account"
               )}
             </button>
           </form>
@@ -177,18 +178,18 @@ export default function LoginSignupForm() {
             <button
               onClick={() => {
                 setIsLogin(!isLogin())
-                setError('')
+                setError("")
               }}
               class="text-sm text-gray-600 hover:text-blue-600 transition-colors duration-200 font-medium"
             >
               {isLogin() ? (
                 <>
-                  Don't have an account?{' '}
+                  Don't have an account?{" "}
                   <span class="text-blue-600 hover:underline">Sign up</span>
                 </>
               ) : (
                 <>
-                  Already have an account?{' '}
+                  Already have an account?{" "}
                   <span class="text-blue-600 hover:underline">Sign in</span>
                 </>
               )}

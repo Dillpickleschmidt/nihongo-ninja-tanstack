@@ -7,14 +7,14 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "給料[きゅうりょう]を"
+            text: "給料[きゅうりょう]を",
           },
           {
             text: "もらったら",
-            blank: true
+            blank: true,
           },
           {
-            text: "、ショッピングモールに"
+            text: "、ショッピングモールに",
           },
           {
             text: "行[い]く",
@@ -22,13 +22,13 @@ export const questions: Question[] = [
               pos: "Godan verb - Iku/Yuku special class",
               form: "volitional",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Basic pattern with を for salary"
-      }
-    ]
+        notes: "Basic pattern with を for salary",
+      },
+    ],
   },
   {
     english: "When I get tired from work, I just want to go straight home",
@@ -37,37 +37,37 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "仕事[しごと]で"
+            text: "仕事[しごと]で",
           },
           {
             text: "疲[つか]れたら",
-            blank: true
+            blank: true,
           },
           {
-            text: "、まっすぐ帰[かえ]りたく"
+            text: "、まっすぐ帰[かえ]りたく",
           },
           {
             text: "なる",
             conjugation: {
               pos: "Godan verb with 'ru' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using たい + なる to express a desire"
+        notes: "Using たい + なる to express a desire",
       },
       {
         segments: [
           {
-            text: "仕事[しごと]で"
+            text: "仕事[しごと]で",
           },
           {
             text: "疲[つか]れたら",
-            blank: true
+            blank: true,
           },
           {
-            text: "、まっすぐ"
+            text: "、まっすぐ",
           },
           {
             text: "帰[かえ]る",
@@ -75,13 +75,13 @@ export const questions: Question[] = [
               pos: "Godan verb with 'ru' ending",
               form: "tai-form",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using たい to express desire"
-      }
-    ]
+        notes: "Using たい to express desire",
+      },
+    ],
   },
   {
     english: "If the lock isn't working, we should contact the landlord",
@@ -97,16 +97,17 @@ export const questions: Question[] = [
               pos: "Suru verb - compound word",
               form: "volitional",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using 壊れる instead of 使えない"
-      }
-    ]
+        notes: "Using 壊れる instead of 使えない",
+      },
+    ],
   },
   {
-    english: "Once the baby is born, we probably won't be able to travel much anymore",
+    english:
+      "Once the baby is born, we probably won't be able to travel much anymore",
     answers: [
       {
         segments: [
@@ -118,13 +119,13 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Ichidan verb",
               polarity: "negative",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using できる for potential form (SHOULD BE なくなります)"
-      }
-    ]
+        notes: "Using できる for potential form (SHOULD BE なくなります)",
+      },
+    ],
   },
   {
     english: "I become envious whenever I see people getting married",
@@ -138,8 +139,8 @@ export const questions: Question[] = [
               pos: "Suru verb - compound word",
               form: "te-form",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "いるのを" },
           { text: "見[み]たら", blank: true },
@@ -148,10 +149,10 @@ export const questions: Question[] = [
             conjugation: {
               pos: "I-adjective",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
-        ]
+              tense: "non-past",
+            },
+          },
+        ],
       },
       {
         segments: [
@@ -162,8 +163,8 @@ export const questions: Question[] = [
               pos: "Suru verb - compound word",
               form: "te-form",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "いるのを" },
           { text: "見[み]たら", blank: true },
@@ -172,8 +173,8 @@ export const questions: Question[] = [
             conjugation: {
               pos: "I-adjective",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "に" },
           {
@@ -181,12 +182,12 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'ru' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
-        ]
-      }
-    ]
+              tense: "non-past",
+            },
+          },
+        ],
+      },
+    ],
   },
   {
     english: "When the preparation is complete, please let me know",
@@ -202,17 +203,18 @@ export const questions: Question[] = [
               pos: "Ichidan verb",
               form: "te-form",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
-          { text: "ください" }
+          { text: "ください" },
         ],
-        notes: "Using 終わる for completion"
-      }
-    ]
+        notes: "Using 終わる for completion",
+      },
+    ],
   },
   {
-    english: "If I become a salaryman, I wonder if I'll get used to wearing a suit every day",
+    english:
+      "If I become a salaryman, I wonder if I'll get used to wearing a suit every day",
     answers: [
       {
         segments: [
@@ -224,8 +226,8 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Ichidan verb",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "ことに" },
           {
@@ -233,8 +235,8 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Ichidan verb",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "かなと" },
           {
@@ -242,11 +244,11 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'u' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using こと to nominalize the action"
+        notes: "Using こと to nominalize the action",
       },
       {
         segments: [
@@ -258,8 +260,8 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Ichidan verb",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "ことに" },
           {
@@ -267,8 +269,8 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Ichidan verb",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "と" },
           {
@@ -276,11 +278,11 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'u' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using こと to nominalize the action"
+        notes: "Using こと to nominalize the action",
       },
       {
         segments: [
@@ -292,8 +294,8 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Ichidan verb",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "ことに" },
           {
@@ -301,13 +303,13 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Ichidan verb",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using こと to nominalize the action"
-      }
-    ]
+        notes: "Using こと to nominalize the action",
+      },
+    ],
   },
   {
     english: "Once you get divorced, you'll feel much more free",
@@ -321,8 +323,8 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Na-adjective",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "に" },
           {
@@ -330,11 +332,11 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'ru' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using もっと for emphasis"
+        notes: "Using もっと for emphasis",
       },
       {
         segments: [
@@ -345,8 +347,8 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Na-adjective",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "に" },
           {
@@ -354,14 +356,14 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'ru' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
-          { text: "よ" }
+          { text: "よ" },
         ],
-        notes: "Using もっと + よ for emphasis"
-      }
-    ]
+        notes: "Using もっと + よ for emphasis",
+      },
+    ],
   },
   {
     english: "The room becomes quite lonely after the guests leave",
@@ -376,24 +378,25 @@ export const questions: Question[] = [
             conjugation: {
               pos: "I-adjective",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           {
             text: "なる",
             conjugation: {
               pos: "Godan verb with 'ru' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using が to mark both subject and object"
-      }
-    ]
+        notes: "Using が to mark both subject and object",
+      },
+    ],
   },
   {
-    english: "When there's a difference of opinion, it's better to talk it through",
+    english:
+      "When there's a difference of opinion, it's better to talk it through",
     answers: [
       {
         segments: [
@@ -405,14 +408,14 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'u' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
-          { text: "方[ほう]がいいです" }
+          { text: "方[ほう]がいいです" },
         ],
-        notes: "Using 話し合う for mutual discussion"
-      }
-    ]
+        notes: "Using 話し合う for mutual discussion",
+      },
+    ],
   },
   {
     english: "I get really worried if the news doesn't come on time",
@@ -427,8 +430,8 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Na-adjective",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "に" },
           {
@@ -436,13 +439,13 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'ru' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using 遅れる for delay"
-      }
-    ]
+        notes: "Using 遅れる for delay",
+      },
+    ],
   },
   {
     english: "Once you've chosen a job, you can't easily quit",
@@ -458,13 +461,13 @@ export const questions: Question[] = [
               pos: "Ichidan verb",
               form: "potential",
               polarity: "negative",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using に with 簡単"
-      }
-    ]
+        notes: "Using に with 簡単",
+      },
+    ],
   },
   {
     english: "If the hot water isn't enough, just boil some more",
@@ -481,14 +484,14 @@ export const questions: Question[] = [
               pos: "Godan verb with 'su' ending",
               form: "te-form",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
-          { text: "ください" }
+          { text: "ください" },
         ],
-        notes: "Using もっと for 'more'"
-      }
-    ]
+        notes: "Using もっと for 'more'",
+      },
+    ],
   },
   {
     english: "When I get my full-time job, let's have a celebration party",
@@ -504,13 +507,13 @@ export const questions: Question[] = [
               pos: "Suru verb - special class",
               form: "volitional",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using お祝い for celebration"
-      }
-    ]
+        notes: "Using お祝い for celebration",
+      },
+    ],
   },
   {
     english: "If the prime minister resigns, what do you think will happen?",
@@ -525,8 +528,8 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'ru' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "と" },
           {
@@ -534,16 +537,17 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'u' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using どう for 'what/how'"
-      }
-    ]
+        notes: "Using どう for 'what/how'",
+      },
+    ],
   },
   {
-    english: "Once you get used to living alone, cooking becomes more enjoyable",
+    english:
+      "Once you get used to living alone, cooking becomes more enjoyable",
     answers: [
       {
         segments: [
@@ -555,21 +559,21 @@ export const questions: Question[] = [
             conjugation: {
               pos: "I-adjective",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           {
             text: "なる",
             conjugation: {
               pos: "Godan verb with 'ru' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using に with 慣れる"
-      }
-    ]
+        notes: "Using に with 慣れる",
+      },
+    ],
   },
   {
     english: "If it seems dangerous, you don't have to force yourself to go",
@@ -583,14 +587,14 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb - Iku/Yuku special class",
               polarity: "negative",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
-          { text: "てもいい" }
+          { text: "てもいい" },
         ],
-        notes: "Using 無理して for 'force yourself'"
-      }
-    ]
+        notes: "Using 無理して for 'force yourself'",
+      },
+    ],
   },
   {
     english: "When the scheduling doesn't work out, I get depressed",
@@ -605,11 +609,11 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'mu' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using 落ち込む for 'get depressed'"
+        notes: "Using 落ち込む for 'get depressed'",
       },
       {
         segments: [
@@ -621,8 +625,8 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'mu' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "に" },
           {
@@ -630,13 +634,13 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'ru' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using 落ち込む for 'get depressed'"
-      }
-    ]
+        notes: "Using 落ち込む for 'get depressed'",
+      },
+    ],
   },
   {
     english: "If you win the lottery, what's the first thing you'd buy?",
@@ -651,17 +655,18 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'u' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
-          { text: "か" }
+          { text: "か" },
         ],
-        notes: "Using に with 最初"
-      }
-    ]
+        notes: "Using に with 最初",
+      },
+    ],
   },
   {
-    english: "Once you get strong enough, even difficult things become possible",
+    english:
+      "Once you get strong enough, even difficult things become possible",
     answers: [
       {
         segments: [
@@ -672,8 +677,8 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Ichidan verb",
               polarity: "positive",
-              tense: "non-past"
-            }
+              tense: "non-past",
+            },
           },
           { text: "ように" },
           {
@@ -681,12 +686,12 @@ export const questions: Question[] = [
             conjugation: {
               pos: "Godan verb with 'ru' ending",
               polarity: "positive",
-              tense: "non-past"
-            }
-          }
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using でも for 'even'"
-      }
-    ]
-  }
+        notes: "Using でも for 'even'",
+      },
+    ],
+  },
 ]

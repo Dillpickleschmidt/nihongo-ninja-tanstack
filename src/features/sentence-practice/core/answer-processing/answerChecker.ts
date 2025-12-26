@@ -8,7 +8,10 @@ export interface MatchResult {
 }
 
 // LCS-based matching, returns similarity and error positions
-export function matchAnswer(userInput: string, correctAnswer: string): MatchResult {
+export function matchAnswer(
+  userInput: string,
+  correctAnswer: string,
+): MatchResult {
   const m = userInput.length
   const n = correctAnswer.length
 
@@ -128,8 +131,12 @@ function getStrippableParticles(validAnswers: RichAnswer[]): string[] {
 }
 
 // Main entry: normalizes, strips particles, matches against kanji + kana versions
-export function checkAnswer(input: string, validAnswers: RichAnswer[]): CheckResult {
-  const { text: normalizedInput, toOriginal: userToOriginal } = normalizeWithPositions(input)
+export function checkAnswer(
+  input: string,
+  validAnswers: RichAnswer[],
+): CheckResult {
+  const { text: normalizedInput, toOriginal: userToOriginal } =
+    normalizeWithPositions(input)
   let userText = normalizedInput
   const strippableParticles = getStrippableParticles(validAnswers)
 

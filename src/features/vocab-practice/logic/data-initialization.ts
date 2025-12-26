@@ -1,4 +1,4 @@
-import { createEmptyCard, State, type Card } from 'ts-fsrs'
+import { createEmptyCard, State, type Card } from "ts-fsrs"
 import type {
   VocabularyItem,
   VocabHierarchy,
@@ -7,14 +7,14 @@ import type {
   PracticeMode,
   PracticeItemType,
   Mnemonics,
-} from 'convex/validators'
+} from "convex/validators"
 import type {
   PracticeCard,
   PracticeSessionState,
   FSRSInfo,
   SessionCardStyle,
-} from '../types'
-import { addKanaAndRuby } from '@/data/utils/vocabulary/transforms'
+} from "../types"
+import { addKanaAndRuby } from "@/data/utils/vocabulary/transforms"
 
 /**
  * FSRS card data for practice session initialization.
@@ -44,7 +44,7 @@ export type PracticeItemData = {
  */
 function createPracticeCard(
   key: string,
-  type: 'vocabulary' | 'kanji' | 'radical',
+  type: "vocabulary" | "kanji" | "radical",
   displayData: VocabularyItem | KanjiEntry | RadicalEntry,
   fsrsData: FSRSCardInput | null,
   sessionPracticeMode: PracticeMode,
@@ -58,12 +58,12 @@ function createPracticeCard(
   }
 
   let vocabItem: VocabularyItem
-  let characterForKanjiRadical = ''
+  let characterForKanjiRadical = ""
   let meaningsForKanjiRadical: string[] = []
 
-  if (type === 'vocabulary') {
+  if (type === "vocabulary") {
     vocabItem = displayData as VocabularyItem
-  } else if (type === 'kanji') {
+  } else if (type === "kanji") {
     const kanjiEntry = displayData as KanjiEntry
     characterForKanjiRadical = kanjiEntry.kanji
     meaningsForKanjiRadical = kanjiEntry.meanings
@@ -114,14 +114,14 @@ function createPracticeCard(
   let prompt: string
   let validAnswers: string[]
 
-  if (type === 'vocabulary') {
-    if (practiceMode === 'meanings') {
+  if (type === "vocabulary") {
+    if (practiceMode === "meanings") {
       // Meanings mode: Japanese word prompt, English answer
       prompt = richVocab.word
       validAnswers = [...richVocab.english]
     } else {
       // Spellings mode: English prompt, Kana answer
-      prompt = richVocab.english.join(', ')
+      prompt = richVocab.english.join(", ")
       validAnswers = Array.from(new Set(richVocab.hiragana))
     }
   } else {
@@ -130,18 +130,18 @@ function createPracticeCard(
     validAnswers = meaningsForKanjiRadical
   }
 
-  let sessionStyle: SessionCardStyle = 'multiple-choice'
-  const isKanjiOrRadical = type === 'kanji' || type === 'radical'
+  let sessionStyle: SessionCardStyle = "multiple-choice"
+  const isKanjiOrRadical = type === "kanji" || type === "radical"
 
   if (isKanjiOrRadical && fsrsInfo.card.state === State.New) {
     // If it's a new Kanji or Radical, start with an introduction phase
-    sessionStyle = 'introduction'
+    sessionStyle = "introduction"
   } else if (fsrsInfo.card.state === State.Review) {
-    if (type === 'vocabulary') {
-      sessionStyle = 'multiple-choice'
+    if (type === "vocabulary") {
+      sessionStyle = "multiple-choice"
     } else {
       // Dependencies or due reviews in review state should be quick flashcards.
-      sessionStyle = 'flashcard'
+      sessionStyle = "flashcard"
     }
   }
 
@@ -149,7 +149,7 @@ function createPracticeCard(
     key,
     vocab: richVocab,
     fsrs: fsrsInfo,
-    sessionScope: 'module',
+    sessionScope: "module",
     practiceMode,
     practiceItemType: type,
     sessionStyle,
@@ -203,13 +203,13 @@ export function initializePracticeSession(
       moduleData.fsrsCards.find(
         (c) =>
           c.practiceItemKey === vocabRel.word &&
-          c.type === 'vocabulary' &&
+          c.type === "vocabulary" &&
           c.mode === sessionPracticeMode,
       ) || null
 
     const card = createPracticeCard(
       key,
-      'vocabulary',
+      "vocabulary",
       displayData,
       fsrsData,
       sessionPracticeMode,
@@ -228,13 +228,13 @@ export function initializePracticeSession(
         moduleData.fsrsCards.find(
           (c) =>
             c.practiceItemKey === kanjiRel.kanji &&
-            c.type === 'kanji' &&
+            c.type === "kanji" &&
             c.mode === sessionPracticeMode,
         ) || null
 
       const card = createPracticeCard(
         key,
-        'kanji',
+        "kanji",
         displayData,
         fsrsData,
         sessionPracticeMode,
@@ -252,13 +252,13 @@ export function initializePracticeSession(
         moduleData.fsrsCards.find(
           (c) =>
             c.practiceItemKey === radicalChar &&
-            c.type === 'radical' &&
+            c.type === "radical" &&
             c.mode === sessionPracticeMode,
         ) || null
 
       const card = createPracticeCard(
         key,
-        'radical',
+        "radical",
         displayData,
         fsrsData,
         sessionPracticeMode,
@@ -296,11 +296,11 @@ export function initializePracticeSession(
       // Find display data
       let displayData: VocabularyItem | KanjiEntry | RadicalEntry | undefined
 
-      if (fsrsData.type === 'vocabulary') {
+      if (fsrsData.type === "vocabulary") {
         displayData = nonModuleVocabLookup.get(fsrsData.practiceItemKey)
-      } else if (fsrsData.type === 'kanji') {
+      } else if (fsrsData.type === "kanji") {
         displayData = nonModuleKanjiLookup.get(fsrsData.practiceItemKey)
-      } else if (fsrsData.type === 'radical') {
+      } else if (fsrsData.type === "radical") {
         displayData = nonModuleRadicalLookup.get(fsrsData.practiceItemKey)
       }
 
@@ -313,8 +313,8 @@ export function initializePracticeSession(
         fsrsData,
         sessionPracticeMode,
       )
-      reviewCard.sessionScope = 'review'
-      reviewCard.sessionStyle = 'flashcard'
+      reviewCard.sessionScope = "review"
+      reviewCard.sessionStyle = "flashcard"
       cardMap.set(key, reviewCard)
     })
   }
@@ -377,7 +377,7 @@ export function initializePracticeSession(
   for (const [key, card] of cardMap.entries()) {
     if (card.isDisabled) continue // Skip disabled cards
 
-    if (card.sessionScope === 'module') {
+    if (card.sessionScope === "module") {
       // Only lock if prerequisites are enabled AND there's an actual dependency
       if (enablePrerequisites && dependencyMap.has(key)) {
         lockedKeys.add(key)

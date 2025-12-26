@@ -18,7 +18,7 @@ export function LearningPathSection(props: LearningPathSectionProps) {
   const profile = useConvexQuery(api.api.profiles.getProfile, {})
   const learningPathsQuery = useConvexQuery(
     api.api.learning_paths.getAllLearningPaths,
-    {}
+    {},
   )
 
   const selectedPathId = () =>
@@ -32,7 +32,7 @@ export function LearningPathSection(props: LearningPathSectionProps) {
   const pathChaptersQuery = useConvexQuery(
     api.api.learning_paths.getPathChapters,
     () => ({ pathId: selectedPathId()! }),
-    () => ({ enabled: !!selectedPathId() })
+    () => ({ enabled: !!selectedPathId() }),
   )
 
   const chapters = () => pathChaptersQuery.data()
@@ -86,7 +86,9 @@ export function LearningPathSection(props: LearningPathSectionProps) {
           }
         >
           <For each={chapters()}>
-            {(chapter) => <ChapterSection chapter={chapter} viewMode={selectedView()} />}
+            {(chapter) => (
+              <ChapterSection chapter={chapter} viewMode={selectedView()} />
+            )}
           </For>
         </Suspense>
       </Tabs>

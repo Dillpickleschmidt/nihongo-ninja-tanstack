@@ -1,41 +1,41 @@
-import { createFileRoute } from '@tanstack/solid-router'
-import type { QueryClient } from '@tanstack/solid-query'
-import { z } from 'zod'
-import { createSignal, createResource, createEffect, Show } from 'solid-js'
-import { convexQuery } from '@/lib/convex-query'
-import { api } from 'convex/_generated/api'
-import { useVocab } from '@/features/vocab-page/context/VocabContext'
-import { resolveDeckFromPath } from '@/features/vocab-page/utils/navigation'
-import { usePracticeManager } from '@/features/vocab-practice/logic/usePracticeManager'
+import { createFileRoute } from "@tanstack/solid-router"
+import type { QueryClient } from "@tanstack/solid-query"
+import { z } from "zod"
+import { createSignal, createResource, createEffect, Show } from "solid-js"
+import { convexQuery } from "@/lib/convex-query"
+import { api } from "convex/_generated/api"
+import { useVocab } from "@/features/vocab-page/context/VocabContext"
+import { resolveDeckFromPath } from "@/features/vocab-page/utils/navigation"
+import { usePracticeManager } from "@/features/vocab-practice/logic/usePracticeManager"
 import {
   initializePracticeSession,
   type PracticeItemData,
   type FSRSCardInput,
-} from '@/features/vocab-practice/logic/data-initialization'
-import type { UnifiedDeck } from 'convex/model/decks'
-import type { DeckHierarchyResult } from 'convex/model/hierarchy'
-import { toTsFsrsCard, fromTsFsrsCard, fromTsFsrsLog } from 'convex/model/fsrs'
-import type { Doc } from 'convex/_generated/dataModel'
-import type { PracticeMode } from 'convex/validators'
-import type { Grade } from 'ts-fsrs'
-import { useMutation } from 'convex-solidjs'
-import { VocabPractice } from '@/features/vocab-practice/VocabPractice'
+} from "@/features/vocab-practice/logic/data-initialization"
+import type { UnifiedDeck } from "convex/model/decks"
+import type { DeckHierarchyResult } from "convex/model/hierarchy"
+import { toTsFsrsCard, fromTsFsrsCard, fromTsFsrsLog } from "convex/model/fsrs"
+import type { Doc } from "convex/_generated/dataModel"
+import type { PracticeMode } from "convex/validators"
+import type { Grade } from "ts-fsrs"
+import { useMutation } from "convex-solidjs"
+import { VocabPractice } from "@/features/vocab-practice/VocabPractice"
 
 type DeckLookupResult =
-  | { type: 'deck'; deck: UnifiedDeck }
-  | { type: 'not-found'; pathSegments: string[] }
+  | { type: "deck"; deck: UnifiedDeck }
+  | { type: "not-found"; pathSegments: string[] }
 
 type PracticeData = {
   hierarchy: DeckHierarchyResult
-  moduleFsrs: Doc<'userFsrsCards'>[]
-  reviewFsrs: Doc<'userFsrsCards'>[]
+  moduleFsrs: Doc<"userFsrsCards">[]
+  reviewFsrs: Doc<"userFsrsCards">[]
 }
 
 const practiceSearchSchema = z.object({
-  mode: z.enum(['meanings', 'spellings']).catch('meanings'),
+  mode: z.enum(["meanings", "spellings"]).catch("meanings"),
 })
 
-export const Route = createFileRoute('/_home/vocab/practice/$')({
+export const Route = createFileRoute("/_home/vocab/practice/$")({
   validateSearch: (search) => practiceSearchSchema.parse(search),
   loaderDeps: ({ search }) => ({ mode: search.mode }),
   loader: ({ context, params, deps }) => {
@@ -43,20 +43,25 @@ export const Route = createFileRoute('/_home/vocab/practice/$')({
     const mode = deps.mode
 
     const foldersAndDecksPromise = context.queryClient.fetchQuery(
-      convexQuery(api.api.folders.getAllFoldersAndDecks, {})
+      convexQuery(api.api.folders.getAllFoldersAndDecks, {}),
     )
     const dueCardsPromise = context.queryClient.fetchQuery(
-      convexQuery(api.api.fsrs.getDueFSRSCards, { mode, limit: 50 })
+      convexQuery(api.api.fsrs.getDueFSRSCards, { mode, limit: 50 }),
     )
 
     const deckLookupPromise = foldersAndDecksPromise.then((data) =>
-      lookupDeck(pathSegments, data.decks)
+      lookupDeck(pathSegments, data.decks),
     )
 
     const practiceDataPromise = deckLookupPromise.then((result) =>
-      result.type === 'deck'
-        ? fetchPracticeData(context.queryClient, result.deck, mode, dueCardsPromise)
-        : null
+      result.type === "deck"
+        ? fetchPracticeData(
+            context.queryClient,
+            result.deck,
+            mode,
+            dueCardsPromise,
+          )
+        : null,
     )
 
     return { deckLookupPromise, practiceDataPromise, pathSegments }
@@ -77,8 +82,8 @@ function PracticeCatchAll() {
 
   const deck = () => {
     const result = deckLookup()
-    if (result?.type === 'deck') return result.deck
-    if (result?.type === 'not-found') {
+    if (result?.type === "deck") return result.deck
+    if (result?.type === "not-found") {
       return resolveDeckFromPath(result.pathSegments, decks())
     }
     return null
@@ -87,7 +92,7 @@ function PracticeCatchAll() {
   const upsertFSRSCardMutation = useMutation(api.api.fsrs.upsertFSRSCard)
 
   const practiceManager = usePracticeManager(async (card) => {
-    const itemKey = card.key.split(':')[1]
+    const itemKey = card.key.split(":")[1]
     try {
       await upsertFSRSCardMutation.mutate({
         practiceItemKey: itemKey,
@@ -97,7 +102,7 @@ function PracticeCatchAll() {
         type: card.practiceItemType,
       })
     } catch (error) {
-      console.error('Failed to save FSRS progress:', error)
+      console.error("Failed to save FSRS progress:", error)
     }
   })
 
@@ -117,7 +122,7 @@ function PracticeCatchAll() {
       when={deck()}
       fallback={
         <div>
-          <p>{deckLookup() ? 'Deck not found' : 'Loading...'}</p>
+          <p>{deckLookup() ? "Deck not found" : "Loading..."}</p>
         </div>
       }
     >
@@ -140,27 +145,30 @@ function PracticeCatchAll() {
 }
 
 function parsePathSegments(splat: string | undefined): string[] {
-  return splat ? splat.split('/').filter(Boolean) : []
+  return splat ? splat.split("/").filter(Boolean) : []
 }
 
-function lookupDeck(pathSegments: string[], decks: UnifiedDeck[]): DeckLookupResult {
+function lookupDeck(
+  pathSegments: string[],
+  decks: UnifiedDeck[],
+): DeckLookupResult {
   const deck = resolveDeckFromPath(pathSegments, decks)
-  if (deck) return { type: 'deck', deck }
-  return { type: 'not-found', pathSegments }
+  if (deck) return { type: "deck", deck }
+  return { type: "not-found", pathSegments }
 }
 
 async function fetchPracticeData(
   queryClient: QueryClient,
   deck: UnifiedDeck,
   mode: PracticeMode,
-  dueCardsPromise: Promise<Doc<'userFsrsCards'>[]>
+  dueCardsPromise: Promise<Doc<"userFsrsCards">[]>,
 ): Promise<PracticeData> {
   const [hierarchy, reviewFsrs] = await Promise.all([
     queryClient.fetchQuery(
       convexQuery(api.api.hierarchy.getVocabHierarchyByDeck, {
         deckId: deck.id,
         deckSource: deck.source,
-      })
+      }),
     ),
     dueCardsPromise,
   ])
@@ -169,8 +177,8 @@ async function fetchPracticeData(
   const moduleFsrs =
     keys.length > 0
       ? await queryClient.fetchQuery(
-        convexQuery(api.api.fsrs.getFSRSCardsForItems, { keys, mode })
-      )
+          convexQuery(api.api.fsrs.getFSRSCardsForItems, { keys, mode }),
+        )
       : []
 
   return { hierarchy, moduleFsrs, reviewFsrs }
@@ -185,7 +193,7 @@ function extractHierarchyKeys(hierarchy: DeckHierarchyResult): string[] {
 }
 
 // Convert flat card document to FSRSCardInput for practice session
-function toFSRSCardInput(doc: Doc<'userFsrsCards'>): FSRSCardInput {
+function toFSRSCardInput(doc: Doc<"userFsrsCards">): FSRSCardInput {
   return {
     practiceItemKey: doc.practiceItemKey,
     card: toTsFsrsCard(doc),
@@ -197,14 +205,14 @@ function toFSRSCardInput(doc: Doc<'userFsrsCards'>): FSRSCardInput {
 function buildSessionState(
   data: PracticeData,
   mode: PracticeMode,
-  includeReviews: boolean
+  includeReviews: boolean,
 ) {
   const { hierarchy, moduleFsrs, reviewFsrs } = data
 
   const moduleData: PracticeItemData = {
     vocabulary: hierarchy.vocabulary,
-    kanji: mode === 'meanings' ? hierarchy.kanji : [],
-    radicals: mode === 'meanings' ? hierarchy.radicals : [],
+    kanji: mode === "meanings" ? hierarchy.kanji : [],
+    radicals: mode === "meanings" ? hierarchy.radicals : [],
     fsrsCards: moduleFsrs.map(toFSRSCardInput),
   }
 
@@ -217,9 +225,12 @@ function buildSessionState(
   const filteredReviewFsrs = (reviewFsrs || [])
     .map(toFSRSCardInput)
     .filter((card) => {
-      if (card.type === 'vocabulary') return !moduleKeys.vocabulary.has(card.practiceItemKey)
-      if (card.type === 'kanji') return !moduleKeys.kanji.has(card.practiceItemKey)
-      if (card.type === 'radical') return !moduleKeys.radicals.has(card.practiceItemKey)
+      if (card.type === "vocabulary")
+        return !moduleKeys.vocabulary.has(card.practiceItemKey)
+      if (card.type === "kanji")
+        return !moduleKeys.kanji.has(card.practiceItemKey)
+      if (card.type === "radical")
+        return !moduleKeys.radicals.has(card.practiceItemKey)
       return true
     })
 
@@ -237,6 +248,6 @@ function buildSessionState(
     mode,
     false,
     true,
-    includeReviews
+    includeReviews,
   )
 }

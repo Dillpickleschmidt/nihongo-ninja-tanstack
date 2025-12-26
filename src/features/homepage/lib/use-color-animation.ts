@@ -1,19 +1,19 @@
-import { onMount, onCleanup } from 'solid-js'
+import { onMount, onCleanup } from "solid-js"
 
-const ORANGE = { accent: '#f59e0b', accentEnd: '#f43f5e' }
-const PINK = { accent: '#ec4899', accentEnd: '#a855f7' }
+const ORANGE = { accent: "#f59e0b", accentEnd: "#f43f5e" }
+const PINK = { accent: "#ec4899", accentEnd: "#a855f7" }
 
 export function useColorAnimation() {
   onMount(() => {
     const root = document.documentElement
-    root.style.setProperty('--landing-accent', ORANGE.accent)
-    root.style.setProperty('--landing-accent-end', ORANGE.accentEnd)
+    root.style.setProperty("--landing-accent", ORANGE.accent)
+    root.style.setProperty("--landing-accent-end", ORANGE.accentEnd)
 
     let isPink = false
     const interval = setInterval(() => {
       const colors = isPink ? ORANGE : PINK
-      root.style.setProperty('--landing-accent', colors.accent)
-      root.style.setProperty('--landing-accent-end', colors.accentEnd)
+      root.style.setProperty("--landing-accent", colors.accent)
+      root.style.setProperty("--landing-accent-end", colors.accentEnd)
       isPink = !isPink
     }, 5000)
 

@@ -9,7 +9,7 @@ export function createScrollObserver(
     onExitUp?: () => void
     onExitDown?: () => void
   },
-  options?: { rootMargin?: string }
+  options?: { rootMargin?: string },
 ): () => void {
   const { rootMargin = "-50% 0px -50% 0px" } = options ?? {}
   let isVisible = false
@@ -41,7 +41,7 @@ export function createScrollObserver(
         }
       })
     },
-    { rootMargin, threshold: 0 }
+    { rootMargin, threshold: 0 },
   )
 
   observer.observe(element)
@@ -49,12 +49,15 @@ export function createScrollObserver(
 }
 
 export function observeOneWaySnap(element: HTMLElement): () => void {
-  const snapClass = element.classList.contains("snap-start") ? "snap-start"
-    : element.classList.contains("snap-center") ? "snap-center"
-      : element.classList.contains("snap-end") ? "snap-end"
+  const snapClass = element.classList.contains("snap-start")
+    ? "snap-start"
+    : element.classList.contains("snap-center")
+      ? "snap-center"
+      : element.classList.contains("snap-end")
+        ? "snap-end"
         : null
 
-  if (!snapClass) return () => { }
+  if (!snapClass) return () => {}
 
   // Create zero-height marker at top of element
   const topMarker = document.createElement("div")
@@ -72,14 +75,16 @@ export function observeOneWaySnap(element: HTMLElement): () => void {
             }
           } else if (entry.boundingClientRect.top >= 0) {
             element.classList.add(snapClass)
-            if (element.parentElement?.classList.contains(snapClass) === false) {
+            if (
+              element.parentElement?.classList.contains(snapClass) === false
+            ) {
               element.parentElement?.classList.add(snapClass)
             }
           }
         })
       })
     },
-    { rootMargin: "0px 0px -80% 0px", threshold: 0 }
+    { rootMargin: "0px 0px -80% 0px", threshold: 0 },
   )
 
   observer.observe(topMarker)

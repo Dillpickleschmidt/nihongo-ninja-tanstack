@@ -67,9 +67,30 @@ describe("JPDB Processor", () => {
         const data: JpdbJsonData = {
           ...validEmptyJpdbData,
           cards_vocabulary_jp_en: [
-            { vid: 1, spelling: "valid", reading: "valid", reviews: [{ timestamp: 1704110400, grade: "okay", from_anki: false }] },
-            { vid: 2, spelling: "", reading: "empty", reviews: [{ timestamp: 1704110400, grade: "okay", from_anki: false }] },
-            { vid: 3, spelling: "  ", reading: "whitespace", reviews: [{ timestamp: 1704110400, grade: "okay", from_anki: false }] },
+            {
+              vid: 1,
+              spelling: "valid",
+              reading: "valid",
+              reviews: [
+                { timestamp: 1704110400, grade: "okay", from_anki: false },
+              ],
+            },
+            {
+              vid: 2,
+              spelling: "",
+              reading: "empty",
+              reviews: [
+                { timestamp: 1704110400, grade: "okay", from_anki: false },
+              ],
+            },
+            {
+              vid: 3,
+              spelling: "  ",
+              reading: "whitespace",
+              reviews: [
+                { timestamp: 1704110400, grade: "okay", from_anki: false },
+              ],
+            },
           ],
         }
 
@@ -131,9 +152,24 @@ describe("JPDB Processor", () => {
         const data: JpdbJsonData = {
           ...validEmptyJpdbData,
           cards_kanji_keyword_char: [
-            { character: "有", reviews: [{ timestamp: 1704110400, grade: "okay", from_anki: false }] },
-            { character: "", reviews: [{ timestamp: 1704110400, grade: "okay", from_anki: false }] },
-            { character: "  ", reviews: [{ timestamp: 1704110400, grade: "okay", from_anki: false }] },
+            {
+              character: "有",
+              reviews: [
+                { timestamp: 1704110400, grade: "okay", from_anki: false },
+              ],
+            },
+            {
+              character: "",
+              reviews: [
+                { timestamp: 1704110400, grade: "okay", from_anki: false },
+              ],
+            },
+            {
+              character: "  ",
+              reviews: [
+                { timestamp: 1704110400, grade: "okay", from_anki: false },
+              ],
+            },
           ],
         }
 
@@ -154,7 +190,9 @@ describe("JPDB Processor", () => {
               vid: 1,
               spelling: "test",
               reading: "test",
-              reviews: [{ timestamp: unixSeconds, grade: "okay", from_anki: false }],
+              reviews: [
+                { timestamp: unixSeconds, grade: "okay", from_anki: false },
+              ],
             },
           ],
         }
@@ -162,7 +200,9 @@ describe("JPDB Processor", () => {
         const result = processJpdbData(data)
 
         // Card should be processed with correct timestamp
-        expect(result.processedCards[0].fsrsCard.last_review?.toISOString()).toBe("2024-01-01T12:00:00.000Z")
+        expect(
+          result.processedCards[0].fsrsCard.last_review?.toISOString(),
+        ).toBe("2024-01-01T12:00:00.000Z")
       })
 
       it("handles millisecond timestamps", () => {
@@ -174,7 +214,9 @@ describe("JPDB Processor", () => {
               vid: 1,
               spelling: "test",
               reading: "test",
-              reviews: [{ timestamp: unixMillis, grade: "okay", from_anki: false }],
+              reviews: [
+                { timestamp: unixMillis, grade: "okay", from_anki: false },
+              ],
             },
           ],
         }
@@ -182,7 +224,9 @@ describe("JPDB Processor", () => {
         const result = processJpdbData(data)
 
         // Card should be processed with correct timestamp
-        expect(result.processedCards[0].fsrsCard.last_review?.toISOString()).toBe("2024-01-01T12:00:00.000Z")
+        expect(
+          result.processedCards[0].fsrsCard.last_review?.toISOString(),
+        ).toBe("2024-01-01T12:00:00.000Z")
       })
     })
 
@@ -192,7 +236,14 @@ describe("JPDB Processor", () => {
           ...validEmptyJpdbData,
           cards_vocabulary_jp_en: [
             { vid: 1, spelling: "no-reviews", reading: "new", reviews: [] },
-            { vid: 2, spelling: "has-reviews", reading: "test", reviews: [{ timestamp: 1704110400, grade: "okay", from_anki: false }] },
+            {
+              vid: 2,
+              spelling: "has-reviews",
+              reading: "test",
+              reviews: [
+                { timestamp: 1704110400, grade: "okay", from_anki: false },
+              ],
+            },
           ],
         }
 
@@ -255,7 +306,11 @@ describe("JPDB Processor", () => {
               spelling: "mastered",
               reading: "mastered",
               reviews: [
-                { timestamp: 1704110400, grade: "never-forget", from_anki: false },
+                {
+                  timestamp: 1704110400,
+                  grade: "never-forget",
+                  from_anki: false,
+                },
               ],
             },
           ],
@@ -270,14 +325,18 @@ describe("JPDB Processor", () => {
     describe("error handling", () => {
       it("throws error when no cards found", () => {
         expect(() => processJpdbData(validEmptyJpdbData)).toThrow(
-          "No vocabulary or kanji cards found"
+          "No vocabulary or kanji cards found",
         )
       })
     })
 
     describe("mixed content", () => {
       it("processes both vocabulary and kanji together", () => {
-        const review = { timestamp: 1704110400, grade: "okay" as const, from_anki: false }
+        const review = {
+          timestamp: 1704110400,
+          grade: "okay" as const,
+          from_anki: false,
+        }
         const data: JpdbJsonData = {
           ...validEmptyJpdbData,
           cards_vocabulary_jp_en: [

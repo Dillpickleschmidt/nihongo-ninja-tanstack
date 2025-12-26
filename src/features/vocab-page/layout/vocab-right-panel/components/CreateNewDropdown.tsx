@@ -1,24 +1,24 @@
-import { Plus, FileText, Folder } from 'lucide-solid'
-import { Button } from '@/components/ui/button'
+import { Plus, FileText, Folder } from "lucide-solid"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from '@/components/ui/dropdown-menu'
-import { useVocab } from '../../../context/VocabContext'
-import { useNavigate } from '@tanstack/solid-router'
+} from "@/components/ui/dropdown-menu"
+import { useVocab } from "../../../context/VocabContext"
+import { useNavigate } from "@tanstack/solid-router"
 
 export function CreateNewDropdown() {
   const ctx = useVocab()
   const navigate = useNavigate()
 
   const handleCreateDeck = () => {
-    navigate({ to: '/vocab/create' })
+    navigate({ to: "/vocab/create" })
   }
 
   const handleCreateFolder = () => {
-    const name = window.prompt('Enter folder name:')
+    const name = window.prompt("Enter folder name:")
     if (name && name.trim()) {
       ctx.createFolder(name.trim())
     }

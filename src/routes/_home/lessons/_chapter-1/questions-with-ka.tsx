@@ -2,7 +2,9 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import YouTubeVideo from "@/features/youtube/YouTube"
 
-export const Route = createFileRoute("/_home/lessons/_chapter-1/questions-with-ka")({
+export const Route = createFileRoute(
+  "/_home/lessons/_chapter-1/questions-with-ka",
+)({
   loader: async () => {
     return {
       contentBox: {

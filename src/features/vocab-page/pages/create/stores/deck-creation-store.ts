@@ -1,34 +1,35 @@
-import { createStore } from 'solid-js/store'
-import type { DeckCreationStore, PracticeMode } from '../types/deck-creation-types'
+import { createStore } from "solid-js/store"
+import type {
+  DeckCreationStore,
+  PracticeMode,
+} from "../types/deck-creation-types"
 import {
   createEmptyVocabItemFormData,
   deckVocabItemToFormData,
   type VocabItemFormData,
-} from '@/features/vocab-page/types/vocabulary'
-import type { Doc } from 'convex/_generated/dataModel'
+} from "@/features/vocab-page/types/vocabulary"
+import type { Doc } from "convex/_generated/dataModel"
 
 // Data for editing existing decks
 export interface DeckEditData {
-  deck: Doc<'userDecks'>
-  vocabItems: Doc<'deckVocabularyItems'>[]
+  deck: Doc<"userDecks">
+  vocabItems: Doc<"deckVocabularyItems">[]
   folderName?: string // UI only - looked up from folders list
 }
 
-const createInitialState = (
-  initialData?: DeckEditData
-): DeckCreationStore => {
+const createInitialState = (initialData?: DeckEditData): DeckCreationStore => {
   // If we have initial data (edit mode), use DB values directly
   // Otherwise (create mode), use defaults
   const isEditMode = !!initialData?.deck
 
   const originalData = isEditMode
     ? {
-      deckId: initialData.deck._id,
-      name: initialData.deck.deckName,
-      description: initialData.deck.deckDescription || '',
-      folderId: initialData.deck.folderId || 'root',
-      folderName: initialData.folderName || 'Root',
-    }
+        deckId: initialData.deck._id,
+        name: initialData.deck.deckName,
+        description: initialData.deck.deckDescription || "",
+        folderId: initialData.deck.folderId || "root",
+        folderName: initialData.folderName || "Root",
+      }
     : null
 
   // If we have initial vocab items, convert them to form data
@@ -60,13 +61,17 @@ const createInitialState = (
 
   return {
     deck: {
-      name: isEditMode ? initialData.deck.deckName : '',
-      description: isEditMode ? (initialData.deck.deckDescription || '') : '',
-      selectedFolderId: isEditMode ? (initialData.deck.folderId || 'root') : 'root',
-      selectedFolderName: isEditMode ? (initialData.folderName || 'Root') : 'Root',
+      name: isEditMode ? initialData.deck.deckName : "",
+      description: isEditMode ? initialData.deck.deckDescription || "" : "",
+      selectedFolderId: isEditMode
+        ? initialData.deck.folderId || "root"
+        : "root",
+      selectedFolderName: isEditMode
+        ? initialData.folderName || "Root"
+        : "Root",
       allowedPracticeModes: isEditMode
         ? initialData.deck.allowedPracticeModes
-        : ['meanings', 'spellings'],
+        : ["meanings", "spellings"],
     },
     vocabItems: {
       nextId,
@@ -79,7 +84,7 @@ const createInitialState = (
       isFormValid: false,
     },
     ui: {
-      currentTab: 'items',
+      currentTab: "items",
     },
     original: originalData,
   }
@@ -91,37 +96,37 @@ export function createDeckCreationStore(initialData?: DeckEditData) {
   const actions = {
     // Deck metadata actions
     updateDeckName: (name: string) => {
-      setStore('deck', 'name', name)
+      setStore("deck", "name", name)
     },
 
     updateDeckDescription: (description: string) => {
-      setStore('deck', 'description', description)
+      setStore("deck", "description", description)
     },
 
     updateDeckFolder: (folderId: string, folderName: string) => {
-      setStore('deck', 'selectedFolderId', folderId)
-      setStore('deck', 'selectedFolderName', folderName)
+      setStore("deck", "selectedFolderId", folderId)
+      setStore("deck", "selectedFolderName", folderName)
     },
 
     updateAllowedPracticeModes: (modes: PracticeMode[]) => {
-      setStore('deck', 'allowedPracticeModes', modes)
+      setStore("deck", "allowedPracticeModes", modes)
     },
 
     // Vocab items actions
     addVocabItem: () => {
       const newId = store.vocabItems.nextId
-      setStore('vocabItems', 'activeIds', (prev) => [...prev, newId])
-      setStore('vocabItems', 'formData', (prev) =>
-        new Map(prev).set(newId, createEmptyVocabItemFormData())
+      setStore("vocabItems", "activeIds", (prev) => [...prev, newId])
+      setStore("vocabItems", "formData", (prev) =>
+        new Map(prev).set(newId, createEmptyVocabItemFormData()),
       )
-      setStore('vocabItems', 'nextId', (prev) => prev + 1)
+      setStore("vocabItems", "nextId", (prev) => prev + 1)
     },
 
     removeVocabItem: (id: number) => {
-      setStore('vocabItems', 'activeIds', (prev) =>
-        prev.filter((itemId) => itemId !== id)
+      setStore("vocabItems", "activeIds", (prev) =>
+        prev.filter((itemId) => itemId !== id),
       )
-      setStore('vocabItems', 'formData', (prev) => {
+      setStore("vocabItems", "formData", (prev) => {
         const newMap = new Map(prev)
         newMap.delete(id)
         return newMap
@@ -129,31 +134,31 @@ export function createDeckCreationStore(initialData?: DeckEditData) {
     },
 
     updateVocabItemFormData: (id: number, formData: VocabItemFormData) => {
-      setStore('vocabItems', 'formData', (prev) =>
-        new Map(prev).set(id, formData)
+      setStore("vocabItems", "formData", (prev) =>
+        new Map(prev).set(id, formData),
       )
     },
 
     // Validation actions
     setValidationErrors: (errors: Record<string, string[]>) => {
-      setStore('validation', 'errors', errors)
+      setStore("validation", "errors", errors)
     },
 
     clearValidationErrors: () => {
-      setStore('validation', 'errors', {})
+      setStore("validation", "errors", {})
     },
 
     setHasAttemptedSubmit: (attempted: boolean) => {
-      setStore('validation', 'hasAttemptedSubmit', attempted)
+      setStore("validation", "hasAttemptedSubmit", attempted)
     },
 
     setFormValid: (isValid: boolean) => {
-      setStore('validation', 'isFormValid', isValid)
+      setStore("validation", "isFormValid", isValid)
     },
 
     // UI actions
     setCurrentTab: (tab: string) => {
-      setStore('ui', 'currentTab', tab)
+      setStore("ui", "currentTab", tab)
     },
 
     // Reset action
@@ -175,4 +180,4 @@ export function createDeckCreationStore(initialData?: DeckEditData) {
 
 export type DeckCreationStoreActions = ReturnType<
   typeof createDeckCreationStore
->['actions']
+>["actions"]

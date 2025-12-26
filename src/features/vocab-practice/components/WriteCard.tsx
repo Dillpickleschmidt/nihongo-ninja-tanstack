@@ -1,14 +1,14 @@
-import { createSignal, createEffect, on, Show } from 'solid-js'
-import { Rating, type Grade } from 'ts-fsrs'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/utils'
-import type { PracticeCard } from '../types'
+import { createSignal, createEffect, on, Show } from "solid-js"
+import { Rating, type Grade } from "ts-fsrs"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/utils"
+import type { PracticeCard } from "../types"
 import {
   TYPE_BADGE_CLASSES,
   getPromptDisplay,
   getMnemonic,
   formatMnemonic,
-} from '../utils/card-display'
+} from "../utils/card-display"
 
 type Props = {
   card: PracticeCard
@@ -18,7 +18,7 @@ type Props = {
 }
 
 export function WriteCard(props: Props) {
-  const [userAnswer, setUserAnswer] = createSignal('')
+  const [userAnswer, setUserAnswer] = createSignal("")
   const [answeredCardId, setAnsweredCardId] = createSignal<string | null>(null)
 
   const isAnswered = () => answeredCardId() === props.card.key
@@ -27,7 +27,7 @@ export function WriteCard(props: Props) {
   createEffect(
     on(
       () => props.card,
-      () => setUserAnswer(''),
+      () => setUserAnswer(""),
       { defer: true },
     ),
   )
@@ -44,7 +44,7 @@ export function WriteCard(props: Props) {
   }
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Enter' && !isAnswered() && userAnswer().trim()) {
+    if (e.key === "Enter" && !isAnswered() && userAnswer().trim()) {
       e.preventDefault()
       handleSubmit()
     }
@@ -82,7 +82,7 @@ export function WriteCard(props: Props) {
             <div class="mb-2 flex justify-center">
               <span
                 class={cn(
-                  'rounded-full px-3 py-1 text-xs font-medium',
+                  "rounded-full px-3 py-1 text-xs font-medium",
                   TYPE_BADGE_CLASSES[props.card.practiceItemType],
                 )}
               >
@@ -92,17 +92,23 @@ export function WriteCard(props: Props) {
 
             {/* Question text */}
             <div class="mb-2 text-lg text-muted-foreground">
-              {props.card.practiceItemType === 'radical' ? 'What is this radical called?' : 'What does this mean?'}
+              {props.card.practiceItemType === "radical"
+                ? "What is this radical called?"
+                : "What does this mean?"}
             </div>
 
             {/* Japanese prompt */}
             <Show
               when={promptDisplay().isHtml}
               fallback={
-                <div class={cn(
-                  'font-japanese font-bold',
-                  props.card.practiceItemType === 'vocabulary' ? 'text-4xl' : 'text-6xl'
-                )}>
+                <div
+                  class={cn(
+                    "font-japanese font-bold",
+                    props.card.practiceItemType === "vocabulary"
+                      ? "text-4xl"
+                      : "text-6xl",
+                  )}
+                >
                   {promptDisplay().text}
                 </div>
               }
@@ -124,16 +130,16 @@ export function WriteCard(props: Props) {
               disabled={isAnswered()}
               placeholder="Type your answer..."
               class={cn(
-                'w-full rounded-xl border-2 bg-card/70 px-4 py-4 text-center text-lg font-medium outline-none transition-all',
-                'placeholder:text-muted-foreground/50',
+                "w-full rounded-xl border-2 bg-card/70 px-4 py-4 text-center text-lg font-medium outline-none transition-all",
+                "placeholder:text-muted-foreground/50",
                 !isAnswered() &&
-                'border-card-foreground/30 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20',
+                  "border-card-foreground/30 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20",
                 isAnswered() &&
-                isCorrect() &&
-                'border-emerald-500 bg-emerald-500/10 text-emerald-600',
+                  isCorrect() &&
+                  "border-emerald-500 bg-emerald-500/10 text-emerald-600",
                 isAnswered() &&
-                !isCorrect() &&
-                'border-rose-500 bg-rose-500/10 text-rose-600',
+                  !isCorrect() &&
+                  "border-rose-500 bg-rose-500/10 text-rose-600",
               )}
             />
 
@@ -145,10 +151,10 @@ export function WriteCard(props: Props) {
                 onClick={handleSubmit}
                 disabled={!userAnswer().trim()}
                 class={cn(
-                  'w-full h-14 rounded-xl text-lg font-semibold',
+                  "w-full h-14 rounded-xl text-lg font-semibold",
                   userAnswer().trim()
-                    ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg hover:from-cyan-600 hover:to-blue-600'
-                    : 'bg-muted text-muted-foreground cursor-not-allowed hover:bg-muted',
+                    ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg hover:from-cyan-600 hover:to-blue-600"
+                    : "bg-muted text-muted-foreground cursor-not-allowed hover:bg-muted",
                 )}
               >
                 Check Answer
@@ -159,10 +165,10 @@ export function WriteCard(props: Props) {
             <Show when={isAnswered()}>
               <div
                 class={cn(
-                  'rounded-lg p-3 text-center text-sm font-medium',
+                  "rounded-lg p-3 text-center text-sm font-medium",
                   isCorrect()
-                    ? 'bg-emerald-500/10 text-emerald-600'
-                    : 'bg-rose-500/10 text-rose-600',
+                    ? "bg-emerald-500/10 text-emerald-600"
+                    : "bg-rose-500/10 text-rose-600",
                 )}
               >
                 <Show
@@ -171,7 +177,7 @@ export function WriteCard(props: Props) {
                     <>
                       <p>Not quite! The correct answer is:</p>
                       <p class="mt-1 font-japanese text-lg font-bold">
-                        {props.card.validAnswers.join(', ')}
+                        {props.card.validAnswers.join(", ")}
                       </p>
                     </>
                   }
@@ -203,10 +209,10 @@ export function WriteCard(props: Props) {
           <Button
             size="lg"
             class={cn(
-              'h-14 rounded-xl px-12 text-lg font-semibold text-white shadow-lg transition-all hover:shadow-xl',
+              "h-14 rounded-xl px-12 text-lg font-semibold text-white shadow-lg transition-all hover:shadow-xl",
               isCorrect()
-                ? 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600'
-                : 'bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600',
+                ? "bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
+                : "bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600",
             )}
             onClick={handleNext}
           >

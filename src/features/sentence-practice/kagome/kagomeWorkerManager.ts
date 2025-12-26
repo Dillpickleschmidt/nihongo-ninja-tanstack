@@ -1,6 +1,11 @@
 // Kagome Worker Manager - handles communication with Kagome WASM worker
 
-import type { KagomeToken, TokenizationResult, PatternMatch, CompoundSpan } from "./types"
+import type {
+  KagomeToken,
+  TokenizationResult,
+  PatternMatch,
+  CompoundSpan,
+} from "./types"
 
 interface PendingRequest {
   resolve: (result: TokenizationResult) => void
@@ -44,7 +49,8 @@ class KagomeWorkerManager {
       this.resolveReady()
     } else if (data.type === "tokenize-result") {
       const { id, tokens, grammarMatches, compoundSpans } = data
-      const request = id !== undefined ? this.pendingRequests.get(id) : undefined
+      const request =
+        id !== undefined ? this.pendingRequests.get(id) : undefined
       if (request) {
         this.pendingRequests.delete(id!)
         request.resolve({
@@ -55,7 +61,8 @@ class KagomeWorkerManager {
       }
     } else if (data.type === "tokenize-error") {
       const { id, message } = data
-      const request = id !== undefined ? this.pendingRequests.get(id) : undefined
+      const request =
+        id !== undefined ? this.pendingRequests.get(id) : undefined
       if (request) {
         this.pendingRequests.delete(id!)
         request.reject(new Error(message || "Tokenization failed"))
@@ -93,7 +100,7 @@ class KagomeWorkerManager {
         reject: (error) => {
           clearTimeout(timeout)
           reject(error)
-        }
+        },
       })
 
       try {

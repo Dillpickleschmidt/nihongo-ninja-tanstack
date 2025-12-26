@@ -1,10 +1,10 @@
-import { Show, Index, createMemo } from 'solid-js'
-import { useConvexQuery } from '~/lib/convex-query'
-import { api } from '~/../convex/_generated/api'
-import { SmallAnimeCard } from './small-card'
-import { SkeletonAnimeCard } from './skeleton-card'
-import { getCurrentSeason } from '../../../utils/section-configs'
-import type { SectionConfig } from '../../../utils/section-configs'
+import { Show, Index, createMemo } from "solid-js"
+import { useConvexQuery } from "~/lib/convex-query"
+import { api } from "~/../convex/_generated/api"
+import { SmallAnimeCard } from "./small-card"
+import { SkeletonAnimeCard } from "./skeleton-card"
+import { getCurrentSeason } from "../../../utils/section-configs"
+import type { SectionConfig } from "../../../utils/section-configs"
 
 interface ConvexAnimeSectionProps {
   config: SectionConfig
@@ -17,12 +17,12 @@ export function ConvexAnimeSection(props: ConvexAnimeSectionProps) {
     const base = { sectionType: props.config.type! }
 
     switch (props.config.type) {
-      case 'trending':
-      case 'popular-season':
+      case "trending":
+      case "popular-season":
         return { ...base, season, year }
-      case 'genre':
+      case "genre":
         return { ...base, genre: props.config.params?.genre }
-      case 'all-time-popular':
+      case "all-time-popular":
         return base
       default:
         return base

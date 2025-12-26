@@ -1,17 +1,17 @@
-import { Show } from 'solid-js'
-import { Link, useLocation } from '@tanstack/solid-router'
-import { Play, ChevronRight } from 'lucide-solid'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Button } from '@/components/ui/button'
-import { SSRMediaQuery } from '@/components/SSRMediaQuery'
-import type { UnifiedDeck } from 'convex/model/decks'
-import { buildPracticePath } from '../../../utils/navigation'
-import { useDeckView, type TabValue } from './deck-view/hooks/useDeckView'
-import { DeckHeader } from './deck-view/components/DeckHeader'
-import { SummaryCardsRow } from './deck-view/components/SummaryCardsRow'
-import { SelectionIndicator } from './deck-view/components/SelectionIndicator'
-import { VocabTab } from './deck-view/components/VocabTab'
-import { KanjiTab } from './deck-view/KanjiTab'
+import { Show } from "solid-js"
+import { Link, useLocation } from "@tanstack/solid-router"
+import { Play, ChevronRight } from "lucide-solid"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
+import { SSRMediaQuery } from "@/components/SSRMediaQuery"
+import type { UnifiedDeck } from "convex/model/decks"
+import { buildPracticePath } from "../../../utils/navigation"
+import { useDeckView, type TabValue } from "./deck-view/hooks/useDeckView"
+import { DeckHeader } from "./deck-view/components/DeckHeader"
+import { SummaryCardsRow } from "./deck-view/components/SummaryCardsRow"
+import { SelectionIndicator } from "./deck-view/components/SelectionIndicator"
+import { VocabTab } from "./deck-view/components/VocabTab"
+import { KanjiTab } from "./deck-view/KanjiTab"
 
 interface DeckViewProps {
   deck: UnifiedDeck
@@ -32,8 +32,8 @@ export function DeckView(props: DeckViewProps) {
         vocabCount={view.counts()?.vocab}
         kanjiCount={view.counts()?.kanji}
         radicalCount={view.counts()?.radicals}
-        onVocabClick={() => view.setActiveTab('vocabulary')}
-        onKanjiClick={() => view.setActiveTab('kanji')}
+        onVocabClick={() => view.setActiveTab("vocabulary")}
+        onKanjiClick={() => view.setActiveTab("kanji")}
       />
 
       <Show when={view.hasSelection()}>
@@ -92,7 +92,8 @@ export function DeckView(props: DeckViewProps) {
             to={buildPracticePath(location().pathname)}
             class="group flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm transition-all bg-(--accent)/80 text-white font-medium hover:scale-[1.02] hover:bg-(--accent)"
             style={{
-              "box-shadow": "0 8px 15px -4px color-mix(in srgb, var(--accent) 30%, transparent)",
+              "box-shadow":
+                "0 8px 15px -4px color-mix(in srgb, var(--accent) 30%, transparent)",
             }}
           >
             <Play class="size-4" />

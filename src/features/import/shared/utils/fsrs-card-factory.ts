@@ -36,7 +36,7 @@ const STATUS_CARD_CONFIG = {
  */
 export function createCardFromStatus(
   status: Exclude<ItemStatus, null>,
-  now: Date = new Date()
+  now: Date = new Date(),
 ): Card {
   const config = STATUS_CARD_CONFIG[status]
   const dueDate = new Date(now)
@@ -77,7 +77,7 @@ export interface ConvexCard {
  */
 export function createConvexCardFromStatus(
   status: Exclude<ItemStatus, null>,
-  now: number = Date.now()
+  now: number = Date.now(),
 ): ConvexCard {
   const config = STATUS_CARD_CONFIG[status]
   const dueTimestamp = now + config.scheduledDays * 24 * 60 * 60 * 1000

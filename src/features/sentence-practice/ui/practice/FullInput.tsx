@@ -14,8 +14,7 @@ export default function FullInput() {
   // Initialize tokenization effects
   useTokenization()
 
-  const isAnswerCorrect = () =>
-    store.showResult && store.checkResult?.isCorrect
+  const isAnswerCorrect = () => store.showResult && store.checkResult?.isCorrect
 
   const handleMainButton = () => {
     if (isAnswerCorrect()) {

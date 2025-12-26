@@ -1,6 +1,6 @@
-import { createMemo } from 'solid-js'
-import type { TreeNode } from '@/components/ui/tree-view'
-import type { Folder, Deck } from '@/features/vocab-page/context/VocabContext'
+import { createMemo } from "solid-js"
+import type { TreeNode } from "@/components/ui/tree-view"
+import type { Folder, Deck } from "@/features/vocab-page/context/VocabContext"
 
 interface UseFolderTreeProps {
   folders: Folder[]
@@ -9,15 +9,15 @@ interface UseFolderTreeProps {
 }
 
 export function useFolderTree(props: UseFolderTreeProps) {
-  const isFolder = () => props.item && 'folderName' in props.item
+  const isFolder = () => props.item && "folderName" in props.item
 
   const folderTreeNodes = createMemo((): TreeNode[] => {
     if (props.folders.length === 0) return []
 
     // Filter to only user folders (built-in folders can't be used as destinations)
-    let availableFolders = props.folders.filter((f) => f.source === 'user')
+    let availableFolders = props.folders.filter((f) => f.source === "user")
 
-    if (props.item && !('deckName' in props.item)) {
+    if (props.item && !("deckName" in props.item)) {
       const folderId = props.item.id
       const excludeIds = new Set([folderId])
 
@@ -67,7 +67,7 @@ export function useFolderTree(props: UseFolderTreeProps) {
     addDescendants(folderId)
 
     const decks = props.decks.filter(
-      (d) => d.folderId && descendants.has(d.folderId)
+      (d) => d.folderId && descendants.has(d.folderId),
     ).length
     const folders = descendants.size - 1 // Exclude the folder itself
 

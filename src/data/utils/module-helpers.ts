@@ -170,4 +170,3 @@ export function getLinkTo(module: Module, moduleKey: string): string {
 
   return `/practice/${moduleKey}`
 }
-

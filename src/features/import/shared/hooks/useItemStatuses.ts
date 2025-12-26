@@ -16,12 +16,16 @@ export function useItemStatuses(items: Accessor<StatusItem[]>) {
   const statusesQuery = useConvexQuery(
     api.api.fsrs.getItemStatuses,
     () => ({ items: items() }),
-    () => ({ enabled: !!user() && items().length > 0 })
+    () => ({ enabled: !!user() && items().length > 0 }),
   )
 
   const statusMap = createMemo(() => {
     const data = statusesQuery.data()
-    if (!data) return { vocabulary: {}, kanji: {}, radical: {} } as Record<PracticeItemType, Record<string, ItemStatus>>
+    if (!data)
+      return { vocabulary: {}, kanji: {}, radical: {} } as Record<
+        PracticeItemType,
+        Record<string, ItemStatus>
+      >
 
     const map: Record<PracticeItemType, Record<string, ItemStatus>> = {
       vocabulary: {},

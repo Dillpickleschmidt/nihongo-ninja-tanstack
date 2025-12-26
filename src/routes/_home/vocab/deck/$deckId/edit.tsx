@@ -1,23 +1,23 @@
-import { createFileRoute } from '@tanstack/solid-router'
-import { Show } from 'solid-js'
-import { convexQuery, useConvexQuery } from '@/lib/convex-query'
-import { api } from 'convex/_generated/api'
-import type { Id } from 'convex/_generated/dataModel'
-import { authQueryOptions } from '@/query/query-options'
-import { getUser } from '@/lib/auth'
-import { DeckCreationContainer } from '@/features/vocab-page/pages/create/components/DeckCreationContainer'
-import { DeckCreationStoreProvider } from '@/features/vocab-page/pages/create/context/DeckCreationStoreContext'
-import { useVocab } from '@/features/vocab-page/context/VocabContext'
-import type { DeckEditData } from '@/features/vocab-page/pages/create/stores/deck-creation-store'
+import { createFileRoute } from "@tanstack/solid-router"
+import { Show } from "solid-js"
+import { convexQuery, useConvexQuery } from "@/lib/convex-query"
+import { api } from "convex/_generated/api"
+import type { Id } from "convex/_generated/dataModel"
+import { authQueryOptions } from "@/query/query-options"
+import { getUser } from "@/lib/auth"
+import { DeckCreationContainer } from "@/features/vocab-page/pages/create/components/DeckCreationContainer"
+import { DeckCreationStoreProvider } from "@/features/vocab-page/pages/create/context/DeckCreationStoreContext"
+import { useVocab } from "@/features/vocab-page/context/VocabContext"
+import type { DeckEditData } from "@/features/vocab-page/pages/create/stores/deck-creation-store"
 
-export const Route = createFileRoute('/_home/vocab/deck/$deckId/edit')({
+export const Route = createFileRoute("/_home/vocab/deck/$deckId/edit")({
   loader: ({ context, params }) => {
     const auth = context.queryClient.getQueryData(authQueryOptions().queryKey)
     if (auth?.session?.user) {
       context.queryClient.prefetchQuery(
         convexQuery(api.api.decks.getDeckWithVocab, {
-          deckId: params.deckId as Id<'userDecks'>,
-        })
+          deckId: params.deckId as Id<"userDecks">,
+        }),
       )
     }
   },
@@ -32,8 +32,8 @@ function DeckEditComponent() {
   // For authenticated users: fetch from Convex
   const deckQuery = useConvexQuery(
     api.api.decks.getDeckWithVocab,
-    () => ({ deckId: params().deckId as Id<'userDecks'> }),
-    () => ({ enabled: !!user() })
+    () => ({ deckId: params().deckId as Id<"userDecks"> }),
+    () => ({ enabled: !!user() }),
   )
 
   // TODO: Add guest user support (sessionStorage lookup)

@@ -1,18 +1,18 @@
 // Vocabulary type system and conversion utilities
-import type { DeckVocabItemInput, VocabularyItem } from 'convex/validators'
-import type { Doc } from 'convex/_generated/dataModel'
-import { extractSegmentText } from '@/data/utils/text/furigana'
-import type { VocabItemFormData } from '../validation/vocabulary-validation'
+import type { DeckVocabItemInput, VocabularyItem } from "convex/validators"
+import type { Doc } from "convex/_generated/dataModel"
+import { extractSegmentText } from "@/data/utils/text/furigana"
+import type { VocabItemFormData } from "../validation/vocabulary-validation"
 
 // Re-export type from validation schema
-export type { VocabItemFormData } from '../validation/vocabulary-validation'
+export type { VocabItemFormData } from "../validation/vocabulary-validation"
 
 // Helper to create empty form data
 export function createEmptyVocabItemFormData(): VocabItemFormData {
   return {
-    word: '',
-    furigana: '',
-    english: [''],
+    word: "",
+    furigana: "",
+    english: [""],
     isVerb: false,
     notes: [],
     particles: [],
@@ -32,7 +32,7 @@ function processFormDataFields(formData: VocabItemFormData) {
     }))
 
   const validExamples = formData.examples.filter(
-    (e) => e.japanese.trim() || e.english.trim()
+    (e) => e.japanese.trim() || e.english.trim(),
   )
 
   const readingMnemonics = formData.readingMnemonics.filter((m) => m.trim())
@@ -41,16 +41,18 @@ function processFormDataFields(formData: VocabItemFormData) {
   const hasMnemonics = readingMnemonics.length > 0 || kanjiMnemonics.length > 0
 
   return {
-    info: formData.notes.length > 0
-      ? formData.notes.filter((n) => n.trim()).map((n) => n.trim())
-      : undefined,
+    info:
+      formData.notes.length > 0
+        ? formData.notes.filter((n) => n.trim()).map((n) => n.trim())
+        : undefined,
     particles: validParticles.length > 0 ? validParticles : undefined,
-    exampleSentences: validExamples.length > 0
-      ? validExamples.map((e) => ({
-        japanese: [e.japanese.trim()],
-        english: [e.english.trim()],
-      }))
-      : undefined,
+    exampleSentences:
+      validExamples.length > 0
+        ? validExamples.map((e) => ({
+            japanese: [e.japanese.trim()],
+            english: [e.english.trim()],
+          }))
+        : undefined,
     mnemonics: hasMnemonics
       ? { reading: readingMnemonics, kanji: kanjiMnemonics }
       : undefined,
@@ -59,7 +61,7 @@ function processFormDataFields(formData: VocabItemFormData) {
 
 // Convert form data to Convex API input
 export function formDataToDeckVocabItemInput(
-  formData: VocabItemFormData
+  formData: VocabItemFormData,
 ): DeckVocabItemInput | null {
   if (
     !formData.word.trim() ||
@@ -81,7 +83,9 @@ export function formDataToDeckVocabItemInput(
 }
 
 // Convert form data to VocabularyItem for preview display
-export function formDataToVocabularyItem(formData: VocabItemFormData): VocabularyItem {
+export function formDataToVocabularyItem(
+  formData: VocabItemFormData,
+): VocabularyItem {
   const processed = processFormDataFields(formData)
 
   return {
@@ -95,7 +99,9 @@ export function formDataToVocabularyItem(formData: VocabItemFormData): Vocabular
 }
 
 // Convert DB item back to form data (for edit mode)
-export function deckVocabItemToFormData(item: Doc<'deckVocabularyItems'>): VocabItemFormData {
+export function deckVocabItemToFormData(
+  item: Doc<"deckVocabularyItems">,
+): VocabItemFormData {
   return {
     word: item.word,
     furigana: item.furigana || item.word,

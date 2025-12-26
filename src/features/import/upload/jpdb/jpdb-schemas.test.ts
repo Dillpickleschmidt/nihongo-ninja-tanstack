@@ -19,7 +19,9 @@ describe("JPDB Schemas", () => {
     it("maps JPDB custom grades to CustomFSRSRating", () => {
       expect(mapJpdbGradeToFSRS("unknown")).toBe(CustomFSRSRating.Ignore)
       expect(mapJpdbGradeToFSRS("nothing")).toBe(CustomFSRSRating.Forget)
-      expect(mapJpdbGradeToFSRS("never-forget")).toBe(CustomFSRSRating.NeverForget)
+      expect(mapJpdbGradeToFSRS("never-forget")).toBe(
+        CustomFSRSRating.NeverForget,
+      )
     })
 
     // Default case for unmapped values

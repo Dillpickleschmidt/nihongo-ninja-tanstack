@@ -1,10 +1,10 @@
-import { createSignal, createMemo } from 'solid-js'
+import { createSignal, createMemo } from "solid-js"
 import {
   DeckNameSchema,
   DescriptionSchema,
   validateDeckNameUnique,
-} from '../validation/deck-folder-validation'
-import { useVocab } from '../context/VocabContext'
+} from "../validation/deck-folder-validation"
+import { useVocab } from "../context/VocabContext"
 
 /**
  * Hook for real-time deck form validation with error messages.
@@ -15,9 +15,12 @@ import { useVocab } from '../context/VocabContext'
 export function useDeckFormValidation(excludeDeckId?: string) {
   const { decks } = useVocab()
 
-  const [name, setName] = createSignal('')
-  const [description, setDescription] = createSignal('')
-  const [touched, setTouched] = createSignal({ name: false, description: false })
+  const [name, setName] = createSignal("")
+  const [description, setDescription] = createSignal("")
+  const [touched, setTouched] = createSignal({
+    name: false,
+    description: false,
+  })
 
   const nameError = createMemo(() => {
     if (!touched().name) return undefined
@@ -44,16 +47,16 @@ export function useDeckFormValidation(excludeDeckId?: string) {
   })
 
   const isValid = createMemo(
-    () => !nameError() && !descriptionError() && name().length > 0
+    () => !nameError() && !descriptionError() && name().length > 0,
   )
 
-  const markTouched = (field: 'name' | 'description') => {
+  const markTouched = (field: "name" | "description") => {
     setTouched((prev) => ({ ...prev, [field]: true }))
   }
 
   const reset = () => {
-    setName('')
-    setDescription('')
+    setName("")
+    setDescription("")
     setTouched({ name: false, description: false })
   }
 

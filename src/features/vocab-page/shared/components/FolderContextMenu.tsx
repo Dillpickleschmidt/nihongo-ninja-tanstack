@@ -1,22 +1,22 @@
-import { createSignal, Show, type JSX } from 'solid-js'
-import { Link } from '@tanstack/solid-router'
+import { createSignal, Show, type JSX } from "solid-js"
+import { Link } from "@tanstack/solid-router"
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from '@/components/ui/context-menu'
+} from "@/components/ui/context-menu"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { PencilLine, Trash2 } from 'lucide-solid'
-import { useFolderTree } from '../../hooks/useFolderTree'
-import { DeleteConfirmation } from './DeleteConfirmation'
-import { useVocab, type Folder } from '../../context/VocabContext'
+} from "@/components/ui/dialog"
+import { PencilLine, Trash2 } from "lucide-solid"
+import { useFolderTree } from "../../hooks/useFolderTree"
+import { DeleteConfirmation } from "./DeleteConfirmation"
+import { useVocab, type Folder } from "../../context/VocabContext"
 
 interface FolderContextMenuProps {
   folder?: Folder
@@ -28,8 +28,8 @@ export function FolderContextMenu(props: FolderContextMenuProps) {
   const ctx = useVocab()
   const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false)
   const [deleteStrategy, setDeleteStrategy] = createSignal<
-    'move-up' | 'delete-all'
-  >('move-up')
+    "move-up" | "delete-all"
+  >("move-up")
 
   const folderTree = useFolderTree({
     folders: ctx.folders(),
@@ -44,7 +44,7 @@ export function FolderContextMenu(props: FolderContextMenuProps) {
   }
 
   // Only show context menu for user folders
-  const canEdit = () => props.folder?.source === 'user'
+  const canEdit = () => props.folder?.source === "user"
 
   return (
     <>

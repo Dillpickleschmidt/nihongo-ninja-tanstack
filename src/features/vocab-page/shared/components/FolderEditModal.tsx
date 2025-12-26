@@ -1,28 +1,28 @@
-import { createSignal, createMemo, createEffect, on, Show } from 'solid-js'
+import { createSignal, createMemo, createEffect, on, Show } from "solid-js"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 import {
   TextField,
   TextFieldInput,
   TextFieldLabel,
-} from '@/components/ui/text-field'
-import { Trash2, SquarePen, Check, X } from 'lucide-solid'
+} from "@/components/ui/text-field"
+import { Trash2, SquarePen, Check, X } from "lucide-solid"
 import {
   FolderNameSchema,
   validateFolderNameUnique,
   validateNoCircularReference,
-} from '../../validation/deck-folder-validation'
-import { NAME_MAX_LENGTH } from '../../validation/constants'
-import { useFolderTree } from '../../hooks/useFolderTree'
-import { LocationSelector } from './LocationSelector'
-import { DeleteConfirmation } from './DeleteConfirmation'
-import { useVocab } from '../../context/VocabContext'
+} from "../../validation/deck-folder-validation"
+import { NAME_MAX_LENGTH } from "../../validation/constants"
+import { useFolderTree } from "../../hooks/useFolderTree"
+import { LocationSelector } from "./LocationSelector"
+import { DeleteConfirmation } from "./DeleteConfirmation"
+import { useVocab } from "../../context/VocabContext"
 
 export function FolderEditModal() {
   const ctx = useVocab()
@@ -31,11 +31,11 @@ export function FolderEditModal() {
   let nameInputRef!: HTMLInputElement
 
   // Form state
-  const [name, setName] = createSignal('')
-  const [selectedFolderId, setSelectedFolderId] = createSignal<string>('')
+  const [name, setName] = createSignal("")
+  const [selectedFolderId, setSelectedFolderId] = createSignal<string>("")
   const [deleteStrategy, setDeleteStrategy] = createSignal<
-    'move-up' | 'delete-all'
-  >('move-up')
+    "move-up" | "delete-all"
+  >("move-up")
   const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false)
   const [isEditingName, setIsEditingName] = createSignal(false)
   const [showValidation, setShowValidation] = createSignal(false)
@@ -50,7 +50,7 @@ export function FolderEditModal() {
     if (!f) return
 
     setName(f.folderName)
-    setSelectedFolderId(f.parentFolderId || 'root')
+    setSelectedFolderId(f.parentFolderId || "root")
     setShowDeleteConfirm(false)
     setIsEditingName(false)
     setShowValidation(false)
@@ -62,18 +62,18 @@ export function FolderEditModal() {
       if (f) {
         initializeForm()
       }
-    })
+    }),
   )
 
   // Get user folders only for validation
   const userFolders = createMemo(() =>
-    ctx.folders().filter((f) => f.source === 'user')
+    ctx.folders().filter((f) => f.source === "user"),
   )
 
   // Validation
   const nameValidation = createMemo(() => {
     const f = folder()
-    if (!f) return { isValid: true, error: '' }
+    if (!f) return { isValid: true, error: "" }
 
     // Check Zod schema first
     const schemaResult = FolderNameSchema.safeParse(name())
@@ -83,13 +83,13 @@ export function FolderEditModal() {
 
     // Check uniqueness within the target parent folder
     const targetParentId =
-      selectedFolderId() === 'root' ? undefined : selectedFolderId()
+      selectedFolderId() === "root" ? undefined : selectedFolderId()
 
     const uniqueResult = validateFolderNameUnique(
       name(),
       userFolders(),
       targetParentId,
-      f.id
+      f.id,
     )
     if (!uniqueResult.isValid) {
       return uniqueResult
@@ -100,20 +100,20 @@ export function FolderEditModal() {
       const circularResult = validateNoCircularReference(
         f.id,
         targetParentId,
-        userFolders()
+        userFolders(),
       )
       if (!circularResult.isValid) {
         return circularResult
       }
     }
 
-    return { isValid: true, error: '' }
+    return { isValid: true, error: "" }
   })
 
   // Stable validation state that only changes on blur/submit
   const stableValidationState = createMemo(() => {
-    if (!showValidation()) return 'valid'
-    return nameValidation().isValid ? 'valid' : 'invalid'
+    if (!showValidation()) return "valid"
+    return nameValidation().isValid ? "valid" : "invalid"
   })
 
   // Check if there are changes
@@ -122,7 +122,7 @@ export function FolderEditModal() {
     if (!f) return false
 
     const targetParentId =
-      selectedFolderId() === 'root' ? undefined : selectedFolderId()
+      selectedFolderId() === "root" ? undefined : selectedFolderId()
     const nameChanged = name() !== f.folderName
     const locationChanged = targetParentId !== f.parentFolderId
     return nameChanged || locationChanged
@@ -133,7 +133,8 @@ export function FolderEditModal() {
   // Folder tree and contents
   const folderTree = createMemo(() => {
     const f = folder()
-    if (!f) return { folderTreeNodes: [], folderContents: { decks: 0, folders: 0 } }
+    if (!f)
+      return { folderTreeNodes: [], folderContents: { decks: 0, folders: 0 } }
 
     const tree = useFolderTree({
       folders: ctx.folders(),
@@ -150,9 +151,9 @@ export function FolderEditModal() {
   // Get selected folder display name
   const selectedFolderName = () => {
     const id = selectedFolderId()
-    if (id === 'root') return 'Root'
+    if (id === "root") return "Root"
     const f = ctx.folders().find((f) => f.id === id)
-    return f?.folderName || 'Unknown'
+    return f?.folderName || "Unknown"
   }
 
   // Event handlers
@@ -164,7 +165,7 @@ export function FolderEditModal() {
     // Check for unsaved name changes
     if (isEditingName()) {
       const shouldApply = window.confirm(
-        'You have unsaved name changes! Would you like to apply them?'
+        "You have unsaved name changes! Would you like to apply them?",
       )
       if (!shouldApply) {
         return
@@ -184,7 +185,7 @@ export function FolderEditModal() {
     }
 
     const targetParentId =
-      selectedFolderId() === 'root' ? null : selectedFolderId()
+      selectedFolderId() === "root" ? null : selectedFolderId()
     if (targetParentId !== (f.parentFolderId || null)) {
       updates.parentFolderId = targetParentId
     }
@@ -203,7 +204,7 @@ export function FolderEditModal() {
 
   const getTitle = () => {
     const f = folder()
-    if (!f) return 'Edit Folder'
+    if (!f) return "Edit Folder"
     return `Edit ${f.folderName}`
   }
 
@@ -217,7 +218,9 @@ export function FolderEditModal() {
         <Show when={!showDeleteConfirm()}>
           <div class="space-y-6">
             {/* Name Field */}
-            <TextField validationState={stableValidationState() as 'valid' | 'invalid'}>
+            <TextField
+              validationState={stableValidationState() as "valid" | "invalid"}
+            >
               <TextFieldLabel>Name</TextFieldLabel>
               <div class="relative">
                 <TextFieldInput
@@ -226,14 +229,14 @@ export function FolderEditModal() {
                   onInput={(e) => setName(e.currentTarget.value)}
                   onBlur={() => setShowValidation(true)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' && isEditingName()) {
+                    if (e.key === "Enter" && isEditingName()) {
                       setIsEditingName(false)
                     }
                   }}
                   placeholder="Folder name"
                   maxLength={NAME_MAX_LENGTH}
                   disabled={!isEditingName()}
-                  class={`pr-12 focus-visible:ring focus-visible:ring-amber-500 ${!isEditingName() ? 'bg-muted/50 cursor-default' : ''}`}
+                  class={`pr-12 focus-visible:ring focus-visible:ring-amber-500 ${!isEditingName() ? "bg-muted/50 cursor-default" : ""}`}
                 />
                 <div class="absolute top-1/2 right-2 flex -translate-y-1/2 gap-1">
                   <Show when={!isEditingName()}>
@@ -279,7 +282,9 @@ export function FolderEditModal() {
 
             {/* Location Field */}
             <div class="space-y-3">
-              <label class="text-foreground text-sm font-medium">Location</label>
+              <label class="text-foreground text-sm font-medium">
+                Location
+              </label>
 
               <div class="bg-muted/20 border-card-foreground/70 space-y-3 rounded-lg border p-3 backdrop-blur-sm">
                 <LocationSelector

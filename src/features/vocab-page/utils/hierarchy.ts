@@ -1,5 +1,5 @@
-import type { UnifiedFolder } from 'convex/model/folders'
-import type { UnifiedDeck } from 'convex/model/decks'
+import type { UnifiedFolder } from "convex/model/folders"
+import type { UnifiedDeck } from "convex/model/decks"
 
 // ===== Core Filtering =====
 
@@ -11,15 +11,24 @@ export function getRootDecks(decks: UnifiedDeck[]): UnifiedDeck[] {
   return decks.filter((d) => !d.folderId)
 }
 
-export function getFolderChildren(folders: UnifiedFolder[], parentId: string): UnifiedFolder[] {
+export function getFolderChildren(
+  folders: UnifiedFolder[],
+  parentId: string,
+): UnifiedFolder[] {
   return folders.filter((f) => f.parentFolderId === parentId)
 }
 
-export function getDecksInFolder(decks: UnifiedDeck[], folderId: string): UnifiedDeck[] {
+export function getDecksInFolder(
+  decks: UnifiedDeck[],
+  folderId: string,
+): UnifiedDeck[] {
   return decks.filter((d) => d.folderId === folderId)
 }
 
-export function getFolderPath(folderId: string, folders: UnifiedFolder[]): UnifiedFolder[] {
+export function getFolderPath(
+  folderId: string,
+  folders: UnifiedFolder[],
+): UnifiedFolder[] {
   const path: UnifiedFolder[] = []
   let current = folders.find((f) => f.id === folderId)
   while (current) {
@@ -34,21 +43,21 @@ export function getFolderPath(folderId: string, folders: UnifiedFolder[]): Unifi
 // ===== HierarchyNode =====
 
 export type HierarchyNode =
-  | { type: 'folder'; id: string; data: UnifiedFolder }
-  | { type: 'deck'; id: string; data: UnifiedDeck }
+  | { type: "folder"; id: string; data: UnifiedFolder }
+  | { type: "deck"; id: string; data: UnifiedDeck }
 
 export function getRootLevelItems(
   folders: UnifiedFolder[],
-  decks: UnifiedDeck[]
+  decks: UnifiedDeck[],
 ): HierarchyNode[] {
   const items: HierarchyNode[] = []
 
   for (const folder of getRootFolders(folders)) {
-    items.push({ type: 'folder', id: folder.id, data: folder })
+    items.push({ type: "folder", id: folder.id, data: folder })
   }
 
   for (const deck of getRootDecks(decks)) {
-    items.push({ type: 'deck', id: deck.id, data: deck })
+    items.push({ type: "deck", id: deck.id, data: deck })
   }
 
   return items
@@ -57,16 +66,16 @@ export function getRootLevelItems(
 export function getFolderLevelItems(
   folders: UnifiedFolder[],
   decks: UnifiedDeck[],
-  folderId: string
+  folderId: string,
 ): HierarchyNode[] {
   const items: HierarchyNode[] = []
 
   for (const folder of getFolderChildren(folders, folderId)) {
-    items.push({ type: 'folder', id: folder.id, data: folder })
+    items.push({ type: "folder", id: folder.id, data: folder })
   }
 
   for (const deck of getDecksInFolder(decks, folderId)) {
-    items.push({ type: 'deck', id: deck.id, data: deck })
+    items.push({ type: "deck", id: deck.id, data: deck })
   }
 
   return items

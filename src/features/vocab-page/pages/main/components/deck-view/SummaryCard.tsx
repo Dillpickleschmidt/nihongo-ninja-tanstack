@@ -1,5 +1,5 @@
-import { Show } from 'solid-js'
-import { LoaderCircle } from 'lucide-solid'
+import { Show } from "solid-js"
+import { LoaderCircle } from "lucide-solid"
 
 type SummaryCardProps = {
   label: string

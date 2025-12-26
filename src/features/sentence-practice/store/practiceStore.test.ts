@@ -76,6 +76,8 @@ describe("getUserAnswer in easy mode", () => {
 
     const answer = store.computed.getUserAnswer()
     // Kana for segments with furigana, katakana stays as-is (no furigana to convert)
-    expect(answer).toBe("きゅうりょうをもらったらショッピングモールにいきましょう")
+    expect(answer).toBe(
+      "きゅうりょうをもらったらショッピングモールにいきましょう",
+    )
   })
 })

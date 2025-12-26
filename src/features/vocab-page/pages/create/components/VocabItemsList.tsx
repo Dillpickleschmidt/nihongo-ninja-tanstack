@@ -1,8 +1,8 @@
-import { For } from 'solid-js'
-import { Plus } from 'lucide-solid'
-import { Button } from '@/components/ui/button'
-import { useDeckCreationStore } from '../context/DeckCreationStoreContext'
-import { VocabItemEditor } from './VocabItemEditor'
+import { For } from "solid-js"
+import { Plus } from "lucide-solid"
+import { Button } from "@/components/ui/button"
+import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
+import { VocabItemEditor } from "./VocabItemEditor"
 
 export function VocabItemsList() {
   const { store, actions } = useDeckCreationStore()

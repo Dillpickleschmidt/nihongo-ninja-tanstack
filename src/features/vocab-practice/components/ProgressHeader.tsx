@@ -5,7 +5,8 @@ type Props = {
 }
 
 export function ProgressHeader(props: Props) {
-  const percentage = () => (props.total > 0 ? (props.completed / props.total) * 100 : 0)
+  const percentage = () =>
+    props.total > 0 ? (props.completed / props.total) * 100 : 0
 
   return (
     <div class="mb-4 px-4 pt-4">

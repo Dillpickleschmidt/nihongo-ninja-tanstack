@@ -1,14 +1,22 @@
-import { Show } from 'solid-js'
-import { Download, Users, Crown, SquarePen, FileText, Share, Eye } from 'lucide-solid'
-import { useNavigate } from '@tanstack/solid-router'
-import { Button } from '@/components/ui/button'
+import { Show } from "solid-js"
+import {
+  Download,
+  Users,
+  Crown,
+  SquarePen,
+  FileText,
+  Share,
+  Eye,
+} from "lucide-solid"
+import { useNavigate } from "@tanstack/solid-router"
+import { Button } from "@/components/ui/button"
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from '@/components/ui/popover'
-import { useVocab } from '../../context/VocabContext'
-import type { SharedDeckInfo } from 'convex/model/sharing'
+} from "@/components/ui/popover"
+import { useVocab } from "../../context/VocabContext"
+import type { SharedDeckInfo } from "convex/model/sharing"
 
 interface SharedDeckCardProps {
   deck: SharedDeckInfo
@@ -30,7 +38,7 @@ export function SharedDeckCard(props: SharedDeckCardProps) {
   }
 
   const handleRename = () => {
-    const newName = window.prompt('Enter new deck name:', props.deck.deckName)
+    const newName = window.prompt("Enter new deck name:", props.deck.deckName)
     if (newName && newName.trim() && newName.trim() !== props.deck.deckName) {
       ctx.updateDeck(props.deck.deckId as string, { deckName: newName.trim() })
     }
@@ -38,10 +46,11 @@ export function SharedDeckCard(props: SharedDeckCardProps) {
 
   return (
     <div
-      class={`relative rounded-xl border shadow-md backdrop-blur-sm transition-all duration-200 hover:shadow-lg ${props.isOwnDeck
-        ? `border-amber-400/50 ring-1 ring-amber-400/20 ${(props.index + 1) % 2 === 0 ? 'bg-card/60' : 'bg-card/50'}`
-        : `border-card-foreground/70 ${(props.index + 1) % 2 === 0 ? 'bg-card/60' : 'bg-card/50'}`
-        }`}
+      class={`relative rounded-xl border shadow-md backdrop-blur-sm transition-all duration-200 hover:shadow-lg ${
+        props.isOwnDeck
+          ? `border-amber-400/50 ring-1 ring-amber-400/20 ${(props.index + 1) % 2 === 0 ? "bg-card/60" : "bg-card/50"}`
+          : `border-card-foreground/70 ${(props.index + 1) % 2 === 0 ? "bg-card/60" : "bg-card/50"}`
+      }`}
     >
       <div class="p-4">
         <div class="flex items-start justify-between">
@@ -66,16 +75,17 @@ export function SharedDeckCard(props: SharedDeckCardProps) {
             {/* Metadata */}
             <div class="flex flex-wrap items-center gap-3">
               <div
-                class={`flex items-center gap-1.5 rounded-md border px-2 py-1 backdrop-blur-sm ${props.isOwnDeck
-                  ? 'border-amber-400/30 bg-amber-100/20'
-                  : 'border-card-foreground/50 bg-background/40'
-                  }`}
+                class={`flex items-center gap-1.5 rounded-md border px-2 py-1 backdrop-blur-sm ${
+                  props.isOwnDeck
+                    ? "border-amber-400/30 bg-amber-100/20"
+                    : "border-card-foreground/50 bg-background/40"
+                }`}
               >
                 <Users
-                  class={`h-3 w-3 ${props.isOwnDeck ? 'text-amber-400' : 'text-sky-400'}`}
+                  class={`h-3 w-3 ${props.isOwnDeck ? "text-amber-400" : "text-sky-400"}`}
                 />
                 <span class="text-xs font-medium">
-                  {props.isOwnDeck ? 'You' : 'Community'}
+                  {props.isOwnDeck ? "You" : "Community"}
                 </span>
               </div>
 

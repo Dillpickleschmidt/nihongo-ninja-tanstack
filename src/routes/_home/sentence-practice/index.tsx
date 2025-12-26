@@ -1,4 +1,11 @@
-import { For, Show, createMemo, createSignal, onMount, onCleanup } from "solid-js"
+import {
+  For,
+  Show,
+  createMemo,
+  createSignal,
+  onMount,
+  onCleanup,
+} from "solid-js"
 import { createFileRoute, Link } from "@tanstack/solid-router"
 import { useMutation } from "convex-solidjs"
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
@@ -16,18 +23,21 @@ import { dynamic_modules, type DynamicModule } from "@/data/dynamic_modules"
 import { chapters, type LearningPathChapter } from "@/data/chapters"
 import { textbooks } from "@/data/textbooks"
 import { Sidebar } from "@/features/sidebar/Sidebar"
-import { getUser } from '@/lib/auth'
+import { getUser } from "@/lib/auth"
 import { useConvexQuery, convexQuery } from "@/lib/convex-query"
-import { useQueryClient } from '@tanstack/solid-query'
+import { useQueryClient } from "@tanstack/solid-query"
 import { queryKeys } from "~/query/query-keys"
 import { api } from "../../../../convex/_generated/api"
-import { getInitialAnimationStyles, observeElementForAnimation } from "@/utils/animations"
+import {
+  getInitialAnimationStyles,
+  observeElementForAnimation,
+} from "@/utils/animations"
 
 export const Route = createFileRoute("/_home/sentence-practice/")({
   loader: ({ context }) => {
     // Prefetch user profile for instant data on navigation
     context.queryClient.prefetchQuery(
-      convexQuery(api.api.profiles.getProfile, {})
+      convexQuery(api.api.profiles.getProfile, {}),
     )
   },
   component: SentencePracticeList,
@@ -49,11 +59,9 @@ function SentencePracticeList() {
   })
 
   // Fetch user profile with preferences
-  const profileQuery = useConvexQuery(
-    api.api.profiles.getProfile,
-    {},
-    () => ({ enabled: !!user() })
-  )
+  const profileQuery = useConvexQuery(api.api.profiles.getProfile, {}, () => ({
+    enabled: !!user(),
+  }))
 
   // Search state
   const [search, setSearch] = createSignal("")
@@ -69,7 +77,10 @@ function SentencePracticeList() {
   const availableTextbooks = createMemo(() =>
     Object.entries(textbooks)
       .filter(([textbookId]) => textbookId !== "getting_started")
-      .map(([id, textbook]) => ({ id, name: textbook.short_name || textbook.name }))
+      .map(([id, textbook]) => ({
+        id,
+        name: textbook.short_name || textbook.name,
+      })),
   )
 
   // Group modules by chapter
@@ -87,7 +98,9 @@ function SentencePracticeList() {
         if (itemId.startsWith("sentence-practice-")) {
           const module = dynamic_modules[itemId]
           if (module) {
-            chapterModules.push(enrichModule({ id: itemId, ...module }, chapterSlug))
+            chapterModules.push(
+              enrichModule({ id: itemId, ...module }, chapterSlug),
+            )
           }
         }
       })
@@ -106,20 +119,20 @@ function SentencePracticeList() {
     if (!q) return groupedByChapter()
 
     return groupedByChapter()
-      .map(group => ({
+      .map((group) => ({
         ...group,
         modules: group.modules.filter(
           (m) =>
             m.title.toLowerCase().includes(q) ||
             (m.description || "").toLowerCase().includes(q) ||
             m.id.toLowerCase().includes(q),
-        )
+        ),
       }))
-      .filter(group => group.modules.length > 0)
+      .filter((group) => group.modules.length > 0)
   })
 
   const totalModules = createMemo(() =>
-    groupedByChapter().reduce((acc, g) => acc + g.modules.length, 0)
+    groupedByChapter().reduce((acc, g) => acc + g.modules.length, 0),
   )
 
   return (
@@ -135,20 +148,27 @@ function SentencePracticeList() {
             <Select
               value={activeLearningPath()}
               onChange={(value) => {
-                updateLearningPath.mutate({ field: "activeLearningPath", value })
+                updateLearningPath.mutate({
+                  field: "activeLearningPath",
+                  value,
+                })
               }}
-              options={availableTextbooks().map(t => t.id)}
+              options={availableTextbooks().map((t) => t.id)}
               placeholder="Select textbook"
               itemComponent={(props) => (
                 <SelectItem item={props.item}>
-                  {availableTextbooks().find(t => t.id === props.item.rawValue)?.name || "Select textbook"}
+                  {availableTextbooks().find(
+                    (t) => t.id === props.item.rawValue,
+                  )?.name || "Select textbook"}
                 </SelectItem>
               )}
             >
               <SelectTrigger class="bg-background/40 w-[180px]">
                 <SelectValue<string>>
                   {(state) => {
-                    const tb = availableTextbooks().find(t => t.id === state.selectedOption())
+                    const tb = availableTextbooks().find(
+                      (t) => t.id === state.selectedOption(),
+                    )
                     return tb?.name || "Select textbook"
                   }}
                 </SelectValue>
@@ -171,7 +191,8 @@ function SentencePracticeList() {
               文型練習
             </h1>
             <p class="text-muted-foreground mt-2 max-w-lg text-sm leading-relaxed md:text-base">
-              Master sentence patterns chapter by chapter. Build your understanding progressively.
+              Master sentence patterns chapter by chapter. Build your
+              understanding progressively.
             </p>
           </div>
 
@@ -228,7 +249,9 @@ function SentencePracticeList() {
               <div class="text-muted-foreground py-12 text-center">
                 <Search class="mx-auto mb-3 size-10 opacity-50" />
                 <p>No results for "{search()}"</p>
-                <p class="mt-1 text-sm opacity-70">Try a different search term</p>
+                <p class="mt-1 text-sm opacity-70">
+                  Try a different search term
+                </p>
               </div>
             </Show>
           </Show>
@@ -262,7 +285,8 @@ function ChapterGroupItem(props: { group: ChapterGroup }) {
           {getChapterDisplayNumber(props.group.chapter.slug)}
         </div>
         <span class="text-muted-foreground/60 text-xs">
-          · {props.group.modules.length} {props.group.modules.length === 1 ? "pattern" : "patterns"}
+          · {props.group.modules.length}{" "}
+          {props.group.modules.length === 1 ? "pattern" : "patterns"}
         </span>
       </div>
 
@@ -270,13 +294,18 @@ function ChapterGroupItem(props: { group: ChapterGroup }) {
       <ul class="relative ml-[7px] border-l-2 border-card-foreground/10">
         <For each={props.group.modules}>
           {(m, index) => (
-            <li class={cn("relative", index() !== props.group.modules.length - 1 && "pb-1")}>
+            <li
+              class={cn(
+                "relative",
+                index() !== props.group.modules.length - 1 && "pb-1",
+              )}
+            >
               <Link
                 to={m.linkTo}
                 class={cn(
                   "group flex items-center gap-3 rounded-lg py-2.5 pr-3 pl-6 transition-all duration-150",
                   "hover:bg-amber-500/5",
-                  "focus-visible:outline-none focus-visible:bg-amber-500/10"
+                  "focus-visible:outline-none focus-visible:bg-amber-500/10",
                 )}
               >
                 {/* Timeline dot - vertically centered */}
@@ -311,7 +340,10 @@ type EnrichedSentenceModule = {
   chapterSlug?: string
 }
 
-function enrichModule(mod: { id: string } & DynamicModule, chapterSlug?: string): EnrichedSentenceModule {
+function enrichModule(
+  mod: { id: string } & DynamicModule,
+  chapterSlug?: string,
+): EnrichedSentenceModule {
   const strippedId = mod.id.replace(/^sentence-practice-/, "")
   return {
     id: mod.id,

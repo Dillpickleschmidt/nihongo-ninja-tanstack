@@ -1,9 +1,9 @@
-import { For, Show } from 'solid-js'
-import { VocabularyCard } from '@/features/vocab-page/pages/main/components/deck-view/VocabularyCard'
+import { For, Show } from "solid-js"
+import { VocabularyCard } from "@/features/vocab-page/pages/main/components/deck-view/VocabularyCard"
 import {
   formDataToVocabularyItem,
   type VocabItemFormData,
-} from '@/features/vocab-page/types/vocabulary'
+} from "@/features/vocab-page/types/vocabulary"
 
 interface VocabPreviewProps {
   vocabularyItems: VocabItemFormData[]
@@ -25,7 +25,10 @@ export function VocabPreview(props: VocabPreviewProps) {
       <div class="space-y-4">
         <For each={props.vocabularyItems}>
           {(item, index) => (
-            <VocabularyCard item={formDataToVocabularyItem(item)} index={index()} />
+            <VocabularyCard
+              item={formDataToVocabularyItem(item)}
+              index={index()}
+            />
           )}
         </For>
       </div>

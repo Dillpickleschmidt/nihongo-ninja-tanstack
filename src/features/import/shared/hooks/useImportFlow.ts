@@ -18,10 +18,16 @@ export function useImportFlow(options: UseImportFlowOptions) {
   const overrides = useStatusOverrides()
 
   const [showUndoDialog, setShowUndoDialog] = createSignal(false)
-  const [pendingUndoItem, setPendingUndoItem] = createSignal<OverrideItem | null>(null)
+  const [pendingUndoItem, setPendingUndoItem] =
+    createSignal<OverrideItem | null>(null)
 
-  const getOverrideStatus = (key: string, type: PracticeItemType): ItemStatus | undefined =>
-    overrides.hasOverride(key, type) ? overrides.getOverride(key, type) : undefined
+  const getOverrideStatus = (
+    key: string,
+    type: PracticeItemType,
+  ): ItemStatus | undefined =>
+    overrides.hasOverride(key, type)
+      ? overrides.getOverride(key, type)
+      : undefined
 
   /** Call inside onMount */
   const setupClickOutside = () => {
@@ -41,9 +47,11 @@ export function useImportFlow(options: UseImportFlowOptions) {
   }
 
   const countSelectedAtOrAbove = (status: ItemStatus): number => {
-    return selection.selectedPairs().filter(({ key, type }) =>
-      isAtOrAboveStatus(options.getBaseStatus(key, type), status)
-    ).length
+    return selection
+      .selectedPairs()
+      .filter(({ key, type }) =>
+        isAtOrAboveStatus(options.getBaseStatus(key, type), status),
+      ).length
   }
 
   /** Applies status to selected items, skipping those already at or above target */
@@ -51,8 +59,9 @@ export function useImportFlow(options: UseImportFlowOptions) {
     const items = selection.selectedPairs()
     if (items.length === 0) return
 
-    const itemsToApply = items.filter(({ key, type }) =>
-      !isAtOrAboveStatus(options.getBaseStatus(key, type), status)
+    const itemsToApply = items.filter(
+      ({ key, type }) =>
+        !isAtOrAboveStatus(options.getBaseStatus(key, type), status),
     )
     if (itemsToApply.length === 0) {
       selection.resetSelection()
@@ -72,11 +81,21 @@ export function useImportFlow(options: UseImportFlowOptions) {
   }
 
   /** Handle undo click - shows dialog if multiple selected, otherwise undoes single item */
-  const handleUndoClick = (_e: MouseEvent, key: string, type: PracticeItemType) => {
+  const handleUndoClick = (
+    _e: MouseEvent,
+    key: string,
+    type: PracticeItemType,
+  ) => {
     const items = selection.selectedPairs()
-    const selectedWithOverrides = items.filter((item) => overrides.hasOverride(item.key, item.type))
+    const selectedWithOverrides = items.filter((item) =>
+      overrides.hasOverride(item.key, item.type),
+    )
 
-    if (items.length > 1 && selection.isSelected(key) && selectedWithOverrides.length > 0) {
+    if (
+      items.length > 1 &&
+      selection.isSelected(key) &&
+      selectedWithOverrides.length > 0
+    ) {
       setPendingUndoItem({ key, type })
       setShowUndoDialog(true)
     } else {
@@ -93,7 +112,9 @@ export function useImportFlow(options: UseImportFlowOptions) {
 
   const handleUndoSelected = () => {
     const items = selection.selectedPairs()
-    const itemsWithOverrides = items.filter((item) => overrides.hasOverride(item.key, item.type))
+    const itemsWithOverrides = items.filter((item) =>
+      overrides.hasOverride(item.key, item.type),
+    )
     overrides.clearOverrides(itemsWithOverrides)
     setShowUndoDialog(false)
     setPendingUndoItem(null)
@@ -101,8 +122,11 @@ export function useImportFlow(options: UseImportFlowOptions) {
   }
 
   /** For undo dialog */
-  const undoDialogSelectedCount = createMemo(() =>
-    selection.selectedPairs().filter((item) => overrides.hasOverride(item.key, item.type)).length
+  const undoDialogSelectedCount = createMemo(
+    () =>
+      selection
+        .selectedPairs()
+        .filter((item) => overrides.hasOverride(item.key, item.type)).length,
   )
 
   return {

@@ -1,6 +1,6 @@
-import { createFileRoute } from '@tanstack/solid-router'
+import { createFileRoute } from "@tanstack/solid-router"
 
-export const Route = createFileRoute('/_home/review')({
+export const Route = createFileRoute("/_home/review")({
   component: RouteComponent,
 })
 

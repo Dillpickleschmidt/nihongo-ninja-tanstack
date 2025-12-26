@@ -5,7 +5,9 @@ import SelectText from "@/components/text/MultipleChoiceText"
 import Romaji from "@/components/text/Romaji"
 import YouTubeVideo from "@/features/youtube/YouTube"
 
-export const Route = createFileRoute("/_home/lessons/_chapter-2/ne-yo-particles")({
+export const Route = createFileRoute(
+  "/_home/lessons/_chapter-2/ne-yo-particles",
+)({
   loader: async () => ({
     contentBox: { nextButtonLink: "/lessons/_chapter-2/kikusasaizu-2-2" },
   }),

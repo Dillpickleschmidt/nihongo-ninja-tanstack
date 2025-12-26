@@ -7,7 +7,10 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
-import { getPosCategory, type PosCategorySimplified } from "@/data/utils/vocabulary/part-of-speech"
+import {
+  getPosCategory,
+  type PosCategorySimplified,
+} from "@/data/utils/vocabulary/part-of-speech"
 import { JLPT_SETS } from "../consts"
 import { useSectionItems } from "../../shared/hooks/useSectionItems"
 import type { ItemStatus } from "../../shared/status"
@@ -24,24 +27,37 @@ export function VocabSection(props: {
   level: string
   isSelected: (key: string) => boolean
   onToggleAll: (items: VocabularyItem[], checked: boolean) => void
-  onItemClick: (e: MouseEvent, id: string, type: PracticeItemType, groupIds: string[]) => void
-  onPointerDown: (e: PointerEvent, id: string, type: PracticeItemType, groupIds: string[]) => void
-  getOverrideStatus: (key: string, type: PracticeItemType) => ItemStatus | undefined
+  onItemClick: (
+    e: MouseEvent,
+    id: string,
+    type: PracticeItemType,
+    groupIds: string[],
+  ) => void
+  onPointerDown: (
+    e: PointerEvent,
+    id: string,
+    type: PracticeItemType,
+    groupIds: string[],
+  ) => void
+  getOverrideStatus: (
+    key: string,
+    type: PracticeItemType,
+  ) => ItemStatus | undefined
   onUndoClick: (e: MouseEvent, key: string, type: PracticeItemType) => void
 }) {
-  const vocabQuery = useConvexQuery(
-    api.api.vocabulary.getBySets,
-    () => ({ setIds: [...JLPT_SETS] })
-  )
+  const vocabQuery = useConvexQuery(api.api.vocabulary.getBySets, () => ({
+    setIds: [...JLPT_SETS],
+  }))
 
   const items = () => vocabQuery.data()?.[props.level.toLowerCase()]
 
-  const { allKeys, getStoredStatus, allSelected, selectedCount } = useSectionItems({
-    items,
-    getKey: (i) => i.key,
-    type: "vocabulary",
-    isSelected: props.isSelected,
-  })
+  const { allKeys, getStoredStatus, allSelected, selectedCount } =
+    useSectionItems({
+      items,
+      getKey: (i) => i.key,
+      type: "vocabulary",
+      isSelected: props.isSelected,
+    })
 
   return (
     <Show
@@ -66,7 +82,7 @@ export function VocabSection(props: {
         })
 
         const nonEmptyCategories = createMemo(() =>
-          POS_CATEGORIES.filter((c) => grouped()[c.key].length > 0)
+          POS_CATEGORIES.filter((c) => grouped()[c.key].length > 0),
         )
 
         return (
@@ -99,8 +115,14 @@ export function VocabSection(props: {
                               sublabel={item.english[0]}
                               checked={props.isSelected(item.key)}
                               importStatus={null}
-                              storedStatus={getStoredStatus(item.key, "vocabulary")}
-                              overrideStatus={props.getOverrideStatus(item.key, "vocabulary")}
+                              storedStatus={getStoredStatus(
+                                item.key,
+                                "vocabulary",
+                              )}
+                              overrideStatus={props.getOverrideStatus(
+                                item.key,
+                                "vocabulary",
+                              )}
                               allIds={allKeys()}
                               onItemClick={props.onItemClick}
                               onPointerDown={props.onPointerDown}

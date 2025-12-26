@@ -32,20 +32,12 @@ export function ChapterSection(props: ChapterSectionProps) {
   })
 
   return (
-    <div
-      ref={ref}
-      class="mb-12"
-      style={getInitialAnimationStyles("down")}
-    >
+    <div ref={ref} class="mb-12" style={getInitialAnimationStyles("down")}>
       {/* Chapter Header */}
       <div class="mb-6">
-        <h2 class="text-2xl font-bold mb-2">
-          {props.chapter.title}
-        </h2>
+        <h2 class="text-2xl font-bold mb-2">{props.chapter.title}</h2>
         <Show when={props.chapter.description}>
-          <p class="text-neutral-300 max-w-3xl">
-            {props.chapter.description}
-          </p>
+          <p class="text-neutral-300 max-w-3xl">{props.chapter.description}</p>
         </Show>
       </div>
 

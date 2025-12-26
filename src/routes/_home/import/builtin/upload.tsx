@@ -16,7 +16,8 @@ type Step = "upload" | "review"
 function UploadHistoryPage() {
   const queryClient = useQueryClient()
   const [step, setStep] = createSignal<Step>("upload")
-  const [processedResult, setProcessedResult] = createSignal<JpdbProcessResult | null>(null)
+  const [processedResult, setProcessedResult] =
+    createSignal<JpdbProcessResult | null>(null)
 
   onMount(() => {
     queryClient.setQueryData(queryKeys.backgroundSettings(), {
@@ -62,10 +63,7 @@ function UploadHistoryPage() {
                   handleBack()
                 }}
               />
-              <JpdbResultsView
-                result={result()}
-                onBack={handleBack}
-              />
+              <JpdbResultsView result={result()} onBack={handleBack} />
             </>
           )}
         </Show>

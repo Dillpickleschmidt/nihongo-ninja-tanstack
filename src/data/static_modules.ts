@@ -2,18 +2,18 @@ export interface StaticModule {
   title: string
   link: string
   module_type:
-  | "grammar-notes"
-  | "chapter-vocab-overview"
-  | "lesson"
-  | "vocab-test"
-  | "conjugation-practice"
-  | "counter-practice"
-  | "worksheet"
-  | "video"
-  | "audio"
-  | "reading"
-  | "culture-note"
-  | "game"
+    | "grammar-notes"
+    | "chapter-vocab-overview"
+    | "lesson"
+    | "vocab-test"
+    | "conjugation-practice"
+    | "counter-practice"
+    | "worksheet"
+    | "video"
+    | "audio"
+    | "reading"
+    | "culture-note"
+    | "game"
   description?: string
   daily_prog_amount?: number
 }

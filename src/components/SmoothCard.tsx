@@ -87,15 +87,17 @@ function useSmoothCardInternals(
   // Make these reactive getters so they update when props change
   const scaledWidth = () => props.width * getCurrentScale()
   const scaledHeight = () => props.height * getCurrentScale()
-  const scaledCornerRadius = () => (props.cornerRadius || 20) * getCurrentScale()
+  const scaledCornerRadius = () =>
+    (props.cornerRadius || 20) * getCurrentScale()
 
-  const svgPath = () => getSvgPath({
-    width: scaledWidth(),
-    height: scaledHeight(),
-    cornerRadius: scaledCornerRadius(),
-    cornerSmoothing: props.cornerSmoothing || 1,
-    preserveSmoothing: true,
-  })
+  const svgPath = () =>
+    getSvgPath({
+      width: scaledWidth(),
+      height: scaledHeight(),
+      cornerRadius: scaledCornerRadius(),
+      cornerSmoothing: props.cornerSmoothing || 1,
+      preserveSmoothing: true,
+    })
 
   const combinedStyle = () => ({
     width: `${scaledWidth()}px`,
@@ -144,10 +146,7 @@ function SmoothCardContent(props: SmoothCardContentProps) {
     <>
       <div
         style={props.internals.combinedStyle()}
-        class={cn(
-          "shadow-sm shadow-black/5 dark:shadow-black/20",
-          props.class,
-        )}
+        class={cn("shadow-sm shadow-black/5 dark:shadow-black/20", props.class)}
       >
         {props.children}
       </div>

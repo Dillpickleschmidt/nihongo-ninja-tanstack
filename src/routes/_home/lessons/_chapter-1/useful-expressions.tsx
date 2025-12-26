@@ -6,10 +6,14 @@ import { api } from "convex/_generated/api"
 import MultipleChoiceText from "@/components/text/MultipleChoiceText"
 import { VocabularyCard } from "@/features/vocab-page/pages/main/components/deck-view/VocabularyCard"
 
-export const Route = createFileRoute("/_home/lessons/_chapter-1/useful-expressions")({
+export const Route = createFileRoute(
+  "/_home/lessons/_chapter-1/useful-expressions",
+)({
   loader: async () => {
     const setId = "genki_1_ch1_useful-expressions"
-    const { queryFn } = convexQuery(api.api.vocabulary.getBySets, { setIds: [setId] })
+    const { queryFn } = convexQuery(api.api.vocabulary.getBySets, {
+      setIds: [setId],
+    })
     const result = await queryFn()
     const vocabItems = result[setId] ?? []
     return {

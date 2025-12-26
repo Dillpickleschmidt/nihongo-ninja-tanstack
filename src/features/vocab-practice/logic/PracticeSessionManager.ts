@@ -1,7 +1,7 @@
 // vocab-practice/logic/PracticeSessionManager.ts
-import { Grade } from 'ts-fsrs'
-import type { PracticeSessionState, PracticeCard } from '../types'
-import { handleCardAnswer } from './card-state-handler'
+import { Grade } from "ts-fsrs"
+import type { PracticeSessionState, PracticeCard } from "../types"
+import { handleCardAnswer } from "./card-state-handler"
 
 const ACTIVE_QUEUE_MAX_SIZE = 10
 

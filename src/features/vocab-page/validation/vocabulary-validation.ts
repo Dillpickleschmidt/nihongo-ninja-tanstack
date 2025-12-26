@@ -1,11 +1,11 @@
 // Vocabulary item validation schemas and utilities
-import { z } from 'zod'
-import { RequiredStringSchema, NonEmptyStringArraySchema } from './constants'
+import { z } from "zod"
+import { RequiredStringSchema, NonEmptyStringArraySchema } from "./constants"
 
 // Reusable English meanings schema
 const EnglishMeaningsSchema = NonEmptyStringArraySchema.refine(
   (arr) => arr.some((meaning) => meaning.trim().length > 0),
-  'At least one English meaning is required'
+  "At least one English meaning is required",
 )
 
 // Base vocabulary item validation schema (internal only)
@@ -24,7 +24,7 @@ const VocabItemFormDataSchema = BaseVocabItemSchema.extend({
       z.object({
         particle: z.string(),
         label: z.string().optional(),
-      })
+      }),
     )
     .default([]),
   examples: z
@@ -32,7 +32,7 @@ const VocabItemFormDataSchema = BaseVocabItemSchema.extend({
       z.object({
         japanese: z.string(),
         english: z.string(),
-      })
+      }),
     )
     .default([]),
   readingMnemonics: z.array(z.string()).default([]),

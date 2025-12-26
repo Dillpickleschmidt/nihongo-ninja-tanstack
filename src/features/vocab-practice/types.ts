@@ -1,17 +1,17 @@
-import type { Card as FSRSCard, ReviewLog } from 'ts-fsrs'
+import type { Card as FSRSCard, ReviewLog } from "ts-fsrs"
 import type {
   RichVocabItem,
   PracticeMode,
   PracticeItemType,
-} from 'convex/validators'
+} from "convex/validators"
 
 // Session card UI state
 export type SessionCardStyle =
-  | 'multiple-choice'
-  | 'write'
-  | 'flashcard'
-  | 'introduction'
-  | 'done'
+  | "multiple-choice"
+  | "write"
+  | "flashcard"
+  | "introduction"
+  | "done"
 
 // FSRS card + logs wrapper
 export type FSRSInfo = {
@@ -29,7 +29,7 @@ export type PracticeCard = {
   sessionStyle: SessionCardStyle
   prompt: string
   validAnswers: string[]
-  sessionScope: 'module' | 'review'
+  sessionScope: "module" | "review"
   isDisabled: boolean
 }
 

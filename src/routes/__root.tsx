@@ -1,33 +1,36 @@
 /// <reference types="vite/client" />
-import type { JSX } from 'solid-js'
-import { createEffect } from 'solid-js'
-import { HydrationScript, Suspense, isServer } from 'solid-js/web'
+import type { JSX } from "solid-js"
+import { createEffect } from "solid-js"
+import { HydrationScript, Suspense, isServer } from "solid-js/web"
 import {
   HeadContent,
   Outlet,
   Scripts,
   createRootRouteWithContext,
-} from '@tanstack/solid-router'
+} from "@tanstack/solid-router"
 import {
   ColorModeProvider,
   ColorModeScript,
   cookieStorageManagerSSR,
-} from '@kobalte/core'
+} from "@kobalte/core"
 import {
   QueryClientProvider,
   useQuery,
   useQueryClient,
-} from '@tanstack/solid-query'
-import type { QueryClient } from '@tanstack/solid-query'
-import { createMediaQuery } from '@solid-primitives/media'
-import '@fontsource-variable/inter'
-import '@fontsource/poppins'
-import appCss from '@/styles/app.css?url'
-import AppConvexProvider, { convexQueryClient } from '@/providers/convex'
+} from "@tanstack/solid-query"
+import type { QueryClient } from "@tanstack/solid-query"
+import { createMediaQuery } from "@solid-primitives/media"
+import "@fontsource-variable/inter"
+import "@fontsource/poppins"
+import appCss from "@/styles/app.css?url"
+import AppConvexProvider, { convexQueryClient } from "@/providers/convex"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { SolidQueryDevtools } from "@tanstack/solid-query-devtools"
-import { authQueryOptions, deviceSettingsQueryOptions } from '@/query/query-options'
-import { updateDeviceSettingsCookie } from '@/query/model/device-settings'
+import {
+  authQueryOptions,
+  deviceSettingsQueryOptions,
+} from "@/query/query-options"
+import { updateDeviceSettingsCookie } from "@/query/model/device-settings"
 
 export interface RouterContext {
   queryClient: QueryClient
@@ -36,10 +39,10 @@ export interface RouterContext {
 export const Route = createRootRouteWithContext<RouterContext>()({
   head: () => ({
     meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
     ],
-    links: [{ rel: 'stylesheet', href: appCss }],
+    links: [{ rel: "stylesheet", href: appCss }],
   }),
   beforeLoad: async ({ context }) => {
     context.queryClient.prefetchQuery(deviceSettingsQueryOptions())
@@ -75,14 +78,14 @@ function RootComponent() {
 function RootDocument(props: { children: JSX.Element }) {
   const queryClient = useQueryClient()
   const settingsQuery = useQuery(() => deviceSettingsQueryOptions())
-  const storageManager = cookieStorageManagerSSR('')
+  const storageManager = cookieStorageManagerSSR("")
 
   if (!isServer) {
-    const isDesktop = createMediaQuery('(min-width: 1280px)')
+    const isDesktop = createMediaQuery("(min-width: 1280px)")
     createEffect(() => {
-      const detectedType = isDesktop() ? 'desktop' : 'mobile'
-      if (settingsQuery.data!['device-type'] !== detectedType) {
-        updateDeviceSettingsCookie(queryClient, { 'device-type': detectedType })
+      const detectedType = isDesktop() ? "desktop" : "mobile"
+      if (settingsQuery.data!["device-type"] !== detectedType) {
+        updateDeviceSettingsCookie(queryClient, { "device-type": detectedType })
       }
     })
   }
@@ -96,9 +99,7 @@ function RootDocument(props: { children: JSX.Element }) {
       <body>
         <HeadContent />
         <ColorModeProvider storageManager={storageManager}>
-          <AppConvexProvider>
-            {props.children}
-          </AppConvexProvider>
+          <AppConvexProvider>{props.children}</AppConvexProvider>
         </ColorModeProvider>
         <Scripts />
       </body>

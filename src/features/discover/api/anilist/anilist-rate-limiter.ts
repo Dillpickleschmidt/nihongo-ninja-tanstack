@@ -54,9 +54,7 @@ export function getAniListLimiter(): Bottleneck {
           const retryAfter = error.res.headers.get("retry-after")
           const wait =
             parseRetryAfter(retryAfter) + RETRY_CONFIG.rateLimitBuffer
-          console.log(
-            `[RateLimit] AniList rate limited, retrying in ${wait}ms`,
-          )
+          console.log(`[RateLimit] AniList rate limited, retrying in ${wait}ms`)
           if (jobInfo.retryCount < RETRY_CONFIG.maxRetries) {
             return wait
           }

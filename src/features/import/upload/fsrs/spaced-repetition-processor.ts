@@ -6,7 +6,10 @@ import {
   type Card,
   type ReviewLog,
 } from "ts-fsrs"
-import type { NormalizedReview, FSRSProcessingGrade } from "./processing-schemas"
+import type {
+  NormalizedReview,
+  FSRSProcessingGrade,
+} from "./processing-schemas"
 
 // =============================================================================
 // CONSTANTS AND TYPES

@@ -486,8 +486,8 @@ export function conditional(
       case "verb":
         return [
           reading.slice(0, -1) +
-          changeHiraganaVowel(reading.slice(-1), "e") +
-          "ば",
+            changeHiraganaVowel(reading.slice(-1), "e") +
+            "ば",
         ]
       case "i-adjective":
         return [reading.slice(0, -1) + "ければ"]
@@ -625,8 +625,12 @@ export function normalForm(
   options: ConjugationOptions = {},
 ): string[] {
   // Default these options to false if not provided
-  const { polite = false, negative = false, past = false, adverb = false } =
-    options
+  const {
+    polite = false,
+    negative = false,
+    past = false,
+    adverb = false,
+  } = options
   const form = getForm(partOfSpeech)
 
   if (form === "i-adjective") {
@@ -754,20 +758,20 @@ function deAruNormalForm(options: ConjugationOptions = {}): string[] {
       return !negative
         ? [desu]
         : [
-          dewa + "ありません",
-          dewa + nai + desu,
-          ja + "ありません",
-          ja + nai + desu,
-        ]
+            dewa + "ありません",
+            dewa + nai + desu,
+            ja + "ありません",
+            ja + nai + desu,
+          ]
     } else {
       return !negative
         ? ["でした"]
         : [
-          dewa + "ありませんでした",
-          dewa + "な" + katta + desu,
-          ja + "ありませんでした",
-          ja + "な" + katta + desu,
-        ]
+            dewa + "ありませんでした",
+            dewa + "な" + katta + desu,
+            ja + "ありませんでした",
+            ja + "な" + katta + desu,
+          ]
     }
   } else {
     if (!past) {

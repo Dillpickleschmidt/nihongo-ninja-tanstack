@@ -62,7 +62,9 @@ export function TableOfContents(props: TableOfContentsProps) {
         updateActiveSection()
 
         // Listen for scroll
-        window.addEventListener("scroll", updateActiveSection, { passive: true })
+        window.addEventListener("scroll", updateActiveSection, {
+          passive: true,
+        })
 
         onCleanup(() => {
           window.removeEventListener("scroll", updateActiveSection)
@@ -93,7 +95,7 @@ export function TableOfContents(props: TableOfContentsProps) {
                   class={cn(
                     "hover:text-foreground text-muted-foreground block transition-colors",
                     activeId() === item.id &&
-                    "border-l-primary text-foreground border-l-2 pl-2 font-medium",
+                      "border-l-primary text-foreground border-l-2 pl-2 font-medium",
                   )}
                 >
                   {item.title}

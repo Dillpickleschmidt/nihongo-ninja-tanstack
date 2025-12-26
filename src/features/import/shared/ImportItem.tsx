@@ -18,13 +18,24 @@ export interface ImportItemProps {
   storedStatus: ItemStatus
   overrideStatus?: ItemStatus
   allIds: string[]
-  onItemClick: (e: MouseEvent, id: string, type: PracticeItemType, groupIds: string[]) => void
-  onPointerDown: (e: PointerEvent, id: string, type: PracticeItemType, groupIds: string[]) => void
+  onItemClick: (
+    e: MouseEvent,
+    id: string,
+    type: PracticeItemType,
+    groupIds: string[],
+  ) => void
+  onPointerDown: (
+    e: PointerEvent,
+    id: string,
+    type: PracticeItemType,
+    groupIds: string[],
+  ) => void
   onUndoClick?: (e: MouseEvent, key: string, type: PracticeItemType) => void
 }
 
 export function ImportItem(props: ImportItemProps) {
-  const type = (): PracticeItemType => (props.variant === "vocab" ? "vocabulary" : "kanji")
+  const type = (): PracticeItemType =>
+    props.variant === "vocab" ? "vocabulary" : "kanji"
   const effectiveStatus = () => props.overrideStatus ?? props.importStatus
   const hasOverride = () => props.overrideStatus !== undefined
 
@@ -35,8 +46,25 @@ export function ImportItem(props: ImportItemProps) {
   }
 
   return (
-    <Show when={props.variant === "vocab"} fallback={<KanjiLayout {...props} type={type()} effectiveStatus={effectiveStatus()} hasOverride={hasOverride()} onUndoClick={handleUndoClick} />}>
-      <VocabLayout {...props} type={type()} effectiveStatus={effectiveStatus()} hasOverride={hasOverride()} onUndoClick={handleUndoClick} />
+    <Show
+      when={props.variant === "vocab"}
+      fallback={
+        <KanjiLayout
+          {...props}
+          type={type()}
+          effectiveStatus={effectiveStatus()}
+          hasOverride={hasOverride()}
+          onUndoClick={handleUndoClick}
+        />
+      }
+    >
+      <VocabLayout
+        {...props}
+        type={type()}
+        effectiveStatus={effectiveStatus()}
+        hasOverride={hasOverride()}
+        onUndoClick={handleUndoClick}
+      />
     </Show>
   )
 }
@@ -53,16 +81,22 @@ function VocabLayout(props: LayoutProps) {
     <div
       data-import-item-id={props.id}
       onClick={(e) => props.onItemClick(e, props.id, props.type, props.allIds)}
-      onPointerDown={(e) => props.onPointerDown(e, props.id, props.type, props.allIds)}
+      onPointerDown={(e) =>
+        props.onPointerDown(e, props.id, props.type, props.allIds)
+      }
       class={cn(
         "relative flex cursor-pointer touch-manipulation items-center gap-3 rounded-lg border p-3 transition-colors ease-instant-hover-150 select-none",
         props.checked
           ? "border-(--accent)/30 bg-(--accent)/10"
-          : "border-white/10 bg-white/2 hover:border-white/20"
+          : "border-white/10 bg-white/2 hover:border-white/20",
       )}
     >
       <Show when={props.hasOverride}>
-        <UndoButton onClick={props.onUndoClick} class="top-1 left-1 size-5" iconClass="size-3" />
+        <UndoButton
+          onClick={props.onUndoClick}
+          class="top-1 left-1 size-5"
+          iconClass="size-3"
+        />
       </Show>
 
       <div
@@ -70,7 +104,7 @@ function VocabLayout(props: LayoutProps) {
           "size-4 shrink-0 rounded border transition-colors",
           props.checked
             ? "border-(--accent) bg-(--accent) text-white"
-            : "border-white/30 bg-white/10"
+            : "border-white/30 bg-white/10",
         )}
       >
         {props.checked && <CheckIcon />}
@@ -80,7 +114,10 @@ function VocabLayout(props: LayoutProps) {
         <p class="truncate text-xs text-white/40">{props.sublabel}</p>
       </div>
       <StatusBadge status={props.storedStatus} class="top-1.5 right-1.5" />
-      <MainStatusBadge status={props.effectiveStatus} class="right-1.5 bottom-1.5" />
+      <MainStatusBadge
+        status={props.effectiveStatus}
+        class="right-1.5 bottom-1.5"
+      />
     </div>
   )
 }
@@ -90,16 +127,22 @@ function KanjiLayout(props: LayoutProps) {
     <div
       data-import-item-id={props.id}
       onClick={(e) => props.onItemClick(e, props.id, props.type, props.allIds)}
-      onPointerDown={(e) => props.onPointerDown(e, props.id, props.type, props.allIds)}
+      onPointerDown={(e) =>
+        props.onPointerDown(e, props.id, props.type, props.allIds)
+      }
       class={cn(
         "relative flex aspect-square cursor-pointer touch-manipulation flex-col items-center justify-center rounded-lg border p-2 transition-colors ease-instant-hover-150 select-none",
         props.checked
           ? "border-(--accent)/30 bg-(--accent)/10"
-          : "border-white/10 bg-white/2 hover:border-white/20"
+          : "border-white/10 bg-white/2 hover:border-white/20",
       )}
     >
       <Show when={props.hasOverride}>
-        <UndoButton onClick={props.onUndoClick} class="top-0.5 left-0.5 size-4" iconClass="size-2.5" />
+        <UndoButton
+          onClick={props.onUndoClick}
+          class="top-0.5 left-0.5 size-4"
+          iconClass="size-2.5"
+        />
       </Show>
 
       <Show when={props.checked && !props.hasOverride}>
@@ -123,19 +166,33 @@ function KanjiLayout(props: LayoutProps) {
   )
 }
 
-function UndoButton(props: { onClick: (e: MouseEvent) => void; class: string; iconClass: string }) {
+function UndoButton(props: {
+  onClick: (e: MouseEvent) => void
+  class: string
+  iconClass: string
+}) {
   return (
     <button
       type="button"
       class={cn(
         "absolute z-10 flex items-center justify-center rounded bg-white/10 text-white/50 transition-colors hover:bg-white/20 hover:text-white",
-        props.class
+        props.class,
       )}
       onClick={props.onClick}
       title="Undo override"
     >
-      <svg class={props.iconClass} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+      <svg
+        class={props.iconClass}
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
+        />
       </svg>
     </button>
   )

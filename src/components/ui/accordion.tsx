@@ -14,10 +14,12 @@ type AccordionItemProps<T extends ValidComponent = "div"> =
   }
 
 const AccordionItem = <T extends ValidComponent = "div">(
-  props: PolymorphicProps<T, AccordionItemProps<T>>
+  props: PolymorphicProps<T, AccordionItemProps<T>>,
 ) => {
   const [local, others] = splitProps(props as AccordionItemProps, ["class"])
-  return <AccordionPrimitive.Item class={cn("border-b", local.class)} {...others} />
+  return (
+    <AccordionPrimitive.Item class={cn("border-b", local.class)} {...others} />
+  )
 }
 
 type AccordionTriggerProps<T extends ValidComponent = "button"> =
@@ -27,15 +29,18 @@ type AccordionTriggerProps<T extends ValidComponent = "button"> =
   }
 
 const AccordionTrigger = <T extends ValidComponent = "button">(
-  props: PolymorphicProps<T, AccordionTriggerProps<T>>
+  props: PolymorphicProps<T, AccordionTriggerProps<T>>,
 ) => {
-  const [local, others] = splitProps(props as AccordionTriggerProps, ["class", "children"])
+  const [local, others] = splitProps(props as AccordionTriggerProps, [
+    "class",
+    "children",
+  ])
   return (
     <AccordionPrimitive.Header class="flex">
       <AccordionPrimitive.Trigger
         class={cn(
           "flex flex-1 cursor-pointer items-center justify-between py-4 font-medium transition-all [&[data-expanded]>svg]:rotate-180",
-          local.class
+          local.class,
         )}
         {...others}
       >
@@ -64,14 +69,17 @@ type AccordionContentProps<T extends ValidComponent = "div"> =
   }
 
 const AccordionContent = <T extends ValidComponent = "div">(
-  props: PolymorphicProps<T, AccordionContentProps<T>>
+  props: PolymorphicProps<T, AccordionContentProps<T>>,
 ) => {
-  const [local, others] = splitProps(props as AccordionContentProps, ["class", "children"])
+  const [local, others] = splitProps(props as AccordionContentProps, [
+    "class",
+    "children",
+  ])
   return (
     <AccordionPrimitive.Content
       class={cn(
         "animate-accordion-up overflow-hidden text-sm transition-all data-expanded:animate-accordion-down",
-        local.class
+        local.class,
       )}
       {...others}
     >

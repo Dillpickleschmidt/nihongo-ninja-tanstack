@@ -5,7 +5,9 @@ import Romaji from "@/components/text/Romaji"
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
 import YouTubeVideo from "@/features/youtube/YouTube"
 
-export const Route = createFileRoute("/_home/lessons/_chapter-1/the-no-particle")({
+export const Route = createFileRoute(
+  "/_home/lessons/_chapter-1/the-no-particle",
+)({
   loader: async () => {
     return {
       contentBox: {

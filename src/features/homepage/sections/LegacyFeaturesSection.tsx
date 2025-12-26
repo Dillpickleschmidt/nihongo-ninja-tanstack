@@ -33,8 +33,8 @@ const FEATURES: Feature[] = [
           <span class="font-bold">
             If anything here overlaps with these tools, it's free.
           </span>{" "}
-          If you prefer to use those tools instead, no problemo—you can pick
-          and choose.
+          If you prefer to use those tools instead, no problemo—you can pick and
+          choose.
         </div>
         <div class="mt-3 text-sm italic text-muted-foreground">
           Nihongo Ninja's source-code is also publicly available and
@@ -175,7 +175,10 @@ function FeaturesAccordion() {
         {(point, index) => (
           <AccordionItem value={`item-${index()}`}>
             <AccordionTrigger>
-              <span><span class="text-sm text-pink-300 mr-1.5">{index() + 1}.</span> {point.title}</span>
+              <span>
+                <span class="text-sm text-pink-300 mr-1.5">{index() + 1}.</span>{" "}
+                {point.title}
+              </span>
             </AccordionTrigger>
             <AccordionContent>
               <div class="text-foreground/80 leading-relaxed">

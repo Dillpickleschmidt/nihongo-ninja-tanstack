@@ -1,6 +1,12 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { isServer } from "solid-js/web"
-import { Suspense, createSignal, createEffect, onMount, onCleanup } from "solid-js"
+import {
+  Suspense,
+  createSignal,
+  createEffect,
+  onMount,
+  onCleanup,
+} from "solid-js"
 import { convexQuery } from "@/lib/convex-query"
 import { api } from "../../../convex/_generated/api"
 import { useQueryClient } from "@tanstack/solid-query"
@@ -12,12 +18,14 @@ import { LearningPathSection } from "@/features/dashboard/learning-path/Learning
 
 export const Route = createFileRoute("/_home/dashboard")({
   loader: ({ context }) => {
-    context.queryClient.prefetchQuery(convexQuery(api.api.profiles.getProfile, {}))
     context.queryClient.prefetchQuery(
-      convexQuery(api.api.learning_paths.getAllLearningPaths, {})
+      convexQuery(api.api.profiles.getProfile, {}),
     )
     context.queryClient.prefetchQuery(
-      convexQuery(api.api.fsrs.getDueFSRSCardsCount, {})
+      convexQuery(api.api.learning_paths.getAllLearningPaths, {}),
+    )
+    context.queryClient.prefetchQuery(
+      convexQuery(api.api.fsrs.getDueFSRSCardsCount, {}),
     )
     return { didSSR: isServer }
   },

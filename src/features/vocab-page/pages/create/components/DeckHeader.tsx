@@ -1,5 +1,5 @@
-import { createSignal } from 'solid-js'
-import { Button } from '@/components/ui/button'
+import { createSignal } from "solid-js"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -8,15 +8,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
+} from "@/components/ui/dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Ellipsis } from 'lucide-solid'
-import { useDeckCreationStore } from '../context/DeckCreationStoreContext'
+} from "@/components/ui/dropdown-menu"
+import { Ellipsis } from "lucide-solid"
+import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
 
 interface DeckHeaderProps {
   onClear: () => void
@@ -34,7 +34,7 @@ export function DeckHeader(props: DeckHeaderProps) {
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-2xl leading-tight font-semibold">
-            {isEditMode ? 'Edit Custom Deck' : 'Create a Custom Deck'}
+            {isEditMode ? "Edit Custom Deck" : "Create a Custom Deck"}
           </h1>
           <p class="text-muted-foreground text-sm">
             Build vocabulary with translations, examples, and more.
@@ -81,13 +81,13 @@ export function DeckHeader(props: DeckHeaderProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem onSelect={() => { }}>
+              <DropdownMenuItem onSelect={() => {}}>
                 Import CSV…
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => { }}>
+              <DropdownMenuItem onSelect={() => {}}>
                 Import JSON…
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => { }}>
+              <DropdownMenuItem onSelect={() => {}}>
                 Export JSON
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -99,10 +99,10 @@ export function DeckHeader(props: DeckHeaderProps) {
             disabled={props.isSaving}
           >
             {props.isSaving
-              ? 'Saving...'
+              ? "Saving..."
               : isEditMode
-                ? 'Save Changes'
-                : 'Save Deck'}
+                ? "Save Changes"
+                : "Save Deck"}
           </Button>
         </div>
       </div>

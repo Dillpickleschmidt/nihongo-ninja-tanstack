@@ -5,7 +5,9 @@ import { createRichSegment } from "./textProcessor"
 
 const conjugationEngine = new ConjugationEngine()
 
-function transformToConjugatedWord(segment: SentenceSegment): string | ConjugatedWord {
+function transformToConjugatedWord(
+  segment: SentenceSegment,
+): string | ConjugatedWord {
   if (!segment.conjugation) {
     return segment.text
   }
@@ -19,14 +21,20 @@ function transformToConjugatedWord(segment: SentenceSegment): string | Conjugate
 }
 
 // Returns conjugated text (first variant if multiple exist)
-export function conjugateSegment(segment: SentenceSegment, isPolite: boolean): string {
+export function conjugateSegment(
+  segment: SentenceSegment,
+  isPolite: boolean,
+): string {
   const transformed = transformToConjugatedWord(segment)
   const results = conjugationEngine.conjugateSegments([transformed], isPolite)
   return results[0][0]
 }
 
 // Conjugates and pre-computes all text representations
-export function processSegments(segments: SentenceSegment[], isPolite: boolean): RichSegment[] {
+export function processSegments(
+  segments: SentenceSegment[],
+  isPolite: boolean,
+): RichSegment[] {
   return segments.map((segment) => {
     const conjugatedText = conjugateSegment(segment, isPolite)
     return createRichSegment(conjugatedText, segment.blank ?? false)

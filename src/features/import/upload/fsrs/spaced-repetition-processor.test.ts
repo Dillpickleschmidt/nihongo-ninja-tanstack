@@ -44,7 +44,7 @@ describe("Spaced Repetition Processor", () => {
     it("logs warning for unknown grade", () => {
       const consoleWarnSpy = vi
         .spyOn(console, "warn")
-        .mockImplementation(() => { })
+        .mockImplementation(() => {})
       mapGradeToFSRS("unknown")
       expect(consoleWarnSpy).toHaveBeenCalledWith(
         expect.stringContaining("Unhandled grade"),

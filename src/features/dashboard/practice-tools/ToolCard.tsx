@@ -19,7 +19,7 @@ export function ToolCard(props: ToolCardProps) {
       class={cn(
         "group relative overflow-hidden h-auto justify-start rounded-xl border border-white/5 p-5 text-base whitespace-normal transition-colors",
         "animate-fade-up opacity-0",
-        "hover:border-(--accent)/30"
+        "hover:border-(--accent)/30",
       )}
       style={{
         "animation-delay": `${props.index * 75}ms`,

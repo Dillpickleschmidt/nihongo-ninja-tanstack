@@ -1,4 +1,4 @@
-import { SummaryCard } from '../SummaryCard'
+import { SummaryCard } from "../SummaryCard"
 
 interface SummaryCardsRowProps {
   vocabCount?: number
@@ -21,10 +21,7 @@ export function SummaryCardsRow(props: SummaryCardsRowProps) {
         count={props.kanjiCount}
         onClick={props.onKanjiClick}
       />
-      <SummaryCard
-        label="Radicals"
-        count={props.radicalCount}
-      />
+      <SummaryCard label="Radicals" count={props.radicalCount} />
     </div>
   )
 }

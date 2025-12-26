@@ -12,7 +12,8 @@ interface AlternativeAnswersProps {
 export default function AlternativeAnswers(props: AlternativeAnswersProps) {
   // Derive bestMatchPoliteForm from the best match
   const bestMatchPoliteForm = createMemo(
-    () => props.allMatches[props.bestMatchIndex]?.answer.originalPoliteForm ?? true,
+    () =>
+      props.allMatches[props.bestMatchIndex]?.answer.originalPoliteForm ?? true,
   )
 
   // Filter logic (same as original):
@@ -43,7 +44,8 @@ export default function AlternativeAnswers(props: AlternativeAnswersProps) {
         `}
         </style>
         <h3 class="font-bold text-neutral-500">
-          Alternative Answers ({bestMatchPoliteForm() ? "Polite" : "Casual"} Form):
+          Alternative Answers ({bestMatchPoliteForm() ? "Polite" : "Casual"}{" "}
+          Form):
         </h3>
         <div class="max-h-96 space-y-3 overflow-y-auto">
           <For each={filteredMatches()}>
@@ -54,7 +56,9 @@ export default function AlternativeAnswers(props: AlternativeAnswersProps) {
                 </div>
                 <FuriganaText
                   text={
-                    props.showFurigana ? match.answer.original : match.answer.plain
+                    props.showFurigana
+                      ? match.answer.original
+                      : match.answer.plain
                   }
                   showFurigana={props.showFurigana}
                   errors={match.answerErrors}

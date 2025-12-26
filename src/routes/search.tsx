@@ -1,7 +1,7 @@
 import { Match, Switch } from "solid-js"
 import { createFileRoute } from "@tanstack/solid-router"
-import { useQueryClient } from '@tanstack/solid-query'
-import { getUser } from '@/lib/auth'
+import { useQueryClient } from "@tanstack/solid-query"
+import { getUser } from "@/lib/auth"
 import {
   SearchProvider,
   useSearchContext,
@@ -12,7 +12,7 @@ import { LiveActionContent } from "@/features/search/categories/live-action/Live
 import { YouTubeContent } from "@/features/search/categories/youtube/YouTubeContent"
 import { NihongoNinjaContent } from "@/features/search/categories/nihongo-ninja/NihongoNinjaContent"
 import { queryKeys } from "@/query/query-keys"
-import { BottomNav } from '~/features/navbar/Nav'
+import { BottomNav } from "~/features/navbar/Nav"
 
 export const Route = createFileRoute("/search")({
   component: SearchPage,
@@ -31,7 +31,10 @@ function SearchPage() {
   return (
     <SearchProvider>
       <SearchContent user={user} />
-      <BottomNav class='bg-background/85 opacity-100' dailyProgressPercentage={65} />
+      <BottomNav
+        class="bg-background/85 opacity-100"
+        dailyProgressPercentage={65}
+      />
     </SearchProvider>
   )
 }

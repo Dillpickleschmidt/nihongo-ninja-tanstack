@@ -1,14 +1,14 @@
-import { createIsomorphicFn } from '@tanstack/solid-start'
+import { createIsomorphicFn } from "@tanstack/solid-start"
 import {
   getCookie as serverGetCookie,
   setCookie as serverSetCookie,
   deleteCookie as serverDeleteCookie,
-} from '@tanstack/solid-start/server'
+} from "@tanstack/solid-start/server"
 
 type CookieOptions = {
   maxAge?: number
   secure?: boolean
-  sameSite?: 'strict' | 'lax' | 'none'
+  sameSite?: "strict" | "lax" | "none"
 }
 
 export const getCookie = createIsomorphicFn()
@@ -16,9 +16,9 @@ export const getCookie = createIsomorphicFn()
     return serverGetCookie(name) ?? null
   })
   .client((name: string) => {
-    const cookies = document.cookie.split(';').map((c) => {
-      const [n, ...v] = c.trim().split('=')
-      return { name: n.trim(), value: v.join('=') }
+    const cookies = document.cookie.split(";").map((c) => {
+      const [n, ...v] = c.trim().split("=")
+      return { name: n.trim(), value: v.join("=") }
     })
     return cookies.find((c) => c.name === name)?.value || null
   })
@@ -26,22 +26,22 @@ export const getCookie = createIsomorphicFn()
 export const setCookie = createIsomorphicFn()
   .server((name: string, value: string, options?: CookieOptions) => {
     serverSetCookie(name, value, {
-      path: '/',
+      path: "/",
       secure: options?.secure ?? true,
-      sameSite: options?.sameSite ?? 'lax',
+      sameSite: options?.sameSite ?? "lax",
       maxAge: options?.maxAge ?? 60 * 60 * 24 * 365,
     })
   })
   .client((name: string, value: string, options?: CookieOptions) => {
     const opts = {
       maxAge: 60 * 60 * 24 * 365,
-      sameSite: 'lax' as const,
+      sameSite: "lax" as const,
       ...options,
     }
-    const isHttps = window.location.protocol === 'https:'
+    const isHttps = window.location.protocol === "https:"
 
     let cookieString = `${name}=${value}; Path=/`
-    if (isHttps) cookieString += '; Secure'
+    if (isHttps) cookieString += "; Secure"
     if (opts.sameSite) cookieString += `; SameSite=${opts.sameSite}`
     if (opts.maxAge) cookieString += `; Max-Age=${opts.maxAge}`
 
@@ -50,7 +50,7 @@ export const setCookie = createIsomorphicFn()
 
 export const deleteCookie = createIsomorphicFn()
   .server((name: string) => {
-    serverDeleteCookie(name, { path: '/' })
+    serverDeleteCookie(name, { path: "/" })
   })
   .client((name: string) => {
     document.cookie = `${name}=; Path=/; Max-Age=0`

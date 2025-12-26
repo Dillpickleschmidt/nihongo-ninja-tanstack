@@ -1,18 +1,21 @@
-import { createFileRoute } from '@tanstack/solid-router'
-import { createResource, Suspense } from 'solid-js'
-import { convexQuery } from '@/lib/convex-query'
-import { api } from 'convex/_generated/api'
-import { useQueryClient } from '@tanstack/solid-query'
-import { queryKeys } from '@/query/query-keys'
-import { PracticeProvider, PracticeContainer } from '@/features/sentence-practice'
-import { Sidebar } from '~/features/sidebar/Sidebar'
+import { createFileRoute } from "@tanstack/solid-router"
+import { createResource, Suspense } from "solid-js"
+import { convexQuery } from "@/lib/convex-query"
+import { api } from "convex/_generated/api"
+import { useQueryClient } from "@tanstack/solid-query"
+import { queryKeys } from "@/query/query-keys"
+import {
+  PracticeProvider,
+  PracticeContainer,
+} from "@/features/sentence-practice"
+import { Sidebar } from "~/features/sidebar/Sidebar"
 
-export const Route = createFileRoute('/_home/sentence-practice/$id')({
+export const Route = createFileRoute("/_home/sentence-practice/$id")({
   loader: ({ context, params }) => {
     const questionsPromise = context.queryClient.fetchQuery(
       convexQuery(api.api.sentencePractice.getQuestionsBySetId, {
         setId: params.id,
-      })
+      }),
     )
     return { questionsPromise }
   },
@@ -43,7 +46,13 @@ function RouteComponent() {
         <div class="relative w-full">
           <div class="flex flex-col pb-16">
             <div class="px-8">
-              <Suspense fallback={<div class="text-muted-foreground py-12 text-center">Loading...</div>}>
+              <Suspense
+                fallback={
+                  <div class="text-muted-foreground py-12 text-center">
+                    Loading...
+                  </div>
+                }
+              >
                 <PracticeProvider>
                   <PracticeContainer questions={questions()!} />
                 </PracticeProvider>

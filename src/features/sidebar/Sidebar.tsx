@@ -183,8 +183,10 @@ function NavigationContent(props: NavigationContentProps) {
                   <Link to={item.href} onClick={props.onNavigate}>
                     <Button
                       variant="ghost"
-                      class={cn("w-full justify-start px-2 hover:bg-(--accent)/20")}
-                      onClick={() => { }}
+                      class={cn(
+                        "w-full justify-start px-2 hover:bg-(--accent)/20",
+                      )}
+                      onClick={() => {}}
                     >
                       <Show
                         when={typeof item.icon === "string"}
@@ -194,7 +196,8 @@ function NavigationContent(props: NavigationContentProps) {
                             class={cn(
                               "mx-1 size-4!",
                               item.class,
-                              props.isActive(item.href) && "text-(--accent) brightness-150",
+                              props.isActive(item.href) &&
+                                "text-(--accent) brightness-150",
                             )}
                           />
                         }
@@ -203,7 +206,8 @@ function NavigationContent(props: NavigationContentProps) {
                           class={cn(
                             "mx-1 size-4 flex items-center justify-center text-base font-japanese font-medium",
                             item.class,
-                            props.isActive(item.href) && "text-(--accent) brightness-150",
+                            props.isActive(item.href) &&
+                              "text-(--accent) brightness-150",
                           )}
                         >
                           {item.icon as string}
@@ -212,7 +216,8 @@ function NavigationContent(props: NavigationContentProps) {
                       <span
                         class={cn(
                           "text-[0.85rem] font-medium",
-                          props.isActive(item.href) && "text-(--accent) brightness-150",
+                          props.isActive(item.href) &&
+                            "text-(--accent) brightness-150",
                         )}
                       >
                         {item.title}

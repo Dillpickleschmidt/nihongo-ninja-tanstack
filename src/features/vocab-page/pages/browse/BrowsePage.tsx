@@ -1,32 +1,38 @@
-import { createSignal, createEffect, For, Show, onMount, onCleanup } from 'solid-js'
-import { Clock, TrendingUp } from 'lucide-solid'
-import { useMutation } from 'convex-solidjs'
-import { useConvexQuery } from '@/lib/convex-query'
-import { api } from 'convex/_generated/api'
-import { getUser } from '@/lib/auth'
-import { Button } from '@/components/ui/button'
-import { SharedDeckCard } from './SharedDeckCard'
-import { DeckPreviewModal } from './DeckPreviewModal'
-import type { SharedDeckInfo } from 'convex/model/sharing'
-import type { Id } from 'convex/_generated/dataModel'
+import {
+  createSignal,
+  createEffect,
+  For,
+  Show,
+  onMount,
+  onCleanup,
+} from "solid-js"
+import { Clock, TrendingUp } from "lucide-solid"
+import { useMutation } from "convex-solidjs"
+import { useConvexQuery } from "@/lib/convex-query"
+import { api } from "convex/_generated/api"
+import { getUser } from "@/lib/auth"
+import { Button } from "@/components/ui/button"
+import { SharedDeckCard } from "./SharedDeckCard"
+import { DeckPreviewModal } from "./DeckPreviewModal"
+import type { SharedDeckInfo } from "convex/model/sharing"
+import type { Id } from "convex/_generated/dataModel"
 
-type SortBy = 'recent' | 'popular'
+type SortBy = "recent" | "popular"
 
 const PAGE_SIZE = 20
 
 export function BrowsePage() {
   const user = getUser()
-  const [sortBy, setSortBy] = createSignal<SortBy>('recent')
+  const [sortBy, setSortBy] = createSignal<SortBy>("recent")
   const [offset, setOffset] = createSignal(0)
   const [allDecks, setAllDecks] = createSignal<SharedDeckInfo[]>([])
   const [hasMore, setHasMore] = createSignal(true)
-  const [previewDeckId, setPreviewDeckId] = createSignal<Id<'userDecks'> | null>(
-    null
-  )
+  const [previewDeckId, setPreviewDeckId] =
+    createSignal<Id<"userDecks"> | null>(null)
 
   const sharedDecksQuery = useConvexQuery(
     api.api.sharing.getSharedDecks,
-    () => ({ sortBy: sortBy(), limit: PAGE_SIZE, offset: offset() })
+    () => ({ sortBy: sortBy(), limit: PAGE_SIZE, offset: offset() }),
   )
 
   const importDeck = useMutation(api.api.sharing.importSharedDeck)
@@ -80,7 +86,7 @@ export function BrowsePage() {
           setOffset((prev) => prev + PAGE_SIZE)
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     )
 
     if (sentinelRef) {
@@ -101,13 +107,13 @@ export function BrowsePage() {
     setHasMore(true)
   }
 
-  const handleImport = async (deckId: Id<'userDecks'>) => {
+  const handleImport = async (deckId: Id<"userDecks">) => {
     setImportingIds((prev) => new Set(prev).add(deckId))
     try {
       await importDeck.mutate({ deckId })
     } catch (error) {
-      console.error('Failed to import deck:', error)
-      alert('Failed to import deck. Please try again.')
+      console.error("Failed to import deck:", error)
+      alert("Failed to import deck. Please try again.")
     } finally {
       setImportingIds((prev) => {
         const next = new Set(prev)
@@ -117,8 +123,8 @@ export function BrowsePage() {
     }
   }
 
-  const handleUnshare = async (deckId: Id<'userDecks'>) => {
-    if (!confirm('Are you sure you want to unshare this deck?')) return
+  const handleUnshare = async (deckId: Id<"userDecks">) => {
+    if (!confirm("Are you sure you want to unshare this deck?")) return
 
     setUnsharingIds((prev) => new Set(prev).add(deckId))
     try {
@@ -126,8 +132,8 @@ export function BrowsePage() {
       // Remove from local list
       setAllDecks((prev) => prev.filter((d) => d.deckId !== deckId))
     } catch (error) {
-      console.error('Failed to unshare deck:', error)
-      alert('Failed to unshare deck. Please try again.')
+      console.error("Failed to unshare deck:", error)
+      alert("Failed to unshare deck. Please try again.")
     } finally {
       setUnsharingIds((prev) => {
         const next = new Set(prev)
@@ -158,11 +164,12 @@ export function BrowsePage() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => handleSortChange('recent')}
-            class={`flex items-center gap-2 rounded-md px-3 py-2 text-xs transition-all ${sortBy() === 'recent'
-              ? 'bg-background/70 text-foreground font-medium shadow backdrop-blur-sm'
-              : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
-              }`}
+            onClick={() => handleSortChange("recent")}
+            class={`flex items-center gap-2 rounded-md px-3 py-2 text-xs transition-all ${
+              sortBy() === "recent"
+                ? "bg-background/70 text-foreground font-medium shadow backdrop-blur-sm"
+                : "text-muted-foreground hover:text-foreground hover:bg-background/50"
+            }`}
           >
             <Clock class="h-3.5 w-3.5" />
             Recent
@@ -170,11 +177,12 @@ export function BrowsePage() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => handleSortChange('popular')}
-            class={`flex items-center gap-2 rounded-md px-3 py-2 text-xs transition-all ${sortBy() === 'popular'
-              ? 'bg-background/70 text-foreground font-medium shadow backdrop-blur-sm'
-              : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
-              }`}
+            onClick={() => handleSortChange("popular")}
+            class={`flex items-center gap-2 rounded-md px-3 py-2 text-xs transition-all ${
+              sortBy() === "popular"
+                ? "bg-background/70 text-foreground font-medium shadow backdrop-blur-sm"
+                : "text-muted-foreground hover:text-foreground hover:bg-background/50"
+            }`}
           >
             <TrendingUp class="h-3.5 w-3.5" />
             Popular

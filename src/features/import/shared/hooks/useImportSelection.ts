@@ -12,7 +12,11 @@ export interface SelectedItem {
   type: PracticeItemType
 }
 
-function calculateRange(groupIds: string[], startId: string, endId: string): string[] {
+function calculateRange(
+  groupIds: string[],
+  startId: string,
+  endId: string,
+): string[] {
   const startIdx = groupIds.indexOf(startId)
   const endIdx = groupIds.indexOf(endId)
 
@@ -30,7 +34,9 @@ function calculateRange(groupIds: string[], startId: string, endId: string): str
  * Tracks both key and type for each selected item.
  */
 export function useImportSelection() {
-  const [selectedItems, setSelectedItems] = createStore<Record<string, PracticeItemType>>({})
+  const [selectedItems, setSelectedItems] = createStore<
+    Record<string, PracticeItemType>
+  >({})
   const [anchorId, setAnchorId] = createSignal<string | null>(null)
 
   // Long-press and drag tracking
@@ -47,7 +53,7 @@ export function useImportSelection() {
   const handleAutoScroll = createAutoScroller()
 
   const selectedPairs = createMemo<SelectedItem[]>(() =>
-    Object.entries(selectedItems).map(([key, type]) => ({ key, type }))
+    Object.entries(selectedItems).map(([key, type]) => ({ key, type })),
   )
 
   const isSelected = (key: string) => key in selectedItems
@@ -63,7 +69,11 @@ export function useImportSelection() {
     setAnchorId(null)
   }
 
-  const setSelected = (ids: string[], type: PracticeItemType, selected: boolean) => {
+  const setSelected = (
+    ids: string[],
+    type: PracticeItemType,
+    selected: boolean,
+  ) => {
     batch(() => {
       for (const id of ids) {
         if (selected) {
@@ -90,20 +100,28 @@ export function useImportSelection() {
     items: T[],
     keyExtractor: (item: T) => string,
     type: PracticeItemType,
-    checked: boolean
+    checked: boolean,
   ) => {
     batch(() => {
       for (const item of items) {
         if (checked) {
           setSelectedItems(keyExtractor(item), type)
         } else {
-          setSelectedItems(keyExtractor(item), undefined as unknown as PracticeItemType)
+          setSelectedItems(
+            keyExtractor(item),
+            undefined as unknown as PracticeItemType,
+          )
         }
       }
     })
   }
 
-  const handlePointerDown = (e: PointerEvent, id: string, type: PracticeItemType, groupIds: string[]) => {
+  const handlePointerDown = (
+    e: PointerEvent,
+    id: string,
+    type: PracticeItemType,
+    groupIds: string[],
+  ) => {
     e.preventDefault()
     dragStartX = e.clientX
     dragStartY = e.clientY
@@ -133,7 +151,9 @@ export function useImportSelection() {
       longPressTimer = null
     }, LONG_PRESS_DURATION)
 
-    document.addEventListener("pointermove", handlePointerMove, { passive: true })
+    document.addEventListener("pointermove", handlePointerMove, {
+      passive: true,
+    })
     document.addEventListener("pointerup", handlePointerUp)
     document.addEventListener("pointercancel", handlePointerUp)
   }
@@ -153,12 +173,22 @@ export function useImportSelection() {
     }
 
     if (isLongPressing()) {
-      const itemId = getItemIdAtPoint(e.clientX, e.clientY, "data-import-item-id")
+      const itemId = getItemIdAtPoint(
+        e.clientX,
+        e.clientY,
+        "data-import-item-id",
+      )
       const groupIds = dragGroupIds()
       const anchor = dragAnchorId()
       const type = dragType()
 
-      if (itemId && anchor && type && groupIds.includes(itemId) && groupIds.includes(anchor)) {
+      if (
+        itemId &&
+        anchor &&
+        type &&
+        groupIds.includes(itemId) &&
+        groupIds.includes(anchor)
+      ) {
         const range = calculateRange(groupIds, anchor, itemId)
 
         if (dragMode === "deselect") {
@@ -185,7 +215,7 @@ export function useImportSelection() {
           e.stopPropagation()
           e.preventDefault()
         },
-        { capture: true, once: true }
+        { capture: true, once: true },
       )
     }
 
@@ -201,7 +231,12 @@ export function useImportSelection() {
     document.removeEventListener("pointercancel", handlePointerUp)
   }
 
-  const handleItemClick = (e: MouseEvent, id: string, type: PracticeItemType, allIdsInGroup: string[]) => {
+  const handleItemClick = (
+    e: MouseEvent,
+    id: string,
+    type: PracticeItemType,
+    allIdsInGroup: string[],
+  ) => {
     e.stopPropagation()
     e.preventDefault()
 

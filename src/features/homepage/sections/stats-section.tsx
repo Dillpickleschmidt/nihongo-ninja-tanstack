@@ -1,4 +1,4 @@
-import { StatCounter } from '../components/stat-counter'
+import { StatCounter } from "../components/stat-counter"
 
 export function StatsSection() {
   return (

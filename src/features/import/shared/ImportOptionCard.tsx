@@ -16,7 +16,7 @@ export function ImportOptionCard(props: ImportOptionCardProps) {
       class={cn(
         "group flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm",
         "transition-all duration-200",
-        "hover:bg-(--accent)/10 hover:border-(--accent)/30"
+        "hover:bg-(--accent)/10 hover:border-(--accent)/30",
       )}
     >
       <div class="flex size-12 items-center justify-center rounded-xl bg-(--accent)/15">

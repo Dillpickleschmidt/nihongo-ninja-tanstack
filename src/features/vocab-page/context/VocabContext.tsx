@@ -4,23 +4,23 @@ import {
   type ParentProps,
   createSignal,
   createMemo,
-} from 'solid-js'
-import { useMutation } from 'convex-solidjs'
-import { useConvexQuery } from '@/lib/convex-query'
-import { api } from 'convex/_generated/api'
-import { getUser } from '@/lib/auth'
-import type { Id } from 'convex/_generated/dataModel'
+} from "solid-js"
+import { useMutation } from "convex-solidjs"
+import { useConvexQuery } from "@/lib/convex-query"
+import { api } from "convex/_generated/api"
+import { getUser } from "@/lib/auth"
+import type { Id } from "convex/_generated/dataModel"
 import {
   loadGuestData,
   saveGuestData,
   type GuestVocabData,
   type GuestFolder,
   type GuestDeck,
-} from '../storage/sessionStorage'
-import { getFolderPath } from '../utils/hierarchy'
+} from "../storage/sessionStorage"
+import { getFolderPath } from "../utils/hierarchy"
 
 // Unified types for the context
-export type Source = 'user' | 'built-in'
+export type Source = "user" | "built-in"
 
 export type Folder = {
   id: string
@@ -54,22 +54,26 @@ interface VocabContextValue {
   createFolder: (name: string, parentId?: string) => Promise<void>
   updateFolder: (
     folderId: string,
-    updates: { folderName?: string; parentFolderId?: string | null }
+    updates: { folderName?: string; parentFolderId?: string | null },
   ) => Promise<void>
   deleteFolder: (
     folderId: string,
-    strategy: 'move-up' | 'delete-all'
+    strategy: "move-up" | "delete-all",
   ) => Promise<void>
 
   // Deck mutations
-  createDeck: (name: string, description?: string, folderId?: string) => Promise<void>
+  createDeck: (
+    name: string,
+    description?: string,
+    folderId?: string,
+  ) => Promise<void>
   updateDeck: (
     deckId: string,
     updates: {
       deckName?: string
       deckDescription?: string
       folderId?: string | null
-    }
+    },
   ) => Promise<void>
   deleteDeck: (deckId: string) => Promise<void>
 
@@ -88,7 +92,7 @@ function normalizeGuestFolder(folder: GuestFolder): Folder {
     id: folder.id,
     folderName: folder.folderName,
     parentFolderId: folder.parentFolderId,
-    source: 'user',
+    source: "user",
   }
 }
 
@@ -99,7 +103,7 @@ function normalizeGuestDeck(deck: GuestDeck): Deck {
     deckName: deck.deckName,
     deckDescription: deck.deckDescription,
     folderId: deck.folderId,
-    source: 'user',
+    source: "user",
   }
 }
 
@@ -110,11 +114,12 @@ export function VocabProvider(props: ParentProps) {
   // Works for both authenticated and unauthenticated users (returns built-in only when not logged in)
   const foldersAndDecksQuery = useConvexQuery(
     api.api.folders.getAllFoldersAndDecks,
-    {}
+    {},
   )
 
   // Guest data (local state for unauthenticated users)
-  const [guestData, setGuestData] = createSignal<GuestVocabData>(loadGuestData())
+  const [guestData, setGuestData] =
+    createSignal<GuestVocabData>(loadGuestData())
 
   // Unified data accessors - merge Convex unified data with guest data
   const folders = createMemo((): Folder[] => {
@@ -151,7 +156,7 @@ export function VocabProvider(props: ParentProps) {
 
   // Sidebar expanded state
   const [expandedSections, setExpandedSections] = createSignal<Set<string>>(
-    new Set()
+    new Set(),
   )
 
   const toggleSection = (id: string) => {
@@ -202,7 +207,7 @@ export function VocabProvider(props: ParentProps) {
     if (user()) {
       await createFolderMutation.mutate({
         folderName: name,
-        parentFolderId: parentId as Id<'userDeckFolders'> | undefined,
+        parentFolderId: parentId as Id<"userDeckFolders"> | undefined,
       })
     } else {
       const newFolder: GuestFolder = {
@@ -221,14 +226,14 @@ export function VocabProvider(props: ParentProps) {
 
   const updateFolder = async (
     folderId: string,
-    updates: { folderName?: string; parentFolderId?: string | null }
+    updates: { folderName?: string; parentFolderId?: string | null },
   ) => {
     if (user()) {
       await updateFolderMutation.mutate({
-        folderId: folderId as Id<'userDeckFolders'>,
+        folderId: folderId as Id<"userDeckFolders">,
         folderName: updates.folderName,
         parentFolderId: updates.parentFolderId as
-          | Id<'userDeckFolders'>
+          | Id<"userDeckFolders">
           | null
           | undefined,
       })
@@ -238,13 +243,13 @@ export function VocabProvider(props: ParentProps) {
         folders: guestData().folders.map((f) =>
           f.id === folderId
             ? {
-              ...f,
-              ...(updates.folderName && { folderName: updates.folderName }),
-              ...(updates.parentFolderId !== undefined && {
-                parentFolderId: updates.parentFolderId ?? undefined,
-              }),
-            }
-            : f
+                ...f,
+                ...(updates.folderName && { folderName: updates.folderName }),
+                ...(updates.parentFolderId !== undefined && {
+                  parentFolderId: updates.parentFolderId ?? undefined,
+                }),
+              }
+            : f,
         ),
       }
       setGuestData(updated)
@@ -254,11 +259,11 @@ export function VocabProvider(props: ParentProps) {
 
   const deleteFolder = async (
     folderId: string,
-    strategy: 'move-up' | 'delete-all'
+    strategy: "move-up" | "delete-all",
   ) => {
     if (user()) {
       await deleteFolderMutation.mutate({
-        folderId: folderId as Id<'userDeckFolders'>,
+        folderId: folderId as Id<"userDeckFolders">,
         strategy,
       })
     } else {
@@ -269,22 +274,22 @@ export function VocabProvider(props: ParentProps) {
       // Get all descendant folder IDs
       const getAllDescendantIds = (parentId: string): string[] => {
         const children = guestData().folders.filter(
-          (f) => f.parentFolderId === parentId
+          (f) => f.parentFolderId === parentId,
         )
         return children.flatMap((c) => [c.id, ...getAllDescendantIds(c.id)])
       }
       const allFolderIds = new Set([folderId, ...getAllDescendantIds(folderId)])
 
       let newDecks = guestData().decks
-      if (strategy === 'move-up') {
+      if (strategy === "move-up") {
         newDecks = guestData().decks.map((d) =>
           d.folderId && allFolderIds.has(d.folderId)
             ? { ...d, folderId: folder.parentFolderId }
-            : d
+            : d,
         )
       } else {
         newDecks = guestData().decks.filter(
-          (d) => !d.folderId || !allFolderIds.has(d.folderId)
+          (d) => !d.folderId || !allFolderIds.has(d.folderId),
         )
       }
 
@@ -301,13 +306,13 @@ export function VocabProvider(props: ParentProps) {
   const createDeck = async (
     name: string,
     description?: string,
-    folderId?: string
+    folderId?: string,
   ) => {
     if (user()) {
       await createDeckMutation.mutate({
         deckName: name,
         deckDescription: description,
-        folderId: folderId as Id<'userDeckFolders'> | undefined,
+        folderId: folderId as Id<"userDeckFolders"> | undefined,
       })
     } else {
       const newDeck: GuestDeck = {
@@ -331,14 +336,14 @@ export function VocabProvider(props: ParentProps) {
       deckName?: string
       deckDescription?: string
       folderId?: string | null
-    }
+    },
   ) => {
     if (user()) {
       await updateDeckMutation.mutate({
-        deckId: deckId as Id<'userDecks'>,
+        deckId: deckId as Id<"userDecks">,
         deckName: updates.deckName,
         deckDescription: updates.deckDescription,
-        folderId: updates.folderId as Id<'userDeckFolders'> | null | undefined,
+        folderId: updates.folderId as Id<"userDeckFolders"> | null | undefined,
       })
     } else {
       const updated = {
@@ -346,16 +351,16 @@ export function VocabProvider(props: ParentProps) {
         decks: guestData().decks.map((d) =>
           d.id === deckId
             ? {
-              ...d,
-              ...(updates.deckName && { deckName: updates.deckName }),
-              ...(updates.deckDescription !== undefined && {
-                deckDescription: updates.deckDescription,
-              }),
-              ...(updates.folderId !== undefined && {
-                folderId: updates.folderId ?? undefined,
-              }),
-            }
-            : d
+                ...d,
+                ...(updates.deckName && { deckName: updates.deckName }),
+                ...(updates.deckDescription !== undefined && {
+                  deckDescription: updates.deckDescription,
+                }),
+                ...(updates.folderId !== undefined && {
+                  folderId: updates.folderId ?? undefined,
+                }),
+              }
+            : d,
         ),
       }
       setGuestData(updated)
@@ -365,7 +370,7 @@ export function VocabProvider(props: ParentProps) {
 
   const deleteDeck = async (deckId: string) => {
     if (user()) {
-      await deleteDeckMutation.mutate({ deckId: deckId as Id<'userDecks'> })
+      await deleteDeckMutation.mutate({ deckId: deckId as Id<"userDecks"> })
     } else {
       const updated = {
         ...guestData(),
@@ -408,6 +413,6 @@ export function VocabProvider(props: ParentProps) {
 
 export function useVocab() {
   const ctx = useContext(VocabContext)
-  if (!ctx) throw new Error('useVocab must be used within VocabProvider')
+  if (!ctx) throw new Error("useVocab must be used within VocabProvider")
   return ctx
 }

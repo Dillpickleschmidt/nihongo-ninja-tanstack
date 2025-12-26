@@ -8,10 +8,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "田中[たなか]さんは" },
-          { text: "学生[がくせい]ですか", blank: true }
-        ]
-      }
-    ]
+          { text: "学生[がくせい]ですか", blank: true },
+        ],
+      },
+    ],
   },
   {
     english: "Is Mr./Ms. Yamada a doctor?",
@@ -20,10 +20,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "山田[やまだ]さんは" },
-          { text: "医者[いしゃ]ですか", blank: true }
-        ]
-      }
-    ]
+          { text: "医者[いしゃ]ですか", blank: true },
+        ],
+      },
+    ],
   },
   {
     english: "How old is Professor Suzuki?",
@@ -32,10 +32,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "鈴木[すずき]先生[せんせい]は" },
-          { text: "何[なん]歳[さい]ですか", blank: true }
-        ]
-      }
-    ]
+          { text: "何[なん]歳[さい]ですか", blank: true },
+        ],
+      },
+    ],
   },
   {
     english: "Is Mr./Ms. Yoshida Japanese?",
@@ -44,10 +44,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "吉田[よしだ]さんは" },
-          { text: "日本人[にほんじん]ですか", blank: true }
-        ]
-      }
-    ]
+          { text: "日本人[にほんじん]ですか", blank: true },
+        ],
+      },
+    ],
   },
   {
     english: "Is Ms. Hanako a nurse?",
@@ -56,10 +56,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "花子[はなこ]さんは" },
-          { text: "看護師[かんごし]ですか", blank: true }
-        ]
-      }
-    ]
+          { text: "看護師[かんごし]ですか", blank: true },
+        ],
+      },
+    ],
   },
   {
     english: "Is Katou a university student?",
@@ -68,10 +68,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "加藤[かとう]さんは" },
-          { text: "大学生[だいがくせい]ですか", blank: true }
-        ]
-      }
-    ]
+          { text: "大学生[だいがくせい]ですか", blank: true },
+        ],
+      },
+    ],
   },
   {
     english: "Is Mr./Ms. Satou a lawyer?",
@@ -80,10 +80,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "砂糖[さとう]さんは" },
-          { text: "弁護士[べんごし]ですか", blank: true }
-        ]
-      }
-    ]
+          { text: "弁護士[べんごし]ですか", blank: true },
+        ],
+      },
+    ],
   },
   {
     english: "Is Tarou a first-year student?",
@@ -92,10 +92,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "太郎[たろう]さんは" },
-          { text: "一年生[いちねんせい]ですか", blank: true }
-        ]
-      }
-    ]
+          { text: "一年生[いちねんせい]ですか", blank: true },
+        ],
+      },
+    ],
   },
   {
     english: "Is Ms. Kimura a housewife?",
@@ -104,10 +104,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "木村[きむら]さんは" },
-          { text: "主婦[しゅふ]ですか", blank: true }
-        ]
-      }
-    ]
+          { text: "主婦[しゅふ]ですか", blank: true },
+        ],
+      },
+    ],
   },
   {
     english: "Is Mr./Ms. Inoue an office worker?",
@@ -116,9 +116,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "井上[いのうえ]さんは" },
-          { text: "会社員[かいしゃいん]ですか", blank: true }
-        ]
-      }
-    ]
-  }
+          { text: "会社員[かいしゃいん]ですか", blank: true },
+        ],
+      },
+    ],
+  },
 ]

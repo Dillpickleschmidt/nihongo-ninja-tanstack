@@ -55,14 +55,20 @@ writeFileSync(setsFile, sets.map((s) => JSON.stringify(s)).join("\n"))
 
 try {
   console.log(`Importing ${items.length} vocabulary items...`)
-  execSync(`bunx convex import --table coreVocabularyItems ${itemsFile} --replace`, {
-    stdio: "inherit",
-  })
+  execSync(
+    `bunx convex import --table coreVocabularyItems ${itemsFile} --replace`,
+    {
+      stdio: "inherit",
+    },
+  )
 
   console.log(`Importing ${sets.length} vocabulary sets...`)
-  execSync(`bunx convex import --table coreVocabularySets ${setsFile} --replace`, {
-    stdio: "inherit",
-  })
+  execSync(
+    `bunx convex import --table coreVocabularySets ${setsFile} --replace`,
+    {
+      stdio: "inherit",
+    },
+  )
 
   console.log("Done!")
 } finally {

@@ -1,38 +1,41 @@
-import { createSignal, createMemo, createEffect, on, Show } from 'solid-js'
-import { useMutation } from 'convex-solidjs'
-import { api } from 'convex/_generated/api'
+import { createSignal, createMemo, createEffect, on, Show } from "solid-js"
+import { useMutation } from "convex-solidjs"
+import { api } from "convex/_generated/api"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 import {
   TextField,
   TextFieldInput,
   TextFieldLabel,
-} from '@/components/ui/text-field'
+} from "@/components/ui/text-field"
 import {
   DeckNameSchema,
   DescriptionSchema,
   validateDeckNameUnique,
-} from '../../validation/deck-folder-validation'
-import { DECK_NAME_MAX_LENGTH, DESCRIPTION_MAX_LENGTH } from '../../validation/constants'
-import { useFolderTree } from '../../hooks/useFolderTree'
-import { LocationSelector } from './LocationSelector'
-import { useVocab } from '../../context/VocabContext'
-import type { Id } from 'convex/_generated/dataModel'
+} from "../../validation/deck-folder-validation"
+import {
+  DECK_NAME_MAX_LENGTH,
+  DESCRIPTION_MAX_LENGTH,
+} from "../../validation/constants"
+import { useFolderTree } from "../../hooks/useFolderTree"
+import { LocationSelector } from "./LocationSelector"
+import { useVocab } from "../../context/VocabContext"
+import type { Id } from "convex/_generated/dataModel"
 
 export function DeckCopyModal() {
   const ctx = useVocab()
   const copyDeckMutation = useMutation(api.api.decks.copyDeck)
 
   // Form state
-  const [name, setName] = createSignal('')
-  const [description, setDescription] = createSignal('')
-  const [selectedFolderId, setSelectedFolderId] = createSignal<string>('root')
+  const [name, setName] = createSignal("")
+  const [description, setDescription] = createSignal("")
+  const [selectedFolderId, setSelectedFolderId] = createSignal<string>("root")
   const [showValidation, setShowValidation] = createSignal(false)
   const [isSaving, setIsSaving] = createSignal(false)
 
@@ -47,8 +50,8 @@ export function DeckCopyModal() {
 
     // Suggest a copy name
     setName(`${d.deckName} (copy)`)
-    setDescription(d.deckDescription || '')
-    setSelectedFolderId(d.folderId || 'root')
+    setDescription(d.deckDescription || "")
+    setSelectedFolderId(d.folderId || "root")
     setShowValidation(false)
     setIsSaving(false)
   }
@@ -59,12 +62,12 @@ export function DeckCopyModal() {
       if (d) {
         initializeForm()
       }
-    })
+    }),
   )
 
   // Get user decks only for validation
   const userDecks = createMemo(() =>
-    ctx.decks().filter((d) => d.source === 'user')
+    ctx.decks().filter((d) => d.source === "user"),
   )
 
   // Folder tree for location selector
@@ -88,7 +91,7 @@ export function DeckCopyModal() {
       return uniqueResult
     }
 
-    return { isValid: true, error: '' }
+    return { isValid: true, error: "" }
   })
 
   const descriptionValidation = createMemo(() => {
@@ -96,7 +99,7 @@ export function DeckCopyModal() {
     if (!schemaResult.success) {
       return { isValid: false, error: schemaResult.error.errors[0].message }
     }
-    return { isValid: true, error: '' }
+    return { isValid: true, error: "" }
   })
 
   const canSave = () =>
@@ -107,9 +110,9 @@ export function DeckCopyModal() {
   // Get selected folder display name
   const selectedFolderName = () => {
     const id = selectedFolderId()
-    if (id === 'root') return 'Root'
+    if (id === "root") return "Root"
     const f = ctx.folders().find((f) => f.id === id)
-    return f?.folderName || 'Unknown'
+    return f?.folderName || "Unknown"
   }
 
   // Event handlers
@@ -134,15 +137,15 @@ export function DeckCopyModal() {
         deckName: name().trim(),
         deckDescription: description().trim() || undefined,
         folderId:
-          selectedFolderId() === 'root'
+          selectedFolderId() === "root"
             ? undefined
-            : (selectedFolderId() as Id<'userDeckFolders'>),
+            : (selectedFolderId() as Id<"userDeckFolders">),
       })
 
       handleClose()
     } catch (error) {
-      console.error('Failed to copy deck:', error)
-      alert('Failed to copy deck. Please try again.')
+      console.error("Failed to copy deck:", error)
+      alert("Failed to copy deck. Please try again.")
     } finally {
       setIsSaving(false)
     }
@@ -150,7 +153,7 @@ export function DeckCopyModal() {
 
   const getTitle = () => {
     const d = deck()
-    if (!d) return 'Copy Deck'
+    if (!d) return "Copy Deck"
     return `Copy "${d.deckName}"`
   }
 
@@ -165,7 +168,9 @@ export function DeckCopyModal() {
           {/* Name Field */}
           <TextField
             validationState={
-              showValidation() && !nameValidation().isValid ? 'invalid' : 'valid'
+              showValidation() && !nameValidation().isValid
+                ? "invalid"
+                : "valid"
             }
           >
             <TextFieldLabel>Name</TextFieldLabel>
@@ -186,8 +191,8 @@ export function DeckCopyModal() {
           <TextField
             validationState={
               showValidation() && !descriptionValidation().isValid
-                ? 'invalid'
-                : 'valid'
+                ? "invalid"
+                : "valid"
             }
           >
             <TextFieldLabel>Description (optional)</TextFieldLabel>
@@ -199,7 +204,9 @@ export function DeckCopyModal() {
               class="focus-visible:ring focus-visible:ring-amber-500"
             />
             <Show when={showValidation() && !descriptionValidation().isValid}>
-              <p class="text-sm text-red-500">{descriptionValidation().error}</p>
+              <p class="text-sm text-red-500">
+                {descriptionValidation().error}
+              </p>
             </Show>
           </TextField>
 
@@ -217,7 +224,7 @@ export function DeckCopyModal() {
           </div>
 
           {/* Info about copying */}
-          <Show when={deck()?.source === 'built-in'}>
+          <Show when={deck()?.source === "built-in"}>
             <div class="bg-muted/20 border-card-foreground/70 rounded-lg border p-3 backdrop-blur-sm">
               <p class="text-muted-foreground text-xs">
                 This will create a new deck that you can edit. The original
@@ -241,7 +248,7 @@ export function DeckCopyModal() {
             disabled={!canSave() || isSaving()}
             class="flex-1 hover:cursor-pointer"
           >
-            {isSaving() ? 'Creating...' : 'Create Copy'}
+            {isSaving() ? "Creating..." : "Create Copy"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -13,16 +13,28 @@ export function KanjiSection(props: {
   level: string
   isSelected: (key: string) => boolean
   onToggleAll: (items: KanjiEntry[], checked: boolean) => void
-  onItemClick: (e: MouseEvent, id: string, type: PracticeItemType, groupIds: string[]) => void
-  onPointerDown: (e: PointerEvent, id: string, type: PracticeItemType, groupIds: string[]) => void
-  getOverrideStatus: (key: string, type: PracticeItemType) => ItemStatus | undefined
+  onItemClick: (
+    e: MouseEvent,
+    id: string,
+    type: PracticeItemType,
+    groupIds: string[],
+  ) => void
+  onPointerDown: (
+    e: PointerEvent,
+    id: string,
+    type: PracticeItemType,
+    groupIds: string[],
+  ) => void
+  getOverrideStatus: (
+    key: string,
+    type: PracticeItemType,
+  ) => ItemStatus | undefined
   onUndoClick: (e: MouseEvent, key: string, type: PracticeItemType) => void
 }) {
   // Reuse vocab query (cache hit from VocabSection)
-  const vocabQuery = useConvexQuery(
-    api.api.vocabulary.getBySets,
-    () => ({ setIds: [...JLPT_SETS] })
-  )
+  const vocabQuery = useConvexQuery(api.api.vocabulary.getBySets, () => ({
+    setIds: [...JLPT_SETS],
+  }))
 
   // Derive kanji characters from vocab client-side
   const kanjiChars = createMemo(() => {
@@ -35,17 +47,18 @@ export function KanjiSection(props: {
   const kanjiQuery = useConvexQuery(
     api.api.vocabulary.getKanjiByChars,
     () => ({ chars: kanjiChars() }),
-    () => ({ enabled: kanjiChars().length > 0 })
+    () => ({ enabled: kanjiChars().length > 0 }),
   )
 
   const items = () => kanjiQuery.data()
 
-  const { allKeys, getStoredStatus, allSelected, selectedCount } = useSectionItems({
-    items,
-    getKey: (i) => i.kanji,
-    type: "kanji",
-    isSelected: props.isSelected,
-  })
+  const { allKeys, getStoredStatus, allSelected, selectedCount } =
+    useSectionItems({
+      items,
+      getKey: (i) => i.kanji,
+      type: "kanji",
+      isSelected: props.isSelected,
+    })
 
   return (
     <Show

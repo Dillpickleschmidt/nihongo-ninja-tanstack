@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/solid-router'
+import { Link } from "@tanstack/solid-router"
 
 export function Footer() {
   return (
@@ -10,14 +10,23 @@ export function Footer() {
             <span class="text-white/70">Nihongo Ninja</span>
           </div>
           <div class="flex items-center gap-6 text-sm text-white/40">
-            <Link to="/about" class="hover:text-white transition-colors">About</Link>
-            <a href="#" class="hover:text-white transition-colors">Privacy</a>
-            <a href="#" class="hover:text-white transition-colors">Terms</a>
-            <a href="https://github.com" class="hover:text-white transition-colors">GitHub</a>
+            <Link to="/about" class="hover:text-white transition-colors">
+              About
+            </Link>
+            <a href="#" class="hover:text-white transition-colors">
+              Privacy
+            </a>
+            <a href="#" class="hover:text-white transition-colors">
+              Terms
+            </a>
+            <a
+              href="https://github.com"
+              class="hover:text-white transition-colors"
+            >
+              GitHub
+            </a>
           </div>
-          <div class="text-sm text-white/30">
-            © 2025 Nihongo Ninja
-          </div>
+          <div class="text-sm text-white/30">© 2025 Nihongo Ninja</div>
         </div>
       </div>
     </footer>

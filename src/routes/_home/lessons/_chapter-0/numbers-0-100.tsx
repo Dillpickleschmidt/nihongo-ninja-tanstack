@@ -10,15 +10,17 @@ import {
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
 
-export const Route = createFileRoute("/_home/lessons/_chapter-0/numbers-0-100")({
-  loader: async () => ({
-    contentBox: {
-      nextButtonLink: "/lessons/hiragana",
-      size: "lg",
-    },
-  }),
-  component: JapaneseNumbers,
-})
+export const Route = createFileRoute("/_home/lessons/_chapter-0/numbers-0-100")(
+  {
+    loader: async () => ({
+      contentBox: {
+        nextButtonLink: "/lessons/hiragana",
+        size: "lg",
+      },
+    }),
+    component: JapaneseNumbers,
+  },
+)
 
 function JapaneseNumbers() {
   const isDesktop = createMediaQuery("(min-width: 1024px)")

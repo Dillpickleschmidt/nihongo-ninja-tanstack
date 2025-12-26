@@ -1,7 +1,7 @@
-import { Index, createSignal, onCleanup } from 'solid-js'
-import { ConvexAnimeSection } from '~/features/discover/components/ui/cards/query-card'
-import { SkeletonAnimeCard } from '~/features/discover/components/ui/cards/skeleton-card'
-import type { SectionConfig } from '~/features/discover/utils/section-configs'
+import { Index, createSignal, onCleanup } from "solid-js"
+import { ConvexAnimeSection } from "~/features/discover/components/ui/cards/query-card"
+import { SkeletonAnimeCard } from "~/features/discover/components/ui/cards/skeleton-card"
+import type { SectionConfig } from "~/features/discover/utils/section-configs"
 
 function SingleSection(props: { section: SectionConfig }) {
   const [shouldLoad, setShouldLoad] = createSignal(false)
@@ -14,7 +14,7 @@ function SingleSection(props: { section: SectionConfig }) {
           observer.unobserve(el)
         }
       },
-      { threshold: 0 }
+      { threshold: 0 },
     )
     observer.observe(el)
     onCleanup(() => observer.unobserve(el))

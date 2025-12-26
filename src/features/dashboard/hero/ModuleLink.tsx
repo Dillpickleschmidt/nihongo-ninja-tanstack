@@ -19,14 +19,14 @@ export function ModuleLink(props: ModuleLinkProps) {
         "group flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm transition-all",
         props.isPrimary
           ? "bg-(--accent)/80 text-white font-medium hover:scale-[1.02] hover:bg-(--accent)"
-          : "bg-white/5 text-white/70 hover:text-white hover:bg-(--accent)/20"
+          : "bg-white/5 text-white/70 hover:text-white hover:bg-(--accent)/20",
       )}
       style={
         props.isPrimary
           ? {
-            "box-shadow":
-              "0 8px 15px -4px color-mix(in srgb, var(--accent) 30%, transparent)",
-          }
+              "box-shadow":
+                "0 8px 15px -4px color-mix(in srgb, var(--accent) 30%, transparent)",
+            }
           : {}
       }
     >
@@ -37,7 +37,7 @@ export function ModuleLink(props: ModuleLinkProps) {
       <ChevronRight
         class={cn(
           "size-4 transition-transform",
-          props.isPrimary && "group-hover:translate-x-0.5"
+          props.isPrimary && "group-hover:translate-x-0.5",
         )}
       />
     </Button>

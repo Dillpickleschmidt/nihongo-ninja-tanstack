@@ -1,5 +1,5 @@
-import { For, Show, JSX } from 'solid-js'
-import { ChevronRight, ChevronDown } from 'lucide-solid'
+import { For, Show, JSX } from "solid-js"
+import { ChevronRight, ChevronDown } from "lucide-solid"
 
 export interface TreeNode {
   id: string
@@ -47,10 +47,12 @@ function TreeViewNode(props: TreeViewProps & { node: TreeNode }) {
   return (
     <div>
       <div
-        class={`flex items-center rounded-sm px-2 py-1 text-xs ${isSelectable() ? 'cursor-pointer hover:bg-accent' : 'cursor-default'
-          } ${isSelected() && isSelectable() ? 'ring-border bg-accent ring-1' : ''
-          }`}
-        style={{ 'padding-left': paddingLeft }}
+        class={`flex items-center rounded-sm px-2 py-1 text-xs ${
+          isSelectable() ? "cursor-pointer hover:bg-accent" : "cursor-default"
+        } ${
+          isSelected() && isSelectable() ? "ring-border bg-accent ring-1" : ""
+        }`}
+        style={{ "padding-left": paddingLeft }}
         onClick={handleSelect}
       >
         {/* Expand/Collapse Button */}

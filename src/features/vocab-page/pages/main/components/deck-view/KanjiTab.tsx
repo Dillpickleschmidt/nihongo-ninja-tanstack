@@ -1,8 +1,8 @@
-import { For, Show } from 'solid-js'
-import { LoaderCircle } from 'lucide-solid'
-import { Chip } from './Chip'
-import { DueBadge } from './DueBadge'
-import type { KanjiEntry } from 'convex/validators'
+import { For, Show } from "solid-js"
+import { LoaderCircle } from "lucide-solid"
+import { Chip } from "./Chip"
+import { DueBadge } from "./DueBadge"
+import type { KanjiEntry } from "convex/validators"
 
 type KanjiTabProps = {
   kanjiEntries?: KanjiEntry[]
@@ -30,17 +30,27 @@ export function KanjiTab(props: KanjiTabProps) {
             <Show
               when={props.skippedKanji?.length}
               fallback={
-                <p class="text-muted-foreground text-sm">No kanji to display.</p>
+                <p class="text-muted-foreground text-sm">
+                  No kanji to display.
+                </p>
               }
             >
               {/* Only skipped kanji, no marked kanji */}
               <div class="space-y-4">
-                <p class="text-muted-foreground text-sm">No marked kanji found.</p>
+                <p class="text-muted-foreground text-sm">
+                  No marked kanji found.
+                </p>
                 <div class="border-t border-card-foreground/20 pt-4">
-                  <div class="text-muted-foreground text-xs mb-2">Unmarked (will skip):</div>
+                  <div class="text-muted-foreground text-xs mb-2">
+                    Unmarked (will skip):
+                  </div>
                   <div class="flex flex-wrap gap-2">
                     <For each={props.skippedKanji}>
-                      {(kanji) => <span class="text-muted-foreground/60 text-lg">{kanji}</span>}
+                      {(kanji) => (
+                        <span class="text-muted-foreground/60 text-lg">
+                          {kanji}
+                        </span>
+                      )}
                     </For>
                   </div>
                 </div>
@@ -51,16 +61,18 @@ export function KanjiTab(props: KanjiTabProps) {
           <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
             <For each={props.kanjiEntries}>
               {(kanjiEntry) => {
-                const usedIn = () => props.kanjiToVocab?.get(kanjiEntry.kanji)?.length || 0
+                const usedIn = () =>
+                  props.kanjiToVocab?.get(kanjiEntry.kanji)?.length || 0
 
                 return (
                   <div class="border-card-foreground/40 rounded-lg border p-3">
                     <div class="flex items-center justify-between gap-2">
                       <button
-                        class={`cursor-pointer rounded-md px-2 py-1 text-left text-lg font-bold ${props.selectedKanji() === kanjiEntry.kanji
-                          ? 'bg-indigo-500/15 text-indigo-400'
-                          : 'text-primary ease-instant-hover-150 hover:bg-primary/5'
-                          }`}
+                        class={`cursor-pointer rounded-md px-2 py-1 text-left text-lg font-bold ${
+                          props.selectedKanji() === kanjiEntry.kanji
+                            ? "bg-indigo-500/15 text-indigo-400"
+                            : "text-primary ease-instant-hover-150 hover:bg-primary/5"
+                        }`}
                         onClick={() => props.toggleKanji(kanjiEntry.kanji)}
                         title="Toggle select Kanji"
                       >
@@ -69,11 +81,15 @@ export function KanjiTab(props: KanjiTabProps) {
 
                       <div class="flex flex-col items-end gap-1">
                         <div class="text-muted-foreground text-xs">
-                          Used in {usedIn()} {usedIn() === 1 ? 'word' : 'words'}
+                          Used in {usedIn()} {usedIn() === 1 ? "word" : "words"}
                         </div>
 
                         {/* Placeholder for future FSRS due badge */}
-                        <DueBadge isDue={false} isLoading={false} variant="purple" />
+                        <DueBadge
+                          isDue={false}
+                          isLoading={false}
+                          variant="purple"
+                        />
                       </div>
                     </div>
 
@@ -91,7 +107,9 @@ export function KanjiTab(props: KanjiTabProps) {
                           )}
                         </For>
                         <Show when={kanjiEntry.radicalComponents.length === 0}>
-                          <span class="text-muted-foreground text-xs">None</span>
+                          <span class="text-muted-foreground text-xs">
+                            None
+                          </span>
                         </Show>
                       </div>
                     </div>
@@ -104,10 +122,16 @@ export function KanjiTab(props: KanjiTabProps) {
           {/* Skipped kanji section */}
           <Show when={props.skippedKanji?.length}>
             <div class="mt-6 border-t border-card-foreground/20 pt-4">
-              <div class="text-muted-foreground text-xs mb-2">Unmarked (will skip):</div>
+              <div class="text-muted-foreground text-xs mb-2">
+                Unmarked (will skip):
+              </div>
               <div class="flex flex-wrap gap-2">
                 <For each={props.skippedKanji}>
-                  {(kanji) => <span class="text-muted-foreground/60 text-lg">{kanji}</span>}
+                  {(kanji) => (
+                    <span class="text-muted-foreground/60 text-lg">
+                      {kanji}
+                    </span>
+                  )}
                 </For>
               </div>
             </div>

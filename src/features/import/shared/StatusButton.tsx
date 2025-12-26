@@ -8,7 +8,13 @@ const STATUS_ICONS: Record<
   (props: JSX.SvgSVGAttributes<SVGSVGElement>) => JSX.Element
 > = {
   learning: (props) => (
-    <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <svg
+      {...props}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -17,7 +23,13 @@ const STATUS_ICONS: Record<
     </svg>
   ),
   decent: (props) => (
-    <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <svg
+      {...props}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -26,7 +38,13 @@ const STATUS_ICONS: Record<
     </svg>
   ),
   mastered: (props) => (
-    <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <svg
+      {...props}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -69,7 +87,7 @@ export function StatusButton(props: StatusButtonProps) {
         "h-9 gap-1.5 px-3 border",
         colorClass().base,
         colorClass().hover,
-        props.class
+        props.class,
       )}
       onClick={props.onClick}
       title={config().tooltip}
@@ -81,19 +99,32 @@ export function StatusButton(props: StatusButtonProps) {
 }
 
 /** Clear status button for manual mode */
-export function ClearStatusButton(props: { onClick: () => void; class?: string }) {
+export function ClearStatusButton(props: {
+  onClick: () => void
+  class?: string
+}) {
   return (
     <Button
       variant="ghost"
       class={cn(
         "h-9 gap-1.5 px-3 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white",
-        props.class
+        props.class,
       )}
       onClick={props.onClick}
       title="Clear status override"
     >
-      <svg class="size-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      <svg
+        class="size-4 shrink-0"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M6 18L18 6M6 6l12 12"
+        />
       </svg>
       <span class="truncate">Clear</span>
     </Button>

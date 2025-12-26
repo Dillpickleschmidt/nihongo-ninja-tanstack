@@ -1,4 +1,8 @@
-import { Checkbox, CheckboxInput, CheckboxLabel } from "@/components/ui/checkbox"
+import {
+  Checkbox,
+  CheckboxInput,
+  CheckboxLabel,
+} from "@/components/ui/checkbox"
 
 export function SelectAllHeader(props: {
   level: string

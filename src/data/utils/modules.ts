@@ -27,7 +27,7 @@ const allModules: Record<string, Module> = {
  * Resolves module IDs from a chapter to full module objects with display properties.
  */
 export function getModulesFromChapter(
-  chapter: LearningPathChapter
+  chapter: LearningPathChapter,
 ): ResolvedModule[] {
   const disabledSet = new Set(chapter.disabled_modules || [])
 

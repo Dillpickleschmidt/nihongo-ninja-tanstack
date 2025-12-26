@@ -310,7 +310,11 @@ export default function KanaChart(props: { type: ChartType }) {
             {row.consonant}
           </div>
           {row.cells.map((cell) =>
-            cell[0] !== null ? <SyllableTile jp={cell[0]} romaji={cell[1]} /> : <div></div>,
+            cell[0] !== null ? (
+              <SyllableTile jp={cell[0]} romaji={cell[1]} />
+            ) : (
+              <div></div>
+            ),
           )}
         </>
       ))}

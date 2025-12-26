@@ -45,7 +45,10 @@ export function extractUserListIds(
       const progress = entry?.media?.mediaListEntry?.progress ?? 0
       // +2 is for series that don't have the next airing episode scheduled, but are still airing
       // -1 is because we care about the latest aired available episode, not the next aired episode
-      return progress < (entry?.media?.nextAiringEpisode?.episode ?? (progress + 2)) - 1
+      return (
+        progress <
+        (entry?.media?.nextAiringEpisode?.episode ?? progress + 2) - 1
+      )
     })
     .map((entry) => entry?.media?.id)
     .filter(Boolean) as number[]

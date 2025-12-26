@@ -4,7 +4,10 @@ import { convexMutation, useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { fromTsFsrsCard, fromTsFsrsLog } from "convex/model/fsrs"
 import { useImportFlow } from "../shared/hooks/useImportFlow"
-import { useItemStatuses, type StatusItem } from "../shared/hooks/useItemStatuses"
+import {
+  useItemStatuses,
+  type StatusItem,
+} from "../shared/hooks/useItemStatuses"
 import { SelectAllHeader } from "../shared/SelectAllHeader"
 import { ImportItem } from "../shared/ImportItem"
 import { FloatingActionBar } from "../shared/FloatingActionBar"
@@ -16,7 +19,11 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
-import type { JpdbProcessResult, JpdbImportItem, ProcessedCard } from "./jpdb/jpdb-processor"
+import type {
+  JpdbProcessResult,
+  JpdbImportItem,
+  ProcessedCard,
+} from "./jpdb/jpdb-processor"
 
 interface JpdbResultsViewProps {
   result: JpdbProcessResult
@@ -26,11 +33,16 @@ interface JpdbResultsViewProps {
 export function JpdbResultsView(props: JpdbResultsViewProps) {
   const [isImporting, setIsImporting] = createSignal(false)
   const [importError, setImportError] = createSignal<string | null>(null)
-  const [importResult, setImportResult] = createSignal<{ imported: number } | null>(null)
+  const [importResult, setImportResult] = createSignal<{
+    imported: number
+  } | null>(null)
 
   // Build status map from import data (before database filtering)
   const baseStatusMap = createMemo(() => {
-    const map: Record<string, Record<string, typeof props.result.vocabItems[0]["status"]>> = {
+    const map: Record<
+      string,
+      Record<string, (typeof props.result.vocabItems)[0]["status"]>
+    > = {
       vocabulary: {},
       kanji: {},
       radical: {},
@@ -66,13 +78,13 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
   const vocabQuery = useConvexQuery(
     api.api.vocabulary.getByKeys,
     () => ({ keys: vocabIds() }),
-    () => ({ enabled: vocabIds().length > 0 })
+    () => ({ enabled: vocabIds().length > 0 }),
   )
 
   const kanjiQuery = useConvexQuery(
     api.api.vocabulary.getKanjiByChars,
     () => ({ chars: kanjiIds() }),
-    () => ({ enabled: kanjiIds().length > 0 })
+    () => ({ enabled: kanjiIds().length > 0 }),
   )
 
   // Build kanji meanings map from query results
@@ -89,7 +101,11 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
   // Partition items into found (with meanings) and skipped (no match in DB)
   const partitionedVocab = createMemo(() => {
     const vocabData = vocabQuery.data()
-    if (!vocabData) return { found: [] as (JpdbImportItem & { meaning: string })[], skipped: [] as JpdbImportItem[] }
+    if (!vocabData)
+      return {
+        found: [] as (JpdbImportItem & { meaning: string })[],
+        skipped: [] as JpdbImportItem[],
+      }
 
     const found: (JpdbImportItem & { meaning: string })[] = []
     const skipped: JpdbImportItem[] = []
@@ -107,8 +123,15 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
 
   const partitionedKanji = createMemo(() => {
     const kanjiMeanings = kanjiMeaningsMap()
-    if (kanjiMeanings.size === 0 && kanjiIds().length > 0 && kanjiQuery.data() === undefined) {
-      return { found: [] as (JpdbImportItem & { meaning: string })[], skipped: [] as JpdbImportItem[] }
+    if (
+      kanjiMeanings.size === 0 &&
+      kanjiIds().length > 0 &&
+      kanjiQuery.data() === undefined
+    ) {
+      return {
+        found: [] as (JpdbImportItem & { meaning: string })[],
+        skipped: [] as JpdbImportItem[],
+      }
     }
 
     const found: (JpdbImportItem & { meaning: string })[] = []
@@ -141,8 +164,12 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
   ])
   const getStoredStatus = useItemStatuses(statusItems)
 
-  const vocabSelectedCount = createMemo(() => foundVocab().filter((i) => flow.isSelected(i.id)).length)
-  const kanjiSelectedCount = createMemo(() => foundKanji().filter((i) => flow.isSelected(i.id)).length)
+  const vocabSelectedCount = createMemo(
+    () => foundVocab().filter((i) => flow.isSelected(i.id)).length,
+  )
+  const kanjiSelectedCount = createMemo(
+    () => foundKanji().filter((i) => flow.isSelected(i.id)).length,
+  )
 
   const allVocabSelected = () =>
     foundVocab().length > 0 && foundVocab().every((i) => flow.isSelected(i.id))
@@ -186,7 +213,9 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
         })
         .filter((card): card is NonNullable<typeof card> => card !== undefined)
 
-      const result = await convexMutation(api.api.fsrs.batchImportFSRSCards, { cards: cardsToImport })()
+      const result = await convexMutation(api.api.fsrs.batchImportFSRSCards, {
+        cards: cardsToImport,
+      })()
       setImportResult(result)
     } catch (err) {
       setImportError(err instanceof Error ? err.message : "Import failed")
@@ -243,7 +272,10 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
 
       {/* Vocabulary Section */}
       <Show when={foundVocab().length > 0}>
-        <Collapsible defaultOpen class="rounded-xl border border-white/10 bg-white/5">
+        <Collapsible
+          defaultOpen
+          class="rounded-xl border border-white/10 bg-white/5"
+        >
           <CollapsibleTrigger class="w-full rounded-t-xl px-4 py-3 text-left text-white/80 hover:bg-white/5">
             Vocabulary ({foundVocab().length})
           </CollapsibleTrigger>
@@ -253,7 +285,9 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
               category="vocabulary"
               selectedCount={vocabSelectedCount()}
               allSelected={allVocabSelected()}
-              onToggle={(checked) => flow.toggleAll(foundVocab(), (i) => i.id, "vocabulary", checked)}
+              onToggle={(checked) =>
+                flow.toggleAll(foundVocab(), (i) => i.id, "vocabulary", checked)
+              }
             />
             <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               <For each={foundVocab()}>
@@ -266,7 +300,10 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
                     checked={flow.isSelected(item.id)}
                     importStatus={item.status}
                     storedStatus={getStoredStatus(item.id, "vocabulary")}
-                    overrideStatus={flow.getOverrideStatus(item.id, "vocabulary")}
+                    overrideStatus={flow.getOverrideStatus(
+                      item.id,
+                      "vocabulary",
+                    )}
                     allIds={foundVocabIds()}
                     onItemClick={flow.handleItemClick}
                     onPointerDown={flow.handlePointerDown}
@@ -281,7 +318,10 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
 
       {/* Kanji Section */}
       <Show when={foundKanji().length > 0}>
-        <Collapsible defaultOpen class="rounded-xl border border-white/10 bg-white/5">
+        <Collapsible
+          defaultOpen
+          class="rounded-xl border border-white/10 bg-white/5"
+        >
           <CollapsibleTrigger class="w-full rounded-t-xl px-4 py-3 text-left text-white/80 hover:bg-white/5">
             Kanji ({foundKanji().length})
           </CollapsibleTrigger>
@@ -291,7 +331,9 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
               category="kanji"
               selectedCount={kanjiSelectedCount()}
               allSelected={allKanjiSelected()}
-              onToggle={(checked) => flow.toggleAll(foundKanji(), (i) => i.id, "kanji", checked)}
+              onToggle={(checked) =>
+                flow.toggleAll(foundKanji(), (i) => i.id, "kanji", checked)
+              }
             />
             <div class="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">
               <For each={foundKanji()}>
@@ -321,7 +363,8 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
       <Show when={skippedVocab().length > 0 || skippedKanji().length > 0}>
         <Collapsible class="rounded-xl border border-white/10 bg-white/5">
           <CollapsibleTrigger class="w-full rounded-t-xl px-4 py-3 text-left text-white/60 hover:bg-white/5">
-            Skipped ({skippedVocab().length + skippedKanji().length} not in database)
+            Skipped ({skippedVocab().length + skippedKanji().length} not in
+            database)
           </CollapsibleTrigger>
           <CollapsibleContent class="border-t border-white/10 p-4">
             <Show when={skippedVocab().length > 0}>
@@ -374,7 +417,11 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
               fallback={`Import ${allFoundIds().length} Items`}
             >
               <span class="flex items-center gap-2">
-                <svg class="size-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                <svg
+                  class="size-4 animate-spin"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
                   <circle
                     class="opacity-25"
                     cx="12"

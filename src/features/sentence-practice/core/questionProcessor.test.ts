@@ -1,7 +1,10 @@
 // core/questionProcessor.test.ts
 import { describe, it, expect } from "vitest"
 import { prepareQuestion } from "./questionProcessor"
-import type { SentenceAnswer, SentenceSegment } from "../../../../convex/validators"
+import type {
+  SentenceAnswer,
+  SentenceSegment,
+} from "../../../../convex/validators"
 
 // Helper to create a minimal question object
 function createQuestion(
@@ -159,23 +162,19 @@ describe("prepareQuestion", () => {
     const result = prepareQuestion(question)
 
     // Should have RichAnswer with original and kana versions
-    expect(result.validAnswers.some((a) => a.original === "行[い]きます")).toBe(true)
+    expect(result.validAnswers.some((a) => a.original === "行[い]きます")).toBe(
+      true,
+    )
     expect(result.validAnswers.some((a) => a.kana === "いきます")).toBe(true)
   })
 
   it("handles multiple raw answers", () => {
     const question = createQuestion("I will go to the store", [
       {
-        segments: [
-          segment("店[みせ]に"),
-          segment("行[い]きます"),
-        ],
+        segments: [segment("店[みせ]に"), segment("行[い]きます")],
       },
       {
-        segments: [
-          segment("お店[みせ]に"),
-          segment("行[い]きます"),
-        ],
+        segments: [segment("お店[みせ]に"), segment("行[い]きます")],
       },
     ])
 

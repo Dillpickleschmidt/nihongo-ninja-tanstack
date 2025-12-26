@@ -8,7 +8,10 @@ const STATUS_RANK: Record<NonNullable<ItemStatus> | "null", number> = {
 }
 
 /** Returns true if current status is >= target status in the hierarchy */
-export function isAtOrAboveStatus(current: ItemStatus, target: ItemStatus): boolean {
+export function isAtOrAboveStatus(
+  current: ItemStatus,
+  target: ItemStatus,
+): boolean {
   return STATUS_RANK[current ?? "null"] >= STATUS_RANK[target ?? "null"]
 }
 

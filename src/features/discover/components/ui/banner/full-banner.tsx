@@ -119,7 +119,7 @@ export function FullBanner(props: FullBannerProps) {
                       <Button
                         variant="ghost"
                         class="text-custom! select:text-primary! bg-primary/5 h-7 font-bold text-nowrap"
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         {formatFormat(anime().format)}
                       </Button>
@@ -132,7 +132,7 @@ export function FullBanner(props: FullBannerProps) {
                       <Button
                         variant="ghost"
                         class="text-custom! select:text-primary! bg-primary/5 h-7 font-bold text-nowrap"
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         {formatStatus(anime().status)}
                       </Button>
@@ -145,7 +145,7 @@ export function FullBanner(props: FullBannerProps) {
                       <Button
                         variant="ghost"
                         class="text-custom! select:text-primary! bg-primary/5 h-7 font-bold text-nowrap capitalize"
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         {formatSeason(anime().season)} {anime().seasonYear}
                       </Button>
@@ -158,7 +158,7 @@ export function FullBanner(props: FullBannerProps) {
                       <Button
                         variant="ghost"
                         class={`select:text-primary! bg-primary/5 h-7 font-bold text-nowrap ${getScoreColor(anime().averageScore)}`}
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         {formatScore(anime().averageScore)}
                       </Button>
@@ -224,7 +224,7 @@ export function FullBanner(props: FullBannerProps) {
                           <Button
                             variant="ghost"
                             class="text-custom! select:text-primary! bg-primary/5 h-7 font-bold text-nowrap"
-                            onClick={() => { }}
+                            onClick={() => {}}
                           >
                             {genre}
                           </Button>

@@ -61,10 +61,16 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
             "fixed bottom-6 left-1/2 z-50 flex w-auto -translate-x-1/2 transition-all duration-300 ease-out md:bottom-8",
             props.selectedCount > 0
               ? "translate-y-0 opacity-100"
-              : "pointer-events-none translate-y-10 opacity-0"
+              : "pointer-events-none translate-y-10 opacity-0",
           )}
         >
-          <div class="flex w-full items-center justify-between gap-3 overflow-x-auto rounded-xl border border-(--accent)/20 p-3 shadow-lg shadow-black/20 backdrop-blur-md" style={{ "background-color": "color-mix(in srgb, var(--accent) 15%, rgb(23 23 23))" }}>
+          <div
+            class="flex w-full items-center justify-between gap-3 overflow-x-auto rounded-xl border border-(--accent)/20 p-3 shadow-lg shadow-black/20 backdrop-blur-md"
+            style={{
+              "background-color":
+                "color-mix(in srgb, var(--accent) 15%, rgb(23 23 23))",
+            }}
+          >
             {/* Counter */}
             <div class="flex items-center gap-2">
               <div class="flex size-8 items-center justify-center rounded-full bg-(--accent)/20 font-mono text-sm font-bold text-(--accent)">
@@ -79,11 +85,20 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
             <div class="flex items-center gap-1">
               {/* Automatic mode: Learning, Decent, Mastered */}
               <Show when={props.mode === "automatic"}>
-                <StatusButton status="learning" onClick={() => handleStatusClick("learning")} />
+                <StatusButton
+                  status="learning"
+                  onClick={() => handleStatusClick("learning")}
+                />
               </Show>
 
-              <StatusButton status="decent" onClick={() => handleStatusClick("decent")} />
-              <StatusButton status="mastered" onClick={() => handleStatusClick("mastered")} />
+              <StatusButton
+                status="decent"
+                onClick={() => handleStatusClick("decent")}
+              />
+              <StatusButton
+                status="mastered"
+                onClick={() => handleStatusClick("mastered")}
+              />
 
               {/* Manual mode: Clear button */}
               <Show when={props.mode === "manual" && props.onClearOverrides}>
@@ -99,8 +114,18 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
                 onClick={props.onClearSelection}
                 title="Deselect all"
               >
-                <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  class="size-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>

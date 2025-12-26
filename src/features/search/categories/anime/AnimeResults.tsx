@@ -9,10 +9,9 @@ interface AnimeResultsProps {
 }
 
 export function AnimeResults(props: AnimeResultsProps) {
-  const { results, isLoading, sentinelRef } =
-    useAnimeInfiniteScroll({
-      search: props.search,
-    })
+  const { results, isLoading, sentinelRef } = useAnimeInfiniteScroll({
+    search: props.search,
+  })
 
   return (
     <>

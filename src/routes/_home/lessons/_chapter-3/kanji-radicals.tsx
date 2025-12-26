@@ -3,7 +3,9 @@ import { createFileRoute } from "@tanstack/solid-router"
 import YouTubeVideo from "@/features/youtube/YouTube"
 import Romaji from "@/components/text/Romaji"
 
-export const Route = createFileRoute("/_home/lessons/_chapter-3/kanji-radicals")({
+export const Route = createFileRoute(
+  "/_home/lessons/_chapter-3/kanji-radicals",
+)({
   loader: async () => ({
     contentBox: {
       nextButtonLink: "/learn/chapter-3/chapter-1-kanji-part-1",

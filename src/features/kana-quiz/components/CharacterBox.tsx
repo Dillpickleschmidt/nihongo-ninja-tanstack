@@ -53,8 +53,9 @@ export default function CharacterBox(props: CharacterBoxProps) {
           onInput={handleInputChange}
           disabled={props.disabled}
           placeholder="..."
-          class={`text-foreground placeholder-muted-foreground h-full w-full bg-transparent text-center text-xl font-medium outline-none ${props.disabled ? "cursor-not-allowed opacity-60" : ""
-            }`}
+          class={`text-foreground placeholder-muted-foreground h-full w-full bg-transparent text-center text-xl font-medium outline-none ${
+            props.disabled ? "cursor-not-allowed opacity-60" : ""
+          }`}
           style={{ "font-family": "inherit" }}
         />
       </SmoothCard>

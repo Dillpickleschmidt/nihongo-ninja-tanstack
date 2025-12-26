@@ -51,12 +51,18 @@ export interface JpdbProcessResult {
 /**
  * Determines import item status based on FSRS card state after review simulation
  */
-function getItemStatusFromFSRSCard(fsrsCard: { state: number; stability: number }): ItemStatus {
+function getItemStatusFromFSRSCard(fsrsCard: {
+  state: number
+  stability: number
+}): ItemStatus {
   if (fsrsCard.state === State.New) {
     return null
   }
 
-  if (fsrsCard.state === State.Learning || fsrsCard.state === State.Relearning) {
+  if (
+    fsrsCard.state === State.Learning ||
+    fsrsCard.state === State.Relearning
+  ) {
     return "learning"
   }
 
@@ -169,7 +175,7 @@ export async function processJpdbFile(file: File): Promise<JpdbProcessResult> {
   const parseResult = safeParseJpdbJsonData(jpdbData)
   if (!parseResult.success) {
     throw new Error(
-      "Invalid JPDB JSON format. Please check your file and try again."
+      "Invalid JPDB JSON format. Please check your file and try again.",
     )
   }
 

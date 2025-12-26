@@ -1,11 +1,11 @@
-import { createSignal, createMemo, type Accessor, type Setter } from 'solid-js'
-import { useConvexQuery } from '@/lib/convex-query'
-import { api } from 'convex/_generated/api'
-import { extractKanjiCharacters } from '@/data/utils/text/japanese'
-import type { UnifiedDeck } from 'convex/model/decks'
-import type { VocabularyItem, KanjiEntry } from 'convex/validators'
+import { createSignal, createMemo, type Accessor, type Setter } from "solid-js"
+import { useConvexQuery } from "@/lib/convex-query"
+import { api } from "convex/_generated/api"
+import { extractKanjiCharacters } from "@/data/utils/text/japanese"
+import type { UnifiedDeck } from "convex/model/decks"
+import type { VocabularyItem, KanjiEntry } from "convex/validators"
 
-export type TabValue = 'vocabulary' | 'kanji'
+export type TabValue = "vocabulary" | "kanji"
 
 interface UseDeckViewOptions {
   deck: UnifiedDeck
@@ -22,7 +22,9 @@ interface UseDeckViewReturn {
   filteredVocab: Accessor<VocabularyItem[] | undefined>
   filteredKanji: Accessor<KanjiEntry[] | undefined>
   kanjiToVocab: Accessor<Map<string, string[]> | undefined>
-  counts: Accessor<{ vocab: number; kanji: number; radicals: number } | undefined>
+  counts: Accessor<
+    { vocab: number; kanji: number; radicals: number } | undefined
+  >
   skippedKanji: () => string[] | undefined
   hasSelection: () => boolean
 
@@ -37,9 +39,11 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
   const { deck } = options
 
   // State
-  const [activeTab, setActiveTab] = createSignal<TabValue>('vocabulary')
+  const [activeTab, setActiveTab] = createSignal<TabValue>("vocabulary")
   const [selectedKanji, setSelectedKanji] = createSignal<string | null>(null)
-  const [selectedRadical, setSelectedRadical] = createSignal<string | null>(null)
+  const [selectedRadical, setSelectedRadical] = createSignal<string | null>(
+    null,
+  )
 
   // Fetch vocabulary with hierarchy (works for both built-in and user decks)
   const hierarchyQuery = useConvexQuery(
@@ -47,7 +51,7 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
     () => ({
       deckId: deck.id,
       deckSource: deck.source,
-    })
+    }),
   )
 
   // Derived: kanji → vocab lookup map
@@ -75,7 +79,7 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
     if (!selected) return data.vocabulary
 
     return data.vocabulary.filter((item) =>
-      extractKanjiCharacters(item.word).includes(selected)
+      extractKanjiCharacters(item.word).includes(selected),
     )
   })
 
@@ -104,7 +108,8 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
   // Derived: skipped kanji (plain function - used once)
   const skippedKanji = () => hierarchyQuery.data()?.skippedKanji
 
-  const hasSelection = () => selectedKanji() !== null || selectedRadical() !== null
+  const hasSelection = () =>
+    selectedKanji() !== null || selectedRadical() !== null
 
   // Handlers
   const toggleKanji = (kanji: string) => {
@@ -113,7 +118,7 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
     } else {
       setSelectedKanji(kanji)
       setSelectedRadical(null)
-      setActiveTab('vocabulary')
+      setActiveTab("vocabulary")
     }
   }
 
@@ -129,7 +134,7 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
   const handleKanjiChipClick = (kanji: string) => {
     setSelectedKanji(kanji)
     setSelectedRadical(null)
-    setActiveTab('kanji')
+    setActiveTab("kanji")
   }
 
   const clearSelection = () => {

@@ -13,18 +13,23 @@ export function useSectionItems<T>(options: UseSectionItemsOptions<T>) {
   const allKeys = createMemo(() => options.items()?.map(options.getKey) ?? [])
 
   const statusItems = createMemo<StatusItem[]>(() =>
-    allKeys().map((key) => ({ key, type: options.type }))
+    allKeys().map((key) => ({ key, type: options.type })),
   )
 
   const getStoredStatus = useItemStatuses(statusItems)
 
   const allSelected = () => {
     const list = options.items()
-    return list !== undefined && list.length > 0 && list.every((i) => options.isSelected(options.getKey(i)))
+    return (
+      list !== undefined &&
+      list.length > 0 &&
+      list.every((i) => options.isSelected(options.getKey(i)))
+    )
   }
 
   const selectedCount = () =>
-    options.items()?.filter((i) => options.isSelected(options.getKey(i))).length ?? 0
+    options.items()?.filter((i) => options.isSelected(options.getKey(i)))
+      .length ?? 0
 
   return { allKeys, getStoredStatus, allSelected, selectedCount }
 }

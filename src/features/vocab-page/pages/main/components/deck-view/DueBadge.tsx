@@ -1,34 +1,34 @@
-import { Show } from 'solid-js'
+import { Show } from "solid-js"
 
 type DueBadgeProps = {
   isDue: boolean
   dueDate?: string | Date
   isLoading?: boolean
-  variant?: 'indigo' | 'purple' | 'amber'
+  variant?: "indigo" | "purple" | "amber"
 }
 
 export function DueBadge(props: DueBadgeProps) {
-  const variant = () => props.variant || 'indigo'
+  const variant = () => props.variant || "indigo"
 
   const colors = () => {
     switch (variant()) {
-      case 'purple':
-        return 'bg-purple-500/20 text-purple-300'
-      case 'amber':
-        return 'bg-amber-500/20 text-amber-500'
+      case "purple":
+        return "bg-purple-500/20 text-purple-300"
+      case "amber":
+        return "bg-amber-500/20 text-amber-500"
       default:
-        return 'bg-indigo-500/20 text-indigo-300'
+        return "bg-indigo-500/20 text-indigo-300"
     }
   }
 
   const loadingColor = () => {
     switch (variant()) {
-      case 'purple':
-        return 'bg-purple-500/20'
-      case 'amber':
-        return 'bg-amber-500/20'
+      case "purple":
+        return "bg-purple-500/20"
+      case "amber":
+        return "bg-amber-500/20"
       default:
-        return 'bg-indigo-500/20'
+        return "bg-indigo-500/20"
     }
   }
 
@@ -49,9 +49,9 @@ export function DueBadge(props: DueBadgeProps) {
           <Show when={props.dueDate}>
             <div class="text-muted-foreground text-[11px]">
               {new Date(props.dueDate!).toLocaleDateString(undefined, {
-                weekday: 'short',
-                month: 'short',
-                day: 'numeric',
+                weekday: "short",
+                month: "short",
+                day: "numeric",
               })}
             </div>
           </Show>

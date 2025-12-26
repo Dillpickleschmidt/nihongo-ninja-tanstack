@@ -84,4 +84,3 @@ export type {
   CollapsibleTriggerProps,
   CollapsibleContentProps,
 }
-

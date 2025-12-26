@@ -2,22 +2,19 @@ import {
   TextField,
   TextFieldInput,
   TextFieldLabel,
-} from '@/components/ui/text-field'
-import { Label } from '@/components/ui/label'
+} from "@/components/ui/text-field"
+import { Label } from "@/components/ui/label"
 import {
   Checkbox,
   CheckboxInput,
   CheckboxLabel,
-} from '@/components/ui/checkbox'
-import { LocationSelector } from '@/features/vocab-page/shared/components/LocationSelector'
-import { useFolderTree } from '@/features/vocab-page/hooks/useFolderTree'
-import { useDeckCreationStore } from '../context/DeckCreationStoreContext'
-import { useDeckValidation } from '../hooks/useDeckCreationValidation'
-import type {
-  Folder,
-  Deck,
-} from '@/features/vocab-page/context/VocabContext'
-import type { PracticeMode } from '../types/deck-creation-types'
+} from "@/components/ui/checkbox"
+import { LocationSelector } from "@/features/vocab-page/shared/components/LocationSelector"
+import { useFolderTree } from "@/features/vocab-page/hooks/useFolderTree"
+import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
+import { useDeckValidation } from "../hooks/useDeckCreationValidation"
+import type { Folder, Deck } from "@/features/vocab-page/context/VocabContext"
+import type { PracticeMode } from "../types/deck-creation-types"
 
 interface DeckDetailsProps {
   folders: Folder[]
@@ -39,11 +36,11 @@ export function DeckDetails(props: DeckDetailsProps) {
   })
 
   const handleFolderSelect = (folderId: string) => {
-    if (folderId === 'root') {
-      actions.updateDeckFolder('root', 'Root')
+    if (folderId === "root") {
+      actions.updateDeckFolder("root", "Root")
     } else {
       const folder = props.folders.find((f) => f.id === folderId)
-      actions.updateDeckFolder(folderId, folder?.folderName || 'Root')
+      actions.updateDeckFolder(folderId, folder?.folderName || "Root")
     }
   }
 
@@ -57,7 +54,7 @@ export function DeckDetails(props: DeckDetailsProps) {
         return deckValidation.deckNameValidation().error
       }
       if (store.deck.name.trim().length === 0) {
-        return 'Deck name is required'
+        return "Deck name is required"
       }
     }
 
@@ -103,7 +100,7 @@ export function DeckDetails(props: DeckDetailsProps) {
   const practiceModeError = () => {
     const hasAttemptedSubmit = store.validation.hasAttemptedSubmit
     if (hasAttemptedSubmit && store.deck.allowedPracticeModes.length === 0) {
-      return 'At least one practice mode must be enabled'
+      return "At least one practice mode must be enabled"
     }
     return undefined
   }
@@ -155,13 +152,13 @@ export function DeckDetails(props: DeckDetailsProps) {
             <Checkbox
               class="flex items-center justify-end space-x-2"
               title="Choose which modes are presented when you click to practice this deck. At least one must be enabled."
-              checked={store.deck.allowedPracticeModes.includes('meanings')}
+              checked={store.deck.allowedPracticeModes.includes("meanings")}
               onChange={(enabled) =>
-                handlePracticeModeChange('meanings', enabled)
+                handlePracticeModeChange("meanings", enabled)
               }
               disabled={
                 store.deck.allowedPracticeModes.length === 1 &&
-                store.deck.allowedPracticeModes.includes('meanings')
+                store.deck.allowedPracticeModes.includes("meanings")
               }
             >
               <CheckboxLabel class="text-muted-foreground text-xs">
@@ -175,13 +172,13 @@ export function DeckDetails(props: DeckDetailsProps) {
             <Checkbox
               class="flex items-center justify-end space-x-2"
               title="Choose which modes are presented when you click to practice this deck. At least one must be enabled."
-              checked={store.deck.allowedPracticeModes.includes('spellings')}
+              checked={store.deck.allowedPracticeModes.includes("spellings")}
               onChange={(enabled) =>
-                handlePracticeModeChange('spellings', enabled)
+                handlePracticeModeChange("spellings", enabled)
               }
               disabled={
                 store.deck.allowedPracticeModes.length === 1 &&
-                store.deck.allowedPracticeModes.includes('spellings')
+                store.deck.allowedPracticeModes.includes("spellings")
               }
             >
               <CheckboxLabel class="text-muted-foreground text-xs">
@@ -207,7 +204,7 @@ export function DeckDetails(props: DeckDetailsProps) {
           onChange={actions.updateDeckDescription}
         >
           <TextFieldLabel>
-            Description{' '}
+            Description{" "}
             <span class="text-muted-foreground text-xs">(Optional)</span>
           </TextFieldLabel>
           <TextFieldInput

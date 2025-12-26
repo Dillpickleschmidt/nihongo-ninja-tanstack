@@ -1,8 +1,8 @@
-import { For, Show, createMemo } from 'solid-js'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/utils'
-import type { PracticeCard } from '../types'
-import { getPromptDisplay } from '../utils/card-display'
+import { For, Show, createMemo } from "solid-js"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/utils"
+import type { PracticeCard } from "../types"
+import { getPromptDisplay } from "../utils/card-display"
 
 type ReviewResult = {
   card: PracticeCard
@@ -24,8 +24,8 @@ export function FinishScreen(props: Props) {
     let correctCount = 0
 
     for (const r of props.results) {
-      if (r.card.sessionScope === 'module') moduleItems.push(r)
-      else if (r.card.sessionScope === 'review') reviewItems.push(r)
+      if (r.card.sessionScope === "module") moduleItems.push(r)
+      else if (r.card.sessionScope === "review") reviewItems.push(r)
       if (r.correct) correctCount++
     }
 
@@ -38,26 +38,26 @@ export function FinishScreen(props: Props) {
   // Dynamic emoji based on accuracy
   const theme = createMemo(() => {
     const acc = stats().accuracy
-    if (acc >= 90) return { emoji: '🎉', title: 'Outstanding!' }
-    if (acc >= 70) return { emoji: '🌟', title: 'Great Work!' }
-    if (acc >= 50) return { emoji: '💪', title: 'Keep Going!' }
-    return { emoji: '📚', title: 'Practice Makes Perfect' }
+    if (acc >= 90) return { emoji: "🎉", title: "Outstanding!" }
+    if (acc >= 70) return { emoji: "🌟", title: "Great Work!" }
+    if (acc >= 50) return { emoji: "💪", title: "Keep Going!" }
+    return { emoji: "📚", title: "Practice Makes Perfect" }
   })
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'vocabulary':
-        return 'bg-orange-500/20 text-orange-600 dark:text-orange-400'
-      case 'kanji':
-        return 'bg-indigo-500/20 text-indigo-600 dark:text-indigo-400'
-      case 'radical':
-        return 'bg-purple-500/20 text-purple-600 dark:text-purple-400'
+      case "vocabulary":
+        return "bg-orange-500/20 text-orange-600 dark:text-orange-400"
+      case "kanji":
+        return "bg-indigo-500/20 text-indigo-600 dark:text-indigo-400"
+      case "radical":
+        return "bg-purple-500/20 text-purple-600 dark:text-purple-400"
       default:
-        return ''
+        return ""
     }
   }
 
-  const getCardPrompt = (card: PracticeCard) => getPromptDisplay(card, '0.6rem')
+  const getCardPrompt = (card: PracticeCard) => getPromptDisplay(card, "0.6rem")
 
   return (
     <div class="flex min-h-[calc(100vh-12rem)] flex-col items-center px-4 pb-32 pt-8">
@@ -67,15 +67,24 @@ export function FinishScreen(props: Props) {
           <div class="mb-4 text-6xl">{theme().emoji}</div>
           <h1 class="mb-2 text-3xl font-bold">{theme().title}</h1>
           <p class="text-lg text-muted-foreground">
-            You completed <span class="font-semibold text-foreground">{props.deckName}</span>
+            You completed{" "}
+            <span class="font-semibold text-foreground">{props.deckName}</span>
           </p>
         </div>
 
         {/* Stat boxes (from hmr) */}
         <div class="mb-8 grid grid-cols-3 gap-4">
-          <StatCard label="Correct" value={stats().correctCount} color="emerald" />
+          <StatCard
+            label="Correct"
+            value={stats().correctCount}
+            color="emerald"
+          />
           <StatCard label="Total" value={stats().total} color="blue" />
-          <StatCard label="Accuracy" value={`${stats().accuracy}%`} color="purple" />
+          <StatCard
+            label="Accuracy"
+            value={`${stats().accuracy}%`}
+            color="purple"
+          />
         </div>
 
         {/* Module Items section */}
@@ -89,7 +98,13 @@ export function FinishScreen(props: Props) {
             </h2>
             <div class="space-y-2">
               <For each={stats().moduleItems}>
-                {(result) => <ResultCard result={result} getTypeColor={getTypeColor} getPromptDisplay={getCardPrompt} />}
+                {(result) => (
+                  <ResultCard
+                    result={result}
+                    getTypeColor={getTypeColor}
+                    getPromptDisplay={getCardPrompt}
+                  />
+                )}
               </For>
             </div>
           </div>
@@ -106,7 +121,13 @@ export function FinishScreen(props: Props) {
             </h2>
             <div class="space-y-2">
               <For each={stats().reviewItems}>
-                {(result) => <ResultCard result={result} getTypeColor={getTypeColor} getPromptDisplay={getCardPrompt} />}
+                {(result) => (
+                  <ResultCard
+                    result={result}
+                    getTypeColor={getTypeColor}
+                    getPromptDisplay={getCardPrompt}
+                  />
+                )}
               </For>
             </div>
           </div>
@@ -130,28 +151,28 @@ export function FinishScreen(props: Props) {
 function StatCard(props: {
   label: string
   value: string | number
-  color: 'emerald' | 'blue' | 'purple'
+  color: "emerald" | "blue" | "purple"
 }) {
   const colorClasses = {
-    emerald: 'from-emerald-500/20 to-emerald-500/5 border-emerald-500/30',
-    blue: 'from-blue-500/20 to-blue-500/5 border-blue-500/30',
-    purple: 'from-purple-500/20 to-purple-500/5 border-purple-500/30',
+    emerald: "from-emerald-500/20 to-emerald-500/5 border-emerald-500/30",
+    blue: "from-blue-500/20 to-blue-500/5 border-blue-500/30",
+    purple: "from-purple-500/20 to-purple-500/5 border-purple-500/30",
   }
 
   const textColorClasses = {
-    emerald: 'text-emerald-500',
-    blue: 'text-blue-500',
-    purple: 'text-purple-500',
+    emerald: "text-emerald-500",
+    blue: "text-blue-500",
+    purple: "text-purple-500",
   }
 
   return (
     <div
       class={cn(
-        'rounded-xl border bg-gradient-to-b p-4 text-center',
+        "rounded-xl border bg-gradient-to-b p-4 text-center",
         colorClasses[props.color],
       )}
     >
-      <div class={cn('text-2xl font-bold', textColorClasses[props.color])}>
+      <div class={cn("text-2xl font-bold", textColorClasses[props.color])}>
         {props.value}
       </div>
       <div class="text-xs text-muted-foreground">{props.label}</div>
@@ -162,7 +183,11 @@ function StatCard(props: {
 function ResultCard(props: {
   result: ReviewResult
   getTypeColor: (type: string) => string
-  getPromptDisplay: (card: PracticeCard) => { html?: string; text?: string; isHtml: boolean }
+  getPromptDisplay: (card: PracticeCard) => {
+    html?: string
+    text?: string
+    isHtml: boolean
+  }
 }) {
   const { card, correct, missCount } = props.result
   const promptDisplay = props.getPromptDisplay(card)
@@ -187,7 +212,7 @@ function ResultCard(props: {
               />
             </Show>
             <span class="truncate text-sm text-muted-foreground">
-              {card.validAnswers.join(', ')}
+              {card.validAnswers.join(", ")}
             </span>
           </div>
         </div>
@@ -197,14 +222,14 @@ function ResultCard(props: {
           {/* Miss count badge */}
           <Show when={missCount && missCount > 0}>
             <span class="rounded-full bg-rose-500/10 px-2 py-0.5 text-xs font-medium text-rose-500">
-              {missCount} {missCount === 1 ? 'miss' : 'misses'}
+              {missCount} {missCount === 1 ? "miss" : "misses"}
             </span>
           </Show>
 
           {/* Type badge */}
           <span
             class={cn(
-              'rounded-full px-2 py-0.5 text-xs font-medium',
+              "rounded-full px-2 py-0.5 text-xs font-medium",
               props.getTypeColor(card.practiceItemType),
             )}
           >
@@ -214,13 +239,13 @@ function ResultCard(props: {
           {/* Status indicator */}
           <div
             class={cn(
-              'flex h-6 w-6 items-center justify-center rounded-full text-xs',
+              "flex h-6 w-6 items-center justify-center rounded-full text-xs",
               correct
-                ? 'bg-emerald-500/20 text-emerald-500'
-                : 'bg-rose-500/20 text-rose-500',
+                ? "bg-emerald-500/20 text-emerald-500"
+                : "bg-rose-500/20 text-rose-500",
             )}
           >
-            {correct ? '✓' : '✗'}
+            {correct ? "✓" : "✗"}
           </div>
         </div>
       </div>

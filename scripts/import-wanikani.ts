@@ -92,7 +92,9 @@ interface WaniKaniItem {
 /**
  * Applies character replacements for visually similar Unicode variants
  */
-function applyCharacterReplacements(characters: string | null): string | undefined {
+function applyCharacterReplacements(
+  characters: string | null,
+): string | undefined {
   if (!characters) return undefined
   return CHARACTER_REPLACEMENTS[characters] ?? characters
 }
@@ -101,7 +103,10 @@ function applyCharacterReplacements(characters: string | null): string | undefin
  * Selects the best meaning mnemonic between radical and kanji
  * Prefers the one with actual content rather than "same as X" descriptions
  */
-function selectBestMeaningMnemonic(radicalMnemonic: string, kanjiMnemonic: string): string {
+function selectBestMeaningMnemonic(
+  radicalMnemonic: string,
+  kanjiMnemonic: string,
+): string {
   const unhelpfulRadicalPatterns = [
     "same as the kanji",
     "radical for",
@@ -127,7 +132,9 @@ function selectBestMeaningMnemonic(radicalMnemonic: string, kanjiMnemonic: strin
   if (kanjiIsUnhelpful && !radicalIsUnhelpful) return radicalMnemonic
 
   // Both have unhelpful patterns or both are helpful - prefer longest
-  return radicalMnemonic.length > kanjiMnemonic.length ? radicalMnemonic : kanjiMnemonic
+  return radicalMnemonic.length > kanjiMnemonic.length
+    ? radicalMnemonic
+    : kanjiMnemonic
 }
 
 /**
@@ -152,7 +159,8 @@ function selectBestCharacterImage(
 
   // Then look for 512x512 PNG
   const png512 = images.find(
-    (img) => img.content_type === "image/png" && img.metadata.dimensions === "512x512",
+    (img) =>
+      img.content_type === "image/png" && img.metadata.dimensions === "512x512",
   )
   if (png512) return png512.url
 
@@ -202,7 +210,10 @@ async function fetchAllPages<T>(initialEndpoint: string): Promise<T[]> {
 /**
  * Builds optimized lookup maps for ID remapping
  */
-function buildIdMappings(radicalSubjects: WaniKaniApiSubject[], kanjiSubjects: WaniKaniApiSubject[]) {
+function buildIdMappings(
+  radicalSubjects: WaniKaniApiSubject[],
+  kanjiSubjects: WaniKaniApiSubject[],
+) {
   // Map kanji characters to their IDs
   const kanjiCharToId = new Map<string, number>()
   for (const kanji of kanjiSubjects) {
@@ -225,9 +236,14 @@ function buildIdMappings(radicalSubjects: WaniKaniApiSubject[], kanjiSubjects: W
       // Find matching kanji and select best mnemonic
       const matchingKanji = kanjiSubjects.find((k) => k.id === kanjiId)
       if (matchingKanji) {
-        const radicalMnemonic = (radical.data as WaniKaniRadicalData).meaning_mnemonic
-        const kanjiMnemonic = (matchingKanji.data as WaniKaniKanjiData).meaning_mnemonic
-        const bestMnemonic = selectBestMeaningMnemonic(radicalMnemonic, kanjiMnemonic)
+        const radicalMnemonic = (radical.data as WaniKaniRadicalData)
+          .meaning_mnemonic
+        const kanjiMnemonic = (matchingKanji.data as WaniKaniKanjiData)
+          .meaning_mnemonic
+        const bestMnemonic = selectBestMeaningMnemonic(
+          radicalMnemonic,
+          kanjiMnemonic,
+        )
 
         radicalMeaningMnemonicMap.set(kanjiId, bestMnemonic)
       }
@@ -305,70 +321,76 @@ function transformKanjiToItem(
 
 console.log("Starting WaniKani import...")
 console.log("")
+;(async () => {
+  try {
+    console.log("Fetching WaniKani subjects from API...")
+    const allSubjects = await fetchAllPages<WaniKaniApiSubject>(
+      "/subjects?per_page=1000",
+    )
+    console.log(`Fetched ${allSubjects.length} total subjects`)
+    console.log("")
 
-  ; (async () => {
-    try {
-      console.log("Fetching WaniKani subjects from API...")
-      const allSubjects = await fetchAllPages<WaniKaniApiSubject>(
-        "/subjects?per_page=1000",
+    // Filter to only radicals and kanji
+    const radicalSubjects = allSubjects.filter((s) => s.object === "radical")
+    const kanjiSubjects = allSubjects.filter((s) => s.object === "kanji")
+
+    console.log(`Found:`)
+    console.log(`   - ${radicalSubjects.length} radicals`)
+    console.log(`   - ${kanjiSubjects.length} kanji`)
+    console.log("")
+
+    // Build ID mappings
+    const { kanjiCharToId, radicalToKanjiMap, radicalMeaningMnemonicMap } =
+      buildIdMappings(radicalSubjects, kanjiSubjects)
+
+    // Filter duplicate radicals
+    const filteredRadicals = filterDuplicateRadicals(
+      radicalSubjects,
+      kanjiCharToId,
+    )
+
+    const filteredCount = radicalSubjects.length - filteredRadicals.length
+    if (filteredCount > 0) {
+      console.log(
+        `Filtered out ${filteredCount} radicals with duplicate characters`,
       )
-      console.log(`Fetched ${allSubjects.length} total subjects`)
       console.log("")
-
-      // Filter to only radicals and kanji
-      const radicalSubjects = allSubjects.filter((s) => s.object === "radical")
-      const kanjiSubjects = allSubjects.filter((s) => s.object === "kanji")
-
-      console.log(`Found:`)
-      console.log(`   - ${radicalSubjects.length} radicals`)
-      console.log(`   - ${kanjiSubjects.length} kanji`)
-      console.log("")
-
-      // Build ID mappings
-      const { kanjiCharToId, radicalToKanjiMap, radicalMeaningMnemonicMap } =
-        buildIdMappings(radicalSubjects, kanjiSubjects)
-
-      // Filter duplicate radicals
-      const filteredRadicals = filterDuplicateRadicals(
-        radicalSubjects,
-        kanjiCharToId,
-      )
-
-      const filteredCount = radicalSubjects.length - filteredRadicals.length
-      if (filteredCount > 0) {
-        console.log(
-          `Filtered out ${filteredCount} radicals with duplicate characters`,
-        )
-        console.log("")
-      }
-
-      // Transform to Convex format
-      const items: WaniKaniItem[] = [
-        ...filteredRadicals.map(transformRadicalToItem),
-        ...kanjiSubjects.map((kanji) =>
-          transformKanjiToItem(kanji, radicalToKanjiMap, radicalMeaningMnemonicMap),
-        ),
-      ]
-
-      console.log(`Prepared ${items.length} items for import`)
-      console.log("")
-
-      // Write JSONLines file and import via Convex CLI
-      const itemsFile = "scripts/.tmp-wanikani-items.jsonl"
-      writeFileSync(itemsFile, items.map((i) => JSON.stringify(i)).join("\n"))
-
-      try {
-        console.log(`Importing ${items.length} WaniKani items...`)
-        execSync(`bunx convex import --table wanikaniItems ${itemsFile} --replace`, {
-          stdio: "inherit",
-        })
-        console.log("")
-        console.log("Done!")
-      } finally {
-        unlinkSync(itemsFile)
-      }
-    } catch (error) {
-      console.error("Fatal error:", error)
-      process.exit(1)
     }
-  })()
+
+    // Transform to Convex format
+    const items: WaniKaniItem[] = [
+      ...filteredRadicals.map(transformRadicalToItem),
+      ...kanjiSubjects.map((kanji) =>
+        transformKanjiToItem(
+          kanji,
+          radicalToKanjiMap,
+          radicalMeaningMnemonicMap,
+        ),
+      ),
+    ]
+
+    console.log(`Prepared ${items.length} items for import`)
+    console.log("")
+
+    // Write JSONLines file and import via Convex CLI
+    const itemsFile = "scripts/.tmp-wanikani-items.jsonl"
+    writeFileSync(itemsFile, items.map((i) => JSON.stringify(i)).join("\n"))
+
+    try {
+      console.log(`Importing ${items.length} WaniKani items...`)
+      execSync(
+        `bunx convex import --table wanikaniItems ${itemsFile} --replace`,
+        {
+          stdio: "inherit",
+        },
+      )
+      console.log("")
+      console.log("Done!")
+    } finally {
+      unlinkSync(itemsFile)
+    }
+  } catch (error) {
+    console.error("Fatal error:", error)
+    process.exit(1)
+  }
+})()

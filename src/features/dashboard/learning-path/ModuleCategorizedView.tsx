@@ -1,6 +1,9 @@
 import { For, createMemo } from "solid-js"
 import { Link } from "@tanstack/solid-router"
-import { getModuleIcon, getModuleIconClasses } from "@/data/utils/module-helpers"
+import {
+  getModuleIcon,
+  getModuleIconClasses,
+} from "@/data/utils/module-helpers"
 import type { ResolvedModule } from "@/data/utils/modules"
 import { cn } from "@/utils"
 
@@ -72,7 +75,11 @@ export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
 
   return (
     <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-      <For each={Object.entries(CATEGORIES) as Array<[CategoryKey, CategoryConfig]>}>
+      <For
+        each={
+          Object.entries(CATEGORIES) as Array<[CategoryKey, CategoryConfig]>
+        }
+      >
         {([categoryKey, categoryConfig]) => {
           const categoryModules = () => groupedModules()[categoryKey]
           const HeaderIcon = getModuleIcon(categoryConfig.iconModuleType)
@@ -94,10 +101,12 @@ export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
               <div class="space-y-3">
                 <For each={categoryModules()}>
                   {(enrichedModule) => {
-                    const ModuleIcon = getModuleIcon(enrichedModule.module.module_type)
+                    const ModuleIcon = getModuleIcon(
+                      enrichedModule.module.module_type,
+                    )
                     const isCompleted = false // TODO: integrate with completion tracking
                     const originalIndex = props.modules.findIndex(
-                      (m) => m.moduleId === enrichedModule.moduleId
+                      (m) => m.moduleId === enrichedModule.moduleId,
                     )
 
                     return (
@@ -105,7 +114,8 @@ export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
                         to={enrichedModule.linkTo}
                         class={cn(
                           "block transition-colors",
-                          enrichedModule.disabled && "cursor-not-allowed opacity-50"
+                          enrichedModule.disabled &&
+                            "cursor-not-allowed opacity-50",
                         )}
                       >
                         <div
@@ -113,7 +123,7 @@ export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
                             "text-sm",
                             isCompleted
                               ? "text-green-500"
-                              : "text-white hover:text-neutral-300"
+                              : "text-white hover:text-neutral-300",
                           )}
                         >
                           <div class="flex items-center gap-2">
@@ -125,7 +135,8 @@ export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
                           </div>
                           <p class="text-muted-foreground/60 mt-1 text-xs">
                             {originalIndex + 1}.{" "}
-                            {enrichedModule.module.description || "Description coming soon"}
+                            {enrichedModule.module.description ||
+                              "Description coming soon"}
                           </p>
                         </div>
                       </Link>

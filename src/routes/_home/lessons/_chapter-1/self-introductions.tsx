@@ -3,7 +3,9 @@ import { createFileRoute } from "@tanstack/solid-router"
 import Furigana from "@/components/text/Furigana"
 import YouTubeVideo from "@/features/youtube/YouTube"
 
-export const Route = createFileRoute("/_home/lessons/_chapter-1/self-introductions")({
+export const Route = createFileRoute(
+  "/_home/lessons/_chapter-1/self-introductions",
+)({
   loader: async () => {
     return {
       contentBox: {

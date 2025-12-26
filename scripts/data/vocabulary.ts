@@ -13798,7 +13798,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     partOfSpeech: "I-adjective",
     info: [
       'Note: 近く (chikaku) is used as a noun meaning "vicinity" or "neighborhood", ' +
-      "and as an adverb with the に particle (e.g., 駅に近い).",
+        "and as an adverb with the に particle (e.g., 駅に近い).",
     ],
     exampleSentences: [
       {

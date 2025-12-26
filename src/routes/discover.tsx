@@ -1,19 +1,22 @@
-import { createFileRoute } from '@tanstack/solid-router'
-import { useQueryClient } from '@tanstack/solid-query'
-import { queryKeys } from '~/query/query-keys'
-import { getGenericSections, getCurrentSeason } from '~/features/discover/utils/section-configs'
-import { BannerSection } from '~/features/discover/components/ui/homepage/banner-section'
-import { GenericSections } from '~/features/discover/components/ui/homepage/generic-sections'
-import { convexQuery, convexMutation } from '~/lib/convex-query'
-import { api } from '~/../convex/_generated/api'
-import { BottomNav } from '~/features/navbar/Nav'
+import { createFileRoute } from "@tanstack/solid-router"
+import { useQueryClient } from "@tanstack/solid-query"
+import { queryKeys } from "~/query/query-keys"
+import {
+  getGenericSections,
+  getCurrentSeason,
+} from "~/features/discover/utils/section-configs"
+import { BannerSection } from "~/features/discover/components/ui/homepage/banner-section"
+import { GenericSections } from "~/features/discover/components/ui/homepage/generic-sections"
+import { convexQuery, convexMutation } from "~/lib/convex-query"
+import { api } from "~/../convex/_generated/api"
+import { BottomNav } from "~/features/navbar/Nav"
 
-export const Route = createFileRoute('/discover')({
+export const Route = createFileRoute("/discover")({
   loader: ({ context }) => {
     const { season, year } = getCurrentSeason()
     const genericSections = getGenericSections(season, year)
 
-    const sections = genericSections.map(section => ({
+    const sections = genericSections.map((section) => ({
       type: section.type!,
       params: section.params,
       queryVars: section.queryVars,
@@ -22,14 +25,14 @@ export const Route = createFileRoute('/discover')({
     const mutationFn = convexMutation(api.api.anime.ensureAllSections, {
       sections,
     })
-    mutationFn().catch(() => { })
+    mutationFn().catch(() => {})
 
     context.queryClient.prefetchQuery(
       convexQuery(api.api.anime.getSectionAnime, {
-        sectionType: 'trending',
+        sectionType: "trending",
         season,
-        year
-      })
+        year,
+      }),
     )
 
     return {
@@ -57,7 +60,10 @@ function DiscoverPage() {
         <GenericSections sections={loaderData().genericSections} />
       </div>
 
-      <BottomNav class='bg-background/85 opacity-100' dailyProgressPercentage={65} />
+      <BottomNav
+        class="bg-background/85 opacity-100"
+        dailyProgressPercentage={65}
+      />
     </div>
   )
 }

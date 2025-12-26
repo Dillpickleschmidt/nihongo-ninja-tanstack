@@ -34,7 +34,13 @@ function BuiltinMethodPage() {
             title="Mark What I Know"
             description="Browse JLPT vocab, grammar, and kanji lists"
             icon={(props) => (
-              <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <svg
+                {...props}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -49,7 +55,13 @@ function BuiltinMethodPage() {
             title="Upload History"
             description="Import from .apkg or jpdb .json exports"
             icon={(props) => (
-              <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <svg
+                {...props}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"

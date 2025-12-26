@@ -57,7 +57,9 @@ export function convertToRuby(text: string, furiganaSize?: string): string {
   return convertFuriganaToRubyHtml(text, furiganaSize)
 }
 
-export function anyContainsKanji(inputs: (string | null | undefined)[]): boolean {
+export function anyContainsKanji(
+  inputs: (string | null | undefined)[],
+): boolean {
   return inputs.some((text) => text && containsKanji(text))
 }
 
@@ -69,7 +71,10 @@ export function extractPlainText(segments: string[]): string {
   return normalizeText(plainText)
 }
 
-export function createRichSegment(original: string, isBlank: boolean): RichSegment {
+export function createRichSegment(
+  original: string,
+  isBlank: boolean,
+): RichSegment {
   return {
     original,
     plain: removeFurigana(original),

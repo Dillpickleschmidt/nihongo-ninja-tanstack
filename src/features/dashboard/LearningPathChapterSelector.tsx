@@ -49,7 +49,7 @@ export function LearningPathChapterSelector(
   const chaptersQuery = useConvexQuery(
     api.api.learning_paths.getPathChapters,
     () => ({ pathId: displayedPathId()! }),
-    () => ({ enabled: !!displayedPathId() })
+    () => ({ enabled: !!displayedPathId() }),
   )
 
   const displayedChapters = () => chaptersQuery.data() ?? []
@@ -83,7 +83,8 @@ export function LearningPathChapterSelector(
           props.popoverWidth || "w-[400px] md:w-[450px]",
         )}
         style={{
-          "background-color": "color-mix(in srgb, var(--accent) 15%, rgb(10 10 10 / 0.7))"
+          "background-color":
+            "color-mix(in srgb, var(--accent) 15%, rgb(10 10 10 / 0.7))",
         }}
       >
         <div class="grid grid-cols-[2fr_3fr]">
@@ -150,24 +151,18 @@ export function LearningPathChapterSelector(
                   class={cn(
                     "hover:bg-card-foreground/40 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-normal",
                     props.activePathId === displayedPathId() &&
-                    props.activeChapter.slug === chapter.slug &&
-                    "bg-primary/10 hover:bg-primary/15 font-semibold",
+                      props.activeChapter.slug === chapter.slug &&
+                      "bg-primary/10 hover:bg-primary/15 font-semibold",
                   )}
                 >
-                  <span>
-                    Chapter {getChapterDisplayNumber(chapter.slug)}
-                  </span>
+                  <span>Chapter {getChapterDisplayNumber(chapter.slug)}</span>
                   <Show
                     when={
                       props.activePathId === displayedPathId() &&
                       props.activeChapter.slug === chapter.slug
                     }
                   >
-                    <svg
-                      class="size-4"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
+                    <svg class="size-4" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M5 12l5 5l10 -10" />
                     </svg>
                   </Show>

@@ -35,7 +35,9 @@ describe("generateValidAnswers", () => {
 
     // Check that kana field has the kana version
     expect(
-      result.some((a) => stripSeparators(a.kana) === "きゅうりょうをもらったら"),
+      result.some(
+        (a) => stripSeparators(a.kana) === "きゅうりょうをもらったら",
+      ),
     ).toBe(true)
     // Check that isKanaVariation flag is set
     expect(result.some((a) => a.isKanaVariation === true)).toBe(true)
@@ -54,9 +56,7 @@ describe("generateValidAnswers", () => {
   })
 
   it("sets metadata correctly", () => {
-    const segments: RichSegment[] = [
-      createRichSegment("こんにちは", false),
-    ]
+    const segments: RichSegment[] = [createRichSegment("こんにちは", false)]
     const result = generateValidAnswers(segments, 1, false)
 
     // Check that metadata is set correctly
@@ -94,8 +94,12 @@ describe("honorific variations", () => {
     const result = generateValidAnswers(segments, 0, true)
 
     // Should have variations with くん, ちゃん, 先生
-    expect(result.some((a) => a.original.includes("田中[たなか]くん"))).toBe(true)
-    expect(result.some((a) => a.original.includes("田中[たなか]ちゃん"))).toBe(true)
+    expect(result.some((a) => a.original.includes("田中[たなか]くん"))).toBe(
+      true,
+    )
+    expect(result.some((a) => a.original.includes("田中[たなか]ちゃん"))).toBe(
+      true,
+    )
     expect(
       result.some((a) => a.original.includes("田中[たなか]先生[せんせい]")),
     ).toBe(true)
@@ -138,7 +142,9 @@ describe("honorific variations", () => {
     // Filter to non-kana variations
     const nonKana = result.filter((a) => !a.isKanaVariation)
     expect(nonKana).toHaveLength(1)
-    expect(stripSeparators(nonKana[0].original)).toBe("今日[きょう]は暑[あつ]いです")
+    expect(stripSeparators(nonKana[0].original)).toBe(
+      "今日[きょう]は暑[あつ]いです",
+    )
   })
 })
 

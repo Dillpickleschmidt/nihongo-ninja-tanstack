@@ -48,7 +48,9 @@ export function CategoryTabs(props: CategoryTabsProps) {
           )}
         >
           <SelectTrigger class="w-auto min-w-32">
-            <SelectValue<string>>{(state) => state.selectedOption()}</SelectValue>
+            <SelectValue<string>>
+              {(state) => state.selectedOption()}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent />
         </Select>

@@ -71,7 +71,9 @@ export function createPracticeStore() {
   }
 
   // Initialize blank inputs array for a question
-  function initializeBlankInputs(question: ProcessedQuestion): (string | null | undefined)[] {
+  function initializeBlankInputs(
+    question: ProcessedQuestion,
+  ): (string | null | undefined)[] {
     const firstAnswer = question.answers[0]
     if (!firstAnswer) return []
     return firstAnswer.map((seg) => (seg.isBlank ? null : undefined))
@@ -246,7 +248,10 @@ export function createPracticeStore() {
         setStore("modelAnswerTokens", tokens)
       },
 
-      setUserInputTokens: (tokens: KagomeToken[], overlayResult: OverlayResult | null) => {
+      setUserInputTokens: (
+        tokens: KagomeToken[],
+        overlayResult: OverlayResult | null,
+      ) => {
         setStore({
           userInputTokens: tokens,
           overlayResult,

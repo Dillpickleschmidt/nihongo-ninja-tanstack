@@ -1,7 +1,11 @@
 // Store
 export { PracticeProvider, usePractice } from "./store/PracticeContext"
 export { createPracticeStore } from "./store/practiceStore"
-export type { PracticeState, Difficulty, PracticeStore } from "./store/practiceStore"
+export type {
+  PracticeState,
+  Difficulty,
+  PracticeStore,
+} from "./store/practiceStore"
 
 // UI Components
 export { default as PracticeContainer } from "./ui/practice/PracticeContainer"

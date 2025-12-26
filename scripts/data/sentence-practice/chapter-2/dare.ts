@@ -8,19 +8,20 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "だれが", blank: true },
-          { text: "日本語[にほんご]の 先生[せんせい]ですか" }
+          { text: "日本語[にほんご]の 先生[せんせい]ですか" },
         ],
-        notes: "Using が to identify which specific person among the teachers is the Japanese teacher"
+        notes:
+          "Using が to identify which specific person among the teachers is the Japanese teacher",
       },
       {
         segments: [
           { text: "日本語[にほんご]の 先生[せんせい]は" },
           { text: "だれ", blank: true },
-          { text: "ですか" }
+          { text: "ですか" },
         ],
-        notes: "Using は to ask about the Japanese teacher in general"
-      }
-    ]
+        notes: "Using は to ask about the Japanese teacher in general",
+      },
+    ],
   },
   {
     english: "Whose umbrella is this?",
@@ -30,18 +31,15 @@ export const questions: Question[] = [
         segments: [
           { text: "これは" },
           { text: "だれの", blank: true },
-          { text: "かさですか" }
+          { text: "かさですか" },
         ],
-        notes: "Longer, less natural sounding"
+        notes: "Longer, less natural sounding",
       },
       {
-        segments: [
-          { text: "だれの", blank: true },
-          { text: "かさですか" }
-        ],
-        notes: "Shorter, natural sounding"
-      }
-    ]
+        segments: [{ text: "だれの", blank: true }, { text: "かさですか" }],
+        notes: "Shorter, natural sounding",
+      },
+    ],
   },
   {
     english: "Who is an international student in this class?",
@@ -50,19 +48,20 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "だれが", blank: true },
-          { text: "このクラスの 留学生[りゅうがくせい]ですか" }
+          { text: "このクラスの 留学生[りゅうがくせい]ですか" },
         ],
-        notes: "Using が to identify a specific person"
+        notes: "Using が to identify a specific person",
       },
       {
         segments: [
           { text: "このクラスで" },
           { text: "だれが", blank: true },
-          { text: "留学生[りゅうがくせい]ですか" }
+          { text: "留学生[りゅうがくせい]ですか" },
         ],
-        notes: "Using で to specify the location first, then asking who within that space is the international student (Chapter 3)"
-      }
-    ]
+        notes:
+          "Using で to specify the location first, then asking who within that space is the international student (Chapter 3)",
+      },
+    ],
   },
   {
     english: "Who is Korean?",
@@ -71,19 +70,19 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "だれが", blank: true },
-          { text: "韓国人[かんこくじん]ですか" }
+          { text: "韓国人[かんこくじん]ですか" },
         ],
-        notes: "Using が to identify a specific person"
+        notes: "Using が to identify a specific person",
       },
       {
         segments: [
           { text: "韓国人[かんこくじん]は" },
           { text: "だれ", blank: true },
-          { text: "ですか" }
+          { text: "ですか" },
         ],
-        notes: "Using は to ask the question in general"
-      }
-    ]
+        notes: "Using は to ask the question in general",
+      },
+    ],
   },
   {
     english: "Whose English textbook is this?",
@@ -93,18 +92,18 @@ export const questions: Question[] = [
         segments: [
           { text: "これは" },
           { text: "だれの", blank: true },
-          { text: "英語[えいご]の 本[ほん]ですか" }
+          { text: "英語[えいご]の 本[ほん]ですか" },
         ],
-        notes: "Longer, less natural sounding"
+        notes: "Longer, less natural sounding",
       },
       {
         segments: [
           { text: "だれの", blank: true },
-          { text: "英語[えいご]の 本[ほん]ですか" }
+          { text: "英語[えいご]の 本[ほん]ですか" },
         ],
-        notes: "Shorter, more natural sounding"
-      }
-    ]
+        notes: "Shorter, more natural sounding",
+      },
+    ],
   },
   {
     english: "Whose bag is this?",
@@ -114,18 +113,15 @@ export const questions: Question[] = [
         segments: [
           { text: "これは" },
           { text: "だれの", blank: true },
-          { text: "かばんですか" }
+          { text: "かばんですか" },
         ],
-        notes: "Longer, less natural sounding"
+        notes: "Longer, less natural sounding",
       },
       {
-        segments: [
-          { text: "だれの", blank: true },
-          { text: "かばんですか" }
-        ],
-        notes: "Shorter, natural sounding"
-      }
-    ]
+        segments: [{ text: "だれの", blank: true }, { text: "かばんですか" }],
+        notes: "Shorter, natural sounding",
+      },
+    ],
   },
   {
     english: "Who's the doctor at the university?",
@@ -134,19 +130,20 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "だれが", blank: true },
-          { text: "この 大学[だいがく]の 医者[いしゃ]ですか" }
+          { text: "この 大学[だいがく]の 医者[いしゃ]ですか" },
         ],
-        notes: "Using が to identify a specific person"
+        notes: "Using が to identify a specific person",
       },
       {
         segments: [
           { text: "この 大学[だいがく]で" },
           { text: "だれが", blank: true },
-          { text: "医者[いしゃ]ですか" }
+          { text: "医者[いしゃ]ですか" },
         ],
-        notes: "Using で to ask about who at this university is a doctor (Chapter 3)"
-      }
-    ]
+        notes:
+          "Using で to ask about who at this university is a doctor (Chapter 3)",
+      },
+    ],
   },
   {
     english: "Who is a first-year student?",
@@ -155,11 +152,11 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "だれが", blank: true },
-          { text: "一年生[いちねんせい]ですか" }
+          { text: "一年生[いちねんせい]ですか" },
         ],
-        notes: "Using が to identify a specific person"
-      }
-    ]
+        notes: "Using が to identify a specific person",
+      },
+    ],
   },
   {
     english: "Who is the English teacher?",
@@ -168,19 +165,20 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "だれが", blank: true },
-          { text: "英語[えいご]の 先生[せんせい]ですか" }
+          { text: "英語[えいご]の 先生[せんせい]ですか" },
         ],
-        notes: "Using が to identify a specific person"
+        notes: "Using が to identify a specific person",
       },
       {
         segments: [
           { text: "英語[えいご]の 先生[せんせい]は" },
           { text: "だれ", blank: true },
-          { text: "ですか" }
+          { text: "ですか" },
         ],
-        notes: "Using は to ask about the English teacher's identity in general"
-      }
-    ]
+        notes:
+          "Using は to ask about the English teacher's identity in general",
+      },
+    ],
   },
   {
     english: "Whose wallet is this?",
@@ -190,18 +188,15 @@ export const questions: Question[] = [
         segments: [
           { text: "これは" },
           { text: "だれの", blank: true },
-          { text: "さいふですか" }
+          { text: "さいふですか" },
         ],
-        notes: "Longer, less natural sounding"
+        notes: "Longer, less natural sounding",
       },
       {
-        segments: [
-          { text: "だれの", blank: true },
-          { text: "さいふですか" }
-        ],
-        notes: "Shorter, natural sounding"
-      }
-    ]
+        segments: [{ text: "だれの", blank: true }, { text: "さいふですか" }],
+        notes: "Shorter, natural sounding",
+      },
+    ],
   },
   {
     english: "Whose notebook is this?",
@@ -211,18 +206,15 @@ export const questions: Question[] = [
         segments: [
           { text: "これは" },
           { text: "だれの", blank: true },
-          { text: "ノートですか" }
+          { text: "ノートですか" },
         ],
-        notes: "Longer, less natural sounding"
+        notes: "Longer, less natural sounding",
       },
       {
-        segments: [
-          { text: "だれの", blank: true },
-          { text: "ノートですか" }
-        ],
-        notes: "Shorter, natural sounding"
-      }
-    ]
+        segments: [{ text: "だれの", blank: true }, { text: "ノートですか" }],
+        notes: "Shorter, natural sounding",
+      },
+    ],
   },
   {
     english: "Who at this high school is a nurse?",
@@ -231,19 +223,20 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "だれが", blank: true },
-          { text: "この 高校[こうこう]の 看護師[かんごし]ですか" }
+          { text: "この 高校[こうこう]の 看護師[かんごし]ですか" },
         ],
-        notes: "Using が to identify a specific person"
+        notes: "Using が to identify a specific person",
       },
       {
         segments: [
           { text: "この 高校[こうこう]で" },
           { text: "だれが", blank: true },
-          { text: "看護師[かんごし]ですか" }
+          { text: "看護師[かんごし]ですか" },
         ],
-        notes: "Using で to ask about who in this location is Chinese (Chapter 3)"
-      }
-    ]
+        notes:
+          "Using で to ask about who in this location is Chinese (Chapter 3)",
+      },
+    ],
   },
   {
     english: "Who in this office is Chinese?",
@@ -252,19 +245,19 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "だれが", blank: true },
-          { text: "このオフィスの 中国人[ちゅうごくじん]ですか" }
+          { text: "このオフィスの 中国人[ちゅうごくじん]ですか" },
         ],
-        notes: "Using が to ask who has the role of teacher for this class"
+        notes: "Using が to ask who has the role of teacher for this class",
       },
       {
         segments: [
           { text: "このオフィスで" },
           { text: "だれが", blank: true },
-          { text: "中国人[ちゅうごくじん]ですか" }
+          { text: "中国人[ちゅうごくじん]ですか" },
         ],
-        notes: "Using で to specify where (Chapter 3)"
-      }
-    ]
+        notes: "Using で to specify where (Chapter 3)",
+      },
+    ],
   },
   {
     english: "Whose dictionary is this?",
@@ -274,18 +267,15 @@ export const questions: Question[] = [
         segments: [
           { text: "これは" },
           { text: "だれの", blank: true },
-          { text: "じしょですか" }
+          { text: "じしょですか" },
         ],
-        notes: "Longer, less natural sounding"
+        notes: "Longer, less natural sounding",
       },
       {
-        segments: [
-          { text: "だれの", blank: true },
-          { text: "じしょですか" }
-        ],
-        notes: "Shorter, natural sounding"
-      }
-    ]
+        segments: [{ text: "だれの", blank: true }, { text: "じしょですか" }],
+        notes: "Shorter, natural sounding",
+      },
+    ],
   },
   {
     english: "Who is your teacher?",
@@ -294,19 +284,19 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "だれが", blank: true },
-          { text: "先生[せんせい]ですか" }
+          { text: "先生[せんせい]ですか" },
         ],
-        notes: "Using が to identify a specific person"
+        notes: "Using が to identify a specific person",
       },
       {
         segments: [
           { text: "先生[せんせい]は" },
           { text: "だれ", blank: true },
-          { text: "ですか" }
+          { text: "ですか" },
         ],
-        notes: "Using は to ask the question in general"
-      }
-    ]
+        notes: "Using は to ask the question in general",
+      },
+    ],
   },
   {
     english: "Who is American?",
@@ -315,19 +305,19 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "だれが", blank: true },
-          { text: "アメリカ人[じん]ですか" }
+          { text: "アメリカ人[じん]ですか" },
         ],
-        notes: "Using が to identify a specific person"
+        notes: "Using が to identify a specific person",
       },
       {
         segments: [
           { text: "アメリカ人[じん]は" },
           { text: "だれ", blank: true },
-          { text: "ですか" }
+          { text: "ですか" },
         ],
-        notes: "Using は to ask the question in general"
-      }
-    ]
+        notes: "Using は to ask the question in general",
+      },
+    ],
   },
   {
     english: "Who is an office worker?",
@@ -336,19 +326,19 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "だれが", blank: true },
-          { text: "会社員[かいしゃいん]ですか" }
+          { text: "会社員[かいしゃいん]ですか" },
         ],
-        notes: "Using が to identify a specific person"
+        notes: "Using が to identify a specific person",
       },
       {
         segments: [
           { text: "会社員[かいしゃいん]は" },
           { text: "だれ", blank: true },
-          { text: "ですか" }
+          { text: "ですか" },
         ],
-        notes: "Using は to ask about the office worker's identity in general"
-      }
-    ]
+        notes: "Using は to ask about the office worker's identity in general",
+      },
+    ],
   },
   {
     english: "Whose newspaper is this?",
@@ -358,18 +348,15 @@ export const questions: Question[] = [
         segments: [
           { text: "これは" },
           { text: "だれの", blank: true },
-          { text: "しんぶんですか" }
+          { text: "しんぶんですか" },
         ],
-        notes: "Longer, less natural sounding"
+        notes: "Longer, less natural sounding",
       },
       {
-        segments: [
-          { text: "だれの", blank: true },
-          { text: "しんぶんですか" }
-        ],
-        notes: "Shorter, natural sounding"
-      }
-    ]
+        segments: [{ text: "だれの", blank: true }, { text: "しんぶんですか" }],
+        notes: "Shorter, natural sounding",
+      },
+    ],
   },
   {
     english: "Who at this school is a high school student?",
@@ -378,19 +365,19 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "だれが", blank: true },
-          { text: "この 学校[がっこう]の 高校生[こうこうせい]ですか" }
+          { text: "この 学校[がっこう]の 高校生[こうこうせい]ですか" },
         ],
-        notes: "Using が to identify a specific person"
+        notes: "Using が to identify a specific person",
       },
       {
         segments: [
           { text: "この 学校[がっこう]で" },
           { text: "だれが", blank: true },
-          { text: "高校生[こうこうせい]ですか" }
+          { text: "高校生[こうこうせい]ですか" },
         ],
-        notes: "Using で to ask about who in this class is Chinese (Chapter 3)"
-      }
-    ]
+        notes: "Using で to ask about who in this class is Chinese (Chapter 3)",
+      },
+    ],
   },
   {
     english: "Who is a lawyer?",
@@ -399,18 +386,18 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "だれが", blank: true },
-          { text: "弁護士[べんごし]ですか" }
+          { text: "弁護士[べんごし]ですか" },
         ],
-        notes: "Using が to identify a specific person"
+        notes: "Using が to identify a specific person",
       },
       {
         segments: [
           { text: "弁護士[べんごし]は" },
           { text: "だれ", blank: true },
-          { text: "ですか" }
+          { text: "ですか" },
         ],
-        notes: "Using は to ask the question in general"
-      }
-    ]
-  }
+        notes: "Using は to ask the question in general",
+      },
+    ],
+  },
 ]

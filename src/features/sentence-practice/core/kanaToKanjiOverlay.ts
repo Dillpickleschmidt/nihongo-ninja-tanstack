@@ -75,7 +75,9 @@ function calculateMatchScore(userKana: string, segmentKana: string): number {
 
   // Score: prefix length weighted heavily + length similarity
   const lengthSimilarity =
-    1 - Math.abs(userKana.length - segmentKana.length) / Math.max(userKana.length, segmentKana.length, 1)
+    1 -
+    Math.abs(userKana.length - segmentKana.length) /
+      Math.max(userKana.length, segmentKana.length, 1)
   return prefixLen * 10 + lengthSimilarity
 }
 
@@ -103,8 +105,13 @@ function buildCharacterMap(
 
       // Proportional mapping for kanji→kana
       for (let j = 1; j <= kanjiText.length; j++) {
-        const proportional = Math.round((kanaText.length * j) / kanjiText.length)
-        characterMap.set(overlaidStart + plainPos + j, userStart + kanaPos + proportional)
+        const proportional = Math.round(
+          (kanaText.length * j) / kanjiText.length,
+        )
+        characterMap.set(
+          overlaidStart + plainPos + j,
+          userStart + kanaPos + proportional,
+        )
       }
 
       plainPos += kanjiText.length
@@ -125,7 +132,10 @@ function buildCharacterMap(
  * When user's kana matches a segment's kana, outputs the segment's plain (kanji) form.
  * Tracks character boundary mappings for position translation.
  */
-function applyOverlay(userKana: string, segments: RichSegment[]): OverlayResult {
+function applyOverlay(
+  userKana: string,
+  segments: RichSegment[],
+): OverlayResult {
   const characterMap = new Map<number, number>()
   let overlaidText = ""
   let userPos = 0

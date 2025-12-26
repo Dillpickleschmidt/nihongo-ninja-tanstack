@@ -4,7 +4,9 @@ import YouTubeVideo from "@/features/youtube/YouTube"
 import Furigana from "@/components/text/Furigana"
 import Romaji from "@/components/text/Romaji"
 
-export const Route = createFileRoute("/_home/lessons/_chapter-3/verb-conj-masu")({
+export const Route = createFileRoute(
+  "/_home/lessons/_chapter-3/verb-conj-masu",
+)({
   loader: async () => ({
     contentBox: {
       nextButtonLink: "/learn/chapter-2/janai",
@@ -732,4 +734,3 @@ function IrregularPractice() {
     </div>
   )
 }
-

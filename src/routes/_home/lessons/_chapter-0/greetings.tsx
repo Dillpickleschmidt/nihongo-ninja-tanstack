@@ -8,7 +8,9 @@ import { VocabularyCard } from "@/features/vocab-page/pages/main/components/deck
 export const Route = createFileRoute("/_home/lessons/_chapter-0/greetings")({
   loader: async () => {
     const setId = "genki_1_ch0_greetings-common-expressions"
-    const { queryFn } = convexQuery(api.api.vocabulary.getBySets, { setIds: [setId] })
+    const { queryFn } = convexQuery(api.api.vocabulary.getBySets, {
+      setIds: [setId],
+    })
     const result = await queryFn()
     const vocabItems = (result[setId] ?? []).slice(0, 10)
     return {

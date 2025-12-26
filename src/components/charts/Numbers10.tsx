@@ -40,9 +40,7 @@ export default function Numbers10() {
           },
           { jp: <Romaji romaji="juu">じゅう</Romaji>, num: 10 },
         ].map((item) => (
-          <li
-            class="flex items-center justify-between px-6 py-4"
-          >
+          <li class="flex items-center justify-between px-6 py-4">
             <div class="flex flex-col">
               <span class="text-foreground text-2xl font-semibold">
                 {item.jp}

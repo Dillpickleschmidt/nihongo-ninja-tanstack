@@ -59,7 +59,7 @@ function CurrentChapterCardContent() {
   const profile = useConvexQuery(api.api.profiles.getProfile, {})
   const learningPathsQuery = useConvexQuery(
     api.api.learning_paths.getAllLearningPaths,
-    {}
+    {},
   )
 
   const selectedPathId = () =>
@@ -68,7 +68,7 @@ function CurrentChapterCardContent() {
   const pathChaptersQuery = useConvexQuery(
     api.api.learning_paths.getPathChapters,
     () => ({ pathId: selectedPathId()! }),
-    () => ({ enabled: !!selectedPathId() })
+    () => ({ enabled: !!selectedPathId() }),
   )
 
   const currentChapter = () => {
@@ -89,7 +89,7 @@ function CurrentChapterCardContent() {
   const dueCardsQuery = useConvexQuery(
     api.api.fsrs.getDueFSRSCardsCount,
     {},
-    () => ({ enabled: !!user() })
+    () => ({ enabled: !!user() }),
   )
 
   const handleChapterSelect = (pathId: string, chapter: { slug: string }) => {
@@ -103,7 +103,9 @@ function CurrentChapterCardContent() {
         <h2 class="text-xl font-semibold text-white mb-2 md:text-2xl">
           {currentChapter()?.title}
         </h2>
-        <Show when={(currentChapter() as { description?: string })?.description}>
+        <Show
+          when={(currentChapter() as { description?: string })?.description}
+        >
           <p class="text-sm text-white/50 mb-4 max-w-2xl line-clamp-2 md:text-base">
             {(currentChapter() as { description?: string })?.description}
           </p>
@@ -134,7 +136,11 @@ function CurrentChapterCardContent() {
           </div>
         </Show>
         {/* Selector needs non-null values - wrap in Show */}
-        <Show when={currentChapter() && learningPathsQuery.data() && selectedPathId()}>
+        <Show
+          when={
+            currentChapter() && learningPathsQuery.data() && selectedPathId()
+          }
+        >
           <LearningPathChapterSelector
             learningPaths={learningPathsQuery.data()!}
             activePathId={selectedPathId()!}

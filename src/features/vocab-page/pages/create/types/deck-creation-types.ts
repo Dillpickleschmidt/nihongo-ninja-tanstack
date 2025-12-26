@@ -1,6 +1,6 @@
-import type { VocabItemFormData } from '@/features/vocab-page/types/vocabulary'
-import type { Infer } from 'convex/values'
-import { practiceModeValidator } from 'convex/validators'
+import type { VocabItemFormData } from "@/features/vocab-page/types/vocabulary"
+import type { Infer } from "convex/values"
+import { practiceModeValidator } from "convex/validators"
 
 export type PracticeMode = Infer<typeof practiceModeValidator>
 

@@ -1,15 +1,18 @@
-import { createSignal, Show, For, createMemo } from 'solid-js'
-import { Rating, type Grade } from 'ts-fsrs'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/utils'
-import type { PracticeCard } from '../types'
+import { createSignal, Show, For, createMemo } from "solid-js"
+import { Rating, type Grade } from "ts-fsrs"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/utils"
+import type { PracticeCard } from "../types"
 import {
   TYPE_BADGE_CLASSES,
   getPromptDisplay,
   getMnemonic,
   formatMnemonic,
-} from '../utils/card-display'
-import { generateDistractors, shuffleArray } from '../utils/distractor-generation'
+} from "../utils/card-display"
+import {
+  generateDistractors,
+  shuffleArray,
+} from "../utils/distractor-generation"
 
 type Props = {
   card: PracticeCard
@@ -48,21 +51,21 @@ export function MultipleChoiceCard(props: Props) {
   }
 
   const getButtonState = (option: string) => {
-    if (!isAnswered()) return 'default'
+    if (!isAnswered()) return "default"
     const isCorrectOption = props.card.validAnswers.some(
       (ans) => ans.toLowerCase() === option.toLowerCase(),
     )
-    if (isCorrectOption) return 'correct'
-    if (option === selectedAnswer() && !isCorrectOption) return 'incorrect'
-    return 'faded'
+    if (isCorrectOption) return "correct"
+    if (option === selectedAnswer() && !isCorrectOption) return "incorrect"
+    return "faded"
   }
 
   const stateClasses = {
     default:
-      'bg-card/70 border-card-foreground/30 hover:bg-card/90 hover:border-card-foreground/50 cursor-pointer',
-    correct: 'bg-emerald-500/20 border-emerald-500 text-emerald-600',
-    incorrect: 'bg-rose-500/20 border-rose-500 text-rose-600',
-    faded: 'bg-card/30 border-card-foreground/10 opacity-50',
+      "bg-card/70 border-card-foreground/30 hover:bg-card/90 hover:border-card-foreground/50 cursor-pointer",
+    correct: "bg-emerald-500/20 border-emerald-500 text-emerald-600",
+    incorrect: "bg-rose-500/20 border-rose-500 text-rose-600",
+    faded: "bg-card/30 border-card-foreground/10 opacity-50",
   }
 
   const promptDisplay = () => getPromptDisplay(props.card)
@@ -93,7 +96,7 @@ export function MultipleChoiceCard(props: Props) {
             <div class="mb-2 flex justify-center">
               <span
                 class={cn(
-                  'rounded-full px-3 py-1 text-xs font-medium',
+                  "rounded-full px-3 py-1 text-xs font-medium",
                   TYPE_BADGE_CLASSES[props.card.practiceItemType],
                 )}
               >
@@ -103,17 +106,23 @@ export function MultipleChoiceCard(props: Props) {
 
             {/* Question text */}
             <div class="mb-2 text-lg text-muted-foreground">
-              {props.card.practiceItemType === 'radical' ? 'What is this radical called?' : 'What does this mean?'}
+              {props.card.practiceItemType === "radical"
+                ? "What is this radical called?"
+                : "What does this mean?"}
             </div>
 
             {/* Japanese prompt */}
             <Show
               when={promptDisplay().isHtml}
               fallback={
-                <div class={cn(
-                  'font-japanese font-bold',
-                  props.card.practiceItemType === 'vocabulary' ? 'text-4xl' : 'text-6xl'
-                )}>
+                <div
+                  class={cn(
+                    "font-japanese font-bold",
+                    props.card.practiceItemType === "vocabulary"
+                      ? "text-4xl"
+                      : "text-6xl",
+                  )}
+                >
                   {promptDisplay().text}
                 </div>
               }
@@ -141,17 +150,23 @@ export function MultipleChoiceCard(props: Props) {
                     onClick={() => handleSelect(option)}
                     disabled={isAnswered()}
                     class={cn(
-                      'rounded-xl border-2 p-4 text-center transition-all duration-200',
-                      'font-medium',
+                      "rounded-xl border-2 p-4 text-center transition-all duration-200",
+                      "font-medium",
                       stateClasses[state()],
-                      isAnswered() && 'cursor-default',
+                      isAnswered() && "cursor-default",
                     )}
                   >
                     <span class="text-sm md:text-base">{option}</span>
                     <Show when={isAnswered() && isCorrectOption()}>
                       <span class="ml-2 text-emerald-500">✓</span>
                     </Show>
-                    <Show when={isAnswered() && option === selectedAnswer() && !isCorrectOption()}>
+                    <Show
+                      when={
+                        isAnswered() &&
+                        option === selectedAnswer() &&
+                        !isCorrectOption()
+                      }
+                    >
                       <span class="ml-2 text-rose-500">✗</span>
                     </Show>
                   </button>
@@ -181,10 +196,10 @@ export function MultipleChoiceCard(props: Props) {
           <Button
             size="lg"
             class={cn(
-              'h-14 rounded-xl px-12 text-lg font-semibold text-white shadow-lg transition-all hover:shadow-xl',
+              "h-14 rounded-xl px-12 text-lg font-semibold text-white shadow-lg transition-all hover:shadow-xl",
               isCorrect()
-                ? 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600'
-                : 'bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600',
+                ? "bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
+                : "bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600",
             )}
             onClick={handleNext}
           >
@@ -195,4 +210,3 @@ export function MultipleChoiceCard(props: Props) {
     </div>
   )
 }
-

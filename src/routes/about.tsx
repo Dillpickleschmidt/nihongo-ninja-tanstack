@@ -1,5 +1,5 @@
-import { createFileRoute } from '@tanstack/solid-router'
-export const Route = createFileRoute('/about')({
+import { createFileRoute } from "@tanstack/solid-router"
+export const Route = createFileRoute("/about")({
   component: RouteComponent,
 })
 

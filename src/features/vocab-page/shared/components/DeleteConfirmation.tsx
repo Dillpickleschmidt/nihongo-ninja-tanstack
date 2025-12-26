@@ -1,20 +1,20 @@
-import { Show } from 'solid-js'
-import { Button } from '@/components/ui/button'
-import type { Folder, Deck } from '../../context/VocabContext'
+import { Show } from "solid-js"
+import { Button } from "@/components/ui/button"
+import type { Folder, Deck } from "../../context/VocabContext"
 
 type DeckDeleteConfirmationProps = {
-  itemType: 'deck'
+  itemType: "deck"
   item: Deck
   onCancel: () => void
   onConfirm: () => void
 }
 
 type FolderDeleteConfirmationProps = {
-  itemType: 'folder'
+  itemType: "folder"
   item: Folder
   folderContents?: { decks: number; folders: number }
-  deleteStrategy: 'move-up' | 'delete-all'
-  onStrategyChange: (strategy: 'move-up' | 'delete-all') => void
+  deleteStrategy: "move-up" | "delete-all"
+  onStrategyChange: (strategy: "move-up" | "delete-all") => void
   onCancel: () => void
   onConfirm: () => void
 }
@@ -27,7 +27,7 @@ export function DeleteConfirmation(props: DeleteConfirmationProps) {
   return (
     <div class="space-y-4">
       <Show
-        when={props.itemType === 'deck'}
+        when={props.itemType === "deck"}
         fallback={(() => {
           const folderProps = props as FolderDeleteConfirmationProps
           return (
@@ -43,17 +43,17 @@ export function DeleteConfirmation(props: DeleteConfirmationProps) {
               >
                 <div class="bg-background/40 border-card-foreground/70 rounded border p-3 backdrop-blur-sm">
                   <p class="text-sm">
-                    This folder contains{' '}
+                    This folder contains{" "}
                     <strong>
                       {folderProps.folderContents!.decks} deck
-                      {folderProps.folderContents!.decks !== 1 ? 's' : ''}
+                      {folderProps.folderContents!.decks !== 1 ? "s" : ""}
                     </strong>
                     <Show when={folderProps.folderContents!.folders > 0}>
-                      {' '}
-                      and{' '}
+                      {" "}
+                      and{" "}
                       <strong>
                         {folderProps.folderContents!.folders} subfolder
-                        {folderProps.folderContents!.folders !== 1 ? 's' : ''}
+                        {folderProps.folderContents!.folders !== 1 ? "s" : ""}
                       </strong>
                     </Show>
                     . What should happen to them?
@@ -64,8 +64,8 @@ export function DeleteConfirmation(props: DeleteConfirmationProps) {
                       <input
                         type="radio"
                         name="deleteStrategy"
-                        checked={folderProps.deleteStrategy === 'move-up'}
-                        onChange={() => folderProps.onStrategyChange('move-up')}
+                        checked={folderProps.deleteStrategy === "move-up"}
+                        onChange={() => folderProps.onStrategyChange("move-up")}
                         class="accent-amber-500"
                       />
                       <span class="text-sm">Move items to parent folder</span>
@@ -75,9 +75,9 @@ export function DeleteConfirmation(props: DeleteConfirmationProps) {
                       <input
                         type="radio"
                         name="deleteStrategy"
-                        checked={folderProps.deleteStrategy === 'delete-all'}
+                        checked={folderProps.deleteStrategy === "delete-all"}
                         onChange={() =>
-                          folderProps.onStrategyChange('delete-all')
+                          folderProps.onStrategyChange("delete-all")
                         }
                         class="accent-amber-500"
                       />
@@ -107,7 +107,7 @@ export function DeleteConfirmation(props: DeleteConfirmationProps) {
           Cancel
         </Button>
         <Button variant="destructive" onClick={props.onConfirm}>
-          Delete {props.itemType === 'deck' ? 'Deck' : 'Folder'}
+          Delete {props.itemType === "deck" ? "Deck" : "Folder"}
         </Button>
       </div>
     </div>

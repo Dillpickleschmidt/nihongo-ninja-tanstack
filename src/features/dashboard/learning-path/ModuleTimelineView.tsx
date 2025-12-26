@@ -18,30 +18,39 @@ export function ModuleTimelineView(props: ModuleTimelineViewProps) {
           const isCompleted = false // TODO: integrate with completion tracking
 
           return (
-            <li class={cn("relative", index() !== props.modules.length - 1 && "pb-1")}>
+            <li
+              class={cn(
+                "relative",
+                index() !== props.modules.length - 1 && "pb-1",
+              )}
+            >
               <Link
                 to={enrichedModule.linkTo}
                 class={cn(
                   "group flex items-center gap-3 rounded-lg py-2.5 pr-3 pl-6 transition-all duration-150",
                   "hover:bg-white/5",
                   "focus-visible:outline-none focus-visible:bg-white/10",
-                  enrichedModule.disabled && "cursor-not-allowed opacity-50"
+                  enrichedModule.disabled && "cursor-not-allowed opacity-50",
                 )}
               >
                 {/* Timeline dot - vertically centered */}
-                <div class={cn(
-                  "absolute left-[-7px] top-1/2 -translate-y-1/2 size-3 rounded-full border-2 bg-background transition-colors",
-                  isCompleted
-                    ? "border-green-500 bg-green-500"
-                    : "border-card-foreground/20 group-hover:border-white/50 group-hover:bg-white/50"
-                )} />
+                <div
+                  class={cn(
+                    "absolute left-[-7px] top-1/2 -translate-y-1/2 size-3 rounded-full border-2 bg-background transition-colors",
+                    isCompleted
+                      ? "border-green-500 bg-green-500"
+                      : "border-card-foreground/20 group-hover:border-white/50 group-hover:bg-white/50",
+                  )}
+                />
 
                 {/* Module content */}
                 <div class="min-w-0 flex-1">
-                  <h3 class={cn(
-                    "flex items-center gap-1.5 text-sm font-medium leading-tight transition-colors",
-                    isCompleted ? "text-green-500" : "group-hover:text-white"
-                  )}>
+                  <h3
+                    class={cn(
+                      "flex items-center gap-1.5 text-sm font-medium leading-tight transition-colors",
+                      isCompleted ? "text-green-500" : "group-hover:text-white",
+                    )}
+                  >
                     {enrichedModule.module.title}
                     <ModuleIcon
                       size="16px"
@@ -49,7 +58,8 @@ export function ModuleTimelineView(props: ModuleTimelineViewProps) {
                     />
                   </h3>
                   <p class="text-muted-foreground mt-0.5 text-xs line-clamp-2">
-                    {enrichedModule.module.description || "Description coming soon"}
+                    {enrichedModule.module.description ||
+                      "Description coming soon"}
                   </p>
                 </div>
 

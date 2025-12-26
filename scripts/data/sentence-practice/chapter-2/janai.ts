@@ -8,17 +8,15 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "これは" },
-          { text: "私[わたし]の 本[ほん]じゃないです", blank: true }
+          { text: "私[わたし]の 本[ほん]じゃないです", blank: true },
         ],
-        notes: "Full form with これは"
+        notes: "Full form with これは",
       },
       {
-        segments: [
-          { text: "私[わたし]の 本[ほん]じゃないです", blank: true }
-        ],
-        notes: "Shorter form without これは"
-      }
-    ]
+        segments: [{ text: "私[わたし]の 本[ほん]じゃないです", blank: true }],
+        notes: "Shorter form without これは",
+      },
+    ],
   },
   {
     english: "Isn't this Tanaka's bag?",
@@ -27,17 +25,17 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "これは" },
-          { text: "田中[たなか]さんのかばんじゃないですか", blank: true }
+          { text: "田中[たなか]さんのかばんじゃないですか", blank: true },
         ],
-        notes: "Full form with これは"
+        notes: "Full form with これは",
       },
       {
         segments: [
-          { text: "田中[たなか]さんのかばんじゃないですか", blank: true }
+          { text: "田中[たなか]さんのかばんじゃないですか", blank: true },
         ],
-        notes: "Shorter form without これは"
-      }
-    ]
+        notes: "Shorter form without これは",
+      },
+    ],
   },
   {
     english: "This is not Tanaka's dictionary.",
@@ -46,17 +44,17 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "これは" },
-          { text: "田中[たなか]さんのじしょじゃないです", blank: true }
+          { text: "田中[たなか]さんのじしょじゃないです", blank: true },
         ],
-        notes: "Full form with これは"
+        notes: "Full form with これは",
       },
       {
         segments: [
-          { text: "田中[たなか]さんのじしょじゃないです", blank: true }
+          { text: "田中[たなか]さんのじしょじゃないです", blank: true },
         ],
-        notes: "Shorter form without これは"
-      }
-    ]
+        notes: "Shorter form without これは",
+      },
+    ],
   },
   {
     english: "Tanaka is not a student. Yamada is not a student either.",
@@ -68,11 +66,11 @@ export const questions: Question[] = [
           { text: "学生[がくせい]じゃないです", blank: true },
           { text: "。山田[やまだ]さんも" },
           { text: "学生[がくせい]じゃないです", blank: true },
-          { text: "。" }
+          { text: "。" },
         ],
-        notes: "Using も to add another person who isn't a student"
-      }
-    ]
+        notes: "Using も to add another person who isn't a student",
+      },
+    ],
   },
   {
     english: "Isn't that person Chinese?",
@@ -81,10 +79,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "あの 人[ひと]は" },
-          { text: "中国人[ちゅうごくじん]じゃないですか", blank: true }
-        ]
-      }
-    ]
+          { text: "中国人[ちゅうごくじん]じゃないですか", blank: true },
+        ],
+      },
+    ],
   },
   {
     english: "This is not a student.",
@@ -93,24 +91,22 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "これは" },
-          { text: "学生[がくせい]じゃないです", blank: true }
+          { text: "学生[がくせい]じゃないです", blank: true },
         ],
-        notes: "Full form with これは"
+        notes: "Full form with これは",
       },
       {
         segments: [
           { text: "これが" },
-          { text: "学生[がくせい]じゃないです", blank: true }
+          { text: "学生[がくせい]じゃないです", blank: true },
         ],
-        notes: "Full form with これは"
+        notes: "Full form with これは",
       },
       {
-        segments: [
-          { text: "学生[がくせい]じゃないです", blank: true }
-        ],
-        notes: "Shorter form without これは, when context is clear"
-      }
-    ]
+        segments: [{ text: "学生[がくせい]じゃないです", blank: true }],
+        notes: "Shorter form without これは, when context is clear",
+      },
+    ],
   },
   {
     english: "Tanaka is not a teacher.",
@@ -119,10 +115,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "田中[たなか]さんは" },
-          { text: "先生[せんせい]じゃないです", blank: true }
-        ]
-      }
-    ]
+          { text: "先生[せんせい]じゃないです", blank: true },
+        ],
+      },
+    ],
   },
   {
     english: "Isn't Yamada a nurse?",
@@ -131,10 +127,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "山田[やまだ]さんは" },
-          { text: "看護師[かんごし]じゃないですか", blank: true }
-        ]
-      }
-    ]
+          { text: "看護師[かんごし]じゃないですか", blank: true },
+        ],
+      },
+    ],
   },
   {
     english: "This is not an English book.",
@@ -143,17 +139,17 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "これは" },
-          { text: "英語[えいご]の 本[ほん]じゃないです", blank: true }
+          { text: "英語[えいご]の 本[ほん]じゃないです", blank: true },
         ],
-        notes: "Full form with これは"
+        notes: "Full form with これは",
       },
       {
         segments: [
-          { text: "英語[えいご]の 本[ほん]じゃないです", blank: true }
+          { text: "英語[えいご]の 本[ほん]じゃないです", blank: true },
         ],
-        notes: "Shorter form without これは"
-      }
-    ]
+        notes: "Shorter form without これは",
+      },
+    ],
   },
   {
     english: "Yamada is not a doctor. Kim is not a doctor either.",
@@ -165,10 +161,10 @@ export const questions: Question[] = [
           { text: "医者[いしゃ]じゃないです", blank: true },
           { text: "。キムさんも" },
           { text: "医者[いしゃ]じゃないです", blank: true },
-          { text: "。" }
+          { text: "。" },
         ],
-        notes: "Using も to add another person who isn't a doctor"
-      }
-    ]
-  }
+        notes: "Using も to add another person who isn't a doctor",
+      },
+    ],
+  },
 ]

@@ -1,13 +1,13 @@
-import { Match, Switch, Show, createSignal, createMemo } from 'solid-js'
-import type { PracticeManagerHook } from './logic/usePracticeManager'
-import { Rating, type Grade } from 'ts-fsrs'
-import { IntroductionCard } from './components/IntroductionCard'
-import { MultipleChoiceCard } from './components/MultipleChoiceCard'
-import { WriteCard } from './components/WriteCard'
-import { FlashcardCard } from './components/FlashcardCard'
-import { FinishScreen } from './components/FinishScreen'
-import { ReviewScreen } from './components/ReviewScreen'
-import type { PracticeCard } from './types'
+import { Match, Switch, Show, createSignal, createMemo } from "solid-js"
+import type { PracticeManagerHook } from "./logic/usePracticeManager"
+import { Rating, type Grade } from "ts-fsrs"
+import { IntroductionCard } from "./components/IntroductionCard"
+import { MultipleChoiceCard } from "./components/MultipleChoiceCard"
+import { WriteCard } from "./components/WriteCard"
+import { FlashcardCard } from "./components/FlashcardCard"
+import { FinishScreen } from "./components/FinishScreen"
+import { ReviewScreen } from "./components/ReviewScreen"
+import type { PracticeCard } from "./types"
 
 const CARDS_UNTIL_REVIEW = 7
 
@@ -20,7 +20,7 @@ type ReviewResult = {
 type Props = {
   practiceManager: PracticeManagerHook
   deckName: string
-  mode: 'meanings' | 'spellings'
+  mode: "meanings" | "spellings"
   onAnswer: (rating: Grade) => Promise<void>
   onIntroductionComplete: () => void
   onReturn?: () => void
@@ -40,11 +40,16 @@ export function VocabPractice(props: Props) {
   const recentHistory = () => allResults().slice(lastReviewIndex())
 
   // All cards for distractor generation
-  const allCards = createMemo(() => Array.from(props.practiceManager.cardMap().values()))
+  const allCards = createMemo(() =>
+    Array.from(props.practiceManager.cardMap().values()),
+  )
   const currentIndex = () => progress().completed
 
   const totalItems = createMemo(() => {
-    return progress().total || allCards().filter((c) => c.sessionScope === 'module').length
+    return (
+      progress().total ||
+      allCards().filter((c) => c.sessionScope === "module").length
+    )
   })
 
   // Handle answer with result tracking
@@ -53,7 +58,10 @@ export function VocabPractice(props: Props) {
     if (!currentCard) return
 
     const isCorrect = rating !== Rating.Again
-    setAllResults((prev) => [...prev, { card: currentCard, correct: isCorrect }])
+    setAllResults((prev) => [
+      ...prev,
+      { card: currentCard, correct: isCorrect },
+    ])
 
     // Show review every 7 cards
     if (allResults().length - lastReviewIndex() >= CARDS_UNTIL_REVIEW) {
@@ -74,7 +82,7 @@ export function VocabPractice(props: Props) {
     if (props.onReturn) {
       props.onReturn()
     } else {
-      window.location.href = '/vocab'
+      window.location.href = "/vocab"
     }
   }
 
@@ -82,7 +90,10 @@ export function VocabPractice(props: Props) {
     <div>
       {/* Review Screen (shown after practice, before finish) */}
       <Show when={showReview()}>
-        <ReviewScreen results={recentHistory()} onContinue={handleReviewContinue} />
+        <ReviewScreen
+          results={recentHistory()}
+          onContinue={handleReviewContinue}
+        />
       </Show>
 
       {/* Finish Screen */}
@@ -99,7 +110,7 @@ export function VocabPractice(props: Props) {
         <Show when={card()} keyed>
           {(currentCard) => (
             <Switch>
-              <Match when={currentCard.sessionStyle === 'introduction'}>
+              <Match when={currentCard.sessionStyle === "introduction"}>
                 <IntroductionCard
                   card={currentCard}
                   currentIndex={currentIndex()}
@@ -107,7 +118,7 @@ export function VocabPractice(props: Props) {
                   onContinue={props.onIntroductionComplete}
                 />
               </Match>
-              <Match when={currentCard.sessionStyle === 'multiple-choice'}>
+              <Match when={currentCard.sessionStyle === "multiple-choice"}>
                 <MultipleChoiceCard
                   card={currentCard}
                   allCards={allCards()}
@@ -116,7 +127,7 @@ export function VocabPractice(props: Props) {
                   onAnswer={handleAnswer}
                 />
               </Match>
-              <Match when={currentCard.sessionStyle === 'write'}>
+              <Match when={currentCard.sessionStyle === "write"}>
                 <WriteCard
                   card={currentCard}
                   currentIndex={currentIndex()}
@@ -124,7 +135,7 @@ export function VocabPractice(props: Props) {
                   onAnswer={handleAnswer}
                 />
               </Match>
-              <Match when={currentCard.sessionStyle === 'flashcard'}>
+              <Match when={currentCard.sessionStyle === "flashcard"}>
                 <FlashcardCard
                   card={currentCard}
                   currentIndex={currentIndex()}

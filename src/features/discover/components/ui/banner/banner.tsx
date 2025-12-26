@@ -30,12 +30,8 @@ export function Banner(props: BannerProps) {
         </div>
       }
     >
-      <Show
-        when={props.bannerData}
-        fallback={<BannerSkeleton />}
-      >
+      <Show when={props.bannerData} fallback={<BannerSkeleton />}>
         {(bannerData) => {
-
           let timerId: ReturnType<typeof setTimeout> | undefined
 
           const processedData = () => bannerData()
@@ -52,7 +48,8 @@ export function Banner(props: BannerProps) {
                 "--custom-r": color.r,
                 "--custom-g": color.g,
                 "--custom-b": color.b,
-                "--text-contrast": textColor === "white" ? "#ffffff" : "#000000",
+                "--text-contrast":
+                  textColor === "white" ? "#ffffff" : "#000000",
               } as any)
             }
           })

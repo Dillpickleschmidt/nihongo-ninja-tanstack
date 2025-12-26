@@ -2,7 +2,11 @@ export type PracticeModeEnum = "meanings" | "readings" | "both"
 
 export interface DynamicModule {
   title: string
-  module_type: "vocab-list" | "vocab-practice" | "sentence-practice" | "vocab-test"
+  module_type:
+    | "vocab-list"
+    | "vocab-practice"
+    | "sentence-practice"
+    | "vocab-test"
   vocab_set_ids: string[]
   description?: string
   instructions?: string

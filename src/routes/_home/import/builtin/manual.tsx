@@ -11,7 +11,7 @@ import { JLPT_SETS } from "@/features/import/manual/consts"
 export const Route = createFileRoute("/_home/import/builtin/manual")({
   loader: ({ context }) => {
     context.queryClient.prefetchQuery(
-      convexQuery(api.api.vocabulary.getBySets, { setIds: [...JLPT_SETS] })
+      convexQuery(api.api.vocabulary.getBySets, { setIds: [...JLPT_SETS] }),
     )
   },
   component: ManualMarkingPage,

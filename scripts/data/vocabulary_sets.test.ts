@@ -49,7 +49,9 @@ describe("vocabulary_sets", () => {
         )
         .join("\n  ")
 
-      expect.fail(`Found ${duplicates.length} duplicate value(s) in vocabulary sets:\n  ${message}`)
+      expect.fail(
+        `Found ${duplicates.length} duplicate value(s) in vocabulary sets:\n  ${message}`,
+      )
     }
   })
 })

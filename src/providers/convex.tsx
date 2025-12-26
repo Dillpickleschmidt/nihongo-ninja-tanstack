@@ -1,11 +1,11 @@
-import { ConvexProvider, setupConvex } from 'convex-solidjs'
-import type { JSXElement } from 'solid-js'
-import { authClient } from '@/lib/auth-client'
-import { fetchAuth } from '@/lib/server'
+import { ConvexProvider, setupConvex } from "convex-solidjs"
+import type { JSXElement } from "solid-js"
+import { authClient } from "@/lib/auth-client"
+import { fetchAuth } from "@/lib/server"
 
 const CONVEX_URL = import.meta.env.VITE_CONVEX_URL
 if (!CONVEX_URL) {
-  console.error('missing envar CONVEX_URL')
+  console.error("missing envar CONVEX_URL")
 }
 
 export const convexQueryClient = setupConvex(CONVEX_URL)
@@ -21,5 +21,7 @@ convexQueryClient.client.setAuth(async ({ forceRefreshToken }) => {
 })
 
 export default function AppConvexProvider(props: { children: JSXElement }) {
-  return <ConvexProvider client={convexQueryClient}>{props.children}</ConvexProvider>
+  return (
+    <ConvexProvider client={convexQueryClient}>{props.children}</ConvexProvider>
+  )
 }

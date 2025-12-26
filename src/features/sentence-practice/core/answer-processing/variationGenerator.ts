@@ -1,7 +1,18 @@
 import type { RichSegment, RichAnswer } from "../types"
-import { convertToKana, removeFurigana, SEGMENT_SEPARATOR } from "../textProcessor"
+import {
+  convertToKana,
+  removeFurigana,
+  SEGMENT_SEPARATOR,
+} from "../textProcessor"
 
-const PRONOUNS = ["私[わたし]", "私[わたくし]", "僕[ぼく]", "俺[おれ]", "あたし", "うち"]
+const PRONOUNS = [
+  "私[わたし]",
+  "私[わたくし]",
+  "僕[ぼく]",
+  "俺[おれ]",
+  "あたし",
+  "うち",
+]
 const PLURAL_PRONOUNS = ["私[わたし]たち", "僕[ぼく]たち", "俺[おれ]たち"]
 const HONORIFIC_VARIATIONS: Record<string, string[]> = {
   さん: ["くん", "ちゃん", "先生[せんせい]"],
@@ -69,7 +80,12 @@ function generatePronounVariations(answers: RichAnswer[]): RichAnswer[] {
       for (let i = 0; i < occurrences; i++) {
         for (const altPronoun of PRONOUNS) {
           if (altPronoun !== basePronoun) {
-            const newOriginal = replaceAtIndex(answer.original, basePronoun, altPronoun, i)
+            const newOriginal = replaceAtIndex(
+              answer.original,
+              basePronoun,
+              altPronoun,
+              i,
+            )
             if (!resultMap.has(newOriginal)) {
               resultMap.set(newOriginal, {
                 ...answer,
@@ -83,7 +99,11 @@ function generatePronounVariations(answers: RichAnswer[]): RichAnswer[] {
         }
 
         // Special case: drop "私[わたし]は" at beginning
-        if (basePronoun === "私[わたし]" && i === 0 && answer.original.startsWith("私[わたし]は")) {
+        if (
+          basePronoun === "私[わたし]" &&
+          i === 0 &&
+          answer.original.startsWith("私[わたし]は")
+        ) {
           const newOriginal = answer.original.replace("私[わたし]は", "")
           if (newOriginal !== answer.original && !resultMap.has(newOriginal)) {
             resultMap.set(newOriginal, {
@@ -106,7 +126,12 @@ function generatePronounVariations(answers: RichAnswer[]): RichAnswer[] {
       for (let i = 0; i < occurrences; i++) {
         for (const altPronoun of PLURAL_PRONOUNS) {
           if (altPronoun !== basePronoun) {
-            const newOriginal = replaceAtIndex(answer.original, basePronoun, altPronoun, i)
+            const newOriginal = replaceAtIndex(
+              answer.original,
+              basePronoun,
+              altPronoun,
+              i,
+            )
             if (!resultMap.has(newOriginal)) {
               resultMap.set(newOriginal, {
                 ...answer,
@@ -134,13 +159,20 @@ function generateHonorificVariations(answers: RichAnswer[]): RichAnswer[] {
   }
 
   for (const answer of answers) {
-    for (const [baseHonorific, alternatives] of Object.entries(HONORIFIC_VARIATIONS)) {
+    for (const [baseHonorific, alternatives] of Object.entries(
+      HONORIFIC_VARIATIONS,
+    )) {
       const regex = new RegExp(escapeRegex(baseHonorific), "g")
       const occurrences = (answer.original.match(regex) || []).length
 
       for (let i = 0; i < occurrences; i++) {
         for (const altHonorific of alternatives) {
-          const newOriginal = replaceAtIndex(answer.original, baseHonorific, altHonorific, i)
+          const newOriginal = replaceAtIndex(
+            answer.original,
+            baseHonorific,
+            altHonorific,
+            i,
+          )
           if (!resultMap.has(newOriginal)) {
             resultMap.set(newOriginal, {
               ...answer,
@@ -163,7 +195,9 @@ export function generateValidAnswers(
   sourceAnswerIndex: number,
   isPoliteForm: boolean,
 ): RichAnswer[] {
-  const baseAnswerString = segments.map((s) => s.original).join(SEGMENT_SEPARATOR)
+  const baseAnswerString = segments
+    .map((s) => s.original)
+    .join(SEGMENT_SEPARATOR)
   if (baseAnswerString === "") {
     return [
       {

@@ -1,6 +1,6 @@
-import { For, createSignal, onMount, onCleanup } from 'solid-js'
-import { cn } from '@/utils'
-import { QUICK_FEATURES } from '../data/features'
+import { For, createSignal, onMount, onCleanup } from "solid-js"
+import { cn } from "@/utils"
+import { QUICK_FEATURES } from "../data/features"
 
 export function QuickFeatures() {
   return (
@@ -15,7 +15,7 @@ export function QuickFeatures() {
               onMount(() => {
                 const observer = new IntersectionObserver(
                   ([entry]) => entry.isIntersecting && setVisible(true),
-                  { threshold: 0.3 }
+                  { threshold: 0.3 },
                 )
                 if (ref) observer.observe(ref)
                 onCleanup(() => observer.disconnect())
@@ -26,9 +26,11 @@ export function QuickFeatures() {
                   ref={ref}
                   class={cn(
                     "group relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] p-6 transition-all duration-500 hover:border-(--landing-accent)/20 hover:bg-white/[0.04]",
-                    visible() ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                    visible()
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-8",
                   )}
-                  style={{ 'transition-delay': `${i() * 100}ms` }}
+                  style={{ "transition-delay": `${i() * 100}ms` }}
                 >
                   <div class="mb-4 text-4xl font-japanese text-(--landing-accent)/80 transition-transform duration-300 group-hover:scale-110">
                     {feature.icon}

@@ -65,7 +65,9 @@ export function ConfirmActionDialog(props: ConfirmActionDialogProps) {
             </Button>
           </Show>
           <Button
-            variant={props.variant === "destructive" ? "destructive" : "default"}
+            variant={
+              props.variant === "destructive" ? "destructive" : "default"
+            }
             class={
               props.variant === "destructive"
                 ? ""

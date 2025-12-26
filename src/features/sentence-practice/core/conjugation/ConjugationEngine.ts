@@ -20,12 +20,19 @@ export class ConjugationEngine {
     forceMode?: "polite" | "casual",
   ): string[][] {
     const effectivePolite =
-      forceMode === "polite" ? true : forceMode === "casual" ? false : politeForm
+      forceMode === "polite"
+        ? true
+        : forceMode === "casual"
+          ? false
+          : politeForm
 
     return segments.map((segment) => {
       // Handle special standalone words (copulas, etc.)
       if (typeof segment === "string") {
-        const specialForm = this.rules.getSpecialWordForm(segment, effectivePolite)
+        const specialForm = this.rules.getSpecialWordForm(
+          segment,
+          effectivePolite,
+        )
         return specialForm ? [specialForm] : [segment]
       }
 

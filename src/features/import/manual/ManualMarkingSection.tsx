@@ -1,4 +1,12 @@
-import { createSignal, createMemo, For, Match, Suspense, Switch, onMount } from "solid-js"
+import {
+  createSignal,
+  createMemo,
+  For,
+  Match,
+  Suspense,
+  Switch,
+  onMount,
+} from "solid-js"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import type { PracticeItemType } from "convex/validators"
@@ -8,7 +16,10 @@ import { VocabSection, VocabSectionSkeleton } from "./components/VocabSection"
 import { KanjiSection, KanjiSectionSkeleton } from "./components/KanjiSection"
 import { JLPT_SETS } from "./consts"
 import { useImportFlow } from "../shared/hooks/useImportFlow"
-import { useItemStatuses, type StatusItem } from "../shared/hooks/useItemStatuses"
+import {
+  useItemStatuses,
+  type StatusItem,
+} from "../shared/hooks/useItemStatuses"
 import { FloatingActionBar } from "../shared/FloatingActionBar"
 import { ConfirmActionDialog } from "../shared/ConfirmActionDialog"
 
@@ -16,27 +27,34 @@ const JLPT_LEVELS = ["N5", "N4", "N3", "N2", "N1"] as const
 const CATEGORIES = ["Vocabulary", "Grammar", "Kanji"] as const
 
 export function ManualMarkingSection() {
-  const [selectedLevel, setSelectedLevel] = createSignal<(typeof JLPT_LEVELS)[number]>("N5")
-  const [selectedCategory, setSelectedCategory] = createSignal<(typeof CATEGORIES)[number]>("Vocabulary")
+  const [selectedLevel, setSelectedLevel] =
+    createSignal<(typeof JLPT_LEVELS)[number]>("N5")
+  const [selectedCategory, setSelectedCategory] =
+    createSignal<(typeof CATEGORIES)[number]>("Vocabulary")
 
   // Query vocab data (same as VocabSection - cache hit)
-  const vocabQuery = useConvexQuery(
-    api.api.vocabulary.getBySets,
-    () => ({ setIds: [...JLPT_SETS] })
-  )
+  const vocabQuery = useConvexQuery(api.api.vocabulary.getBySets, () => ({
+    setIds: [...JLPT_SETS],
+  }))
 
   // Derive all items for current level (vocab + kanji) with types
   const allItems = createMemo<StatusItem[]>(() => {
     const vocab = vocabQuery.data()?.[selectedLevel().toLowerCase()] ?? []
-    const vocabItems: StatusItem[] = vocab.map((i) => ({ key: i.key, type: "vocabulary" }))
-    const kanjiItems: StatusItem[] = extractAllKanjiFromVocab(vocab).map((k) => ({ key: k, type: "kanji" }))
+    const vocabItems: StatusItem[] = vocab.map((i) => ({
+      key: i.key,
+      type: "vocabulary",
+    }))
+    const kanjiItems: StatusItem[] = extractAllKanjiFromVocab(vocab).map(
+      (k) => ({ key: k, type: "kanji" }),
+    )
     return [...vocabItems, ...kanjiItems]
   })
 
   const getStoredStatus = useItemStatuses(allItems)
 
   const flow = useImportFlow({
-    getBaseStatus: (key: string, type: PracticeItemType) => getStoredStatus(key, type),
+    getBaseStatus: (key: string, type: PracticeItemType) =>
+      getStoredStatus(key, type),
   })
 
   onMount(() => flow.setupClickOutside())
@@ -44,7 +62,10 @@ export function ManualMarkingSection() {
   return (
     <>
       <LevelTabs selected={selectedLevel()} onSelect={setSelectedLevel} />
-      <CategoryTabs selected={selectedCategory()} onSelect={setSelectedCategory} />
+      <CategoryTabs
+        selected={selectedCategory()}
+        onSelect={setSelectedCategory}
+      />
 
       <div class="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
         <Switch>
@@ -53,7 +74,9 @@ export function ManualMarkingSection() {
               <VocabSection
                 level={selectedLevel()}
                 isSelected={flow.isSelected}
-                onToggleAll={(items, checked) => flow.toggleAll(items, (i) => i.key, "vocabulary", checked)}
+                onToggleAll={(items, checked) =>
+                  flow.toggleAll(items, (i) => i.key, "vocabulary", checked)
+                }
                 onItemClick={flow.handleItemClick}
                 onPointerDown={flow.handlePointerDown}
                 getOverrideStatus={flow.getOverrideStatus}
@@ -66,7 +89,9 @@ export function ManualMarkingSection() {
               <KanjiSection
                 level={selectedLevel()}
                 isSelected={flow.isSelected}
-                onToggleAll={(items, checked) => flow.toggleAll(items, (i) => i.kanji, "kanji", checked)}
+                onToggleAll={(items, checked) =>
+                  flow.toggleAll(items, (i) => i.kanji, "kanji", checked)
+                }
                 onItemClick={flow.handleItemClick}
                 onPointerDown={flow.handlePointerDown}
                 getOverrideStatus={flow.getOverrideStatus}
@@ -90,7 +115,7 @@ export function ManualMarkingSection() {
             "rounded-xl px-6 py-3 font-medium transition-all",
             flow.selectedCount() > 0
               ? "bg-(--accent) text-white hover:brightness-110"
-              : "bg-white/10 text-white/40 cursor-not-allowed"
+              : "bg-white/10 text-white/40 cursor-not-allowed",
           )}
         >
           Save Progress
@@ -112,9 +137,10 @@ export function ManualMarkingSection() {
         open={flow.showUndoDialog()}
         onOpenChange={flow.setShowUndoDialog}
         title="Undo Override"
-        description={flow.pendingUndoItem()
-          ? `Undo override for this item, or all ${flow.undoDialogSelectedCount()} selected items with overrides?`
-          : `Undo override for ${flow.undoDialogSelectedCount()} selected item${flow.undoDialogSelectedCount() !== 1 ? "s" : ""}?`
+        description={
+          flow.pendingUndoItem()
+            ? `Undo override for this item, or all ${flow.undoDialogSelectedCount()} selected items with overrides?`
+            : `Undo override for ${flow.undoDialogSelectedCount()} selected item${flow.undoDialogSelectedCount() !== 1 ? "s" : ""}?`
         }
         confirmLabel={`Undo ${flow.undoDialogSelectedCount()} Selected`}
         onConfirm={flow.handleUndoSelected}
@@ -140,7 +166,7 @@ function LevelTabs(props: {
               "shrink-0 rounded-lg px-4 py-2 text-sm font-medium transition-all",
               props.selected === level
                 ? "bg-(--accent) text-white"
-                : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
+                : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white",
             )}
           >
             {level}
@@ -166,7 +192,7 @@ function CategoryTabs(props: {
               "rounded-lg px-4 py-2 text-sm font-medium transition-all",
               props.selected === category
                 ? "bg-white/15 text-white"
-                : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white/70"
+                : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white/70",
             )}
           >
             {category}
@@ -176,4 +202,3 @@ function CategoryTabs(props: {
     </div>
   )
 }
-

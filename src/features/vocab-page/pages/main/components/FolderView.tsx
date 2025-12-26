@@ -1,20 +1,20 @@
-import { For, Show } from 'solid-js'
-import { Link } from '@tanstack/solid-router'
+import { For, Show } from "solid-js"
+import { Link } from "@tanstack/solid-router"
 import {
   Breadcrumb,
   BreadcrumbList,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { FolderCard } from '../../../shared/components/FolderCard'
-import { DeckCard } from '../../../shared/components/DeckCard'
-import { getFolderLevelItems } from '../../../utils/hierarchy'
+} from "@/components/ui/breadcrumb"
+import { FolderCard } from "../../../shared/components/FolderCard"
+import { DeckCard } from "../../../shared/components/DeckCard"
+import { getFolderLevelItems } from "../../../utils/hierarchy"
 import {
   buildFolderBreadcrumbs,
   type BreadcrumbItem as BreadcrumbItemType,
-} from '../../../utils/navigation'
-import { useVocab } from '../../../context/VocabContext'
+} from "../../../utils/navigation"
+import { useVocab } from "../../../context/VocabContext"
 
 interface FolderViewProps {
   folderId: string
@@ -28,10 +28,12 @@ export function FolderView(props: FolderViewProps) {
   const ctx = useVocab()
 
   const folder = () => ctx.folders().find((f) => f.id === props.folderId)
-  const breadcrumbs = () => buildFolderBreadcrumbs(ctx.folders(), props.folderId)
-  const items = () => getFolderLevelItems(ctx.folders(), ctx.decks(), props.folderId)
+  const breadcrumbs = () =>
+    buildFolderBreadcrumbs(ctx.folders(), props.folderId)
+  const items = () =>
+    getFolderLevelItems(ctx.folders(), ctx.decks(), props.folderId)
 
-  const currentFolderName = () => folder()?.folderName || 'Folder'
+  const currentFolderName = () => folder()?.folderName || "Folder"
 
   return (
     <div class="space-y-6">
@@ -40,7 +42,9 @@ export function FolderView(props: FolderViewProps) {
 
       {/* Page Header */}
       <div class="mb-4">
-        <h2 class="text-foreground mb-2 text-2xl font-bold">{currentFolderName()}</h2>
+        <h2 class="text-foreground mb-2 text-2xl font-bold">
+          {currentFolderName()}
+        </h2>
       </div>
 
       {/* Grid with empty state */}
@@ -52,9 +56,9 @@ export function FolderView(props: FolderViewProps) {
           <For each={items()}>
             {(node) => {
               switch (node.type) {
-                case 'folder':
+                case "folder":
                   return <FolderCard folder={node.data} />
-                case 'deck':
+                case "deck":
                   return <DeckCard deck={node.data} />
                 default:
                   return null
@@ -90,7 +94,9 @@ function FolderBreadcrumbs(props: FolderBreadcrumbsProps) {
                   <BreadcrumbItem>
                     <Show
                       when={!item.current}
-                      fallback={<span class="text-foreground">{item.label}</span>}
+                      fallback={
+                        <span class="text-foreground">{item.label}</span>
+                      }
                     >
                       <BreadcrumbLink as={Link} to={item.href}>
                         {item.label}

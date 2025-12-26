@@ -1,14 +1,14 @@
-import { Show, Suspense } from 'solid-js'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/utils'
-import type { PracticeCard } from '../types'
+import { Show, Suspense } from "solid-js"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/utils"
+import type { PracticeCard } from "../types"
 import {
   TYPE_BADGE_CLASSES,
   TYPE_TEXT_COLORS,
   getPromptDisplay,
   formatMnemonic,
-} from '../utils/card-display'
-import { KanjiDisplay } from './KanjiDisplay'
+} from "../utils/card-display"
+import { KanjiDisplay } from "./KanjiDisplay"
 
 type Props = {
   card: PracticeCard
@@ -23,7 +23,7 @@ export function IntroductionCard(props: Props) {
   const shouldUseAnimation = () => {
     const type = props.card.practiceItemType
     const char = character()
-    return (type === 'kanji' || type === 'radical') && char && char.length === 1
+    return (type === "kanji" || type === "radical") && char && char.length === 1
   }
 
   // IntroductionCard shows both meaning and reading mnemonics
@@ -31,7 +31,7 @@ export function IntroductionCard(props: Props) {
     const mnemonics = props.card.vocab.mnemonics
     if (!mnemonics) return null
 
-    if (props.card.practiceItemType === 'vocabulary') {
+    if (props.card.practiceItemType === "vocabulary") {
       return {
         meaning: mnemonics.kanji?.[0] || null,
         reading: mnemonics.reading?.[0] || null,
@@ -43,7 +43,7 @@ export function IntroductionCard(props: Props) {
     }
   }
 
-  const promptDisplay = () => getPromptDisplay(props.card, '1rem')
+  const promptDisplay = () => getPromptDisplay(props.card, "1rem")
   const mnemonic = () => getMnemonic()
   const progress = () => ((props.currentIndex + 1) / props.totalItems) * 100
 
@@ -52,7 +52,9 @@ export function IntroductionCard(props: Props) {
     <Show
       when={promptDisplay().isHtml}
       fallback={
-        <div class="font-japanese text-7xl font-bold">{promptDisplay().text}</div>
+        <div class="font-japanese text-7xl font-bold">
+          {promptDisplay().text}
+        </div>
       }
     >
       <div
@@ -84,7 +86,7 @@ export function IntroductionCard(props: Props) {
           <div class="mb-4 flex justify-center">
             <span
               class={cn(
-                'rounded-full px-3 py-1 text-xs font-medium',
+                "rounded-full px-3 py-1 text-xs font-medium",
                 TYPE_BADGE_CLASSES[props.card.practiceItemType],
               )}
             >
@@ -94,10 +96,7 @@ export function IntroductionCard(props: Props) {
 
           {/* Main character/word */}
           <div class="mb-4 text-center">
-            <Show
-              when={shouldUseAnimation()}
-              fallback={<PlainTextDisplay />}
-            >
+            <Show when={shouldUseAnimation()} fallback={<PlainTextDisplay />}>
               <Suspense fallback={<PlainTextDisplay />}>
                 <KanjiDisplay character={character()} />
               </Suspense>
@@ -105,8 +104,13 @@ export function IntroductionCard(props: Props) {
           </div>
 
           {/* Meanings */}
-          <div class={cn('mb-6 text-center text-xl font-medium', TYPE_TEXT_COLORS[props.card.practiceItemType])}>
-            {props.card.validAnswers.join(', ')}
+          <div
+            class={cn(
+              "mb-6 text-center text-xl font-medium",
+              TYPE_TEXT_COLORS[props.card.practiceItemType],
+            )}
+          >
+            {props.card.validAnswers.join(", ")}
           </div>
 
           {/* Mnemonic section */}

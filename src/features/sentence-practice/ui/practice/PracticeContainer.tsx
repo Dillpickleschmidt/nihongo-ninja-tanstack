@@ -88,7 +88,9 @@ export default function PracticeContainer(props: PracticeContainerProps) {
                 <CollapsibleContent class="w-full">
                   <Show
                     when={store.effectiveDifficulty === "hard"}
-                    fallback={<EasyModeDebugPanel currentQuestion={question()} />}
+                    fallback={
+                      <EasyModeDebugPanel currentQuestion={question()} />
+                    }
                   >
                     <DebugPanel allAnswers={question().validAnswers} />
                   </Show>

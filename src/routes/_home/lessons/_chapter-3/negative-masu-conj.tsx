@@ -2,7 +2,9 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import Romaji from "@/components/text/Romaji"
 
-export const Route = createFileRoute("/_home/lessons/_chapter-3/negative-masu-conj")({
+export const Route = createFileRoute(
+  "/_home/lessons/_chapter-3/negative-masu-conj",
+)({
   loader: async () => ({
     contentBox: {
       nextButtonLink: "/learn/chapter-3/practice/masu-conjugation",
@@ -135,4 +137,3 @@ export default function NegativeMasuPractice() {
     </div>
   )
 }
-

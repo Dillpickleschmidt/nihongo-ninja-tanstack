@@ -1,7 +1,9 @@
-import { textbooks, type Textbook } from '../textbooks'
+import { textbooks, type Textbook } from "../textbooks"
 
 // Return type uses string id for downstream compatibility
-export function getAllTextbooks(): Array<Omit<Textbook, 'id'> & { id: string }> {
+export function getAllTextbooks(): Array<
+  Omit<Textbook, "id"> & { id: string }
+> {
   return Object.entries(textbooks).map(([id, tb]) => ({ ...tb, id }))
 }
 

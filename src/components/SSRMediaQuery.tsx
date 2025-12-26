@@ -1,7 +1,7 @@
-import { Show, type ParentProps } from 'solid-js'
-import { useBreakpoints } from '@/hooks/useBreakpoints'
+import { Show, type ParentProps } from "solid-js"
+import { useBreakpoints } from "@/hooks/useBreakpoints"
 
-type Breakpoint = 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+type Breakpoint = "sm" | "md" | "lg" | "xl" | "2xl"
 
 interface SSRMediaQueryProps extends ParentProps {
   showFrom?: Breakpoint

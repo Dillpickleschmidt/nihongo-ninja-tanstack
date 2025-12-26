@@ -17,22 +17,32 @@ export function useStatusOverrides() {
     radical: {},
   })
 
-  const setOverride = (key: string, type: PracticeItemType, status: ItemStatus) => {
+  const setOverride = (
+    key: string,
+    type: PracticeItemType,
+    status: ItemStatus,
+  ) => {
     setOverrides(type, key, status)
   }
 
   const clearOverride = (key: string, type: PracticeItemType) => {
-    setOverrides(type, produce((state) => {
-      delete state[key]
-    }))
+    setOverrides(
+      type,
+      produce((state) => {
+        delete state[key]
+      }),
+    )
   }
 
   const clearOverrides = (items: OverrideItem[]) => {
     batch(() => {
       for (const { key, type } of items) {
-        setOverrides(type, produce((state) => {
-          delete state[key]
-        }))
+        setOverrides(
+          type,
+          produce((state) => {
+            delete state[key]
+          }),
+        )
       }
     })
   }

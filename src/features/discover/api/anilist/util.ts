@@ -164,7 +164,7 @@ export function duration(media: Pick<Media, "duration">) {
 export function desc(media: Pick<Media, "description">) {
   return notes(
     media.description?.replace(/<[^>]+>/g, "").replace(/\n+/g, "\n") ??
-    "No description available.",
+      "No description available.",
   )
 }
 

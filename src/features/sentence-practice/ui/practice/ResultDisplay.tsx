@@ -26,10 +26,11 @@ export default function ResultDisplay() {
             <div class="font-bold">Your answer:</div>
             <div class="flex w-full items-center">
               <div
-                class={`border-card-foreground/70 w-full rounded border-2 p-2 text-xl ${store.checkResult!.isCorrect
-                  ? "border-green-500/75 bg-green-500/15"
-                  : ""
-                  }`}
+                class={`border-card-foreground/70 w-full rounded border-2 p-2 text-xl ${
+                  store.checkResult!.isCorrect
+                    ? "border-green-500/75 bg-green-500/15"
+                    : ""
+                }`}
               >
                 <FuriganaText
                   text={store.singleInput}
@@ -58,8 +59,9 @@ export default function ResultDisplay() {
           <div class="space-y-1">
             <div class="font-bold">Correct answer:</div>
             <div
-              class={`border-card-foreground/70 rounded border text-xl ${store.showFurigana ? "px-2 pt-3 pb-1" : "p-2"
-                }`}
+              class={`border-card-foreground/70 rounded border text-xl ${
+                store.showFurigana ? "px-2 pt-3 pb-1" : "p-2"
+              }`}
             >
               <FuriganaText
                 text={bestAnswer() || ""}
@@ -74,8 +76,7 @@ export default function ResultDisplay() {
         {/* Similarity indicator (when wrong) */}
         <Show
           when={
-            !store.checkResult!.isCorrect &&
-            store.checkResult!.similarity > 0
+            !store.checkResult!.isCorrect && store.checkResult!.similarity > 0
           }
         >
           <div class="text-muted-foreground text-sm">

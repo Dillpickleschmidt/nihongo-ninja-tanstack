@@ -9,8 +9,9 @@ export function ChatAttachment(props: {
   const isStudent = props.speaker === "student"
   return (
     <div
-      class={`flex items-start gap-2 ${isStudent ? "justify-start" : "justify-end"
-        }`}
+      class={`flex items-start gap-2 ${
+        isStudent ? "justify-start" : "justify-end"
+      }`}
     >
       {isStudent && (
         <Avatar class="h-8 w-8 shrink-0">

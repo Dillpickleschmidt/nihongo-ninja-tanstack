@@ -1,15 +1,19 @@
-import { For, Show, createMemo } from 'solid-js'
-import { Book, Folder } from 'lucide-solid'
-import { useVocab, type Folder as FolderType, type Deck } from '../../../context/VocabContext'
-import { DeckCard } from '../../../shared/components/DeckCard'
-import { CollapsibleSection } from './CollapsibleSection'
-import { CreateNewDropdown } from './CreateNewDropdown'
+import { For, Show, createMemo } from "solid-js"
+import { Book, Folder } from "lucide-solid"
+import {
+  useVocab,
+  type Folder as FolderType,
+  type Deck,
+} from "../../../context/VocabContext"
+import { DeckCard } from "../../../shared/components/DeckCard"
+import { CollapsibleSection } from "./CollapsibleSection"
+import { CreateNewDropdown } from "./CreateNewDropdown"
 import {
   getRootFolders,
   getRootDecks,
   getFolderChildren,
   getDecksInFolder,
-} from '../../../utils/hierarchy'
+} from "../../../utils/hierarchy"
 
 interface SidebarHierarchyViewProps {
   selectedDeckId: string | null
@@ -20,16 +24,16 @@ export function SidebarHierarchyView(props: SidebarHierarchyViewProps) {
 
   // Separate built-in vs user folders/decks
   const builtInFolders = createMemo(() =>
-    ctx.folders().filter((f) => f.source === 'built-in')
+    ctx.folders().filter((f) => f.source === "built-in"),
   )
   const builtInDecks = createMemo(() =>
-    ctx.decks().filter((d) => d.source === 'built-in')
+    ctx.decks().filter((d) => d.source === "built-in"),
   )
   const userFolders = createMemo(() =>
-    ctx.folders().filter((f) => f.source === 'user')
+    ctx.folders().filter((f) => f.source === "user"),
   )
   const userDecks = createMemo(() =>
-    ctx.decks().filter((d) => d.source === 'user')
+    ctx.decks().filter((d) => d.source === "user"),
   )
 
   // Root level items for each section
@@ -51,7 +55,11 @@ export function SidebarHierarchyView(props: SidebarHierarchyViewProps) {
       {/* Scrollable content */}
       <div class="flex-1 space-y-4 overflow-y-auto">
         {/* Learning Paths section */}
-        <Show when={builtInRootFolders().length > 0 || builtInRootDecks().length > 0}>
+        <Show
+          when={
+            builtInRootFolders().length > 0 || builtInRootDecks().length > 0
+          }
+        >
           <div class="space-y-1">
             <h4 class="text-muted-foreground px-2 text-xs font-medium uppercase tracking-wide">
               Learning Paths
@@ -139,13 +147,14 @@ interface FolderNodeProps {
 function FolderNode(props: FolderNodeProps) {
   const ctx = useVocab()
 
-  const childFolders = () => getFolderChildren(props.allFolders, props.folder.id)
+  const childFolders = () =>
+    getFolderChildren(props.allFolders, props.folder.id)
   const childDecks = () => getDecksInFolder(props.allDecks, props.folder.id)
 
   const isExpanded = () => ctx.expandedSections().has(props.folder.id)
   const handleToggle = () => ctx.toggleSection(props.folder.id)
 
-  const Icon = props.folder.source === 'built-in' ? Book : Folder
+  const Icon = props.folder.source === "built-in" ? Book : Folder
 
   return (
     <CollapsibleSection

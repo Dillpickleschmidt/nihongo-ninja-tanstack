@@ -6,16 +6,16 @@ import SelectText from "@/components/text/MultipleChoiceText"
 import CustomTextArea from "@/components/ui/custom/CustomTextArea"
 import Romaji from "@/components/text/Romaji"
 
-export const Route = createFileRoute("/_home/lessons/_chapter-3/o-de-ni-e-particles")(
-  {
-    loader: async () => ({
-      contentBox: {
-        nextButtonLink: "/learn/chapter-3/word-order",
-      },
-    }),
-    component: RouteComponent,
-  },
-)
+export const Route = createFileRoute(
+  "/_home/lessons/_chapter-3/o-de-ni-e-particles",
+)({
+  loader: async () => ({
+    contentBox: {
+      nextButtonLink: "/learn/chapter-3/word-order",
+    },
+  }),
+  component: RouteComponent,
+})
 
 function RouteComponent() {
   return (

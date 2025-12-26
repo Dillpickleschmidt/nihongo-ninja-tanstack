@@ -1,7 +1,7 @@
-import { For, Show } from 'solid-js'
-import { LoaderCircle } from 'lucide-solid'
-import type { VocabularyItem } from 'convex/validators'
-import { VocabularyCard } from '../VocabularyCard'
+import { For, Show } from "solid-js"
+import { LoaderCircle } from "lucide-solid"
+import type { VocabularyItem } from "convex/validators"
+import { VocabularyCard } from "../VocabularyCard"
 
 interface VocabTabProps {
   vocabulary?: VocabularyItem[]
@@ -27,12 +27,7 @@ export function VocabTab(props: VocabTabProps) {
       >
         <div class="space-y-4">
           <For each={props.vocabulary}>
-            {(item, index) => (
-              <VocabularyCard
-                item={item}
-                index={index()}
-              />
-            )}
+            {(item, index) => <VocabularyCard item={item} index={index()} />}
           </For>
         </div>
       </Show>

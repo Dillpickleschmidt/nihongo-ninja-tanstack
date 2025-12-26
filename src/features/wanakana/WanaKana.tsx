@@ -44,7 +44,7 @@ const WanakanaWrapper = (props: WanakanaWrapperProps) => {
         if (wanakanaBoundElement) {
           try {
             wanakana.unbind(wanakanaBoundElement)
-          } catch (e) { }
+          } catch (e) {}
           wanakanaBoundElement = null
         }
 
@@ -68,7 +68,7 @@ const WanakanaWrapper = (props: WanakanaWrapperProps) => {
     if (wanakanaBoundElement) {
       try {
         wanakana.unbind(wanakanaBoundElement)
-      } catch (e) { }
+      } catch (e) {}
     }
   })
 

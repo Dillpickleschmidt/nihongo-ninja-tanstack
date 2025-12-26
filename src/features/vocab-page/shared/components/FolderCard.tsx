@@ -1,8 +1,8 @@
-import { Folder as FolderIcon } from 'lucide-solid'
-import { Show } from 'solid-js'
-import { FolderContextMenu } from './FolderContextMenu'
-import { useVocab, type Folder } from '../../context/VocabContext'
-import { buildFolderUrlPath } from '../../utils/navigation'
+import { Folder as FolderIcon } from "lucide-solid"
+import { Show } from "solid-js"
+import { FolderContextMenu } from "./FolderContextMenu"
+import { useVocab, type Folder } from "../../context/VocabContext"
+import { buildFolderUrlPath } from "../../utils/navigation"
 
 interface FolderCardProps {
   folder: Folder
@@ -14,13 +14,14 @@ interface FolderCardProps {
  */
 export function FolderCard(props: FolderCardProps) {
   const ctx = useVocab()
-  const folderPath = () => `/vocab/${buildFolderUrlPath(props.folder.id, ctx.folders())}`
+  const folderPath = () =>
+    `/vocab/${buildFolderUrlPath(props.folder.id, ctx.folders())}`
 
   return (
     <FolderContextMenu folder={props.folder} to={folderPath()}>
       <CardContent
         title={props.folder.folderName}
-        isBuiltIn={props.folder.source === 'built-in'}
+        isBuiltIn={props.folder.source === "built-in"}
       />
     </FolderContextMenu>
   )
@@ -35,7 +36,9 @@ function CardContent(props: { title: string; isBuiltIn?: boolean }) {
       </div>
 
       <div class="min-w-0 flex-1">
-        <h4 class="truncate text-sm leading-tight font-medium">{props.title}</h4>
+        <h4 class="truncate text-sm leading-tight font-medium">
+          {props.title}
+        </h4>
         <Show when={props.isBuiltIn}>
           <p class="text-muted-foreground mt-1 text-xs">Built-in</p>
         </Show>

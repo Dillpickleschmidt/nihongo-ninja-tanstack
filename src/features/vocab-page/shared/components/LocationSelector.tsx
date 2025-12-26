@@ -1,28 +1,28 @@
 // features/vocab-page/components/LocationSelector.tsx
-import { createSignal, Show } from 'solid-js'
-import { Button } from '@/components/ui/button'
+import { createSignal, Show } from "solid-js"
+import { Button } from "@/components/ui/button"
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from '@/components/ui/popover'
-import { TreeView, TreeNode } from '@/components/ui/tree-view'
-import { Folder, House, ChevronDown } from 'lucide-solid'
+} from "@/components/ui/popover"
+import { TreeView, TreeNode } from "@/components/ui/tree-view"
+import { Folder, House, ChevronDown } from "lucide-solid"
 
 interface LocationSelectorProps {
   selectedFolderId: string
   selectedFolderName: string
   folderTreeNodes: TreeNode[]
-  editingType: 'deck' | 'folder'
+  editingType: "deck" | "folder"
   onSelect: (folderId: string) => void
 }
 
 export function LocationSelector(props: LocationSelectorProps) {
   const [isPopoverOpen, setIsPopoverOpen] = createSignal(false)
   const [tempSelectedFolderId, setTempSelectedFolderId] =
-    createSignal<string>('')
+    createSignal<string>("")
   const [expandedFolderIds, setExpandedFolderIds] = createSignal<Set<string>>(
-    new Set()
+    new Set(),
   )
 
   const handleOpenChange = (open: boolean) => {
@@ -30,11 +30,11 @@ export function LocationSelector(props: LocationSelectorProps) {
       setTempSelectedFolderId(props.selectedFolderId)
 
       // Auto-expand path to current selection
-      if (props.selectedFolderId !== 'root') {
+      if (props.selectedFolderId !== "root") {
         const expandPath = (
           targetId: string,
           nodes: TreeNode[],
-          path: string[] = []
+          path: string[] = [],
         ): string[] | null => {
           for (const node of nodes) {
             if (node.id === targetId) return path
@@ -51,10 +51,10 @@ export function LocationSelector(props: LocationSelectorProps) {
 
         const pathToExpand = expandPath(
           props.selectedFolderId,
-          props.folderTreeNodes
+          props.folderTreeNodes,
         )
         // Always include "root" since it needs to be expanded to show any children
-        setExpandedFolderIds(new Set(['root', ...(pathToExpand || [])]))
+        setExpandedFolderIds(new Set(["root", ...(pathToExpand || [])]))
       }
     }
     setIsPopoverOpen(open)
@@ -84,9 +84,9 @@ export function LocationSelector(props: LocationSelectorProps) {
 
   // Determine if a node should be selectable based on editing type
   const isSelectableNode = (node: TreeNode) => {
-    if (props.editingType === 'folder') {
+    if (props.editingType === "folder") {
       // When editing folders, only folders (and root) are selectable
-      return node.id === 'root' || node.data !== null
+      return node.id === "root" || node.data !== null
     } else {
       // When editing decks, all locations are selectable
       return true
@@ -111,7 +111,7 @@ export function LocationSelector(props: LocationSelectorProps) {
         class="bg-background/50 border-card-foreground/70 h-10 w-full justify-start font-normal backdrop-blur-sm"
       >
         <Show
-          when={props.selectedFolderId === 'root'}
+          when={props.selectedFolderId === "root"}
           fallback={
             <>
               <Folder class="mr-2 h-4 w-4" />
@@ -130,8 +130,8 @@ export function LocationSelector(props: LocationSelectorProps) {
           <TreeView
             nodes={[
               {
-                id: 'root',
-                label: 'Root',
+                id: "root",
+                label: "Root",
                 children: props.folderTreeNodes,
                 data: null,
               },
@@ -142,7 +142,7 @@ export function LocationSelector(props: LocationSelectorProps) {
             onToggle={handleToggleFolder}
             isSelectable={isSelectableNode}
             renderIcon={(node) =>
-              node.id === 'root' ? (
+              node.id === "root" ? (
                 <House class="mr-2 h-4 w-4 shrink-0" />
               ) : (
                 <Folder class="mr-2 h-4 w-4 shrink-0" />
@@ -150,8 +150,9 @@ export function LocationSelector(props: LocationSelectorProps) {
             }
             renderLabel={(node, isSelected) => (
               <span
-                class={`flex-1 truncate ${!isSelectableNode(node) ? 'opacity-50' : ''
-                  } ${isSelected && isSelectableNode(node) ? 'font-medium' : ''}`}
+                class={`flex-1 truncate ${
+                  !isSelectableNode(node) ? "opacity-50" : ""
+                } ${isSelected && isSelectableNode(node) ? "font-medium" : ""}`}
               >
                 {node.label}
               </span>

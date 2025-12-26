@@ -2,96 +2,96 @@ import type { Question } from "./types"
 
 export const questions: Question[] = [
   {
-    "english": "I am a student.",
-    "answers": [
+    english: "I am a student.",
+    answers: [
       {
-        "segments": [
+        segments: [
           {
-            "text": "学生[がくせい]",
-            "blank": true
+            text: "学生[がくせい]",
+            blank: true,
           },
           {
-            "text": "です"
-          }
-        ]
+            text: "です",
+          },
+        ],
       },
       {
-        "segments": [
+        segments: [
           {
-            "text": "私[わたし]は"
+            text: "私[わたし]は",
           },
           {
-            "text": "学生[がくせい]",
-            "blank": true
+            text: "学生[がくせい]",
+            blank: true,
           },
           {
-            "text": "です"
-          }
-        ]
+            text: "です",
+          },
+        ],
       },
       {
-        "segments": [
+        segments: [
           {
-            "text": "私[わたし]が"
+            text: "私[わたし]が",
           },
           {
-            "text": "学生[がくせい]",
-            "blank": true
+            text: "学生[がくせい]",
+            blank: true,
           },
           {
-            "text": "です"
-          }
-        ]
-      }
-    ]
+            text: "です",
+          },
+        ],
+      },
+    ],
   },
   {
-    "english": "I eat bananas.",
-    "hint": "bananas - バナナ",
-    "answers": [
+    english: "I eat bananas.",
+    hint: "bananas - バナナ",
+    answers: [
       {
-        "segments": [
+        segments: [
           {
-            "text": "バナナを"
+            text: "バナナを",
           },
           {
-            "text": "食[た]べる",
-            "blank": true
-          }
-        ]
+            text: "食[た]べる",
+            blank: true,
+          },
+        ],
       },
       {
-        "segments": [
+        segments: [
           {
-            "text": "私[わたし]はバナナを"
+            text: "私[わたし]はバナナを",
           },
           {
-            "text": "食[た]べる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "form": "normal",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          }
-        ]
+            text: "食[た]べる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
       },
       {
-        "segments": [
+        segments: [
           {
-            "text": "私[わたし]がバナナを"
+            text: "私[わたし]がバナナを",
           },
           {
-            "text": "食[た]べる",
-            "conjugation": {
-              "pos": "Ichidan verb",
-              "form": "normal",
-              "polarity": "positive",
-              "tense": "non-past"
-            }
-          }
-        ]
-      }
-    ]
-  }
+            text: "食[た]べる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+      },
+    ],
+  },
 ]

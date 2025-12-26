@@ -6,7 +6,9 @@ import CustomTextArea from "@/components/ui/custom/CustomTextArea"
 import Romaji from "@/components/text/Romaji"
 import WanakanaWrapper from "@/features/wanakana/WanaKana"
 
-export const Route = createFileRoute("/_home/lessons/_chapter-3/polite-invitations")({
+export const Route = createFileRoute(
+  "/_home/lessons/_chapter-3/polite-invitations",
+)({
   loader: async () => ({
     contentBox: { nextButtonLink: "/lessons/_chapter-3/next-lesson" },
   }),

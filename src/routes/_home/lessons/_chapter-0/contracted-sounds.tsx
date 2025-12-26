@@ -3,7 +3,9 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { ChatBubble } from "@/components/ChatBubble"
 
-export const Route = createFileRoute("/_home/lessons/_chapter-0/contracted-sounds")({
+export const Route = createFileRoute(
+  "/_home/lessons/_chapter-0/contracted-sounds",
+)({
   loader: async () => ({
     contentBox: { nextButtonLink: "/vocab?import=contracted-sounds" },
   }),

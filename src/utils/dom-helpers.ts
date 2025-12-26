@@ -5,7 +5,7 @@
 export function getItemIdAtPoint(
   x: number,
   y: number,
-  dataAttribute: string
+  dataAttribute: string,
 ): string | null {
   const elements = document.elementsFromPoint(x, y)
   for (const el of elements) {

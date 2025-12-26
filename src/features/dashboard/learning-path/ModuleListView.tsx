@@ -47,21 +47,24 @@ function ModuleListItem(props: ModuleListItemProps) {
           "border-card-foreground/70 border backdrop-blur-sm",
           "bg-gradient-to-br dark:from-neutral-600/15 dark:to-gray-600/10",
           "ease-instant-hover-200",
-          props.isCompleted && "border-green-500/50 font-semibold text-green-500",
-          disabled ? "cursor-not-allowed opacity-50" : "hover:bg-accent cursor-pointer"
+          props.isCompleted &&
+            "border-green-500/50 font-semibold text-green-500",
+          disabled
+            ? "cursor-not-allowed opacity-50"
+            : "hover:bg-accent cursor-pointer",
         )}
       >
         <div
           class={cn(
             "scrollbar-none absolute inset-0 flex items-center justify-between overflow-x-scroll overflow-y-hidden px-5",
-            props.isCompleted && "bg-green-500/10"
+            props.isCompleted && "bg-green-500/10",
           )}
         >
           <div class="flex items-center gap-3">
             <span
               class={cn(
                 "text-primary",
-                props.isCompleted && "font-bold text-green-500"
+                props.isCompleted && "font-bold text-green-500",
               )}
             >
               {props.number}.
@@ -69,7 +72,7 @@ function ModuleListItem(props: ModuleListItemProps) {
             <span
               class={cn(
                 "text-primary dark:text-muted-foreground",
-                props.isCompleted && "font-bold text-green-500"
+                props.isCompleted && "font-bold text-green-500",
               )}
             >
               {props.isCompleted && (

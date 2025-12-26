@@ -1,6 +1,6 @@
-import { isServer } from 'solid-js/web'
+import { isServer } from "solid-js/web"
 
-const STORAGE_KEY = 'nihongo-ninja-vocab-data'
+const STORAGE_KEY = "nihongo-ninja-vocab-data"
 
 export interface GuestFolder {
   id: string
@@ -27,7 +27,7 @@ export function saveGuestData(data: GuestVocabData): void {
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data))
   } catch (e) {
-    console.warn('Failed to save guest data:', e)
+    console.warn("Failed to save guest data:", e)
   }
 }
 
@@ -37,7 +37,7 @@ export function loadGuestData(): GuestVocabData {
     const data = sessionStorage.getItem(STORAGE_KEY)
     return data ? JSON.parse(data) : EMPTY_DATA
   } catch (e) {
-    console.warn('Failed to load guest data:', e)
+    console.warn("Failed to load guest data:", e)
     return EMPTY_DATA
   }
 }
@@ -47,6 +47,6 @@ export function clearGuestData(): void {
   try {
     sessionStorage.removeItem(STORAGE_KEY)
   } catch (e) {
-    console.warn('Failed to clear guest data:', e)
+    console.warn("Failed to clear guest data:", e)
   }
 }

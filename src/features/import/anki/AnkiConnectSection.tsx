@@ -228,7 +228,7 @@ export function AnkiConnectSection() {
               "rounded-xl px-5 py-2.5 text-sm font-medium transition-all",
               status() === "testing"
                 ? "bg-white/10 text-white/50 cursor-wait"
-                : "bg-(--accent) text-white hover:brightness-110"
+                : "bg-(--accent) text-white hover:brightness-110",
             )}
           >
             {status() === "testing" ? "Testing..." : "Test Connection"}
@@ -238,8 +238,8 @@ export function AnkiConnectSection() {
         {status() === "error" && (
           <div class="mt-4 rounded-lg border border-red-500/20 bg-red-500/10 p-4">
             <p class="text-sm text-red-300">
-              Make sure Anki is running and AnkiConnect is installed
-              correctly. Check that no firewall is blocking the connection.
+              Make sure Anki is running and AnkiConnect is installed correctly.
+              Check that no firewall is blocking the connection.
             </p>
           </div>
         )}
@@ -263,7 +263,7 @@ export function AnkiConnectSection() {
             "rounded-xl px-6 py-3 font-medium transition-all",
             status() === "success"
               ? "bg-(--accent) text-white hover:brightness-110"
-              : "bg-white/10 text-white/40 cursor-not-allowed"
+              : "bg-white/10 text-white/40 cursor-not-allowed",
           )}
         >
           Start Sync
@@ -342,7 +342,7 @@ function StatusIndicator(props: { status: ConnectionStatus }) {
         props.status === "idle" && "bg-white/10",
         props.status === "testing" && "bg-amber-500/20",
         props.status === "success" && "bg-emerald-500/20",
-        props.status === "error" && "bg-red-500/20"
+        props.status === "error" && "bg-red-500/20",
       )}
     >
       {props.status === "idle" && (

@@ -88,7 +88,7 @@ export function shuffle<T>(array: T[]): T[] {
   const shuffled = [...array]
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled
 }
@@ -119,7 +119,7 @@ export function getBannerImageSource(media: any): string | null {
 }
 
 /**
- * Get cover image source for mobile 
+ * Get cover image source for mobile
  * Uses coverImage.extraLarge or falls back to banner image chain
  * @param media - Media object with coverImage, bannerImage, trailer
  * @returns Image URL or null

@@ -1,20 +1,20 @@
-import { Show, For } from 'solid-js'
-import { Download } from 'lucide-solid'
-import { useConvexQuery } from '@/lib/convex-query'
-import { api } from 'convex/_generated/api'
+import { Show, For } from "solid-js"
+import { Download } from "lucide-solid"
+import { useConvexQuery } from "@/lib/convex-query"
+import { api } from "convex/_generated/api"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { convertFuriganaToRubyHtml } from '@/data/utils/text/furigana'
-import type { Id } from 'convex/_generated/dataModel'
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { convertFuriganaToRubyHtml } from "@/data/utils/text/furigana"
+import type { Id } from "convex/_generated/dataModel"
 
 interface DeckPreviewModalProps {
-  deckId: Id<'userDecks'> | null
+  deckId: Id<"userDecks"> | null
   onClose: () => void
   onImport: () => void
   isImporting: boolean
@@ -26,7 +26,7 @@ export function DeckPreviewModal(props: DeckPreviewModalProps) {
   const vocabQuery = useConvexQuery(
     api.api.decks.getDeckVocabItems,
     () => ({ deckId: props.deckId! }),
-    () => ({ enabled: isOpen() })
+    () => ({ enabled: isOpen() }),
   )
 
   const vocab = () => vocabQuery.data() ?? []
@@ -49,7 +49,9 @@ export function DeckPreviewModal(props: DeckPreviewModalProps) {
           {/* Empty */}
           <Show when={!vocabQuery.isLoading() && vocab().length === 0}>
             <div class="py-8 text-center">
-              <p class="text-muted-foreground">This deck has no vocabulary items.</p>
+              <p class="text-muted-foreground">
+                This deck has no vocabulary items.
+              </p>
             </div>
           </Show>
 
@@ -57,13 +59,15 @@ export function DeckPreviewModal(props: DeckPreviewModalProps) {
           <Show when={vocab().length > 0}>
             <div class="space-y-2">
               <p class="text-muted-foreground mb-4 text-sm">
-                {vocab().length} vocabulary item{vocab().length !== 1 ? 's' : ''}
+                {vocab().length} vocabulary item
+                {vocab().length !== 1 ? "s" : ""}
               </p>
               <For each={vocab()}>
                 {(item, index) => (
                   <div
-                    class={`rounded-lg border border-card-foreground/50 p-3 ${(index() + 1) % 2 === 0 ? 'bg-card/60' : 'bg-card/50'
-                      }`}
+                    class={`rounded-lg border border-card-foreground/50 p-3 ${
+                      (index() + 1) % 2 === 0 ? "bg-card/60" : "bg-card/50"
+                    }`}
                   >
                     <div class="flex items-baseline gap-3">
                       <span class="text-muted-foreground text-sm">
@@ -72,11 +76,11 @@ export function DeckPreviewModal(props: DeckPreviewModalProps) {
                       <span
                         class="font-japanese text-lg font-bold"
                         innerHTML={convertFuriganaToRubyHtml(
-                          item.furigana || item.word
+                          item.furigana || item.word,
                         )}
                       />
                       <span class="text-muted-foreground text-sm italic">
-                        {item.english.join(', ')}
+                        {item.english.join(", ")}
                       </span>
                     </div>
                   </div>

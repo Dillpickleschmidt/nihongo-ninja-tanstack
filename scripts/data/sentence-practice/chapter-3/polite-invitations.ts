@@ -7,17 +7,17 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "図書館[としょかん]で" },
-          { text: "勉強[べんきょう]しませんか", blank: true }
-        ]
+          { text: "勉強[べんきょう]しませんか", blank: true },
+        ],
       },
       {
         segments: [
           { text: "一緒[いっしょ]に 図書館[としょかん]で" },
-          { text: "勉強[べんきょう]しませんか", blank: true }
+          { text: "勉強[べんきょう]しませんか", blank: true },
         ],
-        notes: "With 一緒に"
-      }
-    ]
+        notes: "With 一緒に",
+      },
+    ],
   },
   {
     english: "Would you like to watch a movie?",
@@ -25,17 +25,17 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "映画[えいが]を" },
-          { text: "見[み]ませんか", blank: true }
-        ]
+          { text: "見[み]ませんか", blank: true },
+        ],
       },
       {
         segments: [
           { text: "一緒[いっしょ]に 映画[えいが]を" },
-          { text: "見[み]ませんか", blank: true }
+          { text: "見[み]ませんか", blank: true },
         ],
-        notes: "With 一緒に"
-      }
-    ]
+        notes: "With 一緒に",
+      },
+    ],
   },
   {
     english: "Would you like to drink coffee at the cafe?",
@@ -43,32 +43,32 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "カフェでコーヒーを" },
-          { text: "飲[の]みませんか", blank: true }
+          { text: "飲[の]みませんか", blank: true },
         ],
-        notes: "Location first"
+        notes: "Location first",
       },
       {
         segments: [
           { text: "コーヒーをカフェで" },
-          { text: "飲[の]みませんか", blank: true }
+          { text: "飲[の]みませんか", blank: true },
         ],
-        notes: "Object first"
+        notes: "Object first",
       },
       {
         segments: [
           { text: "一緒[いっしょ]にカフェでコーヒーを" },
-          { text: "飲[の]みませんか", blank: true }
+          { text: "飲[の]みませんか", blank: true },
         ],
-        notes: "With 一緒に, location first"
+        notes: "With 一緒に, location first",
       },
       {
         segments: [
           { text: "一緒[いっしょ]にコーヒーをカフェで" },
-          { text: "飲[の]みませんか", blank: true }
+          { text: "飲[の]みませんか", blank: true },
         ],
-        notes: "With 一緒に, object first"
-      }
-    ]
+        notes: "With 一緒に, object first",
+      },
+    ],
   },
   {
     english: "Would you like to read books?",
@@ -76,17 +76,17 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "本[ほん]を" },
-          { text: "読[よ]みませんか", blank: true }
-        ]
+          { text: "読[よ]みませんか", blank: true },
+        ],
       },
       {
         segments: [
           { text: "一緒[いっしょ]に 本[ほん]を" },
-          { text: "読[よ]みませんか", blank: true }
+          { text: "読[よ]みませんか", blank: true },
         ],
-        notes: "With 一緒に"
-      }
-    ]
+        notes: "With 一緒に",
+      },
+    ],
   },
   {
     english: "Would you like go to school together?",
@@ -94,31 +94,31 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "一緒[いっしょ]に 学校[がっこう]に" },
-          { text: "行[い]きませんか", blank: true }
+          { text: "行[い]きませんか", blank: true },
         ],
-        notes: "With 一緒に using に"
+        notes: "With 一緒に using に",
       },
       {
         segments: [
           { text: "一緒[いっしょ]に 学校[がっこう]へ" },
-          { text: "行[い]きませんか", blank: true }
+          { text: "行[い]きませんか", blank: true },
         ],
-        notes: "With 一緒に using へ"
+        notes: "With 一緒に using へ",
       },
       {
         segments: [
           { text: "学校[がっこう]に" },
-          { text: "行[い]きませんか", blank: true }
-        ]
+          { text: "行[い]きませんか", blank: true },
+        ],
       },
       {
         segments: [
           { text: "学校[がっこう]へ" },
-          { text: "行[い]きませんか", blank: true }
+          { text: "行[い]きませんか", blank: true },
         ],
-        notes: "Using へ"
-      }
-    ]
+        notes: "Using へ",
+      },
+    ],
   },
   {
     english: "Would you like to listen to music?",
@@ -126,17 +126,17 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "音楽[おんがく]を" },
-          { text: "聞[き]きませんか", blank: true }
-        ]
+          { text: "聞[き]きませんか", blank: true },
+        ],
       },
       {
         segments: [
           { text: "一緒[いっしょ]に 音楽[おんがく]を" },
-          { text: "聞[き]きませんか", blank: true }
+          { text: "聞[き]きませんか", blank: true },
         ],
-        notes: "With 一緒に"
-      }
-    ]
+        notes: "With 一緒に",
+      },
+    ],
   },
   {
     english: "Would you like to eat lunch together?",
@@ -144,17 +144,17 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "昼[ひる]ご 飯[はん]を" },
-          { text: "食[た]べませんか", blank: true }
-        ]
+          { text: "食[た]べませんか", blank: true },
+        ],
       },
       {
         segments: [
           { text: "一緒[いっしょ]に 昼[ひる]ご 飯[はん]を" },
-          { text: "食[た]べませんか", blank: true }
+          { text: "食[た]べませんか", blank: true },
         ],
-        notes: "With 一緒に"
-      }
-    ]
+        notes: "With 一緒に",
+      },
+    ],
   },
   {
     english: "Would you like to watch TV at my house?",
@@ -162,32 +162,32 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "うちでテレビを" },
-          { text: "見[み]ませんか", blank: true }
+          { text: "見[み]ませんか", blank: true },
         ],
-        notes: "Location first"
+        notes: "Location first",
       },
       {
         segments: [
           { text: "テレビをうちで" },
-          { text: "見[み]ませんか", blank: true }
+          { text: "見[み]ませんか", blank: true },
         ],
-        notes: "Object first"
+        notes: "Object first",
       },
       {
         segments: [
           { text: "一緒[いっしょ]にうちでテレビを" },
-          { text: "見[み]ませんか", blank: true }
+          { text: "見[み]ませんか", blank: true },
         ],
-        notes: "With 一緒に, location first"
+        notes: "With 一緒に, location first",
       },
       {
         segments: [
           { text: "一緒[いっしょ]にテレビをうちで" },
-          { text: "見[み]ませんか", blank: true }
+          { text: "見[み]ませんか", blank: true },
         ],
-        notes: "With 一緒に, object first"
-      }
-    ]
+        notes: "With 一緒に, object first",
+      },
+    ],
   },
   {
     english: "Would you study Japanese with me?",
@@ -195,16 +195,16 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "一緒[いっしょ]に 日本語[にほんご]を" },
-          { text: "勉強[べんきょう]しませんか", blank: true }
+          { text: "勉強[べんきょう]しませんか", blank: true },
         ],
-        notes: "With 一緒に"
+        notes: "With 一緒に",
       },
       {
         segments: [
           { text: "日本語[にほんご]を" },
-          { text: "勉強[べんきょう]しませんか", blank: true }
-        ]
-      }
-    ]
-  }
+          { text: "勉強[べんきょう]しませんか", blank: true },
+        ],
+      },
+    ],
+  },
 ]

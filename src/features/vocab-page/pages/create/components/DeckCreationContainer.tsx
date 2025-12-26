@@ -1,21 +1,21 @@
-import { createMemo, createSignal } from 'solid-js'
-import { useMutation } from 'convex-solidjs'
-import { useNavigate } from '@tanstack/solid-router'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useDeckCreationStore } from '../context/DeckCreationStoreContext'
-import { useDeckValidation } from '../hooks/useDeckCreationValidation'
+import { createMemo, createSignal } from "solid-js"
+import { useMutation } from "convex-solidjs"
+import { useNavigate } from "@tanstack/solid-router"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
+import { useDeckValidation } from "../hooks/useDeckCreationValidation"
 import {
   formDataToDeckVocabItemInput,
   type VocabItemFormData,
-} from '@/features/vocab-page/types/vocabulary'
-import { validateVocabItemMinimal } from '@/features/vocab-page/validation/vocabulary-validation'
-import { api } from 'convex/_generated/api'
-import type { Id } from 'convex/_generated/dataModel'
-import type { Folder, Deck } from '@/features/vocab-page/context/VocabContext'
-import { DeckHeader } from './DeckHeader'
-import { DeckDetails } from './DeckDetails'
-import { VocabItemsList } from './VocabItemsList'
-import { VocabPreview } from './VocabPreview'
+} from "@/features/vocab-page/types/vocabulary"
+import { validateVocabItemMinimal } from "@/features/vocab-page/validation/vocabulary-validation"
+import { api } from "convex/_generated/api"
+import type { Id } from "convex/_generated/dataModel"
+import type { Folder, Deck } from "@/features/vocab-page/context/VocabContext"
+import { DeckHeader } from "./DeckHeader"
+import { DeckDetails } from "./DeckDetails"
+import { VocabItemsList } from "./VocabItemsList"
+import { VocabPreview } from "./VocabPreview"
 
 interface DeckCreationContainerProps {
   folders: Folder[]
@@ -38,7 +38,7 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
   // Get valid form data items for preview and submission
   const validFormDataItems = createMemo(() => {
     return Array.from(store.vocabItems.formData.values()).filter(
-      (formData: VocabItemFormData) => validateVocabItemMinimal(formData)
+      (formData: VocabItemFormData) => validateVocabItemMinimal(formData),
     )
   })
 
@@ -56,7 +56,7 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
     const hasValidVocabItems = validFormDataItems().length > 0
 
     if (!isDeckValid || !hasValidVocabItems) {
-      console.log('Validation failed')
+      console.log("Validation failed")
       return
     }
 
@@ -65,9 +65,9 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
     try {
       // Prepare folder_id (convert "root" to undefined)
       const folderId =
-        store.deck.selectedFolderId === 'root'
+        store.deck.selectedFolderId === "root"
           ? undefined
-          : (store.deck.selectedFolderId as Id<'userDeckFolders'>)
+          : (store.deck.selectedFolderId as Id<"userDeckFolders">)
 
       const isEditMode = actions.isEditMode()
 
@@ -80,11 +80,11 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
         // Edit mode: use updateDeckWithVocab
         const deckId = store.original?.deckId
         if (!deckId) {
-          throw new Error('Deck ID is required for editing')
+          throw new Error("Deck ID is required for editing")
         }
 
         await updateDeckWithVocab.mutate({
-          deckId: deckId as Id<'userDecks'>,
+          deckId: deckId as Id<"userDecks">,
           deckName: store.deck.name,
           deckDescription: store.deck.description || undefined,
           folderId: folderId ?? null,
@@ -92,7 +92,7 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
           vocabularyItems,
         })
 
-        console.log('Deck updated successfully')
+        console.log("Deck updated successfully")
       } else {
         // Create mode: use createDeckWithVocab
         const newDeckId = await createDeckWithVocab.mutate({
@@ -103,15 +103,15 @@ export function DeckCreationContainer(props: DeckCreationContainerProps) {
           vocabularyItems,
         })
 
-        console.log('Deck created successfully:', newDeckId)
+        console.log("Deck created successfully:", newDeckId)
       }
 
       actions.resetStore()
 
       // Navigate back to vocab page
-      navigate({ to: '/vocab' })
+      navigate({ to: "/vocab" })
     } catch (error) {
-      console.error('Failed to save deck:', error)
+      console.error("Failed to save deck:", error)
     } finally {
       setIsSaving(false)
     }

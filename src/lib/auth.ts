@@ -1,10 +1,10 @@
-import { redirect } from '@tanstack/solid-router'
-import { useQuery } from '@tanstack/solid-query'
-import { authQueryOptions } from '@/query/query-options'
-import { fetchAuth } from './server'
+import { redirect } from "@tanstack/solid-router"
+import { useQuery } from "@tanstack/solid-query"
+import { authQueryOptions } from "@/query/query-options"
+import { fetchAuth } from "./server"
 
 type AuthData = Awaited<ReturnType<typeof fetchAuth>>
-export type User = NonNullable<AuthData['session']>['user']
+export type User = NonNullable<AuthData["session"]>["user"]
 
 // For components - reactive via useQuery
 export function getUser() {
@@ -16,6 +16,6 @@ export function getUser() {
 export async function requireAuth() {
   const { token } = await fetchAuth()
   if (!token) {
-    throw redirect({ to: '/auth' })
+    throw redirect({ to: "/auth" })
   }
 }

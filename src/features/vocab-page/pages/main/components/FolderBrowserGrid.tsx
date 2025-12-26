@@ -1,8 +1,8 @@
-import { For, Show } from 'solid-js'
-import { FolderCard } from '../../../shared/components/FolderCard'
-import { DeckCard } from '../../../shared/components/DeckCard'
-import { getRootLevelItems } from '../../../utils/hierarchy'
-import type { Folder, Deck } from '../../../context/VocabContext'
+import { For, Show } from "solid-js"
+import { FolderCard } from "../../../shared/components/FolderCard"
+import { DeckCard } from "../../../shared/components/DeckCard"
+import { getRootLevelItems } from "../../../utils/hierarchy"
+import type { Folder, Deck } from "../../../context/VocabContext"
 
 interface FolderBrowserGridProps {
   folders: Folder[]
@@ -36,9 +36,9 @@ export function FolderBrowserGrid(props: FolderBrowserGridProps) {
           <For each={rootItems()}>
             {(node) => {
               switch (node.type) {
-                case 'folder':
+                case "folder":
                   return <FolderCard folder={node.data} />
-                case 'deck':
+                case "deck":
                   return <DeckCard deck={node.data} />
                 default:
                   return null

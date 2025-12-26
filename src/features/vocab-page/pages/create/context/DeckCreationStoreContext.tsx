@@ -1,10 +1,10 @@
-import { createContext, useContext, type ParentProps } from 'solid-js'
+import { createContext, useContext, type ParentProps } from "solid-js"
 import {
   createDeckCreationStore,
   type DeckCreationStoreActions,
   type DeckEditData,
-} from '../stores/deck-creation-store'
-import type { DeckCreationStore } from '../types/deck-creation-types'
+} from "../stores/deck-creation-store"
+import type { DeckCreationStore } from "../types/deck-creation-types"
 
 // Context for the deck creation store
 const DeckCreationStoreContext = createContext<{
@@ -13,7 +13,7 @@ const DeckCreationStoreContext = createContext<{
 }>()
 
 export function DeckCreationStoreProvider(
-  props: ParentProps<{ initialData?: DeckEditData }>
+  props: ParentProps<{ initialData?: DeckEditData }>,
 ) {
   const storeData = createDeckCreationStore(props.initialData)
 
@@ -28,7 +28,7 @@ export function useDeckCreationStore() {
   const context = useContext(DeckCreationStoreContext)
   if (!context) {
     throw new Error(
-      'useDeckCreationStore must be used within a DeckCreationStoreProvider'
+      "useDeckCreationStore must be used within a DeckCreationStoreProvider",
     )
   }
   return context

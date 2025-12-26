@@ -11,7 +11,9 @@ import {
   BookPlus,
 } from "lucide-solid"
 
-export const Route = createFileRoute("/_home/lessons/_chapter-0/welcome-overview")({
+export const Route = createFileRoute(
+  "/_home/lessons/_chapter-0/welcome-overview",
+)({
   loader: async () => {
     return {
       contentBox: {

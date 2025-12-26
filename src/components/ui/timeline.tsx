@@ -166,4 +166,3 @@ const TimelineItemDescription: Component<ComponentProps<"p">> = (props) => {
 }
 
 export { Timeline }
-

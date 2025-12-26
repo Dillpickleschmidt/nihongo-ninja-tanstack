@@ -99,44 +99,63 @@ describe("checkAnswer", () => {
   })
 
   it("strips ending particle よ when not in valid answers", () => {
-    const result = checkAnswer("行きましょうよ", toRichAnswers(["行きましょう"]))
+    const result = checkAnswer(
+      "行きましょうよ",
+      toRichAnswers(["行きましょう"]),
+    )
     expect(result.isCorrect).toBe(true)
     expect(result.strippedParticle).toBe("よ")
   })
 
   it("strips ending particle よね when not in valid answers", () => {
-    const result = checkAnswer("行きましょうよね", toRichAnswers(["行きましょう"]))
+    const result = checkAnswer(
+      "行きましょうよね",
+      toRichAnswers(["行きましょう"]),
+    )
     expect(result.isCorrect).toBe(true)
     expect(result.strippedParticle).toBe("よね")
   })
 
   it("does not strip particle when answer already contains it", () => {
-    const result = checkAnswer("行きましょうね", toRichAnswers(["行きましょうね"]))
+    const result = checkAnswer(
+      "行きましょうね",
+      toRichAnswers(["行きましょうね"]),
+    )
     expect(result.isCorrect).toBe(true)
     expect(result.strippedParticle).toBeUndefined()
   })
 
   it("does not strip particle for question answers", () => {
-    const result = checkAnswer("何を買いますかよ", toRichAnswers(["何を買いますか"]))
+    const result = checkAnswer(
+      "何を買いますかよ",
+      toRichAnswers(["何を買いますか"]),
+    )
     expect(result.isCorrect).toBe(false) // Should not strip
     expect(result.strippedParticle).toBeUndefined()
   })
 
   it("normalizes input (removes punctuation, whitespace)", () => {
-    const result = checkAnswer("  行きましょう。", toRichAnswers(["行きましょう"]))
+    const result = checkAnswer(
+      "  行きましょう。",
+      toRichAnswers(["行きましょう"]),
+    )
     expect(result.isCorrect).toBe(true)
   })
 
   it("matches kana input against kanji answer with furigana", () => {
     // Valid answers must have furigana brackets for kana conversion to work
-    const answers = toRichAnswers(["仕事[しごと]で疲[つか]れたら帰[かえ]ります"])
+    const answers = toRichAnswers([
+      "仕事[しごと]で疲[つか]れたら帰[かえ]ります",
+    ])
     const kanaInput = "しごとでつかれたらかえります"
     const result = checkAnswer(kanaInput, answers)
     expect(result.isCorrect).toBe(true)
   })
 
   it("matches kanji input against kanji answer with furigana", () => {
-    const answers = toRichAnswers(["仕事[しごと]で疲[つか]れたら帰[かえ]ります"])
+    const answers = toRichAnswers([
+      "仕事[しごと]で疲[つか]れたら帰[かえ]ります",
+    ])
     const kanjiInput = "仕事で疲れたら帰ります"
     const result = checkAnswer(kanjiInput, answers)
     expect(result.isCorrect).toBe(true)
@@ -146,8 +165,13 @@ describe("checkAnswer", () => {
     // Both input and answer have comma at position 12
     // Input: きゅうりょうをもらったら、もーるにいこう (20 chars)
     // Answer: きゅうりょうをもらったら、ショッピングモールにいこう (26 chars)
-    const answers = toRichAnswers(["きゅうりょうをもらったら、ショッピングモールにいこう"])
-    const result = checkAnswer("きゅうりょうをもらったら、もーるにいこう", answers)
+    const answers = toRichAnswers([
+      "きゅうりょうをもらったら、ショッピングモールにいこう",
+    ])
+    const result = checkAnswer(
+      "きゅうりょうをもらったら、もーるにいこう",
+      answers,
+    )
 
     // User errors mapped to original positions (after comma):
     // Position 13: も (extra), Position 15: る (should be ル)

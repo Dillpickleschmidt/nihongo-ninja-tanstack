@@ -16,7 +16,8 @@ export function CTASection(props: { onExplore?: () => void }) {
             </span>
           </h2>
           <p class="mx-auto mb-10 max-w-xl text-lg text-white/60">
-            Dive into the lessons, try out the practice tools, or discover content that matches your level. No sign-up needed to get started.
+            Dive into the lessons, try out the practice tools, or discover
+            content that matches your level. No sign-up needed to get started.
           </p>
           <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <button
@@ -24,12 +25,23 @@ export function CTASection(props: { onExplore?: () => void }) {
               onClick={props.onExplore}
               class="group inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end) px-10 py-4 text-lg font-semibold text-white transition-all hover:scale-[1.02]"
               style={{
-                "box-shadow": "0 20px 25px -5px color-mix(in srgb, var(--landing-accent) 25%, transparent), 0 8px 10px -6px color-mix(in srgb, var(--landing-accent) 25%, transparent)"
+                "box-shadow":
+                  "0 20px 25px -5px color-mix(in srgb, var(--landing-accent) 25%, transparent), 0 8px 10px -6px color-mix(in srgb, var(--landing-accent) 25%, transparent)",
               }}
             >
               Start Exploring
-              <svg class="h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              <svg
+                class="h-5 w-5 transition-transform group-hover:translate-x-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
               </svg>
             </button>
           </div>

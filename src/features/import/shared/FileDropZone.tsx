@@ -45,7 +45,7 @@ export function FileDropZone(props: FileDropZoneProps) {
         "flex cursor-pointer flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed p-12 transition-all",
         isDragging()
           ? "border-(--accent)/50 bg-(--accent)/10"
-          : "border-white/20 bg-white/5 hover:border-white/30 hover:bg-white/[0.07]"
+          : "border-white/20 bg-white/5 hover:border-white/30 hover:bg-white/[0.07]",
       )}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -61,13 +61,13 @@ export function FileDropZone(props: FileDropZoneProps) {
       <div
         class={cn(
           "flex size-16 items-center justify-center rounded-2xl transition-colors",
-          isDragging() ? "bg-(--accent)/20" : "bg-white/10"
+          isDragging() ? "bg-(--accent)/20" : "bg-white/10",
         )}
       >
         <svg
           class={cn(
             "size-8 transition-colors",
-            isDragging() ? "text-(--accent)" : "text-white/50"
+            isDragging() ? "text-(--accent)" : "text-white/50",
           )}
           fill="none"
           viewBox="0 0 24 24"
@@ -90,8 +90,7 @@ export function FileDropZone(props: FileDropZoneProps) {
       ) : (
         <div class="text-center">
           <p class="font-medium text-white">
-            Drop your file here, or{" "}
-            <span class="text-(--accent)">browse</span>
+            Drop your file here, or <span class="text-(--accent)">browse</span>
           </p>
           <p class="mt-1 text-sm text-white/50">
             {props.description || "Supports .apkg and .json files"}

@@ -1,7 +1,13 @@
-import { Dynamic } from 'solid-js/web'
-import { Link, useLocation } from '@tanstack/solid-router'
-import { House, Search, GraduationCap, Settings, type LucideIcon } from 'lucide-solid'
-import { cn } from '@/utils'
+import { Dynamic } from "solid-js/web"
+import { Link, useLocation } from "@tanstack/solid-router"
+import {
+  House,
+  Search,
+  GraduationCap,
+  Settings,
+  type LucideIcon,
+} from "lucide-solid"
+import { cn } from "@/utils"
 
 // --- Shared Types ---
 interface NavItem {
@@ -21,10 +27,10 @@ interface NavProps {
 
 // --- Shared Logic ---
 const navItems: NavItem[] = [
-  { id: 'home', label: 'Home', href: '/dashboard', icon: House },
-  { id: 'guides', label: 'Guides', href: '/guides', icon: GraduationCap },
-  { id: 'search', label: 'Search', href: '/search', icon: Search },
-  { id: 'tools', label: 'Tools', href: '/settings', icon: Settings },
+  { id: "home", label: "Home", href: "/dashboard", icon: House },
+  { id: "guides", label: "Guides", href: "/guides", icon: GraduationCap },
+  { id: "search", label: "Search", href: "/search", icon: Search },
+  { id: "tools", label: "Tools", href: "/settings", icon: Settings },
 ]
 
 function useNavLogic(dailyProgress: number) {
@@ -32,7 +38,7 @@ function useNavLogic(dailyProgress: number) {
 
   const isActive = (href: string) => {
     const currentPath = location().pathname
-    if (href === '/learn') return currentPath.startsWith('/learn')
+    if (href === "/learn") return currentPath.startsWith("/learn")
     return currentPath === href
   }
 
@@ -85,7 +91,7 @@ function ProgressCircle(props: ProgressCircleProps) {
 
   return (
     <svg
-      class={cn('-rotate-90', props.class)}
+      class={cn("-rotate-90", props.class)}
       viewBox={`0 0 ${props.size} ${props.size}`}
     >
       <circle
@@ -119,32 +125,32 @@ export function BottomNav(props: NavProps) {
 
   const bottomNavItems = [
     ...navItems.slice(0, 2), // Home, Vocab
-    { id: 'review', label: `${dailyProgress()}%`, href: '/review', icon: null },
+    { id: "review", label: `${dailyProgress()}%`, href: "/review", icon: null },
     ...navItems.slice(2), // Search, Settings
   ]
 
   return (
-    <div class={cn('fixed right-0 bottom-0 left-0 z-40')}>
+    <div class={cn("fixed right-0 bottom-0 left-0 z-40")}>
       <div
         class={cn(
-          'pb-safe flex items-center justify-center px-6',
-          'bg-background/50 text-primary',
-          'border-card-foreground/50 border-t backdrop-blur-lg transition-all duration-200',
-          'shadow-lg shadow-black/10',
-          props.class
+          "pb-safe flex items-center justify-center px-6",
+          "bg-background/50 text-primary",
+          "border-card-foreground/50 border-t backdrop-blur-lg transition-all duration-200",
+          "shadow-lg shadow-black/10",
+          props.class,
         )}
       >
         <nav class="flex items-center justify-between" style="width: 400px;">
           {bottomNavItems.map((item) => {
-            if (item.id === 'review') {
+            if (item.id === "review") {
               const active = nav.isActive(item.href)
               return (
                 <Link
                   to={item.href}
                   class={cn(
-                    'group relative flex h-16 w-16 items-center justify-center rounded-full transition-all duration-200',
-                    'hover:scale-110',
-                    active && 'scale-110'
+                    "group relative flex h-16 w-16 items-center justify-center rounded-full transition-all duration-200",
+                    "hover:scale-110",
+                    active && "scale-110",
                   )}
                 >
                   {/* Progress Circle */}
@@ -162,16 +168,16 @@ export function BottomNav(props: NavProps) {
 
                   <span
                     class={cn(
-                      'relative z-10 font-bold transition-colors duration-200',
+                      "relative z-10 font-bold transition-colors duration-200",
                       dailyProgress() === 100
-                        ? 'text-sm text-green-500'
+                        ? "text-sm text-green-500"
                         : cn(
-                          'text-xs',
-                          active ? 'text-primary' : 'text-primary/80'
-                        )
+                            "text-xs",
+                            active ? "text-primary" : "text-primary/80",
+                          ),
                     )}
                   >
-                    {dailyProgress() === 100 ? '百' : `${dailyProgress()}%`}
+                    {dailyProgress() === 100 ? "百" : `${dailyProgress()}%`}
                   </span>
                 </Link>
               )
@@ -181,20 +187,20 @@ export function BottomNav(props: NavProps) {
 
             return (
               <Link
-                id={'tour-' + item.id}
+                id={"tour-" + item.id}
                 to={item.href}
                 class={cn(
-                  'group flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200',
-                  'hover:bg-card-foreground/20 hover:dark:bg-card-foreground/60 hover:scale-110',
+                  "group flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200",
+                  "hover:bg-card-foreground/20 hover:dark:bg-card-foreground/60 hover:scale-110",
                   active &&
-                  'bg-card-foreground/10 dark:bg-card-foreground/60 scale-110'
+                    "bg-card-foreground/10 dark:bg-card-foreground/60 scale-110",
                 )}
               >
                 <Dynamic
                   component={item.icon as LucideIcon}
                   class={cn(
-                    'h-5 w-5 transition-colors duration-200',
-                    active ? 'text-primary' : 'text-primary/60'
+                    "h-5 w-5 transition-colors duration-200",
+                    active ? "text-primary" : "text-primary/60",
                   )}
                 />
               </Link>
@@ -202,6 +208,6 @@ export function BottomNav(props: NavProps) {
           })}
         </nav>
       </div>
-    </div >
+    </div>
   )
 }

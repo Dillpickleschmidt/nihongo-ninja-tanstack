@@ -33,11 +33,17 @@ export function useTokenization() {
     if (!modelText) return
 
     const worker = getKagomeWorker()
-    worker.tokenize(modelText).then((result) => {
-      actions.setModelAnswerTokens(result.tokens)
-    }).catch((error) => {
-      console.error("[useTokenization] Model answer tokenization failed:", error)
-    })
+    worker
+      .tokenize(modelText)
+      .then((result) => {
+        actions.setModelAnswerTokens(result.tokens)
+      })
+      .catch((error) => {
+        console.error(
+          "[useTokenization] Model answer tokenization failed:",
+          error,
+        )
+      })
   })
 
   // Tokenize user input when it changes (debounced)

@@ -1,23 +1,23 @@
 // features/vocab-page/deck-creation/components/VocabItemEditor.tsx
-import { Index, Show, createMemo } from 'solid-js'
-import { Plus, Trash2, Minus, InfoIcon } from 'lucide-solid'
-import { Button } from '@/components/ui/button'
+import { Index, Show, createMemo } from "solid-js"
+import { Plus, Trash2, Minus, InfoIcon } from "lucide-solid"
+import { Button } from "@/components/ui/button"
 import {
   TextField,
   TextFieldDescription,
   TextFieldInput,
   TextFieldLabel,
-} from '@/components/ui/text-field'
+} from "@/components/ui/text-field"
 import {
   Checkbox,
   CheckboxInput,
   CheckboxLabel,
-} from '@/components/ui/checkbox'
-import { useDeckCreationStore } from '../context/DeckCreationStoreContext'
-import { useVocabItemValidation } from '../hooks/useDeckCreationValidation'
-import { createEmptyVocabItemFormData } from '@/features/vocab-page/types/vocabulary'
-import { Label } from '@/components/ui/label'
-import type { FieldValidationState } from '../types/deck-creation-types'
+} from "@/components/ui/checkbox"
+import { useDeckCreationStore } from "../context/DeckCreationStoreContext"
+import { useVocabItemValidation } from "../hooks/useDeckCreationValidation"
+import { createEmptyVocabItemFormData } from "@/features/vocab-page/types/vocabulary"
+import { Label } from "@/components/ui/label"
+import type { FieldValidationState } from "../types/deck-creation-types"
 
 interface VocabItemEditorProps {
   itemId: number
@@ -57,7 +57,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
   // English meanings handlers
   const addEnglishMeaning = () =>
     updateFormData({
-      english: [...formData().english, ''],
+      english: [...formData().english, ""],
     })
 
   const removeEnglishMeaning = (index: number) =>
@@ -65,20 +65,20 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
       english:
         formData().english.length > 1
           ? formData().english.filter((_, i) => i !== index)
-          : [''],
+          : [""],
     })
 
   const updateEnglishMeaning = (index: number, value: string) =>
     updateFormData({
       english: formData().english.map((item, i) =>
-        i === index ? value : item
+        i === index ? value : item,
       ),
     })
 
   // Additional field handlers (keeping original logic)
   const addNote = () =>
     updateFormData({
-      notes: [...formData().notes, ''],
+      notes: [...formData().notes, ""],
     })
 
   const removeNote = (index: number) =>
@@ -93,7 +93,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
 
   const addParticle = () =>
     updateFormData({
-      particles: [...formData().particles, { particle: '', label: '' }],
+      particles: [...formData().particles, { particle: "", label: "" }],
     })
 
   const removeParticle = (index: number) =>
@@ -103,18 +103,18 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
 
   const updateParticle = (
     index: number,
-    field: 'particle' | 'label',
-    value: string
+    field: "particle" | "label",
+    value: string,
   ) =>
     updateFormData({
       particles: formData().particles.map((item, i) =>
-        i === index ? { ...item, [field]: value } : item
+        i === index ? { ...item, [field]: value } : item,
       ),
     })
 
   const addExample = () =>
     updateFormData({
-      examples: [...formData().examples, { japanese: '', english: '' }],
+      examples: [...formData().examples, { japanese: "", english: "" }],
     })
 
   const removeExample = (index: number) =>
@@ -124,37 +124,37 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
 
   const updateExample = (
     index: number,
-    field: 'japanese' | 'english',
-    value: string
+    field: "japanese" | "english",
+    value: string,
   ) =>
     updateFormData({
       examples: formData().examples.map((item, i) =>
-        i === index ? { ...item, [field]: value } : item
+        i === index ? { ...item, [field]: value } : item,
       ),
     })
 
   const addReadingMnemonic = () =>
     updateFormData({
-      readingMnemonics: [...formData().readingMnemonics, ''],
+      readingMnemonics: [...formData().readingMnemonics, ""],
     })
 
   const removeReadingMnemonic = (index: number) =>
     updateFormData({
       readingMnemonics: formData().readingMnemonics.filter(
-        (_, i) => i !== index
+        (_, i) => i !== index,
       ),
     })
 
   const updateReadingMnemonic = (index: number, value: string) =>
     updateFormData({
       readingMnemonics: formData().readingMnemonics.map((item, i) =>
-        i === index ? value : item
+        i === index ? value : item,
       ),
     })
 
   const addKanjiMnemonic = () =>
     updateFormData({
-      kanjiMnemonics: [...formData().kanjiMnemonics, ''],
+      kanjiMnemonics: [...formData().kanjiMnemonics, ""],
     })
 
   const removeKanjiMnemonic = (index: number) =>
@@ -165,7 +165,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
   const updateKanjiMnemonic = (index: number, value: string) =>
     updateFormData({
       kanjiMnemonics: formData().kanjiMnemonics.map((item, i) =>
-        i === index ? value : item
+        i === index ? value : item,
       ),
     })
 
@@ -407,14 +407,14 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                       <TextField
                         value={particle().particle}
                         onChange={(value) =>
-                          updateParticle(i, 'particle', value)
+                          updateParticle(i, "particle", value)
                         }
                       >
                         <TextFieldInput placeholder="Particle (は、を、に...)" />
                       </TextField>
                       <TextField
                         value={particle().label}
-                        onChange={(value) => updateParticle(i, 'label', value)}
+                        onChange={(value) => updateParticle(i, "label", value)}
                       >
                         <TextFieldInput placeholder="Label (for when there are multiple particles)" />
                       </TextField>
@@ -460,14 +460,14 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                       <TextField
                         value={example().japanese}
                         onChange={(value) =>
-                          updateExample(i, 'japanese', value)
+                          updateExample(i, "japanese", value)
                         }
                       >
                         <TextFieldInput placeholder="Japanese example..." />
                       </TextField>
                       <TextField
                         value={example().english}
-                        onChange={(value) => updateExample(i, 'english', value)}
+                        onChange={(value) => updateExample(i, "english", value)}
                       >
                         <TextFieldInput placeholder="English translation..." />
                       </TextField>

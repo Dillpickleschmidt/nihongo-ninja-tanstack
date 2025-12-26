@@ -1,6 +1,9 @@
 // Vocabulary type transformations
 import type { VocabularyItem, RichVocabItem } from "convex/validators"
-import { extractHiragana, convertFuriganaToRubyHtml } from "@/data/utils/text/furigana"
+import {
+  extractHiragana,
+  convertFuriganaToRubyHtml,
+} from "@/data/utils/text/furigana"
 
 /**
  * Adds hiragana and ruby text to VocabularyItem objects.

@@ -1,6 +1,6 @@
-import { Show } from 'solid-js'
-import { FolderBrowserGrid } from './FolderBrowserGrid'
-import { useVocab } from '../../../context/VocabContext'
+import { Show } from "solid-js"
+import { FolderBrowserGrid } from "./FolderBrowserGrid"
+import { useVocab } from "../../../context/VocabContext"
 
 /**
  * Main vocab dashboard layout component
@@ -25,10 +25,7 @@ export function VocabDashboard() {
 
       {/* Main content */}
       <Show when={!ctx.isLoading()}>
-        <FolderBrowserGrid
-          folders={ctx.folders()}
-          decks={ctx.decks()}
-        />
+        <FolderBrowserGrid folders={ctx.folders()} decks={ctx.decks()} />
       </Show>
     </div>
   )

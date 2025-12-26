@@ -10,12 +10,12 @@ import { coverMedium, format, title } from "../../../api/anilist/util"
 interface SmallAnimeCardProps {
   media: FragmentOf<typeof FullMedia>
   status?:
-  | "CURRENT"
-  | "PLANNING"
-  | "COMPLETED"
-  | "PAUSED"
-  | "DROPPED"
-  | "REPEATING"
+    | "CURRENT"
+    | "PLANNING"
+    | "COMPLETED"
+    | "PAUSED"
+    | "DROPPED"
+    | "REPEATING"
 }
 
 export function SmallAnimeCard(props: SmallAnimeCardProps) {
@@ -26,14 +26,17 @@ export function SmallAnimeCard(props: SmallAnimeCardProps) {
 
   onMount(() => {
     // Use Web Animations API - runs once via JavaScript, immune to CSS animation restarts
-    cardRef?.animate([
-      { transform: 'translate3d(0, 1.2rem, 0) scale(0.95)' },
-      { transform: 'translate3d(0, 0, 0) scale(1)' }
-    ], {
-      duration: 300,
-      easing: 'ease',
-      fill: 'forwards'
-    })
+    cardRef?.animate(
+      [
+        { transform: "translate3d(0, 1.2rem, 0) scale(0.95)" },
+        { transform: "translate3d(0, 0, 0) scale(1)" },
+      ],
+      {
+        duration: 300,
+        easing: "ease",
+        fill: "forwards",
+      },
+    )
   })
 
   const coverUrl = () => coverMedium(props.media as any) ?? ""

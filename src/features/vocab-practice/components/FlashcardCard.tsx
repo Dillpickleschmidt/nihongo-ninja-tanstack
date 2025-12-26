@@ -1,16 +1,16 @@
-import { createSignal, Show, Suspense, onMount, onCleanup } from 'solid-js'
-import { Rating, type Grade } from 'ts-fsrs'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/utils'
-import type { PracticeCard } from '../types'
+import { createSignal, Show, Suspense, onMount, onCleanup } from "solid-js"
+import { Rating, type Grade } from "ts-fsrs"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/utils"
+import type { PracticeCard } from "../types"
 import {
   TYPE_BADGE_CLASSES,
   TYPE_TEXT_COLORS,
   getPromptDisplay,
   getMnemonic,
   formatMnemonic,
-} from '../utils/card-display'
-import { KanjiDisplay } from './KanjiDisplay'
+} from "../utils/card-display"
+import { KanjiDisplay } from "./KanjiDisplay"
 
 type Props = {
   card: PracticeCard
@@ -29,38 +29,42 @@ export function FlashcardCard(props: Props) {
   const shouldUseAnimation = () => {
     const type = props.card.practiceItemType
     const char = character()
-    return (type === 'kanji' || type === 'radical') && char && char.length === 1
+    return (type === "kanji" || type === "radical") && char && char.length === 1
   }
 
   // Keyboard shortcuts
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
+    if (
+      e.target instanceof HTMLInputElement ||
+      e.target instanceof HTMLTextAreaElement
+    )
+      return
 
-    if (e.code === 'Space' && !isRevealed()) {
+    if (e.code === "Space" && !isRevealed()) {
       e.preventDefault()
       setRevealedCardId(props.card.key)
     } else if (isRevealed()) {
       switch (e.key) {
-        case '1':
+        case "1":
           props.onAnswer(Rating.Again)
           break
-        case '2':
+        case "2":
           props.onAnswer(Rating.Hard)
           break
-        case '3':
+        case "3":
           props.onAnswer(Rating.Good)
           break
-        case '4':
+        case "4":
           props.onAnswer(Rating.Easy)
           break
       }
     }
   }
 
-  onMount(() => window.addEventListener('keydown', handleKeyDown))
-  onCleanup(() => window.removeEventListener('keydown', handleKeyDown))
+  onMount(() => window.addEventListener("keydown", handleKeyDown))
+  onCleanup(() => window.removeEventListener("keydown", handleKeyDown))
 
-  const promptDisplay = () => getPromptDisplay(props.card, '1rem')
+  const promptDisplay = () => getPromptDisplay(props.card, "1rem")
   const mnemonic = () => getMnemonic(props.card)
   const progress = () => ((props.currentIndex + 1) / props.totalItems) * 100
 
@@ -69,7 +73,9 @@ export function FlashcardCard(props: Props) {
     <Show
       when={promptDisplay().isHtml}
       fallback={
-        <div class="font-japanese text-7xl font-bold">{promptDisplay().text}</div>
+        <div class="font-japanese text-7xl font-bold">
+          {promptDisplay().text}
+        </div>
       }
     >
       <div
@@ -101,7 +107,7 @@ export function FlashcardCard(props: Props) {
           <div class="mb-4 flex justify-center">
             <span
               class={cn(
-                'rounded-full px-3 py-1 text-xs font-medium',
+                "rounded-full px-3 py-1 text-xs font-medium",
                 TYPE_BADGE_CLASSES[props.card.practiceItemType],
               )}
             >
@@ -111,10 +117,7 @@ export function FlashcardCard(props: Props) {
 
           {/* Prompt */}
           <div class="mb-6 text-center">
-            <Show
-              when={shouldUseAnimation()}
-              fallback={<PlainTextDisplay />}
-            >
+            <Show when={shouldUseAnimation()} fallback={<PlainTextDisplay />}>
               <Suspense fallback={<PlainTextDisplay />}>
                 <KanjiDisplay character={character()} />
               </Suspense>
@@ -125,8 +128,13 @@ export function FlashcardCard(props: Props) {
           <Show when={isRevealed()}>
             <div class="space-y-4 border-t border-card-foreground/10 pt-6">
               {/* Meanings */}
-              <div class={cn('text-center text-xl font-medium', TYPE_TEXT_COLORS[props.card.practiceItemType])}>
-                {props.card.validAnswers.join(', ')}
+              <div
+                class={cn(
+                  "text-center text-xl font-medium",
+                  TYPE_TEXT_COLORS[props.card.practiceItemType],
+                )}
+              >
+                {props.card.validAnswers.join(", ")}
               </div>
 
               {/* Mnemonic */}

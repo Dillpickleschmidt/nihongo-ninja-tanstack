@@ -333,29 +333,19 @@ export const vocabularySets: Record<string, IndividualVocabularySet> = {
     ],
   },
   "sentence-practice-words-that-point": {
-    keys: [
-      "genki_1/sentence-practice-words-that-point",
-    ],
+    keys: ["genki_1/sentence-practice-words-that-point"],
   },
   "sentence-practice-dare": {
-    keys: [
-      "genki_1/sentence-practice-dare",
-    ],
+    keys: ["genki_1/sentence-practice-dare"],
   },
   "sentence-practice-mo-particle": {
-    keys: [
-      "genki_1/sentence-practice-mo-particle",
-    ],
+    keys: ["genki_1/sentence-practice-mo-particle"],
   },
   "sentence-practice-janai": {
-    keys: [
-      "genki_1/sentence-practice-janai",
-    ],
+    keys: ["genki_1/sentence-practice-janai"],
   },
   "sentence-practice-ne-yo": {
-    keys: [
-      "genki_1/sentence-practice-ne-yo",
-    ],
+    keys: ["genki_1/sentence-practice-ne-yo"],
   },
   "genki_1_ch2_places-money-food": {
     keys: [
@@ -606,14 +596,10 @@ export const vocabularySets: Record<string, IndividualVocabularySet> = {
     ],
   },
   "sentence-practice-o-de-ni-e-particles": {
-    keys: [
-      "genki_1/sentence-practice-o-de-ni-e-particles",
-    ],
+    keys: ["genki_1/sentence-practice-o-de-ni-e-particles"],
   },
   "sentence-practice-polite-invitations": {
-    keys: [
-      "genki_1/sentence-practice-polite-invitations",
-    ],
+    keys: ["genki_1/sentence-practice-polite-invitations"],
   },
   "genki_1_ch3_adverbs-expressions": {
     keys: [
@@ -630,14 +616,10 @@ export const vocabularySets: Record<string, IndividualVocabularySet> = {
     ],
   },
   "sentence-practice-time-expressions": {
-    keys: [
-      "genki_1/sentence-practice-time-expressions",
-    ],
+    keys: ["genki_1/sentence-practice-time-expressions"],
   },
   "sentence-practice-frequency-adverbs": {
-    keys: [
-      "genki_1/sentence-practice-frequency-adverbs",
-    ],
+    keys: ["genki_1/sentence-practice-frequency-adverbs"],
   },
   "genki_1_ch4_vocab-list": {
     keys: [
@@ -739,28 +721,13 @@ export const vocabularySets: Record<string, IndividualVocabularySet> = {
     ],
   },
   "genki_1_ch4_location-words": {
-    keys: [
-      "右",
-      "左",
-      "前",
-      "後ろ",
-      "中",
-      "上",
-      "下",
-      "近く",
-      "隣",
-      "間",
-    ],
+    keys: ["右", "左", "前", "後ろ", "中", "上", "下", "近く", "隣", "間"],
   },
   "sentence-practice-iru-aru": {
-    keys: [
-      "genki_1/sentence-practice-iru-aru",
-    ],
+    keys: ["genki_1/sentence-practice-iru-aru"],
   },
   "sentence-practice-where-things-are": {
-    keys: [
-      "genki_1/sentence-practice-where-things-are",
-    ],
+    keys: ["genki_1/sentence-practice-where-things-are"],
   },
   "genki_1_ch4_verbs-adv-misc": {
     keys: [
@@ -784,19 +751,13 @@ export const vocabularySets: Record<string, IndividualVocabularySet> = {
     ],
   },
   "sentence-practice-deshita-past-tense-verbs": {
-    keys: [
-      "genki_1/sentence-practice-deshita-past-tense-verbs",
-    ],
+    keys: ["genki_1/sentence-practice-deshita-past-tense-verbs"],
   },
   "sentence-practice-to-particle": {
-    keys: [
-      "genki_1/sentence-practice-to-particle",
-    ],
+    keys: ["genki_1/sentence-practice-to-particle"],
   },
   "sentence-practice-duration": {
-    keys: [
-      "genki_1/sentence-practice-duration",
-    ],
+    keys: ["genki_1/sentence-practice-duration"],
   },
   "genki_1_ch5_vocab-list": {
     keys: [
@@ -910,14 +871,10 @@ export const vocabularySets: Record<string, IndividualVocabularySet> = {
     ],
   },
   "sentence-practice-adjectives": {
-    keys: [
-      "genki_1/sentence-practice-adjectives",
-    ],
+    keys: ["genki_1/sentence-practice-adjectives"],
   },
   "sentence-practice-suki-kirai": {
-    keys: [
-      "genki_1/sentence-practice-suki-kirai",
-    ],
+    keys: ["genki_1/sentence-practice-suki-kirai"],
   },
   "genki_1_ch5_verbs-adv-misc": {
     keys: [
@@ -2448,19 +2405,13 @@ export const vocabularySets: Record<string, IndividualVocabularySet> = {
     ],
   },
   "sentence-practice-sou-desu-heresay": {
-    keys: [
-      "genki_1/sentence-practice-sou-desu-heresay",
-    ],
+    keys: ["genki_1/sentence-practice-sou-desu-heresay"],
   },
   "sentence-practice-tte": {
-    keys: [
-      "genki_1/sentence-practice-tte",
-    ],
+    keys: ["genki_1/sentence-practice-tte"],
   },
   "sentence-practice-tara": {
-    keys: [
-      "genki_1/sentence-practice-tara",
-    ],
+    keys: ["genki_1/sentence-practice-tara"],
   },
   "genki_2_ch18_vocab-list": {
     keys: [
@@ -3113,9 +3064,7 @@ export const vocabularySets: Record<string, IndividualVocabularySet> = {
     ],
   },
   "sentence-practice-honorific-verbs": {
-    keys: [
-      "genki_1/sentence-practice-honorific-verbs",
-    ],
+    keys: ["genki_1/sentence-practice-honorific-verbs"],
   },
   "genki_2_ch20_vocab-list": {
     keys: [
@@ -3248,13 +3197,9 @@ export const vocabularySets: Record<string, IndividualVocabularySet> = {
     ],
   },
   "sentence-practice-extra-modest-expressions": {
-    keys: [
-      "genki_1/sentence-practice-extra-modest-expressions",
-    ],
+    keys: ["genki_1/sentence-practice-extra-modest-expressions"],
   },
   "sentence-practice-humble-expressions": {
-    keys: [
-      "genki_1/sentence-practice-humble-expressions",
-    ],
+    keys: ["genki_1/sentence-practice-humble-expressions"],
   },
 }

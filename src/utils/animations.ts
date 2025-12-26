@@ -48,7 +48,11 @@ export function animateElementIn(
   initialPosition: Position,
   options: { withOpacity?: boolean; duration?: number; distance?: number } = {},
 ): Promise<void> {
-  const { withOpacity = true, duration = ANIMATION_CONFIG.duration, distance = ANIMATION_CONFIG.distance } = options
+  const {
+    withOpacity = true,
+    duration = ANIMATION_CONFIG.duration,
+    distance = ANIMATION_CONFIG.distance,
+  } = options
 
   return new Promise((resolve) => {
     element.style.transition = "none"
@@ -63,7 +67,9 @@ export function animateElementIn(
       `transform ${duration}ms ${ANIMATION_CONFIG.easings.transform}`,
     ]
     if (withOpacity) {
-      transitions.push(`opacity ${duration}ms ${ANIMATION_CONFIG.easings.opacityEnter}`)
+      transitions.push(
+        `opacity ${duration}ms ${ANIMATION_CONFIG.easings.opacityEnter}`,
+      )
     }
     element.style.transition = transitions.join(", ")
 
@@ -90,7 +96,11 @@ export function animateElementOut(
   exitPosition: Position,
   options: { withOpacity?: boolean; duration?: number; distance?: number } = {},
 ): Promise<void> {
-  const { withOpacity = true, duration = ANIMATION_CONFIG.duration, distance = ANIMATION_CONFIG.distance } = options
+  const {
+    withOpacity = true,
+    duration = ANIMATION_CONFIG.duration,
+    distance = ANIMATION_CONFIG.distance,
+  } = options
 
   return new Promise((resolve) => {
     // Hint to browser for GPU acceleration
@@ -101,7 +111,9 @@ export function animateElementOut(
       `transform ${duration}ms ${ANIMATION_CONFIG.easings.transform}`,
     ]
     if (withOpacity) {
-      transitions.push(`opacity ${duration}ms ${ANIMATION_CONFIG.easings.opacityExit}`)
+      transitions.push(
+        `opacity ${duration}ms ${ANIMATION_CONFIG.easings.opacityExit}`,
+      )
     }
     element.style.transition = transitions.join(", ")
 
@@ -151,8 +163,10 @@ export function observeElementForAnimation(
   // Create sentinel wrapper (observing this instead of element avoids animation feedback)
   const sentinel = document.createElement("div")
   // Copy snap classes to sentinel so scroll-snap still works
-  if (element.classList.contains("snap-start")) sentinel.classList.add("snap-start")
-  if (element.classList.contains("snap-center")) sentinel.classList.add("snap-center")
+  if (element.classList.contains("snap-start"))
+    sentinel.classList.add("snap-start")
+  if (element.classList.contains("snap-center"))
+    sentinel.classList.add("snap-center")
   if (element.classList.contains("snap-end")) sentinel.classList.add("snap-end")
   element.parentNode?.insertBefore(sentinel, element)
   sentinel.appendChild(element)
@@ -173,9 +187,12 @@ export function observeElementForAnimation(
         } else if (!entry.isIntersecting && isVisible && !noExit) {
           isVisible = false
           // For vertical animations, exit opposite to scroll direction
-          const isVertical = initialPosition === "up" || initialPosition === "down"
+          const isVertical =
+            initialPosition === "up" || initialPosition === "down"
           const exitPosition = isVertical
-            ? (isScrollingDown ? "up" : "down")
+            ? isScrollingDown
+              ? "up"
+              : "down"
             : initialPosition
           animateElementOut(element, exitPosition)
         }
@@ -195,4 +212,3 @@ export function observeElementForAnimation(
     sentinel.remove()
   }
 }
-

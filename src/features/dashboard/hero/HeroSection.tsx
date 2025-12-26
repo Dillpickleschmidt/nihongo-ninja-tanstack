@@ -50,7 +50,7 @@ function HeroBadge() {
   const profile = useConvexQuery(api.api.profiles.getProfile, {})
   const learningPathsQuery = useConvexQuery(
     api.api.learning_paths.getAllLearningPaths,
-    {}
+    {},
   )
 
   const selectedPathId = () =>
@@ -62,7 +62,7 @@ function HeroBadge() {
   const pathChaptersQuery = useConvexQuery(
     api.api.learning_paths.getPathChapters,
     () => ({ pathId: selectedPathId()! }),
-    () => ({ enabled: !!selectedPathId() })
+    () => ({ enabled: !!selectedPathId() }),
   )
 
   const currentChapter = () => {
@@ -90,9 +90,7 @@ function HeroBadge() {
         </span>
         <Show when={moduleCount() !== undefined}>
           <span class="text-white/30">•</span>
-          <span class="text-sm text-white/50">
-            {moduleCount()} modules
-          </span>
+          <span class="text-sm text-white/50">{moduleCount()} modules</span>
         </Show>
       </Show>
     </div>
