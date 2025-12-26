@@ -1,17 +1,22 @@
-import { internalAction, mutation, internalMutation, query } from '../_generated/server'
-import { internal } from '../_generated/api'
-import { v } from 'convex/values'
-import { DiscoverSearch } from '../../src/features/discover/api/anilist/queries'
-import * as animeModel from '../model/anime'
+import {
+  internalAction,
+  mutation,
+  internalMutation,
+  query,
+} from "../_generated/server"
+import { internal } from "../_generated/api"
+import { v } from "convex/values"
+import { DiscoverSearch } from "../../src/features/discover/api/anilist/queries"
+import * as animeModel from "../model/anime"
 
 // Unified query for all anime sections (trending, popular, genre, etc.)
 export const getSectionAnime = query({
   args: {
     sectionType: v.union(
-      v.literal('trending'),
-      v.literal('popular-season'),
-      v.literal('all-time-popular'),
-      v.literal('genre')
+      v.literal("trending"),
+      v.literal("popular-season"),
+      v.literal("all-time-popular"),
+      v.literal("genre"),
     ),
     season: v.optional(v.string()),
     year: v.optional(v.number()),
@@ -28,7 +33,7 @@ export const getSectionAnime = query({
     const isStale = animeModel.isCacheStale(cached)
 
     // For trending sections, include banner indices and HQ images
-    if (args.sectionType === 'trending') {
+    if (args.sectionType === "trending") {
       const bannerIndices = cached?.data
         ? animeModel.generateBannerIndices(cached.data)
         : []
@@ -51,17 +56,26 @@ export const getSectionAnime = query({
 // Checks staleness and schedules fetches for stale sections
 export const ensureAllSections = mutation({
   args: {
-    sections: v.array(v.object({
-      type: v.string(),
-      params: v.optional(v.any()),
-      queryVars: v.any(),
-    })),
+    sections: v.array(
+      v.object({
+        type: v.string(),
+        params: v.optional(v.any()),
+        queryVars: v.any(),
+      }),
+    ),
   },
   handler: async (ctx, args) => {
-    const sectionsToFetch: Array<{ type: string, params: any, queryVars: any }> = []
+    const sectionsToFetch: Array<{
+      type: string
+      params: any
+      queryVars: any
+    }> = []
 
     for (const section of args.sections) {
-      const cacheKey = animeModel.generateCacheKey(section.type, section.params || {})
+      const cacheKey = animeModel.generateCacheKey(
+        section.type,
+        section.params || {},
+      )
       const isStale = await animeModel.checkCacheStaleness(ctx, cacheKey)
 
       if (isStale) {
@@ -109,11 +123,13 @@ export const storeSectionData = internalMutation({
 // Fetches stale sections from AniList in parallel
 export const fetchAllSections = internalAction({
   args: {
-    sections: v.array(v.object({
-      type: v.string(),
-      params: v.any(),
-      queryVars: v.any(),
-    })),
+    sections: v.array(
+      v.object({
+        type: v.string(),
+        params: v.any(),
+        queryVars: v.any(),
+      }),
+    ),
   },
   handler: async (ctx, args) => {
     const now = Date.now()
@@ -121,10 +137,13 @@ export const fetchAllSections = internalAction({
 
     await Promise.all(
       args.sections.map(async (section) => {
-        const data = await animeModel.fetchFromAniList(DiscoverSearch, section.queryVars)
+        const data = await animeModel.fetchFromAniList(
+          DiscoverSearch,
+          section.queryVars,
+        )
 
         let hqImages: Record<string, string> | undefined
-        if (section.type === 'trending') {
+        if (section.type === "trending") {
           const processed = await animeModel.processTrendingData(data)
           hqImages = processed.hqImages
         }
@@ -137,7 +156,7 @@ export const fetchAllSections = internalAction({
           fetchedAt: now,
           expiresAt,
         })
-      })
+      }),
     )
   },
 })

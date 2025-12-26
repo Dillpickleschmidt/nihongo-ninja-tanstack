@@ -1,6 +1,6 @@
-import { v } from 'convex/values'
-import { mutation, query } from '../_generated/server'
-import * as Profiles from '../model/profiles'
+import { v } from "convex/values"
+import { mutation, query } from "../_generated/server"
+import * as Profiles from "../model/profiles"
 
 /**
  * Gets the current user's profile
@@ -18,7 +18,8 @@ export const updatePreferenceField = mutation({
     field: v.string(),
     value: v.any(),
   },
-  handler: (ctx, { field, value }) => Profiles.updatePreference(ctx, field, value),
+  handler: (ctx, { field, value }) =>
+    Profiles.updatePreference(ctx, field, value),
 })
 
 /**
@@ -35,16 +36,20 @@ export const ensureProfile = mutation({
  */
 export const getServiceToken = query({
   args: {
-    service: v.union(v.literal('anilist'), v.literal('kitsu'), v.literal('mal')),
+    service: v.union(
+      v.literal("anilist"),
+      v.literal("kitsu"),
+      v.literal("mal"),
+    ),
   },
   handler: async (ctx, { service }) => {
     const identity = await ctx.auth.getUserIdentity()
     if (!identity) return null
 
     return await ctx.db
-      .query('userServiceTokens')
-      .withIndex('by_user_service', (q) =>
-        q.eq('userId', identity.subject).eq('service', service),
+      .query("userServiceTokens")
+      .withIndex("by_user_service", (q) =>
+        q.eq("userId", identity.subject).eq("service", service),
       )
       .first()
   },

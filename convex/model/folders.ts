@@ -1,7 +1,7 @@
-import { MutationCtx, QueryCtx } from '../_generated/server'
-import { Id } from '../_generated/dataModel'
-import { textbooks, type TextbookIDEnum } from '../../src/data/textbooks'
-import { chapters } from '../../src/data/chapters'
+import { MutationCtx, QueryCtx } from "../_generated/server"
+import { Id } from "../_generated/dataModel"
+import { textbooks, type TextbookIDEnum } from "../../src/data/textbooks"
+import { chapters } from "../../src/data/chapters"
 
 // ===== Unified Folder Type =====
 
@@ -9,7 +9,7 @@ export interface UnifiedFolder {
   id: string
   folderName: string
   parentFolderId?: string
-  source: 'user' | 'built-in'
+  source: "user" | "built-in"
 }
 
 // ===== Built-in Folder Generation =====
@@ -23,7 +23,7 @@ export function getBuiltInFolders(): UnifiedFolder[] {
       id: textbookId,
       folderName: textbook.short_name,
       parentFolderId: undefined,
-      source: 'built-in',
+      source: "built-in",
     })
 
     // Add chapters as child folders
@@ -33,7 +33,7 @@ export function getBuiltInFolders(): UnifiedFolder[] {
         id: `${textbookId}/${chapterSlug}`,
         folderName: chapter.title,
         parentFolderId: textbookId,
-        source: 'built-in',
+        source: "built-in",
       })
     }
   }
@@ -54,7 +54,7 @@ export async function getAllFolders(ctx: QueryCtx): Promise<UnifiedFolder[]> {
     id: f._id,
     folderName: f.folderName,
     parentFolderId: f.parentFolderId,
-    source: 'user' as const,
+    source: "user" as const,
   }))
 
   return [...builtIn, ...normalized]
@@ -64,11 +64,11 @@ export async function getAllFolders(ctx: QueryCtx): Promise<UnifiedFolder[]> {
 
 export async function getUserFolders(ctx: QueryCtx) {
   const identity = await ctx.auth.getUserIdentity()
-  if (!identity) throw new Error('Unauthenticated')
+  if (!identity) throw new Error("Unauthenticated")
 
   return ctx.db
-    .query('userDeckFolders')
-    .withIndex('by_user', (q) => q.eq('userId', identity.subject))
+    .query("userDeckFolders")
+    .withIndex("by_user", (q) => q.eq("userId", identity.subject))
     .collect()
 }
 
@@ -77,37 +77,37 @@ export async function getUserFolders(ctx: QueryCtx) {
 export async function checkFolderNameUnique(
   ctx: QueryCtx,
   name: string,
-  parentFolderId?: Id<'userDeckFolders'>,
-  excludeFolderId?: Id<'userDeckFolders'>
+  parentFolderId?: Id<"userDeckFolders">,
+  excludeFolderId?: Id<"userDeckFolders">,
 ) {
   const identity = await ctx.auth.getUserIdentity()
-  if (!identity) throw new Error('Unauthenticated')
+  if (!identity) throw new Error("Unauthenticated")
 
   const existingFolders = await ctx.db
-    .query('userDeckFolders')
-    .withIndex('by_user', (q) => q.eq('userId', identity.subject))
+    .query("userDeckFolders")
+    .withIndex("by_user", (q) => q.eq("userId", identity.subject))
     .collect()
   const duplicate = existingFolders.find(
     (f) =>
       f.folderName.toLowerCase() === name.toLowerCase() &&
       f.parentFolderId === parentFolderId &&
-      f._id !== excludeFolderId
+      f._id !== excludeFolderId,
   )
   if (duplicate) {
-    throw new Error('A folder with this name already exists here')
+    throw new Error("A folder with this name already exists here")
   }
 }
 
 export async function verifyFolderOwnership(
   ctx: QueryCtx,
-  folderId: Id<'userDeckFolders'>
+  folderId: Id<"userDeckFolders">,
 ) {
   const identity = await ctx.auth.getUserIdentity()
-  if (!identity) throw new Error('Unauthenticated')
+  if (!identity) throw new Error("Unauthenticated")
 
   const folder = await ctx.db.get(folderId)
-  if (!folder) throw new Error('Folder not found')
-  if (folder.userId !== identity.subject) throw new Error('Unauthorized')
+  if (!folder) throw new Error("Folder not found")
+  if (folder.userId !== identity.subject) throw new Error("Unauthorized")
   return folder
 }
 
@@ -116,12 +116,12 @@ export async function verifyFolderOwnership(
 export async function createFolder(
   ctx: MutationCtx,
   folderName: string,
-  parentFolderId?: Id<'userDeckFolders'>
+  parentFolderId?: Id<"userDeckFolders">,
 ) {
   const identity = await ctx.auth.getUserIdentity()
-  if (!identity) throw new Error('Unauthenticated')
+  if (!identity) throw new Error("Unauthenticated")
 
-  return ctx.db.insert('userDeckFolders', {
+  return ctx.db.insert("userDeckFolders", {
     userId: identity.subject,
     folderName,
     parentFolderId,
@@ -130,16 +130,17 @@ export async function createFolder(
 
 export async function updateFolder(
   ctx: MutationCtx,
-  folderId: Id<'userDeckFolders'>,
+  folderId: Id<"userDeckFolders">,
   updates: {
     folderName?: string
-    parentFolderId?: Id<'userDeckFolders'> | null
-  }
+    parentFolderId?: Id<"userDeckFolders"> | null
+  },
 ) {
   const identity = await ctx.auth.getUserIdentity()
-  if (!identity) throw new Error('Unauthenticated')
+  if (!identity) throw new Error("Unauthenticated")
 
-  const patch: { folderName?: string; parentFolderId?: Id<'userDeckFolders'> } = {}
+  const patch: { folderName?: string; parentFolderId?: Id<"userDeckFolders"> } =
+    {}
   if (updates.folderName !== undefined) {
     patch.folderName = updates.folderName
   }
@@ -151,28 +152,28 @@ export async function updateFolder(
 
 export async function deleteFolderWithStrategy(
   ctx: MutationCtx,
-  folderId: Id<'userDeckFolders'>,
-  strategy: 'move-up' | 'delete-all'
+  folderId: Id<"userDeckFolders">,
+  strategy: "move-up" | "delete-all",
 ) {
   const identity = await ctx.auth.getUserIdentity()
-  if (!identity) throw new Error('Unauthenticated')
+  if (!identity) throw new Error("Unauthenticated")
 
   const folder = await ctx.db.get(folderId)
-  if (!folder) throw new Error('Folder not found')
+  if (!folder) throw new Error("Folder not found")
 
   const allFolderIds = await getDescendantFolderIds(ctx, folderId)
   allFolderIds.add(folderId)
 
   const allDecks = await ctx.db
-    .query('userDecks')
-    .withIndex('by_user', (q) => q.eq('userId', folder.userId))
+    .query("userDecks")
+    .withIndex("by_user", (q) => q.eq("userId", folder.userId))
     .collect()
 
   const decksInFolders = allDecks.filter(
-    (d) => d.folderId && allFolderIds.has(d.folderId)
+    (d) => d.folderId && allFolderIds.has(d.folderId),
   )
 
-  if (strategy === 'move-up') {
+  if (strategy === "move-up") {
     for (const deck of decksInFolders) {
       await ctx.db.patch(deck._id, { folderId: folder.parentFolderId })
     }
@@ -189,12 +190,12 @@ export async function deleteFolderWithStrategy(
 
 async function getDescendantFolderIds(
   ctx: QueryCtx | MutationCtx,
-  folderId: Id<'userDeckFolders'>
-): Promise<Set<Id<'userDeckFolders'>>> {
-  const result = new Set<Id<'userDeckFolders'>>()
+  folderId: Id<"userDeckFolders">,
+): Promise<Set<Id<"userDeckFolders">>> {
+  const result = new Set<Id<"userDeckFolders">>()
   const children = await ctx.db
-    .query('userDeckFolders')
-    .filter((q) => q.eq(q.field('parentFolderId'), folderId))
+    .query("userDeckFolders")
+    .filter((q) => q.eq(q.field("parentFolderId"), folderId))
     .collect()
 
   for (const child of children) {

@@ -1,24 +1,27 @@
-import type { QueryCtx, MutationCtx } from '../_generated/server'
-import type { Doc } from '../_generated/dataModel'
-import { print } from 'graphql'
-import Bottleneck from 'bottleneck'
+import type { QueryCtx, MutationCtx } from "../_generated/server"
+import type { Doc } from "../_generated/dataModel"
+import { print } from "graphql"
+import Bottleneck from "bottleneck"
 import {
   ANILIST_RATE_LIMIT_CONFIG,
   FetchError,
   RETRY_CONFIG,
-} from '../../src/features/discover/api/anilist/anilist-rate-limiter'
+} from "../../src/features/discover/api/anilist/anilist-rate-limiter"
 
 export const CACHE_DURATION_MS = 6 * 60 * 60 * 1000 // 6 hours
 
-export function generateCacheKey(type: string, params: Record<string, any> = {}): string {
+export function generateCacheKey(
+  type: string,
+  params: Record<string, any> = {},
+): string {
   switch (type) {
-    case 'trending':
+    case "trending":
       return `trending:${params.season}:${params.year}`
-    case 'popular-season':
+    case "popular-season":
       return `popular-season:${params.season}:${params.year}`
-    case 'all-time-popular':
-      return 'all-time-popular'
-    case 'genre':
+    case "all-time-popular":
+      return "all-time-popular"
+    case "genre":
       return `genre:${params.genre}`
     default:
       throw new Error(`Unknown cache type: ${type}`)
@@ -27,16 +30,19 @@ export function generateCacheKey(type: string, params: Record<string, any> = {})
 
 export async function getCachedAnime(ctx: QueryCtx, cacheKey: string) {
   return ctx.db
-    .query('cachedAnime')
-    .withIndex('by_cache_key', (q) => q.eq('cacheKey', cacheKey))
+    .query("cachedAnime")
+    .withIndex("by_cache_key", (q) => q.eq("cacheKey", cacheKey))
     .first()
 }
 
 // Lightweight check that only accesses metadata, avoiding the massive data field
-export async function checkCacheStaleness(ctx: QueryCtx, cacheKey: string): Promise<boolean> {
+export async function checkCacheStaleness(
+  ctx: QueryCtx,
+  cacheKey: string,
+): Promise<boolean> {
   const cached = await ctx.db
-    .query('cachedAnime')
-    .withIndex('by_cache_key', (q) => q.eq('cacheKey', cacheKey))
+    .query("cachedAnime")
+    .withIndex("by_cache_key", (q) => q.eq("cacheKey", cacheKey))
     .first()
 
   // Only access expiresAt field (Convex should optimize to not load data field)
@@ -54,18 +60,18 @@ export async function storeCachedAnime(
   },
 ) {
   const existing = await ctx.db
-    .query('cachedAnime')
-    .withIndex('by_cache_key', (q) => q.eq('cacheKey', args.cacheKey))
+    .query("cachedAnime")
+    .withIndex("by_cache_key", (q) => q.eq("cacheKey", args.cacheKey))
     .first()
 
   if (existing) {
     await ctx.db.patch(existing._id, args)
   } else {
-    await ctx.db.insert('cachedAnime', args)
+    await ctx.db.insert("cachedAnime", args)
   }
 }
 
-export function isCacheStale(cached: Doc<'cachedAnime'> | null): boolean {
+export function isCacheStale(cached: Doc<"cachedAnime"> | null): boolean {
   return !cached || cached.expiresAt < Date.now()
 }
 
@@ -83,7 +89,7 @@ export function generateBannerIndices(pageData: any): number[] {
 
   for (let i = validIndices.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-      ;[validIndices[i], validIndices[j]] = [validIndices[j], validIndices[i]]
+    ;[validIndices[i], validIndices[j]] = [validIndices[j], validIndices[i]]
   }
 
   return validIndices.slice(0, 5)
@@ -95,19 +101,19 @@ export function generateBannerIndices(pageData: any): number[] {
  */
 export function extractHqImageUrl(anizipData: any): string | null {
   const images = anizipData?.images || []
-  const fanart = images.find((i: any) => i.coverType === 'Fanart')?.url
-  const poster = images.find((i: any) => i.coverType === 'Poster')?.url
+  const fanart = images.find((i: any) => i.coverType === "Fanart")?.url
+  const poster = images.find((i: any) => i.coverType === "Poster")?.url
   return fanart || poster || null
 }
 
 export async function fetchFromAniList(
   query: any,
-  variables: Record<string, any>
+  variables: Record<string, any>,
 ): Promise<any> {
   const queryString = print(query)
-  const response = await rateLimitedFetch('https://graphql.anilist.co', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const response = await rateLimitedFetch("https://graphql.anilist.co", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query: queryString, variables }),
   })
 
@@ -123,7 +129,7 @@ export async function fetchAnizipData(anilistId: number): Promise<any | null> {
     const res = await fetch(
       `https://api.ani.zip/mappings?anilist_id=${anilistId}`,
       {
-        headers: { 'User-Agent': 'nihongo-ninja/1.0' },
+        headers: { "User-Agent": "nihongo-ninja/1.0" },
       },
     )
 
@@ -137,16 +143,16 @@ export async function fetchAnizipData(anilistId: number): Promise<any | null> {
 export async function processTrendingData(data: any): Promise<{
   hqImages: Record<string, string>
 }> {
-  const animeIds = data.data?.Page?.media
-    ?.filter((m: any) => m?.id)
-    .map((m: any) => m.id) || []
+  const animeIds =
+    data.data?.Page?.media?.filter((m: any) => m?.id).map((m: any) => m.id) ||
+    []
 
   const anizipResults = await Promise.all(
     animeIds.map(async (anilistId: number) => {
       const anizipData = await fetchAnizipData(anilistId)
       const imageUrl = anizipData ? extractHqImageUrl(anizipData) : null
       return { anilistId, imageUrl }
-    })
+    }),
   )
 
   const hqImages: Record<string, string> = {}
@@ -169,15 +175,15 @@ function getLimiter(): Bottleneck {
   if (!limiter) {
     limiter = new Bottleneck(ANILIST_RATE_LIMIT_CONFIG)
 
-    limiter.on('failed', async (error: FetchError | Error, jobInfo) => {
-      if (error.name === 'AbortError') return undefined
+    limiter.on("failed", async (error: FetchError | Error, jobInfo) => {
+      if (error.name === "AbortError") return undefined
 
       if (jobInfo.retryCount > RETRY_CONFIG.maxRetries) {
         console.error(`[AniList] Failed after ${jobInfo.retryCount} retries`)
         return undefined
       }
 
-      if (error.message === 'Failed to fetch') {
+      if (error.message === "Failed to fetch") {
         console.warn(
           `[AniList] Network error (retry ${jobInfo.retryCount}/${RETRY_CONFIG.maxRetries}, waiting 60s)`,
         )
@@ -193,7 +199,7 @@ function getLimiter(): Bottleneck {
         return RETRY_CONFIG.serverErrorWait
       }
 
-      const retryAfter = parseInt(error.res.headers.get('retry-after') ?? '60')
+      const retryAfter = parseInt(error.res.headers.get("retry-after") ?? "60")
       const delay = (retryAfter + RETRY_CONFIG.rateLimitBuffer / 1000) * 1000
       console.warn(
         `[AniList] Rate limited (retry ${jobInfo.retryCount}/${RETRY_CONFIG.maxRetries}, waiting ${retryAfter}s)`,

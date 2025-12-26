@@ -1,13 +1,13 @@
-import { MutationCtx, QueryCtx } from '../_generated/server'
-import { Id } from '../_generated/dataModel'
-import { createDeck as createDeckModel } from './decks'
-import { getDeckVocabItems, createDeckVocabItems } from './vocabulary'
+import { MutationCtx, QueryCtx } from "../_generated/server"
+import { Id } from "../_generated/dataModel"
+import { createDeck as createDeckModel } from "./decks"
+import { getDeckVocabItems, createDeckVocabItems } from "./vocabulary"
 
-type SortBy = 'recent' | 'popular'
+type SortBy = "recent" | "popular"
 
 export interface SharedDeckInfo {
-  shareId: Id<'publicDeckShares'>
-  deckId: Id<'userDecks'>
+  shareId: Id<"publicDeckShares">
+  deckId: Id<"userDecks">
   deckName: string
   deckDescription?: string
   sharedBy: string
@@ -17,10 +17,10 @@ export interface SharedDeckInfo {
 
 // ===== Helpers =====
 
-function getShareByDeckId(ctx: QueryCtx, deckId: Id<'userDecks'>) {
+function getShareByDeckId(ctx: QueryCtx, deckId: Id<"userDecks">) {
   return ctx.db
-    .query('publicDeckShares')
-    .withIndex('by_deck', (q) => q.eq('deckId', deckId))
+    .query("publicDeckShares")
+    .withIndex("by_deck", (q) => q.eq("deckId", deckId))
     .first()
 }
 
@@ -28,9 +28,9 @@ function getShareByDeckId(ctx: QueryCtx, deckId: Id<'userDecks'>) {
 
 export async function getSharedDecks(
   ctx: QueryCtx,
-  args: { sortBy: SortBy; limit: number; offset: number }
+  args: { sortBy: SortBy; limit: number; offset: number },
 ): Promise<SharedDeckInfo[]> {
-  const shares = await ctx.db.query('publicDeckShares').collect()
+  const shares = await ctx.db.query("publicDeckShares").collect()
 
   // Join with deck info
   const results: SharedDeckInfo[] = []
@@ -50,7 +50,7 @@ export async function getSharedDecks(
   }
 
   // Sort
-  if (args.sortBy === 'popular') {
+  if (args.sortBy === "popular") {
     results.sort((a, b) => b.importCount - a.importCount)
   } else {
     results.sort((a, b) => b.sharedAt - a.sharedAt)
@@ -60,58 +60,60 @@ export async function getSharedDecks(
   return results.slice(args.offset, args.offset + args.limit)
 }
 
-export async function isShared(ctx: QueryCtx, deckId: Id<'userDecks'>) {
+export async function isShared(ctx: QueryCtx, deckId: Id<"userDecks">) {
   return !!(await getShareByDeckId(ctx, deckId))
 }
 
 // ===== Mutations =====
 
-export async function shareDeck(ctx: MutationCtx, deckId: Id<'userDecks'>) {
+export async function shareDeck(ctx: MutationCtx, deckId: Id<"userDecks">) {
   const identity = await ctx.auth.getUserIdentity()
-  if (!identity) throw new Error('Unauthenticated')
+  if (!identity) throw new Error("Unauthenticated")
 
   const deck = await ctx.db.get(deckId)
-  if (!deck) throw new Error('Deck not found')
-  if (deck.userId !== identity.subject) throw new Error('Unauthorized')
+  if (!deck) throw new Error("Deck not found")
+  if (deck.userId !== identity.subject) throw new Error("Unauthorized")
 
-  if (await getShareByDeckId(ctx, deckId)) throw new Error('Deck is already shared')
+  if (await getShareByDeckId(ctx, deckId))
+    throw new Error("Deck is already shared")
 
-  return ctx.db.insert('publicDeckShares', {
+  return ctx.db.insert("publicDeckShares", {
     deckId,
     sharedBy: identity.subject,
     importCount: 0,
   })
 }
 
-export async function unshareDeck(ctx: MutationCtx, deckId: Id<'userDecks'>) {
+export async function unshareDeck(ctx: MutationCtx, deckId: Id<"userDecks">) {
   const identity = await ctx.auth.getUserIdentity()
-  if (!identity) throw new Error('Unauthenticated')
+  if (!identity) throw new Error("Unauthenticated")
 
   const share = await getShareByDeckId(ctx, deckId)
-  if (!share) throw new Error('Deck is not shared')
-  if (share.sharedBy !== identity.subject) throw new Error('Unauthorized')
+  if (!share) throw new Error("Deck is not shared")
+  if (share.sharedBy !== identity.subject) throw new Error("Unauthorized")
 
   await ctx.db.delete(share._id)
 }
 
 export async function importSharedDeck(
   ctx: MutationCtx,
-  deckId: Id<'userDecks'>
+  deckId: Id<"userDecks">,
 ) {
   const identity = await ctx.auth.getUserIdentity()
-  if (!identity) throw new Error('Unauthenticated')
+  if (!identity) throw new Error("Unauthenticated")
 
   const share = await getShareByDeckId(ctx, deckId)
-  if (!share) throw new Error('Deck is not shared')
+  if (!share) throw new Error("Deck is not shared")
 
   const originalDeck = await ctx.db.get(deckId)
-  if (!originalDeck) throw new Error('Deck not found')
-  if (originalDeck.userId === identity.subject) throw new Error('Cannot import your own deck')
+  if (!originalDeck) throw new Error("Deck not found")
+  if (originalDeck.userId === identity.subject)
+    throw new Error("Cannot import your own deck")
 
   const newDeckId = await createDeckModel(ctx, {
     deckName: originalDeck.deckName,
     deckDescription: originalDeck.deckDescription,
-    source: 'shared',
+    source: "shared",
     originalDeckId: deckId,
     allowedPracticeModes: originalDeck.allowedPracticeModes,
   })
@@ -121,7 +123,7 @@ export async function importSharedDeck(
     await createDeckVocabItems(
       ctx,
       newDeckId,
-      vocabItems.map(({ _id, _creationTime, deckId: _, ...item }) => item)
+      vocabItems.map(({ _id, _creationTime, deckId: _, ...item }) => item),
     )
   }
 
@@ -132,7 +134,7 @@ export async function importSharedDeck(
 
 export async function deleteShareForDeck(
   ctx: MutationCtx,
-  deckId: Id<'userDecks'>
+  deckId: Id<"userDecks">,
 ) {
   const share = await getShareByDeckId(ctx, deckId)
   if (share) await ctx.db.delete(share._id)

@@ -1,11 +1,11 @@
-import { v } from 'convex/values'
-import { mutation, query } from '../_generated/server'
-import * as Decks from '../model/decks'
-import * as Vocabulary from '../model/vocabulary'
+import { v } from "convex/values"
+import { mutation, query } from "../_generated/server"
+import * as Decks from "../model/decks"
+import * as Vocabulary from "../model/vocabulary"
 import {
   practiceModeValidator,
   deckVocabItemInputValidator,
-} from '../validators'
+} from "../validators"
 
 /**
  * Create a new user deck
@@ -14,14 +14,14 @@ export const createDeck = mutation({
   args: {
     deckName: v.string(),
     deckDescription: v.optional(v.string()),
-    folderId: v.optional(v.id('userDeckFolders')),
+    folderId: v.optional(v.id("userDeckFolders")),
   },
   handler: async (ctx, args) => {
     await Decks.checkDeckNameUnique(ctx, args.deckName)
     return Decks.createDeck(ctx, {
       ...args,
-      source: 'user',
-      allowedPracticeModes: ['meanings', 'spellings'],
+      source: "user",
+      allowedPracticeModes: ["meanings", "spellings"],
     })
   },
 })
@@ -31,10 +31,10 @@ export const createDeck = mutation({
  */
 export const updateDeck = mutation({
   args: {
-    deckId: v.id('userDecks'),
+    deckId: v.id("userDecks"),
     deckName: v.optional(v.string()),
     deckDescription: v.optional(v.string()),
-    folderId: v.optional(v.union(v.id('userDeckFolders'), v.null())),
+    folderId: v.optional(v.union(v.id("userDeckFolders"), v.null())),
   },
   handler: async (ctx, args) => {
     await Decks.verifyDeckOwnership(ctx, args.deckId)
@@ -50,7 +50,7 @@ export const updateDeck = mutation({
  * Delete a deck (also deletes all vocabulary items)
  */
 export const deleteDeck = mutation({
-  args: { deckId: v.id('userDecks') },
+  args: { deckId: v.id("userDecks") },
   handler: async (ctx, { deckId }) => {
     await Decks.verifyDeckOwnership(ctx, deckId)
     return Decks.deleteDeck(ctx, deckId)
@@ -64,7 +64,7 @@ export const createDeckWithVocab = mutation({
   args: {
     deckName: v.string(),
     deckDescription: v.optional(v.string()),
-    folderId: v.optional(v.id('userDeckFolders')),
+    folderId: v.optional(v.id("userDeckFolders")),
     allowedPracticeModes: v.array(practiceModeValidator),
     vocabularyItems: v.array(deckVocabItemInputValidator),
   },
@@ -73,7 +73,7 @@ export const createDeckWithVocab = mutation({
     const { vocabularyItems, ...deckData } = args
     const deckId = await Decks.createDeck(ctx, {
       ...deckData,
-      source: 'user',
+      source: "user",
     })
     await Vocabulary.createDeckVocabItems(ctx, deckId, vocabularyItems)
     return deckId
@@ -85,10 +85,10 @@ export const createDeckWithVocab = mutation({
  */
 export const updateDeckWithVocab = mutation({
   args: {
-    deckId: v.id('userDecks'),
+    deckId: v.id("userDecks"),
     deckName: v.optional(v.string()),
     deckDescription: v.optional(v.string()),
-    folderId: v.optional(v.union(v.id('userDeckFolders'), v.null())),
+    folderId: v.optional(v.union(v.id("userDeckFolders"), v.null())),
     allowedPracticeModes: v.optional(v.array(practiceModeValidator)),
     vocabularyItems: v.optional(v.array(deckVocabItemInputValidator)),
   },
@@ -110,7 +110,7 @@ export const updateDeckWithVocab = mutation({
  * Get vocabulary items for a deck
  */
 export const getDeckVocabItems = query({
-  args: { deckId: v.id('userDecks') },
+  args: { deckId: v.id("userDecks") },
   handler: (ctx, { deckId }) => Vocabulary.getDeckVocabItems(ctx, deckId),
 })
 
@@ -118,7 +118,7 @@ export const getDeckVocabItems = query({
  * Get deck metadata and vocabulary items together (for editing)
  */
 export const getDeckWithVocab = query({
-  args: { deckId: v.id('userDecks') },
+  args: { deckId: v.id("userDecks") },
   handler: async (ctx, { deckId }) => {
     await Decks.verifyDeckOwnership(ctx, deckId)
     const deck = await ctx.db.get(deckId)
@@ -133,20 +133,24 @@ export const getDeckWithVocab = query({
 export const copyDeck = mutation({
   args: {
     deckId: v.string(),
-    deckSource: v.union(v.literal('user'), v.literal('built-in')),
+    deckSource: v.union(v.literal("user"), v.literal("built-in")),
     deckName: v.string(),
     deckDescription: v.optional(v.string()),
-    folderId: v.optional(v.id('userDeckFolders')),
+    folderId: v.optional(v.id("userDeckFolders")),
   },
   handler: async (ctx, args) => {
     await Decks.checkDeckNameUnique(ctx, args.deckName)
-    const vocabItems = await Vocabulary.fetchDeckVocab(ctx, args.deckId, args.deckSource)
+    const vocabItems = await Vocabulary.fetchDeckVocab(
+      ctx,
+      args.deckId,
+      args.deckSource,
+    )
     const newDeckId = await Decks.createDeck(ctx, {
       deckName: args.deckName,
       deckDescription: args.deckDescription,
       folderId: args.folderId,
-      source: 'user',
-      allowedPracticeModes: ['meanings', 'spellings'],
+      source: "user",
+      allowedPracticeModes: ["meanings", "spellings"],
     })
     await Vocabulary.createDeckVocabItems(ctx, newDeckId, vocabItems)
     return newDeckId

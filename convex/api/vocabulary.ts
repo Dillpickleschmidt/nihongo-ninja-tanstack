@@ -1,7 +1,7 @@
-import { v } from 'convex/values'
-import { query } from '../_generated/server'
-import * as Vocabulary from '../model/vocabulary'
-import { fetchKanjiAndRadicals } from '../model/kanji'
+import { v } from "convex/values"
+import { query } from "../_generated/server"
+import * as Vocabulary from "../model/vocabulary"
+import { fetchKanjiAndRadicals } from "../model/kanji"
 
 /**
  * Get vocabulary items for given set IDs

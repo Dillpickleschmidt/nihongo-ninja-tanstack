@@ -1,13 +1,13 @@
-import { v } from 'convex/values'
-import { mutation, query } from '../_generated/server'
-import * as FSRS from '../model/fsrs'
+import { v } from "convex/values"
+import { mutation, query } from "../_generated/server"
+import * as FSRS from "../model/fsrs"
 import {
   practiceModeValidator,
   practiceItemTypeValidator,
   practiceItemKeyValidator,
   fsrsCardValidator,
   fsrsReviewLogValidator,
-} from '../validators'
+} from "../validators"
 
 /**
  * Get FSRS cards for specific practice items
@@ -72,7 +72,7 @@ export const batchImportFSRSCards = mutation({
         type: practiceItemTypeValidator,
         card: fsrsCardValidator,
         logs: v.array(fsrsReviewLogValidator),
-      })
+      }),
     ),
   },
   handler: (ctx, args) => FSRS.batchImportFSRSCards(ctx, args.cards),

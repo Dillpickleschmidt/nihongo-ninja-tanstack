@@ -1,5 +1,5 @@
-import { MutationCtx, QueryCtx } from '../_generated/server'
-import { DEFAULT_USER_PREFERENCES } from '../validators'
+import { MutationCtx, QueryCtx } from "../_generated/server"
+import { DEFAULT_USER_PREFERENCES } from "../validators"
 
 /**
  * Gets the current user's profile
@@ -9,8 +9,8 @@ export async function getProfile(ctx: QueryCtx) {
   if (!identity) return null
 
   return ctx.db
-    .query('profiles')
-    .withIndex('by_user', (q) => q.eq('userId', identity.subject))
+    .query("profiles")
+    .withIndex("by_user", (q) => q.eq("userId", identity.subject))
     .first()
 }
 
@@ -20,16 +20,16 @@ export async function getProfile(ctx: QueryCtx) {
 export async function updatePreference(
   ctx: MutationCtx,
   field: string,
-  value: unknown
+  value: unknown,
 ) {
   const identity = await ctx.auth.getUserIdentity()
-  if (!identity) throw new Error('Unauthenticated')
+  if (!identity) throw new Error("Unauthenticated")
 
   const profile = await ctx.db
-    .query('profiles')
-    .withIndex('by_user', (q) => q.eq('userId', identity.subject))
+    .query("profiles")
+    .withIndex("by_user", (q) => q.eq("userId", identity.subject))
     .first()
-  if (!profile) throw new Error('Profile not found')
+  if (!profile) throw new Error("Profile not found")
 
   await ctx.db.patch(profile._id, {
     userPreferences: {
@@ -51,12 +51,12 @@ export async function ensureProfileExists(ctx: MutationCtx) {
   if (!identity) return null
 
   let profile = await ctx.db
-    .query('profiles')
-    .withIndex('by_user', (q) => q.eq('userId', identity.subject))
+    .query("profiles")
+    .withIndex("by_user", (q) => q.eq("userId", identity.subject))
     .first()
 
   if (!profile) {
-    const id = await ctx.db.insert('profiles', {
+    const id = await ctx.db.insert("profiles", {
       userId: identity.subject,
       userPreferences: DEFAULT_USER_PREFERENCES,
     })

@@ -13,7 +13,8 @@
     "test": "vitest",
     "upsert-vocab": "bun run scripts/upsert-core-vocab.ts",
     "upsert-sentence-practice": "bun run scripts/upsert-sentence-practice.ts",
-    "import-wanikani": "bun run scripts/import-wanikani.ts"
+    "import-wanikani": "bun run scripts/import-wanikani.ts",
+    "add-dictionaries": "bun run scripts/import-dictionary.ts"
   },
   "dependencies": {
     "@convex-dev/better-auth": "0.9.7",

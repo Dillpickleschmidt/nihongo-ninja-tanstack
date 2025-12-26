@@ -1,15 +1,20 @@
-import { MutationCtx, QueryCtx } from '../_generated/server'
-import { Doc, Id } from '../_generated/dataModel'
-import type { Infer } from 'convex/values'
-import type { PracticeMode, PracticeItemType, fsrsCardValidator, fsrsReviewLogValidator } from '../validators'
-import type { Card, ReviewLog } from 'ts-fsrs'
+import { MutationCtx, QueryCtx } from "../_generated/server"
+import { Doc, Id } from "../_generated/dataModel"
+import type { Infer } from "convex/values"
+import type {
+  PracticeMode,
+  PracticeItemType,
+  fsrsCardValidator,
+  fsrsReviewLogValidator,
+} from "../validators"
+import type { Card, ReviewLog } from "ts-fsrs"
 
 // Validated formats (what API receives - already storage-ready)
 type ValidatedCard = Infer<typeof fsrsCardValidator>
 type ValidatedLog = Infer<typeof fsrsReviewLogValidator>
 
 // Helper: Convert flat card document to ts-fsrs Card (for algorithm operations)
-export function toTsFsrsCard(doc: Doc<'userFsrsCards'>): Card {
+export function toTsFsrsCard(doc: Doc<"userFsrsCards">): Card {
   return {
     due: new Date(doc.dueAt),
     stability: doc.stability,
@@ -42,12 +47,16 @@ function fetchExistingCard(
   userId: string,
   key: string,
   mode: PracticeMode,
-  type: PracticeItemType
+  type: PracticeItemType,
 ) {
   return ctx.db
-    .query('userFsrsCards')
-    .withIndex('by_user_key_mode_type', (q) =>
-      q.eq('userId', userId).eq('practiceItemKey', key).eq('mode', mode).eq('type', type)
+    .query("userFsrsCards")
+    .withIndex("by_user_key_mode_type", (q) =>
+      q
+        .eq("userId", userId)
+        .eq("practiceItemKey", key)
+        .eq("mode", mode)
+        .eq("type", type),
     )
     .first()
 }
@@ -55,7 +64,7 @@ function fetchExistingCard(
 // Helper: check if incoming card should be imported over existing
 function shouldImportCard(
   incomingScheduledDays: number,
-  existing: Doc<'userFsrsCards'> | null
+  existing: Doc<"userFsrsCards"> | null,
 ): boolean {
   if (!existing) return true
   return incomingScheduledDays >= existing.scheduled_days
@@ -64,8 +73,8 @@ function shouldImportCard(
 export async function getFSRSCardsForItems(
   ctx: QueryCtx,
   keys: string[],
-  mode: PracticeMode
-): Promise<Doc<'userFsrsCards'>[]> {
+  mode: PracticeMode,
+): Promise<Doc<"userFsrsCards">[]> {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) return []
 
@@ -74,22 +83,24 @@ export async function getFSRSCardsForItems(
   const results = await Promise.all(
     keys.map((key) =>
       ctx.db
-        .query('userFsrsCards')
-        .withIndex('by_user_key_mode', (q) =>
-          q.eq('userId', userId).eq('practiceItemKey', key).eq('mode', mode)
+        .query("userFsrsCards")
+        .withIndex("by_user_key_mode_type", (q) =>
+          q.eq("userId", userId).eq("practiceItemKey", key).eq("mode", mode),
         )
-        .first()
-    )
+        .first(),
+    ),
   )
 
-  return results.filter((card): card is NonNullable<typeof card> => card !== null)
+  return results.filter(
+    (card): card is NonNullable<typeof card> => card !== null,
+  )
 }
 
 export async function getDueFSRSCards(
   ctx: QueryCtx,
   mode: PracticeMode,
-  limit: number = 100
-): Promise<Doc<'userFsrsCards'>[]> {
+  limit: number = 100,
+): Promise<Doc<"userFsrsCards">[]> {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) return []
 
@@ -97,9 +108,9 @@ export async function getDueFSRSCards(
   const now = Date.now()
 
   return ctx.db
-    .query('userFsrsCards')
-    .withIndex('by_user_mode_dueAt', (q) =>
-      q.eq('userId', userId).eq('mode', mode).lte('dueAt', now)
+    .query("userFsrsCards")
+    .withIndex("by_user_mode_dueAt", (q) =>
+      q.eq("userId", userId).eq("mode", mode).lte("dueAt", now),
     )
     .take(limit)
 }
@@ -109,7 +120,7 @@ type StatusesByType = Record<PracticeItemType, Record<string, StatusData>>
 
 export async function getItemStatuses(
   ctx: QueryCtx,
-  items: { key: string; type: PracticeItemType }[]
+  items: { key: string; type: PracticeItemType }[],
 ): Promise<StatusesByType> {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) return { vocabulary: {}, kanji: {}, radical: {} }
@@ -119,12 +130,16 @@ export async function getItemStatuses(
   const results = await Promise.all(
     items.map((item) =>
       ctx.db
-        .query('userFsrsCards')
-        .withIndex('by_user_key_mode_type', (q) =>
-          q.eq('userId', userId).eq('practiceItemKey', item.key).eq('mode', 'meanings').eq('type', item.type)
+        .query("userFsrsCards")
+        .withIndex("by_user_key_mode_type", (q) =>
+          q
+            .eq("userId", userId)
+            .eq("practiceItemKey", item.key)
+            .eq("mode", "meanings")
+            .eq("type", item.type),
         )
-        .first()
-    )
+        .first(),
+    ),
   )
 
   const statusMap: StatusesByType = { vocabulary: {}, kanji: {}, radical: {} }
@@ -151,15 +166,15 @@ export async function getDueFSRSCardsCount(ctx: QueryCtx): Promise<number> {
 
   const [meaningsCards, spellingsCards] = await Promise.all([
     ctx.db
-      .query('userFsrsCards')
-      .withIndex('by_user_mode_dueAt', (q) =>
-        q.eq('userId', userId).eq('mode', 'meanings').lte('dueAt', now)
+      .query("userFsrsCards")
+      .withIndex("by_user_mode_dueAt", (q) =>
+        q.eq("userId", userId).eq("mode", "meanings").lte("dueAt", now),
       )
       .collect(),
     ctx.db
-      .query('userFsrsCards')
-      .withIndex('by_user_mode_dueAt', (q) =>
-        q.eq('userId', userId).eq('mode', 'spellings').lte('dueAt', now)
+      .query("userFsrsCards")
+      .withIndex("by_user_mode_dueAt", (q) =>
+        q.eq("userId", userId).eq("mode", "spellings").lte("dueAt", now),
       )
       .collect(),
   ])
@@ -175,15 +190,21 @@ export async function upsertFSRSCard(
     newLogs: ValidatedLog[]
     mode: PracticeMode
     type: PracticeItemType
-  }
+  },
 ): Promise<void> {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) {
-    throw new Error('Must be authenticated to save FSRS progress')
+    throw new Error("Must be authenticated to save FSRS progress")
   }
 
   const userId = identity.subject
-  const existing = await fetchExistingCard(ctx, userId, data.practiceItemKey, data.mode, data.type)
+  const existing = await fetchExistingCard(
+    ctx,
+    userId,
+    data.practiceItemKey,
+    data.mode,
+    data.type,
+  )
 
   const cardData = {
     userId,
@@ -193,20 +214,20 @@ export async function upsertFSRSCard(
     ...data.card,
   }
 
-  let cardId: Id<'userFsrsCards'>
+  let cardId: Id<"userFsrsCards">
 
   if (existing) {
     await ctx.db.patch(existing._id, data.card)
     cardId = existing._id
   } else {
-    cardId = await ctx.db.insert('userFsrsCards', cardData)
+    cardId = await ctx.db.insert("userFsrsCards", cardData)
   }
 
   // Insert new logs
   await Promise.all(
     data.newLogs.map((log) =>
-      ctx.db.insert('userFsrsCardLogs', { cardId, ...log })
-    )
+      ctx.db.insert("userFsrsCardLogs", { cardId, ...log }),
+    ),
   )
 }
 
@@ -225,18 +246,20 @@ export async function batchImportFSRSCards(
     type: PracticeItemType
     card: ValidatedCard
     logs: ValidatedLog[]
-  }[]
+  }[],
 ): Promise<{ imported: number }> {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) {
-    throw new Error('Must be authenticated to import cards')
+    throw new Error("Must be authenticated to import cards")
   }
 
   const userId = identity.subject
 
   // Batch fetch existing cards
   const existingCards = await Promise.all(
-    cards.map((card) => fetchExistingCard(ctx, userId, card.searchTerm, 'meanings', card.type))
+    cards.map((card) =>
+      fetchExistingCard(ctx, userId, card.searchTerm, "meanings", card.type),
+    ),
   )
 
   // Filter + upsert in one pass
@@ -245,7 +268,10 @@ export async function batchImportFSRSCards(
     cards.map(async (card, i) => {
       const existing = existingCards[i]
 
-      if (SKIP_WORSE_IMPORTS && !shouldImportCard(card.card.scheduled_days, existing)) {
+      if (
+        SKIP_WORSE_IMPORTS &&
+        !shouldImportCard(card.card.scheduled_days, existing)
+      ) {
         return null
       }
 
@@ -254,27 +280,27 @@ export async function batchImportFSRSCards(
       const cardData = {
         userId,
         practiceItemKey: card.searchTerm,
-        mode: 'meanings' as const,
+        mode: "meanings" as const,
         type: card.type,
         ...card.card,
       }
 
-      let cardId: Id<'userFsrsCards'>
+      let cardId: Id<"userFsrsCards">
 
       if (existing) {
         await ctx.db.patch(existing._id, card.card)
         cardId = existing._id
       } else {
-        cardId = await ctx.db.insert('userFsrsCards', cardData)
+        cardId = await ctx.db.insert("userFsrsCards", cardData)
       }
 
       // Insert all logs for this card
       await Promise.all(
         card.logs.map((log) =>
-          ctx.db.insert('userFsrsCardLogs', { cardId, ...log })
-        )
+          ctx.db.insert("userFsrsCardLogs", { cardId, ...log }),
+        ),
       )
-    })
+    }),
   )
 
   return { imported: importedCount }

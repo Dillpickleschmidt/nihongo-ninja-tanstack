@@ -1,7 +1,7 @@
-import { v } from 'convex/values'
-import { mutation, query } from '../_generated/server'
-import * as Folders from '../model/folders'
-import * as Decks from '../model/decks'
+import { v } from "convex/values"
+import { mutation, query } from "../_generated/server"
+import * as Folders from "../model/folders"
+import * as Decks from "../model/decks"
 
 /**
  * Get all folders and decks for the current user (user data only)
@@ -37,10 +37,14 @@ export const getAllFoldersAndDecks = query({
 export const createFolder = mutation({
   args: {
     folderName: v.string(),
-    parentFolderId: v.optional(v.id('userDeckFolders')),
+    parentFolderId: v.optional(v.id("userDeckFolders")),
   },
   handler: async (ctx, args) => {
-    await Folders.checkFolderNameUnique(ctx, args.folderName, args.parentFolderId)
+    await Folders.checkFolderNameUnique(
+      ctx,
+      args.folderName,
+      args.parentFolderId,
+    )
     return Folders.createFolder(ctx, args.folderName, args.parentFolderId)
   },
 })
@@ -50,9 +54,9 @@ export const createFolder = mutation({
  */
 export const updateFolder = mutation({
   args: {
-    folderId: v.id('userDeckFolders'),
+    folderId: v.id("userDeckFolders"),
     folderName: v.optional(v.string()),
-    parentFolderId: v.optional(v.union(v.id('userDeckFolders'), v.null())),
+    parentFolderId: v.optional(v.union(v.id("userDeckFolders"), v.null())),
   },
   handler: async (ctx, args) => {
     await Folders.verifyFolderOwnership(ctx, args.folderId)
@@ -66,8 +70,8 @@ export const updateFolder = mutation({
  */
 export const deleteFolder = mutation({
   args: {
-    folderId: v.id('userDeckFolders'),
-    strategy: v.union(v.literal('move-up'), v.literal('delete-all')),
+    folderId: v.id("userDeckFolders"),
+    strategy: v.union(v.literal("move-up"), v.literal("delete-all")),
   },
   handler: async (ctx, { folderId, strategy }) => {
     await Folders.verifyFolderOwnership(ctx, folderId)

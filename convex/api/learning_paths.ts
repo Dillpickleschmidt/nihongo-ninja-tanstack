@@ -1,6 +1,6 @@
-import { v } from 'convex/values'
-import { query } from '../_generated/server'
-import * as LearningPaths from '../model/learning_paths'
+import { v } from "convex/values"
+import { query } from "../_generated/server"
+import * as LearningPaths from "../model/learning_paths"
 
 /**
  * Get all learning paths (built-in textbooks + user-created)

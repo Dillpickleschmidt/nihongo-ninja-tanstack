@@ -1,4 +1,4 @@
-import type { QueryCtx } from '../_generated/server'
+import type { QueryCtx } from "../_generated/server"
 import type {
   VocabularyItem,
   KanjiEntry,
@@ -6,9 +6,9 @@ import type {
   VocabHierarchy,
   VocabRelationship,
   KanjiRelationship,
-} from '../validators'
-import { extractKanjiCharacters } from '../../src/data/utils/text/japanese'
-import { fetchKanjiAndRadicals } from './kanji'
+} from "../validators"
+import { extractKanjiCharacters } from "../../src/data/utils/text/japanese"
+import { fetchKanjiAndRadicals } from "./kanji"
 
 export type DeckHierarchyResult = {
   vocabulary: VocabularyItem[]
@@ -21,7 +21,7 @@ export type DeckHierarchyResult = {
 
 export async function buildDeckHierarchy(
   ctx: QueryCtx,
-  vocabulary: VocabularyItem[]
+  vocabulary: VocabularyItem[],
 ): Promise<DeckHierarchyResult> {
   const kanjiChars = extractAllKanjiFromVocab(vocabulary)
   const kanjiResult = await fetchKanjiAndRadicals(ctx, kanjiChars, [])
@@ -30,7 +30,7 @@ export async function buildDeckHierarchy(
   const hierarchy = buildHierarchyRelationships(
     vocabulary,
     kanjiResult.kanji,
-    radicalResult.radicals
+    radicalResult.radicals,
   )
 
   return {
@@ -47,7 +47,9 @@ export async function buildDeckHierarchy(
  * Extract all unique kanji characters from vocabulary items
  * Preserves order of first appearance
  */
-export function extractAllKanjiFromVocab(vocabulary: VocabularyItem[]): string[] {
+export function extractAllKanjiFromVocab(
+  vocabulary: VocabularyItem[],
+): string[] {
   const seen = new Set<string>()
   const result: string[] = []
 
@@ -90,7 +92,7 @@ function extractAllRadicalsFromKanji(kanjiEntries: KanjiEntry[]): string[] {
 function buildHierarchyRelationships(
   vocabulary: VocabularyItem[],
   kanjiEntries: KanjiEntry[],
-  radicalEntries: RadicalEntry[]
+  radicalEntries: RadicalEntry[],
 ): VocabHierarchy {
   const vocabRelationships: VocabRelationship[] = vocabulary.map((item) => ({
     word: item.word,

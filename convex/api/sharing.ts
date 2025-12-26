@@ -1,13 +1,13 @@
-import { v } from 'convex/values'
-import { mutation, query } from '../_generated/server'
-import * as Sharing from '../model/sharing'
+import { v } from "convex/values"
+import { mutation, query } from "../_generated/server"
+import * as Sharing from "../model/sharing"
 
 /**
  * Get shared decks with pagination and sorting
  */
 export const getSharedDecks = query({
   args: {
-    sortBy: v.union(v.literal('recent'), v.literal('popular')),
+    sortBy: v.union(v.literal("recent"), v.literal("popular")),
     limit: v.number(),
     offset: v.number(),
   },
@@ -18,7 +18,7 @@ export const getSharedDecks = query({
  * Check if a deck is shared
  */
 export const isShared = query({
-  args: { deckId: v.id('userDecks') },
+  args: { deckId: v.id("userDecks") },
   handler: (ctx, { deckId }) => Sharing.isShared(ctx, deckId),
 })
 
@@ -26,7 +26,7 @@ export const isShared = query({
  * Share a deck publicly
  */
 export const shareDeck = mutation({
-  args: { deckId: v.id('userDecks') },
+  args: { deckId: v.id("userDecks") },
   handler: (ctx, { deckId }) => Sharing.shareDeck(ctx, deckId),
 })
 
@@ -34,7 +34,7 @@ export const shareDeck = mutation({
  * Remove a deck from public sharing
  */
 export const unshareDeck = mutation({
-  args: { deckId: v.id('userDecks') },
+  args: { deckId: v.id("userDecks") },
   handler: (ctx, { deckId }) => Sharing.unshareDeck(ctx, deckId),
 })
 
@@ -42,6 +42,6 @@ export const unshareDeck = mutation({
  * Import a shared deck into user's account
  */
 export const importSharedDeck = mutation({
-  args: { deckId: v.id('userDecks') },
+  args: { deckId: v.id("userDecks") },
   handler: (ctx, { deckId }) => Sharing.importSharedDeck(ctx, deckId),
 })

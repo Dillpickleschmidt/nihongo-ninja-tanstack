@@ -1,8 +1,8 @@
-import { QueryCtx } from '../_generated/server'
-import type { Doc } from '../_generated/dataModel'
-import type { KanjiEntry, RadicalEntry } from '../validators'
+import { QueryCtx } from "../_generated/server"
+import type { Doc } from "../_generated/dataModel"
+import type { KanjiEntry, RadicalEntry } from "../validators"
 
-type WanikaniItem = Doc<'wanikaniItems'>
+type WanikaniItem = Doc<"wanikaniItems">
 
 /**
  * Fetch kanji and radical data from wanikaniItems table
@@ -14,7 +14,7 @@ type WanikaniItem = Doc<'wanikaniItems'>
 export async function fetchKanjiAndRadicals(
   ctx: QueryCtx,
   kanjiChars: string[],
-  radicalChars: string[] = []
+  radicalChars: string[] = [],
 ): Promise<{
   kanji: KanjiEntry[]
   radicals: RadicalEntry[]
@@ -25,27 +25,37 @@ export async function fetchKanjiAndRadicals(
     return { kanji: [], radicals: [], skippedKanji: [], skippedRadicals: [] }
   }
 
-  const items = await fetchWanikaniItemsByCharacters(ctx, [...kanjiChars, ...radicalChars])
+  const items = await fetchWanikaniItemsByCharacters(ctx, [
+    ...kanjiChars,
+    ...radicalChars,
+  ])
   const { kanjiMap, radicalMap } = partitionItemsByType(items)
   const componentMap = await buildComponentRadicalMap(ctx, kanjiMap)
 
-  const { entries: kanji, skipped: skippedKanji } = buildKanjiEntries(kanjiChars, kanjiMap, componentMap)
-  const { entries: radicals, skipped: skippedRadicals } = buildRadicalEntries(radicalChars, radicalMap)
+  const { entries: kanji, skipped: skippedKanji } = buildKanjiEntries(
+    kanjiChars,
+    kanjiMap,
+    componentMap,
+  )
+  const { entries: radicals, skipped: skippedRadicals } = buildRadicalEntries(
+    radicalChars,
+    radicalMap,
+  )
 
   return { kanji, radicals, skippedKanji, skippedRadicals }
 }
 
 async function fetchWanikaniItemsByCharacters(
   ctx: QueryCtx,
-  characters: string[]
+  characters: string[],
 ): Promise<WanikaniItem[]> {
   const results = await Promise.all(
     characters.map((char) =>
       ctx.db
-        .query('wanikaniItems')
-        .withIndex('by_character', (q) => q.eq('characters', char))
-        .first()
-    )
+        .query("wanikaniItems")
+        .withIndex("by_character", (q) => q.eq("characters", char))
+        .first(),
+    ),
   )
   return results.filter((item): item is WanikaniItem => item !== null)
 }
@@ -58,9 +68,9 @@ function partitionItemsByType(items: WanikaniItem[]): {
   const radicalMap = new Map<string, WanikaniItem>()
 
   for (const item of items) {
-    if (item.characterType === 'kanji' && item.characters) {
+    if (item.characterType === "kanji" && item.characters) {
       kanjiMap.set(item.characters, item)
-    } else if (item.characterType === 'radical' && item.characters) {
+    } else if (item.characterType === "radical" && item.characters) {
       radicalMap.set(item.characters, item)
     }
   }
@@ -70,7 +80,7 @@ function partitionItemsByType(items: WanikaniItem[]): {
 
 async function buildComponentRadicalMap(
   ctx: QueryCtx,
-  kanjiMap: Map<string, WanikaniItem>
+  kanjiMap: Map<string, WanikaniItem>,
 ): Promise<Map<number, string>> {
   const componentIds = new Set<number>()
   for (const item of kanjiMap.values()) {
@@ -83,14 +93,14 @@ async function buildComponentRadicalMap(
   const results = await Promise.all(
     [...componentIds].map((id) =>
       ctx.db
-        .query('wanikaniItems')
-        .withIndex('by_wanikaniId', (q) => q.eq('wanikaniId', id))
-        .first()
-    )
+        .query("wanikaniItems")
+        .withIndex("by_wanikaniId", (q) => q.eq("wanikaniId", id))
+        .first(),
+    ),
   )
 
   for (const item of results) {
-    if (item?.characterType === 'radical' && item.characters) {
+    if (item?.characterType === "radical" && item.characters) {
       map.set(item.wanikaniId, item.characters)
     }
   }
@@ -101,7 +111,7 @@ async function buildComponentRadicalMap(
 function buildKanjiEntries(
   kanjiChars: string[],
   kanjiMap: Map<string, WanikaniItem>,
-  componentMap: Map<number, string>
+  componentMap: Map<number, string>,
 ): { entries: KanjiEntry[]; skipped: string[] } {
   const entries: KanjiEntry[] = []
   const skipped: string[] = []
@@ -131,7 +141,7 @@ function buildKanjiEntries(
 
 function buildRadicalEntries(
   radicalChars: string[],
-  radicalMap: Map<string, WanikaniItem>
+  radicalMap: Map<string, WanikaniItem>,
 ): { entries: RadicalEntry[]; skipped: string[] } {
   const entries: RadicalEntry[] = []
   const skipped: string[] = []

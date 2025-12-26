@@ -1,9 +1,6 @@
-import { MutationCtx, QueryCtx } from '../_generated/server'
-import { Id } from '../_generated/dataModel'
-import {
-  type VocabularyItem,
-  type DeckVocabItemInput,
-} from '../validators'
+import { MutationCtx, QueryCtx } from "../_generated/server"
+import { Id } from "../_generated/dataModel"
+import { type VocabularyItem, type DeckVocabItemInput } from "../validators"
 
 /**
  * Unified: fetch vocab for any deck based on source
@@ -13,13 +10,13 @@ import {
 export async function fetchDeckVocab(
   ctx: QueryCtx,
   deckId: string,
-  deckSource: 'user' | 'built-in'
+  deckSource: "user" | "built-in",
 ): Promise<VocabularyItem[]> {
-  if (deckSource === 'built-in') {
+  if (deckSource === "built-in") {
     const vocabBySet = await fetchVocabBySets(ctx, [deckId])
     return Object.values(vocabBySet).flat()
   }
-  return fetchUserDeckVocab(ctx, deckId as Id<'userDecks'>)
+  return fetchUserDeckVocab(ctx, deckId as Id<"userDecks">)
 }
 
 /**
@@ -27,7 +24,7 @@ export async function fetchDeckVocab(
  */
 export async function fetchVocabBySets(
   ctx: QueryCtx,
-  setIds: string[]
+  setIds: string[],
 ): Promise<Record<string, VocabularyItem[]>> {
   if (setIds.length === 0) return {}
 
@@ -44,17 +41,20 @@ export async function fetchVocabBySets(
     Object.entries(sets).map(([setId, keys]) => [
       setId,
       keys.map((key) => itemsMap[encodeURIComponent(key)]).filter(Boolean),
-    ])
+    ]),
   )
 }
 
 /**
  * Get all vocabulary items for a deck
  */
-export async function getDeckVocabItems(ctx: QueryCtx, deckId: Id<'userDecks'>) {
+export async function getDeckVocabItems(
+  ctx: QueryCtx,
+  deckId: Id<"userDecks">,
+) {
   return ctx.db
-    .query('deckVocabularyItems')
-    .withIndex('by_deck', (q) => q.eq('deckId', deckId))
+    .query("deckVocabularyItems")
+    .withIndex("by_deck", (q) => q.eq("deckId", deckId))
     .collect()
 }
 
@@ -63,13 +63,13 @@ export async function getDeckVocabItems(ctx: QueryCtx, deckId: Id<'userDecks'>) 
  */
 export async function createDeckVocabItems(
   ctx: MutationCtx,
-  deckId: Id<'userDecks'>,
-  items: DeckVocabItemInput[]
+  deckId: Id<"userDecks">,
+  items: DeckVocabItemInput[],
 ) {
-  const insertedIds: Id<'deckVocabularyItems'>[] = []
+  const insertedIds: Id<"deckVocabularyItems">[] = []
 
   for (const item of items) {
-    const id = await ctx.db.insert('deckVocabularyItems', {
+    const id = await ctx.db.insert("deckVocabularyItems", {
       deckId,
       word: item.word,
       furigana: item.furigana,
@@ -89,10 +89,13 @@ export async function createDeckVocabItems(
 /**
  * Delete all vocabulary items for a deck
  */
-export async function deleteDeckVocabItems(ctx: MutationCtx, deckId: Id<'userDecks'>) {
+export async function deleteDeckVocabItems(
+  ctx: MutationCtx,
+  deckId: Id<"userDecks">,
+) {
   const items = await ctx.db
-    .query('deckVocabularyItems')
-    .withIndex('by_deck', (q) => q.eq('deckId', deckId))
+    .query("deckVocabularyItems")
+    .withIndex("by_deck", (q) => q.eq("deckId", deckId))
     .collect()
 
   for (const item of items) {
@@ -108,8 +111,8 @@ export async function deleteDeckVocabItems(ctx: MutationCtx, deckId: Id<'userDec
  */
 export async function replaceDeckVocabItems(
   ctx: MutationCtx,
-  deckId: Id<'userDecks'>,
-  items: DeckVocabItemInput[]
+  deckId: Id<"userDecks">,
+  items: DeckVocabItemInput[],
 ) {
   await deleteDeckVocabItems(ctx, deckId)
   return createDeckVocabItems(ctx, deckId, items)
@@ -120,13 +123,13 @@ export async function replaceDeckVocabItems(
  */
 async function fetchUserDeckVocab(
   ctx: QueryCtx,
-  deckId: Id<'userDecks'>
+  deckId: Id<"userDecks">,
 ): Promise<VocabularyItem[]> {
   const deckItems = await getDeckVocabItems(ctx, deckId)
   return deckItems.map((item) => ({
     key: item.word,
     word: item.word,
-    furigana: item.furigana ?? '',
+    furigana: item.furigana ?? "",
     english: item.english,
     info: item.info,
     mnemonics: item.mnemonics,
@@ -141,7 +144,7 @@ async function fetchUserDeckVocab(
  */
 async function fetchSetsByIds(
   ctx: QueryCtx,
-  setIds: string[]
+  setIds: string[],
 ): Promise<Record<string, string[]>> {
   if (setIds.length === 0) return {}
 
@@ -149,8 +152,8 @@ async function fetchSetsByIds(
 
   for (const setId of setIds) {
     const set = await ctx.db
-      .query('coreVocabularySets')
-      .withIndex('by_setId', (q) => q.eq('setId', setId))
+      .query("coreVocabularySets")
+      .withIndex("by_setId", (q) => q.eq("setId", setId))
       .first()
 
     if (set) {
@@ -167,7 +170,7 @@ async function fetchSetsByIds(
 export async function fetchVocabItemsByKeys(
   ctx: QueryCtx,
   keys: string[],
-  deckId: Id<'userDecks'> | null
+  deckId: Id<"userDecks"> | null,
 ): Promise<Record<string, VocabularyItem>> {
   if (keys.length === 0) return {}
 
@@ -177,10 +180,10 @@ export async function fetchVocabItemsByKeys(
   const items = await Promise.all(
     keys.map((key) =>
       ctx.db
-        .query('coreVocabularyItems')
-        .withIndex('by_key', (q) => q.eq('key', key))
-        .first()
-    )
+        .query("coreVocabularyItems")
+        .withIndex("by_key", (q) => q.eq("key", key))
+        .first(),
+    ),
   )
 
   for (let i = 0; i < keys.length; i++) {
@@ -194,8 +197,8 @@ export async function fetchVocabItemsByKeys(
   if (deckId !== null) {
     const keySet = new Set(keys)
     const deckItems = await ctx.db
-      .query('deckVocabularyItems')
-      .withIndex('by_deck', (q) => q.eq('deckId', deckId))
+      .query("deckVocabularyItems")
+      .withIndex("by_deck", (q) => q.eq("deckId", deckId))
       .collect()
 
     for (const deckItem of deckItems) {
@@ -203,7 +206,7 @@ export async function fetchVocabItemsByKeys(
         results[encodeURIComponent(deckItem.word)] = {
           key: deckItem.word,
           word: deckItem.word,
-          furigana: deckItem.furigana ?? '',
+          furigana: deckItem.furigana ?? "",
           english: deckItem.english,
           info: deckItem.info,
           mnemonics: deckItem.mnemonics,

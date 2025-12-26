@@ -1,10 +1,10 @@
-import { createClient } from '@convex-dev/better-auth'
-import { convex } from '@convex-dev/better-auth/plugins'
-import { betterAuth } from 'better-auth'
-import { components } from './_generated/api'
-import type { GenericCtx } from '@convex-dev/better-auth'
-import type { DataModel } from './_generated/dataModel'
-import type { QueryCtx, MutationCtx } from './_generated/server'
+import { createClient } from "@convex-dev/better-auth"
+import { convex } from "@convex-dev/better-auth/plugins"
+import { betterAuth } from "better-auth"
+import { components } from "./_generated/api"
+import type { GenericCtx } from "@convex-dev/better-auth"
+import type { DataModel } from "./_generated/dataModel"
+import type { QueryCtx, MutationCtx } from "./_generated/server"
 
 const siteUrl = process.env.SITE_URL!
 
@@ -49,7 +49,7 @@ export const getUser = async (ctx: QueryCtx | MutationCtx) => {
 export const requireAuth = async (ctx: QueryCtx | MutationCtx) => {
   const user = await getUser(ctx)
   if (!user) {
-    throw new Error('Unauthenticated')
+    throw new Error("Unauthenticated")
   }
   return user
 }
