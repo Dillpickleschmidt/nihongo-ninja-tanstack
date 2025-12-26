@@ -1,68 +1,39 @@
 import { MutationCtx, QueryCtx } from '../_generated/server'
-import type { PracticeMode, PracticeItemType } from '../validators'
+import { Doc, Id } from '../_generated/dataModel'
 import type { Infer } from 'convex/values'
-import type { importCardValidator } from '../validators'
-import { type Card, type ReviewLog } from 'ts-fsrs'
+import type { PracticeMode, PracticeItemType, fsrsCardValidator, fsrsReviewLogValidator } from '../validators'
+import type { Card, ReviewLog } from 'ts-fsrs'
 
-// Convex storage format (timestamps instead of Dates)
-type ConvexCard = Omit<Card, 'due' | 'last_review' | 'learning_steps'> & {
-  due: number
-  learning_steps?: number
-}
+// Validated formats (what API receives - already storage-ready)
+type ValidatedCard = Infer<typeof fsrsCardValidator>
+type ValidatedLog = Infer<typeof fsrsReviewLogValidator>
 
-type ConvexReviewLog = Omit<ReviewLog, 'due' | 'review'> & {
-  due: number
-  review: number
-}
-
-export interface FSRSCardData {
-  practiceItemKey: string
-  fsrsCard: ConvexCard
-  fsrsLogs: ConvexReviewLog[]
-  mode: PracticeMode
-  type: PracticeItemType
-}
-
-export interface TsFSRSCardData {
-  practiceItemKey: string
-  fsrsCard: Card
-  fsrsLogs: ReviewLog[]
-  mode: PracticeMode
-  type: PracticeItemType
-}
-
-// Convert Convex storage format → ts-fsrs format (for loading)
-export function toTsFsrs(convex: FSRSCardData): TsFSRSCardData {
-  const { due, learning_steps, ...cardRest } = convex.fsrsCard
+// Helper: Convert flat card document to ts-fsrs Card (for algorithm operations)
+export function toTsFsrsCard(doc: Doc<'userFsrsCards'>): Card {
   return {
-    ...convex,
-    fsrsCard: {
-      ...cardRest,
-      due: new Date(due),
-      learning_steps: learning_steps ?? 0,
-      last_review: undefined,
-    },
-    fsrsLogs: convex.fsrsLogs.map((log) => ({
-      ...log,
-      due: new Date(log.due),
-      review: new Date(log.review),
-    })),
+    due: new Date(doc.dueAt),
+    stability: doc.stability,
+    difficulty: doc.difficulty,
+    elapsed_days: doc.elapsed_days,
+    scheduled_days: doc.scheduled_days,
+    reps: doc.reps,
+    lapses: doc.lapses,
+    state: doc.state,
+    learning_steps: doc.learning_steps ?? 0,
+    last_review: undefined,
   }
 }
 
-// Convert ts-fsrs format → Convex storage format (for saving)
-export function toConvexFsrs(ts: TsFSRSCardData): FSRSCardData {
-  const { due, last_review, ...cardRest } = ts.fsrsCard
-  return {
-    ...ts,
-    fsrsCard: { ...cardRest, due: due.getTime() },
-    fsrsLogs: ts.fsrsLogs.map(({ due, review, learning_steps, ...rest }) => ({
-      ...rest,
-      due: due.getTime(),
-      review: review.getTime(),
-      learning_steps: learning_steps ?? 0,
-    })),
-  }
+// Helper: Convert ts-fsrs Card to flat fields for storage
+export function fromTsFsrsCard(card: Card) {
+  const { due, last_review, ...rest } = card
+  return { ...rest, dueAt: due.getTime() }
+}
+
+// Helper: Convert ts-fsrs ReviewLog to flat fields for storage
+export function fromTsFsrsLog(log: ReviewLog) {
+  const { due, review, ...rest } = log
+  return { ...rest, due: due.getTime(), review: review.getTime() }
 }
 
 // Helper: fetch existing card by key/mode/type
@@ -84,17 +55,17 @@ function fetchExistingCard(
 // Helper: check if incoming card should be imported over existing
 function shouldImportCard(
   incomingScheduledDays: number,
-  existing: { fsrsCard: { scheduled_days: number } } | null
+  existing: Doc<'userFsrsCards'> | null
 ): boolean {
   if (!existing) return true
-  return incomingScheduledDays >= existing.fsrsCard.scheduled_days
+  return incomingScheduledDays >= existing.scheduled_days
 }
 
 export async function getFSRSCardsForItems(
   ctx: QueryCtx,
   keys: string[],
   mode: PracticeMode
-): Promise<FSRSCardData[]> {
+): Promise<Doc<'userFsrsCards'>[]> {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) return []
 
@@ -111,42 +82,26 @@ export async function getFSRSCardsForItems(
     )
   )
 
-  return results
-    .filter((card): card is NonNullable<typeof card> => card !== null)
-    .map((card) => ({
-      practiceItemKey: card.practiceItemKey,
-      fsrsCard: card.fsrsCard,
-      fsrsLogs: card.fsrsLogs,
-      mode: card.mode,
-      type: card.type,
-    }))
+  return results.filter((card): card is NonNullable<typeof card> => card !== null)
 }
 
 export async function getDueFSRSCards(
   ctx: QueryCtx,
   mode: PracticeMode,
   limit: number = 100
-): Promise<FSRSCardData[]> {
+): Promise<Doc<'userFsrsCards'>[]> {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) return []
 
   const userId = identity.subject
   const now = Date.now()
 
-  const cards = await ctx.db
+  return ctx.db
     .query('userFsrsCards')
-    .withIndex('by_user_mode_due', (q) =>
+    .withIndex('by_user_mode_dueAt', (q) =>
       q.eq('userId', userId).eq('mode', mode).lte('dueAt', now)
     )
     .take(limit)
-
-  return cards.map((card) => ({
-    practiceItemKey: card.practiceItemKey,
-    fsrsCard: card.fsrsCard,
-    fsrsLogs: card.fsrsLogs,
-    mode: card.mode,
-    type: card.type,
-  }))
 }
 
 type StatusData = { state: number; scheduled_days: number }
@@ -178,8 +133,8 @@ export async function getItemStatuses(
     if (card) {
       // Convex requires ASCII field names, so encode Japanese keys
       statusMap[items[i].type][encodeURIComponent(items[i].key)] = {
-        state: card.fsrsCard.state,
-        scheduled_days: card.fsrsCard.scheduled_days,
+        state: card.state,
+        scheduled_days: card.scheduled_days,
       }
     }
   }
@@ -197,13 +152,13 @@ export async function getDueFSRSCardsCount(ctx: QueryCtx): Promise<number> {
   const [meaningsCards, spellingsCards] = await Promise.all([
     ctx.db
       .query('userFsrsCards')
-      .withIndex('by_user_mode_due', (q) =>
+      .withIndex('by_user_mode_dueAt', (q) =>
         q.eq('userId', userId).eq('mode', 'meanings').lte('dueAt', now)
       )
       .collect(),
     ctx.db
       .query('userFsrsCards')
-      .withIndex('by_user_mode_due', (q) =>
+      .withIndex('by_user_mode_dueAt', (q) =>
         q.eq('userId', userId).eq('mode', 'spellings').lte('dueAt', now)
       )
       .collect(),
@@ -216,8 +171,8 @@ export async function upsertFSRSCard(
   ctx: MutationCtx,
   data: {
     practiceItemKey: string
-    fsrsCard: FSRSCardData['fsrsCard']
-    fsrsLogs: FSRSCardData['fsrsLogs']
+    card: ValidatedCard
+    newLogs: ValidatedLog[]
     mode: PracticeMode
     type: PracticeItemType
   }
@@ -233,22 +188,27 @@ export async function upsertFSRSCard(
   const cardData = {
     userId,
     practiceItemKey: data.practiceItemKey,
-    fsrsCard: data.fsrsCard,
-    fsrsLogs: data.fsrsLogs,
-    dueAt: data.fsrsCard.due,
-    stability: data.fsrsCard.stability,
     mode: data.mode,
     type: data.type,
+    ...data.card,
   }
+
+  let cardId: Id<'userFsrsCards'>
 
   if (existing) {
-    await ctx.db.patch(existing._id, cardData)
+    await ctx.db.patch(existing._id, data.card)
+    cardId = existing._id
   } else {
-    await ctx.db.insert('userFsrsCards', cardData)
+    cardId = await ctx.db.insert('userFsrsCards', cardData)
   }
-}
 
-type ImportCard = Infer<typeof importCardValidator>
+  // Insert new logs
+  await Promise.all(
+    data.newLogs.map((log) =>
+      ctx.db.insert('userFsrsCardLogs', { cardId, ...log })
+    )
+  )
+}
 
 // Skip importing cards where existing has a longer interval (better knowledge)
 const SKIP_WORSE_IMPORTS = true
@@ -260,7 +220,12 @@ const SKIP_WORSE_IMPORTS = true
  */
 export async function batchImportFSRSCards(
   ctx: MutationCtx,
-  cards: ImportCard[]
+  cards: {
+    searchTerm: string
+    type: PracticeItemType
+    card: ValidatedCard
+    logs: ValidatedLog[]
+  }[]
 ): Promise<{ imported: number }> {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) {
@@ -277,10 +242,10 @@ export async function batchImportFSRSCards(
   // Filter + upsert in one pass
   let importedCount = 0
   await Promise.all(
-    cards.map((card, i) => {
+    cards.map(async (card, i) => {
       const existing = existingCards[i]
 
-      if (SKIP_WORSE_IMPORTS && !shouldImportCard(card.fsrsCard.scheduled_days, existing)) {
+      if (SKIP_WORSE_IMPORTS && !shouldImportCard(card.card.scheduled_days, existing)) {
         return null
       }
 
@@ -289,17 +254,26 @@ export async function batchImportFSRSCards(
       const cardData = {
         userId,
         practiceItemKey: card.searchTerm,
-        fsrsCard: card.fsrsCard,
-        fsrsLogs: card.fsrsLogs,
-        dueAt: card.fsrsCard.due,
-        stability: card.fsrsCard.stability,
-        mode: 'meanings' as const, // Import always targets meanings mode for now
+        mode: 'meanings' as const,
         type: card.type,
+        ...card.card,
       }
 
-      return existing
-        ? ctx.db.patch(existing._id, cardData)
-        : ctx.db.insert('userFsrsCards', cardData)
+      let cardId: Id<'userFsrsCards'>
+
+      if (existing) {
+        await ctx.db.patch(existing._id, card.card)
+        cardId = existing._id
+      } else {
+        cardId = await ctx.db.insert('userFsrsCards', cardData)
+      }
+
+      // Insert all logs for this card
+      await Promise.all(
+        card.logs.map((log) =>
+          ctx.db.insert('userFsrsCardLogs', { cardId, ...log })
+        )
+      )
     })
   )
 

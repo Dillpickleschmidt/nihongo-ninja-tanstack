@@ -1,6 +1,6 @@
 // vocab-practice/logic/data-initialization.test.ts
 import { describe, it, expect } from 'vitest'
-import { createEmptyCard, Rating, State } from 'ts-fsrs'
+import { createEmptyCard, State } from 'ts-fsrs'
 import type {
   VocabularyItem,
   VocabHierarchy,
@@ -9,10 +9,10 @@ import type {
   KanjiEntry,
   RadicalEntry,
 } from 'convex/validators'
-import type { TsFSRSCardData } from 'convex/model/fsrs'
 import {
   initializePracticeSession,
   type PracticeItemData,
+  type FSRSCardInput,
 } from './data-initialization'
 
 // --- Mock Data Factory Functions ---
@@ -59,28 +59,11 @@ const createMockFSRSCard = (
   mode: 'meanings' | 'spellings',
   type: 'vocabulary' | 'kanji' | 'radical',
   state: State = State.New,
-): TsFSRSCardData => ({
+): FSRSCardInput => ({
   practiceItemKey: key,
-  fsrsCard: { ...createEmptyCard(new Date()), state },
+  card: { ...createEmptyCard(new Date()), state },
   mode,
   type,
-  fsrsLogs:
-    state === State.Review
-      ? [
-        {
-          rating: Rating.Good,
-          state: State.Review,
-          due: new Date(),
-          stability: 3,
-          difficulty: 5,
-          elapsed_days: 0,
-          last_elapsed_days: 0,
-          scheduled_days: 3,
-          review: new Date(),
-          learning_steps: 0,
-        },
-      ]
-      : [],
 })
 
 // --- Core Mock Data Definitions ---
@@ -141,7 +124,7 @@ const createModuleData = (
   vocabulary: VocabularyItem[] = mockVocabularyItems,
   kanji: KanjiEntry[] = mockKanjiEntries,
   radicals: RadicalEntry[] = mockRadicalEntries,
-  fsrsCards: TsFSRSCardData[] = [],
+  fsrsCards: FSRSCardInput[] = [],
 ): PracticeItemData => ({
   vocabulary,
   kanji,
@@ -154,7 +137,7 @@ const createNonModuleData = (
   vocabulary: VocabularyItem[] = [],
   kanji: KanjiEntry[] = [],
   radicals: RadicalEntry[] = [],
-  fsrsCards: TsFSRSCardData[] = [],
+  fsrsCards: FSRSCardInput[] = [],
 ): PracticeItemData => ({
   vocabulary,
   kanji,
@@ -205,7 +188,7 @@ describe('Data Initialization', () => {
     })
 
     it('should handle duplicate keys between module and due cards correctly', () => {
-      const duplicateDueCards: TsFSRSCardData[] = [
+      const duplicateDueCards: FSRSCardInput[] = [
         createMockFSRSCard('食べる', 'meanings', 'vocabulary'),
       ]
 
@@ -226,7 +209,7 @@ describe('Data Initialization', () => {
     })
 
     it('should process standalone due review cards', () => {
-      const mockDueFSRSCards: TsFSRSCardData[] = [
+      const mockDueFSRSCards: FSRSCardInput[] = [
         createMockFSRSCard('due1', 'meanings', 'vocabulary'),
         createMockFSRSCard('due2', 'meanings', 'vocabulary'),
       ]
@@ -389,7 +372,7 @@ describe('Data Initialization', () => {
 
   describe('FSRS data handling', () => {
     it('should preserve and filter FSRS data correctly', () => {
-      const mockModuleFSRSCards: TsFSRSCardData[] = [
+      const mockModuleFSRSCards: FSRSCardInput[] = [
         createMockFSRSCard('食べる', 'meanings', 'vocabulary', State.Review),
         createMockFSRSCard('食', 'meanings', 'kanji', State.New),
       ]
@@ -411,24 +394,24 @@ describe('Data Initialization', () => {
       const vocabCard = result.cardMap.get('vocabulary:食べる')
       const kanjiCard = result.cardMap.get('kanji:食')
 
-      expect(vocabCard?.fsrs.card).toBe(mockModuleFSRSCards[0].fsrsCard)
-      expect(kanjiCard?.fsrs.card).toBe(mockModuleFSRSCards[1].fsrsCard)
-      expect(vocabCard?.fsrs.logs).toHaveLength(1)
+      expect(vocabCard?.fsrs.card).toBe(mockModuleFSRSCards[0].card)
+      expect(kanjiCard?.fsrs.card).toBe(mockModuleFSRSCards[1].card)
+      expect(vocabCard?.fsrs.logs).toHaveLength(0)
       expect(kanjiCard?.fsrs.logs).toHaveLength(0)
     })
 
     it('should filter incoming FSRS data by the current session mode', () => {
-      const mixedModeFSRSCards: TsFSRSCardData[] = [
+      const mixedModeFSRSCards: FSRSCardInput[] = [
         createMockFSRSCard('食べる', 'meanings', 'vocabulary'),
         createMockFSRSCard('食べる', 'spellings', 'vocabulary'),
         createMockFSRSCard('食', 'meanings', 'kanji'),
         createMockFSRSCard('食', 'spellings', 'kanji'),
       ]
 
-      mixedModeFSRSCards[0].fsrsCard.stability = 10
-      mixedModeFSRSCards[1].fsrsCard.stability = 50
-      mixedModeFSRSCards[2].fsrsCard.stability = 20
-      mixedModeFSRSCards[3].fsrsCard.stability = 60
+      mixedModeFSRSCards[0].card.stability = 10
+      mixedModeFSRSCards[1].card.stability = 50
+      mixedModeFSRSCards[2].card.stability = 20
+      mixedModeFSRSCards[3].card.stability = 60
 
       const result = initializePracticeSession(
         mockHierarchy,
@@ -554,7 +537,7 @@ describe('Data Initialization', () => {
     })
 
     it('should handle cards already in Review state', () => {
-      const reviewStateFSRS: TsFSRSCardData[] = [
+      const reviewStateFSRS: FSRSCardInput[] = [
         createMockFSRSCard('人', 'meanings', 'radical', State.Review),
       ]
 
@@ -583,20 +566,20 @@ describe('Data Initialization', () => {
       const futureDate = new Date()
       futureDate.setDate(futureDate.getDate() + 1)
 
-      const fsrsCardsWithFutureDates: TsFSRSCardData[] = [
+      const fsrsCardsWithFutureDates: FSRSCardInput[] = [
         {
           ...createMockFSRSCard('人', 'meanings', 'radical', State.Review),
-          fsrsCard: {
+          card: {
             ...createMockFSRSCard('人', 'meanings', 'radical', State.Review)
-              .fsrsCard,
+              .card,
             due: futureDate,
           },
         },
         {
           ...createMockFSRSCard('口', 'meanings', 'radical', State.Review),
-          fsrsCard: {
+          card: {
             ...createMockFSRSCard('口', 'meanings', 'radical', State.Review)
-              .fsrsCard,
+              .card,
             due: futureDate,
           },
         },
@@ -625,12 +608,12 @@ describe('Data Initialization', () => {
       const futureDate = new Date()
       futureDate.setDate(futureDate.getDate() + 1)
 
-      const fsrsCardsWithFutureDates: TsFSRSCardData[] = [
+      const fsrsCardsWithFutureDates: FSRSCardInput[] = [
         {
           ...createMockFSRSCard('人', 'meanings', 'radical', State.Review),
-          fsrsCard: {
+          card: {
             ...createMockFSRSCard('人', 'meanings', 'radical', State.Review)
-              .fsrsCard,
+              .card,
             due: futureDate,
           },
         },
@@ -661,20 +644,20 @@ describe('Data Initialization', () => {
       const futureDate = new Date()
       futureDate.setDate(futureDate.getDate() + 1)
 
-      const fsrsCardsWithFutureDates: TsFSRSCardData[] = [
+      const fsrsCardsWithFutureDates: FSRSCardInput[] = [
         {
           ...createMockFSRSCard('人', 'meanings', 'radical', State.Review),
-          fsrsCard: {
+          card: {
             ...createMockFSRSCard('人', 'meanings', 'radical', State.Review)
-              .fsrsCard,
+              .card,
             due: futureDate,
           },
         },
         {
           ...createMockFSRSCard('口', 'meanings', 'radical', State.Review),
-          fsrsCard: {
+          card: {
             ...createMockFSRSCard('口', 'meanings', 'radical', State.Review)
-              .fsrsCard,
+              .card,
             due: futureDate,
           },
         },
@@ -708,12 +691,12 @@ describe('Data Initialization', () => {
       const futureDate = new Date()
       futureDate.setDate(futureDate.getDate() + 1)
 
-      const fsrsCardsWithFutureDates: TsFSRSCardData[] = [
+      const fsrsCardsWithFutureDates: FSRSCardInput[] = [
         {
           ...createMockFSRSCard('人', 'meanings', 'radical', State.Review),
-          fsrsCard: {
+          card: {
             ...createMockFSRSCard('人', 'meanings', 'radical', State.Review)
-              .fsrsCard,
+              .card,
             due: futureDate,
           },
         },
@@ -916,26 +899,26 @@ describe('Data Initialization', () => {
       const pastDate = new Date(Date.now() - 86400000)
       const futureDate = new Date(Date.now() + 86400000)
 
-      const cards: TsFSRSCardData[] = [
+      const cards: FSRSCardInput[] = [
         {
           ...createMockFSRSCard('due1', 'meanings', 'vocabulary'),
-          fsrsCard: {
-            ...createMockFSRSCard('due1', 'meanings', 'vocabulary').fsrsCard,
+          card: {
+            ...createMockFSRSCard('due1', 'meanings', 'vocabulary').card,
             due: pastDate,
           },
         },
         {
           ...createMockFSRSCard('future1', 'meanings', 'vocabulary'),
-          fsrsCard: {
+          card: {
             ...createMockFSRSCard('future1', 'meanings', 'vocabulary')
-              .fsrsCard,
+              .card,
             due: futureDate,
           },
         },
         {
           ...createMockFSRSCard('due2', 'spellings', 'vocabulary'),
-          fsrsCard: {
-            ...createMockFSRSCard('due2', 'spellings', 'vocabulary').fsrsCard,
+          card: {
+            ...createMockFSRSCard('due2', 'spellings', 'vocabulary').card,
             due: pastDate,
           },
         },
@@ -965,10 +948,10 @@ describe('Data Initialization', () => {
       const pastDate = new Date()
       pastDate.setDate(pastDate.getDate() - 1)
 
-      const dueReviewCard: TsFSRSCardData = {
+      const dueReviewCard: FSRSCardInput = {
         ...createMockFSRSCard('外部', 'meanings', 'vocabulary'),
-        fsrsCard: {
-          ...createMockFSRSCard('外部', 'meanings', 'vocabulary').fsrsCard,
+        card: {
+          ...createMockFSRSCard('外部', 'meanings', 'vocabulary').card,
           due: pastDate,
         },
       }
@@ -1002,10 +985,10 @@ describe('Data Initialization', () => {
       const pastDate = new Date()
       pastDate.setDate(pastDate.getDate() - 1)
 
-      const dueReviewCard: TsFSRSCardData = {
+      const dueReviewCard: FSRSCardInput = {
         ...createMockFSRSCard('外部', 'meanings', 'vocabulary'),
-        fsrsCard: {
-          ...createMockFSRSCard('外部', 'meanings', 'vocabulary').fsrsCard,
+        card: {
+          ...createMockFSRSCard('外部', 'meanings', 'vocabulary').card,
           due: pastDate,
         },
       }

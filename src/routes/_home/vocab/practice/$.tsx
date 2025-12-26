@@ -10,10 +10,12 @@ import { usePracticeManager } from '@/features/vocab-practice/logic/usePracticeM
 import {
   initializePracticeSession,
   type PracticeItemData,
+  type FSRSCardInput,
 } from '@/features/vocab-practice/logic/data-initialization'
 import type { UnifiedDeck } from 'convex/model/decks'
 import type { DeckHierarchyResult } from 'convex/model/hierarchy'
-import { toTsFsrs, toConvexFsrs, type FSRSCardData } from 'convex/model/fsrs'
+import { toTsFsrsCard, fromTsFsrsCard, fromTsFsrsLog } from 'convex/model/fsrs'
+import type { Doc } from 'convex/_generated/dataModel'
 import type { PracticeMode } from 'convex/validators'
 import type { Grade } from 'ts-fsrs'
 import { useMutation } from 'convex-solidjs'
@@ -25,8 +27,8 @@ type DeckLookupResult =
 
 type PracticeData = {
   hierarchy: DeckHierarchyResult
-  moduleFsrs: FSRSCardData[]
-  reviewFsrs: FSRSCardData[]
+  moduleFsrs: Doc<'userFsrsCards'>[]
+  reviewFsrs: Doc<'userFsrsCards'>[]
 }
 
 const practiceSearchSchema = z.object({
@@ -86,15 +88,14 @@ function PracticeCatchAll() {
 
   const practiceManager = usePracticeManager(async (card) => {
     const itemKey = card.key.split(':')[1]
-    const convexData = toConvexFsrs({
-      practiceItemKey: itemKey,
-      fsrsCard: card.fsrs.card,
-      fsrsLogs: card.fsrs.logs || [],
-      mode: card.practiceMode,
-      type: card.practiceItemType,
-    })
     try {
-      await upsertFSRSCardMutation.mutate(convexData)
+      await upsertFSRSCardMutation.mutate({
+        practiceItemKey: itemKey,
+        card: fromTsFsrsCard(card.fsrs.card),
+        newLogs: (card.fsrs.logs || []).map(fromTsFsrsLog),
+        mode: card.practiceMode,
+        type: card.practiceItemType,
+      })
     } catch (error) {
       console.error('Failed to save FSRS progress:', error)
     }
@@ -152,7 +153,7 @@ async function fetchPracticeData(
   queryClient: QueryClient,
   deck: UnifiedDeck,
   mode: PracticeMode,
-  dueCardsPromise: Promise<FSRSCardData[]>
+  dueCardsPromise: Promise<Doc<'userFsrsCards'>[]>
 ): Promise<PracticeData> {
   const [hierarchy, reviewFsrs] = await Promise.all([
     queryClient.fetchQuery(
@@ -183,6 +184,16 @@ function extractHierarchyKeys(hierarchy: DeckHierarchyResult): string[] {
   ]
 }
 
+// Convert flat card document to FSRSCardInput for practice session
+function toFSRSCardInput(doc: Doc<'userFsrsCards'>): FSRSCardInput {
+  return {
+    practiceItemKey: doc.practiceItemKey,
+    card: toTsFsrsCard(doc),
+    mode: doc.mode,
+    type: doc.type,
+  }
+}
+
 function buildSessionState(
   data: PracticeData,
   mode: PracticeMode,
@@ -194,7 +205,7 @@ function buildSessionState(
     vocabulary: hierarchy.vocabulary,
     kanji: mode === 'meanings' ? hierarchy.kanji : [],
     radicals: mode === 'meanings' ? hierarchy.radicals : [],
-    fsrsCards: moduleFsrs.map(toTsFsrs),
+    fsrsCards: moduleFsrs.map(toFSRSCardInput),
   }
 
   const moduleKeys = {
@@ -204,7 +215,7 @@ function buildSessionState(
   }
 
   const filteredReviewFsrs = (reviewFsrs || [])
-    .map(toTsFsrs)
+    .map(toFSRSCardInput)
     .filter((card) => {
       if (card.type === 'vocabulary') return !moduleKeys.vocabulary.has(card.practiceItemKey)
       if (card.type === 'kanji') return !moduleKeys.kanji.has(card.practiceItemKey)

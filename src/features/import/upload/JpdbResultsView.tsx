@@ -2,7 +2,7 @@ import { createSignal, For, Show, createMemo, onMount } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { convexMutation, useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
-import { toConvexFsrs } from "convex/model/fsrs"
+import { fromTsFsrsCard, fromTsFsrsLog } from "convex/model/fsrs"
 import { useImportFlow } from "../shared/hooks/useImportFlow"
 import { useItemStatuses, type StatusItem } from "../shared/hooks/useItemStatuses"
 import { SelectAllHeader } from "../shared/SelectAllHeader"
@@ -161,35 +161,27 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
       // Get the processed cards for all found items, applying overrides where set
       const cardsToImport = idsToImport
         .map((id) => {
-          const card = cardMap().get(id)
-          if (!card) return undefined
+          const processedCard = cardMap().get(id)
+          if (!processedCard) return undefined
 
-          const override = flow.getOverrideStatus(id, card.type)
+          const override = flow.getOverrideStatus(id, processedCard.type)
 
           // If there's an override, create a new card from the status
           if (override) {
-            const fsrsCard = createConvexCardFromStatus(override)
             return {
-              searchTerm: card.searchTerm,
-              type: card.type,
-              fsrsCard,
-              fsrsLogs: [], // Fresh start with override
+              searchTerm: processedCard.searchTerm,
+              type: processedCard.type,
+              card: createConvexCardFromStatus(override),
+              logs: [], // Fresh start with override
             }
           }
 
-          // Otherwise use the original processed card
-          const converted = toConvexFsrs({
-            practiceItemKey: card.searchTerm,
-            fsrsCard: card.fsrsCard,
-            fsrsLogs: card.fsrsLogs,
-            mode: "meanings",
-            type: card.type,
-          })
+          // Otherwise convert the original processed card to Convex format using helpers
           return {
-            searchTerm: converted.practiceItemKey,
-            type: converted.type,
-            fsrsCard: converted.fsrsCard,
-            fsrsLogs: converted.fsrsLogs,
+            searchTerm: processedCard.searchTerm,
+            type: processedCard.type,
+            card: fromTsFsrsCard(processedCard.fsrsCard),
+            logs: processedCard.fsrsLogs.map(fromTsFsrsLog),
           }
         })
         .filter((card): card is NonNullable<typeof card> => card !== undefined)

@@ -1,13 +1,13 @@
-import { createEmptyCard, State } from 'ts-fsrs'
+import { createEmptyCard, State, type Card } from 'ts-fsrs'
 import type {
   VocabularyItem,
   VocabHierarchy,
   KanjiEntry,
   RadicalEntry,
   PracticeMode,
+  PracticeItemType,
   Mnemonics,
 } from 'convex/validators'
-import type { TsFSRSCardData } from 'convex/model/fsrs'
 import type {
   PracticeCard,
   PracticeSessionState,
@@ -17,13 +17,24 @@ import type {
 import { addKanaAndRuby } from '@/data/utils/vocabulary/transforms'
 
 /**
+ * FSRS card data for practice session initialization.
+ * Contains the ts-fsrs Card object plus metadata for matching.
+ */
+export type FSRSCardInput = {
+  practiceItemKey: string
+  card: Card
+  mode: PracticeMode
+  type: PracticeItemType
+}
+
+/**
  * Consistent data structure for both module and non-module items
  */
 export type PracticeItemData = {
   vocabulary: VocabularyItem[]
   kanji: KanjiEntry[]
   radicals: RadicalEntry[]
-  fsrsCards: TsFSRSCardData[]
+  fsrsCards: FSRSCardInput[]
 }
 
 /**
@@ -35,15 +46,15 @@ function createPracticeCard(
   key: string,
   type: 'vocabulary' | 'kanji' | 'radical',
   displayData: VocabularyItem | KanjiEntry | RadicalEntry,
-  fsrsData: TsFSRSCardData | null,
+  fsrsData: FSRSCardInput | null,
   sessionPracticeMode: PracticeMode,
 ): PracticeCard {
-  const existingFSRS = fsrsData?.fsrsCard
+  const existingFSRS = fsrsData?.card
   const practiceMode = fsrsData?.mode || sessionPracticeMode
 
   const fsrsInfo: FSRSInfo = {
     card: existingFSRS || createEmptyCard(new Date()),
-    logs: fsrsData?.fsrsLogs || [],
+    logs: [], // Logs start empty, accumulated during session
   }
 
   let vocabItem: VocabularyItem
@@ -278,8 +289,7 @@ export function initializePracticeSession(
       if (cardMap.has(key)) return
 
       // Skip if not due or wrong mode
-      const isDue =
-        fsrsData.fsrsCard.due && new Date(fsrsData.fsrsCard.due) <= now
+      const isDue = fsrsData.card.due && fsrsData.card.due <= now
       const matchesMode = fsrsData.mode === sessionPracticeMode
       if (!isDue || !matchesMode) return
 

@@ -7,7 +7,6 @@ import {
   practiceItemKeyValidator,
   fsrsCardValidator,
   fsrsReviewLogValidator,
-  importCardValidator,
 } from '../validators'
 
 /**
@@ -54,8 +53,8 @@ export const getItemStatuses = query({
 export const upsertFSRSCard = mutation({
   args: {
     practiceItemKey: v.string(),
-    fsrsCard: fsrsCardValidator,
-    fsrsLogs: v.array(fsrsReviewLogValidator),
+    card: fsrsCardValidator,
+    newLogs: v.array(fsrsReviewLogValidator),
     mode: practiceModeValidator,
     type: practiceItemTypeValidator,
   },
@@ -64,11 +63,17 @@ export const upsertFSRSCard = mutation({
 
 /**
  * Import pre-processed FSRS cards in batch (e.g., from JPDB JSON)
- * Cards are simulated client-side; this mutation just stores them.
  */
 export const batchImportFSRSCards = mutation({
   args: {
-    cards: v.array(importCardValidator),
+    cards: v.array(
+      v.object({
+        searchTerm: v.string(),
+        type: practiceItemTypeValidator,
+        card: fsrsCardValidator,
+        logs: v.array(fsrsReviewLogValidator),
+      })
+    ),
   },
-  handler: (ctx, { cards }) => FSRS.batchImportFSRSCards(ctx, cards),
+  handler: (ctx, args) => FSRS.batchImportFSRSCards(ctx, args.cards),
 })

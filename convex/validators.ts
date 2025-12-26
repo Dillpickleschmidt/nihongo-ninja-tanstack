@@ -34,7 +34,7 @@ const fsrsStateValidator = v.union(
 )
 
 export const fsrsCardValidator = v.object({
-  due: v.number(), // timestamp (was Date)
+  dueAt: v.number(), // timestamp - when card is due for review
   stability: v.float64(),
   difficulty: v.float64(),
   elapsed_days: v.number(),

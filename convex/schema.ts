@@ -5,8 +5,6 @@ import {
   exampleSentenceValidator,
   videoValidator,
   particleValidator,
-  fsrsCardValidator,
-  fsrsReviewLogValidator,
   transcriptLineValidator,
   metaDataValidator,
   userPreferencesValidator,
@@ -66,20 +64,41 @@ export default defineSchema({
     isVerb: v.optional(v.boolean()),
   }).index('by_deck', ['deckId']),
 
-  // FSRS Cards (Spaced Repetition)
+  // FSRS Cards (Spaced Repetition) - flat structure for bandwidth efficiency
   userFsrsCards: defineTable({
     userId: v.string(),
     practiceItemKey: v.string(),
-    fsrsCard: fsrsCardValidator,
-    fsrsLogs: v.array(fsrsReviewLogValidator),
-    dueAt: v.number(), // timestamp
-    stability: v.float64(),
     mode: practiceModeValidator,
     type: practiceItemTypeValidator,
+    // FSRS card fields (flattened):
+    dueAt: v.number(), // timestamp - when card is due for review
+    stability: v.float64(),
+    difficulty: v.float64(),
+    elapsed_days: v.number(),
+    scheduled_days: v.number(),
+    reps: v.number(),
+    lapses: v.number(),
+    state: v.union(v.literal(0), v.literal(1), v.literal(2), v.literal(3)), // New, Learning, Review, Relearning
+    learning_steps: v.optional(v.number()),
   })
     .index('by_user_key_mode_type', ['userId', 'practiceItemKey', 'mode', 'type'])
     .index('by_user_key_mode', ['userId', 'practiceItemKey', 'mode'])
-    .index('by_user_mode_due', ['userId', 'mode', 'dueAt']),
+    .index('by_user_mode_dueAt', ['userId', 'mode', 'dueAt']),
+
+  // FSRS Review Logs (separate table for bandwidth efficiency)
+  userFsrsCardLogs: defineTable({
+    cardId: v.id('userFsrsCards'),
+    rating: v.union(v.literal(0), v.literal(1), v.literal(2), v.literal(3), v.literal(4)),
+    state: v.union(v.literal(0), v.literal(1), v.literal(2), v.literal(3)),
+    due: v.number(),
+    stability: v.float64(),
+    difficulty: v.float64(),
+    elapsed_days: v.number(),
+    last_elapsed_days: v.number(),
+    scheduled_days: v.number(),
+    learning_steps: v.number(),
+    review: v.number(), // timestamp of the review
+  }).index('by_card', ['cardId']),
 
   // User Completed Modules
   userCompletedModules: defineTable({

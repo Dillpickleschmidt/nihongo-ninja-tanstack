@@ -60,7 +60,7 @@ export function createCardFromStatus(
  * Convex-compatible card format (timestamps instead of Dates).
  */
 export interface ConvexCard {
-  due: number
+  dueAt: number
   stability: number
   difficulty: number
   elapsed_days: number
@@ -83,7 +83,7 @@ export function createConvexCardFromStatus(
   const dueTimestamp = now + config.scheduledDays * 24 * 60 * 60 * 1000
 
   return {
-    due: dueTimestamp,
+    dueAt: dueTimestamp,
     stability: config.stability,
     difficulty: config.difficulty,
     elapsed_days: 0,
