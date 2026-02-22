@@ -5,6 +5,7 @@ import { api } from "convex/_generated/api"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { getModulesFromChapter } from "@/data/utils/modules"
 import { animateElementIn, getInitialAnimationStyles } from "@/utils/animations"
+import { usePreferences } from "@/lib/preferences"
 import { CurrentChapterCard } from "./CurrentChapterCard"
 
 interface HeroSectionProps {
@@ -47,14 +48,13 @@ export function HeroSection(props: HeroSectionProps) {
 }
 
 function HeroBadge() {
-  const profile = useConvexQuery(api.api.profiles.getProfile, {})
+  const { preferences } = usePreferences()
   const learningPathsQuery = useConvexQuery(
     api.api.learning_paths.getAllLearningPaths,
     {},
   )
 
-  const selectedPathId = () =>
-    profile.data()?.userPreferences.activeLearningPath
+  const selectedPathId = () => preferences().activeLearningPath
 
   const selectedPath = () =>
     learningPathsQuery.data()?.find((p) => p.id === selectedPathId())
@@ -66,7 +66,7 @@ function HeroBadge() {
   )
 
   const currentChapter = () => {
-    const chapterSlug = profile.data()?.userPreferences.activeChapter
+    const chapterSlug = preferences().activeChapter
     if (!chapterSlug) return undefined
     return pathChaptersQuery.data()?.find((c) => c.slug === chapterSlug)
   }

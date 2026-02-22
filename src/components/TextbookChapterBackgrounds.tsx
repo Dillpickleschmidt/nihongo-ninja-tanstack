@@ -4,10 +4,8 @@ import {
   useQueryClient,
 } from "@tanstack/solid-query"
 import { FastAverageColor } from "fast-average-color"
-import { api } from "convex/_generated/api"
-import { getUser } from "@/lib/auth"
 import { backgroundSettingsQueryOptions } from "~/query/query-options"
-import { useConvexQuery } from "@/lib/convex-query"
+import { usePreferences } from "@/lib/preferences"
 import { queryKeys } from "~/query/query-keys"
 
 export type BackgroundColor = {
@@ -186,17 +184,13 @@ export type BackgroundSettings = {
 }
 
 export function TextbookChapterBackgrounds() {
-  const user = getUser()
   const queryClient = useQueryClient()
+  const { preferences } = usePreferences()
 
   const backgroundSettingsQuery = useTanstackQuery(() =>
     backgroundSettingsQueryOptions(),
   )
   const settings = () => backgroundSettingsQuery.data
-
-  const profileQuery = useConvexQuery(api.api.profiles.getProfile, {}, () => ({
-    enabled: !!user(),
-  }))
 
   const extractAndSetColor = (element: HTMLImageElement | HTMLVideoElement) => {
     try {
@@ -212,8 +206,8 @@ export function TextbookChapterBackgrounds() {
   }
 
   const getBackgroundItem = () => {
-    const textbook = profileQuery.data()?.userPreferences?.activeLearningPath
-    const chapter = profileQuery.data()?.userPreferences?.activeChapter
+    const textbook = preferences().activeLearningPath
+    const chapter = preferences().activeChapter
 
     if (!textbook || !chapter) return fallbackBackground
     return (

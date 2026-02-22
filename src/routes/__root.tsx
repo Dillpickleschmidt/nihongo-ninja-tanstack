@@ -3,6 +3,7 @@ import type { JSX } from "solid-js"
 import { createEffect } from "solid-js"
 import { HydrationScript, Suspense, isServer } from "solid-js/web"
 import {
+  ClientOnly,
   HeadContent,
   Outlet,
   Scripts,
@@ -29,8 +30,13 @@ import { SolidQueryDevtools } from "@tanstack/solid-query-devtools"
 import {
   authQueryOptions,
   deviceSettingsQueryOptions,
+  preferencesQueryOptions,
 } from "@/query/query-options"
 import { updateDeviceSettingsCookie } from "@/query/model/device-settings"
+import { syncPreferencesFromProfile } from "@/query/model/preferences"
+import { useConvexQuery } from "@/lib/convex-query"
+import { getUser } from "@/lib/auth"
+import { api } from "convex/_generated/api"
 
 export interface RouterContext {
   queryClient: QueryClient
@@ -46,6 +52,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   }),
   beforeLoad: async ({ context }) => {
     context.queryClient.prefetchQuery(deviceSettingsQueryOptions())
+    context.queryClient.prefetchQuery(preferencesQueryOptions())
     const auth = await context.queryClient.ensureQueryData(authQueryOptions())
 
     if (auth.token) {
@@ -55,7 +62,10 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     return {}
   },
   loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(deviceSettingsQueryOptions())
+    await Promise.all([
+      context.queryClient.ensureQueryData(deviceSettingsQueryOptions()),
+      context.queryClient.ensureQueryData(preferencesQueryOptions()),
+    ])
     return {}
   },
   component: RootComponent,
@@ -99,10 +109,32 @@ function RootDocument(props: { children: JSX.Element }) {
       <body>
         <HeadContent />
         <ColorModeProvider storageManager={storageManager}>
-          <AppConvexProvider>{props.children}</AppConvexProvider>
+          <AppConvexProvider>
+            <ClientOnly>
+              <PreferencesSync />
+            </ClientOnly>
+            {props.children}
+          </AppConvexProvider>
         </ColorModeProvider>
         <Scripts />
       </body>
     </html>
   )
+}
+
+function PreferencesSync() {
+  const queryClient = useQueryClient()
+  const user = getUser()
+  const profile = useConvexQuery(api.api.profiles.getProfile, {}, () => ({
+    enabled: !!user(),
+  }))
+
+  createEffect(() => {
+    const prefs = profile.data()?.userPreferences
+    if (prefs) {
+      syncPreferencesFromProfile(queryClient, prefs)
+    }
+  })
+
+  return null
 }

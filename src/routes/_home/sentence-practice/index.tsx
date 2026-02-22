@@ -7,7 +7,6 @@ import {
   onCleanup,
 } from "solid-js"
 import { createFileRoute, Link } from "@tanstack/solid-router"
-import { useMutation } from "convex-solidjs"
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
 import {
   Select,
@@ -23,23 +22,15 @@ import { dynamic_modules, type DynamicModule } from "@/data/dynamic_modules"
 import { chapters, type LearningPathChapter } from "@/data/chapters"
 import { textbooks } from "@/data/textbooks"
 import { Sidebar } from "@/features/sidebar/Sidebar"
-import { getUser } from "@/lib/auth"
-import { useConvexQuery, convexQuery } from "@/lib/convex-query"
+import { usePreferences } from "@/lib/preferences"
 import { useQueryClient } from "@tanstack/solid-query"
 import { queryKeys } from "~/query/query-keys"
-import { api } from "../../../../convex/_generated/api"
 import {
   getInitialAnimationStyles,
   observeElementForAnimation,
 } from "@/utils/animations"
 
 export const Route = createFileRoute("/_home/sentence-practice/")({
-  loader: ({ context }) => {
-    // Prefetch user profile for instant data on navigation
-    context.queryClient.prefetchQuery(
-      convexQuery(api.api.profiles.getProfile, {}),
-    )
-  },
   component: SentencePracticeList,
 })
 
@@ -49,8 +40,8 @@ type ChapterGroup = {
 }
 
 function SentencePracticeList() {
-  const user = getUser()
   const queryClient = useQueryClient()
+  const { preferences, setPreference } = usePreferences()
 
   queryClient.setQueryData(queryKeys.backgroundSettings(), {
     blur: 16,
@@ -58,20 +49,11 @@ function SentencePracticeList() {
     showGradient: false,
   })
 
-  // Fetch user profile with preferences
-  const profileQuery = useConvexQuery(api.api.profiles.getProfile, {}, () => ({
-    enabled: !!user(),
-  }))
-
   // Search state
   const [search, setSearch] = createSignal("")
 
   // Get active learning path from user preferences
-  const activeLearningPath = () =>
-    profileQuery.data()?.userPreferences?.activeLearningPath || "genki_1"
-
-  // Mutation to update learning path
-  const updateLearningPath = useMutation(api.api.profiles.updatePreferenceField)
+  const activeLearningPath = () => preferences().activeLearningPath
 
   // Available textbooks for selector
   const availableTextbooks = createMemo(() =>
@@ -144,15 +126,11 @@ function SentencePracticeList() {
       <div class="relative mx-auto mt-10 w-full max-w-5xl px-4 pb-28 lg:pt-16">
         {/* Textbook selector (top-right) */}
         <div class="absolute -top-14 right-4 flex items-center gap-1 lg:top-16">
-          <Show when={profileQuery.data}>
-            <Select
-              value={activeLearningPath()}
-              onChange={(value) => {
-                updateLearningPath.mutate({
-                  field: "activeLearningPath",
-                  value,
-                })
-              }}
+          <Select
+            value={activeLearningPath()}
+            onChange={(value) => {
+              if (value) setPreference("activeLearningPath", value)
+            }}
               options={availableTextbooks().map((t) => t.id)}
               placeholder="Select textbook"
               itemComponent={(props) => (
@@ -175,7 +153,6 @@ function SentencePracticeList() {
               </SelectTrigger>
               <SelectContent class="bg-background border-card-foreground/70" />
             </Select>
-          </Show>
         </div>
 
         {/* Header */}
@@ -214,46 +191,30 @@ function SentencePracticeList() {
 
         {/* Content */}
         <Show
-          when={profileQuery.data() !== undefined}
+          when={totalModules() > 0}
           fallback={
-            <div class="space-y-8">
-              <For each={Array.from({ length: 3 })}>
-                {() => (
-                  <div class="space-y-3">
-                    <div class="bg-card/40 h-8 w-48 animate-pulse rounded-lg" />
-                    <div class="bg-card/40 h-24 animate-pulse rounded-xl" />
-                  </div>
-                )}
-              </For>
+            <div class="text-muted-foreground py-12 text-center">
+              <BookOpen class="mx-auto mb-3 size-12 opacity-50" />
+              <p>No sentence practice modules found for this textbook.</p>
             </div>
           }
         >
-          <Show
-            when={totalModules() > 0}
-            fallback={
-              <div class="text-muted-foreground py-12 text-center">
-                <BookOpen class="mx-auto mb-3 size-12 opacity-50" />
-                <p>No sentence practice modules found for this textbook.</p>
-              </div>
-            }
-          >
-            {/* Chapter groups */}
-            <div class="space-y-6">
-              <For each={filteredGroups()}>
-                {(group) => <ChapterGroupItem group={group} />}
-              </For>
-            </div>
+          {/* Chapter groups */}
+          <div class="space-y-6">
+            <For each={filteredGroups()}>
+              {(group) => <ChapterGroupItem group={group} />}
+            </For>
+          </div>
 
-            {/* Empty search results */}
-            <Show when={filteredGroups().length === 0 && totalModules() > 0}>
-              <div class="text-muted-foreground py-12 text-center">
-                <Search class="mx-auto mb-3 size-10 opacity-50" />
-                <p>No results for "{search()}"</p>
-                <p class="mt-1 text-sm opacity-70">
-                  Try a different search term
-                </p>
-              </div>
-            </Show>
+          {/* Empty search results */}
+          <Show when={filteredGroups().length === 0 && totalModules() > 0}>
+            <div class="text-muted-foreground py-12 text-center">
+              <Search class="mx-auto mb-3 size-10 opacity-50" />
+              <p>No results for "{search()}"</p>
+              <p class="mt-1 text-sm opacity-70">
+                Try a different search term
+              </p>
+            </div>
           </Show>
         </Show>
       </div>

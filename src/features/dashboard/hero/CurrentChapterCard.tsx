@@ -1,11 +1,11 @@
 import { Show, For, createSignal, Suspense, onMount } from "solid-js"
 import { ChevronRight } from "lucide-solid"
-import { useMutation } from "convex-solidjs"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { getModulesFromChapter } from "@/data/utils/modules"
 import { animateElementIn, getInitialAnimationStyles } from "@/utils/animations"
 import { getUser } from "@/lib/auth"
+import { usePreferences } from "@/lib/preferences"
 import { LearningPathChapterSelector } from "../LearningPathChapterSelector"
 import { ModuleLink } from "./ModuleLink"
 
@@ -55,15 +55,13 @@ function CurrentChapterCardContent() {
   const [isSelectorOpen, setIsSelectorOpen] = createSignal(false)
 
   // Queries
-  const updatePreference = useMutation(api.api.profiles.updatePreferenceField)
-  const profile = useConvexQuery(api.api.profiles.getProfile, {})
+  const { preferences, setPreference } = usePreferences()
   const learningPathsQuery = useConvexQuery(
     api.api.learning_paths.getAllLearningPaths,
     {},
   )
 
-  const selectedPathId = () =>
-    profile.data()?.userPreferences.activeLearningPath
+  const selectedPathId = () => preferences().activeLearningPath
 
   const pathChaptersQuery = useConvexQuery(
     api.api.learning_paths.getPathChapters,
@@ -72,7 +70,7 @@ function CurrentChapterCardContent() {
   )
 
   const currentChapter = () => {
-    const chapterSlug = profile.data()?.userPreferences.activeChapter
+    const chapterSlug = preferences().activeChapter
     if (!chapterSlug) return undefined
     return pathChaptersQuery.data()?.find((c) => c.slug === chapterSlug)
   }
@@ -93,8 +91,8 @@ function CurrentChapterCardContent() {
   )
 
   const handleChapterSelect = (pathId: string, chapter: { slug: string }) => {
-    updatePreference.mutate({ field: "activeLearningPath", value: pathId })
-    updatePreference.mutate({ field: "activeChapter", value: chapter.slug })
+    setPreference("activeLearningPath", pathId)
+    setPreference("activeChapter", chapter.slug)
   }
 
   return (

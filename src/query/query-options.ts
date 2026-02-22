@@ -2,6 +2,7 @@ import { queryOptions } from "@tanstack/solid-query"
 import { fetchAuth } from "@/lib/server"
 import { queryKeys } from "./query-keys"
 import { parseDeviceSettingsCookie } from "./model/device-settings"
+import { parsePreferencesCookie } from "./model/preferences"
 import type {
   BackgroundSettings,
   BackgroundColor,
@@ -34,6 +35,19 @@ export const deviceSettingsQueryOptions = () =>
     queryKey: queryKeys.deviceSettings(),
     queryFn: async () => parseDeviceSettingsCookie(),
     initialData: parseDeviceSettingsCookie(),
+    staleTime: Infinity,
+    gcTime: Infinity,
+  })
+
+// ============================================================================
+// Preferences Query Options
+// ============================================================================
+
+export const preferencesQueryOptions = () =>
+  queryOptions({
+    queryKey: queryKeys.preferences(),
+    queryFn: async () => parsePreferencesCookie(),
+    initialData: parsePreferencesCookie(),
     staleTime: Infinity,
     gcTime: Infinity,
   })

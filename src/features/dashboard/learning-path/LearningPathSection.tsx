@@ -4,6 +4,7 @@ import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { animateElementIn, getInitialAnimationStyles } from "@/utils/animations"
+import { usePreferences } from "@/lib/preferences"
 import { ChapterSection } from "./ChapterSection"
 
 interface LearningPathSectionProps {
@@ -15,14 +16,13 @@ export function LearningPathSection(props: LearningPathSectionProps) {
   const [selectedView, setSelectedView] = createSignal<string>("grid")
 
   // Queries
-  const profile = useConvexQuery(api.api.profiles.getProfile, {})
+  const { preferences } = usePreferences()
   const learningPathsQuery = useConvexQuery(
     api.api.learning_paths.getAllLearningPaths,
     {},
   )
 
-  const selectedPathId = () =>
-    profile.data()?.userPreferences.activeLearningPath
+  const selectedPathId = () => preferences().activeLearningPath
 
   const selectedPath = () =>
     learningPathsQuery.data()?.find((p) => p.id === selectedPathId())

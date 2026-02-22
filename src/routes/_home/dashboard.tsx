@@ -19,9 +19,6 @@ import { LearningPathSection } from "@/features/dashboard/learning-path/Learning
 export const Route = createFileRoute("/_home/dashboard")({
   loader: ({ context }) => {
     context.queryClient.prefetchQuery(
-      convexQuery(api.api.profiles.getProfile, {}),
-    )
-    context.queryClient.prefetchQuery(
       convexQuery(api.api.learning_paths.getAllLearningPaths, {}),
     )
     context.queryClient.prefetchQuery(
