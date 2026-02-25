@@ -4,7 +4,7 @@ import { QUICK_FEATURES } from "../data/features"
 
 export function QuickFeatures() {
   return (
-    <section class="relative py-20">
+    <section class="relative pt-14 pb-20">
       <div class="mx-auto max-w-7xl px-6">
         <div class="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
           <For each={QUICK_FEATURES}>

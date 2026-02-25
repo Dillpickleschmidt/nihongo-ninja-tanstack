@@ -25,7 +25,7 @@ export function CurrentChapterCard(props: CurrentChapterCardProps) {
   return (
     <div
       ref={cardRef}
-      class="relative overflow-hidden rounded-2xl min-h-34"
+      class="relative overflow-hidden min-h-34"
       style={props.skipAnimation ? {} : getInitialAnimationStyles("down")}
     >
       <Suspense

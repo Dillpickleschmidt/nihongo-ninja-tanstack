@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as GetStartedRouteImport } from './routes/get-started'
 import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
@@ -73,6 +74,11 @@ import { Route as HomeVocabDeckDeckIdEditRouteImport } from './routes/_home/voca
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GetStartedRoute = GetStartedRouteImport.update({
+  id: '/get-started',
+  path: '/get-started',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DiscoverRoute = DiscoverRouteImport.update({
@@ -411,6 +417,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/discover': typeof DiscoverRoute
+  '/get-started': typeof GetStartedRoute
   '/search': typeof SearchRoute
   '/dashboard': typeof HomeDashboardRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
@@ -472,6 +479,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/discover': typeof DiscoverRoute
+  '/get-started': typeof GetStartedRoute
   '/search': typeof SearchRoute
   '/dashboard': typeof HomeDashboardRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
@@ -534,6 +542,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/discover': typeof DiscoverRoute
+  '/get-started': typeof GetStartedRoute
   '/search': typeof SearchRoute
   '/_home/dashboard': typeof HomeDashboardRoute
   '/_home/lessons': typeof HomeLessonsRouteWithChildren
@@ -597,6 +606,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/discover'
+    | '/get-started'
     | '/search'
     | '/dashboard'
     | '/lessons'
@@ -658,6 +668,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/discover'
+    | '/get-started'
     | '/search'
     | '/dashboard'
     | '/lessons'
@@ -719,6 +730,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/discover'
+    | '/get-started'
     | '/search'
     | '/_home/dashboard'
     | '/_home/lessons'
@@ -782,6 +794,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   DiscoverRoute: typeof DiscoverRoute
+  GetStartedRoute: typeof GetStartedRoute
   SearchRoute: typeof SearchRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
@@ -793,6 +806,13 @@ declare module '@tanstack/solid-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/get-started': {
+      id: '/get-started'
+      path: '/get-started'
+      fullPath: '/get-started'
+      preLoaderRoute: typeof GetStartedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/discover': {
@@ -1367,6 +1387,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   DiscoverRoute: DiscoverRoute,
+  GetStartedRoute: GetStartedRoute,
   SearchRoute: SearchRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }

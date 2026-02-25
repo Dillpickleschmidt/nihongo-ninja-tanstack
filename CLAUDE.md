@@ -59,17 +59,17 @@ export const Route = createFileRoute("/_home/vocab/deck/$deckId/edit")({
       convexQuery(api.api.decks.getDeckWithVocab, {
         deckId: params.deckId as Id<"userDecks">,
       }),
-    );
+    )
   },
-});
+})
 
 // Component - reactive query
-const user = getUser();
+const user = getUser()
 const deckQuery = useConvexQuery(
   api.api.decks.getDeckWithVocab,
   () => ({ deckId: params().deckId as Id<"userDecks"> }),
   () => ({ enabled: !!user() }),
-);
+)
 ```
 
 Skip user-specific queries when not signed in to avoid network delay (`enabled: !!user()`).
@@ -97,3 +97,7 @@ Prefer plain accessor functions over `createMemo` when used only once. Reserve `
 
 - `api/` - Thin queries/mutations: define args, pass ctx to model helpers, return
 - `model/` - Business logic + auth checks via `ctx.auth.getUserIdentity()` (when necessary)
+
+### useNavigate
+
+⚠️ Because of the Link component's built-in affordances around href, cmd/ctrl + click-ability, and active/inactive capabilities, it's recommended to use the Link component instead of useNavigate for anything the user can interact with (e.g. links, buttons). However, there are some cases where useNavigate is necessary to handle side-effect navigations (e.g. a successful async action that results in a navigation).

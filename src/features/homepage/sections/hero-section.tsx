@@ -5,10 +5,10 @@ import { VideoShowcase } from "../components/video-showcase"
 
 export function HeroSection(props: {
   heroLoaded: Accessor<boolean>
-  onExplore?: () => void
+  explorePath?: string
 }) {
   return (
-    <section class="relative flex min-h-screen items-center justify-center pt-16">
+    <section class="relative flex min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-14rem)] items-center justify-center -mt-16">
       <div class="mx-auto max-w-7xl px-6 py-20">
         <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Text content */}
@@ -43,9 +43,8 @@ export function HeroSection(props: {
             </p>
 
             <div class="flex flex-col gap-4 sm:flex-row">
-              <button
-                type="button"
-                onClick={props.onExplore}
+              <Link
+                to={props.explorePath ?? "/get-started"}
                 class="group inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end) px-8 py-4 font-semibold text-white transition-all hover:scale-[1.02]"
                 style={{
                   "box-shadow":
@@ -66,7 +65,7 @@ export function HeroSection(props: {
                     d="M13 7l5 5m0 0l-5 5m5-5H6"
                   />
                 </svg>
-              </button>
+              </Link>
               <Link
                 to="/discover"
                 class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-semibold text-white transition-all hover:bg-white/10 hover:border-white/20"
@@ -123,22 +122,6 @@ export function HeroSection(props: {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div
-        class={cn(
-          "absolute bottom-8 left-1/2 -translate-x-1/2 transition-all duration-1000 delay-1000",
-          props.heroLoaded() ? "opacity-100" : "opacity-0",
-        )}
-      >
-        <div class="flex flex-col items-center gap-2 text-white/30">
-          <span class="text-xs uppercase tracking-widest">
-            Scroll to explore
-          </span>
-          <div class="h-12 w-6 rounded-full border border-white/20 p-1">
-            <div class="h-2 w-2 animate-bounce rounded-full bg-white/40" />
-          </div>
-        </div>
-      </div>
     </section>
   )
 }

@@ -3,10 +3,16 @@ import { createSignal } from "solid-js"
 import { useQueryClient } from "@tanstack/solid-query"
 import { authClient } from "@/lib/auth-client"
 import { createProfile } from "@/lib/server"
+import { queryKeys } from "~/query/query-keys"
 
 export default function LoginSignupForm() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  queryClient.setQueryData(queryKeys.backgroundSettings(), {
+    blur: 0,
+    opacityOffset: -1,
+    showGradient: false,
+  })
   const [isLogin, setIsLogin] = createSignal(true)
   const [name, setName] = createSignal("")
   const [email, setEmail] = createSignal("")

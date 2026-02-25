@@ -34,15 +34,15 @@ const textbook_chapter_backgrounds: TextbookChapterBackgrounds = {
   genki_1: {
     "chapter-0": {
       source_type: "img",
-      src: "/img/backgrounds/tranquil_village_by_k_jackson_katss_djqxpcz.png",
+      src: "/img/backgrounds/red-temple.jpg",
       layout: "horizontal",
-      opacity: 0.44,
+      opacity: 0.4,
     },
     "chapter-1": {
       source_type: "img",
-      src: "/img/backgrounds/morning_village_by_k_jackson_katss_djrsova.jpg",
+      src: "/img/backgrounds/tranquil_village_by_k_jackson_katss_djqxpcz.png",
       layout: "horizontal",
-      opacity: 0.4,
+      opacity: 0.44,
     },
     "chapter-2": {
       source_type: "img",
@@ -52,7 +52,7 @@ const textbook_chapter_backgrounds: TextbookChapterBackgrounds = {
     },
     "chapter-3": {
       source_type: "img",
-      src: "/img/backgrounds/red-temple.jpg",
+      src: "/img/backgrounds/morning_village_by_k_jackson_katss_djrsova.jpg",
       layout: "horizontal",
       opacity: 0.4,
     },
@@ -171,7 +171,7 @@ const textbook_chapter_backgrounds: TextbookChapterBackgrounds = {
 
 const fallbackBackground: BackgroundMediaItem = {
   source_type: "img",
-  src: "/img/backgrounds/tranquil_village_by_k_jackson_katss_djqxpcz.png",
+  src: "/img/backgrounds/red-temple.jpg",
   layout: "horizontal",
   opacity: 0.4,
   y_offset_desktop: "0",
@@ -233,6 +233,8 @@ export function TextbookChapterBackgrounds() {
     }
     return "100%"
   }
+
+  if (finalOpacity() <= 0) return null
 
   return (
     <>

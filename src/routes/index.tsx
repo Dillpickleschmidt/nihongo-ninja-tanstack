@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/solid-router"
 import { createSignal, onMount } from "solid-js"
+import { useQueryClient } from "@tanstack/solid-query"
+import { queryKeys } from "~/query/query-keys"
 import { FloatingKanji } from "@/features/homepage/components/floating-kanji"
-import { TextbookSelectionDialog } from "@/features/homepage/components/textbook-selection-dialog"
 import { HeroSection } from "@/features/homepage/sections/hero-section"
 import { QuickFeatures } from "@/features/homepage/sections/quick-features"
 import { MainFeatures } from "@/features/homepage/sections/main-features"
@@ -17,8 +18,14 @@ export const Route = createFileRoute("/")({
 })
 
 function Homepage() {
+  const queryClient = useQueryClient()
+  queryClient.setQueryData(queryKeys.backgroundSettings(), {
+    blur: 0,
+    opacityOffset: -1,
+    showGradient: false,
+  })
+
   const [heroLoaded, setHeroLoaded] = createSignal(false)
-  const [dialogOpen, setDialogOpen] = createSignal(false)
 
   // Initialize color cycling animation
   useColorAnimation()
@@ -29,7 +36,7 @@ function Homepage() {
   })
 
   return (
-    <div class="z-0 relative min-h-screen bg-neutral-950 text-white overflow-x-hidden">
+    <div class="z-0 relative min-h-screen bg-neutral-950 text-white overflow-x-clip">
       <style>{`
         @property --landing-accent { syntax: "<color>"; inherits: true; initial-value: #f59e0b; }
         @property --landing-accent-end { syntax: "<color>"; inherits: true; initial-value: #f43f5e; }
@@ -59,7 +66,7 @@ function Homepage() {
       </div>
 
       {/* Navigation */}
-      <nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 backdrop-blur-xl bg-neutral-950/70">
+      <nav class="sticky top-0 z-50 border-b border-white/5 backdrop-blur-xl bg-neutral-950/70">
         <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
           <Link to="/" class="flex items-center gap-2 text-lg font-bold">
             <img src="/icons/ninja.png" alt="Ninja" class="size-8 -mb-1.25" />
@@ -78,9 +85,8 @@ function Homepage() {
               About
             </Link>
           </div>
-          <button
-            type="button"
-            onClick={() => setDialogOpen(true)}
+          <Link
+            to="/get-started"
             class="landing-accent-gradient rounded-full px-5 py-2 text-sm font-medium text-white transition-all hover:scale-105"
             style={{
               "box-shadow":
@@ -88,28 +94,22 @@ function Homepage() {
             }}
           >
             Explore
-          </button>
+          </Link>
         </div>
       </nav>
 
       {/* Page Sections */}
       <HeroSection
         heroLoaded={heroLoaded}
-        onExplore={() => setDialogOpen(true)}
+        explorePath="/get-started"
       />
       <QuickFeatures />
       <MainFeatures />
       <StatsSection />
       <PremiumCallout />
       <VideoShowcaseSection />
-      <CTASection onExplore={() => setDialogOpen(true)} />
+      <CTASection explorePath="/get-started" />
       <Footer />
-
-      {/* Textbook Selection Dialog */}
-      <TextbookSelectionDialog
-        open={dialogOpen()}
-        onOpenChange={setDialogOpen}
-      />
     </div>
   )
 }

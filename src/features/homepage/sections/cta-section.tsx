@@ -1,4 +1,6 @@
-export function CTASection(props: { onExplore?: () => void }) {
+import { Link } from "@tanstack/solid-router"
+
+export function CTASection(props: { explorePath?: string }) {
   return (
     <section class="relative py-20 lg:py-32">
       <div class="mx-auto max-w-4xl px-6 text-center">
@@ -20,9 +22,8 @@ export function CTASection(props: { onExplore?: () => void }) {
             content that matches your level. No sign-up needed to get started.
           </p>
           <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <button
-              type="button"
-              onClick={props.onExplore}
+            <Link
+              to={props.explorePath ?? "/get-started"}
               class="group inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end) px-10 py-4 text-lg font-semibold text-white transition-all hover:scale-[1.02]"
               style={{
                 "box-shadow":
@@ -43,7 +44,7 @@ export function CTASection(props: { onExplore?: () => void }) {
                   d="M13 7l5 5m0 0l-5 5m5-5H6"
                 />
               </svg>
-            </button>
+            </Link>
           </div>
         </div>
       </div>

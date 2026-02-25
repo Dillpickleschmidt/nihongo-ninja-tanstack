@@ -1,9 +1,7 @@
-import { Suspense } from "solid-js"
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/solid-router"
 import { useQueryClient } from "@tanstack/solid-query"
 import { authClient } from "@/lib/auth-client"
 import { BottomNav } from "@/features/navbar/Nav"
-import { TextbookChapterBackgrounds } from "@/components/TextbookChapterBackgrounds"
 import { Sidebar } from "@/features/sidebar/Sidebar"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 
@@ -23,10 +21,6 @@ function HomeLayout() {
 
   return (
     <>
-      <Suspense>
-        <TextbookChapterBackgrounds />
-      </Suspense>
-
       <Outlet />
 
       <SSRMediaQuery showFrom="md">

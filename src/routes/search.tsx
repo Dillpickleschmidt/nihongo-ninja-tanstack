@@ -24,7 +24,7 @@ function SearchPage() {
 
   queryClient.setQueryData(queryKeys.backgroundSettings(), {
     blur: 0,
-    backgroundOpacityOffset: -1,
+    opacityOffset: -1,
     showGradient: false,
   })
 

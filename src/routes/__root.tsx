@@ -25,6 +25,7 @@ import "@fontsource-variable/inter"
 import "@fontsource/poppins"
 import appCss from "@/styles/app.css?url"
 import AppConvexProvider, { convexQueryClient } from "@/providers/convex"
+import { TextbookChapterBackgrounds } from "@/components/TextbookChapterBackgrounds"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { SolidQueryDevtools } from "@tanstack/solid-query-devtools"
 import {
@@ -113,6 +114,9 @@ function RootDocument(props: { children: JSX.Element }) {
             <ClientOnly>
               <PreferencesSync />
             </ClientOnly>
+            <Suspense>
+              <TextbookChapterBackgrounds />
+            </Suspense>
             {props.children}
           </AppConvexProvider>
         </ColorModeProvider>
