@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/solid-router"
-import { createSignal, onMount } from "solid-js"
 import { useQueryClient } from "@tanstack/solid-query"
 import { queryKeys } from "~/query/query-keys"
 import { FloatingKanji } from "@/features/homepage/components/floating-kanji"
@@ -25,15 +24,8 @@ function Homepage() {
     showGradient: false,
   })
 
-  const [heroLoaded, setHeroLoaded] = createSignal(false)
-
   // Initialize color cycling animation
   useColorAnimation()
-
-  onMount(() => {
-    // Trigger hero animation
-    setTimeout(() => setHeroLoaded(true), 100)
-  })
 
   return (
     <div class="z-0 relative min-h-screen bg-neutral-950 text-white overflow-x-clip">
@@ -99,10 +91,7 @@ function Homepage() {
       </nav>
 
       {/* Page Sections */}
-      <HeroSection
-        heroLoaded={heroLoaded}
-        explorePath="/get-started"
-      />
+      <HeroSection explorePath="/get-started" />
       <QuickFeatures />
       <MainFeatures />
       <StatsSection />

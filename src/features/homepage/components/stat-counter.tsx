@@ -1,36 +1,35 @@
-import { createSignal, onMount, onCleanup } from "solid-js"
-import { cn } from "@/utils"
+import { onMount } from "solid-js"
+import {
+  animateElementIn,
+  getInitialAnimationStyles,
+} from "@/utils/animations"
 
 export function StatCounter(props: {
   value: string
   label: string
   delay: number
 }) {
-  const [isVisible, setIsVisible] = createSignal(false)
   let ref: HTMLDivElement | undefined
 
   onMount(() => {
+    if (!ref) return
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true)
+          setTimeout(
+            () => animateElementIn(ref!, "down", { duration: 700 }),
+            props.delay,
+          )
+          observer.disconnect()
         }
       },
       { threshold: 0.5 },
     )
-    if (ref) observer.observe(ref)
-    onCleanup(() => observer.disconnect())
+    observer.observe(ref)
   })
 
   return (
-    <div
-      ref={ref}
-      class={cn(
-        "text-center transition-all duration-700",
-        isVisible() ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
-      )}
-      style={{ "transition-delay": `${props.delay}ms` }}
-    >
+    <div ref={ref} class="text-center" style={getInitialAnimationStyles("down")}>
       <div class="text-4xl font-bold text-transparent bg-clip-text bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end) lg:text-5xl">
         {props.value}
       </div>

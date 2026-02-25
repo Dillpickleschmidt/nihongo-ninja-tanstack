@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/solid-router"
-import { createSignal, For, Show, onMount } from "solid-js"
+import { createSignal, For, Show } from "solid-js"
 import { useQueryClient } from "@tanstack/solid-query"
 import { textbooks, type TextbookIDEnum } from "@/data/textbooks"
 import { usePreferences } from "@/lib/preferences"
@@ -23,7 +23,6 @@ function GetStartedPage() {
   const [step, setStep] = createSignal<Step>("fork")
   const [selectedTextbook, setSelectedTextbook] =
     createSignal<TextbookIDEnum>("genki_1")
-  const [mounted, setMounted] = createSignal(false)
   const queryClient = useQueryClient()
   queryClient.setQueryData(queryKeys.backgroundSettings(), {
     blur: 0,
@@ -32,10 +31,6 @@ function GetStartedPage() {
   })
 
   useColorAnimation()
-
-  onMount(() => {
-    setTimeout(() => setMounted(true), 50)
-  })
 
   const handleContinueTextbook = () => {
     setPreference("activeLearningPath", selectedTextbook())
@@ -48,7 +43,7 @@ function GetStartedPage() {
   }
 
   return (
-    <div class="relative min-h-[100dvh] text-white overflow-x-clip">
+    <div class="relative min-h-dvh text-white overflow-x-clip">
       <style>{`
         @property --landing-accent { syntax: "<color>"; inherits: true; initial-value: #f59e0b; }
         @property --landing-accent-end { syntax: "<color>"; inherits: true; initial-value: #f43f5e; }
@@ -58,10 +53,7 @@ function GetStartedPage() {
           from { opacity: 0; transform: translateY(16px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-up {
-          animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          opacity: 0;
-        }
+        .animate-fade-up { animation: fade-up 0.5s ease-out both; }
 
         @keyframes glow-pulse {
           0%, 100% { opacity: 0.15; }
@@ -114,12 +106,7 @@ function GetStartedPage() {
       <div class="relative flex flex-col items-center min-h-[calc(100dvh-4rem)] px-6 py-12">
         {/* Step 1: Fork */}
         <Show when={step() === "fork"}>
-          <div
-            class={cn(
-              "w-full max-w-3xl my-auto md:pb-16",
-              mounted() && "animate-fade-up",
-            )}
-          >
+          <div class="w-full max-w-3xl my-auto md:pb-16 animate-fade-up">
             <div class="text-center mb-10 md:mb-14">
               <h1 class="text-3xl md:text-5xl font-bold tracking-tight">
                 How do you want to{" "}
@@ -271,7 +258,7 @@ function GetStartedPage() {
               </button>
             </div>
 
-            <p class="mt-8 text-center text-sm text-white/25">
+            <p class="mt-8 text-center text-white/25">
               You can always switch or use both later.
             </p>
           </div>

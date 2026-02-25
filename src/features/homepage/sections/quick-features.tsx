@@ -1,6 +1,9 @@
-import { For, createSignal, onMount, onCleanup } from "solid-js"
-import { cn } from "@/utils"
+import { For, onMount } from "solid-js"
 import { QUICK_FEATURES } from "../data/features"
+import {
+  animateElementIn,
+  getInitialAnimationStyles,
+} from "@/utils/animations"
 
 export function QuickFeatures() {
   return (
@@ -10,27 +13,29 @@ export function QuickFeatures() {
           <For each={QUICK_FEATURES}>
             {(feature, i) => {
               let ref: HTMLDivElement | undefined
-              const [visible, setVisible] = createSignal(false)
 
               onMount(() => {
+                if (!ref) return
                 const observer = new IntersectionObserver(
-                  ([entry]) => entry.isIntersecting && setVisible(true),
+                  ([entry]) => {
+                    if (entry.isIntersecting) {
+                      setTimeout(
+                        () => animateElementIn(ref!, "down", { duration: 500 }),
+                        200 + i() * 100,
+                      )
+                      observer.disconnect()
+                    }
+                  },
                   { threshold: 0.3 },
                 )
-                if (ref) observer.observe(ref)
-                onCleanup(() => observer.disconnect())
+                observer.observe(ref)
               })
 
               return (
                 <div
                   ref={ref}
-                  class={cn(
-                    "group relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] p-6 transition-all duration-500 hover:border-(--landing-accent)/20 hover:bg-white/[0.04]",
-                    visible()
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-8",
-                  )}
-                  style={{ "transition-delay": `${i() * 100}ms` }}
+                  class="group relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] p-6 transition-colors duration-300 hover:border-(--landing-accent)/20 hover:bg-white/[0.04]"
+                  style={getInitialAnimationStyles("down")}
                 >
                   <div class="mb-4 text-4xl font-japanese text-(--landing-accent)/80 transition-transform duration-300 group-hover:scale-110">
                     {feature.icon}

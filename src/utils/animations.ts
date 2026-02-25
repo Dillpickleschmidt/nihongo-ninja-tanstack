@@ -12,28 +12,39 @@ export const ANIMATION_CONFIG = {
 
 export type Position = "left" | "right" | "up" | "down"
 
-function getTranslateValue(position: Position, distance: number): string {
+function getTransformValue(
+  position: Position,
+  distance: number,
+  scale?: number,
+): string {
+  let translate: string
   switch (position) {
     case "left":
-      return `translate3d(${-distance}px, 0, 0)`
+      translate = `translate3d(${-distance}px, 0, 0)`
+      break
     case "right":
-      return `translate3d(${distance}px, 0, 0)`
+      translate = `translate3d(${distance}px, 0, 0)`
+      break
     case "up":
-      return `translate3d(0, ${-distance}px, 0)`
+      translate = `translate3d(0, ${-distance}px, 0)`
+      break
     case "down":
-      return `translate3d(0, ${distance}px, 0)`
+      translate = `translate3d(0, ${distance}px, 0)`
+      break
   }
+  return scale !== undefined ? `${translate} scale(${scale})` : translate
 }
 
 export function getInitialAnimationStyles(
   initialPosition: Position,
   withOpacity = true,
   distance: number = ANIMATION_CONFIG.distance,
+  scale?: number,
 ): Record<string, string> {
   const styles: Record<string, string> = {
     "will-change": "transform, opacity",
     "backface-visibility": "hidden",
-    transform: getTranslateValue(initialPosition, distance),
+    transform: getTransformValue(initialPosition, distance, scale),
   }
 
   if (withOpacity) {
@@ -46,17 +57,27 @@ export function getInitialAnimationStyles(
 export function animateElementIn(
   element: HTMLElement,
   initialPosition: Position,
-  options: { withOpacity?: boolean; duration?: number; distance?: number } = {},
+  options: {
+    withOpacity?: boolean
+    duration?: number
+    distance?: number
+    scale?: number
+  } = {},
 ): Promise<void> {
   const {
     withOpacity = true,
     duration = ANIMATION_CONFIG.duration,
     distance = ANIMATION_CONFIG.distance,
+    scale,
   } = options
 
   return new Promise((resolve) => {
     element.style.transition = "none"
-    element.style.transform = getTranslateValue(initialPosition, distance)
+    element.style.transform = getTransformValue(
+      initialPosition,
+      distance,
+      scale,
+    )
     if (withOpacity) {
       element.style.opacity = "0"
     }
@@ -73,11 +94,15 @@ export function animateElementIn(
     }
     element.style.transition = transitions.join(", ")
 
+    // Double rAF ensures the browser paints the hidden state before transitioning
     requestAnimationFrame(() => {
-      element.style.transform = "translate3d(0, 0, 0)"
-      if (withOpacity) {
-        element.style.opacity = "1"
-      }
+      requestAnimationFrame(() => {
+        element.style.transform =
+          scale !== undefined ? "translate3d(0, 0, 0) scale(1)" : "translate3d(0, 0, 0)"
+        if (withOpacity) {
+          element.style.opacity = "1"
+        }
+      })
     })
 
     const handleTransitionEnd = (e: TransitionEvent) => {
@@ -94,12 +119,18 @@ export function animateElementIn(
 export function animateElementOut(
   element: HTMLElement,
   exitPosition: Position,
-  options: { withOpacity?: boolean; duration?: number; distance?: number } = {},
+  options: {
+    withOpacity?: boolean
+    duration?: number
+    distance?: number
+    scale?: number
+  } = {},
 ): Promise<void> {
   const {
     withOpacity = true,
     duration = ANIMATION_CONFIG.duration,
     distance = ANIMATION_CONFIG.distance,
+    scale,
   } = options
 
   return new Promise((resolve) => {
@@ -118,7 +149,7 @@ export function animateElementOut(
     element.style.transition = transitions.join(", ")
 
     requestAnimationFrame(() => {
-      element.style.transform = getTranslateValue(exitPosition, distance)
+      element.style.transform = getTransformValue(exitPosition, distance, scale)
       if (withOpacity) {
         element.style.opacity = "0"
       }

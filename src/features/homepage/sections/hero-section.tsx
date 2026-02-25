@@ -1,24 +1,32 @@
 import { Link } from "@tanstack/solid-router"
-import { Accessor } from "solid-js"
-import { cn } from "@/utils"
+import { onMount } from "solid-js"
 import { VideoShowcase } from "../components/video-showcase"
+import {
+  animateElementIn,
+  getInitialAnimationStyles,
+} from "@/utils/animations"
 
-export function HeroSection(props: {
-  heroLoaded: Accessor<boolean>
-  explorePath?: string
-}) {
+export function HeroSection(props: { explorePath?: string }) {
+  let textRef: HTMLDivElement | undefined
+  let videoRef: HTMLDivElement | undefined
+
+  onMount(() => {
+    if (textRef) {
+      animateElementIn(textRef, "down", { duration: 1000 })
+    }
+    if (videoRef) {
+      animateElementIn(videoRef, "down", { duration: 1000, scale: 0.95 })
+    }
+  })
+
   return (
     <section class="relative flex min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-14rem)] items-center justify-center -mt-16">
       <div class="mx-auto max-w-7xl px-6 py-20">
         <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Text content */}
           <div
-            class={cn(
-              "transition-all duration-1000 delay-200",
-              props.heroLoaded()
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8",
-            )}
+            ref={textRef}
+            style={getInitialAnimationStyles("down")}
           >
             <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-(--landing-accent)/20 bg-(--landing-accent)/10 px-4 py-1.5 text-sm text-(--landing-accent)">
               <span class="relative flex h-2 w-2">
@@ -90,12 +98,9 @@ export function HeroSection(props: {
 
           {/* Hero video */}
           <div
-            class={cn(
-              "relative transition-all duration-1000 delay-500",
-              props.heroLoaded()
-                ? "opacity-100 translate-y-0 scale-100"
-                : "opacity-0 translate-y-8 scale-95",
-            )}
+            ref={videoRef}
+            class="relative"
+            style={getInitialAnimationStyles("down", true, undefined, 0.95)}
           >
             {/* Glow effect behind video */}
             <div class="absolute -inset-4 rounded-3xl bg-linear-to-r from-(--landing-accent)/20 to-(--landing-accent-end)/20 blur-2xl" />

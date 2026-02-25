@@ -1,6 +1,10 @@
-import { createSignal, onMount, onCleanup, type JSX } from "solid-js"
+import { onMount, type JSX } from "solid-js"
 import { cn } from "@/utils"
 import { VideoShowcase } from "./video-showcase"
+import {
+  animateElementIn,
+  getInitialAnimationStyles,
+} from "@/utils/animations"
 
 export function FeatureVideoCard(props: {
   title: string
@@ -11,31 +15,36 @@ export function FeatureVideoCard(props: {
   index: number
 }) {
   let ref: HTMLDivElement | undefined
-  const [isVisible, setIsVisible] = createSignal(false)
 
   onMount(() => {
+    if (!ref) return
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true)
+          setTimeout(
+            () =>
+              animateElementIn(ref!, "down", {
+                duration: 700,
+                distance: 48,
+              }),
+            props.index * 100,
+          )
           observer.disconnect()
         }
       },
       { threshold: 0.2, rootMargin: "-50px" },
     )
-    if (ref) observer.observe(ref)
-    onCleanup(() => observer.disconnect())
+    observer.observe(ref)
   })
 
   return (
     <div
       ref={ref}
       class={cn(
-        "grid gap-8 lg:gap-12 items-center transition-all duration-700",
+        "grid gap-8 lg:gap-12 items-center",
         props.flipped ? "lg:grid-cols-[1fr_1.2fr]" : "lg:grid-cols-[1.2fr_1fr]",
-        isVisible() ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12",
       )}
-      style={{ "transition-delay": `${props.index * 100}ms` }}
+      style={getInitialAnimationStyles("down", true, 48)}
     >
       <div class={cn(props.flipped && "lg:order-2")}>
         <div class="mb-4 flex items-center gap-3">
