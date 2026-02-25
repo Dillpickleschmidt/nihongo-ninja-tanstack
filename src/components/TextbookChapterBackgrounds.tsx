@@ -185,7 +185,7 @@ export type BackgroundSettings = {
 
 export function TextbookChapterBackgrounds() {
   const queryClient = useQueryClient()
-  const { preferences } = usePreferences()
+  const { preferences, setPreference } = usePreferences()
 
   const backgroundSettingsQuery = useTanstackQuery(() =>
     backgroundSettingsQueryOptions(),
@@ -200,6 +200,7 @@ export function TextbookChapterBackgrounds() {
         isDark: color.isDark,
       } satisfies BackgroundColor)
       document.documentElement.style.setProperty("--accent", color.hex)
+      setPreference("accentColor", color.hex)
     } catch (e) {
       console.warn("Failed to extract color from background:", e)
     }

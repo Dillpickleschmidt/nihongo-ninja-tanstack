@@ -34,7 +34,7 @@ import {
   preferencesQueryOptions,
 } from "@/query/query-options"
 import { updateDeviceSettingsCookie } from "@/query/model/device-settings"
-import { syncPreferencesFromProfile } from "@/query/model/preferences"
+import { parsePreferencesCookie, syncPreferencesFromProfile } from "@/query/model/preferences"
 import { useConvexQuery } from "@/lib/convex-query"
 import { getUser } from "@/lib/auth"
 import { api } from "convex/_generated/api"
@@ -89,6 +89,7 @@ function RootComponent() {
 function RootDocument(props: { children: JSX.Element }) {
   const queryClient = useQueryClient()
   const settingsQuery = useQuery(() => deviceSettingsQueryOptions())
+  const initialAccentColor = parsePreferencesCookie().accentColor
   const storageManager = cookieStorageManagerSSR("")
 
   if (!isServer) {
@@ -106,6 +107,7 @@ function RootDocument(props: { children: JSX.Element }) {
       <head>
         <HydrationScript />
         <ColorModeScript storageType={storageManager.type} />
+        <style>{`:root { --accent: ${initialAccentColor}; }`}</style>
       </head>
       <body>
         <HeadContent />

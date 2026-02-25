@@ -172,6 +172,7 @@ export const userPreferencesValidator = v.object({
   hasCompletedOnboarding: v.boolean(),
   tours: v.record(v.string(), v.number()),
   conjugationPractice: conjugationPracticeSettingsValidator,
+  accentColor: v.string(),
   timestamp: v.number(),
 })
 
@@ -213,6 +214,7 @@ export const DEFAULT_USER_PREFERENCES = {
     noFurigana: false,
     emoji: false,
   },
+  accentColor: "#797980",
   timestamp: 0,
 }
 
