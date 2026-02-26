@@ -1,6 +1,8 @@
 import { createIsomorphicFn } from "@tanstack/solid-start"
-import { useQuery as useConvexSolidQuery } from "convex-solidjs"
 import { useQueryClient } from "@tanstack/solid-query"
+import { useQuery as useConvexSolidQuery } from "convex-solidjs"
+import { createEffect } from "solid-js"
+import { isServer } from "solid-js/web"
 import type {
   FunctionReference,
   FunctionArgs,
@@ -94,46 +96,34 @@ export const convexMutation = createIsomorphicFn()
 
 type MaybeAccessor<T> = T | (() => T)
 
-interface QueryOptions {
-  enabled?: boolean
-}
-
-// Helper to unwrap MaybeAccessor (matches convex-solidjs pattern)
 function resolve<T>(value: MaybeAccessor<T>): T {
   return typeof value === "function" ? (value as () => T)() : value
 }
 
-// For components - bridges TanStack cache + convex-solidjs live updates
+// Bridges convex-solidjs with TQ cache for instant client-side navigations.
 export function useConvexQuery<Query extends FunctionReference<"query">>(
   query: Query,
   args: MaybeAccessor<FunctionArgs<Query>>,
-  options?: MaybeAccessor<QueryOptions>,
+  options?: MaybeAccessor<{ enabled?: boolean }>,
 ) {
   const queryClient = useQueryClient()
+  const resolvedArgs = () => resolve(args)
+  const queryKey = () => getQueryKey(query, resolvedArgs())
 
-  const live = useConvexSolidQuery(query, args, () => {
-    const resolvedArgs = resolve(args)
-    const queryKey = getQueryKey(query, resolvedArgs)
-    const cached = queryClient.getQueryData<FunctionReturnType<Query>>(queryKey)
+  // On client only, check TQ cache for data from a previous visit or loader
+  const cached = isServer ? undefined : queryClient.getQueryData(queryKey())
 
-    return {
-      ...resolve(options),
-      initialData: cached,
-    }
+  const result = useConvexSolidQuery(query, args, () => ({
+    ...resolve(options),
+    ...(cached !== undefined ? { initialData: cached } : {}),
+  }))
+
+  // Sync live data back to TQ cache for future navigations
+  createEffect(() => {
+    const data = result.data()
+    if (data === undefined) return
+    queryClient.setQueryData(queryKey(), data)
   })
 
-  return {
-    data: () => {
-      const liveData = live.data()
-      if (liveData !== undefined) {
-        const queryKey = getQueryKey(query, resolve(args))
-        // sync live data to TQ cache
-        queryClient.setQueryData(queryKey, liveData)
-      }
-      return liveData
-    },
-    error: live.error,
-    isLoading: live.isLoading,
-    refetch: live.refetch,
-  }
+  return result
 }

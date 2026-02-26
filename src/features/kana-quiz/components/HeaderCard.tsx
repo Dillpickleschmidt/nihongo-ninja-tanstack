@@ -4,26 +4,25 @@ export function HeaderCard(props: {
   theme?: { accent: string; message?: string }
 }) {
   return (
-    <div class="bg-card/70 border-border mx-auto max-w-2xl rounded-xl border p-6 text-center shadow backdrop-blur-sm">
-      <h1 class="text-foreground mb-2 text-3xl font-extrabold">
+    <div class="mx-auto max-w-2xl py-2 text-center">
+      <h1 class="text-foreground mb-2 text-3xl font-bold tracking-tight">
         {props.title}
       </h1>
 
-      {/* Optional accent line */}
       {props.theme && (
-        <div class={`mx-auto mb-4 h-1 w-16 rounded ${props.theme.accent}`} />
+        <div
+          class={`mx-auto mb-3 h-1 w-12 rounded-full ${props.theme.accent}`}
+        />
       )}
 
-      {/* Body message */}
-      <p class="text-muted-foreground text-lg">
+      <p class="text-white/50 text-base leading-relaxed">
         {props.theme?.message ??
           "Type the romaji for each kana in the boxes below."}
       </p>
 
-      {/* Only shown for normal intro */}
       {!props.theme && (
-        <p class="text-muted-foreground/80 mt-2 text-sm">
-          Practice until it feels natural 👍
+        <p class="mt-1.5 text-sm text-white/30">
+          Practice until it feels natural
         </p>
       )}
     </div>

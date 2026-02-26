@@ -153,7 +153,7 @@ function SmoothCardContent(props: SmoothCardContentProps) {
 
       <svg
         class={cn(
-          "absolute inset-0 overflow-visible",
+          "pointer-events-none absolute inset-0 overflow-visible",
           props.internals.showOutline() ? "opacity-100" : "opacity-0",
           props.internals.activeOutlineClass(),
         )}

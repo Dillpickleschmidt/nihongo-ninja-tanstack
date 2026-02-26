@@ -30,6 +30,10 @@ import { Route as HomeVocabSplatRouteImport } from './routes/_home/vocab/$'
 import { Route as HomeSentencePracticeIdRouteImport } from './routes/_home/sentence-practice/$id'
 import { Route as HomeImportAnkiRouteImport } from './routes/_home/import/anki'
 import { Route as HomeImportBuiltinIndexRouteImport } from './routes/_home/import/builtin/index'
+import { Route as HomeVocabTestHiraganaQuizRouteImport } from './routes/_home/vocab/test/hiragana-quiz'
+import { Route as HomeVocabTestDakutenHandakutenQuizRouteImport } from './routes/_home/vocab/test/dakuten-handakuten-quiz'
+import { Route as HomeVocabTestContractedSoundsQuizRouteImport } from './routes/_home/vocab/test/contracted-sounds-quiz'
+import { Route as HomeVocabTestAllHiraganaQuizRouteImport } from './routes/_home/vocab/test/all-hiragana-quiz'
 import { Route as HomeVocabPracticeSplatRouteImport } from './routes/_home/vocab/practice/$'
 import { Route as HomeLessonsChapter3WordOrderRouteImport } from './routes/_home/lessons/_chapter-3/word-order'
 import { Route as HomeLessonsChapter3VerbConjMasuRouteImport } from './routes/_home/lessons/_chapter-3/verb-conj-masu'
@@ -176,6 +180,30 @@ const HomeImportBuiltinIndexRoute = HomeImportBuiltinIndexRouteImport.update({
   path: '/import/builtin/',
   getParentRoute: () => HomeRoute,
 } as any)
+const HomeVocabTestHiraganaQuizRoute =
+  HomeVocabTestHiraganaQuizRouteImport.update({
+    id: '/test/hiragana-quiz',
+    path: '/test/hiragana-quiz',
+    getParentRoute: () => HomeVocabRoute,
+  } as any)
+const HomeVocabTestDakutenHandakutenQuizRoute =
+  HomeVocabTestDakutenHandakutenQuizRouteImport.update({
+    id: '/test/dakuten-handakuten-quiz',
+    path: '/test/dakuten-handakuten-quiz',
+    getParentRoute: () => HomeVocabRoute,
+  } as any)
+const HomeVocabTestContractedSoundsQuizRoute =
+  HomeVocabTestContractedSoundsQuizRouteImport.update({
+    id: '/test/contracted-sounds-quiz',
+    path: '/test/contracted-sounds-quiz',
+    getParentRoute: () => HomeVocabRoute,
+  } as any)
+const HomeVocabTestAllHiraganaQuizRoute =
+  HomeVocabTestAllHiraganaQuizRouteImport.update({
+    id: '/test/all-hiragana-quiz',
+    path: '/test/all-hiragana-quiz',
+    getParentRoute: () => HomeVocabRoute,
+  } as any)
 const HomeVocabPracticeSplatRoute = HomeVocabPracticeSplatRouteImport.update({
   id: '/practice/$',
   path: '/practice/$',
@@ -471,6 +499,10 @@ export interface FileRoutesByFullPath {
   '/lessons/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof HomeLessonsChapter3WordOrderRoute
   '/vocab/practice/$': typeof HomeVocabPracticeSplatRoute
+  '/vocab/test/all-hiragana-quiz': typeof HomeVocabTestAllHiraganaQuizRoute
+  '/vocab/test/contracted-sounds-quiz': typeof HomeVocabTestContractedSoundsQuizRoute
+  '/vocab/test/dakuten-handakuten-quiz': typeof HomeVocabTestDakutenHandakutenQuizRoute
+  '/vocab/test/hiragana-quiz': typeof HomeVocabTestHiraganaQuizRoute
   '/import/builtin': typeof HomeImportBuiltinIndexRoute
   '/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
@@ -532,6 +564,10 @@ export interface FileRoutesByTo {
   '/lessons/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof HomeLessonsChapter3WordOrderRoute
   '/vocab/practice/$': typeof HomeVocabPracticeSplatRoute
+  '/vocab/test/all-hiragana-quiz': typeof HomeVocabTestAllHiraganaQuizRoute
+  '/vocab/test/contracted-sounds-quiz': typeof HomeVocabTestContractedSoundsQuizRoute
+  '/vocab/test/dakuten-handakuten-quiz': typeof HomeVocabTestDakutenHandakutenQuizRoute
+  '/vocab/test/hiragana-quiz': typeof HomeVocabTestHiraganaQuizRoute
   '/import/builtin': typeof HomeImportBuiltinIndexRoute
   '/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
@@ -596,6 +632,10 @@ export interface FileRoutesById {
   '/_home/lessons/_chapter-3/verb-conj-masu': typeof HomeLessonsChapter3VerbConjMasuRoute
   '/_home/lessons/_chapter-3/word-order': typeof HomeLessonsChapter3WordOrderRoute
   '/_home/vocab/practice/$': typeof HomeVocabPracticeSplatRoute
+  '/_home/vocab/test/all-hiragana-quiz': typeof HomeVocabTestAllHiraganaQuizRoute
+  '/_home/vocab/test/contracted-sounds-quiz': typeof HomeVocabTestContractedSoundsQuizRoute
+  '/_home/vocab/test/dakuten-handakuten-quiz': typeof HomeVocabTestDakutenHandakutenQuizRoute
+  '/_home/vocab/test/hiragana-quiz': typeof HomeVocabTestHiraganaQuizRoute
   '/_home/import/builtin/': typeof HomeImportBuiltinIndexRoute
   '/_home/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
@@ -660,6 +700,10 @@ export interface FileRouteTypes {
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
     | '/vocab/practice/$'
+    | '/vocab/test/all-hiragana-quiz'
+    | '/vocab/test/contracted-sounds-quiz'
+    | '/vocab/test/dakuten-handakuten-quiz'
+    | '/vocab/test/hiragana-quiz'
     | '/import/builtin'
     | '/vocab/deck/$deckId/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -721,6 +765,10 @@ export interface FileRouteTypes {
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
     | '/vocab/practice/$'
+    | '/vocab/test/all-hiragana-quiz'
+    | '/vocab/test/contracted-sounds-quiz'
+    | '/vocab/test/dakuten-handakuten-quiz'
+    | '/vocab/test/hiragana-quiz'
     | '/import/builtin'
     | '/vocab/deck/$deckId/edit'
   id:
@@ -784,6 +832,10 @@ export interface FileRouteTypes {
     | '/_home/lessons/_chapter-3/verb-conj-masu'
     | '/_home/lessons/_chapter-3/word-order'
     | '/_home/vocab/practice/$'
+    | '/_home/vocab/test/all-hiragana-quiz'
+    | '/_home/vocab/test/contracted-sounds-quiz'
+    | '/_home/vocab/test/dakuten-handakuten-quiz'
+    | '/_home/vocab/test/hiragana-quiz'
     | '/_home/import/builtin/'
     | '/_home/vocab/deck/$deckId/edit'
   fileRoutesById: FileRoutesById
@@ -947,6 +999,34 @@ declare module '@tanstack/solid-router' {
       fullPath: '/import/builtin'
       preLoaderRoute: typeof HomeImportBuiltinIndexRouteImport
       parentRoute: typeof HomeRoute
+    }
+    '/_home/vocab/test/hiragana-quiz': {
+      id: '/_home/vocab/test/hiragana-quiz'
+      path: '/test/hiragana-quiz'
+      fullPath: '/vocab/test/hiragana-quiz'
+      preLoaderRoute: typeof HomeVocabTestHiraganaQuizRouteImport
+      parentRoute: typeof HomeVocabRoute
+    }
+    '/_home/vocab/test/dakuten-handakuten-quiz': {
+      id: '/_home/vocab/test/dakuten-handakuten-quiz'
+      path: '/test/dakuten-handakuten-quiz'
+      fullPath: '/vocab/test/dakuten-handakuten-quiz'
+      preLoaderRoute: typeof HomeVocabTestDakutenHandakutenQuizRouteImport
+      parentRoute: typeof HomeVocabRoute
+    }
+    '/_home/vocab/test/contracted-sounds-quiz': {
+      id: '/_home/vocab/test/contracted-sounds-quiz'
+      path: '/test/contracted-sounds-quiz'
+      fullPath: '/vocab/test/contracted-sounds-quiz'
+      preLoaderRoute: typeof HomeVocabTestContractedSoundsQuizRouteImport
+      parentRoute: typeof HomeVocabRoute
+    }
+    '/_home/vocab/test/all-hiragana-quiz': {
+      id: '/_home/vocab/test/all-hiragana-quiz'
+      path: '/test/all-hiragana-quiz'
+      fullPath: '/vocab/test/all-hiragana-quiz'
+      preLoaderRoute: typeof HomeVocabTestAllHiraganaQuizRouteImport
+      parentRoute: typeof HomeVocabRoute
     }
     '/_home/vocab/practice/$': {
       id: '/_home/vocab/practice/$'
@@ -1335,6 +1415,10 @@ interface HomeVocabRouteChildren {
   HomeVocabCreateRoute: typeof HomeVocabCreateRoute
   HomeVocabIndexRoute: typeof HomeVocabIndexRoute
   HomeVocabPracticeSplatRoute: typeof HomeVocabPracticeSplatRoute
+  HomeVocabTestAllHiraganaQuizRoute: typeof HomeVocabTestAllHiraganaQuizRoute
+  HomeVocabTestContractedSoundsQuizRoute: typeof HomeVocabTestContractedSoundsQuizRoute
+  HomeVocabTestDakutenHandakutenQuizRoute: typeof HomeVocabTestDakutenHandakutenQuizRoute
+  HomeVocabTestHiraganaQuizRoute: typeof HomeVocabTestHiraganaQuizRoute
   HomeVocabDeckDeckIdEditRoute: typeof HomeVocabDeckDeckIdEditRoute
 }
 
@@ -1344,6 +1428,12 @@ const HomeVocabRouteChildren: HomeVocabRouteChildren = {
   HomeVocabCreateRoute: HomeVocabCreateRoute,
   HomeVocabIndexRoute: HomeVocabIndexRoute,
   HomeVocabPracticeSplatRoute: HomeVocabPracticeSplatRoute,
+  HomeVocabTestAllHiraganaQuizRoute: HomeVocabTestAllHiraganaQuizRoute,
+  HomeVocabTestContractedSoundsQuizRoute:
+    HomeVocabTestContractedSoundsQuizRoute,
+  HomeVocabTestDakutenHandakutenQuizRoute:
+    HomeVocabTestDakutenHandakutenQuizRoute,
+  HomeVocabTestHiraganaQuizRoute: HomeVocabTestHiraganaQuizRoute,
   HomeVocabDeckDeckIdEditRoute: HomeVocabDeckDeckIdEditRoute,
 }
 

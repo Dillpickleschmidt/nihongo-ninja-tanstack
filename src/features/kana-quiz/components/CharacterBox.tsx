@@ -1,26 +1,25 @@
 // src/features/kana-quiz/components/CharacterBox.tsx
-import { JSX } from "solid-js"
 import { SmoothCard } from "@/components/SmoothCard"
+import { TextField, TextFieldInput } from "@/components/ui/text-field"
 
 type CharacterBoxProps = {
   character: string
-  userInput: string
-  onInputChange: (newUserInput: string) => void
+  registerRef: (el: HTMLInputElement) => void
   disabled: boolean
   isCorrect?: boolean
   isIncorrect?: boolean
-  showResults?: boolean
 }
 
 export default function CharacterBox(props: CharacterBoxProps) {
-  const handleInputChange: JSX.EventHandler<HTMLInputElement, InputEvent> = (
-    e,
-  ) => props.onInputChange(e.currentTarget.value)
+  const getBorderClass = () => {
+    if (props.isCorrect) return "stroke-emerald-500/60 [stroke-width:1.5]"
+    if (props.isIncorrect) return "stroke-rose-500/50 [stroke-width:1.5]"
+    return "stroke-white/[0.08] [stroke-width:0.75]"
+  }
 
-  // One clean background per state
   const getBackground = () => {
-    if (props.isCorrect) return "bg-emerald-500/20"
-    if (props.isIncorrect) return "bg-rose-500/20"
+    if (props.isCorrect) return "bg-emerald-500/15"
+    if (props.isIncorrect) return "bg-rose-500/15"
     return "bg-card/70"
   }
 
@@ -31,34 +30,23 @@ export default function CharacterBox(props: CharacterBoxProps) {
       cornerRadius={20}
       cornerSmoothing={1}
       border={true}
-      borderClass="stroke-neutral-400/35 [stroke-width:0.75]"
-      class={`flex flex-col items-center justify-center ${getBackground()} p-4 shadow-md backdrop-blur-sm transition-all duration-200`}
+      borderClass={getBorderClass()}
+      class={`flex flex-col items-center justify-center ${getBackground()} p-4 backdrop-blur-sm transition-all duration-300`}
     >
-      {/* Kana character */}
-      <div class="font-japanese text-foreground mb-4 text-4xl font-semibold select-none">
+      <div class="font-japanese mb-4 text-4xl font-semibold text-white/90 select-none">
         {props.character}
       </div>
 
-      {/* Input box inside */}
-      <SmoothCard
-        width={112}
-        height={56}
-        cornerRadius={12}
-        cornerSmoothing={1}
-        class="bg-background/70 p-0 backdrop-blur-sm"
-      >
-        <input
-          type="text"
-          value={props.userInput}
-          onInput={handleInputChange}
-          disabled={props.disabled}
+      <TextField disabled={props.disabled} class="w-28">
+        <TextFieldInput
+          ref={props.registerRef}
+          maxLength={4}
           placeholder="..."
-          class={`text-foreground placeholder-muted-foreground h-full w-full bg-transparent text-center text-xl font-medium outline-none ${
-            props.disabled ? "cursor-not-allowed opacity-60" : ""
+          class={`h-14 rounded-xl border border-white/8 bg-background/70 text-center text-xl font-medium text-white/90 placeholder:text-white/20 backdrop-blur-sm transition-all focus:border-(--accent)/40 focus:bg-background/80 ${
+            props.disabled ? "cursor-not-allowed disabled:opacity-80" : ""
           }`}
-          style={{ "font-family": "inherit" }}
         />
-      </SmoothCard>
+      </TextField>
     </SmoothCard>
   )
 }

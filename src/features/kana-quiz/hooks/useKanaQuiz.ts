@@ -1,5 +1,5 @@
 // src/features/kana-quiz/hooks/useKanaQuiz.ts
-import { createSignal } from "solid-js"
+import { type Accessor, createEffect, createSignal } from "solid-js"
 import type { VocabularyItem } from "convex/validators"
 
 export type KanaItem = {
@@ -19,39 +19,55 @@ type CharacterBoxState = KanaItem & {
   isCorrect: boolean
 }
 
-export const useKanaQuiz = (kana: KanaItem[]) => {
+export const useKanaQuiz = (kana: Accessor<KanaItem[] | undefined>) => {
   const [showResults, setShowResults] = createSignal(false)
   const [numCorrect, setNumCorrect] = createSignal(0)
+  const [characterBoxes, setCharacterBoxes] = createSignal<
+    CharacterBoxState[] | undefined
+  >()
 
-  const [characterBoxes, setCharacterBoxes] = createSignal<CharacterBoxState[]>(
-    kana.map((kanaItem) => ({
-      ...kanaItem,
-      userInput: "",
-      isCorrect: false,
-    })),
-  )
+  // Initialize character boxes when kana arrives (set-once)
+  createEffect(() => {
+    const items = kana()
+    if (!items || characterBoxes()) return
+    setCharacterBoxes(
+      items.map((kanaItem) => ({
+        ...kanaItem,
+        userInput: "",
+        isCorrect: false,
+      })),
+    )
+  })
 
-  const handleInputChange = (index: number, newUserInput: string) => {
-    setCharacterBoxes((prevCharacterBoxes) => {
-      const newCharacterBoxes = [...prevCharacterBoxes]
-      newCharacterBoxes[index].userInput = newUserInput
-      newCharacterBoxes[index].isCorrect = newCharacterBoxes[
-        index
-      ].romaji.includes(newUserInput.toLowerCase())
-      setNumCorrect(newCharacterBoxes.filter((box) => box.isCorrect).length)
-      return newCharacterBoxes
-    })
+  const inputRefs: HTMLInputElement[] = []
+
+  const registerRef = (index: number, el: HTMLInputElement) => {
+    inputRefs[index] = el
   }
 
   const handleSubmit = () => {
+    const boxes = characterBoxes()
+    if (!boxes) return
+    const scored = boxes.map((box, i) => {
+      const userInput = inputRefs[i]?.value ?? ""
+      return {
+        ...box,
+        userInput,
+        isCorrect: box.romaji.includes(userInput.toLowerCase()),
+      }
+    })
+    setCharacterBoxes(scored)
+    setNumCorrect(scored.filter((b) => b.isCorrect).length)
     setShowResults(true)
   }
 
   const handleRetry = () => {
-    // Shuffle the kana array for a new order
-    const shuffledKana = [...kana].sort(() => Math.random() - 0.5)
-
-    // Reset all state back to initial values with shuffled order
+    const items = kana()
+    if (!items) return
+    const shuffledKana = [...items].sort(() => Math.random() - 0.5)
+    for (const ref of inputRefs) {
+      if (ref) ref.value = ""
+    }
     setShowResults(false)
     setNumCorrect(0)
     setCharacterBoxes(
@@ -67,7 +83,7 @@ export const useKanaQuiz = (kana: KanaItem[]) => {
     characterBoxes,
     showResults,
     numCorrect,
-    handleInputChange,
+    registerRef,
     handleSubmit,
     handleRetry,
   }
