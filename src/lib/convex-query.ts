@@ -134,7 +134,6 @@ export function useConvexQuery<Query extends FunctionReference<"query">>(
     },
     error: live.error,
     isLoading: live.isLoading,
-    isStale: live.isStale,
     refetch: live.refetch,
   }
 }

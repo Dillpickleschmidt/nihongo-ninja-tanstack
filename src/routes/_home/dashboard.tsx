@@ -1,16 +1,11 @@
 import { createFileRoute } from "@tanstack/solid-router"
-import { isServer } from "solid-js/web"
-import {
-  Suspense,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-} from "solid-js"
+import { createSignal, createEffect, onMount, onCleanup } from "solid-js"
 import { convexQuery } from "@/lib/convex-query"
 import { api } from "../../../convex/_generated/api"
+import { parsePreferencesCookie } from "@/query/model/preferences"
 import { useQueryClient } from "@tanstack/solid-query"
 import { queryKeys } from "~/query/query-keys"
+import { CompletionsSyncDialog } from "@/features/dashboard/CompletionsSyncDialog"
 import { FloatingKanji } from "@/features/homepage/components/floating-kanji"
 import { HeroSection } from "@/features/dashboard/hero/HeroSection"
 import { PracticeToolsSection } from "@/features/dashboard/practice-tools/PracticeToolsSection"
@@ -24,13 +19,17 @@ export const Route = createFileRoute("/_home/dashboard")({
     context.queryClient.prefetchQuery(
       convexQuery(api.api.fsrs.getDueFSRSCardsCount, {}),
     )
-    return { didSSR: isServer }
+    const pathId = parsePreferencesCookie().activeLearningPath
+    if (pathId) {
+      context.queryClient.prefetchQuery(
+        convexQuery(api.api.learning_paths.getPathWithProgress, { pathId }),
+      )
+    }
   },
   component: DashboardComponent,
 })
 
 function DashboardComponent() {
-  const { didSSR } = Route.useLoaderData()()
   const [scrollY, setScrollY] = createSignal(0)
   const queryClient = useQueryClient()
 
@@ -60,17 +59,17 @@ function DashboardComponent() {
         .animate-fade-up { animation: fade-up 0.3s ease-out forwards; }
       `}</style>
 
+      <CompletionsSyncDialog />
+
       <FloatingKanji char="忍" class="top-20 left-[10%]" delay={0} />
 
       <main class="relative pt-28 pb-32 md:pb-12">
         <div class="mx-auto max-w-7xl px-4 md:px-6">
-          <HeroSection skipAnimation={didSSR} />
+          <HeroSection />
 
           <PracticeToolsSection />
 
-          <Suspense>
-            <LearningPathSection skipAnimation={didSSR} />
-          </Suspense>
+          <LearningPathSection />
         </div>
       </main>
     </div>

@@ -10,15 +10,22 @@ if (!CONVEX_URL) {
 
 export const convexQueryClient = setupConvex(CONVEX_URL)
 
-// Set auth on the WebSocket client (for client-side real-time updates)
-convexQueryClient.client.setAuth(async ({ forceRefreshToken }) => {
+const convexAuthProvider = async ({
+  forceRefreshToken,
+}: {
+  forceRefreshToken: boolean
+}) => {
   if (forceRefreshToken) {
-    // Force BetterAuth to refresh the session and get new JWT
     await authClient.getSession({ query: { disableCookieCache: true } })
   }
   const { token } = await fetchAuth()
   return token
-})
+}
+
+convexQueryClient.client.setAuth(convexAuthProvider)
+
+// Exported for re-triggering auth after sign-in/sign-out
+export { convexAuthProvider }
 
 export default function AppConvexProvider(props: { children: JSXElement }) {
   return (

@@ -3,7 +3,14 @@ import { Button } from "./ui/button"
 import { useLocation, useNavigate, useMatches } from "@tanstack/solid-router"
 import { cva } from "class-variance-authority"
 import { cn } from "@/utils"
-import { getUser } from "@/lib/auth"
+import { useCompleteModule } from "@/lib/completions"
+import { static_modules } from "@/data/static_modules"
+
+// Reverse lookup: link URL → moduleId (only static modules use ContentBox)
+const linkToModuleId: Record<string, string> = {}
+for (const [moduleId, mod] of Object.entries(static_modules)) {
+  linkToModuleId[mod.link] = moduleId
+}
 
 type ContentBoxConfig = {
   nextButtonLink?: string
@@ -36,8 +43,10 @@ export default function ContentBox(props: ContentBoxProps) {
   const location = useLocation()
   const navigate = useNavigate()
   const matches = useMatches()
-  const user = getUser()
+  const { completeModule } = useCompleteModule()
   const [showCompleteButton, setShowCompleteButton] = createSignal(false)
+
+  const moduleId = () => linkToModuleId[location().pathname]
 
   const config = (): ContentBoxConfig => {
     const currentPath = location().pathname
@@ -58,7 +67,8 @@ export default function ContentBox(props: ContentBoxProps) {
 
   const handleCompleteClick = (e: Event) => {
     e.preventDefault()
-    // TODO: Add actual module completion logic
+    const id = moduleId()
+    if (id) completeModule(id)
     navigate({ to: "/dashboard" })
   }
 
@@ -118,7 +128,7 @@ export default function ContentBox(props: ContentBoxProps) {
             size="lg"
             class="animate-in fade-in slide-in-from-bottom-4 duration-300"
           >
-            {user() ? "Mark as Complete" : "Return"}
+            {moduleId() ? "Mark as Complete" : "Return"}
           </Button>
         </div>
       </Show>

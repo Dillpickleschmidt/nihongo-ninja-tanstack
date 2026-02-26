@@ -7,6 +7,7 @@ import { cn } from "@/utils"
 
 interface ModuleListViewProps {
   modules: ResolvedModule[]
+  isCompleted: (moduleId: string) => boolean
 }
 
 export function ModuleListView(props: ModuleListViewProps) {
@@ -18,7 +19,7 @@ export function ModuleListView(props: ModuleListViewProps) {
             module={module}
             index={index()}
             number={index() + 1}
-            isCompleted={false} // TODO: integrate with completion tracking
+            isCompleted={props.isCompleted(module.moduleId)}
           />
         )}
       </For>

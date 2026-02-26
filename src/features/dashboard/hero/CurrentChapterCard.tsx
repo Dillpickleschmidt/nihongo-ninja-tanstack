@@ -1,32 +1,18 @@
-import { Show, For, createSignal, Suspense, onMount } from "solid-js"
+import { Show, For, createSignal, Suspense } from "solid-js"
 import { ChevronRight } from "lucide-solid"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { getModulesFromChapter } from "@/data/utils/modules"
-import { animateElementIn, getInitialAnimationStyles } from "@/utils/animations"
 import { getUser } from "@/lib/auth"
 import { usePreferences } from "@/lib/preferences"
 import { LearningPathChapterSelector } from "../LearningPathChapterSelector"
 import { ModuleLink } from "./ModuleLink"
 
-interface CurrentChapterCardProps {
-  skipAnimation?: boolean
-}
-
-export function CurrentChapterCard(props: CurrentChapterCardProps) {
-  let cardRef: HTMLDivElement | undefined
-
-  onMount(() => {
-    if (!props.skipAnimation && cardRef) {
-      animateElementIn(cardRef, "down")
-    }
-  })
-
+export function CurrentChapterCard() {
   return (
     <div
-      ref={cardRef}
-      class="relative overflow-hidden min-h-34"
-      style={props.skipAnimation ? {} : getInitialAnimationStyles("down")}
+      class="relative overflow-hidden min-h-34 animate-fade-up opacity-0"
+      style={{ "animation-delay": "75ms" }}
     >
       <Suspense
         fallback={
@@ -63,8 +49,8 @@ function CurrentChapterCardContent() {
 
   const selectedPathId = () => preferences().activeLearningPath
 
-  const pathChaptersQuery = useConvexQuery(
-    api.api.learning_paths.getPathChapters,
+  const progressQuery = useConvexQuery(
+    api.api.learning_paths.getPathWithProgress,
     () => ({ pathId: selectedPathId()! }),
     () => ({ enabled: !!selectedPathId() }),
   )
@@ -72,7 +58,7 @@ function CurrentChapterCardContent() {
   const currentChapter = () => {
     const chapterSlug = preferences().activeChapter
     if (!chapterSlug) return undefined
-    return pathChaptersQuery.data()?.find((c) => c.slug === chapterSlug)
+    return progressQuery.data()?.chapters?.find((c) => c.slug === chapterSlug)
   }
 
   const currentModules = () => {

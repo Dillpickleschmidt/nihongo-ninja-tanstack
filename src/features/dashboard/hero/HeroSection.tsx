@@ -1,33 +1,16 @@
-import { Show, Suspense, onMount } from "solid-js"
+import { Show, Suspense } from "solid-js"
 import { Sparkles } from "lucide-solid"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { getModulesFromChapter } from "@/data/utils/modules"
-import { animateElementIn, getInitialAnimationStyles } from "@/utils/animations"
 import { usePreferences } from "@/lib/preferences"
 import { CurrentChapterCard } from "./CurrentChapterCard"
 
-interface HeroSectionProps {
-  skipAnimation?: boolean
-}
-
-export function HeroSection(props: HeroSectionProps) {
-  let headerRef: HTMLDivElement | undefined
-
-  onMount(() => {
-    if (!props.skipAnimation && headerRef) {
-      animateElementIn(headerRef, "down")
-    }
-  })
-
+export function HeroSection() {
   return (
     <section>
-      <div
-        ref={headerRef}
-        class="mb-8"
-        style={props.skipAnimation ? {} : getInitialAnimationStyles("down")}
-      >
+      <div class="mb-8 animate-fade-up opacity-0">
         <Suspense
           fallback={
             <div class="flex items-center gap-3 mb-2">
@@ -42,7 +25,7 @@ export function HeroSection(props: HeroSectionProps) {
         </h1>
       </div>
 
-      <CurrentChapterCard skipAnimation={props.skipAnimation} />
+      <CurrentChapterCard />
     </section>
   )
 }
@@ -59,8 +42,8 @@ function HeroBadge() {
   const selectedPath = () =>
     learningPathsQuery.data()?.find((p) => p.id === selectedPathId())
 
-  const pathChaptersQuery = useConvexQuery(
-    api.api.learning_paths.getPathChapters,
+  const progressQuery = useConvexQuery(
+    api.api.learning_paths.getPathWithProgress,
     () => ({ pathId: selectedPathId()! }),
     () => ({ enabled: !!selectedPathId() }),
   )
@@ -68,7 +51,7 @@ function HeroBadge() {
   const currentChapter = () => {
     const chapterSlug = preferences().activeChapter
     if (!chapterSlug) return undefined
-    return pathChaptersQuery.data()?.find((c) => c.slug === chapterSlug)
+    return progressQuery.data()?.chapters?.find((c) => c.slug === chapterSlug)
   }
 
   const moduleCount = () => {

@@ -7,6 +7,7 @@ import { cn } from "@/utils"
 
 interface ModuleTimelineViewProps {
   modules: ResolvedModule[]
+  isCompleted: (moduleId: string) => boolean
 }
 
 export function ModuleTimelineView(props: ModuleTimelineViewProps) {
@@ -15,7 +16,7 @@ export function ModuleTimelineView(props: ModuleTimelineViewProps) {
       <For each={props.modules}>
         {(enrichedModule, index) => {
           const ModuleIcon = getModuleIcon(enrichedModule.module.module_type)
-          const isCompleted = false // TODO: integrate with completion tracking
+          const isCompleted = props.isCompleted(enrichedModule.moduleId)
 
           return (
             <li

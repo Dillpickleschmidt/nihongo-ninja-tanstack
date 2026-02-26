@@ -1,10 +1,6 @@
-import { Show, For, onMount, onCleanup } from "solid-js"
+import { Show, For } from "solid-js"
 import { getModulesFromChapter } from "@/data/utils/modules"
 import type { LearningPathChapter } from "@/data/chapters"
-import {
-  getInitialAnimationStyles,
-  observeElementForAnimation,
-} from "@/utils/animations"
 import { ModuleListView } from "./ModuleListView"
 import { ModuleCategorizedView } from "./ModuleCategorizedView"
 import { ModuleTimelineView } from "./ModuleTimelineView"
@@ -12,27 +8,14 @@ import { ModuleTimelineView } from "./ModuleTimelineView"
 interface ChapterSectionProps {
   chapter: LearningPathChapter
   viewMode: string
+  isCompleted: (moduleId: string) => boolean
 }
 
 export function ChapterSection(props: ChapterSectionProps) {
-  let ref: HTMLDivElement | undefined
-
   const modules = () => getModulesFromChapter(props.chapter)
 
-  onMount(() => {
-    if (ref) {
-      const cleanup = observeElementForAnimation(ref, {
-        initialPosition: "down",
-        noExit: true,
-        screenBottomOffset: 15,
-        screenTopOffset: 15,
-      })
-      onCleanup(cleanup)
-    }
-  })
-
   return (
-    <div ref={ref} class="mb-12" style={getInitialAnimationStyles("down")}>
+    <div class="mb-12 animate-fade-up opacity-0">
       {/* Chapter Header */}
       <div class="mb-6">
         <h2 class="text-2xl font-bold mb-2">{props.chapter.title}</h2>
@@ -57,16 +40,16 @@ export function ChapterSection(props: ChapterSectionProps) {
       {/* Grid View - Timeline on mobile, Grid on desktop */}
       <Show when={props.viewMode === "grid"}>
         <div class="md:hidden">
-          <ModuleTimelineView modules={modules()} />
+          <ModuleTimelineView modules={modules()} isCompleted={props.isCompleted} />
         </div>
         <div class="hidden md:block">
-          <ModuleListView modules={modules()} />
+          <ModuleListView modules={modules()} isCompleted={props.isCompleted} />
         </div>
       </Show>
 
       {/* Categorized View */}
       <Show when={props.viewMode === "compact"}>
-        <ModuleCategorizedView modules={modules()} />
+        <ModuleCategorizedView modules={modules()} isCompleted={props.isCompleted} />
       </Show>
     </div>
   )

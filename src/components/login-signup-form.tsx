@@ -3,6 +3,7 @@ import { createSignal } from "solid-js"
 import { useQueryClient } from "@tanstack/solid-query"
 import { authClient } from "@/lib/auth-client"
 import { createProfile } from "@/lib/server"
+import { convexQueryClient, convexAuthProvider } from "@/providers/convex"
 import { queryKeys } from "~/query/query-keys"
 
 export default function LoginSignupForm() {
@@ -42,7 +43,8 @@ export default function LoginSignupForm() {
       }
 
       queryClient.invalidateQueries({ queryKey: ["auth"] })
-      navigate({ to: "/" })
+      convexQueryClient.client.setAuth(convexAuthProvider)
+      navigate({ to: "/dashboard" })
     } catch (err: any) {
       setError(err?.message || "An error occurred")
     } finally {

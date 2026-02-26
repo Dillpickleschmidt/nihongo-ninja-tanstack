@@ -1,21 +1,18 @@
-import { createSignal, Suspense, For, onMount } from "solid-js"
+import { createSignal, Suspense, Index } from "solid-js"
 import { Rows3, List } from "lucide-solid"
 import { useConvexQuery } from "@/lib/convex-query"
+import { useLocalCompletions } from "@/lib/completions"
 import { api } from "convex/_generated/api"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { animateElementIn, getInitialAnimationStyles } from "@/utils/animations"
 import { usePreferences } from "@/lib/preferences"
+import { getUser } from "@/lib/auth"
 import { ChapterSection } from "./ChapterSection"
 
-interface LearningPathSectionProps {
-  skipAnimation?: boolean
-}
-
-export function LearningPathSection(props: LearningPathSectionProps) {
-  let ref: HTMLElement | undefined
+export function LearningPathSection() {
   const [selectedView, setSelectedView] = createSignal<string>("grid")
 
   // Queries
+  const user = getUser()
   const { preferences } = usePreferences()
   const learningPathsQuery = useConvexQuery(
     api.api.learning_paths.getAllLearningPaths,
@@ -29,25 +26,26 @@ export function LearningPathSection(props: LearningPathSectionProps) {
 
   const selectedPathName = () => selectedPath()?.name
 
-  const pathChaptersQuery = useConvexQuery(
-    api.api.learning_paths.getPathChapters,
+  const progressQuery = useConvexQuery(
+    api.api.learning_paths.getPathWithProgress,
     () => ({ pathId: selectedPathId()! }),
     () => ({ enabled: !!selectedPathId() }),
   )
 
-  const chapters = () => pathChaptersQuery.data()
+  const chapters = () => progressQuery.data()?.chapters
 
-  onMount(() => {
-    if (!props.skipAnimation && ref) {
-      animateElementIn(ref, "down")
-    }
-  })
+  const completedSet = () =>
+    new Set(progressQuery.data()?.completedModules ?? [])
+
+  const localCompletions = useLocalCompletions()
+
+  const isCompleted = (moduleId: string) =>
+    completedSet().has(moduleId) || moduleId in localCompletions()
 
   return (
     <section
-      ref={ref}
-      class="mt-12"
-      style={props.skipAnimation ? {} : getInitialAnimationStyles("down")}
+      class="mt-12 animate-fade-up opacity-0"
+      style={{ "animation-delay": "150ms" }}
     >
       <Tabs value={selectedView()} onChange={setSelectedView} class="w-full">
         {/* Header + tabs - render immediately */}
@@ -85,11 +83,11 @@ export function LearningPathSection(props: LearningPathSectionProps) {
             </div>
           }
         >
-          <For each={chapters()}>
+          <Index each={chapters()}>
             {(chapter) => (
-              <ChapterSection chapter={chapter} viewMode={selectedView()} />
+              <ChapterSection chapter={chapter()} viewMode={selectedView()} isCompleted={isCompleted} />
             )}
-          </For>
+          </Index>
         </Suspense>
       </Tabs>
     </section>

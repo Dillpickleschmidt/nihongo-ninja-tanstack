@@ -9,6 +9,7 @@
  */
 
 import type * as api_anime from "../api/anime.js";
+import type * as api_completions from "../api/completions.js";
 import type * as api_decks from "../api/decks.js";
 import type * as api_folders from "../api/folders.js";
 import type * as api_fsrs from "../api/fsrs.js";
@@ -21,6 +22,7 @@ import type * as api_vocabulary from "../api/vocabulary.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as model_anime from "../model/anime.js";
+import type * as model_completions from "../model/completions.js";
 import type * as model_decks from "../model/decks.js";
 import type * as model_folders from "../model/folders.js";
 import type * as model_fsrs from "../model/fsrs.js";
@@ -40,6 +42,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   "api/anime": typeof api_anime;
+  "api/completions": typeof api_completions;
   "api/decks": typeof api_decks;
   "api/folders": typeof api_folders;
   "api/fsrs": typeof api_fsrs;
@@ -52,6 +55,7 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
   "model/anime": typeof model_anime;
+  "model/completions": typeof model_completions;
   "model/decks": typeof model_decks;
   "model/folders": typeof model_folders;
   "model/fsrs": typeof model_fsrs;

@@ -41,6 +41,7 @@ const CATEGORIES: Record<CategoryKey, CategoryConfig> = {
 
 interface ModuleCategorizedViewProps {
   modules: ResolvedModule[]
+  isCompleted: (moduleId: string) => boolean
 }
 
 export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
@@ -104,7 +105,7 @@ export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
                     const ModuleIcon = getModuleIcon(
                       enrichedModule.module.module_type,
                     )
-                    const isCompleted = false // TODO: integrate with completion tracking
+                    const isCompleted = props.isCompleted(enrichedModule.moduleId)
                     const originalIndex = props.modules.findIndex(
                       (m) => m.moduleId === enrichedModule.moduleId,
                     )
