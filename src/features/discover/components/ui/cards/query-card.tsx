@@ -1,36 +1,16 @@
 import { Show, Index, createMemo } from "solid-js"
-import { useConvexQuery } from "~/lib/convex-query"
-import { api } from "~/../convex/_generated/api"
+import { useDiscoverSection } from "~/features/discover/hooks/useDiscoverSection"
 import { SmallAnimeCard } from "./small-card"
 import { SkeletonAnimeCard } from "./skeleton-card"
-import { getCurrentSeason } from "../../../utils/section-configs"
 import type { SectionConfig } from "../../../utils/section-configs"
 
-interface ConvexAnimeSectionProps {
+interface AnimeSectionProps {
   config: SectionConfig
 }
 
-export function ConvexAnimeSection(props: ConvexAnimeSectionProps) {
-  const { season, year } = getCurrentSeason()
-
-  const queryVars = () => {
-    const base = { sectionType: props.config.type! }
-
-    switch (props.config.type) {
-      case "trending":
-      case "popular-season":
-        return { ...base, season, year }
-      case "genre":
-        return { ...base, genre: props.config.params?.genre }
-      case "all-time-popular":
-        return base
-      default:
-        return base
-    }
-  }
-
-  const query = useConvexQuery(api.api.anime.getSectionAnime, queryVars)
-  const mediaData = createMemo(() => query.data()?.data?.media)
+export function AnimeSection(props: AnimeSectionProps) {
+  const query = useDiscoverSection(() => props.config)
+  const mediaData = createMemo(() => query.data?.media)
 
   return (
     <Show
@@ -42,7 +22,7 @@ export function ConvexAnimeSection(props: ConvexAnimeSectionProps) {
       }
     >
       <Show
-        when={!query.error()}
+        when={!query.error}
         fallback={
           <div class="flex h-80 w-full items-center justify-center p-5">
             <div>
@@ -51,7 +31,7 @@ export function ConvexAnimeSection(props: ConvexAnimeSectionProps) {
                 Looks like something went wrong!
               </div>
               <div class="text-muted-foreground text-center text-lg">
-                {(query.error() as Error)?.message}
+                {(query.error as Error)?.message}
               </div>
             </div>
           </div>

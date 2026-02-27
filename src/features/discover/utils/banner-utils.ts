@@ -80,61 +80,6 @@ export function formatColorForCSS(hex: string | null | undefined): {
 }
 
 /**
- * Shuffle array randomly using Fisher-Yates algorithm
- * @param array - Array to shuffle
- * @returns New shuffled array
- */
-export function shuffle<T>(array: T[]): T[] {
-  const shuffled = [...array]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled
-}
-
-/**
- * Get banner image source with fallback chain
- * 1. bannerImage (primary)
- * 2. YouTube thumbnail (if trailer exists)
- * 3. coverImage.extraLarge (fallback)
- * @param media - Media object with bannerImage, trailer, coverImage
- * @returns Image URL or null
- */
-export function getBannerImageSource(media: any): string | null {
-  // Primary: banner image
-  if (media?.bannerImage) return media.bannerImage
-
-  // Fallback: YouTube trailer thumbnail
-  if (media?.trailer?.id) {
-    return `https://i.ytimg.com/vi/${media.trailer.id}/maxresdefault.jpg`
-  }
-
-  // Last resort: cover image (fallback)
-  if (media?.coverImage?.extraLarge) {
-    return media.coverImage.extraLarge
-  }
-
-  return null
-}
-
-/**
- * Get cover image source for mobile
- * Uses coverImage.extraLarge or falls back to banner image chain
- * @param media - Media object with coverImage, bannerImage, trailer
- * @returns Image URL or null
- */
-export function getCoverImageSource(media: any): string | null {
-  // Primary: cover image (portrait)
-  if (media?.coverImage?.extraLarge) {
-    return media.coverImage.extraLarge
-  }
-
-  // Fallback: use banner image chain
-  return getBannerImageSource(media)
-}
-
-/**
  * Clean HTML from description text
  * @param html - HTML string
  * @returns Plain text
@@ -229,4 +174,25 @@ export function formatFormat(format: string | null | undefined): string {
   if (format === "MOVIE") return "Movie"
   if (format === "MUSIC") return "Music"
   return format
+}
+
+/**
+ * Selects 5 random anime indices that have banner images
+ */
+export function generateBannerIndices(
+  media: { bannerImage?: string | null }[],
+): number[] {
+  const validIndices: number[] = []
+  media.forEach((item, index) => {
+    if (item?.bannerImage) {
+      validIndices.push(index)
+    }
+  })
+
+  for (let i = validIndices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[validIndices[i], validIndices[j]] = [validIndices[j], validIndices[i]]
+  }
+
+  return validIndices.slice(0, 5)
 }

@@ -2,9 +2,10 @@ import type { ScheduleMedia } from "./queries"
 import type { Media, MediaEdge } from "./types"
 import type { ResultOf } from "gql.tada"
 
-export function banner(
-  media: Pick<Media, "trailer" | "bannerImage" | "coverImage">,
-): string | undefined {
+type BannerMedia = Pick<Media, "bannerImage" | "coverImage"> &
+  Partial<Pick<Media, "trailer">>
+
+export function banner(media: BannerMedia): string | undefined {
   if (media.bannerImage) return media.bannerImage
   if (media.trailer?.id)
     return `https://i.ytimg.com/vi/${media.trailer.id}/maxresdefault.jpg`
@@ -20,23 +21,17 @@ export const STATUS_LABELS = {
   REPEATING: "Re-Watching",
 }
 
-export function cover(
-  media: Pick<Media, "trailer" | "bannerImage" | "coverImage">,
-): string | undefined {
+export function cover(media: BannerMedia): string | undefined {
   return media.coverImage?.extraLarge ?? banner(media)
 }
 
-export function coverMedium(
-  media: Pick<Media, "trailer" | "bannerImage" | "coverImage">,
-): string | undefined {
+export function coverMedium(media: BannerMedia): string | undefined {
   return (
     media.coverImage?.medium?.replace("/small/", "/medium/") ?? banner(media)
   )
 }
 
-export function coverSmall(
-  media: Pick<Media, "trailer" | "bannerImage" | "coverImage">,
-): string | undefined {
+export function coverSmall(media: BannerMedia): string | undefined {
   return media.coverImage?.medium ?? banner(media)
 }
 

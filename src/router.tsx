@@ -22,7 +22,7 @@ export function getRouter() {
     dehydrate: () => {
       return {
         queryClientState: dehydrate(queryClient, {
-          shouldDehydrateQuery: () => true, // Include all queries (even pending)
+          shouldDehydrateQuery: () => true,
           shouldDehydrateMutation: () => true, // Include all mutations
         }),
       } as any

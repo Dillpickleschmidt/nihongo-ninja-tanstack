@@ -1,5 +1,5 @@
-import { Index, createSignal, onCleanup } from "solid-js"
-import { ConvexAnimeSection } from "~/features/discover/components/ui/cards/query-card"
+import { Index, Suspense, createSignal, onCleanup } from "solid-js"
+import { AnimeSection } from "~/features/discover/components/ui/cards/query-card"
 import { SkeletonAnimeCard } from "~/features/discover/components/ui/cards/skeleton-card"
 import type { SectionConfig } from "~/features/discover/utils/section-configs"
 
@@ -30,7 +30,15 @@ function SingleSection(props: { section: SectionConfig }) {
       </div>
       <div class="flex overflow-x-auto pb-4" ref={observeContainer}>
         {shouldLoad() ? (
-          <ConvexAnimeSection config={props.section} />
+          <Suspense
+            fallback={
+              <Index each={Array.from({ length: 10 })}>
+                {() => <SkeletonAnimeCard />}
+              </Index>
+            }
+          >
+            <AnimeSection config={props.section} />
+          </Suspense>
         ) : (
           <Index each={Array.from({ length: 10 })}>
             {() => <SkeletonAnimeCard />}

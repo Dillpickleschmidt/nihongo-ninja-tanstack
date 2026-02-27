@@ -1,7 +1,10 @@
 import { createMemo } from "solid-js"
-import { useConvexQuery } from "~/lib/convex-query"
-import { api } from "~/../convex/_generated/api"
-import { getCurrentSeason } from "~/features/discover/utils/section-configs"
+import {
+  getCurrentSeason,
+  getTrendingConfig,
+} from "~/features/discover/utils/section-configs"
+import { useDiscoverSection } from "~/features/discover/hooks/useDiscoverSection"
+import { useHqImage } from "~/features/discover/hooks/useHqImage"
 import { Banner } from "~/features/discover/components/ui/banner/banner"
 
 /**
@@ -10,50 +13,32 @@ import { Banner } from "~/features/discover/components/ui/banner/banner"
 export function BannerSection() {
   const { season, year } = getCurrentSeason()
 
-  // Use Convex query for reactivity
-  const trendingQuery = useConvexQuery(api.api.anime.getSectionAnime, () => ({
-    sectionType: "trending" as const,
-    season,
-    year,
-  }))
+  const trendingQuery = useDiscoverSection(
+    () => getTrendingConfig(season, year),
+    { withBannerIndices: true },
+  )
 
-  // Derive banner data using shuffled indices from Convex
   const bannerData = createMemo(() => {
-    const trending = trendingQuery.data()
-
-    if (!trending) return undefined // Not loaded yet
-
-    const media = trending.data?.media
-    const indices = trending.bannerIndices
-
-    if (!media || !indices || indices.length === 0) {
-      return [] // Loaded but empty
-    }
-
-    // Pick items by shuffled indices
-    const result = indices.map((i) => media[i]).filter(Boolean)
-    return result
+    const data = trendingQuery.data
+    if (data === undefined) return undefined
+    const media = data.media
+    if (!media || media.length === 0) return []
+    return data.bannerIndices.map((i) => media[i]).filter(Boolean)
   })
 
-  // Derive HQ image URLs directly from trending cache
-  const hqImageUrls = createMemo(() => {
-    const data = bannerData()
-    const trending = trendingQuery.data()
-
-    if (!data || data.length === 0) return undefined
-
-    const hqImages = trending?.hqImages
-    if (!hqImages) return undefined
-
-    // Map anime to their cached HQ image URLs
-    return data.map((anime: any) => hqImages[anime.id.toString()] ?? null)
-  })
+  // All 5 HQ images fetch independently, non-blocking
+  const hq0 = useHqImage(() => bannerData()?.[0]?.id)
+  const hq1 = useHqImage(() => bannerData()?.[1]?.id)
+  const hq2 = useHqImage(() => bannerData()?.[2]?.id)
+  const hq3 = useHqImage(() => bannerData()?.[3]?.id)
+  const hq4 = useHqImage(() => bannerData()?.[4]?.id)
+  const hqImageUrls = () => [hq0.data, hq1.data, hq2.data, hq3.data, hq4.data]
 
   return (
     <Banner
       bannerData={bannerData()}
       hqImageUrls={hqImageUrls()}
-      error={trendingQuery.error()}
+      error={trendingQuery.error}
       isDesktop={true}
     />
   )

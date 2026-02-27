@@ -7,8 +7,12 @@ import {
 } from "~/features/discover/utils/section-configs"
 import { BannerSection } from "~/features/discover/components/ui/homepage/banner-section"
 import { GenericSections } from "~/features/discover/components/ui/homepage/generic-sections"
-import { convexQuery, convexMutation } from "~/lib/convex-query"
-import { api } from "~/../convex/_generated/api"
+import {
+  fetchDiscoverSection,
+  fetchHqImage,
+  hqImageQueryKey,
+} from "~/features/discover/api/anilist/fetch"
+import { sectionQueryKey } from "~/features/discover/hooks/useDiscoverSection"
 import { BottomNav } from "~/features/navbar/Nav"
 
 export const Route = createFileRoute("/discover")({
@@ -16,24 +20,33 @@ export const Route = createFileRoute("/discover")({
     const { season, year } = getCurrentSeason()
     const genericSections = getGenericSections(season, year)
 
-    const sections = genericSections.map((section) => ({
-      type: section.type!,
-      params: section.params,
-      queryVars: section.queryVars,
-    }))
+    const trendingConfig = genericSections.find((s) => s.type === "trending")!
 
-    const mutationFn = convexMutation(api.api.anime.ensureAllSections, {
-      sections,
-    })
-    mutationFn().catch(() => {})
+    // Prefetch trending, then kick off HQ image prefetches for banner items
+    context.queryClient
+      .ensureQueryData({
+        queryKey: sectionQueryKey(trendingConfig),
+        queryFn: () =>
+          fetchDiscoverSection(trendingConfig.queryVars!, {
+            withBannerIndices: true,
+          }),
+      })
+      .then((data) => {
+        const media =
+          data.media?.filter(
+            (m): m is NonNullable<typeof m> => m != null,
+          ) ?? []
+        const bannerMedia = data.bannerIndices
+          .map((i) => media[i])
+          .filter(Boolean)
 
-    context.queryClient.prefetchQuery(
-      convexQuery(api.api.anime.getSectionAnime, {
-        sectionType: "trending",
-        season,
-        year,
-      }),
-    )
+        for (const anime of bannerMedia) {
+          context.queryClient.prefetchQuery({
+            queryKey: hqImageQueryKey(anime.id),
+            queryFn: () => fetchHqImage(anime.id),
+          })
+        }
+      })
 
     return {
       genericSections,

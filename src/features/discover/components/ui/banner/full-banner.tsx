@@ -2,8 +2,7 @@ import { createSignal, For, Show } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { Play } from "lucide-solid"
 import { Button } from "~/components/ui/button"
-import type { FragmentOf } from "gql.tada"
-import { FullMedia } from "~/features/discover/api/anilist/queries"
+import type { DiscoverMedia } from "~/features/discover/api/anilist/types"
 import { BannerImage } from "./banner-image"
 import { AnimatedHeart } from "~/features/discover/components/icons/animated/heart"
 import { AnimatedBookmark } from "~/features/discover/components/icons/animated/bookmark"
@@ -19,7 +18,7 @@ import {
 } from "~/features/discover/utils/banner-utils"
 
 interface FullBannerProps {
-  current: FragmentOf<typeof FullMedia> | null | undefined
+  current: DiscoverMedia | null | undefined
   hqImageUrl: string | null | undefined
   isDesktop: boolean
   currentIndex: number
@@ -55,7 +54,7 @@ export function FullBanner(props: FullBannerProps) {
       return anime.coverImage?.extraLarge
     }
 
-    // Desktop: use HQ image from Convex cache if available
+    // Desktop: use HQ image from ani.zip if available
     if (props.hqImageUrl) {
       return props.hqImageUrl
     }

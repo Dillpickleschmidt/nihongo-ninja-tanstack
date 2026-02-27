@@ -19,7 +19,6 @@ export const RETRY_CONFIG = {
 }
 
 // Custom error class for fetch errors
-// Compatible with both client and server (Convex) implementations
 export class FetchError extends Error {
   constructor(
     public res: Response,

@@ -3,12 +3,11 @@ import { Show, createSignal, onMount } from "solid-js"
 import { CalendarDays, Tv } from "lucide-solid"
 import { StatusDot } from "../status-dot"
 import { LoadImage } from "../img/load-image"
-import type { FragmentOf } from "gql.tada"
-import type { FullMedia } from "../../../api/anilist/queries"
+import type { DiscoverMedia, Media } from "../../../api/anilist/types"
 import { coverMedium, format, title } from "../../../api/anilist/util"
 
 interface SmallAnimeCardProps {
-  media: FragmentOf<typeof FullMedia>
+  media: DiscoverMedia | Media
   status?:
     | "CURRENT"
     | "PLANNING"
@@ -39,9 +38,9 @@ export function SmallAnimeCard(props: SmallAnimeCardProps) {
     )
   })
 
-  const coverUrl = () => coverMedium(props.media as any) ?? ""
-  const titleText = () => title(props.media as any)
-  const formatText = () => format(props.media as any)
+  const coverUrl = () => coverMedium(props.media) ?? ""
+  const titleText = () => title(props.media)
+  const formatText = () => format(props.media)
   const year = () => props.media.seasonYear ?? "TBA"
 
   return (

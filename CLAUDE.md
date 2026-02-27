@@ -74,6 +74,8 @@ const deckQuery = useConvexQuery(
 
 Skip user-specific queries when not signed in to avoid network delay (`enabled: !!user()`).
 
+DO NOT EVER USE `await` IN A LOADER UNLESS EXPLICITLY TOLD TO SINCE IT SLOWS DOWN THE ENTIRE PAGE LOAD!
+
 ### Data Loading States
 
 - `undefined` = not yet loaded → show skeleton/loader

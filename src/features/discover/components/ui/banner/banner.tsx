@@ -1,6 +1,5 @@
 import { createSignal, createEffect, onCleanup, Show } from "solid-js"
-import type { FragmentOf } from "gql.tada"
-import { FullMedia } from "~/features/discover/api/anilist/queries"
+import type { DiscoverMedia } from "~/features/discover/api/anilist/types"
 import { FullBanner } from "./full-banner"
 import { BannerSkeleton } from "./skeleton-banner"
 import {
@@ -9,18 +8,16 @@ import {
 } from "~/features/discover/utils/banner-utils"
 
 interface BannerProps {
-  bannerData: (FragmentOf<typeof FullMedia> | null)[] | undefined
+  bannerData: (DiscoverMedia | null)[] | undefined
   hqImageUrls: (string | null | undefined)[] | undefined
   error?: Error | null
   isDesktop: boolean
 }
 
 export function Banner(props: BannerProps) {
-  // Move ALL hooks to top level (before any conditional logic)
   const [currentIndex, setCurrentIndex] = createSignal(0)
   const [colorVars, setColorVars] = createSignal<Record<string, string>>({})
 
-  // Use reactive Show components instead of early returns
   return (
     <Show
       when={!props.error}
