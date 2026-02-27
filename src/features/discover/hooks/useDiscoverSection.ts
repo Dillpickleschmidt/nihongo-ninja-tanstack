@@ -18,5 +18,5 @@ export function useDiscoverSection(
 }
 
 export function sectionQueryKey(config: SectionConfig) {
-  return ["anilist", config.type, config.params ?? null] as const
+  return ["anilist", config.type ?? null, config.params ?? config.queryVars ?? null] as const
 }

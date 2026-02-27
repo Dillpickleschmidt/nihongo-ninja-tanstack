@@ -20,7 +20,7 @@ export function BannerSection() {
 
   const bannerData = createMemo(() => {
     const data = trendingQuery.data
-    if (data === undefined) return undefined
+    if (!data) return []
     const media = data.media
     if (!media || media.length === 0) return []
     return data.bannerIndices.map((i) => media[i]).filter(Boolean)

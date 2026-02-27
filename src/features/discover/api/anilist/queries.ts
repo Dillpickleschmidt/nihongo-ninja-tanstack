@@ -208,12 +208,12 @@ export const Search = gql(
 
 export const DiscoverSearch = gql(
   `
-  query DiscoverSearch($page: Int, $perPage: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat, $sort: [MediaSort], $genre: [String], $statusNot: [MediaStatus]) {
+  query DiscoverSearch($page: Int, $perPage: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat, $sort: [MediaSort], $genre: [String], $statusNot: [MediaStatus], $ids: [Int]) {
     Page(page: $page, perPage: $perPage) {
       pageInfo {
         hasNextPage
       },
-      media(type: ANIME, season: $season, seasonYear: $seasonYear, format: $format, sort: $sort, genre_in: $genre, status_not_in: $statusNot) {
+      media(type: ANIME, season: $season, seasonYear: $seasonYear, format: $format, sort: $sort, genre_in: $genre, status_not_in: $statusNot, id_in: $ids) {
         ...DiscoverMedia
       }
     }

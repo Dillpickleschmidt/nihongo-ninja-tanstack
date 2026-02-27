@@ -21,6 +21,7 @@ import type * as api_sharing from "../api/sharing.js";
 import type * as api_vocabulary from "../api/vocabulary.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
+import type * as model_animeAuth from "../model/animeAuth.js";
 import type * as model_completions from "../model/completions.js";
 import type * as model_decks from "../model/decks.js";
 import type * as model_folders from "../model/folders.js";
@@ -53,6 +54,7 @@ declare const fullApi: ApiFromModules<{
   "api/vocabulary": typeof api_vocabulary;
   auth: typeof auth;
   http: typeof http;
+  "model/animeAuth": typeof model_animeAuth;
   "model/completions": typeof model_completions;
   "model/decks": typeof model_decks;
   "model/folders": typeof model_folders;

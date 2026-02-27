@@ -4,12 +4,19 @@
  */
 
 export interface SectionConfig {
-  type?: "popular-season" | "trending" | "all-time-popular" | "genre" // Optional for personalized sections
+  type?:
+    | "popular-season"
+    | "trending"
+    | "all-time-popular"
+    | "genre"
+    | "continue-watching"
+    | "planning"
+    | "sequels"
   title: string
-  params?: { genre?: string; season?: string; year?: number } // For genre sections and seasonal sections
-  queryVars?: Record<string, any> // For personalized sections (Continue Watching, etc.)
+  params?: { genre?: string; season?: string; year?: number }
+  queryVars?: Record<string, any>
   viewMoreLink?: string
-  _key?: string // Stable key for SolidJS For loop
+  _key?: string
 }
 
 export function getCurrentSeason(): {
@@ -99,6 +106,42 @@ export function getGenreConfig(
     },
     viewMoreLink: `/explore/genre/${genre.toLowerCase()}`,
   }
+}
+
+export function getPersonalSections(
+  userListIds: import("./id-extractors").UserListIDs,
+): SectionConfig[] {
+  const sections: SectionConfig[] = []
+  let keyIndex = 0
+
+  if (userListIds.continueIDs.length > 0) {
+    sections.push({
+      type: "continue-watching",
+      title: "Continue Watching",
+      queryVars: { ids: userListIds.continueIDs, page: 1, perPage: 10 },
+      _key: `personal-${keyIndex++}`,
+    })
+  }
+
+  if (userListIds.planningIDs.length > 0) {
+    sections.push({
+      type: "planning",
+      title: "Planning to Watch",
+      queryVars: { ids: userListIds.planningIDs, page: 1, perPage: 10 },
+      _key: `personal-${keyIndex++}`,
+    })
+  }
+
+  if (userListIds.sequelIDs.length > 0) {
+    sections.push({
+      type: "sequels",
+      title: "Sequels You Missed",
+      queryVars: { ids: userListIds.sequelIDs, page: 1, perPage: 10 },
+      _key: `personal-${keyIndex++}`,
+    })
+  }
+
+  return sections
 }
 
 export function getGenericSections(

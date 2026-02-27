@@ -1,14 +1,13 @@
 import { createSignal, createEffect, onCleanup, Show } from "solid-js"
 import type { DiscoverMedia } from "~/features/discover/api/anilist/types"
 import { FullBanner } from "./full-banner"
-import { BannerSkeleton } from "./skeleton-banner"
 import {
   getContrastTextColor,
   formatColorForCSS,
 } from "~/features/discover/utils/banner-utils"
 
 interface BannerProps {
-  bannerData: (DiscoverMedia | null)[] | undefined
+  bannerData: (DiscoverMedia | null)[]
   hqImageUrls: (string | null | undefined)[] | undefined
   error?: Error | null
   isDesktop: boolean
@@ -27,12 +26,11 @@ export function Banner(props: BannerProps) {
         </div>
       }
     >
-      <Show when={props.bannerData} fallback={<BannerSkeleton />}>
-        {(bannerData) => {
-          let timerId: ReturnType<typeof setTimeout> | undefined
+      {(() => {
+        let timerId: ReturnType<typeof setTimeout> | undefined
 
-          const processedData = () => bannerData()
-          const current = () => processedData()[currentIndex()]
+        const processedData = () => props.bannerData
+        const current = () => processedData()[currentIndex()]
 
           // Update color variables when current anime changes
           createEffect(() => {
@@ -76,9 +74,9 @@ export function Banner(props: BannerProps) {
             scheduleNext()
           }
 
-          return (
-            <>
-              <style>{`
+        return (
+          <>
+            <style>{`
                 @keyframes banner-fill {
                   from { transform: translate3d(-100%, 0, 0); }
                   to { transform: translate3d(0%, 0, 0); }
@@ -92,31 +90,30 @@ export function Banner(props: BannerProps) {
                 }
               `}</style>
 
-              <div style={colorVars()}>
-                <div class="relative h-[70vh] overflow-hidden md:h-[80vh]">
-                  <Show
-                    when={processedData().length > 0}
-                    fallback={
-                      <div class="w-full p-8 text-center text-muted-foreground">
-                        No featured anime available this season
-                      </div>
-                    }
-                  >
-                    <FullBanner
-                      current={current()}
-                      hqImageUrl={props.hqImageUrls?.[currentIndex()] ?? null}
-                      isDesktop={props.isDesktop}
-                      currentIndex={currentIndex()}
-                      onSelectIndex={handleSelectIndex}
-                      itemCount={processedData().length}
-                    />
-                  </Show>
-                </div>
+            <div style={colorVars()}>
+              <div class="relative h-[70vh] overflow-hidden md:h-[80vh]">
+                <Show
+                  when={processedData().length > 0}
+                  fallback={
+                    <div class="w-full p-8 text-center text-muted-foreground">
+                      No featured anime available this season
+                    </div>
+                  }
+                >
+                  <FullBanner
+                    current={current()}
+                    hqImageUrl={props.hqImageUrls?.[currentIndex()] ?? null}
+                    isDesktop={props.isDesktop}
+                    currentIndex={currentIndex()}
+                    onSelectIndex={handleSelectIndex}
+                    itemCount={processedData().length}
+                  />
+                </Show>
               </div>
-            </>
-          )
-        }}
-      </Show>
+            </div>
+          </>
+        )
+      })()}
     </Show>
   )
 }
