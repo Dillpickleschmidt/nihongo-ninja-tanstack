@@ -9,6 +9,7 @@
  */
 
 import type * as api_anime from "../api/anime.js";
+import type * as api_animeAuth from "../api/animeAuth.js";
 import type * as api_completions from "../api/completions.js";
 import type * as api_decks from "../api/decks.js";
 import type * as api_folders from "../api/folders.js";
@@ -42,6 +43,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   "api/anime": typeof api_anime;
+  "api/animeAuth": typeof api_animeAuth;
   "api/completions": typeof api_completions;
   "api/decks": typeof api_decks;
   "api/folders": typeof api_folders;

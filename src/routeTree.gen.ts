@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as OauthCallbackRouteImport } from './routes/oauth-callback'
 import { Route as GetStartedRouteImport } from './routes/get-started'
 import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -80,6 +81,11 @@ import { Route as HomeVocabDeckDeckIdEditRouteImport } from './routes/_home/voca
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OauthCallbackRoute = OauthCallbackRouteImport.update({
+  id: '/oauth-callback',
+  path: '/oauth-callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GetStartedRoute = GetStartedRouteImport.update({
@@ -457,6 +463,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/discover': typeof DiscoverRoute
   '/get-started': typeof GetStartedRoute
+  '/oauth-callback': typeof OauthCallbackRoute
   '/search': typeof SearchRoute
   '/dashboard': typeof HomeDashboardRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
@@ -525,6 +532,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/discover': typeof DiscoverRoute
   '/get-started': typeof GetStartedRoute
+  '/oauth-callback': typeof OauthCallbackRoute
   '/search': typeof SearchRoute
   '/dashboard': typeof HomeDashboardRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
@@ -594,6 +602,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/discover': typeof DiscoverRoute
   '/get-started': typeof GetStartedRoute
+  '/oauth-callback': typeof OauthCallbackRoute
   '/search': typeof SearchRoute
   '/_home/dashboard': typeof HomeDashboardRoute
   '/_home/lessons': typeof HomeLessonsRouteWithChildren
@@ -664,6 +673,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/discover'
     | '/get-started'
+    | '/oauth-callback'
     | '/search'
     | '/dashboard'
     | '/lessons'
@@ -732,6 +742,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/discover'
     | '/get-started'
+    | '/oauth-callback'
     | '/search'
     | '/dashboard'
     | '/lessons'
@@ -800,6 +811,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/discover'
     | '/get-started'
+    | '/oauth-callback'
     | '/search'
     | '/_home/dashboard'
     | '/_home/lessons'
@@ -870,6 +882,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   DiscoverRoute: typeof DiscoverRoute
   GetStartedRoute: typeof GetStartedRoute
+  OauthCallbackRoute: typeof OauthCallbackRoute
   SearchRoute: typeof SearchRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
@@ -881,6 +894,13 @@ declare module '@tanstack/solid-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oauth-callback': {
+      id: '/oauth-callback'
+      path: '/oauth-callback'
+      fullPath: '/oauth-callback'
+      preLoaderRoute: typeof OauthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/get-started': {
@@ -1517,6 +1537,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   DiscoverRoute: DiscoverRoute,
   GetStartedRoute: GetStartedRoute,
+  OauthCallbackRoute: OauthCallbackRoute,
   SearchRoute: SearchRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }

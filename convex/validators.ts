@@ -218,6 +218,14 @@ export const DEFAULT_USER_PREFERENCES = {
   timestamp: 0,
 }
 
+// === Anime Service Validator ===
+export const animeServiceValidator = v.union(
+  v.literal("anilist"),
+  v.literal("kitsu"),
+  v.literal("mal"),
+)
+export type AnimeService = Infer<typeof animeServiceValidator>
+
 // === Enum Validators (from Supabase enums) ===
 
 // practice_mode_enum: meanings, spellings

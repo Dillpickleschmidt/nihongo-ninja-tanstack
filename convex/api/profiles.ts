@@ -1,6 +1,7 @@
 import { v } from "convex/values"
 import { mutation, query } from "../_generated/server"
 import * as Profiles from "../model/profiles"
+import { animeServiceValidator } from "../validators"
 
 /**
  * Gets the current user's profile
@@ -36,11 +37,7 @@ export const ensureProfile = mutation({
  */
 export const getServiceToken = query({
   args: {
-    service: v.union(
-      v.literal("anilist"),
-      v.literal("kitsu"),
-      v.literal("mal"),
-    ),
+    service: animeServiceValidator,
   },
   handler: async (ctx, { service }) => {
     const identity = await ctx.auth.getUserIdentity()

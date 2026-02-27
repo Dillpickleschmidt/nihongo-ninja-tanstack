@@ -8,6 +8,7 @@ import {
   transcriptLineValidator,
   metaDataValidator,
   userPreferencesValidator,
+  animeServiceValidator,
   practiceModeValidator,
   practiceItemTypeValidator,
   vocabularyItemValidator,
@@ -132,11 +133,7 @@ export default defineSchema({
   // User Service Tokens (Anilist, etc.)
   userServiceTokens: defineTable({
     userId: v.string(),
-    service: v.union(
-      v.literal("anilist"),
-      v.literal("kitsu"),
-      v.literal("mal"),
-    ),
+    service: animeServiceValidator,
     accessToken: v.string(),
     refreshToken: v.optional(v.string()),
     expiresAt: v.optional(v.number()),
