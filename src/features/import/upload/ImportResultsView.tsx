@@ -20,17 +20,20 @@ import {
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
 import type {
-  JpdbProcessResult,
-  JpdbImportItem,
+  ImportProcessResult,
+  ImportItem as ImportItemType,
   ProcessedCard,
-} from "./jpdb/jpdb-processor"
+} from "./types"
 
-interface JpdbResultsViewProps {
-  result: JpdbProcessResult
+interface ImportResultsViewProps {
+  result: ImportProcessResult
   onBack: () => void
+  source?: string
 }
 
-export function JpdbResultsView(props: JpdbResultsViewProps) {
+export function ImportResultsView(props: ImportResultsViewProps) {
+  const source = () => props.source ?? "Import"
+
   const [isImporting, setIsImporting] = createSignal(false)
   const [importError, setImportError] = createSignal<string | null>(null)
   const [importResult, setImportResult] = createSignal<{
@@ -103,12 +106,12 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
     const vocabData = vocabQuery.data()
     if (!vocabData)
       return {
-        found: [] as (JpdbImportItem & { meaning: string })[],
-        skipped: [] as JpdbImportItem[],
+        found: [] as (ImportItemType & { meaning: string })[],
+        skipped: [] as ImportItemType[],
       }
 
-    const found: (JpdbImportItem & { meaning: string })[] = []
-    const skipped: JpdbImportItem[] = []
+    const found: (ImportItemType & { meaning: string })[] = []
+    const skipped: ImportItemType[] = []
 
     for (const item of props.result.vocabItems) {
       const dbItem = vocabData[encodeURIComponent(item.id)]
@@ -129,13 +132,13 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
       kanjiQuery.data() === undefined
     ) {
       return {
-        found: [] as (JpdbImportItem & { meaning: string })[],
-        skipped: [] as JpdbImportItem[],
+        found: [] as (ImportItemType & { meaning: string })[],
+        skipped: [] as ImportItemType[],
       }
     }
 
-    const found: (JpdbImportItem & { meaning: string })[] = []
-    const skipped: JpdbImportItem[] = []
+    const found: (ImportItemType & { meaning: string })[] = []
+    const skipped: ImportItemType[] = []
 
     for (const item of props.result.kanjiItems) {
       const meaning = kanjiMeanings.get(item.id)
@@ -230,7 +233,7 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
       <div class="rounded-xl border border-white/10 bg-white/5 p-4">
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="font-medium text-white">JPDB Import Preview</h3>
+            <h3 class="font-medium text-white">{source()} Import Preview</h3>
             <p class="mt-1 text-sm text-white/50">
               Found {props.result.vocabItems.length} vocabulary and{" "}
               {props.result.kanjiItems.length} kanji items
@@ -244,6 +247,21 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
             Back
           </button>
         </div>
+      </div>
+
+      {/* Guidance */}
+      <div class="space-y-2 text-[13px] leading-relaxed text-white/40">
+        <p>
+          Only cards you've reviewed at least once are shown. Each card has a
+          status badge based on your review history:{" "}
+          <span class="text-amber-400">Learning</span>,{" "}
+          <span class="text-sky-400">Decent</span>, or{" "}
+          <span class="text-emerald-400">Mastered</span>.
+        </p>
+        <p>
+          Items not found in our database are listed under Skipped. If desired,
+          you can select items to override their status.
+        </p>
       </div>
 
       {/* Error Message */}
@@ -261,7 +279,7 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
               Successfully imported {result().imported} cards
             </p>
             <Link
-              to="/import/builtin"
+              to="/dashboard"
               class="mt-3 inline-block rounded-lg bg-green-500/20 px-4 py-2 text-sm text-green-400 hover:bg-green-500/30"
             >
               Done
@@ -281,7 +299,7 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
           </CollapsibleTrigger>
           <CollapsibleContent class="border-t border-white/10 p-4">
             <SelectAllHeader
-              level="JPDB"
+              level={source()}
               category="vocabulary"
               selectedCount={vocabSelectedCount()}
               allSelected={allVocabSelected()}
@@ -327,7 +345,7 @@ export function JpdbResultsView(props: JpdbResultsViewProps) {
           </CollapsibleTrigger>
           <CollapsibleContent class="border-t border-white/10 p-4">
             <SelectAllHeader
-              level="JPDB"
+              level={source()}
               category="kanji"
               selectedCount={kanjiSelectedCount()}
               allSelected={allKanjiSelected()}

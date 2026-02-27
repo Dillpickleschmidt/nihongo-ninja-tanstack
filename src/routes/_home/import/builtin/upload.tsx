@@ -4,20 +4,32 @@ import { createSignal, onMount, Show } from "solid-js"
 import { queryKeys } from "@/query/query-keys"
 import { ImportPageHeader } from "@/features/import/shared/ImportPageHeader"
 import { UploadHistorySection } from "@/features/import/upload/UploadHistorySection"
-import { JpdbResultsView } from "@/features/import/upload/JpdbResultsView"
-import type { JpdbProcessResult } from "@/features/import/upload/jpdb/jpdb-processor"
+import { ImportResultsView } from "@/features/import/upload/ImportResultsView"
+import { AnkiFieldMappingView } from "@/features/import/upload/anki/AnkiFieldMappingView"
+import { transformAnkiData } from "@/features/import/upload/anki/anki-adapter"
+import type { ImportProcessResult } from "@/features/import/upload/types"
+import type { AnkiExtractionResult } from "@/features/import/upload/anki/anki-processor"
+import type { AnkiExtractedData, FieldMapping } from "@/features/import/upload/anki/anki-types"
 
 export const Route = createFileRoute("/_home/import/builtin/upload")({
   component: UploadHistoryPage,
 })
 
-type Step = "upload" | "review"
+type Step = "upload" | "field-mapping" | "review"
 
 function UploadHistoryPage() {
   const queryClient = useQueryClient()
   const [step, setStep] = createSignal<Step>("upload")
   const [processedResult, setProcessedResult] =
-    createSignal<JpdbProcessResult | null>(null)
+    createSignal<ImportProcessResult | null>(null)
+  const [importSource, setImportSource] = createSignal<"JPDB" | "Anki">("JPDB")
+
+  // Anki-specific state
+  const [ankiExtractedData, setAnkiExtractedData] =
+    createSignal<AnkiExtractedData | null>(null)
+  const [fieldMapping, setFieldMapping] = createSignal<FieldMapping | null>(
+    null,
+  )
 
   onMount(() => {
     queryClient.setQueryData(queryKeys.backgroundSettings(), {
@@ -27,14 +39,42 @@ function UploadHistoryPage() {
     })
   })
 
-  const handleProcessed = (result: JpdbProcessResult) => {
+  const handleProcessed = (result: ImportProcessResult) => {
+    setProcessedResult(result)
+    setImportSource("JPDB")
+    setStep("review")
+  }
+
+  const handleAnkiExtracted = (result: AnkiExtractionResult) => {
+    setAnkiExtractedData(result.extractedData)
+    setFieldMapping(result.detectedFieldMapping)
+    setImportSource("Anki")
+    setStep("field-mapping")
+  }
+
+  const handleFieldMappingNext = () => {
+    const data = ankiExtractedData()
+    const mapping = fieldMapping()
+    if (!data || !mapping) return
+
+    const result = transformAnkiData(data, mapping)
     setProcessedResult(result)
     setStep("review")
   }
 
   const handleBack = () => {
-    setStep("upload")
-    setProcessedResult(null)
+    const current = step()
+    if (current === "review" && importSource() === "Anki") {
+      setStep("field-mapping")
+      setProcessedResult(null)
+    } else if (current === "field-mapping") {
+      setStep("upload")
+      setAnkiExtractedData(null)
+      setFieldMapping(null)
+    } else {
+      setStep("upload")
+      setProcessedResult(null)
+    }
   }
 
   return (
@@ -47,7 +87,29 @@ function UploadHistoryPage() {
             backTo="/import/builtin"
             backLabel="Back"
           />
-          <UploadHistorySection onProcessed={handleProcessed} />
+          <UploadHistorySection
+            onProcessed={handleProcessed}
+            onAnkiExtracted={handleAnkiExtracted}
+          />
+        </Show>
+
+        <Show when={step() === "field-mapping" && ankiExtractedData() && fieldMapping()}>
+          <ImportPageHeader
+            title="Map Anki Fields"
+            subtitle="Confirm which fields contain the word and meaning"
+            backTo="/import/builtin/upload"
+            backLabel="Back"
+            onBackClick={(e) => {
+              e.preventDefault()
+              handleBack()
+            }}
+          />
+          <AnkiFieldMappingView
+            extractedData={ankiExtractedData()!}
+            fieldMapping={fieldMapping()!}
+            onMappingChange={setFieldMapping}
+            onNext={handleFieldMappingNext}
+          />
         </Show>
 
         <Show when={step() === "review" && processedResult()}>
@@ -63,7 +125,11 @@ function UploadHistoryPage() {
                   handleBack()
                 }}
               />
-              <JpdbResultsView result={result()} onBack={handleBack} />
+              <ImportResultsView
+                result={result()}
+                onBack={handleBack}
+                source={importSource()}
+              />
             </>
           )}
         </Show>

@@ -1,9 +1,12 @@
 import { createSignal, Show } from "solid-js"
 import { FileDropZone } from "@/features/import/shared/FileDropZone"
-import { processJpdbFile, type JpdbProcessResult } from "./jpdb/jpdb-processor"
+import { processJpdbFile } from "./jpdb/jpdb-processor"
+import { extractAnkiFile, type AnkiExtractionResult } from "./anki/anki-processor"
+import type { ImportProcessResult } from "./types"
 
 interface UploadHistorySectionProps {
-  onProcessed?: (result: JpdbProcessResult) => void
+  onProcessed?: (result: ImportProcessResult) => void
+  onAnkiExtracted?: (result: AnkiExtractionResult) => void
 }
 
 export function UploadHistorySection(props: UploadHistorySectionProps) {
@@ -19,7 +22,8 @@ export function UploadHistorySection(props: UploadHistorySectionProps) {
         const result = await processJpdbFile(file)
         props.onProcessed?.(result)
       } else if (file.name.endsWith(".apkg")) {
-        setError("Anki import is not yet supported")
+        const result = await extractAnkiFile(file)
+        props.onAnkiExtracted?.(result)
       } else {
         setError("Unsupported file format")
       }

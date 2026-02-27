@@ -1,4 +1,4 @@
-import { createEmptyCard, State, type Card, type ReviewLog } from "ts-fsrs"
+import { createEmptyCard } from "ts-fsrs"
 import {
   safeParseJpdbJsonData,
   mapJpdbGradeToFSRS,
@@ -7,8 +7,12 @@ import {
 } from "./jpdb-schemas"
 import { simulateFSRSReviews } from "../fsrs/spaced-repetition-processor"
 import { NormalizedReviewSchema } from "../fsrs/processing-schemas"
-import type { PracticeItemType } from "convex/validators"
-import type { ItemStatus } from "../../shared/status"
+import { getItemStatusFromFSRSCard } from "../types"
+import type {
+  ImportItem,
+  ProcessedCard,
+  ImportProcessResult,
+} from "../types"
 
 /**
  * Normalizes a timestamp to ensure it's a Date object
@@ -19,62 +23,6 @@ function normalizeTimestamp(timestamp: number): Date {
     return new Date(timestamp * 1000)
   }
   return new Date(timestamp)
-}
-
-/**
- * Import item for UI display
- */
-export interface JpdbImportItem {
-  id: string
-  status: ItemStatus
-}
-
-/**
- * Processed card ready for import (includes final FSRS state)
- */
-export interface ProcessedCard {
-  searchTerm: string
-  type: PracticeItemType
-  fsrsCard: Card
-  fsrsLogs: ReviewLog[]
-}
-
-/**
- * Result from processing a JPDB file
- */
-export interface JpdbProcessResult {
-  vocabItems: JpdbImportItem[]
-  kanjiItems: JpdbImportItem[]
-  processedCards: ProcessedCard[]
-}
-
-/**
- * Determines import item status based on FSRS card state after review simulation
- */
-function getItemStatusFromFSRSCard(fsrsCard: {
-  state: number
-  stability: number
-}): ItemStatus {
-  if (fsrsCard.state === State.New) {
-    return null
-  }
-
-  if (
-    fsrsCard.state === State.Learning ||
-    fsrsCard.state === State.Relearning
-  ) {
-    return "learning"
-  }
-
-  if (fsrsCard.state === State.Review) {
-    if (fsrsCard.stability >= 21) {
-      return "mastered"
-    } else {
-      return "decent"
-    }
-  }
-
-  return null
 }
 
 /**
@@ -93,9 +41,9 @@ function transformReviews(jpdbReviews: JpdbReview[]) {
 /**
  * Processes validated JPDB JSON data and returns import items and processed cards
  */
-export function processJpdbData(data: JpdbJsonData): JpdbProcessResult {
-  const vocabItems: JpdbImportItem[] = []
-  const kanjiItems: JpdbImportItem[] = []
+export function processJpdbData(data: JpdbJsonData): ImportProcessResult {
+  const vocabItems: ImportItem[] = []
+  const kanjiItems: ImportItem[] = []
   const processedCards: ProcessedCard[] = []
 
   // Process vocabulary JP->EN cards
@@ -161,7 +109,7 @@ export function processJpdbData(data: JpdbJsonData): JpdbProcessResult {
 /**
  * Processes a JPDB JSON file and returns import items and processed cards
  */
-export async function processJpdbFile(file: File): Promise<JpdbProcessResult> {
+export async function processJpdbFile(file: File): Promise<ImportProcessResult> {
   const jsonText = await file.text()
 
   let jpdbData: unknown
