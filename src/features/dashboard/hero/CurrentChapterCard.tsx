@@ -7,6 +7,7 @@ import { usePreferences } from "@/lib/preferences"
 import { useSrs } from "@/features/srs/use-srs"
 import { LearningPathChapterSelector } from "../LearningPathChapterSelector"
 import { ModuleLink } from "./ModuleLink"
+import { DueCountBadge } from "./DueCountBadge"
 
 export function CurrentChapterCard() {
   return (
@@ -106,14 +107,7 @@ function CurrentChapterCardContent() {
 
       {/* Progress indicator */}
       <div class="flex items-center gap-4 lg:flex-col lg:items-end">
-        <Show when={srs.dueCount() !== undefined}>
-          <div class="text-right">
-            <div class="text-2xl font-bold text-(--accent) brightness-150 md:text-3xl">
-              {srs.dueCount()}
-            </div>
-            <div class="text-xs text-white/40">due cards</div>
-          </div>
-        </Show>
+        <DueCountBadge count={srs.dueCount()} />
         {/* Selector needs non-null values - wrap in Show */}
         <Show
           when={

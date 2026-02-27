@@ -2,6 +2,7 @@ import { createClientOnlyFn } from "@tanstack/solid-start"
 
 const ANKI_CONNECT_URL = "http://localhost:8765"
 const ANKI_CONNECT_VERSION = 6
+const ANKI_CONNECT_TIMEOUT_MS = 5000
 
 interface AnkiConnectRequest {
   action: string
@@ -51,11 +52,20 @@ async function ankiConnectRequest<T = unknown>(
   }
 
   try {
-    const response = await fetch(ANKI_CONNECT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(request),
-    })
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), ANKI_CONNECT_TIMEOUT_MS)
+
+    let response: Response
+    try {
+      response = await fetch(ANKI_CONNECT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(request),
+        signal: controller.signal,
+      })
+    } finally {
+      clearTimeout(timeoutId)
+    }
 
     if (!response.ok) {
       throw new Error(
@@ -71,6 +81,12 @@ async function ankiConnectRequest<T = unknown>(
 
     return data.result
   } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      throw new Error(
+        `AnkiConnect request timed out after ${ANKI_CONNECT_TIMEOUT_MS / 1000} seconds. Make sure Anki is running and reachable.`,
+      )
+    }
+
     if (error instanceof TypeError && error.message.includes("fetch")) {
       throw new Error(
         "Cannot connect to Anki. Make sure Anki is running with the AnkiConnect plugin installed.",
