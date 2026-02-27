@@ -1,4 +1,5 @@
 import { ConvexProvider, setupConvex } from "convex-solidjs"
+import { createRoot } from "solid-js"
 import type { JSXElement } from "solid-js"
 import { authClient } from "@/lib/auth-client"
 import { fetchAuth } from "@/lib/server"
@@ -8,7 +9,12 @@ if (!CONVEX_URL) {
   console.error("missing envar CONVEX_URL")
 }
 
-export const convexQueryClient = setupConvex(CONVEX_URL)
+let disposeConvexRoot: (() => void) | undefined
+
+export const convexQueryClient = createRoot((dispose) => {
+  disposeConvexRoot = dispose
+  return setupConvex(CONVEX_URL)
+})
 
 const convexAuthProvider = async ({
   forceRefreshToken,
@@ -23,6 +29,12 @@ const convexAuthProvider = async ({
 }
 
 convexQueryClient.client.setAuth(convexAuthProvider)
+
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => {
+    disposeConvexRoot?.()
+  })
+}
 
 // Exported for re-triggering auth after sign-in/sign-out
 export { convexAuthProvider }
