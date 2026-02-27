@@ -160,19 +160,53 @@ export async function getDailyProgress(
 }
 
 function toDateKey(eventTs: number, timeZone: string): string {
-  try {
-    return new Intl.DateTimeFormat("en-CA", {
-      timeZone,
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }).format(new Date(eventTs))
-  } catch {
-    return new Intl.DateTimeFormat("en-CA", {
-      timeZone: "UTC",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }).format(new Date(eventTs))
+  const zone = safeTimeZone(timeZone)
+  const parts = getDatePartsInTimeZone(eventTs, zone)
+
+  if (parts.hour < 4) {
+    return decrementDateKey(`${parts.year}-${parts.month}-${parts.day}`)
   }
+
+  return `${parts.year}-${parts.month}-${parts.day}`
+}
+
+function safeTimeZone(timeZone: string): string {
+  try {
+    Intl.DateTimeFormat("en-US", { timeZone }).format(new Date())
+    return timeZone
+  } catch {
+    return "UTC"
+  }
+}
+
+function getDatePartsInTimeZone(eventTs: number, timeZone: string) {
+  const formatted = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    hour12: false,
+  }).formatToParts(new Date(eventTs))
+
+  const get = (type: string) =>
+    formatted.find((part) => part.type === type)?.value || "00"
+
+  return {
+    year: get("year"),
+    month: get("month"),
+    day: get("day"),
+    hour: Number(get("hour")),
+  }
+}
+
+function decrementDateKey(dateKey: string): string {
+  const [year, month, day] = dateKey.split("-").map((v) => Number(v))
+  const d = new Date(Date.UTC(year, month - 1, day))
+  d.setUTCDate(d.getUTCDate() - 1)
+
+  const y = d.getUTCFullYear()
+  const m = String(d.getUTCMonth() + 1).padStart(2, "0")
+  const dd = String(d.getUTCDate()).padStart(2, "0")
+  return `${y}-${m}-${dd}`
 }

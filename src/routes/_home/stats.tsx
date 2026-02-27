@@ -2,12 +2,22 @@ import { createFileRoute } from "@tanstack/solid-router"
 import { For, Show, createMemo } from "solid-js"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
+import { queryKeys } from "~/query/query-keys"
 import {
   DAILY_PROGRESS_TARGET_UNITS,
   getLocalDateKey,
 } from "@/lib/progress/weights"
 
 export const Route = createFileRoute("/_home/stats")({
+  loader: ({ context, preload }) => {
+    if (!preload) {
+      context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+        blur: 4,
+        opacityOffset: -0.22,
+        showGradient: false,
+      })
+    }
+  },
   component: RouteComponent,
 })
 
@@ -67,15 +77,13 @@ function RouteComponent() {
         <p>date: {todayKey()}</p>
         <p>progress units (from daily stats): {derived().progressUnits}</p>
         <p>
-          progress units (direct daily query):
-          {" "}
+          progress units (direct daily query):{" "}
           {dailyProgressQuery.data()?.progressUnits ?? 0}
         </p>
         <p>questions answered: {derived().questionsAnswered}</p>
         <p>
-          daily progress: {derived().progressPercent}% ({derived().progressUnits} /
-          {" "}
-          {DAILY_PROGRESS_TARGET_UNITS})
+          daily progress: {derived().progressPercent}% (
+          {derived().progressUnits} / {DAILY_PROGRESS_TARGET_UNITS})
         </p>
       </section>
 
@@ -122,10 +130,8 @@ function RouteComponent() {
             <For each={recentActivityQuery.data() || []}>
               {(row) => (
                 <li>
-                  {row.moduleType} / {row.modulePath} - {row.progressUnits} units,
-                  {" "}
-                  {row.questionsAnswered} questions -
-                  {" "}
+                  {row.moduleType} / {row.modulePath} - {row.progressUnits}{" "}
+                  units, {row.questionsAnswered} questions -{" "}
                   {new Date(row.lastUpdatedAt).toLocaleString()}
                 </li>
               )}
@@ -147,9 +153,8 @@ function RouteComponent() {
             <For each={distributionQuery.data() || []}>
               {(row) => (
                 <li>
-                  {row.moduleType}: {row.progressUnits} units, {row.questionsAnswered}
-                  {" "}
-                  questions
+                  {row.moduleType}: {row.progressUnits} units,{" "}
+                  {row.questionsAnswered} questions
                 </li>
               )}
             </For>

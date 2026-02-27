@@ -2,6 +2,7 @@ import { dynamic_modules } from "@/data/dynamic_modules"
 import { static_modules } from "@/data/static_modules"
 
 export const DAILY_PROGRESS_TARGET_UNITS = 1800
+export const PROGRESS_DAY_CUTOFF_HOUR = 4
 
 export const PROGRESS_WEIGHTS = {
   vocab: {
@@ -48,11 +49,16 @@ export function getModuleTypeForCompletion(moduleId: string): string | null {
 }
 
 export function getLocalDateKey(date = new Date()): string {
+  const adjustedDate = new Date(date)
+  if (adjustedDate.getHours() < PROGRESS_DAY_CUTOFF_HOUR) {
+    adjustedDate.setDate(adjustedDate.getDate() - 1)
+  }
+
   return new Intl.DateTimeFormat("en-CA", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  }).format(date)
+  }).format(adjustedDate)
 }
 
 export function getCurrentTimeZone(): string {
