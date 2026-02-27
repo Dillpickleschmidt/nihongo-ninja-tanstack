@@ -21,7 +21,7 @@ function AnkiConnectPage() {
   })
 
   return (
-    <div class="mx-auto max-w-2xl px-4 pt-24 pb-32 md:pb-16">
+    <div class="mx-auto max-w-2xl px-4 pt-24 pb-32">
       <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
         <ImportPageHeader
           title="Connect to Anki"

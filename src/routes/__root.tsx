@@ -13,6 +13,7 @@ import {
   ColorModeProvider,
   ColorModeScript,
   cookieStorageManagerSSR,
+  useColorMode,
 } from "@kobalte/core"
 import {
   QueryClientProvider,
@@ -38,6 +39,7 @@ import { parsePreferencesCookie, syncPreferencesFromProfile } from "@/query/mode
 import { useConvexQuery } from "@/lib/convex-query"
 import { getUser } from "@/lib/auth"
 import { api } from "convex/_generated/api"
+import { Toaster } from "@/components/ui/sonner"
 
 export interface RouterContext {
   queryClient: QueryClient
@@ -120,12 +122,18 @@ function RootDocument(props: { children: JSX.Element }) {
               <TextbookChapterBackgrounds />
             </Suspense>
             {props.children}
+            <ThemedToaster />
           </AppConvexProvider>
         </ColorModeProvider>
         <Scripts />
       </body>
     </html>
   )
+}
+
+function ThemedToaster() {
+  const { colorMode } = useColorMode()
+  return <Toaster theme={colorMode()} />
 }
 
 function PreferencesSync() {

@@ -46,7 +46,6 @@ const Timeline: Component<TimelineProps> = (rawProps) => {
             title={item.title}
             description={item.description}
             bullet={item.bullet}
-            isLast={index() === props.items.length - 1}
             isActive={
               props.activeItem === -1 ? false : props.activeItem >= index() + 1
             }
@@ -67,7 +66,6 @@ export type TimelineItemProps = {
   title: JSXElement
   description?: JSXElement
   bullet?: JSXElement
-  isLast?: boolean
   isActive: boolean
   isActiveBullet: boolean
   class?: string
@@ -82,7 +80,6 @@ const TimelineItem: Component<TimelineItemProps> = (props) => {
     "bullet",
     "description",
     "title",
-    "isLast",
     "isActive",
     "isActiveBullet",
     "bulletSize",
@@ -92,9 +89,8 @@ const TimelineItem: Component<TimelineItemProps> = (props) => {
   return (
     <li
       class={cn(
-        "relative border-l pb-8 pl-8",
-        local.isLast && "border-l-transparent pb-0",
-        local.isActive && !local.isLast && "border-l-primary",
+        "relative border-l pb-8 pl-8 last:border-l-transparent last:pb-0",
+        local.isActive && "border-l-primary",
         local.class,
       )}
       style={{

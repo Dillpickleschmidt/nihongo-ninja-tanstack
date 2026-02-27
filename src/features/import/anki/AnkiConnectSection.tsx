@@ -2,7 +2,11 @@ import { createSignal, Show } from "solid-js"
 import { Monitor, Smartphone, Copy, Check, ExternalLink } from "lucide-solid"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Timeline } from "@/components/ui/timeline"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/utils"
+import { toast } from "solid-sonner"
+import { validateAnkiConnect } from "./anki-connect-client"
+import { usePreferences } from "@/lib/preferences"
 
 type ConnectionStatus = "idle" | "testing" | "success" | "error"
 
@@ -17,13 +21,27 @@ const StepBullet = (n: number) => (
 )
 
 export function AnkiConnectSection() {
+  const { preferences, setPreference } = usePreferences()
   const [status, setStatus] = createSignal<ConnectionStatus>("idle")
+  const [errorMessage, setErrorMessage] = createSignal("")
 
-  const handleTestConnection = () => {
+  const handleTestConnection = async () => {
     setStatus("testing")
-    setTimeout(() => {
+    setErrorMessage("")
+    const result = await validateAnkiConnect()
+    if (result.success) {
+      setStatus("success")
+      const current = preferences().srsServicePreferences.anki
+      setPreference("srsServicePreferences", {
+        anki: { ...current, mode: "enabled", is_api_key_valid: true },
+      })
+      toast.success("Anki connected", {
+        description: "SRS service switched to Anki",
+      })
+    } else {
       setStatus("error")
-    }, 1500)
+      setErrorMessage(result.error ?? "Unknown error")
+    }
   }
 
   return (
@@ -220,26 +238,25 @@ export function AnkiConnectSection() {
             </div>
           </div>
 
-          <button
-            type="button"
+          <Button
             onClick={handleTestConnection}
             disabled={status() === "testing"}
             class={cn(
-              "rounded-xl px-5 py-2.5 text-sm font-medium transition-all",
+              "rounded-xl px-5 py-2.5",
               status() === "testing"
                 ? "bg-white/10 text-white/50 cursor-wait"
-                : "bg-(--accent) text-white hover:brightness-110",
+                : "bg-(--accent) text-white hover:bg-(--accent) hover:brightness-110",
             )}
           >
             {status() === "testing" ? "Testing..." : "Test Connection"}
-          </button>
+          </Button>
         </div>
 
         {status() === "error" && (
           <div class="mt-4 rounded-lg border border-red-500/20 bg-red-500/10 p-4">
             <p class="text-sm text-red-300">
-              Make sure Anki is running and AnkiConnect is installed correctly.
-              Check that no firewall is blocking the connection.
+              {errorMessage() ||
+                "Make sure Anki is running and AnkiConnect is installed correctly."}
             </p>
           </div>
         )}
@@ -247,27 +264,10 @@ export function AnkiConnectSection() {
         {status() === "success" && (
           <div class="mt-4 rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-4">
             <p class="text-sm text-emerald-300">
-              Successfully connected to Anki. You can now sync your review
-              progress.
+              Successfully connected to Anki.
             </p>
           </div>
         )}
-      </div>
-
-      {/* Sync Button */}
-      <div class="mt-6 flex justify-end">
-        <button
-          type="button"
-          disabled={status() !== "success"}
-          class={cn(
-            "rounded-xl px-6 py-3 font-medium transition-all",
-            status() === "success"
-              ? "bg-(--accent) text-white hover:brightness-110"
-              : "bg-white/10 text-white/40 cursor-not-allowed",
-          )}
-        >
-          Start Sync
-        </button>
       </div>
     </>
   )
