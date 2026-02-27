@@ -3,6 +3,8 @@ import { fetchAuth } from "@/lib/server"
 import { queryKeys } from "./query-keys"
 import { parseDeviceSettingsCookie } from "./model/device-settings"
 import { parsePreferencesCookie } from "./model/preferences"
+import { api } from "convex/_generated/api"
+import { convexQueryClient } from "@/providers/convex"
 import type {
   BackgroundSettings,
   BackgroundColor,
@@ -86,3 +88,47 @@ export const backgroundColorQueryOptions = () => {
     gcTime: Infinity,
   })
 }
+
+// ============================================================================
+// Progress Query Options
+// ============================================================================
+
+export const dailyModuleStatsQueryOptions = (dateKey: string) =>
+  queryOptions({
+    queryKey: queryKeys.dailyModuleStats(dateKey),
+    queryFn: async () =>
+      convexQueryClient.client.query(api.api.progress.getDailyModuleStatsForDate, {
+        dateKey,
+      }),
+  })
+
+export const dailyProgressQueryOptions = (dateKey: string) =>
+  queryOptions({
+    queryKey: queryKeys.dailyProgress(dateKey),
+    queryFn: async () =>
+      convexQueryClient.client.query(api.api.progress.getDailyProgress, {
+        dateKey,
+      }),
+  })
+
+export const recentModuleActivityQueryOptions = (limit: number) =>
+  queryOptions({
+    queryKey: queryKeys.recentModuleActivity(limit),
+    queryFn: async () =>
+      convexQueryClient.client.query(api.api.progress.getRecentModuleActivity, {
+        limit,
+      }),
+  })
+
+export const progressDistributionQueryOptions = (
+  fromDateKey: string,
+  toDateKey: string,
+) =>
+  queryOptions({
+    queryKey: queryKeys.progressDistribution(fromDateKey, toDateKey),
+    queryFn: async () =>
+      convexQueryClient.client.query(api.api.progress.getDistribution, {
+        fromDateKey,
+        toDateKey,
+      }),
+  })

@@ -94,6 +94,7 @@ function PracticeCatchAll() {
   }
 
   const upsertFSRSCardMutation = useMutation(api.api.fsrs.upsertFSRSCard)
+  const recordProgressMutation = useMutation(api.api.progress.recordProgressEvent)
 
   const practiceManager = usePracticeManager(async (card) => {
     const itemKey = card.key.split(":")[1]
@@ -111,6 +112,20 @@ function PracticeCatchAll() {
   })
 
   const [sessionInitialized, setSessionInitialized] = createSignal(false)
+
+  const recordProgress = (progressUnitsDelta: number, questionsAnsweredDelta: number) => {
+    const currentDeck = deck()
+    if (!currentDeck) return
+
+    recordProgressMutation.mutate({
+      modulePath: buildVocabModulePath(currentDeck),
+      moduleType: "vocab-practice",
+      progressUnitsDelta,
+      questionsAnsweredDelta,
+      eventTs: Date.now(),
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
+    })
+  }
 
   createEffect(() => {
     const data = practiceData()
@@ -141,11 +156,16 @@ function PracticeCatchAll() {
             mode={mode()}
             onAnswer={(rating: Grade) => practiceManager.answerCard(rating)}
             onIntroductionComplete={() => practiceManager.processIntroduction()}
+            onProgressEvent={recordProgress}
           />
         </Show>
       )}
     </Show>
   )
+}
+
+function buildVocabModulePath(deck: UnifiedDeck): string {
+  return `vocab-deck:${deck.id}`
 }
 
 function parsePathSegments(splat: string | undefined): string[] {

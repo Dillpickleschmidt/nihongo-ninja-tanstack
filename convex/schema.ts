@@ -120,15 +120,20 @@ export default defineSchema({
     .index("by_user", ["userId"])
     .index("by_user_module", ["userId", "modulePath"]),
 
-  // User Practice Sessions
-  userPracticeSessions: defineTable({
+  // User Daily Module Progress Stats
+  userDailyModuleStats: defineTable({
     userId: v.string(),
+    dateKey: v.string(),
     modulePath: v.string(),
     moduleType: v.string(),
-    durationSeconds: v.number(),
-    questionsAnswered: v.optional(v.number()),
+    progressUnits: v.number(),
+    questionsAnswered: v.number(),
     lastUpdatedAt: v.number(),
-  }).index("by_user", ["userId"]),
+  })
+    .index("by_user_date", ["userId", "dateKey"])
+    .index("by_user_date_module", ["userId", "dateKey", "modulePath"])
+    .index("by_user_lastUpdated", ["userId", "lastUpdatedAt"])
+    .index("by_user_date_type", ["userId", "dateKey", "moduleType"]),
 
   // User Service Tokens (Anilist, etc.)
   userServiceTokens: defineTable({

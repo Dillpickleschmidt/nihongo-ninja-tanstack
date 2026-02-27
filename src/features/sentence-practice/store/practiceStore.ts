@@ -47,7 +47,9 @@ const initialState: PracticeState = {
   overlayResult: null,
 }
 
-export function createPracticeStore() {
+export function createPracticeStore(
+  onProgressEvent?: (progressUnitsDelta: number, questionsAnsweredDelta: number) => void,
+) {
   const [store, setStore] = createStore<PracticeState>(initialState)
 
   // Get current processed question
@@ -178,6 +180,10 @@ export function createPracticeStore() {
 
       // Move to next question
       nextQuestion: () => {
+        const currentDifficulty = store.effectiveDifficulty
+        const progressUnitsDelta = currentDifficulty === "easy" ? 15 : 30
+        onProgressEvent?.(progressUnitsDelta, 1)
+
         const nextIndex = store.currentQuestionIndex + 1
         if (nextIndex >= store.questions.length) return
 

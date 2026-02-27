@@ -23,6 +23,7 @@ type Props = {
   mode: "meanings" | "spellings"
   onAnswer: (rating: Grade) => Promise<void>
   onIntroductionComplete: () => void
+  onProgressEvent?: (progressUnitsDelta: number, questionsAnsweredDelta: number) => void
   onReturn?: () => void
 }
 
@@ -68,6 +69,14 @@ export function VocabPractice(props: Props) {
       setShowReview(true)
     }
 
+    if (currentCard.sessionStyle === "multiple-choice") {
+      props.onProgressEvent?.(5, 1)
+    } else if (currentCard.sessionStyle === "write") {
+      props.onProgressEvent?.(10, 1)
+    } else if (currentCard.sessionStyle === "flashcard") {
+      props.onProgressEvent?.(5, 1)
+    }
+
     await props.onAnswer(rating)
   }
 
@@ -75,10 +84,12 @@ export function VocabPractice(props: Props) {
   const handleReviewContinue = () => {
     setShowReview(false)
     setLastReviewIndex(allResults().length)
+    props.onProgressEvent?.(5, 0)
   }
 
   // Return to vocab home
   const handleReturn = () => {
+    props.onProgressEvent?.(10, 0)
     if (props.onReturn) {
       props.onReturn()
     } else {
@@ -115,7 +126,10 @@ export function VocabPractice(props: Props) {
                   card={currentCard}
                   currentIndex={currentIndex()}
                   totalItems={totalItems()}
-                  onContinue={props.onIntroductionComplete}
+                  onContinue={() => {
+                    props.onProgressEvent?.(10, 1)
+                    props.onIntroductionComplete()
+                  }}
                 />
               </Match>
               <Match when={currentCard.sessionStyle === "multiple-choice"}>

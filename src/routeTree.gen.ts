@@ -18,6 +18,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as HomeRouteImport } from './routes/_home'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
+import { Route as HomeStatsRouteImport } from './routes/_home/stats'
 import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
 import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeLessonsRouteImport } from './routes/_home/lessons'
@@ -120,6 +121,11 @@ const IndexRoute = IndexRouteImport.update({
 const HomeVocabRoute = HomeVocabRouteImport.update({
   id: '/vocab',
   path: '/vocab',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeStatsRoute = HomeStatsRouteImport.update({
+  id: '/stats',
+  path: '/stats',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeSettingsRoute = HomeSettingsRouteImport.update({
@@ -469,6 +475,7 @@ export interface FileRoutesByFullPath {
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
+  '/stats': typeof HomeStatsRoute
   '/vocab': typeof HomeVocabRouteWithChildren
   '/import/anki': typeof HomeImportAnkiRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
@@ -538,6 +545,7 @@ export interface FileRoutesByTo {
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
+  '/stats': typeof HomeStatsRoute
   '/import/anki': typeof HomeImportAnkiRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/vocab/$': typeof HomeVocabSplatRoute
@@ -608,6 +616,7 @@ export interface FileRoutesById {
   '/_home/lessons': typeof HomeLessonsRouteWithChildren
   '/_home/review': typeof HomeReviewRoute
   '/_home/settings': typeof HomeSettingsRoute
+  '/_home/stats': typeof HomeStatsRoute
   '/_home/vocab': typeof HomeVocabRouteWithChildren
   '/_home/import/anki': typeof HomeImportAnkiRoute
   '/_home/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
@@ -679,6 +688,7 @@ export interface FileRouteTypes {
     | '/lessons'
     | '/review'
     | '/settings'
+    | '/stats'
     | '/vocab'
     | '/import/anki'
     | '/sentence-practice/$id'
@@ -748,6 +758,7 @@ export interface FileRouteTypes {
     | '/lessons'
     | '/review'
     | '/settings'
+    | '/stats'
     | '/import/anki'
     | '/sentence-practice/$id'
     | '/vocab/$'
@@ -817,6 +828,7 @@ export interface FileRouteTypes {
     | '/_home/lessons'
     | '/_home/review'
     | '/_home/settings'
+    | '/_home/stats'
     | '/_home/vocab'
     | '/_home/import/anki'
     | '/_home/sentence-practice/$id'
@@ -950,6 +962,13 @@ declare module '@tanstack/solid-router' {
       path: '/vocab'
       fullPath: '/vocab'
       preLoaderRoute: typeof HomeVocabRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/stats': {
+      id: '/_home/stats'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof HomeStatsRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/settings': {
@@ -1503,6 +1522,7 @@ interface HomeRouteChildren {
   HomeLessonsRoute: typeof HomeLessonsRouteWithChildren
   HomeReviewRoute: typeof HomeReviewRoute
   HomeSettingsRoute: typeof HomeSettingsRoute
+  HomeStatsRoute: typeof HomeStatsRoute
   HomeVocabRoute: typeof HomeVocabRouteWithChildren
   HomeImportAnkiRoute: typeof HomeImportAnkiRoute
   HomeSentencePracticeIdRoute: typeof HomeSentencePracticeIdRoute
@@ -1518,6 +1538,7 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeLessonsRoute: HomeLessonsRouteWithChildren,
   HomeReviewRoute: HomeReviewRoute,
   HomeSettingsRoute: HomeSettingsRoute,
+  HomeStatsRoute: HomeStatsRoute,
   HomeVocabRoute: HomeVocabRouteWithChildren,
   HomeImportAnkiRoute: HomeImportAnkiRoute,
   HomeSentencePracticeIdRoute: HomeSentencePracticeIdRoute,

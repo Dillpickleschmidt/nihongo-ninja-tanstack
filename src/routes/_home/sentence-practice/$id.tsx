@@ -24,7 +24,10 @@ export const Route = createFileRoute("/_home/sentence-practice/$id")({
         setId: params.id,
       }),
     )
-    return { questionsPromise }
+    return {
+      questionsPromise,
+      modulePath: `sentence-practice-${params.id}`,
+    }
   },
   component: RouteComponent,
 })
@@ -53,7 +56,7 @@ function RouteComponent() {
                   </div>
                 }
               >
-                <PracticeProvider>
+                <PracticeProvider modulePath={loaderData().modulePath}>
                   <PracticeContainer questions={questions()!} />
                 </PracticeProvider>
               </Suspense>

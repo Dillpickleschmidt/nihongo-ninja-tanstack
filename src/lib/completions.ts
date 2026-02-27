@@ -2,6 +2,11 @@ import { createSignal, onMount } from "solid-js"
 import { useMutation } from "convex-solidjs"
 import { getUser } from "@/lib/auth"
 import { api } from "convex/_generated/api"
+import {
+  getCompletionProgressUnits,
+  getCurrentTimeZone,
+  getModuleTypeForCompletion,
+} from "@/lib/progress/weights"
 
 // ============================================================================
 // localStorage helpers
@@ -49,6 +54,7 @@ export function useLocalCompletions() {
 export function useCompleteModule() {
   const user = getUser()
   const completeMutation = useMutation(api.api.completions.completeModule)
+  const progressMutation = useMutation(api.api.progress.recordProgressEvent)
 
   const [localCompletions, setLocalCompletions] = createSignal<Record<string, number>>({})
 
@@ -57,8 +63,21 @@ export function useCompleteModule() {
   })
 
   const completeModule = (moduleId: string) => {
+    const moduleType = getModuleTypeForCompletion(moduleId)
+    const progressUnits = getCompletionProgressUnits(moduleId)
+
     if (user()) {
       completeMutation.mutate({ modulePath: moduleId })
+      if (moduleType && progressUnits > 0) {
+        progressMutation.mutate({
+          modulePath: moduleId,
+          moduleType,
+          progressUnitsDelta: progressUnits,
+          questionsAnsweredDelta: 0,
+          eventTs: Date.now(),
+          timeZone: getCurrentTimeZone(),
+        })
+      }
     } else {
       addLocalCompletion(moduleId)
       setLocalCompletions(getLocalCompletions())
