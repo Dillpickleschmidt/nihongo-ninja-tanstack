@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/solid-router"
 import { createResource, Suspense } from "solid-js"
 import { convexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
-import { useQueryClient } from "@tanstack/solid-query"
 import { queryKeys } from "@/query/query-keys"
 import {
   PracticeProvider,

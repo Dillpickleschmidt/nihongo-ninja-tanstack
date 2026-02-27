@@ -27,7 +27,11 @@ type DeckLookupResult =
 
 type PracticeData = {
   hierarchy: DeckHierarchyResult
-  moduleFsrs: Doc<"userFsrsCards">[]
+  moduleFsrs: {
+    vocabulary: Doc<"userFsrsCards">[]
+    kanji: Doc<"userFsrsCards">[]
+    radical: Doc<"userFsrsCards">[]
+  }
   reviewFsrs: Doc<"userFsrsCards">[]
 }
 
@@ -179,7 +183,7 @@ async function fetchPracticeData(
       ? await queryClient.fetchQuery(
           convexQuery(api.api.fsrs.getFSRSCardsForItems, { keys, mode }),
         )
-      : []
+      : { vocabulary: [], kanji: [], radical: [] }
 
   return { hierarchy, moduleFsrs, reviewFsrs }
 }
@@ -208,12 +212,17 @@ function buildSessionState(
   includeReviews: boolean,
 ) {
   const { hierarchy, moduleFsrs, reviewFsrs } = data
+  const allModuleFsrs = [
+    ...moduleFsrs.vocabulary,
+    ...moduleFsrs.kanji,
+    ...moduleFsrs.radical,
+  ]
 
   const moduleData: PracticeItemData = {
     vocabulary: hierarchy.vocabulary,
     kanji: mode === "meanings" ? hierarchy.kanji : [],
     radicals: mode === "meanings" ? hierarchy.radicals : [],
-    fsrsCards: moduleFsrs.map(toFSRSCardInput),
+    fsrsCards: allModuleFsrs.map(toFSRSCardInput),
   }
 
   const moduleKeys = {

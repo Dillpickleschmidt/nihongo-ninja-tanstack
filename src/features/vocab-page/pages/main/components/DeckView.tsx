@@ -32,6 +32,10 @@ export function DeckView(props: DeckViewProps) {
         vocabCount={view.counts()?.vocab}
         kanjiCount={view.counts()?.kanji}
         radicalCount={view.counts()?.radicals}
+        vocabDueRows={view.dueRows()?.vocabulary}
+        kanjiDueRows={view.dueRows()?.kanji}
+        radicalDueRows={view.dueRows()?.radicals}
+        dueRowsLoading={view.dueRowsLoading()}
         onVocabClick={() => view.setActiveTab("vocabulary")}
         onKanjiClick={() => view.setActiveTab("kanji")}
       />

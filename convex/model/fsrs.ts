@@ -74,26 +74,43 @@ export async function getFSRSCardsForItems(
   ctx: QueryCtx,
   keys: string[],
   mode: PracticeMode,
-): Promise<Doc<"userFsrsCards">[]> {
+): Promise<{
+  vocabulary: Doc<"userFsrsCards">[]
+  kanji: Doc<"userFsrsCards">[]
+  radical: Doc<"userFsrsCards">[]
+}> {
   const identity = await ctx.auth.getUserIdentity()
-  if (!identity) return []
+  if (!identity) {
+    return { vocabulary: [], kanji: [], radical: [] }
+  }
 
   const userId = identity.subject
+  const uniqueSortedKeys = [...new Set(keys)].sort()
 
   const results = await Promise.all(
-    keys.map((key) =>
+    uniqueSortedKeys.map((key) =>
       ctx.db
         .query("userFsrsCards")
         .withIndex("by_user_key_mode_type", (q) =>
           q.eq("userId", userId).eq("practiceItemKey", key).eq("mode", mode),
         )
-        .first(),
+        .collect(),
     ),
   )
 
-  return results.filter(
-    (card): card is NonNullable<typeof card> => card !== null,
-  )
+  const bucketed = {
+    vocabulary: [] as Doc<"userFsrsCards">[],
+    kanji: [] as Doc<"userFsrsCards">[],
+    radical: [] as Doc<"userFsrsCards">[],
+  }
+
+  for (const cardsForKey of results) {
+    for (const card of cardsForKey) {
+      bucketed[card.type].push(card)
+    }
+  }
+
+  return bucketed
 }
 
 export async function getDueFSRSCards(

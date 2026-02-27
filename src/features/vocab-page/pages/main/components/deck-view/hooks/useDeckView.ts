@@ -25,6 +25,22 @@ interface UseDeckViewReturn {
   counts: Accessor<
     { vocab: number; kanji: number; radicals: number } | undefined
   >
+  dueRows: Accessor<
+    | {
+        vocabulary: {
+          meanings: { hasHistory: boolean; dueCount: number }
+          spellings: { hasHistory: boolean; dueCount: number }
+        }
+        kanji: {
+          meanings: { hasHistory: boolean; dueCount: number }
+        }
+        radicals: {
+          meanings: { hasHistory: boolean; dueCount: number }
+        }
+      }
+    | undefined
+  >
+  dueRowsLoading: Accessor<boolean>
   skippedKanji: () => string[] | undefined
   hasSelection: () => boolean
 
@@ -52,6 +68,31 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
       deckId: deck.id,
       deckSource: deck.source,
     }),
+  )
+
+  const hierarchyKeys = createMemo(() => {
+    const data = hierarchyQuery.data()
+    if (!data) return [] as string[]
+
+    return [
+      ...new Set([
+        ...data.vocabulary.map((item) => item.word),
+        ...data.kanji.map((item) => item.kanji),
+        ...data.radicals.map((item) => item.radical),
+      ]),
+    ].sort()
+  })
+
+  const meaningsFsrsQuery = useConvexQuery(
+    api.api.fsrs.getFSRSCardsForItems,
+    () => ({ keys: hierarchyKeys(), mode: "meanings" as const }),
+    () => ({ enabled: hierarchyKeys().length > 0 }),
+  )
+
+  const spellingsFsrsQuery = useConvexQuery(
+    api.api.fsrs.getFSRSCardsForItems,
+    () => ({ keys: hierarchyKeys(), mode: "spellings" as const }),
+    () => ({ enabled: hierarchyKeys().length > 0 }),
   )
 
   // Derived: kanji → vocab lookup map
@@ -105,6 +146,46 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
     }
   })
 
+  const dueRows = createMemo(() => {
+    const meanings = meaningsFsrsQuery.data()
+    const spellings = spellingsFsrsQuery.data()
+    if (!meanings || !spellings) return undefined
+
+    const now = Date.now()
+    const countDue = (cards: { dueAt: number }[]) =>
+      cards.reduce((count, card) => count + (card.dueAt <= now ? 1 : 0), 0)
+
+    return {
+      vocabulary: {
+        meanings: {
+          hasHistory: meanings.vocabulary.length > 0,
+          dueCount: countDue(meanings.vocabulary),
+        },
+        spellings: {
+          hasHistory: spellings.vocabulary.length > 0,
+          dueCount: countDue(spellings.vocabulary),
+        },
+      },
+      kanji: {
+        meanings: {
+          hasHistory: meanings.kanji.length > 0,
+          dueCount: countDue(meanings.kanji),
+        },
+      },
+      radicals: {
+        meanings: {
+          hasHistory: meanings.radical.length > 0,
+          dueCount: countDue(meanings.radical),
+        },
+      },
+    }
+  })
+
+  const dueRowsLoading = createMemo(() => {
+    if (hierarchyKeys().length === 0) return false
+    return meaningsFsrsQuery.isLoading() || spellingsFsrsQuery.isLoading()
+  })
+
   // Derived: skipped kanji (plain function - used once)
   const skippedKanji = () => hierarchyQuery.data()?.skippedKanji
 
@@ -154,6 +235,8 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
     filteredKanji,
     kanjiToVocab,
     counts,
+    dueRows,
+    dueRowsLoading,
     skippedKanji,
     hasSelection,
 
