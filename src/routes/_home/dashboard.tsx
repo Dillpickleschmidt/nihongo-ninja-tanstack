@@ -16,10 +16,14 @@ export const Route = createFileRoute("/_home/dashboard")({
     context.queryClient.prefetchQuery(
       convexQuery(api.api.learning_paths.getAllLearningPaths, {}),
     )
-    context.queryClient.prefetchQuery(
-      convexQuery(api.api.fsrs.getDueFSRSCardsCount, {}),
-    )
-    const pathId = parsePreferencesCookie().activeLearningPath
+    const prefs = parsePreferencesCookie()
+    const anki = prefs.srsServicePreferences.anki
+    if (!(anki.mode === "enabled" && anki.is_api_key_valid)) {
+      context.queryClient.prefetchQuery(
+        convexQuery(api.api.fsrs.getDueFSRSCardsCount, {}),
+      )
+    }
+    const pathId = prefs.activeLearningPath
     if (pathId) {
       context.queryClient.prefetchQuery(
         convexQuery(api.api.learning_paths.getPathWithProgress, { pathId }),

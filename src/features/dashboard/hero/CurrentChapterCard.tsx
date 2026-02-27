@@ -3,8 +3,8 @@ import { ChevronRight } from "lucide-solid"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { getModulesFromChapter } from "@/data/utils/modules"
-import { getUser } from "@/lib/auth"
 import { usePreferences } from "@/lib/preferences"
+import { useSrs } from "@/features/srs/use-srs"
 import { LearningPathChapterSelector } from "../LearningPathChapterSelector"
 import { ModuleLink } from "./ModuleLink"
 
@@ -69,12 +69,7 @@ function CurrentChapterCardContent() {
 
   const nextModules = () => currentModules()?.slice(0, 3) ?? []
 
-  const user = getUser()
-  const dueCardsQuery = useConvexQuery(
-    api.api.fsrs.getDueFSRSCardsCount,
-    {},
-    () => ({ enabled: !!user() }),
-  )
+  const srs = useSrs()
 
   const handleChapterSelect = (pathId: string, chapter: { slug: string }) => {
     setPreference("activeLearningPath", pathId)
@@ -111,10 +106,10 @@ function CurrentChapterCardContent() {
 
       {/* Progress indicator */}
       <div class="flex items-center gap-4 lg:flex-col lg:items-end">
-        <Show when={dueCardsQuery.data() !== undefined}>
+        <Show when={srs.dueCount() !== undefined}>
           <div class="text-right">
             <div class="text-2xl font-bold text-(--accent) brightness-150 md:text-3xl">
-              {dueCardsQuery.data()}
+              {srs.dueCount()}
             </div>
             <div class="text-xs text-white/40">due cards</div>
           </div>
