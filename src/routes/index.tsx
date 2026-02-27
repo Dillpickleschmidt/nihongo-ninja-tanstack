@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/solid-router"
-import { useQueryClient } from "@tanstack/solid-query"
 import { queryKeys } from "~/query/query-keys"
 import { FloatingKanji } from "@/features/homepage/components/floating-kanji"
 import { HeroSection } from "@/features/homepage/sections/hero-section"
@@ -13,17 +12,19 @@ import { Footer } from "@/features/homepage/sections/footer"
 import { useColorAnimation } from "@/features/homepage/lib/use-color-animation"
 
 export const Route = createFileRoute("/")({
+  loader: ({ context, preload }) => {
+    if (!preload) {
+      context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+        blur: 0,
+        opacityOffset: -1,
+        showGradient: false,
+      })
+    }
+  },
   component: Homepage,
 })
 
 function Homepage() {
-  const queryClient = useQueryClient()
-  queryClient.setQueryData(queryKeys.backgroundSettings(), {
-    blur: 0,
-    opacityOffset: -1,
-    showGradient: false,
-  })
-
   // Initialize color cycling animation
   useColorAnimation()
 

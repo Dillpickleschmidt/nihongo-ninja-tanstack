@@ -59,7 +59,7 @@ export const preferencesQueryOptions = () =>
 const defaultBackgroundSettings: BackgroundSettings = {
   blur: undefined,
   opacityOffset: 0,
-  showGradient: true,
+  showGradient: false,
 }
 
 export const backgroundSettingsQueryOptions = () => {

@@ -1,6 +1,4 @@
 import { createFileRoute } from "@tanstack/solid-router"
-import { useQueryClient } from "@tanstack/solid-query"
-import { onMount } from "solid-js"
 import { convexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { queryKeys } from "@/query/query-keys"
@@ -9,7 +7,15 @@ import { ManualMarkingSection } from "@/features/import/manual/ManualMarkingSect
 import { JLPT_SETS } from "@/features/import/manual/consts"
 
 export const Route = createFileRoute("/_home/import/builtin/manual")({
-  loader: ({ context }) => {
+  loader: ({ context, preload }) => {
+    if (!preload) {
+      context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+        blur: 16,
+        opacityOffset: -0.25,
+        showGradient: false,
+      })
+    }
+
     context.queryClient.prefetchQuery(
       convexQuery(api.api.vocabulary.getBySets, { setIds: [...JLPT_SETS] }),
     )
@@ -18,16 +24,6 @@ export const Route = createFileRoute("/_home/import/builtin/manual")({
 })
 
 function ManualMarkingPage() {
-  const queryClient = useQueryClient()
-
-  onMount(() => {
-    queryClient.setQueryData(queryKeys.backgroundSettings(), {
-      blur: 16,
-      opacityOffset: -0.25,
-      showGradient: false,
-    })
-  })
-
   return (
     <div class="mx-auto max-w-4xl px-4 pt-24 pb-32 md:pb-16">
       <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">

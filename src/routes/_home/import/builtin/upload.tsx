@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/solid-router"
-import { useQueryClient } from "@tanstack/solid-query"
-import { createSignal, onMount, Show } from "solid-js"
+import { createSignal, Show } from "solid-js"
 import { queryKeys } from "@/query/query-keys"
 import { ImportPageHeader } from "@/features/import/shared/ImportPageHeader"
 import { UploadHistorySection } from "@/features/import/upload/UploadHistorySection"
@@ -12,13 +11,21 @@ import type { AnkiExtractionResult } from "@/features/import/upload/anki/anki-pr
 import type { AnkiExtractedData, FieldMapping } from "@/features/import/upload/anki/anki-types"
 
 export const Route = createFileRoute("/_home/import/builtin/upload")({
+  loader: ({ context, preload }) => {
+    if (!preload) {
+      context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+        blur: 12,
+        opacityOffset: -0.22,
+        showGradient: false,
+      })
+    }
+  },
   component: UploadHistoryPage,
 })
 
 type Step = "upload" | "field-mapping" | "review"
 
 function UploadHistoryPage() {
-  const queryClient = useQueryClient()
   const [step, setStep] = createSignal<Step>("upload")
   const [processedResult, setProcessedResult] =
     createSignal<ImportProcessResult | null>(null)
@@ -30,14 +37,6 @@ function UploadHistoryPage() {
   const [fieldMapping, setFieldMapping] = createSignal<FieldMapping | null>(
     null,
   )
-
-  onMount(() => {
-    queryClient.setQueryData(queryKeys.backgroundSettings(), {
-      blur: 12,
-      opacityOffset: -0.22,
-      showGradient: false,
-    })
-  })
 
   const handleProcessed = (result: ImportProcessResult) => {
     setProcessedResult(result)

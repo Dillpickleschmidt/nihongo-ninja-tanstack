@@ -11,7 +11,15 @@ import {
 import { Sidebar } from "~/features/sidebar/Sidebar"
 
 export const Route = createFileRoute("/_home/sentence-practice/$id")({
-  loader: ({ context, params }) => {
+  loader: ({ context, params, preload }) => {
+    if (!preload) {
+      context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+        blur: 2,
+        opacityOffset: -0.22,
+        showGradient: false,
+      })
+    }
+
     const questionsPromise = context.queryClient.fetchQuery(
       convexQuery(api.api.sentencePractice.getQuestionsBySetId, {
         setId: params.id,
@@ -24,13 +32,6 @@ export const Route = createFileRoute("/_home/sentence-practice/$id")({
 
 function RouteComponent() {
   const loaderData = Route.useLoaderData()
-  const queryClient = useQueryClient()
-
-  queryClient.setQueryData(queryKeys.backgroundSettings(), {
-    blur: 2,
-    opacityOffset: -0.22,
-    showGradient: false,
-  })
 
   const [questions] = createResource(() => loaderData().questionsPromise)
 

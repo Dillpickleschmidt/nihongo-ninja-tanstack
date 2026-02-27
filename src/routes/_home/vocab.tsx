@@ -1,6 +1,5 @@
 // src/routes/_home/vocab.tsx
 import { createFileRoute, Outlet } from "@tanstack/solid-router"
-import { useQueryClient } from "@tanstack/solid-query"
 import { Suspense } from "solid-js"
 import { queryKeys } from "~/query/query-keys"
 import { Sidebar } from "@/features/sidebar/Sidebar"
@@ -11,18 +10,19 @@ import { FolderEditModal } from "@/features/vocab-page/shared/components/FolderE
 import { DeckCopyModal } from "@/features/vocab-page/shared/components/DeckCopyModal"
 
 export const Route = createFileRoute("/_home/vocab")({
+  loader: ({ context, preload }) => {
+    if (!preload) {
+      context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+        blur: 2,
+        opacityOffset: -0.22,
+        showGradient: false,
+      })
+    }
+  },
   component: VocabLayoutComponent,
 })
 
 function VocabLayoutComponent() {
-  const queryClient = useQueryClient()
-
-  queryClient.setQueryData(queryKeys.backgroundSettings(), {
-    blur: 2,
-    opacityOffset: -0.22,
-    showGradient: false,
-  })
-
   return (
     <VocabProvider>
       <div class="grid grid-cols-[auto_1fr] md:grid-cols-[18rem_1fr_24rem]">

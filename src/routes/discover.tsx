@@ -1,6 +1,5 @@
-import { createEffect, createResource, Show, Suspense } from "solid-js"
+import { createResource, Show, Suspense } from "solid-js"
 import { createFileRoute } from "@tanstack/solid-router"
-import { useQueryClient } from "@tanstack/solid-query"
 import { queryKeys } from "~/query/query-keys"
 import { authQueryOptions } from "~/query/query-options"
 import {
@@ -22,7 +21,15 @@ import {
 import { BottomNav } from "~/features/navbar/Nav"
 
 export const Route = createFileRoute("/discover")({
-  loader: ({ context }) => {
+  loader: ({ context, preload }) => {
+    if (!preload) {
+      context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+        blur: 0,
+        opacityOffset: -1,
+        showGradient: false,
+      })
+    }
+
     const { season, year } = getCurrentSeason()
     const genericSections = getGenericSections(season, year)
     const auth = context.queryClient.getQueryData(authQueryOptions().queryKey)
@@ -70,18 +77,9 @@ export const Route = createFileRoute("/discover")({
 
 function DiscoverPage() {
   const loaderData = Route.useLoaderData()
-  const queryClient = useQueryClient()
   const [personalSections] = createResource(
     () => loaderData().personalSectionsPromise,
   )
-
-  createEffect(() => {
-    queryClient.setQueryData(queryKeys.backgroundSettings(), {
-      blur: 0,
-      opacityOffset: -1,
-      showGradient: false,
-    })
-  })
 
   return (
     <div>

@@ -1,6 +1,5 @@
 import { Match, Switch } from "solid-js"
 import { createFileRoute } from "@tanstack/solid-router"
-import { useQueryClient } from "@tanstack/solid-query"
 import { getUser } from "@/lib/auth"
 import {
   SearchProvider,
@@ -15,18 +14,20 @@ import { queryKeys } from "@/query/query-keys"
 import { BottomNav } from "~/features/navbar/Nav"
 
 export const Route = createFileRoute("/search")({
+  loader: ({ context, preload }) => {
+    if (!preload) {
+      context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+        blur: 0,
+        opacityOffset: -1,
+        showGradient: false,
+      })
+    }
+  },
   component: SearchPage,
 })
 
 function SearchPage() {
-  const queryClient = useQueryClient()
   const user = getUser()
-
-  queryClient.setQueryData(queryKeys.backgroundSettings(), {
-    blur: 0,
-    opacityOffset: -1,
-    showGradient: false,
-  })
 
   return (
     <SearchProvider>

@@ -23,7 +23,6 @@ import { chapters, type LearningPathChapter } from "@/data/chapters"
 import { textbooks } from "@/data/textbooks"
 import { Sidebar } from "@/features/sidebar/Sidebar"
 import { usePreferences } from "@/lib/preferences"
-import { useQueryClient } from "@tanstack/solid-query"
 import { queryKeys } from "~/query/query-keys"
 import {
   getInitialAnimationStyles,
@@ -31,6 +30,15 @@ import {
 } from "@/utils/animations"
 
 export const Route = createFileRoute("/_home/sentence-practice/")({
+  loader: ({ context, preload }) => {
+    if (!preload) {
+      context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+        blur: 16,
+        opacityOffset: -0.22,
+        showGradient: false,
+      })
+    }
+  },
   component: SentencePracticeList,
 })
 
@@ -40,14 +48,7 @@ type ChapterGroup = {
 }
 
 function SentencePracticeList() {
-  const queryClient = useQueryClient()
   const { preferences, setPreference } = usePreferences()
-
-  queryClient.setQueryData(queryKeys.backgroundSettings(), {
-    blur: 16,
-    opacityOffset: -0.22,
-    showGradient: false,
-  })
 
   // Search state
   const [search, setSearch] = createSignal("")

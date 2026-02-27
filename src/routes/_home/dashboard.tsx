@@ -12,7 +12,15 @@ import { PracticeToolsSection } from "@/features/dashboard/practice-tools/Practi
 import { LearningPathSection } from "@/features/dashboard/learning-path/LearningPathSection"
 
 export const Route = createFileRoute("/_home/dashboard")({
-  loader: ({ context }) => {
+  loader: ({ context, preload }) => {
+    if (!preload) {
+      context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+        blur: 4,
+        opacityOffset: -0.22,
+        showGradient: false,
+      })
+    }
+
     context.queryClient.prefetchQuery(
       convexQuery(api.api.learning_paths.getAllLearningPaths, {}),
     )
@@ -41,7 +49,7 @@ function DashboardComponent() {
   createEffect(() => {
     const atTop = scrollY() < 400
     queryClient.setQueryData(queryKeys.backgroundSettings(), {
-      blur: atTop ? 4 : 0,
+      blur: atTop ? 4 : 12,
       opacityOffset: -0.22,
       showGradient: false,
     })

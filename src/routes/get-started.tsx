@@ -1,6 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/solid-router"
 import { createSignal, For, Show } from "solid-js"
-import { useQueryClient } from "@tanstack/solid-query"
 import { textbooks, type TextbookIDEnum } from "@/data/textbooks"
 import { usePreferences } from "@/lib/preferences"
 import { useColorAnimation } from "@/features/homepage/lib/use-color-animation"
@@ -9,6 +8,15 @@ import { Button } from "~/components/ui/button"
 import { queryKeys } from "~/query/query-keys"
 
 export const Route = createFileRoute("/get-started")({
+  loader: ({ context, preload }) => {
+    if (!preload) {
+      context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+        blur: 0,
+        opacityOffset: 0.6,
+        showGradient: false,
+      })
+    }
+  },
   component: GetStartedPage,
 })
 
@@ -23,12 +31,6 @@ function GetStartedPage() {
   const [step, setStep] = createSignal<Step>("fork")
   const [selectedTextbook, setSelectedTextbook] =
     createSignal<TextbookIDEnum>("genki_1")
-  const queryClient = useQueryClient()
-  queryClient.setQueryData(queryKeys.backgroundSettings(), {
-    blur: 0,
-    opacityOffset: 0.6,
-    showGradient: false,
-  })
 
   useColorAnimation()
 
