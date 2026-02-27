@@ -4,10 +4,10 @@ import { api } from "convex/_generated/api"
 import { dynamic_modules } from "@/data/dynamic_modules"
 import { KanaQuiz } from "@/features/kana-quiz/KanaQuiz"
 
-const MODULE_ID = "dakuten-handakuten-quiz"
+const MODULE_ID = "contracted-sounds-quiz"
 
 export const Route = createFileRoute(
-  "/_home/vocab/test/dakuten-handakuten-quiz",
+  "/_home/vocab/quiz/contracted-sounds",
 )({
   loader: ({ context }) => {
     context.queryClient.prefetchQuery(

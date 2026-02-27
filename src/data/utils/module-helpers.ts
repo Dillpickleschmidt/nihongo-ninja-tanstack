@@ -161,7 +161,8 @@ export function getLinkTo(module: Module, moduleKey: string): string {
   }
 
   if (module.module_type === "vocab-test") {
-    return `/vocab/test/${moduleKey}`
+    const strippedId = moduleKey.replace(/-quiz$/, "")
+    return `/vocab/quiz/${strippedId}`
   }
 
   if (module.module_type === "vocab-list") {

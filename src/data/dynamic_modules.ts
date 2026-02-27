@@ -174,14 +174,14 @@ export const dynamic_modules: Record<string, DynamicModule> = {
   "katakana-practice": {
     title: "Katakana",
     module_type: "vocab-practice",
-    vocab_set_ids: [], // FIX
+    vocab_set_ids: ["katakana"],
     instructions: "Practice writing and recognizing Katakana characters.",
     allowed_practice_modes: ["meanings"],
   },
   "katakana-quiz": {
     title: "Katakana Quiz",
     module_type: "vocab-test",
-    vocab_set_ids: [], // FIX
+    vocab_set_ids: ["katakana"],
     instructions: "Test your knowledge of Katakana characters.",
   },
   genki_1_ch2_things: {
