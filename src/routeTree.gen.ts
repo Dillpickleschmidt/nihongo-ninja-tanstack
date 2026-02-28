@@ -32,6 +32,7 @@ import { Route as HomeVocabCreateRouteImport } from './routes/_home/vocab/create
 import { Route as HomeVocabBrowseRouteImport } from './routes/_home/vocab/browse'
 import { Route as HomeVocabSplatRouteImport } from './routes/_home/vocab/$'
 import { Route as HomeSentencePracticeIdRouteImport } from './routes/_home/sentence-practice/$id'
+import { Route as HomeImportCustomRouteImport } from './routes/_home/import/custom'
 import { Route as HomeImportAnkiRouteImport } from './routes/_home/import/anki'
 import { Route as HomeImportBuiltinIndexRouteImport } from './routes/_home/import/builtin/index'
 import { Route as HomeVocabQuizKatakanaRouteImport } from './routes/_home/vocab/quiz/katakana'
@@ -193,6 +194,11 @@ const HomeVocabSplatRoute = HomeVocabSplatRouteImport.update({
 const HomeSentencePracticeIdRoute = HomeSentencePracticeIdRouteImport.update({
   id: '/sentence-practice/$id',
   path: '/sentence-practice/$id',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeImportCustomRoute = HomeImportCustomRouteImport.update({
+  id: '/import/custom',
+  path: '/import/custom',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeImportAnkiRoute = HomeImportAnkiRouteImport.update({
@@ -485,6 +491,7 @@ export interface FileRoutesByFullPath {
   '/stats': typeof HomeStatsRoute
   '/vocab': typeof HomeVocabRouteWithChildren
   '/import/anki': typeof HomeImportAnkiRoute
+  '/import/custom': typeof HomeImportCustomRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
@@ -555,6 +562,7 @@ export interface FileRoutesByTo {
   '/settings': typeof HomeSettingsRoute
   '/stats': typeof HomeStatsRoute
   '/import/anki': typeof HomeImportAnkiRoute
+  '/import/custom': typeof HomeImportCustomRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
@@ -628,6 +636,7 @@ export interface FileRoutesById {
   '/_home/stats': typeof HomeStatsRoute
   '/_home/vocab': typeof HomeVocabRouteWithChildren
   '/_home/import/anki': typeof HomeImportAnkiRoute
+  '/_home/import/custom': typeof HomeImportCustomRoute
   '/_home/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/_home/vocab/$': typeof HomeVocabSplatRoute
   '/_home/vocab/browse': typeof HomeVocabBrowseRoute
@@ -701,6 +710,7 @@ export interface FileRouteTypes {
     | '/stats'
     | '/vocab'
     | '/import/anki'
+    | '/import/custom'
     | '/sentence-practice/$id'
     | '/vocab/$'
     | '/vocab/browse'
@@ -771,6 +781,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/stats'
     | '/import/anki'
+    | '/import/custom'
     | '/sentence-practice/$id'
     | '/vocab/$'
     | '/vocab/browse'
@@ -843,6 +854,7 @@ export interface FileRouteTypes {
     | '/_home/stats'
     | '/_home/vocab'
     | '/_home/import/anki'
+    | '/_home/import/custom'
     | '/_home/sentence-practice/$id'
     | '/_home/vocab/$'
     | '/_home/vocab/browse'
@@ -1072,6 +1084,13 @@ declare module '@tanstack/solid-router' {
       path: '/sentence-practice/$id'
       fullPath: '/sentence-practice/$id'
       preLoaderRoute: typeof HomeSentencePracticeIdRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/import/custom': {
+      id: '/_home/import/custom'
+      path: '/import/custom'
+      fullPath: '/import/custom'
+      preLoaderRoute: typeof HomeImportCustomRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/import/anki': {
@@ -1545,6 +1564,7 @@ interface HomeRouteChildren {
   HomeStatsRoute: typeof HomeStatsRoute
   HomeVocabRoute: typeof HomeVocabRouteWithChildren
   HomeImportAnkiRoute: typeof HomeImportAnkiRoute
+  HomeImportCustomRoute: typeof HomeImportCustomRoute
   HomeSentencePracticeIdRoute: typeof HomeSentencePracticeIdRoute
   HomeImportIndexRoute: typeof HomeImportIndexRoute
   HomeSentencePracticeIndexRoute: typeof HomeSentencePracticeIndexRoute
@@ -1562,6 +1582,7 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeStatsRoute: HomeStatsRoute,
   HomeVocabRoute: HomeVocabRouteWithChildren,
   HomeImportAnkiRoute: HomeImportAnkiRoute,
+  HomeImportCustomRoute: HomeImportCustomRoute,
   HomeSentencePracticeIdRoute: HomeSentencePracticeIdRoute,
   HomeImportIndexRoute: HomeImportIndexRoute,
   HomeSentencePracticeIndexRoute: HomeSentencePracticeIndexRoute,

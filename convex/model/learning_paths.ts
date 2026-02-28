@@ -1,17 +1,74 @@
-import { QueryCtx } from "../_generated/server"
+import { Id } from "../_generated/dataModel"
+import { MutationCtx, QueryCtx } from "../_generated/server"
+import { createDeckVocabItems } from "./vocabulary"
 import {
   getAllTextbooks,
   isBuiltInTextbook,
 } from "../../src/data/utils/textbooks"
 import { getChaptersByTextbook } from "../../src/data/utils/chapters"
+import { static_modules } from "../../src/data/static_modules"
+import { dynamic_modules } from "../../src/data/dynamic_modules"
 
 const MODULES_PER_CHAPTER = 30
+
+const allModules = {
+  ...static_modules,
+  ...dynamic_modules,
+}
 
 export type LearningPath = {
   id: string
   name: string
   shortName: string
   isUserCreated: boolean
+}
+
+export type LearningPathModule = {
+  moduleId: string
+  module: {
+    title: string
+    module_type: string
+    description?: string
+  }
+  linkTo: string
+  disabled: boolean
+}
+
+export type LearningPathChapter = {
+  slug: string
+  title: string
+  description?: string
+  features?: string[]
+  modules: LearningPathModule[]
+}
+
+type CreateCustomLearningPathArgs = {
+  transcript: {
+    name: string
+    showName?: string
+    episodeName?: string
+    transcriptData: Array<{
+      line_id: number
+      text: string
+      english: string
+      timestamp?: string
+    }>
+  }
+  selectedGrammarModules: Array<{
+    moduleId: string
+    transcriptLineIds: number[][]
+    orderIndex: number
+  }>
+  selectedVocabDecks: Array<{
+    isVerbDeck: boolean
+    words: Array<{
+      word: string
+      furigana?: string
+      english?: string
+    }>
+    transcriptLineIds: number[][]
+    orderIndex: number
+  }>
 }
 
 /**
@@ -61,16 +118,202 @@ export async function getChaptersForPath(ctx: QueryCtx, pathId: string) {
     return getChaptersByTextbook(pathId)
   }
 
+  const userPathId = await resolveUserPathId(ctx, pathId)
+  if (!userPathId) return []
+
   // User path - generate chapters from modules
   const moduleSources = await ctx.db
     .query("learningPathModuleSources")
-    .withIndex("by_path", (q) => q.eq("pathId", pathId as any))
+    .withIndex("by_path", (q) => q.eq("pathId", userPathId))
     .collect()
 
   moduleSources.sort((a, b) => a.orderIndex - b.orderIndex)
 
   const moduleIds = moduleSources.map((m) => m.moduleId)
   return chunkIntoChapters(moduleIds)
+}
+
+export async function getResolvedChaptersForPath(
+  ctx: QueryCtx,
+  pathId: string,
+): Promise<LearningPathChapter[]> {
+  if (isBuiltInTextbook(pathId)) {
+    const chapters = getChaptersByTextbook(pathId)
+    return chapters.map((chapter) => {
+      const disabledSet = new Set(chapter.disabled_modules ?? [])
+      const modules: LearningPathModule[] = []
+
+      for (const moduleId of chapter.learning_path_item_ids) {
+        const module = allModules[moduleId]
+        if (!module) {
+          console.warn(
+            `[LearningPath] Missing built-in module '${moduleId}' in chapter '${chapter.slug}'`,
+          )
+          continue
+        }
+
+        modules.push({
+          moduleId,
+          module: {
+            title: module.title,
+            module_type: module.module_type,
+            description: module.description,
+          },
+          linkTo: getModuleLink(module, moduleId),
+          disabled: disabledSet.has(moduleId),
+        })
+      }
+
+      return {
+        slug: chapter.slug,
+        title: chapter.title,
+        description: chapter.description,
+        features: chapter.features,
+        modules,
+      }
+    })
+  }
+
+  const userPathId = await resolveUserPathId(ctx, pathId)
+  if (!userPathId) return []
+
+  const moduleSources = await ctx.db
+    .query("learningPathModuleSources")
+    .withIndex("by_path", (q) => q.eq("pathId", userPathId))
+    .collect()
+
+  if (moduleSources.length === 0) return []
+
+  moduleSources.sort((a, b) => a.orderIndex - b.orderIndex)
+
+  const deckIds = new Set(
+    moduleSources
+      .filter((source) => source.sourceType === "vocabulary")
+      .map((source) => source.moduleId),
+  )
+
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) return []
+
+  const decks = await Promise.all(
+    [...deckIds].map((deckId) => ctx.db.get(deckId as Id<"userDecks">)),
+  )
+
+  const deckMap = new Map(
+    decks
+      .filter((deck) => deck !== null && deck.userId === identity.subject)
+      .map((deck) => [String(deck!._id), deck!]),
+  )
+
+  const resolvedModules: LearningPathModule[] = []
+
+  for (const source of moduleSources) {
+    if (source.sourceType === "grammar") {
+      const module = allModules[source.moduleId]
+      if (!module) {
+        console.warn(
+          `[LearningPath] Missing grammar module '${source.moduleId}' for custom path '${pathId}'`,
+        )
+        continue
+      }
+
+      resolvedModules.push({
+        moduleId: source.moduleId,
+        module: {
+          title: module.title,
+          module_type: module.module_type,
+          description: module.description,
+        },
+        linkTo: getModuleLink(module, source.moduleId),
+        disabled: false,
+      })
+      continue
+    }
+
+    const deck = deckMap.get(source.moduleId)
+    if (!deck) {
+      console.warn(
+        `[LearningPath] Missing vocabulary deck '${source.moduleId}' for custom path '${pathId}'`,
+      )
+      continue
+    }
+
+    resolvedModules.push({
+      moduleId: source.moduleId,
+      module: {
+        title: deck.deckName,
+        module_type: "vocab-practice",
+        description: deck.deckDescription,
+      },
+      linkTo: `/vocab/practice/${source.moduleId}`,
+      disabled: false,
+    })
+  }
+
+  return chunkResolvedModulesIntoChapters(resolvedModules)
+}
+
+export async function createCustomLearningPath(
+  ctx: MutationCtx,
+  args: CreateCustomLearningPathArgs,
+): Promise<{ pathId: string; firstChapterSlug: string }> {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) throw new Error("Unauthenticated")
+
+  const pathId = await ctx.db.insert("learningPathTranscripts", {
+    userId: identity.subject,
+    name: args.transcript.name,
+    showName: args.transcript.showName,
+    episodeName: args.transcript.episodeName,
+    transcriptData: args.transcript.transcriptData,
+  })
+
+  for (const module of args.selectedGrammarModules) {
+    await ctx.db.insert("learningPathModuleSources", {
+      pathId,
+      moduleId: module.moduleId,
+      sourceType: "grammar",
+      transcriptLineIds: module.transcriptLineIds,
+      orderIndex: module.orderIndex,
+    })
+  }
+
+  const sortedVocabDecks = [...args.selectedVocabDecks].sort(
+    (a, b) => a.orderIndex - b.orderIndex,
+  )
+
+  for (let i = 0; i < sortedVocabDecks.length; i++) {
+    const deck = sortedVocabDecks[i]!
+    const deckName = `${deck.isVerbDeck ? "Verbs" : "Non-Verbs"} - Part ${i + 1}`
+    const deckId = await ctx.db.insert("userDecks", {
+      userId: identity.subject,
+      deckName,
+      deckDescription: `Vocabulary from ${args.transcript.name}`,
+      source: "user",
+      allowedPracticeModes: ["meanings", "spellings"],
+    })
+
+    await createDeckVocabItems(
+      ctx,
+      deckId,
+      deck.words.map((word) => ({
+        word: word.word,
+        furigana: word.furigana,
+        english: word.english ? [word.english] : [],
+        isVerb: deck.isVerbDeck,
+      })),
+    )
+
+    await ctx.db.insert("learningPathModuleSources", {
+      pathId,
+      moduleId: String(deckId),
+      sourceType: "vocabulary",
+      transcriptLineIds: deck.transcriptLineIds,
+      orderIndex: deck.orderIndex,
+    })
+  }
+
+  return { pathId: String(pathId), firstChapterSlug: "chapter-1" }
 }
 
 function chunkIntoChapters(moduleIds: string[]) {
@@ -84,4 +327,61 @@ function chunkIntoChapters(moduleIds: string[]) {
     })
   }
   return chapters
+}
+
+function chunkResolvedModulesIntoChapters(
+  modules: LearningPathModule[],
+): LearningPathChapter[] {
+  const chapters: LearningPathChapter[] = []
+  for (let i = 0; i < modules.length; i += MODULES_PER_CHAPTER) {
+    const chapterNum = Math.floor(i / MODULES_PER_CHAPTER) + 1
+    chapters.push({
+      slug: `chapter-${chapterNum}`,
+      title: `Part ${chapterNum}`,
+      modules: modules.slice(i, i + MODULES_PER_CHAPTER),
+    })
+  }
+  return chapters
+}
+
+function getModuleLink(
+  module: { module_type: string; link?: string },
+  moduleId: string,
+): string {
+  if ("link" in module && module.link) {
+    return module.link
+  }
+
+  if (module.module_type === "vocab-practice") {
+    return `/vocab?import=${moduleId}`
+  }
+
+  if (module.module_type === "sentence-practice") {
+    const strippedId = moduleId.replace(/^sentence-practice-/, "")
+    return `/sentence-practice/${strippedId}`
+  }
+
+  if (module.module_type === "vocab-test") {
+    const strippedId = moduleId.replace(/-quiz$/, "")
+    return `/vocab/quiz/${strippedId}`
+  }
+
+  if (module.module_type === "vocab-list") {
+    return `/vocab/list/${moduleId}`
+  }
+
+  return `/practice/${moduleId}`
+}
+
+async function resolveUserPathId(
+  ctx: QueryCtx,
+  pathId: string,
+): Promise<Id<"learningPathTranscripts"> | null> {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) return null
+
+  const maybePath = await ctx.db.get(pathId as Id<"learningPathTranscripts">)
+  if (!maybePath) return null
+  if (maybePath.userId !== identity.subject) return null
+  return maybePath._id
 }

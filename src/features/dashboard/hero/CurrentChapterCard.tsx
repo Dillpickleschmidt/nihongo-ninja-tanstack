@@ -2,7 +2,6 @@ import { Show, For, createSignal, Suspense } from "solid-js"
 import { ChevronRight } from "lucide-solid"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
-import { getModulesFromChapter } from "@/data/utils/modules"
 import { usePreferences } from "@/lib/preferences"
 import { useSrs } from "@/features/srs/use-srs"
 import { LearningPathChapterSelector } from "../LearningPathChapterSelector"
@@ -65,7 +64,7 @@ function CurrentChapterCardContent() {
   const currentModules = () => {
     const chapter = currentChapter()
     if (chapter === undefined) return undefined
-    return getModulesFromChapter(chapter)
+    return chapter.modules
   }
 
   const nextModules = () => currentModules()?.slice(0, 3) ?? []

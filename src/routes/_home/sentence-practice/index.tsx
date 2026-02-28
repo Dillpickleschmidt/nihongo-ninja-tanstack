@@ -19,7 +19,7 @@ import { Search, PencilLine, ChevronRight, BookOpen } from "lucide-solid"
 import { cn } from "@/utils"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { dynamic_modules, type DynamicModule } from "@/data/dynamic_modules"
-import { chapters, type LearningPathChapter } from "@/data/chapters"
+import { chapters, type BuiltInChapter } from "@/data/chapters"
 import { textbooks } from "@/data/textbooks"
 import { Sidebar } from "@/features/sidebar/Sidebar"
 import { usePreferences } from "@/lib/preferences"
@@ -43,7 +43,7 @@ export const Route = createFileRoute("/_home/sentence-practice/")({
 })
 
 type ChapterGroup = {
-  chapter: LearningPathChapter
+  chapter: BuiltInChapter
   modules: EnrichedSentenceModule[]
 }
 

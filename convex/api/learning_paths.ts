@@ -1,7 +1,8 @@
 import { v } from "convex/values"
-import { query } from "../_generated/server"
+import { mutation, query } from "../_generated/server"
 import * as LearningPaths from "../model/learning_paths"
 import * as Completions from "../model/completions"
+import { transcriptLineValidator } from "../validators"
 
 /**
  * Get all learning paths (built-in textbooks + user-created)
@@ -26,8 +27,44 @@ export const getPathChapters = query({
 export const getPathWithProgress = query({
   args: { pathId: v.string() },
   handler: async (ctx, { pathId }) => {
-    const chapters = await LearningPaths.getChaptersForPath(ctx, pathId)
+    const chapters = await LearningPaths.getResolvedChaptersForPath(ctx, pathId)
     const completedModules = await Completions.getCompletedModules(ctx)
     return { chapters, completedModules: completedModules ?? [] }
   },
+})
+
+/**
+ * Create a custom learning path from subtitle-derived selections
+ */
+export const createCustomLearningPath = mutation({
+  args: {
+    transcript: v.object({
+      name: v.string(),
+      showName: v.optional(v.string()),
+      episodeName: v.optional(v.string()),
+      transcriptData: v.array(transcriptLineValidator),
+    }),
+    selectedGrammarModules: v.array(
+      v.object({
+        moduleId: v.string(),
+        transcriptLineIds: v.array(v.array(v.number())),
+        orderIndex: v.number(),
+      }),
+    ),
+    selectedVocabDecks: v.array(
+      v.object({
+        isVerbDeck: v.boolean(),
+        words: v.array(
+          v.object({
+            word: v.string(),
+            furigana: v.optional(v.string()),
+            english: v.optional(v.string()),
+          }),
+        ),
+        transcriptLineIds: v.array(v.array(v.number())),
+        orderIndex: v.number(),
+      }),
+    ),
+  },
+  handler: (ctx, args) => LearningPaths.createCustomLearningPath(ctx, args),
 })

@@ -1,6 +1,6 @@
 import type { TextbookIDEnum } from "./textbooks"
 
-export interface LearningPathChapter {
+export interface BuiltInChapter {
   slug: string
   title: string
   description?: string
@@ -13,7 +13,7 @@ export interface LearningPathChapter {
 
 export const chapters: Record<
   TextbookIDEnum,
-  Record<string, LearningPathChapter>
+  Record<string, BuiltInChapter>
 > = {
   // Genki 1 Chapters (Ch0-Ch12)
   genki_1: {

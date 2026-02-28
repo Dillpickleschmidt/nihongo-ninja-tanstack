@@ -1,15 +1,15 @@
-import { chapters, type LearningPathChapter } from "../chapters"
+import { chapters, type BuiltInChapter } from "../chapters"
 import type { TextbookIDEnum } from "../textbooks"
 
 export function getChaptersByTextbook(
   textbookId: string,
-): LearningPathChapter[] {
+): BuiltInChapter[] {
   return Object.values(chapters[textbookId as TextbookIDEnum] ?? {})
 }
 
 export function getTextbookChapterBySlug(
   textbookId: string,
   slug: string,
-): LearningPathChapter | undefined {
+): BuiltInChapter | undefined {
   return chapters[textbookId as TextbookIDEnum]?.[slug]
 }

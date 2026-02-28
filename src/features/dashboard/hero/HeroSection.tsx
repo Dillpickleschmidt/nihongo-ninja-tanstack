@@ -3,7 +3,6 @@ import { Sparkles } from "lucide-solid"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
-import { getModulesFromChapter } from "@/data/utils/modules"
 import { usePreferences } from "@/lib/preferences"
 import { CurrentChapterCard } from "./CurrentChapterCard"
 
@@ -57,7 +56,7 @@ function HeroBadge() {
   const moduleCount = () => {
     const chapter = currentChapter()
     if (chapter === undefined) return undefined
-    return getModulesFromChapter(chapter).length
+    return chapter.modules.length
   }
 
   return (

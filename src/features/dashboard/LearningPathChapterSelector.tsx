@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/popover"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "../../../convex/_generated/api"
-import type { LearningPathChapter } from "@/data/chapters"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { cn } from "@/utils"
 
@@ -23,10 +22,10 @@ interface LearningPathChapterSelectorProps {
   children: JSX.Element
   learningPaths: LearningPath[]
   activePathId: string
-  activeChapter: LearningPathChapter
+  activeChapter: { slug: string }
   isOpen: boolean
   onOpenChange: (open: boolean) => void
-  onChapterSelect: (pathId: string, chapter: LearningPathChapter) => void
+  onChapterSelect: (pathId: string, chapter: { slug: string }) => void
   popoverWidth?: string
   class?: string
 }

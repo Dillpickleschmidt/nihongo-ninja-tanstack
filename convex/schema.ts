@@ -171,7 +171,9 @@ export default defineSchema({
     sourceType: v.union(v.literal("grammar"), v.literal("vocabulary")),
     transcriptLineIds: v.array(v.array(v.number())), // Array of line ID arrays per pattern
     orderIndex: v.number(),
-  }).index("by_path", ["pathId"]),
+  })
+    .index("by_path", ["pathId"])
+    .index("by_path_module", ["pathId", "moduleId"]),
 
   // ===== Reference/Seed Data Tables =====
 

@@ -5,14 +5,12 @@ import { useLocalCompletions } from "@/lib/completions"
 import { api } from "convex/_generated/api"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { usePreferences } from "@/lib/preferences"
-import { getUser } from "@/lib/auth"
 import { ChapterSection } from "./ChapterSection"
 
 export function LearningPathSection() {
   const [selectedView, setSelectedView] = createSignal<string>("grid")
 
   // Queries
-  const user = getUser()
   const { preferences } = usePreferences()
   const learningPathsQuery = useConvexQuery(
     api.api.learning_paths.getAllLearningPaths,

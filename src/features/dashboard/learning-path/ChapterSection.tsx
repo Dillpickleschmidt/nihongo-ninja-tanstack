@@ -1,9 +1,8 @@
 import { Show, For } from "solid-js"
-import { getModulesFromChapter } from "@/data/utils/modules"
-import type { LearningPathChapter } from "@/data/chapters"
 import { ModuleListView } from "./ModuleListView"
 import { ModuleCategorizedView } from "./ModuleCategorizedView"
 import { ModuleTimelineView } from "./ModuleTimelineView"
+import type { LearningPathChapter } from "./types"
 
 interface ChapterSectionProps {
   chapter: LearningPathChapter
@@ -12,7 +11,7 @@ interface ChapterSectionProps {
 }
 
 export function ChapterSection(props: ChapterSectionProps) {
-  const modules = () => getModulesFromChapter(props.chapter)
+  const modules = () => props.chapter.modules
 
   return (
     <div class="mb-12 animate-fade-up opacity-0">

@@ -1,12 +1,12 @@
 import { For } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { ChevronRight } from "lucide-solid"
-import { getModuleIcon } from "@/data/utils/module-helpers"
-import type { ResolvedModule } from "@/data/utils/modules"
+import { getModuleIcon, getModuleIconClasses } from "@/data/utils/module-helpers"
 import { cn } from "@/utils"
+import type { LearningPathModule } from "./types"
 
 interface ModuleTimelineViewProps {
-  modules: ResolvedModule[]
+  modules: LearningPathModule[]
   isCompleted: (moduleId: string) => boolean
 }
 
@@ -55,7 +55,10 @@ export function ModuleTimelineView(props: ModuleTimelineViewProps) {
                     {enrichedModule.module.title}
                     <ModuleIcon
                       size="16px"
-                      class={cn("shrink-0", enrichedModule.iconClasses)}
+                      class={cn(
+                        "shrink-0",
+                        getModuleIconClasses(enrichedModule.module.module_type),
+                      )}
                     />
                   </h3>
                   <p class="text-muted-foreground mt-0.5 text-xs line-clamp-2">

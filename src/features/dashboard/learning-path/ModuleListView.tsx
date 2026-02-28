@@ -1,12 +1,12 @@
 import { For } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { CircleCheckBig } from "lucide-solid"
-import { getModuleIcon } from "@/data/utils/module-helpers"
-import type { ResolvedModule } from "@/data/utils/modules"
+import { getModuleIcon, getModuleIconClasses } from "@/data/utils/module-helpers"
 import { cn } from "@/utils"
+import type { LearningPathModule } from "./types"
 
 interface ModuleListViewProps {
-  modules: ResolvedModule[]
+  modules: LearningPathModule[]
   isCompleted: (moduleId: string) => boolean
 }
 
@@ -28,15 +28,16 @@ export function ModuleListView(props: ModuleListViewProps) {
 }
 
 interface ModuleListItemProps {
-  module: ResolvedModule
+  module: LearningPathModule
   index: number
   number: number
   isCompleted: boolean
 }
 
 function ModuleListItem(props: ModuleListItemProps) {
-  const { module, linkTo, iconClasses, disabled } = props.module
+  const { module, linkTo, disabled } = props.module
   const ModuleIcon = getModuleIcon(module.module_type)
+  const iconClasses = getModuleIconClasses(module.module_type)
 
   return (
     <div class="ease-instant-hover-75 hover:scale-[98.5%]">

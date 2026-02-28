@@ -4,8 +4,8 @@ import {
   getModuleIcon,
   getModuleIconClasses,
 } from "@/data/utils/module-helpers"
-import type { ResolvedModule } from "@/data/utils/modules"
 import { cn } from "@/utils"
+import type { LearningPathModule } from "./types"
 
 // Category configuration
 type CategoryKey = "vocabulary" | "lessons" | "grammar" | "other"
@@ -40,14 +40,14 @@ const CATEGORIES: Record<CategoryKey, CategoryConfig> = {
 }
 
 interface ModuleCategorizedViewProps {
-  modules: ResolvedModule[]
+  modules: LearningPathModule[]
   isCompleted: (moduleId: string) => boolean
 }
 
 export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
   // Group modules by category
   const groupedModules = createMemo(() => {
-    const groups: Record<CategoryKey, ResolvedModule[]> = {
+    const groups: Record<CategoryKey, LearningPathModule[]> = {
       vocabulary: [],
       lessons: [],
       grammar: [],
@@ -130,7 +130,9 @@ export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
                           <div class="flex items-center gap-2">
                             <ModuleIcon
                               size="16px"
-                              class={enrichedModule.iconClasses}
+                              class={getModuleIconClasses(
+                                enrichedModule.module.module_type,
+                              )}
                             />
                             <span>{enrichedModule.module.title}</span>
                           </div>
