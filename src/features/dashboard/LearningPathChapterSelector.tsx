@@ -1,11 +1,13 @@
 import { createSignal, For, Show, createEffect } from "solid-js"
 import type { JSX } from "solid-js"
+import { X } from "lucide-solid"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { useConvexQuery } from "@/lib/convex-query"
+import { useMutation } from "convex-solidjs"
 import { api } from "../../../convex/_generated/api"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { cn } from "@/utils"
@@ -34,8 +36,10 @@ export function LearningPathChapterSelector(
   props: LearningPathChapterSelectorProps,
 ) {
   const [selectedPathId, setSelectedPathId] = createSignal<string | null>(null)
+  const [deletingPathId, setDeletingPathId] = createSignal<string | null>(null)
+  const deletePathMutation = useMutation(api.api.learning_paths.deleteCustomLearningPath)
 
-  let activePathRef: HTMLButtonElement | undefined
+  let activePathRef: HTMLElement | undefined
 
   // Split paths into built-in textbooks and user-created
   const builtInTextbooks = () =>
@@ -62,6 +66,42 @@ export function LearningPathChapterSelector(
 
   const handlePathSelect = (pathId: string) => {
     setSelectedPathId(pathId)
+  }
+
+  const handlePathSelectKeyDown = (event: KeyboardEvent, pathId: string) => {
+    if (event.key !== "Enter" && event.key !== " ") return
+    event.preventDefault()
+    handlePathSelect(pathId)
+  }
+
+  const handleDeletePath = async (event: MouseEvent, path: LearningPath) => {
+    event.preventDefault()
+    event.stopPropagation()
+
+    const confirmed = window.confirm(
+      `Delete "${path.name}"? This will also delete all vocabulary decks generated for this learning path.`,
+    )
+    if (!confirmed) return
+
+    setDeletingPathId(path.id)
+    try {
+      const result = await deletePathMutation.mutate({ pathId: path.id })
+
+      if (props.activePathId === path.id) {
+        props.onChapterSelect(result.fallbackPathId, {
+          slug: result.fallbackChapterSlug,
+        })
+      }
+
+      if (selectedPathId() === path.id) {
+        setSelectedPathId(result.fallbackPathId)
+      }
+    } catch (error) {
+      console.error("Failed to delete learning path:", error)
+      alert("Failed to delete learning path. Please try again.")
+    } finally {
+      setDeletingPathId(null)
+    }
   }
 
   const handleOpenChange = (open: boolean) => {
@@ -119,22 +159,43 @@ export function LearningPathChapterSelector(
               </div>
               <For each={userPaths()}>
                 {(path) => (
-                  <button
+                  <div
                     ref={(el) => {
                       if (props.activePathId === path.id) {
                         activePathRef = el
                       }
                     }}
-                    onClick={() => handlePathSelect(path.id)}
                     class={cn(
-                      "hover:bg-primary/15 flex w-full items-center justify-between rounded-md p-2 text-left text-sm font-medium",
+                      "hover:bg-primary/15 flex w-full items-center justify-between gap-2 rounded-md p-2 text-left text-sm font-medium",
                       displayedPathId() === path.id && "bg-primary/10",
                     )}
                   >
-                    <span class="flex items-center gap-2">
-                      <span>{path.shortName}</span>
-                    </span>
-                  </button>
+                    <div
+                      role="button"
+                      tabindex={0}
+                      onClick={() => handlePathSelect(path.id)}
+                      onKeyDown={(event) => handlePathSelectKeyDown(event, path.id)}
+                      class="min-w-0 flex-1 cursor-pointer"
+                    >
+                      <span class="flex items-center gap-2">
+                        <span class="truncate">{path.shortName}</span>
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      aria-label={`Delete learning path ${path.name}`}
+                      disabled={deletingPathId() === path.id}
+                      onClick={(event) => void handleDeletePath(event, path)}
+                      class="hover:bg-white/10 rounded p-1 text-white/50 transition hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <Show
+                        when={deletingPathId() === path.id}
+                        fallback={<X class="size-3.5" />}
+                      >
+                        <span class="inline-block size-3.5 animate-spin rounded-full border border-current border-t-transparent" />
+                      </Show>
+                    </button>
+                  </div>
                 )}
               </For>
             </Show>

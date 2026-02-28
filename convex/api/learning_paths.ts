@@ -68,3 +68,12 @@ export const createCustomLearningPath = mutation({
   },
   handler: (ctx, args) => LearningPaths.createCustomLearningPath(ctx, args),
 })
+
+/**
+ * Delete a user-created learning path and generated resources
+ */
+export const deleteCustomLearningPath = mutation({
+  args: { pathId: v.string() },
+  handler: (ctx, { pathId }) =>
+    LearningPaths.deleteCustomLearningPath(ctx, pathId),
+})

@@ -1,6 +1,7 @@
 import { Id } from "../_generated/dataModel"
 import { MutationCtx, QueryCtx } from "../_generated/server"
 import { createDeckVocabItems } from "./vocabulary"
+import { deleteDeck } from "./decks"
 import {
   getAllTextbooks,
   isBuiltInTextbook,
@@ -316,6 +317,62 @@ export async function createCustomLearningPath(
   return { pathId: String(pathId), firstChapterSlug: "chapter-1" }
 }
 
+export async function deleteCustomLearningPath(
+  ctx: MutationCtx,
+  pathId: string,
+): Promise<{
+  deletedPathId: string
+  fallbackPathId: string
+  fallbackChapterSlug: string
+}> {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) throw new Error("Unauthenticated")
+  if (isBuiltInTextbook(pathId)) {
+    throw new Error("Built-in learning paths cannot be deleted")
+  }
+
+  const userPathId = await resolveUserPathId(ctx, pathId)
+  if (!userPathId) throw new Error("Learning path not found")
+
+  const moduleSources = await ctx.db
+    .query("learningPathModuleSources")
+    .withIndex("by_path", (q) => q.eq("pathId", userPathId))
+    .collect()
+
+  const vocabDeckIds = moduleSources
+    .filter((source) => source.sourceType === "vocabulary")
+    .map((source) => source.moduleId)
+
+  for (const deckIdString of vocabDeckIds) {
+    const deckId = deckIdString as Id<"userDecks">
+    const deck = await ctx.db.get(deckId)
+    if (!deck || deck.userId !== identity.subject) {
+      console.warn(
+        `[LearningPath] Skipping missing or unauthorized deck '${deckIdString}' for path '${pathId}'`,
+      )
+      continue
+    }
+
+    await deleteDeck(ctx, deckId)
+  }
+
+  for (const source of moduleSources) {
+    await ctx.db.delete(source._id)
+  }
+
+  await ctx.db.delete(userPathId)
+
+  const fallbackPathId = "genki_1"
+  const fallbackChapterSlug =
+    getChaptersByTextbook(fallbackPathId)[0]?.slug ?? "chapter-0"
+
+  return {
+    deletedPathId: pathId,
+    fallbackPathId,
+    fallbackChapterSlug,
+  }
+}
+
 function chunkIntoChapters(moduleIds: string[]) {
   const chapters = []
   for (let i = 0; i < moduleIds.length; i += MODULES_PER_CHAPTER) {
@@ -374,7 +431,7 @@ function getModuleLink(
 }
 
 async function resolveUserPathId(
-  ctx: QueryCtx,
+  ctx: QueryCtx | MutationCtx,
   pathId: string,
 ): Promise<Id<"learningPathTranscripts"> | null> {
   const identity = await ctx.auth.getUserIdentity()
