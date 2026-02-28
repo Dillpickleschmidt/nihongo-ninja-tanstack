@@ -1,4 +1,5 @@
 import { GRAMMAR_TO_MODULES } from "@/data/grammar_to_modules"
+import { buildBracketFurigana } from "@/data/utils/text/kana"
 import { getKagomeWorker } from "@/features/sentence-practice/kagome/kagomeWorkerManager"
 import type { POS } from "@/features/sentence-practice/kagome/types"
 import type { ExtractedData, TranscriptLine } from "./types"
@@ -72,7 +73,9 @@ export async function extractTranscriptData(
           existing.count++
         } else {
           vocabularyMap.set(baseForm, {
-            furigana: normalizeOptional(token.reading),
+            furigana: normalizeOptional(
+              buildBracketFurigana(baseForm, token.reading),
+            ),
             pos: primaryPos,
             english: undefined,
             transcriptLineIds: [lineId],
