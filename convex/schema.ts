@@ -159,6 +159,7 @@ export default defineSchema({
   learningPathTranscripts: defineTable({
     userId: v.string(),
     name: v.string(),
+    rootFolderId: v.id("userDeckFolders"),
     showName: v.optional(v.string()),
     episodeName: v.optional(v.string()),
     transcriptData: v.array(transcriptLineValidator),

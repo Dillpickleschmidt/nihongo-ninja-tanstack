@@ -70,7 +70,9 @@ export async function getAllDecks(ctx: QueryCtx): Promise<UnifiedDeck[]> {
     deckName: d.deckName,
     deckDescription: d.deckDescription,
     folderId: d.folderId,
-    source: (d.source === "user" ? "user" : "built-in") as "user" | "built-in",
+    source: (d.source === "built-in" ? "built-in" : "user") as
+      | "user"
+      | "built-in",
   }))
 
   return [...builtIn, ...normalized]

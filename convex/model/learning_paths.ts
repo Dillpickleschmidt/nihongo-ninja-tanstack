@@ -261,9 +261,34 @@ export async function createCustomLearningPath(
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) throw new Error("Unauthenticated")
 
+  const rootFolderId = await ctx.db.insert("userDeckFolders", {
+    userId: identity.subject,
+    folderName: args.transcript.name,
+    parentFolderId: undefined,
+  })
+
+  const sortedVocabDecks = [...args.selectedVocabDecks].sort(
+    (a, b) => a.orderIndex - b.orderIndex,
+  )
+
+  const chapterFolderIdBySlug = new Map<string, Id<"userDeckFolders">>()
+  for (const deck of sortedVocabDecks) {
+    const chapterNum = Math.floor(deck.orderIndex / MODULES_PER_CHAPTER) + 1
+    const chapterSlug = `chapter-${chapterNum}`
+    if (chapterFolderIdBySlug.has(chapterSlug)) continue
+
+    const chapterFolderId = await ctx.db.insert("userDeckFolders", {
+      userId: identity.subject,
+      folderName: `Chapter ${chapterNum}`,
+      parentFolderId: rootFolderId,
+    })
+    chapterFolderIdBySlug.set(chapterSlug, chapterFolderId)
+  }
+
   const pathId = await ctx.db.insert("learningPathTranscripts", {
     userId: identity.subject,
     name: args.transcript.name,
+    rootFolderId,
     showName: args.transcript.showName,
     episodeName: args.transcript.episodeName,
     transcriptData: args.transcript.transcriptData,
@@ -279,18 +304,18 @@ export async function createCustomLearningPath(
     })
   }
 
-  const sortedVocabDecks = [...args.selectedVocabDecks].sort(
-    (a, b) => a.orderIndex - b.orderIndex,
-  )
-
   for (let i = 0; i < sortedVocabDecks.length; i++) {
     const deck = sortedVocabDecks[i]!
     const deckName = `${deck.isVerbDeck ? "Verbs" : "Non-Verbs"} - Part ${i + 1}`
+    const chapterNum = Math.floor(deck.orderIndex / MODULES_PER_CHAPTER) + 1
+    const chapterSlug = `chapter-${chapterNum}`
+    const chapterFolderId = chapterFolderIdBySlug.get(chapterSlug)
     const deckId = await ctx.db.insert("userDecks", {
       userId: identity.subject,
       deckName,
       deckDescription: `Vocabulary from ${args.transcript.name}`,
-      source: "user",
+      folderId: chapterFolderId,
+      source: "learning_path",
       allowedPracticeModes: ["meanings", "spellings"],
     })
 
@@ -333,6 +358,8 @@ export async function deleteCustomLearningPath(
 
   const userPathId = await resolveUserPathId(ctx, pathId)
   if (!userPathId) throw new Error("Learning path not found")
+  const path = await ctx.db.get(userPathId)
+  if (!path) throw new Error("Learning path not found")
 
   const moduleSources = await ctx.db
     .query("learningPathModuleSources")
@@ -360,6 +387,8 @@ export async function deleteCustomLearningPath(
     await ctx.db.delete(source._id)
   }
 
+  await deleteFolderTree(ctx, path.rootFolderId)
+
   await ctx.db.delete(userPathId)
 
   const fallbackPathId = "genki_1"
@@ -379,7 +408,7 @@ function chunkIntoChapters(moduleIds: string[]) {
     const chapterNum = Math.floor(i / MODULES_PER_CHAPTER) + 1
     chapters.push({
       slug: `chapter-${chapterNum}`,
-      title: `Part ${chapterNum}`,
+      title: `Chapter ${chapterNum}`,
       learning_path_item_ids: moduleIds.slice(i, i + MODULES_PER_CHAPTER),
     })
   }
@@ -394,7 +423,7 @@ function chunkResolvedModulesIntoChapters(
     const chapterNum = Math.floor(i / MODULES_PER_CHAPTER) + 1
     chapters.push({
       slug: `chapter-${chapterNum}`,
-      title: `Part ${chapterNum}`,
+      title: `Chapter ${chapterNum}`,
       modules: modules.slice(i, i + MODULES_PER_CHAPTER),
     })
   }
@@ -441,4 +470,20 @@ async function resolveUserPathId(
   if (!maybePath) return null
   if (maybePath.userId !== identity.subject) return null
   return maybePath._id
+}
+
+async function deleteFolderTree(
+  ctx: MutationCtx,
+  folderId: Id<"userDeckFolders">,
+): Promise<void> {
+  const children = await ctx.db
+    .query("userDeckFolders")
+    .filter((q) => q.eq(q.field("parentFolderId"), folderId))
+    .collect()
+
+  for (const child of children) {
+    await deleteFolderTree(ctx, child._id)
+  }
+
+  await ctx.db.delete(folderId)
 }
