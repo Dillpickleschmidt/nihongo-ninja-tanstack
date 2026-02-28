@@ -65,7 +65,7 @@ export async function extractTranscriptData(
         if (
           shouldSkipToken({
             tokenClass: token.class,
-            primaryPos,
+            pos: token.pos,
             normalizedWord: baseForm,
           })
         ) {
