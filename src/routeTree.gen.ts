@@ -22,6 +22,7 @@ import { Route as HomeStatsRouteImport } from './routes/_home/stats'
 import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
 import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeLessonsRouteImport } from './routes/_home/lessons'
+import { Route as HomeKanaRouteImport } from './routes/_home/kana'
 import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeVocabIndexRouteImport } from './routes/_home/vocab/index'
 import { Route as HomeSentencePracticeIndexRouteImport } from './routes/_home/sentence-practice/index'
@@ -141,6 +142,11 @@ const HomeReviewRoute = HomeReviewRouteImport.update({
 const HomeLessonsRoute = HomeLessonsRouteImport.update({
   id: '/lessons',
   path: '/lessons',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeKanaRoute = HomeKanaRouteImport.update({
+  id: '/kana',
+  path: '/kana',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeDashboardRoute = HomeDashboardRouteImport.update({
@@ -472,6 +478,7 @@ export interface FileRoutesByFullPath {
   '/oauth-callback': typeof OauthCallbackRoute
   '/search': typeof SearchRoute
   '/dashboard': typeof HomeDashboardRoute
+  '/kana': typeof HomeKanaRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
@@ -542,6 +549,7 @@ export interface FileRoutesByTo {
   '/oauth-callback': typeof OauthCallbackRoute
   '/search': typeof SearchRoute
   '/dashboard': typeof HomeDashboardRoute
+  '/kana': typeof HomeKanaRoute
   '/lessons': typeof HomeLessonsRouteWithChildren
   '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
@@ -613,6 +621,7 @@ export interface FileRoutesById {
   '/oauth-callback': typeof OauthCallbackRoute
   '/search': typeof SearchRoute
   '/_home/dashboard': typeof HomeDashboardRoute
+  '/_home/kana': typeof HomeKanaRoute
   '/_home/lessons': typeof HomeLessonsRouteWithChildren
   '/_home/review': typeof HomeReviewRoute
   '/_home/settings': typeof HomeSettingsRoute
@@ -685,6 +694,7 @@ export interface FileRouteTypes {
     | '/oauth-callback'
     | '/search'
     | '/dashboard'
+    | '/kana'
     | '/lessons'
     | '/review'
     | '/settings'
@@ -755,6 +765,7 @@ export interface FileRouteTypes {
     | '/oauth-callback'
     | '/search'
     | '/dashboard'
+    | '/kana'
     | '/lessons'
     | '/review'
     | '/settings'
@@ -825,6 +836,7 @@ export interface FileRouteTypes {
     | '/oauth-callback'
     | '/search'
     | '/_home/dashboard'
+    | '/_home/kana'
     | '/_home/lessons'
     | '/_home/review'
     | '/_home/settings'
@@ -990,6 +1002,13 @@ declare module '@tanstack/solid-router' {
       path: '/lessons'
       fullPath: '/lessons'
       preLoaderRoute: typeof HomeLessonsRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/kana': {
+      id: '/_home/kana'
+      path: '/kana'
+      fullPath: '/kana'
+      preLoaderRoute: typeof HomeKanaRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/dashboard': {
@@ -1519,6 +1538,7 @@ const HomeVocabRouteWithChildren = HomeVocabRoute._addFileChildren(
 
 interface HomeRouteChildren {
   HomeDashboardRoute: typeof HomeDashboardRoute
+  HomeKanaRoute: typeof HomeKanaRoute
   HomeLessonsRoute: typeof HomeLessonsRouteWithChildren
   HomeReviewRoute: typeof HomeReviewRoute
   HomeSettingsRoute: typeof HomeSettingsRoute
@@ -1535,6 +1555,7 @@ interface HomeRouteChildren {
 
 const HomeRouteChildren: HomeRouteChildren = {
   HomeDashboardRoute: HomeDashboardRoute,
+  HomeKanaRoute: HomeKanaRoute,
   HomeLessonsRoute: HomeLessonsRouteWithChildren,
   HomeReviewRoute: HomeReviewRoute,
   HomeSettingsRoute: HomeSettingsRoute,
