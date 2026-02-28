@@ -1,4 +1,5 @@
 import { GRAMMAR_TO_MODULES } from "@/data/grammar_to_modules"
+import { containsKanji } from "@/data/utils/text/japanese"
 import { buildBracketFurigana } from "@/data/utils/text/kana"
 import { getKagomeWorker } from "@/features/sentence-practice/kagome/kagomeWorkerManager"
 import type { POS } from "@/features/sentence-practice/kagome/types"
@@ -20,6 +21,7 @@ export async function extractTranscriptData(
   const grammarPatternSet = new Set<string>()
   const foundGrammarPatterns: string[] = []
   const grammarPatternMap = new Map<string, number[]>()
+  const baseFormReadingCache = new Map<string, string>()
 
   const vocabularyMap = new Map<
     string,
@@ -79,9 +81,17 @@ export async function extractTranscriptData(
           }
           existing.count++
         } else {
+          const resolvedReading = await resolveReadingForBaseForm(
+            baseForm,
+            token.surface,
+            token.reading,
+            worker,
+            baseFormReadingCache,
+          )
+
           vocabularyMap.set(baseForm, {
             furigana: normalizeOptional(
-              buildBracketFurigana(baseForm, token.reading),
+              buildBracketFurigana(baseForm, resolvedReading),
             ),
             pos: primaryPos,
             english: undefined,
@@ -130,4 +140,40 @@ function normalizeTokenWord(baseForm: string, surface: string): string {
 function normalizeOptional(value: string | undefined): string | undefined {
   if (!value || value === "*") return undefined
   return value
+}
+
+async function resolveReadingForBaseForm(
+  baseForm: string,
+  surface: string,
+  tokenReading: string,
+  worker: Awaited<ReturnType<typeof getKagomeWorker>>,
+  cache: Map<string, string>,
+): Promise<string> {
+  const fallbackReading = tokenReading ?? ""
+  if (!baseForm || !containsKanji(baseForm)) {
+    return fallbackReading
+  }
+
+  const cached = cache.get(baseForm)
+  if (cached !== undefined) return cached
+
+  const shouldResolveLemmaReading = baseForm !== surface.trim()
+  if (!shouldResolveLemmaReading) {
+    cache.set(baseForm, fallbackReading)
+    return fallbackReading
+  }
+
+  try {
+    const { tokens } = await worker.tokenize(baseForm)
+    const resolvedReading = tokens[0]?.reading
+    if (resolvedReading && resolvedReading !== "*") {
+      cache.set(baseForm, resolvedReading)
+      return resolvedReading
+    }
+  } catch {
+    // Fall through to fallback.
+  }
+
+  cache.set(baseForm, fallbackReading)
+  return fallbackReading
 }
