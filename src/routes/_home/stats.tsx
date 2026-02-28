@@ -1,12 +1,16 @@
 import { createFileRoute } from "@tanstack/solid-router"
-import { For, Show, createMemo } from "solid-js"
-import { useConvexQuery } from "@/lib/convex-query"
+import { For, Index, Show, createMemo, untrack } from "solid-js"
+import { convexQuery, useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { queryKeys } from "~/query/query-keys"
 import {
   DAILY_PROGRESS_TARGET_UNITS,
   getLocalDateKey,
 } from "@/lib/progress/weights"
+import { ProgressRing, getProgressColor } from "@/features/stats/ProgressRing"
+import { ModuleCard } from "@/features/stats/ModuleCard"
+import { DistributionBar } from "@/features/stats/DistributionBar"
+import { ActivityItem } from "@/features/stats/ActivityItem"
 
 export const Route = createFileRoute("/_home/stats")({
   loader: ({ context, preload }) => {
@@ -17,21 +21,34 @@ export const Route = createFileRoute("/_home/stats")({
         showGradient: false,
       })
     }
+
+    const todayKey = getLocalDateKey()
+    const range = getLastNDaysRange(7)
+
+    context.queryClient.prefetchQuery(
+      convexQuery(api.api.progress.getDailyModuleStatsForDate, {
+        dateKey: todayKey,
+      }),
+    )
+    context.queryClient.prefetchQuery(
+      convexQuery(api.api.progress.getRecentModuleActivity, { limit: 12 }),
+    )
+    context.queryClient.prefetchQuery(
+      convexQuery(api.api.progress.getDistribution, {
+        fromDateKey: range.fromDateKey,
+        toDateKey: range.toDateKey,
+      }),
+    )
   },
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const todayKey = () => getLocalDateKey()
-  const range = () => getLastNDaysRange(7)
+  const range = createMemo(() => getLastNDaysRange(7))
 
   const dailyStatsQuery = useConvexQuery(
     api.api.progress.getDailyModuleStatsForDate,
-    () => ({ dateKey: todayKey() }),
-  )
-
-  const dailyProgressQuery = useConvexQuery(
-    api.api.progress.getDailyProgress,
     () => ({ dateKey: todayKey() }),
   )
 
@@ -68,101 +85,244 @@ function RouteComponent() {
     }
   })
 
+  const reversedModules = createMemo(() =>
+    [...(dailyStatsQuery.data() ?? [])].reverse(),
+  )
+
+  const weeklyTotalXP = createMemo(() =>
+    (distributionQuery.data() ?? []).reduce(
+      (sum, row) => sum + row.progressUnits,
+      0,
+    ),
+  )
+
+  const todayLabel = untrack(() => {
+    const d = new Date()
+    return d.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    })
+  })
+
   return (
-    <main class="p-4 pb-24 md:pl-72 md:pr-6 md:pt-6">
-      <h1 class="text-2xl font-semibold">Stats</h1>
+    <main class="p-4 pt-12 pb-24 mx-auto max-w-5xl">
+      <style>{`
+        @keyframes fade-up {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up { animation: fade-up 0.3s ease-out forwards; }
+      `}</style>
 
-      <section class="mt-6 space-y-1">
-        <h2 class="font-medium">Today Summary</h2>
-        <p>date: {todayKey()}</p>
-        <p>progress units (from daily stats): {derived().progressUnits}</p>
-        <p>
-          progress units (direct daily query):{" "}
-          {dailyProgressQuery.data()?.progressUnits ?? 0}
-        </p>
-        <p>questions answered: {derived().questionsAnswered}</p>
-        <p>
-          daily progress: {derived().progressPercent}% (
-          {derived().progressUnits} / {DAILY_PROGRESS_TARGET_UNITS})
-        </p>
-      </section>
+      {/* Hero */}
+      <div class="animate-fade-up opacity-0">
+        <h1 class="text-3xl font-bold text-white/90">Today</h1>
+        <p class="text-sm text-white/25 mt-1">{todayLabel}</p>
+      </div>
 
-      <section class="mt-8">
-        <h2 class="font-medium">Today Module Breakdown</h2>
-        <Show
-          when={(dailyStatsQuery.data()?.length ?? 0) > 0}
-          fallback={<p class="text-sm">No stats recorded today.</p>}
+      {/* Top metrics row */}
+      <div
+        class="mt-10 flex items-center gap-10 lg:gap-14 animate-fade-up opacity-0"
+        style={{ "animation-delay": "75ms" }}
+      >
+        <ProgressRing progress={derived().progressPercent} />
+
+        <div class="flex gap-10 lg:gap-14">
+          <div>
+            <div
+              class="text-4xl font-bold tabular-nums"
+              style={{ color: getProgressColor(derived().progressPercent) }}
+            >
+              {derived().progressUnits.toLocaleString()}
+            </div>
+            <div class="text-sm text-white/30 mt-1">
+              of {DAILY_PROGRESS_TARGET_UNITS.toLocaleString()} XP
+            </div>
+            <div class="text-xs text-white/20 mt-1">
+              60 XP ≈ 1 minute of practice
+            </div>
+          </div>
+
+          <div>
+            <div class="text-4xl font-bold tabular-nums text-white/85">
+              {derived().questionsAnswered}
+            </div>
+            <div class="text-sm text-white/30 mt-1">questions</div>
+          </div>
+
+          <div>
+            <div class="text-4xl font-bold tabular-nums text-white/85">
+              {dailyStatsQuery.data()?.length ?? 0}
+            </div>
+            <div class="text-sm text-white/30 mt-1">modules</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div
+        class="mt-8 h-1 w-full overflow-hidden rounded-full bg-white/6 animate-fade-up opacity-0"
+        style={{ "animation-delay": "100ms" }}
+      >
+        <div
+          class="h-full rounded-full transition-all duration-700 ease-out"
+          style={{
+            width: `${Math.min(100, derived().progressPercent)}%`,
+            background: getProgressColor(derived().progressPercent),
+            opacity: "0.5",
+          }}
+        />
+      </div>
+
+      {/* Today's Modules */}
+      <section class="mt-12">
+        <h2
+          class="text-lg font-semibold text-white/70 animate-fade-up opacity-0"
+          style={{ "animation-delay": "125ms" }}
         >
-          <table class="mt-2 w-full text-left text-sm">
-            <thead>
-              <tr>
-                <th>modulePath</th>
-                <th>moduleType</th>
-                <th>progressUnits</th>
-                <th>questions</th>
-                <th>lastUpdatedAt</th>
-              </tr>
-            </thead>
-            <tbody>
-              <For each={dailyStatsQuery.data() || []}>
-                {(row) => (
-                  <tr>
-                    <td>{row.modulePath}</td>
-                    <td>{row.moduleType}</td>
-                    <td>{row.progressUnits}</td>
-                    <td>{row.questionsAnswered}</td>
-                    <td>{new Date(row.lastUpdatedAt).toLocaleString()}</td>
-                  </tr>
+          Today's Modules
+        </h2>
+        <Show
+          when={dailyStatsQuery.data() !== undefined}
+          fallback={<SkeletonRows count={3} />}
+        >
+          <Show
+            when={dailyStatsQuery.data()!.length > 0}
+            fallback={
+              <p
+                class="text-sm text-white/25 mt-4 animate-fade-up opacity-0"
+                style={{ "animation-delay": "175ms" }}
+              >
+                No modules practiced yet today
+              </p>
+            }
+          >
+            <div class="mt-4 divide-y divide-white/5">
+              <For each={reversedModules()}>
+                {(row, i) => (
+                  <div
+                    class="animate-fade-up opacity-0"
+                    style={{ "animation-delay": `${150 + i() * 50}ms` }}
+                  >
+                    <ModuleCard
+                      modulePath={row.modulePath}
+                      moduleType={row.moduleType}
+                      progressUnits={row.progressUnits}
+                      questionsAnswered={row.questionsAnswered}
+                      lastUpdatedAt={row.lastUpdatedAt}
+                    />
+                  </div>
                 )}
               </For>
-            </tbody>
-          </table>
+            </div>
+          </Show>
         </Show>
       </section>
 
-      <section class="mt-8">
-        <h2 class="font-medium">Recent Module Activity</h2>
-        <Show
-          when={(recentActivityQuery.data()?.length ?? 0) > 0}
-          fallback={<p class="text-sm">No recent activity yet.</p>}
+      {/* Two-column: Distribution + Recent Activity */}
+      <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <section
+          class="animate-fade-up opacity-0"
+          style={{ "animation-delay": "250ms" }}
         >
-          <ul class="mt-2 space-y-1 text-sm">
-            <For each={recentActivityQuery.data() || []}>
-              {(row) => (
-                <li>
-                  {row.moduleType} / {row.modulePath} - {row.progressUnits}{" "}
-                  units, {row.questionsAnswered} questions -{" "}
-                  {new Date(row.lastUpdatedAt).toLocaleString()}
-                </li>
-              )}
-            </For>
-          </ul>
-        </Show>
-      </section>
+          <div class="mb-4 flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-white/70">This Week</h2>
+            <div class="text-right">
+              <div class="text-sm text-white/55 tabular-nums">
+                {weeklyTotalXP().toLocaleString()} XP
+              </div>
+            </div>
+          </div>
+          <DistributionBar
+            data={distributionQuery.data()}
+            rangeLabel={`${formatDateShort(range().fromDateKey)} – ${formatDateShort(range().toDateKey)}`}
+          />
+        </section>
 
-      <section class="mt-8">
-        <h2 class="font-medium">Distribution (Last 7 Days)</h2>
-        <p class="text-sm">
-          range: {range().fromDateKey} to {range().toDateKey}
-        </p>
-        <Show
-          when={(distributionQuery.data()?.length ?? 0) > 0}
-          fallback={<p class="text-sm">No distribution data yet.</p>}
+        <section
+          class="animate-fade-up opacity-0"
+          style={{ "animation-delay": "300ms" }}
         >
-          <ul class="mt-2 space-y-1 text-sm">
-            <For each={distributionQuery.data() || []}>
-              {(row) => (
-                <li>
-                  {row.moduleType}: {row.progressUnits} units,{" "}
-                  {row.questionsAnswered} questions
-                </li>
-              )}
-            </For>
-          </ul>
-        </Show>
-      </section>
+          <h2 class="text-lg font-semibold text-white/70 mb-4">
+            Recent Activity
+          </h2>
+          <Show
+            when={recentActivityQuery.data() !== undefined}
+            fallback={<SkeletonDots count={5} />}
+          >
+            <Show
+              when={recentActivityQuery.data()!.length > 0}
+              fallback={<p class="text-sm text-white/25">No recent activity</p>}
+            >
+              <div class="divide-y divide-white/4">
+                <For each={recentActivityQuery.data()}>
+                  {(row) => (
+                    <ActivityItem
+                      modulePath={row.modulePath}
+                      moduleType={row.moduleType}
+                      progressUnits={row.progressUnits}
+                      questionsAnswered={row.questionsAnswered}
+                      lastUpdatedAt={row.lastUpdatedAt}
+                    />
+                  )}
+                </For>
+              </div>
+            </Show>
+          </Show>
+        </section>
+      </div>
     </main>
   )
+}
+
+function SkeletonRows(props: { count: number }) {
+  const items = () => Array.from({ length: props.count }, (_, i) => i)
+  return (
+    <div class="mt-4 divide-y divide-white/5">
+      <Index each={items()}>
+        {(i) => (
+          <div class="py-4 flex items-center gap-4">
+            <div
+              class="h-4 rounded bg-white/4 animate-pulse"
+              style={{
+                "animation-delay": `${i() * 100}ms`,
+                width: `${40 - i() * 5}%`,
+              }}
+            />
+          </div>
+        )}
+      </Index>
+    </div>
+  )
+}
+
+function SkeletonDots(props: { count: number }) {
+  const items = () => Array.from({ length: props.count }, (_, i) => i)
+  return (
+    <div class="divide-y divide-white/4">
+      <Index each={items()}>
+        {(i) => (
+          <div class="flex items-center gap-3 py-3">
+            <div class="h-2 w-2 rounded-full bg-white/6" />
+            <div
+              class="h-4 rounded bg-white/3 animate-pulse"
+              style={{
+                "animation-delay": `${i() * 60}ms`,
+                width: `${70 - i() * 8}%`,
+              }}
+            />
+          </div>
+        )}
+      </Index>
+    </div>
+  )
+}
+
+function formatDateShort(dateKey: string) {
+  const [year, month, day] = dateKey.split("-")
+  const d = new Date(Number(year), Number(month) - 1, Number(day))
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" })
 }
 
 function getLastNDaysRange(days: number) {
