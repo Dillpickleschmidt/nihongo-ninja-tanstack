@@ -2,12 +2,14 @@ import { Show, For } from "solid-js"
 import { ModuleListView } from "./ModuleListView"
 import { ModuleCategorizedView } from "./ModuleCategorizedView"
 import { ModuleTimelineView } from "./ModuleTimelineView"
-import type { LearningPathChapter } from "./types"
+import type { LearningPathChapter, LearningPathModule } from "./types"
 
 interface ChapterSectionProps {
   chapter: LearningPathChapter
   viewMode: string
   isCompleted: (moduleId: string) => boolean
+  openInDialog?: boolean
+  onModuleSelect?: (module: LearningPathModule) => void
 }
 
 export function ChapterSection(props: ChapterSectionProps) {
@@ -39,16 +41,31 @@ export function ChapterSection(props: ChapterSectionProps) {
       {/* Grid View - Timeline on mobile, Grid on desktop */}
       <Show when={props.viewMode === "grid"}>
         <div class="md:hidden">
-          <ModuleTimelineView modules={modules()} isCompleted={props.isCompleted} />
+          <ModuleTimelineView
+            modules={modules()}
+            isCompleted={props.isCompleted}
+            openInDialog={props.openInDialog}
+            onModuleSelect={props.onModuleSelect}
+          />
         </div>
         <div class="hidden md:block">
-          <ModuleListView modules={modules()} isCompleted={props.isCompleted} />
+          <ModuleListView
+            modules={modules()}
+            isCompleted={props.isCompleted}
+            openInDialog={props.openInDialog}
+            onModuleSelect={props.onModuleSelect}
+          />
         </div>
       </Show>
 
       {/* Categorized View */}
       <Show when={props.viewMode === "compact"}>
-        <ModuleCategorizedView modules={modules()} isCompleted={props.isCompleted} />
+        <ModuleCategorizedView
+          modules={modules()}
+          isCompleted={props.isCompleted}
+          openInDialog={props.openInDialog}
+          onModuleSelect={props.onModuleSelect}
+        />
       </Show>
     </div>
   )

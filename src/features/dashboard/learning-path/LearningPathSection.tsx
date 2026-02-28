@@ -1,4 +1,4 @@
-import { createSignal, Suspense, Index } from "solid-js"
+import { createSignal, Suspense, Index, Show } from "solid-js"
 import { Rows3, List } from "lucide-solid"
 import { useConvexQuery } from "@/lib/convex-query"
 import { useLocalCompletions } from "@/lib/completions"
@@ -6,9 +6,14 @@ import { api } from "convex/_generated/api"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { usePreferences } from "@/lib/preferences"
 import { ChapterSection } from "./ChapterSection"
+import { ModuleDetailDialog } from "./ModuleDetailDialog"
+import type { LearningPathModule } from "./types"
 
 export function LearningPathSection() {
   const [selectedView, setSelectedView] = createSignal<string>("grid")
+  const [selectedModule, setSelectedModule] =
+    createSignal<LearningPathModule | null>(null)
+  const [dialogOpen, setDialogOpen] = createSignal(false)
 
   // Queries
   const { preferences } = usePreferences()
@@ -23,6 +28,7 @@ export function LearningPathSection() {
     learningPathsQuery.data()?.find((p) => p.id === selectedPathId())
 
   const selectedPathName = () => selectedPath()?.name
+  const isUserCreatedPath = () => selectedPath()?.isUserCreated === true
 
   const progressQuery = useConvexQuery(
     api.api.learning_paths.getPathWithProgress,
@@ -39,6 +45,11 @@ export function LearningPathSection() {
 
   const isCompleted = (moduleId: string) =>
     completedSet().has(moduleId) || moduleId in localCompletions()
+
+  const handleModuleSelect = (module: LearningPathModule) => {
+    setSelectedModule(module)
+    setDialogOpen(true)
+  }
 
   return (
     <section
@@ -83,11 +94,27 @@ export function LearningPathSection() {
         >
           <Index each={chapters()}>
             {(chapter) => (
-              <ChapterSection chapter={chapter()} viewMode={selectedView()} isCompleted={isCompleted} />
+              <ChapterSection
+                chapter={chapter()}
+                viewMode={selectedView()}
+                isCompleted={isCompleted}
+                openInDialog={isUserCreatedPath()}
+                onModuleSelect={handleModuleSelect}
+              />
             )}
           </Index>
         </Suspense>
       </Tabs>
+
+      <Show when={isUserCreatedPath() && selectedModule() !== null}>
+        <ModuleDetailDialog
+          pathId={selectedPathId() || ""}
+          moduleId={selectedModule()!.moduleId}
+          moduleName={selectedModule()!.module.title}
+          isOpen={dialogOpen()}
+          onOpenChange={setDialogOpen}
+        />
+      </Show>
     </section>
   )
 }

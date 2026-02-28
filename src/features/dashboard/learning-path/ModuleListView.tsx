@@ -8,6 +8,8 @@ import type { LearningPathModule } from "./types"
 interface ModuleListViewProps {
   modules: LearningPathModule[]
   isCompleted: (moduleId: string) => boolean
+  openInDialog?: boolean
+  onModuleSelect?: (module: LearningPathModule) => void
 }
 
 export function ModuleListView(props: ModuleListViewProps) {
@@ -20,6 +22,8 @@ export function ModuleListView(props: ModuleListViewProps) {
             index={index()}
             number={index() + 1}
             isCompleted={props.isCompleted(module.moduleId)}
+            openInDialog={props.openInDialog}
+            onModuleSelect={props.onModuleSelect}
           />
         )}
       </For>
@@ -32,6 +36,8 @@ interface ModuleListItemProps {
   index: number
   number: number
   isCompleted: boolean
+  openInDialog?: boolean
+  onModuleSelect?: (module: LearningPathModule) => void
 }
 
 function ModuleListItem(props: ModuleListItemProps) {
@@ -39,56 +45,66 @@ function ModuleListItem(props: ModuleListItemProps) {
   const ModuleIcon = getModuleIcon(module.module_type)
   const iconClasses = getModuleIconClasses(module.module_type)
 
-  return (
-    <div class="ease-instant-hover-75 hover:scale-[98.5%]">
-      <Link
-        to={linkTo}
-        data-lessons-section
-        class={cn(
-          "group bg-card font-inter relative block h-12 w-full rounded-md text-sm whitespace-nowrap",
-          "border-card-foreground/70 border backdrop-blur-sm",
-          "bg-gradient-to-br dark:from-neutral-600/15 dark:to-gray-600/10",
-          "ease-instant-hover-200",
-          props.isCompleted &&
-            "border-green-500/50 font-semibold text-green-500",
-          disabled
-            ? "cursor-not-allowed opacity-50"
-            : "hover:bg-accent cursor-pointer",
-        )}
-      >
-        <div
+  const content = (
+    <div
+      class={cn(
+        "scrollbar-none absolute inset-0 flex items-center justify-between overflow-x-scroll overflow-y-hidden px-5",
+        props.isCompleted && "bg-green-500/10",
+      )}
+    >
+      <div class="flex items-center gap-3">
+        <span
           class={cn(
-            "scrollbar-none absolute inset-0 flex items-center justify-between overflow-x-scroll overflow-y-hidden px-5",
-            props.isCompleted && "bg-green-500/10",
+            "text-primary",
+            props.isCompleted && "font-bold text-green-500",
           )}
         >
-          <div class="flex items-center gap-3">
-            <span
-              class={cn(
-                "text-primary",
-                props.isCompleted && "font-bold text-green-500",
-              )}
-            >
-              {props.number}.
-            </span>
-            <span
-              class={cn(
-                "text-primary dark:text-muted-foreground",
-                props.isCompleted && "font-bold text-green-500",
-              )}
-            >
-              {props.isCompleted && (
-                <CircleCheckBig class="mr-2 inline-flex h-4 w-4 origin-center dark:text-green-500" />
-              )}
-              {module.title}
-            </span>
-          </div>
+          {props.number}.
+        </span>
+        <span
+          class={cn(
+            "text-primary dark:text-muted-foreground",
+            props.isCompleted && "font-bold text-green-500",
+          )}
+        >
+          {props.isCompleted && (
+            <CircleCheckBig class="mr-2 inline-flex h-4 w-4 origin-center dark:text-green-500" />
+          )}
+          {module.title}
+        </span>
+      </div>
 
-          <div class="sticky right-0 flex shrink-0">
-            <ModuleIcon size="20px" class={iconClasses} />
-          </div>
-        </div>
-      </Link>
+      <div class="sticky right-0 flex shrink-0">
+        <ModuleIcon size="20px" class={iconClasses} />
+      </div>
+    </div>
+  )
+
+  const baseClasses = cn(
+    "group bg-card font-inter relative block h-12 w-full rounded-md text-sm whitespace-nowrap",
+    "border-card-foreground/70 border backdrop-blur-sm",
+    "bg-gradient-to-br dark:from-neutral-600/15 dark:to-gray-600/10",
+    "ease-instant-hover-200",
+    props.isCompleted && "border-green-500/50 font-semibold text-green-500",
+    disabled ? "cursor-not-allowed opacity-50" : "hover:bg-accent cursor-pointer",
+  )
+
+  return (
+    <div class="ease-instant-hover-75 hover:scale-[98.5%]">
+      {props.openInDialog ? (
+        <button
+          type="button"
+          data-lessons-section
+          onClick={() => props.onModuleSelect?.(props.module)}
+          class={cn(baseClasses, "text-left")}
+        >
+          {content}
+        </button>
+      ) : (
+        <Link to={linkTo} data-lessons-section class={baseClasses}>
+          {content}
+        </Link>
+      )}
     </div>
   )
 }

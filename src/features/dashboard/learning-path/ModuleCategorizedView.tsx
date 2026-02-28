@@ -42,6 +42,8 @@ const CATEGORIES: Record<CategoryKey, CategoryConfig> = {
 interface ModuleCategorizedViewProps {
   modules: LearningPathModule[]
   isCompleted: (moduleId: string) => boolean
+  openInDialog?: boolean
+  onModuleSelect?: (module: LearningPathModule) => void
 }
 
 export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
@@ -110,38 +112,52 @@ export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
                       (m) => m.moduleId === enrichedModule.moduleId,
                     )
 
-                    return (
-                      <Link
-                        to={enrichedModule.linkTo}
+                    const content = (
+                      <div
                         class={cn(
-                          "block transition-colors",
-                          enrichedModule.disabled &&
-                            "cursor-not-allowed opacity-50",
+                          "text-sm",
+                          isCompleted
+                            ? "text-green-500"
+                            : "text-white hover:text-neutral-300",
                         )}
                       >
-                        <div
-                          class={cn(
-                            "text-sm",
-                            isCompleted
-                              ? "text-green-500"
-                              : "text-white hover:text-neutral-300",
-                          )}
-                        >
-                          <div class="flex items-center gap-2">
-                            <ModuleIcon
-                              size="16px"
-                              class={getModuleIconClasses(
-                                enrichedModule.module.module_type,
-                              )}
-                            />
-                            <span>{enrichedModule.module.title}</span>
-                          </div>
-                          <p class="text-muted-foreground/60 mt-1 text-xs">
-                            {originalIndex + 1}.{" "}
-                            {enrichedModule.module.description ||
-                              "Description coming soon"}
-                          </p>
+                        <div class="flex items-center gap-2">
+                          <ModuleIcon
+                            size="16px"
+                            class={getModuleIconClasses(
+                              enrichedModule.module.module_type,
+                            )}
+                          />
+                          <span>{enrichedModule.module.title}</span>
                         </div>
+                        <p class="text-muted-foreground/60 mt-1 text-xs">
+                          {originalIndex + 1}.{" "}
+                          {enrichedModule.module.description ||
+                            "Description coming soon"}
+                        </p>
+                      </div>
+                    )
+
+                    const baseClasses = cn(
+                      "block transition-colors",
+                      enrichedModule.disabled && "cursor-not-allowed opacity-50",
+                    )
+
+                    if (props.openInDialog) {
+                      return (
+                        <button
+                          type="button"
+                          onClick={() => props.onModuleSelect?.(enrichedModule)}
+                          class={cn(baseClasses, "w-full text-left")}
+                        >
+                          {content}
+                        </button>
+                      )
+                    }
+
+                    return (
+                      <Link to={enrichedModule.linkTo} class={baseClasses}>
+                        {content}
                       </Link>
                     )
                   }}

@@ -43,6 +43,24 @@ export type LearningPathChapter = {
   modules: LearningPathModule[]
 }
 
+export type ModuleDetail = {
+  sourceType: "grammar" | "vocabulary"
+  transcriptGroups: Array<
+    Array<{
+      line_id: number
+      text: string
+      english: string
+      timestamp?: string
+    }>
+  >
+  vocabularyItems: Array<{
+    word: string
+    furigana?: string
+    english?: string
+  }>
+  moduleDescription?: string
+}
+
 type CreateCustomLearningPathArgs = {
   transcript: {
     name: string
@@ -252,6 +270,96 @@ export async function getResolvedChaptersForPath(
   }
 
   return chunkResolvedModulesIntoChapters(resolvedModules)
+}
+
+export async function getModuleDetail(
+  ctx: QueryCtx,
+  pathId: string,
+  moduleId: string,
+): Promise<ModuleDetail | null> {
+  const userPathId = await resolveUserPathId(ctx, pathId)
+  if (!userPathId) return null
+
+  const path = await ctx.db.get(userPathId)
+  if (!path) return null
+
+  const source = await ctx.db
+    .query("learningPathModuleSources")
+    .withIndex("by_path_module", (q) =>
+      q.eq("pathId", userPathId).eq("moduleId", moduleId),
+    )
+    .first()
+
+  if (!source) {
+    console.warn(
+      `[LearningPath] Missing module source for path '${pathId}' and module '${moduleId}'`,
+    )
+    return null
+  }
+
+  const transcriptGroups = source.transcriptLineIds.map((group) =>
+    group
+      .map((lineId) => path.transcriptData[lineId])
+      .filter(
+        (
+          line,
+        ): line is {
+          line_id: number
+          text: string
+          english: string
+          timestamp?: string
+        } => line !== undefined,
+      ),
+  )
+
+  if (source.sourceType === "grammar") {
+    const module = allModules[moduleId]
+    if (!module) {
+      console.warn(
+        `[LearningPath] Missing grammar module '${moduleId}' for module detail`,
+      )
+    }
+
+    return {
+      sourceType: "grammar",
+      transcriptGroups,
+      vocabularyItems: [],
+      moduleDescription: module?.description,
+    }
+  }
+
+  const deckId = moduleId as Id<"userDecks">
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) return null
+
+  const deck = await ctx.db.get(deckId)
+  if (!deck || deck.userId !== identity.subject) {
+    console.warn(
+      `[LearningPath] Missing or unauthorized deck '${moduleId}' for module detail`,
+    )
+    return {
+      sourceType: "vocabulary",
+      transcriptGroups,
+      vocabularyItems: [],
+    }
+  }
+
+  const vocabItems = await ctx.db
+    .query("deckVocabularyItems")
+    .withIndex("by_deck", (q) => q.eq("deckId", deckId))
+    .collect()
+
+  return {
+    sourceType: "vocabulary",
+    transcriptGroups,
+    vocabularyItems: vocabItems
+      .sort((a, b) => a._creationTime - b._creationTime)
+      .map((item) => ({
+        word: item.word,
+        furigana: item.furigana,
+        english: item.english[0],
+      })),
+  }
 }
 
 export async function createCustomLearningPath(

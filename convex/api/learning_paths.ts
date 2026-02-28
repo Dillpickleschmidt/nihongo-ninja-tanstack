@@ -34,6 +34,18 @@ export const getPathWithProgress = query({
 })
 
 /**
+ * Get detail data for a module in a custom learning path
+ */
+export const getModuleDetail = query({
+  args: {
+    pathId: v.string(),
+    moduleId: v.string(),
+  },
+  handler: (ctx, { pathId, moduleId }) =>
+    LearningPaths.getModuleDetail(ctx, pathId, moduleId),
+})
+
+/**
  * Create a custom learning path from subtitle-derived selections
  */
 export const createCustomLearningPath = mutation({
