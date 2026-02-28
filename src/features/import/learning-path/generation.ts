@@ -167,10 +167,6 @@ function filterAndDeduplicateVocab(
   const vocabMap = new Map<string, VocabWordWithFrequency>()
 
   vocabulary.forEach((word) => {
-    if (!word.word || shouldFilterPOS(word.pos)) {
-      return
-    }
-
     if (vocabMap.has(word.word)) {
       const existing = vocabMap.get(word.word)!
       existing.count++
@@ -186,10 +182,6 @@ function filterAndDeduplicateVocab(
   })
 
   return vocabMap
-}
-
-function shouldFilterPOS(pos: string): boolean {
-  return ["記号", "補助記号", "助詞"].includes(pos)
 }
 
 function distributeEvenly<T>(items: T[], targetSize: number): T[][] {

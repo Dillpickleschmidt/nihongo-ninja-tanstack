@@ -22,36 +22,35 @@ describe("Learning path generation", () => {
   })
 
   describe("chunkVocabularyByFrequency", () => {
-    it("filters out unwanted POS", async () => {
+    it("uses extracted vocabulary as-is", () => {
       const data: ExtractedData = {
         grammarPatternLineIds: {},
         grammarPatterns: [],
         vocabulary: [
           createVocabWord("する", "動詞", 0),
-          createVocabWord("。", "記号", 1), // Should be filtered
+          createVocabWord("。", "記号", 1),
           createVocabWord("本", "名詞", 2),
-          createVocabWord("は", "助詞", 3), // Should be filtered (particle)
-          createVocabWord("", "名詞", 4), // Should be filtered (empty)
+          createVocabWord("は", "助詞", 3),
+          createVocabWord("", "名詞", 4),
         ],
         transcript: [],
       }
 
-      const result = await createLearningPath(data, "genki_1")
+      const result = createLearningPath(data, "genki_1")
       const vocabModules = result.modules.filter((m) => m.type === "vocabulary")
 
       // Flatten all vocab words from all modules
       const allWords = vocabModules.flatMap((m) => m.words)
 
-      // Verify punctuation, particles, and empty strings are filtered
-      expect(allWords.every((w) => w.word !== "。")).toBe(true)
-      expect(allWords.every((w) => w.word !== "は")).toBe(true)
-      expect(allWords.every((w) => w.word !== "")).toBe(true)
-      // Verify valid words remain
+      // Generation should not apply business filtering
+      expect(allWords.some((w) => w.word === "。")).toBe(true)
+      expect(allWords.some((w) => w.word === "は")).toBe(true)
+      expect(allWords.some((w) => w.word === "")).toBe(true)
       expect(allWords.some((w) => w.word === "する")).toBe(true)
       expect(allWords.some((w) => w.word === "本")).toBe(true)
     })
 
-    it("creates modules with optimal sizes using distributeEvenly", async () => {
+    it("creates modules with optimal sizes using distributeEvenly", () => {
       // 50 verbs + 76 nouns = 126 total
       const data: ExtractedData = {
         grammarPatternLineIds: {},
@@ -67,7 +66,7 @@ describe("Learning path generation", () => {
         transcript: [],
       }
 
-      const result = await createLearningPath(data, "genki_1")
+      const result = createLearningPath(data, "genki_1")
       const vocabModules = result.modules.filter((m) => m.type === "vocabulary")
 
       // Count verb and non-verb modules
@@ -89,7 +88,7 @@ describe("Learning path generation", () => {
       expect(nonVerbModules[4]!.words.length).toBe(15)
     })
 
-    it("maintains frequency ordering across modules", async () => {
+    it("maintains frequency ordering across modules", () => {
       // Note: This test assumes vocabulary is extracted with frequency counts
       // For now, we test that higher-indexed vocab appears in later modules
 
@@ -105,7 +104,7 @@ describe("Learning path generation", () => {
         transcript: [],
       }
 
-      const result = await createLearningPath(data, "genki_1")
+      const result = createLearningPath(data, "genki_1")
       const vocabModules = result.modules.filter((m) => m.type === "vocabulary")
 
       // 50 nouns → 4 modules using distributeEvenly(50, 15) → 3 or 4 chunks
@@ -117,7 +116,7 @@ describe("Learning path generation", () => {
       })
     })
 
-    it("interleaves verb and non-verb modules by frequency", async () => {
+    it("interleaves verb and non-verb modules by frequency", () => {
       // This test checks that verb and non-verb modules appear in frequency order
 
       const data: ExtractedData = {
@@ -132,7 +131,7 @@ describe("Learning path generation", () => {
         transcript: [],
       }
 
-      const result = await createLearningPath(data, "genki_1")
+      const result = createLearningPath(data, "genki_1")
       const vocabModules = result.modules.filter((m) => m.type === "vocabulary")
 
       // Should have multiple modules of both verb and non-verb
@@ -145,7 +144,7 @@ describe("Learning path generation", () => {
       expect(vocabModules.length).toBeGreaterThan(1)
     })
 
-    it("handles edge case with remaining items", async () => {
+    it("handles edge case with remaining items", () => {
       // Small amounts: 8 verbs + 7 nouns (won't fill a full 15-item bucket)
       const data: ExtractedData = {
         grammarPatternLineIds: {},
@@ -161,7 +160,7 @@ describe("Learning path generation", () => {
         transcript: [],
       }
 
-      const result = await createLearningPath(data, "genki_1")
+      const result = createLearningPath(data, "genki_1")
       const vocabModules = result.modules.filter((m) => m.type === "vocabulary")
 
       // Should create modules with partial sizes
@@ -176,7 +175,7 @@ describe("Learning path generation", () => {
   })
 
   describe("createLearningPath integration", () => {
-    it("includes always-included modules", async () => {
+    it("includes always-included modules", () => {
       const data: ExtractedData = {
         grammarPatternLineIds: {},
         grammarPatterns: [],
@@ -184,7 +183,7 @@ describe("Learning path generation", () => {
         transcript: [],
       }
 
-      const result = await createLearningPath(data, "genki_1")
+      const result = createLearningPath(data, "genki_1")
 
       const alwaysIncluded = [
         "welcome-overview",
@@ -201,7 +200,7 @@ describe("Learning path generation", () => {
       })
     })
 
-    it("always-included modules appear first (orderIndex 0-3)", async () => {
+    it("always-included modules appear first (orderIndex 0-3)", () => {
       const data: ExtractedData = {
         grammarPatternLineIds: {},
         grammarPatterns: [],
@@ -209,7 +208,7 @@ describe("Learning path generation", () => {
         transcript: [],
       }
 
-      const result = await createLearningPath(data, "genki_1")
+      const result = createLearningPath(data, "genki_1")
 
       const alwaysIncludedIds = [
         "welcome-overview",
@@ -226,7 +225,7 @@ describe("Learning path generation", () => {
       })
     })
 
-    it("unchecks completed modules", async () => {
+    it("unchecks completed modules", () => {
       const data: ExtractedData = {
         grammarPatternLineIds: {},
         grammarPatterns: [],
@@ -235,7 +234,7 @@ describe("Learning path generation", () => {
       }
 
       const completedIds = ["welcome-overview", "japanese-pronunciation"]
-      const result = await createLearningPath(data, "genki_1", completedIds)
+      const result = createLearningPath(data, "genki_1", completedIds)
 
       const grammarModules = result.modules.filter(
         (m) => m.type === "grammar",
@@ -247,7 +246,7 @@ describe("Learning path generation", () => {
       expect(checkedModules.length).toBe(0)
     })
 
-    it("orderIndex values are sequential", async () => {
+    it("orderIndex values are sequential", () => {
       const data: ExtractedData = {
         grammarPatternLineIds: {},
         grammarPatterns: ["masen_ka"], // 1 pattern → 1 grammar module
@@ -259,14 +258,14 @@ describe("Learning path generation", () => {
         transcript: [],
       }
 
-      const result = await createLearningPath(data, "genki_1")
+      const result = createLearningPath(data, "genki_1")
 
       result.modules.forEach((module, idx) => {
         expect(module.orderIndex).toBe(idx)
       })
     })
 
-    it("no duplicate orderIndex values", async () => {
+    it("no duplicate orderIndex values", () => {
       const data: ExtractedData = {
         grammarPatternLineIds: {},
         grammarPatterns: ["masen_ka", "tara_conditional"],
@@ -278,7 +277,7 @@ describe("Learning path generation", () => {
         transcript: [],
       }
 
-      const result = await createLearningPath(data, "genki_1")
+      const result = createLearningPath(data, "genki_1")
 
       const orderIndices = result.modules.map((m) => m.orderIndex)
       const uniqueIndices = new Set(orderIndices)
@@ -288,7 +287,7 @@ describe("Learning path generation", () => {
   })
 
   describe("interleaving", () => {
-    it("interleaves grammar with vocab when baseRatio < 4", async () => {
+    it("interleaves grammar with vocab when baseRatio < 4", () => {
       // 6 grammar (after removing always-included: 2 other), 25 vocab → baseRatio = 12, capped at 4
       const data: ExtractedData = {
         grammarPatternLineIds: {},
@@ -308,7 +307,7 @@ describe("Learning path generation", () => {
         transcript: [],
       }
 
-      const result = await createLearningPath(data, "genki_1")
+      const result = createLearningPath(data, "genki_1")
 
       // Extract modules (skip always-included)
       const modules = result.modules.slice(4) // skip first 4 always-included
@@ -327,7 +326,7 @@ describe("Learning path generation", () => {
       expect(hasVocabBetweenGrammar).toBe(true)
     })
 
-    it("caps vocab per grammar at 4 when baseRatio >= 4", async () => {
+    it("caps vocab per grammar at 4 when baseRatio >= 4", () => {
       // 5 grammar, 50 vocab → baseRatio = 10, capped at 4
       const data: ExtractedData = {
         grammarPatternLineIds: {},
@@ -345,7 +344,7 @@ describe("Learning path generation", () => {
         transcript: [],
       }
 
-      const result = await createLearningPath(data, "genki_1")
+      const result = createLearningPath(data, "genki_1")
       const modules = result.modules.slice(4) // skip always-included
 
       // Count vocab between each grammar module

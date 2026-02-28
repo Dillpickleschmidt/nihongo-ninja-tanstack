@@ -2,6 +2,7 @@ import { GRAMMAR_TO_MODULES } from "@/data/grammar_to_modules"
 import { buildBracketFurigana } from "@/data/utils/text/kana"
 import { getKagomeWorker } from "@/features/sentence-practice/kagome/kagomeWorkerManager"
 import type { POS } from "@/features/sentence-practice/kagome/types"
+import { shouldSkipToken } from "./token-filter"
 import type { ExtractedData, TranscriptLine } from "./types"
 
 interface RawTranscriptLine {
@@ -60,10 +61,16 @@ export async function extractTranscriptData(
 
       for (const token of tokens) {
         const primaryPos = (token.pos[0] ?? "") as POS
-        if (!primaryPos) continue
-
         const baseForm = normalizeTokenWord(token.base_form, token.surface)
-        if (!baseForm) continue
+        if (
+          shouldSkipToken({
+            tokenClass: token.class,
+            primaryPos,
+            normalizedWord: baseForm,
+          })
+        ) {
+          continue
+        }
 
         if (vocabularyMap.has(baseForm)) {
           const existing = vocabularyMap.get(baseForm)!
