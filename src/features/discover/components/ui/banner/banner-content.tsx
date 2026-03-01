@@ -3,7 +3,6 @@ import { Link } from "@tanstack/solid-router"
 import { Play } from "lucide-solid"
 import { Button } from "~/components/ui/button"
 import type { DiscoverMedia } from "~/features/discover/api/anilist/types"
-import { BannerImage } from "./banner-image"
 import { AnimatedHeart } from "~/features/discover/components/icons/animated/heart"
 import { AnimatedBookmark } from "~/features/discover/components/icons/animated/bookmark"
 import {
@@ -14,54 +13,19 @@ import {
   formatSeason,
   formatStatus,
   formatFormat,
-  formatColorForCSS,
 } from "~/features/discover/utils/banner-utils"
 
-interface FullBannerProps {
+interface BannerContentProps {
   current: DiscoverMedia | null | undefined
-  hqImageUrl: string | null | undefined
-  isDesktop: boolean
+  colorVars: Record<string, string>
   currentIndex: number
   onSelectIndex: (index: number) => void
   itemCount: number
 }
 
-export function FullBanner(props: FullBannerProps) {
+export function BannerContent(props: BannerContentProps) {
   const [isFavorited, setIsFavorited] = createSignal(false)
   const [isBookmarked, setIsBookmarked] = createSignal(false)
-
-  const getColorVars = () => {
-    const hexColor = props.current?.coverImage?.color ?? "#fff"
-    const { r, g, b } = formatColorForCSS(hexColor)
-
-    return {
-      "--custom": hexColor,
-      "--custom-r": r,
-      "--custom-g": g,
-      "--custom-b": b,
-    } as any
-  }
-
-  const bannerImage = () => {
-    const anime = props.current
-
-    if (!anime) {
-      return null
-    }
-
-    // Mobile: always use cover image (portrait from AniList)
-    if (!props.isDesktop) {
-      return anime.coverImage?.extraLarge
-    }
-
-    // Desktop: use HQ image from ani.zip if available
-    if (props.hqImageUrl) {
-      return props.hqImageUrl
-    }
-
-    // Fallback to AniList images
-    return anime.bannerImage ?? anime.coverImage?.extraLarge
-  }
 
   return (
     <>
@@ -78,19 +42,7 @@ export function FullBanner(props: FullBannerProps) {
         }
       `}</style>
 
-      {/* Image Background Layer */}
-      <Show when={props.current}>
-        {(anime) => (
-          <BannerImage
-            src={bannerImage()}
-            alt={anime().title?.userPreferred ?? "Anime banner"}
-            color={anime().coverImage?.color}
-          />
-        )}
-      </Show>
-
-      {/* Content Overlay */}
-      <div style={getColorVars()} class="relative flex h-full w-full flex-col">
+      <div style={props.colorVars} class="flex h-full w-full flex-col">
         {/* Main Content Grid */}
         <Show when={props.current}>
           {(anime) => (
@@ -107,12 +59,10 @@ export function FullBanner(props: FullBannerProps) {
 
                 {/* Metadata Buttons */}
                 <div class="flex max-w-full flex-nowrap items-center gap-2 overflow-clip py-4 pt-4 font-bold md:place-content-start md:self-start">
-                  {/* Episodes/Progress */}
                   <div class="text-custom! bg-primary/5 inline-flex h-7 items-center rounded px-3.5 text-sm text-nowrap">
                     {formatEpisodeCount(anime())}
                   </div>
 
-                  {/* Format */}
                   <Show when={anime().format}>
                     <Link to="." tabindex={-1}>
                       <Button
@@ -125,7 +75,6 @@ export function FullBanner(props: FullBannerProps) {
                     </Link>
                   </Show>
 
-                  {/* Status */}
                   <Show when={anime().status}>
                     <Link to="." tabindex={-1}>
                       <Button
@@ -138,7 +87,6 @@ export function FullBanner(props: FullBannerProps) {
                     </Link>
                   </Show>
 
-                  {/* Season */}
                   <Show when={anime().season}>
                     <Link to="." tabindex={-1}>
                       <Button
@@ -151,7 +99,6 @@ export function FullBanner(props: FullBannerProps) {
                     </Link>
                   </Show>
 
-                  {/* Score */}
                   <Show when={anime().averageScore}>
                     <Link to="." tabindex={-1}>
                       <Button
@@ -167,7 +114,6 @@ export function FullBanner(props: FullBannerProps) {
 
                 {/* Action Buttons Group */}
                 <div class="flex w-[280px] max-w-full flex-row">
-                  {/* Play Button */}
                   <Button
                     variant="default"
                     size="sm"
@@ -177,7 +123,6 @@ export function FullBanner(props: FullBannerProps) {
                     <span>Watch Now</span>
                   </Button>
 
-                  {/* Favorite Button */}
                   <Button
                     variant="ghost"
                     onClick={() => setIsFavorited(!isFavorited())}
@@ -190,7 +135,6 @@ export function FullBanner(props: FullBannerProps) {
                     />
                   </Button>
 
-                  {/* Bookmark Button */}
                   <Button
                     variant="ghost"
                     onClick={() => setIsBookmarked(!isBookmarked())}
@@ -207,14 +151,12 @@ export function FullBanner(props: FullBannerProps) {
 
               {/* Right Column */}
               <div class="flex w-full min-w-0 flex-col items-center self-end md:items-end md:pr-5">
-                {/* Description */}
                 <Show when={anime().description}>
                   <p class="text-muted-foreground/80 line-clamp-2 max-w-[90%] pt-3 text-center text-xs text-balance md:line-clamp-3 md:max-w-[75%] md:text-right md:text-sm">
                     {stripHtml(anime().description)}
                   </p>
                 </Show>
 
-                {/* Genres */}
                 <Show when={anime().genres && anime().genres!.length > 0}>
                   <div class="hidden max-w-full flex-nowrap items-center gap-2 overflow-clip pt-4 md:flex md:place-content-end md:self-end">
                     <For each={anime().genres}>
@@ -240,7 +182,7 @@ export function FullBanner(props: FullBannerProps) {
         {/* Navigation Dots Row */}
         <div
           class="flex w-full flex-nowrap justify-center overflow-clip"
-          style={getColorVars()}
+          style={props.colorVars}
         >
           <For each={Array(props.itemCount)}>
             {(_, index) => {
@@ -248,16 +190,12 @@ export function FullBanner(props: FullBannerProps) {
               return (
                 <div
                   class="pt-2 pb-4"
-                  classList={{
-                    "cursor-pointer": !isActive(),
-                  }}
+                  classList={{ "cursor-pointer": !isActive() }}
                   onClick={() => props.onSelectIndex(index())}
                 >
                   <div
                     class="progress-badge mr-2 overflow-clip rounded bg-neutral-800"
-                    classList={{
-                      active: isActive(),
-                    }}
+                    classList={{ active: isActive() }}
                     style={{
                       height: "4px",
                       width: isActive() ? "3rem" : "1.5rem",

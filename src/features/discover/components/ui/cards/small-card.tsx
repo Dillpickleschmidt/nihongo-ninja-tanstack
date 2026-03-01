@@ -1,13 +1,13 @@
-import { Link } from "@tanstack/solid-router"
-import { Show, createSignal, onMount } from "solid-js"
-import { CalendarDays, Tv } from "lucide-solid"
+import { Show, createMemo } from "solid-js"
 import { StatusDot } from "../status-dot"
 import { LoadImage } from "../img/load-image"
 import type { DiscoverMedia, Media } from "../../../api/anilist/types"
-import { coverMedium, format, title } from "../../../api/anilist/util"
+import { cover, coverMedium, title } from "../../../api/anilist/util"
+import { getMockComprehension } from "../../../utils/mock-data"
 
 interface SmallAnimeCardProps {
   media: DiscoverMedia | Media
+  size?: "small" | "large"
   status?:
     | "CURRENT"
     | "PLANNING"
@@ -15,81 +15,105 @@ interface SmallAnimeCardProps {
     | "PAUSED"
     | "DROPPED"
     | "REPEATING"
+  onCardClick?: (media: DiscoverMedia | Media) => void
+}
+
+function getBarColor(pct: number): string {
+  if (pct >= 70) return "from-emerald-600 to-emerald-400"
+  if (pct >= 45) return "from-amber-600 to-amber-400"
+  return "from-red-600 to-red-400"
 }
 
 export function SmallAnimeCard(props: SmallAnimeCardProps) {
-  // TODO: Implement hover effects for card details display
-  // TODO: Implement navigation to anime detail page (currently links to '.', needs `/explore/anime/${props.media.id}`)
-  const [hidden, setHidden] = createSignal(true)
-  let cardRef: HTMLDivElement | undefined
-
-  onMount(() => {
-    // Use Web Animations API - runs once via JavaScript, immune to CSS animation restarts
-    cardRef?.animate(
-      [
-        { transform: "translate3d(0, 1.2rem, 0) scale(0.95)" },
-        { transform: "translate3d(0, 0, 0) scale(1)" },
-      ],
-      {
-        duration: 300,
-        easing: "ease",
-        fill: "forwards",
-      },
-    )
-  })
-
-  const coverUrl = () => coverMedium(props.media) ?? ""
+  const isLarge = () => props.size === "large"
+  const coverUrl = () =>
+    isLarge() ? (cover(props.media) ?? "") : (coverMedium(props.media) ?? "")
   const titleText = () => title(props.media)
-  const formatText = () => format(props.media)
-  const year = () => props.media.seasonYear ?? "TBA"
+  const comprehension = createMemo(() => getMockComprehension(props.media.id))
 
   return (
-    <Link
-      to={`.`}
-      // TODO: Update to {`/explore/anime/${props.media.id}`} when detail page is ready
-      class="pointer-events-auto relative shrink-0 cursor-pointer p-4 text-white [contain-intrinsic-size:auto_152px_auto_290.4px] [content-visibility:auto]"
-      classList={{
-        "[content-visibility:visible]!": !hidden(),
-        "": !hidden(), // original z-40 class
-      }}
-      onMouseEnter={() => setHidden(false)}
-      onMouseLeave={() => setHidden(true)}
-    >
-      <div
-        ref={cardRef}
-        class="flex w-38 flex-col"
-        style={{ "aspect-ratio": "152/290" }}
+    <>
+      <style>{`
+        @keyframes fade-up {
+          from { opacity: 0; transform: translateY(1rem); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up { animation: fade-up 0.5s ease-out both; }
+      `}</style>
+
+      <button
+        type="button"
+        onClick={() => props.onCardClick?.(props.media)}
+        class="animate-fade-up relative shrink-0 cursor-pointer text-left text-white ease-instant-hover-300 hover:scale-102 hover:brightness-115 [content-visibility:auto]"
+        classList={{
+          "w-38": !isLarge(),
+          "w-56": isLarge(),
+        }}
       >
+        <div class="flex flex-col">
         {/* Cover Image */}
-        <div class="h-54">
+        <div
+          class="overflow-hidden rounded-t-lg"
+          classList={{ "h-54": !isLarge(), "h-72": isLarge() }}
+        >
           <LoadImage
             src={coverUrl()}
             alt="cover"
-            class="h-full w-full rounded object-cover"
+            class="h-full w-full object-cover"
             color={props.media.coverImage?.color}
           />
         </div>
 
+        {/* Comprehension bar */}
+        <div class="h-1 w-full overflow-hidden rounded-b-lg bg-white/6">
+          <div
+            class={`h-full bg-gradient-to-r ${getBarColor(comprehension().avg)}`}
+            style={{ width: `${comprehension().avg}%` }}
+          />
+        </div>
+
+        {/* Comprehension numbers */}
+        <div class="flex items-baseline justify-between px-0.5 pt-2">
+          <div
+            class="flex flex-col"
+            title="Average comprehension across all episodes"
+          >
+            <span class="text-[0.55rem] uppercase tracking-wider text-white/25">
+              avg
+            </span>
+            <span class="tabular-nums text-sm font-semibold text-white/70">
+              {comprehension().avg}%
+            </span>
+          </div>
+          <span class="text-white/15">/</span>
+          <div
+            class="flex flex-col items-end"
+            title="Episode with most comprehension"
+          >
+            <span class="text-[0.55rem] uppercase tracking-wider text-white/25">
+              best
+            </span>
+            <span class="tabular-nums text-sm font-bold text-(--accent)">
+              {comprehension().best}%
+            </span>
+          </div>
+        </div>
+
         {/* Title */}
-        <div class="line-clamp-2 pt-3 text-[0.8rem] font-black">
+        <div
+          class="line-clamp-2 pt-2 font-black"
+          classList={{
+            "text-[0.8rem]": !isLarge(),
+            "text-[0.9rem]": isLarge(),
+          }}
+        >
           <Show when={props.status}>
             <StatusDot variant={props.status!} />
           </Show>
           {titleText()}
         </div>
-
-        {/* Metadata */}
-        <div class="mt-auto flex justify-between pt-2 text-neutral-500">
-          <div class="flex items-center text-xs font-medium">
-            <CalendarDays class="mr-1 -ml-0.5 h-4 w-4" />
-            {year()}
-          </div>
-          <div class="flex items-center text-xs font-medium">
-            {formatText()}
-            <Tv class="-mr-0.5 ml-1 h-4 w-4" />
-          </div>
         </div>
-      </div>
-    </Link>
+      </button>
+    </>
   )
 }

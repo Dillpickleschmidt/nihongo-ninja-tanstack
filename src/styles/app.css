@@ -439,8 +439,6 @@
   }
 }
 
-/* Card load-in animation now handled via Web Animations API in JavaScript */
-
 /* Driver.js tour popover styling */
 .driver-popover.nihongo-ninja-tour {
   background: var(--color-background);

@@ -97,7 +97,11 @@ export function stripHtml(html: string | null | undefined): string {
  * @param media - Media object with episodes and mediaListEntry
  * @returns Formatted string (e.g., "12 Episodes" or "5 / 12 Episodes")
  */
-export function formatEpisodeCount(media: any): string {
+export function formatEpisodeCount(media: {
+  episodes?: number | null
+  duration?: number | null
+  mediaListEntry?: { progress?: number | null } | null
+}): string {
   const total = media?.episodes
   const progress = media?.mediaListEntry?.progress
 

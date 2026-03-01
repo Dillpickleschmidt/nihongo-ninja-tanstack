@@ -13,10 +13,8 @@ export interface SectionConfig {
     | "planning"
     | "sequels"
   title: string
-  params?: { genre?: string; season?: string; year?: number }
   queryVars?: Record<string, any>
   viewMoreLink?: string
-  _key?: string
 }
 
 export function getCurrentSeason(): {
@@ -48,7 +46,6 @@ export function getPopularSeasonConfig(
   return {
     type: "popular-season",
     title: "Popular This Season",
-    params: { season, year },
     queryVars: {
       page: 1,
       perPage: 10,
@@ -64,7 +61,6 @@ export function getTrendingConfig(season: string, year: number): SectionConfig {
   return {
     type: "trending",
     title: "Trending Now",
-    params: { season, year },
     queryVars: {
       page: 1,
       perPage: 15,
@@ -97,7 +93,6 @@ export function getGenreConfig(
   return {
     type: "genre",
     title: `${genre} Anime`,
-    params: { genre },
     queryVars: {
       page: 1,
       perPage: 10,
@@ -112,14 +107,12 @@ export function getPersonalSections(
   userListIds: import("./id-extractors").UserListIDs,
 ): SectionConfig[] {
   const sections: SectionConfig[] = []
-  let keyIndex = 0
 
   if (userListIds.continueIDs.length > 0) {
     sections.push({
       type: "continue-watching",
       title: "Continue Watching",
       queryVars: { ids: userListIds.continueIDs, page: 1, perPage: 10 },
-      _key: `personal-${keyIndex++}`,
     })
   }
 
@@ -128,7 +121,6 @@ export function getPersonalSections(
       type: "planning",
       title: "Planning to Watch",
       queryVars: { ids: userListIds.planningIDs, page: 1, perPage: 10 },
-      _key: `personal-${keyIndex++}`,
     })
   }
 
@@ -137,7 +129,6 @@ export function getPersonalSections(
       type: "sequels",
       title: "Sequels You Missed",
       queryVars: { ids: userListIds.sequelIDs, page: 1, perPage: 10 },
-      _key: `personal-${keyIndex++}`,
     })
   }
 
@@ -148,10 +139,7 @@ export function getGenericSections(
   season: string,
   year: number,
 ): SectionConfig[] {
-  const sections: SectionConfig[] = []
-  let keyIndex = 0
-
-  const genericConfigs = [
+  return [
     getPopularSeasonConfig(season, year),
     getTrendingConfig(season, year),
     getAllTimePopularConfig(),
@@ -160,11 +148,4 @@ export function getGenericSections(
     getGenreConfig("Adventure"),
     getGenreConfig("Fantasy"),
   ]
-
-  genericConfigs.forEach((section) => {
-    section._key = `generic-${keyIndex++}`
-    sections.push(section)
-  })
-
-  return sections
 }

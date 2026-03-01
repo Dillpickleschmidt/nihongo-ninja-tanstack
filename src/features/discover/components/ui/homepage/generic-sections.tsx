@@ -1,10 +1,28 @@
 import { Index, Suspense, createSignal, onCleanup } from "solid-js"
 import { AnimeSection } from "~/features/discover/components/ui/cards/query-card"
 import { SkeletonAnimeCard } from "~/features/discover/components/ui/cards/skeleton-card"
+import { SectionHeader } from "~/features/discover/components/ui/homepage/section-header"
+import { isLargeCards } from "~/features/discover/hooks/useWeightSettings"
 import type { SectionConfig } from "~/features/discover/utils/section-configs"
+import type {
+  DiscoverMedia,
+  Media,
+} from "~/features/discover/api/anilist/types"
 
-function SingleSection(props: { section: SectionConfig }) {
+const DEFAULT_LARGE_SECTIONS = new Set([
+  "Popular This Season",
+  "All Time Popular",
+  "Action Anime",
+])
+
+function SingleSection(props: {
+  section: SectionConfig
+  onCardClick?: (media: DiscoverMedia | Media) => void
+}) {
   const [shouldLoad, setShouldLoad] = createSignal(false)
+  const defaultLarge = () => DEFAULT_LARGE_SECTIONS.has(props.section.title)
+  const cardSize = (): "small" | "large" =>
+    isLargeCards(props.section.title, defaultLarge()) ? "large" : "small"
 
   const observeContainer = (el: HTMLDivElement) => {
     const observer = new IntersectionObserver(
@@ -22,26 +40,28 @@ function SingleSection(props: { section: SectionConfig }) {
 
   return (
     <>
-      <div class="text-muted-foreground flex cursor-pointer items-end px-4 pt-5">
-        <div class="text-lg font-semibold leading-none">
-          {props.section.title}
-        </div>
-        <div class="ml-auto text-xs">View More</div>
-      </div>
-      <div class="flex overflow-x-auto pb-4" ref={observeContainer}>
+      <SectionHeader section={props.section} defaultLarge={defaultLarge()} />
+      <div
+        class="scrollbar-none flex items-start gap-8 overflow-x-auto p-4"
+        ref={observeContainer}
+      >
         {shouldLoad() ? (
           <Suspense
             fallback={
               <Index each={Array.from({ length: 10 })}>
-                {() => <SkeletonAnimeCard />}
+                {() => <SkeletonAnimeCard size={cardSize()} />}
               </Index>
             }
           >
-            <AnimeSection config={props.section} />
+            <AnimeSection
+              config={props.section}
+              cardSize={cardSize()}
+              onCardClick={props.onCardClick}
+            />
           </Suspense>
         ) : (
           <Index each={Array.from({ length: 10 })}>
-            {() => <SkeletonAnimeCard />}
+            {() => <SkeletonAnimeCard size={cardSize()} />}
           </Index>
         )}
       </div>
@@ -53,10 +73,15 @@ function SingleSection(props: { section: SectionConfig }) {
  * Generic anime sections (Popular, Trending, etc.)
  * Lazy loads data as sections scroll into view
  */
-export function GenericSections(props: { sections: SectionConfig[] }) {
+export function GenericSections(props: {
+  sections: SectionConfig[]
+  onCardClick?: (media: DiscoverMedia | Media) => void
+}) {
   return (
     <Index each={props.sections}>
-      {(section) => <SingleSection section={section()} />}
+      {(section) => (
+        <SingleSection section={section()} onCardClick={props.onCardClick} />
+      )}
     </Index>
   )
 }
