@@ -3,6 +3,7 @@ import { Link } from "@tanstack/solid-router"
 import { Play } from "lucide-solid"
 import { Button } from "~/components/ui/button"
 import type { DiscoverMedia } from "~/features/discover/api/anilist/types"
+import { title } from "~/features/discover/api/anilist/util"
 import { AnimatedHeart } from "~/features/discover/components/icons/animated/heart"
 import { AnimatedBookmark } from "~/features/discover/components/icons/animated/bookmark"
 import {
@@ -21,6 +22,7 @@ interface BannerContentProps {
   currentIndex: number
   onSelectIndex: (index: number) => void
   itemCount: number
+  titleLanguage?: string | null
 }
 
 export function BannerContent(props: BannerContentProps) {
@@ -54,7 +56,7 @@ export function BannerContent(props: BannerContentProps) {
                   to="."
                   class="line-clamp-2 w-[900px] max-w-[85%] cursor-pointer text-3xl leading-tight font-black text-balance text-white hover:text-neutral-300 hover:underline md:text-4xl"
                 >
-                  {anime().title?.userPreferred}
+                  {title(anime(), props.titleLanguage)}
                 </Link>
 
                 {/* Metadata Buttons */}

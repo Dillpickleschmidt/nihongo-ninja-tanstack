@@ -20,12 +20,13 @@ interface ShowDetailDialogProps {
   media: DiscoverMedia | null
   open: boolean
   onOpenChange: (open: boolean) => void
+  titleLanguage?: string | null
 }
 
 export function ShowDetailDialog(props: ShowDetailDialogProps) {
   const [learnOpen, setLearnOpen] = createSignal(false)
 
-  const mediaTitle = () => (props.media ? title(props.media) : "")
+  const mediaTitle = () => (props.media ? title(props.media, props.titleLanguage) : "")
   const coverUrl = () => (props.media ? cover(props.media) : "")
   const description = () =>
     props.media ? stripHtml(props.media.description) : ""

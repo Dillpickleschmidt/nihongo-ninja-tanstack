@@ -35,8 +35,22 @@ export function coverSmall(media: BannerMedia): string | undefined {
   return media.coverImage?.medium ?? banner(media)
 }
 
-export function title(media: Pick<Media, "title">): string {
-  return media.title?.userPreferred ?? "TBA"
+export function title(
+  media: Pick<Media, "title">,
+  titleLanguage?: string | null,
+): string {
+  const t = media.title
+  if (!t) return "TBA"
+  switch (titleLanguage) {
+    case "ROMAJI":
+    case "ROMAJI_STYLISED":
+      return t.romaji ?? t.english ?? "TBA"
+    case "NATIVE":
+    case "NATIVE_STYLISED":
+      return t.native ?? t.english ?? "TBA"
+    default:
+      return t.english ?? "TBA"
+  }
 }
 
 export function getParentForSpecial(media: Media) {

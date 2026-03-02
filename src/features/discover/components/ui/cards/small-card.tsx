@@ -8,6 +8,7 @@ import { getMockComprehension } from "../../../utils/mock-data"
 interface SmallAnimeCardProps {
   media: DiscoverMedia | Media
   size?: "small" | "large"
+  titleLanguage?: string | null
   status?:
     | "CURRENT"
     | "PLANNING"
@@ -28,7 +29,7 @@ export function SmallAnimeCard(props: SmallAnimeCardProps) {
   const isLarge = () => props.size === "large"
   const coverUrl = () =>
     isLarge() ? (cover(props.media) ?? "") : (coverMedium(props.media) ?? "")
-  const titleText = () => title(props.media)
+  const titleText = () => title(props.media, props.titleLanguage)
   const comprehension = createMemo(() => getMockComprehension(props.media.id))
 
   return (

@@ -17,6 +17,7 @@ const DEFAULT_LARGE_SECTIONS = new Set([
 
 function SingleSection(props: {
   section: SectionConfig
+  titleLanguage?: string | null
   onCardClick?: (media: DiscoverMedia | Media) => void
 }) {
   const [shouldLoad, setShouldLoad] = createSignal(false)
@@ -56,6 +57,7 @@ function SingleSection(props: {
             <AnimeSection
               config={props.section}
               cardSize={cardSize()}
+              titleLanguage={props.titleLanguage}
               onCardClick={props.onCardClick}
             />
           </Suspense>
@@ -75,12 +77,17 @@ function SingleSection(props: {
  */
 export function GenericSections(props: {
   sections: SectionConfig[]
+  titleLanguage?: string | null
   onCardClick?: (media: DiscoverMedia | Media) => void
 }) {
   return (
     <Index each={props.sections}>
       {(section) => (
-        <SingleSection section={section()} onCardClick={props.onCardClick} />
+        <SingleSection
+          section={section()}
+          titleLanguage={props.titleLanguage}
+          onCardClick={props.onCardClick}
+        />
       )}
     </Index>
   )

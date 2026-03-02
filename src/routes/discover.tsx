@@ -101,8 +101,9 @@ function DiscoverPage() {
   const [vignetteOpacity, setVignetteOpacity] = createSignal(0)
 
   const banner = useBannerCarousel()
+  const titleLanguage = () => personalSections()?.titleLanguage ?? null
   const allSections = createMemo(() => {
-    const personal = personalSections()
+    const personal = personalSections()?.sections
     const generic = loaderData().genericSections
     return personal ? [...personal, ...generic] : generic
   })
@@ -206,6 +207,7 @@ function DiscoverPage() {
                       currentIndex={banner.currentIndex()}
                       onSelectIndex={banner.selectIndex}
                       itemCount={banner.itemCount()}
+                      titleLanguage={titleLanguage()}
                     />
                   </Show>
                 </div>
@@ -215,6 +217,7 @@ function DiscoverPage() {
               <div class="relative z-10 pb-16 sm:px-2">
                 <GenericSections
                   sections={allSections()}
+                  titleLanguage={titleLanguage()}
                   onCardClick={handleCardClick}
                 />
               </div>
@@ -230,6 +233,7 @@ function DiscoverPage() {
         onOpenChange={(open) => {
           if (!open) setSelectedMedia(null)
         }}
+        titleLanguage={titleLanguage()}
       />
 
       <StreamingPrefsModal />

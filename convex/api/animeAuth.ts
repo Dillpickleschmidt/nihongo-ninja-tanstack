@@ -8,7 +8,7 @@ import {
 } from "../_generated/server"
 import { animeServiceValidator } from "../validators"
 import * as model from "../model/animeAuth"
-import type { UserListsResponse } from "../model/animeAuth"
+import type { FetchUserListsResult } from "../model/animeAuth"
 
 export const getConnectionStatus = query({
   args: {},
@@ -44,5 +44,5 @@ export const exchangeAniListToken = action({
 
 export const fetchUserLists = action({
   args: {},
-  handler: (ctx): Promise<UserListsResponse> => model.fetchUserLists(ctx),
+  handler: (ctx): Promise<FetchUserListsResult> => model.fetchUserLists(ctx),
 })

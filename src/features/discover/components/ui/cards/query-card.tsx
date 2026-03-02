@@ -8,6 +8,7 @@ import type { DiscoverMedia, Media } from "../../../api/anilist/types"
 interface AnimeSectionProps {
   config: SectionConfig
   cardSize?: "small" | "large"
+  titleLanguage?: string | null
   onCardClick?: (media: DiscoverMedia | Media) => void
 }
 
@@ -38,6 +39,7 @@ export function AnimeSection(props: AnimeSectionProps) {
                 <SmallAnimeCard
                   media={m()}
                   size={props.cardSize}
+                  titleLanguage={props.titleLanguage}
                   onCardClick={props.onCardClick}
                 />
               )}

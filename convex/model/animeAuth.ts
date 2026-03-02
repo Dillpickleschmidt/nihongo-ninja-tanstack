@@ -136,7 +136,7 @@ export async function exchangeAniListToken(
 
 // AniList authenticated API helpers
 
-const VIEWER_QUERY = `query { Viewer { id } }`
+const VIEWER_QUERY = `query { Viewer { id, options { titleLanguage } } }`
 
 const USER_LISTS_QUERY = `query UserLists($id: Int) {
   MediaListCollection(userId: $id, type: ANIME, forceSingleCompletedList: true, sort: UPDATED_TIME_DESC) {
@@ -186,9 +186,14 @@ async function anilistRequest(
 
 export type UserListsResponse = ResultOf<typeof UserLists>
 
+export interface FetchUserListsResult {
+  lists: UserListsResponse
+  titleLanguage: string | null
+}
+
 export async function fetchUserLists(
   ctx: ActionCtx,
-): Promise<UserListsResponse> {
+): Promise<FetchUserListsResult> {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) throw new Error("Unauthenticated")
 
@@ -202,5 +207,9 @@ export async function fetchUserLists(
   const viewerId = viewerData?.Viewer?.id
   if (!viewerId) throw new Error("Could not fetch AniList viewer")
 
-  return await anilistRequest(USER_LISTS_QUERY, { id: viewerId }, token)
+  const titleLanguage: string | null =
+    viewerData?.Viewer?.options?.titleLanguage ?? null
+
+  const lists = await anilistRequest(USER_LISTS_QUERY, { id: viewerId }, token)
+  return { lists, titleLanguage }
 }

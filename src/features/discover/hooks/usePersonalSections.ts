@@ -21,9 +21,12 @@ export function personalSectionsQueryOptions(userId: string | null) {
         return null
       }
 
-      const raw = await convexAction(api.api.animeAuth.fetchUserLists, {})()
-      const userListIds = extractUserListIds(raw)
-      return getPersonalSections(userListIds)
+      const { lists, titleLanguage } = await convexAction(
+        api.api.animeAuth.fetchUserLists,
+        {},
+      )()
+      const userListIds = extractUserListIds(lists)
+      return { sections: getPersonalSections(userListIds), titleLanguage }
     },
     staleTime: Infinity,
   }
