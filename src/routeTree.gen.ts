@@ -11,12 +11,16 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as OauthCallbackRouteImport } from './routes/oauth-callback'
+import { Route as GuidesRouteImport } from './routes/guides'
 import { Route as GetStartedRouteImport } from './routes/get-started'
 import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as HomeRouteImport } from './routes/_home'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GuidesIndexRouteImport } from './routes/guides/index'
+import { Route as GuidesSrsRouteImport } from './routes/guides/srs'
+import { Route as GuidesComparisonRouteImport } from './routes/guides/comparison'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
 import { Route as HomeStatsRouteImport } from './routes/_home/stats'
 import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
@@ -67,7 +71,6 @@ import { Route as HomeLessonsChapter1MinutesRouteImport } from './routes/_home/l
 import { Route as HomeLessonsChapter1JapaneseNamesHonorificsRouteImport } from './routes/_home/lessons/_chapter-1/japanese-names-honorifics'
 import { Route as HomeLessonsChapter1AnouEttoRouteImport } from './routes/_home/lessons/_chapter-1/anou-etto'
 import { Route as HomeLessonsChapter0WritingSystemsRouteImport } from './routes/_home/lessons/_chapter-0/writing-systems'
-import { Route as HomeLessonsChapter0WelcomeToNihongoNinjaRouteImport } from './routes/_home/lessons/_chapter-0/welcome-to-nihongo-ninja'
 import { Route as HomeLessonsChapter0WelcomeOverviewRouteImport } from './routes/_home/lessons/_chapter-0/welcome-overview'
 import { Route as HomeLessonsChapter0PunctuationMiscRouteImport } from './routes/_home/lessons/_chapter-0/punctuation-misc'
 import { Route as HomeLessonsChapter0Numbers0100RouteImport } from './routes/_home/lessons/_chapter-0/numbers-0-100'
@@ -90,6 +93,11 @@ const SearchRoute = SearchRouteImport.update({
 const OauthCallbackRoute = OauthCallbackRouteImport.update({
   id: '/oauth-callback',
   path: '/oauth-callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesRoute = GuidesRouteImport.update({
+  id: '/guides',
+  path: '/guides',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GetStartedRoute = GetStartedRouteImport.update({
@@ -120,6 +128,21 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesIndexRoute = GuidesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => GuidesRoute,
+} as any)
+const GuidesSrsRoute = GuidesSrsRouteImport.update({
+  id: '/srs',
+  path: '/srs',
+  getParentRoute: () => GuidesRoute,
+} as any)
+const GuidesComparisonRoute = GuidesComparisonRouteImport.update({
+  id: '/comparison',
+  path: '/comparison',
+  getParentRoute: () => GuidesRoute,
 } as any)
 const HomeVocabRoute = HomeVocabRouteImport.update({
   id: '/vocab',
@@ -400,12 +423,6 @@ const HomeLessonsChapter0WritingSystemsRoute =
     path: '/writing-systems',
     getParentRoute: () => HomeLessonsRoute,
   } as any)
-const HomeLessonsChapter0WelcomeToNihongoNinjaRoute =
-  HomeLessonsChapter0WelcomeToNihongoNinjaRouteImport.update({
-    id: '/_chapter-0/welcome-to-nihongo-ninja',
-    path: '/welcome-to-nihongo-ninja',
-    getParentRoute: () => HomeLessonsRoute,
-  } as any)
 const HomeLessonsChapter0WelcomeOverviewRoute =
   HomeLessonsChapter0WelcomeOverviewRouteImport.update({
     id: '/_chapter-0/welcome-overview',
@@ -488,6 +505,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/discover': typeof DiscoverRoute
   '/get-started': typeof GetStartedRoute
+  '/guides': typeof GuidesRouteWithChildren
   '/oauth-callback': typeof OauthCallbackRoute
   '/search': typeof SearchRoute
   '/dashboard': typeof HomeDashboardRoute
@@ -497,6 +515,9 @@ export interface FileRoutesByFullPath {
   '/settings': typeof HomeSettingsRoute
   '/stats': typeof HomeStatsRoute
   '/vocab': typeof HomeVocabRouteWithChildren
+  '/guides/comparison': typeof GuidesComparisonRoute
+  '/guides/srs': typeof GuidesSrsRoute
+  '/guides/': typeof GuidesIndexRoute
   '/import/anki': typeof HomeImportAnkiRoute
   '/import/custom': typeof HomeImportCustomRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
@@ -519,7 +540,6 @@ export interface FileRoutesByFullPath {
   '/lessons/numbers-0-100': typeof HomeLessonsChapter0Numbers0100Route
   '/lessons/punctuation-misc': typeof HomeLessonsChapter0PunctuationMiscRoute
   '/lessons/welcome-overview': typeof HomeLessonsChapter0WelcomeOverviewRoute
-  '/lessons/welcome-to-nihongo-ninja': typeof HomeLessonsChapter0WelcomeToNihongoNinjaRoute
   '/lessons/writing-systems': typeof HomeLessonsChapter0WritingSystemsRoute
   '/lessons/anou-etto': typeof HomeLessonsChapter1AnouEttoRoute
   '/lessons/japanese-names-honorifics': typeof HomeLessonsChapter1JapaneseNamesHonorificsRoute
@@ -569,6 +589,9 @@ export interface FileRoutesByTo {
   '/review': typeof HomeReviewRoute
   '/settings': typeof HomeSettingsRoute
   '/stats': typeof HomeStatsRoute
+  '/guides/comparison': typeof GuidesComparisonRoute
+  '/guides/srs': typeof GuidesSrsRoute
+  '/guides': typeof GuidesIndexRoute
   '/import/anki': typeof HomeImportAnkiRoute
   '/import/custom': typeof HomeImportCustomRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
@@ -591,7 +614,6 @@ export interface FileRoutesByTo {
   '/lessons/numbers-0-100': typeof HomeLessonsChapter0Numbers0100Route
   '/lessons/punctuation-misc': typeof HomeLessonsChapter0PunctuationMiscRoute
   '/lessons/welcome-overview': typeof HomeLessonsChapter0WelcomeOverviewRoute
-  '/lessons/welcome-to-nihongo-ninja': typeof HomeLessonsChapter0WelcomeToNihongoNinjaRoute
   '/lessons/writing-systems': typeof HomeLessonsChapter0WritingSystemsRoute
   '/lessons/anou-etto': typeof HomeLessonsChapter1AnouEttoRoute
   '/lessons/japanese-names-honorifics': typeof HomeLessonsChapter1JapaneseNamesHonorificsRoute
@@ -635,6 +657,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/discover': typeof DiscoverRoute
   '/get-started': typeof GetStartedRoute
+  '/guides': typeof GuidesRouteWithChildren
   '/oauth-callback': typeof OauthCallbackRoute
   '/search': typeof SearchRoute
   '/_home/dashboard': typeof HomeDashboardRoute
@@ -644,6 +667,9 @@ export interface FileRoutesById {
   '/_home/settings': typeof HomeSettingsRoute
   '/_home/stats': typeof HomeStatsRoute
   '/_home/vocab': typeof HomeVocabRouteWithChildren
+  '/guides/comparison': typeof GuidesComparisonRoute
+  '/guides/srs': typeof GuidesSrsRoute
+  '/guides/': typeof GuidesIndexRoute
   '/_home/import/anki': typeof HomeImportAnkiRoute
   '/_home/import/custom': typeof HomeImportCustomRoute
   '/_home/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
@@ -666,7 +692,6 @@ export interface FileRoutesById {
   '/_home/lessons/_chapter-0/numbers-0-100': typeof HomeLessonsChapter0Numbers0100Route
   '/_home/lessons/_chapter-0/punctuation-misc': typeof HomeLessonsChapter0PunctuationMiscRoute
   '/_home/lessons/_chapter-0/welcome-overview': typeof HomeLessonsChapter0WelcomeOverviewRoute
-  '/_home/lessons/_chapter-0/welcome-to-nihongo-ninja': typeof HomeLessonsChapter0WelcomeToNihongoNinjaRoute
   '/_home/lessons/_chapter-0/writing-systems': typeof HomeLessonsChapter0WritingSystemsRoute
   '/_home/lessons/_chapter-1/anou-etto': typeof HomeLessonsChapter1AnouEttoRoute
   '/_home/lessons/_chapter-1/japanese-names-honorifics': typeof HomeLessonsChapter1JapaneseNamesHonorificsRoute
@@ -710,6 +735,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/discover'
     | '/get-started'
+    | '/guides'
     | '/oauth-callback'
     | '/search'
     | '/dashboard'
@@ -719,6 +745,9 @@ export interface FileRouteTypes {
     | '/settings'
     | '/stats'
     | '/vocab'
+    | '/guides/comparison'
+    | '/guides/srs'
+    | '/guides/'
     | '/import/anki'
     | '/import/custom'
     | '/sentence-practice/$id'
@@ -741,7 +770,6 @@ export interface FileRouteTypes {
     | '/lessons/numbers-0-100'
     | '/lessons/punctuation-misc'
     | '/lessons/welcome-overview'
-    | '/lessons/welcome-to-nihongo-ninja'
     | '/lessons/writing-systems'
     | '/lessons/anou-etto'
     | '/lessons/japanese-names-honorifics'
@@ -791,6 +819,9 @@ export interface FileRouteTypes {
     | '/review'
     | '/settings'
     | '/stats'
+    | '/guides/comparison'
+    | '/guides/srs'
+    | '/guides'
     | '/import/anki'
     | '/import/custom'
     | '/sentence-practice/$id'
@@ -813,7 +844,6 @@ export interface FileRouteTypes {
     | '/lessons/numbers-0-100'
     | '/lessons/punctuation-misc'
     | '/lessons/welcome-overview'
-    | '/lessons/welcome-to-nihongo-ninja'
     | '/lessons/writing-systems'
     | '/lessons/anou-etto'
     | '/lessons/japanese-names-honorifics'
@@ -856,6 +886,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/discover'
     | '/get-started'
+    | '/guides'
     | '/oauth-callback'
     | '/search'
     | '/_home/dashboard'
@@ -865,6 +896,9 @@ export interface FileRouteTypes {
     | '/_home/settings'
     | '/_home/stats'
     | '/_home/vocab'
+    | '/guides/comparison'
+    | '/guides/srs'
+    | '/guides/'
     | '/_home/import/anki'
     | '/_home/import/custom'
     | '/_home/sentence-practice/$id'
@@ -887,7 +921,6 @@ export interface FileRouteTypes {
     | '/_home/lessons/_chapter-0/numbers-0-100'
     | '/_home/lessons/_chapter-0/punctuation-misc'
     | '/_home/lessons/_chapter-0/welcome-overview'
-    | '/_home/lessons/_chapter-0/welcome-to-nihongo-ninja'
     | '/_home/lessons/_chapter-0/writing-systems'
     | '/_home/lessons/_chapter-1/anou-etto'
     | '/_home/lessons/_chapter-1/japanese-names-honorifics'
@@ -931,6 +964,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   DiscoverRoute: typeof DiscoverRoute
   GetStartedRoute: typeof GetStartedRoute
+  GuidesRoute: typeof GuidesRouteWithChildren
   OauthCallbackRoute: typeof OauthCallbackRoute
   SearchRoute: typeof SearchRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
@@ -950,6 +984,13 @@ declare module '@tanstack/solid-router' {
       path: '/oauth-callback'
       fullPath: '/oauth-callback'
       preLoaderRoute: typeof OauthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides': {
+      id: '/guides'
+      path: '/guides'
+      fullPath: '/guides'
+      preLoaderRoute: typeof GuidesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/get-started': {
@@ -993,6 +1034,27 @@ declare module '@tanstack/solid-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/guides/': {
+      id: '/guides/'
+      path: '/'
+      fullPath: '/guides/'
+      preLoaderRoute: typeof GuidesIndexRouteImport
+      parentRoute: typeof GuidesRoute
+    }
+    '/guides/srs': {
+      id: '/guides/srs'
+      path: '/srs'
+      fullPath: '/guides/srs'
+      preLoaderRoute: typeof GuidesSrsRouteImport
+      parentRoute: typeof GuidesRoute
+    }
+    '/guides/comparison': {
+      id: '/guides/comparison'
+      path: '/comparison'
+      fullPath: '/guides/comparison'
+      preLoaderRoute: typeof GuidesComparisonRouteImport
+      parentRoute: typeof GuidesRoute
     }
     '/_home/vocab': {
       id: '/_home/vocab'
@@ -1344,13 +1406,6 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeLessonsChapter0WritingSystemsRouteImport
       parentRoute: typeof HomeLessonsRoute
     }
-    '/_home/lessons/_chapter-0/welcome-to-nihongo-ninja': {
-      id: '/_home/lessons/_chapter-0/welcome-to-nihongo-ninja'
-      path: '/welcome-to-nihongo-ninja'
-      fullPath: '/lessons/welcome-to-nihongo-ninja'
-      preLoaderRoute: typeof HomeLessonsChapter0WelcomeToNihongoNinjaRouteImport
-      parentRoute: typeof HomeLessonsRoute
-    }
     '/_home/lessons/_chapter-0/welcome-overview': {
       id: '/_home/lessons/_chapter-0/welcome-overview'
       path: '/welcome-overview'
@@ -1456,7 +1511,6 @@ interface HomeLessonsRouteChildren {
   HomeLessonsChapter0Numbers0100Route: typeof HomeLessonsChapter0Numbers0100Route
   HomeLessonsChapter0PunctuationMiscRoute: typeof HomeLessonsChapter0PunctuationMiscRoute
   HomeLessonsChapter0WelcomeOverviewRoute: typeof HomeLessonsChapter0WelcomeOverviewRoute
-  HomeLessonsChapter0WelcomeToNihongoNinjaRoute: typeof HomeLessonsChapter0WelcomeToNihongoNinjaRoute
   HomeLessonsChapter0WritingSystemsRoute: typeof HomeLessonsChapter0WritingSystemsRoute
   HomeLessonsChapter1AnouEttoRoute: typeof HomeLessonsChapter1AnouEttoRoute
   HomeLessonsChapter1JapaneseNamesHonorificsRoute: typeof HomeLessonsChapter1JapaneseNamesHonorificsRoute
@@ -1503,8 +1557,6 @@ const HomeLessonsRouteChildren: HomeLessonsRouteChildren = {
     HomeLessonsChapter0PunctuationMiscRoute,
   HomeLessonsChapter0WelcomeOverviewRoute:
     HomeLessonsChapter0WelcomeOverviewRoute,
-  HomeLessonsChapter0WelcomeToNihongoNinjaRoute:
-    HomeLessonsChapter0WelcomeToNihongoNinjaRoute,
   HomeLessonsChapter0WritingSystemsRoute:
     HomeLessonsChapter0WritingSystemsRoute,
   HomeLessonsChapter1AnouEttoRoute: HomeLessonsChapter1AnouEttoRoute,
@@ -1616,6 +1668,21 @@ const HomeRouteChildren: HomeRouteChildren = {
 
 const HomeRouteWithChildren = HomeRoute._addFileChildren(HomeRouteChildren)
 
+interface GuidesRouteChildren {
+  GuidesComparisonRoute: typeof GuidesComparisonRoute
+  GuidesSrsRoute: typeof GuidesSrsRoute
+  GuidesIndexRoute: typeof GuidesIndexRoute
+}
+
+const GuidesRouteChildren: GuidesRouteChildren = {
+  GuidesComparisonRoute: GuidesComparisonRoute,
+  GuidesSrsRoute: GuidesSrsRoute,
+  GuidesIndexRoute: GuidesIndexRoute,
+}
+
+const GuidesRouteWithChildren =
+  GuidesRoute._addFileChildren(GuidesRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   HomeRoute: HomeRouteWithChildren,
@@ -1623,6 +1690,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   DiscoverRoute: DiscoverRoute,
   GetStartedRoute: GetStartedRoute,
+  GuidesRoute: GuidesRouteWithChildren,
   OauthCallbackRoute: OauthCallbackRoute,
   SearchRoute: SearchRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,

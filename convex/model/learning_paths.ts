@@ -11,7 +11,10 @@ import { static_modules } from "../../src/data/static_modules"
 import { dynamic_modules } from "../../src/data/dynamic_modules"
 
 const MODULES_PER_CHAPTER = 30
-const DEFAULT_CUSTOM_PATH_SPECIAL_MODULE_IDS = ["welcome-overview"]
+const DEFAULT_CUSTOM_PATH_SPECIAL_MODULE_IDS = [
+  "welcome-overview",
+  "lesson-structure",
+]
 
 const moduleCatalog = {
   ...static_modules,

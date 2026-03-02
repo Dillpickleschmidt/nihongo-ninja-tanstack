@@ -13,6 +13,7 @@ import type {
 
 const ALWAYS_INCLUDED_MODULES = [
   "welcome-overview",
+  "lesson-structure",
   "japanese-pronunciation",
   "writing-systems",
   "hiragana",

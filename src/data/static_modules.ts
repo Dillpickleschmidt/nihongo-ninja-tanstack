@@ -19,12 +19,12 @@ export interface StaticModule {
 }
 
 export const static_modules: Record<string, StaticModule> = {
-  "welcome-to-nihongo-ninja": {
+  "welcome-overview": {
     title: "Welcome to Nihongo Ninja",
-    link: "/lessons/welcome-to-nihongo-ninja",
+    link: "/guides",
     module_type: "lesson",
   },
-  "welcome-overview": {
+  "lesson-structure": {
     title: "Lesson Structure",
     link: "/lessons/welcome-overview",
     module_type: "lesson",

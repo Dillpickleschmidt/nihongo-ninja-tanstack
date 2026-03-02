@@ -187,6 +187,7 @@ describe("Learning path generation", () => {
 
       const alwaysIncluded = [
         "welcome-overview",
+        "lesson-structure",
         "japanese-pronunciation",
         "writing-systems",
         "hiragana",
@@ -200,7 +201,7 @@ describe("Learning path generation", () => {
       })
     })
 
-    it("always-included modules appear first (orderIndex 0-3)", () => {
+    it("always-included modules appear first (orderIndex 0-4)", () => {
       const data: ExtractedData = {
         grammarPatternLineIds: {},
         grammarPatterns: [],
@@ -212,13 +213,14 @@ describe("Learning path generation", () => {
 
       const alwaysIncludedIds = [
         "welcome-overview",
+        "lesson-structure",
         "japanese-pronunciation",
         "writing-systems",
         "hiragana",
       ]
 
-      const first4Modules = result.modules.slice(0, 4) as GrammarModuleOption[]
-      first4Modules.forEach((module, idx) => {
+      const first5Modules = result.modules.slice(0, 5) as GrammarModuleOption[]
+      first5Modules.forEach((module, idx) => {
         expect(module.type).toBe("grammar")
         expect(module.orderIndex).toBe(idx)
         expect(alwaysIncludedIds.includes(module.moduleId)).toBe(true)
@@ -233,7 +235,11 @@ describe("Learning path generation", () => {
         transcript: [],
       }
 
-      const completedIds = ["welcome-overview", "japanese-pronunciation"]
+      const completedIds = [
+        "welcome-overview",
+        "lesson-structure",
+        "japanese-pronunciation",
+      ]
       const result = createLearningPath(data, "genki_1", completedIds)
 
       const grammarModules = result.modules.filter(

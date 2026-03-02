@@ -28,7 +28,7 @@ export const chapters: Record<
         "Natural greetings and everyday expressions",
         "Numbers 0-100 with practical applications",
       ],
-      special_learning_path_item_ids: ["welcome-to-nihongo-ninja", "welcome-overview"],
+      special_learning_path_item_ids: ["welcome-overview", "lesson-structure"],
       learning_path_item_ids: [
         "japanese-pronunciation",
         "writing-systems",

@@ -43,6 +43,7 @@ export const GRAMMAR_TO_MODULES: Partial<Record<GrammarPatternId, string[]>> = {
 // Core lessons to add
 /*
  * "welcome-overview"
+ * "lesson-structure"
  * "japanese-pronunciation"
  * "writing-systems"
  * "hiragana"
