@@ -7,7 +7,7 @@ import { getLinkTo } from "./module-helpers"
 // Unified Module type
 export type Module = StaticModule | DynamicModule
 
-const allModules: Record<string, Module> = {
+const moduleCatalog: Record<string, Module> = {
   ...static_modules,
   ...dynamic_modules,
 }
@@ -23,7 +23,7 @@ export function getNextModuleLink(moduleId: string): string | null {
       if (idx === -1 || idx === ids.length - 1) continue
 
       const nextId = ids[idx + 1]
-      const nextModule = allModules[nextId]
+      const nextModule = moduleCatalog[nextId]
       if (nextModule) return getLinkTo(nextModule, nextId)
     }
   }

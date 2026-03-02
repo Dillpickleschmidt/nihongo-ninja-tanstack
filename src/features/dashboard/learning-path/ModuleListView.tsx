@@ -7,20 +7,27 @@ import type { LearningPathModule } from "./types"
 
 interface ModuleListViewProps {
   modules: LearningPathModule[]
+  numberOffset?: number
+  columns?: "auto" | "single"
   isCompleted: (moduleId: string) => boolean
   openInDialog?: boolean
   onModuleSelect?: (module: LearningPathModule) => void
 }
 
 export function ModuleListView(props: ModuleListViewProps) {
+  const gridClasses = () =>
+    props.columns === "single"
+      ? "grid grid-cols-1 gap-3"
+      : "grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
+
   return (
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
+    <div class={gridClasses()}>
       <For each={props.modules}>
         {(module, index) => (
           <ModuleListItem
             module={module}
             index={index()}
-            number={index() + 1}
+            number={index() + 1 + (props.numberOffset ?? 0)}
             isCompleted={props.isCompleted(module.moduleId)}
             openInDialog={props.openInDialog}
             onModuleSelect={props.onModuleSelect}

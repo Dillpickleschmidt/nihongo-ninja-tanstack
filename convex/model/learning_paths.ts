@@ -11,8 +11,9 @@ import { static_modules } from "../../src/data/static_modules"
 import { dynamic_modules } from "../../src/data/dynamic_modules"
 
 const MODULES_PER_CHAPTER = 30
+const DEFAULT_CUSTOM_PATH_SPECIAL_MODULE_IDS = ["welcome-overview"]
 
-const allModules = {
+const moduleCatalog = {
   ...static_modules,
   ...dynamic_modules,
 }
@@ -40,6 +41,7 @@ export type LearningPathChapter = {
   title: string
   description?: string
   features?: string[]
+  specialModules: LearningPathModule[]
   modules: LearningPathModule[]
 }
 
@@ -160,34 +162,34 @@ export async function getResolvedChaptersForPath(
     const chapters = getChaptersByTextbook(pathId)
     return chapters.map((chapter) => {
       const disabledSet = new Set(chapter.disabled_modules ?? [])
-      const modules: LearningPathModule[] = []
+      const specialModuleIds = chapter.special_learning_path_item_ids
 
-      for (const moduleId of chapter.learning_path_item_ids) {
-        const module = allModules[moduleId]
-        if (!module) {
-          console.warn(
-            `[LearningPath] Missing built-in module '${moduleId}' in chapter '${chapter.slug}'`,
-          )
-          continue
-        }
-
-        modules.push({
-          moduleId,
-          module: {
-            title: module.title,
-            module_type: module.module_type,
-            description: module.description,
-          },
-          linkTo: getModuleLink(module, moduleId),
-          disabled: disabledSet.has(moduleId),
-        })
+      const overlappingModuleIds = specialModuleIds.filter((moduleId) =>
+        chapter.learning_path_item_ids.includes(moduleId),
+      )
+      if (overlappingModuleIds.length > 0) {
+        console.warn(
+          `[LearningPath] Chapter '${chapter.slug}' has overlapping special and regular modules: ${overlappingModuleIds.join(", ")}`,
+        )
       }
+
+      const specialModules = resolveLearningPathModuleIds(
+        specialModuleIds,
+        disabledSet,
+        chapter.slug,
+      )
+      const modules = resolveLearningPathModuleIds(
+        chapter.learning_path_item_ids,
+        disabledSet,
+        chapter.slug,
+      )
 
       return {
         slug: chapter.slug,
         title: chapter.title,
         description: chapter.description,
         features: chapter.features,
+        specialModules,
         modules,
       }
     })
@@ -228,7 +230,7 @@ export async function getResolvedChaptersForPath(
 
   for (const source of moduleSources) {
     if (source.sourceType === "grammar") {
-      const module = allModules[source.moduleId]
+      const module = moduleCatalog[source.moduleId]
       if (!module) {
         console.warn(
           `[LearningPath] Missing grammar module '${source.moduleId}' for custom path '${pathId}'`,
@@ -269,7 +271,7 @@ export async function getResolvedChaptersForPath(
     })
   }
 
-  return chunkResolvedModulesIntoChapters(resolvedModules)
+  return buildCustomPathChapters(resolvedModules)
 }
 
 export async function getModuleDetail(
@@ -313,7 +315,7 @@ export async function getModuleDetail(
   )
 
   if (source.sourceType === "grammar") {
-    const module = allModules[moduleId]
+      const module = moduleCatalog[moduleId]
     if (!module) {
       console.warn(
         `[LearningPath] Missing grammar module '${moduleId}' for module detail`,
@@ -523,19 +525,57 @@ function chunkIntoChapters(moduleIds: string[]) {
   return chapters
 }
 
-function chunkResolvedModulesIntoChapters(
+function buildCustomPathChapters(
   modules: LearningPathModule[],
 ): LearningPathChapter[] {
+  const customSpecialModules = resolveLearningPathModuleIds(
+    DEFAULT_CUSTOM_PATH_SPECIAL_MODULE_IDS,
+    new Set<string>(),
+    "custom-path-defaults",
+  )
+
   const chapters: LearningPathChapter[] = []
   for (let i = 0; i < modules.length; i += MODULES_PER_CHAPTER) {
     const chapterNum = Math.floor(i / MODULES_PER_CHAPTER) + 1
     chapters.push({
       slug: `chapter-${chapterNum}`,
       title: `Chapter ${chapterNum}`,
+      specialModules: chapterNum === 1 ? customSpecialModules : [],
       modules: modules.slice(i, i + MODULES_PER_CHAPTER),
     })
   }
   return chapters
+}
+
+function resolveLearningPathModuleIds(
+  moduleIds: string[],
+  disabledSet: Set<string>,
+  chapterSlug: string,
+): LearningPathModule[] {
+  const resolvedModules: LearningPathModule[] = []
+
+  for (const moduleId of moduleIds) {
+    const module = moduleCatalog[moduleId]
+    if (!module) {
+      console.warn(
+        `[LearningPath] Missing built-in module '${moduleId}' in chapter '${chapterSlug}'`,
+      )
+      continue
+    }
+
+    resolvedModules.push({
+      moduleId,
+      module: {
+        title: module.title,
+        module_type: module.module_type,
+        description: module.description,
+      },
+      linkTo: getModuleLink(module, moduleId),
+      disabled: disabledSet.has(moduleId),
+    })
+  }
+
+  return resolvedModules
 }
 
 function getModuleLink(

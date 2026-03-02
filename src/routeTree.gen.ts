@@ -67,6 +67,7 @@ import { Route as HomeLessonsChapter1MinutesRouteImport } from './routes/_home/l
 import { Route as HomeLessonsChapter1JapaneseNamesHonorificsRouteImport } from './routes/_home/lessons/_chapter-1/japanese-names-honorifics'
 import { Route as HomeLessonsChapter1AnouEttoRouteImport } from './routes/_home/lessons/_chapter-1/anou-etto'
 import { Route as HomeLessonsChapter0WritingSystemsRouteImport } from './routes/_home/lessons/_chapter-0/writing-systems'
+import { Route as HomeLessonsChapter0WelcomeToNihongoNinjaRouteImport } from './routes/_home/lessons/_chapter-0/welcome-to-nihongo-ninja'
 import { Route as HomeLessonsChapter0WelcomeOverviewRouteImport } from './routes/_home/lessons/_chapter-0/welcome-overview'
 import { Route as HomeLessonsChapter0PunctuationMiscRouteImport } from './routes/_home/lessons/_chapter-0/punctuation-misc'
 import { Route as HomeLessonsChapter0Numbers0100RouteImport } from './routes/_home/lessons/_chapter-0/numbers-0-100'
@@ -399,6 +400,12 @@ const HomeLessonsChapter0WritingSystemsRoute =
     path: '/writing-systems',
     getParentRoute: () => HomeLessonsRoute,
   } as any)
+const HomeLessonsChapter0WelcomeToNihongoNinjaRoute =
+  HomeLessonsChapter0WelcomeToNihongoNinjaRouteImport.update({
+    id: '/_chapter-0/welcome-to-nihongo-ninja',
+    path: '/welcome-to-nihongo-ninja',
+    getParentRoute: () => HomeLessonsRoute,
+  } as any)
 const HomeLessonsChapter0WelcomeOverviewRoute =
   HomeLessonsChapter0WelcomeOverviewRouteImport.update({
     id: '/_chapter-0/welcome-overview',
@@ -512,6 +519,7 @@ export interface FileRoutesByFullPath {
   '/lessons/numbers-0-100': typeof HomeLessonsChapter0Numbers0100Route
   '/lessons/punctuation-misc': typeof HomeLessonsChapter0PunctuationMiscRoute
   '/lessons/welcome-overview': typeof HomeLessonsChapter0WelcomeOverviewRoute
+  '/lessons/welcome-to-nihongo-ninja': typeof HomeLessonsChapter0WelcomeToNihongoNinjaRoute
   '/lessons/writing-systems': typeof HomeLessonsChapter0WritingSystemsRoute
   '/lessons/anou-etto': typeof HomeLessonsChapter1AnouEttoRoute
   '/lessons/japanese-names-honorifics': typeof HomeLessonsChapter1JapaneseNamesHonorificsRoute
@@ -583,6 +591,7 @@ export interface FileRoutesByTo {
   '/lessons/numbers-0-100': typeof HomeLessonsChapter0Numbers0100Route
   '/lessons/punctuation-misc': typeof HomeLessonsChapter0PunctuationMiscRoute
   '/lessons/welcome-overview': typeof HomeLessonsChapter0WelcomeOverviewRoute
+  '/lessons/welcome-to-nihongo-ninja': typeof HomeLessonsChapter0WelcomeToNihongoNinjaRoute
   '/lessons/writing-systems': typeof HomeLessonsChapter0WritingSystemsRoute
   '/lessons/anou-etto': typeof HomeLessonsChapter1AnouEttoRoute
   '/lessons/japanese-names-honorifics': typeof HomeLessonsChapter1JapaneseNamesHonorificsRoute
@@ -657,6 +666,7 @@ export interface FileRoutesById {
   '/_home/lessons/_chapter-0/numbers-0-100': typeof HomeLessonsChapter0Numbers0100Route
   '/_home/lessons/_chapter-0/punctuation-misc': typeof HomeLessonsChapter0PunctuationMiscRoute
   '/_home/lessons/_chapter-0/welcome-overview': typeof HomeLessonsChapter0WelcomeOverviewRoute
+  '/_home/lessons/_chapter-0/welcome-to-nihongo-ninja': typeof HomeLessonsChapter0WelcomeToNihongoNinjaRoute
   '/_home/lessons/_chapter-0/writing-systems': typeof HomeLessonsChapter0WritingSystemsRoute
   '/_home/lessons/_chapter-1/anou-etto': typeof HomeLessonsChapter1AnouEttoRoute
   '/_home/lessons/_chapter-1/japanese-names-honorifics': typeof HomeLessonsChapter1JapaneseNamesHonorificsRoute
@@ -731,6 +741,7 @@ export interface FileRouteTypes {
     | '/lessons/numbers-0-100'
     | '/lessons/punctuation-misc'
     | '/lessons/welcome-overview'
+    | '/lessons/welcome-to-nihongo-ninja'
     | '/lessons/writing-systems'
     | '/lessons/anou-etto'
     | '/lessons/japanese-names-honorifics'
@@ -802,6 +813,7 @@ export interface FileRouteTypes {
     | '/lessons/numbers-0-100'
     | '/lessons/punctuation-misc'
     | '/lessons/welcome-overview'
+    | '/lessons/welcome-to-nihongo-ninja'
     | '/lessons/writing-systems'
     | '/lessons/anou-etto'
     | '/lessons/japanese-names-honorifics'
@@ -875,6 +887,7 @@ export interface FileRouteTypes {
     | '/_home/lessons/_chapter-0/numbers-0-100'
     | '/_home/lessons/_chapter-0/punctuation-misc'
     | '/_home/lessons/_chapter-0/welcome-overview'
+    | '/_home/lessons/_chapter-0/welcome-to-nihongo-ninja'
     | '/_home/lessons/_chapter-0/writing-systems'
     | '/_home/lessons/_chapter-1/anou-etto'
     | '/_home/lessons/_chapter-1/japanese-names-honorifics'
@@ -1331,6 +1344,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeLessonsChapter0WritingSystemsRouteImport
       parentRoute: typeof HomeLessonsRoute
     }
+    '/_home/lessons/_chapter-0/welcome-to-nihongo-ninja': {
+      id: '/_home/lessons/_chapter-0/welcome-to-nihongo-ninja'
+      path: '/welcome-to-nihongo-ninja'
+      fullPath: '/lessons/welcome-to-nihongo-ninja'
+      preLoaderRoute: typeof HomeLessonsChapter0WelcomeToNihongoNinjaRouteImport
+      parentRoute: typeof HomeLessonsRoute
+    }
     '/_home/lessons/_chapter-0/welcome-overview': {
       id: '/_home/lessons/_chapter-0/welcome-overview'
       path: '/welcome-overview'
@@ -1436,6 +1456,7 @@ interface HomeLessonsRouteChildren {
   HomeLessonsChapter0Numbers0100Route: typeof HomeLessonsChapter0Numbers0100Route
   HomeLessonsChapter0PunctuationMiscRoute: typeof HomeLessonsChapter0PunctuationMiscRoute
   HomeLessonsChapter0WelcomeOverviewRoute: typeof HomeLessonsChapter0WelcomeOverviewRoute
+  HomeLessonsChapter0WelcomeToNihongoNinjaRoute: typeof HomeLessonsChapter0WelcomeToNihongoNinjaRoute
   HomeLessonsChapter0WritingSystemsRoute: typeof HomeLessonsChapter0WritingSystemsRoute
   HomeLessonsChapter1AnouEttoRoute: typeof HomeLessonsChapter1AnouEttoRoute
   HomeLessonsChapter1JapaneseNamesHonorificsRoute: typeof HomeLessonsChapter1JapaneseNamesHonorificsRoute
@@ -1482,6 +1503,8 @@ const HomeLessonsRouteChildren: HomeLessonsRouteChildren = {
     HomeLessonsChapter0PunctuationMiscRoute,
   HomeLessonsChapter0WelcomeOverviewRoute:
     HomeLessonsChapter0WelcomeOverviewRoute,
+  HomeLessonsChapter0WelcomeToNihongoNinjaRoute:
+    HomeLessonsChapter0WelcomeToNihongoNinjaRoute,
   HomeLessonsChapter0WritingSystemsRoute:
     HomeLessonsChapter0WritingSystemsRoute,
   HomeLessonsChapter1AnouEttoRoute: HomeLessonsChapter1AnouEttoRoute,

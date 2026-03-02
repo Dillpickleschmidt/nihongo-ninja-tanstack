@@ -14,5 +14,6 @@ export interface LearningPathChapter {
   title: string
   description?: string
   features?: string[]
+  specialModules: LearningPathModule[]
   modules: LearningPathModule[]
 }

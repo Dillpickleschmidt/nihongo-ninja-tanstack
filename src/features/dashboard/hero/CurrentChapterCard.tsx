@@ -64,7 +64,7 @@ function CurrentChapterCardContent() {
   const currentModules = () => {
     const chapter = currentChapter()
     if (chapter === undefined) return undefined
-    return chapter.modules
+    return [...chapter.specialModules, ...chapter.modules]
   }
 
   const nextModules = () => currentModules()?.slice(0, 3) ?? []

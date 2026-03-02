@@ -41,6 +41,7 @@ const CATEGORIES: Record<CategoryKey, CategoryConfig> = {
 
 interface ModuleCategorizedViewProps {
   modules: LearningPathModule[]
+  numberOffset?: number
   isCompleted: (moduleId: string) => boolean
   openInDialog?: boolean
   onModuleSelect?: (module: LearningPathModule) => void
@@ -131,7 +132,7 @@ export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
                           <span>{enrichedModule.module.title}</span>
                         </div>
                         <p class="text-muted-foreground/60 mt-1 text-xs">
-                          {originalIndex + 1}.{" "}
+                          {originalIndex + 1 + (props.numberOffset ?? 0)}.{" "}
                           {enrichedModule.module.description ||
                             "Description coming soon"}
                         </p>

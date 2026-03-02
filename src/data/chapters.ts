@@ -7,6 +7,7 @@ export interface BuiltInChapter {
   disabled?: boolean
   heading?: string
   features?: string[]
+  special_learning_path_item_ids: string[]
   learning_path_item_ids: string[]
   disabled_modules?: string[]
 }
@@ -21,14 +22,14 @@ export const chapters: Record<
       slug: "chapter-0",
       title: "Chapter 0: Japanese from scratch.",
       description:
-        "Comprehend all the Japanese sounds, master hiragana, learn essential greetings, and count to 100. It's critical, foundational work.",
+        "Comprehend all the Japanese sounds, master hiragana, learn essential greetings, and count to 100.",
       features: [
         "Hiragana mastery through progressive quizzes",
         "Natural greetings and everyday expressions",
         "Numbers 0-100 with practical applications",
       ],
+      special_learning_path_item_ids: ["welcome-to-nihongo-ninja", "welcome-overview"],
       learning_path_item_ids: [
-        "welcome-overview",
         "japanese-pronunciation",
         "writing-systems",
         "hiragana",
@@ -66,6 +67,7 @@ export const chapters: Record<
         "Introduce yourself",
         "Learn the foundational Japanese sentence structure",
       ],
+      special_learning_path_item_ids: [],
 
       learning_path_item_ids: [
         "genki_1_ch1_vocab-list",
@@ -111,6 +113,7 @@ export const chapters: Record<
       title: "Chapter 2",
       description:
         "Building on introductions, learn to identify and ask about things, use particles が and も, and negate statements.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_1_ch2_vocab-list",
         "grammar-notes",
@@ -159,6 +162,7 @@ export const chapters: Record<
       title: "Chapter 3",
       description:
         "Introduce verbs and adjectives, learn basic conjugations, and use location and direction particles.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_1_ch3_vocab-list",
         "grammar-notes",
@@ -208,6 +212,7 @@ export const chapters: Record<
       title: "Chapter 4",
       description:
         "Learn to talk about existence of things and people, use past tense, and connect nouns with と.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_1_ch4_vocab-list",
         "grammar-notes",
@@ -246,6 +251,7 @@ export const chapters: Record<
       title: "Chapter 5",
       description:
         "Learn about い and な adjectives, their conjugations, and how to use them to modify nouns.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_1_ch5_vocab-list",
         "grammar-notes",
@@ -280,6 +286,7 @@ export const chapters: Record<
       title: "Chapter 6",
       description:
         "Learn the essential て-form of verbs, its various uses, and how to connect actions and ideas.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_1_ch6_vocab-list",
         "grammar-notes",
@@ -310,6 +317,7 @@ export const chapters: Record<
       title: "Chapter 7",
       description:
         "Expand vocabulary with nouns, body parts, verbs, and adjectives, and learn about converting adjectives to adverbs.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_1_ch7_vocab-list",
         "grammar-notes",
@@ -332,6 +340,7 @@ export const chapters: Record<
       title: "Chapter 8",
       description:
         "Focus on vocabulary expansion with nouns, verbs, adjectives, and adverbs, and explore verb functionality.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_1_ch8_vocab-list",
         "grammar-notes",
@@ -354,6 +363,7 @@ export const chapters: Record<
       title: "Chapter 9",
       description:
         "Learn about various noun categories, small item counters, and continue expanding verb and adjective vocabulary.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_1_ch9_vocab-list",
         "grammar-notes",
@@ -376,6 +386,7 @@ export const chapters: Record<
       title: "Chapter 10",
       description:
         "Continue building vocabulary with different noun groups, verbs, and explore concepts like comparing sizes and emotions.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_1_ch10_vocab-list",
         "grammar-notes",
@@ -399,6 +410,7 @@ export const chapters: Record<
       title: "Chapter 11",
       description:
         "Delve deeper into nouns and verbs, including irregular verbs, adverbs, and occupations.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_1_ch11_vocab-list",
         "grammar-notes",
@@ -421,6 +433,7 @@ export const chapters: Record<
       title: "Chapter 12",
       description:
         "Review and expand vocabulary with more nouns, verbs, adjectives, and adverbs.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_1_ch12_vocab-list",
         "grammar-notes",
@@ -445,6 +458,7 @@ export const chapters: Record<
       title: "Chapter 13",
       description:
         "Focus on vocabulary for nouns, adjectives, verbs, and day counts.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_2_ch13_vocab-list",
         "grammar-notes",
@@ -465,6 +479,7 @@ export const chapters: Record<
       title: "Chapter 14",
       description:
         "Introduce more nouns, adjectives, verbs, counters, adverbs, and other miscellaneous vocabulary.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_2_ch14_vocab-list",
         "grammar-notes",
@@ -486,6 +501,7 @@ export const chapters: Record<
       title: "Chapter 15",
       description:
         "Focus on different verb types (Ichidan, Godan, Irregular) and continue expanding noun, adverb, and miscellaneous vocabulary.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_2_ch15_vocab-list",
         "grammar-notes",
@@ -508,6 +524,7 @@ export const chapters: Record<
       title: "Chapter 16",
       description:
         "Introduce more nouns, adjectives, and verbs (U, Ru, Irregular), along with adverbs and other miscellaneous terms.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_2_ch16_vocab-list",
         "grammar-notes",
@@ -529,6 +546,7 @@ export const chapters: Record<
       title: "Chapter 17",
       description:
         "Expand vocabulary with more nouns, verbs, adjectives, and adverbs, and practice new sentence patterns.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_2_ch17_vocab-list",
         "grammar-notes",
@@ -553,6 +571,7 @@ export const chapters: Record<
       title: "Chapter 18",
       description:
         "Further vocabulary expansion with various noun groups, adjectives, and verb types (U, Ru, Irregular).",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_2_ch18_vocab-list",
         "grammar-notes",
@@ -574,6 +593,7 @@ export const chapters: Record<
       title: "Chapter 19",
       description:
         "Review and test vocabulary from previous chapters and introduce new vocabulary related to nouns, adjectives, and verbs.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_2_ch19_vocab-list",
         "grammar-notes",
@@ -600,6 +620,7 @@ export const chapters: Record<
       title: "Chapter 20",
       description:
         "Conclude Genki I with more vocabulary covering nouns, adjectives, and various verb types, and practice different expression levels.",
+      special_learning_path_item_ids: [],
       learning_path_item_ids: [
         "genki_2_ch20_vocab-list",
         "grammar-notes",
