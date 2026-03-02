@@ -235,77 +235,67 @@ export function TextbookChapterBackgrounds() {
     return "100%"
   }
 
-  if (finalOpacity() <= 0) return null
-
   return (
-    <>
-      <Show
-        when={backgroundItem().source_type === "img"}
-        fallback={
-          <>
-            {/* Video Background */}
-            <video
-              ref={(el) => {
-                if (el.readyState >= 2) {
-                  extractAndSetColor(el)
-                }
-              }}
-              src={backgroundItem().src}
-              class="pointer-events-none fixed inset-0 -z-10 -mt-8"
-              style={{
-                "object-fit": "cover",
-                "object-position":
-                  backgroundItem().layout === "vertical" ? "top" : "center",
-                opacity: finalOpacity(),
-                filter: `blur(${blurValue()})`,
-                transition: "filter 300ms ease-out",
-                width: "100%",
-                height: heightValue(),
-                top: yOffset(),
-              }}
-              autoplay
-              loop
-              muted
-              playsinline
-              preload="auto"
-              onLoadedData={(e) => extractAndSetColor(e.currentTarget)}
-            />
-          </>
-        }
-      >
-        {/* Image Background */}
-        <img
-          ref={(el) => {
-            if (el.complete) {
-              extractAndSetColor(el)
-            }
-          }}
-          src={backgroundItem().src}
-          class="pointer-events-none fixed inset-0 -z-10 -mt-8"
-          alt="Background"
-          style={{
-            "object-fit": "cover",
-            "object-position":
-              backgroundItem().layout === "vertical" ? "top" : "center",
-            opacity: finalOpacity(),
-            filter: `blur(${blurValue()})`,
-            transition: "filter 300ms ease-out",
-            width: "100%",
-            height: heightValue(),
-            top: yOffset(),
-          }}
-          onLoad={(e) => extractAndSetColor(e.currentTarget)}
-        />
-      </Show>
+    <Show when={finalOpacity() > 0}>
+      <>
+        <Show
+          when={backgroundItem().source_type === "img"}
+          fallback={
+            <>
+              {/* Video Background */}
+              <video
+                src={backgroundItem().src}
+                class="pointer-events-none fixed inset-0 -z-10 -mt-8"
+                style={{
+                  "object-fit": "cover",
+                  "object-position":
+                    backgroundItem().layout === "vertical" ? "top" : "center",
+                  opacity: finalOpacity(),
+                  filter: `blur(${blurValue()})`,
+                  transition: "filter 300ms ease-out",
+                  width: "100%",
+                  height: heightValue(),
+                  top: yOffset(),
+                }}
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="auto"
+                onLoadedData={(e) => extractAndSetColor(e.currentTarget)}
+              />
+            </>
+          }
+        >
+          {/* Image Background */}
+          <img
+            src={backgroundItem().src}
+            class="pointer-events-none fixed inset-0 -z-10 -mt-8"
+            alt="Background"
+            style={{
+              "object-fit": "cover",
+              "object-position":
+                backgroundItem().layout === "vertical" ? "top" : "center",
+              opacity: finalOpacity(),
+              filter: `blur(${blurValue()})`,
+              transition: "filter 300ms ease-out",
+              width: "100%",
+              height: heightValue(),
+              top: yOffset(),
+            }}
+            onLoad={(e) => extractAndSetColor(e.currentTarget)}
+          />
+        </Show>
 
-      {/* Gradient Overlay */}
-      <div
-        class={`pointer-events-none fixed inset-0 -z-5 transition-opacity duration-300 ${settings()?.showGradient == false ? "opacity-0" : "opacity-100"}`}
-        style={{
-          background:
-            "linear-gradient(to bottom, transparent 30%, rgba(18, 18, 18, 1) 100%)",
-        }}
-      />
-    </>
+        {/* Gradient Overlay */}
+        <div
+          class={`pointer-events-none fixed inset-0 -z-5 transition-opacity duration-300 ${settings()?.showGradient == false ? "opacity-0" : "opacity-100"}`}
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent 30%, rgba(18, 18, 18, 1) 100%)",
+          }}
+        />
+      </>
+    </Show>
   )
 }
