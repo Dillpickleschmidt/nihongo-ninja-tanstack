@@ -24,16 +24,17 @@ import {
   hqImageQueryKey,
 } from "~/features/discover/api/anilist/fetch"
 import { sectionQueryKey } from "~/features/discover/hooks/useDiscoverSection"
-import {
-  personalSectionsQueryOptions,
-} from "~/features/discover/hooks/usePersonalSections"
+import { personalSectionsQueryOptions } from "~/features/discover/hooks/usePersonalSections"
 import { useBannerCarousel } from "~/features/discover/hooks/useBannerCarousel"
 import { BottomNav } from "~/features/navbar/Nav"
 import { DiscoverTabs } from "~/features/discover/components/ui/tabs/discover-tabs"
 import { ComingSoonTab } from "~/features/discover/components/ui/tabs/coming-soon-tab"
 import { ShowDetailDialog } from "~/features/discover/components/ui/detail/show-detail-dialog"
 import { StreamingPrefsModal } from "~/features/discover/components/ui/settings/streaming-prefs-modal"
-import type { DiscoverMedia, Media } from "~/features/discover/api/anilist/types"
+import type {
+  DiscoverMedia,
+  Media,
+} from "~/features/discover/api/anilist/types"
 
 export const Route = createFileRoute("/discover")({
   loader: ({ context, preload }) => {
@@ -66,9 +67,7 @@ export const Route = createFileRoute("/discover")({
       })
       .then((data) => {
         const media =
-          data.media?.filter(
-            (m): m is NonNullable<typeof m> => m != null,
-          ) ?? []
+          data.media?.filter((m): m is NonNullable<typeof m> => m != null) ?? []
         const bannerMedia = data.bannerIndices
           .map((i) => media[i])
           .filter(Boolean)
@@ -99,6 +98,7 @@ function DiscoverPage() {
   >(null)
   const [bannerImageOpacity, setBannerImageOpacity] = createSignal(1)
   const [contentOpacity, setContentOpacity] = createSignal(1)
+  const [vignetteOpacity, setVignetteOpacity] = createSignal(0)
 
   const banner = useBannerCarousel()
   const allSections = createMemo(() => {
@@ -108,6 +108,24 @@ function DiscoverPage() {
   })
 
   let scrollRef: HTMLDivElement | undefined
+  const [bannerTransform, setBannerTransform] = createSignal(
+    "scale(1.05) translate(0px, 0px)",
+  )
+
+  function handleBannerMouseMove(e: MouseEvent) {
+    // Only activate once content overlay has faded out
+    if (!scrollRef || scrollRef.scrollTop < 300) return
+    const x = (e.clientX / window.innerWidth - 0.5) * 2
+    const y = (e.clientY / window.innerHeight - 0.5) * 2
+    const maxShift = 5 // px
+    setBannerTransform(
+      `scale(1.05) translate(${x * maxShift}px, ${y * maxShift}px)`,
+    )
+  }
+
+  function handleBannerMouseLeave() {
+    setBannerTransform("scale(1.05) translate(0px, 0px)")
+  }
 
   function handleCardClick(media: DiscoverMedia | Media) {
     setSelectedMedia(media)
@@ -116,19 +134,24 @@ function DiscoverPage() {
   function handleScroll() {
     if (!scrollRef) return
     const scrollY = scrollRef.scrollTop
-    setBannerImageOpacity(Math.max(0.07, 1 - scrollY / 600))
+    setBannerImageOpacity(Math.max(0.45, 1 - scrollY / 600))
     setContentOpacity(Math.max(0, 1 - scrollY / 300))
+    setVignetteOpacity(Math.min(1, Math.max(0, (scrollY - 200) / 200)))
+    if (scrollY < 300) setBannerTransform("scale(1.05) translate(0px, 0px)")
   }
 
   onMount(() => {
     scrollRef?.addEventListener("scroll", handleScroll, { passive: true })
-    onCleanup(() =>
-      scrollRef?.removeEventListener("scroll", handleScroll),
-    )
+    onCleanup(() => scrollRef?.removeEventListener("scroll", handleScroll))
   })
 
   return (
-    <div ref={scrollRef} class="relative h-screen overflow-y-auto">
+    <div
+      ref={scrollRef}
+      class="relative h-screen overflow-y-auto"
+      onMouseMove={handleBannerMouseMove}
+      onMouseLeave={handleBannerMouseLeave}
+    >
       <DiscoverTabs
         youtubeContent={<ComingSoonTab label="YouTube" />}
         animeContent={
@@ -148,7 +171,10 @@ function DiscoverPage() {
               >
                 <Show when={banner.current()}>
                   {(anime) => (
-                    <div class="absolute inset-0">
+                    <div
+                      class="absolute inset-0 transition-transform duration-300 ease-out"
+                      style={{ transform: bannerTransform() }}
+                    >
                       <BannerImage
                         src={banner.bannerImage()}
                         alt={anime().title?.userPreferred ?? "Anime banner"}
@@ -157,11 +183,19 @@ function DiscoverPage() {
                     </div>
                   )}
                 </Show>
+                <div
+                  class="pointer-events-none absolute inset-0"
+                  style={{
+                    opacity: vignetteOpacity(),
+                    background:
+                      "radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%)",
+                  }}
+                />
               </div>
 
               {/* Layer 2: Content overlaid on image area — scrolls normally, fades fast */}
               <div
-                class="relative z-[1] -mt-[70vh] h-[70vh] md:-mt-[80vh] md:h-[80vh]"
+                class="relative z-1 -mt-[70vh] h-[70vh] md:-mt-[80vh] md:h-[80vh]"
                 style={{ opacity: contentOpacity() }}
               >
                 <div class="relative flex h-full flex-col">
