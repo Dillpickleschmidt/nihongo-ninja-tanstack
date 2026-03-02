@@ -17,6 +17,8 @@ import type { SectionConfig } from "~/features/discover/utils/section-configs"
 interface SectionHeaderProps {
   section: SectionConfig
   defaultLarge?: boolean
+  expanded?: boolean
+  onToggleExpand?: () => void
 }
 
 export function SectionHeader(props: SectionHeaderProps) {
@@ -60,9 +62,13 @@ export function SectionHeader(props: SectionHeaderProps) {
         </PopoverContent>
       </Popover>
 
-      <div class="text-muted-foreground ml-auto cursor-pointer text-xs transition-colors hover:text-white/50">
-        View More
-      </div>
+      <button
+        type="button"
+        onClick={() => props.onToggleExpand?.()}
+        class="text-muted-foreground ml-auto cursor-pointer text-xs transition-colors hover:text-white/50"
+      >
+        {props.expanded ? "View Less" : "View More"}
+      </button>
     </div>
   )
 }

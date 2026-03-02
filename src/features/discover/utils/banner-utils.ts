@@ -185,6 +185,7 @@ export function formatFormat(format: string | null | undefined): string {
  */
 export function generateBannerIndices(
   media: { bannerImage?: string | null }[],
+  seed: number,
 ): number[] {
   const validIndices: number[] = []
   media.forEach((item, index) => {
@@ -193,10 +194,21 @@ export function generateBannerIndices(
     }
   })
 
+  const random = createSeededRandom(seed)
   for (let i = validIndices.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
+    const j = Math.floor(random() * (i + 1))
     ;[validIndices[i], validIndices[j]] = [validIndices[j], validIndices[i]]
   }
 
   return validIndices.slice(0, 5)
+}
+
+function createSeededRandom(seed: number) {
+  let t = seed >>> 0
+  return () => {
+    t += 0x6d2b79f5
+    let x = Math.imul(t ^ (t >>> 15), t | 1)
+    x ^= x + Math.imul(x ^ (x >>> 7), x | 61)
+    return ((x ^ (x >>> 14)) >>> 0) / 4294967296
+  }
 }

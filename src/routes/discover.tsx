@@ -1,11 +1,9 @@
 import {
-  createMemo,
   createResource,
   createSignal,
   onCleanup,
   onMount,
   Show,
-  Suspense,
 } from "solid-js"
 import { createFileRoute } from "@tanstack/solid-router"
 import { queryKeys } from "~/query/query-keys"
@@ -14,6 +12,7 @@ import {
   getGenericSections,
   getCurrentSeason,
 } from "~/features/discover/utils/section-configs"
+import { generateBannerIndices } from "~/features/discover/utils/banner-utils"
 import { BannerSkeleton } from "~/features/discover/components/ui/banner/skeleton-banner"
 import { BannerImage } from "~/features/discover/components/ui/banner/banner-image"
 import { BannerContent } from "~/features/discover/components/ui/banner/banner-content"
@@ -51,6 +50,7 @@ export const Route = createFileRoute("/discover")({
     const auth = context.queryClient.getQueryData(authQueryOptions().queryKey)
 
     const trendingConfig = genericSections.find((s) => s.type === "trending")!
+    const bannerSeed = Math.floor(Math.random() * 4294967296)
 
     const userId = auth?.session?.user?.id ?? null
     const personalSectionsPromise = userId
@@ -58,17 +58,18 @@ export const Route = createFileRoute("/discover")({
       : Promise.resolve(null)
 
     context.queryClient
-      .ensureQueryData({
+      .ensureInfiniteQueryData({
         queryKey: sectionQueryKey(trendingConfig),
-        queryFn: () =>
-          fetchDiscoverSection(trendingConfig.queryVars!, {
-            withBannerIndices: true,
-          }),
+        queryFn: () => fetchDiscoverSection(trendingConfig.queryVars!),
+        initialPageParam: 1,
+        getNextPageParam: () => undefined,
       })
       .then((data) => {
+        const page = data.pages?.[0]
+        if (!page) return
         const media =
-          data.media?.filter((m): m is NonNullable<typeof m> => m != null) ?? []
-        const bannerMedia = data.bannerIndices
+          page.media?.filter((m): m is NonNullable<typeof m> => m != null) ?? []
+        const bannerMedia = generateBannerIndices(media, bannerSeed)
           .map((i) => media[i])
           .filter(Boolean)
 
@@ -81,6 +82,7 @@ export const Route = createFileRoute("/discover")({
       })
 
     return {
+      bannerSeed,
       genericSections,
       personalSectionsPromise,
     }
@@ -100,13 +102,13 @@ function DiscoverPage() {
   const [contentOpacity, setContentOpacity] = createSignal(1)
   const [vignetteOpacity, setVignetteOpacity] = createSignal(0)
 
-  const banner = useBannerCarousel()
+  const banner = useBannerCarousel(() => loaderData().bannerSeed)
   const titleLanguage = () => personalSections()?.titleLanguage ?? null
-  const allSections = createMemo(() => {
+  const allSections = () => {
     const personal = personalSections()?.sections
     const generic = loaderData().genericSections
     return personal ? [...personal, ...generic] : generic
-  })
+  }
 
   let scrollRef: HTMLDivElement | undefined
   const [bannerTransform, setBannerTransform] = createSignal(
@@ -156,20 +158,20 @@ function DiscoverPage() {
       <DiscoverTabs
         youtubeContent={<ComingSoonTab label="YouTube" />}
         animeContent={
-          <Suspense fallback={<BannerSkeleton />}>
-            <Show
-              when={!banner.error()}
-              fallback={
-                <div class="w-full bg-red-50 p-4 text-red-600">
-                  Error loading banner
-                </div>
-              }
+          <Show
+            when={!banner.error()}
+            fallback={
+              <div class="w-full bg-red-50 p-4 text-red-600">
+                Error loading banner
+              </div>
+            }
+          >
+            {/* Layer 1: Sticky background image — fades slowly */}
+            <div
+              class="sticky top-0 z-0 h-[70vh] overflow-hidden md:h-[80vh]"
+              style={{ opacity: bannerImageOpacity() }}
             >
-              {/* Layer 1: Sticky background image — fades slowly */}
-              <div
-                class="sticky top-0 z-0 h-[70vh] overflow-hidden md:h-[80vh]"
-                style={{ opacity: bannerImageOpacity() }}
-              >
+              <Show when={!banner.isLoading()} fallback={<BannerSkeleton />}>
                 <Show when={banner.current()}>
                   {(anime) => (
                     <div
@@ -184,45 +186,45 @@ function DiscoverPage() {
                     </div>
                   )}
                 </Show>
-                <div
-                  class="pointer-events-none absolute inset-0"
-                  style={{
-                    opacity: vignetteOpacity(),
-                    background:
-                      "radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%)",
-                  }}
-                />
-              </div>
-
-              {/* Layer 2: Content overlaid on image area — scrolls normally, fades fast */}
+              </Show>
               <div
-                class="relative z-1 -mt-[70vh] h-[70vh] md:-mt-[80vh] md:h-[80vh]"
-                style={{ opacity: contentOpacity() }}
-              >
-                <div class="relative flex h-full flex-col">
-                  <Show when={banner.itemCount() > 0}>
-                    <BannerContent
-                      current={banner.current()}
-                      colorVars={banner.colorVars()}
-                      currentIndex={banner.currentIndex()}
-                      onSelectIndex={banner.selectIndex}
-                      itemCount={banner.itemCount()}
-                      titleLanguage={titleLanguage()}
-                    />
-                  </Show>
-                </div>
-              </div>
+                class="pointer-events-none absolute inset-0"
+                style={{
+                  opacity: vignetteOpacity(),
+                  background:
+                    "radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%)",
+                }}
+              />
+            </div>
 
-              {/* Layer 3: Section rows — scroll naturally over the faded banner */}
-              <div class="relative z-10 pb-16 sm:px-2">
-                <GenericSections
-                  sections={allSections()}
-                  titleLanguage={titleLanguage()}
-                  onCardClick={handleCardClick}
-                />
+            {/* Layer 2: Content overlaid on image area — scrolls normally, fades fast */}
+            <div
+              class="relative z-1 -mt-[70vh] h-[70vh] md:-mt-[80vh] md:h-[80vh]"
+              style={{ opacity: contentOpacity() }}
+            >
+              <div class="relative flex h-full flex-col">
+                <Show when={banner.itemCount() > 0}>
+                  <BannerContent
+                    current={banner.current()}
+                    colorVars={banner.colorVars()}
+                    currentIndex={banner.currentIndex()}
+                    onSelectIndex={banner.selectIndex}
+                    itemCount={banner.itemCount()}
+                    titleLanguage={titleLanguage()}
+                  />
+                </Show>
               </div>
-            </Show>
-          </Suspense>
+            </div>
+
+            {/* Layer 3: Section rows — scroll naturally over the faded banner */}
+            <div class="relative z-10 pb-16 sm:px-2">
+              <GenericSections
+                sections={allSections()}
+                titleLanguage={titleLanguage()}
+                onCardClick={handleCardClick}
+              />
+            </div>
+          </Show>
         }
         dramasContent={<ComingSoonTab label="Dramas" />}
       />
