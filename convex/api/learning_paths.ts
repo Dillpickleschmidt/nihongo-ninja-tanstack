@@ -5,31 +5,17 @@ import * as Completions from "../model/completions"
 import { transcriptLineValidator } from "../validators"
 
 /**
- * Get all learning paths (built-in textbooks + user-created)
- * Returns unified LearningPath objects with isUserCreated flag
+ * All dashboard learning path data in one query: paths list, chapters, completions
  */
-export const getAllLearningPaths = query({
-  args: {},
-  handler: (ctx) => LearningPaths.getAllLearningPaths(ctx),
-})
-
-/**
- * Get chapters for a learning path (built-in textbook or user-created)
- */
-export const getPathChapters = query({
-  args: { pathId: v.string() },
-  handler: (ctx, { pathId }) => LearningPaths.getChaptersForPath(ctx, pathId),
-})
-
-/**
- * Get chapters + completed modules in a single query (dashboard use)
- */
-export const getPathWithProgress = query({
+export const getDashboardData = query({
   args: { pathId: v.string() },
   handler: async (ctx, { pathId }) => {
-    const chapters = await LearningPaths.getResolvedChaptersForPath(ctx, pathId)
-    const completedModules = await Completions.getCompletedModules(ctx)
-    return { chapters, completedModules: completedModules ?? [] }
+    const [paths, chapters, completedModules] = await Promise.all([
+      LearningPaths.getAllLearningPaths(ctx),
+      LearningPaths.getResolvedChaptersForPath(ctx, pathId),
+      Completions.getCompletedModules(ctx),
+    ])
+    return { paths, chapters, completedModules: completedModules ?? [] }
   },
 })
 

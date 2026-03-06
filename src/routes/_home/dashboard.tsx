@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/solid-query"
 import { queryKeys } from "~/query/query-keys"
 import { CompletionsSyncDialog } from "@/features/dashboard/CompletionsSyncDialog"
 import { FloatingKanji } from "@/features/homepage/components/floating-kanji"
+import { DashboardPathProvider } from "@/features/dashboard/context/dashboard-path"
 import { HeroSection } from "@/features/dashboard/hero/HeroSection"
 import { PracticeToolsSection } from "@/features/dashboard/practice-tools/PracticeToolsSection"
 import { LearningPathSection } from "@/features/dashboard/learning-path/LearningPathSection"
@@ -21,9 +22,6 @@ export const Route = createFileRoute("/_home/dashboard")({
       })
     }
 
-    context.queryClient.prefetchQuery(
-      convexQuery(api.api.learning_paths.getAllLearningPaths, {}),
-    )
     const prefs = parsePreferencesCookie()
     const anki = prefs.srsServicePreferences.anki
     if (!(anki.mode === "enabled" && anki.is_api_key_valid)) {
@@ -34,7 +32,7 @@ export const Route = createFileRoute("/_home/dashboard")({
     const pathId = prefs.activeLearningPath
     if (pathId) {
       context.queryClient.prefetchQuery(
-        convexQuery(api.api.learning_paths.getPathWithProgress, { pathId }),
+        convexQuery(api.api.learning_paths.getDashboardData, { pathId }),
       )
     }
   },
@@ -76,13 +74,15 @@ function DashboardComponent() {
       <FloatingKanji char="忍" class="top-20 left-[10%]" delay={0} />
 
       <main class="relative pt-28 pb-32 md:pb-12">
-        <div class="mx-auto max-w-7xl px-4 md:px-6">
-          <HeroSection />
+        <DashboardPathProvider>
+          <div class="mx-auto max-w-7xl px-4 md:px-6">
+            <HeroSection />
 
-          <PracticeToolsSection />
+            <PracticeToolsSection />
 
-          <LearningPathSection />
-        </div>
+            <LearningPathSection />
+          </div>
+        </DashboardPathProvider>
       </main>
     </div>
   )

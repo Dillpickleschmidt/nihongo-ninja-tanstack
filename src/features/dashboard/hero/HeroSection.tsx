@@ -1,9 +1,7 @@
 import { Show, Suspense } from "solid-js"
 import { Sparkles } from "lucide-solid"
-import { useConvexQuery } from "@/lib/convex-query"
-import { api } from "convex/_generated/api"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
-import { usePreferences } from "@/lib/preferences"
+import { useDashboardPath } from "../context/dashboard-path"
 import { CurrentChapterCard } from "./CurrentChapterCard"
 
 export function HeroSection() {
@@ -30,28 +28,7 @@ export function HeroSection() {
 }
 
 function HeroBadge() {
-  const { preferences } = usePreferences()
-  const learningPathsQuery = useConvexQuery(
-    api.api.learning_paths.getAllLearningPaths,
-    {},
-  )
-
-  const selectedPathId = () => preferences().activeLearningPath
-
-  const selectedPath = () =>
-    learningPathsQuery.data()?.find((p) => p.id === selectedPathId())
-
-  const progressQuery = useConvexQuery(
-    api.api.learning_paths.getPathWithProgress,
-    () => ({ pathId: selectedPathId()! }),
-    () => ({ enabled: !!selectedPathId() }),
-  )
-
-  const currentChapter = () => {
-    const chapterSlug = preferences().activeChapter
-    if (!chapterSlug) return undefined
-    return progressQuery.data()?.chapters?.find((c) => c.slug === chapterSlug)
-  }
+  const { selectedPath, currentChapter } = useDashboardPath()
 
   const moduleCount = () => {
     const chapter = currentChapter()

@@ -1,10 +1,8 @@
 import { Show, For, createSignal, Suspense } from "solid-js"
 import { ChevronRight } from "lucide-solid"
-import { useConvexQuery } from "@/lib/convex-query"
-import { api } from "convex/_generated/api"
-import { usePreferences } from "@/lib/preferences"
 import { useSrs } from "@/features/srs/use-srs"
-import { LearningPathChapterSelector } from "../LearningPathChapterSelector"
+import { useDashboardPath } from "../context/dashboard-path"
+import { LearningPathSelector } from "../LearningPathSelector"
 import { ModuleLink } from "./ModuleLink"
 import { DueCountBadge } from "./DueCountBadge"
 
@@ -39,27 +37,9 @@ export function CurrentChapterCard() {
 
 function CurrentChapterCardContent() {
   const [isSelectorOpen, setIsSelectorOpen] = createSignal(false)
-
-  // Queries
-  const { preferences, setPreference } = usePreferences()
-  const learningPathsQuery = useConvexQuery(
-    api.api.learning_paths.getAllLearningPaths,
-    {},
-  )
-
-  const selectedPathId = () => preferences().activeLearningPath
-
-  const progressQuery = useConvexQuery(
-    api.api.learning_paths.getPathWithProgress,
-    () => ({ pathId: selectedPathId()! }),
-    () => ({ enabled: !!selectedPathId() }),
-  )
-
-  const currentChapter = () => {
-    const chapterSlug = preferences().activeChapter
-    if (!chapterSlug) return undefined
-    return progressQuery.data()?.chapters?.find((c) => c.slug === chapterSlug)
-  }
+  const { query, setPreference, selectedPathId, currentChapter } =
+    useDashboardPath()
+  const srs = useSrs()
 
   const currentModules = () => {
     const chapter = currentChapter()
@@ -68,11 +48,9 @@ function CurrentChapterCardContent() {
   }
 
   const nextModules = () => currentModules()?.slice(0, 3) ?? []
-  const srs = useSrs()
 
-  const handleChapterSelect = (pathId: string, chapter: { slug: string }) => {
+  const handlePathSelect = (pathId: string) => {
     setPreference("activeLearningPath", pathId)
-    setPreference("activeChapter", chapter.slug)
   }
 
   return (
@@ -107,22 +85,19 @@ function CurrentChapterCardContent() {
       <div class="flex items-center gap-4 lg:flex-col lg:items-end">
         <DueCountBadge count={srs.dueCount} />
         <Show
-          when={
-            currentChapter() && learningPathsQuery.data() && selectedPathId()
-          }
+          when={currentChapter() && query.data()?.paths && selectedPathId()}
         >
-          <LearningPathChapterSelector
-            learningPaths={learningPathsQuery.data()!}
+          <LearningPathSelector
+            learningPaths={query.data()!.paths}
             activePathId={selectedPathId()!}
-            activeChapter={currentChapter()!}
             isOpen={isSelectorOpen()}
             onOpenChange={setIsSelectorOpen}
-            onChapterSelect={handleChapterSelect}
+            onPathSelect={handlePathSelect}
             class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition-all hover:bg-white/10 hover:text-white cursor-pointer"
           >
-            Change chapter
+            Change path
             <ChevronRight class="size-4" />
-          </LearningPathChapterSelector>
+          </LearningPathSelector>
         </Show>
       </div>
     </div>

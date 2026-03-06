@@ -1,8 +1,6 @@
-import { createSignal, Suspense, Index, Show } from "solid-js"
+import { createSignal, createEffect, Suspense, Index, Show } from "solid-js"
 import { Rows3, List } from "lucide-solid"
-import { useConvexQuery } from "@/lib/convex-query"
 import { useLocalCompletions } from "@/lib/completions"
-import { api } from "convex/_generated/api"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Accordion,
@@ -10,47 +8,41 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion"
-import { usePreferences } from "@/lib/preferences"
+import { useDashboardPath } from "../context/dashboard-path"
 import { ChapterSection } from "./ChapterSection"
 import { ModuleDetailDialog } from "./ModuleDetailDialog"
 import type { LearningPathModule } from "./types"
 
 export function LearningPathSection() {
   const [selectedView, setSelectedView] = createSignal<string>("grid")
+  const [expandedChapters, setExpandedChapters] = createSignal<string[]>([])
   const [selectedModule, setSelectedModule] =
     createSignal<LearningPathModule | null>(null)
   const [dialogOpen, setDialogOpen] = createSignal(false)
 
-  // Queries
-  const { preferences } = usePreferences()
-  const learningPathsQuery = useConvexQuery(
-    api.api.learning_paths.getAllLearningPaths,
-    {},
-  )
-
-  const selectedPathId = () => preferences().activeLearningPath
-
-  const selectedPath = () =>
-    learningPathsQuery.data()?.find((p) => p.id === selectedPathId())
+  const { query, preferences, selectedPathId, selectedPath } =
+    useDashboardPath()
 
   const selectedPathName = () => selectedPath()?.name
   const isUserCreatedPath = () => selectedPath()?.isUserCreated === true
 
-  const progressQuery = useConvexQuery(
-    api.api.learning_paths.getPathWithProgress,
-    () => ({ pathId: selectedPathId()! }),
-    () => ({ enabled: !!selectedPathId() }),
-  )
+  const chapters = () => query.data()?.chapters
 
-  const chapters = () => progressQuery.data()?.chapters
-
-  const completedSet = () =>
-    new Set(progressQuery.data()?.completedModules ?? [])
+  const completedSet = () => new Set(query.data()?.completedModules ?? [])
 
   const localCompletions = useLocalCompletions()
 
   const isCompleted = (moduleId: string) =>
     completedSet().has(moduleId) || moduleId in localCompletions()
+
+  // Ensure the active chapter accordion is always expanded
+  createEffect(() => {
+    const activeChapter = preferences().activeChapter
+    if (!activeChapter) return
+    setExpandedChapters((prev) =>
+      prev.includes(activeChapter) ? prev : [...prev, activeChapter],
+    )
+  })
 
   const handleModuleSelect = (module: LearningPathModule) => {
     setSelectedModule(module)
@@ -98,7 +90,11 @@ export function LearningPathSection() {
             </div>
           }
         >
-          <Accordion multiple defaultValue={[preferences().activeChapter]}>
+          <Accordion
+            multiple
+            value={expandedChapters()}
+            onChange={setExpandedChapters}
+          >
             <Index each={chapters()}>
               {(chapter) => (
                 <AccordionItem value={chapter().slug} class="border-white/10">
