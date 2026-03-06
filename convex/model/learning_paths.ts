@@ -9,6 +9,7 @@ import {
 import { getChaptersByTextbook } from "../../src/data/utils/chapters"
 import { static_modules } from "../../src/data/static_modules"
 import { dynamic_modules } from "../../src/data/dynamic_modules"
+import { getModuleLink } from "../../src/lib/module-links"
 
 const MODULES_PER_CHAPTER = 30
 const DEFAULT_CUSTOM_PATH_SPECIAL_MODULE_IDS = [
@@ -581,34 +582,6 @@ function resolveLearningPathModuleIds(
   return resolvedModules
 }
 
-function getModuleLink(
-  module: { module_type: string; link?: string },
-  moduleId: string,
-): string {
-  if ("link" in module && module.link) {
-    return module.link
-  }
-
-  if (module.module_type === "vocab-practice") {
-    return `/vocab?import=${moduleId}`
-  }
-
-  if (module.module_type === "sentence-practice") {
-    const strippedId = moduleId.replace(/^sentence-practice-/, "")
-    return `/sentence-practice/${strippedId}`
-  }
-
-  if (module.module_type === "vocab-test") {
-    const strippedId = moduleId.replace(/-quiz$/, "")
-    return `/vocab/quiz/${strippedId}`
-  }
-
-  if (module.module_type === "vocab-list") {
-    return `/vocab/list/${moduleId}`
-  }
-
-  return `/practice/${moduleId}`
-}
 
 async function resolveUserPathId(
   ctx: QueryCtx | MutationCtx,

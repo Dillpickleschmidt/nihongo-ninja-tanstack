@@ -4,13 +4,7 @@ import { useLocation, useNavigate, useMatches } from "@tanstack/solid-router"
 import { cva } from "class-variance-authority"
 import { cn } from "@/utils"
 import { useCompleteModule } from "@/lib/completions"
-import { static_modules } from "@/data/static_modules"
-
-// Reverse lookup: link URL → moduleId (only static modules use ContentBox)
-const linkToModuleId: Record<string, string> = {}
-for (const [moduleId, mod] of Object.entries(static_modules)) {
-  linkToModuleId[mod.link] = moduleId
-}
+import { linkToModuleId } from "@/lib/module-links"
 
 type ContentBoxConfig = {
   nextButtonLink?: string

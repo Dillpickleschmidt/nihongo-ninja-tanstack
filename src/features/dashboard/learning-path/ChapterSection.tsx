@@ -21,23 +21,24 @@ export function ChapterSection(props: ChapterSectionProps) {
   const hasSpecialModules = () => specialModules().length > 0
 
   return (
-    <div class="mb-12 animate-fade-up opacity-0">
+    <div>
       <div
         class={cn(
           "mb-6",
-          hasSpecialModules() && "flex flex-col gap-6 lg:flex-row lg:items-start",
+          hasSpecialModules() &&
+            "flex flex-col gap-6 lg:flex-row lg:items-start",
         )}
       >
         <div class={cn(hasSpecialModules() && "min-w-0 flex-1")}>
-          {/* Chapter Header */}
-          <div class="mb-6">
-            <h2 class="text-2xl font-bold mb-2">{props.chapter.title}</h2>
-            <Show when={props.chapter.description}>
-              <p class="text-neutral-300 max-w-3xl">{props.chapter.description}</p>
-            </Show>
-          </div>
+          <Show when={props.chapter.description}>
+            <p class="text-neutral-300 max-w-3xl mb-4">
+              {props.chapter.description}
+            </p>
+          </Show>
 
-          <Show when={props.chapter.features && props.chapter.features.length > 0}>
+          <Show
+            when={props.chapter.features && props.chapter.features.length > 0}
+          >
             <ul class="space-y-1">
               <For each={props.chapter.features}>
                 {(feature) => (

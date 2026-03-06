@@ -4,6 +4,12 @@ import { useConvexQuery } from "@/lib/convex-query"
 import { useLocalCompletions } from "@/lib/completions"
 import { api } from "convex/_generated/api"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion"
 import { usePreferences } from "@/lib/preferences"
 import { ChapterSection } from "./ChapterSection"
 import { ModuleDetailDialog } from "./ModuleDetailDialog"
@@ -92,17 +98,26 @@ export function LearningPathSection() {
             </div>
           }
         >
-          <Index each={chapters()}>
-            {(chapter) => (
-              <ChapterSection
-                chapter={chapter()}
-                viewMode={selectedView()}
-                isCompleted={isCompleted}
-                openInDialog={isUserCreatedPath()}
-                onModuleSelect={handleModuleSelect}
-              />
-            )}
-          </Index>
+          <Accordion multiple defaultValue={[preferences().activeChapter]}>
+            <Index each={chapters()}>
+              {(chapter) => (
+                <AccordionItem value={chapter().slug} class="border-white/10">
+                  <AccordionTrigger class="text-sm font-medium hover:no-underline data-expanded:text-2xl data-expanded:font-bold">
+                    {chapter().title}
+                  </AccordionTrigger>
+                  <AccordionContent class="text-base">
+                    <ChapterSection
+                      chapter={chapter()}
+                      viewMode={selectedView()}
+                      isCompleted={isCompleted}
+                      openInDialog={isUserCreatedPath()}
+                      onModuleSelect={handleModuleSelect}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+              )}
+            </Index>
+          </Accordion>
         </Suspense>
       </Tabs>
 
