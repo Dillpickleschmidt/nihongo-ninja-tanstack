@@ -1,12 +1,14 @@
-import { useQuery } from "@tanstack/solid-query"
+import { useQueryClient } from "@tanstack/solid-query"
+import { QueryObserver } from "@tanstack/query-core"
 import { useConvexQuery } from "@/lib/convex-query"
-import { isServer } from "solid-js/web"
-import { api } from "convex/_generated/api"
 import { getUser } from "@/lib/auth"
 import { usePreferences } from "@/lib/preferences"
 import { getAnkiDueCount } from "@/features/import/anki/anki-adapter"
+import { api } from "convex/_generated/api"
+import { createEffect, createSignal, onCleanup } from "solid-js"
 
 export function useSrs() {
+  const queryClient = useQueryClient()
   const { preferences } = usePreferences()
   const user = getUser()
   const ankiActive = () => {
@@ -15,32 +17,49 @@ export function useSrs() {
   }
   const authed = () => !!user()
 
-  // Built-in FSRS — reactive via Convex WebSocket
   const fsrsDueCount = useConvexQuery(
     api.api.fsrs.getDueFSRSCardsCount,
     {},
     () => ({ enabled: authed() && !ankiActive() }),
   )
 
-  // Anki — polled via TanStack Query, client-only
-  const ankiDueCount = useQuery(() => ({
-    queryKey: ["srs", "anki", "dueCount"] as const,
-    queryFn: async () => {
-      if (isServer) return null as number | null
-      return (await getAnkiDueCount()).total
-    },
-    enabled: authed() && ankiActive(),
-    refetchInterval: 30_000,
-    staleTime: 30_000,
-    refetchOnMount: "always",
-  }))
+  const [ankiCount, setAnkiCount] = createSignal<number | undefined>(undefined)
+
+  createEffect(() => {
+    if (!authed() || !ankiActive()) {
+      setAnkiCount(undefined)
+      return
+    }
+
+    const observer = new QueryObserver(queryClient, {
+      queryKey: ["srs", "anki", "dueCount"] as const,
+      queryFn: async () => (await getAnkiDueCount()).total,
+      refetchInterval: 30_000,
+      staleTime: 30_000,
+      refetchOnMount: "always",
+    })
+
+    const updateFromResult = (
+      result: ReturnType<typeof observer.getCurrentResult>,
+    ) => {
+      setAnkiCount(result.status === "success" ? result.data : undefined)
+    }
+
+    updateFromResult(observer.getCurrentResult())
+    const unsubscribe = observer.subscribe(updateFromResult)
+
+    onCleanup(unsubscribe)
+  })
 
   return {
     dueCount: () => {
+      if (!authed()) return 0
+
       if (ankiActive()) {
-        if (ankiDueCount.status !== "success") return undefined
-        return ankiDueCount.data === null ? undefined : ankiDueCount.data
+        return ankiCount()
       }
+
+      if (fsrsDueCount.isLoading()) return undefined
       return fsrsDueCount.data()
     },
   }

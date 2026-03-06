@@ -68,7 +68,6 @@ function CurrentChapterCardContent() {
   }
 
   const nextModules = () => currentModules()?.slice(0, 3) ?? []
-
   const srs = useSrs()
 
   const handleChapterSelect = (pathId: string, chapter: { slug: string }) => {
@@ -106,8 +105,7 @@ function CurrentChapterCardContent() {
 
       {/* Progress indicator */}
       <div class="flex items-center gap-4 lg:flex-col lg:items-end">
-        <DueCountBadge count={srs.dueCount()} />
-        {/* Selector needs non-null values - wrap in Show */}
+        <DueCountBadge count={srs.dueCount} />
         <Show
           when={
             currentChapter() && learningPathsQuery.data() && selectedPathId()
