@@ -17,7 +17,7 @@ export function ToolCard(props: ToolCardProps) {
       as={Link}
       to={props.tool.href}
       class={cn(
-        "group relative overflow-hidden h-auto justify-start rounded-xl border border-white/5 p-5 text-base whitespace-normal transition-colors",
+        "group relative overflow-hidden h-auto justify-start rounded-xl border border-white/5 px-3 py-3.5 md:p-5 text-base whitespace-normal transition-colors",
         "animate-fade-up opacity-0",
         "hover:border-(--accent)/30",
       )}
@@ -40,9 +40,9 @@ export function ToolCard(props: ToolCardProps) {
         }}
       />
 
-      <div class="flex items-start gap-4">
+      <div class="flex items-center gap-4">
         <div
-          class="flex h-12 w-12 items-center justify-center rounded-xl text-2xl font-japanese text-(--accent) transition-transform duration-300 group-hover:scale-110"
+          class="flex h-9 w-9 md:h-12 md:w-12 items-center justify-center rounded-lg md:rounded-xl text-xl md:text-2xl font-japanese text-(--accent) transition-transform duration-300 group-hover:scale-110"
           style={{
             "background-color": `color-mix(in srgb, var(--accent) ${bgOpacity() * 100}%, transparent)`,
           }}

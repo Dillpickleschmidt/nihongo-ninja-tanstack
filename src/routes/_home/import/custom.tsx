@@ -31,7 +31,7 @@ function CustomImportPage() {
   const createCustomLearningPath = useMutation(
     api.api.learning_paths.createCustomLearningPath,
   )
-  const { setPreference } = usePreferences()
+  const { setPreferences } = usePreferences()
 
   const [textbookId, setTextbookId] = createSignal<TextbookIDEnum>("genki_1")
   const [pathName, setPathName] = createSignal("")
@@ -88,8 +88,10 @@ function CustomImportPage() {
         selectedVocabDecks,
       })
 
-      setPreference("activeLearningPath", result.pathId)
-      setPreference("activeChapter", result.firstChapterSlug)
+      setPreferences({
+        activeLearningPath: result.pathId,
+        activeChapter: result.firstChapterSlug,
+      })
       navigate({ to: "/dashboard" })
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save learning path")

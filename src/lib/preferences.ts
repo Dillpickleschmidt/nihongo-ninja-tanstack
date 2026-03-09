@@ -5,6 +5,7 @@ import { getUser } from "./auth"
 import { preferencesQueryOptions } from "@/query/query-options"
 import {
   updatePreferenceCookie,
+  updatePreferencesCookie,
   type StoredPreferences,
 } from "@/query/model/preferences"
 
@@ -22,6 +23,14 @@ export function usePreferences() {
     ) => {
       updatePreferenceCookie(queryClient, field, value)
       if (user()) mutation.mutate({ field, value })
+    },
+    setPreferences: (updates: Partial<StoredPreferences>) => {
+      updatePreferencesCookie(queryClient, updates)
+      if (user()) {
+        for (const [field, value] of Object.entries(updates)) {
+          mutation.mutate({ field, value })
+        }
+      }
     },
   }
 }

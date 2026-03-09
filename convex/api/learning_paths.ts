@@ -15,7 +15,7 @@ export const getDashboardData = query({
       LearningPaths.getResolvedChaptersForPath(ctx, pathId),
       Completions.getCompletedModules(ctx),
     ])
-    return { paths, chapters, completedModules: completedModules ?? [] }
+    return { pathId, paths, chapters, completedModules: completedModules ?? [] }
   },
 })
 

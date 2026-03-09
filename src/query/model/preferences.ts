@@ -21,10 +21,17 @@ export function parsePreferencesCookie(): StoredPreferences {
 export function updatePreferenceCookie<
   K extends keyof StoredPreferences,
 >(queryClient: QueryClient, field: K, value: StoredPreferences[K]) {
+  updatePreferencesCookie(queryClient, { [field]: value })
+}
+
+export function updatePreferencesCookie(
+  queryClient: QueryClient,
+  updates: Partial<StoredPreferences>,
+) {
   const current =
     queryClient.getQueryData<StoredPreferences>(queryKeys.preferences()) ??
     DEFAULT_USER_PREFERENCES
-  const updated = { ...current, [field]: value, timestamp: Date.now() }
+  const updated = { ...current, ...updates, timestamp: Date.now() }
   setCookie(PREFERENCES_COOKIE, JSON.stringify(updated))
   queryClient.setQueryData(queryKeys.preferences(), updated)
 }

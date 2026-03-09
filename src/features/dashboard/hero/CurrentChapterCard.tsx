@@ -37,7 +37,7 @@ export function CurrentChapterCard() {
 
 function CurrentChapterCardContent() {
   const [isSelectorOpen, setIsSelectorOpen] = createSignal(false)
-  const { query, setPreference, selectedPathId, currentChapter } =
+  const { query, selectedPathId, currentChapter, switchPath } =
     useDashboardPath()
   const srs = useSrs()
 
@@ -48,10 +48,6 @@ function CurrentChapterCardContent() {
   }
 
   const nextModules = () => currentModules()?.slice(0, 3) ?? []
-
-  const handlePathSelect = (pathId: string) => {
-    setPreference("activeLearningPath", pathId)
-  }
 
   return (
     <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
@@ -92,7 +88,7 @@ function CurrentChapterCardContent() {
             activePathId={selectedPathId()!}
             isOpen={isSelectorOpen()}
             onOpenChange={setIsSelectorOpen}
-            onPathSelect={handlePathSelect}
+            onPathSelect={switchPath}
             class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition-all hover:bg-white/10 hover:text-white cursor-pointer"
           >
             Change path

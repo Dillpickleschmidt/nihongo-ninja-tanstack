@@ -1,14 +1,16 @@
-import { createContext, createEffect, useContext, type JSX } from "solid-js"
+import { createContext, useContext, type JSX } from "solid-js"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { usePreferences } from "@/lib/preferences"
+import { isBuiltInTextbook } from "@/data/utils/textbooks"
+import { getChaptersByTextbook } from "@/data/utils/chapters"
 
 type DashboardPathContextValue = ReturnType<typeof createDashboardPathValue>
 
 const DashboardPathContext = createContext<DashboardPathContextValue>()
 
 function createDashboardPathValue() {
-  const { preferences, setPreference } = usePreferences()
+  const { preferences, setPreference, setPreferences } = usePreferences()
   const selectedPathId = () => preferences().activeLearningPath
 
   const query = useConvexQuery(
@@ -17,15 +19,15 @@ function createDashboardPathValue() {
     () => ({ enabled: !!selectedPathId() }),
   )
 
-  // Sync activeChapter when it doesn't exist in current path's chapters
-  createEffect(() => {
-    const chapters = query.data()?.chapters
-    if (!chapters?.length) return
-    const stored = preferences().activeChapter
-    if (!chapters.some((c) => c.slug === stored)) {
-      setPreference("activeChapter", chapters[0].slug)
-    }
-  })
+  const switchPath = (pathId: string) => {
+    const firstChapter = isBuiltInTextbook(pathId)
+      ? getChaptersByTextbook(pathId)[0]?.slug
+      : "chapter-1"
+    setPreferences({
+      activeLearningPath: pathId,
+      ...(firstChapter && { activeChapter: firstChapter }),
+    })
+  }
 
   const currentChapter = () => {
     const chapters = query.data()?.chapters
@@ -44,6 +46,7 @@ function createDashboardPathValue() {
     selectedPathId,
     currentChapter,
     selectedPath,
+    switchPath,
   }
 }
 
