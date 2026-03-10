@@ -1,7 +1,33 @@
 // vocab-practice/logic/card-state-handler.ts
 import { FSRS, Rating, Grade } from "ts-fsrs"
-import type { PracticeCard } from "../types"
+import type { PracticeCard, SessionCardStyle } from "../types"
 
+/** Pure session-style transition — shared by FSRS and Anki modes */
+export function nextSessionStyle(
+  currentStyle: SessionCardStyle,
+  practiceItemType: PracticeCard["practiceItemType"],
+  grade: Grade,
+): SessionCardStyle {
+  switch (currentStyle) {
+    case "multiple-choice":
+      if (grade === Rating.Good) {
+        return practiceItemType === "kanji" || practiceItemType === "radical"
+          ? "flashcard"
+          : "write"
+      }
+      return "multiple-choice"
+    case "write":
+      return grade === Rating.Good ? "done" : "multiple-choice"
+    case "flashcard":
+      return grade === Rating.Again ? "multiple-choice" : "flashcard"
+    case "done":
+      return "done"
+    default:
+      return currentStyle
+  }
+}
+
+/** FSRS mode: style transition + FSRS card/log update */
 export function handleCardAnswer(
   card: PracticeCard,
   grade: Grade,
@@ -17,39 +43,31 @@ export function handleCardAnswer(
   const logs = card.fsrs.logs ? [...card.fsrs.logs] : []
   if (reviewLog) logs.push(reviewLog)
 
-  let sessionStyle = card.sessionStyle
-  switch (card.sessionStyle) {
-    case "multiple-choice":
-      // Conditional logic based on practiceItemType
-      if (grade === Rating.Good) {
-        if (
-          card.practiceItemType === "kanji" ||
-          card.practiceItemType === "radical"
-        ) {
-          sessionStyle = "flashcard"
-        } else {
-          sessionStyle = "write"
-        }
-      } else {
-        sessionStyle = "multiple-choice"
-      }
-      break
-    case "write":
-      sessionStyle = grade === Rating.Good ? "done" : "multiple-choice"
-      break
-    case "flashcard":
-      sessionStyle = grade === Rating.Again ? "multiple-choice" : "flashcard"
-      break
-    case "done":
-      break
-  }
-
   return {
     ...card,
-    sessionStyle,
+    sessionStyle: nextSessionStyle(
+      card.sessionStyle,
+      card.practiceItemType,
+      grade,
+    ),
     fsrs: {
       card: updatedFSRSCard,
       logs,
     },
+  }
+}
+
+/** Anki mode: style transition only, no FSRS */
+export function handleCardAnswerAnki(
+  card: PracticeCard,
+  grade: Grade,
+): PracticeCard {
+  return {
+    ...card,
+    sessionStyle: nextSessionStyle(
+      card.sessionStyle,
+      card.practiceItemType,
+      grade,
+    ),
   }
 }

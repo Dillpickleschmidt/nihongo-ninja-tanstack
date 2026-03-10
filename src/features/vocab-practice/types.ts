@@ -31,6 +31,9 @@ export type PracticeCard = {
   validAnswers: string[]
   sessionScope: "module" | "review"
   isDisabled: boolean
+  ankiCardId?: number
+  ankiCardType?: number // 0=new, 1=learning, 2=review, 3=relearn
+  ankiRenderedHtml?: { question: string; answer: string; css: string }
 }
 
 // Session state with queues

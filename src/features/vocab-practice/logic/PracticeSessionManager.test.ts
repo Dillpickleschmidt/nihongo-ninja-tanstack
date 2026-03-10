@@ -387,7 +387,7 @@ describe("PracticeSessionManager", () => {
         reviewCards: 1,
         activeCards: ["vocabulary:復習1"],
       })
-      const reviewManager = new PracticeSessionManager(reviewState, true)
+      const reviewManager = new PracticeSessionManager(reviewState, { reviewOnly: true })
 
       reviewManager.processAnswer(Rating.Good) // Complete review card
       expect(reviewManager.isFinished()).toBe(true)
@@ -737,7 +737,7 @@ describe("PracticeSessionManager", () => {
         isDisabled: false,
       })
 
-      const manager = new PracticeSessionManager(mixedModeState, true)
+      const manager = new PracticeSessionManager(mixedModeState, { reviewOnly: true })
 
       // Verify different modes work correctly
       const meaningsCard = manager.getCurrentCard()

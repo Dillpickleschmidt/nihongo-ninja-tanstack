@@ -167,6 +167,88 @@ export const getAllSeenCards = createClientOnlyFn(
   },
 )
 
+export type AnkiNote = {
+  deckName: string
+  modelName: string
+  fields: Record<string, string>
+  options?: {
+    allowDuplicate?: boolean
+    duplicateScope?: string
+    duplicateScopeOptions?: {
+      deckName?: string
+      checkChildren?: boolean
+      checkAllModels?: boolean
+    }
+  }
+}
+
+export type AnkiNoteInfo = {
+  noteId: number
+  modelName: string
+  fields: Record<string, { value: string; order: number }>
+  cards: number[]
+}
+
+export const getModelNames = createClientOnlyFn(
+  async (): Promise<string[]> => {
+    return await ankiConnectRequest<string[]>("modelNames")
+  },
+)
+
+export const getModelFieldNames = createClientOnlyFn(
+  async (modelName: string): Promise<string[]> => {
+    return await ankiConnectRequest<string[]>("modelFieldNames", { modelName })
+  },
+)
+
+export const createModel = createClientOnlyFn(
+  async (
+    modelName: string,
+    inOrderFields: string[],
+    cardTemplates: { Name: string; Front: string; Back: string }[],
+    css?: string,
+  ): Promise<unknown> => {
+    return await ankiConnectRequest("createModel", {
+      modelName,
+      inOrderFields,
+      cardTemplates,
+      css: css || "",
+    })
+  },
+)
+
+export const createDeck = createClientOnlyFn(
+  async (deckName: string): Promise<number> => {
+    return await ankiConnectRequest<number>("createDeck", { deck: deckName })
+  },
+)
+
+export const addNotes = createClientOnlyFn(
+  async (notes: AnkiNote[]): Promise<(number | null)[]> => {
+    return await ankiConnectRequest<(number | null)[]>("addNotes", { notes })
+  },
+)
+
+export const findNotes = createClientOnlyFn(
+  async (query: string): Promise<number[]> => {
+    return await ankiConnectRequest<number[]>("findNotes", { query })
+  },
+)
+
+export const notesInfo = createClientOnlyFn(
+  async (noteIds: number[]): Promise<AnkiNoteInfo[]> => {
+    return await ankiConnectRequest<AnkiNoteInfo[]>("notesInfo", {
+      notes: noteIds,
+    })
+  },
+)
+
+export const answerCards = createClientOnlyFn(
+  async (answers: { cardId: number; ease: number }[]): Promise<boolean[]> => {
+    return await ankiConnectRequest<boolean[]>("answerCards", { answers })
+  },
+)
+
 export const getWeekSeenCards = createClientOnlyFn(
   async (): Promise<AnkiCardInfo[]> => {
     const weekCardIds = await ankiConnectRequest<number[]>("findCards", {

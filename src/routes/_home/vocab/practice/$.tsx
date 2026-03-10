@@ -12,6 +12,7 @@ import {
   type PracticeItemData,
   type FSRSCardInput,
 } from "@/features/vocab-practice/logic/data-initialization"
+import { initializeAnkiPracticeSession } from "@/features/vocab-practice/logic/anki-data-initialization"
 import type { UnifiedDeck } from "convex/model/decks"
 import type { DeckHierarchyResult } from "convex/model/hierarchy"
 import { toTsFsrsCard, fromTsFsrsCard, fromTsFsrsLog } from "convex/model/fsrs"
@@ -20,6 +21,23 @@ import type { PracticeMode } from "convex/validators"
 import type { Grade } from "ts-fsrs"
 import { useMutation } from "convex-solidjs"
 import { VocabPractice } from "@/features/vocab-practice/VocabPractice"
+import { usePreferences } from "@/lib/preferences"
+import { validateAnkiConnect } from "@/features/import/anki/anki-connect-client"
+import { ensureAnkiSetup } from "@/features/import/anki/anki-setup"
+import {
+  buildModuleNotesFromData,
+  checkModuleSync,
+  pushNotesToAnki,
+  fetchModuleCardData,
+  fetchDueReviewCards,
+  gradeAnkiCard,
+} from "@/features/import/anki/anki-sync"
+import { meaningsDeckName, spellingsDeckName } from "@/features/import/anki/anki-models"
+import {
+  AnkiSyncDialog,
+  type AnkiSyncState,
+} from "@/features/vocab-practice/components/AnkiSyncDialog"
+import { toast } from "solid-sonner"
 
 type DeckLookupResult =
   | { type: "deck"; deck: UnifiedDeck }
@@ -78,6 +96,12 @@ function PracticeCatchAll() {
   const { decks } = useVocab()
   const search = Route.useSearch()
   const mode = () => search().mode
+  const { preferences } = usePreferences()
+
+  const ankiActive = () => {
+    const anki = preferences().srsServicePreferences.anki
+    return anki.mode === "enabled" && anki.is_api_key_valid
+  }
 
   const [deckLookup] = createResource(() => loaderData().deckLookupPromise)
   const [practiceData] = createResource(() => loaderData().practiceDataPromise)
@@ -93,10 +117,49 @@ function PracticeCatchAll() {
     return null
   }
 
-  const upsertFSRSCardMutation = useMutation(api.api.fsrs.upsertFSRSCard)
-  const recordProgressMutation = useMutation(api.api.progress.recordProgressEvent)
+  return (
+    <Show
+      when={deck()}
+      fallback={
+        <div>
+          <p>{deckLookup() ? "Deck not found" : "Loading..."}</p>
+        </div>
+      }
+    >
+      {(d) => (
+        <Show
+          when={ankiActive()}
+          fallback={
+            <FsrsPractice
+              deck={d()}
+              mode={mode()}
+              practiceData={practiceData()}
+              includeReviews={includeReviews()}
+            />
+          }
+        >
+          <AnkiPractice
+            deck={d()}
+            mode={mode()}
+            practiceData={practiceData()}
+          />
+        </Show>
+      )}
+    </Show>
+  )
+}
 
-  const practiceManager = usePracticeManager(async (card) => {
+// --- FSRS Practice (existing flow, extracted) ---
+
+function FsrsPractice(props: {
+  deck: UnifiedDeck
+  mode: PracticeMode
+  practiceData: PracticeData | null | undefined
+  includeReviews: boolean
+}) {
+  const upsertFSRSCardMutation = useMutation(api.api.fsrs.upsertFSRSCard)
+
+  const practiceManager = usePracticeManager(async (card, _rating) => {
     const itemKey = card.key.split(":")[1]
     try {
       await upsertFSRSCardMutation.mutate({
@@ -112,13 +175,198 @@ function PracticeCatchAll() {
   })
 
   const [sessionInitialized, setSessionInitialized] = createSignal(false)
+  const recordProgress = useRecordProgress(() => props.deck)
 
-  const recordProgress = (progressUnitsDelta: number, questionsAnsweredDelta: number) => {
-    const currentDeck = deck()
-    if (!currentDeck) return
+  createEffect(() => {
+    const data = props.practiceData
+    if (!data || sessionInitialized()) return
 
-    recordProgressMutation.mutate({
-      modulePath: buildVocabModulePath(currentDeck),
+    const sessionState = buildSessionState(data, props.mode, props.includeReviews)
+    practiceManager.initializeManager(sessionState)
+    setSessionInitialized(true)
+  })
+
+  return (
+    <Show
+      when={sessionInitialized()}
+      fallback={<div>Loading practice session...</div>}
+    >
+      <VocabPractice
+        practiceManager={practiceManager}
+        deckName={props.deck.deckName}
+        mode={props.mode}
+        onAnswer={(rating: Grade) => practiceManager.answerCard(rating)}
+        onIntroductionComplete={() => practiceManager.processIntroduction()}
+        onProgressEvent={recordProgress}
+      />
+    </Show>
+  )
+}
+
+// --- Anki Practice ---
+
+function AnkiPractice(props: {
+  deck: UnifiedDeck
+  mode: PracticeMode
+  practiceData: PracticeData | null | undefined
+}) {
+  const [ankiState, setAnkiState] = createSignal<AnkiSyncState>({
+    phase: "checking",
+  })
+  const [sessionInitialized, setSessionInitialized] = createSignal(false)
+
+  const practiceManager = usePracticeManager(async (card, rating) => {
+    if (!card.ankiCardId) return
+    try {
+      const success = await gradeAnkiCard(card.ankiCardId, rating as number)
+      if (!success) throw new Error("Anki rejected the answer")
+    } catch (error) {
+      console.error("Failed to sync answer to Anki:", error)
+      toast.error("Lost connection to Anki. Answer not saved.")
+    }
+  })
+
+  const recordProgress = useRecordProgress(() => props.deck)
+
+  let syncContext: {
+    hierarchy: DeckHierarchyResult
+    deckName: string
+    toAddNotes: ReturnType<typeof buildModuleNotesFromData>
+  } | null = null
+
+  const startAnkiFlow = async () => {
+    const data = props.practiceData
+    if (!data) return
+
+    setAnkiState({ phase: "checking" })
+
+    try {
+      // Validate connection
+      const validation = await validateAnkiConnect()
+      if (!validation.success) {
+        setAnkiState({
+          phase: "error",
+          message: validation.error || "Failed to connect to Anki",
+        })
+        return
+      }
+
+      const hierarchy = data.hierarchy
+      const deckName =
+        props.mode === "meanings"
+          ? meaningsDeckName(props.deck.deckName)
+          : spellingsDeckName(props.deck.deckName)
+
+      // Build notes from hierarchy display data
+      const notes = buildModuleNotesFromData(
+        hierarchy.vocabulary,
+        props.mode === "meanings" ? hierarchy.kanji : [],
+        props.mode === "meanings" ? hierarchy.radicals : [],
+        props.mode,
+        deckName,
+      )
+
+      // Check what needs syncing
+      const { toAdd, alreadyExist } = await checkModuleSync(notes, deckName)
+
+      syncContext = { hierarchy, deckName, toAddNotes: toAdd }
+      setAnkiState({ phase: "confirm", toAdd: toAdd.length, alreadyExist })
+    } catch (error) {
+      setAnkiState({
+        phase: "error",
+        message:
+          error instanceof Error ? error.message : "Unknown error occurred",
+      })
+    }
+  }
+
+  const continueAnkiSetup = async () => {
+    if (!syncContext || !props.practiceData) return
+
+    setAnkiState({ phase: "loading" })
+
+    try {
+      const { hierarchy, deckName, toAddNotes } = syncContext
+
+      // Ensure models + decks exist, then push notes
+      await ensureAnkiSetup(props.deck.deckName)
+      await pushNotesToAnki(toAddNotes)
+
+      // Fetch card data from Anki
+      const nnKeys = [
+        ...hierarchy.vocabulary.map((v) => `vocabulary:${v.word}`),
+        ...(props.mode === "meanings"
+          ? hierarchy.kanji.map((k) => `kanji:${k.kanji}`)
+          : []),
+        ...(props.mode === "meanings"
+          ? hierarchy.radicals.map((r) => `radical:${r.radical}`)
+          : []),
+      ]
+
+      const moduleCards = await fetchModuleCardData(nnKeys, deckName)
+      const reviewCards = await fetchDueReviewCards(
+        deckName,
+        new Set(nnKeys),
+      )
+
+      // Initialize practice session
+      const sessionState = initializeAnkiPracticeSession(
+        hierarchy.hierarchy,
+        moduleCards,
+        reviewCards,
+        props.mode,
+      )
+
+      practiceManager.initializeManager(sessionState, { ankiMode: true })
+      setSessionInitialized(true)
+      setAnkiState({ phase: "ready" })
+    } catch (error) {
+      setAnkiState({
+        phase: "error",
+        message:
+          error instanceof Error ? error.message : "Unknown error occurred",
+      })
+    }
+  }
+
+  // Start flow when practice data arrives
+  createEffect(() => {
+    if (props.practiceData && !sessionInitialized()) {
+      startAnkiFlow()
+    }
+  })
+
+  return (
+    <Show
+      when={sessionInitialized() && ankiState().phase === "ready"}
+      fallback={
+        <AnkiSyncDialog
+          state={ankiState()}
+          onContinue={continueAnkiSetup}
+          onCancel={() => {
+            window.location.href = "/vocab"
+          }}
+          onRetry={startAnkiFlow}
+        />
+      }
+    >
+      <VocabPractice
+        practiceManager={practiceManager}
+        deckName={props.deck.deckName}
+        mode={props.mode}
+        onAnswer={(rating: Grade) => practiceManager.answerCard(rating)}
+        onIntroductionComplete={() => practiceManager.processIntroduction()}
+        onProgressEvent={recordProgress}
+      />
+    </Show>
+  )
+}
+
+function useRecordProgress(deck: () => UnifiedDeck) {
+  const mutation = useMutation(api.api.progress.recordProgressEvent)
+  return (progressUnitsDelta: number, questionsAnsweredDelta: number) => {
+    mutation.mutate({
+      modulePath: `vocab-deck:${deck().id}`,
       moduleType: "vocab-practice",
       progressUnitsDelta,
       questionsAnsweredDelta,
@@ -126,46 +374,6 @@ function PracticeCatchAll() {
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
     })
   }
-
-  createEffect(() => {
-    const data = practiceData()
-    if (!data || sessionInitialized()) return
-
-    const sessionState = buildSessionState(data, mode(), includeReviews())
-    practiceManager.initializeManager(sessionState)
-    setSessionInitialized(true)
-  })
-
-  return (
-    <Show
-      when={deck()}
-      fallback={
-        <div>
-          <p>{deckLookup() ? "Deck not found" : "Loading..."}</p>
-        </div>
-      }
-    >
-      {(d) => (
-        <Show
-          when={sessionInitialized()}
-          fallback={<div>Loading practice session...</div>}
-        >
-          <VocabPractice
-            practiceManager={practiceManager}
-            deckName={d().deckName}
-            mode={mode()}
-            onAnswer={(rating: Grade) => practiceManager.answerCard(rating)}
-            onIntroductionComplete={() => practiceManager.processIntroduction()}
-            onProgressEvent={recordProgress}
-          />
-        </Show>
-      )}
-    </Show>
-  )
-}
-
-function buildVocabModulePath(deck: UnifiedDeck): string {
-  return `vocab-deck:${deck.id}`
 }
 
 function parsePathSegments(splat: string | undefined): string[] {

@@ -180,11 +180,6 @@ export function initializePracticeSession(
   includeReviews = true,
 ): PracticeSessionState {
   const cardMap = new Map<string, PracticeCard>()
-  const dependencyMap = new Map<string, string[]>()
-  const unlocksMap = new Map<string, string[]>()
-  const lockedKeys = new Set<string>()
-  let moduleQueue: string[] = []
-  const reviewQueue: string[] = []
 
   // Create lookup maps for display data
   const vocabLookup = new Map(moduleData.vocabulary.map((v) => [v.word, v]))
@@ -319,9 +314,44 @@ export function initializePracticeSession(
     })
   }
 
-  // --- Phase 3: Build Dependencies (Only if prerequisites are enabled) ---
+  // --- Phase 3 & 4: Build dependencies and populate queues ---
+  const queues = buildSessionQueues(cardMap, hierarchy, {
+    enablePrerequisites,
+    shuffle,
+    isDue: (card) => !card.fsrs.card.due || card.fsrs.card.due <= new Date(),
+  })
+
+  return {
+    cardMap,
+    ...queues,
+    activeQueue: [],
+    isFinished: false,
+  }
+}
+
+/** Build dependency graph, lock cards, populate queues from a pre-built cardMap */
+export function buildSessionQueues(
+  cardMap: Map<string, PracticeCard>,
+  hierarchy: VocabHierarchy,
+  options: {
+    enablePrerequisites?: boolean
+    shuffle?: boolean
+    isDue: (card: PracticeCard) => boolean
+  },
+): Pick<
+  PracticeSessionState,
+  "dependencyMap" | "unlocksMap" | "lockedKeys" | "moduleQueue" | "reviewQueue"
+> {
+  const dependencyMap = new Map<string, string[]>()
+  const unlocksMap = new Map<string, string[]>()
+  const lockedKeys = new Set<string>()
+  let moduleQueue: string[] = []
+  const reviewQueue: string[] = []
+
+  const enablePrerequisites = options.enablePrerequisites ?? true
+
   if (enablePrerequisites) {
-    // 3a. Process vocabulary dependencies on kanji
+    // Build vocabulary → kanji dependencies
     hierarchy.vocabulary.forEach((vocabRel) => {
       const vocabKey = `vocabulary:${vocabRel.word}`
       if (!cardMap.has(vocabKey)) return
@@ -331,13 +361,10 @@ export function initializePracticeSession(
         const kanjiCard = cardMap.get(kanjiKey)
         if (!kanjiCard) return
 
-        const now = new Date()
-        const isDue = !kanjiCard.fsrs.card.due || kanjiCard.fsrs.card.due <= now
-
         if (!unlocksMap.has(kanjiKey)) unlocksMap.set(kanjiKey, [])
         unlocksMap.get(kanjiKey)!.push(vocabKey)
 
-        if (isDue) {
+        if (options.isDue(kanjiCard)) {
           if (!dependencyMap.has(vocabKey)) dependencyMap.set(vocabKey, [])
           dependencyMap.get(vocabKey)!.push(kanjiKey)
         } else {
@@ -346,7 +373,7 @@ export function initializePracticeSession(
       })
     })
 
-    // 3b. Process kanji dependencies on radicals
+    // Build kanji → radical dependencies
     hierarchy.kanji.forEach((kanjiRel) => {
       const kanjiKey = `kanji:${kanjiRel.kanji}`
       if (!cardMap.has(kanjiKey)) return
@@ -356,14 +383,10 @@ export function initializePracticeSession(
         const radicalCard = cardMap.get(radicalKey)
         if (!radicalCard) return
 
-        const now = new Date()
-        const isDue =
-          !radicalCard.fsrs.card.due || radicalCard.fsrs.card.due <= now
-
         if (!unlocksMap.has(radicalKey)) unlocksMap.set(radicalKey, [])
         unlocksMap.get(radicalKey)!.push(kanjiKey)
 
-        if (isDue) {
+        if (options.isDue(radicalCard)) {
           if (!dependencyMap.has(kanjiKey)) dependencyMap.set(kanjiKey, [])
           dependencyMap.get(kanjiKey)!.push(radicalKey)
         } else {
@@ -373,35 +396,24 @@ export function initializePracticeSession(
     })
   }
 
-  // --- Phase 4: Lock Cards and Populate Queues ---
+  // Lock cards and populate queues
   for (const [key, card] of cardMap.entries()) {
-    if (card.isDisabled) continue // Skip disabled cards
+    if (card.isDisabled) continue
 
     if (card.sessionScope === "module") {
-      // Only lock if prerequisites are enabled AND there's an actual dependency
       if (enablePrerequisites && dependencyMap.has(key)) {
         lockedKeys.add(key)
       } else {
         moduleQueue.push(key)
       }
     } else {
-      // Review cards go to review queue
       reviewQueue.push(key)
     }
   }
 
-  if (shuffle) {
+  if (options.shuffle) {
     moduleQueue = [...moduleQueue].sort(() => Math.random() - 0.5)
   }
 
-  return {
-    cardMap,
-    dependencyMap,
-    unlocksMap,
-    lockedKeys,
-    moduleQueue,
-    reviewQueue,
-    activeQueue: [],
-    isFinished: false,
-  }
+  return { dependencyMap, unlocksMap, lockedKeys, moduleQueue, reviewQueue }
 }

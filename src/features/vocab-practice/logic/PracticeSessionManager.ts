@@ -1,7 +1,7 @@
 // vocab-practice/logic/PracticeSessionManager.ts
 import { Grade } from "ts-fsrs"
 import type { PracticeSessionState, PracticeCard } from "../types"
-import { handleCardAnswer } from "./card-state-handler"
+import { handleCardAnswer, handleCardAnswerAnki } from "./card-state-handler"
 
 const ACTIVE_QUEUE_MAX_SIZE = 10
 
@@ -15,11 +15,16 @@ type QueueState = {
 export class PracticeSessionManager {
   private state: PracticeSessionState
   private reviewOnly: boolean
+  private ankiMode: boolean
   private changeCallbacks: (() => void)[] = []
 
-  constructor(initialState: PracticeSessionState, reviewOnly: boolean = false) {
+  constructor(
+    initialState: PracticeSessionState,
+    options: { reviewOnly?: boolean; ankiMode?: boolean } = {},
+  ) {
     this.state = initialState
-    this.reviewOnly = reviewOnly
+    this.reviewOnly = options.reviewOnly ?? false
+    this.ankiMode = options.ankiMode ?? false
 
     // Initial replenishment of the active queue from the source queues
     if (this.state.activeQueue.length === 0) {
@@ -172,7 +177,9 @@ export class PracticeSessionManager {
     const originalCard = this.state.cardMap.get(key)!
 
     // 1. Update card state based on answer
-    const updatedCard = handleCardAnswer(originalCard, rating)
+    const updatedCard = this.ankiMode
+      ? handleCardAnswerAnki(originalCard, rating)
+      : handleCardAnswer(originalCard, rating)
     this.state.cardMap.set(key, updatedCard)
 
     // 2. Check if this completion unlocks other cards

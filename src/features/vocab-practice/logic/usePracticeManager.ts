@@ -5,7 +5,7 @@ import { PracticeSessionManager } from "./PracticeSessionManager"
 import type { PracticeCard, PracticeSessionState } from "../types"
 
 export function usePracticeManager(
-  persistCard?: (card: PracticeCard) => Promise<void>,
+  persistCard?: (card: PracticeCard, rating: Grade) => Promise<void>,
 ) {
   // Manager instance (not reactive)
   const [manager, setManager] = createSignal<PracticeSessionManager | null>(
@@ -30,44 +30,11 @@ export function usePracticeManager(
   /**
    * Initialize the practice manager with session state
    */
-  const initializeManager = (sessionState: PracticeSessionState): void => {
-    const newManager = new PracticeSessionManager(sessionState)
-
-    // Set up observer for automatic reactivity sync
-    newManager.onChange(() => {
-      setCurrentCard(
-        newManager.isFinished() ? null : newManager.getCurrentCard(),
-      )
-      setActiveQueue(newManager.getActiveQueue())
-      setIsFinished(newManager.isFinished())
-      setCardMap(newManager.getCardMap())
-      setDependencyMap(newManager.getState().dependencyMap)
-      const progress = newManager.getModuleProgress()
-      setModuleProgress({ completed: progress.done, total: progress.total })
-    })
-
-    setManager(newManager)
-
-    // Initial sync
-    setCurrentCard(newManager.isFinished() ? null : newManager.getCurrentCard())
-    setActiveQueue(newManager.getActiveQueue())
-    setIsFinished(newManager.isFinished())
-    setCardMap(newManager.getCardMap())
-    setDependencyMap(newManager.getState().dependencyMap)
-    const initialProgress = newManager.getModuleProgress()
-    setModuleProgress({
-      completed: initialProgress.done,
-      total: initialProgress.total,
-    })
-  }
-
-  /**
-   * Initialize manager for review-only mode
-   */
-  const initializeReviewManager = (
+  const initializeManager = (
     sessionState: PracticeSessionState,
+    options?: { reviewOnly?: boolean; ankiMode?: boolean },
   ): void => {
-    const newManager = new PracticeSessionManager(sessionState, true)
+    const newManager = new PracticeSessionManager(sessionState, options)
 
     // Set up observer for automatic reactivity sync
     newManager.onChange(() => {
@@ -105,7 +72,7 @@ export function usePracticeManager(
     // Observer will automatically update reactive signals
     // Persist if callback provided
     if (persistCard && updatedCard) {
-      await persistCard(updatedCard)
+      await persistCard(updatedCard, rating)
     }
   }
 
@@ -149,7 +116,6 @@ export function usePracticeManager(
     // Manager access
     manager,
     initializeManager,
-    initializeReviewManager,
 
     // Reactive state (signals)
     currentCard,

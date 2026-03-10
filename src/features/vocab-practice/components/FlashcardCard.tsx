@@ -1,4 +1,11 @@
-import { createSignal, Show, Suspense, onMount, onCleanup } from "solid-js"
+import {
+  createSignal,
+  createEffect,
+  Show,
+  Suspense,
+  onMount,
+  onCleanup,
+} from "solid-js"
 import { Rating, type Grade } from "ts-fsrs"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/utils"
@@ -17,6 +24,23 @@ type Props = {
   currentIndex: number
   totalItems: number
   onAnswer: (rating: Grade) => Promise<void>
+}
+
+function AnkiCardRenderer(props: { html: string; css: string }) {
+  let containerRef!: HTMLDivElement
+  let shadowRoot: ShadowRoot
+
+  onMount(() => {
+    shadowRoot = containerRef.attachShadow({ mode: "open" })
+  })
+
+  createEffect(() => {
+    if (shadowRoot) {
+      shadowRoot.innerHTML = `<style>${props.css}</style>${props.html}`
+    }
+  })
+
+  return <div ref={containerRef} />
 }
 
 export function FlashcardCard(props: Props) {
@@ -117,10 +141,25 @@ export function FlashcardCard(props: Props) {
 
           {/* Prompt */}
           <div class="mb-6 text-center">
-            <Show when={shouldUseAnimation()} fallback={<PlainTextDisplay />}>
-              <Suspense fallback={<PlainTextDisplay />}>
-                <KanjiDisplay character={character()} />
-              </Suspense>
+            <Show
+              when={props.card.ankiRenderedHtml}
+              fallback={
+                <Show
+                  when={shouldUseAnimation()}
+                  fallback={<PlainTextDisplay />}
+                >
+                  <Suspense fallback={<PlainTextDisplay />}>
+                    <KanjiDisplay character={character()} />
+                  </Suspense>
+                </Show>
+              }
+            >
+              {(rendered) => (
+                <AnkiCardRenderer
+                  html={rendered().question}
+                  css={rendered().css}
+                />
+              )}
             </Show>
           </div>
 
@@ -128,14 +167,26 @@ export function FlashcardCard(props: Props) {
           <Show when={isRevealed()}>
             <div class="space-y-4 border-t border-card-foreground/10 pt-6">
               {/* Meanings */}
-              <div
-                class={cn(
-                  "text-center text-xl font-medium",
-                  TYPE_TEXT_COLORS[props.card.practiceItemType],
-                )}
+              <Show
+                when={props.card.ankiRenderedHtml}
+                fallback={
+                  <div
+                    class={cn(
+                      "text-center text-xl font-medium",
+                      TYPE_TEXT_COLORS[props.card.practiceItemType],
+                    )}
+                  >
+                    {props.card.validAnswers.join(", ")}
+                  </div>
+                }
               >
-                {props.card.validAnswers.join(", ")}
-              </div>
+                {(rendered) => (
+                  <AnkiCardRenderer
+                    html={rendered().answer}
+                    css={rendered().css}
+                  />
+                )}
+              </Show>
 
               {/* Mnemonic */}
               <Show when={mnemonic()}>
