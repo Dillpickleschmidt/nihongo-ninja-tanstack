@@ -184,6 +184,30 @@ export async function updateDeck(
   await ctx.db.patch(deckId, patch)
 }
 
+export async function resolveDeckById(
+  ctx: QueryCtx,
+  deckId: string,
+): Promise<UnifiedDeck | null> {
+  const builtIn = getBuiltInDecks().find((d) => d.id === deckId)
+  if (builtIn) return builtIn
+
+  try {
+    const userDeck = await ctx.db.get(deckId as Id<"userDecks">)
+    if (!userDeck) return null
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity || userDeck.userId !== identity.subject) return null
+    return {
+      id: userDeck._id,
+      deckName: userDeck.deckName,
+      deckDescription: userDeck.deckDescription,
+      folderId: userDeck.folderId,
+      source: "user",
+    }
+  } catch {
+    return null
+  }
+}
+
 export async function deleteDeck(ctx: MutationCtx, deckId: Id<"userDecks">) {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) throw new Error("Unauthenticated")

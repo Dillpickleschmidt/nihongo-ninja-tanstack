@@ -37,20 +37,20 @@ export async function ensureAnkiModels(): Promise<void> {
   }
 }
 
-export async function ensureAnkiDecks(learningPathName: string): Promise<{
+export async function ensureAnkiDecks(pathSegments: string[]): Promise<{
   meaningsDeck: string
   spellingsDeck: string
 }> {
-  const mDeck = meaningsDeckName(learningPathName)
-  const sDeck = spellingsDeckName(learningPathName)
+  const mDeck = meaningsDeckName(pathSegments)
+  const sDeck = spellingsDeckName(pathSegments)
   await Promise.all([createDeck(mDeck), createDeck(sDeck)])
   return { meaningsDeck: mDeck, spellingsDeck: sDeck }
 }
 
-export async function ensureAnkiSetup(learningPathName: string): Promise<{
+export async function ensureAnkiSetup(pathSegments: string[]): Promise<{
   meaningsDeck: string
   spellingsDeck: string
 }> {
   await ensureAnkiModels()
-  return await ensureAnkiDecks(learningPathName)
+  return await ensureAnkiDecks(pathSegments)
 }

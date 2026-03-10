@@ -43,10 +43,10 @@ export const ANKI_MODEL_BY_NAME = new Map<string, AnkiModelDef>(
   Object.values(ANKI_MODELS).map((m) => [m.modelName, m as AnkiModelDef]),
 )
 
-export function meaningsDeckName(pathName: string) {
-  return `NihongoNinja::${pathName}::Meanings`
+export function meaningsDeckName(pathSegments: string[]) {
+  return `NihongoNinja::${pathSegments.join("::")}::Meanings`
 }
 
-export function spellingsDeckName(pathName: string) {
-  return `NihongoNinja::${pathName}::Spellings`
+export function spellingsDeckName(pathSegments: string[]) {
+  return `NihongoNinja::${pathSegments.join("::")}::Spellings`
 }

@@ -43,6 +43,14 @@ export async function buildDeckHierarchy(
   }
 }
 
+export function extractHierarchyKeys(result: DeckHierarchyResult): string[] {
+  return [
+    ...result.vocabulary.map((v) => v.word),
+    ...result.kanji.map((k) => k.kanji),
+    ...result.radicals.map((r) => r.radical),
+  ]
+}
+
 /**
  * Extract all unique kanji characters from vocabulary items
  * Preserves order of first appearance

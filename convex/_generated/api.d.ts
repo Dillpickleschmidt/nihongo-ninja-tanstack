@@ -15,6 +15,7 @@ import type * as api_folders from "../api/folders.js";
 import type * as api_fsrs from "../api/fsrs.js";
 import type * as api_hierarchy from "../api/hierarchy.js";
 import type * as api_learning_paths from "../api/learning_paths.js";
+import type * as api_practice from "../api/practice.js";
 import type * as api_profiles from "../api/profiles.js";
 import type * as api_progress from "../api/progress.js";
 import type * as api_sentencePractice from "../api/sentencePractice.js";
@@ -50,6 +51,7 @@ declare const fullApi: ApiFromModules<{
   "api/fsrs": typeof api_fsrs;
   "api/hierarchy": typeof api_hierarchy;
   "api/learning_paths": typeof api_learning_paths;
+  "api/practice": typeof api_practice;
   "api/profiles": typeof api_profiles;
   "api/progress": typeof api_progress;
   "api/sentencePractice": typeof api_sentencePractice;
