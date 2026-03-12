@@ -101,6 +101,7 @@ function DiscoverPage() {
   const [bannerImageOpacity, setBannerImageOpacity] = createSignal(1)
   const [contentOpacity, setContentOpacity] = createSignal(1)
   const [vignetteOpacity, setVignetteOpacity] = createSignal(0)
+  const [bannerBlur, setBannerBlur] = createSignal(0)
 
   const banner = useBannerCarousel(() => loaderData().bannerSeed)
   const titleLanguage = () => personalSections()?.titleLanguage ?? null
@@ -140,6 +141,7 @@ function DiscoverPage() {
     setBannerImageOpacity(Math.max(0.45, 1 - scrollY / 600))
     setContentOpacity(Math.max(0, 1 - scrollY / 300))
     setVignetteOpacity(Math.min(1, Math.max(0, (scrollY - 200) / 200)))
+    setBannerBlur(scrollY >= 300 ? 4 : 0)
     if (scrollY < 300) setBannerTransform("scale(1.05) translate(0px, 0px)")
   }
 
@@ -175,8 +177,13 @@ function DiscoverPage() {
                 <Show when={banner.current()}>
                   {(anime) => (
                     <div
-                      class="absolute inset-0 transition-transform duration-300 ease-out"
-                      style={{ transform: bannerTransform() }}
+                      class="absolute inset-0"
+                      style={{
+                        transform: bannerTransform(),
+                        filter: `blur(${bannerBlur()}px)`,
+                        transition:
+                          "transform 300ms ease-out, filter 300ms ease-out",
+                      }}
                     >
                       <BannerImage
                         src={banner.bannerImage()}
