@@ -9,6 +9,13 @@ export const Route = createFileRoute("/_home/vocab/")({
     context.queryClient.prefetchQuery(
       convexQuery(api.api.progress.getRecentModuleActivity, { limit: 20 }),
     )
+    context.queryClient.prefetchQuery(
+      convexQuery(api.api.missedWords.getMostMissedItems, {
+        daysBack: 14,
+        maxItems: 25,
+        mode: "meanings",
+      }),
+    )
   },
   component: VocabDashboard,
 })

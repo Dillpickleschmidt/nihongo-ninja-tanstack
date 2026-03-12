@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_home/vocab")({
   loader: ({ context, preload }) => {
     if (!preload) {
       context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
-        blur: 2,
+        blur: 12,
         opacityOffset: -0.22,
         showGradient: false,
       })
@@ -24,19 +24,18 @@ export const Route = createFileRoute("/_home/vocab")({
 function VocabLayoutComponent() {
   return (
     <VocabProvider>
-
       {/* Center: Nav + Content */}
-      <div class="px-8 pb-16 mr-79">
+      <div class="px-8 pb-16 mr-80">
         <CenterNavBar />
         <Suspense>
           <Outlet />
         </Suspense>
       </div>
 
-        {/* Right: Panel with user's decks */}
-        <div class="fixed top-0 right-0 w-auto! hidden border-border/50 bg-card/30 border-l py-4 pl-4 md:block md:h-[calc(100vh-4rem)]">
-          <VocabRightPanel />
-        </div>
+      {/* Right: Panel with user's decks */}
+      <div class="fixed top-0 right-0 w-80! hidden border-border/50 bg-card/30 border-l py-4 pl-4 md:block md:h-[calc(100vh-4rem)]">
+        <VocabRightPanel />
+      </div>
 
       {/* Global Modals */}
       <FolderEditModal />

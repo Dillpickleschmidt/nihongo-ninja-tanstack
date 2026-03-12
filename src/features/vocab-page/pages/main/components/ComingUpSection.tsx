@@ -20,14 +20,12 @@ export function ComingUpSection(props: ComingUpSectionProps) {
     const chapter = textbookChapters[props.activeChapter]
     if (!chapter) return []
 
-    // Get vocab-practice module IDs in chapter order
     const vocabPracticeIds = chapter.learning_path_item_ids.filter(
       (id) => dynamic_modules[id]?.module_type === "vocab-practice",
     )
 
     const completedSet = new Set(props.recentCompletions.map((c) => c.moduleId))
 
-    // Find the last completed vocab-practice module in this chapter
     let lastCompletedIdx = -1
     for (let i = vocabPracticeIds.length - 1; i >= 0; i--) {
       if (completedSet.has(vocabPracticeIds[i])) {
@@ -36,10 +34,13 @@ export function ComingUpSection(props: ComingUpSectionProps) {
       }
     }
 
-    // Take next 2 uncompleted after that position
     const startIdx = lastCompletedIdx + 1
     const upcoming: Deck[] = []
-    for (let i = startIdx; i < vocabPracticeIds.length && upcoming.length < 2; i++) {
+    for (
+      let i = startIdx;
+      i < vocabPracticeIds.length && upcoming.length < 2;
+      i++
+    ) {
       if (!completedSet.has(vocabPracticeIds[i])) {
         const deck = props.decks.find((d) => d.id === vocabPracticeIds[i])
         if (deck) upcoming.push(deck)

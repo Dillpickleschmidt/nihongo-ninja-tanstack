@@ -1,16 +1,12 @@
-import { Show, createEffect, createMemo } from "solid-js"
+import { createEffect, createMemo } from "solid-js"
 import { useLocation } from "@tanstack/solid-router"
 import { useVocab } from "../context/VocabContext"
 import { resolveDeckFromPath, resolveFolderFromPath } from "../utils/navigation"
-import { SidebarUserInfoView } from "./vocab-right-panel/components/SidebarUserInfoView"
 import { SidebarHierarchyView } from "./vocab-right-panel/components/SidebarHierarchyView"
 
 export function VocabRightPanel() {
   const location = useLocation()
   const ctx = useVocab()
-
-  // Show full sidebar on all routes except /vocab
-  const showFullSidebar = () => location().pathname !== "/vocab"
 
   // Single memo that resolves current target from path
   const currentTarget = createMemo(() => {
@@ -60,9 +56,5 @@ export function VocabRightPanel() {
     }
   })
 
-  return (
-    <Show when={showFullSidebar()} fallback={<SidebarUserInfoView />}>
-      <SidebarHierarchyView selectedDeckId={selectedDeckId()} />
-    </Show>
-  )
+  return <SidebarHierarchyView selectedDeckId={selectedDeckId()} />
 }
