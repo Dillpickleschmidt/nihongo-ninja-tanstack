@@ -1,7 +1,14 @@
 // src/routes/_home/vocab/index.tsx
 import { createFileRoute } from "@tanstack/solid-router"
+import { convexQuery } from "@/lib/convex-query"
+import { api } from "convex/_generated/api"
 import { VocabDashboard } from "@/features/vocab-page/pages/main/components/VocabDashboard"
 
 export const Route = createFileRoute("/_home/vocab/")({
+  loader: ({ context }) => {
+    context.queryClient.prefetchQuery(
+      convexQuery(api.api.progress.getRecentModuleActivity, { limit: 20 }),
+    )
+  },
   component: VocabDashboard,
 })
