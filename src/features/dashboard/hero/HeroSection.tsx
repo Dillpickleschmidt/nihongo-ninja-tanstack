@@ -3,26 +3,43 @@ import { Sparkles } from "lucide-solid"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { useDashboardPath } from "../context/dashboard-path"
 import { CurrentChapterCard } from "./CurrentChapterCard"
+import { HeroTimeline } from "./HeroTimeline"
 
 export function HeroSection() {
+  const { currentChapter } = useDashboardPath()
+
+  const currentModules = () => {
+    const chapter = currentChapter()
+    if (chapter === undefined) return undefined
+    return [...chapter.specialModules, ...chapter.modules]
+  }
+
+  const nextModules = () => currentModules()?.slice(0, 3) ?? []
+
   return (
-    <section>
-      <div class="mb-8 animate-fade-up opacity-0">
-        <Suspense
-          fallback={
-            <div class="flex items-center gap-3 mb-2">
-              <div class="h-6 w-24 rounded-full bg-white/10 animate-pulse" />
-            </div>
-          }
-        >
-          <HeroBadge />
-        </Suspense>
-        <h1 class="text-3xl font-bold lg:text-4xl">
-          <span class="text-(--accent)">Continue</span> your journey
-        </h1>
+    <section class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex-1">
+        <div class="mb-8 animate-fade-up opacity-0">
+          <Suspense
+            fallback={
+              <div class="flex items-center gap-3 mb-2">
+                <div class="h-6 w-24 rounded-full bg-white/10 animate-pulse" />
+              </div>
+            }
+          >
+            <HeroBadge />
+          </Suspense>
+          <h1 class="text-3xl font-bold lg:text-4xl">
+            <span class="text-(--accent)">Continue</span> your journey
+          </h1>
+        </div>
+
+        <CurrentChapterCard />
       </div>
 
-      <CurrentChapterCard />
+      <div class="lg:shrink-0 animate-fade-up opacity-0" style={{ "animation-delay": "100ms" }}>
+        <HeroTimeline modules={nextModules()} />
+      </div>
     </section>
   )
 }

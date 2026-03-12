@@ -9,18 +9,18 @@ export function DueCountBadge(props: DueCountBadgeProps) {
   const count = createMemo(() => props.count())
 
   return (
-    <div class="text-right">
+    <div class="flex items-center gap-2">
       <Show
         when={count() !== undefined}
         fallback={
-          <LoaderCircle class="ml-auto h-5 w-5 animate-spin text-white/50" />
+          <LoaderCircle class="h-4 w-4 animate-spin text-white/50" />
         }
       >
-        <div class="text-2xl font-bold text-(--accent) brightness-150 md:text-3xl">
+        <span class="text-2xl font-bold text-(--accent) brightness-150">
           {count()}
-        </div>
+        </span>
       </Show>
-      <div class="text-xs text-white/40">due cards</div>
+      <span class="text-sm text-white/40">due cards</span>
     </div>
   )
 }
