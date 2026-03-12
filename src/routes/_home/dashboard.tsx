@@ -73,7 +73,7 @@ function DashboardComponent() {
 
       <FloatingKanji char="忍" class="top-20 left-[10%]" delay={0} />
 
-      <main class="relative pt-20 md:pt-28 pb-32">
+      <main class="relative pt-20 md:pt-20 2xl:pt-28 pb-32">
         <DashboardPathProvider>
           <div class="mx-auto max-w-7xl px-4 md:px-6">
             <HeroSection />

@@ -48,7 +48,7 @@ export function DeckView(props: DeckViewProps) {
         />
       </Show>
 
-      <div class="px-4">
+      <div>
         <Tabs
           value={view.activeTab()}
           onChange={(v) => view.setActiveTab(v as TabValue)}

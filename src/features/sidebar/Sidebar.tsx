@@ -169,7 +169,7 @@ function NavigationContent(props: NavigationContentProps) {
       {/*   </span> */}
       {/* </Link> */}
       {/* Navigation Groups */}
-      <div class="flex-1 space-y-1 pt-24">
+      <div class="flex-1 space-y-1 2xl:pt-16">
         <For each={navigation}>
           {(section) => (
             <div class="flex flex-col space-y-1 py-4">
@@ -270,7 +270,6 @@ function DesktopSidebar(props: {
   return (
     <div
       ref={props.ref}
-      class="fixed top-0 left-0 h-screen w-72 z-50"
       style={props.animated ? getInitialAnimationStyles("left") : undefined}
     >
       <NavigationContent

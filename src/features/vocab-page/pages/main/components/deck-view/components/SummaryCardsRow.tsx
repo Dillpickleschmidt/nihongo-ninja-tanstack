@@ -21,7 +21,7 @@ interface SummaryCardsRowProps {
 
 export function SummaryCardsRow(props: SummaryCardsRowProps) {
   return (
-    <div class="grid grid-cols-3 gap-3 px-4">
+    <div class="grid grid-cols-3 gap-3">
       <SummaryCard
         label="Vocabulary"
         count={props.vocabCount}

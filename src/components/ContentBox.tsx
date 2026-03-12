@@ -24,7 +24,8 @@ type ContentBoxProps = {
 export const contentBoxVariants = cva("w-full mb-16 md:mb-0 pb-16 relative", {
   variants: {
     size: {
-      default: "bg-card/40 max-w-4xl",
+      default: "max-w-4xl",
+      // bg-card/40
       lg: "max-w-6xl md:max-w-7xl",
     },
   },

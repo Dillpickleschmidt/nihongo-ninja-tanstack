@@ -74,16 +74,21 @@ function HomeLayout() {
   })
 
   return (
-    <>
+    <div class="flex">
       <ActiveChapterSync />
-      <Outlet />
 
-      <SSRMediaQuery showFrom="md">
-        <Sidebar animated={false} onSignOut={handleSignOut} />
+      <SSRMediaQuery showFrom="xl">
+        <div class="w-48 min-[1700px]:w-72 z-50 sticky top-0 h-screen">
+          <Sidebar animated={false} onSignOut={handleSignOut} />
+        </div>
       </SSRMediaQuery>
 
+      <div class="w-full flex justify-center min-[1700px]:-ml-72! [&>*]:w-full">
+        <Outlet />
+      </div>
+
       <BottomNav dailyProgressPercentage={dailyProgressPercentage()} />
-    </>
+    </div>
   )
 }
 
