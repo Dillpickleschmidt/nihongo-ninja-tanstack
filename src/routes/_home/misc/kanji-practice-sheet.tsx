@@ -10,9 +10,7 @@ import PrintButton from "@/components/PrintButton"
 import { Button } from "@/components/ui/button"
 import { Sun, Moon } from "lucide-solid"
 
-export const Route = createFileRoute(
-  "/_home/additional-resources/kanji-practice-sheet",
-)({
+export const Route = createFileRoute("/_home/misc/kanji-practice-sheet")({
   head: () => ({
     meta: [{ title: "漢字練習シート" }],
   }),
@@ -292,7 +290,9 @@ function KanjiPracticeSheet() {
     <div class="min-[1700px]:pl-72 mx-auto w-full max-w-[1700px] flex flex-col items-center gap-8 px-12 pt-8 pb-28">
       <div ref={setPrintContent} class="flex w-full flex-col gap-8 print:gap-0">
         {/* Page 1: Header + Main Table */}
-        <div class={`border-card relative aspect-[8.5/11] w-full border p-12 print:w-full print:border-none print:bg-white print:p-8 ${isLight() ? "bg-white text-black" : "bg-background"}`}>
+        <div
+          class={`border-card relative aspect-[8.5/11] w-full border p-12 print:w-full print:border-none print:bg-white print:p-8 ${isLight() ? "bg-white text-black" : "bg-background"}`}
+        >
           {/* Controls */}
           <div class="absolute top-12 left-12 print:hidden">
             <Button
@@ -353,7 +353,9 @@ function KanjiPracticeSheet() {
         </div>
 
         {/* Page 2: Second Table */}
-        <div class={`border-card aspect-[8.5/11] w-full border p-12 print:w-full print:break-before-page print:border-none print:bg-white print:p-8 ${isLight() ? "bg-white text-black" : "bg-background"}`}>
+        <div
+          class={`border-card aspect-[8.5/11] w-full border p-12 print:w-full print:break-before-page print:border-none print:bg-white print:p-8 ${isLight() ? "bg-white text-black" : "bg-background"}`}
+        >
           <PracticeTable rows={SECOND_TABLE_ROWS} showHeader={false} />
         </div>
       </div>
