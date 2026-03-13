@@ -205,7 +205,7 @@
   --radius-sm: calc(var(--radius) - 4px);
 
   --font-inter: "Inter Variable", "sans-serif";
-  --font-japanese: "NotoSansJP Variable", "sans-serif";
+  --font-japanese: "Noto Sans JP Variable", "sans-serif";
   --font-poppins: "Poppins", "sans-serif";
 
   /* Animation keyframes */

@@ -23,6 +23,7 @@ import {
 import type { QueryClient } from "@tanstack/solid-query"
 import { createMediaQuery } from "@solid-primitives/media"
 import "@fontsource-variable/inter"
+import "@fontsource-variable/noto-sans-jp"
 import "@fontsource/poppins"
 import appCss from "@/styles/app.css?url"
 import AppConvexProvider, { convexQueryClient } from "@/providers/convex"
