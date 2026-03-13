@@ -1,5 +1,6 @@
 import { createSignal, For, Show } from "solid-js"
-import { ChevronDown, PencilLine } from "lucide-solid"
+import { Link } from "@tanstack/solid-router"
+import { ChevronDown, ChevronRight, PencilLine } from "lucide-solid"
 
 interface TranscriptLine {
   line_id: number
@@ -12,6 +13,7 @@ interface ModuleDetailGrammarProps {
   transcriptGroups: TranscriptLine[][]
   moduleId: string
   moduleDescription?: string
+  linkTo: string
 }
 
 export function ModuleDetailGrammar(props: ModuleDetailGrammarProps) {
@@ -27,12 +29,23 @@ export function ModuleDetailGrammar(props: ModuleDetailGrammarProps) {
           <div>
             <p class="mb-2 text-sm font-medium text-white/40">Example</p>
             <div class="rounded-lg border border-card-foreground/70 bg-gradient-to-br backdrop-blur-sm dark:from-neutral-600/15 dark:to-gray-600/10 p-5">
-              <p class="font-japanese text-xl leading-relaxed text-white/90">
-                {sentence().text}
-              </p>
-              <p class="text-muted-foreground mt-2 text-sm">
-                {sentence().english || "[English translation]"}
-              </p>
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                  <p class="font-japanese text-xl leading-relaxed text-white/90">
+                    {sentence().text}
+                  </p>
+                  <p class="text-muted-foreground mt-2 text-sm">
+                    {sentence().english || "[English translation]"}
+                  </p>
+                </div>
+                <Link
+                  to={props.linkTo}
+                  class="flex items-center gap-1.5 shrink-0 rounded-lg bg-amber-500/15 px-3 py-1.5 text-sm font-medium text-amber-300 ring-1 ring-amber-400/25 transition-all hover:bg-amber-500/25 hover:text-amber-200"
+                >
+                  Continue
+                  <ChevronRight class="size-4" />
+                </Link>
+              </div>
             </div>
           </div>
         )}

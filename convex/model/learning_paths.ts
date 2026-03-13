@@ -263,6 +263,13 @@ export async function getResolvedChaptersForPath(
       continue
     }
 
+    const folderPath = deck.folderId
+      ? await buildFolderPath(ctx, deck.folderId)
+      : ""
+    const deckPath = folderPath
+      ? `/vocab/${folderPath}/${String(deck._id)}`
+      : `/vocab/${String(deck._id)}`
+
     resolvedModules.push({
       moduleId: source.moduleId,
       module: {
@@ -270,7 +277,7 @@ export async function getResolvedChaptersForPath(
         module_type: "vocab-practice",
         description: deck.deckDescription,
       },
-      linkTo: `/vocab/practice/${source.moduleId}`,
+      linkTo: deckPath,
       disabled: false,
     })
   }
@@ -610,4 +617,24 @@ async function deleteFolderTree(
   }
 
   await ctx.db.delete(folderId)
+}
+
+async function buildFolderPath(
+  ctx: QueryCtx,
+  folderId: Id<"userDeckFolders">,
+): Promise<string> {
+  const segments: string[] = []
+  let currentId: Id<"userDeckFolders"> | undefined = folderId
+
+  while (currentId) {
+    const [folder] = await ctx.db
+      .query("userDeckFolders")
+      .filter((q) => q.eq(q.field("_id"), currentId!))
+      .collect()
+    if (!folder) break
+    segments.unshift(String(folder._id))
+    currentId = folder.parentFolderId
+  }
+
+  return segments.join("/")
 }

@@ -1,5 +1,6 @@
 import { createSignal, For, Show } from "solid-js"
-import { GraduationCap } from "lucide-solid"
+import { Link } from "@tanstack/solid-router"
+import { GraduationCap, ChevronRight } from "lucide-solid"
 import { extractHiragana } from "@/data/utils/text/furigana"
 
 interface TranscriptLine {
@@ -18,6 +19,7 @@ interface VocabItem {
 interface ModuleDetailVocabularyProps {
   transcriptGroups: TranscriptLine[][]
   vocabularyItems: VocabItem[]
+  linkTo: string
 }
 
 export function ModuleDetailVocabulary(props: ModuleDetailVocabularyProps) {
@@ -55,18 +57,27 @@ export function ModuleDetailVocabulary(props: ModuleDetailVocabularyProps) {
           <div class="space-y-5">
             {/* Word heading — gradient card */}
             <div class="rounded-lg border border-card-foreground/70 bg-gradient-to-br backdrop-blur-sm dark:from-neutral-600/15 dark:to-gray-600/10 p-5">
-              <div class="flex items-center gap-3">
-                <GraduationCap class="size-5 shrink-0 text-orange-400" />
-                <p class="font-japanese text-xl text-white/90">
-                  {word().word}
-                  <Show when={word().furigana}>
-                    {(furigana) => (
-                      <span class="text-muted-foreground ml-1.5 text-sm">
-                        （{extractHiragana(furigana())}）
-                      </span>
-                    )}
-                  </Show>
-                </p>
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                  <GraduationCap class="size-5 shrink-0 text-orange-400" />
+                  <p class="font-japanese text-xl text-white/90">
+                    {word().word}
+                    <Show when={word().furigana}>
+                      {(furigana) => (
+                        <span class="text-muted-foreground ml-1.5 text-sm">
+                          （{extractHiragana(furigana())}）
+                        </span>
+                      )}
+                    </Show>
+                  </p>
+                </div>
+                <Link
+                  to={props.linkTo}
+                  class="flex items-center gap-1.5 shrink-0 rounded-lg bg-orange-500/15 px-3 py-1.5 text-sm font-medium text-orange-300 ring-1 ring-orange-400/25 transition-all hover:bg-orange-500/25 hover:text-orange-200"
+                >
+                  Continue
+                  <ChevronRight class="size-4" />
+                </Link>
               </div>
               <Show when={word().english}>
                 {(english) => (

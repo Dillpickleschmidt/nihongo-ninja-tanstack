@@ -99,6 +99,7 @@ export function LearningPathSection(props: LearningPathSectionProps) {
           pathId={selectedPathId() || ""}
           moduleId={selectedModule()!.moduleId}
           moduleName={selectedModule()!.module.title}
+          linkTo={selectedModule()!.linkTo}
           isOpen={dialogOpen()}
           onOpenChange={setDialogOpen}
         />

@@ -14,6 +14,7 @@ interface ModuleDetailDialogProps {
   pathId: string
   moduleId: string
   moduleName: string
+  linkTo: string
   isOpen: boolean
   onOpenChange: (open: boolean) => void
 }
@@ -58,6 +59,7 @@ export function ModuleDetailDialog(props: ModuleDetailDialogProps) {
                   <ModuleDetailVocabulary
                     transcriptGroups={detailQuery.data()?.transcriptGroups ?? []}
                     vocabularyItems={detailQuery.data()?.vocabularyItems ?? []}
+                    linkTo={props.linkTo}
                   />
                 }
               >
@@ -65,6 +67,7 @@ export function ModuleDetailDialog(props: ModuleDetailDialogProps) {
                   transcriptGroups={detailQuery.data()?.transcriptGroups ?? []}
                   moduleId={props.moduleId}
                   moduleDescription={detailQuery.data()?.moduleDescription}
+                  linkTo={props.linkTo}
                 />
               </Show>
             </Show>

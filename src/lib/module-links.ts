@@ -8,8 +8,11 @@ export function getModuleLink(
   moduleId: string,
 ): string {
   if ("link" in module && module.link) return module.link
-  if (module.module_type === "vocab-practice")
-    return `/vocab?import=${moduleId}`
+  if (module.module_type === "vocab-practice") {
+    const chapter = getChapterForModule(moduleId)
+    if (chapter) return `/vocab/${chapter.textbookId}/${chapter.chapterSlug}/${moduleId}`
+    return `/vocab/practice/${moduleId}`
+  }
   if (module.module_type === "sentence-practice")
     return `/sentence-practice/${moduleId.replace(/^sentence-practice-/, "")}`
   if (module.module_type === "vocab-test")
