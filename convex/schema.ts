@@ -30,6 +30,7 @@ export default defineSchema({
     userId: v.string(),
     folderName: v.string(),
     parentFolderId: v.optional(v.id("userDeckFolders")),
+    learningPathId: v.optional(v.id("learningPathTranscripts")),
   }).index("by_user", ["userId"]),
 
   // User Decks

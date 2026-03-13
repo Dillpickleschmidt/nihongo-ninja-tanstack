@@ -10,6 +10,7 @@ export interface UnifiedFolder {
   folderName: string
   parentFolderId?: string
   source: "user" | "built-in"
+  learningPathId?: string
 }
 
 // ===== Built-in Folder Generation =====
@@ -55,6 +56,7 @@ export async function getAllFolders(ctx: QueryCtx): Promise<UnifiedFolder[]> {
     folderName: f.folderName,
     parentFolderId: f.parentFolderId,
     source: "user" as const,
+    learningPathId: f.learningPathId,
   }))
 
   return [...builtIn, ...normalized]
@@ -117,6 +119,7 @@ export async function createFolder(
   ctx: MutationCtx,
   folderName: string,
   parentFolderId?: Id<"userDeckFolders">,
+  learningPathId?: Id<"learningPathTranscripts">,
 ) {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) throw new Error("Unauthenticated")
@@ -125,6 +128,7 @@ export async function createFolder(
     userId: identity.subject,
     folderName,
     parentFolderId,
+    learningPathId,
   })
 }
 

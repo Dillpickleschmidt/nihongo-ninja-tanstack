@@ -360,11 +360,25 @@ export async function createCustomLearningPath(
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) throw new Error("Unauthenticated")
 
+  // Create root folder first (needed for path record)
   const rootFolderId = await ctx.db.insert("userDeckFolders", {
     userId: identity.subject,
     folderName: args.transcript.name,
     parentFolderId: undefined,
   })
+
+  // Create path record (needed for learningPathId on folders)
+  const pathId = await ctx.db.insert("learningPathTranscripts", {
+    userId: identity.subject,
+    name: args.transcript.name,
+    rootFolderId,
+    showName: args.transcript.showName,
+    episodeName: args.transcript.episodeName,
+    transcriptData: args.transcript.transcriptData,
+  })
+
+  // Patch root folder with learningPathId
+  await ctx.db.patch(rootFolderId, { learningPathId: pathId })
 
   const sortedVocabDecks = [...args.selectedVocabDecks].sort(
     (a, b) => a.orderIndex - b.orderIndex,
@@ -380,18 +394,10 @@ export async function createCustomLearningPath(
       userId: identity.subject,
       folderName: `Chapter ${chapterNum}`,
       parentFolderId: rootFolderId,
+      learningPathId: pathId,
     })
     chapterFolderIdBySlug.set(chapterSlug, chapterFolderId)
   }
-
-  const pathId = await ctx.db.insert("learningPathTranscripts", {
-    userId: identity.subject,
-    name: args.transcript.name,
-    rootFolderId,
-    showName: args.transcript.showName,
-    episodeName: args.transcript.episodeName,
-    transcriptData: args.transcript.transcriptData,
-  })
 
   for (const module of args.selectedGrammarModules) {
     await ctx.db.insert("learningPathModuleSources", {

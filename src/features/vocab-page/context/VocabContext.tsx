@@ -27,6 +27,7 @@ export type Folder = {
   folderName: string
   parentFolderId?: string
   source: Source
+  learningPathId?: string
 }
 
 export type Deck = {

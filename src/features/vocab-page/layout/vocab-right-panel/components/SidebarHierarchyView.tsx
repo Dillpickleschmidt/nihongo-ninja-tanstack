@@ -10,7 +10,7 @@ import { CollapsibleSection } from "./CollapsibleSection"
 import { CreateNewDropdown } from "./CreateNewDropdown"
 import {
   getRootFolders,
-  getRootDecks,
+  getRootOrphanDecks,
   getFolderChildren,
   getDecksInFolder,
 } from "../../../utils/hierarchy"
@@ -22,25 +22,24 @@ interface SidebarHierarchyViewProps {
 export function SidebarHierarchyView(props: SidebarHierarchyViewProps) {
   const ctx = useVocab()
 
-  // Separate built-in vs user folders/decks
-  const builtInFolders = createMemo(() =>
-    ctx.folders().filter((f) => f.source === "built-in"),
-  )
-  const builtInDecks = createMemo(() =>
-    ctx.decks().filter((d) => d.source === "built-in"),
-  )
-  const userFolders = createMemo(() =>
-    ctx.folders().filter((f) => f.source === "user"),
-  )
-  const userDecks = createMemo(() =>
-    ctx.decks().filter((d) => d.source === "user"),
+  const allFolders = () => ctx.folders()
+  const allDecks = () => ctx.decks()
+
+  const learningPathRootFolders = createMemo(() =>
+    getRootFolders(allFolders()).filter(
+      (f) => f.source === "built-in" || f.learningPathId,
+    ),
   )
 
-  // Root level items for each section
-  const builtInRootFolders = createMemo(() => getRootFolders(builtInFolders()))
-  const builtInRootDecks = createMemo(() => getRootDecks(builtInDecks()))
-  const userRootFolders = createMemo(() => getRootFolders(userFolders()))
-  const userRootDecks = createMemo(() => getRootDecks(userDecks()))
+  const plainUserRootFolders = createMemo(() =>
+    getRootFolders(allFolders()).filter(
+      (f) => f.source === "user" && !f.learningPathId,
+    ),
+  )
+
+  const orphanUserDecks = createMemo(() =>
+    getRootOrphanDecks(allDecks()).filter((d) => d.source === "user"),
+  )
 
   return (
     <div class="flex h-full flex-col">
@@ -55,33 +54,20 @@ export function SidebarHierarchyView(props: SidebarHierarchyViewProps) {
       {/* Scrollable content */}
       <div class="flex-1 space-y-4 overflow-y-auto">
         {/* Learning Paths section */}
-        <Show
-          when={
-            builtInRootFolders().length > 0 || builtInRootDecks().length > 0
-          }
-        >
+        <Show when={learningPathRootFolders().length > 0}>
           <div class="space-y-1">
             <h4 class="text-muted-foreground px-2 text-xs font-medium uppercase tracking-wide">
               Learning Paths
             </h4>
             <div class="space-y-1">
-              <For each={builtInRootFolders()}>
+              <For each={learningPathRootFolders()}>
                 {(folder) => (
                   <FolderNode
                     folder={folder}
-                    allFolders={builtInFolders()}
-                    allDecks={builtInDecks()}
+                    allFolders={allFolders()}
+                    allDecks={allDecks()}
                     selectedDeckId={props.selectedDeckId}
                     depth={0}
-                  />
-                )}
-              </For>
-              <For each={builtInRootDecks()}>
-                {(deck) => (
-                  <DeckCard
-                    deck={deck}
-                    isSelected={props.selectedDeckId === deck.id}
-                    class="mx-2"
                   />
                 )}
               </For>
@@ -89,13 +75,16 @@ export function SidebarHierarchyView(props: SidebarHierarchyViewProps) {
           </div>
         </Show>
 
-        {/* User Decks section */}
+        {/* My Folders section */}
         <div class="space-y-1">
           <h4 class="text-muted-foreground px-2 text-xs font-medium uppercase tracking-wide">
-            My Decks
+            My Folders
           </h4>
           <Show
-            when={userRootFolders().length > 0 || userRootDecks().length > 0}
+            when={
+              plainUserRootFolders().length > 0 ||
+              orphanUserDecks().length > 0
+            }
             fallback={
               <p class="text-muted-foreground px-2 py-4 text-center text-xs">
                 No decks yet. Create one to get started!
@@ -103,18 +92,18 @@ export function SidebarHierarchyView(props: SidebarHierarchyViewProps) {
             }
           >
             <div class="space-y-1">
-              <For each={userRootFolders()}>
+              <For each={plainUserRootFolders()}>
                 {(folder) => (
                   <FolderNode
                     folder={folder}
-                    allFolders={userFolders()}
-                    allDecks={userDecks()}
+                    allFolders={allFolders()}
+                    allDecks={allDecks()}
                     selectedDeckId={props.selectedDeckId}
                     depth={0}
                   />
                 )}
               </For>
-              <For each={userRootDecks()}>
+              <For each={orphanUserDecks()}>
                 {(deck) => (
                   <DeckCard
                     deck={deck}

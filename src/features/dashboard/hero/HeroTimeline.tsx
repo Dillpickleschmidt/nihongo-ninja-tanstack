@@ -29,12 +29,12 @@ export function HeroTimeline(props: HeroTimelineProps) {
                 <ModuleTimelineItem
                   module={enrichedModule}
                   hideDescription
-                  linkClass={
+                  class={
                     isPrimary()
-                      ? "-ml-2 bg-(--accent)/80 backdrop-blur-sm rounded-xl hover:bg-(--accent) hover:scale-[1.02]"
+                      ? "-ml-2 text-white bg-(--accent)/80 backdrop-blur-sm rounded-xl hover:bg-(--accent) hover:scale-[1.02]"
                       : undefined
                   }
-                  linkStyle={
+                  style={
                     isPrimary()
                       ? {
                           "box-shadow":
@@ -43,12 +43,6 @@ export function HeroTimeline(props: HeroTimelineProps) {
                       : undefined
                   }
                   hideDot={isPrimary()}
-                  titleClass={isPrimary() ? "text-white" : undefined}
-                  chevronClass={
-                    isPrimary()
-                      ? "text-white/60 group-hover:text-white/80"
-                      : undefined
-                  }
                 />
               </li>
             )

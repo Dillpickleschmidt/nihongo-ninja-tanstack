@@ -183,6 +183,8 @@ const SelectErrorMessage = <T extends ValidComponent = "div">(
   )
 }
 
+const SelectSection = SelectPrimitive.Section
+
 export {
   Select,
   SelectValue,
@@ -190,6 +192,7 @@ export {
   SelectTrigger,
   SelectContent,
   SelectItem,
+  SelectSection,
   SelectLabel,
   SelectDescription,
   SelectErrorMessage,

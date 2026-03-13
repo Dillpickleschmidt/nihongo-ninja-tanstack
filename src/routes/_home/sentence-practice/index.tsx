@@ -6,7 +6,7 @@ import {
   onMount,
   onCleanup,
 } from "solid-js"
-import { createFileRoute, Link } from "@tanstack/solid-router"
+import { createFileRoute } from "@tanstack/solid-router"
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
 import {
   Select,
@@ -15,8 +15,8 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select"
-import { Search, PencilLine, ChevronRight, BookOpen } from "lucide-solid"
-import { cn } from "@/utils"
+import { Search, PencilLine, BookOpen } from "lucide-solid"
+import { TimelineList, TimelineItem } from "@/components/TimelineList"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { dynamic_modules, type DynamicModule } from "@/data/dynamic_modules"
 import { chapters, type BuiltInChapter } from "@/data/chapters"
@@ -253,43 +253,17 @@ function ChapterGroupItem(props: { group: ChapterGroup }) {
       </div>
 
       {/* Module list */}
-      <ul class="relative ml-[7px] border-l-2 border-card-foreground/10">
-        <For each={props.group.modules}>
-          {(m, index) => (
-            <li
-              class={cn(
-                "relative",
-                index() !== props.group.modules.length - 1 && "pb-1",
-              )}
-            >
-              <Link
-                to={m.linkTo}
-                class={cn(
-                  "group flex items-center gap-3 rounded-lg py-2.5 pr-3 pl-6 transition-all duration-150",
-                  "hover:bg-amber-500/5",
-                  "focus-visible:outline-none focus-visible:bg-amber-500/10",
-                )}
-              >
-                {/* Timeline dot - vertically centered */}
-                <div class="absolute left-[-7px] top-1/2 -translate-y-1/2 size-3 rounded-full border-2 border-card-foreground/20 bg-background transition-colors group-hover:border-amber-500 group-hover:bg-amber-500" />
-
-                <div class="min-w-0 flex-1">
-                  <h3 class="text-sm font-medium leading-tight transition-colors group-hover:text-amber-400">
-                    {m.title}
-                  </h3>
-                  <Show when={m.description}>
-                    <p class="text-muted-foreground mt-0.5 line-clamp-1 text-xs">
-                      {m.description}
-                    </p>
-                  </Show>
-                </div>
-
-                <ChevronRight class="size-4 shrink-0 text-muted-foreground/40 transition-all group-hover:translate-x-0.5 group-hover:text-amber-400" />
-              </Link>
-            </li>
-          )}
-        </For>
-      </ul>
+      <TimelineList each={props.group.modules}>
+        {(m) => (
+          <TimelineItem
+            title={m.title}
+            description={m.description}
+            linkTo={m.linkTo}
+            class="hover:text-amber-400 hover:bg-amber-500/5 focus-visible:bg-amber-500/10"
+            dotClass="group-hover:border-amber-500 group-hover:bg-amber-500"
+          />
+        )}
+      </TimelineList>
     </div>
   )
 }
