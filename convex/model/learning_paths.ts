@@ -7,20 +7,11 @@ import {
   isBuiltInTextbook,
 } from "../../src/data/utils/textbooks"
 import { getChaptersByTextbook } from "../../src/data/utils/chapters"
-import { static_modules } from "../../src/data/static_modules"
-import { dynamic_modules } from "../../src/data/dynamic_modules"
+import { external_resources } from "../../src/data/external_resources"
+import { moduleCatalog } from "../../src/data/utils/modules"
 import { getModuleLink } from "../../src/lib/module-links"
 
 const MODULES_PER_CHAPTER = 30
-const DEFAULT_CUSTOM_PATH_SPECIAL_MODULE_IDS = [
-  "welcome-overview",
-  "lesson-structure",
-]
-
-const moduleCatalog = {
-  ...static_modules,
-  ...dynamic_modules,
-}
 
 export type LearningPath = {
   id: string
@@ -45,7 +36,7 @@ export type LearningPathChapter = {
   title: string
   description?: string
   features?: string[]
-  specialModules: LearningPathModule[]
+  externalResourceIds: string[]
   modules: LearningPathModule[]
 }
 
@@ -166,26 +157,13 @@ export async function getResolvedChaptersForPath(
     const chapters = getChaptersByTextbook(pathId)
     return chapters.map((chapter) => {
       const disabledSet = new Set(chapter.disabled_modules ?? [])
-      const specialModuleIds = chapter.special_learning_path_item_ids
-
-      const overlappingModuleIds = specialModuleIds.filter((moduleId) =>
-        chapter.learning_path_item_ids.includes(moduleId),
-      )
-      if (overlappingModuleIds.length > 0) {
-        console.warn(
-          `[LearningPath] Chapter '${chapter.slug}' has overlapping special and regular modules: ${overlappingModuleIds.join(", ")}`,
-        )
-      }
-
-      const specialModules = resolveLearningPathModuleIds(
-        specialModuleIds,
-        disabledSet,
-        chapter.slug,
-      )
       const modules = resolveLearningPathModuleIds(
         chapter.learning_path_item_ids,
         disabledSet,
         chapter.slug,
+      )
+      const externalResourceIds = chapter.learning_path_item_ids.filter(
+        (id) => id in external_resources,
       )
 
       return {
@@ -193,7 +171,7 @@ export async function getResolvedChaptersForPath(
         title: chapter.title,
         description: chapter.description,
         features: chapter.features,
-        specialModules,
+        externalResourceIds,
         modules,
       }
     })
@@ -539,19 +517,13 @@ function chunkIntoChapters(moduleIds: string[]) {
 function buildCustomPathChapters(
   modules: LearningPathModule[],
 ): LearningPathChapter[] {
-  const customSpecialModules = resolveLearningPathModuleIds(
-    DEFAULT_CUSTOM_PATH_SPECIAL_MODULE_IDS,
-    new Set<string>(),
-    "custom-path-defaults",
-  )
-
   const chapters: LearningPathChapter[] = []
   for (let i = 0; i < modules.length; i += MODULES_PER_CHAPTER) {
     const chapterNum = Math.floor(i / MODULES_PER_CHAPTER) + 1
     chapters.push({
       slug: `chapter-${chapterNum}`,
       title: `Chapter ${chapterNum}`,
-      specialModules: chapterNum === 1 ? customSpecialModules : [],
+      externalResourceIds: [],
       modules: modules.slice(i, i + MODULES_PER_CHAPTER),
     })
   }

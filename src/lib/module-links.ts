@@ -1,5 +1,6 @@
 import { chapters } from "@/data/chapters"
 import { static_modules } from "@/data/static_modules"
+import { external_resources } from "@/data/external_resources"
 
 // --- Forward: moduleId → link URL ---
 
@@ -25,6 +26,9 @@ export function getModuleLink(
 
 export const linkToModuleId: Record<string, string> = {}
 for (const [moduleId, mod] of Object.entries(static_modules)) {
+  linkToModuleId[mod.link] = moduleId
+}
+for (const [moduleId, mod] of Object.entries(external_resources)) {
   linkToModuleId[mod.link] = moduleId
 }
 
@@ -60,10 +64,7 @@ const moduleToChapter: Record<
 > = {}
 for (const [textbookId, textbookChapters] of Object.entries(chapters)) {
   for (const chapter of Object.values(textbookChapters)) {
-    for (const moduleId of [
-      ...chapter.special_learning_path_item_ids,
-      ...chapter.learning_path_item_ids,
-    ]) {
+    for (const moduleId of chapter.learning_path_item_ids) {
       moduleToChapter[moduleId] = { textbookId, chapterSlug: chapter.slug }
     }
   }

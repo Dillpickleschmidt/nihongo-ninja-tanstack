@@ -1,15 +1,17 @@
 // Module path and resolution utilities
 import { static_modules, type StaticModule } from "../static_modules"
 import { dynamic_modules, type DynamicModule } from "../dynamic_modules"
+import { external_resources } from "../external_resources"
 import { chapters } from "../chapters"
 import { getLinkTo } from "./module-helpers"
 
 // Unified Module type
 export type Module = StaticModule | DynamicModule
 
-const moduleCatalog: Record<string, Module> = {
+export const moduleCatalog: Record<string, Module> = {
   ...static_modules,
   ...dynamic_modules,
+  ...external_resources,
 }
 
 /**

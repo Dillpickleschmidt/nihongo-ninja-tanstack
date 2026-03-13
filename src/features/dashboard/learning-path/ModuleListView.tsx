@@ -7,27 +7,19 @@ import type { LearningPathModule } from "./types"
 
 interface ModuleListViewProps {
   modules: LearningPathModule[]
-  numberOffset?: number
-  columns?: "auto" | "single"
   isCompleted: (moduleId: string) => boolean
   openInDialog?: boolean
   onModuleSelect?: (module: LearningPathModule) => void
 }
 
 export function ModuleListView(props: ModuleListViewProps) {
-  const gridClasses = () =>
-    props.columns === "single"
-      ? "grid grid-cols-1 gap-3"
-      : "grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
-
   return (
-    <div class={gridClasses()}>
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
       <For each={props.modules}>
         {(module, index) => (
           <ModuleListItem
             module={module}
             index={index()}
-            number={index() + 1 + (props.numberOffset ?? 0)}
             isCompleted={props.isCompleted(module.moduleId)}
             openInDialog={props.openInDialog}
             onModuleSelect={props.onModuleSelect}
@@ -41,7 +33,6 @@ export function ModuleListView(props: ModuleListViewProps) {
 interface ModuleListItemProps {
   module: LearningPathModule
   index: number
-  number: number
   isCompleted: boolean
   openInDialog?: boolean
   onModuleSelect?: (module: LearningPathModule) => void
@@ -66,7 +57,7 @@ function ModuleListItem(props: ModuleListItemProps) {
             props.isCompleted && "font-bold text-green-500",
           )}
         >
-          {props.number}.
+          {props.index + 1}.
         </span>
         <span
           class={cn(

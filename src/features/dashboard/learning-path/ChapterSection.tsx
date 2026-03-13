@@ -2,8 +2,9 @@ import { Show, For } from "solid-js"
 import { ModuleListView } from "./ModuleListView"
 import { ModuleCategorizedView } from "./ModuleCategorizedView"
 import { ModuleTimelineView } from "./ModuleTimelineView"
-import { SpecialModulesSection } from "./SpecialModulesSection"
+import { ExternalResourcesSection } from "./ExternalResourcesSection"
 import { cn } from "@/utils"
+
 import type { LearningPathChapter, LearningPathModule } from "./types"
 
 interface ChapterSectionProps {
@@ -15,21 +16,20 @@ interface ChapterSectionProps {
 }
 
 export function ChapterSection(props: ChapterSectionProps) {
-  const specialModules = () => props.chapter.specialModules
   const regularModules = () => props.chapter.modules
-  const numberOffset = () => specialModules().length
-  const hasSpecialModules = () => specialModules().length > 0
+  const externalResourceIds = () => props.chapter.externalResourceIds
+  const hasExternalResources = () => externalResourceIds().length > 0
 
   return (
     <div>
       <div
         class={cn(
           "mb-6",
-          hasSpecialModules() &&
+          hasExternalResources() &&
             "flex flex-col gap-6 lg:flex-row lg:items-start",
         )}
       >
-        <div class={cn(hasSpecialModules() && "min-w-0 flex-1")}>
+        <div class={cn(hasExternalResources() && "min-w-0 flex-1")}>
           <Show when={props.chapter.description}>
             <p class="text-neutral-300 max-w-3xl mb-4">
               {props.chapter.description}
@@ -52,13 +52,10 @@ export function ChapterSection(props: ChapterSectionProps) {
           </Show>
         </div>
 
-        <Show when={hasSpecialModules()}>
-          <div class="lg:w-[calc((100%-1.5rem)/2)] xl:w-[calc((100%-3rem)/3)] lg:shrink-0">
-            <SpecialModulesSection
-              specialModules={specialModules()}
-              isCompleted={props.isCompleted}
-              openInDialog={props.openInDialog}
-              onModuleSelect={props.onModuleSelect}
+        <Show when={hasExternalResources()}>
+          <div class="lg:w-1/2 lg:shrink-0">
+            <ExternalResourcesSection
+              externalResourceIds={externalResourceIds()}
             />
           </div>
         </Show>
@@ -77,7 +74,6 @@ export function ChapterSection(props: ChapterSectionProps) {
         <div class="hidden md:block">
           <ModuleListView
             modules={regularModules()}
-            numberOffset={numberOffset()}
             isCompleted={props.isCompleted}
             openInDialog={props.openInDialog}
             onModuleSelect={props.onModuleSelect}
@@ -89,7 +85,6 @@ export function ChapterSection(props: ChapterSectionProps) {
       <Show when={props.viewMode === "compact"}>
         <ModuleCategorizedView
           modules={regularModules()}
-          numberOffset={numberOffset()}
           isCompleted={props.isCompleted}
           openInDialog={props.openInDialog}
           onModuleSelect={props.onModuleSelect}

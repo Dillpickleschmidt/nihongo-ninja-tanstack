@@ -14,6 +14,7 @@ export interface StaticModule {
     | "reading"
     | "culture-note"
     | "game"
+    | "listening-material"
   description?: string
   daily_prog_amount?: number
 }
