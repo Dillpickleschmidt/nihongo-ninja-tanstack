@@ -1,30 +1,29 @@
-import { For, Show } from "solid-js"
-import { chapters } from "@/data/chapters"
-import { dynamic_modules } from "@/data/dynamic_modules"
-import { DeckCard } from "../../../shared/components/DeckCard"
-import type { Deck } from "../../../context/VocabContext"
-import type { TextbookIDEnum } from "@/data/textbooks"
+import { For, Show, type Accessor } from "solid-js"
+import { Link } from "@tanstack/solid-router"
+import { Button } from "@/components/ui/button"
+import { buildDeckUrlPath } from "../../../utils/navigation"
+import { useVocab, type Deck } from "../../../context/VocabContext"
+import type { LearningPathChapter } from "convex/model/learning_paths"
 
 interface ComingUpSectionProps {
-  recentCompletions: { moduleId: string; completedAt: number }[]
-  decks: Deck[]
-  activeLearningPath: string
-  activeChapter: string
+  recentCompletions: Accessor<{ moduleId: string; completedAt: number }[]>
+  decks: Accessor<Deck[]>
+  chapter: Accessor<LearningPathChapter | undefined>
+  learningPathName: Accessor<string | undefined>
 }
 
 export function ComingUpSection(props: ComingUpSectionProps) {
-  const comingUpDecks = () => {
-    const textbookChapters = chapters[props.activeLearningPath as TextbookIDEnum]
-    if (!textbookChapters) return []
+  const ctx = useVocab()
 
-    const chapter = textbookChapters[props.activeChapter]
+  const comingUpDecks = () => {
+    const chapter = props.chapter()
     if (!chapter) return []
 
-    const vocabPracticeIds = chapter.learning_path_item_ids.filter(
-      (id) => dynamic_modules[id]?.module_type === "vocab-practice",
-    )
+    const vocabPracticeIds = chapter.modules
+      .filter((m) => m.module.module_type === "vocab-practice")
+      .map((m) => m.moduleId)
 
-    const completedSet = new Set(props.recentCompletions.map((c) => c.moduleId))
+    const completedSet = new Set(props.recentCompletions().map((c) => c.moduleId))
 
     let lastCompletedIdx = -1
     for (let i = vocabPracticeIds.length - 1; i >= 0; i--) {
@@ -42,7 +41,7 @@ export function ComingUpSection(props: ComingUpSectionProps) {
       i++
     ) {
       if (!completedSet.has(vocabPracticeIds[i])) {
-        const deck = props.decks.find((d) => d.id === vocabPracticeIds[i])
+        const deck = props.decks().find((d) => d.id === vocabPracticeIds[i])
         if (deck) upcoming.push(deck)
       }
     }
@@ -50,12 +49,34 @@ export function ComingUpSection(props: ComingUpSectionProps) {
     return upcoming
   }
 
+  const chapterLabel = () => {
+    const parts = [props.learningPathName(), props.chapter()?.title].filter(Boolean)
+    return parts.join(" ")
+  }
+
   return (
     <Show when={comingUpDecks().length > 0}>
       <div>
-        <h2 class="text-foreground mb-4 text-sm font-semibold">Coming Up</h2>
-        <div class="grid gap-3 sm:grid-cols-2">
-          <For each={comingUpDecks()}>{(deck) => <DeckCard deck={deck} />}</For>
+        <h2 class="text-foreground mb-3 text-sm font-semibold">Coming Up</h2>
+        <div>
+          <For each={comingUpDecks()}>
+            {(deck, index) => (
+              <Button
+                as={Link}
+                to={`/vocab/${buildDeckUrlPath(deck, ctx.folders())}`}
+                variant="ghost"
+                class="flex w-full items-center gap-3 py-2 px-2 h-auto justify-start rounded-md transition-colors hover:bg-white/[0.03]"
+              >
+                <div class={`h-1.5 w-1.5 rounded-full shrink-0 ${index() === 0 ? "bg-orange-400" : "bg-white/20"}`} />
+                <span class="text-sm text-white/50 truncate flex-1 text-left">
+                  {deck.deckName}
+                </span>
+                <span class="text-xs text-white/25 shrink-0">
+                  {chapterLabel()}
+                </span>
+              </Button>
+            )}
+          </For>
         </div>
       </div>
     </Show>

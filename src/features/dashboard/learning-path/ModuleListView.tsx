@@ -3,7 +3,7 @@ import { Link } from "@tanstack/solid-router"
 import { CircleCheckBig } from "lucide-solid"
 import { getModuleIcon, getModuleIconClasses } from "@/data/utils/module-helpers"
 import { cn } from "@/utils"
-import type { LearningPathModule } from "./types"
+import type { LearningPathModule } from "convex/model/learning_paths"
 
 interface ModuleListViewProps {
   modules: LearningPathModule[]

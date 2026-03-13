@@ -5,7 +5,7 @@ import {
   getModuleIconClasses,
 } from "@/data/utils/module-helpers"
 import { cn } from "@/utils"
-import type { LearningPathModule } from "./types"
+import type { LearningPathModule } from "convex/model/learning_paths"
 
 // Category configuration
 type CategoryKey = "vocabulary" | "lessons" | "grammar" | "other"

@@ -25,7 +25,7 @@ export function RecentlyStudiedSection(props: RecentlyStudiedSectionProps) {
 
   const recentDecks = () =>
     props.recentCompletions
-      .slice(0, 4)
+      .slice(0, 3)
       .map((c) => {
         const deck = props.decks.find((d) => d.id === c.moduleId)
         return deck ? { deck, completedAt: c.completedAt } : null

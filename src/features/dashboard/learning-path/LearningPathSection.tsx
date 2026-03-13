@@ -16,7 +16,7 @@ import {
 import { useDashboardPath } from "../context/dashboard-path"
 import { ChapterSection } from "./ChapterSection"
 import { ModuleDetailDialog } from "./ModuleDetailDialog"
-import type { LearningPathModule } from "./types"
+import type { LearningPathModule } from "convex/model/learning_paths"
 
 interface LearningPathSectionProps {
   selectedView: Accessor<string>

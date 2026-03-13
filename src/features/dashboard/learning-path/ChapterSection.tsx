@@ -5,7 +5,7 @@ import { ModuleTimelineView } from "./ModuleTimelineView"
 import { ExternalResourcesSection } from "./ExternalResourcesSection"
 import { cn } from "@/utils"
 
-import type { LearningPathChapter, LearningPathModule } from "./types"
+import type { LearningPathChapter, LearningPathModule } from "convex/model/learning_paths"
 
 interface ChapterSectionProps {
   chapter: LearningPathChapter

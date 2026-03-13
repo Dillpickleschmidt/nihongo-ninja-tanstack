@@ -1,6 +1,6 @@
 import { For, Show } from "solid-js"
 import { cn } from "@/utils"
-import type { LearningPathModule } from "../learning-path/types"
+import type { LearningPathModule } from "convex/model/learning_paths"
 import { ModuleTimelineItem } from "../learning-path/ModuleTimelineItem"
 
 interface HeroTimelineProps {

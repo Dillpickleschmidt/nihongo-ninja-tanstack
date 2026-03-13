@@ -5,7 +5,7 @@ import {
   getModuleIconClasses,
 } from "@/data/utils/module-helpers"
 import { cn } from "@/utils"
-import type { LearningPathModule } from "./types"
+import type { LearningPathModule } from "convex/model/learning_paths"
 import type { JSX } from "solid-js"
 
 interface ModuleTimelineItemProps {

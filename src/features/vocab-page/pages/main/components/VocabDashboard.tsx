@@ -18,6 +18,23 @@ export function VocabDashboard() {
   )
   const { preferences } = usePreferences()
 
+  const dashboardData = useConvexQuery(
+    api.api.learning_paths.getDashboardData,
+    () => ({ pathId: preferences().activeLearningPath }),
+    () => ({ enabled: !!preferences().activeLearningPath }),
+  )
+
+  const activeLearningPathName = () => {
+    const pathId = preferences().activeLearningPath
+    return dashboardData.data()?.paths.find((p) => p.id === pathId)?.shortName
+  }
+
+  const activeChapterData = () => {
+    const slug = preferences().activeChapter
+    const chapters = dashboardData.data()?.chapters
+    return chapters?.find((c) => c.slug === slug) ?? chapters?.[0]
+  }
+
   const recentVocabCompletions = createMemo(() => {
     const rows = recentActivity.data() ?? []
     const seen = new Set<string>()
@@ -51,15 +68,23 @@ export function VocabDashboard() {
 
         <Show when={!ctx.isLoading()}>
           <div
-            class="animate-fade-up opacity-0"
+            class="animate-fade-up flex flex-col gap-6 opacity-0 md:flex-row"
             style={{ "animation-delay": "0ms" }}
           >
-            <ComingUpSection
-              recentCompletions={recentVocabCompletions()}
-              decks={ctx.decks()}
-              activeLearningPath={preferences().activeLearningPath}
-              activeChapter={preferences().activeChapter}
-            />
+            <div class="md:w-1/2">
+              <ComingUpSection
+                recentCompletions={recentVocabCompletions}
+                decks={ctx.decks}
+                chapter={activeChapterData}
+                learningPathName={activeLearningPathName}
+              />
+            </div>
+            <div class="md:w-1/2">
+              <RecentlyStudiedSection
+                recentCompletions={recentVocabCompletions()}
+                decks={ctx.decks()}
+              />
+            </div>
           </div>
 
           <Show when={!!user()}>
@@ -76,16 +101,6 @@ export function VocabDashboard() {
             style={{ "animation-delay": "150ms" }}
           >
             <FolderBrowserGrid folders={ctx.folders()} decks={ctx.decks()} />
-          </div>
-
-          <div
-            class="animate-fade-up opacity-0"
-            style={{ "animation-delay": "225ms" }}
-          >
-            <RecentlyStudiedSection
-              recentCompletions={recentVocabCompletions()}
-              decks={ctx.decks()}
-            />
           </div>
         </Show>
       </div>
