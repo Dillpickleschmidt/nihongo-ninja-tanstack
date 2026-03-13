@@ -1,4 +1,10 @@
-import { Show, Suspense, createSignal, type Accessor, type Setter } from "solid-js"
+import {
+  Show,
+  Suspense,
+  createSignal,
+  type Accessor,
+  type Setter,
+} from "solid-js"
 import { Sparkles, ChevronRight } from "lucide-solid"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
@@ -65,17 +71,20 @@ export function HeroSection(props: HeroSectionProps) {
       </div>
 
       <div
-        class="lg:shrink-0 animate-fade-up opacity-0"
+        class="lg:shrink-0 lg:self-stretch flex flex-col animate-fade-up opacity-0"
         style={{ "animation-delay": "100ms" }}
       >
-        <HeroTimeline modules={nextModules()} />
-        <SSRMediaQuery showFrom="md">
-          <ViewToggle
-            selectedView={props.selectedView}
-            setSelectedView={props.setSelectedView}
-            class="mt-4"
-          />
-        </SSRMediaQuery>
+        <div class="flex-1 flex flex-col justify-center">
+          <HeroTimeline modules={nextModules()} />
+        </div>
+        <div>
+          <SSRMediaQuery showFrom="md">
+            <ViewToggle
+              selectedView={props.selectedView}
+              setSelectedView={props.setSelectedView}
+            />
+          </SSRMediaQuery>
+        </div>
       </div>
     </section>
   )
@@ -83,8 +92,7 @@ export function HeroSection(props: HeroSectionProps) {
 
 function HeroContent() {
   const [isSelectorOpen, setIsSelectorOpen] = createSignal(false)
-  const { query, selectedPathId, selectedPath, switchPath } =
-    useDashboardPath()
+  const { query, selectedPathId, selectedPath, switchPath } = useDashboardPath()
   const srs = useSrs()
 
   return (
@@ -97,9 +105,7 @@ function HeroContent() {
       </p>
 
       <div class="flex items-center gap-4">
-        <Show
-          when={query.data()?.paths && selectedPathId()}
-        >
+        <Show when={query.data()?.paths && selectedPathId()}>
           <LearningPathSelector
             learningPaths={query.data()!.paths}
             activePathId={selectedPathId()!}

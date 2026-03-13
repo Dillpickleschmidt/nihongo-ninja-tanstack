@@ -1,4 +1,11 @@
-import { createSignal, createEffect, Suspense, Index, Show, type Accessor } from "solid-js"
+import {
+  createSignal,
+  createEffect,
+  Suspense,
+  Index,
+  Show,
+  type Accessor,
+} from "solid-js"
 import { useLocalCompletions } from "@/lib/completions"
 import {
   Accordion,
@@ -50,7 +57,7 @@ export function LearningPathSection(props: LearningPathSectionProps) {
 
   return (
     <section
-      class="mt-12 animate-fade-up opacity-0"
+      class="mt-6 animate-fade-up opacity-0"
       style={{ "animation-delay": "150ms" }}
     >
       <Suspense
