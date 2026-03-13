@@ -1043,9 +1043,9 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
       },
     ],
   },
-  ぜろ: {
-    word: "ぜろ",
-    furigana: "ぜろ",
+  ゼロ: {
+    word: "ゼロ",
+    furigana: "ゼロ",
     english: ["Zero", "0"],
     chapter: 0,
   },
@@ -1158,10 +1158,22 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     english: ["Twelve", "12"],
     chapter: 0,
   },
+  じゅうご: {
+    word: "じゅうご",
+    furigana: "じゅうご",
+    english: ["Fifteen", "15"],
+    chapter: 0,
+  },
   じゅうはち: {
     word: "じゅうはち",
     furigana: "じゅうはち",
     english: ["Eighteen", "18"],
+    chapter: 0,
+  },
+  じゅうきゅう: {
+    word: "じゅうきゅう",
+    furigana: "じゅうきゅう",
+    english: ["Nineteen", "19"],
     chapter: 0,
   },
   にじゅう: {
@@ -1236,6 +1248,12 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     english: ["Fifty", "50"],
     chapter: 0,
   },
+  ごじゅういち: {
+    word: "ごじゅういち",
+    furigana: "ごじゅういち",
+    english: ["Fifty-one", "51"],
+    chapter: 0,
+  },
   ごじゅうさん: {
     word: "ごじゅうさん",
     furigana: "ごじゅうさん",
@@ -1266,10 +1284,22 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
     english: ["Sixty-four", "64"],
     chapter: 0,
   },
+  ろくじゅうなな: {
+    word: "ろくじゅうなな",
+    furigana: "ろくじゅうなな",
+    english: ["Sixty-seven", "67"],
+    chapter: 0,
+  },
   ななじゅう: {
     word: "ななじゅう",
     furigana: "ななじゅう",
     english: ["Seventy", "70"],
+    chapter: 0,
+  },
+  ななじゅうに: {
+    word: "ななじゅうに",
+    furigana: "ななじゅうに",
+    english: ["Seventy-two", "72"],
     chapter: 0,
   },
   ななじゅうろく: {
@@ -2440,9 +2470,9 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
       'For example, "おなまえは？" means "What is your name?".',
     ],
   },
-  皆: {
-    word: "皆",
-    furigana: "皆[みんな]",
+  みんな: {
+    word: "みんな",
+    furigana: "みんな",
     english: ["everyone", "all"],
     chapter: 1,
     info: [

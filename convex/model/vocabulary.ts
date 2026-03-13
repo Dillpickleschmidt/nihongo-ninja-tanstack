@@ -1,10 +1,11 @@
 import { MutationCtx, QueryCtx } from "../_generated/server"
 import { Id } from "../_generated/dataModel"
 import { type VocabularyItem, type DeckVocabItemInput } from "../validators"
+import { dynamic_modules } from "../../src/data/dynamic_modules"
 
 /**
  * Unified: fetch vocab for any deck based on source
- * For built-in decks, deckId is the vocab set ID
+ * For built-in decks, deckId is the dynamic module ID — resolve its vocab_set_ids
  * For user decks, deckId is the Convex document ID
  */
 export async function fetchDeckVocab(
@@ -13,7 +14,9 @@ export async function fetchDeckVocab(
   deckSource: "user" | "built-in",
 ): Promise<VocabularyItem[]> {
   if (deckSource === "built-in") {
-    const vocabBySet = await fetchVocabBySets(ctx, [deckId])
+    const module = dynamic_modules[deckId]
+    const setIds = module?.vocab_set_ids ?? [deckId]
+    const vocabBySet = await fetchVocabBySets(ctx, setIds)
     return Object.values(vocabBySet).flat()
   }
   return fetchUserDeckVocab(ctx, deckId as Id<"userDecks">)
