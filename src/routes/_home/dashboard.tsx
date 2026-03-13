@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/solid-router"
-import { createSignal, createEffect, onMount, onCleanup } from "solid-js"
+import { createSignal, createEffect, onMount, onCleanup, type Accessor, type Setter } from "solid-js"
 import { convexQuery } from "@/lib/convex-query"
 import { api } from "../../../convex/_generated/api"
 import { parsePreferencesCookie } from "@/query/model/preferences"
@@ -9,7 +9,9 @@ import { CompletionsSyncDialog } from "@/features/dashboard/CompletionsSyncDialo
 import { FloatingKanji } from "@/features/homepage/components/floating-kanji"
 import { DashboardPathProvider } from "@/features/dashboard/context/dashboard-path"
 import { HeroSection } from "@/features/dashboard/hero/HeroSection"
+import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { PracticeToolsSection } from "@/features/dashboard/practice-tools/PracticeToolsSection"
+import { ViewToggle } from "@/features/dashboard/hero/ViewToggle"
 import { LearningPathSection } from "@/features/dashboard/learning-path/LearningPathSection"
 
 export const Route = createFileRoute("/_home/dashboard")({
@@ -41,6 +43,7 @@ export const Route = createFileRoute("/_home/dashboard")({
 
 function DashboardComponent() {
   const [scrollY, setScrollY] = createSignal(0)
+  const [selectedView, setSelectedView] = createSignal<string>("grid")
   const queryClient = useQueryClient()
 
   // Dynamic background blur: 4 at top, 0 when scrolled
@@ -76,11 +79,18 @@ function DashboardComponent() {
       <main class="relative pt-20 md:pt-20 2xl:pt-28 pb-32">
         <DashboardPathProvider>
           <div class="mx-auto max-w-7xl px-4 md:px-6">
-            <HeroSection />
+            <HeroSection selectedView={selectedView} setSelectedView={setSelectedView} />
 
-            <PracticeToolsSection />
+            <SSRMediaQuery hideFrom="md">
+              <PracticeToolsSection />
+              <ViewToggle
+                selectedView={selectedView}
+                setSelectedView={setSelectedView}
+                class="mt-4"
+              />
+            </SSRMediaQuery>
 
-            <LearningPathSection />
+            <LearningPathSection selectedView={selectedView} />
           </div>
         </DashboardPathProvider>
       </main>
