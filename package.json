@@ -40,6 +40,7 @@
     "gql.tada": "^1.9.0",
     "graphql": "^16.12.0",
     "lucide-solid": "^0.555.0",
+    "posthog-js": "^1.360.1",
     "redaxios": "^0.5.1",
     "solid-js": "^1.9.10",
     "solid-sonner": "^0.2.8",
@@ -53,7 +54,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.17.0",
+    "@cloudflare/vite-plugin": "^1.27.0",
     "@solidjs/testing-library": "^0.8.10",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/node": "^22.10.2",
@@ -67,6 +68,6 @@
     "vite-plugin-solid-svg": "^0.8.1",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "^4.0.15",
-    "wrangler": "^4.53.0"
+    "wrangler": "^4.72.0"
   }
 }

@@ -40,6 +40,7 @@ import { useConvexQuery } from "@/lib/convex-query"
 import { getUser } from "@/lib/auth"
 import { api } from "convex/_generated/api"
 import { Toaster } from "@/components/ui/sonner"
+import { PostHogPageView, PostHogIdentify } from "@/providers/posthog"
 
 export interface RouterContext {
   queryClient: QueryClient
@@ -117,6 +118,8 @@ function RootDocument(props: { children: JSX.Element }) {
           <AppConvexProvider>
             <ClientOnly>
               <PreferencesSync />
+              <PostHogIdentify />
+              <PostHogPageView />
             </ClientOnly>
             <Suspense>
               <TextbookChapterBackgrounds />
