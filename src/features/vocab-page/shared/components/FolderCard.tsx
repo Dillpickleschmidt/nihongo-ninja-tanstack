@@ -19,16 +19,18 @@ export function FolderCard(props: FolderCardProps) {
 
   return (
     <FolderContextMenu folder={props.folder} to={folderPath()}>
-      <CardContent
+      <FolderCardContent
         title={props.folder.folderName}
-        isBuiltIn={props.folder.source === "built-in"}
+        subtitle={props.folder.source === "built-in" ? "Built-in" : undefined}
       />
     </FolderContextMenu>
   )
 }
 
-// Reusable card content
-function CardContent(props: { title: string; isBuiltIn?: boolean }) {
+export function FolderCardContent(props: {
+  title: string
+  subtitle?: string
+}) {
   return (
     <div class="flex items-start gap-3">
       <div class="bg-muted/40 border-card-foreground/70 rounded-md border p-2 backdrop-blur-xs">
@@ -39,8 +41,8 @@ function CardContent(props: { title: string; isBuiltIn?: boolean }) {
         <h4 class="truncate text-sm leading-tight font-medium">
           {props.title}
         </h4>
-        <Show when={props.isBuiltIn}>
-          <p class="text-muted-foreground mt-1 text-xs">Built-in</p>
+        <Show when={props.subtitle}>
+          <p class="text-muted-foreground mt-1 text-xs">{props.subtitle}</p>
         </Show>
       </div>
     </div>

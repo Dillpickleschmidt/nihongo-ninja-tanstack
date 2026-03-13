@@ -32,6 +32,7 @@ import { Route as HomeVocabIndexRouteImport } from './routes/_home/vocab/index'
 import { Route as HomeSentencePracticeIndexRouteImport } from './routes/_home/sentence-practice/index'
 import { Route as HomeImportIndexRouteImport } from './routes/_home/import/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as HomeVocabUnsortedRouteImport } from './routes/_home/vocab/unsorted'
 import { Route as HomeVocabCreateRouteImport } from './routes/_home/vocab/create'
 import { Route as HomeVocabBrowseRouteImport } from './routes/_home/vocab/browse'
 import { Route as HomeVocabSplatRouteImport } from './routes/_home/vocab/$'
@@ -201,6 +202,11 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
+} as any)
+const HomeVocabUnsortedRoute = HomeVocabUnsortedRouteImport.update({
+  id: '/unsorted',
+  path: '/unsorted',
+  getParentRoute: () => HomeVocabRoute,
 } as any)
 const HomeVocabCreateRoute = HomeVocabCreateRouteImport.update({
   id: '/create',
@@ -539,6 +545,7 @@ export interface FileRoutesByFullPath {
   '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
+  '/vocab/unsorted': typeof HomeVocabUnsortedRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/import/': typeof HomeImportIndexRoute
   '/sentence-practice/': typeof HomeSentencePracticeIndexRoute
@@ -615,6 +622,7 @@ export interface FileRoutesByTo {
   '/vocab/$': typeof HomeVocabSplatRoute
   '/vocab/browse': typeof HomeVocabBrowseRoute
   '/vocab/create': typeof HomeVocabCreateRoute
+  '/vocab/unsorted': typeof HomeVocabUnsortedRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/import': typeof HomeImportIndexRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
@@ -695,6 +703,7 @@ export interface FileRoutesById {
   '/_home/vocab/$': typeof HomeVocabSplatRoute
   '/_home/vocab/browse': typeof HomeVocabBrowseRoute
   '/_home/vocab/create': typeof HomeVocabCreateRoute
+  '/_home/vocab/unsorted': typeof HomeVocabUnsortedRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_home/import/': typeof HomeImportIndexRoute
   '/_home/sentence-practice/': typeof HomeSentencePracticeIndexRoute
@@ -775,6 +784,7 @@ export interface FileRouteTypes {
     | '/vocab/$'
     | '/vocab/browse'
     | '/vocab/create'
+    | '/vocab/unsorted'
     | '/api/auth/$'
     | '/import/'
     | '/sentence-practice/'
@@ -851,6 +861,7 @@ export interface FileRouteTypes {
     | '/vocab/$'
     | '/vocab/browse'
     | '/vocab/create'
+    | '/vocab/unsorted'
     | '/api/auth/$'
     | '/import'
     | '/sentence-practice'
@@ -930,6 +941,7 @@ export interface FileRouteTypes {
     | '/_home/vocab/$'
     | '/_home/vocab/browse'
     | '/_home/vocab/create'
+    | '/_home/vocab/unsorted'
     | '/api/auth/$'
     | '/_home/import/'
     | '/_home/sentence-practice/'
@@ -1158,6 +1170,13 @@ declare module '@tanstack/solid-router' {
       fullPath: '/api/auth/$'
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_home/vocab/unsorted': {
+      id: '/_home/vocab/unsorted'
+      path: '/unsorted'
+      fullPath: '/vocab/unsorted'
+      preLoaderRoute: typeof HomeVocabUnsortedRouteImport
+      parentRoute: typeof HomeVocabRoute
     }
     '/_home/vocab/create': {
       id: '/_home/vocab/create'
@@ -1642,6 +1661,7 @@ interface HomeVocabRouteChildren {
   HomeVocabSplatRoute: typeof HomeVocabSplatRoute
   HomeVocabBrowseRoute: typeof HomeVocabBrowseRoute
   HomeVocabCreateRoute: typeof HomeVocabCreateRoute
+  HomeVocabUnsortedRoute: typeof HomeVocabUnsortedRoute
   HomeVocabIndexRoute: typeof HomeVocabIndexRoute
   HomeVocabPracticeSplatRoute: typeof HomeVocabPracticeSplatRoute
   HomeVocabQuizAllHiraganaRoute: typeof HomeVocabQuizAllHiraganaRoute
@@ -1656,6 +1676,7 @@ const HomeVocabRouteChildren: HomeVocabRouteChildren = {
   HomeVocabSplatRoute: HomeVocabSplatRoute,
   HomeVocabBrowseRoute: HomeVocabBrowseRoute,
   HomeVocabCreateRoute: HomeVocabCreateRoute,
+  HomeVocabUnsortedRoute: HomeVocabUnsortedRoute,
   HomeVocabIndexRoute: HomeVocabIndexRoute,
   HomeVocabPracticeSplatRoute: HomeVocabPracticeSplatRoute,
   HomeVocabQuizAllHiraganaRoute: HomeVocabQuizAllHiraganaRoute,

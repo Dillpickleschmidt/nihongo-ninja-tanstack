@@ -1,7 +1,7 @@
 import { For, Show } from "solid-js"
-import { FolderCard } from "../../../shared/components/FolderCard"
-import { DeckCard } from "../../../shared/components/DeckCard"
-import { getRootLevelItems } from "../../../utils/hierarchy"
+import { Link } from "@tanstack/solid-router"
+import { FolderCard, FolderCardContent } from "../../../shared/components/FolderCard"
+import { getRootFolders, getRootOrphanDecks } from "../../../utils/hierarchy"
 import type { Folder, Deck } from "../../../context/VocabContext"
 
 interface FolderBrowserGridProps {
@@ -12,14 +12,16 @@ interface FolderBrowserGridProps {
 
 /**
  * Grid of folders and decks for navigation
- * Shows all root-level items (no parent folder)
+ * Shows root-level folders and a virtual "Unsorted" folder for orphaned decks
  */
 export function FolderBrowserGrid(props: FolderBrowserGridProps) {
-  const rootItems = () => getRootLevelItems(props.folders, props.decks)
+  const rootFolders = () => getRootFolders(props.folders)
+  const orphanDecks = () => getRootOrphanDecks(props.decks)
+  const hasItems = () => rootFolders().length > 0 || orphanDecks().length > 0
 
   return (
     <Show
-      when={rootItems().length > 0}
+      when={hasItems()}
       fallback={
         <div class="border-border/50 rounded-lg border border-dashed p-8 text-center">
           <p class="text-muted-foreground text-sm">
@@ -33,20 +35,28 @@ export function FolderBrowserGrid(props: FolderBrowserGridProps) {
           All Decks & Folders
         </h2>
         <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          <For each={rootItems()}>
-            {(node) => {
-              switch (node.type) {
-                case "folder":
-                  return <FolderCard folder={node.data} />
-                case "deck":
-                  return <DeckCard deck={node.data} />
-                default:
-                  return null
-              }
-            }}
+          <For each={rootFolders()}>
+            {(folder) => <FolderCard folder={folder} />}
           </For>
+          <Show when={orphanDecks().length > 0}>
+            <UnsortedFolderCard deckCount={orphanDecks().length} />
+          </Show>
         </div>
       </div>
     </Show>
+  )
+}
+
+function UnsortedFolderCard(props: { deckCount: number }) {
+  const subtitle = () =>
+    `${props.deckCount} ${props.deckCount === 1 ? "deck" : "decks"}`
+
+  return (
+    <Link
+      to="/vocab/unsorted"
+      class="bg-card/60 hover:bg-card/70 border-card-foreground/70 block cursor-pointer rounded-lg border p-4 shadow-sm backdrop-blur-sm transition-colors hover:shadow-md"
+    >
+      <FolderCardContent title="Unsorted" subtitle={subtitle()} />
+    </Link>
   )
 }

@@ -40,6 +40,10 @@ export function getFolderPath(
   return path
 }
 
+export function getRootOrphanDecks(decks: UnifiedDeck[]): UnifiedDeck[] {
+  return decks.filter((d) => !d.folderId)
+}
+
 // ===== HierarchyNode =====
 
 export type HierarchyNode =
