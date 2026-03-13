@@ -1,3 +1,4 @@
+/// <reference path="../youtube.d.ts" />
 // src/features/youtube/components/YouTubeIframe.tsx
 import { createSignal, onMount, createEffect, onCleanup } from "solid-js"
 import { loadYouTubeApi } from "../util/youtubeAPI"

@@ -1,7 +1,6 @@
+/// <reference path="../youtube.d.ts" />
 // src/features/youtube/util/youtubeAPI.ts
-declare global {
-  var onYouTubeIframeAPIReady: () => void
-}
+
 let apiLoadPromise: Promise<void> | null = null
 
 export function loadYouTubeApi(): Promise<void> {

@@ -27,4 +27,5 @@ declare namespace YT {
 
 interface Window {
   YT?: typeof YT
+  onYouTubeIframeAPIReady?: () => void
 }
