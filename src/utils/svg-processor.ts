@@ -1,7 +1,6 @@
 import { raphaelColors } from "./raphael-colors"
 
-const KANJIVG_BASE =
-  "https://zsllzwieciplioikzzmq.supabase.co/storage/v1/object/public/kanji-svgs/kanjivg-20250816-stripped"
+const KANJIVG_BASE = "https://kanjivg.nihongoninja.io"
 
 function getPathStartPoint(dAttribute: string) {
   const match = dAttribute.match(/^M([\d.-]+),([\d.-]+)/)
