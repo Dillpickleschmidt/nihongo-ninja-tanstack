@@ -25,6 +25,16 @@ export const getByKeys = query({
 })
 
 /**
+ * Lightweight search index for all visible decks (deck ID + searchable terms)
+ */
+export const getSearchIndex = query({
+  args: {},
+  handler: async (ctx) => {
+    return Vocabulary.getSearchIndex(ctx)
+  },
+})
+
+/**
  * Get kanji entries for given kanji characters
  */
 export const getKanjiByChars = query({

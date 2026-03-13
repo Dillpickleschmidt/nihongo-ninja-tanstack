@@ -2,6 +2,7 @@ import { MutationCtx, QueryCtx } from "../_generated/server"
 import { Id } from "../_generated/dataModel"
 import { type VocabularyItem, type DeckVocabItemInput } from "../validators"
 import { dynamic_modules } from "../../src/data/dynamic_modules"
+import * as Decks from "./decks"
 
 /**
  * Unified: fetch vocab for any deck based on source
@@ -119,6 +120,32 @@ export async function replaceDeckVocabItems(
 ) {
   await deleteDeckVocabItems(ctx, deckId)
   return createDeckVocabItems(ctx, deckId, items)
+}
+
+/**
+ * Lightweight search index: returns deckId + searchable terms for all visible decks.
+ * Full VocabularyItem docs are fetched server-side but only word/english are returned.
+ */
+export async function getSearchIndex(
+  ctx: QueryCtx,
+): Promise<{ deckId: string; terms: string[] }[]> {
+  const allDecks = await Decks.getAllDecks(ctx)
+
+  const results = await Promise.all(
+    allDecks.map(async (deck) => {
+      const vocab = await fetchDeckVocab(ctx, deck.id, deck.source)
+      const terms: string[] = []
+      for (const item of vocab) {
+        terms.push(item.word.toLowerCase())
+        for (const eng of item.english) {
+          terms.push(eng.toLowerCase())
+        }
+      }
+      return { deckId: deck.id, terms }
+    }),
+  )
+
+  return results
 }
 
 /**

@@ -2,16 +2,13 @@ import { Show, createMemo } from "solid-js"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { usePreferences } from "@/lib/preferences"
-import { getUser } from "@/lib/auth"
 import { FolderBrowserGrid } from "./FolderBrowserGrid"
 import { RecentlyStudiedSection } from "./RecentlyStudiedSection"
 import { ComingUpSection } from "./ComingUpSection"
-import { MissedWordsDeckBuilder } from "./MissedWordsDeckBuilder"
 import { useVocab } from "../../../context/VocabContext"
 
 export function VocabDashboard() {
   const ctx = useVocab()
-  const user = getUser()
   const recentActivity = useConvexQuery(
     api.api.progress.getRecentModuleActivity,
     () => ({ limit: 20 }),
@@ -87,18 +84,9 @@ export function VocabDashboard() {
             </div>
           </div>
 
-          <Show when={!!user()}>
-            <div
-              class="animate-fade-up opacity-0"
-              style={{ "animation-delay": "75ms" }}
-            >
-              <MissedWordsDeckBuilder />
-            </div>
-          </Show>
-
           <div
             class="animate-fade-up opacity-0"
-            style={{ "animation-delay": "150ms" }}
+            style={{ "animation-delay": "75ms" }}
           >
             <FolderBrowserGrid folders={ctx.folders()} decks={ctx.decks()} />
           </div>

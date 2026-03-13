@@ -1,4 +1,4 @@
-import { For, Show, createSignal, createMemo, createEffect, on } from "solid-js"
+import { For, Show, Suspense, createSignal, createMemo, createEffect, on } from "solid-js"
 import {
   Select,
   SelectTrigger,
@@ -13,7 +13,11 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion"
+import { TextField, TextFieldInput } from "@/components/ui/text-field"
+import { Search } from "lucide-solid"
 import { TimelineList, TimelineItem } from "@/components/TimelineList"
+import { useConvexQuery } from "@/lib/convex-query"
+import { api } from "convex/_generated/api"
 import { usePreferences } from "@/lib/preferences"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { FolderCard } from "../../../shared/components/FolderCard"
@@ -51,6 +55,39 @@ export function FolderBrowserGrid(props: FolderBrowserGridProps) {
 
   const rootFolders = () => getRootFolders(props.folders)
   const orphanDecks = () => getRootOrphanDecks(props.decks)
+
+  // Search state
+  const [search, setSearch] = createSignal("")
+  const [searchFocused, setSearchFocused] = createSignal(false)
+  const [searchIndex, setSearchIndex] =
+    createSignal<{ deckId: string; terms: string[] }[]>()
+
+  const matchingDeckIds = createMemo((): Set<string> | null => {
+    const q = search().trim().toLowerCase()
+    if (!q) return null
+
+    const matches = new Set<string>()
+
+    for (const deck of props.decks) {
+      if (
+        deck.deckName.toLowerCase().includes(q) ||
+        deck.deckDescription?.toLowerCase().includes(q)
+      ) {
+        matches.add(deck.id)
+      }
+    }
+
+    const index = searchIndex()
+    if (index) {
+      for (const entry of index) {
+        if (entry.terms.some((term) => term.includes(q))) {
+          matches.add(entry.deckId)
+        }
+      }
+    }
+
+    return matches
+  })
 
   const menuGroups = createMemo((): MenuGroup[] => {
     const groups: MenuGroup[] = []
@@ -106,44 +143,59 @@ export function FolderBrowserGrid(props: FolderBrowserGridProps) {
   return (
     <Show when={allItems().length > 0}>
       <div class={props.class}>
-        <div class="mb-6 flex items-center justify-between">
-          <h2 class="text-foreground text-sm font-semibold">
+        <div class="mb-6 flex items-center justify-between gap-3">
+          <h2 class="text-foreground shrink-0 text-sm font-semibold">
             All Decks & Folders
           </h2>
 
-          <Select<MenuItem, MenuGroup>
-            options={menuGroups()}
-            optionValue="id"
-            optionTextValue="label"
-            optionGroupChildren="options"
-            value={selected()}
-            onChange={(value) => { if (value) setSelected(value) }}
-            itemComponent={(itemProps) => (
-              <SelectItem item={itemProps.item}>
-                {itemProps.item.rawValue.label}
-              </SelectItem>
-            )}
-            sectionComponent={(sectionProps) => (
-              <SelectSection>
-                <div class="px-2 py-1.5 text-xs text-white/40">
-                  {sectionProps.section.rawValue.label}
-                </div>
-              </SelectSection>
-            )}
-          >
-            <SelectTrigger class="w-auto min-w-48 border-0 bg-white/[0.04] text-white/70 hover:bg-white/[0.06]">
-              <SelectValue<MenuItem>>
-                {(state) => state.selectedOption()?.label}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent
-              class="border border-(--accent)/20 backdrop-blur-2xl"
-              style={{
-                "background-color":
-                  "color-mix(in srgb, var(--accent) 15%, rgb(10 10 10 / 0.7))",
-              }}
-            />
-          </Select>
+          <div class="flex items-center gap-2">
+            <TextField class="w-48 sm:w-56">
+              <div class="relative">
+                <Search class="text-muted-foreground pointer-events-none absolute top-1/2 left-3 z-10 h-4 w-4 -translate-y-1/2" />
+                <TextFieldInput
+                  placeholder="Search decks..."
+                  value={search()}
+                  onInput={(e) => setSearch(e.currentTarget.value)}
+                  onFocus={() => setSearchFocused(true)}
+                  class="bg-card/40 border-card-foreground/20 pl-9 backdrop-blur-sm"
+                />
+              </div>
+            </TextField>
+
+            <Select<MenuItem, MenuGroup>
+              options={menuGroups()}
+              optionValue="id"
+              optionTextValue="label"
+              optionGroupChildren="options"
+              value={selected()}
+              onChange={(value) => { if (value) setSelected(value) }}
+              itemComponent={(itemProps) => (
+                <SelectItem item={itemProps.item}>
+                  {itemProps.item.rawValue.label}
+                </SelectItem>
+              )}
+              sectionComponent={(sectionProps) => (
+                <SelectSection>
+                  <div class="px-2 py-1.5 text-xs text-white/40">
+                    {sectionProps.section.rawValue.label}
+                  </div>
+                </SelectSection>
+              )}
+            >
+              <SelectTrigger class="w-auto min-w-48 border-0 bg-white/[0.04] text-white/70 hover:bg-white/[0.06]">
+                <SelectValue<MenuItem>>
+                  {(state) => state.selectedOption()?.label}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent
+                class="border border-(--accent)/20 backdrop-blur-2xl"
+                style={{
+                  "background-color":
+                    "color-mix(in srgb, var(--accent) 15%, rgb(10 10 10 / 0.7))",
+                }}
+              />
+            </Select>
+          </div>
         </div>
 
         <Show when={isPathView() && selectedId()}>
@@ -151,6 +203,7 @@ export function FolderBrowserGrid(props: FolderBrowserGridProps) {
             folderId={selectedId()!}
             folders={props.folders}
             decks={props.decks}
+            matchingDeckIds={matchingDeckIds()}
           />
         </Show>
 
@@ -159,17 +212,38 @@ export function FolderBrowserGrid(props: FolderBrowserGridProps) {
             folderId={selectedId()!}
             folders={props.folders}
             decks={props.decks}
+            matchingDeckIds={matchingDeckIds()}
           />
         </Show>
 
         <Show when={selectedType() === "unsorted"}>
           <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <For each={orphanDecks()}>{(deck) => <DeckCard deck={deck} />}</For>
+            <For each={filterDecks(orphanDecks(), matchingDeckIds())}>
+              {(deck) => <DeckCard deck={deck} />}
+            </For>
           </div>
         </Show>
+
+        <Show when={matchingDeckIds() !== null && matchingDeckIds()!.size === 0}>
+          <div class="py-12 text-center">
+            <Search class="mx-auto mb-3 size-10 text-muted-foreground opacity-50" />
+            <p class="text-muted-foreground">No results for "{search()}"</p>
+          </div>
+        </Show>
+
+        <Suspense>
+          <Show when={searchFocused()}>
+            <SearchIndexSubscription onData={setSearchIndex} />
+          </Show>
+        </Suspense>
       </div>
     </Show>
   )
+}
+
+function filterDecks(decks: Deck[], matchingIds: Set<string> | null): Deck[] {
+  if (!matchingIds) return decks
+  return decks.filter((d) => matchingIds.has(d.id))
 }
 
 // ===== Learning path: chapter accordions =====
@@ -178,6 +252,7 @@ function PathAccordion(props: {
   folderId: string
   folders: Folder[]
   decks: Deck[]
+  matchingDeckIds: Set<string> | null
 }) {
   const { preferences } = usePreferences()
   const chapters = () => getFolderChildren(props.folders, props.folderId)
@@ -192,12 +267,23 @@ function PathAccordion(props: {
     return slug ? `${props.folderId}/${slug}` : null
   }
 
+  const visibleChapters = () => {
+    const allChapters = chapters()
+    if (!props.matchingDeckIds) return allChapters
+    return allChapters.filter((chapter) => {
+      const decks = getDecksInFolder(props.decks, chapter.id)
+      return decks.some((d) => props.matchingDeckIds!.has(d.id))
+    })
+  }
+
   return (
     <div class="mx-auto max-w-5xl">
       <Accordion multiple value={expandedIds()} onChange={setExpandedIds}>
-        <For each={chapters()}>
+        <For each={visibleChapters()}>
           {(chapter) => {
-            const decks = () => getDecksInFolder(props.decks, chapter.id)
+            const allDecks = () => getDecksInFolder(props.decks, chapter.id)
+            const decks = () =>
+              filterDecks(allDecks(), props.matchingDeckIds)
             const isActive = () => chapter.id === activeChapterFolderId()
             const slug = chapter.id.split("/").pop()!
             const displayNum =
@@ -266,9 +352,16 @@ function UserFolderContent(props: {
   folderId: string
   folders: Folder[]
   decks: Deck[]
+  matchingDeckIds: Set<string> | null
 }) {
-  const items = () =>
-    getFolderLevelItems(props.folders, props.decks, props.folderId)
+  const items = () => {
+    const all = getFolderLevelItems(props.folders, props.decks, props.folderId)
+    if (!props.matchingDeckIds) return all
+    return all.filter(
+      (node) =>
+        node.type === "folder" || props.matchingDeckIds!.has(node.data.id),
+    )
+  }
 
   return (
     <Show
@@ -296,3 +389,19 @@ function UserFolderContent(props: {
     </Show>
   )
 }
+
+// ===== Search index subscription (isolated Suspense) =====
+
+function SearchIndexSubscription(props: {
+  onData: (data: { deckId: string; terms: string[] }[]) => void
+}) {
+  const query = useConvexQuery(api.api.vocabulary.getSearchIndex, () => ({}))
+
+  createEffect(() => {
+    const data = query.data()
+    if (data) props.onData(data)
+  })
+
+  return null
+}
+
