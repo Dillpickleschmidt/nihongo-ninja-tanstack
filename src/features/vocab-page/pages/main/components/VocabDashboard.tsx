@@ -2,7 +2,7 @@ import { Show, createMemo } from "solid-js"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { usePreferences } from "@/lib/preferences"
-import { FolderBrowserGrid } from "./FolderBrowserGrid"
+import { FolderBrowser } from "./FolderBrowser"
 import { RecentlyStudiedSection } from "./RecentlyStudiedSection"
 import { ComingUpSection } from "./ComingUpSection"
 import { useVocab } from "../../../context/VocabContext"
@@ -88,7 +88,7 @@ export function VocabDashboard() {
             class="animate-fade-up opacity-0"
             style={{ "animation-delay": "75ms" }}
           >
-            <FolderBrowserGrid folders={ctx.folders()} decks={ctx.decks()} />
+            <FolderBrowser folders={ctx.folders()} decks={ctx.decks()} />
           </div>
         </Show>
       </div>
