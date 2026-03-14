@@ -56,7 +56,7 @@ export function VocabDashboard() {
         .animate-fade-up { animation: fade-up 0.3s ease-out forwards; }
       `}</style>
 
-      <div class="space-y-6">
+      <div class="mx-auto max-w-4xl space-y-6 pt-4">
         <Show when={ctx.isLoading()}>
           <div class="flex items-center justify-center py-12">
             <div class="text-muted-foreground text-sm">Loading...</div>
@@ -88,7 +88,7 @@ export function VocabDashboard() {
             class="animate-fade-up opacity-0"
             style={{ "animation-delay": "75ms" }}
           >
-            <FolderBrowser folders={ctx.folders()} decks={ctx.decks()} />
+            <FolderBrowser folders={ctx.folders} decks={ctx.decks} />
           </div>
         </Show>
       </div>

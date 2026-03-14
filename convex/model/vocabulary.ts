@@ -52,7 +52,7 @@ export async function fetchVocabBySets(
 /**
  * Get all vocabulary items for a deck
  */
-export async function getDeckVocabItems(
+export async function getUserDeckVocabItems(
   ctx: QueryCtx,
   deckId: Id<"userDecks">,
 ) {
@@ -155,7 +155,7 @@ async function fetchUserDeckVocab(
   ctx: QueryCtx,
   deckId: Id<"userDecks">,
 ): Promise<VocabularyItem[]> {
-  const deckItems = await getDeckVocabItems(ctx, deckId)
+  const deckItems = await getUserDeckVocabItems(ctx, deckId)
   return deckItems.map((item) => ({
     key: item.word,
     word: item.word,

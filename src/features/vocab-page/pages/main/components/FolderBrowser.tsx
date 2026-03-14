@@ -7,6 +7,7 @@ import {
   SelectItem,
   SelectSection,
 } from "@/components/ui/select"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
 import { Search } from "lucide-solid"
 import { usePreferences } from "@/lib/preferences"
@@ -14,6 +15,9 @@ import { DeckCard } from "../../../shared/components/DeckCard"
 import { getRootFolders, getRootOrphanDecks } from "../../../utils/hierarchy"
 import { ChapterAccordion } from "./folder-browser/components/ChapterAccordion"
 import { UserFolderContent } from "./folder-browser/components/UserFolderContent"
+import { VocabListChapterAccordion } from "./folder-browser/components/VocabListChapterAccordion"
+import { VocabListUserContent } from "./folder-browser/components/VocabListUserContent"
+import { DeckVocabCollapsible } from "./folder-browser/components/DeckVocabCollapsible"
 import { SearchIndexSubscription } from "./folder-browser/components/SearchIndexSubscription"
 import {
   filterDecks,
@@ -25,8 +29,8 @@ import {
 export function FolderBrowser(props: FolderBrowserProps) {
   const { preferences } = usePreferences()
 
-  const rootFolders = () => getRootFolders(props.folders)
-  const orphanDecks = () => getRootOrphanDecks(props.decks)
+  const rootFolders = () => getRootFolders(props.folders())
+  const orphanDecks = () => getRootOrphanDecks(props.decks())
 
   // Search state
   const [search, setSearch] = createSignal("")
@@ -40,7 +44,7 @@ export function FolderBrowser(props: FolderBrowserProps) {
 
     const matches = new Set<string>()
 
-    for (const deck of props.decks) {
+    for (const deck of props.decks()) {
       if (
         deck.deckName.toLowerCase().includes(q) ||
         deck.deckDescription?.toLowerCase().includes(q)
@@ -113,12 +117,21 @@ export function FolderBrowser(props: FolderBrowserProps) {
     selectedType() === "built-in" || selectedType() === "learning-path"
 
   return (
-    <Show when={allItems().length > 0}>
-      <div class={props.class}>
+    <Suspense>
+      <Tabs
+        defaultValue="modules"
+        class={props.class ?? ""}
+      >
         <div class="mb-6 flex items-center justify-between gap-3">
-          <h2 class="text-foreground shrink-0 text-sm font-semibold">
-            All Decks & Folders
-          </h2>
+          <div class="flex items-center gap-3">
+            <h2 class="text-foreground shrink-0 text-sm font-semibold">
+              All Decks & Folders
+            </h2>
+            <TabsList class="h-8 rounded-lg bg-white/[0.04] p-0.5">
+              <TabsTrigger value="modules" class="h-7 rounded-md px-3 text-xs data-selected:bg-white/10">Modules</TabsTrigger>
+              <TabsTrigger value="vocab-list" class="h-7 rounded-md px-3 text-xs data-selected:bg-white/10">Vocab List</TabsTrigger>
+            </TabsList>
+          </div>
 
           <div class="flex items-center gap-2">
             <TextField class="w-48 sm:w-56">
@@ -172,31 +185,61 @@ export function FolderBrowser(props: FolderBrowserProps) {
           </div>
         </div>
 
-        <Show when={isPathView() && selectedId()}>
-          <ChapterAccordion
-            folderId={selectedId()!}
-            folders={props.folders}
-            decks={props.decks}
-            matchingDeckIds={matchingDeckIds()}
-          />
-        </Show>
+        <TabsContent value="modules" class="mt-0">
+          <Show when={isPathView() && selectedId()}>
+            <ChapterAccordion
+              folderId={selectedId()!}
+              folders={props.folders()}
+              decks={props.decks()}
+              matchingDeckIds={matchingDeckIds()}
+            />
+          </Show>
 
-        <Show when={selectedType() === "user" && selectedId()}>
-          <UserFolderContent
-            folderId={selectedId()!}
-            folders={props.folders}
-            decks={props.decks}
-            matchingDeckIds={matchingDeckIds()}
-          />
-        </Show>
+          <Show when={selectedType() === "user" && selectedId()}>
+            <UserFolderContent
+              folderId={selectedId()!}
+              folders={props.folders()}
+              decks={props.decks()}
+              matchingDeckIds={matchingDeckIds()}
+            />
+          </Show>
 
-        <Show when={selectedType() === "unsorted"}>
-          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <For each={filterDecks(orphanDecks(), matchingDeckIds())}>
-              {(deck) => <DeckCard deck={deck} />}
-            </For>
-          </div>
-        </Show>
+          <Show when={selectedType() === "unsorted"}>
+            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <For each={filterDecks(orphanDecks(), matchingDeckIds())}>
+                {(deck) => <DeckCard deck={deck} />}
+              </For>
+            </div>
+          </Show>
+        </TabsContent>
+
+        <TabsContent value="vocab-list" class="mt-0">
+          <Show when={isPathView() && selectedId()}>
+            <VocabListChapterAccordion
+              folderId={selectedId()!}
+              folders={props.folders()}
+              decks={props.decks()}
+              matchingDeckIds={matchingDeckIds()}
+            />
+          </Show>
+
+          <Show when={selectedType() === "user" && selectedId()}>
+            <VocabListUserContent
+              folderId={selectedId()!}
+              folders={props.folders()}
+              decks={props.decks()}
+              matchingDeckIds={matchingDeckIds()}
+            />
+          </Show>
+
+          <Show when={selectedType() === "unsorted"}>
+            <div class="space-y-1">
+              <For each={filterDecks(orphanDecks(), matchingDeckIds())}>
+                {(deck) => <DeckVocabCollapsible deck={deck} />}
+              </For>
+            </div>
+          </Show>
+        </TabsContent>
 
         <Show
           when={matchingDeckIds() !== null && matchingDeckIds()!.size === 0}
@@ -212,7 +255,7 @@ export function FolderBrowser(props: FolderBrowserProps) {
             <SearchIndexSubscription onData={setSearchIndex} />
           </Show>
         </Suspense>
-      </div>
-    </Show>
+      </Tabs>
+    </Suspense>
   )
 }

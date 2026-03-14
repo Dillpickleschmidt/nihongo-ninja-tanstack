@@ -11,7 +11,7 @@ function RouteComponent() {
       <ul class="space-y-2">
         <li>
           <Link
-            href="/misc/kanji-practice-sheet"
+            to="/misc/kanji-practice-sheet"
             class="text-primary hover:underline"
           >
             Kanji Practice Sheet

@@ -24,7 +24,7 @@ export function DeckPreviewModal(props: DeckPreviewModalProps) {
   const isOpen = () => !!props.deckId
 
   const vocabQuery = useConvexQuery(
-    api.api.decks.getDeckVocabItems,
+    api.api.decks.getUserDeckVocabItems,
     () => ({ deckId: props.deckId! }),
     () => ({ enabled: isOpen() }),
   )

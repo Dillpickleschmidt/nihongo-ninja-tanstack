@@ -12,10 +12,10 @@ import {
   getDecksInFolder,
 } from "@/features/vocab-page/utils/hierarchy"
 import { filterDecks } from "../utils"
-import { DeckTimelineList } from "./DeckTimelineList"
+import { DeckVocabCollapsible } from "./DeckVocabCollapsible"
 import type { Folder, Deck } from "@/features/vocab-page/context/VocabContext"
 
-export function ChapterAccordion(props: {
+export function VocabListChapterAccordion(props: {
   folderId: string
   folders: Folder[]
   decks: Deck[]
@@ -23,21 +23,25 @@ export function ChapterAccordion(props: {
 }) {
   const { preferences } = usePreferences()
   const chapters = () => getFolderChildren(props.folders, props.folderId)
-  const chapterIds = () => chapters().map((c) => c.id)
-
-  const [expandedIds, setExpandedIds] = createSignal<string[]>(chapterIds())
-  createEffect(
-    on(
-      () => props.folderId,
-      () => setExpandedIds(chapterIds()),
-    ),
-  )
 
   const activeChapterFolderId = () => {
     if (props.folderId !== preferences().activeLearningPath) return null
     const slug = preferences().activeChapter
     return slug ? `${props.folderId}/${slug}` : null
   }
+
+  const getInitialExpanded = () => {
+    const active = activeChapterFolderId()
+    return active ? [active] : []
+  }
+
+  const [expandedIds, setExpandedIds] = createSignal<string[]>(getInitialExpanded())
+  createEffect(
+    on(
+      () => props.folderId,
+      () => setExpandedIds(getInitialExpanded()),
+    ),
+  )
 
   const visibleChapters = () => {
     const allChapters = chapters()
@@ -64,12 +68,12 @@ export function ChapterAccordion(props: {
 
             return (
               <AccordionItem value={chapter.id} class="border-0">
-                <AccordionTrigger class="hover:no-underline">
+                <AccordionTrigger class="py-3 hover:no-underline">
                   <div class="flex items-center gap-2">
                     <div
                       class={`flex size-6 items-center justify-center rounded-md text-xs font-bold ${
                         isActive()
-                          ? "bg-gradient-to-br from-orange-500/30 to-amber-500/30 text-orange-400"
+                          ? "bg-gradient-to-br from-sky-500/30 to-sky-400/30 text-sky-400"
                           : "bg-gradient-to-br from-white/10 to-white/5 text-white/50"
                       }`}
                     >
@@ -77,7 +81,7 @@ export function ChapterAccordion(props: {
                     </div>
                     <span
                       class={`text-sm font-semibold ${
-                        isActive() ? "text-orange-400" : "text-white/70"
+                        isActive() ? "text-sky-400" : "text-white/70"
                       }`}
                     >
                       {chapter.folderName}
@@ -89,7 +93,11 @@ export function ChapterAccordion(props: {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <DeckTimelineList decks={decks()} />
+                  <div class="space-y-0.5">
+                    <For each={decks()}>
+                      {(deck) => <DeckVocabCollapsible deck={deck} />}
+                    </For>
+                  </div>
                 </AccordionContent>
               </AccordionItem>
             )

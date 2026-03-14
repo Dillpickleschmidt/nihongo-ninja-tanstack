@@ -63,15 +63,14 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
 
   // Fetch vocabulary with hierarchy (works for both built-in and user decks)
   const hierarchyQuery = useConvexQuery(
-    api.api.hierarchy.getVocabHierarchyByDeck,
+    api.api.hierarchy.getDeckHierarchy,
     () => ({
       deckId: deck.id,
-      deckSource: deck.source,
     }),
   )
 
   const hierarchyKeys = createMemo(() => {
-    const data = hierarchyQuery.data()
+    const data = hierarchyQuery.data()?.hierarchy
     if (!data) return [] as string[]
 
     return [
@@ -97,7 +96,7 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
 
   // Derived: kanji → vocab lookup map
   const kanjiToVocab = createMemo(() => {
-    const data = hierarchyQuery.data()
+    const data = hierarchyQuery.data()?.hierarchy
     if (!data) return undefined
 
     const map = new Map<string, string[]>()
@@ -113,7 +112,7 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
 
   // Derived: filtered vocabulary based on selected kanji
   const filteredVocab = createMemo(() => {
-    const data = hierarchyQuery.data()
+    const data = hierarchyQuery.data()?.hierarchy
     if (!data) return undefined
 
     const selected = selectedKanji()
@@ -126,7 +125,7 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
 
   // Derived: filtered kanji based on selected radical
   const filteredKanji = createMemo(() => {
-    const data = hierarchyQuery.data()
+    const data = hierarchyQuery.data()?.hierarchy
     if (!data) return undefined
 
     const selected = selectedRadical()
@@ -137,7 +136,7 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
 
   // Derived: counts
   const counts = createMemo(() => {
-    const data = hierarchyQuery.data()
+    const data = hierarchyQuery.data()?.hierarchy
     if (!data) return undefined
     return {
       vocab: data.vocabulary.length,
@@ -187,7 +186,7 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
   })
 
   // Derived: skipped kanji (plain function - used once)
-  const skippedKanji = () => hierarchyQuery.data()?.skippedKanji
+  const skippedKanji = () => hierarchyQuery.data()?.hierarchy.skippedKanji
 
   const hasSelection = () =>
     selectedKanji() !== null || selectedRadical() !== null

@@ -1,5 +1,12 @@
 import { createFileRoute } from "@tanstack/solid-router"
-import { createSignal, createEffect, onMount, onCleanup, type Accessor, type Setter } from "solid-js"
+import {
+  createSignal,
+  createEffect,
+  onMount,
+  onCleanup,
+  type Accessor,
+  type Setter,
+} from "solid-js"
 import { convexQuery } from "@/lib/convex-query"
 import { api } from "../../../convex/_generated/api"
 import { parsePreferencesCookie } from "@/query/model/preferences"
@@ -76,22 +83,23 @@ function DashboardComponent() {
 
       <FloatingKanji char="忍" class="top-20 left-[10%]" delay={0} />
 
-      <main class="relative pt-20 md:pt-20 2xl:pt-28 pb-32">
+      <main class="pt-20 md:pt-20 2xl:pt-28 pb-32 px-4 md:px-6">
         <DashboardPathProvider>
-          <div class="mx-auto max-w-7xl px-4 md:px-6">
-            <HeroSection selectedView={selectedView} setSelectedView={setSelectedView} />
+          <HeroSection
+            selectedView={selectedView}
+            setSelectedView={setSelectedView}
+          />
 
-            <SSRMediaQuery hideFrom="md">
-              <PracticeToolsSection />
-              <ViewToggle
-                selectedView={selectedView}
-                setSelectedView={setSelectedView}
-                class="mt-4"
-              />
-            </SSRMediaQuery>
+          <SSRMediaQuery hideFrom="md">
+            <PracticeToolsSection />
+            <ViewToggle
+              selectedView={selectedView}
+              setSelectedView={setSelectedView}
+              class="mt-4"
+            />
+          </SSRMediaQuery>
 
-            <LearningPathSection selectedView={selectedView} />
-          </div>
+          <LearningPathSection selectedView={selectedView} />
         </DashboardPathProvider>
       </main>
     </div>

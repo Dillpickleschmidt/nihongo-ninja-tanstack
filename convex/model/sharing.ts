@@ -1,7 +1,7 @@
 import { MutationCtx, QueryCtx } from "../_generated/server"
 import { Id } from "../_generated/dataModel"
 import { createDeck as createDeckModel } from "./decks"
-import { getDeckVocabItems, createDeckVocabItems } from "./vocabulary"
+import { getUserDeckVocabItems, createDeckVocabItems } from "./vocabulary"
 
 type SortBy = "recent" | "popular"
 
@@ -118,7 +118,7 @@ export async function importSharedDeck(
     allowedPracticeModes: originalDeck.allowedPracticeModes,
   })
 
-  const vocabItems = await getDeckVocabItems(ctx, deckId)
+  const vocabItems = await getUserDeckVocabItems(ctx, deckId)
   if (vocabItems.length > 0) {
     await createDeckVocabItems(
       ctx,

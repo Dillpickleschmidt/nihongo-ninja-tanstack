@@ -1,8 +1,8 @@
 import type { Folder, Deck } from "@/features/vocab-page/context/VocabContext"
 
 export interface FolderBrowserProps {
-  folders: Folder[]
-  decks: Deck[]
+  folders: () => Folder[]
+  decks: () => Deck[]
   class?: string
 }
 

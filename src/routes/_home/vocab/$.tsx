@@ -43,9 +43,8 @@ export const Route = createFileRoute("/_home/vocab/$")({
         if (deck) {
           // Prefetch hierarchy data for both built-in and user decks
           context.queryClient.prefetchQuery(
-            convexQuery(api.api.hierarchy.getVocabHierarchyByDeck, {
+            convexQuery(api.api.hierarchy.getDeckHierarchy, {
               deckId: deck.id,
-              deckSource: deck.source,
             }),
           )
           return { type: "deck" as const, deck }

@@ -3,6 +3,7 @@ import { Link } from "@tanstack/solid-router"
 import { Button } from "@/components/ui/button"
 import { buildDeckUrlPath } from "../../../utils/navigation"
 import { useVocab, type Deck } from "../../../context/VocabContext"
+import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import type { LearningPathChapter } from "convex/model/learning_paths"
 
 interface ComingUpSectionProps {
@@ -50,7 +51,11 @@ export function ComingUpSection(props: ComingUpSectionProps) {
   }
 
   const chapterLabel = () => {
-    const parts = [props.learningPathName(), props.chapter()?.title].filter(Boolean)
+    const chapter = props.chapter()
+    if (!chapter) return ""
+    const num = getChapterDisplayNumber(chapter.slug)
+    const short = num ? `Ch. ${num}` : chapter.title
+    const parts = [props.learningPathName(), short].filter(Boolean)
     return parts.join(" ")
   }
 

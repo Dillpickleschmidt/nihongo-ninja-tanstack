@@ -1,6 +1,7 @@
 import { v } from "convex/values"
 import { query } from "../_generated/server"
 import * as Vocabulary from "../model/vocabulary"
+import { resolveDeckById } from "../model/decks"
 import { fetchKanjiAndRadicals } from "../model/kanji"
 
 /**
@@ -21,6 +22,18 @@ export const getByKeys = query({
   args: { keys: v.array(v.string()) },
   handler: async (ctx, { keys }) => {
     return Vocabulary.fetchVocabItemsByKeys(ctx, keys, null)
+  },
+})
+
+/**
+ * Get vocabulary items for a deck (built-in or user)
+ */
+export const getDeckVocab = query({
+  args: { deckId: v.string() },
+  handler: async (ctx, { deckId }) => {
+    const deck = await resolveDeckById(ctx, deckId)
+    if (!deck) return []
+    return Vocabulary.fetchDeckVocab(ctx, deck.id, deck.source)
   },
 })
 

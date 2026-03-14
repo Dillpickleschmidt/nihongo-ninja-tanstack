@@ -109,9 +109,9 @@ export const updateDeckWithVocab = mutation({
 /**
  * Get vocabulary items for a deck
  */
-export const getDeckVocabItems = query({
+export const getUserDeckVocabItems = query({
   args: { deckId: v.id("userDecks") },
-  handler: (ctx, { deckId }) => Vocabulary.getDeckVocabItems(ctx, deckId),
+  handler: (ctx, { deckId }) => Vocabulary.getUserDeckVocabItems(ctx, deckId),
 })
 
 /**
@@ -122,7 +122,7 @@ export const getDeckWithVocab = query({
   handler: async (ctx, { deckId }) => {
     await Decks.verifyDeckOwnership(ctx, deckId)
     const deck = await ctx.db.get(deckId)
-    const vocabItems = await Vocabulary.getDeckVocabItems(ctx, deckId)
+    const vocabItems = await Vocabulary.getUserDeckVocabItems(ctx, deckId)
     return { deck, vocabItems }
   },
 })

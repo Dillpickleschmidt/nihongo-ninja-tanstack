@@ -1,20 +1,23 @@
 import { v } from "convex/values"
 import { query } from "../_generated/server"
+import { resolveDeckById } from "../model/decks"
 import { fetchDeckVocab } from "../model/vocabulary"
 import { buildDeckHierarchy } from "../model/hierarchy"
 
 /**
- * Get vocabulary with full kanji/radical hierarchy for a deck
- * For built-in decks, deckId is the vocab set ID
- * For user decks, deckId is the Convex document ID
+ * Get deck metadata + vocabulary with full kanji/radical hierarchy
+ * Accepts any deck ID (built-in or user) via resolveDeckById
  */
-export const getVocabHierarchyByDeck = query({
+export const getDeckHierarchy = query({
   args: {
     deckId: v.string(),
-    deckSource: v.union(v.literal("user"), v.literal("built-in")),
   },
   handler: async (ctx, args) => {
-    const vocabulary = await fetchDeckVocab(ctx, args.deckId, args.deckSource)
-    return buildDeckHierarchy(ctx, vocabulary)
+    const deck = await resolveDeckById(ctx, args.deckId)
+    if (!deck) return null
+
+    const vocabulary = await fetchDeckVocab(ctx, deck.id, deck.source)
+    const hierarchy = await buildDeckHierarchy(ctx, vocabulary)
+    return { deck, hierarchy }
   },
 })

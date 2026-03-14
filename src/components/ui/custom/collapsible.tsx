@@ -25,6 +25,7 @@ type CollapsibleTriggerProps<T extends ValidComponent = "button"> =
   CollapsiblePrimitive.CollapsibleTriggerProps<T> & {
     class?: string | undefined
     children?: JSX.Element
+    chevronEnd?: boolean
   }
 
 const CollapsibleTriggerImpl = <T extends ValidComponent = "button">(
@@ -33,12 +34,18 @@ const CollapsibleTriggerImpl = <T extends ValidComponent = "button">(
   const [local, others] = splitProps(props as CollapsibleTriggerProps, [
     "class",
     "children",
+    "chevronEnd",
   ])
+
+  const chevron = (
+    <ChevronRight class="h-4 w-4 shrink-0 transition-transform duration-200 [button[aria-expanded=true]_&]:rotate-90" />
+  )
 
   return (
     <CollapsiblePrimitive.Trigger
       class={cn(
-        "inline-flex w-full items-center justify-start gap-2 rounded-md text-sm font-medium transition-colors",
+        "inline-flex w-full items-center gap-2 rounded-md text-sm font-medium transition-colors",
+        local.chevronEnd ? "justify-between" : "justify-start",
         "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
         "disabled:pointer-events-none disabled:opacity-50",
         "hover:bg-accent hover:text-accent-foreground",
@@ -46,8 +53,9 @@ const CollapsibleTriggerImpl = <T extends ValidComponent = "button">(
       )}
       {...others}
     >
-      <ChevronRight class="h-4 w-4 shrink-0 transition-transform duration-200 [button[aria-expanded=true]_&]:rotate-90" />
+      {!local.chevronEnd && chevron}
       {local.children}
+      {local.chevronEnd && chevron}
     </CollapsiblePrimitive.Trigger>
   )
 }

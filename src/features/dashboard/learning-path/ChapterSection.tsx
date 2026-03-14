@@ -31,7 +31,7 @@ export function ChapterSection(props: ChapterSectionProps) {
       >
         <div class={cn(hasExternalResources() && "min-w-0 flex-1")}>
           <Show when={props.chapter.description}>
-            <p class="text-neutral-300 max-w-3xl mb-4">
+            <p class="text-neutral-300">
               {props.chapter.description}
             </p>
           </Show>

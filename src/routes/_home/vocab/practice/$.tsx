@@ -65,7 +65,7 @@ export const Route = createFileRoute("/_home/vocab/practice/$")({
     const ankiDataPromise =
       deckId && isAnkiMode
         ? context.queryClient.fetchQuery(
-            convexQuery(api.api.practice.getDeckHierarchy, { deckId }),
+            convexQuery(api.api.hierarchy.getDeckHierarchy, { deckId }),
           )
         : null
 

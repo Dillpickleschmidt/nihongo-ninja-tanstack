@@ -14,12 +14,12 @@ export function ExternalResourcesSection(
 
   return (
     <Show when={count() > 0}>
-      <div>
+      <div class="w-0 min-w-full overflow-x-auto">
         <div
           class={cn(
-            "flex gap-4 overflow-x-auto pb-2",
-            count() < 3 && "justify-end",
-            count() === 3 && "md:justify-end",
+            "flex w-max gap-4 pb-2",
+            count() < 3 && "ml-auto",
+            count() === 3 && "md:ml-auto",
           )}
         >
           <For each={props.externalResourceIds}>

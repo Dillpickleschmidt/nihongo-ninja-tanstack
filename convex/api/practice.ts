@@ -33,16 +33,3 @@ export const getPracticeData = query({
   },
 })
 
-export const getDeckHierarchy = query({
-  args: {
-    deckId: v.string(),
-  },
-  handler: async (ctx, args) => {
-    const deck = await resolveDeckById(ctx, args.deckId)
-    if (!deck) return null
-
-    const vocabulary = await fetchDeckVocab(ctx, deck.id, deck.source)
-    const hierarchy = await buildDeckHierarchy(ctx, vocabulary)
-    return { deck, hierarchy }
-  },
-})

@@ -38,7 +38,11 @@ const syncActiveChapter = createIsomorphicFn()
           chapter.textbookId === prefs.activeLearningPath &&
           chapter.chapterSlug !== prefs.activeChapter
         ) {
-          updatePreferenceCookie(queryClient, "activeChapter", chapter.chapterSlug)
+          updatePreferenceCookie(
+            queryClient,
+            "activeChapter",
+            chapter.chapterSlug,
+          )
         }
       }
     },
@@ -70,7 +74,10 @@ function HomeLayout() {
 
   const dailyProgressPercentage = createMemo(() => {
     const units = dailyProgressQuery.data()?.progressUnits ?? 0
-    return Math.min(100, Math.round((units / DAILY_PROGRESS_TARGET_UNITS) * 100))
+    return Math.min(
+      100,
+      Math.round((units / DAILY_PROGRESS_TARGET_UNITS) * 100),
+    )
   })
 
   return (
@@ -83,7 +90,7 @@ function HomeLayout() {
         </div>
       </SSRMediaQuery>
 
-      <div class="w-full flex justify-center min-[1700px]:-ml-72! [&>*]:w-full">
+      <div class="w-full flex justify-center min-[1700px]:-ml-72! *:w-full *:max-w-7xl">
         <Outlet />
       </div>
 
