@@ -40,8 +40,9 @@ export function ExternalResourceCard(props: ExternalResourceCardProps) {
   return (
     <SmoothCardLink
       to={props.resource.link}
-      width={180}
-      height={120}
+      width={160}
+      height={105}
+      cornerRadius={14}
       class="relative overflow-hidden p-3.5 shadow-lg shadow-black transition-opacity hover:opacity-80"
     >
       {thumbnailUrl() && (
@@ -71,7 +72,7 @@ export function ExternalResourceCard(props: ExternalResourceCardProps) {
           <div class="font-inter text-[13px] font-semibold leading-tight text-white drop-shadow-sm drop-shadow-black">
             {truncateText(props.resource.title, 35)}
           </div>
-          <div class="text-muted-foreground text-[11px] capitalize drop-shadow-sm">
+          <div class="text-muted-foreground pt-[5px] text-[11px] leading-none capitalize drop-shadow-sm">
             {props.resource.module_type.replace("-", " ")}
           </div>
         </div>
