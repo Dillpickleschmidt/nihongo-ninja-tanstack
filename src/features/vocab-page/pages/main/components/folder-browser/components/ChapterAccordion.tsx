@@ -89,7 +89,7 @@ export function ChapterAccordion(props: {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <DeckTimelineList decks={decks()} />
+                  <DeckTimelineList decks={decks()} isActiveChapter={isActive()} />
                 </AccordionContent>
               </AccordionItem>
             )
