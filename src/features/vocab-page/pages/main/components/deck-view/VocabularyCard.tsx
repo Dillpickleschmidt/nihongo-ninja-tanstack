@@ -1,8 +1,13 @@
-import { For } from "solid-js"
+import { For, type JSXElement } from "solid-js"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Book, Grid2x2 } from "lucide-solid"
 import { convertFuriganaToRubyHtml } from "@/data/utils/text/furigana"
 import type { VocabularyItem } from "convex/validators"
+
+const mobileTriggerClass =
+  "h-7 w-full rounded-md text-primary/50 hover:text-primary data-[selected]:bg-transparent data-[selected]:text-primary data-[selected]:shadow-none"
+const desktopTriggerClass =
+  "h-7 rounded-md text-xs text-primary/50 hover:text-primary data-[selected]:bg-transparent data-[selected]:text-primary data-[selected]:shadow-none"
 
 interface VocabularyCardProps {
   item: VocabularyItem
@@ -18,36 +23,22 @@ export function VocabularyCard(props: VocabularyCardProps) {
         }`}
       >
         <div class="px-6 py-6">
-          <div class="border-border mb-6 border-b pb-4">
-            <div class="flex items-center justify-between gap-4">
-              <div class="flex items-baseline gap-4">
-                <h3 class="font-japanese flex items-baseline text-xl font-bold">
-                  <span class="text-muted-foreground mr-3 text-base">
-                    {`${props.index + 1}.`}
-                  </span>
-                  <span
-                    class="text-xl"
-                    innerHTML={convertFuriganaToRubyHtml(props.item.furigana)}
-                  />
-                </h3>
-                <span class="text-muted-foreground text-sm italic">
-                  {props.item.english.join(", ")}
-                </span>
-              </div>
-            </div>
-          </div>
-
           {/* Mobile: Tabbed Layout */}
           <div class="md:hidden">
+            <CardHeader item={props.item} index={props.index} />
             <Tabs defaultValue="info" class="w-full">
-              <TabsList class="bg-background/40 border-card-foreground/70 border backdrop-blur-sm">
-                <TabsTrigger value="info">
-                  <Book class="mr-2 h-4 w-4" />
-                  Info
+              <TabsList class="w-full bg-background/40 backdrop-blur-sm">
+                <TabsTrigger value="info" class={mobileTriggerClass}>
+                  <Book class="mr-1.5 h-3.5 w-3.5" />
+                  <span class="text-xs">Info</span>
                 </TabsTrigger>
-                <TabsTrigger value="examples">
-                  <Grid2x2 class="mr-2 h-4 w-4" />
-                  Examples
+                <TabsTrigger value="examples-simple" class={mobileTriggerClass}>
+                  <Grid2x2 class="mr-1.5 h-3.5 w-3.5" />
+                  <span class="text-xs">Simple Examples</span>
+                </TabsTrigger>
+                <TabsTrigger value="examples-real" class={mobileTriggerClass}>
+                  <Grid2x2 class="mr-1.5 h-3.5 w-3.5" />
+                  <span class="text-xs">Real Examples</span>
                 </TabsTrigger>
               </TabsList>
 
@@ -55,22 +46,73 @@ export function VocabularyCard(props: VocabularyCardProps) {
                 <VocabInfo item={props.item} />
               </TabsContent>
 
-              <TabsContent value="examples">
+              <TabsContent value="examples-simple">
                 <VocabExamples item={props.item} />
+              </TabsContent>
+
+              <TabsContent value="examples-real">
+                <p class="text-muted-foreground text-sm">No real examples yet</p>
               </TabsContent>
             </Tabs>
           </div>
 
           {/* Desktop: Compact Layout */}
-          <div class="hidden md:flex md:justify-between md:gap-6">
-            <div class="max-w-[50%] border-l-2 border-orange-400/60 pl-6 saturate-75">
-              <VocabInfo item={props.item} />
+          <Tabs defaultValue="examples-simple" class="hidden md:block">
+            <CardHeader item={props.item} index={props.index}>
+              <TabsList class="bg-background/40 backdrop-blur-sm">
+                <TabsTrigger value="examples-simple" class={desktopTriggerClass}>
+                  Simple Examples
+                </TabsTrigger>
+                <TabsTrigger value="examples-real" class={desktopTriggerClass}>
+                  Real Examples
+                </TabsTrigger>
+              </TabsList>
+            </CardHeader>
+
+            <div class="flex justify-between gap-6">
+              <div class="max-w-[50%] border-l-2 border-orange-400/60 pl-6 saturate-75">
+                <VocabInfo item={props.item} />
+              </div>
+              <div class="bg-background/40 border-card-foreground/70 w-full max-w-[60%] rounded-lg border p-4 backdrop-blur-sm">
+                <TabsContent value="examples-simple">
+                  <VocabExamples item={props.item} />
+                </TabsContent>
+
+                <TabsContent value="examples-real">
+                  <p class="text-muted-foreground text-sm">No real examples yet</p>
+                </TabsContent>
+              </div>
             </div>
-            <div class="bg-background/40 border-card-foreground/70 w-full max-w-[60%] rounded-lg border p-4 backdrop-blur-sm">
-              <VocabExamples item={props.item} />
-            </div>
-          </div>
+          </Tabs>
         </div>
+      </div>
+    </div>
+  )
+}
+
+function CardHeader(props: {
+  item: VocabularyItem
+  index: number
+  children?: JSXElement
+}) {
+  return (
+    <div class="border-border mb-6 border-b pb-4">
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-baseline gap-4">
+          <h3 class="font-japanese flex items-baseline text-xl font-bold">
+            <span class="text-muted-foreground mr-3 text-base">
+              {`${props.index + 1}.`}
+            </span>
+            <span
+              class="text-xl"
+              innerHTML={convertFuriganaToRubyHtml(props.item.furigana)}
+            />
+          </h3>
+          <span class="text-muted-foreground text-sm italic">
+            {props.item.english.join(", ")}
+          </span>
+        </div>
+        {props.children}
       </div>
     </div>
   )
@@ -147,9 +189,6 @@ function VocabExamples(props: { item: VocabularyItem }) {
     <div class="space-y-3">
       {props.item.exampleSentences && props.item.exampleSentences.length > 0 ? (
         <>
-          <h4 class="text-foreground mb-3 text-sm font-medium">
-            Example Sentences
-          </h4>
           <div class="space-y-4">
             <For each={props.item.exampleSentences}>
               {(sentence) => (
