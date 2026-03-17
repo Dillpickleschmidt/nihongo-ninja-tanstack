@@ -38,12 +38,13 @@ export const getDeckVocab = query({
 })
 
 /**
- * Lightweight search index for all visible decks (deck ID + searchable terms)
+ * Scoped vocab index: search terms per deck + optional ordered keys for IK ranking.
+ * Scoped to a learning path, folder, or unsorted decks.
  */
-export const getSearchIndex = query({
-  args: {},
-  handler: async (ctx) => {
-    return Vocabulary.getSearchIndex(ctx)
+export const getVocabIndex = query({
+  args: { scopeId: v.string() },
+  handler: async (ctx, { scopeId }) => {
+    return Vocabulary.getVocabIndex(ctx, scopeId)
   },
 })
 

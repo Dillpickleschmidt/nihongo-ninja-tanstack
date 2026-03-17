@@ -5,6 +5,7 @@ import { VocabularyCard } from "../VocabularyCard"
 
 interface VocabTabProps {
   vocabulary?: VocabularyItem[]
+  orderedKeys?: string[]
 }
 
 export function VocabTab(props: VocabTabProps) {
@@ -27,7 +28,13 @@ export function VocabTab(props: VocabTabProps) {
       >
         <div class="space-y-4">
           <For each={props.vocabulary}>
-            {(item, index) => <VocabularyCard item={item} index={index()} />}
+            {(item, index) => (
+              <VocabularyCard
+                item={item}
+                index={index()}
+                orderedKeys={props.orderedKeys}
+              />
+            )}
           </For>
         </div>
       </Show>

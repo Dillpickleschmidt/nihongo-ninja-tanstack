@@ -1,7 +1,14 @@
-import { For, type JSXElement } from "solid-js"
+import { For, Show, Suspense, createMemo, createSignal, onCleanup, type JSXElement } from "solid-js"
+import { useQuery } from "@tanstack/solid-query"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Book, Grid2x2 } from "lucide-solid"
+import { Skeleton } from "@/components/ui/custom/skeleton"
+import { Book, Grid2x2, AudioLines } from "lucide-solid"
 import { convertFuriganaToRubyHtml } from "@/data/utils/text/furigana"
+import {
+  fetchImmersionKitExamples,
+  rankExamples,
+  type ImmersionKitExample,
+} from "../../../../lib/immersion-kit"
 import type { VocabularyItem } from "convex/validators"
 
 const mobileTriggerClass =
@@ -12,6 +19,7 @@ const desktopTriggerClass =
 interface VocabularyCardProps {
   item: VocabularyItem
   index: number
+  orderedKeys?: string[]
 }
 
 export function VocabularyCard(props: VocabularyCardProps) {
@@ -51,13 +59,18 @@ export function VocabularyCard(props: VocabularyCardProps) {
               </TabsContent>
 
               <TabsContent value="examples-real">
-                <p class="text-muted-foreground text-sm">No real examples yet</p>
+                <Suspense fallback={<RealExamplesSkeleton />}>
+                  <RealExamples
+                    word={props.item.word}
+                    orderedKeys={props.orderedKeys}
+                  />
+                </Suspense>
               </TabsContent>
             </Tabs>
           </div>
 
           {/* Desktop: Compact Layout */}
-          <Tabs defaultValue="examples-simple" class="hidden md:block">
+          <Tabs defaultValue="examples-real" class="hidden md:block">
             <CardHeader item={props.item} index={props.index}>
               <TabsList class="bg-background/40 backdrop-blur-sm">
                 <TabsTrigger value="examples-simple" class={desktopTriggerClass}>
@@ -69,17 +82,22 @@ export function VocabularyCard(props: VocabularyCardProps) {
               </TabsList>
             </CardHeader>
 
-            <div class="flex justify-between gap-6">
-              <div class="max-w-[50%] border-l-2 border-orange-400/60 pl-6 saturate-75">
+            <div class="flex gap-6">
+              <div class="w-1/2 border-l-2 border-orange-400/60 pl-6 saturate-75">
                 <VocabInfo item={props.item} />
               </div>
-              <div class="bg-background/40 border-card-foreground/70 w-full max-w-[60%] rounded-lg border p-4 backdrop-blur-sm">
+              <div class="bg-background/40 border-card-foreground/70 w-1/2 rounded-lg border p-4 backdrop-blur-sm">
                 <TabsContent value="examples-simple">
                   <VocabExamples item={props.item} />
                 </TabsContent>
 
                 <TabsContent value="examples-real">
-                  <p class="text-muted-foreground text-sm">No real examples yet</p>
+                  <Suspense fallback={<RealExamplesSkeleton />}>
+                    <RealExamples
+                      word={props.item.word}
+                      orderedKeys={props.orderedKeys}
+                    />
+                  </Suspense>
                 </TabsContent>
               </div>
             </div>
@@ -108,7 +126,7 @@ function CardHeader(props: {
               innerHTML={convertFuriganaToRubyHtml(props.item.furigana)}
             />
           </h3>
-          <span class="text-muted-foreground text-sm italic">
+          <span class="text-foreground/70 text-sm italic">
             {props.item.english.join(", ")}
           </span>
         </div>
@@ -149,7 +167,7 @@ function VocabInfo(props: { item: VocabularyItem }) {
                 <For each={props.item.mnemonics.kanji}>
                   {(mnemonic) => (
                     <div class="ml-2 text-sm">
-                      <span class="text-muted-foreground">{mnemonic}</span>
+                      <span class="text-foreground/70">{mnemonic}</span>
                     </div>
                   )}
                 </For>
@@ -164,7 +182,7 @@ function VocabInfo(props: { item: VocabularyItem }) {
                 <For each={props.item.mnemonics.reading}>
                   {(mnemonic) => (
                     <div class="ml-2 text-sm">
-                      <span class="text-muted-foreground">{mnemonic}</span>
+                      <span class="text-foreground/70">{mnemonic}</span>
                     </div>
                   )}
                 </For>
@@ -174,7 +192,7 @@ function VocabInfo(props: { item: VocabularyItem }) {
       )}
 
       {props.item.info && props.item.info.length > 0 && (
-        <ul class="text-muted-foreground ml-4 space-y-1 text-sm">
+        <ul class="text-foreground/70 ml-4 space-y-1 text-sm">
           <For each={props.item.info}>
             {(info) => <li class="list-disc">{info}</li>}
           </For>
@@ -217,6 +235,133 @@ function VocabExamples(props: { item: VocabularyItem }) {
       ) : (
         <p class="text-muted-foreground text-sm">No examples available</p>
       )}
+    </div>
+  )
+}
+
+const TOP_N = 2
+
+function RealExamples(props: {
+  word: string
+  orderedKeys?: string[]
+}) {
+  const query = useQuery(() => ({
+    queryKey: ["immersion-kit", props.word],
+    queryFn: () => fetchImmersionKitExamples(props.word),
+    enabled: !!props.word,
+  }))
+
+  const examples = createMemo(() => {
+    const data = query.data
+    if (!data) return undefined
+    return rankExamples(data, props.word, props.orderedKeys).slice(0, TOP_N)
+  })
+  const [playingUrl, setPlayingUrl] = createSignal<string | null>(null)
+  let currentAudio: HTMLAudioElement | undefined
+
+  const playAudio = (soundUrl: string) => {
+    if (playingUrl() === soundUrl) {
+      currentAudio?.pause()
+      setPlayingUrl(null)
+      return
+    }
+
+    currentAudio?.pause()
+    const audio = new Audio(soundUrl)
+    currentAudio = audio
+
+    setPlayingUrl(soundUrl)
+    audio.play()
+
+    audio.onended = () => {
+      if (playingUrl() === soundUrl) setPlayingUrl(null)
+    }
+    audio.onerror = () => {
+      if (playingUrl() === soundUrl) setPlayingUrl(null)
+    }
+  }
+
+  onCleanup(() => {
+    currentAudio?.pause()
+  })
+
+  return (
+    <Show
+      when={examples()?.length}
+      fallback={
+        <p class="text-muted-foreground text-sm">No real examples found</p>
+      }
+    >
+      <div class="space-y-4">
+        <For each={examples()}>
+          {(example) => (
+            <div class="flex flex-col gap-3 sm:flex-row">
+              <Show when={example.image}>
+                <div class="shrink-0 sm:w-36">
+                  <img
+                    src={example.image}
+                    alt="Scene"
+                    class="h-44 w-full cursor-pointer rounded-lg object-cover opacity-90 transition-opacity hover:opacity-100 sm:h-24 sm:w-36"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none"
+                    }}
+                    onClick={() =>
+                      example.sound && playAudio(example.sound)
+                    }
+                  />
+                </div>
+              </Show>
+              <div class="min-w-0 flex-grow">
+                <div class="mb-1.5 flex items-center gap-2">
+                  <button
+                    class="hover:bg-muted rounded-full p-1.5 transition-colors"
+                    onClick={() =>
+                      example.sound && playAudio(example.sound)
+                    }
+                    disabled={!example.sound}
+                  >
+                    <AudioLines
+                      class={`h-4 w-4 ${
+                        playingUrl() === example.sound
+                          ? "text-emerald-400"
+                          : "text-muted-foreground"
+                      }`}
+                    />
+                  </button>
+                  <span class="text-muted-foreground text-xs">
+                    {example.title.replace(/_/g, " ")}
+                  </span>
+                </div>
+                <p class="font-japanese text-base leading-relaxed">
+                  {example.sentence}
+                </p>
+                <p class="text-muted-foreground mt-1 text-xs leading-relaxed">
+                  {example.translation}
+                </p>
+              </div>
+            </div>
+          )}
+        </For>
+      </div>
+    </Show>
+  )
+}
+
+function RealExamplesSkeleton() {
+  return (
+    <div class="space-y-4">
+      <For each={[0, 1]}>
+        {() => (
+          <div class="flex gap-3">
+            <Skeleton class="h-24 w-36 shrink-0 rounded-lg" />
+            <div class="min-w-0 flex-grow space-y-2">
+              <Skeleton class="h-4 w-24 rounded" />
+              <Skeleton class="h-5 w-full rounded" />
+              <Skeleton class="h-3 w-3/4 rounded" />
+            </div>
+          </div>
+        )}
+      </For>
     </div>
   )
 }

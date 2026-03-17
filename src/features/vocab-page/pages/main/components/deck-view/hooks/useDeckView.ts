@@ -2,6 +2,8 @@ import { createSignal, createMemo, type Accessor, type Setter } from "solid-js"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { extractKanjiCharacters } from "@/data/utils/text/japanese"
+import { useVocab } from "@/features/vocab-page/context/VocabContext"
+import { resolveDeckScopeId } from "@/features/vocab-page/utils/scope"
 import type { UnifiedDeck } from "convex/model/decks"
 import type { VocabularyItem, KanjiEntry } from "convex/validators"
 
@@ -41,6 +43,7 @@ interface UseDeckViewReturn {
     | undefined
   >
   dueRowsLoading: Accessor<boolean>
+  orderedKeys: Accessor<string[] | undefined>
   skippedKanji: () => string[] | undefined
   hasSelection: () => boolean
 
@@ -93,6 +96,17 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
     () => ({ keys: hierarchyKeys(), mode: "spellings" as const }),
     () => ({ enabled: hierarchyKeys().length > 0 }),
   )
+
+  // Vocab index for IK ranking (orderedKeys)
+  const { folders, decks } = useVocab()
+  const scopeId = createMemo(() =>
+    resolveDeckScopeId(deck.id, decks(), folders()),
+  )
+  const vocabIndexQuery = useConvexQuery(
+    api.api.vocabulary.getVocabIndex,
+    () => ({ scopeId: scopeId() }),
+  )
+  const orderedKeys = () => vocabIndexQuery.data()?.orderedKeys
 
   // Derived: kanji → vocab lookup map
   const kanjiToVocab = createMemo(() => {
@@ -236,6 +250,7 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
     counts,
     dueRows,
     dueRowsLoading,
+    orderedKeys,
     skippedKanji,
     hasSelection,
 

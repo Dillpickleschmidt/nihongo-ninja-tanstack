@@ -208,8 +208,11 @@ export function FolderBrowser(props: FolderBrowserProps) {
         </Show>
 
         <Suspense>
-          <Show when={searchFocused()}>
-            <SearchIndexSubscription onData={setSearchIndex} />
+          <Show when={searchFocused() && selected()}>
+            <SearchIndexSubscription
+              scopeId={selected()!.id === "unsorted" ? "" : selected()!.id}
+              onData={setSearchIndex}
+            />
           </Show>
         </Suspense>
       </div>

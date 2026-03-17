@@ -28,7 +28,7 @@ import { cn } from "@/utils"
 import type { ButtonProps } from "@/components/ui/button"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/custom/skeleton"
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
 import {
   Tooltip,

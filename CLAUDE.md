@@ -103,3 +103,7 @@ Prefer plain accessor functions over `createMemo` when used only once. Reserve `
 ### useNavigate
 
 ⚠️ Because of the Link component's built-in affordances around href, cmd/ctrl + click-ability, and active/inactive capabilities, it's recommended to use the Link component instead of useNavigate for anything the user can interact with (e.g. links, buttons). However, there are some cases where useNavigate is necessary to handle side-effect navigations (e.g. a successful async action that results in a navigation).
+
+### <Suspense>
+
+Suspense should be as fine-grained as possible, wrapping only the areas it needs to to prevent data not dependent on the data from being hidden.

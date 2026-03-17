@@ -2,7 +2,10 @@ import { MutationCtx, QueryCtx } from "../_generated/server"
 import { Id } from "../_generated/dataModel"
 import { type VocabularyItem, type DeckVocabItemInput } from "../validators"
 import { dynamic_modules } from "../../src/data/dynamic_modules"
+import { isBuiltInTextbook } from "../../src/data/utils/textbooks"
+import { getChaptersByTextbook } from "../../src/data/utils/chapters"
 import * as Decks from "./decks"
+import { getDescendantFolderIds } from "./folders"
 
 /**
  * Unified: fetch vocab for any deck based on source
@@ -123,29 +126,233 @@ export async function replaceDeckVocabItems(
 }
 
 /**
- * Lightweight search index: returns deckId + searchable terms for all visible decks.
- * Full VocabularyItem docs are fetched server-side but only word/english are returned.
+ * Scoped vocab index: returns search terms per deck + optional ordered keys for IK ranking.
+ * Scoped to a learning path, folder, or unsorted decks based on scopeId.
  */
-export async function getSearchIndex(
+export async function getVocabIndex(
   ctx: QueryCtx,
-): Promise<{ deckId: string; terms: string[] }[]> {
-  const allDecks = await Decks.getAllDecks(ctx)
+  scopeId: string,
+): Promise<{
+  deckTerms: { deckId: string; terms: string[] }[]
+  orderedKeys?: string[]
+}> {
+  // Branch 1: Built-in textbook learning path
+  if (isBuiltInTextbook(scopeId)) {
+    return getBuiltInTextbookIndex(ctx, scopeId)
+  }
 
-  const results = await Promise.all(
-    allDecks.map(async (deck) => {
-      const vocab = await fetchDeckVocab(ctx, deck.id, deck.source)
-      const terms: string[] = []
-      for (const item of vocab) {
-        terms.push(item.word.toLowerCase())
-        for (const eng of item.english) {
-          terms.push(eng.toLowerCase())
+  // Branch 2: Unsorted (no folder)
+  if (scopeId === "") {
+    return getUnsortedIndex(ctx)
+  }
+
+  // Branch 3: Folder (may or may not be a learning path)
+  return getFolderIndex(ctx, scopeId)
+}
+
+async function getBuiltInTextbookIndex(
+  ctx: QueryCtx,
+  textbookId: string,
+): Promise<{
+  deckTerms: { deckId: string; terms: string[] }[]
+  orderedKeys: string[]
+}> {
+  const chapters = getChaptersByTextbook(textbookId)
+
+  // Collect all unique set IDs for batch fetch
+  const allSetIds = new Set<string>()
+  for (const chapter of chapters) {
+    for (const moduleId of chapter.learning_path_item_ids) {
+      const module = dynamic_modules[moduleId]
+      if (module?.vocab_set_ids) {
+        for (const setId of module.vocab_set_ids) allSetIds.add(setId)
+      }
+    }
+  }
+
+  const allSets = await fetchSetsByIds(ctx, [...allSetIds])
+
+  // Batch-fetch all vocab items once
+  const allKeys = new Set<string>()
+  for (const keys of Object.values(allSets)) {
+    for (const key of keys) allKeys.add(key)
+  }
+  const itemsMap = await fetchVocabItemsByKeys(ctx, [...allKeys], null)
+
+  // Build orderedKeys preserving learning path order (first occurrence wins)
+  const seenKeys = new Set<string>()
+  const orderedKeys: string[] = []
+  for (const chapter of chapters) {
+    for (const moduleId of chapter.learning_path_item_ids) {
+      const module = dynamic_modules[moduleId]
+      if (!module?.vocab_set_ids) continue
+      for (const setId of module.vocab_set_ids) {
+        const keys = allSets[setId]
+        if (!keys) continue
+        for (const key of keys) {
+          if (!seenKeys.has(key)) {
+            seenKeys.add(key)
+            orderedKeys.push(key)
+          }
         }
       }
-      return { deckId: deck.id, terms }
+    }
+  }
+
+  // Build deckTerms for vocab-practice modules only (these are the searchable decks)
+  const deckTerms: { deckId: string; terms: string[] }[] = []
+  for (const chapter of chapters) {
+    for (const moduleId of chapter.learning_path_item_ids) {
+      const module = dynamic_modules[moduleId]
+      if (module?.module_type !== "vocab-practice") continue
+      const deckSetIds = module.vocab_set_ids ?? [moduleId]
+      const terms: string[] = []
+      for (const setId of deckSetIds) {
+        const keys = allSets[setId]
+        if (!keys) continue
+        for (const key of keys) {
+          const item = itemsMap[encodeURIComponent(key)]
+          if (!item) continue
+          terms.push(item.word.toLowerCase())
+          for (const eng of item.english) terms.push(eng.toLowerCase())
+        }
+      }
+      deckTerms.push({ deckId: moduleId, terms })
+    }
+  }
+
+  return { deckTerms, orderedKeys }
+}
+
+async function getUnsortedIndex(
+  ctx: QueryCtx,
+): Promise<{ deckTerms: { deckId: string; terms: string[] }[] }> {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) return { deckTerms: [] }
+
+  const userDecks = await ctx.db
+    .query("userDecks")
+    .withIndex("by_user", (q) => q.eq("userId", identity.subject))
+    .collect()
+
+  const unsortedDecks = userDecks.filter((d) => !d.folderId)
+
+  const deckTerms = await Promise.all(
+    unsortedDecks.map(async (deck) => {
+      const vocab = await fetchDeckVocab(ctx, deck._id, "user")
+      return { deckId: deck._id, terms: extractTerms(vocab) }
     }),
   )
 
-  return results
+  return { deckTerms }
+}
+
+async function getFolderIndex(
+  ctx: QueryCtx,
+  scopeId: string,
+): Promise<{
+  deckTerms: { deckId: string; terms: string[] }[]
+  orderedKeys?: string[]
+}> {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) return { deckTerms: [] }
+
+  let folder
+  try {
+    folder = await ctx.db.get(scopeId as Id<"userDeckFolders">)
+  } catch {
+    return { deckTerms: [] }
+  }
+  if (!folder || folder.userId !== identity.subject) return { deckTerms: [] }
+
+  // 3a: Folder with learningPathId → custom learning path
+  if (folder.learningPathId) {
+    return getCustomLearningPathIndex(ctx, folder.learningPathId, identity.subject)
+  }
+
+  // 3b: Regular folder → collect all decks in folder + descendants
+  return getRegularFolderIndex(ctx, scopeId as Id<"userDeckFolders">, identity.subject)
+}
+
+async function getCustomLearningPathIndex(
+  ctx: QueryCtx,
+  learningPathId: Id<"learningPathTranscripts">,
+  userId: string,
+): Promise<{
+  deckTerms: { deckId: string; terms: string[] }[]
+  orderedKeys: string[]
+}> {
+  const moduleSources = await ctx.db
+    .query("learningPathModuleSources")
+    .withIndex("by_path", (q) => q.eq("pathId", learningPathId))
+    .collect()
+
+  moduleSources.sort((a, b) => a.orderIndex - b.orderIndex)
+
+  const vocabSources = moduleSources.filter(
+    (s) => s.sourceType === "vocabulary",
+  )
+
+  const seenKeys = new Set<string>()
+  const orderedKeys: string[] = []
+  const deckTerms: { deckId: string; terms: string[] }[] = []
+
+  for (const source of vocabSources) {
+    const vocab = await fetchUserDeckVocab(
+      ctx,
+      source.moduleId as Id<"userDecks">,
+    )
+    const terms: string[] = []
+    for (const item of vocab) {
+      if (!seenKeys.has(item.word)) {
+        seenKeys.add(item.word)
+        orderedKeys.push(item.word)
+      }
+      terms.push(item.word.toLowerCase())
+      for (const eng of item.english) terms.push(eng.toLowerCase())
+    }
+    deckTerms.push({ deckId: source.moduleId, terms })
+  }
+
+  return { deckTerms, orderedKeys }
+}
+
+async function getRegularFolderIndex(
+  ctx: QueryCtx,
+  folderId: Id<"userDeckFolders">,
+  userId: string,
+): Promise<{ deckTerms: { deckId: string; terms: string[] }[] }> {
+  const descendantIds = await getDescendantFolderIds(ctx, folderId)
+  descendantIds.add(folderId)
+
+  const userDecks = await ctx.db
+    .query("userDecks")
+    .withIndex("by_user", (q) => q.eq("userId", userId))
+    .collect()
+
+  const folderDecks = userDecks.filter(
+    (d) => d.folderId && descendantIds.has(d.folderId),
+  )
+
+  const deckTerms = await Promise.all(
+    folderDecks.map(async (deck) => {
+      const vocab = await fetchDeckVocab(ctx, deck._id, "user")
+      return { deckId: deck._id, terms: extractTerms(vocab) }
+    }),
+  )
+
+  return { deckTerms }
+}
+
+function extractTerms(vocab: VocabularyItem[]): string[] {
+  const terms: string[] = []
+  for (const item of vocab) {
+    terms.push(item.word.toLowerCase())
+    for (const eng of item.english) {
+      terms.push(eng.toLowerCase())
+    }
+  }
+  return terms
 }
 
 /**

@@ -192,7 +192,7 @@ export async function deleteFolderWithStrategy(
   }
 }
 
-async function getDescendantFolderIds(
+export async function getDescendantFolderIds(
   ctx: QueryCtx | MutationCtx,
   folderId: Id<"userDeckFolders">,
 ): Promise<Set<Id<"userDeckFolders">>> {

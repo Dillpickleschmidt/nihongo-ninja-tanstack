@@ -73,7 +73,10 @@ export function DeckView(props: DeckViewProps) {
           </TabsList>
 
           <TabsContent value="vocabulary" class="mt-4">
-            <VocabTab vocabulary={view.filteredVocab()} />
+            <VocabTab
+              vocabulary={view.filteredVocab()}
+              orderedKeys={view.orderedKeys()}
+            />
           </TabsContent>
 
           <TabsContent value="kanji" class="mt-4">
