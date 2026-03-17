@@ -76,6 +76,7 @@ export function DeckView(props: DeckViewProps) {
             <VocabTab
               vocabulary={view.filteredVocab()}
               orderedKeys={view.orderedKeys()}
+              knownWords={view.knownWords()}
             />
           </TabsContent>
 

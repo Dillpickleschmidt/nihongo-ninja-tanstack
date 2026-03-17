@@ -20,6 +20,7 @@ interface VocabularyCardProps {
   item: VocabularyItem
   index: number
   orderedKeys?: string[]
+  knownWords?: string[]
 }
 
 export function VocabularyCard(props: VocabularyCardProps) {
@@ -63,6 +64,7 @@ export function VocabularyCard(props: VocabularyCardProps) {
                   <RealExamples
                     word={props.item.word}
                     orderedKeys={props.orderedKeys}
+                    knownWords={props.knownWords ?? []}
                   />
                 </Suspense>
               </TabsContent>
@@ -96,6 +98,7 @@ export function VocabularyCard(props: VocabularyCardProps) {
                     <RealExamples
                       word={props.item.word}
                       orderedKeys={props.orderedKeys}
+                    knownWords={props.knownWords ?? []}
                     />
                   </Suspense>
                 </TabsContent>
@@ -244,6 +247,7 @@ const TOP_N = 2
 function RealExamples(props: {
   word: string
   orderedKeys?: string[]
+  knownWords: string[]
 }) {
   const query = useQuery(() => ({
     queryKey: ["immersion-kit", props.word],
@@ -254,7 +258,7 @@ function RealExamples(props: {
   const examples = createMemo(() => {
     const data = query.data
     if (!data) return undefined
-    return rankExamples(data, props.word, props.orderedKeys).slice(0, TOP_N)
+    return rankExamples(data, props.word, props.orderedKeys, props.knownWords).slice(0, TOP_N)
   })
   const [playingUrl, setPlayingUrl] = createSignal<string | null>(null)
   let currentAudio: HTMLAudioElement | undefined

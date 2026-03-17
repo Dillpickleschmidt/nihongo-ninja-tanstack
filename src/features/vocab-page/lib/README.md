@@ -26,6 +26,13 @@ User opens deck
       |         +-- deckTerms --> SearchIndexSubscription (powers vocab search)
       |         +-- orderedKeys --> passed as prop down to VocabularyCard
       |
+      +-- useConvexQuery(getKnownVocabWords)
+      |         |
+      |         v
+      |   string[] (all words practiced via SRS — any path, Anki, JPDB)
+      |         |
+      |         +-- knownWords --> passed as prop down to VocabularyCard
+      |
       v
   VocabularyCard
       |
@@ -38,20 +45,27 @@ User opens deck
       |   ImmersionKitExample[] (sentences, full image/sound URLs)
       |         |
       |         v
-      |   rankExamples(examples, word, orderedKeys) --> top 2
+      |   rankExamples(examples, word, orderedKeys, knownWords) --> top 2
       |
       +-- RealExamples component renders sentences, images, audio
 ```
 
 ## Ranking
 
-When `orderedKeys` is available (deck is part of a learning path), examples are scored using three weighted factors:
+Examples are scored using three weighted factors:
 
 - **Vocab overlap (0.5)**: how many words in the example sentence the user has already learned
 - **Sentence length (0.3)**: shorter sentences score higher, plateau at 30 chars
 - **Proximity (0.2)**: bonus for known words that were learned recently relative to the target word
 
-Without `orderedKeys`, examples are ranked by sentence length only.
+### Known vocabulary sources
+
+1. **`orderedKeys`** (current learning path): Words before the target in the path count as known and contribute to both vocab overlap and proximity scoring.
+2. **`knownWords`** (global SRS history): All words the user has practiced via SRS across any source (learning paths, Anki imports, JPDB imports, user decks). These contribute to vocab overlap only — no proximity bonus since they lack positional context.
+
+The `knownWords` query (`getKnownVocabWords`) fetches all `userFsrsCards` for the user and extracts unique `practiceItemKey` values.
+
+Without either source, examples are ranked by sentence length only.
 
 ## Sequential Fetch Queue
 

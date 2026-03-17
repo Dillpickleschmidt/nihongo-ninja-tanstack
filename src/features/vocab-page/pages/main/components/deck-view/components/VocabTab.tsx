@@ -6,6 +6,7 @@ import { VocabularyCard } from "../VocabularyCard"
 interface VocabTabProps {
   vocabulary?: VocabularyItem[]
   orderedKeys?: string[]
+  knownWords: string[]
 }
 
 export function VocabTab(props: VocabTabProps) {
@@ -33,6 +34,7 @@ export function VocabTab(props: VocabTabProps) {
                 item={item}
                 index={index()}
                 orderedKeys={props.orderedKeys}
+                knownWords={props.knownWords}
               />
             )}
           </For>

@@ -44,6 +44,7 @@ interface UseDeckViewReturn {
   >
   dueRowsLoading: Accessor<boolean>
   orderedKeys: Accessor<string[] | undefined>
+  knownWords: Accessor<string[]>
   skippedKanji: () => string[] | undefined
   hasSelection: () => boolean
 
@@ -107,6 +108,13 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
     () => ({ scopeId: scopeId() }),
   )
   const orderedKeys = () => vocabIndexQuery.data()?.orderedKeys
+
+  // Global known vocabulary from SRS practice history (all paths, Anki, JPDB)
+  const knownVocabQuery = useConvexQuery(
+    api.api.vocabulary.getKnownVocabWords,
+    () => ({}),
+  )
+  const knownWords = () => knownVocabQuery.data() ?? []
 
   // Derived: kanji → vocab lookup map
   const kanjiToVocab = createMemo(() => {
@@ -251,6 +259,7 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
     dueRows,
     dueRowsLoading,
     orderedKeys,
+    knownWords,
     skippedKanji,
     hasSelection,
 

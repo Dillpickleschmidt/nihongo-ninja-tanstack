@@ -52,41 +52,46 @@ const PROXIMITY_WEIGHT = 0.2
 
 /**
  * Ranks IK examples by relevance.
- * If orderedKeys is provided, uses vocab overlap + proximity scoring.
- * Otherwise, ranks by sentence length only.
+ * - orderedKeys: vocab from current learning path (enables proximity scoring)
+ * - knownWords: all vocab the user has practiced via SRS (enables global vocab overlap)
+ * - Falls back to sentence length only when neither is available.
  */
 export function rankExamples(
   examples: ImmersionKitExample[],
   targetWord: string,
   orderedKeys: string[] | undefined,
+  knownWords: string[],
 ): ImmersionKitExample[] {
   if (examples.length === 0) return []
 
-  if (!orderedKeys) {
-    return rankByLengthOnly(examples)
-  }
+  const knownWordsSet = new Set(knownWords)
 
-  // Build a position map for known words
+  // Build position map from current learning path
   const positionMap = new Map<string, number>()
-  for (let i = 0; i < orderedKeys.length; i++) {
-    if (!positionMap.has(orderedKeys[i])) {
-      positionMap.set(orderedKeys[i], i)
+  if (orderedKeys) {
+    for (let i = 0; i < orderedKeys.length; i++) {
+      if (!positionMap.has(orderedKeys[i])) {
+        positionMap.set(orderedKeys[i], i)
+      }
     }
   }
 
   const targetPosition = positionMap.get(targetWord)
-  if (targetPosition === undefined) {
+
+  // No path context and no SRS history → length only
+  if (targetPosition === undefined && knownWordsSet.size === 0) {
     return rankByLengthOnly(examples)
   }
 
   const scored = examples.map((example) => ({
     example,
     score: calculateScore(
-      example.sentence,
       example.word_list,
       positionMap,
+      knownWordsSet,
       targetWord,
       targetPosition,
+      example.sentence.length,
     ),
   }))
 
@@ -106,30 +111,38 @@ function rankByLengthOnly(
 }
 
 function calculateScore(
-  sentence: string,
   wordList: string[],
   positionMap: Map<string, number>,
+  knownWordsSet: Set<string>,
   targetWord: string,
-  targetPosition: number,
+  targetPosition: number | undefined,
+  sentenceLength: number,
 ): number {
   const otherWords = wordList.filter((w) => w !== targetWord)
   if (otherWords.length === 0) return 0
 
-  let knownWords = 0
+  let knownCount = 0
   let proximitySum = 0
 
   for (const word of otherWords) {
     const position = positionMap.get(word)
-    if (position !== undefined && position <= targetPosition) {
-      knownWords++
-      const distance = targetPosition - position
-      proximitySum += Math.exp(-distance / 2)
+    if (
+      targetPosition !== undefined &&
+      position !== undefined &&
+      position <= targetPosition
+    ) {
+      // Known from current path — vocab overlap + proximity
+      knownCount++
+      proximitySum += Math.exp(-(targetPosition - position) / 2)
+    } else if (knownWordsSet.has(word)) {
+      // Known from SRS globally — vocab overlap only, no proximity
+      knownCount++
     }
   }
 
-  const vocabScore = 1 - Math.exp(-knownWords / 5)
-  const proxScore = knownWords > 0 ? proximitySum / knownWords : 0
-  const lenScore = lengthScore(sentence.length)
+  const vocabScore = 1 - Math.exp(-knownCount / 5)
+  const proxScore = knownCount > 0 ? proximitySum / knownCount : 0
+  const lenScore = lengthScore(sentenceLength)
 
   return (
     vocabScore * VOCAB_WEIGHT +

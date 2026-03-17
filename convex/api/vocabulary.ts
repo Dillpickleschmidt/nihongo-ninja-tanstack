@@ -1,6 +1,7 @@
 import { v } from "convex/values"
 import { query } from "../_generated/server"
 import * as Vocabulary from "../model/vocabulary"
+import * as Fsrs from "../model/fsrs"
 import { resolveDeckById } from "../model/decks"
 import { fetchKanjiAndRadicals } from "../model/kanji"
 
@@ -46,6 +47,14 @@ export const getVocabIndex = query({
   handler: async (ctx, { scopeId }) => {
     return Vocabulary.getVocabIndex(ctx, scopeId)
   },
+})
+
+/**
+ * All vocabulary words the user has practiced via SRS.
+ */
+export const getKnownVocabWords = query({
+  args: {},
+  handler: async (ctx) => Fsrs.getAllPracticedKeys(ctx),
 })
 
 /**

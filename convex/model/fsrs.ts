@@ -41,6 +41,21 @@ export function fromTsFsrsLog(log: ReviewLog) {
   return { ...rest, due: due.getTime(), review: review.getTime() }
 }
 
+// Helper: query cards by user + mode, with optional dueAt upper bound
+function queryCardsByMode(
+  ctx: QueryCtx,
+  userId: string,
+  mode: PracticeMode,
+  dueAt?: number,
+) {
+  return ctx.db
+    .query("userFsrsCards")
+    .withIndex("by_user_mode_dueAt", (q) => {
+      const base = q.eq("userId", userId).eq("mode", mode)
+      return dueAt !== undefined ? base.lte("dueAt", dueAt) : base
+    })
+}
+
 // Helper: fetch existing card by key/mode/type
 function fetchExistingCard(
   ctx: MutationCtx | QueryCtx,
@@ -121,15 +136,30 @@ export async function getDueFSRSCards(
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) return []
 
-  const userId = identity.subject
-  const now = Date.now()
+  return queryCardsByMode(ctx, identity.subject, mode, Date.now()).take(limit)
+}
 
-  return ctx.db
-    .query("userFsrsCards")
-    .withIndex("by_user_mode_dueAt", (q) =>
-      q.eq("userId", userId).eq("mode", mode).lte("dueAt", now),
-    )
-    .take(limit)
+/**
+ * All unique practice item keys the user has ever practiced (both modes).
+ */
+export async function getAllPracticedKeys(ctx: QueryCtx): Promise<string[]> {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) return []
+
+  const userId = identity.subject
+  const [spellings, meanings] = await Promise.all([
+    queryCardsByMode(ctx, userId, "spellings").collect(),
+    queryCardsByMode(ctx, userId, "meanings").collect(),
+  ])
+
+  const seen = new Set<string>()
+  for (const card of spellings) {
+    if (card.type === "vocabulary") seen.add(card.practiceItemKey)
+  }
+  for (const card of meanings) {
+    if (card.type === "vocabulary") seen.add(card.practiceItemKey)
+  }
+  return [...seen]
 }
 
 type StatusData = { state: number; scheduled_days: number }
@@ -181,22 +211,12 @@ export async function getDueFSRSCardsCount(ctx: QueryCtx): Promise<number> {
   const userId = identity.subject
   const now = Date.now()
 
-  const [meaningsCards, spellingsCards] = await Promise.all([
-    ctx.db
-      .query("userFsrsCards")
-      .withIndex("by_user_mode_dueAt", (q) =>
-        q.eq("userId", userId).eq("mode", "meanings").lte("dueAt", now),
-      )
-      .collect(),
-    ctx.db
-      .query("userFsrsCards")
-      .withIndex("by_user_mode_dueAt", (q) =>
-        q.eq("userId", userId).eq("mode", "spellings").lte("dueAt", now),
-      )
-      .collect(),
+  const [meanings, spellings] = await Promise.all([
+    queryCardsByMode(ctx, userId, "meanings", now).collect(),
+    queryCardsByMode(ctx, userId, "spellings", now).collect(),
   ])
 
-  return meaningsCards.length + spellingsCards.length
+  return meanings.length + spellings.length
 }
 
 export async function upsertFSRSCard(
