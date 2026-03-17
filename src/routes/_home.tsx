@@ -104,7 +104,18 @@ function ActiveChapterSync() {
   const { preferences, setPreference } = usePreferences()
 
   createEffect(() => {
-    const moduleId = getModuleIdFromUrl(location().pathname, location().search)
+    const loc = location()
+
+    // Handle /vocab?chapter=X
+    const chapterParam = new URLSearchParams(loc.search).get("chapter")
+    if (loc.pathname === "/vocab" && chapterParam) {
+      if (chapterParam !== preferences().activeChapter) {
+        setPreference("activeChapter", chapterParam)
+      }
+      return
+    }
+
+    const moduleId = getModuleIdFromUrl(loc.pathname, loc.search)
     if (!moduleId) return
 
     const chapter = getChapterForModule(moduleId)

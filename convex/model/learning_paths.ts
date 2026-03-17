@@ -541,7 +541,17 @@ function resolveLearningPathModuleIds(
   disabledSet: Set<string>,
   chapterSlug: string,
 ): LearningPathModule[] {
-  const resolvedModules: LearningPathModule[] = []
+  const resolvedModules: LearningPathModule[] = [
+    {
+      moduleId: `${chapterSlug}-vocab`,
+      module: {
+        title: `Ch. ${chapterSlug.replace("chapter-", "")} Vocabulary`,
+        module_type: "vocab-list",
+      },
+      linkTo: `/vocab?chapter=${chapterSlug}`,
+      disabled: false,
+    },
+  ]
 
   for (const moduleId of moduleIds) {
     const module = moduleCatalog[moduleId]

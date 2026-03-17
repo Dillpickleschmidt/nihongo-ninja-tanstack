@@ -1,4 +1,5 @@
-import { For, createSignal, createEffect, on } from "solid-js"
+import { For, createSignal, createEffect, on, onMount } from "solid-js"
+import { getRouteApi } from "@tanstack/solid-router"
 import {
   Accordion,
   AccordionItem,
@@ -21,23 +22,36 @@ export function ChapterAccordion(props: {
   decks: Deck[]
   matchingDeckIds: Set<string> | null
 }) {
+  const vocabRoute = getRouteApi("/_home/vocab/")
+  const search = vocabRoute.useSearch()
   const { preferences } = usePreferences()
   const chapters = () => getFolderChildren(props.folders, props.folderId)
-  const chapterIds = () => chapters().map((c) => c.id)
-
-  const [expandedIds, setExpandedIds] = createSignal<string[]>(chapterIds())
-  createEffect(
-    on(
-      () => props.folderId,
-      () => setExpandedIds(chapterIds()),
-    ),
-  )
 
   const activeChapterFolderId = () => {
     if (props.folderId !== preferences().activeLearningPath) return null
     const slug = preferences().activeChapter
     return slug ? `${props.folderId}/${slug}` : null
   }
+
+  const [expandedIds, setExpandedIds] = createSignal<string[]>(
+    activeChapterFolderId() ? [activeChapterFolderId()!] : [],
+  )
+  createEffect(
+    on(
+      () => props.folderId,
+      () => setExpandedIds(activeChapterFolderId() ? [activeChapterFolderId()!] : []),
+    ),
+  )
+
+  onMount(() => {
+    const chapter = search().chapter
+    if (chapter) {
+      // Delay to allow parent mount animations to settle
+      requestAnimationFrame(() => {
+        document.getElementById(chapter)?.scrollIntoView({ behavior: "smooth", block: "start" })
+      })
+    }
+  })
 
   const visibleChapters = () => {
     const allChapters = chapters()
@@ -63,7 +77,7 @@ export function ChapterAccordion(props: {
               ""
 
             return (
-              <AccordionItem value={chapter.id} class="border-0">
+              <AccordionItem value={chapter.id} class="border-0" id={slug}>
                 <AccordionTrigger class="hover:no-underline">
                   <div class="flex items-center gap-2">
                     <div

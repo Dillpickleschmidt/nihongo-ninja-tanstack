@@ -44,7 +44,6 @@ export const chapters: Record<
         "long-vowels-paused-consonants",
         "all-hiragana-quiz",
         "punctuation-misc",
-        "genki_1_ch0-vocab-list",
         "greetings",
         "greetings-japanese-super-immersion",
         "common-expressions",
@@ -54,7 +53,6 @@ export const chapters: Record<
         "genki_1_ch0_numbers-0-10",
         "genki_1_ch0_numbers-11-100",
       ],
-      disabled_modules: ["genki_1_ch0-vocab-list"],
     },
 
     "chapter-1": {
@@ -70,7 +68,6 @@ export const chapters: Record<
 
 
       learning_path_item_ids: [
-        "genki_1_ch1_vocab-list",
         "grammar-notes",
         "genki_1_ch1_kanji-numbers",
         "genki_1_ch1_people-descriptors-misc",
@@ -101,7 +98,6 @@ export const chapters: Record<
         "my-kikitori-conversation-3",
       ],
       disabled_modules: [
-        "genki_1_ch1_vocab-list",
         "grammar-notes",
         "worksheet-1",
       ],
@@ -114,7 +110,6 @@ export const chapters: Record<
         "Building on introductions, learn to identify and ask about things, use particles が and も, and negate statements.",
 
       learning_path_item_ids: [
-        "genki_1_ch2_vocab-list",
         "grammar-notes",
         "katakana",
         "katakana-practice",
@@ -146,7 +141,6 @@ export const chapters: Record<
         "genki_1_ch2_all-vocab-test",
       ],
       disabled_modules: [
-        "genki_1_ch2_vocab-list",
         "grammar-notes",
         "katakana-words-worksheet",
         "practice-money",
@@ -161,7 +155,6 @@ export const chapters: Record<
         "Introduce verbs and adjectives, learn basic conjugations, and use location and direction particles.",
 
       learning_path_item_ids: [
-        "genki_1_ch3_vocab-list",
         "grammar-notes",
         "introduction-to-kanji",
         "kanji-radicals",
@@ -198,7 +191,6 @@ export const chapters: Record<
         "long-form-conversation-immersion",
       ],
       disabled_modules: [
-        "genki_1_ch3_vocab-list",
         "grammar-notes",
         "genki_1_ch3_all-vocab-test",
       ],
@@ -211,7 +203,6 @@ export const chapters: Record<
         "Learn to talk about existence of things and people, use past tense, and connect nouns with と.",
 
       learning_path_item_ids: [
-        "genki_1_ch4_vocab-list",
         "grammar-notes",
         "genki_1_ch4_nouns-1",
         "genki_1_ch4_nouns-2",
@@ -237,7 +228,6 @@ export const chapters: Record<
         "beginner-guide-to-konbini",
       ],
       disabled_modules: [
-        "genki_1_ch4_vocab-list",
         "grammar-notes",
         "genki_1_ch4_all-vocab-test",
       ],
@@ -250,7 +240,6 @@ export const chapters: Record<
         "Learn about い and な adjectives, their conjugations, and how to use them to modify nouns.",
 
       learning_path_item_ids: [
-        "genki_1_ch5_vocab-list",
         "grammar-notes",
         "genki_1_ch5_nouns",
         "genki_1_ch5_i-adjectives",
@@ -272,7 +261,6 @@ export const chapters: Record<
         "counter-practice",
       ],
       disabled_modules: [
-        "genki_1_ch5_vocab-list",
         "grammar-notes",
         "genki_1_ch5_all-vocab-test",
       ],
@@ -285,7 +273,6 @@ export const chapters: Record<
         "Learn the essential て-form of verbs, its various uses, and how to connect actions and ideas.",
 
       learning_path_item_ids: [
-        "genki_1_ch6_vocab-list",
         "grammar-notes",
         "genki_1_ch6_nouns",
         "genki_1_ch6_u-verbs-and-adj",
@@ -303,7 +290,6 @@ export const chapters: Record<
         "genki_1_ch6_all-vocab-test",
       ],
       disabled_modules: [
-        "genki_1_ch6_vocab-list",
         "grammar-notes",
         "genki_1_ch6_all-vocab-test",
       ],
@@ -316,7 +302,6 @@ export const chapters: Record<
         "Expand vocabulary with nouns, body parts, verbs, and adjectives, and learn about converting adjectives to adverbs.",
 
       learning_path_item_ids: [
-        "genki_1_ch7_vocab-list",
         "grammar-notes",
         "genki_1_ch7_nouns-1",
         "genki_1_ch7_body-parts",
@@ -326,7 +311,6 @@ export const chapters: Record<
         "genki_1_ch7_all-vocab-test",
       ],
       disabled_modules: [
-        "genki_1_ch7_vocab-list",
         "grammar-notes",
         "genki_1_ch7_all-vocab-test",
       ],
@@ -339,7 +323,6 @@ export const chapters: Record<
         "Focus on vocabulary expansion with nouns, verbs, adjectives, and adverbs, and explore verb functionality.",
 
       learning_path_item_ids: [
-        "genki_1_ch8_vocab-list",
         "grammar-notes",
         "genki_1_ch8_nouns-1",
         "genki_1_ch8_nouns-2",
@@ -349,7 +332,6 @@ export const chapters: Record<
         "genki_1_ch8_all-vocab-test",
       ],
       disabled_modules: [
-        "genki_1_ch8_vocab-list",
         "grammar-notes",
         "genki_1_ch8_all-vocab-test",
       ],
@@ -362,7 +344,6 @@ export const chapters: Record<
         "Learn about various noun categories, small item counters, and continue expanding verb and adjective vocabulary.",
 
       learning_path_item_ids: [
-        "genki_1_ch9_vocab-list",
         "grammar-notes",
         "genki_1_ch9_nouns",
         "genki_1_ch9_small-item-counters",
@@ -372,7 +353,6 @@ export const chapters: Record<
         "genki_1_ch9_all-vocab-test",
       ],
       disabled_modules: [
-        "genki_1_ch9_vocab-list",
         "grammar-notes",
         "genki_1_ch9_all-vocab-test",
       ],
@@ -385,7 +365,6 @@ export const chapters: Record<
         "Continue building vocabulary with different noun groups, verbs, and explore concepts like comparing sizes and emotions.",
 
       learning_path_item_ids: [
-        "genki_1_ch10_vocab-list",
         "grammar-notes",
         "genki_1_ch10_nouns-1",
         "genki_1_ch10_nouns-2",
@@ -396,7 +375,6 @@ export const chapters: Record<
         "genki_1_ch10_all-vocab-test",
       ],
       disabled_modules: [
-        "genki_1_ch10_vocab-list",
         "grammar-notes",
         "genki_1_ch10_all-vocab-test",
       ],
@@ -409,7 +387,6 @@ export const chapters: Record<
         "Delve deeper into nouns and verbs, including irregular verbs, adverbs, and occupations.",
 
       learning_path_item_ids: [
-        "genki_1_ch11_vocab-list",
         "grammar-notes",
         "genki_1_ch11_nouns-1",
         "genki_1_ch11_nouns-2",
@@ -419,7 +396,6 @@ export const chapters: Record<
         "genki_1_ch11_all-vocab-test",
       ],
       disabled_modules: [
-        "genki_1_ch11_vocab-list",
         "grammar-notes",
         "genki_1_ch11_all-vocab-test",
       ],
@@ -432,7 +408,6 @@ export const chapters: Record<
         "Review and expand vocabulary with more nouns, verbs, adjectives, and adverbs.",
 
       learning_path_item_ids: [
-        "genki_1_ch12_vocab-list",
         "grammar-notes",
         "genki_1_ch12_nouns-1",
         "genki_1_ch12_nouns-2",
@@ -441,7 +416,6 @@ export const chapters: Record<
         "genki_1_ch12_all-vocab-test",
       ],
       disabled_modules: [
-        "genki_1_ch12_vocab-list",
         "grammar-notes",
         "genki_1_ch12_all-vocab-test",
       ],
@@ -457,7 +431,6 @@ export const chapters: Record<
         "Focus on vocabulary for nouns, adjectives, verbs, and day counts.",
 
       learning_path_item_ids: [
-        "genki_2_ch13_vocab-list",
         "grammar-notes",
         "genki_2_ch13_nouns",
         "genki_2_ch13_adj-and-verbs",
@@ -465,7 +438,6 @@ export const chapters: Record<
         "genki_2_ch13_all-vocab-test",
       ],
       disabled_modules: [
-        "genki_2_ch13_vocab-list",
         "grammar-notes",
         "genki_2_ch13_all-vocab-test",
       ],
@@ -478,7 +450,6 @@ export const chapters: Record<
         "Introduce more nouns, adjectives, verbs, counters, adverbs, and other miscellaneous vocabulary.",
 
       learning_path_item_ids: [
-        "genki_2_ch14_vocab-list",
         "grammar-notes",
         "genki_2_ch14_nouns-1",
         "genki_2_ch14_nouns-2",
@@ -487,7 +458,6 @@ export const chapters: Record<
         "genki_2_ch14_all-vocab-test",
       ],
       disabled_modules: [
-        "genki_2_ch14_vocab-list",
         "grammar-notes",
         "genki_2_ch14_all-vocab-test",
       ],
@@ -500,7 +470,6 @@ export const chapters: Record<
         "Focus on different verb types (Ichidan, Godan, Irregular) and continue expanding noun, adverb, and miscellaneous vocabulary.",
 
       learning_path_item_ids: [
-        "genki_2_ch15_vocab-list",
         "grammar-notes",
         "genki_2_ch15_nouns-1",
         "genki_2_ch15_nouns-2",
@@ -510,7 +479,6 @@ export const chapters: Record<
         "genki_2_ch15_all-vocab-test",
       ],
       disabled_modules: [
-        "genki_2_ch15_vocab-list",
         "grammar-notes",
         "genki_2_ch15_all-vocab-test",
       ],
@@ -523,7 +491,6 @@ export const chapters: Record<
         "Introduce more nouns, adjectives, and verbs (U, Ru, Irregular), along with adverbs and other miscellaneous terms.",
 
       learning_path_item_ids: [
-        "genki_2_ch16_vocab-list",
         "grammar-notes",
         "genki_2_ch16_nouns",
         "genki_2_ch16_adj-and-u-v",
@@ -532,7 +499,6 @@ export const chapters: Record<
         "genki_2_ch16_all-vocab-test",
       ],
       disabled_modules: [
-        "genki_2_ch16_vocab-list",
         "grammar-notes",
         "genki_2_ch16_all-vocab-test",
       ],
@@ -545,7 +511,6 @@ export const chapters: Record<
         "Expand vocabulary with more nouns, verbs, adjectives, and adverbs, and practice new sentence patterns.",
 
       learning_path_item_ids: [
-        "genki_2_ch17_vocab-list",
         "grammar-notes",
         "genki_2_ch17_nouns-1",
         "genki_2_ch17_nouns-2",
@@ -557,7 +522,6 @@ export const chapters: Record<
         "sentence-practice-tara",
       ],
       disabled_modules: [
-        "genki_2_ch17_vocab-list",
         "grammar-notes",
         "genki_2_ch17_all-vocab-test",
       ],
@@ -570,7 +534,6 @@ export const chapters: Record<
         "Further vocabulary expansion with various noun groups, adjectives, and verb types (U, Ru, Irregular).",
 
       learning_path_item_ids: [
-        "genki_2_ch18_vocab-list",
         "grammar-notes",
         "genki_2_ch18_nouns-1",
         "genki_2_ch18_nouns-2-and-adjectives",
@@ -579,7 +542,6 @@ export const chapters: Record<
         "genki_2_ch18_all-vocab-test",
       ],
       disabled_modules: [
-        "genki_2_ch18_vocab-list",
         "grammar-notes",
         "genki_2_ch18_all-vocab-test",
       ],
@@ -592,7 +554,6 @@ export const chapters: Record<
         "Review and test vocabulary from previous chapters and introduce new vocabulary related to nouns, adjectives, and verbs.",
 
       learning_path_item_ids: [
-        "genki_2_ch19_vocab-list",
         "grammar-notes",
         "genki_2_ch19_chapter-13-18-nouns",
         "genki_2_ch19_chapter-13-18-adjectives",
@@ -605,7 +566,6 @@ export const chapters: Record<
         "sentence-practice-honorific-verbs",
       ],
       disabled_modules: [
-        "genki_2_ch19_vocab-list",
         "grammar-notes",
         "genki_2_ch19_all-vocab-test",
       ],
@@ -618,7 +578,6 @@ export const chapters: Record<
         "Conclude Genki I with more vocabulary covering nouns, adjectives, and various verb types, and practice different expression levels.",
 
       learning_path_item_ids: [
-        "genki_2_ch20_vocab-list",
         "grammar-notes",
         "genki_2_ch20_nouns",
         "genki_2_ch20_adj-u-v",
@@ -628,7 +587,6 @@ export const chapters: Record<
         "sentence-practice-humble-expressions",
       ],
       disabled_modules: [
-        "genki_2_ch20_vocab-list",
         "grammar-notes",
         "genki_2_ch20_all-vocab-test",
       ],
