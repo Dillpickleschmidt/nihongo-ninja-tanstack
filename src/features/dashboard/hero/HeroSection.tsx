@@ -5,6 +5,7 @@ import {
   type Accessor,
   type Setter,
 } from "solid-js"
+import { Skeleton } from "@/components/ui/custom/skeleton"
 import { Sparkles, ChevronRight } from "lucide-solid"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
@@ -38,7 +39,7 @@ export function HeroSection(props: HeroSectionProps) {
           <Suspense
             fallback={
               <div class="flex items-center gap-3 mb-2">
-                <div class="h-6 w-24 rounded-full bg-white/10 animate-pulse" />
+                <Skeleton class="h-6 w-24 rounded-full bg-white/10" />
               </div>
             }
           >
@@ -56,11 +57,11 @@ export function HeroSection(props: HeroSectionProps) {
           <Suspense
             fallback={
               <div>
-                <div class="h-7 w-48 bg-white/10 rounded animate-pulse mb-2" />
-                <div class="h-4 w-64 bg-white/5 rounded animate-pulse mb-4" />
+                <Skeleton class="h-7 w-48 bg-white/10 rounded mb-2" />
+                <Skeleton class="h-4 w-64 bg-white/5 rounded mb-4" />
                 <div class="flex items-center gap-4">
-                  <div class="h-8 w-28 bg-white/5 rounded-xl animate-pulse" />
-                  <div class="h-10 w-16 bg-white/5 rounded animate-pulse" />
+                  <Skeleton class="h-8 w-28 bg-white/5 rounded-xl" />
+                  <Skeleton class="h-10 w-16 bg-white/5 rounded" />
                 </div>
               </div>
             }

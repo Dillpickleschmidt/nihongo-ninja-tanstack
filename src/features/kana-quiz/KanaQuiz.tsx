@@ -24,6 +24,7 @@ import {
   type Accessor,
 } from "solid-js"
 import { RotateCcw } from "lucide-solid"
+import { Skeleton } from "@/components/ui/custom/skeleton"
 import { HeaderCard } from "./components/HeaderCard"
 
 type KanaQuizContext = {
@@ -148,8 +149,8 @@ function KanaQuizHeader(props: { title: string }) {
       when={kana()}
       fallback={
         <div class="mx-auto max-w-2xl py-2 text-center">
-          <div class="mx-auto h-8 w-48 animate-pulse rounded-lg bg-white/10" />
-          <div class="mx-auto mt-3 h-4 w-72 animate-pulse rounded bg-white/5" />
+          <Skeleton class="mx-auto h-8 w-48 rounded-lg bg-white/10" />
+          <Skeleton class="mx-auto mt-3 h-4 w-72 rounded bg-white/5" />
         </div>
       }
     >
@@ -175,7 +176,7 @@ function KanaQuizGrid() {
       fallback={
         <>
           {Array.from({ length: 12 }).map(() => (
-            <div class="h-[195px] w-[149px] animate-pulse rounded-[20px] bg-white/3" />
+            <Skeleton class="h-[195px] w-[149px] rounded-[20px] bg-white/3" />
           ))}
         </>
       }

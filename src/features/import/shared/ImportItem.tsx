@@ -1,4 +1,5 @@
 import { Show } from "solid-js"
+import { Skeleton } from "@/components/ui/custom/skeleton"
 import { cn } from "@/utils"
 import { MainStatusBadge } from "./MainStatusBadge"
 import { StatusBadge } from "./StatusBadge"
@@ -204,14 +205,14 @@ export function ImportItemSkeleton(props: { variant: ImportItemVariant }) {
       when={props.variant === "vocab"}
       fallback={
         <div class="flex aspect-square animate-pulse flex-col items-center justify-center rounded-lg border border-white/10 bg-white/2 p-2">
-          <div class="size-8 rounded bg-white/10" />
-          <div class="mt-1 h-2 w-12 rounded bg-white/5" />
+          <Skeleton class="size-8 rounded bg-white/10" />
+          <Skeleton class="mt-1 h-2 w-12 rounded bg-white/5" />
         </div>
       }
     >
       <div class="animate-pulse rounded-lg border border-white/10 bg-white/2 p-3">
-        <div class="mb-2 h-4 w-16 rounded bg-white/10" />
-        <div class="h-3 w-24 rounded bg-white/5" />
+        <Skeleton class="mb-2 h-4 w-16 rounded bg-white/10" />
+        <Skeleton class="h-3 w-24 rounded bg-white/5" />
       </div>
     </Show>
   )

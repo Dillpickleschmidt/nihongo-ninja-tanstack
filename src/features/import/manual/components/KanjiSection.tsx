@@ -1,4 +1,5 @@
 import { createMemo, For, Show } from "solid-js"
+import { Skeleton } from "@/components/ui/custom/skeleton"
 import type { KanjiEntry, PracticeItemType } from "convex/validators"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
@@ -109,10 +110,10 @@ export function KanjiSectionSkeleton() {
     <>
       <div class="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
         <div class="flex items-center gap-3">
-          <div class="size-4 animate-pulse rounded bg-white/10" />
-          <div class="h-4 w-40 animate-pulse rounded bg-white/10" />
+          <Skeleton class="size-4 rounded bg-white/10" />
+          <Skeleton class="h-4 w-40 rounded bg-white/10" />
         </div>
-        <div class="h-4 w-20 animate-pulse rounded bg-white/10" />
+        <Skeleton class="h-4 w-20 rounded bg-white/10" />
       </div>
       <div class="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">
         <For each={Array.from({ length: 16 })}>

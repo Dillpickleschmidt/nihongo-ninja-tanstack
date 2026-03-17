@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { For, Index, Show, createMemo, untrack } from "solid-js"
+import { Skeleton } from "@/components/ui/custom/skeleton"
 import { convexQuery, useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { queryKeys } from "~/query/query-keys"
@@ -283,8 +284,8 @@ function SkeletonRows(props: { count: number }) {
       <Index each={items()}>
         {(i) => (
           <div class="py-4 flex items-center gap-4">
-            <div
-              class="h-4 rounded bg-white/4 animate-pulse"
+            <Skeleton
+              class="h-4 rounded bg-white/4"
               style={{
                 "animation-delay": `${i() * 100}ms`,
                 width: `${40 - i() * 5}%`,
@@ -304,9 +305,9 @@ function SkeletonDots(props: { count: number }) {
       <Index each={items()}>
         {(i) => (
           <div class="flex items-center gap-3 py-3">
-            <div class="h-2 w-2 rounded-full bg-white/6" />
-            <div
-              class="h-4 rounded bg-white/3 animate-pulse"
+            <Skeleton class="h-2 w-2 rounded-full bg-white/6" />
+            <Skeleton
+              class="h-4 rounded bg-white/3"
               style={{
                 "animation-delay": `${i() * 60}ms`,
                 width: `${70 - i() * 8}%`,

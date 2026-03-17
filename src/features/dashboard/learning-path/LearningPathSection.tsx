@@ -6,6 +6,7 @@ import {
   Show,
   type Accessor,
 } from "solid-js"
+import { Skeleton } from "@/components/ui/custom/skeleton"
 import { useLocalCompletions } from "@/lib/completions"
 import {
   Accordion,
@@ -63,8 +64,8 @@ export function LearningPathSection(props: LearningPathSectionProps) {
       <Suspense
         fallback={
           <div class="space-y-4">
-            <div class="h-24 bg-white/5 rounded animate-pulse" />
-            <div class="h-24 bg-white/5 rounded animate-pulse" />
+            <Skeleton class="h-24 bg-white/5 rounded" />
+            <Skeleton class="h-24 bg-white/5 rounded" />
           </div>
         }
       >

@@ -1,4 +1,5 @@
 import { Show } from "solid-js"
+import { Skeleton } from "@/components/ui/custom/skeleton"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import {
@@ -89,15 +90,15 @@ export function ModuleDetailDialog(props: ModuleDetailDialogProps) {
 function LoadingSkeleton() {
   return (
     <div class="space-y-4 py-2">
-      <div class="h-20 animate-pulse rounded-xl bg-white/5" />
+      <Skeleton class="h-20 rounded-xl bg-white/5" />
       <div class="space-y-2">
-        <div class="h-4 w-3/4 animate-pulse rounded bg-white/5" />
-        <div class="h-4 w-1/2 animate-pulse rounded bg-white/5" />
+        <Skeleton class="h-4 w-3/4 rounded bg-white/5" />
+        <Skeleton class="h-4 w-1/2 rounded bg-white/5" />
       </div>
       <div class="h-px bg-white/10" />
       <div class="space-y-2">
-        <div class="h-4 w-2/3 animate-pulse rounded bg-white/5" />
-        <div class="h-3 w-1/3 animate-pulse rounded bg-white/5" />
+        <Skeleton class="h-4 w-2/3 rounded bg-white/5" />
+        <Skeleton class="h-3 w-1/3 rounded bg-white/5" />
       </div>
     </div>
   )
