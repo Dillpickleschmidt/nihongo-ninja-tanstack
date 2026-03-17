@@ -1,6 +1,9 @@
 import { chapters } from "@/data/chapters"
 import { static_modules } from "@/data/static_modules"
-import { external_resources } from "@/data/external_resources"
+import {
+  external_resources,
+  getExternalResourceLink,
+} from "@/data/external_resources"
 
 // --- Forward: moduleId → link URL ---
 
@@ -9,6 +12,7 @@ export function getModuleLink(
   moduleId: string,
 ): string {
   if ("link" in module && module.link) return module.link
+  if (moduleId in external_resources) return getExternalResourceLink(moduleId)
   if (module.module_type === "vocab-practice") {
     const chapter = getChapterForModule(moduleId)
     if (chapter) return `/vocab/${chapter.textbookId}/${chapter.chapterSlug}/${moduleId}`
@@ -28,8 +32,8 @@ export const linkToModuleId: Record<string, string> = {}
 for (const [moduleId, mod] of Object.entries(static_modules)) {
   linkToModuleId[mod.link] = moduleId
 }
-for (const [moduleId, mod] of Object.entries(external_resources)) {
-  linkToModuleId[mod.link] = moduleId
+for (const moduleId of Object.keys(external_resources)) {
+  linkToModuleId[getExternalResourceLink(moduleId)] = moduleId
 }
 
 export function getModuleIdFromUrl(

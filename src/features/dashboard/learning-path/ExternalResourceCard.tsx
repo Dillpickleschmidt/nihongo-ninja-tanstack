@@ -1,8 +1,10 @@
 import { SmoothCardLink } from "@/components/SmoothCard"
 import { getThumbnailUrl } from "@/data/utils/thumbnails"
 import type { ExternalResource } from "@/data/external_resources"
+import { getExternalResourceLink } from "@/data/external_resources"
 
 interface ExternalResourceCardProps {
+  resourceId: string
   resource: ExternalResource
 }
 
@@ -39,7 +41,7 @@ export function ExternalResourceCard(props: ExternalResourceCardProps) {
 
   return (
     <SmoothCardLink
-      to={props.resource.link}
+      to={getExternalResourceLink(props.resourceId)}
       width={160}
       height={105}
       cornerRadius={14}

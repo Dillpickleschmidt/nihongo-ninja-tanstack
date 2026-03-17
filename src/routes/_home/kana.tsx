@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/solid-router"
 import { For } from "solid-js"
 import { queryKeys } from "~/query/query-keys"
 import { dynamic_modules } from "@/data/dynamic_modules"
-import { getLinkTo } from "@/data/utils/module-helpers"
+import { getModuleLink } from "@/lib/module-links"
 
 export const Route = createFileRoute("/_home/kana")({
   loader: ({ context, preload }) => {
@@ -231,7 +231,7 @@ function KanaPage() {
 function QuizCard(props: { mod: QuizModule; delay: number }) {
   const href = () => {
     const dm = dynamic_modules[props.mod.id]
-    return dm ? getLinkTo(dm, props.mod.id) : `/practice/${props.mod.id}`
+    return dm ? getModuleLink(dm, props.mod.id) : `/practice/${props.mod.id}`
   }
 
   return (

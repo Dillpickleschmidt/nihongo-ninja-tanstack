@@ -16,7 +16,6 @@ import {
   MapPlus,
 } from "lucide-solid"
 import type { Component } from "solid-js"
-import type { Module } from "./modules"
 
 // Icon components mapped by module type
 const iconComponents: Record<string, Component<any>> = {
@@ -144,30 +143,3 @@ export function getModuleIconClasses(moduleType: string): string {
   return (MODULE_STYLES[moduleType] || DEFAULT_STYLE).text
 }
 
-// Generate link URL for a module
-export function getLinkTo(module: Module, moduleKey: string): string {
-  if ("link" in module && module.link) {
-    return module.link
-  }
-
-  // Handle dynamic modules by module_type
-  if (module.module_type === "vocab-practice") {
-    return `/vocab?import=${moduleKey}`
-  }
-
-  if (module.module_type === "sentence-practice") {
-    const strippedId = moduleKey.replace(/^sentence-practice-/, "")
-    return `/sentence-practice/${strippedId}`
-  }
-
-  if (module.module_type === "vocab-test") {
-    const strippedId = moduleKey.replace(/-quiz$/, "")
-    return `/vocab/quiz/${strippedId}`
-  }
-
-  if (module.module_type === "vocab-list") {
-    return `/vocab/list/${moduleKey}`
-  }
-
-  return `/practice/${moduleKey}`
-}
