@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
-import { generateDistractors } from "./distractor-generation"
+import { generateDistractors, type ChoiceOption } from "./distractor-generation"
 import { getPosCategory } from "@/data/utils/vocabulary/part-of-speech"
 import type { PracticeCard } from "../types"
 
@@ -9,6 +9,7 @@ function createMockCard(
   validAnswers: string[],
   partOfSpeech?: string,
   practiceItemType: "vocabulary" | "kanji" | "radical" = "vocabulary",
+  particles?: { label?: string; particle: string }[],
 ): PracticeCard {
   return {
     key,
@@ -17,6 +18,7 @@ function createMockCard(
       furigana: "test",
       english: validAnswers,
       partOfSpeech,
+      particles,
     } as PracticeCard["vocab"],
     fsrs: { card: {} as any },
     practiceMode: "meanings",
@@ -27,6 +29,10 @@ function createMockCard(
     sessionScope: "module",
     isDisabled: false,
   }
+}
+
+function answers(options: ChoiceOption[]): string[] {
+  return options.map((o) => o.answer)
 }
 
 describe("getPosCategory", () => {
@@ -93,12 +99,13 @@ describe("generateDistractors", () => {
         adjectiveCard,
       ]
       const distractors = generateDistractors(currentCard, allCards, 3)
+      const ans = answers(distractors)
 
       // Should include verb answers only (enough verbs available)
-      expect(distractors).toContain("drink")
-      expect(distractors).toContain("see")
-      expect(distractors).toContain("run")
-      expect(distractors).not.toContain("big")
+      expect(ans).toContain("drink")
+      expect(ans).toContain("see")
+      expect(ans).toContain("run")
+      expect(ans).not.toContain("big")
     })
 
     it("should filter adjectives with adjectives when enough available", () => {
@@ -130,12 +137,13 @@ describe("generateDistractors", () => {
 
       const allCards = [currentCard, adjCard1, adjCard2, adjCard3, verbCard]
       const distractors = generateDistractors(currentCard, allCards, 3)
+      const ans = answers(distractors)
 
       // Should include adjective answers only (enough adjectives available)
-      expect(distractors).toContain("small")
-      expect(distractors).toContain("quiet")
-      expect(distractors).toContain("new")
-      expect(distractors).not.toContain("eat")
+      expect(ans).toContain("small")
+      expect(ans).toContain("quiet")
+      expect(ans).toContain("new")
+      expect(ans).not.toContain("eat")
     })
 
     it('should group cards without POS as "other" when enough available', () => {
@@ -157,12 +165,13 @@ describe("generateDistractors", () => {
         verbCard,
       ]
       const distractors = generateDistractors(currentCard, allCards, 3)
+      const ans = answers(distractors)
 
       // Should include "other" category answers only (enough available)
-      expect(distractors).toContain("desk")
-      expect(distractors).toContain("chair")
-      expect(distractors).toContain("window")
-      expect(distractors).not.toContain("eat")
+      expect(ans).toContain("desk")
+      expect(ans).toContain("chair")
+      expect(ans).toContain("window")
+      expect(ans).not.toContain("eat")
     })
   })
 
@@ -198,12 +207,13 @@ describe("generateDistractors", () => {
         kanjiCard,
       ]
       const distractors = generateDistractors(vocabCard, allCards, 3)
+      const ans = answers(distractors)
 
       // Should include vocabulary answers only (enough vocab available)
-      expect(distractors).toContain("drink")
-      expect(distractors).toContain("see")
-      expect(distractors).toContain("run")
-      expect(distractors).not.toContain("food")
+      expect(ans).toContain("drink")
+      expect(ans).toContain("see")
+      expect(ans).toContain("run")
+      expect(ans).not.toContain("food")
     })
   })
 
@@ -222,11 +232,12 @@ describe("generateDistractors", () => {
 
       const allCards = [currentCard, otherCard]
       const distractors = generateDistractors(currentCard, allCards, 3)
+      const ans = answers(distractors)
 
       // Should exclude "eat" (case-insensitive match)
-      expect(distractors).not.toContain("eat")
-      expect(distractors).not.toContain("to eat")
-      expect(distractors).toContain("drink")
+      expect(ans).not.toContain("eat")
+      expect(ans).not.toContain("to eat")
+      expect(ans).toContain("drink")
     })
   })
 
@@ -246,9 +257,10 @@ describe("generateDistractors", () => {
 
       const allCards = [currentCard, adjectiveCard]
       const distractors = generateDistractors(currentCard, allCards, 3)
+      const ans = answers(distractors)
 
       // Should include adjective as fallback since not enough verbs
-      expect(distractors).toContain("big")
+      expect(ans).toContain("big")
     })
 
     it("should fall back to any card when not enough same type", () => {
@@ -261,9 +273,10 @@ describe("generateDistractors", () => {
 
       const allCards = [vocabCard, kanjiCard]
       const distractors = generateDistractors(vocabCard, allCards, 3)
+      const ans = answers(distractors)
 
       // Should include kanji as fallback since not enough vocabulary
-      expect(distractors).toContain("food")
+      expect(ans).toContain("food")
     })
   })
 
@@ -287,10 +300,51 @@ describe("generateDistractors", () => {
 
       const allCards = [currentCard, card1, card2]
       const distractors = generateDistractors(currentCard, allCards, 3)
+      const ans = answers(distractors)
 
       // "drink" should only appear once
-      const drinkCount = distractors.filter((d) => d === "drink").length
+      const drinkCount = ans.filter((d) => d === "drink").length
       expect(drinkCount).toBeLessThanOrEqual(1)
+    })
+  })
+
+  describe("particles", () => {
+    it("should carry particles from source cards", () => {
+      const currentCard = createMockCard(
+        "vocabulary:食べる",
+        ["eat"],
+        "Ichidan verb",
+        "vocabulary",
+        [{ label: "direct object", particle: "を" }],
+      )
+      const otherCard = createMockCard(
+        "vocabulary:行く",
+        ["go"],
+        "Godan verb - Iku/Yuku special class",
+        "vocabulary",
+        [{ label: "destination", particle: "に" }],
+      )
+      const noParticleCard = createMockCard(
+        "vocabulary:見る",
+        ["see"],
+        "Ichidan verb",
+      )
+      const extraCard = createMockCard(
+        "vocabulary:走る",
+        ["run"],
+        "Ichidan verb",
+      )
+
+      const allCards = [currentCard, otherCard, noParticleCard, extraCard]
+      const distractors = generateDistractors(currentCard, allCards, 3)
+
+      const goOption = distractors.find((d) => d.answer === "go")
+      expect(goOption?.particles).toEqual([
+        { label: "destination", particle: "に" },
+      ])
+
+      const seeOption = distractors.find((d) => d.answer === "see")
+      expect(seeOption?.particles).toBeUndefined()
     })
   })
 })

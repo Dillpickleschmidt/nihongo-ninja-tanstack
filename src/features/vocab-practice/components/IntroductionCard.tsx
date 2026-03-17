@@ -1,4 +1,4 @@
-import { Show, Suspense } from "solid-js"
+import { Show, For, Suspense } from "solid-js"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/utils"
 import type { PracticeCard } from "../types"
@@ -113,6 +113,21 @@ export function IntroductionCard(props: Props) {
             {props.card.validAnswers.join(", ")}
           </div>
 
+          {/* Particles */}
+          <Show when={props.card.vocab.particles?.length}>
+            <div class="-mt-4 mb-6 text-center text-sm text-muted-foreground">
+              <For each={props.card.vocab.particles}>
+                {(p) => (
+                  <span class="font-japanese">
+                    {p.label
+                      ? `${p.label} - ${p.particle}`
+                      : `particle: ${p.particle}`}
+                  </span>
+                )}
+              </For>
+            </div>
+          </Show>
+
           {/* Mnemonic section */}
           <Show when={mnemonic()}>
             {(m) => (
@@ -143,7 +158,7 @@ export function IntroductionCard(props: Props) {
       {/* Fixed bottom action button */}
       <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
         <Button
-          ref={(el: HTMLButtonElement) => requestAnimationFrame(() => el.focus())}
+          ref={(el: HTMLButtonElement) => { requestAnimationFrame(() => el.focus()) }}
           size="lg"
           class="h-14 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-12 text-lg font-semibold text-white shadow-lg transition-all hover:from-amber-600 hover:to-orange-600 hover:shadow-xl"
           onClick={props.onContinue}

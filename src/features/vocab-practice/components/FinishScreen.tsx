@@ -136,7 +136,7 @@ export function FinishScreen(props: Props) {
         {/* Return button */}
         <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
           <Button
-            ref={(el: HTMLButtonElement) => requestAnimationFrame(() => el.focus())}
+            ref={(el: HTMLButtonElement) => { requestAnimationFrame(() => el.focus()) }}
             size="lg"
             class="h-14 rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 px-12 text-lg font-semibold text-white shadow-lg transition-all hover:from-violet-600 hover:to-purple-600 hover:shadow-xl"
             onClick={props.onReturn}
@@ -215,6 +215,19 @@ function ResultCard(props: {
             <span class="truncate text-sm text-muted-foreground">
               {card.validAnswers.join(", ")}
             </span>
+            <Show when={card.vocab.particles?.length}>
+              <span class="text-xs text-muted-foreground/70">
+                <For each={card.vocab.particles}>
+                  {(p) => (
+                    <span class="font-japanese">
+                      {p.label
+                        ? `${p.label} - ${p.particle}`
+                        : `particle: ${p.particle}`}
+                    </span>
+                  )}
+                </For>
+              </span>
+            </Show>
           </div>
         </div>
 

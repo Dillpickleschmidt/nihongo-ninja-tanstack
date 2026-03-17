@@ -3966,7 +3966,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   来る: {
     jlptLevel: "n5",
     word: "来る",
-    furigana: "来る[くる]",
+    furigana: "来る[る]",
     english: ["to come"],
     chapter: 3,
     partOfSpeech: "Kuru verb - special class",

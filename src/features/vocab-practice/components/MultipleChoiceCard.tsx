@@ -12,6 +12,7 @@ import {
 import {
   generateDistractors,
   shuffleArray,
+  type ChoiceOption,
 } from "../utils/distractor-generation"
 
 type Props = {
@@ -30,9 +31,12 @@ export function MultipleChoiceCard(props: Props) {
 
   // Generate options with distractors
   const options = createMemo(() => {
-    const correctAnswer = props.card.validAnswers[0]
+    const correctOption: ChoiceOption = {
+      answer: props.card.validAnswers[0],
+      particles: props.card.vocab.particles,
+    }
     const distractors = generateDistractors(props.card, props.allCards, 3)
-    return shuffleArray([correctAnswer, ...distractors])
+    return shuffleArray([correctOption, ...distractors])
   })
 
   const handleSelect = (answer: string) => {
@@ -50,13 +54,13 @@ export function MultipleChoiceCard(props: Props) {
     props.onAnswer(isCorrect() ? Rating.Good : Rating.Again)
   }
 
-  const getButtonState = (option: string) => {
+  const getButtonState = (answer: string) => {
     if (!isAnswered()) return "default"
     const isCorrectOption = props.card.validAnswers.some(
-      (ans) => ans.toLowerCase() === option.toLowerCase(),
+      (ans) => ans.toLowerCase() === answer.toLowerCase(),
     )
     if (isCorrectOption) return "correct"
-    if (option === selectedAnswer() && !isCorrectOption) return "incorrect"
+    if (answer === selectedAnswer() && !isCorrectOption) return "incorrect"
     return "faded"
   }
 
@@ -78,7 +82,7 @@ export function MultipleChoiceCard(props: Props) {
       if (e.key >= "1" && e.key <= "4") {
         const idx = parseInt(e.key) - 1
         const opts = options()
-        if (idx < opts.length) handleSelect(opts[idx])
+        if (idx < opts.length) handleSelect(opts[idx].answer)
       }
     }
     document.addEventListener("keydown", handleKeydown)
@@ -151,19 +155,21 @@ export function MultipleChoiceCard(props: Props) {
           <div class="mt-8 grid grid-cols-2 gap-3">
             <For each={options()}>
               {(option, i) => {
-                const state = () => getButtonState(option)
+                const state = () => getButtonState(option.answer)
                 const isCorrectOption = () =>
                   props.card.validAnswers.some(
-                    (ans) => ans.toLowerCase() === option.toLowerCase(),
+                    (ans) =>
+                      ans.toLowerCase() === option.answer.toLowerCase(),
                   )
 
                 return (
                   <button
                     type="button"
-                    onClick={() => handleSelect(option)}
+                    onClick={() => handleSelect(option.answer)}
                     disabled={isAnswered()}
                     class={cn(
-                      "group relative rounded-xl border-2 p-4 text-center transition-all duration-200",
+                      "group relative rounded-xl border-2 p-4 transition-all duration-200",
+                      option.particles?.length ? "text-left" : "text-center",
                       "font-medium",
                       stateClasses[state()],
                       isAnswered() && "cursor-default",
@@ -178,14 +184,27 @@ export function MultipleChoiceCard(props: Props) {
                     >
                       {i() + 1}
                     </span>
-                    <span class="text-sm md:text-base">{option}</span>
+                    <span class="text-base md:text-lg">{option.answer}</span>
+                    <Show when={option.particles?.length}>
+                      <div class="mt-1 space-y-0.5 text-sm font-light text-muted-foreground">
+                        <For each={option.particles}>
+                          {(p) => (
+                            <div class="font-japanese">
+                              {p.label
+                                ? `${p.label} - ${p.particle}`
+                                : `particle: ${p.particle}`}
+                            </div>
+                          )}
+                        </For>
+                      </div>
+                    </Show>
                     <Show when={isAnswered() && isCorrectOption()}>
                       <span class="ml-2 text-emerald-500">✓</span>
                     </Show>
                     <Show
                       when={
                         isAnswered() &&
-                        option === selectedAnswer() &&
+                        option.answer === selectedAnswer() &&
                         !isCorrectOption()
                       }
                     >
@@ -216,7 +235,7 @@ export function MultipleChoiceCard(props: Props) {
       <Show when={isAnswered()}>
         <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
           <Button
-            ref={(el: HTMLButtonElement) => requestAnimationFrame(() => el.focus())}
+            ref={(el: HTMLButtonElement) => { requestAnimationFrame(() => el.focus()) }}
             size="lg"
             class={cn(
               "h-14 rounded-xl px-12 text-lg font-semibold text-white shadow-lg transition-all hover:shadow-xl",

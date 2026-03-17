@@ -2,6 +2,7 @@ import {
   createSignal,
   createEffect,
   Show,
+  For,
   Suspense,
   onMount,
   onCleanup,
@@ -185,6 +186,21 @@ export function FlashcardCard(props: Props) {
                 )}
               </Show>
 
+              {/* Particles */}
+              <Show when={props.card.vocab.particles?.length}>
+                <div class="text-center text-sm text-muted-foreground">
+                  <For each={props.card.vocab.particles}>
+                    {(p) => (
+                      <span class="font-japanese">
+                        {p.label
+                          ? `${p.label} - ${p.particle}`
+                          : `particle: ${p.particle}`}
+                      </span>
+                    )}
+                  </For>
+                </div>
+              </Show>
+
               {/* Mnemonic */}
               <Show when={mnemonic()}>
                 <div class="rounded-lg bg-muted/50 p-4 text-left">
@@ -208,7 +224,7 @@ export function FlashcardCard(props: Props) {
           when={isRevealed()}
           fallback={
             <Button
-              ref={(el: HTMLButtonElement) => requestAnimationFrame(() => el.focus())}
+              ref={(el: HTMLButtonElement) => { requestAnimationFrame(() => el.focus()) }}
               variant="outline"
               onClick={() => setRevealedCardId(props.card.key)}
               class="h-14 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-12 text-lg font-semibold text-white shadow-lg transition-all hover:from-cyan-600 hover:to-blue-600 hover:shadow-xl"

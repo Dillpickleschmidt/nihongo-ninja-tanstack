@@ -78,6 +78,21 @@ export function ReviewScreen(props: Props) {
                     {result.card.validAnswers.join(", ")}
                   </div>
 
+                  {/* Particles */}
+                  <Show when={result.card.vocab.particles?.length}>
+                    <div class="text-xs text-muted-foreground">
+                      <For each={result.card.vocab.particles}>
+                        {(p) => (
+                          <span class="font-japanese">
+                            {p.label
+                              ? `${p.label} - ${p.particle}`
+                              : `particle: ${p.particle}`}
+                          </span>
+                        )}
+                      </For>
+                    </div>
+                  </Show>
+
                   {/* Result badge */}
                   <div
                     class={cn(
@@ -98,7 +113,7 @@ export function ReviewScreen(props: Props) {
         {/* Fixed bottom continue button */}
         <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
           <Button
-            ref={(el: HTMLButtonElement) => requestAnimationFrame(() => el.focus())}
+            ref={(el: HTMLButtonElement) => { requestAnimationFrame(() => el.focus()) }}
             size="lg"
             class="h-14 rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 px-12 text-lg font-semibold text-white shadow-lg transition-all hover:from-violet-600 hover:to-purple-600 hover:shadow-xl"
             onClick={props.onContinue}
