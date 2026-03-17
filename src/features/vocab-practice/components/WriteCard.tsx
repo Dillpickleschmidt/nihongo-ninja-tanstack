@@ -123,6 +123,7 @@ export function WriteCard(props: Props) {
           {/* Write input area */}
           <div class="mt-8 space-y-4">
             <input
+              ref={(el) => requestAnimationFrame(() => el.focus())}
               type="text"
               value={userAnswer()}
               onInput={(e) => setUserAnswer(e.currentTarget.value)}
@@ -207,6 +208,7 @@ export function WriteCard(props: Props) {
       <Show when={isAnswered()}>
         <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
           <Button
+            ref={(el: HTMLButtonElement) => requestAnimationFrame(() => el.focus())}
             size="lg"
             class={cn(
               "h-14 rounded-xl px-12 text-lg font-semibold text-white shadow-lg transition-all hover:shadow-xl",

@@ -1,4 +1,4 @@
-import { createSignal, Show, For, createMemo } from "solid-js"
+import { createSignal, Show, For, createMemo, onMount, onCleanup } from "solid-js"
 import { Rating, type Grade } from "ts-fsrs"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/utils"
@@ -72,6 +72,19 @@ export function MultipleChoiceCard(props: Props) {
   const mnemonic = () => getMnemonic(props.card)
   const progress = () => ((props.currentIndex + 1) / props.totalItems) * 100
 
+  // Keyboard shortcuts: 1-4 to select options
+  onMount(() => {
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (e.key >= "1" && e.key <= "4") {
+        const idx = parseInt(e.key) - 1
+        const opts = options()
+        if (idx < opts.length) handleSelect(opts[idx])
+      }
+    }
+    document.addEventListener("keydown", handleKeydown)
+    onCleanup(() => document.removeEventListener("keydown", handleKeydown))
+  })
+
   return (
     <div class="flex flex-col items-center p-4">
       {/* Progress indicator */}
@@ -137,7 +150,7 @@ export function MultipleChoiceCard(props: Props) {
           {/* Multiple choice options (2x2 grid) */}
           <div class="mt-8 grid grid-cols-2 gap-3">
             <For each={options()}>
-              {(option) => {
+              {(option, i) => {
                 const state = () => getButtonState(option)
                 const isCorrectOption = () =>
                   props.card.validAnswers.some(
@@ -150,12 +163,21 @@ export function MultipleChoiceCard(props: Props) {
                     onClick={() => handleSelect(option)}
                     disabled={isAnswered()}
                     class={cn(
-                      "rounded-xl border-2 p-4 text-center transition-all duration-200",
+                      "group relative rounded-xl border-2 p-4 text-center transition-all duration-200",
                       "font-medium",
                       stateClasses[state()],
                       isAnswered() && "cursor-default",
                     )}
                   >
+                    <span
+                      title={`Press ${i() + 1} to select`}
+                      class={cn(
+                        "absolute left-0 top-0 px-2.5 py-2 text-xs text-muted-foreground/0 transition-colors",
+                        !isAnswered() && "group-hover:text-muted-foreground/50",
+                      )}
+                    >
+                      {i() + 1}
+                    </span>
                     <span class="text-sm md:text-base">{option}</span>
                     <Show when={isAnswered() && isCorrectOption()}>
                       <span class="ml-2 text-emerald-500">✓</span>
@@ -194,6 +216,7 @@ export function MultipleChoiceCard(props: Props) {
       <Show when={isAnswered()}>
         <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
           <Button
+            ref={(el: HTMLButtonElement) => requestAnimationFrame(() => el.focus())}
             size="lg"
             class={cn(
               "h-14 rounded-xl px-12 text-lg font-semibold text-white shadow-lg transition-all hover:shadow-xl",

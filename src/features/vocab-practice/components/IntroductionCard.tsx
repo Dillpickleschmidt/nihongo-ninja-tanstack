@@ -143,6 +143,7 @@ export function IntroductionCard(props: Props) {
       {/* Fixed bottom action button */}
       <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
         <Button
+          ref={(el: HTMLButtonElement) => requestAnimationFrame(() => el.focus())}
           size="lg"
           class="h-14 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-12 text-lg font-semibold text-white shadow-lg transition-all hover:from-amber-600 hover:to-orange-600 hover:shadow-xl"
           onClick={props.onContinue}

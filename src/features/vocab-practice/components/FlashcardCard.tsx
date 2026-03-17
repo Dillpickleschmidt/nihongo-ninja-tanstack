@@ -64,10 +64,7 @@ export function FlashcardCard(props: Props) {
     )
       return
 
-    if (e.code === "Space" && !isRevealed()) {
-      e.preventDefault()
-      setRevealedCardId(props.card.key)
-    } else if (isRevealed()) {
+    if (isRevealed()) {
       switch (e.key) {
         case "1":
           props.onAnswer(Rating.Again)
@@ -211,6 +208,7 @@ export function FlashcardCard(props: Props) {
           when={isRevealed()}
           fallback={
             <Button
+              ref={(el: HTMLButtonElement) => requestAnimationFrame(() => el.focus())}
               variant="outline"
               onClick={() => setRevealedCardId(props.card.key)}
               class="h-14 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-12 text-lg font-semibold text-white shadow-lg transition-all hover:from-cyan-600 hover:to-blue-600 hover:shadow-xl"
