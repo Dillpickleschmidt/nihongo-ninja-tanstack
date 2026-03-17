@@ -34,3 +34,6 @@ scripts/.sentence-practice-cache.json
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# SST
+.sst

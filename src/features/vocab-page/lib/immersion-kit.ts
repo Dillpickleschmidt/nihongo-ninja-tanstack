@@ -1,3 +1,5 @@
+import { tokenizeSentences } from "@/lib/kagome/tokenize"
+
 // =====================================
 // Types (matches apiv2.immersionkit.com response)
 // =====================================
@@ -14,13 +16,18 @@ export type ImmersionKitExample = {
   matched_indexes: { index: number; length: number }[]
 }
 
+export type ImmersionKitData = {
+  examples: ImmersionKitExample[]
+  baseForms: string[][]
+}
+
 // =====================================
-// Fetch (sequential queue to avoid 429s)
+// Fetch + Tokenize (cached together)
 // =====================================
 
 let pending: Promise<void> = Promise.resolve()
 
-export function fetchImmersionKitExamples(
+function fetchImmersionKitExamples(
   word: string,
 ): Promise<ImmersionKitExample[]> {
   const result = pending.then(() => doFetch(word))
@@ -41,6 +48,20 @@ async function doFetch(word: string): Promise<ImmersionKitExample[]> {
   return data?.examples ?? []
 }
 
+/**
+ * Fetches IK examples and tokenizes sentences to extract base forms.
+ * Both are cached together in TanStack Query.
+ */
+export async function fetchAndTokenize(
+  word: string,
+): Promise<ImmersionKitData> {
+  const examples = await fetchImmersionKitExamples(word)
+  const baseForms = await tokenizeSentences(
+    examples.map((e) => e.sentence),
+  )
+  return { examples, baseForms }
+}
+
 // =====================================
 // Ranking
 // =====================================
@@ -51,13 +72,15 @@ const VOCAB_WEIGHT = 0.5
 const PROXIMITY_WEIGHT = 0.2
 
 /**
- * Ranks IK examples by relevance.
+ * Ranks IK examples by relevance using Kagome base forms.
+ * - baseForms: base forms per sentence (from Lambda tokenizer)
  * - orderedKeys: vocab from current learning path (enables proximity scoring)
  * - knownWords: all vocab the user has practiced via SRS (enables global vocab overlap)
  * - Falls back to sentence length only when neither is available.
  */
 export function rankExamples(
   examples: ImmersionKitExample[],
+  baseForms: string[][],
   targetWord: string,
   orderedKeys: string[] | undefined,
   knownWords: string[],
@@ -78,15 +101,15 @@ export function rankExamples(
 
   const targetPosition = positionMap.get(targetWord)
 
-  // No path context and no SRS history → length only
+  // No path context and no SRS history -> length only
   if (targetPosition === undefined && knownWordsSet.size === 0) {
     return rankByLengthOnly(examples)
   }
 
-  const scored = examples.map((example) => ({
+  const scored = examples.map((example, i) => ({
     example,
     score: calculateScore(
-      example.word_list,
+      baseForms[i] ?? [],
       positionMap,
       knownWordsSet,
       targetWord,

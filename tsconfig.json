@@ -4,6 +4,9 @@
     "**/*.tsx",
     "public/script*.js"
   ],
+  "exclude": [
+    "sst.config.ts"
+  ],
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,

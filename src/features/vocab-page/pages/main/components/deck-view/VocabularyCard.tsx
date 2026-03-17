@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/custom/skeleton"
 import { Book, Grid2x2, AudioLines } from "lucide-solid"
 import { convertFuriganaToRubyHtml } from "@/data/utils/text/furigana"
 import {
-  fetchImmersionKitExamples,
+  fetchAndTokenize,
   rankExamples,
   type ImmersionKitExample,
 } from "../../../../lib/immersion-kit"
@@ -251,14 +251,14 @@ function RealExamples(props: {
 }) {
   const query = useQuery(() => ({
     queryKey: ["immersion-kit", props.word],
-    queryFn: () => fetchImmersionKitExamples(props.word),
+    queryFn: () => fetchAndTokenize(props.word),
     enabled: !!props.word,
   }))
 
   const examples = createMemo(() => {
     const data = query.data
     if (!data) return undefined
-    return rankExamples(data, props.word, props.orderedKeys, props.knownWords).slice(0, TOP_N)
+    return rankExamples(data.examples, data.baseForms, props.word, props.orderedKeys, props.knownWords).slice(0, TOP_N)
   })
   const [playingUrl, setPlayingUrl] = createSignal<string | null>(null)
   let currentAudio: HTMLAudioElement | undefined
