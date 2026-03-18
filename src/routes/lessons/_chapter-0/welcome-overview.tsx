@@ -17,7 +17,7 @@ export const Route = createFileRoute(
   loader: async () => {
     return {
       contentBox: {
-        nextButtonLink: "/lessons/japanese-pronunciation",
+        nextButtonLink: "/lessons/writing-systems",
       },
     }
   },
@@ -226,14 +226,14 @@ function RouteComponent() {
         <section class="mt-12 text-center">
           <h3 class="mb-2 text-lg font-bold">Ready to Begin?</h3>
           <p class="text-muted-foreground mb-6 text-sm">
-            Start with Japanese pronunciation and sounds — the foundation of
+            Start with the Japanese writing systems — the foundation of
             everything else.
           </p>
           <a
-            href="/lessons/japanese-pronunciation"
+            href="/lessons/writing-systems"
             class="inline-block rounded-full bg-fuchsia-500 px-6 py-3 font-semibold text-white shadow-md transition hover:bg-fuchsia-600"
           >
-            Start with Pronunciation →
+            Start with Writing Systems →
           </a>
         </section>
       </main>

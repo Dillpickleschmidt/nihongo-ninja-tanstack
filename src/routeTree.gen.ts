@@ -63,7 +63,6 @@ import { Route as LessonsChapter0WelcomeOverviewRouteImport } from './routes/les
 import { Route as LessonsChapter0PunctuationMiscRouteImport } from './routes/lessons/_chapter-0/punctuation-misc'
 import { Route as LessonsChapter0Numbers0100RouteImport } from './routes/lessons/_chapter-0/numbers-0-100'
 import { Route as LessonsChapter0LongVowelsPausedConsonantsRouteImport } from './routes/lessons/_chapter-0/long-vowels-paused-consonants'
-import { Route as LessonsChapter0JapanesePronunciationRouteImport } from './routes/lessons/_chapter-0/japanese-pronunciation'
 import { Route as LessonsChapter0HiraganaRouteImport } from './routes/lessons/_chapter-0/hiragana'
 import { Route as LessonsChapter0GreetingsRouteImport } from './routes/lessons/_chapter-0/greetings'
 import { Route as LessonsChapter0DakutenHandakutenRouteImport } from './routes/lessons/_chapter-0/dakuten-handakuten'
@@ -384,12 +383,6 @@ const LessonsChapter0LongVowelsPausedConsonantsRoute =
     path: '/long-vowels-paused-consonants',
     getParentRoute: () => LessonsRoute,
   } as any)
-const LessonsChapter0JapanesePronunciationRoute =
-  LessonsChapter0JapanesePronunciationRouteImport.update({
-    id: '/_chapter-0/japanese-pronunciation',
-    path: '/japanese-pronunciation',
-    getParentRoute: () => LessonsRoute,
-  } as any)
 const LessonsChapter0HiraganaRoute = LessonsChapter0HiraganaRouteImport.update({
   id: '/_chapter-0/hiragana',
   path: '/hiragana',
@@ -566,7 +559,6 @@ export interface FileRoutesByFullPath {
   '/lessons/dakuten-handakuten': typeof LessonsChapter0DakutenHandakutenRoute
   '/lessons/greetings': typeof LessonsChapter0GreetingsRoute
   '/lessons/hiragana': typeof LessonsChapter0HiraganaRoute
-  '/lessons/japanese-pronunciation': typeof LessonsChapter0JapanesePronunciationRoute
   '/lessons/long-vowels-paused-consonants': typeof LessonsChapter0LongVowelsPausedConsonantsRoute
   '/lessons/numbers-0-100': typeof LessonsChapter0Numbers0100Route
   '/lessons/punctuation-misc': typeof LessonsChapter0PunctuationMiscRoute
@@ -646,7 +638,6 @@ export interface FileRoutesByTo {
   '/lessons/dakuten-handakuten': typeof LessonsChapter0DakutenHandakutenRoute
   '/lessons/greetings': typeof LessonsChapter0GreetingsRoute
   '/lessons/hiragana': typeof LessonsChapter0HiraganaRoute
-  '/lessons/japanese-pronunciation': typeof LessonsChapter0JapanesePronunciationRoute
   '/lessons/long-vowels-paused-consonants': typeof LessonsChapter0LongVowelsPausedConsonantsRoute
   '/lessons/numbers-0-100': typeof LessonsChapter0Numbers0100Route
   '/lessons/punctuation-misc': typeof LessonsChapter0PunctuationMiscRoute
@@ -730,7 +721,6 @@ export interface FileRoutesById {
   '/lessons/_chapter-0/dakuten-handakuten': typeof LessonsChapter0DakutenHandakutenRoute
   '/lessons/_chapter-0/greetings': typeof LessonsChapter0GreetingsRoute
   '/lessons/_chapter-0/hiragana': typeof LessonsChapter0HiraganaRoute
-  '/lessons/_chapter-0/japanese-pronunciation': typeof LessonsChapter0JapanesePronunciationRoute
   '/lessons/_chapter-0/long-vowels-paused-consonants': typeof LessonsChapter0LongVowelsPausedConsonantsRoute
   '/lessons/_chapter-0/numbers-0-100': typeof LessonsChapter0Numbers0100Route
   '/lessons/_chapter-0/punctuation-misc': typeof LessonsChapter0PunctuationMiscRoute
@@ -814,7 +804,6 @@ export interface FileRouteTypes {
     | '/lessons/dakuten-handakuten'
     | '/lessons/greetings'
     | '/lessons/hiragana'
-    | '/lessons/japanese-pronunciation'
     | '/lessons/long-vowels-paused-consonants'
     | '/lessons/numbers-0-100'
     | '/lessons/punctuation-misc'
@@ -894,7 +883,6 @@ export interface FileRouteTypes {
     | '/lessons/dakuten-handakuten'
     | '/lessons/greetings'
     | '/lessons/hiragana'
-    | '/lessons/japanese-pronunciation'
     | '/lessons/long-vowels-paused-consonants'
     | '/lessons/numbers-0-100'
     | '/lessons/punctuation-misc'
@@ -977,7 +965,6 @@ export interface FileRouteTypes {
     | '/lessons/_chapter-0/dakuten-handakuten'
     | '/lessons/_chapter-0/greetings'
     | '/lessons/_chapter-0/hiragana'
-    | '/lessons/_chapter-0/japanese-pronunciation'
     | '/lessons/_chapter-0/long-vowels-paused-consonants'
     | '/lessons/_chapter-0/numbers-0-100'
     | '/lessons/_chapter-0/punctuation-misc'
@@ -1419,13 +1406,6 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof LessonsChapter0LongVowelsPausedConsonantsRouteImport
       parentRoute: typeof LessonsRoute
     }
-    '/lessons/_chapter-0/japanese-pronunciation': {
-      id: '/lessons/_chapter-0/japanese-pronunciation'
-      path: '/japanese-pronunciation'
-      fullPath: '/lessons/japanese-pronunciation'
-      preLoaderRoute: typeof LessonsChapter0JapanesePronunciationRouteImport
-      parentRoute: typeof LessonsRoute
-    }
     '/lessons/_chapter-0/hiragana': {
       id: '/lessons/_chapter-0/hiragana'
       path: '/hiragana'
@@ -1724,7 +1704,6 @@ interface LessonsRouteChildren {
   LessonsChapter0DakutenHandakutenRoute: typeof LessonsChapter0DakutenHandakutenRoute
   LessonsChapter0GreetingsRoute: typeof LessonsChapter0GreetingsRoute
   LessonsChapter0HiraganaRoute: typeof LessonsChapter0HiraganaRoute
-  LessonsChapter0JapanesePronunciationRoute: typeof LessonsChapter0JapanesePronunciationRoute
   LessonsChapter0LongVowelsPausedConsonantsRoute: typeof LessonsChapter0LongVowelsPausedConsonantsRoute
   LessonsChapter0Numbers0100Route: typeof LessonsChapter0Numbers0100Route
   LessonsChapter0PunctuationMiscRoute: typeof LessonsChapter0PunctuationMiscRoute
@@ -1763,8 +1742,6 @@ const LessonsRouteChildren: LessonsRouteChildren = {
   LessonsChapter0DakutenHandakutenRoute: LessonsChapter0DakutenHandakutenRoute,
   LessonsChapter0GreetingsRoute: LessonsChapter0GreetingsRoute,
   LessonsChapter0HiraganaRoute: LessonsChapter0HiraganaRoute,
-  LessonsChapter0JapanesePronunciationRoute:
-    LessonsChapter0JapanesePronunciationRoute,
   LessonsChapter0LongVowelsPausedConsonantsRoute:
     LessonsChapter0LongVowelsPausedConsonantsRoute,
   LessonsChapter0Numbers0100Route: LessonsChapter0Numbers0100Route,

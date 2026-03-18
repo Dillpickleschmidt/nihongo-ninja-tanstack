@@ -30,11 +30,6 @@ export const static_modules: Record<string, StaticModule> = {
     link: "/lessons/welcome-overview",
     module_type: "lesson",
   },
-  "japanese-pronunciation": {
-    title: "Japanese Pronunciation",
-    link: "/lessons/japanese-pronunciation",
-    module_type: "lesson",
-  },
   "writing-systems": {
     title: "Writing Systems",
     link: "/lessons/writing-systems",

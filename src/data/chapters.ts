@@ -30,7 +30,6 @@ export const chapters: Record<
       learning_path_item_ids: [
         "welcome-overview",
         "lesson-structure",
-        "japanese-pronunciation",
         "writing-systems",
         "hiragana",
         "hiragana-practice",

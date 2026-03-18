@@ -306,7 +306,7 @@ export default function KanaChart(props: { type: ChartType }) {
     >
       {rows.map((row) => (
         <>
-          <div class="text-muted-foreground flex w-5 items-center justify-end pr-2 text-center text-base">
+          <div class="flex w-5 items-center justify-end pr-2 text-center text-base text-white/30">
             {row.consonant}
           </div>
           {row.cells.map((cell) =>
@@ -324,9 +324,9 @@ export default function KanaChart(props: { type: ChartType }) {
 
 function SyllableTile(props: { jp: string; romaji: string }) {
   return (
-    <div class="bg-card/50 text-foreground rounded-md p-3 text-center">
+    <div class="rounded-md bg-white/[0.04] p-3 text-center text-white/90">
       <p class="font-japanese text-2xl">{props.jp}</p>
-      <p class="text-muted-foreground text-xs">{props.romaji}</p>
+      <p class="text-xs text-white/40">{props.romaji}</p>
     </div>
   )
 }
