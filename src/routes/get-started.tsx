@@ -81,7 +81,7 @@ function GetStartedPage() {
         class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] -z-10"
         style={{
           background:
-            "radial-gradient(ellipse at center, color-mix(in srgb, var(--accent) 8%, transparent), transparent 70%)",
+            "radial-gradient(ellipse at center, color-mix(in srgb, var(--dynamic-accent) 8%, transparent), transparent 70%)",
           animation: "glow-pulse 6s ease-in-out infinite",
         }}
       />
@@ -127,18 +127,18 @@ function GetStartedPage() {
               <button
                 type="button"
                 onClick={() => setStep("textbook")}
-                class="group relative rounded-2xl border border-white/5 p-6 md:p-8 text-left transition-colors duration-300 hover:border-(--accent)/30 cursor-pointer flex flex-col overflow-hidden"
+                class="group relative rounded-2xl border border-white/5 p-6 md:p-8 text-left transition-colors duration-300 hover:border-dynamic-accent/30 cursor-pointer flex flex-col overflow-hidden"
                 style={{
                   "background-color":
-                    "color-mix(in srgb, var(--accent) 12%, transparent)",
+                    "color-mix(in srgb, var(--dynamic-accent) 12%, transparent)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor =
-                    "color-mix(in srgb, var(--accent) 20%, transparent)"
+                    "color-mix(in srgb, var(--dynamic-accent) 20%, transparent)"
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.backgroundColor =
-                    "color-mix(in srgb, var(--accent) 12%, transparent)"
+                    "color-mix(in srgb, var(--dynamic-accent) 12%, transparent)"
                 }}
               >
                 {/* Noise texture overlay */}
@@ -162,7 +162,7 @@ function GetStartedPage() {
                   />
                 </div>
                 <div>
-                  <h2 class="text-lg md:text-xl font-semibold text-white transition-colors group-hover:text-(--accent)">
+                  <h2 class="text-lg md:text-xl font-semibold text-white transition-colors group-hover:text-dynamic-accent">
                     I'm following a textbook
                   </h2>
                   <p class="mt-1.5 text-sm text-white/40 leading-relaxed group-hover:text-white/50 transition-colors">
@@ -170,7 +170,7 @@ function GetStartedPage() {
                     your curriculum.
                   </p>
                 </div>
-                <div class="mt-auto pt-5 flex items-center gap-1.5 text-xs font-medium text-white/50 group-hover:text-(--accent) transition-colors">
+                <div class="mt-auto pt-5 flex items-center gap-1.5 text-xs font-medium text-white/50 group-hover:text-dynamic-accent transition-colors">
                   <span>Select your textbook</span>
                   <svg
                     class="size-3 transition-transform group-hover:translate-x-0.5"
@@ -192,18 +192,18 @@ function GetStartedPage() {
               <button
                 type="button"
                 onClick={() => setStep("show")}
-                class="group relative rounded-2xl border border-white/5 p-6 md:p-8 text-left transition-colors duration-300 hover:border-(--accent)/30 cursor-pointer flex flex-col overflow-hidden"
+                class="group relative rounded-2xl border border-white/5 p-6 md:p-8 text-left transition-colors duration-300 hover:border-dynamic-accent/30 cursor-pointer flex flex-col overflow-hidden"
                 style={{
                   "background-color":
-                    "color-mix(in srgb, var(--accent) 12%, transparent)",
+                    "color-mix(in srgb, var(--dynamic-accent) 12%, transparent)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor =
-                    "color-mix(in srgb, var(--accent) 20%, transparent)"
+                    "color-mix(in srgb, var(--dynamic-accent) 20%, transparent)"
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.backgroundColor =
-                    "color-mix(in srgb, var(--accent) 12%, transparent)"
+                    "color-mix(in srgb, var(--dynamic-accent) 12%, transparent)"
                 }}
               >
                 {/* Noise texture overlay */}
@@ -233,7 +233,7 @@ function GetStartedPage() {
                   />
                 </div>
                 <div>
-                  <h2 class="text-lg md:text-xl font-semibold text-white transition-colors group-hover:text-(--accent)">
+                  <h2 class="text-lg md:text-xl font-semibold text-white transition-colors group-hover:text-dynamic-accent">
                     I want to learn through a show
                   </h2>
                   <p class="mt-1.5 text-sm text-white/40 leading-relaxed group-hover:text-white/50 transition-colors">
@@ -241,7 +241,7 @@ function GetStartedPage() {
                     from real dialogue.
                   </p>
                 </div>
-                <div class="mt-auto pt-5 flex items-center gap-1.5 text-xs font-medium text-white/50 group-hover:text-(--accent) transition-colors">
+                <div class="mt-auto pt-5 flex items-center gap-1.5 text-xs font-medium text-white/50 group-hover:text-dynamic-accent transition-colors">
                   <span>See how it works</span>
                   <svg
                     class="size-3 transition-transform group-hover:translate-x-0.5"
@@ -272,7 +272,7 @@ function GetStartedPage() {
             <div class="text-center mb-10">
               <h1 class="text-2xl md:text-4xl font-bold tracking-tight">
                 Which{" "}
-                <span class="text-(--accent) brightness-150">textbook</span> are
+                <span class="text-dynamic-accent brightness-150">textbook</span> are
                 you following?
               </h1>
               <p class="mt-2 text-sm md:text-base text-white/50">
@@ -289,14 +289,14 @@ function GetStartedPage() {
                     class={cn(
                       "group relative flex flex-col items-center rounded-2xl px-6 py-5 transition-all duration-200 cursor-pointer border",
                       selectedTextbook() === textbook.id
-                        ? "border-(--accent)/30 scale-[1.02]"
-                        : "border-white/5 hover:border-(--accent)/20 hover:scale-[1.01]",
+                        ? "border-dynamic-accent/30 scale-[1.02]"
+                        : "border-white/5 hover:border-dynamic-accent/20 hover:scale-[1.01]",
                     )}
                     style={{
                       "background-color":
                         selectedTextbook() === textbook.id
-                          ? "color-mix(in srgb, var(--accent) 15%, transparent)"
-                          : "color-mix(in srgb, var(--accent) 5%, transparent)",
+                          ? "color-mix(in srgb, var(--dynamic-accent) 15%, transparent)"
+                          : "color-mix(in srgb, var(--dynamic-accent) 5%, transparent)",
                     }}
                   >
                     {/* Selection indicator */}
@@ -304,7 +304,7 @@ function GetStartedPage() {
                       class={cn(
                         "absolute top-3 right-3 size-5 rounded-full border-2 transition-all duration-200 flex items-center justify-center",
                         selectedTextbook() === textbook.id
-                          ? "border-(--accent) bg-(--accent)"
+                          ? "border-dynamic-accent bg-dynamic-accent"
                           : "border-white/20",
                       )}
                     >
@@ -380,10 +380,10 @@ function GetStartedPage() {
               <Button
                 variant="ghost"
                 onClick={handleContinueTextbook}
-                class="group inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white bg-(--accent) transition-all hover:scale-[1.02]"
+                class="group inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white bg-dynamic-accent transition-all hover:scale-[1.02]"
                 style={{
                   "box-shadow":
-                    "0 8px 16px -4px color-mix(in srgb, var(--accent) 30%, transparent)",
+                    "0 8px 16px -4px color-mix(in srgb, var(--dynamic-accent) 30%, transparent)",
                 }}
               >
                 Continue
@@ -411,7 +411,7 @@ function GetStartedPage() {
             <div class="text-center mb-8 md:mb-10">
               <h1 class="text-2xl md:text-4xl font-bold tracking-tight">
                 Learn through{" "}
-                <span class="text-(--accent) brightness-150">
+                <span class="text-dynamic-accent brightness-150">
                   shows you love
                 </span>
               </h1>
@@ -426,7 +426,7 @@ function GetStartedPage() {
                 class="relative rounded-2xl border border-white/5 p-4 md:p-5 overflow-hidden"
                 style={{
                   "background-color":
-                    "color-mix(in srgb, var(--accent) 6%, transparent)",
+                    "color-mix(in srgb, var(--dynamic-accent) 6%, transparent)",
                 }}
               >
                 <div
@@ -479,7 +479,7 @@ function GetStartedPage() {
                 class="relative rounded-2xl border border-white/5 p-4 md:p-5 overflow-hidden"
                 style={{
                   "background-color":
-                    "color-mix(in srgb, var(--accent) 6%, transparent)",
+                    "color-mix(in srgb, var(--dynamic-accent) 6%, transparent)",
                 }}
               >
                 <div
@@ -539,7 +539,7 @@ function GetStartedPage() {
                 class="relative rounded-2xl border border-white/5 p-4 md:p-5 overflow-hidden"
                 style={{
                   "background-color":
-                    "color-mix(in srgb, var(--accent) 6%, transparent)",
+                    "color-mix(in srgb, var(--dynamic-accent) 6%, transparent)",
                 }}
               >
                 <div
@@ -565,9 +565,9 @@ function GetStartedPage() {
                   </div>
                   <div class="hidden sm:flex flex-shrink-0 w-28 flex-col items-center gap-2">
                     <div class="w-full flex-1 rounded-xl bg-white/[0.04] border border-white/[0.08] flex flex-col items-center justify-center gap-1.5">
-                      <div class="size-10 rounded-full bg-(--accent)/15 flex items-center justify-center">
+                      <div class="size-10 rounded-full bg-dynamic-accent/15 flex items-center justify-center">
                         <svg
-                          class="size-5 text-(--accent) translate-x-0.5"
+                          class="size-5 text-dynamic-accent translate-x-0.5"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
@@ -588,10 +588,10 @@ function GetStartedPage() {
               <Link
                 to="/discover"
                 onClick={handleSetOnboarded}
-                class="group inline-flex items-center gap-2 rounded-xl px-8 py-3 text-sm font-semibold text-white bg-(--accent) transition-all hover:scale-[1.02]"
+                class="group inline-flex items-center gap-2 rounded-xl px-8 py-3 text-sm font-semibold text-white bg-dynamic-accent transition-all hover:scale-[1.02]"
                 style={{
                   "box-shadow":
-                    "0 8px 20px -4px color-mix(in srgb, var(--accent) 30%, transparent)",
+                    "0 8px 20px -4px color-mix(in srgb, var(--dynamic-accent) 30%, transparent)",
                 }}
               >
                 Browse Shows
@@ -653,10 +653,10 @@ function GetStartedPage() {
 function StepBadge(props: { n: number }) {
   return (
     <span
-      class="flex-shrink-0 size-7 rounded-full flex items-center justify-center text-xs font-bold text-white bg-(--accent)"
+      class="flex-shrink-0 size-7 rounded-full flex items-center justify-center text-xs font-bold text-white bg-dynamic-accent"
       style={{
         "box-shadow":
-          "0 0 12px color-mix(in srgb, var(--accent) 25%, transparent)",
+          "0 0 12px color-mix(in srgb, var(--dynamic-accent) 25%, transparent)",
       }}
     >
       {props.n}
@@ -695,7 +695,7 @@ function StatBar(props: {
         <div
           class={cn(
             "h-full rounded-full",
-            props.accent ? "bg-(--accent)" : "bg-white/20",
+            props.accent ? "bg-dynamic-accent" : "bg-white/20",
           )}
           style={{ width: props.pct }}
         />

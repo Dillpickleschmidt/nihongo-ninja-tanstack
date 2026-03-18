@@ -16,7 +16,7 @@ export function DueCountBadge(props: DueCountBadgeProps) {
           <LoaderCircle class="h-4 w-4 animate-spin text-white/50" />
         }
       >
-        <span class="text-2xl font-bold text-(--accent) brightness-150">
+        <span class="text-2xl font-bold text-dynamic-accent brightness-150">
           {count()}
         </span>
       </Show>

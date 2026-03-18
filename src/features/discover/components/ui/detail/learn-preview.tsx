@@ -32,7 +32,7 @@ export function LearnPreview(props: LearnPreviewProps) {
           <span class="text-xs font-medium text-white/40">
             Frequency cutoff
           </span>
-          <span class="tabular-nums text-xs font-semibold text-(--accent)">
+          <span class="tabular-nums text-xs font-semibold text-dynamic-accent">
             {cutoff()}+
           </span>
         </div>
@@ -44,8 +44,8 @@ export function LearnPreview(props: LearnPreviewProps) {
           step={100}
         >
           <SliderTrack class="h-1.5 bg-white/8">
-            <SliderFill class="bg-(--accent)" />
-            <SliderThumb class="-top-1 size-3.5 border-2 border-white/15 bg-(--accent) shadow-[0_2px_6px_rgba(0,0,0,0.3)] transition-transform hover:scale-115" />
+            <SliderFill class="bg-dynamic-accent" />
+            <SliderThumb class="-top-1 size-3.5 border-2 border-white/15 bg-dynamic-accent shadow-[0_2px_6px_rgba(0,0,0,0.3)] transition-transform hover:scale-115" />
           </SliderTrack>
         </Slider>
         <div class="text-[0.6rem] text-white/20">
@@ -115,10 +115,10 @@ export function LearnPreview(props: LearnPreviewProps) {
       {/* Start button */}
       <button
         type="button"
-        class="mt-1 w-full cursor-pointer rounded-xl bg-(--accent)/80 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:scale-[1.01] hover:bg-(--accent)"
+        class="mt-1 w-full cursor-pointer rounded-xl bg-dynamic-accent/80 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:scale-[1.01] hover:bg-dynamic-accent"
         style={{
           "box-shadow":
-            "0 6px 12px -3px color-mix(in srgb, var(--accent) 25%, transparent)",
+            "0 6px 12px -3px color-mix(in srgb, var(--dynamic-accent) 25%, transparent)",
         }}
       >
         Start Learning

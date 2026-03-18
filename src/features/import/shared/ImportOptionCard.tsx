@@ -16,11 +16,11 @@ export function ImportOptionCard(props: ImportOptionCardProps) {
       class={cn(
         "group flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm",
         "transition-all duration-200",
-        "hover:bg-(--accent)/10 hover:border-(--accent)/30",
+        "hover:bg-dynamic-accent/10 hover:border-dynamic-accent/30",
       )}
     >
-      <div class="flex size-12 items-center justify-center rounded-xl bg-(--accent)/15">
-        <props.icon class="size-6 text-(--accent)" />
+      <div class="flex size-12 items-center justify-center rounded-xl bg-dynamic-accent/15">
+        <props.icon class="size-6 text-dynamic-accent" />
       </div>
 
       <div class="flex-1">
@@ -28,7 +28,7 @@ export function ImportOptionCard(props: ImportOptionCardProps) {
         <p class="text-sm text-white/50 leading-relaxed">{props.description}</p>
       </div>
 
-      <div class="flex items-center gap-1.5 text-sm font-medium text-(--accent) opacity-0 transition-opacity group-hover:opacity-100">
+      <div class="flex items-center gap-1.5 text-sm font-medium text-dynamic-accent opacity-0 transition-opacity group-hover:opacity-100">
         <span>Continue</span>
         <svg
           class="size-4 transition-transform group-hover:translate-x-0.5"

@@ -11,7 +11,7 @@ import { usePreferences } from "@/lib/preferences"
 type ConnectionStatus = "idle" | "testing" | "success" | "error"
 
 const tabTriggerClass =
-  "rounded-full h-9 px-4 data-[selected]:bg-(--accent)/20 data-[selected]:text-white border border-transparent transition-colors flex items-center justify-center gap-2"
+  "rounded-full h-9 px-4 data-[selected]:bg-dynamic-accent/20 data-[selected]:text-white border border-transparent transition-colors flex items-center justify-center gap-2"
 
 const StepTitle = (text: string) => (
   <span class="text-base font-bold text-white">{text}</span>
@@ -77,7 +77,7 @@ export function AnkiConnectSection() {
                           href="https://apps.ankiweb.net/"
                           target="_blank"
                           rel="noopener noreferrer"
-                          class="text-(--accent) underline underline-offset-2 hover:brightness-125"
+                          class="text-dynamic-accent underline underline-offset-2 hover:brightness-125"
                         >
                           ankiweb.net
                         </a>
@@ -120,7 +120,7 @@ export function AnkiConnectSection() {
                           <pre class="text-xs md:text-sm text-white/80 font-mono leading-relaxed">
                             {`"webCorsOriginList": [
   "http://localhost"`}
-                            <span class="text-(--accent)">
+                            <span class="text-dynamic-accent">
                               {`,
   "https://nihongoninja.io"`}
                             </span>
@@ -245,7 +245,7 @@ export function AnkiConnectSection() {
               "rounded-xl px-5 py-2.5",
               status() === "testing"
                 ? "bg-white/10 text-white/50 cursor-wait"
-                : "bg-(--accent) text-white hover:bg-(--accent) hover:brightness-110",
+                : "bg-dynamic-accent text-white hover:bg-dynamic-accent hover:brightness-110",
             )}
           >
             {status() === "testing" ? "Testing..." : "Test Connection"}
@@ -295,7 +295,7 @@ function CopyButton(props: { text: string }) {
         </span>
       </Show>
       {copied() ? (
-        <Check class="size-4 text-(--accent)" />
+        <Check class="size-4 text-dynamic-accent" />
       ) : (
         <Copy class="size-4" />
       )}
@@ -312,7 +312,7 @@ function CopyableCode(props: { text: string; label?: string }) {
             {props.label}:
           </span>
         </Show>
-        <code class="font-mono text-(--accent) text-sm truncate">
+        <code class="font-mono text-dynamic-accent text-sm truncate">
           {props.text}
         </code>
       </div>
@@ -327,7 +327,7 @@ function ExternalLinkButton(props: { href: string; children: any }) {
       href={props.href}
       target="_blank"
       rel="noopener noreferrer"
-      class="inline-flex items-center gap-2 rounded-lg bg-(--accent)/10 px-4 py-2 text-sm font-medium text-(--accent) transition-colors hover:bg-(--accent)/20 border border-(--accent)/20"
+      class="inline-flex items-center gap-2 rounded-lg bg-dynamic-accent/10 px-4 py-2 text-sm font-medium text-dynamic-accent transition-colors hover:bg-dynamic-accent/20 border border-dynamic-accent/20"
     >
       {props.children} <ExternalLink class="size-3" />
     </a>

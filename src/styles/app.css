@@ -192,6 +192,8 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
 
+  --color-dynamic-accent: var(--dynamic-accent);
+
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
 
@@ -221,6 +223,24 @@
   @keyframes accordion-up {
     from {
       height: var(--kb-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  @keyframes collapsible-expand {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--kb-collapsible-content-height);
+    }
+  }
+
+  @keyframes collapsible-collapse {
+    from {
+      height: var(--kb-collapsible-content-height);
     }
     to {
       height: 0;

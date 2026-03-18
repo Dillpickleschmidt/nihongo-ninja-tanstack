@@ -42,7 +42,7 @@ export default function CharacterBox(props: CharacterBoxProps) {
           ref={props.registerRef}
           maxLength={4}
           placeholder="..."
-          class={`h-14 rounded-xl border border-white/8 bg-background/70 text-center text-xl font-medium text-white/90 placeholder:text-white/20 backdrop-blur-sm transition-all focus:border-(--accent)/40 focus:bg-background/80 ${
+          class={`h-14 rounded-xl border border-white/8 bg-background/70 text-center text-xl font-medium text-white/90 placeholder:text-white/20 backdrop-blur-sm transition-all focus:border-dynamic-accent/40 focus:bg-background/80 ${
             props.disabled ? "cursor-not-allowed disabled:opacity-80" : ""
           }`}
         />

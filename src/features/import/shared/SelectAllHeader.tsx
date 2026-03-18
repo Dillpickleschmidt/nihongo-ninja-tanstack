@@ -18,7 +18,7 @@ export function SelectAllHeader(props: {
         onChange={props.onToggle}
         class="flex items-center gap-3"
       >
-        <CheckboxInput class="border-white/30 bg-white/10 data-checked:bg-(--accent) data-checked:text-white" />
+        <CheckboxInput class="border-white/30 bg-white/10 data-checked:bg-dynamic-accent data-checked:text-white" />
         <CheckboxLabel class="text-white">
           Select all {props.level} {props.category}
         </CheckboxLabel>

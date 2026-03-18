@@ -111,7 +111,7 @@ function RootDocument(props: { children: JSX.Element }) {
       <head>
         <HydrationScript />
         <ColorModeScript storageType={storageManager.type} />
-        <style>{`:root { --accent: ${initialAccentColor}; }`}</style>
+        <style>{`:root { --dynamic-accent: ${initialAccentColor}; }`}</style>
       </head>
       <body>
         <HeadContent />

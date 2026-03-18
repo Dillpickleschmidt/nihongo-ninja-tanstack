@@ -199,7 +199,7 @@ export function TextbookChapterBackgrounds() {
         hex: color.hex,
         isDark: color.isDark,
       } satisfies BackgroundColor)
-      document.documentElement.style.setProperty("--accent", color.hex)
+      document.documentElement.style.setProperty("--dynamic-accent", color.hex)
       setPreference("accentColor", color.hex)
     } catch (e) {
       console.warn("Failed to extract color from background:", e)

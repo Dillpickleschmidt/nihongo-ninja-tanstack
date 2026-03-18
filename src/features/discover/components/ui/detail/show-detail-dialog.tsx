@@ -110,7 +110,7 @@ export function ShowDetailDialog(props: ShowDetailDialogProps) {
                   <Show when={genres().length > 0}>
                     <div class="flex flex-wrap gap-1.5">
                       {genres().map((genre) => (
-                        <span class="rounded-md border border-(--accent)/15 bg-(--accent)/8 px-2 py-0.5 text-[0.65rem] font-medium text-(--accent)/70">
+                        <span class="rounded-md border border-dynamic-accent/15 bg-dynamic-accent/8 px-2 py-0.5 text-[0.65rem] font-medium text-dynamic-accent/70">
                           {genre}
                         </span>
                       ))}
@@ -137,10 +137,10 @@ export function ShowDetailDialog(props: ShowDetailDialogProps) {
                     <button
                       type="button"
                       onClick={() => setLearnOpen(true)}
-                      class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl bg-(--accent)/80 px-4 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.01] hover:bg-(--accent)"
+                      class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl bg-dynamic-accent/80 px-4 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.01] hover:bg-dynamic-accent"
                       style={{
                         "box-shadow":
-                          "0 8px 15px -4px color-mix(in srgb, var(--accent) 30%, transparent)",
+                          "0 8px 15px -4px color-mix(in srgb, var(--dynamic-accent) 30%, transparent)",
                       }}
                     >
                       <BookOpen class="size-4" />

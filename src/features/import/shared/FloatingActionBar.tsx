@@ -65,15 +65,15 @@ export function FloatingActionBar(props: FloatingActionBarProps) {
           )}
         >
           <div
-            class="flex w-full items-center justify-between gap-3 overflow-x-auto rounded-xl border border-(--accent)/20 p-3 shadow-lg shadow-black/20 backdrop-blur-md"
+            class="flex w-full items-center justify-between gap-3 overflow-x-auto rounded-xl border border-dynamic-accent/20 p-3 shadow-lg shadow-black/20 backdrop-blur-md"
             style={{
               "background-color":
-                "color-mix(in srgb, var(--accent) 15%, rgb(23 23 23))",
+                "color-mix(in srgb, var(--dynamic-accent) 15%, rgb(23 23 23))",
             }}
           >
             {/* Counter */}
             <div class="flex items-center gap-2">
-              <div class="flex size-8 items-center justify-center rounded-full bg-(--accent)/20 font-mono text-sm font-bold text-(--accent)">
+              <div class="flex size-8 items-center justify-center rounded-full bg-dynamic-accent/20 font-mono text-sm font-bold text-dynamic-accent">
                 {props.selectedCount}
               </div>
               <span class="hidden text-sm text-white/50 sm:inline">

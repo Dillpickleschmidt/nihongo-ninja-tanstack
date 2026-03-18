@@ -220,7 +220,7 @@ function RouteComponent() {
                               isActive={isActive(item.href)}
                             >
                               <span
-                                class={`${isActive(item.href) && "text-(--accent) brightness-150"}`}
+                                class={`${isActive(item.href) && "text-dynamic-accent brightness-150"}`}
                               >
                                 {item.title}
                               </span>

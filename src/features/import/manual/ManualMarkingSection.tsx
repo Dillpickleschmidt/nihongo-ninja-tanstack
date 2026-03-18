@@ -114,7 +114,7 @@ export function ManualMarkingSection() {
           class={cn(
             "rounded-xl px-6 py-3 font-medium transition-all",
             flow.selectedCount() > 0
-              ? "bg-(--accent) text-white hover:brightness-110"
+              ? "bg-dynamic-accent text-white hover:brightness-110"
               : "bg-white/10 text-white/40 cursor-not-allowed",
           )}
         >
@@ -165,7 +165,7 @@ function LevelTabs(props: {
             class={cn(
               "shrink-0 rounded-lg px-4 py-2 text-sm font-medium transition-all",
               props.selected === level
-                ? "bg-(--accent) text-white"
+                ? "bg-dynamic-accent text-white"
                 : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white",
             )}
           >

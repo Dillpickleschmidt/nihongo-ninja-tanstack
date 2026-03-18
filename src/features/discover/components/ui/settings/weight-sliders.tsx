@@ -39,7 +39,7 @@ export function WeightSliders(props: WeightSlidersProps) {
                 {item.label}
               </span>
             </div>
-            <span class="tabular-nums text-xs font-semibold text-(--accent)">
+            <span class="tabular-nums text-xs font-semibold text-dynamic-accent">
               {props.values[item.key]}%
             </span>
           </div>
@@ -50,8 +50,8 @@ export function WeightSliders(props: WeightSlidersProps) {
             maxValue={100}
           >
             <SliderTrack class="h-1.5 bg-white/8">
-              <SliderFill class="bg-(--accent)" />
-              <SliderThumb class="-top-1 size-3.5 border-2 border-white/15 bg-(--accent) shadow-[0_2px_6px_rgba(0,0,0,0.3)] transition-transform hover:scale-115" />
+              <SliderFill class="bg-dynamic-accent" />
+              <SliderThumb class="-top-1 size-3.5 border-2 border-white/15 bg-dynamic-accent shadow-[0_2px_6px_rgba(0,0,0,0.3)] transition-transform hover:scale-115" />
             </SliderTrack>
           </Slider>
         </div>

@@ -170,7 +170,7 @@ export function MissedWordsDeckBuilder() {
               <Button
                 onClick={handleCreateDeck}
                 disabled={isCreating()}
-                class="bg-(--accent)/80 text-white hover:bg-(--accent) hover:scale-[1.02] transition-all rounded-lg"
+                class="bg-dynamic-accent/80 text-white hover:bg-dynamic-accent hover:scale-[1.02] transition-all rounded-lg"
               >
                 {isCreating()
                   ? "Creating..."

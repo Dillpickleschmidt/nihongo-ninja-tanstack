@@ -62,7 +62,7 @@ export function StreamingPrefsModal() {
                   onClick={() => toggleService(service().id)}
                   class="group flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all"
                   classList={{
-                    "border-(--accent)/25 bg-(--accent)/8": isSelected(),
+                    "border-dynamic-accent/25 bg-dynamic-accent/8": isSelected(),
                     "border-white/8 bg-white/2 hover:border-white/15 hover:bg-white/4":
                       !isSelected(),
                   }}
@@ -71,7 +71,7 @@ export function StreamingPrefsModal() {
                   <div
                     class="flex size-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold transition-all"
                     classList={{
-                      "bg-(--accent)/20 text-(--accent)": isSelected(),
+                      "bg-dynamic-accent/20 text-dynamic-accent": isSelected(),
                       "bg-white/6 text-white/25": !isSelected(),
                     }}
                   >
@@ -119,10 +119,10 @@ export function StreamingPrefsModal() {
             type="button"
             onClick={handleSave}
             disabled={selections().length === 0}
-            class="flex-1 cursor-pointer rounded-xl bg-(--accent)/80 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-(--accent) disabled:cursor-not-allowed disabled:opacity-30"
+            class="flex-1 cursor-pointer rounded-xl bg-dynamic-accent/80 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-dynamic-accent disabled:cursor-not-allowed disabled:opacity-30"
             style={{
               "box-shadow":
-                "0 6px 12px -3px color-mix(in srgb, var(--accent) 25%, transparent)",
+                "0 6px 12px -3px color-mix(in srgb, var(--dynamic-accent) 25%, transparent)",
             }}
           >
             Save

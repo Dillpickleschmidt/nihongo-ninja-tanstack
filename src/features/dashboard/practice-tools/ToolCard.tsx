@@ -19,17 +19,17 @@ export function ToolCard(props: ToolCardProps) {
       class={cn(
         "group relative overflow-hidden h-auto justify-start rounded-xl border border-white/5 px-3 py-3.5 md:p-5 text-base whitespace-normal transition-colors",
         "animate-fade-up opacity-0",
-        "hover:border-(--accent)/30",
+        "hover:border-dynamic-accent/30",
       )}
       style={{
         "animation-delay": `${props.index * 75}ms`,
-        "background-color": `color-mix(in srgb, var(--accent) ${bgOpacity() * 100}%, transparent)`,
+        "background-color": `color-mix(in srgb, var(--dynamic-accent) ${bgOpacity() * 100}%, transparent)`,
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = `color-mix(in srgb, var(--accent) ${hoverOpacity() * 100}%, transparent)`
+        e.currentTarget.style.backgroundColor = `color-mix(in srgb, var(--dynamic-accent) ${hoverOpacity() * 100}%, transparent)`
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = `color-mix(in srgb, var(--accent) ${bgOpacity() * 100}%, transparent)`
+        e.currentTarget.style.backgroundColor = `color-mix(in srgb, var(--dynamic-accent) ${bgOpacity() * 100}%, transparent)`
       }}
     >
       {/* Noise texture overlay */}
@@ -42,15 +42,15 @@ export function ToolCard(props: ToolCardProps) {
 
       <div class="flex items-center gap-4">
         <div
-          class="flex h-9 w-9 md:h-12 md:w-12 items-center justify-center rounded-lg md:rounded-xl text-xl md:text-2xl font-japanese text-(--accent) transition-transform duration-300 group-hover:scale-110"
+          class="flex h-9 w-9 md:h-12 md:w-12 items-center justify-center rounded-lg md:rounded-xl text-xl md:text-2xl font-japanese text-dynamic-accent transition-transform duration-300 group-hover:scale-110"
           style={{
-            "background-color": `color-mix(in srgb, var(--accent) ${bgOpacity() * 100}%, transparent)`,
+            "background-color": `color-mix(in srgb, var(--dynamic-accent) ${bgOpacity() * 100}%, transparent)`,
           }}
         >
           {props.tool.icon}
         </div>
         <div class="flex-1 min-w-0">
-          <h3 class="font-semibold text-white transition-colors group-hover:text-(--accent)">
+          <h3 class="font-semibold text-white transition-colors group-hover:text-dynamic-accent">
             {props.tool.title}
           </h3>
           <p class="text-xs text-white/40 mt-0.5 line-clamp-2">
@@ -60,7 +60,7 @@ export function ToolCard(props: ToolCardProps) {
       </div>
 
       <svg
-        class="absolute right-4 top-1/2 -translate-y-1/2 size-4 text-(--accent) opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0.5"
+        class="absolute right-4 top-1/2 -translate-y-1/2 size-4 text-dynamic-accent opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0.5"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"

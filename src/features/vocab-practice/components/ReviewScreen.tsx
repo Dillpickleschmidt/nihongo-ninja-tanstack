@@ -57,18 +57,18 @@ export function ReviewScreen(props: Props) {
             {(result) => {
               const promptDisplay = getCardPrompt(result.card)
               return (
-                <div class="flex flex-col items-center gap-2 rounded-lg p-4 text-center bg-(--accent)/25 backdrop-blur-sm">
+                <div class="flex flex-col items-center gap-2 rounded-lg p-4 text-center bg-dynamic-accent/25 backdrop-blur-sm">
                   {/* Japanese prompt */}
                   <Show
                     when={promptDisplay.isHtml}
                     fallback={
-                      <div class="font-japanese text-3xl font-bold text-(--accent)">
+                      <div class="font-japanese text-3xl font-bold text-dynamic-accent">
                         {promptDisplay.text}
                       </div>
                     }
                   >
                     <div
-                      class="font-japanese text-3xl font-bold text-(--accent)"
+                      class="font-japanese text-3xl font-bold text-dynamic-accent"
                       innerHTML={promptDisplay.html}
                     />
                   </Show>

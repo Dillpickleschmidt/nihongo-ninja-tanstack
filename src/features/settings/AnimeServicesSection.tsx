@@ -93,7 +93,7 @@ export function AnimeServicesSection() {
                           type="button"
                           onClick={() => handleConnect(service.id)}
                           disabled={processing()}
-                          class="text-sm text-(--accent) hover:underline underline-offset-2 disabled:opacity-50"
+                          class="text-sm text-dynamic-accent hover:underline underline-offset-2 disabled:opacity-50"
                         >
                           {processing() ? "Connecting..." : "Connect"}
                         </button>

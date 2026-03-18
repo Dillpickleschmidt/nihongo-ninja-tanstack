@@ -102,7 +102,7 @@ export function AnkiFieldMappingView(props: AnkiFieldMappingViewProps) {
                       class={cn(
                         "flex w-full cursor-pointer items-center gap-4 rounded-xl border px-5 py-3.5 text-left transition-all ease-instant-hover-150",
                         isSelected()
-                          ? "border-(--accent)/25 bg-(--accent)/[0.07]"
+                          ? "border-dynamic-accent/25 bg-dynamic-accent/[0.07]"
                           : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12] hover:bg-white/[0.05]",
                       )}
                     >
@@ -110,7 +110,7 @@ export function AnkiFieldMappingView(props: AnkiFieldMappingViewProps) {
                         class={cn(
                           "flex size-[18px] shrink-0 items-center justify-center rounded-full border-[1.5px] transition-colors",
                           isSelected()
-                            ? "border-(--accent) bg-(--accent) text-white"
+                            ? "border-dynamic-accent bg-dynamic-accent text-white"
                             : "border-white/15",
                         )}
                       >
@@ -156,7 +156,7 @@ export function AnkiFieldMappingView(props: AnkiFieldMappingViewProps) {
         <Button
           onClick={props.onNext}
           variant="ghost"
-          class="bg-(--accent) hover:bg-(--accent) h-auto rounded-xl px-8 py-3.5 text-base hover:brightness-120"
+          class="bg-dynamic-accent hover:bg-dynamic-accent h-auto rounded-xl px-8 py-3.5 text-base hover:brightness-120"
         >
           Continue
         </Button>
@@ -182,7 +182,7 @@ function FieldSelect(props: {
         class={cn(
           "group flex w-full cursor-pointer items-center gap-3 rounded-xl border px-5 py-4 text-left transition-all ease-instant-hover-150",
           props.open
-            ? "border-(--accent)/30 bg-(--accent)/[0.06]"
+            ? "border-dynamic-accent/30 bg-dynamic-accent/[0.06]"
             : "border-white/[0.12] bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05]",
         )}
       >
@@ -193,7 +193,7 @@ function FieldSelect(props: {
           class={cn(
             "size-5 shrink-0 transition-all",
             props.open
-              ? "rotate-180 text-(--accent)"
+              ? "rotate-180 text-dynamic-accent"
               : "text-white/30 group-hover:text-white/50",
           )}
         />

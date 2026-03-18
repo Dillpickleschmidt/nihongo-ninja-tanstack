@@ -115,7 +115,7 @@ function KanaPage() {
             </p>
             <h1 class="text-3xl font-bold lg:text-4xl">
               <span class="text-white/90">Kana</span>{" "}
-              <span class="text-(--accent)">Practice</span>
+              <span class="text-dynamic-accent">Practice</span>
             </h1>
             <p class="text-sm text-white/35 mt-1.5 max-w-md">
               Master the Japanese syllabaries through timed quizzes. Track your
@@ -237,7 +237,7 @@ function QuizCard(props: { mod: QuizModule; delay: number }) {
   return (
     <Link
       to={href()}
-      class={`group relative block overflow-hidden rounded-xl border border-white/6 bg-white/2.5 transition-colors hover:border-(--accent)/25 hover:bg-white/4.5 anim-up ${props.mod.span ? "md:col-span-2 p-6" : "p-5"}`}
+      class={`group relative block overflow-hidden rounded-xl border border-white/6 bg-white/2.5 transition-colors hover:border-dynamic-accent/25 hover:bg-white/4.5 anim-up ${props.mod.span ? "md:col-span-2 p-6" : "p-5"}`}
       style={{ "animation-delay": `${props.delay}ms` }}
     >
       <NoiseOverlay />
@@ -246,7 +246,7 @@ function QuizCard(props: { mod: QuizModule; delay: number }) {
       {/* Header row */}
       <div class="relative flex items-start justify-between gap-4">
         <div class="min-w-0 flex-1">
-          <h3 class="text-lg font-semibold text-white/90 group-hover:text-(--accent) transition-colors">
+          <h3 class="text-lg font-semibold text-white/90 group-hover:text-dynamic-accent transition-colors">
             {props.mod.label}
           </h3>
           <p class="text-sm text-white/30 mt-0.5">{props.mod.subtitle}</p>
@@ -267,7 +267,7 @@ function QuizCard(props: { mod: QuizModule; delay: number }) {
         <For each={props.mod.sample}>
           {(ch) => (
             <span
-              class={`font-japanese text-white/20 group-hover:text-(--accent)/40 transition-colors ${props.mod.span ? "text-xl" : "text-lg"}`}
+              class={`font-japanese text-white/20 group-hover:text-dynamic-accent/40 transition-colors ${props.mod.span ? "text-xl" : "text-lg"}`}
             >
               {ch}
             </span>
@@ -275,7 +275,7 @@ function QuizCard(props: { mod: QuizModule; delay: number }) {
         </For>
       </div>
 
-      <HoverArrow class="text-(--accent)" />
+      <HoverArrow class="text-dynamic-accent" />
     </Link>
   )
 }

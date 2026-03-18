@@ -44,7 +44,7 @@ export function SrsServiceSection() {
             name="srs-service"
             checked={!isAnkiEnabled()}
             onChange={() => handleServiceChange("nihongo")}
-            class="accent-(--accent)"
+            class="accent-dynamic-accent"
           />
           <span class="text-white">None (built-in)</span>
         </label>
@@ -56,7 +56,7 @@ export function SrsServiceSection() {
             checked={isAnkiEnabled()}
             onChange={() => handleServiceChange("anki")}
             disabled={switching()}
-            class="accent-(--accent)"
+            class="accent-dynamic-accent"
           />
           <span class="text-white">
             {switching() ? "Connecting to Anki..." : "Anki"}
@@ -77,7 +77,7 @@ export function SrsServiceSection() {
           Anki is selected but not connected.{" "}
           <Link
             to="/import/anki"
-            class="text-(--accent) underline underline-offset-2"
+            class="text-dynamic-accent underline underline-offset-2"
           >
             Setup instructions
           </Link>

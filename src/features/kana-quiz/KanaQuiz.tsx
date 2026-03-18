@@ -238,10 +238,10 @@ function KanaQuizActionBar(props: { moduleId: string }) {
             <button
               type="button"
               onClick={handleSubmit}
-              class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-(--accent) px-8 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.02] hover:brightness-110"
+              class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-dynamic-accent px-8 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.02] hover:brightness-110"
               style={{
                 "box-shadow":
-                  "0 8px 20px -4px color-mix(in srgb, var(--accent) 30%, transparent)",
+                  "0 8px 20px -4px color-mix(in srgb, var(--dynamic-accent) 30%, transparent)",
               }}
             >
               Submit
@@ -265,10 +265,10 @@ function KanaQuizActionBar(props: { moduleId: string }) {
             >
               <button
                 type="button"
-                class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-(--accent) px-8 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.02] hover:brightness-110"
+                class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-dynamic-accent px-8 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.02] hover:brightness-110"
                 style={{
                   "box-shadow":
-                    "0 8px 20px -4px color-mix(in srgb, var(--accent) 30%, transparent)",
+                    "0 8px 20px -4px color-mix(in srgb, var(--dynamic-accent) 30%, transparent)",
                 }}
               >
                 Next Lesson

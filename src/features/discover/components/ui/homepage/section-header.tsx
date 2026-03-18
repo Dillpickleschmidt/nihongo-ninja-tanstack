@@ -55,7 +55,7 @@ export function SectionHeader(props: SectionHeaderProps) {
               onChange={(e) =>
                 setLargeCards(sectionKey(), e.currentTarget.checked)
               }
-              class="size-3.5 cursor-pointer rounded border-white/20 bg-white/5 accent-(--accent)"
+              class="size-3.5 cursor-pointer rounded border-white/20 bg-white/5 accent-dynamic-accent"
             />
             <span class="text-xs text-white/40">Large cards</span>
           </label>

@@ -71,7 +71,7 @@ export function ConfirmActionDialog(props: ConfirmActionDialogProps) {
             class={
               props.variant === "destructive"
                 ? ""
-                : "bg-(--accent) text-white hover:bg-(--accent) hover:brightness-110"
+                : "bg-dynamic-accent text-white hover:bg-dynamic-accent hover:brightness-110"
             }
             onClick={handleConfirm}
           >

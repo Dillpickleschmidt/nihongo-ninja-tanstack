@@ -31,14 +31,14 @@ export function HeroTimeline(props: HeroTimelineProps) {
                   hideDescription
                   class={
                     isPrimary()
-                      ? "-ml-2 text-white bg-(--accent)/80 backdrop-blur-sm rounded-xl hover:bg-(--accent) hover:scale-[1.02]"
+                      ? "-ml-2 text-white bg-dynamic-accent/80 backdrop-blur-sm rounded-xl hover:bg-dynamic-accent hover:scale-[1.02]"
                       : undefined
                   }
                   style={
                     isPrimary()
                       ? {
                           "box-shadow":
-                            "0 8px 20px -4px color-mix(in srgb, var(--accent) 40%, transparent)",
+                            "0 8px 20px -4px color-mix(in srgb, var(--dynamic-accent) 40%, transparent)",
                         }
                       : undefined
                   }

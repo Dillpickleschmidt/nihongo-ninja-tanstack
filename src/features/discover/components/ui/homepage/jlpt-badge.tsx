@@ -10,8 +10,8 @@ export function JlptBadge() {
 
   return (
     <Show when={user() && level()}>
-      <div class="flex items-center gap-1.5 rounded-lg border border-(--accent)/20 bg-(--accent)/10 px-2.5 py-1 backdrop-blur-sm">
-        <span class="text-[0.7rem] font-bold tracking-wider text-(--accent)">
+      <div class="flex items-center gap-1.5 rounded-lg border border-dynamic-accent/20 bg-dynamic-accent/10 px-2.5 py-1 backdrop-blur-sm">
+        <span class="text-[0.7rem] font-bold tracking-wider text-dynamic-accent">
           {level()}
         </span>
       </div>

@@ -87,10 +87,10 @@ export function LearningPathSelector(props: LearningPathSelectorProps) {
         {props.children}
       </PopoverTrigger>
       <PopoverContent
-        class="w-[250px] overflow-hidden rounded-md border border-(--accent)/20 p-1 shadow-md backdrop-blur-2xl"
+        class="w-[250px] overflow-hidden rounded-md border border-dynamic-accent/20 p-1 shadow-md backdrop-blur-2xl"
         style={{
           "background-color":
-            "color-mix(in srgb, var(--accent) 15%, rgb(10 10 10 / 0.7))",
+            "color-mix(in srgb, var(--dynamic-accent) 15%, rgb(10 10 10 / 0.7))",
         }}
       >
         {/* Built-in Textbooks */}
@@ -108,7 +108,7 @@ export function LearningPathSelector(props: LearningPathSelectorProps) {
               }
               class={cn(
                 "flex w-full cursor-default items-center rounded-sm px-2 py-1.5 text-sm transition-colors outline-none select-none hover:bg-white/10",
-                props.activePathId === path.id && "bg-(--accent)/15",
+                props.activePathId === path.id && "bg-dynamic-accent/15",
               )}
             >
               {path.shortName}
@@ -132,7 +132,7 @@ export function LearningPathSelector(props: LearningPathSelectorProps) {
                 }}
                 class={cn(
                   "flex cursor-default items-center justify-between gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors outline-none select-none hover:bg-white/10",
-                  props.activePathId === path.id && "bg-(--accent)/15",
+                  props.activePathId === path.id && "bg-dynamic-accent/15",
                 )}
               >
                 <div

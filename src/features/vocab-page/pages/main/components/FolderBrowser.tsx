@@ -162,10 +162,10 @@ export function FolderBrowser(props: FolderBrowserProps) {
                 </SelectValue>
               </SelectTrigger>
               <SelectContent
-                class="border border-(--accent)/20 backdrop-blur-2xl"
+                class="border border-dynamic-accent/20 backdrop-blur-2xl"
                 style={{
                   "background-color":
-                    "color-mix(in srgb, var(--accent) 15%, rgb(10 10 10 / 0.7))",
+                    "color-mix(in srgb, var(--dynamic-accent) 15%, rgb(10 10 10 / 0.7))",
                 }}
               />
             </Select>

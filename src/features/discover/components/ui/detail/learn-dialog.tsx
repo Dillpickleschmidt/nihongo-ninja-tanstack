@@ -37,9 +37,9 @@ export function LearnDialog(props: LearnDialogProps) {
               <button
                 type="button"
                 onClick={() => setMode("full")}
-                class="group flex cursor-pointer items-start gap-3 rounded-xl border border-white/8 bg-white/2 p-4 text-left transition-all hover:border-(--accent)/20 hover:bg-white/4"
+                class="group flex cursor-pointer items-start gap-3 rounded-xl border border-white/8 bg-white/2 p-4 text-left transition-all hover:border-dynamic-accent/20 hover:bg-white/4"
               >
-                <div class="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-(--accent)/10 text-(--accent) transition-colors group-hover:bg-(--accent)/15">
+                <div class="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-dynamic-accent/10 text-dynamic-accent transition-colors group-hover:bg-dynamic-accent/15">
                   <BookOpen class="size-4" />
                 </div>
                 <div>
@@ -57,7 +57,7 @@ export function LearnDialog(props: LearnDialogProps) {
               <button
                 type="button"
                 onClick={() => setMode("vocab")}
-                class="group flex cursor-pointer items-start gap-3 rounded-xl border border-white/8 bg-white/2 p-4 text-left transition-all hover:border-(--accent)/20 hover:bg-white/4"
+                class="group flex cursor-pointer items-start gap-3 rounded-xl border border-white/8 bg-white/2 p-4 text-left transition-all hover:border-dynamic-accent/20 hover:bg-white/4"
               >
                 <div class="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/6 text-white/50 transition-colors group-hover:bg-white/8">
                   <Languages class="size-4" />

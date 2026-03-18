@@ -184,7 +184,7 @@ function NavigationContent(props: NavigationContentProps) {
                     <Button
                       variant="ghost"
                       class={cn(
-                        "w-full justify-start px-2 hover:bg-(--accent)/20",
+                        "w-full justify-start px-2 hover:bg-dynamic-accent/20",
                       )}
                       onClick={() => {}}
                     >
@@ -197,7 +197,7 @@ function NavigationContent(props: NavigationContentProps) {
                               "mx-1 size-4!",
                               item.class,
                               props.isActive(item.href) &&
-                                "text-(--accent) brightness-150",
+                                "text-dynamic-accent brightness-150",
                             )}
                           />
                         }
@@ -207,7 +207,7 @@ function NavigationContent(props: NavigationContentProps) {
                             "mx-1 size-4 flex items-center justify-center text-base font-japanese font-medium",
                             item.class,
                             props.isActive(item.href) &&
-                              "text-(--accent) brightness-150",
+                              "text-dynamic-accent brightness-150",
                           )}
                         >
                           {item.icon as string}
@@ -217,7 +217,7 @@ function NavigationContent(props: NavigationContentProps) {
                         class={cn(
                           "text-[0.85rem] font-medium",
                           props.isActive(item.href) &&
-                            "text-(--accent) brightness-150",
+                            "text-dynamic-accent brightness-150",
                         )}
                       >
                         {item.title}

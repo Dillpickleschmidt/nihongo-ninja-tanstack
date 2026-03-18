@@ -215,7 +215,7 @@ function CustomImportPage() {
               type="button"
               onClick={handleSave}
               disabled={isProcessing()}
-              class="rounded-md bg-(--accent) px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+              class="rounded-md bg-dynamic-accent px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
             >
               Save Custom Learning Path
             </button>

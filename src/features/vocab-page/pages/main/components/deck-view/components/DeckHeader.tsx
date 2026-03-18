@@ -33,10 +33,10 @@ export function DeckHeader(props: DeckHeaderProps) {
           <Button
             as={Link}
             to={buildPracticePath(location().pathname)}
-            class="group flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm transition-all bg-(--accent)/80 text-white font-medium hover:scale-[1.02] hover:bg-(--accent)"
+            class="group flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm transition-all bg-dynamic-accent/80 text-white font-medium hover:scale-[1.02] hover:bg-dynamic-accent"
             style={{
               "box-shadow":
-                "0 8px 15px -4px color-mix(in srgb, var(--accent) 30%, transparent)",
+                "0 8px 15px -4px color-mix(in srgb, var(--dynamic-accent) 30%, transparent)",
             }}
           >
             <Play class="size-4" />

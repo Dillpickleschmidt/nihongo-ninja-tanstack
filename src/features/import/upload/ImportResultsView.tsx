@@ -426,7 +426,7 @@ export function ImportResultsView(props: ImportResultsViewProps) {
         <div class="flex justify-end">
           <Button
             variant="ghost"
-            class="bg-(--accent) h-auto px-6 py-3 text-base disabled:cursor-not-allowed hover:brightness-120 hover:bg-(--accent)"
+            class="bg-dynamic-accent h-auto px-6 py-3 text-base disabled:cursor-not-allowed hover:brightness-120 hover:bg-dynamic-accent"
             disabled={allFoundIds().length === 0 || isImporting()}
             onClick={handleImport}
           >
