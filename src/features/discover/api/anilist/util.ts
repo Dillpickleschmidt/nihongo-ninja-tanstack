@@ -49,7 +49,7 @@ export function title(
     case "NATIVE_STYLISED":
       return t.native ?? t.english ?? "TBA"
     default:
-      return t.english ?? "TBA"
+      return t.english ?? t.romaji ?? "TBA"
   }
 }
 

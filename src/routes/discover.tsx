@@ -138,7 +138,7 @@ function DiscoverPage() {
   function handleScroll() {
     if (!scrollRef) return
     const scrollY = scrollRef.scrollTop
-    setBannerImageOpacity(Math.max(0.45, 1 - scrollY / 600))
+    setBannerImageOpacity(Math.max(0.15, 1 - scrollY / 600))
     setContentOpacity(Math.max(0, 1 - scrollY / 300))
     setVignetteOpacity(Math.min(1, Math.max(0, (scrollY - 200) / 200)))
     setBannerBlur(scrollY >= 300 ? 4 : 0)
@@ -153,7 +153,7 @@ function DiscoverPage() {
   return (
     <div
       ref={scrollRef}
-      class="relative h-screen overflow-y-auto"
+      class="relative h-screen overflow-y-auto bg-[#121212]"
       onMouseMove={handleBannerMouseMove}
       onMouseLeave={handleBannerMouseLeave}
     >

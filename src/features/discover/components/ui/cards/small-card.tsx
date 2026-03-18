@@ -19,10 +19,10 @@ interface SmallAnimeCardProps {
   onCardClick?: (media: DiscoverMedia | Media) => void
 }
 
-function getBarColor(pct: number): string {
-  if (pct >= 70) return "from-emerald-600 to-emerald-400"
-  if (pct >= 45) return "from-amber-600 to-amber-400"
-  return "from-red-600 to-red-400"
+function getColor(pct: number): string {
+  if (pct >= 70) return "#34d399"
+  if (pct >= 45) return "#fbbf24"
+  return "#f87171"
 }
 
 export function SmallAnimeCard(props: SmallAnimeCardProps) {
@@ -52,9 +52,9 @@ export function SmallAnimeCard(props: SmallAnimeCardProps) {
         }}
       >
         <div class="flex flex-col">
-        {/* Cover Image */}
+        {/* Cover Image + Progress Circle */}
         <div
-          class="overflow-hidden rounded-t-lg"
+          class="relative overflow-hidden rounded-lg"
           classList={{ "h-54": !isLarge(), "h-72": isLarge() }}
         >
           <LoadImage
@@ -63,46 +63,52 @@ export function SmallAnimeCard(props: SmallAnimeCardProps) {
             class="h-full w-full object-cover"
             color={props.media.coverImage?.color}
           />
-        </div>
-
-        {/* Comprehension bar */}
-        <div class="h-1 w-full overflow-hidden rounded-b-lg bg-white/6">
-          <div
-            class={`h-full bg-gradient-to-r ${getBarColor(comprehension().avg)}`}
-            style={{ width: `${comprehension().avg}%` }}
-          />
-        </div>
-
-        {/* Comprehension numbers */}
-        <div class="flex items-baseline justify-between px-0.5 pt-2">
-          <div
-            class="flex flex-col"
-            title="Average comprehension across all episodes"
-          >
-            <span class="text-[0.55rem] uppercase tracking-wider text-white/25">
-              avg
-            </span>
-            <span class="tabular-nums text-sm font-semibold text-white/70">
-              {comprehension().avg}%
-            </span>
-          </div>
-          <span class="text-white/15">/</span>
-          <div
-            class="flex flex-col items-end"
-            title="Episode with most comprehension"
-          >
-            <span class="text-[0.55rem] uppercase tracking-wider text-white/25">
-              best
-            </span>
-            <span class="tabular-nums text-sm font-bold text-(--accent)">
-              {comprehension().best}%
-            </span>
+          {/* Progress circle */}
+          <div class="absolute right-1.5 bottom-1.5" title={`Avg: ${comprehension().avg}% / Best: ${comprehension().best}%`}>
+            <svg class="size-8 -rotate-90" viewBox="0 0 36 36">
+              {/* Background */}
+              <circle
+                cx="18" cy="18" r="15"
+                fill="rgba(0,0,0,0.6)"
+                stroke="white"
+                stroke-opacity="0.1"
+                stroke-width="2.5"
+              />
+              {/* Best comprehension (underlaid, semi-transparent) */}
+              <circle
+                cx="18" cy="18" r="15"
+                fill="none"
+                stroke={getColor(comprehension().best)}
+                stroke-opacity="0.5"
+                stroke-width="2.5"
+                stroke-dasharray={`${comprehension().best * 0.9425} 94.25`}
+              />
+              {/* Average comprehension (primary) */}
+              <circle
+                cx="18" cy="18" r="15"
+                fill="none"
+                stroke={getColor(comprehension().avg)}
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-dasharray={`${comprehension().avg * 0.9425} 94.25`}
+              />
+              {/* Number */}
+              <text
+                x="18" y="18"
+                text-anchor="middle"
+                dominant-baseline="central"
+                class="fill-white font-bold"
+                style={{ "font-size": "10px", transform: "rotate(90deg)", "transform-origin": "center" }}
+              >
+                {comprehension().avg}
+              </text>
+            </svg>
           </div>
         </div>
 
         {/* Title */}
         <div
-          class="line-clamp-2 pt-2 font-black"
+          class="line-clamp-2 pt-1 font-black"
           classList={{
             "text-[0.8rem]": !isLarge(),
             "text-[0.9rem]": isLarge(),

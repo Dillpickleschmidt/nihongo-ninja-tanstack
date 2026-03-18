@@ -27,8 +27,8 @@ const DEFAULT_LARGE_SECTIONS = new Set([
 ])
 
 // Approximate row heights (card + gap) for max-height calculation
-const SMALL_ROW_H = 310
-const LARGE_ROW_H = 390
+const SMALL_ROW_H = 280
+const LARGE_ROW_H = 360
 
 function SingleSection(props: {
   section: SectionConfig
