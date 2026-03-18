@@ -1,6 +1,7 @@
 // UserInputPosDisplay - shows tokenized user input with colored POS boxes
 
 import { For, Show, type Component } from "solid-js"
+import { ClickableTooltip } from "@/components/ClickableTooltip"
 import type { KagomeToken } from "../../kagome/types"
 import type { OverlayResult } from "../../core/kanaToKanjiOverlay"
 import {
@@ -58,12 +59,13 @@ const UserInputPosDisplay: Component<UserInputPosDisplayProps> = (props) => {
             const description = getCategoryDescription(category)
 
             return (
-              <span
-                class={`${colorClass} font-japanese inline-block rounded-md px-1 py-0.5 text-base font-medium`}
-                title={description}
-              >
-                {originalText}
-              </span>
+              <ClickableTooltip content={description}>
+                <span
+                  class={`${colorClass} font-japanese inline-block rounded-md px-1 py-0.5 text-base font-medium`}
+                >
+                  {originalText}
+                </span>
+              </ClickableTooltip>
             )
           }}
         </For>

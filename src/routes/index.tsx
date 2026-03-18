@@ -3,11 +3,12 @@ import { queryKeys } from "~/query/query-keys"
 import { FloatingKanji } from "@/features/homepage/components/floating-kanji"
 import { HeroSection } from "@/features/homepage/sections/hero-section"
 import { QuickFeatures } from "@/features/homepage/sections/quick-features"
+import { PersonalQuote } from "@/features/homepage/sections/personal-quote"
 import { MainFeatures } from "@/features/homepage/sections/main-features"
 import { StatsSection } from "@/features/homepage/sections/stats-section"
+import { WhatMakesUsDifferent } from "@/features/homepage/sections/what-makes-us-different"
 import { VideoShowcaseSection } from "@/features/homepage/sections/video-showcase-section"
 import { CTASection } from "@/features/homepage/sections/cta-section"
-import { PremiumCallout } from "@/features/homepage/sections/premium-callout"
 import { Footer } from "@/features/homepage/sections/footer"
 import { useColorAnimation } from "@/features/homepage/lib/use-color-animation"
 
@@ -94,9 +95,10 @@ function Homepage() {
       {/* Page Sections */}
       <HeroSection explorePath="/get-started" />
       <QuickFeatures />
+      <PersonalQuote />
       <MainFeatures />
       <StatsSection />
-      <PremiumCallout />
+      <WhatMakesUsDifferent />
       <VideoShowcaseSection />
       <CTASection explorePath="/get-started" />
       <Footer />

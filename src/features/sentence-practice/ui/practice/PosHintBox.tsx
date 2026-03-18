@@ -1,6 +1,7 @@
 // PosHintBox - displays a single colored box for model answer POS hint
 
 import type { Component } from "solid-js"
+import { ClickableTooltip } from "@/components/ClickableTooltip"
 import {
   type PosCategory,
   getPosCategory,
@@ -26,12 +27,13 @@ const PosHintBox: Component<PosHintBoxProps> = (props) => {
   const spacer = (): string => "　".repeat(props.width)
 
   return (
-    <span
-      class={`${colorClass()} font-japanese inline-block rounded-md px-1 py-0.5 text-base font-medium`}
-      title={description()}
-    >
-      {spacer()}
-    </span>
+    <ClickableTooltip content={description()}>
+      <span
+        class={`${colorClass()} font-japanese inline-block rounded-md px-1 py-0.5 text-base font-medium`}
+      >
+        {spacer()}
+      </span>
+    </ClickableTooltip>
   )
 }
 
