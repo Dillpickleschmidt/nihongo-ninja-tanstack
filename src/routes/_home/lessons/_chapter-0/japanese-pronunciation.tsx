@@ -25,8 +25,8 @@ function RouteComponent() {
         </h1>
         <div class="mx-auto mb-5 h-1 w-16 rounded bg-emerald-400" />
         <p class="text-muted-foreground mb-6 text-lg">
-          Simple rules, consistent sounds. Once you get them down, you can
-          pronounce any word you see with confidence.
+          Five vowels. Predictable consonants. Every character maps to exactly
+          one sound.
         </p>
         <div class="font-japanese flex justify-center space-x-3 text-xl">
           <span class="rounded-md bg-emerald-500/20 px-3 py-1">あ</span>
@@ -40,24 +40,22 @@ function RouteComponent() {
       <main class="mx-auto max-w-3xl space-y-12 px-6 leading-relaxed">
         {/* Opening Callout */}
         <section class="bg-muted/20 text-muted-foreground rounded-md p-4 text-sm italic">
-          If English spelling has ever thrown you off—read vs. read (past
-          tense), or though / through / tough—here’s the good news: Japanese
-          doesn’t do that. Every character = one sound, every time.
+          If English spelling has ever thrown you off (read vs. read [past
+          tense], though vs. through vs. tough), here’s the good news: Japanese
+          doesn’t do that. Every character is one sound, every time.
         </section>
 
         {/* Why It's Simpler */}
         <section>
-          <h2 class="mb-3 text-2xl font-semibold">
-            Why Pronunciation Seems Hard (But Isn’t)
-          </h2>
+          <h2 class="mb-3 text-2xl font-semibold">How Japanese Sounds Work</h2>
           <p>
             English makes you deal with silent letters, shifting vowels, and
-            words that look identical but sound completely different. It’s no
-            wonder learners hesitate.
+            words that look identical but sound completely different.
           </p>
           <p class="mt-4">
-            Japanese is designed differently: sounds are predictable. Once you
-            learn the handful of rules, you can comfortably rely on them.
+            Japanese works on a grid. Five vowels, a set of consonants, and each
+            consonant pairs with each vowel to make a syllable. That’s the whole
+            system.
           </p>
         </section>
 
@@ -115,15 +113,14 @@ function RouteComponent() {
 
           {/* Bridge explanation text */}
           <p class="text-muted-foreground mt-6 text-sm">
-            See how neat this is? Each column is one of those five vowels, and
-            each row is a consonant pairing with them. Don't see the pattern? It
-            might take a minute to click.
+            Each column is one of those five vowels, and each row is a consonant
+            pairing with them.
           </p>
 
           <p class="text-muted-foreground mt-4 text-sm">
             Variations worth noting include: <br />・ し = “shi” not “si”
             <br />・ ち = “chi,” つ = “tsu”
-            <br />・ ふ = soft “fu,” like blowing air
+            <br />・ ふ = soft “fu,” like blowing air over the lid of a bottle
             <br />・ を is more often pronounced “o”
             <br />・ ん can be "n" or "m"
           </p>
@@ -133,14 +130,12 @@ function RouteComponent() {
         <section class="mt-8">
           <div class="space-y-3 rounded-md border border-green-600/40 bg-green-900/20 p-5">
             <p class="leading-relaxed font-medium text-green-200">
-              Look at that — with just these patterns, you can already see what
-              makes up most Japanese words. English never gives you this level
-              of consistency.
+              With just these patterns, you can read most of what makes up
+              Japanese words. English never gave you anything this consistent.
             </p>
             <p class="text-sm text-green-300">
-              Don’t worry about memorizing the full chart yet—we're just looking
-              at the patterns right now. Now let's take a look at some real
-              words.
+              You don’t need to memorize the chart yet. We’re just looking at
+              patterns. Now let’s try some real words.
             </p>
           </div>
         </section>
@@ -148,22 +143,22 @@ function RouteComponent() {
         {/* Example Words */}
         <section class="space-y-6">
           <h2 class="mb-5 text-2xl font-semibold">
-            Let’s put it together{" "}
+            Put it together{" "}
             <span class="text-muted-foreground ml-3 text-base">
               (Read left to right)
             </span>
           </h2>
           {/* <p class="mb-4">Let’s put it together. Read left to right:</p> */}
           <div class="grid gap-4 sm:grid-cols-3">
-            <WordCard jp="ねこ" romaji="ne + ko" gloss="“neh-koh” (cat)" />
             <WordCard jp="すし" romaji="su + shi" gloss="“soo-shee” (sushi)" />
+            <WordCard jp="ねこ" romaji="ne + ko" gloss="“neh-koh” (cat)" />
             <WordCard jp="かみ" romaji="ka + mi" gloss="“kah-mee” (paper)" />
           </div>
         </section>
 
         <p class="text-muted-foreground mx-auto max-w-2xl text-sm">
-          In the next lesson, we'll take a look at the major writing systems in
-          Japanese, and how they all fit together.
+          Next up: the major writing systems in Japanese and how they fit
+          together.
         </p>
       </main>
     </div>

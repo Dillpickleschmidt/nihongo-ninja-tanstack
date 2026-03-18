@@ -33,7 +33,7 @@ function RouteComponent() {
             of Japanese
           </h1>
           <p class="text-lg text-slate-300">
-            Master the foundational writing system that unlocks all of Japanese.
+            You've seen the sounds. Now let's put faces to them.
           </p>
         </div>
       </div>
@@ -51,8 +51,8 @@ function RouteComponent() {
 
           <div class="space-y-6 text-lg leading-relaxed">
             <p>
-              Hiragana is one of the three writing systems of Japanese—used
-              alongside Katakana and Kanji. It’s mainly for{" "}
+              Hiragana is one of the three writing systems of Japanese, used
+              for{" "}
               <strong class="text-blue-400">native Japanese words</strong> and{" "}
               <strong class="text-blue-400">grammatical elements</strong> that
               connect words into sentences.
@@ -60,10 +60,9 @@ function RouteComponent() {
 
             <p>
               There are{" "}
-              <strong class="text-blue-400">46 Hiragana characters</strong>. But
-              don’t panic—all of them are built from the{" "}
-              <em>same five vowels</em> you already met in our pronunciation
-              lesson:
+              <strong class="text-blue-400">46 hiragana characters</strong>.
+              All of them are built from the same five vowels you already met in
+              the pronunciation lesson:
             </p>
           </div>
         </section>
@@ -78,7 +77,7 @@ function RouteComponent() {
               a • i • u • e • o
             </div>
             <p class="font-medium text-blue-600 dark:text-blue-400">
-              These are the foundation. Every other Hiragana character builds on
+              These are the foundation. Every other hiragana character builds on
               them.
             </p>
           </div>
@@ -89,24 +88,21 @@ function RouteComponent() {
             speaker="student"
             text="So if I learn hiragana, I can start reading real Japanese?"
           />
-          <ChatBubble
-            speaker="sensei"
-            text="Exactly. That's why it's the first step in your learning journey."
-          />
+          <ChatBubble speaker="sensei" text="That's the idea." />
         </section>
 
         {/* Building Rows */}
         <section class="space-y-6">
           <h2 class="text-2xl font-semibold">Building a Row</h2>
           <p>
-            Put a consonant in front of each vowel, and you unlock a{" "}
+            Put a consonant in front of each vowel, and you get a{" "}
             <strong>whole row</strong> of new sounds:
           </p>
           <ChatAttachment speaker="sensei">
             <p class="mb-3">Here's the k‑row:</p>
             <KanaRow consonant="k" />
             <p class="mt-3 text-center text-[0.8rem] opacity-90">
-              One consonant × five vowels = a predictable row of Hiragana.
+              One consonant × five vowels = a predictable row of hiragana.
             </p>
           </ChatAttachment>
           <ChatAttachment speaker="sensei">
@@ -122,7 +118,7 @@ function RouteComponent() {
             <KanaChart type="base-kana" />
           </div>
           <p class="text-muted-foreground text-sm">
-            Forty‑six characters in all—enough to write anything in Japanese.
+            Forty‑six characters in all.
           </p>
         </section>
 
@@ -130,43 +126,41 @@ function RouteComponent() {
         <section class="space-y-6">
           <h2 class="text-2xl font-semibold">The Exceptions</h2>
           <p>
-            Japanese is wonderfully consistent—but there are a{" "}
-            <strong>handful of quirks</strong> you should know:
+            The system is consistent, but there are a few quirks:
           </p>
 
           <div class="rounded-md border border-blue-700/40 bg-blue-900/20 p-4 text-sm leading-relaxed text-blue-200">
             <p>
-              <span class="font-japanese mr-2 text-sky-200">し</span>→ “shi”
+              <span class="font-japanese mr-2 text-sky-200">し</span>→ "shi"
             </p>
             <p>
-              <span class="font-japanese mr-2 text-sky-200">ち</span>→ “chi”
-              <span class="font-japanese mx-2 text-sky-200">つ</span>→ “tsu”
+              <span class="font-japanese mr-2 text-sky-200">ち</span>→ "chi"
+              <span class="font-japanese mx-2 text-sky-200">つ</span>→ "tsu"
             </p>
             <p>
-              <span class="font-japanese mr-2 text-sky-200">ふ</span>→ soft “fu”
-              (gentle breath)
+              <span class="font-japanese mr-2 text-sky-200">ふ</span>→ soft "fu," like blowing air over the lid of a bottle
             </p>
             <p>
               <span class="font-japanese mr-2 text-sky-200">ん</span>→ the only
-              consonant, “n” or “m”
+              consonant, "n" or "m"
             </p>
             <p>
               <span class="font-japanese mr-2 text-sky-200">を</span>→ written
-              “wo”, usually pronounced “o”
+              "wo", usually pronounced "o"
             </p>
           </div>
         </section>
 
-        {/* Resources (restore original dialogue here) */}
+        {/* How to Learn */}
         <section class="space-y-8">
           <h2 class="text-2xl font-semibold">How to Actually Learn These</h2>
           <ChatBubble
             speaker="student"
-            text="Sensei… there are 46 of these squiggles. I'll never remember them all!"
+            text="Sensei... there are 46 of these squiggles. I'll never remember them all!"
           />
           <ChatBubble
             speaker="sensei"
-            text="Fear not—the internet has come to rescue you!"
+            text="That's what this is for:"
           />
           <ChatAttachment speaker="sensei">
             <a
@@ -177,18 +171,18 @@ function RouteComponent() {
               📄 Tofugu's Free Hiragana PDF
             </a>
             <p class="mt-1 text-xs opacity-90">
-              Mnemonics + practice sheets. Many learners master all 46 kana in
+              Mnemonics + practice sheets. Many learners get through all 46 in
               days.
             </p>
           </ChatAttachment>
 
           <ChatBubble
             speaker="student"
-            text="I'll check that out. What comes after mastering these squiggles?"
+            text="What comes after these squiggles?"
           />
           <ChatBubble
             speaker="sensei"
-            text="Once you've learned the characters, we'll practice Japanese greetings. Don't worry about perfection—we'll ease you in with romaji this time. But next chapter? You're on your own, kid."
+            text="We'll practice with greetings. Romaji this time. But next chapter? You're on your own, kid."
           />
         </section>
 
@@ -196,8 +190,7 @@ function RouteComponent() {
         <section class="space-y-6">
           <h2 class="text-2xl font-semibold">Your First Words</h2>
           <p>
-            Let’s put this into practice! Here are a few simple words spelled
-            entirely in Hiragana:
+            Here are a few simple words spelled entirely in hiragana:
           </p>
           <div class="grid gap-4 sm:grid-cols-3">
             <WordCard jp="ねこ" romaji="ne + ko" gloss="cat" />
@@ -237,7 +230,7 @@ function RouteComponent() {
             <div class="w-full max-w-md">
               <YouTubeVideo
                 videoId="GuDyQYkdyio"
-                title="Sensei’s Wisdom"
+                title="Sensei's Wisdom"
                 credit=""
               />
             </div>
@@ -259,7 +252,7 @@ function ResourceSection() {
             href="https://files.tofugu.com/articles/japanese/2022-07-05-learn-hiragana-book-pdf/tofugu-learn-hiragana-book.pdf"
             target="_blank"
           >
-            Tofugu’s Learn Hiragana PDF
+            Tofugu's Learn Hiragana PDF
           </a>
         </li>
         <li>

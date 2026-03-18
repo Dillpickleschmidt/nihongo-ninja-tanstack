@@ -22,11 +22,8 @@ function RouteComponent() {
         </h1>
         <div class="mx-auto mb-5 h-1 w-16 rounded bg-fuchsia-400" />
         <p class="text-muted-foreground text-lg">
-          Japanese writing doesn’t use uppercase or lowercase, and it treats
-          punctuation differently from English. Periods are circles, question
-          marks are optional, and spaces between words are almost unheard of. In
-          this lesson, we’ll learn the essentials of how punctuation and spacing
-          work in Japanese.
+          Japanese doesn't use uppercase or lowercase, periods are circles,
+          question marks are optional, and spaces between words barely exist.
         </p>
       </header>
 
@@ -38,19 +35,17 @@ function RouteComponent() {
           </h2>
           <ChatBubble
             speaker="student"
-            text="Sensei, I've been learning about Hiragana, but I have some questions about other parts of Japanese writing. What can you tell me about uppercase and lowercase letters in Japanese?"
+            text="Wait, Japanese doesn't have capital letters?"
           />
           <ChatBubble
             speaker="sensei"
             text={
               <p>
                 <span class="font-light italic">
-                  *without looking up from his precise brushwork*
+                  *without looking up from his brushwork*
                 </span>{" "}
-                Japanese is a language of elegant simplicity in some aspects.
-                Unlike English, Japanese does not distinguish between uppercase
-                and lowercase letters. Each character stands proudly on its own,
-                without needing to change form.
+                Nope. No uppercase, no lowercase. Each character has one form.
+                That's it.
               </p>
             }
           />
@@ -61,11 +56,21 @@ function RouteComponent() {
           <h2 class="text-center text-2xl font-semibold">Punctuation</h2>
           <ChatBubble
             speaker="student"
-            text="What about punctuation, like question marks and periods?"
+            text="What about question marks and periods?"
           />
           <ChatBubble
             speaker="sensei"
-            text="Ah, punctuation—the tiny marks that guide our understanding. In Japanese, we do use question marks and periods, but their usage can be a bit different. The question mark (？) is used sparingly, often in informal writing or to add emphasis. In more formal contexts, the sentence-ending particle か (ka) usually signals a question."
+            text={
+              <p>
+                <span class="font-light italic">*flips page*</span> Question
+                marks are used sparingly...
+              </p>
+            }
+          />
+          <ChatBubble speaker="student" text="...Sensei?" />
+          <ChatBubble
+            speaker="sensei"
+            text="Typically, the particle か at the end of a sentence signals a question. The question mark (？) shows up more in casual writing."
           />
 
           <div class="rounded-md border border-blue-700/40 bg-blue-900/20 p-4 leading-relaxed text-blue-200">
@@ -90,7 +95,13 @@ function RouteComponent() {
           />
           <ChatBubble
             speaker="sensei"
-            text='Indeed. The humble period (。) in Japanese is called "句点" (kuten). It’s used at the end of a sentence, just like in English, but instead of a solid dot it appears as a small hollow circle.'
+            text={
+              <p>
+                <span class="font-light italic">*sighs*</span> The period in
+                Japanese is called 句点 (kuten). Works the same as English, but
+                instead of a solid dot, it's a small hollow circle (。).
+              </p>
+            }
           />
         </section>
 
@@ -111,7 +122,7 @@ function RouteComponent() {
                   </span>{" "}
                   Oh, spaces... <em>*nervous laughter*</em> Let me tell you
                   about spaces. Or rather, the complete and total ABSENCE of
-                  spaces! That’s right — Japanese doesn’t use ANY spaces between
+                  spaces! That's right — Japanese doesn't use ANY spaces between
                   words!
                 </p>
                 <p>
@@ -132,19 +143,21 @@ function RouteComponent() {
               <div class="space-y-4">
                 <p>
                   Traditional Japanese writing flows continuously, like a river.
-                  A river that occasionally turns into a waterfall that makes
-                  web developers question their life choices.{" "}
+                  A river that flows straight through the gates of hell, past
+                  the screaming souls of web developers, and into the ninth
+                  circle where most Japanese language tool developers have given
+                  up and are just hardcoding everything.{" "}
                   <em>*adjusts collar*</em> But I digress...
                 </p>
                 <p>
-                  Modern Japanese sometimes uses spaces in children’s books or
+                  Modern Japanese sometimes uses spaces in children's books or
                   learning materials to help with readability. Which would have
                   made my life SO much easier!
                 </p>
                 <p>
                   <em>*composes self*</em>
                 </p>
-                <p>Not that I’m bitter about it or anything.</p>
+                <p>Not that I'm bitter about it or anything.</p>
               </div>
             }
           />
@@ -163,10 +176,6 @@ function RouteComponent() {
           </div>
 
           <ChatBubble speaker="student" text="That sounds... challenging." />
-          <ChatBubble
-            speaker="sensei"
-            text="It takes some adjustment, but regular practice will train your eyes to recognize the natural boundaries in Japanese writing just as easily as in English."
-          />
           <ChatBubble
             speaker="sensei"
             text="We're going to learn some cool tricks to help with that in future lessons."

@@ -17,16 +17,15 @@ export const Route = createFileRoute(
 function RouteComponent() {
   return (
     <div class="mb-32">
-      {/* Updated Header */}
+      {/* Header */}
       <header class="mx-auto max-w-3xl px-6 py-14 text-center">
         <h1 class="mb-3 text-4xl font-extrabold tracking-tight">
           Paused Consonants & Long Vowels
         </h1>
         <div class="mx-auto mb-5 h-1 w-16 rounded bg-fuchsia-400" />
         <p class="text-muted-foreground text-lg">
-          Two subtle features of Japanese pronunciation — the small pause of
-          consonants, and the stretched sound of long vowels — can change a
-          word’s meaning entirely. Let’s learn how they work.
+          Two small features of Japanese pronunciation that can change a word's
+          meaning entirely.
         </p>
       </header>
 
@@ -57,26 +56,23 @@ function RouteComponent() {
           </ul>
           <div>
             <p>
-              Imagine you're in a suspenseful movie, and there's that momentary
-              pause that makes your heart skip a beat. That's what double
-              consonants are in Japanese. They're like tiny, suspenseful hiccups
-              in words that add a whole layer of drama.
+              In Japanese, some consonants get held for a beat before releasing.
+              You'll hear a brief pause in the middle of the word, right before
+              the consonant hits.
             </p>
             <br />
             <p>
               Take &quot;
               <span class="font-japanese font-semibold">がっこう</span> (gakkou
               - school).&quot; Without the double 'k', it would just be a boring
-              old 'gakou.' But with that extra 'k', suddenly, it's 'gak-kou' a
-              word with a bit more punch, a bit more{" "}
-              <span class="">
+              old 'gakou.' But with that extra 'k', it's 'gak-kou' — a word
+              with a bit more punch, a bit more{" "}
+              <span>
                 <u>
                   <em>oomph</em>
                 </u>
                 .
-              </span>{" "}
-              It's the linguistic version of adding an extra shot of espresso to
-              your morning coffee - small but mighty!
+              </span>
             </p>
           </div>
         </div>
@@ -124,21 +120,19 @@ function RouteComponent() {
           </div>
           <div>
             <p>
-              Now, let's switch gears to long vowels. If double consonants are
-              the dramatic pauses, long vowels are like stretching a rubber
-              band, elongating the sound until you think it might just snap.
+              Long vowels stretch a sound longer. Getting the length wrong can
+              change the word.
             </p>
             <br />
             <p>
               Consider &quot;お<u>ばあ</u>さん (o<u>baa</u>san -
-              grandmother).&quot; If you don't stretch the 'a', you might end up
-              calling someone{" "}
+              grandmother).&quot; Cut the long 'a' short and you get{" "}
               <span class="text-nowrap">
                 &quot;お<u>ば</u>
                 さん
               </span>{" "}
-              (o<u>ba</u>san - aunt),&quot; and <em>oh boy</em>, can that lead
-              to some awkward family reunions.
+              (o<u>ba</u>san - aunt),&quot; and <em>oh boy</em>, can that
+              lead to some awkward family reunions.
             </p>
           </div>
         </div>
@@ -158,38 +152,38 @@ function RouteComponent() {
 
           <div class="rounded-md border border-blue-700/40 bg-blue-900/20 p-4 leading-relaxed text-blue-200">
             <p>
-              The <strong>“o”</strong> vowel sound at the end of characters like{" "}
+              The <strong>"o"</strong> vowel sound at the end of characters like{" "}
               <span class="font-japanese">こ・そ・と・も</span>, etc. is
               extended with <span class="font-japanese">う</span>.
               <br />
               Example: <span class="font-japanese">もう</span> → <code>mō</code>
-              , meaning “already” (note: no separate “u” sound).
+              , meaning "already" (note: no separate "u" sound).
             </p>
 
             <p class="mt-3">
-              The <strong>“eh”</strong> vowel sound is extended with{" "}
+              The <strong>"eh"</strong> vowel sound is extended with{" "}
               <span class="font-japanese">い</span>.
               <br />
               Example: <span class="font-japanese">えいが</span> →{" "}
-              <code>ēiga</code>, meaning “movie” (note: no separate “i” sound).
+              <code>ēiga</code>, meaning "movie" (note: no separate "i" sound).
             </p>
           </div>
 
           <ChatBubble
             speaker="sensei"
-            text="These spellings don’t add new syllables — they simply stretch the vowel sound."
+            text="These spellings don't add new syllables — they simply stretch the vowel sound."
           />
 
-          {/* Updated N Section */}
+          {/* N Section */}
           <h3 class="pt-8 text-center font-semibold">
             Special Note: <span class="font-japanese text-xl">ん</span>
           </h3>
 
           <div class="rounded-md border border-blue-700/40 bg-blue-900/20 p-4 text-sm leading-relaxed text-blue-200">
             <p>
-              If a Japanese word contains a single “n” followed by{" "}
+              If a Japanese word contains a single "n" followed by{" "}
               <span class="font-japanese">な・に・ぬ・ね・の</span>, you
-              shouldn't combine the “n” with the next character.
+              shouldn't combine the "n" with the next character.
             </p>
 
             <p class="mt-3">
@@ -199,7 +193,7 @@ function RouteComponent() {
 
             <p class="mt-3">
               Think of it like double letters in English, but even more distinct
-              and important — compare “hello” vs “helo.”
+              and important — compare "hello" vs "helo."
             </p>
           </div>
 
@@ -210,14 +204,12 @@ function RouteComponent() {
           </p>
         </section>
         <p>
-          Paused consonants and long vowels can be tricky for English speakers.
-          Japanese pronunciation is usually straightforward, but these small
-          timing differences are <span class="text-xl font-bold">crucial</span>{" "}
-          — they can change a word’s meaning <u>entirely</u>. You’ll get more
-          comfortable with them as you listen and practice.
+          These timing differences are small but they can change a word's
+          meaning entirely. You'll get more comfortable as you listen and
+          practice.
         </p>
 
-        {/* Bonus above Why */}
+        {/* Bonus */}
         <h3 class="pt-6! pb-0! text-center text-2xl font-semibold">
           Bonus: Japanese Rhythm & Moras
         </h3>
@@ -228,38 +220,27 @@ function RouteComponent() {
           />
         </div>
 
-        {/* Updated Why Section */}
-        <h3 class="mt-8 pb-0! text-center text-3xl font-bold">
-          Why These Matter
-        </h3>
-        <p>
-          Paused consonants and long vowels may look small, but they shape the
-          rhythm of Japanese speech. Getting them right makes your words sound
-          natural and accurate.
-        </p>
         <ChatBubble
           speaker="student"
-          text="So just length or pause can totally change what I’m saying?"
+          text="So just length or pause can totally change what I'm saying?"
         />
         <ChatBubble
           speaker="sensei"
-          text="Exactly. Japanese speakers are very sensitive to these differences.
-          Don’t worry if it feels difficult at first — with practice, you’ll get it."
+          text="Exactly. Japanese speakers pick up on these differences immediately."
         />
         <ChatAttachment speaker="sensei">
           <p class="text-sm leading-relaxed italic">
             Treat double consonants like a hiccup, and long vowels like you're
-            laying down at the dentist with your mouth open. Practice these
-            scenarios, and your pronunciation will surely sound much more
-            natural... Probably.
+            laying down at the dentist with your mouth open. Practice that, and
+            your pronunciation will sound more natural. Probably.
           </p>
         </ChatAttachment>
         <section class="space-y-3 pt-8 text-center">
           <h3 class="text-2xl font-bold">
-            おめでとうございます → <span>Congraduluations</span> 🎉
+            おめでとうございます → <span>Congratulations</span> 🎉
           </h3>
           <p class="text-muted-foreground italic">
-            You've now got 100% coverage of every sound in Japanese!
+            You now have full coverage of every sound in Japanese.
           </p>
         </section>
       </div>

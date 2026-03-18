@@ -17,7 +17,7 @@ export const Route = createFileRoute(
 
 function RouteComponent() {
   return (
-    <>
+    <div class="mb-32">
       <div class="-mt-2 h-48 w-full border-b border-black">
         <img src="/img/chapter-0/brushes.jpg" alt="japanese brushstrokes" />
       </div>
@@ -25,25 +25,14 @@ function RouteComponent() {
         Let's take a closer look at the Japanese writing systems.
       </h2>
       <div class="space-y-9 px-8 sm:px-24 lg:px-12">
-        <div class="border-muted bg-card mr-24 flex gap-4 rounded-2xl border-2 p-4 shadow-md">
-          <Avatar>
-            <AvatarImage src="/img/student.png" />
-            <AvatarFallback>N</AvatarFallback>
-          </Avatar>
-          <p>
-            Wise Sensei, what's this I'm hearing about more than one writing
-            system? Is this some kind of joke?
-          </p>
-        </div>
         <div class="border-muted bg-card ml-24 rounded-2xl border-2 p-4 shadow-md">
           <Avatar class="float-end">
             <AvatarImage src="/img/guru.png" />
             <AvatarFallback>N</AvatarFallback>
           </Avatar>
           <p>
-            <em>*finishing his calligraphy strokes*</em> Japanese has three
-            writing systems, and we often use all of them in a single sentence,
-            like this masterpiece:
+            Japanese has three writing systems, and we often use all of them in
+            a single sentence, like this:
           </p>
         </div>
         <div>
@@ -83,7 +72,8 @@ function RouteComponent() {
           <h3 class="mb-4 text-lg font-semibold text-blue-500">
             Hiragana - The Foundation
           </h3>
-          <div class="space-y-4">
+
+          <div class="mb-6 space-y-4">
             <div class="flex items-start gap-4">
               <Avatar class="shrink-0">
                 <AvatarImage src="/img/student.png" />
@@ -91,16 +81,15 @@ function RouteComponent() {
               </Avatar>
               <div class="flex-1 rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
                 <p class="text-sm">
-                  Three writing systems? That seems... excessive.
+                  Three writing systems? That seems excessive.
                 </p>
               </div>
             </div>
             <div class="flex items-start justify-end gap-4">
               <div class="max-w-md flex-1 rounded-lg bg-blue-100 p-3 dark:bg-blue-900/30">
                 <p class="text-sm">
-                  Think of it like having different tools in an artist's kit.
-                  Each has its purpose, and together they create something
-                  rather beautiful. Let me show you each one.
+                  Each one does a different job. You'll see why once we get into
+                  it.
                 </p>
               </div>
               <Avatar class="shrink-0">
@@ -110,10 +99,10 @@ function RouteComponent() {
             </div>
           </div>
 
-          <div class="mt-6 space-y-4">
+          <div class="space-y-4">
             <p>
-              First, meet Hiragana, the foundational writing system. These
-              curved characters can represent every sound in Japanese:
+              Hiragana is where you start. These curved characters can represent
+              every sound in Japanese:
             </p>
 
             <div class="font-japanese bg-background/50 rounded-lg p-4 text-center text-2xl font-medium">
@@ -128,8 +117,8 @@ function RouteComponent() {
 
             <div class="text-center">
               <p class="mb-2">
-                <strong>Sensei:</strong> Observe their rounded shapes, smooth
-                like the stones in a Zen garden.
+                <strong>Sensei:</strong> Smooth, rounded shapes. Like stones
+                polished by a river.
               </p>
               <div class="mb-4 flex justify-center">
                 <div class="h-10 w-10">
@@ -140,16 +129,17 @@ function RouteComponent() {
                 </div>
               </div>
               <p class="text-muted-foreground">
-                There are 46 of these elegant characters - think of them as the
-                Japanese ABCs, if ABCs were actually logical and consistent.
+                There are 46 of them. Unlike English, they're actually
+                consistent — each one always makes the same sound.
               </p>
             </div>
           </div>
         </div>
+
         {/* Katakana Section */}
         <div class="border-border rounded-lg border bg-gradient-to-br from-green-500/10 to-emerald-500/5 p-6 shadow-lg">
           <h3 class="mb-4 text-lg font-semibold text-green-500">
-            Katakana - The Sharp Cousin
+            Katakana - Sharp Strokes
           </h3>
 
           <div class="mb-6 space-y-4">
@@ -159,18 +149,14 @@ function RouteComponent() {
                 <AvatarFallback>S</AvatarFallback>
               </Avatar>
               <div class="flex-1 rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
-                <p class="text-sm">And the other two systems?</p>
+                <p class="text-sm">And the next one?</p>
               </div>
             </div>
             <div class="flex items-start justify-end gap-4">
               <div class="max-w-md flex-1 rounded-lg bg-green-100 p-3 dark:bg-green-900/30">
                 <p class="text-sm">
-                  <em class="text-green-600 dark:text-green-400">
-                    *SLAMS HANDS ON TABLE*
-                  </em>{" "}
-                  AH! NOW IT GETS EXCITING! <em>*tea splashes*</em> Next we have
-                  Katakana, Hiragana's more angular cousin!{" "}
-                  <em>*straightens robes*</em>
+                  Same sounds, sharper strokes. Where hiragana looks like river
+                  stones, katakana looks like a katana.
                 </p>
               </div>
               <Avatar class="shrink-0">
@@ -181,8 +167,6 @@ function RouteComponent() {
           </div>
 
           <div class="space-y-4">
-            <p>Same sounds, different style:</p>
-
             <div class="font-japanese bg-background/50 rounded-lg p-4 text-center text-2xl font-medium">
               <div class="space-y-1">
                 <p>ア a</p>
@@ -194,10 +178,6 @@ function RouteComponent() {
             </div>
 
             <div class="text-center">
-              <p class="mb-2">
-                <strong>Sensei:</strong> Notice their sharp, decisive forms -
-                like the blade of a katana!
-              </p>
               <div class="mb-4 flex justify-center">
                 <div class="h-10 w-10">
                   <img
@@ -208,45 +188,24 @@ function RouteComponent() {
               </div>
             </div>
 
-            <div class="text-muted-foreground space-y-3">
-              <p>
-                We use Katakana for foreign words, scientific terms, and when we
-                want text to <em>STAND OUT</em>. Like how English uses italics
-                or bold for emphasis.
-              </p>
+            <p>
+              Katakana is for borrowed words, sound effects, and emphasis.
+              English borrowed "sushi" from Japanese; Japanese borrowed テレビ
+              (terebi) from "television." Katakana is how they write those.
+            </p>
 
-              <div class="flex items-start gap-4">
-                <Avatar class="shrink-0">
-                  <AvatarImage src="/img/student.png" />
-                  <AvatarFallback>S</AvatarFallback>
-                </Avatar>
-                <div class="flex-1 rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
-                  <p class="text-sm">
-                    These seem to make the same sounds... why have both?
-                  </p>
-                </div>
-              </div>
-
-              <p>
-                <strong>Sensei:</strong> Good question. Katakana is perfect for
-                writing foreign words, sound effects in manga, and making things
-                pop in advertisements.
-              </p>
-
-              <p class="bg-background/50 rounded p-3 text-sm italic">
-                Got a loanword from English? Write it in Katakana. Heard an
-                onomatopoeia that mimics sounds? Katakana's got you covered.
-                It's also the go-to for emphasis, kind of like how we use
-                italics or ALL CAPS. Plus, it's the script of choice for sci-fi
-                and tech names, giving everything a futuristic vibe.
-              </p>
-            </div>
+            <p class="text-muted-foreground bg-background/50 rounded p-3 text-sm italic">
+              Loanwords from English? Katakana. Onomatopoeia and sound effects?
+              Katakana. Emphasis, like italics or ALL CAPS? Also katakana.
+              You'll also see it a lot in sci-fi and tech names.
+            </p>
           </div>
         </div>
+
         {/* Kanji Section */}
         <div class="border-border rounded-lg border bg-gradient-to-br from-red-500/10 to-pink-500/5 p-6 shadow-lg">
           <h3 class="mb-4 text-lg font-semibold text-red-500">
-            Kanji - The Ancient Power
+            Kanji - The Borrowed Characters
           </h3>
 
           <div class="mb-6 space-y-4">
@@ -256,17 +215,12 @@ function RouteComponent() {
                 <AvatarFallback>S</AvatarFallback>
               </Avatar>
               <div class="flex-1 rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
-                <p class="text-sm">And the final system?</p>
+                <p class="text-sm">And the last one?</p>
               </div>
             </div>
             <div class="flex items-start justify-end gap-4">
               <div class="max-w-md flex-1 rounded-lg bg-red-100 p-3 dark:bg-red-900/30">
-                <p class="text-sm">
-                  <em class="text-red-600 dark:text-red-400">
-                    *leaning forward with villainous delight*
-                  </em>{" "}
-                  Behold, minion... <em>*adjusts glasses*</em>
-                </p>
+                <p class="text-sm">Behold, minion...</p>
               </div>
               <Avatar class="shrink-0">
                 <AvatarImage src="/img/guru.png" />
@@ -288,15 +242,10 @@ function RouteComponent() {
 
             <div class="text-muted-foreground space-y-3">
               <p>
-                Why use Kanji? One symbol can replace several Hiragana
-                characters, making writing more efficient. And more
-                importantly... <em>*leans in conspiratorially*</em> it makes you
-                look incredibly sophisticated when you can read them.
-              </p>
-
-              <p>
-                These characters are inherited from the neighbors in China. For
-                example, the word kanji is actually written as{" "}
+                One kanji can replace several hiragana characters, making
+                writing more compact. These characters are inherited from the
+                neighbors in China. The word kanji itself is actually written
+                as{" "}
                 <span class="font-japanese text-xl">漢字</span> which literally
                 means:
               </p>
@@ -312,17 +261,7 @@ function RouteComponent() {
 
               <p>
                 While China has simplified many of their characters, Japan has
-                kept them unchanged, like preserved artifacts of an ancient
-                time.
-              </p>
-
-              <p>
-                <strong>Student:</strong> Hmm, how should I get started, oh
-                impeccable one?
-              </p>
-              <p>
-                <strong>Sensei:</strong> Begin with Hiragana, your foundation.
-                Master its sounds and strokes, and the rest will follow.
+                kept them unchanged.
               </p>
             </div>
           </div>
@@ -349,7 +288,7 @@ function RouteComponent() {
             <div class="flex items-start justify-end gap-4">
               <div class="max-w-md flex-1 rounded-lg bg-orange-100 p-3 dark:bg-orange-900/30">
                 <p class="text-sm">
-                  Romaji is just Japanese written with Latin letters—like{" "}
+                  Romaji is just Japanese written with Latin letters, like{" "}
                   <code class="bg-background/50 rounded-sm px-1 py-px">
                     konnichiwa
                   </code>{" "}
@@ -368,17 +307,8 @@ function RouteComponent() {
               <strong>Student:</strong> So... like training wheels?
             </p>
             <p>
-              <strong>Sensei:</strong> Exactly. Helpful at first, but not
-              something to depend on. That’s why we’ll only use Romaji in this
+              <strong>Sensei:</strong> Exactly. We'll only use it in this
               first chapter.
-            </p>
-            <p>
-              <strong>Student:</strong> Got it. I’ll start learning the real
-              scripts soon.
-            </p>
-            <p>
-              <strong>Sensei:</strong> <em>*mumbles*</em> If only I had become a
-              hermit… <em>*smiles*</em> Wise choice, young one.
             </p>
           </div>
         </div>
@@ -392,9 +322,8 @@ function RouteComponent() {
               <div>
                 <span class="font-semibold">Hiragana - </span>
                 <span class="text-muted-foreground">
-                  Smooth characters primarily used for native Japanese words and
-                  grammatical elements. It is the core of the Japanese writing
-                  system.
+                  Curved characters for native Japanese words and grammar. The
+                  foundation of the writing system.
                 </span>
               </div>
             </li>
@@ -403,9 +332,8 @@ function RouteComponent() {
               <div>
                 <span class="font-semibold">Katakana - </span>
                 <span class="text-muted-foreground">
-                  Angular characters that primarily represent loanwords/foreign
-                  words. It is the energetic sibling of Hiragana and is often
-                  used in commercials.
+                  Angular characters for borrowed words, sound effects, and
+                  emphasis.
                 </span>
               </div>
             </li>
@@ -414,8 +342,8 @@ function RouteComponent() {
               <div>
                 <span class="font-semibold">Kanji - </span>
                 <span class="text-muted-foreground">
-                  Ancient Chinese characters that represent entire words or
-                  ideas.
+                  Chinese-origin characters that carry meaning. One symbol can
+                  replace several hiragana.
                 </span>
               </div>
             </li>
@@ -432,6 +360,6 @@ function RouteComponent() {
           </ul>
         </div>
       </div>
-    </>
+    </div>
   )
 }
