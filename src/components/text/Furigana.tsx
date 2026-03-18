@@ -5,12 +5,12 @@ type FuriganaProps = {
   furigana: any
 }
 
-export default function Furigana({ children, furigana }: FuriganaProps) {
+export default function Furigana(props: FuriganaProps) {
   return (
     <ruby class="font-japanese">
-      {children}
+      {props.children}
       <rp>(</rp>
-      <rt>{furigana}</rt>
+      <rt>{props.furigana}</rt>
       <rp>)</rp>
     </ruby>
   )

@@ -95,7 +95,12 @@ const vocab = [
     time: 349,
   },
   {
-    japanese: "見えない",
+    japanese: (
+      <>
+        <Furigana furigana={<span class="text-xs">み</span>}>見</Furigana>
+        えない
+      </>
+    ),
     english: "I can't see it",
     time: 357,
   },
