@@ -1,5 +1,6 @@
 import { createSignal } from "solid-js"
 import { ChevronDown } from "lucide-solid"
+import { VocabCardDemo } from "../components/vocab-card-demo"
 
 export function WhatMakesUsDifferent() {
   const [expanded, setExpanded] = createSignal(false)
@@ -17,7 +18,7 @@ export function WhatMakesUsDifferent() {
         <div class="relative">
           <div
             class="overflow-hidden transition-[max-height] duration-700 ease-in-out"
-            style={{ "max-height": expanded() ? "1500px" : "405px" }}
+            style={{ "max-height": expanded() ? "3000px" : "405px" }}
           >
             <div class="space-y-6 text-lg leading-relaxed text-white/70">
               <p>
@@ -56,13 +57,15 @@ export function WhatMakesUsDifferent() {
                 dramas and anime, with pictures attached.
               </p>
 
+              <VocabCardDemo />
+
               <p>
-                You may be used to boring, monotonous spaced-repetition systems
-                that only track vocabulary. Nihongo Ninja also schedules grammar
-                and sentence reviews, so you conjugate, write full sentences,
-                and practice vocab all on the same schedule. Seeing words in
-                different contexts helps them stick faster, and you end up
-                repeating things less.
+                You may also be used to boring, monotonous spaced-repetition
+                systems that only track vocabulary. Nihongo Ninja also schedules
+                grammar and sentence reviews, so you conjugate, write full
+                sentences, and practice vocab all on the same schedule. Seeing
+                words in different contexts helps them stick faster, and you end
+                up repeating things less.
               </p>
 
               <p>
@@ -91,7 +94,9 @@ export function WhatMakesUsDifferent() {
             onClick={() => setExpanded(!expanded())}
           >
             {expanded() ? "Show less" : "Show more"}
-            <ChevronDown class={`size-3.5 transition-transform duration-300 ${expanded() ? "-rotate-180" : ""}`} />
+            <ChevronDown
+              class={`size-3.5 transition-transform duration-300 ${expanded() ? "-rotate-180" : ""}`}
+            />
           </button>
         </div>
       </div>

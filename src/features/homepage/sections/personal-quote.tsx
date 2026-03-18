@@ -20,7 +20,7 @@ export function PersonalQuote() {
         <div class="flex gap-5 lg:gap-6">
           <div class="flex flex-col items-center pt-1">
             <Avatar class="size-10 shrink-0">
-              <AvatarImage src="/avatars/dylan.jpg" alt="Dylan" />
+              {/* <AvatarImage src="/avatars/dylan.jpg" alt="Dylan" /> */}
               <AvatarFallback>D</AvatarFallback>
             </Avatar>
             <div

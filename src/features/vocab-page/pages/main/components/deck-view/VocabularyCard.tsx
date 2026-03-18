@@ -25,7 +25,7 @@ interface VocabularyCardProps {
 
 export function VocabularyCard(props: VocabularyCardProps) {
   return (
-    <div class="w-full">
+    <div class="@container w-full">
       <div
         class={`border-card-foreground/70 relative rounded-lg border shadow-md backdrop-blur-sm ${
           (props.index + 1) % 2 === 0 ? "bg-card/60" : "bg-card/50"
@@ -33,7 +33,7 @@ export function VocabularyCard(props: VocabularyCardProps) {
       >
         <div class="px-6 py-6">
           {/* Mobile: Tabbed Layout */}
-          <div class="md:hidden">
+          <div class="@3xl:hidden">
             <CardHeader item={props.item} index={props.index} />
             <Tabs defaultValue="info" class="w-full">
               <TabsList class="w-full bg-background/40 backdrop-blur-sm">
@@ -56,7 +56,7 @@ export function VocabularyCard(props: VocabularyCardProps) {
               </TabsContent>
 
               <TabsContent value="examples-simple">
-                <VocabExamples item={props.item} />
+                <SimpleExamples item={props.item} />
               </TabsContent>
 
               <TabsContent value="examples-real">
@@ -72,7 +72,7 @@ export function VocabularyCard(props: VocabularyCardProps) {
           </div>
 
           {/* Desktop: Compact Layout */}
-          <Tabs defaultValue="examples-real" class="hidden md:block">
+          <Tabs defaultValue="examples-real" class="hidden @3xl:block">
             <CardHeader item={props.item} index={props.index}>
               <TabsList class="bg-background/40 backdrop-blur-sm">
                 <TabsTrigger value="examples-simple" class={desktopTriggerClass}>
@@ -90,7 +90,7 @@ export function VocabularyCard(props: VocabularyCardProps) {
               </div>
               <div class="bg-background/40 border-card-foreground/70 w-1/2 rounded-lg border p-4 backdrop-blur-sm">
                 <TabsContent value="examples-simple">
-                  <VocabExamples item={props.item} />
+                  <SimpleExamples item={props.item} />
                 </TabsContent>
 
                 <TabsContent value="examples-real">
@@ -98,7 +98,7 @@ export function VocabularyCard(props: VocabularyCardProps) {
                     <RealExamples
                       word={props.item.word}
                       orderedKeys={props.orderedKeys}
-                    knownWords={props.knownWords ?? []}
+                      knownWords={props.knownWords ?? []}
                     />
                   </Suspense>
                 </TabsContent>
@@ -111,7 +111,7 @@ export function VocabularyCard(props: VocabularyCardProps) {
   )
 }
 
-function CardHeader(props: {
+export function CardHeader(props: {
   item: VocabularyItem
   index: number
   children?: JSXElement
@@ -139,7 +139,7 @@ function CardHeader(props: {
   )
 }
 
-function VocabInfo(props: { item: VocabularyItem }) {
+export function VocabInfo(props: { item: VocabularyItem }) {
   return (
     <div class="space-y-4">
       {props.item.particles && (
@@ -205,61 +205,7 @@ function VocabInfo(props: { item: VocabularyItem }) {
   )
 }
 
-function VocabExamples(props: { item: VocabularyItem }) {
-  return (
-    <div class="space-y-3">
-      {props.item.exampleSentences && props.item.exampleSentences.length > 0 ? (
-        <>
-          <div class="space-y-4">
-            <For each={props.item.exampleSentences}>
-              {(sentence) => (
-                <div class="space-y-1.5">
-                  <p class="font-japanese text-base leading-relaxed">
-                    <For each={sentence.japanese}>
-                      {(part) =>
-                        typeof part === "string" ? (
-                          <span innerHTML={convertFuriganaToRubyHtml(part)} />
-                        ) : (
-                          <span innerHTML={convertFuriganaToRubyHtml(part.t)} />
-                        )
-                      }
-                    </For>
-                  </p>
-                  <p class="text-muted-foreground text-xs leading-relaxed">
-                    <For each={sentence.english}>
-                      {(part) => (typeof part === "string" ? part : part.t)}
-                    </For>
-                  </p>
-                </div>
-              )}
-            </For>
-          </div>
-        </>
-      ) : (
-        <p class="text-muted-foreground text-sm">No examples available</p>
-      )}
-    </div>
-  )
-}
-
-const TOP_N = 2
-
-function RealExamples(props: {
-  word: string
-  orderedKeys?: string[]
-  knownWords: string[]
-}) {
-  const query = useQuery(() => ({
-    queryKey: ["immersion-kit", props.word],
-    queryFn: () => fetchAndTokenize(props.word),
-    enabled: !!props.word,
-  }))
-
-  const examples = createMemo(() => {
-    const data = query.data
-    if (!data) return undefined
-    return rankExamples(data.examples, data.baseForms, props.word, props.orderedKeys, props.knownWords).slice(0, TOP_N)
-  })
+export function ImmersionKitExamples(props: { examples: ImmersionKitExample[] }) {
   const [playingUrl, setPlayingUrl] = createSignal<string | null>(null)
   let currentAudio: HTMLAudioElement | undefined
 
@@ -291,13 +237,13 @@ function RealExamples(props: {
 
   return (
     <Show
-      when={examples()?.length}
+      when={props.examples.length}
       fallback={
         <p class="text-muted-foreground text-sm">No real examples found</p>
       }
     >
       <div class="space-y-4">
-        <For each={examples()}>
+        <For each={props.examples}>
           {(example) => (
             <div class="flex flex-col gap-3 sm:flex-row">
               <Show when={example.image}>
@@ -348,6 +294,69 @@ function RealExamples(props: {
         </For>
       </div>
     </Show>
+  )
+}
+
+const TOP_N = 2
+
+function RealExamples(props: {
+  word: string
+  orderedKeys?: string[]
+  knownWords: string[]
+}) {
+  const query = useQuery(() => ({
+    queryKey: ["immersion-kit", props.word],
+    queryFn: () => fetchAndTokenize(props.word),
+    enabled: !!props.word,
+  }))
+
+  const examples = createMemo(() => {
+    const data = query.data
+    if (!data) return undefined
+    return rankExamples(data.examples, data.baseForms, props.word, props.orderedKeys, props.knownWords).slice(0, TOP_N)
+  })
+
+  return (
+    <Show when={examples()}>
+      {(exs) => <ImmersionKitExamples examples={exs()} />}
+    </Show>
+  )
+}
+
+export function SimpleExamples(props: { item: VocabularyItem }) {
+  return (
+    <div class="space-y-3">
+      {props.item.exampleSentences && props.item.exampleSentences.length > 0 ? (
+        <>
+          <div class="space-y-4">
+            <For each={props.item.exampleSentences}>
+              {(sentence) => (
+                <div class="space-y-1.5">
+                  <p class="font-japanese text-base leading-relaxed">
+                    <For each={sentence.japanese}>
+                      {(part) =>
+                        typeof part === "string" ? (
+                          <span innerHTML={convertFuriganaToRubyHtml(part)} />
+                        ) : (
+                          <span innerHTML={convertFuriganaToRubyHtml(part.t)} />
+                        )
+                      }
+                    </For>
+                  </p>
+                  <p class="text-muted-foreground text-xs leading-relaxed">
+                    <For each={sentence.english}>
+                      {(part) => (typeof part === "string" ? part : part.t)}
+                    </For>
+                  </p>
+                </div>
+              )}
+            </For>
+          </div>
+        </>
+      ) : (
+        <p class="text-muted-foreground text-sm">No examples available</p>
+      )}
+    </div>
   )
 }
 
