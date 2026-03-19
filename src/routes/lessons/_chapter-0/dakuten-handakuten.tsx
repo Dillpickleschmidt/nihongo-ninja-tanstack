@@ -1,64 +1,86 @@
-// routes/lessons/_chapter-0/dakuten-handakuten.tsx
-
 import { createFileRoute } from "@tanstack/solid-router"
+import YouTubeVideo from "@/features/youtube/YouTube"
 import KanaChart from "@/components/charts/KanaChart"
-import { ChatBubble } from "@/components/ChatBubble"
+import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/custom/collapsible"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import AsideBlock from "@/features/lessons/components/AsideBlock"
+import RevealBlock from "@/features/lessons/components/RevealBlock"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute(
   "/lessons/_chapter-0/dakuten-handakuten",
 )({
-  loader: async () => ({
+  loader: () => ({
     contentBox: { nextButtonLink: "/vocab?import=dakuten-handakuten" },
   }),
-  component: RouteComponent,
+  component: DakutenHandakuten,
 })
 
-function RouteComponent() {
+function DakutenHandakuten() {
   return (
-    <div class="mb-32">
-      {/* Header */}
-      <header class="mx-auto max-w-3xl px-6 py-14 text-center">
-        <h1 class="mb-3 text-4xl font-extrabold tracking-tight">
-          Dakuten & Handakuten
-        </h1>
-        <div class="mx-auto mb-5 h-1 w-16 rounded bg-fuchsia-400"></div>
-        <p class="text-muted-foreground mb-6 text-lg">
-          Two small marks —{" "}
-          <span class="font-japanese font-semibold">◌゙ </span> (dakuten) and{" "}
-          <span class="font-japanese font-semibold">◌゚ </span> (handakuten) —
-          add new sounds to Japanese. Let’s see how they change the kana.
-        </p>
-      </header>
+    <div class="relative pb-32">
+      <span class="pointer-events-none absolute top-8 left-24 sm:top-11 sm:left-auto sm:right-8 select-none font-japanese text-[10rem] sm:text-[11rem] leading-none text-white/[0.03]">
+        が
+      </span>
+      <LessonHeader
+        chapter="Chapter 0 · Foundations"
+        title={<>Dakuten & Handakuten</>}
+        subtitle="Two small marks that add a whole set of new sounds."
+      >
+        <OverviewItem>
+          What dakuten (
+          <span class="font-japanese font-semibold text-white/60">゛</span>)
+          does to a sound
+        </OverviewItem>
+        <OverviewItem>
+          What handakuten (
+          <span class="font-japanese font-semibold text-white/60">゜</span>)
+          does to a sound
+        </OverviewItem>
+      </LessonHeader>
 
-      <main class="mx-auto max-w-3xl space-y-12 px-6 leading-relaxed">
-        {/* Intro */}
-        <p>
-          You’ve mastered the base sounds of Hiragana. Now it’s time to see how{" "}
-          <strong>dakuten</strong> and <strong>handakuten</strong> expand those
-          sounds. With just two simple marks, dozens of new combinations appear.
-        </p>
+      <div class="space-y-14 px-8">
+        {/* What are these marks? */}
+        <div class="leading-relaxed text-white/70">
+          <SectionLabel>What are these marks?</SectionLabel>
+          <p class="mt-4">
+            Dakuten (
+            <span class="font-japanese font-semibold text-dynamic-accent">
+              ゛
+            </span>
+            ) and handakuten (
+            <span class="font-japanese font-semibold text-dynamic-accent">
+              ゜
+            </span>
+            ) are small marks added to kana you already know. Between them, they
+            open up dozens of new sounds without inventing any new characters.
+          </p>
+        </div>
 
-        {/* Dakuten */}
-        <section class="space-y-6">
-          <h2 class="mb-3 text-2xl font-semibold">Dakuten ◌゙ </h2>
-          <p class="mb-6">
-            Dakuten are two small strokes, like quotation marks, written at the
-            top‑right of a kana. They make the sound voiced — often a little
-            more <strong>muffled</strong> or <strong>dampened</strong> compared
-            to the sharper base form.
+        {/* Dakuten — voicing a sound */}
+        <div class="space-y-6">
+          <SectionLabel>Dakuten — voicing a sound</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            Dakuten are two small strokes added to the top-right of a kana. They
+            make the sound a little more muffled or dampened
+            compared to the sharper base form. "K" sounds become "G" sounds. "S"
+            becomes "Z." The base character stays the same.
           </p>
 
-          <ChatBubble
-            speaker="sensei"
-            text="For example, 'k' sounds turn into 'g' sounds when you add dakuten."
-          />
-
-          {/* K vs G */}
-          <div>
-            <h3 class="text-muted-foreground mb-3 text-lg font-medium">
-              K → G
-            </h3>
-            <TwoRowChart
+          {/* K → G */}
+          <div class="space-y-2">
+            <p class="text-sm font-medium text-white/40">K → G</p>
+            <ComparisonChart
               top={[
                 ["か", "ka"],
                 ["き", "ki"],
@@ -76,126 +98,187 @@ function RouteComponent() {
             />
           </div>
 
-          <ChatBubble speaker="sensei" text="It's similar for 'S' → 'Z'" />
-
-          {/* S vs Z */}
-          <div>
-            <h3 class="text-muted-foreground mb-3 text-lg font-medium">
-              S → Z
-            </h3>
-            <TwoRowChart
+          {/* S → Z */}
+          <div class="space-y-2">
+            <p class="text-sm font-medium text-white/40">S → Z</p>
+            <ComparisonChart
               top={[
                 ["さ", "sa"],
-                ["し", "shi*"],
+                ["し", "shi"],
                 ["す", "su"],
                 ["せ", "se"],
                 ["そ", "so"],
               ]}
               bottom={[
                 ["ざ", "za"],
-                ["じ", "ji"],
+                ["じ", "ji*"],
                 ["ず", "zu"],
                 ["ぜ", "ze"],
                 ["ぞ", "zo"],
               ]}
             />
+            <p class="mt-2 text-xs text-white/30">
+              * じ is pronounced "ji," not "zi"
+            </p>
           </div>
+        </div>
 
-          {/* Full Dakuten chart */}
-          <div class="mt-12">
-            <h3 class="mb-3 text-lg font-medium">Full Dakuten Chart</h3>
+        {/* Sensei wisdom */}
+        <div class="flex gap-5">
+          <div class="flex flex-col items-center pt-1">
+            <Avatar class="size-9 shrink-0 ring-1 ring-white/10">
+              <AvatarImage src="/img/guru.png" alt="sensei" />
+            </Avatar>
+            <div
+              class="mt-3 w-0.5 flex-1 rounded-full"
+              style={{
+                "background-color":
+                  "color-mix(in srgb, var(--dynamic-accent) 50%, transparent)",
+              }}
+            />
+          </div>
+          <div>
+            <SectionLabel>A note from Sensei</SectionLabel>
+            <p class="mt-3 leading-relaxed text-white/50 italic">
+              You thought you'd mastered hiragana, and you were feeling pretty
+              good about it. Then Japanese taps you on the shoulder and goes,{" "}
+              <span class="text-white/70">"Not so fast, Squidward."</span>
+            </p>
+          </div>
+        </div>
+
+        {/* Full dakuten chart */}
+        <div class="space-y-4">
+          <SectionLabel>Full dakuten chart</SectionLabel>
+          <div class="overflow-x-auto">
             <KanaChart type="dakuten" />
           </div>
-          <p class="text-muted-foreground mt-4 text-sm">
-            * Yes, ぢ is pronounced the same as じ and づ like ず, but they’re
-            rarely used.
+        </div>
+
+        {/* About ぢ and づ */}
+        <AsideBlock label="About ぢ and づ">
+          <p class="mt-2 leading-relaxed text-white/70">
+            <span class="font-japanese font-semibold text-dynamic-accent">
+              ぢ
+            </span>{" "}
+            sounds the same as{" "}
+            <span class="font-japanese font-semibold text-white/90">じ</span>,
+            and{" "}
+            <span class="font-japanese font-semibold text-dynamic-accent">
+              づ
+            </span>{" "}
+            sounds the same as{" "}
+            <span class="font-japanese font-semibold text-white/90">ず</span>.
+            You'll rarely see them. When in doubt, use じ and ず.
           </p>
-        </section>
+        </AsideBlock>
 
         {/* Handakuten */}
-        <section class="space-y-6">
-          <h2 class="mb-3 text-2xl font-semibold">Handakuten ◌゚ </h2>
-          <p>
-            Handakuten are small circles that only apply to the{" "}
-            <span class="font-japanese">は</span>-row. They turn the “h” sounds
-            into crisp “p” sounds.
+        <div class="space-y-4">
+          <SectionLabel>Handakuten — the は-row only</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            Handakuten is a small circle (
+            <span class="font-japanese font-semibold text-dynamic-accent">
+              ゜
+            </span>
+            ) that only applies to the H-row. It turns "h" sounds into crisp "p" sounds.
           </p>
+        </div>
 
-          <ChatBubble
-            speaker="student"
-            text="So は (ha) turns into ぱ (pa) just by adding a circle?"
-          />
-          <ChatBubble speaker="sensei" text="Yep." />
-
-          <div>
-            <h3 class="mb-3 text-lg font-medium">Full Handakuten Chart</h3>
+        {/* Full handakuten chart */}
+        <div class="space-y-4">
+          <SectionLabel>Full handakuten chart</SectionLabel>
+          <div class="overflow-x-auto">
             <KanaChart type="handakuten" />
           </div>
-        </section>
+        </div>
 
-        <section class="space-y-6">
-          <ChatBubble
-            speaker="student"
-            text="Why do these tiny mark variations exist? I can barely see them!"
-          />
-          <ChatBubble
-            speaker="sensei"
-            text="Well, variety is
-            the spice of life 🌶️. More importantly, they let Japanese expand its
-            range of sounds without inventing completely new kana."
-          />
-          <ChatBubble
-            speaker="sensei"
-            text={
-              <>
-                Approach dakuten and handakuten with the enthusiasm of a student
-                who proudly thought they’d mastered Hiragana—until Japanese
-                tapped them on the shoulder and said,{" "}
-                <em>"Not so fast, Squidward."</em>
-              </>
-            }
-          />
-        </section>
+        {/* Try it */}
+        <div class="space-y-4">
+          <SectionLabel>Try it</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            Using what you've learned, try to sound out "the po-po have come" in
+            hiragana.
+          </p>
+          <Collapsible>
+            <CollapsibleTrigger
+              class="rounded-lg bg-white/[0.06] px-4 py-2 text-sm text-white/50 transition-colors hover:bg-white/[0.1] hover:text-white/70"
+              chevronEnd
+            >
+              Reveal answer
+            </CollapsibleTrigger>
+            <CollapsibleContent class="overflow-hidden data-[closed]:animate-[collapsible-collapse_200ms_ease] data-[expanded]:animate-[collapsible-expand_200ms_ease]">
+              <p class="mt-4 font-japanese text-2xl font-bold text-white/90">
+                づぽぽはぶかむ
+              </p>
+              <p class="mt-3 text-sm leading-relaxed text-white/50">
+                This is actually how English words get absorbed into Japanese.
+                Words like "Christmas" become{" "}
+                <span class="font-japanese text-white/70">くりすます</span>,
+                "television" becomes{" "}
+                <span class="font-japanese text-white/70">てれび</span>, and
+                "bus" becomes{" "}
+                <span class="font-japanese text-white/70">ばす</span>. Japanese
+                maps foreign sounds onto its own syllable system.
+              </p>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
 
-        {/* Wrap-up */}
-        {/* <section class="space-y-3 text-center"> */}
-        {/*   <p class="font-japanese text-3xl font-semibold">がんばって！</p> */}
-        {/*   <p class="text-muted-foreground mt-2 text-lg">Do your best 😀</p> */}
-        {/* </section> */}
-        <p class="text-muted-foreground text-center text-sm italic">
-          In the next lesson, you'll mix and match these to create even more
-          unique sounds.
-        </p>
-      </main>
+        {/* Video */}
+        <RevealBlock closedLabel="Feeling nervous about pronunciation?">
+          <YouTubeVideo
+            videoId="vQFaPMth2kw"
+            title="Hiragana in 1 Hour"
+            credit="Tamako Sensei"
+          />
+          <p class="mt-4 text-sm text-white/40">
+            Trust me, you'll have a much easier time pronouncing Japanese than
+            they have pronouncing English.
+          </p>
+        </RevealBlock>
+
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            Dakuten (
+            <span class="font-japanese font-semibold text-white/80">゛</span>)
+            makes a sound more muffled (K→G, S→Z, T→D, H→B)
+          </SummaryItem>
+          <SummaryItem>
+            Handakuten (
+            <span class="font-japanese font-semibold text-white/80">゜</span>)
+            turns H into crisp P sounds
+          </SummaryItem>
+          <SummaryItem>Only 4 rows use dakuten (K, S, T, H)</SummaryItem>
+          <SummaryItem>
+            Only the H-row uses handakuten
+          </SummaryItem>
+        </LessonSummary>
+
+      </div>
     </div>
   )
 }
 
-/* Helper for hardcoded 2-row demonstration */
-function TwoRowChart(props: {
+function ComparisonChart(props: {
   top: [string, string][]
   bottom: [string, string][]
 }) {
   return (
-    <div
-      class="grid gap-2 pr-5"
-      style="grid-template-columns: repeat(5, minmax(64px, 1fr));"
-    >
+    <div class="grid grid-cols-5 gap-3">
       {props.top.map(([jp, romaji]) => (
-        <SyllableTile jp={jp} romaji={romaji} />
+        <div class="rounded-lg bg-white/[0.04] p-4 text-center">
+          <p class="font-japanese text-2xl text-white/50">{jp}</p>
+          <p class="text-xs text-white/30">{romaji}</p>
+        </div>
       ))}
       {props.bottom.map(([jp, romaji]) => (
-        <SyllableTile jp={jp} romaji={romaji} />
+        <div class="rounded-lg bg-white/[0.04] p-4 text-center">
+          <p class="font-japanese text-2xl text-white/90">{jp}</p>
+          <p class="text-xs text-white/40">{romaji}</p>
+        </div>
       ))}
-    </div>
-  )
-}
-
-function SyllableTile(props: { jp: string; romaji: string }) {
-  return (
-    <div class="bg-card/50 text-foreground rounded-md p-3 text-center">
-      <p class="font-japanese text-2xl">{props.jp}</p>
-      <p class="text-muted-foreground text-xs">{props.romaji}</p>
     </div>
   )
 }

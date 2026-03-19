@@ -301,32 +301,39 @@ export default function KanaChart(props: { type: ChartType }) {
 
   return (
     <div
-      class="grid gap-2 pr-5"
+      class="grid"
       style="grid-template-columns: auto repeat(5, minmax(64px, 1fr));"
     >
-      {rows.map((row) => (
+      {rows.map((row, rowIdx) => (
         <>
-          <div class="flex w-5 items-center justify-end pr-2 text-center text-base text-white/30">
+          <div class="flex w-8 items-center justify-end pr-3 text-base text-white/30">
             {row.consonant}
           </div>
-          {row.cells.map((cell) =>
-            cell[0] !== null ? (
-              <SyllableTile jp={cell[0]} romaji={cell[1]} />
-            ) : (
-              <div></div>
-            ),
-          )}
+          {row.cells.map((cell, colIdx) => {
+            const isDark = (rowIdx + colIdx) % 2 === 0
+            return (
+              <div
+                class="p-3 text-center"
+                style={{
+                  background: isDark
+                    ? "rgba(45, 30, 18, 0.5)"
+                    : "rgba(60, 40, 24, 0.35)",
+                  "box-shadow": "inset 0 0 0 0.5px rgba(0,0,0,0.3)",
+                }}
+              >
+                {cell[0] !== null ? (
+                  <>
+                    <p class="font-japanese text-2xl text-white/90">
+                      {cell[0]}
+                    </p>
+                    <p class="text-xs text-white/40">{cell[1]}</p>
+                  </>
+                ) : null}
+              </div>
+            )
+          })}
         </>
       ))}
-    </div>
-  )
-}
-
-function SyllableTile(props: { jp: string; romaji: string }) {
-  return (
-    <div class="rounded-md bg-white/[0.04] p-3 text-center text-white/90">
-      <p class="font-japanese text-2xl">{props.jp}</p>
-      <p class="text-xs text-white/40">{props.romaji}</p>
     </div>
   )
 }

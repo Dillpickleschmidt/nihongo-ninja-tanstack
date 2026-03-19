@@ -6,7 +6,7 @@ import LessonHeader, {
 import SectionLabel from "@/features/lessons/components/SectionLabel"
 import GlowBox from "@/features/lessons/components/GlowBox"
 import AsideBlock from "@/features/lessons/components/AsideBlock"
-import RevealBlock from "@/features/lessons/components/RevealBlock"
+import KanaChart from "@/components/charts/KanaChart"
 import LessonSummary, {
   SummaryItem,
 } from "@/features/lessons/components/LessonSummary"
@@ -97,7 +97,7 @@ function Hiragana() {
         <div class="space-y-4">
           <SectionLabel>The full chart</SectionLabel>
           <div class="overflow-x-auto">
-            <LeatherKanaChart />
+            <KanaChart type="base-kana" />
           </div>
         </div>
 
@@ -159,15 +159,6 @@ function Hiragana() {
             </span>
           </p>
         </div>
-
-        {/* Video */}
-        <RevealBlock closedLabel="Feeling nervous about pronunciation?">
-          <YouTubeVideo
-            videoId="vQFaPMth2kw"
-            title="Hiragana in 1 Hour"
-            credit="Tamako Sensei"
-          />
-        </RevealBlock>
 
         {/* How to learn them */}
         <div class="space-y-4">
@@ -263,62 +254,6 @@ function Hiragana() {
           </div>
         </div>
       </div>
-    </div>
-  )
-}
-
-const kanaRows: [string, ([string, string] | null)[]][] = [
-  ["", [["あ", "a"], ["い", "i"], ["う", "u"], ["え", "e"], ["お", "o"]]],
-  ["k", [["か", "ka"], ["き", "ki"], ["く", "ku"], ["け", "ke"], ["こ", "ko"]]],
-  ["s", [["さ", "sa"], ["し", "shi"], ["す", "su"], ["せ", "se"], ["そ", "so"]]],
-  ["t", [["た", "ta"], ["ち", "chi"], ["つ", "tsu"], ["て", "te"], ["と", "to"]]],
-  ["n", [["な", "na"], ["に", "ni"], ["ぬ", "nu"], ["ね", "ne"], ["の", "no"]]],
-  ["h", [["は", "ha"], ["ひ", "hi"], ["ふ", "fu"], ["へ", "he"], ["ほ", "ho"]]],
-  ["m", [["ま", "ma"], ["み", "mi"], ["む", "mu"], ["め", "me"], ["も", "mo"]]],
-  ["y", [["や", "ya"], null, ["ゆ", "yu"], null, ["よ", "yo"]]],
-  ["r", [["ら", "ra"], ["り", "ri"], ["る", "ru"], ["れ", "re"], ["ろ", "ro"]]],
-  ["w", [["わ", "wa"], null, null, null, ["を", "wo"]]],
-  ["", [null, null, ["ん", "n"], null, null]],
-]
-
-function LeatherKanaChart() {
-  return (
-    <div
-      class="grid"
-      style={{
-        "grid-template-columns": "auto repeat(5, minmax(64px, 1fr))",
-      }}
-    >
-      {kanaRows.map((row, rowIdx) => (
-        <>
-          <div class="flex w-8 items-center justify-end pr-3 text-base text-white/30">
-            {row[0]}
-          </div>
-          {row[1].map((cell, colIdx) => {
-            const isDark = (rowIdx + colIdx) % 2 === 0
-            return (
-              <div
-                class="p-3 text-center"
-                style={{
-                  background: isDark
-                    ? "rgba(45, 30, 18, 0.5)"
-                    : "rgba(60, 40, 24, 0.35)",
-                  "box-shadow": "inset 0 0 0 0.5px rgba(0,0,0,0.3)",
-                }}
-              >
-                {cell ? (
-                  <>
-                    <p class="font-japanese text-2xl text-white/90">
-                      {cell[0]}
-                    </p>
-                    <p class="text-xs text-white/40">{cell[1]}</p>
-                  </>
-                ) : null}
-              </div>
-            )
-          })}
-        </>
-      ))}
     </div>
   )
 }
