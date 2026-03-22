@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/solid-router"
+import { createFileRoute, Link } from "@tanstack/solid-router"
 import {
   BookOpen,
   PencilLine,
@@ -10,233 +10,235 @@ import {
   BookOpenText,
   BookPlus,
 } from "lucide-solid"
+import type { JSX } from "solid-js"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import GlowBox from "@/features/lessons/components/GlowBox"
+import AsideBlock from "@/features/lessons/components/AsideBlock"
 
 export const Route = createFileRoute(
   "/lessons/_chapter-0/welcome-overview",
 )({
-  loader: async () => {
-    return {
-      contentBox: {
-        nextButtonLink: "/lessons/writing-systems",
-      },
-    }
-  },
-  component: RouteComponent,
+  component: WelcomeOverview,
 })
 
-function RouteComponent() {
-  const iconSize = "20px"
+const moduleTypes = [
+  {
+    icon: BookOpen,
+    color: "text-green-500",
+    name: "Lesson",
+    desc: "Core grammar & concepts",
+  },
+  {
+    icon: BookPlus,
+    color: "text-sky-400",
+    name: "Vocab",
+    desc: "Anime videos & mnemonics",
+  },
+  {
+    icon: ScrollText,
+    color: "text-red-500",
+    name: "Grammar Notes",
+    desc: "Quick reference summaries",
+  },
+  {
+    icon: Video,
+    color: "text-purple-400",
+    name: "Immersion Video",
+    desc: "Listening & reading practice",
+  },
+  {
+    icon: Volume2,
+    color: "text-purple-400",
+    name: "Immersion Audio",
+    desc: "Pure listening practice",
+  },
+  {
+    icon: PencilLine,
+    color: "text-yellow-500",
+    name: "Practice Sentence",
+    desc: "Apply what you've learned",
+  },
+  {
+    icon: Library,
+    color: "text-sky-400",
+    name: "Vocab List",
+    desc: "All vocabulary in one place",
+  },
+  {
+    icon: GraduationCap,
+    color: "text-orange-500",
+    name: "Vocab Practice",
+    desc: "Efficient memorization",
+  },
+  {
+    icon: GraduationCap,
+    color: "text-yellow-500",
+    name: "Vocab Test",
+    desc: "Test your retention",
+  },
+  {
+    icon: GraduationCap,
+    color: "text-teal-400",
+    name: "Conjugation Practice",
+    desc: "Master verb forms",
+  },
+  {
+    icon: GraduationCap,
+    color: "text-green-500",
+    name: "Counter Practice",
+    desc: "Essential counting system",
+  },
+  {
+    icon: BookOpenText,
+    color: "text-teal-400",
+    name: "Reading",
+    desc: "True Japanese mastery",
+  },
+  {
+    icon: PencilLine,
+    color: "text-teal-400",
+    name: "Worksheet",
+    desc: "Extra practice materials",
+  },
+]
 
-  const moduleTypes = [
-    {
-      icon: BookOpen,
-      color: "text-green-500",
-      name: "Lesson",
-      desc: "Core grammar & concepts",
-    },
-    {
-      icon: BookPlus,
-      color: "text-sky-400",
-      name: "Vocab",
-      desc: "Anime videos & mnemonics",
-    },
-    {
-      icon: ScrollText,
-      color: "text-red-500",
-      name: "Grammar Notes",
-      desc: "Quick reference summaries",
-    },
-    {
-      icon: Video,
-      color: "text-purple-400",
-      name: "Immersion Video",
-      desc: "Listening & reading practice",
-    },
-    {
-      icon: Volume2,
-      color: "text-purple-400",
-      name: "Immersion Audio",
-      desc: "Pure listening practice",
-    },
-    {
-      icon: PencilLine,
-      color: "text-yellow-500",
-      name: "Practice Sentence",
-      desc: "Apply what you've learned",
-    },
-    {
-      icon: Library,
-      color: "text-sky-400",
-      name: "Vocab List",
-      desc: "All vocabulary in one place",
-    },
-    {
-      icon: GraduationCap,
-      color: "text-orange-500",
-      name: "Vocab Practice",
-      desc: "Efficient memorization",
-    },
-    {
-      icon: GraduationCap,
-      color: "text-yellow-500",
-      name: "Vocab Test",
-      desc: "Test your retention",
-    },
-    {
-      icon: GraduationCap,
-      color: "text-teal-400",
-      name: "Conjugation Practice",
-      desc: "Master verb forms",
-    },
-    {
-      icon: GraduationCap,
-      color: "text-green-500",
-      name: "Counter Practice",
-      desc: "Essential counting system",
-    },
-    {
-      icon: BookOpenText,
-      color: "text-teal-400",
-      name: "Reading",
-      desc: "True Japanese mastery",
-    },
-    {
-      icon: PencilLine,
-      color: "text-teal-400",
-      name: "Worksheet",
-      desc: "Extra practice materials",
-    },
-  ]
-
+function WelcomeOverview() {
   return (
-    <div class="mb-32">
-      {/* Header */}
-      <header class="mx-auto max-w-3xl px-6 py-14 text-center">
-        <h1 class="mb-3 text-4xl font-extrabold tracking-tight">
-          Welcome to Nihongo Ninja 🍵
-        </h1>
-        <div class="mx-auto mb-5 h-1 w-16 rounded bg-fuchsia-400"></div>
-        <p class="text-muted-foreground text-lg">
-          Learn Japanese the fun way. N5–N4 level content with epic explanations
-          and practice tools that keep you engaged.
-        </p>
-      </header>
+    <div class="relative pb-32">
+      {/* Decorative background character */}
+      <span class="pointer-events-none absolute top-8 right-6 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:right-8 sm:text-[11rem]">
+        忍
+      </span>
 
-      <main class="mx-auto max-w-3xl space-y-12 px-6 leading-relaxed">
-        {/* Overview */}
-        <section class="space-y-8">
-          <h2 class="text-2xl font-semibold">How This Course Works</h2>
+      <LessonHeader
+        chapter="Chapter 0 · Foundations"
+        title={<>Lesson Structure</>}
+        subtitle="N5-N4 level Japanese with lessons, practice tools, and immersion content."
+      >
+        <OverviewItem>How this course is structured</OverviewItem>
+        <OverviewItem>The module types you'll encounter</OverviewItem>
+        <OverviewItem>Where to start</OverviewItem>
+      </LessonHeader>
 
-          <div class="text-muted-foreground space-y-6 text-sm leading-relaxed">
-            <div>
-              <h3 class="mb-1 text-base font-semibold text-white">
-                What You'll Learn
-              </h3>
-              <p>
-                Listening, reading, writing, and grammar. You can choose where
-                to focus, but start with Hiragana and Katakana — the essential
-                foundations.
-              </p>
-            </div>
-
-            <div>
-              <h3 class="mb-1 text-base font-semibold text-white">
-                Flexible Learning
-              </h3>
-              <p>
-                Pick your own path. Want listening practice? Jump in there.
-                Prefer vocabulary or grammar? Start where your curiosity takes
-                you.
-              </p>
-            </div>
-
-            <div>
-              <h3 class="mb-1 text-base font-semibold text-white">
-                Curated Content
-              </h3>
-              <p>
-                We’ve filtered only the highest‑quality resources to make sure
-                what you see is always worth your time.
-              </p>
-            </div>
+      <div class="space-y-14 px-8">
+        {/* How this course works */}
+        <div class="space-y-4">
+          <SectionLabel>How this course works</SectionLabel>
+          <div class="space-y-4 leading-relaxed text-white/70">
+            <p>
+              This course covers listening, reading, writing, and grammar. You
+              can choose where to focus, but start with Hiragana and
+              Katakana—they're the foundation for everything else.
+            </p>
+            <p>
+              The path is flexible. Want listening practice? Jump straight in.
+              Prefer vocabulary or grammar? Start wherever your curiosity takes
+              you.
+            </p>
           </div>
-        </section>
+        </div>
 
-        {/* Learning Modules */}
-        <section>
-          <h2 class="mb-4 text-2xl font-semibold">Learning Modules</h2>
-          <p class="text-muted-foreground mb-6 text-sm">
-            Every lesson combines modules to keep your learning balanced and
-            effective:
+        {/* Module types */}
+        <div class="space-y-5">
+          <SectionLabel>Module types</SectionLabel>
+          <p class="text-sm leading-relaxed text-white/50">
+            Every lesson is built from a mix of these modules. Different lessons
+            combine them in different ways depending on the topic.
           </p>
 
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {moduleTypes.map((module) => {
               const IconComponent = module.icon
               return (
-                <div class="border-border bg-card/50 flex items-start gap-3 rounded-md border p-3">
-                  <IconComponent
-                    size={iconSize}
-                    class={`${module.color} mt-0.5 shrink-0`}
-                  />
-                  <div>
-                    <div class="text-sm font-medium">{module.name}</div>
-                    <div class="text-muted-foreground text-xs">
-                      {module.desc}
-                    </div>
-                  </div>
-                </div>
+                <ModuleCard
+                  icon={
+                    <IconComponent
+                      size="18px"
+                      class={`${module.color} shrink-0`}
+                    />
+                  }
+                  name={module.name}
+                  desc={module.desc}
+                />
               )
             })}
           </div>
+        </div>
 
-          <p class="text-muted-foreground mt-5 text-sm italic">
-            Different lessons combine modules in different ways for maximum
-            effectiveness.
-          </p>
-        </section>
-
-        {/* Optional Pre-Read */}
-        <section>
-          <h2 class="mb-3 text-xl font-semibold">Optional Pre‑Read</h2>
-          <p class="text-muted-foreground mb-3 text-sm">
-            New to Japanese? This popular guide explains effective learning
-            methods and basics. Recommended: read up to{" "}
+        {/* Optional pre-read */}
+        <div class="space-y-4">
+          <SectionLabel>Optional pre-read</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            New to Japanese? This popular community guide covers effective
+            learning methods and basics. Worth reading up to{" "}
             <a
               href="https://learnjapanese.moe/guide/#22-hiragana-and-katakana"
               target="_blank"
-              class="text-fuchsia-400 underline"
+              class="text-dynamic-accent underline decoration-dynamic-accent/30 underline-offset-2 transition hover:decoration-dynamic-accent/60"
             >
-              2.2 Hiragana and Katakana
+              section 2.2 (Hiragana and Katakana)
             </a>{" "}
-            before this lesson.
+            before diving in.
           </p>
 
-          <a
-            href="https://learnjapanese.moe/guide/"
-            target="_blank"
-            class="bg-muted text-foreground hover:bg-muted/70 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm transition"
-          >
-            <BookOpen size="16" class="text-fuchsia-400" />
-            Japanese Guide – The Moe Way
-          </a>
-        </section>
+          <div class="py-2">
+            <AsideBlock>
+              <a
+                href="https://learnjapanese.moe/guide/"
+                target="_blank"
+                class="group flex items-center gap-3 text-sm text-white/60 transition hover:text-white/80"
+              >
+                <BookOpen
+                  size="16"
+                  class="shrink-0 text-dynamic-accent opacity-70"
+                />
+                <span class="underline decoration-white/20 underline-offset-2 transition group-hover:decoration-white/40">
+                  Japanese Guide – The Moe Way
+                </span>
+              </a>
+            </AsideBlock>
+          </div>
+        </div>
 
-        {/* CTA */}
-        <section class="mt-12 text-center">
-          <h3 class="mb-2 text-lg font-bold">Ready to Begin?</h3>
-          <p class="text-muted-foreground mb-6 text-sm">
-            Start with the Japanese writing systems — the foundation of
-            everything else.
-          </p>
-          <a
-            href="/lessons/writing-systems"
-            class="inline-block rounded-full bg-fuchsia-500 px-6 py-3 font-semibold text-white shadow-md transition hover:bg-fuchsia-600"
-          >
-            Start with Writing Systems →
-          </a>
-        </section>
-      </main>
+        {/* Next step */}
+        <GlowBox>
+          <div class="text-center">
+            <p class="mb-1 text-lg font-semibold text-white/90">
+              Ready to begin?
+            </p>
+            <p class="mb-6 text-sm text-white/50">
+              Start with the three Japanese writing systems—the foundation of
+              everything else.
+            </p>
+            <Link
+              to="/lessons/writing-systems"
+              class="inline-block rounded-full bg-dynamic-accent/20 px-6 py-2.5 text-sm font-medium text-dynamic-accent transition hover:bg-dynamic-accent/30"
+            >
+              Start with Writing Systems →
+            </Link>
+          </div>
+        </GlowBox>
+
+      </div>
+    </div>
+  )
+}
+
+function ModuleCard(props: {
+  icon: JSX.Element
+  name: string
+  desc: string
+}) {
+  return (
+    <div class="flex items-start gap-3 rounded-lg bg-white/[0.04] px-4 py-3">
+      <div class="mt-0.5">{props.icon}</div>
+      <div>
+        <div class="text-sm font-medium text-white/80">{props.name}</div>
+        <div class="text-xs text-white/40">{props.desc}</div>
+      </div>
     </div>
   )
 }

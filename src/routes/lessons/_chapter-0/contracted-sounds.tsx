@@ -1,132 +1,199 @@
-// routes/lessons/_chapter-0/contracted-sounds.tsx
-
 import { createFileRoute } from "@tanstack/solid-router"
-import { ChatBubble } from "@/components/ChatBubble"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import AsideBlock from "@/features/lessons/components/AsideBlock"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute(
   "/lessons/_chapter-0/contracted-sounds",
 )({
-  loader: async () => ({
-    contentBox: { nextButtonLink: "/vocab?import=contracted-sounds" },
-  }),
-  component: RouteComponent,
+
+  component: ContractedSounds,
 })
 
-function RouteComponent() {
+function ContractedSounds() {
   return (
-    <div class="mb-32">
-      {/* Header */}
-      <header class="mx-auto max-w-3xl px-6 py-14 text-center">
-        <h1 class="mb-3 text-4xl font-extrabold tracking-tight">
-          Contracted Sounds (拗音, Yōon)
-        </h1>
-        <div class="mx-auto mb-4 h-1 w-16 rounded bg-fuchsia-400"></div>
-        <p class="text-muted-foreground text-lg leading-relaxed">
-          In Japanese, some hiragana combine with smaller versions of{" "}
-          <span class="font-japanese">や</span>,{" "}
-          <span class="font-japanese">ゆ</span>, and{" "}
-          <span class="font-japanese">よ</span> to form shortened, smoother
-          syllables. These are called <strong>contracted sounds</strong>, or{" "}
-          <span class="font-japanese">拗音 (yōon)</span>.
-        </p>
-      </header>
+    <div class="relative pb-32">
+      <LessonHeader
+        chapter="Chapter 0 · Foundations"
+        title={<>Contracted Sounds</>}
+        subtitle="When two kana blend into one sound."
+      >
+        <OverviewItem>
+          How small kana blend sounds
+        </OverviewItem>
+        <OverviewItem>Moras and tempo</OverviewItem>
+      </LessonHeader>
 
-      <div class="space-y-9 px-8 sm:px-24">
-        <h3 class="mt-6 -mb-6 text-center font-semibold">
-          Contracted Sounds (拗音, Yōon): The Team-Up in Japanese:
-        </h3>
-        <div class="flex flex-row items-center justify-center pb-0!">
-          <div class="*:py-0! pr-6 pl-2 text-center text-xl font-bold">
-            <em>
-              <p>C</p>
-              <p>o</p>
-              <p>n</p>
-              <p>t</p>
-              <p>r</p>
-              <p>a</p>
-              <p>c</p>
-              <p>t</p>
-              <p>e</p>
-              <p>d</p>
-              <br />
-              <p>S</p>
-              <p>o</p>
-              <p>u</p>
-              <p>n</p>
-              <p>d</p>
-              <p>s</p>
-            </em>
+      <div class="space-y-14 px-8">
+        {/* How they work — with vertical text */}
+        <div class="flex gap-6">
+          <div class="hidden select-none items-center sm:flex">
+            <div class="flex flex-col items-center text-center text-lg font-bold italic leading-snug text-white/15">
+              {"Contracted".split("").map((c) => (
+                <span>{c}</span>
+              ))}
+              <span class="my-2" />
+              {"Sounds".split("").map((c) => (
+                <span>{c}</span>
+              ))}
+            </div>
           </div>
-          <div>
-            <p>
-              Some hiragana combine with smaller kana to produce a single,
-              smoother sound. Instead of sounding out two separate syllables,
-              their voices blend, contracting into one syllable/mora.
-            </p>
-            <br />
-            <p>
-              Take <span class="font-japanese">じゃ</span> (<em>ja</em>) for
-              example. Here, <span class="font-japanese">じ</span> (<em>ji</em>)
-              pairs with a small <span class="font-japanese">ゃ</span> (
-              <em>ya</em>). Instead of pronouncing{" "}
-              <span class="font-japanese">じや</span> (<em>jiya</em>) in two
-              beats, Japanese contracts it into{" "}
-              <span class="font-japanese">じゃ</span> (<em>ja</em>). You’ll see
-              this often in words like{" "}
-              <span class="font-japanese">じゃあね</span> (jaane, “see you”).
-            </p>
-            <br />
-            <p>
-              The most common small kana used this way are{" "}
-              <span class="font-japanese">ゃ</span>,{" "}
-              <span class="font-japanese">ゅ</span>, and{" "}
-              <span class="font-japanese">ょ</span>. The reduced size indicates
-              their role: they don’t stand alone, but modify the preceding
-              syllable to create a new contracted sound. Why are they small?
-              Probably because they were willing to reduce their egos for a
-              greater cause. Truly, they're like the special agents of the
-              Hiragana world, teaming up with others to create these smooth,
-              blended sounds.
-            </p>
+          <div class="space-y-6">
+            <SectionLabel>How they work</SectionLabel>
+            <div class="space-y-4 leading-relaxed text-white/70">
+              <p>
+                Some hiragana pair with smaller kana to produce a new single,
+                shorter sound.
+              </p>
+              <p>
+                Take{" "}
+                <span class="font-japanese font-semibold text-dynamic-accent">
+                  きょ
+                </span>{" "}
+                (kyo) for example.{" "}
+                <span class="font-japanese font-semibold text-white/90">
+                  き
+                </span>{" "}
+                (ki) pairs with a small{" "}
+                <span class="font-japanese font-semibold text-white/90">
+                  ょ
+                </span>{" "}
+                (yo). Instead of pronouncing{" "}
+                <span class="font-japanese text-white/90">きよ</span> (kiyo) as
+                two separate sounds, speakers shorten it to{" "}
+                <span class="font-japanese font-semibold text-dynamic-accent">
+                  きょ
+                </span>{" "}
+                (kyo). You'll hear this in words like{" "}
+                <span class="font-japanese text-white/90">きょねん</span>{" "}
+                (kyonen, "last year").
+              </p>
+              <p>
+                Notice the romaji:{" "}
+                <span class="font-japanese font-semibold text-white/90">き</span>{" "}
+                is "ki," but when it contracts, the "i" drops and you get "kyo"
+                instead of "kiyo." That pattern holds for all contracted sounds.
+                Check the last letter of the base kana's romaji, drop it, and
+                add the small kana's sound.
+              </p>
+              <p>
+                The small size is what tells you it's a contraction. When you see
+                a full-sized{" "}
+                <span class="font-japanese text-white/90">や</span>,{" "}
+                <span class="font-japanese text-white/90">ゆ</span>, or{" "}
+                <span class="font-japanese text-white/90">よ</span>, it's a
+                separate sound. When it's small (
+                <span class="font-japanese text-white/90">ゃ</span>,{" "}
+                <span class="font-japanese text-white/90">ゅ</span>,{" "}
+                <span class="font-japanese text-white/90">ょ</span>), it merges
+                with the character before it.
+              </p>
+              <p>
+                The most common small kana are{" "}
+                <span class="font-japanese font-semibold text-white/90">
+                  ゃ
+                </span>
+                ,{" "}
+                <span class="font-japanese font-semibold text-white/90">
+                  ゅ
+                </span>
+                , and{" "}
+                <span class="font-japanese font-semibold text-white/90">
+                  ょ
+                </span>
+                , though any other small kana you see will work the same way.
+              </p>
+              <p class="text-sm text-white/40">
+                Note: you might see "ja" romanized as "jya" in some places. Both
+                refer to the same sound.
+              </p>
+              <p class="text-sm text-white/50 italic">
+                They feel a little weird at first, but the more Japanese you
+                hear, the more natural they'll sound.
+              </p>
+            </div>
           </div>
         </div>
-
-        {/* Why */}
-        <h3 class="text-center text-3xl font-bold">Why These Sounds?</h3>
-        <p>
-          Contracted sounds make Japanese speech more{" "}
-          <strong>efficient and natural</strong>. Instead of longer combinations
-          like “ji‑ya,” speakers shorten them to “ja”{" "}
-          <span class="text-muted-foreground text-sm">
-            (could also be spelled “jya”)
-          </span>
-          . This keeps the rhythm of spoken Japanese smooth and fluid.
-        </p>
 
         {/* Examples */}
-        <div class="mt-6">
-          <p class="mb-4 font-medium">Here are a few example words:</p>
-          <div class="mx-auto grid max-w-2xl grid-cols-3 gap-x-6 gap-y-2">
-            <div>し + ゃ = しゃ</div>
-            <div class="font-japanese">しゃしん</div>
-            <div class="text-muted-foreground">photograph</div>
-
-            <div>じ + ゅ = じゅ</div>
-            <div class="font-japanese">じゅんび</div>
-            <div class="text-muted-foreground">preparation</div>
-
-            <div>き + ょ = きょ</div>
-            <div class="font-japanese">きょねん</div>
-            <div class="text-muted-foreground">last year</div>
+        <div class="space-y-4">
+          <SectionLabel>Examples</SectionLabel>
+          <div class="grid gap-4 sm:grid-cols-3">
+            <ExampleCard
+              formula="し + ゃ = しゃ"
+              word="しゃしん"
+              gloss="photograph"
+            />
+            <ExampleCard
+              formula="じ + ゅ = じゅ"
+              word="じゅんび"
+              gloss="preparation"
+            />
+            <ExampleCard
+              formula="き + ょ = きょ"
+              word="きょねん"
+              gloss="last year"
+            />
           </div>
         </div>
 
-        <ChatBubble
-          speaker="sensei"
-          text="The more Japanese you hear, the more natural they'll sound."
-        />
-        <ChatBubble speaker="student" text="Huh, these really aren't so bad." />
+        {/* What's a mora? */}
+        <AsideBlock label="What's a mora?">
+          <div class="mt-2 space-y-3 leading-relaxed text-white/70">
+            <p>
+              Each full-sized kana takes up one mora, and every mora gets the
+              same amount of time when spoken.{" "}
+              <span class="font-japanese font-semibold text-white/90">
+                びよういん
+              </span>{" "}
+              (bi・yo・u・i・n, beauty salon) is five mora.{" "}
+              <span class="font-japanese font-semibold text-white/90">
+                びょういん
+              </span>{" "}
+              (byo・u・i・n, hospital) is four, because{" "}
+              <span class="font-japanese font-semibold text-dynamic-accent">
+                びょ
+              </span>{" "}
+              is contracted into one. More on this in the next lesson.
+            </p>
+          </div>
+        </AsideBlock>
+
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            Small{" "}
+            <span class="font-japanese font-semibold text-white/80">
+              ゃ, ゅ, ょ
+            </span>{" "}
+            merge with the preceding kana into one mora
+          </SummaryItem>
+          <SummaryItem>
+            Full-sized = separate mora, small = contraction
+          </SummaryItem>
+        </LessonSummary>
       </div>
+    </div>
+  )
+}
+
+function ExampleCard(props: {
+  formula: string
+  word: string
+  gloss: string
+}) {
+  return (
+    <div class="rounded-lg bg-white/[0.04] p-4 text-center">
+      <p class="text-xs text-white/40">{props.formula}</p>
+      <p class="font-japanese mt-2 text-2xl font-bold text-white/90">
+        {props.word}
+      </p>
+      <p class="mt-1 text-sm text-white/50">{props.gloss}</p>
     </div>
   )
 }

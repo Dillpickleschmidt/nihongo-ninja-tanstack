@@ -1,7 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/solid-router"
 import { queryKeys } from "~/query/query-keys"
 import { onMount } from "solid-js"
-import ContentBox from "@/components/ContentBox"
 import { getInitialAnimationStyles, animateElementIn } from "@/utils/animations"
 
 export const Route = createFileRoute("/_home/external-resources")({
@@ -28,9 +27,9 @@ function ExternalResourcesLayout() {
 
   return (
     <div ref={containerRef} style={getInitialAnimationStyles("down")}>
-      <ContentBox>
+      <div class="mx-auto max-w-5xl">
         <Outlet />
-      </ContentBox>
+      </div>
     </div>
   )
 }

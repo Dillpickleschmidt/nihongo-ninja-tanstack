@@ -10,12 +10,7 @@ import {
 } from "@/components/ui/custom/collapsible"
 
 export const Route = createFileRoute("/lessons/_chapter-1/telling-time")({
-  loader: async () => ({
-    contentBox: {
-      nextButtonLink: "/lessons/_chapter-1/occupations-majors",
-      size: "lg",
-    },
-  }),
+
   component: RouteComponent,
 })
 

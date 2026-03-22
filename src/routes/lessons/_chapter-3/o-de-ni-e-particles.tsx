@@ -9,11 +9,7 @@ import Romaji from "@/components/text/Romaji"
 export const Route = createFileRoute(
   "/lessons/_chapter-3/o-de-ni-e-particles",
 )({
-  loader: async () => ({
-    contentBox: {
-      nextButtonLink: "/learn/chapter-3/word-order",
-    },
-  }),
+
   component: RouteComponent,
 })
 

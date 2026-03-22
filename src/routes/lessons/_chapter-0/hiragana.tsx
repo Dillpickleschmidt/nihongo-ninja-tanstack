@@ -12,9 +12,7 @@ import LessonSummary, {
 } from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute("/lessons/_chapter-0/hiragana")({
-  loader: () => ({
-    contentBox: { nextButtonLink: "/vocab?import=hiragana" },
-  }),
+
   component: Hiragana,
 })
 

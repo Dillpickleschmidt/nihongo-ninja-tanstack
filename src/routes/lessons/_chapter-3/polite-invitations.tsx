@@ -9,9 +9,7 @@ import WanakanaWrapper from "@/features/wanakana/WanaKana"
 export const Route = createFileRoute(
   "/lessons/_chapter-3/polite-invitations",
 )({
-  loader: async () => ({
-    contentBox: { nextButtonLink: "/lessons/_chapter-3/next-lesson" },
-  }),
+
   component: RouteComponent,
 })
 

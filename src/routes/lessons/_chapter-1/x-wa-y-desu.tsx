@@ -12,9 +12,7 @@ import LessonSummary, {
 } from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute("/lessons/_chapter-1/x-wa-y-desu")({
-  loader: () => ({
-    contentBox: { nextButtonLink: "/lessons/occupations-majors" },
-  }),
+
   component: XWaYDesu,
 })
 

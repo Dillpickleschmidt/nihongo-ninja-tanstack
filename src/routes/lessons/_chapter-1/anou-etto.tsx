@@ -2,13 +2,6 @@
 import { createFileRoute } from "@tanstack/solid-router"
 
 export const Route = createFileRoute("/lessons/_chapter-1/anou-etto")({
-  loader: async () => {
-    return {
-      contentBox: {
-        nextButtonLink: "/lessons/_chapter-1/kikusasaizu-1-1",
-      },
-    }
-  },
   component: RouteComponent,
 })
 

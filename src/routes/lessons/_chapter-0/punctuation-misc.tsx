@@ -1,187 +1,198 @@
+import type { JSX } from "solid-js"
 import { createFileRoute } from "@tanstack/solid-router"
-import { ChatBubble } from "@/components/ChatBubble"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import AsideBlock from "@/features/lessons/components/AsideBlock"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
-export const Route = createFileRoute(
-  "/lessons/_chapter-0/punctuation-misc",
-)({
-  loader: async () => ({
-    contentBox: {
-      nextButtonLink: "/lessons/greetings",
-    },
-  }),
-  component: RouteComponent,
+export const Route = createFileRoute("/lessons/_chapter-0/punctuation-misc")({
+
+  component: PunctuationMisc,
 })
 
-function RouteComponent() {
+function PunctuationMisc() {
   return (
-    <div class="mb-32">
-      {/* Hero */}
-      <header class="mx-auto max-w-3xl px-6 py-14 text-center">
-        <h1 class="mb-3 text-4xl font-extrabold tracking-tight">
-          Japanese Punctuation & Spacing
-        </h1>
-        <div class="mx-auto mb-5 h-1 w-16 rounded bg-fuchsia-400" />
-        <p class="text-muted-foreground text-lg">
-          Japanese doesn't use uppercase or lowercase, periods are circles,
-          question marks are optional, and spaces between words barely exist.
-        </p>
-      </header>
+    <div class="relative pb-32">
+      <LessonHeader
+        chapter="Chapter 0 · Foundations"
+        title={<>Japanese Punctuation & Spacing</>}
+        subtitle="Where the rules you're used to stop applying."
+      >
+        <OverviewItem>Uppercase? Lowercase?</OverviewItem>
+        <OverviewItem>Punctuation characters</OverviewItem>
+        <OverviewItem>Spaces?</OverviewItem>
+      </LessonHeader>
 
-      <main class="mx-auto max-w-3xl space-y-16 px-6">
-        {/* Upper/lowercase */}
-        <section class="space-y-6">
-          <h2 class="text-center text-2xl font-semibold">
-            No Uppercase or Lowercase!
-          </h2>
-          <ChatBubble
-            speaker="student"
-            text="Wait, Japanese doesn't have capital letters?"
-          />
-          <ChatBubble
-            speaker="sensei"
-            text={
-              <p>
-                <span class="font-light italic">
-                  *without looking up from his brushwork*
-                </span>{" "}
-                Nope. No uppercase, no lowercase. Each character has one form.
-                That's it.
-              </p>
-            }
-          />
-        </section>
+      <div class="space-y-14 px-8">
+        {/* No uppercase or lowercase */}
+        <div class="space-y-5">
+          <SectionLabel>No uppercase or lowercase</SectionLabel>
+          <StudentBubble>
+            Wait, Japanese doesn't have capital letters?
+          </StudentBubble>
+          <SenseiBubble>
+            <Action>without looking up from his brushwork</Action> Nope. No
+            uppercase, no lowercase. Each character has one form. That's it.
+          </SenseiBubble>
+        </div>
 
         {/* Punctuation */}
-        <section class="space-y-6">
-          <h2 class="text-center text-2xl font-semibold">Punctuation</h2>
-          <ChatBubble
-            speaker="student"
-            text="What about question marks and periods?"
-          />
-          <ChatBubble
-            speaker="sensei"
-            text={
-              <p>
-                <span class="font-light italic">*flips page*</span> Question
-                marks are used sparingly...
-              </p>
-            }
-          />
-          <ChatBubble speaker="student" text="...Sensei?" />
-          <ChatBubble
-            speaker="sensei"
-            text="Typically, the particle か at the end of a sentence signals a question. The question mark (？) shows up more in casual writing."
-          />
+        <div class="space-y-5">
+          <SectionLabel>Punctuation</SectionLabel>
+          <StudentBubble>What about question marks and periods?</StudentBubble>
+          <SenseiBubble>
+            <Action>flips page</Action> Question marks are used sparingly...
+          </SenseiBubble>
+          <StudentBubble>...Sensei?</StudentBubble>
+          <SenseiBubble>
+            Usually, the particle{" "}
+            <span class="font-japanese font-semibold text-white/90">か</span> at
+            the end of a sentence signals a question. The question mark (？)
+            shows up more in casual writing.
+          </SenseiBubble>
 
-          <div class="rounded-md border border-blue-700/40 bg-blue-900/20 p-4 leading-relaxed text-blue-200">
-            <p>
-              Japanese speakers use <span class="font-japanese">か</span> to
-              indicate questions in polite and formal contexts. In casual
-              settings, they might drop <span class="font-japanese">か</span>{" "}
-              and rely on intonation, which is written with a question mark
-              (？). Or they might use both!{" "}
-              <span class="text-sm">(informal contexts only).</span>
-            </p>
+          <div class="py-4">
+            <AsideBlock>
+              <p class="text-sm leading-relaxed text-white/60">
+                Japanese speakers use{" "}
+                <span class="font-japanese font-semibold text-white/80">
+                  か
+                </span>{" "}
+                to indicate questions in polite and formal contexts. You
+                literally say 'ka' at the end of the sentence. In casual
+                settings, they might drop{" "}
+                <span class="font-japanese text-white/80">か</span> and rely on
+                intonation, which is written with a question mark (？). Or they
+                might use both (also only in informal contexts).
+              </p>
+            </AsideBlock>
           </div>
 
-          <ChatBubble
-            speaker="student"
-            text="Oh, that's weird. I'll have to get used to that."
-          />
+          <StudentBubble>
+            Oh, that's weird. I'll have to get used to that.
+          </StudentBubble>
+          <StudentBubble>
+            So, what about periods? Surely, they use those... right Sensei?
+          </StudentBubble>
+          <SenseiBubble>
+            <Action>sighs</Action> The period in Japanese is called 句点
+            (kuten). Works the same as English, but instead of a solid dot, it's
+            a small hollow circle (。).
+          </SenseiBubble>
+        </div>
 
-          <ChatBubble
-            speaker="student"
-            text="So, what about periods? Surely, they use those... right Sensei?"
-          />
-          <ChatBubble
-            speaker="sensei"
-            text={
-              <p>
-                <span class="font-light italic">*sighs*</span> The period in
-                Japanese is called 句点 (kuten). Works the same as English, but
-                instead of a solid dot, it's a small hollow circle (。).
+        {/* No spaces */}
+        <div class="space-y-5">
+          <SectionLabel>No spaces</SectionLabel>
+          <StudentBubble>
+            Do Japanese sentences have spaces between words like in English?
+          </StudentBubble>
+          <SenseiBubble>
+            <Action>eye twitching slightly</Action> Oh, spaces...{" "}
+            <Action>nervous laughter</Action> Let me tell you about spaces. Or
+            rather, the complete and total ABSENCE of spaces! That's right,
+            Japanese doesn't use ANY spaces between words!
+            <br />
+            <br />
+            Do you have ANY idea how many hours I spent trying to get this
+            website to understand where one word ends and another begins?! The
+            computer just stares at an endless stream of characters like some
+            kind of confused tourist!
+            <br />
+            <br />
+            <Action>takes deep breath</Action>
+          </SenseiBubble>
+          <SenseiBubble>
+            Traditional Japanese writing flows like a river. A river that flows
+            straight through the gates of hell, past the screaming souls of web
+            developers, and into the ninth circle where most Japanese language
+            tool developers have given up and are just hardcoding everything.{" "}
+            <Action>adjusts collar</Action> But I digress...
+            <br />
+            <br />
+            Modern Japanese sometimes uses spaces in children's books or
+            learning materials to help with readability. Which would have made
+            my life SO much easier!
+            <br />
+            <br />
+            <Action>composes self</Action>
+            <br />
+            <br />
+            Not that I'm bitter about it or anything.
+          </SenseiBubble>
+
+          <div class="py-4">
+            <AsideBlock>
+              <p class="text-sm leading-relaxed text-white/60">
+                Japanese doesn't use spaces between words. However, when typing,
+                you'll notice that punctuation marks like{" "}
+                <span class="font-japanese text-white/80">。</span> and{" "}
+                <span class="font-japanese text-white/80">、</span> have
+                built-in spacing to separate sentences. Japanese characters are
+                also double-width, which means punctuation marks take up more
+                space, appearing as{" "}
+                <span class="font-japanese text-white/80">？</span> and{" "}
+                <span class="font-japanese text-white/80">！</span>.
               </p>
-            }
-          />
-        </section>
-
-        {/* No Spaces */}
-        <section class="space-y-6">
-          <h2 class="text-center text-2xl font-semibold">No Spaces!</h2>
-          <ChatBubble
-            speaker="student"
-            text="Do Japanese sentences have spaces between words like in English?"
-          />
-          <ChatBubble
-            speaker="sensei"
-            text={
-              <div class="space-y-4">
-                <p>
-                  <span class="font-light italic">
-                    *eye twitching slightly*
-                  </span>{" "}
-                  Oh, spaces... <em>*nervous laughter*</em> Let me tell you
-                  about spaces. Or rather, the complete and total ABSENCE of
-                  spaces! That's right — Japanese doesn't use ANY spaces between
-                  words!
-                </p>
-                <p>
-                  Do you have ANY idea how many hours I spent trying to get this
-                  website to understand where one word ends and another begins?!
-                  The computer just stares at an endless stream of characters
-                  like some kind of confused tourist!
-                </p>
-                <p>
-                  <em>*takes deep breath*</em>
-                </p>
-              </div>
-            }
-          />
-          <ChatBubble
-            speaker="sensei"
-            text={
-              <div class="space-y-4">
-                <p>
-                  Traditional Japanese writing flows continuously, like a river.
-                  A river that flows straight through the gates of hell, past
-                  the screaming souls of web developers, and into the ninth
-                  circle where most Japanese language tool developers have given
-                  up and are just hardcoding everything.{" "}
-                  <em>*adjusts collar*</em> But I digress...
-                </p>
-                <p>
-                  Modern Japanese sometimes uses spaces in children's books or
-                  learning materials to help with readability. Which would have
-                  made my life SO much easier!
-                </p>
-                <p>
-                  <em>*composes self*</em>
-                </p>
-                <p>Not that I'm bitter about it or anything.</p>
-              </div>
-            }
-          />
-
-          <div class="rounded-md border border-blue-700/40 bg-blue-900/20 p-4 text-sm leading-relaxed text-blue-200">
-            <p>
-              Japanese doesn't use spaces between words. However, when typing,
-              you'll notice that punctuation marks like{" "}
-              <span class="font-japanese">。</span> and{" "}
-              <span class="font-japanese">、</span> have built‑in spacing to
-              separate sentences. Additionally, Japanese characters are
-              double‑width, which means punctuation marks take up more space,
-              appearing as <span class="font-japanese">？</span> and{" "}
-              <span class="font-japanese">！</span>.
-            </p>
+            </AsideBlock>
           </div>
 
-          <ChatBubble speaker="student" text="That sounds... challenging." />
-          <ChatBubble
-            speaker="sensei"
-            text="We're going to learn some cool tricks to help with that in future lessons."
-          />
-        </section>
-      </main>
+          <StudentBubble>...Are you okay, Sensei?</StudentBubble>
+          <SenseiBubble>I'm fine. Let's move on.</SenseiBubble>
+        </div>
+
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>No uppercase or lowercase in Japanese</SummaryItem>
+          <SummaryItem>
+            Questions use the particle{" "}
+            <span class="font-japanese font-semibold text-white/80">か</span>{" "}
+            (question marks are casual and optional)
+          </SummaryItem>
+          <SummaryItem>
+            Periods are small hollow circles (
+            <span class="font-japanese text-white/80">。</span>)
+          </SummaryItem>
+          <SummaryItem>No spaces between words</SummaryItem>
+        </LessonSummary>
+      </div>
     </div>
   )
+}
+
+function StudentBubble(props: { children: JSX.Element }) {
+  return (
+    <div class="flex items-end gap-3">
+      <Avatar class="size-7 shrink-0 ring-1 ring-white/10">
+        <AvatarImage src="/img/student.png" alt="student" />
+        <AvatarFallback>S</AvatarFallback>
+      </Avatar>
+      <div class="max-w-[80%] rounded-2xl rounded-bl-sm bg-white/[0.06] px-4 py-2.5 text-sm leading-relaxed text-white/70">
+        {props.children}
+      </div>
+    </div>
+  )
+}
+
+function SenseiBubble(props: { children: JSX.Element }) {
+  return (
+    <div class="flex items-end gap-3 justify-end">
+      <div class="max-w-[80%] rounded-2xl rounded-br-sm bg-dynamic-accent/10 px-4 py-2.5 text-sm leading-relaxed text-white/70">
+        {props.children}
+      </div>
+      <Avatar class="size-7 shrink-0 ring-1 ring-white/10">
+        <AvatarImage src="/img/guru.png" alt="sensei" />
+        <AvatarFallback>T</AvatarFallback>
+      </Avatar>
+    </div>
+  )
+}
+
+function Action(props: { children: JSX.Element }) {
+  return <span class="font-light italic text-white/30">*{props.children}*</span>
 }

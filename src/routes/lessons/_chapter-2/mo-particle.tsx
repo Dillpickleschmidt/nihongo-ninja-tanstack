@@ -6,9 +6,7 @@ import { TextField, TextFieldInput } from "@/components/ui/text-field"
 import YouTubeVideo from "@/features/youtube/YouTube"
 
 export const Route = createFileRoute("/lessons/_chapter-2/mo-particle")({
-  loader: async () => ({
-    contentBox: { nextButtonLink: "/lessons/_chapter-2/janai" },
-  }),
+
   component: RouteComponent,
 })
 

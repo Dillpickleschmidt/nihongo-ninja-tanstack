@@ -1,4 +1,9 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/solid-router"
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  useMatches,
+} from "@tanstack/solid-router"
 import { queryKeys } from "~/query/query-keys"
 import { ArrowLeft } from "lucide-solid"
 
@@ -15,7 +20,19 @@ export const Route = createFileRoute("/lessons")({
   component: LessonTestLayout,
 })
 
+function hasMaxWidth(
+  data: unknown,
+): data is { maxWidth: string } {
+  return !!data && typeof data === "object" && "maxWidth" in data
+}
+
 function LessonTestLayout() {
+  const matches = useMatches()
+  const maxWidth = () => {
+    const data = matches().at(-1)?.loaderData
+    return hasMaxWidth(data) ? data.maxWidth : "max-w-3xl"
+  }
+
   return (
     <div class="relative min-h-screen">
       {/* Dust texture overlay */}
@@ -58,7 +75,7 @@ function LessonTestLayout() {
       </div>
 
       {/* Content */}
-      <div class="relative z-10 mx-auto max-w-3xl">
+      <div class={`relative z-10 mx-auto ${maxWidth()}`}>
         <Outlet />
       </div>
     </div>

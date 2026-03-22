@@ -1,4 +1,3 @@
-import ContentBox from "@/components/ContentBox"
 import Furigana from "@/components/text/Furigana"
 import YouTubeVideo from "@/features/youtube/YouTube"
 import { formatDuration } from "@/utils/timeFormat"

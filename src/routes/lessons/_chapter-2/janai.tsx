@@ -5,9 +5,7 @@ import CheckboxQuestion from "@/components/CheckboxQuestion"
 import YouTubeVideo from "@/features/youtube/YouTube"
 
 export const Route = createFileRoute("/lessons/_chapter-2/janai")({
-  loader: async () => ({
-    contentBox: { nextButtonLink: "/lessons/_chapter-2/kikusasaizu-2-1" },
-  }),
+
   component: RouteComponent,
 })
 

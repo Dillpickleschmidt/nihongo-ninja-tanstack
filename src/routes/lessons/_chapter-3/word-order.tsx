@@ -5,11 +5,7 @@ import YouTubeVideo from "@/features/youtube/YouTube"
 import Romaji from "@/components/text/Romaji"
 
 export const Route = createFileRoute("/lessons/_chapter-3/word-order")({
-  loader: async () => ({
-    contentBox: {
-      nextButtonLink: "/learn/chapter-3/practice-particles",
-    },
-  }),
+
   component: RouteComponent,
 })
 

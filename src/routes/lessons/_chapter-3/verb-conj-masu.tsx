@@ -7,11 +7,7 @@ import Romaji from "@/components/text/Romaji"
 export const Route = createFileRoute(
   "/lessons/_chapter-3/verb-conj-masu",
 )({
-  loader: async () => ({
-    contentBox: {
-      nextButtonLink: "/learn/chapter-2/janai",
-    },
-  }),
+
   component: RouteComponent,
 })
 

@@ -1,248 +1,296 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import YouTubeVideo from "@/features/youtube/YouTube"
-import { ChatBubble } from "@/components/ChatBubble"
-import { ChatAttachment } from "@/components/ChatAttachment"
+import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import AsideBlock from "@/features/lessons/components/AsideBlock"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute(
   "/lessons/_chapter-0/long-vowels-paused-consonants",
 )({
-  loader: async () => ({
-    contentBox: {
-      nextButtonLink: "/lessons/practice/all-hiragana-quiz",
-    },
-  }),
-  component: RouteComponent,
+
+  component: LongVowelsPausedConsonants,
 })
 
-function RouteComponent() {
+function LongVowelsPausedConsonants() {
   return (
-    <div class="mb-32">
-      {/* Header */}
-      <header class="mx-auto max-w-3xl px-6 py-14 text-center">
-        <h1 class="mb-3 text-4xl font-extrabold tracking-tight">
-          Paused Consonants & Long Vowels
-        </h1>
-        <div class="mx-auto mb-5 h-1 w-16 rounded bg-fuchsia-400" />
-        <p class="text-muted-foreground text-lg">
-          Two small features of Japanese pronunciation that can change a word's
-          meaning entirely.
-        </p>
-      </header>
+    <div class="relative pb-32">
+      <LessonHeader
+        chapter="Chapter 0 · Foundations"
+        title={<>Long Vowels & Paused Consonants</>}
+        subtitle="Two small features that can change a word's meaning entirely."
+      >
+        <OverviewItem>
+          How{" "}
+          <span class="font-japanese font-semibold text-white/60">っ</span>{" "}
+          creates a pause before a consonant
+        </OverviewItem>
+        <OverviewItem>
+          How long vowels work (and when{" "}
+          <span class="font-japanese font-semibold text-white/60">う</span> and{" "}
+          <span class="font-japanese font-semibold text-white/60">い</span>{" "}
+          extend sounds)
+        </OverviewItem>
+      </LessonHeader>
 
-      <div class="mx-auto max-w-3xl space-y-6 px-6 pt-4">
-        <h3 class="font-semibold">
-          Paused Consonants (<span class="font-japanese">促音</span>, Sokuon)
-        </h3>
-        <div class="flex flex-row justify-center">
-          <ul class="![&>*]:py-0 pr-4 pl-2 text-center text-xl leading-7 font-bold">
-            <li>C</li>
-            <li>o</li>
-            <li>n</li>
-            <li>s</li>
-            <li>o</li>
-            <li>n</li>
-            <li>a</li>
-            <li>n</li>
-            <li>t</li>
-            <li>s</li>
-          </ul>
-          <ul class="![&>*]:py-0 pr-6 text-center text-xl leading-7 font-bold">
-            <li>D</li>
-            <li>o</li>
-            <li>u</li>
-            <li>b</li>
-            <li>l</li>
-            <li>e</li>
-          </ul>
-          <div>
-            <p>
-              In Japanese, some consonants get held for a beat before releasing.
-              You'll hear a brief pause in the middle of the word, right before
-              the consonant hits.
-            </p>
-            <br />
-            <p>
-              Take &quot;
-              <span class="font-japanese font-semibold">がっこう</span> (gakkou
-              - school).&quot; Without the double 'k', it would just be a boring
-              old 'gakou.' But with that extra 'k', it's 'gak-kou' — a word
-              with a bit more punch, a bit more{" "}
-              <span>
-                <u>
-                  <em>oomph</em>
-                </u>
+      <div class="space-y-14 px-8">
+        {/* Paused consonants — with vertical text */}
+        <div class="flex gap-6">
+          <div class="hidden select-none items-center sm:flex">
+            <div class="flex gap-3">
+              <div class="flex flex-col items-center text-center text-lg font-bold italic leading-snug text-white/15">
+                {"Consonants".split("").map((c) => (
+                  <span>{c}</span>
+                ))}
+              </div>
+              <div class="flex flex-col items-center text-center text-lg font-bold italic leading-snug text-white/15">
+                {"Paused".split("").map((c) => (
+                  <span>{c}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div class="space-y-6">
+            <SectionLabel>Paused consonants (っ)</SectionLabel>
+            <div class="space-y-4 leading-relaxed text-white/70">
+              <p>
+                In Japanese, some consonants get held for a beat before
+                releasing. You'll hear a brief pause in the middle of the word,
+                right before the consonant hits.
+              </p>
+              <p>
+                Take{" "}
+                <span class="font-japanese font-semibold text-dynamic-accent">
+                  がっこう
+                </span>{" "}
+                (gakkou, "school"). That small{" "}
+                <span class="font-japanese font-semibold text-white/90">
+                  っ
+                </span>{" "}
+                before the{" "}
+                <span class="font-japanese text-white/90">こ</span> creates a
+                pause: "gak-kou" — a word with a bit more punch, a bit more{" "}
+                <em class="underline">oomph</em>.
+              </p>
+              <p>
+                You write it with a small{" "}
+                <span class="font-japanese font-semibold text-white/90">
+                  っ
+                </span>{" "}
+                before the consonant character. The{" "}
+                <span class="font-japanese text-white/90">っ</span> itself isn't
+                pronounced — it just holds the silence for one mora.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Long vowels — with vertical text */}
+        <div class="flex gap-6">
+          <div class="hidden select-none items-center sm:flex">
+            <div class="flex gap-3">
+              <div class="flex flex-col items-center text-center text-lg font-bold italic leading-snug text-white/15">
+                {"Vowels".split("").map((c) => (
+                  <span>{c}</span>
+                ))}
+              </div>
+              <div class="flex flex-col items-center text-center text-lg font-bold italic leading-snug text-white/15">
+                {"Long".split("").map((c) => (
+                  <span>{c}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div class="space-y-6">
+            <SectionLabel>Long vowels</SectionLabel>
+            <div class="space-y-4 leading-relaxed text-white/70">
+              <p>
+                Long vowels stretch a sound for an extra mora. You create one by
+                placing the same vowel (or a specific one) right after a kana.
+                The two don't get pronounced separately — the vowel just holds
+                longer.
+              </p>
+              <p>
+                <span class="font-japanese font-semibold text-dynamic-accent">
+                  おばあさん
+                </span>{" "}
+                (obaasan) means "grandmother." The{" "}
+                <span class="font-japanese text-white/90">あ</span> after{" "}
+                <span class="font-japanese text-white/90">ば</span> doesn't add
+                a new sound — it just stretches the "a" in{" "}
+                <span class="font-japanese text-white/90">ば</span> longer:
+                "obaaasan." Forget to stretch it and you're saying{" "}
+                <span class="font-japanese font-semibold text-white/90">
+                  おばさん
+                </span>{" "}
+                (obasan, "aunt") instead, and{" "}
+                <em class="text-white/90">oh boy</em>, can that lead to some
+                awkward family reunions.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Long vowels video */}
+        <YouTubeVideo
+          videoId="XG-QPpiqn54"
+          title="Japanese Long Vowels with Pitch"
+          timestamps={[
+            { label: "Intro", time: 0 },
+            { label: "Pronunciation", time: 38 },
+            { label: "あ vs. ああ", time: 90 },
+            { label: "い vs. いい", time: 152 },
+            { label: "う vs. うう", time: 173 },
+            { label: "Pronouncing Yes/No", time: 185 },
+            { label: "え vs. ええ", time: 264 },
+            { label: "お vs. おお", time: 309 },
+            { label: "Practice", time: 350 },
+            { label: "Review Test 1", time: 526 },
+            { label: "Review Test 2", time: 634 },
+          ]}
+          credit="Speak Japanese Naturally"
+        />
+
+        {/* o + う and e + い */}
+        <div class="space-y-6">
+          <div class="space-y-4">
+            <SectionLabel>o + う and e + い</SectionLabel>
+            <div class="space-y-3 leading-relaxed text-white/70">
+              <p>
+                The "o" sound at the end of characters like{" "}
+                <span class="font-japanese text-white/90">
+                  こ・そ・と・も
+                </span>{" "}
+                is usually extended with{" "}
+                <span class="font-japanese font-semibold text-white/90">
+                  う
+                </span>
+                , not{" "}
+                <span class="font-japanese text-white/90">お</span>.
+              </p>
+              <p>
+                Example:{" "}
+                <span class="font-japanese font-semibold text-white/90">
+                  もう
+                </span>{" "}
+                → "mō" (already). There's no separate "u" sound — it just
+                stretches the "o."
+              </p>
+              <p>
+                The "e" sound works similarly with{" "}
+                <span class="font-japanese font-semibold text-white/90">
+                  い
+                </span>
                 .
-              </span>
+              </p>
+              <p>
+                Example:{" "}
+                <span class="font-japanese font-semibold text-white/90">
+                  えいが
+                </span>{" "}
+                → "ēga" (movie). No separate "i" sound — it stretches the "e."
+              </p>
+              <p>
+                These spellings don't add new sounds. They stretch the vowel.
+              </p>
+            </div>
+          </div>
+          <AsideBlock>
+            <p class="text-sm leading-relaxed text-white/40 italic">
+              This sounds confusing on paper, but you'll be listening to these
+              words as you learn them and you'll very quickly get a feel for this
+              without even thinking about it.
+            </p>
+          </AsideBlock>
+        </div>
+
+        {/* ん before な-row */}
+        <AsideBlock label="ん before な-row">
+          <div class="mt-2 space-y-3 leading-relaxed text-white/70">
+            <p>
+              <span class="font-japanese font-semibold text-white/90">ん</span>{" "}
+              before{" "}
+              <span class="font-japanese text-white/90">
+                な・に・ぬ・ね・の
+              </span>{" "}
+              is a common spot where learners accidentally cut the "n" short.
+            </p>
+            <p>
+              <span class="font-japanese font-semibold text-white/90">
+                こんにちは
+              </span>{" "}
+              → "kon-ni-chi-wa," not "ko-ni-chi-wa."
             </p>
           </div>
-        </div>
-        <p class="-mt-4 text-center text-xl font-semibold">
-          Use a little っ before the consonant character to make it a double
-          consonant.
-        </p>
-        <h3 class="pt-8 text-center font-semibold">
-          Long Vowels (<span class="font-japanese">長音</span>, chōon)
-        </h3>
-        <div>
-          <YouTubeVideo
-            videoId="XG-QPpiqn54"
-            title="Japanese Long Vowels with Pitch ーうん-ううん／いね-いいね／おばさん-おばあさん, Oct 17 2020"
-            timestamps={[
-              { label: "Intro", time: 0 },
-              { label: "Pronunciation", time: 38 },
-              { label: "あ vs. ああ", time: 90 },
-              { label: "い vs. いい", time: 152 },
-              { label: "う vs. うう", time: 173 },
-              { label: "Pronouncing Yes/No", time: 185 },
-              { label: "え vs. ええ", time: 264 },
-              { label: "お vs. おお", time: 309 },
-              { label: "Practice", time: 350 },
-              { label: "Review Test 1", time: 526 },
-              { label: "Review Test 2", time: 634 },
-            ]}
-            credit="Speak Japanese Naturally"
-          />
-        </div>
-        <div class="flex flex-row justify-center pb-0!">
-          <div class="![&>*]:py-0 pr-4 pl-2 text-center text-xl leading-7 font-bold">
-            <p>V</p>
-            <p>o</p>
-            <p>w</p>
-            <p>e</p>
-            <p>l</p>
-            <p>s</p>
-          </div>
-          <div class="![&>*]:py-0 pr-6 text-center text-xl leading-7 font-bold">
-            <p>L</p>
-            <p>o</p>
-            <p>n</p>
-            <p>g</p>
+        </AsideBlock>
+
+        {/* Rhythm video */}
+        <YouTubeVideo
+          videoId="J_HLY0Rss-g"
+          title="Japanese Pronunciation: Rhythm"
+          credit="Kaname Naito"
+        />
+
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            Small{" "}
+            <span class="font-japanese font-semibold text-white/80">っ</span>{" "}
+            creates a one-mora pause before a consonant
+          </SummaryItem>
+          <SummaryItem>
+            Long vowels hold a sound for an extra mora
+          </SummaryItem>
+          <SummaryItem>
+            "o" is usually extended with{" "}
+            <span class="font-japanese font-semibold text-white/80">う</span>,
+            "e" with{" "}
+            <span class="font-japanese font-semibold text-white/80">い</span>
+          </SummaryItem>
+          <SummaryItem>
+            <span class="font-japanese font-semibold text-white/80">ん</span>{" "}
+            before な-row is its own mora
+          </SummaryItem>
+        </LessonSummary>
+
+        {/* Sensei wisdom */}
+        <div class="flex gap-5">
+          <div class="flex flex-col items-center pt-1">
+            <Avatar class="size-9 shrink-0 ring-1 ring-white/10">
+              <AvatarImage src="/img/guru.png" alt="sensei" />
+            </Avatar>
+            <div
+              class="mt-3 w-0.5 flex-1 rounded-full"
+              style={{
+                "background-color":
+                  "color-mix(in srgb, var(--dynamic-accent) 50%, transparent)",
+              }}
+            />
           </div>
           <div>
-            <p>
-              Long vowels stretch a sound longer. Getting the length wrong can
-              change the word.
-            </p>
-            <br />
-            <p>
-              Consider &quot;お<u>ばあ</u>さん (o<u>baa</u>san -
-              grandmother).&quot; Cut the long 'a' short and you get{" "}
-              <span class="text-nowrap">
-                &quot;お<u>ば</u>
-                さん
-              </span>{" "}
-              (o<u>ba</u>san - aunt),&quot; and <em>oh boy</em>, can that
-              lead to some awkward family reunions.
+            <SectionLabel>A note from Sensei</SectionLabel>
+            <p class="mt-3 leading-relaxed text-white/50 italic">
+              Treat double consonants like a hiccup, and long vowels like you're
+              lying at the dentist with your mouth open. Practice that, and your
+              pronunciation will sound more natural. Probably.
             </p>
           </div>
         </div>
 
-        <section class="space-y-6 pt-8">
-          {/* Long vowels note */}
-          <h3 class="text-center font-semibold">
-            Special Note:{" "}
-            <span class="text-xl underline">
-              o + <span class="font-japanese">う</span>
-            </span>{" "}
-            and{" "}
-            <span class="text-xl underline">
-              e + <span class="font-japanese">い</span>
-            </span>
-          </h3>
-
-          <div class="rounded-md border border-blue-700/40 bg-blue-900/20 p-4 leading-relaxed text-blue-200">
-            <p>
-              The <strong>"o"</strong> vowel sound at the end of characters like{" "}
-              <span class="font-japanese">こ・そ・と・も</span>, etc. is
-              extended with <span class="font-japanese">う</span>.
-              <br />
-              Example: <span class="font-japanese">もう</span> → <code>mō</code>
-              , meaning "already" (note: no separate "u" sound).
-            </p>
-
-            <p class="mt-3">
-              The <strong>"eh"</strong> vowel sound is extended with{" "}
-              <span class="font-japanese">い</span>.
-              <br />
-              Example: <span class="font-japanese">えいが</span> →{" "}
-              <code>ēiga</code>, meaning "movie" (note: no separate "i" sound).
-            </p>
-          </div>
-
-          <ChatBubble
-            speaker="sensei"
-            text="These spellings don't add new syllables — they simply stretch the vowel sound."
-          />
-
-          {/* N Section */}
-          <h3 class="pt-8 text-center font-semibold">
-            Special Note: <span class="font-japanese text-xl">ん</span>
-          </h3>
-
-          <div class="rounded-md border border-blue-700/40 bg-blue-900/20 p-4 text-sm leading-relaxed text-blue-200">
-            <p>
-              If a Japanese word contains a single "n" followed by{" "}
-              <span class="font-japanese">な・に・ぬ・ね・の</span>, you
-              shouldn't combine the "n" with the next character.
-            </p>
-
-            <p class="mt-3">
-              Example: <span class="font-japanese">こんにちは</span> →{" "}
-              <code>konnichiwa</code>, <em>not</em> "ko nichiwa."
-            </p>
-
-            <p class="mt-3">
-              Think of it like double letters in English, but even more distinct
-              and important — compare "hello" vs "helo."
-            </p>
-          </div>
-
-          <p class="mt-6 text-center">
-            ✅{" "}
-            <span class="font-japanese text-xl font-semibold">kon'nichiwa</span>
-            <br />❌ ko nichiwa
+        {/* Congratulations */}
+        <div class="space-y-3 text-center">
+          <p class="font-japanese text-2xl font-bold text-dynamic-accent">
+            おめでとうございます
           </p>
-        </section>
-        <p>
-          These timing differences are small but they can change a word's
-          meaning entirely. You'll get more comfortable as you listen and
-          practice.
-        </p>
-
-        {/* Bonus */}
-        <h3 class="pt-6! pb-0! text-center text-2xl font-semibold">
-          Bonus: Japanese Rhythm & Moras
-        </h3>
-        <div>
-          <YouTubeVideo
-            videoId="J_HLY0Rss-g"
-            title="Japanese Pronunciation: Rhythm by Kaname Naito, Nov 21 2022"
-          />
-        </div>
-
-        <ChatBubble
-          speaker="student"
-          text="So just length or pause can totally change what I'm saying?"
-        />
-        <ChatBubble
-          speaker="sensei"
-          text="Exactly. Japanese speakers pick up on these differences immediately."
-        />
-        <ChatAttachment speaker="sensei">
-          <p class="text-sm leading-relaxed italic">
-            Treat double consonants like a hiccup, and long vowels like you're
-            laying down at the dentist with your mouth open. Practice that, and
-            your pronunciation will sound more natural. Probably.
-          </p>
-        </ChatAttachment>
-        <section class="space-y-3 pt-8 text-center">
-          <h3 class="text-2xl font-bold">
-            おめでとうございます → <span>Congratulations</span> 🎉
-          </h3>
-          <p class="text-muted-foreground italic">
+          <p class="text-sm text-white/50 italic">
             You now have full coverage of every sound in Japanese.
           </p>
-        </section>
+        </div>
       </div>
     </div>
   )

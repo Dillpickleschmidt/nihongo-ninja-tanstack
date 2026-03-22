@@ -5,11 +5,7 @@ import Romaji from "@/components/text/Romaji"
 export const Route = createFileRoute(
   "/lessons/_chapter-3/negative-masu-conj",
 )({
-  loader: async () => ({
-    contentBox: {
-      nextButtonLink: "/learn/chapter-3/practice/masu-conjugation",
-    },
-  }),
+
   component: RouteComponent,
 })
 

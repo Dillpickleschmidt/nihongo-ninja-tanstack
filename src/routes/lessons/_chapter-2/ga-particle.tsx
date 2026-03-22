@@ -5,9 +5,7 @@ import SelectText from "@/components/text/MultipleChoiceText"
 import YouTubeVideo from "@/features/youtube/YouTube"
 
 export const Route = createFileRoute("/lessons/_chapter-2/ga-particle")({
-  loader: async () => ({
-    contentBox: { nextButtonLink: "/lessons/_chapter-2/dare" },
-  }),
+
   component: RouteComponent,
 })
 

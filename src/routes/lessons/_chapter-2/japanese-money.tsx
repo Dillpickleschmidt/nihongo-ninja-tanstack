@@ -6,9 +6,7 @@ import YouTubeVideo from "@/features/youtube/YouTube"
 export const Route = createFileRoute(
   "/lessons/_chapter-2/japanese-money",
 )({
-  loader: async () => ({
-    contentBox: { nextButtonLink: "/lessons/_chapter-2/practice-money" },
-  }),
+
   component: RouteComponent,
 })
 

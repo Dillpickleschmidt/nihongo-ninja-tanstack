@@ -12,11 +12,7 @@ import {
 
 export const Route = createFileRoute("/lessons/_chapter-0/numbers-0-100")(
   {
-    loader: async () => ({
-      contentBox: {
-        nextButtonLink: "/lessons/hiragana",
-        size: "lg",
-      },
+    loader: () => ({      maxWidth: "max-w-6xl",
     }),
     component: JapaneseNumbers,
   },

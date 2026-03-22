@@ -4,11 +4,7 @@ import BigNumbers from "@/components/charts/BigNumbers"
 import YouTubeVideo from "@/features/youtube/YouTube"
 
 export const Route = createFileRoute("/lessons/_chapter-2/big-numbers")({
-  loader: async () => ({
-    contentBox: {
-      nextButtonLink: "/lessons/_chapter-2/practice/japanese-money",
-    },
-  }),
+
   component: RouteComponent,
 })
 

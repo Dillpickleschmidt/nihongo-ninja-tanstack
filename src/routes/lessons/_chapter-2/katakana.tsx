@@ -9,9 +9,7 @@ import { ChatAttachment } from "@/components/ChatAttachment"
 import KanaChart from "@/components/charts/KanaChart"
 
 export const Route = createFileRoute("/lessons/_chapter-2/katakana")({
-  loader: async () => ({
-    contentBox: { nextButtonLink: "/lessons/_chapter-2/practice/katakana" },
-  }),
+
   component: RouteComponent,
 })
 

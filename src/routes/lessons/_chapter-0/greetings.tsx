@@ -14,12 +14,7 @@ export const Route = createFileRoute("/lessons/_chapter-0/greetings")({
     const result = await queryFn()
     const vocabItems = (result[setId] ?? []).slice(0, 10)
     return {
-      vocabItems,
-      contentBox: {
-        nextButtonLink:
-          "/vocab?import=genki_1_ch0_greetings-common-expressions",
-      },
-    }
+      vocabItems,    }
   },
   component: RouteComponent,
 })

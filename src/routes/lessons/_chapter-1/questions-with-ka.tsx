@@ -5,13 +5,6 @@ import YouTubeVideo from "@/features/youtube/YouTube"
 export const Route = createFileRoute(
   "/lessons/_chapter-1/questions-with-ka",
 )({
-  loader: async () => {
-    return {
-      contentBox: {
-        nextButtonLink: "/lessons/the-no-particle",
-      },
-    }
-  },
   component: RouteComponent,
 })
 

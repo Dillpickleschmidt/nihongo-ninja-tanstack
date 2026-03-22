@@ -5,11 +5,7 @@ import { ChatAttachment } from "@/components/ChatAttachment"
 import YouTubeVideo from "@/features/youtube/YouTube"
 
 export const Route = createFileRoute("/lessons/_chapter-3/kanji")({
-  loader: async () => ({
-    contentBox: {
-      nextButtonLink: "/lessons/_chapter-3/kanji-radicals",
-    },
-  }),
+
   component: RouteComponent,
 })
 

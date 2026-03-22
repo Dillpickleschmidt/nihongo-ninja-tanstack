@@ -20,9 +20,7 @@ import LessonSummary, {
 export const Route = createFileRoute(
   "/lessons/_chapter-0/dakuten-handakuten",
 )({
-  loader: () => ({
-    contentBox: { nextButtonLink: "/vocab?import=dakuten-handakuten" },
-  }),
+
   component: DakutenHandakuten,
 })
 

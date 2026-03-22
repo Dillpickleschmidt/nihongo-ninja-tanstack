@@ -6,11 +6,7 @@ import Romaji from "@/components/text/Romaji"
 export const Route = createFileRoute(
   "/lessons/_chapter-3/kanji-radicals",
 )({
-  loader: async () => ({
-    contentBox: {
-      nextButtonLink: "/learn/chapter-3/chapter-1-kanji-part-1",
-    },
-  }),
+
   component: RouteComponent,
 })
 
