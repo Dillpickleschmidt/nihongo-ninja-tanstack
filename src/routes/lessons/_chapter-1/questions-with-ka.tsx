@@ -1,400 +1,497 @@
-// routes/lessons/questions-ka.tsx
 import { createFileRoute } from "@tanstack/solid-router"
+import Romaji from "@/components/text/Romaji"
 import YouTubeVideo from "@/features/youtube/YouTube"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import GlowBox from "@/features/lessons/components/GlowBox"
+import AsideBlock from "@/features/lessons/components/AsideBlock"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute(
   "/lessons/_chapter-1/questions-with-ka",
 )({
-  component: RouteComponent,
+  component: QuestionsWithKa,
 })
 
-function RouteComponent() {
+function QuestionsWithKa() {
   return (
-    <div class="mb-32">
-      {/* HEADER */}
-      <header class="mx-auto max-w-3xl px-6 py-14 text-center">
-        <h1 class="mb-3 text-4xl font-extrabold tracking-tight">
-          Forming Questions With The{" "}
-          <span class="font-japanese text-red-500">か</span> Particle
-        </h1>
-        <div class="mx-auto mb-6 h-1 w-20 rounded bg-emerald-400" />
-      </header>
+    <div class="relative pb-32">
+      {/* Background character */}
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+        か
+      </span>
 
-      <main class="mx-auto max-w-3xl space-y-14 px-6 leading-relaxed">
+      <LessonHeader
+        chapter="Chapter 1 · Grammar"
+        title={
+          <>
+            Questions with <span class="text-dynamic-accent">か</span>
+          </>
+        }
+        subtitle="How one particle turns any statement into a question."
+      >
+        <OverviewItem>
+          Forming yes/no questions with{" "}
+          <span class="font-japanese font-semibold text-white/60">か</span>
+        </OverviewItem>
+        <OverviewItem>
+          Question words:{" "}
+          <span class="font-japanese font-semibold text-white/60">
+            なん・なに
+          </span>
+        </OverviewItem>
+        <OverviewItem>Rising vs. falling intonation</OverviewItem>
+      </LessonHeader>
+
+      <div class="space-y-14 px-8">
         {/* Intro Video */}
-        <YouTubeVideo
-          videoId="_bG8RWRAaJM"
-          title="か (ka) #9 Ultimate Japanese Particle Guide"
-          credit="JapanesePod101.com"
-          startTime={7}
-        />
+        <div>
+          <YouTubeVideo
+            videoId="_bG8RWRAaJM"
+            title="か (ka) #9 Ultimate Japanese Particle Guide"
+            credit="JapanesePod101.com"
+            startTime={7}
+          />
+        </div>
 
-        {/* INTRODUCTION */}
-        <section>
-          <h2 class="mb-4 text-center text-2xl font-semibold">Introduction</h2>
-          <p>
-            The <span class="font-japanese">か</span> particle is a crucial
-            element in Japanese grammar, primarily used to form questions,
-            though it has other uses as well. Understanding how to use{" "}
-            <span class="font-japanese">か</span> will help you ask and
-            understand questions in Japanese, enhancing your conversational
-            skills.
-          </p>
-        </section>
-
-        {/* YES/NO QUESTIONS */}
-        <section>
-          <h2 class="mb-4 text-center text-2xl font-semibold">
-            Forming Yes/No Questions
-          </h2>
-          <p>
+        {/* Yes/No Questions */}
+        <div class="space-y-4">
+          <SectionLabel>Forming yes/no questions</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             To form a yes/no question in Japanese, simply add{" "}
-            <span class="font-japanese text-xl">か</span> to the end of a
-            statement.
+            <span class="font-japanese font-semibold text-dynamic-accent">
+              か
+            </span>{" "}
+            to the end of a statement.
           </p>
-          <ul class="my-4 ml-6 list-disc space-y-2">
-            <li>
-              <span class="font-bold">Statement: </span>
-              <span class="font-japanese text-xl font-bold">
+
+          <div class="space-y-3">
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="text-xs font-semibold uppercase tracking-wider text-white/30">
+                Statement
+              </p>
+              <p class="mt-1 font-japanese text-xl font-semibold text-white/90">
                 がくせいです。
-              </span>{" "}
-              - <span class="text-muted-foreground">(I am)</span> a student.
-            </li>
-            <li>
-              <span class="font-bold">Question: </span>
-              <span class="font-japanese text-xl font-bold">
-                がくせいです<span class="text-red-500">か</span>。
-              </span>{" "}
-              - Are <span class="text-muted-foreground">(you)</span> a student?
-            </li>
-          </ul>
-          <p class="text-muted-foreground text-sm italic">
+              </p>
+              <p class="mt-1 text-sm text-white/50">
+                <span class="text-white/40">(I am)</span> a student.
+              </p>
+            </div>
+
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="text-xs font-semibold uppercase tracking-wider text-white/30">
+                Question
+              </p>
+              <p class="mt-1 font-japanese text-xl font-semibold text-white/90">
+                がくせいです
+                <span class="text-dynamic-accent">か</span>。
+              </p>
+              <p class="mt-1 text-sm text-white/50">
+                Are <span class="text-white/40">(you)</span> a student?
+              </p>
+            </div>
+          </div>
+
+          <p class="text-sm italic text-white/40">
             Notice that in Japanese, it is not customary to use a question mark
             when the <span class="font-japanese">か</span> particle is present,
             though it is sometimes used in casual writing for clarity.
           </p>
-        </section>
+        </div>
 
-        {/* QUESTION WORDS */}
-        <section>
-          <h2 class="mb-4 text-center text-2xl font-semibold">
-            Question Words
-          </h2>
-          <p>
+        {/* Question Words */}
+        <div class="space-y-4">
+          <SectionLabel>Question words</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             In addition to yes/no questions, Japanese questions often use
             specific question words, such as:
           </p>
-          <div class="flex justify-center py-4">
-            <ul class="list-disc space-y-1 text-xl">
-              <li>
-                <span class="font-japanese text-2xl font-semibold">なん</span>{" "}
-                or{" "}
-                <span class="font-japanese text-2xl font-semibold">なに</span> -
-                what
-              </li>
-              <li>
-                <span class="font-japanese text-2xl font-semibold">どこ</span> -
-                where
-              </li>
-              <li>
-                <span class="font-japanese text-2xl font-semibold">だれ</span> -
-                who
-              </li>
-              <li>
-                <span class="font-japanese text-2xl font-semibold">いつ</span> -
-                when
-              </li>
-              <li>
-                <span class="font-japanese text-2xl font-semibold">どう</span> -
-                how
-              </li>
-              <li>
-                <span class="font-japanese text-2xl font-semibold">なぜ</span> -
-                why
-              </li>
-            </ul>
+
+          <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <QuestionWordCard jp="なん / なに" en="what" />
+            <QuestionWordCard jp="どこ" en="where" />
+            <QuestionWordCard jp="だれ" en="who" />
+            <QuestionWordCard jp="いつ" en="when" />
+            <QuestionWordCard jp="どう" en="how" />
+            <QuestionWordCard jp="なぜ" en="why" />
           </div>
-          <p>
+
+          <p class="leading-relaxed text-white/70">
             These question words are typically followed by{" "}
-            <span class="font-japanese text-xl">か</span> to form a complete
-            question.
+            <span class="font-japanese font-semibold text-white/90">か</span> to
+            form a complete question.
           </p>
-          <p class="mt-2 italic">
+          <p class="leading-relaxed italic text-white/50">
             In this lesson, we'll focus on using{" "}
-            <span class="font-japanese text-xl not-italic">なん・なに</span>{" "}
-            with the <span class="font-japanese text-xl not-italic">か</span>{" "}
+            <span class="font-japanese not-italic text-white/70">なん・なに</span>{" "}
+            with the{" "}
+            <span class="font-japanese not-italic text-white/70">か</span>{" "}
             particle.
           </p>
+        </div>
 
-          <div class="mt-6">
-            <p class="font-bold">Example:</p>
-            <ul class="ml-6 list-disc">
+        {/* Example breakdown */}
+        <div class="space-y-4">
+          <GlowBox>
+            <p class="text-center font-japanese text-2xl font-semibold text-white/90">
+              せんこうはなんですか。
+            </p>
+          </GlowBox>
+
+          <div class="rounded-lg bg-white/[0.04] p-4">
+            <ul class="space-y-1.5 text-sm leading-relaxed text-white/60">
               <li>
-                <span class="font-japanese text-xl">
-                  せんこうはなんですか。
-                </span>
-                <ul class="ml-6 list-disc">
-                  <li>
-                    <span class="font-japanese">せんこう</span> - major
-                  </li>
-                  <li>
-                    <span class="font-japanese">は</span> - topic particle
-                  </li>
-                  <li>
-                    <span class="font-japanese">なん</span> - what
-                  </li>
-                  <li>
-                    <span class="font-japanese">です</span> - is
-                  </li>
-                  <li>
-                    <span class="font-japanese">か</span> - question particle
-                  </li>
-                </ul>
+                <span class="font-japanese font-semibold text-white/80">
+                  せんこう
+                </span>{" "}
+                - major
+              </li>
+              <li>
+                <span class="font-japanese font-semibold text-white/80">は</span>{" "}
+                - topic particle
+              </li>
+              <li>
+                <span class="font-japanese font-semibold text-white/80">
+                  なん
+                </span>{" "}
+                - what
+              </li>
+              <li>
+                <span class="font-japanese font-semibold text-white/80">
+                  です
+                </span>{" "}
+                - is
+              </li>
+              <li>
+                <span class="font-japanese font-semibold text-white/80">か</span>{" "}
+                - question particle
               </li>
             </ul>
           </div>
 
-          <p class="mt-4">
+          <p class="leading-relaxed text-white/70">
             Literally:{" "}
-            <span class="font-bold">As for your major, what is it?</span>
+            <span class="font-semibold text-white/90">
+              As for your major, what is it?
+            </span>
           </p>
 
-          <p class="mt-4 font-bold">Responses:</p>
-          <ul class="ml-6 list-disc space-y-1">
-            <li>
-              <span class="font-japanese text-xl">せんこうはえいごです。</span>{" "}
-              - My major is English.
-            </li>
-            <li>
-              Or just: <span class="font-japanese text-xl">えいごです。</span> -
-              It's English.
-            </li>
-          </ul>
-        </section>
+          <div class="space-y-2">
+            <p class="text-sm font-medium text-white/40">Responses</p>
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-white/80">
+                せんこうはえいごです。
+              </p>
+              <p class="mt-1 text-sm text-white/40">My major is English.</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-white/80">えいごです。</p>
+              <p class="mt-1 text-sm text-white/40">It's English.</p>
+            </div>
+          </div>
+        </div>
 
         {/* なん vs なに */}
-        <section>
-          <h2 class="mb-4 text-center text-2xl font-semibold">
-            <span class="font-japanese text-sky-500">なん</span> vs{" "}
-            <span class="font-japanese text-sky-500">なに</span>
-          </h2>
-          <h2 class="font-japanese text-center text-3xl text-sky-500">何</h2>
-          <p class="mt-4">
-            Both forms mean <span class="font-bold italic">"what"</span> and
-            share <span class="font-japanese text-xl text-sky-500">何</span>,
-            but are used in slightly different contexts:
+        <div class="space-y-6">
+          <SectionLabel>
+            <span class="font-japanese text-dynamic-accent">なん</span> vs{" "}
+            <span class="font-japanese text-dynamic-accent">なに</span>
+          </SectionLabel>
+          <p class="text-center font-japanese text-3xl text-dynamic-accent">
+            何 <span class="text-xl text-white/40">(なん / なに)</span>
           </p>
 
-          <div class="mt-6 space-y-2">
-            <h3 class="font-japanese text-2xl font-bold text-sky-500">なに</h3>
-            <ul class="ml-6 list-disc">
-              <li>Stands on its own.</li>
-              <li>
-                Example:{" "}
-                <span class="font-japanese text-xl">なにをしますか。</span> -
-                What will you do?
-              </li>
-            </ul>
-          </div>
-
-          <div class="mt-6 space-y-2">
-            <h3 class="font-japanese text-2xl font-bold text-sky-500">なん</h3>
-            <ul class="ml-6 list-disc">
-              <li>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-xl font-bold text-dynamic-accent">
+                なに
+              </p>
+              <p class="mt-2 text-sm text-white/60">Stands on its own.</p>
+              <p class="mt-2 text-sm text-white/40">
+                <span class="font-japanese text-white/70">
+                  <Romaji romaji={<span class="text-xs text-white/40">何</span>} class="-mt-1 leading-none">なに</Romaji>をしますか。
+                </span>{" "}
+                - What will you do?
+              </p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-xl font-bold text-dynamic-accent">
+                なん
+              </p>
+              <p class="mt-2 text-sm text-white/60">
                 Before words beginning with d / n / t sounds, and with counters.
-              </li>
-              <li>
-                Example: <span class="font-japanese text-xl">なんですか。</span>{" "}
-                - What is it?
-              </li>
-            </ul>
+              </p>
+              <p class="mt-2 text-sm text-white/40">
+                <span class="font-japanese text-white/70"><Romaji romaji={<span class="text-xs text-white/40">何</span>} class="-mt-1 leading-none">なん</Romaji>ですか。</span> -
+                What is it?
+              </p>
+            </div>
           </div>
 
-          <div class="mt-6">
-            <h3 class="mb-2 text-xl font-bold">Quick Tips</h3>
-            <ul class="ml-6 list-disc space-y-1">
+          <AsideBlock label="Quick tips">
+            <ul class="mt-2 space-y-1.5 text-sm leading-relaxed text-white/60">
               <li>Use なん before d, n, t sounds, and counters.</li>
               <li>Use なに in other cases.</li>
               <li>
-                Don’t overthink — you’ll naturally pick it up with practice.
+                Don't overthink — you'll naturally pick it up with practice.
               </li>
             </ul>
-          </div>
-        </section>
+          </AsideBlock>
+        </div>
 
         {/* Example Sentences */}
-        <section>
-          <h2 class="mb-6 text-center text-2xl font-semibold">
-            か Example Sentences
-          </h2>
-          <ExampleQA
-            q="いまなんじですか。"
-            a="くじです。"
-            gloss="It is nine o’clock."
-            title="What time is it now?"
-          />
-          <ExampleQA
-            q="ゆきさんはなんさいですか。"
-            a="じゅうきゅうさいです。"
-            gloss="I’m nineteen years old."
-            title="How old are you, Yuki?"
-          />
-          <ExampleQA
-            q="なんねんせいですか。"
-            a="にねんせいです。"
-            gloss="I’m a sophomore."
-            title="What year are you in college?"
-          />
-          <ExampleQA
-            q="でんわばんごうはなんばんですか。"
-            a="はちろくななごさんぜろきゅうです。"
-            gloss="It is 867-5309."
-            title="What is your telephone number?"
-          />
-        </section>
+        <div class="space-y-4">
+          <SectionLabel>
+            <span class="font-japanese text-white/50">か</span> example
+            sentences
+          </SectionLabel>
+          <div class="space-y-3">
+            <ExampleQA
+              q="いまなんじですか。"
+              a="くじです。"
+              gloss="It is nine o'clock."
+              title="What time is it now?"
+            />
+            <ExampleQA
+              q="ゆきさんはなんさいですか。"
+              a="じゅうきゅうさいです。"
+              gloss="I'm nineteen years old."
+              title="How old are you, Yuki?"
+            />
+            <ExampleQA
+              q="なんねんせいですか。"
+              a="にねんせいです。"
+              gloss="I'm a sophomore."
+              title="What year are you in college?"
+            />
+            <ExampleQA
+              q="でんわばんごうはなんばんですか。"
+              a="はちろくななごさんぜろきゅうです。"
+              gloss="It is 867-5309."
+              title="What is your telephone number?"
+            />
+          </div>
+        </div>
 
         {/* Non-Question Uses */}
-        <section>
-          <h2 class="mb-6 text-center text-2xl font-semibold">
-            Non-Question Uses of{" "}
-            <span class="font-japanese text-red-500">か</span>
-          </h2>
-          <ul class="ml-6 list-disc space-y-6">
-            <li>
-              <h4 class="mb-2 font-bold">Saying “or”:</h4>
-              <p>
-                日本人か韓国人 - Japanese or Korean. Here, か works like “or.”
+        <div class="space-y-4">
+          <SectionLabel>
+            Non-question uses of{" "}
+            <span class="font-japanese text-white/50">か</span>
+          </SectionLabel>
+
+          <div class="space-y-3">
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="mb-2 text-sm font-semibold text-white/80">
+                Saying "or"
               </p>
-            </li>
-            <li>
-              <h4 class="mb-2 font-bold">Expressing Surprise / Uncertainty:</h4>
-              <p>
-                そうですか - “Is that so?” / “Oh, really?” with nuance of mild
+              <p class="text-sm leading-relaxed text-white/60">
+                日本人か韓国人 - Japanese or Korean. Here, か works like "or."
+              </p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="mb-2 text-sm font-semibold text-white/80">
+                Expressing surprise / uncertainty
+              </p>
+              <p class="text-sm leading-relaxed text-white/60">
+                そうですか - "Is that so?" / "Oh, really?" with nuance of mild
                 surprise.
               </p>
-            </li>
-            <li>
-              <h4 class="mb-2 font-bold">Polite Confirmations:</h4>
-              <p>
-                そうですね。- That’s right. <br />
-                そうですか。- I see. / Is that so? Indicates attentiveness.
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="mb-2 text-sm font-semibold text-white/80">
+                Polite confirmations
               </p>
-            </li>
-          </ul>
-        </section>
+              <div class="space-y-1 text-sm leading-relaxed text-white/60">
+                <p>そうですね。- That's right.</p>
+                <p>
+                  そうですか。- I see. / Is that so? Indicates attentiveness.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Intonation */}
-        <section>
-          <h2 class="mb-6 text-center text-2xl font-semibold">Intonation</h2>
-          <p>
+        <div class="space-y-6">
+          <SectionLabel>Intonation</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             Intonation plays a crucial role with{" "}
-            <span class="font-japanese">か</span>. Rising or falling tones can
-            change whether you are seeking information, politely confirming, or
-            showing realization.
+            <span class="font-japanese font-semibold text-white/90">か</span>.
+            Rising or falling tones can change whether you are seeking
+            information, politely confirming, or showing realization.
           </p>
 
-          <h3 class="mt-6 text-center text-xl font-semibold">
-            Rising Intonation (<span class="text-yellow-400">↑</span>)
-          </h3>
-          <p>
-            Rising intonation is often used in direct questions, especially when
-            seeking new information or confirmation — just like in English.
-          </p>
-          <ul class="mt-4 ml-6 list-disc space-y-4">
-            <li>
-              <h4 class="mb-1 font-bold">Example 1:</h4>
-              <p>
-                Q: <span class="font-japanese text-xl">いまなんじですか。</span>{" "}
-                – What time is it now?{" "}
-              </p>
-              <p>
-                A: <span class="font-japanese text-xl">くじです。</span> – It is
-                nine o’clock.
-              </p>
-            </li>
-            <li>
-              <h4 class="mb-1 font-bold">Example 2:</h4>
-              <p>
-                Q:{" "}
-                <span class="font-japanese text-xl">
-                  さとうさんはがくせいですか。
-                </span>{" "}
-                – Are you (Satou) a student?{" "}
-              </p>
-              <p>
-                A:{" "}
-                <span class="font-japanese text-xl">はい、がくせいです。</span>{" "}
-                – Yes, I am a student.
-              </p>
-            </li>
-          </ul>
+          {/* Rising */}
+          <div class="space-y-4">
+            <p class="text-center text-lg font-semibold text-white/80">
+              Rising Intonation (
+              <span class="text-yellow-400">↑</span>)
+            </p>
+            <p class="leading-relaxed text-white/70">
+              Rising intonation is often used in direct questions, especially
+              when seeking new information or confirmation — just like in
+              English.
+            </p>
+            <div class="space-y-3">
+              <div class="rounded-lg bg-white/[0.04] p-4">
+                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+                  Example 1
+                </p>
+                <div class="space-y-1 text-sm leading-relaxed text-white/60">
+                  <p>
+                    Q:{" "}
+                    <span class="font-japanese text-base text-white/80">
+                      いまなんじですか
+                    </span>
+                    <span class="text-yellow-400">↑</span>。 – What time is it
+                    now?
+                  </p>
+                  <p>
+                    A:{" "}
+                    <span class="font-japanese text-base text-white/80">
+                      くじです。
+                    </span>{" "}
+                    – It is nine o'clock.
+                  </p>
+                </div>
+              </div>
+              <div class="rounded-lg bg-white/[0.04] p-4">
+                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+                  Example 2
+                </p>
+                <div class="space-y-1 text-sm leading-relaxed text-white/60">
+                  <p>
+                    Q:{" "}
+                    <span class="font-japanese text-base text-white/80">
+                      さとうさんはがくせいですか
+                    </span>
+                    <span class="text-yellow-400">↑</span>。 – Are you (Satou)
+                    a student?
+                  </p>
+                  <p>
+                    A:{" "}
+                    <span class="font-japanese text-base text-white/80">
+                      はい、がくせいです。
+                    </span>{" "}
+                    – Yes, I am a student.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <h3 class="mt-10 text-center text-xl font-semibold">
-            Falling Intonation (<span class="text-indigo-400">↓</span>)
-          </h3>
-          <p>
-            Falling intonation is more common when confirming information you
-            just heard, showing realization, or mild surprise.
-          </p>
-          <ul class="mt-4 ml-6 list-disc space-y-4">
-            <li>
-              <h4 class="mb-1 font-bold">Example 1:</h4>
-              <p>
-                A:{" "}
-                <span class="font-japanese text-xl">
-                  あのう、いまなんじですか。
-                </span>{" "}
-                – Excuse me, what time is it?
-              </p>
-              <p>
-                B: <span class="font-japanese text-xl">いま、１０じです。</span>{" "}
-                – Right now it’s 10 o’clock.
-              </p>
-              <p>
-                A:{" "}
-                <span class="font-japanese text-xl">
-                  あ、１０じですか。ありがとうございます。
-                </span>{" "}
-                – Oh, it’s 10 o’clock. Thank you.
-              </p>
-            </li>
-            <li>
-              <h4 class="mb-1 font-bold">Example 2:</h4>
-              <p>
-                A:{" "}
-                <span class="font-japanese text-xl">はじめまして。Aです。</span>{" "}
-                – Nice to meet you. I’m A.
-              </p>
-              <p>
-                B:{" "}
-                <span class="font-japanese text-xl">
-                  ああ、Aさんですか。はじめまして。Bです。
-                </span>{" "}
-                – Oh, you’re A? Nice to meet you. I’m B.
-              </p>
-            </li>
-          </ul>
-        </section>
+          {/* Falling */}
+          <div class="space-y-4">
+            <p class="text-center text-lg font-semibold text-white/80">
+              Falling Intonation (
+              <span class="text-indigo-400">↓</span>)
+            </p>
+            <p class="leading-relaxed text-white/70">
+              Falling intonation is more common when confirming information you
+              just heard, showing realization, or mild surprise.
+            </p>
+            <div class="space-y-3">
+              <div class="rounded-lg bg-white/[0.04] p-4">
+                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+                  Example 1
+                </p>
+                <div class="space-y-1 text-sm leading-relaxed text-white/60">
+                  <p>
+                    A:{" "}
+                    <span class="font-japanese text-base text-white/80">
+                      あのう、いまなんじですか
+                    </span>
+                    <span class="text-yellow-400">↑</span>。 – Excuse me, what
+                    time is it?
+                  </p>
+                  <p>
+                    B:{" "}
+                    <span class="font-japanese text-base text-white/80">
+                      いま、１０じです。
+                    </span>{" "}
+                    – Right now it's 10 o'clock.
+                  </p>
+                  <p>
+                    A:{" "}
+                    <span class="font-japanese text-base text-white/80">
+                      あ、１０じですか
+                    </span>
+                    <span class="text-indigo-400">↓</span>
+                    <span class="font-japanese text-base text-white/80">
+                      。ありがとうございます。
+                    </span>{" "}
+                    – Oh, it's 10 o'clock. Thank you.
+                  </p>
+                </div>
+              </div>
+              <div class="rounded-lg bg-white/[0.04] p-4">
+                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+                  Example 2
+                </p>
+                <div class="space-y-1 text-sm leading-relaxed text-white/60">
+                  <p>
+                    A:{" "}
+                    <span class="font-japanese text-base text-white/80">
+                      はじめまして。Aです。
+                    </span>{" "}
+                    – Nice to meet you. I'm A.
+                  </p>
+                  <p>
+                    B:{" "}
+                    <span class="font-japanese text-base text-white/80">
+                      ああ、Aさんですか
+                    </span>
+                    <span class="text-indigo-400">↓</span>
+                    <span class="font-japanese text-base text-white/80">
+                      。はじめまして。Bです。
+                    </span>{" "}
+                    – Oh, you're A? Nice to meet you. I'm B.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        {/* Conclusion */}
-        <section>
-          <h2 class="pt-10 text-center text-2xl font-semibold">Conclusion</h2>
-          <p class="mt-4">
-            Mastering the use of the{" "}
-            <span class="font-japanese text-red-500">か</span> particle is
-            essential for forming questions naturally in Japanese. It shapes
-            statements into yes/no questions, works with question words, conveys
-            polite confirmations, and even substitutes for "or". Intonation adds
-            an extra layer to the meaning. Once you practice listening and using
-            it yourself, か will quickly feel like second nature.
-          </p>
-        </section>
-      </main>
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            Add か to the end of a statement to make it a question
+          </SummaryItem>
+          <SummaryItem>
+            なん before d/n/t sounds and counters, なに otherwise
+          </SummaryItem>
+          <SummaryItem>
+            Rising intonation (↑) asks, falling (↓) confirms
+          </SummaryItem>
+          <SummaryItem>か between two options means "or"</SummaryItem>
+          <SummaryItem>
+            そうですか expresses mild surprise or acknowledgment
+          </SummaryItem>
+        </LessonSummary>
+      </div>
     </div>
   )
 }
 
-/* --- Reusable component for Q/A examples --- */
+/* --- Question Word Card --- */
+function QuestionWordCard(props: { jp: string; en: string }) {
+  return (
+    <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center">
+      <p class="font-japanese text-xl font-semibold text-white/90">
+        {props.jp}
+      </p>
+      <p class="mt-1 text-sm text-white/40">{props.en}</p>
+    </div>
+  )
+}
+
+/* --- Example Q/A --- */
 function ExampleQA(props: {
   q: string
   a: string
@@ -402,17 +499,21 @@ function ExampleQA(props: {
   title: string
 }) {
   return (
-    <div class="mb-6">
-      <h4 class="mb-1 font-bold">{props.title}</h4>
-      <ul class="ml-6 list-disc space-y-1">
-        <li>
-          A: <span class="font-japanese text-xl">{props.q}</span>
-        </li>
-        <li>
-          B: <span class="font-japanese text-xl">{props.a}</span> –{" "}
+    <div class="rounded-lg bg-white/[0.04] p-4">
+      <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/30">
+        {props.title}
+      </p>
+      <div class="space-y-1 text-sm leading-relaxed text-white/60">
+        <p>
+          A:{" "}
+          <span class="font-japanese text-base text-white/80">{props.q}</span>
+        </p>
+        <p>
+          B:{" "}
+          <span class="font-japanese text-base text-white/80">{props.a}</span> –{" "}
           {props.gloss}
-        </li>
-      </ul>
+        </p>
+      </div>
     </div>
   )
 }

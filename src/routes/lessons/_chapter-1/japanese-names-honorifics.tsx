@@ -1,83 +1,90 @@
-// routes/lessons/japanese-names-honorifics.tsx
+import type { JSX } from "solid-js"
+import { Show } from "solid-js"
 import { createFileRoute } from "@tanstack/solid-router"
 import Furigana from "@/components/text/Furigana"
 import { Button } from "@/components/ui/button"
 import YouTubeVideo from "@/features/youtube/YouTube"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import GlowBox from "@/features/lessons/components/GlowBox"
+import AsideBlock from "@/features/lessons/components/AsideBlock"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute(
   "/lessons/_chapter-1/japanese-names-honorifics",
 )({
-  component: RouteComponent,
+  component: JapaneseNamesHonorifics,
 })
 
-function RouteComponent() {
+function JapaneseNamesHonorifics() {
   return (
-    <div class="mb-32">
-      {/* HEADER */}
-      <header class="mx-auto max-w-3xl px-6 py-14 text-center">
-        <h1 class="mb-3 text-4xl font-extrabold tracking-tight">
-          Japanese Names &amp; Honorifics
-        </h1>
-        <div class="mx-auto mb-6 h-1 w-20 rounded bg-emerald-400" />
-        <p class="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed">
-          This one's really fun because by the end of this lesson, whenever you
-          watch something in Japanese, you'll be able to pick up important
-          information that simply won't be conveyed in English subs, enriching
-          your experience more than those who haven't learned Japanese.
-        </p>
-      </header>
+    <div class="relative pb-32">
+      {/* Background character */}
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+        様
+      </span>
 
-      {/* MAIN LESSON CONTENT */}
-      <main class="mx-auto max-w-3xl space-y-14 px-6 leading-relaxed">
+      <LessonHeader
+        chapter="Chapter 1 · Getting Started"
+        title={<>Names & Honorifics</>}
+        subtitle="How Japanese names work, and the suffixes that define your relationship to someone."
+      >
+        <OverviewItem>Japanese name order and structure</OverviewItem>
+        <OverviewItem>Common honorific suffixes</OverviewItem>
+        <OverviewItem>Choosing the right level of formality</OverviewItem>
+      </LessonHeader>
+
+      <div class="space-y-14 px-8">
         {/* Structure of Names */}
-        <section>
-          <h2 class="mb-4 text-center text-2xl font-semibold">
-            Structure of Japanese Names
-          </h2>
-          <p>
+        <div class="space-y-4">
+          <SectionLabel>Structure of Japanese names</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             Japanese names typically consist of a family name (surname) followed
-            by a given name. This order is the <strong>opposite</strong> of
+            by a given name. This order is the{" "}
+            <span class="font-semibold text-white/90">opposite</span> of
             Western naming conventions where the given name usually comes first.
           </p>
 
-          <div class="my-6 text-center">
-            <h4 class="mb-2 text-xl font-bold">Example:</h4>
-            <h3 class="text-2xl">
+          <div class="rounded-xl bg-white/[0.04] p-6 text-center">
+            <p class="font-japanese text-2xl">
               <Furigana furigana={<span class="text-sm">たなか</span>}>
                 田中
               </Furigana>{" "}
               <Furigana furigana={<span class="text-sm">たろう</span>}>
                 太郎
               </Furigana>{" "}
-              <span class="text-[1.375rem]">(Tanaka Tarou)</span>
-            </h3>
-            <p class="text-muted-foreground mt-1">(last—first)</p>
+              <span class="text-[1.375rem] text-white/60">(Tanaka Tarou)</span>
+            </p>
+            <p class="mt-1 text-sm text-white/40">(last—first)</p>
           </div>
 
-          <ul class="space-y-2">
+          <ul class="space-y-2 leading-relaxed text-white/70">
             <li>
-              <span class="font-bold">Family Name: </span>
+              <span class="font-semibold text-white/90">Family Name: </span>
               <span class="font-japanese">田中</span> (Tanaka) - Means{" "}
               <em>within rice fields</em>.
             </li>
             <li>
-              <span class="font-bold">Given Name: </span>
+              <span class="font-semibold text-white/90">Given Name: </span>
               <span class="font-japanese">太郎</span> (Tarou) - Means{" "}
               <em>great son</em>.
             </li>
           </ul>
-          <p class="text-muted-foreground mt-3 text-sm italic">
+          <p class="text-sm italic text-white/40">
             *Family names often refer to geographical features or parts of
             nature.
           </p>
 
-          <div class="mt-6 text-center">
-            <h4 class="mb-3 text-xl font-semibold">
+          <div class="rounded-xl bg-white/[0.04] p-6 text-center">
+            <p class="mb-3 leading-relaxed text-white/70">
               Foreign names are usually written in katakana and in their native
               order.
-            </h4>
-            <h4 class="text-lg font-bold">Example:</h4>
-            <h3 class="mt-2 text-xl">
+            </p>
+            <p class="font-japanese text-xl">
               <Furigana furigana={<span class="text-sm">とむ</span>}>
                 トム
               </Furigana>
@@ -85,53 +92,41 @@ function RouteComponent() {
               <Furigana furigana={<span class="text-sm">くるーず</span>}>
                 クルーズ
               </Furigana>{" "}
-              <span class="text-lg">(Tom Cruise)</span>
-            </h3>
+              <span class="text-lg text-white/60">(Tom Cruise)</span>
+            </p>
+            <p class="mt-3 text-sm italic text-white/40">
+              (more on katakana in the next chapter)
+            </p>
           </div>
-        </section>
+        </div>
 
         {/* Cultural Differences */}
-        <section>
-          <h2 class="mb-4 text-center text-2xl font-semibold">
-            Cultural Differences in Addressing People
-          </h2>
+        <div class="space-y-6">
+          <SectionLabel>
+            Cultural differences in addressing people
+          </SectionLabel>
 
-          <h4 class="text-xl font-bold">Family Name vs. Given Name</h4>
-          <ul class="list-disc space-y-2 pl-6">
-            <li>
-              <span class="font-bold">In Japan: </span>It is customary to
-              address people by their family names rather than their given
-              names, especially in formal or new relationships. Using the family
-              name with an appropriate honorific shows respect and politeness.
-            </li>
-            <li>
-              <span class="font-bold">In Western Cultures: </span>It is more
-              common to use given names, even in formal situations.
-            </li>
-          </ul>
-
-          <h4 class="mt-6 text-xl font-bold">
-            Importance of Using Family Names
-          </h4>
-          <p>
-            <span class="font-bold">Formality and Respect: </span>In Japan,
-            addressing someone by their given name without permission is
-            considered <strong>very rude and presumptuous</strong>. It implies a
-            level of intimacy or familiarity that is not appropriate in most
+          <p class="leading-relaxed text-white/70">
+            In Japan, people address each other by family name, not given name.
+            Using someone's given name without permission is considered{" "}
+            <span class="font-semibold text-white/90">
+              very rude and presumptuous
+            </span>
+            . It implies a level of intimacy that is not appropriate in most
             social and professional settings.
           </p>
 
-          <h3 class="mt-6 text-center text-2xl font-medium">
-            Always use the family name with the appropriate honorific unless you
-            have been explicitly invited to use the given name.
-          </h3>
-        </section>
+          <GlowBox>
+            <p class="text-center text-lg font-semibold text-white/90">
+              Always use the family name with the appropriate honorific unless
+              you have been explicitly invited to use the given name.
+            </p>
+          </GlowBox>
+        </div>
 
-        {/* HONORIFICS */}
-        <section>
-          <h2 class="mb-4 text-center text-2xl font-semibold">
-            Honorifics: Politeness in Address
-          </h2>
+        {/* Honorifics */}
+        <div class="space-y-4">
+          <SectionLabel>Honorifics: politeness in address</SectionLabel>
 
           <YouTubeVideo
             videoId="5rOHpkpYMIM"
@@ -139,268 +134,237 @@ function RouteComponent() {
             credit="That Japanese Man Yuta"
           />
 
-          <p class="mt-6">
+          <p class="leading-relaxed text-white/70">
             Honorifics are suffixes added to names to convey respect, formality,
             and the relationship between the speaker and the person being
-            addressed. Here are some common honorifics:
+            addressed.
           </p>
+        </div>
 
-          {/* Honorific sections */}
-          <HonorificSection
-            jp="さん"
-            en="San"
-            description={[
-              {
-                label: "Usage",
-                text: "Most common honorific, gender-neutral.",
-              },
-              {
-                label: "Context",
-                text: 'Used in most polite interactions, similar to "Mr./Ms." in English.',
-              },
-            ]}
-            story={{
-              title: "Office setting",
-              characters: "You (a new employee), Mr. Tanaka (your colleague)",
-              text: `On your first day at the office, you meet Mr. Tanaka, your colleague. You say, "Good morning, Tanaka-san. My name is [Your Name]." Using さん shows respect and politeness, making your introduction smooth and professional.`,
-            }}
-          />
+        {/* Individual Honorific Sections */}
+        <HonorificSection
+          jp="さん"
+          en="San"
+          description={[
+            {
+              label: "Usage",
+              text: "Most common honorific, gender-neutral.",
+            },
+            {
+              label: "Context",
+              text: 'Used in most polite interactions, similar to "Mr./Ms." in English.',
+            },
+          ]}
+          story={{
+            title: "Office setting",
+            characters: "Her, Nakamura (coworker)",
+            text: [
+              `"Is Nakamura-san in today?" She leans into the office. "I need her sign-off before three."`,
+            ],
+          }}
+        />
 
-          <HonorificSection
-            jp="ちゃん"
-            en="Chan"
-            description={[
-              {
-                label: "Usage",
-                text: "Informal, affectionate, typically used for children, close friends, or significant others.",
-              },
-              {
-                label: "Context",
-                text: "Conveys endearment and closeness.",
-              },
-            ]}
-            story={{
-              title: "Family gathering",
-              characters: "You (a family member), little Sakura (your niece)",
-              text: `At a family gathering, you say, "Sakura-chan, come here and give me a hug!" Using ちゃん conveys your affection and closeness, making Sakura giggle and run into your arms.`,
-            }}
-          />
+        <HonorificSection
+          jp="ちゃん"
+          en="Chan"
+          description={[
+            {
+              label: "Usage",
+              text: "Informal, affectionate, typically used for children, close friends, or significant others.",
+            },
+            {
+              label: "Context",
+              text: "Conveys endearment and closeness.",
+            },
+          ]}
+          story={{
+            title: "Family gathering",
+            characters: "Her, Sakura (her niece)",
+            text: [
+              `"Sakura-chan, come look at this!" She crouches down and holds out her phone. "There's a cat outside that looks just like yours."`,
+            ],
+          }}
+        />
 
-          <div class="border-muted-foreground/20 mt-10 border-t pt-6">
-            <h3 class="text-3xl font-bold">
-              <Furigana furigana="くん">君</Furigana> -{" "}
-              <span class="font-honk text-4xl">Kun</span>
-            </h3>
-            <YouTubeVideo
-              videoId="beRayxTGDKY"
-              title="The Japanese honorific くん -kun: How, why, when it is used"
-              credit="Kyota Ko"
-            />
-            <ul class="mt-3 space-y-1">
-              <li>
-                <span class="font-bold">Usage: </span>Informal, typically used
-                for boys and young men.
-              </li>
-              <li>
-                <span class="font-bold">Context: </span>Used among friends,
-                classmates, or by superiors addressing male subordinates.
-              </li>
-            </ul>
-            <div class="bg-muted/40 mt-4 rounded-md p-4">
-              <h4 class="text-lg font-bold">Story: School setting</h4>
-              <h4 class="text-md mb-2">
-                <span class="font-bold">Characters:</span> You (a student),
-                Tarou (your classmate)
-              </h4>
-              <p class="text-sm">
-                During recess, you say, "Nice shot, Tarou-kun!" Using くん shows
-                your friendly supportive relationship.
-              </p>
-            </div>
-          </div>
+        <HonorificSection
+          jp="君"
+          en="Kun"
+          furigana="くん"
+          description={[
+            {
+              label: "Usage",
+              text: "Informal, typically used for boys and young men.",
+            },
+            {
+              label: "Context",
+              text: "Used among friends, classmates, or by superiors addressing male subordinates.",
+            },
+          ]}
+          story={{
+            title: "School setting",
+            characters: "Him, Tarou (his classmate)",
+            text: [
+              `"Nice shot, Tarou-kun!" He's still catching his breath on the sideline. "Do that again and we actually win this one."`,
+            ],
+          }}
+          video={{
+            videoId: "beRayxTGDKY",
+            title:
+              "The Japanese honorific くん -kun: How, why, when it is used",
+            credit: "Kyota Ko",
+          }}
+        />
 
-          <HonorificSection
-            jp="先生"
-            en="Sensei"
-            description={[
-              {
-                label: "Usage",
-                text: "For teachers, doctors, or masters of a craft.",
-              },
-              {
-                label: "Context",
-                text: "Conveys respect for expertise and authority.",
-              },
-            ]}
-            story={{
-              title: "Classroom setting",
-              characters: "You (a student), Mr. Yamada (your teacher)",
-              text: `During class, you raise your hand and say, "Yamada-sensei, I have a question." Using 先生 shows respect for Mr. Yamada's knowledge.`,
-            }}
-          />
+        <HonorificSection
+          jp="先生"
+          en="Sensei"
+          description={[
+            {
+              label: "Usage",
+              text: "For teachers, doctors, or masters of a craft.",
+            },
+            {
+              label: "Context",
+              text: "Conveys respect for expertise and authority.",
+            },
+          ]}
+          story={{
+            title: "Classroom setting",
+            characters: "Her, Yamada (her teacher)",
+            text: [
+              `"Yamada-sensei, I don't understand number seven." She flips her worksheet around and slides it across the desk. "I keep getting a different answer."`,
+            ],
+          }}
+        />
 
-          <HonorificSection
-            jp="先輩"
-            en="Senpai"
-            description={[
-              {
-                label: "Usage",
-                text: "For senior colleagues or upperclassmen. Commonly used in both hiragana (せんぱい) and kanji (先輩).",
-              },
-              {
-                label: "Context",
-                text: "Shows respect for someone who is more experienced.",
-              },
-            ]}
-            story={{
-              title: "Club activity",
-              characters: "You (a new club member), Senior Takahashi",
-              text: `At your first club meeting, you say, "Takahashi-senpai, can you show me how to use this equipment?" Using せんぱい acknowledges his seniority.`,
-            }}
-          />
+        <HonorificSection
+          jp="先輩"
+          en="Senpai"
+          description={[
+            {
+              label: "Usage",
+              text: "For senior colleagues or upperclassmen. Commonly used in both hiragana (せんぱい) and kanji (先輩).",
+            },
+            {
+              label: "Context",
+              text: "Shows respect for someone who is more experienced.",
+            },
+          ]}
+          story={{
+            title: "Club activity",
+            characters: "Her (new member), Takahashi (senior member)",
+            text: [
+              `"Takahashi-senpai, is this grip right?" She holds up the racket. He tilts his head. "Close. Rotate your wrist a little more."`,
+            ],
+          }}
+        />
 
-          <HonorificSection
-            jp="様"
-            en="Sama"
-            description={[
-              { label: "Usage", text: "Very formal, respectful." },
-              {
-                label: "Context",
-                text: "Used in business settings, for customers, or in very polite contexts.",
-              },
-            ]}
-            story={{
-              title: "Customer service",
-              characters: "You (a store employee), Ms. Tanaka (a customer)",
-              text: `At a boutique, you greet: "Welcome, Tanaka-sama. How can I help today?" Using 様 conveys utmost respect.`,
-            }}
-          />
+        <HonorificSection
+          jp="様"
+          en="Sama"
+          description={[
+            { label: "Usage", text: "Very formal, respectful." },
+            {
+              label: "Context",
+              text: "Used in business settings, for customers, or in very polite contexts.",
+            },
+          ]}
+          story={{
+            title: "Customer service",
+            characters: "Her (hostess), Tanaka (guest)",
+            text: [
+              `"Tanaka-sama, your reservation is ready." She gestures toward the private dining room. "Right this way, please."`,
+            ],
+          }}
+        />
 
-          <div class="border-muted-foreground/20 mt-10 border-t pt-6">
-            <h3 class="text-3xl font-bold">
-              <Furigana furigana="どの">殿</Furigana> -{" "}
-              <span class="font-honk text-4xl">Dono</span>
-            </h3>
-            <YouTubeVideo
-              videoId="F6uVxd8nTA8"
-              title="What is the Japanese honorific -dono all about?"
-              credit="Kyota Ko"
-            />
-            <ul class="mt-3 space-y-1">
-              <li>
-                <span class="font-bold">Usage: </span>Very formal, archaic.
-              </li>
-              <li>
-                <span class="font-bold">Context: </span>Not used in modern
-                Japanese, but appears in period settings.
-              </li>
-            </ul>
-            <div class="bg-muted/40 mt-4 rounded-md p-4">
-              <h4 class="text-lg font-bold">Story: Historical drama</h4>
-              <h4 class="text-md mb-2">
-                <span class="font-bold">Characters:</span> You (a samurai), Lord
-                Oda
-              </h4>
-              <p class="text-sm">
-                In a drama, you kneel and say, "Oda-dono, I am ready to serve."
-                Using 殿 conveys period-appropriate formality.
-              </p>
-            </div>
-          </div>
-        </section>
+        <HonorificSection
+          jp="殿"
+          en="Dono"
+          furigana="どの"
+          description={[
+            { label: "Usage", text: "Very formal, archaic." },
+            {
+              label: "Context",
+              text: "Not used in modern Japanese, but appears in period settings.",
+            },
+          ]}
+          story={{
+            title: "Historical drama",
+            characters: "Him (a samurai), Lord Oda",
+            text: [
+              <>
+                "Oda-dono, I bring a question from the monks." He unrolls the
+                scroll. "What... is the{" "}
+                <a
+                  href="https://www.youtube.com/watch?v=uio1J2PKzLI"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="underline underline-offset-2 transition-colors hover:text-white/80"
+                >
+                  airspeed velocity of an unladen swallow
+                </a>
+                ?"
+              </>,
+            ],
+          }}
+          video={{
+            videoId: "F6uVxd8nTA8",
+            title: "What is the Japanese honorific -dono all about?",
+            credit: "Kyota Ko",
+          }}
+        />
 
         {/* Additional Titles */}
-        <section>
-          <h2 class="mb-4 text-center text-2xl font-semibold">
-            Additional Titles Based on Occupation
-          </h2>
-          <p>
+        <div class="space-y-4">
+          <SectionLabel>Additional titles based on occupation</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             In addition to the common honorifics, certain titles are used to
             address people based on their occupation or position. You're not
             expected to memorize these now, but here are some examples:
           </p>
-          <ul class="mt-4 space-y-3">
-            <li>
-              <span class="font-japanese text-xl font-bold">社長</span>{" "}
-              (Shachou) - President or CEO of a company
-            </li>
-            <li class="ml-6">Ex: 田中社長 (Tanaka-shachou)</li>
-            <li>
-              <span class="font-japanese text-xl font-bold">部長</span> (Buchou)
-              - Department manager or head
-            </li>
-            <li class="ml-6">Ex: 佐藤部長 (Satou-buchou)</li>
-            <li>
-              <span class="font-japanese text-xl font-bold">課長</span> (Kachou)
-              - Section manager
-            </li>
-            <li class="ml-6">Ex: 鈴木課長 (Suzuki-kachou)</li>
-            <li>
-              <span class="font-japanese text-xl font-bold">主任</span> (Shunin)
-              - Chief of a smaller group
-            </li>
-            <li class="ml-6">Ex: 山田主任 (Yamada-shunin)</li>
-            <li>
-              <span class="font-japanese text-xl font-bold">隊長</span>{" "}
-              (Taichou) - Captain / leader of a team or unit
-            </li>
-            <li class="ml-6">Ex: 鈴木隊長 (Suzuki-taichou)</li>
-          </ul>
-        </section>
 
-        {/* Understanding Context */}
-        <section>
-          <h2 class="mb-4 text-center text-2xl font-semibold">
-            Understanding Context and Nuance
-          </h2>
-          <p>
-            Understanding when and how to use honorifics is key to mastering
-            polite Japanese. Here are some guidelines:
-          </p>
-          <ul class="mt-4 space-y-2">
-            <li>
-              <span class="font-bold">
-                Use さん (San) for general politeness:
-              </span>{" "}
-              This is the safest honorific. Use it unless you have a specific
-              reason to use another.
-            </li>
-            <li>
-              <span class="font-bold">
-                Use 先生 (Sensei) for teachers and experts:
-              </span>{" "}
-              Shows respect for knowledge and expertise.
-            </li>
-            <li>
-              <span class="font-bold">
-                Use ちゃん (Chan) and くん (Kun) for informality:
-              </span>{" "}
-              Among friends, family, or children. ちゃん generally for
-              females/kids; くん for boys.
-            </li>
-            <li>
-              <span class="font-bold">
-                Use せんぱい (Senpai) in hierarchical contexts:
-              </span>{" "}
-              For senior classmates or colleagues.
-            </li>
-            <li>
-              <span class="font-bold">Use さま (Sama) for high respect:</span>{" "}
-              In business, customer service, or formal settings.
-            </li>
-            <li class="font-bold underline underline-offset-2">
-              Avoid using honorifics for yourself.
-            </li>
-          </ul>
-        </section>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <TitleCard
+              jp="社長"
+              romaji="Shachou"
+              meaning="President or CEO of a company"
+              example="田中社長 (Tanaka-shachou)"
+            />
+            <TitleCard
+              jp="部長"
+              romaji="Buchou"
+              meaning="Department manager or head"
+              example="佐藤部長 (Satou-buchou)"
+            />
+            <TitleCard
+              jp="課長"
+              romaji="Kachou"
+              meaning="Section manager"
+              example="鈴木課長 (Suzuki-kachou)"
+            />
+            <TitleCard
+              jp="主任"
+              romaji="Shunin"
+              meaning="Chief of a smaller group"
+              example="山田主任 (Yamada-shunin)"
+            />
+            <TitleCard
+              jp="隊長"
+              romaji="Taichou"
+              meaning="Captain / leader of a team or unit"
+              example="鈴木隊長 (Suzuki-taichou)"
+            />
+          </div>
+        </div>
 
         {/* Practice Section */}
-        <section>
-          <h2 class="pt-16 pb-6! text-center text-5xl font-bold">Practice</h2>
-          <h4 class="pb-2 text-center text-xl font-bold">
+        <div class="space-y-5">
+          <h3 class="text-center text-2xl font-bold">Practice</h3>
+          <p class="text-center text-sm font-medium text-white/40">
             Put the descriptions in the correct order [wip]
-          </h4>
-          <div class="flex flex-col gap-4 pb-24 md:flex-row">
+          </p>
+          <div class="flex flex-col gap-4 md:flex-row">
             <ul class="font-japanese flex flex-1 flex-col space-y-2 *:text-xl">
               <Button variant="outline">さん</Button>
               <Button variant="outline">ちゃん</Button>
@@ -428,40 +392,107 @@ function RouteComponent() {
               </Button>
             </ul>
           </div>
-        </section>
-      </main>
+        </div>
+
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            さん for general politeness, the safest default
+          </SummaryItem>
+          <SummaryItem>
+            先生 for teachers and experts, せんぱい for seniors
+          </SummaryItem>
+          <SummaryItem>
+            ちゃん for affection (kids, close friends), くん for boys/young
+            men
+          </SummaryItem>
+          <SummaryItem>
+            様 (さま) for addressing those of high status (superiors,
+            customers, royalty)
+          </SummaryItem>
+          <SummaryItem>
+            Never use honorifics when referring to yourself
+          </SummaryItem>
+        </LessonSummary>
+      </div>
     </div>
   )
 }
 
-/* --- Helper Honorific Section --- */
+/* --- Honorific Section --- */
 function HonorificSection(props: {
   jp: string
   en: string
+  furigana?: string
   description: { label: string; text: string }[]
-  story: { title: string; characters: string; text: string }
+  story: { title: string; characters: string; text: (string | JSX.Element)[] }
+  video?: { videoId: string; title: string; credit: string }
 }) {
   return (
-    <div class="border-muted-foreground/20 mt-10 border-t pt-6">
-      <h3 class="text-3xl font-bold">
-        <span class="font-japanese">{props.jp}</span> -{" "}
-        <span class="font-honk text-4xl">{props.en}</span>
-      </h3>
-      <ul class="mt-3 space-y-1">
+    <div class="space-y-4">
+      <div class="flex items-baseline gap-3">
+        <h3 class="font-japanese text-2xl font-bold text-white/90">
+          {props.furigana ? (
+            <Furigana furigana={props.furigana}>{props.jp}</Furigana>
+          ) : (
+            props.jp
+          )}
+        </h3>
+        <span class="text-lg font-medium text-white/40">{props.en}</span>
+      </div>
+
+      <Show when={props.video}>
+        {(video) => (
+          <YouTubeVideo
+            videoId={video().videoId}
+            title={video().title}
+            credit={video().credit}
+          />
+        )}
+      </Show>
+
+      <ul class="space-y-1.5 text-sm leading-relaxed text-white/60">
         {props.description.map((d) => (
           <li>
-            <span class="font-bold">{d.label}: </span>
-            {d.text}
+            <span class="font-semibold text-white/80">{d.label}:</span> {d.text}
           </li>
         ))}
       </ul>
-      <div class="bg-muted/40 mt-4 rounded-md p-4">
-        <h4 class="text-lg font-bold">Story: {props.story.title}</h4>
-        <h4 class="text-md mb-2">
-          <span class="font-bold">Characters:</span> {props.story.characters}
-        </h4>
-        <p class="text-sm">{props.story.text}</p>
+
+      <div class="rounded-lg bg-white/[0.04] p-4">
+        <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+          {props.story.title}
+        </p>
+        <p class="mb-2 text-xs text-white/30">{props.story.characters}</p>
+        <div class="space-y-1 text-sm leading-relaxed text-white/60">
+          {props.story.text.map((line) => (
+            <p>{line}</p>
+          ))}
+        </div>
       </div>
+    </div>
+  )
+}
+
+/* --- Title Card --- */
+function TitleCard(props: {
+  jp: string
+  romaji: string
+  meaning: string
+  example: string
+}) {
+  return (
+    <div class="rounded-lg bg-white/[0.04] p-4">
+      <div class="flex items-baseline gap-2">
+        <span class="font-japanese text-xl font-bold text-white/90">
+          {props.jp}
+        </span>
+        <span class="text-sm text-white/40">({props.romaji})</span>
+      </div>
+      <p class="mt-1 text-sm text-white/60">{props.meaning}</p>
+      <p class="mt-1 text-xs text-white/40">
+        Ex: <span class="font-japanese">{props.example}</span>
+      </p>
     </div>
   )
 }

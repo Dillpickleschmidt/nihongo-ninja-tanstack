@@ -1,162 +1,164 @@
-// routes/lessons/saying-you-in-japanese.tsx
+import type { JSX } from "solid-js"
+import { Show } from "solid-js"
 import { createFileRoute } from "@tanstack/solid-router"
 import Furigana from "@/components/text/Furigana"
 import YouTubeVideo from "@/features/youtube/YouTube"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import GlowBox from "@/features/lessons/components/GlowBox"
+import AsideBlock from "@/features/lessons/components/AsideBlock"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute(
   "/lessons/_chapter-1/saying-you-in-japanese",
 )({
-  component: RouteComponent,
+  component: SayingYouInJapanese,
 })
 
-function RouteComponent() {
+function SayingYouInJapanese() {
   return (
-    <div class="mb-32">
-      {/* HEADER */}
-      <header class="mx-auto max-w-3xl px-6 py-14 text-center">
-        <h1 class="mb-3 text-4xl font-extrabold tracking-tight">
-          Saying &quot;You&quot; in Japanese
-        </h1>
-        <div class="mx-auto mb-6 h-1 w-20 rounded bg-emerald-400" />
-      </header>
+    <div class="relative pb-32">
+      {/* Background character */}
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+        君
+      </span>
 
-      {/* MAIN LESSON CONTENT */}
-      <main class="mx-auto max-w-3xl space-y-14 px-6 leading-relaxed">
-        {/* Opening section */}
-        <section>
+      <LessonHeader
+        chapter="Chapter 1 · Getting Started"
+        title={<>Saying "You"</>}
+        subtitle="Why Japanese avoids direct pronouns, and what to do instead."
+      >
+        <OverviewItem>Why "you" is often rude in Japanese</OverviewItem>
+        <OverviewItem>Using names and titles instead</OverviewItem>
+        <OverviewItem>Asking someone's name politely</OverviewItem>
+      </LessonHeader>
+
+      <div class="space-y-14 px-8">
+        {/* Opening */}
+        <div class="leading-relaxed text-white/70">
           <p>
-            In Japanese, addressing someone as &quot;you&quot; is quite nuanced
-            and <span class="font-bold">often avoided</span>. Unlike English,
-            where &quot;you&quot; is universal, using direct pronouns in
-            Japanese can come across as{" "}
-            <span class="font-bold">rude or overly direct</span>. Instead,
-            Japanese speakers prefer using names and titles, which convey
-            respect.
+            In Japanese, saying "you" directly is{" "}
+            <span class="font-semibold text-white/90">often avoided</span>.
+            Unlike English, using direct pronouns can come across as{" "}
+            <span class="font-semibold text-white/90">
+              rude or overly direct
+            </span>
+            . Instead, Japanese speakers use names and titles, as you learned in
+            the previous lesson.
           </p>
-        </section>
+        </div>
 
-        {/* Video: Saying "You" */}
-        <section>
+        {/* Video */}
+        <div>
           <YouTubeVideo
             videoId="8KTvBdGt_vg"
             title="Saying 'You' in Japanese by Kaname Naito, Nov 12 2023"
             credit="Kaname Naito"
           />
-        </section>
-
-        {/* Names Instead of "You" */}
-        <section>
-          <h2 class="mb-4 text-center text-2xl font-semibold">
-            Using Names and Titles Instead of &quot;You&quot;
-          </h2>
-          <p>
-            Japanese speakers frequently use the person&apos;s name with an
-            appropriate honorific or title, especially in formal or polite
-            settings. This practice is more respectful and avoids the directness
-            that can sometimes be considered impolite in Japanese culture.
-          </p>
-        </section>
+        </div>
 
         {/* Pronouns */}
-        <section>
-          <h2 class="mb-4 text-center text-2xl font-semibold">
-            Second-Person Pronouns You Might&apos;ve Heard
-          </h2>
-          <p class="italic">
+        <div class="space-y-4">
+          <SectionLabel>
+            Second-person pronouns you might've heard
+          </SectionLabel>
+          <p class="leading-relaxed italic text-white/50">
             The following second-person pronouns should not be used unless
-            you&apos;ve reached a near-native level of Japanese speaking ability
-            and can fully grasp the situations in which they would be
-            appropriate.
+            you've reached a near-native level of Japanese speaking ability and
+            can fully grasp the situations in which they would be appropriate.
           </p>
+        </div>
 
-          {/* Anata */}
-          <PronounBlock
-            jp="あなた"
-            romaji="Anata"
-            usage="General term for 'you,' that often sounds rude except in specific cases."
-            context="While okay in some contexts, あなた can sound overly familiar or even rude if used too frequently or inappropriately, especially with strangers or superiors. Better to use a name once you know it."
-            example="あなたは学生ですか。"
-            translation="Are you a student?"
-          />
+        {/* Anata */}
+        <PronounBlock
+          jp="あなた"
+          romaji="Anata"
+          usage="General term for 'you,' but often sounds rude or overly familiar."
+          context="Okay in some contexts, but avoid with strangers or superiors. Better to use a name once you know it."
+          example="あなたは学生ですか。"
+          translation="Are you a student?"
+        />
 
-          {/* Kimi */}
-          <PronounBlock
-            jp={
-              <Furigana furigana={<span class="text-sm">きみ</span>}>
-                君
+        {/* Kimi */}
+        <PronounBlock
+          jp={
+            <Furigana furigana={<span class="text-sm">きみ</span>}>
+              君
+            </Furigana>
+          }
+          romaji="Kimi"
+          usage="Informal term for 'you.' Often used by men toward someone younger/lower status, or by women for children or close friends."
+          context="Can sound affectionate or condescending depending on context. More common casually, but risky with strangers or superiors."
+          example="君はどう思う？"
+          translation="What do you think?"
+        />
+
+        {/* Omae */}
+        <PronounBlock
+          jp={
+            <>
+              お
+              <Furigana furigana={<span class="text-sm">まえ</span>}>
+                前
               </Furigana>
-            }
-            romaji="Kimi"
-            usage="Informal term for 'you.' Often used by men toward someone younger/lower status, or by women for children or close friends."
-            context="Can sound affectionate or condescending depending on context. More common casually, but risky with strangers or superiors."
-            example="君はどう思う？"
-            translation="What do you think?"
-          />
+            </>
+          }
+          romaji="Omae"
+          usage="Very informal and direct term, often used by men."
+          context="Okay with very close friends or in confrontations. Extremely rude toward strangers or superiors."
+          example="お前は何をしているんだ？"
+          translation="What the hell are you doing?"
+        />
 
-          {/* Omae */}
-          <PronounBlock
-            jp={
-              <>
-                お
-                <Furigana furigana={<span class="text-sm">まえ</span>}>
-                  前
-                </Furigana>
-              </>
-            }
-            romaji="Omae"
-            usage="Very informal and direct term, often used by men."
-            context="Can sound rude or aggressive if misused. Okay with very close friends or confrontations. Extremely rude toward strangers/superiors."
-            example="お前は何をしているんだ？"
-            translation="What the hell are you doing?"
-          />
+        {/* Temee */}
+        <PronounBlock
+          jp="てめえ"
+          romaji="Temee"
+          usage="Extremely informal, confrontational, often heard in anime for dramatic effect."
+          context="Highly disrespectful/aggressive. Avoid completely in real-life speech; mostly for fights or fiction."
+          example="てめえ、覚悟しろ！"
+          translation="Get ready, you bastard!"
+        />
 
-          {/* Temee */}
-          <PronounBlock
-            jp="てめえ"
-            romaji="Temee"
-            usage="Extremely informal, confrontational, often heard in anime for dramatic effect."
-            context="Highly disrespectful/aggressive. Avoid completely in real-life speech; mostly for fights or fiction."
-            example="てめえ、覚悟しろ！"
-            translation="Get ready, you bastard!"
-          />
+        {/* Kisama */}
+        <PronounBlock
+          jp={
+            <Furigana furigana={<span class="text-sm">きさま</span>}>
+              貴様
+            </Furigana>
+          }
+          romaji="Kisama"
+          usage="Archaic and very rude."
+          context="Almost always insulting/confrontational. Not used in polite modern Japanese. Avoid unless in historical media or deliberately offensive."
+          example="貴様、許さん！"
+          translation="I won't forgive you [offensive]."
+        />
 
-          {/* Kisama */}
-          <PronounBlock
-            jp={
-              <Furigana furigana={<span class="text-sm">きさま</span>}>
-                貴様
+        {/* Anata-sama */}
+        <PronounBlock
+          jp={
+            <>
+              あなた
+              <Furigana furigana={<span class="text-sm">さま</span>}>
+                様
               </Furigana>
-            }
-            romaji="Kisama"
-            usage="Archaic and very rude."
-            context="Almost always insulting/confrontational. Not used in polite modern Japanese. Avoid unless in historical media or deliberately offensive."
-            example="貴様、許さん！"
-            translation="I won't forgive you [offensive]."
-          />
-
-          {/* Anata-sama */}
-          <PronounBlock
-            jp={
-              <>
-                あなた
-                <Furigana furigana={<span class="text-sm">さま</span>}>
-                  様
-                </Furigana>
-              </>
-            }
-            romaji="Anata-sama"
-            usage="Very respectful honorific form."
-            context="Used in very polite, deferential contexts (e.g. customer service). Conveys high respect."
-            example="あなた様のお名前は？"
-            translation="What is your name, sir/madam?"
-          />
-        </section>
+            </>
+          }
+          romaji="Anata-sama"
+          usage="Very respectful honorific form."
+          context="Used in polite, deferential contexts (e.g. customer service)."
+          example="あなた様のお名前は？"
+          translation="What is your name, sir/madam?"
+        />
 
         {/* Unknown name */}
-        <section>
-          <h3 class="pt-6 text-center text-2xl font-bold">
-            But what if you don’t know their name?
-          </h3>
+        <div class="space-y-4">
+          <SectionLabel>But what if you don't know their name?</SectionLabel>
+
           <YouTubeVideo
             videoId="t1iTJK31UYw"
             title="First-time Greeting in Japanese for Beginners by Kaname Naito, Jun 15 2024"
@@ -168,44 +170,77 @@ function RouteComponent() {
             ]}
           />
 
-          <h4 class="font-japanese pt-6 text-center text-3xl font-medium">
-            <Furigana furigana={<span>しつれい</span>}>失礼</Furigana>ですが、お
-            <Furigana furigana={<span>なまえ</span>}>名前</Furigana>は？
-          </h4>
-          <ul class="mt-4 ml-6 list-disc space-y-2">
+          <GlowBox>
+            <p class="text-center font-japanese text-2xl font-medium text-white/90">
+              <Furigana furigana={<span class="text-sm">しつれい</span>}>
+                失礼
+              </Furigana>
+              ですが、お
+              <Furigana furigana={<span class="text-sm">なまえ</span>}>
+                名前
+              </Furigana>
+              は？
+            </p>
+          </GlowBox>
+
+          <ul class="space-y-2 leading-relaxed text-white/70">
             <li>
-              <span class="font-japanese text-xl font-bold">失礼です - </span>
-              Literally “rude” → means “Excuse me / pardon me.”
+              <span class="font-japanese font-semibold text-white/90">
+                失礼です
+              </span>{" "}
+              - "Excuse me / pardon me" (literally "rude")
             </li>
             <li>
-              <span class="font-japanese text-xl font-bold">が - </span>
-              “but”{" "}
-              <span class="text-muted-foreground text-sm">
-                (we’ll revisit later)
-              </span>
+              <span class="font-japanese font-semibold text-white/90">
+                が
+              </span>{" "}
+              - "but"{" "}
+              <span class="text-sm text-white/40">(we'll revisit later)</span>
             </li>
             <li>
-              <span class="font-japanese text-xl font-bold">お - </span>
-              Polite prefix
+              <span class="font-japanese font-semibold text-white/90">
+                お
+              </span>{" "}
+              - Polite prefix
             </li>
             <li>
-              <span class="font-japanese text-xl font-bold">名前 - </span>
-              “Name”
+              <span class="font-japanese font-semibold text-white/90">
+                名前
+              </span>{" "}
+              - "Name"
             </li>
             <li>
-              <span class="font-japanese text-xl font-bold">は？ - </span>
-              Topic particle
+              <span class="font-japanese font-semibold text-white/90">
+                は？
+              </span>{" "}
+              - Topic particle
             </li>
           </ul>
-        </section>
-      </main>
+        </div>
+
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            Avoid saying "you" directly; use names with honorifics instead
+          </SummaryItem>
+          <SummaryItem>
+            あなた is the "safest" pronoun but still often sounds rude
+          </SummaryItem>
+          <SummaryItem>
+            君, お前, てめえ, 貴様 range from casual to hostile
+          </SummaryItem>
+          <SummaryItem>
+            失礼ですが、お名前は？ to politely ask someone's name
+          </SummaryItem>
+        </LessonSummary>
+      </div>
     </div>
   )
 }
 
-/* --- Helper Pronoun Section Component --- */
+/* --- Pronoun Block --- */
 function PronounBlock(props: {
-  jp: any
+  jp: JSX.Element
   romaji: string
   usage: string
   context: string
@@ -213,23 +248,28 @@ function PronounBlock(props: {
   translation: string
 }) {
   return (
-    <div class="border-muted-foreground/20 mt-8 border-t pt-5">
-      <h3 class="mb-2 text-xl font-bold">
-        <span class="font-japanese text-xl">{props.jp}</span> ({props.romaji})
-      </h3>
-      <ul class="ml-4 list-disc space-y-2">
+    <div class="space-y-4">
+      <div class="flex items-baseline gap-3">
+        <h3 class="font-japanese text-2xl font-bold text-white/90">
+          {props.jp}
+        </h3>
+        <span class="text-lg font-medium text-white/40">{props.romaji}</span>
+      </div>
+
+      <ul class="space-y-1.5 text-sm leading-relaxed text-white/60">
         <li>
-          <span class="font-bold">Usage: </span> {props.usage}
+          <span class="font-semibold text-white/80">Usage:</span> {props.usage}
         </li>
         <li>
-          <span class="font-bold">Context: </span> {props.context}
-        </li>
-        <li>
-          <span class="font-bold">Example Usage: </span>
-          <span class="font-japanese ml-1 text-xl">{props.example}</span> —{" "}
-          {props.translation}
+          <span class="font-semibold text-white/80">Context:</span>{" "}
+          {props.context}
         </li>
       </ul>
+
+      <div class="rounded-lg bg-white/[0.04] p-4">
+        <p class="font-japanese text-lg text-white/80">{props.example}</p>
+        <p class="mt-1 text-sm text-white/40">{props.translation}</p>
+      </div>
     </div>
   )
 }

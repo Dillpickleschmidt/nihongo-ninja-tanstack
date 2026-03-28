@@ -1,47 +1,60 @@
-// routes/lessons/self-introductions.tsx
+import type { JSX } from "solid-js"
 import { createFileRoute } from "@tanstack/solid-router"
 import Furigana from "@/components/text/Furigana"
 import YouTubeVideo from "@/features/youtube/YouTube"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import GlowBox from "@/features/lessons/components/GlowBox"
+import AsideBlock from "@/features/lessons/components/AsideBlock"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute(
   "/lessons/_chapter-1/self-introductions",
 )({
-  component: RouteComponent,
+  component: SelfIntroductions,
 })
 
-function RouteComponent() {
+function SelfIntroductions() {
   return (
-    <div class="mb-32">
-      {/* Header */}
-      <header class="mx-auto max-w-3xl px-6 py-14 text-center">
-        <h1 class="mb-3 text-5xl font-extrabold tracking-tight">
-          <em>Self Introductions</em>
-        </h1>
-        <div class="mx-auto mb-6 h-1 w-20 rounded bg-emerald-400" />
-      </header>
+    <div class="relative pb-32">
+      {/* Background character */}
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+        私
+      </span>
 
-      {/* Main Lesson Content */}
-      <main class="mx-auto max-w-3xl space-y-14 px-6 leading-relaxed">
+      <LessonHeader
+        chapter="Chapter 1 · Getting Started"
+        title={<>Self-Introductions</>}
+        subtitle="How to say who you are, and the many ways to say 'I'."
+      >
+        <OverviewItem>First-person pronouns and when to use them</OverviewItem>
+        <OverviewItem>Building a self-introduction</OverviewItem>
+        <OverviewItem>Dropping pronouns when context is clear</OverviewItem>
+      </LessonHeader>
+
+      <div class="space-y-14 px-8">
         {/* First-Person Pronouns */}
-        <section>
-          <h2 class="mb-3 text-center text-2xl font-bold">
-            First-Person Pronouns
-          </h2>
-          <p>
+        <div class="space-y-4">
+          <SectionLabel>First-person pronouns</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             In Japanese, there are several pronouns that you can use to refer to
             yourself, each with its own nuance and level of formality. Unlike
             English, which primarily uses "I," Japanese pronouns can reflect
             gender, formality, and personal style.
           </p>
 
-          <div class="mt-6">
+          <div class="mt-2">
             <YouTubeVideo
               videoId="MNR0egvK_oQ"
               title="Nuances of Japanese First-Person Pronouns by Kaname Naito, Mar 26 2023"
               credit="Kaname Naito"
             />
           </div>
-        </section>
+        </div>
 
         {/* Individual Pronoun Sections */}
         <PronounSection
@@ -51,23 +64,72 @@ function RouteComponent() {
           description={[
             {
               label: "Usage",
-              text: "Gender-neutral, widely used in formal and informal contexts.",
+              text: "Gender-neutral. The safe default.",
             },
             {
               label: "Context",
-              text: `Generally considered the "default" first-person pronoun in Japanese, suitable for men and women in most situations.`,
-            },
-            {
-              label: "Nuance",
-              text: "Neutral and versatile. Men use it in formal settings, while casual contexts might prefer 僕 or 俺.",
+              text: "Men use it in polite or formal situations, but tend to switch to 僕 or even 俺 among friends. Women use it in virtually any setting.",
             },
           ]}
           story={{
-            title: "Introducing yourself",
+            title: "Business introductions",
             characters:
-              "You (the learner), Ms. Yamamoto (coworker), new colleague",
-            text: `As you greet a new colleague, you say, 「私(わたし)は [your name] です。よろしくお願いします。」 Using わたし shows respect and professionalism.`,
+              "He (Osaka branch transfer), She (Suzuki, account manager)",
+            text: [
+              `"I don't think we've met. I'm with the Osaka branch." He extends his hand. "I just transferred last month."`,
+              "",
+              `"I'm Suzuki. I'll be handling your account going forward. Yamada-san brought me up to speed before she left."`,
+            ],
           }}
+        />
+
+        <PronounSection
+          jp="僕"
+          roman="Boku"
+          furigana="ぼく"
+          description={[
+            {
+              label: "Usage",
+              text: "Casual, predominantly male.",
+            },
+            {
+              label: "Context",
+              text: "Common among boys and men in everyday conversation. Modest and relaxed, but too casual for formal settings.",
+            },
+          ]}
+          story={{
+            title: "After practice",
+            characters: "Him, Kenji, teammates",
+            text: [
+              `"Pass it to me next time, not Kenji." He's toweling off after practice. "I was wide open the whole second half."`,
+            ],
+          }}
+        />
+
+        <PronounSection
+          jp="俺"
+          roman="Ore"
+          furigana="おれ"
+          description={[
+            {
+              label: "Usage",
+              text: "Very casual, predominantly male.",
+            },
+            {
+              label: "Context",
+              text: "Used among close friends and peers. Can come across as rude in the wrong setting.",
+            },
+          ]}
+          story={{
+            title: "Game night",
+            characters: "Him, his friends",
+            text: [
+              `"I carried last game and nobody said anything."`,
+              `"Because you also threw the game before that."`,
+              `"...That was lag."`,
+            ],
+          }}
+          footnote="Some guys still prefer 僕 even in casual settings. It's personal choice."
         />
 
         <PronounSection
@@ -85,51 +147,11 @@ function RouteComponent() {
             },
           ]}
           story={{
-            title: "Award ceremony",
-            characters: "You (recipient), audience",
-            text: `On stage, you introduce yourself using わたくし, showing the seriousness and formality of the event.`,
-          }}
-        />
-
-        <PronounSection
-          jp="僕"
-          roman="Boku"
-          furigana="ぼく"
-          description={[
-            {
-              label: "Usage",
-              text: "Informal, typically used by males (or tomboys).",
-            },
-            {
-              label: "Context",
-              text: "Boys and men use it in casual or semi-formal contexts. Conveys humility, less formal than わたし.",
-            },
-          ]}
-          story={{
-            title: "School club introduction",
-            characters: "You (a new member), club members",
-            text: `Joining the soccer club, you casually say 「僕は [your name] です」, fitting natural expectations of boys.`,
-          }}
-        />
-
-        <PronounSection
-          jp="俺"
-          roman="Ore"
-          furigana="おれ"
-          description={[
-            {
-              label: "Usage",
-              text: "Very informal, typically used by males (or tomboys).",
-            },
-            {
-              label: "Context",
-              text: "Used among close friends or casual settings. Can sound rude if misused, conveys confidence/masculinity.",
-            },
-          ]}
-          story={{
-            title: "Gaming night with friends",
-            characters: "You (with close friends)",
-            text: `Hanging at a game night, you say 「俺が勝つぞ!」 showing confidence and camaraderie.`,
+            title: "Press conference",
+            characters: "Him, press corps",
+            text: [
+              `"I take full responsibility for the delay." He adjusts the microphone. Cameras flash. "I will personally ensure this does not happen again."`,
+            ],
           }}
         />
 
@@ -147,9 +169,11 @@ function RouteComponent() {
             },
           ]}
           story={{
-            title: "Café with friends",
-            characters: "You (a young woman), friends",
-            text: `At a café, you casually introduce yourself with あたし, keeping the mood light and friendly.`,
+            title: "Exam day",
+            characters: "Her, her friend",
+            text: [
+              `"I swear I studied for this one." She's flipping through her notes outside the exam room. "I just forgot everything."`,
+            ],
           }}
         />
 
@@ -167,9 +191,12 @@ function RouteComponent() {
             },
           ]}
           story={{
-            title: "High school after-class chat",
-            characters: "You (a female student), classmates",
-            text: `Chatting after school, you use うち naturally with friends, common in Kansai speech.`,
+            title: "Lunch break",
+            characters: "Her, her friends",
+            text: [
+              `"Hang on, that's not what happened." She holds up a hand, mouth still full. Her friend keeps talking anyway.`,
+              `"I'm serious! Ask her." She points her chopsticks across the table. "Tell her I'm right."`,
+            ],
           }}
         />
 
@@ -185,38 +212,27 @@ function RouteComponent() {
             },
           ]}
           story={{
-            title: "Telling stories to grandchildren",
-            characters: "You (elderly man), grandchildren",
-            text: `You begin, 「儂は教師じゃった」, emphasizing your age/authority.`,
+            title: "Back in my day",
+            characters: "Grandpa, his grandson",
+            text: [
+              `"Back in my day, I walked to school uphill. Both directions."`,
+              `"That's not how hills work, grandpa."`,
+              `"Barefoot. In the snow. And I was grateful."`,
+            ],
           }}
         />
 
         {/* Plural First-Person */}
-        <section>
-          <h3 class="text-center text-2xl font-bold">Plural First-Person</h3>
-          <ul class="space-y-4 pt-4 text-xl">
-            <li>
-              <span class="font-japanese font-semibold">私たち</span> – Plural
-              of わたし
-            </li>
-            <li>
-              <span class="font-japanese font-semibold">僕たち</span> – Plural
-              of ぼく
-            </li>
-            <li>
-              <span class="font-japanese font-semibold">俺たち</span> – Plural
-              of おれ
-            </li>
-            <li>
-              <span class="font-japanese font-semibold">あたしたち</span> –
-              Plural of あたし
-            </li>
-            <li>
-              <span class="font-japanese font-semibold">うちたち</span> – Plural
-              of うち
-            </li>
-          </ul>
-        </section>
+        <div class="space-y-4">
+          <SectionLabel>Plural first-person</SectionLabel>
+          <div class="grid gap-2 sm:grid-cols-2">
+            <PluralItem kana="私たち" label="Plural of わたし" />
+            <PluralItem kana="僕たち" label="Plural of ぼく" />
+            <PluralItem kana="俺たち" label="Plural of おれ" />
+            <PluralItem kana="あたしたち" label="Plural of あたし" />
+            <PluralItem kana="うちたち" label="Plural of うち" />
+          </div>
+        </div>
 
         <PronounSection
           jp="我々"
@@ -233,17 +249,18 @@ function RouteComponent() {
             },
           ]}
           story={{
-            title: "Company announcement",
-            characters: "You (rep), employees",
-            text: `「我々は excellence を目指します」. Emphasizes group unity/formality.`,
+            title: "Conference room",
+            characters: "Department head, employees",
+            text: [
+              `"We will not be the department that missed the deadline." He's standing at the front of the conference room. Nobody's checking their phone.`,
+              `"We will deliver. On time."`,
+            ],
           }}
         />
 
         {/* Introducing Yourself */}
-        <section>
-          <h2 class="mb-3 text-center text-3xl font-bold">
-            Introducing Yourself
-          </h2>
+        <div class="space-y-5">
+          <SectionLabel>Introducing yourself</SectionLabel>
 
           <YouTubeVideo
             videoId="t1iTJK31UYw"
@@ -255,107 +272,154 @@ function RouteComponent() {
             ]}
           />
 
-          <p class="mt-6">
-            We've learned the <span class="font-bold">X</span>
-            <span class="font-japanese">は</span>
-            <span class="font-bold">Y</span>
-            <span class="font-japanese">です</span> structure. So you can say:
+          <p class="leading-relaxed text-white/70">
+            We've learned the <span class="font-semibold text-white/90">X</span>
+            <span class="font-japanese font-semibold text-white/90">は</span>
+            <span class="font-semibold text-white/90">Y</span>
+            <span class="font-japanese font-semibold text-white/90">です</span>{" "}
+            structure. So you can say:
           </p>
 
-          <p class="font-japanese text-center font-semibold">
+          <p class="text-center font-japanese text-xl font-semibold text-white/90">
             私は [Your name] です。
           </p>
 
-          <p class="mt-4">
+          <p class="leading-relaxed text-white/70">
             But note: Japanese often omits pronouns when obvious from context.
-            Overusing 私 can feel redundant. Instead, it’s smoother to just say:
+            Overusing 私 can feel redundant. Instead, it's smoother to just say:
           </p>
 
-          <h4 class="py-4 text-center text-3xl font-bold">
-            [your name] + です。
-          </h4>
+          <GlowBox>
+            <p class="text-center text-2xl font-bold text-white/90">
+              [your name] + です。
+            </p>
+          </GlowBox>
 
-          <p>
+          <p class="leading-relaxed text-white/70">
             A richer self-introduction includes greetings and やさしい phrases:
           </p>
-          <p class="font-japanese text-xl font-semibold">
-            こんにちは！はじめまして！ [your name] です。 [info]
-            です。どうぞよろしくお願いします。
-          </p>
 
-          <ul class="mt-6 list-disc space-y-2 pl-6">
-            <li>
-              <span class="font-japanese font-bold">こんにちは</span> – Hello
-            </li>
-            <li>
-              <span class="font-japanese font-bold">はじめまして</span> – “Nice
-              to meet you”
-            </li>
-            <li>[Info]です – Add role/hobby (学生です, 趣味は読書です…)</li>
-            <li>
-              <span class="font-japanese font-bold">
-                どうぞよろしくお願いします
-              </span>{" "}
-              – Polite closure, wishing goodwill.
-            </li>
-          </ul>
-        </section>
+          <div class="rounded-xl bg-white/[0.04] p-6">
+            <p class="font-japanese text-lg font-semibold leading-relaxed text-white/90">
+              こんにちは！はじめまして！ [your name] です。 [info]
+              です。どうぞよろしくお<Furigana furigana={<span class="text-xs">ねが</span>}>願</Furigana>いします。
+            </p>
+          </div>
+
+          <div class="py-2">
+            <AsideBlock>
+              <ul class="space-y-2 text-sm leading-relaxed text-white/60">
+                <li>
+                  <span class="font-japanese font-semibold text-white/80">
+                    こんにちは
+                  </span>{" "}
+                  – Hello
+                </li>
+                <li>
+                  <span class="font-japanese font-semibold text-white/80">
+                    はじめまして
+                  </span>{" "}
+                  – "Nice to meet you"
+                </li>
+                <li>
+                  [Info]です – Add role/info (学生です, 専攻は英語です…)
+                </li>
+                <li>
+                  <span class="font-japanese font-semibold text-white/80">
+                    どうぞよろしくお<Furigana furigana={<span class="text-[10px]">ねが</span>}>願</Furigana>いします
+                  </span>{" "}
+                  – Polite closure, wishing goodwill.
+                </li>
+              </ul>
+            </AsideBlock>
+          </div>
+        </div>
 
         {/* Summary */}
-        <section>
-          <h2 class="text-2xl font-bold">Summary</h2>
-          <ul class="mt-2 ml-6 list-disc space-y-4">
-            <li>
-              Multiple pronouns exist — 私 is safe/default, but choose based on
-              formality, gender nuance, and context.
-            </li>
-            <li>[name] + です = simplest intro</li>
-            <li>
-              Full intro: 「どうも、こんにちは。[name] です。[extra info]
-              です。どうぞよろしくお願いします。」
-            </li>
-          </ul>
-        </section>
-      </main>
+        <LessonSummary>
+          <SummaryItem>
+            私 (わたし) is the safe default, but pronoun choice reflects
+            formality, gender, and context
+          </SummaryItem>
+          <SummaryItem>
+            [name] + です is the simplest self-introduction
+          </SummaryItem>
+          <SummaryItem>
+            Full pattern: はじめまして → [name] です → [info] です →
+            どうぞよろしくお<Furigana furigana={<span class="text-[10px]">ねが</span>}>願</Furigana>いします
+          </SummaryItem>
+          <SummaryItem>
+            Japanese often drops pronouns when context makes them obvious
+          </SummaryItem>
+        </LessonSummary>
+      </div>
     </div>
   )
 }
 
-/* --- Helper Pronoun Reuse Component --- */
 function PronounSection(props: {
   jp: string
   roman: string
   furigana?: string
-  description: { label: string; text: string }[]
-  story: { title: string; characters: string; text: string }
+  footnote?: string
+  description?: { label: string; text: string }[]
+  story?: { title: string; characters: string; text: string[] }
 }) {
   return (
-    <section class="mt-12">
-      <h3 class="font-japanese text-3xl font-bold">
-        {props.furigana ? (
-          <Furigana furigana={props.furigana}>{props.jp}</Furigana>
-        ) : (
-          props.jp
-        )}{" "}
-        - <span class="font-honk text-4xl">{props.roman}</span>
-      </h3>
-
-      <ul class="mt-3 space-y-2">
-        {props.description.map((d) => (
-          <li>
-            <span class="font-bold">{d.label}: </span>
-            {d.text}
-          </li>
-        ))}
-      </ul>
-
-      <div class="bg-muted/40 mt-4 rounded-md p-4">
-        <h4 class="text-lg font-bold">Story: {props.story.title}</h4>
-        <h4 class="text-md mb-2">
-          <span class="font-bold">Characters:</span> {props.story.characters}
-        </h4>
-        <p class="text-sm">{props.story.text}</p>
+    <div class="space-y-4">
+      <div class="flex items-baseline gap-3">
+        <h3 class="font-japanese text-2xl font-bold text-white/90">
+          {props.furigana ? (
+            <Furigana furigana={props.furigana}>{props.jp}</Furigana>
+          ) : (
+            props.jp
+          )}
+        </h3>
+        <span class="text-lg font-medium text-white/40">{props.roman}</span>
       </div>
-    </section>
+
+      {props.description && (
+        <ul class="space-y-1.5 text-sm leading-relaxed text-white/60">
+          {props.description.map((d) => (
+            <li>
+              <span class="font-semibold text-white/80">{d.label}:</span>{" "}
+              {d.text}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {props.story && (
+        <div class="rounded-lg bg-white/[0.04] p-4">
+          <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+            {props.story.title}
+          </p>
+          <p class="mb-2 text-xs text-white/30">
+            {props.story.characters}
+          </p>
+          <div class="space-y-1 text-sm leading-relaxed text-white/60">
+            {props.story.text.map((line) => (
+              <p>{line}</p>
+            ))}
+          </div>
+          {props.footnote && (
+            <p class="mt-3 text-sm italic text-white/40">
+              {props.footnote}
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function PluralItem(props: { kana: string; label: string }) {
+  return (
+    <div class="flex items-baseline gap-3 rounded-lg bg-white/[0.04] px-4 py-3">
+      <span class="font-japanese text-lg font-semibold text-white/80">
+        {props.kana}
+      </span>
+      <span class="text-sm text-white/40">{props.label}</span>
+    </div>
   )
 }
