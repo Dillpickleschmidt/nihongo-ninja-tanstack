@@ -27,7 +27,7 @@ export default function MultipleChoiceText(props: MultipleChoiceTextProps) {
 
   const getTextColorClass = (option: string) => {
     if (correct()[option]) {
-      return "dark:bg-green-500 bg-[#00F064] bg-opacity-[90%] rounded-md font-medium text-black"
+      return "dark:bg-green-500 bg-[#00F064] bg-opacity-[90%] rounded-md font-medium text-black pr-2"
     } else if (clicked()[option]) {
       return "dark:text-red-500 text-[#FF0000] rounded-md font-medium"
     } else {
@@ -43,7 +43,7 @@ export default function MultipleChoiceText(props: MultipleChoiceTextProps) {
           class={`${getTextColorClass(option)} inline-block cursor-pointer`}
           onClick={() => handleClick(option)}
         >
-          <span class="px-3 py-px text-lg">{`${option}) `}</span>
+          <span class="px-2 py-px text-lg">{`${option}) `}</span>
           <span
             class={cn(
               "font-japanese origin-left text-lg font-medium duration-100 ease-out hover:scale-[107%]",
@@ -58,7 +58,7 @@ export default function MultipleChoiceText(props: MultipleChoiceTextProps) {
   }
 
   return (
-    <div class="space-y-3! pl-7">
+    <div class="space-y-2 pl-4">
       <For each={["a", "b", "c", "d"] as const}>
         {(option) => (
           <Show when={options[option]}>
