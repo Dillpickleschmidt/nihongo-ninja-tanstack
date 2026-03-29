@@ -33,13 +33,39 @@ import { Route as HomeVocabIndexRouteImport } from './routes/_home/vocab/index'
 import { Route as HomeSentencePracticeIndexRouteImport } from './routes/_home/sentence-practice/index'
 import { Route as HomeMiscIndexRouteImport } from './routes/_home/misc/index'
 import { Route as HomeImportIndexRouteImport } from './routes/_home/import/index'
+import { Route as LessonsChapter7AdjToAdvRouteImport } from './routes/lessons/_chapter-7/adj-to-adv'
+import { Route as LessonsChapter6TeWaIkemasenRouteImport } from './routes/lessons/_chapter-6/te-wa-ikemasen'
+import { Route as LessonsChapter6TeMoIiDesuRouteImport } from './routes/lessons/_chapter-6/te-mo-ii-desu'
+import { Route as LessonsChapter6TeKudasaiRouteImport } from './routes/lessons/_chapter-6/te-kudasai'
+import { Route as LessonsChapter6TeFormConnectionRouteImport } from './routes/lessons/_chapter-6/te-form-connection'
+import { Route as LessonsChapter6TeFormAdjNounsRouteImport } from './routes/lessons/_chapter-6/te-form-adj-nouns'
+import { Route as LessonsChapter6TeFormRouteImport } from './routes/lessons/_chapter-6/te-form'
+import { Route as LessonsChapter6KaraRouteImport } from './routes/lessons/_chapter-6/kara'
+import { Route as LessonsChapter6DameRouteImport } from './routes/lessons/_chapter-6/dame'
+import { Route as LessonsChapter5WhenNotToUseWaRouteImport } from './routes/lessons/_chapter-5/when-not-to-use-wa'
+import { Route as LessonsChapter5WaComparisonsRouteImport } from './routes/lessons/_chapter-5/wa-comparisons'
+import { Route as LessonsChapter5SuruVsYaruRouteImport } from './routes/lessons/_chapter-5/suru-vs-yaru'
+import { Route as LessonsChapter5SukiKiraiRouteImport } from './routes/lessons/_chapter-5/suki-kirai'
+import { Route as LessonsChapter5PoliteVolitionalRouteImport } from './routes/lessons/_chapter-5/polite-volitional'
+import { Route as LessonsChapter5CountersRouteImport } from './routes/lessons/_chapter-5/counters'
+import { Route as LessonsChapter5AdjectiveConjugationRouteImport } from './routes/lessons/_chapter-5/adjective-conjugation'
+import { Route as LessonsChapter5AdjModifyingNounsRouteImport } from './routes/lessons/_chapter-5/adj-modifying-nouns'
+import { Route as LessonsChapter4WhereThingsAreRouteImport } from './routes/lessons/_chapter-4/where-things-are'
+import { Route as LessonsChapter4ToParticleRouteImport } from './routes/lessons/_chapter-4/to-particle'
+import { Route as LessonsChapter4TakusanRouteImport } from './routes/lessons/_chapter-4/takusan'
+import { Route as LessonsChapter4PolitePastTenseRouteImport } from './routes/lessons/_chapter-4/polite-past-tense'
+import { Route as LessonsChapter4JikanRouteImport } from './routes/lessons/_chapter-4/jikan'
+import { Route as LessonsChapter4IruAruRouteImport } from './routes/lessons/_chapter-4/iru-aru'
 import { Route as LessonsChapter3WordOrderRouteImport } from './routes/lessons/_chapter-3/word-order'
 import { Route as LessonsChapter3VerbConjMasuRouteImport } from './routes/lessons/_chapter-3/verb-conj-masu'
+import { Route as LessonsChapter3SayingAndSoButRouteImport } from './routes/lessons/_chapter-3/saying-and-so-but'
 import { Route as LessonsChapter3PoliteInvitationsRouteImport } from './routes/lessons/_chapter-3/polite-invitations'
 import { Route as LessonsChapter3ODeNiEParticlesRouteImport } from './routes/lessons/_chapter-3/o-de-ni-e-particles'
 import { Route as LessonsChapter3NegativeMasuConjRouteImport } from './routes/lessons/_chapter-3/negative-masu-conj'
 import { Route as LessonsChapter3KanjiRadicalsRouteImport } from './routes/lessons/_chapter-3/kanji-radicals'
 import { Route as LessonsChapter3KanjiRouteImport } from './routes/lessons/_chapter-3/kanji'
+import { Route as LessonsChapter3AdverbsRouteImport } from './routes/lessons/_chapter-3/adverbs'
+import { Route as LessonsChapter2WordsThatPointRouteImport } from './routes/lessons/_chapter-2/words-that-point'
 import { Route as LessonsChapter2NeYoParticlesRouteImport } from './routes/lessons/_chapter-2/ne-yo-particles'
 import { Route as LessonsChapter2MoParticleRouteImport } from './routes/lessons/_chapter-2/mo-particle'
 import { Route as LessonsChapter2KatakanaRouteImport } from './routes/lessons/_chapter-2/katakana'
@@ -210,6 +236,136 @@ const HomeImportIndexRoute = HomeImportIndexRouteImport.update({
   path: '/import/',
   getParentRoute: () => HomeRoute,
 } as any)
+const LessonsChapter7AdjToAdvRoute = LessonsChapter7AdjToAdvRouteImport.update({
+  id: '/_chapter-7/adj-to-adv',
+  path: '/adj-to-adv',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter6TeWaIkemasenRoute =
+  LessonsChapter6TeWaIkemasenRouteImport.update({
+    id: '/_chapter-6/te-wa-ikemasen',
+    path: '/te-wa-ikemasen',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter6TeMoIiDesuRoute =
+  LessonsChapter6TeMoIiDesuRouteImport.update({
+    id: '/_chapter-6/te-mo-ii-desu',
+    path: '/te-mo-ii-desu',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter6TeKudasaiRoute =
+  LessonsChapter6TeKudasaiRouteImport.update({
+    id: '/_chapter-6/te-kudasai',
+    path: '/te-kudasai',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter6TeFormConnectionRoute =
+  LessonsChapter6TeFormConnectionRouteImport.update({
+    id: '/_chapter-6/te-form-connection',
+    path: '/te-form-connection',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter6TeFormAdjNounsRoute =
+  LessonsChapter6TeFormAdjNounsRouteImport.update({
+    id: '/_chapter-6/te-form-adj-nouns',
+    path: '/te-form-adj-nouns',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter6TeFormRoute = LessonsChapter6TeFormRouteImport.update({
+  id: '/_chapter-6/te-form',
+  path: '/te-form',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter6KaraRoute = LessonsChapter6KaraRouteImport.update({
+  id: '/_chapter-6/kara',
+  path: '/kara',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter6DameRoute = LessonsChapter6DameRouteImport.update({
+  id: '/_chapter-6/dame',
+  path: '/dame',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter5WhenNotToUseWaRoute =
+  LessonsChapter5WhenNotToUseWaRouteImport.update({
+    id: '/_chapter-5/when-not-to-use-wa',
+    path: '/when-not-to-use-wa',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter5WaComparisonsRoute =
+  LessonsChapter5WaComparisonsRouteImport.update({
+    id: '/_chapter-5/wa-comparisons',
+    path: '/wa-comparisons',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter5SuruVsYaruRoute =
+  LessonsChapter5SuruVsYaruRouteImport.update({
+    id: '/_chapter-5/suru-vs-yaru',
+    path: '/suru-vs-yaru',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter5SukiKiraiRoute =
+  LessonsChapter5SukiKiraiRouteImport.update({
+    id: '/_chapter-5/suki-kirai',
+    path: '/suki-kirai',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter5PoliteVolitionalRoute =
+  LessonsChapter5PoliteVolitionalRouteImport.update({
+    id: '/_chapter-5/polite-volitional',
+    path: '/polite-volitional',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter5CountersRoute = LessonsChapter5CountersRouteImport.update({
+  id: '/_chapter-5/counters',
+  path: '/counters',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter5AdjectiveConjugationRoute =
+  LessonsChapter5AdjectiveConjugationRouteImport.update({
+    id: '/_chapter-5/adjective-conjugation',
+    path: '/adjective-conjugation',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter5AdjModifyingNounsRoute =
+  LessonsChapter5AdjModifyingNounsRouteImport.update({
+    id: '/_chapter-5/adj-modifying-nouns',
+    path: '/adj-modifying-nouns',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter4WhereThingsAreRoute =
+  LessonsChapter4WhereThingsAreRouteImport.update({
+    id: '/_chapter-4/where-things-are',
+    path: '/where-things-are',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter4ToParticleRoute =
+  LessonsChapter4ToParticleRouteImport.update({
+    id: '/_chapter-4/to-particle',
+    path: '/to-particle',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter4TakusanRoute = LessonsChapter4TakusanRouteImport.update({
+  id: '/_chapter-4/takusan',
+  path: '/takusan',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter4PolitePastTenseRoute =
+  LessonsChapter4PolitePastTenseRouteImport.update({
+    id: '/_chapter-4/polite-past-tense',
+    path: '/polite-past-tense',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter4JikanRoute = LessonsChapter4JikanRouteImport.update({
+  id: '/_chapter-4/jikan',
+  path: '/jikan',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter4IruAruRoute = LessonsChapter4IruAruRouteImport.update({
+  id: '/_chapter-4/iru-aru',
+  path: '/iru-aru',
+  getParentRoute: () => LessonsRoute,
+} as any)
 const LessonsChapter3WordOrderRoute =
   LessonsChapter3WordOrderRouteImport.update({
     id: '/_chapter-3/word-order',
@@ -220,6 +376,12 @@ const LessonsChapter3VerbConjMasuRoute =
   LessonsChapter3VerbConjMasuRouteImport.update({
     id: '/_chapter-3/verb-conj-masu',
     path: '/verb-conj-masu',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsChapter3SayingAndSoButRoute =
+  LessonsChapter3SayingAndSoButRouteImport.update({
+    id: '/_chapter-3/saying-and-so-but',
+    path: '/saying-and-so-but',
     getParentRoute: () => LessonsRoute,
   } as any)
 const LessonsChapter3PoliteInvitationsRoute =
@@ -251,6 +413,17 @@ const LessonsChapter3KanjiRoute = LessonsChapter3KanjiRouteImport.update({
   path: '/kanji',
   getParentRoute: () => LessonsRoute,
 } as any)
+const LessonsChapter3AdverbsRoute = LessonsChapter3AdverbsRouteImport.update({
+  id: '/_chapter-3/adverbs',
+  path: '/adverbs',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsChapter2WordsThatPointRoute =
+  LessonsChapter2WordsThatPointRouteImport.update({
+    id: '/_chapter-2/words-that-point',
+    path: '/words-that-point',
+    getParentRoute: () => LessonsRoute,
+  } as any)
 const LessonsChapter2NeYoParticlesRoute =
   LessonsChapter2NeYoParticlesRouteImport.update({
     id: '/_chapter-2/ne-yo-particles',
@@ -582,13 +755,39 @@ export interface FileRoutesByFullPath {
   '/lessons/katakana': typeof LessonsChapter2KatakanaRoute
   '/lessons/mo-particle': typeof LessonsChapter2MoParticleRoute
   '/lessons/ne-yo-particles': typeof LessonsChapter2NeYoParticlesRoute
+  '/lessons/words-that-point': typeof LessonsChapter2WordsThatPointRoute
+  '/lessons/adverbs': typeof LessonsChapter3AdverbsRoute
   '/lessons/kanji': typeof LessonsChapter3KanjiRoute
   '/lessons/kanji-radicals': typeof LessonsChapter3KanjiRadicalsRoute
   '/lessons/negative-masu-conj': typeof LessonsChapter3NegativeMasuConjRoute
   '/lessons/o-de-ni-e-particles': typeof LessonsChapter3ODeNiEParticlesRoute
   '/lessons/polite-invitations': typeof LessonsChapter3PoliteInvitationsRoute
+  '/lessons/saying-and-so-but': typeof LessonsChapter3SayingAndSoButRoute
   '/lessons/verb-conj-masu': typeof LessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof LessonsChapter3WordOrderRoute
+  '/lessons/iru-aru': typeof LessonsChapter4IruAruRoute
+  '/lessons/jikan': typeof LessonsChapter4JikanRoute
+  '/lessons/polite-past-tense': typeof LessonsChapter4PolitePastTenseRoute
+  '/lessons/takusan': typeof LessonsChapter4TakusanRoute
+  '/lessons/to-particle': typeof LessonsChapter4ToParticleRoute
+  '/lessons/where-things-are': typeof LessonsChapter4WhereThingsAreRoute
+  '/lessons/adj-modifying-nouns': typeof LessonsChapter5AdjModifyingNounsRoute
+  '/lessons/adjective-conjugation': typeof LessonsChapter5AdjectiveConjugationRoute
+  '/lessons/counters': typeof LessonsChapter5CountersRoute
+  '/lessons/polite-volitional': typeof LessonsChapter5PoliteVolitionalRoute
+  '/lessons/suki-kirai': typeof LessonsChapter5SukiKiraiRoute
+  '/lessons/suru-vs-yaru': typeof LessonsChapter5SuruVsYaruRoute
+  '/lessons/wa-comparisons': typeof LessonsChapter5WaComparisonsRoute
+  '/lessons/when-not-to-use-wa': typeof LessonsChapter5WhenNotToUseWaRoute
+  '/lessons/dame': typeof LessonsChapter6DameRoute
+  '/lessons/kara': typeof LessonsChapter6KaraRoute
+  '/lessons/te-form': typeof LessonsChapter6TeFormRoute
+  '/lessons/te-form-adj-nouns': typeof LessonsChapter6TeFormAdjNounsRoute
+  '/lessons/te-form-connection': typeof LessonsChapter6TeFormConnectionRoute
+  '/lessons/te-kudasai': typeof LessonsChapter6TeKudasaiRoute
+  '/lessons/te-mo-ii-desu': typeof LessonsChapter6TeMoIiDesuRoute
+  '/lessons/te-wa-ikemasen': typeof LessonsChapter6TeWaIkemasenRoute
+  '/lessons/adj-to-adv': typeof LessonsChapter7AdjToAdvRoute
   '/import/': typeof HomeImportIndexRoute
   '/misc/': typeof HomeMiscIndexRoute
   '/sentence-practice/': typeof HomeSentencePracticeIndexRoute
@@ -661,13 +860,39 @@ export interface FileRoutesByTo {
   '/lessons/katakana': typeof LessonsChapter2KatakanaRoute
   '/lessons/mo-particle': typeof LessonsChapter2MoParticleRoute
   '/lessons/ne-yo-particles': typeof LessonsChapter2NeYoParticlesRoute
+  '/lessons/words-that-point': typeof LessonsChapter2WordsThatPointRoute
+  '/lessons/adverbs': typeof LessonsChapter3AdverbsRoute
   '/lessons/kanji': typeof LessonsChapter3KanjiRoute
   '/lessons/kanji-radicals': typeof LessonsChapter3KanjiRadicalsRoute
   '/lessons/negative-masu-conj': typeof LessonsChapter3NegativeMasuConjRoute
   '/lessons/o-de-ni-e-particles': typeof LessonsChapter3ODeNiEParticlesRoute
   '/lessons/polite-invitations': typeof LessonsChapter3PoliteInvitationsRoute
+  '/lessons/saying-and-so-but': typeof LessonsChapter3SayingAndSoButRoute
   '/lessons/verb-conj-masu': typeof LessonsChapter3VerbConjMasuRoute
   '/lessons/word-order': typeof LessonsChapter3WordOrderRoute
+  '/lessons/iru-aru': typeof LessonsChapter4IruAruRoute
+  '/lessons/jikan': typeof LessonsChapter4JikanRoute
+  '/lessons/polite-past-tense': typeof LessonsChapter4PolitePastTenseRoute
+  '/lessons/takusan': typeof LessonsChapter4TakusanRoute
+  '/lessons/to-particle': typeof LessonsChapter4ToParticleRoute
+  '/lessons/where-things-are': typeof LessonsChapter4WhereThingsAreRoute
+  '/lessons/adj-modifying-nouns': typeof LessonsChapter5AdjModifyingNounsRoute
+  '/lessons/adjective-conjugation': typeof LessonsChapter5AdjectiveConjugationRoute
+  '/lessons/counters': typeof LessonsChapter5CountersRoute
+  '/lessons/polite-volitional': typeof LessonsChapter5PoliteVolitionalRoute
+  '/lessons/suki-kirai': typeof LessonsChapter5SukiKiraiRoute
+  '/lessons/suru-vs-yaru': typeof LessonsChapter5SuruVsYaruRoute
+  '/lessons/wa-comparisons': typeof LessonsChapter5WaComparisonsRoute
+  '/lessons/when-not-to-use-wa': typeof LessonsChapter5WhenNotToUseWaRoute
+  '/lessons/dame': typeof LessonsChapter6DameRoute
+  '/lessons/kara': typeof LessonsChapter6KaraRoute
+  '/lessons/te-form': typeof LessonsChapter6TeFormRoute
+  '/lessons/te-form-adj-nouns': typeof LessonsChapter6TeFormAdjNounsRoute
+  '/lessons/te-form-connection': typeof LessonsChapter6TeFormConnectionRoute
+  '/lessons/te-kudasai': typeof LessonsChapter6TeKudasaiRoute
+  '/lessons/te-mo-ii-desu': typeof LessonsChapter6TeMoIiDesuRoute
+  '/lessons/te-wa-ikemasen': typeof LessonsChapter6TeWaIkemasenRoute
+  '/lessons/adj-to-adv': typeof LessonsChapter7AdjToAdvRoute
   '/import': typeof HomeImportIndexRoute
   '/misc': typeof HomeMiscIndexRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
@@ -744,13 +969,39 @@ export interface FileRoutesById {
   '/lessons/_chapter-2/katakana': typeof LessonsChapter2KatakanaRoute
   '/lessons/_chapter-2/mo-particle': typeof LessonsChapter2MoParticleRoute
   '/lessons/_chapter-2/ne-yo-particles': typeof LessonsChapter2NeYoParticlesRoute
+  '/lessons/_chapter-2/words-that-point': typeof LessonsChapter2WordsThatPointRoute
+  '/lessons/_chapter-3/adverbs': typeof LessonsChapter3AdverbsRoute
   '/lessons/_chapter-3/kanji': typeof LessonsChapter3KanjiRoute
   '/lessons/_chapter-3/kanji-radicals': typeof LessonsChapter3KanjiRadicalsRoute
   '/lessons/_chapter-3/negative-masu-conj': typeof LessonsChapter3NegativeMasuConjRoute
   '/lessons/_chapter-3/o-de-ni-e-particles': typeof LessonsChapter3ODeNiEParticlesRoute
   '/lessons/_chapter-3/polite-invitations': typeof LessonsChapter3PoliteInvitationsRoute
+  '/lessons/_chapter-3/saying-and-so-but': typeof LessonsChapter3SayingAndSoButRoute
   '/lessons/_chapter-3/verb-conj-masu': typeof LessonsChapter3VerbConjMasuRoute
   '/lessons/_chapter-3/word-order': typeof LessonsChapter3WordOrderRoute
+  '/lessons/_chapter-4/iru-aru': typeof LessonsChapter4IruAruRoute
+  '/lessons/_chapter-4/jikan': typeof LessonsChapter4JikanRoute
+  '/lessons/_chapter-4/polite-past-tense': typeof LessonsChapter4PolitePastTenseRoute
+  '/lessons/_chapter-4/takusan': typeof LessonsChapter4TakusanRoute
+  '/lessons/_chapter-4/to-particle': typeof LessonsChapter4ToParticleRoute
+  '/lessons/_chapter-4/where-things-are': typeof LessonsChapter4WhereThingsAreRoute
+  '/lessons/_chapter-5/adj-modifying-nouns': typeof LessonsChapter5AdjModifyingNounsRoute
+  '/lessons/_chapter-5/adjective-conjugation': typeof LessonsChapter5AdjectiveConjugationRoute
+  '/lessons/_chapter-5/counters': typeof LessonsChapter5CountersRoute
+  '/lessons/_chapter-5/polite-volitional': typeof LessonsChapter5PoliteVolitionalRoute
+  '/lessons/_chapter-5/suki-kirai': typeof LessonsChapter5SukiKiraiRoute
+  '/lessons/_chapter-5/suru-vs-yaru': typeof LessonsChapter5SuruVsYaruRoute
+  '/lessons/_chapter-5/wa-comparisons': typeof LessonsChapter5WaComparisonsRoute
+  '/lessons/_chapter-5/when-not-to-use-wa': typeof LessonsChapter5WhenNotToUseWaRoute
+  '/lessons/_chapter-6/dame': typeof LessonsChapter6DameRoute
+  '/lessons/_chapter-6/kara': typeof LessonsChapter6KaraRoute
+  '/lessons/_chapter-6/te-form': typeof LessonsChapter6TeFormRoute
+  '/lessons/_chapter-6/te-form-adj-nouns': typeof LessonsChapter6TeFormAdjNounsRoute
+  '/lessons/_chapter-6/te-form-connection': typeof LessonsChapter6TeFormConnectionRoute
+  '/lessons/_chapter-6/te-kudasai': typeof LessonsChapter6TeKudasaiRoute
+  '/lessons/_chapter-6/te-mo-ii-desu': typeof LessonsChapter6TeMoIiDesuRoute
+  '/lessons/_chapter-6/te-wa-ikemasen': typeof LessonsChapter6TeWaIkemasenRoute
+  '/lessons/_chapter-7/adj-to-adv': typeof LessonsChapter7AdjToAdvRoute
   '/_home/import/': typeof HomeImportIndexRoute
   '/_home/misc/': typeof HomeMiscIndexRoute
   '/_home/sentence-practice/': typeof HomeSentencePracticeIndexRoute
@@ -827,13 +1078,39 @@ export interface FileRouteTypes {
     | '/lessons/katakana'
     | '/lessons/mo-particle'
     | '/lessons/ne-yo-particles'
+    | '/lessons/words-that-point'
+    | '/lessons/adverbs'
     | '/lessons/kanji'
     | '/lessons/kanji-radicals'
     | '/lessons/negative-masu-conj'
     | '/lessons/o-de-ni-e-particles'
     | '/lessons/polite-invitations'
+    | '/lessons/saying-and-so-but'
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
+    | '/lessons/iru-aru'
+    | '/lessons/jikan'
+    | '/lessons/polite-past-tense'
+    | '/lessons/takusan'
+    | '/lessons/to-particle'
+    | '/lessons/where-things-are'
+    | '/lessons/adj-modifying-nouns'
+    | '/lessons/adjective-conjugation'
+    | '/lessons/counters'
+    | '/lessons/polite-volitional'
+    | '/lessons/suki-kirai'
+    | '/lessons/suru-vs-yaru'
+    | '/lessons/wa-comparisons'
+    | '/lessons/when-not-to-use-wa'
+    | '/lessons/dame'
+    | '/lessons/kara'
+    | '/lessons/te-form'
+    | '/lessons/te-form-adj-nouns'
+    | '/lessons/te-form-connection'
+    | '/lessons/te-kudasai'
+    | '/lessons/te-mo-ii-desu'
+    | '/lessons/te-wa-ikemasen'
+    | '/lessons/adj-to-adv'
     | '/import/'
     | '/misc/'
     | '/sentence-practice/'
@@ -906,13 +1183,39 @@ export interface FileRouteTypes {
     | '/lessons/katakana'
     | '/lessons/mo-particle'
     | '/lessons/ne-yo-particles'
+    | '/lessons/words-that-point'
+    | '/lessons/adverbs'
     | '/lessons/kanji'
     | '/lessons/kanji-radicals'
     | '/lessons/negative-masu-conj'
     | '/lessons/o-de-ni-e-particles'
     | '/lessons/polite-invitations'
+    | '/lessons/saying-and-so-but'
     | '/lessons/verb-conj-masu'
     | '/lessons/word-order'
+    | '/lessons/iru-aru'
+    | '/lessons/jikan'
+    | '/lessons/polite-past-tense'
+    | '/lessons/takusan'
+    | '/lessons/to-particle'
+    | '/lessons/where-things-are'
+    | '/lessons/adj-modifying-nouns'
+    | '/lessons/adjective-conjugation'
+    | '/lessons/counters'
+    | '/lessons/polite-volitional'
+    | '/lessons/suki-kirai'
+    | '/lessons/suru-vs-yaru'
+    | '/lessons/wa-comparisons'
+    | '/lessons/when-not-to-use-wa'
+    | '/lessons/dame'
+    | '/lessons/kara'
+    | '/lessons/te-form'
+    | '/lessons/te-form-adj-nouns'
+    | '/lessons/te-form-connection'
+    | '/lessons/te-kudasai'
+    | '/lessons/te-mo-ii-desu'
+    | '/lessons/te-wa-ikemasen'
+    | '/lessons/adj-to-adv'
     | '/import'
     | '/misc'
     | '/sentence-practice'
@@ -988,13 +1291,39 @@ export interface FileRouteTypes {
     | '/lessons/_chapter-2/katakana'
     | '/lessons/_chapter-2/mo-particle'
     | '/lessons/_chapter-2/ne-yo-particles'
+    | '/lessons/_chapter-2/words-that-point'
+    | '/lessons/_chapter-3/adverbs'
     | '/lessons/_chapter-3/kanji'
     | '/lessons/_chapter-3/kanji-radicals'
     | '/lessons/_chapter-3/negative-masu-conj'
     | '/lessons/_chapter-3/o-de-ni-e-particles'
     | '/lessons/_chapter-3/polite-invitations'
+    | '/lessons/_chapter-3/saying-and-so-but'
     | '/lessons/_chapter-3/verb-conj-masu'
     | '/lessons/_chapter-3/word-order'
+    | '/lessons/_chapter-4/iru-aru'
+    | '/lessons/_chapter-4/jikan'
+    | '/lessons/_chapter-4/polite-past-tense'
+    | '/lessons/_chapter-4/takusan'
+    | '/lessons/_chapter-4/to-particle'
+    | '/lessons/_chapter-4/where-things-are'
+    | '/lessons/_chapter-5/adj-modifying-nouns'
+    | '/lessons/_chapter-5/adjective-conjugation'
+    | '/lessons/_chapter-5/counters'
+    | '/lessons/_chapter-5/polite-volitional'
+    | '/lessons/_chapter-5/suki-kirai'
+    | '/lessons/_chapter-5/suru-vs-yaru'
+    | '/lessons/_chapter-5/wa-comparisons'
+    | '/lessons/_chapter-5/when-not-to-use-wa'
+    | '/lessons/_chapter-6/dame'
+    | '/lessons/_chapter-6/kara'
+    | '/lessons/_chapter-6/te-form'
+    | '/lessons/_chapter-6/te-form-adj-nouns'
+    | '/lessons/_chapter-6/te-form-connection'
+    | '/lessons/_chapter-6/te-kudasai'
+    | '/lessons/_chapter-6/te-mo-ii-desu'
+    | '/lessons/_chapter-6/te-wa-ikemasen'
+    | '/lessons/_chapter-7/adj-to-adv'
     | '/_home/import/'
     | '/_home/misc/'
     | '/_home/sentence-practice/'
@@ -1196,6 +1525,167 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeImportIndexRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/lessons/_chapter-7/adj-to-adv': {
+      id: '/lessons/_chapter-7/adj-to-adv'
+      path: '/adj-to-adv'
+      fullPath: '/lessons/adj-to-adv'
+      preLoaderRoute: typeof LessonsChapter7AdjToAdvRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-6/te-wa-ikemasen': {
+      id: '/lessons/_chapter-6/te-wa-ikemasen'
+      path: '/te-wa-ikemasen'
+      fullPath: '/lessons/te-wa-ikemasen'
+      preLoaderRoute: typeof LessonsChapter6TeWaIkemasenRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-6/te-mo-ii-desu': {
+      id: '/lessons/_chapter-6/te-mo-ii-desu'
+      path: '/te-mo-ii-desu'
+      fullPath: '/lessons/te-mo-ii-desu'
+      preLoaderRoute: typeof LessonsChapter6TeMoIiDesuRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-6/te-kudasai': {
+      id: '/lessons/_chapter-6/te-kudasai'
+      path: '/te-kudasai'
+      fullPath: '/lessons/te-kudasai'
+      preLoaderRoute: typeof LessonsChapter6TeKudasaiRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-6/te-form-connection': {
+      id: '/lessons/_chapter-6/te-form-connection'
+      path: '/te-form-connection'
+      fullPath: '/lessons/te-form-connection'
+      preLoaderRoute: typeof LessonsChapter6TeFormConnectionRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-6/te-form-adj-nouns': {
+      id: '/lessons/_chapter-6/te-form-adj-nouns'
+      path: '/te-form-adj-nouns'
+      fullPath: '/lessons/te-form-adj-nouns'
+      preLoaderRoute: typeof LessonsChapter6TeFormAdjNounsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-6/te-form': {
+      id: '/lessons/_chapter-6/te-form'
+      path: '/te-form'
+      fullPath: '/lessons/te-form'
+      preLoaderRoute: typeof LessonsChapter6TeFormRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-6/kara': {
+      id: '/lessons/_chapter-6/kara'
+      path: '/kara'
+      fullPath: '/lessons/kara'
+      preLoaderRoute: typeof LessonsChapter6KaraRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-6/dame': {
+      id: '/lessons/_chapter-6/dame'
+      path: '/dame'
+      fullPath: '/lessons/dame'
+      preLoaderRoute: typeof LessonsChapter6DameRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-5/when-not-to-use-wa': {
+      id: '/lessons/_chapter-5/when-not-to-use-wa'
+      path: '/when-not-to-use-wa'
+      fullPath: '/lessons/when-not-to-use-wa'
+      preLoaderRoute: typeof LessonsChapter5WhenNotToUseWaRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-5/wa-comparisons': {
+      id: '/lessons/_chapter-5/wa-comparisons'
+      path: '/wa-comparisons'
+      fullPath: '/lessons/wa-comparisons'
+      preLoaderRoute: typeof LessonsChapter5WaComparisonsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-5/suru-vs-yaru': {
+      id: '/lessons/_chapter-5/suru-vs-yaru'
+      path: '/suru-vs-yaru'
+      fullPath: '/lessons/suru-vs-yaru'
+      preLoaderRoute: typeof LessonsChapter5SuruVsYaruRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-5/suki-kirai': {
+      id: '/lessons/_chapter-5/suki-kirai'
+      path: '/suki-kirai'
+      fullPath: '/lessons/suki-kirai'
+      preLoaderRoute: typeof LessonsChapter5SukiKiraiRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-5/polite-volitional': {
+      id: '/lessons/_chapter-5/polite-volitional'
+      path: '/polite-volitional'
+      fullPath: '/lessons/polite-volitional'
+      preLoaderRoute: typeof LessonsChapter5PoliteVolitionalRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-5/counters': {
+      id: '/lessons/_chapter-5/counters'
+      path: '/counters'
+      fullPath: '/lessons/counters'
+      preLoaderRoute: typeof LessonsChapter5CountersRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-5/adjective-conjugation': {
+      id: '/lessons/_chapter-5/adjective-conjugation'
+      path: '/adjective-conjugation'
+      fullPath: '/lessons/adjective-conjugation'
+      preLoaderRoute: typeof LessonsChapter5AdjectiveConjugationRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-5/adj-modifying-nouns': {
+      id: '/lessons/_chapter-5/adj-modifying-nouns'
+      path: '/adj-modifying-nouns'
+      fullPath: '/lessons/adj-modifying-nouns'
+      preLoaderRoute: typeof LessonsChapter5AdjModifyingNounsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-4/where-things-are': {
+      id: '/lessons/_chapter-4/where-things-are'
+      path: '/where-things-are'
+      fullPath: '/lessons/where-things-are'
+      preLoaderRoute: typeof LessonsChapter4WhereThingsAreRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-4/to-particle': {
+      id: '/lessons/_chapter-4/to-particle'
+      path: '/to-particle'
+      fullPath: '/lessons/to-particle'
+      preLoaderRoute: typeof LessonsChapter4ToParticleRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-4/takusan': {
+      id: '/lessons/_chapter-4/takusan'
+      path: '/takusan'
+      fullPath: '/lessons/takusan'
+      preLoaderRoute: typeof LessonsChapter4TakusanRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-4/polite-past-tense': {
+      id: '/lessons/_chapter-4/polite-past-tense'
+      path: '/polite-past-tense'
+      fullPath: '/lessons/polite-past-tense'
+      preLoaderRoute: typeof LessonsChapter4PolitePastTenseRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-4/jikan': {
+      id: '/lessons/_chapter-4/jikan'
+      path: '/jikan'
+      fullPath: '/lessons/jikan'
+      preLoaderRoute: typeof LessonsChapter4JikanRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-4/iru-aru': {
+      id: '/lessons/_chapter-4/iru-aru'
+      path: '/iru-aru'
+      fullPath: '/lessons/iru-aru'
+      preLoaderRoute: typeof LessonsChapter4IruAruRouteImport
+      parentRoute: typeof LessonsRoute
+    }
     '/lessons/_chapter-3/word-order': {
       id: '/lessons/_chapter-3/word-order'
       path: '/word-order'
@@ -1208,6 +1698,13 @@ declare module '@tanstack/solid-router' {
       path: '/verb-conj-masu'
       fullPath: '/lessons/verb-conj-masu'
       preLoaderRoute: typeof LessonsChapter3VerbConjMasuRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-3/saying-and-so-but': {
+      id: '/lessons/_chapter-3/saying-and-so-but'
+      path: '/saying-and-so-but'
+      fullPath: '/lessons/saying-and-so-but'
+      preLoaderRoute: typeof LessonsChapter3SayingAndSoButRouteImport
       parentRoute: typeof LessonsRoute
     }
     '/lessons/_chapter-3/polite-invitations': {
@@ -1243,6 +1740,20 @@ declare module '@tanstack/solid-router' {
       path: '/kanji'
       fullPath: '/lessons/kanji'
       preLoaderRoute: typeof LessonsChapter3KanjiRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-3/adverbs': {
+      id: '/lessons/_chapter-3/adverbs'
+      path: '/adverbs'
+      fullPath: '/lessons/adverbs'
+      preLoaderRoute: typeof LessonsChapter3AdverbsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/_chapter-2/words-that-point': {
+      id: '/lessons/_chapter-2/words-that-point'
+      path: '/words-that-point'
+      fullPath: '/lessons/words-that-point'
+      preLoaderRoute: typeof LessonsChapter2WordsThatPointRouteImport
       parentRoute: typeof LessonsRoute
     }
     '/lessons/_chapter-2/ne-yo-particles': {
@@ -1727,13 +2238,39 @@ interface LessonsRouteChildren {
   LessonsChapter2KatakanaRoute: typeof LessonsChapter2KatakanaRoute
   LessonsChapter2MoParticleRoute: typeof LessonsChapter2MoParticleRoute
   LessonsChapter2NeYoParticlesRoute: typeof LessonsChapter2NeYoParticlesRoute
+  LessonsChapter2WordsThatPointRoute: typeof LessonsChapter2WordsThatPointRoute
+  LessonsChapter3AdverbsRoute: typeof LessonsChapter3AdverbsRoute
   LessonsChapter3KanjiRoute: typeof LessonsChapter3KanjiRoute
   LessonsChapter3KanjiRadicalsRoute: typeof LessonsChapter3KanjiRadicalsRoute
   LessonsChapter3NegativeMasuConjRoute: typeof LessonsChapter3NegativeMasuConjRoute
   LessonsChapter3ODeNiEParticlesRoute: typeof LessonsChapter3ODeNiEParticlesRoute
   LessonsChapter3PoliteInvitationsRoute: typeof LessonsChapter3PoliteInvitationsRoute
+  LessonsChapter3SayingAndSoButRoute: typeof LessonsChapter3SayingAndSoButRoute
   LessonsChapter3VerbConjMasuRoute: typeof LessonsChapter3VerbConjMasuRoute
   LessonsChapter3WordOrderRoute: typeof LessonsChapter3WordOrderRoute
+  LessonsChapter4IruAruRoute: typeof LessonsChapter4IruAruRoute
+  LessonsChapter4JikanRoute: typeof LessonsChapter4JikanRoute
+  LessonsChapter4PolitePastTenseRoute: typeof LessonsChapter4PolitePastTenseRoute
+  LessonsChapter4TakusanRoute: typeof LessonsChapter4TakusanRoute
+  LessonsChapter4ToParticleRoute: typeof LessonsChapter4ToParticleRoute
+  LessonsChapter4WhereThingsAreRoute: typeof LessonsChapter4WhereThingsAreRoute
+  LessonsChapter5AdjModifyingNounsRoute: typeof LessonsChapter5AdjModifyingNounsRoute
+  LessonsChapter5AdjectiveConjugationRoute: typeof LessonsChapter5AdjectiveConjugationRoute
+  LessonsChapter5CountersRoute: typeof LessonsChapter5CountersRoute
+  LessonsChapter5PoliteVolitionalRoute: typeof LessonsChapter5PoliteVolitionalRoute
+  LessonsChapter5SukiKiraiRoute: typeof LessonsChapter5SukiKiraiRoute
+  LessonsChapter5SuruVsYaruRoute: typeof LessonsChapter5SuruVsYaruRoute
+  LessonsChapter5WaComparisonsRoute: typeof LessonsChapter5WaComparisonsRoute
+  LessonsChapter5WhenNotToUseWaRoute: typeof LessonsChapter5WhenNotToUseWaRoute
+  LessonsChapter6DameRoute: typeof LessonsChapter6DameRoute
+  LessonsChapter6KaraRoute: typeof LessonsChapter6KaraRoute
+  LessonsChapter6TeFormRoute: typeof LessonsChapter6TeFormRoute
+  LessonsChapter6TeFormAdjNounsRoute: typeof LessonsChapter6TeFormAdjNounsRoute
+  LessonsChapter6TeFormConnectionRoute: typeof LessonsChapter6TeFormConnectionRoute
+  LessonsChapter6TeKudasaiRoute: typeof LessonsChapter6TeKudasaiRoute
+  LessonsChapter6TeMoIiDesuRoute: typeof LessonsChapter6TeMoIiDesuRoute
+  LessonsChapter6TeWaIkemasenRoute: typeof LessonsChapter6TeWaIkemasenRoute
+  LessonsChapter7AdjToAdvRoute: typeof LessonsChapter7AdjToAdvRoute
 }
 
 const LessonsRouteChildren: LessonsRouteChildren = {
@@ -1768,13 +2305,40 @@ const LessonsRouteChildren: LessonsRouteChildren = {
   LessonsChapter2KatakanaRoute: LessonsChapter2KatakanaRoute,
   LessonsChapter2MoParticleRoute: LessonsChapter2MoParticleRoute,
   LessonsChapter2NeYoParticlesRoute: LessonsChapter2NeYoParticlesRoute,
+  LessonsChapter2WordsThatPointRoute: LessonsChapter2WordsThatPointRoute,
+  LessonsChapter3AdverbsRoute: LessonsChapter3AdverbsRoute,
   LessonsChapter3KanjiRoute: LessonsChapter3KanjiRoute,
   LessonsChapter3KanjiRadicalsRoute: LessonsChapter3KanjiRadicalsRoute,
   LessonsChapter3NegativeMasuConjRoute: LessonsChapter3NegativeMasuConjRoute,
   LessonsChapter3ODeNiEParticlesRoute: LessonsChapter3ODeNiEParticlesRoute,
   LessonsChapter3PoliteInvitationsRoute: LessonsChapter3PoliteInvitationsRoute,
+  LessonsChapter3SayingAndSoButRoute: LessonsChapter3SayingAndSoButRoute,
   LessonsChapter3VerbConjMasuRoute: LessonsChapter3VerbConjMasuRoute,
   LessonsChapter3WordOrderRoute: LessonsChapter3WordOrderRoute,
+  LessonsChapter4IruAruRoute: LessonsChapter4IruAruRoute,
+  LessonsChapter4JikanRoute: LessonsChapter4JikanRoute,
+  LessonsChapter4PolitePastTenseRoute: LessonsChapter4PolitePastTenseRoute,
+  LessonsChapter4TakusanRoute: LessonsChapter4TakusanRoute,
+  LessonsChapter4ToParticleRoute: LessonsChapter4ToParticleRoute,
+  LessonsChapter4WhereThingsAreRoute: LessonsChapter4WhereThingsAreRoute,
+  LessonsChapter5AdjModifyingNounsRoute: LessonsChapter5AdjModifyingNounsRoute,
+  LessonsChapter5AdjectiveConjugationRoute:
+    LessonsChapter5AdjectiveConjugationRoute,
+  LessonsChapter5CountersRoute: LessonsChapter5CountersRoute,
+  LessonsChapter5PoliteVolitionalRoute: LessonsChapter5PoliteVolitionalRoute,
+  LessonsChapter5SukiKiraiRoute: LessonsChapter5SukiKiraiRoute,
+  LessonsChapter5SuruVsYaruRoute: LessonsChapter5SuruVsYaruRoute,
+  LessonsChapter5WaComparisonsRoute: LessonsChapter5WaComparisonsRoute,
+  LessonsChapter5WhenNotToUseWaRoute: LessonsChapter5WhenNotToUseWaRoute,
+  LessonsChapter6DameRoute: LessonsChapter6DameRoute,
+  LessonsChapter6KaraRoute: LessonsChapter6KaraRoute,
+  LessonsChapter6TeFormRoute: LessonsChapter6TeFormRoute,
+  LessonsChapter6TeFormAdjNounsRoute: LessonsChapter6TeFormAdjNounsRoute,
+  LessonsChapter6TeFormConnectionRoute: LessonsChapter6TeFormConnectionRoute,
+  LessonsChapter6TeKudasaiRoute: LessonsChapter6TeKudasaiRoute,
+  LessonsChapter6TeMoIiDesuRoute: LessonsChapter6TeMoIiDesuRoute,
+  LessonsChapter6TeWaIkemasenRoute: LessonsChapter6TeWaIkemasenRoute,
+  LessonsChapter7AdjToAdvRoute: LessonsChapter7AdjToAdvRoute,
 }
 
 const LessonsRouteWithChildren =
