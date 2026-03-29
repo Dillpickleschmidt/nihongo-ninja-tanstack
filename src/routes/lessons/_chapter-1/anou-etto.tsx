@@ -1,147 +1,207 @@
-// routes/lessons/_chapter-1/filler-words.tsx
+import type { JSX } from "solid-js"
 import { createFileRoute } from "@tanstack/solid-router"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute("/lessons/_chapter-1/anou-etto")({
-  component: RouteComponent,
+  component: AnouEtto,
 })
 
-function RouteComponent() {
+function AnouEtto() {
   return (
-    <div class="mb-32">
-      {/* Header */}
-      <header class="mx-auto max-w-3xl px-6 py-14 text-center">
-        <h1 class="mb-3 text-4xl font-extrabold tracking-tight">
-          <em>Fill</em> the Gaps: Master Your Japanese Filler Words
-        </h1>
-        <div class="mx-auto mb-6 h-1 w-20 rounded bg-emerald-400" />
-      </header>
+    <div class="relative pb-32">
+      {/* Background character */}
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+        え
+      </span>
 
-      {/* Main content */}
-      <main class="mx-auto max-w-3xl space-y-14 px-6 leading-relaxed">
+      <LessonHeader
+        chapter="Chapter 1 · Getting Started"
+        title={<>Filler Words</>}
+        subtitle="The sounds that make your pauses sound natural."
+      >
+        <OverviewItem>
+          <span class="font-japanese font-semibold text-white/60">あのう</span>{" "}
+          and{" "}
+          <span class="font-japanese font-semibold text-white/60">えっと</span>{" "}
+          for hesitation
+        </OverviewItem>
+        <OverviewItem>
+          <span class="font-japanese font-semibold text-white/60">まあ</span>,{" "}
+          <span class="font-japanese font-semibold text-white/60">
+            そうですね
+          </span>
+          , and{" "}
+          <span class="font-japanese font-semibold text-white/60">なんか</span>
+        </OverviewItem>
+        <OverviewItem>When and how to use each one</OverviewItem>
+      </LessonHeader>
+
+      <div class="space-y-14 px-8">
         {/* Intro */}
-        <section>
-          <h2 class="mb-4 text-center text-2xl font-semibold">
-            Let&apos;s face it...
-          </h2>
-          <p>
-            No matter what language proficiency level you&apos;re at,
-            you&apos;re going to pause, you&apos;re going to hesitate, and
-            you&apos;re certainly going to make mistakes. It&apos;s all part of
-            the learning process. But what if I told you that there&apos;s a way
-            to make even your pauses sound more natural and fluent? That&apos;s
-            where filler words come in.
+        <div class="space-y-4">
+          <SectionLabel>Let's face it...</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            No matter what language proficiency level you're at, you're going to
+            pause, you're going to hesitate, and you're certainly going to make
+            mistakes. It's all part of the learning process. But what if I told
+            you that there's a way to make even your pauses sound more natural
+            and fluent? That's where filler words come in.
           </p>
-          <p class="mt-4">
+          <p class="leading-relaxed text-white/70">
             Japanese has many common filler words such as{" "}
-            <span class="font-japanese text-xl">あのう</span> (anou),{" "}
-            <span class="font-japanese text-xl">えっと</span> (etto),{" "}
-            <span class="font-japanese text-xl">まあ</span> (maa), and{" "}
-            <span class="font-japanese text-xl">そうですね</span> (sou desu ne),
-            to name a few. Using these appropriately can help you sound more
-            like a native speaker.
+            <span class="font-japanese font-semibold text-white/90">あのう</span>{" "}
+            (anou),{" "}
+            <span class="font-japanese font-semibold text-white/90">えっと</span>{" "}
+            (etto),{" "}
+            <span class="font-japanese font-semibold text-white/90">まあ</span>{" "}
+            (maa), and{" "}
+            <span class="font-japanese font-semibold text-white/90">
+              そうですね
+            </span>{" "}
+            (sou desu ne), to name a few. Using these appropriately can help you
+            sound more like a native speaker.
           </p>
-        </section>
+        </div>
 
         {/* あのう */}
-        <FillerWord
-          jp="あのう"
-          romaji="anou"
-          points={[
-            "A very common word used to politely interrupt someone. It's also used when you need to buy time to think, similar to um or uh in English.",
-            "Example: あのう、すみません。",
-            "Unlike in English, using あのう before asking for help or interrupting someone can actually be polite and considerate, showing that you are being thoughtful.",
-          ]}
-        />
+        <FillerSection jp="あのう" romaji="Anou">
+          <p class="leading-relaxed text-white/70">
+            A very common word used to politely interrupt someone. It's also
+            used when you need to buy time to think, similar to um or uh in
+            English.
+          </p>
+          <div class="rounded-lg bg-white/[0.04] p-4">
+            <p class="font-japanese text-lg text-white/80">
+              あのう、すみません。
+            </p>
+          </div>
+          <p class="text-sm leading-relaxed text-white/50">
+            Unlike in English, using あのう before asking for help or
+            interrupting someone can actually be polite and considerate, showing
+            that you are being thoughtful.
+          </p>
+        </FillerSection>
 
         {/* えっと */}
-        <FillerWord
-          jp="えっと"
-          romaji="etto"
-          points={[
-            "A very common filler word to buy time to think, similar to um or uh in English.",
-            "Example: えっと、次になにをするべきでしょうか。 -> Well, what should we do next?",
-            "あのう is generally used more often than えっと when politely interrupting someone, but both are equally preferred when meaning um/uh. The choice comes down to personal preference.",
-          ]}
-        />
+        <FillerSection jp="えっと" romaji="Etto">
+          <p class="leading-relaxed text-white/70">
+            A very common filler word to buy time to think, similar to um or uh
+            in English.
+          </p>
+          <div class="rounded-lg bg-white/[0.04] p-4">
+            <p class="font-japanese text-lg text-white/80">
+              えっと、つぎになにをするべきでしょうか。
+            </p>
+            <p class="mt-1 text-sm text-white/40">
+              Well, what should we do next?
+            </p>
+          </div>
+          <p class="text-sm leading-relaxed text-white/50">
+            あのう is generally used more often than えっと when politely
+            interrupting someone, but both are equally preferred when meaning
+            um/uh. The choice comes down to personal preference.
+          </p>
+        </FillerSection>
 
         {/* まあ */}
-        <section>
-          <h3 class="font-japanese pt-12 text-3xl font-medium">
-            まあ - <span class="font-honk text-4xl">maa</span>
-          </h3>
-          <ul class="mt-3 list-inside list-disc space-y-2">
-            <li>
-              Can be used to show hesitation or to soften a statement, as well
-              as to express annoyance, resignation, or amazement, depending on
-              context and intonation.
-            </li>
-            <li>
-              <span class="font-bold">Annoyance:</span>
-            </li>
-            <li>
-              <span class="font-bold">Resignation:</span>
-            </li>
-            <li>
-              <span class="font-bold">Surprise or Amazement:</span>
-            </li>
-            <li>
-              <span class="font-bold">Hesitation/Softening: </span>
-              <span class="font-japanese text-xl">
-                まあ、いいんじゃないかな。
-              </span>
-            </li>
-          </ul>
-        </section>
+        <FillerSection jp="まあ" romaji="Maa">
+          <p class="leading-relaxed text-white/70">
+            Can be used to show hesitation or to soften a statement, as well as
+            to express annoyance, resignation, or amazement, depending on
+            context and intonation.
+          </p>
+          <div class="rounded-lg bg-white/[0.04] p-4">
+            <p class="font-japanese text-lg text-white/80">
+              まあ、いいんじゃないかな。
+            </p>
+            <p class="mt-1 text-sm text-white/40">
+              Well, I guess that's fine.
+            </p>
+          </div>
+        </FillerSection>
 
         {/* そうですね */}
-        <FillerWord
-          jp="そうですね"
-          romaji="sou desu ne"
-          points={[
-            "Used to agree with someone or to show you're considering something, similar to 'I see' or 'that's right' in English.",
-            "Example: そうですね、そうしましょう。 -> I see, let's do that.",
-          ]}
-        />
+        <FillerSection jp="そうですね" romaji="Sou desu ne">
+          <p class="leading-relaxed text-white/70">
+            Used to agree with someone or to show you're considering something,
+            similar to "I see" or "that's right" in English.
+          </p>
+          <div class="rounded-lg bg-white/[0.04] p-4">
+            <p class="font-japanese text-lg text-white/80">
+              そうですね、そうしましょう。
+            </p>
+            <p class="mt-1 text-sm text-white/40">I see, let's do that.</p>
+          </div>
+        </FillerSection>
 
         {/* なんか */}
-        <FillerWord
-          jp="なんか"
-          romaji="nanka"
-          points={[
-            'Used when you can\'t find the right word, similar to "like" or "you know" in English.',
-            "Example: なんか、ちょっと変だね。 -> Like, it's a bit strange, you know.",
-          ]}
-        />
+        <FillerSection jp="なんか" romaji="Nanka">
+          <p class="leading-relaxed text-white/70">
+            Used when you can't find the right word, similar to "like" or "you
+            know" in English.
+          </p>
+          <div class="rounded-lg bg-white/[0.04] p-4">
+            <p class="font-japanese text-lg text-white/80">
+              なんか、ちょっと変だね。
+            </p>
+            <p class="mt-1 text-sm text-white/40">
+              Like, it's a bit strange, you know.
+            </p>
+          </div>
+        </FillerSection>
 
         {/* Wrap-up */}
-        <section>
-          <h2 class="pt-6 text-center text-2xl font-semibold">
-            Getting a feel for it...
-          </h2>
-          <p>
+        <div class="space-y-4">
+          <SectionLabel>Getting a feel for it...</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             The best way you can learn these words is to listen to lots of
             native material. Watching Japanese content <em>without</em> English
-            subtitles is always preferred, but you&apos;ll be able to pick up
-            these filler words even with subtitles if you listen/watch enough.
+            subtitles is always preferred, but you'll be able to pick up these
+            filler words even with subtitles if you listen/watch enough.
           </p>
-        </section>
-      </main>
+        </div>
+
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            あのう for polite interruptions, えっと to buy thinking time
+          </SummaryItem>
+          <SummaryItem>
+            まあ softens statements or expresses various emotions
+          </SummaryItem>
+          <SummaryItem>
+            そうですね to agree or show you're considering something
+          </SummaryItem>
+          <SummaryItem>
+            なんか when you can't find the right word ("like" / "you know")
+          </SummaryItem>
+        </LessonSummary>
+      </div>
     </div>
   )
 }
 
-/* --- Reusable filler word block --- */
-function FillerWord(props: { jp: string; romaji: string; points: string[] }) {
+/* --- Filler Word Section --- */
+function FillerSection(props: {
+  jp: string
+  romaji: string
+  children: JSX.Element
+}) {
   return (
-    <section>
-      <h3 class="font-japanese pt-12 text-3xl font-medium">
-        {props.jp} - <span class="font-honk text-4xl">{props.romaji}</span>
-      </h3>
-      <ul class="mt-3 list-inside list-disc space-y-2">
-        {props.points.map((p) => (
-          <li innerHTML={p} />
-        ))}
-      </ul>
-    </section>
+    <div class="space-y-4">
+      <div class="flex items-baseline gap-3">
+        <h3 class="font-japanese text-2xl font-bold text-white/90">
+          {props.jp}
+        </h3>
+        <span class="text-lg font-medium text-white/40">{props.romaji}</span>
+      </div>
+      {props.children}
+    </div>
   )
 }

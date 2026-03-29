@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/solid-router"
-import { createMediaQuery } from "@solid-primitives/media"
+import { useBreakpoints } from "@/hooks/useBreakpoints"
 import MinutesChart1 from "@/components/charts/MinutesChart1"
 import MinutesChart2 from "@/components/charts/MinutesChart2"
 import {
@@ -7,31 +7,57 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute("/lessons/_chapter-1/minutes")({
-
-  component: RouteComponent,
+  loader: () => ({ maxWidth: "max-w-5xl" }),
+  component: Minutes,
 })
 
-function RouteComponent() {
-  const isDesktop = createMediaQuery("(min-width: 1024px)")
+function Minutes() {
+  const bp = useBreakpoints()
 
   return (
-    <div class="mb-32">
-      {/* Header */}
-      <h1 class="mb-12 px-4 pt-16 text-center text-3xl leading-tight font-medium sm:text-4xl">
-        Counting Minutes — <span class="font-japanese">ぷん・ふん</span>
-      </h1>
+    <div class="relative pb-32">
+      {/* Background character */}
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+        分
+      </span>
 
-      {/* Two-column layout */}
-      <div class="mx-auto grid w-full max-w-7xl gap-8 px-4 lg:grid-cols-2 lg:items-start lg:px-12">
+      <LessonHeader
+        chapter="Chapter 1 · Getting Started"
+        title={
+          <>
+            Counting Minutes{" "}
+            <span class="text-dynamic-accent">ぷん・ふん</span>
+          </>
+        }
+        subtitle="Which minutes use ぷん and which use ふん."
+      >
+        <OverviewItem>Minutes 1–30 readings</OverviewItem>
+        <OverviewItem>
+          When to use{" "}
+          <span class="font-japanese font-semibold text-white/60">ぷん</span> vs{" "}
+          <span class="font-japanese font-semibold text-white/60">ふん</span>
+        </OverviewItem>
+        <OverviewItem>Putting hours and minutes together</OverviewItem>
+      </LessonHeader>
+
+      {/* Two-column layout: Charts */}
+      <div class="grid w-full gap-8 px-8 lg:grid-cols-2 lg:items-start">
         {/* Left: Minutes 1–10 */}
         <div class="max-w-md">
           <Collapsible
-            defaultOpen={isDesktop() ? true : false}
-            class="border-border bg-card/70 rounded-xl border shadow backdrop-blur-sm"
+            defaultOpen={bp.lg()}
+            class="rounded-xl bg-white/[0.04] ring-1 ring-white/10"
           >
-            <CollapsibleTrigger class="text-foreground p-4 text-lg font-semibold">
+            <CollapsibleTrigger class="p-4 text-lg font-semibold text-white/80">
               Minutes 1–10
             </CollapsibleTrigger>
             <CollapsibleContent class="p-4">
@@ -43,10 +69,10 @@ function RouteComponent() {
         {/* Right: Minutes 11–30 */}
         <div class="max-w-md">
           <Collapsible
-            defaultOpen={isDesktop() ? true : false}
-            class="border-border bg-card/70 rounded-xl border shadow backdrop-blur-sm"
+            defaultOpen={bp.lg()}
+            class="rounded-xl bg-white/[0.04] ring-1 ring-white/10"
           >
-            <CollapsibleTrigger class="text-foreground p-4 text-lg font-semibold">
+            <CollapsibleTrigger class="p-4 text-lg font-semibold text-white/80">
               Minutes 11–30
             </CollapsibleTrigger>
             <CollapsibleContent class="p-4">
@@ -57,39 +83,68 @@ function RouteComponent() {
       </div>
 
       {/* Explanations */}
-      <div class="mx-auto mt-20 w-full max-w-3xl space-y-6 px-6 pb-32 lg:px-12">
-        <h2 class="text-center text-2xl font-bold">
-          Japanese uses <span class="font-japanese">ぷん・ふん</span> for
-          counting minutes.
-        </h2>
+      <div class="mx-auto mt-14 max-w-3xl space-y-14 px-8">
+        <div class="space-y-4">
+          <SectionLabel>Putting it together</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            Japanese uses{" "}
+            <span class="font-japanese font-semibold text-white/90">
+              ぷん・ふん
+            </span>{" "}
+            for counting minutes.
+          </p>
 
-        <div class="flex justify-center">
-          <ul class="list-disc space-y-2 pl-6">
-            <li>
-              Five past twelve →{" "}
-              <span class="font-japanese text-xl">じゅうにじごふん</span>
-            </li>
-            <li>
-              4:20 → <span class="font-japanese text-xl">よじにじっぷん</span>
-            </li>
-            <li>
-              7:37 →{" "}
-              <span class="font-japanese text-xl">
+          <div class="space-y-2">
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
+              <span class="text-sm text-white/40">Five past twelve</span>
+              <span class="font-japanese text-lg text-white/90">
+                じゅうにじごふん
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
+              <span class="text-sm text-white/40">4:20</span>
+              <span class="font-japanese text-lg text-white/90">
+                よじにじっぷん
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
+              <span class="text-sm text-white/40">7:37</span>
+              <span class="font-japanese text-lg text-white/90">
                 しちじさんじゅうななふん
               </span>
-            </li>
-            <li>
-              10:15 →{" "}
-              <span class="font-japanese text-xl">じゅうじじゅうごふん</span>
-            </li>
-          </ul>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
+              <span class="text-sm text-white/40">10:15</span>
+              <span class="font-japanese text-lg text-white/90">
+                じゅうじじゅうごふん
+              </span>
+            </div>
+          </div>
+
+          <p class="text-center font-semibold text-white/70">
+            You'll just have to memorize which minutes from 1–10 use ぷん and
+            which use ふん.
+          </p>
+          <p class="text-center text-sm italic text-white/40">
+            You'll get better with practice!
+          </p>
         </div>
 
-        <h3 class="mt-9! text-center font-bold">
-          You&apos;ll just have to memorize which minutes from 1–10 use ぷん and
-          which use ふん.
-        </h3>
-        <p class="text-center italic">You&apos;ll get better with practice!</p>
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            Minutes use ぷん or ふん depending on the number
+          </SummaryItem>
+          <SummaryItem>
+            1, 3, 4, 6, 8, 10 use ぷん; the rest use ふん
+          </SummaryItem>
+          <SummaryItem>
+            Combine [hour]じ + [minutes]ぷん/ふん for full times
+          </SummaryItem>
+          <SummaryItem>
+            Memorize 1–10, then the pattern repeats for higher numbers
+          </SummaryItem>
+        </LessonSummary>
       </div>
     </div>
   )

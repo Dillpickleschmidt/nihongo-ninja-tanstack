@@ -1,6 +1,5 @@
-// routes/lessons/_chapter-1/telling-time.tsx
 import { createFileRoute } from "@tanstack/solid-router"
-import { createMediaQuery } from "@solid-primitives/media"
+import { useBreakpoints } from "@/hooks/useBreakpoints"
 import TimeChart from "@/components/charts/TimeChart"
 import YouTubeVideo from "@/features/youtube/YouTube"
 import {
@@ -8,31 +7,53 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/custom/collapsible"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import GlowBox from "@/features/lessons/components/GlowBox"
+import AsideBlock from "@/features/lessons/components/AsideBlock"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute("/lessons/_chapter-1/telling-time")({
-
-  component: RouteComponent,
+  loader: () => ({ maxWidth: "max-w-5xl" }),
+  component: TellingTime,
 })
 
-function RouteComponent() {
-  const isDesktop = createMediaQuery("(min-width: 1024px)")
+function TellingTime() {
+  const bp = useBreakpoints()
 
   return (
-    <div class="mb-32">
-      {/* Page Header */}
-      <h1 class="mb-12 px-4 pt-16 text-center text-3xl leading-tight font-medium sm:text-4xl">
-        Telling Time
-      </h1>
+    <div class="relative pb-32">
+      {/* Background character */}
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+        時
+      </span>
 
-      {/* Responsive grid */}
-      <div class="mx-auto grid w-full max-w-7xl gap-12 px-4 lg:grid-cols-2 lg:items-start lg:px-12">
+      <LessonHeader
+        chapter="Chapter 1 · Getting Started"
+        title={<>Telling Time</>}
+        subtitle="Hours, half hours, and how to ask what time it is."
+      >
+        <OverviewItem>
+          Saying hours with{" "}
+          <span class="font-japanese font-semibold text-white/60">じ</span>
+        </OverviewItem>
+        <OverviewItem>Half hours, quarter-past, and quarter-to</OverviewItem>
+        <OverviewItem>Times of day and asking the time</OverviewItem>
+      </LessonHeader>
+
+      {/* 2-column: TimeChart + Explanations */}
+      <div class="grid w-full gap-12 px-8 lg:grid-cols-2 lg:items-start">
         {/* Left: TimeChart in Collapsible */}
         <div class="max-w-md">
           <Collapsible
-            defaultOpen={isDesktop() ? true : false}
-            class="border-border bg-card/70 rounded-xl border shadow backdrop-blur-sm"
+            defaultOpen={bp.lg()}
+            class="rounded-xl bg-white/[0.04] ring-1 ring-white/10"
           >
-            <CollapsibleTrigger class="text-foreground p-4 text-lg font-semibold">
+            <CollapsibleTrigger class="p-4 text-lg font-semibold text-white/80">
               Hours in Japanese (Time Chart)
             </CollapsibleTrigger>
             <CollapsibleContent class="p-4">
@@ -42,27 +63,33 @@ function RouteComponent() {
         </div>
 
         {/* Right: Explanations */}
-        <div class="text-foreground space-y-12 leading-relaxed">
-          <h2 class="text-2xl font-bold">
+        <div class="space-y-8 leading-relaxed">
+          <p class="text-xl font-bold text-white/90">
             To say the time in Japanese, simply use the number hour followed by
             じ.
-          </h2>
+          </p>
 
-          <ul class="list-disc space-y-2 pl-6">
+          <ul class="space-y-2 text-white/70">
             <li>
-              4 o’clock is only pronounced{" "}
-              <span class="font-japanese font-semibold underline">よじ</span>,
-              not よんじ or しじ.
+              4 o'clock is only pronounced{" "}
+              <span class="font-japanese font-semibold text-white/90 underline underline-offset-2">
+                よじ
+              </span>
+              , not よんじ or しじ.
             </li>
             <li>
-              7 o’clock is only pronounced{" "}
-              <span class="font-japanese font-semibold underline">しちじ</span>,
-              not ななじ.
+              7 o'clock is only pronounced{" "}
+              <span class="font-japanese font-semibold text-white/90 underline underline-offset-2">
+                しちじ
+              </span>
+              , not ななじ.
             </li>
             <li>
-              9 o’clock is only pronounced{" "}
-              <span class="font-japanese font-semibold underline">くじ</span>,
-              not きゅうじ.
+              9 o'clock is only pronounced{" "}
+              <span class="font-japanese font-semibold text-white/90 underline underline-offset-2">
+                くじ
+              </span>
+              , not きゅうじ.
             </li>
           </ul>
 
@@ -82,12 +109,12 @@ function RouteComponent() {
             ]}
           />
 
-          <p class="text-muted-foreground text-sm italic">
+          <p class="text-sm italic text-white/40">
             Thanks again Kaname for your awesome free videos. :) Everyone go
             subscribe to his channel if you like his content!
           </p>
 
-          <ul class="list-disc space-y-2 pl-6">
+          <ul class="space-y-2 text-white/70">
             <li>
               The accent is typically right before じ, with さんじ and じゅうじ
               being exceptions.
@@ -96,10 +123,10 @@ function RouteComponent() {
               In Japan, time is written either with Western digits or a kanji
               number + 時.
             </li>
-            <li class="ml-5">
-              Ex: 二時 → 2 o’clock
+            <li class="ml-5 text-white/50">
+              Ex: 二時 → 2 o'clock
               <br />
-              Ex: ２時 → 2 o’clock
+              Ex: ２時 → 2 o'clock
             </li>
             <li>
               Japanese people typically use the 12‑hour clock conversationally,
@@ -110,135 +137,259 @@ function RouteComponent() {
         </div>
       </div>
 
-      {/* Half hours + Quarter past/to */}
-      <div class="mx-auto mt-20 w-full max-w-3xl space-y-10 px-6 lg:px-12">
-        <h2 class="text-center text-2xl font-bold">
-          For half hours, use <span class="font-japanese">はん</span>{" "}
-          <span class="text-muted-foreground">(half)</span>.
-        </h2>
-        <ul class="list-disc space-y-2 pl-6">
-          <li>
-            <span class="font-japanese">はん</span> usually written with kanji{" "}
-            <span class="font-japanese">半</span>.
-          </li>
-        </ul>
+      {/* Remaining sections: max-w-3xl centered */}
+      <div class="mx-auto mt-20 max-w-3xl space-y-14 px-8">
+        {/* Half hours */}
+        <div class="space-y-4">
+          <SectionLabel>Half hours</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            For half hours, use{" "}
+            <span class="font-japanese font-semibold text-white/90">はん</span>{" "}
+            <span class="text-white/40">(half)</span>. Usually written with
+            kanji{" "}
+            <span class="font-japanese font-semibold text-white/90">半</span>.
+          </p>
 
-        <h3 class="text-xl font-bold">Examples:</h3>
-        <ul class="ml-6 list-disc space-y-1">
-          <li>一時半 – 1:30</li>
-          <li>十二時半 – 12:30</li>
-        </ul>
-
-        <h2 class="text-center text-2xl font-bold">
-          Quarter Past and Quarter To
-        </h2>
-        <p>
-          There isn’t a direct equivalent in Japanese. You either specify exact
-          minutes, or use “a little before X” / “a little after X” with{" "}
-          <span class="font-japanese">まえ</span> and{" "}
-          <span class="font-japanese">すぎ</span>.
-        </p>
-
-        <h3 class="text-xl font-bold">Examples:</h3>
-        <ul class="ml-6 list-disc space-y-1">
-          <li>Quarter‑to‑10 → じゅうじまえ</li>
-          <li>Quarter‑past‑10 → じゅうじすぎ</li>
-        </ul>
-      </div>
-
-      {/* Times of Day */}
-      <div class="mx-auto mt-20 w-full max-w-3xl space-y-10 px-6 lg:px-12">
-        <h2 class="text-center text-3xl font-bold">Times of Day</h2>
-        <p>
-          The basic way to say a.m. and p.m. is ごぜん and ごご, written 午前 /
-          午後. They go before the time.
-        </p>
-
-        <ul class="list-disc space-y-2 pl-6">
-          <li>12:30 a.m. → ごぜん じゅうに はん → 午前十二半</li>
-          <li>12:30 p.m. → ごご じゅうに はん → 午後十二半</li>
-        </ul>
-
-        <p>
-          Conversationally, most people prefer saying “in the morning” / “at
-          night” instead.
-        </p>
-        <ul class="ml-6 list-disc space-y-1">
-          <li>あさのくじ – 9 in the morning</li>
-          <li>よるのくじ – 9 at night</li>
-        </ul>
-
-        <h4 class="text-center text-lg font-bold">
-          Japanese people generally divide a day into four slots:
-        </h4>
-        <ul class="font-japanese space-y-3 text-center text-xl font-semibold">
-          <li>🌄 あさ → Morning (Sunrise – ~10 a.m.)</li>
-          <li>🌤️ ひる → Midday (~10 a.m. – 2/3 p.m.)</li>
-          <li>🌇 ゆうがた → Evening (3/4 p.m. – 7 p.m.)</li>
-          <li>🌒 よる → Night (7 p.m. – Sunrise)</li>
-        </ul>
-
-        <p class="text-sm italic">
-          *あさ and よる are the most common to clarify AM vs PM
-        </p>
-      </div>
-
-      {/* Asking the Time */}
-      <div class="mx-auto mt-20 w-full max-w-3xl space-y-8 px-6 lg:px-12">
-        <h2 class="text-center text-3xl font-bold">Asking The Time</h2>
-
-        <h3 class="font-japanese text-3xl font-medium">
-          今 (いま) — right now / current time
-        </h3>
-        <p>To ask “What time is it?”, say:</p>
-        <h3 class="font-japanese text-center text-2xl font-semibold">
-          いま、なんじですか。
-        </h3>
-
-        <div>
-          <h3 class="mt-8 mb-2 text-xl font-semibold">
-            Scenario 1: Asking for The Time
-          </h3>
-          <ul class="list-disc space-y-2 pl-6">
-            <li>A: いま なんじですか。 → What time is it?</li>
-            <li>B: じゅういちじ はんです。 → It’s 11:30.</li>
-          </ul>
+          <div class="grid gap-2 sm:grid-cols-2">
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <span class="font-japanese text-lg text-white/90">一時半</span>
+              <span class="ml-3 text-sm text-white/40">1:30</span>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <span class="font-japanese text-lg text-white/90">十二時半</span>
+              <span class="ml-3 text-sm text-white/40">12:30</span>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <h3 class="mt-8 mb-2 text-xl font-semibold">
-            Scenario 2: Setting a Meeting Time
-          </h3>
-          <ul class="list-disc space-y-2 pl-6">
-            <li>A: かいぎ は なんじですか。 → What time is the meeting?</li>
-            <li>B: さんじ はんです。 → It’s at 3:30.</li>
-          </ul>
+        {/* Quarter past/to */}
+        <div class="space-y-4">
+          <SectionLabel>Quarter past and quarter to</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            There isn't a direct equivalent in Japanese. You either specify
+            exact minutes, or use "a little before X" / "a little after X" with{" "}
+            <span class="font-japanese font-semibold text-white/90">まえ</span>{" "}
+            and{" "}
+            <span class="font-japanese font-semibold text-white/90">すぎ</span>
+            .
+          </p>
+
+          <div class="grid gap-2 sm:grid-cols-2">
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <p class="text-sm text-white/40">Quarter‑to‑10</p>
+              <p class="font-japanese text-lg text-white/90">じゅうじまえ</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <p class="text-sm text-white/40">Quarter‑past‑10</p>
+              <p class="font-japanese text-lg text-white/90">じゅうじすぎ</p>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <h3 class="mt-8 mb-2 text-xl font-semibold">
-            Scenario 3: Scheduling an Appointment
-          </h3>
-          <ul class="list-disc space-y-2 pl-6">
-            <li>
-              A: いしゃの よやく は なんじですか。 → What time’s the
-              appointment?
-            </li>
-            <li>B: ごぜん じゅうじです。 → It’s at 10 a.m.</li>
-          </ul>
-        </div>
-      </div>
+        {/* Times of Day */}
+        <div class="space-y-6">
+          <div class="space-y-4">
+            <SectionLabel>Times of day</SectionLabel>
+            <p class="leading-relaxed text-white/70">
+              The basic way to say a.m. and p.m. is ごぜん and ごご, written
+              午前 / 午後. They go before the time.
+            </p>
+          </div>
 
-      {/* Bonus */}
-      <div class="mx-auto mt-20 w-full max-w-3xl space-y-6 px-6 lg:px-12">
-        <h2 class="text-center text-3xl font-bold italic">
-          <span class="not-italic">Bonus</span> — History of Japanese Time
-        </h2>
-        <YouTubeVideo
-          videoId="1BJmnEa6YGE"
-          title="Traditional Japanese Time Was Very Different by Linfamy - Nov 21, 2022"
-          credit="Linfamy"
-        />
+          <div class="grid gap-2 sm:grid-cols-2">
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <p class="text-sm text-white/40">12:30 a.m.</p>
+              <p class="font-japanese text-lg text-white/90">
+                ごぜん じゅうに はん
+              </p>
+              <p class="font-japanese text-sm text-white/50">午前十二半</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <p class="text-sm text-white/40">12:30 p.m.</p>
+              <p class="font-japanese text-lg text-white/90">
+                ごご じゅうに はん
+              </p>
+              <p class="font-japanese text-sm text-white/50">午後十二半</p>
+            </div>
+          </div>
+
+          <p class="leading-relaxed text-white/70">
+            Conversationally, most people prefer saying "in the morning" / "at
+            night" instead.
+          </p>
+
+          <div class="grid gap-2 sm:grid-cols-2">
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <p class="font-japanese text-lg text-white/90">あさのくじ</p>
+              <p class="text-sm text-white/40">9 in the morning</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <p class="font-japanese text-lg text-white/90">よるのくじ</p>
+              <p class="text-sm text-white/40">9 at night</p>
+            </div>
+          </div>
+
+          <p class="text-center text-sm font-medium text-white/50">
+            Japanese people generally divide a day into four slots:
+          </p>
+
+          <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center">
+              <p class="text-lg">🌄</p>
+              <p class="font-japanese text-lg font-semibold text-white/90">
+                あさ
+              </p>
+              <p class="text-xs text-white/40">Sunrise – ~10 a.m.</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center">
+              <p class="text-lg">🌤️</p>
+              <p class="font-japanese text-lg font-semibold text-white/90">
+                ひる
+              </p>
+              <p class="text-xs text-white/40">~10 a.m. – 2/3 p.m.</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center">
+              <p class="text-lg">🌇</p>
+              <p class="font-japanese text-lg font-semibold text-white/90">
+                ゆうがた
+              </p>
+              <p class="text-xs text-white/40">3/4 p.m. – 7 p.m.</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center">
+              <p class="text-lg">🌒</p>
+              <p class="font-japanese text-lg font-semibold text-white/90">
+                よる
+              </p>
+              <p class="text-xs text-white/40">7 p.m. – Sunrise</p>
+            </div>
+          </div>
+
+          <p class="text-sm italic text-white/40">
+            *あさ and よる are the most common to clarify AM vs PM
+          </p>
+        </div>
+
+        {/* Asking the Time */}
+        <div class="space-y-6">
+          <div class="space-y-4">
+            <SectionLabel>Asking the time</SectionLabel>
+
+            <AsideBlock>
+            <p class="leading-relaxed text-white/70">
+              <span class="font-japanese font-semibold text-white/90">
+                今 (いま)
+              </span>{" "}
+              — right now / current time
+            </p>
+          </AsideBlock>
+          </div>
+
+          <p class="leading-relaxed text-white/70">
+            To ask "What time is it?", say:
+          </p>
+
+          <GlowBox>
+            <p class="text-center font-japanese text-2xl font-semibold text-white/90">
+              いま、なんじですか。
+            </p>
+          </GlowBox>
+
+          <div class="space-y-3">
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/30">
+                Scenario 1: Asking for the time
+              </p>
+              <div class="space-y-1 text-sm leading-relaxed text-white/60">
+                <p>
+                  A:{" "}
+                  <span class="font-japanese text-base text-white/80">
+                    いま なんじですか。
+                  </span>{" "}
+                  → What time is it?
+                </p>
+                <p>
+                  B:{" "}
+                  <span class="font-japanese text-base text-white/80">
+                    じゅういちじ はんです。
+                  </span>{" "}
+                  → It's 11:30.
+                </p>
+              </div>
+            </div>
+
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/30">
+                Scenario 2: Setting a meeting time
+              </p>
+              <div class="space-y-1 text-sm leading-relaxed text-white/60">
+                <p>
+                  A:{" "}
+                  <span class="font-japanese text-base text-white/80">
+                    かいぎ は なんじですか。
+                  </span>{" "}
+                  → What time is the meeting?
+                </p>
+                <p>
+                  B:{" "}
+                  <span class="font-japanese text-base text-white/80">
+                    さんじ はんです。
+                  </span>{" "}
+                  → It's at 3:30.
+                </p>
+              </div>
+            </div>
+
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/30">
+                Scenario 3: Scheduling an appointment
+              </p>
+              <div class="space-y-1 text-sm leading-relaxed text-white/60">
+                <p>
+                  A:{" "}
+                  <span class="font-japanese text-base text-white/80">
+                    いしゃの よやく は なんじですか。
+                  </span>{" "}
+                  → What time's the appointment?
+                </p>
+                <p>
+                  B:{" "}
+                  <span class="font-japanese text-base text-white/80">
+                    ごぜん じゅうじです。
+                  </span>{" "}
+                  → It's at 10 a.m.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bonus */}
+        <div class="space-y-4">
+          <SectionLabel>
+            Bonus — history of Japanese time
+          </SectionLabel>
+          <YouTubeVideo
+            videoId="1BJmnEa6YGE"
+            title="Traditional Japanese Time Was Very Different by Linfamy - Nov 21, 2022"
+            credit="Linfamy"
+          />
+        </div>
+
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            [number] + じ for hours, with irregular readings for 4, 7, and 9
+          </SummaryItem>
+          <SummaryItem>
+            はん (半) for half hours, まえ/すぎ for quarter-to/past
+          </SummaryItem>
+          <SummaryItem>
+            ごぜん / ごご for a.m./p.m., or あさ / よる conversationally
+          </SummaryItem>
+          <SummaryItem>
+            いま、なんじですか to ask "What time is it?"
+          </SummaryItem>
+        </LessonSummary>
       </div>
     </div>
   )
