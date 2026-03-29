@@ -12,7 +12,7 @@ export default function Romaji(props: RomajiProps) {
   return (
     <span class="inline-flex">
       <span
-        class="font-japanese block"
+        class="font-japanese block leading-none"
         style={{
           "text-shadow": props.textShadow, //"0px 4px 4px rgba(0, 0, 0, 0.25)"
         }}

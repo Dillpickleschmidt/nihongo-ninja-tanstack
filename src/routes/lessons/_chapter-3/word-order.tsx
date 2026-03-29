@@ -1,240 +1,329 @@
-// routes/lessons/_chapter-3/word-order.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import Furigana from "@/components/text/Furigana"
-import YouTubeVideo from "@/features/youtube/YouTube"
 import Romaji from "@/components/text/Romaji"
+import YouTubeVideo from "@/features/youtube/YouTube"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import GlowBox from "@/features/lessons/components/GlowBox"
+import AsideBlock from "@/features/lessons/components/AsideBlock"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute("/lessons/_chapter-3/word-order")({
-
-  component: RouteComponent,
+  component: WordOrder,
 })
 
-function RouteComponent() {
+function WordOrder() {
   return (
-    <>
-      <div class="space-y-2 pt-8 pl-8">
-        <h4 class="text-xl font-medium">Lesson Resources:</h4>
-        <ul class="list-inside list-disc">
-          <li>
-            <a
-              class="text-sky-400 underline"
-              href="https://8020japanese.com/japanese-word-order/"
-              target="_blank"
-            >
-              Japanese Word Order - 80/20 Japanese
-            </a>
-          </li>
-        </ul>
-      </div>
+    <div class="relative pb-32">
+      {/* Background character */}
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+        順
+      </span>
 
-      <h1 class="px-6 pt-6 pb-6 text-center text-4xl font-semibold sm:px-12 sm:pt-12 lg:px-28 lg:pt-24">
-        The Flexibility of Japanese Word Order
-      </h1>
-      <div class="space-y-6 px-8 pb-32 sm:px-16 md:px-24">
-        <p>
-          One of the most fascinating aspects of Japanese is its flexible word
-          order. Unlike English, where the order of words is crucial for
-          conveying meaning, Japanese allows for much more freedom in how you
-          arrange your sentence. This flexibility can be both liberating and
-          confusing for learners. Let's dive into how Japanese word order works
-          and how you can use it effectively.
-        </p>
+      <LessonHeader
+        chapter="Chapter 3 · Grammar"
+        title={<>Word Order</>}
+        subtitle="Why Japanese lets you rearrange almost everything."
+      >
+        <OverviewItem>Topic-comment structure</OverviewItem>
+        <OverviewItem>Common word order patterns</OverviewItem>
+        <OverviewItem>Emphasis, new information, and omission</OverviewItem>
+      </LessonHeader>
 
-        {/* <YouTubeVideo
-          videoId="VIDEO_ID_HERE"
-          title="Japanese Basic Sentence Structure"
-          credit="Japanese Ammo with Misa"
-        /> */}
+      <div class="space-y-14 px-8">
+        {/* The Basics */}
+        <div class="space-y-4">
+          <SectionLabel>The basics</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            In Japanese, the verb almost always comes last. Everything else can
+            be rearranged, because particles (not word order) tell you what role
+            each word plays in the sentence.
+          </p>
+        </div>
 
-        <h2 class="text-2xl font-bold">The Basics</h2>
-        <p>
-          In Japanese, verbs are like the caboose on a train—they always come
-          last. Everything else? Feel free to play musical chairs with them.
-          This is of course is made possible by particles, those small but
-          mighty grammatical markers that show the function of each word in the
-          sentence.
-        </p>
+        {/* Topic-Comment */}
+        <div class="space-y-4">
+          <SectionLabel>Topic-comment: a simple concept</SectionLabel>
+          <YouTubeVideo
+            videoId="U2q5GsB0swQ"
+            title="Basic Sentence Structure in Japanese"
+            credit="Kaname Naito"
+          />
+          <p class="leading-relaxed text-white/70">
+            You pick a topic, mark it with は, then say something about it:
+          </p>
 
-        <h2 class="text-2xl font-bold">Topic-Comment: A Simple Concept</h2>
-        <YouTubeVideo
-          videoId="U2q5GsB0swQ"
-          title="Basic Sentence Structure in Japanese"
-          credit="Kaname Naito"
-        />
-        <p>
-          Here's how it goes: you pick a topic, slap a "は" on it, and then
-          comment away. Like this:
-        </p>
-        <p>
-          <span class="font-japanese text-center text-2xl">
-            コーヒーはおいしいです。
-          </span>
-          - <span class="text-xl">Coffee, right? Delicious</span>.
-        </p>
-        <p>
-          In other words, <span class="font-bold italic">coffee</span> is the
-          topic, and <span class="font-bold italic">it's delicious</span> is the
-          comment. Essentially, you introduce your subject like you're showing
-          off your latest gadget, then you give your hot take on it.
-        </p>
+          <div class="rounded-lg bg-white/[0.04] p-4">
+            <p class="font-japanese text-xl text-white/90">
+              コーヒーはおいしいです。
+            </p>
+            <p class="mt-1 text-sm text-white/40">
+              Coffee? Delicious.
+            </p>
+          </div>
 
-        <h2 class="text-2xl font-bold">Word Order Patterns</h2>
-        <p>
-          While word order is flexible, some patterns are more common and
-          natural-sounding than others. Here are a few general guidelines:
-        </p>
-        <ol class="list-decimal space-y-4 pl-6">
-          <li>
-            <span class="font-semibold">Topic</span> (+
-            <span class="font-japanese">は</span>) often comes{" "}
-            <strong>first</strong>{" "}
-            <span class="text-muted-foreground text-base">
-              (if it's even needed)
-            </span>
-            .
-          </li>
-          <li>
-            <span class="font-semibold">Time expressions</span> often come{" "}
-            <strong>early</strong> in the sentence.
-          </li>
-          <li>
-            <span class="font-semibold">Place expressions</span>{" "}
-            <strong>often follow</strong> time expressions.
-          </li>
-          <li>
-            <span class="font-semibold">The object</span> (+
-            <span class="font-japanese">を</span>) usually comes{" "}
-            <span class="font-semibold">before the verb</span>
-          </li>
-          <li>
-            <span class="font-semibold">The verb</span> almost always comes{" "}
-            <strong>last</strong>.
-          </li>
-        </ol>
+          <p class="leading-relaxed text-white/70">
+            <span class="font-semibold italic text-white/90">Coffee</span> is
+            the topic,{" "}
+            <span class="font-semibold italic text-white/90">
+              it's delicious
+            </span>{" "}
+            is the comment. That's the whole pattern.
+          </p>
+        </div>
 
-        <h3 class="text-xl font-semibold">Example:</h3>
-        <p class="font-japanese text-xl">私は明日東京でラーメンを食べます。</p>
-        <p class="mt-2!">(As for me, I'll eat ramen in Tokyo tomorrow.)</p>
+        {/* Word Order Patterns */}
+        <div class="space-y-4">
+          <SectionLabel>Word order patterns</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            While word order is flexible, some patterns are more common and
+            natural-sounding than others. Here are a few general guidelines:
+          </p>
 
-        <p>You could rearrange this to:</p>
-        <p class="font-japanese text-xl">明日東京で私はラーメンを食べます。</p>
-        <p class="mt-2!">(Tomorrow in Tokyo, I will eat ramen.)</p>
+          <div class="space-y-2">
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <span class="font-semibold text-white/90">1. Topic</span>
+              <span class="text-white/50">
+                {" "}
+                (+<span class="font-japanese">は</span>) often comes{" "}
+                <span class="font-semibold text-white/70">first</span>{" "}
+                <span class="text-xs text-white/30">
+                  (if it's even needed)
+                </span>
+              </span>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <span class="font-semibold text-white/90">
+                2. Time expressions
+              </span>
+              <span class="text-white/50">
+                {" "}
+                often come{" "}
+                <span class="font-semibold text-white/70">early</span> in the
+                sentence
+              </span>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <span class="font-semibold text-white/90">
+                3. Place expressions
+              </span>
+              <span class="text-white/50">
+                {" "}
+                often{" "}
+                <span class="font-semibold text-white/70">follow</span> time
+                expressions
+              </span>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <span class="font-semibold text-white/90">4. The object</span>
+              <span class="text-white/50">
+                {" "}
+                (+<span class="font-japanese">を</span>) usually comes{" "}
+                <span class="font-semibold text-white/70">
+                  before the verb
+                </span>
+              </span>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <span class="font-semibold text-white/90">5. The verb</span>
+              <span class="text-white/50">
+                {" "}
+                almost always comes{" "}
+                <span class="font-semibold text-white/70">last</span>
+              </span>
+            </div>
+          </div>
+        </div>
 
-        <p>
-          Both are grammatically correct, but the emphasis changes slightly.
-        </p>
-        <p class="text-muted-foreground mx-6 mt-4! text-center">
-          *Remember, particles pair with the end of nouns. Move the noun, and
-          the particle follows.
-        </p>
+        {/* Example */}
+        <div class="space-y-4">
+          <div class="space-y-3">
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-xl text-white/90">
+                私は明日東京でラーメンを食べます。
+              </p>
+              <p class="mt-1 text-sm text-white/40">
+                (As for me, I'll eat ramen in Tokyo tomorrow.)
+              </p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-xl text-white/90">
+                明日東京で私はラーメンを食べます。
+              </p>
+              <p class="mt-1 text-sm text-white/40">
+                (Tomorrow in Tokyo, I will eat ramen.)
+              </p>
+            </div>
+          </div>
 
-        <h2 class="text-2xl font-bold">Emphasis and New Information</h2>
-        <p>
-          In Japanese, important or new information tends to be placed closer to
-          the end of the sentence, just before the verb. This is different from
-          English, where we often emphasize important information by putting it
-          at the beginning of a sentence.
-        </p>
-        <p class="text-muted-foreground text-base">
-          *The topic being an exception, which often gets placed first.
-        </p>
+          <p class="leading-relaxed text-white/70">
+            Both are grammatically correct, but the emphasis changes slightly.
+          </p>
+          <p class="text-center text-sm text-white/40">
+            *Remember, particles pair with the end of nouns. Move the noun, and
+            the particle follows.
+          </p>
+        </div>
 
-        <h2 class="text-2xl font-bold">Omission</h2>
-        <div>
-          <p>
+        {/* Emphasis */}
+        <div class="space-y-4">
+          <SectionLabel>Emphasis and new information</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            Important or new information tends to go closer to the end of the
+            sentence, just before the verb. The topic (は) is the exception,
+            which usually stays first.
+          </p>
+
+          <div class="space-y-3">
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-white/90">
+                私は<span class="font-semibold text-dynamic-accent">東京で</span>ラーメンを食べます。
+              </p>
+              <p class="mt-1 text-sm text-white/40">
+                I eat ramen <span class="font-semibold">in Tokyo</span>. (emphasizing Tokyo)
+              </p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-white/90">
+                私は東京で<span class="font-semibold text-dynamic-accent">ラーメンを</span>食べます。
+              </p>
+              <p class="mt-1 text-sm text-white/40">
+                I eat <span class="font-semibold">ramen</span> in Tokyo. (emphasizing ramen)
+              </p>
+            </div>
+          </div>
+
+          <p class="text-sm text-white/50">
+            What's closer to the verb gets more emphasis.
+          </p>
+        </div>
+
+        {/* Omission */}
+        <div class="space-y-4">
+          <SectionLabel>Omission</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             In conversational Japanese, it's common to omit parts of the
             sentence that are clear from context. This includes topics,
             subjects, objects, and even particles sometimes. For example,
             instead of saying:
           </p>
-          <p class="mt-2 ml-2">
-            <span class="font-japanese text-xl">
-              私はコーヒーが
-              <Furigana furigana={<span class="text-sm">す</span>}>好</Furigana>
-              きです。
-            </span>
-            {"->"} I like coffee.
-          </p>
-          <p class="mt-2">you'd more likely say:</p>
-          <p class="mt-2 ml-2">
-            <span class="font-japanese text-xl">コーヒーが好きです。</span>
-            {"->"} Like coffee.
-          </p>
-          <p class="mt-2">You might even just say:</p>
-          <p class="mt-2 ml-2">
-            <span class="font-japanese text-xl">好き。</span>
-            {"->"} Like.
-          </p>
+
+          <div class="space-y-2">
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-white/80">
+                私はコーヒーが
+                <Furigana furigana={<span class="text-xs">す</span>}>
+                  好
+                </Furigana>
+                きです。
+              </p>
+              <p class="mt-1 text-sm text-white/40">I like coffee.</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="text-xs font-semibold uppercase tracking-wider text-white/30">
+                More likely
+              </p>
+              <p class="mt-1 font-japanese text-lg text-white/80">
+                コーヒーが好きです。
+              </p>
+              <p class="mt-1 text-sm text-white/40">Like coffee.</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="text-xs font-semibold uppercase tracking-wider text-white/30">
+                Or even just
+              </p>
+              <p class="mt-1 font-japanese text-lg text-white/80">好き。</p>
+              <p class="mt-1 text-sm text-white/40">Like.</p>
+            </div>
+          </div>
         </div>
 
-        <h2 class="mt-12! text-center text-3xl font-bold">Practice</h2>
-        <p>Try rearranging these sentences to create different nuances:</p>
-        <ol class="list-decimal pl-6">
-          <li>
-            <p class="font-japanese text-xl">私は毎朝図書館で読みます。</p>
-            <p>(I read at the library every morning.)</p>
-          </li>
-          <li>
-            <p class="font-japanese text-xl">
-              田中さんは
-              <span class="text-center">
-                <Romaji romaji="every week">
+        {/* Practice */}
+        <div class="space-y-5">
+          <h3 class="text-center text-2xl font-bold">Practice</h3>
+          <p class="text-center text-sm italic text-white/40">[wip]</p>
+          <div class="space-y-3">
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-white/90">
+                私は毎朝図書館で読みます。
+              </p>
+              <p class="mt-1 text-sm text-white/40">
+                (I read at the library every morning.)
+              </p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-white/90">
+                田中さんは
+                <Romaji romaji="every week" class="text-xs">
                   毎
-                  <Furigana furigana={<span class="text-sm">しゅう</span>}>
+                  <Furigana furigana={<span class="text-xs">しゅう</span>}>
                     週
                   </Furigana>
                 </Romaji>
-              </span>
-              日曜日の
-              <Furigana furigana={<span class="text-sm">よる</span>}>
-                夜
-              </Furigana>
-              にアメリカンアイドルを見ます。
+                日曜日の
+                <Furigana furigana={<span class="text-xs">よる</span>}>
+                  夜
+                </Furigana>
+                にアメリカンアイドルを見ます。
+              </p>
+              <p class="mt-1 text-sm text-white/40">
+                (Mr. Tanaka watches American Idol every Sunday evening.)
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Video */}
+        <div>
+          <YouTubeVideo
+            videoId="ed4rmIY4mL0"
+            title="【N5】Genki 1 Lesson 3 Grammar Made Clear | ます CONJUGATION SIMPLIFIED"
+            credit="ToKini Andy"
+            startTime={3091}
+            timestamps={[
+              { label: "Word Order", time: 3091 },
+              { label: "More about は", time: 3360 },
+            ]}
+          />
+        </div>
+
+        {/* Resource */}
+        <div class="rounded-lg bg-white/[0.03] p-6 ring-1 ring-white/[0.06]">
+          <SectionLabel>Additional resources</SectionLabel>
+          <div class="mt-4 text-sm">
+            <a
+              href="https://8020japanese.com/japanese-word-order/"
+              target="_blank"
+              class="text-dynamic-accent underline decoration-dynamic-accent/30 underline-offset-2 hover:decoration-dynamic-accent/60"
+            >
+              Japanese Word Order - 80/20 Japanese
+            </a>
+            <p class="mt-0.5 text-white/40">
+              An alternative explanation of word order and particles.
             </p>
-            <p>(Mr. Tanaka watches American Idol every Sunday evening.)</p>
-          </li>
-        </ol>
-        <p>
-          Remember, while these rearrangements are grammatically correct, some
-          might sound more natural than others to native speakers.
-        </p>
+          </div>
+        </div>
 
-        <YouTubeVideo
-          videoId="ed4rmIY4mL0"
-          title="【N5】Genki 1 Lesson 3 Grammar Made Clear | ます CONJUGATION SIMPLIFIED"
-          credit="ToKini Andy"
-          startTime={3091}
-          timestamps={[
-            { label: "Word Order", time: 3091 },
-            { label: "More about は", time: 3360 },
-          ]}
-        />
-
-        <h2 class="text-2xl font-bold">Conclusion</h2>
-        <p>
-          Japanese word order flexibility allows for nuanced expression, but it
-          can take time to develop an ear for what sounds most natural. Keep
-          practicing, listening to native speakers, and don't be afraid to
-          experiment with word order in your own Japanese sentences!
-        </p>
-
-        <p class="text-base italic">
-          If you're looking for an alternative explanation{" "}
-          <span class="text-sm">
-            (or just want to further improve your understanding of Japanese word
-            order and particles)
-          </span>
-          ,{" "}
-          <a
-            target="_blank"
-            href="https://8020japanese.com/japanese-word-order/"
-            class="font-bold text-sky-400 underline"
-          >
-            this article
-          </a>{" "}
-          is a great resource.
-        </p>
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            Verbs almost always come last; everything else is flexible
+          </SummaryItem>
+          <SummaryItem>
+            Topic (は) first → time → place → object (を) → verb
+          </SummaryItem>
+          <SummaryItem>
+            New or important info goes closer to the verb
+          </SummaryItem>
+          <SummaryItem>
+            Context-obvious words (topic, subject, particles) are often dropped
+          </SummaryItem>
+        </LessonSummary>
       </div>
-    </>
+    </div>
   )
 }

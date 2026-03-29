@@ -1,337 +1,311 @@
-// routes/lessons/_chapter-3/kanji-radicals.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import YouTubeVideo from "@/features/youtube/YouTube"
 import Romaji from "@/components/text/Romaji"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import GlowBox from "@/features/lessons/components/GlowBox"
+import AsideBlock from "@/features/lessons/components/AsideBlock"
+import RevealBlock from "@/features/lessons/components/RevealBlock"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute(
   "/lessons/_chapter-3/kanji-radicals",
 )({
-
-  component: RouteComponent,
+  component: KanjiRadicals,
 })
 
-function RouteComponent() {
+function KanjiRadicals() {
   return (
-    <div class="mb-32">
-      {/* --- Simple Header (Chapter 2 style) --- */}
-      <header class="mx-auto max-w-3xl px-6 py-14 text-center">
-        <h1 class="mb-3 text-4xl font-extrabold tracking-tight">
-          Breaking Down Kanji
-        </h1>
-        <div class="mx-auto mb-5 h-1 w-16 rounded bg-[#EA5348]" />
-        <p class="text-muted-foreground text-lg">
-          Learning kanji is easier once you understand their building blocks —
-          called radicals. Instead of thousands of characters, you only need
-          ~443 parts to break most kanji down.
-        </p>
-      </header>
+    <div class="relative pb-32">
+      {/* Background character */}
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+        部
+      </span>
 
-      {/* --- Main Content --- */}
-      <main class="mx-auto max-w-3xl space-y-12 px-6 leading-relaxed">
-        <section>
-          <p>
-            2,136 kanji is a <strong>lot</strong> better than 50,000 kanji. But
-            what if I told you we can do better? How about:
+      <LessonHeader
+        chapter="Chapter 3 · Writing"
+        title={<>Breaking Down Kanji</>}
+        subtitle="The ~443 building blocks behind every kanji character."
+      >
+        <OverviewItem>What radicals are and why they help</OverviewItem>
+        <OverviewItem>The 8 positions radicals can appear in</OverviewItem>
+        <OverviewItem>214 official + 229 unofficial = 443 parts</OverviewItem>
+      </LessonHeader>
+
+      <div class="space-y-14 px-8">
+        {/* Hook */}
+        <div class="space-y-4">
+          <p class="leading-relaxed text-white/70">
+            2,136 kanji is a{" "}
+            <span class="font-semibold text-white/90">lot</span> better than
+            50,000 kanji. But what if I told you we can do better? How about:
           </p>
-          <h2 class="mt-3 text-center text-3xl font-bold text-[#EA5348]">
-            443 Kanji
-          </h2>
-          <p class="text-center font-bold">Seems impossible? Well, read on.</p>
-        </section>
 
-        <section>
+          <p class="text-center text-3xl font-bold text-[#EA5348]">
+            ~443 parts
+          </p>
+          <p class="text-center font-semibold text-white/70">
+            Seems impossible? Well, read on.
+          </p>
+        </div>
+
+        {/* Video */}
+        <div>
           <YouTubeVideo
             videoId="DRbVBwzc6Ww"
             title="The Anatomy of a Japanese Kanji"
             credit="ToKini Andy"
           />
-        </section>
+        </div>
 
-        <section>
-          <h2 class="mb-3 text-center text-3xl font-bold text-[#EA5348]">
-            Kanji Radicals
-          </h2>
-          <p>
-            Kanji radicals are the building blocks of kanji characters. Think of
-            them as the roots or foundational elements that provide meaning and
-            structure to kanji. Each kanji is made up of one or more radicals,
-            and each radical can give us clues about the kanji&apos;s meaning
-            and pronunciation.
+        {/* What are radicals */}
+        <div class="space-y-4">
+          <SectionLabel>Kanji radicals</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            Radicals are the building blocks of kanji. Each kanji is made up of
+            one or more radicals, and knowing them gives you clues about a
+            kanji's meaning and pronunciation.
           </p>
-        </section>
+        </div>
 
         {/* Semantic Clues */}
-        <section>
-          <h3 class="text-xl font-semibold text-[#EA5348]">
-            1. Semantic Clues
-          </h3>
-          <ul class="mt-3 ml-9 list-disc space-y-2">
-            <li>
-              Radicals often indicate the general meaning of a kanji. For
-              example, the radical <span class="font-japanese text-xl">水</span>{" "}
-              means <strong>water</strong> and appears in kanji related to
-              liquids, like <span class="font-japanese text-xl">泉</span>{" "}
-              meaning <strong>spring</strong> or <strong>fountain</strong>.
-            </li>
-          </ul>
-        </section>
+        <div class="space-y-4">
+          <SectionLabel class="text-[#EA5348]">
+            1. Semantic clues
+          </SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            Radicals often indicate the general meaning of a kanji. For example,
+            the radical <span class="font-japanese text-xl text-white/90">水</span>{" "}
+            means <span class="font-semibold text-white/90">water</span> and
+            appears in kanji related to liquids, like{" "}
+            <span class="font-japanese text-xl text-white/90">泉</span> meaning{" "}
+            <span class="font-semibold text-white/90">spring</span> or{" "}
+            <span class="font-semibold text-white/90">fountain</span>.
+          </p>
+        </div>
 
         {/* Structural Understanding */}
-        <section>
-          <h3 class="text-xl font-semibold text-[#EA5348]">
-            2. Structural Understanding
-          </h3>
-          <ul class="mt-3 ml-9 list-disc space-y-2">
-            <li>
-              Knowing radicals helps break down complex kanji into manageable
-              parts. This makes it easier to memorize and write kanji correctly.
-              For example, the kanji{" "}
-              <span class="font-japanese text-xl">働</span> meaning{" "}
-              <strong>work</strong> can be broken down into the radicals{" "}
-              <span class="font-japanese text-xl">亻</span> (person) and{" "}
-              <span class="font-japanese text-xl">動</span> (move).
-            </li>
-          </ul>
-          <div class="mt-4 flex justify-center text-4xl">
-            <div class="flex items-center gap-4">
+        <div class="space-y-4">
+          <SectionLabel class="text-[#EA5348]">
+            2. Structural understanding
+          </SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            Knowing radicals lets you break down complex kanji into parts you
+            recognize. For example, the kanji{" "}
+            <span class="font-japanese text-xl text-white/90">働</span> meaning{" "}
+            <span class="font-semibold text-white/90">work</span> can be broken
+            down into the radicals{" "}
+            <span class="font-japanese text-xl text-white/90">亻</span> (person)
+            and{" "}
+            <span class="font-japanese text-xl text-white/90">動</span> (move).
+          </p>
+
+          <GlowBox>
+            <div class="flex items-center justify-center gap-4 font-japanese text-4xl">
               <Romaji romaji="person">亻</Romaji>
-              <span>+</span>
+              <span class="text-white/40">+</span>
               <Romaji romaji="move">動</Romaji>
-              <span>{"->"}</span>
+              <span class="text-white/40">→</span>
               <Romaji romaji="work">働</Romaji>
             </div>
-          </div>
-          <p class="text-muted-foreground mt-2 text-base italic">
+          </GlowBox>
+
+          <p class="text-sm italic text-white/40">
             *<span class="font-japanese text-lg not-italic">動</span> (move) is
             not a radical, but it is a kanji that can be broken down into other
             radicals.
           </p>
-        </section>
+        </div>
 
-        <p>
-          By learning radicals, you can make educated guesses about unfamiliar
-          kanji, making the learning process more efficient.
+        <p class="leading-relaxed text-white/70">
+          Once you know the common radicals, unfamiliar kanji stop looking
+          random.
         </p>
 
         {/* Types of Radicals */}
-        <section class="space-y-3">
-          <h3 class="text-xl font-bold text-[#EA5348]">
-            Types of Kanji Radicals
-          </h3>
-          <p>
+        <div class="space-y-4">
+          <SectionLabel>Types of kanji radicals</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             Kanji radicals are categorized based on their position within a
             kanji:
           </p>
-          <p class="text-muted-foreground text-base italic">
+          <p class="text-sm italic text-white/40">
             *There's no need to memorize the positions, they're just nice to
-            know for general reference purposes.
+            know.
           </p>
-        </section>
+        </div>
 
-        {/* Full Radicals List */}
-        <ol class="mt-3 ml-6 list-decimal space-y-6 font-semibold">
-          <li>
-            Left-hand Radicals – Hen (編)
-            <ul class="mt-2 ml-9 list-disc space-y-1 font-normal">
-              <li>Radicals positioned on the left side of a kanji.</li>
-              <li>
-                <span class="font-semibold">Examples:</span>{" "}
-                <span class="font-japanese text-2xl">亻</span> (person),{" "}
-                <span class="font-japanese text-2xl">扌</span> (hand)
-              </li>
-              <li>
-                <span class="font-semibold">Appear in:</span>{" "}
-                <span class="font-japanese text-2xl">何</span> (what),{" "}
-                <span class="font-japanese text-2xl">指</span> (finger)
-              </li>
-            </ul>
-          </li>
+        {/* Radicals Grid */}
+        <div class="grid gap-3 sm:grid-cols-2">
+          <RadicalCard
+            title="Left-hand Radicals"
+            jp="Hen (編)"
+            description="Radicals positioned on the left side of a kanji."
+            examples={["亻 (person)", "扌 (hand)"]}
+            appearIn={["何 (what)", "指 (finger)"]}
+          />
+          <RadicalCard
+            title="Right-hand Radicals"
+            jp="Tsukuri (旁)"
+            description="Radicals found on the right side of a kanji."
+            examples={["刂 (knife)", "⻏ (village)"]}
+            appearIn={["別 (separate)", "都 (metropolis)"]}
+          />
+          <RadicalCard
+            title="Crown Radicals"
+            jp="Kanmuri (冠)"
+            description="Radicals placed on top of kanji."
+            examples={["宀 (roof)", "⺌ (light rays)"]}
+            appearIn={["家 (house)", "堂 (hall)"]}
+          />
+          <RadicalCard
+            title="Legs/Feet Radicals"
+            jp="Ashi (脚)"
+            description="Radicals placed at the bottom of kanji."
+            examples={["儿 (legs)", "灬 (fire sparks)"]}
+            appearIn={["兄 (older brother)", "黒 (black)"]}
+          />
+          <RadicalCard
+            title="Enclosure Radicals"
+            jp="Kamae (構え)"
+            description="Radicals that enclose kanji on at least two sides."
+            examples={["門 (gate)", "冂 (box)"]}
+            appearIn={["聞 (hear)", "高 (tall/expensive)"]}
+          />
+          <RadicalCard
+            title="Hang-off Radicals"
+            jp="Tare (垂れ)"
+            description="Radicals that hang over the top and left side of a kanji."
+            examples={["广 (house on a cliff)", "尸 (corpse)"]}
+            appearIn={["度 (degrees)", "屋 (roof)"]}
+          />
+          <RadicalCard
+            title="Left-to-Bottom Enclosure"
+            jp="Nyou (繞)"
+            description="Radicals wrapping around left and bottom of kanji."
+            examples={["⻌ (road)", "龰 (footsteps)"]}
+            appearIn={["運 (carry)", "足 (foot)"]}
+          />
+          <RadicalCard
+            title="Whole Kanji Radicals"
+            description="Entire kanji that also serve as radicals."
+            examples={["大 (big)", "木 (tree)"]}
+            appearIn={["太 (plump)", "森 (forest)"]}
+          />
+        </div>
 
-          <li>
-            Right-hand Radicals – Tsukuri (旁)
-            <ul class="mt-2 ml-9 list-disc space-y-1 font-normal">
-              <li>Radicals found on the right side of a kanji.</li>
-              <li>
-                <span class="font-semibold">Examples:</span>{" "}
-                <span class="font-japanese text-2xl">刂</span> (knife),{" "}
-                <span class="font-japanese text-2xl">⻏</span> (village)
-              </li>
-              <li>
-                <span class="font-semibold">Appear in:</span>{" "}
-                <span class="font-japanese text-2xl">別</span> (separate),{" "}
-                <span class="font-japanese text-2xl">都</span> (metropolis)
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            Crown Radicals – Kanmuri (冠)
-            <ul class="mt-2 ml-9 list-disc space-y-1 font-normal">
-              <li>Radicals placed on top of kanji.</li>
-              <li>
-                <span class="font-semibold">Examples:</span>{" "}
-                <span class="font-japanese text-2xl">宀</span> (roof),{" "}
-                <span class="font-japanese text-2xl">⺌</span> (light rays)
-              </li>
-              <li>
-                <span class="font-semibold">Appear in:</span>{" "}
-                <span class="font-japanese text-2xl">家</span> (house),{" "}
-                <span class="font-japanese text-2xl">堂</span> (hall)
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            Legs/Feet Radicals – Ashi (脚)
-            <ul class="mt-2 ml-9 list-disc space-y-1 font-normal">
-              <li>Radicals placed at the bottom of kanji.</li>
-              <li>
-                <span class="font-semibold">Examples:</span>{" "}
-                <span class="font-japanese text-2xl">儿</span> (legs),{" "}
-                <span class="font-japanese text-2xl">灬</span> (fire sparks)
-              </li>
-              <li>
-                <span class="font-semibold">Appear in:</span>{" "}
-                <span class="font-japanese text-2xl">兄</span> (older brother),{" "}
-                <span class="font-japanese text-2xl">黒</span> (black)
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            Enclosure Radicals – Kamae (構え)
-            <ul class="mt-2 ml-9 list-disc space-y-1 font-normal">
-              <li>Radicals that enclose kanji on at least two sides.</li>
-              <li>
-                <span class="font-semibold">Examples:</span>{" "}
-                <span class="font-japanese text-2xl">門</span> (gate),{" "}
-                <span class="font-japanese text-2xl">冂</span> (box)
-              </li>
-              <li>
-                <span class="font-semibold">Appear in:</span>{" "}
-                <span class="font-japanese text-2xl">聞</span> (hear),{" "}
-                <span class="font-japanese text-2xl">高</span> (tall/expensive)
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            Hang-off Radicals – Tare (垂れ)
-            <ul class="mt-2 ml-9 list-disc space-y-1 font-normal">
-              <li>Radicals that hang over the top and left side of a kanji.</li>
-              <li>
-                <span class="font-semibold">Examples:</span>{" "}
-                <span class="font-japanese text-2xl">广</span> (house on a
-                cliff),
-                <span class="font-japanese ml-2 text-2xl">尸</span> (corpse)
-              </li>
-              <li>
-                <span class="font-semibold">Appear in:</span>{" "}
-                <span class="font-japanese text-2xl">度</span> (degrees),{" "}
-                <span class="font-japanese text-2xl">屋</span> (roof)
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            Left-to-Bottom Enclosure Radicals – Nyou (繞)
-            <ul class="mt-2 ml-9 list-disc space-y-1 font-normal">
-              <li>Radicals wrapping around left and bottom of kanji.</li>
-              <li>
-                <span class="font-semibold">Examples:</span>{" "}
-                <span class="font-japanese text-2xl">⻌</span> (road),{" "}
-                <span class="font-japanese text-2xl">龰</span> (footsteps)
-              </li>
-              <li>
-                <span class="font-semibold">Appear in:</span>{" "}
-                <span class="font-japanese text-2xl">運</span> (carry),{" "}
-                <span class="font-japanese text-2xl">足</span> (foot)
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            Whole Kanji Radicals
-            <ul class="mt-2 ml-9 list-disc space-y-1 font-normal">
-              <li>
-                Entire kanji that <strong>also</strong> serve as radicals.
-              </li>
-              <li>
-                <span class="font-semibold">Examples:</span>{" "}
-                <span class="font-japanese text-2xl">大</span> (big),{" "}
-                <span class="font-japanese text-2xl">木</span> (tree)
-              </li>
-              <li>
-                <span class="font-semibold">Appear in:</span>{" "}
-                <span class="font-japanese text-2xl">太</span> (plump),{" "}
-                <span class="font-japanese text-2xl">森</span> (forest)
-              </li>
-            </ul>
-          </li>
-        </ol>
-
-        <section>
-          <p>
-            There are 214 <strong>official</strong> radicals, and James Heisig{" "}
-            <span class="text-muted-foreground text-base">
+        {/* 443 explanation */}
+        <div class="space-y-4">
+          <p class="leading-relaxed text-white/70">
+            There are 214{" "}
+            <span class="font-semibold text-white/90">official</span> radicals,
+            and James Heisig{" "}
+            <span class="text-sm text-white/40">
               (author of the book <em>Remembering The Kanji</em>)
             </span>{" "}
-            popularized the use of 229 additional <strong>unofficial</strong>{" "}
-            radicals he calls <em>primitives</em>, totaling 443 essential kanji
-            parts you'll need to know to put together almost any kanji word.
+            popularized the use of 229 additional{" "}
+            <span class="font-semibold text-white/90">unofficial</span> radicals
+            he calls <em>primitives</em>, totaling 443 essential kanji parts
+            you'll need to know to put together almost any kanji word.
           </p>
 
-          <p class="text-muted-foreground mt-2 text-base italic">
+          <p class="text-sm italic text-white/40">
             *You'll encounter both the official and RTK radicals in{" "}
-            <strong>jpdb.io</strong>, with some added tweaks that further
-            improve RTK's primitives.
+            <span class="font-semibold">jpdb.io</span>, with some added tweaks
+            that further improve RTK's primitives.
           </p>
 
-          <p class="mt-4">
+          <p class="leading-relaxed text-white/70">
             So yeah, technically, there's still over 2,000 kanji to learn if you
             want to match Japanese adults. But after learning these 443
             radicals, all you have to do is mash together what you already know
             to create new kanji. That way, the remaining kanji will come{" "}
-            <strong>much</strong> more quickly.
+            <span class="font-semibold text-white/90">much</span> more quickly.
           </p>
-        </section>
+        </div>
 
         {/* Videos */}
-        <section class="space-y-8">
-          <div>
-            <h3 class="pb-2 text-xl font-bold text-[#EA5348]">
-              How Japanese Kids Learn Kanji
-            </h3>
-            <YouTubeVideo
-              videoId="EykWxB_sqOM"
-              title="How Japanese Kids Learn Kanji"
-              credit="That Japanese Man Yuta"
-            />
-            <p class="text-muted-foreground text-base">
-              This is just to demystify how kids actually learn kanji in Japan.
-              However, they have the advantage of already knowing the words, so
-              I wouldn't recommend learning in exactly the same way as they do
-              if you're going for efficiency.
-            </p>
-          </div>
+        <div class="space-y-4">
+          <SectionLabel>How Japanese kids learn kanji</SectionLabel>
+          <YouTubeVideo
+            videoId="EykWxB_sqOM"
+            title="How Japanese Kids Learn Kanji"
+            credit="That Japanese Man Yuta"
+          />
+          <p class="text-sm text-white/40">
+            This is just to demystify how kids actually learn kanji in Japan.
+            However, they have the advantage of already knowing the words, so I
+            wouldn't recommend learning in exactly the same way as they do if
+            you're going for efficiency.
+          </p>
+        </div>
 
-          <div>
-            <h3 class="pb-2 text-xl font-bold text-[#EA5348]">
-              Can Japanese People Actually Write Kanji?
-            </h3>
-            <YouTubeVideo
-              videoId="sJNxPRBvRQg"
-              title="Can Japanese Actually Write Japanese Kanji?"
-              credit="That Japanese Man Yuta"
-            />
-            <p class="text-muted-foreground text-base">
-              Fun fact: Remembering how to read kanji is much easier than
-              remembering how to write it. Even Japanese people sometimes
-              struggle!
-            </p>
-          </div>
-        </section>
-      </main>
+        <RevealBlock closedLabel="Can Japanese people actually write kanji?">
+          <YouTubeVideo
+            videoId="sJNxPRBvRQg"
+            title="Can Japanese Actually Write Japanese Kanji?"
+            credit="That Japanese Man Yuta"
+          />
+          <p class="mt-4 text-sm text-white/40">
+            Fun fact: Remembering how to read kanji is much easier than
+            remembering how to write it. Even Japanese people sometimes
+            struggle!
+          </p>
+        </RevealBlock>
+
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            Radicals are the building blocks of kanji characters
+          </SummaryItem>
+          <SummaryItem>
+            214 official + 229 unofficial = ~443 parts to learn
+          </SummaryItem>
+          <SummaryItem>
+            Radicals hint at meaning (水 = water-related) and structure
+          </SummaryItem>
+          <SummaryItem>
+            8 positions: left, right, top, bottom, enclosure, hang-off, wrap,
+            whole
+          </SummaryItem>
+        </LessonSummary>
+      </div>
+    </div>
+  )
+}
+
+function RadicalCard(props: {
+  title: string
+  jp?: string
+  description: string
+  examples: string[]
+  appearIn: string[]
+}) {
+  return (
+    <div class="rounded-lg bg-white/[0.04] p-4">
+      <p class="font-semibold text-[#EA5348]">{props.title}</p>
+      {props.jp && (
+        <p class="text-xs text-white/30">{props.jp}</p>
+      )}
+      <p class="mt-2 text-sm text-white/60">{props.description}</p>
+      <div class="mt-3 space-y-1 text-sm">
+        <p class="text-white/40">
+          <span class="font-semibold text-white/60">Examples:</span>{" "}
+          <span class="font-japanese text-base">
+            {props.examples.join(", ")}
+          </span>
+        </p>
+        <p class="text-white/40">
+          <span class="font-semibold text-white/60">Appear in:</span>{" "}
+          <span class="font-japanese text-base">
+            {props.appearIn.join(", ")}
+          </span>
+        </p>
+      </div>
     </div>
   )
 }
