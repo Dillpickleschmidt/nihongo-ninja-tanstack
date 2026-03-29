@@ -1,4 +1,5 @@
 import type { JSX } from "solid-js"
+import { cn } from "@/utils"
 
 export default function SectionLabel(props: {
   children: JSX.Element
@@ -6,7 +7,10 @@ export default function SectionLabel(props: {
 }) {
   return (
     <div
-      class={`text-[0.6rem] font-bold uppercase tracking-[0.25em] ${props.class ?? "text-white/30"}`}
+      class={cn(
+        "text-[0.6rem] font-bold uppercase tracking-[0.25em] text-white/30",
+        props.class,
+      )}
     >
       {props.children}
     </div>

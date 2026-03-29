@@ -1,6 +1,9 @@
-import type { JSX } from "solid-js"
 import { createFileRoute } from "@tanstack/solid-router"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import {
+  StudentBubble,
+  SenseiBubble,
+} from "@/features/lessons/components/DialogueBubbles"
 import LessonHeader, {
   OverviewItem,
 } from "@/features/lessons/components/LessonHeader"
@@ -8,6 +11,7 @@ import SectionLabel from "@/features/lessons/components/SectionLabel"
 import LessonSummary, {
   SummaryItem,
 } from "@/features/lessons/components/LessonSummary"
+import type { JSX } from "solid-js"
 
 export const Route = createFileRoute("/lessons/_chapter-0/writing-systems")({
   loader: () => ({
@@ -34,8 +38,8 @@ function WritingSystems() {
         {/* Intro */}
         <div class="space-y-6">
           <SenseiBubble>
-            Japanese has three writing systems, and we often use all of them in a
-            single sentence, like this:
+            Japanese has three writing systems, and we often use all of them in
+            a single sentence, like this:
           </SenseiBubble>
 
           <div class="text-center">
@@ -150,8 +154,8 @@ function WritingSystems() {
 
           <p class="leading-relaxed text-white/70">
             Katakana is for borrowed words, sound effects, and emphasis. English
-            borrowed "sushi" from Japanese; Japanese borrowed テレビ (terebi) from
-            "television." Katakana is how they write those.
+            borrowed "sushi" from Japanese; Japanese borrowed テレビ (terebi)
+            from "television." Katakana is how they write those.
           </p>
 
           <p class="text-sm leading-relaxed text-white/40 italic">
@@ -197,8 +201,8 @@ function WritingSystems() {
             </div>
 
             <p>
-              While China has simplified many of their characters, Japan has kept
-              them unchanged.
+              While China has simplified many of their characters, Japan has
+              kept them unchanged.
             </p>
           </div>
         </WritingSystemSection>
@@ -214,8 +218,9 @@ function WritingSystems() {
             Sensei, I've seen Romaji used a lot. What exactly is it?
           </StudentBubble>
           <SenseiBubble>
-            Romaji is just Japanese written with Latin letters, like "konnichiwa"
-            instead of <span class="font-japanese">こんにちは</span>.
+            Romaji is just Japanese written with Latin letters, like
+            "konnichiwa" instead of{" "}
+            <span class="font-japanese">こんにちは</span>.
           </SenseiBubble>
 
           <StudentBubble>So... like training wheels?</StudentBubble>
@@ -307,30 +312,3 @@ function WritingSystemSection(props: {
   )
 }
 
-function StudentBubble(props: { children: JSX.Element }) {
-  return (
-    <div class="flex items-end gap-3">
-      <Avatar class="size-7 shrink-0 ring-1 ring-white/10">
-        <AvatarImage src="/img/student.png" alt="student" />
-        <AvatarFallback>S</AvatarFallback>
-      </Avatar>
-      <div class="max-w-[80%] rounded-2xl rounded-bl-sm bg-white/[0.06] px-4 py-2.5 text-sm leading-relaxed text-white/70">
-        {props.children}
-      </div>
-    </div>
-  )
-}
-
-function SenseiBubble(props: { children: JSX.Element }) {
-  return (
-    <div class="flex items-end gap-3 justify-end">
-      <div class="max-w-[80%] rounded-2xl rounded-br-sm bg-dynamic-accent/10 px-4 py-2.5 text-sm leading-relaxed text-white/70">
-        {props.children}
-      </div>
-      <Avatar class="size-7 shrink-0 ring-1 ring-white/10">
-        <AvatarImage src="/img/guru.png" alt="sensei" />
-        <AvatarFallback>T</AvatarFallback>
-      </Avatar>
-    </div>
-  )
-}
