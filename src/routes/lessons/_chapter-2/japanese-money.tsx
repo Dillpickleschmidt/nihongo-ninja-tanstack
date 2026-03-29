@@ -1,32 +1,42 @@
-// routes/lessons/_chapter-2/japanese-money.tsx
 import { createFileRoute } from "@tanstack/solid-router"
 import Furigana from "@/components/text/Furigana"
 import YouTubeVideo from "@/features/youtube/YouTube"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute(
   "/lessons/_chapter-2/japanese-money",
 )({
-
-  component: RouteComponent,
+  component: JapaneseMoney,
 })
 
-function RouteComponent() {
+function JapaneseMoney() {
   return (
-    <div class="mb-32">
-      {/* --- Header --- */}
-      <header class="mx-auto max-w-4xl px-6 py-14 text-center">
-        <h1 class="mb-3 text-5xl font-extrabold tracking-tight">
-          Japanese Money
-        </h1>
-        <div class="mx-auto mb-6 h-1 w-24 rounded bg-emerald-400" />
-      </header>
+    <div class="relative pb-32">
+      {/* Background character */}
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+        円
+      </span>
 
-      <main class="mx-auto max-w-3xl space-y-20 px-6 leading-relaxed">
+      <LessonHeader
+        chapter="Chapter 2 · Culture"
+        title={<>Japanese Money</>}
+        subtitle="Enough to read a price tag and buy something."
+      >
+        <OverviewItem>Japanese coins and bills</OverviewItem>
+        <OverviewItem>How prices are written and spoken</OverviewItem>
+        <OverviewItem>Common phrases for shopping</OverviewItem>
+      </LessonHeader>
+
+      <div class="space-y-14 px-8">
         {/* Intro + Videos */}
-        <section class="mx-auto max-w-xl space-y-8">
-          <h2 class="text-center text-3xl font-bold">
-            Introduction to Japanese Currency
-          </h2>
+        <div class="space-y-4">
+          <SectionLabel>Introduction to Japanese currency</SectionLabel>
 
           <YouTubeVideo
             videoId="Qpp-q_LIPK0"
@@ -39,184 +49,213 @@ function RouteComponent() {
             credit="Nihongo-Learning"
           />
 
-          <p>
-            In Japan, the currency used is the Japanese <strong>Yen</strong>{" "}
-            <span class="text-muted-foreground text-base">
-              (pronounced <strong>En</strong> in Japanese)
+          <p class="leading-relaxed text-white/70">
+            In Japan, the currency used is the Japanese{" "}
+            <span class="font-semibold text-white/90">Yen</span>{" "}
+            <span class="text-sm text-white/40">
+              (pronounced <span class="font-semibold">En</span> in Japanese)
             </span>
-            , abbreviated as <strong>¥</strong> or sometimes{" "}
-            <strong>JPY</strong>. The symbol{" "}
-            <span class="font-japanese font-semibold">円</span> (
+            , abbreviated as <span class="font-semibold text-white/90">¥</span>{" "}
+            or sometimes <span class="font-semibold text-white/90">JPY</span>.
+            The symbol{" "}
+            <span class="font-japanese font-semibold text-white/90">円</span> (
             <span class="font-japanese">えん</span>) is also commonly used.
           </p>
-        </section>
+        </div>
 
         {/* Coins */}
-        <section class="space-y-6">
-          <h2 class="text-center text-3xl font-bold">Coins</h2>
+        <div class="space-y-4">
+          <SectionLabel>Coins</SectionLabel>
           <div class="grid grid-cols-2 gap-6 lg:grid-cols-3">
             {[
               {
                 src: "/img/chapter-2/japanese-money/1-yen-coin.png",
                 label: "¥1",
+                alt: "¥1 coin",
               },
               {
                 src: "/img/chapter-2/japanese-money/5-yen-coin.png",
                 label: "¥5",
+                alt: "¥5 coin",
               },
               {
                 src: "/img/chapter-2/japanese-money/10-yen-coin.png",
                 label: "¥10",
+                alt: "¥10 coin",
               },
               {
                 src: "/img/chapter-2/japanese-money/50-yen-coin.png",
                 label: "¥50",
+                alt: "¥50 coin",
               },
               {
                 src: "/img/chapter-2/japanese-money/100-yen-coin.png",
                 label: "¥100",
+                alt: "¥100 coin",
               },
               {
                 src: "/img/chapter-2/japanese-money/500-yen-coin.png",
                 label: "¥500",
+                alt: "¥500 coin",
               },
             ].map((coin) => (
               <div class="flex flex-col items-center">
                 <div class="w-full max-w-40">
                   <img
                     src={coin.src}
-                    alt={coin.label}
+                    alt={coin.alt}
                     class="aspect-square object-contain"
                   />
                 </div>
-                <p class="mt-3 text-xl font-bold">{coin.label}</p>
+                <p class="mt-3 text-xl font-bold text-white/90">
+                  {coin.label}
+                </p>
               </div>
             ))}
           </div>
-        </section>
+        </div>
 
         {/* Bills */}
-        <section class="space-y-12">
-          <h2 class="text-center text-3xl font-bold">Bills</h2>
-          <div class="mx-auto flex flex-col items-center space-y-12 lg:w-2/3">
+        <div class="space-y-6">
+          <SectionLabel>Bills</SectionLabel>
+          <div class="mx-auto flex flex-col items-center space-y-6 lg:w-2/3">
             <img
               src="/img/chapter-2/japanese-money/one-thousand-japanese-yen.jpg"
               alt="One-thousand-yen-note"
-              class="overflow-hidden rounded-lg shadow"
+              class="overflow-hidden rounded-lg ring-1 ring-white/10"
             />
             <img
               src="/img/chapter-2/japanese-money/five-thousand-japanese-yen.jpg"
               alt="Five-thousand-yen-note"
-              class="overflow-hidden rounded-lg shadow"
+              class="overflow-hidden rounded-lg ring-1 ring-white/10"
             />
             <img
               src="/img/chapter-2/japanese-money/ten-thousand-japanese-yen.jpg"
               alt="Ten-thousand-yen-note"
-              class="overflow-hidden rounded-lg shadow"
+              class="overflow-hidden rounded-lg ring-1 ring-white/10"
             />
           </div>
-        </section>
+        </div>
 
         {/* Prices */}
-        <section class="space-y-6">
-          <h2 class="text-center text-3xl font-bold">
-            Writing and Saying Prices
-          </h2>
-          <p>
+        <div class="space-y-4">
+          <SectionLabel>Writing and saying prices</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             When writing prices, Japanese people tend to use either the{" "}
-            <span class="font-japanese font-semibold">¥</span> in front, or{" "}
-            <span class="font-japanese font-semibold">円</span> after. When
-            spoken, however, they always use
-            <span class="font-semibold">
+            <span class="font-japanese font-semibold text-white/90">¥</span> in
+            front, or{" "}
+            <span class="font-japanese font-semibold text-white/90">円</span>{" "}
+            after. When spoken, however, they always use
+            <span class="font-semibold text-white/90">
+              {" "}
               <Furigana furigana={<span class="text-sm">えん</span>}>
                 円
               </Furigana>
             </span>
             , the same as saying dollars or cents in English.
           </p>
-          <p>
+          <p class="leading-relaxed text-white/70">
             While they often use double-width characters in writing, they more
             frequently use single-width digits for prices ([０] vs [0]).
           </p>
-          <div class="mt-3 flex justify-center text-xl">
-            <ul class="list-disc space-y-2">
-              <li>¥1,000</li>
-              <li>1000円</li>
-            </ul>
+
+          <div class="grid gap-2 sm:grid-cols-2">
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center font-japanese text-xl text-white/90">
+              ¥1,000
+            </div>
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center font-japanese text-xl text-white/90">
+              1000円
+            </div>
           </div>
-          <p>
+
+          <p class="leading-relaxed text-white/70">
             Kanji numbers are rarely used on modern price tags. Most shops
             prefer Arabic numerals, though kanji numbers may still appear in
             traditional stores or cultural contexts.
           </p>
-        </section>
+        </div>
 
         {/* Shop Phrases */}
-        <section class="space-y-8">
-          <h2 class="text-center text-3xl font-bold">
-            Common Phrases in Japanese Shops
-          </h2>
-          <p>
+        <div class="space-y-4">
+          <SectionLabel>Common phrases in Japanese shops</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             The first thing you might hear when you enter a Japanese shop is:
           </p>
 
-          <h3 class="text-xl font-bold">
-            <span class="font-japanese text-2xl">いらっしゃいませ</span> —
-            Welcome to our store
-          </h3>
-          <ul class="ml-6 list-disc">
-            <li>This is the standard greeting when entering many stores.</li>
-          </ul>
+          <div class="space-y-3">
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-xl text-white/90">
+                いらっしゃいませ
+              </p>
+              <p class="mt-1 text-sm text-white/50">
+                Welcome to our store
+              </p>
+              <p class="mt-1 text-xs text-white/40">
+                This is the standard greeting when entering many stores.
+              </p>
+            </div>
 
-          <h3 class="text-xl font-bold">
-            <span class="font-japanese text-2xl">いくらですか</span> — How much
-            is it?
-          </h3>
-          <ul class="ml-6 list-disc">
-            <li>Use this to ask the price of an item.</li>
-            <li>
-              <strong>Example: </strong>
-              <span class="font-japanese text-xl">
-                すみません、この
-                <Furigana furigana={<span class="text-sm">とけい</span>}>
-                  時計
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-xl text-white/90">いくらですか</p>
+              <p class="mt-1 text-sm text-white/50">How much is it?</p>
+              <p class="mt-2 text-xs text-white/40">
+                Example:{" "}
+                <span class="font-japanese text-sm text-white/60">
+                  すみません、この
+                  <Furigana furigana={<span class="text-[10px]">とけい</span>}>
+                    時計
+                  </Furigana>
+                  はいくらですか。
+                </span>
+              </p>
+            </div>
+
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-xl text-white/90">
+                これをください
+              </p>
+              <p class="mt-1 text-sm text-white/50">
+                I'll take this, please.
+              </p>
+              <p class="mt-1 text-xs text-white/40">
+                Use this when you've decided to buy an item.
+              </p>
+            </div>
+
+            <div class="rounded-lg bg-white/[0.04] p-4">
+              <p class="font-japanese text-xl text-white/90">
+                クレジットカードは
+                <Furigana furigana={<span class="text-sm">つか</span>}>
+                  使
                 </Furigana>
-                はいくらですか。
-              </span>
-            </li>
-          </ul>
+                えますか
+              </p>
+              <p class="mt-1 text-sm text-white/50">
+                Can I use a credit card?
+              </p>
+              <p class="mt-1 text-xs text-white/40">
+                Use this to ask if credit cards are accepted.
+              </p>
+            </div>
+          </div>
+        </div>
 
-          <h3 class="text-xl font-bold">
-            <span class="font-japanese text-2xl">これをください</span> — I'll
-            take this, please.
-          </h3>
-          <ul class="ml-6 list-disc">
-            <li>Use this when you’ve decided to buy an item.</li>
-          </ul>
-
-          <h3 class="text-xl font-bold">
-            <span class="font-japanese text-2xl">
-              クレジットカードは
-              <Furigana furigana={<span class="text-sm">つか</span>}>
-                使
-              </Furigana>
-              えますか
-            </span>{" "}
-            — Can I use a credit card?
-          </h3>
-          <ul class="ml-6 list-disc">
-            <li>Use this to ask if credit cards are accepted.</li>
-          </ul>
-        </section>
-
-        {/* Wrap-up */}
-        <section>
-          <p>
-            In the next lesson, we'll practice reading and asking the price of
-            items with practical examples.
-          </p>
-        </section>
-      </main>
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            Japanese currency is the Yen (円 / ¥), no smaller denominations
+          </SummaryItem>
+          <SummaryItem>
+            Coins: ¥1, ¥5, ¥10, ¥50, ¥100, ¥500
+          </SummaryItem>
+          <SummaryItem>
+            Prices written with ¥ before or 円 after, spoken as えん
+          </SummaryItem>
+          <SummaryItem>
+            いくらですか to ask price, これをください to buy
+          </SummaryItem>
+        </LessonSummary>
+      </div>
     </div>
   )
 }

@@ -1,437 +1,521 @@
-// routes/lessons/_chapter-2/katakana.tsx
+import type { JSX } from "solid-js"
 import { createFileRoute } from "@tanstack/solid-router"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import Furigana from "@/components/text/Furigana"
 import Romaji from "@/components/text/Romaji"
 import YouTubeVideo from "@/features/youtube/YouTube"
-import { ChatBubble } from "@/components/ChatBubble"
-import { ChatAttachment } from "@/components/ChatAttachment"
 import KanaChart from "@/components/charts/KanaChart"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import GlowBox from "@/features/lessons/components/GlowBox"
+import AsideBlock from "@/features/lessons/components/AsideBlock"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute("/lessons/_chapter-2/katakana")({
-
-  component: RouteComponent,
+  component: Katakana,
 })
 
-function RouteComponent() {
+function Katakana() {
   return (
-    <div class="mb-12">
-      {/* --- Hero --- */}
-      <div class="relative overflow-hidden bg-gradient-to-br from-slate-900 via-red-900/20 to-slate-900 px-6 py-20">
-        <div class="absolute inset-0 flex items-center justify-center opacity-20">
-          <img
-            src="/img/chapter-2/katakana/ア.png"
-            alt="ア character"
-            class="h-40 w-40 opacity-50"
-          />
-        </div>
-        <div class="relative text-center">
-          <h1 class="mb-4 text-4xl leading-tight font-extrabold text-white">
-            Katakana: The{" "}
-            <span class="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
-              Energetic
-            </span>{" "}
-            Sibling of Hiragana
-          </h1>
-          <p class="text-lg text-slate-300">
-            Master the angular script used for loanwords, foreign names,
-            onomatopoeia, and emphasis.
-          </p>
-        </div>
-      </div>
+    <div class="relative pb-32">
+      {/* Background character */}
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+        ア
+      </span>
 
-      {/* --- Main Content --- */}
-      <main class="mx-auto max-w-3xl space-y-16 px-6 py-12">
-        {/* Resources */}
-        <ResourceSection />
+      <LessonHeader
+        chapter="Chapter 2 · Writing"
+        title={<>Katakana</>}
+        subtitle="The angular script for loanwords, foreign names, and emphasis."
+      >
+        <OverviewItem>Same sounds as hiragana, different shapes</OverviewItem>
+        <OverviewItem>Long vowels, double consonants, dakuten</OverviewItem>
+        <OverviewItem>Tricky look-alikes: シ vs ツ, ン vs ソ</OverviewItem>
+      </LessonHeader>
 
+      <div class="space-y-14 px-8">
         {/* What is Katakana */}
-        <section class="space-y-6 text-lg leading-relaxed">
-          <div class="text-center">
-            <h2 class="mb-4 text-3xl font-bold">What is Katakana?</h2>
-            <div class="mx-auto h-1 w-24 bg-gradient-to-r from-red-400 to-orange-400" />
-          </div>
-
-          <p>
+        <div class="space-y-4">
+          <SectionLabel>What is katakana?</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             Katakana is one of the three main scripts used in Japanese writing,
             along with Hiragana and Kanji. It is primarily used for{" "}
-            <strong class="text-red-400">foreign words</strong>,{" "}
-            <strong class="text-red-400">loanwords</strong>, and{" "}
-            <strong class="text-red-400">onomatopoeia</strong>, and sometimes
-            for <strong class="text-red-400">emphasis</strong>, similar to
-            italics in English. Katakana characters have the same sounds as
+            <span class="font-semibold text-red-400">foreign words</span>,{" "}
+            <span class="font-semibold text-red-400">loanwords</span>, and{" "}
+            <span class="font-semibold text-red-400">onomatopoeia</span>, and
+            sometimes for{" "}
+            <span class="font-semibold text-red-400">emphasis</span>, similar
+            to italics in English. Katakana characters have the same sounds as
             their Hiragana counterparts but are distinct in appearance with
             sharp, angular shapes.
           </p>
-          <p>
-            There are a total of <strong class="text-red-400">46</strong>{" "}
-            Katakana characters, each representing a specific sound.
+          <p class="leading-relaxed text-white/70">
+            There are a total of{" "}
+            <span class="font-semibold text-red-400">46</span> Katakana
+            characters, each representing a specific sound.
           </p>
+        </div>
 
-          <div class="font-japanese flex w-full justify-center text-3xl font-semibold">
-            <ul class="flex w-full max-w-md justify-evenly">
-              <li>ア a</li>
-              <li>イ i</li>
-              <li>ウ u</li>
-              <li>エ e</li>
-              <li>オ o</li>
-            </ul>
-          </div>
-          <p class="text-center italic">It's just like Hiragana!</p>
+        {/* The five vowels */}
+        <div class="space-y-4">
+          <SectionLabel>The five vowels</SectionLabel>
+          <GlowBox>
+            <div class="flex w-full justify-evenly font-japanese text-2xl font-semibold">
+              <span>
+                ア{" "}
+                <span class="text-base font-normal text-white/50">a</span>
+              </span>
+              <span>
+                イ{" "}
+                <span class="text-base font-normal text-white/50">i</span>
+              </span>
+              <span>
+                ウ{" "}
+                <span class="text-base font-normal text-white/50">u</span>
+              </span>
+              <span>
+                エ{" "}
+                <span class="text-base font-normal text-white/50">e</span>
+              </span>
+              <span>
+                オ{" "}
+                <span class="text-base font-normal text-white/50">o</span>
+              </span>
+            </div>
+          </GlowBox>
+          <p class="text-center text-sm italic text-white/40">
+            It's just like Hiragana!
+          </p>
+        </div>
 
-          <p>
+        {/* The full chart */}
+        <div class="space-y-4">
+          <SectionLabel>The full chart</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             Here's a chart containing all 46 Katakana characters with their
             pronunciations.
           </p>
-          <div class="mt-12 flex flex-col items-center">
+          <div class="overflow-x-auto">
             <KanaChart type="katakana" />
           </div>
-        </section>
+        </div>
 
-        {/* Unique Aspects */}
-        <section class="space-y-12">
-          <div class="text-center">
-            <h2 class="mb-4 text-3xl font-bold">Unique Aspects of Katakana</h2>
-            <div class="mx-auto h-1 w-24 bg-gradient-to-r from-red-400 to-orange-400" />
-          </div>
+        {/* Student / Sensei Dialogue */}
+        <div class="space-y-5">
+          <StudentBubble>
+            <Furigana furigana="がくせい">学生</Furigana>: I'm finally coming to
+            grips with Hiragana, and{" "}
+            <span class="font-medium italic">
+              now you expect me to learn Katakana?
+            </span>
+          </StudentBubble>
+          <SenseiBubble>
+            <Furigana furigana="せんせい">先生</Furigana>: Indeed, young
+            apprentice. But learning Katakana is{" "}
+            <span class="font-bold italic">much</span> easier once you've
+            learned Hiragana. They share the same sounds — think of it like a
+            funky new font!
+          </SenseiBubble>
+        </div>
 
-          {/* Long vowels */}
-          <div>
-            <h3 class="text-xl font-bold">Extending the vowel (long vowel)</h3>
-            <p>
-              When you need to extend a vowel sound, use a dash{" "}
-              <span class="font-japanese">ー</span> in horizontal writing or a
-              vertical line <span class="font-japanese">｜</span> in vertical
-              writing.
-            </p>
-            <table class="mt-4 w-full table-fixed">
-              <tbody>
-                <tr>
-                  <td></td>
-                  <td>
-                    <Avatar class="mx-auto h-12 w-12">
-                      <AvatarImage
-                        src="/img/chapter-2/katakana/old-computer.png"
-                        alt="computer"
-                      />
-                      <AvatarFallback>💻</AvatarFallback>
-                    </Avatar>
-                  </td>
-                  <td>
-                    <Avatar class="mx-auto h-12 w-12">
-                      <AvatarImage
-                        src="/img/chapter-2/katakana/harvard-logo.png"
-                        alt="harvard"
-                      />
-                      <AvatarFallback>H</AvatarFallback>
-                    </Avatar>
-                  </td>
-                  <td>
-                    <Avatar class="mx-auto h-12 w-12">
-                      <AvatarImage
-                        src="/img/chapter-2/katakana/mary.png"
-                        alt="mary"
-                      />
-                      <AvatarFallback>M</AvatarFallback>
-                    </Avatar>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center font-semibold">Examples:</td>
-                  <td class="text-center">
-                    <Romaji romaji="compuutaa">コンピューター</Romaji>
-                  </td>
-                  <td class="text-center">
-                    <Romaji romaji="haabaado">ハーバード</Romaji>
-                  </td>
-                  <td class="text-center">
-                    <Romaji romaji="mearii">メアリー</Romaji>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          {/* Character + y */}
-          <div>
-            <h3 class="text-xl font-bold">Character + y + vowel</h3>
-            <p>
-              Japanese often combines characters with little{" "}
-              <span class="font-bold">ya</span>,{" "}
-              <span class="font-bold">yu</span>, and{" "}
-              <span class="font-bold">yo</span> sounds, allowing for more
-              accurate representation of sounds found in foreign words.
-            </p>
-            <div class="mt-3 space-y-2">
-              <p>
-                <span class="font-japanese text-xl">
-                  <Romaji romaji="nyuuyōku">ニューヨーク</Romaji>
-                </span>{" "}
-                {"->"} New York
-              </p>
-              <p>
-                <span class="font-japanese text-xl">
-                  <Romaji romaji="shyatsu">シャツ</Romaji>
-                </span>{" "}
-                {"->"} shirt
-              </p>
-            </div>
-          </div>
-
-          {/* シ vs ツ and ン vs ソ */}
-          <div>
-            <h3 class="text-xl font-bold">シ vs. ツ and ン vs. ソ</h3>
-            <ul class="mb-8 list-inside list-disc space-y-2">
-              <li>
-                In Katakana, <span class="font-japanese text-xl">シ</span> (shi)
-                and <span class="font-japanese text-xl">ツ</span> (tsu) look
-                very similar but have slightly different stroke orientations.{" "}
-                <span class="font-japanese text-xl">シ</span> (shi) has flatter
-                strokes, while the strokes in{" "}
-                <span class="font-japanese text-xl">ツ</span> (tsu) are more
-                vertical.
-              </li>
-
-              <div class="my-4 flex justify-center">
-                <Avatar class="h-16 w-16">
-                  <AvatarImage
-                    src="/img/shocked-child.png"
-                    alt="shocked-person"
-                  />
-                  <AvatarFallback>?!</AvatarFallback>
-                </Avatar>
-                <p class="font-japanese ml-2">？？</p>
-              </div>
-
-              <li>
-                You'll notice that the curved lines of{" "}
-                <span class="font-japanese text-xl">シ</span> and{" "}
-                <span class="font-japanese text-xl">ン</span> don't go all the
-                way to the top of the character, while the curved lines of{" "}
-                <span class="font-japanese text-xl">ツ</span> and{" "}
-                <span class="font-japanese text-xl">ソ</span> do.{" "}
-                <span class="font-semibold text-red-400 italic">
-                  This is the biggest difference!
-                </span>
-              </li>
-              <li>
-                When handwritten, the long curved line of{" "}
-                <span class="font-japanese text-xl">シ</span> is written from
-                the bottom up, while{" "}
-                <span class="font-japanese text-xl">ツ</span> is written from
-                top to bottom.
-              </li>
-              <li>
-                <span class="font-japanese text-xl">ン</span> (n) and{" "}
-                <span class="font-japanese text-xl">ソ</span> (so) are similar.{" "}
-                <span class="font-japanese text-xl">ン</span> (n) is also
-                flatter while <span class="font-japanese text-xl">ソ</span> (so)
-                is more vertical.
-              </li>
-            </ul>
-
-            <ChatBubble
-              speaker="sensei"
-              text="It certainly takes a bit of reading exposure to get used to these subtle differences, but context usually makes the correct character obvious."
-            />
-          </div>
-
-          {/* Double consonants */}
-          <div>
-            <h3 class="text-xl font-bold">
-              Double Consonants—small <span class="font-japanese">ッ</span>
-            </h3>
-            <p>
-              Just like in Hiragana, Katakana uses the small{" "}
-              <span class="font-japanese">ッ</span> to mark doubled consonants.
-            </p>
-            <table class="mt-6! w-full">
-              <tbody>
-                <tr>
-                  <td class="font-semibold">Compare:</td>
-                  <td>
-                    <span class="font-japanese text-xl">
-                      <Romaji romaji="ruuku">
-                        ル<span class="text-orange-400">ー</span>ク
-                      </Romaji>
-                    </span>{" "}
-                    {"->"} Luke
-                  </td>
-                  <td>
-                    <span class="font-japanese text-xl">
-                      <Romaji romaji="maaku">
-                        マ<span class="text-orange-400">ー</span>ク
-                      </Romaji>
-                    </span>{" "}
-                    {"->"} Mark
-                  </td>
-                  <td>
-                    <span class="font-japanese text-xl">
-                      <Romaji romaji="meekaa">
-                        メ<span class="text-orange-400">ー</span>カ
-                        <span class="text-orange-400">ー</span>
-                      </Romaji>
-                    </span>{" "}
-                    {"->"} Maker
-                  </td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>
-                    <span class="font-japanese text-xl">
-                      <Romaji romaji="rukku">
-                        ル<span class="text-sky-400">ッ</span>ク
-                      </Romaji>
-                    </span>{" "}
-                    {"->"} Look
-                  </td>
-                  <td>
-                    <span class="font-japanese text-xl">
-                      <Romaji romaji="makku">
-                        マ<span class="text-sky-400">ッ</span>ク
-                      </Romaji>
-                    </span>{" "}
-                    {"->"} Mac
-                  </td>
-                  <td>
-                    <span class="font-japanese text-xl">
-                      <Romaji romaji="mekka">
-                        メ<span class="text-sky-400">ッ</span>カ
-                      </Romaji>
-                    </span>{" "}
-                    {"->"} Mecca
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          {/* Dakuten */}
-          <div>
-            <h3 class="text-xl font-bold">Dakuten & Handakuten</h3>
-            <p>Just like Hiragana, add diacritics to change sounds:</p>
-            <div class="font-japanese mt-3 flex justify-around text-2xl font-medium">
-              <p>カ → ガ</p>
-              <p>シ → ジ</p>
-              <p>タ → ダ</p>
-              <p>ハ → バ</p>
-              <p>ハ → パ</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Dialogue: Student / Sensei */}
-        <section class="space-y-8">
-          <ChatBubble
-            speaker="student"
-            text={
-              <>
-                <Furigana furigana="がくせい">学生</Furigana>: I'm finally
-                coming to grips with Hiragana, and{" "}
-                <span class="font-medium italic">
-                  now you expect me to learn Katakana?
-                </span>
-              </>
-            }
-          />
-          <ChatBubble
-            speaker="sensei"
-            text={
-              <>
-                <Furigana furigana="せんせい">先生</Furigana>: Indeed, young
-                apprentice. But learning Katakana is{" "}
-                <span class="font-bold italic">much</span> easier once you've
-                learned Hiragana. They share the same sounds—think of it like a
-                funky new font!
-              </>
-            }
-          />
-        </section>
-
-        {/* PDF attachment */}
-        <section class="space-y-6">
-          <ChatAttachment speaker="sensei">
+        {/* How to learn them */}
+        <div class="space-y-4">
+          <SectionLabel>How to learn them</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            Use{" "}
             <a
               href="https://files.tofugu.com/articles/japanese/2022-08-23-learn-katakana-book-pdf/learn-katakana-book-by-tofugu.pdf"
               target="_blank"
-              class="block font-semibold hover:underline"
+              class="text-dynamic-accent underline decoration-dynamic-accent/30 underline-offset-2 hover:decoration-dynamic-accent/60"
             >
-              📄 Tofugu's Learn Katakana PDF
+              Tofugu's Free Katakana PDF
             </a>
-            <p class="mt-1 text-xs opacity-90">
-              Similar to their Hiragana book: mnemonics + practice sheets. Print
-              it or use on your tablet.
+            . Similar to their Hiragana book: mnemonics + practice sheets. Print
+            it or use on your tablet.
+          </p>
+        </div>
+
+        {/* Long vowels */}
+        <div class="space-y-4">
+          <SectionLabel>Extending the vowel (long vowel)</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            When you need to extend a vowel sound, use a dash{" "}
+            <span class="font-japanese font-semibold text-white/90">ー</span> in
+            horizontal writing or a vertical line{" "}
+            <span class="font-japanese font-semibold text-white/90">｜</span> in
+            vertical writing.
+          </p>
+
+          <div class="grid gap-3 sm:grid-cols-3">
+            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
+              <Avatar class="mx-auto mb-2 h-12 w-12">
+                <AvatarImage
+                  src="/img/chapter-2/katakana/old-computer.png"
+                  alt="computer"
+                />
+                <AvatarFallback>💻</AvatarFallback>
+              </Avatar>
+              <p class="font-japanese text-lg">
+                <Romaji romaji="compuutaa">コンピューター</Romaji>
+              </p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
+              <Avatar class="mx-auto mb-2 h-12 w-12">
+                <AvatarImage
+                  src="/img/chapter-2/katakana/harvard-logo.png"
+                  alt="harvard"
+                />
+                <AvatarFallback>H</AvatarFallback>
+              </Avatar>
+              <p class="font-japanese text-lg">
+                <Romaji romaji="haabaado">ハーバード</Romaji>
+              </p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
+              <Avatar class="mx-auto mb-2 h-12 w-12">
+                <AvatarImage
+                  src="/img/chapter-2/katakana/mary.png"
+                  alt="mary"
+                />
+                <AvatarFallback>M</AvatarFallback>
+              </Avatar>
+              <p class="font-japanese text-lg">
+                <Romaji romaji="mearii">メアリー</Romaji>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Character + y + vowel */}
+        <div class="space-y-4">
+          <SectionLabel>Character + y + vowel</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            Japanese often combines characters with little{" "}
+            <span class="font-semibold text-white/90">ya</span>,{" "}
+            <span class="font-semibold text-white/90">yu</span>, and{" "}
+            <span class="font-semibold text-white/90">yo</span> sounds, allowing
+            for more accurate representation of sounds found in foreign words.
+          </p>
+          <div class="grid gap-2 sm:grid-cols-2">
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <p class="font-japanese text-lg text-white/90">
+                <Romaji romaji="nyuuyōku">ニューヨーク</Romaji>
+              </p>
+              <p class="mt-1 text-sm text-white/40">New York</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
+              <p class="font-japanese text-lg text-white/90">
+                <Romaji romaji="shyatsu">シャツ</Romaji>
+              </p>
+              <p class="mt-1 text-sm text-white/40">shirt</p>
+            </div>
+          </div>
+        </div>
+
+        {/* シ vs ツ and ン vs ソ */}
+        <div class="space-y-4">
+          <SectionLabel>シ vs. ツ and ン vs. ソ</SectionLabel>
+          <ul class="space-y-3 leading-relaxed text-white/70">
+            <li>
+              In Katakana,{" "}
+              <span class="font-japanese text-xl text-white/90">シ</span> (shi)
+              and <span class="font-japanese text-xl text-white/90">ツ</span>{" "}
+              (tsu) look very similar but have slightly different stroke
+              orientations.{" "}
+              <span class="font-japanese text-xl text-white/90">シ</span> (shi)
+              has flatter strokes, while the strokes in{" "}
+              <span class="font-japanese text-xl text-white/90">ツ</span> (tsu)
+              are more vertical.
+            </li>
+
+            <li class="flex items-center gap-3">
+              <Avatar class="h-16 w-16 shrink-0">
+                <AvatarImage
+                  src="/img/shocked-child.png"
+                  alt="shocked-person"
+                />
+                <AvatarFallback>?!</AvatarFallback>
+              </Avatar>
+              <span class="font-japanese text-2xl text-white/40">？？</span>
+            </li>
+
+            <li>
+              You'll notice that the curved lines of{" "}
+              <span class="font-japanese text-xl text-white/90">シ</span> and{" "}
+              <span class="font-japanese text-xl text-white/90">ン</span> don't
+              go all the way to the top of the character, while the curved lines
+              of <span class="font-japanese text-xl text-white/90">ツ</span> and{" "}
+              <span class="font-japanese text-xl text-white/90">ソ</span> do.{" "}
+              <span class="font-semibold italic text-red-400">
+                This is the biggest difference!
+              </span>
+            </li>
+            <li>
+              When handwritten, the long curved line of{" "}
+              <span class="font-japanese text-xl text-white/90">シ</span> is
+              written from the bottom up, while{" "}
+              <span class="font-japanese text-xl text-white/90">ツ</span> is
+              written from top to bottom.
+            </li>
+            <li>
+              <span class="font-japanese text-xl text-white/90">ン</span> (n)
+              and <span class="font-japanese text-xl text-white/90">ソ</span>{" "}
+              (so) are similar.{" "}
+              <span class="font-japanese text-xl text-white/90">ン</span> (n) is
+              also flatter while{" "}
+              <span class="font-japanese text-xl text-white/90">ソ</span> (so)
+              is more vertical.
+            </li>
+          </ul>
+
+          <AsideBlock label="From Sensei">
+            <p class="mt-2 text-sm leading-relaxed text-white/60">
+              It certainly takes a bit of reading exposure to get used to these
+              subtle differences, but context usually makes the correct character
+              obvious.
             </p>
-          </ChatAttachment>
-        </section>
+          </AsideBlock>
+        </div>
+
+        {/* Double consonants */}
+        <div class="space-y-4">
+          <SectionLabel>
+            Double consonants — small{" "}
+            <span class="font-japanese text-white/50">ッ</span>
+          </SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            Just like in Hiragana, Katakana uses the small{" "}
+            <span class="font-japanese font-semibold text-white/90">ッ</span> to
+            mark doubled consonants.
+          </p>
+
+          <div class="grid gap-3 sm:grid-cols-3">
+            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-lg text-white/90">
+                <Romaji romaji="ruuku">
+                  ル<span class="text-orange-400">ー</span>ク
+                </Romaji>
+              </p>
+              <p class="mt-1 text-sm text-white/40">Luke</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-lg text-white/90">
+                <Romaji romaji="maaku">
+                  マ<span class="text-orange-400">ー</span>ク
+                </Romaji>
+              </p>
+              <p class="mt-1 text-sm text-white/40">Mark</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-lg text-white/90">
+                <Romaji romaji="meekaa">
+                  メ<span class="text-orange-400">ー</span>カ
+                  <span class="text-orange-400">ー</span>
+                </Romaji>
+              </p>
+              <p class="mt-1 text-sm text-white/40">Maker</p>
+            </div>
+          </div>
+
+          <p class="text-center text-xs font-medium text-white/30">vs.</p>
+
+          <div class="grid gap-3 sm:grid-cols-3">
+            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-lg text-white/90">
+                <Romaji romaji="rukku">
+                  ル<span class="text-sky-400">ッ</span>ク
+                </Romaji>
+              </p>
+              <p class="mt-1 text-sm text-white/40">Look</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-lg text-white/90">
+                <Romaji romaji="makku">
+                  マ<span class="text-sky-400">ッ</span>ク
+                </Romaji>
+              </p>
+              <p class="mt-1 text-sm text-white/40">Mac</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-lg text-white/90">
+                <Romaji romaji="mekka">
+                  メ<span class="text-sky-400">ッ</span>カ
+                </Romaji>
+              </p>
+              <p class="mt-1 text-sm text-white/40">Mecca</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Dakuten & Handakuten */}
+        <div class="space-y-4">
+          <SectionLabel>Dakuten & Handakuten</SectionLabel>
+          <p class="leading-relaxed text-white/70">
+            Just like Hiragana, add diacritics to change sounds:
+          </p>
+          <div class="grid grid-cols-5 gap-3">
+            {(
+              [
+                ["カ → ガ"],
+                ["シ → ジ"],
+                ["タ → ダ"],
+                ["ハ → バ"],
+                ["ハ → パ"],
+              ] as [string][]
+            ).map(([text]) => (
+              <div class="rounded-lg bg-white/[0.04] p-3 text-center font-japanese text-lg font-medium text-white/80">
+                {text}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Try reading */}
+        <div class="space-y-4">
+          <SectionLabel>Try reading</SectionLabel>
+          <div class="grid gap-4 sm:grid-cols-3">
+            <WordCard kana="コーヒー" romaji="ko-hi-i" gloss="coffee" />
+            <WordCard kana="タクシー" romaji="ta-ku-shi-i" gloss="taxi" />
+            <WordCard kana="ホテル" romaji="ho-te-ru" gloss="hotel" />
+          </div>
+          <p class="text-sm text-white/40">
+            Try these too:{" "}
+            <span class="font-japanese text-white/60">
+              テレビ, ビール, パン, チョコレート, アイスクリーム
+            </span>
+          </p>
+        </div>
 
         {/* Closing Dialogue */}
-        <section class="space-y-8">
-          <ChatBubble
-            speaker="student"
-            text={
-              <>
-                <Furigana furigana="がくせい">学生</Furigana>: Thanks{" "}
-                <Furigana furigana="せんせい">先生</Furigana>, I'll give it a
-                shot! Is there anything else I should know?
-              </>
-            }
-          />
-          <ChatBubble
-            speaker="sensei"
-            text={
-              <>
-                <Furigana furigana="せんせい">先生</Furigana>: One note—we won’t
-                add <span class="font-semibold italic">furigana</span> for
-                Katakana characters in this chapter. Use a chart if you’re
-                stuck, and memorize them early.
-              </>
-            }
-          />
-        </section>
+        <div class="space-y-5">
+          <StudentBubble>
+            <Furigana furigana="がくせい">学生</Furigana>: Thanks{" "}
+            <Furigana furigana="せんせい">先生</Furigana>, I'll give it a shot!
+            Is there anything else I should know?
+          </StudentBubble>
+          <SenseiBubble>
+            <Furigana furigana="せんせい">先生</Furigana>: One note — we won't
+            add <span class="font-semibold italic">furigana</span> for Katakana
+            characters in this chapter. Use a chart if you're stuck, and
+            memorize them early.
+          </SenseiBubble>
+        </div>
 
+        {/* Sensei avatar */}
         <div class="flex justify-center">
-          <Avatar class="h-14 w-14">
-            <AvatarImage src="/img/guru.png" alt="guru" />
-            <AvatarFallback>🧙</AvatarFallback>
-          </Avatar>
+          <img
+            src="/img/guru.png"
+            alt="sensei"
+            class="size-14 rounded-full ring-1 ring-white/10"
+          />
         </div>
 
         {/* Video */}
-        <YouTubeVideo
-          videoId="wtcMGycmDjc"
-          title="When to use hiragana, katakana, and kanji"
-          credit="Komei's Channel"
-        />
-      </main>
+        <div>
+          <YouTubeVideo
+            videoId="wtcMGycmDjc"
+            title="When to use hiragana, katakana, and kanji"
+            credit="Komei's Channel"
+          />
+        </div>
+
+        {/* Additional Resources */}
+        <div class="rounded-lg bg-white/[0.03] p-6 ring-1 ring-white/[0.06]">
+          <SectionLabel>Additional resources</SectionLabel>
+          <div class="mt-4 space-y-3 text-sm">
+            <div>
+              <a
+                href="https://files.tofugu.com/articles/japanese/2022-08-23-learn-katakana-book-pdf/learn-katakana-book-by-tofugu.pdf"
+                target="_blank"
+                class="text-dynamic-accent underline decoration-dynamic-accent/30 underline-offset-2 hover:decoration-dynamic-accent/60"
+              >
+                Tofugu's Learn Katakana PDF
+              </a>
+              <p class="mt-0.5 text-white/40">
+                Mnemonics + practice sheets. Print it or use on your tablet.
+              </p>
+            </div>
+            <div>
+              <a
+                href="https://learnjapanese.moe/img/hiragana_katakana_LARGE.png"
+                target="_blank"
+                class="text-dynamic-accent underline decoration-dynamic-accent/30 underline-offset-2 hover:decoration-dynamic-accent/60"
+              >
+                Hiragana & Katakana Chart by IREAL
+              </a>
+              <p class="mt-0.5 text-white/40">Quick visual reference.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            46 katakana characters with the same sounds as hiragana
+          </SummaryItem>
+          <SummaryItem>
+            Used for foreign words, loanwords, onomatopoeia, and emphasis
+          </SummaryItem>
+          <SummaryItem>
+            Long vowels use ー, doubled consonants use small ッ
+          </SummaryItem>
+          <SummaryItem>
+            シ/ン have flatter strokes, ツ/ソ are more vertical
+          </SummaryItem>
+        </LessonSummary>
+      </div>
     </div>
   )
 }
 
-function ResourceSection() {
+function StudentBubble(props: { children: JSX.Element }) {
   return (
-    <section class="border-border bg-card/50 space-y-3 rounded-lg border p-6">
-      <h3 class="text-lg font-semibold">Essential Resources</h3>
-      <ul class="space-y-2">
-        <li>
-          <a
-            class="text-sky-400 hover:underline"
-            href="https://files.tofugu.com/articles/japanese/2022-08-23-learn-katakana-book-pdf/learn-katakana-book-by-tofugu.pdf"
-            target="_blank"
-          >
-            Tofugu's Learn Katakana PDF
-          </a>
-        </li>
-        <li>
-          <a
-            class="text-sky-400 hover:underline"
-            href="https://learnjapanese.moe/img/hiragana_katakana_LARGE.png"
-            target="_blank"
-          >
-            Hiragana & Katakana Chart by IREAL
-          </a>
-        </li>
-      </ul>
-    </section>
+    <div class="flex items-end gap-3">
+      <Avatar class="size-7 shrink-0 ring-1 ring-white/10">
+        <AvatarImage src="/img/student.png" alt="student" />
+        <AvatarFallback>S</AvatarFallback>
+      </Avatar>
+      <div class="max-w-[80%] rounded-2xl rounded-bl-sm bg-white/[0.06] px-4 py-2.5 text-sm leading-relaxed text-white/70">
+        {props.children}
+      </div>
+    </div>
+  )
+}
+
+function SenseiBubble(props: { children: JSX.Element }) {
+  return (
+    <div class="flex items-end justify-end gap-3">
+      <div class="max-w-[80%] rounded-2xl rounded-br-sm bg-dynamic-accent/10 px-4 py-2.5 text-sm leading-relaxed text-white/70">
+        {props.children}
+      </div>
+      <Avatar class="size-7 shrink-0 ring-1 ring-white/10">
+        <AvatarImage src="/img/guru.png" alt="sensei" />
+        <AvatarFallback>T</AvatarFallback>
+      </Avatar>
+    </div>
+  )
+}
+
+function WordCard(props: { kana: string; romaji: string; gloss: string }) {
+  return (
+    <div class="relative">
+      <div
+        class="absolute -inset-px rounded-xl opacity-10"
+        style={{
+          background: `linear-gradient(135deg, var(--dynamic-accent), transparent 50%)`,
+        }}
+      />
+      <div class="relative rounded-xl bg-white/[0.04] p-4 text-center backdrop-blur-sm">
+        <p class="mb-1 font-japanese text-2xl font-semibold text-white/90">
+          {props.kana}
+        </p>
+        <p class="text-sm text-white/50">{props.romaji}</p>
+        <p class="text-sm text-white/70">{props.gloss}</p>
+      </div>
+    </div>
   )
 }

@@ -46,7 +46,7 @@ export default function MultipleChoiceText(props: MultipleChoiceTextProps) {
           <span class="px-2 py-px text-lg">{`${option}) `}</span>
           <span
             class={cn(
-              "font-japanese origin-left text-lg font-medium duration-100 ease-out hover:scale-[107%]",
+              "font-japanese inline-block origin-left text-lg font-medium duration-100 ease-out hover:scale-[107%]",
               props.class,
             )}
           >

@@ -1,29 +1,47 @@
-// routes/lessons/_chapter-2/big-numbers.tsx
 import { createFileRoute } from "@tanstack/solid-router"
+import { For } from "solid-js"
+import { TextField, TextFieldInput } from "@/components/ui/text-field"
+import WanakanaWrapper from "@/features/wanakana/WanaKana"
 import BigNumbers from "@/components/charts/BigNumbers"
 import YouTubeVideo from "@/features/youtube/YouTube"
+import LessonHeader, {
+  OverviewItem,
+} from "@/features/lessons/components/LessonHeader"
+import SectionLabel from "@/features/lessons/components/SectionLabel"
+import LessonSummary, {
+  SummaryItem,
+} from "@/features/lessons/components/LessonSummary"
 
 export const Route = createFileRoute("/lessons/_chapter-2/big-numbers")({
-
-  component: RouteComponent,
+  component: BigNumbersLesson,
 })
 
-function RouteComponent() {
+function BigNumbersLesson() {
   return (
-    <div class="mb-32">
-      {/* --- Header --- */}
-      <header class="mx-auto max-w-3xl px-6 py-14 text-center">
-        <h1 class="mb-3 text-5xl font-extrabold tracking-tight">
-          <span class="italic">BIG</span> Numbers
-        </h1>
-        <div class="mx-auto mb-6 h-1 w-20 rounded bg-emerald-400" />
-      </header>
+    <div class="relative pb-32">
+      {/* Background character */}
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+        万
+      </span>
 
-      {/* --- Main Content --- */}
-      <main class="mx-auto max-w-3xl space-y-16 px-6 leading-relaxed">
+      <LessonHeader
+        chapter="Chapter 2 · Numbers"
+        title={
+          <>
+            <span class="italic">BIG</span> Numbers
+          </>
+        }
+        subtitle="Hundreds, thousands, and ten-thousands in Japanese."
+      >
+        <OverviewItem>Numbers from 100 to 99,999</OverviewItem>
+        <OverviewItem>Reading digits and kanji numbers</OverviewItem>
+        <OverviewItem>Irregular readings for 百, 千, 万</OverviewItem>
+      </LessonHeader>
+
+      <div class="space-y-14 px-8">
         {/* Intro */}
-        <section class="space-y-6">
-          <p>
+        <div class="space-y-4">
+          <p class="leading-relaxed text-white/70">
             Understanding big numbers in Japanese is essential for navigating
             everyday situations, such as reading prices, dealing with currency,
             or discussing quantities. It's especially important because Japanese
@@ -40,7 +58,7 @@ function RouteComponent() {
 
           <BigNumbers />
 
-          <p class="text-muted-foreground text-base italic">
+          <p class="text-sm italic text-white/40">
             *Note that <span class="font-japanese not-italic">一万</span> is{" "}
             <span class="font-japanese not-italic">
               <span class="underline underline-offset-[3px]">いち</span>まん
@@ -51,49 +69,55 @@ function RouteComponent() {
             just <span class="font-japanese not-italic">ひゃく</span> (not{" "}
             <span class="font-japanese not-italic">いちひゃく</span>).
           </p>
-        </section>
+        </div>
 
         {/* Digits Practice */}
-        <section class="space-y-6">
-          <p>
+        <div class="space-y-4">
+          <SectionLabel>Read the digits</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             Read the following numbers. Fill in the answers (in{" "}
             <span class="font-japanese">ひらがな</span>) if you want to check
             your knowledge.
           </p>
           <DigitsPractice />
-        </section>
+        </div>
 
         {/* Kanji Numbers Practice */}
-        <section class="space-y-6">
-          <p>
+        <div class="space-y-4">
+          <SectionLabel>Read the kanji</SectionLabel>
+          <p class="leading-relaxed text-white/70">
             Read the following <span class="font-japanese">漢字</span> (kanji)
             numbers. Fill in the answers (in{" "}
             <span class="font-japanese">ひらがな</span>) if you want to check
             your knowledge{" "}
-            <span class="text-muted-foreground text-base">
+            <span class="text-sm text-white/40">
               (this might feel painful at first, but you'll improve if you
               practice!)
             </span>
             .
           </p>
           <NumbersKanjiPractice />
-        </section>
+        </div>
 
-        {/* Wrap-up */}
-        <section>
-          <p>
-            By practicing these numbers, you will become more comfortable with
-            reading and understanding prices. In the next lesson, we'll dive
-            deep into Japanese currency and shopping.
-          </p>
-        </section>
-      </main>
+        {/* Summary */}
+        <LessonSummary>
+          <SummaryItem>
+            百 (ひゃく) = 100, 千 (せん) = 1,000, 万 (まん) = 10,000
+          </SummaryItem>
+          <SummaryItem>
+            一万 is いちまん, but 千 is just せん and 百 is just ひゃく
+          </SummaryItem>
+          <SummaryItem>
+            Watch for irregular readings (さんびゃく, はっぴゃく, etc.)
+          </SummaryItem>
+          <SummaryItem>
+            Practice reading both digits and kanji numbers
+          </SummaryItem>
+        </LessonSummary>
+      </div>
     </div>
   )
 }
-
-import { TextField, TextFieldInput } from "@/components/ui/text-field"
-import { For } from "solid-js"
 
 function DigitsPractice() {
   const items = [
@@ -124,9 +148,13 @@ function DigitsPractice() {
       <For each={items}>
         {(item) => (
           <div class="flex flex-col items-center">
-            <label class="mb-1 text-center text-base">{item}</label>
+            <label class="mb-1 text-center text-base text-white/70">
+              {item}
+            </label>
             <TextField class="w-full max-w-xs">
-              <TextFieldInput class="text-center text-xl" />
+              <WanakanaWrapper enabled={true} watch={null}>
+                <TextFieldInput class="text-center text-xl" />
+              </WanakanaWrapper>
             </TextField>
           </div>
         )}
@@ -164,9 +192,13 @@ function NumbersKanjiPractice() {
       <For each={items}>
         {(item) => (
           <div class="flex flex-col items-center">
-            <label class="mb-1 text-center text-base">{item}</label>
+            <label class="font-japanese mb-1 text-center text-base text-white/70">
+              {item}
+            </label>
             <TextField class="w-full max-w-xs">
-              <TextFieldInput class="text-center text-xl" />
+              <WanakanaWrapper enabled={true} watch={null}>
+                <TextFieldInput class="text-center text-xl" />
+              </WanakanaWrapper>
             </TextField>
           </div>
         )}
