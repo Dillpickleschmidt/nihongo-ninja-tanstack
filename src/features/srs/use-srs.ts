@@ -7,6 +7,13 @@ import { getAnkiDueCount } from "@/features/import/anki/anki-adapter"
 import { api } from "convex/_generated/api"
 import { createEffect, createSignal, onCleanup } from "solid-js"
 
+export type DueCounts = {
+  vocabMeanings: number | undefined
+  vocabSpellings: number | undefined
+  vocabTotal: number | undefined
+  sentences: number | undefined // placeholder — not tracked yet
+}
+
 export function useSrs() {
   const queryClient = useQueryClient()
   const { preferences } = usePreferences()
@@ -17,7 +24,7 @@ export function useSrs() {
   }
   const authed = () => !!user()
 
-  const fsrsDueCount = useConvexQuery(
+  const fsrsDueCountQuery = useConvexQuery(
     api.api.fsrs.getDueFSRSCardsCount,
     {},
     () => ({ enabled: authed() && !ankiActive() }),
@@ -51,16 +58,28 @@ export function useSrs() {
     onCleanup(unsubscribe)
   })
 
-  return {
-    dueCount: () => {
-      if (!authed()) return 0
+  const dueCounts = (): DueCounts => {
+    if (!authed()) {
+      return { vocabMeanings: 0, vocabSpellings: 0, vocabTotal: 0, sentences: undefined }
+    }
 
-      if (ankiActive()) {
-        return ankiCount()
-      }
+    if (ankiActive()) {
+      const total = ankiCount()
+      return { vocabMeanings: undefined, vocabSpellings: undefined, vocabTotal: total, sentences: undefined }
+    }
 
-      if (fsrsDueCount.isLoading()) return undefined
-      return fsrsDueCount.data()
-    },
+    const data = fsrsDueCountQuery.data()
+    if (data === undefined) {
+      return { vocabMeanings: undefined, vocabSpellings: undefined, vocabTotal: undefined, sentences: undefined }
+    }
+
+    return {
+      vocabMeanings: data.meanings,
+      vocabSpellings: data.spellings,
+      vocabTotal: data.meanings + data.spellings,
+      sentences: undefined, // not tracked yet
+    }
   }
+
+  return { dueCounts }
 }

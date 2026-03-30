@@ -204,9 +204,11 @@ export async function getItemStatuses(
   return statusMap
 }
 
-export async function getDueFSRSCardsCount(ctx: QueryCtx): Promise<number> {
+export async function getDueFSRSCardsCount(
+  ctx: QueryCtx,
+): Promise<{ meanings: number; spellings: number }> {
   const identity = await ctx.auth.getUserIdentity()
-  if (!identity) return 0
+  if (!identity) return { meanings: 0, spellings: 0 }
 
   const userId = identity.subject
   const now = Date.now()
@@ -216,7 +218,7 @@ export async function getDueFSRSCardsCount(ctx: QueryCtx): Promise<number> {
     queryCardsByMode(ctx, userId, "spellings", now).collect(),
   ])
 
-  return meanings.length + spellings.length
+  return { meanings: meanings.length, spellings: spellings.length }
 }
 
 export async function upsertFSRSCard(

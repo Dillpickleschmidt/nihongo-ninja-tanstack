@@ -94,7 +94,8 @@ export function HeroSection(props: HeroSectionProps) {
 function HeroContent() {
   const [isSelectorOpen, setIsSelectorOpen] = createSignal(false)
   const { query, selectedPathId, selectedPath, switchPath } = useLearningPath()
-  const srs = useSrs()
+  const { dueCounts } = useSrs()
+  const vocabTotal = () => dueCounts().vocabTotal
 
   return (
     <div>
@@ -119,7 +120,7 @@ function HeroContent() {
             <ChevronRight class="size-4" />
           </LearningPathSelector>
         </Show>
-        <DueCountBadge count={srs.dueCount} />
+        <DueCountBadge count={vocabTotal} />
       </div>
     </div>
   )

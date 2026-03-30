@@ -14,7 +14,7 @@ import {
   REFERENCE_TOOLS,
 } from "@/features/dashboard/dashboard-cards-data"
 import { useColorAnimation } from "@/features/homepage/lib/use-color-animation"
-import { getUser } from "@/lib/auth"
+import { useSrs } from "@/features/srs/use-srs"
 import { parsePreferencesCookie } from "@/query/model/preferences"
 
 export const Route = createFileRoute("/dashboard")({
@@ -36,16 +36,10 @@ export const Route = createFileRoute("/dashboard")({
 function DashboardComponent() {
   useColorAnimation()
 
-  const user = getUser()
   const { preferences } = usePreferences()
   const selectedPathId = () => preferences().activeLearningPath
-
-  const dueCountQuery = useConvexQuery(
-    api.api.fsrs.getDueFSRSCardsCount,
-    () => ({}),
-    () => ({ enabled: !!user() }),
-  )
-  const dueCount = () => dueCountQuery.data()
+  const { dueCounts } = useSrs()
+  const vocabTotal = () => dueCounts().vocabTotal
 
   const dashboardQuery = useConvexQuery(
     api.api.learning_paths.getDashboardData,
@@ -127,8 +121,8 @@ function DashboardComponent() {
                   <span>·</span>
                   <span>
                     V:{" "}
-                    <Show when={dueCount() !== undefined} fallback="–">
-                      {dueCount()}
+                    <Show when={vocabTotal() !== undefined} fallback="–">
+                      {vocabTotal()}
                     </Show>
                   </span>
                 </span>
@@ -190,7 +184,7 @@ function DashboardComponent() {
                 <DashboardCard
                   card={card()}
                   index={index}
-                  vocabDueCount={dueCount}
+                  vocabDueCount={vocabTotal}
                 />
               )}
             </Index>
