@@ -38,7 +38,7 @@ export function ModuleDetailVocabulary(props: ModuleDetailVocabularyProps) {
             <button
               type="button"
               onClick={() => setFocusedIndex(index())}
-              class={`rounded-full px-3.5 py-1 text-sm font-medium transition-all duration-200 ${
+              class={`rounded-full px-3.5 py-1 text-sm font-medium transition-colors duration-200 ${
                 focusedIndex() === index()
                   ? "bg-orange-500/15 text-orange-300 ring-1 ring-orange-400/25"
                   : "text-muted-foreground hover:bg-white/5 hover:text-white/60"
@@ -73,7 +73,7 @@ export function ModuleDetailVocabulary(props: ModuleDetailVocabularyProps) {
                 </div>
                 <Link
                   to={props.linkTo}
-                  class="flex items-center gap-1.5 shrink-0 rounded-lg bg-orange-500/15 px-3 py-1.5 text-sm font-medium text-orange-300 ring-1 ring-orange-400/25 transition-all hover:bg-orange-500/25 hover:text-orange-200"
+                  class="flex items-center gap-1.5 shrink-0 rounded-lg bg-orange-500/15 px-3 py-1.5 text-sm font-medium text-orange-300 ring-1 ring-orange-400/25 transition-colors hover:bg-orange-500/25 hover:text-orange-200"
                 >
                   Continue
                   <ChevronRight class="size-4" />

@@ -40,7 +40,7 @@ export function ModuleDetailGrammar(props: ModuleDetailGrammarProps) {
                 </div>
                 <Link
                   to={props.linkTo}
-                  class="flex items-center gap-1.5 shrink-0 rounded-lg bg-amber-500/15 px-3 py-1.5 text-sm font-medium text-amber-300 ring-1 ring-amber-400/25 transition-all hover:bg-amber-500/25 hover:text-amber-200"
+                  class="flex items-center gap-1.5 shrink-0 rounded-lg bg-amber-500/15 px-3 py-1.5 text-sm font-medium text-amber-300 ring-1 ring-amber-400/25 transition-colors hover:bg-amber-500/25 hover:text-amber-200"
                 >
                   Continue
                   <ChevronRight class="size-4" />

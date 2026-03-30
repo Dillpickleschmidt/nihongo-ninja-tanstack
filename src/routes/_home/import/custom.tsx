@@ -92,7 +92,7 @@ function CustomImportPage() {
         activeLearningPath: result.pathId,
         activeChapter: result.firstChapterSlug,
       })
-      navigate({ to: "/dashboard" })
+      navigate({ to: "/learn" })
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save learning path")
     } finally {

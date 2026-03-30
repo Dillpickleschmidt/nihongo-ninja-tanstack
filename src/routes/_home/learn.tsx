@@ -1,27 +1,20 @@
 import { createFileRoute } from "@tanstack/solid-router"
-import {
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-  type Accessor,
-  type Setter,
-} from "solid-js"
+import { createSignal, createEffect, onMount, onCleanup } from "solid-js"
 import { convexQuery } from "@/lib/convex-query"
 import { api } from "../../../convex/_generated/api"
 import { parsePreferencesCookie } from "@/query/model/preferences"
 import { useQueryClient } from "@tanstack/solid-query"
 import { queryKeys } from "~/query/query-keys"
-import { CompletionsSyncDialog } from "@/features/dashboard/CompletionsSyncDialog"
+import { CompletionsSyncDialog } from "@/features/learn/CompletionsSyncDialog"
 import { FloatingKanji } from "@/features/homepage/components/floating-kanji"
-import { DashboardPathProvider } from "@/features/dashboard/context/dashboard-path"
-import { HeroSection } from "@/features/dashboard/hero/HeroSection"
-import { SSRMediaQuery } from "@/components/SSRMediaQuery"
-import { PracticeToolsSection } from "@/features/dashboard/practice-tools/PracticeToolsSection"
-import { ViewToggle } from "@/features/dashboard/hero/ViewToggle"
-import { LearningPathSection } from "@/features/dashboard/learning-path/LearningPathSection"
+import { LearningPathProvider } from "@/features/learn/context/learning-path"
+import { HeroSection } from "@/features/learn/hero/HeroSection"
+// import { SSRMediaQuery } from "@/components/SSRMediaQuery"
+// import { PracticeToolsSection } from "@/features/learn/practice-tools/PracticeToolsSection"
+// import { ViewToggle } from "@/features/learn/hero/ViewToggle"
+import { LearningPathSection } from "@/features/learn/learning-path/LearningPathSection"
 
-export const Route = createFileRoute("/_home/dashboard")({
+export const Route = createFileRoute("/_home/learn")({
   loader: ({ context, preload }) => {
     if (!preload) {
       context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
@@ -45,10 +38,10 @@ export const Route = createFileRoute("/_home/dashboard")({
       )
     }
   },
-  component: DashboardComponent,
+  component: LearnComponent,
 })
 
-function DashboardComponent() {
+function LearnComponent() {
   const [scrollY, setScrollY] = createSignal(0)
   const [selectedView, setSelectedView] = createSignal<string>("grid")
   const queryClient = useQueryClient()
@@ -84,23 +77,23 @@ function DashboardComponent() {
       <FloatingKanji char="忍" class="top-20 left-[10%]" delay={0} />
 
       <main class="pt-20 md:pt-20 2xl:pt-28 pb-32 px-4 md:px-6">
-        <DashboardPathProvider>
+        <LearningPathProvider>
           <HeroSection
             selectedView={selectedView}
             setSelectedView={setSelectedView}
           />
 
-          <SSRMediaQuery hideFrom="md">
+          {/* <SSRMediaQuery hideFrom="md">
             <PracticeToolsSection />
             <ViewToggle
               selectedView={selectedView}
               setSelectedView={setSelectedView}
               class="mt-4"
             />
-          </SSRMediaQuery>
+          </SSRMediaQuery> */}
 
           <LearningPathSection selectedView={selectedView} />
-        </DashboardPathProvider>
+        </LearningPathProvider>
       </main>
     </div>
   )

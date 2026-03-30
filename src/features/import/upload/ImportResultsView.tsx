@@ -279,7 +279,7 @@ export function ImportResultsView(props: ImportResultsViewProps) {
               Successfully imported {result().imported} cards
             </p>
             <Link
-              to="/dashboard"
+              to="/learn"
               class="mt-3 inline-block rounded-lg bg-green-500/20 px-4 py-2 text-sm text-green-400 hover:bg-green-500/30"
             >
               Done

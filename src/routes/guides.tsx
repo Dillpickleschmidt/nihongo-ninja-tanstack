@@ -176,7 +176,7 @@ function RouteComponent() {
 
     if (staticModuleEntry) {
       completeModule(staticModuleEntry[0])
-      navigate({ to: "/dashboard" })
+      navigate({ to: "/learn" })
       return
     }
 
@@ -190,7 +190,7 @@ function RouteComponent() {
       }
     }
 
-    navigate({ to: "/dashboard" })
+    navigate({ to: "/learn" })
   }
 
   return (

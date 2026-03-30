@@ -52,8 +52,8 @@ export function HeroSection(props: { explorePath?: string }) {
 
             <div class="flex flex-col gap-4 sm:flex-row">
               <Link
-                to={props.explorePath ?? "/get-started"}
-                class="group inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end) px-8 py-4 font-semibold text-white transition-all hover:scale-[1.02]"
+                to={props.explorePath ?? "/dashboard"}
+                class="group inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end) px-8 py-4 font-semibold text-white transition-transform hover:scale-[1.02]"
                 style={{
                   "box-shadow":
                     "0 10px 12.5px -2.5px color-mix(in srgb, var(--landing-accent) 25%, transparent), 0 4px 5px -3px color-mix(in srgb, var(--landing-accent) 25%, transparent)",
@@ -76,7 +76,7 @@ export function HeroSection(props: { explorePath?: string }) {
               </Link>
               <Link
                 to="/discover"
-                class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-semibold text-white transition-all hover:bg-white/10 hover:border-white/20"
+                class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-semibold text-white transition-colors hover:bg-white/10 hover:border-white/20"
               >
                 <svg
                   class="h-5 w-5"

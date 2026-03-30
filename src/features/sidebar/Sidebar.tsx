@@ -56,7 +56,7 @@ const navigation: NavigationSection[] = [
       {
         id: "stats",
         title: "Your Stats",
-        href: "/stats",
+        href: "/review",
         icon: ChartNoAxesColumn,
         class: "text-primary",
       },

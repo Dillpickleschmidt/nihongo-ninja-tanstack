@@ -5,11 +5,11 @@ import { usePreferences } from "@/lib/preferences"
 import { isBuiltInTextbook } from "@/data/utils/textbooks"
 import { getChaptersByTextbook } from "@/data/utils/chapters"
 
-type DashboardPathContextValue = ReturnType<typeof createDashboardPathValue>
+type LearningPathContextValue = ReturnType<typeof createLearningPathValue>
 
-const DashboardPathContext = createContext<DashboardPathContextValue>()
+const LearningPathContext = createContext<LearningPathContextValue>()
 
-function createDashboardPathValue() {
+function createLearningPathValue() {
   const { preferences, setPreference, setPreferences } = usePreferences()
   const selectedPathId = () => preferences().activeLearningPath
 
@@ -50,20 +50,20 @@ function createDashboardPathValue() {
   }
 }
 
-export function DashboardPathProvider(props: { children: JSX.Element }) {
-  const value = createDashboardPathValue()
+export function LearningPathProvider(props: { children: JSX.Element }) {
+  const value = createLearningPathValue()
   return (
-    <DashboardPathContext.Provider value={value}>
+    <LearningPathContext.Provider value={value}>
       {props.children}
-    </DashboardPathContext.Provider>
+    </LearningPathContext.Provider>
   )
 }
 
-export function useDashboardPath() {
-  const context = useContext(DashboardPathContext)
+export function useLearningPath() {
+  const context = useContext(LearningPathContext)
   if (!context) {
     throw new Error(
-      "useDashboardPath must be used within DashboardPathProvider",
+      "useLearningPath must be used within LearningPathProvider",
     )
   }
   return context

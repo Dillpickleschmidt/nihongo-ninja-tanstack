@@ -23,8 +23,8 @@ export function CTASection(props: { explorePath?: string }) {
           </p>
           <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              to={props.explorePath ?? "/get-started"}
-              class="group inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end) px-10 py-4 text-lg font-semibold text-white transition-all hover:scale-[1.02]"
+              to={props.explorePath ?? "/dashboard"}
+              class="group inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end) px-10 py-4 text-lg font-semibold text-white transition-transform hover:scale-[1.02]"
               style={{
                 "box-shadow":
                   "0 20px 25px -5px color-mix(in srgb, var(--landing-accent) 25%, transparent), 0 8px 10px -6px color-mix(in srgb, var(--landing-accent) 25%, transparent)",

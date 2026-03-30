@@ -66,7 +66,7 @@ function LessonTestLayout() {
       {/* Back button */}
       <div class="fixed top-4 left-4 z-50">
         <Link
-          to="/dashboard"
+          to="/learn"
           class="flex items-center gap-1 text-sm text-white/30 transition-colors hover:text-white/60"
         >
           <ArrowLeft class="size-3.5" />

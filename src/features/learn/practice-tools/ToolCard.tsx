@@ -60,7 +60,7 @@ export function ToolCard(props: ToolCardProps) {
       </div>
 
       <svg
-        class="absolute right-4 top-1/2 -translate-y-1/2 size-4 text-dynamic-accent opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0.5"
+        class="absolute right-4 top-1/2 -translate-y-1/2 size-4 text-dynamic-accent opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:translate-x-0.5"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"

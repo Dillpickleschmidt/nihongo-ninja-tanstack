@@ -23,8 +23,8 @@ function ImportIndexPage() {
         <ImportPageHeader
           title="Import Your Progress"
           subtitle="Choose how you'd like to track your reviews"
-          backTo="/dashboard"
-          backLabel="Dashboard"
+          backTo="/learn"
+          backLabel="Learn"
         />
 
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

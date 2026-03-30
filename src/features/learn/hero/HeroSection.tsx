@@ -10,7 +10,7 @@ import { Sparkles, ChevronRight } from "lucide-solid"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { useSrs } from "@/features/srs/use-srs"
-import { useDashboardPath } from "../context/dashboard-path"
+import { useLearningPath } from "../context/learning-path"
 import { LearningPathSelector } from "../LearningPathSelector"
 import { HeroTimeline } from "./HeroTimeline"
 import { ViewToggle } from "./ViewToggle"
@@ -22,7 +22,7 @@ interface HeroSectionProps {
 }
 
 export function HeroSection(props: HeroSectionProps) {
-  const { currentChapter, selectedPath } = useDashboardPath()
+  const { currentChapter, selectedPath } = useLearningPath()
 
   const currentModules = () => {
     const chapter = currentChapter()
@@ -93,7 +93,7 @@ export function HeroSection(props: HeroSectionProps) {
 
 function HeroContent() {
   const [isSelectorOpen, setIsSelectorOpen] = createSignal(false)
-  const { query, selectedPathId, selectedPath, switchPath } = useDashboardPath()
+  const { query, selectedPathId, selectedPath, switchPath } = useLearningPath()
   const srs = useSrs()
 
   return (
@@ -113,7 +113,7 @@ function HeroContent() {
             isOpen={isSelectorOpen()}
             onOpenChange={setIsSelectorOpen}
             onPathSelect={switchPath}
-            class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition-all hover:bg-white/10 hover:text-white cursor-pointer"
+            class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition-colors hover:bg-white/10 hover:text-white cursor-pointer"
           >
             Change path
             <ChevronRight class="size-4" />
@@ -126,7 +126,7 @@ function HeroContent() {
 }
 
 function HeroBadge() {
-  const { selectedPath, currentChapter } = useDashboardPath()
+  const { selectedPath, currentChapter } = useLearningPath()
 
   const moduleCount = () => {
     const chapter = currentChapter()

@@ -14,7 +14,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion"
-import { useDashboardPath } from "../context/dashboard-path"
+import { useLearningPath } from "../context/learning-path"
 import { ChapterSection } from "./ChapterSection"
 import { ModuleDetailDialog } from "./ModuleDetailDialog"
 import type { LearningPathModule } from "convex/model/learning_paths"
@@ -30,7 +30,7 @@ export function LearningPathSection(props: LearningPathSectionProps) {
   const [dialogOpen, setDialogOpen] = createSignal(false)
 
   const { query, preferences, selectedPathId, selectedPath } =
-    useDashboardPath()
+    useLearningPath()
 
   const isUserCreatedPath = () => selectedPath()?.isUserCreated === true
 

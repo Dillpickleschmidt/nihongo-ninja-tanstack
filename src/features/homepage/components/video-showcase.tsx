@@ -78,7 +78,7 @@ export function VideoShowcase(props: {
           <div class="absolute inset-0 rounded-full bg-(--landing-accent)/20 blur-xl scale-150 group-hover:scale-[2] transition-transform duration-700" />
           <button
             onClick={togglePlay}
-            class="relative flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-(--landing-accent) to-(--landing-accent-end) transition-all duration-300 group-hover:scale-110"
+            class="relative flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-(--landing-accent) to-(--landing-accent-end) transition-transform duration-300 group-hover:scale-110"
             style={{
               "box-shadow":
                 "0 10px 15px -3px color-mix(in srgb, var(--landing-accent) 25%, transparent), 0 4px 6px -4px color-mix(in srgb, var(--landing-accent) 25%, transparent)",

@@ -80,8 +80,8 @@ function Homepage() {
             </Link>
           </div>
           <Link
-            to="/get-started"
-            class="landing-accent-gradient rounded-full px-5 py-2 text-sm font-medium text-white transition-all hover:scale-105"
+            to="/dashboard"
+            class="landing-accent-gradient rounded-full px-5 py-2 text-sm font-medium text-white transition-transform hover:scale-105"
             style={{
               "box-shadow":
                 "0 10px 15px -3px color-mix(in srgb, var(--landing-accent) 20%, transparent), 0 4px 6px -4px color-mix(in srgb, var(--landing-accent) 20%, transparent)",
@@ -93,14 +93,14 @@ function Homepage() {
       </nav>
 
       {/* Page Sections */}
-      <HeroSection explorePath="/get-started" />
+      <HeroSection explorePath="/dashboard" />
       <QuickFeatures />
       <PersonalQuote />
       <MainFeatures />
       <StatsSection />
       <WhatMakesUsDifferent />
       <VideoShowcaseSection />
-      <CTASection explorePath="/get-started" />
+      <CTASection explorePath="/dashboard" />
       <Footer />
     </div>
   )
