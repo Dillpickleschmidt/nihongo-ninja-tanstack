@@ -9,8 +9,10 @@ import {
 } from "solid-js"
 import { Rating, type Grade } from "ts-fsrs"
 import { Button } from "@/components/ui/button"
+import { Button3D } from "@/components/Button3D"
 import { cn } from "@/utils"
 import type { PracticeCard } from "../types"
+import { playClickSound } from "../utils/select-sound"
 import {
   TYPE_BADGE_CLASSES,
   TYPE_TEXT_COLORS,
@@ -233,52 +235,36 @@ export function FlashcardCard(props: Props) {
             </Button>
           }
         >
-          {/* Single-row FSRS buttons (match screenshot layout) */}
+          {/* Single-row FSRS buttons */}
           <div class="grid grid-cols-4 gap-2">
-            <Button
-              class="h-12 min-w-20 rounded-xl bg-rose-500 text-white hover:bg-rose-600 shadow-lg transition-all hover:shadow-xl"
-              onClick={() => props.onAnswer(Rating.Again)}
+            <Button3D
+              color="rgb(244,63,94)"
+              class="text-sm"
+              onClick={() => { playClickSound(); props.onAnswer(Rating.Again) }}
             >
-              <span class="flex items-center justify-center gap-2">
-                <span class="text-sm font-semibold">Again</span>
-                <span class="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-[11px] font-bold">
-                  1
-                </span>
-              </span>
-            </Button>
-            <Button
-              class="h-12 min-w-20 rounded-xl bg-amber-500 text-white hover:bg-amber-600 shadow-lg transition-all hover:shadow-xl"
-              onClick={() => props.onAnswer(Rating.Hard)}
+              Again
+            </Button3D>
+            <Button3D
+              color="rgb(245,158,11)"
+              class="text-sm"
+              onClick={() => { playClickSound(); props.onAnswer(Rating.Hard) }}
             >
-              <span class="flex items-center justify-center gap-2">
-                <span class="text-sm font-semibold">Hard</span>
-                <span class="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-[11px] font-bold">
-                  2
-                </span>
-              </span>
-            </Button>
-            <Button
-              class="h-12 min-w-20 rounded-xl bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg transition-all hover:shadow-xl"
-              onClick={() => props.onAnswer(Rating.Good)}
+              Hard
+            </Button3D>
+            <Button3D
+              color="rgb(16,185,129)"
+              class="text-sm"
+              onClick={() => { playClickSound(); props.onAnswer(Rating.Good) }}
             >
-              <span class="flex items-center justify-center gap-2">
-                <span class="text-sm font-semibold">Good</span>
-                <span class="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-[11px] font-bold">
-                  3
-                </span>
-              </span>
-            </Button>
-            <Button
-              class="h-12 min-w-20 rounded-xl bg-cyan-500 text-white hover:bg-cyan-600 shadow-lg transition-all hover:shadow-xl"
-              onClick={() => props.onAnswer(Rating.Easy)}
+              Good
+            </Button3D>
+            <Button3D
+              color="rgb(6,182,212)"
+              class="text-sm"
+              onClick={() => { playClickSound(); props.onAnswer(Rating.Easy) }}
             >
-              <span class="flex items-center justify-center gap-2">
-                <span class="text-sm font-semibold">Easy</span>
-                <span class="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-[11px] font-bold">
-                  4
-                </span>
-              </span>
-            </Button>
+              Easy
+            </Button3D>
           </div>
         </Show>
       </div>

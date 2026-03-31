@@ -1,7 +1,8 @@
 import { For, Show } from "solid-js"
-import { Button } from "@/components/ui/button"
+import { Button3D } from "@/components/Button3D"
 import { cn } from "@/utils"
 import type { PracticeCard } from "../types"
+import { playClickSound } from "../utils/select-sound"
 import { TYPE_TEXT_COLORS, getPromptDisplay } from "../utils/card-display"
 
 type ReviewResult = {
@@ -111,15 +112,13 @@ export function ReviewScreen(props: Props) {
         </div>
 
         {/* Fixed bottom continue button */}
-        <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
-          <Button
-            ref={(el: HTMLButtonElement) => { requestAnimationFrame(() => el.focus()) }}
-            size="lg"
-            class="h-14 rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 px-12 text-lg font-semibold text-white shadow-lg transition-all hover:from-violet-600 hover:to-purple-600 hover:shadow-xl"
-            onClick={props.onContinue}
+        <div class="fixed bottom-20 left-1/2 -translate-x-1/2 w-48">
+          <Button3D
+            color="rgb(139,92,246)"
+            onClick={() => { playClickSound(); props.onContinue() }}
           >
             Continue →
-          </Button>
+          </Button3D>
         </div>
       </div>
     </div>

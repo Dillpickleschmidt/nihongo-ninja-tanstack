@@ -1,6 +1,6 @@
 import { createSignal, Show, For, createMemo, onMount, onCleanup } from "solid-js"
 import { Rating, type Grade } from "ts-fsrs"
-import { Button } from "@/components/ui/button"
+import { Button3D } from "@/components/Button3D"
 import { cn } from "@/utils"
 import type { PracticeCard } from "../types"
 import {
@@ -14,6 +14,7 @@ import {
   shuffleArray,
   type ChoiceOption,
 } from "../utils/distractor-generation"
+import { playClickSound, playCorrectSound, playErrorSound } from "../utils/select-sound"
 
 type Props = {
   card: PracticeCard
@@ -43,6 +44,10 @@ export function MultipleChoiceCard(props: Props) {
     if (isAnswered()) return
     setSelectedAnswer(answer)
     setAnsweredCardId(props.card.key)
+    const correct = props.card.validAnswers.some(
+      (ans) => ans.toLowerCase() === answer.toLowerCase(),
+    )
+    correct ? playCorrectSound() : playErrorSound()
   }
 
   const isCorrect = () =>
@@ -64,12 +69,11 @@ export function MultipleChoiceCard(props: Props) {
     return "faded"
   }
 
-  const stateClasses = {
-    default:
-      "bg-card/70 border-card-foreground/30 hover:bg-card/90 hover:border-card-foreground/50 cursor-pointer",
-    correct: "bg-emerald-500/20 border-emerald-500 text-emerald-600",
-    incorrect: "bg-rose-500/20 border-rose-500 text-rose-600",
-    faded: "bg-card/30 border-card-foreground/10 opacity-50",
+  const stateColors: Record<string, string> = {
+    default: "rgb(130,130,130)",
+    correct: "rgb(16,185,129)",
+    incorrect: "rgb(244,63,94)",
+    faded: "rgb(60,60,60)",
   }
 
   const promptDisplay = () => getPromptDisplay(props.card)
@@ -163,54 +167,46 @@ export function MultipleChoiceCard(props: Props) {
                   )
 
                 return (
-                  <button
-                    type="button"
-                    onClick={() => handleSelect(option.answer)}
-                    disabled={isAnswered()}
+                  <Button3D
+                    color={stateColors[state()]}
+                    disabled={isAnswered() && state() === "faded"}
                     class={cn(
-                      "group relative rounded-xl border-2 p-4 transition-all duration-200",
                       option.particles?.length ? "text-left" : "text-center",
-                      "font-medium",
-                      stateClasses[state()],
-                      isAnswered() && "cursor-default",
+                      isAnswered() && "pointer-events-none",
                     )}
+                    onClick={() => handleSelect(option.answer)}
                   >
-                    <span
-                      title={`Press ${i() + 1} to select`}
-                      class={cn(
-                        "absolute left-0 top-0 px-2.5 py-2 text-xs text-muted-foreground/0 transition-colors",
-                        !isAnswered() && "group-hover:text-muted-foreground/50",
-                      )}
-                    >
-                      {i() + 1}
-                    </span>
-                    <span class="text-base md:text-lg">{option.answer}</span>
-                    <Show when={option.particles?.length}>
-                      <div class="mt-1 space-y-0.5 text-sm font-light text-muted-foreground">
-                        <For each={option.particles}>
-                          {(p) => (
-                            <div class="font-japanese">
-                              {p.label
-                                ? `${p.label} - ${p.particle}`
-                                : `particle: ${p.particle}`}
-                            </div>
-                          )}
-                        </For>
+                    <div class="flex flex-col items-start w-full">
+                      <div class="flex items-center w-full">
+                        <span class="text-base md:text-lg">{option.answer}</span>
+                        <Show when={isAnswered() && isCorrectOption()}>
+                          <span class="ml-2 text-emerald-600">✓</span>
+                        </Show>
+                        <Show
+                          when={
+                            isAnswered() &&
+                            option.answer === selectedAnswer() &&
+                            !isCorrectOption()
+                          }
+                        >
+                          <span class="ml-2 text-rose-600">✗</span>
+                        </Show>
                       </div>
-                    </Show>
-                    <Show when={isAnswered() && isCorrectOption()}>
-                      <span class="ml-2 text-emerald-500">✓</span>
-                    </Show>
-                    <Show
-                      when={
-                        isAnswered() &&
-                        option.answer === selectedAnswer() &&
-                        !isCorrectOption()
-                      }
-                    >
-                      <span class="ml-2 text-rose-500">✗</span>
-                    </Show>
-                  </button>
+                      <Show when={option.particles?.length}>
+                        <div class="mt-1 space-y-0.5 text-sm font-light opacity-60">
+                          <For each={option.particles}>
+                            {(p) => (
+                              <div class="font-japanese">
+                                {p.label
+                                  ? `${p.label} - ${p.particle}`
+                                  : `particle: ${p.particle}`}
+                              </div>
+                            )}
+                          </For>
+                        </div>
+                      </Show>
+                    </div>
+                  </Button3D>
                 )
               }}
             </For>
@@ -233,20 +229,13 @@ export function MultipleChoiceCard(props: Props) {
 
       {/* Next button */}
       <Show when={isAnswered()}>
-        <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
-          <Button
-            ref={(el: HTMLButtonElement) => { requestAnimationFrame(() => el.focus()) }}
-            size="lg"
-            class={cn(
-              "h-14 rounded-xl px-12 text-lg font-semibold text-white shadow-lg transition-all hover:shadow-xl",
-              isCorrect()
-                ? "bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
-                : "bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600",
-            )}
-            onClick={handleNext}
+        <div class="fixed bottom-20 left-1/2 -translate-x-1/2 w-48">
+          <Button3D
+            color={isCorrect() ? "rgb(16,185,129)" : "rgb(244,63,94)"}
+            onClick={() => { playClickSound(); handleNext() }}
           >
-            Next Question →
-          </Button>
+            Next →
+          </Button3D>
         </div>
       </Show>
     </div>

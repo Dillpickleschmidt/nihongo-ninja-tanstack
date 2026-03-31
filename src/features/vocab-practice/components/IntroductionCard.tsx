@@ -1,7 +1,8 @@
 import { Show, For, Suspense } from "solid-js"
-import { Button } from "@/components/ui/button"
+import { Button3D } from "@/components/Button3D"
 import { cn } from "@/utils"
 import type { PracticeCard } from "../types"
+import { playClickSound } from "../utils/select-sound"
 import {
   TYPE_BADGE_CLASSES,
   TYPE_TEXT_COLORS,
@@ -156,15 +157,13 @@ export function IntroductionCard(props: Props) {
       </div>
 
       {/* Fixed bottom action button */}
-      <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
-        <Button
-          ref={(el: HTMLButtonElement) => { requestAnimationFrame(() => el.focus()) }}
-          size="lg"
-          class="h-14 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-12 text-lg font-semibold text-white shadow-lg transition-all hover:from-amber-600 hover:to-orange-600 hover:shadow-xl"
-          onClick={props.onContinue}
+      <div class="fixed bottom-20 left-1/2 -translate-x-1/2 w-48">
+        <Button3D
+          color="rgb(245,158,11)"
+          onClick={() => { playClickSound(); props.onContinue() }}
         >
           Got It! →
-        </Button>
+        </Button3D>
       </div>
     </div>
   )

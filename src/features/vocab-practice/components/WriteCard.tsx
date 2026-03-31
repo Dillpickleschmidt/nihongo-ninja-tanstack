@@ -1,8 +1,9 @@
 import { createSignal, createEffect, on, Show, For } from "solid-js"
 import { Rating, type Grade } from "ts-fsrs"
-import { Button } from "@/components/ui/button"
+import { Button3D } from "@/components/Button3D"
 import { cn } from "@/utils"
 import type { PracticeCard } from "../types"
+import { playClickSound, playCorrectSound, playErrorSound } from "../utils/select-sound"
 import {
   TYPE_BADGE_CLASSES,
   getPromptDisplay,
@@ -90,6 +91,7 @@ export function WriteCard(props: Props) {
       setParticleCorrectness(checkParticleAnswers())
     }
     setAnsweredCardId(props.card.key)
+    isMainCorrect() ? playCorrectSound() : playErrorSound()
   }
 
   const handleOverrideCorrect = () => {
@@ -267,20 +269,13 @@ export function WriteCard(props: Props) {
 
             {/* Submit button (only show before answering) */}
             <Show when={!isAnswered()}>
-              <Button
-                type="button"
-                size="lg"
-                onClick={handleSubmit}
+              <Button3D
+                color="rgb(6,182,212)"
                 disabled={!userAnswer().trim()}
-                class={cn(
-                  "w-full h-14 rounded-xl text-lg font-semibold",
-                  userAnswer().trim()
-                    ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg hover:from-cyan-600 hover:to-blue-600"
-                    : "bg-muted text-muted-foreground cursor-not-allowed hover:bg-muted",
-                )}
+                onClick={handleSubmit}
               >
                 Check Answer
-              </Button>
+              </Button3D>
             </Show>
 
             {/* Result feedback */}
@@ -354,20 +349,13 @@ export function WriteCard(props: Props) {
 
       {/* Next button */}
       <Show when={isAnswered()}>
-        <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
-          <Button
-            ref={(el: HTMLButtonElement) => { requestAnimationFrame(() => el.focus()) }}
-            size="lg"
-            class={cn(
-              "h-14 rounded-xl px-12 text-lg font-semibold text-white shadow-lg transition-all hover:shadow-xl",
-              isCorrect()
-                ? "bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
-                : "bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600",
-            )}
-            onClick={handleNext}
+        <div class="fixed bottom-20 left-1/2 -translate-x-1/2 w-48">
+          <Button3D
+            color={isCorrect() ? "rgb(16,185,129)" : "rgb(244,63,94)"}
+            onClick={() => { playClickSound(); handleNext() }}
           >
-            Next Question →
-          </Button>
+            Next →
+          </Button3D>
         </div>
       </Show>
     </div>

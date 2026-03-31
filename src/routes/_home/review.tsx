@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/solid-router"
+import { createFileRoute, Link } from "@tanstack/solid-router"
 import { For, Index, Show, createMemo, untrack } from "solid-js"
 import { Skeleton } from "@/components/ui/custom/skeleton"
 import { convexQuery, useConvexQuery } from "@/lib/convex-query"
@@ -8,6 +8,7 @@ import {
   DAILY_PROGRESS_TARGET_UNITS,
   getLocalDateKey,
 } from "@/lib/progress/weights"
+import { useSrs } from "@/features/srs/use-srs"
 import { ProgressRing, getProgressColor } from "@/features/stats/ProgressRing"
 import { ModuleCard } from "@/features/stats/ModuleCard"
 import { DistributionBar } from "@/features/stats/DistributionBar"
@@ -47,6 +48,7 @@ export const Route = createFileRoute("/_home/review")({
 function RouteComponent() {
   const todayKey = () => getLocalDateKey()
   const range = createMemo(() => getLastNDaysRange(7))
+  const { dueCounts } = useSrs()
 
   const dailyStatsQuery = useConvexQuery(
     api.api.progress.getDailyModuleStatsForDate,
@@ -116,48 +118,103 @@ function RouteComponent() {
         .animate-fade-up { animation: fade-up 0.3s ease-out forwards; }
       `}</style>
 
-      {/* Hero */}
-      <div class="animate-fade-up opacity-0">
-        <h1 class="text-3xl font-bold text-white/90">Today</h1>
-        <p class="text-sm text-white/25 mt-1">{todayLabel}</p>
-      </div>
+      {/* Hero - 2 column: stats left, due counts + action right */}
+      <div class="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-center">
+        {/* Left: title + progress stats */}
+        <div>
+          <div class="animate-fade-up opacity-0">
+            <h1 class="text-3xl font-bold text-white/90">Today</h1>
+            <p class="text-sm text-white/25 mt-1">{todayLabel}</p>
+          </div>
 
-      {/* Top metrics row */}
-      <div
-        class="mt-10 flex items-center gap-10 lg:gap-14 animate-fade-up opacity-0"
-        style={{ "animation-delay": "75ms" }}
-      >
-        <ProgressRing progress={derived().progressPercent} />
+          <div
+            class="mt-10 flex items-center gap-10 lg:gap-14 animate-fade-up opacity-0"
+            style={{ "animation-delay": "75ms" }}
+          >
+            <ProgressRing progress={derived().progressPercent} />
 
-        <div class="flex gap-10 lg:gap-14">
-          <div>
-            <div
-              class="text-4xl font-bold tabular-nums"
-              style={{ color: getProgressColor(derived().progressPercent) }}
-            >
-              {derived().progressUnits.toLocaleString()}
+            <div class="flex gap-10 lg:gap-14">
+              <div>
+                <div
+                  class="text-4xl font-bold tabular-nums"
+                  style={{ color: getProgressColor(derived().progressPercent) }}
+                >
+                  {derived().progressUnits.toLocaleString()}
+                </div>
+                <div class="text-sm text-white/30 mt-1">
+                  of {DAILY_PROGRESS_TARGET_UNITS.toLocaleString()} XP
+                </div>
+                <div class="text-xs text-white/20 mt-1">
+                  60 XP ≈ 1 minute of practice
+                </div>
+              </div>
+
+              <div>
+                <div class="text-4xl font-bold tabular-nums text-white/85">
+                  {derived().questionsAnswered}
+                </div>
+                <div class="text-sm text-white/30 mt-1">questions</div>
+              </div>
+
+              <div>
+                <div class="text-4xl font-bold tabular-nums text-white/85">
+                  {dailyStatsQuery.data()?.length ?? 0}
+                </div>
+                <div class="text-sm text-white/30 mt-1">modules</div>
+              </div>
             </div>
-            <div class="text-sm text-white/30 mt-1">
-              of {DAILY_PROGRESS_TARGET_UNITS.toLocaleString()} XP
+          </div>
+        </div>
+
+        {/* Right: due counts + continue button */}
+        <div
+          class="rounded-2xl border border-white/5 bg-white/[0.02] p-6 animate-fade-up opacity-0"
+          style={{ "animation-delay": "100ms" }}
+        >
+          <h2 class="text-sm font-medium text-white/40 mb-4">Due for Review</h2>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between gap-8">
+              <span class="text-sm text-white/60">Sentences</span>
+              <span class="text-lg font-bold tabular-nums text-white/30">–</span>
             </div>
-            <div class="text-xs text-white/20 mt-1">
-              60 XP ≈ 1 minute of practice
+            <div class="flex items-center justify-between gap-8">
+              <span class="text-sm text-white/60">Vocab (meanings)</span>
+              <span class="text-lg font-bold tabular-nums text-white/85">
+                <Show when={dueCounts().vocabMeanings !== undefined} fallback="–">
+                  {dueCounts().vocabMeanings}
+                </Show>
+              </span>
+            </div>
+            <div class="flex items-center justify-between gap-8">
+              <span class="text-sm text-white/60">Vocab (spellings)</span>
+              <span class="text-lg font-bold tabular-nums text-white/85">
+                <Show when={dueCounts().vocabSpellings !== undefined} fallback="–">
+                  {dueCounts().vocabSpellings}
+                </Show>
+              </span>
             </div>
           </div>
 
-          <div>
-            <div class="text-4xl font-bold tabular-nums text-white/85">
-              {derived().questionsAnswered}
-            </div>
-            <div class="text-sm text-white/30 mt-1">questions</div>
+          <div class="mt-2 pt-3 border-t border-white/5 flex items-center justify-between">
+            <span class="text-sm text-white/40">Total</span>
+            <span class="text-lg font-bold tabular-nums text-dynamic-accent">
+              <Show when={dueCounts().vocabTotal !== undefined} fallback="–">
+                {dueCounts().vocabTotal}
+              </Show>
+            </span>
           </div>
 
-          <div>
-            <div class="text-4xl font-bold tabular-nums text-white/85">
-              {dailyStatsQuery.data()?.length ?? 0}
-            </div>
-            <div class="text-sm text-white/30 mt-1">modules</div>
-          </div>
+          <Link
+            to="/vocab"
+            class="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-dynamic-accent/80 px-4 py-2.5 text-sm font-medium text-white transition-[background-color,transform] hover:bg-dynamic-accent hover:scale-[1.02]"
+            style={{
+              "box-shadow":
+                "0 8px 16px -4px color-mix(in srgb, var(--dynamic-accent) 30%, transparent)",
+            }}
+          >
+            Continue Reviews
+          </Link>
         </div>
       </div>
 
