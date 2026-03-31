@@ -23,7 +23,7 @@ export function PracticeHeader(props: PracticeHeaderProps) {
           onClick={props.onQuit}
           class="text-white/30 transition-transform duration-200 hover:scale-125 hover:text-white/60"
         >
-          <X size={28} />
+          <X size={24} />
         </button>
         <div class="relative h-3.5 w-full overflow-hidden rounded-full bg-white/10">
           <div

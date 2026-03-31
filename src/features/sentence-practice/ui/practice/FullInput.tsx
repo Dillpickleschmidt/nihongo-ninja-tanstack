@@ -1,7 +1,6 @@
-// ui/FullInput.tsx
 import { Show } from "solid-js"
 import { CircleQuestionMark } from "lucide-solid"
-import { Button } from "@/components/ui/button"
+import { Button3D } from "@/components/Button3D"
 import { usePractice } from "../../store/PracticeContext"
 import { useTokenization } from "../../hooks/useTokenization"
 import PracticeInput from "./PracticeInput"
@@ -11,7 +10,6 @@ import UserInputPosDisplay from "./UserInputPosDisplay"
 export default function FullInput() {
   const { store, actions, computed } = usePractice()
 
-  // Initialize tokenization effects
   useTokenization()
 
   const isAnswerCorrect = () => store.showResult && store.checkResult?.isCorrect
@@ -49,9 +47,9 @@ export default function FullInput() {
           class="w-full py-6 text-2xl"
           placeholder="Type your answer in Japanese..."
         />
-        <p class="text-muted-foreground pt-1 text-sm">*use caps for katakana</p>
+        <p class="pt-1 text-sm text-white/30">*use caps for katakana</p>
         <Show when={store.checkResult?.strippedParticle}>
-          <div class="text-muted-foreground inline-flex items-center gap-1 pt-0.5 text-sm">
+          <div class="inline-flex items-center gap-1 pt-0.5 text-sm text-white/30">
             <span>
               {store.checkResult?.strippedParticle} may or may not be correct
             </span>
@@ -61,16 +59,16 @@ export default function FullInput() {
           </div>
         </Show>
       </div>
-      <Button
+      <Button3D
+        color={isAnswerCorrect() ? "rgb(34,197,94)" : "rgb(245,158,11)"}
         onClick={handleMainButton}
-        class={`${isAnswerCorrect() ? "bg-green-400 hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600" : "bg-amber-400 dark:bg-amber-500 dark:saturate-85"} w-full py-3 text-sm text-black lg:text-base`}
       >
         {isAnswerCorrect()
           ? computed.hasMoreQuestions()
             ? "Next Question"
             : "Finish"
           : "Check Answer"}
-      </Button>
+      </Button3D>
     </div>
   )
 }

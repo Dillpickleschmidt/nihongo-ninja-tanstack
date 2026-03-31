@@ -1,4 +1,3 @@
-// ui/PracticeContainer.tsx
 import { Show, createEffect, createSignal } from "solid-js"
 import type { Doc } from "../../../../../convex/_generated/dataModel"
 import { usePractice } from "../../store/PracticeContext"
@@ -23,17 +22,14 @@ interface PracticeContainerProps {
 export default function PracticeContainer(props: PracticeContainerProps) {
   const { store, actions, computed } = usePractice()
 
-  // Collapsible state for debug panel
   const [isCollapsibleOpen, setIsCollapsibleOpen] = createSignal(false)
 
-  // Initialize questions when component mounts or questions change
   createEffect(() => {
     if (props.questions.length > 0) {
       actions.setQuestions(props.questions)
     }
   })
 
-  // Auto-expand debug panel when answer is correct in easy mode
   createEffect(() => {
     if (store.effectiveDifficulty === "easy" && store.checkResult?.isCorrect) {
       setIsCollapsibleOpen(true)
@@ -43,16 +39,16 @@ export default function PracticeContainer(props: PracticeContainerProps) {
   const currentQuestion = () => computed.getCurrentQuestion()
 
   return (
-    <div class="mx-auto max-w-2xl space-y-6 p-4">
+    <div class="mx-auto max-w-2xl space-y-6 px-2 pt-4">
       {/* Header with progress and difficulty */}
-      <div class="flex items-center justify-between">
+      <div class="flex items-center">
         <ProgressDisplay />
         <DifficultySelector />
       </div>
 
       {/* Loading state */}
       <Show when={store.isLoading}>
-        <div class="text-muted-foreground py-8 text-center">
+        <div class="py-8 text-center text-white/40">
           Loading questions...
         </div>
       </Show>
@@ -61,10 +57,8 @@ export default function PracticeContainer(props: PracticeContainerProps) {
       <Show when={!store.isLoading && currentQuestion()}>
         {(question) => (
           <div class="space-y-6">
-            {/* Prompt */}
             <PromptDisplay question={question()} />
 
-            {/* Input area - easy or hard mode */}
             <Show
               when={store.effectiveDifficulty === "easy"}
               fallback={<FullInput />}
@@ -72,17 +66,15 @@ export default function PracticeContainer(props: PracticeContainerProps) {
               <FillInBlankInput />
             </Show>
 
-            {/* Results */}
             <ResultDisplay />
 
-            {/* Debug Panels - collapsible, shown after answering */}
             <Show when={store.showResult}>
               <Collapsible
                 class="mt-8 flex flex-col items-center"
                 open={isCollapsibleOpen()}
                 onOpenChange={setIsCollapsibleOpen}
               >
-                <CollapsibleTrigger class="w-fit rounded-full px-4 py-1.5 text-xs">
+                <CollapsibleTrigger class="w-fit rounded-full px-4 py-1.5 text-xs text-white/40">
                   Show all possible
                 </CollapsibleTrigger>
                 <CollapsibleContent class="w-full">
@@ -103,7 +95,7 @@ export default function PracticeContainer(props: PracticeContainerProps) {
 
       {/* No questions state */}
       <Show when={!store.isLoading && store.questions.length === 0}>
-        <div class="text-muted-foreground py-8 text-center">
+        <div class="py-8 text-center text-white/40">
           No questions available for this set.
         </div>
       </Show>

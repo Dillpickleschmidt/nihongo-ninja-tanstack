@@ -1,5 +1,3 @@
-// ui/DifficultySelector.tsx
-import { Button } from "@/components/ui/button"
 import { usePractice } from "../../store/PracticeContext"
 import type { Difficulty } from "../../store/practiceStore"
 
@@ -12,20 +10,19 @@ export default function DifficultySelector() {
   ]
 
   return (
-    <div class="flex gap-2">
+    <div class="flex gap-1.5">
       {difficulties.map((d) => (
-        <Button
-          variant={store.difficulty === d.value ? "default" : "outline"}
-          size="sm"
+        <button
+          type="button"
           onClick={() => actions.setDifficulty(d.value)}
-          class={
+          class={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
             store.difficulty === d.value
-              ? "bg-amber-400 text-black hover:bg-amber-500 dark:bg-amber-500 dark:hover:bg-amber-600"
-              : ""
-          }
+              ? "bg-dynamic-accent/80 text-white"
+              : "bg-white/5 text-white/40 hover:bg-white/10"
+          }`}
         >
           {d.label}
-        </Button>
+        </button>
       ))}
     </div>
   )

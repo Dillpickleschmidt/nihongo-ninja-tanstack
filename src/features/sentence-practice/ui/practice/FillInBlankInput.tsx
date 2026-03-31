@@ -1,6 +1,6 @@
 import { For, Show } from "solid-js"
 import { CircleQuestionMark } from "lucide-solid"
-import { Button } from "@/components/ui/button"
+import { Button3D } from "@/components/Button3D"
 import { usePractice } from "../../store/PracticeContext"
 import PracticeInput from "./PracticeInput"
 
@@ -28,7 +28,7 @@ export default function FillInBlankInput() {
             <>
               {segment.isBlank ? (
                 isAnswerCorrect() ? (
-                  <span class="mx-1 text-green-600 dark:text-green-400">
+                  <span class="mx-1 text-emerald-400">
                     {segment.plain}
                   </span>
                 ) : (
@@ -41,7 +41,7 @@ export default function FillInBlankInput() {
                           handleMainButton()
                         }
                       }}
-                      class="placeholder:text-muted-foreground/35 mx-1 w-32 text-center text-2xl"
+                      class="placeholder:text-white/20 mx-1 w-32 text-center text-2xl"
                       autofocus={index() === 0}
                       placeholder="..."
                     />
@@ -54,13 +54,13 @@ export default function FillInBlankInput() {
           )}
         </For>
         <Show when={isAnswerCorrect()}>
-          <span class="ml-3 inline-block text-3xl font-bold text-green-500">
+          <span class="ml-3 inline-block text-3xl font-bold text-emerald-400">
             ✓
           </span>
         </Show>
-        <p class="text-muted-foreground pt-1 text-sm">*use caps for katakana</p>
+        <p class="pt-1 text-sm text-white/30">*use caps for katakana</p>
         <Show when={store.checkResult?.strippedParticle}>
-          <div class="text-muted-foreground inline-flex items-center gap-1 pt-0.5 text-sm">
+          <div class="inline-flex items-center gap-1 pt-0.5 text-sm text-white/30">
             <span>
               {store.checkResult?.strippedParticle} may or may not be correct
             </span>
@@ -70,16 +70,16 @@ export default function FillInBlankInput() {
           </div>
         </Show>
       </div>
-      <Button
+      <Button3D
+        color={isAnswerCorrect() ? "rgb(34,197,94)" : "rgb(245,158,11)"}
         onClick={handleMainButton}
-        class={`${isAnswerCorrect() ? "bg-green-400 hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600" : "bg-amber-400 dark:bg-amber-500 dark:saturate-85"} w-full py-3 text-sm text-black lg:text-base`}
       >
         {isAnswerCorrect()
           ? computed.hasMoreQuestions()
             ? "Next Question"
             : "Finish"
           : "Check Answer"}
-      </Button>
+      </Button3D>
     </div>
   )
 }

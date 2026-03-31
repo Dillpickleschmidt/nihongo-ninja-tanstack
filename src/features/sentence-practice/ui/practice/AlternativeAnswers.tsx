@@ -1,4 +1,3 @@
-// ui/practice/AlternativeAnswers.tsx
 import { For, Show, createMemo } from "solid-js"
 import FuriganaText from "../common/FuriganaText"
 import type { AnswerMatch } from "../../core/types"
@@ -10,25 +9,16 @@ interface AlternativeAnswersProps {
 }
 
 export default function AlternativeAnswers(props: AlternativeAnswersProps) {
-  // Derive bestMatchPoliteForm from the best match
   const bestMatchPoliteForm = createMemo(
     () =>
       props.allMatches[props.bestMatchIndex]?.answer.originalPoliteForm ?? true,
   )
 
-  // Filter logic (same as original):
   const filteredMatches = createMemo(() =>
     props.allMatches.filter((match, index) => {
-      // Skip the current best match
       if (index === props.bestMatchIndex) return false
-
-      // Skip variations (e.g., alternative kanji)
       if (match.answer.isVariation) return false
-
-      // Skip kana-only variations
       if (match.answer.isKanaVariation) return false
-
-      // Only show answers matching the same politeness form
       return match.answer.originalPoliteForm === bestMatchPoliteForm()
     }),
   )
@@ -43,15 +33,15 @@ export default function AlternativeAnswers(props: AlternativeAnswersProps) {
           }
         `}
         </style>
-        <h3 class="font-bold text-neutral-500">
+        <h3 class="font-medium text-white/40">
           Alternative Answers ({bestMatchPoliteForm() ? "Polite" : "Casual"}{" "}
           Form):
         </h3>
         <div class="max-h-96 space-y-3 overflow-y-auto">
           <For each={filteredMatches()}>
             {(match) => (
-              <div class="bg-card border-card-foreground/30 rounded-md border p-2">
-                <div class="mb-1 text-sm text-neutral-600">
+              <div class="rounded-xl border border-white/10 bg-white/5 p-2">
+                <div class="mb-1 text-sm text-white/30">
                   Similarity: {(match.similarity * 100).toFixed(1)}%
                 </div>
                 <FuriganaText
@@ -62,10 +52,10 @@ export default function AlternativeAnswers(props: AlternativeAnswersProps) {
                   }
                   showFurigana={props.showFurigana}
                   errors={match.answerErrors}
-                  highlightClass="rounded-md border-2 border-black dark:bg-amber-500 bg-amber-400 text-black font-medium dark:saturate-[85%] highlight"
+                  highlightClass="rounded-md border-2 border-black bg-amber-500 text-black font-medium highlight"
                 />
                 <Show when={match.answer.notes}>
-                  <div class="mt-1 text-sm text-neutral-500">
+                  <div class="mt-1 text-sm text-white/30">
                     Note: {match.answer.notes}
                   </div>
                 </Show>
@@ -73,7 +63,7 @@ export default function AlternativeAnswers(props: AlternativeAnswersProps) {
             )}
           </For>
         </div>
-        <p class="text-muted-foreground/50 text-right text-xs">
+        <p class="text-right text-xs text-white/20">
           Other forms are hidden for brevity.*
         </p>
       </div>
