@@ -28,7 +28,7 @@ function VocabLayoutComponent() {
   return (
     <VocabProvider>
       {/* Center: Nav + Content */}
-      <div class={`px-8 pb-16 ${showPanel() ? "md:mr-80" : ""}`}>
+      <div class={`px-4 pb-16 ${showPanel() ? "md:mr-80" : ""}`}>
         <CenterNavBar />
         <Suspense>
           <Outlet />

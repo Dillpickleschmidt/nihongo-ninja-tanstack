@@ -3,18 +3,24 @@ import { Rating, type Grade } from "ts-fsrs"
 import { Button3D } from "@/components/Button3D"
 import { cn } from "@/utils"
 import type { PracticeCard } from "../types"
-import {
-  TYPE_BADGE_CLASSES,
-  getPromptDisplay,
-  getMnemonic,
-  formatMnemonic,
-} from "../utils/card-display"
+import { playCorrectSound, playErrorSound } from "../utils/select-sound"
+import { getMnemonic } from "../utils/card-display"
 import {
   generateDistractors,
   shuffleArray,
   type ChoiceOption,
 } from "../utils/distractor-generation"
-import { playClickSound, playCorrectSound, playErrorSound } from "../utils/select-sound"
+import { QuestionDisplay } from "./QuestionDisplay"
+import { MnemonicDisplay } from "./MnemonicDisplay"
+import { PracticeActionBar } from "./PracticeActionBar"
+import { PRACTICE_LAYOUT } from "../VocabPractice"
+
+const STATE_COLORS: Record<string, string> = {
+  default: "var(--dynamic-accent)",
+  correct: "rgb(16,185,129)",
+  incorrect: "rgb(244,63,94)",
+  faded: "rgb(60,60,60)",
+}
 
 type Props = {
   card: PracticeCard
@@ -30,7 +36,6 @@ export function MultipleChoiceCard(props: Props) {
 
   const isAnswered = () => answeredCardId() === props.card.key
 
-  // Generate options with distractors
   const options = createMemo(() => {
     const correctOption: ChoiceOption = {
       answer: props.card.validAnswers[0],
@@ -69,16 +74,7 @@ export function MultipleChoiceCard(props: Props) {
     return "faded"
   }
 
-  const stateColors: Record<string, string> = {
-    default: "rgb(130,130,130)",
-    correct: "rgb(16,185,129)",
-    incorrect: "rgb(244,63,94)",
-    faded: "rgb(60,60,60)",
-  }
-
-  const promptDisplay = () => getPromptDisplay(props.card)
   const mnemonic = () => getMnemonic(props.card)
-  const progress = () => ((props.currentIndex + 1) / props.totalItems) * 100
 
   // Keyboard shortcuts: 1-4 to select options
   onMount(() => {
@@ -94,149 +90,77 @@ export function MultipleChoiceCard(props: Props) {
   })
 
   return (
-    <div class="flex flex-col items-center p-4">
-      {/* Progress indicator */}
-      <div class="mb-8 text-center">
-        <span class="text-sm font-medium text-muted-foreground">
-          Practice {props.currentIndex + 1} of {props.totalItems}
-        </span>
-        <div class="mx-auto mt-2 h-1 w-48 overflow-hidden rounded-full bg-muted">
-          <div
-            class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all duration-300"
-            style={{ width: `${progress()}%` }}
-          />
-        </div>
-      </div>
+    <div class={PRACTICE_LAYOUT}>
+      <QuestionDisplay card={props.card} />
 
-      {/* Main practice card */}
-      <div class="w-full max-w-lg">
-        <div class="rounded-2xl border border-card-foreground/20 bg-card/60 p-8 shadow-xl backdrop-blur-md">
-          {/* Prompt section */}
-          <div class="text-center">
-            {/* Type badge */}
-            <div class="mb-2 flex justify-center">
-              <span
+      {/* Multiple choice options (2x2 grid) */}
+      <div class="w-full max-w-lg grid grid-cols-2 gap-3">
+        <For each={options()}>
+          {(option, i) => {
+            const state = () => getButtonState(option.answer)
+            const isCorrectOption = () =>
+              props.card.validAnswers.some(
+                (ans) =>
+                  ans.toLowerCase() === option.answer.toLowerCase(),
+              )
+
+            return (
+              <Button3D
+                color={STATE_COLORS[state()]}
+                disabled={isAnswered() && state() === "faded"}
                 class={cn(
-                  "rounded-full px-3 py-1 text-xs font-medium",
-                  TYPE_BADGE_CLASSES[props.card.practiceItemType],
+                  option.particles?.length ? "text-left" : "text-center",
+                  isAnswered() && "pointer-events-none",
                 )}
+                onClick={() => handleSelect(option.answer)}
               >
-                {props.card.practiceItemType}
-              </span>
-            </div>
-
-            {/* Question text */}
-            <div class="mb-2 text-lg text-muted-foreground">
-              {props.card.practiceItemType === "radical"
-                ? "What is this radical called?"
-                : "What does this mean?"}
-            </div>
-
-            {/* Japanese prompt */}
-            <Show
-              when={promptDisplay().isHtml}
-              fallback={
-                <div
-                  class={cn(
-                    "font-japanese font-bold",
-                    props.card.practiceItemType === "vocabulary"
-                      ? "text-4xl"
-                      : "text-6xl",
-                  )}
-                >
-                  {promptDisplay().text}
-                </div>
-              }
-            >
-              <div
-                class="font-japanese text-4xl font-bold"
-                innerHTML={promptDisplay().html}
-              />
-            </Show>
-          </div>
-
-          {/* Multiple choice options (2x2 grid) */}
-          <div class="mt-8 grid grid-cols-2 gap-3">
-            <For each={options()}>
-              {(option, i) => {
-                const state = () => getButtonState(option.answer)
-                const isCorrectOption = () =>
-                  props.card.validAnswers.some(
-                    (ans) =>
-                      ans.toLowerCase() === option.answer.toLowerCase(),
-                  )
-
-                return (
-                  <Button3D
-                    color={stateColors[state()]}
-                    disabled={isAnswered() && state() === "faded"}
-                    class={cn(
-                      option.particles?.length ? "text-left" : "text-center",
-                      isAnswered() && "pointer-events-none",
-                    )}
-                    onClick={() => handleSelect(option.answer)}
-                  >
-                    <div class="flex flex-col items-start w-full">
-                      <div class="flex items-center w-full">
-                        <span class="text-base md:text-lg">{option.answer}</span>
-                        <Show when={isAnswered() && isCorrectOption()}>
-                          <span class="ml-2 text-emerald-600">✓</span>
-                        </Show>
-                        <Show
-                          when={
-                            isAnswered() &&
-                            option.answer === selectedAnswer() &&
-                            !isCorrectOption()
-                          }
-                        >
-                          <span class="ml-2 text-rose-600">✗</span>
-                        </Show>
-                      </div>
-                      <Show when={option.particles?.length}>
-                        <div class="mt-1 space-y-0.5 text-sm font-light opacity-60">
-                          <For each={option.particles}>
-                            {(p) => (
-                              <div class="font-japanese">
-                                {p.label
-                                  ? `${p.label} - ${p.particle}`
-                                  : `particle: ${p.particle}`}
-                              </div>
-                            )}
-                          </For>
-                        </div>
-                      </Show>
+                <div class={cn("flex flex-col w-full", option.particles?.length ? "items-start" : "items-center")}>
+                  <div class="flex items-center">
+                    <span class="text-base md:text-lg">{option.answer}</span>
+                    <Show when={isAnswered() && isCorrectOption()}>
+                      <span class="ml-2 text-emerald-600">✓</span>
+                    </Show>
+                    <Show
+                      when={
+                        isAnswered() &&
+                        option.answer === selectedAnswer() &&
+                        !isCorrectOption()
+                      }
+                    >
+                      <span class="ml-2 text-rose-600">✗</span>
+                    </Show>
+                  </div>
+                  <Show when={option.particles?.length}>
+                    <div class="text-sm font-light opacity-60">
+                      <For each={option.particles}>
+                        {(p) => (
+                          <div class="font-japanese leading-tight">
+                            {p.label
+                              ? `${p.label} - ${p.particle}`
+                              : `particle: ${p.particle}`}
+                          </div>
+                        )}
+                      </For>
                     </div>
-                  </Button3D>
-                )
-              }}
-            </For>
-          </div>
-
-          {/* Mnemonic section (shown after answering) */}
-          <Show when={isAnswered() && mnemonic()}>
-            <div class="mt-6 rounded-lg bg-muted/50 p-4">
-              <h4 class="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Mnemonic
-              </h4>
-              <p
-                class="text-sm leading-relaxed text-foreground/80"
-                innerHTML={formatMnemonic(mnemonic()!)}
-              />
-            </div>
-          </Show>
-        </div>
+                  </Show>
+                </div>
+              </Button3D>
+            )
+          }}
+        </For>
       </div>
 
-      {/* Next button */}
       <Show when={isAnswered()}>
-        <div class="fixed bottom-20 left-1/2 -translate-x-1/2 w-48">
-          <Button3D
-            color={isCorrect() ? "rgb(16,185,129)" : "rgb(244,63,94)"}
-            onClick={() => { playClickSound(); handleNext() }}
-          >
-            Next →
-          </Button3D>
-        </div>
+        <MnemonicDisplay mnemonic={mnemonic()} />
+      </Show>
+
+      {/* Bottom bar */}
+      <Show when={isAnswered()}>
+        <PracticeActionBar
+          state={isCorrect() ? "correct" : "wrong"}
+          onAction={handleNext}
+          feedbackText={props.card.validAnswers[0]}
+        />
       </Show>
     </div>
   )

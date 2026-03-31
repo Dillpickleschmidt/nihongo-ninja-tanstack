@@ -48,7 +48,7 @@ export type PromptDisplay = {
 
 export function getPromptDisplay(
   card: PracticeCard,
-  rubySize = "0.85rem",
+  rubySize = "1rem",
 ): PromptDisplay {
   if (
     card.practiceItemType === "vocabulary" &&

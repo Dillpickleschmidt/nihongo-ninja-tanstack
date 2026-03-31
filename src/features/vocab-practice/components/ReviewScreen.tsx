@@ -1,9 +1,9 @@
 import { For, Show } from "solid-js"
-import { Button3D } from "@/components/Button3D"
 import { cn } from "@/utils"
 import type { PracticeCard } from "../types"
-import { playClickSound } from "../utils/select-sound"
-import { TYPE_TEXT_COLORS, getPromptDisplay } from "../utils/card-display"
+import { getPromptDisplay } from "../utils/card-display"
+import { PracticeActionBar } from "./PracticeActionBar"
+import { PRACTICE_LAYOUT } from "../VocabPractice"
 
 type ReviewResult = {
   card: PracticeCard
@@ -25,63 +25,61 @@ export function ReviewScreen(props: Props) {
     getPromptDisplay(card, "0.75rem")
 
   return (
-    <div class="flex min-h-[calc(100vh-12rem)] flex-col items-center px-4 pb-32 pt-8">
-      <div class="mx-auto w-full max-w-3xl">
-        {/* Header with stats (from hmr) */}
+    <div class={`${PRACTICE_LAYOUT} pt-8`}>
+      <div class="w-full max-w-3xl">
+        {/* Header */}
         <div class="mb-8 text-center">
-          <h1 class="mb-2 text-2xl font-bold">See the terms you practiced!</h1>
-          <div class="flex items-center justify-center gap-4 text-sm text-muted-foreground">
+          <h1 class="mb-2 text-2xl font-bold text-white/90">
+            Review
+          </h1>
+          <div class="flex items-center justify-center gap-4 text-sm text-white/40">
             <span>
-              <span class="font-semibold text-emerald-500">
+              <span class="font-semibold text-emerald-400">
                 {correctCount()}
               </span>{" "}
               correct
             </span>
-            <span class="text-card-foreground/30">•</span>
+            <span class="text-white/20">·</span>
             <span>
-              <span class="font-semibold text-rose-500">
+              <span class="font-semibold text-rose-400">
                 {totalCount() - correctCount()}
               </span>{" "}
               incorrect
             </span>
-            <span class="text-card-foreground/30">•</span>
+            <span class="text-white/20">·</span>
             <span>
-              <span class="font-semibold text-foreground">{accuracy()}%</span>{" "}
-              accuracy
+              <span class="font-semibold text-white/70">{accuracy()}%</span>
             </span>
           </div>
         </div>
 
         {/* Grid of cards */}
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
           <For each={props.results}>
             {(result) => {
               const promptDisplay = getCardPrompt(result.card)
               return (
-                <div class="flex flex-col items-center gap-2 rounded-lg p-4 text-center bg-dynamic-accent/25 backdrop-blur-sm">
-                  {/* Japanese prompt */}
+                <div class="flex flex-col items-center gap-2 rounded-xl bg-white/5 p-4 text-center">
                   <Show
                     when={promptDisplay.isHtml}
                     fallback={
-                      <div class="font-japanese text-3xl font-bold text-dynamic-accent">
+                      <div class="font-japanese text-3xl font-bold text-white/80">
                         {promptDisplay.text}
                       </div>
                     }
                   >
                     <div
-                      class="font-japanese text-3xl font-bold text-dynamic-accent"
+                      class="font-japanese text-3xl font-bold text-white/80"
                       innerHTML={promptDisplay.html}
                     />
                   </Show>
 
-                  {/* English meaning */}
-                  <div class="line-clamp-2 text-sm text-muted-foreground">
+                  <div class="line-clamp-2 text-sm text-white/40">
                     {result.card.validAnswers.join(", ")}
                   </div>
 
-                  {/* Particles */}
                   <Show when={result.card.vocab.particles?.length}>
-                    <div class="text-xs text-muted-foreground">
+                    <div class="text-xs text-white/30">
                       <For each={result.card.vocab.particles}>
                         {(p) => (
                           <span class="font-japanese">
@@ -94,33 +92,29 @@ export function ReviewScreen(props: Props) {
                     </div>
                   </Show>
 
-                  {/* Result badge */}
                   <div
                     class={cn(
                       "rounded-full px-2 py-0.5 text-xs font-bold uppercase",
                       result.correct
-                        ? "bg-green-500/10 text-green-600"
-                        : "bg-red-500/10 text-red-600",
+                        ? "bg-emerald-500/10 text-emerald-400"
+                        : "bg-rose-500/10 text-rose-400",
                     )}
                   >
-                    {result.correct ? "Correct" : "Skipped"}
+                    {result.correct ? "Correct" : "Incorrect"}
                   </div>
                 </div>
               )
             }}
           </For>
         </div>
-
-        {/* Fixed bottom continue button */}
-        <div class="fixed bottom-20 left-1/2 -translate-x-1/2 w-48">
-          <Button3D
-            color="rgb(139,92,246)"
-            onClick={() => { playClickSound(); props.onContinue() }}
-          >
-            Continue →
-          </Button3D>
-        </div>
       </div>
+
+      <PracticeActionBar
+        state="idle"
+        label="Continue"
+        color="rgb(139,92,246)"
+        onAction={props.onContinue}
+      />
     </div>
   )
 }

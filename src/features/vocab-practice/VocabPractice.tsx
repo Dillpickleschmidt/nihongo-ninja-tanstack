@@ -7,7 +7,11 @@ import { WriteCard } from "./components/WriteCard"
 import { FlashcardCard } from "./components/FlashcardCard"
 import { FinishScreen } from "./components/FinishScreen"
 import { ReviewScreen } from "./components/ReviewScreen"
+import { PracticeHeader } from "./components/PracticeHeader"
 import type { PracticeCard } from "./types"
+
+export const PRACTICE_LAYOUT =
+  "flex w-full flex-col items-center gap-4 px-2 sm:w-4/5 sm:gap-8"
 
 const CARDS_UNTIL_REVIEW = 7
 
@@ -52,6 +56,10 @@ export function VocabPractice(props: Props) {
       allCards().filter((c) => c.sessionScope === "module").length
     )
   })
+
+  // Stats counters
+  const correctCount = () => allResults().filter((r) => r.correct).length
+  const wrongCount = () => allResults().filter((r) => !r.correct).length
 
   // Handle answer with result tracking
   const handleAnswer = async (rating: Grade) => {
@@ -98,7 +106,18 @@ export function VocabPractice(props: Props) {
   }
 
   return (
-    <div>
+    <div class="flex flex-col items-center gap-2 md:gap-4">
+      {/* Top bar — shown during active practice */}
+      <Show when={!isFinished() && !showReview()}>
+        <PracticeHeader
+          currentIndex={currentIndex()}
+          totalItems={totalItems()}
+          correctCount={correctCount()}
+          wrongCount={wrongCount()}
+          onQuit={handleReturn}
+        />
+      </Show>
+
       {/* Review Screen (shown after practice, before finish) */}
       <Show when={showReview()}>
         <ReviewScreen
@@ -161,6 +180,9 @@ export function VocabPractice(props: Props) {
           )}
         </Show>
       </Show>
+
+      {/* Bottom spacer for fixed bottom bar */}
+      <div class="h-32" />
     </div>
   )
 }

@@ -1,8 +1,6 @@
 import { Show, For, Suspense } from "solid-js"
-import { Button3D } from "@/components/Button3D"
 import { cn } from "@/utils"
 import type { PracticeCard } from "../types"
-import { playClickSound } from "../utils/select-sound"
 import {
   TYPE_BADGE_CLASSES,
   TYPE_TEXT_COLORS,
@@ -10,6 +8,8 @@ import {
   formatMnemonic,
 } from "../utils/card-display"
 import { KanjiDisplay } from "./KanjiDisplay"
+import { PracticeActionBar } from "./PracticeActionBar"
+import { PRACTICE_LAYOUT } from "../VocabPractice"
 
 type Props = {
   card: PracticeCard
@@ -19,7 +19,6 @@ type Props = {
 }
 
 export function IntroductionCard(props: Props) {
-  // Check if we should show kanji animation
   const character = () => props.card.vocab.word
   const shouldUseAnimation = () => {
     const type = props.card.practiceItemType
@@ -27,7 +26,6 @@ export function IntroductionCard(props: Props) {
     return (type === "kanji" || type === "radical") && char && char.length === 1
   }
 
-  // IntroductionCard shows both meaning and reading mnemonics
   const getMnemonic = () => {
     const mnemonics = props.card.vocab.mnemonics
     if (!mnemonics) return null
@@ -44,127 +42,110 @@ export function IntroductionCard(props: Props) {
     }
   }
 
-  const promptDisplay = () => getPromptDisplay(props.card, "1rem")
+  const promptDisplay = () => getPromptDisplay(props.card)
   const mnemonic = () => getMnemonic()
-  const progress = () => ((props.currentIndex + 1) / props.totalItems) * 100
 
-  // Plain text fallback component
   const PlainTextDisplay = () => (
     <Show
       when={promptDisplay().isHtml}
       fallback={
-        <div class="font-japanese text-7xl font-bold">
+        <div class="font-japanese text-6xl sm:text-8xl font-medium">
           {promptDisplay().text}
         </div>
       }
     >
       <div
-        class="font-japanese text-5xl font-bold tracking-wide"
+        class="font-japanese text-5xl sm:text-7xl font-medium tracking-wide"
         innerHTML={promptDisplay().html}
       />
     </Show>
   )
 
   return (
-    <div class="flex flex-col items-center p-4">
-      {/* Progress indicator */}
-      <div class="mb-8 text-center">
-        <span class="text-sm font-medium text-muted-foreground">
-          New Item {props.currentIndex + 1} of {props.totalItems}
-        </span>
-        <div class="mx-auto mt-2 h-1 w-48 overflow-hidden rounded-full bg-muted">
-          <div
-            class="h-full bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-300"
-            style={{ width: `${progress()}%` }}
-          />
-        </div>
-      </div>
+    <div class={PRACTICE_LAYOUT}>
+      {/* Header */}
+      <div class="flex flex-col items-center gap-4">
+        <span class="text-sm text-white/40">New word</span>
 
-      {/* Main content card */}
-      <div class="w-full max-w-lg">
-        <div class="rounded-2xl border border-card-foreground/20 bg-card/60 p-8 shadow-xl backdrop-blur-md">
-          {/* Type badge */}
-          <div class="mb-4 flex justify-center">
-            <span
-              class={cn(
-                "rounded-full px-3 py-1 text-xs font-medium",
-                TYPE_BADGE_CLASSES[props.card.practiceItemType],
-              )}
-            >
-              {props.card.practiceItemType}
-            </span>
-          </div>
-
-          {/* Main character/word */}
-          <div class="mb-4 text-center">
-            <Show when={shouldUseAnimation()} fallback={<PlainTextDisplay />}>
-              <Suspense fallback={<PlainTextDisplay />}>
-                <KanjiDisplay character={character()} />
-              </Suspense>
-            </Show>
-          </div>
-
-          {/* Meanings */}
-          <div
-            class={cn(
-              "mb-6 text-center text-xl font-medium",
-              TYPE_TEXT_COLORS[props.card.practiceItemType],
-            )}
-          >
-            {props.card.validAnswers.join(", ")}
-          </div>
-
-          {/* Particles */}
-          <Show when={props.card.vocab.particles?.length}>
-            <div class="-mt-4 mb-6 text-center text-sm text-muted-foreground">
-              <For each={props.card.vocab.particles}>
-                {(p) => (
-                  <span class="font-japanese">
-                    {p.label
-                      ? `${p.label} - ${p.particle}`
-                      : `particle: ${p.particle}`}
-                  </span>
-                )}
-              </For>
-            </div>
-          </Show>
-
-          {/* Mnemonic section */}
-          <Show when={mnemonic()}>
-            {(m) => (
-              <Show when={m().meaning || m().reading}>
-                <div class="mt-6 rounded-lg bg-muted/50 p-4 text-left">
-                  <h4 class="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                    Mnemonic
-                  </h4>
-                  <Show when={m().reading}>
-                    <p
-                      class="text-sm leading-relaxed text-foreground/80"
-                      innerHTML={formatMnemonic(m().reading!)}
-                    />
-                  </Show>
-                  <Show when={m().meaning && !m().reading}>
-                    <p
-                      class="text-sm leading-relaxed text-foreground/80"
-                      innerHTML={formatMnemonic(m().meaning!)}
-                    />
-                  </Show>
-                </div>
-              </Show>
-            )}
-          </Show>
-        </div>
-      </div>
-
-      {/* Fixed bottom action button */}
-      <div class="fixed bottom-20 left-1/2 -translate-x-1/2 w-48">
-        <Button3D
-          color="rgb(245,158,11)"
-          onClick={() => { playClickSound(); props.onContinue() }}
+        <span
+          class={cn(
+            "rounded-full px-3 py-1 text-xs font-medium",
+            TYPE_BADGE_CLASSES[props.card.practiceItemType],
+          )}
         >
-          Got It! →
-        </Button3D>
+          {props.card.practiceItemType}
+        </span>
+
+        {/* Main character/word */}
+        <div class="text-center">
+          <Show when={shouldUseAnimation()} fallback={<PlainTextDisplay />}>
+            <Suspense fallback={<PlainTextDisplay />}>
+              <KanjiDisplay character={character()} />
+            </Suspense>
+          </Show>
+        </div>
       </div>
+
+      {/* Details */}
+      <div class="w-full max-w-lg space-y-4">
+        {/* Meanings */}
+        <div
+          class={cn(
+            "text-center text-xl font-medium",
+            TYPE_TEXT_COLORS[props.card.practiceItemType],
+          )}
+        >
+          {props.card.validAnswers.join(", ")}
+        </div>
+
+        {/* Particles */}
+        <Show when={props.card.vocab.particles?.length}>
+          <div class="text-center text-sm text-white/40">
+            <For each={props.card.vocab.particles}>
+              {(p) => (
+                <span class="font-japanese">
+                  {p.label
+                    ? `${p.label} - ${p.particle}`
+                    : `particle: ${p.particle}`}
+                </span>
+              )}
+            </For>
+          </div>
+        </Show>
+
+        {/* Mnemonic */}
+        <Show when={mnemonic()}>
+          {(m) => (
+            <Show when={m().meaning || m().reading}>
+              <div class="rounded-lg bg-white/5 p-4 text-left">
+                <h4 class="mb-2 text-sm font-medium uppercase tracking-wide text-white/40">
+                  Mnemonic
+                </h4>
+                <Show when={m().reading}>
+                  <p
+                    class="text-sm leading-relaxed text-white/70"
+                    innerHTML={formatMnemonic(m().reading!)}
+                  />
+                </Show>
+                <Show when={m().meaning && !m().reading}>
+                  <p
+                    class="text-sm leading-relaxed text-white/70"
+                    innerHTML={formatMnemonic(m().meaning!)}
+                  />
+                </Show>
+              </div>
+            </Show>
+          )}
+        </Show>
+      </div>
+
+      {/* Bottom bar */}
+      <PracticeActionBar
+        state="idle"
+        label="Got It!"
+        color="rgb(245,158,11)"
+        onAction={props.onContinue}
+      />
     </div>
   )
 }

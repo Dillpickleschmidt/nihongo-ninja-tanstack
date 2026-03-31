@@ -8,7 +8,6 @@ import {
   onCleanup,
 } from "solid-js"
 import { Rating, type Grade } from "ts-fsrs"
-import { Button } from "@/components/ui/button"
 import { Button3D } from "@/components/Button3D"
 import { cn } from "@/utils"
 import type { PracticeCard } from "../types"
@@ -18,9 +17,11 @@ import {
   TYPE_TEXT_COLORS,
   getPromptDisplay,
   getMnemonic,
-  formatMnemonic,
 } from "../utils/card-display"
 import { KanjiDisplay } from "./KanjiDisplay"
+import { MnemonicDisplay } from "./MnemonicDisplay"
+import { PracticeActionBar } from "./PracticeActionBar"
+import { PRACTICE_LAYOUT } from "../VocabPractice"
 
 type Props = {
   card: PracticeCard
@@ -51,7 +52,6 @@ export function FlashcardCard(props: Props) {
 
   const isRevealed = () => revealedCardId() === props.card.key
 
-  // Check if we should show kanji animation
   const character = () => props.card.vocab.word
   const shouldUseAnimation = () => {
     const type = props.card.practiceItemType
@@ -88,154 +88,113 @@ export function FlashcardCard(props: Props) {
   onMount(() => window.addEventListener("keydown", handleKeyDown))
   onCleanup(() => window.removeEventListener("keydown", handleKeyDown))
 
-  const promptDisplay = () => getPromptDisplay(props.card, "1rem")
+  const promptDisplay = () => getPromptDisplay(props.card)
   const mnemonic = () => getMnemonic(props.card)
-  const progress = () => ((props.currentIndex + 1) / props.totalItems) * 100
 
-  // Plain text fallback component
   const PlainTextDisplay = () => (
     <Show
       when={promptDisplay().isHtml}
       fallback={
-        <div class="font-japanese text-7xl font-bold">
+        <div class="font-japanese text-6xl sm:text-8xl font-medium">
           {promptDisplay().text}
         </div>
       }
     >
       <div
-        class="font-japanese text-5xl font-bold tracking-wide"
+        class="font-japanese text-5xl sm:text-7xl font-medium tracking-wide"
         innerHTML={promptDisplay().html}
       />
     </Show>
   )
 
   return (
-    <div class="flex flex-col items-center p-4">
-      {/* Progress indicator */}
-      <div class="mb-8 text-center">
-        <span class="text-sm font-medium text-muted-foreground">
-          Review {props.currentIndex + 1} of {props.totalItems}
+    <div class={PRACTICE_LAYOUT}>
+      {/* Question area */}
+      <div class="flex flex-col items-center gap-4">
+        <span class="text-sm text-white/40">
+          How well do you know this?
         </span>
-        <div class="mx-auto mt-2 h-1 w-48 overflow-hidden rounded-full bg-muted">
-          <div
-            class="h-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300"
-            style={{ width: `${progress()}%` }}
-          />
-        </div>
-      </div>
 
-      {/* Main flashcard */}
-      <div class="w-full max-w-lg">
-        <div class="rounded-2xl border border-card-foreground/20 bg-card/60 p-8 shadow-xl backdrop-blur-md">
-          {/* Type badge */}
-          <div class="mb-4 flex justify-center">
-            <span
-              class={cn(
-                "rounded-full px-3 py-1 text-xs font-medium",
-                TYPE_BADGE_CLASSES[props.card.practiceItemType],
-              )}
-            >
-              {props.card.practiceItemType}
-            </span>
-          </div>
+        <span
+          class={cn(
+            "rounded-full px-3 py-1 text-xs font-medium",
+            TYPE_BADGE_CLASSES[props.card.practiceItemType],
+          )}
+        >
+          {props.card.practiceItemType}
+        </span>
 
-          {/* Prompt */}
-          <div class="mb-6 text-center">
-            <Show
-              when={props.card.ankiRenderedHtml}
-              fallback={
-                <Show
-                  when={shouldUseAnimation()}
-                  fallback={<PlainTextDisplay />}
-                >
-                  <Suspense fallback={<PlainTextDisplay />}>
-                    <KanjiDisplay character={character()} />
-                  </Suspense>
-                </Show>
-              }
-            >
-              {(rendered) => (
-                <AnkiCardRenderer
-                  html={rendered().question}
-                  css={rendered().css}
-                />
-              )}
-            </Show>
-          </div>
-
-          {/* Answer section (when revealed) */}
-          <Show when={isRevealed()}>
-            <div class="space-y-4 border-t border-card-foreground/10 pt-6">
-              {/* Meanings */}
+        {/* Prompt */}
+        <div class="text-center">
+          <Show
+            when={props.card.ankiRenderedHtml}
+            fallback={
               <Show
-                when={props.card.ankiRenderedHtml}
-                fallback={
-                  <div
-                    class={cn(
-                      "text-center text-xl font-medium",
-                      TYPE_TEXT_COLORS[props.card.practiceItemType],
-                    )}
-                  >
-                    {props.card.validAnswers.join(", ")}
-                  </div>
-                }
+                when={shouldUseAnimation()}
+                fallback={<PlainTextDisplay />}
               >
-                {(rendered) => (
-                  <AnkiCardRenderer
-                    html={rendered().answer}
-                    css={rendered().css}
-                  />
-                )}
+                <Suspense fallback={<PlainTextDisplay />}>
+                  <KanjiDisplay character={character()} />
+                </Suspense>
               </Show>
-
-              {/* Particles */}
-              <Show when={props.card.vocab.particles?.length}>
-                <div class="text-center text-sm text-muted-foreground">
-                  <For each={props.card.vocab.particles}>
-                    {(p) => (
-                      <span class="font-japanese">
-                        {p.label
-                          ? `${p.label} - ${p.particle}`
-                          : `particle: ${p.particle}`}
-                      </span>
-                    )}
-                  </For>
-                </div>
-              </Show>
-
-              {/* Mnemonic */}
-              <Show when={mnemonic()}>
-                <div class="rounded-lg bg-muted/50 p-4 text-left">
-                  <h4 class="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    Mnemonic
-                  </h4>
-                  <p
-                    class="text-sm leading-relaxed text-foreground/80"
-                    innerHTML={formatMnemonic(mnemonic()!)}
-                  />
-                </div>
-              </Show>
-            </div>
+            }
+          >
+            {(rendered) => (
+              <AnkiCardRenderer
+                html={rendered().question}
+                css={rendered().css}
+              />
+            )}
           </Show>
         </div>
       </div>
 
-      {/* Action buttons at fixed bottom */}
-      <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
-        <Show
-          when={isRevealed()}
-          fallback={
-            <Button
-              ref={(el: HTMLButtonElement) => { requestAnimationFrame(() => el.focus()) }}
-              variant="outline"
-              onClick={() => setRevealedCardId(props.card.key)}
-              class="h-14 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-12 text-lg font-semibold text-white shadow-lg transition-all hover:from-cyan-600 hover:to-blue-600 hover:shadow-xl"
-            >
-              Show Answer
-            </Button>
-          }
-        >
-          {/* Single-row FSRS buttons */}
+      {/* Revealed answer section */}
+      <Show when={isRevealed()}>
+        <div class="w-full max-w-lg space-y-4">
+          {/* Divider */}
+          <div class="h-px bg-white/10" />
+
+          {/* Meanings */}
+          <Show
+            when={props.card.ankiRenderedHtml}
+            fallback={
+              <div
+                class={cn(
+                  "text-center text-xl font-medium",
+                  TYPE_TEXT_COLORS[props.card.practiceItemType],
+                )}
+              >
+                {props.card.validAnswers.join(", ")}
+              </div>
+            }
+          >
+            {(rendered) => (
+              <AnkiCardRenderer
+                html={rendered().answer}
+                css={rendered().css}
+              />
+            )}
+          </Show>
+
+          {/* Particles */}
+          <Show when={props.card.vocab.particles?.length}>
+            <div class="text-center text-sm text-white/40">
+              <For each={props.card.vocab.particles}>
+                {(p) => (
+                  <span class="font-japanese">
+                    {p.label
+                      ? `${p.label} - ${p.particle}`
+                      : `particle: ${p.particle}`}
+                  </span>
+                )}
+              </For>
+            </div>
+          </Show>
+
+          <MnemonicDisplay mnemonic={mnemonic()} />
+
+          {/* FSRS rating buttons */}
           <div class="grid grid-cols-4 gap-2">
             <Button3D
               color="rgb(244,63,94)"
@@ -266,8 +225,18 @@ export function FlashcardCard(props: Props) {
               Easy
             </Button3D>
           </div>
-        </Show>
-      </div>
+        </div>
+      </Show>
+
+      {/* Bottom bar — show answer or already revealed */}
+      <Show when={!isRevealed()}>
+        <PracticeActionBar
+          state="idle"
+          label="Show Answer"
+          color="rgb(6,182,212)"
+          onAction={() => setRevealedCardId(props.card.key)}
+        />
+      </Show>
     </div>
   )
 }

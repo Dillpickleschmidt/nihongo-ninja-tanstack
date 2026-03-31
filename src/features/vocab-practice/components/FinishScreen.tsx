@@ -1,8 +1,8 @@
 import { For, Show, createMemo } from "solid-js"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/utils"
 import type { PracticeCard } from "../types"
 import { getPromptDisplay } from "../utils/card-display"
+import { PracticeActionBar } from "./PracticeActionBar"
 
 type ReviewResult = {
   card: PracticeCard
@@ -17,7 +17,6 @@ type Props = {
 }
 
 export function FinishScreen(props: Props) {
-  // Single-pass stats: group by scope + count correct
   const stats = createMemo(() => {
     const moduleItems: ReviewResult[] = []
     const reviewItems: ReviewResult[] = []
@@ -35,7 +34,6 @@ export function FinishScreen(props: Props) {
     return { moduleItems, reviewItems, correctCount, total, accuracy }
   })
 
-  // Dynamic emoji based on accuracy
   const theme = createMemo(() => {
     const acc = stats().accuracy
     if (acc >= 90) return { emoji: "🎉", title: "Outstanding!" }
@@ -44,54 +42,33 @@ export function FinishScreen(props: Props) {
     return { emoji: "📚", title: "Practice Makes Perfect" }
   })
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case "vocabulary":
-        return "bg-orange-500/20 text-orange-600 dark:text-orange-400"
-      case "kanji":
-        return "bg-indigo-500/20 text-indigo-600 dark:text-indigo-400"
-      case "radical":
-        return "bg-purple-500/20 text-purple-600 dark:text-purple-400"
-      default:
-        return ""
-    }
-  }
-
   const getCardPrompt = (card: PracticeCard) => getPromptDisplay(card, "0.6rem")
 
   return (
-    <div class="flex min-h-[calc(100vh-12rem)] flex-col items-center px-4 pb-32 pt-8">
-      <div class="mx-auto w-full max-w-2xl">
-        {/* Celebration header (emoji from yjo, dynamic title from hmr) */}
+    <div class="flex w-full flex-col items-center gap-6 px-4 pt-12 sm:w-4/5 sm:gap-10">
+      <div class="w-full max-w-2xl">
+        {/* Celebration header */}
         <div class="mb-8 text-center">
           <div class="mb-4 text-6xl">{theme().emoji}</div>
-          <h1 class="mb-2 text-3xl font-bold">{theme().title}</h1>
-          <p class="text-lg text-muted-foreground">
+          <h1 class="mb-2 text-3xl font-bold text-white/90">{theme().title}</h1>
+          <p class="text-lg text-white/40">
             You completed{" "}
-            <span class="font-semibold text-foreground">{props.deckName}</span>
+            <span class="font-semibold text-white/70">{props.deckName}</span>
           </p>
         </div>
 
-        {/* Stat boxes (from hmr) */}
-        <div class="mb-8 grid grid-cols-3 gap-4">
-          <StatCard
-            label="Correct"
-            value={stats().correctCount}
-            color="emerald"
-          />
+        {/* Stat boxes */}
+        <div class="mb-8 grid grid-cols-3 gap-3">
+          <StatCard label="Correct" value={stats().correctCount} color="emerald" />
           <StatCard label="Total" value={stats().total} color="blue" />
-          <StatCard
-            label="Accuracy"
-            value={`${stats().accuracy}%`}
-            color="purple"
-          />
+          <StatCard label="Accuracy" value={`${stats().accuracy}%`} color="purple" />
         </div>
 
-        {/* Module Items section */}
+        {/* Module Items */}
         <Show when={stats().moduleItems.length > 0}>
           <div class="mb-8">
-            <h2 class="mb-4 flex items-center gap-2 text-lg font-semibold">
-              <span class="rounded-full bg-orange-500/10 px-2 py-1 text-sm text-orange-500">
+            <h2 class="mb-4 flex items-center gap-2 text-lg font-semibold text-white/70">
+              <span class="rounded-full bg-amber-500/10 px-2 py-1 text-sm text-amber-400">
                 {stats().moduleItems.length}
               </span>
               Module Items
@@ -99,22 +76,18 @@ export function FinishScreen(props: Props) {
             <div class="space-y-2">
               <For each={stats().moduleItems}>
                 {(result) => (
-                  <ResultCard
-                    result={result}
-                    getTypeColor={getTypeColor}
-                    getPromptDisplay={getCardPrompt}
-                  />
+                  <ResultCard result={result} getPromptDisplay={getCardPrompt} />
                 )}
               </For>
             </div>
           </div>
         </Show>
 
-        {/* Practiced Review Items section */}
+        {/* Review Items */}
         <Show when={stats().reviewItems.length > 0}>
           <div class="mb-8">
-            <h2 class="mb-4 flex items-center gap-2 text-lg font-semibold">
-              <span class="rounded-full bg-indigo-500/10 px-2 py-1 text-sm text-indigo-500">
+            <h2 class="mb-4 flex items-center gap-2 text-lg font-semibold text-white/70">
+              <span class="rounded-full bg-indigo-500/10 px-2 py-1 text-sm text-indigo-400">
                 {stats().reviewItems.length}
               </span>
               Practiced Review Items
@@ -122,29 +95,20 @@ export function FinishScreen(props: Props) {
             <div class="space-y-2">
               <For each={stats().reviewItems}>
                 {(result) => (
-                  <ResultCard
-                    result={result}
-                    getTypeColor={getTypeColor}
-                    getPromptDisplay={getCardPrompt}
-                  />
+                  <ResultCard result={result} getPromptDisplay={getCardPrompt} />
                 )}
               </For>
             </div>
           </div>
         </Show>
-
-        {/* Return button */}
-        <div class="fixed bottom-20 left-1/2 -translate-x-1/2">
-          <Button
-            ref={(el: HTMLButtonElement) => { requestAnimationFrame(() => el.focus()) }}
-            size="lg"
-            class="h-14 rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 px-12 text-lg font-semibold text-white shadow-lg transition-all hover:from-violet-600 hover:to-purple-600 hover:shadow-xl"
-            onClick={props.onReturn}
-          >
-            Return to Vocab Home
-          </Button>
-        </div>
       </div>
+
+      <PracticeActionBar
+        state="idle"
+        label="Return to Vocab Home"
+        color="rgb(139,92,246)"
+        onAction={props.onReturn}
+      />
     </div>
   )
 }
@@ -154,113 +118,65 @@ function StatCard(props: {
   value: string | number
   color: "emerald" | "blue" | "purple"
 }) {
-  const colorClasses = {
-    emerald: "from-emerald-500/20 to-emerald-500/5 border-emerald-500/30",
-    blue: "from-blue-500/20 to-blue-500/5 border-blue-500/30",
-    purple: "from-purple-500/20 to-purple-500/5 border-purple-500/30",
-  }
-
-  const textColorClasses = {
-    emerald: "text-emerald-500",
-    blue: "text-blue-500",
-    purple: "text-purple-500",
+  const colors = {
+    emerald: "border-emerald-500/20 text-emerald-400",
+    blue: "border-blue-500/20 text-blue-400",
+    purple: "border-purple-500/20 text-purple-400",
   }
 
   return (
-    <div
-      class={cn(
-        "rounded-xl border bg-gradient-to-b p-4 text-center",
-        colorClasses[props.color],
-      )}
-    >
-      <div class={cn("text-2xl font-bold", textColorClasses[props.color])}>
-        {props.value}
-      </div>
-      <div class="text-xs text-muted-foreground">{props.label}</div>
+    <div class={cn("rounded-xl border bg-white/5 p-4 text-center", colors[props.color])}>
+      <div class="text-2xl font-bold">{props.value}</div>
+      <div class="text-xs text-white/40">{props.label}</div>
     </div>
   )
 }
 
 function ResultCard(props: {
-  result: ReviewResult
-  getTypeColor: (type: string) => string
-  getPromptDisplay: (card: PracticeCard) => {
-    html?: string
-    text?: string
-    isHtml: boolean
-  }
+  result: { card: PracticeCard; correct: boolean; missCount?: number }
+  getPromptDisplay: (card: PracticeCard) => { html?: string; text?: string; isHtml: boolean }
 }) {
   const { card, correct, missCount } = props.result
   const promptDisplay = props.getPromptDisplay(card)
 
   return (
-    <div class="rounded-xl border border-card-foreground/20 bg-card/60 p-4 backdrop-blur-sm">
-      <div class="flex items-center gap-4">
-        {/* Content */}
-        <div class="min-w-0 flex-1">
-          <div class="flex items-baseline gap-3">
-            <Show
-              when={promptDisplay.isHtml}
-              fallback={
-                <span class="font-japanese text-lg font-bold">
-                  {promptDisplay.text}
-                </span>
-              }
-            >
-              <span
-                class="font-japanese text-lg font-bold"
-                innerHTML={promptDisplay.html}
-              />
-            </Show>
-            <span class="truncate text-sm text-muted-foreground">
-              {card.validAnswers.join(", ")}
-            </span>
-            <Show when={card.vocab.particles?.length}>
-              <span class="text-xs text-muted-foreground/70">
-                <For each={card.vocab.particles}>
-                  {(p) => (
-                    <span class="font-japanese">
-                      {p.label
-                        ? `${p.label} - ${p.particle}`
-                        : `particle: ${p.particle}`}
-                    </span>
-                  )}
-                </For>
+    <div class="flex items-center gap-4 rounded-xl bg-white/5 p-4">
+      <div class="min-w-0 flex-1">
+        <div class="flex items-baseline gap-3">
+          <Show
+            when={promptDisplay.isHtml}
+            fallback={
+              <span class="font-japanese text-lg font-bold text-white/80">
+                {promptDisplay.text}
               </span>
-            </Show>
-          </div>
-        </div>
-
-        {/* Badges */}
-        <div class="flex shrink-0 items-center gap-2">
-          {/* Miss count badge */}
-          <Show when={missCount && missCount > 0}>
-            <span class="rounded-full bg-rose-500/10 px-2 py-0.5 text-xs font-medium text-rose-500">
-              {missCount} {missCount === 1 ? "miss" : "misses"}
-            </span>
+            }
+          >
+            <span
+              class="font-japanese text-lg font-bold text-white/80"
+              innerHTML={promptDisplay.html}
+            />
           </Show>
-
-          {/* Type badge */}
-          <span
-            class={cn(
-              "rounded-full px-2 py-0.5 text-xs font-medium",
-              props.getTypeColor(card.practiceItemType),
-            )}
-          >
-            {card.practiceItemType}
+          <span class="truncate text-sm text-white/40">
+            {card.validAnswers.join(", ")}
           </span>
+        </div>
+      </div>
 
-          {/* Status indicator */}
-          <div
-            class={cn(
-              "flex h-6 w-6 items-center justify-center rounded-full text-xs",
-              correct
-                ? "bg-emerald-500/20 text-emerald-500"
-                : "bg-rose-500/20 text-rose-500",
-            )}
-          >
-            {correct ? "✓" : "✗"}
-          </div>
+      <div class="flex shrink-0 items-center gap-2">
+        <Show when={missCount && missCount > 0}>
+          <span class="rounded-full bg-rose-500/10 px-2 py-0.5 text-xs font-medium text-rose-400">
+            {missCount} {missCount === 1 ? "miss" : "misses"}
+          </span>
+        </Show>
+        <div
+          class={cn(
+            "flex h-6 w-6 items-center justify-center rounded-full text-xs",
+            correct
+              ? "bg-emerald-500/20 text-emerald-400"
+              : "bg-rose-500/20 text-rose-400",
+          )}
+        >
+          {correct ? "✓" : "✗"}
         </div>
       </div>
     </div>
