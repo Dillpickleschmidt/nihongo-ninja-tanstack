@@ -103,7 +103,6 @@ import { Route as HomeVocabBrowseRouteImport } from './routes/_home/vocab/browse
 import { Route as HomeVocabSplatRouteImport } from './routes/_home/vocab/$'
 import { Route as HomeSentencePracticeIdRouteImport } from './routes/_home/sentence-practice/$id'
 import { Route as HomeMiscKanjiPracticeSheetRouteImport } from './routes/_home/misc/kanji-practice-sheet'
-import { Route as HomeImportCustomRouteImport } from './routes/_home/import/custom'
 import { Route as HomeImportAnkiRouteImport } from './routes/_home/import/anki'
 import { Route as HomeExternalResourcesResourceRouteImport } from './routes/_home/external-resources/$resource'
 import { Route as HomeImportBuiltinIndexRouteImport } from './routes/_home/import/builtin/index'
@@ -633,11 +632,6 @@ const HomeMiscKanjiPracticeSheetRoute =
     path: '/misc/kanji-practice-sheet',
     getParentRoute: () => HomeRoute,
   } as any)
-const HomeImportCustomRoute = HomeImportCustomRouteImport.update({
-  id: '/import/custom',
-  path: '/import/custom',
-  getParentRoute: () => HomeRoute,
-} as any)
 const HomeImportAnkiRoute = HomeImportAnkiRouteImport.update({
   id: '/import/anki',
   path: '/import/anki',
@@ -733,7 +727,6 @@ export interface FileRoutesByFullPath {
   '/guides/': typeof GuidesIndexRoute
   '/external-resources/$resource': typeof HomeExternalResourcesResourceRoute
   '/import/anki': typeof HomeImportAnkiRoute
-  '/import/custom': typeof HomeImportCustomRoute
   '/misc/kanji-practice-sheet': typeof HomeMiscKanjiPracticeSheetRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/vocab/$': typeof HomeVocabSplatRoute
@@ -840,7 +833,6 @@ export interface FileRoutesByTo {
   '/guides': typeof GuidesIndexRoute
   '/external-resources/$resource': typeof HomeExternalResourcesResourceRoute
   '/import/anki': typeof HomeImportAnkiRoute
-  '/import/custom': typeof HomeImportCustomRoute
   '/misc/kanji-practice-sheet': typeof HomeMiscKanjiPracticeSheetRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/vocab/$': typeof HomeVocabSplatRoute
@@ -951,7 +943,6 @@ export interface FileRoutesById {
   '/guides/': typeof GuidesIndexRoute
   '/_home/external-resources/$resource': typeof HomeExternalResourcesResourceRoute
   '/_home/import/anki': typeof HomeImportAnkiRoute
-  '/_home/import/custom': typeof HomeImportCustomRoute
   '/_home/misc/kanji-practice-sheet': typeof HomeMiscKanjiPracticeSheetRoute
   '/_home/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
   '/_home/vocab/$': typeof HomeVocabSplatRoute
@@ -1062,7 +1053,6 @@ export interface FileRouteTypes {
     | '/guides/'
     | '/external-resources/$resource'
     | '/import/anki'
-    | '/import/custom'
     | '/misc/kanji-practice-sheet'
     | '/sentence-practice/$id'
     | '/vocab/$'
@@ -1169,7 +1159,6 @@ export interface FileRouteTypes {
     | '/guides'
     | '/external-resources/$resource'
     | '/import/anki'
-    | '/import/custom'
     | '/misc/kanji-practice-sheet'
     | '/sentence-practice/$id'
     | '/vocab/$'
@@ -1279,7 +1268,6 @@ export interface FileRouteTypes {
     | '/guides/'
     | '/_home/external-resources/$resource'
     | '/_home/import/anki'
-    | '/_home/import/custom'
     | '/_home/misc/kanji-practice-sheet'
     | '/_home/sentence-practice/$id'
     | '/_home/vocab/$'
@@ -2039,13 +2027,6 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeMiscKanjiPracticeSheetRouteImport
       parentRoute: typeof HomeRoute
     }
-    '/_home/import/custom': {
-      id: '/_home/import/custom'
-      path: '/import/custom'
-      fullPath: '/import/custom'
-      preLoaderRoute: typeof HomeImportCustomRouteImport
-      parentRoute: typeof HomeRoute
-    }
     '/_home/import/anki': {
       id: '/_home/import/anki'
       path: '/import/anki'
@@ -2211,7 +2192,6 @@ interface HomeRouteChildren {
   HomeSettingsRoute: typeof HomeSettingsRoute
   HomeVocabRoute: typeof HomeVocabRouteWithChildren
   HomeImportAnkiRoute: typeof HomeImportAnkiRoute
-  HomeImportCustomRoute: typeof HomeImportCustomRoute
   HomeMiscKanjiPracticeSheetRoute: typeof HomeMiscKanjiPracticeSheetRoute
   HomeSentencePracticeIdRoute: typeof HomeSentencePracticeIdRoute
   HomeImportIndexRoute: typeof HomeImportIndexRoute
@@ -2233,7 +2213,6 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeSettingsRoute: HomeSettingsRoute,
   HomeVocabRoute: HomeVocabRouteWithChildren,
   HomeImportAnkiRoute: HomeImportAnkiRoute,
-  HomeImportCustomRoute: HomeImportCustomRoute,
   HomeMiscKanjiPracticeSheetRoute: HomeMiscKanjiPracticeSheetRoute,
   HomeSentencePracticeIdRoute: HomeSentencePracticeIdRoute,
   HomeImportIndexRoute: HomeImportIndexRoute,

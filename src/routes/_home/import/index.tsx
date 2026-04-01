@@ -27,7 +27,7 @@ function ImportIndexPage() {
           backLabel="Learn"
         />
 
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-4 sm:grid-cols-2">
           <ImportOptionCard
             title="Nihongo Ninja"
             description="Use our built-in review system with FSRS scheduling"
@@ -68,27 +68,6 @@ function ImportIndexPage() {
               </svg>
             )}
             to="/import/anki"
-          />
-
-          <ImportOptionCard
-            title="Custom Path"
-            description="Generate a path from subtitle files"
-            icon={(props) => (
-              <svg
-                {...props}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="1.5"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M4.5 12.75l6 6 9-13.5"
-                />
-              </svg>
-            )}
-            to="/import/custom"
           />
         </div>
       </div>

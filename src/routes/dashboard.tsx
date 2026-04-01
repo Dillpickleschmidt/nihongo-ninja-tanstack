@@ -7,6 +7,7 @@ import { usePreferences } from "@/lib/preferences"
 import { ChevronRight } from "lucide-solid"
 import { getModuleIcon, getModuleIconClasses } from "@/data/utils/module-helpers"
 import { FloatingKanji } from "@/features/homepage/components/floating-kanji"
+import { LearningPathsPanel, type LearningPathSummary } from "@/features/dashboard/LearningPathsPanel"
 import { DashboardCard } from "@/features/dashboard/DashboardCard"
 import {
   PRACTICE_TOOLS,
@@ -16,6 +17,7 @@ import {
 import { useColorAnimation } from "@/features/homepage/lib/use-color-animation"
 import { useSrs } from "@/features/srs/use-srs"
 import { parsePreferencesCookie } from "@/query/model/preferences"
+import { textbooks, type TextbookIDEnum } from "@/data/textbooks"
 
 export const Route = createFileRoute("/dashboard")({
   loader: ({ context }) => {
@@ -57,6 +59,45 @@ function DashboardComponent() {
       }
     }
     return undefined
+  }
+
+  const pathSummaries = (): LearningPathSummary[] => {
+    const data = dashboardQuery.data()
+    if (!data) return []
+    const completedSet = new Set(data.completedModules)
+
+    return data.paths.map((path) => {
+      const textbook = textbooks[path.id as TextbookIDEnum]
+      const isActive = path.id === data.pathId
+
+      // Real progress for active path only; placeholder for others
+      // TODO: Replace with getAllPathsProgress query for all paths
+      let totalModules = 0
+      let completedCount = 0
+      if (isActive && data.chapters) {
+        for (const chapter of data.chapters) {
+          for (const mod of chapter.modules) {
+            if (!mod.disabled) {
+              totalModules++
+              if (completedSet.has(mod.moduleId)) completedCount++
+            }
+          }
+        }
+      }
+
+      return {
+        id: path.id,
+        name: path.name,
+        shortName: path.shortName,
+        isUserCreated: path.isUserCreated,
+        thumbnailUrl: textbook?.cover_image_url,
+        totalModules,
+        completedModules: completedCount,
+        // TODO: Replace with real SRS vocab data
+        totalVocab: 0,
+        seenVocab: 0,
+      }
+    })
   }
 
   return (
@@ -101,12 +142,12 @@ function DashboardComponent() {
           <div>
             <h1 class="text-4xl font-bold lg:text-5xl">
               <span class="text-transparent bg-clip-text bg-linear-to-r from-(--landing-accent) to-(--landing-accent-end)">
-                Dashboard
+                Learn Japanese from anything.
               </span>
             </h1>
             <p class="mt-3 max-w-lg text-lg text-white/50">
-              Your home base for learning Japanese. Pick up where you left off
-              or explore something new.
+              Turn anime subtitles, YouTube videos, or any Japanese content
+              into personalized learning paths.
             </p>
 
             <div class="mt-6 flex flex-wrap gap-3">
@@ -150,29 +191,10 @@ function DashboardComponent() {
               </Show>
             </div>
           </div>
-          <Link
-            to="/discover"
-            class="group relative aspect-[16/9] overflow-hidden rounded-2xl border border-white/5 transition-colors duration-300 hover:border-(--landing-accent)/20"
-          >
-            <img
-              src="/img/backgrounds/rainy-day-mood-cartoon-style.jpg"
-              alt="Discover"
-              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/50 to-transparent" />
-            <div class="absolute bottom-0 left-0 right-0 p-5">
-              <p class="text-xs font-medium uppercase tracking-wider text-(--landing-accent) mb-1">
-                Discover
-              </p>
-              <h3 class="text-lg font-bold text-white">
-                Find your next show
-              </h3>
-              <p class="mt-1 text-sm text-white/50">
-                Browse curated anime and dramas for immersion practice
-              </p>
-            </div>
-            <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-(--landing-accent)/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-          </Link>
+          <LearningPathsPanel
+            paths={pathSummaries()}
+            loading={!!selectedPathId() && !dashboardQuery.data()}
+          />
         </section>
 
         {/* Row 2: Practice Tools */}
