@@ -72,7 +72,7 @@ export const MEDIA_RESOURCES: DashboardCard[] = [
     id: "curated-video",
     title: "Curated Video Content",
     description: "Hand-picked videos for Japanese learners at every level",
-    href: "/discover",
+    href: "/discover?tab=youtube",
     image: "/img/backgrounds/clay-banks-hwLAI5lRhdM-unsplash.jpg",
     moduleType: "video",
     tags: ["Listening", "Immersion"],

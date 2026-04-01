@@ -10,6 +10,8 @@ import { JlptBadge } from "~/features/discover/components/ui/homepage/jlpt-badge
 import { GlobalWeightsPopover } from "~/features/discover/components/ui/settings/global-weights-popover"
 
 interface DiscoverTabsProps {
+  value: string
+  onChange: (value: string) => void
   animeContent: JSX.Element
   youtubeContent: JSX.Element
   dramasContent: JSX.Element
@@ -17,7 +19,7 @@ interface DiscoverTabsProps {
 
 export function DiscoverTabs(props: DiscoverTabsProps) {
   return (
-    <Tabs defaultValue="anime" class="w-full">
+    <Tabs value={props.value} onChange={props.onChange} class="w-full">
       {/* Fixed controls — each positioned independently so content between them is clickable */}
       <div class="pointer-events-none fixed top-2 right-0 left-0 z-30 flex items-start justify-between px-3">
         <div class="pointer-events-auto">

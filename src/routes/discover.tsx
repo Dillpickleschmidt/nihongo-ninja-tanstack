@@ -5,7 +5,9 @@ import {
   onMount,
   Show,
 } from "solid-js"
-import { createFileRoute } from "@tanstack/solid-router"
+import { createFileRoute, useNavigate } from "@tanstack/solid-router"
+import { z } from "zod"
+import { fallback, zodValidator } from "@tanstack/zod-adapter"
 import { queryKeys } from "~/query/query-keys"
 import { authQueryOptions } from "~/query/query-options"
 import {
@@ -28,6 +30,7 @@ import { useBannerCarousel } from "~/features/discover/hooks/useBannerCarousel"
 import { BottomNav } from "~/features/navbar/Nav"
 import { DiscoverTabs } from "~/features/discover/components/ui/tabs/discover-tabs"
 import { ComingSoonTab } from "~/features/discover/components/ui/tabs/coming-soon-tab"
+import { YouTubeTab } from "~/features/discover/components/ui/tabs/youtube-tab"
 import { ShowDetailDialog } from "~/features/discover/components/ui/detail/show-detail-dialog"
 import { StreamingPrefsModal } from "~/features/discover/components/ui/settings/streaming-prefs-modal"
 import type {
@@ -35,7 +38,12 @@ import type {
   Media,
 } from "~/features/discover/api/anilist/types"
 
+const discoverSearchSchema = z.object({
+  tab: fallback(z.enum(["anime", "youtube", "dramas"]).optional(), undefined),
+})
+
 export const Route = createFileRoute("/discover")({
+  validateSearch: zodValidator(discoverSearchSchema),
   loader: ({ context, preload }) => {
     if (!preload) {
       context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
@@ -92,6 +100,8 @@ export const Route = createFileRoute("/discover")({
 
 function DiscoverPage() {
   const loaderData = Route.useLoaderData()
+  const search = Route.useSearch()
+  const navigate = useNavigate()
   const [personalSections] = createResource(
     () => loaderData().personalSectionsPromise,
   )
@@ -158,7 +168,11 @@ function DiscoverPage() {
       onMouseLeave={handleBannerMouseLeave}
     >
       <DiscoverTabs
-        youtubeContent={<ComingSoonTab label="YouTube" />}
+        value={search().tab ?? "anime"}
+        onChange={(tab: string) =>
+          navigate({ to: "/discover", search: { tab: tab as "anime" | "youtube" | "dramas" }, replace: true })
+        }
+        youtubeContent={<YouTubeTab />}
         animeContent={
           <Show
             when={!banner.error()}
