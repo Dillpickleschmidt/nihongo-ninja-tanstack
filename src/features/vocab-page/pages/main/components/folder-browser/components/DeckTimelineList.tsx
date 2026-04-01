@@ -56,7 +56,7 @@ function DeckTimelineEntry(props: {
 
         <Link
           to={props.linkTo}
-          class="absolute right-9 rounded-md bg-orange-500/80 px-3 py-1.5 text-xs font-medium text-white opacity-0 transition-all duration-150 hover:bg-orange-500 hover:text-white group-hover:opacity-100"
+          class="absolute right-9 rounded-md bg-orange-500/80 px-3 py-1.5 text-xs font-medium text-white transition-colors duration-150 hover:bg-orange-500"
           onClick={(e: MouseEvent) => e.stopPropagation()}
         >
           Start

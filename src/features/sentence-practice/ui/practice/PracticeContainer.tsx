@@ -39,9 +39,9 @@ export default function PracticeContainer(props: PracticeContainerProps) {
   const currentQuestion = () => computed.getCurrentQuestion()
 
   return (
-    <div class="mx-auto max-w-2xl space-y-6 px-2 pt-4">
+    <div class="mx-auto flex w-full max-w-3xl flex-col gap-2 pt-4 md:gap-4">
       {/* Header with progress and difficulty */}
-      <div class="flex items-center">
+      <div class="flex w-full items-center">
         <ProgressDisplay />
         <DifficultySelector />
       </div>
@@ -56,7 +56,7 @@ export default function PracticeContainer(props: PracticeContainerProps) {
       {/* Main practice content */}
       <Show when={!store.isLoading && currentQuestion()}>
         {(question) => (
-          <div class="space-y-6">
+          <div class="space-y-6 px-2">
             <PromptDisplay question={question()} />
 
             <Show

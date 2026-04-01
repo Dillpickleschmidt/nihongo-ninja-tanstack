@@ -37,14 +37,16 @@ function RouteComponent() {
   const [questions] = createResource(() => loaderData().questionsPromise)
 
   return (
-    <Suspense
-      fallback={
-        <div class="py-12 text-center text-white/40">Loading...</div>
-      }
-    >
-      <PracticeProvider modulePath={loaderData().modulePath}>
-        <PracticeContainer questions={questions()!} />
-      </PracticeProvider>
-    </Suspense>
+    <div>
+      <Suspense
+        fallback={
+          <div class="py-12 text-center text-white/40">Loading...</div>
+        }
+      >
+        <PracticeProvider modulePath={loaderData().modulePath}>
+          <PracticeContainer questions={questions()!} />
+        </PracticeProvider>
+      </Suspense>
+    </div>
   )
 }

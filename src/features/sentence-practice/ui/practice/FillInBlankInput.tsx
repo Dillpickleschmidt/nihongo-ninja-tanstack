@@ -32,7 +32,10 @@ export default function FillInBlankInput() {
                     {segment.plain}
                   </span>
                 ) : (
-                  <div class="inline-block">
+                  <div
+                    class="inline-block min-w-32"
+                    style={{ width: `${Math.max(8, (store.blankInputs[index()] ?? "").length * 1.6 + 2)}ch` }}
+                  >
                     <PracticeInput
                       value={store.blankInputs[index()] ?? ""}
                       onInput={(value) => actions.updateInput(value, index())}
@@ -41,7 +44,7 @@ export default function FillInBlankInput() {
                           handleMainButton()
                         }
                       }}
-                      class="placeholder:text-white/20 mx-1 w-32 text-center text-2xl"
+                      class="placeholder:text-white/20 mx-1 text-center text-2xl"
                       autofocus={index() === 0}
                       placeholder="..."
                     />

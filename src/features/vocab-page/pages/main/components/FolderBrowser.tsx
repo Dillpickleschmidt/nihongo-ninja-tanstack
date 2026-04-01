@@ -115,25 +115,12 @@ export function FolderBrowser(props: FolderBrowserProps) {
   return (
     <Suspense>
       <div class={props.class ?? ""}>
-        <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <h2 class="text-foreground text-sm font-semibold">
+        <div class="mb-6 flex flex-wrap items-center justify-end gap-3 sm:justify-between">
+          <h2 class="text-foreground hidden text-sm font-semibold sm:block">
             All Decks & Folders
           </h2>
 
           <div class="flex items-center gap-2">
-            <TextField class="w-48 sm:w-56">
-              <div class="relative">
-                <Search class="text-muted-foreground pointer-events-none absolute top-1/2 left-3 z-10 h-4 w-4 -translate-y-1/2" />
-                <TextFieldInput
-                  placeholder="Search decks..."
-                  value={search()}
-                  onInput={(e) => setSearch(e.currentTarget.value)}
-                  onFocus={() => setSearchFocused(true)}
-                  class="bg-card/40 border-card-foreground/20 pl-9 backdrop-blur-sm"
-                />
-              </div>
-            </TextField>
-
             <Select<MenuItem, MenuGroup>
               options={menuGroups()}
               optionValue="id"
@@ -169,6 +156,19 @@ export function FolderBrowser(props: FolderBrowserProps) {
                 }}
               />
             </Select>
+
+            <TextField class="w-48 sm:w-56">
+              <div class="relative">
+                <Search class="text-muted-foreground pointer-events-none absolute top-1/2 left-3 z-10 h-4 w-4 -translate-y-1/2" />
+                <TextFieldInput
+                  placeholder="Search decks..."
+                  value={search()}
+                  onInput={(e) => setSearch(e.currentTarget.value)}
+                  onFocus={() => setSearchFocused(true)}
+                  class="bg-card/40 border-card-foreground/20 pl-9 backdrop-blur-sm"
+                />
+              </div>
+            </TextField>
           </div>
         </div>
 
