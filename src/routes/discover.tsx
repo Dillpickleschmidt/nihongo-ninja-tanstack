@@ -259,7 +259,9 @@ function DiscoverPage() {
         titleLanguage={titleLanguage()}
       />
 
-      <StreamingPrefsModal />
+      <Show when={!search().tab || search().tab === "anime" || search().tab === "dramas"}>
+        <StreamingPrefsModal />
+      </Show>
 
       <BottomNav
         class="bg-background/85 opacity-100"

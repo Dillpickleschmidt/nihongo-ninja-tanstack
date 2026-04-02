@@ -1,4 +1,4 @@
-import type { JSX } from "solid-js"
+import { Show, type JSX } from "solid-js"
 import {
   Tabs,
   TabsList,
@@ -17,13 +17,19 @@ interface DiscoverTabsProps {
   dramasContent: JSX.Element
 }
 
+const MEDIA_TABS = new Set(["anime", "dramas"])
+
 export function DiscoverTabs(props: DiscoverTabsProps) {
+  const showMediaControls = () => MEDIA_TABS.has(props.value)
+
   return (
     <Tabs value={props.value} onChange={props.onChange} class="w-full">
       {/* Fixed controls — each positioned independently so content between them is clickable */}
       <div class="pointer-events-none fixed top-2 right-0 left-0 z-30 flex items-start justify-between px-3">
         <div class="pointer-events-auto">
-          <JlptBadge />
+          <Show when={showMediaControls()}>
+            <JlptBadge />
+          </Show>
         </div>
 
         <div class="pointer-events-auto">
@@ -51,7 +57,9 @@ export function DiscoverTabs(props: DiscoverTabsProps) {
         </div>
 
         <div class="pointer-events-auto">
-          <GlobalWeightsPopover />
+          <Show when={showMediaControls()}>
+            <GlobalWeightsPopover />
+          </Show>
         </div>
       </div>
 
