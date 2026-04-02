@@ -4,6 +4,14 @@
 @custom-variant dark (.dark &,[data-kb-theme="dark"] &);
 @custom-variant select (&:hover, &:focus-visible, &:active);
 
+@font-face {
+  font-family: "Excalifont";
+  src: url("https://excalidraw.nyc3.cdn.digitaloceanspaces.com/fonts/Excalifont-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   /* Light theme (default) */
   :root {
@@ -208,7 +216,7 @@
 
   --font-inter: "Inter Variable", "sans-serif";
   --font-japanese: "Noto Sans JP Variable", "sans-serif";
-  --font-poppins: "Poppins", "sans-serif";
+  --font-excalifont: "Excalifont", "sans-serif";
 
   /* Animation keyframes */
   @keyframes accordion-down {

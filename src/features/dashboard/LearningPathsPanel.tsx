@@ -1,8 +1,7 @@
-import { createSignal, For, Show, type Component } from "solid-js"
-import { useNavigate } from "@tanstack/solid-router"
+import { createSignal, Show, type Component } from "solid-js"
+import { Link } from "@tanstack/solid-router"
 import * as DialogPrimitive from "@kobalte/core/dialog"
 import { Clapperboard, Video, FileUp, FileText, X } from "lucide-solid"
-import { usePreferences } from "@/lib/preferences"
 import { CreateSubtitlePathDialog } from "./CreateSubtitlePathDialog"
 
 export type LearningPathSummary = {
@@ -17,10 +16,7 @@ export type LearningPathSummary = {
   seenVocab: number
 }
 
-export function LearningPathsPanel(props: {
-  paths: LearningPathSummary[]
-  loading: boolean
-}) {
+export function LearningPathsPanel() {
   const [showSubtitleDialog, setShowSubtitleDialog] = createSignal(false)
   const [showPlaceholder, setShowPlaceholder] = createSignal<string | null>(
     null,
@@ -29,7 +25,7 @@ export function LearningPathsPanel(props: {
   return (
     <div>
       {/* Create a Learning Path */}
-      <h3 class="text-xs font-semibold uppercase tracking-wider text-white/40">
+      <h3 class="text-xs font-semibold uppercase tracking-wider text-white/50">
         Create a Learning Path
       </h3>
       <div class="mt-3 grid grid-cols-2 gap-3">
@@ -37,13 +33,14 @@ export function LearningPathsPanel(props: {
           icon={Clapperboard}
           label="Browse Shows"
           description="From anime or drama subs"
-          onClick={() => setShowPlaceholder("Browse Shows")}
+          to="/discover"
         />
         <CreationTrigger
           icon={Video}
           label="YouTube"
-          description="Learn from a video"
-          onClick={() => setShowPlaceholder("YouTube Video")}
+          description="Browse curated content or add your own"
+          to="/discover"
+          search={{ tab: "youtube" }}
         />
         <CreationTrigger
           icon={FileUp}
@@ -59,35 +56,6 @@ export function LearningPathsPanel(props: {
         />
       </div>
 
-      {/* Your Learning Paths — compact row */}
-      <h3 class="mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">
-        Your Learning Paths
-      </h3>
-      <div class="mt-3">
-        <Show
-          when={!props.loading}
-          fallback={
-            <div class="flex gap-3">
-              <div class="h-10 w-24 animate-pulse rounded-lg bg-white/5" />
-              <div class="h-10 w-24 animate-pulse rounded-lg bg-white/5" />
-            </div>
-          }
-        >
-          <Show
-            when={props.paths.length > 0}
-            fallback={
-              <p class="text-sm text-white/30">No learning paths yet</p>
-            }
-          >
-            <div class="flex flex-wrap gap-2">
-              <For each={props.paths}>
-                {(path) => <PathChip path={path} />}
-              </For>
-            </div>
-          </Show>
-        </Show>
-      </div>
-
       <CreateSubtitlePathDialog
         open={showSubtitleDialog()}
         onClose={() => setShowSubtitleDialog(false)}
@@ -101,70 +69,83 @@ export function LearningPathsPanel(props: {
   )
 }
 
-function PathChip(props: { path: LearningPathSummary }) {
-  const { setPreferences } = usePreferences()
-  const navigate = useNavigate()
-
-  const progress = () => {
-    if (props.path.totalModules <= 0) return null
-    return `${props.path.completedModules}/${props.path.totalModules}`
-  }
-
-  return (
-    <button
-      onClick={() => {
-        setPreferences({ activeLearningPath: props.path.id })
-        navigate({ to: "/learn" })
-      }}
-      class="flex cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-white/5"
-    >
-      <div class="size-8 shrink-0 overflow-hidden rounded">
-        <Show
-          when={props.path.thumbnailUrl}
-          fallback={
-            <div class="flex size-full items-center justify-center bg-gradient-to-br from-(--landing-accent)/30 to-(--landing-accent-end)/30">
-              <span class="text-xs font-bold text-white/70">
-                {props.path.shortName.charAt(0)}
-              </span>
-            </div>
-          }
-        >
-          <img
-            src={props.path.thumbnailUrl!}
-            alt={props.path.shortName}
-            class="size-full object-cover"
-          />
-        </Show>
-      </div>
-      <div class="min-w-0">
-        <p class="truncate text-sm font-medium text-white/70">
-          {props.path.shortName}
-        </p>
-        <Show when={progress()}>
-          {(p) => <p class="text-[11px] text-white/30">{p()}</p>}
-        </Show>
-      </div>
-    </button>
-  )
-}
+const triggerClass =
+  "relative flex cursor-pointer items-center gap-3.5 overflow-hidden rounded-xl border border-white/5 p-4 text-left transition-colors duration-200 hover:border-dynamic-accent/30"
 
 function CreationTrigger(props: {
   icon: Component<{ class?: string }>
   label: string
   description: string
-  onClick: () => void
+  to?: string
+  search?: Record<string, string>
+  onClick?: () => void
 }) {
-  return (
-    <button
-      onClick={props.onClick}
-      class="flex cursor-pointer items-center gap-3.5 rounded-xl border border-white/[0.06] bg-white/[0.03] p-3.5 text-left transition-all duration-200 hover:border-(--landing-accent)/25 hover:bg-white/[0.06]"
-    >
+  const content = () => (
+    <>
       <props.icon class="size-5 shrink-0 text-(--landing-accent)" />
       <div>
         <p class="text-sm font-medium text-white/85">{props.label}</p>
-        <p class="mt-0.5 text-[11px] leading-tight text-white/35">{props.description}</p>
+        <p class="mt-0.5 text-[11px] leading-tight text-white/45">
+          {props.description}
+        </p>
       </div>
-    </button>
+    </>
+  )
+
+  const bgOpacity = 0.15
+  const hoverOpacity = bgOpacity + 0.08
+  const accentBg = {
+    "background-color": `color-mix(in srgb, var(--dynamic-accent) ${bgOpacity * 100}%, transparent)`,
+  }
+  const onEnter = (e: MouseEvent) => {
+    ;(e.currentTarget as HTMLElement).style.backgroundColor =
+      `color-mix(in srgb, var(--dynamic-accent) ${hoverOpacity * 100}%, transparent)`
+  }
+  const onLeave = (e: MouseEvent) => {
+    ;(e.currentTarget as HTMLElement).style.backgroundColor =
+      `color-mix(in srgb, var(--dynamic-accent) ${bgOpacity * 100}%, transparent)`
+  }
+
+  return (
+    <Show
+      when={props.to}
+      fallback={
+        <button
+          onClick={props.onClick}
+          class={triggerClass}
+          style={accentBg}
+          onMouseEnter={onEnter}
+          onMouseLeave={onLeave}
+        >
+          <div
+            class="pointer-events-none absolute inset-0 opacity-3"
+            style={{
+              "background-image": `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+            }}
+          />
+          {content()}
+        </button>
+      }
+    >
+      {(to) => (
+        <Link
+          to={to()}
+          search={props.search}
+          class={triggerClass}
+          style={accentBg}
+          onMouseEnter={onEnter}
+          onMouseLeave={onLeave}
+        >
+          <div
+            class="pointer-events-none absolute inset-0 opacity-3"
+            style={{
+              "background-image": `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+            }}
+          />
+          {content()}
+        </Link>
+      )}
+    </Show>
   )
 }
 

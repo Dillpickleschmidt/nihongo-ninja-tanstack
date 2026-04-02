@@ -20,7 +20,6 @@
     "@convex-dev/better-auth": "0.9.7",
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource-variable/noto-sans-jp": "^5.2.10",
-    "@fontsource/poppins": "^5.2.7",
     "@fontsource/zen-maru-gothic": "^5.2.8",
     "@kobalte/core": "^0.13.11",
     "@tailwindcss/vite": "4.1.17",
