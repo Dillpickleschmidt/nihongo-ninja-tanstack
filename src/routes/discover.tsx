@@ -7,7 +7,6 @@ import {
 } from "solid-js"
 import { createFileRoute, useNavigate } from "@tanstack/solid-router"
 import { z } from "zod"
-import { fallback, zodValidator } from "@tanstack/zod-adapter"
 import { queryKeys } from "~/query/query-keys"
 import { authQueryOptions } from "~/query/query-options"
 import {
@@ -39,11 +38,11 @@ import type {
 } from "~/features/discover/api/anilist/types"
 
 const discoverSearchSchema = z.object({
-  tab: fallback(z.enum(["anime", "youtube", "dramas"]).optional(), undefined),
+  tab: z.enum(["anime", "youtube", "dramas"]).optional().catch(undefined),
 })
 
 export const Route = createFileRoute("/discover")({
-  validateSearch: zodValidator(discoverSearchSchema),
+  validateSearch: discoverSearchSchema,
   loader: ({ context, preload }) => {
     if (!preload) {
       context.queryClient.setQueryData(queryKeys.backgroundSettings(), {

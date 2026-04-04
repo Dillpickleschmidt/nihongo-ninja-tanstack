@@ -20,7 +20,7 @@ export const quickAccessTools: Record<string, Tool[]> = {
       title: "Conjugation Practice",
       description: "Get your forms down",
       icon: "⚡",
-      href: "/practice/conjugation",
+      href: "/conjugation",
     },
     {
       title: "Sentence Building",
@@ -58,7 +58,7 @@ export const quickAccessTools: Record<string, Tool[]> = {
       title: "Conjugation Practice",
       description: "Get your forms down",
       icon: "⚡",
-      href: "/practice/conjugation",
+      href: "/conjugation",
     },
     {
       title: "Vocabulary Practice",

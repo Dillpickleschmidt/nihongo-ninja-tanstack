@@ -82,7 +82,7 @@ export function DeckCopyModal() {
     // Check Zod schema first
     const schemaResult = DeckNameSchema.safeParse(name())
     if (!schemaResult.success) {
-      return { isValid: false, error: schemaResult.error.errors[0].message }
+      return { isValid: false, error: schemaResult.error.issues[0].message }
     }
 
     // Check uniqueness
@@ -97,7 +97,7 @@ export function DeckCopyModal() {
   const descriptionValidation = createMemo(() => {
     const schemaResult = DescriptionSchema.safeParse(description())
     if (!schemaResult.success) {
-      return { isValid: false, error: schemaResult.error.errors[0].message }
+      return { isValid: false, error: schemaResult.error.issues[0].message }
     }
     return { isValid: true, error: "" }
   })

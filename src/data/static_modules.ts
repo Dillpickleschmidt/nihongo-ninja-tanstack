@@ -222,7 +222,7 @@ export const static_modules: Record<string, StaticModule> = {
   },
   "conjugation-practice-masu": {
     title: "Practice Pos/Neg ます Conjugation",
-    link: "/practice/conjugation?normal=true&teForm=false&volitional=false&taiForm=false&tariForm=false&potential=false&imperative=false&conditional=false&passive=false&causative=false&causativePassive=false&verb=false&iAdjective=true&naAdjective=true&polite=true&plain=false&nonPast=true&past=false&positive=true&negative=true",
+    link: "/conjugation?normal=true&teForm=false&volitional=false&taiForm=false&tariForm=false&potential=false&imperative=false&conditional=false&passive=false&causative=false&causativePassive=false&verb=false&iAdjective=true&naAdjective=true&polite=true&plain=false&nonPast=true&past=false&positive=true&negative=true&jlptLevel=n5&leaveOutSuru=false&reverse=false&amount=10&showMeaning=false&noFurigana=false&emoji=false",
     module_type: "conjugation-practice",
   },
   "o-de-ni-e-particles": {
@@ -287,7 +287,7 @@ export const static_modules: Record<string, StaticModule> = {
   },
   "counter-practice": {
     title: "Counters Practice",
-    link: "/lessons/counter-practice",
+    link: "/counters",
     module_type: "counter-practice",
   },
   takusan: {
@@ -302,7 +302,7 @@ export const static_modules: Record<string, StaticModule> = {
   },
   "conjugation-practice-adjective": {
     title: "Practice Adjective Conjugation",
-    link: "/practice/conjugation?normal=true&teForm=false&volitional=false&taiForm=false&tariForm=false&potential=false&imperative=false&conditional=false&passive=false&causative=false&causativePassive=false&verb=false&iAdjective=true&naAdjective=true&polite=true&plain=false&nonPast=true&past=true&positive=true&negative=true",
+    link: "/conjugation?normal=true&teForm=false&volitional=false&taiForm=false&tariForm=false&potential=false&imperative=false&conditional=false&passive=false&causative=false&causativePassive=false&verb=false&iAdjective=true&naAdjective=true&polite=true&plain=false&nonPast=true&past=true&positive=true&negative=true&jlptLevel=n5&leaveOutSuru=false&reverse=false&amount=10&showMeaning=false&noFurigana=false&emoji=false",
     module_type: "conjugation-practice",
   },
   "when-not-to-use-wa": {
@@ -347,7 +347,7 @@ export const static_modules: Record<string, StaticModule> = {
   },
   "conjugation-practice-te-form": {
     title: "Practice て-Form Conjugation",
-    link: "/practice/conjugation?normal=false&teForm=true&volitional=false&taiForm=false&tariForm=false&potential=false&imperative=false&conditional=false&passive=false&causative=false&causativePassive=false&verb=true&iAdjective=false&naAdjective=false&polite=true&plain=false&nonPast=true&past=false&positive=true&negative=false",
+    link: "/conjugation?normal=false&teForm=true&volitional=false&taiForm=false&tariForm=false&potential=false&imperative=false&conditional=false&passive=false&causative=false&causativePassive=false&verb=true&iAdjective=false&naAdjective=false&polite=true&plain=false&nonPast=true&past=false&positive=true&negative=false&jlptLevel=n5&leaveOutSuru=false&reverse=false&amount=10&showMeaning=false&noFurigana=false&emoji=false",
     module_type: "conjugation-practice",
   },
   "te-form-connection": {

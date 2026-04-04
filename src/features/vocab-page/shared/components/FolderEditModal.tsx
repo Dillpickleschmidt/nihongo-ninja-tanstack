@@ -78,7 +78,7 @@ export function FolderEditModal() {
     // Check Zod schema first
     const schemaResult = FolderNameSchema.safeParse(name())
     if (!schemaResult.success) {
-      return { isValid: false, error: schemaResult.error.errors[0].message }
+      return { isValid: false, error: schemaResult.error.issues[0].message }
     }
 
     // Check uniqueness within the target parent folder

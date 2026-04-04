@@ -28,7 +28,7 @@ export function useDeckFormValidation(excludeDeckId?: string) {
     // Check format first
     const formatResult = DeckNameSchema.safeParse(name())
     if (!formatResult.success) {
-      return formatResult.error.errors[0].message
+      return formatResult.error.issues[0].message
     }
 
     // Check uniqueness
@@ -43,7 +43,7 @@ export function useDeckFormValidation(excludeDeckId?: string) {
   const descriptionError = createMemo(() => {
     if (!touched().description) return undefined
     const result = DescriptionSchema.safeParse(description())
-    return result.success ? undefined : result.error.errors[0].message
+    return result.success ? undefined : result.error.issues[0].message
   })
 
   const isValid = createMemo(

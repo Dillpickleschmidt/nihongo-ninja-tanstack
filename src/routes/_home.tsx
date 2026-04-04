@@ -107,7 +107,7 @@ function ActiveChapterSync() {
     const loc = location()
 
     // Handle /vocab?chapter=X
-    const chapterParam = new URLSearchParams(loc.search).get("chapter")
+    const chapterParam = "chapter" in loc.search ? (loc.search.chapter as string) : undefined
     if (loc.pathname === "/vocab" && chapterParam) {
       if (chapterParam !== preferences().activeChapter) {
         setPreference("activeChapter", chapterParam)

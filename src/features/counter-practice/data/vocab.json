@@ -1,0 +1,65 @@
+[
+  { "word": "rabbit", "pluralWord": "rabbits", "patternId": "匹" },
+  { "word": "cat", "pluralWord": "cats", "patternId": "匹" },
+  { "word": "dog", "pluralWord": "dogs", "patternId": "匹" },
+  { "word": "fish", "pluralWord": "fish", "patternId": "匹" },
+  { "word": "mouse", "pluralWord": "mice", "patternId": "匹" },
+
+  { "word": "person", "pluralWord": "people", "patternId": "人" },
+  { "word": "student", "pluralWord": "students", "patternId": "人" },
+  { "word": "teacher", "pluralWord": "teachers", "patternId": "人" },
+  { "word": "friend", "pluralWord": "friends", "patternId": "人" },
+  { "word": "roommate", "pluralWord": "roommates", "patternId": "人" },
+
+  { "word": "sheet of paper", "pluralWord": "sheets of paper", "patternId": "枚" },
+  { "word": "photograph", "pluralWord": "photographs", "patternId": "枚" },
+  { "word": "ticket", "pluralWord": "tickets", "patternId": "枚" },
+  { "word": "postcard", "pluralWord": "postcards", "patternId": "枚" },
+
+  { "word": "apple", "pluralWord": "apples", "patternId": "個" },
+  { "word": "egg", "pluralWord": "eggs", "patternId": "個" },
+  { "word": "cookie", "pluralWord": "cookies", "patternId": "個" },
+
+  { "word": "book", "pluralWord": "books", "patternId": "冊" },
+  { "word": "magazine", "pluralWord": "magazines", "patternId": "冊" },
+  { "word": "dictionary", "pluralWord": "dictionaries", "patternId": "冊" },
+
+  { "word": "pencil", "pluralWord": "pencils", "patternId": "本" },
+  { "word": "umbrella", "pluralWord": "umbrellas", "patternId": "本" },
+  { "word": "tree", "pluralWord": "trees", "patternId": "本" },
+
+  { "word": "minute", "pluralWord": "minutes", "patternId": "分" },
+  { "word": "hour", "pluralWord": "hours", "patternId": "時間" },
+  { "word": "day", "pluralWord": "days", "patternId": "日" },
+  { "word": "week", "pluralWord": "weeks", "patternId": "週間" },
+  { "word": "month", "pluralWord": "months", "patternId": "か月" },
+  { "word": "year", "pluralWord": "years", "patternId": "年" },
+
+  { "word": "floor", "pluralWord": "floors", "patternId": "階" },
+  { "word": "level", "pluralWord": "levels", "patternId": "階" },
+
+  { "word": "thing", "pluralWord": "things", "patternId": "つ" },
+  { "word": "item", "pluralWord": "items", "patternId": "つ" },
+
+  { "word": "year old", "pluralWord": "years old", "patternId": "歳" },
+
+  { "word": "yen", "pluralWord": "yen", "patternId": "円" },
+  { "word": "pound", "pluralWord": "pounds", "patternId": "ポンド" },
+
+  { "word": "time", "pluralWord": "times", "patternId": "回" },
+
+  { "word": "lesson", "pluralWord": "lessons", "patternId": "課" },
+  { "word": "chapter", "pluralWord": "chapters", "patternId": "課" },
+
+  { "word": "page", "pluralWord": "pages", "patternId": "ページ" },
+
+  { "word": "house", "pluralWord": "houses", "patternId": "軒" },
+  { "word": "building", "pluralWord": "buildings", "patternId": "軒" },
+
+  { "word": "pair of shoes", "pluralWord": "pairs of shoes", "patternId": "足" },
+  { "word": "pair of socks", "pluralWord": "pairs of socks", "patternId": "足" },
+
+  { "word": "letter", "pluralWord": "letters", "patternId": "通" },
+  { "word": "message", "pluralWord": "messages", "patternId": "通" },
+  { "word": "email", "pluralWord": "emails", "patternId": "通" }
+]

@@ -1,0 +1,137 @@
+[
+  {
+    "chapter": 1,
+    "content": [
+      {
+        "id": "時",
+        "baseReading": "じ",
+        "numberOverrides": [
+          { "number": 4, "reading": "よ" },
+          { "number": 7, "reading": "しち" },
+          { "number": 9, "reading": "く" }
+        ]
+      },
+      { "id": "分", "baseReading": "ふん", "soundChangeType": "hToP" },
+      {
+        "id": "年",
+        "baseReading": "ねん",
+        "numberOverrides": [{ "number": 4, "reading": "よ" }]
+      },
+      { "id": "百", "baseReading": "ひゃく", "soundChangeType": "hToP/B" },
+      {
+        "id": "歳",
+        "baseReading": "さい",
+        "soundChangeType": "s",
+        "numberOverrides": [{ "number": 20, "reading": "はたち" }]
+      }
+    ]
+  },
+  {
+    "chapter": 2,
+    "content": [
+      { "id": "千", "baseReading": "せん", "soundChangeType": "s" },
+      { "id": "万", "baseReading": "まん" },
+      {
+        "id": "円",
+        "baseReading": "えん",
+        "numberOverrides": [{ "number": 4, "reading": "よ" }]
+      }
+    ]
+  },
+  {
+    "chapter": 4,
+    "content": [
+      {
+        "id": "時間",
+        "baseReading": "じかん",
+        "numberOverrides": [
+          { "number": 4, "reading": "よ" },
+          { "number": 7, "reading": "しち" },
+          { "number": 9, "reading": "く" }
+        ]
+      },
+      {
+        "id": "月",
+        "baseReading": "がつ",
+        "range": [1, 12],
+        "numberOverrides": [
+          { "number": 4, "reading": "し" },
+          { "number": 7, "reading": "しち" },
+          { "number": 9, "reading": "く" }
+        ]
+      },
+      { "id": "か月", "baseReading": "かげつ", "soundChangeType": "k" },
+      { "id": "週間", "baseReading": "しゅうかん", "soundChangeType": "s" },
+      { "id": "日", "baseReading": "にち", "soundChangeType": "dates" },
+      { "id": "課", "baseReading": "か", "soundChangeType": "k" },
+      {
+        "id": "年間",
+        "baseReading": "ねんかん",
+        "numberOverrides": [{ "number": 4, "reading": "よ" }]
+      },
+      { "id": "分間", "baseReading": "ふんかん", "soundChangeType": "hToP" }
+    ]
+  },
+  {
+    "chapter": 5,
+    "content": [
+      { "id": "つ", "baseReading": "つ", "soundChangeType": "generic", "range": [1, 10] },
+      { "id": "枚", "baseReading": "まい" }
+    ]
+  },
+  {
+    "chapter": 6,
+    "content": [
+      { "id": "ページ", "baseReading": "ページ", "soundChangeType": "p" },
+      { "id": "丁目", "baseReading": "ちょうめ", "soundChangeType": "t" }
+    ]
+  },
+  {
+    "chapter": 7,
+    "content": [
+      {
+        "id": "人",
+        "baseReading": "にん",
+        "numberOverrides": [
+          { "number": 1, "reading": "ひとり" },
+          { "number": 2, "reading": "ふたり" }
+        ]
+      },
+      { "id": "ポンド", "baseReading": "ポンド", "soundChangeType": "p" }
+    ]
+  },
+  {
+    "chapter": 8,
+    "content": [
+      { "id": "度", "baseReading": "ど" },
+      { "id": "杯", "baseReading": "はい", "soundChangeType": "hToP/B" }
+    ]
+  },
+  {
+    "chapter": 12,
+    "content": [{ "id": "足", "baseReading": "そく", "soundChangeType": "s" }]
+  },
+  {
+    "chapter": 13,
+    "content": [
+      { "id": "回", "baseReading": "かい", "soundChangeType": "k" },
+      { "id": "通", "baseReading": "つう", "soundChangeType": "t" }
+    ]
+  },
+  {
+    "chapter": 14,
+    "content": [
+      { "id": "本", "baseReading": "ほん", "soundChangeType": "hToP/B" },
+      { "id": "匹", "baseReading": "ひき", "soundChangeType": "hToP/B" },
+      { "id": "個", "baseReading": "こ", "soundChangeType": "k" },
+      { "id": "冊", "baseReading": "さつ", "soundChangeType": "s" }
+    ]
+  },
+  {
+    "chapter": 20,
+    "content": [
+      { "id": "階", "baseReading": "かい", "soundChangeType": "kToG" },
+      { "id": "軒", "baseReading": "けん", "soundChangeType": "kToG" }
+    ]
+  }
+]

@@ -58,6 +58,29 @@ export const getKnownVocabWords = query({
 })
 
 /**
+ * Get vocabulary items suitable for conjugation practice.
+ * Filters server-side to only return items with a partOfSpeech (verbs + adjectives),
+ * projecting a slim shape to reduce data transfer.
+ */
+export const getConjugatableVocab = query({
+  args: { jlptLevels: v.array(v.string()) },
+  handler: async (ctx, { jlptLevels }) => {
+    const sets = await Vocabulary.fetchSetsByIds(ctx, jlptLevels)
+    const allKeys = [...new Set(Object.values(sets).flat())]
+    const itemsMap = await Vocabulary.fetchVocabItemsByKeys(ctx, allKeys, null)
+    return Object.values(itemsMap)
+      .filter((item) => item.partOfSpeech != null)
+      .map(({ key, word, furigana, english, partOfSpeech }) => ({
+        key,
+        word,
+        furigana,
+        english,
+        partOfSpeech: partOfSpeech!,
+      }))
+  },
+})
+
+/**
  * Get kanji entries for given kanji characters
  */
 export const getKanjiByChars = query({

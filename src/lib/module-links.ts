@@ -28,9 +28,17 @@ export function getModuleLink(
 
 // --- Reverse: URL → moduleId ---
 
+function normalizeLink(link: string): string {
+  const qIndex = link.indexOf("?")
+  if (qIndex === -1) return link
+  const params = new URLSearchParams(link.slice(qIndex + 1))
+  params.sort()
+  return `${link.slice(0, qIndex)}?${params.toString()}`
+}
+
 export const linkToModuleId: Record<string, string> = {}
 for (const [moduleId, mod] of Object.entries(static_modules)) {
-  linkToModuleId[mod.link] = moduleId
+  linkToModuleId[normalizeLink(mod.link)] = moduleId
 }
 for (const moduleId of Object.keys(external_resources)) {
   linkToModuleId[getExternalResourceLink(moduleId)] = moduleId
@@ -40,12 +48,23 @@ export function getModuleIdFromUrl(
   pathname: string,
   search: Record<string, unknown> | string,
 ): string | undefined {
+  // Try full URL first (pathname + search params), then pathname alone
+  const params =
+    typeof search === "string"
+      ? new URLSearchParams(search)
+      : new URLSearchParams(
+          Object.entries(search)
+            .filter(([, v]) => v != null)
+            .map(([k, v]) => [k, String(v)]),
+        )
+  params.sort()
+  const searchStr = params.toString()
+  const fullUrl = searchStr ? `${pathname}?${searchStr}` : pathname
+
+  if (linkToModuleId[fullUrl]) return linkToModuleId[fullUrl]
   if (linkToModuleId[pathname]) return linkToModuleId[pathname]
 
-  const importParam =
-    typeof search === "string"
-      ? new URLSearchParams(search).get("import")
-      : (search as Record<string, string>).import
+  const importParam = params.get("import")
   if (importParam) return importParam
 
   const sentenceMatch = pathname.match(/^\/sentence-practice\/(.+)$/)

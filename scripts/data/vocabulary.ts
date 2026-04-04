@@ -6274,7 +6274,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   遊ぶ: {
     jlptLevel: "n5",
     word: "遊ぶ",
-    furigana: "遊ぶ[あそぶ]",
+    furigana: "遊[あそ]ぶ",
     english: ["to play", "to spend time pleasantly"],
     chapter: 6,
     partOfSpeech: "Godan verb with 'bu' ending",
@@ -6288,7 +6288,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   急ぐ: {
     jlptLevel: "n5",
     word: "急ぐ",
-    furigana: "急ぐ[いそぐ]",
+    furigana: "急[いそ]ぐ",
     english: ["to hurry"],
     chapter: 6,
     partOfSpeech: "Godan verb with 'gu' ending",
@@ -6323,7 +6323,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   消す: {
     jlptLevel: "n5",
     word: "消す",
-    furigana: "消す[けす]",
+    furigana: "消[け]す",
     english: ["to turn off", "to erase"],
     chapter: 6,
     partOfSpeech: "Godan verb with 'su' ending",
@@ -6338,7 +6338,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   死ぬ: {
     jlptLevel: "n5",
     word: "死ぬ",
-    furigana: "死ぬ[しぬ]",
+    furigana: "死[し]ぬ",
     english: ["to die"],
     chapter: 6,
     partOfSpeech: "Godan verb with 'nu' ending",
@@ -6376,7 +6376,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   座る: {
     jlptLevel: "n5",
     word: "座る",
-    furigana: "座る[すわる]",
+    furigana: "座[すわ]る",
     english: ["to sit down"],
     chapter: 6,
     partOfSpeech: "Ichidan verb",
@@ -6403,7 +6403,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   立つ: {
     jlptLevel: "n5",
     word: "立つ",
-    furigana: "立つ[たつ]",
+    furigana: "立[た]つ",
     english: ["to stand up", "to be erected"],
     chapter: 6,
     info: [
@@ -6445,7 +6445,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   たばこを吸う: {
     jlptLevel: "n5",
     word: "たばこを吸う",
-    furigana: "たばこを吸う[たばこをすう]",
+    furigana: "たばこを 吸[す]う",
     english: ["to smoke"],
     chapter: 6,
     info: [
@@ -6482,7 +6482,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   使う: {
     jlptLevel: "n5",
     word: "使う",
-    furigana: "使う[つかう]",
+    furigana: "使[つか]う",
     english: ["to use"],
     chapter: 6,
     partOfSpeech: "Godan verb with 'u' ending",
@@ -6505,7 +6505,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   手伝う: {
     jlptLevel: "n5",
     word: "手伝う",
-    furigana: "手伝う[てつだう]",
+    furigana: "手伝[てつだ]う",
     english: ["to help"],
     chapter: 6,
     partOfSpeech: "Godan verb with 'u' ending",
@@ -6528,7 +6528,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   入る: {
     jlptLevel: "n5",
     word: "入る",
-    furigana: "入る[はいる]",
+    furigana: "入[はい]る",
     english: ["to enter", "to join", "to go in"],
     chapter: 6,
     info: [
@@ -6570,9 +6570,8 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   持つ: {
     jlptLevel: "n5",
     word: "持つ",
-    furigana: "持つ[もつ]",
-    english: ["to carry", "to hold"],
-    chapter: 6,
+    furigana: "持[も]つ",
+    english: ["to carry", "to hold"], chapter: 6,
     partOfSpeech: "Godan verb with 'tsu' ending",
     particles: [{ particle: "を", label: "thing" }],
     exampleSentences: [
@@ -6610,7 +6609,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   休む: {
     jlptLevel: "n5",
     word: "休む",
-    furigana: "休む[やすむ]",
+    furigana: "休[やす]む",
     english: ["to be absent (from)", "to rest"],
     chapter: 6,
     partOfSpeech: "Godan verb with 'mu' ending",
@@ -6637,7 +6636,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   開ける: {
     jlptLevel: "n5",
     word: "開ける",
-    furigana: "開ける[あける]",
+    furigana: "開[あ]ける",
     english: ["to open (something)"],
     chapter: 6,
     partOfSpeech: "Ichidan verb",
@@ -6684,7 +6683,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   閉める: {
     jlptLevel: "n5",
     word: "閉める",
-    furigana: "閉める[しめる]",
+    furigana: "閉[し]める",
     english: ["to close (something)"],
     chapter: 6,
     partOfSpeech: "Ichidan verb",
@@ -6735,7 +6734,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   教える: {
     jlptLevel: "n5",
     word: "教える",
-    furigana: "教える[おしえる]",
+    furigana: "教[おし]える",
     english: ["to teach", "to instruct"],
     chapter: 6,
     partOfSpeech: "Ichidan verb",
@@ -6773,7 +6772,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   忘れる: {
     jlptLevel: "n5",
     word: "忘れる",
-    furigana: "忘れる[わすれる]",
+    furigana: "忘[わす]れる",
     english: ["to forget", "to leave behind"],
     chapter: 6,
     partOfSpeech: "Ichidan verb",
@@ -6796,7 +6795,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   降りる: {
     jlptLevel: "n5",
     word: "降りる",
-    furigana: "降りる[おりる]",
+    furigana: "降[お]りる",
     english: ["to get off", "to descend"],
     chapter: 6,
     info: [
@@ -6830,7 +6829,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   借りる: {
     jlptLevel: "n5",
     word: "借りる",
-    furigana: "借りる[かりる]",
+    furigana: "借[か]りる",
     english: ["to borrow"],
     chapter: 6,
     partOfSpeech: "Ichidan verb",
@@ -6867,7 +6866,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
   シャワーを浴びる: {
     word: "シャワーを浴びる",
-    furigana: "シャワーを浴びる[シャワーをあびる]",
+    furigana: "シャワーを 浴[あ]びる",
     english: ["to take a shower"],
     chapter: 6,
     partOfSpeech: "Ichidan verb",
@@ -6919,7 +6918,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   },
   電話する: {
     word: "電話する",
-    furigana: "電話する[でんわする]",
+    furigana: "電話[でんわ]する",
     english: ["to call"],
     chapter: 6,
     partOfSpeech: "Suru verb - compound word",
@@ -6942,7 +6941,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   連れてくる: {
     jlptLevel: "n5",
     word: "連れてくる",
-    furigana: "連れてくる[つれてくる]",
+    furigana: "連[つ]れてくる",
     english: ["to bring (a person)"],
     chapter: 6,
     partOfSpeech: "Godan verb with 'ku' ending",
@@ -6969,7 +6968,7 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   持ってくる: {
     jlptLevel: "n5",
     word: "持ってくる",
-    furigana: "持ってくる[もってくる]",
+    furigana: "持[も]ってくる",
     english: ["to bring (a thing)"],
     chapter: 6,
     partOfSpeech: "Godan verb with 'ru' ending",
@@ -7013,14 +7012,14 @@ const vocabularyWithChapter: LocalVocabularyCollection = {
   結構です: {
     jlptLevel: "n5",
     word: "結構です",
-    furigana: "結構です[けっこうです]",
+    furigana: "結構[けっこう]です",
     english: ["That would be fine.", "That wouldn’t be necessary."],
     chapter: 6,
   },
   本当ですか: {
     jlptLevel: "n5",
     word: "本当ですか",
-    furigana: "本当ですか[ほんとうですか]",
+    furigana: "本当[ほんとう]ですか",
     english: ["Really?"],
     chapter: 6,
   },

@@ -379,7 +379,7 @@ async function fetchUserDeckVocab(
 /**
  * Fetches vocabulary sets by IDs
  */
-async function fetchSetsByIds(
+export async function fetchSetsByIds(
   ctx: QueryCtx,
   setIds: string[],
 ): Promise<Record<string, string[]>> {
