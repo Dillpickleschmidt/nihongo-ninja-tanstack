@@ -38,7 +38,7 @@ export function SummaryPage(props: SummaryPageProps) {
 
         {/* Stat boxes */}
         <div class="mb-8 grid grid-cols-3 gap-3">
-          <div class="rounded-xl border border-emerald-500/20 bg-white/5 p-4 text-center text-emerald-400">
+          <div class="rounded-xl border border-violet-500/20 bg-white/5 p-4 text-center text-violet-300">
             <div class="text-2xl font-bold">{props.correct}</div>
             <div class="text-xs text-white/40">Correct</div>
           </div>
@@ -86,7 +86,7 @@ export function SummaryPage(props: SummaryPageProps) {
                   class={cn(
                     "flex size-6 shrink-0 items-center justify-center rounded-full text-xs",
                     question.correct
-                      ? "bg-emerald-500/20 text-emerald-400"
+                      ? "bg-violet-500/20 text-violet-300"
                       : "bg-rose-500/20 text-rose-400",
                   )}
                 >
@@ -100,7 +100,7 @@ export function SummaryPage(props: SummaryPageProps) {
       {/* Bottom buttons */}
       <div class="fixed bottom-20 left-0 right-0 z-30 flex justify-center gap-3 px-4">
         <div class="w-full max-w-xs">
-          <Button3D color="rgb(22,163,74)" onClick={props.onRestart}>
+          <Button3D color="rgb(139,92,246)" onClick={props.onRestart}>
             Practice Again
           </Button3D>
         </div>

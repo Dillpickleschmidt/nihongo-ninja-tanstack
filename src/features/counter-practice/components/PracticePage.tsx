@@ -154,10 +154,10 @@ export function PracticePage(props: PracticePageProps) {
                 How do you count this?
               </span>
               <div class="mt-4 text-center">
-                <span class="text-5xl font-bold text-green-400 sm:text-7xl">
+                <span class="text-4xl font-bold text-violet-300 sm:text-6xl">
                   {question().number}
                 </span>
-                <span class="ml-3 text-2xl font-semibold text-white/70 sm:text-3xl">
+                <span class="ml-2 text-3xl font-semibold text-white/70 sm:ml-3 sm:text-4xl">
                   {question().number === 1
                     ? question().vocab.word
                     : question().vocab.pluralWord}
@@ -188,12 +188,12 @@ export function PracticePage(props: PracticePageProps) {
                       "font-japanese h-12 rounded-2xl border bg-white/5 py-4 text-center text-lg font-medium outline-none transition-colors placeholder:text-white/30",
                       !isAnswered() &&
                         !showHint() &&
-                        "border-white/10 focus:border-cyan-500",
+                        "border-white/10 focus:border-violet-500",
                       !isAnswered() &&
                         showHint() &&
                         "border-rose-500/50 focus:border-rose-500",
                       isAnswered() &&
-                        "border-emerald-500 bg-emerald-500/10 text-emerald-400",
+                        "border-violet-500 bg-violet-500/10 text-violet-300",
                     )}
                   />
                 </TextField>
@@ -221,7 +221,7 @@ export function PracticePage(props: PracticePageProps) {
 
               {/* Correct feedback */}
               <Show when={isAnswered()}>
-                <div class="rounded-lg bg-emerald-500/10 p-3 text-center text-sm font-medium text-emerald-400">
+                <div class="rounded-lg bg-violet-500/10 p-3 text-center text-sm font-medium text-violet-300">
                   Correct!
                 </div>
               </Show>
@@ -236,11 +236,11 @@ export function PracticePage(props: PracticePageProps) {
           <Button3D
             color={
               isAnswered()
-                ? "rgb(16,185,129)"
+                ? "rgb(139,92,246)"
                 : showHint()
                   ? "rgb(244,63,94)"
-                  : "rgb(22,163,74)"
-            }
+                  : "rgb(139,92,246)"
+             }
             disabled={!answer().trim() && !isAnswered()}
             onClick={isAnswered() ? handleNext : handleCheck}
           >

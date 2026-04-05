@@ -23,6 +23,12 @@ export type CounterPattern = {
   range?: [number, number]
 }
 
+export type CounterPatternGroup = {
+  chapter: number
+  title: string
+  patterns: CounterPattern[]
+}
+
 export type VocabItem = {
   word: string
   pluralWord: string

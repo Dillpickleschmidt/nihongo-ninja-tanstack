@@ -222,7 +222,7 @@ export const chapters: Record<
         "mo-particle",
         "jikan",
         "sentence-practice-duration",
-        "counter-practice",
+        "counter-practice-time-and-duration",
         "takusan",
         "beginner-guide-to-konbini",
       ],
@@ -257,7 +257,7 @@ export const chapters: Record<
         "polite-volitional",
         "sports",
         "counters",
-        "counter-practice",
+        "counter-practice-basic-counters",
       ],
       disabled_modules: [
         "grammar-notes",

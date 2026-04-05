@@ -14,6 +14,8 @@ import {
   FileText,
   Blocks,
   MapPlus,
+  Hash,
+  Repeat2,
 } from "lucide-solid"
 import type { Component } from "solid-js"
 
@@ -25,8 +27,8 @@ const iconComponents: Record<string, Component<any>> = {
   "culture-note": Coffee,
   vocab: BookPlus,
   "vocab-practice": GraduationCap,
-  "conjugation-practice": GraduationCap,
-  "counter-practice": GraduationCap,
+  "conjugation-practice": Repeat2,
+  "counter-practice": Hash,
   game: Gamepad,
   video: Video,
   audio: Volume2,
@@ -77,8 +79,8 @@ const MODULE_STYLES: Record<string, { text: string; bg: string }> = {
     bg: "bg-teal-500 dark:bg-teal-400",
   },
   "counter-practice": {
-    text: "text-green-600 dark:text-green-500",
-    bg: "bg-green-600 dark:bg-green-500",
+    text: "text-violet-600 dark:text-violet-400",
+    bg: "bg-violet-600 dark:bg-violet-400",
   },
   game: {
     text: "text-red-600 dark:text-red-500",
@@ -142,4 +144,3 @@ const DEFAULT_STYLE = {
 export function getModuleIconClasses(moduleType: string): string {
   return (MODULE_STYLES[moduleType] || DEFAULT_STYLE).text
 }
-

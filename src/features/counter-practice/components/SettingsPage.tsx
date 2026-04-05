@@ -1,4 +1,4 @@
-import { For, type JSX } from "solid-js"
+import { For } from "solid-js"
 import { Hash } from "lucide-solid"
 import {
   TextField,
@@ -6,7 +6,8 @@ import {
   TextFieldInput,
 } from "@/components/ui/text-field"
 import { Button3D } from "@/components/Button3D"
-import type { CounterPattern } from "../types"
+import { cn } from "@/utils"
+import type { CounterPattern, CounterPatternGroup } from "../types"
 
 type CounterSettings = {
   selectedPatternIds: string[]
@@ -15,6 +16,7 @@ type CounterSettings = {
 
 type SettingsPageProps = {
   allPatterns: CounterPattern[]
+  groupedPatterns: CounterPatternGroup[]
   settings: () => CounterSettings
   onSettingsChange: (settings: CounterSettings) => void
   onStartPractice: () => void
@@ -58,6 +60,15 @@ const COUNTER_DESCRIPTIONS: Record<string, string> = {
 
 export function SettingsPage(props: SettingsPageProps) {
   const selected = () => new Set(props.settings().selectedPatternIds)
+  const selectedCount = () => props.settings().selectedPatternIds.length
+  const allSelected = () => selectedCount() === props.allPatterns.length
+
+  function setAmount(amount: number) {
+    props.onSettingsChange({
+      ...props.settings(),
+      amount,
+    })
+  }
 
   function togglePattern(id: string) {
     const current = selected()
@@ -80,10 +91,27 @@ export function SettingsPage(props: SettingsPageProps) {
     })
   }
 
-  function selectNone() {
+  function keepOneSelected() {
     props.onSettingsChange({
       ...props.settings(),
       selectedPatternIds: [props.allPatterns[0].id],
+    })
+  }
+
+  function toggleGroup(patternIds: string[], checked: boolean) {
+    const next = new Set(selected())
+
+    if (checked) {
+      for (const id of patternIds) next.add(id)
+    } else {
+      const remaining = props.allPatterns.length - patternIds.filter((id) => next.has(id)).length
+      if (remaining < 1) return
+      for (const id of patternIds) next.delete(id)
+    }
+
+    props.onSettingsChange({
+      ...props.settings(),
+      selectedPatternIds: [...next],
     })
   }
 
@@ -92,8 +120,8 @@ export function SettingsPage(props: SettingsPageProps) {
       {/* Header */}
       <div class="mb-10">
         <div class="mb-2 flex items-center gap-2">
-          <Hash class="size-4 text-green-500" />
-          <span class="text-xs font-semibold tracking-widest text-green-500/90 uppercase">
+          <Hash class="size-4 text-violet-400" />
+          <span class="text-xs font-semibold tracking-widest text-violet-400/90 uppercase">
             Counter Practice
           </span>
         </div>
@@ -103,74 +131,173 @@ export function SettingsPage(props: SettingsPageProps) {
         <p class="text-muted-foreground mt-2 max-w-lg text-sm leading-relaxed md:text-base">
           Practice Japanese counters and their sound change rules.
         </p>
+        <div class="mt-3 flex items-center gap-2 text-xs text-white/35">
+          <span>{selectedCount()} selected</span>
+          <span>•</span>
+          <span>{props.settings().amount} questions</span>
+        </div>
       </div>
 
       <div class="space-y-6 pb-32">
         {/* Counter selection */}
-        <Section title="Select Counters">
-          <div class="mb-3 flex gap-2">
-            <button
-              type="button"
-              onClick={selectAll}
-              class="rounded-full px-3 py-1 text-xs font-medium text-white/40 transition-colors hover:bg-white/10 hover:text-white/60"
-            >
-              Select All
-            </button>
-            <button
-              type="button"
-              onClick={selectNone}
-              class="rounded-full px-3 py-1 text-xs font-medium text-white/40 transition-colors hover:bg-white/10 hover:text-white/60"
-            >
-              Deselect All
-            </button>
+        <section class="space-y-4">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-white/40">
+            Select Counters
+          </h2>
+          <div class="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+            <div class="flex items-center gap-3">
+              <span
+                class={cn(
+                  "flex size-4 shrink-0 items-center justify-center rounded-full border text-[10px] transition-colors",
+                  allSelected()
+                    ? "border-violet-400 bg-violet-500 text-white"
+                    : "border-white/30 bg-white/10 text-transparent",
+                )}
+              >
+                ✓
+              </span>
+              <div class="leading-tight">
+                <p class="text-sm text-white/75">
+                  {allSelected() ? "All counters selected" : "Custom selection"}
+                </p>
+                <p class="text-xs text-white/35">
+                  {selectedCount()} of {props.allPatterns.length} selected
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={selectAll}
+                disabled={allSelected()}
+                class={cn(
+                  "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+                  allSelected()
+                    ? "cursor-default text-white/20"
+                    : "text-white/40 hover:bg-white/10 hover:text-white/60",
+                )}
+              >
+                Select All
+              </button>
+              <button
+                type="button"
+                onClick={keepOneSelected}
+                disabled={selectedCount() === 1}
+                class={cn(
+                  "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+                  selectedCount() === 1
+                    ? "cursor-default text-white/20"
+                    : "text-white/40 hover:bg-white/10 hover:text-white/60",
+                )}
+              >
+                Unselect All
+              </button>
+            </div>
           </div>
-          <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-            <For each={props.allPatterns}>
-              {(pattern) => {
-                const isSelected = () => selected().has(pattern.id)
+
+          <div class="space-y-5">
+            <For each={props.groupedPatterns}>
+              {(group) => {
+                const groupIds = () => group.patterns.map((pattern) => pattern.id)
+                const groupSelectedCount = () =>
+                  group.patterns.filter((pattern) => selected().has(pattern.id)).length
+                const groupAllSelected = () =>
+                  groupSelectedCount() === group.patterns.length
+
                 return (
-                  <button
-                    type="button"
-                    onClick={() => togglePattern(pattern.id)}
-                    class="flex items-center gap-3 rounded-xl border p-3 text-left transition-colors"
-                    classList={{
-                      "bg-green-500/10 border-green-500/30": isSelected(),
-                      "bg-white/5 border-white/10 hover:border-white/20":
-                        !isSelected(),
-                    }}
-                  >
-                    <span
-                      class="font-japanese text-xl font-bold"
-                      classList={{
-                        "text-green-400": isSelected(),
-                        "text-white/50": !isSelected(),
-                      }}
-                    >
-                      {pattern.id}
-                    </span>
-                    <div class="min-w-0 flex-1">
-                      <p
-                        class="font-japanese text-xs"
-                        classList={{
-                          "text-green-400/70": isSelected(),
-                          "text-white/30": !isSelected(),
-                        }}
+                  <div>
+                    <div class="mb-3 flex items-center justify-between">
+                      <div>
+                        <h3 class="text-sm font-medium text-white/85">
+                          {group.title}
+                        </h3>
+                        <p class="mt-1 text-xs text-white/35">
+                          Chapter {group.chapter} · {groupSelectedCount()}/{group.patterns.length} selected
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          toggleGroup(groupIds(), !groupAllSelected())
+                        }
+                        class="rounded-full px-3 py-1 text-xs font-medium text-white/40 transition-colors hover:bg-white/10 hover:text-white/60"
                       >
-                        {pattern.baseReading}
-                      </p>
-                      <p class="truncate text-[10px] text-white/30">
-                        {COUNTER_DESCRIPTIONS[pattern.id] ?? ""}
-                      </p>
+                        {groupAllSelected() ? "Clear group" : "Select group"}
+                      </button>
                     </div>
-                  </button>
+
+                    <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+                      <For each={group.patterns}>
+                        {(pattern) => {
+                          const isSelected = () => selected().has(pattern.id)
+
+                          return (
+                            <Button3D
+                              onClick={() => togglePattern(pattern.id)}
+                              color={
+                                isSelected()
+                                  ? "rgb(109,40,217)"
+                                  : "rgb(75,85,99)"
+                              }
+                              textColor="rgb(17,24,39)"
+                              class={cn(
+                                "mb-2 min-h-[4.75rem] rounded-xl px-3 py-3 text-left text-sm",
+                              )}
+                            >
+                              <div class="flex w-full items-start justify-between gap-3">
+                                <div class="min-w-0 flex-1">
+                                  <div class="flex items-baseline gap-2">
+                                    <span class="font-japanese text-xl font-bold text-black/85">
+                                      {pattern.id}
+                                    </span>
+                                    <span class="font-japanese text-xs text-black/60">
+                                      {pattern.baseReading}
+                                    </span>
+                                  </div>
+                                  <p class="truncate text-[10px] text-black/55">
+                                    {COUNTER_DESCRIPTIONS[pattern.id] ?? ""}
+                                  </p>
+                                </div>
+                                {isSelected() && (
+                                  <span class="text-[10px] font-semibold text-black/70">
+                                    ON
+                                  </span>
+                                )}
+                              </div>
+                            </Button3D>
+                          )
+                        }}
+                      </For>
+                    </div>
+                  </div>
                 )
               }}
             </For>
           </div>
-        </Section>
+        </section>
 
         {/* Options */}
-        <Section title="Options">
+        <section class="space-y-4">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-white/40">
+            Options
+          </h2>
+          <div class="mb-4 flex flex-wrap gap-2">
+            <For each={[10, 20, 30, 50]}>
+              {(amount) => (
+                <button
+                  type="button"
+                  onClick={() => setAmount(amount)}
+                  class="rounded-full px-3 py-1 text-xs font-medium transition-colors"
+                  classList={{
+                    "bg-violet-500/12 text-violet-300": props.settings().amount === amount,
+                    "text-white/40 hover:bg-white/10 hover:text-white/60": props.settings().amount !== amount,
+                  }}
+                >
+                  {amount}
+                </button>
+              )}
+            </For>
+          </div>
           <div class="max-w-xs">
             <TextField class="space-y-2">
               <TextFieldLabel class="text-white/40">
@@ -181,11 +308,7 @@ export function SettingsPage(props: SettingsPageProps) {
                 value={props.settings().amount}
                 onInput={(e) => {
                   const val = parseInt(e.currentTarget.value, 10)
-                  if (!isNaN(val) && val >= 1 && val <= 100)
-                    props.onSettingsChange({
-                      ...props.settings(),
-                      amount: val,
-                    })
+                  if (!isNaN(val) && val >= 1 && val <= 100) setAmount(val)
                 }}
                 min="1"
                 max="100"
@@ -193,28 +316,17 @@ export function SettingsPage(props: SettingsPageProps) {
               />
             </TextField>
           </div>
-        </Section>
+        </section>
       </div>
 
       {/* Fixed bottom button */}
       <div class="fixed bottom-20 left-0 right-0 z-30 flex justify-center px-4">
         <div class="w-full max-w-xs">
-          <Button3D color="rgb(22,163,74)" onClick={props.onStartPractice}>
+          <Button3D color="rgb(139,92,246)" onClick={props.onStartPractice}>
             Start Practice
           </Button3D>
         </div>
       </div>
     </div>
-  )
-}
-
-function Section(props: { title: string; children: JSX.Element }) {
-  return (
-    <section class="space-y-4 rounded-xl border border-white/10 bg-white/5 p-5">
-      <h2 class="text-sm font-semibold uppercase tracking-wide text-white/40">
-        {props.title}
-      </h2>
-      {props.children}
-    </section>
   )
 }

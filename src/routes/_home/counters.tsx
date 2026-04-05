@@ -6,15 +6,40 @@ import {
 import { z } from "zod"
 import counterPatternsData from "@/features/counter-practice/data/counter-patterns.json"
 import vocabData from "@/features/counter-practice/data/vocab.json"
-import type { CounterPattern, VocabItem, Question } from "@/features/counter-practice/types"
+import type {
+  CounterPattern,
+  CounterPatternGroup,
+  VocabItem,
+  Question,
+} from "@/features/counter-practice/types"
 import { SettingsPage } from "@/features/counter-practice/components/SettingsPage"
 import { PracticePage } from "@/features/counter-practice/components/PracticePage"
 import { SummaryPage } from "@/features/counter-practice/components/SummaryPage"
 
-// Flatten all patterns from chapter-grouped data
-const ALL_PATTERNS: CounterPattern[] = (
+const CHAPTER_TITLES: Record<number, string> = {
+  1: "Time and age",
+  2: "Large numbers and money",
+  4: "Dates and duration",
+  5: "General counters",
+  6: "Pages and locations",
+  7: "People and weights",
+  8: "Frequency and drinks",
+  12: "Pairs",
+  13: "Occurrences and messages",
+  14: "Common object counters",
+  20: "Floors and buildings",
+}
+
+const GROUPED_PATTERNS: CounterPatternGroup[] = (
   counterPatternsData as { chapter: number; content: CounterPattern[] }[]
-).flatMap((ch) => ch.content)
+).map((group) => ({
+  chapter: group.chapter,
+  title: CHAPTER_TITLES[group.chapter] ?? `Chapter ${group.chapter}`,
+  patterns: group.content,
+}))
+
+// Flatten all patterns from chapter-grouped data
+const ALL_PATTERNS: CounterPattern[] = GROUPED_PATTERNS.flatMap((ch) => ch.patterns)
 
 const ALL_PATTERN_IDS = ALL_PATTERNS.map((p) => p.id)
 
@@ -91,6 +116,7 @@ function CountersPage() {
         <Match when={currentPage() === "settings"}>
           <SettingsPage
             allPatterns={ALL_PATTERNS}
+            groupedPatterns={GROUPED_PATTERNS}
             settings={settings}
             onSettingsChange={setSettings}
             onStartPractice={handleStartPractice}

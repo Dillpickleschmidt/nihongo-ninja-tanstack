@@ -285,6 +285,11 @@ export const static_modules: Record<string, StaticModule> = {
     link: "/lessons/jikan",
     module_type: "lesson",
   },
+  "counter-practice-time-and-duration": {
+    title: "Practice Time and Duration Counters",
+    link: "/counters?counters=時&counters=分&counters=年&counters=百&counters=歳&counters=千&counters=万&counters=円&counters=時間&counters=月&counters=か月&counters=週間&counters=日&counters=課&counters=年間&counters=分間&amount=10",
+    module_type: "counter-practice",
+  },
   "counter-practice": {
     title: "Counters Practice",
     link: "/counters",
@@ -339,6 +344,11 @@ export const static_modules: Record<string, StaticModule> = {
     title: "Counters",
     link: "/lessons/counters",
     module_type: "lesson",
+  },
+  "counter-practice-basic-counters": {
+    title: "Practice Basic Counters",
+    link: "/counters?counters=つ&counters=枚&amount=10",
+    module_type: "counter-practice",
   },
   "te-form": {
     title: "て-Form (Verbs)",

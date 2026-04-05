@@ -276,9 +276,9 @@ export function SettingsPage(props: SettingsPageProps) {
         </Section>
       </div>
 
-      {/* Fixed bottom bar */}
-      <div class="fixed right-0 bottom-16 left-0 z-30 border-t border-white/5 px-4 py-4 backdrop-blur-xl">
-        <div class="mx-auto max-w-sm">
+      {/* Fixed bottom button */}
+      <div class="fixed bottom-20 left-0 right-0 z-30 flex justify-center px-4">
+        <div class="w-full max-w-xs">
           <Button3D
             onClick={props.onStartPractice}
             color="rgb(20,184,166)"

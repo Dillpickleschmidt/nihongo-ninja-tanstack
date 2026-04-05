@@ -98,14 +98,14 @@ const navigation: NavigationSection[] = [
         title: "Counters",
         href: "/counters",
         icon: Hash,
-        class: "text-green-600 dark:text-green-500",
+        class: "text-violet-600 dark:text-violet-400",
       },
       {
         id: "cheatsheets",
         title: "Cheatsheets",
         href: "/cheatsheets",
         icon: FileText,
-        class: "text-rose-600 dark:text-rose-500 opacity-80",
+        class: "text-green-600 dark:text-green-500 opacity-80",
       },
       {
         id: "kana",
