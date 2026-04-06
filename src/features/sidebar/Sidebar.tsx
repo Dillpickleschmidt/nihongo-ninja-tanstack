@@ -169,12 +169,12 @@ function NavigationContent(props: NavigationContentProps) {
       {/*   </span> */}
       {/* </Link> */}
       {/* Navigation Groups */}
-      <div class="flex-1 space-y-1 2xl:pt-16">
+      <div class="flex-1 space-y-1 xl:pt-12 2xl:pt-16">
         <For each={navigation}>
           {(section) => (
             <div class="flex flex-col space-y-1 py-4">
               <Show when={section.label}>
-                <div class="text-muted-foreground px-3 py-1 text-[0.68rem] font-semibold tracking-wide uppercase">
+                <div class="text-muted-foreground px-3 py-1 text-[0.6rem] 2xl:text-[0.68rem] font-semibold tracking-wide uppercase">
                   {section.label}
                 </div>
               </Show>
@@ -194,7 +194,7 @@ function NavigationContent(props: NavigationContentProps) {
                           <Dynamic
                             component={item.icon as LucideIcon}
                             class={cn(
-                              "mx-1 size-4!",
+                              "mx-1 size-3.5! 2xl:size-4!",
                               item.class,
                               props.isActive(item.href) &&
                                 "text-dynamic-accent brightness-150",
@@ -204,7 +204,7 @@ function NavigationContent(props: NavigationContentProps) {
                       >
                         <span
                           class={cn(
-                            "mx-1 size-4 flex items-center justify-center text-base font-japanese font-medium",
+                            "mx-1 size-3.5 2xl:size-4 flex items-center justify-center text-sm 2xl:text-base font-japanese font-medium",
                             item.class,
                             props.isActive(item.href) &&
                               "text-dynamic-accent brightness-150",
@@ -215,7 +215,7 @@ function NavigationContent(props: NavigationContentProps) {
                       </Show>
                       <span
                         class={cn(
-                          "text-[0.85rem] font-medium",
+                          "text-[0.78rem] 2xl:text-[0.85rem] font-medium",
                           props.isActive(item.href) &&
                             "text-dynamic-accent brightness-150",
                         )}
@@ -241,7 +241,7 @@ function NavigationContent(props: NavigationContentProps) {
                 variant="ghost"
                 class="w-full justify-start gap-2 text-primary/60 hover:text-primary"
               >
-                <LogIn class="w-4 h-4" />
+                <LogIn class="w-3.5 h-3.5 2xl:w-4 2xl:h-4" />
                 Sign In
               </Button>
             </Link>
@@ -252,7 +252,7 @@ function NavigationContent(props: NavigationContentProps) {
             onClick={props.onSignOut}
             class="w-full justify-start gap-2 text-primary/60 hover:text-red-400"
           >
-            <LogOut class="w-4 h-4" />
+            <LogOut class="w-3.5 h-3.5 2xl:w-4 2xl:h-4" />
             Sign Out
           </Button>
         </Show>
@@ -270,6 +270,7 @@ function DesktopSidebar(props: {
   return (
     <div
       ref={props.ref}
+      class="h-full"
       style={props.animated ? getInitialAnimationStyles("left") : undefined}
     >
       <NavigationContent

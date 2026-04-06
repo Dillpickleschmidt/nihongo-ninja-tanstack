@@ -5,42 +5,51 @@ interface SkeletonAnimeCardProps {
 
 export function SkeletonAnimeCard(props: SkeletonAnimeCardProps) {
   const isLarge = () => props.size === "large"
+  const pulseClass = () => (props.animate !== false ? "animate-pulse" : "")
 
   return (
     <div
       class="flex shrink-0 flex-col"
       classList={{ "w-38": !isLarge(), "w-56": isLarge() }}
     >
-      {/* Cover skeleton */}
       <div
-        class="bg-primary/5 w-full rounded-t"
+        class="relative w-full overflow-hidden rounded-lg bg-primary/5"
         classList={{
-          "animate-pulse": props.animate !== false,
+          [pulseClass()]: true,
           "h-[13.5rem]": !isLarge(),
           "h-72": isLarge(),
         }}
-      />
-      {/* Comprehension bar skeleton */}
-      <div
-        class="bg-primary/5 h-1 w-full"
-        classList={{ "animate-pulse": props.animate !== false }}
-      />
-      {/* Comprehension numbers skeleton */}
-      <div class="flex justify-between pt-2">
+      >
         <div
-          class="bg-primary/5 h-6 w-10 rounded"
-          classList={{ "animate-pulse": props.animate !== false }}
-        />
-        <div
-          class="bg-primary/5 h-6 w-10 rounded"
-          classList={{ "animate-pulse": props.animate !== false }}
+          class="absolute right-1.5 bottom-1.5 size-8 rounded-full border border-white/10 bg-black/45"
+          classList={{ [pulseClass()]: true }}
         />
       </div>
-      {/* Title skeleton */}
-      <div
-        class="bg-primary/5 mt-2 h-2 w-28 rounded"
-        classList={{ "animate-pulse": props.animate !== false }}
-      />
+
+      <div class="pt-2">
+        <div class="mb-1 flex items-center gap-2">
+          <div
+            class="size-2 rounded-full bg-primary/10"
+            classList={{ [pulseClass()]: true }}
+          />
+          <div
+            class="h-3 rounded bg-primary/5"
+            classList={{
+              [pulseClass()]: true,
+              "w-24": !isLarge(),
+              "w-32": isLarge(),
+            }}
+          />
+        </div>
+        <div
+          class="h-3 rounded bg-primary/5"
+          classList={{
+            [pulseClass()]: true,
+            "w-28": !isLarge(),
+            "w-40": isLarge(),
+          }}
+        />
+      </div>
     </div>
   )
 }

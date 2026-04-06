@@ -96,9 +96,11 @@ export function SmallAnimeCard(props: SmallAnimeCardProps) {
               <text
                 x="18" y="18"
                 text-anchor="middle"
-                dominant-baseline="central"
-                class="fill-white font-bold"
-                style={{ "font-size": "10px", transform: "rotate(90deg)", "transform-origin": "center" }}
+                dominant-baseline="middle"
+                fill="white"
+                font-size="10"
+                font-weight="700"
+                transform="rotate(90 18 18)"
               >
                 {comprehension().avg}
               </text>

@@ -85,7 +85,7 @@ function HomeLayout() {
       <ActiveChapterSync />
 
       <SSRMediaQuery showFrom="xl">
-        <div class="w-48 min-[1700px]:w-72 z-50 sticky top-0 h-screen">
+        <div class="w-48 min-[1700px]:w-72 z-50 sticky top-0 h-dvh">
           <Sidebar animated={false} onSignOut={handleSignOut} />
         </div>
       </SSRMediaQuery>
