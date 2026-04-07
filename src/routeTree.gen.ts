@@ -9,25 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SearchRouteImport } from './routes/search'
 import { Route as OauthCallbackRouteImport } from './routes/oauth-callback'
 import { Route as LessonsRouteImport } from './routes/lessons'
-import { Route as GuidesRouteImport } from './routes/guides'
-import { Route as DiscoverRouteImport } from './routes/discover'
-import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as HomeRouteImport } from './routes/_home'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as GuidesIndexRouteImport } from './routes/guides/index'
-import { Route as GuidesSrsRouteImport } from './routes/guides/srs'
-import { Route as GuidesComparisonRouteImport } from './routes/guides/comparison'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
 import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
+import { Route as HomeSearchRouteImport } from './routes/_home/search'
 import { Route as HomeReviewRouteImport } from './routes/_home/review'
 import { Route as HomeLearnRouteImport } from './routes/_home/learn'
 import { Route as HomeKanaRouteImport } from './routes/_home/kana'
+import { Route as HomeGuidesRouteImport } from './routes/_home/guides'
 import { Route as HomeExternalResourcesRouteImport } from './routes/_home/external-resources'
+import { Route as HomeDiscoverRouteImport } from './routes/_home/discover'
+import { Route as HomeDashboardRouteImport } from './routes/_home/dashboard'
 import { Route as HomeCountersRouteImport } from './routes/_home/counters'
 import { Route as HomeConjugationRouteImport } from './routes/_home/conjugation'
 import { Route as HomeCheatsheetsRouteImport } from './routes/_home/cheatsheets'
@@ -35,6 +32,7 @@ import { Route as HomeVocabIndexRouteImport } from './routes/_home/vocab/index'
 import { Route as HomeSentencePracticeIndexRouteImport } from './routes/_home/sentence-practice/index'
 import { Route as HomeMiscIndexRouteImport } from './routes/_home/misc/index'
 import { Route as HomeImportIndexRouteImport } from './routes/_home/import/index'
+import { Route as HomeGuidesIndexRouteImport } from './routes/_home/guides/index'
 import { Route as LessonsChapter7AdjToAdvRouteImport } from './routes/lessons/_chapter-7/adj-to-adv'
 import { Route as LessonsChapter6TeWaIkemasenRouteImport } from './routes/lessons/_chapter-6/te-wa-ikemasen'
 import { Route as LessonsChapter6TeMoIiDesuRouteImport } from './routes/lessons/_chapter-6/te-mo-ii-desu'
@@ -104,6 +102,8 @@ import { Route as HomeVocabSplatRouteImport } from './routes/_home/vocab/$'
 import { Route as HomeSentencePracticeIdRouteImport } from './routes/_home/sentence-practice/$id'
 import { Route as HomeMiscKanjiPracticeSheetRouteImport } from './routes/_home/misc/kanji-practice-sheet'
 import { Route as HomeImportAnkiRouteImport } from './routes/_home/import/anki'
+import { Route as HomeGuidesSrsRouteImport } from './routes/_home/guides/srs'
+import { Route as HomeGuidesComparisonRouteImport } from './routes/_home/guides/comparison'
 import { Route as HomeExternalResourcesResourceRouteImport } from './routes/_home/external-resources/$resource'
 import { Route as HomeImportBuiltinIndexRouteImport } from './routes/_home/import/builtin/index'
 import { Route as HomeVocabQuizKatakanaRouteImport } from './routes/_home/vocab/quiz/katakana'
@@ -117,11 +117,6 @@ import { Route as HomeImportBuiltinUploadRouteImport } from './routes/_home/impo
 import { Route as HomeImportBuiltinManualRouteImport } from './routes/_home/import/builtin/manual'
 import { Route as HomeVocabDeckDeckIdEditRouteImport } from './routes/_home/vocab/deck/$deckId/edit'
 
-const SearchRoute = SearchRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const OauthCallbackRoute = OauthCallbackRouteImport.update({
   id: '/oauth-callback',
   path: '/oauth-callback',
@@ -130,21 +125,6 @@ const OauthCallbackRoute = OauthCallbackRouteImport.update({
 const LessonsRoute = LessonsRouteImport.update({
   id: '/lessons',
   path: '/lessons',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GuidesRoute = GuidesRouteImport.update({
-  id: '/guides',
-  path: '/guides',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DiscoverRoute = DiscoverRouteImport.update({
-  id: '/discover',
-  path: '/discover',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -166,21 +146,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GuidesIndexRoute = GuidesIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => GuidesRoute,
-} as any)
-const GuidesSrsRoute = GuidesSrsRouteImport.update({
-  id: '/srs',
-  path: '/srs',
-  getParentRoute: () => GuidesRoute,
-} as any)
-const GuidesComparisonRoute = GuidesComparisonRouteImport.update({
-  id: '/comparison',
-  path: '/comparison',
-  getParentRoute: () => GuidesRoute,
-} as any)
 const HomeVocabRoute = HomeVocabRouteImport.update({
   id: '/vocab',
   path: '/vocab',
@@ -189,6 +154,11 @@ const HomeVocabRoute = HomeVocabRouteImport.update({
 const HomeSettingsRoute = HomeSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeSearchRoute = HomeSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeReviewRoute = HomeReviewRouteImport.update({
@@ -206,9 +176,24 @@ const HomeKanaRoute = HomeKanaRouteImport.update({
   path: '/kana',
   getParentRoute: () => HomeRoute,
 } as any)
+const HomeGuidesRoute = HomeGuidesRouteImport.update({
+  id: '/guides',
+  path: '/guides',
+  getParentRoute: () => HomeRoute,
+} as any)
 const HomeExternalResourcesRoute = HomeExternalResourcesRouteImport.update({
   id: '/external-resources',
   path: '/external-resources',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeDiscoverRoute = HomeDiscoverRouteImport.update({
+  id: '/discover',
+  path: '/discover',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeDashboardRoute = HomeDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeCountersRoute = HomeCountersRouteImport.update({
@@ -246,6 +231,11 @@ const HomeImportIndexRoute = HomeImportIndexRouteImport.update({
   id: '/import/',
   path: '/import/',
   getParentRoute: () => HomeRoute,
+} as any)
+const HomeGuidesIndexRoute = HomeGuidesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HomeGuidesRoute,
 } as any)
 const LessonsChapter7AdjToAdvRoute = LessonsChapter7AdjToAdvRouteImport.update({
   id: '/_chapter-7/adj-to-adv',
@@ -637,6 +627,16 @@ const HomeImportAnkiRoute = HomeImportAnkiRouteImport.update({
   path: '/import/anki',
   getParentRoute: () => HomeRoute,
 } as any)
+const HomeGuidesSrsRoute = HomeGuidesSrsRouteImport.update({
+  id: '/srs',
+  path: '/srs',
+  getParentRoute: () => HomeGuidesRoute,
+} as any)
+const HomeGuidesComparisonRoute = HomeGuidesComparisonRouteImport.update({
+  id: '/comparison',
+  path: '/comparison',
+  getParentRoute: () => HomeGuidesRoute,
+} as any)
 const HomeExternalResourcesResourceRoute =
   HomeExternalResourcesResourceRouteImport.update({
     id: '/$resource',
@@ -707,25 +707,24 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRoute
-  '/discover': typeof DiscoverRoute
-  '/guides': typeof GuidesRouteWithChildren
   '/lessons': typeof LessonsRouteWithChildren
   '/oauth-callback': typeof OauthCallbackRoute
-  '/search': typeof SearchRoute
   '/cheatsheets': typeof HomeCheatsheetsRoute
   '/conjugation': typeof HomeConjugationRoute
   '/counters': typeof HomeCountersRoute
+  '/dashboard': typeof HomeDashboardRoute
+  '/discover': typeof HomeDiscoverRoute
   '/external-resources': typeof HomeExternalResourcesRouteWithChildren
+  '/guides': typeof HomeGuidesRouteWithChildren
   '/kana': typeof HomeKanaRoute
   '/learn': typeof HomeLearnRouteWithChildren
   '/review': typeof HomeReviewRoute
+  '/search': typeof HomeSearchRoute
   '/settings': typeof HomeSettingsRoute
   '/vocab': typeof HomeVocabRouteWithChildren
-  '/guides/comparison': typeof GuidesComparisonRoute
-  '/guides/srs': typeof GuidesSrsRoute
-  '/guides/': typeof GuidesIndexRoute
   '/external-resources/$resource': typeof HomeExternalResourcesResourceRoute
+  '/guides/comparison': typeof HomeGuidesComparisonRoute
+  '/guides/srs': typeof HomeGuidesSrsRoute
   '/import/anki': typeof HomeImportAnkiRoute
   '/misc/kanji-practice-sheet': typeof HomeMiscKanjiPracticeSheetRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
@@ -795,6 +794,7 @@ export interface FileRoutesByFullPath {
   '/lessons/te-mo-ii-desu': typeof LessonsChapter6TeMoIiDesuRoute
   '/lessons/te-wa-ikemasen': typeof LessonsChapter6TeWaIkemasenRoute
   '/lessons/adj-to-adv': typeof LessonsChapter7AdjToAdvRoute
+  '/guides/': typeof HomeGuidesIndexRoute
   '/import/': typeof HomeImportIndexRoute
   '/misc/': typeof HomeMiscIndexRoute
   '/sentence-practice/': typeof HomeSentencePracticeIndexRoute
@@ -815,23 +815,22 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRoute
-  '/discover': typeof DiscoverRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/oauth-callback': typeof OauthCallbackRoute
-  '/search': typeof SearchRoute
   '/cheatsheets': typeof HomeCheatsheetsRoute
   '/conjugation': typeof HomeConjugationRoute
   '/counters': typeof HomeCountersRoute
+  '/dashboard': typeof HomeDashboardRoute
+  '/discover': typeof HomeDiscoverRoute
   '/external-resources': typeof HomeExternalResourcesRouteWithChildren
   '/kana': typeof HomeKanaRoute
   '/learn': typeof HomeLearnRouteWithChildren
   '/review': typeof HomeReviewRoute
+  '/search': typeof HomeSearchRoute
   '/settings': typeof HomeSettingsRoute
-  '/guides/comparison': typeof GuidesComparisonRoute
-  '/guides/srs': typeof GuidesSrsRoute
-  '/guides': typeof GuidesIndexRoute
   '/external-resources/$resource': typeof HomeExternalResourcesResourceRoute
+  '/guides/comparison': typeof HomeGuidesComparisonRoute
+  '/guides/srs': typeof HomeGuidesSrsRoute
   '/import/anki': typeof HomeImportAnkiRoute
   '/misc/kanji-practice-sheet': typeof HomeMiscKanjiPracticeSheetRoute
   '/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
@@ -901,6 +900,7 @@ export interface FileRoutesByTo {
   '/lessons/te-mo-ii-desu': typeof LessonsChapter6TeMoIiDesuRoute
   '/lessons/te-wa-ikemasen': typeof LessonsChapter6TeWaIkemasenRoute
   '/lessons/adj-to-adv': typeof LessonsChapter7AdjToAdvRoute
+  '/guides': typeof HomeGuidesIndexRoute
   '/import': typeof HomeImportIndexRoute
   '/misc': typeof HomeMiscIndexRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
@@ -923,25 +923,24 @@ export interface FileRoutesById {
   '/_home': typeof HomeRouteWithChildren
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRoute
-  '/discover': typeof DiscoverRoute
-  '/guides': typeof GuidesRouteWithChildren
   '/lessons': typeof LessonsRouteWithChildren
   '/oauth-callback': typeof OauthCallbackRoute
-  '/search': typeof SearchRoute
   '/_home/cheatsheets': typeof HomeCheatsheetsRoute
   '/_home/conjugation': typeof HomeConjugationRoute
   '/_home/counters': typeof HomeCountersRoute
+  '/_home/dashboard': typeof HomeDashboardRoute
+  '/_home/discover': typeof HomeDiscoverRoute
   '/_home/external-resources': typeof HomeExternalResourcesRouteWithChildren
+  '/_home/guides': typeof HomeGuidesRouteWithChildren
   '/_home/kana': typeof HomeKanaRoute
   '/_home/learn': typeof HomeLearnRouteWithChildren
   '/_home/review': typeof HomeReviewRoute
+  '/_home/search': typeof HomeSearchRoute
   '/_home/settings': typeof HomeSettingsRoute
   '/_home/vocab': typeof HomeVocabRouteWithChildren
-  '/guides/comparison': typeof GuidesComparisonRoute
-  '/guides/srs': typeof GuidesSrsRoute
-  '/guides/': typeof GuidesIndexRoute
   '/_home/external-resources/$resource': typeof HomeExternalResourcesResourceRoute
+  '/_home/guides/comparison': typeof HomeGuidesComparisonRoute
+  '/_home/guides/srs': typeof HomeGuidesSrsRoute
   '/_home/import/anki': typeof HomeImportAnkiRoute
   '/_home/misc/kanji-practice-sheet': typeof HomeMiscKanjiPracticeSheetRoute
   '/_home/sentence-practice/$id': typeof HomeSentencePracticeIdRoute
@@ -1011,6 +1010,7 @@ export interface FileRoutesById {
   '/lessons/_chapter-6/te-mo-ii-desu': typeof LessonsChapter6TeMoIiDesuRoute
   '/lessons/_chapter-6/te-wa-ikemasen': typeof LessonsChapter6TeWaIkemasenRoute
   '/lessons/_chapter-7/adj-to-adv': typeof LessonsChapter7AdjToAdvRoute
+  '/_home/guides/': typeof HomeGuidesIndexRoute
   '/_home/import/': typeof HomeImportIndexRoute
   '/_home/misc/': typeof HomeMiscIndexRoute
   '/_home/sentence-practice/': typeof HomeSentencePracticeIndexRoute
@@ -1033,25 +1033,24 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
-    | '/dashboard'
-    | '/discover'
-    | '/guides'
     | '/lessons'
     | '/oauth-callback'
-    | '/search'
     | '/cheatsheets'
     | '/conjugation'
     | '/counters'
+    | '/dashboard'
+    | '/discover'
     | '/external-resources'
+    | '/guides'
     | '/kana'
     | '/learn'
     | '/review'
+    | '/search'
     | '/settings'
     | '/vocab'
+    | '/external-resources/$resource'
     | '/guides/comparison'
     | '/guides/srs'
-    | '/guides/'
-    | '/external-resources/$resource'
     | '/import/anki'
     | '/misc/kanji-practice-sheet'
     | '/sentence-practice/$id'
@@ -1121,6 +1120,7 @@ export interface FileRouteTypes {
     | '/lessons/te-mo-ii-desu'
     | '/lessons/te-wa-ikemasen'
     | '/lessons/adj-to-adv'
+    | '/guides/'
     | '/import/'
     | '/misc/'
     | '/sentence-practice/'
@@ -1141,23 +1141,22 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
-    | '/dashboard'
-    | '/discover'
     | '/lessons'
     | '/oauth-callback'
-    | '/search'
     | '/cheatsheets'
     | '/conjugation'
     | '/counters'
+    | '/dashboard'
+    | '/discover'
     | '/external-resources'
     | '/kana'
     | '/learn'
     | '/review'
+    | '/search'
     | '/settings'
+    | '/external-resources/$resource'
     | '/guides/comparison'
     | '/guides/srs'
-    | '/guides'
-    | '/external-resources/$resource'
     | '/import/anki'
     | '/misc/kanji-practice-sheet'
     | '/sentence-practice/$id'
@@ -1227,6 +1226,7 @@ export interface FileRouteTypes {
     | '/lessons/te-mo-ii-desu'
     | '/lessons/te-wa-ikemasen'
     | '/lessons/adj-to-adv'
+    | '/guides'
     | '/import'
     | '/misc'
     | '/sentence-practice'
@@ -1248,25 +1248,24 @@ export interface FileRouteTypes {
     | '/_home'
     | '/about'
     | '/auth'
-    | '/dashboard'
-    | '/discover'
-    | '/guides'
     | '/lessons'
     | '/oauth-callback'
-    | '/search'
     | '/_home/cheatsheets'
     | '/_home/conjugation'
     | '/_home/counters'
+    | '/_home/dashboard'
+    | '/_home/discover'
     | '/_home/external-resources'
+    | '/_home/guides'
     | '/_home/kana'
     | '/_home/learn'
     | '/_home/review'
+    | '/_home/search'
     | '/_home/settings'
     | '/_home/vocab'
-    | '/guides/comparison'
-    | '/guides/srs'
-    | '/guides/'
     | '/_home/external-resources/$resource'
+    | '/_home/guides/comparison'
+    | '/_home/guides/srs'
     | '/_home/import/anki'
     | '/_home/misc/kanji-practice-sheet'
     | '/_home/sentence-practice/$id'
@@ -1336,6 +1335,7 @@ export interface FileRouteTypes {
     | '/lessons/_chapter-6/te-mo-ii-desu'
     | '/lessons/_chapter-6/te-wa-ikemasen'
     | '/lessons/_chapter-7/adj-to-adv'
+    | '/_home/guides/'
     | '/_home/import/'
     | '/_home/misc/'
     | '/_home/sentence-practice/'
@@ -1358,24 +1358,13 @@ export interface RootRouteChildren {
   HomeRoute: typeof HomeRouteWithChildren
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
-  DashboardRoute: typeof DashboardRoute
-  DiscoverRoute: typeof DiscoverRoute
-  GuidesRoute: typeof GuidesRouteWithChildren
   LessonsRoute: typeof LessonsRouteWithChildren
   OauthCallbackRoute: typeof OauthCallbackRoute
-  SearchRoute: typeof SearchRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/solid-router' {
   interface FileRoutesByPath {
-    '/search': {
-      id: '/search'
-      path: '/search'
-      fullPath: '/search'
-      preLoaderRoute: typeof SearchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/oauth-callback': {
       id: '/oauth-callback'
       path: '/oauth-callback'
@@ -1388,27 +1377,6 @@ declare module '@tanstack/solid-router' {
       path: '/lessons'
       fullPath: '/lessons'
       preLoaderRoute: typeof LessonsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/guides': {
-      id: '/guides'
-      path: '/guides'
-      fullPath: '/guides'
-      preLoaderRoute: typeof GuidesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/discover': {
-      id: '/discover'
-      path: '/discover'
-      fullPath: '/discover'
-      preLoaderRoute: typeof DiscoverRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -1439,27 +1407,6 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/guides/': {
-      id: '/guides/'
-      path: '/'
-      fullPath: '/guides/'
-      preLoaderRoute: typeof GuidesIndexRouteImport
-      parentRoute: typeof GuidesRoute
-    }
-    '/guides/srs': {
-      id: '/guides/srs'
-      path: '/srs'
-      fullPath: '/guides/srs'
-      preLoaderRoute: typeof GuidesSrsRouteImport
-      parentRoute: typeof GuidesRoute
-    }
-    '/guides/comparison': {
-      id: '/guides/comparison'
-      path: '/comparison'
-      fullPath: '/guides/comparison'
-      preLoaderRoute: typeof GuidesComparisonRouteImport
-      parentRoute: typeof GuidesRoute
-    }
     '/_home/vocab': {
       id: '/_home/vocab'
       path: '/vocab'
@@ -1472,6 +1419,13 @@ declare module '@tanstack/solid-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof HomeSettingsRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/search': {
+      id: '/_home/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof HomeSearchRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/review': {
@@ -1495,11 +1449,32 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeKanaRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/_home/guides': {
+      id: '/_home/guides'
+      path: '/guides'
+      fullPath: '/guides'
+      preLoaderRoute: typeof HomeGuidesRouteImport
+      parentRoute: typeof HomeRoute
+    }
     '/_home/external-resources': {
       id: '/_home/external-resources'
       path: '/external-resources'
       fullPath: '/external-resources'
       preLoaderRoute: typeof HomeExternalResourcesRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/discover': {
+      id: '/_home/discover'
+      path: '/discover'
+      fullPath: '/discover'
+      preLoaderRoute: typeof HomeDiscoverRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/dashboard': {
+      id: '/_home/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof HomeDashboardRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/counters': {
@@ -1550,6 +1525,13 @@ declare module '@tanstack/solid-router' {
       fullPath: '/import/'
       preLoaderRoute: typeof HomeImportIndexRouteImport
       parentRoute: typeof HomeRoute
+    }
+    '/_home/guides/': {
+      id: '/_home/guides/'
+      path: '/'
+      fullPath: '/guides/'
+      preLoaderRoute: typeof HomeGuidesIndexRouteImport
+      parentRoute: typeof HomeGuidesRoute
     }
     '/lessons/_chapter-7/adj-to-adv': {
       id: '/lessons/_chapter-7/adj-to-adv'
@@ -2034,6 +2016,20 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeImportAnkiRouteImport
       parentRoute: typeof HomeRoute
     }
+    '/_home/guides/srs': {
+      id: '/_home/guides/srs'
+      path: '/srs'
+      fullPath: '/guides/srs'
+      preLoaderRoute: typeof HomeGuidesSrsRouteImport
+      parentRoute: typeof HomeGuidesRoute
+    }
+    '/_home/guides/comparison': {
+      id: '/_home/guides/comparison'
+      path: '/comparison'
+      fullPath: '/guides/comparison'
+      preLoaderRoute: typeof HomeGuidesComparisonRouteImport
+      parentRoute: typeof HomeGuidesRoute
+    }
     '/_home/external-resources/$resource': {
       id: '/_home/external-resources/$resource'
       path: '/$resource'
@@ -2134,6 +2130,22 @@ const HomeExternalResourcesRouteWithChildren =
     HomeExternalResourcesRouteChildren,
   )
 
+interface HomeGuidesRouteChildren {
+  HomeGuidesComparisonRoute: typeof HomeGuidesComparisonRoute
+  HomeGuidesSrsRoute: typeof HomeGuidesSrsRoute
+  HomeGuidesIndexRoute: typeof HomeGuidesIndexRoute
+}
+
+const HomeGuidesRouteChildren: HomeGuidesRouteChildren = {
+  HomeGuidesComparisonRoute: HomeGuidesComparisonRoute,
+  HomeGuidesSrsRoute: HomeGuidesSrsRoute,
+  HomeGuidesIndexRoute: HomeGuidesIndexRoute,
+}
+
+const HomeGuidesRouteWithChildren = HomeGuidesRoute._addFileChildren(
+  HomeGuidesRouteChildren,
+)
+
 interface HomeLearnRouteChildren {
   HomeLearnAdditionalResourcesKanjiPracticeSheetRoute: typeof HomeLearnAdditionalResourcesKanjiPracticeSheetRoute
 }
@@ -2185,10 +2197,14 @@ interface HomeRouteChildren {
   HomeCheatsheetsRoute: typeof HomeCheatsheetsRoute
   HomeConjugationRoute: typeof HomeConjugationRoute
   HomeCountersRoute: typeof HomeCountersRoute
+  HomeDashboardRoute: typeof HomeDashboardRoute
+  HomeDiscoverRoute: typeof HomeDiscoverRoute
   HomeExternalResourcesRoute: typeof HomeExternalResourcesRouteWithChildren
+  HomeGuidesRoute: typeof HomeGuidesRouteWithChildren
   HomeKanaRoute: typeof HomeKanaRoute
   HomeLearnRoute: typeof HomeLearnRouteWithChildren
   HomeReviewRoute: typeof HomeReviewRoute
+  HomeSearchRoute: typeof HomeSearchRoute
   HomeSettingsRoute: typeof HomeSettingsRoute
   HomeVocabRoute: typeof HomeVocabRouteWithChildren
   HomeImportAnkiRoute: typeof HomeImportAnkiRoute
@@ -2206,10 +2222,14 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeCheatsheetsRoute: HomeCheatsheetsRoute,
   HomeConjugationRoute: HomeConjugationRoute,
   HomeCountersRoute: HomeCountersRoute,
+  HomeDashboardRoute: HomeDashboardRoute,
+  HomeDiscoverRoute: HomeDiscoverRoute,
   HomeExternalResourcesRoute: HomeExternalResourcesRouteWithChildren,
+  HomeGuidesRoute: HomeGuidesRouteWithChildren,
   HomeKanaRoute: HomeKanaRoute,
   HomeLearnRoute: HomeLearnRouteWithChildren,
   HomeReviewRoute: HomeReviewRoute,
+  HomeSearchRoute: HomeSearchRoute,
   HomeSettingsRoute: HomeSettingsRoute,
   HomeVocabRoute: HomeVocabRouteWithChildren,
   HomeImportAnkiRoute: HomeImportAnkiRoute,
@@ -2224,21 +2244,6 @@ const HomeRouteChildren: HomeRouteChildren = {
 }
 
 const HomeRouteWithChildren = HomeRoute._addFileChildren(HomeRouteChildren)
-
-interface GuidesRouteChildren {
-  GuidesComparisonRoute: typeof GuidesComparisonRoute
-  GuidesSrsRoute: typeof GuidesSrsRoute
-  GuidesIndexRoute: typeof GuidesIndexRoute
-}
-
-const GuidesRouteChildren: GuidesRouteChildren = {
-  GuidesComparisonRoute: GuidesComparisonRoute,
-  GuidesSrsRoute: GuidesSrsRoute,
-  GuidesIndexRoute: GuidesIndexRoute,
-}
-
-const GuidesRouteWithChildren =
-  GuidesRoute._addFileChildren(GuidesRouteChildren)
 
 interface LessonsRouteChildren {
   LessonsChapter0CommonExpressionsRoute: typeof LessonsChapter0CommonExpressionsRoute
@@ -2380,12 +2385,8 @@ const rootRouteChildren: RootRouteChildren = {
   HomeRoute: HomeRouteWithChildren,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
-  DashboardRoute: DashboardRoute,
-  DiscoverRoute: DiscoverRoute,
-  GuidesRoute: GuidesRouteWithChildren,
   LessonsRoute: LessonsRouteWithChildren,
   OauthCallbackRoute: OauthCallbackRoute,
-  SearchRoute: SearchRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

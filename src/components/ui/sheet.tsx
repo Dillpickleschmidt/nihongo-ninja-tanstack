@@ -97,8 +97,8 @@ const SheetContent = <T extends ValidComponent = "div">(
       <SheetPrimitive.Content
         class={cn(
           sheetVariants({ position: local.position }),
+          "max-h-dvh overflow-y-auto",
           local.class,
-          "max-h-screen overflow-y-auto",
         )}
         {...others}
       >

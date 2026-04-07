@@ -26,7 +26,6 @@ import {
 import { sectionQueryKey } from "~/features/discover/hooks/useDiscoverSection"
 import { personalSectionsQueryOptions } from "~/features/discover/hooks/usePersonalSections"
 import { useBannerCarousel } from "~/features/discover/hooks/useBannerCarousel"
-import { BottomNav } from "~/features/navbar/Nav"
 import { DiscoverTabs } from "~/features/discover/components/ui/tabs/discover-tabs"
 import { ComingSoonTab } from "~/features/discover/components/ui/tabs/coming-soon-tab"
 import { YouTubeTab } from "~/features/discover/components/ui/tabs/youtube-tab"
@@ -41,7 +40,7 @@ const discoverSearchSchema = z.object({
   tab: z.enum(["anime", "youtube", "dramas"]).optional().catch(undefined),
 })
 
-export const Route = createFileRoute("/discover")({
+export const Route = createFileRoute("/_home/discover")({
   validateSearch: discoverSearchSchema,
   loader: ({ context, preload }) => {
     if (!preload) {
@@ -163,6 +162,10 @@ function DiscoverPage() {
     <div
       ref={scrollRef}
       class="relative h-screen overflow-y-auto bg-[#121212]"
+      style={{
+        "margin-left": "calc(-1 * var(--sidebar-width, 0px))",
+        width: "calc(100% + var(--sidebar-width, 0px))",
+      }}
       onMouseMove={handleBannerMouseMove}
       onMouseLeave={handleBannerMouseLeave}
     >
@@ -171,7 +174,7 @@ function DiscoverPage() {
         onChange={(tab: string) =>
           navigate({ to: "/discover", search: { tab: tab as "anime" | "youtube" | "dramas" }, replace: true })
         }
-        youtubeContent={<YouTubeTab />}
+        youtubeContent={<div class="pl-(--sidebar-width)"><YouTubeTab /></div>}
         animeContent={
           <Show
             when={!banner.error()}
@@ -219,7 +222,7 @@ function DiscoverPage() {
 
             {/* Layer 2: Content overlaid on image area — scrolls normally, fades fast */}
             <div
-              class="relative z-1 -mt-[70vh] h-[70vh] md:-mt-[80vh] md:h-[80vh]"
+              class="relative z-1 -mt-[70vh] h-[70vh] pl-(--sidebar-width) md:-mt-[80vh] md:h-[80vh]"
               style={{ opacity: contentOpacity() }}
             >
               <div class="relative flex h-full flex-col">
@@ -237,16 +240,18 @@ function DiscoverPage() {
             </div>
 
             {/* Layer 3: Section rows — scroll naturally over the faded banner */}
-            <div class="relative z-10 pb-16 sm:px-2">
+            <div class="relative z-10 pb-16 pl-(--sidebar-width)">
+              <div class="sm:px-2">
               <GenericSections
                 sections={allSections()}
                 titleLanguage={titleLanguage()}
                 onCardClick={handleCardClick}
               />
+              </div>
             </div>
           </Show>
         }
-        dramasContent={<ComingSoonTab label="Dramas" />}
+        dramasContent={<div class="pl-(--sidebar-width)"><ComingSoonTab label="Dramas" /></div>}
       />
 
       <ShowDetailDialog
@@ -262,10 +267,6 @@ function DiscoverPage() {
         <StreamingPrefsModal />
       </Show>
 
-      <BottomNav
-        class="bg-background/85 opacity-100"
-        dailyProgressPercentage={65}
-      />
     </div>
   )
 }

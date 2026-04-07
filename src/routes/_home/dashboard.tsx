@@ -3,7 +3,7 @@ import { createEffect, createSignal, For, Index, onCleanup, onMount, Show } from
 import { Dynamic } from "solid-js/web"
 import { useQueryClient } from "@tanstack/solid-query"
 import { convexQuery, useConvexQuery } from "@/lib/convex-query"
-import { api } from "../../convex/_generated/api"
+import { api } from "../../../convex/_generated/api"
 import { usePreferences } from "@/lib/preferences"
 import { ChevronRight } from "lucide-solid"
 import { getModuleIcon, getModuleIconClasses } from "@/data/utils/module-helpers"
@@ -20,7 +20,7 @@ import { parsePreferencesCookie } from "@/query/model/preferences"
 import { queryKeys } from "@/query/query-keys"
 import { textbooks, type TextbookIDEnum } from "@/data/textbooks"
 
-export const Route = createFileRoute("/dashboard")({
+export const Route = createFileRoute("/_home/dashboard")({
   loader: ({ context, preload }) => {
     if (!preload) {
       context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
@@ -144,9 +144,9 @@ function DashboardComponent() {
 
       <main>
         {/* Hero */}
-        <section class="mx-auto grid max-w-7xl items-start gap-8 px-6 pt-20 lg:grid-cols-2">
+        <section class="mx-auto grid max-w-7xl items-start gap-8 px-6 pt-12 lg:pt-20 lg:grid-cols-2">
           <div>
-            <h1 class="font-excalifont text-3xl text-white/90">
+            <h1 class="font-bold text-4xl text-white/90">
               The best materials, at the right time
             </h1>
             <p class="mt-3 max-w-lg text-white/50">
@@ -196,7 +196,7 @@ function DashboardComponent() {
           </div>
           <LearningPathsPanel />
 
-          {/* Learning Paths */}
+          {/* Learning Paths - temporarily commented out
           <Show when={pathSummaries().length > 0}>
             <div class="lg:col-start-1">
               <h3 class="font-excalifont text-white/50">
@@ -282,6 +282,7 @@ function DashboardComponent() {
               </div>
             </div>
           </Show>
+          */}
         </section>
 
         <div class="mx-auto mt-16 max-w-7xl px-6 pb-32">

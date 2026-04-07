@@ -5,11 +5,12 @@ import {
   useNavigate,
 } from "@tanstack/solid-router"
 import { createIsomorphicFn } from "@tanstack/solid-start"
-import { createEffect, createMemo } from "solid-js"
+import { createEffect, createMemo, createSignal } from "solid-js"
 import { useQueryClient } from "@tanstack/solid-query"
 import type { QueryClient } from "@tanstack/solid-query"
 import { authClient } from "@/lib/auth-client"
 import { BottomNav } from "@/features/navbar/Nav"
+import { MobileNavSheet } from "@/features/navbar/MobileNavSheet"
 import { Sidebar } from "@/features/sidebar/Sidebar"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { useConvexQuery } from "@/lib/convex-query"
@@ -80,21 +81,33 @@ function HomeLayout() {
     )
   })
 
+  const [moreSheetOpen, setMoreSheetOpen] = createSignal(false)
+
   return (
-    <div class="flex">
+    <div class="[--sidebar-width:0px] xl:[--sidebar-width:12rem] min-[1700px]:[--sidebar-width:18rem]">
       <ActiveChapterSync />
 
       <SSRMediaQuery showFrom="xl">
-        <div class="w-48 min-[1700px]:w-72 z-50 sticky top-0 h-dvh">
+        <div class="fixed left-0 top-0 z-50 h-dvh w-(--sidebar-width)">
           <Sidebar animated={false} onSignOut={handleSignOut} />
         </div>
       </SSRMediaQuery>
 
-      <div class="w-full flex justify-center min-[1700px]:-ml-72! *:w-full *:max-w-7xl">
+      <div class="pl-(--sidebar-width)">
         <Outlet />
       </div>
 
-      <BottomNav dailyProgressPercentage={dailyProgressPercentage()} />
+      <SSRMediaQuery hideFrom="xl">
+        <BottomNav
+          dailyProgressPercentage={dailyProgressPercentage()}
+          onMoreClick={() => setMoreSheetOpen(true)}
+        />
+        <MobileNavSheet
+          open={moreSheetOpen()}
+          onOpenChange={setMoreSheetOpen}
+          onSignOut={handleSignOut}
+        />
+      </SSRMediaQuery>
     </div>
   )
 }

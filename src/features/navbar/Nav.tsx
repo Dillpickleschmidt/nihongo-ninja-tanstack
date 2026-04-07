@@ -3,8 +3,8 @@ import { Link, useLocation } from "@tanstack/solid-router"
 import {
   House,
   Search,
-  GraduationCap,
-  Settings,
+  BookOpen,
+  Menu,
   type LucideIcon,
 } from "lucide-solid"
 import { cn } from "@/utils"
@@ -13,24 +13,26 @@ import { cn } from "@/utils"
 interface NavItem {
   id: string
   label: string
-  href: string
+  href?: string
   icon: LucideIcon | null
+  action?: "open-more"
 }
 
 interface NavProps {
   dailyProgressPercentage?: number
   class?: string
   style?: Record<string, string>
-  onSignOut?: () => void
+  onMoreClick?: () => void
   ref?: (el: HTMLDivElement) => void
 }
 
 // --- Shared Logic ---
 const navItems: NavItem[] = [
   { id: "home", label: "Home", href: "/dashboard", icon: House },
-  { id: "guides", label: "Guides", href: "/guides", icon: GraduationCap },
+  { id: "learn", label: "Learn", href: "/learn", icon: BookOpen },
+  { id: "review", label: "", href: "/review", icon: null },
   { id: "search", label: "Search", href: "/search", icon: Search },
-  { id: "tools", label: "Tools", href: "/settings", icon: Settings },
+  { id: "more", label: "More", icon: Menu, action: "open-more" },
 ]
 
 function useNavLogic(dailyProgress: number) {
@@ -120,13 +122,13 @@ function ProgressCircle(props: ProgressCircleProps) {
 
 // --- BottomNav (Mobile) ---
 export function BottomNav(props: NavProps) {
-  const dailyProgress = () => props.dailyProgressPercentage ?? 65
+  const dailyProgress = () => props.dailyProgressPercentage ?? 0
   const nav = useNavLogic(dailyProgress())
 
   const bottomNavItems = [
-    ...navItems.slice(0, 2), // Home, Vocab
-    { id: "review", label: `${dailyProgress()}%`, href: "/review", icon: null },
-    ...navItems.slice(2), // Search, Settings
+    ...navItems.slice(0, 2), // Home, Learn
+    { ...navItems[2], label: `${dailyProgress()}%` }, // Review with progress
+    ...navItems.slice(3), // Search, More
   ]
 
   return (
@@ -143,10 +145,10 @@ export function BottomNav(props: NavProps) {
         <nav class="flex items-center justify-between" style="width: 400px;">
           {bottomNavItems.map((item) => {
             if (item.id === "review") {
-              const active = nav.isActive(item.href)
+              const active = nav.isActive(item.href!)
               return (
                 <Link
-                  to={item.href}
+                  to={item.href!}
                   class={cn(
                     "group relative flex h-16 w-16 items-center justify-center rounded-full transition-all duration-200",
                     "hover:scale-110",
@@ -183,12 +185,30 @@ export function BottomNav(props: NavProps) {
               )
             }
 
-            const active = nav.isActive(item.href)
+            // "More" button — not a link, triggers bottom sheet
+            if (item.action === "open-more") {
+              return (
+                <button
+                  onClick={() => props.onMoreClick?.()}
+                  class={cn(
+                    "group flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200",
+                    "hover:bg-card-foreground/20 hover:dark:bg-card-foreground/60 hover:scale-110",
+                  )}
+                >
+                  <Dynamic
+                    component={item.icon as LucideIcon}
+                    class="h-5 w-5 text-primary/60 transition-colors duration-200"
+                  />
+                </button>
+              )
+            }
+
+            const active = nav.isActive(item.href!)
 
             return (
               <Link
                 id={"tour-" + item.id}
-                to={item.href}
+                to={item.href!}
                 class={cn(
                   "group flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200",
                   "hover:bg-card-foreground/20 hover:dark:bg-card-foreground/60 hover:scale-110",

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Repeat, Sparkles, DollarSign } from "lucide-solid"
 import BestMaterialsRightTimeSvg from "@/features/homepage/shared/assets/best-materials-right-time.svg"
 
-export const Route = createFileRoute("/guides/")({
+export const Route = createFileRoute("/_home/guides/")({
   loader: () => ({
     toc: [{ id: "how-it-works", title: "What is Nihongo Ninja?" }],
   }),
