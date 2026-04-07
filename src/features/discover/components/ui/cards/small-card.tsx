@@ -110,10 +110,10 @@ export function SmallAnimeCard(props: SmallAnimeCardProps) {
 
         {/* Title */}
         <div
-          class="line-clamp-2 pt-1 font-black"
+          class="line-clamp-2 pt-1 font-black leading-tight"
           classList={{
-            "text-[0.8rem]": !isLarge(),
-            "text-[0.9rem]": isLarge(),
+            "text-[0.8rem] min-h-[2lh]": !isLarge(),
+            "text-[0.9rem] min-h-[2lh]": isLarge(),
           }}
         >
           <Show when={props.status}>

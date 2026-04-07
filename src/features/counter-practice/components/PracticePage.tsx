@@ -119,7 +119,7 @@ export function PracticePage(props: PracticePageProps) {
   }
 
   return (
-    <div class="flex flex-col gap-2 md:gap-4">
+    <div class="flex flex-col gap-2 md:gap-4 font-excalifont">
       {/* Progress header */}
       <div class="flex flex-1 items-center gap-3 mr-3">
         <button

@@ -105,7 +105,7 @@ export function DeckView(props: DeckViewProps) {
             }}
           >
             <Play class="size-4" />
-            <span>Start practicing</span>
+            <span class="font-excalifont">Start practicing</span>
             <ChevronRight class="size-4 transition-transform group-hover:translate-x-0.5" />
           </Button>
         </div>

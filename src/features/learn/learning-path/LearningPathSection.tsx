@@ -77,7 +77,7 @@ export function LearningPathSection(props: LearningPathSectionProps) {
           <Index each={chapters()}>
             {(chapter) => (
               <AccordionItem value={chapter().slug} class="border-white/10">
-                <AccordionTrigger class="text-sm font-medium hover:no-underline data-expanded:text-2xl data-expanded:font-bold">
+                <AccordionTrigger class="text-sm font-medium font-excalifont hover:no-underline data-expanded:text-2xl data-expanded:font-bold">
                   {chapter().title}
                 </AccordionTrigger>
                 <AccordionContent class="text-base">

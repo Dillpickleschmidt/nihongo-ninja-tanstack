@@ -78,7 +78,7 @@ export function ChapterAccordion(props: {
 
             return (
               <AccordionItem value={chapter.id} class="border-0" id={slug}>
-                <AccordionTrigger class="hover:no-underline">
+                <AccordionTrigger class="font-excalifont hover:no-underline">
                   <div class="flex items-center gap-2">
                     <div
                       class={`flex size-6 items-center justify-center rounded-md text-xs font-bold ${

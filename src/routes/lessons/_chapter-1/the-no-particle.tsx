@@ -303,7 +303,7 @@ function TheNoParticle() {
             <h3 class="font-japanese text-center text-2xl font-medium text-white/90">
               <Romaji
                 romaji={
-                  <span class="font-inter text-sm text-white/40">Who</span>
+                  <span class="font-outfit text-sm text-white/40">Who</span>
                 }
               >
                 <Furigana furigana={<span class="text-base">だれ</span>}>

@@ -9,7 +9,7 @@ export function DueCountBadge(props: DueCountBadgeProps) {
   const count = createMemo(() => props.count())
 
   return (
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 font-excalifont">
       <Show
         when={count() !== undefined}
         fallback={

@@ -22,7 +22,7 @@ import {
 } from "@tanstack/solid-query"
 import type { QueryClient } from "@tanstack/solid-query"
 import { createMediaQuery } from "@solid-primitives/media"
-import "@fontsource-variable/inter"
+import "@fontsource-variable/outfit"
 import "@fontsource-variable/noto-sans-jp"
 import "@fontsource/zen-maru-gothic"
 import appCss from "@/styles/app.css?url"

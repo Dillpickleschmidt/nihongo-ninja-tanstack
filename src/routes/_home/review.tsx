@@ -109,7 +109,7 @@ function RouteComponent() {
   })
 
   return (
-    <main class="p-4 pt-12 pb-24 mx-auto max-w-5xl">
+    <main class="p-4 pt-12 pb-24 mx-auto max-w-5xl font-excalifont">
       <style>{`
         @keyframes fade-up {
           from { opacity: 0; transform: translateY(12px); }

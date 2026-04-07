@@ -71,7 +71,7 @@ export function ExternalResourceCard(props: ExternalResourceCardProps) {
           />
         </div>
         <div>
-          <div class="font-inter text-[13px] font-semibold leading-tight text-white drop-shadow-sm drop-shadow-black">
+          <div class="font-outfit text-[13px] font-semibold leading-tight text-white drop-shadow-sm drop-shadow-black">
             {truncateText(props.resource.title, 35)}
           </div>
           <div class="text-muted-foreground pt-[5px] text-[11px] leading-none capitalize drop-shadow-sm">

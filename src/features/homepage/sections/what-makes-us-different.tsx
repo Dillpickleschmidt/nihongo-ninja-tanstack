@@ -20,7 +20,7 @@ export function WhatMakesUsDifferent() {
             class="overflow-hidden transition-[max-height] duration-700 ease-in-out"
             style={{ "max-height": expanded() ? "3000px" : "405px" }}
           >
-            <div class="space-y-6 text-lg leading-relaxed text-white/70">
+            <div class="space-y-6 text-lg font-outfit leading-relaxed text-white/70">
               <p>
                 Many courses have very decent information to teach, but most
                 lack good practice material, if any. They'll hand you worksheets

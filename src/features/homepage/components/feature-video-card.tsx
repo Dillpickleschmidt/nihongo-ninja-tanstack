@@ -56,7 +56,7 @@ export function FeatureVideoCard(props: {
         <h3 class="mb-3 text-2xl font-bold text-white lg:text-3xl">
           {props.title}
         </h3>
-        <p class="text-base text-white/60 leading-relaxed lg:text-lg">
+        <p class="text-base font-outfit text-white/60 leading-relaxed lg:text-lg">
           {props.description}
         </p>
       </div>

@@ -51,7 +51,7 @@ export function DashboardCard(props: DashboardCardProps) {
           <div class="absolute right-2 bottom-2 flex flex-wrap justify-end gap-1">
             <For each={props.card.tags}>
               {(tag) => (
-                <span class="rounded-full bg-background/80 px-1.5 py-0.5 text-[10px] text-white/60">
+                <span class="rounded-full bg-background/80 px-1.5 py-0.5 text-[10px] font-excalifont text-white/60">
                   {tag}
                 </span>
               )}

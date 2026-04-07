@@ -143,7 +143,7 @@ export function FolderBrowser(props: FolderBrowserProps) {
                 </SelectSection>
               )}
             >
-              <SelectTrigger class="w-auto min-w-48 border-0 bg-white/[0.04] text-white/70 hover:bg-white/[0.06]">
+              <SelectTrigger class="w-auto min-w-48 border-0 bg-white/[0.04] font-excalifont text-white/70 hover:bg-white/[0.06]">
                 <SelectValue<MenuItem>>
                   {(state) => state.selectedOption()?.label}
                 </SelectValue>

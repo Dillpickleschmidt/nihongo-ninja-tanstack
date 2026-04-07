@@ -30,7 +30,7 @@ function Homepage() {
   useColorAnimation()
 
   return (
-    <div class="z-0 relative min-h-screen bg-neutral-950 text-white overflow-x-clip">
+    <div class="z-0 relative min-h-screen bg-neutral-950 text-white overflow-x-clip font-excalifont">
       <style>{`
         @property --landing-accent { syntax: "<color>"; inherits: true; initial-value: #f59e0b; }
         @property --landing-accent-end { syntax: "<color>"; inherits: true; initial-value: #f43f5e; }

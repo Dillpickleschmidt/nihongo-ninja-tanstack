@@ -305,7 +305,7 @@ function KanjiPracticeSheet() {
               <span class="sr-only">Toggle sheet colors</span>
             </Button>
           </div>
-          <div class="font-inter absolute top-8 right-8 flex items-center print:hidden">
+          <div class="font-outfit absolute top-8 right-8 flex items-center print:hidden">
             <h2 class="text-card-foreground mr-2 mb-1 font-bold italic">
               CLICK TO PRINT {"->"}
             </h2>

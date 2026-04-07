@@ -79,7 +79,7 @@ function ModuleListItem(props: ModuleListItemProps) {
   )
 
   const baseClasses = cn(
-    "group bg-card font-inter relative block h-12 w-full rounded-md text-sm whitespace-nowrap",
+    "group bg-card font-outfit relative block h-12 w-full rounded-md text-sm whitespace-nowrap",
     "border-card-foreground/70 border backdrop-blur-sm",
     "bg-gradient-to-br dark:from-neutral-600/15 dark:to-gray-600/10",
     "ease-instant-hover-200",

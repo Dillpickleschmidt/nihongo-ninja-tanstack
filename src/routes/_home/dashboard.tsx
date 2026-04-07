@@ -149,7 +149,7 @@ function DashboardComponent() {
             <h1 class="font-bold text-4xl text-white/90">
               The best materials, at the right time
             </h1>
-            <p class="mt-3 max-w-lg text-white/50">
+            <p class="mt-3 max-w-lg font-excalifont text-white/50">
               Build learning paths from your favorite content, practice using unique tools, or continue where you left off.
             </p>
 
@@ -334,7 +334,7 @@ function DashboardComponent() {
 function SectionHeader(props: { title: string }) {
   return (
     <div class="flex items-center gap-4">
-      <h2 class="text-xl font-semibold text-white">{props.title}</h2>
+      <h2 class="text-xl font-semibold font-excalifont text-white">{props.title}</h2>
       <div class="h-px flex-1 bg-gradient-to-r from-(--landing-accent)/20 to-transparent" />
     </div>
   )

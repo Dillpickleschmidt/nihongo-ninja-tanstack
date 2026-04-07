@@ -35,7 +35,7 @@ export function HeroSection(props: HeroSectionProps) {
   return (
     <section class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
       <div class="flex-1">
-        <div class="mb-8 animate-fade-up opacity-0">
+        <div class="mb-4 animate-fade-up opacity-0">
           <Suspense
             fallback={
               <div class="flex items-center gap-3 mb-2">
@@ -45,9 +45,6 @@ export function HeroSection(props: HeroSectionProps) {
           >
             <HeroBadge />
           </Suspense>
-          <h1 class="text-3xl font-bold lg:text-4xl">
-            <span class="text-dynamic-accent">Continue</span> your journey
-          </h1>
         </div>
 
         <div
@@ -99,10 +96,10 @@ function HeroContent() {
 
   return (
     <div>
-      <h2 class="text-xl font-bold text-white mb-1 md:text-2xl">
+      <h2 class="text-3xl font-bold font-excalifont text-white mb-1 md:text-4xl">
         Your <span class="text-dynamic-accent">Learning Path</span>
       </h2>
-      <p class="text-sm text-white/50 mb-4">
+      <p class="text-sm font-excalifont text-white/50 mb-4">
         {selectedPath()?.name ?? "Select a textbook to begin"}
       </p>
 
@@ -136,7 +133,7 @@ function HeroBadge() {
   }
 
   return (
-    <div class="flex items-center gap-3 mb-2">
+    <div class="flex items-center gap-3 mb-2 font-excalifont">
       <div class="flex items-center gap-2 rounded-full border border-dynamic-accent/20 bg-dynamic-accent/10 px-3 py-1 text-xs text-dynamic-accent">
         <Sparkles class="size-3" />
         <span>{selectedPath()?.shortName ?? "Loading..."}</span>

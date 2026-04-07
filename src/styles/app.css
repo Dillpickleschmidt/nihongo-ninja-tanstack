@@ -130,7 +130,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-inter antialiased;
+    @apply bg-background text-foreground font-outfit antialiased;
   }
 
   @media (max-width: 640px) {
@@ -214,7 +214,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  --font-inter: "Inter Variable", "sans-serif";
+  --font-outfit: "Outfit Variable", "sans-serif";
   --font-japanese: "Noto Sans JP Variable", "sans-serif";
   --font-excalifont: "Excalifont", "sans-serif";
 
