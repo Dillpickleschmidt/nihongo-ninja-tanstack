@@ -33,101 +33,41 @@ export const questions: Question[] = [
     ],
   },
   {
+    english: "My mother is Japanese.",
+    answers: [
+      {
+        segments: [
+          { text: "お母[おかあ]さんは 日本人[にほんじん]です", blank: true },
+        ],
+        notes: "Dropping 私の — natural in Japanese when context is clear; お母さん alone implies \"my mother\"",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の お母[おかあ]さんは 日本人[にほんじん]です", blank: true },
+        ],
+        notes: "Full: 私の + お母さん as topic, 日本人です as predicate",
+      },
+      {
+        segments: [
+          { text: "母[はは]は 日本人[にほんじん]です", blank: true },
+        ],
+        notes: "Using 母 (haha) — humble/plain word for one's own mother, more formal register",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 母[はは]は 日本人[にほんじん]です", blank: true },
+        ],
+        notes: "Using 母 (haha) — humble/plain word for one's own mother, more formal register",
+      },
+    ],
+  },
+  {
     english: "Mr./Ms. Satou is Japanese.",
     hint: "Name spelling: 砂糖（さとう）",
     answers: [
       {
         segments: [
           { text: "佐藤[さとう]さんは 日本人[にほんじん]です", blank: true },
-        ],
-      },
-    ],
-  },
-  {
-    english: "Professor Hayashi is a teacher.",
-    hint: "Name spelling: 林（はやし）",
-    answers: [
-      {
-        segments: [
-          {
-            text: "林[はやし]先生[せんせい]は 先生[せんせい]です",
-            blank: true,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    english: "Yuki is a high school student.",
-    hint: "Name spelling: 雪（ゆき）",
-    answers: [
-      {
-        segments: [
-          { text: "雪[ゆき]は 高校生[こうこうせい]です", blank: true },
-        ],
-      },
-      {
-        segments: [{ text: "ユキは 高校生[こうこうせい]です", blank: true }],
-      },
-      {
-        segments: [{ text: "ゆきは 高校生[こうこうせい]です", blank: true }],
-      },
-    ],
-  },
-  {
-    english: "Mr./Ms. Nakamura is a university student.",
-    hint: "Name spelling: 中村（なかむら）",
-    answers: [
-      {
-        segments: [
-          {
-            text: "中村[なかむら]さんは 大学生[だいがくせい]です",
-            blank: true,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    english: "Mr./Ms. Suzuki is a nurse.",
-    hint: "Name spelling: 鈴木（すずき）",
-    answers: [
-      {
-        segments: [
-          { text: "鈴木[すずき]さんは 看護師[かんごし]です", blank: true },
-        ],
-      },
-    ],
-  },
-  {
-    english: "Tarou is a first-year student.",
-    hint: "Name spelling: 太郎（たろう）",
-    answers: [
-      {
-        segments: [
-          { text: "太郎[たろう]は 一年生[いちねんせい]です", blank: true },
-        ],
-      },
-    ],
-  },
-  {
-    english: "Ms. Hanako is a housewife.",
-    hint: "Name spelling: 花子（はなこ）",
-    answers: [
-      {
-        segments: [
-          { text: "花子[はなこ]さんは 主婦[しゅふ]です", blank: true },
-        ],
-      },
-    ],
-  },
-  {
-    english: "I am a graduate student.",
-    hint: "Use XはYです pattern",
-    answers: [
-      {
-        segments: [
-          { text: "私[わたし]は 大学院生[だいがくいんせい]です", blank: true },
         ],
       },
     ],
@@ -162,6 +102,111 @@ export const questions: Question[] = [
     ],
   },
   {
+    english: "Mr./Ms. Nakamura is a university student.",
+    hint: "Name spelling: 中村（なかむら）",
+    answers: [
+      {
+        segments: [
+          {
+            text: "中村[なかむら]さんは 大学生[だいがくせい]です",
+            blank: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    english: "Everyone is a student.",
+    answers: [
+      {
+        segments: [
+          { text: "みんなは 学生[がくせい]です", blank: true },
+        ],
+        notes: "Basic variation: みんな as topic with は",
+      },
+      {
+        segments: [
+          { text: "みんなが 学生[がくせい]です", blank: true },
+        ],
+        notes: "Using が instead of は to highlight \"everyone\"",
+      },
+      {
+        segments: [
+          { text: "皆[みんな]は 学生[がくせい]です", blank: true },
+        ],
+        notes: "Using kanji 皆 for みんな with は",
+      },
+      {
+        segments: [
+          { text: "皆[みんな]が 学生[がくせい]です", blank: true },
+        ],
+        notes: "Kanji 皆 with が instead of は",
+      },
+    ],
+  },
+  {
+    english: "Mr./Ms. Suzuki is a nurse.",
+    hint: "Name spelling: 鈴木（すずき）",
+    answers: [
+      {
+        segments: [
+          { text: "鈴木[すずき]さんは 看護師[かんごし]です", blank: true },
+        ],
+      },
+    ],
+  },
+  {
+    english: "Kobayashi is a high school student.",
+    hint: "Name spelling: 小林（こばやし）",
+    answers: [
+      {
+        segments: [
+          {
+            text: "小林[こばやし]さんは 高校生[こうこうせい]です",
+            blank: true,
+          },
+        ],
+      },
+      {
+        segments: [
+          { text: "賢司[けんじ]は 高校生[こうこうせい]です", blank: true },
+        ],
+      },
+      {
+        segments: [
+          { text: "謙治[けんじ]は 高校生[こうこうせい]です", blank: true },
+        ],
+      },
+      {
+        segments: [
+          { text: "研司[けんじ]は 高校生[こうこうせい]です", blank: true },
+        ],
+      },
+    ],
+  },
+  {
+    english: "Ms. Hanako is a housewife.",
+    hint: "Name spelling: 花子（はなこ）",
+    answers: [
+      {
+        segments: [
+          { text: "花子[はなこ]さんは 主婦[しゅふ]です", blank: true },
+        ],
+      },
+    ],
+  },
+  {
+    english: "I am a graduate student.",
+    hint: "Use XはYです pattern",
+    answers: [
+      {
+        segments: [
+          { text: "私[わたし]は 大学院生[だいがくいんせい]です", blank: true },
+        ],
+      },
+    ],
+  },
+  {
     english: "Mr./Ms. Murata is a lawyer.",
     hint: "Name spelling: 村田（むらた）",
     answers: [
@@ -173,13 +218,27 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Mr./Ms. Inoue is a teacher.",
-    hint: "Name spelling: 井上（いのうえ）",
+    english: "Ms. Mei is a biology major.",
+    hint: "Mei = めい",
+    allow: ["めい"],
     answers: [
       {
         segments: [
-          { text: "井上[いのうえ]さんは 先生[せんせい]です", blank: true },
+          { text: "めいさんは 生物学[せいぶつがく] 専攻[せんこう]です", blank: true },
         ],
+        notes: "Compact form — 生物学専攻 used as a compound noun without の",
+      },
+      {
+        segments: [
+          { text: "めいさんは 生物学[せいぶつがく]の 専攻[せんこう]です", blank: true },
+        ],
+        notes: "Topic is Mei; 生物学の専攻 = biology major",
+      },
+      {
+        segments: [
+          { text: "めいさんの 専攻[せんこう]は 生物学[せいぶつがく]です", blank: true },
+        ],
+        notes: "Topic is Mei's major; は marks 専攻 as topic",
       },
     ],
   },
@@ -194,6 +253,35 @@ export const questions: Question[] = [
             blank: true,
           },
         ],
+      },
+    ],
+  },
+  {
+    english: "My friend is a nurse.",
+    answers: [
+      {
+        segments: [
+          { text: "友[とも]だちは 看護師[かんごし]です", blank: true },
+        ],
+        notes: "Dropping 私の — possession implied; shorter and natural in casual context",
+      },
+      {
+        segments: [
+          { text: "友達[ともだち]は 看護師[かんごし]です", blank: true },
+        ],
+        notes: "友達 kanji variant, no 私の",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 友[とも]だちは 看護師[かんごし]です", blank: true },
+        ],
+        notes: "Standard answer: explicit 私の to show possession \"my friend\"",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 友達[ともだち]は 看護師[かんごし]です", blank: true },
+        ],
+        notes: "Using 友達 kanji variant instead of 友だち",
       },
     ],
   },
@@ -215,22 +303,6 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "岡田[おかだ]さんは 会社員[かいしゃいん]です", blank: true },
-        ],
-      },
-    ],
-  },
-  {
-    english: "Mr./Ms. Abe is a university student.",
-    hint: "Name spelling: 阿部（あべ） or 安倍（あべ）",
-    answers: [
-      {
-        segments: [
-          { text: "阿部[あべ]さんは 大学生[だいがくせい]です", blank: true },
-        ],
-      },
-      {
-        segments: [
-          { text: "安倍[あべ]さんは 大学生[だいがくせい]です", blank: true },
         ],
       },
     ],
