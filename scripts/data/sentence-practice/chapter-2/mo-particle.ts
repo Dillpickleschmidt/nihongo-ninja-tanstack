@@ -3,7 +3,6 @@ import type { Question } from "../types"
 export const questions: Question[] = [
   {
     english: "This bag is expensive. That wallet is also expensive.",
-    hint: "Comparing prices of items",
     answers: [
       {
         segments: [
@@ -16,7 +15,6 @@ export const questions: Question[] = [
   },
   {
     english: "Both this hat and that bag are expensive",
-    hint: "Comparing multiple items' prices",
     answers: [
       {
         segments: [
@@ -29,7 +27,6 @@ export const questions: Question[] = [
   },
   {
     english: "This is my dictionary. This is also my notebook.",
-    hint: "Showing ownership of multiple items",
     answers: [
       {
         segments: [
@@ -51,7 +48,6 @@ export const questions: Question[] = [
   },
   {
     english: "Tanaka is a student. Yamada is also a student.",
-    hint: "Comparing people's roles",
     answers: [
       {
         segments: [
@@ -64,7 +60,6 @@ export const questions: Question[] = [
   },
   {
     english: "Both Tanaka and Sato are Japanese.",
-    hint: "Describing multiple people's nationality",
     answers: [
       {
         segments: [
@@ -77,7 +72,6 @@ export const questions: Question[] = [
   },
   {
     english: "This is an English book. This is also a Japanese book.",
-    hint: "Describing books in different languages",
     answers: [
       {
         segments: [
@@ -90,7 +84,6 @@ export const questions: Question[] = [
   },
   {
     english: "Both this pen and that pencil are expensive.",
-    hint: "Comparing prices of stationery items",
     answers: [
       {
         segments: [
@@ -103,7 +96,6 @@ export const questions: Question[] = [
   },
   {
     english: "Yamada is a doctor. He is also a teacher.",
-    hint: "Describing someone with multiple roles",
     answers: [
       {
         segments: [
@@ -125,7 +117,6 @@ export const questions: Question[] = [
   },
   {
     english: "Both this university and that high school are in Japan.",
-    hint: "Describing locations of schools",
     answers: [
       {
         segments: [
@@ -138,7 +129,6 @@ export const questions: Question[] = [
   },
   {
     english: "Kim is Korean. She is also a university student.",
-    hint: "Describing someone's nationality and role",
     answers: [
       {
         segments: [
@@ -151,7 +141,6 @@ export const questions: Question[] = [
   },
   {
     english: "Both this dictionary and that notebook are mine.",
-    hint: "Showing ownership of multiple items",
     answers: [
       {
         segments: [
@@ -164,7 +153,6 @@ export const questions: Question[] = [
   },
   {
     english: "This is Tanaka's pen. This is also Tanaka's notebook.",
-    hint: "Showing multiple items belonging to same person",
     answers: [
       {
         segments: [
@@ -177,7 +165,6 @@ export const questions: Question[] = [
   },
   {
     english: "Both Yamada and Tanaka are first-year students.",
-    hint: "Describing multiple people's grade level",
     answers: [
       {
         segments: [
@@ -190,7 +177,6 @@ export const questions: Question[] = [
   },
   {
     english: "This is an international student. This is also a nurse.",
-    hint: "Introducing people with different roles",
     answers: [
       {
         segments: [
@@ -203,7 +189,6 @@ export const questions: Question[] = [
   },
   {
     english: "Both this umbrella and that bag are Tanaka's.",
-    hint: "Multiple items belonging to same person",
     answers: [
       {
         segments: [
@@ -216,7 +201,6 @@ export const questions: Question[] = [
   },
   {
     english: "This is the English teacher. This is also the Japanese teacher.",
-    hint: "Introducing teachers of different subjects",
     answers: [
       {
         segments: [
@@ -229,7 +213,6 @@ export const questions: Question[] = [
   },
   {
     english: "Both these shoes and that hat are Yamada's.",
-    hint: "Multiple items belonging to same person",
     answers: [
       {
         segments: [
@@ -242,7 +225,6 @@ export const questions: Question[] = [
   },
   {
     english: "This is the university library. This is also the computer room.",
-    hint: "Introducing different places in a building",
     answers: [
       {
         segments: [
@@ -255,7 +237,6 @@ export const questions: Question[] = [
   },
   {
     english: "Both this bike and that umbrella are expensive.",
-    hint: "Comparing prices of different items",
     answers: [
       {
         segments: [
@@ -268,7 +249,6 @@ export const questions: Question[] = [
   },
   {
     english: "Tanaka is a lawyer. He is also a university teacher.",
-    hint: "Describing someone with multiple professions",
     answers: [
       {
         segments: [
