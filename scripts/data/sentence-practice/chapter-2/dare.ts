@@ -2,106 +2,141 @@ import type { Question } from "../types"
 
 export const questions: Question[] = [
   {
-    english: "Who is the Japanese teacher?",
-    hint: "Several teachers are present in the teachers' room",
+    english: "Who is the English teacher?",
     answers: [
       {
         segments: [
-          { text: "だれが", blank: true },
-          { text: "日本語[にほんご]の 先生[せんせい]ですか" },
+          { text: "誰[だれ]が", blank: true },
+          { text: "英語[えいご]の 先生[せんせい]ですか" },
         ],
         notes:
-          "Using が to identify which specific person among the teachers is the Japanese teacher",
+          "Using が to identify which specific person among the teachers is the English teacher",
       },
       {
         segments: [
-          { text: "日本語[にほんご]の 先生[せんせい]は" },
-          { text: "だれ", blank: true },
+          { text: "英語[えいご]の 先生[せんせい]は" },
+          { text: "誰[だれ]", blank: true },
           { text: "ですか" },
         ],
-        notes: "Using は to ask about the Japanese teacher in general",
+        notes: "Using は to ask about the English teacher in general",
       },
     ],
   },
   {
-    english: "Whose umbrella is this?",
-    hint: "Looking at an umbrella by the door",
+    english: "Whose umbrella is over there?",
     answers: [
+      {
+        segments: [
+          { text: "あれは" },
+          { text: "誰[だれ]の 傘[かさ]", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "あれ as subject — \"that one over there is whose umbrella?\"",
+      },
+      {
+        segments: [
+          { text: "あれ、" },
+          { text: "誰[だれ]の 傘[かさ]", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Shorter with 、instead of は"
+      },
+      {
+        segments: [
+          { text: "あの 傘[かさ]は" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "あの + 傘 as topic — \"that umbrella over there, whose is it?\"",
+      },
+      {
+        segments: [
+          { text: "あそこの 傘[かさ]は" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "あそこの 傘は — \"the umbrella over there, whose is it?\" using location あそこ",
+      },
+      {
+        segments: [
+          { text: "誰[だれ]の 傘[かさ]", blank: true },
+          { text: "があそこですか" },
+        ],
+        notes: "Flipped - grammatically valid but usually less natural",
+      },
+    ],
+  },
+  {
+    english: "Whose English dictionary is this?",
+    hint: "Looking at a dictionary on the desk in front of you",
+    answers: [
+      {
+        segments: [
+          { text: "誰[だれ]の", blank: true },
+          { text: "英語[えいご]の 辞書[じしょ]ですか" },
+        ],
+        notes: "Shorter variant",
+      },
       {
         segments: [
           { text: "これは" },
-          { text: "だれの", blank: true },
-          { text: "かさですか" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "英語[えいご]の 辞書[じしょ]ですか" },
         ],
-        notes: "Longer, less natural sounding",
-      },
-      {
-        segments: [{ text: "だれの", blank: true }, { text: "かさですか" }],
-        notes: "Shorter, natural sounding",
-      },
-    ],
-  },
-  {
-    english: "Who is an international student in this class?",
-    hint: "Looking around at classroom members",
-    answers: [
-      {
-        segments: [
-          { text: "だれが", blank: true },
-          { text: "このクラスの 留学生[りゅうがくせい]ですか" },
-        ],
-        notes: "Using が to identify a specific person",
+        notes: "Standard variant",
       },
       {
         segments: [
-          { text: "このクラスで" },
-          { text: "だれが", blank: true },
-          { text: "留学生[りゅうがくせい]ですか" },
+          { text: "これ、" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "英語[えいご]の 辞書[じしょ]ですか" },
         ],
-        notes:
-          "Using で to specify the location first, then asking who within that space is the international student (Chapter 3)",
-      },
-    ],
-  },
-  {
-    english: "Who is Korean?",
-    hint: "Looking at a group of people",
-    answers: [
-      {
-        segments: [
-          { text: "だれが", blank: true },
-          { text: "韓国人[かんこくじん]ですか" },
-        ],
-        notes: "Using が to identify a specific person",
+        notes: "Standard but with 、instead of は"
       },
       {
         segments: [
-          { text: "韓国人[かんこくじん]は" },
-          { text: "だれ", blank: true },
+          { text: "この 英語[えいご]の 辞書[じしょ]は" },
+          { text: "誰[だれ]の", blank: true },
           { text: "ですか" },
         ],
-        notes: "Using は to ask the question in general",
+        notes: "この variant",
       },
-    ],
-  },
-  {
-    english: "Whose English textbook is this?",
-    hint: "Looking at a textbook on a desk",
-    answers: [
+      {
+        segments: [
+          { text: "誰[だれ]の 英語[えいご]の 辞書[じしょ]", blank: true },
+          { text: "がこれですか" },
+        ],
+        notes: "Flipped - grammatically valid but usually less natural",
+      },
       {
         segments: [
           { text: "これは" },
-          { text: "だれの", blank: true },
-          { text: "英語[えいご]の 本[ほん]ですか" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "英語[えいご]辞書[じしょ]ですか" },
         ],
-        notes: "Longer, less natural sounding",
+        notes: "Dropped a の: Spelled out",
       },
       {
         segments: [
-          { text: "だれの", blank: true },
-          { text: "英語[えいご]の 本[ほん]ですか" },
+          { text: "これ、" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "英語[えいご]辞書[じしょ]ですか" },
         ],
-        notes: "Shorter, more natural sounding",
+        notes: "Dropped a の: 、instead of は"
+      },
+      {
+        segments: [
+          { text: "誰[だれ]の", blank: true },
+          { text: "英語[えいご]辞書[じしょ]ですか" },
+        ],
+        notes: "Dropped a の: Also shorter variant",
+      },
+      {
+        segments: [
+          { text: "誰[だれ]の 英語[えいご]辞書[じしょ]", blank: true },
+          { text: "がこれですか" },
+        ],
+        notes: "Dropped a の: Flipped - grammatically valid but usually less natural",
       },
     ],
   },
@@ -110,38 +145,31 @@ export const questions: Question[] = [
     hint: "Looking at a bag on a chair",
     answers: [
       {
+        segments: [{ text: "だれの", blank: true }, { text: "鞄[かばん]ですか" }],
+        notes: "Shorter, natural sounding",
+      },
+      {
         segments: [
           { text: "これは" },
-          { text: "だれの", blank: true },
-          { text: "かばんですか" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "鞄[かばん]ですか" },
         ],
         notes: "Longer, less natural sounding",
       },
       {
-        segments: [{ text: "だれの", blank: true }, { text: "かばんですか" }],
-        notes: "Shorter, natural sounding",
-      },
-    ],
-  },
-  {
-    english: "Who's the doctor at the university?",
-    hint: "Discussing university staff members",
-    answers: [
-      {
         segments: [
-          { text: "だれが", blank: true },
-          { text: "この 大学[だいがく]の 医者[いしゃ]ですか" },
+          { text: "これ、" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "鞄[かばん]ですか" },
         ],
-        notes: "Using が to identify a specific person",
+        notes: "、instead of は"
       },
       {
         segments: [
-          { text: "この 大学[だいがく]で" },
-          { text: "だれが", blank: true },
-          { text: "医者[いしゃ]ですか" },
+          { text: "誰[だれ]の鞄[かばん]", blank: true },
+          { text: "がこれですか" },
         ],
-        notes:
-          "Using で to ask about who at this university is a doctor (Chapter 3)",
+        notes: "Flipped & verbose - grammatically valid but usually less natural",
       },
     ],
   },
@@ -151,32 +179,10 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "だれが", blank: true },
+          { text: "誰[だれ]が", blank: true },
           { text: "一年生[いちねんせい]ですか" },
         ],
         notes: "Using が to identify a specific person",
-      },
-    ],
-  },
-  {
-    english: "Who is the English teacher?",
-    hint: "Trying to identify one teacher among several",
-    answers: [
-      {
-        segments: [
-          { text: "だれが", blank: true },
-          { text: "英語[えいご]の 先生[せんせい]ですか" },
-        ],
-        notes: "Using が to identify a specific person",
-      },
-      {
-        segments: [
-          { text: "英語[えいご]の 先生[せんせい]は" },
-          { text: "だれ", blank: true },
-          { text: "ですか" },
-        ],
-        notes:
-          "Using は to ask about the English teacher's identity in general",
       },
     ],
   },
@@ -187,114 +193,59 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "これは" },
-          { text: "だれの", blank: true },
-          { text: "さいふですか" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "財布[さいふ]ですか" },
         ],
         notes: "Longer, less natural sounding",
       },
       {
-        segments: [{ text: "だれの", blank: true }, { text: "さいふですか" }],
+        segments: [{ text: "誰[だれ]の", blank: true }, { text: "財布[さいふ]ですか" }],
         notes: "Shorter, natural sounding",
       },
-    ],
-  },
-  {
-    english: "Whose notebook is this?",
-    hint: "Looking at a notebook left in the classroom",
-    answers: [
       {
         segments: [
-          { text: "これは" },
-          { text: "だれの", blank: true },
-          { text: "ノートですか" },
+          { text: "誰[だれ]の財布[さいふ]", blank: true },
+          { text: "がこれですか" },
         ],
-        notes: "Longer, less natural sounding",
-      },
-      {
-        segments: [{ text: "だれの", blank: true }, { text: "ノートですか" }],
-        notes: "Shorter, natural sounding",
+        notes: "Flipped - grammatically valid but usually less natural",
       },
     ],
   },
   {
-    english: "Who at this high school is a nurse?",
-    hint: "Asking about school staff",
+    english: "Whose notebook is on that desk over there?",
     answers: [
       {
         segments: [
-          { text: "だれが", blank: true },
-          { text: "この 高校[こうこう]の 看護師[かんごし]ですか" },
-        ],
-        notes: "Using が to identify a specific person",
-      },
-      {
-        segments: [
-          { text: "この 高校[こうこう]で" },
-          { text: "だれが", blank: true },
-          { text: "看護師[かんごし]ですか" },
-        ],
-        notes:
-          "Using で to ask about who in this location is Chinese (Chapter 3)",
-      },
-    ],
-  },
-  {
-    english: "Who in this office is Chinese?",
-    hint: "Looking at office staff",
-    answers: [
-      {
-        segments: [
-          { text: "だれが", blank: true },
-          { text: "このオフィスの 中国人[ちゅうごくじん]ですか" },
-        ],
-        notes: "Using が to ask who has the role of teacher for this class",
-      },
-      {
-        segments: [
-          { text: "このオフィスで" },
-          { text: "だれが", blank: true },
-          { text: "中国人[ちゅうごくじん]ですか" },
-        ],
-        notes: "Using で to specify where (Chapter 3)",
-      },
-    ],
-  },
-  {
-    english: "Whose dictionary is this?",
-    hint: "Found a dictionary in the library",
-    answers: [
-      {
-        segments: [
-          { text: "これは" },
-          { text: "だれの", blank: true },
-          { text: "じしょですか" },
-        ],
-        notes: "Longer, less natural sounding",
-      },
-      {
-        segments: [{ text: "だれの", blank: true }, { text: "じしょですか" }],
-        notes: "Shorter, natural sounding",
-      },
-    ],
-  },
-  {
-    english: "Who is your teacher?",
-    hint: "Asking about someone's teacher",
-    answers: [
-      {
-        segments: [
-          { text: "だれが", blank: true },
-          { text: "先生[せんせい]ですか" },
-        ],
-        notes: "Using が to identify a specific person",
-      },
-      {
-        segments: [
-          { text: "先生[せんせい]は" },
-          { text: "だれ", blank: true },
+          { text: "あの机[つくえ]のノートは" },
+          { text: "誰[だれ]の", blank: true },
           { text: "ですか" },
         ],
-        notes: "Using は to ask the question in general",
+        notes: "だれの (whose) without repeating ノート — natural Japanese",
+      },
+      {
+        segments: [
+          { text: "あの机[つくえ]のノートは" },
+          { text: "誰[だれ]の ノート", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Verbose but grammatical: あの机のノートは...whose notebook is it, full noun at end",
+      },
+      {
+        segments: [
+          { text: "あそこの 机[つくえ]のノートは" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Using あそこの机 instead of あの机 — あそこ (over there) + の to modify 机",
+      },
+      {
+        segments: [
+          { text: "あそこの 机[つくえ]の ノートは" },
+          { text: "誰[だれ]のノート", blank: true },
+          { text: "です" },
+          { text: "か" },
+        ],
+        notes: "Verbose but grammatical: あそこの机, with full noun repeated at end",
       },
     ],
   },
@@ -304,18 +255,18 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "だれが", blank: true },
-          { text: "アメリカ人[じん]ですか" },
-        ],
-        notes: "Using が to identify a specific person",
-      },
-      {
-        segments: [
           { text: "アメリカ人[じん]は" },
-          { text: "だれ", blank: true },
+          { text: "誰[だれ]", blank: true },
           { text: "ですか" },
         ],
         notes: "Using は to ask the question in general",
+      },
+      {
+        segments: [
+          { text: "誰[だれ]が", blank: true },
+          { text: "アメリカ人[じん]ですか" },
+        ],
+        notes: "Using が to identify a specific person (could be a bit direct/strong sounding though)",
       },
     ],
   },
@@ -325,57 +276,177 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "だれが", blank: true },
-          { text: "会社員[かいしゃいん]ですか" },
-        ],
-        notes: "Using が to identify a specific person",
-      },
-      {
-        segments: [
           { text: "会社員[かいしゃいん]は" },
-          { text: "だれ", blank: true },
+          { text: "誰[だれ]", blank: true },
           { text: "ですか" },
         ],
         notes: "Using は to ask about the office worker's identity in general",
       },
-    ],
-  },
-  {
-    english: "Whose newspaper is this?",
-    hint: "Looking at a newspaper on the desk",
-    answers: [
       {
         segments: [
-          { text: "これは" },
-          { text: "だれの", blank: true },
-          { text: "しんぶんですか" },
-        ],
-        notes: "Longer, less natural sounding",
-      },
-      {
-        segments: [{ text: "だれの", blank: true }, { text: "しんぶんですか" }],
-        notes: "Shorter, natural sounding",
-      },
-    ],
-  },
-  {
-    english: "Who at this school is a high school student?",
-    hint: "In a mixed group of students",
-    answers: [
-      {
-        segments: [
-          { text: "だれが", blank: true },
-          { text: "この 学校[がっこう]の 高校生[こうこうせい]ですか" },
+          { text: "誰[だれ]が", blank: true },
+          { text: "会社員[かいしゃいん]ですか" },
         ],
         notes: "Using が to identify a specific person",
       },
+    ],
+  },
+  {
+    english: "Whose bicycle is that over there?",
+    answers: [
       {
         segments: [
-          { text: "この 学校[がっこう]で" },
-          { text: "だれが", blank: true },
-          { text: "高校生[こうこうせい]ですか" },
+          { text: "あの 自転車[じてんしゃ]は" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "ですか" },
         ],
-        notes: "Using で to ask about who in this class is Chinese (Chapter 3)",
+        notes: "あの + noun as topic, だれの as predicate (bicycle noun dropped)",
+      },
+      {
+        segments: [
+          { text: "あの 自転車[じてんしゃ]は" },
+          { text: "誰[だれ]の 自転車[じてんしゃ]", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "あの + noun as topic, full explicit predicate だれの自転車",
+      },
+      {
+        segments: [
+          { text: "あそこの 自転車[じてんしゃ]は" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "あそこの + noun as topic, だれの as predicate",
+      },
+      {
+        segments: [
+          { text: "あそこの 自転車[じてんしゃ]は" },
+          { text: "誰[だれ]の 自転車[じてんしゃ]", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "あそこの + noun as topic, full explicit predicate だれの自転車",
+      },
+      {
+        segments: [
+          { text: "あれは" },
+          { text: "誰[だれ]の 自転車[じてんしゃ]", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Basic あれは pattern, blank on だれの自転車",
+      },
+      {
+        segments: [
+          { text: "あれ、" },
+          { text: "誰[だれ]の 自転車[じてんしゃ]", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Shorter with 、instead of は"
+      },
+      {
+        segments: [
+          { text: "誰[だれ]の 自転車[じてんしゃ]", blank: true },
+          { text: "があそこですか" },
+        ],
+        notes: "Flipped - grammatically valid but usually less natural",
+      },
+    ],
+  },
+  {
+    english: "Whose hat is that?",
+    answers: [
+      {
+        segments: [
+          { text: "それは" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "帽子[ぼうし]ですか" },
+        ],
+        notes: "Standard: それ (that, near listener) + だれの + 帽子",
+      },
+      {
+        segments: [
+          { text: "あれは" },
+          { text: "誰[だれ]の 帽子[ぼうし]", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Using あれ (that over there) instead of それ",
+      },
+      {
+        segments: [
+          { text: "その 帽子[ぼうし]は" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Using その帽子は as the topic, だれの as predicate (whose is that hat?)",
+      },
+      {
+        segments: [
+          { text: "あの 帽子[ぼうし]は" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Using あの帽子は as topic (that hat over there)",
+      },
+      {
+        segments: [
+          { text: "その 帽子[ぼうし]は" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "帽子[ぼうし]ですか" },
+        ],
+        notes: "Full form: その帽子は だれの帽子ですか — redundant but mirrors earlier sentence patterns (e.g. sentence 9)",
+      },
+      {
+        segments: [
+          { text: "あの 帽子[ぼうし]は" },
+          { text: "誰[だれ]の 帽子[ぼうし]", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Full form with あの帽子は (over there)",
+      },
+      {
+        segments: [
+          { text: "それは" },
+          { text: "誰[だれ]の 帽子[ぼうし]", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "それは + だれの帽子 in the blank (full noun phrase as blank)",
+      },
+      {
+        segments: [
+          { text: "あれは" },
+          { text: "誰[だれ]の 帽子[ぼうし]", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "あれは + だれの帽子 in the blank",
+      },
+      {
+        segments: [
+          { text: "それ、" },
+          { text: "誰[だれ]の 帽子[ぼうし]", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Shorter with 、instead of は"
+      },
+      {
+        segments: [
+          { text: "あれ、" },
+          { text: "誰[だれ]の 帽子[ぼうし]", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Shorter with 、instead of は"
+      },
+      {
+        segments: [
+          { text: "誰[だれ]の 帽子[ぼうし]", blank: true },
+          { text: "があれですか" },
+        ],
+        notes: "Flipped - grammatically valid but usually less natural",
+      },
+      {
+        segments: [
+          { text: "誰[だれ]の 帽子[ぼうし]", blank: true },
+          { text: "がそれですか" },
+        ],
+        notes: "Flipped - grammatically valid but usually less natural",
       },
     ],
   },
@@ -385,7 +456,7 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "だれが", blank: true },
+          { text: "誰[だれ]が", blank: true },
           { text: "弁護士[べんごし]ですか" },
         ],
         notes: "Using が to identify a specific person",
@@ -393,10 +464,99 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "弁護士[べんごし]は" },
-          { text: "だれ", blank: true },
+          { text: "誰[だれ]", blank: true },
           { text: "ですか" },
         ],
         notes: "Using は to ask the question in general",
+      },
+    ],
+  },
+  {
+    english: "Whose computer is that?",
+    answers: [
+      {
+        segments: [
+          { text: "それは" },
+          { text: "誰[だれ]のコンピューター", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Standard: それは + だれの + noun. \"That one\" near the listener.",
+      },
+      {
+        segments: [
+          { text: "あれは" },
+          { text: "誰[だれ]のコンピューター", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Using あれは — \"that one over there\"",
+      },
+      {
+        segments: [
+          { text: "そのコンピューターは" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Using その + noun as subject, asking だれの (dropping the repeated noun)",
+      },
+      {
+        segments: [
+          { text: "あのコンピューターは" },
+          { text: "誰[だれ]の", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Using あの + noun as subject, asking だれの (dropping the repeated noun)",
+      },
+      {
+        segments: [
+          { text: "それ、" },
+          { text: "誰[だれ]のコンピューター", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Shorter with 、instead of は"
+      },
+      {
+        segments: [
+          { text: "あれ、" },
+          { text: "誰[だれ]のコンピューター", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Shorter with 、instead of は"
+      },
+      {
+        segments: [
+          { text: "そのコンピューターは" },
+          { text: "誰[だれ]のコンピューター", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Verbose but grammatical: Using その + noun as subject, with full noun repeated in the question",
+      },
+      {
+        segments: [
+          { text: "あのコンピューターは", blank: true },
+          { text: "誰[だれ]のコンピューターですか" },
+        ],
+        notes: "Verbose but grammatical: Using あの + noun as subject, with full noun repeated in the question",
+      },
+      {
+        segments: [
+          { text: "誰[だれ]のコンピューター", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Flipped - pretty natural since it's short",
+      },
+      {
+        segments: [
+          { text: "誰[だれ]のコンピューター", blank: true },
+          { text: "がそれですか" },
+        ],
+        notes: "Flipped & verbose - grammatically valid but usually less natural",
+      },
+      {
+        segments: [
+          { text: "誰[だれ]のコンピューター", blank: true },
+          { text: "があれですか" },
+        ],
+        notes: "Flipped & verbose - grammatically valid but usually less natural",
       },
     ],
   },
