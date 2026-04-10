@@ -44,8 +44,11 @@ describe("prepareQuestion", () => {
     const result = prepareQuestion(question)
 
     expect(result.english).toBe("Hello")
+    expect(result.displayAnswer[0]?.original).toBe("こんにちは")
     expect(result.answers.length).toBeGreaterThan(0)
-    expect(result.answers[0][0].original).toBe("こんにちは")
+    expect(
+      result.answers.some((answer) => answer[0]?.original === "こんにちは"),
+    ).toBe(true)
   })
 
   it("preserves hint from question", () => {
@@ -72,7 +75,7 @@ describe("prepareQuestion", () => {
     ])
 
     const result = prepareQuestion(question)
-    const firstAnswer = result.answers[0]
+    const firstAnswer = result.displayAnswer
 
     expect(firstAnswer[0].isBlank).toBe(false)
     expect(firstAnswer[1].isBlank).toBe(true)
@@ -251,11 +254,11 @@ describe("prepareQuestion", () => {
 
     const result = prepareQuestion(question)
 
-    // First answer should preserve 3-segment structure
-    expect(result.answers[0]).toHaveLength(3)
-    expect(result.answers[0][0].isBlank).toBe(false)
-    expect(result.answers[0][1].isBlank).toBe(true)
-    expect(result.answers[0][2].isBlank).toBe(false)
+    // Display answer should preserve 3-segment structure
+    expect(result.displayAnswer).toHaveLength(3)
+    expect(result.displayAnswer[0].isBlank).toBe(false)
+    expect(result.displayAnswer[1].isBlank).toBe(true)
+    expect(result.displayAnswer[2].isBlank).toBe(false)
   })
 
   it("returns empty validAnswers for question with empty segments", () => {

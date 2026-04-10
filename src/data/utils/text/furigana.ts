@@ -1,6 +1,18 @@
 // Pure furigana text utility functions with no external dependencies
 // These can be safely imported in test environments
 
+import { KANJI_CHAR_CLASS } from "./japanese"
+
+export const FURIGANA_BASE_CHAR_CLASS = `${KANJI_CHAR_CLASS}ぁ-んァ-ン`
+
+export function createFuriganaGroupRegex(flags = "g"): RegExp {
+  return new RegExp(`([${FURIGANA_BASE_CHAR_CLASS}]+)\\[(.+?)\\]`, flags)
+}
+
+export function createKanjiFuriganaGroupRegex(flags = "g"): RegExp {
+  return new RegExp(`([${KANJI_CHAR_CLASS}]+)\\[(.+?)\\]`, flags)
+}
+
 /**
  * Extracts hiragana readings from furigana notation.
  * @param furigana - A string or array of strings containing kanji with furigana in brackets (e.g., "食[た]べる")
@@ -10,7 +22,7 @@ export function extractHiragana<T extends string | string[]>(
   furigana: T,
 ): T extends string[] ? string[] : string {
   const extract = (text: string): string => {
-    let reading = text.replace(/([一-龯ぁ-んァ-ン]+)\[(.+?)\]/g, "$2")
+    const reading = text.replace(createFuriganaGroupRegex(), "$2")
     return reading.replace(/\s/g, "")
   }
 
@@ -37,7 +49,7 @@ export function convertFuriganaToRubyHtml<T extends string | string[]>(
     const sizeStyle = ` style="font-size: ${furiganaSize}; user-select: none; position: relative; z-index: 1;"`
     // Convert furigana to ruby HTML
     let convertedHtml = text.replace(
-      /([一-龯ぁ-んァ-ン]+)\[(.+?)\]/g,
+      createFuriganaGroupRegex(),
       `<ruby>$1<rp>(</rp><rt><span${sizeStyle}>$2</span></rt><rp>)</rp></ruby>`,
     )
 

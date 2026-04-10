@@ -1,5 +1,6 @@
 import { convertFuriganaToRubyHtml } from "@/data/utils/text/furigana"
 import { containsKanji } from "@/data/utils/text/japanese"
+import { createKanjiFuriganaGroupRegex } from "@/data/utils/text/furigana"
 import type { RichSegment } from "./types"
 
 export const SEGMENT_SEPARATOR = "\x1F" // segment boundary marker
@@ -9,6 +10,7 @@ export function normalizeText(text: string): string {
   return text
     .trim()
     .normalize("NFKC")
+    .replace(/\s+/g, "")
     .replace(/\x1F/g, "")
     .replace(/、/g, "")
     .replace(/[。?!？！]$/, "")
@@ -17,6 +19,11 @@ export function normalizeText(text: string): string {
 export interface NormalizedWithMap {
   text: string
   toOriginal: (pos: number) => number
+}
+
+export interface VisibleTextWithMap {
+  text: string
+  normalizedToVisible: (pos: number) => number
 }
 
 // Normalizes text and returns a function to map positions back to original
@@ -30,7 +37,12 @@ export function normalizeWithPositions(text: string): NormalizedWithMap {
   for (let i = 0; i < trimmed.length; i++) {
     const char = trimmed[i]
     const isEndPunctuation = /[。?!？！]/.test(char) && i === trimmed.length - 1
-    if (char !== "\x1F" && char !== "、" && !isEndPunctuation) {
+    if (
+      char !== "\x1F" &&
+      char !== "、" &&
+      !/\s/.test(char) &&
+      !isEndPunctuation
+    ) {
       survivingPositions.push(i)
       normalized += char
     }
@@ -43,6 +55,59 @@ export function normalizeWithPositions(text: string): NormalizedWithMap {
   }
 }
 
+// Builds visible display text and a mapping from normalized positions to visible positions.
+// Visible text preserves punctuation but removes layout artifacts like spaces and separators.
+export function createVisibleTextWithMap(text: string): VisibleTextWithMap {
+  const normalizedInput = text.trim().normalize("NFKC")
+  const normalizedToVisiblePositions: number[] = []
+  let visible = ""
+  let visiblePos = 0
+  let inBracket = false
+
+  for (let i = 0; i < normalizedInput.length; i++) {
+    const char = normalizedInput[i]
+    const isEndPunctuation = /[。?!？！]/.test(char) && i === normalizedInput.length - 1
+
+    if (char === "[") {
+      inBracket = true
+      continue
+    }
+
+    if (char === "]") {
+      inBracket = false
+      continue
+    }
+
+    const isVisibleChar =
+      !inBracket && char !== "\x1F" && !/\s/.test(char)
+
+    if (isVisibleChar) {
+      visible += char
+      visiblePos += 1
+    }
+
+    const isNormalizedChar =
+      isVisibleChar && char !== "、" && !isEndPunctuation
+
+    if (isNormalizedChar) {
+      normalizedToVisiblePositions.push(visiblePos - 1)
+    }
+  }
+
+  normalizedToVisiblePositions.push(visiblePos)
+
+  return {
+    text: visible,
+    normalizedToVisible: (pos: number) => {
+      const visibleIndex = normalizedToVisiblePositions[pos]
+      if (visibleIndex === undefined) return visiblePos
+      return pos === normalizedToVisiblePositions.length - 1
+        ? visibleIndex
+        : visibleIndex
+    },
+  }
+}
+
 // "行[い]く" → "行く"
 export function removeFurigana(text: string): string {
   return text.replace(/\[.*?\]/g, "")
@@ -50,7 +115,7 @@ export function removeFurigana(text: string): string {
 
 // "行[い]く" → "いく" (only matches kanji before brackets, preserves adjacent hiragana)
 export function convertToKana(text: string): string {
-  return text.replace(/[一-龯]+\[(.+?)\]/g, "$1")
+  return text.replace(createKanjiFuriganaGroupRegex(), "$2")
 }
 
 export function convertToRuby(text: string, furiganaSize?: string): string {

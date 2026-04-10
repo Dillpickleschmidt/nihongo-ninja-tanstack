@@ -26,7 +26,7 @@ export default function PracticeContainer(props: PracticeContainerProps) {
 
   createEffect(() => {
     if (props.questions.length > 0) {
-      actions.setQuestions(props.questions)
+      actions.initializeSession(props.questions)
     }
   })
 

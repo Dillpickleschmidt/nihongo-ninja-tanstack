@@ -1,69 +1,16 @@
 // ui/practice/EasyModeDebugPanel.tsx
 import { For, Show, createMemo } from "solid-js"
 import type { ProcessedQuestion } from "../../core/types"
-import { SEGMENT_SEPARATOR } from "../../core/textProcessor"
+import { getEasyModeBlankVariations } from "./selectors/easyModeVariations"
 
 interface EasyModeDebugPanelProps {
   currentQuestion: ProcessedQuestion
 }
 
-type BlankVariation = {
-  blankIndex: number
-  word: string
-  variations: string[]
-}
-
-const SPACE_REGEX = /\s+/g
-
 export default function EasyModeDebugPanel(props: EasyModeDebugPanelProps) {
-  const blankVariations = createMemo(() => {
-    const variations: BlankVariation[] = []
-
-    // Get first answer segments to identify blanks
-    const firstAnswer = props.currentQuestion.answers[0]
-
-    // Find blank indices (where segment.isBlank === true)
-    const blankIndices: number[] = []
-    firstAnswer.forEach((segment, index) => {
-      if (segment.isBlank) {
-        blankIndices.push(index)
-      }
-    })
-
-    // For each blank, collect all possible values
-    blankIndices.forEach((blankIndex) => {
-      const variationSet = new Set<string>()
-
-      // Extract segments from validAnswers by splitting their text
-      props.currentQuestion.validAnswers.forEach((answer) => {
-        // Skip kana variations (only show kanji)
-        if (answer.isKanaVariation) return
-
-        // Split answer by SEGMENT_SEPARATOR to get individual segments
-        const segments = answer.plain.split(SEGMENT_SEPARATOR)
-        if (segments[blankIndex]) {
-          const segment = segments[blankIndex]
-            .trim()
-            .replace(/\x1F/g, "") // Remove any remaining separators
-            .replace(SPACE_REGEX, "")
-          if (segment) {
-            // Filter out empty strings
-            variationSet.add(segment)
-          }
-        }
-      })
-
-      variations.push({
-        blankIndex,
-        word: firstAnswer[blankIndex].plain
-          .replace(/\x1F/g, "") // Remove segment separator
-          .replace(SPACE_REGEX, ""),
-        variations: Array.from(variationSet).sort(),
-      })
-    })
-
-    return variations
-  })
+  const blankVariations = createMemo(() =>
+    getEasyModeBlankVariations(props.currentQuestion),
+  )
 
   return (
     <div class="border-border bg-card mt-4 rounded-lg border p-4">

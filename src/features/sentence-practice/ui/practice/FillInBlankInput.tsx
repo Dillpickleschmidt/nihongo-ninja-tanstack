@@ -1,14 +1,34 @@
-import { For, Show } from "solid-js"
+import { For, Show, createEffect, createSignal } from "solid-js"
 import { CircleQuestionMark } from "lucide-solid"
 import { Button3D } from "@/components/Button3D"
 import { usePractice } from "../../store/PracticeContext"
+import {
+  composeCanonicalAnswerText,
+  createBlankDraftsForQuestion,
+  type BlankDraft,
+} from "../../session/easyModeAnswerProjection"
 import PracticeInput from "./PracticeInput"
 
 export default function FillInBlankInput() {
   const { store, actions, computed } = usePractice()
+  const [blankDrafts, setBlankDrafts] = createSignal<BlankDraft[]>([])
 
   const currentQuestion = () => computed.getCurrentQuestion()
   const isAnswerCorrect = () => store.showResult && store.checkResult?.isCorrect
+  const displaySegments = () => currentQuestion()?.displayAnswer ?? []
+
+  createEffect(() => {
+    const question = currentQuestion()
+    if (!question || store.effectiveDifficulty !== "easy") return
+
+    // Easy mode owns its own blank drafts, but always projects them into the
+    // canonical store answer so checking/tokenization stay mode-agnostic.
+    const drafts = createBlankDraftsForQuestion(question)
+    setBlankDrafts(drafts)
+    actions.setAnswerText(
+      composeCanonicalAnswerText(question.displayAnswer, drafts),
+    )
+  })
 
   const handleMainButton = () => {
     if (isAnswerCorrect()) {
@@ -18,7 +38,17 @@ export default function FillInBlankInput() {
     }
   }
 
-  const displaySegments = () => currentQuestion()?.answers[0] ?? []
+  const updateBlank = (value: string, index: number) => {
+    const question = currentQuestion()
+    if (!question) return
+
+    const nextBlankDrafts = [...blankDrafts()]
+    nextBlankDrafts[index] = value
+    setBlankDrafts(nextBlankDrafts)
+    actions.setAnswerText(
+      composeCanonicalAnswerText(question.displayAnswer, nextBlankDrafts),
+    )
+  }
 
   return (
     <div class="space-y-4">
@@ -34,11 +64,11 @@ export default function FillInBlankInput() {
                 ) : (
                   <div
                     class="inline-block min-w-32"
-                    style={{ width: `${Math.max(8, (store.blankInputs[index()] ?? "").length * 1.6 + 2)}ch` }}
+                    style={{ width: `${Math.max(8, ((blankDrafts()[index()] as string | null | undefined) ?? "").length * 1.6 + 2)}ch` }}
                   >
                     <PracticeInput
-                      value={store.blankInputs[index()] ?? ""}
-                      onInput={(value) => actions.updateInput(value, index())}
+                      value={(blankDrafts()[index()] as string | null | undefined) ?? ""}
+                      onInput={(value) => updateBlank(value, index())}
                       onKeyPress={(e) => {
                         if (e.key === "Enter") {
                           handleMainButton()

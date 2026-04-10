@@ -2,8 +2,8 @@
 
 import { createEffect, onCleanup } from "solid-js"
 import { getKagomeWorker } from "../kagome/kagomeWorkerManager"
-import { overlayKanji } from "../core/kanaToKanjiOverlay"
 import { usePractice } from "../store/PracticeContext"
+import { createTokenizationSession } from "../services/tokenizationSession"
 
 /**
  * Sets up reactive tokenization effects for model answer and user input.
@@ -11,11 +11,11 @@ import { usePractice } from "../store/PracticeContext"
  */
 export function useTokenization() {
   const { store, actions, computed } = usePractice()
+  const tokenizationSession = createTokenizationSession(getKagomeWorker())
 
   // Initialize kagome worker on mount
   createEffect(() => {
-    const worker = getKagomeWorker()
-    worker.waitForReady().then(() => {
+    tokenizationSession.waitForReady().then(() => {
       actions.setKagomeReady(true)
     })
   })
@@ -26,17 +26,14 @@ export function useTokenization() {
     if (!question || !store.kagomeReady) return
 
     // Get the plain text of the first answer (model answer)
-    const firstAnswer = question.answers[0]
-    if (!firstAnswer) return
-
-    const modelText = firstAnswer.map((seg) => seg.plain).join("")
+    const modelText = question.displayAnswer.map((seg) => seg.plain).join("")
     if (!modelText) return
 
-    const worker = getKagomeWorker()
-    worker
-      .tokenize(modelText)
-      .then((result) => {
-        actions.setModelAnswerTokens(result.tokens)
+    tokenizationSession
+      .tokenizeModelAnswer(question)
+      .then((tokens) => {
+        if (!tokens) return
+        actions.setModelAnswerTokens(tokens)
       })
       .catch((error) => {
         console.error(
@@ -51,7 +48,7 @@ export function useTokenization() {
 
   createEffect(() => {
     // Access the reactive value to track it
-    const userInput = store.singleInput
+    const userInput = store.answerText
 
     // Clear previous timer
     if (debounceTimer) {
@@ -72,15 +69,17 @@ export function useTokenization() {
       const question = computed.getCurrentQuestion()
       if (!question) return
 
-      const worker = getKagomeWorker()
-
-      // Try to overlay kanji if user typed kana
-      const overlay = overlayKanji(userInput, question.answers)
-      const textToTokenize = overlay?.overlaidText ?? userInput
-
       try {
-        const result = await worker.tokenize(textToTokenize)
-        actions.setUserInputTokens(result.tokens, overlay)
+        const result = await tokenizationSession.tokenizeUserInput(
+          userInput,
+          question,
+        )
+        if (result === undefined) return
+        if (result === null) {
+          actions.clearUserInputTokens()
+          return
+        }
+        actions.setUserInputTokens(result.tokens, result.overlay)
       } catch (error) {
         console.error("[useTokenization] Tokenization failed:", error)
       }

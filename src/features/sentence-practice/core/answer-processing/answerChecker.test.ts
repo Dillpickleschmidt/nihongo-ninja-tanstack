@@ -282,4 +282,67 @@ describe("allMatches and bestMatchIndex", () => {
     expect(casualMatch).toBeDefined()
     expect(casualMatch!.answer.originalPoliteForm).toBe(false)
   })
+
+  it("highlights only the dropped subject in an alternative answer", () => {
+    const validAnswers = toRichAnswers([
+      "私[わたし]は時々[ときどき]朝[あさ]八時[はちじ]ごろに音楽[おんがく]を聞[き]きます",
+      "時々[ときどき]朝[あさ]八時[はちじ]ごろに音楽[おんがく]を聞[き]きます",
+    ])
+
+    const result = checkAnswer(
+      "時々朝八時ごろに音楽を聞きます",
+      validAnswers,
+    )
+
+    expect(result.bestMatch).toBe("時々朝八時ごろに音楽を聞きます")
+    expect(result.bestMatchErrors).toEqual([])
+
+    const subjectAlternative = result.allMatches.find(
+      (match) => match.answer.plain === "私は時々朝八時ごろに音楽を聞きます",
+    )
+
+    expect(subjectAlternative?.answerErrors).toEqual([{ start: 0, end: 2 }])
+  })
+
+  it("highlights only の in the 朝の八時 alternative", () => {
+    const validAnswers = toRichAnswers([
+      "私[わたし]は時々[ときどき]朝[あさ]八時[はちじ]ごろに音楽[おんがく]を聞[き]きます",
+      "私[わたし]は時々[ときどき]朝[あさ]の八時[はちじ]ごろに音楽[おんがく]を聞[き]きます",
+    ])
+
+    const result = checkAnswer(
+      "私は時々朝八時ごろに音楽を聞きます",
+      validAnswers,
+    )
+
+    expect(result.bestMatch).toBe("私は時々朝八時ごろに音楽を聞きます")
+    expect(result.bestMatchErrors).toEqual([])
+
+    const noAlternative = result.allMatches.find(
+      (match) => match.answer.plain === "私は時々朝の八時ごろに音楽を聞きます",
+    )
+
+    expect(noAlternative?.answerErrors).toEqual([{ start: 5, end: 6 }])
+  })
+
+  it("highlights the changed verb ending in the casual alternative", () => {
+    const validAnswers = toRichAnswers([
+      "私[わたし]は時々[ときどき]朝[あさ]八時[はちじ]ごろに音楽[おんがく]を聞[き]きます",
+      "私[わたし]は時々[ときどき]朝[あさ]八時[はちじ]ごろに音楽[おんがく]を聞[き]く",
+    ])
+
+    const result = checkAnswer(
+      "私は時々朝八時ごろに音楽を聞きます",
+      validAnswers,
+    )
+
+    expect(result.bestMatch).toBe("私は時々朝八時ごろに音楽を聞きます")
+    expect(result.bestMatchErrors).toEqual([])
+
+    const casualAlternative = result.allMatches.find(
+      (match) => match.answer.plain === "私は時々朝八時ごろに音楽を聞く",
+    )
+
+    expect(casualAlternative?.answerErrors).toEqual([{ start: 14, end: 15 }])
+  })
 })

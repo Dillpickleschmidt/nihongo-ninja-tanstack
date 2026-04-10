@@ -30,7 +30,7 @@ export default function ResultDisplay() {
                 }`}
               >
                 <FuriganaText
-                  text={store.singleInput}
+                  text={store.answerText}
                   errors={store.checkResult!.errorRanges}
                   highlightClass="rounded-md border-2 border-black bg-rose-500 text-black font-medium"
                 />

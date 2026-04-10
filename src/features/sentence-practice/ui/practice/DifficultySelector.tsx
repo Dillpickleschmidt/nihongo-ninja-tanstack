@@ -1,5 +1,5 @@
 import { usePractice } from "../../store/PracticeContext"
-import type { Difficulty } from "../../store/practiceStore"
+import type { Difficulty } from "../../core/types"
 
 export default function DifficultySelector() {
   const { store, actions } = usePractice()

@@ -4,6 +4,7 @@
 
 import type { RichSegment } from "./types"
 import { containsKanji } from "@/data/utils/text/japanese"
+import { createKanjiFuriganaGroupRegex } from "@/data/utils/text/furigana"
 
 export interface OverlayResult {
   overlaidText: string
@@ -97,7 +98,7 @@ function buildCharacterMap(
 
   while (i < original.length) {
     // Match kanji with furigana: 給料[きゅうりょう]
-    const match = original.substring(i).match(/^([一-龯]+)\[(.+?)\]/)
+    const match = original.substring(i).match(createKanjiFuriganaGroupRegex(""))
 
     if (match) {
       const kanjiText = match[1]

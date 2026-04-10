@@ -30,14 +30,14 @@ export default function FullInput() {
         <UserInputPosDisplay
           tokens={store.userInputTokens}
           overlayResult={store.overlayResult}
-          originalInput={store.singleInput}
+          originalInput={store.answerText}
         />
       </div>
 
       <div>
         <PracticeInput
-          value={store.singleInput}
-          onInput={(value) => actions.updateInput(value)}
+          value={store.answerText}
+          onInput={(value) => actions.setAnswerText(value)}
           onKeyPress={(e) => {
             if (e.key === "Enter") {
               handleMainButton()

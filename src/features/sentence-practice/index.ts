@@ -3,7 +3,6 @@ export { PracticeProvider, usePractice } from "./store/PracticeContext"
 export { createPracticeStore } from "./store/practiceStore"
 export type {
   PracticeState,
-  Difficulty,
   PracticeStore,
 } from "./store/practiceStore"
 
@@ -33,4 +32,5 @@ export type {
   ProcessedQuestion,
   CheckResult,
   ErrorRange,
+  Difficulty,
 } from "./core/types"

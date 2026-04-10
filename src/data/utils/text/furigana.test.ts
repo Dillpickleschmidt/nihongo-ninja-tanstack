@@ -3,6 +3,7 @@ import { describe, it, expect } from "vitest"
 import {
   extractHiragana,
   convertFuriganaToRubyHtml,
+  createKanjiFuriganaGroupRegex,
   parseFuriganaString,
 } from "./furigana"
 
@@ -51,6 +52,10 @@ describe("Furigana Utilities", () => {
       const expected = "なんでたべものがない？"
       expect(extractHiragana(input)).toBe(expected)
     })
+
+    it("should handle iteration marks inside furigana groups", () => {
+      expect(extractHiragana("時々[ときどき]")).toBe("ときどき")
+    })
   })
 
   describe("convertFuriganaToRubyHtml", () => {
@@ -77,6 +82,20 @@ describe("Furigana Utilities", () => {
       expect(result).not.toContain("<ruby>が壊")
       // Unit separator should be stripped from output
       expect(result).not.toContain("\x1F")
+    })
+
+    it("converts iteration-mark furigana groups to ruby", () => {
+      const result = convertFuriganaToRubyHtml("時々[ときどき]")
+      expect(result).toContain("<ruby>時々")
+      expect(result).toContain("ときどき")
+    })
+  })
+
+  describe("createKanjiFuriganaGroupRegex", () => {
+    it("matches kanji furigana groups that include 々", () => {
+      const match = "時々[ときどき]".match(createKanjiFuriganaGroupRegex(""))
+      expect(match?.[1]).toBe("時々")
+      expect(match?.[2]).toBe("ときどき")
     })
   })
 })

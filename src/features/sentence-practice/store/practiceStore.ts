@@ -1,21 +1,22 @@
 import { createStore } from "solid-js/store"
 import type { Doc } from "../../../../convex/_generated/dataModel"
-import type { ProcessedQuestion, CheckResult } from "../core/types"
+import type { ProcessedQuestion, CheckResult, Difficulty } from "../core/types"
 import type { KagomeToken } from "../kagome/types"
 import type { OverlayResult } from "../core/kanaToKanjiOverlay"
 import { prepareQuestion } from "../core/questionProcessor"
 import { checkAnswer } from "../core/answer-processing/answerChecker"
-import { anyContainsKanji } from "../core/textProcessor"
-
-export type Difficulty = "easy" | "hard"
+import {
+  calculateEffectiveDifficulty,
+  createNextQuestionSnapshot,
+  createSessionSnapshot,
+  isSessionComplete,
+} from "../session/practiceSession"
 
 export interface PracticeState {
   questions: ProcessedQuestion[]
   currentQuestionIndex: number
-  // Easy mode: array of inputs (one per blank, null = blank not yet filled, undefined = not a blank)
-  blankInputs: (string | null | undefined)[]
-  // Hard mode: single input string
-  singleInput: string
+  // Canonical answer text for the current question, regardless of mode.
+  answerText: string
   showResult: boolean
   checkResult: CheckResult | undefined
   difficulty: Difficulty
@@ -27,13 +28,13 @@ export interface PracticeState {
   modelAnswerTokens: KagomeToken[]
   userInputTokens: KagomeToken[]
   overlayResult: OverlayResult | null
+  currentSetId: string | null
 }
 
 const initialState: PracticeState = {
   questions: [],
   currentQuestionIndex: 0,
-  blankInputs: [],
-  singleInput: "",
+  answerText: "",
   showResult: false,
   checkResult: undefined,
   difficulty: "hard",
@@ -45,6 +46,7 @@ const initialState: PracticeState = {
   modelAnswerTokens: [],
   userInputTokens: [],
   overlayResult: null,
+  currentSetId: null,
 }
 
 export function createPracticeStore(
@@ -52,74 +54,19 @@ export function createPracticeStore(
 ) {
   const [store, setStore] = createStore<PracticeState>(initialState)
 
-  // Get current processed question
   function getCurrentQuestion(): ProcessedQuestion | undefined {
     return store.questions[store.currentQuestionIndex]
   }
 
-  // Check if current question has blank segments (supports easy mode)
-  function hasBlankSegments(question: ProcessedQuestion): boolean {
-    return question.answers[0]?.some((seg) => seg.isBlank) ?? false
+  function getCurrentAnswerText(): string {
+    return store.answerText
   }
 
-  // Calculate effective difficulty based on selection and question structure
-  function calculateEffectiveDifficulty(
-    selectedDifficulty: Difficulty,
-    question?: ProcessedQuestion,
-  ): Difficulty {
-    if (selectedDifficulty === "hard") return "hard"
-    if (!question) return "hard"
-    return hasBlankSegments(question) ? "easy" : "hard"
-  }
-
-  // Initialize blank inputs array for a question
-  function initializeBlankInputs(
-    question: ProcessedQuestion,
-  ): (string | null | undefined)[] {
-    const firstAnswer = question.answers[0]
-    if (!firstAnswer) return []
-    return firstAnswer.map((seg) => (seg.isBlank ? null : undefined))
-  }
-
-  // Get user's current answer text
-  function getUserAnswer(): string {
-    const question = getCurrentQuestion()
-    if (!question) return ""
-
-    if (store.effectiveDifficulty === "easy") {
-      // Join segment texts, replacing blanks with user inputs
-      const firstAnswer = question.answers[0]
-      if (!firstAnswer) return ""
-
-      // Check if user typed kanji in any blank (v1 approach)
-      // If kana input → use pre-computed kana for all segments
-      // If kanji input → use pre-computed plain (kanji without brackets)
-      const blankValues = store.blankInputs.filter(
-        (v): v is string => typeof v === "string",
-      )
-      const shouldUseKana = !anyContainsKanji(blankValues)
-
-      return firstAnswer
-        .map((seg, i) => {
-          if (seg.isBlank) {
-            return store.blankInputs[i] ?? ""
-          }
-          // Use pre-computed properties from RichSegment
-          return shouldUseKana ? seg.kana : seg.plain
-        })
-        .join("")
-    } else {
-      return store.singleInput
-    }
-  }
-
-  // Check the current answer
-  function doCheckAnswer(): CheckResult | undefined {
+  function evaluateCurrentAnswer(): CheckResult | undefined {
     const question = getCurrentQuestion()
     if (!question) return undefined
 
-    const userAnswer = getUserAnswer()
-    return checkAnswer(userAnswer, question.validAnswers)
+    return checkAnswer(getCurrentAnswerText(), question.validAnswers)
   }
 
   return {
@@ -127,26 +74,26 @@ export function createPracticeStore(
     setStore,
     actions: {
       // Initialize with raw questions from Convex
-      setQuestions: (rawQuestions: Doc<"sentencePracticeQuestions">[]) => {
+      initializeSession: (rawQuestions: Doc<"sentencePracticeQuestions">[]) => {
+        const nextSetId = rawQuestions[0]?.setId ?? null
+
+        // Preserve the in-progress session when the same set re-renders.
+        if (store.currentSetId === nextSetId && store.questions.length > 0) {
+          return
+        }
+
         const processedQuestions = rawQuestions.map(prepareQuestion)
-        const firstQuestion = processedQuestions[0]
-        const effectiveDifficulty = calculateEffectiveDifficulty(
-          store.difficulty,
-          firstQuestion,
-        )
-        const blankInputs = firstQuestion
-          ? initializeBlankInputs(firstQuestion)
-          : []
+        const session = createSessionSnapshot(processedQuestions, store.difficulty)
 
         setStore({
-          questions: processedQuestions,
-          currentQuestionIndex: 0,
-          blankInputs,
-          singleInput: "",
+          questions: session.questions,
+          currentQuestionIndex: session.currentQuestionIndex,
+          answerText: "",
           showResult: false,
           checkResult: undefined,
-          effectiveDifficulty,
+          effectiveDifficulty: session.effectiveDifficulty,
           isLoading: false,
+          currentSetId: nextSetId,
           // Reset tokenization state
           modelAnswerTokens: [],
           userInputTokens: [],
@@ -154,24 +101,19 @@ export function createPracticeStore(
         })
       },
 
-      // Update input for easy mode (by index) or hard mode (single)
-      updateInput: (value: string, index?: number) => {
-        if (store.effectiveDifficulty === "easy" && typeof index === "number") {
-          setStore("blankInputs", index, value)
-        } else {
-          setStore("singleInput", value)
-        }
+      setAnswerText: (value: string) => {
+        setStore("answerText", value)
 
-        // If showing result, recheck immediately
+        // Keep the result panel live if the user edits after checking.
         if (store.showResult) {
-          const result = doCheckAnswer()
+          const result = evaluateCurrentAnswer()
           setStore("checkResult", result)
         }
       },
 
       // Check the current answer
       checkAnswer: () => {
-        const result = doCheckAnswer()
+        const result = evaluateCurrentAnswer()
         setStore({
           showResult: true,
           checkResult: result,
@@ -182,25 +124,24 @@ export function createPracticeStore(
       nextQuestion: () => {
         const currentDifficulty = store.effectiveDifficulty
         const progressUnitsDelta = currentDifficulty === "easy" ? 15 : 30
-        onProgressEvent?.(progressUnitsDelta, 1)
-
         const nextIndex = store.currentQuestionIndex + 1
         if (nextIndex >= store.questions.length) return
 
-        const nextQuestion = store.questions[nextIndex]
-        const effectiveDifficulty = calculateEffectiveDifficulty(
+        onProgressEvent?.(progressUnitsDelta, 1)
+
+        const session = createNextQuestionSnapshot(
+          store.questions,
+          nextIndex,
           store.difficulty,
-          nextQuestion,
         )
-        const blankInputs = initializeBlankInputs(nextQuestion)
+        if (!session) return
 
         setStore({
-          currentQuestionIndex: nextIndex,
-          blankInputs,
-          singleInput: "",
+          currentQuestionIndex: session.currentQuestionIndex,
+          answerText: "",
           showResult: false,
           checkResult: undefined,
-          effectiveDifficulty,
+          effectiveDifficulty: session.effectiveDifficulty,
           // Reset tokenization state
           modelAnswerTokens: [],
           userInputTokens: [],
@@ -210,12 +151,8 @@ export function createPracticeStore(
 
       // Reset current question
       resetInput: () => {
-        const question = getCurrentQuestion()
-        const blankInputs = question ? initializeBlankInputs(question) : []
-
         setStore({
-          blankInputs,
-          singleInput: "",
+          answerText: "",
           showResult: false,
           checkResult: undefined,
         })
@@ -224,17 +161,12 @@ export function createPracticeStore(
       // Change difficulty
       setDifficulty: (difficulty: Difficulty) => {
         const question = getCurrentQuestion()
-        const effectiveDifficulty = calculateEffectiveDifficulty(
-          difficulty,
-          question,
-        )
-        const blankInputs = question ? initializeBlankInputs(question) : []
+        const effectiveDifficulty = calculateEffectiveDifficulty(difficulty, question)
 
         setStore({
           difficulty,
           effectiveDifficulty,
-          blankInputs,
-          singleInput: "",
+          answerText: "",
           showResult: false,
           checkResult: undefined,
         })
@@ -274,13 +206,16 @@ export function createPracticeStore(
     // Computed values
     computed: {
       getCurrentQuestion,
-      getUserAnswer,
+      getCurrentAnswerText,
       hasMoreQuestions: () =>
         store.currentQuestionIndex < store.questions.length - 1,
       isComplete: () =>
-        store.currentQuestionIndex >= store.questions.length - 1 &&
-        store.showResult &&
-        store.checkResult?.isCorrect,
+        isSessionComplete(
+          store.currentQuestionIndex,
+          store.questions.length,
+          store.showResult,
+          store.checkResult?.isCorrect,
+        ),
     },
   }
 }

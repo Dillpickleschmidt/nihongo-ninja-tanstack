@@ -1,83 +1,57 @@
-// store/practiceStore.test.ts
-import { describe, it, expect } from "vitest"
+import { describe, it, expect, vi } from "vitest"
 import { createPracticeStore } from "./practiceStore"
-import { createRichSegment } from "../core/textProcessor"
+import type { Doc } from "../../../../convex/_generated/dataModel"
 
-describe("getUserAnswer in easy mode", () => {
-  // Helper to set up store with processed question segments
-  function setupStoreWithSegments(
-    segments: Array<{ text: string; isBlank: boolean }>,
-  ) {
-    const store = createPracticeStore()
-    // Manually set up processed question state with RichSegments
-    store.setStore({
-      questions: [
-        {
-          english: "Test",
-          answers: [segments.map((s) => createRichSegment(s.text, s.isBlank))],
-          validAnswers: [],
-        },
-      ],
-      currentQuestionIndex: 0,
-      effectiveDifficulty: "easy",
-      blankInputs: segments.map((s) => (s.isBlank ? null : undefined)),
-      isLoading: false,
-    })
-    return store
+describe("initializeSession", () => {
+  function createRawQuestion(setId: string, english: string): Doc<"sentencePracticeQuestions"> {
+    return {
+      _id: "test_id" as Doc<"sentencePracticeQuestions">["_id"],
+      _creationTime: 0,
+      setId,
+      order: 0,
+      english,
+      answers: [{ segments: [{ text: "こんにちは" }] }],
+      modelAnswerPOS: [],
+    }
   }
 
-  it("converts segments to kana when user types kana in blank", () => {
-    const store = setupStoreWithSegments([
-      { text: "仕事[しごと]で", isBlank: false },
-      { text: "疲[つか]れたら", isBlank: true },
-      { text: "帰[かえ]ります", isBlank: false },
-    ])
-    store.actions.updateInput("つかれたら", 1) // kana input
+  it("does not reset the session when the same set is re-initialized", () => {
+    const progressSpy = vi.fn()
+    const store = createPracticeStore(progressSpy)
+    const questions = [createRawQuestion("chapter-3", "Hello")]
 
-    const answer = store.computed.getUserAnswer()
-    // Should be all kana: しごとで + つかれたら + かえります
-    expect(answer).toBe("しごとでつかれたらかえります")
+    store.actions.initializeSession(questions)
+    store.actions.setAnswerText("typed answer")
+
+    store.actions.initializeSession(questions)
+
+    expect(store.store.answerText).toBe("typed answer")
+    expect(store.store.currentSetId).toBe("chapter-3")
   })
 
-  it("keeps kanji when user types kanji in blank", () => {
-    const store = setupStoreWithSegments([
-      { text: "仕事[しごと]で", isBlank: false },
-      { text: "疲[つか]れたら", isBlank: true },
-      { text: "帰[かえ]ります", isBlank: false },
-    ])
-    store.actions.updateInput("疲れたら", 1) // kanji input
+  it("resets the session when a different set is loaded", () => {
+    const store = createPracticeStore()
 
-    const answer = store.computed.getUserAnswer()
-    // Should be kanji (furigana removed): 仕事で + 疲れたら + 帰ります
-    expect(answer).toBe("仕事で疲れたら帰ります")
+    store.actions.initializeSession([createRawQuestion("chapter-3", "Hello")])
+    store.actions.setAnswerText("typed answer")
+
+    store.actions.initializeSession([createRawQuestion("chapter-4", "Goodbye")])
+
+    expect(store.store.answerText).toBe("")
+    expect(store.store.currentSetId).toBe("chapter-4")
+    expect(store.store.questions[0]?.english).toBe("Goodbye")
   })
 
-  it("outputs text without furigana brackets", () => {
-    const store = setupStoreWithSegments([
-      { text: "給料[きゅうりょう]を", isBlank: false },
-      { text: "もらったら", isBlank: true },
-    ])
-    store.actions.updateInput("もらったら", 1)
+  it("rechecks the canonical answer text after editing while results are shown", () => {
+    const store = createPracticeStore()
 
-    const answer = store.computed.getUserAnswer()
-    expect(answer).not.toContain("[")
-    expect(answer).not.toContain("]")
-  })
+    store.actions.initializeSession([createRawQuestion("chapter-3", "Hello")])
+    store.actions.setAnswerText("こんばんは")
+    store.actions.checkAnswer()
+    expect(store.store.checkResult?.isCorrect).toBe(false)
 
-  it("handles multiple blanks with kana input", () => {
-    const store = setupStoreWithSegments([
-      { text: "給料[きゅうりょう]を", isBlank: false },
-      { text: "もらったら", isBlank: true },
-      { text: "ショッピングモールに", isBlank: false },
-      { text: "行[い]きましょう", isBlank: true },
-    ])
-    store.actions.updateInput("もらったら", 1)
-    store.actions.updateInput("いきましょう", 3)
+    store.actions.setAnswerText("こんにちは")
 
-    const answer = store.computed.getUserAnswer()
-    // Kana for segments with furigana, katakana stays as-is (no furigana to convert)
-    expect(answer).toBe(
-      "きゅうりょうをもらったらショッピングモールにいきましょう",
-    )
+    expect(store.store.checkResult?.isCorrect).toBe(true)
   })
 })

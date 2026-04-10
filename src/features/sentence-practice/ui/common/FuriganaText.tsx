@@ -1,8 +1,8 @@
 import { createMemo } from "solid-js"
+import { createFuriganaGroupRegex } from "@/data/utils/text/furigana"
 import {
   convertToRuby,
   removeFurigana,
-  calculatePositionMap,
 } from "../../core/textProcessor"
 import type { ErrorRange } from "../../core/types"
 
@@ -33,8 +33,7 @@ export default function FuriganaText(props: FuriganaTextProps) {
       return rubyHtml
     }
 
-    // For errors with furigana, we need more complex handling
-    // For now, just apply errors to the plain text positions
+    // Apply plain-text error ranges onto display units so ruby groups stay intact.
     return highlightErrorsInRuby(text, props.errors, props.highlightClass)
   })
 
@@ -69,7 +68,62 @@ function highlightErrors(
   return result
 }
 
-// Highlight errors in text with furigana by mapping plain text positions to original
+interface DisplayToken {
+  plainStart: number
+  plainEnd: number
+  html: string
+}
+
+function escapeHtml(text: string): string {
+  return text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;")
+}
+
+function tokenizeDisplayUnits(text: string): DisplayToken[] {
+  const tokens: DisplayToken[] = []
+  const furiganaRegex = createFuriganaGroupRegex()
+  let lastIndex = 0
+  let plainPos = 0
+
+  const pushPlainText = (segment: string) => {
+    for (const char of segment) {
+      if (/\s/.test(char) || char === "\x1F") continue
+
+      tokens.push({
+        plainStart: plainPos,
+        plainEnd: plainPos + 1,
+        html: escapeHtml(char),
+      })
+      plainPos += 1
+    }
+  }
+
+  for (const match of text.matchAll(furiganaRegex)) {
+    const fullMatch = match[0]
+    const baseText = removeFurigana(fullMatch).replace(/\s+/g, "")
+    const matchIndex = match.index ?? 0
+
+    pushPlainText(text.slice(lastIndex, matchIndex))
+
+    tokens.push({
+      plainStart: plainPos,
+      plainEnd: plainPos + baseText.length,
+      html: convertToRuby(fullMatch),
+    })
+    plainPos += baseText.length
+    lastIndex = matchIndex + fullMatch.length
+  }
+
+  pushPlainText(text.slice(lastIndex))
+
+  return tokens
+}
+
+// Highlight errors in text with furigana by mapping plain text positions to display units.
 function highlightErrorsInRuby(
   text: string,
   errors: ErrorRange[],
@@ -77,32 +131,32 @@ function highlightErrorsInRuby(
 ): string {
   if (!errors.length) return convertToRuby(text)
 
-  // Map plain text positions to original text positions (with furigana brackets)
-  const plainToOriginal = calculatePositionMap(text)
   const sortedErrors = [...errors].sort((a, b) => a.start - b.start)
+  const tokens = tokenizeDisplayUnits(text)
 
   let result = ""
-  let lastOriginalEnd = 0
+  let isHighlightOpen = false
 
-  for (const error of sortedErrors) {
-    const originalStart = plainToOriginal.get(error.start) ?? 0
-    const originalEnd = plainToOriginal.get(error.end) ?? text.length
+  for (const token of tokens) {
+    const isHighlighted = sortedErrors.some(
+      (error) => token.plainStart < error.end && token.plainEnd > error.start,
+    )
 
-    // Add non-error portion before this error
-    if (originalStart > lastOriginalEnd) {
-      result += convertToRuby(text.slice(lastOriginalEnd, originalStart))
+    if (isHighlighted && !isHighlightOpen) {
+      result += `<span class="${highlightClass || ""}">`
+      isHighlightOpen = true
     }
 
-    // Add error portion with highlight span
-    const errorSlice = text.slice(originalStart, originalEnd)
-    result += `<span class="${highlightClass || ""}">${convertToRuby(errorSlice)}</span>`
+    if (!isHighlighted && isHighlightOpen) {
+      result += "</span>"
+      isHighlightOpen = false
+    }
 
-    lastOriginalEnd = originalEnd
+    result += token.html
   }
 
-  // Add remaining text after last error
-  if (lastOriginalEnd < text.length) {
-    result += convertToRuby(text.slice(lastOriginalEnd))
+  if (isHighlightOpen) {
+    result += "</span>"
   }
 
   return result

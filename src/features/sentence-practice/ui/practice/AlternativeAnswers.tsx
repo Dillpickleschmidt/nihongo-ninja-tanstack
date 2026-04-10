@@ -1,6 +1,7 @@
 import { For, Show, createMemo } from "solid-js"
 import FuriganaText from "../common/FuriganaText"
 import type { AnswerMatch } from "../../core/types"
+import { getAlternativeAnswers } from "./selectors/alternativeAnswers"
 
 interface AlternativeAnswersProps {
   allMatches: AnswerMatch[]
@@ -15,12 +16,7 @@ export default function AlternativeAnswers(props: AlternativeAnswersProps) {
   )
 
   const filteredMatches = createMemo(() =>
-    props.allMatches.filter((match, index) => {
-      if (index === props.bestMatchIndex) return false
-      if (match.answer.isVariation) return false
-      if (match.answer.isKanaVariation) return false
-      return match.answer.originalPoliteForm === bestMatchPoliteForm()
-    }),
+    getAlternativeAnswers(props.allMatches, props.bestMatchIndex),
   )
 
   return (
@@ -45,11 +41,7 @@ export default function AlternativeAnswers(props: AlternativeAnswersProps) {
                   Similarity: {(match.similarity * 100).toFixed(1)}%
                 </div>
                 <FuriganaText
-                  text={
-                    props.showFurigana
-                      ? match.answer.original
-                      : match.answer.plain
-                  }
+                  text={props.showFurigana ? match.answer.original : match.displayText}
                   showFurigana={props.showFurigana}
                   errors={match.answerErrors}
                   highlightClass="rounded-md border-2 border-black bg-amber-500 text-black font-medium highlight"
