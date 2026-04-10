@@ -38,7 +38,9 @@ function createNormalizedKanaToVisiblePlainMapper(
 
 function buildVisibleKanaToPlainBoundaryMap(original: string): number[] {
   const boundaryMap: number[] = [0]
-  const furiganaRegex = createKanjiFuriganaGroupRegex("")
+  const furiganaRegex = new RegExp(
+    `^${createKanjiFuriganaGroupRegex("").source}`,
+  )
   let visibleKanaPos = 0
   let visiblePlainPos = 0
   let index = 0

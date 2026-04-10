@@ -32,82 +32,241 @@ export function matchAnswer(
     }
   }
 
-  // Build LCS dynamic programming table
-  const dp: number[][] = Array(m + 1)
-    .fill(0)
-    .map(() => Array(n + 1).fill(0))
-  const backtrack: string[][] = Array(m + 1)
-    .fill(0)
-    .map(() => Array(n + 1).fill(""))
+  if (m < n && correctAnswer.endsWith(userInput)) {
+    return {
+      similarity: m / n,
+      userErrors: [],
+      answerErrors: [{ start: 0, end: n - m }],
+    }
+  }
+
+  if (m < n && correctAnswer.startsWith(userInput)) {
+    return {
+      similarity: m / n,
+      userErrors: [],
+      answerErrors: [{ start: m, end: n }],
+    }
+  }
+
+  const dp = createAlignmentTables(userInput, correctAnswer)
+  const { userErrorPositions, answerErrorPositions, editDistance } =
+    backtrackAlignment(dp, userInput, correctAnswer)
+
+  return {
+    similarity: 1 - editDistance / Math.max(m, n),
+    userErrors: compressPositionsToRanges(userErrorPositions),
+    answerErrors: compressPositionsToRanges(answerErrorPositions),
+  }
+}
+
+type AlignmentState = "match" | "insert" | "delete"
+
+interface AlignmentCost {
+  edits: number
+  gapSegments: number
+}
+
+interface AlignmentCell {
+  cost: AlignmentCost
+  previous: AlignmentState | null
+}
+
+interface AlignmentTables {
+  match: AlignmentCell[][]
+  insert: AlignmentCell[][]
+  delete: AlignmentCell[][]
+}
+
+const INF_COST: AlignmentCost = {
+  edits: Number.POSITIVE_INFINITY,
+  gapSegments: Number.POSITIVE_INFINITY,
+}
+
+function createAlignmentTables(
+  userInput: string,
+  correctAnswer: string,
+): AlignmentTables {
+  const m = userInput.length
+  const n = correctAnswer.length
+  const match = createStateGrid(m, n)
+  const insert = createStateGrid(m, n)
+  const deleteState = createStateGrid(m, n)
+
+  match[0][0] = { cost: { edits: 0, gapSegments: 0 }, previous: null }
+
+  for (let i = 1; i <= m; i++) {
+    insert[i][0] = chooseBestCell([
+      transitionCell(insert[i - 1][0], 1, 0, "insert"),
+      transitionCell(match[i - 1][0], 1, 1, "match"),
+      transitionCell(deleteState[i - 1][0], 1, 1, "delete"),
+    ])
+  }
+
+  for (let j = 1; j <= n; j++) {
+    deleteState[0][j] = chooseBestCell([
+      transitionCell(deleteState[0][j - 1], 1, 0, "delete"),
+      transitionCell(match[0][j - 1], 1, 1, "match"),
+      transitionCell(insert[0][j - 1], 1, 1, "insert"),
+    ])
+  }
 
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
-      if (userInput[i - 1] === correctAnswer[j - 1]) {
-        dp[i][j] = dp[i - 1][j - 1] + 1
-        backtrack[i][j] = "diag"
-      } else if (dp[i - 1][j] > dp[i][j - 1]) {
-        dp[i][j] = dp[i - 1][j]
-        backtrack[i][j] = "up"
-      } else {
-        dp[i][j] = dp[i][j - 1]
-        backtrack[i][j] = "left"
-      }
+      const substitutionCost = userInput[i - 1] === correctAnswer[j - 1] ? 0 : 1
+
+      match[i][j] = chooseBestCell([
+        transitionCell(match[i - 1][j - 1], substitutionCost, 0, "match"),
+        transitionCell(insert[i - 1][j - 1], substitutionCost, 0, "insert"),
+        transitionCell(deleteState[i - 1][j - 1], substitutionCost, 0, "delete"),
+      ])
+
+      insert[i][j] = chooseBestCell([
+        transitionCell(insert[i - 1][j], 1, 0, "insert"),
+        transitionCell(match[i - 1][j], 1, 1, "match"),
+        transitionCell(deleteState[i - 1][j], 1, 1, "delete"),
+      ])
+
+      deleteState[i][j] = chooseBestCell([
+        transitionCell(deleteState[i][j - 1], 1, 0, "delete"),
+        transitionCell(match[i][j - 1], 1, 1, "match"),
+        transitionCell(insert[i][j - 1], 1, 1, "insert"),
+      ])
     }
   }
 
-  // Reconstruct matches via backtracking, preferring earlier answer positions
-  const matches: Array<{ input: number; answer: number }> = []
-  let i = m
-  let j = n
+  return { match, insert, delete: deleteState }
+}
 
-  while (i > 0 && j > 0) {
-    if (
-      backtrack[i][j] === "diag" &&
-      // Only take this match if there's no equally good path to an earlier occurrence
-      dp[i][j - 1] < dp[i][j]
-    ) {
-      matches.unshift({ input: i - 1, answer: j - 1 })
-      i--
-      j--
-    } else if (dp[i - 1][j] > dp[i][j - 1]) {
-      i--
-    } else {
-      j--
-    }
-  }
+function createStateGrid(m: number, n: number): AlignmentCell[][] {
+  return Array(m + 1)
+    .fill(0)
+    .map(() =>
+      Array(n + 1)
+        .fill(0)
+        .map(() => ({ cost: INF_COST, previous: null })),
+    )
+}
 
-  // Convert matches into error ranges
-  const userErrors: ErrorRange[] = []
-  const answerErrors: ErrorRange[] = []
-  let lastInputPos = 0
-  let lastAnswerPos = 0
-  let matchCount = 0
-
-  for (const { input: inputPos, answer: answerPos } of matches) {
-    if (inputPos > lastInputPos) {
-      userErrors.push({ start: lastInputPos, end: inputPos })
-    }
-    if (answerPos > lastAnswerPos) {
-      answerErrors.push({ start: lastAnswerPos, end: answerPos })
-    }
-    matchCount++
-    lastInputPos = inputPos + 1
-    lastAnswerPos = answerPos + 1
-  }
-
-  // Handle remaining characters
-  if (lastInputPos < m) {
-    userErrors.push({ start: lastInputPos, end: m })
-  }
-  if (lastAnswerPos < n) {
-    answerErrors.push({ start: lastAnswerPos, end: n })
+function transitionCell(
+  cell: AlignmentCell,
+  addedEdits: number,
+  addedGapSegments: number,
+  previous: AlignmentState,
+): AlignmentCell {
+  if (!Number.isFinite(cell.cost.edits)) {
+    return { cost: INF_COST, previous }
   }
 
   return {
-    similarity: matchCount / Math.max(m, n),
-    userErrors,
-    answerErrors,
+    cost: {
+      edits: cell.cost.edits + addedEdits,
+      gapSegments: cell.cost.gapSegments + addedGapSegments,
+    },
+    previous,
   }
+}
+
+function chooseBestCell(candidates: AlignmentCell[]): AlignmentCell {
+  return candidates.reduce((best, candidate) =>
+    compareAlignmentCost(candidate.cost, best.cost) < 0 ? candidate : best,
+  )
+}
+
+function compareAlignmentCost(a: AlignmentCost, b: AlignmentCost): number {
+  if (a.edits !== b.edits) return a.edits - b.edits
+  return a.gapSegments - b.gapSegments
+}
+
+function backtrackAlignment(
+  tables: AlignmentTables,
+  userInput: string,
+  correctAnswer: string,
+): {
+  userErrorPositions: number[]
+  answerErrorPositions: number[]
+  editDistance: number
+} {
+  const userErrorPositions: number[] = []
+  const answerErrorPositions: number[] = []
+  let i = userInput.length
+  let j = correctAnswer.length
+  let state = bestFinalState(tables, i, j)
+
+  while (i > 0 || j > 0) {
+    const cell = tables[state][i][j]
+
+    if (state === "match") {
+      if (i > 0 && j > 0 && userInput[i - 1] !== correctAnswer[j - 1]) {
+        userErrorPositions.push(i - 1)
+        answerErrorPositions.push(j - 1)
+      }
+      i -= 1
+      j -= 1
+    } else if (state === "insert") {
+      userErrorPositions.push(i - 1)
+      i -= 1
+    } else {
+      answerErrorPositions.push(j - 1)
+      j -= 1
+    }
+
+    state = cell.previous ?? "match"
+  }
+
+  return {
+    userErrorPositions: userErrorPositions.sort((a, b) => a - b),
+    answerErrorPositions: answerErrorPositions.sort((a, b) => a - b),
+    editDistance: bestFinalCost(tables, userInput.length, correctAnswer.length).edits,
+  }
+}
+
+function bestFinalState(
+  tables: AlignmentTables,
+  i: number,
+  j: number,
+): AlignmentState {
+  const candidates: Array<{ state: AlignmentState; cost: AlignmentCost }> = [
+    { state: "match", cost: tables.match[i][j].cost },
+    { state: "insert", cost: tables.insert[i][j].cost },
+    { state: "delete", cost: tables.delete[i][j].cost },
+  ]
+
+  return candidates.reduce((best, candidate) =>
+    compareAlignmentCost(candidate.cost, best.cost) < 0 ? candidate : best,
+  ).state
+}
+
+function bestFinalCost(
+  tables: AlignmentTables,
+  i: number,
+  j: number,
+): AlignmentCost {
+  const state = bestFinalState(tables, i, j)
+  return tables[state][i][j].cost
+}
+
+function compressPositionsToRanges(positions: number[]): ErrorRange[] {
+  if (positions.length === 0) return []
+
+  const ranges: ErrorRange[] = []
+  let start = positions[0]
+  let end = positions[0] + 1
+
+  for (let index = 1; index < positions.length; index++) {
+    const position = positions[index]
+
+    if (position === end) {
+      end += 1
+      continue
+    }
+
+    ranges.push({ start, end })
+    start = position
+    end = position + 1
+  }
+
+  ranges.push({ start, end })
+  return ranges
 }
 
 // Returns particles (よ/ね/よね) that can be stripped (not in any answer)

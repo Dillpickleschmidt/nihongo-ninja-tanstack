@@ -39,6 +39,16 @@ describe("matchAnswer", () => {
 })
 
 describe("matchAnswer error positions", () => {
+  it("treats a missing leading prefix as one contiguous answer range", () => {
+    const result = matchAnswer(
+      "たいていくじごろテレビをみる",
+      "わたしたいていくじごろテレビをみる",
+    )
+
+    expect(result.userErrors).toEqual([])
+    expect(result.answerErrors).toEqual([{ start: 0, end: 3 }])
+  })
+
   it("marks all remaining answer chars as errors for partial prefix input", () => {
     const result = matchAnswer("きゅうりょう", "きゅうりょうをもらったら")
     expect(result.userErrors).toEqual([])
@@ -307,6 +317,34 @@ describe("allMatches and bestMatchIndex", () => {
     )
 
     expect(subjectAlternative?.answerErrors).toEqual([{ start: 0, end: 2 }])
+  })
+
+  it("maps omitted 私、 alternatives to the full prefix instead of 、た", () => {
+    const validAnswers = toPreparedAnswers([
+      "私[わたし]、\x1Fたいてい\x1F九時[くじ]\x1Fごろ\x1Fテレビを\x1F見[み]る",
+      "たいてい\x1F九時[くじ]\x1Fごろ\x1Fテレビを\x1F見[み]る",
+    ])
+
+    const result = checkAnswer("たいてい、くじごろテレビをみる", validAnswers)
+    const pronounAlternative = result.allMatches.find(
+      (match) => match.displayText === "私、たいてい九時ごろテレビを見る",
+    )
+
+    expect(pronounAlternative?.answerErrors).toEqual([{ start: 0, end: 2 }])
+  })
+
+  it("maps omitted mid-sentence 私は alternatives to just 私は", () => {
+    const validAnswers = toPreparedAnswers([
+      "たいてい\x1F九時[くじ]\x1Fごろ\x1F私[わたし]はテレビを\x1F見[み]る",
+      "たいてい\x1F九時[くじ]\x1Fごろ\x1Fテレビを\x1F見[み]る",
+    ])
+
+    const result = checkAnswer("たいてい、くじごろテレビをみる", validAnswers)
+    const pronounAlternative = result.allMatches.find(
+      (match) => match.displayText === "たいてい九時ごろ私はテレビを見る",
+    )
+
+    expect(pronounAlternative?.answerErrors).toEqual([{ start: 8, end: 10 }])
   })
 
   it("highlights only の in the 朝の八時 alternative", () => {
