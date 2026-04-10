@@ -73,35 +73,6 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kobayashi is a high school student.",
-    hint: "Name spelling: 小林（こばやし）",
-    answers: [
-      {
-        segments: [
-          {
-            text: "小林[こばやし]さんは 高校生[こうこうせい]です",
-            blank: true,
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "賢司[けんじ]は 高校生[こうこうせい]です", blank: true },
-        ],
-      },
-      {
-        segments: [
-          { text: "謙治[けんじ]は 高校生[こうこうせい]です", blank: true },
-        ],
-      },
-      {
-        segments: [
-          { text: "研司[けんじ]は 高校生[こうこうせい]です", blank: true },
-        ],
-      },
-    ],
-  },
-  {
     english: "Mr./Ms. Nakamura is a university student.",
     hint: "Name spelling: 中村（なかむら）",
     answers: [
@@ -220,7 +191,6 @@ export const questions: Question[] = [
   {
     english: "Ms. Mei is a biology major.",
     hint: "Mei = めい",
-    allow: ["めい"],
     answers: [
       {
         segments: [

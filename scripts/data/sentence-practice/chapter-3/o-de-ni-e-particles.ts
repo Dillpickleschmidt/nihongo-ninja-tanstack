@@ -966,7 +966,6 @@ export const questions: Question[] = [
   {
     english: "Kenji comes to school on Sundays.",
     hint: "Kenji = けんじ",
-    allow: ["けんじ"],
     answers: [
       {
         segments: [
@@ -2180,25 +2179,6 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "毎晩[まいばん]", blank: true },
-          { text: "家[いえ]", blank: true },
-          { text: "で" },
-          { text: "音楽[おんがく]", blank: true },
-          { text: "を" },
-          {
-            text: "聞[き]く",
-            conjugation: {
-              pos: "Godan verb with 'ku' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Dropped 私は; standard word order with 家",
-      },
-      {
-        segments: [
-          { text: "毎晩[まいばん]", blank: true },
           { text: "うち", blank: true },
           { text: "で" },
           { text: "音楽[おんがく]", blank: true },
@@ -2360,25 +2340,6 @@ export const questions: Question[] = [
         ],
         notes: '毎晩 fronted for emphasis on "every night"',
       },
-      {
-        segments: [
-          { text: "毎晩[まいばん]、" },
-          { text: "家[いえ]", blank: true },
-          { text: "で" },
-          { text: "音楽[おんがく]", blank: true },
-          { text: "を" },
-          {
-            text: "聞[き]く",
-            conjugation: {
-              pos: "Godan verb with 'ku' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "毎晩 fronted; dropped 私は",
-      },
     ],
   },
   {
@@ -2508,7 +2469,6 @@ export const questions: Question[] = [
   {
     english: "Yuki comes to my place on weekends.",
     hint: "Yuki = ゆき",
-    allow: ["ゆき"],
     answers: [
       {
         segments: [

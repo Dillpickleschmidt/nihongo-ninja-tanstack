@@ -412,14 +412,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "あれは" },
-          { text: "誰[だれ]の 帽子[ぼうし]", blank: true },
-          { text: "ですか" },
-        ],
-        notes: "あれは + だれの帽子 in the blank",
-      },
-      {
-        segments: [
           { text: "それ、" },
           { text: "誰[だれ]の 帽子[ぼうし]", blank: true },
           { text: "ですか" },

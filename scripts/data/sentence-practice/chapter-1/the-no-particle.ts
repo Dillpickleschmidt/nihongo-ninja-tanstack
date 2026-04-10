@@ -16,7 +16,6 @@ export const questions: Question[] = [
   {
     english: "Is Kenji's friend an international student?",
     hint: "Kenji = けんじ",
-    allow: ["けんじ"],
     answers: [
       {
         segments: [
@@ -73,7 +72,6 @@ export const questions: Question[] = [
   {
     english: "What is Kenji's major?",
     hint: "Kenji = けんじ",
-    allow: ["けんじ"],
     answers: [
       {
         segments: [
@@ -148,7 +146,6 @@ export const questions: Question[] = [
   {
     english: "Hana's older sister is a lawyer.",
     hint: "Hana = はな",
-    allow: ["はな"],
     answers: [
       {
         segments: [
@@ -207,7 +204,6 @@ export const questions: Question[] = [
   {
     english: "Kenji is a first-year engineering student.",
     hint: "Kenji = けんじ",
-    allow: ["けんじ"],
     answers: [
       {
         segments: [
@@ -230,7 +226,6 @@ export const questions: Question[] = [
   {
     english: "What is the name of Hana's university?",
     hint: "Hana = はな",
-    allow: ["はな"],
     answers: [
       {
         segments: [
@@ -300,7 +295,6 @@ export const questions: Question[] = [
   {
     english: "Yuki's older brother is a high school student.",
     hint: "Yuki = ゆき",
-    allow: ["ゆき"],
     answers: [
       {
         segments: [
@@ -335,7 +329,6 @@ export const questions: Question[] = [
   {
     english: "Is Hana's mother a nurse?",
     hint: "Hana = はな",
-    allow: ["はな"],
     answers: [
       {
         segments: [
@@ -348,7 +341,6 @@ export const questions: Question[] = [
   {
     english: "Hana's friend's major is biology.",
     hint: "Hana = はな",
-    allow: ["はな"],
     answers: [
       {
         segments: [
@@ -383,7 +375,6 @@ export const questions: Question[] = [
   {
     english: "Yuki's younger brother is an office worker.",
     hint: "Yuki = ゆき",
-    allow: ["ゆき"],
     answers: [
       {
         segments: [
@@ -438,7 +429,6 @@ export const questions: Question[] = [
   {
     english: "What is Yuki's phone number?",
     hint: "Yuki = ゆき",
-    allow: ["ゆき"],
     answers: [
       {
         segments: [
@@ -465,7 +455,6 @@ export const questions: Question[] = [
   {
     english: "Yuki's younger sister is an international student in India.",
     hint: "Yuki = ゆき",
-    allow: ["ゆき"],
     answers: [
       {
         segments: [
