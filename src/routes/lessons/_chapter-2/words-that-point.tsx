@@ -247,21 +247,25 @@ function WordsThatPoint() {
             for modifying nouns.
           </p>
 
-          <div class="grid grid-cols-2 gap-4 text-center font-japanese text-xl font-medium">
-            <div class="space-y-1">
+          <div class="flex justify-around gap-4">
+            <div class="space-y-1 text-muted-foreground">
+              <p>this one</p>
+              <p>this pen</p>
+            </div>
+            <div class="space-y-1 font-japanese text-xl font-medium">
               <p class="text-white/50 line-through">
-                こ<span class="text-red-500">の</span>！
+                こ<span class="text-red-500">の</span>
               </p>
               <p class="text-white/50 line-through">
                 こ<span class="text-red-500">れ</span>ぺん
               </p>
             </div>
-            <div class="space-y-1">
+            <div class="space-y-1 font-japanese text-xl font-medium">
               <p>
-                こ<span class="text-green-500">の</span>ペン
+                こ<span class="text-green-500">れ</span>
               </p>
               <p>
-                こ<span class="text-green-500">れ</span>！
+                こ<span class="text-green-500">の</span>ペン
               </p>
             </div>
           </div>
@@ -376,13 +380,31 @@ function WordsThatPoint() {
               translation="Who are you? (very polite)"
               situation="When asking politely about someone's identity or direction."
             />
+
+          <AsideBlock>
+            <ul class="-ml-1 mt-4 list-inside" style={'list-style-type: "- ";'}>
+              <li class="text-sm leading-relaxed text-white/60">
+                These should generally be used in place of{" "}
+                <span class="font-japanese">これ</span>,{" "}
+                <span class="font-japanese">この</span>,{" "}
+                <span class="font-japanese">ここ</span>, and{" "}
+                <span class="font-japanese">それ</span>, etc., whenever referring to people, as it's more polite. People aren't things and as such generally deserve different treatment.
+              </li>
+              <li class="text-sm leading-relaxed text-white/60">If you're not about to describe their name specifically, you don't have to use these unless you want to show high regard for the person. 
+              </li>
+              <li class="text-sm leading-relaxed text-white/60">For example: 
+                <span class="font-japanese">この子</span> - "this child" (still polite), 
+                <span class="font-japanese">このバカ</span> - "this idiot".
+              </li>
+           </ul>
+          </AsideBlock>
           </div>
         </div>
 
         <p class="leading-relaxed text-white/70">
           <span class="font-semibold italic text-white/90">Don't worry</span>{" "}
-          if you think you'll struggle differentiating these words. You'll get
-          plenty of practice as you continue learning new material.
+          if you think you'll struggle differentiating these words. You'll naturally 
+          get plenty of practice as you continue learning new material.
         </p>
 
         {/* Summary */}
