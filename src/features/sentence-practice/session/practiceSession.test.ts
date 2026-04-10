@@ -18,6 +18,7 @@ function createQuestion(segments: Array<{ text: string; isBlank: boolean }>): Pr
     displayAnswer,
     answers: [displayAnswer],
     validAnswers: [],
+    preparedAnswersForMatching: [],
   }
 }
 

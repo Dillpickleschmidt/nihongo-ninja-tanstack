@@ -24,7 +24,10 @@ describe("time expressions highlighting", () => {
       modelAnswerPOS: [],
     })
 
-    const result = checkAnswer("たいてい、くじごにテレビをみる", prepared.validAnswers)
+    const result = checkAnswer(
+      "たいてい、くじごにテレビをみる",
+      prepared.preparedAnswersForMatching,
+    )
 
     expect(result.bestMatch).toBe("たいてい九時ごろにテレビを見る")
     expect(result.errorRanges).toEqual([])
@@ -56,7 +59,10 @@ describe("time expressions highlighting", () => {
       modelAnswerPOS: [],
     })
 
-    const result = checkAnswer("たいてい、くじごろテレビをみる", prepared.validAnswers)
+    const result = checkAnswer(
+      "たいてい、くじごろテレビをみる",
+      prepared.preparedAnswersForMatching,
+    )
     const pronounAlternative = result.allMatches.find(
       (match) => match.displayText === "僕、たいてい九時ごろテレビを見る",
     )

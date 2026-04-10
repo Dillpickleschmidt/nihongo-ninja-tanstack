@@ -46,6 +46,7 @@ describe("getEasyModeBlankVariations", () => {
           isKanaVariation: true,
         },
       ],
+      preparedAnswersForMatching: [],
     }
 
     expect(getEasyModeBlankVariations(question)).toEqual([

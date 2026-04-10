@@ -41,13 +41,13 @@ function getPreparedQuestion() {
 }
 
 function expectAccepted(input: string) {
-  const result = checkAnswer(input, getPreparedQuestion().validAnswers)
+  const result = checkAnswer(input, getPreparedQuestion().preparedAnswersForMatching)
 
   expect(result.isCorrect).toBe(true)
 }
 
 function expectRejected(input: string) {
-  const result = checkAnswer(input, getPreparedQuestion().validAnswers)
+  const result = checkAnswer(input, getPreparedQuestion().preparedAnswersForMatching)
 
   expect(result.isCorrect).toBe(false)
 }

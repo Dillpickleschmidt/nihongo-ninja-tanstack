@@ -23,6 +23,15 @@ export interface RichAnswer {
   notes?: string // Optional context note
 }
 
+export interface PreparedAnswerForMatching {
+  answer: RichAnswer
+  normalizedPlain: string
+  normalizedKana: string
+  visiblePlain: string
+  plainToVisible: (pos: number) => number
+  kanaToPlainVisible: (pos: number) => number
+}
+
 export interface AnswerMatch {
   answer: RichAnswer
   displayText: string // The text actually shown (kana or plain)
@@ -37,6 +46,7 @@ export interface ProcessedQuestion {
   displayAnswer: RichSegment[] // canonical answer used for display and easy-mode assembly
   answers: RichSegment[][] // all processed answer variants
   validAnswers: RichAnswer[] // all valid answers for checking
+  preparedAnswersForMatching: PreparedAnswerForMatching[]
 }
 
 export interface CheckResult {

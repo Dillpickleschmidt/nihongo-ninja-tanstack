@@ -1,7 +1,8 @@
 // core/answer-processing/answerChecker.test.ts
 import { describe, it, expect } from "vitest"
 import { checkAnswer, matchAnswer } from "./answerChecker"
-import type { RichAnswer } from "../types"
+import type { PreparedAnswerForMatching, RichAnswer } from "../types"
+import { prepareAnswersForMatching } from "./preparedMatching"
 import { removeFurigana, convertToKana } from "../textProcessor"
 
 // Helper to convert string answers to RichAnswer format for tests
@@ -11,6 +12,10 @@ function toRichAnswers(answers: string[]): RichAnswer[] {
     plain: removeFurigana(original),
     kana: convertToKana(original),
   }))
+}
+
+function toPreparedAnswers(answers: string[]): PreparedAnswerForMatching[] {
+  return prepareAnswersForMatching(toRichAnswers(answers))
 }
 
 describe("matchAnswer", () => {
@@ -70,7 +75,7 @@ describe("checkAnswer", () => {
   it("returns correct for exact match", () => {
     const result = checkAnswer(
       "給料をもらったらショッピングモールに行きましょう",
-      validAnswers,
+      prepareAnswersForMatching(validAnswers),
     )
     expect(result.isCorrect).toBe(true)
     expect(result.similarity).toBe(1)
@@ -79,7 +84,7 @@ describe("checkAnswer", () => {
   it("returns correct for any valid variation", () => {
     const result = checkAnswer(
       "給料をもらったらショッピングモールに行こう",
-      validAnswers,
+      prepareAnswersForMatching(validAnswers),
     )
     expect(result.isCorrect).toBe(true)
   })
@@ -87,13 +92,13 @@ describe("checkAnswer", () => {
   it("returns correct for kana-only answer", () => {
     const result = checkAnswer(
       "きゅうりょうをもらったらしょっぴんぐもーるにいきましょう",
-      validAnswers,
+      prepareAnswersForMatching(validAnswers),
     )
     expect(result.isCorrect).toBe(true)
   })
 
   it("returns incorrect for wrong answer", () => {
-    const result = checkAnswer("全然違う答え", validAnswers)
+    const result = checkAnswer("全然違う答え", prepareAnswersForMatching(validAnswers))
     expect(result.isCorrect).toBe(false)
     expect(result.similarity).toBeLessThan(1)
   })
@@ -101,7 +106,7 @@ describe("checkAnswer", () => {
   it("strips ending particle よ when not in valid answers", () => {
     const result = checkAnswer(
       "行きましょうよ",
-      toRichAnswers(["行きましょう"]),
+      toPreparedAnswers(["行きましょう"]),
     )
     expect(result.isCorrect).toBe(true)
     expect(result.strippedParticle).toBe("よ")
@@ -110,7 +115,7 @@ describe("checkAnswer", () => {
   it("strips ending particle よね when not in valid answers", () => {
     const result = checkAnswer(
       "行きましょうよね",
-      toRichAnswers(["行きましょう"]),
+      toPreparedAnswers(["行きましょう"]),
     )
     expect(result.isCorrect).toBe(true)
     expect(result.strippedParticle).toBe("よね")
@@ -119,7 +124,7 @@ describe("checkAnswer", () => {
   it("does not strip particle when answer already contains it", () => {
     const result = checkAnswer(
       "行きましょうね",
-      toRichAnswers(["行きましょうね"]),
+      toPreparedAnswers(["行きましょうね"]),
     )
     expect(result.isCorrect).toBe(true)
     expect(result.strippedParticle).toBeUndefined()
@@ -128,7 +133,7 @@ describe("checkAnswer", () => {
   it("does not strip particle for question answers", () => {
     const result = checkAnswer(
       "何を買いますかよ",
-      toRichAnswers(["何を買いますか"]),
+      toPreparedAnswers(["何を買いますか"]),
     )
     expect(result.isCorrect).toBe(false) // Should not strip
     expect(result.strippedParticle).toBeUndefined()
@@ -137,7 +142,7 @@ describe("checkAnswer", () => {
   it("normalizes input (removes punctuation, whitespace)", () => {
     const result = checkAnswer(
       "  行きましょう。",
-      toRichAnswers(["行きましょう"]),
+      toPreparedAnswers(["行きましょう"]),
     )
     expect(result.isCorrect).toBe(true)
   })
@@ -148,7 +153,7 @@ describe("checkAnswer", () => {
       "仕事[しごと]で疲[つか]れたら帰[かえ]ります",
     ])
     const kanaInput = "しごとでつかれたらかえります"
-    const result = checkAnswer(kanaInput, answers)
+    const result = checkAnswer(kanaInput, prepareAnswersForMatching(answers))
     expect(result.isCorrect).toBe(true)
   })
 
@@ -157,7 +162,7 @@ describe("checkAnswer", () => {
       "仕事[しごと]で疲[つか]れたら帰[かえ]ります",
     ])
     const kanjiInput = "仕事で疲れたら帰ります"
-    const result = checkAnswer(kanjiInput, answers)
+    const result = checkAnswer(kanjiInput, prepareAnswersForMatching(answers))
     expect(result.isCorrect).toBe(true)
   })
 
@@ -170,7 +175,7 @@ describe("checkAnswer", () => {
     ])
     const result = checkAnswer(
       "きゅうりょうをもらったら、もーるにいこう",
-      answers,
+      prepareAnswersForMatching(answers),
     )
 
     // User errors mapped to original positions (after comma):
@@ -192,7 +197,7 @@ describe("checkAnswer", () => {
 describe("allMatches and bestMatchIndex", () => {
   it("returns allMatches array with AnswerMatch objects", () => {
     const validAnswers = toRichAnswers(["行きましょう", "行こう"])
-    const result = checkAnswer("行きましょう", validAnswers)
+    const result = checkAnswer("行きましょう", prepareAnswersForMatching(validAnswers))
 
     // Verify allMatches exists and has correct structure
     expect(result.allMatches).toBeDefined()
@@ -215,7 +220,7 @@ describe("allMatches and bestMatchIndex", () => {
       "行きましょう", // Exact match (highest similarity)
       "行こう", // Lower similarity
     ])
-    const result = checkAnswer("行きましょう", validAnswers)
+    const result = checkAnswer("行きましょう", prepareAnswersForMatching(validAnswers))
 
     // bestMatchIndex should point to the exact match
     expect(result.bestMatchIndex).toBe(0) // Always 0 after sorting
@@ -231,7 +236,7 @@ describe("allMatches and bestMatchIndex", () => {
       "行きます", // Medium similarity
       "行きましょう", // Exact match
     ])
-    const result = checkAnswer("行きましょう", validAnswers)
+    const result = checkAnswer("行きましょう", prepareAnswersForMatching(validAnswers))
 
     // Verify sorted descending by similarity
     for (let i = 0; i < result.allMatches.length - 1; i++) {
@@ -265,7 +270,7 @@ describe("allMatches and bestMatchIndex", () => {
         sourceAnswerIndex: 0,
       },
     ]
-    const result = checkAnswer("行きましょう", validAnswers)
+    const result = checkAnswer("行きましょう", prepareAnswersForMatching(validAnswers))
 
     // Verify metadata is accessible in allMatches
     const politeMatch = result.allMatches.find(
@@ -291,7 +296,7 @@ describe("allMatches and bestMatchIndex", () => {
 
     const result = checkAnswer(
       "時々朝八時ごろに音楽を聞きます",
-      validAnswers,
+      prepareAnswersForMatching(validAnswers),
     )
 
     expect(result.bestMatch).toBe("時々朝八時ごろに音楽を聞きます")
@@ -312,7 +317,7 @@ describe("allMatches and bestMatchIndex", () => {
 
     const result = checkAnswer(
       "私は時々朝八時ごろに音楽を聞きます",
-      validAnswers,
+      prepareAnswersForMatching(validAnswers),
     )
 
     expect(result.bestMatch).toBe("私は時々朝八時ごろに音楽を聞きます")
@@ -333,7 +338,7 @@ describe("allMatches and bestMatchIndex", () => {
 
     const result = checkAnswer(
       "私は時々朝八時ごろに音楽を聞きます",
-      validAnswers,
+      prepareAnswersForMatching(validAnswers),
     )
 
     expect(result.bestMatch).toBe("私は時々朝八時ごろに音楽を聞きます")

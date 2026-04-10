@@ -1,5 +1,6 @@
 import type { Doc } from "../../../../convex/_generated/dataModel"
 import type { ProcessedQuestion, RichSegment, RichAnswer } from "./types"
+import { prepareAnswersForMatching } from "./answer-processing/preparedMatching"
 import { processSegments } from "./segmentProcessor"
 import { generateValidAnswers } from "./answer-processing/variationGenerator"
 import { SEGMENT_SEPARATOR } from "./textProcessor"
@@ -40,6 +41,9 @@ export function prepareQuestion(
     displayAnswer: processedAnswers[0] ?? [],
     answers: processedAnswers,
     validAnswers: Array.from(validAnswers.values()),
+    preparedAnswersForMatching: prepareAnswersForMatching(
+      Array.from(validAnswers.values()),
+    ),
   }
 }
 

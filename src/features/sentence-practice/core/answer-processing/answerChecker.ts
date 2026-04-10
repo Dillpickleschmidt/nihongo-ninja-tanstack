@@ -1,17 +1,10 @@
-import { createKanjiFuriganaGroupRegex } from "@/data/utils/text/furigana"
-import type { CheckResult, ErrorRange, RichAnswer } from "../types"
-import { removeFurigana } from "../textProcessor"
-import { createVisibleTextWithMap, normalizeWithPositions } from "../textProcessor"
-
-interface PreparedAnswerForMatching {
-  normalizedPlain: string
-  normalizedKana: string
-  visiblePlain: string
-  plainToVisible: (pos: number) => number
-  kanaToPlainVisible: (pos: number) => number
-}
-
-const preparedAnswerCache = new WeakMap<RichAnswer, PreparedAnswerForMatching>()
+import type {
+  CheckResult,
+  ErrorRange,
+  PreparedAnswerForMatching,
+  RichAnswer,
+} from "../types"
+import { normalizeWithPositions } from "../textProcessor"
 
 export interface MatchResult {
   similarity: number
@@ -145,12 +138,14 @@ function getStrippableParticles(validAnswers: RichAnswer[]): string[] {
 // Main entry: normalizes, strips particles, matches against kanji + kana versions
 export function checkAnswer(
   input: string,
-  validAnswers: RichAnswer[],
+  preparedAnswers: PreparedAnswerForMatching[],
 ): CheckResult {
   const { text: normalizedInput, toOriginal: userToOriginal } =
     normalizeWithPositions(input)
   let userText = normalizedInput
-  const strippableParticles = getStrippableParticles(validAnswers)
+  const strippableParticles = getStrippableParticles(
+    preparedAnswers.map((preparedAnswer) => preparedAnswer.answer),
+  )
 
   let strippedParticle: string | undefined
   for (const particle of strippableParticles) {
@@ -161,10 +156,8 @@ export function checkAnswer(
     }
   }
 
-  const matches = validAnswers
-    .map((richAnswer) => {
-      const preparedAnswer = getPreparedAnswerForMatching(richAnswer)
-
+  const matches = preparedAnswers
+    .map((preparedAnswer) => {
       const kanjiMatch = matchAnswer(userText, preparedAnswer.normalizedPlain)
       const kanaMatch = matchAnswer(userText, preparedAnswer.normalizedKana)
 
@@ -187,7 +180,7 @@ export function checkAnswer(
 
       // Return AnswerMatch with full RichAnswer
       return {
-        answer: richAnswer,
+        answer: preparedAnswer.answer,
         displayText: preparedAnswer.visiblePlain,
         similarity: Math.max(kanjiMatch.similarity, kanaMatch.similarity),
         userErrors: mappedUserErrors,
@@ -208,87 +201,4 @@ export function checkAnswer(
     allMatches: matches,
     bestMatchIndex,
   }
-}
-
-function getPreparedAnswerForMatching(
-  richAnswer: RichAnswer,
-): PreparedAnswerForMatching {
-  const cached = preparedAnswerCache.get(richAnswer)
-  if (cached) return cached
-
-  const { text: normalizedPlain } = normalizeWithPositions(richAnswer.plain)
-  const { text: normalizedKana } = normalizeWithPositions(richAnswer.kana)
-  const { text: visiblePlain, normalizedToVisible: plainToVisible } =
-    createVisibleTextWithMap(richAnswer.plain)
-  const kanaToPlainVisible = createNormalizedKanaToVisiblePlainMapper(
-    richAnswer.original,
-    richAnswer.kana,
-  )
-
-  const preparedAnswer = {
-    normalizedPlain,
-    normalizedKana,
-    visiblePlain,
-    plainToVisible,
-    kanaToPlainVisible,
-  }
-
-  preparedAnswerCache.set(richAnswer, preparedAnswer)
-  return preparedAnswer
-}
-
-function createNormalizedKanaToVisiblePlainMapper(
-  original: string,
-  kanaText: string,
-): (pos: number) => number {
-  const { normalizedToVisible: normalizedKanaToVisible } =
-    createVisibleTextWithMap(kanaText)
-  const visibleKanaToPlain = buildVisibleKanaToPlainBoundaryMap(original)
-
-  return (pos: number) => {
-    const visibleKanaPos = normalizedKanaToVisible(pos)
-    return visibleKanaToPlain[visibleKanaPos] ?? visibleKanaToPlain.at(-1) ?? 0
-  }
-}
-
-function buildVisibleKanaToPlainBoundaryMap(original: string): number[] {
-  const boundaryMap: number[] = [0]
-  const furiganaRegex = createKanjiFuriganaGroupRegex("")
-  let visibleKanaPos = 0
-  let visiblePlainPos = 0
-  let index = 0
-
-  while (index < original.length) {
-    const furiganaMatch = original.substring(index).match(furiganaRegex)
-
-    if (furiganaMatch) {
-      const baseText = removeFurigana(furiganaMatch[0]).replace(/\s+/g, "")
-      const kanaReading = furiganaMatch[2].replace(/\s+/g, "")
-
-      for (let step = 1; step <= kanaReading.length; step++) {
-        const proportionalPlain = Math.round(
-          (baseText.length * step) / kanaReading.length,
-        )
-        boundaryMap[visibleKanaPos + step] = visiblePlainPos + proportionalPlain
-      }
-
-      visibleKanaPos += kanaReading.length
-      visiblePlainPos += baseText.length
-      index += furiganaMatch[0].length
-      continue
-    }
-
-    const char = original[index]
-    index += 1
-
-    if (/\s/.test(char) || char === "\x1F" || char === "[" || char === "]") {
-      continue
-    }
-
-    visibleKanaPos += 1
-    visiblePlainPos += 1
-    boundaryMap[visibleKanaPos] = visiblePlainPos
-  }
-
-  return boundaryMap
 }

@@ -48,4 +48,26 @@ describe("getAlternativeAnswers", () => {
       "参りましょう",
     ])
   })
+
+  it("hides pronoun substitutions but keeps dropped-subject variants", () => {
+    const matches = [
+      createMatch({ answerOverrides: { original: "私は行きましょう" } }),
+      createMatch({ answerOverrides: { original: "僕は行きましょう", pronounType: "僕[ぼく]" } }),
+      createMatch({ answerOverrides: { original: "行きましょう", pronounType: "dropped" } }),
+    ]
+
+    expect(getAlternativeAnswers(matches, 0).map((match) => match.answer.original)).toEqual([
+      "行きましょう",
+    ])
+  })
+
+  it("hides honorific substitutions from main alternatives", () => {
+    const matches = [
+      createMatch({ answerOverrides: { original: "田中さんです" } }),
+      createMatch({ answerOverrides: { original: "田中くんです", honorificType: "くん" } }),
+      createMatch({ answerOverrides: { original: "田中先生です", honorificType: "先生[せんせい]" } }),
+    ]
+
+    expect(getAlternativeAnswers(matches, 0)).toEqual([])
+  })
 })

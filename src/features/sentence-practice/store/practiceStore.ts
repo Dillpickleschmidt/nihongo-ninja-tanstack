@@ -66,7 +66,10 @@ export function createPracticeStore(
     const question = getCurrentQuestion()
     if (!question) return undefined
 
-    return checkAnswer(getCurrentAnswerText(), question.validAnswers)
+    return checkAnswer(
+      getCurrentAnswerText(),
+      question.preparedAnswersForMatching,
+    )
   }
 
   return {
