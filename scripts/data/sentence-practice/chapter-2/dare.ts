@@ -3,6 +3,7 @@ import type { Question } from "../types"
 export const questions: Question[] = [
   {
     english: "Who is the English teacher?",
+    hint: "TODO: explian the use of \"that thing is X's\" - (Xさんのです - の ender). Also, explain ga particle usage for forming quesiton words more clearly here.",
     answers: [
       {
         segments: [
