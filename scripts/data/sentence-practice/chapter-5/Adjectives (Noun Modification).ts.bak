@@ -1,0 +1,226 @@
+import type { Question } from "../types"
+
+export const questions: Question[] = [
+  {
+    english: "Kyoto is a lively town.",
+    hint: "Kyoto = きょうと",
+    answers: [
+      {
+        segments: [
+          { text: "きょうとは" },
+          { text: "にぎやかな", blank: true },
+          { text: "町[まち]" },
+          { text: "です" },
+        ],
+        notes: "は as topic particle, にぎやかな modifying 町",
+      },
+      {
+        segments: [
+          { text: "きょうとが" },
+          { text: "にぎやかな", blank: true },
+          { text: "町[まち]" },
+          { text: "です" },
+        ],
+        notes: "Using が instead of は",
+      },
+    ],
+  },
+  {
+    english: "That is a scary movie!",
+    answers: [
+      {
+        segments: [
+          { text: "それは" },
+          { text: "怖[こわ]い", blank: true },
+          { text: "映画[えいが]" },
+          { text: "です" },
+        ],
+        notes: "それは + 怖い映画です",
+      },
+      {
+        segments: [
+          { text: "あれは" },
+          { text: "怖[こわ]い", blank: true },
+          { text: "映画[えいが]" },
+          { text: "です" },
+        ],
+        notes: 'あれは instead of それは — "that over there" nuance',
+      },
+    ],
+  },
+  {
+    english: "I'm reading an interesting book.",
+    answers: [
+      {
+        segments: [
+          { text: "私[わたし]は" },
+          { text: "面白[おもしろ]い", blank: true },
+          { text: "本[ほん]を" },
+          {
+            text: "読[よ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "い-adjective 面白い modifying 本",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 今[いま]" },
+          { text: "面白[おもしろ]い", blank: true },
+          { text: "本[ほん]を" },
+          {
+            text: "読[よ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "With 今 (now) for emphasis on the ongoing action",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は この" },
+          { text: "面白[おもしろ]い", blank: true },
+          { text: "本[ほん]を" },
+          {
+            text: "読[よ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "With この before the adjective+noun (referring to a book nearby)",
+      },
+      {
+        segments: [
+          { text: "私[わたし]が" },
+          { text: "面白[おもしろ]い", blank: true },
+          { text: "本[ほん]を" },
+          {
+            text: "読[よ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "が instead of は, emphasizing that it's I who is reading",
+      },
+    ],
+  },
+  {
+    english: "Is there a quiet room in this hospital?",
+    answers: [
+      {
+        segments: [
+          { text: "この 病院[びょういん]に" },
+          { text: "静[しず]かな", blank: true },
+          { text: "部屋[へや]が" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes:
+          "Standard word order: location に + な-adjective modifying noun + がある + か",
+      },
+      {
+        segments: [
+          { text: "この 病院[びょういん]に" },
+          { text: "静[しず]かな", blank: true },
+          { text: "部屋[へや]は" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "は instead of が — topic-marking the room",
+      },
+      {
+        segments: [
+          { text: "静[しず]かな", blank: true },
+          { text: "部屋[へや]は この 病院[びょういん]に" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes:
+          "Reversed word order: noun phrase first, then location; は on 部屋",
+      },
+      {
+        segments: [
+          { text: "静[しず]かな", blank: true },
+          { text: "部屋[へや]が この 病院[びょういん]に" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Reversed word order with が on 部屋",
+      },
+    ],
+  },
+  {
+    english: "Today is a free day, isn't it!",
+    answers: [
+      {
+        segments: [
+          { text: "今日[きょう]は" },
+          { text: "暇[ひま]な", blank: true },
+          { text: "日[ひ]" },
+          { text: "です" },
+        ],
+        notes: "な-adjective modifying noun + です",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]は" },
+          { text: "暇[ひま]な", blank: true },
+          { text: "日[ひ]じゃない" },
+          { text: "です" },
+          { text: "か" },
+        ],
+        notes: 'Using じゃないですか for "isn\'t it" — polite rhetorical',
+      },
+    ],
+  },
+]
