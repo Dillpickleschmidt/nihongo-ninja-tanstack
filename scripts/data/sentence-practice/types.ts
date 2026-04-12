@@ -1,12 +1,16 @@
+import type { ConjugatedWord } from "../../../src/features/sentence-practice/core/conjugation/types"
+
+export type SegmentConjugation = {
+  pos: ConjugatedWord["pos"]
+  form?: ConjugatedWord["form"]
+  polarity: ConjugatedWord["polarity"]
+  tense: ConjugatedWord["tense"]
+}
+
 export type Segment = {
   text: string
   blank?: boolean
-  conjugation?: {
-    pos: string
-    form?: string
-    polarity: "positive" | "negative"
-    tense: "past" | "non-past"
-  }
+  conjugation?: SegmentConjugation
 }
 
 export type Answer = {
