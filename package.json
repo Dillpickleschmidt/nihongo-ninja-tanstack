@@ -13,6 +13,7 @@
     "test": "vitest",
     "upsert-vocab": "bun run scripts/upsert-core-vocab.ts",
     "upsert-sentence-practice": "bun run scripts/upsert-sentence-practice.ts",
+    "check-sentence-practice-data": "bun run scripts/check-sentence-practice-data.ts",
     "import-wanikani": "bun run scripts/import-wanikani.ts",
     "add-dictionaries": "bun run scripts/import-dictionary.ts"
   },
