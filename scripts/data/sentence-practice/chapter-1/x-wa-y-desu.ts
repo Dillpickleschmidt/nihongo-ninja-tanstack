@@ -140,17 +140,17 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "賢司[けんじ]は 高校生[こうこうせい]です", blank: true },
+          { text: "賢司[けんじ]さんは 高校生[こうこうせい]です", blank: true },
         ],
       },
       {
         segments: [
-          { text: "謙治[けんじ]は 高校生[こうこうせい]です", blank: true },
+          { text: "謙治[けんじ]さんは 高校生[こうこうせい]です", blank: true },
         ],
       },
       {
         segments: [
-          { text: "研司[けんじ]は 高校生[こうこうせい]です", blank: true },
+          { text: "研司[けんじ]さんは 高校生[こうこうせい]です", blank: true },
         ],
       },
     ],

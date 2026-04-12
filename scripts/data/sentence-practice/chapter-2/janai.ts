@@ -195,7 +195,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "あれはけんじの 鞄[かばん]" },
+          { text: "あれはけんじさんの 鞄[かばん]" },
           { text: "じゃないですか", blank: true },
         ],
         notes: "Using あれ (that over there) — also natural when pointing out a bag across the room; じゃないですか",
