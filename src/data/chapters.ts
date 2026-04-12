@@ -282,6 +282,7 @@ export const chapters: Record<
         "te-kudasai",
         "te-mo-ii-desu",
         "te-wa-ikemasen",
+        "sentence-practice-te-form-constructions",
         "dame",
         "te-form-adj-nouns",
         "kara",

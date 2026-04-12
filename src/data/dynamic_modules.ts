@@ -449,6 +449,13 @@ export const dynamic_modules: Record<string, DynamicModule> = {
     module_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch6_ru-v-irr-v-adv-misc"],
   },
+  "sentence-practice-te-form-constructions": {
+    title: "て-form Constructions",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-te-form-constructions"],
+    instructions:
+      "Practice using て-form for requests, connecting activities, permission, and prohibition.",
+  },
   "genki_1_ch6_all-vocab-test": {
     title: "All Vocab - Test",
     module_type: "vocab-test",
