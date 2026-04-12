@@ -1,6 +1,7 @@
 // ui/PracticeInput.tsx
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
 import WanakanaWrapper from "@/features/wanakana/WanaKana"
+import { cn } from "@/utils"
 
 interface PracticeInputProps {
   value: string
@@ -19,7 +20,7 @@ export default function PracticeInput(props: PracticeInputProps) {
           type="text"
           onKeyDown={props.onKeyPress}
           autofocus={props.autofocus}
-          class={props.class}
+          class={cn("font-japanese", props.class)}
           placeholder={props.placeholder}
         />
       </TextField>

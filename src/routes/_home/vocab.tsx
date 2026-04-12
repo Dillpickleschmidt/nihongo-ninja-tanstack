@@ -25,7 +25,10 @@ function VocabLayoutComponent() {
   const location = useLocation()
   const showPanel = () => {
     const pathname = location().pathname
-    return pathname !== "/vocab" && pathname !== "/vocab/" && !pathname.startsWith("/vocab/practice/")
+    return pathname !== "/vocab" &&
+      pathname !== "/vocab/" &&
+      !pathname.startsWith("/vocab/practice/") &&
+      !pathname.startsWith("/vocab/quiz/")
   }
 
   return (

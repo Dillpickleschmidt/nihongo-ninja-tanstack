@@ -44,7 +44,7 @@ export default function FullInput() {
             }
           }}
           autofocus
-          class="w-full py-6 text-2xl"
+          class="font-noto-sans-jp w-full py-6 text-2xl"
           placeholder="Type your answer in Japanese..."
         />
         <p class="pt-1 text-sm text-white/30">*use caps for katakana</p>

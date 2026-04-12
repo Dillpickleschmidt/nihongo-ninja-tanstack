@@ -33,6 +33,7 @@ export default function ResultDisplay() {
                   text={store.answerText}
                   errors={store.checkResult!.errorRanges}
                   highlightClass="rounded-md border-2 border-black bg-rose-500 text-black font-medium"
+                  class="font-japanese"
                 />
               </div>
               <Show
@@ -65,6 +66,7 @@ export default function ResultDisplay() {
                 showFurigana={store.showFurigana}
                 errors={store.checkResult!.bestMatchErrors}
                 highlightClass="rounded-md border-2 border-black bg-emerald-500 text-black font-medium"
+                class="font-japanese"
               />
             </div>
           </div>
