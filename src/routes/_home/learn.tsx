@@ -8,7 +8,10 @@ import { queryKeys } from "~/query/query-keys"
 import { CompletionsSyncDialog } from "@/features/learn/CompletionsSyncDialog"
 import { FloatingKanji } from "@/features/homepage/components/floating-kanji"
 import { LearningPathProvider } from "@/features/learn/context/learning-path"
-import { HeroSection } from "@/features/learn/hero/HeroSection"
+import {
+  HeroSection,
+  LearningPathControls,
+} from "@/features/learn/hero/HeroSection"
 // import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 // import { PracticeToolsSection } from "@/features/learn/practice-tools/PracticeToolsSection"
 // import { ViewToggle } from "@/features/learn/hero/ViewToggle"
@@ -63,7 +66,7 @@ function LearnComponent() {
   })
 
   return (
-    <div class="relative min-h-screen text-white overflow-x-hidden">
+    <div class="relative min-h-screen text-white">
       <style>{`
         @keyframes fade-up {
           from { opacity: 0; transform: translateY(20px); }
@@ -81,6 +84,12 @@ function LearnComponent() {
           <HeroSection
             selectedView={selectedView}
             setSelectedView={setSelectedView}
+          />
+
+          <LearningPathControls
+            selectedView={selectedView}
+            setSelectedView={setSelectedView}
+            class="sticky top-2 z-20 mt-3"
           />
 
           {/* <SSRMediaQuery hideFrom="md">

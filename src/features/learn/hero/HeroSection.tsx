@@ -2,9 +2,12 @@ import {
   Show,
   Suspense,
   createSignal,
+  onCleanup,
+  onMount,
   type Accessor,
   type Setter,
 } from "solid-js"
+import { cn } from "@/utils"
 import { Skeleton } from "@/components/ui/custom/skeleton"
 import { Sparkles, ChevronRight } from "lucide-solid"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
@@ -56,10 +59,6 @@ export function HeroSection(props: HeroSectionProps) {
               <div>
                 <Skeleton class="h-7 w-48 bg-white/10 rounded mb-2" />
                 <Skeleton class="h-4 w-64 bg-white/5 rounded mb-4" />
-                <div class="flex items-center gap-4">
-                  <Skeleton class="h-8 w-28 bg-white/5 rounded-xl" />
-                  <Skeleton class="h-10 w-16 bg-white/5 rounded" />
-                </div>
               </div>
             }
           >
@@ -75,24 +74,13 @@ export function HeroSection(props: HeroSectionProps) {
         <div class="flex-1 flex flex-col justify-center">
           <HeroTimeline modules={nextModules()} />
         </div>
-        <div>
-          <SSRMediaQuery showFrom="md">
-            <ViewToggle
-              selectedView={props.selectedView}
-              setSelectedView={props.setSelectedView}
-            />
-          </SSRMediaQuery>
-        </div>
       </div>
     </section>
   )
 }
 
 function HeroContent() {
-  const [isSelectorOpen, setIsSelectorOpen] = createSignal(false)
-  const { query, selectedPathId, selectedPath, switchPath } = useLearningPath()
-  const { dueCounts } = useSrs()
-  const vocabTotal = () => dueCounts().vocabTotal
+  const { selectedPath } = useLearningPath()
 
   return (
     <div>
@@ -102,22 +90,64 @@ function HeroContent() {
       <p class="text-sm font-excalifont text-white/50 mb-4">
         {selectedPath()?.name ?? "Select a textbook to begin"}
       </p>
+    </div>
+  )
+}
 
-      <div class="flex items-center gap-4">
-        <Show when={query.data()?.paths && selectedPathId()}>
-          <LearningPathSelector
-            learningPaths={query.data()!.paths}
-            activePathId={selectedPathId()!}
-            isOpen={isSelectorOpen()}
-            onOpenChange={setIsSelectorOpen}
-            onPathSelect={switchPath}
-            class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition-colors hover:bg-white/10 hover:text-white cursor-pointer"
-          >
-            Change path
-            <ChevronRight class="size-4" />
-          </LearningPathSelector>
-        </Show>
-        <DueCountBadge count={vocabTotal} />
+export function LearningPathControls(props: HeroSectionProps & { class?: string }) {
+  const [isSelectorOpen, setIsSelectorOpen] = createSignal(false)
+  const [isStuck, setIsStuck] = createSignal(false)
+  const { query, selectedPathId, switchPath } = useLearningPath()
+  const { dueCounts } = useSrs()
+  const vocabTotal = () => dueCounts().vocabTotal
+
+  let containerRef: HTMLDivElement | undefined
+
+  onMount(() => {
+    const checkSticky = () => {
+      if (!containerRef) return
+      setIsStuck(containerRef.getBoundingClientRect().top <= 8)
+    }
+
+    checkSticky()
+    window.addEventListener("scroll", checkSticky, { passive: true })
+    window.addEventListener("resize", checkSticky, { passive: true })
+    onCleanup(() => {
+      window.removeEventListener("scroll", checkSticky)
+      window.removeEventListener("resize", checkSticky)
+    })
+  })
+
+  return (
+    <div ref={containerRef} class={props.class}>
+      <div
+        class={cn(
+          "flex items-center justify-between gap-4 rounded-2xl px-1 py-2 transition-all duration-200",
+          isStuck() &&
+            "bg-background/35 backdrop-blur-md shadow-[0_8px_24px_-16px_rgba(0,0,0,0.7)]",
+        )}
+      >
+        <div class="flex items-center gap-4">
+          <Show when={query.data()?.paths && selectedPathId()}>
+            <LearningPathSelector
+              learningPaths={query.data()!.paths}
+              activePathId={selectedPathId()!}
+              isOpen={isSelectorOpen()}
+              onOpenChange={setIsSelectorOpen}
+              onPathSelect={switchPath}
+              class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition-colors hover:bg-white/10 hover:text-white cursor-pointer"
+            >
+              Change path
+              <ChevronRight class="size-4" />
+            </LearningPathSelector>
+          </Show>
+          <DueCountBadge count={vocabTotal} />
+        </div>
+
+        <ViewToggle
+          selectedView={props.selectedView}
+          setSelectedView={props.setSelectedView}
+        />
       </div>
     </div>
   )
