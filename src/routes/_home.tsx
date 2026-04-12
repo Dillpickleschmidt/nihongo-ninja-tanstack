@@ -93,7 +93,7 @@ function HomeLayout() {
         </div>
       </SSRMediaQuery>
 
-      <div class="pl-(--sidebar-width)">
+      <div class="pl-(--sidebar-width) 2xl:pr-(--sidebar-width)">
         <Outlet />
       </div>
 
@@ -120,7 +120,8 @@ function ActiveChapterSync() {
     const loc = location()
 
     // Handle /vocab?chapter=X
-    const chapterParam = "chapter" in loc.search ? (loc.search.chapter as string) : undefined
+    const chapterParam =
+      "chapter" in loc.search ? (loc.search.chapter as string) : undefined
     if (loc.pathname === "/vocab" && chapterParam) {
       if (chapterParam !== preferences().activeChapter) {
         setPreference("activeChapter", chapterParam)

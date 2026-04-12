@@ -323,7 +323,7 @@ export default function KanaChart(props: { type: ChartType }) {
               >
                 {cell[0] !== null ? (
                   <>
-                    <p class="font-japanese text-2xl text-white/90">
+                    <p class="font-noto-sans-jp text-2xl text-white/90">
                       {cell[0]}
                     </p>
                     <p class="text-xs text-white/40">{cell[1]}</p>

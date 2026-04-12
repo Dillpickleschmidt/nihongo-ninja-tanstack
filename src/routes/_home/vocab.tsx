@@ -1,5 +1,5 @@
 // src/routes/_home/vocab.tsx
-import { createFileRoute, Outlet, useMatch } from "@tanstack/solid-router"
+import { createFileRoute, Outlet, useLocation } from "@tanstack/solid-router"
 import { Show, Suspense } from "solid-js"
 import { queryKeys } from "~/query/query-keys"
 import { CenterNavBar } from "@/features/vocab-page/layout/CenterNavBar"
@@ -22,8 +22,11 @@ export const Route = createFileRoute("/_home/vocab")({
 })
 
 function VocabLayoutComponent() {
-  const isIndex = useMatch({ from: "/_home/vocab/", shouldThrow: false })
-  const showPanel = () => !isIndex()
+  const location = useLocation()
+  const showPanel = () => {
+    const pathname = location().pathname
+    return pathname !== "/vocab" && pathname !== "/vocab/" && !pathname.startsWith("/vocab/practice/")
+  }
 
   return (
     <VocabProvider>

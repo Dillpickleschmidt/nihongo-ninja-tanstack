@@ -215,7 +215,8 @@
   --radius-sm: calc(var(--radius) - 4px);
 
   --font-outfit: "Outfit Variable", "sans-serif";
-  --font-japanese: "Noto Sans JP Variable", "sans-serif";
+  --font-japanese: "Zen Maru Gothic", "sans-serif";
+  --font-noto-sans-jp: "Noto Sans JP Variable", "sans-serif";
   --font-excalifont: "Excalifont", "sans-serif";
 
   /* Animation keyframes */

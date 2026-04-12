@@ -267,13 +267,13 @@ function ComparisonChart(props: {
     <div class="grid grid-cols-5 gap-3">
       {props.top.map(([jp, romaji]) => (
         <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-          <p class="font-japanese text-2xl text-white/50">{jp}</p>
+          <p class="font-noto-sans-jp text-2xl text-white/50">{jp}</p>
           <p class="text-xs text-white/30">{romaji}</p>
         </div>
       ))}
       {props.bottom.map(([jp, romaji]) => (
         <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-          <p class="font-japanese text-2xl text-white/90">{jp}</p>
+          <p class="font-noto-sans-jp text-2xl text-white/90">{jp}</p>
           <p class="text-xs text-white/40">{romaji}</p>
         </div>
       ))}
