@@ -1,0 +1,2043 @@
+import type { Question } from "../types"
+
+export const questions: Question[] = [
+  {
+    english: "There are a lot of cats in the park.",
+    answers: [
+      {
+        segments: [
+          { text: "公園[こうえん]に" },
+          { text: "たくさんの", blank: true },
+          { text: "猫[ねこ]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "Standard たくさんの + noun structure, に for location, いる for living things",
+      },
+      {
+        segments: [
+          { text: "公園[こうえん]に" },
+          { text: "たくさん", blank: true },
+          { text: "猫[ねこ]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "たくさん without の — focuses more on the phrase as a whole",
+      },
+      {
+        segments: [
+          { text: "公園[こうえん]には" },
+          { text: "たくさんの", blank: true },
+          { text: "猫[ねこ]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "には instead of に — topicalizing the location",
+      },
+      {
+        segments: [
+          { text: "公園[こうえん]には" },
+          { text: "たくさん", blank: true },
+          { text: "猫[ねこ]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "には without の — topicalized location, たくさん as adverb",
+      },
+      {
+        segments: [
+          { text: "たくさんの", blank: true },
+          { text: "猫[ねこ]が 公園[こうえん]に" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "たくさんの + noun fronted — subject first, location after",
+      },
+    ],
+  },
+  {
+    english: "I read a lot of books last week.",
+    answers: [
+      {
+        segments: [
+          { text: "先週[せんしゅう]、私[わたし]は" },
+          { text: "たくさん", blank: true },
+          { text: "本[ほん]を" },
+          {
+            text: "読[よ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "たくさん as adverb before noun phrase, は topic marker",
+      },
+      {
+        segments: [
+          { text: "先週[せんしゅう]、私[わたし]は" },
+          { text: "たくさんの", blank: true },
+          { text: "本[ほん]を" },
+          {
+            text: "読[よ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "たくさんの before noun, emphasizing the books",
+      },
+      {
+        segments: [
+          { text: "先週[せんしゅう]、私[わたし]は 本[ほん]を" },
+          { text: "たくさん", blank: true },
+          {
+            text: "読[よ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "たくさん placed right before the verb (after the object)",
+      },
+      {
+        segments: [
+          { text: "先週[せんしゅう]に 私[わたし]は" },
+          { text: "たくさん", blank: true },
+          { text: "本[ほん]を" },
+          {
+            text: "読[よ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "先週 marked with に (temporal に)",
+      },
+      {
+        segments: [
+          { text: "先週[せんしゅう]に 私[わたし]は" },
+          { text: "たくさんの", blank: true },
+          { text: "本[ほん]を" },
+          {
+            text: "読[よ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "たくさんの before noun, 先週 with に",
+      },
+      {
+        segments: [
+          { text: "先週[せんしゅう]、本[ほん]を" },
+          { text: "たくさん", blank: true },
+          {
+            text: "読[よ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "私は dropped (topic omitted), たくさん after object",
+      },
+      {
+        segments: [
+          { text: "先週[せんしゅう]、" },
+          { text: "たくさん", blank: true },
+          { text: "本[ほん]を" },
+          {
+            text: "読[よ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "私は dropped, たくさん as adverb before noun phrase",
+      },
+      {
+        segments: [
+          { text: "先週[せんしゅう]、" },
+          { text: "たくさんの", blank: true },
+          { text: "本[ほん]を" },
+          {
+            text: "読[よ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "私は dropped, たくさんの before noun",
+      },
+      {
+        segments: [
+          { text: "先週[せんしゅう]、私[わたし]が" },
+          { text: "たくさん", blank: true },
+          { text: "本[ほん]を" },
+          {
+            text: "読[よ]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "が instead of は for subject marker",
+      },
+    ],
+  },
+  {
+    english: "I ate a lot at dinner last night.",
+    answers: [
+      {
+        segments: [
+          { text: "昨日[きのう]の 晩[ばん]ご 飯[はん]に、" },
+          { text: "たくさん", blank: true },
+          {
+            text: "食[た]べる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes:
+          'Basic variation: たくさん as adverb before 食べた, 晩ご飯に for "at dinner"',
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]の 夕[ゆう]ご 飯[はん]に、" },
+          { text: "たくさん", blank: true },
+          {
+            text: "食[た]べる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: 'Using 夕ご飯 instead of 晩ご飯 for "dinner"',
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]の 晩[ばん]ご 飯[はん]は、" },
+          { text: "たくさん", blank: true },
+          {
+            text: "食[た]べる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Using は to topicalize 昨日の晩ご飯 instead of に",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]の 夕[ゆう]ご 飯[はん]は、" },
+          { text: "たくさん", blank: true },
+          {
+            text: "食[た]べる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "夕ご飯は topicalized with は",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、 晩[ばん]ご 飯[はん]に" },
+          { text: "たくさん", blank: true },
+          {
+            text: "食[た]べる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "昨日 fronted as separate time expression, then 晩ご飯に",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、 夕[ゆう]ご 飯[はん]に" },
+          { text: "たくさん", blank: true },
+          {
+            text: "食[た]べる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "昨日 fronted, then 夕ご飯に",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]の 晩[ばん]ご 飯[はん]で、" },
+          { text: "たくさん", blank: true },
+          {
+            text: "食[た]べる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: 'Using で instead of に for 晩ご飯 ("at/during dinner")',
+      },
+    ],
+  },
+  {
+    english: "There are a lot of dogs in this town.",
+    answers: [
+      {
+        segments: [
+          { text: "この 町[まち]には" },
+          { text: "たくさん", blank: true },
+          { text: "の 犬[いぬ]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Standard: たくさんの + noun, には particle, が subject",
+      },
+      {
+        segments: [
+          { text: "この 町[まち]には" },
+          { text: "たくさん", blank: true },
+          { text: " 犬[いぬ]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "たくさん as adverb (without の), には, が subject",
+      },
+      {
+        segments: [
+          { text: "この 町[まち]に" },
+          { text: "たくさん", blank: true },
+          { text: "の 犬[いぬ]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "に instead of には — without は topic marker",
+      },
+      {
+        segments: [
+          { text: "この 町[まち]に" },
+          { text: "たくさん", blank: true },
+          { text: " 犬[いぬ]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "に instead of には, たくさん without の",
+      },
+      {
+        segments: [
+          { text: "たくさん", blank: true },
+          { text: "の 犬[いぬ]が この 町[まち]に" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "たくさんの犬 fronted — focuses on the dogs first, then location",
+      },
+    ],
+  },
+  {
+    english: "I have a lot of friends at school.",
+    answers: [
+      {
+        segments: [
+          { text: "学校[がっこう]に" },
+          { text: "たくさんの", blank: true },
+          { text: "友[とも]だちが" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Standard form: たくさんの before noun, に for location",
+      },
+      {
+        segments: [
+          { text: "学校[がっこう]に" },
+          { text: "たくさん", blank: true },
+          { text: "友[とも]だちが" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "Without の — たくさん modifies the whole phrase rather than highlighting the noun",
+      },
+      {
+        segments: [
+          { text: "学校[がっこう]には" },
+          { text: "たくさんの", blank: true },
+          { text: "友[とも]だちが" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          'には instead of に — adds topic/contrast nuance "at school (in particular)"',
+      },
+      {
+        segments: [
+          { text: "学校[がっこう]には" },
+          { text: "たくさん", blank: true },
+          { text: "友[とも]だちが" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "には without の",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は学校[がっこう]に" },
+          { text: "たくさんの", blank: true },
+          { text: "友[とも]だちが" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私は subject at the start, with たくさんの",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は学校[がっこう]に" },
+          { text: "たくさん", blank: true },
+          { text: "友[とも]だちが" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私は subject, without の",
+      },
+      {
+        segments: [
+          { text: "学校[がっこう]に友[とも]だちが" },
+          { text: "たくさん", blank: true },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "たくさん after the subject 友達が — modifies the verb phrase directly",
+      },
+      {
+        segments: [
+          { text: "学校[がっこう]には友[とも]だちが" },
+          { text: "たくさん", blank: true },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "には + 友達が + たくさん + いる word order",
+      },
+    ],
+  },
+  {
+    english: "Did Kenji take a lot of photos yesterday?",
+    hint: "Kenji = けんじ",
+    answers: [
+      {
+        segments: [
+          { text: "けんじさんは 昨日[きのう]" },
+          { text: "たくさん", blank: true },
+          { text: "写真[しゃしん]を" },
+          {
+            text: "撮[と]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Standard: たくさん as adverb before 写真を撮った",
+      },
+      {
+        segments: [
+          { text: "けんじさんは 昨日[きのう]" },
+          { text: "たくさんの", blank: true },
+          { text: "写真[しゃしん]を" },
+          {
+            text: "撮[と]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Using たくさんの before 写真 (noun-modifying form)",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、けんじさんは" },
+          { text: "たくさん", blank: true },
+          { text: "写真[しゃしん]を" },
+          {
+            text: "撮[と]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "昨日 moved to the front of the sentence",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、けんじさんは" },
+          { text: "たくさんの", blank: true },
+          { text: "写真[しゃしん]を" },
+          {
+            text: "撮[と]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "昨日 at front + たくさんの noun-modifying form",
+      },
+      {
+        segments: [
+          { text: "けんじさんは 昨日[きのう]写真[しゃしん]を" },
+          { text: "たくさん", blank: true },
+          {
+            text: "撮[と]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "たくさん placed right before the verb (after 写真を)",
+      },
+      {
+        segments: [
+          { text: "けんじさんが 昨日[きのう]" },
+          { text: "たくさん", blank: true },
+          { text: "写真[しゃしん]を" },
+          {
+            text: "撮[と]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Using が instead of は for the subject particle",
+      },
+      {
+        segments: [
+          { text: "けんじさんが 昨日[きのう]" },
+          { text: "たくさんの", blank: true },
+          { text: "写真[しゃしん]を" },
+          {
+            text: "撮[と]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "が + たくさんの noun-modifying form",
+      },
+    ],
+  },
+  {
+    english: "I drink a lot of coffee every morning.",
+    answers: [
+      {
+        segments: [
+          { text: "私[わたし]は 毎朝[まいあさ]コーヒーを" },
+          { text: "たくさん", blank: true },
+          {
+            text: "飲[の]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Standard: たくさん as adverb before 飲む, 毎朝 after は",
+      },
+      {
+        segments: [
+          { text: "毎朝[まいあさ]、私[わたし]は コーヒーを" },
+          { text: "たくさん", blank: true },
+          {
+            text: "飲[の]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "毎朝 moved to front of sentence as topic-setting time expression",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 毎朝[まいあさ]" },
+          { text: "たくさんの", blank: true },
+          { text: "コーヒーを" },
+          {
+            text: "飲[の]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "たくさんの + コーヒー: たくさん directly modifies the noun コーヒー with の",
+      },
+      {
+        segments: [
+          { text: "毎朝[まいあさ]、私[わたし]は" },
+          { text: "たくさんの", blank: true },
+          { text: "コーヒーを" },
+          {
+            text: "飲[の]む",
+            conjugation: {
+              pos: "Godan verb with 'mu' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "たくさんの + コーヒー with 毎朝 at front",
+      },
+    ],
+  },
+  {
+    english: "There are a lot of vegetables at the supermarket today.",
+    answers: [
+      {
+        segments: [
+          { text: "今日[きょう]、スーパーに" },
+          { text: "たくさんの", blank: true },
+          { text: "野菜[やさい]が" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Standard form: たくさんの + noun, 今日 at the start",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]、スーパーには" },
+          { text: "たくさんの", blank: true },
+          { text: "野菜[やさい]が" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "With は after に for topic-marking the supermarket",
+      },
+      {
+        segments: [
+          { text: "スーパーには今日[きょう]" },
+          { text: "たくさんの", blank: true },
+          { text: "野菜[やさい]が" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "スーパーには first, 今日 moved after",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]、スーパーに野菜[やさい]が" },
+          { text: "たくさん", blank: true },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "たくさん without の, placed before ある as adverb",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]、スーパーには野菜[やさい]が" },
+          { text: "たくさん", blank: true },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "たくさん without の, には for topic-marking",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]、スーパーに" },
+          { text: "たくさん", blank: true },
+          { text: "野菜[やさい]が" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "たくさん directly before noun without の",
+      },
+    ],
+  },
+  {
+    english: "There were a lot of people at the library yesterday.",
+    answers: [
+      {
+        segments: [
+          { text: "昨日[きのう]、図書館[としょかん]に" },
+          { text: "たくさん", blank: true },
+          { text: "の 人[ひと]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Standard form: たくさんの人が, 図書館に, 昨日 at start",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、図書館[としょかん]には" },
+          { text: "たくさん", blank: true },
+          { text: "の 人[ひと]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Using は after 図書館に for topicalization/contrast",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、図書館[としょかん]に" },
+          { text: "たくさん", blank: true },
+          { text: "人[ひと]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes:
+          "Without の between たくさん and 人 — focuses on the overall situation",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、図書館[としょかん]には" },
+          { text: "たくさん", blank: true },
+          { text: "人[ひと]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "には + たくさん without の",
+      },
+      {
+        segments: [
+          { text: "図書館[としょかん]には、昨日[きのう]" },
+          { text: "たくさん", blank: true },
+          { text: "の 人[ひと]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "図書館には at start, 昨日 moved to later in sentence",
+      },
+      {
+        segments: [
+          { text: "図書館[としょかん]に、昨日[きのう]" },
+          { text: "たくさん", blank: true },
+          { text: "の 人[ひと]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "図書館に (without は) at start, 昨日 moved later",
+      },
+    ],
+  },
+  {
+    english: "I bought a lot of vegetables yesterday.",
+    answers: [
+      {
+        segments: [
+          { text: "昨日[きのう]、私[わたし]は" },
+          { text: "たくさん", blank: true },
+          { text: "野菜[やさい]を" },
+          {
+            text: "買[か]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes:
+          "Standard variation: たくさん as adverb before the object phrase",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、私[わたし]は" },
+          { text: "たくさん", blank: true },
+          { text: "の野菜[やさい]を" },
+          {
+            text: "買[か]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes:
+          "たくさんの + noun structure, emphasizing the quantity of vegetables",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は昨日[きのう]" },
+          { text: "たくさん", blank: true },
+          { text: "野菜[やさい]を" },
+          {
+            text: "買[か]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "昨日 moved after 私は (time word later in sentence)",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は昨日[きのう]" },
+          { text: "たくさん", blank: true },
+          { text: "の野菜[やさい]を" },
+          {
+            text: "買[か]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "たくさんの + noun, with 昨日 moved after 私は",
+      },
+    ],
+  },
+  {
+    english: "I listened to a lot of music yesterday.",
+    answers: [
+      {
+        segments: [
+          { text: "昨日[きのう]、私[わたし]は" },
+          { text: "たくさん", blank: true },
+          { text: "音楽[おんがく]を" },
+          {
+            text: "聞[き]く",
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Standard variation: たくさん as adverb before 音楽を聞いた",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、私[わたし]は音楽[おんがく]を" },
+          { text: "たくさん", blank: true },
+          {
+            text: "聞[き]く",
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "たくさん placed after を, right before the verb",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、私[わたし]は" },
+          { text: "たくさんの", blank: true },
+          { text: "音楽[おんがく]を" },
+          {
+            text: "聞[き]く",
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "たくさんの before 音楽, emphasizing the noun",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は昨日[きのう]、" },
+          { text: "たくさん", blank: true },
+          { text: "音楽[おんがく]を" },
+          {
+            text: "聞[き]く",
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "私は at the start, 昨日 moved after は",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、音楽[おんがく]を" },
+          { text: "たくさん", blank: true },
+          {
+            text: "聞[き]く",
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "私は dropped (topic drop), 昨日 at front",
+      },
+    ],
+  },
+  {
+    english: "I didn't write a lot yesterday.",
+    answers: [
+      {
+        segments: [
+          { text: "昨日[きのう]、私[わたし]は" },
+          { text: "たくさん", blank: true },
+          { text: "書[か]かなかった" },
+        ],
+        notes:
+          "Standard variation: たくさん adverbially modifying 書く (negative past)",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は昨日[きのう]" },
+          { text: "たくさん", blank: true },
+          { text: "書[か]かなかった" },
+        ],
+        notes: "昨日 placed after は (私は昨日... word order)",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、私[わたし]は" },
+          { text: "たくさん", blank: true },
+          { text: "は書[か]かなかった" },
+        ],
+        notes:
+          "たくさんは書かなかった — は added after たくさん for contrastive emphasis (I didn't write A LOT, implying I wrote a little)",
+      },
+    ],
+  },
+  {
+    english: "There were a lot of photos in that magazine.",
+    answers: [
+      {
+        segments: [
+          { text: "あの 雑誌[ざっし]に" },
+          { text: "たくさん", blank: true },
+          { text: "の 写真[しゃしん]が" },
+          { text: "あった" },
+        ],
+        notes: "Standard variation: あの + たくさんの + noun, past tense ある",
+      },
+      {
+        segments: [
+          { text: "その 雑誌[ざっし]に" },
+          { text: "たくさん", blank: true },
+          { text: "の 写真[しゃしん]が" },
+          { text: "あった" },
+        ],
+        notes: "その instead of あの",
+      },
+      {
+        segments: [
+          { text: "あの 雑誌[ざっし]に" },
+          { text: "たくさん", blank: true },
+          { text: "写真[しゃしん]が" },
+          { text: "あった" },
+        ],
+        notes: "たくさん without の — focus on the whole phrase",
+      },
+      {
+        segments: [
+          { text: "その 雑誌[ざっし]に" },
+          { text: "たくさん", blank: true },
+          { text: "写真[しゃしん]が" },
+          { text: "あった" },
+        ],
+        notes: "その + たくさん without の",
+      },
+      {
+        segments: [
+          { text: "あの 雑誌[ざっし]には" },
+          { text: "たくさん", blank: true },
+          { text: "の 写真[しゃしん]が" },
+          { text: "あった" },
+        ],
+        notes: "には for topic/contrast emphasis, あの + の",
+      },
+      {
+        segments: [
+          { text: "その 雑誌[ざっし]には" },
+          { text: "たくさん", blank: true },
+          { text: "の 写真[しゃしん]が" },
+          { text: "あった" },
+        ],
+        notes: "には + その + の",
+      },
+      {
+        segments: [
+          { text: "あの 雑誌[ざっし]には" },
+          { text: "たくさん", blank: true },
+          { text: "写真[しゃしん]が" },
+          { text: "あった" },
+        ],
+        notes: "には + あの, without の",
+      },
+      {
+        segments: [
+          { text: "その 雑誌[ざっし]には" },
+          { text: "たくさん", blank: true },
+          { text: "写真[しゃしん]が" },
+          { text: "あった" },
+        ],
+        notes: "には + その, without の",
+      },
+    ],
+  },
+  {
+    english: "Is there a lot of bread at that store?",
+    answers: [
+      {
+        segments: [
+          { text: "その 店[みせ]に" },
+          { text: "たくさんの", blank: true },
+          { text: "パンが" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb - -aru special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Basic variation: その店に + たくさんの + パンがある + か",
+      },
+      {
+        segments: [
+          { text: "あの 店[みせ]に" },
+          { text: "たくさんの", blank: true },
+          { text: "パンが" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb - -aru special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: 'Using あの instead of その for "that store"',
+      },
+      {
+        segments: [
+          { text: "その 店[みせ]には" },
+          { text: "たくさんの", blank: true },
+          { text: "パンが" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb - -aru special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Using には (topic particle) instead of just に",
+      },
+      {
+        segments: [
+          { text: "あの 店[みせ]には" },
+          { text: "たくさんの", blank: true },
+          { text: "パンが" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb - -aru special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "あの店には + たくさんの + パン",
+      },
+      {
+        segments: [
+          { text: "その 店[みせ]に" },
+          { text: "たくさん", blank: true },
+          { text: "パンが" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb - -aru special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Without の — たくさん as adverb modifying the whole phrase",
+      },
+      {
+        segments: [
+          { text: "あの 店[みせ]に" },
+          { text: "たくさん", blank: true },
+          { text: "パンが" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb - -aru special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "あの店に + たくさん (no の) + パンがある",
+      },
+      {
+        segments: [
+          { text: "その 店[みせ]には" },
+          { text: "たくさん", blank: true },
+          { text: "パンが" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb - -aru special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "その店には + たくさん (no の) + パンがある",
+      },
+      {
+        segments: [
+          { text: "あの 店[みせ]には" },
+          { text: "たくさん", blank: true },
+          { text: "パンが" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb - -aru special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "あの店には + たくさん (no の) + パンがある",
+      },
+      {
+        segments: [
+          { text: "その 店[みせ]にパンが" },
+          { text: "たくさん", blank: true },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb - -aru special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes:
+          "パンがたくさんある — たくさん placed directly before ある (adverb modifying the verb)",
+      },
+      {
+        segments: [
+          { text: "あの 店[みせ]にパンが" },
+          { text: "たくさん", blank: true },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb - -aru special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "あの店に + パンがたくさんある",
+      },
+    ],
+  },
+  {
+    english: "Were there a lot of sweet buns at that shop?",
+    answers: [
+      {
+        segments: [
+          { text: "その 店[みせ]に" },
+          { text: "たくさん", blank: true },
+          { text: "のおまんじゅうがありましたか" },
+        ],
+        notes:
+          "Basic variation: その店 (that shop, near listener), たくさんの before noun, past question",
+      },
+      {
+        segments: [
+          { text: "あの 店[みせ]に" },
+          { text: "たくさん", blank: true },
+          { text: "のおまんじゅうがありましたか" },
+        ],
+        notes: "あの店 instead of その店 (that shop over there)",
+      },
+      {
+        segments: [
+          { text: "その 店[みせ]におまんじゅうが" },
+          { text: "たくさん", blank: true },
+          { text: "ありましたか" },
+        ],
+        notes:
+          "たくさん after the subject noun phrase (adverbial placement after が)",
+      },
+      {
+        segments: [
+          { text: "あの 店[みせ]におまんじゅうが" },
+          { text: "たくさん", blank: true },
+          { text: "ありましたか" },
+        ],
+        notes: "あの店, たくさん after subject",
+      },
+      {
+        segments: [
+          { text: "その 店[みせ]に" },
+          { text: "たくさん", blank: true },
+          { text: "のまんじゅうがありましたか" },
+        ],
+        notes: "まんじゅう instead of おまんじゅう, その店",
+      },
+      {
+        segments: [
+          { text: "あの 店[みせ]に" },
+          { text: "たくさん", blank: true },
+          { text: "のまんじゅうがありましたか" },
+        ],
+        notes: "まんじゅう, あの店",
+      },
+      {
+        segments: [
+          { text: "その 店[みせ]に" },
+          { text: "たくさん", blank: true },
+          { text: "おまんじゅうがありましたか" },
+        ],
+        notes: "たくさん without の before おまんじゅう, その店",
+      },
+      {
+        segments: [
+          { text: "あの 店[みせ]に" },
+          { text: "たくさん", blank: true },
+          { text: "おまんじゅうがありましたか" },
+        ],
+        notes: "たくさん without の, あの店",
+      },
+      {
+        segments: [
+          { text: "その 店[みせ]には" },
+          { text: "たくさん", blank: true },
+          { text: "のおまんじゅうがありましたか" },
+        ],
+        notes: "には instead of に (topicalizing the location), その店",
+      },
+      {
+        segments: [
+          { text: "あの 店[みせ]には" },
+          { text: "たくさん", blank: true },
+          { text: "のおまんじゅうがありましたか" },
+        ],
+        notes: "には, あの店, たくさんの",
+      },
+      {
+        segments: [
+          { text: "その 店[みせ]に" },
+          { text: "たくさん", blank: true },
+          { text: "のおまんじゅうがあったか" },
+        ],
+        notes: "Casual form: あった instead of ありました, その店, たくさんの",
+      },
+      {
+        segments: [
+          { text: "あの 店[みせ]に" },
+          { text: "たくさん", blank: true },
+          { text: "のおまんじゅうがあったか" },
+        ],
+        notes: "Casual: あの店, たくさんの, あった",
+      },
+      {
+        segments: [
+          { text: "その 店[みせ]におまんじゅうが" },
+          { text: "たくさん", blank: true },
+          { text: "あったか" },
+        ],
+        notes: "Casual, たくさん after subject, その店",
+      },
+      {
+        segments: [
+          { text: "あの 店[みせ]におまんじゅうが" },
+          { text: "たくさん", blank: true },
+          { text: "あったか" },
+        ],
+        notes: "Casual, たくさん after subject, あの店",
+      },
+      {
+        segments: [
+          { text: "その 店[みせ]にはおまんじゅうが" },
+          { text: "たくさん", blank: true },
+          { text: "あったか" },
+        ],
+        notes: "Casual, には topicalizing location, たくさん after subject",
+      },
+      {
+        segments: [
+          { text: "あの 店[みせ]にはおまんじゅうが" },
+          { text: "たくさん", blank: true },
+          { text: "あったか" },
+        ],
+        notes: "Casual, あの店には, たくさん after subject",
+      },
+    ],
+  },
+  {
+    english: "There were a lot of children in the park yesterday.",
+    answers: [
+      {
+        segments: [
+          { text: "昨日[きのう]、公園[こうえん]に" },
+          { text: "たくさん", blank: true },
+          { text: "の 子供[こども]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes:
+          "Most natural word order: time → location → たくさんの + noun + いた",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、公園[こうえん]に" },
+          { text: "たくさん", blank: true },
+          { text: "子供[こども]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes:
+          "Without の — たくさん modifies the whole phrase rather than focusing on noun",
+      },
+      {
+        segments: [
+          { text: "公園[こうえん]には" },
+          { text: "たくさん", blank: true },
+          { text: "の 子供[こども]が 昨日[きのう]" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "公園には as topic, 昨日 moved later",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]は 公園[こうえん]に" },
+          { text: "たくさん", blank: true },
+          { text: "の 子供[こども]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "昨日は as time topic marker",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]は 公園[こうえん]に" },
+          { text: "たくさん", blank: true },
+          { text: "子供[こども]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "昨日は as topic, without の",
+      },
+      {
+        segments: [
+          { text: "公園[こうえん]には 昨日[きのう]" },
+          { text: "たくさん", blank: true },
+          { text: "の 子供[こども]が" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "公園には first, 昨日 as time before たくさんの",
+      },
+    ],
+  },
+  {
+    english: "A lot of friends came to the park yesterday.",
+    answers: [
+      {
+        segments: [
+          { text: "昨日[きのう]、公園[こうえん]に" },
+          { text: "たくさんの", blank: true },
+          { text: "友[とも]だちが" },
+          {
+            text: "来[く]る",
+            conjugation: {
+              pos: "Kuru verb - special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes:
+          "Basic variation: たくさんの + noun, particle に, が on 友だち, past tense 来る",
+      },
+      {
+        segments: [
+          { text: "公園[こうえん]に昨日[きのう]" },
+          { text: "たくさんの", blank: true },
+          { text: "友[とも]だちが" },
+          {
+            text: "来[く]る",
+            conjugation: {
+              pos: "Kuru verb - special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "公園に comes first before 昨日",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、公園[こうえん]に" },
+          { text: "たくさん", blank: true },
+          { text: "友[とも]だちが" },
+          {
+            text: "来[く]る",
+            conjugation: {
+              pos: "Kuru verb - special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "たくさん without の before 友だち",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、公園[こうえん]へ" },
+          { text: "たくさんの", blank: true },
+          { text: "友[とも]だちが" },
+          {
+            text: "来[く]る",
+            conjugation: {
+              pos: "Kuru verb - special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Using へ instead of に",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、公園[こうえん]へ" },
+          { text: "たくさん", blank: true },
+          { text: "友[とも]だちが" },
+          {
+            text: "来[く]る",
+            conjugation: {
+              pos: "Kuru verb - special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Using へ without の",
+      },
+      {
+        segments: [
+          { text: "公園[こうえん]に" },
+          { text: "たくさんの", blank: true },
+          { text: "友[とも]だちが昨日[きのう]" },
+          {
+            text: "来[く]る",
+            conjugation: {
+              pos: "Kuru verb - special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "昨日 placed right before 来る, after subject",
+      },
+    ],
+  },
+  {
+    english: "I studied a lot last night.",
+    answers: [
+      {
+        segments: [
+          { text: "昨日[きのう]の 夜[よる]、私[わたし]は" },
+          { text: "たくさん", blank: true },
+          {
+            text: "勉強[べんきょう]する",
+            conjugation: {
+              pos: "Suru verb - compound word",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes:
+          'Basic variation: 昨日の夜 for "last night", たくさん before 勉強する',
+      },
+      {
+        segments: [
+          { text: "昨晜[さくばん]、私[わたし]は" },
+          { text: "たくさん", blank: true },
+          {
+            text: "勉強[べんきょう]する",
+            conjugation: {
+              pos: "Suru verb - compound word",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: '昨晩 (さくばん) as alternative word for "last night"',
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]の 夜[よる]、私[わたし]は 勉強[べんきょう]を" },
+          { text: "たくさん", blank: true },
+          {
+            text: "した",
+            conjugation: {
+              pos: "Suru verb - special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes:
+          "Using を after 勉強, たくさん placed after を (at end before verb)",
+      },
+      {
+        segments: [
+          { text: "昨晜[さくばん]、私[わたし]は 勉強[べんきょう]を" },
+          { text: "たくさん", blank: true },
+          {
+            text: "した",
+            conjugation: {
+              pos: "Suru verb - special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "昨晩 with 勉強をたくさんした construction",
+      },
+    ],
+  },
+  {
+    english: "There are a lot of fish at the supermarket today.",
+    answers: [
+      {
+        segments: [
+          { text: "今日[きょう]、スーパーに" },
+          { text: "たくさんの", blank: true },
+          { text: "魚[さかな]が" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Standard: たくさんの + noun, に marks location",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]、スーパーに" },
+          { text: "たくさん", blank: true },
+          { text: "魚[さかな]が" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "たくさん without の — focuses on the phrase/situation rather than the noun",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]は、スーパーに" },
+          { text: "たくさんの", blank: true },
+          { text: "魚[さかな]が" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          '今日は — は on 今日 marking it as the topic/contrast ("today, in particular")',
+      },
+      {
+        segments: [
+          { text: "今日[きょう]、スーパーには" },
+          { text: "たくさんの", blank: true },
+          { text: "魚[さかな]が" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "スーパーには — は on the location, topicalizing the supermarket",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]は、スーパーには" },
+          { text: "たくさんの", blank: true },
+          { text: "魚[さかな]が" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "Both 今日は and スーパーには — double は for extra topicalization",
+      },
+      {
+        segments: [
+          { text: "スーパーには今日[きょう]" },
+          { text: "たくさんの", blank: true },
+          { text: "魚[さかな]が" },
+          {
+            text: "ある",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Location first, then time word — reversed word order",
+      },
+    ],
+  },
+  {
+    english: "There were a lot of people at that hotel!",
+    answers: [
+      {
+        segments: [
+          { text: "あのホテルに" },
+          { text: "たくさんの", blank: true },
+          { text: "人[ひと]がいた" },
+        ],
+        notes: "Basic form: たくさんの + noun, past tense, plain",
+      },
+      {
+        segments: [
+          { text: "あのホテルに" },
+          { text: "たくさん", blank: true },
+          { text: "人[ひと]がいた" },
+        ],
+        notes: "Without の: たくさん as adverb directly before noun phrase",
+      },
+      {
+        segments: [
+          { text: "あのホテルには" },
+          { text: "たくさんの", blank: true },
+          { text: "人[ひと]がいた" },
+        ],
+        notes: "Using には for contrast/topic marking the hotel",
+      },
+      {
+        segments: [
+          { text: "あのホテルには" },
+          { text: "たくさん", blank: true },
+          { text: "人[ひと]がいた" },
+        ],
+        notes: "には + たくさん without の",
+      },
+    ],
+  },
+]
