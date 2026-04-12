@@ -1,4 +1,5 @@
 import {
+  createEffect,
   createResource,
   createSignal,
   onCleanup,
@@ -6,6 +7,7 @@ import {
   Show,
 } from "solid-js"
 import { createFileRoute, useNavigate } from "@tanstack/solid-router"
+import { useQueryClient } from "@tanstack/solid-query"
 import { z } from "zod"
 import { queryKeys } from "~/query/query-keys"
 import { authQueryOptions } from "~/query/query-options"
@@ -42,11 +44,13 @@ const discoverSearchSchema = z.object({
 
 export const Route = createFileRoute("/_home/discover")({
   validateSearch: discoverSearchSchema,
-  loader: ({ context, preload }) => {
+  loaderDeps: ({ search }) => ({ tab: search.tab }),
+  loader: ({ context, preload, deps }) => {
     if (!preload) {
+      const isYouTube = deps.tab === "youtube"
       context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
-        blur: 0,
-        opacityOffset: -1,
+        blur: isYouTube ? 22 : 0,
+        opacityOffset: isYouTube ? -0.22 : -1,
         showGradient: false,
       })
     }
@@ -100,6 +104,7 @@ function DiscoverPage() {
   const loaderData = Route.useLoaderData()
   const search = Route.useSearch()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [personalSections] = createResource(
     () => loaderData().personalSectionsPromise,
   )
@@ -113,6 +118,15 @@ function DiscoverPage() {
 
   const banner = useBannerCarousel(() => loaderData().bannerSeed)
   const titleLanguage = () => personalSections()?.titleLanguage ?? null
+
+  createEffect(() => {
+    const isYouTube = search().tab === "youtube"
+    queryClient.setQueryData(queryKeys.backgroundSettings(), {
+      blur: isYouTube ? 22 : 0,
+      opacityOffset: isYouTube ? -0.22 : -1,
+      showGradient: false,
+    })
+  })
   const allSections = () => {
     const personal = personalSections()?.sections
     const generic = loaderData().genericSections
@@ -161,10 +175,9 @@ function DiscoverPage() {
   return (
     <div
       ref={scrollRef}
-      class="relative h-screen overflow-y-auto bg-[#121212]"
+      class={`relative h-screen overflow-y-auto -ml-(--sidebar-width) 2xl:-mr-(--sidebar-width) ${search().tab !== "youtube" && "bg-[#121212]"}`}
       style={{
         "margin-left": "calc(-1 * var(--sidebar-width, 0px))",
-        width: "calc(100% + var(--sidebar-width, 0px))",
       }}
       onMouseMove={handleBannerMouseMove}
       onMouseLeave={handleBannerMouseLeave}
@@ -172,9 +185,17 @@ function DiscoverPage() {
       <DiscoverTabs
         value={search().tab ?? "anime"}
         onChange={(tab: string) =>
-          navigate({ to: "/discover", search: { tab: tab as "anime" | "youtube" | "dramas" }, replace: true })
+          navigate({
+            to: "/discover",
+            search: { tab: tab as "anime" | "youtube" | "dramas" },
+            replace: true,
+          })
         }
-        youtubeContent={<div class="pl-(--sidebar-width)"><YouTubeTab /></div>}
+        youtubeContent={
+          <div class="pl-(--sidebar-width)">
+            <YouTubeTab />
+          </div>
+        }
         animeContent={
           <Show
             when={!banner.error()}
@@ -242,16 +263,20 @@ function DiscoverPage() {
             {/* Layer 3: Section rows — scroll naturally over the faded banner */}
             <div class="relative z-10 pb-16 pl-(--sidebar-width)">
               <div class="sm:px-2">
-              <GenericSections
-                sections={allSections()}
-                titleLanguage={titleLanguage()}
-                onCardClick={handleCardClick}
-              />
+                <GenericSections
+                  sections={allSections()}
+                  titleLanguage={titleLanguage()}
+                  onCardClick={handleCardClick}
+                />
               </div>
             </div>
           </Show>
         }
-        dramasContent={<div class="pl-(--sidebar-width)"><ComingSoonTab label="Dramas" /></div>}
+        dramasContent={
+          <div class="pl-(--sidebar-width)">
+            <ComingSoonTab label="Dramas" />
+          </div>
+        }
       />
 
       <ShowDetailDialog
@@ -263,10 +288,13 @@ function DiscoverPage() {
         titleLanguage={titleLanguage()}
       />
 
-      <Show when={!search().tab || search().tab === "anime" || search().tab === "dramas"}>
+      <Show
+        when={
+          !search().tab || search().tab === "anime" || search().tab === "dramas"
+        }
+      >
         <StreamingPrefsModal />
       </Show>
-
     </div>
   )
 }
