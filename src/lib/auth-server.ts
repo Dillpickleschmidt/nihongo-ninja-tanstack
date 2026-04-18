@@ -1,5 +1,5 @@
 import { ConvexHttpClient } from "convex/browser"
-import { getToken as getConvexToken } from "@convex-dev/better-auth/utils"
+import { getToken as fetchConvexTokenFromBetterAuth } from "@convex-dev/better-auth/utils"
 import { getRequestHeaders } from "@tanstack/solid-start/server"
 import type {
   FunctionReference,
@@ -39,10 +39,14 @@ function getForwardableRequestHeaders() {
 }
 
 async function getTokenResult(opts?: GetTokenOptions) {
-  return getConvexToken(convexSiteUrl, getForwardableRequestHeaders(), opts)
+  return fetchConvexTokenFromBetterAuth(
+    convexSiteUrl,
+    getForwardableRequestHeaders(),
+    opts,
+  )
 }
 
-export async function fetchSession(request: Request) {
+export async function fetchBetterAuthSession(request: Request) {
   const response = await fetch(`${convexSiteUrl}/api/auth/get-session`, {
     headers: {
       cookie: request.headers.get("cookie") ?? "",
@@ -79,7 +83,7 @@ async function callWithToken<T>(
   }
 }
 
-export const getToken = async () => {
+export const getAuthenticatedConvexToken = async () => {
   const token = await getTokenResult()
   return token.token
 }
@@ -101,14 +105,16 @@ export const handler = (request: Request) => {
   })
 }
 
-export async function fetchAuthQuery<Query extends FunctionReference<"query">>(
+export async function fetchAuthenticatedConvexQuery<
+  Query extends FunctionReference<"query">,
+>(
   query: Query,
   ...args: OptionalRestArgs<Query>
 ): Promise<FunctionReturnType<Query>> {
   return callWithToken((token) => createClient(token).query(query, ...args))
 }
 
-export async function fetchAuthMutation<
+export async function fetchAuthenticatedConvexMutation<
   Mutation extends FunctionReference<"mutation">,
 >(
   mutation: Mutation,
@@ -117,13 +123,11 @@ export async function fetchAuthMutation<
   return callWithToken((token) => createClient(token).mutation(mutation, ...args))
 }
 
-export async function fetchAuthAction<Action extends FunctionReference<"action">>(
+export async function fetchAuthenticatedConvexAction<
+  Action extends FunctionReference<"action">,
+>(
   action: Action,
   ...args: OptionalRestArgs<Action>
 ): Promise<FunctionReturnType<Action>> {
   return callWithToken((token) => createClient(token).action(action, ...args))
 }
-
-export const fetchQuery = fetchAuthQuery
-export const fetchMutation = fetchAuthMutation
-export const fetchAction = fetchAuthAction

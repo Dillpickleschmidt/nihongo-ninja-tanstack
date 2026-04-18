@@ -13,7 +13,7 @@ const siteUrl = process.env.SITE_URL!
 // as well as helper methods for general use.
 export const authComponent = createClient<DataModel>(components.betterAuth)
 
-export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
+const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
   return {
     baseURL: siteUrl,
     database: authComponent.adapter(ctx),
