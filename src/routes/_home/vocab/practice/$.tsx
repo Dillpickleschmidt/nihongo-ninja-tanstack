@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/solid-router"
+import { useQueryClient } from "@tanstack/solid-query"
 import { z } from "zod"
 import { createSignal, createResource, createEffect, Show } from "solid-js"
 import { convexQuery } from "@/lib/convex-query"
@@ -10,6 +11,7 @@ import {
   type FSRSCardInput,
 } from "@/features/vocab-practice/logic/data-initialization"
 import { initializeAnkiPracticeSession } from "@/features/vocab-practice/logic/anki-data-initialization"
+import { prefetchPracticeSessionSvgs } from "@/features/vocab-practice/logic/svg-prefetch"
 import type { UnifiedDeck } from "convex/model/decks"
 import type { DeckHierarchyResult } from "convex/model/hierarchy"
 import { toTsFsrsCard, fromTsFsrsCard, fromTsFsrsLog } from "convex/model/fsrs"
@@ -146,6 +148,7 @@ function FsrsPractice(props: {
   practiceData: PracticeDataResult | null | undefined
   includeReviews: boolean
 }) {
+  const queryClient = useQueryClient()
   const upsertFSRSCardMutation = useMutation(api.api.fsrs.upsertFSRSCard)
 
   const practiceManager = usePracticeManager(async (card, _rating) => {
@@ -176,6 +179,7 @@ function FsrsPractice(props: {
       props.includeReviews,
     )
     practiceManager.initializeManager(sessionState)
+    prefetchPracticeSessionSvgs(queryClient, practiceManager.getManagerState())
     setSessionInitialized(true)
   })
 
@@ -203,6 +207,7 @@ function AnkiPractice(props: {
   mode: PracticeMode
   hierarchy: DeckHierarchyResult | null | undefined
 }) {
+  const queryClient = useQueryClient()
   const [ankiState, setAnkiState] = createSignal<AnkiSyncState>({
     phase: "checking",
   })
@@ -313,6 +318,10 @@ function AnkiPractice(props: {
       )
 
       practiceManager.initializeManager(sessionState, { ankiMode: true })
+      prefetchPracticeSessionSvgs(
+        queryClient,
+        practiceManager.getManagerState(),
+      )
       setSessionInitialized(true)
       setAnkiState({ phase: "ready" })
     } catch (error) {

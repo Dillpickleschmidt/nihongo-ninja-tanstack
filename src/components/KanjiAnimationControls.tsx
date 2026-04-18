@@ -22,7 +22,6 @@ interface KanjiAnimationControlsProps {
   animationSettings: KanjiAnimationSettings
   onDisplaySettingsChange: (settings: Partial<KanjiDisplaySettings>) => void
   onAnimationSettingsChange: (settings: Partial<KanjiAnimationSettings>) => void
-  processedSvgContent: string
   rawSvgContent: string
   styleSettings: KanjiStyleSettings
 }

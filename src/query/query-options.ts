@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/solid-query"
 import { fetchAuth } from "@/lib/server"
+import { fetchKanjiSvg } from "@/utils/svg-processor"
 import { queryKeys } from "./query-keys"
 import { parseDeviceSettingsCookie } from "./model/device-settings"
 import { parsePreferencesCookie } from "./model/preferences"
@@ -84,5 +85,23 @@ export const backgroundColorQueryOptions = () => {
     initialData: defaultBackgroundColor,
     staleTime: Infinity,
     gcTime: Infinity,
+  })
+}
+
+// ============================================================================
+// Kanji SVG Query Options
+// ============================================================================
+
+export function kanjiSvgQueryOptions(character: string) {
+  return queryOptions({
+    queryKey: queryKeys.kanjiSvg(character),
+    queryFn: () => fetchKanjiSvg(character),
+  })
+}
+
+export function kanjiSvgPrefetchQueryOptions(character: string) {
+  return queryOptions({
+    queryKey: queryKeys.kanjiSvg(character),
+    queryFn: () => fetchKanjiSvg(character),
   })
 }

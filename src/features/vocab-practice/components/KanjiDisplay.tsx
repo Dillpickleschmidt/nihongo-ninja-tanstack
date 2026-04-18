@@ -1,5 +1,6 @@
-import { createResource } from "solid-js"
+import { createMemo } from "solid-js"
 import { createStore } from "solid-js/store"
+import { useQuery } from "@tanstack/solid-query"
 import {
   KanjiAnimation,
   type KanjiDisplaySettings,
@@ -7,7 +8,8 @@ import {
   type KanjiStyleSettings,
 } from "@/components/KanjiAnimation"
 import { KanjiAnimationControls } from "@/components/KanjiAnimationControls"
-import { getKanjiSvg, processSvgString } from "@/utils/svg-processor"
+import { kanjiSvgQueryOptions } from "@/query/query-options"
+import { processSvgString } from "@/utils/svg-processor"
 
 // Default settings
 const DEFAULT_DISPLAY_SETTINGS: KanjiDisplaySettings = {
@@ -32,10 +34,7 @@ type Props = {
   character: string
 }
 
-/**
- * Fetches and displays an animated kanji SVG.
- * Uses createResource which integrates with Suspense - wrap in <Suspense> with a fallback.
- */
+/** Fetches and displays an animated kanji SVG. */
 export function KanjiDisplay(props: Props) {
   // Local settings state
   const [displaySettings, setDisplaySettings] =
@@ -44,29 +43,30 @@ export function KanjiDisplay(props: Props) {
     createStore<KanjiAnimationSettings>({ ...DEFAULT_ANIMATION_SETTINGS })
   const styleSettings = DEFAULT_STYLE_SETTINGS
 
-  const [svgData] = createResource(
-    () => props.character,
-    async (char) => {
-      if (!char) return null
-      return await getKanjiSvg(char)
-    },
-  )
+  const svgQuery = useQuery(() => kanjiSvgQueryOptions(props.character))
+
+  const processedSvgContent = createMemo(() => {
+    const svgData = svgQuery.data
+    if (!svgData) return null
+
+    return processSvgString(svgData, {
+      size: styleSettings.size,
+      strokeColor: styleSettings.strokeColor,
+      strokeWidth: styleSettings.strokeWidth,
+      showGrid: styleSettings.showGrid,
+      autostart: animationSettings.autostart,
+      showNumbers: displaySettings.numbers,
+      showStartDots: displaySettings.startDots,
+      showDirectionLines: displaySettings.directionLines,
+    })
+  })
 
   return (
     <>
-      {svgData() && (
+      {svgQuery.data && processedSvgContent() && (
         <div class="flex justify-center">
           <KanjiAnimation
-            processedSvgContent={processSvgString(svgData()!, {
-              size: styleSettings.size,
-              strokeColor: styleSettings.strokeColor,
-              strokeWidth: styleSettings.strokeWidth,
-              showGrid: styleSettings.showGrid,
-              autostart: animationSettings.autostart,
-              showNumbers: displaySettings.numbers,
-              showStartDots: displaySettings.startDots,
-              showDirectionLines: displaySettings.directionLines,
-            })}
+            processedSvgContent={processedSvgContent()!}
             styleSettings={styleSettings}
             displaySettings={displaySettings}
             animationSettings={animationSettings}
@@ -82,17 +82,7 @@ export function KanjiDisplay(props: Props) {
                 onAnimationSettingsChange={(settings) =>
                   setAnimationSettings(settings)
                 }
-                processedSvgContent={processSvgString(svgData()!, {
-                  size: styleSettings.size,
-                  strokeColor: styleSettings.strokeColor,
-                  strokeWidth: styleSettings.strokeWidth,
-                  showGrid: styleSettings.showGrid,
-                  autostart: animationSettings.autostart,
-                  showNumbers: displaySettings.numbers,
-                  showStartDots: displaySettings.startDots,
-                  showDirectionLines: displaySettings.directionLines,
-                })}
-                rawSvgContent={svgData()!}
+                rawSvgContent={svgQuery.data!}
                 styleSettings={styleSettings}
               />
             )}

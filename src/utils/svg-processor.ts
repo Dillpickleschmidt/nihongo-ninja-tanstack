@@ -15,7 +15,9 @@ function getKanjiSvgUrl(char: string) {
   return `${KANJIVG_BASE}/${codePoint}.svg`
 }
 
-export async function getKanjiSvg(char: string): Promise<string | null> {
+export async function fetchKanjiSvg(char: string): Promise<string | null> {
+  if (!char) return null
+
   try {
     const res = await fetch(getKanjiSvgUrl(char))
     if (!res.ok) return null
@@ -25,26 +27,6 @@ export async function getKanjiSvg(char: string): Promise<string | null> {
   } catch {
     return null
   }
-}
-
-export async function fetchKanjiSvgsBatch(
-  characters: string[],
-): Promise<Map<string, string>> {
-  const uniqueChars = Array.from(new Set(characters))
-  const svgMap = new Map<string, string>()
-
-  const results = await Promise.all(
-    uniqueChars.map(async (char) => ({
-      char,
-      svgContent: await getKanjiSvg(char),
-    })),
-  )
-
-  results.forEach(({ char, svgContent }) => {
-    if (svgContent) svgMap.set(char, svgContent)
-  })
-
-  return svgMap
 }
 
 export interface ProcessSvgOptions {
