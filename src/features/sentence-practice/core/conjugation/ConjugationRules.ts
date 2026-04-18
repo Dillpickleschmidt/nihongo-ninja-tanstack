@@ -8,6 +8,10 @@ export class ConjugationRules {
     です: (polite) => (polite ? "です" : "だ"),
     か: (polite) => (polite ? "か" : "？"),
     たら: () => "ら",
+    んですが: (polite) => (polite ? "んですが" : "んだけど"),
+    でしょう: (polite) => (polite ? "でしょう" : "だろう"),
+    でしょうか: (polite) => (polite ? "でしょうか" : "だろうか"),
+    ください: (polite) => (polite ? "ください" : ""),
   } as const
 
   getSpecialWordForm(word: string, polite: boolean): string | undefined {

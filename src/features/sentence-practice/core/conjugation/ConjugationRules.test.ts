@@ -10,8 +10,27 @@ describe("ConjugationRules", () => {
     expect(rules.getSpecialWordForm("か", false)).toBe("？")
   })
 
+  it("returns register-paired forms for んですが / でしょう / でしょうか", () => {
+    expect(rules.getSpecialWordForm("んですが", true)).toBe("んですが")
+    expect(rules.getSpecialWordForm("んですが", false)).toBe("んだけど")
+    expect(rules.getSpecialWordForm("でしょう", true)).toBe("でしょう")
+    expect(rules.getSpecialWordForm("でしょう", false)).toBe("だろう")
+    expect(rules.getSpecialWordForm("でしょうか", true)).toBe("でしょうか")
+    expect(rules.getSpecialWordForm("でしょうか", false)).toBe("だろうか")
+  })
+
+  it("does NOT hardcode んです/のです — split as ん/の + です instead", () => {
+    expect(rules.getSpecialWordForm("んです", true)).toBeUndefined()
+    expect(rules.getSpecialWordForm("のです", true)).toBeUndefined()
+  })
+
+  it("drops ください in casual mode (empty string)", () => {
+    expect(rules.getSpecialWordForm("ください", true)).toBe("ください")
+    expect(rules.getSpecialWordForm("ください", false)).toBe("")
+  })
+
   it("returns undefined for non-special words", () => {
-    expect(rules.getSpecialWordForm("ください", true)).toBeUndefined()
+    expect(rules.getSpecialWordForm("食べる", true)).toBeUndefined()
   })
 
   it("detects adverbial forms only for supported combinations", () => {

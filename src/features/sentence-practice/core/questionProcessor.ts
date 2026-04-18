@@ -14,23 +14,32 @@ export function prepareQuestion(
   const validAnswers = new Map<string, RichAnswer>()
 
   for (const [sourceIndex, rawAnswer] of rawAnswers.entries()) {
-    const politeSegments = processSegments(rawAnswer.segments, true)
-    processedAnswers.push(politeSegments)
+    const register = rawAnswer.register
+    const runPolite = register !== "casual"
+    const runCasual = register !== "polite"
 
-    for (const answer of generateValidAnswers(politeSegments, sourceIndex, true)) {
-      validAnswers.set(answer.original, answer)
+    let politeSegments: RichSegment[] | undefined
+    if (runPolite) {
+      politeSegments = processSegments(rawAnswer.segments, true)
+      processedAnswers.push(politeSegments)
+
+      for (const answer of generateValidAnswers(politeSegments, sourceIndex, true)) {
+        validAnswers.set(answer.original, answer)
+      }
     }
 
-    const casualSegments = processSegments(rawAnswer.segments, false)
+    if (runCasual) {
+      const casualSegments = processSegments(rawAnswer.segments, false)
+      const duplicatesPolite =
+        politeSegments !== undefined &&
+        joinSegments(politeSegments) === joinSegments(casualSegments)
 
-    const politeJoined = joinSegments(politeSegments)
-    const casualJoined = joinSegments(casualSegments)
+      if (!duplicatesPolite) {
+        processedAnswers.push(casualSegments)
 
-    if (casualJoined !== politeJoined) {
-      processedAnswers.push(casualSegments)
-
-      for (const answer of generateValidAnswers(casualSegments, sourceIndex, false)) {
-        validAnswers.set(answer.original, answer)
+        for (const answer of generateValidAnswers(casualSegments, sourceIndex, false)) {
+          validAnswers.set(answer.original, answer)
+        }
       }
     }
   }

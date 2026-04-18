@@ -376,6 +376,7 @@ export const sentenceSegmentValidator = v.object({
 export const sentenceAnswerValidator = v.object({
   segments: v.array(sentenceSegmentValidator),
   notes: v.optional(v.string()),
+  register: v.optional(v.union(v.literal("polite"), v.literal("casual"))),
 })
 
 // Inferred types for sentence practice

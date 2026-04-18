@@ -33,7 +33,7 @@ export class ConjugationEngine {
           segment,
           effectivePolite,
         )
-        return specialForm ? [specialForm] : [segment]
+        return specialForm !== undefined ? [specialForm] : [segment]
       }
 
       return this.conjugateWord(segment, effectivePolite)

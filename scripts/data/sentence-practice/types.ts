@@ -16,6 +16,7 @@ export type Segment = {
 export type Answer = {
   segments: Segment[]
   notes?: string
+  register?: "polite" | "casual"
 }
 
 export type Question = {

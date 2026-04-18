@@ -268,4 +268,87 @@ describe("prepareQuestion", () => {
 
     expect(result.validAnswers.some((a) => a.original === "")).toBe(true)
   })
+
+  it("generates only casual forms when register is 'casual'", () => {
+    const question = createQuestion("Let's go", [
+      {
+        segments: [
+          segment("行[い]く", false, {
+            pos: "Godan verb - Iku/Yuku special class",
+            form: "volitional",
+            polarity: "positive",
+            tense: "non-past",
+          }),
+        ],
+        register: "casual",
+      },
+    ])
+
+    const result = prepareQuestion(question)
+
+    const plains = result.validAnswers.map((a) => a.plain)
+    expect(plains).toContain("行こう")
+    expect(plains.some((p) => p.includes("行きましょう"))).toBe(false)
+  })
+
+  it("generates only polite forms when register is 'polite'", () => {
+    const question = createQuestion("Let's go", [
+      {
+        segments: [
+          segment("行[い]く", false, {
+            pos: "Godan verb - Iku/Yuku special class",
+            form: "volitional",
+            polarity: "positive",
+            tense: "non-past",
+          }),
+        ],
+        register: "polite",
+      },
+    ])
+
+    const result = prepareQuestion(question)
+
+    const plains = result.validAnswers.map((a) => a.plain)
+    expect(plains).toContain("行きましょう")
+    expect(plains.some((p) => p.includes("行こう"))).toBe(false)
+  })
+
+  it("register-locked answer coexists with unlocked canonical answer", () => {
+    const question = createQuestion("I'll watch a movie", [
+      {
+        segments: [
+          segment("映画[えいが]を"),
+          segment("見[み]る", true, {
+            pos: "Ichidan verb",
+            form: "normal",
+            polarity: "positive",
+            tense: "non-past",
+          }),
+        ],
+      },
+      {
+        segments: [
+          segment("映画[えいが]"),
+          segment("見[み]る", true, {
+            pos: "Ichidan verb",
+            form: "normal",
+            polarity: "positive",
+            tense: "non-past",
+          }),
+        ],
+        register: "casual",
+        notes: "を-drop casual",
+      },
+    ])
+
+    const result = prepareQuestion(question)
+    const stripped = result.validAnswers.map((a) =>
+      a.plain.replaceAll("\u001f", ""),
+    )
+
+    expect(stripped).toContain("映画を見る")
+    expect(stripped).toContain("映画を見ます")
+    expect(stripped).toContain("映画見る")
+    expect(stripped.some((s) => s === "映画見ます")).toBe(false)
+  })
 })
