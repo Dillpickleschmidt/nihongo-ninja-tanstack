@@ -795,9 +795,9 @@ export interface FileRoutesByFullPath {
   '/lessons/te-wa-ikemasen': typeof LessonsChapter6TeWaIkemasenRoute
   '/lessons/adj-to-adv': typeof LessonsChapter7AdjToAdvRoute
   '/guides/': typeof HomeGuidesIndexRoute
-  '/import': typeof HomeImportIndexRoute
-  '/misc': typeof HomeMiscIndexRoute
-  '/sentence-practice': typeof HomeSentencePracticeIndexRoute
+  '/import/': typeof HomeImportIndexRoute
+  '/misc/': typeof HomeMiscIndexRoute
+  '/sentence-practice/': typeof HomeSentencePracticeIndexRoute
   '/vocab/': typeof HomeVocabIndexRoute
   '/import/builtin/manual': typeof HomeImportBuiltinManualRoute
   '/import/builtin/upload': typeof HomeImportBuiltinUploadRoute
@@ -808,7 +808,7 @@ export interface FileRoutesByFullPath {
   '/vocab/quiz/dakuten-handakuten': typeof HomeVocabQuizDakutenHandakutenRoute
   '/vocab/quiz/hiragana': typeof HomeVocabQuizHiraganaRoute
   '/vocab/quiz/katakana': typeof HomeVocabQuizKatakanaRoute
-  '/import/builtin': typeof HomeImportBuiltinIndexRoute
+  '/import/builtin/': typeof HomeImportBuiltinIndexRoute
   '/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
 export interface FileRoutesByTo {
@@ -1121,9 +1121,9 @@ export interface FileRouteTypes {
     | '/lessons/te-wa-ikemasen'
     | '/lessons/adj-to-adv'
     | '/guides/'
-    | '/import'
-    | '/misc'
-    | '/sentence-practice'
+    | '/import/'
+    | '/misc/'
+    | '/sentence-practice/'
     | '/vocab/'
     | '/import/builtin/manual'
     | '/import/builtin/upload'
@@ -1134,7 +1134,7 @@ export interface FileRouteTypes {
     | '/vocab/quiz/dakuten-handakuten'
     | '/vocab/quiz/hiragana'
     | '/vocab/quiz/katakana'
-    | '/import/builtin'
+    | '/import/builtin/'
     | '/vocab/deck/$deckId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -1396,7 +1396,7 @@ declare module '@tanstack/solid-router' {
     '/_home': {
       id: '/_home'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -1508,21 +1508,21 @@ declare module '@tanstack/solid-router' {
     '/_home/sentence-practice/': {
       id: '/_home/sentence-practice/'
       path: '/sentence-practice'
-      fullPath: '/sentence-practice'
+      fullPath: '/sentence-practice/'
       preLoaderRoute: typeof HomeSentencePracticeIndexRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/misc/': {
       id: '/_home/misc/'
       path: '/misc'
-      fullPath: '/misc'
+      fullPath: '/misc/'
       preLoaderRoute: typeof HomeMiscIndexRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/import/': {
       id: '/_home/import/'
       path: '/import'
-      fullPath: '/import'
+      fullPath: '/import/'
       preLoaderRoute: typeof HomeImportIndexRouteImport
       parentRoute: typeof HomeRoute
     }
@@ -2040,7 +2040,7 @@ declare module '@tanstack/solid-router' {
     '/_home/import/builtin/': {
       id: '/_home/import/builtin/'
       path: '/import/builtin'
-      fullPath: '/import/builtin'
+      fullPath: '/import/builtin/'
       preLoaderRoute: typeof HomeImportBuiltinIndexRouteImport
       parentRoute: typeof HomeRoute
     }

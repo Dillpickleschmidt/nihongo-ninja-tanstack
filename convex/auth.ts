@@ -1,7 +1,8 @@
 import { createClient } from "@convex-dev/better-auth"
 import { convex } from "@convex-dev/better-auth/plugins"
-import { betterAuth } from "better-auth"
+import { betterAuth, type BetterAuthOptions } from "better-auth/minimal"
 import { components } from "./_generated/api"
+import authConfig from "./auth.config"
 import type { GenericCtx } from "@convex-dev/better-auth"
 import type { DataModel } from "./_generated/dataModel"
 import type { QueryCtx, MutationCtx } from "./_generated/server"
@@ -12,16 +13,8 @@ const siteUrl = process.env.SITE_URL!
 // as well as helper methods for general use.
 export const authComponent = createClient<DataModel>(components.betterAuth)
 
-export const createAuth = (
-  ctx: GenericCtx<DataModel>,
-  { optionsOnly } = { optionsOnly: false },
-) => {
-  return betterAuth({
-    // disable logging when createAuth is called just to generate options.
-    // this is not required, but there's a lot of noise in logs without it.
-    logger: {
-      disabled: optionsOnly,
-    },
+export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
+  return {
     baseURL: siteUrl,
     database: authComponent.adapter(ctx),
     // Configure simple, non-verified email/password to get started
@@ -31,9 +24,19 @@ export const createAuth = (
     },
     plugins: [
       // The Convex plugin is required for Convex compatibility
-      convex({ jwtExpirationSeconds: 60 * 60 * 24 }),
+      convex({
+        authConfig,
+        jwt: {
+          expirationSeconds: 60 * 60 * 24,
+        },
+        jwksRotateOnTokenGenerationError: true,
+      }),
     ],
-  })
+  } satisfies BetterAuthOptions
+}
+
+export const createAuth = (ctx: GenericCtx<DataModel>) => {
+  return betterAuth(createAuthOptions(ctx))
 }
 
 // Returns user | null - for optional auth scenarios

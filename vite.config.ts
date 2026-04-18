@@ -13,6 +13,9 @@ export default defineConfig({
     port: 3000,
     allowedHosts: ["valleyvault"],
   },
+  ssr: {
+    noExternal: ["@convex-dev/better-auth"],
+  },
   plugins: [
     cloudflare({ viteEnvironment: { name: 'ssr' } }),
     tsConfigPaths({

@@ -1,23 +1,18 @@
-import {
-  fetchSession,
-  getCookieName,
-} from "@convex-dev/better-auth/react-start"
 import { createServerFn } from "@tanstack/solid-start"
-import { getCookie, getRequest } from "@tanstack/solid-start/server"
+import { getRequest } from "@tanstack/solid-start/server"
 import { api } from "../../convex/_generated/api"
-import { fetchMutation } from "./auth-server"
+import { fetchMutation, fetchSession, getToken } from "./auth-server"
 
 // Get auth information for SSR using available cookies
 export const fetchAuth = createServerFn({ method: "GET" }).handler(async () => {
-  const { createAuth } = await import("../../convex/auth")
   const request = getRequest()
   const { session } = await fetchSession(request)
-  const sessionCookieName = getCookieName(createAuth)
-  const token = getCookie(sessionCookieName)
+  const token = await getToken()
 
   return {
     session,
-    token,
+    token: token ?? null,
+    userId: session?.user.id ?? null,
   }
 })
 
