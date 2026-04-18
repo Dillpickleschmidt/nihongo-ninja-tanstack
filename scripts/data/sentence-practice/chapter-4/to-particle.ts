@@ -349,41 +349,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 時々[ときどき] " },
-          { text: "兄[あに]と", blank: true },
-          { text: "映画[えいが]を" },
-          {
-            text: "見[み]る",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes:
-          "Using 兄 (plain form of older brother, more humble/casual) instead of お兄さん",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は " },
-          { text: "兄[あに]と", blank: true },
-          { text: "時々[ときどき] 映画[えいが]を" },
-          {
-            text: "見[み]る",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Using 兄 with 時々 after と-phrase",
-      },
-      {
-        segments: [
           { text: "私[わたし]が 時々[ときどき] " },
           { text: "お 兄[にい]さんと", blank: true },
           { text: "映画[えいが]を" },
@@ -398,23 +363,6 @@ export const questions: Question[] = [
           },
         ],
         notes: "Using が instead of は for the subject",
-      },
-      {
-        segments: [
-          { text: "私[わたし]が 時々[ときどき] " },
-          { text: "兄[あに]と", blank: true },
-          { text: "映画[えいが]を" },
-          {
-            text: "見[み]る",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Using が + 兄 combination",
       },
     ],
   },

@@ -287,6 +287,7 @@ export const chapters: Record<
         "te-form-adj-nouns",
         "kara",
         "why-your-speaking-sucks",
+        "sentence-practice-te-form-adj-nouns",
         "genki_1_ch6_all-vocab-test",
       ],
       disabled_modules: [
@@ -308,6 +309,9 @@ export const chapters: Record<
         "genki_1_ch7_verbs",
         "genki_1_ch7_adj-adv-misc",
         "adj-to-adv",
+        "sentence-practice-te-iru",
+        "sentence-practice-Verb-Stem-に行く",
+        "sentence-practice-メアリーさんは髪が長いです",
         "genki_1_ch7_all-vocab-test",
       ],
       disabled_modules: [
@@ -329,6 +333,9 @@ export const chapters: Record<
         "genki_1_ch8_verbs",
         "genki_1_ch8_adj-adv-misc",
         "how-verbs-work",
+        "sentence-practice-short-forms-quoted-speech",
+        "sentence-practice-Verb-のが好きです／上手です",
+        "sentence-practice-〜ないでください",
         "genki_1_ch8_all-vocab-test",
       ],
       disabled_modules: [
@@ -350,6 +357,9 @@ export const chapters: Record<
         "genki_1_ch9_verbs",
         "genki_1_ch9_adj-adv-misc",
         "colors",
+        "sentence-practice-past-tense-short-forms",
+        "sentence-practice-Qualifying-Nouns-with-Verbs-and-Adjectives",
+        "sentence-practice-もう〜ました-and-まだ〜ていません",
         "genki_1_ch9_all-vocab-test",
       ],
       disabled_modules: [
@@ -372,6 +382,14 @@ export const chapters: Record<
         "genki_1_ch10_adj-adv-misc",
         "comparing-sizes",
         "emotions",
+        "sentence-practice-Comparison-between-Two-Items",
+        "sentence-practice-Comparison-among-Three-or-More-Items",
+        "sentence-practice-Adjective・Noun+の",
+        "sentence-practice-〜つもりだ",
+        "sentence-practice-Adjective+なる",
+        "sentence-practice-どこかに・どこにも",
+        "sentence-practice-で",
+        "sentence-practice-〜てくる・〜ていく",
         "genki_1_ch10_all-vocab-test",
       ],
       disabled_modules: [
@@ -393,6 +411,9 @@ export const chapters: Record<
         "genki_1_ch11_ru-v-u-v",
         "genki_1_ch11_irr-v-adv-misc",
         "genki_1_ch11_occupations",
+        "sentence-practice-〜たい",
+        "sentence-practice-〜たり〜たりする",
+        "sentence-practice-〜ことがある",
         "genki_1_ch11_all-vocab-test",
       ],
       disabled_modules: [
@@ -413,6 +434,10 @@ export const chapters: Record<
         "genki_1_ch12_nouns-2",
         "genki_1_ch12_verbs",
         "genki_1_ch12_adj-adv-misc",
+        "sentence-practice-〜んです",
+        "sentence-practice-〜ほうがいいです",
+        "sentence-practice-〜ので",
+        "sentence-practice-〜でしょうか",
         "genki_1_ch12_all-vocab-test",
       ],
       disabled_modules: [
@@ -435,6 +460,10 @@ export const chapters: Record<
         "genki_2_ch13_nouns",
         "genki_2_ch13_adj-and-verbs",
         "genki_2_ch13_day-count-and-misc",
+        "sentence-practice-Potential Verbs",
+        "sentence-practice-〜てみる",
+        "sentence-practice-なら",
+        "sentence-practice-一週間に三回",
         "genki_2_ch13_all-vocab-test",
       ],
       disabled_modules: [
@@ -455,6 +484,7 @@ export const chapters: Record<
         "genki_2_ch14_nouns-2",
         "genki_2_ch14_adj-and-verbs",
         "genki_2_ch14_counters-adv-misc",
+        "sentence-practice-〜かもしれません",
         "genki_2_ch14_all-vocab-test",
       ],
       disabled_modules: [
@@ -476,6 +506,9 @@ export const chapters: Record<
         "genki_2_ch15_godan-and-ichidan-v",
         "genki_2_ch15_irr-v-adv-misc",
         "hobbies-with-yuta",
+        "sentence-practice-Volitional Form",
+        "sentence-practice-Volitional Form + と思っています",
+        "sentence-practice-〜ておく",
         "genki_2_ch15_all-vocab-test",
       ],
       disabled_modules: [
@@ -496,6 +529,9 @@ export const chapters: Record<
         "genki_2_ch16_adj-and-u-v",
         "genki_2_ch16_ru-and-irr-v",
         "genki_2_ch16_adv-and-misc",
+        "sentence-practice-〜ていただけませんか",
+        "sentence-practice-〜時",
+        "sentence-practice-〜てすみませんでした",
         "genki_2_ch16_all-vocab-test",
       ],
       disabled_modules: [

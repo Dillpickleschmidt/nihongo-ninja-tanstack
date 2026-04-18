@@ -2,7 +2,7 @@ import type { Question } from "../types"
 
 export const questions: Question[] = [
   {
-    english: "According to the news, there was a big earthquake yesterday",
+    english: "I heard from the news that there was a big earthquake yesterday",
     answers: [
       {
         segments: [
@@ -59,7 +59,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "According to the weather forecast, a typhoon is coming",
+    english: "I heard from the weather forecast that a typhoon is coming",
     answers: [
       {
         segments: [
@@ -157,7 +157,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "According to my friend, that restaurant's sushi is delicious",
+    english: "I heard from my friend that that restaurant's sushi is delicious",
     answers: [
       {
         segments: [
@@ -224,7 +224,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "According to my roommate, the rent is expensive",
+    english: "I heard from my roommate that the rent is expensive",
     answers: [
       {
         segments: [
@@ -264,7 +264,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I heard there was a big fire yesterday",
+    english: "Apparently there was a big fire yesterday",
     answers: [
       {
         segments: [
@@ -311,7 +311,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "According to the newspaper, a new shopping mall will open",
+    english: "I heard from the newspaper that a new shopping mall will open",
     answers: [
       {
         segments: [
@@ -370,7 +370,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I heard she got a full-time job at a bank",
+    english: "Apparently she got a full-time job at a bank",
     answers: [
       {
         segments: [
@@ -417,7 +417,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "According to the teacher, the homework is very easy",
+    english: "I heard from the teacher that the homework is very easy",
     answers: [
       {
         segments: [
@@ -493,7 +493,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "According to my friend, that cafe's coffee is good",
+    english: "I heard from my friend that that cafe's coffee is good",
     answers: [
       {
         segments: [
@@ -594,7 +594,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "According to my classmate, the test was easy",
+    english: "I heard from my classmate that the test was easy",
     answers: [
       {
         segments: [

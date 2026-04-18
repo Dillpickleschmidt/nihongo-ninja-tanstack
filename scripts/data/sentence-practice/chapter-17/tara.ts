@@ -84,7 +84,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "If the lock isn't working, we should contact the landlord",
+    english: "If the lock breaks, we should contact the landlord",
     answers: [
       {
         segments: [
@@ -128,7 +128,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I become envious whenever I see people getting married",
+    english: "If I see people getting married, I become envious",
     answers: [
       {
         segments: [
@@ -366,7 +366,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "The room becomes quite lonely after the guests leave",
+    english: "Once the guests leave, the room becomes quite lonely",
     answers: [
       {
         segments: [

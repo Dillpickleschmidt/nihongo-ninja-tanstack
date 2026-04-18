@@ -25,6 +25,13 @@ export const questions: Question[] = [
         ],
         notes: "Uses ～ていらっしゃいます construction.",
       },
+      {
+        segments: [
+          { text: "教授[きょうじゅ]は 図書館[としょかん]で 本[ほん]を" },
+          { text: "読[よ]んでいらっしゃいます", blank: true },
+        ],
+        notes: "教授 (professor) instead of 先生",
+      },
     ],
   },
   {

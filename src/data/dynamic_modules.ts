@@ -456,6 +456,13 @@ export const dynamic_modules: Record<string, DynamicModule> = {
     instructions:
       "Practice using て-form for requests, connecting activities, permission, and prohibition.",
   },
+  "sentence-practice-te-form-adj-nouns": {
+    title: "て-form for Adjectives & Nouns",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-te-form-adj-nouns"],
+    instructions:
+      "Practice connecting adjectives and nouns with the て-form.",
+  },
   "genki_1_ch6_all-vocab-test": {
     title: "All Vocab - Test",
     module_type: "vocab-test",
@@ -489,6 +496,27 @@ export const dynamic_modules: Record<string, DynamicModule> = {
     title: "Adj, Adv, & Misc.",
     module_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch7_adj-adv-misc"],
+  },
+  "sentence-practice-te-iru": {
+    title: "〜ている",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-te-iru"],
+    instructions:
+      "Practice the 〜ている form for ongoing actions and resulting states.",
+  },
+  "sentence-practice-Verb-Stem-に行く": {
+    title: "Verb Stem + に行く",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-Verb-Stem-に行く"],
+    instructions:
+      "Practice expressing going somewhere to do something with verb stem + に行く.",
+  },
+  "sentence-practice-メアリーさんは髪が長いです": {
+    title: "X は Y が Z (Body Features)",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-メアリーさんは髪が長いです"],
+    instructions:
+      "Practice describing physical features with the は〜が pattern.",
   },
   "genki_1_ch7_all-vocab-test": {
     title: "All Vocab - Test",
@@ -524,6 +552,26 @@ export const dynamic_modules: Record<string, DynamicModule> = {
     module_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch8_adj-adv-misc"],
   },
+  "sentence-practice-short-forms-quoted-speech": {
+    title: "Short Forms in Quoted Speech",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-short-forms-quoted-speech"],
+    instructions:
+      "Practice reporting thoughts and speech with 〜と思う, 〜と言っていた, and 〜と聞いた.",
+  },
+  "sentence-practice-Verb-のが好きです／上手です": {
+    title: "Verb のが 好き / 上手",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-Verb-のが好きです／上手です"],
+    instructions:
+      "Practice nominalizing verbs with の to express likes and skills.",
+  },
+  "sentence-practice-〜ないでください": {
+    title: "〜ないでください",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜ないでください"],
+    instructions: "Practice making negative requests with 〜ないでください.",
+  },
   "genki_1_ch8_all-vocab-test": {
     title: "All Vocab - Test",
     module_type: "vocab-test",
@@ -558,6 +606,31 @@ export const dynamic_modules: Record<string, DynamicModule> = {
     module_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch9_adj-adv-misc"],
   },
+  "sentence-practice-past-tense-short-forms": {
+    title: "Past Tense Short Forms",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-past-tense-short-forms"],
+    instructions:
+      "Practice past tense short forms of verbs, adjectives, and nouns across standalone and quoted clauses.",
+  },
+  "sentence-practice-Qualifying-Nouns-with-Verbs-and-Adjectives": {
+    title: "Qualifying Nouns with Verbs/Adjectives",
+    module_type: "sentence-practice",
+    vocab_set_ids: [
+      "sentence-practice-Qualifying-Nouns-with-Verbs-and-Adjectives",
+    ],
+    instructions:
+      "Practice modifying nouns with verb and adjective relative clauses.",
+  },
+  "sentence-practice-もう〜ました-and-まだ〜ていません": {
+    title: "もう〜ました / まだ〜ていません",
+    module_type: "sentence-practice",
+    vocab_set_ids: [
+      "sentence-practice-もう〜ました-and-まだ〜ていません",
+    ],
+    instructions:
+      "Practice expressing 'already' with もう and 'not yet' with まだ〜ていません.",
+  },
   "genki_1_ch9_all-vocab-test": {
     title: "All Vocab - Test",
     module_type: "vocab-test",
@@ -591,6 +664,61 @@ export const dynamic_modules: Record<string, DynamicModule> = {
     title: "Adj, Adv, & Misc.",
     module_type: "vocab-practice",
     vocab_set_ids: [], // FIX
+  },
+  "sentence-practice-Comparison-between-Two-Items": {
+    title: "Comparison Between Two Items",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-Comparison-between-Two-Items"],
+    instructions:
+      "Practice comparing two items using より and のほうが.",
+  },
+  "sentence-practice-Comparison-among-Three-or-More-Items": {
+    title: "Comparison Among Three or More Items",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-Comparison-among-Three-or-More-Items"],
+    instructions:
+      "Practice superlative comparisons with 〜の中で〜が一番.",
+  },
+  "sentence-practice-Adjective・Noun+の": {
+    title: "Adjective/Noun + の",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-Adjective・Noun+の"],
+    instructions:
+      "Practice using の to refer back to nouns without repeating them.",
+  },
+  "sentence-practice-〜つもりだ": {
+    title: "〜つもりだ",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜つもりだ"],
+    instructions: "Practice expressing intentions and plans with 〜つもりだ.",
+  },
+  "sentence-practice-Adjective+なる": {
+    title: "Adjective + なる",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-Adjective+なる"],
+    instructions:
+      "Practice expressing change of state with い-adj くなる and な-adj になる.",
+  },
+  "sentence-practice-どこかに・どこにも": {
+    title: "どこかに / どこにも",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-どこかに・どこにも"],
+    instructions:
+      "Practice indefinite and negative pronouns (somewhere/nowhere, anyone/no one).",
+  },
+  "sentence-practice-で": {
+    title: "で Particle (Location of Action)",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-で"],
+    instructions:
+      "Practice using で to mark the location where an action takes place.",
+  },
+  "sentence-practice-〜てくる・〜ていく": {
+    title: "〜てくる / 〜ていく",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜てくる・〜ていく"],
+    instructions:
+      "Practice 〜てくる and 〜ていく for directional movement and gradual change.",
   },
   "genki_1_ch10_all-vocab-test": {
     title: "All Vocab - Test",
@@ -631,6 +759,25 @@ export const dynamic_modules: Record<string, DynamicModule> = {
     module_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch11_occupations"],
   },
+  "sentence-practice-〜たい": {
+    title: "〜たい",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜たい"],
+    instructions: "Practice expressing desires and wants with 〜たい.",
+  },
+  "sentence-practice-〜たり〜たりする": {
+    title: "〜たり〜たりする",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜たり〜たりする"],
+    instructions:
+      "Practice listing representative actions with 〜たり〜たりする.",
+  },
+  "sentence-practice-〜ことがある": {
+    title: "〜ことがある",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜ことがある"],
+    instructions: "Practice expressing past experiences with 〜ことがある.",
+  },
   "genki_1_ch11_all-vocab-test": {
     title: "All Vocab - Test",
     module_type: "vocab-test",
@@ -665,6 +812,30 @@ export const dynamic_modules: Record<string, DynamicModule> = {
     module_type: "vocab-practice",
     vocab_set_ids: ["genki_1_ch12_adj-adv-misc"],
   },
+  "sentence-practice-〜んです": {
+    title: "〜んです",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜んです"],
+    instructions: "Practice using 〜んです for explanatory statements.",
+  },
+  "sentence-practice-〜ほうがいいです": {
+    title: "〜ほうがいいです",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜ほうがいいです"],
+    instructions: "Practice giving advice with 〜ほうがいいです.",
+  },
+  "sentence-practice-〜ので": {
+    title: "〜ので",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜ので"],
+    instructions: "Practice expressing reasons with 〜ので.",
+  },
+  "sentence-practice-〜でしょうか": {
+    title: "〜でしょうか",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜でしょうか"],
+    instructions: "Practice wondering and polite speculation with 〜でしょうか.",
+  },
   "genki_1_ch12_all-vocab-test": {
     title: "All Vocab - Test",
     module_type: "vocab-test",
@@ -693,6 +864,30 @@ export const dynamic_modules: Record<string, DynamicModule> = {
     title: "Day Count & Misc.",
     module_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch13_day-count-and-misc"],
+  },
+  "sentence-practice-Potential Verbs": {
+    title: "Potential Verbs",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-Potential Verbs"],
+    instructions: "Practice expressing ability with potential verb forms.",
+  },
+  "sentence-practice-〜てみる": {
+    title: "〜てみる",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜てみる"],
+    instructions: "Practice expressing trying something with 〜てみる.",
+  },
+  "sentence-practice-なら": {
+    title: "なら",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-なら"],
+    instructions: "Practice conditional statements with なら.",
+  },
+  "sentence-practice-一週間に三回": {
+    title: "一週間に三回",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-一週間に三回"],
+    instructions: "Practice expressing frequency with time + に + counter.",
   },
   "genki_2_ch13_all-vocab-test": {
     title: "All Vocab - Test",
@@ -728,6 +923,12 @@ export const dynamic_modules: Record<string, DynamicModule> = {
     module_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch14_counters-adv-misc"],
   },
+  "sentence-practice-〜かもしれません": {
+    title: "〜かもしれません",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜かもしれません"],
+    instructions: "Practice expressing possibility with 〜かもしれません.",
+  },
   "genki_2_ch14_all-vocab-test": {
     title: "All Vocab - Test",
     module_type: "vocab-test",
@@ -762,6 +963,24 @@ export const dynamic_modules: Record<string, DynamicModule> = {
     module_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch15_irr-v-adv-misc"],
   },
+  "sentence-practice-Volitional Form": {
+    title: "Volitional Form",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-Volitional Form"],
+    instructions: "Practice making suggestions and expressing intent with the volitional form.",
+  },
+  "sentence-practice-Volitional Form + と思っています": {
+    title: "Volitional Form + と思っています",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-Volitional Form + と思っています"],
+    instructions: "Practice expressing ongoing intentions with 〜ようと思っています.",
+  },
+  "sentence-practice-〜ておく": {
+    title: "〜ておく",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜ておく"],
+    instructions: "Practice doing something in advance or in preparation with 〜ておく.",
+  },
   "genki_2_ch15_all-vocab-test": {
     title: "All Vocab - Test",
     module_type: "vocab-test",
@@ -795,6 +1014,24 @@ export const dynamic_modules: Record<string, DynamicModule> = {
     title: "Adv & Misc.",
     module_type: "vocab-practice",
     vocab_set_ids: ["genki_2_ch16_adv-and-misc"],
+  },
+  "sentence-practice-〜ていただけませんか": {
+    title: "〜ていただけませんか",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜ていただけませんか"],
+    instructions: "Practice making polite requests with 〜ていただけませんか.",
+  },
+  "sentence-practice-〜時": {
+    title: "〜時",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜時"],
+    instructions: "Practice expressing 'when' with 〜時.",
+  },
+  "sentence-practice-〜てすみませんでした": {
+    title: "〜てすみませんでした",
+    module_type: "sentence-practice",
+    vocab_set_ids: ["sentence-practice-〜てすみませんでした"],
+    instructions: "Practice apologizing for actions with 〜てすみませんでした.",
   },
   "genki_2_ch16_all-vocab-test": {
     title: "All Vocab - Test",

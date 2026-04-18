@@ -468,42 +468,6 @@ export const questions: Question[] = [
         ],
         notes: "絶対 + 大嫌い for maximum emphasis",
       },
-      {
-        segments: [
-          { text: "お 父[とう]さんはコーヒーが" },
-          { text: "好[す]き", conjugation: naAdj },
-          { text: "が、お 茶[ちゃ]は" },
-          { text: "嫌[きら]い", blank: true, conjugation: naAdj },
-        ],
-        notes: "Using お父さん instead of 父",
-      },
-      {
-        segments: [
-          { text: "お 父[とう]さんはコーヒーが" },
-          { text: "好[す]き", conjugation: naAdj },
-          { text: "が、お 茶[ちゃ]は" },
-          { text: "大[だい]嫌[きら]い", blank: true, conjugation: naAdj },
-        ],
-        notes: "お父さん + 大嫌い",
-      },
-      {
-        segments: [
-          { text: "お 父[とう]さんはコーヒーが" },
-          { text: "好[す]き", conjugation: naAdj },
-          { text: "が、お 茶[ちゃ]は 絶対[ぜったい]" },
-          { text: "嫌[きら]い", blank: true, conjugation: naAdj },
-        ],
-        notes: "お父さん + 絶対嫌い",
-      },
-      {
-        segments: [
-          { text: "お 父[とう]さんはコーヒーが" },
-          { text: "好[す]き", conjugation: naAdj },
-          { text: "が、お 茶[ちゃ]は 絶対[ぜったい]" },
-          { text: "大[だい]嫌[きら]い", blank: true, conjugation: naAdj },
-        ],
-        notes: "お父さん + 絶対 + 大嫌い",
-      },
     ],
   },
   {
