@@ -1,5 +1,5 @@
 import { Show, createMemo } from "solid-js"
-import { Image } from "@unpic/solid"
+import { Image as BaseImage } from "@unpic/solid/base"
 import {
   useQuery as useTanstackQuery,
   useQueryClient,
@@ -9,6 +9,8 @@ import { backgroundSettingsQueryOptions } from "~/query/query-options"
 import { usePreferences } from "@/lib/preferences"
 import { queryKeys } from "~/query/query-keys"
 import { resolveBackground } from "@/features/backgrounds/resolveBackground"
+import { usePrivateImageSource } from "@/features/images/usePrivateImageSource"
+import { buildPublicUnpicSource } from "@/features/images/transformer"
 
 export type BackgroundColor = {
   hex: string
@@ -56,7 +58,28 @@ export function TextbookChapterBackgrounds() {
       preferences().backgroundOverrides,
     ),
   )
-  const backgroundItem = createMemo(() => resolvedBackground().background)
+  const backgroundItem = () => resolvedBackground().background
+  const videoBackground = () => {
+    const bg = backgroundItem()
+    return bg.kind === "video" ? bg : undefined
+  }
+  const uploadImageId = () => {
+    const bg = backgroundItem()
+    return bg.kind === "image" && !("src" in bg) ? bg.id : undefined
+  }
+  const uploadSource = usePrivateImageSource(uploadImageId, () => ({
+    layout: "fullWidth",
+  }))
+  const publicSource = () => {
+    const bg = backgroundItem()
+    if (bg.kind !== "image" || !("src" in bg)) return undefined
+    return buildPublicUnpicSource({
+      src: bg.src,
+      sourceWidth: bg.sourceWidth,
+      layout: { layout: "fullWidth" },
+    })
+  }
+  const imageSource = () => publicSource() ?? uploadSource()
   const yOffset = () => backgroundItem().yOffsetDesktop || "0"
   const finalOpacity = () =>
     backgroundItem().opacity + (settings()?.opacityOffset || 0)
@@ -75,36 +98,32 @@ export function TextbookChapterBackgrounds() {
   return (
     <Show when={finalOpacity() > 0}>
       <>
-        <Show
-          when={backgroundItem().sourceType === "img"}
-          fallback={
-            <>
-              {/* Video Background */}
-              <video
-                src={backgroundItem().src}
-                class="pointer-events-none fixed inset-0 -z-10 -mt-8"
-                style={{
-                  "object-fit": "cover",
-                  "object-position":
-                    backgroundItem().layout === "vertical" ? "top" : "center",
-                  opacity: finalOpacity(),
-                  filter: `blur(${blurValue()})`,
-                  transition: "filter 300ms ease-out",
-                  width: "100%",
-                  height: heightValue(),
-                  top: yOffset(),
-                }}
-                autoplay
-                loop
-                muted
-                playsinline
-                preload="auto"
-                onLoadedData={(e) => extractAndSetColor(e.currentTarget)}
-              />
-            </>
-          }
-        >
-          {/* Image Background */}
+        <Show when={videoBackground()}>
+          {(bg) => (
+            <video
+              src={bg().videoSrc}
+              class="pointer-events-none fixed inset-0 -z-10 -mt-8"
+              style={{
+                "object-fit": "cover",
+                "object-position":
+                  bg().layout === "vertical" ? "top" : "center",
+                opacity: finalOpacity(),
+                filter: `blur(${blurValue()})`,
+                transition: "filter 300ms ease-out",
+                width: "100%",
+                height: heightValue(),
+                top: yOffset(),
+              }}
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="auto"
+              onLoadedData={(e) => extractAndSetColor(e.currentTarget)}
+            />
+          )}
+        </Show>
+        <Show when={backgroundItem().kind === "image"}>
           <div
             class="pointer-events-none fixed inset-0 -z-10 -mt-8 overflow-hidden"
             style={{
@@ -116,17 +135,24 @@ export function TextbookChapterBackgrounds() {
               top: yOffset(),
             }}
           >
-            <Image
-              src={backgroundItem().src}
-              layout="fullWidth"
-              height={1440}
-              class={`h-full w-full ${
-                backgroundItem().layout === "vertical" ? "object-top" : "object-center"
-              }`}
-              alt="Background"
-              objectFit="cover"
-              onLoad={(e) => extractAndSetColor(e.currentTarget)}
-            />
+            <Show when={imageSource()}>
+              {(s) => (
+                <BaseImage
+                  src={s().src}
+                  transformer={s().transformer}
+                  breakpoints={s().breakpoints}
+                  layout="fullWidth"
+                  unstyled
+                  class={`h-full w-full object-cover ${
+                    backgroundItem().layout === "vertical"
+                      ? "object-top"
+                      : "object-center"
+                  }`}
+                  alt="Background"
+                  onLoad={(e) => extractAndSetColor(e.currentTarget)}
+                />
+              )}
+            </Show>
           </div>
         </Show>
 

@@ -3,5 +3,17 @@
   "name": "nihongo-ninja",
   "compatibility_date": "2025-09-02",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/solid-start/server-entry"
+  "main": "@tanstack/solid-start/server-entry",
+  "images": {
+    "binding": "IMAGES",
+    "remote": true
+  },
+  "r2_buckets": [
+    {
+      "binding": "IMAGE_UPLOADS_BUCKET",
+      "bucket_name": "nihongo-ninja-image-uploads",
+      "preview_bucket_name": "nihongo-ninja-image-uploads",
+      "remote": true
+    }
+  ]
 }

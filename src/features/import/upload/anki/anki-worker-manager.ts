@@ -13,7 +13,7 @@ interface PendingRequest {
 
 type WorkerMessage =
   | { type: "ready" }
-  | { type: "extract-result"; id: number; extractedData: any }
+  | { type: "extract-result"; id: number; extractedData: AnkiExtractedData }
   | { type: "extract-error"; id: number; message: string }
   | { type: "error"; message: string }
 
@@ -56,24 +56,7 @@ export class AnkiWorkerManager {
       const request = this.pendingRequests.get(id)
       if (request) {
         this.pendingRequests.delete(id)
-        // Convert serialized data back to proper structure
-        // Note: Object.entries() converts keys to strings, so convert back to numbers
-        const result: AnkiExtractedData = {
-          ...extractedData,
-          cards: new Map(
-            Object.entries(extractedData.cards).map(([k, v]) => [
-              Number(k),
-              v,
-            ]),
-          ),
-          reviews: new Map(
-            Object.entries(extractedData.reviews).map(([k, v]) => [
-              Number(k),
-              v,
-            ]),
-          ),
-        }
-        request.resolve(result)
+        request.resolve(extractedData)
       }
     } else if (data.type === "extract-error") {
       const { id, message } = data

@@ -21,6 +21,7 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # dotenv
 .env*
+!.env.example
 
 # caches
 .eslintcache

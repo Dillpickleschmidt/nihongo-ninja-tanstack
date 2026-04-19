@@ -94,6 +94,7 @@ import { Route as LessonsChapter0GreetingsRouteImport } from './routes/lessons/_
 import { Route as LessonsChapter0DakutenHandakutenRouteImport } from './routes/lessons/_chapter-0/dakuten-handakuten'
 import { Route as LessonsChapter0ContractedSoundsRouteImport } from './routes/lessons/_chapter-0/contracted-sounds'
 import { Route as LessonsChapter0CommonExpressionsRouteImport } from './routes/lessons/_chapter-0/common-expressions'
+import { Route as ApiImagesUploadRouteImport } from './routes/api/images/upload'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as HomeVocabUnsortedRouteImport } from './routes/_home/vocab/unsorted'
 import { Route as HomeVocabCreateRouteImport } from './routes/_home/vocab/create'
@@ -106,6 +107,8 @@ import { Route as HomeGuidesSrsRouteImport } from './routes/_home/guides/srs'
 import { Route as HomeGuidesComparisonRouteImport } from './routes/_home/guides/comparison'
 import { Route as HomeExternalResourcesResourceRouteImport } from './routes/_home/external-resources/$resource'
 import { Route as HomeImportBuiltinIndexRouteImport } from './routes/_home/import/builtin/index'
+import { Route as ApiImagesPublicSplatRouteImport } from './routes/api/images/public/$'
+import { Route as ApiImagesPrivateImageIdRouteImport } from './routes/api/images/private/$imageId'
 import { Route as HomeVocabQuizKatakanaRouteImport } from './routes/_home/vocab/quiz/katakana'
 import { Route as HomeVocabQuizHiraganaRouteImport } from './routes/_home/vocab/quiz/hiragana'
 import { Route as HomeVocabQuizDakutenHandakutenRouteImport } from './routes/_home/vocab/quiz/dakuten-handakuten'
@@ -586,6 +589,11 @@ const LessonsChapter0CommonExpressionsRoute =
     path: '/common-expressions',
     getParentRoute: () => LessonsRoute,
   } as any)
+const ApiImagesUploadRoute = ApiImagesUploadRouteImport.update({
+  id: '/api/images/upload',
+  path: '/api/images/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -647,6 +655,16 @@ const HomeImportBuiltinIndexRoute = HomeImportBuiltinIndexRouteImport.update({
   id: '/import/builtin/',
   path: '/import/builtin/',
   getParentRoute: () => HomeRoute,
+} as any)
+const ApiImagesPublicSplatRoute = ApiImagesPublicSplatRouteImport.update({
+  id: '/api/images/public/$',
+  path: '/api/images/public/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiImagesPrivateImageIdRoute = ApiImagesPrivateImageIdRouteImport.update({
+  id: '/api/images/private/$imageId',
+  path: '/api/images/private/$imageId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const HomeVocabQuizKatakanaRoute = HomeVocabQuizKatakanaRouteImport.update({
   id: '/quiz/katakana',
@@ -733,6 +751,7 @@ export interface FileRoutesByFullPath {
   '/vocab/create': typeof HomeVocabCreateRoute
   '/vocab/unsorted': typeof HomeVocabUnsortedRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/images/upload': typeof ApiImagesUploadRoute
   '/lessons/common-expressions': typeof LessonsChapter0CommonExpressionsRoute
   '/lessons/contracted-sounds': typeof LessonsChapter0ContractedSoundsRoute
   '/lessons/dakuten-handakuten': typeof LessonsChapter0DakutenHandakutenRoute
@@ -808,6 +827,8 @@ export interface FileRoutesByFullPath {
   '/vocab/quiz/dakuten-handakuten': typeof HomeVocabQuizDakutenHandakutenRoute
   '/vocab/quiz/hiragana': typeof HomeVocabQuizHiraganaRoute
   '/vocab/quiz/katakana': typeof HomeVocabQuizKatakanaRoute
+  '/api/images/private/$imageId': typeof ApiImagesPrivateImageIdRoute
+  '/api/images/public/$': typeof ApiImagesPublicSplatRoute
   '/import/builtin/': typeof HomeImportBuiltinIndexRoute
   '/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
@@ -839,6 +860,7 @@ export interface FileRoutesByTo {
   '/vocab/create': typeof HomeVocabCreateRoute
   '/vocab/unsorted': typeof HomeVocabUnsortedRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/images/upload': typeof ApiImagesUploadRoute
   '/lessons/common-expressions': typeof LessonsChapter0CommonExpressionsRoute
   '/lessons/contracted-sounds': typeof LessonsChapter0ContractedSoundsRoute
   '/lessons/dakuten-handakuten': typeof LessonsChapter0DakutenHandakutenRoute
@@ -914,6 +936,8 @@ export interface FileRoutesByTo {
   '/vocab/quiz/dakuten-handakuten': typeof HomeVocabQuizDakutenHandakutenRoute
   '/vocab/quiz/hiragana': typeof HomeVocabQuizHiraganaRoute
   '/vocab/quiz/katakana': typeof HomeVocabQuizKatakanaRoute
+  '/api/images/private/$imageId': typeof ApiImagesPrivateImageIdRoute
+  '/api/images/public/$': typeof ApiImagesPublicSplatRoute
   '/import/builtin': typeof HomeImportBuiltinIndexRoute
   '/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
@@ -949,6 +973,7 @@ export interface FileRoutesById {
   '/_home/vocab/create': typeof HomeVocabCreateRoute
   '/_home/vocab/unsorted': typeof HomeVocabUnsortedRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/images/upload': typeof ApiImagesUploadRoute
   '/lessons/_chapter-0/common-expressions': typeof LessonsChapter0CommonExpressionsRoute
   '/lessons/_chapter-0/contracted-sounds': typeof LessonsChapter0ContractedSoundsRoute
   '/lessons/_chapter-0/dakuten-handakuten': typeof LessonsChapter0DakutenHandakutenRoute
@@ -1024,6 +1049,8 @@ export interface FileRoutesById {
   '/_home/vocab/quiz/dakuten-handakuten': typeof HomeVocabQuizDakutenHandakutenRoute
   '/_home/vocab/quiz/hiragana': typeof HomeVocabQuizHiraganaRoute
   '/_home/vocab/quiz/katakana': typeof HomeVocabQuizKatakanaRoute
+  '/api/images/private/$imageId': typeof ApiImagesPrivateImageIdRoute
+  '/api/images/public/$': typeof ApiImagesPublicSplatRoute
   '/_home/import/builtin/': typeof HomeImportBuiltinIndexRoute
   '/_home/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
@@ -1059,6 +1086,7 @@ export interface FileRouteTypes {
     | '/vocab/create'
     | '/vocab/unsorted'
     | '/api/auth/$'
+    | '/api/images/upload'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
     | '/lessons/dakuten-handakuten'
@@ -1134,6 +1162,8 @@ export interface FileRouteTypes {
     | '/vocab/quiz/dakuten-handakuten'
     | '/vocab/quiz/hiragana'
     | '/vocab/quiz/katakana'
+    | '/api/images/private/$imageId'
+    | '/api/images/public/$'
     | '/import/builtin/'
     | '/vocab/deck/$deckId/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -1165,6 +1195,7 @@ export interface FileRouteTypes {
     | '/vocab/create'
     | '/vocab/unsorted'
     | '/api/auth/$'
+    | '/api/images/upload'
     | '/lessons/common-expressions'
     | '/lessons/contracted-sounds'
     | '/lessons/dakuten-handakuten'
@@ -1240,6 +1271,8 @@ export interface FileRouteTypes {
     | '/vocab/quiz/dakuten-handakuten'
     | '/vocab/quiz/hiragana'
     | '/vocab/quiz/katakana'
+    | '/api/images/private/$imageId'
+    | '/api/images/public/$'
     | '/import/builtin'
     | '/vocab/deck/$deckId/edit'
   id:
@@ -1274,6 +1307,7 @@ export interface FileRouteTypes {
     | '/_home/vocab/create'
     | '/_home/vocab/unsorted'
     | '/api/auth/$'
+    | '/api/images/upload'
     | '/lessons/_chapter-0/common-expressions'
     | '/lessons/_chapter-0/contracted-sounds'
     | '/lessons/_chapter-0/dakuten-handakuten'
@@ -1349,6 +1383,8 @@ export interface FileRouteTypes {
     | '/_home/vocab/quiz/dakuten-handakuten'
     | '/_home/vocab/quiz/hiragana'
     | '/_home/vocab/quiz/katakana'
+    | '/api/images/private/$imageId'
+    | '/api/images/public/$'
     | '/_home/import/builtin/'
     | '/_home/vocab/deck/$deckId/edit'
   fileRoutesById: FileRoutesById
@@ -1361,6 +1397,9 @@ export interface RootRouteChildren {
   LessonsRoute: typeof LessonsRouteWithChildren
   OauthCallbackRoute: typeof OauthCallbackRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiImagesUploadRoute: typeof ApiImagesUploadRoute
+  ApiImagesPrivateImageIdRoute: typeof ApiImagesPrivateImageIdRoute
+  ApiImagesPublicSplatRoute: typeof ApiImagesPublicSplatRoute
 }
 
 declare module '@tanstack/solid-router' {
@@ -1960,6 +1999,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof LessonsChapter0CommonExpressionsRouteImport
       parentRoute: typeof LessonsRoute
     }
+    '/api/images/upload': {
+      id: '/api/images/upload'
+      path: '/api/images/upload'
+      fullPath: '/api/images/upload'
+      preLoaderRoute: typeof ApiImagesUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -2043,6 +2089,20 @@ declare module '@tanstack/solid-router' {
       fullPath: '/import/builtin/'
       preLoaderRoute: typeof HomeImportBuiltinIndexRouteImport
       parentRoute: typeof HomeRoute
+    }
+    '/api/images/public/$': {
+      id: '/api/images/public/$'
+      path: '/api/images/public/$'
+      fullPath: '/api/images/public/$'
+      preLoaderRoute: typeof ApiImagesPublicSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/images/private/$imageId': {
+      id: '/api/images/private/$imageId'
+      path: '/api/images/private/$imageId'
+      fullPath: '/api/images/private/$imageId'
+      preLoaderRoute: typeof ApiImagesPrivateImageIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_home/vocab/quiz/katakana': {
       id: '/_home/vocab/quiz/katakana'
@@ -2388,6 +2448,9 @@ const rootRouteChildren: RootRouteChildren = {
   LessonsRoute: LessonsRouteWithChildren,
   OauthCallbackRoute: OauthCallbackRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiImagesUploadRoute: ApiImagesUploadRoute,
+  ApiImagesPrivateImageIdRoute: ApiImagesPrivateImageIdRoute,
+  ApiImagesPublicSplatRoute: ApiImagesPublicSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

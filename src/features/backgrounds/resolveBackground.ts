@@ -8,6 +8,7 @@ import {
   getChapterOverrideKey,
   type BackgroundOverrides,
 } from "./overrides"
+import { IMAGE_ID_PREFIX } from "@/features/images/validation"
 
 export type BackgroundSourceScope =
   | "chapter"
@@ -15,15 +16,36 @@ export type BackgroundSourceScope =
   | "curated"
   | "fallback"
 
+export type UserImageBackground = {
+  kind: "image"
+  id: string
+  layout: "vertical" | "horizontal"
+  opacity: number
+  yOffsetDesktop?: string
+  yOffsetMobile?: string
+}
+
 export type ResolvedBackground = {
-  background: BuiltInBackground
+  background: BuiltInBackground | UserImageBackground
   sourceScope: BackgroundSourceScope
   sourceLabel: string
   assignedBackgroundId?: string
 }
 
-function getBackgroundById(id: string | undefined) {
-  return id ? BUILT_IN_BACKGROUNDS[id] : undefined
+// Treat unknown, non-upload IDs as stale catalog entries and fall through.
+function resolveOverrideId(
+  id: string | undefined,
+): BuiltInBackground | UserImageBackground | undefined {
+  if (!id) return undefined
+  const catalogEntry = BUILT_IN_BACKGROUNDS[id]
+  if (catalogEntry) return catalogEntry
+  if (!id.startsWith(IMAGE_ID_PREFIX)) return undefined
+  return {
+    kind: "image",
+    id,
+    layout: "horizontal",
+    opacity: 0.4,
+  }
 }
 
 export function resolveBackground(
@@ -34,7 +56,7 @@ export function resolveBackground(
   if (pathId && chapterSlug) {
     const chapterBackgroundId =
       overrides.chapters[getChapterOverrideKey(pathId, chapterSlug)]
-    const chapterBackground = getBackgroundById(chapterBackgroundId)
+    const chapterBackground = resolveOverrideId(chapterBackgroundId)
     if (chapterBackground) {
       return {
         background: chapterBackground,
@@ -47,7 +69,7 @@ export function resolveBackground(
 
   if (pathId) {
     const pathBackgroundId = overrides.paths[pathId]
-    const pathBackground = getBackgroundById(pathBackgroundId)
+    const pathBackground = resolveOverrideId(pathBackgroundId)
     if (pathBackground) {
       return {
         background: pathBackground,
@@ -61,7 +83,9 @@ export function resolveBackground(
   if (pathId && chapterSlug) {
     const curatedBackgroundId =
       CURATED_CHAPTER_BACKGROUNDS[pathId]?.[chapterSlug]
-    const curatedBackground = getBackgroundById(curatedBackgroundId)
+    const curatedBackground = curatedBackgroundId
+      ? BUILT_IN_BACKGROUNDS[curatedBackgroundId]
+      : undefined
     if (curatedBackground) {
       return {
         background: curatedBackground,

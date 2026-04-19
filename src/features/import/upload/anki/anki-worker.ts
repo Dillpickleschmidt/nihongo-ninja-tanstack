@@ -5,18 +5,6 @@
  */
 
 import { extractAnkiData } from "./anki-extraction"
-import type { AnkiExtractedData } from "./anki-types"
-
-/**
- * Serializes extracted data for transfer back to main thread
- */
-function serializeExtractedData(data: AnkiExtractedData) {
-  return {
-    ...data,
-    cards: Object.fromEntries(data.cards),
-    reviews: Object.fromEntries(data.reviews),
-  }
-}
 
 /**
  * Worker message handler
@@ -34,11 +22,10 @@ self.onmessage = async (event: MessageEvent) => {
       // Use the extraction logic from anki-extraction.ts
       const extractedData = await extractAnkiData(file)
 
-      // Serialize Map objects to plain objects for JSON transfer
       self.postMessage({
         type: "extract-result",
         id,
-        extractedData: serializeExtractedData(extractedData),
+        extractedData,
       })
     } catch (error) {
       self.postMessage({

@@ -12,24 +12,35 @@ interface BackgroundContextRowProps {
 }
 
 export function BackgroundContextRow(props: BackgroundContextRowProps) {
+  const background = () => props.resolvedBackground.background
+  const builtInBackground = () => {
+    const current = background()
+    return "src" in current ? current : undefined
+  }
+  const upload = () => {
+    const current = background()
+    return "src" in current ? undefined : { imageId: current.id }
+  }
+
   return (
     <div class="group relative overflow-hidden rounded-xl">
       <button
         type="button"
         onClick={props.onSelect}
-        class="block w-full cursor-pointer rounded-xl border border-white/6 text-left transition-colors hover:border-white/12"
+        class="ease-instant-hover-200 block w-full cursor-pointer rounded-xl border border-white/6 text-left hover:border-white/12"
       >
         <div
           class="relative bg-black/25"
           style={{ "aspect-ratio": props.aspect ?? "16 / 5" }}
         >
           <BackgroundPreviewMedia
-            background={props.resolvedBackground.background}
+            background={builtInBackground()}
+            upload={upload()}
             width={320}
             height={140}
             class="h-full w-full object-cover"
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-background/82 via-background/30 to-background/0 transition-opacity duration-200 group-hover:opacity-45" />
+          <div class="ease-instant-hover-200 absolute inset-0 bg-gradient-to-t from-background/82 via-background/30 to-background/0 group-hover:opacity-45" />
 
           <Show when={props.active}>
             <div class="absolute left-2 top-2 rounded-full bg-dynamic-accent/90 px-2 py-0.5 text-xs font-medium text-black">

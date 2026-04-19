@@ -145,6 +145,18 @@ export default defineSchema({
     expiresAt: v.optional(v.number()),
   }).index("by_user_service", ["userId", "service"]),
 
+  imageAssets: defineTable({
+    imageId: v.string(),
+    ownerUserId: v.string(),
+    storageKey: v.string(),
+    contentType: v.string(),
+    sourceWidth: v.number(),
+    objectEtag: v.string(),
+    createdAt: v.number(),
+  })
+    .index("by_imageId", ["imageId"])
+    .index("by_owner_createdAt", ["ownerUserId", "createdAt"]),
+
   // ===== Deck Sharing Tables =====
 
   // Public Deck Shares

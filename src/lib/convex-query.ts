@@ -12,13 +12,13 @@ import type {
 // Symbol used by Convex to store function name on FunctionReference
 const functionNameSymbol = Symbol.for("functionName")
 
-// Get a serializable key from a function reference
+// Get a stable key from a function reference
 function getQueryKey<Query extends FunctionReference<"query">>(
   query: Query,
   args: FunctionArgs<Query>,
 ) {
   const name = (query as any)[functionNameSymbol] as string
-  return ["convex", name, JSON.stringify(args)] as const
+  return ["convex", name, args] as const
 }
 
 // For loaders - isomorphic (works on both server and client)

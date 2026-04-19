@@ -37,9 +37,9 @@ export function LearnDialog(props: LearnDialogProps) {
               <button
                 type="button"
                 onClick={() => setMode("full")}
-                class="group flex cursor-pointer items-start gap-3 rounded-xl border border-white/8 bg-white/2 p-4 text-left transition-all hover:border-dynamic-accent/20 hover:bg-white/4"
+                class="group ease-instant-hover-200 flex cursor-pointer items-start gap-3 rounded-xl border border-white/8 bg-white/2 p-4 text-left hover:border-dynamic-accent/20 hover:bg-white/4"
               >
-                <div class="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-dynamic-accent/10 text-dynamic-accent transition-colors group-hover:bg-dynamic-accent/15">
+                <div class="ease-instant-hover-200 mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-dynamic-accent/10 text-dynamic-accent group-hover:bg-dynamic-accent/15">
                   <BookOpen class="size-4" />
                 </div>
                 <div>
@@ -57,9 +57,9 @@ export function LearnDialog(props: LearnDialogProps) {
               <button
                 type="button"
                 onClick={() => setMode("vocab")}
-                class="group flex cursor-pointer items-start gap-3 rounded-xl border border-white/8 bg-white/2 p-4 text-left transition-all hover:border-dynamic-accent/20 hover:bg-white/4"
+                class="group ease-instant-hover-200 flex cursor-pointer items-start gap-3 rounded-xl border border-white/8 bg-white/2 p-4 text-left hover:border-dynamic-accent/20 hover:bg-white/4"
               >
-                <div class="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/6 text-white/50 transition-colors group-hover:bg-white/8">
+                <div class="ease-instant-hover-200 mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/6 text-white/50 group-hover:bg-white/8">
                   <Languages class="size-4" />
                 </div>
                 <div>
@@ -80,7 +80,7 @@ export function LearnDialog(props: LearnDialogProps) {
               <button
                 type="button"
                 onClick={() => setMode(null)}
-                class="mb-3 cursor-pointer text-xs text-white/30 transition-colors hover:text-white/50"
+                class="ease-instant-hover-200 mb-3 cursor-pointer text-xs text-white/30 hover:text-white/50"
               >
                 &larr; Back to options
               </button>
