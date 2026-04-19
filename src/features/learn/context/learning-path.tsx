@@ -2,8 +2,7 @@ import { createContext, useContext, type JSX } from "solid-js"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { usePreferences } from "@/lib/preferences"
-import { isBuiltInTextbook } from "@/data/utils/textbooks"
-import { getChaptersByTextbook } from "@/data/utils/chapters"
+import { buildPathSelectionPreferences } from "@/features/learning-path/selection"
 
 type LearningPathContextValue = ReturnType<typeof createLearningPathValue>
 
@@ -20,13 +19,7 @@ function createLearningPathValue() {
   )
 
   const switchPath = (pathId: string) => {
-    const firstChapter = isBuiltInTextbook(pathId)
-      ? getChaptersByTextbook(pathId)[0]?.slug
-      : "chapter-1"
-    setPreferences({
-      activeLearningPath: pathId,
-      ...(firstChapter && { activeChapter: firstChapter }),
-    })
+    setPreferences(buildPathSelectionPreferences(pathId))
   }
 
   const currentChapter = () => {

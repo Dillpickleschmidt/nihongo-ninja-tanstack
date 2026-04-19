@@ -7,11 +7,9 @@ import {
   type Accessor,
   type Setter,
 } from "solid-js"
-import { cn } from "@/utils"
 import { Skeleton } from "@/components/ui/custom/skeleton"
-import { Sparkles, ChevronRight } from "lucide-solid"
+import { Sparkles } from "lucide-solid"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
-import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { useSrs } from "@/features/srs/use-srs"
 import { useLearningPath } from "../context/learning-path"
 import { LearningPathSelector } from "../LearningPathSelector"
@@ -25,7 +23,7 @@ interface HeroSectionProps {
 }
 
 export function HeroSection(props: HeroSectionProps) {
-  const { currentChapter, selectedPath } = useLearningPath()
+  const { currentChapter } = useLearningPath()
 
   const currentModules = () => {
     const chapter = currentChapter()
@@ -95,59 +93,50 @@ function HeroContent() {
 }
 
 export function LearningPathControls(props: HeroSectionProps & { class?: string }) {
-  const [isSelectorOpen, setIsSelectorOpen] = createSignal(false)
   const [isStuck, setIsStuck] = createSignal(false)
-  const { query, selectedPathId, switchPath } = useLearningPath()
   const { dueCounts } = useSrs()
   const vocabTotal = () => dueCounts().vocabTotal
 
-  let containerRef: HTMLDivElement | undefined
+  let sentinelRef: HTMLDivElement | undefined
 
   onMount(() => {
-    const checkSticky = () => {
-      if (!containerRef) return
-      setIsStuck(containerRef.getBoundingClientRect().top <= 8)
-    }
+    if (!sentinelRef) return
 
-    checkSticky()
-    window.addEventListener("scroll", checkSticky, { passive: true })
-    window.addEventListener("resize", checkSticky, { passive: true })
-    onCleanup(() => {
-      window.removeEventListener("scroll", checkSticky)
-      window.removeEventListener("resize", checkSticky)
-    })
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsStuck(!entry.isIntersecting)
+      },
+      {
+        rootMargin: "-8px 0px 0px 0px",
+        threshold: 0,
+      },
+    )
+
+    observer.observe(sentinelRef)
+    onCleanup(() => observer.disconnect())
   })
 
   return (
-    <div ref={containerRef} class={props.class}>
-      <div
-        class={cn(
-          "flex items-center justify-between gap-4 rounded-2xl px-1 py-2 transition-all duration-200",
-          isStuck() &&
-            "bg-background/35 backdrop-blur-md shadow-[0_8px_24px_-16px_rgba(0,0,0,0.7)]",
-        )}
-      >
-        <div class="flex items-center gap-4">
-          <Show when={query.data()?.paths && selectedPathId()}>
-            <LearningPathSelector
-              learningPaths={query.data()!.paths}
-              activePathId={selectedPathId()!}
-              isOpen={isSelectorOpen()}
-              onOpenChange={setIsSelectorOpen}
-              onPathSelect={switchPath}
-              class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition-colors hover:bg-white/10 hover:text-white cursor-pointer"
-            >
-              Change path
-              <ChevronRight class="size-4" />
-            </LearningPathSelector>
-          </Show>
-          <DueCountBadge count={vocabTotal} />
-        </div>
+    <div>
+      <div ref={sentinelRef} class="h-px w-full" aria-hidden="true" />
+      <div class={props.class}>
+        <div
+          class={`flex flex-col gap-4 rounded-2xl px-1 py-2 transition-all duration-200 md:flex-row md:items-center md:justify-between ${
+            isStuck()
+              ? "bg-background/35 backdrop-blur-md shadow-[0_8px_24px_-16px_rgba(0,0,0,0.7)]"
+              : ""
+          }`}
+        >
+          <div class="flex flex-wrap items-center gap-3">
+            <LearningPathSelector />
+            <DueCountBadge count={vocabTotal} />
+          </div>
 
-        <ViewToggle
-          selectedView={props.selectedView}
-          setSelectedView={props.setSelectedView}
-        />
+          <ViewToggle
+            selectedView={props.selectedView}
+            setSelectedView={props.setSelectedView}
+          />
+        </div>
       </div>
     </div>
   )

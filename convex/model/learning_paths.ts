@@ -7,6 +7,8 @@ import {
   isBuiltInTextbook,
 } from "../../src/data/utils/textbooks"
 import { getChaptersByTextbook } from "../../src/data/utils/chapters"
+import { removeOverridesForPath } from "../../src/features/backgrounds/overrides"
+import { buildPathSelectionPreferences } from "../../src/features/learning-path/selection"
 import { external_resources } from "../../src/data/external_resources"
 import { moduleCatalog } from "../../src/data/utils/modules"
 import { getModuleLink } from "../../src/lib/module-links"
@@ -450,11 +452,7 @@ export async function createCustomLearningPath(
 export async function deleteCustomLearningPath(
   ctx: MutationCtx,
   pathId: string,
-): Promise<{
-  deletedPathId: string
-  fallbackPathId: string
-  fallbackChapterSlug: string
-}> {
+) {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) throw new Error("Unauthenticated")
   if (isBuiltInTextbook(pathId)) {
@@ -496,15 +494,27 @@ export async function deleteCustomLearningPath(
 
   await ctx.db.delete(userPathId)
 
-  const fallbackPathId = "genki_1"
-  const fallbackChapterSlug =
-    getChaptersByTextbook(fallbackPathId)[0]?.slug ?? "chapter-0"
+  const profile = await ctx.db
+    .query("profiles")
+    .withIndex("by_user", (q) => q.eq("userId", identity.subject))
+    .first()
 
-  return {
-    deletedPathId: pathId,
-    fallbackPathId,
-    fallbackChapterSlug,
-  }
+  if (!profile) return
+
+  const wasActive = profile.userPreferences.activeLearningPath === pathId
+  const fallback = buildPathSelectionPreferences("genki_1")
+
+  await ctx.db.patch(profile._id, {
+    userPreferences: {
+      ...profile.userPreferences,
+      backgroundOverrides: removeOverridesForPath(
+        profile.userPreferences.backgroundOverrides,
+        pathId,
+      ),
+      ...(wasActive && fallback),
+      timestamp: Date.now(),
+    },
+  })
 }
 
 function chunkIntoChapters(moduleIds: string[]) {

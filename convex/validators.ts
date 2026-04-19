@@ -169,6 +169,10 @@ export const userPreferencesValidator = v.object({
   srsServicePreferences: srsServicePreferencesValidator,
   activeLearningPath: v.string(),
   activeChapter: v.string(),
+  backgroundOverrides: v.object({
+    paths: v.record(v.string(), v.string()),
+    chapters: v.record(v.string(), v.string()),
+  }),
   hasCompletedOnboarding: v.boolean(),
   tours: v.record(v.string(), v.number()),
   conjugationPractice: conjugationPracticeSettingsValidator,
@@ -183,6 +187,10 @@ export const DEFAULT_USER_PREFERENCES = {
   },
   activeLearningPath: "genki_1",
   activeChapter: "chapter-0",
+  backgroundOverrides: {
+    paths: {},
+    chapters: {},
+  },
   hasCompletedOnboarding: false,
   tours: {},
   conjugationPractice: {

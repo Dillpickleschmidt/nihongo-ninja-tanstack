@@ -23,6 +23,7 @@ import { chapters, type BuiltInChapter } from "@/data/chapters"
 import { textbooks } from "@/data/textbooks"
 import { Sidebar } from "@/features/sidebar/Sidebar"
 import { usePreferences } from "@/lib/preferences"
+import { buildPathSelectionPreferences } from "@/features/learning-path/selection"
 import { queryKeys } from "~/query/query-keys"
 import {
   getInitialAnimationStyles,
@@ -48,7 +49,7 @@ type ChapterGroup = {
 }
 
 function SentencePracticeList() {
-  const { preferences, setPreference } = usePreferences()
+  const { preferences, setPreferences } = usePreferences()
 
   // Search state
   const [search, setSearch] = createSignal("")
@@ -130,7 +131,7 @@ function SentencePracticeList() {
           <Select
             value={activeLearningPath()}
             onChange={(value) => {
-              if (value) setPreference("activeLearningPath", value)
+              if (value) setPreferences(buildPathSelectionPreferences(value))
             }}
               options={availableTextbooks().map((t) => t.id)}
               placeholder="Select textbook"
