@@ -98,14 +98,23 @@ function generateKinshipVariations(answers: RichAnswer[]): RichAnswer[] {
 // accepts both by generating the contracted form from each 〜ている
 // occurrence in the answer. Order matters: longer forms first so
 // ていなかった isn't partially eaten by ていない.
+//
+// Verbs whose te-form ends in で (Godan ぶ/む/ぬ: 読む→読んで, 飲む→飲んで,
+// 遊ぶ→遊んで, 死ぬ→死んで) need the parallel で-rows so
+// 読んでいる→読んでる, 混んでいた→混んでた also generate.
+//
+// 〜てます/〜てました/〜てません are intentionally NOT produced: those are
+// casual contractions of polite forms and aren't appropriate accepted
+// variants for either register.
 const TE_IRU_CONTRACTIONS: Array<[from: string, to: string]> = [
   ["ていなかった", "てなかった"],
-  ["ていません", "てません"],
-  ["ていました", "てました"],
-  ["ています", "てます"],
   ["ていない", "てない"],
   ["ていた", "てた"],
   ["ている", "てる"],
+  ["でいなかった", "でなかった"],
+  ["でいない", "でない"],
+  ["でいた", "でた"],
+  ["でいる", "でる"],
 ]
 
 function contractTeIru(s: string): string {

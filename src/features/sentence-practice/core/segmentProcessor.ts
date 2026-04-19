@@ -20,23 +20,43 @@ function transformToConjugatedWord(
   } as ConjugatedWord
 }
 
-// Returns conjugated text (first variant if multiple exist)
+// Returns every conjugated variant for the segment. Plain-text segments
+// yield a single-element array.
 export function conjugateSegment(
   segment: SentenceSegment,
   isPolite: boolean,
-): string {
+): string[] {
   const transformed = transformToConjugatedWord(segment)
   const results = conjugationEngine.conjugateSegments([transformed], isPolite)
-  return results[0][0]
+  return results[0]
 }
 
-// Conjugates and pre-computes all text representations
+// Conjugates each segment, fans out the per-segment variants into complete
+// sequences via cartesian product. A segment that conjugates to N forms
+// multiplies the number of returned sequences by N.
 export function processSegments(
   segments: SentenceSegment[],
   isPolite: boolean,
-): RichSegment[] {
-  return segments.map((segment) => {
-    const conjugatedText = conjugateSegment(segment, isPolite)
-    return createRichSegment(conjugatedText, segment.blank ?? false)
+): RichSegment[][] {
+  const perSegmentOptions: RichSegment[][] = segments.map((segment) => {
+    const isBlank = segment.blank ?? false
+    return conjugateSegment(segment, isPolite).map((text) =>
+      createRichSegment(text, isBlank),
+    )
   })
+  return cartesian(perSegmentOptions)
+}
+
+function cartesian<T>(arrays: T[][]): T[][] {
+  let acc: T[][] = [[]]
+  for (const options of arrays) {
+    const next: T[][] = []
+    for (const prefix of acc) {
+      for (const item of options) {
+        next.push([...prefix, item])
+      }
+    }
+    acc = next
+  }
+  return acc
 }

@@ -11,35 +11,38 @@ export function prepareQuestion(
 ): ProcessedQuestion {
   const { english, hint, answers: rawAnswers } = question
   const processedAnswers: RichSegment[][] = []
+  const seenSequences = new Set<string>()
   const validAnswers = new Map<string, RichAnswer>()
+
+  const addSequence = (
+    seq: RichSegment[],
+    sourceIndex: number,
+    isPolite: boolean,
+  ) => {
+    const key = joinSegments(seq)
+    if (!seenSequences.has(key)) {
+      seenSequences.add(key)
+      processedAnswers.push(seq)
+    }
+    for (const answer of generateValidAnswers(seq, sourceIndex, isPolite)) {
+      validAnswers.set(answer.original, answer)
+    }
+  }
 
   for (const [sourceIndex, rawAnswer] of rawAnswers.entries()) {
     const register = rawAnswer.register
     const runPolite = register !== "casual"
     const runCasual = register !== "polite"
 
-    let politeSegments: RichSegment[] | undefined
     if (runPolite) {
-      politeSegments = processSegments(rawAnswer.segments, true)
-      processedAnswers.push(politeSegments)
-
-      for (const answer of generateValidAnswers(politeSegments, sourceIndex, true)) {
-        validAnswers.set(answer.original, answer)
+      for (const seq of processSegments(rawAnswer.segments, true)) {
+        addSequence(seq, sourceIndex, true)
       }
     }
 
     if (runCasual) {
-      const casualSegments = processSegments(rawAnswer.segments, false)
-      const duplicatesPolite =
-        politeSegments !== undefined &&
-        joinSegments(politeSegments) === joinSegments(casualSegments)
-
-      if (!duplicatesPolite) {
-        processedAnswers.push(casualSegments)
-
-        for (const answer of generateValidAnswers(casualSegments, sourceIndex, false)) {
-          validAnswers.set(answer.original, answer)
-        }
+      for (const seq of processSegments(rawAnswer.segments, false)) {
+        addSequence(seq, sourceIndex, false)
       }
     }
   }
