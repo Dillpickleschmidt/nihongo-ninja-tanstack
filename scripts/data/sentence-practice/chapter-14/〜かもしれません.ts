@@ -481,6 +481,22 @@ export const questions: Question[] = [
         ],
         notes: "日曜日は fronted as topic; が marks the café; using 休み",
       },
+      {
+        segments: [
+          { text: "このカフェは 日曜日[にちようび]は 休[やす]みかも" },
+          {
+            text: "しれる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Polite-generating split: 〜かも + しれる(conj) → かもしれない / かもしれません",
+      },
     ],
   },
   {
@@ -527,6 +543,22 @@ export const questions: Question[] = [
           { text: "かもしれない", blank: true },
         ],
         notes: "大好き without こと",
+      },
+      {
+        segments: [
+          { text: "もうけんじさんのことが 好[す]きかも" },
+          {
+            text: "しれる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Polite-generating split: 〜かも + しれる(conj)",
       },
     ],
   },
@@ -807,6 +839,22 @@ export const questions: Question[] = [
           { text: "明日[あした]は 休[やす]みを 取[と]って 海[うみ]へ行[い]くかもしれない", blank: true },
         ],
         notes: "は after 明日 + 休みを取って + へ for direction",
+      },
+      {
+        segments: [
+          { text: "明日[あした]休[やす]んで 海[うみ]に 行[い]くかも" },
+          {
+            text: "しれる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Polite-generating split",
       },
     ],
   },

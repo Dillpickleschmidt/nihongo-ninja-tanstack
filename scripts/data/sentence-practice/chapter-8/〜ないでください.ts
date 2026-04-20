@@ -475,6 +475,14 @@ export const questions: Question[] = [
         ],
         notes: "朝食 (formal) instead of 朝ご飯",
       },
+      {
+        segments: [
+          { text: "朝[あさ]ご 飯[はん]を 食[た]べずに 仕事[しごと]に" },
+          { text: "行[い]かないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "〜ずに alternative for \"without eating\"",
+      },
     ],
   },
   {

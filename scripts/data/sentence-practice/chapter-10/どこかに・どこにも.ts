@@ -49,6 +49,40 @@ export const questions: Question[] = [
           { text: "か" },
         ],
       },
+      {
+        segments: [
+          { text: "けんじさんは 今週末[こんしゅうまつ]" },
+          { text: "どこかに", blank: true },
+          {
+            text: "行[い]く",
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "今週末 (this weekend) instead of 週末",
+      },
+      {
+        segments: [
+          { text: "けんじさんは 今週末[こんしゅうまつ]" },
+          { text: "どこかへ", blank: true },
+          {
+            text: "行[い]く",
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "今週末 + へ",
+      },
     ],
   },
   {
@@ -204,6 +238,38 @@ export const questions: Question[] = [
           },
         ],
         notes: "クラブ instead of サークル",
+      },
+      {
+        segments: [
+          { text: "誰[だれ]でも このクラブに" },
+          {
+            text: " 入[はい]れる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "誰でも fronted + クラブに",
+      },
+      {
+        segments: [
+          { text: "誰[だれ]でも このサークルに" },
+          {
+            text: " 入[はい]れる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "誰でも fronted + サークルに",
       },
     ],
   },

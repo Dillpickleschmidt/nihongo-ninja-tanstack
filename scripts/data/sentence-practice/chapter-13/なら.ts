@@ -137,6 +137,24 @@ export const questions: Question[] = [
         ],
         notes: "は instead of が in the result clause",
       },
+      {
+        segments: [
+          { text: "かばんを" },
+          { text: "買[か]うなら", blank: true },
+          { text: "、あの 店[みせ]のが 安[やす]くていいですよ" },
+        ],
+        register: "polite",
+        notes: "Polite ending いいですよ",
+      },
+      {
+        segments: [
+          { text: "かばんを" },
+          { text: "買[か]うなら", blank: true },
+          { text: "、その 店[みせ]のが 安[やす]くていいですよ" },
+        ],
+        register: "polite",
+        notes: "Polite いいですよ + その店",
+      },
     ],
   },
   {
@@ -235,6 +253,24 @@ export const questions: Question[] = [
           { text: "、図書館[としょかん]は 静[しず]かでいいね" },
         ],
         notes: "の + なら, ね ending",
+      },
+      {
+        segments: [
+          { text: "勉強[べんきょう]する" },
+          { text: "なら", blank: true },
+          { text: "、図書館[としょかん]は 静[しず]かでいいですよ" },
+        ],
+        register: "polite",
+        notes: "Polite ending いいですよ",
+      },
+      {
+        segments: [
+          { text: "勉強[べんきょう]する" },
+          { text: "なら", blank: true },
+          { text: "、図書館[としょかん]は 静[しず]かでいいです" },
+        ],
+        register: "polite",
+        notes: "Polite ending いいです (no よ)",
       },
     ],
   },

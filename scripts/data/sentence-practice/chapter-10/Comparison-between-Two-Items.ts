@@ -155,7 +155,7 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ですか" },
+          { text: "か" },
         ],
         notes:
           "Question comparing summer heat in Japan vs India using より～のほうが. The blank is 暑い (the comparison adjective). です and か are plain text outside the blank since the engine does not double-add です for question sentences here.",
@@ -180,7 +180,7 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ですか" },
+          { text: "か" },
         ],
         notes: "Topic-first word order: 日本の夏は、インドの夏より暑いですか",
       },
@@ -292,7 +292,7 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ですか" },
+          { text: "か" },
         ],
         notes:
           "Comparison using より～のほうが with い-adjective 大きい. The blank covers the adjective predicate.",
@@ -585,7 +585,7 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ですか" },
+          { text: "か" },
         ],
       },
       {
@@ -610,12 +610,21 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "寮[りょう]に 住[す]むことは うちに 住[す]むことと" },
-          { text: "同[おな]じくらい 便利[べんり]", blank: true },
-          { text: "ですか" },
+          { text: "寮[りょう]に 住[す]むことは うちに 住[す]むことと 同[おな]じくらい" },
+          {
+            text: "便利[べんり]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
         ],
         notes:
-          "Using と同じくらい pattern: Noun/Verb こと + と同じくらい + な-adjective. The blank covers the full comparison nucleus.",
+          "Using と同じくらい pattern: Noun/Verb こと + と同じくらい + な-adjective.",
       },
       {
         segments: [
@@ -682,7 +691,7 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ですか" },
+          { text: "か" },
         ],
         notes:
           "Using Verb+こと to nominalize both actions, then より～のほうが for comparison. The blank covers the full comparison construction up to and including のほうが.",
@@ -753,7 +762,7 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ですか" },
+          { text: "か" },
         ],
       },
       {
@@ -771,7 +780,7 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ですか" },
+          { text: "か" },
         ],
         notes: "こと dropped",
       },
@@ -790,7 +799,7 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ですか" },
+          { text: "か" },
         ],
         notes: "Reversed order with は instead of のほうが",
       },
@@ -830,7 +839,7 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ですか" },
+          { text: "か" },
         ],
       },
       {
@@ -844,7 +853,7 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ですか" },
+          { text: "か" },
         ],
       },
     ],
@@ -956,13 +965,22 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "スーパーですしを 買[か]うことは、すし 屋[や]で 食[た]べることと",
+            text: "スーパーですしを 買[か]うことは、すし 屋[や]で 食[た]べることと 同[おな]じくらい",
           },
-          { text: "同[おな]じくらいおいしい", blank: true },
-          { text: "ですか" },
+          {
+            text: "おいしい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
         ],
         notes:
-          "Uses と同じくらい to compare buying sushi at a supermarket vs. eating it at a sushi restaurant. The blank covers the と同じくらい + adjective construction.",
+          "Uses と同じくらい to compare buying sushi at a supermarket vs. eating it at a sushi restaurant.",
       },
       {
         segments: [

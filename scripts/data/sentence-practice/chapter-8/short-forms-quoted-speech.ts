@@ -336,6 +336,28 @@ export const questions: Question[] = [
         ],
         notes: "私は dropped + が",
       },
+      {
+        segments: [
+          {
+            text: "そうたさんは 毎日[まいにち] 遅[おそ]くまで 働[はたら]いていると",
+            blank: true,
+          },
+          { text: "思[おも]う", blank: true },
+        ],
+        register: "casual",
+        notes: "遅くまで (until late) + 働いている + 思う",
+      },
+      {
+        segments: [
+          {
+            text: "そうたさんは 毎日[まいにち] 遅[おそ]くまで 働[はたら]いていると",
+            blank: true,
+          },
+          { text: "思[おも]っている", blank: true },
+        ],
+        register: "casual",
+        notes: "遅くまで + 働いている",
+      },
     ],
   },
   {
@@ -394,6 +416,17 @@ export const questions: Question[] = [
         ],
         notes: "Volitional 行こう (first-person intention) + は topic",
       },
+      {
+        segments: [
+          {
+            text: "今週末[こんしゅうまつ] 海[うみ]に 行[い]こうと",
+            blank: true,
+          },
+          { text: "思[おも]う", blank: true },
+        ],
+        register: "casual",
+        notes: "Volitional 行こう without は",
+      },
     ],
   },
   {
@@ -448,6 +481,28 @@ export const questions: Question[] = [
           { text: "聞[き]いた", blank: true },
         ],
         notes: "と聞いた instead of と言っていた",
+      },
+      {
+        segments: [
+          {
+            text: "はなさんは 今[いま] 犬[いぬ]と 暮[く]らしていると",
+            blank: true,
+          },
+          { text: "言[い]った", blank: true },
+        ],
+        register: "casual",
+        notes: "暮らしている (live, synonym of 住む) + 言った",
+      },
+      {
+        segments: [
+          {
+            text: "はなさんは 今[いま] 犬[いぬ]と 暮[く]らしていると",
+            blank: true,
+          },
+          { text: "言[い]っていた", blank: true },
+        ],
+        register: "casual",
+        notes: "暮らしている + 言っていた",
       },
     ],
   },
@@ -507,6 +562,14 @@ export const questions: Question[] = [
           { text: "か" },
         ],
         notes: "大変だ + は",
+      },
+      {
+        segments: [
+          { text: "はなさんはバイトが 忙[いそが]しすぎると", blank: true },
+          { text: "思[おも]っている", blank: true },
+          { text: "か" },
+        ],
+        notes: "バイト (casual abbreviation of アルバイト)",
       },
     ],
   },
@@ -687,6 +750,17 @@ export const questions: Question[] = [
         ],
         notes: "そうたさんが instead of そうたさんは",
       },
+      {
+        segments: [
+          {
+            text: "そうたさんははなさんは 歌[うた]が 上手[じょうず]だと",
+            blank: true,
+          },
+          { text: "思[おも]う", blank: true },
+        ],
+        register: "casual",
+        notes: "思う (plain) instead of 思っている",
+      },
     ],
   },
   {
@@ -741,6 +815,17 @@ export const questions: Question[] = [
           { text: "聞[き]いた", blank: true },
         ],
         notes: "と聞いた instead of と言っていた",
+      },
+      {
+        segments: [
+          {
+            text: "あみさんは 今日[きょう] 食堂[しょくどう]で 昼[ひる]ご 飯[はん]を 食[た]べているって",
+            blank: true,
+          },
+          { text: "言[い]った", blank: true },
+        ],
+        register: "casual",
+        notes: "って (casual quote) + 言った",
       },
     ],
   },
@@ -845,7 +930,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I heard that Sora is going on a date this weekend.",
+    english: "Someone told me Sora is going on a date this weekend.",
     hint: "Sora = そら",
     answers: [
       {
@@ -941,6 +1026,28 @@ export const questions: Question[] = [
           { text: "思[おも]っている", blank: true },
         ],
         notes: "はなさんの部屋 instead of 自分の部屋",
+      },
+      {
+        segments: [
+          {
+            text: "はなさんは 部屋[へや]が 小[ちい]さすぎると",
+            blank: true,
+          },
+          { text: "思[おも]っている", blank: true },
+        ],
+        register: "casual",
+        notes: "部屋が + 小さすぎる (too small) — self-possession implicit",
+      },
+      {
+        segments: [
+          {
+            text: "はなさんは 部屋[へや]が 小[ちい]さすぎると",
+            blank: true,
+          },
+          { text: "思[おも]う", blank: true },
+        ],
+        register: "casual",
+        notes: "部屋が + 小さすぎる + 思う",
       },
     ],
   },

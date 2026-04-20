@@ -157,6 +157,57 @@ export const questions: Question[] = [
         ],
         notes: "とても instead of すごく",
       },
+      {
+        segments: [
+          { text: "日本[にほん]は 夏[なつ]に 本当[ほんとう]に" },
+          {
+            text: "暑[あつ]くなる",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "ね" },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "夏[なつ]に 日本[にほん]は 本当[ほんとう]に" },
+          {
+            text: "暑[あつ]くなる",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "ね" },
+        ],
+        notes: "夏に fronted + 本当に",
+      },
+      {
+        segments: [
+          { text: "夏[なつ]に 日本[にほん]は すごく" },
+          {
+            text: "暑[あつ]くなる",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "ね" },
+        ],
+        notes: "夏に fronted",
+      },
     ],
   },
   {

@@ -86,6 +86,39 @@ export const questions: Question[] = [
         ],
         notes: "Explicit 私が + contracted とく + ね",
       },
+      {
+        segments: [
+          { text: "予約[よやく]して" },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "ね" },
+        ],
+        notes: "Polite-generating split: して + おく (conjugates to おく/おきます) + ね",
+      },
+      {
+        segments: [
+          { text: "予約[よやく]して" },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Split for polite generation, no particle",
+      },
     ],
   },
   {
@@ -225,6 +258,38 @@ export const questions: Question[] = [
           { text: "買[か]っておく", blank: true },
         ],
         notes: "Explicit 私は with チケット",
+      },
+      {
+        segments: [
+          { text: "切符[きっぷ]を 買[か]って" },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Polite-generating split: 買って + おく(conj) — produces 買っておく / 買っておきます",
+      },
+      {
+        segments: [
+          { text: "チケットを 買[か]って" },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Polite-generating split with チケット",
       },
     ],
   },
@@ -373,6 +438,22 @@ export const questions: Question[] = [
           { text: "消[け]しとく", blank: true },
         ],
         notes: "Casual contracted とく form",
+      },
+      {
+        segments: [
+          { text: "電気[でんき]を 消[け]して" },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Polite-generating split: 消して + おく(conj) → 消しておく / 消しておきます",
       },
     ],
   },
@@ -555,6 +636,38 @@ export const questions: Question[] = [
           { text: "入[い]れとく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Explicit 私のかばん — \"my bag\"",
+      },
+      {
+        segments: [
+          { text: "今夜[こんや]、かばんに 荷物[にもつ]を 入[い]れて" },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Polite-generating split: 入れて + おく(conj) — full 〜ておきます polite",
+      },
+      {
+        segments: [
+          { text: "今夜[こんや]、荷物[にもつ]を 詰[つ]めて" },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "詰める (pack) synonym — \"pack my bag\" reading",
       },
     ],
   },
@@ -773,6 +886,38 @@ export const questions: Question[] = [
         ],
         notes: "Contracted とく form with 少し. 財布に first.",
       },
+      {
+        segments: [
+          { text: "財布[さいふ]に お金[おかね]を 入[い]れて" },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Polite-generating split: 入れて + おく(conj) — proper base word, produces 入れておく / 入れておきます",
+      },
+      {
+        segments: [
+          { text: "お金[おかね]を 財布[さいふ]に 入[い]れて" },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Split with お金を first",
+      },
     ],
   },
   {
@@ -856,6 +1001,54 @@ export const questions: Question[] = [
           { text: "ね" },
         ],
         notes: "With ね for seeking agreement/softening",
+      },
+      {
+        segments: [
+          { text: "宿題[しゅくだい]を して" },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Polite-generating split: して + おく(conj) — produces 宿題をしておく / 宿題をしておきます",
+      },
+      {
+        segments: [
+          { text: "宿題[しゅくだい]を やって" },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Split with やる — やっておく / やっておきます",
+      },
+      {
+        segments: [
+          { text: "先[さき]に 宿題[しゅくだい]を して" },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "先に + split",
       },
     ],
   },
@@ -1136,15 +1329,78 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "ここで 写真[しゃしん]を 撮[と]って" },
-          { text: "おきます", blank: true },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Polite おきます split as blank",
+        notes: "Polite-generating split: 撮って + おく(conj) — produces both registers",
       },
     ],
   },
   {
-    english: "I'll go ahead and turn on the air conditioner before everyone arrives.",
+    english:
+      "I'll go ahead and turn on the air conditioner before everyone arrives.",
     answers: [
+      {
+        segments: [
+          {
+            text: "みんなが 来[く]る 前[まえ]に、エアコンを つけて",
+          },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+      },
+      {
+        segments: [
+          {
+            text: "みんなが 来[く]る 前[まえ]に、エアコンを つけ",
+          },
+          {
+            text: "とく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Contracted casual form とく",
+      },
+      {
+        segments: [
+          {
+            text: "みんなが 来[く]る 前[まえ]に、クーラーを つけて",
+          },
+          {
+            text: "おく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "クーラー synonym for エアコン",
+      },
     ],
   },
 ];

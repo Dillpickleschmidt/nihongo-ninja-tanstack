@@ -76,14 +76,14 @@ export const questions: Question[] = [
         segments: [
           { text: "病気[びょうき]のとき", blank: true },
           { text: "、お 母[かあ]さんの 料理[りょうり]が" },
-          { text: "食[た]べたい", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
           { text: "病気[びょうき]のとき", blank: true },
           { text: "、お 母[かあ]さんの 料理[りょうり]を" },
-          { text: "食[た]べたい", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using を instead of が to mark 料理",
       },
@@ -91,7 +91,7 @@ export const questions: Question[] = [
         segments: [
           { text: "病気[びょうき]のとき", blank: true },
           { text: "に、お 母[かあ]さんの 料理[りょうり]が" },
-          { text: "食[た]べたい", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Adding に after とき",
       },
@@ -99,7 +99,7 @@ export const questions: Question[] = [
         segments: [
           { text: "病気[びょうき]のとき", blank: true },
           { text: "に、お 母[かあ]さんの 料理[りょうり]を" },
-          { text: "食[た]べたい", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
         notes: "に after とき, を marking 料理",
       },
@@ -107,14 +107,14 @@ export const questions: Question[] = [
         segments: [
           { text: "病気[びょうき]のときは", blank: true },
           { text: "、お 母[かあ]さんの 料理[りょうり]が" },
-          { text: "食[た]べたい", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
           { text: "病気[びょうき]のときは", blank: true },
           { text: "、お 母[かあ]さんの 料理[りょうり]を" },
-          { text: "食[た]べたい", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
         notes: "は after とき, を marking 料理",
       },

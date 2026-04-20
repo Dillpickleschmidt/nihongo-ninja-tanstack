@@ -662,6 +662,15 @@ export const questions: Question[] = [
         ],
         notes: "With explicit subject 私は",
       },
+      {
+        segments: [
+          { text: "果物[くだもの]" },
+          { text: "の 中[なか]でいちごが 一番[いちばん]", blank: true },
+          { text: " 好[す]き" },
+        ],
+        register: "casual",
+        notes: "Bare 好き (no だ) — natural casual statement",
+      },
     ],
   },
   {

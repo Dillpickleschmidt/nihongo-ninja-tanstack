@@ -18,6 +18,24 @@ export const questions: Question[] = [
         ],
         notes: "Using が",
       },
+      {
+        segments: [
+          { text: "メアリーさんは 来月[らいげつ]仕事[しごと]を 辞[や]める" },
+          { text: "って", blank: true },
+          { text: "言[い]ってる" },
+        ],
+        register: "casual",
+        notes: "〜って言ってる (is saying) extended form",
+      },
+      {
+        segments: [
+          { text: "メアリーさんは 来月[らいげつ]仕事[しごと]を 辞[や]める" },
+          { text: "って", blank: true },
+          { text: "言[い]っている" },
+        ],
+        register: "casual",
+        notes: "〜って言っている non-contracted",
+      },
     ],
   },
   {
@@ -27,7 +45,7 @@ export const questions: Question[] = [
         segments: [
           { text: "メアリーさんは 来年[らいねん]留学[りゅうがく]する" },
           { text: "って", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Basic pattern with は",
       },
@@ -35,7 +53,7 @@ export const questions: Question[] = [
         segments: [
           { text: "メアリーさんが 来年[らいげつ]留学[りゅうがく]する" },
           { text: "って", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using が",
       },
@@ -58,6 +76,24 @@ export const questions: Question[] = [
         ],
         notes: "Using は for subject and が for topic",
       },
+      {
+        segments: [
+          { text: "友[とも]達[だち]は 映画[えいが]はつまらなかっ" },
+          { text: "たって", blank: true },
+          { text: "言[い]っている" },
+        ],
+        register: "casual",
+        notes: "〜って言っている (is saying) extension",
+      },
+      {
+        segments: [
+          { text: "友[とも]達[だち]は 映画[えいが]がつまらなかっ" },
+          { text: "たって", blank: true },
+          { text: "言[い]っている" },
+        ],
+        register: "casual",
+        notes: "は+が + 言っている extension",
+      },
     ],
   },
   {
@@ -77,6 +113,24 @@ export const questions: Question[] = [
         ],
         notes: "Using は for subject and が for topic",
       },
+      {
+        segments: [
+          { text: "先生[せんせい]はテストは 簡単[かんたん]" },
+          { text: "だって", blank: true },
+          { text: "言[い]っている" },
+        ],
+        register: "casual",
+        notes: "〜って言っている extension",
+      },
+      {
+        segments: [
+          { text: "先生[せんせい]はテストが 簡単[かんたん]" },
+          { text: "だって", blank: true },
+          { text: "言[い]っている" },
+        ],
+        register: "casual",
+        notes: "は+が + 言っている extension",
+      },
     ],
   },
   {
@@ -86,7 +140,7 @@ export const questions: Question[] = [
         segments: [
           { text: "ケンさんは 宿題[しゅくだい]が 難[むずか]しい" },
           { text: "って", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Basic pattern with が",
       },
@@ -94,7 +148,7 @@ export const questions: Question[] = [
         segments: [
           { text: "ケンさんの 宿題[しゅくだい]が 難[むずか]しい" },
           { text: "って", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using の for possession",
       },
@@ -117,6 +171,15 @@ export const questions: Question[] = [
         ],
         notes: "Using が",
       },
+      {
+        segments: [
+          { text: "ユキさんは 結婚[けっこん]する" },
+          { text: "って", blank: true },
+          { text: "言[い]っている" },
+        ],
+        register: "casual",
+        notes: "〜って言っている extension",
+      },
     ],
   },
   {
@@ -126,7 +189,7 @@ export const questions: Question[] = [
         segments: [
           { text: "姉[あね]は 家賃[やちん]が 高[たか]くなっ" },
           { text: "たって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は for subject and が for topic",
       },
@@ -134,7 +197,7 @@ export const questions: Question[] = [
         segments: [
           { text: "姉[あね]が 家賃[やちん]が 高[たか]くなっ" },
           { text: "たって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using が for both",
       },
@@ -157,6 +220,15 @@ export const questions: Question[] = [
         ],
         notes: "Using が",
       },
+      {
+        segments: [
+          { text: "マイクさんは 日本[にほん]の 生活[せいかつ]に 慣[な]れ" },
+          { text: "たって", blank: true },
+          { text: "言[い]っている" },
+        ],
+        register: "casual",
+        notes: "〜って言っている extension",
+      },
     ],
   },
   {
@@ -166,7 +238,7 @@ export const questions: Question[] = [
         segments: [
           { text: "クラスメートは 期末試験[きまつしけん]がなくなっ" },
           { text: "たって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は for subject and が for topic",
       },
@@ -174,7 +246,7 @@ export const questions: Question[] = [
         segments: [
           { text: "クラスメートが 期末試験[きまつしけん]がなくなっ" },
           { text: "たって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using が for both",
       },
@@ -199,6 +271,17 @@ export const questions: Question[] = [
         ],
         notes: "Using は with 大きな",
       },
+      {
+        segments: [
+          {
+            text: "田中[たなか]さんは 近[ちか]くで 大[おお]きい 火事[かじ]がある",
+          },
+          { text: "って", blank: true },
+          { text: "言[い]っている" },
+        ],
+        register: "casual",
+        notes: "〜って言っている extension",
+      },
     ],
   },
   {
@@ -208,7 +291,7 @@ export const questions: Question[] = [
         segments: [
           { text: "友[とも]達[だち]はレストランがいい" },
           { text: "って", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は for subject and が for topic",
       },
@@ -216,9 +299,25 @@ export const questions: Question[] = [
         segments: [
           { text: "友[とも]達[だち]はあのレストランはいい" },
           { text: "って", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は for both, with あの",
+      },
+      {
+        segments: [
+          { text: "友[とも]達[だち]がそのレストランはいい" },
+          { text: "って", blank: true },
+          { text: "言[い]っていた" },
+        ],
+        notes: "が subject + は topic + その (that nearby)",
+      },
+      {
+        segments: [
+          { text: "友[とも]達[だち]がそのレストランがいい" },
+          { text: "って", blank: true },
+          { text: "言[い]っていた" },
+        ],
+        notes: "が subject + が object + その",
       },
     ],
   },
@@ -239,6 +338,15 @@ export const questions: Question[] = [
         ],
         notes: "Using が with active form",
       },
+      {
+        segments: [
+          { text: "ケイコさんは 新[あたら]しい 仕事[しごと]が 決[き]まっ" },
+          { text: "たって", blank: true },
+          { text: "言[い]っている" },
+        ],
+        register: "casual",
+        notes: "〜って言っている extension",
+      },
     ],
   },
   {
@@ -250,7 +358,7 @@ export const questions: Question[] = [
             text: "サラさんは 東京[とうきょう]大学[だいがく]に 合格[ごうかく]し",
           },
           { text: "たって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は and 合格",
       },
@@ -258,7 +366,7 @@ export const questions: Question[] = [
         segments: [
           { text: "サラさんは 東京[とうきょう]大学[だいがく]に 入[はい]っ" },
           { text: "たって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は",
       },
@@ -268,7 +376,7 @@ export const questions: Question[] = [
             text: "サラさんが 東京[とうきょう]大学[だいがく]に 合格[ごうかく]し",
           },
           { text: "たって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using が and 合格",
       },
@@ -276,7 +384,7 @@ export const questions: Question[] = [
         segments: [
           { text: "サラさんが 東京[とうきょう]大学[だいがく]に 入[はい]っ" },
           { text: "たって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using が",
       },
@@ -299,6 +407,15 @@ export const questions: Question[] = [
         ],
         notes: "Using は and が",
       },
+      {
+        segments: [
+          { text: "ナオミさんはテストは 簡単[かんたん]だっ" },
+          { text: "たって", blank: true },
+          { text: "言[い]っている" },
+        ],
+        register: "casual",
+        notes: "〜って言っている extension",
+      },
     ],
   },
   {
@@ -308,7 +425,7 @@ export const questions: Question[] = [
         segments: [
           { text: "ルームメイトはショッピングモールができ" },
           { text: "たって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は and が with できた",
       },
@@ -316,7 +433,7 @@ export const questions: Question[] = [
         segments: [
           { text: "ルームメイトはショッピングモールがオープンし" },
           { text: "たって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は and が with オープンした",
       },
@@ -339,6 +456,15 @@ export const questions: Question[] = [
         ],
         notes: "Using が",
       },
+      {
+        segments: [
+          { text: "ボブさんは 日本語[にほんご]を 勉強[べんきょう]している" },
+          { text: "って", blank: true },
+          { text: "言[い]っている" },
+        ],
+        register: "casual",
+        notes: "〜って言っている extension (non-contracted 勉強している)",
+      },
     ],
   },
   {
@@ -348,7 +474,7 @@ export const questions: Question[] = [
         segments: [
           { text: "先生[せんせい]は 宿題[しゅくだい]が 明日[あした]まで" },
           { text: "だって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は and が",
       },
@@ -356,7 +482,7 @@ export const questions: Question[] = [
         segments: [
           { text: "先生[せんせい]は 宿題[しゅくだい]は 明日[あした]まで" },
           { text: "だって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は for both",
       },
@@ -369,7 +495,7 @@ export const questions: Question[] = [
         segments: [
           { text: "ジョンさんはカフェが 込[こ]んでる" },
           { text: "って", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は and が",
       },
@@ -377,7 +503,7 @@ export const questions: Question[] = [
         segments: [
           { text: "ジョンさんはあのカフェは 込[こ]んでる" },
           { text: "って", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は for both with あの",
       },
@@ -401,6 +527,15 @@ export const questions: Question[] = [
         ],
         notes: "Using が",
       },
+      {
+        segments: [
+          { text: "ユキさんは 試験[しけん]に 落[お]ち" },
+          { text: "たって", blank: true },
+          { text: "言[い]っている" },
+        ],
+        register: "casual",
+        notes: "〜って言っている extension",
+      },
     ],
   },
   {
@@ -411,7 +546,7 @@ export const questions: Question[] = [
         segments: [
           { text: "姉[あね]は 映画館[えいがかん]が 混[こ]んでき" },
           { text: "たって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は and が",
       },
@@ -419,7 +554,7 @@ export const questions: Question[] = [
         segments: [
           { text: "姉[あね]が 映画館[えいがかん]は 混[こ]んでき" },
           { text: "たって", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using が and は",
       },
@@ -435,6 +570,15 @@ export const questions: Question[] = [
         ],
         notes: "Using は and が",
       },
+      {
+        segments: [
+          { text: "田中[たなか]さんは 明日[あした]の 天気[てんき]がいい" },
+          { text: "って", blank: true },
+          { text: "言[い]っている" },
+        ],
+        register: "casual",
+        notes: "〜って言っている extension",
+      },
     ],
   },
   {
@@ -444,7 +588,7 @@ export const questions: Question[] = [
         segments: [
           { text: "ケンさんは 新[あたら]しい 仕事[しごと]が 面白[おもしろ]い" },
           { text: "って", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using は and が",
       },
@@ -452,7 +596,7 @@ export const questions: Question[] = [
         segments: [
           { text: "ケンさんの 新[あたら]しい 仕事[しごと]は 面白[おもしろ]い" },
           { text: "って", blank: true },
-          { text: "言[い]ってた" },
+          { text: "言[い]っていた" },
         ],
         notes: "Using の and は",
       },

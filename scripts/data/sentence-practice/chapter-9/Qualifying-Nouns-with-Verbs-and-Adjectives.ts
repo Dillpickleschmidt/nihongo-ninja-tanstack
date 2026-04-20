@@ -262,6 +262,15 @@ export const questions: Question[] = [
         ],
         notes: "から + とても + casual",
       },
+      {
+        segments: [
+          { text: "図書館[としょかん]で" },
+          { text: " 借[か]りた 本[ほん]", blank: true },
+          { text: "は とても 面白[おもしろ]い 話[はなし]がある" },
+        ],
+        register: "casual",
+        notes: "で + とても + casual ある",
+      },
     ],
   },
   {
@@ -552,6 +561,24 @@ export const questions: Question[] = [
           { text: "混[こ]んでいた", blank: true },
         ],
         notes: "混んでいた (was crowded) — more accurate than にぎやか",
+      },
+      {
+        segments: [
+          { text: "今朝[けさ]" },
+          { text: " 乗[の]った 電車[でんしゃ]", blank: true },
+          { text: "は すごく 混[こ]んで" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "混んでいました — polite past te-iru (was crowded)",
       },
     ],
   },

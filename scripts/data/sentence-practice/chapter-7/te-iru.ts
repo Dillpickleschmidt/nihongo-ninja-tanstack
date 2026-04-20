@@ -189,7 +189,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Does Kenji drink coffee every morning?",
+    english: "Is Kenji drinking coffee every morning (these days)?",
     hint: "Kenji = けんじ",
     answers: [
       {
@@ -589,12 +589,21 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I always listen to music while studying.",
+    english: "I'm always listening to music while studying.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は いつも 勉強[べんきょう]して 音楽[おんがく]を" },
-          { text: "聞[き]いている", blank: true },
+          { text: "私[わたし]は いつも 勉強[べんきょう]して 音楽[おんがく]を 聞[き]いて" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
       },
       {
@@ -606,29 +615,65 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]が いつも 勉強[べんきょう]して 音楽[おんがく]を" },
-          { text: "聞[き]いている", blank: true },
+          { text: "私[わたし]が いつも 勉強[べんきょう]して 音楽[おんがく]を 聞[き]いて" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
         notes: "が instead of は",
       },
       {
         segments: [
-          { text: "私[わたし]は 勉強[べんきょう]して いつも 音楽[おんがく]を" },
-          { text: "聞[き]いている", blank: true },
+          { text: "私[わたし]は 勉強[べんきょう]して いつも 音楽[おんがく]を 聞[き]いて" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
         notes: "いつも moved after 勉強して",
       },
       {
         segments: [
-          { text: "私[わたし]は いつも 勉強[べんきょう]して 音楽[おんがく]を" },
-          { text: "聴[き]いている", blank: true },
+          { text: "私[わたし]は いつも 勉強[べんきょう]して 音楽[おんがく]を 聴[き]いて" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
         notes: "Using 聴く (listen attentively) instead of 聞く",
       },
       {
         segments: [
-          { text: "いつも 勉強[べんきょう]しながら 音楽[おんがく]を" },
-          { text: "聞[き]いている", blank: true },
+          { text: "いつも 勉強[べんきょう]しながら 音楽[おんがく]を 聞[き]いて" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
         notes: "〜ながら (while) for concurrent action, subject dropped",
       },
@@ -949,62 +994,125 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "あのころ、 私[わたし]は 毎日[まいにち] 父[ちち]の 車[くるま]を",
+            text: "あのころ、 私[わたし]は 毎日[まいにち] 父[ちち]の 車[くるま]を 使[つか]って",
           },
-          { text: "使[つか]っていた", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
         ],
       },
       {
         segments: [
           {
-            text: "その 頃[ころ]、 私[わたし]は 毎日[まいにち] 父[ちち]の 車[くるま]を",
+            text: "その 頃[ころ]、 私[わたし]は 毎日[まいにち] 父[ちち]の 車[くるま]を 使[つか]って",
           },
-          { text: "使[つか]っていた", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
         ],
         notes: "その頃 instead of あのころ",
       },
       {
         segments: [
           {
-            text: "あのころ、 私[わたし]は 父[ちち]の 車[くるま]を 毎日[まいにち]",
+            text: "あのころ、 私[わたし]は 父[ちち]の 車[くるま]を 毎日[まいにち] 使[つか]って",
           },
-          { text: "使[つか]っていた", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
         ],
         notes: "毎日 moved after 車を",
       },
       {
         segments: [
           {
-            text: "私[わたし]は あのころ、 毎日[まいにち] 父[ちち]の 車[くるま]を",
+            text: "私[わたし]は あのころ、 毎日[まいにち] 父[ちち]の 車[くるま]を 使[つか]って",
           },
-          { text: "使[つか]っていた", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
         ],
         notes: "私は at start, あのころ after は",
       },
       {
         segments: [
           {
-            text: "あのころ、 私[わたし]は 毎日[まいにち] 父[ちち]の 車[くるま]に",
+            text: "あのころ、 私[わたし]は 毎日[まいにち] 父[ちち]の 車[くるま]に 乗[の]って",
           },
-          { text: "乗[の]っていた", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
         ],
         notes: "乗っていた — 'was riding/taking' as a synonym for using",
       },
       {
         segments: [
           {
-            text: "その 頃[ころ]、 私[わたし]は 父[ちち]の 車[くるま]を 毎日[まいにち]",
+            text: "その 頃[ころ]、 私[わたし]は 父[ちち]の 車[くるま]を 毎日[まいにち] 使[つか]って",
           },
-          { text: "使[つか]っていた", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
         ],
         notes: "その頃 + 毎日 after 車を",
       },
       {
         segments: [
           {
-            text: "毎日[まいにち]、 あのころは 私[わたし]は 父[ちち]の 車[くるま]を",
+            text: "毎日[まいにち]、 あのころは 私[わたし]は 父[ちち]の 車[くるま]を 使[つか]って",
           },
-          { text: "使[つか]っていた", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
         ],
         notes: "毎日 fronted, あのころは as topic",
       },
@@ -1066,7 +1174,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "My mother cooks every morning.",
+    english: "My mother is cooking every morning (these days).",
     answers: [
       {
         segments: [
@@ -1204,7 +1312,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "My older brother plays tennis every Saturday.",
+    english: "My older brother is playing tennis every Saturday (these days).",
     answers: [
       {
         segments: [

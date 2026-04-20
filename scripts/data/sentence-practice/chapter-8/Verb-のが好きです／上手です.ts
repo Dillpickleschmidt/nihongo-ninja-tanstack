@@ -918,6 +918,60 @@ export const questions: Question[] = [
         ],
         notes: "Reversed clause order",
       },
+      {
+        segments: [
+          { text: "ゆきさんは 泳[およ]ぐのが" },
+          {
+            text: " 苦手[にがて]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "けど、海[うみ]に 行[い]くのが" },
+          {
+            text: " 大好[だいす]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "苦手 (weak point) instead of 下手",
+      },
+      {
+        segments: [
+          { text: "ゆきさんは 泳[およ]ぐのが" },
+          {
+            text: " 苦手[にがて]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "が、海[うみ]に 行[い]くのが" },
+          {
+            text: " 大好[だいす]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "苦手 + が conjunction",
+      },
     ],
   },
   {
@@ -1076,6 +1130,33 @@ export const questions: Question[] = [
           },
         ],
         notes: "のは for contrast in second clause",
+      },
+      {
+        segments: [
+          { text: "ミクさんは 写真[しゃしん]を 撮[と]るのが" },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "が、本[ほん]を 読[よ]むのは" },
+          {
+            text: " 好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "のは for contrast + が conjunction",
       },
     ],
   },
@@ -1607,6 +1688,33 @@ export const questions: Question[] = [
         ],
         notes: "のは for contrast in second clause",
       },
+      {
+        segments: [
+          { text: "はるとさんは 泳[およ]ぐのが" },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "が、海[うみ]に 行[い]くのは" },
+          {
+            text: " 好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "のは for contrast + が conjunction",
+      },
     ],
   },
   {
@@ -2043,6 +2151,60 @@ export const questions: Question[] = [
           },
         ],
         notes: "のは for contrast in second clause",
+      },
+      {
+        segments: [
+          { text: "なおみさんは 人[ひと]の 話[はなし]を 聞[き]くのが とても" },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "けど、話[はな]すのは" },
+          {
+            text: " 好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とても + のは for contrast",
+      },
+      {
+        segments: [
+          { text: "なおみさんは 人[ひと]の 話[はなし]を 聞[き]くのが とても" },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "が、話[はな]すのは" },
+          {
+            text: " 好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とても + のは + が conjunction",
       },
     ],
   },

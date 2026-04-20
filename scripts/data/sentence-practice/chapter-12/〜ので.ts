@@ -243,6 +243,14 @@ export const questions: Question[] = [
         ],
         notes: "おなかがすく (dictionary form) as blank — \"stomach gets empty so...\"",
       },
+      {
+        segments: [
+          { text: "おなかがすいた", blank: true },
+          { text: "ので、サンドイッチを 買[か]いに" },
+          { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
+        ],
+        notes: "おなかがすいた (past/resulting state) — \"got hungry so...\"",
+      },
     ],
   },
   {

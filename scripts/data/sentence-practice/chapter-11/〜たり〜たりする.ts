@@ -132,6 +132,42 @@ export const questions: Question[] = [
         ],
         notes: "Reversed order, no お",
       },
+      {
+        segments: [
+          {
+            text: "平日[へいじつ]の 夜[よる]は お 風呂[ふろ]に 入[はい]ったり、本[ほん]を 読[よ]んだり",
+          },
+          {
+            text: "する",
+            blank: true,
+            conjugation: {
+              pos: "Suru verb - special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "平日の夜 (weeknights) instead of 平日",
+      },
+      {
+        segments: [
+          {
+            text: "平日[へいじつ]の 夜[よる]は 風呂[ふろ]に 入[はい]ったり、本[ほん]を 読[よ]んだり",
+          },
+          {
+            text: "する",
+            blank: true,
+            conjugation: {
+              pos: "Suru verb - special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "平日の夜 + no お",
+      },
     ],
   },
   {
@@ -452,6 +488,42 @@ export const questions: Question[] = [
           },
         ],
         notes: "日は + reversed",
+      },
+      {
+        segments: [
+          {
+            text: "休[やす]みの 日[ひ]に、けんじさんは カラオケを 歌[うた]ったり、踊[おど]ったり",
+          },
+          {
+            text: "する",
+            blank: true,
+            conjugation: {
+              pos: "Suru verb - special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "休みの日に fronted",
+      },
+      {
+        segments: [
+          {
+            text: "休[やす]みの 日[ひ]は、けんじさんは カラオケを 歌[うた]ったり、踊[おど]ったり",
+          },
+          {
+            text: "する",
+            blank: true,
+            conjugation: {
+              pos: "Suru verb - special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "休みの日は fronted",
       },
     ],
   },

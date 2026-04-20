@@ -679,6 +679,23 @@ export const questions: Question[] = [
         ],
         notes: "が + を particle combination",
       },
+      {
+        segments: [
+          { text: "たけしさんはもうレストランに" },
+          {
+            text: " 電話[でんわ]する",
+            blank: true,
+            conjugation: {
+              pos: "Suru verb - compound word",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "With か question particle",
+      },
     ],
   },
   {
@@ -1483,6 +1500,40 @@ export const questions: Question[] = [
           { text: "の" },
         ],
         notes: "が + の soft question: コンサートがもう始まったの？",
+      },
+      {
+        segments: [
+          { text: "コンサートはもう", blank: true },
+          {
+            text: " 始[はじ]まる",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "With か question particle",
+      },
+      {
+        segments: [
+          { text: "コンサートがもう", blank: true },
+          {
+            text: " 始[はじ]まる",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "が + か question particle",
       },
     ],
   },

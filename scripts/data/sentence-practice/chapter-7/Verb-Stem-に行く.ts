@@ -783,6 +783,25 @@ export const questions: Question[] = [
       },
       {
         segments: [
+          { text: "ゆきさんは 今夜[こんや] カラオケに" },
+          { text: "歌[うた]いに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "の" },
+        ],
+        register: "casual",
+        notes: "の question particle (casual)",
+      },
+      {
+        segments: [
           { text: "ゆきさんは 今晩[こんばん] カラオケ 屋[や]に" },
           { text: "歌[うた]いに", blank: true },
           {

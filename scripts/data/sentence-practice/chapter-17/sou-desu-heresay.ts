@@ -154,6 +154,13 @@ export const questions: Question[] = [
         ],
         notes: "Adding source with では",
       },
+      {
+        segments: [
+          { text: "彼[かれ]らの 先生[せんせい]はとても 厳[きび]しい" },
+          { text: "そうです", blank: true },
+        ],
+        notes: "彼らの prefix (their)",
+      },
     ],
   },
   {

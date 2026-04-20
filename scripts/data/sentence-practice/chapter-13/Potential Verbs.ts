@@ -92,6 +92,40 @@ export const questions: Question[] = [
         ],
         notes: "が subject + を marking 海 + potential + か",
       },
+      {
+        segments: [
+          { text: "けんじさんは 海[うみ]で" },
+          {
+            text: "泳[およ]ぐ",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'gu' ending",
+              form: "potential",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Polite-generating: 泳ぐ + potential conjugation → 泳げる / 泳げます",
+      },
+      {
+        segments: [
+          { text: "けんじさんが 海[うみ]で" },
+          {
+            text: "泳[およ]ぐ",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'gu' ending",
+              form: "potential",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Polite-generating + が subject",
+      },
     ],
   },
   {

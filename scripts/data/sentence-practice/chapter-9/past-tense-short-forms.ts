@@ -246,6 +246,24 @@ export const questions: Question[] = [
         ],
         notes: "Polite でした with が",
       },
+      {
+        segments: [
+          { text: "けんじさんは 去年[きょねん] 大学院生[だいがくいんせい]" },
+          { text: "だった", blank: true },
+          { text: "けど、今[いま]は 先生[せんせい]だ" },
+        ],
+        register: "casual",
+        notes: "Casual だ copula in second clause",
+      },
+      {
+        segments: [
+          { text: "けんじさんは 去年[きょねん] 大学院生[だいがくいんせい]" },
+          { text: "だった", blank: true },
+          { text: "が、今[いま]は 先生[せんせい]だ" },
+        ],
+        register: "casual",
+        notes: "Casual だ + が conjunction",
+      },
     ],
   },
   {

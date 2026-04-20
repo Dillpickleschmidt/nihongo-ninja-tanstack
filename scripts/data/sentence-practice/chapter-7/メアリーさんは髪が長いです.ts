@@ -81,7 +81,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "My younger brother has a really big mouth.",
+    english: "My younger brother's mouth is really big.",
     answers: [
       {
         segments: [
@@ -121,7 +121,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "My mother has really beautiful eyes.",
+    english: "My mother's eyes are really beautiful.",
     answers: [
       {
         segments: [
@@ -200,7 +200,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "My grandmother has really cute hands.",
+    english: "My grandmother's hands are really cute.",
     answers: [
       {
         segments: [
@@ -547,7 +547,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "My father has a really fast car.",
+    english: "My father's car is really fast.",
     answers: [
       {
         segments: [
@@ -705,7 +705,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "My mother has a really fast car.",
+    english: "My mother's car is really fast.",
     answers: [
       {
         segments: [
@@ -745,7 +745,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "My grandfather has a really big stomach.",
+    english: "My grandfather's stomach is really big.",
     answers: [
       {
         segments: [
@@ -838,6 +838,24 @@ export const questions: Question[] = [
           },
         ],
         notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "妹[いもうと]は" },
+          { text: "髪[かみ]が", blank: true },
+          { text: "とても" },
+          {
+            text: "きれい",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とても instead of すごく",
       },
     ],
   },
