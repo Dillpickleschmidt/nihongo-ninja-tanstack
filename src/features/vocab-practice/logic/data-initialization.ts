@@ -276,7 +276,6 @@ export function initializePracticeSession(
     )
 
     const now = new Date()
-
     nonModuleData.fsrsCards.forEach((fsrsData) => {
       const key = `${fsrsData.type}:${fsrsData.practiceItemKey}`
 

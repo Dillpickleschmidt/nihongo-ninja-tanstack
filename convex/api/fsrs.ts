@@ -21,17 +21,6 @@ export const getFSRSCardsForItems = query({
 })
 
 /**
- * Get due FSRS cards for review mixing
- */
-export const getDueFSRSCards = query({
-  args: {
-    mode: practiceModeValidator,
-    limit: v.optional(v.number()),
-  },
-  handler: (ctx, args) => FSRS.getDueFSRSCards(ctx, args.mode, args.limit),
-})
-
-/**
  * Get count of all due FSRS cards across all modes
  */
 export const getDueFSRSCardsCount = query({

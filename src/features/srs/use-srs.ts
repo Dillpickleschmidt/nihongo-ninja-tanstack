@@ -30,7 +30,14 @@ export function useSrs() {
     () => ({ enabled: authed() && !ankiActive() }),
   )
 
-  const [ankiCount, setAnkiCount] = createSignal<number | undefined>(undefined)
+  const [ankiCount, setAnkiCount] = createSignal<
+    | {
+        meanings: number
+        spellings: number
+        total: number
+      }
+    | undefined
+  >(undefined)
 
   createEffect(() => {
     if (!authed() || !ankiActive()) {
@@ -40,7 +47,7 @@ export function useSrs() {
 
     const observer = new QueryObserver(queryClient, {
       queryKey: ["srs", "anki", "dueCount"] as const,
-      queryFn: async () => (await getAnkiDueCount()).total,
+      queryFn: async () => getAnkiDueCount(),
       refetchInterval: 30_000,
       staleTime: 30_000,
       refetchOnMount: "always",
@@ -64,8 +71,13 @@ export function useSrs() {
     }
 
     if (ankiActive()) {
-      const total = ankiCount()
-      return { vocabMeanings: undefined, vocabSpellings: undefined, vocabTotal: total, sentences: undefined }
+      const counts = ankiCount()
+      return {
+        vocabMeanings: counts?.meanings,
+        vocabSpellings: counts?.spellings,
+        vocabTotal: counts?.total,
+        sentences: undefined,
+      }
     }
 
     const data = fsrsDueCountQuery.data()

@@ -10,6 +10,7 @@ import {
   type AnkiCardInfo,
 } from "./anki-connect-client"
 import { ANKI_MODELS } from "./anki-models"
+import { getRecognizedPracticeMode } from "./anki-adapter"
 import { addKanaAndRuby } from "@/data/utils/vocabulary/transforms"
 
 export { type AnkiCardInfo } from "./anki-connect-client"
@@ -150,6 +151,19 @@ export async function fetchDueReviewCards(
     const nnKeyField = card.fields.NnKey
     if (!nnKeyField) return true
     return !excludeNnKeys.has(nnKeyField.value)
+  })
+}
+
+export async function fetchDueReviewCardsByMode(
+  mode: PracticeMode,
+): Promise<AnkiCardInfo[]> {
+  const dueCardIds = await findCards("is:due")
+  if (dueCardIds.length === 0) return []
+
+  const cards = await getCardsInfo(dueCardIds)
+  return cards.filter((card) => {
+    if (!card.fields.NnKey) return false
+    return getRecognizedPracticeMode(card) === mode
   })
 }
 

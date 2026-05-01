@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/solid-router"
-import { For, Index, Show, createMemo, untrack } from "solid-js"
+import { For, Index, Show, createMemo, createSignal, untrack } from "solid-js"
 import { Skeleton } from "@/components/ui/custom/skeleton"
 import { convexQuery, useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
@@ -13,8 +13,16 @@ import { ProgressRing, getProgressColor } from "@/features/stats/ProgressRing"
 import { ModuleCard } from "@/features/stats/ModuleCard"
 import { DistributionBar } from "@/features/stats/DistributionBar"
 import { ActivityItem } from "@/features/stats/ActivityItem"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
-export const Route = createFileRoute("/_home/review")({
+export const Route = createFileRoute("/_home/review/")({
   loader: ({ context, preload }) => {
     if (!preload) {
       context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
@@ -49,6 +57,7 @@ function RouteComponent() {
   const todayKey = () => getLocalDateKey()
   const range = createMemo(() => getLastNDaysRange(7))
   const { dueCounts } = useSrs()
+  const [dialogOpen, setDialogOpen] = createSignal(false)
 
   const dailyStatsQuery = useConvexQuery(
     api.api.progress.getDailyModuleStatsForDate,
@@ -179,7 +188,7 @@ function RouteComponent() {
               <span class="text-lg font-bold tabular-nums text-white/30">–</span>
             </div>
             <div class="flex items-center justify-between gap-8">
-              <span class="text-sm text-white/60">Vocab (meanings)</span>
+              <span class="text-sm text-white/60">Meanings</span>
               <span class="text-lg font-bold tabular-nums text-white/85">
                 <Show when={dueCounts().vocabMeanings !== undefined} fallback="–">
                   {dueCounts().vocabMeanings}
@@ -187,7 +196,7 @@ function RouteComponent() {
               </span>
             </div>
             <div class="flex items-center justify-between gap-8">
-              <span class="text-sm text-white/60">Vocab (spellings)</span>
+              <span class="text-sm text-white/60">Spellings</span>
               <span class="text-lg font-bold tabular-nums text-white/85">
                 <Show when={dueCounts().vocabSpellings !== undefined} fallback="–">
                   {dueCounts().vocabSpellings}
@@ -205,16 +214,20 @@ function RouteComponent() {
             </span>
           </div>
 
-          <Link
-            to="/vocab"
+          <Button
+            type="button"
+            disabled={
+              dueCounts().vocabTotal === undefined || dueCounts().vocabTotal === 0
+            }
             class="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-dynamic-accent/80 px-4 py-2.5 text-sm font-medium text-white transition-[background-color,transform] hover:bg-dynamic-accent hover:scale-[1.02]"
             style={{
               "box-shadow":
                 "0 8px 16px -4px color-mix(in srgb, var(--dynamic-accent) 30%, transparent)",
             }}
+            onClick={() => setDialogOpen(true)}
           >
-            Continue Reviews
-          </Link>
+            Start Review
+          </Button>
         </div>
       </div>
 
@@ -330,7 +343,95 @@ function RouteComponent() {
           </Show>
         </section>
       </div>
+
+      <ReviewModeDialog
+        open={dialogOpen()}
+        onOpenChange={setDialogOpen}
+        meaningsCount={dueCounts().vocabMeanings}
+        spellingsCount={dueCounts().vocabSpellings}
+      />
     </main>
+  )
+}
+
+function ReviewModeDialog(props: {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  meaningsCount: number | undefined
+  spellingsCount: number | undefined
+}) {
+  return (
+    <Dialog open={props.open} onOpenChange={props.onOpenChange}>
+      <DialogContent class="border-white/10 bg-[#121212] sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle class="text-white/90">Choose Review Mode</DialogTitle>
+          <DialogDescription class="text-white/45">
+            Pick the type of review you want to practice right now.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <ReviewModeOption
+            mode="meanings"
+            label="Meanings"
+            symbol="読"
+            symbolClass="text-sky-300"
+            count={props.meaningsCount}
+          />
+          <ReviewModeOption
+            mode="spellings"
+            label="Spellings"
+            symbol="あ"
+            symbolClass="text-orange-300"
+            count={props.spellingsCount}
+          />
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function ReviewModeOption(props: {
+  mode: "meanings" | "spellings"
+  label: string
+  symbol: string
+  symbolClass: string
+  count: number | undefined
+}) {
+  const disabled = () => props.count === undefined || props.count === 0
+
+  return (
+    <Show
+      when={!disabled()}
+      fallback={
+        <Button
+          type="button"
+          variant="outline"
+          disabled
+          class="h-auto min-h-28 flex-col gap-2 border-white/10 bg-white/[0.02] p-4"
+        >
+          <span class={`text-lg font-bold ${props.symbolClass}`}>
+            {props.symbol}
+          </span>
+          <span class="text-sm font-medium">{props.label}</span>
+          <span class="text-xs text-white/35">{props.count ?? "–"} due</span>
+        </Button>
+      }
+    >
+      <Link
+        to="/review/session"
+        search={{ mode: props.mode }}
+        class="inline-flex h-auto min-h-28 items-center justify-center rounded-md border border-white/10 bg-white/[0.02] p-4 text-white transition-colors hover:bg-white/[0.05]"
+      >
+        <div class="flex flex-col items-center gap-2">
+          <span class={`text-lg font-bold ${props.symbolClass}`}>
+            {props.symbol}
+          </span>
+          <span class="text-sm font-medium">{props.label}</span>
+          <span class="text-xs text-white/45">{props.count} due</span>
+        </div>
+      </Link>
+    </Show>
   )
 }
 

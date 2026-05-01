@@ -5,17 +5,13 @@ import { createSignal, createResource, createEffect, Show } from "solid-js"
 import { convexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { usePracticeManager } from "@/features/vocab-practice/logic/usePracticeManager"
-import {
-  initializePracticeSession,
-  type PracticeItemData,
-  type FSRSCardInput,
-} from "@/features/vocab-practice/logic/data-initialization"
+import { buildFsrsSessionState } from "@/features/vocab-practice/logic/fsrs-session-state"
 import { initializeAnkiPracticeSession } from "@/features/vocab-practice/logic/anki-data-initialization"
 import { prefetchPracticeSessionSvgs } from "@/features/vocab-practice/logic/svg-prefetch"
 import type { UnifiedDeck } from "convex/model/decks"
 import type { DeckHierarchyResult } from "convex/model/hierarchy"
-import { toTsFsrsCard, fromTsFsrsCard, fromTsFsrsLog } from "convex/model/fsrs"
-import type { Doc } from "convex/_generated/dataModel"
+import type { DeckPracticeSessionData } from "convex/model/practice"
+import { fromTsFsrsCard, fromTsFsrsLog } from "convex/model/fsrs"
 import type { PracticeMode } from "convex/validators"
 import type { Grade } from "ts-fsrs"
 import { useMutation } from "convex-solidjs"
@@ -41,6 +37,7 @@ import {
 } from "@/features/vocab-practice/components/AnkiSyncDialog"
 import { parsePreferencesCookie } from "@/query/model/preferences"
 import { toast } from "solid-sonner"
+import { useRecordVocabProgress } from "@/features/vocab-practice/logic/useRecordVocabProgress"
 
 const practiceSearchSchema = z.object({
   mode: z.enum(["meanings", "spellings"]).catch("meanings"),
@@ -131,21 +128,10 @@ function PracticeCatchAll() {
 
 // --- FSRS Practice (existing flow, extracted) ---
 
-type PracticeDataResult = {
-  deck: UnifiedDeck
-  hierarchy: DeckHierarchyResult
-  moduleFsrs: {
-    vocabulary: Doc<"userFsrsCards">[]
-    kanji: Doc<"userFsrsCards">[]
-    radical: Doc<"userFsrsCards">[]
-  }
-  reviewFsrs: Doc<"userFsrsCards">[]
-}
-
 function FsrsPractice(props: {
   deck: UnifiedDeck
   mode: PracticeMode
-  practiceData: PracticeDataResult | null | undefined
+  practiceData: DeckPracticeSessionData | null | undefined
   includeReviews: boolean
 }) {
   const queryClient = useQueryClient()
@@ -166,26 +152,24 @@ function FsrsPractice(props: {
     }
   })
 
-  const [sessionInitialized, setSessionInitialized] = createSignal(false)
-  const recordProgress = useRecordProgress(() => props.deck)
+  const recordProgress = useRecordVocabProgress(() => `vocab-deck:${props.deck.id}`)
 
   createEffect(() => {
     const data = props.practiceData
-    if (!data || sessionInitialized()) return
+    if (!data || practiceManager.manager()) return
 
-    const sessionState = buildSessionState(
-      data,
-      props.mode,
-      props.includeReviews,
-    )
+    const sessionState = buildFsrsSessionState(data.reviewData, props.mode, {
+      hierarchy: data.hierarchy.hierarchy,
+      moduleData: data.moduleData,
+      includeReviews: props.includeReviews,
+    })
     practiceManager.initializeManager(sessionState)
     prefetchPracticeSessionSvgs(queryClient, practiceManager.getManagerState())
-    setSessionInitialized(true)
   })
 
   return (
     <Show
-      when={sessionInitialized()}
+      when={practiceManager.manager()}
       fallback={<div>Loading practice session...</div>}
     >
       <VocabPractice
@@ -211,7 +195,6 @@ function AnkiPractice(props: {
   const [ankiState, setAnkiState] = createSignal<AnkiSyncState>({
     phase: "checking",
   })
-  const [sessionInitialized, setSessionInitialized] = createSignal(false)
 
   const practiceManager = usePracticeManager(async (card, rating) => {
     if (!card.ankiCardId) return
@@ -224,7 +207,7 @@ function AnkiPractice(props: {
     }
   })
 
-  const recordProgress = useRecordProgress(() => props.deck)
+  const recordProgress = useRecordVocabProgress(() => `vocab-deck:${props.deck.id}`)
 
   let syncContext: {
     hierarchy: DeckHierarchyResult
@@ -322,7 +305,6 @@ function AnkiPractice(props: {
         queryClient,
         practiceManager.getManagerState(),
       )
-      setSessionInitialized(true)
       setAnkiState({ phase: "ready" })
     } catch (error) {
       setAnkiState({
@@ -335,14 +317,14 @@ function AnkiPractice(props: {
 
   // Start flow when practice data arrives
   createEffect(() => {
-    if (props.hierarchy && !sessionInitialized()) {
+    if (props.hierarchy && !practiceManager.manager()) {
       startAnkiFlow()
     }
   })
 
   return (
     <Show
-      when={sessionInitialized() && ankiState().phase === "ready"}
+      when={practiceManager.manager() && ankiState().phase === "ready"}
       fallback={
         <AnkiSyncDialog
           state={ankiState()}
@@ -366,83 +348,6 @@ function AnkiPractice(props: {
   )
 }
 
-function useRecordProgress(deck: () => UnifiedDeck) {
-  const mutation = useMutation(api.api.progress.recordProgressEvent)
-  return (progressUnitsDelta: number, questionsAnsweredDelta: number) => {
-    mutation.mutate({
-      modulePath: `vocab-deck:${deck().id}`,
-      moduleType: "vocab-practice",
-      progressUnitsDelta,
-      questionsAnsweredDelta,
-      eventTs: Date.now(),
-      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
-    })
-  }
-}
-
 function parsePathSegments(splat: string | undefined): string[] {
   return splat ? splat.split("/").filter(Boolean) : []
-}
-
-// Convert flat card document to FSRSCardInput for practice session
-function toFSRSCardInput(doc: Doc<"userFsrsCards">): FSRSCardInput {
-  return {
-    practiceItemKey: doc.practiceItemKey,
-    card: toTsFsrsCard(doc),
-    mode: doc.mode,
-    type: doc.type,
-  }
-}
-
-function buildSessionState(
-  data: PracticeDataResult,
-  mode: PracticeMode,
-  includeReviews: boolean,
-) {
-  const { hierarchy, moduleFsrs, reviewFsrs } = data
-  const allModuleFsrs = [
-    ...moduleFsrs.vocabulary,
-    ...moduleFsrs.kanji,
-    ...moduleFsrs.radical,
-  ]
-
-  const moduleData: PracticeItemData = {
-    vocabulary: hierarchy.vocabulary,
-    kanji: mode === "meanings" ? hierarchy.kanji : [],
-    radicals: mode === "meanings" ? hierarchy.radicals : [],
-    fsrsCards: allModuleFsrs.map(toFSRSCardInput),
-  }
-
-  const moduleKeys = {
-    vocabulary: new Set(hierarchy.vocabulary.map((v) => v.word)),
-    kanji: new Set(hierarchy.kanji.map((k) => k.kanji)),
-    radicals: new Set(hierarchy.radicals.map((r) => r.radical)),
-  }
-
-  const filteredReviewFsrs = reviewFsrs.map(toFSRSCardInput).filter((card) => {
-    if (card.type === "vocabulary")
-      return !moduleKeys.vocabulary.has(card.practiceItemKey)
-    if (card.type === "kanji")
-      return !moduleKeys.kanji.has(card.practiceItemKey)
-    if (card.type === "radical")
-      return !moduleKeys.radicals.has(card.practiceItemKey)
-    return true
-  })
-
-  const nonModuleData: PracticeItemData = {
-    vocabulary: [],
-    kanji: [],
-    radicals: [],
-    fsrsCards: filteredReviewFsrs,
-  }
-
-  return initializePracticeSession(
-    hierarchy.hierarchy,
-    moduleData,
-    nonModuleData,
-    mode,
-    false,
-    true,
-    includeReviews,
-  )
 }

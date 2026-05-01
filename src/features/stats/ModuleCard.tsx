@@ -1,3 +1,5 @@
+import { formatModuleName } from "./format-module-name"
+
 interface ModuleCardProps {
   modulePath: string
   moduleType: string
@@ -14,14 +16,6 @@ const TYPE_CONFIG: Record<string, { label: string; color: string }> = {
 
 function getTypeConfig(type: string) {
   return TYPE_CONFIG[type] ?? { label: type, color: "255, 255, 255" }
-}
-
-function formatModuleName(path: string) {
-  return path
-    .replace(/^vocab-deck:/, "")
-    .replace(/^sentence-practice-/, "")
-    .replaceAll("_", " ")
-    .replaceAll("-", " ")
 }
 
 function formatTime(ts: number) {

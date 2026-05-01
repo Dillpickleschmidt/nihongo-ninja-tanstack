@@ -14,6 +14,7 @@ type Props = {
   deckName: string
   results: ReviewResult[]
   onReturn: () => void
+  returnLabel?: string
 }
 
 export function FinishScreen(props: Props) {
@@ -105,7 +106,7 @@ export function FinishScreen(props: Props) {
 
       <PracticeActionBar
         state="idle"
-        label="Return to Vocab Home"
+        label={props.returnLabel ?? "Return to Vocab Home"}
         color="rgb(139,92,246)"
         onAction={props.onReturn}
       />

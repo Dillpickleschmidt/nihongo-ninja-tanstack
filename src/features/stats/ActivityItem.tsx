@@ -1,3 +1,5 @@
+import { formatModuleName } from "./format-module-name"
+
 interface ActivityItemProps {
   modulePath: string
   moduleType: string
@@ -10,14 +12,6 @@ const TYPE_COLORS: Record<string, string> = {
   "vocab-practice": "147, 197, 253",
   "sentence-practice": "196, 181, 253",
   "vocab-test": "253, 186, 116",
-}
-
-function formatModuleName(path: string) {
-  return path
-    .replace(/^vocab-deck:/, "")
-    .replace(/^sentence-practice-/, "")
-    .replaceAll("_", " ")
-    .replaceAll("-", " ")
 }
 
 function formatRelativeTime(ts: number) {

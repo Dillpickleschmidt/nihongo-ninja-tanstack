@@ -25,10 +25,12 @@ type Props = {
   practiceManager: PracticeManagerHook
   deckName: string
   mode: "meanings" | "spellings"
+  reviewOnly?: boolean
   onAnswer: (rating: Grade) => Promise<void>
   onIntroductionComplete: () => void
   onProgressEvent?: (progressUnitsDelta: number, questionsAnsweredDelta: number) => void
   onReturn?: () => void
+  returnLabel?: string
 }
 
 export function VocabPractice(props: Props) {
@@ -48,14 +50,24 @@ export function VocabPractice(props: Props) {
   const allCards = createMemo(() =>
     Array.from(props.practiceManager.cardMap().values()),
   )
-  const currentIndex = () => progress().completed
 
   const totalItems = createMemo(() => {
+    if (props.reviewOnly) {
+      return allCards().filter((card) => !card.isDisabled).length
+    }
     return (
       progress().total ||
-      allCards().filter((c) => c.sessionScope === "module").length
+      allCards().filter((card) => card.sessionScope === "module").length
     )
   })
+
+  const currentIndex = () => {
+    if (!props.reviewOnly) return progress().completed
+
+    const total = totalItems()
+    if (total === 0) return 0
+    return Math.min(allResults().length, total - 1)
+  }
 
   // Stats counters
   const correctCount = () => allResults().filter((r) => r.correct).length
@@ -132,6 +144,7 @@ export function VocabPractice(props: Props) {
           deckName={props.deckName}
           results={allResults()}
           onReturn={handleReturn}
+          returnLabel={props.returnLabel}
         />
       </Show>
 

@@ -131,12 +131,13 @@ export async function getFSRSCardsForItems(
 export async function getDueFSRSCards(
   ctx: QueryCtx,
   mode: PracticeMode,
-  limit: number = 100,
+  limit?: number,
 ): Promise<Doc<"userFsrsCards">[]> {
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) return []
 
-  return queryCardsByMode(ctx, identity.subject, mode, Date.now()).take(limit)
+  const query = queryCardsByMode(ctx, identity.subject, mode, Date.now())
+  return limit === undefined ? query.collect() : query.take(limit)
 }
 
 /**
