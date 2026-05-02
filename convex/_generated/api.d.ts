@@ -35,6 +35,7 @@ import type * as model_images from "../model/images.js";
 import type * as model_kanji from "../model/kanji.js";
 import type * as model_learning_paths from "../model/learning_paths.js";
 import type * as model_missedWords from "../model/missedWords.js";
+import type * as model_practice from "../model/practice.js";
 import type * as model_profiles from "../model/profiles.js";
 import type * as model_progress from "../model/progress.js";
 import type * as model_sharing from "../model/sharing.js";
@@ -75,6 +76,7 @@ declare const fullApi: ApiFromModules<{
   "model/kanji": typeof model_kanji;
   "model/learning_paths": typeof model_learning_paths;
   "model/missedWords": typeof model_missedWords;
+  "model/practice": typeof model_practice;
   "model/profiles": typeof model_profiles;
   "model/progress": typeof model_progress;
   "model/sharing": typeof model_sharing;

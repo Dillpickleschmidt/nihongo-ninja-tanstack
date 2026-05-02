@@ -92,7 +92,9 @@ export const questions: Question[] = [
         segments: [
           { text: "先週[せんしゅう]の 週末[しゅうまつ]は、" },
           { text: "どこにも", blank: true },
-          { text: "行[い]かなかった。うちで ごろごろしていた。" },
+          { text: "行[い]かなかった。うちで ごろごろして" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
+          { text: "。" },
         ],
       },
       {
@@ -976,7 +978,9 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "寝[ね]ていた 時[とき]に、" },
+          { text: "寝[ね]て" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
+          { text: "時[とき]に、" },
           { text: "誰[だれ]かから", blank: true },
           { text: "電話[でんわ]があったけど、番号[ばんごう]がわからなかった" },
         ],
@@ -1306,7 +1310,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "このごろ、面白[おもしろ]い 人[ひと]に" },
-          { text: "誰[だれ]も 会[あ]っていない", blank: true },
+          { text: "誰[だれ]も 会[あ]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
           { text: "。この 町[まち]を 出[で]て、" },
           {
             text: "どこかで 新[あたら]しい 人[ひと]に 会[あ]いたい",

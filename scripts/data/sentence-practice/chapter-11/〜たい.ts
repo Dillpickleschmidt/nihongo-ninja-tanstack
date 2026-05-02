@@ -307,16 +307,8 @@ export const questions: Question[] = [
         { text: "今夜[こんや]、けんじくんとカラオケを" },
         { text: "したい", blank: true },
         { text: "けど、したくないと" },
-        {
-          text: "言[い]っていた",
-          blank: true,
-          conjugation: {
-            pos: "Godan verb with 'u' ending",
-            form: "te-form",
-            polarity: "positive",
-            tense: "past",
-          },
-        },
+        { text: "言[い]って", blank: true },
+        { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
       ],
     },
       {

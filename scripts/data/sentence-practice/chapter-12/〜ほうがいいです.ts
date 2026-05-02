@@ -214,61 +214,71 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "薬[くすり]を 飲[の]んでいる 間[あいだ]は、お 酒[さけ]を 飲[の]まないほうがいい", blank: true },
+          { text: "薬[くすり]を 飲[の]んで", blank: true },
+          { text: "いる 間[あいだ]は、お 酒[さけ]を 飲[の]まないほうがいい", blank: true },
         ],
         notes: "ないほうがいい (casual), 〜ている間は for \"while taking medicine\"",
       },
       {
         segments: [
-          { text: "薬[くすり]を 飲[の]んでいる 間[あいだ]は、お 酒[さけ]を 飲[の]まないほうがいいです", blank: true },
+          { text: "薬[くすり]を 飲[の]んで", blank: true },
+          { text: "いる 間[あいだ]は、お 酒[さけ]を 飲[の]まないほうがいいです", blank: true },
         ],
         notes: "ないほうがいいです (polite form), 〜ている間は",
       },
       {
         segments: [
-          { text: "薬[くすり]を 飲[の]んでいるときは、お 酒[さけ]を 飲[の]まないほうがいい", blank: true },
+          { text: "薬[くすり]を 飲[の]んで", blank: true },
+          { text: "いるときは、お 酒[さけ]を 飲[の]まないほうがいい", blank: true },
         ],
         notes: "ないほうがいい, using 〜ているときは (\"when taking medicine\") instead of 間",
       },
       {
         segments: [
-          { text: "薬[くすり]を 飲[の]んでいるときは、お 酒[さけ]を 飲[の]まないほうがいいです", blank: true },
+          { text: "薬[くすり]を 飲[の]んで", blank: true },
+          { text: "いるときは、お 酒[さけ]を 飲[の]まないほうがいいです", blank: true },
         ],
         notes: "ないほうがいいです (polite), using 〜ているときは",
       },
       {
         segments: [
-          { text: "薬[くすり]を 飲[の]んでいる 間[あいだ]は、お 酒[さけ]を 飲[の]まないほうがいいよ", blank: true },
+          { text: "薬[くすり]を 飲[の]んで", blank: true },
+          { text: "いる 間[あいだ]は、お 酒[さけ]を 飲[の]まないほうがいいよ", blank: true },
         ],
         notes: "ないほうがいい + よ particle for softer advisory tone, 〜ている間は",
       },
       {
         segments: [
-          { text: "薬[くすり]を 飲[の]んでいる 間[あいだ]は、お 酒[さけ]を 飲[の]まないほうがいいですよ", blank: true },
+          { text: "薬[くすり]を 飲[の]んで", blank: true },
+          { text: "いる 間[あいだ]は、お 酒[さけ]を 飲[の]まないほうがいいですよ", blank: true },
         ],
         notes: "ないほうがいいですよ (polite + よ), 〜ている間は",
       },
       {
         segments: [
-          { text: "薬[くすり]を 飲[の]んでいるときは、お 酒[さけ]を 飲[の]まないほうがいいよ", blank: true },
+          { text: "薬[くすり]を 飲[の]んで", blank: true },
+          { text: "いるときは、お 酒[さけ]を 飲[の]まないほうがいいよ", blank: true },
         ],
         notes: "ないほうがいい + よ, using 〜ているときは",
       },
       {
         segments: [
-          { text: "薬[くすり]を 飲[の]んでいるときは、お 酒[さけ]を 飲[の]まないほうがいいですよ", blank: true },
+          { text: "薬[くすり]を 飲[の]んで", blank: true },
+          { text: "いるときは、お 酒[さけ]を 飲[の]まないほうがいいですよ", blank: true },
         ],
         notes: "ないほうがいいですよ (polite + よ), 〜ているときは",
       },
       {
         segments: [
-          { text: "薬[くすり]を 飲[の]んでいる 間[あいだ]は、 酒[さけ]を 飲[の]まないほうがいい", blank: true },
+          { text: "薬[くすり]を 飲[の]んで", blank: true },
+          { text: "いる 間[あいだ]は、 酒[さけ]を 飲[の]まないほうがいい", blank: true },
         ],
         notes: "Using 酒 instead of お酒 (slightly less formal), 〜ている間は",
       },
       {
         segments: [
-          { text: "薬[くすり]を 飲[の]んでいる 間[あいだ]は、 酒[さけ]を 飲[の]まないほうがいいです", blank: true },
+          { text: "薬[くすり]を 飲[の]んで", blank: true },
+          { text: "いる 間[あいだ]は、 酒[さけ]を 飲[の]まないほうがいいです", blank: true },
         ],
         notes: "Using 酒 instead of お酒, polite form with です",
       },
@@ -471,14 +481,18 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "疲[つか]れているから、今日[きょう]は休[やす]んだほうがいい", blank: true },
+          { text: "疲[つか]れて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "から、今日[きょう]は休[やす]んだほうがいい", blank: true },
           { text: "です" },
         ],
         notes: "Reason first + polite です. The です is separate plain text (→だ in casual), but いい is an い-adj so いいだ is the known issue — checking if engine handles this correctly.",
       },
       {
         segments: [
-          { text: "疲[つか]れているから、今日[きょう]は出[で]かけないほうがいい", blank: true },
+          { text: "疲[つか]れて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "から、今日[きょう]は出[で]かけないほうがいい", blank: true },
           { text: "です" },
         ],
         notes: "ないほうがいい + polite です. Shouldn't go out today.",

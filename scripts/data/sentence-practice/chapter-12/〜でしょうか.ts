@@ -244,7 +244,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "終電[しゅうでん]はもう 出[で]ている", blank: true },
+          { text: "終電[しゅうでん]はもう 出[で]て", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "でしょう" },
         ],
       },

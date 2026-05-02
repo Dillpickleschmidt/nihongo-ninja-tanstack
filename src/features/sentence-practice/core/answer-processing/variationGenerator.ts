@@ -93,28 +93,21 @@ function generateKinshipVariations(answers: RichAnswer[]): RichAnswer[] {
   return Array.from(resultMap.values())
 }
 
-// Casual contractions of 〜ている family. A fluent speaker often says
-// 食べてる instead of 食べている, 寝てた instead of 寝ていた, etc. The app
-// accepts both by generating the contracted form from each 〜ている
-// occurrence in the answer. Order matters: longer forms first so
-// ていなかった isn't partially eaten by ていない.
-//
-// Verbs whose te-form ends in で (Godan ぶ/む/ぬ: 読む→読んで, 飲む→飲んで,
-// 遊ぶ→遊んで, 死ぬ→死んで) need the parallel で-rows so
-// 読んでいる→読んでる, 混んでいた→混んでた also generate.
-//
-// 〜てます/〜てました/〜てません are intentionally NOT produced: those are
-// casual contractions of polite forms and aren't appropriate accepted
-// variants for either register.
+// Casual 〜ている → 〜てる contractions. Fires only when te-form
+// (〜て or 〜で) ends one segment and an いる-auxiliary form begins the
+// next; the segment separator is consumed. Single-segment 〜ている text
+// is intentionally not contracted — split such data into te-form +
+// いる-auxiliary segments. ます-polite forms (てます/てました/てません) are
+// not included.
 const TE_IRU_CONTRACTIONS: Array<[from: string, to: string]> = [
-  ["ていなかった", "てなかった"],
-  ["ていない", "てない"],
-  ["ていた", "てた"],
-  ["ている", "てる"],
-  ["でいなかった", "でなかった"],
-  ["でいない", "でない"],
-  ["でいた", "でた"],
-  ["でいる", "でる"],
+  ["て" + SEGMENT_SEPARATOR + "いなかった", "てなかった"],
+  ["て" + SEGMENT_SEPARATOR + "いない", "てない"],
+  ["て" + SEGMENT_SEPARATOR + "いた", "てた"],
+  ["て" + SEGMENT_SEPARATOR + "いる", "てる"],
+  ["で" + SEGMENT_SEPARATOR + "いなかった", "でなかった"],
+  ["で" + SEGMENT_SEPARATOR + "いない", "でない"],
+  ["で" + SEGMENT_SEPARATOR + "いた", "でた"],
+  ["で" + SEGMENT_SEPARATOR + "いる", "でる"],
 ]
 
 function contractTeIru(s: string): string {

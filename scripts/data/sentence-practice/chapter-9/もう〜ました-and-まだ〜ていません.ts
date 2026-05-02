@@ -332,9 +332,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          {
-            text: "宿題[しゅくだい]がまだ 終[お]わっていないから、 今晩[こんばん]は",
-          },
+          { text: "宿題[しゅくだい]がまだ 終[お]わって" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "から、 今晩[こんばん]は" },
           {
             text: " 出[で]かける",
             blank: true,
@@ -351,10 +351,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          {
-            text: "まだ 宿題[しゅくだい]が 終[お]わっていないから、 今晩[こんばん]は",
-            blank: true,
-          },
+          { text: "まだ 宿題[しゅくだい]が 終[お]わって", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "から、 今晩[こんばん]は", blank: true },
           {
             text: " 出[で]かける",
             conjugation: {
@@ -386,9 +385,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          {
-            text: "宿題[しゅくだい]がまだ 終[お]わっていないから、 今夜[こんや]は",
-          },
+          { text: "宿題[しゅくだい]がまだ 終[お]わって" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "から、 今夜[こんや]は" },
           {
             text: " 出[で]かける",
             blank: true,
@@ -444,14 +443,16 @@ export const questions: Question[] = [
         segments: [
           { text: "その 映画[えいが]は" },
           { text: "もう 見[み]た", blank: true },
-          { text: "けど、 本[ほん]はまだ 読[よ]んでいない" },
+          { text: "けど、 本[ほん]はまだ 読[よ]んで" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: 'Basic version: もう＋見た, まだ〜ていない, けど for "but"',
       },
       {
         segments: [
           { text: "その 映画[えいが]はもう 見[み]たけど、" },
-          { text: " 本[ほん]はまだ 読[よ]んでいない", blank: true },
+          { text: " 本[ほん]はまだ 読[よ]んで", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: "Blank covers the まだ〜ていない part instead",
       },
@@ -459,7 +460,8 @@ export const questions: Question[] = [
         segments: [
           { text: "あの 映画[えいが]は" },
           { text: "もう 見[み]た", blank: true },
-          { text: "けど、 本[ほん]はまだ 読[よ]んでいない" },
+          { text: "けど、 本[ほん]はまだ 読[よ]んで" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: 'あの instead of その for "that movie"',
       },
@@ -467,7 +469,8 @@ export const questions: Question[] = [
         segments: [
           { text: "私[わたし]はその 映画[えいが]を" },
           { text: "もう 見[み]た", blank: true },
-          { text: "けど、 本[ほん]はまだ 読[よ]んでいない" },
+          { text: "けど、 本[ほん]はまだ 読[よ]んで" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes:
           "私は subject explicit, を instead of は for movie (object marker)",
@@ -476,7 +479,8 @@ export const questions: Question[] = [
         segments: [
           { text: "その 映画[えいが]を" },
           { text: "もう 見[み]た", blank: true },
-          { text: "けど、 本[ほん]はまだ 読[よ]んでいない" },
+          { text: "けど、 本[ほん]はまだ 読[よ]んで" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes:
           "を instead of は for movie (direct object marker, no topic emphasis)",
@@ -485,13 +489,15 @@ export const questions: Question[] = [
         segments: [
           { text: "その 映画[えいが]は" },
           { text: "もう 見[み]た", blank: true },
-          { text: "が、 本[ほん]はまだ 読[よ]んでいない" },
+          { text: "が、 本[ほん]はまだ 読[よ]んで" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: 'が instead of けど/でも for "but" (more formal conjunction)',
       },
       {
         segments: [
-          { text: "本[ほん]はまだ 読[よ]んでいない" },
+          { text: "本[ほん]はまだ 読[よ]んで" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
           { text: "けど、その 映画[えいが]は" },
           { text: "もう 見[み]た", blank: true },
         ],
@@ -501,7 +507,8 @@ export const questions: Question[] = [
         segments: [
           { text: "その 映画[えいが]は" },
           { text: "もう 見[み]た", blank: true },
-          { text: "けど、 本[ほん]をまだ 読[よ]んでいない" },
+          { text: "けど、 本[ほん]をまだ 読[よ]んで" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: "本を (direct object を) instead of 本は for the book",
       },
@@ -514,11 +521,8 @@ export const questions: Question[] = [
             conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" },
           },
           { text: "が、 本[ほん]はまだ" },
-          {
-            text: "読[よ]んでいる",
-            blank: true,
-            conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" },
-          },
+          { text: "読[よ]んで", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: "が (more formal connector) instead of けど",
       },
@@ -1943,7 +1947,9 @@ export const questions: Question[] = [
         segments: [
           { text: "試験[しけん]は" },
           { text: "まだ", blank: true },
-          { text: " 終[お]わっていないです" },
+          { text: " 終[お]わって" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "です" },
           { text: "か" },
         ],
         notes:
@@ -1962,7 +1968,9 @@ export const questions: Question[] = [
         segments: [
           { text: "テストは" },
           { text: "まだ", blank: true },
-          { text: " 終[お]わっていないです" },
+          { text: " 終[お]わって" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "です" },
           { text: "か" },
         ],
         notes: "テスト + ていないです form",
@@ -1971,7 +1979,9 @@ export const questions: Question[] = [
         segments: [
           { text: "試験[しけん]は" },
           { text: "まだ", blank: true },
-          { text: " 終[お]わっていないの" },
+          { text: " 終[お]わって" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "の" },
         ],
         notes: "Casual の-question with 試験; softer inquiry tone",
       },
@@ -1979,7 +1989,9 @@ export const questions: Question[] = [
         segments: [
           { text: "テストは" },
           { text: "まだ", blank: true },
-          { text: " 終[お]わっていないの" },
+          { text: " 終[お]わって" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "の" },
         ],
         notes: "テスト + casual の-question",
       },
@@ -2207,7 +2219,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "お 弁当[べんとう]はもう 買[か]ったけど、まだ" },
-          { text: " 食[た]べていない", blank: true },
+          { text: " 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: "Using casual ていない form as the blank instead of ていません",
       },
@@ -2216,7 +2229,8 @@ export const questions: Question[] = [
           { text: "お 弁当[べんとう]は" },
           { text: "もう", blank: true },
           { text: " 買[か]ったが、" },
-          { text: "まだ 食[た]べていない", blank: true },
+          { text: "まだ 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes:
           "Using が (but) instead of けど, two blanks for もう and まだ～ていない",
@@ -2226,14 +2240,16 @@ export const questions: Question[] = [
           { text: "お 弁当[べんとう]を" },
           { text: "もう", blank: true },
           { text: " 買[か]ったけど、" },
-          { text: "まだ 食[た]べていない", blank: true },
+          { text: "まだ 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: "Using を instead of は for お弁当",
       },
       {
         segments: [
           { text: "弁当[べんとう]はもう 買[か]ったけど、" },
-          { text: "まだ 食[た]べていない", blank: true },
+          { text: "まだ 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: "Using 弁当 without お prefix",
       },
@@ -2247,7 +2263,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "お 弁当[べんとう]はもう 買[か]っただけど、" },
-          { text: "まだ 食[た]べていない", blank: true },
+          { text: "まだ 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes:
           "Using だけど instead of けど for slightly more emphatic contrast",
@@ -2271,14 +2288,16 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "もう お 弁当[べんとう]は 買[か]ったけど、" },
-          { text: "まだ 食[た]べていない", blank: true },
+          { text: "まだ 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: "もう placed before お弁当は (front position)",
       },
       {
         segments: [
           { text: "弁当[べんとう]はもう 買[か]ったが、" },
-          { text: "まだ 食[た]べていない", blank: true },
+          { text: "まだ 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: "Using 弁当 without お prefix, が (but)",
       },
@@ -2287,7 +2306,8 @@ export const questions: Question[] = [
           { text: "お 弁当[べんとう]を" },
           { text: "もう", blank: true },
           { text: " 買[か]ったが、" },
-          { text: "まだ 食[た]べていない", blank: true },
+          { text: "まだ 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: "Using を instead of は, が (but), two blanks",
       },

@@ -1298,18 +1298,16 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          {
-            text: "けんじさんは 図書館[としょかん]で 勉強[べんきょう]している",
-          },
+          { text: "けんじさんは 図書館[としょかん]で 勉強[べんきょう]して" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "と", blank: true },
           { text: " 言[い]っていました", blank: true },
         ],
       },
       {
         segments: [
-          {
-            text: "けんじさんは 図書館[としょかん]で 勉強[べんきょう]している",
-          },
+          { text: "けんじさんは 図書館[としょかん]で 勉強[べんきょう]して" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "って", blank: true },
           { text: " 言[い]っていました" },
         ],
@@ -1325,9 +1323,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          {
-            text: "けんじさんは 図書館[としょかん]で 勉強[べんきょう]している",
-          },
+          { text: "けんじさんは 図書館[としょかん]で 勉強[べんきょう]して" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "と", blank: true },
           { text: " 言[い]った", blank: true },
         ],
@@ -1335,7 +1332,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "図書館[としょかん]で 勉強[べんきょう]している" },
+          { text: "図書館[としょかん]で 勉強[べんきょう]して" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "と", blank: true },
           { text: "けんじさんが 言[い]っていました", blank: true },
         ],
@@ -1349,39 +1347,35 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          {
-            text: "ゆきさんは 朝[あさ]ご 飯[はん]にいちごを 食[た]べていると",
-            blank: true,
-          },
+          { text: "ゆきさんは 朝[あさ]ご 飯[はん]にいちごを 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "と", blank: true },
           { text: " 言[い]っていました" },
         ],
       },
       {
         segments: [
-          {
-            text: "ゆきさんは 朝[あさ]ご 飯[はん]にいちごを 食[た]べているって",
-            blank: true,
-          },
+          { text: "ゆきさんは 朝[あさ]ご 飯[はん]にいちごを 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "って", blank: true },
           { text: " 言[い]っていました" },
         ],
         notes: "Casual って quotation particle",
       },
       {
         segments: [
-          {
-            text: "ゆきさんは 朝[あさ]ご 飯[はん]にいちごを 食[た]べていると",
-            blank: true,
-          },
+          { text: "ゆきさんは 朝[あさ]ご 飯[はん]にいちごを 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "と", blank: true },
           { text: " 言[い]いました" },
         ],
         notes: "言いました instead of 言っていました",
       },
       {
         segments: [
-          {
-            text: "ゆきさんが 朝[あさ]ご 飯[はん]にいちごを 食[た]べていると",
-            blank: true,
-          },
+          { text: "ゆきさんが 朝[あさ]ご 飯[はん]にいちごを 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "と", blank: true },
           { text: " 言[い]っていました" },
         ],
         notes: "が instead of は",
@@ -1398,10 +1392,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          {
-            text: "ゆきさんは いちごを 朝[あさ]ご 飯[はん]に 食[た]べていると",
-            blank: true,
-          },
+          { text: "ゆきさんは いちごを 朝[あさ]ご 飯[はん]に 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "と", blank: true },
           { text: " 言[い]っていました" },
         ],
         notes: "いちごを before 朝ご飯に",
@@ -1415,7 +1408,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みほさんは おばあさんに 手紙[てがみ]を" },
-          { text: " 書[か]いている", blank: true },
+          { text: " 書[か]いて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "と" },
           { text: " 言[い]っていました", blank: true },
         ],
@@ -1423,7 +1417,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みほさんは おばあさんに 手紙[てがみ]を" },
-          { text: " 書[か]いている", blank: true },
+          { text: " 書[か]いて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "って" },
           { text: " 言[い]っていました", blank: true },
         ],
@@ -1432,7 +1427,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みほさんが おばあさんに 手紙[てがみ]を" },
-          { text: " 書[か]いている", blank: true },
+          { text: " 書[か]いて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "と" },
           { text: " 言[い]っていました", blank: true },
         ],
@@ -1441,7 +1437,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みほさんは 手紙[てがみ]を おばあさんに" },
-          { text: " 書[か]いている", blank: true },
+          { text: " 書[か]いて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "と" },
           { text: " 言[い]っていました", blank: true },
         ],
@@ -1450,7 +1447,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みほさんは おばあさんに 手紙[てがみ]を" },
-          { text: " 書[か]いている", blank: true },
+          { text: " 書[か]いて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "と" },
           { text: " 言[い]いました", blank: true },
         ],
@@ -1465,7 +1463,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "なつきさんは 海[うみ]で" },
-          { text: " 泳[およ]いでいると 言[い]っていました", blank: true },
+          { text: " 泳[およ]いで", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "と 言[い]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
       },
       {
@@ -1478,21 +1479,29 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "なつきさんは 海[うみ]で" },
-          { text: " 泳[およ]いでいるって 言[い]っていました", blank: true },
+          { text: " 泳[およ]いで", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "って 言[い]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
         notes: "Casual って quotation particle",
       },
       {
         segments: [
           { text: "なつきさんが 海[うみ]で" },
-          { text: " 泳[およ]いでいると 言[い]っていました", blank: true },
+          { text: " 泳[およ]いで", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "と 言[い]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
         notes: "が instead of は",
       },
       {
         segments: [
           { text: "なつきさんは 海[うみ]で" },
-          { text: " 泳[およ]いでいると 言[い]いました", blank: true },
+          { text: " 泳[およ]いで", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "と 言[い]いました", blank: true },
         ],
         notes: "言いました instead of 言っていました",
       },

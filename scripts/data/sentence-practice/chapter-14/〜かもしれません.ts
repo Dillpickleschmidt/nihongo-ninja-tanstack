@@ -46,7 +46,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "電車[でんしゃ]に 傘[かさ]を 忘[わす]れた。傘[かさ]は もう" },
-          { text: "残[のこ]っていない", blank: true },
+          { text: "残[のこ]って", blank: true },
+          { text: "いない", blank: true },
           { text: "かもしれない" },
         ],
         notes: "Second sentence makes the umbrella the topic with は; uses 残っていない (not remaining anymore) to express it's gone.",
@@ -443,18 +444,21 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "このカフェは 日曜日[にちようび]に 閉[し]まっているかもしれない", blank: true },
+          { text: "このカフェは 日曜日[にちようび]に 閉[し]まって", blank: true },
+          { text: "いるかもしれない", blank: true },
         ],
       },
       {
         segments: [
-          { text: "このカフェは 日曜日[にちようび]は 閉[し]まっているかもしれない", blank: true },
+          { text: "このカフェは 日曜日[にちようび]は 閉[し]まって", blank: true },
+          { text: "いるかもしれない", blank: true },
         ],
         notes: "Using は instead of に for 日曜日 (topic/contrast particle)",
       },
       {
         segments: [
-          { text: "日曜日[にちようび]は このカフェが 閉[し]まっているかもしれない", blank: true },
+          { text: "日曜日[にちようび]は このカフェが 閉[し]まって", blank: true },
+          { text: "いるかもしれない", blank: true },
         ],
         notes: "日曜日は fronted as topic; が marks the café",
       },
@@ -472,7 +476,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "このカフェは 日曜日[にちようび]に 開[あ]いていないかもしれない", blank: true },
+          { text: "このカフェは 日曜日[にちようび]に 開[あ]いて", blank: true },
+          { text: "いないかもしれない", blank: true },
         ],
       },
       {
@@ -1161,59 +1166,79 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "高校[こうこう]の 時[とき]から 同[おな]じ 財布[さいふ]を 使[つか]っている。新[あたら]しいのを 買[か]った 方[ほう]がいいかもしれない", blank: true },
+          { text: "高校[こうこう]の 時[とき]から 同[おな]じ 財布[さいふ]を 使[つか]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "。新[あたら]しいのを 買[か]った 方[ほう]がいいかもしれない", blank: true },
         ],
         notes: "Base answer: two sentences, 高校の時から, 新しいのを買ったほうがいい + かもしれない",
       },
       {
         segments: [
-          { text: "高校[こうこう]から ずっと 同[おな]じ 財布[さいふ]を 使[つか]っている。新[あたら]しいのを 買[か]った 方[ほう]がいいかもしれない", blank: true },
+          { text: "高校[こうこう]から ずっと 同[おな]じ 財布[さいふ]を 使[つか]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "。新[あたら]しいのを 買[か]った 方[ほう]がいいかもしれない", blank: true },
         ],
       },
       {
         segments: [
-          { text: "高校[こうこう]の 時[とき]から 同[おな]じ 財布[さいふ]を 使[つか]っているから、そろそろ 新[あたら]しいのを 買[か]った 方[ほう]がいいかもしれない", blank: true },
+          { text: "高校[こうこう]の 時[とき]から 同[おな]じ 財布[さいふ]を 使[つか]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "から、そろそろ 新[あたら]しいのを 買[か]った 方[ほう]がいいかもしれない", blank: true },
         ],
         notes: "Single sentence using から to connect the two clauses, adds そろそろ (it's about time)",
       },
       {
         segments: [
-          { text: "高校[こうこう]から ずっと 同[おな]じ 財布[さいふ]を 使[つか]っているから、そろそろ 新[あたら]しいのを 買[か]った 方[ほう]がいいかもしれない", blank: true },
+          { text: "高校[こうこう]から ずっと 同[おな]じ 財布[さいふ]を 使[つか]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "から、そろそろ 新[あたら]しいのを 買[か]った 方[ほう]がいいかもしれない", blank: true },
         ],
         notes: "Single sentence with ずっと added for emphasis, そろそろ, connected with から",
       },
       {
         segments: [
-          { text: "高校[こうこう]の 時[とき]から 同[おな]じ 財布[さいふ]を 使[つか]っている。そろそろ 新[あたら]しい 財布[さいふ]を 買[か]った 方[ほう]がいいかもしれない", blank: true },
+          { text: "高校[こうこう]の 時[とき]から 同[おな]じ 財布[さいふ]を 使[つか]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "。そろそろ 新[あたら]しい 財布[さいふ]を 買[か]った 方[ほう]がいいかもしれない", blank: true },
         ],
         notes: "Two sentences; uses 新しい財布を (full noun) instead of 新しいの, with そろそろ",
       },
       {
         segments: [
-          { text: "高校[こうこう]の 時[とき]から 同[おな]じ 財布[さいふ]を 使[つか]っている。新[あたら]しい 財布[さいふ]を 買[か]った 方[ほう]がいいかもしれない", blank: true },
+          { text: "高校[こうこう]の 時[とき]から 同[おな]じ 財布[さいふ]を 使[つか]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "。新[あたら]しい 財布[さいふ]を 買[か]った 方[ほう]がいいかもしれない", blank: true },
         ],
         notes: "Two sentences; 新しい財布を (full noun) without そろそろ",
       },
       {
         segments: [
-          { text: "高校[こうこう]の 時[とき]から 同[おな]じ 財布[さいふ]を 使[つか]っているので、そろそろ 新[あたら]しいのを 買[か]った 方[ほう]がいいかもしれない", blank: true },
+          { text: "高校[こうこう]の 時[とき]から 同[おな]じ 財布[さいふ]を 使[つか]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "ので、そろそろ 新[あたら]しいのを 買[か]った 方[ほう]がいいかもしれない", blank: true },
         ],
         notes: "Single sentence using ので instead of から to connect clauses",
       },
       {
         segments: [
-          { text: "高校生[こうこうせい]の 頃[ころ]から 同[おな]じ 財布[さいふ]を 使[つか]っている。新[あたら]しいのを 買[か]った 方[ほう]がいいかもしれない", blank: true },
+          { text: "高校生[こうこうせい]の 頃[ころ]から 同[おな]じ 財布[さいふ]を 使[つか]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "。新[あたら]しいのを 買[か]った 方[ほう]がいいかもしれない", blank: true },
         ],
         notes: "Uses 高校生の頃から (since around the time of being a high school student) instead of 高校の時から",
       },
       {
         segments: [
-          { text: "高校[こうこう]の 時[とき]から 同[おな]じ 財布[さいふ]を 使[つか]っている。そろそろ 新[あたら]しいのを 買[か]う 時[とき]かもしれない", blank: true },
+          { text: "高校[こうこう]の 時[とき]から 同[おな]じ 財布[さいふ]を 使[つか]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "。そろそろ 新[あたら]しいのを 買[か]う 時[とき]かもしれない", blank: true },
         ],
       },
       {
         segments: [
-          { text: "高校[こうこう]から 同[おな]じ 財布[さいふ]を 使[つか]っている。そろそろ 新[あたら]しいのを 買[か]う 時[とき]かもしれない", blank: true },
+          { text: "高校[こうこう]から 同[おな]じ 財布[さいふ]を 使[つか]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "。そろそろ 新[あたら]しいのを 買[か]う 時[とき]かもしれない", blank: true },
         ],
         notes: "高校から (without の時) + 時かもしれない structure",
       },

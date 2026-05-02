@@ -70,21 +70,24 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今年[ことし]の 夏[なつ]、富士山[ふじさん]に 登[のぼ]ろうと" },
-          { text: "思[おも]っている", blank: true },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Casual form with と思っている (plain), no ます ending",
       },
       {
         segments: [
           { text: "この 夏[なつ]、富士山[ふじさん]に 登[のぼ]ろうと" },
-          { text: "思[おも]っている", blank: true },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "この夏 + casual と思っている",
       },
       {
         segments: [
           { text: "今年[ことし]の 夏[なつ]に 富士山[ふじさん]に 登[のぼ]ろうと" },
-          { text: "思[おも]っている", blank: true },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "今年の夏に + casual と思っている",
       },
@@ -107,14 +110,16 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今年[ことし]の 夏[なつ]、富士山[ふじさん]を 登[のぼ]ろうと" },
-          { text: "思[おも]っている", blank: true },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "富士山を + casual と思っている",
       },
       {
         segments: [
           { text: "この 夏[なつ]、富士山[ふじさん]を 登[のぼ]ろうと" },
-          { text: "思[おも]っている", blank: true },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "この夏 + 富士山を + casual と思っている",
       },
@@ -792,7 +797,8 @@ export const questions: Question[] = [
           { text: "さくらを 誕生日[たんじょうび]パーティーに" },
           { text: "誘[さそ]おう", blank: true },
           { text: "と" },
-          { text: "思[おも]っている", blank: true },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが、どう" },
           { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
@@ -803,7 +809,8 @@ export const questions: Question[] = [
           { text: "さくらを 誕生日[たんじょうび]パーティーに" },
           { text: "誘[さそ]おう", blank: true },
           { text: "と" },
-          { text: "思[おも]っている", blank: true },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んだけど、いいと" },
           { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "か" },
@@ -858,25 +865,29 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "寮[りょう]を 出[で]て 一人[ひとり]で 住[す]もうと 思[おも]っている", blank: true },
+          { text: "寮[りょう]を 出[で]て 一人[ひとり]で 住[す]もうと 思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Casual form with と思っている (plain/casual ending)",
       },
       {
         segments: [
-          { text: "寮[りょう]を 出[で]て 一人[ひとり]暮[ぐ]らしを しようと 思[おも]っている", blank: true },
+          { text: "寮[りょう]を 出[で]て 一人[ひとり]暮[ぐ]らしを しようと 思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Casual with 一人暮らしをしよう + と思っている",
       },
       {
         segments: [
-          { text: "寮[りょう]から 出[で]て 一人[ひとり]で 住[す]もうと 思[おも]っている", blank: true },
+          { text: "寮[りょう]から 出[で]て 一人[ひとり]で 住[す]もうと 思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Casual, から version",
       },
       {
         segments: [
-          { text: "寮[りょう]から 出[で]て 一人[ひとり]暮[ぐ]らしを しようと 思[おも]っている", blank: true },
+          { text: "寮[りょう]から 出[で]て 一人[ひとり]暮[ぐ]らしを しようと 思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Casual, から + 一人暮らしをしよう",
       },
@@ -891,7 +902,8 @@ export const questions: Question[] = [
           { text: "最近[さいきん]けっこう 寂[さび]しいから、猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
           { text: "と" },
-          { text: "思[おも]っている", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Two blanks: volitional 飼おう + と + 思っている (conjugated); loneliness clause first with から; けっこう for \"pretty\"",
       },
@@ -900,7 +912,8 @@ export const questions: Question[] = [
           { text: "猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
           { text: "と" },
-          { text: "思[おも]っている", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "。最近[さいきん]けっこう 寂[さび]しくて" },
         ],
         notes: "Cat clause first, then reason after using 寂しくて (て-form of い-adj as reason)",
@@ -910,7 +923,8 @@ export const questions: Question[] = [
           { text: "最近[さいきん]すごく 寂[さび]しいから、猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
           { text: "と" },
-          { text: "思[おも]っている", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "すごく instead of けっこう — stronger emphasis on loneliness",
       },
@@ -919,7 +933,8 @@ export const questions: Question[] = [
           { text: "最近[さいきん]ちょっと 寂[さび]しいから、猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
           { text: "と" },
-          { text: "思[おも]っている", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "ちょっと instead of けっこう — softer/more understated expression of loneliness",
       },
@@ -928,7 +943,8 @@ export const questions: Question[] = [
           { text: "最近[さいきん]けっこう 寂[さび]しいし、猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
           { text: "と" },
-          { text: "思[おも]っている", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "し instead of から — listing loneliness as one reason among possibly others",
       },
@@ -937,7 +953,8 @@ export const questions: Question[] = [
           { text: "猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
           { text: "と" },
-          { text: "思[おも]っている", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "。最近[さいきん]けっこう 寂[さび]しいから" },
         ],
         notes: "Cat intention first, then reason appended as trailing から clause",
@@ -947,7 +964,8 @@ export const questions: Question[] = [
           { text: "最近[さいきん]けっこう 寂[さび]しくて、猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
           { text: "と" },
-          { text: "思[おも]っている", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "寂しくて (て-form) leading into intention clause — loneliness as causal te-form",
       },
@@ -956,7 +974,8 @@ export const questions: Question[] = [
           { text: "最近[さいきん]けっこう 寂[さび]しいので、猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
           { text: "と" },
-          { text: "思[おも]っている", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "ので instead of から — slightly more formal/written reason connector",
       },
@@ -969,14 +988,16 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みか、今週末[こんしゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しようと思[おも]っている", blank: true },
+          { text: "参加[さんか]しようと思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "？" },
         ],
       },
       {
         segments: [
           { text: "みか、今週末[こんしゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しようと思[おも]っている", blank: true },
+          { text: "参加[さんか]しようと思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "の？" },
         ],
         notes: "Adds の at the end for a softer, more inquisitive casual question",
@@ -984,14 +1005,16 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みか、今週末[こんしゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しようと思[おも]っている", blank: true },
+          { text: "参加[さんか]しようと思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですか" },
         ],
       },
       {
         segments: [
           { text: "みか、バーベキューに" },
-          { text: "参加[さんか]しようと思[おも]っている", blank: true },
+          { text: "参加[さんか]しようと思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "？" },
         ],
         notes: "Drops 今週末 — context may make \"this weekend\" implied, or shorter natural phrasing",
@@ -1017,7 +1040,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みか、週末[しゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しようと思[おも]っている", blank: true },
+          { text: "参加[さんか]しようと思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "？" },
         ],
         notes: "Uses 週末 instead of 今週末 — \"the weekend\" rather than \"this weekend\" (still natural in context)",
@@ -1050,7 +1074,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "なおみに" },
-          { text: "プロポーズしようと思[おも]っているんだけど", blank: true },
+          { text: "プロポーズしようと思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "んだけど", blank: true },
           { text: "、もう 指輪[ゆびわ]も 買[か]った" },
         ],
         notes: "Casual-locked variant with んだけど connector",
@@ -1074,7 +1100,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "たけるさん、今週[こんしゅう]の 日曜日[にちようび]に 映画[えいが]を 見[み]に 行[い]こうと" },
-          { text: "思[おも]っている", blank: true },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "？" },
         ],
       },
@@ -1099,7 +1126,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "たけるさん、今週[こんしゅう]の 日曜日[にちようび]に 映画[えいが]を 見[み]に 行[い]こうと" },
-          { text: "思[おも]っている", blank: true },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "ん？" },
         ],
       },
@@ -1114,7 +1142,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "たけるさん、今度[こんど]の 日曜日[にちようび]に 映画[えいが]を 見[み]に 行[い]こうと" },
-          { text: "思[おも]っている", blank: true },
+          { text: "思[おも]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "？" },
         ],
         notes: "今度の日曜日 instead of 今週の日曜日 (this coming Sunday)",

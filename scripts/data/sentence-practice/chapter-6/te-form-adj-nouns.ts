@@ -1269,14 +1269,16 @@ export const questions: Question[] = [
         segments: [
           { text: "ゆきさんのアパートは" },
           { text: "新[あたら]しくてきれいで", blank: true },
-          { text: "、とても 楽[たの]しく 住[す]んでいる" },
+          { text: "、とても 楽[たの]しく 住[す]んで" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
           { text: "ゆきさんのアパートは" },
           { text: "新[あたら]しくてきれいだから", blank: true },
-          { text: "、とても 楽[たの]しく 住[す]んでいる" },
+          { text: "、とても 楽[たの]しく 住[す]んで" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "だから instead of で",
       },
@@ -1284,7 +1286,8 @@ export const questions: Question[] = [
         segments: [
           { text: "ゆきさんのアパートは" },
           { text: "新[あたら]しくてきれいなので", blank: true },
-          { text: "、とても 楽[たの]しく 住[す]んでいる" },
+          { text: "、とても 楽[たの]しく 住[す]んで" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "なので instead of で",
       },
@@ -1292,7 +1295,8 @@ export const questions: Question[] = [
         segments: [
           { text: "ゆきさんのアパートは" },
           { text: "新[あたら]しくてきれいで", blank: true },
-          { text: "、とても 楽[たの]しくそこに 住[す]んでいる" },
+          { text: "、とても 楽[たの]しくそこに 住[す]んで" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "With そこに explicit",
       },
@@ -1300,7 +1304,8 @@ export const questions: Question[] = [
         segments: [
           { text: "ゆきさんのアパートは" },
           { text: "新[あたら]しくてきれいだから", blank: true },
-          { text: "、とても 楽[たの]しくそこに 住[す]んでいる" },
+          { text: "、とても 楽[たの]しくそこに 住[す]んで" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "だから + そこに",
       },
@@ -1308,7 +1313,8 @@ export const questions: Question[] = [
         segments: [
           { text: "ゆきさんのアパートは" },
           { text: "新[あたら]しくてきれいで", blank: true },
-          { text: "、ゆきさんはそこにとても 楽[たの]しく 住[す]んでいる" },
+          { text: "、ゆきさんはそこにとても 楽[たの]しく 住[す]んで" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "With ゆきさんは re-introduced + そこに",
       },

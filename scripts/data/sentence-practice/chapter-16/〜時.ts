@@ -382,7 +382,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "おなかがすいているとき", blank: true },
+          { text: "おなかがすいて", blank: true },
+          { text: "いるとき", blank: true },
           { text: "、いつもスーパーで" },
           { text: "買[か]いすぎる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
@@ -390,7 +391,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "おなかがすいているときに", blank: true },
+          { text: "おなかがすいて", blank: true },
+          { text: "いるときに", blank: true },
           { text: "、いつもスーパーで" },
           { text: "買[か]いすぎる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],

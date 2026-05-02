@@ -474,7 +474,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "借[か]りていた 地図[ちず]を", blank: true },
+          { text: "借[か]りて", blank: true },
+          { text: "いた 地図[ちず]を", blank: true },
           { text: "なくして すみませんでした" },
         ],
       },

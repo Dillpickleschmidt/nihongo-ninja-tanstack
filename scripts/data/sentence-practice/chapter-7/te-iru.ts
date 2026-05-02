@@ -7,8 +7,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "私[わたし]は 今[いま] 朝[あさ]ご 飯[はん]を" },
+          { text: "食[た]べて", blank: true },
           {
-            text: "食[た]べている",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -22,8 +23,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "私[わたし]は 朝[あさ]ご 飯[はん]を 今[いま]" },
+          { text: "食[た]べて", blank: true },
           {
-            text: "食[た]べている",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -38,8 +40,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今[いま] 私[わたし]は 朝[あさ]ご 飯[はん]を" },
+          { text: "食[た]べて", blank: true },
           {
-            text: "食[た]べている",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -53,23 +56,10 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 今[いま] 朝[あさ]ご 飯[はん]を" },
-          { text: "食[た]べてる", blank: true },
-        ],
-        notes: "Contracted てる form",
-      },
-      {
-        segments: [
-          { text: "今[いま] 朝[あさ]ご 飯[はん]を" },
-          { text: "食[た]べてる", blank: true },
-        ],
-        notes: "Contracted てる, pronoun dropped, 今 at start",
-      },
-      {
-        segments: [
           { text: "私[わたし]が 今[いま] 朝[あさ]ご 飯[はん]を" },
+          { text: "食[た]べて", blank: true },
           {
-            text: "食[た]べている",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -103,20 +93,6 @@ export const questions: Question[] = [
           },
         ],
       },
-      {
-        segments: [
-          { text: "けんじさんは" },
-          { text: "結婚[けっこん]してる", blank: true },
-        ],
-        notes: "Casual い-dropped form",
-      },
-      {
-        segments: [
-          { text: "けんじさんは" },
-          { text: "結婚[けっこん]してます", blank: true },
-        ],
-        notes: "Polite い-dropped form",
-      },
     ],
   },
   {
@@ -126,8 +102,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "けんじさんは 図書館[としょかん]で" },
+          { text: "歌[うた]って", blank: true },
           {
-            text: "歌[うた]っていた",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -141,8 +118,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "けんじさんが 図書館[としょかん]で" },
+          { text: "歌[うた]って", blank: true },
           {
-            text: "歌[うた]っていた",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -157,8 +135,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "けんじさんは 図書館[としょかん]で 歌[うた]を" },
+          { text: "歌[うた]って", blank: true },
           {
-            text: "歌[うた]っていた",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -173,8 +152,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "けんじさんが 図書館[としょかん]で 歌[うた]を" },
+          { text: "歌[うた]って", blank: true },
           {
-            text: "歌[うた]っていた",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -195,8 +175,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "けんじさんは 毎朝[まいあさ] コーヒーを" },
+          { text: "飲[の]んで", blank: true },
           {
-            text: "飲[の]んでいる",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -211,25 +192,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "けんじさんは 毎朝[まいあさ] コーヒーを" },
+          { text: "飲[の]んで", blank: true },
           {
-            text: "飲[の]んでる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "Contracted でる form",
-      },
-      {
-        segments: [
-          { text: "けんじさんは 毎朝[まいあさ] コーヒーを" },
-          {
-            text: "飲[の]んでいる",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -241,23 +206,6 @@ export const questions: Question[] = [
           { text: "の" },
         ],
         notes: "の question particle instead of か",
-      },
-      {
-        segments: [
-          { text: "けんじさんは 毎朝[まいあさ] コーヒーを" },
-          {
-            text: "飲[の]んでる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "の" },
-        ],
-        notes: "Contracted でる + の question",
       },
     ],
   },
@@ -297,13 +245,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "父[ちち]は 銀行[ぎんこう]で" },
-          { text: "働[はたら]いてる", blank: true },
-        ],
-        notes: "Contracted てる form",
-      },
-      {
-        segments: [
           { text: "私[わたし]の 父[ちち]は 銀行[ぎんこう]で 働[はたら]いて" },
           {
             text: "いる",
@@ -321,23 +262,18 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "父[ちち]は 銀行[ぎんこう]で" },
-          { text: "働[はたら]いている", blank: true },
+          { text: "働[はたら]いて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "働いている as a single chunk",
       },
       {
         segments: [
           { text: "父[ちち]が 銀行[ぎんこう]で" },
-          { text: "働[はたら]いている", blank: true },
+          { text: "働[はたら]いて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "が + single-chunk 働いている",
-      },
-      {
-        segments: [
-          { text: "父[ちち]が 銀行[ぎんこう]で" },
-          { text: "働[はたら]いてる", blank: true },
-        ],
-        notes: "Contracted てる with が",
       },
       {
         segments: [
@@ -377,22 +313,6 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-      },
-      {
-        segments: [
-          { text: "けんじさんは 眼鏡[めがね]を" },
-          { text: "かけてる", blank: true },
-          { text: "か" },
-        ],
-        notes: "Casual い-dropped",
-      },
-      {
-        segments: [
-          { text: "けんじさんは 眼鏡[めがね]を" },
-          { text: "かけてます", blank: true },
-          { text: "か" },
-        ],
-        notes: "Polite い-dropped",
       },
     ],
   },
@@ -486,20 +406,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんは 今[いま] 車[くるま]の 中[なか]で" },
-          { text: "寝[ね]てる", blank: true },
-        ],
-        notes: "Contracted てる form",
-      },
-      {
-        segments: [
-          { text: "けんじさんは 今[いま] 車[くるま]で" },
-          { text: "寝[ね]てる", blank: true },
-        ],
-        notes: "Contracted てる + 車で",
-      },
-      {
-        segments: [
           { text: "今[いま]、 けんじさんが 車[くるま]の 中[なか]で" },
           { text: "寝[ね]て", blank: true },
           {
@@ -518,8 +424,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "けんじさんは 今[いま] 車[くるま]の 中[なか]で" },
+          { text: "寝[ね]て", blank: true },
           {
-            text: "寝[ね]ている",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -534,8 +441,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "けんじさんは 今[いま] 車[くるま]で" },
+          { text: "寝[ね]て", blank: true },
           {
-            text: "寝[ね]ている",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -555,7 +463,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "犬[いぬ]は" },
-          { text: "死[し]んでいる", blank: true },
+          { text: "死[し]んで", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
@@ -567,22 +476,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "犬[いぬ]は" },
-          { text: "死[し]んでる", blank: true },
-        ],
-        notes: "Casual い-dropped",
-      },
-      {
-        segments: [
-          { text: "犬[いぬ]は" },
-          { text: "死[し]んでます", blank: true },
-        ],
-        notes: "Polite い-dropped",
-      },
-      {
-        segments: [
           { text: "犬[いぬ]が" },
-          { text: "死[し]んでいる", blank: true },
+          { text: "死[し]んで", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "が instead of は",
       },
@@ -605,13 +501,6 @@ export const questions: Question[] = [
             },
           },
         ],
-      },
-      {
-        segments: [
-          { text: "私[わたし]は いつも 勉強[べんきょう]して 音楽[おんがく]を" },
-          { text: "聞[き]いてる", blank: true },
-        ],
-        notes: "Contracted てる form",
       },
       {
         segments: [
@@ -826,20 +715,6 @@ export const questions: Question[] = [
         ],
         notes: "は particle",
       },
-      {
-        segments: [
-          { text: "窓[まど]が" },
-          { text: "閉[し]まってる", blank: true },
-        ],
-        notes: "Casual い-dropped",
-      },
-      {
-        segments: [
-          { text: "窓[まど]は" },
-          { text: "閉[し]まってる", blank: true },
-        ],
-        notes: "は + casual い-dropped",
-      },
     ],
   },
   {
@@ -880,13 +755,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 毎日[まいにち] 病院[びょういん]で" },
-          { text: "働[はたら]いてる", blank: true },
-        ],
-        notes: "Contracted てる form",
-      },
-      {
-        segments: [
           { text: "私[わたし]が 毎日[まいにち] 病院[びょういん]で" },
           { text: "働[はたら]いて", blank: true },
           {
@@ -904,13 +772,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 病院[びょういん]で 毎日[まいにち]" },
-          { text: "働[はたら]いてる", blank: true },
-        ],
-        notes: "Contracted てる, location before time",
-      },
-      {
-        segments: [
           { text: "私[わたし]が 病院[びょういん]で 毎日[まいにち]" },
           { text: "働[はたら]いて", blank: true },
           {
@@ -925,13 +786,6 @@ export const questions: Question[] = [
           },
         ],
         notes: "が + location before time",
-      },
-      {
-        segments: [
-          { text: "私[わたし]が 毎日[まいにち] 病院[びょういん]で" },
-          { text: "働[はたら]いてる", blank: true },
-        ],
-        notes: "が + contracted てる form",
       },
     ],
   },
@@ -971,20 +825,6 @@ export const questions: Question[] = [
           },
         ],
         notes: "今 moved after カナダに",
-      },
-      {
-        segments: [
-          { text: "けんじさんの 弟[おとうと]は 今[いま] カナダに" },
-          { text: "住[す]んでる", blank: true },
-        ],
-        notes: "Casual い-dropped form",
-      },
-      {
-        segments: [
-          { text: "けんじさんの 弟[おとうと]は カナダに 今[いま]" },
-          { text: "住[す]んでる", blank: true },
-        ],
-        notes: "Casual い-dropped, alternate word order",
       },
     ],
   },
@@ -1179,8 +1019,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "母[はは]は 毎朝[まいあさ] 料理[りょうり]" },
+          { text: "して", blank: true },
           {
-            text: "している",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -1194,8 +1035,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "私[わたし]の 母[はは]は 毎朝[まいあさ] 料理[りょうり]" },
+          { text: "して", blank: true },
           {
-            text: "している",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -1210,8 +1052,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "母[はは]は 毎朝[まいあさ] ご 飯[はん]を" },
+          { text: "作[つく]って", blank: true },
           {
-            text: "作[つく]っている",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -1226,8 +1069,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "母[はは]は 毎朝[まいあさ] 料理[りょうり]を" },
+          { text: "して", blank: true },
           {
-            text: "している",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -1242,8 +1086,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "母[はは]が 毎朝[まいあさ] 料理[りょうり]" },
+          { text: "して", blank: true },
           {
-            text: "している",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -1258,8 +1103,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "母[はは]は 毎朝[まいあさ] 朝[あさ]ご 飯[はん]を" },
+          { text: "作[つく]って", blank: true },
           {
-            text: "作[つく]っている",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
@@ -1319,20 +1165,23 @@ export const questions: Question[] = [
           {
             text: "私[わたし]の 兄[あに]は 毎週[まいしゅう] 土曜日[どようび]に テニスを",
           },
-          { text: "している", blank: true },
+          { text: "して", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
           { text: "兄[あに]は 毎週[まいしゅう] 土曜日[どようび]に テニスを" },
-          { text: "している", blank: true },
+          { text: "して", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Without 私の — 兄 alone is natural",
       },
       {
         segments: [
           { text: "兄[あに]は 毎週[まいしゅう] 土曜日[どようび]に テニスを" },
-          { text: "やっている", blank: true },
+          { text: "やって", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "やっている instead of している",
       },
@@ -1341,44 +1190,34 @@ export const questions: Question[] = [
           {
             text: "私[わたし]の 兄[あに]は 毎週[まいしゅう] 土曜日[どようび]に テニスを",
           },
-          { text: "やっている", blank: true },
+          { text: "やって", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "With 私の + やっている",
       },
       {
         segments: [
           { text: "兄[あに]は 土曜日[どようび]に テニスを" },
-          { text: "している", blank: true },
+          { text: "して", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Without 毎週",
       },
       {
         segments: [
           { text: "兄[あに]が 毎週[まいしゅう] 土曜日[どようび]に テニスを" },
-          { text: "している", blank: true },
+          { text: "して", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "が instead of は",
       },
       {
         segments: [
           { text: "毎週[まいしゅう] 土曜日[どようび]に 兄[あに]は テニスを" },
-          { text: "している", blank: true },
+          { text: "して", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Time phrase moved to the front",
-      },
-      {
-        segments: [
-          { text: "兄[あに]は 毎週[まいしゅう] 土曜日[どようび]に テニスを" },
-          { text: "してる", blank: true },
-        ],
-        notes: "Contracted してる",
-      },
-      {
-        segments: [
-          { text: "兄[あに]は 毎週[まいしゅう] 土曜日[どようび]に テニスを" },
-          { text: "やってる", blank: true },
-        ],
-        notes: "Contracted やってる",
       },
     ],
   },

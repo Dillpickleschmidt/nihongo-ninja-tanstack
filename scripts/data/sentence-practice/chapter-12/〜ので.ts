@@ -230,7 +230,8 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "おなかがすいている", blank: true },
+          { text: "おなかがすいて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "ので、サンドイッチを 買[か]いに" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],

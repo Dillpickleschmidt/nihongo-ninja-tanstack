@@ -326,14 +326,16 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "ちょっと おなかが すいている", blank: true },
+          { text: "ちょっと おなかが すいて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが" },
           { text: "…" },
         ],
       },
       {
         segments: [
-          { text: "少し[すこし] おなかが すいている", blank: true },
+          { text: "少し[すこし] おなかが すいて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが" },
           { text: "…" },
         ],
@@ -341,35 +343,40 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ちょっと おなかが すいている", blank: true },
+          { text: "ちょっと おなかが すいて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですけど…" },
         ],
         notes: "んですけど — polite base with けど ending (softer than が)",
       },
       {
         segments: [
-          { text: "少し[すこし] おなかが すいている", blank: true },
+          { text: "少し[すこし] おなかが すいて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですけど…" },
         ],
         notes: "少し + んですけど",
       },
       {
         segments: [
-          { text: "ちょっと おなかが すいている", blank: true },
+          { text: "ちょっと おなかが すいて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "のですが…" },
         ],
         notes: "のですが — formal の variant instead of ん",
       },
       {
         segments: [
-          { text: "ちょっと おなかが すいている", blank: true },
+          { text: "ちょっと おなかが すいて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "のだけど…" },
         ],
         notes: "のだけど — formal の with casual けど",
       },
       {
         segments: [
-          { text: "おなかが ちょっと すいている", blank: true },
+          { text: "おなかが ちょっと すいて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが" },
           { text: "…" },
         ],
@@ -377,28 +384,32 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "おなかが 少し[すこし] すいている", blank: true },
+          { text: "おなかが 少し[すこし] すいて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが…" },
         ],
         notes: "おなかが 少し order + んですが",
       },
       {
         segments: [
-          { text: "ちょっと おなかは すいている", blank: true },
+          { text: "ちょっと おなかは すいて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが…" },
         ],
         notes: "おなかは (は instead of が, adds slight contrast nuance) + んですが",
       },
       {
         segments: [
-          { text: "ちょっと おなかが すいている", blank: true },
+          { text: "ちょっと おなかが すいて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んだけれど…" },
         ],
         notes: "んだけれど — slightly more formal than んだけど",
       },
       {
         segments: [
-          { text: "ちょっと おなかが すいている", blank: true },
+          { text: "ちょっと おなかが すいて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですけれど…" },
         ],
         notes: "んですけれど — polite base with けれど ending",
@@ -744,7 +755,8 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "疲[つか]れている", blank: true },
+          { text: "疲[つか]れて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが" },
           { text: "、ちょっと 休[やす]んでも いい" },
           { text: "です" },
@@ -754,7 +766,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "疲[つか]れている", blank: true },
+          { text: "疲[つか]れて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが" },
           { text: "、少[すこ]し 休[やす]んでも いい" },
           { text: "です" },
@@ -763,7 +776,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "疲[つか]れている", blank: true },
+          { text: "疲[つか]れて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが" },
           { text: "、ちょっと 休[やす]んでも かまわない" },
           { text: "です" },
@@ -772,7 +786,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "疲[つか]れている", blank: true },
+          { text: "疲[つか]れて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "のですが、ちょっと 休[やす]んでも いい" },
           { text: "です" },
           { text: "か" },
@@ -790,7 +805,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "疲[つか]れている", blank: true },
+          { text: "疲[つか]れて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んだけれど、ちょっと 休[やす]んでも いい" },
           { text: "です" },
           { text: "か" },
@@ -798,7 +814,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "疲[つか]れている", blank: true },
+          { text: "疲[つか]れて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "のだけど、ちょっと 休[やす]んでも いい" },
           { text: "です" },
           { text: "か" },
@@ -806,7 +823,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "疲[つか]れている", blank: true },
+          { text: "疲[つか]れて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んだけれど、少[すこ]し 休[やす]んでも いい" },
           { text: "です" },
           { text: "か" },
@@ -815,7 +833,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "疲[つか]れている", blank: true },
+          { text: "疲[つか]れて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "のですが、少[すこ]し 休[やす]んでも いい" },
           { text: "です" },
           { text: "か" },
@@ -920,7 +939,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "すみません、図書館[としょかん]を" },
-          { text: "探[さが]している", blank: true },
+          { text: "探[さが]して", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが、どこにあるか 教[おし]えていただけますか" },
         ],
         notes: "Core answer: ている (searching) + んですが + polite request to be told where it is",
@@ -928,7 +948,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "すみません、図書館[としょかん]を" },
-          { text: "探[さが]している", blank: true },
+          { text: "探[さが]して", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが" },
           { text: "、どこにありますか" },
         ],
@@ -937,14 +958,16 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "すみません、図書館[としょかん]を" },
-          { text: "探[さが]している", blank: true },
+          { text: "探[さが]して", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んだけど、どこにあるか 教[おし]えてもらえますか" },
         ],
       },
       {
         segments: [
           { text: "すみません、図書館[としょかん]を" },
-          { text: "探[さが]している", blank: true },
+          { text: "探[さが]して", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが" },
           { text: "…" },
         ],
@@ -953,7 +976,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "すみません、図書館[としょかん]を" },
-          { text: "探[さが]している", blank: true },
+          { text: "探[さが]して", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが、図書館[としょかん]はどこですか" },
         ],
         notes: "Ending with 図書館はどこですか (asking directly where the library is)",
@@ -984,7 +1008,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "すみません、図書館[としょかん]を" },
-          { text: "探[さが]している", blank: true },
+          { text: "探[さが]して", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが、図書館[としょかん]はどこか 教[おし]えていただけますか" },
         ],
         notes: "Asking 図書館はどこか教えていただけますか (where is the library, could you tell me)",
@@ -992,7 +1017,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "すみません、図書館[としょかん]を" },
-          { text: "探[さが]している", blank: true },
+          { text: "探[さが]して", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "んですが、教[おし]えてもらえますか" },
         ],
         notes: "Shorter ending: んですが、教えてもらえますか (without restating location)",

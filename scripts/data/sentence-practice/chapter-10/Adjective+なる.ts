@@ -565,7 +565,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "試験[しけん]が 近[ちか]くなってきたから、少[すこ]し" },
-          { text: "忙[いそが]しくなっている", blank: true },
+          { text: "忙[いそが]しくなって", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "忙しくなっている instead of なってきた",
       },

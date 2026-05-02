@@ -1184,9 +1184,9 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          {
-            text: "はなさんが 知[し]っている 有名人[ゆうめいじん]の 中[なか]で",
-          },
+          { text: "はなさんが 知[し]って" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "有名人[ゆうめいじん]の 中[なか]で" },
           { text: "誰[だれ]が 一番[いちばん]有名[ゆうめい]か", blank: true },
         ],
         notes:
