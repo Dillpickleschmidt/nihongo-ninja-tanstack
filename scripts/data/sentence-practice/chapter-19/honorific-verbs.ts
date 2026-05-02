@@ -7,30 +7,55 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "先生[せんせい]は 図書館[としょかん]で 本[ほん]を" },
-          { text: "お 読[よ]みになっています", blank: true },
+          { text: "お 読[よ]みになって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "先生[せんせい]は 図書館[としょかん]で 本[ほん]を" },
-          { text: "ご 覧[らん]になっています", blank: true },
+          { text: "ご 覧[らん]になって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Uses ご覧になる for 'reading' in an honorific context.",
+        notes:
+          "ご 覧[らん]になる can mean reading or looking at something honorifically.",
+        register: "polite",
       },
       {
         segments: [
           { text: "先生[せんせい]は 図書館[としょかん]で 本[ほん]を" },
-          { text: "読[よ]んでいらっしゃいます", blank: true },
+          { text: "読[よ]んで", blank: true },
+          { text: "いらっしゃいます", blank: true },
         ],
-        notes: "Uses ～ていらっしゃいます construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "教授[きょうじゅ]は 図書館[としょかん]で 本[ほん]を" },
-          { text: "読[よ]んでいらっしゃいます", blank: true },
+          { text: "読[よ]んで", blank: true },
+          { text: "いらっしゃいます", blank: true },
         ],
         notes: "教授 (professor) instead of 先生",
+        register: "polite",
       },
     ],
   },
@@ -44,55 +69,60 @@ export const questions: Question[] = [
           { text: "お 泊[と]まりになります", blank: true },
           { text: "か" },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "先生[せんせい]はどちらに" },
-          { text: "お 泊[と]まりになりますか", blank: true },
+          { text: "お 泊[と]まりになります", blank: true },
+          { text: "か" },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "先生[せんせい]はどちらに" },
-          { text: "お 泊[と]まりですか", blank: true },
+          { text: "お 泊[と]まりです", blank: true },
+          { text: "か" },
         ],
-        notes: "Uses お泊まり as a noun with です.",
+        notes: "お 泊[と]まりです uses a noun-like phrasing for staying.",
+        register: "polite",
       },
       {
         segments: [
           { text: "どこへ 先生[せんせい]が" },
-          { text: "お 泊[と]まりになりますか", blank: true },
+          { text: "お 泊[と]まりになります", blank: true },
+          { text: "か" },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "どこに 先生[せんせい]が" },
-          { text: "お 泊[と]まりになりますか", blank: true },
+          { text: "お 泊[と]まりになります", blank: true },
+          { text: "か" },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
     ],
   },
   {
     english: "The department manager (graciously) welcomed the new employee.",
-    hint: "社員（しゃいん）- employee; 迎える（むかえる）- to welcome/greet",
+    hint: "社員[しゃいん] - employee; 迎[むか]える - to welcome/greet",
     answers: [
       {
         segments: [
           { text: "部長[ぶちょう]は 新[あたら]しい 社員[しゃいん]を" },
           { text: "お 迎[むか]えになりました", blank: true },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "部長[ぶちょう]が 新[あたら]しい 社員[しゃいん]を" },
           { text: "お 迎[むか]えになりました", blank: true },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
     ],
   },
@@ -103,16 +133,11 @@ export const questions: Question[] = [
         segments: [
           { text: "先生[せんせい]は 何[なに]を" },
           { text: "おっしゃる", blank: true },
-          { text: "つもりですか" },
+          { text: "つもりです" },
+          { text: "か" },
         ],
-        notes: "Uses おっしゃる (honorific for 言う).",
-      },
-      {
-        segments: [
-          { text: "先生[せんせい]は 何[なん]と" },
-          { text: "おっしゃいますか", blank: true },
-        ],
-        notes: "Uses おっしゃいます (present tense of おっしゃる).",
+        notes: "おっしゃる is an honorific way to say 言[い]う.",
+        register: "polite",
       },
     ],
   },
@@ -127,7 +152,8 @@ export const questions: Question[] = [
           },
           { text: "くださいました", blank: true },
         ],
-        notes: "私たちに.",
+        notes: "私[わたし]たちに makes the recipient explicit.",
+        register: "polite",
       },
       {
         segments: [
@@ -136,6 +162,7 @@ export const questions: Question[] = [
           },
           { text: "くださいました", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
@@ -144,7 +171,9 @@ export const questions: Question[] = [
           },
           { text: "してくださいました", blank: true },
         ],
-        notes: "Uses してくださいました for 'giving advice.'",
+        notes:
+          "アドバイスをする treats advice as something the president did for us.",
+        register: "polite",
       },
       {
         segments: [
@@ -153,7 +182,9 @@ export const questions: Question[] = [
           },
           { text: "してくださいました", blank: true },
         ],
-        notes: "Uses してくださいました for 'giving advice.'",
+        notes:
+          "アドバイスをする treats advice as something the president did for us.",
+        register: "polite",
       },
       {
         segments: [
@@ -162,7 +193,8 @@ export const questions: Question[] = [
           },
           { text: "くださいました", blank: true },
         ],
-        notes: "私たちに.",
+        notes: "私[わたし]たちに makes the recipient explicit.",
+        register: "polite",
       },
       {
         segments: [
@@ -171,6 +203,7 @@ export const questions: Question[] = [
           },
           { text: "くださいました", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
@@ -179,7 +212,9 @@ export const questions: Question[] = [
           },
           { text: "してくださいました", blank: true },
         ],
-        notes: "Uses してくださいました for 'giving advice.'",
+        notes:
+          "アドバイスをする treats advice as something the president did for us.",
+        register: "polite",
       },
       {
         segments: [
@@ -188,7 +223,9 @@ export const questions: Question[] = [
           },
           { text: "してくださいました", blank: true },
         ],
-        notes: "Uses してくださいました for 'giving advice.'",
+        notes:
+          "アドバイスをする treats advice as something the president did for us.",
+        register: "polite",
       },
     ],
   },
@@ -204,7 +241,8 @@ export const questions: Question[] = [
           { text: "ご 覧[らん]になります", blank: true },
         ],
         notes:
-          "Uses ご覧になります for 'reading' or 'looking at' in an honorific way.",
+          "ご 覧[らん]になる can mean reading or looking at something honorifically.",
+        register: "polite",
       },
       {
         segments: [
@@ -213,7 +251,8 @@ export const questions: Question[] = [
           },
           { text: "ご 覧[らん]になります", blank: true },
         ],
-        notes: "Uses お父様 instead of お父さん for added formality.",
+        notes: "お 父[とう]様[さま] is more formal than お 父[とう]さん.",
+        register: "polite",
       },
       {
         segments: [
@@ -222,7 +261,8 @@ export const questions: Question[] = [
           },
           { text: "お 読[よ]みになります", blank: true },
         ],
-        notes: "Uses お読みになる for 'reading' in an honorific way.",
+        notes: "お 読[よ]みになる is an honorific way to say 読[よ]む.",
+        register: "polite",
       },
       {
         segments: [
@@ -231,7 +271,8 @@ export const questions: Question[] = [
           },
           { text: "お 読[よ]みになります", blank: true },
         ],
-        notes: "Uses お父様 instead of お父さん for added formality.",
+        notes: "お 父[とう]様[さま] is more formal than お 父[とう]さん.",
+        register: "polite",
       },
     ],
   },
@@ -241,60 +282,67 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今週末[こんしゅうまつ]はどちらへ" },
-          { text: "お 出[で]かけになるつもりですか", blank: true },
+          { text: "お 出[で]かけになるつもりです", blank: true },
+          { text: "か" },
         ],
-        notes: "へ",
+        notes: "へ marks the destination direction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "今週末[こんしゅうまつ]はどちらに" },
-          { text: "お 出[で]かけになるつもりですか", blank: true },
+          { text: "お 出[で]かけになるつもりです", blank: true },
+          { text: "か" },
         ],
-        notes: "に",
+        notes: "に marks the destination point.",
+        register: "polite",
       },
     ],
   },
   {
-    english: "Will Mrs. Kaede be attnding the summer festival this weekend?",
-    hint: "お越す（おこす）- to attend, 楓(かえで) - Kaede",
+    english: "Will Mrs. Kaede be attending the summer festival this weekend?",
+    hint: "お 越[こ]しになる - to attend/come/go (honorific); 楓[かえで] - Kaede",
     answers: [
       {
         segments: [
           {
-            text: "楓[かえで]様[さま]は 今週末[こんしゅうまつ]の 夏祭[なつまつ]りに",
+            text: "楓[かえで]さんは 今週末[こんしゅうまつ]の 夏祭[なつまつ]りに",
           },
-          { text: "お 越[こし]になりますか", blank: true },
+          { text: "お 越[こ]しになります", blank: true },
+          { text: "か" },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           {
-            text: "楓[かえで]様[さま]が 今週末[こんしゅうまつ]の 夏祭[なつまつ]りに",
+            text: "楓[かえで]さんが 今週末[こんしゅうまつ]の 夏祭[なつまつ]りに",
           },
-          { text: "お 越[こし]になりますか", blank: true },
+          { text: "お 越[こ]しになります", blank: true },
+          { text: "か" },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
     ],
   },
   {
     english: "The professor (graciously) gave me this book.",
-    hint: "You could optionally use 渡す（わたす）- to hand over, to give",
+    hint: "渡[わた]す - to hand over, to give",
     answers: [
       {
         segments: [
           { text: "先生[せんせい]がこの 本[ほん]を" },
           { text: "くださいました", blank: true },
         ],
-        notes: "Uses くださいました to describe the act of giving.",
+        register: "polite",
       },
       {
         segments: [
           { text: "先生[せんせい]がこの 本[ほん]を" },
-          { text: "渡[わた]てくださいました", blank: true },
+          { text: "渡[わた]してくださいました", blank: true },
         ],
-        notes: "Uses 渡てくださいました.",
+        notes: "渡[わた]す makes the handover explicit.",
+        register: "polite",
       },
     ],
   },
@@ -306,14 +354,15 @@ export const questions: Question[] = [
           { text: "先生[せんせい]は 来月[らいげつ]の 旅行[りょこう]について" },
           { text: "お 話[はな]しになりました", blank: true },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "先生[せんせい]は 来月[らいげつ]の 旅行[りょこう]について" },
           { text: "おっしゃいました", blank: true },
         ],
-        notes: "Uses おっしゃいました (honorific for 言う).",
+        notes: "おっしゃる is an honorific way to say 言[い]う.",
+        register: "polite",
       },
     ],
   },
@@ -324,32 +373,40 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "新[あたら]しいウェブサイトのデザインを" },
-          { text: "ご 覧[らん]になりましたか", blank: true },
+          { text: "ご 覧[らん]になりました", blank: true },
+          { text: "か" },
         ],
         notes:
-          "Uses ご覧になる in the past tense to ask about reviewing in an honorific way.",
+          "ご 覧[らん]になる can mean looking over or reviewing something honorifically.",
+        register: "polite",
       },
       {
         segments: [
           { text: "もう 新[あたら]しいウェブサイトのデザインを" },
-          { text: "ご 覧[らん]になりましたか", blank: true },
+          { text: "ご 覧[らん]になりました", blank: true },
+          { text: "か" },
         ],
         notes: "もう adds the sense of 'already/yet' to the question.",
+        register: "polite",
       },
       {
         segments: [
           { text: "新[あたら]しいウェブサイトのデザインは" },
-          { text: "ご 覧[らん]になりましたか", blank: true },
+          { text: "ご 覧[らん]になりました", blank: true },
+          { text: "か" },
         ],
-        notes: "Uses は instead of を for a softer, less direct phrasing.",
+        notes: "は makes the website design the topic.",
+        register: "polite",
       },
       {
         segments: [
           { text: "新[あたら]しいウェブサイトのデザインを" },
-          { text: "お 目[め]通[どおし]しになりましたか", blank: true },
+          { text: "お 目[め]通[どお]しになりました", blank: true },
+          { text: "か" },
         ],
         notes:
-          "Uses お目通し, a more formal/written way to say 'review/look through' in an honorific context.",
+          "お 目[め]通[どお]し is a formal way to say someone looks over something.",
+        register: "polite",
       },
     ],
   },
@@ -359,46 +416,73 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今[いま]社長[しゃちょう]は 電話[でんわ]で" },
-          { text: "お 話[はな]しになっています", blank: true },
+          { text: "お 話[はな]しになって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "今[いま]社長[しゃちょう]は 電話[でんわ]で" },
-          { text: "話[はな]していらっしゃいます", blank: true },
+          { text: "話[はな]して", blank: true },
+          { text: "いらっしゃいます", blank: true },
         ],
-        notes: "Uses ～ていらっしゃいます construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "今[いま]社長[しゃちょう]は 電話[でんわ]に" },
-          { text: "出[で]ていらっしゃいます", blank: true },
+          { text: "出[で]て", blank: true },
+          { text: "いらっしゃいます", blank: true },
         ],
-        notes:
-          "Uses ～ていらっしゃいます with 出る to describe answering the phone.",
+        notes: "電話[でんわ]に 出[で]る means to answer or be on the phone.",
+        register: "polite",
       },
       {
         segments: [
           { text: "ただいま 社長[しゃちょう]は 電話[でんわ]で" },
-          { text: "お 話[はな]しになっています", blank: true },
+          { text: "お 話[はな]しになって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Replaces 今 with ただいま for a more formal tone.",
+        notes: "ただいま sounds more formal than 今[いま].",
+        register: "polite",
       },
       {
         segments: [
           { text: "ただいま 社長[しゃちょう]は 電話[でんわ]で" },
-          { text: "話[はな]していらっしゃいます", blank: true },
+          { text: "話[はな]して", blank: true },
+          { text: "いらっしゃいます", blank: true },
         ],
-        notes: "Replaces 今 with ただいま and uses ～ていらっしゃいます.",
+        notes: "ただいま sounds more formal than 今[いま].",
+        register: "polite",
       },
       {
         segments: [
           { text: "ただいま 社長[しゃちょう]は 電話[でんわ]に" },
-          { text: "出[で]ていらっしゃいます", blank: true },
+          { text: "出[で]て", blank: true },
+          { text: "いらっしゃいます", blank: true },
         ],
         notes:
-          "Replaces 今 with ただいま and uses 出る with ～ていらっしゃいます.",
+          "ただいま sounds more formal; 電話[でんわ]に 出[で]る means to answer or be on the phone.",
+        register: "polite",
       },
     ],
   },
@@ -408,30 +492,37 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "主人[しゅじん]は 花子[はなこ]さんの 手紙[てがみ]を" },
-          { text: "お 読[よ]みになりましたか", blank: true },
+          { text: "お 読[よ]みになりました", blank: true },
+          { text: "か" },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "主人[しゅじん]が 花子[はなこ]さんの 手紙[てがみ]を" },
-          { text: "お 読[よ]みになりましたか", blank: true },
+          { text: "お 読[よ]みになりました", blank: true },
+          { text: "か" },
         ],
-        notes: "Uses が to mark the subject instead of は.",
+        notes: "が marks the subject directly.",
+        register: "polite",
       },
       {
         segments: [
           { text: "主人[しゅじん]は 花子[はなこ]さんの 手紙[てがみ]は" },
-          { text: "お 読[よ]みになりましたか", blank: true },
+          { text: "お 読[よ]みになりました", blank: true },
+          { text: "か" },
         ],
-        notes: "Uses は twice for a softer, more indirect phrasing.",
+        notes: "The second は makes Hanako's letter the topic.",
+        register: "polite",
       },
       {
         segments: [
           { text: "主人[しゅじん]が 花子[はなこ]さんの 手紙[てがみ]は" },
-          { text: "お 読[よ]みになりましたか", blank: true },
+          { text: "お 読[よ]みになりました", blank: true },
+          { text: "か" },
         ],
-        notes: "Uses が with は for another variation.",
+        notes: "が marks the reader, while は makes Hanako's letter the topic.",
+        register: "polite",
       },
     ],
   },
@@ -441,16 +532,17 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "先生[せんせい]はこのレストランで" },
-          { text: "召[め]し上[あ]がります", blank: true },
+          { text: "召[め]し 上[あ]がります", blank: true },
         ],
-        notes: "Uses 召し上がる (honorific for 食べる).",
+        notes: "召[め]し 上[あ]がる is an honorific way to say 食[た]べる.",
+        register: "polite",
       },
       {
         segments: [
           { text: "先生[せんせい]はこのレストランで" },
           { text: "お 食事[しょくじ]になります", blank: true },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
     ],
   },
@@ -462,28 +554,28 @@ export const questions: Question[] = [
           { text: "先生[せんせい]は 私[わたし]たちの 質問[しつもん]に" },
           { text: "答[こた]えてくださいました", blank: true },
         ],
-        notes: "Uses てくださる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "先生[せんせい]が 私[わたし]たちの 質問[しつもん]に" },
           { text: "答[こた]えてくださいました", blank: true },
         ],
-        notes: "Uses てくださる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "先生[せんせい]は 私[わたし]たちの 質問[しつもん]に" },
           { text: "お 答[こた]えになりました", blank: true },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "先生[せんせい]が 私[わたし]たちの 質問[しつもん]に" },
           { text: "お 答[こた]えになりました", blank: true },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
     ],
   },
@@ -493,16 +585,20 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "その 本[ほん]を" },
-          { text: "お 読[よ]みになったことがありますか", blank: true },
+          { text: "お 読[よ]みになったことがあります", blank: true },
+          { text: "か" },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "その 本[ほん]を" },
-          { text: "ご 覧[らん]になったことがありますか", blank: true },
+          { text: "ご 覧[らん]になったことがあります", blank: true },
+          { text: "か" },
         ],
-        notes: "Uses ご覧になる to describe 'reading' in an honorific way.",
+        notes:
+          "ご 覧[らん]になる can mean reading or looking at something honorifically.",
+        register: "polite",
       },
     ],
   },
@@ -513,16 +609,27 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "社長[しゃちょう]は 今[いま]オフィスでレポートを" },
-          { text: "書[か]いていらっしゃいます", blank: true },
+          { text: "書[か]いて", blank: true },
+          { text: "いらっしゃいます", blank: true },
         ],
-        notes: "Uses ～ていらっしゃいます.",
+        register: "polite",
       },
       {
         segments: [
           { text: "社長[しゃちょう]は 今[いま]オフィスでレポートを" },
-          { text: "お 書[か]きになっています", blank: true },
+          { text: "お 書[か]きになって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
     ],
   },
@@ -532,16 +639,27 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "先生[せんせい]は 新[あたら]しいプロジェクトについて" },
-          { text: "お 考[かんが]えになっています", blank: true },
+          { text: "お 考[かんが]えになって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "先生[せんせい]は 新[あたら]しいプロジェクトについて" },
-          { text: "考[かんが]えていらっしゃいます", blank: true },
+          { text: "考[かんが]えて", blank: true },
+          { text: "いらっしゃいます", blank: true },
         ],
-        notes: "Uses ～ていらっしゃいます construction.",
+        register: "polite",
       },
     ],
   },
@@ -553,15 +671,15 @@ export const questions: Question[] = [
           { text: "先生[せんせい]は 事務所[じむしょ]に" },
           { text: "お 寄[よ]りになりました", blank: true },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "先生[せんせい]はオフィスに" },
           { text: "お 寄[よ]りになりました", blank: true },
         ],
-        notes:
-          "Uses お[verb stem]になる construction with 'オフィス' instead of '事務所.'",
+        notes: "オフィス is a loanword alternative to 事務所[じむしょ].",
+        register: "polite",
       },
     ],
   },
@@ -573,21 +691,24 @@ export const questions: Question[] = [
           { text: "先生[せんせい]は 毎朝[まいあさ]お 茶[ちゃ]を" },
           { text: "召[め]し 上[あ]がります", blank: true },
         ],
-        notes: "Uses 召し上がる (honorific for 飲む).",
+        notes: "召[め]し 上[あ]がる is an honorific way to say 飲[の]む.",
+        register: "polite",
       },
       {
         segments: [
           { text: "毎朝[まいあさ]、先生[せんせい]はお 茶[ちゃ]を" },
           { text: "召[め]し 上[あ]がります", blank: true },
         ],
-        notes: "Uses 召し上がる (honorific for 飲む).",
+        notes: "召[め]し 上[あ]がる is an honorific way to say 飲[の]む.",
+        register: "polite",
       },
       {
         segments: [
           { text: "毎朝[まいあさ]、先生[せんせい]がお 茶[ちゃ]を" },
           { text: "召[め]し 上[あ]がります", blank: true },
         ],
-        notes: "Uses 召し上がる (honorific for 飲む).",
+        notes: "召[め]し 上[あ]がる is an honorific way to say 飲[の]む.",
+        register: "polite",
       },
     ],
   },
@@ -599,21 +720,21 @@ export const questions: Question[] = [
           { text: "先生[せんせい]は 毎晩[まいばん]早[はや]く" },
           { text: "お 休[やす]みになります", blank: true },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "毎晩[まいばん]、先生[せんせい]は 早[はや]く" },
           { text: "お 休[やす]みになります", blank: true },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
       {
         segments: [
           { text: "毎晩[まいばん]、先生[せんせい]が 早[はや]く" },
           { text: "お 休[やす]みになります", blank: true },
         ],
-        notes: "Uses お[verb stem]になる construction.",
+        register: "polite",
       },
     ],
   },

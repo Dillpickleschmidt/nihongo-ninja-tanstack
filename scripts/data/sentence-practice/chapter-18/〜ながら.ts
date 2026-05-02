@@ -7,36 +7,16 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "私[わたし]は いつも スマホで ニュースを" },
-          { text: "読[よ]み", blank: true },
-          { text: "ながら 朝[あさ]ご飯[はん]を" },
+          { text: "読[よ]みながら", blank: true },
+          { text: "朝[あさ]ご 飯[はん]を" },
           { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-      },
-      {
-        segments: [
-          { text: "私[わたし]は いつも スマホで ニュースを" },
-          { text: "読[よ]み", blank: true },
-          { text: "ながら 朝[あさ]ご飯[はん]を" },
-          { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
-        ],
-        notes: "Adding よ for assertive tone — \"I always eat breakfast while reading news on my phone, you know\"",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は いつも スマホで ニュースを" },
-          { text: "読[よ]み", blank: true },
-          { text: "ながら 朝[あさ]ご飯[はん]を" },
-          { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "ね" },
-        ],
-        notes: "Adding ね for seeking agreement/softer tone",
       },
       {
         segments: [
           { text: "私[わたし]は いつも 携帯[けいたい]で ニュースを" },
-          { text: "読[よ]み", blank: true },
-          { text: "ながら 朝[あさ]ご飯[はん]を" },
+          { text: "読[よ]みながら", blank: true },
+          { text: "朝[あさ]ご 飯[はん]を" },
           { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using 携帯 instead of スマホ for \"phone\" — both are common and natural",
@@ -44,26 +24,17 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "いつも 私[わたし]は スマホで ニュースを" },
-          { text: "読[よ]み", blank: true },
-          { text: "ながら 朝[あさ]ご飯[はん]を" },
+          { text: "読[よ]みながら", blank: true },
+          { text: "朝[あさ]ご 飯[はん]を" },
           { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "いつも moved to the very beginning of the sentence — natural adverb placement variation",
       },
       {
         segments: [
-          { text: "いつも スマホで ニュースを" },
-          { text: "読[よ]み", blank: true },
-          { text: "ながら 朝[あさ]ご飯[はん]を" },
-          { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Subject 私は dropped",
-      },
-      {
-        segments: [
           { text: "私[わたし]が いつも スマホで ニュースを" },
-          { text: "読[よ]み", blank: true },
-          { text: "ながら 朝[あさ]ご飯[はん]を" },
+          { text: "読[よ]みながら", blank: true },
+          { text: "朝[あさ]ご 飯[はん]を" },
           { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using が instead of は for the subject particle — emphasizes the subject slightly more",
@@ -71,8 +42,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "私[わたし]は いつも スマホで ニュースを" },
-          { text: "見[み]", blank: true },
-          { text: "ながら 朝[あさ]ご飯[はん]を" },
+          { text: "見[み]ながら", blank: true },
+          { text: "朝[あさ]ご 飯[はん]を" },
           { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using 見る instead of 読む for news — \"watching/checking\" the news on phone (also natural in Japanese)",
@@ -80,8 +51,8 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "私[わたし]は いつも 携帯[けいたい]で ニュースを" },
-          { text: "見[み]", blank: true },
-          { text: "ながら 朝[あさ]ご飯[はん]を" },
+          { text: "見[み]ながら", blank: true },
+          { text: "朝[あさ]ご 飯[はん]を" },
           { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "携帯 + 見る combination",
@@ -94,116 +65,19 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "私[わたし]は" },
-          { text: "電話[でんわ]し", blank: true },
-          { text: "ながら 家[いえ]に" },
-          { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-      },
-      {
-        segments: [
-          { text: "私[わたし]は" },
-          { text: "電話[でんわ]し", blank: true },
-          { text: "ながら うちに" },
-          { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "うち instead of 家 for home",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は" },
-          { text: "電話[でんわ]をし", blank: true },
-          { text: "ながら 家[いえ]に" },
-          { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "電話をする (with を particle), 家 for home",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は" },
-          { text: "電話[でんわ]をし", blank: true },
-          { text: "ながら うちに" },
-          { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "電話をする with うち for home",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は" },
-          { text: "電話[でんわ]し", blank: true },
-          { text: "ながら 家[いえ]に" },
+          { text: "電話[でんわ]しながら", blank: true },
+          { text: "家[いえ]まで 歩[ある]いて" },
           { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Past tense: 帰った/帰りました, 電話する stem, 家",
       },
       {
         segments: [
           { text: "私[わたし]は" },
-          { text: "電話[でんわ]をし", blank: true },
-          { text: "ながら 家[いえ]に" },
+          { text: "電話[でんわ]をしながら", blank: true },
+          { text: "家[いえ]まで 歩[ある]いて" },
           { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Past tense with を on 電話, 家",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は" },
-          { text: "電話[でんわ]し", blank: true },
-          { text: "ながら うちに" },
-          { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
-        ],
-        notes: "Past tense, うち for home, no を",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は" },
-          { text: "電話[でんわ]をし", blank: true },
-          { text: "ながら うちに" },
-          { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
-        ],
-        notes: "Past tense, うち, with を on 電話",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は" },
-          { text: "電話[でんわ]し", blank: true },
-          { text: "ながら 家[いえ]まで歩[ある]いて帰[かえ]った" },
-        ],
-        notes: "歩いて帰った — explicitly \"walked home\" using 歩いて帰る, past tense. The ながら blank is the focus; 歩いて帰った is plain text as it's a fixed subordinate construction.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は" },
-          { text: "電話[でんわ]をし", blank: true },
-          { text: "ながら 家[いえ]まで歩[ある]いて帰[かえ]った" },
-        ],
-        notes: "電話をして + ながら, 歩いて帰った explicitly walking home past",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は" },
-          { text: "電話[でんわ]し", blank: true },
-          { text: "ながら 家[いえ]へ" },
-          { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "へ instead of に with 家, non-past",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は" },
-          { text: "電話[でんわ]し", blank: true },
-          { text: "ながら 家[いえ]へ" },
-          { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
-        ],
-        notes: "へ instead of に with 家, past tense",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は" },
-          { text: "電話[でんわ]をし", blank: true },
-          { text: "ながら 家[いえ]へ" },
-          { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
-        ],
-        notes: "電話をする with へ, past",
+        notes: "電話をする includes を before 電話.",
       },
     ],
   },
@@ -266,33 +140,28 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "私[わたし]は いつも" },
-          { text: "洗濯[せんたく]し", blank: true },
-          { text: "ながら ポッドキャストを" },
+          { text: "洗濯[せんたく]しながら", blank: true },
+          { text: "ポッドキャストを" },
           { text: "聞[き]く", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "私[わたし]は いつも ポッドキャストを聞[き]きながら 洗濯[せんたく]を" },
-          { text: "する", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "私[わたし]は いつも" },
+          { text: "洗濯[せんたく]をしながら", blank: true },
+          { text: "ポッドキャストを" },
+          { text: "聞[き]く", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Reversed order: ポッドキャストを聴きながら洗濯をする (listening while doing laundry — ながら clause is the secondary action)",
+        notes: "洗濯をする includes を before 洗濯.",
       },
       {
         segments: [
-          { text: "私[わたし]は いつも 洗濯[せんたく]をし", blank: true },
-          { text: "ながら ポッドキャストを" },
+          { text: "私[わたし]は" },
+          { text: "洗濯[せんたく]しながら", blank: true },
+          { text: "いつも ポッドキャストを" },
           { text: "聞[き]く", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "洗濯をしながら variant with を particle on 洗濯",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 洗濯[せんたく]し", blank: true },
-          { text: "ながら いつも ポッドキャストを" },
-          { text: "聞[き]く", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "いつも moved after ながら to modify the main verb instead",
+        notes: "いつも can also come before the main action.",
       },
     ],
   },
@@ -301,30 +170,20 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 手紙[てがみ]を 書[か]きながら、コーヒーを" },
-          { text: "飲[の]む", blank: true, conjugation: { pos: "Godan verb with 'mu' ending", form: "normal", polarity: "positive", tense: "past" } },
+          { text: "私[わたし]は 手紙[てがみ]を" },
+          { text: "書[か]きながら", blank: true },
+          { text: "コーヒーを" },
+          { text: "飲[の]む", conjugation: { pos: "Godan verb with 'mu' ending", form: "normal", polarity: "positive", tense: "past" } },
         ],
       },
       {
         segments: [
-          { text: "手紙[てがみ]を 書[か]きながら、コーヒーを" },
-          { text: "飲[の]む", blank: true, conjugation: { pos: "Godan verb with 'mu' ending", form: "normal", polarity: "positive", tense: "past" } },
+          { text: "私[わたし]は コーヒーを" },
+          { text: "飲[の]みながら", blank: true },
+          { text: "手紙[てがみ]を" },
+          { text: "書[か]く", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Subject (私は) dropped — natural in Japanese casual speech",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は コーヒーを 飲[の]みながら、手紙[てがみ]を" },
-          { text: "書[か]く", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "past" } },
-        ],
-        notes: "Reversed: coffee-drinking as A (ながら), letter-writing as B (main action) — also natural",
-      },
-      {
-        segments: [
-          { text: "コーヒーを 飲[の]みながら、手紙[てがみ]を" },
-          { text: "書[か]く", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "past" } },
-        ],
-        notes: "Reversed A/B, subject dropped",
+        notes: "The coffee-drinking can be the simultaneous action while writing the letter.",
       },
     ],
   },
@@ -343,7 +202,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "私[わたし]は" },
-          { text: "お皿[さら]を" },
+          { text: "お 皿[さら]を" },
           { text: "洗[あら]いながら", blank: true },
           { text: "、好[す]きな 歌[うた]を" },
           { text: "歌[うた]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "past" } },
@@ -362,7 +221,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "私[わたし]は" },
-          { text: "お皿[さら]を" },
+          { text: "お 皿[さら]を" },
           { text: "洗[あら]いながら", blank: true },
           { text: "、大[だい]好[す]きな 歌[うた]を" },
           { text: "歌[うた]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "past" } },
@@ -378,7 +237,7 @@ export const questions: Question[] = [
         segments: [
           { text: "私[わたし]は テレビを" },
           { text: "見[み]ながら", blank: true },
-          { text: "、晩[ばん]ご飯[はん]を" },
+          { text: "、晩[ばん]ご 飯[はん]を" },
           { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
       },
@@ -386,19 +245,10 @@ export const questions: Question[] = [
         segments: [
           { text: "私[わたし]は テレビを" },
           { text: "見[み]ながら", blank: true },
-          { text: "、夕[ゆう]ご飯[はん]を" },
+          { text: "、夕[ゆう]ご 飯[はん]を" },
           { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
         notes: "Using 夕ご飯 instead of 晩ご飯 for dinner",
-      },
-      {
-        segments: [
-          { text: "テレビを" },
-          { text: "見[み]ながら", blank: true },
-          { text: "、晩[ばん]ご飯[はん]を" },
-          { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
-        ],
-        notes: "No subject — completely dropped",
       },
     ],
   },

@@ -8,14 +8,14 @@ export const questions: Question[] = [
         segments: [
           { text: "公園[こうえん]の 桜[さくら]は もう" },
           { text: "咲[さ]いて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
           { text: "公園[こうえん]の 桜[さくら]が もう" },
           { text: "咲[さ]いて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "が instead of は — neutral subject marker",
       },
@@ -23,7 +23,7 @@ export const questions: Question[] = [
         segments: [
           { text: "公園[こうえん]の 桜[さくら]の 花[はな]は もう" },
           { text: "咲[さ]いて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "桜の花 (cherry blossom flowers) instead of just 桜, with は",
       },
@@ -31,7 +31,7 @@ export const questions: Question[] = [
         segments: [
           { text: "公園[こうえん]の 桜[さくら]の 花[はな]が もう" },
           { text: "咲[さ]いて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "桜の花 with が instead of は",
       },
@@ -39,7 +39,7 @@ export const questions: Question[] = [
         segments: [
           { text: "もう公園[こうえん]の 桜[さくら]は" },
           { text: "咲[さ]いて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "もう moved to the front of the sentence",
       },
@@ -97,20 +97,19 @@ export const questions: Question[] = [
   },
   {
     english: "The light in the living room is already on.",
-    hint: "Think about the state the light is in, not the action of turning it on.",
     answers: [
       {
         segments: [
           { text: "リビングの 電気[でんき]は もう" },
           { text: "ついて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
           { text: "リビングの 電気[でんき]が もう" },
           { text: "ついて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using が instead of は",
       },
@@ -118,7 +117,7 @@ export const questions: Question[] = [
         segments: [
           { text: "リビングのライトは もう" },
           { text: "ついて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "ライト instead of 電気 for \"light\", with は",
       },
@@ -126,7 +125,7 @@ export const questions: Question[] = [
         segments: [
           { text: "リビングのライトが もう" },
           { text: "ついて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "ライト with が particle",
       },
@@ -134,7 +133,7 @@ export const questions: Question[] = [
         segments: [
           { text: "居間[いま]の 電気[でんき]は もう" },
           { text: "ついて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "居間 (traditional Japanese word) instead of リビング for \"living room\", with は",
       },
@@ -142,7 +141,7 @@ export const questions: Question[] = [
         segments: [
           { text: "居間[いま]の 電気[でんき]が もう" },
           { text: "ついて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "居間 with が particle",
       },
@@ -276,7 +275,7 @@ export const questions: Question[] = [
         segments: [
           { text: "どうして 窓[まど]は" },
           { text: "開[あ]いて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "ん" },
           { text: "です" },
           { text: "か" },
@@ -286,7 +285,7 @@ export const questions: Question[] = [
         segments: [
           { text: "なぜ 窓[まど]は" },
           { text: "開[あ]いて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "ん" },
           { text: "です" },
           { text: "か" },
@@ -297,7 +296,7 @@ export const questions: Question[] = [
         segments: [
           { text: "どうして 窓[まど]が" },
           { text: "開[あ]いて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "ん" },
           { text: "です" },
           { text: "か" },
@@ -308,7 +307,7 @@ export const questions: Question[] = [
         segments: [
           { text: "なぜ 窓[まど]が" },
           { text: "開[あ]いて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "ん" },
           { text: "です" },
           { text: "か" },
@@ -329,25 +328,11 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "電車[でんしゃ]は もう" },
-          { text: "混[こ]んでる", blank: true },
-        ],
-        notes: "Casual い-dropped form: 混んでる instead of 混んでいる",
-      },
-      {
-        segments: [
           { text: "電車[でんしゃ]が もう" },
           { text: "混[こ]んで", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using が instead of は — emphasizing the train (as the subject) is the one that's packed",
-      },
-      {
-        segments: [
-          { text: "電車[でんしゃ]が もう" },
-          { text: "混[こ]んでる", blank: true },
-        ],
-        notes: "が + casual い-dropped form: 混んでる",
       },
       {
         segments: [
@@ -365,24 +350,6 @@ export const questions: Question[] = [
         ],
         notes: "Using とても instead of すごく to emphasize \"packed\"",
       },
-      {
-        segments: [
-          { text: "電車[でんしゃ]は もう" },
-          { text: "混[こ]んで", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
-        ],
-        notes: "Adding よ (assertive sentence-final particle) — informing/asserting that the train is packed",
-      },
-      {
-        segments: [
-          { text: "電車[でんしゃ]は もう" },
-          { text: "混[こ]んで", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "ね" },
-        ],
-        notes: "Adding ね (seeking agreement) — noting together that the train is already packed",
-      },
     ],
   },
   {
@@ -395,7 +362,6 @@ export const questions: Question[] = [
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
-        notes: "は particle; blank is いる (→いる casual / います polite)",
       },
       {
         segments: [
@@ -409,7 +375,6 @@ export const questions: Question[] = [
   },
   {
     english: "The candle has already gone out.",
-    hint: "Think about the current state the candle is in, not the action of going out.",
     answers: [
       {
         segments: [
@@ -452,13 +417,6 @@ export const questions: Question[] = [
           { text: "閉[し]まって", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-      },
-      {
-        segments: [
-          { text: "店[みせ]は もう 閉[し]まって" },
-          { text: "いる", blank: true },
-        ],
-        notes: "Blank on いる only, separating て from いる",
       },
       {
         segments: [
@@ -588,30 +546,12 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが" },
-          { text: "転[ころ]んで", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ！" },
-        ],
-        notes: "Added よ for exclamatory emphasis",
-      },
-      {
-        segments: [
           { text: "けんじさんは" },
           { text: "転[ころ]んで", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "！" },
         ],
         notes: "は instead of が for Kenji as topic",
-      },
-      {
-        segments: [
-          { text: "けんじさんは" },
-          { text: "転[ころ]んで", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ！" },
-        ],
-        notes: "は for topic + よ for exclamation",
       },
     ],
   },
@@ -623,14 +563,14 @@ export const questions: Question[] = [
         segments: [
           { text: "お 湯[ゆ]は もう" },
           { text: "沸[わ]いて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
           { text: "お 湯[ゆ]が もう" },
           { text: "沸[わ]いて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "が instead of は — が marks the subject naturally when stating a fact/observation",
       },
@@ -638,7 +578,7 @@ export const questions: Question[] = [
         segments: [
           { text: "もう お 湯[ゆ]は" },
           { text: "沸[わ]いて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "もう moved to the start of the sentence before お湯は",
       },
@@ -646,7 +586,7 @@ export const questions: Question[] = [
         segments: [
           { text: "もう お 湯[ゆ]が" },
           { text: "沸[わ]いて", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "もう at start + が particle",
       },
@@ -657,50 +597,38 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "机[つくえ]の 上[うえ]に 虫[むし]がいる — 死[し]んでいると" },
-          { text: "思[おも]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "机[つくえ]の 上[うえ]に 虫[むし]がいる。" },
+          { text: "死[し]んで", blank: true },
+          { text: "いる", blank: true },
+          { text: "と 思[おも]う" },
         ],
       },
       {
         segments: [
-          { text: "机[つくえ]の 上[うえ]に 虫[むし]がいる — 死[し]んでると" },
-          { text: "思[おも]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "机[つくえ]に 虫[むし]がいる。" },
+          { text: "死[し]んで", blank: true },
+          { text: "いる", blank: true },
+          { text: "と 思[おも]う" },
         ],
-        notes: "Casual い-drop: 死んでる (ている → てる)",
+        notes: "机に is a shorter way to say it is on the desk.",
       },
       {
         segments: [
-          { text: "机[つくえ]に 虫[むし]がいる — 死[し]んでいると" },
-          { text: "思[おも]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "机[つくえ]の 上[うえ]に 虫[むし]がいる。" },
+          { text: "死[し]んで", blank: true },
+          { text: "いる", blank: true },
+          { text: "かもしれない" },
         ],
-        notes: "机に (dropping 上に) — common natural shortening",
+        notes: "かもしれない makes the guess softer: it might be dead.",
       },
       {
         segments: [
-          { text: "机[つくえ]の 上[うえ]に 虫[むし]がいる — 死[し]んでいるんじゃないかと" },
-          { text: "思[おも]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "机[つくえ]の 上[うえ]に 虫[むし]がいる。" },
+          { text: "死[し]んで", blank: true },
+          { text: "いる", blank: true },
+          { text: "んじゃないかと 思[おも]う" },
         ],
-        notes: "Softer conjecture: 死んでいるんじゃないかと思う — \"I think it might be dead\"",
-      },
-      {
-        segments: [
-          { text: "机[つくえ]の 上[うえ]に 虫[むし]がいる。死[し]んで", blank: true },
-          { text: "いるかもしれない", blank: true },
-        ],
-        notes: "かもしれない for \"might be dead\" — blank covers the whole second clause",
-      },
-      {
-        segments: [
-          { text: "机[つくえ]の 上[うえ]に 虫[むし]がいる — 死[し]んで", blank: true },
-          { text: "いるんじゃないかと 思[おも]う", blank: true },
-        ],
-        notes: "All-in-one blank: 死んでいるんじゃないかと思う — softer conjecture, casual phrasing",
-      },
-      {
-        segments: [
-          { text: "机[つくえ]の 上[うえ]に 虫[むし]がいる。死[し]んでるんじゃないかと 思[おも]う", blank: true },
-        ],
-        notes: "い-drop casual version: 死んでる + んじゃないかと思う",
+        notes: "んじゃないかと思う is another softer way to say you think so.",
       },
     ],
   },
@@ -720,45 +648,7 @@ export const questions: Question[] = [
           { text: "始[はじ]まって", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Using が instead of は — emphasizing the movie as subject",
-      },
-      {
-        segments: [
-          { text: "映画[えいが]は もう" },
-          { text: "始[はじ]まって", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
-        ],
-        notes: "Adding よ particle for exclamatory/assertive tone — suits the \"!\" in the prompt",
-      },
-      {
-        segments: [
-          { text: "映画[えいが]が もう" },
-          { text: "始[はじ]まって", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
-        ],
-        notes: "が + よ combination — emphatic exclamation",
-      },
-      {
-        segments: [
-          { text: "映画[えいが]は もう 始[はじ]まって", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "ん", blank: true },
-          { text: "です", blank: true },
-          { text: "よ", blank: true },
-        ],
-        notes: "んですよ polite emphatic",
-      },
-      {
-        segments: [
-          { text: "映画[えいが]が もう 始[はじ]まって", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "ん", blank: true },
-          { text: "です", blank: true },
-          { text: "よ", blank: true },
-        ],
-        notes: "が + んですよ polite emphatic",
+        notes: "Using が instead of は emphasizes the movie as the subject.",
       },
     ],
   },
@@ -769,14 +659,14 @@ export const questions: Question[] = [
         segments: [
           { text: "タオルが" },
           { text: "汚[よご]れて", blank: true },
-          { text: "いる" },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
           { text: "タオルは" },
           { text: "汚[よご]れて", blank: true },
-          { text: "いる" },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "は instead of が as topic marker",
       },
@@ -784,7 +674,7 @@ export const questions: Question[] = [
         segments: [
           { text: "タオルがもう" },
           { text: "汚[よご]れて", blank: true },
-          { text: "いる" },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Adding もう (already) for emphasis that it has gotten dirty",
       },
@@ -792,23 +682,9 @@ export const questions: Question[] = [
         segments: [
           { text: "タオルはもう" },
           { text: "汚[よご]れて", blank: true },
-          { text: "いる" },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "は topic + もう (already)",
-      },
-      {
-        segments: [
-          { text: "タオルが汚[よご]れて" },
-          { text: "いる", blank: true },
-        ],
-        notes: "Blank is いる instead of 汚れて — different blank placement",
-      },
-      {
-        segments: [
-          { text: "タオルは汚[よご]れて" },
-          { text: "いる", blank: true },
-        ],
-        notes: "は topic, blank is いる",
       },
     ],
   },
@@ -885,6 +761,29 @@ export const questions: Question[] = [
     english: "Kenji has already gone home.",
     hint: "Kenji = けんじ",
     answers: [
+      {
+        segments: [
+          { text: "けんじさんは もう" },
+          { text: "帰[かえ]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+        ],
+      },
+      {
+        segments: [
+          { text: "けんじさんが もう" },
+          { text: "帰[かえ]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+        ],
+        notes: "が presents Kenji as the subject of the observation.",
+      },
+      {
+        segments: [
+          { text: "もう けんじさんは" },
+          { text: "帰[かえ]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+        ],
+        notes: "もう can also come at the start of the sentence.",
+      },
     ],
   },
 ];
