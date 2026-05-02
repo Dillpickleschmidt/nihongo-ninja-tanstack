@@ -155,16 +155,6 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "来年[らいねん]の 春[はる]、新幹線[しんかんせん]で 京都[きょうと]に 行[い]くつもり",
-            blank: true,
-          },
-          { text: "です" },
-        ],
-        notes: "Base answer with に",
-      },
-      {
-        segments: [
-          {
             text: "来年[らいねん]の 春[はる]、新幹線[しんかんせん]で 京都[きょうと]へ 行[い]くつもり",
             blank: true,
           },
@@ -180,7 +170,7 @@ export const questions: Question[] = [
           },
           { text: "です" },
         ],
-        notes: "私は at start (auto-dropped), with に",
+        notes: "私は at start, with に",
       },
       {
         segments: [
@@ -190,7 +180,7 @@ export const questions: Question[] = [
           },
           { text: "です" },
         ],
-        notes: "私は at start (auto-dropped), with へ",
+        notes: "私は at start, with へ",
       },
       {
         segments: [
@@ -309,39 +299,7 @@ export const questions: Question[] = [
           { text: "です" },
         ],
       },
-      {
-        segments: [
-          {
-            text: "晩[ばん]ご 飯[はん]の 時[とき]は、ぜんぜん スマホを使[つか]わないつもりだ",
-          },
-        ],
-        notes: "晩ご飯の時、全然スマホを使わないつもりだ (casual, は dropped)",
-      },
-      {
-        segments: [
-          {
-            text: "夕[ゆう]ご 飯[はん]の 時[とき]は、ぜんぜん スマホを使[つか]わないつもりだ",
-          },
-        ],
-        notes: "夕ご飯 variant casual",
-      },
-      {
-        segments: [
-          {
-            text: "晩[ばん]ご 飯[はん]の 時[とき]、ぜんぜん スマホを使[つか]わないつもりだ",
-          },
-        ],
-        notes: "は omitted, の時 version casual",
-      },
-      {
-        segments: [
-          {
-            text: "夕[ゆう]ご 飯[はん]の 時[とき]、ぜんぜん スマホを使[つか]わないつもりだ",
-          },
-        ],
-        notes: "夕ご飯、は omitted casual",
-      },
-    ],
+      ],
   },
   {
     english:
@@ -482,15 +440,15 @@ export const questions: Question[] = [
         segments: [
           { text: "寮[りょう]に 帰[かえ]って 住[す]む" },
           { text: "つもりはない", blank: true },
-          { text: "。一人[ひとり]で 住[す]むほうがとてもいい。" },
+          { text: "。一人[ひとり]で 住[す]むほうがとてもよい。" },
         ],
         notes:
-          'Uses the つもりはない pattern ("have no intention of") as hinted. 帰って住む = go back to live. 一人で住む ほうがとてもいい = living alone is much better. ずっと is not in known vocabulary so とても is used instead.',
+          'Uses the つもりはない pattern ("have no intention of") as hinted. 帰って住む = go back to live. 一人で住む ほうがとてもよい = living alone is much better. ずっと is not in known vocabulary so とても is used instead.',
       },
       {
         segments: [
           {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりはありません。一人[ひとり]で 住[す]むほうがとてもいい",
+            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりはありません。一人[ひとり]で 住[す]むほうがとてもよい",
           },
         ],
         notes: "Polite form: はない → はありません",
@@ -498,7 +456,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりがない。一人[ひとり]で 住[す]むほうがとてもいい",
+            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりがない。一人[ひとり]で 住[す]むほうがとてもよい",
           },
         ],
         notes: "Particle swap: は → が",
@@ -506,7 +464,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりがありません。一人[ひとり]で 住[す]むほうがとてもいい",
+            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりがありません。一人[ひとり]で 住[す]むほうがとてもよい",
           },
         ],
         notes: "Polite + particle swap: がない → がありません",
@@ -514,7 +472,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりはない。一人[ひとり]で住[す]むほうがいい",
+            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりはない。一人[ひとり]で住[す]むほうがよい",
           },
         ],
         notes: "Without とても",
@@ -522,7 +480,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりはありません。一人[ひとり]で住[す]むほうがいい",
+            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりはありません。一人[ひとり]で住[す]むほうがよい",
           },
         ],
         notes: "Polite, without とても",
@@ -530,7 +488,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりがない。一人[ひとり]で住[す]むほうがいい",
+            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりがない。一人[ひとり]で住[す]むほうがよい",
           },
         ],
         notes: "Particle が, without とても",
@@ -538,7 +496,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりがありません。一人[ひとり]で住[す]むほうがいい",
+            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりがありません。一人[ひとり]で住[す]むほうがよい",
           },
         ],
         notes: "Polite + が, without とても",
@@ -559,32 +517,11 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "来月[らいげつ]、アルバイトをやめて、勉強[べんきょう]するつもりです",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "来月[らいげつ]アルバイトをやめて、勉強[べんきょう]するつもりです",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
             text: "アルバイトをやめて、来月[らいげつ]から 勉強[べんきょう]するつもりです",
           },
         ],
       },
-      {
-        segments: [
-          {
-            text: "来月[らいげつ]、アルバイトをやめて 勉強[べんきょう]するつもりです",
-          },
-        ],
-      },
-    ],
+      ],
   },
   {
     english:
@@ -596,14 +533,6 @@ export const questions: Question[] = [
           { text: "起[お]きるつもりはない", blank: true },
           { text: "。ゆっくり 寝[ね]る 日[ひ]だから。" },
         ],
-      },
-      {
-        segments: [
-          {
-            text: "日曜日[にちようび]は、早[はや]く 起[お]きるつもりはない。ゆっくり 寝[ね]る 日[ひ]だから。",
-          },
-        ],
-        notes: "All in one segment, no blank needed",
       },
       {
         segments: [
@@ -652,7 +581,7 @@ export const questions: Question[] = [
           },
         ],
         notes:
-          "ゆっくり寝られる日だから — potential form, natural but outside known grammar; included as variation",
+          "ゆっくり寝られる日だから gives the reason as a day when I can sleep in",
       },
     ],
   },
@@ -662,7 +591,7 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "料理[りょうり]クラスを 取[と]って、うちで すしを" },
+          { text: "料理[りょうり]クラスを 取[と]って、家[いえ]で すしを" },
           { text: "作[つく]るつもり", blank: true },
           { text: "です" },
         ],
@@ -670,17 +599,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "料理[りょうり]クラスを 取[と]って、うちで すしを 作[つく]るつもり",
-            blank: true,
-          },
-          { text: "です" },
-        ],
-        notes: "Full sentence with blank over the whole predicate",
-      },
-      {
-        segments: [
-          {
-            text: "料理[りょうり]クラスを 取[と]って、うちで 寿司[すし]を 作[つく]るつもりです",
+            text: "料理[りょうり]クラスを 取[と]って、家[いえ]で 寿司[すし]を 作[つく]るつもりです",
           },
         ],
         notes: "Using 寿司 kanji spelling",
@@ -688,7 +607,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "料理[りょうり]のクラスを 取[と]って、うちで すしを 作[つく]るつもりです",
+            text: "料理[りょうり]のクラスを 取[と]って、家[いえ]で すしを 作[つく]るつもりです",
           },
         ],
         notes: "料理のクラス with の particle",
@@ -696,15 +615,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "料理[りょうり]クラスを 取[と]って、家[いえ]で すしを 作[つく]るつもりです",
-          },
-        ],
-        notes: "家 instead of うち",
-      },
-      {
-        segments: [
-          {
-            text: "料理[りょうり]クラスに 行[い]って、うちで すしを 作[つく]るつもりです",
+            text: "料理[りょうり]クラスに 行[い]って、家[いえ]で すしを 作[つく]るつもりです",
           },
         ],
         notes: "料理クラスに行って variation",
@@ -734,13 +645,6 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんは、卒業[そつぎょう]するまで 髪[かみ]を 切[き]るつもりはないと 聞[き]きました",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
             text: "けんじさんは、卒業[そつぎょう]するまで 髪[かみ]を 切[き]るつもりがないと 聞[き]きました",
           },
         ],
@@ -752,28 +656,7 @@ export const questions: Question[] = [
           },
         ],
       },
-      {
-        segments: [
-          {
-            text: "けんじさんは卒業[そつぎょう]するまで 髪[かみ]を 切[き]るつもりはないと 聞[き]きました",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "けんじさんは卒業[そつぎょう]するまで 髪[かみ]を 切[き]るつもりがないと 聞[き]きました",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "けんじさんは卒業[そつぎょう]するまで 髪[かみ]を 切[き]るつもりじゃないと 聞[き]きました",
-          },
-        ],
-      },
-    ],
+      ],
   },
   {
     english:
@@ -787,16 +670,6 @@ export const questions: Question[] = [
           { text: "行[い]くつもり", blank: true },
           { text: "です" },
         ],
-      },
-      {
-        segments: [
-          { text: "バスに" },
-          { text: "乗[の]るつもりはない" },
-          { text: "。歩[ある]いて 駅[えき]に" },
-          { text: "行[い]くつもり" },
-          { text: "です" },
-        ],
-        notes: "Base polite form as displayed",
       },
       {
         segments: [
@@ -827,24 +700,6 @@ export const questions: Question[] = [
           { text: "です" },
         ],
         notes: "Polite form with がありません in first clause",
-      },
-      {
-        segments: [
-          { text: "バスに" },
-          { text: "乗[の]るつもりはない" },
-          { text: "。歩[ある]いて 駅[えき]に" },
-          { text: "行[い]くつもりだ" },
-        ],
-        notes: "Casual form with だ in second clause",
-      },
-      {
-        segments: [
-          { text: "バスに" },
-          { text: "乗[の]るつもりがない" },
-          { text: "。歩[ある]いて 駅[えき]に" },
-          { text: "行[い]くつもりだ" },
-        ],
-        notes: "Casual with が and だ",
       },
       {
         segments: [
@@ -954,16 +809,6 @@ export const questions: Question[] = [
           { text: "飲[の]まないつもり", blank: true },
           { text: "です" },
         ],
-      },
-      {
-        segments: [
-          {
-            text: "今年[ことし]、ゆきさんの 誕生日[たんじょうび]パーティーで お酒[さけ]を",
-          },
-          { text: "飲[の]まないつもり", blank: true },
-          { text: "です" },
-        ],
-        notes: "Base answer",
       },
       {
         segments: [
@@ -1247,15 +1092,6 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "ホームステイをするつもりはない。寮[りょう]に住[す]むつもり",
-          },
-          { text: "です" },
-        ],
-        notes: "Casual-leaning with polite ending on second clause",
-      },
-      {
-        segments: [
-          {
             text: "ホームステイをするつもりがない。寮[りょう]に住[す]むつもり",
           },
           { text: "です" },
@@ -1316,16 +1152,6 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "看護師[かんごし]に" },
-          { text: "なるつもりはない" },
-          { text: "。国際関係[こくさいかんけい]を" },
-          { text: "勉強[べんきょう]するつもり" },
-          { text: "です" },
-        ],
-        notes: "Display answer — つもりはない + つもりです",
-      },
-      {
-        segments: [
-          { text: "看護師[かんごし]に" },
           { text: "なるつもりがない" },
           { text: "。国際関係[こくさいかんけい]を" },
           { text: "勉強[べんきょう]するつもり" },
@@ -1344,17 +1170,7 @@ export const questions: Question[] = [
         ],
         notes: "ないつもり for first clause + つもりです",
       },
-      {
-        segments: [
-          {
-            text: "看護師[かんごし]にならないつもりだ。国際関係[こくさいかんけい]を",
-          },
-          { text: "勉強[べんきょう]するつもり" },
-          { text: "です" },
-        ],
-        notes: "ないつもり variant for first clause + つもりだ (casual)",
-      },
-    ],
+      ],
   },
   {
     english: "Is Naomi really planning to go to Australia alone?",
@@ -1369,17 +1185,7 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
-      },
-      {
-        segments: [
-          {
-            text: "なおみさんは 本当[ほんとう]に 一人[ひとり]で オーストラリアに",
-          },
-          { text: "行[い]くつもり" },
-          { text: "です" },
-          { text: "か" },
-        ],
-        notes: "Standard form with に",
+        register: "polite",
       },
       {
         segments: [
@@ -1390,6 +1196,7 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
+        register: "polite",
         notes: "With へ instead of に",
       },
       {
@@ -1401,6 +1208,7 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
+        register: "polite",
         notes: "Word order: オーストラリアに before 一人で",
       },
       {
@@ -1412,16 +1220,8 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
+        register: "polite",
         notes: "Word order: オーストラリアへ before 一人で",
-      },
-      {
-        segments: [
-          {
-            text: "なおみさんは 本当[ほんとう]に 一人[ひとり]で オーストラリアに 行[い]くつもりだ",
-          },
-          { text: "か" },
-        ],
-        notes: "Casual form with つもりだ",
       },
       {
         segments: [
@@ -1432,6 +1232,7 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
+        register: "polite",
         notes: "本当に at start",
       },
     ],

@@ -17,7 +17,6 @@ export const questions: Question[] = [
               tense: "past",
             },
           },
-          { text: "ね" },
         ],
       },
       {
@@ -33,7 +32,6 @@ export const questions: Question[] = [
               tense: "past",
             },
           },
-          { text: "ね" },
         ],
       },
     ],
@@ -45,21 +43,6 @@ export const questions: Question[] = [
         segments: [
           { text: "私[わたし]は いつか" },
           { text: "弁護士[べんごし]に" },
-          {
-            text: "なる",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'ru' ending",
-              form: "tai-form",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "私[わたし]は いつか 弁護士[べんごし]に" },
           {
             text: "なる",
             blank: true,
@@ -120,7 +103,6 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ね" },
         ],
       },
       {
@@ -136,7 +118,6 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ね" },
         ],
         notes: "夏は (topic) instead of 夏に (time)",
       },
@@ -153,7 +134,6 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ね" },
         ],
         notes: "とても instead of すごく",
       },
@@ -170,7 +150,6 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ね" },
         ],
         notes: "本当に instead of すごく",
       },
@@ -187,7 +166,6 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ね" },
         ],
         notes: "夏に fronted + 本当に",
       },
@@ -204,7 +182,6 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ね" },
         ],
         notes: "夏に fronted",
       },
@@ -384,7 +361,7 @@ export const questions: Question[] = [
           },
         ],
         notes:
-          'いい → よく (irregular) + なる, past tense: よくなった. 歌うのが uses nominalization to express "singing".',
+          'よい → よく (irregular) + なる, past tense: よくなった. 歌うのが uses nominalization to express "singing".',
       },
       {
         segments: [
@@ -456,7 +433,8 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "上手くなる (got skilled at) — 上手い (i-adj reading) instead of よい",
+        notes:
+          "上手くなる (got skilled at) — 上手い (i-adj reading) instead of よい",
       },
     ],
   },
@@ -479,10 +457,10 @@ export const questions: Question[] = [
             },
           },
           { text: "から、すごくよく 勉強[べんきょう]していて、テストが" },
-          { text: "よくなった", blank: true },
+          { text: "よくなる", blank: true },
         ],
         notes:
-          "Two なる instances: 看護師になる (goal, non-past plain form before から) + よくなった (past change, いい→よい exception). Blanks cover both grammar targets.",
+          "Two なる instances: 看護師になる (goal, non-past plain form before から) + よくなった (past change, よい→よい exception). Blanks cover both grammar targets.",
       },
       {
         segments: [
@@ -499,7 +477,7 @@ export const questions: Question[] = [
             },
           },
           { text: "から、とてもよく 勉強[べんきょう]していて、テストが" },
-          { text: "よくなった", blank: true },
+          { text: "よくなる", blank: true },
         ],
         notes: "とても instead of すごく",
       },
@@ -518,7 +496,7 @@ export const questions: Question[] = [
             },
           },
           { text: "から、すごくよく 勉強[べんきょう]して、テストが" },
-          { text: "よくなった", blank: true },
+          { text: "よくなる", blank: true },
         ],
         notes: "勉強して without ていて",
       },
@@ -537,7 +515,7 @@ export const questions: Question[] = [
             },
           },
           { text: "から、とてもよく 勉強[べんきょう]して、テストが" },
-          { text: "よくなった", blank: true },
+          { text: "よくなる", blank: true },
         ],
         notes: "とても + 勉強して without ていて",
       },
@@ -545,7 +523,7 @@ export const questions: Question[] = [
   },
   {
     english:
-      "The exam is getting closer, so I'm starting to get a little nervous.",
+      "The exam is getting closer, so I'm starting to get a little busy.",
     answers: [
       {
         segments: [
@@ -553,7 +531,7 @@ export const questions: Question[] = [
           { text: "忙[いそが]しくなってきた", blank: true },
         ],
         notes:
-          '「近くなってきた」= exam getting closer; 「忙しくなってきた」= starting to get busy. Replacing "nervous" (no known vocab) with "busy" (忙しい).',
+          "近くなってきた means the exam is getting closer; 忙しくなってきた means starting to get busy.",
       },
       {
         segments: [
@@ -566,14 +544,23 @@ export const questions: Question[] = [
         segments: [
           { text: "試験[しけん]が 近[ちか]くなってきたから、少[すこ]し" },
           { text: "忙[いそが]しくなって", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
         notes: "忙しくなっている instead of なってきた",
       },
       {
         segments: [
           { text: "試験[しけん]が 近[ちか]くなったから、少[すこ]し" },
-          { text: "忙[いそが]しくなった", blank: true },
+          { text: "忙[いそが]しくなる", blank: true },
         ],
         notes: "Simple くなった without てくる in both clauses",
       },
@@ -655,21 +642,19 @@ export const questions: Question[] = [
     ],
   },
   {
-    english:
-      "Studying abroad in a foreign country, I got less lonely over time.",
+    english: "Living alone, I got less lonely over time.",
     answers: [
       {
         segments: [
           { text: "一人[ひとり]で 住[す]んでいて、" },
-          { text: "少[すこ]し 寂[さび]しくなくなった", blank: true },
+          { text: "少[すこ]し 寂[さび]しくなくなる", blank: true },
         ],
-        notes:
-          '寂しくなくなった = 寂しい → 寂しく (adverb form) + なくなった (became not). This is ～くなる applied to the negative: "became not lonely / became less lonely." The validator may not detect this double-negative construction, but it is the correct application of the grammar point.',
+        notes: "寂しくなくなった means became less lonely.",
       },
       {
         segments: [
           { text: "一人[ひとり]で 住[す]んでいて、" },
-          { text: "寂[さび]しくなくなった", blank: true },
+          { text: "寂[さび]しくなくなる", blank: true },
         ],
         notes: "Without 少し",
       },
@@ -695,15 +680,14 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "会社[かいしゃ]で 働[はたら]いて、毎日[まいにち] すごく" },
-          { text: "忙[いそが]しくなった", blank: true },
+          { text: "忙[いそが]しくなる", blank: true },
         ],
-        notes:
-          "The blank targets the い-adjective + くなった (past tense) construction, which is the grammar point being practiced.",
+        notes: "忙しくなった means became busy.",
       },
       {
         segments: [
           { text: "会社[かいしゃ]で 働[はたら]いて、毎日[まいにち] とても" },
-          { text: "忙[いそが]しくなった", blank: true },
+          { text: "忙[いそが]しくなる", blank: true },
         ],
         notes: "Using とても instead of すごく",
       },
@@ -712,14 +696,14 @@ export const questions: Question[] = [
           {
             text: "会社[かいしゃ]で 働[はたら]いてから、毎日[まいにち] すごく",
           },
-          { text: "忙[いそが]しくなった", blank: true },
+          { text: "忙[いそが]しくなる", blank: true },
         ],
         notes: "Using から to mean 'after starting to work at a company'",
       },
       {
         segments: [
           { text: "会社[かいしゃ]で 働[はたら]いて、毎日[まいにち]は すごく" },
-          { text: "忙[いそが]しくなった", blank: true },
+          { text: "忙[いそが]しくなる", blank: true },
         ],
         notes: "毎日は as topic",
       },
@@ -745,7 +729,7 @@ export const questions: Question[] = [
           {
             text: "から、このごろ 毎日[まいにち] 練習[れんしゅう]していて、料理[りょうり]が すごく",
           },
-          { text: "上手[じょうず]になった", blank: true },
+          { text: "上手[じょうず]になる", blank: true },
         ],
         notes:
           'Two instances of なる: (1) シェフになる — noun + になる (non-past, goal); (2) 上手になった — な-adjective + になった (past, result). "wants to be" replaced with "is going to become" to avoid たい.',
@@ -766,7 +750,7 @@ export const questions: Question[] = [
           {
             text: "から、このごろ 毎日[まいにち] 練習[れんしゅう]して、料理[りょうり]が すごく",
           },
-          { text: "上手[じょうず]になった", blank: true },
+          { text: "上手[じょうず]になる", blank: true },
         ],
         notes: "練習して without ていて",
       },
@@ -786,7 +770,7 @@ export const questions: Question[] = [
           {
             text: "から、このごろ 毎日[まいにち] 練習[れんしゅう]していて、料理[りょうり]が とても",
           },
-          { text: "上手[じょうず]になった", blank: true },
+          { text: "上手[じょうず]になる", blank: true },
         ],
         notes: "とても instead of すごく",
       },
@@ -806,7 +790,7 @@ export const questions: Question[] = [
           {
             text: "から、このごろ 毎日[まいにち] 練習[れんしゅう]して、料理[りょうり]が とても",
           },
-          { text: "上手[じょうず]になった", blank: true },
+          { text: "上手[じょうず]になる", blank: true },
         ],
         notes: "とても + 練習して without ていて",
       },
@@ -821,17 +805,17 @@ export const questions: Question[] = [
           {
             text: "医者[いしゃ]になるから、このごろ 勉強[べんきょう]していて、日本語[にほんご]が すごく",
           },
-          { text: "よくなった", blank: true },
+          { text: "よくなる", blank: true },
         ],
         notes:
-          "いい→よくなった (past tense exception). The blank targets the grammar point: よくなった. Context (reason clause, time expression, te-form chain) stays outside.",
+          "よい→よくなった (past tense exception). The blank targets the grammar point: よくなった. Context (reason clause, time expression, te-form chain) stays outside.",
       },
       {
         segments: [
           {
             text: "医者[いしゃ]になるから、このごろ 勉強[べんきょう]して、日本語[にほんご]が すごく",
           },
-          { text: "よくなった", blank: true },
+          { text: "よくなる", blank: true },
         ],
         notes: "Without ている — just して (te-form).",
       },
@@ -840,7 +824,7 @@ export const questions: Question[] = [
           {
             text: "医者[いしゃ]になるから、このごろ 勉強[べんきょう]していて、日本語[にほんご]が",
           },
-          { text: "よくなった", blank: true },
+          { text: "よくなる", blank: true },
         ],
         notes: "Without すごく.",
       },
@@ -849,7 +833,7 @@ export const questions: Question[] = [
           {
             text: "医者[いしゃ]になるから、このごろ 勉強[べんきょう]して、日本語[にほんご]が",
           },
-          { text: "よくなった", blank: true },
+          { text: "よくなる", blank: true },
         ],
         notes: "Without ている and without すごく.",
       },
@@ -857,48 +841,47 @@ export const questions: Question[] = [
   },
   {
     english:
-      "I want to get better at swimming, so I've been going to the pool every day and I'm finally getting faster.",
+      "I've been going to the pool every day, and my swimming has gotten faster.",
     hint: "pool = プール",
     answers: [
       {
         segments: [
           { text: "毎日[まいにち] プールに 行[い]っていて、泳[およ]ぐのが" },
-          { text: "速[はや]くなった", blank: true },
+          { text: "速[はや]くなる", blank: true },
         ],
-        notes:
-          "Drops 'want to' (たい not known) and 'finally/getting' (やっと/てくる not known). Focuses on the core grammar: い-adjective + くなる in past tense.",
+        notes: "速くなった means became faster.",
       },
       {
         segments: [
           { text: "毎日[まいにち] プールへ 行[い]っていて、泳[およ]ぐのが" },
-          { text: "速[はや]くなった", blank: true },
+          { text: "速[はや]くなる", blank: true },
         ],
         notes: "へ instead of に",
       },
       {
         segments: [
           { text: "毎日[まいにち] プールに 行[い]っていて、泳[およ]ぐのが" },
-          { text: "よくなった", blank: true },
+          { text: "よくなる", blank: true },
         ],
         notes: "よくなった (got better) instead of 速くなった",
       },
       {
         segments: [
           { text: "毎日[まいにち] プールへ 行[い]っていて、泳[およ]ぐのが" },
-          { text: "よくなった", blank: true },
+          { text: "よくなる", blank: true },
         ],
       },
       {
         segments: [
           { text: "毎日[まいにち] プールに 行[い]っていて、泳[およ]ぐのが" },
-          { text: "上手[じょうず]になった", blank: true },
+          { text: "上手[じょうず]になる", blank: true },
         ],
         notes: "上手になった (got skilled)",
       },
       {
         segments: [
           { text: "毎日[まいにち] プールへ 行[い]っていて、泳[およ]ぐのが" },
-          { text: "上手[じょうず]になった", blank: true },
+          { text: "上手[じょうず]になる", blank: true },
         ],
         notes: "へ + 上手になった",
       },
@@ -907,7 +890,7 @@ export const questions: Question[] = [
           {
             text: "私[わたし]は 毎日[まいにち] プールに 行[い]っていて、泳[およ]ぐのが",
           },
-          { text: "速[はや]くなった", blank: true },
+          { text: "速[はや]くなる", blank: true },
         ],
         notes: "Explicit 私は",
       },
@@ -916,14 +899,14 @@ export const questions: Question[] = [
           {
             text: "私[わたし]は 毎日[まいにち] プールへ 行[い]っていて、泳[およ]ぐのが",
           },
-          { text: "速[はや]くなった", blank: true },
+          { text: "速[はや]くなる", blank: true },
         ],
         notes: "Explicit 私は + へ",
       },
     ],
   },
   {
-    english: "It's already November, so it's getting dark early, isn't it.",
+    english: "It's already November, so the mornings are getting cold.",
     answers: [
       {
         segments: [
@@ -938,10 +921,8 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ね" },
         ],
-        notes:
-          "暗い (dark) is not in known vocabulary; reworded to use 寒い (cold) with 朝 (mornings), which naturally fits November and exercises ～くなる. Blank covers the full ～くなる construction.",
+        notes: "寒くなる means to get cold.",
       },
       {
         segments: [
@@ -956,7 +937,6 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "ね" },
         ],
         notes: "は instead of が on 朝",
       },
@@ -964,7 +944,6 @@ export const questions: Question[] = [
         segments: [
           { text: "もう 十一月[じゅういちがつ]だから、朝[あさ]が" },
           { text: "寒[さむ]くなってきた", blank: true },
-          { text: "ね" },
         ],
         notes: "くなってきた for gradual change",
       },
@@ -972,7 +951,6 @@ export const questions: Question[] = [
         segments: [
           { text: "もう 十一月[じゅういちがつ]だから、朝[あさ]は" },
           { text: "寒[さむ]くなってきた", blank: true },
-          { text: "ね" },
         ],
         notes: "は + くなってきた",
       },
@@ -980,27 +958,26 @@ export const questions: Question[] = [
   },
   {
     english:
-      "When I started living in the dormitory, I got less interested in watching TV.",
+      "When I started living in the dormitory, watching TV became less fun.",
     answers: [
       {
         segments: [
           { text: "寮[りょう]に 住[す]んで、テレビを 見[み]るのが" },
-          { text: "楽[たの]しくなくなった", blank: true },
+          { text: "楽[たの]しくなくなる", blank: true },
         ],
-        notes:
-          '楽しくなくなった = くなる in negative past form, expressing "became less fun/enjoyable." Used as a stand-in for "less interested" since 興味 is not in known vocabulary.',
+        notes: "楽しくなくなった means became less fun.",
       },
       {
         segments: [
           { text: "寮[りょう]に 入[はい]って、テレビを 見[み]るのが" },
-          { text: "楽[たの]しくなくなった", blank: true },
+          { text: "楽[たの]しくなくなる", blank: true },
         ],
         notes: "入って instead of 住んで",
       },
       {
         segments: [
           { text: "寮[りょう]に 住[す]み始[はじ]めて、テレビを 見[み]るのが" },
-          { text: "楽[たの]しくなくなった", blank: true },
+          { text: "楽[たの]しくなくなる", blank: true },
         ],
         notes: "住み始めて (started living)",
       },
@@ -1015,7 +992,7 @@ export const questions: Question[] = [
           {
             text: "有名[ゆうめい]になりたいから、毎日[まいにち] ギターを 練習[れんしゅう]していて、もう",
           },
-          { text: "上手[じょうず]になった", blank: true },
+          { text: "上手[じょうず]になる", blank: true },
         ],
         notes:
           'The blank covers 上手になった — the core grammar point (な-adjective + になる in past tense). 有名になりたい uses たい which is not in known grammar, but the sentence parallels previous examples that also use ~になる for "want to become" without the たい form. Note: たい is technically not listed, but 有名になりたい is a natural expression — if validator rejects, may need to rework.',
@@ -1025,7 +1002,7 @@ export const questions: Question[] = [
           {
             text: "有名[ゆうめい]になりたいから、毎日[まいにち] ギターを 練習[れんしゅう]して、もう",
           },
-          { text: "上手[じょうず]になった", blank: true },
+          { text: "上手[じょうず]になる", blank: true },
         ],
         notes: "て instead of ていて",
       },
@@ -1034,7 +1011,7 @@ export const questions: Question[] = [
           {
             text: "有名[ゆうめい]になりたいから、毎日[まいにち] ギターを 練習[れんしゅう]していて、ギターが もう",
           },
-          { text: "上手[じょうず]になった", blank: true },
+          { text: "上手[じょうず]になる", blank: true },
         ],
         notes: "ギターが added as subject of 上手になった",
       },
@@ -1043,7 +1020,7 @@ export const questions: Question[] = [
           {
             text: "有名[ゆうめい]になりたいから、毎日[まいにち] ギターの 練習[れんしゅう]をしていて、もう",
           },
-          { text: "上手[じょうず]になった", blank: true },
+          { text: "上手[じょうず]になる", blank: true },
         ],
         notes: "ギターの練習をしていて variant",
       },
@@ -1052,7 +1029,7 @@ export const questions: Question[] = [
           {
             text: "有名[ゆうめい]になりたいから、毎日[まいにち] ギターの 練習[れんしゅう]をして、もう",
           },
-          { text: "上手[じょうず]になった", blank: true },
+          { text: "上手[じょうず]になる", blank: true },
         ],
         notes: "ギターの練習をして variant",
       },
@@ -1060,14 +1037,14 @@ export const questions: Question[] = [
   },
   {
     english:
-      "I want to become a doctor, so I've been studying every day, and biology has gotten easier for me.",
+      "I've been studying every day, and biology has gotten easier for me.",
     answers: [
       {
         segments: [
           {
             text: "毎日[まいにち] 勉強[べんきょう]していて、生物学[せいぶつがく]が",
           },
-          { text: "やさしくなった", blank: true },
+          { text: "やさしくなる", blank: true },
         ],
       },
       {
@@ -1075,7 +1052,7 @@ export const questions: Question[] = [
           {
             text: "毎日[まいにち] 勉強[べんきょう]して、生物学[せいぶつがく]が",
           },
-          { text: "やさしくなった", blank: true },
+          { text: "やさしくなる", blank: true },
         ],
         notes: "して instead of していて",
       },
@@ -1084,7 +1061,7 @@ export const questions: Question[] = [
           {
             text: "毎日[まいにち] 勉強[べんきょう]していて、生物学[せいぶつがく]は",
           },
-          { text: "やさしくなった", blank: true },
+          { text: "やさしくなる", blank: true },
         ],
         notes: "は instead of が on 生物学",
       },
@@ -1093,7 +1070,7 @@ export const questions: Question[] = [
           {
             text: "毎日[まいにち] 勉強[べんきょう]して、生物学[せいぶつがく]は",
           },
-          { text: "やさしくなった", blank: true },
+          { text: "やさしくなる", blank: true },
         ],
         notes: "は + して",
       },
@@ -1102,7 +1079,7 @@ export const questions: Question[] = [
           {
             text: "毎日[まいにち] 勉強[べんきょう]していて、生物学[せいぶつがく]が 少[すこ]し",
           },
-          { text: "やさしくなった", blank: true },
+          { text: "やさしくなる", blank: true },
         ],
         notes: "With 少し",
       },
@@ -1111,7 +1088,7 @@ export const questions: Question[] = [
           {
             text: "毎日[まいにち] 勉強[べんきょう]して、生物学[せいぶつがく]が 少[すこ]し",
           },
-          { text: "やさしくなった", blank: true },
+          { text: "やさしくなる", blank: true },
         ],
         notes: "With 少し + して",
       },
@@ -1124,24 +1101,14 @@ export const questions: Question[] = [
         segments: [
           { text: "秋[あき]に、 木[き]が" },
           { text: " 赤[あか]くなってきれいになる", blank: true },
-          { text: "ね" },
         ],
       },
       {
         segments: [
           { text: "秋[あき]は、 木[き]が" },
           { text: " 赤[あか]くなってきれいになる", blank: true },
-          { text: "ね" },
         ],
         notes: "秋は topicalized",
-      },
-      {
-        segments: [
-          { text: "秋[あき]に 木[き]が" },
-          { text: " 赤[あか]くなってきれいになる", blank: true },
-          { text: "ね" },
-        ],
-        notes: "Without comma",
       },
     ],
   },

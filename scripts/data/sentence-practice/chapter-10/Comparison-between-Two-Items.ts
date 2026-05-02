@@ -9,6 +9,7 @@ export const questions: Question[] = [
           { text: "新幹線[しんかんせん]と 飛行機[ひこうき]と、" },
           { text: "どちらが 速[はや]いですか", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
@@ -16,6 +17,7 @@ export const questions: Question[] = [
             text: "新幹線[しんかんせん]と 飛行機[ひこうき]、どちらが 速[はや]いですか",
           },
         ],
+        register: "polite",
         notes: "と repeated once (second と dropped)",
       },
       {
@@ -24,6 +26,7 @@ export const questions: Question[] = [
             text: "新幹線[しんかんせん]と 飛行機[ひこうき]と、どちらのほうが 速[はや]いですか",
           },
         ],
+        register: "polite",
         notes: "どちらのほうが variant",
       },
       {
@@ -32,6 +35,7 @@ export const questions: Question[] = [
             text: "新幹線[しんかんせん]と 飛行機[ひこうき]、どちらのほうが 速[はや]いですか",
           },
         ],
+        register: "polite",
         notes: "どちらのほうが variant, second と dropped",
       },
       {
@@ -40,6 +44,7 @@ export const questions: Question[] = [
             text: "新幹線[しんかんせん]と 飛行機[ひこうき]と、どっちが 速[はや]いですか",
           },
         ],
+        register: "polite",
         notes: "どっち variant",
       },
       {
@@ -48,6 +53,7 @@ export const questions: Question[] = [
             text: "新幹線[しんかんせん]と 飛行機[ひこうき]、どっちが 速[はや]いですか",
           },
         ],
+        register: "polite",
         notes: "どっち variant, second と dropped",
       },
       {
@@ -56,6 +62,7 @@ export const questions: Question[] = [
             text: "新幹線[しんかんせん]と 飛行機[ひこうき]と、どっちのほうが 速[はや]いですか",
           },
         ],
+        register: "polite",
         notes: "どっちのほうが variant",
       },
       {
@@ -64,6 +71,7 @@ export const questions: Question[] = [
             text: "新幹線[しんかんせん]と 飛行機[ひこうき]、どっちのほうが 速[はや]いですか",
           },
         ],
+        register: "polite",
         notes: "どっちのほうが variant, second と dropped",
       },
       {
@@ -72,6 +80,7 @@ export const questions: Question[] = [
             text: "飛行機[ひこうき]と 新幹線[しんかんせん]と、どちらが 速[はや]いですか",
           },
         ],
+        register: "polite",
         notes: "airplane listed first",
       },
       {
@@ -80,6 +89,7 @@ export const questions: Question[] = [
             text: "飛行機[ひこうき]と 新幹線[しんかんせん]、どちらが 速[はや]いですか",
           },
         ],
+        register: "polite",
         notes: "airplane first, second と dropped",
       },
       {
@@ -88,6 +98,7 @@ export const questions: Question[] = [
             text: "新幹線[しんかんせん]と 飛行機[ひこうき]では、どちらが 速[はや]いですか",
           },
         ],
+        register: "polite",
         notes: "では (topic marker) instead of と、",
       },
     ],
@@ -118,16 +129,6 @@ export const questions: Question[] = [
         ],
         notes:
           "Using noun すし with のほうが (dropping 食べる for the preferred item)",
-      },
-      {
-        segments: [
-          {
-            text: "ハンバーガーを 食[た]べるより すしを 食[た]べるほうが 好[す]き",
-            blank: true,
-          },
-          { text: "です" },
-        ],
-        notes: "ほうが好き as plain text (no comma variant handled by engine)",
       },
       {
         segments: [
@@ -166,7 +167,8 @@ export const questions: Question[] = [
             text: "インドの 夏[なつ]より、日本[にほん]の 夏[なつ]のほうが 暑[あつ]いですか",
           },
         ],
-        notes: "Full sentence as plain text variation",
+        register: "polite",
+        notes: "Same comparison as a single sentence",
       },
       {
         segments: [
@@ -198,6 +200,7 @@ export const questions: Question[] = [
           },
           { text: "どちらが 楽[たの]しいですか", blank: true },
         ],
+        register: "polite",
         notes:
           'Using こと to nominalize the verbs, and どちらが for the "which" comparison. The hint says to use "I" perspective but since this is a question about what "you find" enjoyable, it\'s naturally phrased as a question directed at the listener. The whole sentence is the target grammar (と～と、どちらが construction).',
       },
@@ -207,6 +210,7 @@ export const questions: Question[] = [
             text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]することと、どっちが 楽[たの]しいですか",
           },
         ],
+        register: "polite",
         notes: "Using どっちが instead of どちらが (more casual)",
       },
       {
@@ -215,6 +219,7 @@ export const questions: Question[] = [
             text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]すること、どちらが 楽[たの]しいですか",
           },
         ],
+        register: "polite",
         notes: "Dropping the second と before comma",
       },
       {
@@ -223,6 +228,7 @@ export const questions: Question[] = [
             text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]すること、どっちが 楽[たの]しいですか",
           },
         ],
+        register: "polite",
         notes: "Dropping the second と, using どっちが",
       },
       {
@@ -231,6 +237,7 @@ export const questions: Question[] = [
             text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのと、どちらが 楽[たの]しいですか",
           },
         ],
+        register: "polite",
         notes: "Using の instead of こと for nominalization",
       },
       {
@@ -239,6 +246,7 @@ export const questions: Question[] = [
             text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのと、どっちが 楽[たの]しいですか",
           },
         ],
+        register: "polite",
         notes: "Using の for nominalization and どっちが",
       },
       {
@@ -247,6 +255,7 @@ export const questions: Question[] = [
             text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するの、どちらが 楽[たの]しいですか",
           },
         ],
+        register: "polite",
         notes: "Using の for nominalization, dropping second と",
       },
       {
@@ -255,6 +264,7 @@ export const questions: Question[] = [
             text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]することと、どちらのほうが 楽[たの]しいですか",
           },
         ],
+        register: "polite",
         notes: "Using どちらのほうが",
       },
       {
@@ -263,6 +273,7 @@ export const questions: Question[] = [
             text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのと、どちらのほうが 楽[たの]しいですか",
           },
         ],
+        register: "polite",
         notes: "Using の nominalization with どちらのほうが",
       },
       {
@@ -271,6 +282,7 @@ export const questions: Question[] = [
             text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのでは、どちらの 方[ほう]が 楽[たの]しいですか",
           },
         ],
+        register: "polite",
         notes: "では (topic marker) instead of と、",
       },
     ],
@@ -303,25 +315,15 @@ export const questions: Question[] = [
             text: "けんじさんの 猫[ねこ]より、けんじさんの 犬[いぬ]のほうが 大[おお]きいですか",
           },
         ],
-      },
-      {
-        segments: [
-          {
-            text: "けんじさんの 猫[ねこ]より けんじさんの 犬[いぬ]のほうが 大[おお]きいですか",
-          },
-        ],
+        register: "polite",
       },
       {
         segments: [
           { text: "猫[ねこ]より、 犬[いぬ]のほうが 大[おお]きいですか" },
         ],
+        register: "polite",
       },
-      {
-        segments: [
-          { text: "猫[ねこ]より 犬[いぬ]のほうが 大[おお]きいですか" },
-        ],
-      },
-    ],
+      ],
   },
   {
     english: "Taking a bath is about as relaxing as listening to music.",
@@ -336,39 +338,7 @@ export const questions: Question[] = [
         notes:
           'Uses と同じくらい to express "just as enjoyable as". 楽しい is used as the closest available adjective for "relaxing". お風呂に入ること is compared to 音楽を聞くこと.',
       },
-      {
-        segments: [
-          {
-            text: "テレビを 見[み]るより、お 風呂[ふろ]に 入[はい]るほうが 楽[たの]しい",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "No comma variant",
-      },
-      {
-        segments: [
-          {
-            text: "テレビを 見[み]るより、風呂[ふろ]に 入[はい]るほうが",
-            blank: true,
-          },
-          {
-            text: "楽[たの]しい",
-            blank: true,
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Without お on 風呂",
-      },
+
       {
         segments: [
           {
@@ -405,16 +375,11 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
-      },
-      {
-        segments: [
-          {
-            text: "イタリアのピザより、イタリアのワインのほうが 有名[ゆうめい]ですか",
-          },
-        ],
+        register: "polite",
       },
       {
         segments: [{ text: "ピザより、ワインのほうが 有名[ゆうめい]ですか" }],
+        register: "polite",
         notes: "Dropped イタリアの for both",
       },
     ],
@@ -427,59 +392,67 @@ export const questions: Question[] = [
         segments: [
           { text: "はるかさんは" },
           {
-            text: "歌[うた]うことと スポーツをすることと、どちらが 好[す]きですか",
+            text: "歌[うた]うことと 踊[おど]ることと、どちらが 好[す]きですか",
             blank: true,
           },
         ],
+        register: "polite",
       },
       {
         segments: [
           {
-            text: "はるかさんは 歌[うた]うことと スポーツをすることと、どちらのほうが 好[す]きですか",
+            text: "はるかさんは 歌[うた]うことと 踊[おど]ることと、どちらのほうが 好[す]きですか",
           },
         ],
+        register: "polite",
       },
       {
         segments: [
           {
-            text: "はるかさんは 歌[うた]うことと スポーツをすること、どちらが 好[す]きですか",
+            text: "はるかさんは 歌[うた]うことと 踊[おど]ること、どちらが 好[す]きですか",
           },
         ],
+        register: "polite",
       },
       {
         segments: [
           {
-            text: "はるかさんは 歌[うた]うことと スポーツをすること、どちらのほうが 好[す]きですか",
+            text: "はるかさんは 歌[うた]うことと 踊[おど]ること、どちらのほうが 好[す]きですか",
           },
         ],
+        register: "polite",
       },
       {
         segments: [
           {
-            text: "はるかさんは 歌[うた]うことと スポーツをすることと、どっちが 好[す]きですか",
+            text: "はるかさんは 歌[うた]うことと 踊[おど]ることと、どっちが 好[す]きですか",
           },
         ],
+        register: "polite",
       },
       {
         segments: [
           {
-            text: "はるかさんは 歌[うた]うことと スポーツをすることと、どっちのほうが 好[す]きですか",
+            text: "はるかさんは 歌[うた]うことと 踊[おど]ることと、どっちのほうが 好[す]きですか",
           },
         ],
+        register: "polite",
       },
       {
         segments: [
           {
-            text: "はるかさんは 歌[うた]うことと スポーツをすること、どっちが 好[す]きですか",
+            text: "はるかさんは 歌[うた]うことと 踊[おど]ること、どっちが 好[す]きですか",
           },
         ],
+        register: "polite",
       },
       {
         segments: [
           {
-            text: "はるかさんは 歌[うた]うことと スポーツをすること、どっちのほうが 好[す]きですか",
+            text: "はるかさんは 歌[うた]うことと 踊[おど]ること、どっちのほうが 好[す]きですか",
           },
         ],
+        register: "polite",
       },
     ],
   },
@@ -496,31 +469,18 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
+        register: "polite",
         notes:
-          "より～のほうが comparison question. The blank covers the comparison construction (the より and のほうが nucleus). 便利 is a な-adjective used predicatively without な before です.",
-      },
-      {
-        segments: [
-          {
-            text: "バスに乗[の]るより、地下鉄[ちかてつ]に乗[の]るほうが便利[べんり]ですか",
-          },
-          { text: "" },
-        ],
-        notes: "No spaces variant",
+          "より〜のほうが compares riding the subway with riding the bus. 便利 is a な-adjective used predicatively without な before です.",
       },
       {
         segments: [
           { text: "バスより、地下鉄[ちかてつ]のほうが便利[べんり]ですか" },
         ],
+        register: "polite",
         notes: "Noun + より + Noun + のほうが variant (without verb 乗る)",
       },
-      {
-        segments: [
-          { text: "バスより地下鉄[ちかてつ]のほうが便利[べんり]ですか" },
-        ],
-        notes: "Noun variant, no pause particle",
-      },
-    ],
+      ],
   },
   {
     english: "Is reading books more interesting than watching TV?",
@@ -530,6 +490,7 @@ export const questions: Question[] = [
           { text: "テレビを 見[み]るより、本[ほん]を 読[よ]むほうが" },
           { text: "面白[おもしろ]いですか", blank: true },
         ],
+        register: "polite",
         notes:
           "The blank covers the adjective predicate including the question marker, as the core comparison outcome of the より～のほうが structure.",
       },
@@ -539,6 +500,7 @@ export const questions: Question[] = [
             text: "テレビを 見[み]ることより、本[ほん]を 読[よ]むことのほうが面白[おもしろ]いですか",
           },
         ],
+        register: "polite",
         notes: "Using こと nominalizer for both verbs",
       },
       {
@@ -547,16 +509,9 @@ export const questions: Question[] = [
             text: "本[ほん]を 読[よ]むのは、テレビを 見[み]るより面白[おもしろ]いですか",
           },
         ],
+        register: "polite",
         notes:
           "Topic-first word order: 本を読むのは、テレビを見るより面白いですか",
-      },
-      {
-        segments: [
-          {
-            text: "テレビを 見[み]るより本[ほん]を 読[よ]むほうが面白[おもしろ]いですか",
-          },
-        ],
-        notes: "No comma variant",
       },
       {
         segments: [
@@ -564,6 +519,7 @@ export const questions: Question[] = [
             text: "テレビを 見[み]ることより、本[ほん]を 読[よ]むほうが面白[おもしろ]いですか",
           },
         ],
+        register: "polite",
         notes: "こと on first verb only, ほう on second",
       },
     ],
@@ -594,6 +550,7 @@ export const questions: Question[] = [
             text: "富士山[ふじさん]は韓国[かんこく]のどの山[やま]より高[たか]いですか",
           },
         ],
+        register: "polite",
       },
       {
         segments: [
@@ -601,6 +558,7 @@ export const questions: Question[] = [
             text: "富士山[ふじさん]は韓国[かんこく]のどの山[やま]よりも高[たか]いですか",
           },
         ],
+        register: "polite",
         notes: "よりも variant",
       },
     ],
@@ -630,14 +588,11 @@ export const questions: Question[] = [
         segments: [
           { text: "家[いえ]より、寮[りょう]のほうが便利[べんり]ですか" },
         ],
+        register: "polite",
       },
       {
         segments: [{ text: "うちより寮[りょう]のほうが便利[べんり]ですか" }],
-      },
-      {
-        segments: [
-          { text: "家[いえ]より寮[りょう]のほうが便利[べんり]ですか" },
-        ],
+        register: "polite",
       },
       {
         segments: [
@@ -645,6 +600,7 @@ export const questions: Question[] = [
             text: "寮[りょう]に 住[す]むことは うちに 住[す]むことと同[おな]じくらい便利[べんり]ですか",
           },
         ],
+        register: "polite",
         notes: "No comma variation",
       },
       {
@@ -653,6 +609,7 @@ export const questions: Question[] = [
             text: "寮[りょう]に 住[す]むことは 家[いえ]に 住[す]むことと 同[おな]じくらい 便利[べんり]ですか",
           },
         ],
+        register: "polite",
         notes: "家 instead of うち",
       },
       {
@@ -661,6 +618,7 @@ export const questions: Question[] = [
             text: "寮[りょう]に 住[す]むことは うちに 住[す]むことと 同[おな]じぐらい 便利[べんり]ですか",
           },
         ],
+        register: "polite",
         notes: "ぐらい variant",
       },
       {
@@ -669,6 +627,7 @@ export const questions: Question[] = [
             text: "寮[りょう]に 住[す]むことは 家[いえ]に 住[す]むことと 同[おな]じぐらい 便利[べんり]ですか",
           },
         ],
+        register: "polite",
         notes: "家 + ぐらい variant",
       },
     ],
@@ -703,6 +662,7 @@ export const questions: Question[] = [
           },
           { text: "難[むずか]しいですか" },
         ],
+        register: "polite",
         notes: "Without こと for the second verb",
       },
       {
@@ -712,6 +672,7 @@ export const questions: Question[] = [
           },
           { text: "難[むずか]しいですか" },
         ],
+        register: "polite",
         notes: "Without こと for the first verb",
       },
       {
@@ -721,6 +682,7 @@ export const questions: Question[] = [
           },
           { text: "難[むずか]しいですか" },
         ],
+        register: "polite",
         notes: "Without こと for both verbs",
       },
       {
@@ -730,6 +692,7 @@ export const questions: Question[] = [
           },
           { text: "難[むずか]しいですか" },
         ],
+        register: "polite",
         notes: "Using どちらが construction",
       },
       {
@@ -739,6 +702,7 @@ export const questions: Question[] = [
           },
           { text: "難[むずか]しいですか" },
         ],
+        register: "polite",
         notes: "Using どちらのほうが construction",
       },
     ],
@@ -827,11 +791,14 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
+        register: "polite",
       },
       {
         segments: [
+          { text: "スペインの 冬[ふゆ]は カナダの 冬[ふゆ]より" },
           {
-            text: "スペインの 冬[ふゆ]は カナダの 冬[ふゆ]より 暖[あたた]かい",
+            text: " 暖[あたた]かい",
+            blank: true,
             conjugation: {
               pos: "I-adjective",
               form: "normal",
@@ -844,8 +811,10 @@ export const questions: Question[] = [
       },
       {
         segments: [
+          { text: "カナダの 冬[ふゆ]より スペインの 冬[ふゆ]のほうが" },
           {
-            text: "カナダの 冬[ふゆ]より スペインの 冬[ふゆ]のほうが 暖[あたた]かい",
+            text: " 暖[あたた]かい",
+            blank: true,
             conjugation: {
               pos: "I-adjective",
               form: "normal",
@@ -872,23 +841,18 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
+        register: "polite",
         notes:
-          "Using より～のほうが to compare Takeshi's cooking to his mother's. 上手 (skillful/good at) is used for cooking skill. The blank covers the comparison construction up to the predicate adjective.",
+          "Using より〜のほうが to compare Takeshi's cooking to his mother's. 上手 describes cooking skill.",
       },
-      {
-        segments: [
-          {
-            text: "たけしさんのお母[かあ]さんの料理[りょうり]より、たけしさんの料理[りょうり]のほうが上手[じょうず]ですか",
-          },
-        ],
-        notes: "Full sentence as one segment",
-      },
+
       {
         segments: [
           {
             text: "お母[かあ]さんの料理[りょうり]より、たけしさんの料理[りょうり]のほうが上手[じょうず]ですか",
           },
         ],
+        register: "polite",
         notes:
           "Dropping たけしさんの before お母さん — still clear from context",
       },
@@ -898,15 +862,17 @@ export const questions: Question[] = [
             text: "たけしさんのお母[かあ]さんの料理[りょうり]より、たけしさんのほうが料理[りょうり]が上手[じょうず]ですか",
           },
         ],
+        register: "polite",
         notes: "Alternative word order: たけしさんのほうが料理が上手ですか",
       },
       {
         segments: [
           {
-            text: "たけしさんのお母[かあ]さんの料理[りょうり]より、たけしさんの料理[りょうり]のほうがいいですか",
+            text: "たけしさんのお母[かあ]さんの料理[りょうり]より、たけしさんの料理[りょうり]のほうがよいですか",
           },
         ],
-        notes: "Using いい instead of 上手 — 'is better'",
+        register: "polite",
+        notes: "Using よい instead of 上手 — 'is better'",
       },
     ],
   },
@@ -919,16 +885,9 @@ export const questions: Question[] = [
           { text: "会社[かいしゃ]で 働[はたら]くことのほうが", blank: true },
           { text: "大変[たいへん]ですか" },
         ],
+        register: "polite",
         notes:
           'Using 大変 (tough/hard) to express "stressful". より～のほうが comparison question structure.',
-      },
-      {
-        segments: [
-          {
-            text: "アルバイトをすることより、会社[かいしゃ]で働[はたら]くことのほうが大変[たいへん]ですか",
-          },
-        ],
-        notes: "No comma variant",
       },
       {
         segments: [
@@ -936,6 +895,7 @@ export const questions: Question[] = [
             text: "アルバイトをするより、会社[かいしゃ]で働[はたら]くほうが大変[たいへん]ですか",
           },
         ],
+        register: "polite",
         notes:
           "Without こと nominalization on both verbs, using verb directly before ほうが",
       },
@@ -945,6 +905,7 @@ export const questions: Question[] = [
             text: "会社[かいしゃ]で働[はたら]くことはアルバイトをすることより大変[たいへん]ですか",
           },
         ],
+        register: "polite",
         notes: "Reversed order: company work は + part-time より",
       },
       {
@@ -953,6 +914,7 @@ export const questions: Question[] = [
             text: "アルバイトより会社[かいしゃ]で働[はたら]くほうが大変[たいへん]ですか",
           },
         ],
+        register: "polite",
         notes:
           "Abbreviated: アルバイトより会社で働くほうが大変ですか — comparing the activity directly",
       },
@@ -988,6 +950,7 @@ export const questions: Question[] = [
             text: "スーパーですしを 買[か]うことより、レストランですしを 食[た]べることのほうがおいしいですか",
           },
         ],
+        register: "polite",
         notes: "Standard form",
       },
       {
@@ -996,6 +959,7 @@ export const questions: Question[] = [
             text: "スーパーですしを 買[か]うよりレストランですしを 食[た]べるほうがおいしいですか",
           },
         ],
+        register: "polite",
         notes: "Dropped こと, の versions",
       },
       {
@@ -1004,6 +968,7 @@ export const questions: Question[] = [
             text: "スーパーですしを 買[か]うよりも、レストランですしを 食[た]べるほうがおいしいですか",
           },
         ],
+        register: "polite",
         notes: "よりも variation",
       },
       {
@@ -1012,6 +977,7 @@ export const questions: Question[] = [
             text: "スーパーで 買[か]ったすしより、レストランで 食[た]べたすしのほうがおいしいですか",
           },
         ],
+        register: "polite",
         notes: "Noun phrase variation using past tense modifiers",
       },
       {
@@ -1020,7 +986,8 @@ export const questions: Question[] = [
             text: "スーパーですしを 買[か]うことは、すし 屋[や]で 食[た]べることと同[おな]じくらいおいしいですか",
           },
         ],
-        notes: "Standard form — same as display",
+        register: "polite",
+        notes: "Standard word order",
       },
       {
         segments: [
@@ -1028,6 +995,7 @@ export const questions: Question[] = [
             text: "スーパーですしを 買[か]うことは、すし 屋[や]で 食[た]べることと同[おな]じぐらいおいしいですか",
           },
         ],
+        register: "polite",
         notes: "ぐらい variation",
       },
       {
@@ -1036,6 +1004,7 @@ export const questions: Question[] = [
             text: "スーパーですしを 買[か]うことは、すしやで 食[た]べることと同[おな]じくらいおいしいですか",
           },
         ],
+        register: "polite",
         notes: "すし屋 written without space",
       },
       {
@@ -1044,6 +1013,7 @@ export const questions: Question[] = [
             text: "すし 屋[や]で 食[た]べることと同[おな]じくらい、スーパーですしを 買[か]うことはおいしいですか",
           },
         ],
+        register: "polite",
         notes: "Word order: sushi restaurant first",
       },
     ],
@@ -1059,15 +1029,9 @@ export const questions: Question[] = [
           },
           { text: "大変[たいへん]ですか" },
         ],
+        register: "polite",
         notes:
           'Using 大変 (tough/hard) as the adjective for "tiring", since there is no い-adjective for "tiring" in the known vocab. 大変 covers the meaning well here. The blank covers the full より～のほうが construction.',
-      },
-      {
-        segments: [
-          {
-            text: "洗濯[せんたく]することより、残業[ざんぎょう]することのほうが大変[たいへん]ですか",
-          },
-        ],
       },
       {
         segments: [
@@ -1075,6 +1039,7 @@ export const questions: Question[] = [
             text: "洗濯[せんたく]することより、残業[ざんぎょう]するほうが大変[たいへん]ですか",
           },
         ],
+        register: "polite",
       },
     ],
   },
@@ -1148,46 +1113,6 @@ export const questions: Question[] = [
         ],
         notes: "Both と kept, どっちのほうが variant",
       },
-      {
-        segments: [
-          {
-            text: "レストランで 食[た]べることと うちで 料理[りょうり]すること と、どちらが 楽[たの]しいと 思[おも]いますか",
-          },
-        ],
-        notes: "うち instead of 家",
-      },
-      {
-        segments: [
-          {
-            text: "レストランで 食[た]べることと うちで 料理[りょうり]すること、どちらが 楽[たの]しいと 思[おも]いますか",
-          },
-        ],
-        notes: "うち instead of 家, second と dropped",
-      },
-      {
-        segments: [
-          {
-            text: "レストランで 食[た]べることと うちで 料理[りょうり]すること、どちらのほうが 楽[たの]しいと 思[おも]いますか",
-          },
-        ],
-        notes: "うち, second と dropped, どちらのほうが",
-      },
-      {
-        segments: [
-          {
-            text: "レストランで 食[た]べることと うちで 料理[りょうり]すること、どっちが 楽[たの]しいと 思[おも]いますか",
-          },
-        ],
-        notes: "うち, second と dropped, どっちが",
-      },
-      {
-        segments: [
-          {
-            text: "レストランで 食[た]べることと うちで 料理[りょうり]すること、どっちのほうが 楽[たの]しいと 思[おも]いますか",
-          },
-        ],
-        notes: "うち, second と dropped, どっちのほうが",
-      },
-    ],
+      ],
   },
 ]

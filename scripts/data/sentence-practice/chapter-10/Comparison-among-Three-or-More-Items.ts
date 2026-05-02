@@ -68,26 +68,7 @@ export const questions: Question[] = [
         ],
         notes: "Standard structure: 家族の中で誰が一番背が高いですか",
       },
-      {
-        segments: [
-          { text: "さきさんの 家族[かぞく]" },
-          { text: "の 中[なか]で", blank: true },
-          { text: "誰[だれ]が 一番[いちばん] 背[せ]が" },
-          {
-            text: "高[たか]い",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes:
-          "Blank on の中で only, testing のなかで grammar point specifically",
-      },
-    ],
+      ],
   },
   {
     english: "Among all sports, soccer is the most fun!",
@@ -322,20 +303,13 @@ export const questions: Question[] = [
           { text: "飲[の]み 物[もの]の" },
           { text: "中[なか]で", blank: true },
           { text: "一番[いちばん]", blank: true },
-          {
-            text: "おいしい",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
+          { text: "おいしい" },
           { text: "のはどれ" },
           { text: "です" },
           { text: "か" },
         ],
-        notes: "「一番おいしいのはどれ」 — \"the most delicious one is which\" reversed structure",
+        register: "polite",
+        notes: "「一番おいしいのはどれ」 — \"which one is the most delicious\"",
       },
     ],
   },
@@ -585,60 +559,7 @@ export const questions: Question[] = [
         ],
         notes: "Standard version with 兄弟の中で, direct question with か",
       },
-      {
-        segments: [
-          { text: "なおみさんの 兄弟[きょうだい]の" },
-          { text: "中[なか]で", blank: true },
-          { text: "誰[だれ]が 一番[いちばん]" },
-          {
-            text: "若[わか]い",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "Blank on 中で instead of the adjective",
-      },
-      {
-        segments: [
-          { text: "なおみさんの" },
-          { text: "兄弟[きょうだい]の 中[なか]で", blank: true },
-          { text: "誰[だれ]が 一番[いちばん]" },
-          {
-            text: "若[わか]い",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "Blank includes 兄弟の中で as a unit",
-      },
-      {
-        segments: [
-          { text: "なおみさんの 兄弟[きょうだい]の 中[なか]で 誰[だれ]が" },
-          {
-            text: "一番[いちばん] 若[わか]い",
-            blank: true,
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "Blank is 一番若い as a unit",
-      },
-    ],
+      ],
   },
   {
     english: "Among all fruits, I like strawberries the best!",
@@ -669,7 +590,7 @@ export const questions: Question[] = [
           { text: " 好[す]き" },
         ],
         register: "casual",
-        notes: "Bare 好き (no だ) — natural casual statement",
+        notes: "好き as a plain statement",
       },
     ],
   },
@@ -800,43 +721,7 @@ export const questions: Question[] = [
         ],
         notes: 'Using 何が instead of どれが - "what" instead of "which one"',
       },
-      {
-        segments: [
-          { text: "歌[うた]" },
-          { text: "の 中[なか]で", blank: true },
-          { text: "どれが 一番[いちばん]" },
-          {
-            text: "難[むずか]しい",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "Blank on の中で portion to test that part of the grammar",
-      },
-      {
-        segments: [
-          { text: "歌[うた]" },
-          { text: "の 中[なか]で", blank: true },
-          { text: "どの 歌[うた]が 一番[いちばん]" },
-          {
-            text: "難[むずか]しい",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "Blank on の中で, using どの歌が",
-      },
-    ],
+      ],
   },
   {
     english: "Among all my classes, I like history the best.",
@@ -896,7 +781,8 @@ export const questions: Question[] = [
           { text: "中[なか]で", blank: true },
           { text: "たけしさんが" },
           { text: "一番[いちばん]", blank: true },
-          { text: "元気[げんき]です" },
+          { text: "元気[げんき]" },
+          { text: "です" },
         ],
         notes: "Standard: 寮の皆の中で with 皆 in kanji",
       },
@@ -906,7 +792,8 @@ export const questions: Question[] = [
           { text: "中[なか]で", blank: true },
           { text: "たけしさんが" },
           { text: "一番[いちばん]", blank: true },
-          { text: "元気[げんき]です" },
+          { text: "元気[げんき]" },
+          { text: "です" },
         ],
         notes: "Using みんな in hiragana instead of kanji 皆",
       },
@@ -916,31 +803,12 @@ export const questions: Question[] = [
           { text: "中[なか]で", blank: true },
           { text: "たけしさんが" },
           { text: "一番[いちばん]", blank: true },
-          { text: "元気[げんき]です" },
+          { text: "元気[げんき]" },
+          { text: "です" },
         ],
         notes: "Without 皆/みんな - 寮の中で implying among people in the dorm",
       },
-      {
-        segments: [
-          { text: "寮[りょう]の 皆[みな]さんの" },
-          { text: "中[なか]で", blank: true },
-          { text: "たけしさんが" },
-          { text: "一番[いちばん]", blank: true },
-          { text: "元気[げんき]です" },
-        ],
-        notes: "Using 皆さん (more polite form of everyone)",
-      },
-      {
-        segments: [
-          { text: "寮[りょう]のみなさんの" },
-          { text: "中[なか]で", blank: true },
-          { text: "たけしさんが" },
-          { text: "一番[いちばん]", blank: true },
-          { text: "元気[げんき]です" },
-        ],
-        notes: "Using みなさん in hiragana",
-      },
-    ],
+      ],
   },
   {
     english: "Among all vegetables, which one is the cheapest?",
@@ -960,25 +828,7 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "Standard with どれが, 安い as blank",
-      },
-      {
-        segments: [
-          { text: "野菜[やさい]" },
-          { text: "の 中[なか]で", blank: true },
-          { text: "どれが 一番[いちばん]" },
-          {
-            text: "安[やす]い",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "Standard with どれが, の中で as blank",
+        notes: "どれが asks which one",
       },
       {
         segments: [
@@ -995,27 +845,9 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "Using 何が instead of どれが, 安い as blank",
+        notes: "何が instead of どれが",
       },
-      {
-        segments: [
-          { text: "野菜[やさい]" },
-          { text: "の 中[なか]で", blank: true },
-          { text: "何[なに]が 一番[いちばん]" },
-          {
-            text: "安[やす]い",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "Using 何が instead of どれが, の中で as blank",
-      },
-    ],
+      ],
   },
   {
     english: "Among everyone at the company, Rina is the busiest.",
@@ -1028,22 +860,6 @@ export const questions: Question[] = [
           {
             text: "忙[いそが]しい",
             blank: true,
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "会社[かいしゃ]の皆[みんな]の中[なか]でりなさんが一番[いちばん]",
-          },
-          {
-            text: "忙[いそが]しい",
             conjugation: {
               pos: "I-adjective",
               form: "normal",
@@ -1093,21 +909,14 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "動物園[どうぶつえん]の 中[なか]で" },
+          { text: "動物園[どうぶつえん]の 動物[どうぶつ]の 中[なか]で" },
           { text: "どれが 一番[いちばん] 怖[こわ]いか", blank: true },
         ],
       },
       {
         segments: [
           {
-            text: "動物園[どうぶつえん]の中[なか]でどれが一番[いちばん]怖[こわ]いか",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "動物園[どうぶつえん]のなかでどれが一番[いちばん]怖[こわ]いか",
+            text: "動物園[どうぶつえん]の動物[どうぶつ]のなかでどれが一番[いちばん]怖[こわ]いか",
           },
         ],
       },
@@ -1118,7 +927,7 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "私[わたし]の 勉強[べんきょう]の 中[なか]で" },
+          { text: "私[わたし]が 勉強[べんきょう]している 言語[げんご]の 中[なか]で" },
           { text: "日本語[にほんご]が 一番[いちばん]", blank: true },
           {
             text: "難[むずか]しい",
@@ -1132,12 +941,14 @@ export const questions: Question[] = [
           },
         ],
         notes:
-          "Using 私の勉強の中で to express 'among the things I study'. 難しい is conjugated as an i-adjective.",
+          "私が勉強している言語の中で means among the languages I study.",
       },
       {
         segments: [
+          { text: "私[わたし]が 勉強[べんきょう]している 言語[げんご]のなかで 日本語[にほんご]が 一番[いちばん]" },
           {
-            text: "私[わたし]の 勉強[べんきょう]のなかで 日本語[にほんご]が 一番[いちばん] 難[むずか]しい",
+            text: " 難[むずか]しい",
+            blank: true,
             conjugation: {
               pos: "I-adjective",
               form: "normal",
@@ -1150,8 +961,10 @@ export const questions: Question[] = [
       },
       {
         segments: [
+          { text: "勉強[べんきょう]している 言語[げんご]の 中[なか]で 日本語[にほんご]が 一番[いちばん]" },
           {
-            text: "勉強[べんきょう]の 中[なか]で 日本語[にほんご]が 一番[いちばん] 難[むずか]しい",
+            text: " 難[むずか]しい",
+            blank: true,
             conjugation: {
               pos: "I-adjective",
               form: "normal",
@@ -1160,12 +973,14 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Dropped 私の at the start",
+        notes: "Dropped 私が at the start",
       },
       {
         segments: [
+          { text: "勉強[べんきょう]している 言語[げんご]のなかで 日本語[にほんご]が 一番[いちばん]" },
           {
-            text: "勉強[べんきょう]のなかで 日本語[にほんご]が 一番[いちばん] 難[むずか]しい",
+            text: " 難[むずか]しい",
+            blank: true,
             conjugation: {
               pos: "I-adjective",
               form: "normal",
@@ -1184,13 +999,11 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "はなさんが 知[し]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "はなさんが 知[し]っている" },
           { text: "有名人[ゆうめいじん]の 中[なか]で" },
-          { text: "誰[だれ]が 一番[いちばん]有名[ゆうめい]か", blank: true },
+          { text: "誰[だれ]が 一番[いちばん]有名[ゆうめい]", blank: true },
+          { text: "か" },
         ],
-        notes:
-          "The blank covers the question nucleus: who + superlative + question marker か. The group (はなさんが知っている有名人の中で) stays outside as context.",
       },
       {
         segments: [
@@ -1198,7 +1011,8 @@ export const questions: Question[] = [
             text: "はなさんが 知[し]っている 有名人[ゆうめいじん]の中[なか]で誰[だれ]が一番[いちばん]有名[ゆうめい]ですか",
           },
         ],
-        notes: "Polite variant with ですか instead of plain か",
+        register: "polite",
+        notes: "ですか question ending",
       },
       {
         segments: [
@@ -1214,7 +1028,8 @@ export const questions: Question[] = [
             text: "はなさんの知[し]っている 有名人[ゆうめいじん]の 中[なか]で誰[だれ]が一番[いちばん]有名[ゆうめい]ですか",
           },
         ],
-        notes: "の possessive + ですか polite",
+        register: "polite",
+        notes: "の possessive + ですか question ending",
       },
       {
         segments: [
@@ -1230,7 +1045,8 @@ export const questions: Question[] = [
             text: "はなさんが 知[し]っている 有名人[ゆうめいじん]のなかで誰[だれ]が一番[いちばん]有名[ゆうめい]ですか",
           },
         ],
-        notes: "のなかで + ですか polite",
+        register: "polite",
+        notes: "のなかで + ですか question ending",
       },
     ],
   },

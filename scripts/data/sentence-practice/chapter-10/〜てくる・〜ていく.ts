@@ -71,22 +71,7 @@ export const questions: Question[] = [
           },
         ],
       },
-      {
-        segments: [
-          { text: "写真[しゃしん]を 撮[と]って" },
-          {
-            text: "帰[かえ]る",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'ru' ending (irregular verb)",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Using 帰る instead of てくる",
-      },
+
     ],
   },
   {
@@ -302,7 +287,10 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "そうたさんはまた 教科書[きょうかしょ]を 持[も]ってくるのを" },
+          { text: "そうたさんはまた 教科書[きょうかしょ]を" },
+          { text: " 持[も]って", blank: true },
+          { text: "くる", blank: true },
+          { text: "のを" },
           {
             text: "忘[わす]れる",
             blank: true,
@@ -317,7 +305,10 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そうたさんは 教科書[きょうかしょ]をまた 持[も]ってくるのを" },
+          { text: "そうたさんは 教科書[きょうかしょ]をまた" },
+          { text: " 持[も]って", blank: true },
+          { text: "くる", blank: true },
+          { text: "のを" },
           {
             text: "忘[わす]れる",
             blank: true,
@@ -402,22 +393,6 @@ export const questions: Question[] = [
             },
           },
         ],
-      },
-      {
-        segments: [
-          { text: "カラオケを 練習[れんしゅう]して" },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Without the 遅くなる前に opening",
       },
       {
         segments: [
@@ -554,62 +529,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "野菜[やさい]を買[か]って" },
-          {
-            text: "くる",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "から、すぐ帰[かえ]って" },
-          {
-            text: "くる",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "よ" },
-        ],
-        notes: "With よ sentence-final particle for assertion.",
-      },
-      {
-        segments: [
-          { text: "野菜[やさい]を買[か]って" },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "から、すぐ" },
-          { text: "帰[かえ]って" },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Base form: buy vegetables and come back, so will be back soon.",
-      },
-      {
-        segments: [
           { text: "野菜[やさい]を買[か]いに" },
           { text: "行[い]って" },
           {
@@ -665,36 +584,7 @@ export const questions: Question[] = [
         ],
         notes: "ちょっと added before 野菜 for natural nuance.",
       },
-      {
-        segments: [
-          { text: "野菜[やさい]を買[か]って" },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "から、すぐ" },
-          { text: "帰[かえ]って" },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "よ" },
-        ],
-        notes: "With よ sentence-final particle for assertion.",
-      },
-    ],
+      ],
   },
   {
     english: "I'm going to go eat sushi and come back — want to join me?",
@@ -783,35 +673,7 @@ export const questions: Question[] = [
         ],
         notes: "が instead of けど",
       },
-      {
-        segments: [
-          { text: "すしを 食[た]べて" },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、一緒[いっしょ]に" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "volitional",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "行きましょうか (volitional invitation)",
-      },
-    ],
+      ],
   },
   {
     english: "Sota is going to eat lunch and come back.",
@@ -834,21 +696,6 @@ export const questions: Question[] = [
         },
       ],
     },
-      {
-        segments: [
-          { text: "そうたさんは 昼[ひる]ご飯[はん]を 食[た]べて" },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
       {
         segments: [
           { text: "そうたさんは 昼[ひる]ご飯[はん]を 食[た]べて 帰[かえ]って" },
@@ -874,7 +721,7 @@ export const questions: Question[] = [
       segments: [
         { text: "図書館[としょかん]で" },
         {
-          text: "作文[さくぶん]を 書[か]いていって、帰[かえ]って",
+          text: "作文[さくぶん]を 書[か]いて、帰[かえ]って",
           blank: true,
         },
         {
@@ -891,58 +738,7 @@ export const questions: Question[] = [
     },
       {
         segments: [
-          {
-            text: "図書館[としょかん]で作文[さくぶん]を書[か]いていって、帰[かえ]って",
-          },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "図書館[としょかん]へ作文[さくぶん]を書[か]いていって、帰[かえ]って",
-          },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "図書館[としょかん]に作文[さくぶん]を書[か]いていって、帰[かえ]って",
-          },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "作文[さくぶん]を 図書館[としょかん]で 書[か]いていって、 帰[かえ]って" },
+          { text: "作文[さくぶん]を 図書館[としょかん]で 書[か]いて、 帰[かえ]って" },
           {
             text: "来[く]る",
             blank: true,
@@ -976,26 +772,8 @@ export const questions: Question[] = [
             tense: "past",
           },
         },
-        { text: "ね" },
       ],
     },
-      {
-        segments: [
-          { text: "このごろ、 天気[てんき]が 寒[さむ]くなって" },
-          {
-            text: "くる",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "ね" },
-        ],
-        notes: "Same as display (duplicate after format normalization)",
-      },
       {
         segments: [
           { text: "このごろ、 天気[てんき]は 寒[さむ]くなって" },
@@ -1009,7 +787,6 @@ export const questions: Question[] = [
               tense: "past",
             },
           },
-          { text: "ね" },
         ],
         notes: "は instead of が",
       },
@@ -1026,7 +803,6 @@ export const questions: Question[] = [
               tense: "past",
             },
           },
-          { text: "ね" },
         ],
         notes: "最近 (recently) + subject 天気が dropped",
       },
@@ -1036,26 +812,9 @@ export const questions: Question[] = [
     english: "I'm going to go do some shopping and bring back some fruit.",
     answers: [
       {
-      segments: [
-        { text: "買[か]い 物[もの]をして" },
-        { text: "いって", blank: true },
-        { text: "、 果物[くだもの]を" },
-        { text: "買[か]って", blank: true },
-        {
-          text: "来[く]る",
-          blank: true,
-          conjugation: {
-            pos: "Kuru verb - special class",
-            form: "normal",
-            polarity: "positive",
-            tense: "non-past",
-          },
-        },
-      ],
-    },
-      {
         segments: [
-          { text: "買[か]い 物[もの]をしていって、 果物[くだもの]を 買[か]って" },
+          { text: "買[か]い 物[もの]に 行[い]って、 果物[くだもの]を" },
+          { text: "買[か]って", blank: true },
           {
             text: "来[く]る",
             blank: true,
@@ -1067,11 +826,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "No pause variant",
       },
       {
         segments: [
-          { text: "買[か]い 物[もの]をしてきて、 果物[くだもの]を 買[か]って" },
+          { text: "私[わたし]は 買[か]い 物[もの]に 行[い]って、 果物[くだもの]を" },
+          { text: "買[か]って", blank: true },
           {
             text: "来[く]る",
             blank: true,
@@ -1083,68 +842,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "してきて variant",
-      },
-      {
-        segments: [
-          { text: "買[か]い 物[もの]をして、 果物[くだもの]を買[か]って" },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Using shopping+come back with fruit, without explicit ていく",
-      },
-      {
-        segments: [
-          { text: "買[か]い 物[もの]をして" },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "、 果物[くだもの]を買[か]って" },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Using 買い物してくる structure",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 買[か]い 物[もの]をして" },
-          { text: "いって" },
-          { text: "、 果物[くだもの]を買[か]って" },
-          {
-            text: "来[く]る",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "With は topic marker",
+        notes: "Explicit 私は",
       },
     ],
   },
@@ -1153,7 +851,7 @@ export const questions: Question[] = [
     answers: [
       {
       segments: [
-        { text: "先生[せんせい]に" },
+        { text: "先生に" },
         { text: "聞[き]いて", blank: true },
         {
           text: "来[く]る",
@@ -1360,7 +1058,7 @@ export const questions: Question[] = [
   },
   {
     english:
-      "I'm going to go practice the piano and come back, so please start without me.",
+      "I'm going to go practice the piano and come back, so please wait here for me.",
     answers: [
       {
       segments: [
@@ -1431,7 +1129,7 @@ export const questions: Question[] = [
           },
           { text: "から、ここで 待[ま]っていて" },
         ],
-        notes: "ピアノの練習をする, casual ending",
+        notes: "ピアノの練習をする variant",
       },
     ],
   },
@@ -1441,7 +1139,7 @@ export const questions: Question[] = [
     answers: [
       {
       segments: [
-        { text: "散歩[さんぽ]して、パンを" },
+        { text: "散歩して、帰[かえ]りにパンを" },
         { text: "買[か]って", blank: true },
         {
           text: "来[く]る",
@@ -1465,69 +1163,34 @@ export const questions: Question[] = [
         segments: [
           { text: "世界[せかい]で 日本語[にほんご]が 有名[ゆうめい]になって" },
           {
-            text: "いく",
+            text: "くる",
             blank: true,
             conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
+              pos: "Kuru verb - special class",
               form: "normal",
               polarity: "positive",
-              tense: "non-past",
+              tense: "past",
             },
           },
-          { text: "ね" },
         ],
       },
       {
         segments: [
           { text: "世界[せかい]で 日本語[にほんご]は 有名[ゆうめい]になって" },
           {
-            text: "いく",
+            text: "くる",
             blank: true,
             conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
+              pos: "Kuru verb - special class",
               form: "normal",
               polarity: "positive",
-              tense: "non-past",
+              tense: "past",
             },
           },
-          { text: "ね" },
         ],
         notes: "は instead of が",
       },
-      {
-        segments: [
-          { text: "世界[せかい]で 日本語[にほんご]が 有名[ゆうめい]になって" },
-          {
-            text: "くる",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "ね" },
-        ],
-        notes: "てきた instead of ていく",
-      },
-      {
-        segments: [
-          { text: "世界[せかい]で 日本語[にほんご]は 有名[ゆうめい]になって" },
-          {
-            text: "くる",
-            blank: true,
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "ね" },
-        ],
-        notes: "は + てきた",
-      },
+
     ],
   },
 ]

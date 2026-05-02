@@ -77,7 +77,7 @@ export const questions: Question[] = [
           { text: "私[わたし]は" },
           { text: "週末[しゅうまつ]は" },
           { text: "たいてい" },
-          { text: "図書館[としょかん]で" },
+          { text: "図書館[としょかん]で", blank: true },
           {
             text: "勉強[べんきょう]する",
             blank: true,
@@ -116,7 +116,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "時々[ときどき]友[とも]だちと食堂[しょくどう]で昼[ひる]ご飯[はん]を",
+            text: "友[とも]だちと時々[ときどき]食堂[しょくどう]で昼[ひる]ご飯[はん]を", blank: true,
           },
           {
             text: "食[た]べる",
@@ -133,24 +133,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "友[とも]だちと時々[ときどき]食堂[しょくどう]で昼[ひる]ご飯[はん]を",
-          },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "時々[ときどき]食堂[しょくどう]で友[とも]だちと昼[ひる]ご飯[はん]を",
+            text: "時々[ときどき]食堂[しょくどう]で友[とも]だちと昼[ひる]ご飯[はん]を", blank: true,
           },
           {
             text: "食[た]べる",
@@ -189,24 +172,6 @@ export const questions: Question[] = [
     },
       {
         segments: [
-          { text: "毎晩[まいばん]、" },
-          { text: "部屋[へや]で", blank: true },
-          { text: "ギターを" },
-          {
-            text: "練習[れんしゅう]する",
-            blank: true,
-            conjugation: {
-              pos: "Suru verb - compound word",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "With comma after 毎晩",
-      },
-      {
-        segments: [
           { text: "部屋[へや]で", blank: true },
           { text: "毎晩[まいばん]ギターを" },
           {
@@ -229,7 +194,7 @@ export const questions: Question[] = [
     answers: [
       {
       segments: [
-        { text: "東京[とうきょう]のデパートで" },
+        { text: "東京[とうきょう]のデパートで", blank: true },
         { text: "この 帽子[ぼうし]を" },
         {
           text: "買[か]う",
@@ -243,23 +208,6 @@ export const questions: Question[] = [
         },
       ],
     },
-      {
-        segments: [
-          { text: "東京[とうきょう]のデパートで", blank: true },
-          { text: "この 帽子[ぼうし]を" },
-          {
-            text: "買[か]う",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'u' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "Dropped 私は",
-      },
       {
         segments: [
           { text: "この 帽子[ぼうし]は" },
@@ -341,7 +289,7 @@ export const questions: Question[] = [
         segments: [
           { text: "カフェ" },
           { text: "じゃなくて", blank: true },
-          { text: "、うちで 映画[えいが]を" },
+          { text: "、家[いえ]で 映画[えいが]を", blank: true },
           {
             text: "見[み]る",
             blank: true,
@@ -356,25 +304,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "カフェ" },
-          { text: "じゃなくて", blank: true },
-          { text: "、家[いえ]で 映画[えいが]を" },
-          {
-            text: "見[み]る",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "家 instead of うち",
-      },
-      {
-        segments: [
-          { text: "家[いえ]で 映画[えいが]を" },
+          { text: "家[いえ]で 映画[えいが]を", blank: true },
           {
             text: "見[み]る",
             blank: true,
@@ -388,23 +318,7 @@ export const questions: Question[] = [
         ],
         notes: "Without the contrastive clause",
       },
-      {
-        segments: [
-          { text: "うちで 映画[えいが]を" },
-          {
-            text: "見[み]る",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "うち + without contrastive clause",
-      },
-    ],
+      ],
   },
   {
     english: "I sang karaoke at a karaoke bar in Shibuya last Saturday.",
@@ -425,30 +339,11 @@ export const questions: Question[] = [
           },
         },
       ],
-      notes:
-        "Time expression stays outside the blank. The blank covers the location+で+object and the past verb — the full grammar nucleus demonstrating で as activity location.",
+      notes: "Time expression at the start",
     },
       {
         segments: [
-          {
-            text: "先週[せんしゅう]の 土曜日[どようび]、しぶやのカラオケでカラオケを",
-          },
-          {
-            text: "歌[うた]う",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'u' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "No space between しぶや and カラオケ",
-      },
-      {
-        segments: [
-          { text: "しぶやのカラオケでカラオケを" },
+          { text: "しぶやのカラオケでカラオケを", blank: true },
           {
             text: "歌[うた]う",
             blank: true,
@@ -466,7 +361,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "先週[せんしゅう]の土曜日[どようび]にしぶやのカラオケでカラオケを",
+            text: "先週[せんしゅう]の土曜日[どようび]にしぶやのカラオケでカラオケを", blank: true,
           },
           {
             text: "歌[うた]う",
@@ -481,25 +376,7 @@ export const questions: Question[] = [
         ],
         notes: "に added after time expression",
       },
-      {
-        segments: [
-          {
-            text: "先週[せんしゅう]の土曜日[どようび]にしぶやのカラオケでカャラオケを",
-          },
-          {
-            text: "歌[うた]う",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'u' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes:
-          "に added after time expression; カラオケ → カャラオケ typo guard — use standard spelling",
-      },
+
     ],
   },
   {
@@ -524,7 +401,7 @@ export const questions: Question[] = [
     },
       {
         segments: [
-          { text: "今朝[けさ]公園[こうえん]で新聞[しんぶん]を" },
+          { text: "公園[こうえん]で今朝[けさ]新聞[しんぶん]を", blank: true },
           {
             text: "読[よ]む",
             blank: true,
@@ -539,7 +416,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "公園[こうえん]で今朝[けさ]新聞[しんぶん]を" },
+          { text: "公園[こうえん]で新聞[しんぶん]を今朝[けさ]", blank: true },
           {
             text: "読[よ]む",
             blank: true,
@@ -554,22 +431,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "公園[こうえん]で新聞[しんぶん]を今朝[けさ]" },
-          {
-            text: "読[よ]む",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'mu' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "私[わたし]は今朝[けさ]公園[こうえん]で新聞[しんぶん]を" },
+          { text: "私[わたし]は今朝[けさ]公園[こうえん]で新聞[しんぶん]を", blank: true },
           {
             text: "読[よ]む",
             blank: true,
@@ -590,7 +452,7 @@ export const questions: Question[] = [
     answers: [
       {
       segments: [
-        { text: "東京[とうきょう]の" },
+        { text: "しぶやの" },
         { text: "店[みせ]で", blank: true },
         { text: "この ジーンズを" },
         {
@@ -615,12 +477,11 @@ export const questions: Question[] = [
           },
         },
       ],
-      notes:
-        "The blank targets で1 (location of action). Tokyo replaces Shibuya to avoid the false-positive vocab flag.",
+      notes: "しぶやの店で marks where the jeans were bought",
     },
       {
         segments: [
-          { text: "このジーンズは 東京[とうきょう]の 店[みせ]で" },
+          { text: "このジーンズは しぶやの 店[みせ]で", blank: true },
           {
             text: "買[か]う",
             blank: true,
@@ -645,34 +506,7 @@ export const questions: Question[] = [
         ],
         notes: "Topic-marked これ variation with は",
       },
-      {
-        segments: [
-          { text: "東京[とうきょう]の 店[みせ]で このジーンズを" },
-          {
-            text: "買[か]う",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'u' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "けど、 思[おも]ったより" },
-          {
-            text: "安[やす]い",
-            blank: true,
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "Object before verb variation",
-      },
-    ],
+      ],
   },
   {
     english: "I always do my homework at a cafe near the station.",
@@ -774,7 +608,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "先週[せんしゅう]の 日曜日[にちようび]、友[とも]だちとうちの 近[ちか]くの 公園[こうえん]でサッカーを",
+            text: "友[とも]だちと先週[せんしゅう]の 日曜日[にちようび]、うちの 近[ちか]くの 公園[こうえん]でサッカーを", blank: true,
           },
           {
             text: "する",
@@ -791,24 +625,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "友[とも]だちと先週[せんしゅう]の 日曜日[にちようび]、うちの 近[ちか]くの 公園[こうえん]でサッカーを",
-          },
-          {
-            text: "する",
-            blank: true,
-            conjugation: {
-              pos: "Suru verb - included",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "先週[せんしゅう]の 日曜日[にちようび]、友[とも]だちと家[いえ]の 近[ちか]くの 公園[こうえん]でサッカーを",
+            text: "先週[せんしゅう]の 日曜日[にちようび]、友[とも]だちと家[いえ]の 近[ちか]くの 公園[こうえん]でサッカーを", blank: true,
           },
           {
             text: "する",
@@ -901,12 +718,12 @@ export const questions: Question[] = [
         },
       ],
       notes:
-        "Blank covers the location + で particle (公園の近くのレストランで), which is the target construction for this で grammar point.",
+        "公園の近くのレストランで marks where the baseball was watched",
     },
       {
         segments: [
           {
-            text: "私[わたし]は 公園[こうえん]の 近[ちか]くの レストランで 野球[やきゅう]を",
+            text: "私[わたし]は 公園[こうえん]の 近[ちか]くの レストランで 野球[やきゅう]を", blank: true,
           },
           {
             text: "見[み]る",
@@ -924,7 +741,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "野球[やきゅう]を 公園[こうえん]の 近[ちか]くの レストランで",
+            text: "野球[やきゅう]を 公園[こうえん]の 近[ちか]くの レストランで", blank: true,
           },
           {
             text: "見[み]る",
@@ -940,25 +757,7 @@ export const questions: Question[] = [
         notes:
           "Word order: object before location (less natural but grammatically valid)",
       },
-      {
-        segments: [
-          {
-            text: "公園[こうえん]の 近[ちか]くのレストランで 野球[やきゅう]を",
-          },
-          {
-            text: "見[み]る",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "近く without の before レストラン (slight variation)",
-      },
-    ],
+      ],
   },
   {
     english: "I drank coffee at a cafe near the university this morning.",
@@ -984,38 +783,7 @@ export const questions: Question[] = [
     },
       {
         segments: [
-          { text: "今朝[けさ]大学[だいがく]の近[ちか]くのカフェでコーヒーを" },
-          {
-            text: "飲[の]む",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'mu' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]大学[だいがく]の近[ちか]くのカフェでコーヒーを" },
-          {
-            text: "飲[の]む",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'mu' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "。" },
-        ],
-      },
-      {
-        segments: [
-          { text: "大学[だいがく]の近[ちか]くのカフェで今朝[けさ]コーヒーを" },
+          { text: "大学[だいがく]の近[ちか]くのカフェで今朝[けさ]コーヒーを", blank: true },
           {
             text: "飲[の]む",
             blank: true,
@@ -1036,7 +804,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "昨日[きのう]の 夜[よる]、" },
-          { text: "友[とも]だちのうちで", blank: true },
+          { text: "友[とも]だちの家[いえ]で", blank: true },
           { text: "晩[ばん]ご 飯[はん]を" },
           {
             text: "料理[りょうり]する",
@@ -1049,29 +817,11 @@ export const questions: Question[] = [
             },
           },
         ],
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]、" },
-          { text: "友[とも]だちの 家[いえ]で", blank: true },
-          { text: "晩[ばん]ご 飯[はん]を" },
-          {
-            text: "料理[りょうり]する",
-            blank: true,
-            conjugation: {
-              pos: "Suru verb - compound word",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "家 instead of うち",
       },
       {
         segments: [
           { text: "昨晩[さくばん]、" },
-          { text: "友[とも]だちのうちで", blank: true },
+          { text: "友[とも]だちの家[いえ]で", blank: true },
           { text: "晩[ばん]ご 飯[はん]を" },
           {
             text: "料理[りょうり]する",
@@ -1089,7 +839,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "昨日[きのう]の 夜[よる]、" },
-          { text: "友[とも]だちのうちで", blank: true },
+          { text: "友[とも]だちの家[いえ]で", blank: true },
           { text: "夕[ゆう]ご 飯[はん]を" },
           {
             text: "料理[りょうり]する",
@@ -1130,25 +880,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "昨日[きのう]動物園[どうぶつえん]でカメラで写真[しゃしん]を",
-          },
-          {
-            text: "撮[と]る",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'ru' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "Time expression moved to front of sentence",
-      },
-      {
-        segments: [
-          {
-            text: "カメラで昨日[きのう]動物園[どうぶつえん]で写真[しゃしん]を",
+            text: "カメラで昨日[きのう]動物園[どうぶつえん]で写真[しゃしん]を", blank: true,
           },
           {
             text: "撮[と]る",
@@ -1166,7 +898,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "昨日[きのう]動物園[どうぶつえん]で写真[しゃしん]をカメラで",
+            text: "昨日[きのう]動物園[どうぶつえん]で写真[しゃしん]をカメラで", blank: true,
           },
           {
             text: "撮[と]る",
@@ -1208,25 +940,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "火曜日[かようび]に ゆきさんと 学校[がっこう]の 近[ちか]くの 公園[こうえん]でテニスを",
-          },
-          {
-            text: "練習[れんしゅう]する",
-            blank: true,
-            conjugation: {
-              pos: "Suru verb - compound word",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "Time phrase moved to end",
-      },
-      {
-        segments: [
-          {
-            text: "学校[がっこう]の 近[ちか]くの 公園[こうえん]で ゆきさんと 火曜日[かようび]にテニスを",
+            text: "学校[がっこう]の 近[ちか]くの 公園[こうえん]で ゆきさんと 火曜日[かようび]にテニスを", blank: true,
           },
           {
             text: "練習[れんしゅう]する",
@@ -1244,7 +958,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "火曜日[かようび]、ゆきさんと 学校[がっこう]の 近[ちか]くの 公園[こうえん]でテニスを",
+            text: "火曜日[かようび]、ゆきさんと 学校[がっこう]の 近[ちか]くの 公園[こうえん]でテニスを", blank: true,
           },
           {
             text: "練習[れんしゅう]する",
@@ -1262,7 +976,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "ゆきさんと 火曜日[かようび]に 学校[がっこう]の 近[ちか]くの 公園[こうえん]でテニスを",
+            text: "ゆきさんと 火曜日[かようび]に 学校[がっこう]の 近[ちか]くの 公園[こうえん]でテニスを", blank: true,
           },
           {
             text: "練習[れんしゅう]する",
@@ -1284,10 +998,10 @@ export const questions: Question[] = [
     answers: [
       {
       segments: [
-        { text: "大阪[おおさか]のレストランで" },
+        { text: "大阪[おおさか]のレストランで", blank: true },
         { text: "はじめてすしを", blank: true },
         {
-          text: "食[た]べた",
+          text: "食[た]べる",
           blank: true,
           conjugation: {
             pos: "Ichidan verb",
@@ -1335,7 +1049,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はじめて大阪[おおさか]のレストランで寿司[すし]を" },
+          { text: "はじめて大阪[おおさか]のレストランで寿司[すし]を", blank: true },
           {
             text: "食[た]べる",
             blank: true,
@@ -1375,25 +1089,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今朝[けさ]" },
-          { text: "寮[りょう]で" },
-          { text: "洗濯[せんたく]" },
-          {
-            text: "する",
-            blank: true,
-            conjugation: {
-              pos: "Suru verb - included",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "Display answer variation",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]" },
-          { text: "寮[りょう]で" },
+          { text: "寮[りょう]で", blank: true },
           { text: "洗濯[せんたく]を" },
           {
             text: "する",
@@ -1433,7 +1129,7 @@ export const questions: Question[] = [
     },
       {
         segments: [
-          { text: "昨日[きのう]の 夜[よる]、イタリアのレストランでワインを" },
+          { text: "イタリアのレストランで昨日[きのう]の 夜[よる]ワインを", blank: true },
           {
             text: "飲[の]む",
             blank: true,
@@ -1448,22 +1144,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "イタリアのレストランで昨日[きのう]の 夜[よる]ワインを" },
-          {
-            text: "飲[の]む",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'mu' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]、イタリアのレストランでワインを" },
+          { text: "昨日[きのう]、イタリアのレストランでワインを", blank: true },
           {
             text: "飲[の]む",
             blank: true,
