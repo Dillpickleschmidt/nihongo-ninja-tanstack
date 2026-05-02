@@ -22,39 +22,8 @@ export const questions: Question[] = [
           { text: "予約[よやく]" },
           { text: "しとく", blank: true },
         ],
+        register: "casual",
         notes: "Contracted casual form: しとく instead of しておく",
-      },
-      {
-        segments: [
-          { text: "予約[よやく]" },
-          { text: "しておく", blank: true },
-          { text: "ね" },
-        ],
-        notes: "With ね sentence-final particle for seeking agreement/softening",
-      },
-      {
-        segments: [
-          { text: "予約[よやく]" },
-          { text: "しとく", blank: true },
-          { text: "ね" },
-        ],
-        notes: "Contracted とく + ね",
-      },
-      {
-        segments: [
-          { text: "予約[よやく]" },
-          { text: "しておく", blank: true },
-          { text: "よ" },
-        ],
-        notes: "With よ sentence-final particle for assertiveness",
-      },
-      {
-        segments: [
-          { text: "予約[よやく]" },
-          { text: "しとく", blank: true },
-          { text: "よ" },
-        ],
-        notes: "Contracted とく + よ",
       },
       {
         segments: [
@@ -68,40 +37,8 @@ export const questions: Question[] = [
           { text: "私[わたし]が 予約[よやく]" },
           { text: "しとく", blank: true },
         ],
+        register: "casual",
         notes: "Explicit subject 私が + contracted とく",
-      },
-      {
-        segments: [
-          { text: "私[わたし]が 予約[よやく]" },
-          { text: "しておく", blank: true },
-          { text: "ね" },
-        ],
-        notes: "Explicit 私が + ておく + ね",
-      },
-      {
-        segments: [
-          { text: "私[わたし]が 予約[よやく]" },
-          { text: "しとく", blank: true },
-          { text: "ね" },
-        ],
-        notes: "Explicit 私が + contracted とく + ね",
-      },
-      {
-        segments: [
-          { text: "予約[よやく]して" },
-          {
-            text: "おく",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'ku' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "ね" },
-        ],
-        notes: "Polite-generating split: して + おく (conjugates to おく/おきます) + ね",
       },
       {
         segments: [
@@ -123,7 +60,6 @@ export const questions: Question[] = [
   },
   {
     english: "I'll go ahead and buy the tickets.",
-    hint: "The nuance is doing this now so it's taken care of for later.",
     answers: [
       {
         segments: [
@@ -155,70 +91,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "切符[きっぷ]を" },
-          { text: "買[か]っておく", blank: true },
-          { text: "よ" },
-        ],
-        notes: "With よ for assertiveness: 切符を買っておくよ",
-      },
-      {
-        segments: [
-          { text: "チケットを" },
-          { text: "買[か]っておく", blank: true },
-          { text: "よ" },
-        ],
-        notes: "チケットを買っておくよ — with よ",
-      },
-      {
-        segments: [
-          { text: "切符[きっぷ]を" },
-          { text: "買[か]っとく", blank: true },
-          { text: "よ" },
-        ],
-        notes: "Contracted とく + よ with 切符",
-      },
-      {
-        segments: [
-          { text: "チケットを" },
-          { text: "買[か]っとく", blank: true },
-          { text: "よ" },
-        ],
-        notes: "Contracted とく + よ with チケット",
-      },
-      {
-        segments: [
-          { text: "切符[きっぷ]を" },
-          { text: "買[か]っておく", blank: true },
-          { text: "ね" },
-        ],
-        notes: "With ね for seeking agreement/softening: 切符を買っておくね",
-      },
-      {
-        segments: [
-          { text: "チケットを" },
-          { text: "買[か]っておく", blank: true },
-          { text: "ね" },
-        ],
-        notes: "チケットを買っておくね",
-      },
-      {
-        segments: [
-          { text: "切符[きっぷ]を" },
-          { text: "買[か]っとく", blank: true },
-          { text: "ね" },
-        ],
-        notes: "Contracted とく + ね with 切符",
-      },
-      {
-        segments: [
-          { text: "チケットを" },
-          { text: "買[か]っとく", blank: true },
-          { text: "ね" },
-        ],
-        notes: "Contracted とく + ね with チケット",
-      },
-      {
-        segments: [
           { text: "先[さき]に 切符[きっぷ]を" },
           { text: "買[か]っておく", blank: true },
         ],
@@ -236,6 +108,7 @@ export const questions: Question[] = [
           { text: "先[さき]に 切符[きっぷ]を" },
           { text: "買[か]っとく", blank: true },
         ],
+        register: "casual",
         notes: "先に + 切符を買っとく (contracted)",
       },
       {
@@ -243,6 +116,7 @@ export const questions: Question[] = [
           { text: "先[さき]に チケットを" },
           { text: "買[か]っとく", blank: true },
         ],
+        register: "casual",
         notes: "先に + チケットを買っとく (contracted)",
       },
       {
@@ -299,62 +173,62 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "迷[まよ]わないから、レストランを" },
-          { text: "調[しら]べておく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "調[しら]べておく", blank: true },
         ],
       },
       {
         segments: [
           { text: "迷[まよ]わないので、レストランを" },
-          { text: "調[しら]べておく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "調[しら]べておく", blank: true },
         ],
         notes: "ので instead of から for the reason clause.",
       },
       {
         segments: [
           { text: "レストランを" },
-          { text: "調[しら]べておく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "調[しら]べておく", blank: true },
         ],
         notes: "Minimal version — no reason clause, just the core ておく sentence.",
       },
       {
         segments: [
           { text: "迷[まよ]わないから、レストランを" },
-          { text: "調[しら]べとく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "調[しら]べとく", blank: true },
         ],
         notes: "Contracted とく form instead of ておく (casual speech pattern).",
       },
       {
         segments: [
           { text: "迷[まよ]わないので、レストランを" },
-          { text: "調[しら]べとく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "調[しら]べとく", blank: true },
         ],
         notes: "Contracted とく form with ので reason clause.",
       },
       {
         segments: [
           { text: "迷[まよ]わないから、私[わたし]がレストランを" },
-          { text: "調[しら]べておく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "調[しら]べておく", blank: true },
         ],
         notes: "Explicitly including 私が to emphasize \"I will go ahead and look it up\".",
       },
       {
         segments: [
-          { text: "先[まず]にレストランを" },
-          { text: "調[しら]べておく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "先[さき]にレストランを" },
+          { text: "調[しら]べておく", blank: true },
         ],
         notes: "先に (first/ahead) without reason clause — \"I'll go ahead and look up the restaurant first.\"",
       },
       {
         segments: [
           { text: "迷[まよ]わないから、先[さき]に レストランを" },
-          { text: "調[しら]べておく", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "調[しら]べておく", blank: true },
         ],
         notes: "先に (first/ahead) with から reason clause, reinforcing the \"going ahead\" nuance",
       },
       {
         segments: [
           { text: "先[さき]に レストランを" },
-          { text: "調[しら]べとく", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "調[しら]べとく", blank: true },
         ],
         notes: "先に with contracted とく form, no reason clause",
       },
@@ -392,34 +266,10 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "教科書[きょうかしょ]を 読[よ]んで", blank: true },
-          { text: "おく", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "ね" },
-        ],
-        notes: "ておく + ね for a softer, confirmatory tone.",
-      },
-      {
-        segments: [
           { text: "教科書[きょうかしょ]を 読[よ]ん", blank: true },
           { text: "とくね", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Contracted とく + ね particle.",
-      },
-      {
-        segments: [
-          { text: "教科書[きょうかしょ]を 読[よ]んで", blank: true },
-          { text: "おく", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
-        ],
-        notes: "ておく + よ for a more assertive/declarative tone.",
-      },
-      {
-        segments: [
-          { text: "先[さき]に 教科書[きょうかしょ]を 読[よ]んで", blank: true },
-          { text: "おく", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "ね" },
-        ],
-        notes: "先に + ておく + ね.",
       },
     ],
   },
@@ -437,6 +287,7 @@ export const questions: Question[] = [
           { text: "電気[でんき]を" },
           { text: "消[け]しとく", blank: true },
         ],
+        register: "casual",
         notes: "Casual contracted とく form",
       },
       {
@@ -589,51 +440,35 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今夜[こんや]、かばんに 荷物[にもつ]を" },
-          { text: "入[い]れとく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "入[い]れとく", blank: true },
         ],
         notes: "Core answer using contracted とく form; 今夜 for tonight; かばんに荷物を入れる for packing",
       },
       {
         segments: [
           { text: "今晩[こんばん]、かばんに 荷物[にもつ]を" },
-          { text: "入[い]れとく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "入[い]れとく", blank: true },
         ],
         notes: "今晩 instead of 今夜 for tonight",
       },
       {
         segments: [
           { text: "今夜[こんや]、荷物[にもつ]はかばんに" },
-          { text: "入[い]れとく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "入[い]れとく", blank: true },
         ],
         notes: "荷物はかばんに — は marks 荷物 as topic",
       },
       {
         segments: [
-          { text: "今夜[こんや]、かばんに 荷物[にもつ]を" },
-          { text: "入[い]れとく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
-        ],
-        notes: "Adding よ for assertion/announcement nuance",
-      },
-      {
-        segments: [
-          { text: "今夜[こんや]、かばんに 荷物[にもつ]を" },
-          { text: "入[い]れとく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "ね" },
-        ],
-        notes: "Adding ね for seeking confirmation/softening nuance",
-      },
-      {
-        segments: [
           { text: "かばんに 荷物[にもつ]を今夜[こんや]" },
-          { text: "入[い]れとく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "入[い]れとく", blank: true },
         ],
         notes: "今夜 moved after the object phrase",
       },
       {
         segments: [
           { text: "今夜[こんや]、私[わたし]のかばんに 荷物[にもつ]を" },
-          { text: "入[い]れとく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "入[い]れとく", blank: true },
         ],
         notes: "Explicit 私のかばん — \"my bag\"",
       },
@@ -684,24 +519,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "メールを" },
-          { text: "送[おく]って", blank: true },
-          { text: "おく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "ね" },
-        ],
-        notes: "With ね at the end for seeking confirmation/softening.",
-      },
-      {
-        segments: [
-          { text: "メールを" },
-          { text: "送[おく]って", blank: true },
-          { text: "おく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
-        ],
-        notes: "With よ at the end for assertiveness.",
-      },
-      {
-        segments: [
           { text: "先[さき]に メールを" },
           { text: "送[おく]って", blank: true },
           { text: "おく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -721,23 +538,8 @@ export const questions: Question[] = [
           { text: "メールを 送[おく]っ" },
           { text: "とく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
+        register: "casual",
         notes: "Contracted とく form: 送っとく (casual contraction of 送っておく).",
-      },
-      {
-        segments: [
-          { text: "メールを 送[おく]っ" },
-          { text: "とく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "ね" },
-        ],
-        notes: "Contracted とく form with ね for softening.",
-      },
-      {
-        segments: [
-          { text: "メールを 送[おく]っ" },
-          { text: "とく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
-        ],
-        notes: "Contracted とく with よ for assertiveness.",
       },
       {
         segments: [
@@ -761,8 +563,9 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "部屋[へや]を" },
-          { text: "掃除[そうじ]しとく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "past" } },
+          { text: "掃除[そうじ]しとく", blank: true },
         ],
+        register: "casual",
         notes: "Contracted とく form (past): 掃除して + とく → しといた, casual speech",
       },
       {
@@ -776,7 +579,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "部屋[へや]を" },
-          { text: "片付[かたづ]けとく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "past" } },
+          { text: "片付[かたづ]けとく", blank: true },
         ],
         notes: "片付ける + contracted とく form (past), casual speech",
       },
@@ -789,14 +592,14 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "はなさんは ホテルを 予約[よやく]し" },
-          { text: "ておく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "past" } },
+          { text: "ておく", blank: true },
           { text: "か" },
         ],
       },
       {
         segments: [
           { text: "はなさんは ホテルの 予約[よやく]を し" },
-          { text: "ておく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "past" } },
+          { text: "ておく", blank: true },
           { text: "か" },
         ],
         notes: "ホテルの予約をする phrasing instead of ホテルを予約する",
@@ -820,7 +623,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "はなさんが ホテルを 予約[よやく]し" },
-          { text: "ておく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "past" } },
+          { text: "ておく", blank: true },
           { text: "か" },
         ],
         notes: "Using が instead of は for subject marker",
@@ -828,7 +631,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "はなさんは もう ホテルを 予約[よやく]し" },
-          { text: "ておく", blank: true, conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "past" } },
+          { text: "ておく", blank: true },
           { text: "か" },
         ],
         notes: "Adding もう (already) — natural in questions about whether something was done in advance",
@@ -849,40 +652,40 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "財布[さいふ]に お金[おかね]を" },
-          { text: "入[い]れておく", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "入[い]れておく", blank: true },
         ],
       },
       {
         segments: [
           { text: "財布[さいふ]に お金[おかね]を" },
-          { text: "入[い]れとく", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "入[い]れとく", blank: true },
         ],
         notes: "Contracted とく form (casual). 財布に first.",
       },
       {
         segments: [
           { text: "お金[おかね]を 財布[さいふ]に" },
-          { text: "入[い]れておく", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "入[い]れておく", blank: true },
         ],
       },
       {
         segments: [
           { text: "お金[おかね]を 財布[さいふ]に" },
-          { text: "入[い]れとく", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "入[い]れとく", blank: true },
         ],
         notes: "Contracted とく form (casual). お金を first.",
       },
       {
         segments: [
           { text: "財布[さいふ]に 少[すこ]し お金[おかね]を" },
-          { text: "入[い]れておく", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "入[い]れておく", blank: true },
         ],
         notes: "Adding 少し (a little / some) to specify \"some money\". 財布に first.",
       },
       {
         segments: [
           { text: "財布[さいふ]に 少[すこ]し お金[おかね]を" },
-          { text: "入[い]れとく", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "入[い]れとく", blank: true },
         ],
         notes: "Contracted とく form with 少し. 財布に first.",
       },
@@ -934,6 +737,7 @@ export const questions: Question[] = [
           { text: "宿題[しゅくだい]を" },
           { text: "しとく", blank: true },
         ],
+        register: "casual",
         notes: "Casual contracted とく form of する + ておく",
       },
       {
@@ -969,6 +773,7 @@ export const questions: Question[] = [
           { text: "先[さき]に 宿題[しゅくだい]を" },
           { text: "しとく", blank: true },
         ],
+        register: "casual",
         notes: "先に with contracted とく (する)",
       },
       {
@@ -977,30 +782,6 @@ export const questions: Question[] = [
           { text: "やっとく", blank: true },
         ],
         notes: "先に with contracted とく (やる)",
-      },
-      {
-        segments: [
-          { text: "宿題[しゅくだい]を" },
-          { text: "しておく", blank: true },
-          { text: "よ" },
-        ],
-        notes: "With よ for assertion/declaration",
-      },
-      {
-        segments: [
-          { text: "宿題[しゅくだい]を" },
-          { text: "やっておく", blank: true },
-          { text: "よ" },
-        ],
-        notes: "やる + ておく + よ",
-      },
-      {
-        segments: [
-          { text: "宿題[しゅくだい]を" },
-          { text: "しておく", blank: true },
-          { text: "ね" },
-        ],
-        notes: "With ね for seeking agreement/softening",
       },
       {
         segments: [
@@ -1228,6 +1009,7 @@ export const questions: Question[] = [
           { text: "野菜[やさい]を洗[あら]っ", blank: true },
           { text: "とく", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
+        register: "casual",
         notes: "Contracted casual form: 洗っとく / 洗っときます",
       },
       {
@@ -1243,38 +1025,6 @@ export const questions: Question[] = [
           { text: "とく", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Explicit 私は subject with contracted とく",
-      },
-      {
-        segments: [
-          { text: "野菜[やさい]を洗[あら]って", blank: true },
-          { text: "おく", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "ね" },
-        ],
-        notes: "With ね for softening/seeking agreement",
-      },
-      {
-        segments: [
-          { text: "野菜[やさい]を洗[あら]っ", blank: true },
-          { text: "とく", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "ね" },
-        ],
-        notes: "Contracted とく with ね",
-      },
-      {
-        segments: [
-          { text: "野菜[やさい]を洗[あら]って", blank: true },
-          { text: "おく", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
-        ],
-        notes: "With よ for assertive tone",
-      },
-      {
-        segments: [
-          { text: "野菜[やさい]を洗[あら]っ", blank: true },
-          { text: "とく", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
-        ],
-        notes: "Contracted とく with よ",
       },
     ],
   },
@@ -1293,38 +1043,6 @@ export const questions: Question[] = [
           { text: "撮[と]っとく", blank: true },
         ],
         notes: "Contracted casual form とく instead of ておく",
-      },
-      {
-        segments: [
-          { text: "ここで 写真[しゃしん]を" },
-          { text: "撮[と]っておく", blank: true },
-          { text: "ね" },
-        ],
-        notes: "Added ね for seeking agreement/softening",
-      },
-      {
-        segments: [
-          { text: "ここで 写真[しゃしん]を" },
-          { text: "撮[と]っとく", blank: true },
-          { text: "ね" },
-        ],
-        notes: "Contracted とく + ね",
-      },
-      {
-        segments: [
-          { text: "ここで 写真[しゃしん]を" },
-          { text: "撮[と]っておく", blank: true },
-          { text: "よ" },
-        ],
-        notes: "Added よ for assertion/informing the listener",
-      },
-      {
-        segments: [
-          { text: "ここで 写真[しゃしん]を" },
-          { text: "撮[と]っとく", blank: true },
-          { text: "よ" },
-        ],
-        notes: "Contracted とく + よ",
       },
       {
         segments: [

@@ -43,7 +43,6 @@ export const questions: Question[] = [
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "potential", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
-        notes: "もし + 宿題をしたら combination.",
       },
       {
         segments: [
@@ -61,7 +60,6 @@ export const questions: Question[] = [
           { text: "、カラオケに" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "宿題をしたら + volitional.",
       },
       {
         segments: [
@@ -81,7 +79,6 @@ export const questions: Question[] = [
           { text: "、カラオケに" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "もし + 終わったら + volitional.",
       },
       {
         segments: [
@@ -99,7 +96,6 @@ export const questions: Question[] = [
           { text: "、カラオケに" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "やったら + volitional.",
       },
       {
         segments: [
@@ -110,7 +106,6 @@ export const questions: Question[] = [
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "potential", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
-        notes: "もし + やったら + potential か.",
       },
       {
         segments: [
@@ -118,6 +113,7 @@ export const questions: Question[] = [
           { text: "終[お]わったら", blank: true },
           { text: "、カラオケに行[い]きませんか" },
         ],
+        register: "polite",
       },
       {
         segments: [
@@ -125,7 +121,7 @@ export const questions: Question[] = [
           { text: "したら", blank: true },
           { text: "、カラオケに行[い]きませんか" },
         ],
-        notes: "宿題をしたら + ませんか invitation form.",
+        register: "polite",
       },
       {
         segments: [
@@ -134,7 +130,7 @@ export const questions: Question[] = [
           { text: "終[お]わったら", blank: true },
           { text: "、カラオケに行[い]きませんか" },
         ],
-        notes: "もし + 終わったら + ませんか.",
+        register: "polite",
       },
     ],
   },
@@ -143,66 +139,45 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "週末[しゅうまつ]", blank: true },
-          { text: "だったら、海[うみ]に" },
-          { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-      },
-      {
-        segments: [
-          { text: "もし", blank: true },
-          { text: "週末[しゅうまつ]だったら、海[うみ]に" },
-          { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Adding もし at the start to emphasize the hypothetical \"if\" nuance. もし is the blank.",
-      },
-      {
-        segments: [
-          { text: "週末[しゅうまつ]" },
-          { text: "だったら", blank: true },
+          { text: "週末[しゅうまつ]だったら", blank: true },
           { text: "、海[うみ]に" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "だったら is the blank, testing the conditional ending itself.",
       },
       {
         segments: [
-          { text: "もし週末[しゅうまつ]" },
-          { text: "だったら", blank: true },
+          { text: "もし週末[しゅうまつ]だったら", blank: true },
           { text: "、海[うみ]に" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "もし + 週末 upfront, だったら as the blank.",
       },
       {
         segments: [
-          { text: "週末[しゅうまつ]", blank: true },
-          { text: "だったら、海[うみ]へ" },
+          { text: "週末[しゅうまつ]だったら", blank: true },
+          { text: "、海[うみ]へ" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using へ instead of に for direction to the sea.",
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "週末[しゅうまつ]だったら、海[うみ]へ" },
+          { text: "もし週末[しゅうまつ]だったら", blank: true },
+          { text: "、海[うみ]へ" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "もし as blank + へ particle variant.",
       },
       {
         segments: [
-          { text: "週末[しゅうまつ]", blank: true },
-          { text: "だったら、海[うみ]に行[い]きたい" },
+          { text: "週末[しゅうまつ]だったら", blank: true },
+          { text: "、海[うみ]に行[い]きたい" },
         ],
         notes: "Result clause uses たい form — \"would want to go to the sea.\" Captures the hypothetical desire.",
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "週末[しゅうまつ]だったら、海[うみ]に行[い]きたい" },
+          { text: "もし週末[しゅうまつ]だったら", blank: true },
+          { text: "、海[うみ]に行[い]きたい" },
         ],
-        notes: "もし + たい result clause.",
       },
     ],
   },
@@ -211,78 +186,66 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "天気[てんき]が", blank: true },
-          { text: "よかったら", blank: true },
+          { text: "天気[てんき]がよかったら", blank: true },
           { text: "、公園[こうえん]で 写真[しゃしん]を" },
-          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
           { text: "もし" },
-          { text: "天気[てんき]が", blank: true },
-          { text: "よかったら", blank: true },
+          { text: "天気[てんき]がよかったら", blank: true },
           { text: "、公園[こうえん]で 写真[しゃしん]を" },
-          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Adding もし at the start to emphasize the hypothetical \"if\"",
       },
       {
         segments: [
-          { text: "天気[てんき]が", blank: true },
-          { text: "よかったら", blank: true },
+          { text: "天気[てんき]がよかったら", blank: true },
           { text: "、公園[こうえん]で 写真[しゃしん]を" },
-          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "past" } },
+          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "past" } },
         ],
         notes: "Past tense of たい (撮りたかった) to match \"would have wanted\" counterfactual nuance",
       },
       {
         segments: [
           { text: "もし" },
-          { text: "天気[てんき]が", blank: true },
-          { text: "よかったら", blank: true },
+          { text: "天気[てんき]がよかったら", blank: true },
           { text: "、公園[こうえん]で 写真[しゃしん]を" },
-          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "past" } },
+          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "past" } },
         ],
-        notes: "もし + past たい — emphatic hypothetical with counterfactual nuance",
       },
       {
         segments: [
-          { text: "晴[は]れ", blank: true },
-          { text: "だったら", blank: true },
+          { text: "晴[は]れだったら", blank: true },
           { text: "、公園[こうえん]で 写真[しゃしん]を" },
-          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Using 晴れ (sunny/clear weather) as noun + だったら instead of よかったら",
       },
       {
         segments: [
           { text: "もし" },
-          { text: "晴[は]れ", blank: true },
-          { text: "だったら", blank: true },
+          { text: "晴[は]れだったら", blank: true },
           { text: "、公園[こうえん]で 写真[しゃしん]を" },
-          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "もし + 晴れだったら — emphatic hypothetical with noun + だったら",
       },
       {
         segments: [
-          { text: "天気[てんき]が", blank: true },
-          { text: "よかったら", blank: true },
+          { text: "天気[てんき]がよかったら", blank: true },
           { text: "、公園[こうえん]で 写真[しゃしん]が" },
-          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
         notes: "写真が撮りたい — が instead of を before たい, also natural in Japanese",
       },
       {
         segments: [
           { text: "もし" },
-          { text: "天気[てんき]が", blank: true },
-          { text: "よかったら", blank: true },
+          { text: "天気[てんき]がよかったら", blank: true },
           { text: "、公園[こうえん]で 写真[しゃしん]が" },
-          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "撮[と]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "もし + 写真が撮りたい — emphatic if with が before たい",
       },
     ],
   },
@@ -297,10 +260,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "宝[たから]くじに 当[あ]たったら、 外国[がいこく]に 旅行[りょこう]したい" },
+          { text: "もし宝[たから]くじに 当[あ]たったら", blank: true },
+          { text: "、 外国[がいこく]に 旅行[りょこう]したい" },
         ],
-        notes: "Adding もし at the start to emphasize the hypothetical nuance",
       },
       {
         segments: [
@@ -311,10 +273,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "宝[たから]くじに 当[あ]たったら、 海外[かいがい]を 旅行[りょこう]したい" },
+          { text: "もし宝[たから]くじに 当[あ]たったら", blank: true },
+          { text: "、 海外[かいがい]を 旅行[りょこう]したい" },
         ],
-        notes: "もし + 海外を旅行したい version",
       },
       {
         segments: [
@@ -325,10 +286,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "宝[たから]くじに 当[あ]たったら、 外国[がいこく]へ 旅行[りょこう]したい" },
+          { text: "もし宝[たから]くじに 当[あ]たったら", blank: true },
+          { text: "、 外国[がいこく]へ 旅行[りょこう]したい" },
         ],
-        notes: "もし + 外国へ旅行したい version",
       },
       {
         segments: [
@@ -346,10 +306,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "宝[たから]くじに 当[あ]たったら、 海外[かいがい]へ 旅行[りょこう]したい" },
+          { text: "もし宝[たから]くじに 当[あ]たったら", blank: true },
+          { text: "、 海外[かいがい]へ 旅行[りょこう]したい" },
         ],
-        notes: "もし + 海外へ旅行したい version",
       },
       {
         segments: [
@@ -360,10 +319,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "宝[たから]くじに 当[あ]たったら、 外国[がいこく]に 旅行[りょこう]に行[い]きたい" },
+          { text: "もし宝[たから]くじに 当[あ]たったら", blank: true },
+          { text: "、 外国[がいこく]に 旅行[りょこう]に行[い]きたい" },
         ],
-        notes: "もし + 外国に旅行に行きたい version",
       },
       {
         segments: [
@@ -373,10 +331,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "宝[たから]くじに 当[あ]たったら、 海外[かいがい]に 旅行[りょこう]に行[い]きたい" },
+          { text: "もし宝[たから]くじに 当[あ]たったら", blank: true },
+          { text: "、 海外[かいがい]に 旅行[りょこう]に行[い]きたい" },
         ],
-        notes: "もし + 海外に旅行に行きたい version",
       },
     ],
   },
@@ -395,7 +352,6 @@ export const questions: Question[] = [
           { text: "もしけんじさんが もう一度[いちど] 遅刻[ちこく]したら、" },
           { text: "待[ま]つ", blank: true, conjugation: { pos: "Godan verb with 'tsu' ending", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
-        notes: "Adding もし for emphasis on the conditional",
       },
       {
         segments: [
@@ -409,7 +365,6 @@ export const questions: Question[] = [
           { text: "もしけんじさんが もう一度[いちど] 遅れ[おくれ]たら、" },
           { text: "待[ま]つ", blank: true, conjugation: { pos: "Godan verb with 'tsu' ending", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
-        notes: "もし + 遅れたら variation",
       },
       {
         segments: [
@@ -423,15 +378,13 @@ export const questions: Question[] = [
           { text: "もしけんじさんが 今度[こんど] 遅刻[ちこく]したら、" },
           { text: "待[ま]つ", blank: true, conjugation: { pos: "Godan verb with 'tsu' ending", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
-        notes: "もし + 今度 + 遅刻したら",
       },
       {
         segments: [
           { text: "けんじさんが もう一度[いちど] 遅刻[ちこく]したら、" },
           { text: "待[ま]つ", blank: true, conjugation: { pos: "Godan verb with 'tsu' ending", form: "normal", polarity: "negative", tense: "non-past" } },
-          { text: "よ" },
+          { text: "" },
         ],
-        notes: "Adding よ for assertive/declarative tone",
       },
       {
         segments: [
@@ -452,7 +405,6 @@ export const questions: Question[] = [
           { text: "もしけんじさんが また 遅刻[ちこく]したら、" },
           { text: "待[ま]つ", blank: true, conjugation: { pos: "Godan verb with 'tsu' ending", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
-        notes: "もし + また variation",
       },
     ],
   },
@@ -477,7 +429,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "ホラー 映画[えいが]だったら", blank: true },
-          { text: "、一人[ひとり]で 見[み]るのは いやだ" },
+          { text: "、一人[ひとり]で 見[み]るのは いやです" },
         ],
         notes: "Using のは嫌だ (\"watching it alone is unpleasant\") instead of 見たくない.",
       },
@@ -485,9 +437,8 @@ export const questions: Question[] = [
         segments: [
           { text: "もし" },
           { text: "ホラー 映画[えいが]だったら", blank: true },
-          { text: "、一人[ひとり]で 見[み]るのは いやだ" },
+          { text: "、一人[ひとり]で 見[み]るのは いやです" },
         ],
-        notes: "もし + のは嫌だ version.",
       },
       {
         segments: [
@@ -501,7 +452,6 @@ export const questions: Question[] = [
           { text: "ホラー 映画[えいが]だったら", blank: true },
           { text: "、一人[ひとり]では 見[み]たくない" },
         ],
-        notes: "もし + 一人では version.",
       },
     ],
   },
@@ -510,16 +460,16 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "おなかが", blank: true },
-          { text: "すいたら" },
+          { text: "おなかがすいたら", blank: true },
+          { text: "" },
           { text: "、かばんの 中[なか]に パンが" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "もし おなかが", blank: true },
-          { text: "すいたら" },
+          { text: "もし おなかがすいたら", blank: true },
+          { text: "" },
           { text: "、かばんの 中[なか]に パンが" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
@@ -527,28 +477,26 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "おなかが", blank: true },
-          { text: "すいたら" },
+          { text: "おなかがすいたら", blank: true },
+          { text: "" },
           { text: "、かばんの 中[なか]に パンが" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
+          { text: "" },
         ],
-        notes: "Added よ sentence-final particle for assertive nuance",
       },
       {
         segments: [
-          { text: "もし おなかが", blank: true },
-          { text: "すいたら" },
+          { text: "もし おなかがすいたら", blank: true },
+          { text: "" },
           { text: "、かばんの 中[なか]に パンが" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
+          { text: "" },
         ],
-        notes: "もし + よ for emphasis and assertion",
       },
       {
         segments: [
-          { text: "おなかが", blank: true },
-          { text: "すいたら" },
+          { text: "おなかがすいたら", blank: true },
+          { text: "" },
           { text: "、パンが かばんの 中[なか]に" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
@@ -556,17 +504,16 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もし おなかが", blank: true },
-          { text: "すいたら" },
+          { text: "もし おなかがすいたら", blank: true },
+          { text: "" },
           { text: "、パンが かばんの 中[なか]に" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "もし + パンが fronted word order",
       },
       {
         segments: [
-          { text: "おなかが", blank: true },
-          { text: "すいたら" },
+          { text: "おなかがすいたら", blank: true },
+          { text: "" },
           { text: "、かばんの 中[なか]に パンは" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
@@ -574,17 +521,16 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もし おなかが", blank: true },
-          { text: "すいたら" },
+          { text: "もし おなかがすいたら", blank: true },
+          { text: "" },
           { text: "、かばんの 中[なか]に パンは" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "もし + パンは (は instead of が)",
       },
       {
         segments: [
-          { text: "おなかが", blank: true },
-          { text: "すいたら" },
+          { text: "おなかがすいたら", blank: true },
+          { text: "" },
           { text: "、かばんに パンが" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
@@ -592,12 +538,11 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もし おなかが", blank: true },
-          { text: "すいたら" },
+          { text: "もし おなかがすいたら", blank: true },
+          { text: "" },
           { text: "、かばんに パンが" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "もし + かばんに without 中",
       },
     ],
   },
@@ -614,8 +559,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: " 空港[くうこう]に 着[つ]いたら、もう 飛行機[ひこうき]が 出[で]ていたら、どうしたらいいですか" },
+          { text: "もし 空港[くうこう]に 着[つ]いたら", blank: true },
+          { text: "、もう 飛行機[ひこうき]が 出[で]ていたら、どうしたらいいですか" },
         ],
         notes: "Adding もし at the start to emphasize the hypothetical \"if\" nuance",
       },
@@ -629,10 +574,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: " 空港[くうこう]に 着[つ]いたら、もう 飛行機[ひこうき]に 乗[の]り 遅[おく]れていたら、どうしたらいいですか" },
+          { text: "もし 空港[くうこう]に 着[つ]いたら", blank: true },
+          { text: "、もう 飛行機[ひこうき]に 乗[の]り 遅[おく]れていたら、どうしたらいいですか" },
         ],
-        notes: "もし + 乗り遅れていたら version",
       },
     ],
   },
@@ -658,9 +602,8 @@ export const questions: Question[] = [
         segments: [
           { text: "かばんを" },
           { text: "開[あ]けたら", blank: true },
-          { text: "、中[なか]に 猫[ねこ]が いたよ" },
+          { text: "、中[なか]に 猫[ねこ]が いた" },
         ],
-        notes: "Adding よ particle — adding emphasis/sharing new info with listener",
       },
       {
         segments: [
@@ -676,7 +619,6 @@ export const questions: Question[] = [
           { text: "開[あ]けたら", blank: true },
           { text: "、中[なか]に ねこが いた" },
         ],
-        notes: "ねこ in hiragana instead of 猫 kanji — natural casual writing style",
       },
       {
         segments: [
@@ -690,7 +632,6 @@ export const questions: Question[] = [
   },
   {
     english: "If I told you a secret, would you promise not to tell anyone?",
-    hint: "Address the listener as the subject performing the promise, not \"you\" as a pronoun — rephrase mentally to avoid あなた",
     answers: [
       {
         segments: [
@@ -708,7 +649,6 @@ export const questions: Question[] = [
           { text: "、誰[だれ]にも 言[い]わないと 約束[やくそく]できる" },
           { text: "か" },
         ],
-        notes: "Without もし, 約束できる？",
       },
       {
         segments: [
@@ -807,21 +747,18 @@ export const questions: Question[] = [
           { text: "夏[なつ]になったら", blank: true },
           { text: "、海[うみ]で 泳[およ]ぎに 行[い]きたい" },
         ],
-        notes: "夏になったら + 泳ぎに行きたい (want to go swimming)",
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "夏[なつ]になったら、海[うみ]で 泳[およ]ぎたい" },
+          { text: "もし夏[なつ]になったら", blank: true },
+          { text: "、海[うみ]で 泳[およ]ぎたい" },
         ],
-        notes: "もし emphasizing the conditional; blank on もし",
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "夏[なつ]になったら、海[うみ]で 泳[およ]ぎに 行[い]きたい" },
+          { text: "もし夏[なつ]になったら", blank: true },
+          { text: "、海[うみ]で 泳[およ]ぎに 行[い]きたい" },
         ],
-        notes: "もし + 夏になったら + 泳ぎに行きたい",
       },
       {
         segments: [
@@ -835,21 +772,18 @@ export const questions: Question[] = [
           { text: "夏[なつ]がきたら", blank: true },
           { text: "、海[うみ]で 泳[およ]ぎに 行[い]きたい" },
         ],
-        notes: "夏がきたら + 泳ぎに行きたい",
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "夏[なつ]がきたら、海[うみ]で 泳[およ]ぎたい" },
+          { text: "もし夏[なつ]がきたら", blank: true },
+          { text: "、海[うみ]で 泳[およ]ぎたい" },
         ],
-        notes: "もし + 夏がきたら + 泳ぎたい",
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "夏[なつ]がきたら、海[うみ]で 泳[およ]ぎに 行[い]きたい" },
+          { text: "もし夏[なつ]がきたら", blank: true },
+          { text: "、海[うみ]で 泳[およ]ぎに 行[い]きたい" },
         ],
-        notes: "もし + 夏がきたら + 泳ぎに行きたい",
       },
       {
         segments: [
@@ -863,21 +797,18 @@ export const questions: Question[] = [
           { text: "夏[なつ]がきたら", blank: true },
           { text: "、海[うみ]に 泳[およ]ぎに 行[い]きたい" },
         ],
-        notes: "夏がきたら + 海に泳ぎに行きたい",
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "夏[なつ]になったら、海[うみ]に 泳[およ]ぎに 行[い]きたい" },
+          { text: "もし夏[なつ]になったら", blank: true },
+          { text: "、海[うみ]に 泳[およ]ぎに 行[い]きたい" },
         ],
-        notes: "もし + 夏になったら + 海に泳ぎに行きたい",
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "夏[なつ]がきたら、海[うみ]に 泳[およ]ぎに 行[い]きたい" },
+          { text: "もし夏[なつ]がきたら", blank: true },
+          { text: "、海[うみ]に 泳[およ]ぎに 行[い]きたい" },
         ],
-        notes: "もし + 夏がきたら + 海に泳ぎに行きたい",
       },
     ],
   },
@@ -897,7 +828,6 @@ export const questions: Question[] = [
           { text: "住[す]んだら", blank: true },
           { text: "、何語[なにご]を 勉強[べんきょう]したらいいですか" },
         ],
-        notes: "Without もし; otherwise same as above",
       },
       {
         segments: [
@@ -941,6 +871,7 @@ export const questions: Question[] = [
           { text: "、ヒーターをつけて" },
           { text: "ください" },
         ],
+        register: "polite",
       },
       {
         segments: [
@@ -949,7 +880,7 @@ export const questions: Question[] = [
           { text: "、ヒーターをつけて" },
           { text: "ください" },
         ],
-        notes: "もし + たら + てください combination",
+        register: "polite",
       },
       {
         segments: [
@@ -957,34 +888,33 @@ export const questions: Question[] = [
           { text: "、ヒーターをつけて" },
           { text: "ください" },
         ],
-        notes: "寒くなりすぎたら + てください",
+        register: "polite",
       },
       {
         segments: [
-          { text: "寒[さむ]すぎたら、ヒーターを" },
-          { text: "つけて", blank: true },
+          { text: "寒[さむ]すぎたら", blank: true },
+          { text: "、ヒーターをつけて" },
         ],
       },
       {
         segments: [
-          { text: "もし寒[さむ]すぎたら、ヒーターを" },
-          { text: "つけて", blank: true },
+          { text: "もし寒[さむ]すぎたら", blank: true },
+          { text: "、ヒーターをつけて" },
         ],
         notes: "Adding もし at the start for emphasis on the hypothetical \"if\"",
       },
       {
         segments: [
-          { text: "寒[さむ]くなりすぎたら、ヒーターを" },
-          { text: "つけて", blank: true },
+          { text: "寒[さむ]くなりすぎたら", blank: true },
+          { text: "、ヒーターをつけて" },
         ],
         notes: "Using 寒くなりすぎたら (become too cold) instead of 寒すぎたら — emphasizes the process of becoming cold",
       },
       {
         segments: [
-          { text: "もし寒[さむ]くなりすぎたら、ヒーターを" },
-          { text: "つけて", blank: true },
+          { text: "もし寒[さむ]くなりすぎたら", blank: true },
+          { text: "、ヒーターをつけて" },
         ],
-        notes: "もし + 寒くなりすぎたら variation",
       },
     ],
   },
@@ -1016,7 +946,6 @@ export const questions: Question[] = [
           { text: "、出[で]ると" },
           { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Without もし — still uses たら, slightly less emphasis on hypothetical",
       },
       {
         segments: [
@@ -1025,7 +954,6 @@ export const questions: Question[] = [
           { text: "、出[で]てくれると" },
           { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Without もし, with 出てくれる",
       },
       {
         segments: [
@@ -1041,7 +969,6 @@ export const questions: Question[] = [
           { text: "電話[でんわ]したら", blank: true },
           { text: "、出[で]るだろうか" },
         ],
-        notes: "Without もし, using だろうか",
         register: "casual",
       },
       {
@@ -1059,7 +986,6 @@ export const questions: Question[] = [
           { text: "電話[でんわ]したら", blank: true },
           { text: "、出[で]てくれるだろうか" },
         ],
-        notes: "Without もし, 出てくれるだろうか",
         register: "casual",
       },
       {
@@ -1076,7 +1002,6 @@ export const questions: Question[] = [
           { text: "電話[でんわ]したら", blank: true },
           { text: "、出[で]るかな" },
         ],
-        notes: "Without もし, casual かな",
         register: "casual",
       },
       {
@@ -1085,7 +1010,6 @@ export const questions: Question[] = [
           { text: "電話[でんわ]したら", blank: true },
           { text: "、出[で]てくれるかな" },
         ],
-        notes: "もし + たら + 出てくれるかな — casual wondering with くれる",
         register: "casual",
       },
       {
@@ -1094,7 +1018,6 @@ export const questions: Question[] = [
           { text: "電話[でんわ]したら", blank: true },
           { text: "、出[で]てくれるかな" },
         ],
-        notes: "Without もし, 出てくれるかな",
         register: "casual",
       },
     ],
@@ -1104,76 +1027,71 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "調[しら]べ", blank: true },
-          { text: "たら、びっくりするかもしれない" },
+          { text: "調[しら]べたら", blank: true },
+          { text: "、びっくりするかもしれない" },
         ],
       },
       {
         segments: [
           { text: "もし" },
-          { text: "調[しら]べ", blank: true },
-          { text: "たら、びっくりするかもしれない" },
+          { text: "調[しら]べたら", blank: true },
+          { text: "、びっくりするかもしれない" },
         ],
         notes: "Adding もし at the start to emphasize the \"if\" nuance",
       },
       {
         segments: [
-          { text: "調[しら]べ", blank: true },
-          { text: "たら、びっくりするかも" },
+          { text: "調[しら]べたら", blank: true },
+          { text: "、びっくりするかも" },
         ],
       },
       {
         segments: [
           { text: "もし" },
-          { text: "調[しら]べ", blank: true },
-          { text: "たら、びっくりするかも" },
+          { text: "調[しら]べたら", blank: true },
+          { text: "、びっくりするかも" },
         ],
-        notes: "もし + たら + casual かも ending",
       },
       {
         segments: [
-          { text: "調[しら]べ", blank: true },
-          { text: "たら、驚[おどろ]くかもしれない" },
+          { text: "調[しら]べたら", blank: true },
+          { text: "、驚[おどろ]くかもしれない" },
         ],
         notes: "Using 驚く instead of びっくりする for \"surprised\"",
       },
       {
         segments: [
           { text: "もし" },
-          { text: "調[しら]べ", blank: true },
-          { text: "たら、驚[おどろ]くかもしれない" },
+          { text: "調[しら]べたら", blank: true },
+          { text: "、驚[おどろ]くかもしれない" },
         ],
-        notes: "もし + たら + 驚く + かもしれない",
       },
       {
         segments: [
-          { text: "調[しら]べ", blank: true },
-          { text: "たら、驚[おどろ]くかも" },
+          { text: "調[しら]べたら", blank: true },
+          { text: "、驚[おどろ]くかも" },
         ],
         notes: "驚く + casual かも ending",
       },
       {
         segments: [
           { text: "もし" },
-          { text: "調[しら]べ", blank: true },
-          { text: "たら、驚[おどろ]くかも" },
+          { text: "調[しら]べたら", blank: true },
+          { text: "、驚[おどろ]くかも" },
         ],
-        notes: "もし + たら + 驚く + casual かも",
       },
       {
         segments: [
-          { text: "調[しら]べ", blank: true },
-          { text: "たら、びっくりするかもしれないよ" },
+          { text: "調[しら]べたら", blank: true },
+          { text: "、びっくりするかもしれない" },
         ],
-        notes: "Adding よ particle for slight emphasis/assertion",
       },
       {
         segments: [
           { text: "もし" },
-          { text: "調[しら]べ", blank: true },
-          { text: "たら、びっくりするかもしれないよ" },
+          { text: "調[しら]べたら", blank: true },
+          { text: "、びっくりするかもしれない" },
         ],
-        notes: "もし + たら + かもしれないよ",
       },
     ],
   },
@@ -1183,55 +1101,53 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "公園[こうえん]に", blank: true },
-          { text: "着[つ]いたら、私[わたし]のベンチにもう 猫[ねこ]が 座[すわ]っていた" },
+          { text: "公園[こうえん]に 着[つ]いたら", blank: true },
+          { text: "、私[わたし]のベンチにもう 猫[ねこ]が 座[すわ]っていた" },
         ],
       },
       {
         segments: [
-          { text: "公園[こうえん]に", blank: true },
-          { text: "行[い]ったら、私[わたし]のベンチにもう 猫[ねこ]が 座[すわ]っていた" },
+          { text: "公園[こうえん]に 行[い]ったら", blank: true },
+          { text: "、私[わたし]のベンチにもう 猫[ねこ]が 座[すわ]っていた" },
         ],
         notes: "行ったら instead of 着いたら — \"when I went to the park\"",
       },
       {
         segments: [
-          { text: "公園[こうえん]に", blank: true },
-          { text: "着[つ]いたら、私[わたし]のベンチにもう 猫[ねこ]が いた" },
+          { text: "公園[こうえん]に 着[つ]いたら", blank: true },
+          { text: "、私[わたし]のベンチにもう 猫[ねこ]が いた" },
         ],
         notes: "Using いた instead of 座っていた for the result clause — simpler expression \"a cat was already there\"",
       },
       {
         segments: [
-          { text: "もし", blank: true },
-          { text: "公園[こうえん]に 着[つ]いたら、私[わたし]のベンチにもう 猫[ねこ]が 座[すわ]っていた" },
+          { text: "もし公園[こうえん]に 着[つ]いたら", blank: true },
+          { text: "、私[わたし]のベンチにもう 猫[ねこ]が 座[すわ]っていた" },
         ],
-        notes: "Adding もし at the start for emphasis — though this sentence is past tense/discovery, もし can still be used",
       },
       {
         segments: [
-          { text: "公園[こうえん]に", blank: true },
-          { text: "着[つ]いたら、ベンチにもう 猫[ねこ]が 座[すわ]っていた" },
+          { text: "公園[こうえん]に 着[つ]いたら", blank: true },
+          { text: "、ベンチにもう 猫[ねこ]が 座[すわ]っていた" },
         ],
         notes: "Dropping 私の — in context, \"the bench\" implies it's the one I was heading to; natural in Japanese",
       },
       {
         segments: [
-          { text: "公園[こうえん]に", blank: true },
-          { text: "着[つ]いたら、私[わたし]のベンチにはもう 猫[ねこ]が 座[すわ]っていた" },
+          { text: "公園[こうえん]に 着[つ]いたら", blank: true },
+          { text: "、私[わたし]のベンチにはもう 猫[ねこ]が 座[すわ]っていた" },
         ],
       },
       {
         segments: [
-          { text: "公園[こうえん]に", blank: true },
-          { text: "行[い]ったら、私[わたし]のベンチにはもう 猫[ねこ]が 座[すわ]っていた" },
+          { text: "公園[こうえん]に 行[い]ったら", blank: true },
+          { text: "、私[わたし]のベンチにはもう 猫[ねこ]が 座[すわ]っていた" },
         ],
-        notes: "行ったら + には particle combination",
       },
       {
         segments: [
-          { text: "公園[こうえん]に", blank: true },
-          { text: "着[つ]いたら、私[わたし]のベンチにすでに 猫[ねこ]が 座[すわ]っていた" },
+          { text: "公園[こうえん]に 着[つ]いたら", blank: true },
+          { text: "、私[わたし]のベンチにすでに 猫[ねこ]が 座[すわ]っていた" },
         ],
         notes: "すでに instead of もう — \"already\" with a slightly more formal nuance",
       },
@@ -1242,50 +1158,30 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "食[た]べ", blank: true },
-          { text: "たら、お 皿[さら]を 洗[あら]ってね" },
+          { text: "食[た]べたら", blank: true },
+          { text: "、お皿[さら]を 洗[あら]って" },
         ],
       },
       {
         segments: [
-          { text: "食[た]べ", blank: true },
-          { text: "たら、お 皿[さら]を 洗[あら]って" },
+          { text: "食[た]べたら", blank: true },
+          { text: "、皿[さら]を 洗[あら]って" },
         ],
-        notes: "Without ね — more direct casual request using て-form alone",
+        notes: "Using plain 皿 instead of お皿.",
       },
       {
         segments: [
-          { text: "食[た]べ", blank: true },
-          { text: "たら、 皿[さら]を 洗[あら]ってね" },
+          { text: "食[た]べ 終[お]わったら", blank: true },
+          { text: "、お皿[さら]を 洗[あら]って" },
         ],
-        notes: "Without お — plain 皿 instead of お皿, with ね",
+        notes: "Using 食べ終わる for finishing a meal.",
       },
       {
         segments: [
-          { text: "食[た]べ", blank: true },
-          { text: "たら、 皿[さら]を 洗[あら]って" },
+          { text: "食[た]べ 終[お]わったら", blank: true },
+          { text: "、皿[さら]を 洗[あら]って" },
         ],
-        notes: "Without お and without ね — most direct/plain casual form",
-      },
-      {
-        segments: [
-          { text: "食[た]べ 終[お]わっ", blank: true },
-          { text: "たら、お 皿[さら]を 洗[あら]ってね" },
-        ],
-      },
-      {
-        segments: [
-          { text: "食[た]べ 終[お]わっ", blank: true },
-          { text: "たら、お 皿[さら]を 洗[あら]って" },
-        ],
-        notes: "食べ終わったら without ね — direct",
-      },
-      {
-        segments: [
-          { text: "食[た]べ 終[お]わっ", blank: true },
-          { text: "たら、 皿[さら]を 洗[あら]ってね" },
-        ],
-        notes: "食べ終わったら + 皿 (without お) + ね",
+        notes: "Using 食べ終わる with plain 皿.",
       },
     ],
   },
@@ -1297,7 +1193,8 @@ export const questions: Question[] = [
         segments: [
           { text: "シェフになったら", blank: true },
           { text: "、世界一[せかいいち]のピザを" },
-          { text: "作[つく]りたいと思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "作[つく]りたいと" },
+          { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using 〜たいと思う instead of just たい to express \"I think I'd want to\"",
       },
@@ -1306,69 +1203,45 @@ export const questions: Question[] = [
           { text: "もし" },
           { text: "シェフになったら", blank: true },
           { text: "、世界一[せかいいち]のピザを" },
-          { text: "作[つく]りたいと思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "作[つく]りたいと" },
+          { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "もし + たいと思う combination",
       },
       {
         segments: [
-          { text: "シェフに", blank: true },
-          { text: "なったら" },
+          { text: "シェフになったら", blank: true },
           { text: "、世界一[せかいいち]のピザを" },
-          { text: "作[つく]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "作[つく]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
           { text: "もし" },
-          { text: "シェフに", blank: true },
-          { text: "なったら" },
+          { text: "シェフになったら", blank: true },
           { text: "、世界一[せかいいち]のピザを" },
-          { text: "作[つく]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "作[つく]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Adding もし at start for emphasis on hypothetical \"if\"",
       },
       {
         segments: [
-          { text: "シェフに", blank: true },
-          { text: "なったら" },
+          { text: "シェフになったら", blank: true },
           { text: "、世界[せかい]で一番[いちばん]おいしいピザを" },
-          { text: "作[つく]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "作[つく]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using 世界で一番おいしい instead of 世界一の to express \"world's best\"",
       },
       {
         segments: [
           { text: "もし" },
-          { text: "シェフに", blank: true },
-          { text: "なったら" },
+          { text: "シェフになったら", blank: true },
           { text: "、世界[せかい]で一番[いちばん]おいしいピザを" },
-          { text: "作[つく]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "もし + 世界で一番おいしい combined",
-      },
-      {
-        segments: [
-          { text: "シェフに", blank: true },
-          { text: "なったら" },
-          { text: "、世界一[せかいいち]のピザを作[つく]りたいと" },
-          { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "作[つく]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "もし" },
-          { text: "シェフに", blank: true },
-          { text: "なったら" },
-          { text: "、世界一[せかいいち]のピザを作[つく]りたいと" },
-          { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "もし + たいと思う combination",
-      },
-      {
-        segments: [
-          { text: "シェフに", blank: true },
-          { text: "なったら" },
+          { text: "シェフになったら", blank: true },
           { text: "、世界一[せかいいち]のピザを作[つく]って" },
           { text: "み[み]る", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
@@ -1376,27 +1249,24 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "もし" },
-          { text: "シェフに", blank: true },
-          { text: "なったら" },
+          { text: "シェフになったら", blank: true },
           { text: "、世界一[せかいいち]のピザを作[つく]って" },
           { text: "み[み]る", conjugation: { pos: "Ichidan verb", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "もし + 作ってみたい combination",
       },
       {
         segments: [
-          { text: "シェフ", blank: true },
-          { text: "だったら、世界一[せかいいち]のピザを" },
-          { text: "作[つく]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "シェフだったら", blank: true },
+          { text: "、世界一[せかいいち]のピザを" },
+          { text: "作[つく]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "もしシェフ", blank: true },
-          { text: "だったら、世界一[せかいいち]のピザを" },
-          { text: "作[つく]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
+          { text: "もしシェフだったら", blank: true },
+          { text: "、世界一[せかいいち]のピザを" },
+          { text: "作[つく]る", conjugation: { pos: "Godan verb with 'u' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "もし + シェフだったら",
       },
     ],
   },
@@ -1405,44 +1275,30 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "もしこれが 夢[ゆめ]だったら、" },
-          { text: "起[お]きたくない", blank: true },
+          { text: "もしこれが 夢[ゆめ]だったら", blank: true },
+          { text: "、起[お]きたくない" },
         ],
       },
       {
         segments: [
-          { text: "これが 夢[ゆめ]だったら、" },
-          { text: "起[お]きたくない", blank: true },
+          { text: "これが 夢[ゆめ]だったら", blank: true },
+          { text: "、起[お]きたくない" },
         ],
-        notes: "Without もし — minimal form, same meaning but less emphasis on hypothetical",
       },
       {
         segments: [
-          { text: "もしこれが 夢[ゆめ]だったら、" },
-          { text: "起[お]きたくないな", blank: true },
+          { text: "もしこれが 夢[ゆめ]だったら", blank: true },
+          { text: "、起[お]きたくないな" },
         ],
-        notes: "Adds な sentence-final particle for a wistful/emotional nuance",
+        notes: "Using な for a wistful feeling.",
+        register: "casual",
       },
       {
         segments: [
-          { text: "これが 夢[ゆめ]だったら、" },
-          { text: "起[お]きたくないな", blank: true },
+          { text: "これが 夢[ゆめ]だったら", blank: true },
+          { text: "、起[お]きたくないな" },
         ],
-        notes: "Without もし, with な for wistfulness",
-      },
-      {
-        segments: [
-          { text: "もしこれが 夢[ゆめ]だったら、" },
-          { text: "起[お]きたくないよ", blank: true },
-        ],
-        notes: "Adds よ for assertive/emphatic tone",
-      },
-      {
-        segments: [
-          { text: "これが 夢[ゆめ]だったら、" },
-          { text: "起[お]きたくないよ", blank: true },
-        ],
-        notes: "Without もし, with よ for emphasis",
+        register: "casual",
       },
     ],
   },
@@ -1456,6 +1312,7 @@ export const questions: Question[] = [
           { text: "、電話[でんわ]して" },
           { text: "ください" },
         ],
+        register: "polite",
       },
       {
         segments: [
@@ -1471,18 +1328,17 @@ export const questions: Question[] = [
         segments: [
           { text: "私[わたし]の 財布[さいふ]が" },
           { text: "見[み]つかったら", blank: true },
-          { text: "、電話[でんわ]してね" },
+          { text: "、電話[でんわ]して" },
         ],
-        notes: "Using ね instead of ください for a softer, more casual request",
+        register: "polite",
       },
       {
         segments: [
           { text: "もし" },
           { text: "私[わたし]の 財布[さいふ]が" },
           { text: "見[み]つかったら", blank: true },
-          { text: "、電話[でんわ]してね" },
+          { text: "、電話[でんわ]して" },
         ],
-        notes: "もし + softer ね ending",
       },
       {
         segments: [
@@ -1492,6 +1348,7 @@ export const questions: Question[] = [
           { text: "ください" },
         ],
         notes: "Using は instead of が for the wallet (topic-marking the wallet)",
+        register: "polite",
       },
       {
         segments: [
@@ -1501,7 +1358,7 @@ export const questions: Question[] = [
           { text: "、電話[でんわ]して" },
           { text: "ください" },
         ],
-        notes: "もし + は for wallet + ください",
+        register: "polite",
       },
       {
         segments: [
@@ -1511,7 +1368,7 @@ export const questions: Question[] = [
           { text: "、連絡[れんらく]して" },
           { text: "ください" },
         ],
-        notes: "もし + 連絡する",
+        register: "polite",
       },
       {
         segments: [
@@ -1519,6 +1376,7 @@ export const questions: Question[] = [
           { text: "見[み]つかったら", blank: true },
           { text: "、電話[でんわ]していただけませんか" },
         ],
+        register: "polite",
       },
       {
         segments: [
@@ -1527,7 +1385,7 @@ export const questions: Question[] = [
           { text: "見[み]つかったら", blank: true },
           { text: "、電話[でんわ]していただけませんか" },
         ],
-        notes: "もし + ていただけませんか",
+        register: "polite",
       },
       {
         segments: [
@@ -1537,6 +1395,7 @@ export const questions: Question[] = [
           { text: "ください" },
         ],
         notes: "Dropping 私の — context makes ownership clear",
+        register: "polite",
       },
       {
         segments: [
@@ -1546,14 +1405,15 @@ export const questions: Question[] = [
           { text: "、電話[でんわ]して" },
           { text: "ください" },
         ],
-        notes: "もし + dropped 私の",
+        register: "polite",
       },
       {
         segments: [
-          { text: "私[わたし]の 財布[さいふ]が 見[み]つかったら、連絡[れんらく]して" },
-          { text: "ください", blank: true },
+          { text: "私[わたし]の 財布[さいふ]が 見[み]つかったら", blank: true },
+          { text: "、連絡[れんらく]してください" },
         ],
         notes: "Using 連絡する (to contact) instead of 電話する, with ください request",
+        register: "polite",
       },
     ],
   },

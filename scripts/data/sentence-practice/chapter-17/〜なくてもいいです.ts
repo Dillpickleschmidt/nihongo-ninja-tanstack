@@ -9,7 +9,7 @@ export const questions: Question[] = [
           { text: "テストは 来週[らいしゅう]だから、今日[きょう]は" },
           { text: "勉強[べんきょう]しなくてもいい", blank: true },
         ],
-        notes: "Base answer: テストは来週だから with なくてもいい (も included), casual ending",
+        notes: "テストは来週だから with なくてもいい (も included), casual ending",
       },
       {
         segments: [
@@ -89,8 +89,7 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "お金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]がなくて", blank: true },
           { text: "、新[あたら]しいコンピューターが" },
           { text: "買[か]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -98,8 +97,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]がなくて", blank: true },
           { text: "、新[あたら]しいコンピューターを" },
           { text: "買[か]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -107,8 +105,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]がなくて", blank: true },
           { text: "、新[あたら]しいコンピューターが買[か]うことが" },
           { text: "できる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -116,8 +113,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]がなくて", blank: true },
           { text: "、新[あたら]しいコンピューターを買[か]うことが" },
           { text: "できる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -125,8 +121,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]がなくて", blank: true },
           { text: "、新[あたら]しいパソコンが" },
           { text: "買[か]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -134,8 +129,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]がなくて", blank: true },
           { text: "、新[あたら]しいパソコンを" },
           { text: "買[か]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -143,8 +137,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]がなくて", blank: true },
           { text: "、新[あたら]しいパソコンが買[か]うことが" },
           { text: "できる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -152,8 +145,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]がなくて", blank: true },
           { text: "、新[あたら]しいパソコンを買[か]うことが" },
           { text: "できる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -161,8 +153,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お金[かね]は", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]はなくて", blank: true },
           { text: "、新[あたら]しいコンピューターが" },
           { text: "買[か]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -170,8 +161,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お金[かね]は", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]はなくて", blank: true },
           { text: "、新[あたら]しいコンピューターを" },
           { text: "買[か]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -179,8 +169,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お金[かね]は", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]はなくて", blank: true },
           { text: "、新[あたら]しいパソコンが" },
           { text: "買[か]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -188,8 +177,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お金[かね]は", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]はなくて", blank: true },
           { text: "、新[あたら]しいパソコンを" },
           { text: "買[か]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -197,8 +185,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]はお金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "私[わたし]はお金[かね]がなくて", blank: true },
           { text: "、新[あたら]しいコンピューターが" },
           { text: "買[か]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -206,8 +193,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]はお金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "私[わたし]はお金[かね]がなくて", blank: true },
           { text: "、新[あたら]しいパソコンが" },
           { text: "買[か]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -215,8 +201,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "金[かね]がなくて", blank: true },
           { text: "、新[あたら]しいコンピューターが" },
           { text: "買[か]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -224,8 +209,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "金[かね]がなくて", blank: true },
           { text: "、新[あたら]しいパソコンが" },
           { text: "買[か]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -242,7 +226,7 @@ export const questions: Question[] = [
           { text: "なくてもいい", blank: true },
           { text: "から、思[おも]うことを書[か]いて" },
         ],
-        notes: "Base answer: 作文は長くなくてもいい, using から to connect, 思うことを書いて for \"write what you think\"",
+        notes: "作文は長くなくてもいい, using から to connect, 思うことを書いて for \"write what you think\"",
       },
       {
         segments: [
@@ -444,16 +428,14 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "現金[げんきん]が", blank: true },
-          { text: "なくて" },
+          { text: "現金[げんきん]がなくて", blank: true },
           { text: "、レストランの 代金[だいきん]が" },
           { text: "払[はら]う", conjugation: { pos: "Godan verb with 'u' ending", form: "potential", polarity: "negative", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "お金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]がなくて", blank: true },
           { text: "、レストランの 代金[だいきん]が" },
           { text: "払[はら]う", conjugation: { pos: "Godan verb with 'u' ending", form: "potential", polarity: "negative", tense: "non-past" } },
         ],
@@ -461,8 +443,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "現金[げんきん]が", blank: true },
-          { text: "なくて" },
+          { text: "現金[げんきん]がなくて", blank: true },
           { text: "、レストランの 代金[だいきん]を" },
           { text: "払[はら]う", conjugation: { pos: "Godan verb with 'u' ending", form: "potential", polarity: "negative", tense: "non-past" } },
         ],
@@ -470,8 +451,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]がなくて", blank: true },
           { text: "、レストランの 代金[だいきん]を" },
           { text: "払[はら]う", conjugation: { pos: "Godan verb with 'u' ending", form: "potential", polarity: "negative", tense: "non-past" } },
         ],
@@ -479,8 +459,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "現金[げんきん]が", blank: true },
-          { text: "なくて" },
+          { text: "現金[げんきん]がなくて", blank: true },
           { text: "、レストランの 代金[だいきん]を 払[はら]う ことが" },
           { text: "できる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -488,8 +467,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お金[かね]が", blank: true },
-          { text: "なくて" },
+          { text: "お金[かね]がなくて", blank: true },
           { text: "、レストランの 代金[だいきん]を 払[はら]う ことが" },
           { text: "できる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
@@ -497,8 +475,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "現金[げんきん]が", blank: true },
-          { text: "なくて" },
+          { text: "現金[げんきん]がなくて", blank: true },
           { text: "、食堂[しょくどう]の 代[だい]が" },
           { text: "払[はら]う", conjugation: { pos: "Godan verb with 'u' ending", form: "potential", polarity: "negative", tense: "non-past" } },
         ],
@@ -511,95 +488,89 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "迎[むか]えに 来[こ]", blank: true },
-          { text: "なくてもいい" },
+          { text: "迎[むか]えに 来[こ]なくてもいい", blank: true },
           { text: "、電車[でんしゃ]に 乗[の]れるから" },
         ],
       },
       {
         segments: [
-          { text: "迎[むか]えに 来[こ]", blank: true },
-          { text: "なくてもいい" },
+          { text: "迎[むか]えに 来[こ]なくてもいい", blank: true },
           { text: "、電車[でんしゃ]で 行[い]けるから" },
         ],
         notes: "Same structure but \"can go by train\" instead of \"can ride the train\"",
       },
       {
         segments: [
-          { text: "迎[むか]えに 来[こ]", blank: true },
-          { text: "なくていい" },
+          { text: "迎[むか]えに 来[こ]なくていい", blank: true },
           { text: "、電車[でんしゃ]に 乗[の]れるから" },
         ],
         notes: "も omitted (more casual): 来なくていい",
       },
       {
         segments: [
-          { text: "迎[むか]えに 来[こ]", blank: true },
-          { text: "なくていい" },
+          { text: "迎[むか]えに 来[こ]なくていい", blank: true },
           { text: "、電車[でんしゃ]で 行[い]けるから" },
         ],
         notes: "も omitted + \"can go by train\"",
       },
       {
         segments: [
-          { text: "電車[でんしゃ]に 乗[の]れるから、迎[むか]えに 来[こ]", blank: true },
-          { text: "なくてもいい" },
+          { text: "電車[でんしゃ]に 乗[の]れるから、迎[むか]えに 来[こ]なくてもいい", blank: true },
         ],
         notes: "Reversed order: reason clause first, then なくてもいい",
       },
       {
         segments: [
-          { text: "電車[でんしゃ]で 行[い]けるから、迎[むか]えに 来[こ]", blank: true },
-          { text: "なくてもいい" },
+          { text: "電車[でんしゃ]で 行[い]けるから、迎[むか]えに 来[こ]なくてもいい", blank: true },
         ],
         notes: "Reversed order + \"can go by train\"",
       },
       {
         segments: [
-          { text: "迎[むか]えに 来[こ]", blank: true },
-          { text: "なくてもいい、電車[でんしゃ]に 乗[の]れるよ" },
+          { text: "迎[むか]えに 来[こ]なくてもいい", blank: true },
+          { text: "、電車[でんしゃ]に 乗[の]れる" },
         ],
-        notes: "With よ for assertion at the end; 乗れる plain (inside clause stays plain)",
+        notes: "Plain 乗れる after the なくてもいい clause",
       },
       {
         segments: [
-          { text: "迎[むか]えに 来[こ]", blank: true },
-          { text: "なくてもいい、電車[でんしゃ]で 行[い]けるよ" },
+          { text: "迎[むか]えに 来[こ]なくてもいい", blank: true },
+          { text: "、電車[でんしゃ]で 行[い]ける" },
         ],
-        notes: "With よ + \"can go by train\"",
+        notes: "Using 電車で行ける after the なくてもいい clause",
       },
       {
         segments: [
-          { text: "迎[むか]えに 来[こ]", blank: true },
-          { text: "なくてもいい、電車[でんしゃ]に 乗[の]れるからね" },
+          { text: "迎[むか]えに 来[こ]なくてもいい", blank: true },
+          { text: "、電車[でんしゃ]に 乗[の]れるから" },
         ],
-        notes: "With ね for seeking agreement/softening",
+        notes: "Using から after the なくてもいい clause",
       },
       {
         segments: [
-          { text: "迎[むか]えに 来[こ]", blank: true },
-          { text: "なくてもいい、電車[でんしゃ]に 乗[の]ることができるから" },
+          { text: "迎[むか]えに 来[こ]なくてもいい", blank: true },
+          { text: "、電車[でんしゃ]に 乗[の]ることができるから" },
         ],
         notes: "Using ことができる for \"can take the train\" instead of potential form",
       },
       {
         segments: [
-          { text: "迎[むか]えに 来[こ]", blank: true },
-          { text: "なくてもいい、電車[でんしゃ]で 行[い]くことができるから" },
+          { text: "迎[むか]えに 来[こ]なくてもいい", blank: true },
+          { text: "、電車[でんしゃ]で 行[い]くことができるから" },
         ],
         notes: "ことができる + \"go by train\"",
       },
       {
         segments: [
-          { text: "私[わたし]を 迎[むか]えに 来[こ]", blank: true },
-          { text: "なくてもいい、電車[でんしゃ]に 乗[の]れるから" },
+          { text: "私[わたし]を 迎[むか]えに 来[こ]なくてもいい", blank: true },
+          { text: "、電車[でんしゃ]に 乗[の]れるから" },
         ],
         notes: "Explicit object 私を added to 迎えに来る",
       },
       {
         segments: [
-          { text: "私[わたし]を 迎[むか]えに 来[こ]", blank: true },
-          { text: "なくてもいい、電車[でんしゃ]で 行[い]けるから" },
+          { text: "私[わたし]を 迎[むか]えに 来[こ]なくてもいい", blank: true },
+          { text: "、電車[でんしゃ]で 行[い]けるから" },
         ],
         notes: "Explicit 私を + \"can go by train\"",
       },
@@ -614,7 +585,7 @@ export const questions: Question[] = [
           { text: "面白[おもしろ]くなくて", blank: true },
           { text: "、やりたくない" },
         ],
-        notes: "面白くなくて as the blank (なくて grammar point); plain text やりたくない for \"don't want to do it\"",
+        notes: "面白くなくて (なくて grammar point); plain text やりたくない for \"don't want to do it\"",
       },
       {
         segments: [
@@ -667,7 +638,7 @@ export const questions: Question[] = [
           { text: "、まだ 新[あたら]しく" },
           { text: "見[み]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "汚い (い-adj) → 汚くなくて as blank; 見える with conjugation for polite/casual",
+        notes: "汚い (い-adj) → 汚くなくて as phrase; 見える with conjugation for polite/casual",
       },
       {
         segments: [
@@ -676,21 +647,25 @@ export const questions: Question[] = [
           { text: "、まだ" },
           { text: "新[あたら]しい", conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "汚くなくて (blank) + まだ新しい with conjugation — stating it IS new rather than it looks new",
+        notes: "汚くなくて + まだ新しい with conjugation — stating it IS new rather than it looks new",
       },
       {
         segments: [
-          { text: "かばんは 汚[きたな]れていなくて、まだ 新[あたら]しく", blank: true },
+          { text: "かばんは" },
+          { text: "汚[きたな]れていなくて", blank: true },
+          { text: "、まだ 新[あたら]しく" },
           { text: "見[み]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Verb form: 汚れていなくて (hasn't gotten dirty) as blank; 見える with conjugation",
+        notes: "Verb form: 汚れていなくて (hasn't gotten dirty) as phrase; 見える with conjugation",
       },
       {
         segments: [
-          { text: "かばんは 汚[きたな]れていなくて、まだ", blank: true },
+          { text: "かばんは" },
+          { text: "汚[きたな]れていなくて", blank: true },
+          { text: "、まだ" },
           { text: "新[あたら]しい", conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "汚れていなくて as blank + まだ新しい with conjugation",
+        notes: "汚れていなくて with まだ新しい",
       },
       {
         segments: [
@@ -699,14 +674,16 @@ export const questions: Question[] = [
           { text: "、まだ 新[あたら]しそう" },
           { text: "です" },
         ],
-        notes: "汚くなくて (blank) + まだ新しそうです — そう suffix on い-adjective to mean \"looks new\"",
+        notes: "汚くなくて + まだ新しそうです — そう suffix on い-adjective to mean \"looks new\"",
       },
       {
         segments: [
-          { text: "かばんは 汚[きたな]れていなくて、まだ 新[あたら]しそう", blank: true },
+          { text: "かばんは" },
+          { text: "汚[きたな]れていなくて", blank: true },
+          { text: "、まだ 新[あたら]しそう" },
           { text: "です" },
         ],
-        notes: "汚れていなくて as blank + まだ新しそうです",
+        notes: "汚れていなくて with まだ新しそうです",
       },
     ],
   },
@@ -752,7 +729,7 @@ export const questions: Question[] = [
           { text: "まだ おなかが すいていないから、晩[ばん]ご飯[はん]を今[いま]" },
           { text: "食[た]べなくてもいい", blank: true },
         ],
-        notes: "今 placed before the blank (after 晩ご飯を), different word order",
+        notes: "今 placed after 晩ご飯を for a different word order",
       },
       {
         segments: [
@@ -859,17 +836,17 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "カジュアルフライデーだから、けんじさんは 仕事[しごと]にネクタイをつけなくても" },
-          { text: "いい", blank: true },
+          { text: "カジュアルフライデーだから、けんじさんは 仕事[しごと]にネクタイを" },
+          { text: "つけなくてもいい", blank: true },
         ],
-        notes: "Using つける instead of する for wearing a tie; blank on いい",
+        notes: "Using つける instead of する for wearing a tie",
       },
       {
         segments: [
-          { text: "カジュアルフライデーだから、けんじさんは 会社[かいしゃ]にネクタイをつけなくても" },
-          { text: "いい", blank: true },
+          { text: "カジュアルフライデーだから、けんじさんは 会社[かいしゃ]にネクタイを" },
+          { text: "つけなくてもいい", blank: true },
         ],
-        notes: "つける + 会社に; blank on いい",
+        notes: "つける + 会社に",
       },
     ],
   },
@@ -882,7 +859,7 @@ export const questions: Question[] = [
           { text: "、とても" },
           { text: "疲[つか]れている", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Base answer: なくて as cause/reason, とても for \"really\", ている for current state",
+        notes: "なくて as cause/reason, とても for \"really\", ている for current state",
       },
       {
         segments: [
@@ -967,54 +944,47 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "時間[じかん]が", blank: true },
-          { text: "なくて", blank: true },
+          { text: "時間[じかん]がなくて", blank: true },
           { text: "、宿題[しゅくだい]ができなかった" },
         ],
       },
       {
         segments: [
-          { text: "時間[じかん]が", blank: true },
-          { text: "なくて", blank: true },
+          { text: "時間[じかん]がなくて", blank: true },
           { text: "、宿題[しゅくだい]をやれなかった" },
         ],
         notes: "Using やれなかった instead of できなかった for \"couldn't do\"",
       },
       {
         segments: [
-          { text: "時間[じかん]は", blank: true },
-          { text: "なくて", blank: true },
+          { text: "時間[じかん]はなくて", blank: true },
           { text: "、宿題[しゅくだい]ができなかった" },
         ],
         notes: "Using は instead of が with 時間 for contrastive/topic marking",
       },
       {
         segments: [
-          { text: "時間[じかん]が", blank: true },
-          { text: "なくて", blank: true },
+          { text: "時間[じかん]がなくて", blank: true },
           { text: "、宿題[しゅくだい]をすることができなかった" },
         ],
       },
       {
         segments: [
-          { text: "暇[ひま]が", blank: true },
-          { text: "なくて", blank: true },
+          { text: "暇[ひま]がなくて", blank: true },
           { text: "、宿題[しゅくだい]ができなかった" },
         ],
         notes: "Using 暇 (free time) instead of 時間 for \"time\"",
       },
       {
         segments: [
-          { text: "暇[ひま]が", blank: true },
-          { text: "なくて", blank: true },
+          { text: "暇[ひま]がなくて", blank: true },
           { text: "、宿題[しゅくだい]をやれなかった" },
         ],
         notes: "暇がなくて + やれなかった variant",
       },
       {
         segments: [
-          { text: "時間[じかん]が", blank: true },
-          { text: "なくて", blank: true },
+          { text: "時間[じかん]がなくて", blank: true },
           { text: "、宿題[しゅくだい]をやることができなかった" },
         ],
         notes: "時間がなくて + やることができなかった (ことができる form with やる)",
@@ -1029,7 +999,7 @@ export const questions: Question[] = [
           { text: "図書館[としょかん]は お金[かね]が いらないから、お金[かね]を" },
           { text: "下[お]ろさなくてもいい", blank: true },
         ],
-        notes: "Base answer: 図書館はお金がいらない (library doesn't need money) + から + 下ろさなくてもいい",
+        notes: "図書館はお金がいらない (library doesn't need money) + から + 下ろさなくてもいい",
       },
       {
         segments: [
@@ -1130,54 +1100,47 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "傘[かさ]が", blank: true },
-          { text: "なくて", blank: true },
+          { text: "傘[かさ]がなくて", blank: true },
           { text: "、出[で]かけられない" },
         ],
       },
       {
         segments: [
-          { text: "傘[かさ]が", blank: true },
-          { text: "なくて", blank: true },
+          { text: "傘[かさ]がなくて", blank: true },
           { text: "、出[で]かけることができない" },
         ],
         notes: "Using ことができない instead of られない for the potential negative.",
       },
       {
         segments: [
-          { text: "傘[かさ]が", blank: true },
-          { text: "なくて", blank: true },
-          { text: "、外[そと]に出[で]れない" },
+          { text: "傘[かさ]がなくて", blank: true },
+          { text: "、外[そと]に出[で]られない" },
         ],
         notes: "Using 外に出られない (can't go outside) instead of 出かけられない.",
       },
       {
         segments: [
-          { text: "傘[かさ]が", blank: true },
-          { text: "なくて", blank: true },
+          { text: "傘[かさ]がなくて", blank: true },
           { text: "、外[そと]に出[で]ることができない" },
         ],
         notes: "外に出ることができない — using ことができない with 外に出る.",
       },
       {
         segments: [
-          { text: "傘[かさ]は", blank: true },
-          { text: "なくて", blank: true },
+          { text: "傘[かさ]はなくて", blank: true },
           { text: "、出[で]かけられない" },
         ],
         notes: "Using 傘は (topic/contrast marker) instead of 傘が.",
       },
       {
         segments: [
-          { text: "傘[かさ]を持[も]ってい", blank: true },
-          { text: "なくて", blank: true },
+          { text: "傘[かさ]を持[も]っていなくて", blank: true },
           { text: "、出[で]かけられない" },
         ],
       },
       {
         segments: [
-          { text: "傘[かさ]を持[も]ってい", blank: true },
-          { text: "なくて", blank: true },
+          { text: "傘[かさ]を持[も]っていなくて", blank: true },
           { text: "、出[で]かけることができない" },
         ],
         notes: "持っていなくて + ことができない variant.",
@@ -1202,10 +1165,10 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "部屋[へや]はきれいじゃなくても" },
-          { text: "いい", blank: true },
+          { text: "部屋[へや]は" },
+          { text: "きれいじゃなくてもいい", blank: true },
         ],
-        notes: "Blank on いい only",
+        notes: "Using いい with the whole なくてもいい pattern",
       },
       {
         segments: [
@@ -1223,10 +1186,10 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "部屋[へや]はきれいじゃなくても" },
-          { text: "大丈夫[だいじょうぶ]", blank: true },
+          { text: "部屋[へや]は" },
+          { text: "きれいじゃなくても大丈夫[だいじょうぶ]", blank: true },
         ],
-        notes: "Blank on 大丈夫, using も before it",
+        notes: "Using 大丈夫 instead of いい with the whole なくても大丈夫 pattern",
       },
       {
         segments: [
@@ -1237,8 +1200,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "部屋[へや]はきれいではなくても" },
-          { text: "大丈夫[だいじょうぶ]", blank: true },
+          { text: "部屋[へや]は" },
+          { text: "きれいではなくても大丈夫[だいじょうぶ]", blank: true },
         ],
         notes: "では (formal) + 大丈夫",
       },
@@ -1248,6 +1211,33 @@ export const questions: Question[] = [
     english: "The movie isn't scary, so I don't have to worry.",
     hint: "horror = ホラー",
     answers: [
+      {
+        segments: [
+          { text: "映画[えいが]は 怖[こわ]くないから、心配[しんぱい]" },
+          { text: "しなくてもいい", blank: true },
+        ],
+      },
+      {
+        segments: [
+          { text: "映画[えいが]は 怖[こわ]くないので、心配[しんぱい]" },
+          { text: "しなくてもいい", blank: true },
+        ],
+        notes: "Using ので for a softer reason",
+      },
+      {
+        segments: [
+          { text: "ホラー映画[えいが]じゃないから、心配[しんぱい]" },
+          { text: "しなくてもいい", blank: true },
+        ],
+        notes: "Using ホラー映画 to say it is not a horror movie",
+      },
+      {
+        segments: [
+          { text: "映画[えいが]は 怖[こわ]くないから、心配[しんぱい]" },
+          { text: "しなくていい", blank: true },
+        ],
+        notes: "Using なくていい without も",
+      },
     ],
   },
 ];

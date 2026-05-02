@@ -32,7 +32,6 @@ export const questions: Question[] = [
   },
   {
     english: "When I get tired from work, I just want to go straight home",
-    hint: "Use たら since that's what we're practicing",
     answers: [
       {
         segments: [
@@ -114,16 +113,10 @@ export const questions: Question[] = [
           { text: "赤[あか]ちゃんが" },
           { text: "生[う]まれたら", blank: true },
           { text: "、たぶん旅行[りょこう]があまり" },
-          {
-            text: "できる",
-            conjugation: {
-              pos: "Ichidan verb",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
+          { text: "できなく" },
+          { text: "なる", conjugation: { pos: "Godan verb with 'ru' ending", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Using できる for potential form (SHOULD BE なくなります)",
+        notes: "Using なくなる to show that travel becomes difficult after the baby is born",
       },
     ],
   },
@@ -168,15 +161,7 @@ export const questions: Question[] = [
           },
           { text: "いるのを" },
           { text: "見[み]たら", blank: true },
-          {
-            text: "うらやましい",
-            conjugation: {
-              pos: "I-adjective",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "に" },
+          { text: "うらやましく" },
           {
             text: "なる",
             conjugation: {
@@ -221,24 +206,7 @@ export const questions: Question[] = [
           { text: "サラリーマンに" },
           { text: "なったら", blank: true },
           { text: "、毎日[まいにち]スーツを" },
-          {
-            text: "着[き]る",
-            conjugation: {
-              pos: "Ichidan verb",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "ことに" },
-          {
-            text: "慣[な]れる",
-            conjugation: {
-              pos: "Ichidan verb",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "かなと" },
+          { text: "着[き]ることに慣[な]れるかなと" },
           {
             text: "思[おも]う",
             conjugation: {
@@ -255,24 +223,7 @@ export const questions: Question[] = [
           { text: "サラリーマンに" },
           { text: "なったら", blank: true },
           { text: "、毎日[まいにち]スーツを" },
-          {
-            text: "着[き]る",
-            conjugation: {
-              pos: "Ichidan verb",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "ことに" },
-          {
-            text: "慣[な]れる",
-            conjugation: {
-              pos: "Ichidan verb",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "と" },
+          { text: "着[き]ることに慣[な]れると" },
           {
             text: "思[おも]う",
             conjugation: {
@@ -289,23 +240,7 @@ export const questions: Question[] = [
           { text: "サラリーマンに" },
           { text: "なったら", blank: true },
           { text: "、毎日[まいにち]スーツを" },
-          {
-            text: "着[き]る",
-            conjugation: {
-              pos: "Ichidan verb",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "ことに" },
-          {
-            text: "慣[な]れる",
-            conjugation: {
-              pos: "Ichidan verb",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
+          { text: "着[き]ることに慣[な]れる" },
         ],
         notes: "Using こと to nominalize the action",
       },
@@ -318,15 +253,7 @@ export const questions: Question[] = [
         segments: [
           { text: "離婚[りこん]したら", blank: true },
           { text: "、もっと" },
-          {
-            text: "自由[じゆう]",
-            conjugation: {
-              pos: "Na-adjective",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "に" },
+          { text: "自由[じゆう]に" },
           {
             text: "なる",
             conjugation: {
@@ -343,25 +270,19 @@ export const questions: Question[] = [
           { text: "離婚[りこん]したら", blank: true },
           { text: "、もっと" },
           {
-            text: "自由[じゆう]",
-            conjugation: {
-              pos: "Na-adjective",
-              polarity: "positive",
-              tense: "non-past",
-            },
+            text: "解放感[かいほうかん]",
           },
-          { text: "に" },
+          { text: "が" },
           {
-            text: "なる",
+            text: "ある",
             conjugation: {
-              pos: "Godan verb with 'ru' ending",
+              pos: "Godan verb with 'ru' ending (irregular verb)",
               polarity: "positive",
               tense: "non-past",
             },
           },
-          { text: "よ" },
         ],
-        notes: "Using もっと + よ for emphasis",
+        notes: "Using 解放感 for a sense of freedom",
       },
     ],
   },
@@ -373,14 +294,7 @@ export const questions: Question[] = [
           { text: "お客[きゃく]さんが" },
           { text: "帰[かえ]ったら", blank: true },
           { text: "、部屋[へや]が" },
-          {
-            text: "寂[さび]しい",
-            conjugation: {
-              pos: "I-adjective",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
+          { text: "寂[さび]しく" },
           {
             text: "なる",
             conjugation: {
@@ -403,14 +317,7 @@ export const questions: Question[] = [
           { text: "意見[いけん]の違[ちが]いが" },
           { text: "あったら", blank: true },
           { text: "、" },
-          {
-            text: "話[はな]し合[あ]う",
-            conjugation: {
-              pos: "Godan verb with 'u' ending",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
+          { text: "話[はな]し合[あ]った" },
           { text: "方[ほう]がいいです" },
         ],
         notes: "Using 話し合う for mutual discussion",
@@ -425,15 +332,7 @@ export const questions: Question[] = [
           { text: "ニュースが" },
           { text: "遅[おく]れたら", blank: true },
           { text: "、" },
-          {
-            text: "心配[しんぱい]",
-            conjugation: {
-              pos: "Na-adjective",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "に" },
+          { text: "心配[しんぱい]に" },
           {
             text: "なる",
             conjugation: {
@@ -523,15 +422,7 @@ export const questions: Question[] = [
           { text: "首相[しゅしょう]が" },
           { text: "辞[や]めたら", blank: true },
           { text: "、どう" },
-          {
-            text: "なる",
-            conjugation: {
-              pos: "Godan verb with 'ru' ending",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "と" },
+          { text: "なると" },
           {
             text: "思[おも]う",
             conjugation: {
@@ -554,14 +445,7 @@ export const questions: Question[] = [
           { text: "一人暮[ひとりぐ]らしに" },
           { text: "慣[な]れたら", blank: true },
           { text: "、料理[りょうり]が" },
-          {
-            text: "楽[たの]しい",
-            conjugation: {
-              pos: "I-adjective",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
+          { text: "楽[たの]しく" },
           {
             text: "なる",
             conjugation: {
@@ -582,15 +466,7 @@ export const questions: Question[] = [
         segments: [
           { text: "危[あぶ]なかったら", blank: true },
           { text: "、無理[むり]して" },
-          {
-            text: "行[い]く",
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-          { text: "てもいい" },
+          { text: "行[い]かなくてもいい" },
         ],
         notes: "Using 無理して for 'force yourself'",
       },
@@ -615,31 +491,7 @@ export const questions: Question[] = [
         ],
         notes: "Using 落ち込む for 'get depressed'",
       },
-      {
-        segments: [
-          { text: "都合[つごう]が" },
-          { text: "悪[わる]かったら", blank: true },
-          { text: "、" },
-          {
-            text: "落[お]ち込[こ]む",
-            conjugation: {
-              pos: "Godan verb with 'mu' ending",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "に" },
-          {
-            text: "なる",
-            conjugation: {
-              pos: "Godan verb with 'ru' ending",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Using 落ち込む for 'get depressed'",
-      },
+
     ],
   },
   {
@@ -670,17 +522,9 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "強[つよ]かったら", blank: true },
+          { text: "強[つよ]くなったら", blank: true },
           { text: "、難[むずか]しいことでも" },
-          {
-            text: "できる",
-            conjugation: {
-              pos: "Ichidan verb",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "ように" },
+          { text: "できるように" },
           {
             text: "なる",
             conjugation: {

@@ -14,19 +14,6 @@ const toOmotteIru = [
   },
 ] as const
 
-const toOmou = [
-  { text: "と", blank: true },
-  {
-    text: "思[おも]う",
-    blank: true,
-    conjugation: {
-      pos: "Godan verb with 'u' ending",
-      form: "normal",
-      polarity: "positive",
-      tense: "non-past",
-    },
-  },
-] as const
 
 export const questions: Question[] = [
   {
@@ -49,27 +36,11 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "来月[らいげつ]、アルバイトを" },
-          { text: "やめよう", blank: true },
-          ...toOmou,
-        ],
-        notes: "Using と思う (simple intention) instead of と思っている",
-      },
-      {
-        segments: [
           { text: "来月[らいげつ]、アルバイトは" },
           { text: "やめよう", blank: true },
           ...toOmotteIru,
         ],
         notes: "は instead of を (topicalizing アルバイト)",
-      },
-      {
-        segments: [
-          { text: "来月[らいげつ]、アルバイトは" },
-          { text: "やめよう", blank: true },
-          ...toOmou,
-        ],
-        notes: "は + simple と思う",
       },
     ],
   },
@@ -79,14 +50,14 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "今年[ことし]の 夏[なつ]、富士山[ふじさん]に" },
+          { text: "今年[ことし]の 夏[なつ]、富士山に" },
           { text: "登[のぼ]ろう", blank: true },
           ...toOmotteIru,
         ],
       },
       {
         segments: [
-          { text: "この 夏[なつ]、富士山[ふじさん]に" },
+          { text: "この 夏[なつ]、富士山に" },
           { text: "登[のぼ]ろう", blank: true },
           ...toOmotteIru,
         ],
@@ -94,7 +65,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "今年[ことし]の 夏[なつ]に 富士山[ふじさん]に" },
+          { text: "今年[ことし]の 夏[なつ]に 富士山に" },
           { text: "登[のぼ]ろう", blank: true },
           ...toOmotteIru,
         ],
@@ -102,7 +73,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "今年[ことし]の 夏[なつ]、富士山[ふじさん]を" },
+          { text: "今年[ことし]の 夏[なつ]、富士山を" },
           { text: "登[のぼ]ろう", blank: true },
           ...toOmotteIru,
         ],
@@ -110,7 +81,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "この 夏[なつ]、富士山[ふじさん]を" },
+          { text: "この 夏[なつ]、富士山を" },
           { text: "登[のぼ]ろう", blank: true },
           ...toOmotteIru,
         ],
@@ -322,21 +293,21 @@ export const questions: Question[] = [
   },
   {
     english:
-      "I think I'll go see the autumn leaves in Kyoto this year.",
+      "I'm thinking of going to see the autumn leaves in Kyoto this year.",
     hint: "Kyoto = きょうと",
     answers: [
       {
         segments: [
           { text: "今年[ことし]は、きょうとに 紅葉[こうよう]を 見[み]に" },
           { text: "行[い]こう", blank: true },
-          ...toOmou,
+          ...toOmotteIru,
         ],
       },
       {
         segments: [
           { text: "今年[ことし]、きょうとに 紅葉[こうよう]を 見[み]に" },
           { text: "行[い]こう", blank: true },
-          ...toOmou,
+          ...toOmotteIru,
         ],
         notes: "No は after 今年",
       },
@@ -344,7 +315,7 @@ export const questions: Question[] = [
         segments: [
           { text: "今年[ことし]は、きょうとへ 紅葉[こうよう]を 見[み]に" },
           { text: "行[い]こう", blank: true },
-          ...toOmou,
+          ...toOmotteIru,
         ],
         notes: "へ instead of に for destination",
       },
@@ -352,7 +323,7 @@ export const questions: Question[] = [
         segments: [
           { text: "今年[ことし]、きょうとへ 紅葉[こうよう]を 見[み]に" },
           { text: "行[い]こう", blank: true },
-          ...toOmou,
+          ...toOmotteIru,
         ],
         notes: "No は + へ",
       },
@@ -360,7 +331,7 @@ export const questions: Question[] = [
         segments: [
           { text: "今年[ことし]は、きょうとの 紅葉[こうよう]を 見[み]に" },
           { text: "行[い]こう", blank: true },
-          ...toOmou,
+          ...toOmotteIru,
         ],
         notes: "きょうとの紅葉 (の-modifier) instead of destination に",
       },
@@ -584,7 +555,7 @@ export const questions: Question[] = [
           { text: "さくらさんを 誕生日[たんじょうび]パーティーに" },
           { text: "誘[さそ]おう", blank: true },
           ...toOmotteIru,
-          { text: "んだけど、いいと" },
+          { text: "んだけど、よいと" },
           {
             text: "思[おも]う",
             conjugation: {
@@ -601,7 +572,7 @@ export const questions: Question[] = [
           { text: "誕生日[たんじょうび]パーティーに さくらさんを" },
           { text: "誘[さそ]おう", blank: true },
           ...toOmotteIru,
-          { text: "んだけど、いいと" },
+          { text: "んだけど、よいと" },
           {
             text: "思[おも]う",
             conjugation: {
@@ -639,10 +610,19 @@ export const questions: Question[] = [
           { text: "さくらさんを 誕生日[たんじょうび]パーティーに" },
           { text: "誘[さそ]おう", blank: true },
           ...toOmotteIru,
-          { text: "んだけど、いいと 思[おも]わない" },
+          { text: "んだけど、よいと" },
+          {
+            text: "思[おも]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
           { text: "か" },
         ],
-        notes: "Negative question いいと思わないか — seeking agreement",
+        notes: "Negative question よいと思わないか — seeking agreement",
       },
     ],
   },
@@ -703,8 +683,7 @@ export const questions: Question[] = [
   {
     english:
       "I've been thinking of getting a cat — I've been feeling pretty lonely lately.",
-    hint: "Two separate statements joined naturally; express loneliness with 寂しい",
-    answers: [
+        answers: [
       {
         segments: [
           { text: "最近[さいきん]けっこう 寂[さび]しいから、猫[ねこ]を" },
@@ -781,7 +760,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みかさん、今週末[こんしゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しよう", blank: true },
+          { text: "参加しよう", blank: true },
           ...toOmotteIru,
           { text: "？" },
         ],
@@ -789,7 +768,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みかさん、今週末[こんしゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しよう", blank: true },
+          { text: "参加しよう", blank: true },
           ...toOmotteIru,
           { text: "の？" },
         ],
@@ -798,17 +777,17 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みかさん、今週末[こんしゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しよう", blank: true },
+          { text: "参加しよう", blank: true },
           ...toOmotteIru,
-          { text: "ん", blank: true },
-          { text: "ですか" },
+          { text: "んですか" },
         ],
-        notes: "Polite んですか variant",
+        register: "polite",
+        notes: "Polite んですか ending.",
       },
       {
         segments: [
           { text: "みかさん、バーベキューに" },
-          { text: "参加[さんか]しよう", blank: true },
+          { text: "参加しよう", blank: true },
           ...toOmotteIru,
           { text: "？" },
         ],
@@ -817,7 +796,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みかさん、週末[しゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しよう", blank: true },
+          { text: "参加しよう", blank: true },
           ...toOmotteIru,
           { text: "？" },
         ],
@@ -977,14 +956,14 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今晩[こんばん]、川[かわ]のそばを" },
-          { text: "散歩[さんぽ]しよう", blank: true },
+          { text: "散歩しよう", blank: true },
           ...toOmotteIru,
         ],
       },
       {
         segments: [
           { text: "今夜[こんや]、川[かわ]のそばを" },
-          { text: "散歩[さんぽ]しよう", blank: true },
+          { text: "散歩しよう", blank: true },
           ...toOmotteIru,
         ],
         notes: "今夜 instead of 今晩",
@@ -992,7 +971,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今晩[こんばん]、川[かわ]の 近[ちか]くを" },
-          { text: "散歩[さんぽ]しよう", blank: true },
+          { text: "散歩しよう", blank: true },
           ...toOmotteIru,
         ],
         notes: "川の近くを (near the river) instead of 川のそばを",
@@ -1000,7 +979,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今夜[こんや]、川[かわ]の 近[ちか]くを" },
-          { text: "散歩[さんぽ]しよう", blank: true },
+          { text: "散歩しよう", blank: true },
           ...toOmotteIru,
         ],
         notes: "今夜 + 川の近くを",
@@ -1008,7 +987,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今晩[こんばん]、川[かわ]のそばで" },
-          { text: "散歩[さんぽ]しよう", blank: true },
+          { text: "散歩しよう", blank: true },
           ...toOmotteIru,
         ],
         notes: "川のそばで (で instead of を) — at the riverside location",
@@ -1016,7 +995,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今夜[こんや]、川[かわ]のそばで" },
-          { text: "散歩[さんぽ]しよう", blank: true },
+          { text: "散歩しよう", blank: true },
           ...toOmotteIru,
         ],
         notes: "今夜 + 川のそばで",

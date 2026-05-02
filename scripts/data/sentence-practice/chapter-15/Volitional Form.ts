@@ -40,13 +40,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "明日[あした]、海[うみ]で泳[およ]ぎに" },
-          { text: "行[い]く", blank: true, conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "volitional", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "海で泳ぎに行こう — で instead of に for location of activity",
-      },
-      {
-        segments: [
           { text: "明日[あした]、海[うみ]で一緒[いっしょ]に" },
           { text: "泳[およ]ぐ", blank: true, conjugation: { pos: "Godan verb with 'gu' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
@@ -154,30 +147,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "週末[しゅうまつ]は、一緒[いっしょ]に 漫画[まんが]を" },
-          { text: "読[よ]む", blank: true, conjugation: { pos: "Godan verb with 'mu' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
-        ],
-        notes: "Adding よ for enthusiastic suggestion",
-      },
-      {
-        segments: [
-          { text: "週末[しゅうまつ]、一緒[いっしょ]に 漫画[まんが]を" },
-          { text: "読[よ]む", blank: true, conjugation: { pos: "Godan verb with 'mu' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
-          { text: "ね" },
-        ],
-        notes: "Adding ね for softer suggestion seeking agreement",
-      },
-      {
-        segments: [
-          { text: "週末[しゅうまつ]は、一緒[いっしょ]に 漫画[まんが]を" },
-          { text: "読[よ]む", blank: true, conjugation: { pos: "Godan verb with 'mu' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
-          { text: "ね" },
-        ],
-        notes: "は after 週末 + ね ending",
-      },
-      {
-        segments: [
           { text: "一緒[いっしょ]に週末[しゅうまつ]、漫画[まんが]を" },
           { text: "読[よ]む", blank: true, conjugation: { pos: "Godan verb with 'mu' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
@@ -196,14 +165,6 @@ export const questions: Question[] = [
           { text: "読[よ]む", blank: true, conjugation: { pos: "Godan verb with 'mu' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "週末に with に particle instead of no particle/は",
-      },
-      {
-        segments: [
-          { text: "週末[しゅうまつ]に一緒[いっしょ]に 漫画[まんが]を" },
-          { text: "読[よ]む", blank: true, conjugation: { pos: "Godan verb with 'mu' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
-          { text: "よ" },
-        ],
-        notes: "週末に + よ ending",
       },
     ],
   },
@@ -398,30 +359,16 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "お 祭[まつ]りで たくさん 写真[しゃしん]を" },
+          { text: "お 祭[まつ]りで 多[おお]くの 写真[しゃしん]を" },
           { text: "撮[と]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "祭[まつ]りで たくさん 写真[しゃしん]を" },
+          { text: "祭[まつ]りで 多[おお]くの 写真[しゃしん]を" },
           { text: "撮[と]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Using 祭り instead of お祭り (without honorific お)",
-      },
-      {
-        segments: [
-          { text: "お 祭[まつ]りで 写真[しゃしん]を たくさん" },
-          { text: "撮[と]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "たくさん moved after 写真を (closer to the verb)",
-      },
-      {
-        segments: [
-          { text: "祭[まつ]りで 写真[しゃしん]を たくさん" },
-          { text: "撮[と]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "祭り (no honorific) + たくさん after 写真を",
+        notes: "Using 祭り instead of お祭り (without honorific お), with 多くの for a lot of",
       },
       {
         segments: [
@@ -650,28 +597,33 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "宿題[しゅくだい]を" },
-          { text: "手伝[てつだ]おうか", blank: true },
+          { text: "手伝[てつだ]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
+          { text: "か" },
         ],
       },
       {
         segments: [
           { text: "宿題[しゅくだい]、" },
-          { text: "手伝[てつだ]おうか", blank: true },
+          { text: "手伝[てつだ]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
+          { text: "か" },
         ],
+        register: "casual",
         notes: "Casual particle drop: 宿題、手伝おうか — topic set without を",
       },
       {
         segments: [
           { text: "宿題[しゅくだい]の手伝[てつだ]いを" },
-          { text: "しようか", blank: true },
+          { text: "する", blank: true, conjugation: { pos: "Suru verb - special class", form: "volitional", polarity: "positive", tense: "non-past" } },
+          { text: "か" },
         ],
       },
       {
         segments: [
           { text: "私[わたし]が宿題[しゅくだい]を" },
-          { text: "手伝[てつだ]おうか", blank: true },
+          { text: "手伝[てつだ]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
+          { text: "か" },
         ],
-        notes: "Adding 私が for emphasis: \"Shall I (be the one to) help with the homework?\"",
+        notes: "Explicit 私が emphasizes that I would be the one helping.",
       },
     ],
   },
@@ -681,60 +633,36 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "この 夏[なつ]、みんなで 富士山[ふじさん]に" },
+          { text: "この 夏[なつ]、みんなで 富士山に" },
           { text: "登[のぼ]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "この 夏[なつ]、みんなで 富士山[ふじさん]に" },
-          { text: "登[のぼ]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
-          { text: "よ！" },
-        ],
-        notes: "Same as above but with よ particle for emphasis/exclamation",
-      },
-      {
-        segments: [
-          { text: "この 夏[なつ]、 一緒[いっしょ]に 富士山[ふじさん]に" },
+          { text: "この 夏[なつ]、 一緒[いっしょ]に 富士山に" },
           { text: "登[のぼ]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using 一緒に instead of みんなで",
       },
       {
         segments: [
-          { text: "この 夏[なつ]、みんなで 一緒[いっしょ]に 富士山[ふじさん]に" },
+          { text: "この 夏[なつ]、みんなで 一緒[いっしょ]に 富士山に" },
           { text: "登[のぼ]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "今年[ことし]の 夏[なつ]、みんなで 富士山[ふじさん]に" },
+          { text: "今年[ことし]の 夏[なつ]、みんなで 富士山に" },
           { text: "登[のぼ]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using 今年の夏 instead of この夏",
       },
       {
         segments: [
-          { text: "みんなで 富士山[ふじさん]に" },
-          { text: "登[のぼ]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
-          { text: "よ、この 夏[なつ]！" },
-        ],
-        notes: "Time phrase moved to end, with よ particle",
-      },
-      {
-        segments: [
-          { text: "富士山[ふじさん]に、この 夏[なつ]みんなで" },
+          { text: "富士山に、この 夏[なつ]みんなで" },
           { text: "登[のぼ]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "富士山 fronted as topic, then この夏、みんなで",
-      },
-      {
-        segments: [
-          { text: "この 夏[なつ]、みんなで 一緒[いっしょ]に 富士山[ふじさん]に" },
-          { text: "登[のぼ]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
-          { text: "よ！" },
-        ],
-        notes: "みんなで + 一緒に + よ for extra enthusiasm",
       },
     ],
   },
@@ -967,21 +895,24 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "エアコンを消[け]そう", blank: true },
+          { text: "エアコンを" },
+          { text: "消[け]す", blank: true, conjugation: { pos: "Godan verb with 'su' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
       },
       {
         segments: [
-          { text: "私[わたし]が エアコンを消[け]そう", blank: true },
+          { text: "私[わたし]が エアコンを" },
+          { text: "消[け]す", blank: true, conjugation: { pos: "Godan verb with 'su' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
-        notes: "Explicit subject 私が: 私がエアコンを消そうか — emphasizing \"shall I (be the one to)\"",
+        notes: "Explicit 私が emphasizes that I would be the one turning it off.",
       },
       {
         segments: [
           { text: "エアコンを" },
-          { text: "切[き]ろうか", blank: true },
+          { text: "切[き]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
+          { text: "か" },
         ],
       },
     ],
@@ -1014,14 +945,14 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今日[きょう]は クレジットカードがないから、現金[げんきん]で" },
-          { text: "払[は]おう", blank: true },
+          { text: "払[はら]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using 払う (to pay) instead of 使う, with 現金で (with cash) construction",
       },
       {
         segments: [
           { text: "今日[きょう]は 現金[げんきん]で" },
-          { text: "払[は]おう", blank: true },
+          { text: "払[はら]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
           { text: "—クレジットカードがないから" },
         ],
         notes: "現金で払おう with reason after (suggestion first, matching English order)",
@@ -1029,7 +960,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "クレジットカードがないから、今日[きょう]は 現金[げんきん]で" },
-          { text: "払[は]おう", blank: true },
+          { text: "払[はら]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "現金で払おう, reason-first order",
       },
@@ -1051,7 +982,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "クレジットカードがないので、今日[きょう]は 現金[げんきん]で" },
-          { text: "払[は]おう", blank: true },
+          { text: "払[はら]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "現金で払おう with ので for reason",
       },
@@ -1098,22 +1029,6 @@ export const questions: Question[] = [
           { text: "！" },
         ],
         notes: "温泉の旅館 — \"inn of/at a hot spring\" as alternative phrasing",
-      },
-      {
-        segments: [
-          { text: "この 冬[ふゆ]、温泉[おんせん] 旅館[りょかん]に" },
-          { text: "泊[と]まる", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
-          { text: "ね！" },
-        ],
-        notes: "Adding ね for seeking agreement/shared enthusiasm",
-      },
-      {
-        segments: [
-          { text: "この 冬[ふゆ]、温泉[おんせん] 旅館[りょかん]に" },
-          { text: "泊[と]まる", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
-          { text: "よ！" },
-        ],
-        notes: "Adding よ for assertive suggestion",
       },
     ],
   },
