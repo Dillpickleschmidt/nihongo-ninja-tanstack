@@ -288,8 +288,14 @@ function allIndexesOf(haystack: string, needle: string): number[] {
   return out
 }
 
+function isInsideFuriganaReading(text: string, index: number): boolean {
+  const lastOpen = text.lastIndexOf("[", index)
+  const lastClose = text.lastIndexOf("]", index)
+  return lastOpen > lastClose
+}
+
 // Replaces さん/くん/ちゃん with alternatives (position-based), skipping
-// occurrences that are part of a kinship-term form.
+// occurrences that are part of a kinship-term form or furigana reading.
 function generateHonorificVariations(answers: RichAnswer[]): RichAnswer[] {
   const resultMap = new Map<string, RichAnswer>()
 
@@ -304,7 +310,10 @@ function generateHonorificVariations(answers: RichAnswer[]): RichAnswer[] {
       const positions = allIndexesOf(answer.original, baseHonorific)
 
       for (let i = 0; i < positions.length; i++) {
-        if (isInKinshipForm(answer.original, baseHonorific, positions[i])) {
+        if (
+          isInsideFuriganaReading(answer.original, positions[i]) ||
+          isInKinshipForm(answer.original, baseHonorific, positions[i])
+        ) {
           continue
         }
         for (const altHonorific of alternatives) {

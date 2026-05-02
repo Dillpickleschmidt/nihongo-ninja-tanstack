@@ -146,6 +146,21 @@ describe("honorific variations", () => {
       "今日[きょう]は暑[あつ]いです",
     )
   })
+
+  it("does not replace honorific-looking text inside furigana readings", () => {
+    const segments: RichSegment[] = [
+      createRichSegment("三階[さんがい]にございます", false),
+      createRichSegment("参加[さんか]いたします", false),
+    ]
+    const result = generateValidAnswers(segments, 0, true)
+    const nonKana = result.filter((a) => !a.isKanaVariation)
+
+    expect(nonKana).toHaveLength(1)
+    expect(stripSeparators(nonKana[0].original)).toBe(
+      "三階[さんがい]にございます参加[さんか]いたします",
+    )
+    expect(nonKana[0].honorificType).toBe("none")
+  })
 })
 
 describe("position-based replacement", () => {
